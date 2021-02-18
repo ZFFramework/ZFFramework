@@ -19,5 +19,7 @@ if not defined MODULE_BRANCH set MODULE_BRANCH=master
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 
-call "%ZF_ROOT_PATH%\tools\common\git_check.bat" %MODULE_REPO% %MODULE_BRANCH% "%ZF_ROOT_PATH%\..\ZFModule\ZF\%MODULE_NAME%"
+if "%MODULE_BRANCH%" neq "LOCAL" (
+    call "%ZF_ROOT_PATH%\tools\common\git_check.bat" %MODULE_REPO% %MODULE_BRANCH% "%ZF_ROOT_PATH%\..\ZFModule\ZF\%MODULE_NAME%"
+)
 

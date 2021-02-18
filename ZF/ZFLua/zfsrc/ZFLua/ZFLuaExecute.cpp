@@ -12,6 +12,11 @@ static zfbool _ZFP_ZFLuaExecute(ZF_IN const ZFPathInfo *pathInfoOrNull,
                                 ZF_IN const ZFCoreArray<zfautoObject> *luaParams,
                                 ZF_IN void *L)
 {
+    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
+    {
+        zfCoreAssertWithMessageTrim(ZFThread::currentThread()->isMainThread(),
+            "[ZFLua] ZFLuaExecute can only called in main thread");
+    }
     if(!input.callbackIsValid())
     {
         return zffalse;

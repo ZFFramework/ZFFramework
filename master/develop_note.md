@@ -68,9 +68,7 @@ we use zfstring as low level string container, which is reproduce of std::string
 * behaviors changed:
     * able to construct from a null char string
     * NO thread-safe supported,
-        which should be implemented manually,
-        for most case, outter invoker should have wrapped by zfCoreMutexLocker,
-        and there's no need for low level string types to supply thread-safe
+        which should be implemented manually
 
 
 ## ZFCoreArray/ZFCoreMap

@@ -17,7 +17,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * if the source image have nine patch,
  * scale would use the nine patch setting\n
  * return null if source image or newSize invalid\n
- * newSize would always used as pixel unit\n
  * this method would create a new image even if size not changed
  */
 ZFMETHOD_FUNC_DECLARE_2(zfautoObject, ZFUIImageScale,

@@ -139,7 +139,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
     // zfl_call metatable
     ZFImpl_ZFLua_execute(L,
             "_ZFP_zfl_index = function(tbl, k)\n"
-            "    local t = tbl .. '.' .. k\n" // ZFNamespaceSeparator
+            "    local t = {ZFNS=tbl.ZFNS .. '.' .. k}\n" // ZFNamespaceSeparator
             "    local d = debug.getmetatable(t)\n"
             "    d.__index = _ZFP_zfl_index\n"
             "    d.__call = _ZFP_zfl_call\n"
@@ -147,7 +147,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
             "    return t\n"
             "end\n"
             "_ZFP_zfl_call = function(tbl, ...)\n"
-            "    return zfl_callStatic(tbl, ...)\n"
+            "    return zfl_callStatic(tbl.ZFNS, ...)\n"
             "end\n"
         );
 
@@ -218,12 +218,12 @@ static void _ZFP_ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT zfstring &code,
                                              ZF_IN const zfchar *scopeName)
 {
     zfstringAppend(code,
-            "%s = '%s'\n"
-            "local tbl = debug.getmetatable(%s)\n"
+            "%s = {ZFNS='%s'}\n"
+            "local tbl = {}\n"
             "tbl.__index = _ZFP_zfl_index\n"
             "tbl.__call = _ZFP_zfl_call\n"
             "debug.setmetatable(%s, tbl)\n"
-        , scopeName, scopeName, scopeName, scopeName);
+        , scopeName, scopeName, scopeName);
 }
 void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT lua_State *L, ZF_IN const zfchar **scopeNameList)
 {
