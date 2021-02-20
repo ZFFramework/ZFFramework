@@ -1,3 +1,4 @@
+
 # Introduction
 
 welcome to ZFFramework, a cross-platform, lightweight, mid-level application framework in C++
@@ -15,31 +16,6 @@ Homepage:
 
     NOTE: this repo would keep clean (remove unnecessary history) and update frequently,
     if you want stable or history version, please refer to [ZFFrameworkDist](https://github.com/ZFFrameworkDist/ZFFramework)
-
-# Main features
-
-* minimum requirement
-* powerful reflection, serialzation, styleable logic
-
-    * for how powerful ZFFramework is, you may refer to [Feature page](https://zfframework.github.io/doc/_doc_tag__feature.html)
-    * automatic lua binding, no extra bind code or config are necessary
-    * automatic UI serialization
-    * stateful property animation
-    * enhanced global event observer
-
-* fully modularization, "core + protocol + dynamic implementation" design
-
-    support any platform if you are able to supply a native C++ implementation,
-    most of implementation can be replaced easily, and implementation is required only if its owner module being used
-
-* easy to communicate with native code
-
-    even to embed UI elements and native UI elements with each other
-
-* UI module to write cross-platform UI easily
-* built-in auto scale logic to support multiple screen size
-
-    you have no need to write size-dependent code in both app and implementation
 
 
 # Quick overview
@@ -118,6 +94,32 @@ Homepage:
     * depends on the actual platform implementation
 
 
+# Main features
+
+* minimum requirement
+* powerful reflection, serialzation, styleable logic
+
+    * for how powerful ZFFramework is, you may refer to [Feature page](https://zfframework.github.io/doc/_doc_tag__feature.html)
+    * automatic lua binding, no extra bind code or config are necessary
+    * automatic UI serialization
+    * stateful property animation
+    * enhanced global event observer
+
+* fully modularization, "core + protocol + dynamic implementation" design
+
+    support any platform if you are able to supply a native C++ implementation,
+    most of implementation can be replaced easily, and implementation is required only if its owner module being used
+
+* easy to communicate with native code
+
+    even to embed UI elements and native UI elements with each other
+
+* UI module to write cross-platform UI easily
+* built-in auto scale logic to support multiple screen size
+
+    you have no need to write size-dependent code in both app and implementation
+
+
 # Current status
 
 * finished
@@ -164,10 +166,5 @@ feel free to copy or modify or use it
     [Issues](https://github.com/ZFFramework/ZFFramework/issues) or [Pull Request](https://github.com/ZFFramework/ZFFramework/pulls) are welcome
 
 
-if you like my work, please consider donate:
-
-* [paypal](http://paypal.com/): zerofighter@163.com
-* [alipay](http://alipay.com/): zerofighter@163.com
-
-contact master@zsaber.com (Chinese or English only) before donate, we would really appreciate for your help
+if you like my work, [buy me a coffee](https://github.com/ZSaberLv0/ZSaberLv0)?
 
