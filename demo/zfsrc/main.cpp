@@ -68,36 +68,6 @@ static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void)
     window->childAdd(containerView);
     containerView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
 
-    {
-        zfblockedAlloc(ZFUIKit_test_Button, button);
-        containerView->childAdd(button);
-
-        ZFLISTENER_LOCAL(onClickButton, {
-            if(ZFUIViewStateAniAutoApplyStarted())
-            {
-                ZFUIViewStateAniAutoApplyStop();
-            }
-            else
-            {
-                ZFUIViewStateAniAutoApplyStart();
-            }
-            listenerData.sender<ZFUIButtonBasic *>()->buttonLabelText(
-                zfstringWithFormat("stateAni %s", ZFUIViewStateAniAutoApplyStarted() ? "on" : "off"));
-        })
-        button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton);
-        button->buttonBackgroundStyle()->viewBackgroundColor(ZFUIColorRed());
-        ZFUIViewStateAniAutoApplyStart();
-        button->buttonSimulateClick();
-    }
-
-    {
-        zfblockedAlloc(ZFUIView, separator);
-        containerView->childAdd(separator);
-        separator->viewSizeMin(ZFUISizeMake(0, 5));
-        separator->viewSizeMax(ZFUISizeMake(-1, 5));
-        separator->viewBackgroundColor(ZFUIColorGray());
-    }
-
     ZFUIViewFocusNextMove(window);
     return containerView;
 }

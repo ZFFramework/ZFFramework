@@ -16,6 +16,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_BEGIN(ZFXml)
 public:
     /**
+     * @brief see #ZFXmlEscapeCharEncode
+     */
+    virtual void xmlEscapeCharEncode(ZF_OUT const ZFOutput &dst,
+                                     ZF_IN const zfchar *src,
+                                     ZF_IN_OPT zfindex count = zfindexMax());
+    /**
+     * @brief see #ZFXmlEscapeCharEncode
+     */
+    virtual void xmlEscapeCharDecode(ZF_OUT const ZFOutput &dst,
+                                     ZF_IN const zfchar *src,
+                                     ZF_IN_OPT zfindex count = zfindexMax());
+
+public:
+    /**
      * @brief parse xml document
      *
      * you must parse the DOM tree and save to document,

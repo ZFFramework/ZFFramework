@@ -1,8 +1,0 @@
-<ZFUIImage imageType="input" >
-    <ZFUIMargin name="imageNinePatch" value="(5, 5, 5, 5)" />
-    <ZFCallback callbackType="ZFInputForLocalFile" category="imageData" >
-        <node category="callbackData" >
-            <zfstring category="filePath" value="button_highlighted.png" />
-        </node>
-    </ZFCallback>
-</ZFUIImage>

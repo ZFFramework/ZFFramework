@@ -1,6 +1,5 @@
 #include "ZFXml.h"
 #include "protocol/ZFProtocolZFXml.h"
-#include "protocol/ZFProtocolZFXmlEscapeChar.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -1604,7 +1603,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFXmlEscapeCharEncode,
                        ZFMP_IN(const zfchar *, src),
                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
 {
-    ZFPROTOCOL_ACCESS(ZFXmlEscapeChar)->xmlEscapeCharEncode(dst, src, count);
+    ZFPROTOCOL_ACCESS(ZFXml)->xmlEscapeCharEncode(dst, src, count);
 }
 
 ZFMETHOD_FUNC_DEFINE_3(void, ZFXmlEscapeCharDecode,
@@ -1619,7 +1618,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFXmlEscapeCharDecode,
                        ZFMP_IN(const zfchar *, src),
                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
 {
-    ZFPROTOCOL_ACCESS(ZFXmlEscapeChar)->xmlEscapeCharDecode(dst, src, count);
+    ZFPROTOCOL_ACCESS(ZFXml)->xmlEscapeCharDecode(dst, src, count);
 }
 
 ZF_NAMESPACE_GLOBAL_END

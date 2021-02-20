@@ -16,6 +16,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_BEGIN(ZFJson)
 public:
     /**
+     * @brief see #ZFJsonEscapeCharEncode
+     */
+    virtual void jsonEscapeCharEncode(ZF_OUT const ZFOutput &dst,
+                                      ZF_IN const zfchar *src,
+                                      ZF_IN_OPT zfindex count = zfindexMax());
+    /**
+     * @brief see #ZFJsonEscapeCharEncode
+     */
+    virtual void jsonEscapeCharDecode(ZF_OUT const ZFOutput &dst,
+                                      ZF_IN const zfchar *src,
+                                      ZF_IN_OPT zfindex count = zfindexMax());
+
+public:
+    /**
      * @brief parse json
      */
     virtual ZFJsonItem jsonParse(ZF_IN const zfchar *src,

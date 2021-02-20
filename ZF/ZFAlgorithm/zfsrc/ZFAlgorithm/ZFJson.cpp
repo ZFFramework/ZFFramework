@@ -1,6 +1,5 @@
 #include "ZFJson.h"
 #include "protocol/ZFProtocolZFJson.h"
-#include "protocol/ZFProtocolZFJsonEscapeChar.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstl_deque.h"
 
@@ -986,7 +985,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFJsonEscapeCharEncode,
                        ZFMP_IN(const zfchar *, src),
                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
 {
-    ZFPROTOCOL_ACCESS(ZFJsonEscapeChar)->jsonEscapeCharEncode(dst, src, count);
+    ZFPROTOCOL_ACCESS(ZFJson)->jsonEscapeCharEncode(dst, src, count);
 }
 
 ZFMETHOD_FUNC_DEFINE_3(void, ZFJsonEscapeCharDecode,
@@ -1001,7 +1000,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFJsonEscapeCharDecode,
                        ZFMP_IN(const zfchar *, src),
                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
 {
-    ZFPROTOCOL_ACCESS(ZFJsonEscapeChar)->jsonEscapeCharDecode(dst, src, count);
+    ZFPROTOCOL_ACCESS(ZFJson)->jsonEscapeCharDecode(dst, src, count);
 }
 
 ZF_NAMESPACE_GLOBAL_END

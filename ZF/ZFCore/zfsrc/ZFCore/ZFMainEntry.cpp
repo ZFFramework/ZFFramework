@@ -13,7 +13,7 @@ void _ZFP_ZFMainRegister(ZF_IN _ZFP_ZFMainFuncType func)
 {
     _ZFP_ZFMainFunc = func;
 }
-zfint ZFMainExecute(ZF_IN_OPT ZFCoreArray<zfstring> const &params)
+zfint ZFMainExecute(ZF_IN_OPT ZFCoreArray<zfstring> const &params /* = ZFCoreArray<zfstring>() */)
 {
     _ZFP_ZFMainFuncType &func = _ZFP_ZFMainFunc;
     if(func != zfnull)

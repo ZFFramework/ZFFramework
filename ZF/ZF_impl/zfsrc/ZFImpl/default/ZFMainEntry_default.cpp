@@ -14,19 +14,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLin
     return ZFMainCommonEntry(argc, argv);
 #else
     ZFFrameworkInit();
-    ZFArrayEditable *params = zfAlloc(ZFArrayEditable);
-
-    ZFCoreArray<zfstring> tmpList;
-    zfCoreArgSplit(tmpList, zfstringToUTF8(lpCmdLine, ZFStringEncoding::e_UTF16).cString());
-    for(zfindex i = 0; i < tmpList.count(); ++i)
-    {
-        v_zfstring *s = zfAlloc(v_zfstring, tmpList.get(i).cString());
-        params->add(s);
-        zfRelease(s);
-    }
-
+    ZFCoreArray<zfstring> params;
+    zfCoreArgSplit(params, zfstringToUTF8(lpCmdLine, ZFStringEncoding::e_UTF16).cString());
     zfint result = ZFMainExecute(params);
-    zfRelease(params);
     ZFFrameworkCleanup();
     return result;
 #endif // #if ZF_ENV_sys_WindowsCE #else
