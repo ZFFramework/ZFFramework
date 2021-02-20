@@ -134,7 +134,7 @@ public:
     // ============================================================
     // properties
     /**
-     * @brief whether this dialog update layout accorrding to #ZFUISysWindow::sysWindowMargin,
+     * @brief whether this dialog update layout according to #ZFUISysWindow::sysWindowMargin,
      *   true by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, sysWindowMarginShouldApply, zftrue)
@@ -207,14 +207,14 @@ public:
     ZFPROPERTY_OVERRIDE_ON_DETACH_DECLARE(ZFUIView *, dialogView)
 
     /**
-     * @brief whether automatically fix frame accorrding to #ZFUIOnScreenKeyboardAutoResizeStart,
+     * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,
      *   true by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, dialogWindowAutoResize, zftrue)
     ZFPROPERTY_OVERRIDE_ON_ATTACH_DECLARE(zfbool, dialogWindowAutoResize)
 
     /**
-     * @brief whether automatically fix frame accorrding to #ZFUIOnScreenKeyboardAutoFitLayout,
+     * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoFitLayout,
      *   false by default
      *
      * auto fit settings can be changed by #dialogWindowAutoFitLayout

@@ -1,7 +1,7 @@
 /**
  * @file ZFUIOnScreenKeyboardAutoFit.h
  * @brief a scroll container that automatically fits content's position
- *   accorrding #ZFUIOnScreenKeyboardState
+ *   according #ZFUIOnScreenKeyboardState
  */
 
 #ifndef _ZFI_ZFUIOnScreenKeyboardAutoFit_h_
@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate;
 /**
  * @brief a scroll container that automatically fits content's position
- *   accorrding #ZFUIOnScreenKeyboardState
+ *   according #ZFUIOnScreenKeyboardState
  */
 zfclass ZF_ENV_EXPORT ZFUIOnScreenKeyboardAutoFitLayout : zfextends ZFUIScrollView
 {

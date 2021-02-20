@@ -59,7 +59,7 @@ public:
     ZFMETHOD_DECLARE_0(const ZFUIRect &, keyboardFramePrev)
 
     /**
-     * @brief fix client frame accorrding to current keyboard frame
+     * @brief fix client frame according to current keyboard frame
      *
      * output is the available client frame that won't be covered by the keyboard
      */

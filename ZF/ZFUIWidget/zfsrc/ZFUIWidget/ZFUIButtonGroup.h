@@ -101,7 +101,7 @@ public:
     /**
      * @brief add button
      *
-     * newly added button's setting would be changed accorrding #buttonGroupType,
+     * newly added button's setting would be changed according #buttonGroupType,
      * before #buttonOnAdd
      */
     ZFMETHOD_DECLARE_2(void, buttonAdd,

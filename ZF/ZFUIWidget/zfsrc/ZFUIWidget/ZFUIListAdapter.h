@@ -128,7 +128,7 @@ public:
      * util it's coming to visible\n
      * return a -1 size to measure the cell automatically,
      * otherwise, the cell's size is fixed\n
-     * return #cellSizeHint accorrding to #cellSizeFill by default
+     * return #cellSizeHint according to #cellSizeFill by default
      */
     ZFMETHOD_DECLARE_2(zfint, cellSizeAtIndex,
                        ZFMP_IN(zfindex, index),

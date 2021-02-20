@@ -101,7 +101,7 @@ public:
                               ZFMP_IN(ZFUIViewLayoutParam *, lp))
 
     /**
-     * @brief util method to apply sizeHint accorrding sizeParam
+     * @brief util method to apply sizeHint according sizeParam
      */
     ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply,
                               ZFMP_OUT(zfint &, ret),
@@ -115,7 +115,7 @@ public:
                               ZFMP_IN(ZFUISizeTypeEnum, sizeParam))
 
     /**
-     * @brief util method to apply sizeHint accorrding sizeParam
+     * @brief util method to apply sizeHint according sizeParam
      */
     ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply,
                               ZFMP_OUT(ZFUISize &, ret),

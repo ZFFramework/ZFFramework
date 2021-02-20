@@ -36,7 +36,7 @@
  *         return ZFMainEntry_sys_Qt(argc, argv);
  *     }
  *   @endcode
- * -# copy all res and libs to your product output or proper location accorrding to your platform
+ * -# copy all res and libs to your product output or proper location according to your platform
  *   -  for Windows or Linux
  *     @code
  *       ~/

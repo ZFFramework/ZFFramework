@@ -41,7 +41,7 @@ public:
      *
      * note that the image's size is applied by #ZFUIImage::imageScale,
      * you should take care of the actual scale logic manually
-     * @note size is in pixel unit, you may revert it accorrding imageScale
+     * @note size is in pixel unit, you may revert it according imageScale
      */
     virtual void imageNinePatchChanged(ZF_IN ZFUIImageView *imageView,
                                        ZF_IN zffloat imageScale,

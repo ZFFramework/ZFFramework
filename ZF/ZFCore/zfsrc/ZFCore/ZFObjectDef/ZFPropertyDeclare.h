@@ -183,7 +183,7 @@ extern ZF_ENV_EXPORT const ZFProperty *ZFPropertyForName(ZF_IN const zfchar *cla
  * -  propertyOnDetach: called when property setter called or owner object deallocated\n
  *   you may do additional detach steps here
  * -  propertyOnUpdate: called after property first accessed or setter called\n
- *   you may apply your impl accorrding to the property's new value
+ *   you may apply your impl according to the property's new value
  *
  *
  * after override, for detach events (detach/dealloc),

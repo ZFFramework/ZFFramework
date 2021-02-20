@@ -154,7 +154,7 @@ public:
     ZFPROPERTY_OVERRIDE_ON_VERIFY_DECLARE(ZFUIWindowLevelEnum, windowLevel)
 
     /**
-     * @brief whether this window update layout accorrding to #ZFUISysWindow::sysWindowMargin,
+     * @brief whether this window update layout according to #ZFUISysWindow::sysWindowMargin,
      *   true by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, sysWindowMarginShouldApply, zftrue)

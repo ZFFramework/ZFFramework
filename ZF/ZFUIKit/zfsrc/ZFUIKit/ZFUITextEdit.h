@@ -344,7 +344,7 @@ public:
     /**
      * @brief whether text should change
      *
-     * by default, this method would check accorrding to #ZFUITextEdit::textEditFilter,
+     * by default, this method would check according to #ZFUITextEdit::textEditFilter,
      * and null or empty string would always treated as allowed for safe
      */
     ZFMETHOD_DECLARE_1(zfbool, textShouldChange,
@@ -391,7 +391,7 @@ protected:
     zfoverride
     virtual void scaleOnChange(void);
     /**
-     * @brief text edit view would measure accorrding text size
+     * @brief text edit view would measure according text size
      */
     zfoverride
     virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,

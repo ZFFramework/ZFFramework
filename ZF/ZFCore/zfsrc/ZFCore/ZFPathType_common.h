@@ -38,7 +38,7 @@ ZFPATHTYPE_DECLARE(storageSharedPath)
  *
  * pathData is file's relative path within #ZFFilePathForCache
  *
- * note, the cache path's content would be removed accorrding to #ZFFilePathForCacheClear
+ * note, the cache path's content would be removed according to #ZFFilePathForCacheClear
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
 ZFPATHTYPE_DECLARE(cachePath)

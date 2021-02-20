@@ -163,7 +163,7 @@ protected:
     zfoverride
     virtual void scaleOnChange(void);
     /**
-     * @brief we would measure accorrding text size
+     * @brief we would measure according text size
      */
     zfoverride
     virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,

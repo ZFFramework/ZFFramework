@@ -81,7 +81,7 @@ public:
      * you should schedule a timer task that repeatly call #notifyScrollViewScrollAnimation,
      * return a relative time in miliseconds to represents scroll animation's timing\n
      * timer interval should be decided by implementation internally,
-     * accorrding to runtime performance,
+     * according to runtime performance,
      * and typically 50 miliseconds would suit for most cases\n
      * \n
      * by default, we would use #ZFTimer to supply a default implementation,

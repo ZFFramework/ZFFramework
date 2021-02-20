@@ -149,7 +149,7 @@ public:
      *
      *
      * this method is useful if you cached some data by #classTag
-     * accorrding to class's method or property list,
+     * according to class's method or property list,
      * and want to update it again if meta data changed\n
      * see also #ZFClassDataChangeObserver
      */
@@ -278,7 +278,7 @@ public:
      * create object by specified params,
      * the object must have proper #ZFObject::objectOnInit
      * declared as #ZFOBJECT_ON_INIT_DECLARE_1 series,
-     * and params are passed accorrding to #ZFMethodGenericInvoker
+     * and params are passed according to #ZFMethodGenericInvoker
      * @note this method do much reflection steps to find proper objectOnInit,
      *   which may cause performance issue,
      *   use with caution,

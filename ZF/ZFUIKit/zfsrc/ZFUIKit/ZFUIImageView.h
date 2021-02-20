@@ -66,7 +66,7 @@ public:
 
 public:
     /**
-     * @brief measure image view accorrding to current image
+     * @brief measure image view according to current image
      */
     ZFMETHOD_DECLARE_1(void, measureImageView,
                        ZFMP_OUT(ZFUISize &, ret))
@@ -97,7 +97,7 @@ protected:
                                         ZF_IN const ZFUIRect &bounds,
                                         ZF_IN const ZFUIMargin &nativeImplViewMargin);
     /**
-     * @brief image view would measure accorrding image size
+     * @brief image view would measure according image size
      */
     zfoverride
     virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,

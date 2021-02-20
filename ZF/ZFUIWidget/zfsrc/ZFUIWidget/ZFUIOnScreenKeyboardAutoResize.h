@@ -1,6 +1,6 @@
 /**
  * @file ZFUIOnScreenKeyboardAutoResize.h
- * @brief auto fit #ZFUIWindow accorrding to #ZFUIOnScreenKeyboardState
+ * @brief auto fit #ZFUIWindow according to #ZFUIOnScreenKeyboardState
  */
 
 #ifndef _ZFI_ZFUIOnScreenKeyboardAutoResize_h_
@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief auto resize #ZFUIWindow accorrding to #ZFUIOnScreenKeyboardState
+ * @brief auto resize #ZFUIWindow according to #ZFUIOnScreenKeyboardState
  *
  * resize logic are done by changing window's #ZFUIViewLayoutParam::layoutMargin\n
  * \n

@@ -1,6 +1,6 @@
 /**
  * @file ZFUIViewLayout.h
- * @brief simple container view that measure accorrding children
+ * @brief simple container view that measure according children
  */
 
 #ifndef _ZFI_ZFUIViewLayout_h_
@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // ZFUIViewLayout
 /**
- * @brief simple container view that measure accorrding children
+ * @brief simple container view that measure according children
  */
 zfclass ZF_ENV_EXPORT ZFUIViewLayout : zfextends ZFUIView
 {
@@ -22,7 +22,7 @@ zfclass ZF_ENV_EXPORT ZFUIViewLayout : zfextends ZFUIView
     // override ZFUIView
 protected:
     /**
-     * @brief measure accorrding all of its children,
+     * @brief measure according all of its children,
      *   return the largest area of them
      */
     zfoverride

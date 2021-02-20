@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief util method to apply template to plain text
  *
- * data would be applied accorrding to #ZFTextTemplateParam,
+ * data would be applied according to #ZFTextTemplateParam,
  * and result would be written to output,
  * return newly size written if success,
  * or zfindexMax() if failed,

@@ -91,7 +91,7 @@ public:
     // util method
 public:
     /**
-     * @brief util method to calculate text size accorrding auto change setting for this text view
+     * @brief util method to calculate text size according auto change setting for this text view
      *
      * usually used by implementation that doesn't support text auto resizing,
      * loop to measure and calculate proper text size,

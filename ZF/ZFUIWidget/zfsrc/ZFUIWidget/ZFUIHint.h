@@ -76,7 +76,7 @@ public:
      *   -  #ZFUIGlobalStyle::itemMargin as #ZFUIViewLayoutParam::layoutMargin
      *
      * you should update the layout param of the hint window instead of the hint view,
-     * and the hint view would be layouted accorrding the hintWindow's layout param
+     * and the hint view would be layouted according the hintWindow's layout param
      */
     ZFMETHOD_DECLARE_0(ZFUIWindow *, hintWindow)
 
@@ -108,7 +108,7 @@ public:
     ZFPROPERTY_RETAIN(ZFAnimation *, hintAniHide)
 
     /**
-     * @brief whether automatically fix frame accorrding to #ZFUIOnScreenKeyboardAutoResizeStart,
+     * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,
      *   true by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, hintWindowAutoResize, zftrue)

@@ -4,7 +4,7 @@
  * -  <b>Q</b>: why it takes so long to build\n
  *   <b>A</b>: may be:
  *   -  we need to git clone some repos to build the project,
- *     which may cost much time accorrding to your network
+ *     which may cost much time according to your network
  *   -  the C++ itself takes long time to compile
  *
  *   once you successfully build the library,

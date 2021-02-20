@@ -22,7 +22,7 @@ public:
      * @brief see #ZFUIImageScale
      *
      * returned image would be released by nativeImageRelease of ZFUIImage protocol
-     * @note size is in pixel unit, you may revert it accorrding imageScale
+     * @note size is in pixel unit, you may revert it according imageScale
      */
     virtual void *imageApplyScale(ZF_IN zffloat imageScale,
                                   ZF_IN void *nativeImage,
@@ -32,7 +32,7 @@ public:
      * @brief see #ZFUIImageLoadFromColor, size ensured valid
      *
      * returned image would be released by nativeImageRelease of ZFUIImage protocol
-     * @note size is in pixel unit, you may revert it accorrding imageScale
+     * @note size is in pixel unit, you may revert it according imageScale
      */
     virtual void *imageLoadFromColor(ZF_IN zffloat imageScale,
                                      ZF_IN const ZFUIColor &color,

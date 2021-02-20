@@ -119,7 +119,7 @@ public:
     ZFPROPERTY_OVERRIDE_ON_ATTACH_DECLARE(ZFUIOrientationEnum, listOrientation)
 
     /**
-     * @brief whether auto update #ZFUIScrollView::scrollBounceVertical series accorrding to #listOrientation,
+     * @brief whether auto update #ZFUIScrollView::scrollBounceVertical series according to #listOrientation,
      *   true by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, listBounce, zftrue)
@@ -226,7 +226,7 @@ public:
      * @brief return first visible cell's index, valid only if #listReloadRequested is not true
      *
      * index is ordered by #ZFUIListAdapter,
-     * so first cell may positioned at bottom accorrding to layout orientation
+     * so first cell may positioned at bottom according to layout orientation
      */
     ZFMETHOD_DECLARE_0(const ZFIndexRange &, listVisibleCellIndexRange)
 

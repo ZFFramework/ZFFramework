@@ -163,7 +163,7 @@ public:
 
 public:
     /**
-     * @brief native window margin accorrding to impl
+     * @brief native window margin according to impl
      */
     ZFMETHOD_DECLARE_0(const ZFUIMargin &, sysWindowMargin)
     void _ZFP_ZFUISysWindow_sysWindowMargin(ZF_IN const ZFUIMargin &sysWindowMargin);

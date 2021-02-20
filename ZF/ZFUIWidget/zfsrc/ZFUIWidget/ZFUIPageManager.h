@@ -537,7 +537,7 @@ protected:
      *   pageManager->pageAniOnUpdatePriority(resumePage, pausePage, pausePageHasHigherPriority);
      * @endcode
      * by default, #pageAniOnUpdate would update page animation
-     * accorrding to page's resume and pause reason,
+     * according to page's resume and pause reason,
      * and page requested by user would have higher animation priority (request resume or request destroy)\n
      * the page's animation:
      * -  #ZFUIPage::pageAniResumeByRequest
@@ -549,7 +549,7 @@ protected:
                                  ZF_IN ZFUIPage *pausePageOrNull,
                                  ZF_IN ZFUIPageResumeReasonEnum reason);
     /**
-     * @brief called for subclass to do extra update accorrding the priority
+     * @brief called for subclass to do extra update according the priority
      *
      * typically, for page with higher priority, its page view should be placed at top of view tree
      */

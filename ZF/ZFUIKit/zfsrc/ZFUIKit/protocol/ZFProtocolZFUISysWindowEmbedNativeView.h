@@ -19,7 +19,7 @@ public:
      * @brief used to attach window's root view to native container
      *
      * the attached child must fill parent,
-     * and change frame accorrding to parent's size automatically
+     * and change frame according to parent's size automatically
      */
     virtual void nativeViewAdd(ZF_IN void *parent, ZF_IN void *child) zfpurevirtual;
     /**

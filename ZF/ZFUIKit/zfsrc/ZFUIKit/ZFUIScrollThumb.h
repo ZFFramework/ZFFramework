@@ -28,7 +28,7 @@ public:
 
 public:
     /**
-     * @brief util method to calculate scroll thumb's position accorrding to view's position
+     * @brief util method to calculate scroll thumb's position according to view's position
      *
      * 0 result size means no need to show the scroll thumb
      */
@@ -42,7 +42,7 @@ public:
                                           ZF_IN_OPT zfint headMargin = 0,
                                           ZF_IN_OPT zfint tailMargin = 0);
     /**
-     * @brief util method to calculate view's position accorrding to scroll thumb's position
+     * @brief util method to calculate view's position according to scroll thumb's position
      */
     static void scrollThumbPosToViewPos(ZF_OUT zfint &scrollContentOffset,
                                         ZF_IN zfint scrollViewSize,
