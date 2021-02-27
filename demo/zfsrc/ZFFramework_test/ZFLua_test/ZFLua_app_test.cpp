@@ -1,5 +1,5 @@
 #include "ZFLua_test.h"
-#include "ZFUIKit.h"
+#include "ZFUIWidget.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -14,15 +14,15 @@ protected:
         zfsuper::testCaseOnStart();
 
         zfautoObject luaResult = ZFLuaExecute(ZFInputForResFile("test_ZFLua_app.lua"));
-        ZFUIWindow *window = luaResult;
-        zfCoreAssert(window != zfnull);
-        window->observerAdd(
-            ZFUIWindow::EventWindowOnHide(),
-            ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, windowOnHide)));
+        ZFUIPageManager *pm = luaResult;
+        zfCoreAssert(pm != zfnull);
+        pm->observerAdd(
+            ZFUIPageManager::EventManagerOnDestroy(),
+            ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, managerOnDestroy)));
     }
 
 private:
-    ZFLISTENER_INLINE(windowOnHide)
+    ZFLISTENER_INLINE(managerOnDestroy)
     {
         this->testCaseStop(ZFResultType::e_Success);
         ZFLuaGC();

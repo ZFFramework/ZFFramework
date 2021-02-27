@@ -33,7 +33,7 @@ protected:
                     "print(2 * zfint(3))\n"
                 );
             ZFLuaExecute(
-                    "print('\\n__div: (0 0 0)')\n"
+                    "print('\\n__div: (0.66 0.66 0.66)')\n"
                     "print(zfint(2) / zfint(3))\n"
                     "print(zfint(2) / 3)\n"
                     "print(2 / zfint(3))\n"

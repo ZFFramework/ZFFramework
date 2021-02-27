@@ -88,6 +88,13 @@ protected:
      */
     virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress);
 
+protected:
+    zfoverride
+    virtual zfbool serializableOnCheck(void)
+    {
+        return this->classData() != ZFAnimationTimeLine::ClassData();
+    }
+
 private:
     _ZFP_ZFAnimationTimeLinePrivate *d;
     friend zfclassFwd _ZFP_ZFAnimationTimeLinePrivate;

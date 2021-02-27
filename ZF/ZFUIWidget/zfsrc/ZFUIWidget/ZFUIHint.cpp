@@ -131,11 +131,10 @@ public:
         zfRetainChange(this->hintAnimating, this->pimplOwner->hintAniShow());
         if(this->hintAnimating != zfnull)
         {
-            this->hintAnimating->observerAdd(ZFObserverAddParam()
-                .eventId(ZFAnimation::EventAniOnStopOrOnInvalid())
-                .observer(this->hintAniShowOnStopListener)
-                .userData(this->pimplOwner->objectHolder())
-                .autoRemoveAfterActivate(zftrue));
+            this->hintAnimating->observerAddForOnce(
+                ZFAnimation::EventAniOnStopOrOnInvalid(),
+                this->hintAniShowOnStopListener,
+                this->pimplOwner->objectHolder());
             this->hintAnimating->aniTarget(this->pimplOwner->hintWindow());
             this->hintAnimating->aniStart();
         }
@@ -170,11 +169,10 @@ public:
         zfRetainChange(this->hintAnimating, this->pimplOwner->hintAniHide());
         if(this->hintAnimating != zfnull)
         {
-            this->hintAnimating->observerAdd(ZFObserverAddParam()
-                .eventId(ZFAnimation::EventAniOnStopOrOnInvalid())
-                .observer(ZFCallbackForFunc(_ZFP_ZFUIHintPrivate::hintAniHideOnStop))
-                .userData(this->pimplOwner->objectHolder())
-                .autoRemoveAfterActivate(zftrue));
+            this->hintAnimating->observerAddForOnce(
+                ZFAnimation::EventAniOnStopOrOnInvalid(),
+                ZFCallbackForFunc(_ZFP_ZFUIHintPrivate::hintAniHideOnStop),
+                this->pimplOwner->objectHolder());
             this->hintAnimating->aniTarget(this->pimplOwner->hintWindow());
             this->hintAnimating->aniStart();
         }

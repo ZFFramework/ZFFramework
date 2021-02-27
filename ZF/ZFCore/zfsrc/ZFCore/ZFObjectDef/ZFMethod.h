@@ -400,7 +400,7 @@ public:
         return this->_ZFP_ZFMethod_paramDefaultValueCallbackList[index];
     }
     /**
-     * @brief get the method's param default value at index, #zfautoObjectNull if no default param
+     * @brief get the method's param default value at index, null if no default param
      */
     inline zfautoObject methodParamDefaultValueAtIndex(ZF_IN zfindex index) const
     {

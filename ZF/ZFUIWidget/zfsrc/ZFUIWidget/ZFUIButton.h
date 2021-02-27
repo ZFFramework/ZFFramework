@@ -191,6 +191,14 @@ public:
                        ZFMP_IN_OPT(ZFObject *, owner, zfnull),
                        ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse),
                        ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
+    /**
+     * @brief util to observe #EventButtonOnClick
+     */
+    ZFMETHOD_DECLARE_4(zfidentity, onClickForOnce,
+                       ZFMP_IN(const ZFListener &, observer),
+                       ZFMP_IN_OPT(ZFObject *, userData, zfnull),
+                       ZFMP_IN_OPT(ZFObject *, owner, zfnull),
+                       ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 
 protected:
     zfoverride

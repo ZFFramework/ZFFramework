@@ -49,7 +49,7 @@ typedef void (*ZFUIViewTreePrintInfoGetter)(ZF_IN ZFUIView *view,
  * without parent's one being called
  */
 extern ZF_ENV_EXPORT void ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass,
-                                                         ZF_IN ZFUIViewTreePrintInfoGetter viewInfoGetter);
+                                                              ZF_IN ZFUIViewTreePrintInfoGetter viewInfoGetter);
 /**
  * @brief see #ZFUIViewTreePrintInfoGetterForClass
  */

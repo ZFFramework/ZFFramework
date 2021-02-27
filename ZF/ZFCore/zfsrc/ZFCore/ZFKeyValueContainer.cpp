@@ -267,7 +267,7 @@ zfidentity ZFKeyValueContainer::objectHash(void)
     zfiterator it = this->iterator();
     if(this->iteratorIsValid(it))
     {
-        return (zfidentity)(~((zfidentity)this->count()
+        return (zfidentity)(~((zft_zfidentity)this->count()
             | ((ZFObjectHash(this->iteratorKey(it)) << 16) & 0x00FF0000)
             | ((ZFObjectHash(this->iteratorValue(it)) << 24) & 0xFF000000)));
     }

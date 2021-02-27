@@ -46,7 +46,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @typedef zft_zfuint64
  * @brief primitive number type, use only if necessary, see #zfindex
  * */
-#if _ZFP_ZFCoreTypeDef_CoreIntType_has_stdint
+#if ZF_ENV_STDINT
     typedef int8_t zft_zfint8;
     typedef uint8_t zft_zfuint8;
 
@@ -65,13 +65,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     typedef signed short int zft_zfint16;
     typedef unsigned short int zft_zfuint16;
 
-    typedef signed long int zft_zfint32;
-    typedef unsigned long int zft_zfuint32;
+    typedef signed int zft_zfint32;
+    typedef unsigned int zft_zfuint32;
 
     typedef signed long long int zft_zfint64;
     typedef unsigned long long int zft_zfuint64;
-#endif // #if _ZFP_ZFCoreTypeDef_CoreIntType_has_stdint
-#undef _ZFP_ZFCoreTypeDef_CoreIntType_has_stdint
+#endif // #if ZF_ENV_STDINT
 
 // ============================================================
 /**

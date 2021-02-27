@@ -108,7 +108,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_bnot(ZF_IN lua_State *L)
 {
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
-        (lua_Number)(~((zfflags)v1->zfv)),
+        (lua_Number)(zfflags)(~((zfflags)v1->zfv)),
         v1, v_zfflags::ClassData(), zfnull, zfnull);
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_shl(ZF_IN lua_State *L)

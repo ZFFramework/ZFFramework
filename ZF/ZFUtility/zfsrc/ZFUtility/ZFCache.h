@@ -54,7 +54,7 @@ public:
     ZFMETHOD_DECLARE_1(void, cacheAdd,
                        ZFMP_IN(ZFObject *, cacheValue))
     /**
-     * @brief access cache, or return #zfautoObjectNull if not exist
+     * @brief access cache, or return null if not exist
      */
     ZFMETHOD_DECLARE_0(zfautoObject, cacheGet)
 

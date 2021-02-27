@@ -135,12 +135,6 @@ private:
     _ZFP_zfautoObjectPrivate *d;
 };
 
-extern ZF_ENV_EXPORT const zfautoObject _ZFP_zfautoObjectNull;
-/**
- * @brief global null zfautoObject
- */
-#define zfautoObjectNull() _ZFP_zfautoObjectNull
-
 // ============================================================
 // zfautoObjectT
 /**

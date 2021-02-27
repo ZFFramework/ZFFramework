@@ -140,7 +140,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
     ZFImpl_ZFLua_execute(L,
             "_ZFP_zfl_index = function(tbl, k)\n"
             "    local t = {ZFNS=tbl.ZFNS .. '.' .. k}\n" // ZFNamespaceSeparator
-            "    local d = debug.getmetatable(t)\n"
+            "    local d = {}\n"
             "    d.__index = _ZFP_zfl_index\n"
             "    d.__call = _ZFP_zfl_call\n"
             "    debug.setmetatable(t, d)\n"

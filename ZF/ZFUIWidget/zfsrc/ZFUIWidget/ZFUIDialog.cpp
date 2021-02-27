@@ -372,21 +372,17 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogShow)
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim())
     {
         d->dialogWindowAniShow->aniTarget(d->dialogWindowBg);
-        d->dialogWindowAniShow->observerAdd(ZFObserverAddParam()
-            .eventId(ZFAnimation::EventAniOnStopOrOnInvalid())
-            .observer(d->aniShowOnStopListener)
-            .autoRemoveAfterActivate(zftrue)
-        );
+        d->dialogWindowAniShow->observerAddForOnce(
+            ZFAnimation::EventAniOnStopOrOnInvalid(),
+            d->aniShowOnStopListener);
         d->dialogWindowAniShow->aniStart();
     }
     if(this->dialogAniShow() != zfnull)
     {
         this->dialogAniShow()->aniTarget(d->dialogBg);
-        this->dialogAniShow()->observerAdd(ZFObserverAddParam()
-            .eventId(ZFAnimation::EventAniOnStopOrOnInvalid())
-            .observer(d->aniShowOnStopListener)
-            .autoRemoveAfterActivate(zftrue)
-        );
+        this->dialogAniShow()->observerAddForOnce(
+            ZFAnimation::EventAniOnStopOrOnInvalid(),
+            d->aniShowOnStopListener);
         this->dialogAniShow()->aniStart();
     }
 }
@@ -412,21 +408,17 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogHide)
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim())
     {
         d->dialogWindowAniHide->aniTarget(d->dialogWindowBg);
-        d->dialogWindowAniHide->observerAdd(ZFObserverAddParam()
-            .eventId(ZFAnimation::EventAniOnStopOrOnInvalid())
-            .observer(d->aniHideOnStopListener)
-            .autoRemoveAfterActivate(zftrue)
-        );
+        d->dialogWindowAniHide->observerAddForOnce(
+            ZFAnimation::EventAniOnStopOrOnInvalid(),
+            d->aniHideOnStopListener);
         d->dialogWindowAniHide->aniStart();
     }
     if(this->dialogAniHide() != zfnull)
     {
         this->dialogAniHide()->aniTarget(d->dialogBg);
-        this->dialogAniHide()->observerAdd(ZFObserverAddParam()
-            .eventId(ZFAnimation::EventAniOnStopOrOnInvalid())
-            .observer(d->aniHideOnStopListener)
-            .autoRemoveAfterActivate(zftrue)
-        );
+        this->dialogAniHide()->observerAddForOnce(
+            ZFAnimation::EventAniOnStopOrOnInvalid(),
+            d->aniHideOnStopListener);
         this->dialogAniHide()->aniStart();
     }
 }

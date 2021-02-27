@@ -257,7 +257,6 @@ zfindex zfstringReplaceReversely(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *repl
 {
     zfindex replacedCount = 0;
     zfindex replaceFromLen = zfslen(replaceFrom);
-    zfindex replaceToLen = zfslen(replaceTo);
     zfindex pos = s.length();
     while(maxCount == zfindexMax() || replacedCount < maxCount)
     {

@@ -102,8 +102,6 @@ void zfautoObject::zflockfree_assign(ZF_IN zfautoObject const &ref)
     }
 }
 
-const zfautoObject _ZFP_zfautoObjectNull;
-
 // ============================================================
 void _ZFP_zfautoObjectTError(void)
 {
@@ -111,13 +109,4 @@ void _ZFP_zfautoObjectTError(void)
 }
 
 ZF_NAMESPACE_GLOBAL_END
-
-#if _ZFP_ZFOBJECT_METHOD_REG
-#include "../ZFObject.h"
-ZF_NAMESPACE_GLOBAL_BEGIN
-
-ZFMETHOD_FUNC_USER_REGISTER_0({return zfnull;}, zfautoObject, zfautoObjectNull)
-
-ZF_NAMESPACE_GLOBAL_END
-#endif
 

@@ -165,7 +165,7 @@ protected:
      */
     virtual inline zfautoObject cellCacheOnAccess(ZF_IN zfindex index)
     {
-        return zfautoObjectNull();
+        return zfnull;
     }
     zffinal inline void _ZFP_ZFUIListAdapter_cellCacheOnRecycle(ZF_IN ZFUIListCell *cell)
     {

@@ -222,7 +222,7 @@ public:
         this->callbackTag(key, zfnull);
     }
     /**
-     * @brief remove tag, return removed tag or #zfautoObjectNull if not exist
+     * @brief remove tag, return removed tag or null if not exist
      */
     zffinal zfautoObject callbackTagRemoveAndGet(ZF_IN const zfchar *key);
     /**

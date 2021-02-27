@@ -82,7 +82,7 @@ public:
      * typical usage:
      * @code
      *   const ZFClass *cls = ZFClass::classForName("MyObject");
-     *   zfautoObject objTmp = ((cls != zfnull) ? cls->newInstance() : zfautoObjectNull());
+     *   zfautoObject objTmp = ((cls != zfnull) ? cls->newInstance() : zfautoObject());
      *   MyObject *obj = objTmp.to<MyObject *>();
      * @endcode
      * @note the class to find must:
@@ -563,7 +563,7 @@ public:
         this->classTag(key, zfnull);
     }
     /**
-     * @brief remove tag, return removed tag or #zfautoObjectNull if not exist
+     * @brief remove tag, return removed tag or null if not exist
      */
     zffinal zfautoObject classTagRemoveAndGet(ZF_IN const zfchar *key) const;
     /**

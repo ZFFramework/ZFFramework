@@ -92,7 +92,7 @@
 
         zfblockedAllocWithCache(ZFUIMouseEvent, ev);
         ev->eventResolved(zffalse);
-        ev->mouseId = (zfidentity)[touch hash];
+        ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseDown;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIPointFromCGPoint([touch locationInView:self]);
         ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
@@ -121,7 +121,7 @@
     {
         zfblockedAllocWithCache(ZFUIMouseEvent, ev);
         ev->eventResolved(zffalse);
-        ev->mouseId = (zfidentity)[touch hash];
+        ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseMove;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIPointFromCGPoint([touch locationInView:self]);
         ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
@@ -144,7 +144,7 @@
 
         zfblockedAllocWithCache(ZFUIMouseEvent, ev);
         ev->eventResolved(zffalse);
-        ev->mouseId = (zfidentity)[touch hash];
+        ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseUp;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIPointFromCGPoint([touch locationInView:self]);
         ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
@@ -167,7 +167,7 @@
 
         zfblockedAllocWithCache(ZFUIMouseEvent, ev);
         ev->eventResolved(zffalse);
-        ev->mouseId = (zfidentity)[touch hash];
+        ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseCancel;
         ev->mousePoint = ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIPointFromCGPoint([touch locationInView:self]);
         ev->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;

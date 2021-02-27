@@ -82,20 +82,20 @@ public:
     zfuint refCount;
     zfbool PODType;
     T_Element *buf;
-    T_Element *bufEnd;
-    T_Element *contentEnd;
+    zfuint capacity;
+    zfuint count;
 public:
     _ZFP_ZFCoreArrayPrivate(void)
     : refCount(1)
     , PODType(zffalse)
     , buf(zfnull)
-    , bufEnd(zfnull)
-    , contentEnd(zfnull)
+    , capacity(0)
+    , count(0)
     {
     }
     ~_ZFP_ZFCoreArrayPrivate(void)
     {
-        _ZFP_ZFCoreArray_objDestroy(this->buf, this->contentEnd, this->PODType);
+        _ZFP_ZFCoreArray_objDestroy(this->buf, this->buf + this->count, this->PODType);
         zffree(this->buf);
     }
 };
@@ -233,12 +233,12 @@ public:
         {
             if(d->buf)
             {
-                _ZFP_ZFCoreArray_objDestroy(d->buf, d->contentEnd, d->PODType);
-                d->contentEnd = d->buf;
+                _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
+                d->count = 0;
             }
             this->capacity(ref.count());
             _ZFP_ZFCoreArray_objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf(), d->PODType);
-            d->contentEnd = d->buf + ref.count();
+            d->count = (zfuint)ref.count();
         }
     }
     /**
@@ -364,7 +364,7 @@ public:
     /**
      * @brief get capacity
      */
-    zfindex capacity(void) const {return (d->bufEnd - d->buf);}
+    zfindex capacity(void) const {return (zfindex)d->capacity;}
 
 public:
     /**
@@ -374,8 +374,8 @@ public:
     {
         T_Element t = e;
         this->capacity(this->count() + 1);
-        _ZFP_ZFCoreArray_objCreate(d->contentEnd, d->contentEnd + 1, &t, d->PODType);
-        ++(d->contentEnd);
+        _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, &t, d->PODType);
+        ++(d->count);
     }
     /**
      * @brief add element at index
@@ -390,10 +390,10 @@ public:
         }
         T_Element t = e;
         this->capacity(this->count() + 1);
-        _ZFP_ZFCoreArray_objCreate(d->contentEnd, d->contentEnd + 1, d->PODType);
+        _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, d->PODType);
         T_Element *pos = d->buf + index;
         _ZFP_ZFCoreArray_objMove(pos + 1, pos, this->count() - index, d->PODType);
-        ++(d->contentEnd);
+        ++(d->count);
         *pos = t;
     }
     /**
@@ -406,11 +406,11 @@ public:
         {
             return ;
         }
-        if(src < d->buf || src >= d->bufEnd)
+        if(src < d->buf || src >= d->buf + d->capacity)
         {
             this->capacity(this->count() + count);
-            _ZFP_ZFCoreArray_objCreate(d->contentEnd, d->contentEnd + count, src, d->PODType);
-            d->contentEnd += count;
+            _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + count, src, d->PODType);
+            d->count += count;
         }
         else
         {
@@ -434,7 +434,7 @@ public:
     zfindex find(ZF_IN T_Element const &e,
                  ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual) const
     {
-        for(T_Element *p = d->buf; p < d->contentEnd; ++p)
+        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p)
         {
             if(comparer(*p, e) == ZFCompareTheSame)
             {
@@ -451,7 +451,7 @@ public:
     {
         if(d->buf)
         {
-            for(T_Element *p = d->contentEnd - 1; p >= d->buf; --p)
+            for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p)
             {
                 if(comparer(*p, e) == ZFCompareTheSame)
                 {
@@ -468,7 +468,7 @@ public:
     zfindex find(ZF_IN T_Another const &e,
                  ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer) const
     {
-        for(T_Element *p = d->buf; p < d->contentEnd; ++p)
+        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p)
         {
             if(comparer(*p, e) == ZFCompareTheSame)
             {
@@ -486,7 +486,7 @@ public:
     {
         if(d->buf)
         {
-            for(T_Element *p = d->contentEnd - 1; p >= d->buf; --p)
+            for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p)
             {
                 if(comparer(*p, e) == ZFCompareTheSame)
                 {
@@ -503,7 +503,7 @@ public:
     zfbool removeElement(ZF_IN T_Element const &e,
                          ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual)
     {
-        for(T_Element *p = d->buf; p < d->contentEnd; ++p)
+        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p)
         {
             if(comparer(*p, e) == ZFCompareTheSame)
             {
@@ -520,7 +520,7 @@ public:
     zfbool removeElement(ZF_IN T_Another const &e,
                          ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer)
     {
-        for(T_Element *p = d->buf; p < d->contentEnd; ++p)
+        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p)
         {
             if(comparer(*p, e) == ZFCompareTheSame)
             {
@@ -538,7 +538,7 @@ public:
     {
         if(d->buf)
         {
-            for(T_Element *p = d->contentEnd - 1; p >= d->buf; --p)
+            for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p)
             {
                 if(comparer(*p, e) == ZFCompareTheSame)
                 {
@@ -558,7 +558,7 @@ public:
     {
         if(d->buf)
         {
-            for(T_Element *p = d->contentEnd - 1; p >= d->buf; --p)
+            for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p)
             {
                 if(comparer(*p, e) == ZFCompareTheSame)
                 {
@@ -576,7 +576,7 @@ public:
                              ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual)
     {
         zfindex removedCount = 0;
-        for(T_Element *p = d->buf; p < d->contentEnd; ++p)
+        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p)
         {
             if(comparer(*p, e) == ZFCompareTheSame)
             {
@@ -595,7 +595,7 @@ public:
                              ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer)
     {
         zfindex removedCount = 0;
-        for(T_Element *p = d->buf; p < d->contentEnd; ++p)
+        for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p)
         {
             if(comparer(*p, e) == ZFCompareTheSame)
             {
@@ -618,8 +618,8 @@ public:
             return ;
         }
         _ZFP_ZFCoreArray_objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1, d->PODType);
-        _ZFP_ZFCoreArray_objDestroy(d->contentEnd - 1, d->contentEnd, d->PODType);
-        --(d->contentEnd);
+        _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - 1, d->buf + d->count, d->PODType);
+        --(d->count);
         this->capacityTrim();
     }
     /**
@@ -638,8 +638,8 @@ public:
             count = this->count() - index;
         }
         _ZFP_ZFCoreArray_objMove(d->buf + index, d->buf + index + count, this->count() - (index + count), d->PODType);
-        _ZFP_ZFCoreArray_objDestroy(d->contentEnd - count, d->contentEnd, d->PODType);
-        d->contentEnd -= count;
+        _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - count, d->buf + d->count, d->PODType);
+        d->count -= count;
         this->capacityTrim();
     }
     /**
@@ -651,7 +651,7 @@ public:
         {
             zfCoreCriticalIndexOutOfRange(index, this->count());
         }
-        T_Element t = *(d->buf);
+        T_Element t = *(d->buf + index);
         this->remove(index);
         return t;
     }
@@ -693,7 +693,7 @@ public:
     T_Element removeLastAndGet(void)
     {
         zfCoreAssertWithMessage(!this->isEmpty(), "removeLastAndGet an empty array");
-        T_Element t = *(d->contentEnd - 1);
+        T_Element t = *(d->buf + d->count - 1);
         this->remove(this->count() - 1);
         return t;
     }
@@ -702,8 +702,8 @@ public:
      */
     void removeAll(void)
     {
-        _ZFP_ZFCoreArray_objDestroy(d->buf, d->contentEnd, d->PODType);
-        d->contentEnd = d->buf;
+        _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
+        d->count = 0;
     }
 
     /**
@@ -819,7 +819,7 @@ public:
         {
             zfCoreCriticalIndexOutOfRange(0, this->count());
         }
-        return *(d->contentEnd - 1);
+        return *(d->buf + d->count - 1);
     }
 
     /**
@@ -837,11 +837,11 @@ public:
     /**
      * @brief element count of this array
      */
-    zfindex count(void) const {return (d->contentEnd - d->buf);}
+    zfindex count(void) const {return (zfindex)d->count;}
     /**
      * @brief true if empty
      */
-    zfbool isEmpty(void) const {return (d->contentEnd == d->buf);}
+    zfbool isEmpty(void) const {return (d->count == 0);}
 
 public:
     /**
@@ -873,23 +873,25 @@ private:
         {
             if(newCapacity == 0)
             {
-                _ZFP_ZFCoreArray_objDestroy(d->buf, d->contentEnd, d->PODType);
+                _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
                 zffree(d->buf);
-                d->buf = d->bufEnd = d->contentEnd = zfnull;
+                d->buf = zfnull;
+                d->capacity = 0;
+                d->count = 0;
             }
             else
             {
                 T_Element *oldBuf = d->buf;
-                T_Element *oldContentEnd = d->contentEnd;
+                zfuint oldCount = d->count;
 
                 T_Element *newBuf = (T_Element *)zfmalloc(newCapacity * sizeof(T_Element));
-                _ZFP_ZFCoreArray_objCreate(newBuf, newBuf + (oldContentEnd - oldBuf), oldBuf, d->PODType);
+                _ZFP_ZFCoreArray_objCreate(newBuf, newBuf + oldCount, oldBuf, d->PODType);
 
                 d->buf = newBuf;
-                d->bufEnd = newBuf + newCapacity;
-                d->contentEnd = newBuf + (oldContentEnd - oldBuf);
+                d->capacity = (zfuint)newCapacity;
+                d->count = oldCount;
 
-                _ZFP_ZFCoreArray_objDestroy(oldBuf, oldContentEnd, d->PODType);
+                _ZFP_ZFCoreArray_objDestroy(oldBuf, oldBuf + oldCount, d->PODType);
                 zffree(oldBuf);
             }
         }

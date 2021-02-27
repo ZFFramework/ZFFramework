@@ -262,6 +262,15 @@ public:
                                    ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal) const;
     /** @brief see #ZFObject::observerNotify */
     zffinal zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param) const;
+    /** @brief see #ZFObject::observerNotify */
+    zffinal inline zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
+                                                 ZF_IN const ZFListener &observer,
+                                                 ZF_IN_OPT ZFObject *userData = zfnull,
+                                                 ZF_IN_OPT ZFObject *owner = zfnull,
+                                                 ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal) const
+    {
+        return this->observerAdd(eventId, observer, userData, owner, observerLevel);
+    }
     /** @brief see #ZFObject::observerMoveToFirst */
     zffinal void observerMoveToFirst(ZF_IN zfidentity taskId) const;
     /** @brief see #ZFObject::observerNotify */

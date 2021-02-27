@@ -232,7 +232,7 @@ public:
      */
     zffinal void serializableDataTagRemove(ZF_IN const zfchar *key);
     /**
-     * @brief remove tag, return removed tag or #zfautoObjectNull if not exist
+     * @brief remove tag, return removed tag or null if not exist
      */
     zffinal zfautoObject serializableDataTagRemoveAndGet(ZF_IN const zfchar *key);
     /**

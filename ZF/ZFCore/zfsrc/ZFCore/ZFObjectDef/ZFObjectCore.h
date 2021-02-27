@@ -457,7 +457,7 @@ public:
         this->objectTag(key, zfnull);
     }
     /**
-     * @brief remove tag, return removed tag or #zfautoObjectNull if not exist
+     * @brief remove tag, return removed tag or null if not exist
      */
     zffinal zfautoObject objectTagRemoveAndGet(ZF_IN const zfchar *key);
     /**
@@ -504,6 +504,22 @@ public:
     zffinal inline zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param)
     {
         return this->observerHolder().observerAdd(param);
+    }
+    /**
+     * @brief see #observerNotify
+     */
+    zffinal inline zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
+                                                 ZF_IN const ZFListener &observer,
+                                                 ZF_IN_OPT ZFObject *userData = zfnull,
+                                                 ZF_IN_OPT ZFObject *owner = zfnull,
+                                                 ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal)
+    {
+        return this->observerHolder().observerAddForOnce(
+            eventId,
+            observer,
+            userData,
+            owner,
+            observerLevel);
     }
     /**
      * @brief move observer to head of same #ZFLevel

@@ -640,7 +640,7 @@ zfautoObject ZFClass::newInstanceGeneric(
         }
         this->newInstanceGenericEnd(token, zffalse);
     }
-    return zfautoObjectNull();
+    return zfnull;
 }
 ZFToken ZFClass::newInstanceGenericBegin(void) const
 {

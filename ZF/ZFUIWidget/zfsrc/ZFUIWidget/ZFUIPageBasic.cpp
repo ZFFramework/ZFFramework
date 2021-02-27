@@ -1,9 +1,0 @@
-#include "ZFUIPageBasic.h"
-#include "ZFUIPageManagerBasic.h"
-
-ZF_NAMESPACE_GLOBAL_BEGIN
-
-ZFOBJECT_REGISTER(ZFUIPageBasic)
-
-ZF_NAMESPACE_GLOBAL_END
-

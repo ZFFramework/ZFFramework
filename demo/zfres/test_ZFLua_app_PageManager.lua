@@ -1,4 +1,4 @@
-local pm = ZFUIPageManagerBasic();
+local pm = ZFUIPageManager();
 
 pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, userData)
         zfLog("manager onCreate");
@@ -38,14 +38,8 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
         rightButton:viewBackgroundColor(ZFUIColorRandom());
         rightButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
                 local pm = userData:objectHolded();
-                pm:embededPause();
-                pm:embededDestroy();
+                pm:managerDestroy();
             end, pm:objectHolder());
-
-        local pageContainer = ZFUIView();
-        pm:objectTag("pageContainer", pageContainer);
-        managerContainer:childAdd(pageContainer, ZFUISizeParamFillFill());
-        pm:pageContainer(pageContainer);
     end);
 
 return pm;
