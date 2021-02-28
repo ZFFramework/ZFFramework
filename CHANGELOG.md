@@ -5,6 +5,7 @@
 * add support for setter and getter method to simulate property
 * add lambda implemented by pure C++03
 * enhance view layout logic
+* optimize page impl
 * remove view delegate support
 * remove some useless module
 
