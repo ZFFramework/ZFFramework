@@ -233,14 +233,6 @@ void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZFMethod *> &ret,
             ZFMP_IN(zfuint, value));
         ret.add(resultMethod);
     }
-    {
-        ZFMethodUserRegisterDetail_1(resultMethod, {
-                return invokerObject->to<ZFEnum *>()->_ZFP_enumValue(value);
-            }, d->ownerClass, public, ZFMethodTypeVirtual,
-            void, "enumValue",
-            ZFMP_IN(zfuint, value));
-        ret.add(resultMethod);
-    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

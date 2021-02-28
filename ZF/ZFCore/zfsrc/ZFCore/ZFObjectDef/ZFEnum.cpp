@@ -378,6 +378,16 @@ ZFMETHOD_USER_REGISTER_DETAIL_1({
     void, enumValue
     , ZFMP_IN(zfuint, value)
     )
+ZFMETHOD_USER_REGISTER_DETAIL_1({
+        if(value != zfnull)
+        {
+            invokerObject->to<ZFEnum *>()->_ZFP_ZFEnum_value = value->enumValue();
+        }
+    }, ZFEnum,
+    protected, ZFMethodTypeVirtual, ZF_CALLER_LINE,
+    void, enumValue
+    , ZFMP_IN(ZFEnum *, value)
+    )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_7(zfbool, zfflagsToString, ZFMP_IN_OUT(zfstring &, ret), ZFMP_IN(const ZFClass *, enumClass), ZFMP_IN(zfflags const &, value), ZFMP_IN_OPT(zfbool, includeNotConverted, zftrue), ZFMP_IN_OPT(zfbool, exclusiveMode, zffalse), ZFMP_OUT_OPT(zfflags *, notConverted, zfnull), ZFMP_IN_OPT(zfchar, separatorToken, '|'))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(zfstring, zfflagsToString, ZFMP_IN(const ZFClass *, enumClass), ZFMP_IN(zfflags const &, value), ZFMP_IN_OPT(zfbool, includeNotConverted, zftrue), ZFMP_IN_OPT(zfbool, exclusiveMode, zffalse), ZFMP_OUT_OPT(zfflags *, notConverted, zfnull), ZFMP_IN_OPT(zfchar, separatorToken, '|'))

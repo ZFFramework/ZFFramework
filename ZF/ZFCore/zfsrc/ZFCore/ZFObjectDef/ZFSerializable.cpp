@@ -38,47 +38,7 @@ public:
 };
 
 // ============================================================
-// _ZFP_ZFSerializablePrivate
-zfclassNotPOD _ZFP_ZFSerializablePrivate
-{
-public:
-    zfstring editModeWrappedClassName;
-    ZFCoreArray<ZFSerializableData> editModeWrappedElementDatas;
-public:
-    _ZFP_ZFSerializablePrivate(void)
-    {
-    }
-    _ZFP_ZFSerializablePrivate(ZF_IN const _ZFP_ZFSerializablePrivate &ref)
-    : editModeWrappedClassName(ref.editModeWrappedClassName)
-    , editModeWrappedElementDatas()
-    {
-        this->_copyInternal(ref);
-    }
-    _ZFP_ZFSerializablePrivate &operator = (ZF_IN const _ZFP_ZFSerializablePrivate &ref)
-    {
-        this->editModeWrappedClassName = ref.editModeWrappedClassName;
-        this->_copyInternal(ref);
-        return *this;
-    }
-private:
-    void _copyInternal(ZF_IN const _ZFP_ZFSerializablePrivate &ref)
-    {
-        this->editModeWrappedElementDatas.removeAll();
-        this->editModeWrappedElementDatas.capacity(ref.editModeWrappedElementDatas.capacity());
-        for(zfindex i = 0; i < ref.editModeWrappedElementDatas.count(); ++i)
-        {
-            this->editModeWrappedElementDatas.add(ref.editModeWrappedElementDatas[i].copy());
-        }
-    }
-};
-
-// ============================================================
 // ZFSerializable
-ZFSerializable::~ZFSerializable(void)
-{
-    zfdelete(d);
-}
-
 ZFCoreMap &ZFSerializable::editModeData(void)
 {
     static ZFCoreMap m;
@@ -91,9 +51,10 @@ zfbool &ZFSerializable::editMode(void)
 }
 const zfchar *ZFSerializable::editModeWrappedClassName(void)
 {
-    if(d != zfnull && !d->editModeWrappedClassName.isEmpty())
+    v_zfstring *d = this->toObject()->objectTag<v_zfstring *>("_ZFP_ZFSerializable_editModeWrappedClassName");
+    if(d != zfnull && !d->zfv.isEmpty())
     {
-        return d->editModeWrappedClassName.cString();
+        return d->zfv.cString();
     }
     else
     {
@@ -102,19 +63,32 @@ const zfchar *ZFSerializable::editModeWrappedClassName(void)
 }
 void ZFSerializable::editModeWrappedClassName(ZF_IN const zfchar *value)
 {
-    if(d == zfnull)
+    if(zfsIsEmpty(value))
     {
-        d = zfnew(_ZFP_ZFSerializablePrivate);
+        this->toObject()->objectTagRemove("_ZFP_ZFSerializable_editModeWrappedClassName");
     }
-    d->editModeWrappedClassName = value;
+    else
+    {
+        this->toObject()->objectTag("_ZFP_ZFSerializable_editModeWrappedClassName", zflineAlloc(v_zfstring, value));
+    }
 }
+
+zfclass _ZFP_I_ZFSerializableEditModeWrappedElementDatas : zfextends ZFObject
+{
+    ZFOBJECT_DECLARE(_ZFP_I_ZFSerializableEditModeWrappedElementDatas, ZFObject)
+public:
+    ZFCoreArray<ZFSerializableData> d;
+};
 ZFCoreArray<ZFSerializableData> &ZFSerializable::editModeWrappedElementDatas(void)
 {
+    _ZFP_I_ZFSerializableEditModeWrappedElementDatas *d = this->toObject()->objectTag<_ZFP_I_ZFSerializableEditModeWrappedElementDatas *>("_ZFP_ZFSerializable_editModeWrappedElementDatas");
     if(d == zfnull)
     {
-        d = zfnew(_ZFP_ZFSerializablePrivate);
+        zfblockedAlloc(_ZFP_I_ZFSerializableEditModeWrappedElementDatas, dTmp);
+        d = dTmp;
+        this->toObject()->objectTag("_ZFP_ZFSerializable_editModeWrappedElementDatas", d);
     }
-    return d->editModeWrappedElementDatas;
+    return d->d;
 }
 
 zfbool ZFSerializable::serializable(void)
@@ -148,12 +122,13 @@ zfbool ZFSerializable::serializeFromData(ZF_IN const ZFSerializableData &seriali
         ZFSerializable::EditModeData *editModeData = ZFSerializable::editModeData().get<ZFSerializable::EditModeData *>(this->editModeWrappedClassName());
         if(editModeData != zfnull)
         {
+            ZFCoreArray<ZFSerializableData> &editModeWrappedElementDatas = this->editModeWrappedElementDatas();
             for(zfindex i = 0; i < serializableData.elementCount(); ++i)
             {
                 const ZFSerializableData &element = serializableData.elementAtIndex(i);
                 if(element.editMode())
                 {
-                    this->editModeWrappedElementDatas().add(element.copy());
+                    editModeWrappedElementDatas.add(element.copy());
                     element.resolveMarkAll();
                 }
             }
@@ -355,11 +330,12 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
         serializableData.itemClass(this->classData()->classNameFull());
     }
 
-    if(ZFSerializable::editMode() && d != zfnull)
+    if(ZFSerializable::editMode())
     {
-        for(zfindex i = 0; i < d->editModeWrappedElementDatas.count(); ++i)
+        ZFCoreArray<ZFSerializableData> &editModeWrappedElementDatas = this->editModeWrappedElementDatas();
+        for(zfindex i = 0; i < editModeWrappedElementDatas.count(); ++i)
         {
-            serializableData.elementAdd(d->editModeWrappedElementDatas.get(i));
+            serializableData.elementAdd(editModeWrappedElementDatas.get(i));
         }
     }
 
@@ -728,20 +704,20 @@ void ZFSerializable::serializableCopyInfoFrom(ZF_IN ZFSerializable *anotherSeria
         return ;
     }
 
-    if(anotherSerializable->d == zfnull)
+    this->editModeWrappedClassName(anotherSerializable->editModeWrappedClassName());
+    _ZFP_I_ZFSerializableEditModeWrappedElementDatas *d = anotherSerializable->toObject()->objectTag<_ZFP_I_ZFSerializableEditModeWrappedElementDatas *>("_ZFP_ZFSerializable_editModeWrappedElementDatas");
+    if(d == zfnull)
     {
-        zfdelete(d);
-        d = zfnull;
+        this->toObject()->objectTag("_ZFP_ZFSerializable_editModeWrappedElementDatas", zfnull);
     }
     else
     {
-        if(d == zfnull)
+        ZFCoreArray<ZFSerializableData> &editModeWrappedElementDatas = this->editModeWrappedElementDatas();
+        editModeWrappedElementDatas.removeAll();
+        editModeWrappedElementDatas.capacity(d->d.capacity());
+        for(zfindex i = 0; i < d->d.count(); ++i)
         {
-            d = zfnew(_ZFP_ZFSerializablePrivate, *(anotherSerializable->d));
-        }
-        else
-        {
-            *d = *(anotherSerializable->d);
+            editModeWrappedElementDatas.add(d->d[i].copy());
         }
     }
 }

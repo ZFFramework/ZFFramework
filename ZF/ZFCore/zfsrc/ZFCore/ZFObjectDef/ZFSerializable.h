@@ -54,7 +54,6 @@ typedef enum {
 
 // ============================================================
 zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
-zfclassFwd _ZFP_ZFSerializablePrivate;
 /**
  * @brief base class of call serializable object
  *
@@ -157,7 +156,7 @@ zfclassFwd _ZFP_ZFSerializablePrivate;
  */
 zfinterface ZF_ENV_EXPORT ZFSerializable : zfextends ZFInterface
 {
-    ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(ZFSerializable, ZFInterface)
+    ZFINTERFACE_DECLARE(ZFSerializable, ZFInterface)
 
     // ============================================================
     // edit mode
@@ -202,12 +201,6 @@ public:
     virtual ZFCoreArray<ZFSerializableData> &editModeWrappedElementDatas(void);
 
     // ============================================================
-protected:
-    /** @cond ZFPrivateDoc */
-    ZFSerializable(void) : d(zfnull) {}
-    /** @endcond */
-    virtual ~ZFSerializable(void);
-
 public:
     /**
      * @brief true if object is currently serializable, see #ZFSerializable
@@ -458,9 +451,6 @@ public:
      * the anotherSerializable must be same as this object
      */
     virtual void serializableCopyInfoFrom(ZF_IN ZFSerializable *anotherSerializable);
-
-private:
-    _ZFP_ZFSerializablePrivate *d;
 };
 
 // ============================================================
