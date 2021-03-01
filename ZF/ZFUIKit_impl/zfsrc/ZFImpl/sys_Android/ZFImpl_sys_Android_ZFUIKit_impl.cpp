@@ -169,10 +169,10 @@ jobject ZFImpl_sys_Android_ZFUIRectToZFAndroidRect(ZF_IN const ZFUIRect &rect, Z
     static jfieldID jfIdY = JNIUtilGetFieldID(jniEnv, jclsRect, "y", JNIType::S_int.getId());
     static jfieldID jfIdWidth = JNIUtilGetFieldID(jniEnv, jclsRect, "width", JNIType::S_int.getId());
     static jfieldID jfIdHeight = JNIUtilGetFieldID(jniEnv, jclsRect, "height", JNIType::S_int.getId());
-    JNIUtilSetIntField(jniEnv, jobjRect, jfIdX, rect.point.x);
-    JNIUtilSetIntField(jniEnv, jobjRect, jfIdY, rect.point.y);
-    JNIUtilSetIntField(jniEnv, jobjRect, jfIdWidth, rect.size.width);
-    JNIUtilSetIntField(jniEnv, jobjRect, jfIdHeight, rect.size.height);
+    JNIUtilSetIntField(jniEnv, jobjRect, jfIdX, rect.x);
+    JNIUtilSetIntField(jniEnv, jobjRect, jfIdY, rect.y);
+    JNIUtilSetIntField(jniEnv, jobjRect, jfIdWidth, rect.width);
+    JNIUtilSetIntField(jniEnv, jobjRect, jfIdHeight, rect.height);
     return jobjRect;
 }
 jobject ZFImpl_sys_Android_ZFUIRectToZFAndroidRect(ZF_IN const ZFUIRect &rect)
@@ -193,10 +193,10 @@ void ZFImpl_sys_Android_ZFUIRectFromZFAndroidRectT(ZF_OUT ZFUIRect &ret, ZF_IN j
     static jfieldID jfIdY = JNIUtilGetFieldID(jniEnv, jclsRect, "y", JNIType::S_int.getId());
     static jfieldID jfIdWidth = JNIUtilGetFieldID(jniEnv, jclsRect, "width", JNIType::S_int.getId());
     static jfieldID jfIdHeight = JNIUtilGetFieldID(jniEnv, jclsRect, "height", JNIType::S_int.getId());
-    ret.point.x = JNIUtilGetIntField(jniEnv, jobjRect, jfIdX);
-    ret.point.y = JNIUtilGetIntField(jniEnv, jobjRect, jfIdY);
-    ret.size.width = JNIUtilGetIntField(jniEnv, jobjRect, jfIdWidth);
-    ret.size.height = JNIUtilGetIntField(jniEnv, jobjRect, jfIdHeight);
+    ret.x = JNIUtilGetIntField(jniEnv, jobjRect, jfIdX);
+    ret.y = JNIUtilGetIntField(jniEnv, jobjRect, jfIdY);
+    ret.width = JNIUtilGetIntField(jniEnv, jobjRect, jfIdWidth);
+    ret.height = JNIUtilGetIntField(jniEnv, jobjRect, jfIdHeight);
 }
 
 jint ZFImpl_sys_Android_ZFUIKit_impl_ZFUIColorToColor(ZF_IN const ZFUIColor &color)

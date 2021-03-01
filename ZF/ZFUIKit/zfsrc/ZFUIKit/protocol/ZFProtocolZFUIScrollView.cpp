@@ -99,73 +99,73 @@ public:
     zfbool scrollable(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().size.width > v->viewFrame().size.width || v->scrollContentFrame().size.height > v->viewFrame().size.height));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().width > v->viewFrame().width || v->scrollContentFrame().height > v->viewFrame().height));
     }
     zfbool scrollableX(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().size.width > v->viewFrame().size.width));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().width > v->viewFrame().width));
     }
     zfbool scrollableY(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().size.height > v->viewFrame().size.height));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().height > v->viewFrame().height));
     }
     zfbool scrollableLeft(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().point.x < 0));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().x < 0));
     }
     zfbool scrollableTop(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().point.y < 0));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().y < 0));
     }
     zfbool scrollableRight(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (ZFUIRectGetRight(v->scrollContentFrame()) > v->viewFrame().size.width));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (ZFUIRectGetRight(v->scrollContentFrame()) > v->viewFrame().width));
     }
     zfbool scrollableBottom(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (ZFUIRectGetBottom(v->scrollContentFrame()) > v->viewFrame().size.height));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (ZFUIRectGetBottom(v->scrollContentFrame()) > v->viewFrame().height));
     }
 
     zfbool scrollableOrBounceable(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || v->scrollBounceVerticalAlways() || v->scrollContentFrame().size.width > v->viewFrame().size.width || v->scrollContentFrame().size.height > v->viewFrame().size.height));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || v->scrollBounceVerticalAlways() || v->scrollContentFrame().width > v->viewFrame().width || v->scrollContentFrame().height > v->viewFrame().height));
     }
     zfbool scrollableOrBounceableX(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || v->scrollContentFrame().size.width > v->viewFrame().size.width));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || v->scrollContentFrame().width > v->viewFrame().width));
     }
     zfbool scrollableOrBounceableY(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || v->scrollContentFrame().size.height > v->viewFrame().size.height));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || v->scrollContentFrame().height > v->viewFrame().height));
     }
     zfbool scrollableOrBounceableLeft(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || (v->scrollBounceHorizontal() && v->scrollContentFrame().size.width > v->viewFrame().size.width) || v->scrollContentFrame().point.x < 0));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || (v->scrollBounceHorizontal() && v->scrollContentFrame().width > v->viewFrame().width) || v->scrollContentFrame().x < 0));
     }
     zfbool scrollableOrBounceableTop(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || (v->scrollBounceVertical() && v->scrollContentFrame().size.height > v->viewFrame().size.height) || v->scrollContentFrame().point.y < 0));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || (v->scrollBounceVertical() && v->scrollContentFrame().height > v->viewFrame().height) || v->scrollContentFrame().y < 0));
     }
     zfbool scrollableOrBounceableRight(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || (v->scrollBounceHorizontal() && v->scrollContentFrame().size.width > v->viewFrame().size.width) || ZFUIRectGetRight(v->scrollContentFrame()) > v->viewFrame().size.width));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || (v->scrollBounceHorizontal() && v->scrollContentFrame().width > v->viewFrame().width) || ZFUIRectGetRight(v->scrollContentFrame()) > v->viewFrame().width));
     }
     zfbool scrollableOrBounceableBottom(void)
     {
         ZFUIScrollView *v = pimplOwner->scrollView;
-        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || (v->scrollBounceVertical() && v->scrollContentFrame().size.height > v->viewFrame().size.height) || ZFUIRectGetBottom(v->scrollContentFrame()) > v->viewFrame().size.height));
+        return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || (v->scrollBounceVertical() && v->scrollContentFrame().height > v->viewFrame().height) || ZFUIRectGetBottom(v->scrollContentFrame()) > v->viewFrame().height));
     }
 
 public:

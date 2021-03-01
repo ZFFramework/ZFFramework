@@ -55,6 +55,8 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFKeyValuePairHolder, ZFKeyValuePairHo
         }
         return zftrue;
     })
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFKeyValuePairHolder, zfautoObject, key)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFKeyValuePairHolder, zfautoObject, value)
 
 ZFTYPEID_ALIAS_DEFINE(ZFKeyValuePairHolder, ZFKeyValuePairHolder, ZFKeyValuePair, ZFKeyValuePair)
 

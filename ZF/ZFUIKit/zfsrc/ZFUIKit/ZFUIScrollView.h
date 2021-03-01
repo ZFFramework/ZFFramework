@@ -231,8 +231,8 @@ protected:
     zfoverride
     virtual inline void layoutChildOffsetOnUpdate(ZF_IN_OUT ZFUIPoint &ret)
     {
-        ret.x += this->scrollContentFrame().point.x;
-        ret.y += this->scrollContentFrame().point.y;
+        ret.x += this->scrollContentFrame().x;
+        ret.y += this->scrollContentFrame().y;
     }
 
     /**
@@ -340,22 +340,22 @@ public:
      */
     ZFMETHOD_INLINE_0(zfint, scrollContentOffsetLeft)
     {
-        return -this->scrollContentFrame().point.x;
+        return -this->scrollContentFrame().x;
     }
     /** @brief see #scrollContentOffsetLeft */
     ZFMETHOD_INLINE_0(zfint, scrollContentOffsetTop)
     {
-        return -this->scrollContentFrame().point.y;
+        return -this->scrollContentFrame().y;
     }
     /** @brief see #scrollContentOffsetLeft */
     ZFMETHOD_INLINE_0(zfint, scrollContentOffsetRight)
     {
-        return this->scrollArea().size.width - ZFUIRectGetRight(this->scrollContentFrame());
+        return this->scrollArea().width - ZFUIRectGetRight(this->scrollContentFrame());
     }
     /** @brief see #scrollContentOffsetLeft */
     ZFMETHOD_INLINE_0(zfint, scrollContentOffsetBottom)
     {
-        return this->scrollArea().size.height - ZFUIRectGetBottom(this->scrollContentFrame());
+        return this->scrollArea().height - ZFUIRectGetBottom(this->scrollContentFrame());
     }
 
 public:

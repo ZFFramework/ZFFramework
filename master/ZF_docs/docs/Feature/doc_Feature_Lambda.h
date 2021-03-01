@@ -13,8 +13,8 @@
  *           , ZFUIRect &, refCapture
  *           , ZFUIRect, valueCapture
  *       , {
- *           refCapture.size.width = 999;
- *           valueCapture.size.width = 999;
+ *           refCapture.width = 999;
+ *           valueCapture.width = 999;
  *       })
  *
  *   zfblockedAlloc(ZFUIButton, btn);

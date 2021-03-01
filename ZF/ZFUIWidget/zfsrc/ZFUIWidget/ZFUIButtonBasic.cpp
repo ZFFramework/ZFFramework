@@ -347,7 +347,7 @@ void ZFUIButtonBasic::internalBgViewOnLayout(ZF_IN const ZFUIRect &bounds)
         backgroundView->viewFrame(ZFUIRectApplyMargin(bounds, this->buttonBackgroundMargin()));
     }
 
-    ZFUISize sizeHint = ZFUISizeApplyMargin(bounds.size, this->buttonContentMargin());
+    ZFUISize sizeHint = ZFUISizeApplyMargin(ZFUIRectGetSize(bounds), this->buttonContentMargin());
 
     ZFUIView *labelView = ZFCastZFObjectUnchecked(ZFUIView *, d->buttonLabel);
     ZFUIView *iconView = ZFCastZFObjectUnchecked(ZFUIView *, d->buttonIcon);

@@ -120,7 +120,6 @@ void ZFTimer::_ZFP_ZFTimer_timerOnStop(void)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFTimerExecuteParam, ZFTimerExecuteParam)
-
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFTimerExecuteParam, zftimet, timerInterval)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFTimerExecuteParam, zfbool, timerActivateInMainThread)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFTimerExecuteParam, ZFObject *, timerParam0)

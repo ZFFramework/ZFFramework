@@ -207,15 +207,15 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void)
         zfbool viewVisibleNew = zffalse;
         if(this->scrollThumbHorizontal())
         {
-            sizeRange = this->scrollView()->viewFrame().size.width
+            sizeRange = this->scrollView()->viewFrame().width
                 - ZFUIMarginGetWidth(this->scrollView()->nativeImplViewMargin());
             ZFUIScrollThumb::scrollThumbPosFromViewPos(
                 pos,
                 size,
                 sizeRange,
-                this->scrollView()->scrollArea().size.width,
-                this->scrollView()->scrollContentFrame().point.x,
-                this->scrollView()->scrollContentFrame().size.width,
+                this->scrollView()->scrollArea().width,
+                this->scrollView()->scrollContentFrame().x,
+                this->scrollView()->scrollContentFrame().width,
                 imageSize.width,
                 0,
                 imageSize.width);
@@ -231,15 +231,15 @@ void ZFUIScrollThumbDefault::scrollThumbUpdate(void)
         }
         else
         {
-            sizeRange = this->scrollView()->viewFrame().size.height
+            sizeRange = this->scrollView()->viewFrame().height
                 - ZFUIMarginGetHeight(this->scrollView()->nativeImplViewMargin());
             ZFUIScrollThumb::scrollThumbPosFromViewPos(
                 pos,
                 size,
                 sizeRange,
-                this->scrollView()->scrollArea().size.height,
-                this->scrollView()->scrollContentFrame().point.y,
-                this->scrollView()->scrollContentFrame().size.height,
+                this->scrollView()->scrollArea().height,
+                this->scrollView()->scrollContentFrame().y,
+                this->scrollView()->scrollContentFrame().height,
                 imageSize.height,
                 0,
                 0);

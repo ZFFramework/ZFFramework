@@ -20,9 +20,10 @@ public:
         QWidget *nativeView = ZFCastStatic(QWidget *, view->nativeView());
 
         QPoint nativePos = nativeView->mapToGlobal(QPoint(0, 0));
-        rect.point.x = nativePos.x();
-        rect.point.y = nativePos.y();
-        rect.size = view->viewFrame().size;
+        rect.x = nativePos.x();
+        rect.y = nativePos.y();
+        rect.width = view->viewFrame().width;
+        rect.height = view->viewFrame().height;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewPositionOnScreenImpl_sys_Qt)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewPositionOnScreenImpl_sys_Qt)

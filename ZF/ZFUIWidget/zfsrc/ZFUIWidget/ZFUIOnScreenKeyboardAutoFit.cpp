@@ -83,14 +83,15 @@ public:
         }
 
         ZFUIRect orgRect = ZFUIViewPositionOnScreen(this->pimplOwner);
-        if(orgRect.size != this->pimplOwner->viewFrame().size)
+        if(orgRect.width != this->pimplOwner->viewFrame().width
+            || orgRect.height != this->pimplOwner->viewFrame().height)
         {
             return ;
         }
-        orgRect.point.x -= this->autoFitMargin.left;
-        orgRect.size.width += this->autoFitMargin.left + this->autoFitMargin.right;
-        orgRect.point.y -= this->autoFitMargin.top;
-        orgRect.size.height += this->autoFitMargin.top + this->autoFitMargin.bottom;
+        orgRect.x -= this->autoFitMargin.left;
+        orgRect.width += this->autoFitMargin.left + this->autoFitMargin.right;
+        orgRect.y -= this->autoFitMargin.top;
+        orgRect.height += this->autoFitMargin.top + this->autoFitMargin.bottom;
 
         this->autoFitMarginCalc(this->autoFitMargin, orgRect, ZFUIOnScreenKeyboardState::instanceForView(this->pimplOwner));
         #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
@@ -300,7 +301,8 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
 {
     zfsuper::layoutOnLayoutPrepare(bounds);
     if(!this->autoFitEnable()
-        || this->viewFrame().size == ZFUISizeZero() || this->viewFrame().size != bounds.size
+        || (this->viewFrame().width == 0 && this->viewFrame().height == 0)
+        || this->viewFrame().width != bounds.width || this->viewFrame().height != bounds.height
         || !d->scrollEnableFlag)
     {
         this->scrollContentFrame(bounds);
@@ -308,8 +310,8 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
     else
     {
         ZFUIRect scrollContentFrame = this->scrollContentFrame();
-        scrollContentFrame.size.width = bounds.size.width + ZFUIMarginGetWidth(d->autoFitMargin);
-        scrollContentFrame.size.height = bounds.size.height + ZFUIMarginGetHeight(d->autoFitMargin);
+        scrollContentFrame.width = bounds.width + ZFUIMarginGetWidth(d->autoFitMargin);
+        scrollContentFrame.height = bounds.height + ZFUIMarginGetHeight(d->autoFitMargin);
         this->scrollContentFrameUpdate(scrollContentFrame);
         d->autoFitUpdateFrame();
         if(d->autoFitFocusedViewNeedUpdate)

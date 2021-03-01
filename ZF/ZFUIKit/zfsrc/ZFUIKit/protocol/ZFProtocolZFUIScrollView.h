@@ -71,8 +71,8 @@ public:
                                                 ZF_IN const ZFUIRect &frame)
     {
         ZFUIRect frameNew = ZFUIRectApplyScaleReversely(frame, scrollView->scaleFixed());
-        frameNew.point.x -= scrollView->scrollAreaMargin().left;
-        frameNew.point.y -= scrollView->scrollAreaMargin().top;
+        frameNew.x -= scrollView->scrollAreaMargin().left;
+        frameNew.y -= scrollView->scrollAreaMargin().top;
         scrollView->_ZFP_ZFUIScrollView_scrollContentFrameByImpl(frameNew);
     }
     /**

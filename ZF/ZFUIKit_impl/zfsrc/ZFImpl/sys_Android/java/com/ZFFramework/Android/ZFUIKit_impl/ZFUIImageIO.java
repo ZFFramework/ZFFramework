@@ -23,6 +23,13 @@ public final class ZFUIImageIO {
         return new BitmapDrawable(bmp);
     }
     @SuppressWarnings("deprecation")
+    public static Object native_imageLoadInFrame(float imageScale,
+                                                 Object nativeImage,
+                                                 int frame_x, int frame_y, int frame_width, int frame_height) {
+        Bitmap bmp = Bitmap.createBitmap(((BitmapDrawable)nativeImage).getBitmap(), frame_x, frame_y, frame_width, frame_height);
+        return new BitmapDrawable(bmp);
+    }
+    @SuppressWarnings("deprecation")
     public static Object native_imageLoadFromColor(int color,
                                                    int size_width, int size_height) {
         Bitmap bmp = Bitmap.createBitmap(size_width, size_height, Config.ARGB_8888);

@@ -696,65 +696,6 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, zfidentity, eventId)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, ZFObject *, sender)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, ZFObject *, param0)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, ZFObject *, param1)
-
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFListenerData, void, eventFiltered, ZFMP_IN(zfbool, eventFiltered))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFListenerData, zfbool, eventFiltered)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFListenerData, ZFListenerData &, eventFilterEnable)
-
-ZFOBJECT_ON_INIT_USER_REGISTER_4({
-        invokerObject->to<v_ZFListenerData *>()->zfv
-            .eventId(eventId)
-            .sender(sender)
-            .param0(param0)
-            .param1(param1)
-            ;
-    }, v_ZFListenerData
-    , ZFMP_IN(zfidentity, eventId)
-    , ZFMP_IN(ZFObject *, sender)
-    , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-    , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
-    )
-
-ZFMETHOD_USER_REGISTER_0({
-        ZFListenerData listenerData;
-        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(listenerData, zfnull);
-    }, v_ZFCallback,
-    void, execute)
-ZFMETHOD_USER_REGISTER_2({
-        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(listenerData, userData);
-    }, v_ZFCallback,
-    void, execute
-    , ZFMP_IN(const ZFListenerData &, listenerData)
-    , ZFMP_IN_OPT(ZFObject *, userData, zfnull)
-    )
-
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFObserverAddParam, zfidentity, eventId)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFObserverAddParam, ZFListener, observer)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFObserverAddParam, ZFObject *, userData)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFObserverAddParam, ZFObject *, owner)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFObserverAddParam, zfbool, autoRemoveAfterActivate)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFObserverAddParam, ZFLevel, observerLevel)
-
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_6(v_ZFObserverHolder, zfidentity, observerAdd, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFObject *, userData, zfnull), ZFMP_IN_OPT(ZFObject *, owner, zfnull), ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverHolder, zfidentity, observerAdd, ZFMP_IN(const ZFObserverAddParam &, param))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFObserverHolder, zfidentity, observerAddForOnce, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFObject *, userData, zfnull), ZFMP_IN_OPT(ZFObject *, owner, zfnull), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverHolder, void, observerMoveToFirst, ZFMP_IN(zfidentity, taskId))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFObserverHolder, void, observerRemove, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, callback))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverHolder, void, observerRemove, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, callback), ZFMP_IN(ZFObject *, userData), ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, userDataComparer, ZFComparerCheckEqual))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverHolder, void, observerRemoveByTaskId, ZFMP_IN(zfidentity, taskId))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverHolder, void, observerRemoveByOwner, ZFMP_IN(ZFObject *, owner))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverHolder, void, observerRemoveAll, ZFMP_IN(zfidentity, eventId))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserverHolder, void, observerRemoveAll)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserverHolder, zfbool, observerHasAdd)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFObserverHolder, zfbool, observerHasAdd, ZFMP_IN(zfidentity, eventId))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverHolder, void, observerNotify, ZFMP_IN(zfidentity, eventId), ZFMP_IN_OPT(ZFObject *, param0, zfnull), ZFMP_IN_OPT(ZFObject *, param1, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserverHolder, void, observerNotifyWithCustomSender, ZFMP_IN(ZFObject *, customSender), ZFMP_IN(zfidentity, eventId), ZFMP_IN_OPT(ZFObject *, param0, zfnull), ZFMP_IN_OPT(ZFObject *, param1, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserverHolder, ZFObject *, observerOwner)
-
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFObserverHolder &, ZFObjectGlobalEventObserver)
 
 ZF_NAMESPACE_GLOBAL_END

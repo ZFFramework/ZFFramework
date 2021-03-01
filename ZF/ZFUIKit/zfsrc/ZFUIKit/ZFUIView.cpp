@@ -1536,13 +1536,13 @@ ZFMETHOD_DEFINE_0(ZFUIView, const ZFUISize &, layoutMeasuredSize)
 
 ZFPROPERTY_OVERRIDE_ON_VERIFY_DEFINE(ZFUIView, ZFUIRect, viewFrame)
 {
-    if(propertyValue.size.width < 0)
+    if(propertyValue.width < 0)
     {
-        propertyValue.size.width = 0;
+        propertyValue.width = 0;
     }
-    if(propertyValue.size.height < 0)
+    if(propertyValue.height < 0)
     {
-        propertyValue.size.height = 0;
+        propertyValue.height = 0;
     }
 }
 ZFPROPERTY_OVERRIDE_ON_ATTACH_DEFINE(ZFUIView, ZFUIRect, viewFrame)
@@ -1551,7 +1551,8 @@ ZFPROPERTY_OVERRIDE_ON_ATTACH_DEFINE(ZFUIView, ZFUIRect, viewFrame)
         && (d->viewParent == zfnull || !ZFBitTest(d->viewParent->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layouting)))
     { // changed by user or animation
         if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
-            || !ZFUISizeIsEqual(propertyValue.size, propertyValueOld.size))
+            || propertyValue.width != propertyValueOld.width
+            || propertyValue.height != propertyValueOld.height)
         {
             // request layout only for the changed view
             d->layoutRequest(this, zffalse);
@@ -1561,11 +1562,12 @@ ZFPROPERTY_OVERRIDE_ON_ATTACH_DEFINE(ZFUIView, ZFUIRect, viewFrame)
     // else, changed by parent layout step
 
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
-        || propertyValue.size != propertyValueOld.size)
+        || propertyValue.width != propertyValueOld.width
+        || propertyValue.height != propertyValueOld.height)
     {
         d->viewFramePrev = propertyValueOld;
-        d->viewCenter.x = propertyValue.point.x + propertyValue.size.width / 2;
-        d->viewCenter.y = propertyValue.point.y + propertyValue.size.height / 2;
+        d->viewCenter.x = propertyValue.x + propertyValue.width / 2;
+        d->viewCenter.y = propertyValue.y + propertyValue.height / 2;
 
         if(propertyValue != propertyValueOld || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_scaleChanged))
         {
@@ -1608,8 +1610,8 @@ ZFPROPERTY_OVERRIDE_ON_ATTACH_DEFINE(ZFUIView, ZFUIRect, viewFrame)
     }
     else if(propertyValue != propertyValueOld || ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_scaleChanged)) {
         d->viewFramePrev = propertyValueOld;
-        d->viewCenter.x = propertyValue.point.x + propertyValue.size.width / 2;
-        d->viewCenter.y = propertyValue.point.y + propertyValue.size.height / 2;
+        d->viewCenter.x = propertyValue.x + propertyValue.width / 2;
+        d->viewCenter.y = propertyValue.y + propertyValue.height / 2;
 
         // size not changed but point changed, notify impl to move the view is enough
         ZFPROTOCOL_ACCESS(ZFUIView)->viewFrame(this, ZFUIRectApplyScale(propertyValue, this->scaleFixed()));
@@ -1625,42 +1627,42 @@ ZFMETHOD_DEFINE_0(ZFUIView, const ZFUIRect &, viewFramePrev)
 
 ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewX)
 {
-    return this->viewFrame().point.x;
+    return this->viewFrame().x;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewX, ZFMP_IN(zfint const &, propertyValue))
 {
     ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.point.x = propertyValue;
+    viewFrame.x = propertyValue;
     this->viewFrame(viewFrame);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewY)
 {
-    return this->viewFrame().point.y;
+    return this->viewFrame().y;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewY, ZFMP_IN(zfint const &, propertyValue))
 {
     ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.point.y = propertyValue;
+    viewFrame.y = propertyValue;
     this->viewFrame(viewFrame);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewWidth)
 {
-    return this->viewFrame().size.width;
+    return this->viewFrame().width;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewWidth, ZFMP_IN(zfint const &, propertyValue))
 {
     ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.size.width = propertyValue;
+    viewFrame.width = propertyValue;
     this->viewFrame(viewFrame);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewHeight)
 {
-    return this->viewFrame().size.height;
+    return this->viewFrame().height;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewHeight, ZFMP_IN(zfint const &, propertyValue))
 {
     ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.size.height = propertyValue;
+    viewFrame.height = propertyValue;
     this->viewFrame(viewFrame);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewCenterX)
@@ -1670,7 +1672,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewCenterX)
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterX, ZFMP_IN(zfint const &, propertyValue))
 {
     ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.point.x = propertyValue - viewFrame.size.width / 2;
+    viewFrame.x = propertyValue - viewFrame.width / 2;
     this->viewFrame(viewFrame);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewCenterY)
@@ -1680,7 +1682,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, zfint const &, viewCenterY)
 ZFMETHOD_DEFINE_1(ZFUIView, void, viewCenterY, ZFMP_IN(zfint const &, propertyValue))
 {
     ZFUIRect viewFrame = this->viewFrame();
-    viewFrame.point.y = propertyValue - viewFrame.size.height / 2;
+    viewFrame.y = propertyValue - viewFrame.height / 2;
     this->viewFrame(viewFrame);
 }
 

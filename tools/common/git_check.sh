@@ -14,7 +14,8 @@ if test "x-$CLONE_OPTION" = "x-" ; then
 fi
 
 _OLD_DIR=$(pwd)
-_TIMEOUT=86400
+# 60*60*24*7, one week
+_TIMEOUT=604800
 _GIT_VALID=0
 
 if test -e "$DST_PATH/.git"; then

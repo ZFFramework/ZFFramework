@@ -105,10 +105,10 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, scrollView->nativeImplView()),
-            (jint)frame.point.x,
-            (jint)frame.point.y,
-            (jint)frame.size.width,
-            (jint)frame.size.height);
+            (jint)frame.x,
+            (jint)frame.y,
+            (jint)frame.width,
+            (jint)frame.height);
     }
     virtual zftimet scrollAnimationStart(ZF_IN ZFUIScrollView *scrollView,
                                          ZF_IN zftimet recommendTimerInterval)

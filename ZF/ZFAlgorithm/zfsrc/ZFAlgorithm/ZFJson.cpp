@@ -888,7 +888,6 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFJsonItem, ZFJsonItem, {
     }, {
         return ZFJsonItemToOutput(ZFOutputForString(s), v);
     })
-
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, void, objectInfoT, ZFMP_IN_OUT(zfstring &, ret))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJsonItem, zfstring, objectInfo)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJsonItem, zfindex, objectRetainCount)

@@ -20,7 +20,8 @@ exit /b 1
 if not defined CLONE_OPTION set CLONE_OPTION=--depth=1
 
 set _OLD_DIR=%cd%
-set _TIMEOUT=86400
+rem 60*60*24*7, one week
+set _TIMEOUT=604800
 set _GIT_VALID=0
 
 if exist "%DST_PATH%\.git" (

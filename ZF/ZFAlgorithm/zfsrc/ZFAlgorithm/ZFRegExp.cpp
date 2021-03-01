@@ -106,7 +106,6 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
 
         return zftrue;
     })
-
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFRegExpResult, zfbool, matched)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFRegExpResult, ZFIndexRange, matchedRange)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFRegExpResult, ZFCoreArrayPOD<ZFIndexRange>, namedGroups)

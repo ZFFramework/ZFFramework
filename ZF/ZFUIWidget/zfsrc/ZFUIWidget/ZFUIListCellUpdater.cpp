@@ -43,7 +43,6 @@ ZFMETHOD_DEFINE_2(ZFUIListCellUpdater, void, itemCacheRecycle,
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFUIListCellUpdaterParam, ZFUIListCellUpdaterParam)
-
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, ZFUIListCell *, cell)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, zfindex, cellIndex)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, zfindex, cellCount)

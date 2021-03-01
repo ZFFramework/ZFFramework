@@ -31,19 +31,19 @@ protected:
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds)
     {
         zfsuper::layoutOnLayout(bounds);
-        if(bounds.size.height >= bounds.size.width)
+        if(bounds.height >= bounds.width)
         {
             this->imageViewSmall()->viewFrame(ZFUIRectApplyMargin(
-                ZFUIRectMake(0, 0, bounds.size.width, bounds.size.height / 2),
+                ZFUIRectMake(0, 0, bounds.width, bounds.height / 2),
                 ZFUIMarginMake(5)));
             this->imageViewLarge()->viewFrame(ZFUIRectApplyMargin(
-                ZFUIRectMake(0, bounds.size.height / 2, bounds.size.width, bounds.size.height / 2),
+                ZFUIRectMake(0, bounds.height / 2, bounds.width, bounds.height / 2),
                 ZFUIMarginMake(5)));
         }
         else
         {
-            this->imageViewSmall()->viewFrame(ZFUIRectMake(0, 0, bounds.size.width, bounds.size.height / 2));
-            this->imageViewLarge()->viewFrame(ZFUIRectMake(bounds.size.width / 2, 0, bounds.size.width, bounds.size.height / 2));
+            this->imageViewSmall()->viewFrame(ZFUIRectMake(0, 0, bounds.width, bounds.height / 2));
+            this->imageViewLarge()->viewFrame(ZFUIRectMake(bounds.width / 2, 0, bounds.width, bounds.height / 2));
         }
     }
 };

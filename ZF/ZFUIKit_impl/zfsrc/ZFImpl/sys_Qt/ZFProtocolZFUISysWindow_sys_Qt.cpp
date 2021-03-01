@@ -22,7 +22,7 @@ static void _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(ZF_IN ZFUISysWindow
     nativeWindow->setGeometry(ZFImpl_sys_Qt_ZFUIKit_impl_ZFUIRectToQRect(frame));
     if(nativeWindow->layout() != zfnull)
     {
-        QRect t(0, 0, frame.size.width, frame.size.height);
+        QRect t(0, 0, frame.width, frame.height);
         for(int i = 0; i < nativeWindow->layout()->count(); ++i)
         {
             nativeWindow->layout()->itemAt(i)->widget()->setGeometry(t);

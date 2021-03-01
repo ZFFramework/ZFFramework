@@ -58,7 +58,7 @@ protected:
 
         zfint contentHeight = 0;
         zfint space = 4;
-        ZFUISize childMeasureSizeHint = ZFUISizeMake(this->scrollArea().size.width, -1);
+        ZFUISize childMeasureSizeHint = ZFUISizeMake(this->scrollArea().width, -1);
         ZFUISizeParam childMeasureSizeParam = ZFUISizeParamFillWrap();
 
         for(zfindex i = 0; i < this->childCount(); ++i)
@@ -74,8 +74,8 @@ protected:
         contentHeight += space;
 
         this->scrollContentFrameUpdate(ZFUIRectMake(
-            this->scrollContentFrame().point.x, this->scrollContentFrame().point.y,
-            this->scrollArea().size.width, contentHeight));
+            this->scrollContentFrame().x, this->scrollContentFrame().y,
+            this->scrollArea().width, contentHeight));
     }
 };
 

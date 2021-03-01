@@ -72,6 +72,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIPoint, ZFUIPoint, {
         zfstringAppend(s, "(%d, %d)", v.x, v.y);
         return zftrue;
     })
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIPoint, zfint, x)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIPoint, zfint, y)
 
 ZFTYPEID_PROGRESS_DEFINE(ZFUIPoint, ZFUIPoint, {
         ret.x = from.x + (zfint)((to.x - from.x) * progress);
@@ -138,6 +140,10 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIMargin, ZFUIMargin, {
         zfstringAppend(s, "(%d, %d, %d, %d)", v.left, v.top, v.right, v.bottom);
         return zftrue;
     })
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIMargin, zfint, left)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIMargin, zfint, top)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIMargin, zfint, right)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIMargin, zfint, bottom)
 
 ZFTYPEID_PROGRESS_DEFINE(ZFUIMargin, ZFUIMargin, {
         ret.left = from.left + (zfint)((to.left - from.left) * progress);
@@ -238,6 +244,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISize, ZFUISize, {
         zfstringAppend(s, "(%d, %d)", v.width, v.height);
         return zftrue;
     })
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUISize, zfint, width)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUISize, zfint, height)
 
 ZFTYPEID_PROGRESS_DEFINE(ZFUISize, ZFUISize, {
         ret.width = from.width + (zfint)((to.width - from.width) * progress);
@@ -326,21 +334,25 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIRect, ZFUIRect, {
         {
             return zffalse;
         }
-        v.point.x = buf[0];
-        v.point.y = buf[1];
-        v.size.width = buf[2];
-        v.size.height = buf[3];
+        v.x = buf[0];
+        v.y = buf[1];
+        v.width = buf[2];
+        v.height = buf[3];
         return zftrue;
     }, {
-        zfstringAppend(s, "(%d, %d, %d, %d)", v.point.x, v.point.y, v.size.width, v.size.height);
+        zfstringAppend(s, "(%d, %d, %d, %d)", v.x, v.y, v.width, v.height);
         return zftrue;
     })
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIRect, zfint, x)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIRect, zfint, y)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIRect, zfint, width)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIRect, zfint, height)
 
 ZFTYPEID_PROGRESS_DEFINE(ZFUIRect, ZFUIRect, {
-        ret.point.x = from.point.x + (zfint)((to.point.x - from.point.x) * progress);
-        ret.point.y = from.point.y + (zfint)((to.point.y - from.point.y) * progress);
-        ret.size.width = from.size.width + (zfint)((to.size.width - from.size.width) * progress);
-        ret.size.height = from.size.height + (zfint)((to.size.height - from.size.height) * progress);
+        ret.x = from.x + (zfint)((to.x - from.x) * progress);
+        ret.y = from.y + (zfint)((to.y - from.y) * progress);
+        ret.width = from.width + (zfint)((to.width - from.width) * progress);
+        ret.height = from.height + (zfint)((to.height - from.height) * progress);
     })
 
 // ============================================================
@@ -390,50 +402,51 @@ ZFMETHOD_FUNC_DEFINE_5(void, ZFUIAlignApply,
     {
         return ;
     }
-    ret.size = itemSize;
+    ret.width = itemSize.width;
+    ret.height = itemSize.height;
 
     if(ZFBitTest(align, ZFUIAlign::e_LeftInner))
     {
-        ret.point.x = refRect.point.x + margin.left;
+        ret.x = refRect.x + margin.left;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_RightInner))
     {
-        ret.point.x = refRect.point.x + refRect.size.width - margin.right - itemSize.width;
+        ret.x = refRect.x + refRect.width - margin.right - itemSize.width;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Left))
     {
-        ret.point.x = refRect.point.x - margin.right - itemSize.width;
+        ret.x = refRect.x - margin.right - itemSize.width;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Right))
     {
-        ret.point.x = refRect.point.x + refRect.size.width + margin.left;
+        ret.x = refRect.x + refRect.width + margin.left;
     }
     else
     {
-        ret.point.x = refRect.point.x + margin.left
-            + (refRect.size.width - margin.left - margin.right - itemSize.width) / 2;
+        ret.x = refRect.x + margin.left
+            + (refRect.width - margin.left - margin.right - itemSize.width) / 2;
     }
 
     if(ZFBitTest(align, ZFUIAlign::e_TopInner))
     {
-        ret.point.y = refRect.point.y + margin.top;
+        ret.y = refRect.y + margin.top;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_BottomInner))
     {
-        ret.point.y = refRect.point.y + refRect.size.height - margin.bottom - itemSize.height;
+        ret.y = refRect.y + refRect.height - margin.bottom - itemSize.height;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Top))
     {
-        ret.point.y = refRect.point.y - margin.bottom - itemSize.height;
+        ret.y = refRect.y - margin.bottom - itemSize.height;
     }
     else if(ZFBitTest(align, ZFUIAlign::e_Bottom))
     {
-        ret.point.y = refRect.point.y + refRect.size.height + margin.top;
+        ret.y = refRect.y + refRect.height + margin.top;
     }
     else
     {
-        ret.point.y = refRect.point.y + margin.top
-            + (refRect.size.height - margin.top - margin.bottom - itemSize.height) / 2;
+        ret.y = refRect.y + margin.top
+            + (refRect.height - margin.top - margin.bottom - itemSize.height) / 2;
     }
 }
 ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIRect, ZFUIAlignApply,
@@ -706,20 +719,20 @@ static void _ZFP_ZFUIContentScaleTypeApply_Center(ZF_OUT ZFUIRect &ret, ZF_IN co
 static void _ZFP_ZFUIContentScaleTypeApply_FillX(ZF_OUT ZFUIRect &ret, ZF_IN const ZFUIRect &bounds, ZF_IN const ZFUISize &contentSize)
 {
     ret = ZFUIAlignApply(ZFUIAlign::e_Center, bounds, ZFUISizeMake(
-        bounds.size.width,
-        bounds.size.width * contentSize.height / contentSize.width
+        bounds.width,
+        bounds.width * contentSize.height / contentSize.width
         ));
 }
 static void _ZFP_ZFUIContentScaleTypeApply_FillY(ZF_OUT ZFUIRect &ret, ZF_IN const ZFUIRect &bounds, ZF_IN const ZFUISize &contentSize)
 {
     ret = ZFUIAlignApply(ZFUIAlign::e_Center, bounds, ZFUISizeMake(
-        contentSize.width * bounds.size.height / contentSize.height,
-        bounds.size.height
+        contentSize.width * bounds.height / contentSize.height,
+        bounds.height
         ));
 }
 static void _ZFP_ZFUIContentScaleTypeApply_FillCenter(ZF_OUT ZFUIRect &ret, ZF_IN const ZFUIRect &bounds, ZF_IN const ZFUISize &contentSize)
 {
-    if(contentSize.width * bounds.size.height >= bounds.size.width * contentSize.height)
+    if(contentSize.width * bounds.height >= bounds.width * contentSize.height)
     {
         _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize);
     }
@@ -730,7 +743,7 @@ static void _ZFP_ZFUIContentScaleTypeApply_FillCenter(ZF_OUT ZFUIRect &ret, ZF_I
 }
 static void _ZFP_ZFUIContentScaleTypeApply_FillCenterClipped(ZF_OUT ZFUIRect &ret, ZF_IN const ZFUIRect &bounds, ZF_IN const ZFUISize &contentSize)
 {
-    if(contentSize.width * bounds.size.height >= bounds.size.width * contentSize.height)
+    if(contentSize.width * bounds.height >= bounds.width * contentSize.height)
     {
         _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize);
     }
@@ -760,7 +773,7 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFUIContentScaleTypeApply,
             _ZFP_ZFUIContentScaleTypeApply_FillCenterClipped(ret, bounds, contentSize);
             break;
         case ZFUIContentScaleType::e_FitCenter:
-            if(contentSize.width <= bounds.size.width && contentSize.height <= bounds.size.height)
+            if(contentSize.width <= bounds.width && contentSize.height <= bounds.height)
             {
                 _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize);
             }
@@ -773,7 +786,7 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFUIContentScaleTypeApply,
             _ZFP_ZFUIContentScaleTypeApply_FillX(ret, bounds, contentSize);
             break;
         case ZFUIContentScaleType::e_FitX:
-            if(contentSize.width <= bounds.size.width)
+            if(contentSize.width <= bounds.width)
             {
                 _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize);
             }
@@ -786,7 +799,7 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFUIContentScaleTypeApply,
             _ZFP_ZFUIContentScaleTypeApply_FillY(ret, bounds, contentSize);
             break;
         case ZFUIContentScaleType::e_FitY:
-            if(contentSize.height <= bounds.size.height)
+            if(contentSize.height <= bounds.height)
             {
                 _ZFP_ZFUIContentScaleTypeApply_Center(ret, bounds, contentSize);
             }

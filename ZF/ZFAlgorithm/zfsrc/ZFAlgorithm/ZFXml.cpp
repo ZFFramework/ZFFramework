@@ -1484,7 +1484,6 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXmlItem, ZFXmlItem, {
     }, {
         return ZFXmlItemToString(s, v, ZFXmlOutputFlagsTrim());
     })
-
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, void, objectInfoT, ZFMP_IN_OUT(zfstring &, ret))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfstring, objectInfo)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfindex, objectRetainCount)

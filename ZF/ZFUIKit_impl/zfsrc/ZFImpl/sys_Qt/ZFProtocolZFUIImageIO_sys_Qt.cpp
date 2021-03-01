@@ -32,6 +32,14 @@ public:
         }
         return this->_scaleImage(nativeImageTmp, imageScale, newSize, ninePatch);
     }
+    virtual void *imageLoadInFrame(ZF_IN zffloat imageScale,
+                                   ZF_IN void *nativeImage,
+                                   ZF_IN const ZFUIRect &frameInImage)
+    {
+        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage retTmp = nativeImageTmp->copy(frameInImage.x, frameInImage.y, frameInImage.width, frameInImage.height);
+        return new QImage(retTmp);
+    }
     virtual void *imageLoadFromColor(ZF_IN zffloat imageScale,
                                      ZF_IN const ZFUIColor &color,
                                      ZF_IN const ZFUISize &size)

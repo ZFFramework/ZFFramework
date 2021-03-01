@@ -2,6 +2,7 @@
 
 * reduce property impl's complexity
 * change property setter name
+* change ZFUIRect's property
 * add support for setter and getter method to simulate property
 * add lambda implemented by pure C++03
 * enhance view layout logic

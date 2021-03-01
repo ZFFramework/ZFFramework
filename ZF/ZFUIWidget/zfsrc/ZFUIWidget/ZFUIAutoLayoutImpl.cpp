@@ -71,9 +71,11 @@ public:
         {
             ZFUIView *child = parent->childAtIndex(i);
             ZFUIAutoLayoutParam *layoutParam = child->layoutParam<ZFUIAutoLayoutParam *>();
-            _childFrame[i].size = child->layoutMeasure(
+            ZFUISize childSize = child->layoutMeasure(
                 ZFUIViewLayoutParam::sizeHintMerge(sizeHint, layoutParam->sizeHint()),
                 layoutParam->sizeParam());
+            _childFrame[i].width = childSize.width;
+            _childFrame[i].height = childSize.height;
         }
     }
     zfbool isFixedRule(ZF_IN const ZFUIAutoLayoutRule &rule)
@@ -200,9 +202,9 @@ void ZFUIAutoLayout::layoutOnMeasure(ZF_OUT ZFUISize &ret,
 }
 void ZFUIAutoLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
 {
-    d->prepareLayout(this, this->viewFrame().size);
-    d->_parentWidth = bounds.size.width;
-    d->_parentHeight = bounds.size.height;
+    d->prepareLayout(this, ZFUIRectGetSize(this->viewFrame()));
+    d->_parentWidth = bounds.width;
+    d->_parentHeight = bounds.height;
     for(zfindex i = this->childCount() - 1; i != zfindexMax(); --i)
     {
         d->layoutChild(this, i, zftrue);
@@ -256,8 +258,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(ZF_IN ZFUIView *parent,
             head,
             tail - head,
             xAxis ? layoutParam->biasX() : layoutParam->biasY(),
-            xAxis ? _childFrame[childIndex].point.x : _childFrame[childIndex].point.y,
-            xAxis ? _childFrame[childIndex].size.width : _childFrame[childIndex].size.height);
+            xAxis ? _childFrame[childIndex].x : _childFrame[childIndex].y,
+            xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height);
     }
 
     _layouting[childIndex] = zffalse;
@@ -286,7 +288,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(ZF_IN ZFUIView *parent,
     }
     _layouting[childIndex] = zftrue;
 
-    zfint &_childSize = xAxis ? _childFrame[childIndex].size.width : _childFrame[childIndex].size.height;
+    zfint &_childSize = xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height;
     zffloat scale = (rule.scale() > 0 ? rule.scale() : 1);
     if(rule.targetPos() == ZFUIAutoLayoutPos::e_Width)
     {
@@ -302,7 +304,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(ZF_IN ZFUIView *parent,
                 targetIndex,
                 rule.target()->layoutParam<ZFUIAutoLayoutParam *>()->_ZFP_al_d.ruleList[ZFUIAutoLayoutPos::e_Width],
                 zftrue);
-            _childSize = zfmMax(_childSize, (zfint)(_childFrame[targetIndex].size.width * scale + rule.offset()));
+            _childSize = zfmMax(_childSize, (zfint)(_childFrame[targetIndex].width * scale + rule.offset()));
         }
     }
     else if(rule.targetPos() == ZFUIAutoLayoutPos::e_Height)
@@ -319,7 +321,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(ZF_IN ZFUIView *parent,
                 targetIndex,
                 rule.target()->layoutParam<ZFUIAutoLayoutParam *>()->_ZFP_al_d.ruleList[ZFUIAutoLayoutPos::e_Height],
                 zftrue);
-            _childSize = zfmMax(_childSize, (zfint)(_childFrame[targetIndex].size.height * scale + rule.offset()));
+            _childSize = zfmMax(_childSize, (zfint)(_childFrame[targetIndex].height * scale + rule.offset()));
         }
     }
 
@@ -485,7 +487,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(ZF_IN ZFUIView *parent,
     {
         zfindex childIndex = chain[i];
         const ZFUIAutoLayoutRule *ruleList = parent->childAtIndex(childIndex)->layoutParam<ZFUIAutoLayoutParam *>()->_ZFP_al_d.ruleList;
-        _childSizeCache[childIndex] = xAxis ? _childFrame[childIndex].size.width : _childFrame[childIndex].size.height;
+        _childSizeCache[childIndex] = xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height;
         if(ruleList[posHead].pos() != ZFUIAutoLayoutPos::e_None)
         {
             _childSizeCache[childIndex] += ruleList[posHead].offset();
@@ -528,8 +530,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChildByChain(ZF_IN ZFUIView *parent,
             tailTmp,
             _childSizeCache[childIndex],
             xAxis ? layoutParam->biasX() : layoutParam->biasY(),
-            xAxis ? _childFrame[childIndex].point.x : _childFrame[childIndex].point.y,
-            xAxis ? _childFrame[childIndex].size.width : _childFrame[childIndex].size.height);
+            xAxis ? _childFrame[childIndex].x : _childFrame[childIndex].y,
+            xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height);
     }
 }
 

@@ -123,10 +123,10 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
-            rect.point.x,
-            rect.point.y,
-            rect.size.width,
-            rect.size.height);
+            rect.x,
+            rect.y,
+            rect.width,
+            rect.height);
     }
     virtual zffloat nativeViewScaleForImpl(ZF_IN void *nativeView)
     {
@@ -297,10 +297,10 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
-            rect.point.x,
-            rect.point.y,
-            rect.size.width,
-            rect.size.height);
+            rect.x,
+            rect.y,
+            rect.width,
+            rect.height);
     }
 
     virtual void layoutRequest(ZF_IN ZFUIView *view)

@@ -25,6 +25,16 @@ public:
             ninePatch);
         return (__bridge_retained void *)ret;
     }
+    virtual void *imageLoadInFrame(ZF_IN zffloat imageScale,
+                                   ZF_IN void *nativeImage,
+                                   ZF_IN const ZFUIRect &frameInImage)
+    {
+        UIImage *src = (__bridge UIImage *)nativeImage;
+        UIImage *ret = [UIImage imageWithCGImage:CGImageCreateWithImageInRect(
+            src.CGImage,
+            ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIRectToCGRect(frameInImage))];
+        return (__bridge_retained void *)ret;
+    }
     virtual void *imageLoadFromColor(ZF_IN zffloat imageScale,
                                      ZF_IN const ZFUIColor &color,
                                      ZF_IN const ZFUISize &size)

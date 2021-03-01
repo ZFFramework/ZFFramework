@@ -121,8 +121,8 @@ static void _ZFP_ZFUIViewFocusNextFind(ZF_IN_OUT ZFCoreArrayPOD<_ZFP_ZFUIViewFoc
             focusDatas,
             view->childAtIndex(i),
             includingInternalViews,
-            offsetX + view->viewFrame().point.x,
-            offsetY + view->viewFrame().point.y);
+            offsetX + view->viewFrame().x,
+            offsetY + view->viewFrame().y);
     }
     if(includingInternalViews)
     {
@@ -133,8 +133,8 @@ static void _ZFP_ZFUIViewFocusNextFind(ZF_IN_OUT ZFCoreArrayPOD<_ZFP_ZFUIViewFoc
                 focusDatas,
                 viewArray[i],
                 includingInternalViews,
-                offsetX + view->viewFrame().point.x,
-                offsetY + view->viewFrame().point.y);
+                offsetX + view->viewFrame().x,
+                offsetY + view->viewFrame().y);
         }
         viewArray = view->internalFgViewArray();
         for(zfindex i = 0; i < viewArray.count(); ++i)
@@ -143,8 +143,8 @@ static void _ZFP_ZFUIViewFocusNextFind(ZF_IN_OUT ZFCoreArrayPOD<_ZFP_ZFUIViewFoc
                 focusDatas,
                 viewArray[i],
                 includingInternalViews,
-                offsetX + view->viewFrame().point.x,
-                offsetY + view->viewFrame().point.y);
+                offsetX + view->viewFrame().x,
+                offsetY + view->viewFrame().y);
         }
     }
 }
@@ -358,8 +358,8 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind,
         && !root->classData()->classIsTypeOf(ZFUIWindow::ClassData())
         && root != param.focusEndParent())
     {
-        viewCenter.x += root->viewFrame().point.x;
-        viewCenter.y += root->viewFrame().point.y;
+        viewCenter.x += root->viewFrame().x;
+        viewCenter.y += root->viewFrame().y;
         root = root->viewParent();
     }
     ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> focusDatas;

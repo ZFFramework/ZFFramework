@@ -86,6 +86,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallerInfo, ZFCallerInfo, {
         v.callerInfoT(s);
         return zftrue;
     })
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallerInfo, void, callerInfoT, ZFMP_IN_OUT(zfstring &, ret))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallerInfo, zfstring, callerInfo)
 
 ZF_NAMESPACE_GLOBAL_END
 

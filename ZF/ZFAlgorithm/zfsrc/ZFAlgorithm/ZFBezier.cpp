@@ -245,8 +245,6 @@ ZFTYPEID_DEFINE(ZFBezier, ZFBezier, {
         s += ")";
         return zftrue;
     })
-
-// ============================================================
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFBezier, void, controlPoint, ZFMP_IN(zffloat, p0x), ZFMP_IN(zffloat, p0y), ZFMP_IN(zffloat, p1x), ZFMP_IN(zffloat, p1y))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, y_by_t, ZFMP_IN(zffloat, t))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, y_by_x, ZFMP_IN(zffloat, x))

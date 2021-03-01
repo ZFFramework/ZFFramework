@@ -118,7 +118,8 @@ public:
     void scrollAreaUpdate(void)
     {
         ZFUIRect newValue = ZFUIRectZero();
-        newValue.size = this->pimplOwner->viewFrame().size;
+        newValue.width = this->pimplOwner->viewFrame().width;
+        newValue.height = this->pimplOwner->viewFrame().height;
         ZFUIRectApplyMargin(newValue, newValue, this->pimplOwner->nativeImplViewMargin());
         ZFUIRectApplyMargin(newValue, newValue, this->scrollAreaMargin);
         if(newValue != this->scrollArea)
@@ -170,9 +171,9 @@ public:
         }
 
         this->xScrollEnable = (this->pimplOwner->scrollBounceHorizontalAlways()
-            || this->pimplOwner->scrollContentFrame().size.width > this->pimplOwner->scrollArea().size.width);
+            || this->pimplOwner->scrollContentFrame().width > this->pimplOwner->scrollArea().width);
         this->yScrollEnable = (this->pimplOwner->scrollBounceVerticalAlways()
-            || this->pimplOwner->scrollContentFrame().size.height > this->pimplOwner->scrollArea().size.height);
+            || this->pimplOwner->scrollContentFrame().height > this->pimplOwner->scrollArea().height);
 
         if(this->xScroll->scrollRequireFocus())
         {
@@ -261,9 +262,9 @@ public:
         }
 
         this->xScrollEnable = (this->pimplOwner->scrollBounceHorizontalAlways()
-            || this->pimplOwner->scrollContentFrame().size.width > this->pimplOwner->scrollArea().size.width);
+            || this->pimplOwner->scrollContentFrame().width > this->pimplOwner->scrollArea().width);
         this->yScrollEnable = (this->pimplOwner->scrollBounceVerticalAlways()
-            || this->pimplOwner->scrollContentFrame().size.height > this->pimplOwner->scrollArea().size.height);
+            || this->pimplOwner->scrollContentFrame().height > this->pimplOwner->scrollArea().height);
 
         this->scrollerActionAdd(_ZFP_ZFUIScrollViewActionDragEnd);
         this->scrollerActionRun();
@@ -285,7 +286,7 @@ public:
         {
             if((this->autoScrollSpeedX > 0 && this->xScroll->scrollContentOffset() >= 0)
                 || (this->autoScrollSpeedX < 0
-                    && this->xScroll->scrollContentOffset() + this->xScroll->scrollContentSize() <= this->pimplOwner->scrollArea().size.width))
+                    && this->xScroll->scrollContentOffset() + this->xScroll->scrollContentSize() <= this->pimplOwner->scrollArea().width))
             {
                 this->pimplOwner->scrollOverride(zftrue);
                 this->pimplOwner->autoScrollStopX();
@@ -300,7 +301,7 @@ public:
         {
             if((this->autoScrollSpeedY > 0 && this->yScroll->scrollContentOffset() >= 0)
                 || (this->autoScrollSpeedY < 0
-                    && this->yScroll->scrollContentOffset() + this->yScroll->scrollContentSize() <= this->pimplOwner->scrollArea().size.height))
+                    && this->yScroll->scrollContentOffset() + this->yScroll->scrollContentSize() <= this->pimplOwner->scrollArea().height))
             {
                 this->pimplOwner->scrollOverride(zftrue);
                 this->pimplOwner->autoScrollStopY();
@@ -321,8 +322,8 @@ public:
     void scrollContentFrameUpdateForImpl(void)
     {
         ZFUIRect frame = this->pimplOwner->scrollContentFrame();
-        frame.point.x += this->pimplOwner->scrollAreaMargin().left;
-        frame.point.y += this->pimplOwner->scrollAreaMargin().top;
+        frame.x += this->pimplOwner->scrollAreaMargin().left;
+        frame.y += this->pimplOwner->scrollAreaMargin().top;
         ZFUIRectApplyScale(frame, frame, this->pimplOwner->scaleFixed());
         if(frame != this->scrollContentFrameCache)
         {
@@ -641,20 +642,20 @@ ZFPROPERTY_OVERRIDE_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollAlignToPageVe
 }
 ZFPROPERTY_OVERRIDE_ON_ATTACH_DEFINE(ZFUIScrollView, ZFUIRect, scrollContentFrame)
 {
-    if(d->xScroll->scrollContentOffset() != propertyValue.point.x
-        || d->xScroll->scrollContentSize() != propertyValue.size.width)
+    if(d->xScroll->scrollContentOffset() != propertyValue.x
+        || d->xScroll->scrollContentSize() != propertyValue.width)
     {
-        d->xScroll->scrollContentChanged(propertyValue.point.x, propertyValue.size.width);
+        d->xScroll->scrollContentChanged(propertyValue.x, propertyValue.width);
     }
-    if(d->yScroll->scrollContentOffset() != propertyValue.point.y
-        || d->yScroll->scrollContentSize() != propertyValue.size.height)
+    if(d->yScroll->scrollContentOffset() != propertyValue.y
+        || d->yScroll->scrollContentSize() != propertyValue.height)
     {
-        d->yScroll->scrollContentChanged(propertyValue.point.y, propertyValue.size.height);
+        d->yScroll->scrollContentChanged(propertyValue.y, propertyValue.height);
     }
     if(!d->scrollContentFrameOverrideFlag)
     {
-        d->xScroll->scrollWithoutAnimation(propertyValue.point.x);
-        d->yScroll->scrollWithoutAnimation(propertyValue.point.y);
+        d->xScroll->scrollWithoutAnimation(propertyValue.x);
+        d->yScroll->scrollWithoutAnimation(propertyValue.y);
         d->scrollerUpdate();
 
         if(d->scrollOverrideFlag == 0)
@@ -799,8 +800,8 @@ void ZFUIScrollView::implChildOnRemoveAllForDealloc(void)
 void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
 {
     d->scrollAreaUpdate();
-    zfint xScrollOwnerSize = bounds.size.width - ZFUIMarginGetWidth(this->nativeImplViewMargin()) - ZFUIMarginGetWidth(d->scrollAreaMargin);
-    zfint yScrollOwnerSize = bounds.size.height - ZFUIMarginGetHeight(this->nativeImplViewMargin()) - ZFUIMarginGetHeight(d->scrollAreaMargin);
+    zfint xScrollOwnerSize = bounds.width - ZFUIMarginGetWidth(this->nativeImplViewMargin()) - ZFUIMarginGetWidth(d->scrollAreaMargin);
+    zfint yScrollOwnerSize = bounds.height - ZFUIMarginGetHeight(this->nativeImplViewMargin()) - ZFUIMarginGetHeight(d->scrollAreaMargin);
     if(xScrollOwnerSize != d->xScroll->scrollOwnerSize()
         || yScrollOwnerSize != d->yScroll->scrollOwnerSize())
     {
@@ -854,8 +855,8 @@ void ZFUIScrollView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent)
         return ;
     }
 
-    zfint wheelXSaved = this->scrollByPointEndPoint().x - this->scrollContentFrame().point.x;
-    zfint wheelYSaved = this->scrollByPointEndPoint().y - this->scrollContentFrame().point.y;
+    zfint wheelXSaved = this->scrollByPointEndPoint().x - this->scrollContentFrame().x;
+    zfint wheelYSaved = this->scrollByPointEndPoint().y - this->scrollContentFrame().y;
     const zfint initValue = 60;
     const zfint maxValue = 3000;
     zfint wheelX = wheelEvent->wheelX * initValue;
@@ -906,7 +907,7 @@ void ZFUIScrollView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent)
     {
         if(this->scrollAlignToPageHorizontal())
         {
-            zfint pageSize = this->scrollArea().size.width;
+            zfint pageSize = this->scrollArea().width;
             if(zfmAbs(wheelX) < zfmAbs(pageSize))
             {
                 if(wheelX > 0)
@@ -930,7 +931,7 @@ void ZFUIScrollView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent)
     {
         if(this->scrollAlignToPageVertical())
         {
-            zfint pageSize = this->scrollArea().size.height;
+            zfint pageSize = this->scrollArea().height;
             if(zfmAbs(wheelY) < zfmAbs(pageSize))
             {
                 if(wheelY > 0)
@@ -952,7 +953,7 @@ void ZFUIScrollView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent)
 
     if(wheelX != 0 || wheelY != 0)
     {
-        this->scrollByPoint(this->scrollContentFrame().point.x + wheelX, this->scrollContentFrame().point.y + wheelY);
+        this->scrollByPoint(this->scrollContentFrame().x + wheelX, this->scrollContentFrame().y + wheelY);
         wheelEvent->eventResolved(zftrue);
     }
 }
@@ -1022,25 +1023,25 @@ ZFMETHOD_DEFINE_3(ZFUIScrollView, void, scrollChildToVisible,
     const ZFUIRect &contentFrame = this->scrollContentFrame();
     _ZFP_ZFUIScrollView_scrollChildToVisible(
         offsetX,
-        childRect.point.x, childRect.size.width,
-        selfRect.point.x, selfRect.size.width,
-        contentFrame.point.x, contentFrame.size.width,
+        childRect.x, childRect.width,
+        selfRect.x, selfRect.width,
+        contentFrame.x, contentFrame.width,
         margin.left, margin.right);
     _ZFP_ZFUIScrollView_scrollChildToVisible(
         offsetY,
-        childRect.point.y, childRect.size.height,
-        selfRect.point.y, selfRect.size.height,
-        contentFrame.point.y, contentFrame.size.height,
+        childRect.y, childRect.height,
+        selfRect.y, selfRect.height,
+        contentFrame.y, contentFrame.height,
         margin.top, margin.bottom);
 
     if(offsetX != 0 || offsetY != 0)
     {
         ZFUIRect t = this->scrollContentFrame();
-        t.point.x += offsetX;
-        t.point.y += offsetY;
+        t.x += offsetX;
+        t.y += offsetY;
         if(scrollWithAni)
         {
-            this->scrollByPoint(t.point.x, t.point.y);
+            this->scrollByPoint(t.x, t.y);
         }
         else
         {
@@ -1158,13 +1159,13 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollContentFrameAnimated,
                   ZFMP_IN(const ZFUIRect &, scrollContentFrame))
 {
     this->scrollContentFrameUpdate(ZFUIRectMake(
-        this->scrollContentFrame().point.x,
-        this->scrollContentFrame().point.y,
-        scrollContentFrame.size.width,
-        scrollContentFrame.size.height));
+        this->scrollContentFrame().x,
+        this->scrollContentFrame().y,
+        scrollContentFrame.width,
+        scrollContentFrame.height));
     if(d->state != ZFUIScrollViewState::e_Dragging)
     {
-        this->scrollByPoint(scrollContentFrame.point.x, scrollContentFrame.point.y);
+        this->scrollByPoint(scrollContentFrame.x, scrollContentFrame.y);
     }
     else
     {
@@ -1177,8 +1178,8 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollContentFrameAnimated,
 ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollContentFrameUpdate,
                   ZFMP_IN(const ZFUIRect &, scrollContentFrame))
 {
-    d->xScroll->scrollContentChanged(scrollContentFrame.point.x, scrollContentFrame.size.width);
-    d->yScroll->scrollContentChanged(scrollContentFrame.point.y, scrollContentFrame.size.height);
+    d->xScroll->scrollContentChanged(scrollContentFrame.x, scrollContentFrame.width);
+    d->yScroll->scrollContentChanged(scrollContentFrame.y, scrollContentFrame.height);
     d->scrollerUpdate();
 }
 ZFMETHOD_DEFINE_2(ZFUIScrollView, void, scrollByPoint,

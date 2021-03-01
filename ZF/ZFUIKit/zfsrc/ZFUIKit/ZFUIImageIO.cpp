@@ -20,14 +20,36 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, ZFUIImageScale,
         image->nativeImage(),
         ZFUISizeApplyScale(newSize, scale),
         ZFUIMarginApplyScale(image->imageNinePatch(), scale));
-    if(nativeImage == zfnull)
-    {
+    return ZFUIImageLoadFromNativeImage(nativeImage);
+}
+
+// ============================================================
+// ZFUIImageLoadInFrame
+ZFMETHOD_FUNC_DEFINE_2(zfautoObject, ZFUIImageLoadInFrame,
+                       ZFMP_IN(ZFUIImage *, image),
+                       ZFMP_IN(const ZFUIRect &, frameInImage))
+{
+    if(image == zfnull
+        || frameInImage.x < 0 || frameInImage.x >= image->imageSize().width
+        || frameInImage.y < 0 || frameInImage.y >= image->imageSize().height
+    ) {
         return zfnull;
     }
-    zfautoObject ret = ZFUIImage::ClassData()->newInstance();
-    ret.to<ZFUIImage *>()->nativeImage(nativeImage);
-    ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(nativeImage);
-    return ret;
+    ZFUIRect frame = frameInImage;
+    if(frame.width <= 0 || frame.x + frame.width > image->imageSize().width)
+    {
+        frame.width = image->imageSize().width - frame.x;
+    }
+    if(frame.height <= 0 || frame.y + frame.height > image->imageSize().height)
+    {
+        frame.height = image->imageSize().height - frame.y;
+    }
+    zffloat scale = image->imageScaleFixed();
+    void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImageIO)->imageLoadInFrame(
+        scale,
+        image->nativeImage(),
+        ZFUIRectApplyScale(frameInImage, scale));
+    return ZFUIImageLoadFromNativeImage(nativeImage);
 }
 
 // ============================================================
@@ -41,6 +63,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObject, ZFUIImageLoadFromNativeImage,
     }
     zfautoObject ret = ZFUIImage::ClassData()->newInstance();
     ret.to<ZFUIImage *>()->nativeImage(nativeImage);
+    ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(nativeImage);
     return ret;
 }
 
@@ -168,18 +191,14 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, ZFUIImageLoadFromColor,
         ZFUIGlobalStyle::DefaultStyle()->imageScale(),
         color,
         ZFUISizeApplyScale(sizeTmp, ZFUIGlobalStyle::DefaultStyle()->imageScale()));
-    if(nativeImage == zfnull)
+    zfautoObject ret = ZFUIImageLoadFromNativeImage(nativeImage);
+    ZFUIImage *image = ret;
+    if(image == zfnull)
     {
         return zfnull;
     }
 
-    zfautoObject ret = ZFUIImage::ClassData()->newInstance();
-    ZFUIImage *image = ret;
-    image->nativeImage(nativeImage);
-    ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(nativeImage);
-
     ZFSerializableData imageData;
-
     do
     {
         // color

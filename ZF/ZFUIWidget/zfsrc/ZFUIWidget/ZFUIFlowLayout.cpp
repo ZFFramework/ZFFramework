@@ -84,11 +84,11 @@ void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
     {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
-            _ZFP_ZFUIFlowLayout_layoutHorizontal(this, bounds.size);
+            _ZFP_ZFUIFlowLayout_layoutHorizontal(this, ZFUIRectGetSize(bounds));
             break;
         case ZFUIOrientation::e_Top:
         case ZFUIOrientation::e_Bottom:
-            _ZFP_ZFUIFlowLayout_layoutVertical(this, bounds.size);
+            _ZFP_ZFUIFlowLayout_layoutVertical(this, ZFUIRectGetSize(bounds));
             break;
         default:
             zfCoreCriticalShouldNotGoHere();

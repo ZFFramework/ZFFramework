@@ -612,8 +612,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUISize, ZFUISizeApplyMarginReversely,
 zfclassPOD ZF_ENV_EXPORT ZFUIRect
 {
 public:
-    ZFUIPoint point;      /**< @brief top-left point */
-    ZFUISize size;        /**< @brief size of rect */
+    zfint x; /**< @brief x */
+    zfint y; /**< @brief y */
+    zfint width; /**< @brief width */
+    zfint height; /**< @brief height */
 };
 
 /**
@@ -646,7 +648,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFUIRect, ZFUIRectMake,
                                ZFMP_IN(zfint const &, w),
                                ZFMP_IN(zfint const &, h))
 {
-    ZFUIRect ret = {{x, y}, {w, h}};
+    ZFUIRect ret = {x, y, w, h};
     return ret;
 }
 /**
@@ -656,7 +658,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectMake,
                                ZFMP_IN(const ZFUIPoint &, point),
                                ZFMP_IN(const ZFUISize &, size))
 {
-    ZFUIRect ret = {point, size};
+    ZFUIRect ret = {point.x, point.y, size.width, size.height};
     return ret;
 }
 
@@ -668,7 +670,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectMake,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(zfbool, ZFUIRectIsEmpty,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    return (rect.size.width <= 0 || rect.size.height <= 0);
+    return (rect.width <= 0 || rect.height <= 0);
 }
 /**
  * @brief union two rect, return a rect that contains both rect1 and rect2
@@ -678,14 +680,14 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectUnion,
                                ZFMP_IN(const ZFUIRect &, rect2))
 {
     ZFUIRect ret = {
-        {(rect1.point.x < rect2.point.x) ? rect1.point.x : rect2.point.x,
-        (rect1.point.y < rect2.point.y) ? rect1.point.y : rect2.point.y},
-        {(rect1.point.x + rect1.size.width > rect2.point.x + rect2.size.width)
-            ? (rect1.point.x + rect1.size.width)
-            : (rect2.point.x + rect2.size.width),
-        (rect1.point.y + rect1.size.height > rect2.point.y + rect2.size.height)
-            ? (rect1.point.y + rect1.size.height)
-            : (rect2.point.y + rect2.size.height)}
+        (rect1.x < rect2.x) ? rect1.x : rect2.x,
+        (rect1.y < rect2.y) ? rect1.y : rect2.y,
+        (rect1.x + rect1.width > rect2.x + rect2.width)
+            ? (rect1.x + rect1.width)
+            : (rect2.x + rect2.width),
+        (rect1.y + rect1.height > rect2.y + rect2.height)
+            ? (rect1.y + rect1.height)
+            : (rect2.y + rect2.height)
     };
     if(ZFUIRectIsEmpty(ret))
     {
@@ -704,14 +706,14 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectIntersection,
                                ZFMP_IN(const ZFUIRect &, rect2))
 {
     ZFUIRect ret = {
-        {(rect1.point.x > rect2.point.x) ? rect1.point.x : rect2.point.x,
-        (rect1.point.y > rect2.point.y) ? rect1.point.y : rect2.point.y},
-        {(rect1.point.x + rect1.size.width < rect2.point.x + rect2.size.width)
-            ? (rect1.point.x + rect1.size.width)
-            : (rect2.point.x + rect2.size.width),
-        (rect1.point.y + rect1.size.height < rect2.point.y + rect2.size.height)
-            ? (rect1.point.y + rect1.size.height)
-            : (rect2.point.y + rect2.size.height)}
+        (rect1.x > rect2.x) ? rect1.x : rect2.x,
+        (rect1.y > rect2.y) ? rect1.y : rect2.y,
+        (rect1.x + rect1.width < rect2.x + rect2.width)
+            ? (rect1.x + rect1.width)
+            : (rect2.x + rect2.width),
+        (rect1.y + rect1.height < rect2.y + rect2.height)
+            ? (rect1.y + rect1.height)
+            : (rect2.y + rect2.height)
     };
     if(ZFUIRectIsEmpty(ret))
     {
@@ -739,10 +741,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(zfbool, ZFUIRectIsContainPoint,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(const ZFUIPoint &, point))
 {
-    return (point.x >= rect.point.x
-        && point.x <= rect.point.x + rect.size.width
-        && point.y >= rect.point.y
-        && point.y <= rect.point.y + rect.size.height);
+    return (point.x >= rect.x
+        && point.x <= rect.x + rect.width
+        && point.y >= rect.y
+        && point.y <= rect.y + rect.height);
 }
 /**
  * @brief see #ZFUIRectIsContainPoint
@@ -755,10 +757,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(zfbool, ZFUIRectIsContainPoint,
                                ZFMP_IN(const ZFUIPoint &, point),
                                ZFMP_IN(const ZFUIMargin &, margin))
 {
-    return (point.x >= rect.point.x + margin.left
-        && point.x <= rect.point.x + rect.size.width - margin.right
-        && point.y >= rect.point.y + margin.top
-        && point.y <= rect.point.y + rect.size.height - margin.bottom);
+    return (point.x >= rect.x + margin.left
+        && point.x <= rect.x + rect.width - margin.right
+        && point.y >= rect.y + margin.top
+        && point.y <= rect.y + rect.height - margin.bottom);
 }
 /**
  * @brief return true if rect2 is completely contained by rect1,
@@ -768,10 +770,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(zfbool, ZFUIRectIsContainRect,
                                ZFMP_IN(const ZFUIRect &, rect1),
                                ZFMP_IN(const ZFUIRect &, rect2))
 {
-    return (rect2.point.x >= rect1.point.x
-        && rect2.point.x + rect2.size.width <= rect1.point.x + rect1.size.width
-        && rect2.point.y >= rect1.point.y
-        && rect2.point.y + rect2.size.height <= rect1.point.y + rect1.size.height);
+    return (rect2.x >= rect1.x
+        && rect2.x + rect2.width <= rect1.x + rect1.width
+        && rect2.y >= rect1.y
+        && rect2.y + rect2.height <= rect1.y + rect1.height);
 }
 /**
  * @brief see #ZFUIRectIsContainRect
@@ -784,10 +786,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(zfbool, ZFUIRectIsContainRect,
                                ZFMP_IN(const ZFUIRect &, rect2),
                                ZFMP_IN(const ZFUIMargin &, margin))
 {
-    return (rect2.point.x >= rect1.point.x + margin.left
-        && rect2.point.x + rect2.size.width <= rect1.point.x + rect1.size.width - margin.right
-        && rect2.point.y >= rect1.point.y + margin.top
-        && rect2.point.y + rect2.size.height <= rect1.point.y + rect1.size.height - margin.bottom);
+    return (rect2.x >= rect1.x + margin.left
+        && rect2.x + rect2.width <= rect1.x + rect1.width - margin.right
+        && rect2.y >= rect1.y + margin.top
+        && rect2.y + rect2.height <= rect1.y + rect1.height - margin.bottom);
 }
 /**
  * @brief return a scaled rect
@@ -797,10 +799,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFUIRectApplyScale,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(zffloat, scale))
 {
-    ret.point.x = ZFUISizeApplyScale(rect.point.x, scale);
-    ret.point.y = ZFUISizeApplyScale(rect.point.y, scale);
-    ret.size.width = ZFUISizeApplyScale(rect.size.width, scale);
-    ret.size.height = ZFUISizeApplyScale(rect.size.height, scale);
+    ret.x = ZFUISizeApplyScale(rect.x, scale);
+    ret.y = ZFUISizeApplyScale(rect.y, scale);
+    ret.width = ZFUISizeApplyScale(rect.width, scale);
+    ret.height = ZFUISizeApplyScale(rect.height, scale);
 }
 /**
  * @brief return a scaled rect
@@ -809,13 +811,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectApplyScale,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(zffloat, scale))
 {
-    ZFUIRect ret = {{
-        ZFUISizeApplyScale(rect.point.x, scale),
-        ZFUISizeApplyScale(rect.point.y, scale)
-    }, {
-        ZFUISizeApplyScale(rect.size.width, scale),
-        ZFUISizeApplyScale(rect.size.height, scale)
-    }};
+    ZFUIRect ret = {
+        ZFUISizeApplyScale(rect.x, scale),
+        ZFUISizeApplyScale(rect.y, scale),
+        ZFUISizeApplyScale(rect.width, scale),
+        ZFUISizeApplyScale(rect.height, scale)
+    };
     return ret;
 }
 /**
@@ -826,10 +827,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFUIRectApplyScaleReversely,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(zffloat, scale))
 {
-    ret.point.x = ZFUISizeApplyScaleReversely(rect.point.x, scale);
-    ret.point.y = ZFUISizeApplyScaleReversely(rect.point.y, scale);
-    ret.size.width = ZFUISizeApplyScaleReversely(rect.size.width, scale);
-    ret.size.height = ZFUISizeApplyScaleReversely(rect.size.height, scale);
+    ret.x = ZFUISizeApplyScaleReversely(rect.x, scale);
+    ret.y = ZFUISizeApplyScaleReversely(rect.y, scale);
+    ret.width = ZFUISizeApplyScaleReversely(rect.width, scale);
+    ret.height = ZFUISizeApplyScaleReversely(rect.height, scale);
 }
 /**
  * @brief return a scaled rect reversely
@@ -838,13 +839,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectApplyScaleReversely,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(zffloat, scale))
 {
-    ZFUIRect ret = {{
-        ZFUISizeApplyScaleReversely(rect.point.x, scale),
-        ZFUISizeApplyScaleReversely(rect.point.y, scale)
-    }, {
-        ZFUISizeApplyScaleReversely(rect.size.width, scale),
-        ZFUISizeApplyScaleReversely(rect.size.height, scale)
-    }};
+    ZFUIRect ret = {
+        ZFUISizeApplyScaleReversely(rect.x, scale),
+        ZFUISizeApplyScaleReversely(rect.y, scale),
+        ZFUISizeApplyScaleReversely(rect.width, scale),
+        ZFUISizeApplyScaleReversely(rect.height, scale)
+    };
     return ret;
 }
 /**
@@ -853,7 +853,16 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectApplyScaleReversely,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFUIRect, ZFUIRectGetBounds,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    ZFUIRect ret = {{0, 0}, {rect.size.width, rect.size.height}};
+    ZFUIRect ret = {0, 0, rect.width, rect.height};
+    return ret;
+}
+/**
+ * @brief get size of the rect
+ */
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFUISize, ZFUIRectGetSize,
+                               ZFMP_IN(const ZFUIRect &, rect))
+{
+    ZFUISize ret = {rect.width, rect.height};
     return ret;
 }
 /**
@@ -862,7 +871,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFUIRect, ZFUIRectGetBounds,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFUIPoint, ZFUIRectGetCenter,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    ZFUIPoint ret = {rect.point.x + rect.size.width / 2, rect.point.y + rect.size.height / 2};
+    ZFUIPoint ret = {rect.x + rect.width / 2, rect.y + rect.height / 2};
     return ret;
 }
 /**
@@ -871,7 +880,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFUIPoint, ZFUIRectGetCenter,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(zfint, ZFUIRectGetLeft,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    return rect.point.x;
+    return rect.x;
 }
 /**
  * @brief get top edge of the rect
@@ -879,7 +888,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(zfint, ZFUIRectGetLeft,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(zfint, ZFUIRectGetTop,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    return rect.point.y;
+    return rect.y;
 }
 /**
  * @brief get right edge of the rect
@@ -887,7 +896,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(zfint, ZFUIRectGetTop,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(zfint, ZFUIRectGetRight,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    return (rect.point.x + rect.size.width);
+    return (rect.x + rect.width);
 }
 /**
  * @brief get bottom edge of the rect
@@ -895,7 +904,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(zfint, ZFUIRectGetRight,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(zfint, ZFUIRectGetBottom,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    return (rect.point.y + rect.size.height);
+    return (rect.y + rect.height);
 }
 
 /**
@@ -906,10 +915,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFUIRectApplyMargin,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(const ZFUIMargin &, margin))
 {
-    ret.point.x = rect.point.x + margin.left;
-    ret.point.y = rect.point.y + margin.top;
-    ret.size.width = rect.size.width - margin.left - margin.right;
-    ret.size.height = rect.size.height - margin.top - margin.bottom;
+    ret.x = rect.x + margin.left;
+    ret.y = rect.y + margin.top;
+    ret.width = rect.width - margin.left - margin.right;
+    ret.height = rect.height - margin.top - margin.bottom;
 }
 /**
  * @brief return a rect excluding the margin
@@ -918,13 +927,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectApplyMargin,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(const ZFUIMargin &, margin))
 {
-    ZFUIRect ret = {{
-        rect.point.x + margin.left,
-        rect.point.y + margin.top
-    }, {
-        rect.size.width - margin.left - margin.right,
-        rect.size.height - margin.top - margin.bottom
-    }};
+    ZFUIRect ret = {
+        rect.x + margin.left,
+        rect.y + margin.top,
+        rect.width - margin.left - margin.right,
+        rect.height - margin.top - margin.bottom
+    };
     return ret;
 }
 /**
@@ -935,10 +943,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFUIRectApplyMarginReversely,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(const ZFUIMargin &, margin))
 {
-    ret.point.x = rect.point.x - margin.left;
-    ret.point.y = rect.point.y - margin.top;
-    ret.size.width = rect.size.width + margin.left + margin.right;
-    ret.size.height = rect.size.height + margin.top + margin.bottom;
+    ret.x = rect.x - margin.left;
+    ret.y = rect.y - margin.top;
+    ret.width = rect.width + margin.left + margin.right;
+    ret.height = rect.height + margin.top + margin.bottom;
 }
 /**
  * @brief revert excluding the margin
@@ -947,13 +955,12 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFUIRect, ZFUIRectApplyMarginReversely,
                                ZFMP_IN(const ZFUIRect &, rect),
                                ZFMP_IN(const ZFUIMargin &, margin))
 {
-    ZFUIRect ret = {{
-        rect.point.x - margin.left,
-        rect.point.y - margin.top
-    }, {
-        rect.size.width + margin.left + margin.right,
-        rect.size.height + margin.top + margin.bottom
-    }};
+    ZFUIRect ret = {
+        rect.x - margin.left,
+        rect.y - margin.top,
+        rect.width + margin.left + margin.right,
+        rect.height + margin.top + margin.bottom
+    };
     return ret;
 }
 

@@ -1106,9 +1106,6 @@ void ZFDynamic::errorCallbackNotify(ZF_IN const zfchar *errorHint) const
 }
 
 // ============================================================
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFDynamic, ZFDynamic)
-
-// ============================================================
 ZFMETHOD_FUNC_DEFINE_0(void, ZFDynamicRemoveAll)
 {
     ZF_STATIC_INITIALIZER_INSTANCE(ZFDynamicDataHolder)->removeAll();
@@ -1123,6 +1120,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicRemoveAllAutoNotify)
 ZF_GLOBAL_INITIALIZER_END(ZFDynamicRemoveAllAutoNotify)
 
 // ============================================================
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFDynamic, ZFDynamic)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFDynamic, v_ZFDynamic, void, exportTag, ZFMP_IN_OUT(const ZFOutput &, output))
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         invokerObject->to<v_ZFDynamic *>()->zfv.regTag(regTag);

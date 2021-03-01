@@ -88,11 +88,11 @@ private:
             ZFUIMarginGetHeight(contentMargin) + itemSize.height + (itemSize.height + itemSpace.height) * itemCount.height));
 
         for(zfint y = contentMargin.top;
-            y <= scrollView->scrollContentFrame().size.height - itemSize.height - contentMargin.bottom;
+            y <= scrollView->scrollContentFrame().height - itemSize.height - contentMargin.bottom;
             y += itemSize.height + itemSpace.height)
         {
             for(zfint x = contentMargin.left;
-                x <= scrollView->scrollContentFrame().size.height - itemSize.width - contentMargin.right;
+                x <= scrollView->scrollContentFrame().height - itemSize.width - contentMargin.right;
                 x += itemSize.width + itemSpace.width)
             {
                 zfblockedAlloc(ZFUIButton, btn);

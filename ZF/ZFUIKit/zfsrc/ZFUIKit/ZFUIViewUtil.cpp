@@ -48,7 +48,7 @@ ZFMETHOD_FUNC_DEFINE_5(ZFUIView *, viewChildAt,
     {
         return zfnull;
     }
-    if(pos.x < 0 || pos.y < 0 || pos.x > view->viewFrame().size.width || pos.y > view->viewFrame().size.height)
+    if(pos.x < 0 || pos.y < 0 || pos.x > view->viewFrame().width || pos.y > view->viewFrame().height)
     {
         return zfnull;
     }
@@ -58,8 +58,8 @@ ZFMETHOD_FUNC_DEFINE_5(ZFUIView *, viewChildAt,
     {
         ZFUIView *child = childList[i];
         ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointMake(
-                pos.x - child->viewFrame().point.x,
-                pos.y - child->viewFrame().point.y
+                pos.x - child->viewFrame().x,
+                pos.y - child->viewFrame().y
             ),
             filterDisabledView,
             filterInternalView,
@@ -76,8 +76,8 @@ ZFMETHOD_FUNC_DEFINE_5(ZFUIView *, viewChildAt,
     {
         ZFUIView *child = childList[i];
         ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointMake(
-                pos.x - (child->viewFrame().point.x + layoutChildOffset.x),
-                pos.y - (child->viewFrame().point.y + layoutChildOffset.y)
+                pos.x - (child->viewFrame().x + layoutChildOffset.x),
+                pos.y - (child->viewFrame().y + layoutChildOffset.y)
             ),
             filterDisabledView,
             filterInternalView,
@@ -93,8 +93,8 @@ ZFMETHOD_FUNC_DEFINE_5(ZFUIView *, viewChildAt,
     {
         ZFUIView *child = childList[i];
         ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointMake(
-                pos.x - child->viewFrame().point.x,
-                pos.y - child->viewFrame().point.y
+                pos.x - child->viewFrame().x,
+                pos.y - child->viewFrame().y
             ),
             filterDisabledView,
             filterInternalView,
@@ -128,8 +128,8 @@ ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParent,
     {
         view = view->viewParent();
         ZFUIPoint layoutChildOffset = view->layoutChildOffset();
-        rect.point.x += layoutChildOffset.x;
-        rect.point.y += layoutChildOffset.y;
+        rect.x += layoutChildOffset.x;
+        rect.y += layoutChildOffset.y;
     }
     if(view != parent)
     {

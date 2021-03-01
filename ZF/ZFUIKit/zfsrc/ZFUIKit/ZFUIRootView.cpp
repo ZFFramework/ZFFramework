@@ -55,7 +55,7 @@ static void _ZFP_ZFUIRootView_layoutParamApply(ZF_OUT ZFUIRect &ret,
                                                ZF_IN const ZFUIMargin &sysWindowMargin)
 {
     ZFUIMargin totalMargin = ZFUIMarginInc(lp->layoutMargin(), sysWindowMargin);
-    ZFUISize refSizeTmp = ZFUIRectApplyMargin(rect, totalMargin).size;
+    ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, totalMargin));
     if(refSizeTmp.width < 0)
     {
         refSizeTmp.width = 0;

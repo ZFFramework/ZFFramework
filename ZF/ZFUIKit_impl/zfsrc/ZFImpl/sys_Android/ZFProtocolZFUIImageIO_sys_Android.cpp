@@ -53,6 +53,24 @@ public:
         JNIBlockedDeleteLocalRefWithEnv(tmp, jniEnv);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
+    virtual void *imageLoadInFrame(ZF_IN zffloat imageScale,
+                                   ZF_IN void *nativeImage,
+                                   ZF_IN const ZFUIRect &frameInImage)
+    {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageLoadInFrame",
+            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+                .add(JNIType::S_float)
+                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+                .add(JNIType::S_int).add(JNIType::S_int).add(JNIType::S_int).add(JNIType::S_int)
+            ).c_str());
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
+            imageScale,
+            ZFCastStatic(jobject, nativeImage),
+            (jint)frameInImage.x, (jint)frameInImage.y, (jint)frameInImage.width, (jint)frameInImage.height);
+        JNIBlockedDeleteLocalRefWithEnv(tmp, jniEnv);
+        return JNIUtilNewGlobalRef(jniEnv, tmp);
+    }
     virtual void *imageLoadFromColor(ZF_IN zffloat imageScale,
                                      ZF_IN const ZFUIColor &color,
                                      ZF_IN const ZFUISize &size)

@@ -24,6 +24,16 @@ ZFMETHOD_FUNC_DECLARE_2(zfautoObject, ZFUIImageScale,
                         ZFMP_IN(const ZFUISize &, newSize))
 
 // ============================================================
+// ZFUIImageLoadInFrame
+/**
+ * @brief clip an exist image and sharing low level data if possible
+ * @note this method has no cache logic
+ */
+ZFMETHOD_FUNC_DECLARE_2(zfautoObject, ZFUIImageLoadInFrame,
+                        ZFMP_IN(ZFUIImage *, image),
+                        ZFMP_IN(const ZFUIRect &, frameInImage))
+
+// ============================================================
 // ZFUIImageLoadFromNativeImage
 /**
  * @brief create image from native image

@@ -76,7 +76,7 @@ void ZFUIListCellView::internalBgViewOnLayout(ZF_IN const ZFUIRect &bounds)
     ZFUISize cellIconSize = ZFUISizeZero();
     ZFUISize cellCenterSize = ZFUISizeZero();
     ZFUISize cellAccessorySize = ZFUISizeZero();
-    _ZFP_ZFUIListCellView_measureContent(this, bounds.size, cellIconSize, cellCenterSize, cellAccessorySize);
+    _ZFP_ZFUIListCellView_measureContent(this, ZFUIRectGetSize(bounds), cellIconSize, cellCenterSize, cellAccessorySize);
 
     this->cellIconContainer()->viewFrame(ZFUIAlignApply(
         ZFUIAlign::e_LeftInner | ZFUIAlignGetY(this->cellIconContainer()->layoutParam()->layoutAlign()),

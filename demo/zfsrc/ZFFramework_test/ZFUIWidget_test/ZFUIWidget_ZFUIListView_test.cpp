@@ -202,8 +202,8 @@ private:
                 zfbool toHead = (zfmRand(2) == 0);
                 zfindex toIndex = zfmRand(listView->listAdapter()->cellCount());
                 zfint toOffset = (ZFUIOrientationIsHorizontal(listView->listOrientation())
-                    ? zfmRand(listView->viewFrame().size.width)
-                    : zfmRand(listView->viewFrame().size.height));
+                    ? zfmRand(listView->viewFrame().width)
+                    : zfmRand(listView->viewFrame().height));
                 zfbool animated = (zfmRand(5) != 0);
                 ZFUIHintShow(zfstringWithFormat("%s\nindex: %zi\noffset: %d\nanimated: %b",
                     toHead ? "scrollListCellToHead" : "scrollListCellToTail",

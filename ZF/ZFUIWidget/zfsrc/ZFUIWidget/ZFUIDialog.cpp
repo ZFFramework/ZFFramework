@@ -226,7 +226,7 @@ public:
         ZFUIMargin totalMargin = ZFUIMarginInc(dialogMargin, contentMargin);
 
         this->dialogContainer->layoutMeasure(
-            ZFUISizeApplyMargin(bounds.size, totalMargin),
+            ZFUISizeApplyMargin(ZFUIRectGetSize(bounds), totalMargin),
             this->pimplOwner->dialogLayoutParam()->sizeParam());
         ZFUISize dialogContainerSize = this->dialogContainer->layoutMeasuredSize();
 

@@ -19,7 +19,7 @@ ZFMETHOD_DEFINE_4(ZFUIViewLayoutParam, void, layoutParamApply,
                   ZFMP_IN(ZFUIView *, child),
                   ZFMP_IN(ZFUIViewLayoutParam *, lp))
 {
-    ZFUISize refSizeTmp = ZFUIRectApplyMargin(rect, lp->layoutMargin()).size;
+    ZFUISize refSizeTmp = ZFUIRectGetSize(ZFUIRectApplyMargin(rect, lp->layoutMargin()));
     if(refSizeTmp.width < 0)
     {
         refSizeTmp.width = 0;

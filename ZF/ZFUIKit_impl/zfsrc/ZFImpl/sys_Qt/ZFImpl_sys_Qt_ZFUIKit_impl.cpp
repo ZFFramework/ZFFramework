@@ -102,14 +102,14 @@ void ZFImpl_sys_Qt_ZFUIKit_impl_ZFUISizeFromQSizeT(ZF_OUT ZFUISize &ret, ZF_IN c
 }
 void ZFImpl_sys_Qt_ZFUIKit_impl_ZFUIRectToQRectT(ZF_OUT QRect &ret, ZF_IN const ZFUIRect &rect)
 {
-    ret = QRect(rect.point.x, rect.point.y, rect.size.width, rect.size.height);
+    ret = QRect(rect.x, rect.y, rect.width, rect.height);
 }
 void ZFImpl_sys_Qt_ZFUIKit_impl_ZFUIRectFromQRectT(ZF_OUT ZFUIRect &ret, ZF_IN const QRect &qRect)
 {
-    ret.point.x = qRect.x();
-    ret.point.y = qRect.y();
-    ret.size.width = qRect.width();
-    ret.size.height = qRect.height();
+    ret.x = qRect.x();
+    ret.y = qRect.y();
+    ret.width = qRect.width();
+    ret.height = qRect.height();
 }
 
 void ZFImpl_sys_Qt_ZFUIKit_impl_ZFUIColorToQColor(ZF_OUT QColor &ret, ZF_IN const ZFUIColor &color)

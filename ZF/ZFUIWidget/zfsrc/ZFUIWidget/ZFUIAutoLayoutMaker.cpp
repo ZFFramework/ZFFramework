@@ -2,8 +2,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFUIAutoLayoutMaker, ZFUIAutoLayoutMaker)
-
 // ============================================================
 zfclassNotPOD _ZFP_ZFUIAutoLayoutMakerPrivate
 {
@@ -409,6 +407,8 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIAutoLayoutMaker, zfal_maker, ZFMP_IN(ZFUIView *, chil
 }
 
 // ============================================================
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFUIAutoLayoutMaker, ZFUIAutoLayoutMaker)
+
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         invokerObject->to<v_ZFUIAutoLayoutMaker *>()->zfv.zfal_maker(child);
     }, v_ZFUIAutoLayoutMaker

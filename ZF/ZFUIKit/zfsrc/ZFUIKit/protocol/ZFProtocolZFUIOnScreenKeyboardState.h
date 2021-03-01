@@ -37,7 +37,7 @@ public:
         ZFUIRectApplyScale(clientFrame, clientFrame, keyboardState->keyboardOwnerSysWindow()->rootView()->scaleFixed());
         if(ZFUIRectGetBottom(clientFrame) > ZFUIRectGetTop(keyboardFrame))
         {
-            clientFrame.size.height -= ZFUIRectGetBottom(clientFrame) - ZFUIRectGetTop(keyboardFrame);
+            clientFrame.height -= ZFUIRectGetBottom(clientFrame) - ZFUIRectGetTop(keyboardFrame);
         }
     }
 

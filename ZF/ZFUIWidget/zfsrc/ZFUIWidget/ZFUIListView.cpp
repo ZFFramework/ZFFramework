@@ -108,7 +108,7 @@ public:
         if(this->listAdapter != zfnull)
         {
             this->listAdapter->_ZFP_ZFUIListAdapter_listOrientation = this->pimplOwner->listOrientation();
-            this->listAdapter->_ZFP_ZFUIListAdapter_listContainerSize = this->pimplOwner->scrollArea().size;
+            this->listAdapter->_ZFP_ZFUIListAdapter_listContainerSize = ZFUIRectGetSize(this->pimplOwner->scrollArea());
         }
     }
     void listAdapterAfterAttach(void)
@@ -216,14 +216,14 @@ public:
                 case ZFUIOrientation::e_Left:
                 case ZFUIOrientation::e_Right:
                     ret = cell->layoutMeasure(
-                            ZFUISizeMake(-1, this->pimplOwner->scrollArea().size.height),
+                            ZFUISizeMake(-1, this->pimplOwner->scrollArea().height),
                             ZFUISizeParamWrapFill()
                         ).width;
                     break;
                 case ZFUIOrientation::e_Top:
                 case ZFUIOrientation::e_Bottom:
                     ret = cell->layoutMeasure(
-                            ZFUISizeMake(this->pimplOwner->scrollArea().size.width, -1),
+                            ZFUISizeMake(this->pimplOwner->scrollArea().width, -1),
                             ZFUISizeParamFillWrap()
                         ).height;
                     break;
@@ -318,13 +318,13 @@ public:
         {
             case ZFUIOrientation::e_Left:
             {
-                zfint offset = cellFrame.point.x + cellFrame.size.width;
+                zfint offset = cellFrame.x + cellFrame.width;
                 zfint offsetEnd = zfmMax(
-                    -scrollContentFrame.point.x - scrollMargin.left,
+                    -scrollContentFrame.x - scrollMargin.left,
                     0);
                 zfint offsetBegin = zfmMin(
-                    offsetEnd + viewFrame.size.width,
-                    scrollContentFrame.size.width);
+                    offsetEnd + viewFrame.width,
+                    scrollContentFrame.width);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
                 {
@@ -372,8 +372,8 @@ public:
                     if(sizeDelta != 0)
                     {
                         ZFUIRect contentFrame = scrollContentFrame;
-                        contentFrame.point.x -= sizeDelta;
-                        contentFrame.size.width += sizeDelta;
+                        contentFrame.x -= sizeDelta;
+                        contentFrame.width += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                     if(index == zfindexMax())
@@ -389,13 +389,13 @@ public:
                 break;
             case ZFUIOrientation::e_Top:
             {
-                zfint offset = cellFrame.point.y + cellFrame.size.height;
+                zfint offset = cellFrame.y + cellFrame.height;
                 zfint offsetEnd = zfmMax(
-                    -scrollContentFrame.point.y - scrollMargin.top,
+                    -scrollContentFrame.y - scrollMargin.top,
                     0);
                 zfint offsetBegin = zfmMin(
-                    offsetEnd + viewFrame.size.height,
-                    scrollContentFrame.size.height);
+                    offsetEnd + viewFrame.height,
+                    scrollContentFrame.height);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
                 {
@@ -443,8 +443,8 @@ public:
                     if(sizeDelta != 0)
                     {
                         ZFUIRect contentFrame = scrollContentFrame;
-                        contentFrame.point.y -= sizeDelta;
-                        contentFrame.size.height += sizeDelta;
+                        contentFrame.y -= sizeDelta;
+                        contentFrame.height += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                     if(index == zfindexMax())
@@ -460,12 +460,12 @@ public:
                 break;
             case ZFUIOrientation::e_Right:
             {
-                zfint offset = cellFrame.point.x;
+                zfint offset = cellFrame.x;
                 zfint offsetEnd = zfmMin(
-                    -scrollContentFrame.point.x + viewFrame.size.width - scrollMargin.left,
-                    scrollContentFrame.size.width);
+                    -scrollContentFrame.x + viewFrame.width - scrollMargin.left,
+                    scrollContentFrame.width);
                 zfint offsetBegin = zfmMax(
-                    offsetEnd - viewFrame.size.width,
+                    offsetEnd - viewFrame.width,
                     0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
@@ -514,7 +514,7 @@ public:
                     if(sizeDelta != 0)
                     {
                         ZFUIRect contentFrame = scrollContentFrame;
-                        contentFrame.size.width += sizeDelta;
+                        contentFrame.width += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                     this->listVisibleCellOffset = offset;
@@ -523,12 +523,12 @@ public:
                 break;
             case ZFUIOrientation::e_Bottom:
             {
-                zfint offset = cellFrame.point.y;
+                zfint offset = cellFrame.y;
                 zfint offsetEnd = zfmMin(
-                    -scrollContentFrame.point.y + viewFrame.size.height - scrollMargin.top,
-                    scrollContentFrame.size.height);
+                    -scrollContentFrame.y + viewFrame.height - scrollMargin.top,
+                    scrollContentFrame.height);
                 zfint offsetBegin = zfmMax(
-                    offsetEnd - viewFrame.size.height,
+                    offsetEnd - viewFrame.height,
                     0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
@@ -577,7 +577,7 @@ public:
                     if(sizeDelta != 0)
                     {
                         ZFUIRect contentFrame = scrollContentFrame;
-                        contentFrame.size.height += sizeDelta;
+                        contentFrame.height += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                     this->listVisibleCellOffset = offset;
@@ -607,12 +607,12 @@ public:
         {
             case ZFUIOrientation::e_Left:
             {
-                zfint offset = cellFrame.point.x;
+                zfint offset = cellFrame.x;
                 zfint offsetEnd = zfmMin(
-                    -scrollContentFrame.point.x + viewFrame.size.width - scrollMargin.left,
-                    scrollContentFrame.size.width);
+                    -scrollContentFrame.x + viewFrame.width - scrollMargin.left,
+                    scrollContentFrame.width);
                 zfint offsetBegin = zfmMax(
-                    offsetEnd - viewFrame.size.width,
+                    offsetEnd - viewFrame.width,
                     0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
@@ -672,7 +672,7 @@ public:
                     if(sizeDelta != 0)
                     {
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
-                        contentFrame.size.width += sizeDelta;
+                        contentFrame.width += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                 }
@@ -680,12 +680,12 @@ public:
                 break;
             case ZFUIOrientation::e_Top:
             {
-                zfint offset = cellFrame.point.y;
+                zfint offset = cellFrame.y;
                 zfint offsetEnd = zfmMin(
-                    -scrollContentFrame.point.y + viewFrame.size.height - scrollMargin.top,
-                    scrollContentFrame.size.height);
+                    -scrollContentFrame.y + viewFrame.height - scrollMargin.top,
+                    scrollContentFrame.height);
                 zfint offsetBegin = zfmMax(
-                    offsetEnd - viewFrame.size.height,
+                    offsetEnd - viewFrame.height,
                     0);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
@@ -745,7 +745,7 @@ public:
                     if(sizeDelta != 0)
                     {
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
-                        contentFrame.size.height += sizeDelta;
+                        contentFrame.height += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                 }
@@ -753,13 +753,13 @@ public:
                 break;
             case ZFUIOrientation::e_Right:
             {
-                zfint offset = cellFrame.point.x + cellFrame.size.width;
+                zfint offset = cellFrame.x + cellFrame.width;
                 zfint offsetEnd = zfmMax(
-                    -scrollContentFrame.point.x - scrollMargin.left,
+                    -scrollContentFrame.x - scrollMargin.left,
                     0);
                 zfint offsetBegin = zfmMin(
-                    offsetEnd + viewFrame.size.width,
-                    scrollContentFrame.size.width);
+                    offsetEnd + viewFrame.width,
+                    scrollContentFrame.width);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
                 {
@@ -811,8 +811,8 @@ public:
                     {
                         this->listVisibleCellOffset += sizeDelta;
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
-                        contentFrame.point.x -= sizeDelta;
-                        contentFrame.size.width += sizeDelta;
+                        contentFrame.x -= sizeDelta;
+                        contentFrame.width += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                 }
@@ -820,13 +820,13 @@ public:
                 break;
             case ZFUIOrientation::e_Bottom:
             {
-                zfint offset = cellFrame.point.y + cellFrame.size.height;
+                zfint offset = cellFrame.y + cellFrame.height;
                 zfint offsetEnd = zfmMax(
-                    -scrollContentFrame.point.y - scrollMargin.top,
+                    -scrollContentFrame.y - scrollMargin.top,
                     0);
                 zfint offsetBegin = zfmMin(
-                    offsetEnd + viewFrame.size.height,
-                    scrollContentFrame.size.height);
+                    offsetEnd + viewFrame.height,
+                    scrollContentFrame.height);
                 // remove cells exceeds visible range
                 for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
                 {
@@ -878,8 +878,8 @@ public:
                     {
                         this->listVisibleCellOffset += sizeDelta;
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
-                        contentFrame.point.y -= sizeDelta;
-                        contentFrame.size.height += sizeDelta;
+                        contentFrame.y -= sizeDelta;
+                        contentFrame.height += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
                 }
@@ -908,27 +908,27 @@ public:
                     0,
                     0,
                     cellSize,
-                    this->pimplOwner->scrollArea().size.height));
+                    this->pimplOwner->scrollArea().height));
                 break;
             case ZFUIOrientation::e_Top:
                 this->updateTailCellAfterIndex(0, ZFUIRectMake(
                     0,
                     0,
-                    this->pimplOwner->scrollArea().size.width,
+                    this->pimplOwner->scrollArea().width,
                     cellSize));
                 break;
             case ZFUIOrientation::e_Right:
                 this->updateTailCellAfterIndex(0, ZFUIRectMake(
-                    this->pimplOwner->scrollContentFrame().size.width - cellSize,
+                    this->pimplOwner->scrollContentFrame().width - cellSize,
                     0,
                     cellSize,
-                    this->pimplOwner->scrollArea().size.height));
+                    this->pimplOwner->scrollArea().height));
                 break;
             case ZFUIOrientation::e_Bottom:
                 this->updateTailCellAfterIndex(0, ZFUIRectMake(
                     0,
-                    this->pimplOwner->scrollContentFrame().size.height - cellSize,
-                    this->pimplOwner->scrollArea().size.width,
+                    this->pimplOwner->scrollContentFrame().height - cellSize,
+                    this->pimplOwner->scrollArea().width,
                     cellSize));
                 break;
             default:
@@ -942,53 +942,53 @@ public:
         switch(this->pimplOwner->listOrientation())
         {
             case ZFUIOrientation::e_Left:
-                ret.point.x = this->listVisibleCellOffset;
-                ret.size.height = this->pimplOwner->scrollArea().size.height;
+                ret.x = this->listVisibleCellOffset;
+                ret.height = this->pimplOwner->scrollArea().height;
                 for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
                 {
                     if(i == cellIndex)
                     {
-                        ret.size.width = this->cellSizeList[i];
+                        ret.width = this->cellSizeList[i];
                         break;
                     }
-                    ret.point.x += this->cellSizeList[i];
+                    ret.x += this->cellSizeList[i];
                 }
                 break;
             case ZFUIOrientation::e_Top:
-                ret.point.y = this->listVisibleCellOffset;
-                ret.size.width = this->pimplOwner->scrollArea().size.width;
+                ret.y = this->listVisibleCellOffset;
+                ret.width = this->pimplOwner->scrollArea().width;
                 for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
                 {
                     if(i == cellIndex)
                     {
-                        ret.size.height = this->cellSizeList[i];
+                        ret.height = this->cellSizeList[i];
                         break;
                     }
-                    ret.point.y += this->cellSizeList[i];
+                    ret.y += this->cellSizeList[i];
                 }
                 break;
             case ZFUIOrientation::e_Right:
-                ret.point.x = this->listVisibleCellOffset;
-                ret.size.height = this->pimplOwner->scrollArea().size.height;
+                ret.x = this->listVisibleCellOffset;
+                ret.height = this->pimplOwner->scrollArea().height;
                 for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
                 {
-                    ret.point.x -= this->cellSizeList[i];
+                    ret.x -= this->cellSizeList[i];
                     if(i == cellIndex)
                     {
-                        ret.size.width = this->cellSizeList[i];
+                        ret.width = this->cellSizeList[i];
                         break;
                     }
                 }
                 break;
             case ZFUIOrientation::e_Bottom:
-                ret.point.y = this->listVisibleCellOffset;
-                ret.size.width = this->pimplOwner->scrollArea().size.width;
+                ret.y = this->listVisibleCellOffset;
+                ret.width = this->pimplOwner->scrollArea().width;
                 for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
                 {
-                    ret.point.y -= this->cellSizeList[i];
+                    ret.y -= this->cellSizeList[i];
                     if(i == cellIndex)
                     {
-                        ret.size.height = this->cellSizeList[i];
+                        ret.height = this->cellSizeList[i];
                         break;
                     }
                 }
@@ -1011,11 +1011,11 @@ public:
                 {
                     case ZFUIOrientation::e_Left:
                     case ZFUIOrientation::e_Right:
-                        scrollContentFrame.size.height = this->pimplOwner->scrollArea().size.height;
+                        scrollContentFrame.height = this->pimplOwner->scrollArea().height;
                         break;
                     case ZFUIOrientation::e_Top:
                     case ZFUIOrientation::e_Bottom:
-                        scrollContentFrame.size.width = this->pimplOwner->scrollArea().size.width;
+                        scrollContentFrame.width = this->pimplOwner->scrollArea().width;
                         break;
                     default:
                         zfCoreCriticalShouldNotGoHere();
@@ -1107,19 +1107,19 @@ public:
             case ZFUIOrientation::e_Right:
             {
                 ZFUIRect scrollContentFrameNew = ZFUIRectMake(
-                    this->pimplOwner->scrollContentFrame().point.x,
+                    this->pimplOwner->scrollContentFrame().x,
                     0,
-                    zfmMax(totalSize, this->pimplOwner->scrollArea().size.width),
-                    this->pimplOwner->scrollArea().size.height);
+                    zfmMax(totalSize, this->pimplOwner->scrollArea().width),
+                    this->pimplOwner->scrollArea().height);
                 if(this->listReloadByChangeListOrientation)
                 {
                     if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Left)
                     {
-                        scrollContentFrameNew.point.x = 0;
+                        scrollContentFrameNew.x = 0;
                     }
                     else
                     {
-                        scrollContentFrameNew.point.x = this->pimplOwner->scrollArea().size.width - scrollContentFrameNew.size.width;
+                        scrollContentFrameNew.x = this->pimplOwner->scrollArea().width - scrollContentFrameNew.width;
                     }
                 }
                 this->pimplOwner->scrollContentFrameUpdate(scrollContentFrameNew);
@@ -1130,18 +1130,18 @@ public:
             {
                 ZFUIRect scrollContentFrameNew = ZFUIRectMake(
                     0,
-                    this->pimplOwner->scrollContentFrame().point.y,
-                    this->pimplOwner->scrollArea().size.width,
-                    zfmMax(totalSize, this->pimplOwner->scrollArea().size.height));
+                    this->pimplOwner->scrollContentFrame().y,
+                    this->pimplOwner->scrollArea().width,
+                    zfmMax(totalSize, this->pimplOwner->scrollArea().height));
                 if(this->listReloadByChangeListOrientation)
                 {
                     if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Top)
                     {
-                        scrollContentFrameNew.point.y = 0;
+                        scrollContentFrameNew.y = 0;
                     }
                     else
                     {
-                        scrollContentFrameNew.point.y = this->pimplOwner->scrollArea().size.height - scrollContentFrameNew.size.height;
+                        scrollContentFrameNew.y = this->pimplOwner->scrollArea().height - scrollContentFrameNew.height;
                     }
                 }
                 this->pimplOwner->scrollContentFrameUpdate(scrollContentFrameNew);
@@ -1197,23 +1197,23 @@ public:
 
         // fix content range
         ZFUIRect scrollContentFrame = this->pimplOwner->scrollContentFrame();
-        if(scrollContentFrame.point.x > 0)
+        if(scrollContentFrame.x > 0)
         {
-            scrollContentFrame.point.x = 0;
+            scrollContentFrame.x = 0;
         }
-        if(scrollContentFrame.point.y > 0)
+        if(scrollContentFrame.y > 0)
         {
-            scrollContentFrame.point.y = 0;
+            scrollContentFrame.y = 0;
         }
-        if(scrollContentFrame.size.width > this->pimplOwner->scrollArea().size.width
-            && scrollContentFrame.point.x + scrollContentFrame.size.width < this->pimplOwner->scrollArea().size.width)
+        if(scrollContentFrame.width > this->pimplOwner->scrollArea().width
+            && scrollContentFrame.x + scrollContentFrame.width < this->pimplOwner->scrollArea().width)
         {
-            scrollContentFrame.point.x = this->pimplOwner->scrollArea().size.width - scrollContentFrame.size.width;
+            scrollContentFrame.x = this->pimplOwner->scrollArea().width - scrollContentFrame.width;
         }
-        if(scrollContentFrame.size.height > this->pimplOwner->scrollArea().size.height
-            && scrollContentFrame.point.y + scrollContentFrame.size.height < this->pimplOwner->scrollArea().size.height)
+        if(scrollContentFrame.height > this->pimplOwner->scrollArea().height
+            && scrollContentFrame.y + scrollContentFrame.height < this->pimplOwner->scrollArea().height)
         {
-            scrollContentFrame.point.y = this->pimplOwner->scrollArea().size.height - scrollContentFrame.size.height;
+            scrollContentFrame.y = this->pimplOwner->scrollArea().height - scrollContentFrame.height;
         }
         this->pimplOwner->scrollContentFrameUpdate(scrollContentFrame);
 
@@ -1233,7 +1233,7 @@ public:
         {
             case ZFUIOrientation::e_Left:
                 offset = this->listVisibleCellOffset;
-                fillSize = this->pimplOwner->scrollArea().size.height;
+                fillSize = this->pimplOwner->scrollArea().height;
                 for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
                 {
                     zfint cellWidth = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
@@ -1248,7 +1248,7 @@ public:
                 break;
             case ZFUIOrientation::e_Top:
                 offset = this->listVisibleCellOffset;
-                fillSize = this->pimplOwner->scrollArea().size.width;
+                fillSize = this->pimplOwner->scrollArea().width;
                 for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
                 {
                     zfint cellHeight = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
@@ -1263,7 +1263,7 @@ public:
                 break;
             case ZFUIOrientation::e_Right:
                 offset = this->listVisibleCellOffset;
-                fillSize = this->pimplOwner->scrollArea().size.height;
+                fillSize = this->pimplOwner->scrollArea().height;
                 for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
                 {
                     zfint cellWidth = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
@@ -1278,7 +1278,7 @@ public:
                 break;
             case ZFUIOrientation::e_Bottom:
                 offset = this->listVisibleCellOffset;
-                fillSize = this->pimplOwner->scrollArea().size.width;
+                fillSize = this->pimplOwner->scrollArea().width;
                 for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
                 {
                     zfint cellHeight = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
@@ -1340,11 +1340,11 @@ private:
         {
             if(ZFUIOrientationIsHorizontal(this->pimplOwner->listOrientation()))
             {
-                return this->pimplOwner->scrollArea().size.width - (offset + this->cellSizeList[this->scrollListCellIndex] + this->scrollListCellOffset);
+                return this->pimplOwner->scrollArea().width - (offset + this->cellSizeList[this->scrollListCellIndex] + this->scrollListCellOffset);
             }
             else
             {
-                return this->pimplOwner->scrollArea().size.height - (offset + this->cellSizeList[this->scrollListCellIndex] + this->scrollListCellOffset);
+                return this->pimplOwner->scrollArea().height - (offset + this->cellSizeList[this->scrollListCellIndex] + this->scrollListCellOffset);
             }
         }
     }
@@ -1360,19 +1360,19 @@ private:
         {
             case ZFUIOrientation::e_Left:
                 posX = pos;
-                posY = scrollContentFrame.point.y;
+                posY = scrollContentFrame.y;
                 break;
             case ZFUIOrientation::e_Top:
-                posX = scrollContentFrame.point.x;
+                posX = scrollContentFrame.x;
                 posY = pos;
                 break;
             case ZFUIOrientation::e_Right:
-                posX = this->pimplOwner->scrollArea().size.width - pos - scrollContentFrame.size.width;
-                posY = scrollContentFrame.point.y;
+                posX = this->pimplOwner->scrollArea().width - pos - scrollContentFrame.width;
+                posY = scrollContentFrame.y;
                 break;
             case ZFUIOrientation::e_Bottom:
-                posX = scrollContentFrame.point.x;
-                posY = this->pimplOwner->scrollArea().size.height - pos - scrollContentFrame.size.height;
+                posX = scrollContentFrame.x;
+                posY = this->pimplOwner->scrollArea().height - pos - scrollContentFrame.height;
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
@@ -1384,7 +1384,7 @@ private:
         }
         else
         {
-            this->pimplOwner->scrollContentFrame(ZFUIRectMake(posX, posY, scrollContentFrame.size.width, scrollContentFrame.size.height));
+            this->pimplOwner->scrollContentFrame(ZFUIRectMake(posX, posY, scrollContentFrame.width, scrollContentFrame.height));
         }
         this->pimplOwner->scrollOverride(zffalse);
     }
@@ -1561,8 +1561,10 @@ zfbool ZFUIListView::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData 
 
 void ZFUIListView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
 {
-    if(!d->listQuickReloadRequested && this->viewFrame().size != this->viewFramePrev().size)
-    {
+    if(!d->listQuickReloadRequested && (
+        this->viewFrame().width != this->viewFramePrev().width
+        || this->viewFrame().height != this->viewFramePrev().height
+    )) {
         d->listQuickReloadRequested = zftrue;
         d->cellNeedUpdate = zftrue;
     }
@@ -1711,11 +1713,11 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAtIndex,
     {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
-            cellOldFrame.size.width = cellNewSize;
+            cellOldFrame.width = cellNewSize;
             break;
         case ZFUIOrientation::e_Top:
         case ZFUIOrientation::e_Bottom:
-            cellOldFrame.size.height = cellNewSize;
+            cellOldFrame.height = cellNewSize;
             break;
         default:
             zfCoreCriticalShouldNotGoHere();

@@ -26,17 +26,17 @@ void ZFImpl_sys_iOS_ZFUIKit_impl_ZFUISizeFromCGSizeT(ZF_OUT ZFUISize &ret, ZF_IN
 }
 void ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIRectToCGRectT(ZF_OUT CGRect &ret, ZF_IN const ZFUIRect &rect)
 {
-    ret.origin.x = rect.point.x;
-    ret.origin.y = rect.point.y;
-    ret.size.width = rect.size.width;
-    ret.size.height = rect.size.height;
+    ret.origin.x = rect.x;
+    ret.origin.y = rect.y;
+    ret.size.width = rect.width;
+    ret.size.height = rect.height;
 }
 void ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIRectFromCGRectT(ZF_OUT ZFUIRect &ret, ZF_IN const CGRect &cgRect)
 {
-    ret.point.x = zfmRound(cgRect.origin.x);
-    ret.point.y = zfmRound(cgRect.origin.y);
-    ret.size.width = zfmRound(cgRect.size.width);
-    ret.size.height = zfmRound(cgRect.size.height);
+    ret.x = zfmRound(cgRect.origin.x);
+    ret.y = zfmRound(cgRect.origin.y);
+    ret.width = zfmRound(cgRect.size.width);
+    ret.height = zfmRound(cgRect.size.height);
 }
 
 void ZFImpl_sys_iOS_ZFUIKit_impl_ZFUIMarginToUIEdgeInsetsT(ZF_OUT UIEdgeInsets &ret, ZF_IN const ZFUIMargin &margin)

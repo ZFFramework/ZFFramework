@@ -66,8 +66,8 @@ static zftimet _ZFP_ZFUIScrollViewImpl_sys_iOS_timestamp(void)
     self->__ZFP_scrollContentFrame = newScrollContentFrame;
 
     self._ZFP_mouseDragOverride = zftrue;
-    self.contentSize = ZFImpl_sys_iOS_ZFUIKit_impl_ZFUISizeToCGSize(newScrollContentFrame.size);
-    [self setContentOffset:CGPointMake(-newScrollContentFrame.point.x, -newScrollContentFrame.point.y) animated:NO];
+    self.contentSize = ZFImpl_sys_iOS_ZFUIKit_impl_ZFUISizeToCGSize(ZFUIRectGetSize(newScrollContentFrame));
+    [self setContentOffset:CGPointMake(-newScrollContentFrame.x, -newScrollContentFrame.y) animated:NO];
     self._ZFP_mouseDragPrevPos = self.contentOffset;
     self._ZFP_mouseDragOverride = zffalse;
 }

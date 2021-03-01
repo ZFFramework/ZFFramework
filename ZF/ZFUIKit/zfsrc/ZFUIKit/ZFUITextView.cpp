@@ -168,7 +168,7 @@ void ZFUITextView::internalImplViewOnLayout(ZF_IN const ZFUIRect &bounds)
 {
     zfsuper::internalImplViewOnLayout(bounds);
     ZFPROTOCOL_ACCESS(ZFUITextView)->layoutNativeTextView(this,
-        ZFUISizeApplyScale(ZFUISizeApplyMargin(bounds.size, this->nativeImplViewMargin()), this->scaleFixed()));
+        ZFUISizeApplyScale(ZFUISizeApplyMargin(ZFUIRectGetSize(bounds), this->nativeImplViewMargin()), this->scaleFixed()));
 }
 
 ZF_NAMESPACE_GLOBAL_END
