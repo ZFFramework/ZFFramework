@@ -1,0 +1,13 @@
+/**
+ * @file ZFNet.h
+ * @brief header file for ZFNet module
+ */
+
+#ifndef _ZFI_ZFNet_h_
+#define _ZFI_ZFNet_h_
+
+#include "ZFNet/ZFHttpRequest.h"
+#include "ZFNet/ZFNetDef.h"
+
+#endif // #ifndef _ZFI_ZFNet_h_
+

@@ -1,0 +1,243 @@
+#include "ZFContainer.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+ZFOBJECT_REGISTER(ZFContainer)
+
+ZFOBSERVER_EVENT_REGISTER(ZFContainer, ContentOnChange)
+ZFOBSERVER_EVENT_REGISTER(ZFContainer, ContentOnAdd)
+ZFOBSERVER_EVENT_REGISTER(ZFContainer, ContentOnRemove)
+
+ZFMETHOD_DEFINE_3(ZFContainer, void, objectInfoOfContentT,
+                  ZFMP_IN_OUT(zfstring &, ret),
+                  ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
+                  ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault()))
+{
+    zfindex count = 0;
+    ret += token.tokenLeft;
+    zfiterator it = this->iter();
+    for(; this->iterValid(it) && count < maxCount; ++count, this->iterNext(it))
+    {
+        if(count > 0)
+        {
+            ret += token.tokenSeparator;
+        }
+        ret += token.tokenValueLeft;
+        this->iterValue(it)->objectInfoT(ret);
+        ret += token.tokenValueRight;
+    }
+    if(count < this->count())
+    {
+        if(count > 0)
+        {
+            ret += token.tokenSeparator;
+        }
+        ret += token.tokenEtc;
+    }
+    ret += token.tokenRight;
+}
+ZFMETHOD_DEFINE_2(ZFContainer, zfstring, objectInfoOfContent,
+                  ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
+                  ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault()))
+{
+    zfstring ret;
+    this->objectInfoOfContentT(ret, maxCount, token);
+    return ret;
+}
+
+zfbool ZFContainer::serializableOnCheck(void)
+{
+    if(!zfsuperI(ZFSerializable)::serializableOnCheck()) {return zffalse;}
+    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
+    {
+        if(!ZFObjectIsSerializable(this->iterValue(it)))
+        {
+            return zffalse;
+        }
+    }
+    return zftrue;
+}
+zfbool ZFContainer::serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
+                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
+                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
+{
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
+
+    this->removeAll();
+
+    for(zfindex i = 0; i < serializableData.childCount(); ++i)
+    {
+        const ZFSerializableData &categoryData = serializableData.childAtIndex(i);
+        if(categoryData.resolved()) {continue;}
+        const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
+        if(category == zfnull) {continue;}
+
+        if(zfscmpTheSame(category, ZFSerializableKeyword_ZFContainer_element))
+        {
+            zfautoObject element;
+            if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))
+            {
+                return zffalse;
+            }
+            if(element == zfnull)
+            {
+                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                    "null element");
+                return zffalse;
+            }
+            this->iterAdd(element.toObject());
+
+            categoryData.resolveMark();
+        }
+    }
+    return zftrue;
+}
+zfbool ZFContainer::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
+                                                  ZF_IN ZFSerializable *referencedOwnerOrNull,
+                                                  ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
+{
+    if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
+    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+
+    if(ref == zfnull)
+    {
+        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
+        {
+            ZFSerializableData elementData;
+            if(!ZFObjectToData(elementData, this->iterValue(it), outErrorHint))
+            {
+                return zffalse;
+            }
+            elementData.category(ZFSerializableKeyword_ZFContainer_element);
+            serializableData.childAdd(elementData);
+        }
+    }
+    else
+    {
+        return this->serializableOnSerializeToDataWithRef(serializableData, ref, outErrorHint);
+    }
+
+    return zftrue;
+}
+zfbool ZFContainer::serializableOnSerializeToDataWithRef(ZF_IN_OUT ZFSerializableData &serializableData,
+                                                         ZF_IN ZFSerializable *referencedOwnerOrNull,
+                                                         ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
+{
+    ZFContainer *ref = ZFCastZFObject(ZFContainer *, referencedOwnerOrNull);
+    if(ref == zfnull)
+    {
+        ZFSerializableUtil::errorOccurred(outErrorHint,
+            "%s not type of %s",
+            referencedOwnerOrNull->toObject()->objectInfoOfInstance().cString(), ZFContainer::ClassData()->classNameFull());
+        return zffalse;
+    }
+
+    if(ref->count() == 0)
+    {
+        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
+        {
+            ZFObject *element = this->iterValue(it);
+            ZFSerializableData elementData;
+            if(!ZFObjectToData(elementData, element, outErrorHint))
+            {
+                return zffalse;
+            }
+            elementData.category(ZFSerializableKeyword_ZFContainer_element);
+            serializableData.childAdd(elementData);
+        }
+        return zftrue;
+    }
+
+    ZFContainer *tmp = this->classData()->newInstance();
+    zfblockedRelease(tmp);
+    tmp->addFrom(ref);
+    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
+    {
+        ZFObject *element = this->iterValue(it);
+        zfiterator itTmp = tmp->iterFind(element);
+        if(ref->iterValid(itTmp))
+        {
+            tmp->iterRemove(itTmp);
+            continue;
+        }
+
+        ZFSerializableData elementData;
+        if(!ZFObjectToData(elementData, element, outErrorHint))
+        {
+            return zffalse;
+        }
+        elementData.category(ZFSerializableKeyword_ZFContainer_element);
+        serializableData.childAdd(elementData);
+    }
+
+    if(tmp->count() > 0)
+    {
+        ZFSerializableUtil::errorOccurred(outErrorHint,
+            "missing elements from referenced container: %s", tmp->objectInfoOfContent().cString());
+        return zffalse;
+    }
+
+    return zftrue;
+}
+
+void ZFContainer::copyableOnCopyFrom(ZF_IN ZFObject *anotherObj)
+{
+    zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
+    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    if(another != zfnull && this != another)
+    {
+        this->removeAll();
+        this->addFrom(another);
+    }
+}
+
+void ZFContainer::objectOnDeallocPrepare(void)
+{
+    this->removeAll();
+    zfsuper::objectOnDeallocPrepare();
+}
+
+zfidentity ZFContainer::objectHash(void)
+{
+    ZFObject *first = zfnull;
+    {
+        zfiterator it = this->iter();
+        if(this->iterValid(it))
+        {
+            first = this->iterValue(it);
+        }
+    }
+    if(first != zfnull)
+    {
+        return zfidentityHash(this->count(), first->objectHash());
+    }
+    else
+    {
+        return zfidentityZero();
+    }
+}
+ZFCompareResult ZFContainer::objectCompare(ZF_IN ZFObject *anotherObj)
+{
+    if(this == anotherObj) {return ZFCompareTheSame;}
+    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    if(another == zfnull) {return ZFCompareUncomparable;}
+
+    if(this->count() != another->count()
+        || this->objectHash() != another->objectHash())
+    {
+        return ZFCompareUncomparable;
+    }
+    for(zfiterator it = this->iter(), itRef = another->iter();
+        this->iterValid(it);
+        this->iterNext(it), another->iterNext(itRef))
+    {
+        if(ZFObjectCompare(this->iterValue(it), another->iterValue(itRef)) != ZFCompareTheSame)
+        {
+            return ZFCompareUncomparable;
+        }
+    }
+    return ZFCompareTheSame;
+}
+
+ZF_NAMESPACE_GLOBAL_END
+
