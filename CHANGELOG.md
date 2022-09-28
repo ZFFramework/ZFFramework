@@ -6,6 +6,7 @@
 * optimize external res logic
 * optimize lua meta info registration
 * support return non-ZFObject type for ZFLuaImport
+* add network module
 
 # 0.9.0
 
