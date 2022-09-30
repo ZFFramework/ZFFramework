@@ -126,12 +126,17 @@ public final class ZFMainEntry extends Activity {
         if (_app != null && _app.get() != null) {
             return;
         }
-        if (app == null || context == null || ownerActivity == null) {
+        if (app == null) {
             return;
         }
         _app = new WeakReference<>(app);
-        _appContext = new WeakReference<>(context.getApplicationContext());
-        _context = new WeakReference<>(context);
+        if (context == null) {
+            _appContext = new WeakReference<>(app.getApplicationContext());
+            _context = new WeakReference<>(app.getApplicationContext());
+        } else {
+            _appContext = new WeakReference<>(context.getApplicationContext());
+            _context = new WeakReference<>(context);
+        }
         mainEntryActivity(ownerActivity);
         ZFFrameworkInit();
     }
