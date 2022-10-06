@@ -631,7 +631,7 @@ public:
      * \n
      * #UIScale usually used for scale for entire view tree,
      * all layout and touch position would be scaled properly,
-     * however, changing #UIScale for a deep view tree may consume must time\n
+     * however, changing #UIScale for a deep view tree may consume much time\n
      * for temporarily scale, typically for animation,
      * use #viewScaleX instead
      */

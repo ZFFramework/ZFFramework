@@ -1537,7 +1537,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, zffloat, UIScaleForImpl)
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, UIScaleForPixel)
 {
-    return d->UIScaleFixed * ZFPROTOCOL_ACCESS(ZFUIView)->UIScaleForPixel(this->nativeView());
+    return this->UIScale() * this->UIScaleInherited() * ZFPROTOCOL_ACCESS(ZFUIView)->UIScaleForPixel(this->nativeView());
 }
 ZFMETHOD_DEFINE_0(ZFUIView, zffloat, UIScaleFixed)
 {

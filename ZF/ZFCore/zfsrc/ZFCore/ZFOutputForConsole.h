@@ -24,7 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief default output callback to output to console, source must be zfchar *string
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFOutput, ZFOutputForConsole)
+ZFEXPORT_VAR_DECLARE(ZFOutput, ZFOutputForConsole)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFOutputForConsole_h_

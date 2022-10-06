@@ -33,7 +33,7 @@ static ZFOutput _ZFP_ZFOutputForConsole_create(void)
     return ret;
 }
 
-ZFEXPORT_VAR_READONLY_DEFINE(ZFOutput, ZFOutputForConsole, _ZFP_ZFOutputForConsole_create())
+ZFEXPORT_VAR_DEFINE(ZFOutput, ZFOutputForConsole, _ZFP_ZFOutputForConsole_create())
 
 ZF_NAMESPACE_GLOBAL_END
 

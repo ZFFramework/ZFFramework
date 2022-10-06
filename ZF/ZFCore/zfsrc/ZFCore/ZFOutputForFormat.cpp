@@ -341,6 +341,10 @@ void ZFOutputFormatBasic::format(ZF_IN_OUT zfstring &ret,
     {
         if(*src == '\n')
         {
+            if(needLinePrefix)
+            {
+                ret += this->linePrefix();
+            }
             ret.append(p, src - p);
             ret += this->linePostfix();
             ret += '\n';
