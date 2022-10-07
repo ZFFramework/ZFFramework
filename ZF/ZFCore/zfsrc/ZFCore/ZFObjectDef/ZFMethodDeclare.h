@@ -404,7 +404,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         /** @endcond */ \
     PublicOrProtectedOrPrivate: \
-        ZFMethodType_() ReturnType MethodName( \
+        _ZFP_ZFMethodType(ZFMethodType_) ReturnType MethodName( \
                 ParamExpandOrEmpty0(            ParamType0 param0 DefaultValueFix0()) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1 DefaultValueFix1()) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2 DefaultValueFix2()) \
@@ -487,7 +487,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             )); /* tricks to support overload method */ \
         /** @endcond */ \
     PublicOrProtectedOrPrivate: \
-        ZFMethodType_() ReturnType MethodName( \
+        _ZFP_ZFMethodType(ZFMethodType_) ReturnType MethodName( \
                 ParamExpandOrEmpty0(            ParamType0 param0 DefaultValueFix0()) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1 DefaultValueFix1()) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2 DefaultValueFix2()) \

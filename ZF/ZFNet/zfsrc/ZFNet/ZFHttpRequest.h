@@ -20,10 +20,14 @@ zfclass ZF_ENV_EXPORT ZFHttpResponse : zfextends ZFObject
     ZFOBJECT_DECLARE(ZFHttpResponse, ZFObject)
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFHttpRequest")
 
-    ZFPROPERTY_ASSIGN(zfbool, success) /**< @brief whether the request is considered success */
-    ZFPROPERTY_ASSIGN(zfint, code) /**< @brief http response code */
-    ZFPROPERTY_ASSIGN(zfstring, errorHint) /**< @brief error hint, if error occurred */
-    ZFMETHOD_DECLARE_0(ZFBuffer &, body) /**< @brief response body content */
+    /** @brief whether the request is considered success */
+    ZFPROPERTY_ASSIGN(zfbool, success)
+    /** @brief http response code */
+    ZFPROPERTY_ASSIGN(zfint, code)
+    /** @brief error hint, if error occurred */
+    ZFPROPERTY_ASSIGN(zfstring, errorHint)
+    /** @brief response body content */
+    ZFMETHOD_DECLARE_0(ZFBuffer &, body)
 
     // ============================================================
     /** @brief get the response header */
@@ -117,7 +121,8 @@ zfclass ZF_ENV_EXPORT ZFHttpRequest : zfextends ZFStyleableObject
     ZFOBJECT_ON_INIT_DECLARE_2(ZFMP_IN(const zfchar *, url),
                                ZFMP_IN_OPT(const zfchar *, method, "GET"))
 
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, timeout, 2000) /**< @brief timeout */
+    /** @brief timeout */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, timeout, 2000)
 
     /** @brief the request url */
     ZFPROPERTY_ASSIGN(zfstring, url)

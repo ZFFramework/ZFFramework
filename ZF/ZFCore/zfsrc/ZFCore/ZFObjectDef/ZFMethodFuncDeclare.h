@@ -247,6 +247,12 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFil
 #define _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePostfix_notInline()
 #define _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePostfix(isInlineOrNot) _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePostfix_##isInlineOrNot()
 
+#if ZF_DOXYGEN_FLAG
+    #define _ZFP_ZFMETHOD_FUNC_NAME(MethodName) MethodName
+#else
+    #define _ZFP_ZFMETHOD_FUNC_NAME(MethodName) (MethodName)
+#endif
+
 // ============================================================
 #define _ZFP_ZFMETHOD_FUNC_DECLARE(...) \
     _ZFP_MtdD_EXPAND(_ZFP_ZFMETHOD_FUNC_DECLARE_(__VA_ARGS__))
@@ -274,7 +280,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFil
             ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
         )); \
     /** @endcond */ \
-    _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix(isInlineOrNot) ReturnType (MethodName)( \
+    _ZFP_ZFMETHOD_FUNC_DECLARE_inlinePrefix(isInlineOrNot) ReturnType _ZFP_ZFMETHOD_FUNC_NAME(MethodName)( \
             ParamExpandOrEmpty0(            ParamType0 param0 DefaultValueFix0()) \
             ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1 DefaultValueFix1()) \
             ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2 DefaultValueFix2()) \
@@ -299,7 +305,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFil
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePrefix(isInlineOrNot) ReturnType (MethodName)( \
+    _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePrefix(isInlineOrNot) ReturnType _ZFP_ZFMETHOD_FUNC_NAME(MethodName)( \
             ParamExpandOrEmpty0(            ParamType0 param0) \
             ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
             ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
@@ -437,7 +443,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFil
             ))zfnull)); \
     } \
     ZF_STATIC_REGISTER_END(MtdFR_##MethodName##_##RegSig) \
-    _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePrefix(isInlineOrNot) ReturnType (MethodName)( \
+    _ZFP_ZFMETHOD_FUNC_DEFINE_inlinePrefix(isInlineOrNot) ReturnType _ZFP_ZFMETHOD_FUNC_NAME(MethodName)( \
             ParamExpandOrEmpty0(            ParamType0 param0) \
             ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
             ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \

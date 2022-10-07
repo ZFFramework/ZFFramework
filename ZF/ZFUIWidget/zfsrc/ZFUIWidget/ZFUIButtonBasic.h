@@ -268,26 +268,14 @@ protected:
 public:
     /**
      * @brief button's label view, style of this view must be changed by #ZFUIButtonBasic::buttonLabelStyleNormal, etc
-     *
-     * @note property may not updated immediately,
-     *   if really want to update manually,
-     *   use #ZFUIButton::buttonStateUpdate
      */
     ZFMETHOD_DECLARE_0(ZFUITextView *, buttonLabel)
     /**
      * @brief button's icon view, style of this view must be changed by #ZFUIButtonBasic::buttonIconStyleNormal, etc
-     *
-     * @note property may not updated immediately,
-     *   if really want to update manually,
-     *   use #ZFUIButton::buttonStateUpdate
      */
     ZFMETHOD_DECLARE_0(ZFUIImageView *, buttonIcon)
     /**
      * @brief button's background view, style of this view must be changed by #ZFUIButtonBasic::buttonBackgroundStyleNormal, etc
-     *
-     * @note property may not updated immediately,
-     *   if really want to update manually,
-     *   use #ZFUIButton::buttonStateUpdate
      */
     ZFMETHOD_DECLARE_0(ZFUIImageView *, buttonBackground)
 

@@ -20,8 +20,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  all extra '/' and '\\' would be replaced with single '/'
  * -  strip spaces and tabs at head and tail
  * -  replace these escape chars:
- *   -  `\"` to double quote
- *   -  `\ ` to space
+ *   -  '\"' to double quote
+ *   -  '\ ' to space
  * -  remove "./" at head
  * -  remove "/." at tail
  * -  remove "/./" at anywhere

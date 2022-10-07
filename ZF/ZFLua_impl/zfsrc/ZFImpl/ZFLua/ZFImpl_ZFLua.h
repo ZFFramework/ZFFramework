@@ -317,8 +317,8 @@ zfclass ZF_ENV_EXPORT ZFImpl_ZFLuaValue : zfextends ZFObject
     ZFOBJECT_DECLARE(ZFImpl_ZFLuaValue, ZFObject)
 
 public:
-    lua_State *L;
-    int luaValue;
+    lua_State *L; /**< @brief the lua state */
+    int luaValue; /**< @brief the lua value ref */
 
 public:
     zfoverride

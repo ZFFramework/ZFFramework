@@ -9,8 +9,6 @@
 #include "ZFTypeId_spec.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/** @cond ZFPrivateDoc */
-
 template<typename T_ZFCoreArray>
 zfclassNotPOD _ZFP_ZFCoreArrayConvert
 {
@@ -135,6 +133,7 @@ public:
             this->zfv.removeAll();
         }
     }
+    /** @brief set the internal value */
     virtual void wrappedValue(ZF_IN const ZFCoreArrayBase &v)
     {
         this->wrappedValue((const void *)&v);
@@ -185,6 +184,8 @@ public:
         return zffalse;
     }
 };
+
+/** @cond ZFPrivateDoc */
 
 template<typename T_Type>
 zfclassNotPOD ZFTypeId<ZFCoreArray<T_Type> > : zfextendsNotPOD ZFTypeInfo

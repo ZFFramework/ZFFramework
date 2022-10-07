@@ -30,6 +30,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
+ * @def zfnullT
+ * @brief type for zfnull, can be used for function overload
  * @def zfnull
  * @brief same as NULL, defined for future use
  */

@@ -35,6 +35,7 @@ private:
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(zftaskid, zftaskid)
 
+/** @brief invalid taskid */
 ZFEXPORT_VAR_READONLY_DECLARE(zftaskid, zftaskidInvalid)
 
 // ============================================================
