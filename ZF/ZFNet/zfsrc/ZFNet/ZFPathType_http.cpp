@@ -121,6 +121,7 @@ public:
             maxByteSize = d->buffer.bufferSize() - d->curPos;
         }
         zfmemcpy(buf, d->buffer.bufferT<const zfbyte *>() + d->curPos, maxByteSize);
+        d->curPos += maxByteSize;
         return maxByteSize;
     }
     static zfindex callbackWrite(ZF_IN void *token,

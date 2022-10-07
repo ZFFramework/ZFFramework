@@ -378,7 +378,8 @@ public:
      * -# when you want to destroy the manager,
      *   simply call #managerDestroy
      */
-    ZFMETHOD_DECLARE_0(ZFUIWindow *, managerCreateForWindow)
+    ZFMETHOD_DECLARE_1(ZFUIWindow *, managerCreateForWindow,
+                       ZFMP_IN_OPT(ZFUISysWindow *, windowOwnerSysWindow, zfnull))
     /** @brief valid only for #managerCreateForWindow */
     ZFMETHOD_DECLARE_0(ZFUIWindow *, managerOwnerWindow)
 

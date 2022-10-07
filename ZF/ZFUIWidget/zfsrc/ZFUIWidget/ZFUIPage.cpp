@@ -455,9 +455,10 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerResumed)
     return d->managerResumed;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow)
+ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow,
+                  ZFMP_IN_OPT(ZFUISysWindow *, windowOwnerSysWindow, zfnull))
 {
-    zfblockedAlloc(ZFUIWindow, window);
+    zfblockedAlloc(ZFUIWindow, window, windowOwnerSysWindow);
     d->managerOwnerWindow = window;
 
     this->managerCreate();
