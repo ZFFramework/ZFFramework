@@ -5,19 +5,18 @@ import com.ZFFramework.Android.NativeUtil.ZFAndroidBuffer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
-
 public final class ZFHttpRequest {
 
     public long zfjniPointerOwnerZFHttpRequest = 0;
     public long zfjniPointerOwnerZFHttpResponse = 0;
-    public HttpsURLConnection connection = null;
+    public HttpURLConnection connection = null;
     public Map<String, String> sendHeader = new HashMap<>();
     public boolean running = true;
 
@@ -53,7 +52,7 @@ public final class ZFHttpRequest {
     public static void native_url(Object nativeTask, String url, int timeout) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         try {
-            task.connection = (HttpsURLConnection) new URL(url).openConnection();
+            task.connection = (HttpURLConnection) new URL(url).openConnection();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -167,7 +166,7 @@ public final class ZFHttpRequest {
     public static void native_request(Object nativeTask, Object nativeBuf) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         int code = -1;
-        String errorHint = "request error";
+        String errorHint = null;
         ZFAndroidBuffer bodyBuf = null;
 
         if (!task.running) {
@@ -190,7 +189,7 @@ public final class ZFHttpRequest {
                     code = task.connection.getResponseCode();
                 } catch (IOException ignored) {
                 }
-                errorHint = "connection timeout";
+                errorHint = "connection failed: " + e.getMessage();
                 break;
             }
             if (!task.running) {
@@ -213,10 +212,14 @@ public final class ZFHttpRequest {
             InputStream input = null;
             try {
                 input = task.connection.getInputStream();
-            } catch (IOException ignored) {
+            } catch (IOException e) {
+                errorHint = "read failed: " + e.getMessage();
             }
             if (input == null) {
-                errorHint = "read failed";
+                if(errorHint == null)
+                {
+                    errorHint = "read failed";
+                }
                 break;
             }
             if (!task.running) {
@@ -231,8 +234,8 @@ public final class ZFHttpRequest {
                 int read = 0;
                 try {
                     read = input.read(ioBuf);
-                } catch (IOException ignored) {
-                    errorHint = "read timeout";
+                } catch (IOException e) {
+                    errorHint = "read timeout: " + e.getMessage();
                     bodyBuf = null;
                     break;
                 }

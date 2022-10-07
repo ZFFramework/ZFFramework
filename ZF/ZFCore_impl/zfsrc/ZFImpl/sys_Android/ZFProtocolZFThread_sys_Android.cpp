@@ -24,7 +24,7 @@ public:
                                               ZF_IN ZFListener runnable,
                                               ZF_IN ZFObject *param0,
                                               ZF_IN ZFObject *param1)
-    : ownerZFThread(zfnull)
+    : ownerZFThread(ownerZFThread)
     , runnable(runnable)
     , param0(param0)
     , param1(param1)

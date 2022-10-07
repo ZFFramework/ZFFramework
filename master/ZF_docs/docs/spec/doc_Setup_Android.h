@@ -27,7 +27,7 @@
  *     <activity
  *         android:name="com.ZFFramework.Android.ZF_impl.ZFMainEntry"
  *         android:label="ZFFramework"
- *         android:launchMode="singleTask" >
+ *         android:usesCleartextTraffic="true">
  *     </activity>
  *     <activity
  *         android:name="com.ZFFramework.Android.ZFUIKit_impl.ZFUISysWindow"
