@@ -22,27 +22,35 @@ import java.nio.ByteBuffer;
  */
 public class ZFAndroidBuffer {
     public ZFAndroidBuffer() {
+        this.bufferRealloc(0);
     }
+
     public ZFAndroidBuffer(int bufferCapacity) {
         this.bufferRealloc(bufferCapacity);
     }
 
     public void bufferRealloc(int bufferSize) {
-        if(this.byteBuffer == null) {
+        if (this.byteBuffer == null) {
             this.byteBuffer = ByteBuffer.allocateDirect(Math.max(32, bufferSize));
-            return ;
+            this.byteBuffer.clear();
+            return;
         }
-        if(bufferSize <= this.byteBuffer.capacity()) {
-            return ;
+        if (bufferSize <= this.byteBuffer.capacity()) {
+            return;
         }
-        bufferSize = Math.max(this.byteBuffer.capacity() * 2, bufferSize);
-        ByteBuffer bufferTmp = ByteBuffer.allocateDirect(bufferSize);
+        int capacity = Math.max(32, this.byteBuffer.capacity());
+        while (capacity <= bufferSize) {
+            capacity *= 2;
+        }
+        ByteBuffer bufferTmp = ByteBuffer.allocateDirect(capacity);
+        bufferTmp.clear();
         this.byteBuffer.flip();
         bufferTmp.put(this.byteBuffer);
         this.byteBuffer = bufferTmp;
     }
+
     public void bufferCheckIncrease(int incSize) {
-        if(this.byteBuffer != null) {
+        if (this.byteBuffer != null) {
             incSize += this.byteBuffer.position();
         }
         this.bufferRealloc(incSize);
@@ -71,35 +79,41 @@ public class ZFAndroidBuffer {
 
     // ============================================================
     protected ByteBuffer byteBuffer = null;
+
     protected ZFAndroidBuffer(ByteBuffer byteBuffer) {
         this.byteBuffer = byteBuffer;
     }
+
     protected static Object native_bufferForByteBuffer(Object byteBuffer) {
-        return new ZFAndroidBuffer((ByteBuffer)byteBuffer);
+        return new ZFAndroidBuffer((ByteBuffer) byteBuffer);
     }
+
     protected static Object native_buffer(Object buffer) {
-        return ((ZFAndroidBuffer)buffer).byteBuffer;
+        return ((ZFAndroidBuffer) buffer).byteBuffer;
     }
+
     protected static int native_bufferSize(Object buffer) {
-        return ((ZFAndroidBuffer)buffer).byteBuffer.remaining();
+        return ((ZFAndroidBuffer) buffer).byteBuffer.remaining();
     }
 
     protected static class _BufferInputStream extends InputStream {
         private ZFAndroidBuffer _owner;
+
         _BufferInputStream(ZFAndroidBuffer buf) {
             this._owner = buf;
         }
+
         @Override
         public synchronized int read() throws IOException {
-            if(!_owner.byteBuffer.hasRemaining()) {
+            if (!_owner.byteBuffer.hasRemaining()) {
                 return -1;
             }
             return _owner.byteBuffer.get();
         }
+
         @Override
         public synchronized int read(byte[] bytes, int off, int len) throws IOException {
-            if(_owner.byteBuffer.remaining() <= 0)
-            {
+            if (_owner.byteBuffer.remaining() <= 0) {
                 return -1;
             }
             len = Math.min(len, _owner.byteBuffer.remaining());
@@ -107,15 +121,19 @@ public class ZFAndroidBuffer {
             return len;
         }
     }
+
     protected static class _BufferOutputStream extends OutputStream {
         private ZFAndroidBuffer _owner;
+
         _BufferOutputStream(ZFAndroidBuffer buf) {
             this._owner = buf;
         }
+
         public synchronized void write(int b) throws IOException {
             _owner.bufferCheckIncrease(1);
-            _owner.byteBuffer.put((byte)b);
+            _owner.byteBuffer.put((byte) b);
         }
+
         public synchronized void write(byte[] bytes, int offset, int len) throws IOException {
             _owner.bufferCheckIncrease(len);
             _owner.byteBuffer.put(bytes, offset, len);

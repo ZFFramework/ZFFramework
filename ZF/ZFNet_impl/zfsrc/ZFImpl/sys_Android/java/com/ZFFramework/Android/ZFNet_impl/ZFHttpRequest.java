@@ -8,8 +8,10 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 public final class ZFHttpRequest {
@@ -18,7 +20,26 @@ public final class ZFHttpRequest {
     public long zfjniPointerOwnerZFHttpResponse = 0;
     public HttpURLConnection connection = null;
     public Map<String, String> sendHeader = new HashMap<>();
+    public List<String> recvHeader = null;
     public boolean running = true;
+
+    private void _recvHeaderUpdate() {
+        if (this.recvHeader != null) {
+            return;
+        }
+        this.recvHeader = new ArrayList<>();
+        if (this.connection == null) {
+            return;
+        }
+
+        int count = this.connection.getHeaderFields().size();
+        for (int i = 0; i < count; ++i) {
+            String key = this.connection.getHeaderFieldKey(i);
+            if (key != null) {
+                this.recvHeader.add(key);
+            }
+        }
+    }
 
     // ============================================================
     public static native void native_ZFHttpRequest_notifyResponse(long zfjniPointerOwnerZFHttpRequest,
@@ -108,6 +129,9 @@ public final class ZFHttpRequest {
         if (task.connection != null) {
             NativeIterator it = new NativeIterator();
             it.it = task.sendHeader.keySet().iterator();
+            if (it.it.hasNext()) {
+                it.key = it.it.next();
+            }
             return it;
         }
         return null;
@@ -115,7 +139,7 @@ public final class ZFHttpRequest {
 
     public static boolean native_headerIterValid(Object nativeTask, Object nativeIt) {
         NativeIterator it = (NativeIterator) nativeIt;
-        return it != null && it.it != null && it.it.hasNext();
+        return it != null && it.it != null && (it.it.hasNext() || it.key != null);
     }
 
     public static void native_headerIterNext(Object nativeTask, Object nativeIt) {
@@ -216,8 +240,7 @@ public final class ZFHttpRequest {
                 errorHint = "read failed: " + e.getMessage();
             }
             if (input == null) {
-                if(errorHint == null)
-                {
+                if (errorHint == null) {
                     errorHint = "read failed";
                 }
                 break;
@@ -252,6 +275,9 @@ public final class ZFHttpRequest {
         } while (false);
 
         if (task.running) {
+            if (bodyBuf != null) {
+                bodyBuf.bufferReadyToRead();
+            }
             native_ZFHttpRequest_notifyResponse(
                     task.zfjniPointerOwnerZFHttpRequest,
                     task.zfjniPointerOwnerZFHttpResponse,
@@ -316,25 +342,24 @@ public final class ZFHttpRequest {
 
     public static int native_responseHeaderCount(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            return task.connection.getHeaderFields().size();
-        }
-        return 0;
+        task._recvHeaderUpdate();
+        return task.recvHeader.size();
     }
 
     public static Object native_responseHeaderIter(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            NativeIterator it = new NativeIterator();
-            it.it = task.connection.getHeaderFields().keySet().iterator();
-            return it;
+        task._recvHeaderUpdate();
+        NativeIterator it = new NativeIterator();
+        it.it = task.recvHeader.iterator();
+        if (it.it.hasNext()) {
+            it.key = it.it.next();
         }
-        return null;
+        return it;
     }
 
     public static boolean native_responseHeaderIterValid(Object nativeTask, Object nativeIt) {
         NativeIterator it = (NativeIterator) nativeIt;
-        return it != null && it.it != null && it.it.hasNext();
+        return it != null && it.it != null && (it.it.hasNext() || it.key != null);
     }
 
     public static void native_responseHeaderIterNext(Object nativeTask, Object nativeIt) {
