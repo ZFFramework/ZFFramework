@@ -16,7 +16,7 @@ if not defined PASSWORD (
 )
 
 
-if not exist "%OUTPUT_PATH%\ZFFramework_doc.chm" (
+if not exist "%OUTPUT_PATH%\html\index.html" (
     echo doc not exist
     exit /b 1
 )
