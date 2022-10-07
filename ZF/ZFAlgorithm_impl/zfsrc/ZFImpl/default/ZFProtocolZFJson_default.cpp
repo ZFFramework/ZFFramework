@@ -103,7 +103,7 @@ private:
                 for(rapidjson::Value::ConstValueIterator it = implJsonItem.Begin(); it != implJsonItem.End(); ++it)
                 {
                     ZFJsonItem jsonChild = this->jsonConvert(*it, docHolder);
-                    if(!jsonChild.jsonTypeValid())
+                    if(!jsonChild)
                     {
                         return ZFJsonItem();
                     }
@@ -117,7 +117,7 @@ private:
                 for(rapidjson::Value::ConstMemberIterator it = implJsonItem.MemberBegin(); it != implJsonItem.MemberEnd(); ++it)
                 {
                     ZFJsonItem jsonChild = this->jsonConvert(it->value, docHolder);
-                    if(!jsonChild.jsonTypeValid())
+                    if(!jsonChild)
                     {
                         return ZFJsonItem();
                     }

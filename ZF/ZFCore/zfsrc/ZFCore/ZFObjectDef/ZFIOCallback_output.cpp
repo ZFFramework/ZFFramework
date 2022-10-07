@@ -164,7 +164,7 @@ ZFOutput ZFOutputForBufferUnsafe(ZF_IN void *buf,
 {
     if(buf == zfnull || maxCount == 0 || (maxCount == 1 && autoAppendNullToken))
     {
-        return ZFCallback();
+        return zfnull;
     }
     _ZFP_I_ZFOutputForBufferUnsafeOwner *owner = zfAllocWithCache(_ZFP_I_ZFOutputForBufferUnsafeOwner);
     owner->autoAppendNullToken = autoAppendNullToken;

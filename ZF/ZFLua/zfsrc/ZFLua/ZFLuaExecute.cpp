@@ -17,7 +17,7 @@ static zfbool _ZFP_ZFLuaExecute(ZF_IN const ZFPathInfo *pathInfoOrNull,
         zfCoreAssertWithMessageTrim(ZFThread::currentThread()->isMainThread(),
             "[ZFLua] ZFLuaExecute can only called in main thread");
     }
-    if(!input.callbackIsValid())
+    if(!input)
     {
         return zffalse;
     }

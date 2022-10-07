@@ -98,6 +98,10 @@ ZFCallback::ZFCallback(void)
 : d(zfnull)
 {
 }
+ZFCallback::ZFCallback(ZF_IN const zfnullT &dummy)
+: d(zfnull)
+{
+}
 ZFCallback::ZFCallback(ZF_IN const ZFCallback &ref)
 : d(zfnull)
 {
@@ -106,6 +110,11 @@ ZFCallback::ZFCallback(ZF_IN const ZFCallback &ref)
 ZFCallback &ZFCallback::operator = (ZF_IN const ZFCallback &ref)
 {
     _ZFP_ZFCallbackPrivateDataChange(d, ref.d);
+    return *this;
+}
+ZFCallback &ZFCallback::operator = (ZF_IN const zfnullT &dummy)
+{
+    _ZFP_ZFCallbackPrivateDataChange(d, zfnull);
     return *this;
 }
 ZFCallback::~ZFCallback(void)
@@ -361,11 +370,6 @@ const ZFMethod *ZFCallback::callbackMethod(void) const
 ZFFuncAddrType ZFCallback::callbackRawFunction(void) const
 {
     return (d ? d->callbackRawFunction : zfnull);
-}
-
-void ZFCallback::callbackClear(void)
-{
-    _ZFP_ZFCallbackPrivateDataChange(d, zfnull);
 }
 
 void ZFCallback::callbackOwnerObjectRetain(void) const

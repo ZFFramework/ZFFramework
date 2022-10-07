@@ -103,7 +103,7 @@ zfindex ZFInputReadChar(ZF_IN_OUT zfstring &buf, ZF_IN_OUT const ZFInput &input)
 
 void ZFInputReadToString(ZF_IN_OUT zfstring &ret, ZF_IN_OUT const ZFInput &input)
 {
-    if(!input.callbackIsValid())
+    if(!input)
     {
         return ;
     }
@@ -134,7 +134,7 @@ void ZFInputReadToString(ZF_IN_OUT zfstring &ret, ZF_IN_OUT const ZFInput &input
 
 ZFBuffer ZFInputReadToBuffer(ZF_IN_OUT const ZFInput &input)
 {
-    if(!input.callbackIsValid())
+    if(!input)
     {
         return ZFBuffer();
     }
@@ -219,7 +219,7 @@ zfindex ZFInputReadUntil(ZF_IN_OUT zfstring &ret,
     {
         *firstMatchedChar = '\0';
     }
-    if(input.callbackIsValid())
+    if(input)
     {
         zfchar buf[9] = {0};
         zfindex charSetCount = zfslen(charSet);
@@ -263,7 +263,7 @@ zfindex ZFInputCheckMatch(ZF_IN const zfchar **tokens,
                           ZF_IN_OUT const ZFInput &input)
 {
     zfindex ret = zfindexMax();
-    if(input.callbackIsValid())
+    if(input)
     {
         zfindex saved = input.ioTell();
         zfindex maxLen = 0;
@@ -333,7 +333,7 @@ public:
 
     ZFALLOC_CACHE_RELEASE({
         cache->_cleanup();
-        cache->src.callbackClear();
+        cache->src = zfnull;
     })
 private:
     void _cleanup(void)
@@ -404,7 +404,7 @@ ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
     zfindex countFixed = count;
     do
     {
-        if(!inputCallback.callbackIsValid()) {break;}
+        if(!inputCallback) {break;}
 
         savedPos = inputCallback.ioTell();
         if(savedPos == zfindexMax()) {break;}
@@ -426,7 +426,7 @@ ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
         {
             inputCallback.ioSeek(savedPos, ZFSeekPosBegin);
         }
-        return ZFCallback();
+        return zfnull;
     }
 
     _ZFP_I_ZFInputForInputInRangeOwner *owner = zfAllocWithCache(_ZFP_I_ZFInputForInputInRangeOwner);
@@ -613,7 +613,7 @@ static ZFInput _ZFP_ZFInputForBuffer(ZF_IN zfbool copy,
 {
     if(src == zfnull)
     {
-        return ZFCallback();
+        return zfnull;
     }
     if(copy)
     {

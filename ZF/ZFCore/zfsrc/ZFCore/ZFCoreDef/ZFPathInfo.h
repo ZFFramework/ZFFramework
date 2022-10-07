@@ -40,12 +40,16 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     ZFPathInfo(void) : pathType(), pathData() {}
+    ZFPathInfo(ZF_IN const zfnullT &dummy) : pathType(), pathData() {}
     ZFPathInfo(ZF_IN const ZFPathInfo &pathInfo) : pathType(pathInfo.pathType), pathData(pathInfo.pathData) {}
     ZFPathInfo(ZF_IN const zfchar *pathType) : pathType(pathType), pathData() {}
     ZFPathInfo(ZF_IN const zfchar *pathType, ZF_IN const zfchar *pathData) : pathType(pathType), pathData(pathData) {}
     ZFPathInfo &operator = (ZF_IN const ZFPathInfo &pathInfo) {this->pathType = pathInfo.pathType; this->pathData = pathInfo.pathData; return *this;}
+    ZFPathInfo &operator = (ZF_IN const zfnullT &dummy) {this->pathType = zfnull; this->pathData = zfnull; return *this;}
     zfbool operator == (ZF_IN const ZFPathInfo &pathInfo) const {return (this->pathType == pathInfo.pathType && this->pathData == pathInfo.pathData);}
     zfbool operator != (ZF_IN const ZFPathInfo &pathInfo) const {return !this->operator == (pathInfo);}
+    zfbool operator == (ZF_IN const zfnullT &dummy) const {return (this->pathType == zfnull && this->pathData == zfnull);}
+    zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->operator == (dummy);}
     /** @endcond */
 };
 

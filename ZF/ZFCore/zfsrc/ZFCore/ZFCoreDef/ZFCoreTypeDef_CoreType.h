@@ -33,11 +33,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @def zfnull
  * @brief same as NULL, defined for future use
  */
-#if 0 && defined(__cplusplus) && (__cplusplus >= 201103L) && 0 // c++11
+#if 1 && defined(__cplusplus) && (__cplusplus >= 201103L) // c++11
+    #ifndef zfnullT
+        #define zfnullT nullptr_t
+    #endif
     #ifndef zfnull
         #define zfnull nullptr
     #endif
 #else // backward capacity
+    #ifndef zfnullT
+        #define zfnullT int
+    #endif
     #ifndef zfnull
         #define zfnull NULL
     #endif

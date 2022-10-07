@@ -38,7 +38,7 @@ public:
             cache->outputEnd();
         }
 
-        cache->output.callbackClear();
+        cache->output = zfnull;
         if(cache->format != zfnull)
         {
             zfRelease(cache->format);
@@ -92,7 +92,7 @@ public:
             buf, ZFOutputFormatStep::e_OnOutputEnd, "", 0, this->outputCount, this->writtenLen, this->state);
         if(!buf.isEmpty())
         {
-            if(this->output.callbackIsValid())
+            if(this->output)
             {
                 this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
             }
@@ -103,7 +103,7 @@ public:
             buf, ZFOutputFormatStep::e_OnDealloc, "", 0, this->outputCount, this->writtenLen, this->state);
         if(!buf.isEmpty())
         {
-            if(this->output.callbackIsValid())
+            if(this->output)
             {
                 this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
             }
@@ -117,7 +117,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForFormatOwner, zfindex, onOutput,
                   ZFMP_IN(const void *, s),
                   ZFMP_IN(zfindex, count))
 {
-    if(!this->output.callbackIsValid())
+    if(!this->output)
     {
         return 0;
     }
@@ -164,7 +164,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT,
                        ZFMP_IN(const ZFOutput &, output),
                        ZFMP_IN(ZFOutputFormat *, format))
 {
-    if(!output.callbackIsValid())
+    if(!output)
     {
         return zffalse;
     }
@@ -286,7 +286,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFOutput, ZFOutputForFormatGetOutput,
     _ZFP_I_ZFOutputForFormatOwner *owner = ZFCastZFObject(_ZFP_I_ZFOutputForFormatOwner *, callback.callbackOwnerObject());
     if(owner == zfnull)
     {
-        return ZFCallback();
+        return zfnull;
     }
     else
     {

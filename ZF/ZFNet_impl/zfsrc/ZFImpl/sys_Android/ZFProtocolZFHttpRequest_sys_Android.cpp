@@ -495,8 +495,9 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest,
                          jobject body)
 {
     ZFHttpResponse *response = ZFCastZFObject(ZFHttpResponse *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpResponse));
+    response->success(code == 200);
     response->code(code);
-    response->errorHint(code);
+    response->errorHint(ZFImpl_sys_Android_zfstringFromString(errorHint));
     ZFImpl_sys_Android_Buffer buffer = ZFImpl_sys_Android_ZFAndroidBufferFromJava(body);
     if(buffer.buffer != zfnull)
     {

@@ -363,7 +363,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathParentOf,
     zfindex pos = zfstringFindReversely(src, zfindexMax(), ZFFileSeparatorString());
     if(src >= ret.cString() && src < ret.cString() + ret.length())
     {
-        if(pos != zfindexMax())
+        if(pos != zfindexMax() && !(pos >= 3 && src[pos-1] == ZFFileSeparator() && src[pos-2] == ':'))
         {
             ret.remove(pos);
             return zftrue;
@@ -376,7 +376,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathParentOf,
     }
     else
     {
-        if(pos != zfindexMax())
+        if(pos != zfindexMax() && !(pos >= 3 && src[pos-1] == ZFFileSeparator() && src[pos-2] == ':'))
         {
             ret.append(src, pos);
             return zftrue;

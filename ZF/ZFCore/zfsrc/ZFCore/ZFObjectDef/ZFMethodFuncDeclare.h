@@ -419,7 +419,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFil
                         , ZFM_TOSTRING(param7) \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdFH_##MethodName##_##RegSig, DefaultExpandOrEmpty7, 7) \
                     ) \
-                , zfnull \
+                , (const zfchar *)zfnull \
             ); \
         return _methodHolder.method; \
     } \

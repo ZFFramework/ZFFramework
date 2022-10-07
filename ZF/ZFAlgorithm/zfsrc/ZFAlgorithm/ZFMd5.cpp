@@ -57,7 +57,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, zfMd5Calc,
                        ZFMP_IN(const ZFInput &, callback),
                        ZFMP_IN_OPT(zfbool, upperCase, zftrue))
 {
-    if(!callback.callbackIsValid())
+    if(!callback)
     {
         return ;
     }

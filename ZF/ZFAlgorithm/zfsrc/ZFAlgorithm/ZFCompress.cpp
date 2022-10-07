@@ -11,7 +11,7 @@ ZFMETHOD_FUNC_DEFINE_2(void *, ZFCompressBegin,
                        ZFMP_IN_OUT(const ZFOutput &, outputZip),
                        ZFMP_IN_OPT(ZFCompressLevelEnum, compressLevel, ZFCompressLevel::EnumDefault()))
 {
-    if(!outputZip.callbackIsValid())
+    if(!outputZip)
     {
         return zfnull;
     }
@@ -37,7 +37,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressContent,
                        ZFMP_IN_OUT(const ZFInput &, inputRaw),
                        ZFMP_IN(const zfchar *, filePathInZip))
 {
-    if(compressToken == zfnull || !inputRaw.callbackIsValid() || zfsIsEmpty(filePathInZip))
+    if(compressToken == zfnull || !inputRaw || zfsIsEmpty(filePathInZip))
     {
         return zffalse;
     }
@@ -63,7 +63,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFCompressContentDir,
 ZFMETHOD_FUNC_DEFINE_1(void *, ZFDecompressBegin,
                        ZFMP_IN_OUT(const ZFInput &, inputZip))
 {
-    if(!inputZip.callbackIsValid())
+    if(!inputZip)
     {
         return zfnull;
     }
@@ -89,7 +89,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContentAtIndex,
                        ZFMP_IN_OUT(const ZFOutput &, outputRaw),
                        ZFMP_IN(zfindex, fileIndexInZip))
 {
-    if(decompressToken == zfnull || !outputRaw.callbackIsValid() || fileIndexInZip == zfindexMax())
+    if(decompressToken == zfnull || !outputRaw || fileIndexInZip == zfindexMax())
     {
         return zffalse;
     }
@@ -103,7 +103,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContent,
                        ZFMP_IN_OUT(const ZFOutput &, outputRaw),
                        ZFMP_IN(const zfchar *, filePathInZip))
 {
-    if(decompressToken == zfnull || !outputRaw.callbackIsValid() || zfsIsEmpty(filePathInZip))
+    if(decompressToken == zfnull || !outputRaw || zfsIsEmpty(filePathInZip))
     {
         return zffalse;
     }

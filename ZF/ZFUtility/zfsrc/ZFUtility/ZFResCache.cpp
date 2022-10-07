@@ -28,7 +28,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObject, zfRes,
                        ZFMP_IN(const zfchar *, resFilePath))
 {
     ZFInput input = ZFInputForResFile(resFilePath);
-    if(!input.callbackIsValid())
+    if(!input)
     {
         return zfnull;
     }

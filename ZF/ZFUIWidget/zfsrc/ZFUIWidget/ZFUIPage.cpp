@@ -771,7 +771,7 @@ ZFMETHOD_DEFINE_2(ZFUIPageManager, void, pageRequest,
                   ZFMP_IN(const ZFListener &, callback),
                   ZFMP_IN_OPT(ZFObject *, userData, zfnull))
 {
-    if(callback.callbackIsValid())
+    if(callback)
     {
         d->pageRequestAdd(this, callback, userData);
     }

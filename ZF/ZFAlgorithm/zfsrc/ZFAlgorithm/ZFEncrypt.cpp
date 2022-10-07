@@ -8,7 +8,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFEncrypt,
                        ZFMP_IN(const ZFInput &, input),
                        ZFMP_IN(const zfchar *, encryptKey))
 {
-    if(!input.callbackIsValid() || !output.callbackIsValid())
+    if(!input || !output)
     {
         return zffalse;
     }
@@ -19,7 +19,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecrypt,
                        ZFMP_IN(const ZFInput &, input),
                        ZFMP_IN(const zfchar *, encryptKey))
 {
-    if(!input.callbackIsValid() || !output.callbackIsValid())
+    if(!input || !output)
     {
         return zffalse;
     }

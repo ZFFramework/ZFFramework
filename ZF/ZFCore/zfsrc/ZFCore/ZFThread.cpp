@@ -120,7 +120,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
     {
         _ZFP_ZFThreadTaskData task = *(zfThread->d->taskQueue.begin());
         zfThread->d->taskQueue.pop_front();
-        if(!task.task.callbackIsValid())
+        if(!task.task)
         {
             continue;
         }
@@ -356,7 +356,7 @@ ZFMETHOD_DEFINE_2(ZFThread, void, taskQueueAdd,
                   ZFMP_IN(const ZFListener &, task),
                   ZFMP_IN_OPT(ZFObject *, userData, zfnull))
 {
-    if(!task.callbackIsValid())
+    if(!task)
     {
         return;
     }
@@ -420,7 +420,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
         zfThread->threadOnRun(ZFListenerData(zfidentityInvalid(), zfThread), zfThreadUserData);
     }
     zfCoreMutexLock();
-    if(zfThread->threadRunnable().callbackIsValid())
+    if(zfThread->threadRunnable())
     {
         ZFListener tmp = zfThread->threadRunnable();
         zfCoreMutexUnlock();
@@ -453,7 +453,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
 
         zfCoreMutexUnlock();
 
-        if(task.callbackIsValid())
+        if(task)
         {
             task.execute(ZFListenerData(zfidentityInvalid(), zfThread), taskUserData);
         }
@@ -502,7 +502,7 @@ void ZFThread::_ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFListenerData &list
 
         zfCoreMutexUnlock();
 
-        if(task.callbackIsValid())
+        if(task)
         {
             task.execute(ZFListenerData(zfidentityInvalid(), zfThread), taskUserData);
         }

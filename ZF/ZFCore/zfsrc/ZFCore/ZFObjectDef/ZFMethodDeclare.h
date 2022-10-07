@@ -398,7 +398,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                             , ZFM_TOSTRING(param7) \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty7, 7) \
                         ) \
-                    , zfnull \
+                    , (const zfchar *)zfnull \
                 ); \
             return _methodHolder.method; \
         } \
@@ -610,7 +610,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                         , ZFM_TOSTRING(param7) \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty7, 7) \
                     ) \
-                , zfnull \
+                , (const zfchar *)zfnull \
             ); \
         return _methodHolder.method; \
     } \

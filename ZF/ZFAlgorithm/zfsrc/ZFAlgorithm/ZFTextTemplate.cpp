@@ -68,7 +68,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfindex, ZFTextTemplateApply,
             if(p > data)
             {
                 size += p - data;
-                if(output.callbackIsValid())
+                if(output)
                 {
                     output.execute(data, p - data);
                 }
@@ -86,7 +86,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfindex, ZFTextTemplateApply,
         if(p > data)
         {
             size += p - data;
-            if(output.callbackIsValid())
+            if(output)
             {
                 output.execute(data, p - data);
             }
@@ -171,7 +171,7 @@ static void _ZFP_ZFTextTemplateApply_replaceData(ZF_IN const ZFTextTemplateParam
         return ;
     }
     zfindex valueLen = zfslen(value);
-    if(output.callbackIsValid())
+    if(output)
     {
         output.execute(value, valueLen);
     }
@@ -357,7 +357,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(ZF_IN const ZFTextTemplateParam &
         indexDataState->indexCur += indexDataState->indexData->indexOffset;
     }
 
-    if(output.callbackIsValid())
+    if(output)
     {
         output.execute(value.cString(), value.length());
     }

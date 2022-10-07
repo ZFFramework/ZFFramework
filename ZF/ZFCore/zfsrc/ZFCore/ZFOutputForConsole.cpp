@@ -7,7 +7,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeC
 {
     ret = ZFOutputForConsole();
     serializableData.resolveMark();
-    return ret.callbackIsValid();
+    return ret;
 }
 
 // ============================================================

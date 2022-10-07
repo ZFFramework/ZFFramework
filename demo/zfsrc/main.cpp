@@ -38,7 +38,7 @@ static void _ZFP_ZFFramework_test_luaTest(void)
     }
 
     ZFInput input = ZFInputForResFile("zf.lua");
-    if(input.callbackIsValid())
+    if(input)
     {
         ZFLuaExecute(input);
         ZFLuaGC();

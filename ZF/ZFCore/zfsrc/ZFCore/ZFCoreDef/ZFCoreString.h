@@ -80,12 +80,6 @@ public:
     : d()
     {
     }
-    /** @brief construct a string with specified capacity */
-    _zfstr(ZF_IN zfindex capacity)
-    : d()
-    {
-        _capacityRequire(capacity)[0] = '\0';
-    }
     /** @brief copy content from another string */
     _zfstr(ZF_IN const _zfstr &s)
     : d()
@@ -176,14 +170,6 @@ public:
         }
     }
     inline _zfstr &operator = (ZF_IN const T_Char *s) {return this->assign(s);}
-    _zfstr &operator = (ZF_IN T_Char c)
-    {
-        T_Char *buf = d.buf();
-        buf[0] = c;
-        buf[1] = '\0';
-        _updateLength(1);
-        return *this;
-    }
     zfbool operator == (ZF_IN const _zfstr &ref) const
     {
         return (this->compare(ref) == 0);

@@ -27,7 +27,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFUIImageSaveToBase64,
                        ZFMP_OUT(const ZFOutput &, outputCallback),
                        ZFMP_IN(ZFUIImage *, image))
 {
-    if(image != zfnull && image->nativeImage() != zfnull && outputCallback.callbackIsValid())
+    if(image != zfnull && image->nativeImage() != zfnull && outputCallback)
     {
         zfblockedAlloc(ZFIOBufferByCacheFile, io);
         if(!ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageToOutput(image->nativeImage(), io->output()))
@@ -43,7 +43,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIImageLoadFromFile,
 {
     zfautoObjectT<ZFUIImage *> ret = ZFUIImage::ClassData()->newInstance();
     ZFUIImage *image = ret;
-    if(image == zfnull || !inputCallback.callbackIsValid())
+    if(image == zfnull || !inputCallback)
     {
         return zfnull;
     }
@@ -69,7 +69,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFUIImageSaveToFile,
                        ZFMP_OUT(const ZFOutput &, outputCallback),
                        ZFMP_IN(ZFUIImage *, image))
 {
-    if(image != zfnull && image->nativeImage() != zfnull && outputCallback.callbackIsValid())
+    if(image != zfnull && image->nativeImage() != zfnull && outputCallback)
     {
         return ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageToOutput(image->nativeImage(), outputCallback);
     }
@@ -83,7 +83,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(input, ZFUIImageSerializeType_input)
     {
         return zffalse;
     }
-    if(!input.callbackIsValid())
+    if(!input)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
             "invalid callback");

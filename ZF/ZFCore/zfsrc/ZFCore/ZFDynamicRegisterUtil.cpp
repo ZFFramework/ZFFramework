@@ -274,7 +274,7 @@ zfbool ZFDynamic::operator == (ZF_IN const ZFDynamic &ref) const
 
 void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output)
 {
-    if(!output.callbackIsValid())
+    if(!output)
     {
         return ;
     }
@@ -489,7 +489,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDynamicClassEventDataHolder, ZFLevelZFFr
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicClassEventDataHolder)
 {
-    if(this->classOnChangeListener.callbackIsValid())
+    if(this->classOnChangeListener)
     {
         ZFClassDataChangeObserver.observerRemove(
             ZFGlobalEvent::EventClassDataChange(),
@@ -501,7 +501,7 @@ ZFListener classOnChangeListener;
 ZFListener instanceOnCreateListener; // userData: associated class
 void classOnChangeCheckAttach(void)
 {
-    if(!this->classOnChangeListener.callbackIsValid())
+    if(!this->classOnChangeListener)
     {
         this->classOnChangeListener = ZFCallbackForFunc(zfself::classOnChange);
         ZFClassDataChangeObserver.observerAdd(
@@ -559,7 +559,7 @@ ZFDynamic &ZFDynamic::on(ZF_IN zfidentity eventId,
         d->error("invalid eventId");
         return *this;
     }
-    if(!callback.callbackIsValid())
+    if(!callback)
     {
         d->error("invalid callback");
         return *this;

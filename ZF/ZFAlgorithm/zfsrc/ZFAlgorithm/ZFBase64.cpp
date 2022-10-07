@@ -43,7 +43,7 @@ ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Encode,
                        ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault()),
                        ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone()))
 {
-    if(!outputCallback.callbackIsValid() || !inputCallback.callbackIsValid())
+    if(!outputCallback || !inputCallback)
     {
         return zffalse;
     }
@@ -140,7 +140,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFBase64Decode,
                        ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault()),
                        ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault()))
 {
-    if(!outputCallback.callbackIsValid() || !inputCallback.callbackIsValid())
+    if(!outputCallback || !inputCallback)
     {
         return zffalse;
     }

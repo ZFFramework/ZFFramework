@@ -123,6 +123,7 @@ public:
      * @brief implementation must notify when receive response
      *
      * before notify, you must fill these:
+     * -  #ZFHttpResponse::success
      * -  #ZFHttpResponse::code
      * -  #ZFHttpResponse::errorHint
      * -  #ZFHttpResponse::body

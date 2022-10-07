@@ -68,7 +68,7 @@ public:
             zfCoreMutexUnlock();
             return;
         }
-        if(!taskData->finishCallback.callbackIsValid())
+        if(!taskData->finishCallback)
         {
             _ZFP_taskDataCleanup(d, taskData);
             zfCoreMutexUnlock();
@@ -101,9 +101,9 @@ private:
     static void _ZFP_taskDataCleanup(ZF_IN ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d, ZF_IN _ZFP_I_zfasyncTaskData *taskData)
     {
         d->taskIdGenerator.idRelease(taskData->taskId);
-        taskData->callback.callbackClear();
+        taskData->callback = zfnull;
         taskData->userData = zfnull;
-        taskData->finishCallback.callbackClear();
+        taskData->finishCallback = zfnull;
         taskData->finishCallbackUserData = zfnull;
         taskData->callerThread = zfnull;
     }
@@ -116,7 +116,7 @@ ZFMETHOD_FUNC_DEFINE_4(zftaskid, zfasync,
                        ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback()),
                        ZFMP_IN_OPT(ZFObject *, finishCallbackUserData, zfnull))
 {
-    if(!callback.callbackIsValid())
+    if(!callback)
     {
         return zftaskidInvalid();
     }
@@ -148,6 +148,21 @@ ZFMETHOD_FUNC_DEFINE_4(zftaskid, zfasync,
         }
     }
     zfCoreAssert(thread != zfnull);
+    if(thread == ZFThread::currentThread())
+    {
+        if(d->threadPool.count() < d->maxThread)
+        {
+            thread = zflineAlloc(ZFThread);
+            thread->taskQueueInit();
+            thread->threadStart();
+            d->threadPool.add(thread);
+        }
+        else
+        {
+            d->threadPoolIndex = ((d->threadPoolIndex + 1) % d->threadPool.count());
+            thread = d->threadPool[d->threadPoolIndex];
+        }
+    }
 
     zfblockedAlloc(_ZFP_I_zfasyncTaskData, taskData);
     taskData->taskId = d->taskIdGenerator.idAcquire();
@@ -155,7 +170,7 @@ ZFMETHOD_FUNC_DEFINE_4(zftaskid, zfasync,
     taskData->userData = userData;
     taskData->finishCallback = finishCallback;
     taskData->finishCallbackUserData = finishCallbackUserData;
-    if(finishCallback.callbackIsValid())
+    if(finishCallback)
     {
         taskData->callerThread = ZFThread::currentThread();
     }

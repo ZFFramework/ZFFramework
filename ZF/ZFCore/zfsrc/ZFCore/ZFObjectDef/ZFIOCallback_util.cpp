@@ -8,7 +8,7 @@ zfindex ZFInputReadToOutput(ZF_IN_OUT const ZFOutput &output,
                             ZF_IN_OUT const ZFInput &input)
 {
     zfindex size = 0;
-    if(input.callbackIsValid() && output.callbackIsValid())
+    if(input && output)
     {
         #define _ZFP_ZFInputReadToOutput_blockSize 256
         zfchar buf[_ZFP_ZFInputReadToOutput_blockSize] = {0};

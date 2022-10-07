@@ -7,7 +7,7 @@ ZFOBJECT_REGISTER(ZFIOBuffer)
 ZFMETHOD_DEFINE_0(ZFIOBuffer, ZFInput, input)
 {
     ZFInput ret = this->implInput();
-    if(ret.callbackIsValid())
+    if(ret)
     {
         ret.callbackTag(ZFCallbackTagKeyword_ZFIOBuffer, this);
     }
@@ -16,7 +16,7 @@ ZFMETHOD_DEFINE_0(ZFIOBuffer, ZFInput, input)
 ZFMETHOD_DEFINE_0(ZFIOBuffer, ZFOutput, output)
 {
     ZFInput ret = this->implOutput();
-    if(ret.callbackIsValid())
+    if(ret)
     {
         ret.callbackTag(ZFCallbackTagKeyword_ZFIOBuffer, this);
     }

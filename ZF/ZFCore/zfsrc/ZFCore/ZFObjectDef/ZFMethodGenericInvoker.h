@@ -329,7 +329,7 @@ public:
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(owner) \
     owner::GI
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(owner, DefaultExpandOrEmpty, N) \
-    (zfnull DefaultExpandOrEmpty(ZFM_EMPTY(), owner::pDef##N))
+    (NULL DefaultExpandOrEmpty(ZFM_EMPTY(), owner::pDef##N))
 
 // ============================================================
 extern ZF_ENV_EXPORT zfbool _ZFP_ZFMethodGenericInvoke(ZF_IN const ZFMethod *invokerMethod

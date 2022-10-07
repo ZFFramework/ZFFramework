@@ -22,6 +22,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       if listenerData:param1() == zfindexMax() then
  *           // return total input size
  *           listenerData:param1():zfv(yourTotalLength)
+ *           return
  *       end
  *
  *       local buf = listenerData:param0()

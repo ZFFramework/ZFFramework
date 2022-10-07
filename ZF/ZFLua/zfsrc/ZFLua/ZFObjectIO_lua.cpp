@@ -8,7 +8,7 @@ ZFOBJECTIO_DEFINE(lua, {
             || ZFObjectIOImplCheck(pathInfo, "lua"));
     }, {
         ret = ZFLuaExecute(input);
-        return input.callbackIsValid();
+        return input;
     }, {
         zfstringAppend(outErrorHint, "not supported");
         return zffalse;

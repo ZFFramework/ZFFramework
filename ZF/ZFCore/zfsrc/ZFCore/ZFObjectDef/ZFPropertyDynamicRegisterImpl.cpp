@@ -734,7 +734,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
                                                            ZF_IN ZFObject *userData)
 {
     _ZFP_I_PropDynRegLifeCycleData *implUserData = ZFCastZFObject(_ZFP_I_PropDynRegLifeCycleData *, userData);
-    if(implUserData == zfnull || !implUserData->callback.callbackIsValid())
+    if(implUserData == zfnull || !implUserData->callback)
     {
         return;
     }
@@ -803,7 +803,7 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProperty *property,
         }
         return zffalse;
     }
-    if(property == zfnull || !callback.callbackIsValid())
+    if(property == zfnull || !callback)
     {
         if(errorHint != zfnull)
         {

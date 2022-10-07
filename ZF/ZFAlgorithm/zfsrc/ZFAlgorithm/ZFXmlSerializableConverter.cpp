@@ -8,7 +8,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(ZF_OUT ZFSerializableData &serializ
                                              ZF_OUT_OPT zfstring *outErrorHint = zfnull,
                                              ZF_OUT_OPT ZFXmlItem *outErrorPos = zfnull)
 {
-    if(!xmlElement.xmlTypeValid())
+    if(!xmlElement)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, "null xml element");
         if(outErrorPos != zfnull)
@@ -39,7 +39,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(ZF_OUT ZFSerializableData &serializ
     serializableData.itemClass(xmlElement.xmlName());
 
     ZFXmlItem attribute = xmlElement.attrFirst();
-    while(attribute.xmlTypeValid())
+    while(attribute)
     {
         if(attribute.xmlName() == zfnull)
         {
@@ -56,7 +56,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(ZF_OUT ZFSerializableData &serializ
     }
 
     ZFXmlItem element = xmlElement.childFirstElement();
-    while(element.xmlTypeValid())
+    while(element)
     {
         ZFSerializableData childData;
         if(!_ZFP_ZFSerializableDataFromXml(childData, element, outErrorHint, outErrorPos))
@@ -144,7 +144,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFSerializableDataFromXml,
                        ZFMP_IN(const ZFInput &, input),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
 {
-    if(!input.callbackIsValid())
+    if(!input)
     {
         zfstringAppend(outErrorHint, "invalid input callback");
         return zffalse;

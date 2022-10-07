@@ -88,7 +88,7 @@ extern ZF_ENV_EXPORT void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
                 , ZFM_TOSTRING(param7) \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty7, 7) \
             ) \
-        , zfnull \
+        , (const zfchar *)zfnull \
     )
 
 #define _ZFP_ZFMethodUserRegister(...) \

@@ -95,8 +95,8 @@ zfclassFwd _ZFP_ZFCallbackPrivate;
  * then you may pass it as param or store it for future use\n
  * to execute callback, use #executeExact similar to ZFMethod::execute,
  * while you have no need to take care of the owner object
- * @warning before execute, you must check whether the callback is valid,
- *   by #callbackIsValid, otherwise, assert fail
+ * @warning before execute, you must check whether the callback is valid
+ *   (by #callbackValid or `cb != zfnull` or `!cb`), otherwise, assert fail
  * @warning while execute, similar to ZFMethod,
  *   you must explicitly assign the ReturnType
  *   and each ParamType for the template param
@@ -109,11 +109,16 @@ zfclassLikePOD ZF_ENV_EXPORT ZFCallback
 public:
     /** @cond ZFPrivateDoc */
     ZFCallback(void);
-    ZFCallback(const ZFCallback &ref);
-    ZFCallback &operator = (const ZFCallback &ref);
+    ZFCallback(ZF_IN const zfnullT &dummy);
+    ZFCallback(ZF_IN const ZFCallback &ref);
+    ZFCallback &operator = (ZF_IN const ZFCallback &ref);
+    ZFCallback &operator = (ZF_IN const zfnullT &dummy);
     virtual ~ZFCallback(void);
     zfbool operator == (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) == ZFCompareTheSame);}
     zfbool operator != (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) != ZFCompareTheSame);}
+    zfbool operator == (ZF_IN const zfnullT &dummy) const {return (d == zfnull);}
+    zfbool operator != (ZF_IN const zfnullT &dummy) const {return (d != zfnull);}
+    operator bool (void) const {return this->callbackValid();}
     static ZFCallback _ZFP_ZFCallbackCreateMethod(ZF_IN const ZFMethod *callbackMethod);
     static ZFCallback _ZFP_ZFCallbackCreateMemberMethod(ZF_IN ZFObject *callbackOwnerObject,
                                                         ZF_IN const ZFMethod *callbackMethod);
@@ -231,7 +236,7 @@ public:
     /**
      * @brief return true if callback is valid
      */
-    zffinal inline zfbool callbackIsValid(void) const
+    zffinal inline zfbool callbackValid(void) const
     {
         return (this->callbackType() != ZFCallbackTypeDummy);
     }
@@ -256,16 +261,6 @@ public:
      * @brief get static function, valid only if type is #ZFCallbackTypeRawFunction
      */
     zffinal ZFFuncAddrType callbackRawFunction(void) const;
-
-    /**
-     * @brief clear and reset to dummy callback,
-     *   as well as all attached tags
-     *
-     * release reference count only,
-     * if other callback is refering to the internal data,
-     * the data won't be deleted
-     */
-    zffinal void callbackClear(void);
 
     /**
      * @brief retain owner object and auto release it
@@ -393,13 +388,22 @@ public:
         : ParentType() \
         { \
         } \
+        CallbackTypeName(ZF_IN const zfnullT &dummy) \
+        : ParentType(dummy) \
+        { \
+        } \
         CallbackTypeName(ZF_IN const ZFCallback &ref) \
         : ParentType(ref) \
         { \
         } \
-        CallbackTypeName &operator = (const CallbackTypeName &ref) \
+        CallbackTypeName &operator = (ZF_IN const ZFCallback &ref) \
         { \
-            ZFCallback::operator = (ref); \
+            ParentType::operator = (ref); \
+            return *this; \
+        } \
+        CallbackTypeName &operator = (ZF_IN const zfnullT &dummy) \
+        { \
+            ParentType::operator = (dummy); \
             return *this; \
         } \
         /** @endcond */

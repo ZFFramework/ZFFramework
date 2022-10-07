@@ -10,7 +10,7 @@ public:
     ZFALLOC_CACHE_RELEASE({
         cache->_bufCache->zfv.removeAll();
         cache->_countCache->zfv = 0;
-        cache->luaCallback.callbackClear();
+        cache->luaCallback = zfnull;
         cache->userData = zfnull;
     })
 
@@ -47,7 +47,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForLuaOwner, zfindex, onInput,
                   ZFMP_IN(void *, buf),
                   ZFMP_IN(zfindex, count))
 {
-    if(this->luaCallback.callbackIsValid())
+    if(this->luaCallback)
     {
         this->_bufCache->zfv.removeAll();
         this->_countCache->zfv = ((buf == zfnull) ? zfindexMax() : count);
@@ -78,9 +78,9 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForLua,
                        ZFMP_IN(const ZFListener &, luaCallback),
                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
 {
-    if(!luaCallback.callbackIsValid())
+    if(!luaCallback)
     {
-        return ZFCallback();
+        return zfnull;
     }
     zfblockedAllocWithCache(_ZFP_I_ZFInputForLuaOwner, owner);
     owner->luaCallback = luaCallback;

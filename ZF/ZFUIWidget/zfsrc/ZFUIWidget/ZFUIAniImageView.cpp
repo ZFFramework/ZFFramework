@@ -651,7 +651,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(ZF_IN const ZFClass *desiredClass,
         return zffalse;
     }
     ZFOutput objOutput = ZFOutputForPathInfo(pathInfo);
-    if(!objOutput.callbackIsValid())
+    if(!objOutput)
     {
         return zffalse;
     }
@@ -664,7 +664,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(ZF_IN const ZFClass *desiredClass,
     ++dotPos;
     imgPathInfo.pathData.replace(dotPos, imgPathInfo.pathData.length() - dotPos, "png");
     ZFOutput imgOutput = ZFOutputForPathInfo(imgPathInfo);
-    if(!imgOutput.callbackIsValid())
+    if(!imgOutput)
     {
         return zffalse;
     }
@@ -713,9 +713,9 @@ static zfbool _ZFP_ZFUIAniImageCreate(ZF_IN const ZFClass *desiredClass,
         return zffalse;
     }
 
-    imgOutput.callbackClear(); // clear to make the file readable
+    imgOutput = zfnull; // clear to make the file readable
     ZFInput imgInput = ZFInputForLocalFile(pathInfo, imgFileName);
-    if(!imgInput.callbackIsValid())
+    if(!imgInput)
     {
         return zffalse;
     }

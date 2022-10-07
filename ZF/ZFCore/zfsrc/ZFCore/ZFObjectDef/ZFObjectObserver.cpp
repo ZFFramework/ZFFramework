@@ -260,7 +260,7 @@ zfidentity ZFObserverHolder::observerAdd(ZF_IN zfidentity eventId,
     zfCoreMutexLocker();
 
     if(eventId == zfidentityInvalid()
-        || !observer.callbackIsValid())
+        || !observer)
     {
         return zfidentityInvalid();
     }

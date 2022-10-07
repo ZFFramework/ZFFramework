@@ -74,7 +74,7 @@ zfbool ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableData,
                                   ZF_IN const ZFInput &input,
                                   ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
 {
-    if(!input.callbackIsValid())
+    if(!input)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, "invalid input callback");
         return zffalse;
@@ -110,7 +110,7 @@ zfbool ZFSerializableDataToZfsd(ZF_IN_OUT const ZFOutput &output,
                                 ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
                                 ZF_IN_OPT zfbool prettyPrint /* = zftrue */)
 {
-    if(!output.callbackIsValid())
+    if(!output)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, "invalid output callback");
         return zffalse;

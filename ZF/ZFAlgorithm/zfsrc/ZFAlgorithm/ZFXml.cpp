@@ -83,13 +83,13 @@ static zfbool _ZFP_ZFXmlOutputElementUseSingleTag(ZF_IN const ZFXmlItem &element
                                                   ZF_IN const ZFXmlOutputFlags &flags,
                                                   ZF_IN const ZFXmlVisitData &data)
 {
-    return (flags.xmlElementTrimTagIfNoChildren && !element.childFirst().xmlTypeValid());
+    return (flags.xmlElementTrimTagIfNoChildren && !element.childFirst());
 }
 static zfbool _ZFP_ZFXmlOutputElementAttributeNeedNewLine(ZF_IN const ZFXmlItem &element,
                                                           ZF_IN const ZFXmlOutputFlags &flags,
                                                           ZF_IN const ZFXmlVisitData &data)
 {
-    if(!element.xmlTypeValid())
+    if(!element)
     {
         return zffalse;
     }
@@ -100,10 +100,10 @@ static zfbool _ZFP_ZFXmlOutputElementAttributeNeedNewLine(ZF_IN const ZFXmlItem 
     }
     if(flags.xmlElementAttributeCountBeforeAddNewLine == 0)
     {
-        return xmlAttribute.xmlTypeValid();
+        return xmlAttribute;
     }
     zfindex xmlAttributeCount = 0;
-    while(xmlAttribute.xmlTypeValid())
+    while(xmlAttribute)
     {
         ++xmlAttributeCount;
         if(xmlAttributeCount > flags.xmlElementAttributeCountBeforeAddNewLine)
@@ -118,7 +118,7 @@ static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(ZF_IN const ZFXmlItem &xml
                                                       ZF_IN const ZFXmlOutputFlags &flags,
                                                       ZF_IN const ZFXmlVisitData &data)
 {
-    if(flags.xmlElementTrimTagIfNoChildren && !xmlChild.xmlTypeValid())
+    if(flags.xmlElementTrimTagIfNoChildren && !xmlChild)
     {
         return zffalse;
     }
@@ -131,14 +131,14 @@ static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(ZF_IN const ZFXmlItem &xml
     {
         return zftrue;
     }
-    for(ZFXmlItem t = xmlChild.siblingNext(); t.xmlTypeValid(); t = t.siblingNext())
+    for(ZFXmlItem t = xmlChild.siblingNext(); t; t = t.siblingNext())
     {
         if(t.xmlType() != ZFXmlType::e_XmlText)
         {
             return zftrue;
         }
     }
-    for(ZFXmlItem t = xmlChild.siblingPrev(); t.xmlTypeValid(); t = t.siblingPrev())
+    for(ZFXmlItem t = xmlChild.siblingPrev(); t; t = t.siblingPrev())
     {
         if(t.xmlType() != ZFXmlType::e_XmlText)
         {
@@ -220,7 +220,7 @@ private:
                 this->add(data.xmlItem.xmlName());
                 break;
             case ZFXmlVisitType::e_Exit:
-                if(data.xmlItem.attrFirst().xmlTypeValid()
+                if(data.xmlItem.attrFirst()
                     && _ZFP_ZFXmlOutputElementUseSingleTag(data.xmlItem, flags, data))
                 {
                     this->add(" ");
@@ -377,7 +377,7 @@ private:
                 break;
             case ZFXmlVisitType::e_Exit:
             {
-                if(!data.xmlItem.attrFirst().xmlTypeValid())
+                if(!data.xmlItem.attrFirst())
                 {
                     this->add(" ");
                 }
@@ -474,9 +474,9 @@ ZFMETHOD_FUNC_DEFINE_2(ZFXmlVisitCallback, ZFXmlVisitCallbackForOutput,
                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()),
                        ZFMP_IN_OPT(const ZFXmlOutputFlags &, flags, ZFXmlOutputFlagsDefault()))
 {
-    if(!outputCallback.callbackIsValid())
+    if(!outputCallback)
     {
-        return ZFCallback();
+        return zfnull;
     }
     _ZFP_I_ZFXmlOutputOwner *owner = zfAlloc(_ZFP_I_ZFXmlOutputOwner);
     owner->outputCallback = outputCallback;
@@ -882,7 +882,7 @@ static void _ZFP_ZFXmlCopyNode(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
         case ZFXmlType::e_XmlDeclaration:
         {
             ZFXmlItem fromAttribute = from.attrFirst();
-            while(fromAttribute.xmlTypeValid())
+            while(fromAttribute)
             {
                 to.attrAdd(fromAttribute.xmlClone());
                 fromAttribute = fromAttribute.attrNext();
@@ -902,7 +902,7 @@ static void _ZFP_ZFXmlCopyTree(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
         case ZFXmlType::e_XmlElement:
         {
             ZFXmlItem fromChild = from.childFirst();
-            while(fromChild.xmlTypeValid())
+            while(fromChild)
             {
                 to.childAdd(fromChild.xmlCloneTree());
                 fromChild = fromChild.siblingNext();
@@ -912,7 +912,7 @@ static void _ZFP_ZFXmlCopyTree(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
         case ZFXmlType::e_XmlDocument:
         {
             ZFXmlItem fromChild = from.childFirst();
-            while(fromChild.xmlTypeValid())
+            while(fromChild)
             {
                 to.childAdd(fromChild.xmlCloneTree());
                 fromChild = fromChild.siblingNext();
@@ -943,6 +943,10 @@ ZFXmlItem::ZFXmlItem(ZF_IN _ZFP_ZFXmlItemPrivate *ref)
 }
 
 ZFXmlItem::ZFXmlItem(void)
+: d(zfnull)
+{
+}
+ZFXmlItem::ZFXmlItem(ZF_IN const zfnullT &dummy)
 : d(zfnull)
 {
 }
@@ -992,6 +996,19 @@ ZFXmlItem &ZFXmlItem::operator = (ZF_IN const ZFXmlItem &ref)
         {
             zfdelete(dTmp);
         }
+    }
+    return *this;
+}
+ZFXmlItem &ZFXmlItem::operator = (ZF_IN const zfnullT &dummy)
+{
+    if(d)
+    {
+        --(d->refCount);
+        if(d->refCount == 0)
+        {
+            zfdelete(d);
+        }
+        d = zfnull;
     }
     return *this;
 }
@@ -1072,7 +1089,7 @@ void ZFXmlItem::_ZFP_ZFXml_xmlMemoryPool_xmlValue(ZF_IN const zfchar *xmlValue, 
 // ============================================================
 void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisitCallbackForOutput() */) const
 {
-    if(!callback.callbackIsValid() || this->xmlType() == ZFXmlType::e_XmlNull)
+    if(!callback || this->xmlType() == ZFXmlType::e_XmlNull)
     {
         return ;
     }
@@ -1096,7 +1113,7 @@ void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisi
                     }
 
                     ZFXmlItem xmlChild = data.xmlItem.childLast();
-                    if(xmlChild.xmlTypeValid())
+                    if(xmlChild)
                     {
                         zfindex xmlChildDepth = ((data.xmlItem.xmlType() == ZFXmlType::e_XmlDocument)
                             ? data.depth
@@ -1106,7 +1123,7 @@ void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisi
                         {
                             datas.add(ZFXmlVisitData(xmlChild, ZFXmlVisitType::e_Enter, xmlChildDepth, 0));
                             xmlChild = xmlChild.siblingPrev();
-                        } while(xmlChild.xmlTypeValid());
+                        } while(xmlChild);
                         for(zfindex i = ((zfindex)datas.count()) - 1, xmlChildIndex = 0;
                             i != startIndex;
                             --i, ++xmlChildIndex)
@@ -1121,7 +1138,7 @@ void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisi
                 if(xmlType == ZFXmlType::e_XmlElement || xmlType == ZFXmlType::e_XmlDeclaration)
                 {
                     ZFXmlItem xmlAttribute = data.xmlItem.attrLast();
-                    if(xmlAttribute.xmlTypeValid())
+                    if(xmlAttribute)
                     {
                         zfindex xmlAttributeDepth = data.depth + 1;
                         zfindex startIndex = ((zfindex)datas.count()) - 1;
@@ -1129,7 +1146,7 @@ void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisi
                         {
                             datas.add(ZFXmlVisitData(xmlAttribute, ZFXmlVisitType::e_Enter, xmlAttributeDepth, 0));
                             xmlAttribute = xmlAttribute.attrPrev();
-                        } while(xmlAttribute.xmlTypeValid());
+                        } while(xmlAttribute);
                         for(zfindex i = ((zfindex)datas.count()) - 1, xmlChildIndex = 0;
                             i != startIndex;
                             --i, ++xmlChildIndex)
@@ -1571,7 +1588,7 @@ ZFXmlItem::operator zfstring (void) const
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXmlItem, ZFXmlItem, {
         v = ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, srcLen);
-        return v.xmlTypeValid();
+        return v;
     }, {
         return ZFXmlItemToString(s, v, ZFXmlOutputFlagsTrim());
     })
@@ -1664,7 +1681,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFXmlItemToOutput,
                        ZFMP_IN(const ZFXmlItem &, xmlItem),
                        ZFMP_IN_OPT(const ZFXmlOutputFlags &, outputFlags, ZFXmlOutputFlagsDefault()))
 {
-    if(!output.callbackIsValid() || !xmlItem.xmlTypeValid())
+    if(!output || !xmlItem)
     {
         return zffalse;
     }

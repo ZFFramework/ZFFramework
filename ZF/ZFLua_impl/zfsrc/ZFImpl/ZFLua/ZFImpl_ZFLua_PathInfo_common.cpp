@@ -102,20 +102,20 @@ static int _ZFP_ZFLuaLocalInput(ZF_IN lua_State *L, ZF_IN zfbool requireValid, Z
     ZFInputForLocalFileT(ret->zfv, pathInfo->zfv, localFilePath);
 
     // try to search each location
-    if(!ret->zfv.callbackIsValid())
+    if(!ret->zfv)
     {
         ZFInputForPathInfoT(ret->zfv, ZFPathType_res(), localFilePath);
-        if(!ret->zfv.callbackIsValid())
+        if(!ret->zfv)
         {
             ZFInputForPathInfoT(ret->zfv, ZFPathType_file(), localFilePath);
         }
-        if(!ret->zfv.callbackIsValid())
+        if(!ret->zfv)
         {
             ZFInputForPathInfoT(ret->zfv, ZFPathType_modulePath(), localFilePath);
         }
     }
 
-    if(!ret->zfv.callbackIsValid())
+    if(!ret->zfv)
     {
         if(requireValid)
         {
@@ -279,7 +279,7 @@ static int _ZFP_ZFLuaImportAllExecute(ZF_IN lua_State *L,
     ZFInput input;
     input.callbackSerializeCustomDisable(zftrue);
     ZFInputForPathInfoT(input, pathInfo->zfv.pathType, pathInfo->zfv.pathData);
-    if(!input.callbackIsValid())
+    if(!input)
     {
         return ZFImpl_ZFLua_luaError(L,
             "unable to load: %s",
@@ -293,7 +293,7 @@ static int _ZFP_ZFLuaImportAllExecute(ZF_IN lua_State *L,
     }
     m[input.callbackId()] = zftrue;
 
-    if(importCallback.callbackIsValid())
+    if(importCallback)
     {
         importCallback.execute(ZFListenerData().param0(pathInfo), importCallbackUserData);
     }

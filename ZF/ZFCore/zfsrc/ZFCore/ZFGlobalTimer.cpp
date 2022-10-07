@@ -48,7 +48,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfidentity, ZFGlobalTimerAttach,
                        ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse),
                        ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 {
-    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkHigh) != ZFFrameworkStateAvailable || !timerCallback.callbackIsValid())
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkHigh) != ZFFrameworkStateAvailable || !timerCallback)
     {
         return zfidentityInvalid();
     }

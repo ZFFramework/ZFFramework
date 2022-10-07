@@ -10,6 +10,69 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd _ZFP_ZFHttpRequestPrivate;
+
+// ============================================================
+/**
+ * @brief see #ZFHttpRequest
+ */
+zfclass ZF_ENV_EXPORT ZFHttpResponse : zfextends ZFObject
+{
+    ZFOBJECT_DECLARE(ZFHttpResponse, ZFObject)
+    ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFHttpRequest")
+
+    ZFPROPERTY_ASSIGN(zfbool, success) /**< @brief whether the request is considered success */
+    ZFPROPERTY_ASSIGN(zfint, code) /**< @brief http response code */
+    ZFPROPERTY_ASSIGN(zfstring, errorHint) /**< @brief error hint, if error occurred */
+    ZFMETHOD_DECLARE_0(ZFBuffer &, body) /**< @brief response body content */
+
+    // ============================================================
+    /** @brief get the response header */
+    ZFMETHOD_DECLARE_1(zfstring, header,
+                       ZFMP_IN(const zfchar *, key))
+
+    /** @brief response header count */
+    ZFMETHOD_DECLARE_0(zfindex, headerCount)
+
+    /** @brief iterator for #header */
+    ZFMETHOD_DECLARE_0(zfiterator, headerIter)
+    /** @brief iterator for #header */
+    ZFMETHOD_DECLARE_1(zfbool, headerIterValid,
+                       ZFMP_IN(const zfiterator &, it))
+    /** @brief iterator for #header */
+    ZFMETHOD_DECLARE_1(void, headerIterNext,
+                       ZFMP_IN_OUT(zfiterator &, it))
+    /** @brief iterator for #header */
+    ZFMETHOD_DECLARE_1(zfstring, headerIterKey,
+                       ZFMP_IN(const zfiterator &, it))
+    /** @brief iterator for #header */
+    ZFMETHOD_DECLARE_1(zfstring, headerIterValue,
+                       ZFMP_IN(const zfiterator &, it))
+
+    // ============================================================
+    /** @brief util to access body as plain text */
+    ZFMETHOD_DECLARE_0(const zfchar *, bodyText)
+    /** @brief util to access body as json, return an invalid json if not able to parse */
+    ZFMETHOD_DECLARE_0(ZFJsonItem, bodyJson)
+
+    /** @brief print all content info, usually for debug use only */
+    ZFMETHOD_DECLARE_0(zfstring, contentInfo)
+
+protected:
+    zfoverride
+    virtual void objectOnInit(void);
+    zfoverride
+    virtual void objectOnDealloc(void);
+protected:
+    zfoverride
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
+
+private:
+    _ZFP_ZFHttpRequestPrivate *d;
+    friend zfclassFwd ZFHttpRequest;
+    friend zfclassFwd _ZFP_ZFHttpRequestPrivate;
+};
+
+// ============================================================
 /**
  * @brief http request util
  *
@@ -31,6 +94,14 @@ zfclass ZF_ENV_EXPORT ZFHttpRequest : zfextends ZFStyleableObject
 {
     ZFOBJECT_DECLARE(ZFHttpRequest, ZFStyleableObject)
 
+    /**
+     * @brief called when any response received or timeout, before #EventOnResponse and impl callback
+     *
+     * sender is the #ZFHttpRequest,
+     * param0 is the #ZFHttpResponse\n
+     * call in the same thread that #request was called
+     */
+    ZFOBSERVER_EVENT(OnResponsePrepare)
     /**
      * @brief called when any response received or timeout
      *
@@ -109,29 +180,19 @@ zfclass ZF_ENV_EXPORT ZFHttpRequest : zfextends ZFStyleableObject
     /**
      * @brief start the request
      *
-     * callback would be called in the same thread that called this method
+     * callback would be called in the same thread that called this method,
+     * sender is the owner #ZFHttpRequest,
+     * param0 is the #ZFHttpResponse
      */
     ZFMETHOD_DECLARE_2(ZFHttpRequest *, request,
-                       ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
-    /** @brief util to write to #body and start request */
-    ZFMETHOD_DECLARE_3(ZFHttpRequest *, request,
-                       ZFMP_IN(const zfchar *, text),
-                       ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
-    /** @brief util to write to #body and start request */
-    ZFMETHOD_DECLARE_3(ZFHttpRequest *, request,
-                       ZFMP_IN(const ZFJsonItem &, json),
-                       ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
-    /** @brief util to write to #body and start request */
-    ZFMETHOD_DECLARE_3(ZFHttpRequest *, request,
-                       ZFMP_IN(const ZFBuffer &, buf),
                        ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
 
     /** @brief cancel the request */
     ZFMETHOD_DECLARE_0(void, requestCancel)
+
+    /** @brief util to perform sync request */
+    ZFMETHOD_DECLARE_0(zfautoObjectT<ZFHttpResponse *>, requestSync)
 
     /** @brief print all content info, usually for debug use only */
     ZFMETHOD_DECLARE_0(zfstring, contentInfo)
@@ -149,66 +210,6 @@ private:
     _ZFP_ZFHttpRequestPrivate *d;
 public:
     void _ZFP_ZFHttpRequest_notifyResponse(void);
-};
-
-// ============================================================
-/**
- * @brief see #ZFHttpRequest
- */
-zfclass ZF_ENV_EXPORT ZFHttpResponse : zfextends ZFObject
-{
-    ZFOBJECT_DECLARE(ZFHttpResponse, ZFObject)
-    ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFHttpRequest")
-
-    ZFPROPERTY_ASSIGN(zfint, code) /**< @brief http response code */
-    ZFPROPERTY_ASSIGN(zfstring, errorHint) /**< @brief error hint, if error occurred */
-    ZFMETHOD_DECLARE_0(ZFBuffer &, body) /**< @brief response body content */
-
-    // ============================================================
-    /** @brief get the response header */
-    ZFMETHOD_DECLARE_1(zfstring, header,
-                       ZFMP_IN(const zfchar *, key))
-
-    /** @brief response header count */
-    ZFMETHOD_DECLARE_0(zfindex, headerCount)
-
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_0(zfiterator, headerIter)
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfbool, headerIterValid,
-                       ZFMP_IN(const zfiterator &, it))
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(void, headerIterNext,
-                       ZFMP_IN_OUT(zfiterator &, it))
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfstring, headerIterKey,
-                       ZFMP_IN(const zfiterator &, it))
-    /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfstring, headerIterValue,
-                       ZFMP_IN(const zfiterator &, it))
-
-    // ============================================================
-    /** @brief util to access body as plain text */
-    ZFMETHOD_DECLARE_0(const zfchar *, bodyText)
-    /** @brief util to access body as json, return an invalid json if not able to parse */
-    ZFMETHOD_DECLARE_0(ZFJsonItem, bodyJson)
-
-    /** @brief print all content info, usually for debug use only */
-    ZFMETHOD_DECLARE_0(zfstring, contentInfo)
-
-protected:
-    zfoverride
-    virtual void objectOnInit(void);
-    zfoverride
-    virtual void objectOnDealloc(void);
-protected:
-    zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
-
-private:
-    _ZFP_ZFHttpRequestPrivate *d;
-    friend zfclassFwd ZFHttpRequest;
-    friend zfclassFwd _ZFP_ZFHttpRequestPrivate;
 };
 
 ZF_NAMESPACE_GLOBAL_END

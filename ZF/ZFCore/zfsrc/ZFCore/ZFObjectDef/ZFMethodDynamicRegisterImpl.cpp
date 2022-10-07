@@ -91,7 +91,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
             param.methodNamespace());
         return zfnull;
     }
-    zfbool methodImplValid = param.methodImpl().callbackIsValid();
+    zfbool methodImplValid = param.methodImpl();
     if(param.methodGenericInvoker() == zfnull && !methodImplValid)
     {
         zfstringAppend(errorHint, "methodGenericInvoker / methodImpl not set");
@@ -222,7 +222,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
             , param.methodParamTypeIdAtIndex(5), param.methodParamTypeNameAtIndex(5), param.methodParamNameAtIndex(5), param.methodParamDefaultValueCallbackAtIndex(5)
             , param.methodParamTypeIdAtIndex(6), param.methodParamTypeNameAtIndex(6), param.methodParamNameAtIndex(6), param.methodParamDefaultValueCallbackAtIndex(6)
             , param.methodParamTypeIdAtIndex(7), param.methodParamTypeNameAtIndex(7), param.methodParamNameAtIndex(7), param.methodParamDefaultValueCallbackAtIndex(7)
-            , zfnull
+            , (const zfchar *)zfnull
         );
     for(zfindex i = 0; i < param.methodParamCount(); ++i)
     {

@@ -83,7 +83,7 @@ protected:
     zfoverride
     virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress)
     {
-        if(this->customAniCallback().callbackIsValid())
+        if(this->customAniCallback())
         {
             this->_ZFP_progressHolder->zfv = progress;
             this->customAniCallback().execute(

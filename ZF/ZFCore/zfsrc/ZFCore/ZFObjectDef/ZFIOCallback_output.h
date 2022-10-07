@@ -87,7 +87,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFOutput, ZFIOCallback)
     /** @cond ZFPrivateDoc */ \
     inline const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) \
     { \
-        if(output.callbackIsValid()) \
+        if(output) \
         outputAction \
         return output; \
     } \

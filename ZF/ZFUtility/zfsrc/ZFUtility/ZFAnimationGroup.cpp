@@ -73,7 +73,7 @@ public:
             this->pimplOwner->aniImplNotifyStop();
             return ;
         }
-        if(this->cachedParallel != this->pimplOwner->aniParallel() || !this->cachedOnStartListener.callbackIsValid())
+        if(this->cachedParallel != this->pimplOwner->aniParallel() || !this->cachedOnStartListener)
         {
             this->cachedParallel = this->pimplOwner->aniParallel();
             if(this->cachedParallel)

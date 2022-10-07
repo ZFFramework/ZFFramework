@@ -361,6 +361,14 @@ ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFPathInfoForLocalFileT,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const zfchar *, childPath))
 /**
+ * @brief util to make a child path info relative to existing one,
+ *   see also #ZFFilePathInfoCallbackToChild
+ */
+ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFPathInfoForLocalFileT,
+                        ZFMP_OUT(zfstring &, ret),
+                        ZFMP_IN(const ZFPathInfo &, pathInfo),
+                        ZFMP_IN(const zfchar *, childPath))
+/**
  * @brief see #ZFPathInfoForLocalFileT
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFPathInfo, ZFPathInfoForLocalFile,

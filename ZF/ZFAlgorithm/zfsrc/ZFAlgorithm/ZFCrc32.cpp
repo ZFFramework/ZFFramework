@@ -54,7 +54,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfflags, zfCrc32Calc,
                        ZFMP_IN(const ZFInput &, callback),
                        ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero()))
 {
-    if(!callback.callbackIsValid()) {return ZFCrc32ValueInvalid();}
+    if(!callback) {return ZFCrc32ValueInvalid();}
 
     zfbyte buf[1024] = {0};
     zfindex readCount = 0;

@@ -68,8 +68,8 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
     for(zfindex i = 0; i < settings->count(); ++i)
     {
         ZFUIKit_test_SettingData *setting = settings->get<ZFUIKit_test_SettingData *>(i);
-        zfCoreAssert(setting->buttonTextGetter().callbackIsValid());
-        zfCoreAssert(setting->buttonClickListener().callbackIsValid());
+        zfCoreAssert(setting->buttonTextGetter());
+        zfCoreAssert(setting->buttonClickListener());
 
         zfblockedAlloc(ZFUIKit_test_Button, button);
         listView->childAdd(button);
@@ -123,7 +123,7 @@ void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
                                             ZF_IN ZFObject *userData)
 {
     zfCoreAssert(settings != zfnull);
-    zfCoreAssert(nextCallback.callbackIsValid());
+    zfCoreAssert(nextCallback);
 
     zfblockedAlloc(ZFObject, holder);
     holder->objectTag("obj", obj->objectHolder());

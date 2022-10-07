@@ -185,24 +185,20 @@ zfclassLikePOD ZF_ENV_EXPORT ZFJsonItem
 {
     // ============================================================
 public:
-    /** @brief construct a null item */
+    /** @cond ZFPrivateDoc */
     ZFJsonItem(void);
-    /** @brief construct with specified type */
+    ZFJsonItem(ZF_IN const zfnullT &dummy);
     ZFJsonItem(ZF_IN ZFJsonTypeEnum jsonType);
-    /** @brief retain from other item */
     ZFJsonItem(ZF_IN const ZFJsonItem &ref);
     virtual ~ZFJsonItem(void);
 
-    /** @cond ZFPrivateDoc */
     ZFJsonItem &operator = (ZF_IN const ZFJsonItem &ref);
+    ZFJsonItem &operator = (ZF_IN const zfnullT &dummy);
+    inline zfbool operator == (ZF_IN const zfnullT &ref) const {return !this->jsonTypeValid();}
+    inline zfbool operator != (ZF_IN const zfnullT &ref) const {return this->jsonTypeValid();}
     zfbool operator == (ZF_IN const ZFJsonItem &ref) const;
-    zfbool operator != (ZF_IN const ZFJsonItem &ref) const {return !(this->operator == (ref));}
+    inline zfbool operator != (ZF_IN const ZFJsonItem &ref) const {return !(this->operator == (ref));}
     /** @endcond */
-private:
-    zfbool operator == (ZF_IN const zfchar *ref) const;
-    zfbool operator != (ZF_IN const zfchar *ref) const;
-    zfbool operator == (ZF_IN zfint ref) const;
-    zfbool operator != (ZF_IN zfint ref) const;
 
     // ============================================================
 public:
@@ -355,6 +351,8 @@ public:
 public:
     /** @brief return #ZFJsonItemToString */
     operator zfstring (void) const;
+    /** @brief return #jsonTypeValid */
+    operator zfbool (void) const {return this->jsonTypeValid();}
     /** @brief access #attr */
     inline ZFJsonItem operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
     /** @brief access #childAtIndex */

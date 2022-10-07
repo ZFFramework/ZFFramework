@@ -165,11 +165,13 @@ public:
             }
             if(error != nil)
             {
+                weakTask.ownerResponse->success(zffalse);
                 weakTask.ownerResponse->code((int)error.code);
                 weakTask.ownerResponse->errorHint(ZFImpl_sys_iOS_zfstringFromNSString([NSString stringWithFormat:@"\"%@\"", error.localizedDescription]));
             }
             else
             {
+                weakTask.ownerResponse->success(((NSHTTPURLResponse *)response).statusCode == 200);
                 weakTask.ownerResponse->code((zfint)(((NSHTTPURLResponse *)response).statusCode));
             }
             weakTask.response = (NSHTTPURLResponse *)response;

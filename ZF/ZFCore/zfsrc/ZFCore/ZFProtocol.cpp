@@ -247,7 +247,7 @@ void ZFProtocolImplInfoPrint(ZF_IN const ZFProtocolImplInfo &data,
 ZFMETHOD_FUNC_DEFINE_1(void, ZFProtocolImplInfoPrint,
                        ZFMP_IN_OPT(const ZFOutput &, callback, ZFOutputDefault()))
 {
-    if(!callback.callbackIsValid())
+    if(!callback)
     {
         return ;
     }

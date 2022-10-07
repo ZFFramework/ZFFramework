@@ -101,24 +101,20 @@ zffinal zfclassLikePOD ZF_ENV_EXPORT ZFXmlItem
 {
     // ============================================================
 public:
-    /** @brief construct a null item */
+    /** @cond ZFPrivateDoc */
     ZFXmlItem(void);
-    /** @brief construct with specified type */
+    ZFXmlItem(ZF_IN const zfnullT &dummy);
     ZFXmlItem(ZF_IN ZFXmlTypeEnum xmlType);
-    /** @brief retain from other item */
     ZFXmlItem(ZF_IN const ZFXmlItem &ref);
     virtual ~ZFXmlItem(void);
 
-    /** @cond ZFPrivateDoc */
     ZFXmlItem &operator = (ZF_IN const ZFXmlItem &ref);
+    ZFXmlItem &operator = (ZF_IN const zfnullT &dummy);
+    inline zfbool operator == (ZF_IN const zfnullT &dummy) const {return !this->xmlTypeValid();}
+    inline zfbool operator != (ZF_IN const zfnullT &dummy) const {return this->xmlTypeValid();}
     zfbool operator == (ZF_IN const ZFXmlItem &ref) const;
     inline zfbool operator != (ZF_IN const ZFXmlItem &ref) const {return !(this->operator == (ref));}
     /** @endcond */
-private:
-    zfbool operator == (ZF_IN const zfchar *ref) const;
-    zfbool operator != (ZF_IN const zfchar *ref) const;
-    zfbool operator == (ZF_IN zfint ref) const;
-    zfbool operator != (ZF_IN zfint ref) const;
 
     // ============================================================
 public:
@@ -363,6 +359,8 @@ public:
 public:
     /** @brief return #ZFXmlItemToString */
     operator zfstring (void) const;
+    /** @brief return #xmlTypeValid */
+    operator zfbool (void) const {return this->xmlTypeValid();}
     /** @brief access #attr */
     inline ZFXmlItem operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
 

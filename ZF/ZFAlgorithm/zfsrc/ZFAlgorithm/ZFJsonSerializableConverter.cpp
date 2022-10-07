@@ -33,7 +33,7 @@ static zfbool _ZFP_ZFSerializableDataFromJson(ZF_OUT ZFSerializableData &seriali
                                               ZF_OUT_OPT zfstring *outErrorHint = zfnull,
                                               ZF_OUT_OPT ZFJsonItem *outErrorPos = zfnull)
 {
-    if(!jsonObject.jsonTypeValid())
+    if(!jsonObject)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, "null json object");
         if(outErrorPos != zfnull)
@@ -94,7 +94,7 @@ static zfbool _ZFP_ZFSerializableDataFromJson(ZF_OUT ZFSerializableData &seriali
         return zffalse;
     }
 
-    if(elementJsonArray.jsonTypeValid())
+    if(elementJsonArray)
     {
         for(zfindex i = 0; i < elementJsonArray.childCount(); ++i)
         {
@@ -141,7 +141,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToJson,
                        ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
 {
     jsonObject = ZFSerializableDataToJson(serializableData, outErrorHint, outErrorPos);
-    return jsonObject.jsonTypeValid();
+    return jsonObject;
 }
 ZFMETHOD_FUNC_DEFINE_3(ZFJsonItem, ZFSerializableDataToJson,
                        ZFMP_IN(const ZFSerializableData &, serializableData),
@@ -188,7 +188,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFSerializableDataFromJson,
                        ZFMP_IN(const ZFInput &, input),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
 {
-    if(!input.callbackIsValid())
+    if(!input)
     {
         zfstringAppend(outErrorHint, "invalid input callback");
         return zffalse;

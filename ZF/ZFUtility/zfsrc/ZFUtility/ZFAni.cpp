@@ -8,7 +8,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
                        ZFMP_IN(const ZFListener &, aniImpl),
                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
 {
-    if(!aniImpl.callbackIsValid())
+    if(!aniImpl)
     {
         return zfnull;
     }

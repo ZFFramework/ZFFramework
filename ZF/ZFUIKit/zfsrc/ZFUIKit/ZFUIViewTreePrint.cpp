@@ -87,7 +87,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint,
                        ZFMP_IN(ZFUIView *, view),
                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()))
 {
-    if(view == zfnull || !outputCallback.callbackIsValid())
+    if(view == zfnull || !outputCallback)
     {
         return ;
     }
@@ -267,7 +267,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreeNativePrint,
                        ZFMP_IN(ZFUIView *, view),
                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()))
 {
-    if(!outputCallback.callbackIsValid())
+    if(!outputCallback)
     {
         return;
     }

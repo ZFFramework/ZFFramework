@@ -122,7 +122,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFilePathInfoCopy,
 {
     if(srcPath == zfnull || dstPath == zfnull)
     {
-        _ZFP_ZFFilePathInfoCopy_SetErrPos(errPos, zfnull);
+        _ZFP_ZFFilePathInfoCopy_SetErrPos(errPos, (const ZFPathInfo *)zfnull);
         return zffalse;
     }
     if(!ZFFilePathInfoIsExist(srcPath))

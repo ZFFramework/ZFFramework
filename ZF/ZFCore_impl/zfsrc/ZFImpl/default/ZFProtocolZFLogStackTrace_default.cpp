@@ -73,7 +73,8 @@ public:
 private:
     zfstring trimFunc(ZF_IN const zfchar *s)
     {
-        zfstring ret(zfslen(s));
+        zfstring ret;
+        ret.capacity(zfslen(s));
         const zfchar *last = (s - 1);
         zfbool namespaceMatched = zffalse;
         while(*s)

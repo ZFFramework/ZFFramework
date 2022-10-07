@@ -45,7 +45,8 @@ public:
             zfdelete(this->bodyJsonCache);
             this->bodyJsonCache = zfnull;
         }
-        if(this->callback.callbackIsValid())
+        owner->observerNotify(ZFHttpRequest::EventOnResponsePrepare(), this->response);
+        if(this->callback)
         {
             this->callback.execute(ZFListenerData()
                 .sender(owner)
@@ -72,6 +73,7 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFHttpRequest)
 
+ZFOBSERVER_EVENT_REGISTER(ZFHttpRequest, OnResponsePrepare)
 ZFOBSERVER_EVENT_REGISTER(ZFHttpRequest, OnResponse)
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFHttpRequest,
@@ -191,35 +193,36 @@ ZFMETHOD_DEFINE_2(ZFHttpRequest, ZFHttpRequest *, request,
 
     return this;
 }
-ZFMETHOD_DEFINE_3(ZFHttpRequest, ZFHttpRequest *, request,
-                  ZFMP_IN(const zfchar *, text),
-                  ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
-{
-    this->body(text);
-    return this->request(callback, userData);
-}
-ZFMETHOD_DEFINE_3(ZFHttpRequest, ZFHttpRequest *, request,
-                  ZFMP_IN(const ZFJsonItem &, json),
-                  ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
-{
-    this->body(json);
-    return this->request(callback, userData);
-}
-ZFMETHOD_DEFINE_3(ZFHttpRequest, ZFHttpRequest *, request,
-                  ZFMP_IN(const ZFBuffer &, buf),
-                  ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
-{
-    this->body(buf);
-    return this->request(callback, userData);
-}
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel)
 {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->requestCancel(d->nativeTask);
     d->notifyCancel(this);
+}
+
+ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoObjectT<ZFHttpResponse *>, requestSync)
+{
+    ZFHttpRequest *send = this;
+    zfautoObjectT<ZFHttpResponse *> recv;
+    zfblockedAlloc(ZFSemaphore, waitLock);
+    ZFLISTENER_3(onRequest
+            , ZFHttpRequest *, send
+            , ZFSemaphore *, waitLock
+            , zfautoObjectT<ZFHttpResponse *> &, recv
+            ) {
+        ZFLISTENER_2(onResponse
+                , ZFSemaphore *, waitLock
+                , zfautoObjectT<ZFHttpResponse *> &, recv
+                ) {
+            recv = listenerData.param0();
+            waitLock->semaphoreBroadcast();
+        } ZFLISTENER_END(onResponse)
+        send->request(onResponse);
+    } ZFLISTENER_END(onRequest)
+    zfasync(onRequest);
+
+    waitLock->semaphoreWait();
+    return recv;
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, contentInfo)

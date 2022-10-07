@@ -583,7 +583,7 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
                 , paramTypeId[5], paramTypeName[5], paramName[5], paramDefaultValueAccess[5]
                 , paramTypeId[6], paramTypeName[6], paramName[6], paramDefaultValueAccess[6]
                 , paramTypeId[7], paramTypeName[7], paramName[7], paramDefaultValueAccess[7]
-                , zfnull
+                , (const zfchar *)zfnull
             );
 
         if(methodOwnerClass != zfnull)

@@ -69,7 +69,7 @@ public:
      */
     virtual inline void runnableExecute(void)
     {
-        if(this->runnable.callbackIsValid())
+        if(this->runnable)
         {
             this->runnable.execute(this->listenerData, this->userData());
         }
