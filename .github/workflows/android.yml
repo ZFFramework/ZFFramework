@@ -24,6 +24,9 @@ jobs:
       uses: nttld/setup-ndk@v1
       with:
         ndk-version: r21e
+        
+    - name: ZF env
+      run: export ZFAndroidABI=${{ZFANDROIDABI}}
 
     - name: Build demo project with src
       run: sh ./master/ZF_CI/testbuild/testbuild_Android.sh ZFFramework_test ./demo/zfproj_with_src/Android/ZFFramework_test
