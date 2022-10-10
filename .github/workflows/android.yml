@@ -26,7 +26,7 @@ jobs:
         ndk-version: r21e
         
     - name: ZF env
-      run: export ZFAndroidABI=${{ZFANDROIDABI}}
+      run: export ZFAndroidABI=${{secrets.ZFANDROIDABI}}
 
     - name: Build demo project with src
       run: sh ./master/ZF_CI/testbuild/testbuild_Android.sh ZFFramework_test ./demo/zfproj_with_src/Android/ZFFramework_test
