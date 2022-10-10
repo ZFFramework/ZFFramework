@@ -20,11 +20,10 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Android NDK toolchain Setup
-      uses: ravinderjangra/android-ndk-toolchain-setup@0.2
+    - name: Setup Android NDK
+      uses: nttld/setup-ndk@v1
       with:
-        api: 21
-        arch: arm64-v8a
+        ndk-version: r21e
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
