@@ -25,7 +25,8 @@ jobs:
       with:
         ndk-version: r21e
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Build demo project with src
+      run: sh ./master/ZF_CI/testbuild/testbuild_Android.sh ZFFramework_test ./demo/zfproj_with_src/Android/ZFFramework_test
+
+    - name: Build demo project with lib
+      run: sh ./master/ZF_CI/testbuild/testbuild_Android.sh ZFFramework_test ./demo/zfproj/Android/ZFFramework_test
