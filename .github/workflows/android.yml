@@ -14,20 +14,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: set up JDK 11
+
+    - name: Setup JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
+        java-version: 1.8
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v2
 
     - name: Setup Android NDK
       uses: nttld/setup-ndk@v1
       with:
         ndk-version: r21e
 
-    - name: Build demo project with src
+    - name: ZF build zfproj_with_src
       run: sh ./master/ZF_CI/testbuild/testbuild_Android.sh ZFFramework_test ./demo/zfproj_with_src/Android/ZFFramework_test
 
-    - name: Build demo project with lib
+    - name: ZF build zfproj
       run: sh ./master/ZF_CI/testbuild/testbuild_Android.sh ZFFramework_test ./demo/zfproj/Android/ZFFramework_test
