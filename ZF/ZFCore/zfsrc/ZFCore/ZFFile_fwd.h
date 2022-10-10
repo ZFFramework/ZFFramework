@@ -138,6 +138,11 @@ public:
     void implDetach(void);
     /** @brief check whether impl matches, assert fail if not match, return the #implUserData */
     void *implCheck(ZF_IN const zfchar *implName) const;
+
+    /** @brief util for impl to store extra data */
+    void implTag(ZF_IN const zfchar *key, ZF_IN ZFObject *value) const;
+    /** @brief util for impl to store extra data */
+    ZFObject *implTag(ZF_IN const zfchar *key) const;
 private:
     _ZFP_ZFFileFindDataPrivate *d;
 };

@@ -460,13 +460,6 @@ ZFOUTPUT_TYPE(ZFPathInfo, {output.execute(ZFPathInfoToString(v));})
 #define ZFSerializableKeyword_ZFPathInfo_separator ":"
 
 /**
- * @brief util method to parse path info for performance
- */
-extern ZF_ENV_EXPORT zfbool ZFPathInfoParse(ZF_IN const zfchar *pathInfo,
-                                            ZF_OUT zfstring &pathType,
-                                            ZF_OUT const zfchar *&pathData);
-
-/**
  * @brief see #ZFTYPEID_DECLARE
  *
  * serializable data:

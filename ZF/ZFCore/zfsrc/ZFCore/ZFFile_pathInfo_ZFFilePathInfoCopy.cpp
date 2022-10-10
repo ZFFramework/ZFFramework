@@ -63,8 +63,8 @@ static zfbool _ZFP_ZFFilePathInfoCopy_copyDir(ZF_IN const ZFPathInfo &srcPath,
     stacksDirSrc.add(srcPath.pathData);
     stacksDirDst.add(dstPath.pathData);
 
-    ZFPathInfo srcDir(srcPath.pathType);
-    ZFPathInfo dstDir(dstPath.pathType);
+    ZFPathInfo srcDir(srcPath.pathType, zfnull);
+    ZFPathInfo dstDir(dstPath.pathType, zfnull);
     zfstring errPosTmp;
     while(!stacksDirSrc.isEmpty())
     {
@@ -83,8 +83,8 @@ static zfbool _ZFP_ZFFilePathInfoCopy_copyDir(ZF_IN const ZFPathInfo &srcPath,
         ZFFileFindData fd;
         if(ZFFilePathInfoFindFirst(srcDir, fd))
         {
-            ZFPathInfo srcTmp(srcDir.pathType);
-            ZFPathInfo dstTmp(dstDir.pathType);
+            ZFPathInfo srcTmp(srcDir.pathType, zfnull);
+            ZFPathInfo dstTmp(dstDir.pathType, zfnull);
             do
             {
                 srcTmp.pathData = srcDir.pathData;
@@ -145,7 +145,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFilePathInfoCopy,
     }
 
     {
-        ZFPathInfo dstPathParent(dstPath.pathType);
+        ZFPathInfo dstPathParent(dstPath.pathType, zfnull);
         if(!srcIsDir)
         {
             if(!ZFFilePathInfoToParent(dstPathParent, dstPathParent.pathData))

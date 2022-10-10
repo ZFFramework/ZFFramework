@@ -564,42 +564,15 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, ZFFilterType, fil
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, zfbool, filterCheckActive, ZFMP_IN(const zfchar *, e))
 
 // ============================================================
-zfbool ZFPathInfoParse(ZF_IN const zfchar *pathInfo,
-                       ZF_OUT zfstring &pathType,
-                       ZF_OUT const zfchar *&pathData)
-{
-    pathData = pathInfo;
-    while(*pathData != ZFSerializableKeyword_ZFPathInfo_separator[0] && *pathData != '\0') {++pathData;}
-    if(*pathData != ZFSerializableKeyword_ZFPathInfo_separator[0])
-    {
-        return zffalse;
-    }
-    pathType.append(pathInfo, pathData - pathInfo);
-    ++pathData;
-    return zftrue;
-}
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPathInfo, ZFPathInfo, {
-        if(srcLen == zfindexMax())
-        {
-            const zfchar *pathData = zfnull;
-            if(!ZFPathInfoParse(src, v.pathType, pathData))
-            {
-                return zffalse;
-            }
-            v.pathData = pathData;
-            return zftrue;
-        }
-        else
-        {
-            const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen);
-            const zfchar *p = src;
-            while(*p != ZFSerializableKeyword_ZFPathInfo_separator[0] && p < srcEnd) {++p;}
-            if(*p != ZFSerializableKeyword_ZFPathInfo_separator[0]) {return zffalse;}
-            v.pathType.assign(src, p - src);
-            ++p;
-            v.pathData.assign(p, srcEnd - p);
-            return zftrue;
-        }
+        const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen);
+        const zfchar *p = src;
+        while(*p != ZFSerializableKeyword_ZFPathInfo_separator[0] && p < srcEnd) {++p;}
+        if(*p != ZFSerializableKeyword_ZFPathInfo_separator[0]) {return zffalse;}
+        v.pathType.assign(src, p - src);
+        ++p;
+        v.pathData.assign(p, srcEnd - p);
+        return zftrue;
     }, {
         s += v.pathType;
         s += ZFSerializableKeyword_ZFPathInfo_separator[0];

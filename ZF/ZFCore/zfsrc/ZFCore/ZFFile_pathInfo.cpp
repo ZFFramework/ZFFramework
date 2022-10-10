@@ -657,7 +657,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFInputForPathInfoStringT,
 {
     zfstring pathType;
     const zfchar *pathData = zfnull;
-    if(!ZFPathInfoParse(pathInfoString, pathType, pathData))
+    if(!ZFPathInfoParse(pathType, pathData, pathInfoString))
     {
         return zffalse;
     }
@@ -867,7 +867,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForPathInfoStringT,
 {
     zfstring pathType;
     const zfchar *pathData = zfnull;
-    if(!ZFPathInfoParse(pathInfoString, pathType, pathData))
+    if(!ZFPathInfoParse(pathType, pathData, pathInfoString))
     {
         return zffalse;
     }
@@ -1218,6 +1218,157 @@ ZFSTYLE_DECODER_DEFINE(ZFStyleDecoder_pathInfo, {
     return ZFInputForPathInfoStringT(input, styleKey + 1)
         && ZFObjectIOLoadT(ret, input);
 })
+
+// ============================================================
+zfbool ZFPathInfoParse(ZF_OUT zfstring &pathType,
+                       ZF_OUT const zfchar *&pathData,
+                       ZF_IN const zfchar *pathInfo)
+{
+    pathData = pathInfo;
+    while(*pathData != ZFSerializableKeyword_ZFPathInfo_separator[0] && *pathData != '\0') {++pathData;}
+    if(*pathData != ZFSerializableKeyword_ZFPathInfo_separator[0])
+    {
+        pathData = zfnull;
+        return zffalse;
+    }
+    else
+    {
+        pathType.append(pathInfo, pathData - pathInfo);
+        ++pathData;
+        return zftrue;
+    }
+}
+zfbool ZFPathInfoParse(ZF_OUT zfstring &pathType,
+                       ZF_OUT zfstring &pathData,
+                       ZF_IN const zfchar *pathInfo)
+{
+    const zfchar *pathDataTmp = zfnull;
+    if(ZFPathInfoParse(pathType, pathDataTmp, pathInfo))
+    {
+        pathData += pathDataTmp;
+        return zftrue;
+    }
+    else
+    {
+        return zffalse;
+    }
+}
+
+const ZFFilePathInfoImpl *ZFPathInfoVerify(ZF_IN const zfchar *pathInfo)
+{
+    zfstring pathType;
+    const zfchar *pathData = zfnull;
+    if(ZFPathInfoParse(pathType, pathData, pathInfo))
+    {
+        return ZFFilePathInfoImplForPathType(pathType);
+    }
+    else
+    {
+        return zfnull;
+    }
+}
+
+const ZFFilePathInfoImpl *ZFPathInfoParseAndVerify(ZF_OUT zfstring &pathType,
+                                                   ZF_OUT const zfchar *&pathData,
+                                                   ZF_IN const zfchar *pathInfo)
+{
+    zfindex pathTypeLenSaved = pathType.length();
+    if(ZFPathInfoParse(pathType, pathData, pathInfo))
+    {
+        const ZFFilePathInfoImpl *ret = ZFFilePathInfoImplForPathType(pathType.cString() + pathTypeLenSaved);
+        if(ret == zfnull)
+        {
+            pathType.remove(pathTypeLenSaved);
+            pathData = zfnull;
+            return zfnull;
+        }
+        else
+        {
+            return ret;
+        }
+    }
+    else
+    {
+        return zfnull;
+    }
+}
+
+// ============================================================
+// all printable chars (0x20 ~ 0x7E) except:
+//   '%' : 0x25
+//   '|' : 0x7C
+const zfchar _ZFP_ZFPathInfoChainCharMap[256] = {
+    // 0x00 ~ 0x0F
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0x10 ~ 0x1F
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0x20 ~ 0x2F
+    1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    // 0x30 ~ 0x3F
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    // 0x40 ~ 0x4F
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    // 0x50 ~ 0x5F
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    // 0x60 ~ 0x6F
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    // 0x70 ~ 0x7F
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0,
+    // 0x80 ~ 0x8F
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0x90 ~ 0x9F
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0xA0 ~ 0xAF
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0xB0 ~ 0xBF
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0xC0 ~ 0xCF
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0xD0 ~ 0xDF
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0xE0 ~ 0xEF
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    // 0xF0 ~ 0xFF
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+};
+
+zfbool ZFPathInfoChainParse(ZF_OUT zfstring &chainPathType,
+                            ZF_OUT zfstring &chainPathData,
+                            ZF_OUT const zfchar *&pathData,
+                            ZF_IN const zfchar *pathDataOrig)
+{
+    zfindex pos = zfstringFind(pathDataOrig, '|');
+    if(pos == zfindexMax())
+    {
+        return zffalse;
+    }
+    zfstring chainPathInfo;
+    chainPathInfo.capacity(pos);
+    zfCoreDataDecode(chainPathInfo, pathDataOrig, pos);
+    if(!ZFPathInfoParse(chainPathType, chainPathData, chainPathInfo))
+    {
+        return zffalse;
+    }
+    pathData = pathDataOrig + pos + 1;
+    return zftrue;
+}
+zfbool ZFPathInfoChainParse(ZF_OUT zfstring &chainPathInfoString,
+                            ZF_OUT const zfchar *&pathData,
+                            ZF_IN const zfchar *pathDataOrig)
+{
+    zfindex pos = zfstringFind(pathDataOrig, '|');
+    if(pos == zfindexMax())
+    {
+        return zffalse;
+    }
+    else
+    {
+        chainPathInfoString.capacity(chainPathInfoString.length() + pos);
+        zfCoreDataDecode(chainPathInfoString, pathDataOrig, pos);
+        pathData = pathDataOrig + pos + 1;
+        return zftrue;
+    }
+}
 
 ZF_NAMESPACE_GLOBAL_END
 

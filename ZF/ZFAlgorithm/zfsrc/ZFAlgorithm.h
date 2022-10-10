@@ -17,6 +17,8 @@
 #include "ZFAlgorithm/ZFMd5.h"
 #include "ZFAlgorithm/ZFObjectIO_json.h"
 #include "ZFAlgorithm/ZFObjectIO_xml.h"
+#include "ZFAlgorithm/ZFPathType_ZFCompress.h"
+#include "ZFAlgorithm/ZFPathType_base64.h"
 #include "ZFAlgorithm/ZFRegExp.h"
 #include "ZFAlgorithm/ZFTextTemplate.h"
 #include "ZFAlgorithm/ZFTextTemplateRun.h"

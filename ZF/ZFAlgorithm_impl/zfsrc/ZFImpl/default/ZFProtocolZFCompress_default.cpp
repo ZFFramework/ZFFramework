@@ -113,6 +113,12 @@ public:
             return mz_zip_writer_add_mem(zip, tmp.cString(), NULL, 0, 0);
         }
     }
+    virtual zfbool compressContentRemove(ZF_IN_OUT void *compressToken,
+                                         ZF_IN const zfchar *filePathInZip)
+    {
+        // not implemented yet
+        return zffalse;
+    }
 
     virtual void *decompressBegin(ZF_IN_OUT const ZFInput &inputZip)
     {
@@ -198,10 +204,16 @@ public:
             return zffalse;
         }
         filePathInZip.capacity(filePathInZip.length() + size);
-        filePathInZip.zfunsafe_length(filePathInZip.length() + size);
+        filePathInZip.zfunsafe_length(filePathInZip.length() + size - 1); // the size including '\0'
         mz_zip_reader_get_filename(zip, (mz_uint)fileIndexInZip, filePathInZip.zfunsafe_buffer(), (mz_uint)size);
-        filePathInZip.zfunsafe_buffer()[filePathInZip.length()] = '\0';
         return zftrue;
+    }
+    virtual zfbool decompressContentIsDir(ZF_IN void *decompressToken,
+                                          ZF_IN zfindex fileIndexInZip)
+    {
+        mz_zip_archive *zip = (mz_zip_archive *)decompressToken;
+        mz_zip_archive_file_stat stat;
+        return (mz_zip_reader_file_stat(zip, (mz_uint)fileIndexInZip, &stat) && stat.m_is_directory);
     }
 
 private:
@@ -399,10 +411,7 @@ private:
     static size_t _writeFuncForOutput(void *pOpaque, mz_uint64 file_ofs, const void *pBuf, size_t n)
     {
         const ZFOutput &output = *(ZFOutput *)pOpaque;
-        if(!output.ioSeek((zfindex)file_ofs))
-        {
-            return 0;
-        }
+        output.ioSeek((zfindex)file_ofs);
         return (size_t)output.execute(pBuf, (zfindex)n);
     }
     static size_t _readFuncForInput(void *pOpaque, mz_uint64 file_ofs, void *pBuf, size_t n)

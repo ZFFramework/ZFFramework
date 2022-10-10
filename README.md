@@ -6,6 +6,7 @@
     * [cpp hello world](#cpp-hello-world)
     * [lua hello world](#lua-hello-world)
     * [powerful dynamic register](#powerful-dynamic-register)
+    * [powerful abstract IO](#powerful-abstract-io)
 * [Getting started](#getting-started)
 * [Detailed](#detailed)
     * [Requirement](#requirement)
@@ -105,7 +106,7 @@ button:onClick(
 
 ## powerful dynamic register
 
-this piece of code shows the powerful dynamic register logic
+both lua and cpp can dynamic register class and method
 
 ```cpp
 #include "ZFLua.h"
@@ -145,6 +146,21 @@ ZFMAIN_ENTRY()
         "local myView = MyChildView()\n"
         "myView:testAliased('luaParam0')\n"
     );
+}
+```
+
+
+## powerful abstract IO
+
+chain http file and zip file, and R/W contents in the zip file just like normal local file
+
+```cpp
+#include "ZFCore.h"
+ZFMAIN_ENTRY()
+{
+    ZFFileResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
+    ZFInputReadToOutput(zfLogTrimT(), ZFInputForResFile("path/in/zip/file.txt"));
+    ZFFilePathInfoTreePrint(ZFPathInfo("res:"));
 }
 ```
 

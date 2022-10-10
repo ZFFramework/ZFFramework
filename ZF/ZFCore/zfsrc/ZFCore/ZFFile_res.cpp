@@ -54,10 +54,6 @@ ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFPathInfo>, ZFFileResExtPathList)
 ZFMETHOD_FUNC_DEFINE_1(const ZFPathInfo *, ZFFileResExtPathCheck,
                        ZFMP_IN(const zfchar *, resPath))
 {
-    if(zfsIsEmpty(resPath) || zfscmpTheSame(resPath, "."))
-    {
-        return zfnull;
-    }
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFFileResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i)
     {
@@ -213,15 +209,15 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResFindNext,
 
     if(!implUserData->resExtPath.pathType.isEmpty())
     {
-        if(ZFFileFileFindNext(implUserData->resExtFd))
+        if(ZFFilePathInfoFindNext(implUserData->resExtPath, implUserData->resExtFd))
         {
             implUserData->copyToFd(fd.impl());
             return zftrue;
         }
 
+        ZFFilePathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
         implUserData->resExtPath.pathType.removeAll();
         implUserData->resExtPath.pathData.removeAll();
-        ZFFileFileFindClose(implUserData->resExtFd);
 
         implUserData->resFindFirstStarted = _ZFP_ZFFileResProcessImpl->resFindFirst(fd.impl(), implUserData->resPathSaved);
         return implUserData->resFindFirstStarted;
@@ -235,9 +231,11 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFFileResFindClose,
 
     if(!implUserData->resExtPath.pathType.isEmpty())
     {
-        ZFFileFileFindClose(implUserData->resExtFd);
+        ZFFilePathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
+        implUserData->resExtPath.pathType.removeAll();
+        implUserData->resExtPath.pathData.removeAll();
     }
-    else if(implUserData->resFindFirstStarted)
+    if(implUserData->resFindFirstStarted)
     {
         _ZFP_ZFFileResProcessImpl->resFindClose(fd.impl());
     }

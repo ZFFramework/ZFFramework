@@ -56,6 +56,7 @@
 #include "ZFObjectDef/ZFObjectSmartPointer.h"
 #include "ZFObjectDef/ZFObjectUtil.h"
 #include "ZFObjectDef/ZFOutputDefault.h"
+#include "ZFObjectDef/ZFPathInfo.h"
 #include "ZFObjectDef/ZFProgressable.h"
 #include "ZFObjectDef/ZFProperty.h"
 #include "ZFObjectDef/ZFPropertyDeclare.h"

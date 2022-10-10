@@ -15,6 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFPROTOCOL_INTERFACE_BEGIN(ZFCompress)
 public:
+    // ============================================================
     /** @brief see #ZFCompressBegin */
     virtual void *compressBegin(ZF_IN_OUT const ZFOutput &outputZip,
                                 ZF_IN ZFCompressLevelEnum compressLevel) zfpurevirtual;
@@ -27,7 +28,11 @@ public:
     /** @brief see #ZFCompressBegin */
     virtual zfbool compressContentDir(ZF_IN_OUT void *compressToken,
                                       ZF_IN const zfchar *filePathInZip) zfpurevirtual;
+    /** @brief see #ZFCompressBegin */
+    virtual zfbool compressContentRemove(ZF_IN_OUT void *compressToken,
+                                         ZF_IN const zfchar *filePathInZip) zfpurevirtual;
 
+    // ============================================================
     /** @brief see #ZFCompressBegin */
     virtual void *decompressBegin(ZF_IN_OUT const ZFInput &inputZip) zfpurevirtual;
     /** @brief see #ZFCompressBegin */
@@ -45,6 +50,25 @@ public:
     virtual zfbool decompressContentPath(ZF_IN void *decompressToken,
                                          ZF_IN_OUT zfstring &filePathInZip,
                                          ZF_IN zfindex fileIndexInZip) zfpurevirtual;
+    /** @brief see #ZFCompressBegin */
+    virtual zfbool decompressContentIsDir(ZF_IN void *decompressToken,
+                                          ZF_IN zfindex fileIndexInZip) zfpurevirtual;
+    /** @brief see #ZFCompressBegin */
+    virtual zfbool decompressContentIsDir(ZF_IN void *decompressToken,
+                                          ZF_IN const zfchar *filePathInZip)
+    {
+        zfindex fileIndexInZip = this->decompressContentIndex(decompressToken, filePathInZip);
+        return fileIndexInZip != zfindexMax() && this->decompressContentIsDir(decompressToken, fileIndexInZip);
+    }
+
+    /** @brief see #ZFDecompressContentFindFirst */
+    virtual zfbool decompressContentFindFirst(ZF_IN_OUT ZFFileFindData &fd,
+                                              ZF_IN void *decompressToken,
+                                              ZF_IN const zfchar *filePathInZip);
+    /** @brief see #ZFDecompressContentFindFirst */
+    virtual zfbool decompressContentFindNext(ZF_IN_OUT ZFFileFindData &fd);
+    /** @brief see #ZFDecompressContentFindFirst */
+    virtual void decompressContentFindClose(ZF_IN_OUT ZFFileFindData &fd);
 ZFPROTOCOL_INTERFACE_END(ZFCompress)
 
 ZF_NAMESPACE_GLOBAL_END

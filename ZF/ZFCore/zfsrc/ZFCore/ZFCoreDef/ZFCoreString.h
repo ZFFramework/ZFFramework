@@ -434,7 +434,7 @@ public:
         }
     }
     /** @brief remove part of the string */
-    void remove(ZF_IN_OPT zfindex pos = 0, ZF_IN_OPT zfindex len = zfindexMax())
+    void remove(ZF_IN zfindex pos, ZF_IN_OPT zfindex len = zfindexMax())
     {
         zfindex lenTmp = this->length();
         if(pos < lenTmp)

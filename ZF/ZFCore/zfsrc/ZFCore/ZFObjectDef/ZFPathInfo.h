@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFPathInfo_h_
 #define _ZFI_ZFPathInfo_h_
 
-#include "ZFCoreTypeDef.h"
+#include "ZFObjectClassTypeFwd.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -42,7 +42,7 @@ public:
     ZFPathInfo(void) : pathType(), pathData() {}
     ZFPathInfo(ZF_IN const zfnullT &dummy) : pathType(), pathData() {}
     ZFPathInfo(ZF_IN const ZFPathInfo &pathInfo) : pathType(pathInfo.pathType), pathData(pathInfo.pathData) {}
-    ZFPathInfo(ZF_IN const zfchar *pathType) : pathType(pathType), pathData() {}
+    ZFPathInfo(ZF_IN const zfchar *pathInfoString);
     ZFPathInfo(ZF_IN const zfchar *pathType, ZF_IN const zfchar *pathData) : pathType(pathType), pathData(pathData) {}
     ZFPathInfo &operator = (ZF_IN const ZFPathInfo &pathInfo) {this->pathType = pathInfo.pathType; this->pathData = pathInfo.pathData; return *this;}
     ZFPathInfo &operator = (ZF_IN const zfnullT &dummy) {this->pathType = zfnull; this->pathData = zfnull; return *this;}

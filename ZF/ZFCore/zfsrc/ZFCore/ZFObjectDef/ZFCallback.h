@@ -10,6 +10,7 @@
 #include "ZFObjectCast.h"
 #include "ZFAny.h"
 #include "zfautoObjectFwd.h"
+#include "ZFPathInfo.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

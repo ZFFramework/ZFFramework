@@ -280,6 +280,12 @@ extern ZF_ENV_EXPORT void _ZFP_ZFFilePathInfoUnregister(ZF_IN const zfchar *path
  * so we introduced this generic version to achieve advanced file processing\n
  * to use, register your path type by this macro,
  * then use #ZFFilePathInfoOpen series to process files
+ *
+ * note, for performance, these impl functions must support
+ * path conversion inplace: (the input and output string may or may not be same object)
+ * -  callbackToFileName
+ * -  callbackToChild
+ * -  callbackToParent
  */
 #define ZFPATHTYPE_FILEIO_REGISTER(registerSig, pathType \
         , callbackIsExist_ \
@@ -566,6 +572,68 @@ ZFMETHOD_FUNC_DECLARE_3(ZFOutput, ZFOutputForLocalFile,
  * #ZFInputForPathInfo and #ZFObjectIOLoad
  */
 #define ZFStyleDecoder_pathInfo pathInfo
+
+// ============================================================
+/**
+ * @brief util for impl to parse path info for performance
+ */
+extern ZF_ENV_EXPORT zfbool ZFPathInfoParse(ZF_OUT zfstring &pathType,
+                                            ZF_OUT const zfchar *&pathData,
+                                            ZF_IN const zfchar *pathInfo);
+/**
+ * @brief util for impl to parse path info for performance
+ */
+extern ZF_ENV_EXPORT zfbool ZFPathInfoParse(ZF_OUT zfstring &pathType,
+                                            ZF_OUT zfstring &pathData,
+                                            ZF_IN const zfchar *pathInfo);
+/**
+ * @brief util for impl to parse path info and verify by #ZFFilePathInfoImplForPathType,
+ *   and return the result #ZFFilePathInfoImpl if success
+ */
+extern ZF_ENV_EXPORT const ZFFilePathInfoImpl *ZFPathInfoVerify(ZF_IN const zfchar *pathInfo);
+/**
+ * @brief util for impl to parse path info and verify by #ZFFilePathInfoImplForPathType,
+ *   and return the result #ZFFilePathInfoImpl if success
+ */
+extern ZF_ENV_EXPORT const ZFFilePathInfoImpl *ZFPathInfoParseAndVerify(ZF_OUT zfstring &pathType,
+                                                                        ZF_OUT const zfchar *&pathData,
+                                                                        ZF_IN const zfchar *pathInfo);
+
+// ============================================================
+/**
+ * @brief util for impl to parse chained path data
+ *
+ * chained path info format: 'pathType1:pathType2:pathData2|pathData1'\n
+ * or, if recursively chained: 'pathType1:pathType2:pathType3:pathData3%7cpathData2|pathData1'\n
+ * note if the chained path info contains the special '|' char, it must be escaped by '%7c',
+ * or use #zfCoreDataEncode with #ZFPathInfoChainCharMap\n
+ * \n
+ * typical case:
+ * @code
+ *   // original path info:
+ *   pathType1:pathType2:pathType3:pathData3%7cpathData2|pathData1
+ *
+ *   // pathDataOrig should be:
+ *   pathType2:pathType3:pathData3%7cpathData2|pathData1
+ *
+ *   // after parse:
+ *   //   chainPathType = pathType2
+ *   //   chainPathData = pathType3:pathData3|pathData2
+ *   //   pathData      = pathData1
+ * @endcode
+ */
+extern ZF_ENV_EXPORT zfbool ZFPathInfoChainParse(ZF_OUT zfstring &chainPathType,
+                                                 ZF_OUT zfstring &chainPathData,
+                                                 ZF_OUT const zfchar *&pathData,
+                                                 ZF_IN const zfchar *pathDataOrig);
+/** @brief see #ZFPathInfoChainParse */
+extern ZF_ENV_EXPORT zfbool ZFPathInfoChainParse(ZF_OUT zfstring &chainPathInfoString,
+                                                 ZF_OUT const zfchar *&pathData,
+                                                 ZF_IN const zfchar *pathDataOrig);
+
+extern ZF_ENV_EXPORT const zfchar _ZFP_ZFPathInfoChainCharMap[256];
+/** @brief see #ZFPathInfoChainParse */
+#define ZFPathInfoChainCharMap() _ZFP_ZFPathInfoChainCharMap
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFFile_pathInfo_h_
