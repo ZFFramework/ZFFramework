@@ -37,6 +37,8 @@ Homepage:
     * [![Android](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml)
     * [![iOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml)
     * [![Qt Linux](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml)
+    * [![Qt MacOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml)
+    * [![Qt Windows](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml)
     * NOTE: this repo would keep clean (remove unnecessary history) and update frequently,
     if you want stable or history version, please refer to [ZFFrameworkDist](https://github.com/ZFFrameworkDist/ZFFramework)
 
