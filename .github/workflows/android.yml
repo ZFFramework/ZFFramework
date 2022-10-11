@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
-      ZFAndroidABI: ${{secrets.ZFANDROIDABI}}
+      ZFAndroidABI: arm64-v8a
       ZF_PROJ_PATH: demo/zfproj/Android/ZFFramework_test
       ZF_PROJ_NAME: ZFFramework_test
 
@@ -31,6 +31,11 @@ jobs:
       uses: nttld/setup-ndk@v1
       with:
         ndk-version: r21e
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
 
     - name: ZF build zfproj
       run: |
