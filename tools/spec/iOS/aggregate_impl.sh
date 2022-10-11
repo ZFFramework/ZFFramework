@@ -58,9 +58,10 @@ fi
 
 mkdir -p "$RELEASE_PATH/lib" >/dev/null 2>&1
 
-# Uses the Lipo Tool to merge both binary files (i386 + armv6/armv7) into one Universal final product.
-lipo "$SIMULATOR_DIR/lib$PROJ_NAME.a" -remove arm64 -output "$SIMULATOR_DIR/lib$PROJ_NAME.a"
-lipo -create "$DEVICE_DIR/lib$PROJ_NAME.a" "$SIMULATOR_DIR/lib$PROJ_NAME.a" -output "$RELEASE_PATH/lib/lib$PROJ_NAME.a"
+# lipo won't work anymore, since device and simulator both have arm64 arch
+#   lipo "$SIMULATOR_DIR/lib$PROJ_NAME.a" -remove arm64 -output "$SIMULATOR_DIR/lib$PROJ_NAME.a"
+#   lipo -create "$DEVICE_DIR/lib$PROJ_NAME.a" "$SIMULATOR_DIR/lib$PROJ_NAME.a" -output "$RELEASE_PATH/lib/lib$PROJ_NAME.a"
+xcodebuild -create-xcframework -library "$DEVICE_DIR/lib$PROJ_NAME.a" -library "$SIMULATOR_DIR/lib$PROJ_NAME.a" -output "$RELEASE_PATH/lib/$PROJ_NAME.xcframework"
 
 # copy headers
 if ! test "x-$HEADER_SRC_PATH" = "x-" && ! test "x-$HEADER_DST_PATH" = "x-" ; then

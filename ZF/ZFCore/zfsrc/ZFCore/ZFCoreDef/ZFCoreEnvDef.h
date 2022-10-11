@@ -18,7 +18,7 @@
     #ifdef _WIN32
         #define ZF_ENV_EXPORT __declspec(dllexport)
     #else
-        #define ZF_ENV_EXPORT
+        #define ZF_ENV_EXPORT __attribute__((visibility("default")))
     #endif
 #endif
 

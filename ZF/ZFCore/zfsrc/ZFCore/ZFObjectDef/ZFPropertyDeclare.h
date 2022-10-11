@@ -270,7 +270,7 @@ extern ZF_ENV_EXPORT const ZFProperty *ZFPropertyForName(ZF_IN const zfchar *cla
 
 // ============================================================
 template<typename T_ZFObject>
-zfclassNotPOD _ZFP_PropRVH
+zfclassNotPOD _ZFP_PropRVH // RetainValueHolder
 {
 public:
     void value(ZF_IN ZFObject *obj)
@@ -301,16 +301,24 @@ private:
     T_ZFObject _value;
 };
 template<typename T_Type>
-void _ZFP_Prop_rawValueStoreCallback_retain(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value)
+zfclassNotPOD ZF_ENV_EXPORT _ZFP_PropRVSC_r // RawValueStoreCallback_retain
 {
-    ((_ZFP_PropRVH<T_Type> *)rawValueStoreToken)->value(value);
-}
+public:
+    static void f(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value)
+    {
+        ((_ZFP_PropRVH<T_Type> *)rawValueStoreToken)->value(value);
+    }
+};
 template<typename T_Type>
-void *_ZFP_Prop_rawValueStoreCallback_assign(ZF_IN void *rawValueStoreToken, ZF_IN const void *value)
+zfclassNotPOD ZF_ENV_EXPORT _ZFP_PropRVSC_a // RawValueStoreCallback_assign
 {
-    *(T_Type *)rawValueStoreToken = *(T_Type *)value;
-    return rawValueStoreToken;
-}
+public:
+    static void *f(ZF_IN void *rawValueStoreToken, ZF_IN const void *value)
+    {
+        *(T_Type *)rawValueStoreToken = *(T_Type *)value;
+        return rawValueStoreToken;
+    }
+};
 
 template<typename T_Type, int isZFObject = zftIsZFObject(typename zftTraits<T_Type>::TrType)>
 zfclassNotPOD _ZFP_PropWeak
@@ -412,7 +420,7 @@ public:
                         owner, \
                         ZFCastZFObjectUnchecked(ZFObject *, this->_ZFP_v->value()), \
                         notifyOwnerAttach, \
-                        _ZFP_Prop_rawValueStoreCallback_retain<zfself::PropVT_##Name>, \
+                        _ZFP_PropRVSC_r<zfself::PropVT_##Name>::f, \
                         this->_ZFP_v); \
                 } \
                 return this->_ZFP_v->value(); \
@@ -608,7 +616,7 @@ public:
                 accessed, \
                 valueOld, \
                 ZFObjectToObject(propertyValue), \
-                _ZFP_Prop_rawValueStoreCallback_retain<zfself::PropVT_##Name>, \
+                _ZFP_PropRVSC_r<zfself::PropVT_##Name>::f, \
                 Name##_PropV._ZFP_v); \
             zfCoreMutexUnlock(); \
         } \
@@ -638,7 +646,7 @@ public:
                 accessed, \
                 &valueOld, \
                 &propertyValue, \
-                _ZFP_Prop_rawValueStoreCallback_assign<zfself::PropVT_##Name>, \
+                _ZFP_PropRVSC_a<zfself::PropVT_##Name>::f, \
                 Name##_PropV._ZFP_v, \
                 _ZFP_PropWeak<zfself::PropVT_##Name>::v(valueOld), \
                 _ZFP_PropWeak<zfself::PropVT_##Name>::v(propertyValue)); \

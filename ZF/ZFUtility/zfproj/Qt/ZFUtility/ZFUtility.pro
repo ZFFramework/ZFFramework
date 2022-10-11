@@ -105,10 +105,6 @@ TEMPLATE = lib
 QMAKE_CXXFLAGS += -Wno-unused-parameter
 CONFIG += warn_off
 
-win32 {
-    DEFINES += ZF_ENV_EXPORT=__declspec\\(dllexport\\)
-}
-
 # ======================================================================
 equals(ZF_UNITY_BUILD, 1) {
     for(src_path, ZF_PROJ_SRC_PATH) {
