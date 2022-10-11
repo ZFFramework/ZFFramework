@@ -18,6 +18,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Setup Doxygen tmp dir
+      run: |
+        mkdir -p ./_tmp
+
     - name: Setup Doxygen
       uses: mattnotmitt/doxygen-action@1.9.4
       with:
