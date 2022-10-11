@@ -7,10 +7,10 @@ android {
         minSdkVersion 18
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
         externalNativeBuild {
             cmake {
-                cppFlags ""
+                cppFlags ''
             }
         }
         ndk {
@@ -37,10 +37,9 @@ android {
     }
     externalNativeBuild {
         cmake {
-            path "CMakeLists.txt"
+            path 'CMakeLists.txt'
         }
     }
-    buildToolsVersion '29.0.3'
 }
 
 dependencies {
@@ -57,14 +56,14 @@ task ZFSetup {
     doLast {
         if(Os.isFamily(Os.FAMILY_WINDOWS)) {
             exec {
-                executable "cmd.exe"
-                args "/c", ZF_ROOT_PATH + "/tools/util/copy_res.bat", this.projectDir.getAbsolutePath() + "/../../../../zfres", this.projectDir.getAbsolutePath() + "/src/main/assets/zfres"
+                executable 'cmd.exe'
+                args '/c', ZF_ROOT_PATH + '/tools/util/copy_res.bat', this.projectDir.getAbsolutePath() + '/../../../../zfres', this.projectDir.getAbsolutePath() + '/src/main/assets/zfres'
             }
         }
         else {
             exec {
-                executable "sh"
-                args ZF_ROOT_PATH + "/tools/util/copy_res.sh", this.projectDir.getAbsolutePath() + "/../../../../zfres", this.projectDir.getAbsolutePath() + "/src/main/assets/zfres"
+                executable 'sh'
+                args ZF_ROOT_PATH + '/tools/util/copy_res.sh', this.projectDir.getAbsolutePath() + '/../../../../zfres', this.projectDir.getAbsolutePath() + '/src/main/assets/zfres'
             }
         }
     }
@@ -74,14 +73,14 @@ preBuild.dependsOn ZFSetup
 gradle.buildFinished {
     if(Os.isFamily(Os.FAMILY_WINDOWS)) {
         exec {
-            executable "cmd.exe"
-            args "/c", ZF_ROOT_PATH + "/tools/spec/Android/libs_copy.bat", "ZFNet_impl", this.projectDir.getAbsolutePath() + '/..'
+            executable 'cmd.exe'
+            args '/c', ZF_ROOT_PATH + '/tools/spec/Android/libs_copy.bat', 'ZFNet_impl', this.projectDir.getAbsolutePath() + '/..'
         }
     }
     else {
         exec {
-            executable "sh"
-            args ZF_ROOT_PATH + "/tools/spec/Android/libs_copy.sh", "ZFNet_impl", this.projectDir.getAbsolutePath() + '/..'
+            executable 'sh'
+            args ZF_ROOT_PATH + '/tools/spec/Android/libs_copy.sh', 'ZFNet_impl', this.projectDir.getAbsolutePath() + '/..'
         }
     }
 }
