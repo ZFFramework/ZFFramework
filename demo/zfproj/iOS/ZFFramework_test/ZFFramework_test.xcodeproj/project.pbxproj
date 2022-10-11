@@ -7,76 +7,76 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		096F9DD01C14E83CEE8DCC4F368B8EE5 /* libZFLua_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C61DF8AF3B03E73FF9AAEDCE2DFC3EEC /* libZFLua_impl.a */; };
-		0F7DECE21584F1C39CE17097C7FC0D92 /* libZFCore_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA683203A8BA8BAFF7B380408E54CC3C /* libZFCore_impl.a */; };
+		0E3027CB48169AE3CD4F06E87E197B70 /* ZFCore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A64D731726A1ECABE550D19A82BA042 /* ZFCore.xcframework */; };
 		1381B0090EE2FFC94CEBCC26FD0BB659 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F061EB7C9BD5F52121B0557A615D83C0 /* RootViewController.m */; };
 		1A5C8F19FB797592E3ECDCC4DACC03BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C9BFA88C08E42779AD4884FC1C06585 /* AppDelegate.mm */; };
-		1D17F2C5D16844BE0A64735B47D5CD82 /* libZFUIWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B48FA033470A8C63B3373392C6FADF5A /* libZFUIWidget.a */; };
+		1D0CEF841C8AA78DC287F441ACB2927A /* ZFLua_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA16659CF2EA1C663F5B13BE2351C4A /* ZFLua_impl.xcframework */; };
+		2246998311FF87C8890A6AF630EA7A4C /* ZFAlgorithm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64202862A2FB937808A7DCBB2B156FCA /* ZFAlgorithm.xcframework */; };
 		3CB33592BF3B13EDC738B807067D5D6C /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D4752C4014B0C3ACB8A222AC41FA50 /* Icon@2x.png */; };
+		4387E5087B17CE000010EC88CFB14670 /* ZFAlgorithm_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F4A7351B5DCA95651C4F5552D5606F4 /* ZFAlgorithm_impl.xcframework */; };
 		43B9894F1AB11C2B93F78944910067D1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5571A6E22034D37232435DDD2BC0C36F /* WebKit.framework */; };
-		4B30BBDED15F8BD832183549C8BCB78F /* libZFUtility.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B1AC36DA3012BB7D211CF013BD3959F /* libZFUtility.a */; };
+		485FC82907F8E83FB15A478F5CC32FB6 /* ZFNet.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9ADD17F0C1EEF07ED88DC15721B251 /* ZFNet.xcframework */; };
+		4D509B749C0CDFA2F566E44A882946C4 /* ZF_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BB508B5C240484B578BAA4D4509AFA /* ZF_impl.xcframework */; };
 		4D62EE679847C1DA4912179DCCC786D8 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 180356FC1063A700CD5782320AB96DA4 /* Icon.png */; };
+		4F68018AEE9F5C309BABA51991997AC3 /* ZFUtility.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C23BD755CC5A695011BFCF5C52DF326 /* ZFUtility.xcframework */; };
+		51D0A1583161EE95BE8FCBFC42FF991F /* ZFUIWebKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17CD1259AF6B3F1C63D193F321377836 /* ZFUIWebKit.xcframework */; };
 		5A2D1B7E525EFA11B011F293A9612C7A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA60027D62B88AEAE715B00485C4449 /* CoreGraphics.framework */; };
 		5AD62590FCBED9C00949DDFDAFD129D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0EB20273DFFC54E3E2B05F6BA13015 /* Foundation.framework */; };
-		5FE1C5CBDF1B728CE7DBEE7EFDAFA938 /* libZFAlgorithm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DAB3538AB166A61B3DCB2956AD7434 /* libZFAlgorithm.a */; };
-		644009BA3B58733D83EC2498890DADED /* libZFUIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3740DC0E279EABC8463306F7AFF6DBF0 /* libZFUIKit.a */; };
-		65CE1764B3521CDB6C0BF5E8BC0E6574 /* libZFUIKit_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6820EDE2E8237E60A4956146704FBF83 /* libZFUIKit_impl.a */; };
-		6EE4C12C53E57831D22D21A68D9BE657 /* libZF_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0254AD51BEE9BF1E65263AB8BA325FCC /* libZF_impl.a */; };
 		708CAF6061584D2D9E8E12C40BF8F1A9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 28085A588F52B61C8C8901A1DDD06AC1 /* main.m */; };
+		7152C93BD08C4EDB5CCF545B18A1A6BA /* ZFNet_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A533CDA7AA2EC2B8C0ED47B784B60ED /* ZFNet_impl.xcframework */; };
 		7978EADE23C4EF15B96506A4AF0CDAB2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83E96AC3B662FD2F9BBE9FA0548335E2 /* QuartzCore.framework */; };
-		7CEFECA0574E583AC858A091019497EC /* libZFLua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AAB15AF17B2331CDD97FC5419F569428 /* libZFLua.a */; };
+		7AFFB7A7412D4A9588C815CE4CD4EAAD /* ZFUIWebKit_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A02322216AB599DF32E7476DD98E5E /* ZFUIWebKit_impl.xcframework */; };
 		8C685169DF0F9CAEA05119F61AA2CC7D /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */; };
-		8D2123AB9F36105452AF9837A3140E92 /* libZFUIWebKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F26F9EC48498DFC76F79C389C57D7F9B /* libZFUIWebKit.a */; };
+		8DDA23BA83C17DBF7693CF6AB19F9BF4 /* ZFUIKit_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA36B1D2B30F162E8BEB57385E64B93 /* ZFUIKit_impl.xcframework */; };
 		9C424F0584E327DD77DD241C14240DB1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = D01A9F9B443A7DB46BCE695ADBBFC55D /* Icon-72.png */; };
-		9CB6407E837F7E6CD985A0C57CCA3D82 /* libZFAlgorithm_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C1F9E207032B422498F80B808949F4E /* libZFAlgorithm_impl.a */; };
 		9F74A258BD406F304D89045DF5E40A34 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D108275A6468BEA69C8E0941D81453E6 /* Default-568h@2x.png */; };
 		B444E1034EE4F71F860956EDA8CD79F3 /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E6076B3FC80DEDD41ADEAD3C95FB9E9 /* Icon-50.png */; };
-		BFABA5158FD8218298DCA35E971DECAF /* libZFNet_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B57B84A4B2FC3E3C10C58BCE7F82CB /* libZFNet_impl.a */; };
+		BB45B76571AE6F30BD19F3C39E629509 /* ZFUIKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A86DAE671D5A32BA66B8DE555ACB72F /* ZFUIKit.xcframework */; };
 		CC0FB20D751D4331B68A1682029828DA /* Icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C6F8AF0F0F8CAE69C9F8A7D513DFD8 /* Icon-29.png */; };
-		D12BF45065767C98306087C7D5756888 /* libZFCore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 558B8C5D2844801432E7FF751910EDCA /* libZFCore.a */; };
 		D55978FC2F2C331D5CB4ED4BD73ABF4A /* zfgensrc_ZFFramework_test.mm in Sources */ = {isa = PBXBuildFile; fileRef = 432AE8FEE0B1231DC226F217C0DF9873 /* zfgensrc_ZFFramework_test.mm */; };
-		DBEDFD63BF53F8B9107E31F1D7118678 /* libZFUIWebKit_impl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 63FCB87003AC70739763DEB1096A1433 /* libZFUIWebKit_impl.a */; };
+		DC334CCC38281A34D3BFDF7C101A12B4 /* ZFCore_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15D28FD2B13681BF3CA43DE63BF3DD11 /* ZFCore_impl.xcframework */; };
+		EB2AC4FE93FBE665A98C59EC46645FD0 /* ZFLua.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 754EFA4B5FB63960CB3D4BE6FF9B852B /* ZFLua.xcframework */; };
 		F433DF2F8E9048B804750BC6FCA26E0D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18FED90F590D54A4B04F1AC67DAE2C8E /* UIKit.framework */; };
-		F86771463A1B5B6D3D471B8041E8BE54 /* libZFNet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E1A438E79EF2476C49A75876ACF055 /* libZFNet.a */; };
+		F83CA1420BA83F7B06B92222DA042B55 /* ZFUIWidget.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9FBB9DE01E47F0D050ADC723ACCB396 /* ZFUIWidget.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0254AD51BEE9BF1E65263AB8BA325FCC /* libZF_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZF_impl.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZF_impl.a; sourceTree = "<group>"; };
+		15D28FD2B13681BF3CA43DE63BF3DD11 /* ZFCore_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFCore_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFCore_impl.xcframework; sourceTree = "<group>"; };
+		17CD1259AF6B3F1C63D193F321377836 /* ZFUIWebKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIWebKit.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIWebKit.xcframework; sourceTree = "<group>"; };
 		180356FC1063A700CD5782320AB96DA4 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		18FED90F590D54A4B04F1AC67DAE2C8E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		1B1AC36DA3012BB7D211CF013BD3959F /* libZFUtility.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFUtility.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFUtility.a; sourceTree = "<group>"; };
 		28085A588F52B61C8C8901A1DDD06AC1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2B9ADD17F0C1EEF07ED88DC15721B251 /* ZFNet.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFNet.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFNet.xcframework; sourceTree = "<group>"; };
+		2C23BD755CC5A695011BFCF5C52DF326 /* ZFUtility.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUtility.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUtility.xcframework; sourceTree = "<group>"; };
 		2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		332F88D638391DCF6EC5E545AD032306 /* ZFFramework_test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZFFramework_test.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3740DC0E279EABC8463306F7AFF6DBF0 /* libZFUIKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFUIKit.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFUIKit.a; sourceTree = "<group>"; };
+		3A64D731726A1ECABE550D19A82BA042 /* ZFCore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFCore.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFCore.xcframework; sourceTree = "<group>"; };
 		432AE8FEE0B1231DC226F217C0DF9873 /* zfgensrc_ZFFramework_test.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFFramework_test.mm; sourceTree = "<group>"; };
 		4371E9EBC2DCE7C856478A7E6177329E /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		48DAB3538AB166A61B3DCB2956AD7434 /* libZFAlgorithm.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFAlgorithm.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFAlgorithm.a; sourceTree = "<group>"; };
 		4D8A3E41B3E26CBCCDD757E9DF517B06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5571A6E22034D37232435DDD2BC0C36F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		558B8C5D2844801432E7FF751910EDCA /* libZFCore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFCore.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFCore.a; sourceTree = "<group>"; };
+		5AA16659CF2EA1C663F5B13BE2351C4A /* ZFLua_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFLua_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFLua_impl.xcframework; sourceTree = "<group>"; };
 		5C9BFA88C08E42779AD4884FC1C06585 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		63FCB87003AC70739763DEB1096A1433 /* libZFUIWebKit_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFUIWebKit_impl.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFUIWebKit_impl.a; sourceTree = "<group>"; };
-		6820EDE2E8237E60A4956146704FBF83 /* libZFUIKit_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFUIKit_impl.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFUIKit_impl.a; sourceTree = "<group>"; };
+		5CA36B1D2B30F162E8BEB57385E64B93 /* ZFUIKit_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIKit_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIKit_impl.xcframework; sourceTree = "<group>"; };
+		64202862A2FB937808A7DCBB2B156FCA /* ZFAlgorithm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFAlgorithm.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFAlgorithm.xcframework; sourceTree = "<group>"; };
 		68EF398AEB16CC875741A132F8AB393F /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
-		6C1F9E207032B422498F80B808949F4E /* libZFAlgorithm_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFAlgorithm_impl.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFAlgorithm_impl.a; sourceTree = "<group>"; };
+		754EFA4B5FB63960CB3D4BE6FF9B852B /* ZFLua.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFLua.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFLua.xcframework; sourceTree = "<group>"; };
 		75C6F8AF0F0F8CAE69C9F8A7D513DFD8 /* Icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-29.png"; sourceTree = "<group>"; };
+		7A86DAE671D5A32BA66B8DE555ACB72F /* ZFUIKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIKit.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIKit.xcframework; sourceTree = "<group>"; };
+		7F4A7351B5DCA95651C4F5552D5606F4 /* ZFAlgorithm_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFAlgorithm_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFAlgorithm_impl.xcframework; sourceTree = "<group>"; };
 		83E96AC3B662FD2F9BBE9FA0548335E2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8524A496906EAEDA20274170DA321750 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8B0EB20273DFFC54E3E2B05F6BA13015 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		92A02322216AB599DF32E7476DD98E5E /* ZFUIWebKit_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIWebKit_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIWebKit_impl.xcframework; sourceTree = "<group>"; };
 		92D4752C4014B0C3ACB8A222AC41FA50 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		9A533CDA7AA2EC2B8C0ED47B784B60ED /* ZFNet_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFNet_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFNet_impl.xcframework; sourceTree = "<group>"; };
 		9E6076B3FC80DEDD41ADEAD3C95FB9E9 /* Icon-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-50.png"; sourceTree = "<group>"; };
-		AAB15AF17B2331CDD97FC5419F569428 /* libZFLua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFLua.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFLua.a; sourceTree = "<group>"; };
 		ACA60027D62B88AEAE715B00485C4449 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		B48FA033470A8C63B3373392C6FADF5A /* libZFUIWidget.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFUIWidget.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFUIWidget.a; sourceTree = "<group>"; };
-		B5B57B84A4B2FC3E3C10C58BCE7F82CB /* libZFNet_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFNet_impl.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFNet_impl.a; sourceTree = "<group>"; };
-		BA683203A8BA8BAFF7B380408E54CC3C /* libZFCore_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFCore_impl.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFCore_impl.a; sourceTree = "<group>"; };
-		C3E1A438E79EF2476C49A75876ACF055 /* libZFNet.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFNet.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFNet.a; sourceTree = "<group>"; };
-		C61DF8AF3B03E73FF9AAEDCE2DFC3EEC /* libZFLua_impl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFLua_impl.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFLua_impl.a; sourceTree = "<group>"; };
 		D01A9F9B443A7DB46BCE695ADBBFC55D /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		D108275A6468BEA69C8E0941D81453E6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		D6BB508B5C240484B578BAA4D4509AFA /* ZF_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZF_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZF_impl.xcframework; sourceTree = "<group>"; };
+		D9FBB9DE01E47F0D050ADC723ACCB396 /* ZFUIWidget.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIWidget.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIWidget.xcframework; sourceTree = "<group>"; };
 		F061EB7C9BD5F52121B0557A615D83C0 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		F26F9EC48498DFC76F79C389C57D7F9B /* libZFUIWebKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libZFUIWebKit.a; path = ../../../../../ZFFramework/_release/iOS/all/lib/libZFUIWebKit.a; sourceTree = "<group>"; };
 		F83F53F7BBBB8AC77B4AA39ED59AA7A2 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,21 +90,21 @@
 				7978EADE23C4EF15B96506A4AF0CDAB2 /* QuartzCore.framework in Frameworks */,
 				F433DF2F8E9048B804750BC6FCA26E0D /* UIKit.framework in Frameworks */,
 				43B9894F1AB11C2B93F78944910067D1 /* WebKit.framework in Frameworks */,
-				5FE1C5CBDF1B728CE7DBEE7EFDAFA938 /* libZFAlgorithm.a in Frameworks */,
-				9CB6407E837F7E6CD985A0C57CCA3D82 /* libZFAlgorithm_impl.a in Frameworks */,
-				D12BF45065767C98306087C7D5756888 /* libZFCore.a in Frameworks */,
-				0F7DECE21584F1C39CE17097C7FC0D92 /* libZFCore_impl.a in Frameworks */,
-				7CEFECA0574E583AC858A091019497EC /* libZFLua.a in Frameworks */,
-				096F9DD01C14E83CEE8DCC4F368B8EE5 /* libZFLua_impl.a in Frameworks */,
-				F86771463A1B5B6D3D471B8041E8BE54 /* libZFNet.a in Frameworks */,
-				BFABA5158FD8218298DCA35E971DECAF /* libZFNet_impl.a in Frameworks */,
-				644009BA3B58733D83EC2498890DADED /* libZFUIKit.a in Frameworks */,
-				65CE1764B3521CDB6C0BF5E8BC0E6574 /* libZFUIKit_impl.a in Frameworks */,
-				8D2123AB9F36105452AF9837A3140E92 /* libZFUIWebKit.a in Frameworks */,
-				DBEDFD63BF53F8B9107E31F1D7118678 /* libZFUIWebKit_impl.a in Frameworks */,
-				1D17F2C5D16844BE0A64735B47D5CD82 /* libZFUIWidget.a in Frameworks */,
-				4B30BBDED15F8BD832183549C8BCB78F /* libZFUtility.a in Frameworks */,
-				6EE4C12C53E57831D22D21A68D9BE657 /* libZF_impl.a in Frameworks */,
+				2246998311FF87C8890A6AF630EA7A4C /* ZFAlgorithm.xcframework in Frameworks */,
+				4387E5087B17CE000010EC88CFB14670 /* ZFAlgorithm_impl.xcframework in Frameworks */,
+				0E3027CB48169AE3CD4F06E87E197B70 /* ZFCore.xcframework in Frameworks */,
+				DC334CCC38281A34D3BFDF7C101A12B4 /* ZFCore_impl.xcframework in Frameworks */,
+				EB2AC4FE93FBE665A98C59EC46645FD0 /* ZFLua.xcframework in Frameworks */,
+				1D0CEF841C8AA78DC287F441ACB2927A /* ZFLua_impl.xcframework in Frameworks */,
+				485FC82907F8E83FB15A478F5CC32FB6 /* ZFNet.xcframework in Frameworks */,
+				7152C93BD08C4EDB5CCF545B18A1A6BA /* ZFNet_impl.xcframework in Frameworks */,
+				BB45B76571AE6F30BD19F3C39E629509 /* ZFUIKit.xcframework in Frameworks */,
+				8DDA23BA83C17DBF7693CF6AB19F9BF4 /* ZFUIKit_impl.xcframework in Frameworks */,
+				51D0A1583161EE95BE8FCBFC42FF991F /* ZFUIWebKit.xcframework in Frameworks */,
+				7AFFB7A7412D4A9588C815CE4CD4EAAD /* ZFUIWebKit_impl.xcframework in Frameworks */,
+				F83CA1420BA83F7B06B92222DA042B55 /* ZFUIWidget.xcframework in Frameworks */,
+				4F68018AEE9F5C309BABA51991997AC3 /* ZFUtility.xcframework in Frameworks */,
+				4D509B749C0CDFA2F566E44A882946C4 /* ZF_impl.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,21 +145,21 @@
 				83E96AC3B662FD2F9BBE9FA0548335E2 /* QuartzCore.framework */,
 				18FED90F590D54A4B04F1AC67DAE2C8E /* UIKit.framework */,
 				5571A6E22034D37232435DDD2BC0C36F /* WebKit.framework */,
-				48DAB3538AB166A61B3DCB2956AD7434 /* libZFAlgorithm.a */,
-				6C1F9E207032B422498F80B808949F4E /* libZFAlgorithm_impl.a */,
-				558B8C5D2844801432E7FF751910EDCA /* libZFCore.a */,
-				BA683203A8BA8BAFF7B380408E54CC3C /* libZFCore_impl.a */,
-				AAB15AF17B2331CDD97FC5419F569428 /* libZFLua.a */,
-				C61DF8AF3B03E73FF9AAEDCE2DFC3EEC /* libZFLua_impl.a */,
-				C3E1A438E79EF2476C49A75876ACF055 /* libZFNet.a */,
-				B5B57B84A4B2FC3E3C10C58BCE7F82CB /* libZFNet_impl.a */,
-				3740DC0E279EABC8463306F7AFF6DBF0 /* libZFUIKit.a */,
-				6820EDE2E8237E60A4956146704FBF83 /* libZFUIKit_impl.a */,
-				F26F9EC48498DFC76F79C389C57D7F9B /* libZFUIWebKit.a */,
-				63FCB87003AC70739763DEB1096A1433 /* libZFUIWebKit_impl.a */,
-				B48FA033470A8C63B3373392C6FADF5A /* libZFUIWidget.a */,
-				1B1AC36DA3012BB7D211CF013BD3959F /* libZFUtility.a */,
-				0254AD51BEE9BF1E65263AB8BA325FCC /* libZF_impl.a */,
+				64202862A2FB937808A7DCBB2B156FCA /* ZFAlgorithm.xcframework */,
+				7F4A7351B5DCA95651C4F5552D5606F4 /* ZFAlgorithm_impl.xcframework */,
+				3A64D731726A1ECABE550D19A82BA042 /* ZFCore.xcframework */,
+				15D28FD2B13681BF3CA43DE63BF3DD11 /* ZFCore_impl.xcframework */,
+				754EFA4B5FB63960CB3D4BE6FF9B852B /* ZFLua.xcframework */,
+				5AA16659CF2EA1C663F5B13BE2351C4A /* ZFLua_impl.xcframework */,
+				2B9ADD17F0C1EEF07ED88DC15721B251 /* ZFNet.xcframework */,
+				9A533CDA7AA2EC2B8C0ED47B784B60ED /* ZFNet_impl.xcframework */,
+				7A86DAE671D5A32BA66B8DE555ACB72F /* ZFUIKit.xcframework */,
+				5CA36B1D2B30F162E8BEB57385E64B93 /* ZFUIKit_impl.xcframework */,
+				17CD1259AF6B3F1C63D193F321377836 /* ZFUIWebKit.xcframework */,
+				92A02322216AB599DF32E7476DD98E5E /* ZFUIWebKit_impl.xcframework */,
+				D9FBB9DE01E47F0D050ADC723ACCB396 /* ZFUIWidget.xcframework */,
+				2C23BD755CC5A695011BFCF5C52DF326 /* ZFUtility.xcframework */,
+				D6BB508B5C240484B578BAA4D4509AFA /* ZF_impl.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

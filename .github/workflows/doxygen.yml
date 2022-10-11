@@ -22,8 +22,8 @@ jobs:
     - name: Setup Doxygen
       uses: mattnotmitt/doxygen-action@1.9.4
       with:
-        doxyfile-path: master/ZF_docs/Doxygen/Doxyfile
         working-directory: master/ZF_docs/Doxygen
+        doxyfile-path: ./Doxyfile
 
     - name: ZFSetup
       run: |
