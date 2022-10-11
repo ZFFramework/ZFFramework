@@ -36,7 +36,7 @@
  *   -  tools from ~/tools/release
  *   -  manually build projects under ~/ZF
  * -# create your own iOS project
- * -# drag and drop ZFFramework's libraries (*.a or *.dylib files) to your project
+ * -# drag and drop ZFFramework's libraries (*.xcframework) to your project
  * -# modify your project's target settings:
  *   -  Header Search Paths
  *   -  Library Search Paths
@@ -48,7 +48,7 @@
  *   -  QuartzCore.framework
  *   -  CoreGraphics.framework
  *   -  WebKit.framework, if you want the ZFUIWebKit module
- *   -  all ZFFramework's *.a files
+ *   -  all ZFFramework's *.xcframework files
  * -# add "New Run Script Phase" in your project's target's "Build Phases",
  *   to copy all resource files:
  *   @code
