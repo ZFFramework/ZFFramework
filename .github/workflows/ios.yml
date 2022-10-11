@@ -22,9 +22,6 @@ jobs:
         ./zfsetup.sh
 
     - name: ZF build zfproj
-      env:
-        scheme: ${ZF_PROJ_NAME}
-        platform: ${{ 'iOS Simulator' }}
       run: |
         chmod +x ../ZFFramework/master/ZF_CI/testbuild/testbuild_iOS.sh
         ../ZFFramework/master/ZF_CI/testbuild/testbuild_iOS.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}/iOS/${ZF_PROJ_NAME}"

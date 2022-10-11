@@ -1,0 +1,31 @@
+name: Doxygen
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Doxygen
+      run: |
+        apt-get install doxygen
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
+
+    - name: ZF doxygen
+      run: |
+        chmod +x ../ZFFramework/master/ZF_CI/doc.sh
+        ../ZFFramework/master/ZF_CI/doc.sh
+
