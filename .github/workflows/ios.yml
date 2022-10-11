@@ -1,0 +1,38 @@
+name: iOS
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      ZF_PROJ_PATH: demo/zfproj
+      ZF_PROJ_NAME: ZFFramework_test
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set Default Scheme
+      run: |
+        scheme_list=$(xcodebuild -list -json | tr -d "\n")
+        default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
+        echo $default | cat >default
+        echo Using default scheme: $default
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
+
+    - name: ZF build zfproj
+      env:
+        scheme: ${{ 'default' }}
+        platform: ${{ 'iOS Simulator' }}
+      run: |
+        chmod +x ../ZFFramework/master/ZF_CI/testbuild/testbuild_iOS.sh
+        ../ZFFramework/master/ZF_CI/testbuild/testbuild_iOS.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}/iOS/${ZF_PROJ_NAME}"
+

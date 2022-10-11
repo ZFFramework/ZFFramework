@@ -1,4 +1,4 @@
-name: Android CI
+name: Android
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     env:
       ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
       ZFAndroidABI: arm64-v8a
-      ZF_PROJ_PATH: demo/zfproj/Android/ZFFramework_test
+      ZF_PROJ_PATH: demo/zfproj
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:
@@ -40,7 +40,7 @@ jobs:
     - name: ZF build zfproj
       run: |
         chmod +x ../ZFFramework/master/ZF_CI/testbuild/testbuild_Android.sh
-        ../ZFFramework/master/ZF_CI/testbuild/testbuild_Android.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
+        ../ZFFramework/master/ZF_CI/testbuild/testbuild_Android.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}/Android/${ZF_PROJ_NAME}"
 
     - name: ZF upload archive
       run: |
