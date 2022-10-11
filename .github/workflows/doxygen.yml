@@ -24,7 +24,7 @@ jobs:
         mkdir -p ./_tmp
 
     - name: Setup Doxygen
-      uses: mattnotmitt/doxygen-action@1
+      uses: dreygur/doxygen@latest
       with:
         working-directory: master/ZF_docs/Doxygen
         doxyfile-path: ./Doxyfile
