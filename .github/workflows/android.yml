@@ -19,19 +19,19 @@ jobs:
       ZF_PROJ_NAME: ZFFramework_test
 
     steps:
-    - uses: actions/checkout
+    - uses: actions/checkout@v3
 
     - name: Setup JDK
-      uses: actions/setup-java
+      uses: actions/setup-java@v3
       with:
         java-version: 11
         distribution: temurin
 
     - name: Setup Android SDK
-      uses: android-actions/setup-android
+      uses: android-actions/setup-android@v2
 
     - name: Setup Android NDK
-      uses: nttld/setup-ndk
+      uses: nttld/setup-ndk@v1
       with:
         ndk-version: r21e
 
