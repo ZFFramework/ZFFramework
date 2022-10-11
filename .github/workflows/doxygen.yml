@@ -17,7 +17,7 @@ jobs:
 
     - name: Setup Doxygen
       run: |
-        apt-get install doxygen
+        apk add doxygen
 
     - name: ZFSetup
       run: |
