@@ -16,14 +16,14 @@ jobs:
       ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout
 
     - name: Setup Doxygen tmp dir
       run: |
         mkdir -p ./_tmp
 
     - name: Setup Doxygen
-      uses: mattnotmitt/doxygen-action@1.9.4
+      uses: mattnotmitt/doxygen-action
       with:
         working-directory: master/ZF_docs/Doxygen
         doxyfile-path: ./Doxyfile
