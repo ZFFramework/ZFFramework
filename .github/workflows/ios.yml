@@ -24,6 +24,8 @@ jobs:
       run: |
         chmod +x ./zfsetup.sh
         ./zfsetup.sh
+        chmod +x ../ZFFramework/tools/release/release_iOS.sh
+        ../ZFFramework/tools/release/release_iOS.sh
 
     - name: ZF build zfproj
       run: |
