@@ -40,7 +40,7 @@ jobs:
     - name: ZF upload archive
       run: |
         if [ $(basename $(dirname $(git remote get-url origin)) .git) = "ZFFramework" ]; then
-          chmod +x ../ZFFramework/master/ZF_CI/upload_app.sh;
-          ../ZFFramework/master/ZF_CI/upload_app.sh "${ZF_PROJ_PATH}/Android/${ZF_PROJ_NAME}/zfapp/build/outputs/apk/release/zfapp-release.apk" "${ZF_PROJ_NAME}.apk";
+        chmod +x ../ZFFramework/master/ZF_CI/upload_app.sh
+        ../ZFFramework/master/ZF_CI/upload_app.sh "${ZF_PROJ_PATH}/Android/${ZF_PROJ_NAME}/zfapp/build/outputs/apk/release/zfapp-release.apk" "${ZF_PROJ_NAME}.apk"
         fi
 

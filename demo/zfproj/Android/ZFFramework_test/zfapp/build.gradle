@@ -40,21 +40,6 @@ android {
     }
     sourceSets {
         main {
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFUtility/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFUIWidget/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFLua/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFUIWebKit/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFNet/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZF_impl/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFCore_impl/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm_impl/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFUIKit_impl/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFLua_impl/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFUIWebKit_impl/src/main/jniLibs'
-            jniLibs.srcDirs += ZF_ROOT_PATH + '/_release/Android/module/ZFNet_impl/src/main/jniLibs'
         }
     }
     externalNativeBuild {

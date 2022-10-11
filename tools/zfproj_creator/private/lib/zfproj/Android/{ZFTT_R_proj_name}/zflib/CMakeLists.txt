@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.4.1)
+project({ZFTT_R_proj_name})
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../../ZFFramework)
 
