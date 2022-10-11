@@ -6,12 +6,13 @@ on:
   pull_request:
     branches: [ "master" ]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    concurrency:
-      group: ${{ github.ref }}
-      cancel-in-progress: true
     env:
       ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
 
