@@ -27,7 +27,7 @@ jobs:
         export-path-to-vcvarsall: VCVARSALL_PATH
 
     - name: Setup MSVC env
-      run: "$env:VCVARSALL_PATH\\vcvarsall.bat"
+      run: Invoke-Expression -Command 'cmd.exe /C "$env:VCVARSALL_PATH\\vcvarsall.bat"'
 
     - name: Setup Qt
       uses: jurplel/install-qt-action@v3.0.0
@@ -38,9 +38,9 @@ jobs:
 
     - name: ZFSetup
       run: |
-        ".\\zfsetup.bat"
+        Invoke-Expression -Command 'cmd.exe /C ".\\zfsetup.bat"'
 
     - name: ZF build zfproj
       run: |
-        "..\\ZFFramework\\master\\ZF_CI\\testbuild\\testbuild_Qt_Windows.bat" "$env:ZF_PROJ_NAME" "$env:ZF_PROJ_PATH\\Qt\\$env:ZF_PROJ_NAME"
+        Invoke-Expression -Command 'cmd.exe /C "..\\ZFFramework\\master\\ZF_CI\\testbuild\\testbuild_Qt_Windows.bat" "$env:ZF_PROJ_NAME" "$env:ZF_PROJ_PATH\\Qt\\$env:ZF_PROJ_NAME"'
 
