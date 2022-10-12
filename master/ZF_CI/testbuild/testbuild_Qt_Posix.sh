@@ -17,7 +17,7 @@ _PROJ_PATH=$(pwd)
 mkdir -p "$_TMP_PATH" >/dev/null 2>&1
 cd "$_TMP_PATH"
 qmake "$_PROJ_PATH/$PROJ_NAME.pro" CONFIG+=release
-make -j2
+make -j4
 _RESULT="$?"
 cd "$_OLD_DIR"
 

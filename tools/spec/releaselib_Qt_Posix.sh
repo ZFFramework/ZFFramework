@@ -24,6 +24,6 @@ find . -name "*.a.*" | xargs -I{} rm {}
 find . -name "*.so.*" | xargs -I{} rm {}
 find . -name "*.dylib.*" | xargs -I{} rm {}
 qmake "$PROJ_PATH/zfproj/Qt/$PROJ_NAME/$PROJ_NAME.pro" CONFIG+=release
-make -j2
+make -j4
 cd "$_OLD_DIR"
 

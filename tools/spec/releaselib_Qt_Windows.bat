@@ -14,6 +14,18 @@ echo   releaselib_Qt_Windows.bat PROJ_NAME PROJ_PATH
 exit /b 1
 :run
 
+setlocal enabledelayedexpansion
+if not defined ZF_QT_MAKE (
+    where /q nmake
+    if "!errorlevel!" == "0" (
+        rem MSVC
+        set ZF_QT_MAKE=nmake
+    ) else (
+        rem mingw
+        set ZF_QT_MAKE=mingw32-make
+    )
+)
+
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
 set ZF_TOOLS_PATH=%ZF_ROOT_PATH%\tools
 set QT_TYPE=Qt_Windows
@@ -30,6 +42,6 @@ cd /d "%ZF_ROOT_PATH%\_tmp\%QT_TYPE%\%PROJ_NAME%\build"
 del /f/s/q ".\*.dll" /f/s/q/a >nul 2>&1
 del /f/s/q ".\*.a" /f/s/q/a >nul 2>&1
 qmake "%PROJ_PATH%\zfproj\Qt\%PROJ_NAME%\%PROJ_NAME%.pro" CONFIG+=release
-mingw32-make -j4
+"%ZF_QT_MAKE%" -j4
 cd /d "%_OLD_DIR%"
 

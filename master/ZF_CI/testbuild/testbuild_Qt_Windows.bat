@@ -14,6 +14,18 @@ echo   testbuild_Qt_Windows.bat PROJ_NAME PROJ_PATH
 exit /b 1
 :run
 
+setlocal enabledelayedexpansion
+if not defined ZF_QT_MAKE (
+    where /q nmake
+    if "!errorlevel!" == "0" (
+        rem MSVC
+        set ZF_QT_MAKE=nmake
+    ) else (
+        rem mingw
+        set ZF_QT_MAKE=mingw32-make
+    )
+)
+
 set ZF_ROOT_PATH=%WORK_DIR%\..\..\..
 set ZF_TOOLS_PATH=%ZF_ROOT_PATH%\tools
 set _TMP_PATH=%ZF_ROOT_PATH%\_tmp\Qt_Windows\%PROJ_NAME%\release
@@ -24,7 +36,7 @@ set _PROJ_PATH=%cd%
 mkdir "%_TMP_PATH%" >nul 2>&1
 cd /d "%_TMP_PATH%"
 qmake "%_PROJ_PATH%\%PROJ_NAME%.pro" CONFIG+=release
-mingw32-make -j4
+"%ZF_QT_MAKE%" -j4
 set _RESULT=%errorlevel%
 cd /d "%_OLD_DIR%"
 
