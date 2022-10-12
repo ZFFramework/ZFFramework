@@ -102,7 +102,7 @@ QT += core
 TARGET = $${ZF_PROJ_NAME}
 TEMPLATE = lib
 
-QMAKE_CXXFLAGS += -Wno-unused-parameter
+# QMAKE_CXXFLAGS += -Wno-unused-parameter
 CONFIG += warn_off
 
 # ======================================================================
