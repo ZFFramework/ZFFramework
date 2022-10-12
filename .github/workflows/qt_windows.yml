@@ -25,9 +25,7 @@ jobs:
       uses: TheMrMilchmann/setup-msvc-dev@v2
       with:
         export-path-to-vcvarsall: VCVARSALL_PATH
-
-    - name: Setup MSVC env
-      run: Invoke-Expression -Command 'cmd.exe /C "$env:VCVARSALL_PATH\\vcvarsall.bat"'
+        arch: x64
 
     - name: Setup Qt
       uses: jurplel/install-qt-action@v3.0.0
