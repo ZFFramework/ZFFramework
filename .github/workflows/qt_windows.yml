@@ -21,15 +21,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Setup MSVC cmd
+      uses: TheMrMilchmann/setup-msvc-dev@v2
+      with:
+        export-path-to-vcvarsall: VCVARSALL_PATH
+
+    - name: Setup MSVC env
+      run: "%VCVARSALL_PATH%"
+
     - name: Setup Qt
       uses: jurplel/install-qt-action@v3.0.0
       with:
         host: windows
         target: desktop
         modules: qtwebengine
-
-    - name: Setup MSVC cmd
-      uses: TheMrMilchmann/setup-msvc-dev@v2
 
     - name: ZFSetup
       run: |
