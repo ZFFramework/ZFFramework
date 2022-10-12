@@ -186,7 +186,7 @@ typedef zfautoObject (*ZFObjectCreator)(void);
 /**
  * @brief true if Type is #ZFObject type
  */
-#define zftIsZFObject(Type) (ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, Type) ? 1 : 0)
+#define zftIsZFObject(Type) ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, Type)
 ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, void (*F)(void))
 
 // ============================================================

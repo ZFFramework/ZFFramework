@@ -384,13 +384,13 @@ public:
 
 // ============================================================
 /** @brief std::enable_if wrapper */
-template<bool cond = false>
+template<int cond = 0, typename T_Fix = void>
 zfclassNotPOD ZF_ENV_EXPORT zftEnableIf
 {
 };
 /** @brief std::enable_if wrapper */
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftEnableIf<true>
+zfclassNotPOD ZF_ENV_EXPORT zftEnableIf<1>
 {
 public:
     /** @brief std::enable_if wrapper */

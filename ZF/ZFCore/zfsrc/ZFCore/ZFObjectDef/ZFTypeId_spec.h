@@ -461,7 +461,7 @@ public:
 /** @cond ZFPrivateDoc */
 template<typename T_Type>
 zfclassNotPOD ZFTypeId<T_Type,
-        typename zftEnableIf<!zftIsZFObject(typename zftTraits<T_Type>::TrType)>::EnableIf,
+        typename zftEnableIf<!zftIsZFObject(typename zftTraits<T_Type>::TrType) ? 1 : 0>::EnableIf,
         typename zftEnableIf<zftTraits<T_Type>::TrIsPtr>::EnableIf
     > : zfextendsNotPOD ZFTypeInfo
 {

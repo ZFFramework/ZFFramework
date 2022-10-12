@@ -351,7 +351,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFMethodGenericInvokeError(ZF_IN const ZFMethod *
         } \
         _ZFP_ZFTypeIdWrapperMarkConstCheck<Type##N>::a(_p[N]);
 #define _ZFP_ZFMethodGenericInvoke_REPEAT2(N) \
-        _ZFP_MtdGII_P<Type##N>::p(param##N, _p[N]);
+        _ZFP_MtdGII_P<Type##N, zftIsZFObject(typename zftTraits<Type##N>::TrType)>::p(param##N, _p[N]);
 
 #define _ZFP_ZFMethodGenericInvoke_DECLARE(N) \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
@@ -373,7 +373,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFMethodGenericInvokeError(ZF_IN const ZFMethod *
         return _ZFP_MtdGII_R<T_ReturnType>::r(method, obj, _ret); \
     }
 
-template<typename T_ParamType, typename T_Fix = void>
+template<typename T_ParamType, int isZFObject>
 zfclassNotPOD _ZFP_MtdGII_P
 {
 public:
@@ -382,7 +382,7 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType const &>
+zfclassNotPOD _ZFP_MtdGII_P<T_ParamType const &, 0>
 {
 public:
     static inline void p(ZF_IN_OUT T_ParamType const &p, ZF_IN_OUT zfautoObject &h)
@@ -390,15 +390,31 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<const T_ParamType *>
+zfclassNotPOD _ZFP_MtdGII_P<const T_ParamType *, 0>
 {
 public:
     static inline void p(ZF_IN_OUT const T_ParamType *p, ZF_IN_OUT zfautoObject &h)
     {
     }
 };
+template<>
+zfclassNotPOD _ZFP_MtdGII_P<const void *, 0>
+{
+public:
+    static inline void p(ZF_IN_OUT const void *p, ZF_IN_OUT zfautoObject &h)
+    {
+    }
+};
+template<>
+zfclassNotPOD _ZFP_MtdGII_P<void *, 0>
+{
+public:
+    static inline void p(ZF_IN_OUT void *p, ZF_IN_OUT zfautoObject &h)
+    {
+    }
+};
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType &>
+zfclassNotPOD _ZFP_MtdGII_P<T_ParamType &, 0>
 {
 public:
     static void p(ZF_IN_OUT T_ParamType &p, ZF_IN_OUT zfautoObject &h)
@@ -409,7 +425,7 @@ public:
     }
 };
 template<typename T_ParamType>
-zfclassNotPOD _ZFP_MtdGII_P<T_ParamType *, zftEnableIf<!zftIsZFObject(T_ParamType)> >
+zfclassNotPOD _ZFP_MtdGII_P<T_ParamType *, 0>
 {
 public:
     static void p(ZF_IN_OUT T_ParamType *p, ZF_IN_OUT zfautoObject &h)

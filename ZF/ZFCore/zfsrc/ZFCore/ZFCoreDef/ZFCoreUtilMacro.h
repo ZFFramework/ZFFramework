@@ -468,21 +468,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFM_CLASS_HAS_MEMBER_DECLARE(NameSpace, memberName, memberSig) \
     /** @cond ZFPrivateDoc */ \
     template<typename T_Owner> \
-    zfclassNotPOD _ZFP_ZFM_CLASS_HAS_MEMBER_##NameSpace##_##memberName \
+    zfclassNotPOD _ZFP_ClsHM_##NameSpace##_##memberName \
     { \
     private: \
         template <typename T, memberSig> struct _Fix {}; \
         template<typename T> static char _has(_Fix<T, &T::memberName> *); \
         template<typename T> static int _has(...); \
     public: \
-        enum { value = (sizeof(_has<T_Owner>(0)) == sizeof(char)) }; \
+        enum { value = (sizeof(_has<T_Owner>(0)) == sizeof(char) ? 1 : 0) }; \
     }; \
     /** @endcond */
 /**
  * @brief see #ZFM_CLASS_HAS_MEMBER_DECLARE
  */
 #define ZFM_CLASS_HAS_MEMBER(NameSpace, memberName, ClassToCheck) \
-    (_ZFP_ZFM_CLASS_HAS_MEMBER_##NameSpace##_##memberName<ClassToCheck>::value != 0)
+    (_ZFP_ClsHM_##NameSpace##_##memberName<ClassToCheck>::value ? 1 : 0)
 
 // ============================================================
 /**
