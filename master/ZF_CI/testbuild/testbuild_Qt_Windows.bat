@@ -10,7 +10,7 @@ if not defined PROJ_PATH goto :usage
 goto :run
 :usage
 echo usage:
-echo   testbuild_Qt_MacOS.bat PROJ_NAME PROJ_PATH
+echo   testbuild_Qt_Windows.bat PROJ_NAME PROJ_PATH
 exit /b 1
 :run
 

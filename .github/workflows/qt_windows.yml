@@ -34,5 +34,5 @@ jobs:
 
     - name: ZF build zfproj
       run: |
-        ..\ZFFramework\master\ZF_CI\testbuild\testbuild_Qt_Windows.bat "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}\Qt\${ZF_PROJ_NAME}"
+        ..\ZFFramework\master\ZF_CI\testbuild\testbuild_Qt_Windows.bat "%ZF_PROJ_NAME%" "%ZF_PROJ_PATH%\Qt\%ZF_PROJ_NAME%"
 
