@@ -28,6 +28,9 @@ jobs:
         target: desktop
         modules: qtwebengine
 
+    - name: Setup MSVC cmd
+      uses: TheMrMilchmann/setup-msvc-dev@v2
+
     - name: ZFSetup
       run: |
         .\zfsetup.bat
