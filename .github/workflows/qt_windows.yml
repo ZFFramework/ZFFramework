@@ -27,7 +27,7 @@ jobs:
         export-path-to-vcvarsall: VCVARSALL_PATH
 
     - name: Setup MSVC env
-      run: "%VCVARSALL_PATH%"
+      run: "%VCVARSALL_PATH%\vcvarsall.bat"
 
     - name: Setup Qt
       uses: jurplel/install-qt-action@v3.0.0
