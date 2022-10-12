@@ -19,10 +19,11 @@ if not defined ZF_QT_MAKE (
     where /q nmake
     if "!errorlevel!" == "0" (
         rem MSVC
+        set CL=/MP
         set ZF_QT_MAKE=nmake
     ) else (
         rem mingw
-        set ZF_QT_MAKE=mingw32-make
+        set ZF_QT_MAKE=mingw32-make -j4
     )
 )
 
@@ -36,7 +37,7 @@ set _PROJ_PATH=%cd%
 mkdir "%_TMP_PATH%" >nul 2>&1
 cd /d "%_TMP_PATH%"
 qmake "%_PROJ_PATH%\%PROJ_NAME%.pro" CONFIG+=release
-"%ZF_QT_MAKE%" -j4
+%ZF_QT_MAKE%
 set _RESULT=%errorlevel%
 cd /d "%_OLD_DIR%"
 

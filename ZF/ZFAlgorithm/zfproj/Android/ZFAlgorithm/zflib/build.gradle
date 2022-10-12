@@ -14,9 +14,9 @@ android {
             }
         }
         ndk {
-            if(System.getenv('ZFAndroidABI') != null && !System.getenv('ZFAndroidABI').isEmpty()) {
-                // ZFAndroidABI=armeabi-v7a,arm64-v8a,x86 ./gradle assembleRelease
-                abiFilters System.getenv('ZFAndroidABI').split(',')
+            if(System.getenv('ZF_ANDROID_ABI') != null && !System.getenv('ZF_ANDROID_ABI').isEmpty()) {
+                // ZF_ANDROID_ABI=armeabi-v7a,arm64-v8a,x86 ./gradle assembleRelease
+                abiFilters System.getenv('ZF_ANDROID_ABI').split(',')
             }
             else {
                 // abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'x86', 'x86_64'
