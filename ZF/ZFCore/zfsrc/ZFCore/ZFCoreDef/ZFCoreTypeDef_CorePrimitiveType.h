@@ -59,7 +59,7 @@ ZF_ENV_SENSITIVE("must ensure these types differs from each other")
 #endif
 
 #ifndef _ZFT_zfindex
-    typedef unsigned long int _ZFT_t_zfindex;
+    typedef size_t _ZFT_t_zfindex;
 #else
     typedef _ZFT_zfindex _ZFT_t_zfindex;
 #endif

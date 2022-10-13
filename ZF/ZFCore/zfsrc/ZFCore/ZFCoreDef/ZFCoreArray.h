@@ -408,7 +408,7 @@ public:
         {
             this->capacity(this->count() + count);
             _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + count, src, d->PODType);
-            d->count += count;
+            d->count += (zfuint)count;
         }
         else
         {

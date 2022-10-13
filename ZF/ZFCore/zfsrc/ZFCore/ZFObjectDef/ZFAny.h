@@ -22,6 +22,15 @@ public:
         return (ZFObject *)obj;
     }
 };
+template<>
+zfclassNotPOD _ZFP_ZFAnyCastT<zfnullT, 0>
+{
+public:
+    static ZFObject *c(ZF_IN zfnullT const &obj)
+    {
+        return (ZFObject *)zfnull;
+    }
+};
 template<typename T_Type>
 zfclassNotPOD _ZFP_ZFAnyCastT<T_Type, 1>
 {

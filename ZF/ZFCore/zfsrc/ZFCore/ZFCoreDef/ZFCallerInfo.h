@@ -51,7 +51,7 @@ extern ZF_ENV_EXPORT zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *fi
 /**
  * @brief same as __LINE__ in C++ world
  */
-#define ZF_CALLER_LINE __LINE__
+#define ZF_CALLER_LINE ((zfuint)(__LINE__))
 
 // ============================================================
 // ZFCallerInfo

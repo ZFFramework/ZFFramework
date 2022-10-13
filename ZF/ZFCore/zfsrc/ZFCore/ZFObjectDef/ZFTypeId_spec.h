@@ -70,9 +70,10 @@ ZFOUTPUT_TYPE(ZFCallerInfo, {output << v.callerInfo();})
 // ============================================================
 // ZFObject
 /** @cond ZFPrivateDoc */
-template<typename T_Type>
-zfclassNotPOD ZFTypeId<T_Type,
-        typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrType)>::EnableIf
+template<typename T_Type, typename T_PointerFix>
+zfclassNotPOD ZFTypeId<T_Type
+        , typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrType)>::EnableIf
+        , T_PointerFix
     > : zfextendsNotPOD ZFTypeInfo
 {
 public:
@@ -459,10 +460,10 @@ public:
 // ============================================================
 // pointer type
 /** @cond ZFPrivateDoc */
-template<typename T_Type>
-zfclassNotPOD ZFTypeId<T_Type,
-        typename zftEnableIf<!zftIsZFObject(typename zftTraits<T_Type>::TrType) ? 1 : 0>::EnableIf,
-        typename zftEnableIf<zftTraits<T_Type>::TrIsPtr>::EnableIf
+template<typename T_Type, typename T_ZFObjectFix>
+zfclassNotPOD ZFTypeId<T_Type
+        , T_ZFObjectFix
+        , typename zftEnableIf<!zftIsZFObject(typename zftTraits<T_Type>::TrType) && zftTraits<T_Type>::TrIsPtr>::EnableIf
     > : zfextendsNotPOD ZFTypeInfo
 {
 public:
