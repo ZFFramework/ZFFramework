@@ -59,7 +59,19 @@ ZF_ENV_SENSITIVE("must ensure these types differs from each other")
 #endif
 
 #ifndef _ZFT_zfindex
-    typedef size_t _ZFT_t_zfindex;
+    template<typename T_size_t>
+    class _ZFT_t_zfindexFix
+    {
+    public:
+        typedef size_t T;
+    };
+    template<>
+    class _ZFT_t_zfindexFix<unsigned int>
+    {
+    public:
+        typedef unsigned long T;
+    };
+    typedef _ZFT_t_zfindexFix<size_t>::T _ZFT_t_zfindex;
 #else
     typedef _ZFT_zfindex _ZFT_t_zfindex;
 #endif
