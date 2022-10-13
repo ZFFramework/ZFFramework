@@ -70,11 +70,8 @@ ZFOUTPUT_TYPE(ZFCallerInfo, {output << v.callerInfo();})
 // ============================================================
 // ZFObject
 /** @cond ZFPrivateDoc */
-template<typename T_Type, typename T_PointerFix>
-zfclassNotPOD ZFTypeId<T_Type
-        , typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrType)>::EnableIf
-        , T_PointerFix
-    > : zfextendsNotPOD ZFTypeInfo
+template<typename T_Type>
+zfclassNotPOD ZFTypeId<T_Type, 1, 1> : zfextendsNotPOD ZFTypeInfo
 {
 public:
     enum {
@@ -302,7 +299,7 @@ public:
 // zfautoObjectT
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObject>
-zfclassNotPOD ZFTypeId<zfautoObjectT<T_ZFObject> > : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<zfautoObjectT<T_ZFObject>, 0, 0> : zfextendsNotPOD ZFTypeInfo
 {
 public:
     enum {
@@ -460,14 +457,11 @@ public:
 // ============================================================
 // pointer type
 /** @cond ZFPrivateDoc */
-template<typename T_Type, typename T_ZFObjectFix>
-zfclassNotPOD ZFTypeId<T_Type
-        , T_ZFObjectFix
-        , typename zftEnableIf<!zftIsZFObject(typename zftTraits<T_Type>::TrType) && zftTraits<T_Type>::TrIsPtr>::EnableIf
-    > : zfextendsNotPOD ZFTypeInfo
+template<typename T_Type>
+zfclassNotPOD ZFTypeId<T_Type *, 0, 1> : zfextendsNotPOD ZFTypeInfo
 {
 public:
-    typedef typename zftTraits<T_Type>::TrType T_Type_;
+    typedef typename zftTraits<T_Type *>::TrType T_Type_;
 public:
     enum {
         TypeIdRegistered = ZFTypeId<T_Type_>::TypeIdRegistered,
@@ -493,7 +487,7 @@ public:
         ZFTypeId<T_Type_> t;
         return t.typeIdClass();
     }
-    static zfbool ValueStore(ZF_OUT zfautoObject &obj, T_Type const &v)
+    static zfbool ValueStore(ZF_OUT zfautoObject &obj, T_Type * const &v)
     {
         if(v == zfnull)
         {
@@ -509,7 +503,7 @@ public:
     {
         return ZFTypeId<T_Type_>::ValueStore(obj, *v);
     }
-    template<typename T_Access = T_Type
+    template<typename T_Access = T_Type *
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
             && zftTypeIsSame<
                     typename zftTraits<T_Access>::TrNoRef,

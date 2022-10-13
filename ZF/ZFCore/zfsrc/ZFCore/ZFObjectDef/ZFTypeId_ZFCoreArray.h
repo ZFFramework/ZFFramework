@@ -188,7 +188,7 @@ public:
 /** @cond ZFPrivateDoc */
 
 template<typename T_Type>
-zfclassNotPOD ZFTypeId<ZFCoreArray<T_Type> > : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<ZFCoreArray<T_Type>, 0, 0> : zfextendsNotPOD ZFTypeInfo
 {
 public:
     enum {
@@ -280,7 +280,7 @@ private:
 };
 
 template<typename T_Type>
-zfclassNotPOD ZFTypeId<ZFCoreArrayPOD<T_Type> > : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<ZFCoreArrayPOD<T_Type>, 0, 0> : zfextendsNotPOD ZFTypeInfo
 {
 public:
     enum {

@@ -88,7 +88,10 @@ zfclassNotPOD _ZFP_ZFTypeIdRegChecker
  * and T_Type must be plain type without reference,
  * use #zftTraits::TrNoRef if necessary
  */
-template<typename T_Type, typename T_ZFObjectFix = void, typename T_PointerFix = void>
+template<typename T_Type
+        , int T_isZFObject = zftIsZFObject(typename zftTraits<T_Type>::TrType)
+        , int T_isPointer = zftTraits<T_Type>::TrIsPtr
+    >
 zfclassNotPOD ZFTypeId : zfextendsNotPOD ZFTypeInfo
 {
 public:
