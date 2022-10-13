@@ -17,7 +17,7 @@ exit /b 1
 mkdir "%DST_PATH%" >nul 2>&1
 xcopy /s/e/y/r/h "%SRC_PATH%" "%DST_PATH%" >nul 2>&1
 
-for /f "tokens=*" %%i in ('dir /s/b/ad "%DST_PATH%" 2^>nul') do (
+for /f "tokens=*" %%i in ('dir /s/b/a-d "%DST_PATH%" 2^>nul') do (
     if "%%~ni" == "_repo" (
         rmdir /s/q "%%i" >nul 2>&1
     )
