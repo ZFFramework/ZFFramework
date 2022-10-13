@@ -374,7 +374,17 @@ extern ZF_ENV_EXPORT void _ZFP_ZFMethodGenericInvokeError(ZF_IN const ZFMethod *
     }
 
 template<typename T_ParamType, int isZFObject>
-zfclassNotPOD _ZFP_MtdGII_P
+zfclassNotPOD _ZFP_MtdGII_P;
+template<typename T_ParamType>
+zfclassNotPOD _ZFP_MtdGII_P<T_ParamType, 0>
+{
+public:
+    static inline void p(ZF_IN_OUT T_ParamType p, ZF_IN_OUT zfautoObject &h)
+    {
+    }
+};
+template<typename T_ParamType>
+zfclassNotPOD _ZFP_MtdGII_P<T_ParamType, 1>
 {
 public:
     static inline void p(ZF_IN_OUT T_ParamType p, ZF_IN_OUT zfautoObject &h)

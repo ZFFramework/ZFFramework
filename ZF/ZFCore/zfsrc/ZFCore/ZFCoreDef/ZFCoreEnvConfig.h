@@ -113,6 +113,12 @@ PREDEFINED            += ZFIMPLEMENTS_DECLARE(...):=
     // reference type warnings
     #pragma warning(disable:4180)
 
+    // internal template without ZF_ENV_EXPORT
+    #pragma warning(disable:4251)
+
+    // 32bit int convert to 64bit pointer
+    #pragma warning(disable:4312)
+
     // placement new for POD with no-param-constructor:
     //   new addr Type();
     #pragma warning(disable:4345)
