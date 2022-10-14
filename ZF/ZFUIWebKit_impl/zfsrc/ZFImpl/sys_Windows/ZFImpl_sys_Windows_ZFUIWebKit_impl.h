@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Windows_ZFUIWebKit_impl_h_
 #define _ZFI_ZFImpl_sys_Windows_ZFUIWebKit_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFUIWebKit_impl.h"
 
 #include "ZFImpl/sys_Windows/ZFImpl_sys_Windows_ZF_impl.h"
 

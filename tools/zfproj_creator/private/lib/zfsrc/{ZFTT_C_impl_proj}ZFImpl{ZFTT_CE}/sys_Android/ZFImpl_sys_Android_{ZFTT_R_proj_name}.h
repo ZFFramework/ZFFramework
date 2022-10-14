@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Android_{ZFTT_R_proj_name}_h_
 #define _ZFI_ZFImpl_sys_Android_{ZFTT_R_proj_name}_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_{ZFTT_R_proj_name}.h"
 {ZFTT_C_impl_require_0}
 #include "ZFImpl/sys_Android/ZFImpl_sys_Android_{ZFTT_R_impl_name_0}.h"{ZFTT_CE}{ZFTT_C_impl_require_1}
 #include "ZFImpl/sys_Android/ZFImpl_sys_Android_{ZFTT_R_impl_name_1}.h"{ZFTT_CE}{ZFTT_C_impl_require_2}

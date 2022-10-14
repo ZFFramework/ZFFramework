@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Posix_ZFAlgorithm_impl_h_
 #define _ZFI_ZFImpl_sys_Posix_ZFAlgorithm_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFAlgorithm_impl.h"
 
 #include "ZFImpl/sys_Posix/ZFImpl_sys_Posix_ZF_impl.h"
 

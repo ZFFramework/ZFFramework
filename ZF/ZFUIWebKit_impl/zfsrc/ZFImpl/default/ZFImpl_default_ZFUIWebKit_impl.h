@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_default_ZFUIWebKit_impl_h_
 #define _ZFI_ZFImpl_default_ZFUIWebKit_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFUIWebKit_impl.h"
 
 #include "ZFImpl/default/ZFImpl_default_ZF_impl.h"
 

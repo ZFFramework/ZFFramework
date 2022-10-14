@@ -7,6 +7,7 @@
 #define _ZFI_ZFImpl_ZFLua_h_
 
 #include "ZFLua.h"
+#include "../ZFImpl_ZFLua_impl.h"
 
 #include "_impl/lua/ELuna.h"
 

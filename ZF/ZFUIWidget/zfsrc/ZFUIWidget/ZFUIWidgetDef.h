@@ -12,6 +12,11 @@
 #include "ZFUIKit.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/** @brief used to export symbols */
+#ifndef ZFLIB_ZFUIWidget
+    #define ZFLIB_ZFUIWidget ZF_ENV_IMPORT
+#endif
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIWidgetDef_h_
 

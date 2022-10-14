@@ -8,9 +8,7 @@
 #include "ZFCoreEnvConfig.h"
 
 // ============================================================
-/**
- * @brief used to export symbols
- */
+/** @brief used to export symbols */
 #ifndef ZF_ENV_EXPORT
     #ifdef _WIN32
         #define ZF_ENV_EXPORT __declspec(dllexport)
@@ -18,15 +16,18 @@
         #define ZF_ENV_EXPORT __attribute__((visibility("default")))
     #endif
 #endif
-/**
- * @brief used to import symbols
- */
+/** @brief used to import symbols */
 #ifndef ZF_ENV_IMPORT
     #ifdef _WIN32
         #define ZF_ENV_IMPORT __declspec(dllimport)
     #else
         #define ZF_ENV_IMPORT __attribute__((visibility("default")))
     #endif
+#endif
+
+/** @brief used to export symbols */
+#ifndef ZFLIB_ZFCore
+    #define ZFLIB_ZFCore ZF_ENV_IMPORT
 #endif
 
 // ============================================================

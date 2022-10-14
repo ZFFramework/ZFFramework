@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Qt_ZFCore_impl_h_
 #define _ZFI_ZFImpl_sys_Qt_ZFCore_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFCore_impl.h"
 
 #include "ZFImpl/sys_Qt/ZFImpl_sys_Qt_ZF_impl.h"
 

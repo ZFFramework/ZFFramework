@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Qt_ZFUIWebKit_impl_h_
 #define _ZFI_ZFImpl_sys_Qt_ZFUIWebKit_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFUIWebKit_impl.h"
 
 #include "ZFImpl/sys_Qt/ZFImpl_sys_Qt_ZF_impl.h"
 

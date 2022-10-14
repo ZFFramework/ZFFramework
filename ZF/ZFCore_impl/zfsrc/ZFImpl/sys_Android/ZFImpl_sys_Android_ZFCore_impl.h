@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Android_ZFCore_impl_h_
 #define _ZFI_ZFImpl_sys_Android_ZFCore_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFCore_impl.h"
 
 #include "ZFImpl/sys_Android/ZFImpl_sys_Android_ZF_impl.h"
 

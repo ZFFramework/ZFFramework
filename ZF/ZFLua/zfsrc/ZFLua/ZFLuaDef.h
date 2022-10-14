@@ -9,6 +9,11 @@
 #include "ZFCore.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/** @brief used to export symbols */
+#ifndef ZFLIB_ZFLua
+    #define ZFLIB_ZFLua ZF_ENV_IMPORT
+#endif
+
 // ============================================================
 extern ZF_ENV_EXPORT ZFCoreArray<ZFOutput> &_ZFP_ZFLuaErrorCallbacks(void);
 /**

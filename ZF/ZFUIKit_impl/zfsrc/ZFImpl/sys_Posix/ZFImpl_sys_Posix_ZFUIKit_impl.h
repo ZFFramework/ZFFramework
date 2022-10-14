@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Posix_ZFUIKit_impl_h_
 #define _ZFI_ZFImpl_sys_Posix_ZFUIKit_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFUIKit_impl.h"
 
 #include "ZFImpl/sys_Posix/ZFImpl_sys_Posix_ZF_impl.h"
 #include "ZFUIKit/ZFUITypeDef.h"

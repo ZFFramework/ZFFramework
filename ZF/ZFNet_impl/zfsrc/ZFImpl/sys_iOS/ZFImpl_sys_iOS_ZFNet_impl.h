@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_iOS_ZFNet_impl_h_
 #define _ZFI_ZFImpl_sys_iOS_ZFNet_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZFNet_impl.h"
 
 #include "ZFImpl/sys_iOS/ZFImpl_sys_iOS_ZF_impl.h"
 

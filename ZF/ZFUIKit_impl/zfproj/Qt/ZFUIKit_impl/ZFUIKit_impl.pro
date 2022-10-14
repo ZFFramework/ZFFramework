@@ -39,6 +39,8 @@ ZF_PROJ_HEADER_PATH = $${_PRO_FILE_PWD_}/../../../zfsrc
 # can hold one or more paths, separated by space
 ZF_PROJ_RES_PATH = $${_PRO_FILE_PWD_}/../../../zfres
 
+# for symbol export for Windows
+DEFINES += ZFLIB_ZFUIKit_impl=ZF_ENV_EXPORT
 
 # ======================================================================
 CONFIG(debug, debug|release) {
