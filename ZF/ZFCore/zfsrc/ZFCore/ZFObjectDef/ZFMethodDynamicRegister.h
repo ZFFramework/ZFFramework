@@ -147,15 +147,15 @@ public:
     /** @brief see #ZFMethodDynamicRegister */
     zfindex methodParamCount(void) const;
     /** @brief see #ZFMethodDynamicRegister */
-    const zfchar *methodParamTypeIdAtIndex(ZF_IN zfindex index) const;
+    const zfchar *methodParamTypeIdAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    const zfchar *methodParamTypeNameAtIndex(ZF_IN zfindex index) const;
+    const zfchar *methodParamTypeNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    const zfchar *methodParamNameAtIndex(ZF_IN zfindex index) const;
+    const zfchar *methodParamNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodParamDefaultValueCallback methodParamDefaultValueCallbackAtIndex(ZF_IN zfindex index) const;
+    ZFMethodParamDefaultValueCallback methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    ZFObject *methodParamDefaultValueAtIndex(ZF_IN zfindex index) const;
+    ZFObject *methodParamDefaultValueAt(ZF_IN zfindex index) const;
 
 public:
     /** @cond ZFPrivateDoc */

@@ -87,7 +87,7 @@ zfindex _ZFP_ZFEnumData::enumIndexForValue(ZF_IN zfuint value) const
 {
     return d->vl.find(value);
 }
-zfuint _ZFP_ZFEnumData::enumValueAtIndex(ZF_IN zfindex index) const
+zfuint _ZFP_ZFEnumData::enumValueAt(ZF_IN zfindex index) const
 {
     if(index >= d->vl.count())
     {
@@ -98,7 +98,7 @@ zfuint _ZFP_ZFEnumData::enumValueAtIndex(ZF_IN zfindex index) const
         return d->vl[index];
     }
 }
-const zfchar *_ZFP_ZFEnumData::enumNameAtIndex(ZF_IN zfindex index) const
+const zfchar *_ZFP_ZFEnumData::enumNameAt(ZF_IN zfindex index) const
 {
     if(index >= d->nl.count())
     {
@@ -195,17 +195,17 @@ void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZFMethod *> &ret,
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumValueAtIndex(index);
+                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumValueAt(index);
             }, d->ownerClass, public, ZFMethodTypeStatic,
-            zfuint, "EnumValueAtIndex",
+            zfuint, "EnumValueAt",
             ZFMP_IN(zfindex, index));
         ret.add(resultMethod);
     }
     {
         ZFMethodUserRegisterDetail_1(resultMethod, {
-                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumNameAtIndex(index);
+                return _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass())->enumNameAt(index);
             }, d->ownerClass, public, ZFMethodTypeStatic,
-            const zfchar *, "EnumNameAtIndex",
+            const zfchar *, "EnumNameAt",
             ZFMP_IN(zfindex, index));
         ret.add(resultMethod);
     }

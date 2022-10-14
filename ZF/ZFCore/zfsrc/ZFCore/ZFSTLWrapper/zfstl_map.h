@@ -19,7 +19,7 @@
 // ============================================================
 /** @cond ZFPrivateDoc */
 template<typename T_Key, typename T_Value, typename T_Compare = zfstl::less<T_Key> >
-class ZF_ENV_EXPORT zfimplmap : public zfstlmap<T_Key, T_Value, T_Compare>
+class zfimplmap : public zfstlmap<T_Key, T_Value, T_Compare>
 {
 private:
     static void _ZFP_d(void *data)

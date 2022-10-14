@@ -113,7 +113,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad,
         ZFStyleChangeBlock();
         for(zfindex i = 0; i < serializableData.childCount(); ++i)
         {
-            const ZFSerializableData &child = serializableData.childAtIndex(i);
+            const ZFSerializableData &child = serializableData.childAt(i);
             const zfchar *styleKey = ZFSerializableUtil::checkPropertyName(child);
             if(styleKey != zfnull)
             {
@@ -136,7 +136,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad,
         ZFStyleChangeBlock();
         for(zfindex i = 0; i < styleList->itemCount(); ++i)
         {
-            _ZFP_ZFStyleLoad_ZFStyleSet(styleList->itemKeyAtIndex(i), styleList->itemValueAtIndex(i));
+            _ZFP_ZFStyleLoad_ZFStyleSet(styleList->itemKeyAt(i), styleList->itemValueAt(i));
         }
     }
     return zftrue;
@@ -154,12 +154,12 @@ ZFMETHOD_DEFINE_0(ZFStyleList, zfindex, itemCount)
 {
     return d->keyList.count();
 }
-ZFMETHOD_DEFINE_1(ZFStyleList, const zfchar *, itemKeyAtIndex,
+ZFMETHOD_DEFINE_1(ZFStyleList, const zfchar *, itemKeyAt,
                   ZFMP_IN(zfindex, index))
 {
     return d->keyList.get(index);
 }
-ZFMETHOD_DEFINE_1(ZFStyleList, ZFStyleable *, itemValueAtIndex,
+ZFMETHOD_DEFINE_1(ZFStyleList, ZFStyleable *, itemValueAt,
                   ZFMP_IN(zfindex, index))
 {
     return d->valueList.get(index);
@@ -226,7 +226,7 @@ zfbool ZFStyleList::serializableOnSerializeFromData(ZF_IN const ZFSerializableDa
     }
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &elementData = serializableData.childAtIndex(i);
+        const ZFSerializableData &elementData = serializableData.childAt(i);
         if(elementData.resolved())
         {
             continue;

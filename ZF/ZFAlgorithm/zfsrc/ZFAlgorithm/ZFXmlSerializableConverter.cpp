@@ -127,7 +127,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXmlItem, ZFSerializableDataToXml,
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        ZFXmlItem child = ZFSerializableDataToXml(serializableData.childAtIndex(i), outErrorHint, outErrorPos);
+        ZFXmlItem child = ZFSerializableDataToXml(serializableData.childAt(i), outErrorHint, outErrorPos);
         if(child.xmlType() == ZFXmlType::e_XmlNull)
         {
             return ZFXmlItem();

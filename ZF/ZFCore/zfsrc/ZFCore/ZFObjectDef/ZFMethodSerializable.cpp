@@ -37,7 +37,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethod, const ZFMethod *, {
         for(zfindex i = 0; i < v->methodParamCount(); ++i)
         {
             s += ":";
-            s += v->methodParamTypeIdAtIndex(i);
+            s += v->methodParamTypeIdAt(i);
         }
 
         return zftrue;
@@ -62,11 +62,11 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFMethod, zfbool, methodParamTypeIdI
     , ZFMP_IN_OPT(const zfchar *, methodParamTypeId7, zfnull)
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, zfbool, methodParamTypeIdIsMatch, ZFMP_IN(const ZFMethod *, method))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamTypeIdAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamTypeNameAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamNameAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, ZFMethodParamDefaultValueCallback, methodParamDefaultValueCallbackAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, zfautoObject, methodParamDefaultValueAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamTypeIdAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamTypeNameAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamNameAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, ZFMethodParamDefaultValueCallback, methodParamDefaultValueCallbackAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, zfautoObject, methodParamDefaultValueAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfindex, methodParamDefaultBeginIndex)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFFuncAddrType, methodInvoker)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, methodInvoker, ZFMP_IN(ZFFuncAddrType, methodInvoker))

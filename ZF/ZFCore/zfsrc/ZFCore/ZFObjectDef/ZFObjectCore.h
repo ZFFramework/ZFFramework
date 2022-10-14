@@ -62,7 +62,7 @@ public:
     static ZFObject *_ZFP_zfAllocWithCache(void) {return zfnull;}
 };
 template<typename T_ZFObject, int valid>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_Obj_AllocCk;
+zfclassNotPOD _ZFP_Obj_AllocCk;
 zfclassFwd _ZFP_ZFObjectPrivate;
 zfclassFwd ZFObjectHolder;
 /**

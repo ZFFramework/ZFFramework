@@ -57,7 +57,7 @@ private:
                 , ZFUISizeParamFillFill()
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout->childAtIndex(0)->layoutParam<ZFUIAutoLayoutParam *>(), zffloat, ZFPropertyAccess(ZFUIAutoLayoutParam, biasX),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout->childAt(0)->layoutParam<ZFUIAutoLayoutParam *>(), zffloat, ZFPropertyAccess(ZFUIAutoLayoutParam, biasX),
             ZFCoreArrayPODCreate(zffloat
                 , 0.5f
                 , 0.1f

@@ -556,7 +556,7 @@ zfbool ZFCoreArrayFromData(ZF_IN_OUT ZFCoreArray<T_Type> &v,
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &element = serializableData.childAtIndex(i);
+        const ZFSerializableData &element = serializableData.childAt(i);
         if(element.resolved())
         {
             continue;

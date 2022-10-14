@@ -64,7 +64,7 @@ ZFFilterForZFClass &ZFFilterForZFClass::filterRemove(ZF_IN const ZFClass * const
     }
     return *this;
 }
-ZFFilterForZFClass &ZFFilterForZFClass::filterRemoveAtIndex(ZF_IN zfindex index)
+ZFFilterForZFClass &ZFFilterForZFClass::filterRemoveAt(ZF_IN zfindex index)
 {
     this->_ZFP_ZFFilterForZFClass_filters.remove(index);
     return *this;
@@ -79,11 +79,11 @@ zfindex ZFFilterForZFClass::filterCount(void) const
 {
     return this->_ZFP_ZFFilterForZFClass_filters.count();
 }
-const ZFClass *ZFFilterForZFClass::filterElementAtIndex(ZF_IN zfindex index) const
+const ZFClass *ZFFilterForZFClass::filterElementAt(ZF_IN zfindex index) const
 {
     return this->_ZFP_ZFFilterForZFClass_filters.get(index).filterClass;
 }
-ZFFilterForZFClassType ZFFilterForZFClass::filterTypeAtIndex(ZF_IN zfindex index) const
+ZFFilterForZFClassType ZFFilterForZFClass::filterTypeAt(ZF_IN zfindex index) const
 {
     return this->_ZFP_ZFFilterForZFClass_filters.get(index).filterType;
 }
@@ -107,7 +107,7 @@ zfindex ZFFilterForZFClass::customFilterCallbackCount(void) const
 {
     return this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.count();
 }
-ZFFilterForZFClass::CustomFilterCallback ZFFilterForZFClass::customFilterCallbackAtIndex(ZF_IN zfindex index) const
+ZFFilterForZFClass::CustomFilterCallback ZFFilterForZFClass::customFilterCallbackAt(ZF_IN zfindex index) const
 {
     return this->_ZFP_ZFFilterForZFClass_customFilterCallbacks.get(index);
 }

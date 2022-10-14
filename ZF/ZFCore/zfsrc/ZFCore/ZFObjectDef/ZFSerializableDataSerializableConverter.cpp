@@ -463,7 +463,7 @@ zfbool ZFSerializableDataToZfsd(ZF_OUT zfstring &result,
         result += _ZFP_ZFSD_ChildBegin;
         for(zfindex i = 0; i < serializableData.childCount(); ++i)
         {
-            if(!ZFSerializableDataToZfsd(result, serializableData.childAtIndex(i), outErrorHint, prettyPrint))
+            if(!ZFSerializableDataToZfsd(result, serializableData.childAt(i), outErrorHint, prettyPrint))
             {
                 return zffalse;
             }
@@ -547,7 +547,7 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(ZF_OUT zfstring &result,
         result += '\n';
         for(zfindex i = 0; i < serializableData.childCount(); ++i)
         {
-            if(!_ZFP_ZFSerializableDataToZfsdPretty(result, serializableData.childAtIndex(i), outErrorHint, indentLevel + 1))
+            if(!_ZFP_ZFSerializableDataToZfsdPretty(result, serializableData.childAt(i), outErrorHint, indentLevel + 1))
             {
                 return zffalse;
             }

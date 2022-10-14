@@ -11,13 +11,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 template<typename T_zfsuper, typename T_superInterface, int superImplementsInterface>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfsuperI
+zfclassNotPOD _ZFP_zfsuperI
 {
 public:
     typedef T_superInterface SuperType;
 };
 template<typename T_zfsuper, typename T_superInterface>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfsuperI<T_zfsuper, T_superInterface, 1>
+zfclassNotPOD _ZFP_zfsuperI<T_zfsuper, T_superInterface, 1>
 {
 public:
     typedef T_zfsuper SuperType;

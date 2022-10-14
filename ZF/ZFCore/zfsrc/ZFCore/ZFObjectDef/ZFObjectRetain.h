@@ -13,9 +13,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // zfAlloc
 /* ZFMETHOD_MAX_PARAM */
 template<typename T_ZFObject, int valid>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_Obj_AllocCk;
+zfclassNotPOD _ZFP_Obj_AllocCk;
 template<typename T_ZFObject>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_Obj_AllocCk<T_ZFObject, 1>
+zfclassNotPOD _ZFP_Obj_AllocCk<T_ZFObject, 1>
 {
 public:
     static inline T_ZFObject *CanAlloc(T_ZFObject *obj)
@@ -82,7 +82,7 @@ public:
     }
 };
 template<typename T_ZFObject>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_Obj_AllocCk<T_ZFObject, 0>
+zfclassNotPOD _ZFP_Obj_AllocCk<T_ZFObject, 0>
 {
 };
 #define _ZFP_zfAlloc(T_ZFObject, ...) \
@@ -251,7 +251,7 @@ extern ZF_ENV_EXPORT void _ZFP_zfAllocWithCache_register(ZF_IN_OUT zfbool &enabl
                                                          ZF_IN_OUT zfindex &cacheCount);
 extern ZF_ENV_EXPORT void _ZFP_zfAllocWithCache_unregister(ZF_IN_OUT zfbool &enableFlag);
 template<typename T_ZFObject, typename T_Cleanup = T_ZFObject, int T_MaxCache = 16>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_Obj_AllocCache
+zfclassNotPOD _ZFP_Obj_AllocCache
 {
 public:
     static T_ZFObject *Alloc(void)

@@ -298,7 +298,7 @@ zfbool ZFAnimationGroup::serializableOnSerializeFromData(ZF_IN const ZFSerializa
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &categoryData = serializableData.childAtIndex(i);
+        const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
@@ -452,12 +452,12 @@ ZFMETHOD_DEFINE_0(ZFAnimationGroup, zfindex, childAniCount)
 {
     return d->childAnis->count();
 }
-ZFMETHOD_DEFINE_1(ZFAnimationGroup, ZFAnimation *, childAniAtIndex,
+ZFMETHOD_DEFINE_1(ZFAnimationGroup, ZFAnimation *, childAniAt,
                   ZFMP_IN(zfindex, index))
 {
     return d->childAnis->get<ZFAnimationGroupChildData *>(index)->childAni();
 }
-ZFMETHOD_DEFINE_1(ZFAnimationGroup, ZFAnimationGroupChildData *, childAniDataAtIndex,
+ZFMETHOD_DEFINE_1(ZFAnimationGroup, ZFAnimationGroupChildData *, childAniDataAt,
                   ZFMP_IN(zfindex, index))
 {
     return d->childAnis->get<ZFAnimationGroupChildData *>(index);

@@ -10,15 +10,22 @@
 // ============================================================
 /**
  * @brief used to export symbols
- *
- * for example, add -DZF_ENV_EXPORT=__declspec(dllexport)
- * to export symbols under Windows
  */
 #ifndef ZF_ENV_EXPORT
     #ifdef _WIN32
         #define ZF_ENV_EXPORT __declspec(dllexport)
     #else
         #define ZF_ENV_EXPORT __attribute__((visibility("default")))
+    #endif
+#endif
+/**
+ * @brief used to import symbols
+ */
+#ifndef ZF_ENV_IMPORT
+    #ifdef _WIN32
+        #define ZF_ENV_IMPORT __declspec(dllimport)
+    #else
+        #define ZF_ENV_IMPORT __attribute__((visibility("default")))
     #endif
 #endif
 

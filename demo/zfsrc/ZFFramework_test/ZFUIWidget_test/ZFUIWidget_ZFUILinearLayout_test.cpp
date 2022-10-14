@@ -38,8 +38,8 @@ private:
             child->viewBackgroundColor(ZFUIColorRandom());
         }
 
-        layout->childAtIndex(1)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
-        layout->childAtIndex(2)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(2);
+        layout->childAt(1)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
+        layout->childAt(2)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(2);
 
         zfblockedAlloc(ZFUILinearLayout, l);
         layout->childAdd(l);

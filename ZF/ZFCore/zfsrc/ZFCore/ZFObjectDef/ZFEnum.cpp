@@ -260,9 +260,9 @@ public:
         if(ret == zfnull)
         {
             const ZFMethod *enumCountMethod = enumClass->methodForName("EnumCount");
-            const ZFMethod *enumValueAtIndexMethod = enumClass->methodForName("EnumValueAtIndex");
-            const ZFMethod *enumNameAtIndexMethod = enumClass->methodForName("EnumNameAtIndex");
-            zfCoreAssert(enumCountMethod != zfnull && enumValueAtIndexMethod != zfnull && enumNameAtIndexMethod != zfnull);
+            const ZFMethod *enumValueAtMethod = enumClass->methodForName("EnumValueAt");
+            const ZFMethod *enumNameAtMethod = enumClass->methodForName("EnumNameAt");
+            zfCoreAssert(enumCountMethod != zfnull && enumValueAtMethod != zfnull && enumNameAtMethod != zfnull);
 
             ret = zfAlloc(_ZFP_I_ZFEnum_stringConverterDataHolder);
             enumClass->classTag(_ZFP_I_ZFEnum_stringConverterDataHolder::ClassData()->classNameFull(), ret);
@@ -273,8 +273,8 @@ public:
             ret->nameList = (const zfchar **)zfmalloc(sizeof(const zfchar *) * ret->enumCount);
             for(zfindex i = 0; i < ret->enumCount; ++i)
             {
-                ret->flagList[i] = enumValueAtIndexMethod->execute<zfuint, zfindex>(zfnull, i);
-                ret->nameList[i] = enumNameAtIndexMethod->execute<const zfchar *, zfindex>(zfnull, i);
+                ret->flagList[i] = enumValueAtMethod->execute<zfuint, zfindex>(zfnull, i);
+                ret->nameList[i] = enumNameAtMethod->execute<const zfchar *, zfindex>(zfnull, i);
             }
         }
         return ret;
@@ -362,8 +362,8 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfindex, enumCount)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfindex, enumIndexForValue, ZFMP_IN(zfuint, value))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfuint, enumValueAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfchar *, enumNameAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfuint, enumValueAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfchar *, enumNameAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfbool, enumContainValue, ZFMP_IN(zfuint, value))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfuint, enumValueForName, ZFMP_IN(const zfchar *, name))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfchar *, enumNameForValue, ZFMP_IN(zfuint, value))

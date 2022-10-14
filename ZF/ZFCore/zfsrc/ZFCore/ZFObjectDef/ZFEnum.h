@@ -134,11 +134,11 @@ public:
     /**
      * @brief get the value at index, or ZFEnumInvalid if not exist
      */
-    virtual zfuint enumValueAtIndex(ZF_IN zfindex index) zfpurevirtual;
+    virtual zfuint enumValueAt(ZF_IN zfindex index) zfpurevirtual;
     /**
      * @brief get the name at index, or ZFEnumNameInvalid if not exist
      */
-    virtual const zfchar *enumNameAtIndex(ZF_IN zfindex index) zfpurevirtual;
+    virtual const zfchar *enumNameAt(ZF_IN zfindex index) zfpurevirtual;
     /**
      * @brief return true if contain the specified value
      */

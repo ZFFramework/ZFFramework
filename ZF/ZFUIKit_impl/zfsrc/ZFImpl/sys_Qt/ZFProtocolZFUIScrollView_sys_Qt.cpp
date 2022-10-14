@@ -431,7 +431,7 @@ public:
         y -= _ZFP_scrollViewContentView->geometry().y();
         for( ; beforeIndex != zfindexMax(); --beforeIndex)
         {
-            QGraphicsWidget *t = _ZFP_scrollViewContentViewLayoutProxy->childAtIndex(beforeIndex);
+            QGraphicsWidget *t = _ZFP_scrollViewContentViewLayoutProxy->childAt(beforeIndex);
             if(t->isEnabled() && t->geometry().contains(x, y))
             {
                 return t;
@@ -597,7 +597,7 @@ public:
                                    ZF_IN zfindex atIndex)
     {
         _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *, parent->nativeImplView());
-        nativeScrollView->_ZFP_scrollViewContentViewLayoutProxy->childRemoveAtIndex(atIndex);
+        nativeScrollView->_ZFP_scrollViewContentViewLayoutProxy->childRemoveAt(atIndex);
     }
     virtual void scrollChildRemoveAllForDealloc(ZF_IN ZFUIScrollView *parent)
     {

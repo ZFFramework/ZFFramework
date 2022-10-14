@@ -19,7 +19,7 @@
 // ============================================================
 /** @cond ZFPrivateDoc */
 template<typename T_Key, typename T_Value, typename T_Hash = zfstl::hash<T_Key>, typename T_Equal = zfstl::equal_to<T_Key> >
-class ZF_ENV_EXPORT zfimplhashmap : public zfstlhashmap<T_Key, T_Value, T_Hash, T_Equal>
+class zfimplhashmap : public zfstlhashmap<T_Key, T_Value, T_Hash, T_Equal>
 {
 private:
     static void _ZFP_d(void *data)

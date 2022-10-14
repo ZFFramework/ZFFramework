@@ -151,13 +151,13 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex replaceDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    const zfchar *replaceDataNameAtIndex(ZF_IN zfindex index) const;
+    const zfchar *replaceDataNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
-    const zfchar *replaceDataAtIndex(ZF_IN zfindex index) const;
+    const zfchar *replaceDataAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
     void replaceDataRemove(ZF_IN const zfchar *key);
     /** @brief see #ZFTextTemplateApply */
-    void replaceDataRemoveAtIndex(ZF_IN zfindex index);
+    void replaceDataRemoveAt(ZF_IN zfindex index);
     /** @brief see #ZFTextTemplateApply */
     void replaceDataRemoveAll(void);
 
@@ -176,13 +176,13 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex enableDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    const zfchar *enableDataNameAtIndex(ZF_IN zfindex index) const;
+    const zfchar *enableDataNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
-    zfbool enableDataAtIndex(ZF_IN zfindex index) const;
+    zfbool enableDataAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
     void enableDataRemove(ZF_IN const zfchar *key);
     /** @brief see #ZFTextTemplateApply */
-    void enableDataRemoveAtIndex(ZF_IN zfindex index);
+    void enableDataRemoveAt(ZF_IN zfindex index);
     /** @brief see #ZFTextTemplateApply */
     void enableDataRemoveAll(void);
 
@@ -201,15 +201,15 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex indexDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    const zfchar *indexDataNameAtIndex(ZF_IN zfindex index) const;
+    const zfchar *indexDataNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
-    const ZFTextTemplateIndexData *indexDataAtIndex(ZF_IN zfindex index) const;
+    const ZFTextTemplateIndexData *indexDataAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
-    ZFTextTemplateIndexData *indexDataAtIndex(ZF_IN zfindex index);
+    ZFTextTemplateIndexData *indexDataAt(ZF_IN zfindex index);
     /** @brief see #ZFTextTemplateApply */
     void indexDataRemove(ZF_IN const zfchar *key);
     /** @brief see #ZFTextTemplateApply */
-    void indexDataRemoveAtIndex(ZF_IN zfindex index);
+    void indexDataRemoveAt(ZF_IN zfindex index);
     /** @brief see #ZFTextTemplateApply */
     void indexDataRemoveAll(void);
 

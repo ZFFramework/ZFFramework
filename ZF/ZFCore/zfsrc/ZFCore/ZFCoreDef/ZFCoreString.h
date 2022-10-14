@@ -72,7 +72,7 @@ public:
  * @brief low level string container
  */
 template<typename T_Char>
-zfclassLikePOD ZF_ENV_EXPORT _zfstr
+zfclassLikePOD _zfstr
 {
 public:
     /** @brief construct an empty string */

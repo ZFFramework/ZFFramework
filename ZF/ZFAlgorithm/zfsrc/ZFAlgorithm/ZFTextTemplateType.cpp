@@ -264,11 +264,11 @@ zfindex ZFTextTemplateParam::replaceDataCount(void) const
 {
     return d->replaceDataMap.count();
 }
-const zfchar *ZFTextTemplateParam::replaceDataNameAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFTextTemplateParam::replaceDataNameAt(ZF_IN zfindex index) const
 {
     return d->replaceDataList.get(index)->key;
 }
-const zfchar *ZFTextTemplateParam::replaceDataAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFTextTemplateParam::replaceDataAt(ZF_IN zfindex index) const
 {
     return d->replaceDataList.get(index)->value;
 }
@@ -281,7 +281,7 @@ void ZFTextTemplateParam::replaceDataRemove(ZF_IN const zfchar *key)
         d->replaceDataMap.iterRemove(it);
     }
 }
-void ZFTextTemplateParam::replaceDataRemoveAtIndex(ZF_IN zfindex index)
+void ZFTextTemplateParam::replaceDataRemoveAt(ZF_IN zfindex index)
 {
     const zfchar *key = d->replaceDataList.get(index)->key;
     d->replaceDataList.remove(index);
@@ -352,11 +352,11 @@ zfindex ZFTextTemplateParam::enableDataCount(void) const
 {
     return d->enableDataMap.count();
 }
-const zfchar *ZFTextTemplateParam::enableDataNameAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFTextTemplateParam::enableDataNameAt(ZF_IN zfindex index) const
 {
     return d->enableDataList.get(index)->key;
 }
-zfbool ZFTextTemplateParam::enableDataAtIndex(ZF_IN zfindex index) const
+zfbool ZFTextTemplateParam::enableDataAt(ZF_IN zfindex index) const
 {
     return d->enableDataList.get(index)->value;
 }
@@ -369,7 +369,7 @@ void ZFTextTemplateParam::enableDataRemove(ZF_IN const zfchar *key)
         d->enableDataMap.iterRemove(it);
     }
 }
-void ZFTextTemplateParam::enableDataRemoveAtIndex(ZF_IN zfindex index)
+void ZFTextTemplateParam::enableDataRemoveAt(ZF_IN zfindex index)
 {
     const zfchar *key = d->enableDataList.get(index)->key;
     d->enableDataList.remove(index);
@@ -440,15 +440,15 @@ zfindex ZFTextTemplateParam::indexDataCount(void) const
 {
     return d->indexDataMap.count();
 }
-const zfchar *ZFTextTemplateParam::indexDataNameAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFTextTemplateParam::indexDataNameAt(ZF_IN zfindex index) const
 {
     return d->indexDataList.get(index)->key;
 }
-const ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAtIndex(ZF_IN zfindex index) const
+const ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAt(ZF_IN zfindex index) const
 {
     return &(d->indexDataList.get(index)->value);
 }
-ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAtIndex(ZF_IN zfindex index)
+ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAt(ZF_IN zfindex index)
 {
     return &(d->indexDataList.get(index)->value);
 }
@@ -461,7 +461,7 @@ void ZFTextTemplateParam::indexDataRemove(ZF_IN const zfchar *key)
         d->indexDataMap.iterRemove(it);
     }
 }
-void ZFTextTemplateParam::indexDataRemoveAtIndex(ZF_IN zfindex index)
+void ZFTextTemplateParam::indexDataRemoveAt(ZF_IN zfindex index)
 {
     const zfchar *key = d->indexDataList.get(index)->key;
     d->indexDataList.remove(index);
@@ -671,7 +671,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
         {
             for(zfindex i = 0; i < element->childCount(); ++i)
             {
-                const ZFSerializableData &item = element->childAtIndex(i);
+                const ZFSerializableData &item = element->childAt(i);
                 const zfchar *key = item.propertyName();
                 if(key == zfnull)
                 {
@@ -694,7 +694,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
         {
             for(zfindex i = 0; i < element->childCount(); ++i)
             {
-                const ZFSerializableData &item = element->childAtIndex(i);
+                const ZFSerializableData &item = element->childAt(i);
                 const zfchar *key = item.propertyName();
                 if(key == zfnull)
                 {
@@ -728,7 +728,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
         {
             for(zfindex i = 0; i < element->childCount(); ++i)
             {
-                const ZFSerializableData &item = element->childAtIndex(i);
+                const ZFSerializableData &item = element->childAt(i);
                 const zfchar *key = item.propertyName();
                 if(key == zfnull)
                 {
@@ -768,11 +768,11 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
             for(zfindex i = 0; i < v.replaceDataCount(); ++i)
             {
                 ZFSerializableData itemData;
-                if(!zfstringToData(itemData, v.replaceDataAtIndex(i), outErrorHint))
+                if(!zfstringToData(itemData, v.replaceDataAt(i), outErrorHint))
                 {
                     return zffalse;
                 }
-                itemData.propertyName(v.replaceDataNameAtIndex(i));
+                itemData.propertyName(v.replaceDataNameAt(i));
                 nodeData.childAdd(itemData);
             }
 
@@ -787,11 +787,11 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
             for(zfindex i = 0; i < v.enableDataCount(); ++i)
             {
                 ZFSerializableData itemData;
-                if(!zfboolToData(itemData, v.enableDataAtIndex(i), outErrorHint))
+                if(!zfboolToData(itemData, v.enableDataAt(i), outErrorHint))
                 {
                     return zffalse;
                 }
-                itemData.propertyName(v.enableDataNameAtIndex(i));
+                itemData.propertyName(v.enableDataNameAt(i));
                 nodeData.childAdd(itemData);
             }
 
@@ -817,11 +817,11 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
             for(zfindex i = 0; i < v.indexDataCount(); ++i)
             {
                 ZFSerializableData itemData;
-                if(!ZFTextTemplateIndexDataToData(itemData, *(v.indexDataAtIndex(i)), outErrorHint))
+                if(!ZFTextTemplateIndexDataToData(itemData, *(v.indexDataAt(i)), outErrorHint))
                 {
                     return zffalse;
                 }
-                itemData.propertyName(v.indexDataNameAtIndex(i));
+                itemData.propertyName(v.indexDataNameAt(i));
                 nodeData.childAdd(itemData);
             }
 
@@ -848,10 +848,10 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, replaceDataAdd, ZFMP_IN(const zfchar *, key), ZFMP_IN(const zfchar *, value))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, replaceData, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, replaceDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, replaceDataNameAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, replaceDataAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, replaceDataNameAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, replaceDataAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, replaceDataRemove, ZFMP_IN(const zfchar *, key))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, replaceDataRemoveAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, replaceDataRemoveAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, void, replaceDataRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataDefault, ZFMP_IN(zfbool, enableDataDefault))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfbool, enableDataDefault)
@@ -859,20 +859,20 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, enableDat
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfbool *, enableData, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableDataValue, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, enableDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, enableDataNameAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableDataAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, enableDataNameAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableDataAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataRemove, ZFMP_IN(const zfchar *, key))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataRemoveAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, enableDataRemoveAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, void, enableDataRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataDefault, ZFMP_IN(const ZFTextTemplateIndexData &, indexDataDefault))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, const ZFTextTemplateIndexData &, indexDataDefault)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, indexDataAdd, ZFMP_IN(const zfchar *, key), ZFMP_IN(const ZFTextTemplateIndexData &, value))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTemplateIndexData *, indexData, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, indexDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, indexDataNameAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTemplateIndexData *, indexDataAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfchar *, indexDataNameAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTemplateIndexData *, indexDataAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataRemove, ZFMP_IN(const zfchar *, key))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataRemoveAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, indexDataRemoveAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, void, indexDataRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, copyFrom, ZFMP_IN(const ZFTextTemplateParam &, ref))
 

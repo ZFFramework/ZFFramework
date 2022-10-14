@@ -319,11 +319,11 @@ public:
     /** @brief util for #ZFDynamic::method */
     zfindex methodParamCount(void) const;
     /** @brief util for #ZFDynamic::method */
-    const zfchar *methodParamTypeIdAtIndex(ZF_IN zfindex index) const;
+    const zfchar *methodParamTypeIdAt(ZF_IN zfindex index) const;
     /** @brief util for #ZFDynamic::method */
-    const zfchar *methodParamNameAtIndex(ZF_IN zfindex index) const;
+    const zfchar *methodParamNameAt(ZF_IN zfindex index) const;
     /** @brief util for #ZFDynamic::method */
-    ZFObject *methodParamDefaultValueAtIndex(ZF_IN zfindex index) const;
+    ZFObject *methodParamDefaultValueAt(ZF_IN zfindex index) const;
 
 public:
     /** @cond ZFPrivateDoc */

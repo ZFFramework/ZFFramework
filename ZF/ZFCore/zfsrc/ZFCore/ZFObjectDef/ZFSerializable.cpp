@@ -69,7 +69,7 @@ zfbool ZFSerializable::serializeFromData(ZF_IN const ZFSerializableData &seriali
         const ZFCoreMap &propertyMap = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializablePropertyMap;
         for(zfindex i = 0; i < serializableData.childCount(); ++i)
         {
-            const ZFSerializableData &element = serializableData.childAtIndex(i);
+            const ZFSerializableData &element = serializableData.childAt(i);
             if(element.resolved() || element.category() != zfnull)
             {
                 continue;
@@ -305,7 +305,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
             {
                 for(zfindex i = tmpCls->implementedInterfaceCount() - 1; i != zfindexMax(); --i)
                 {
-                    allClass.add(tmpCls->implementedInterfaceAtIndex(i));
+                    allClass.add(tmpCls->implementedInterfaceAt(i));
                 }
                 if(tmpCls->classParent() != zfnull)
                 {
@@ -318,7 +318,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
                 tmpCls = allClass[i];
                 for(zfindex iProperty = 0; iProperty < tmpCls->propertyCount(); ++iProperty)
                 {
-                    allProperty.add(tmpCls->propertyAtIndex(iProperty));
+                    allProperty.add(tmpCls->propertyAt(iProperty));
                 }
             }
         }

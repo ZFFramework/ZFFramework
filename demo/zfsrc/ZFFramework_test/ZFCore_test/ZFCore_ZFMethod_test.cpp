@@ -325,7 +325,7 @@ private:
     {
         for(zfindex i = 0; i < cls->methodCount(); ++i)
         {
-            this->testCaseOutput("%s%s", indent, cls->methodAtIndex(i)->objectInfo().cString());
+            this->testCaseOutput("%s%s", indent, cls->methodAt(i)->objectInfo().cString());
         }
     }
 };

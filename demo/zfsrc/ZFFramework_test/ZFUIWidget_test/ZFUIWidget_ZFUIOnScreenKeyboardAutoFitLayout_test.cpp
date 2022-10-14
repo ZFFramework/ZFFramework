@@ -29,9 +29,9 @@ protected:
             view->viewBackgroundColor(ZFUIColorRandom());
             view->layoutParam()->layoutMargin(ZFUIMarginMake(10));
         }
-        layout->childAtIndex(0)->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
-        layout->childAtIndex(1)->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
-        layout->childAtIndex(2)->layoutParam()->layoutAlign(ZFUIAlign::e_BottomInner);
+        layout->childAt(0)->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
+        layout->childAt(1)->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
+        layout->childAt(2)->layoutParam()->layoutAlign(ZFUIAlign::e_BottomInner);
     }
 
 private:

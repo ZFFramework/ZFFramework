@@ -119,7 +119,7 @@ public:
 
 // ============================================================
 template<typename T_ZFObject>
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedAllocContainer
+zffinal zfclassLikePOD _ZFP_zfblockedAllocContainer
 {
 public:
     _ZFP_zfblockedAllocContainer(ZF_IN T_ZFObject *obj)
@@ -134,7 +134,7 @@ public:
     T_ZFObject *obj;
 };
 template<typename T_ZFObject>
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfunsafe_zfblockedAllocContainer
+zffinal zfclassLikePOD _ZFP_zfunsafe_zfblockedAllocContainer
 {
 public:
     _ZFP_zfunsafe_zfblockedAllocContainer(ZF_IN T_ZFObject *obj)

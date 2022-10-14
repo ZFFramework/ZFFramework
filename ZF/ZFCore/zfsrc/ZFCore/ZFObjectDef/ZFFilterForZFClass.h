@@ -92,7 +92,7 @@ public:
     /**
      * @brief remove filter
      */
-    virtual ZFFilterForZFClass &filterRemoveAtIndex(ZF_IN zfindex index);
+    virtual ZFFilterForZFClass &filterRemoveAt(ZF_IN zfindex index);
     /**
      * @brief remove filter
      */
@@ -106,11 +106,11 @@ public:
     /**
      * @brief get filter class at index
      */
-    virtual const ZFClass *filterElementAtIndex(ZF_IN zfindex index) const;
+    virtual const ZFClass *filterElementAt(ZF_IN zfindex index) const;
     /**
      * @brief get filter type at index
      */
-    virtual ZFFilterForZFClassType filterTypeAtIndex(ZF_IN zfindex index) const;
+    virtual ZFFilterForZFClassType filterTypeAt(ZF_IN zfindex index) const;
     /**
      * @brief add a custom filter callback
      */
@@ -130,7 +130,7 @@ public:
     /**
      * @brief get custom filter callback
      */
-    virtual ZFFilterForZFClass::CustomFilterCallback customFilterCallbackAtIndex(ZF_IN zfindex index) const;
+    virtual ZFFilterForZFClass::CustomFilterCallback customFilterCallbackAt(ZF_IN zfindex index) const;
 
 public:
     /**

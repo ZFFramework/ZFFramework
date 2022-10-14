@@ -72,7 +72,7 @@ inline T_Number zfmApplyProgress(ZF_IN T_Number const &start, ZF_IN T_Number con
 
 /** @brief template version of #zffloatEpsilon */
 template<typename T_zffloat>
-zfclassNotPOD ZF_ENV_EXPORT zffloatEpsilonT
+zfclassNotPOD zffloatEpsilonT
 {
 public:
     /** @brief template version of #zffloatEpsilon */
@@ -82,21 +82,21 @@ template<typename T_zffloat>
 const T_zffloat zffloatEpsilonT<T_zffloat>::v = zffloatEpsilon;
 /** @cond ZFPrivateDoc */
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zffloatEpsilonT<zffloat>
+zfclassNotPOD zffloatEpsilonT<zffloat>
 {
 public:
     /** @brief template version of #zffloatEpsilon */
     static const zffloat v;
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zffloatEpsilonT<zfdouble>
+zfclassNotPOD zffloatEpsilonT<zfdouble>
 {
 public:
     /** @brief template version of #zffloatEpsilon */
     static const zfdouble v;
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zffloatEpsilonT<zflongdouble>
+zfclassNotPOD zffloatEpsilonT<zflongdouble>
 {
 public:
     /** @brief template version of #zffloatEpsilon */

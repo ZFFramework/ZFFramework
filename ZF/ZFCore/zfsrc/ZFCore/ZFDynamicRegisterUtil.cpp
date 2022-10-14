@@ -757,10 +757,10 @@ ZFDynamic &ZFDynamic::method(ZF_IN const zfchar *methodReturnTypeId,
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i)
     {
         p.methodParamAddWithDefault(
-            methodParam.methodParamTypeIdAtIndex(i),
+            methodParam.methodParamTypeIdAt(i),
             zfnull,
-            methodParam.methodParamNameAtIndex(i),
-            methodParam.methodParamDefaultValueAtIndex(i));
+            methodParam.methodParamNameAt(i),
+            methodParam.methodParamDefaultValueAt(i));
     }
     if(d->cls == zfnull)
     {
@@ -1087,15 +1087,15 @@ zfindex ZFMP::methodParamCount(void) const
 {
     return d->methodParamCount;
 }
-const zfchar *ZFMP::methodParamTypeIdAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFMP::methodParamTypeIdAt(ZF_IN zfindex index) const
 {
     return d->methodParamTypeId[index];
 }
-const zfchar *ZFMP::methodParamNameAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFMP::methodParamNameAt(ZF_IN zfindex index) const
 {
     return d->methodParamName[d->methodParamCount];
 }
-ZFObject *ZFMP::methodParamDefaultValueAtIndex(ZF_IN zfindex index) const
+ZFObject *ZFMP::methodParamDefaultValueAt(ZF_IN zfindex index) const
 {
     return d->methodParamDefaultValue[d->methodParamCount];
 }
@@ -1132,9 +1132,9 @@ ZFMP &ZFMP::operator = (ZF_IN const ZFMP &ref)
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFMP, ZFMP &, mp, ZFMP_IN(const zfchar *, methodParamTypeId), ZFMP_IN_OPT(const zfchar *, methodParamName, zfnull), ZFMP_IN_OPT(ZFObject *, methodParamDefaultValue, ZFMethodGenericInvokerDefaultParam()))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMP, zfindex, methodParamCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfchar *, methodParamTypeIdAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfchar *, methodParamNameAtIndex, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, ZFObject *, methodParamDefaultValueAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfchar *, methodParamTypeIdAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfchar *, methodParamNameAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, ZFObject *, methodParamDefaultValueAt, ZFMP_IN(zfindex, index))
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // zflineFree
 template<typename T_POD>
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_zflineFreeContainer
+zfclassLikePOD _ZFP_zflineFreeContainer
 {
 public:
     _ZFP_zflineFreeContainer(ZF_IN const _ZFP_zflineFreeContainer &ref) : p(ref.p) {}
@@ -71,7 +71,7 @@ private:
 // ============================================================
 // zflineDelete
 template<typename T_Object>
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_zflineDeleteContainer
+zfclassLikePOD _ZFP_zflineDeleteContainer
 {
 public:
     _ZFP_zflineDeleteContainer(ZF_IN const _ZFP_zflineDeleteContainer &ref) : p(ref.p) {}

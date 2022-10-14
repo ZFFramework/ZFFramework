@@ -14,7 +14,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(ZF_IN const ZFSeria
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &categoryData = serializableData.childAtIndex(i);
+        const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(!zfscmpTheSame(category, ZFSerializableKeyword_ZFUIListAdapterArray_cell)) {continue;}
@@ -55,7 +55,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeToData(ZF_IN_OUT ZFSerializa
         for(zfindex i = 0, count = this->cellCount(); i < count; ++i)
         {
             ZFSerializableData cellData;
-            if(!ZFObjectToData(cellData, this->cellAtIndex(i), outErrorHint))
+            if(!ZFObjectToData(cellData, this->cellAt(i), outErrorHint))
             {
                 return zffalse;
             }
@@ -74,7 +74,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeToData(ZF_IN_OUT ZFSerializa
         {
             for(zfindex i = 0; i < this->cellCount(); ++i)
             {
-                if(!ZFObjectCompare(this->cellAtIndex(i).toObject(), ref->cellAtIndex(i).toObject()))
+                if(!ZFObjectCompare(this->cellAt(i).toObject(), ref->cellAt(i).toObject()))
                 {
                     cellAllSame = zffalse;
                 }

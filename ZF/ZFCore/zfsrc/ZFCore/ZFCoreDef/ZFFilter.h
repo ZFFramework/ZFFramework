@@ -61,7 +61,7 @@ typedef enum {
 // ============================================================
 /** @brief filter data for #ZFFilterBase */
 template<typename T_Element>
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFFilterData
+zfclassLikePOD _ZFP_ZFFilterData
 {
 public:
     /** @brief filter data for #ZFFilterBase */
@@ -74,7 +74,7 @@ public:
  * @brief base class of filter
  */
 template<typename T_Public, typename T_Internal = T_Public>
-zfclassLikePOD ZF_ENV_EXPORT ZFFilterBase
+zfclassLikePOD ZFFilterBase
 {
 protected:
     /** @brief typedef for self */
@@ -207,7 +207,7 @@ public:
     /**
      * @brief remove a element
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &filterRemoveAtIndex(ZF_IN zfindex index)
+    virtual ZFFilterBase<T_Public, T_Internal> &filterRemoveAt(ZF_IN zfindex index)
     {
         this->filterOnRemove(this->_filters.get(index).element);
         this->_filters.remove(index);
@@ -236,7 +236,7 @@ public:
     /**
      * @brief get element at index
      */
-    virtual T_Public filterElementAtIndex(ZF_IN zfindex index) const
+    virtual T_Public filterElementAt(ZF_IN zfindex index) const
     {
         T_Public t;
         this->filterOnAccess(t, this->_filters.get(index).element);
@@ -245,14 +245,14 @@ public:
     /**
      * @brief get filter data at index
      */
-    virtual T_Internal const &filterInternalAtIndex(ZF_IN zfindex index) const
+    virtual T_Internal const &filterInternalAt(ZF_IN zfindex index) const
     {
         return this->_filters.get(index).element;
     }
     /**
      * @brief get filter type for filter data at index
      */
-    virtual ZFFilterType filterTypeAtIndex(ZF_IN zfindex index) const
+    virtual ZFFilterType filterTypeAt(ZF_IN zfindex index) const
     {
         return this->_filters.get(index).filterType;
     }
@@ -311,7 +311,7 @@ public:
     /**
      * @brief get custom filter callback
      */
-    virtual typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallbackAtIndex(ZF_IN zfindex index) const
+    virtual typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallbackAt(ZF_IN zfindex index) const
     {
         return this->_customFilters->get(index);
     }
@@ -461,7 +461,7 @@ private:
  * -  support operator == to compare whether public type is equal to internal storage type
  */
 template<typename T_Public, typename T_Internal = T_Public>
-zfclassLikePOD ZF_ENV_EXPORT ZFFilterBasic : zfextendsLikePOD ZFFilterBase<T_Public, T_Internal>
+zfclassLikePOD ZFFilterBasic : zfextendsLikePOD ZFFilterBase<T_Public, T_Internal>
 {
     ZFFILTER_DECLARE(
         ZFM_EXPAND(ZFFilterBasic<T_Public, T_Internal>),
@@ -534,7 +534,7 @@ typedef ZFFilterBasic<zfidentity> ZFFilterForIdentity;
  * @brief base class of string filter
  */
 template<typename T_Public, typename T_Internal>
-zfclassLikePOD ZF_ENV_EXPORT ZFFilterForStringBase : zfextendsLikePOD ZFFilterBase<T_Public, T_Internal>
+zfclassLikePOD ZFFilterForStringBase : zfextendsLikePOD ZFFilterBase<T_Public, T_Internal>
 {
     ZFFILTER_DECLARE(
         ZFM_EXPAND(ZFFilterForStringBase<T_Public, T_Internal>),

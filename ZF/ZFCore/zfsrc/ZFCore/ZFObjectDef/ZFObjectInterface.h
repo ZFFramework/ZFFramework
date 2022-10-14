@@ -117,11 +117,11 @@ public:
     public:
 
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface, int isInterface>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFInterfaceCastWrapper
+zfclassNotPOD _ZFP_ZFInterfaceCastWrapper
 {
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 0>
+zfclassNotPOD _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 0>
 {
 public:
     static ZFInterface *_ZFP_cast(ZF_IN ZFObject * const &obj)
@@ -130,7 +130,7 @@ public:
     }
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 1>
+zfclassNotPOD _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 1>
 {
 public:
     template<typename T_ZFObject>

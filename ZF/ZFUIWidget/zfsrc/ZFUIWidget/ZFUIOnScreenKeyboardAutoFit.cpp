@@ -289,7 +289,7 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnMeasure(ZF_OUT ZFUISize &ret,
         ZFUISizeMake(ZFUIMarginGetWidth(d->autoFitMargin), ZFUIMarginGetHeight(d->autoFitMargin)));
     for(zfindex i = 0; i < this->childCount(); ++i)
     {
-        ZFUIView *child = this->childAtIndex(i);
+        ZFUIView *child = this->childAt(i);
         child->layoutMeasure(sizeHintTmp, child->layoutParam()->sizeParam());
         ret.width = zfmMax(ret.width, child->layoutMeasuredSize().width + ZFUIMarginGetWidth(child->layoutParam()->layoutMargin()));
         ret.height = zfmMax(ret.height, child->layoutMeasuredSize().height + ZFUIMarginGetWidth(child->layoutParam()->layoutMargin()));

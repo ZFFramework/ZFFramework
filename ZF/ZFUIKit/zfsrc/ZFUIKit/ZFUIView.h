@@ -851,7 +851,7 @@ public:
     /**
      * @brief remove view at index or assert fail if index out of range
      */
-    ZFMETHOD_DECLARE_1(void, childRemoveAtIndex,
+    ZFMETHOD_DECLARE_1(void, childRemoveAt,
                        ZFMP_IN(zfindex, index))
     /**
      * @brief remove all child view
@@ -877,7 +877,7 @@ public:
      * @brief replace child at index, assert fail if index out of range
      *   or view to replace already has parent
      */
-    ZFMETHOD_DECLARE_2(void, childReplaceAtIndex,
+    ZFMETHOD_DECLARE_2(void, childReplaceAt,
                        ZFMP_IN(zfindex, atIndex),
                        ZFMP_IN(ZFUIView *, toReplace))
     /**
@@ -887,7 +887,7 @@ public:
     /**
      * @brief get child view at index or assert fail if out of range
      */
-    ZFMETHOD_DECLARE_1(ZFUIView *, childAtIndex,
+    ZFMETHOD_DECLARE_1(ZFUIView *, childAt,
                        ZFMP_IN(zfindex, index))
     /**
      * @brief return index of view or zfindexMax() if not child of this view

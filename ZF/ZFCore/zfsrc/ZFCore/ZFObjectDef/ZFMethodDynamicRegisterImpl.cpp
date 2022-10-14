@@ -130,11 +130,11 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
     }
     for(zfindex i = 0; i < param.methodParamCount(); ++i)
     {
-        if(param.methodParamDefaultValueCallbackAtIndex(i) != zfnull)
+        if(param.methodParamDefaultValueCallbackAt(i) != zfnull)
         {
             for( ; i < param.methodParamCount(); ++i)
             {
-                if(param.methodParamDefaultValueCallbackAtIndex(i) == zfnull)
+                if(param.methodParamDefaultValueCallbackAt(i) == zfnull)
                 {
                     zfstringAppend(errorHint,
                         "param %zi has no default value but previous param has",
@@ -149,14 +149,14 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
     {
         existMethod = param.methodOwnerClass()->methodForNameIgnoreParent(
                 param.methodName()
-                , param.methodParamTypeIdAtIndex(0)
-                , param.methodParamTypeIdAtIndex(1)
-                , param.methodParamTypeIdAtIndex(2)
-                , param.methodParamTypeIdAtIndex(3)
-                , param.methodParamTypeIdAtIndex(4)
-                , param.methodParamTypeIdAtIndex(5)
-                , param.methodParamTypeIdAtIndex(6)
-                , param.methodParamTypeIdAtIndex(7)
+                , param.methodParamTypeIdAt(0)
+                , param.methodParamTypeIdAt(1)
+                , param.methodParamTypeIdAt(2)
+                , param.methodParamTypeIdAt(3)
+                , param.methodParamTypeIdAt(4)
+                , param.methodParamTypeIdAt(5)
+                , param.methodParamTypeIdAt(6)
+                , param.methodParamTypeIdAt(7)
             );
     }
     else
@@ -164,14 +164,14 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
         existMethod = ZFMethodForName(
                 param.methodNamespace()
                 , param.methodName()
-                , param.methodParamTypeIdAtIndex(0)
-                , param.methodParamTypeIdAtIndex(1)
-                , param.methodParamTypeIdAtIndex(2)
-                , param.methodParamTypeIdAtIndex(3)
-                , param.methodParamTypeIdAtIndex(4)
-                , param.methodParamTypeIdAtIndex(5)
-                , param.methodParamTypeIdAtIndex(6)
-                , param.methodParamTypeIdAtIndex(7)
+                , param.methodParamTypeIdAt(0)
+                , param.methodParamTypeIdAt(1)
+                , param.methodParamTypeIdAt(2)
+                , param.methodParamTypeIdAt(3)
+                , param.methodParamTypeIdAt(4)
+                , param.methodParamTypeIdAt(5)
+                , param.methodParamTypeIdAt(6)
+                , param.methodParamTypeIdAt(7)
             );
     }
     if(existMethod != zfnull)
@@ -214,19 +214,19 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
             , param.methodName()
             , param.methodReturnTypeId()
             , param.methodReturnTypeName()
-            , param.methodParamTypeIdAtIndex(0), param.methodParamTypeNameAtIndex(0), param.methodParamNameAtIndex(0), param.methodParamDefaultValueCallbackAtIndex(0)
-            , param.methodParamTypeIdAtIndex(1), param.methodParamTypeNameAtIndex(1), param.methodParamNameAtIndex(1), param.methodParamDefaultValueCallbackAtIndex(1)
-            , param.methodParamTypeIdAtIndex(2), param.methodParamTypeNameAtIndex(2), param.methodParamNameAtIndex(2), param.methodParamDefaultValueCallbackAtIndex(2)
-            , param.methodParamTypeIdAtIndex(3), param.methodParamTypeNameAtIndex(3), param.methodParamNameAtIndex(3), param.methodParamDefaultValueCallbackAtIndex(3)
-            , param.methodParamTypeIdAtIndex(4), param.methodParamTypeNameAtIndex(4), param.methodParamNameAtIndex(4), param.methodParamDefaultValueCallbackAtIndex(4)
-            , param.methodParamTypeIdAtIndex(5), param.methodParamTypeNameAtIndex(5), param.methodParamNameAtIndex(5), param.methodParamDefaultValueCallbackAtIndex(5)
-            , param.methodParamTypeIdAtIndex(6), param.methodParamTypeNameAtIndex(6), param.methodParamNameAtIndex(6), param.methodParamDefaultValueCallbackAtIndex(6)
-            , param.methodParamTypeIdAtIndex(7), param.methodParamTypeNameAtIndex(7), param.methodParamNameAtIndex(7), param.methodParamDefaultValueCallbackAtIndex(7)
+            , param.methodParamTypeIdAt(0), param.methodParamTypeNameAt(0), param.methodParamNameAt(0), param.methodParamDefaultValueCallbackAt(0)
+            , param.methodParamTypeIdAt(1), param.methodParamTypeNameAt(1), param.methodParamNameAt(1), param.methodParamDefaultValueCallbackAt(1)
+            , param.methodParamTypeIdAt(2), param.methodParamTypeNameAt(2), param.methodParamNameAt(2), param.methodParamDefaultValueCallbackAt(2)
+            , param.methodParamTypeIdAt(3), param.methodParamTypeNameAt(3), param.methodParamNameAt(3), param.methodParamDefaultValueCallbackAt(3)
+            , param.methodParamTypeIdAt(4), param.methodParamTypeNameAt(4), param.methodParamNameAt(4), param.methodParamDefaultValueCallbackAt(4)
+            , param.methodParamTypeIdAt(5), param.methodParamTypeNameAt(5), param.methodParamNameAt(5), param.methodParamDefaultValueCallbackAt(5)
+            , param.methodParamTypeIdAt(6), param.methodParamTypeNameAt(6), param.methodParamNameAt(6), param.methodParamDefaultValueCallbackAt(6)
+            , param.methodParamTypeIdAt(7), param.methodParamTypeNameAt(7), param.methodParamNameAt(7), param.methodParamDefaultValueCallbackAt(7)
             , (const zfchar *)zfnull
         );
     for(zfindex i = 0; i < param.methodParamCount(); ++i)
     {
-        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_paramDefaultValueList[i] = param.methodParamDefaultValueAtIndex(i);
+        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_paramDefaultValueList[i] = param.methodParamDefaultValueAt(i);
     }
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m[method] = zftrue;
     return method;

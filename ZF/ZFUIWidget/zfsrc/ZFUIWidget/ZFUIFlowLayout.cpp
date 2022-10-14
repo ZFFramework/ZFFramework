@@ -149,7 +149,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(ZF_IN ZFUIFlowLayout *
     childIndexStop = parent->childCount();
     for(zfindex i = childIndexStart; i < parent->childCount(); ++i)
     {
-        ZFUIView *child = parent->childAtIndex(i);
+        ZFUIView *child = parent->childAt(i);
         ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
         if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
         {
@@ -201,7 +201,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(ZF_IN ZFUIFlowLayout *pa
     childIndexStop = parent->childCount();
     for(zfindex i = childIndexStart; i < parent->childCount(); ++i)
     {
-        ZFUIView *child = parent->childAtIndex(i);
+        ZFUIView *child = parent->childAt(i);
         ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
         if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
         {
@@ -323,7 +323,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(ZF_IN ZFUIFlowLayout *parent,
         zffloat usedSize = (positiveDirectionX ? parent->layoutChildMargin().left : parent->layoutChildMargin().right);
         for(zfindex i = childIndexStart; i < childIndex; ++i)
         {
-            ZFUIView *child = parent->childAtIndex(i);
+            ZFUIView *child = parent->childAt(i);
             ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
             if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
             {
@@ -388,7 +388,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(ZF_IN ZFUIFlowLayout *parent,
         zffloat usedSize = (positiveDirectionY ? parent->layoutChildMargin().top : parent->layoutChildMargin().bottom);
         for(zfindex i = childIndexStart; i < childIndex; ++i)
         {
-            ZFUIView *child = parent->childAtIndex(i);
+            ZFUIView *child = parent->childAt(i);
             ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
             if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
             {

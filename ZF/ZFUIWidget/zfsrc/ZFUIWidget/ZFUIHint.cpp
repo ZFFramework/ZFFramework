@@ -61,7 +61,7 @@ protected:
         }
         else
         {
-            ret = this->childAtIndex(0)->layoutMeasure(sizeHint, sizeParam);
+            ret = this->childAt(0)->layoutMeasure(sizeHint, sizeParam);
         }
     }
     zfoverride
@@ -69,7 +69,7 @@ protected:
     {
         if(this->childCount() > 0)
         {
-            this->childAtIndex(0)->viewFrame(bounds);
+            this->childAt(0)->viewFrame(bounds);
         }
     }
 };

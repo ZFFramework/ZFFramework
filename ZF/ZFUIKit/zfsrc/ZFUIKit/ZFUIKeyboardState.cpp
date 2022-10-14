@@ -36,13 +36,13 @@ void ZFUIKeyboardState::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
     zfstring tmp;
     for(zfindex i = 0; i < ZFUIKeyCode::EnumCount(); ++i)
     {
-        if(this->keyPressed((ZFUIKeyCodeEnum)ZFUIKeyCode::EnumValueAtIndex(i)))
+        if(this->keyPressed((ZFUIKeyCodeEnum)ZFUIKeyCode::EnumValueAt(i)))
         {
             if(!tmp.isEmpty())
             {
                 tmp += ", ";
             }
-            tmp += ZFUIKeyCode::EnumNameAtIndex(i);
+            tmp += ZFUIKeyCode::EnumNameAt(i);
         }
     }
     if(!tmp.isEmpty())

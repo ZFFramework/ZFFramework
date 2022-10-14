@@ -52,14 +52,14 @@ public:
         return _ZFP_ZFEnumDataRef()->enumIndexForValue(value);
     }
     zfoverride
-    virtual zfuint enumValueAtIndex(ZF_IN zfindex index)
+    virtual zfuint enumValueAt(ZF_IN zfindex index)
     {
-        return _ZFP_ZFEnumDataRef()->enumValueAtIndex(index);
+        return _ZFP_ZFEnumDataRef()->enumValueAt(index);
     }
     zfoverride
-    virtual const zfchar *enumNameAtIndex(ZF_IN zfindex index)
+    virtual const zfchar *enumNameAt(ZF_IN zfindex index)
     {
-        return _ZFP_ZFEnumDataRef()->enumNameAtIndex(index);
+        return _ZFP_ZFEnumDataRef()->enumNameAt(index);
     }
     zfoverride
     virtual zfbool enumContainValue(ZF_IN zfuint value)
@@ -212,7 +212,7 @@ const ZFClass *ZFEnumDynamicRegister(ZF_IN const zfchar *enumClassName,
         ZFMethodUserRegisterDetail_0(resultMethod, {
                 return _ZFP_ZFEnumDynamic_e(invokerMethod, invokerObject);
             }, enumClass, public, ZFMethodTypeStatic,
-            ZFEnum *, zfstringWithFormat("e_%s", d->d->enumNameAtIndex(i)));
+            ZFEnum *, zfstringWithFormat("e_%s", d->d->enumNameAt(i)));
         d->userRegMethods.add(resultMethod);
     }
 

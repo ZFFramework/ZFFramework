@@ -72,20 +72,20 @@ inline T_ZFObjectTo _ZFP_ObjCastExplicit(T_ZFObjectFrom const &obj)
 // ============================================================
 // ZFCastZFObject
 template<typename T_To>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCast
+zfclassNotPOD _ZFP_ObjCast
 {
 public:
     template<typename T_From>
     static inline T_To c(T_From const &obj);
 };
 template<int T_CanCastDirectly, typename T_To, typename T_From, int T_ToType, int T_FromType>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastHolder
+zfclassNotPOD _ZFP_ObjCastHolder
 {
 };
 
 // can cast directly
 template<typename T_To, typename T_From, int T_ToType, int T_FromType>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastHolder<1, T_To, T_From, T_ToType, T_FromType>
+zfclassNotPOD _ZFP_ObjCastHolder<1, T_To, T_From, T_ToType, T_FromType>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -95,7 +95,7 @@ public:
 };
 // object to object
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFObject>
+zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFObject>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -107,7 +107,7 @@ public:
 };
 // object to interface
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFObject>
+zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFObject>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -121,7 +121,7 @@ public:
 };
 // interface to object
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFInterface>
+zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFInterface>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -133,7 +133,7 @@ public:
 };
 // interface to interface
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFInterface>
+zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFInterface>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -171,20 +171,20 @@ inline ZFInterface *_ZFP_ObjCast<ZFInterface *>::c(T_From const &obj)
 // ============================================================
 // ZFCastZFObjectUnchecked
 template<typename T_To>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastUnchecked
+zfclassNotPOD _ZFP_ObjCastUnchecked
 {
 public:
     template<typename T_From>
     static inline T_To c(T_From const &obj);
 };
 template<int T_CanCastDirectly, typename T_To, typename T_From, int T_ToType, int T_FromType>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastUncheckedHolder
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder
 {
 };
 
 // can cast directly
 template<typename T_To, typename T_From, int T_ToType, int T_FromType>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastUncheckedHolder<1, T_To, T_From, T_ToType, T_FromType>
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<1, T_To, T_From, T_ToType, T_FromType>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -194,7 +194,7 @@ public:
 };
 // object to object
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFObject>
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFObject>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -204,7 +204,7 @@ public:
 };
 // object to interface
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFObject>
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFObject>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -218,7 +218,7 @@ public:
 };
 // interface to object
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFInterface>
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFObject, _ZFP_ObjCastTypeZFInterface>
 {
 public:
     static inline T_To c(T_From const &obj)
@@ -230,7 +230,7 @@ public:
 };
 // interface to interface
 template<typename T_To, typename T_From>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFInterface>
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, T_From, _ZFP_ObjCastTypeZFInterface, _ZFP_ObjCastTypeZFInterface>
 {
 public:
     static inline T_To c(T_From const &obj)

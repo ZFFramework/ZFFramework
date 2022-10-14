@@ -99,7 +99,7 @@ static zfbool _ZFP_ZFSerializableDataFromJson(ZF_OUT ZFSerializableData &seriali
         for(zfindex i = 0; i < elementJsonArray.childCount(); ++i)
         {
             ZFSerializableData childData;
-            if(!_ZFP_ZFSerializableDataFromJson(childData, elementJsonArray.childAtIndex(i), outErrorHint, outErrorPos))
+            if(!_ZFP_ZFSerializableDataFromJson(childData, elementJsonArray.childAt(i), outErrorHint, outErrorPos))
             {
                 return zffalse;
             }
@@ -167,7 +167,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJsonItem, ZFSerializableDataToJson,
     ZFJsonItem elementJsonArray(ZFJsonType::e_JsonArray);
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        ZFJsonItem child = ZFSerializableDataToJson(serializableData.childAtIndex(i), outErrorHint, outErrorPos);
+        ZFJsonItem child = ZFSerializableDataToJson(serializableData.childAt(i), outErrorHint, outErrorPos);
         if(child.jsonType() == ZFJsonType::e_JsonNull)
         {
             return ZFJsonItem();

@@ -65,7 +65,7 @@ protected:
         {
             contentHeight += space;
 
-            ZFUIView *child = this->childAtIndex(i);
+            ZFUIView *child = this->childAt(i);
             child->layoutMeasure(childMeasureSizeHint, childMeasureSizeParam);
             child->layoutParam()->layoutMargin(ZFUIMarginMake(0, contentHeight, 0, 0));
 

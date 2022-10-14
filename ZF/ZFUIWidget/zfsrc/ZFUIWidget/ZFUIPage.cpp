@@ -550,7 +550,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfindex, pageCount)
 {
     return this->pageList().count();
 }
-ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIPage *, pageAtIndex,
+ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIPage *, pageAt,
                   ZFMP_IN(zfindex, index))
 {
     return this->pageList().get(index);

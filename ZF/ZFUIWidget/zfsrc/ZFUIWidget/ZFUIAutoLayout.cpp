@@ -42,7 +42,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(ZF_IN const ZFSerial
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &element = serializableData.childAtIndex(i);
+        const ZFSerializableData &element = serializableData.childAt(i);
         if(element.resolved()
             || ZFSerializableUtil::checkItemClass(element, ZFSerializableKeyword_ZFUIAutoLayoutParam_rule) == zfnull)
         {
@@ -236,7 +236,7 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(ZF_IN const ZFSerializabl
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
     for(zfindex childIndex = 0; childIndex < this->childCount(); ++childIndex)
     {
-        ZFUIView *child = this->childAtIndex(childIndex);
+        ZFUIView *child = this->childAt(childIndex);
         ZFUIAutoLayoutParam *layoutParam = child->layoutParam<ZFUIAutoLayoutParam *>();
         for(zfindex ruleIndex = ZFUIAutoLayoutParam::_ZFP_PosBegin(); ruleIndex < ZFUIAutoLayoutPos::ZFEnumCount; ++ruleIndex)
         {
@@ -246,7 +246,7 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(ZF_IN const ZFSerializabl
                     "%s invalid target \"%s\" for %s",
                     this->objectInfo().cString(),
                     layoutParam->_ZFP_al_d.ruleList[ruleIndex].targetId().cString(),
-                    this->childAtIndex(childIndex)->objectInfo().cString());
+                    this->childAt(childIndex)->objectInfo().cString());
                 return zffalse;
             }
         }
@@ -280,7 +280,7 @@ zfbool ZFUIAutoLayout::_ZFP_updateTarget(ZF_IN ZFUIView *child, ZF_IN_OUT ZFUIAu
             zfindex childIndexRef = zfindexMax();
             if(zfindexFromString(childIndexRef, rule.targetId()) && childIndexRef < this->childCount())
             {
-                rule.target() = this->childAtIndex(childIndexRef);
+                rule.target() = this->childAt(childIndexRef);
             }
         }
     }

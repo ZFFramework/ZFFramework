@@ -19,7 +19,7 @@ void allClassParentT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret,
             ret.add(cls);
             for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i)
             {
-                ret.add(cls->implementedInterfaceAtIndex(i));
+                ret.add(cls->implementedInterfaceAt(i));
             }
             cls = cls->classParent();
         }
@@ -34,9 +34,9 @@ void allClassParentT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret,
             }
             for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i)
             {
-                if(filter->filterCheckActive(cls->implementedInterfaceAtIndex(i)))
+                if(filter->filterCheckActive(cls->implementedInterfaceAt(i)))
                 {
-                    ret.add(cls->implementedInterfaceAtIndex(i));
+                    ret.add(cls->implementedInterfaceAt(i));
                 }
             }
             cls = cls->classParent();
@@ -54,9 +54,9 @@ void allMethodT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
         const ZFClass *cls = allClassParent.get(i);
         for(zfindex j = 0; j < cls->methodCount(); ++j)
         {
-            if(filter == zfnull || filter->filterCheckActive(cls->methodAtIndex(j)))
+            if(filter == zfnull || filter->filterCheckActive(cls->methodAt(j)))
             {
-                ret.add(cls->methodAtIndex(j));
+                ret.add(cls->methodAt(j));
             }
         }
     }
@@ -72,9 +72,9 @@ void allPropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
         const ZFClass *cls = allClassParent.get(i);
         for(zfindex j = 0; j < cls->propertyCount(); ++j)
         {
-            if(filter == zfnull || filter->filterCheckActive(cls->propertyAtIndex(j)))
+            if(filter == zfnull || filter->filterCheckActive(cls->propertyAt(j)))
             {
-                ret.add(cls->propertyAtIndex(j));
+                ret.add(cls->propertyAt(j));
             }
         }
     }

@@ -9,7 +9,7 @@ void ZFUIViewLayout::layoutOnMeasure(ZF_OUT ZFUISize &ret,
     ZFUILayoutParam::sizeHintApply(ret, this->viewSizeMin(), sizeHint, sizeParam);
     for(zfindex i = 0; i < this->childCount(); ++i)
     {
-        ZFUIView *child = this->childAtIndex(i);
+        ZFUIView *child = this->childAt(i);
         ZFUISize sizeHintTmp = sizeHint;
         if(sizeHintTmp.width >= 0)
         {

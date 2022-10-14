@@ -451,7 +451,7 @@ void ZFClass::objectInfoT(ZF_IN_OUT zfstring &ret) const
             {
                 ret += ", ";
             }
-            ret += this->implementedInterfaceAtIndex(i)->classNameFull();
+            ret += this->implementedInterfaceAt(i)->classNameFull();
         }
         ret += '>';
     }
@@ -477,7 +477,7 @@ void ZFClass::objectInfoOfInheritTreeT(ZF_IN_OUT zfstring &ret) const
             zfbool first = zftrue;
             for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i)
             {
-                if(cls->implementedInterfaceAtIndex(i) == ZFInterface::ClassData())
+                if(cls->implementedInterfaceAt(i) == ZFInterface::ClassData())
                 {
                     continue;
                 }
@@ -490,7 +490,7 @@ void ZFClass::objectInfoOfInheritTreeT(ZF_IN_OUT zfstring &ret) const
                 {
                     ret += ", ";
                 }
-                cls->implementedInterfaceAtIndex(i)->objectInfoOfInheritTreeT(ret);
+                cls->implementedInterfaceAt(i)->objectInfoOfInheritTreeT(ret);
             }
             if(!first)
             {
@@ -668,7 +668,7 @@ zfindex ZFClass::implementedInterfaceCount(void) const
 {
     return d->implementedInterface.count();
 }
-const ZFClass *ZFClass::implementedInterfaceAtIndex(ZF_IN zfindex index) const
+const ZFClass *ZFClass::implementedInterfaceAt(ZF_IN zfindex index) const
 {
     return d->implementedInterface.get(index);
 }
@@ -680,7 +680,7 @@ zfindex ZFClass::methodCount(void) const
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
     return d->methodList.count();
 }
-const ZFMethod *ZFClass::methodAtIndex(ZF_IN zfindex index) const
+const ZFMethod *ZFClass::methodAt(ZF_IN zfindex index) const
 {
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
     if(index >= d->methodList.count())
@@ -891,7 +891,7 @@ zfindex ZFClass::propertyCount(void) const
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
     return d->propertyList.count();
 }
-const ZFProperty *ZFClass::propertyAtIndex(ZF_IN zfindex index) const
+const ZFProperty *ZFClass::propertyAt(ZF_IN zfindex index) const
 {
     this->_ZFP_ZFClass_methodAndPropertyAutoRegister();
     if(index >= d->propertyList.count())
@@ -1541,7 +1541,7 @@ void ZFClass::_ZFP_ZFClassInitFinish_methodAndPropertyFindCache(ZF_IN ZFClass *c
 
         for(zfindex i = clsTmp->implementedInterfaceCount() - 1; i != zfindexMax(); --i)
         {
-            clsToCheck.push_back(clsTmp->implementedInterfaceAtIndex(i));
+            clsToCheck.push_back(clsTmp->implementedInterfaceAt(i));
         }
         if(clsTmp->classParent())
         {

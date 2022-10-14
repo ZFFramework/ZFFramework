@@ -43,7 +43,7 @@ extern ZF_ENV_EXPORT void ZFPropertyUserRegisterNotifyUpdate(ZF_IN ZFObject *own
 // ============================================================
 /** @brief default impl for #ZFPropertyUserRegisterRetain */
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT ZFPropertyUserRegisterDefaultImplRetain
+zfclassNotPOD ZFPropertyUserRegisterDefaultImplRetain
 {
 private:
     static void _deleteCallback(ZF_IN void *p)
@@ -164,7 +164,7 @@ private:
 // ============================================================
 /** @brief default impl for #ZFPropertyUserRegisterAssign */
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT ZFPropertyUserRegisterDefaultImplAssign
+zfclassNotPOD ZFPropertyUserRegisterDefaultImplAssign
 {
 private:
     static void _deleteCallback(ZF_IN void *p)

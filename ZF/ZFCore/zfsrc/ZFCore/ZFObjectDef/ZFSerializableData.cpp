@@ -574,16 +574,16 @@ zfindex ZFSerializableData::childCount(void) const
 {
     return (zfindex)d->elements.size();
 }
-const ZFSerializableData &ZFSerializableData::childAtIndex(ZF_IN zfindex index) const
+const ZFSerializableData &ZFSerializableData::childAt(ZF_IN zfindex index) const
 {
     return d->elements[(zfstlsize)index];
 }
-ZFSerializableData &ZFSerializableData::childAtIndex(ZF_IN zfindex index)
+ZFSerializableData &ZFSerializableData::childAt(ZF_IN zfindex index)
 {
     return d->elements[(zfstlsize)index];
 }
 
-void ZFSerializableData::childRemoveAtIndex(ZF_IN zfindex index)
+void ZFSerializableData::childRemoveAt(ZF_IN zfindex index)
 {
     d->elements[(zfstlsize)index].d->serializableDataParent = zfnull;
     d->elements.erase(d->elements.begin() + (zfstlsize)index);
@@ -688,7 +688,7 @@ zfbool ZFSerializableData::resolvedAll(ZF_OUT_OPT const ZFSerializableData **fir
     }
     for(zfindex i = 0; i < this->childCount(); ++i)
     {
-        if(!this->childAtIndex(i).resolvedAll(firstNotResolvedElement, firstNotResolvedAttribute))
+        if(!this->childAt(i).resolvedAll(firstNotResolvedElement, firstNotResolvedAttribute))
         {
             return zffalse;
         }
@@ -703,7 +703,7 @@ void ZFSerializableData::resolveMarkAll(void) const
         this->resolveAttributeMarkAll();
         for(zfindex i = 0; i < this->childCount(); ++i)
         {
-            this->childAtIndex(i).resolveMarkAll();
+            this->childAt(i).resolveMarkAll();
         }
     }
 }
@@ -715,7 +715,7 @@ void ZFSerializableData::resolveUnmarkAll(void) const
         this->resolveAttributeUnmarkAll();
         for(zfindex i = 0; i < this->childCount(); ++i)
         {
-            this->childAtIndex(i).resolveUnmarkAll();
+            this->childAt(i).resolveUnmarkAll();
         }
     }
 }
@@ -771,7 +771,7 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
     }
     for(zfindex i = 0; i < this->childCount(); ++i)
     {
-        if(this->childAtIndex(i).objectCompare(another.childAtIndex(i)) != ZFCompareTheSame)
+        if(this->childAt(i).objectCompare(another.childAt(i)) != ZFCompareTheSame)
         {
             return ZFCompareUncomparable;
         }

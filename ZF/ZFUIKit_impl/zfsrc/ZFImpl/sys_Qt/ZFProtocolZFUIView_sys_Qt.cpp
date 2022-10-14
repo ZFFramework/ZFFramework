@@ -397,7 +397,7 @@ public:
 
         if(nativeView->_ZFP_nativeImplView != zfnull)
         {
-            nativeView->_ZFP_layoutProxy->childRemoveAtIndex(virtualIndex);
+            nativeView->_ZFP_layoutProxy->childRemoveAt(virtualIndex);
         }
         nativeView->_ZFP_nativeImplView = v;
         if(nativeView->_ZFP_nativeImplView != zfnull)
@@ -503,7 +503,7 @@ public:
                              ZF_IN zfindex childLayerIndex)
     {
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_Qt_View *, parent->nativeView());
-        nativeView->_ZFP_layoutProxy->childRemoveAtIndex(virtualIndex);
+        nativeView->_ZFP_layoutProxy->childRemoveAt(virtualIndex);
     }
     virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent)
     {

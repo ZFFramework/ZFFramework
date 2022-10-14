@@ -167,8 +167,8 @@ const ZFSerializableData *checkElementByName(ZF_IN const ZFSerializableData &ser
     {
         return zfnull;
     }
-    serializableData.childAtIndex(index).resolvePropertyNameMark();
-    return &(serializableData.childAtIndex(index));
+    serializableData.childAt(index).resolvePropertyNameMark();
+    return &(serializableData.childAt(index));
 }
 const ZFSerializableData *requireElementByName(ZF_IN const ZFSerializableData &serializableData,
                                                ZF_IN const zfchar *desiredElementName,
@@ -193,8 +193,8 @@ const ZFSerializableData *checkElementByCategory(ZF_IN const ZFSerializableData 
     {
         return zfnull;
     }
-    serializableData.childAtIndex(index).resolveCategoryMark();
-    return &(serializableData.childAtIndex(index));
+    serializableData.childAt(index).resolveCategoryMark();
+    return &(serializableData.childAt(index));
 }
 const ZFSerializableData *requireElementByCategory(ZF_IN const ZFSerializableData &serializableData,
                                                    ZF_IN const zfchar *desiredElementCategory,
@@ -258,7 +258,7 @@ static zfbool _ZFP_ZFSerializableUtilPrintResolveStatus(ZF_IN const ZFSerializab
 
         for(zfindex i = 0; i < serializableData.childCount(); ++i)
         {
-            _ZFP_ZFSerializableUtilPrintResolveStatus(serializableData.childAtIndex(i), outputCallback, level + 1);
+            _ZFP_ZFSerializableUtilPrintResolveStatus(serializableData.childAt(i), outputCallback, level + 1);
         }
         return zftrue;
     }

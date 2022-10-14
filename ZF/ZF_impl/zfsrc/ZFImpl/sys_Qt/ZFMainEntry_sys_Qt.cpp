@@ -100,7 +100,7 @@ zfindex ZFImpl_sys_Qt_BaseLayout::childCount(void) const
 {
     return this->children.count();
 }
-QGraphicsWidget *ZFImpl_sys_Qt_BaseLayout::childAtIndex(ZF_IN zfindex index) const
+QGraphicsWidget *ZFImpl_sys_Qt_BaseLayout::childAt(ZF_IN zfindex index) const
 {
     return this->children[index];
 }
@@ -125,10 +125,10 @@ void ZFImpl_sys_Qt_BaseLayout::childRemove(ZF_IN QGraphicsWidget *item)
     zfindex index = this->children.find(item);
     if(index != zfindexMax())
     {
-        this->childRemoveAtIndex(index);
+        this->childRemoveAt(index);
     }
 }
-void ZFImpl_sys_Qt_BaseLayout::childRemoveAtIndex(ZF_IN zfindex index)
+void ZFImpl_sys_Qt_BaseLayout::childRemoveAt(ZF_IN zfindex index)
 {
     QGraphicsWidget *item = this->children.removeAndGet(index);
     if(item->scene() != NULL)
@@ -169,11 +169,11 @@ int ZFImpl_sys_Qt_BaseLayout::count() const
 }
 QGraphicsLayoutItem *ZFImpl_sys_Qt_BaseLayout::itemAt(int i) const
 {
-    return this->childAtIndex((zfindex)i);
+    return this->childAt((zfindex)i);
 }
 void ZFImpl_sys_Qt_BaseLayout::removeAt(int index)
 {
-    this->childRemoveAtIndex((zfindex)index);
+    this->childRemoveAt((zfindex)index);
 }
 QSizeF ZFImpl_sys_Qt_BaseLayout::sizeHint(Qt::SizeHint which, const QSizeF &constraint /* = QSizeF() */) const
 {

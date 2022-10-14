@@ -33,7 +33,7 @@ protected:
     virtual inline void buttonOnRemove(ZF_IN ZFUIButton *button,
                                        ZF_IN zfindex buttonIndex)
     {
-        this->childRemoveAtIndex(buttonIndex);
+        this->childRemoveAt(buttonIndex);
         zfsuperI(ZFUIButtonGroup)::buttonOnRemove(button, buttonIndex);
     }
 };

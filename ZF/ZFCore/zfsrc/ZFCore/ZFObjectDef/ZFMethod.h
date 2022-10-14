@@ -398,7 +398,7 @@ public:
     /**
      * @brief get the method's param type id at index
      */
-    inline const zfchar *methodParamTypeIdAtIndex(ZF_IN zfindex index) const
+    inline const zfchar *methodParamTypeIdAt(ZF_IN zfindex index) const
     {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramTypeIdList[index];
@@ -406,7 +406,7 @@ public:
     /**
      * @brief get the method's param type name at index, usually for debug use
      */
-    inline const zfchar *methodParamTypeNameAtIndex(ZF_IN zfindex index) const
+    inline const zfchar *methodParamTypeNameAt(ZF_IN zfindex index) const
     {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramTypeNameList[index];
@@ -414,7 +414,7 @@ public:
     /**
      * @brief get the method's param name at index, usually for debug use
      */
-    inline const zfchar *methodParamNameAtIndex(ZF_IN zfindex index) const
+    inline const zfchar *methodParamNameAt(ZF_IN zfindex index) const
     {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramNameList[index];
@@ -422,7 +422,7 @@ public:
     /**
      * @brief get the method param's default value access callback
      */
-    inline ZFMethodParamDefaultValueCallback methodParamDefaultValueCallbackAtIndex(ZF_IN zfindex index) const
+    inline ZFMethodParamDefaultValueCallback methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const
     {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramDefaultValueCallbackList[index];
@@ -430,7 +430,7 @@ public:
     /**
      * @brief get the method's param default value at index, null if no default param
      */
-    inline zfautoObject methodParamDefaultValueAtIndex(ZF_IN zfindex index) const
+    inline zfautoObject methodParamDefaultValueAt(ZF_IN zfindex index) const
     {
         zfCoreAssert(index < this->methodParamCount());
         if(index < this->methodParamDefaultBeginIndex())

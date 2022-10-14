@@ -198,7 +198,7 @@ public:
      * @note this method would only schedule an update step,
      * when it would be reloaded is not ensured\n
      * @note this method would reload the entire list,
-     *   use #listReloadCellAtIndex for performance
+     *   use #listReloadCellAt for performance
      */
     ZFMETHOD_DECLARE_0(void, listReload)
     /**
@@ -211,7 +211,7 @@ public:
      *
      * this method would have higher performance if you want to update specified cell only
      */
-    ZFMETHOD_DECLARE_1(void, listReloadCellAtIndex,
+    ZFMETHOD_DECLARE_1(void, listReloadCellAt,
                        ZFMP_IN(zfindex, index))
 
 public:

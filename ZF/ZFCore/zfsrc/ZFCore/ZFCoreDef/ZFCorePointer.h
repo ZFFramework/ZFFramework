@@ -146,7 +146,7 @@ public:
 
 // ============================================================
 template<typename T_Pointer>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFCorePointerPrivate
+zfclassNotPOD _ZFP_ZFCorePointerPrivate
 {
 public:
     zfuint refCount;
@@ -191,7 +191,7 @@ public:
  * to declare your own type, see #ZFCOREPOINTER_DECLARE
  */
 template<typename T_Pointer, typename T_ZFCorePointerType>
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFCorePointer : zfextendsLikePOD ZFCorePointerBase
+zffinal zfclassLikePOD ZFCorePointer : zfextendsLikePOD ZFCorePointerBase
 {
 public:
     /**
@@ -369,7 +369,7 @@ private:
  */
 #define ZFCOREPOINTER_DECLARE(T_ZFCorePointer, pointerRetainAction, pointerDeleteAction) \
     template<typename T_Type> \
-    zfclassNotPOD ZF_ENV_EXPORT _ZFP_CPT_##T_ZFCorePointer \
+    zfclassNotPOD _ZFP_CPT_##T_ZFCorePointer \
     { \
     public: \
         static inline void pointerOnRetain(T_Type const &p) \
@@ -379,7 +379,7 @@ private:
     }; \
     /** @brief see #ZFCorePointer */ \
     template<typename T_Type> \
-    zfclassLikePOD ZF_ENV_EXPORT T_ZFCorePointer : zfextendsLikePOD ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> > \
+    zfclassLikePOD T_ZFCorePointer : zfextendsLikePOD ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> > \
     { \
     public: \
         /** @cond ZFPrivateDoc */ \

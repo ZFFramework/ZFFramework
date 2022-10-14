@@ -96,7 +96,7 @@ public:
     /**
      * @brief get button at index
      */
-    ZFMETHOD_DECLARE_1(ZFUIButton *, buttonAtIndex,
+    ZFMETHOD_DECLARE_1(ZFUIButton *, buttonAt,
                        ZFMP_IN(zfindex, buttonIndex))
     /**
      * @brief add button
@@ -119,7 +119,7 @@ public:
      *
      * removed button's setting won't be reset by this method
      */
-    ZFMETHOD_DECLARE_1(void, buttonRemoveAtIndex,
+    ZFMETHOD_DECLARE_1(void, buttonRemoveAt,
                        ZFMP_IN(zfindex, buttonIndex))
     /**
      * @brief remove all button

@@ -22,10 +22,10 @@ public:
     /** @brief style count */
     ZFMETHOD_DECLARE_0(zfindex, itemCount)
     /** @brief style key */
-    ZFMETHOD_DECLARE_1(const zfchar *, itemKeyAtIndex,
+    ZFMETHOD_DECLARE_1(const zfchar *, itemKeyAt,
                        ZFMP_IN(zfindex, index))
     /** @brief style value */
-    ZFMETHOD_DECLARE_1(ZFStyleable *, itemValueAtIndex,
+    ZFMETHOD_DECLARE_1(ZFStyleable *, itemValueAt,
                        ZFMP_IN(zfindex, index))
     /** @brief style value */
     ZFMETHOD_DECLARE_2(void, itemForKey,

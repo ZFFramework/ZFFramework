@@ -40,7 +40,7 @@ zfautoObject ZFMethodInvokeData::callSuper(void)
         }
         for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i)
         {
-            toCheck.queuePut(cls->implementedInterfaceAtIndex(i));
+            toCheck.queuePut(cls->implementedInterfaceAt(i));
         }
         if(toCheck.isEmpty())
         {
@@ -273,11 +273,11 @@ zfindex ZFMethodDynamicRegisterParam::methodParamCount(void) const
 {
     return d->methodParamCount;
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodParamTypeIdAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFMethodDynamicRegisterParam::methodParamTypeIdAt(ZF_IN zfindex index) const
 {
     return (index < d->methodParamCount ? d->methodParamTypeId[index].cString() : zfnull);
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodParamTypeNameAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFMethodDynamicRegisterParam::methodParamTypeNameAt(ZF_IN zfindex index) const
 {
     if(index < d->methodParamCount)
     {
@@ -295,15 +295,15 @@ const zfchar *ZFMethodDynamicRegisterParam::methodParamTypeNameAtIndex(ZF_IN zfi
         return zfnull;
     }
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodParamNameAtIndex(ZF_IN zfindex index) const
+const zfchar *ZFMethodDynamicRegisterParam::methodParamNameAt(ZF_IN zfindex index) const
 {
     return (index < d->methodParamCount ? d->methodParamName[index].cString() : zfnull);
 }
-ZFMethodParamDefaultValueCallback ZFMethodDynamicRegisterParam::methodParamDefaultValueCallbackAtIndex(ZF_IN zfindex index) const
+ZFMethodParamDefaultValueCallback ZFMethodDynamicRegisterParam::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const
 {
     return (index < d->methodParamCount ? d->methodParamDefaultValueCallback[index] : zfnull);
 }
-ZFObject *ZFMethodDynamicRegisterParam::methodParamDefaultValueAtIndex(ZF_IN zfindex index) const
+ZFObject *ZFMethodDynamicRegisterParam::methodParamDefaultValueAt(ZF_IN zfindex index) const
 {
     return (index < d->methodParamCount ? d->methodParamDefaultValue[index].toObject() : zfnull);
 }

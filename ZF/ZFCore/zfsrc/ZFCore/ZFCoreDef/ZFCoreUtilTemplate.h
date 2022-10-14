@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief util wrapper class to hold a type
  */
 template<typename T_Type>
-zfclassLikePOD ZF_ENV_EXPORT zftValue
+zfclassLikePOD zftValue
 {
 public:
     /** @brief the wrapped value */
@@ -74,7 +74,7 @@ typedef enum {
  *   no rvalue reference support
  */
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits
+zfclassNotPOD zftTraits
 {
 public:
     enum {
@@ -125,7 +125,7 @@ public:
  *   const void * const &
  */
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<T_Type &>
+zfclassNotPOD zftTraits<T_Type &>
 {
 public:
     enum {
@@ -142,7 +142,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_R;}
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<T_Type const &>
+zfclassNotPOD zftTraits<T_Type const &>
 {
 public:
     enum {
@@ -159,7 +159,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CR;}
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<T_Type *>
+zfclassNotPOD zftTraits<T_Type *>
 {
 public:
     enum {
@@ -176,7 +176,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_P;}
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<T_Type *&>
+zfclassNotPOD zftTraits<T_Type *&>
 {
 public:
     enum {
@@ -193,7 +193,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PR;}
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<T_Type * const &>
+zfclassNotPOD zftTraits<T_Type * const &>
 {
 public:
     enum {
@@ -210,7 +210,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PCR;}
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<const T_Type *>
+zfclassNotPOD zftTraits<const T_Type *>
 {
 public:
     enum {
@@ -227,7 +227,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CP;}
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<const T_Type *&>
+zfclassNotPOD zftTraits<const T_Type *&>
 {
 public:
     enum {
@@ -244,7 +244,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CPR;}
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<const T_Type * const &>
+zfclassNotPOD zftTraits<const T_Type * const &>
 {
 public:
     enum {
@@ -262,7 +262,7 @@ public:
 };
 
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<void>
+zfclassNotPOD zftTraits<void>
 {
 public:
     enum {
@@ -279,7 +279,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_N;}
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<void *>
+zfclassNotPOD zftTraits<void *>
 {
 public:
     enum {
@@ -296,7 +296,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_P;}
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<const void *>
+zfclassNotPOD zftTraits<const void *>
 {
 public:
     enum {
@@ -313,7 +313,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CP;}
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<void *&>
+zfclassNotPOD zftTraits<void *&>
 {
 public:
     enum {
@@ -330,7 +330,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PR;}
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<void * const &>
+zfclassNotPOD zftTraits<void * const &>
 {
 public:
     enum {
@@ -347,7 +347,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PCR;}
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<const void *&>
+zfclassNotPOD zftTraits<const void *&>
 {
 public:
     enum {
@@ -364,7 +364,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CPR;}
 };
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftTraits<const void * const &>
+zfclassNotPOD zftTraits<const void * const &>
 {
 public:
     enum {
@@ -385,12 +385,12 @@ public:
 // ============================================================
 /** @brief std::enable_if wrapper */
 template<int cond = 0, typename T_Fix = void>
-zfclassNotPOD ZF_ENV_EXPORT zftEnableIf
+zfclassNotPOD zftEnableIf
 {
 };
 /** @brief std::enable_if wrapper */
 template<>
-zfclassNotPOD ZF_ENV_EXPORT zftEnableIf<1>
+zfclassNotPOD zftEnableIf<1>
 {
 public:
     /** @brief std::enable_if wrapper */
@@ -400,7 +400,7 @@ public:
 // ============================================================
 /** @brief std::is_same wrapper */
 template<typename T0, typename T1>
-zfclassNotPOD ZF_ENV_EXPORT zftTypeIsSame
+zfclassNotPOD zftTypeIsSame
 {
 public:
     enum {
@@ -410,7 +410,7 @@ public:
 };
 /** @brief std::is_same wrapper */
 template<typename T>
-zfclassNotPOD ZF_ENV_EXPORT zftTypeIsSame<T, T>
+zfclassNotPOD zftTypeIsSame<T, T>
 {
 public:
     enum {
@@ -422,7 +422,7 @@ public:
 // ============================================================
 /** @brief std::is_class wrapper */
 template<typename T>
-zfclassNotPOD ZF_ENV_EXPORT zftTypeIsClass
+zfclassNotPOD zftTypeIsClass
 {
 private:
     template<typename U>
@@ -460,7 +460,7 @@ public:
 };
 /** @brief std::is_base_of wrapper */
 template<typename TChild, typename TBase>
-zfclassNotPOD ZF_ENV_EXPORT zftTypeIsTypeOf<TChild, TBase, false>
+zfclassNotPOD zftTypeIsTypeOf<TChild, TBase, false>
 {
 public:
     enum {
@@ -470,7 +470,7 @@ public:
 };
 /** @brief std::is_base_of wrapper */
 template<typename T>
-zfclassNotPOD ZF_ENV_EXPORT zftTypeIsTypeOf<T, T, true>
+zfclassNotPOD zftTypeIsTypeOf<T, T, true>
 {
 public:
     enum {

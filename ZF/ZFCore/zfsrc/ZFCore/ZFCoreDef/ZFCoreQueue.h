@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @warning can hold POD types only
  */
 template<typename T_POD>
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFCoreQueuePOD
+zffinal zfclassLikePOD ZFCoreQueuePOD
 {
 public:
     /**

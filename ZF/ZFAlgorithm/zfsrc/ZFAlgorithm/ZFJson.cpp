@@ -155,7 +155,7 @@ static void _ZFP_ZFJsonItemToOutput_output_JsonArray(ZF_IN_OUT const ZFOutput &o
                 output << outputFlags.jsonToken.jsonNewLineToken << outputFlags.jsonGlobalLineBeginToken;
                 _ZFP_ZFJsonItemToOutput_outputIndent(output, outputFlags, indentLevel);
             }
-            _ZFP_ZFJsonItemToOutput_output(output, jsonArray.childAtIndex(i), outputFlags, indentLevel + 1);
+            _ZFP_ZFJsonItemToOutput_output(output, jsonArray.childAt(i), outputFlags, indentLevel + 1);
         }
         else
         {
@@ -163,7 +163,7 @@ static void _ZFP_ZFJsonItemToOutput_output_JsonArray(ZF_IN_OUT const ZFOutput &o
             {
                 output << outputFlags.jsonToken.jsonSeparatorInSameLineToken;
             }
-            _ZFP_ZFJsonItemToOutput_output(output, jsonArray.childAtIndex(i), outputFlags, indentLevel + 1);
+            _ZFP_ZFJsonItemToOutput_output(output, jsonArray.childAt(i), outputFlags, indentLevel + 1);
         }
     }
     if(outputFlags.jsonArrayAddNewLineForContent
@@ -566,7 +566,7 @@ ZFJsonItem ZFJsonItem::jsonCloneTree(void) const
         case ZFJsonType::e_JsonArray:
             for(zfindex i = 0; i < this->childCount(); ++i)
             {
-                ret.childAdd(this->childAtIndex(i).jsonCloneTree());
+                ret.childAdd(this->childAt(i).jsonCloneTree());
             }
             break;
         default:
@@ -804,7 +804,7 @@ zfindex ZFJsonItem::childCount(void) const
 {
     return d ? (zfindex)d->jsonArrayChildren.size() : 0;
 }
-ZFJsonItem ZFJsonItem::childAtIndex(ZF_IN zfindex index) const
+ZFJsonItem ZFJsonItem::childAt(ZF_IN zfindex index) const
 {
     if(index >= this->childCount())
     {
@@ -840,7 +840,7 @@ ZFJsonItem &ZFJsonItem::childAdd(ZF_IN const ZFJsonItem &jsonObject,
     return *this;
 }
 
-ZFJsonItem &ZFJsonItem::childRemoveAtIndex(ZF_IN zfindex index)
+ZFJsonItem &ZFJsonItem::childRemoveAt(ZF_IN zfindex index)
 {
     if(index >= this->childCount())
     {
@@ -915,10 +915,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, ZFJsonItem, attrIterValu
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJsonItem, void, attrIterValue, ZFMP_IN_OUT(zfiterator &, it), ZFMP_IN(const ZFJsonItem &, jsonItem))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, void, attrIterRemove, ZFMP_IN_OUT(zfiterator &, it))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJsonItem, zfindex, childCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, ZFJsonItem, childAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, ZFJsonItem, childAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJsonItem, ZFJsonItem &, childAdd, ZFMP_IN(const zfchar *, jsonValue), ZFMP_IN_OPT(zfindex, atIndex, zfindexMax()))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJsonItem, ZFJsonItem &, childAdd, ZFMP_IN(const ZFJsonItem &, jsonObject), ZFMP_IN_OPT(zfindex, atIndex, zfindexMax()))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, ZFJsonItem &, childRemoveAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, ZFJsonItem &, childRemoveAt, ZFMP_IN(zfindex, index))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJsonItem, ZFJsonItem &, childRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJsonItem, zfindex, childFind, ZFMP_IN(const ZFJsonItem &, jsonObject))
 

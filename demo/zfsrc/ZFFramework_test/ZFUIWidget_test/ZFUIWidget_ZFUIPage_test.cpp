@@ -70,7 +70,7 @@ protected:
     {
         zfsuper::pageOnResume(reason);
         zfindex index = this->pageManager()->pageList().find(this->pageGroupId().cString(), zfself::pageFindFirstByPageGroupId);
-        if(index != zfindexMax() && this->pageManager()->pageAtIndex(index) != this)
+        if(index != zfindexMax() && this->pageManager()->pageAt(index) != this)
         {
             this->_titleLeftView()->viewVisible(zftrue);
         }
@@ -125,9 +125,9 @@ protected:
                     ZFCoreArrayPOD<ZFUIPage *> pageToDestroy;
                     for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i)
                     {
-                        if(pageManager->pageAtIndex(i)->pageGroupId().compare(pageGroupId->zfv) == 0)
+                        if(pageManager->pageAt(i)->pageGroupId().compare(pageGroupId->zfv) == 0)
                         {
-                            pageToDestroy.add(pageManager->pageAtIndex(i));
+                            pageToDestroy.add(pageManager->pageAt(i));
                         }
                     }
                     if(pageToDestroy.count() > 1)
@@ -142,7 +142,7 @@ protected:
                 {
                     for(zfindex i = 0; i < pageManager->_buttonLayout()->childCount(); ++i)
                     {
-                        ZFUIButton *button = pageManager->_buttonLayout()->childAtIndex(i)->toAny();
+                        ZFUIButton *button = pageManager->_buttonLayout()->childAt(i)->toAny();
                         button->buttonChecked(zffalse);
                     }
                     listenerData.sender<ZFUIButton *>()->buttonChecked(zftrue);
@@ -178,7 +178,7 @@ protected:
             button->buttonBackgroundStyleNormal()->image(ZFUIImageLoadFromColor(ZFUIColorMake(r, g, b, 0.25f)));
             button->buttonBackgroundStyleHighlighted()->image(ZFUIImageLoadFromColor(ZFUIColorMake(r, g, b)));
         }
-        this->_buttonLayout()->childAtIndex(0)->to<ZFUIButton *>()->buttonSimulateClick();
+        this->_buttonLayout()->childAt(0)->to<ZFUIButton *>()->buttonSimulateClick();
     }
 };
 

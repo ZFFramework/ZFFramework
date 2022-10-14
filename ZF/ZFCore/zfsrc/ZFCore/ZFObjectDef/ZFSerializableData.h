@@ -318,14 +318,14 @@ public:
     /** @brief see #ZFSerializable */
     zffinal zfindex childCount(void) const;
     /** @brief see #ZFSerializable */
-    zffinal const ZFSerializableData &childAtIndex(ZF_IN zfindex index) const;
+    zffinal const ZFSerializableData &childAt(ZF_IN zfindex index) const;
     /** @brief see #ZFSerializable */
-    zffinal ZFSerializableData &childAtIndex(ZF_IN zfindex index);
+    zffinal ZFSerializableData &childAt(ZF_IN zfindex index);
 
     /**
      * @brief remove element at index
      */
-    zffinal void childRemoveAtIndex(ZF_IN zfindex index);
+    zffinal void childRemoveAt(ZF_IN zfindex index);
     /**
      * @brief remove all element
      */

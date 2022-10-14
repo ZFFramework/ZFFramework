@@ -47,8 +47,8 @@ ZFENUM_END_WITH_DEFAULT(ZFCompressLevel, ZFCompressLevel::e_DefaultCompress)
  *   zfbool success = (decompressToken != zfnull);
  *   success &= ZFDecompressContent(decompressToken, outputRaw0, filePathInZip0);
  *   success &= ZFDecompressContent(decompressToken, outputRaw1, filePathInZip1);
- *   success &= ZFDecompressContentAtIndex(decompressToken, outputRaw0, fileIndexInZip0);
- *   success &= ZFDecompressContentAtIndex(decompressToken, outputRaw1, fileIndexInZip1);
+ *   success &= ZFDecompressContentAt(decompressToken, outputRaw0, fileIndexInZip0);
+ *   success &= ZFDecompressContentAt(decompressToken, outputRaw1, fileIndexInZip1);
  *   success &= ZFDecompressEnd(decompressToken);
  *
  *   // get zip file content info
@@ -99,7 +99,7 @@ ZFMETHOD_FUNC_DECLARE_1(void *, ZFDecompressBegin,
 ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFDecompressEnd,
                         ZFMP_IN(void *, decompressToken))
 /** @brief see #ZFCompressBegin */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFDecompressContentAtIndex,
+ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFDecompressContentAt,
                         ZFMP_IN_OUT(void *, decompressToken),
                         ZFMP_IN_OUT(const ZFOutput &, outputRaw),
                         ZFMP_IN(zfindex, fileIndexInZip))

@@ -21,7 +21,7 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
         leftButton:viewVisible(zffalse);
         leftButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
                 local pm = userData:objectHolded();
-                pm:pageAtIndex(pm:pageCount() - 1):pageDestroy();
+                pm:pageAt(pm:pageCount() - 1):pageDestroy();
             end, pm:objectHolder());
 
         local centerButton = ZFUIButtonBasic();

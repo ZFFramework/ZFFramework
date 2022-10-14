@@ -301,7 +301,7 @@ private:
     T_ZFObject _value;
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_PropRVSC_r // RawValueStoreCallback_retain
+zfclassNotPOD _ZFP_PropRVSC_r // RawValueStoreCallback_retain
 {
 public:
     static void f(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value)
@@ -310,7 +310,7 @@ public:
     }
 };
 template<typename T_Type>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_PropRVSC_a // RawValueStoreCallback_assign
+zfclassNotPOD _ZFP_PropRVSC_a // RawValueStoreCallback_assign
 {
 public:
     static void *f(ZF_IN void *rawValueStoreToken, ZF_IN const void *value)

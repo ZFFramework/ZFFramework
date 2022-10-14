@@ -78,8 +78,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     e = tmp.to<ZFEnum *>();
  *     for(zfindex i = 0; i < e->enumCount(); ++i)
  *     { // OK, list all the value and name for e, which is EnumName type
- *         value = e->enumValueAtIndex(i);
- *         name = e->enumNameAtIndex(i);
+ *         value = e->enumValueAt(i);
+ *         name = e->enumNameAt(i);
  *     }
  *     value = e->enumValueForName("Value1"); // OK, value from EnumName
  *     name = e->enumNameForValue(value); // OK, name from EnumName
@@ -155,8 +155,8 @@ public:
              ZF_IN const zfchar *name);
     zfindex enumCount(void) const;
     zfindex enumIndexForValue(ZF_IN zfuint value) const;
-    zfuint enumValueAtIndex(ZF_IN zfindex index) const;
-    const zfchar *enumNameAtIndex(ZF_IN zfindex index) const;
+    zfuint enumValueAt(ZF_IN zfindex index) const;
+    const zfchar *enumNameAt(ZF_IN zfindex index) const;
     zfbool enumContainValue(ZF_IN zfuint value) const;
     zfuint enumValueForName(ZF_IN const zfchar *name) const;
     const zfchar *enumNameForValue(ZF_IN zfuint value) const;
@@ -221,14 +221,14 @@ public:
             return zfself::_ZFP_ZFEnumDataRef()->enumIndexForValue(value); \
         } \
         /** @brief get the value at index, or ZFEnumInvalid if not exist */ \
-        static zfuint EnumValueAtIndex(ZF_IN zfindex index) \
+        static zfuint EnumValueAt(ZF_IN zfindex index) \
         { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumValueAtIndex(index); \
+            return zfself::_ZFP_ZFEnumDataRef()->enumValueAt(index); \
         } \
         /** @brief get the name at index, or ZFEnumNameInvalid if not exist */ \
-        static const zfchar *EnumNameAtIndex(ZF_IN zfindex index) \
+        static const zfchar *EnumNameAt(ZF_IN zfindex index) \
         { \
-            return zfself::_ZFP_ZFEnumDataRef()->enumNameAtIndex(index); \
+            return zfself::_ZFP_ZFEnumDataRef()->enumNameAt(index); \
         } \
         /** @brief return true if contain the specified value */ \
         static zfbool EnumContainValue(ZF_IN zfuint value) \
@@ -268,14 +268,14 @@ public:
             return zfself::EnumIndexForValue(value); \
         } \
         zfoverride \
-        virtual zfuint enumValueAtIndex(ZF_IN zfindex index) \
+        virtual zfuint enumValueAt(ZF_IN zfindex index) \
         { \
-            return zfself::EnumValueAtIndex(index); \
+            return zfself::EnumValueAt(index); \
         } \
         zfoverride \
-        virtual const zfchar *enumNameAtIndex(ZF_IN zfindex index) \
+        virtual const zfchar *enumNameAt(ZF_IN zfindex index) \
         { \
-            return zfself::EnumNameAtIndex(index); \
+            return zfself::EnumNameAt(index); \
         } \
         zfoverride \
         virtual zfbool enumContainValue(ZF_IN zfuint value) \
@@ -327,7 +327,7 @@ public:
                 d->enumDefault = (zfuint)(EnumDefaultAction); \
                 if(d->enumDefault == ZFEnumInvalid()) \
                 { \
-                    d->enumDefault = d->enumValueAtIndex(0); \
+                    d->enumDefault = d->enumValueAt(0); \
                 } \
                 d->enumIsFlags = (IsFlags); \
             } \
@@ -382,7 +382,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZF
             ZFMethodUserRegisterDetail_0(resultMethod, { \
                     return (EnumName##Enum)EnumName::EnumValueForName(invokerMethod->methodName() + 2); \
                 }, EnumName::ClassData(), public, ZFMethodTypeStatic, \
-                EnumName##Enum, zfstringWithFormat("e_%s", EnumName::EnumNameAtIndex(i))); \
+                EnumName##Enum, zfstringWithFormat("e_%s", EnumName::EnumNameAt(i))); \
             _m.add(resultMethod); \
         } \
         _ZFP_ZFEnumMethodReg(_m, EnumName::_ZFP_ZFEnumDataRef()); \

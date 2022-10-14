@@ -12,16 +12,16 @@ public:
     {
         return 2000;
     }
-    virtual zffloat cellSizeAtIndex(ZF_IN zfindex index,
-                                    ZF_IN ZFUIListCell *cell)
+    virtual zffloat cellSizeAt(ZF_IN zfindex index,
+                               ZF_IN ZFUIListCell *cell)
     {
         #if 1
             return this->cellSizeHint() + zfmRand(100);
         #else
-            return zfsuperI(ZFUIListAdapter)::cellSizeAtIndex(index, cell);
+            return zfsuperI(ZFUIListAdapter)::cellSizeAt(index, cell);
         #endif
     }
-    virtual zfautoObject cellAtIndex(ZF_IN zfindex index)
+    virtual zfautoObject cellAt(ZF_IN zfindex index)
     {
         zfblockedAlloc(ZFUIListCell, ret);
         ret->cellView(zflineAlloc(ZFUIListCellViewBasic));

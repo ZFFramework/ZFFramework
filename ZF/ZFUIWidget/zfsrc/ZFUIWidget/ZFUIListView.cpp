@@ -78,7 +78,7 @@ public:
         }
         else
         {
-            listView->listReloadCellAtIndex(atIndex->zfv);
+            listView->listReloadCellAt(atIndex->zfv);
         }
     }
     void listBounceUpdate(void)
@@ -145,13 +145,13 @@ public:
         this->pimplOwner->childAdd(child, layoutParam, index);
         this->childAddOverrideFlag = zffalse;
     }
-    void childRemoveAtIndex(ZF_IN zfindex index)
+    void childRemoveAt(ZF_IN zfindex index)
     {
         this->childAddOverrideFlag = zftrue;
-        this->pimplOwner->childRemoveAtIndex(index);
+        this->pimplOwner->childRemoveAt(index);
         this->childAddOverrideFlag = zffalse;
     }
-    zfautoObjectT<ZFUIListCell *> cellLoadAtIndex(ZF_IN zfindex index)
+    zfautoObjectT<ZFUIListCell *> cellLoadAt(ZF_IN zfindex index)
     {
         zfautoObjectT<ZFUIListCell *> ret = this->listAdapter->cellCacheOnAccess(index);
         if(ret != zfnull)
@@ -161,8 +161,8 @@ public:
                 ZFUIListCell::ClassData()->classNameFull());
             return ret;
         }
-        ret = this->listAdapter->cellAtIndex(index);
-        zfCoreAssertWithMessage(ret != zfnull, "cellAtIndex must return a %s", ZFUIListCell::ClassData()->classNameFull());
+        ret = this->listAdapter->cellAt(index);
+        zfCoreAssertWithMessage(ret != zfnull, "cellAt must return a %s", ZFUIListCell::ClassData()->classNameFull());
         ZFUIListCell *cell = ZFCastZFObject(ZFUIListCell *, ret.toObject());
         zfCoreAssertWithMessage(cell != zfnull, "list cell %s not type of %s",
             ret.toObject()->classData()->classNameFull(),
@@ -206,9 +206,9 @@ public:
         }
         this->listAdapter->cellCacheOnRecycle(cell);
     }
-    zffloat cellSizeAtIndex(ZF_IN zfindex index, ZF_IN ZFUIListCell *cell)
+    zffloat cellSizeAt(ZF_IN zfindex index, ZF_IN ZFUIListCell *cell)
     {
-        zffloat ret = this->listAdapter->cellSizeAtIndex(index, cell);
+        zffloat ret = this->listAdapter->cellSizeAt(index, cell);
         if(ret < 0)
         {
             switch(this->pimplOwner->listOrientation())
@@ -245,7 +245,7 @@ public:
             for(zfindex i = this->listVisibleCell.count() - 1; i != zfindexMax(); --i)
             {
                 ZFUIListCell *cell = this->listVisibleCell[i];
-                this->childRemoveAtIndex(i);
+                this->childRemoveAt(i);
                 if(this->listAdapter != zfnull)
                 {
                     this->cellOnRecycle(cell);
@@ -266,7 +266,7 @@ public:
         zfindex indexOfVisibleCell = index - this->listVisibleCellIndexRange.start;
         for(zfindex i = indexOfVisibleCell; i != zfindexMax(); --i)
         {
-            this->childRemoveAtIndex(i);
+            this->childRemoveAt(i);
             ZFUIListCell *cell = this->listVisibleCell[i];
             this->cellOnRecycle(cell);
             this->pimplOwner->cellOnDetach(cell);
@@ -290,7 +290,7 @@ public:
         zfindex indexOfVisibleCell = index - this->listVisibleCellIndexRange.start;
         for(zfindex i = this->listVisibleCellIndexRange.count - 1; i != zfindexMax() && i >= indexOfVisibleCell; --i)
         {
-            this->childRemoveAtIndex(i);
+            this->childRemoveAt(i);
             ZFUIListCell *cell = this->listVisibleCell[i];
             this->cellOnRecycle(cell);
             this->pimplOwner->cellOnDetach(cell);
@@ -353,8 +353,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -424,8 +424,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -495,8 +495,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -558,8 +558,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -642,8 +642,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -715,8 +715,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -788,8 +788,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -855,8 +855,8 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAtIndex(index).to<ZFUIListCell *>());
-                        zffloat cellSizeNew = this->cellSizeAtIndex(index, cellNew);
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index])
                         {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -1163,7 +1163,7 @@ public:
         for(zfindex i = this->listVisibleCell.count() - 1; i != zfindexMax(); --i)
         {
             ZFUIListCell *cell = this->listVisibleCell[i];
-            this->childRemoveAtIndex(i);
+            this->childRemoveAt(i);
             this->cellOnRecycle(cell);
             this->pimplOwner->cellOnDetach(cell);
             zfRelease(cell);
@@ -1501,7 +1501,7 @@ zfbool ZFUIListView::serializableOnSerializeFromData(ZF_IN const ZFSerializableD
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &categoryData = serializableData.childAtIndex(i);
+        const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(!zfscmpTheSame(category, ZFSerializableKeyword_ZFUIListView_listAdapter)) {continue;}
@@ -1678,7 +1678,7 @@ ZFMETHOD_DEFINE_0(ZFUIListView, zfbool, listReloadRequested)
 {
     return d->listReloadRequested;
 }
-ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAtIndex,
+ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt,
                   ZFMP_IN(zfindex, index))
 {
     if(d->listReloadRequested || !ZFIndexRangeContain(d->listVisibleCellIndexRange, index))
@@ -1692,10 +1692,10 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAtIndex,
     ZFUIListCell *cellOld = d->listVisibleCell[indexOfVisibleCell];
     ZFUIRect cellOldFrame = d->listVisibleCellFrame(index);
 
-    ZFUIListCell *cellNew = zfRetain(d->cellLoadAtIndex(index).to<ZFUIListCell *>());
+    ZFUIListCell *cellNew = zfRetain(d->cellLoadAt(index).to<ZFUIListCell *>());
     d->listVisibleCell[indexOfVisibleCell] = cellNew;
 
-    this->childReplaceAtIndex(indexOfVisibleCell, cellNew);
+    this->childReplaceAt(indexOfVisibleCell, cellNew);
 
     d->cellOnRecycle(cellOld);
     this->cellOnDetach(cellOld);
@@ -1703,7 +1703,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAtIndex,
     d->cellOnUpdate(index, cellNew);
 
     // update cell size at index
-    zffloat cellNewSize = d->cellSizeAtIndex(index, cellNew);
+    zffloat cellNewSize = d->cellSizeAt(index, cellNew);
     d->cellSizeList[index] = cellNewSize;
 
     // update all cells after the reloaded one

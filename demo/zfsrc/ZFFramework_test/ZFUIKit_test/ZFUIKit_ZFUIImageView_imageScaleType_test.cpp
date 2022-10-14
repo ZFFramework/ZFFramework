@@ -82,7 +82,7 @@ private:
         {
             index = 0;
         }
-        value = (ZFUIContentScaleTypeEnum)ZFUIContentScaleType::EnumValueAtIndex(index);
+        value = (ZFUIContentScaleTypeEnum)ZFUIContentScaleType::EnumValueAt(index);
     }
     void prepareSettingButton(ZF_IN ZFUIWindow *window,
                               ZF_IN ZFArray *imageViews)

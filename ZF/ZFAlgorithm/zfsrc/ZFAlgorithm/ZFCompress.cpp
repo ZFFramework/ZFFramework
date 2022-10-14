@@ -97,7 +97,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFDecompressEnd,
         return ZFPROTOCOL_ACCESS(ZFCompress)->decompressEnd(decompressToken);
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContentAtIndex,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContentAt,
                        ZFMP_IN_OUT(void *, decompressToken),
                        ZFMP_IN_OUT(const ZFOutput &, outputRaw),
                        ZFMP_IN(zfindex, fileIndexInZip))
@@ -367,7 +367,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir,
                 success = zffalse;
                 break;
             }
-            if(!ZFDecompressContentAtIndex(decompressToken, outputRaw, fileIndexInZip))
+            if(!ZFDecompressContentAt(decompressToken, outputRaw, fileIndexInZip))
             {
                 success = zffalse;
                 break;

@@ -106,7 +106,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(ZF_IN ZFUILinearLayout *
     }
     for(zfindex i = 0; i < parent->childCount(); ++i)
     {
-        ZFUIView *child = parent->childAtIndex(i);
+        ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
         if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
         {
@@ -156,7 +156,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(ZF_IN ZFUILinearLayout *pa
     }
     for(zfindex i = 0; i < parent->childCount(); ++i)
     {
-        ZFUIView *child = parent->childAtIndex(i);
+        ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
         if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
         {
@@ -207,7 +207,7 @@ static void _ZFP_ZFUILinearLayout_layoutHorizontal(ZF_IN ZFUILinearLayout *paren
     zffloat usedSize = (positiveDirection ? parent->layoutChildMargin().left : parent->layoutChildMargin().right);
     for(zfindex i = 0; i < parent->childCount(); ++i)
     {
-        ZFUIView *child = parent->childAtIndex(i);
+        ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
         if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
         {
@@ -258,7 +258,7 @@ static void _ZFP_ZFUILinearLayout_layoutVertical(ZF_IN ZFUILinearLayout *parent,
     zffloat usedSize = (positiveDirection ? parent->layoutChildMargin().top : parent->layoutChildMargin().bottom);
     for(zfindex i = 0; i < parent->childCount(); ++i)
     {
-        ZFUIView *child = parent->childAtIndex(i);
+        ZFUIView *child = parent->childAt(i);
         ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
         if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
         {

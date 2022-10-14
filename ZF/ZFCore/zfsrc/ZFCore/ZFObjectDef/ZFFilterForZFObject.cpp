@@ -24,7 +24,7 @@ ZFFilterForZFObject::~ZFFilterForZFObject(void)
 {
     for(zfindex i = 0; i < this->filterCount(); ++i)
     {
-        zfRelease(this->filterInternalAtIndex(i));
+        zfRelease(this->filterInternalAt(i));
     }
 }
 
@@ -33,7 +33,7 @@ void ZFFilterForZFObject::copyFrom(ZF_IN ZFFilterBase<ZFObject *, ZFObject *> co
     zfsuper::copyFrom(ref);
     for(zfindex i = 0; i < this->filterCount(); ++i)
     {
-        zfRetain(this->filterInternalAtIndex(i));
+        zfRetain(this->filterInternalAt(i));
     }
     this->classFilter.copyFrom(((ZFFilterForZFObject const &)ref).classFilter);
 }

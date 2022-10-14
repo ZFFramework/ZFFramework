@@ -124,7 +124,7 @@ public:
  * @brief key hasher by pointer value hash, used in STL
  */
 template<typename T_Pointer>
-zfclassNotPOD ZF_ENV_EXPORT zfpointer_zfstlHasher
+zfclassNotPOD zfpointer_zfstlHasher
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -181,7 +181,7 @@ public:
  * @brief key comparer by pointer value comparation, used in STL
  */
 template<typename T_Pointer>
-zfclassNotPOD ZF_ENV_EXPORT zfpointer_zfstlHashComparer
+zfclassNotPOD zfpointer_zfstlHashComparer
 {
 public:
     /** @cond ZFPrivateDoc */

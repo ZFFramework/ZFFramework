@@ -283,7 +283,7 @@ public:
         }
         for(zfindex i = child->childCount() - 1; i != zfindexMax(); --i)
         {
-            UIScaleUpdateCheck(child, child->childAtIndex(i));
+            UIScaleUpdateCheck(child, child->childAt(i));
         }
         child->layoutRequest();
         child->UIScaleOnChange();
@@ -367,13 +367,13 @@ public:
         zfindex index = this->childFind(layer, view);
         if(index != zfindexMax())
         {
-            this->childRemoveAtIndex(owner, childLayer, layer, index);
+            this->childRemoveAt(owner, childLayer, layer, index);
         }
     }
-    void childRemoveAtIndex(ZF_IN ZFUIView *owner,
-                            ZF_IN ZFUIViewChildLayerEnum childLayer,
-                            ZF_IN _ZFP_ZFUIViewLayerData &layer,
-                            ZF_IN zfindex index)
+    void childRemoveAt(ZF_IN ZFUIView *owner,
+                       ZF_IN ZFUIViewChildLayerEnum childLayer,
+                       ZF_IN _ZFP_ZFUIViewLayerData &layer,
+                       ZF_IN zfindex index)
     {
         ZFUIView *child = layer.views.get(index);
 
@@ -498,8 +498,8 @@ public:
     {
         return layer.views.count();
     }
-    ZFUIView *childAtIndex(ZF_IN _ZFP_ZFUIViewLayerData &layer,
-                           ZF_IN zfindex index)
+    ZFUIView *childAt(ZF_IN _ZFP_ZFUIViewLayerData &layer,
+                      ZF_IN zfindex index)
     {
         return layer.views.get(index);
     }
@@ -550,8 +550,8 @@ public:
         }
         return zftrue;
     }
-    ZFUILayoutParam *childLayoutParamAtIndex(ZF_IN _ZFP_ZFUIViewLayerData &layer,
-                                             ZF_IN zfindex index)
+    ZFUILayoutParam *childLayoutParamAt(ZF_IN _ZFP_ZFUIViewLayerData &layer,
+                                        ZF_IN zfindex index)
     {
         return layer.views.get(index)->layoutParam();
     }
@@ -830,7 +830,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &categoryData = serializableData.childAtIndex(i);
+        const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
@@ -975,7 +975,7 @@ zfbool ZFUIView::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &ser
             for(zfindex i = 0, count = this->childCount(); i < count; ++i)
             {
                 ZFSerializableData childData;
-                if(!ZFObjectToData(childData, this->childAtIndex(i), outErrorHint))
+                if(!ZFObjectToData(childData, this->childAt(i), outErrorHint))
                 {
                     return zffalse;
                 }
@@ -1260,7 +1260,7 @@ zfidentity ZFUIView::objectHash(void)
     zfidentity hash = zfidentityHash(zfidentityCalcString(this->classData()->classNameFull()) , this->childCount());
     for(zfindex i = 0; i < this->childCount(); ++i)
     {
-        hash = zfidentityHash(hash, this->childAtIndex(i)->objectHash());
+        hash = zfidentityHash(hash, this->childAt(i)->objectHash());
     }
     return hash;
 }
@@ -1862,7 +1862,7 @@ void ZFUIView::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
 {
     for(zfindex i = 0; i < this->childCount(); ++i)
     {
-        ZFUIView *child = this->childAtIndex(i);
+        ZFUIView *child = this->childAt(i);
         child->viewFrame(
             ZFUILayoutParam::layoutParamApply(
                 bounds,
@@ -1966,10 +1966,10 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, childRemove,
 {
     d->childRemove(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, view);
 }
-ZFMETHOD_DEFINE_1(ZFUIView, void, childRemoveAtIndex,
+ZFMETHOD_DEFINE_1(ZFUIView, void, childRemoveAt,
                   ZFMP_IN(zfindex, index))
 {
-    d->childRemoveAtIndex(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, index);
+    d->childRemoveAt(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, index);
 }
 ZFMETHOD_DEFINE_0(ZFUIView, void, childRemoveAll)
 {
@@ -1988,7 +1988,7 @@ ZFMETHOD_DEFINE_2(ZFUIView, void, childMove,
 {
     d->childMove(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, child, toIndexOrIndexMax);
 }
-ZFMETHOD_DEFINE_2(ZFUIView, void, childReplaceAtIndex,
+ZFMETHOD_DEFINE_2(ZFUIView, void, childReplaceAt,
                   ZFMP_IN(zfindex, atIndex),
                   ZFMP_IN(ZFUIView *, toReplace))
 {
@@ -1999,10 +1999,10 @@ ZFMETHOD_DEFINE_0(ZFUIView, zfindex, childCount)
 {
     return d->childCount(d->layerNormal);
 }
-ZFMETHOD_DEFINE_1(ZFUIView, ZFUIView *, childAtIndex,
+ZFMETHOD_DEFINE_1(ZFUIView, ZFUIView *, childAt,
                   ZFMP_IN(zfindex, index))
 {
-    return d->childAtIndex(d->layerNormal, index);
+    return d->childAt(d->layerNormal, index);
 }
 ZFMETHOD_DEFINE_1(ZFUIView, zfindex, childFind,
                   ZFMP_IN(ZFUIView *, view))
@@ -2178,38 +2178,38 @@ void ZFUIView::internalViewOnLayout(ZF_IN const ZFUIRect &bounds)
 {
     for(zfindex i = 0; i < d->childCount(d->layerInternalImpl); ++i)
     {
-        ZFUIView *child = d->childAtIndex(d->layerInternalImpl, i);
+        ZFUIView *child = d->childAt(d->layerInternalImpl, i);
         if(this->internalViewShouldLayout(child))
         {
             child->viewFrame(
                 ZFUILayoutParam::layoutParamApply(
                     bounds,
                     child,
-                    d->childLayoutParamAtIndex(d->layerInternalImpl, i)));
+                    d->childLayoutParamAt(d->layerInternalImpl, i)));
         }
     }
     for(zfindex i = 0; i < d->childCount(d->layerInternalBg); ++i)
     {
-        ZFUIView *child = d->childAtIndex(d->layerInternalBg, i);
+        ZFUIView *child = d->childAt(d->layerInternalBg, i);
         if(this->internalViewShouldLayout(child))
         {
             child->viewFrame(
                 ZFUILayoutParam::layoutParamApply(
                     bounds,
                     child,
-                    d->childLayoutParamAtIndex(d->layerInternalBg, i)));
+                    d->childLayoutParamAt(d->layerInternalBg, i)));
         }
     }
     for(zfindex i = 0; i < d->childCount(d->layerInternalFg); ++i)
     {
-        ZFUIView *child = d->childAtIndex(d->layerInternalFg, i);
+        ZFUIView *child = d->childAt(d->layerInternalFg, i);
         if(this->internalViewShouldLayout(child))
         {
             child->viewFrame(
                 ZFUILayoutParam::layoutParamApply(
                     bounds,
                     child,
-                    d->childLayoutParamAtIndex(d->layerInternalFg, i)));
+                    d->childLayoutParamAt(d->layerInternalFg, i)));
         }
     }
 }
@@ -2307,8 +2307,8 @@ void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable)
     }
     for(zfindex i = 0; i < ref->childCount(); ++i)
     {
-        zfautoObjectT<ZFUIView *> child = ref->childAtIndex(i)->copy();
-        zfautoObjectT<ZFUILayoutParam *> childLayoutParam = ref->childAtIndex(i)->layoutParam()->copy();
+        zfautoObjectT<ZFUIView *> child = ref->childAt(i)->copy();
+        zfautoObjectT<ZFUILayoutParam *> childLayoutParam = ref->childAt(i)->layoutParam()->copy();
         this->childAdd(child, childLayoutParam);
     }
 }

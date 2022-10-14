@@ -57,7 +57,7 @@ private:
             ZFUIView *layout = userData->objectHolded();
             if(layout->childCount() > 0)
             {
-                layout->childRemoveAtIndex(layout->childCount() - 1);
+                layout->childRemoveAt(layout->childCount() - 1);
             }
         } ZFLISTENER_END(removeButtonOnClick)
         removeButton->observerAdd(ZFUIButton::EventButtonOnClick(), removeButtonOnClick, layout->objectHolder());

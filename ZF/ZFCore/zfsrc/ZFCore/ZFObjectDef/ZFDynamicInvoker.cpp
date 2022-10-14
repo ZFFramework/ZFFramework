@@ -285,7 +285,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
                 {
                     paramConvertCache.zfunsafe_assign(paramList[iParam]);
                     if(!ZFDI_paramConvert(
-                        paramList[iParam], method->methodParamTypeIdAtIndex(iParam), wrapper, errorHintTmp))
+                        paramList[iParam], method->methodParamTypeIdAt(iParam), wrapper, errorHintTmp))
                     {
                         paramList[iParam].zfunsafe_assign(paramConvertCache);
                         paramConvertSuccess = zffalse;
@@ -352,7 +352,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
                 if(wrapper != zfnull)
                 {
                     if(!ZFDI_paramConvert(
-                        paramListTmp[iParam], method->methodParamTypeIdAtIndex(iParam), wrapper, errorHintTmp))
+                        paramListTmp[iParam], method->methodParamTypeIdAt(iParam), wrapper, errorHintTmp))
                     {
                         paramConvertSuccess = zffalse;
                         break;
@@ -551,7 +551,7 @@ zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
                 {
                     paramConvertCache.zfunsafe_assign(paramList[iParam]);
                     if(!ZFDI_paramConvert(
-                        paramList[iParam], method->methodParamTypeIdAtIndex(iParam), wrapper, errorHintTmp))
+                        paramList[iParam], method->methodParamTypeIdAt(iParam), wrapper, errorHintTmp))
                     {
                         paramList[iParam].zfunsafe_assign(paramConvertCache);
                         paramConvertSuccess = zffalse;
@@ -605,7 +605,7 @@ zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
                 if(wrapper != zfnull)
                 {
                     if(!ZFDI_paramConvert(
-                        paramListTmp[iParam], method->methodParamTypeIdAtIndex(iParam), wrapper, errorHintTmp))
+                        paramListTmp[iParam], method->methodParamTypeIdAt(iParam), wrapper, errorHintTmp))
                     {
                         paramConvertSuccess = zffalse;
                         break;

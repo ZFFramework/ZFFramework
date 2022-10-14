@@ -60,7 +60,7 @@ public:
     _ZFP_zfpoolObjectBlock<N> *next;
 };
 template<int N>
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfpoolObject
+zfclassNotPOD _ZFP_zfpoolObject
 {
 public:
     void *poolMalloc(void)

@@ -85,7 +85,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(ZF_IN const ZFSerial
     zfautoObject value;
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        const ZFSerializableData &categoryData = serializableData.childAtIndex(i);
+        const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}

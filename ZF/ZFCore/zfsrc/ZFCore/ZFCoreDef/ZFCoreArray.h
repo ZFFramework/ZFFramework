@@ -76,7 +76,7 @@ static void _ZFP_ZFCoreArray_objDestroy(ZF_IN T_Element *p, ZF_IN T_Element *pEn
     }
 }
 template<typename T_Element>
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFCoreArrayPrivate
+zffinal zfclassNotPOD _ZFP_ZFCoreArrayPrivate
 {
 public:
     zfuint refCount;
@@ -150,7 +150,7 @@ public:
  *   since it really bricks the portability of your code
  */
 template<typename T_Element>
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFCoreArray : zfextendsLikePOD ZFCoreArrayBase
+zffinal zfclassLikePOD ZFCoreArray : zfextendsLikePOD ZFCoreArrayBase
 {
 public:
     /**
@@ -904,7 +904,7 @@ private:
  * @warning you should ensure the content type is POD type
  */
 template<typename T_Element>
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFCoreArrayPOD : zfextendsLikePOD ZFCoreArray<T_Element>
+zffinal zfclassLikePOD ZFCoreArrayPOD : zfextendsLikePOD ZFCoreArray<T_Element>
 {
 public:
     /**
@@ -949,7 +949,7 @@ public:
 };
 
 template<typename T_Element>
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFCoreArrayCreate
+zfclassLikePOD _ZFP_ZFCoreArrayCreate
 {
 public:
     inline _ZFP_ZFCoreArrayCreate<T_Element> &add(ZF_IN T_Element const &v)
@@ -962,7 +962,7 @@ public:
     ZFCoreArray<T_Element> v;
 };
 template<typename T_Element>
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFCoreArrayPODCreate
+zfclassLikePOD _ZFP_ZFCoreArrayPODCreate
 {
 public:
     inline _ZFP_ZFCoreArrayPODCreate<T_Element> &add(ZF_IN T_Element const &v)

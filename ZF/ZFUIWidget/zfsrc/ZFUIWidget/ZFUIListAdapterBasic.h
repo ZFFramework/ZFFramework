@@ -9,17 +9,17 @@
 #include "ZFUIListAdapter.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/** @brief see #ZFUIListAdapterBasic::EventListCellAtIndex */
+/** @brief see #ZFUIListAdapterBasic::EventListCellAt */
 zfclass ZF_ENV_EXPORT ZFUIListAdapterBasicParam : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIListAdapterBasicParam, ZFObject)
 
 public:
-    /** @brief see #ZFUIListAdapterBasic::EventListCellAtIndex */
+    /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
     ZFPROPERTY_RETAIN(ZFUIListCell *, cell)
-    /** @brief see #ZFUIListAdapterBasic::EventListCellAtIndex */
+    /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
     ZFPROPERTY_ASSIGN(zfindex, cellIndex)
-    /** @brief see #ZFUIListAdapterBasic::EventListCellAtIndex */
+    /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, cellSize, -1)
 };
 
@@ -36,19 +36,19 @@ public:
  *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCount(), function(listenerData, userData)
  *       listenerData:param0():zfv(yourListCellCount());
  *   end);
- *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellAtIndex(), function(listenerData, userData)
+ *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellAt(), function(listenerData, userData)
  *       local param = listenerData:param0();
- *       param:cell(yourListCellAtIndex(param:cellIndex()));
+ *       param:cell(yourListCellAt(param:cellIndex()));
  *   end);
  *
  *   -- optional
- *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellSizeAtIndex(), function(listenerData, userData)
+ *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellSizeAt(), function(listenerData, userData)
  *       local param = listenerData:param0();
- *       param:cellSize(yourListCellSizeAtIndex(param:cellIndex(), param:cell()));
+ *       param:cellSize(yourListCellSizeAt(param:cellIndex(), param:cell()));
  *   end);
  *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCacheOnAccess(), function(listenerData, userData)
  *       local param = listenerData:param0();
- *       param:cell(yourListCellCacheAtIndex(param:cellIndex()));
+ *       param:cell(yourListCellCacheAt(param:cellIndex()));
  *   end);
  *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCacheOnRecycle(), function(listenerData, userData)
  *       local cell = listenerData:param0();
@@ -74,17 +74,17 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when #cellAtIndex,
+     * called when #cellAt,
      * param0 is #ZFUIListAdapterBasicParam
      */
-    ZFOBSERVER_EVENT(ListCellAtIndex)
+    ZFOBSERVER_EVENT(ListCellAt)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when #cellSizeAtIndex,
+     * called when #cellSizeAt,
      * param0 is #ZFUIListAdapterBasicParam
      */
-    ZFOBSERVER_EVENT(ListCellSizeAtIndex)
+    ZFOBSERVER_EVENT(ListCellSizeAt)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -102,28 +102,28 @@ public:
         return ret->zfv;
     }
     zfoverride
-    virtual zfautoObject cellAtIndex(ZF_IN zfindex index)
+    virtual zfautoObject cellAt(ZF_IN zfindex index)
     {
         zfblockedAlloc(ZFUIListAdapterBasicParam, param);
         param->cellIndex(index);
-        this->observerNotify(zfself::EventListCellAtIndex(), param);
+        this->observerNotify(zfself::EventListCellAt(), param);
         return param->cell();
     }
     zfoverride
-    virtual zffloat cellSizeAtIndex(ZF_IN zfindex index,
-                                    ZF_IN ZFUIListCell *cell)
+    virtual zffloat cellSizeAt(ZF_IN zfindex index,
+                               ZF_IN ZFUIListCell *cell)
     {
-        if(this->observerHasAdd(zfself::EventListCellSizeAtIndex()))
+        if(this->observerHasAdd(zfself::EventListCellSizeAt()))
         {
             zfblockedAlloc(ZFUIListAdapterBasicParam, param);
             param->cellIndex(index);
             param->cell(cell);
-            this->observerNotify(zfself::EventListCellSizeAtIndex(), param);
+            this->observerNotify(zfself::EventListCellSizeAt(), param);
             return param->cellSize();
         }
         else
         {
-            return zfsuperI(ZFUIListAdapter)::cellSizeAtIndex(index, cell);
+            return zfsuperI(ZFUIListAdapter)::cellSizeAt(index, cell);
         }
     }
 

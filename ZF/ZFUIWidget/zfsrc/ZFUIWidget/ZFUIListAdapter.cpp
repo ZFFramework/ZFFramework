@@ -33,7 +33,7 @@ ZFMETHOD_DEFINE_1(ZFUIListAdapter, void, listAdapterNotifyReload,
     this->listAdapterOnReload(atIndexOrMax);
 }
 
-ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAtIndex,
+ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt,
                   ZFMP_IN(zfindex, index),
                   ZFMP_IN(ZFUIListCell *, cell))
 {
@@ -95,7 +95,7 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, void, cellCacheDefaultRecycle,
 
 // ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIListAdapter, zfindex, cellCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFUIListAdapter, zfautoObjectT<ZFUIListCell *>, cellAtIndex, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFUIListAdapter, zfautoObjectT<ZFUIListCell *>, cellAt, ZFMP_IN(zfindex, index))
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -102,7 +102,7 @@ public:
     /**
      * @brief access list cell at index, assert fail if return null object
      */
-    virtual zfautoObject cellAtIndex(ZF_IN zfindex index) zfpurevirtual;
+    virtual zfautoObject cellAt(ZF_IN zfindex index) zfpurevirtual;
     /**
      * @brief check cell size at index
      *
@@ -115,7 +115,7 @@ public:
      * otherwise, the cell's size is fixed\n
      * return #cellSizeHint according to #cellSizeFill by default
      */
-    ZFMETHOD_DECLARE_2(zffloat, cellSizeAtIndex,
+    ZFMETHOD_DECLARE_2(zffloat, cellSizeAt,
                        ZFMP_IN(zfindex, index),
                        ZFMP_IN(ZFUIListCell *, cell))
 

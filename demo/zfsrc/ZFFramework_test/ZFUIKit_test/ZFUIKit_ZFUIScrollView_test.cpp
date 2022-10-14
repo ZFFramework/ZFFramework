@@ -184,7 +184,7 @@ private:
             ZFLISTENER(buttonClickListener) {
                 ZFUIScrollView *scrollView = userData->objectTag("scrollView")->objectHolded();
                 zfindex index = scrollView->childCount() / 2;
-                scrollView->scrollChildToVisible(scrollView->childAtIndex(index));
+                scrollView->scrollChildToVisible(scrollView->childAt(index));
             } ZFLISTENER_END(buttonClickListener)
             setting->buttonClickListener(buttonClickListener);
         }

@@ -370,7 +370,7 @@ public:
     /**
      * @brief get implemented interface
      */
-    const ZFClass *implementedInterfaceAtIndex(ZF_IN zfindex index) const;
+    const ZFClass *implementedInterfaceAt(ZF_IN zfindex index) const;
 
     // ============================================================
     // ZFMethod
@@ -380,7 +380,7 @@ public:
      *
      * note that parent class's method won't be included\n
      * the order is ensured to be the same as ZFMethod declared
-     * @see methodAtIndex
+     * @see methodAt
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
     zfindex methodCount(void) const;
@@ -392,7 +392,7 @@ public:
      * @see methodForNameIgnoreParent, methodForName
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
-    const ZFMethod *methodAtIndex(ZF_IN zfindex index) const;
+    const ZFMethod *methodAt(ZF_IN zfindex index) const;
 
     /** @brief see #methodGetAll */
     void methodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret) const;
@@ -415,7 +415,7 @@ public:
      * if more than one method with same name (and or param type id) were found,
      * the first one would be returned
      *
-     * @see methodAtIndex, methodForName
+     * @see methodAt, methodForName
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
     const ZFMethod *methodForNameIgnoreParent(ZF_IN const zfchar *methodName
@@ -444,7 +444,7 @@ public:
      * @brief get the method by name hierarchically from class inherit tree, or zfnull if not exists
      *
      * searching from subclass to parent class, return the first matched
-     * @see methodAtIndex, methodForNameIgnoreParent
+     * @see methodAt, methodForNameIgnoreParent
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      * @note ensured breadth-first
      */
@@ -481,7 +481,7 @@ public:
      *
      * note that parent class's property won't be included\n
      * the order is ensured to be the same as property declared
-     * @see propertyAtIndex
+     * @see propertyAt
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
     zfindex propertyCount(void) const;
@@ -493,7 +493,7 @@ public:
      * @see propertyForName
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
-    const ZFProperty *propertyAtIndex(ZF_IN zfindex index) const;
+    const ZFProperty *propertyAt(ZF_IN zfindex index) const;
 
     /** @brief see #propertyGetAll */
     void propertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) const;
@@ -512,7 +512,7 @@ public:
      *
      * propertyName should be "Property" without "set" or "get"\n
      * note that parent class's property won't be included
-     * @see propertyAtIndex, propertyForName
+     * @see propertyAt, propertyForName
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
     const ZFProperty *propertyForNameIgnoreParent(const zfchar *propertyName) const;
@@ -521,7 +521,7 @@ public:
      *
      * propertyName should be "Property" without "set" or "get"\n
      * searching from subclass to parent class, return the first matched
-     * @see propertyAtIndex, propertyForName
+     * @see propertyAt, propertyForName
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      * @note ensured breadth-first
      */

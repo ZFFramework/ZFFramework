@@ -202,13 +202,13 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const
             {
                 ret += ", ";
             }
-            ret += this->methodParamTypeNameAtIndex(i);
+            ret += this->methodParamTypeNameAt(i);
             ret += " ";
-            ret += this->methodParamNameAtIndex(i);
+            ret += this->methodParamNameAt(i);
             if(i >= this->methodParamDefaultBeginIndex())
             {
                 ret += " = ";
-                zfautoObject v = this->methodParamDefaultValueAtIndex(i);
+                zfautoObject v = this->methodParamDefaultValueAt(i);
                 if(v == zfnull)
                 {
                     ret += ZFTOKEN_zfnull;
@@ -240,7 +240,7 @@ zfbool ZFMethod::methodParamTypeIdIsMatch(
 {
     #define _ZFP_ZFMethodParamCheck_paramLoop(N) \
         if(zfsIsEmpty(methodParamTypeId##N) || zfscmpTheSame(methodParamTypeId##N, ZFTypeId_void())) {return (this->methodParamCount() == N);} \
-        if(this->methodParamCount() <= N || !zfscmpTheSame(this->methodParamTypeIdAtIndex(N), methodParamTypeId##N)) {return zffalse;}
+        if(this->methodParamCount() <= N || !zfscmpTheSame(this->methodParamTypeIdAt(N), methodParamTypeId##N)) {return zffalse;}
     _ZFP_ZFMethodParamCheck_paramLoop(0)
     _ZFP_ZFMethodParamCheck_paramLoop(1)
     _ZFP_ZFMethodParamCheck_paramLoop(2)
@@ -546,7 +546,7 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
         {
             for(zfindex i = 0; i < paramCount; ++i)
             {
-                if(!zfscmpTheSame(paramTypeName[i], method->methodParamTypeNameAtIndex(i)))
+                if(!zfscmpTheSame(paramTypeName[i], method->methodParamTypeNameAt(i)))
                 {
                     isRedefine = zftrue;
                     break;
@@ -836,10 +836,10 @@ const ZFMethod *ZFMethodAlias(ZF_IN const ZFMethod *method,
     ZFMethodParamDefaultValueCallback paramDefaultValueCallback[ZFMETHOD_MAX_PARAM];
     for(zfindex i = 0; i < method->methodParamCount(); ++i)
     {
-        paramTypeId[i] = method->methodParamTypeIdAtIndex(i);
-        paramTypeName[i] = method->methodParamTypeNameAtIndex(i);
-        paramName[i] = method->methodParamNameAtIndex(i);
-        paramDefaultValueCallback[i] = method->methodParamDefaultValueCallbackAtIndex(i);
+        paramTypeId[i] = method->methodParamTypeIdAt(i);
+        paramTypeName[i] = method->methodParamTypeNameAt(i);
+        paramName[i] = method->methodParamNameAt(i);
+        paramDefaultValueCallback[i] = method->methodParamDefaultValueCallbackAt(i);
     }
     if(method->methodParamCount() != ZFMETHOD_MAX_PARAM)
     {

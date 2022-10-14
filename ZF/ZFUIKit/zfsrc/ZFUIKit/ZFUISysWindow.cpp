@@ -470,7 +470,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onResume(void)
 
     for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i)
     {
-        ZFUIWindow *window = ZFCastZFObject(ZFUIWindow *, this->rootView()->childAtIndex(i));
+        ZFUIWindow *window = ZFCastZFObject(ZFUIWindow *, this->rootView()->childAt(i));
         if(window != zfnull)
         {
             window->windowOwnerSysWindowOnResume();
@@ -489,7 +489,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onPause(void)
 
     for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i)
     {
-        ZFUIWindow *window = ZFCastZFObject(ZFUIWindow *, this->rootView()->childAtIndex(i));
+        ZFUIWindow *window = ZFCastZFObject(ZFUIWindow *, this->rootView()->childAt(i));
         if(window != zfnull)
         {
             window->windowOwnerSysWindowOnPause();
@@ -504,7 +504,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onRotate(void)
 
     for(zfindex i = this->rootView()->childCount() - 1; i != zfindexMax(); --i)
     {
-        ZFUIWindow *window = ZFCastZFObject(ZFUIWindow *, this->rootView()->childAtIndex(i));
+        ZFUIWindow *window = ZFCastZFObject(ZFUIWindow *, this->rootView()->childAt(i));
         if(window != zfnull)
         {
             window->windowOwnerSysWindowOnRotate();

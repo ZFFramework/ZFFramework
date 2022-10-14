@@ -162,7 +162,7 @@ public:
  * use #ZFOUTPUT_TYPE to declare for your own type
  */
 template<typename T_Element, typename T_ReservedFix = void>
-zfclassNotPOD ZF_ENV_EXPORT ZFCoreInfoGetter
+zfclassNotPOD ZFCoreInfoGetter
 {
 public:
     /** @brief see #ZFCoreInfoGetter */
@@ -174,7 +174,7 @@ public:
 
 /** @brief type for #ZFCoreInfoGetter */
 template<typename T_Element>
-zfclassNotPOD ZF_ENV_EXPORT ZFCoreInfoGetterType
+zfclassNotPOD ZFCoreInfoGetterType
 {
 public:
     /** @brief type for #ZFCoreInfoGetter */

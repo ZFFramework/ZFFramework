@@ -92,7 +92,7 @@ protected:
                     zfLogTrimT() << ZFLogAutoEndlOff << ", ";
                 }
                 zfLogTrimT() << ZFLogAutoSpaceOff << ZFLogAutoEndlOff
-                << clsTmp->propertyAtIndex(i)->propertyName();
+                << clsTmp->propertyAt(i)->propertyName();
             }
             zfLogTrimT();
 

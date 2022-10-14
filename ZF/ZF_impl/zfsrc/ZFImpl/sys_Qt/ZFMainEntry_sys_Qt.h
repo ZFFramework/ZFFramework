@@ -40,11 +40,11 @@ public:
 
 public:
     virtual zfindex childCount(void) const;
-    virtual QGraphicsWidget *childAtIndex(ZF_IN zfindex index) const;
+    virtual QGraphicsWidget *childAt(ZF_IN zfindex index) const;
     virtual void childAdd(ZF_IN QGraphicsWidget *item,
                           ZF_IN_OPT zfindex index = zfindexMax());
     virtual void childRemove(ZF_IN QGraphicsWidget *item);
-    virtual void childRemoveAtIndex(ZF_IN zfindex index);
+    virtual void childRemoveAt(ZF_IN zfindex index);
     virtual void childRemoveAll(void);
 
 public:

@@ -667,7 +667,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
     }
     if(param.propertyCustomImplSetterMethod()->methodParamCount() != 1
         || !zfscmpTheSame(param.propertyCustomImplSetterMethod()->methodReturnTypeId(), ZFTypeId_void())
-        || !zfscmpTheSame(param.propertyCustomImplSetterMethod()->methodParamTypeIdAtIndex(0), param.propertyTypeId())
+        || !zfscmpTheSame(param.propertyCustomImplSetterMethod()->methodParamTypeIdAt(0), param.propertyTypeId())
         )
     {
         zfstringAppend(errorHint,

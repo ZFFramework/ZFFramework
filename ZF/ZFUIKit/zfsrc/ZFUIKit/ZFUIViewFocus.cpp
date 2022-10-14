@@ -119,7 +119,7 @@ static void _ZFP_ZFUIViewFocusNextFind(ZF_IN_OUT ZFCoreArrayPOD<_ZFP_ZFUIViewFoc
     {
         _ZFP_ZFUIViewFocusNextFind(
             focusDatas,
-            view->childAtIndex(i),
+            view->childAt(i),
             includingInternalViews,
             offsetX + view->viewFrame().x,
             offsetY + view->viewFrame().y);

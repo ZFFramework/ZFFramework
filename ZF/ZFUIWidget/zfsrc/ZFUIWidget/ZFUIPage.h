@@ -452,15 +452,15 @@ public:
     /**
      * @brief page at index
      */
-    ZFMETHOD_DECLARE_1(ZFUIPage *, pageAtIndex,
+    ZFMETHOD_DECLARE_1(ZFUIPage *, pageAt,
                        ZFMP_IN(zfindex, index))
     /**
      * @brief page at index
      */
     template<typename T_ZFUIPage>
-    inline T_ZFUIPage pageAtIndex(ZF_IN zfindex index)
+    inline T_ZFUIPage pageAt(ZF_IN zfindex index)
     {
-        return ZFCastZFObjectUnchecked(T_ZFUIPage, this->pageAtIndex(index));
+        return ZFCastZFObjectUnchecked(T_ZFUIPage, this->pageAt(index));
     }
     /**
      * @brief return foreground page or null if no page

@@ -321,7 +321,7 @@ public:
     /**
      * @brief get json child at index, valid only for #ZFJsonType::e_JsonArray
      */
-    ZFJsonItem childAtIndex(ZF_IN zfindex index) const;
+    ZFJsonItem childAt(ZF_IN zfindex index) const;
 
     /**
      * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_JsonArray
@@ -336,7 +336,7 @@ public:
     /**
      * @brief remove json child at index, valid only for #ZFJsonType::e_JsonArray
      */
-    ZFJsonItem &childRemoveAtIndex(ZF_IN zfindex index);
+    ZFJsonItem &childRemoveAt(ZF_IN zfindex index);
     /**
      * @brief remove all json child, valid only for #ZFJsonType::e_JsonArray
      */
@@ -355,8 +355,8 @@ public:
     operator zfbool (void) const {return this->jsonTypeValid();}
     /** @brief access #attr */
     inline ZFJsonItem operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
-    /** @brief access #childAtIndex */
-    inline ZFJsonItem operator [] (ZF_IN zfindex const &jsonObjectIndex) const {return this->childAtIndex(jsonObjectIndex);}
+    /** @brief access #childAt */
+    inline ZFJsonItem operator [] (ZF_IN zfindex const &jsonObjectIndex) const {return this->childAt(jsonObjectIndex);}
 
 private:
     _ZFP_ZFJsonItemPrivate *d;
