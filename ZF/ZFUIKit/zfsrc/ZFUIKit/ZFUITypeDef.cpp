@@ -641,6 +641,24 @@ ZFMETHOD_FUNC_INLINE_DEFINE_4(ZFUIColor, ZFUIColorMake,
                               ZFMP_IN(zffloat, b),
                               ZFMP_IN_OPT(zffloat, a, 1.0f))
 
+ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIColor, ZFUIColorMakeARGB,
+                              ZFMP_IN(zfuint, argb))
+ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIColor, ZFUIColorMakeRGB,
+                              ZFMP_IN(zfuint, rgb))
+
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithA,
+                              ZFMP_IN(ZFUIColor const &, c),
+                              ZFMP_IN(zffloat, a))
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithR,
+                              ZFMP_IN(ZFUIColor const &, c),
+                              ZFMP_IN(zffloat, r))
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithG,
+                              ZFMP_IN(ZFUIColor const &, c),
+                              ZFMP_IN(zffloat, g))
+ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithB,
+                              ZFMP_IN(ZFUIColor const &, c),
+                              ZFMP_IN(zffloat, b))
+
 ZFMETHOD_FUNC_INLINE_DEFINE_1(zffloat, ZFUIColorGetA,
                               ZFMP_IN(ZFUIColor const &, c))
 ZFMETHOD_FUNC_INLINE_DEFINE_1(zffloat, ZFUIColorGetR,
@@ -661,19 +679,6 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor &, ZFUIColorSetG,
                               ZFMP_IN(zffloat, g))
 ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor &, ZFUIColorSetB,
                               ZFMP_IN_OUT(ZFUIColor &, c),
-                              ZFMP_IN(zffloat, b))
-
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithA,
-                              ZFMP_IN(ZFUIColor const &, c),
-                              ZFMP_IN(zffloat, a))
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithR,
-                              ZFMP_IN(ZFUIColor const &, c),
-                              ZFMP_IN(zffloat, r))
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithG,
-                              ZFMP_IN(ZFUIColor const &, c),
-                              ZFMP_IN(zffloat, g))
-ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIColor, ZFUIColorWithB,
-                              ZFMP_IN(ZFUIColor const &, c),
                               ZFMP_IN(zffloat, b))
 
 ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFUIColor, ZFUIColorRandom,
