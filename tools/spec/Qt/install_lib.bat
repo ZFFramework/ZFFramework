@@ -20,3 +20,5 @@ mkdir "%DST_PATH%" >nul 2>&1
 copy /y "%SRC_PATH%\\*.dll" "%DST_PATH%"
 copy /y "%SRC_PATH%\\*.a" "%DST_PATH%"
 
+exit /b 0
+
