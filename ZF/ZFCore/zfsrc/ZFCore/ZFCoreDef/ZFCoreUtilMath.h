@@ -76,31 +76,29 @@ zfclassNotPOD zffloatEpsilonT
 {
 public:
     /** @brief template version of #zffloatEpsilon */
-    static const T_zffloat v;
+    static inline T_zffloat v(void) {return zffloatEpsilon;}
 };
-template<typename T_zffloat>
-const T_zffloat zffloatEpsilonT<T_zffloat>::v = zffloatEpsilon;
 /** @cond ZFPrivateDoc */
 template<>
 zfclassNotPOD zffloatEpsilonT<zffloat>
 {
 public:
     /** @brief template version of #zffloatEpsilon */
-    static const zffloat v;
+    static inline zffloat v(void) {return zffloatEpsilon;}
 };
 template<>
 zfclassNotPOD zffloatEpsilonT<zfdouble>
 {
 public:
     /** @brief template version of #zffloatEpsilon */
-    static const zfdouble v;
+    static inline zfdouble v(void) {return zfdoubleEpsilon;}
 };
 template<>
 zfclassNotPOD zffloatEpsilonT<zflongdouble>
 {
 public:
     /** @brief template version of #zffloatEpsilon */
-    static const zflongdouble v;
+    static inline zflongdouble v(void) {return zflongdoubleEpsilon;}
 };
 /** @endcond */
 
@@ -111,7 +109,7 @@ public:
 template<typename T_zffloat>
 inline zfbool zffloatIsEqual(ZF_IN T_zffloat const &v1, ZF_IN T_zffloat const &v2)
 {
-    return (zfmAbs(v1 - v2) < zffloatEpsilonT<T_zffloat>::v);
+    return (zfmAbs(v1 - v2) < zffloatEpsilonT<T_zffloat>::v());
 }
 /**
  * @brief compare two float value,
@@ -120,7 +118,7 @@ inline zfbool zffloatIsEqual(ZF_IN T_zffloat const &v1, ZF_IN T_zffloat const &v
 template<typename T_zffloat>
 inline zfbool zffloatNotEqual(ZF_IN T_zffloat const &v1, ZF_IN T_zffloat const &v2)
 {
-    return (zfmAbs(v1 - v2) >= zffloatEpsilonT<T_zffloat>::v);
+    return (zfmAbs(v1 - v2) >= zffloatEpsilonT<T_zffloat>::v());
 }
 /**
  * @brief return true if v1 > v2
@@ -128,7 +126,7 @@ inline zfbool zffloatNotEqual(ZF_IN T_zffloat const &v1, ZF_IN T_zffloat const &
 template<typename T_zffloat>
 inline zfbool zffloatIsGreater(ZF_IN T_zffloat const &v1, ZF_IN T_zffloat const &v2)
 {
-    return (v1 - v2 > zffloatEpsilonT<T_zffloat>::v);
+    return (v1 - v2 > zffloatEpsilonT<T_zffloat>::v());
 }
 /**
  * @brief return true if v1 < v2
@@ -136,7 +134,7 @@ inline zfbool zffloatIsGreater(ZF_IN T_zffloat const &v1, ZF_IN T_zffloat const 
 template<typename T_zffloat>
 inline zfbool zffloatIsSmaller(ZF_IN T_zffloat const &v1, ZF_IN T_zffloat const &v2)
 {
-    return (v2 - v1 > zffloatEpsilonT<T_zffloat>::v);
+    return (v2 - v1 > zffloatEpsilonT<T_zffloat>::v());
 }
 
 // ============================================================
@@ -146,7 +144,7 @@ template<typename T_zffloat>
 inline T_zffloat zfmRoundUp(ZF_IN const T_zffloat &v)
 {
     return (T_zffloat)((v >= 0)
-            ? (zfint)(v + 1 - zffloatEpsilonT<T_zffloat>::v)
+            ? (zfint)(v + 1 - zffloatEpsilonT<T_zffloat>::v())
             : (zfint)v
         );
 }
@@ -156,7 +154,7 @@ inline T_zffloat zfmRoundDown(ZF_IN const T_zffloat &v)
 {
     return (T_zffloat)((v >= 0)
             ? (zfint)v
-            : (zfint)(v - 1 + zffloatEpsilonT<T_zffloat>::v)
+            : (zfint)(v - 1 + zffloatEpsilonT<T_zffloat>::v())
         );
 }
 /** @brief util method to round up/down or round a float value */

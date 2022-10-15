@@ -5,10 +5,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-const zffloat zffloatEpsilonT<zffloat>::v = zffloatEpsilon;
-const zfdouble zffloatEpsilonT<zfdouble>::v = zfdoubleEpsilon;
-const zflongdouble zffloatEpsilonT<zflongdouble>::v = zflongdoubleEpsilon;
-
 // ============================================================
 ZF_STATIC_REGISTER_INIT(ZFCoreUtilMathDataHolder)
 {
