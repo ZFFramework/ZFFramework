@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   the nativeImage described here should be same as
  *   the one in ZFUIImage's protocol
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIImageIO)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIImageIO)
 public:
     /**
      * @brief see #ZFUIImageScale

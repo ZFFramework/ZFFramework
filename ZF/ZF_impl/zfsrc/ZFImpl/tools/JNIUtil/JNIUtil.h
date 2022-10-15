@@ -6,14 +6,13 @@
 #ifndef _JNIUtil_h_
 #define _JNIUtil_h_
 
+#include "../../ZFImpl_ZF_impl.h"
+#define _JNI_EXPORT ZFLIB_ZF_impl
+
 // ============================================================
-#if 1
-#include "ZFCore.h"
-/** @cond ZFPrivateDoc */
-#define _JNI_EXPORT ZF_ENV_EXPORT
-/** @endcond */
-#else
-#define _JNI_EXPORT
+/** @brief used to export symbols */
+#ifndef _JNI_EXPORT
+    #define _JNI_EXPORT
 #endif
 
 // ============================================================

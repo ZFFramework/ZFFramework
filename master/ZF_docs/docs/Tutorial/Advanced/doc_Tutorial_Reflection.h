@@ -65,7 +65,7 @@
  *       int yourProp;
  *   };
  *
- *   ZFTYPEID_DECLARE(YourType, YourType)
+ *   ZFTYPEID_DECLARE(ZFLIB_APP, YourType, YourType)
  *
  *   // source file
  *   ZFTYPEID_DEFINE_BY_STRING_CONVERTER(YourType, YourType, {

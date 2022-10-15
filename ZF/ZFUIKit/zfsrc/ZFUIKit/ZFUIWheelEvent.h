@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief wheel event for ui elements
  */
-zffinal zfclass ZF_ENV_EXPORT ZFUIWheelEvent : zfextends ZFUIEvent
+zffinal zfclass ZFLIB_ZFUIKit ZFUIWheelEvent : zfextends ZFUIEvent
 {
     ZFOBJECT_DECLARE(ZFUIWheelEvent, ZFUIEvent)
 

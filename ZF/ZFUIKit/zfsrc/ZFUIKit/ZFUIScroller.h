@@ -26,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  implement all necessary methods
  * -  invoke scroll animation at proper time, by #scrollAniStartCallback and #scrollAniStopCallback
  */
-zfinterface ZF_ENV_EXPORT ZFUIScroller : zfextends ZFInterface
+zfinterface ZFLIB_ZFUIKit ZFUIScroller : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFUIScroller, ZFInterface)
 
@@ -167,12 +167,12 @@ public:
  *
  * use null to use default scroller
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFUIScrollerClass,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollerClass,
                         ZFMP_IN(const ZFClass *, cls))
 /**
  * @brief get the class of default scroller
  */
-ZFMETHOD_FUNC_DECLARE_0(const ZFClass *, ZFUIScrollerClass)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, const ZFClass *, ZFUIScrollerClass)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIScroller_h_

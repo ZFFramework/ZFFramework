@@ -21,8 +21,8 @@ zfclassFwd ZFClass;
 /**
  * @brief get property by name, or null if not registered
  */
-extern ZF_ENV_EXPORT const ZFProperty *ZFPropertyForName(ZF_IN const zfchar *classNameOrFullName,
-                                                         ZF_IN const zfchar *propertyName);
+extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(ZF_IN const zfchar *classNameOrFullName,
+                                                        ZF_IN const zfchar *propertyName);
 
 // ============================================================
 /** @brief see #ZFPROPERTY_RETAIN */
@@ -743,49 +743,49 @@ public:
         ZF_IN zfself::PropHT_##Name constFix(const) &propertyValue, \
         ZF_IN zfself::PropHT_##Name const &propertyValueOld)
 
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleRegister(ZF_IN const zfchar *lifeCycleName,
-                                                           ZF_IN const ZFProperty *property,
-                                                           ZF_IN const ZFClass *propertyOwnerClass,
-                                                           ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper);
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleUnregister(ZF_IN const zfchar *lifeCycleName,
-                                                             ZF_IN const ZFProperty *property,
-                                                             ZF_IN const ZFClass *propertyOwnerClass);
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleCall_init_retain(ZF_IN const ZFProperty *property,
-                                                                   ZF_IN ZFObject *propertyOwnerObject,
-                                                                   ZF_IN ZFObject *value,
-                                                                   ZF_IN zfbool notifyOwnerAttach,
-                                                                   ZF_IN void (*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value),
-                                                                   ZF_IN void *rawValueStoreToken);
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleCall_init_assign(ZF_IN const ZFProperty *property,
-                                                                   ZF_IN ZFObject *propertyOwnerObject,
-                                                                   ZF_IN void *value,
-                                                                   ZF_IN zfbool notifyOwnerAttach,
-                                                                   ZF_IN ZFObject *weakProp);
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleCall_dealloc_retain(ZF_IN const ZFProperty *property,
-                                                                      ZF_IN ZFObject *propertyOwnerObject,
-                                                                      ZF_IN ZFObject *value,
-                                                                      ZF_IN zfbool notifyOwnerDetach);
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleCall_dealloc_assign(ZF_IN const ZFProperty *property,
-                                                                      ZF_IN ZFObject *propertyOwnerObject,
-                                                                      ZF_IN void *value,
-                                                                      ZF_IN zfbool notifyOwnerDetach,
-                                                                      ZF_IN ZFObject *weakProp);
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleCall_setter_retain(ZF_IN const ZFProperty *property,
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleRegister(ZF_IN const zfchar *lifeCycleName,
+                                                          ZF_IN const ZFProperty *property,
+                                                          ZF_IN const ZFClass *propertyOwnerClass,
+                                                          ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper);
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleUnregister(ZF_IN const zfchar *lifeCycleName,
+                                                            ZF_IN const ZFProperty *property,
+                                                            ZF_IN const ZFClass *propertyOwnerClass);
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_init_retain(ZF_IN const ZFProperty *property,
+                                                                  ZF_IN ZFObject *propertyOwnerObject,
+                                                                  ZF_IN ZFObject *value,
+                                                                  ZF_IN zfbool notifyOwnerAttach,
+                                                                  ZF_IN void (*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value),
+                                                                  ZF_IN void *rawValueStoreToken);
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_init_assign(ZF_IN const ZFProperty *property,
+                                                                  ZF_IN ZFObject *propertyOwnerObject,
+                                                                  ZF_IN void *value,
+                                                                  ZF_IN zfbool notifyOwnerAttach,
+                                                                  ZF_IN ZFObject *weakProp);
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_dealloc_retain(ZF_IN const ZFProperty *property,
                                                                      ZF_IN ZFObject *propertyOwnerObject,
-                                                                     ZF_IN zfbool accessed,
-                                                                     ZF_IN ZFObject *propertyValueOld,
-                                                                     ZF_IN ZFObject *propertyValueNew,
-                                                                     ZF_IN void (*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value),
-                                                                     ZF_IN void *rawValueStoreToken);
-extern ZF_ENV_EXPORT void _ZFP_ZFPropertyLifeCycleCall_setter_assign(ZF_IN const ZFProperty *property,
+                                                                     ZF_IN ZFObject *value,
+                                                                     ZF_IN zfbool notifyOwnerDetach);
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_dealloc_assign(ZF_IN const ZFProperty *property,
                                                                      ZF_IN ZFObject *propertyOwnerObject,
-                                                                     ZF_IN zfbool accessed,
-                                                                     ZF_IN void *propertyValueOld,
-                                                                     ZF_IN const void *propertyValueNew,
-                                                                     ZF_IN void *(*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN const void *value),
-                                                                     ZF_IN void *rawValueStoreToken,
-                                                                     ZF_IN ZFObject *weakPropOld,
-                                                                     ZF_IN ZFObject *weakPropNew);
+                                                                     ZF_IN void *value,
+                                                                     ZF_IN zfbool notifyOwnerDetach,
+                                                                     ZF_IN ZFObject *weakProp);
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_setter_retain(ZF_IN const ZFProperty *property,
+                                                                    ZF_IN ZFObject *propertyOwnerObject,
+                                                                    ZF_IN zfbool accessed,
+                                                                    ZF_IN ZFObject *propertyValueOld,
+                                                                    ZF_IN ZFObject *propertyValueNew,
+                                                                    ZF_IN void (*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value),
+                                                                    ZF_IN void *rawValueStoreToken);
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleCall_setter_assign(ZF_IN const ZFProperty *property,
+                                                                    ZF_IN ZFObject *propertyOwnerObject,
+                                                                    ZF_IN zfbool accessed,
+                                                                    ZF_IN void *propertyValueOld,
+                                                                    ZF_IN const void *propertyValueNew,
+                                                                    ZF_IN void *(*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN const void *value),
+                                                                    ZF_IN void *rawValueStoreToken,
+                                                                    ZF_IN ZFObject *weakPropOld,
+                                                                    ZF_IN ZFObject *weakPropNew);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPropertyDeclare_h_

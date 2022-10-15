@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief native image view
  */
-zfclass ZF_ENV_EXPORT ZFUIImageView : zfextends ZFUIView
+zfclass ZFLIB_ZFUIKit ZFUIImageView : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIImageView, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIImageView)

@@ -10,7 +10,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFBufferPrivate
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFBufferPrivate
 {
 public:
     zfuint refCount;
@@ -38,7 +38,7 @@ public:
 /**
  * @brief buffer util
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFBuffer
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFBuffer
 {
 public:
     /**

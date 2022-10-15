@@ -47,7 +47,7 @@ public:
  *
  * designed for hiding type from ZFCorePointer
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFCorePointerBase
+zfclassLikePOD ZFLIB_ZFCore ZFCorePointerBase
 {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFCorePointerBase)
 public:

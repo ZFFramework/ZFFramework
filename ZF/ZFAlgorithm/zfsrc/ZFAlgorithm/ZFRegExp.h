@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief compile flags for ZFRegExp
  */
-ZFENUM_BEGIN(ZFRegExpOption)
+ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFRegExpOption)
     /**
      * @brief no flags
      *
@@ -46,18 +46,18 @@ ZFENUM_BEGIN(ZFRegExpOption)
      * '$' matches string's end only
      */
     ZFENUM_VALUE_WITH_INIT(MultiLine, 4)
-ZFENUM_SEPARATOR(ZFRegExpOption)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(None)
     ZFENUM_VALUE_REGISTER(IgnoreCase)
     ZFENUM_VALUE_REGISTER(SingleLine)
     ZFENUM_VALUE_REGISTER(MultiLine)
-ZFENUM_END_FLAGS(ZFRegExpOption, ZFRegExpOptionFlags)
+ZFENUM_END_FLAGS(ZFLIB_ZFAlgorithm, ZFRegExpOption, ZFRegExpOptionFlags)
 
 // ============================================================
 /**
  * @brief match result info for ZFRegExp
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFRegExpResult
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFRegExpResult
 {
 public:
     /**
@@ -121,7 +121,7 @@ public:
  *   </ZFRegExpResult>
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFRegExpResult, ZFRegExpResult)
+ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFRegExpResult, ZFRegExpResult)
 ZFOUTPUT_TYPE(ZFRegExpResult, {output << v.objectInfo();})
 
 // ============================================================
@@ -142,7 +142,7 @@ zfclassFwd _ZFP_ZFRegExpPrivate;
  *   />
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFRegExp : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable
+zfclass ZFLIB_ZFAlgorithm ZFRegExp : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable
 {
     ZFOBJECT_DECLARE(ZFRegExp, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)

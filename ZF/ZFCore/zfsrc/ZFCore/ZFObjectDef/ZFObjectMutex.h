@@ -21,11 +21,11 @@ typedef ZFCoreMutexImplCallbackUnlock ZFObjectMutexImplCallbackUnlock;
 /** @brief see #ZFObjectMutexImplSet */
 typedef zfbool (*ZFObjectMutexImplCallbackTryLock)(ZF_IN void *implObject);
 
-extern ZF_ENV_EXPORT ZFObjectMutexImplCallbackInit _ZFP_ZFObjectMutexImplInit;
-extern ZF_ENV_EXPORT ZFObjectMutexImplCallbackDealloc _ZFP_ZFObjectMutexImplDealloc;
-extern ZF_ENV_EXPORT ZFObjectMutexImplCallbackLock _ZFP_ZFObjectMutexImplLock;
-extern ZF_ENV_EXPORT ZFObjectMutexImplCallbackUnlock _ZFP_ZFObjectMutexImplUnlock;
-extern ZF_ENV_EXPORT ZFObjectMutexImplCallbackTryLock _ZFP_ZFObjectMutexImplTryLock;
+extern ZFLIB_ZFCore ZFObjectMutexImplCallbackInit _ZFP_ZFObjectMutexImplInit;
+extern ZFLIB_ZFCore ZFObjectMutexImplCallbackDealloc _ZFP_ZFObjectMutexImplDealloc;
+extern ZFLIB_ZFCore ZFObjectMutexImplCallbackLock _ZFP_ZFObjectMutexImplLock;
+extern ZFLIB_ZFCore ZFObjectMutexImplCallbackUnlock _ZFP_ZFObjectMutexImplUnlock;
+extern ZFLIB_ZFCore ZFObjectMutexImplCallbackTryLock _ZFP_ZFObjectMutexImplTryLock;
 
 // ============================================================
 /**
@@ -42,11 +42,11 @@ extern ZF_ENV_EXPORT ZFObjectMutexImplCallbackTryLock _ZFP_ZFObjectMutexImplTryL
  * \n
  * note, changing this impl would also change #ZFCoreMutexImplSet
  */
-extern ZF_ENV_EXPORT void ZFObjectMutexImplSet(ZF_IN_OPT ZFObjectMutexImplCallbackInit implInit = zfnull,
-                                               ZF_IN_OPT ZFObjectMutexImplCallbackDealloc implDealloc = zfnull,
-                                               ZF_IN_OPT ZFObjectMutexImplCallbackLock implLock = zfnull,
-                                               ZF_IN_OPT ZFObjectMutexImplCallbackUnlock implUnlock = zfnull,
-                                               ZF_IN_OPT ZFObjectMutexImplCallbackTryLock implTryLock = zfnull);
+extern ZFLIB_ZFCore void ZFObjectMutexImplSet(ZF_IN_OPT ZFObjectMutexImplCallbackInit implInit = zfnull,
+                                              ZF_IN_OPT ZFObjectMutexImplCallbackDealloc implDealloc = zfnull,
+                                              ZF_IN_OPT ZFObjectMutexImplCallbackLock implLock = zfnull,
+                                              ZF_IN_OPT ZFObjectMutexImplCallbackUnlock implUnlock = zfnull,
+                                              ZF_IN_OPT ZFObjectMutexImplCallbackTryLock implTryLock = zfnull);
 
 /** @brief see #ZFObjectMutexImplSet */
 inline ZFObjectMutexImplCallbackInit ZFObjectMutexImplGetInit(void) {return _ZFP_ZFObjectMutexImplInit;}

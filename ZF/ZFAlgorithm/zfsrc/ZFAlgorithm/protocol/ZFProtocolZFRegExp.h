@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFRegExp
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFRegExp)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFAlgorithm, ZFRegExp)
 public:
     /**
      * @brief create a native reg exp

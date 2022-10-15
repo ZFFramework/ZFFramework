@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief data to hold params for #ZFMethodGenericInvoker */
-zfclass ZF_ENV_EXPORT ZFMethodInvokeData : zfextends ZFObject
+zfclass ZFLIB_ZFCore ZFMethodInvokeData : zfextends ZFObject
 {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFMethodInvokeData, ZFObject)
 

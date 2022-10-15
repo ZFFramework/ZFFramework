@@ -22,7 +22,7 @@ zfclassFwd _ZFP_ZFTestCasePrivate;
  * @note automatically test case run depends on #ZFClass's class map,
  *   see #ZFOBJECT_REGISTER for more info
  */
-zfabstract ZF_ENV_EXPORT ZFTestCase : zfextends ZFObject
+zfabstract ZFLIB_ZFUtility ZFTestCase : zfextends ZFObject
 {
     ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFTestCase, ZFObject)
 

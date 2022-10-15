@@ -13,9 +13,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief default output callback, output source must be zfchar *string
  */
-extern ZF_ENV_EXPORT const ZFOutput &ZFOutputDefault(void);
+extern ZFLIB_ZFCore const ZFOutput &ZFOutputDefault(void);
 /** @brief see #ZFOutputDefault  */
-extern ZF_ENV_EXPORT void ZFOutputDefault(ZF_IN const ZFOutput &v);
+extern ZFLIB_ZFCore void ZFOutputDefault(ZF_IN const ZFOutput &v);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFOutputDefault_h_

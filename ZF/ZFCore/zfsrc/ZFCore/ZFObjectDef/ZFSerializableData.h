@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * note, you must not change this config if some serialization logic is processing,
  * usually, change it in app entry
  */
-extern ZF_ENV_EXPORT zfbool ZFSerializableDataResolveCheckEnable;
+extern ZFLIB_ZFCore zfbool ZFSerializableDataResolveCheckEnable;
 
 /**
  * @brief keyword for #ZFSerializable to hold a no name node,
@@ -69,7 +69,7 @@ zfclassFwd _ZFP_ZFSerializableDataPrivate;
  * this is a data structure similar to xml,
  * designed to reduce xml dependency
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFSerializableData
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFSerializableData
 {
 public:
     /** @cond ZFPrivateDoc */

@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for #ZFHttpRequest
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFHttpRequest)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFNet, ZFHttpRequest)
     // ============================================================
     // for request
 public:

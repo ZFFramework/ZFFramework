@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
-zfclass ZF_ENV_EXPORT ZFUIListAdapterBasicParam : zfextends ZFObject
+zfclass ZFLIB_ZFUIWidget ZFUIListAdapterBasicParam : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIListAdapterBasicParam, ZFObject)
 
@@ -56,7 +56,7 @@ public:
  *   end);
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFUIListAdapterBasic : zfextends ZFStyleableObject, zfimplements ZFUIListAdapter
+zfclass ZFLIB_ZFUIWidget ZFUIListAdapterBasic : zfextends ZFStyleableObject, zfimplements ZFUIListAdapter
 {
     ZFOBJECT_DECLARE(ZFUIListAdapterBasic, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFUIListAdapter)

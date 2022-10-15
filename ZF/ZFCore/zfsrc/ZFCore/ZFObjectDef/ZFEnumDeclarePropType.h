@@ -10,24 +10,9 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-template<typename T_Type>
-zfclassNotPOD _ZFP_ZFEnumCanModify
-{
-public:
-    enum {
-        v = (zffalse
-            || zftTraits<T_Type>::TrModifier == zftTraitsModifier_R
-            || zftTraits<T_Type>::TrModifier == zftTraitsModifier_P
-            || zftTraits<T_Type>::TrModifier == zftTraitsModifier_PR
-            || zftTraits<T_Type>::TrModifier == zftTraitsModifier_PCR
-        ) ? 1 : 0,
-    };
-};
-
-// ============================================================
 // normal enum
-#define _ZFP_ZFENUM_PROP_TYPE_DECLARE(EnumName) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(EnumName##Enum, EnumName##Enum) \
+#define _ZFP_ZFENUM_PROP_TYPE_DECLARE(ZFLIB_, EnumName) \
+    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName##Enum, EnumName##Enum) \
     /** @cond ZFPrivateDoc */ \
     template<> \
     zfclassNotPOD ZFTypeId<EnumName##Enum> : zfextendsNotPOD ZFTypeInfo \
@@ -88,14 +73,7 @@ public:
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
             { \
-                if(_ZFP_ZFEnumCanModify<T_Access>::v) \
-                { \
-                    return (ZFCastZFObject(EnumName##Editable *, obj) != zfnull); \
-                } \
-                else \
-                { \
-                    return (ZFCastZFObject(EnumName *, obj) != zfnull); \
-                } \
+                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
             { \
@@ -114,14 +92,7 @@ public:
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
             { \
-                if(_ZFP_ZFEnumCanModify<T_Access>::v) \
-                { \
-                    return (ZFCastZFObject(EnumName##Editable *, obj) != zfnull); \
-                } \
-                else \
-                { \
-                    return (ZFCastZFObject(EnumName *, obj) != zfnull); \
-                } \
+                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
             { \
@@ -175,12 +146,12 @@ public:
 
 // ============================================================
 // enum flags
-#define _ZFP_ZFENUM_FLAGS_PROP_TYPE_DECLARE(EnumName, EnumFlagsName) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(EnumFlagsName, EnumFlagsName) \
+#define _ZFP_ZFENUM_FLAGS_PROP_TYPE_DECLARE(ZFLIB_, EnumName, EnumFlagsName) \
+    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumFlagsName, EnumFlagsName) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZF_ENV_EXPORT v_##EnumFlagsName : zfextends EnumName##Editable \
+    zfclass ZFLIB_ v_##EnumFlagsName : zfextends EnumName \
     { \
-        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, EnumName##Editable) \
+        ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, EnumName) \
     public: \
         zfoverride \
         virtual const zfchar *wrappedValueTypeId(void) \
@@ -259,14 +230,7 @@ public:
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
             { \
-                if(_ZFP_ZFEnumCanModify<T_Access>::v) \
-                { \
-                    return (ZFCastZFObject(EnumName##Editable *, obj) != zfnull); \
-                } \
-                else \
-                { \
-                    return (ZFCastZFObject(EnumName *, obj) != zfnull); \
-                } \
+                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
             { \
@@ -285,14 +249,7 @@ public:
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
             { \
-                if(_ZFP_ZFEnumCanModify<T_Access>::v) \
-                { \
-                    return (ZFCastZFObject(EnumName##Editable *, obj) != zfnull); \
-                } \
-                else \
-                { \
-                    return (ZFCastZFObject(EnumName *, obj) != zfnull); \
-                } \
+                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
             { \

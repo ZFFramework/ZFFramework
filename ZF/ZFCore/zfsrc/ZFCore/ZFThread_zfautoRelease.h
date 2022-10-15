@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-extern ZF_ENV_EXPORT void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj);
 template<typename T_ZFObject>
 inline T_ZFObject _ZFP_zfautoRelease(ZF_IN T_ZFObject obj)
 {

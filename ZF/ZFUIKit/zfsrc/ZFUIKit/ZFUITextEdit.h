@@ -18,17 +18,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * the actual behavior depends on native keyboard\n
  * for advanced keyboard management, you should supply your own native code if necessary
  */
-ZFENUM_BEGIN(ZFUITextEditKeyboardType)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUITextEditKeyboardType)
     ZFENUM_VALUE(Normal) /**< @brief can input any word */
     ZFENUM_VALUE(CharBased) /**< @brief input char only */
     ZFENUM_VALUE(PhonePad) /**< @brief input phone number only */
     ZFENUM_VALUE(NumberPad) /**< @brief input number only */
-ZFENUM_SEPARATOR(ZFUITextEditKeyboardType)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Normal)
     ZFENUM_VALUE_REGISTER(CharBased)
     ZFENUM_VALUE_REGISTER(PhonePad)
     ZFENUM_VALUE_REGISTER(NumberPad)
-ZFENUM_END(ZFUITextEditKeyboardType)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUITextEditKeyboardType)
 
 // ============================================================
 // ZFUITextEditKeyboardReturnType
@@ -39,38 +39,38 @@ ZFENUM_END(ZFUITextEditKeyboardType)
  * the actual behavior depends on native keyboard\n
  * for advanced keyboard management, you should supply your own native code if necessary
  */
-ZFENUM_BEGIN(ZFUITextEditKeyboardReturnType)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnType)
     ZFENUM_VALUE(Normal) /**< @brief normal return key */
     ZFENUM_VALUE(Next) /**< @brief go to next */
     ZFENUM_VALUE(Search) /**< @brief search */
     ZFENUM_VALUE(Done) /**< @brief done */
     ZFENUM_VALUE(Go) /**< @brief go */
     ZFENUM_VALUE(Send) /**< @brief send */
-ZFENUM_SEPARATOR(ZFUITextEditKeyboardReturnType)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Normal)
     ZFENUM_VALUE_REGISTER(Next)
     ZFENUM_VALUE_REGISTER(Search)
     ZFENUM_VALUE_REGISTER(Done)
     ZFENUM_VALUE_REGISTER(Go)
     ZFENUM_VALUE_REGISTER(Send)
-ZFENUM_END(ZFUITextEditKeyboardReturnType)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnType)
 
 // ============================================================
 // ZFUITextEditKeyboardReturnAction
 /**
  * @brief action to perform when click return
  */
-ZFENUM_BEGIN(ZFUITextEditKeyboardReturnAction)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnAction)
     ZFENUM_VALUE(None) /**< @brief do nothing */
     ZFENUM_VALUE(Confirm) /**< @brief confirm only, keep focus and keyboard state */
     ZFENUM_VALUE(FocusNext) /**< @brief confirm and move focus to next */
     ZFENUM_VALUE(HideKeyboard) /**< @brief confirm and hide on screen keyboard if showing */
-ZFENUM_SEPARATOR(ZFUITextEditKeyboardReturnAction)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(None)
     ZFENUM_VALUE_REGISTER(Confirm)
     ZFENUM_VALUE_REGISTER(FocusNext)
     ZFENUM_VALUE_REGISTER(HideKeyboard)
-ZFENUM_END_WITH_DEFAULT(ZFUITextEditKeyboardReturnAction, ZFUITextEditKeyboardReturnAction::e_FocusNext)
+ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUITextEditKeyboardReturnAction, ZFUITextEditKeyboardReturnAction::e_FocusNext)
 
 zfclassFwd _ZFP_ZFUITextEditPrivate;
 // ============================================================
@@ -88,7 +88,7 @@ zfclassFwd _ZFP_ZFUITextEditPrivate;
  * @note this view supply quite simple text edit logic,
  *   designed to be lightweighted and able to be embeded to other complex views
  */
-zfclass ZF_ENV_EXPORT ZFUITextEdit : zfextends ZFUIView
+zfclass ZFLIB_ZFUIKit ZFUITextEdit : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUITextEdit, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextEdit)

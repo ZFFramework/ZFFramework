@@ -30,30 +30,30 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  "MethodNamespace0.MethodNamespace1.methodName" :
  *   for function type method with custom name space
  */
-ZFTYPEID_DECLARE(ZFMethod, const ZFMethod *)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethod, const ZFMethod *)
 
 /* ZFMETHOD_MAX_PARAM */
 /**
  * @brief parse method from method sig
  */
-extern ZF_ENV_EXPORT const ZFMethod *ZFMethodFromSig(ZF_IN const zfchar *classOrNamespace,
-                                                     ZF_IN const zfchar *methodName
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId0 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
-                                                     );
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(ZF_IN const zfchar *classOrNamespace,
+                                                    ZF_IN const zfchar *methodName
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId0 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+                                                    );
 /**
  * @brief parse method from method sig
  *
  * methodSigPos must be successfully decoded by #ZFMethodSigSplit
  */
-extern ZF_ENV_EXPORT const ZFMethod *ZFMethodFromSig(ZF_IN const zfchar *methodSig,
-                                                     ZF_IN const ZFCoreArray<ZFIndexRange> &methodSigPos);
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(ZF_IN const zfchar *methodSig,
+                                                    ZF_IN const ZFCoreArray<ZFIndexRange> &methodSigPos);
 
 /**
  * @brief split method sig
@@ -70,9 +70,9 @@ extern ZF_ENV_EXPORT const ZFMethod *ZFMethodFromSig(ZF_IN const zfchar *methodS
  * -  pos[8] : range of methodParamTypeId6, 0 length if none
  * -  pos[9] : range of methodParamTypeId7, 0 length if none
  */
-extern ZF_ENV_EXPORT zfbool ZFMethodSigSplit(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret,
-                                             ZF_IN const zfchar *src,
-                                             ZF_IN_OPT zfindex srcLen = zfindexMax());
+extern ZFLIB_ZFCore zfbool ZFMethodSigSplit(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret,
+                                            ZF_IN const zfchar *src,
+                                            ZF_IN_OPT zfindex srcLen = zfindexMax());
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFMethodSerializable_h_

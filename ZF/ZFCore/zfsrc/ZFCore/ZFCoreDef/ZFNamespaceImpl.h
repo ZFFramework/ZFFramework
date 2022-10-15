@@ -37,9 +37,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         _ZFP_ZF_NAMESPACE_NOT_REGISTERED(); \
     } \
     ZF_STATIC_REGISTER_END(_ZFP_NSReg)
-extern ZF_ENV_EXPORT zfstring _ZFP_ZFNamespaceRegister(ZF_IN const char *parent,
-                                                       ZF_IN const char *child);
-extern ZF_ENV_EXPORT void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns);
+extern ZFLIB_ZFCore zfstring _ZFP_ZFNamespaceRegister(ZF_IN const char *parent,
+                                                      ZF_IN const char *child);
+extern ZFLIB_ZFCore void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns);
 class _ZFP_ZFNamespaceHolder
 {
 public:
@@ -80,22 +80,22 @@ public:
  *
  * return null if everything are skipped
  */
-extern ZF_ENV_EXPORT const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns);
+extern ZFLIB_ZFCore const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns);
 /**
  * @brief util to split namespace components, similar to #zfCoreDataPairSplitString
  *
  * if success, ret ensured to have at least one element even if the namespace is empty,
  * at this case, the only one element would be #ZFIndexRangeZero
  */
-extern ZF_ENV_EXPORT zfbool ZFNamespaceSplit(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret,
-                                             ZF_IN const zfchar *src,
-                                             ZF_IN_OPT zfindex srcLen = zfindexMax());
+extern ZFLIB_ZFCore zfbool ZFNamespaceSplit(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret,
+                                            ZF_IN const zfchar *src,
+                                            ZF_IN_OPT zfindex srcLen = zfindexMax());
 
 // ============================================================
 /**
  * @brief get all namespace
  */
-extern ZF_ENV_EXPORT void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret);
+extern ZFLIB_ZFCore void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret);
 /** @brief see #ZFNamespaceGetAllT */
 inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(void)
 {
@@ -105,9 +105,9 @@ inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(void)
 }
 
 /** @brief see #ZFNamespaceGetAllT */
-extern ZF_ENV_EXPORT void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
-                                             ZF_IN const zfchar *parent,
-                                             ZF_IN_OPT zfbool recursive = zffalse);
+extern ZFLIB_ZFCore void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
+                                            ZF_IN const zfchar *parent,
+                                            ZF_IN_OPT zfbool recursive = zffalse);
 /** @brief see #ZFNamespaceGetAllT */
 inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(ZF_IN const zfchar *parent,
                                                         ZF_IN_OPT zfbool recursive = zffalse)

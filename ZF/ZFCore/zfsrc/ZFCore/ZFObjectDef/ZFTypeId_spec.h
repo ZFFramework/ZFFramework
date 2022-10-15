@@ -64,7 +64,7 @@ public:
 /** @endcond */
 
 // ============================================================
-ZFTYPEID_DECLARE(ZFCallerInfo, ZFCallerInfo)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallerInfo, ZFCallerInfo)
 ZFOUTPUT_TYPE(ZFCallerInfo, {output << v.callerInfo();})
 
 // ============================================================
@@ -216,8 +216,8 @@ public:
  *   <MyObject />
  * @endcode
  */
-ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(zfautoObject, zfautoObject)
-ZFOUTPUT_TYPE_DECLARE(zfautoObject)
+ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_ZFCore, zfautoObject, zfautoObject)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, zfautoObject)
 
 /** @cond ZFPrivateDoc */
 template<>

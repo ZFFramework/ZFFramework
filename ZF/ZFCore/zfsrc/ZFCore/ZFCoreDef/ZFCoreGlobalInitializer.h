@@ -14,8 +14,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 /** @brief see #ZFFrameworkInit */
 typedef void (*ZFFrameworkStateChangeCallback)(void);
-extern ZF_ENV_EXPORT ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void);
-extern ZF_ENV_EXPORT ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void);
+extern ZFLIB_ZFCore ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void);
+extern ZFLIB_ZFCore ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void);
 /** @brief called when #ZFFrameworkInit finished */
 #define ZFFrameworkInitFinishCallbacks _ZFP_ZFFrameworkInitFinishCallbacks()
 /** @brief called when #ZFFrameworkInit finished */
@@ -36,11 +36,11 @@ extern ZF_ENV_EXPORT ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFram
  * -  #ZFFrameworkInitFinishCallbacks and #ZFFrameworkCleanupPrepareCallbacks
  *   won't be called when loading the additional lib
  */
-extern ZF_ENV_EXPORT void ZFFrameworkInit(void);
+extern ZFLIB_ZFCore void ZFFrameworkInit(void);
 /**
  * @brief see #ZFFrameworkInit
  */
-extern ZF_ENV_EXPORT void ZFFrameworkCleanup(void);
+extern ZFLIB_ZFCore void ZFFrameworkCleanup(void);
 
 /**
  * @brief state for ZFFramework
@@ -64,21 +64,21 @@ typedef enum {
 /**
  * @brief assert fail and output log if ZFFramework not initialized
  */
-extern ZF_ENV_EXPORT void ZFFrameworkAssertInit(void);
+extern ZFLIB_ZFCore void ZFFrameworkAssertInit(void);
 /**
  * @brief get current state of ZFFramework
  */
-extern ZF_ENV_EXPORT ZFFrameworkState ZFFrameworkStateCheck(void);
+extern ZFLIB_ZFCore ZFFrameworkState ZFFrameworkStateCheck(void);
 /**
  * @brief get current state of ZFFramework of specified level
  */
-extern ZF_ENV_EXPORT ZFFrameworkState ZFFrameworkStateCheck(ZF_IN ZFLevel level);
+extern ZFLIB_ZFCore ZFFrameworkState ZFFrameworkStateCheck(ZF_IN ZFLevel level);
 
 // ============================================================
 typedef void *(*_ZFP_GI_Constructor)(void);
 typedef void (*_ZFP_GI_Destructor)(ZF_IN void *p);
 zfclassFwd _ZFP_GI_RegPrivate;
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_GI_Reg
+zfclassNotPOD ZFLIB_ZFCore _ZFP_GI_Reg
 {
 public:
     _ZFP_GI_Reg(ZF_IN const zfchar *name,

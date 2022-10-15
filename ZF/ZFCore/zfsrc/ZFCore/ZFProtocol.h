@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief level type for ZFProtocol, see #ZFPROTOCOL_IMPLEMENTATION_BEGIN
  */
-ZFENUM_BEGIN(ZFProtocolLevel)
+ZFENUM_BEGIN(ZFLIB_ZFCore, ZFProtocolLevel)
     ZFENUM_VALUE(Default)
     ZFENUM_VALUE(SystemLow)
     ZFENUM_VALUE(SystemNormal)
@@ -21,7 +21,7 @@ ZFENUM_BEGIN(ZFProtocolLevel)
     ZFENUM_VALUE(AppLow)
     ZFENUM_VALUE(AppNormal)
     ZFENUM_VALUE(AppHigh)
-ZFENUM_SEPARATOR(ZFProtocolLevel)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Default)
     ZFENUM_VALUE_REGISTER(SystemLow)
     ZFENUM_VALUE_REGISTER(SystemNormal)
@@ -29,13 +29,13 @@ ZFENUM_SEPARATOR(ZFProtocolLevel)
     ZFENUM_VALUE_REGISTER(AppLow)
     ZFENUM_VALUE_REGISTER(AppNormal)
     ZFENUM_VALUE_REGISTER(AppHigh)
-ZFENUM_END(ZFProtocolLevel)
+ZFENUM_END(ZFLIB_ZFCore, ZFProtocolLevel)
 
 // ============================================================
 /**
  * @brief base class of all protocol of ZFFramework
  */
-zfclassNotPOD ZF_ENV_EXPORT ZFProtocol
+zfclassNotPOD ZFLIB_ZFCore ZFProtocol
 {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFProtocol)
 
@@ -174,7 +174,7 @@ public:
 };
 
 // ============================================================
-ZFOUTPUT_TYPE_DECLARE(const ZFProtocol *)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, const ZFProtocol *)
 ZFOUTPUT_TYPE(ZFProtocol *, {output << (const ZFProtocol *)v;})
 ZFOUTPUT_TYPE(ZFProtocol, {output << (const ZFProtocol *)&v;})
 
@@ -183,7 +183,7 @@ zfclassFwd _ZFP_ZFProtocolData;
 typedef ZFProtocol *(*_ZFP_ZFProtocolTryAccessCallback)(void);
 typedef ZFProtocol *(*_ZFP_ZFProtocolConstructor)(void);
 typedef void (*_ZFP_ZFProtocolCleanupCallback)(ZF_IN _ZFP_ZFProtocolData *implData);
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFProtocolData
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFProtocolData
 {
 public:
     zfstring protocolName;
@@ -195,12 +195,12 @@ public:
     _ZFP_ZFProtocolCleanupCallback implCleanupCallback;
     ZFProtocol *implInstance;
 };
-extern ZF_ENV_EXPORT _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(zfbool *ZFCoreLibDestroyFlag,
-                                                                          const zfchar *protocolName,
-                                                                          _ZFP_ZFProtocolTryAccessCallback implTryAccessCallback,
-                                                                          zfbool protocolOptional);
-extern ZF_ENV_EXPORT void _ZFP_ZFProtocolImplDataUnregister(zfbool *ZFCoreLibDestroyFlag, const zfchar *protocolName);
-extern ZF_ENV_EXPORT void _ZFP_ZFProtocolImplAccess(void);
+extern ZFLIB_ZFCore _ZFP_ZFProtocolData &_ZFP_ZFProtocolImplDataRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
+                                                                         ZF_IN const zfchar *protocolName,
+                                                                         ZF_IN _ZFP_ZFProtocolTryAccessCallback implTryAccessCallback,
+                                                                         ZF_IN zfbool protocolOptional);
+extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplDataUnregister(zfbool *ZFCoreLibDestroyFlag, const zfchar *protocolName);
+extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
 
 // ============================================================
 /**
@@ -211,8 +211,8 @@ extern ZF_ENV_EXPORT void _ZFP_ZFProtocolImplAccess(void);
 #define ZFPROTOCOL_INTERFACE_CLASS(ModuleName) \
     ZFPInterface_##ModuleName
 
-#define _ZFP_ZFPROTOCOL_INTERFACE_BEGIN(ModuleName) \
-    zfclassNotPOD ZF_ENV_EXPORT ZFPROTOCOL_INTERFACE_CLASS(ModuleName) : zfextendsNotPOD ZFProtocol \
+#define _ZFP_ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_, ModuleName) \
+    zfclassNotPOD ZFLIB_ ZFPROTOCOL_INTERFACE_CLASS(ModuleName) : zfextendsNotPOD ZFProtocol \
     { \
         protected: \
             /** @brief class ref to super */ \
@@ -416,7 +416,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFProtocolImplAccess(void);
  * typical usage:
  * @code
  *   // in a *.h file
- *   ZFPROTOCOL_INTERFACE_BEGIN(SomeModule)
+ *   ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_APP, SomeModule)
  *       public: // you can add constructors, but with no arguments only
  *           ZFPROTOCOL_INTERFACE_CLASS(SomeModule)(void) {...}
  *           virtual ~ZFPROTOCOL_INTERFACE_CLASS(SomeModule)(void) {...}
@@ -431,8 +431,8 @@ extern ZF_ENV_EXPORT void _ZFP_ZFProtocolImplAccess(void);
  * for how to access the implementation, see #ZFPROTOCOL_TRY_ACCESS
  * @note all protocol is singleton mode
  */
-#define ZFPROTOCOL_INTERFACE_BEGIN(ModuleName) \
-    _ZFP_ZFPROTOCOL_INTERFACE_BEGIN(ModuleName)
+#define ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_, ModuleName) \
+    _ZFP_ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_, ModuleName)
 
 /**
  * @brief for more information, please refer to #ZFPROTOCOL_INTERFACE_BEGIN
@@ -503,7 +503,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFProtocolImplAccess(void);
     ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolIsAvailable()
 
 typedef void (*_ZFP_ZFProtocolImplRegisterHolderClearCallback)(void);
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFProtocolImplRegisterHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFProtocolImplRegisterHolder
 {
 public:
     _ZFP_ZFProtocolImplRegisterHolder(ZF_IN zfbool *ZFCoreLibDestroyFlag,
@@ -776,8 +776,8 @@ private:
  * second param desiredImpl can be assigned to check whether the protocol matches what you want,
  * see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT
  */
-extern ZF_ENV_EXPORT ZFProtocol *ZFProtocolForName(ZF_IN const zfchar *name,
-                                                   ZF_IN_OPT const zfchar *desiredImpl = zfnull);
+extern ZFLIB_ZFCore ZFProtocol *ZFProtocolForName(ZF_IN const zfchar *name,
+                                                  ZF_IN_OPT const zfchar *desiredImpl = zfnull);
 /**
  * @brief check whether protocol is available
  *
@@ -785,7 +785,7 @@ extern ZF_ENV_EXPORT ZFProtocol *ZFProtocolForName(ZF_IN const zfchar *name,
  * second param desiredImpl can be assigned to check whether the protocol matches what you want,
  * see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFProtocolIsAvailable,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFProtocolIsAvailable,
                         ZFMP_IN(const zfchar *, name),
                         ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull))
 
@@ -793,7 +793,7 @@ ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFProtocolIsAvailable,
 /**
  * @brief see #ZFProtocolImplInfoGetAll
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFProtocolImplInfo
+zfclassLikePOD ZFLIB_ZFCore ZFProtocolImplInfo
 {
 public:
     /**
@@ -813,25 +813,25 @@ public:
 /**
  * @brief for debug use only, get all protocol's info
  */
-extern ZF_ENV_EXPORT ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAll(void);
+extern ZFLIB_ZFCore ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAll(void);
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
-extern ZF_ENV_EXPORT ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllImplemented(void);
+extern ZFLIB_ZFCore ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllImplemented(void);
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
-extern ZF_ENV_EXPORT ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllNotImplemented(void);
+extern ZFLIB_ZFCore ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllNotImplemented(void);
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFProtocolImplInfoPrint,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFProtocolImplInfoPrint,
                         ZFMP_IN_OPT(const ZFOutput &, callback, ZFOutputDefault()))
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
-extern ZF_ENV_EXPORT void ZFProtocolImplInfoPrint(ZF_IN const ZFProtocolImplInfo &data,
-                                                  ZF_IN_OPT const ZFOutput &callback = ZFOutputDefault());
+extern ZFLIB_ZFCore void ZFProtocolImplInfoPrint(ZF_IN const ZFProtocolImplInfo &data,
+                                                 ZF_IN_OPT const ZFOutput &callback = ZFOutputDefault());
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocol_h_

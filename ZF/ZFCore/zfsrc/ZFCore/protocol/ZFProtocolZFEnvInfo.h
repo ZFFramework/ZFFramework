@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFEnvInfo
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFEnvInfo_systemInfo)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFEnvInfo_systemInfo)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
     /**
@@ -31,7 +31,7 @@ ZFPROTOCOL_INTERFACE_END(ZFEnvInfo_systemInfo)
 /**
  * @brief protocol for ZFEnvInfo
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFEnvInfo_frameworkInfo)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFEnvInfo_frameworkInfo)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
     /**

@@ -15,16 +15,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note dynamic registered contents would be removed automatically
  *   during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkHigh
  */
-extern ZF_ENV_EXPORT const ZFClass *ZFEnumDynamicRegister(ZF_IN const zfchar *enumClassName,
-                                                          ZF_IN const ZFCoreArrayPOD<zfuint> &enumValues,
-                                                          ZF_IN const ZFCoreArray<zfstring> &enumNames,
-                                                          ZF_IN zfuint enumDefault = ZFEnumInvalid(),
-                                                          ZF_IN zfbool enumIsFlags = zffalse,
-                                                          ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore const ZFClass *ZFEnumDynamicRegister(ZF_IN const zfchar *enumClassName,
+                                                         ZF_IN const ZFCoreArrayPOD<zfuint> &enumValues,
+                                                         ZF_IN const ZFCoreArray<zfstring> &enumNames,
+                                                         ZF_IN zfuint enumDefault = ZFEnumInvalid(),
+                                                         ZF_IN zfbool enumIsFlags = zffalse,
+                                                         ZF_OUT_OPT zfstring *errorHint = zfnull);
 /**
  * @brief see #ZFEnumDynamicRegister
  */
-extern ZF_ENV_EXPORT void ZFEnumDynamicUnregister(ZF_IN const ZFClass *enumClass);
+extern ZFLIB_ZFCore void ZFEnumDynamicUnregister(ZF_IN const ZFClass *enumClass);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFEnumDynamicRegister_h_

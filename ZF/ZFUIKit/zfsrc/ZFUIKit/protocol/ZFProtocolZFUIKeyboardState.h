@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFUIKeyboardState
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIKeyboardState)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIKeyboardState)
 ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
     /**
@@ -50,18 +50,18 @@ ZFPROTOCOL_INTERFACE_END(ZFUIKeyboardState)
  * use #ZFUIKeyboardStateBuiltinImplNotifyKeyEvent to manually
  * update the keyboard state
  */
-extern ZF_ENV_EXPORT void ZFUIKeyboardStateBuiltinImplRegister(void);
+extern ZFLIB_ZFUIKit void ZFUIKeyboardStateBuiltinImplRegister(void);
 /**
  * @brief see #ZFUIKeyboardStateBuiltinImplRegister
  */
-extern ZF_ENV_EXPORT void ZFUIKeyboardStateBuiltinImplUnregister(void);
+extern ZFLIB_ZFUIKit void ZFUIKeyboardStateBuiltinImplUnregister(void);
 /**
  * @brief see #ZFUIKeyboardStateBuiltinImplRegister
  *
  * if your keyboard event won't be logged by #ZFUIView::EventViewOnEvent,
  * you may manually use this method to update the key state
  */
-extern ZF_ENV_EXPORT void ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event);
+extern ZFLIB_ZFUIKit void ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFUIKeyboardState_h_

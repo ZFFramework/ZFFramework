@@ -18,9 +18,9 @@ zfclassFwd ZFFilterForZFProperty;
 ZF_NAMESPACE_BEGIN(ZFClassUtil)
 
 /** @brief see #allClassParent */
-extern ZF_ENV_EXPORT void allClassParentT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret,
-                                          ZF_IN const ZFClass *cls,
-                                          ZF_IN_OPT const ZFFilterForZFClass *filter = zfnull);
+extern ZFLIB_ZFCore void allClassParentT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret,
+                                         ZF_IN const ZFClass *cls,
+                                         ZF_IN_OPT const ZFFilterForZFClass *filter = zfnull);
 /**
  * @brief util to get all parent class
  */
@@ -33,9 +33,9 @@ inline ZFCoreArrayPOD<const ZFClass *> allClassParent(ZF_IN const ZFClass *cls,
 }
 
 /** @brief see #allMethod */
-extern ZF_ENV_EXPORT void allMethodT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
-                                     ZF_IN const ZFClass *cls,
-                                     ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull);
+extern ZFLIB_ZFCore void allMethodT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
+                                    ZF_IN const ZFClass *cls,
+                                    ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull);
 /**
  * @brief util to get all method in inherit tree
  */
@@ -48,9 +48,9 @@ inline ZFCoreArrayPOD<const ZFMethod *> allMethod(ZF_IN const ZFClass *cls,
 }
 
 /** @brief see #allProperty */
-extern ZF_ENV_EXPORT void allPropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
-                                       ZF_IN const ZFClass *cls,
-                                       ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull);
+extern ZFLIB_ZFCore void allPropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
+                                      ZF_IN const ZFClass *cls,
+                                      ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull);
 /**
  * @brief util to get all property in inherit tree
  */
@@ -70,17 +70,17 @@ inline ZFCoreArrayPOD<const ZFProperty *> allProperty(ZF_IN const ZFClass *cls,
  * but must be ensured that all property are safe to be compared,
  * i.e. each property's type must match
  */
-extern ZF_ENV_EXPORT zfbool allPropertyIsEqual(ZF_IN ZFObject *obj0,
-                                               ZF_IN ZFObject *obj1,
-                                               ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull);
+extern ZFLIB_ZFCore zfbool allPropertyIsEqual(ZF_IN ZFObject *obj0,
+                                              ZF_IN ZFObject *obj1,
+                                              ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull);
 
 /**
  * @brief use reflect to print all property if the property is not #ZFPropertyIsInitValue
  */
-extern ZF_ENV_EXPORT void objectPropertyInfo(ZF_IN_OUT zfstring &ret,
-                                             ZF_IN ZFObject *obj,
-                                             ZF_IN_OPT zfindex maxCount = zfindexMax(),
-                                             ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault());
+extern ZFLIB_ZFCore void objectPropertyInfo(ZF_IN_OUT zfstring &ret,
+                                            ZF_IN ZFObject *obj,
+                                            ZF_IN_OPT zfindex maxCount = zfindexMax(),
+                                            ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault());
 /** @brief see #objectPropertyInfo */
 inline zfstring objectPropertyInfo(ZF_IN ZFObject *obj,
                                    ZF_IN_OPT zfindex maxCount = zfindexMax(),
@@ -92,8 +92,8 @@ inline zfstring objectPropertyInfo(ZF_IN ZFObject *obj,
 }
 
 /** @brief see #objectInfo */
-extern ZF_ENV_EXPORT void objectInfoT(ZF_IN_OUT zfstring &ret,
-                                      ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore void objectInfoT(ZF_IN_OUT zfstring &ret,
+                                     ZF_IN ZFObject *obj);
 /**
  * @brief get short info of object, see #objectPropertyInfo
  */

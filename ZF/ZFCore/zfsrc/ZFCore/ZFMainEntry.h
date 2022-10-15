@@ -48,20 +48,20 @@ ZF_NAMESPACE_BEGIN(ZFApp)
  *
  * NOTE: the app params only avaialble after #ZFMAIN_ENTRY
  */
-ZFMETHOD_FUNC_DECLARE_0(const ZFCoreArray<zfstring> &, appParams)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const ZFCoreArray<zfstring> &, appParams)
 
 /** @brief exit code for app, 0 by default */
-ZFMETHOD_FUNC_DECLARE_1(void, appExitCode, ZFMP_IN(zfint, exitCode))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, appExitCode, ZFMP_IN(zfint, exitCode))
 /** @brief exit code for app, 0 by default */
-ZFMETHOD_FUNC_DECLARE_0(zfint, appExitCode)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfint, appExitCode)
 
 ZF_NAMESPACE_END(ZFApp)
 
 // ============================================================
 typedef void (*_ZFP_ZFMainFuncType)(void);
-extern ZF_ENV_EXPORT _ZFP_ZFMainFuncType &_ZFP_ZFMainFunc(void);
-extern ZF_ENV_EXPORT ZFCoreArray<zfstring> &_ZFP_ZFApp_appParams(void);
-extern ZF_ENV_EXPORT zfint &_ZFP_ZFApp_appExitCode(void);
+extern ZFLIB_ZFCore _ZFP_ZFMainFuncType &_ZFP_ZFMainFunc(void);
+extern ZFLIB_ZFCore ZFCoreArray<zfstring> &_ZFP_ZFApp_appParams(void);
+extern ZFLIB_ZFCore zfint &_ZFP_ZFApp_appExitCode(void);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFMainEntry_h_

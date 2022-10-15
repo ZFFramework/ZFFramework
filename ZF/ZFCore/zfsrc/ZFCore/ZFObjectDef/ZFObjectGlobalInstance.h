@@ -19,18 +19,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * if necessary,
  * use #ZFObjectGlobalInstanceRemove to remove manually before #ZFFrameworkCleanup
  */
-extern ZF_ENV_EXPORT ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN const ZFCorePointerBase &sp,
-                                                                  ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
+extern ZFLIB_ZFCore ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN const ZFCorePointerBase &sp,
+                                                                 ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
 /** @brief see #ZFObjectGlobalInstanceAdd */
-extern ZF_ENV_EXPORT ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN ZFObject *obj,
-                                                                  ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
+extern ZFLIB_ZFCore ZFCorePointerBase *ZFObjectGlobalInstanceAdd(ZF_IN ZFObject *obj,
+                                                                 ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
 /** @brief see #ZFObjectGlobalInstanceAdd */
-extern ZF_ENV_EXPORT void ZFObjectGlobalInstanceRemove(ZF_IN ZFCorePointerBase *sp,
-                                                       ZF_IN ZFLevel level);
+extern ZFLIB_ZFCore void ZFObjectGlobalInstanceRemove(ZF_IN ZFCorePointerBase *sp,
+                                                      ZF_IN ZFLevel level);
 
 // ============================================================
 // private
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFClassSingletonPointerHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFClassSingletonPointerHolder
 {
 public:
     void *d;
@@ -38,9 +38,9 @@ public:
     _ZFP_ZFClassSingletonPointerHolder(void) : d(zfnull) {}
 };
 typedef void (*_ZFP_ZFClassSingletonDeleteCallback)(ZF_IN void *instance);
-extern ZF_ENV_EXPORT _ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfchar *sig);
+extern ZFLIB_ZFCore _ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfchar *sig);
 
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFClassSingletonDeleteCallbackHolder
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFClassSingletonDeleteCallbackHolder
 {
 public:
     _ZFP_ZFClassSingletonDeleteCallback deleteCallback;

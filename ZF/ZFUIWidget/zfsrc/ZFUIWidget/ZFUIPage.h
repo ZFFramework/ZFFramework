@@ -12,28 +12,28 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief page resume reason
  */
-ZFENUM_BEGIN(ZFUIPageResumeReason)
+ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIPageResumeReason)
     ZFENUM_VALUE(ByManagerResume)
     ZFENUM_VALUE(ByRequest)
     ZFENUM_VALUE(FromBackground)
-ZFENUM_SEPARATOR(ZFUIPageResumeReason)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(ByManagerResume)
     ZFENUM_VALUE_REGISTER(ByRequest)
     ZFENUM_VALUE_REGISTER(FromBackground)
-ZFENUM_END(ZFUIPageResumeReason)
+ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIPageResumeReason)
 
 /**
  * @brief page pause reason
  */
-ZFENUM_BEGIN(ZFUIPagePauseReason)
+ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIPagePauseReason)
     ZFENUM_VALUE(ByManagerPause)
     ZFENUM_VALUE(ToBackground)
     ZFENUM_VALUE(BeforeDestroy)
-ZFENUM_SEPARATOR(ZFUIPagePauseReason)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(ByManagerPause)
     ZFENUM_VALUE_REGISTER(ToBackground)
     ZFENUM_VALUE_REGISTER(BeforeDestroy)
-ZFENUM_END(ZFUIPagePauseReason)
+ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIPagePauseReason)
 
 // ============================================================
 zfclassFwd ZFUIPageManager;
@@ -74,7 +74,7 @@ zfclassFwd ZFUIPageManager;
  * -  alloc a ZFUIPage, #ZFObject::observerAdd to #EventPageOnCreate,
  *   and perform additional page create steps
  */
-zfclass ZF_ENV_EXPORT ZFUIPage : zfextends ZFObject
+zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextends ZFObject
 {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIPage, ZFObject)
 
@@ -287,7 +287,7 @@ private:
 // ============================================================
 zfclassFwd _ZFP_ZFUIPageManagerPrivate;
 /** @brief see #ZFUIPage */
-zfclass ZF_ENV_EXPORT ZFUIPageManager : zfextends ZFObject
+zfclass ZFLIB_ZFUIWidget ZFUIPageManager : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIPageManager, ZFObject)
 

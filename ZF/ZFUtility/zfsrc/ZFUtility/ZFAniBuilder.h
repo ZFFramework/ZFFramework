@@ -97,7 +97,7 @@ private:
     _ZFP_ZFAniBuilderPrivate *d;
 };
 
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFAniBuilder, ZFAniBuilder)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUtility, ZFAniBuilder, ZFAniBuilder)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFAniBuilder_h_

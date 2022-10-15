@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFUIView
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIView)
 public:
     /**
      * @brief called to save native view cache

@@ -29,10 +29,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 template<typename T_Int>
-ZF_ENV_EXPORT zfbool zfsFromIntT(ZF_OUT zfstring &s,
-                                 ZF_IN T_Int n,
-                                 ZF_IN_OPT zfindex radix = 10,
-                                 ZF_IN_OPT zfbool useUpperCase = zftrue)
+zfbool zfsFromIntT(ZF_OUT zfstring &s,
+                   ZF_IN T_Int n,
+                   ZF_IN_OPT zfindex radix = 10,
+                   ZF_IN_OPT zfbool useUpperCase = zftrue)
 {
     if(radix < 2 || radix > 36) {return zffalse;}
 
@@ -74,9 +74,9 @@ ZF_ENV_EXPORT zfbool zfsFromIntT(ZF_OUT zfstring &s,
  * @brief see #zfsFromIntT
  */
 template<typename T_Int>
-ZF_ENV_EXPORT zfstring zfsFromInt(ZF_IN T_Int n,
-                                  ZF_IN_OPT zfindex radix = 10,
-                                  ZF_IN_OPT zfbool useUpperCase = zftrue)
+zfstring zfsFromInt(ZF_IN T_Int n,
+                    ZF_IN_OPT zfindex radix = 10,
+                    ZF_IN_OPT zfbool useUpperCase = zftrue)
 {
     zfstring s;
     zfsFromIntT(s, n, radix, useUpperCase);
@@ -93,12 +93,12 @@ ZF_ENV_EXPORT zfstring zfsFromInt(ZF_IN T_Int n,
  * (for example, specify a short int type while numbers in src is too long)
  */
 template<typename T_Int>
-ZF_ENV_EXPORT zfbool zfsToIntT(ZF_OUT T_Int &ret,
-                               ZF_IN const zfchar *src,
-                               ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                               ZF_IN_OPT zfindex radix = 10,
-                               ZF_IN_OPT zfbool allowNegative = zftrue,
-                               ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
+zfbool zfsToIntT(ZF_OUT T_Int &ret,
+                 ZF_IN const zfchar *src,
+                 ZF_IN_OPT zfindex srcLen = zfindexMax(),
+                 ZF_IN_OPT zfindex radix = 10,
+                 ZF_IN_OPT zfbool allowNegative = zftrue,
+                 ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
 {
     if(src == zfnull || srcLen == 0 || radix < 2 || radix > 36)
     {
@@ -159,11 +159,11 @@ ZF_ENV_EXPORT zfbool zfsToIntT(ZF_OUT T_Int &ret,
  * @brief see #zfsToIntT
  */
 template<typename T_Int>
-ZF_ENV_EXPORT T_Int zfsToInt(ZF_IN const zfchar *src,
-                             ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                             ZF_IN_OPT zfindex radix = 10,
-                             ZF_IN_OPT zfbool allowNegative = zftrue,
-                             ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
+T_Int zfsToInt(ZF_IN const zfchar *src,
+               ZF_IN_OPT zfindex srcLen = zfindexMax(),
+               ZF_IN_OPT zfindex radix = 10,
+               ZF_IN_OPT zfbool allowNegative = zftrue,
+               ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
 {
     T_Int ret = 0;
     zfsToIntT(ret, src, srcLen, radix, allowNegative, outErrorPos);
@@ -190,8 +190,8 @@ inline zfint zfsToInt(ZF_IN const zfchar *src,
  * for typical usage, see #zfsFromIntT
  */
 template<typename T_Float>
-ZF_ENV_EXPORT zfbool zfsFromFloatT(ZF_OUT zfstring &s,
-                                   ZF_IN T_Float n)
+zfbool zfsFromFloatT(ZF_OUT zfstring &s,
+                     ZF_IN T_Float n)
 {
     zfchar buf[64] = {0};
     sprintf(buf, "%lf", (double)n);
@@ -225,7 +225,7 @@ ZF_ENV_EXPORT zfbool zfsFromFloatT(ZF_OUT zfstring &s,
  * @brief see #zfsFromFloatT
  */
 template<typename T_Float>
-ZF_ENV_EXPORT zfstring zfsFromFloat(ZF_IN T_Float n)
+zfstring zfsFromFloat(ZF_IN T_Float n)
 {
     zfstring s;
     zfsFromFloatT(s, n);
@@ -242,10 +242,10 @@ ZF_ENV_EXPORT zfstring zfsFromFloat(ZF_IN T_Float n)
  * @note if src is null, pErrPos would be null
  */
 template<typename T_Float>
-ZF_ENV_EXPORT zfbool zfsToFloatT(ZF_OUT T_Float &ret,
-                                 ZF_IN const zfchar *src,
-                                 ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                 ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
+zfbool zfsToFloatT(ZF_OUT T_Float &ret,
+                   ZF_IN const zfchar *src,
+                   ZF_IN_OPT zfindex srcLen = zfindexMax(),
+                   ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
 {
     if(src == zfnull || srcLen == 0)
     {
@@ -325,9 +325,9 @@ ZF_ENV_EXPORT zfbool zfsToFloatT(ZF_OUT T_Float &ret,
  * @brief see #zfsToFloatT
  */
 template<typename T_Float>
-ZF_ENV_EXPORT T_Float zfsToFloat(ZF_IN const zfchar *src,
-                                 ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                 ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
+T_Float zfsToFloat(ZF_IN const zfchar *src,
+                   ZF_IN_OPT zfindex srcLen = zfindexMax(),
+                   ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
 {
     T_Float ret = 0;
     zfsToFloatT(ret, src, srcLen, outErrorPos);
@@ -582,7 +582,7 @@ inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src,
 // ============================================================
 // zfstringFind
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFind(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFind(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFind(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -601,7 +601,7 @@ inline zfindex zfstringFind(ZF_IN const zfstring &src, ZF_IN zfchar find)
 // ============================================================
 // zfstringFindReversely
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFindReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFindReversely(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -620,7 +620,7 @@ inline zfindex zfstringFindReversely(ZF_IN const zfstring &src, ZF_IN zfchar fin
 // ============================================================
 // zfstringFindCaseInsensitive
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFindCaseInsensitive(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindCaseInsensitive(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFindCaseInsensitive(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -639,7 +639,7 @@ inline zfindex zfstringFindCaseInsensitive(ZF_IN const zfstring &src, ZF_IN zfch
 // ============================================================
 // zfstringFindCaseInsensitiveReversely
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -658,7 +658,7 @@ inline zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfstring &src, Z
 // ============================================================
 // zfstringFindFirstOf
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFindFirstOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindFirstOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFindFirstOf(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -677,7 +677,7 @@ inline zfindex zfstringFindFirstOf(ZF_IN const zfstring &src, ZF_IN zfchar find)
 // ============================================================
 // zfstringFindFirstNotOf
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFindFirstNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindFirstNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFindFirstNotOf(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -696,7 +696,7 @@ inline zfindex zfstringFindFirstNotOf(ZF_IN const zfstring &src, ZF_IN zfchar fi
 // ============================================================
 // zfstringFindLastOf
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFindLastOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindLastOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFindLastOf(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -715,7 +715,7 @@ inline zfindex zfstringFindLastOf(ZF_IN const zfstring &src, ZF_IN zfchar find)
 // ============================================================
 // zfstringFindLastNotOf
 /** @brief find string */
-extern ZF_ENV_EXPORT zfindex zfstringFindLastNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindLastNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
 /** @brief find string */
 inline zfindex zfstringFindLastNotOf(ZF_IN const zfstring &src, ZF_IN const zfstring &find)
 {
@@ -734,9 +734,9 @@ inline zfindex zfstringFindLastNotOf(ZF_IN const zfstring &src, ZF_IN zfchar fin
 // ============================================================
 // zfstringReplace
 /** @brief replace string, return replaced count */
-extern ZF_ENV_EXPORT zfindex zfstringReplace(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringReplace(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
 /** @brief replace string, return replaced count */
-extern ZF_ENV_EXPORT zfindex zfstringReplaceReversely(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringReplaceReversely(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
 
 ZF_NAMESPACE_GLOBAL_END
 

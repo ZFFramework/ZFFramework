@@ -14,11 +14,11 @@ static int _ZFP_ZFLua_performance_test_alloc(lua_State *L)
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DECLARE_0(void, _ZFP_ZFLua_performance_test_f0)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_APP, void, _ZFP_ZFLua_performance_test_f0)
 ZFMETHOD_FUNC_DEFINE_0(void, _ZFP_ZFLua_performance_test_f0)
 {
 }
-ZFMETHOD_FUNC_DECLARE_4(void, _ZFP_ZFLua_performance_test_f4
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_APP, void, _ZFP_ZFLua_performance_test_f4
         , ZFMP_IN(const zfchar *, p0)
         , ZFMP_IN(const zfchar *, p1)
         , ZFMP_IN(const zfchar *, p2)

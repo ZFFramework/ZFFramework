@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #ZFMethodFuncUserRegister_0 */
-extern ZF_ENV_EXPORT void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method);
+extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method);
 
 // ============================================================
 #define _ZFP_ZFMethodFuncUserRegisterParamExpand( \

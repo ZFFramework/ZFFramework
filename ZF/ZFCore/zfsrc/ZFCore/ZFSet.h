@@ -14,7 +14,7 @@ zfclassFwd ZFMap;
 /**
  * @brief container of ZFObject, see #ZFContainer
  */
-zfclass ZF_ENV_EXPORT ZFSet : zfextends ZFContainer
+zfclass ZFLIB_ZFCore ZFSet : zfextends ZFContainer
 {
     ZFOBJECT_DECLARE(ZFSet, ZFContainer)
 

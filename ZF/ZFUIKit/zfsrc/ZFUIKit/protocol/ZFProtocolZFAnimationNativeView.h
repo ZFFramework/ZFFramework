@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFAnimationNativeView
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFAnimationNativeView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFAnimationNativeView)
 public:
     /**
      * @brief create native animation

@@ -11,18 +11,18 @@
 #include "ZFCoreLog.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZF_ENV_EXPORT void _ZFP_zfCoreLogCriticalMessage(ZF_IN const ZFCallerInfo &callerInfo,
+extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessage(ZF_IN const ZFCallerInfo &callerInfo,
+                                                       ZF_IN const zfchar *fmt,
+                                                       ...);
+extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessageV(ZF_IN const ZFCallerInfo &callerInfo,
                                                         ZF_IN const zfchar *fmt,
-                                                        ...);
-extern ZF_ENV_EXPORT void _ZFP_zfCoreLogCriticalMessageV(ZF_IN const ZFCallerInfo &callerInfo,
-                                                         ZF_IN const zfchar *fmt,
-                                                         ZF_IN va_list vaList);
-extern ZF_ENV_EXPORT void _ZFP_zfCoreCritical(ZF_IN const ZFCallerInfo &callerInfo,
+                                                        ZF_IN va_list vaList);
+extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(ZF_IN const ZFCallerInfo &callerInfo,
+                                             ZF_IN const zfchar *fmt,
+                                             ...);
+extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(ZF_IN const ZFCallerInfo &callerInfo,
                                               ZF_IN const zfchar *fmt,
-                                              ...);
-extern ZF_ENV_EXPORT void _ZFP_zfCoreCriticalV(ZF_IN const ZFCallerInfo &callerInfo,
-                                               ZF_IN const zfchar *fmt,
-                                               ZF_IN va_list vaList);
+                                              ZF_IN va_list vaList);
 
 // ============================================================
 /**

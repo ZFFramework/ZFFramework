@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFJson
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFJson)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFAlgorithm, ZFJson)
 public:
     /**
      * @brief see #ZFJsonEscapeCharEncode

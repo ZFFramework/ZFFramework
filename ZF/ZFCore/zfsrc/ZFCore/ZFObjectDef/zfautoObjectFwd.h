@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // zfautoObject
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfautoObjectPrivate
+zfclassNotPOD ZFLIB_ZFCore _ZFP_zfautoObjectPrivate
 {
 public:
     zfuint refCount;
@@ -42,7 +42,7 @@ public:
  *   } // content obj would be released when zfautoObject destroyed
  * @endcode
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT zfautoObject
+zffinal zfclassLikePOD ZFLIB_ZFCore zfautoObject
 {
     /** @cond ZFPrivateDoc */
 public:

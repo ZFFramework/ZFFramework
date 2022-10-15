@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #zfstringAppend */
-extern ZF_ENV_EXPORT void zfstringAppendV(ZF_OUT zfstring &s, ZF_IN const zfchar *fmt, va_list vaList);
+extern ZFLIB_ZFCore void zfstringAppendV(ZF_OUT zfstring &s, ZF_IN const zfchar *fmt, va_list vaList);
 /** @brief see #zfstringAppend */
 inline void zfstringAppendV(ZF_OUT_OPT zfstring *s, ZF_IN const zfchar *fmt, va_list vaList)
 {

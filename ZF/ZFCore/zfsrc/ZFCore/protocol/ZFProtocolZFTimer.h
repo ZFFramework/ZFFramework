@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFTimer
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFTimer)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFTimer)
 public:
     /**
      * @brief create and return a native timer

@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFUIViewPositionOnScreen
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIViewPositionOnScreen)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIViewPositionOnScreen)
 public:
     /**
      * @brief see #ZFUIViewPositionOnScreen

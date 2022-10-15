@@ -12,23 +12,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief key action for ZFUIKeyCode
  */
-ZFENUM_BEGIN(ZFUIKeyAction)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIKeyAction)
     ZFENUM_VALUE(KeyDown)      /**< @brief key down */
     ZFENUM_VALUE(KeyRepeat)    /**< @brief key repeat */
     ZFENUM_VALUE(KeyUp)        /**< @brief key up */
     ZFENUM_VALUE(KeyCancel)    /**< @brief key cancel */
-ZFENUM_SEPARATOR(ZFUIKeyAction)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(KeyDown)
     ZFENUM_VALUE_REGISTER(KeyRepeat)
     ZFENUM_VALUE_REGISTER(KeyUp)
     ZFENUM_VALUE_REGISTER(KeyCancel)
-ZFENUM_END(ZFUIKeyAction)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIKeyAction)
 
 // ============================================================
 /**
  * @brief key code
  */
-ZFENUM_BEGIN(ZFUIKeyCode)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIKeyCode)
     ZFENUM_VALUE(kUnknown = 1)
 
     ZFENUM_VALUE(kEsc = 100)
@@ -159,7 +159,7 @@ ZFENUM_BEGIN(ZFUIKeyCode)
     ZFENUM_VALUE(kPhoneBack = 1005)
     ZFENUM_VALUE(kPhoneSearch = 1006)
     ZFENUM_VALUE(kPhoneCamera = 1007)
-ZFENUM_SEPARATOR(ZFUIKeyCode)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(kUnknown)
 
     ZFENUM_VALUE_REGISTER(kEsc)
@@ -290,7 +290,7 @@ ZFENUM_SEPARATOR(ZFUIKeyCode)
     ZFENUM_VALUE_REGISTER(kPhoneBack)
     ZFENUM_VALUE_REGISTER(kPhoneSearch)
     ZFENUM_VALUE_REGISTER(kPhoneCamera)
-ZFENUM_END(ZFUIKeyCode)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIKeyCode)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIKeyCode_h_

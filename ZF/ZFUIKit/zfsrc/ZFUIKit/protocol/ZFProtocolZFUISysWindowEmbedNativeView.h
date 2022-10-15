@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFUISysWindow
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUISysWindowEmbedNativeView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUISysWindowEmbedNativeView)
 public:
     /**
      * @brief used to attach window's root view to native container

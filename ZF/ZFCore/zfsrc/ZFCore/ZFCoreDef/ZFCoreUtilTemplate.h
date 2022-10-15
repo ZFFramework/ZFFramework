@@ -440,7 +440,7 @@ public:
 /** @brief std::is_base_of wrapper */
 template<typename TChild, typename TBase,
     bool _IsClass = (zftTypeIsClass<TChild>::TypeIsClass && zftTypeIsClass<TBase>::TypeIsClass)>
-zfclassNotPOD ZF_ENV_EXPORT zftTypeIsTypeOf
+zfclassNotPOD zftTypeIsTypeOf
 {
 private:
     template<typename T_Dummy>

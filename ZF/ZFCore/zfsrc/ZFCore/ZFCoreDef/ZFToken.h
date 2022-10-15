@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief util class to hold string tokens
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFTokenForContainer
+zfclassLikePOD ZFLIB_ZFCore ZFTokenForContainer
 {
 public:
     zfstring tokenLeft; /**< @brief "[" by default */
@@ -64,10 +64,10 @@ public:
     inline zfbool operator != (ZF_IN const ZFTokenForContainer &ref) const {return !this->operator == (ref);}
     /** @endcond */
 };
-extern ZF_ENV_EXPORT const ZFTokenForContainer _ZFP_ZFTokenForContainerTrim;
-extern ZF_ENV_EXPORT const ZFTokenForContainer _ZFP_ZFTokenForContainerDetail;
-extern ZF_ENV_EXPORT const ZFTokenForContainer _ZFP_ZFTokenForContainerPlainList;
-extern ZF_ENV_EXPORT ZFTokenForContainer _ZFP_ZFTokenForContainerDefault;
+extern ZFLIB_ZFCore const ZFTokenForContainer _ZFP_ZFTokenForContainerTrim;
+extern ZFLIB_ZFCore const ZFTokenForContainer _ZFP_ZFTokenForContainerDetail;
+extern ZFLIB_ZFCore const ZFTokenForContainer _ZFP_ZFTokenForContainerPlainList;
+extern ZFLIB_ZFCore ZFTokenForContainer _ZFP_ZFTokenForContainerDefault;
 /**
  * @brief see #ZFTokenForContainer
  *
@@ -112,7 +112,7 @@ extern ZF_ENV_EXPORT ZFTokenForContainer _ZFP_ZFTokenForContainerDefault;
 /**
  * @brief util class to hold string tokens
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFTokenForKeyValueContainer
+zfclassLikePOD ZFLIB_ZFCore ZFTokenForKeyValueContainer
 {
 public:
     zfstring tokenLeft; /**< @brief "{" by default */
@@ -187,9 +187,9 @@ public:
     inline zfbool operator != (ZF_IN const ZFTokenForKeyValueContainer &ref) const {return !this->operator == (ref);}
     /** @endcond */
 };
-extern ZF_ENV_EXPORT const ZFTokenForKeyValueContainer _ZFP_ZFTokenForKeyValueContainerTrim;
-extern ZF_ENV_EXPORT const ZFTokenForKeyValueContainer _ZFP_ZFTokenForKeyValueContainerDetail;
-extern ZF_ENV_EXPORT ZFTokenForKeyValueContainer _ZFP_ZFTokenForKeyValueContainerDefault;
+extern ZFLIB_ZFCore const ZFTokenForKeyValueContainer _ZFP_ZFTokenForKeyValueContainerTrim;
+extern ZFLIB_ZFCore const ZFTokenForKeyValueContainer _ZFP_ZFTokenForKeyValueContainerDetail;
+extern ZFLIB_ZFCore ZFTokenForKeyValueContainer _ZFP_ZFTokenForKeyValueContainerDefault;
 /**
  * @brief see #ZFTokenForKeyValueContainer
  *

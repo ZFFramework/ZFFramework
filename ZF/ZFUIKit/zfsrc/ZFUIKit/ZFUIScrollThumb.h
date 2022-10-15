@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract scroll thumb for #ZFUIScrollView
  */
-zfinterface ZF_ENV_EXPORT ZFUIScrollThumb : zfextends ZFInterface
+zfinterface ZFLIB_ZFUIKit ZFUIScrollThumb : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFUIScrollThumb, ZFInterface)
 
@@ -98,23 +98,23 @@ private:
  *
  * set to null to use default
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFUIScrollThumbHorizontalClass,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollThumbHorizontalClass,
                         ZFMP_IN(const ZFClass *, cls))
 /**
  * @brief get the class of default scroll thumb
  */
-ZFMETHOD_FUNC_DECLARE_0(const ZFClass *, ZFUIScrollThumbHorizontalClass)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, const ZFClass *, ZFUIScrollThumbHorizontalClass)
 /**
  * @brief change default scroll thumb class
  *
  * set to null to use default
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFUIScrollThumbVerticalClass,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollThumbVerticalClass,
                         ZFMP_IN(const ZFClass *, cls))
 /**
  * @brief get the class of default scroll thumb
  */
-ZFMETHOD_FUNC_DECLARE_0(const ZFClass *, ZFUIScrollThumbVerticalClass)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, const ZFClass *, ZFUIScrollThumbVerticalClass)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIScrollThumb_h_

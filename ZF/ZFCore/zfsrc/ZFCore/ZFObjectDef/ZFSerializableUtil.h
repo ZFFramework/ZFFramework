@@ -14,33 +14,33 @@ ZF_NAMESPACE_BEGIN(ZFSerializableUtil)
 /**
  * @brief util method to set error
  */
-extern ZF_ENV_EXPORT void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
-                                        ZF_OUT_OPT ZFSerializableData *outErrorPos,
-                                        ZF_IN const ZFSerializableData &errorPos,
-                                        ZF_IN const zfchar *fmt,
-                                        ...);
+extern ZFLIB_ZFCore void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
+                                       ZF_OUT_OPT ZFSerializableData *outErrorPos,
+                                       ZF_IN const ZFSerializableData &errorPos,
+                                       ZF_IN const zfchar *fmt,
+                                       ...);
 
 /**
  * @brief util method to set error
  */
-extern ZF_ENV_EXPORT void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
-                                        ZF_IN const zfchar *fmt,
-                                        ...);
+extern ZFLIB_ZFCore void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
+                                       ZF_IN const zfchar *fmt,
+                                       ...);
 
 /**
  * @brief util method to set error
  */
-extern ZF_ENV_EXPORT void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
-                                             ZF_OUT_OPT ZFSerializableData *outErrorPos,
-                                             ZF_IN const ZFSerializableData &errorPos,
-                                             ZF_IN const zfchar *serializingName,
-                                             ZF_IN const zfchar *errorValue);
+extern ZFLIB_ZFCore void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
+                                            ZF_OUT_OPT ZFSerializableData *outErrorPos,
+                                            ZF_IN const ZFSerializableData &errorPos,
+                                            ZF_IN const zfchar *serializingName,
+                                            ZF_IN const zfchar *errorValue);
 /**
  * @brief util method to set error
  */
-extern ZF_ENV_EXPORT void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
-                                             ZF_IN const zfchar *serializingName,
-                                             ZF_IN const zfchar *errorValue);
+extern ZFLIB_ZFCore void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
+                                            ZF_IN const zfchar *serializingName,
+                                            ZF_IN const zfchar *errorValue);
 
 /**
  * @brief util to check whether the serializable data contains desired attribute
@@ -48,15 +48,15 @@ extern ZF_ENV_EXPORT void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
  * use #ZFTypeId_none shows that any class name is allowed except empty\n
  * return null if no match
  */
-extern ZF_ENV_EXPORT const zfchar *checkItemClass(ZF_IN const ZFSerializableData &serializableData,
-                                                  ZF_IN const zfchar *desiredClass);
+extern ZFLIB_ZFCore const zfchar *checkItemClass(ZF_IN const ZFSerializableData &serializableData,
+                                                 ZF_IN const zfchar *desiredClass);
 /**
  * @brief see #checkItemClass, output error hint if failed
  */
-extern ZF_ENV_EXPORT const zfchar *requireItemClass(ZF_IN const ZFSerializableData &serializableData,
-                                                    ZF_IN const zfchar *desiredClass,
-                                                    ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore const zfchar *requireItemClass(ZF_IN const ZFSerializableData &serializableData,
+                                                   ZF_IN const zfchar *desiredClass,
+                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
 
 /**
  * @brief util to check whether the serializable data contains desired attribute,
@@ -64,46 +64,46 @@ extern ZF_ENV_EXPORT const zfchar *requireItemClass(ZF_IN const ZFSerializableDa
  *
  * return null if not exist
  */
-extern ZF_ENV_EXPORT const zfchar *checkAttribute(ZF_IN const ZFSerializableData &serializableData,
-                                                  ZF_IN const zfchar *desiredAttribute);
+extern ZFLIB_ZFCore const zfchar *checkAttribute(ZF_IN const ZFSerializableData &serializableData,
+                                                 ZF_IN const zfchar *desiredAttribute);
 /**
  * @brief see #checkAttribute, output error hint if failed,
  *   auto mark as resolved
  */
-extern ZF_ENV_EXPORT const zfchar *requireAttribute(ZF_IN const ZFSerializableData &serializableData,
-                                                    ZF_IN const zfchar *desiredAttribute,
-                                                    ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore const zfchar *requireAttribute(ZF_IN const ZFSerializableData &serializableData,
+                                                   ZF_IN const zfchar *desiredAttribute,
+                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
 
 /**
  * @brief util to check whether the serializable data contains desired element,
  *   auto mark name as resolved
  */
-extern ZF_ENV_EXPORT const ZFSerializableData *checkElementByName(ZF_IN const ZFSerializableData &serializableData,
-                                                                  ZF_IN const zfchar *desiredElementName);
+extern ZFLIB_ZFCore const ZFSerializableData *checkElementByName(ZF_IN const ZFSerializableData &serializableData,
+                                                                 ZF_IN const zfchar *desiredElementName);
 /**
  * @brief see #checkElementByName, output error hint if failed,
  *   auto mark name as resolved
  */
-extern ZF_ENV_EXPORT const ZFSerializableData *requireElementByName(ZF_IN const ZFSerializableData &serializableData,
-                                                                    ZF_IN const zfchar *desiredElementName,
-                                                                    ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                                    ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore const ZFSerializableData *requireElementByName(ZF_IN const ZFSerializableData &serializableData,
+                                                                   ZF_IN const zfchar *desiredElementName,
+                                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
 
 /**
  * @brief util to check whether the serializable data contains desired element,
  *   auto mark category as resolved
  */
-extern ZF_ENV_EXPORT const ZFSerializableData *checkElementByCategory(ZF_IN const ZFSerializableData &serializableData,
-                                                                      ZF_IN const zfchar *desiredElementCategory);
+extern ZFLIB_ZFCore const ZFSerializableData *checkElementByCategory(ZF_IN const ZFSerializableData &serializableData,
+                                                                     ZF_IN const zfchar *desiredElementCategory);
 /**
  * @brief see #checkElementByCategory, output error hint if failed,
  *   auto mark category as resolved
  */
-extern ZF_ENV_EXPORT const ZFSerializableData *requireElementByCategory(ZF_IN const ZFSerializableData &serializableData,
-                                                                        ZF_IN const zfchar *desiredElementCategory,
-                                                                        ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                                        ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore const ZFSerializableData *requireElementByCategory(ZF_IN const ZFSerializableData &serializableData,
+                                                                       ZF_IN const zfchar *desiredElementCategory,
+                                                                       ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                                                       ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
 
 /**
  * @brief util to check whether the serializable data contains property name attribute,
@@ -168,8 +168,8 @@ inline const zfchar *requireCategory(ZF_IN const ZFSerializableData &serializabl
  *
  * return true if anything not resolved, or false if all resolved
  */
-extern ZF_ENV_EXPORT zfbool printResolveStatus(ZF_IN const ZFSerializableData &serializableData,
-                                               ZF_IN_OPT const ZFOutput &outputCallback = ZFOutputDefault());
+extern ZFLIB_ZFCore zfbool printResolveStatus(ZF_IN const ZFSerializableData &serializableData,
+                                              ZF_IN_OPT const ZFOutput &outputCallback = ZFOutputDefault());
 
 // ============================================================
 // util macro for impl

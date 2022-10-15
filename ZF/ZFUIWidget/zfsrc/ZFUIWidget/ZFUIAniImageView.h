@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd _ZFP_ZFUIAniImageDataPrivate;
 /** @brief see #ZFUIAniImageView */
-zffinal zfclass ZF_ENV_EXPORT ZFUIAniImageData : zfextends ZFStyleableObject
+zffinal zfclass ZFLIB_ZFUIWidget ZFUIAniImageData : zfextends ZFStyleableObject
 {
     ZFOBJECT_DECLARE(ZFUIAniImageData, ZFStyleableObject)
 
@@ -138,7 +138,7 @@ zfclassFwd _ZFP_ZFUIAniImageViewPrivate;
  *   </ZFUIAniImageView>
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFUIAniImageView : zfextends ZFUIImageView
+zfclass ZFLIB_ZFUIWidget ZFUIAniImageView : zfextends ZFUIImageView
 {
     ZFOBJECT_DECLARE(ZFUIAniImageView, ZFUIImageView)
 

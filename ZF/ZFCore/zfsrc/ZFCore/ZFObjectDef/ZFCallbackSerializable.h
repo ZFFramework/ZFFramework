@@ -43,7 +43,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   </ZFCallback>
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFCallback, ZFCallback)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback)
 ZFOUTPUT_TYPE(ZFCallback, {output.execute(v.objectInfo());})
 
 /** @brief keyword for serialize */
@@ -55,10 +55,10 @@ ZFOUTPUT_TYPE(ZFCallback, {output.execute(v.objectInfo());})
 #define ZFSerializableKeyword_ZFCallback_callbackData "callbackData"
 
 // ============================================================
-ZFTYPEID_ALIAS_DECLARE(ZFCallback, ZFCallback, ZFListener, ZFListener)
-ZFTYPEID_ALIAS_DECLARE(ZFCallback, ZFCallback, ZFIOCallback, ZFIOCallback)
-ZFTYPEID_ALIAS_DECLARE(ZFCallback, ZFCallback, ZFOutput, ZFOutput)
-ZFTYPEID_ALIAS_DECLARE(ZFCallback, ZFCallback, ZFInput, ZFInput)
+ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFListener, ZFListener)
+ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFIOCallback, ZFIOCallback)
+ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFOutput, ZFOutput)
+ZFTYPEID_ALIAS_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback, ZFInput, ZFInput)
 
 // ============================================================
 // custom serialize logic
@@ -66,10 +66,10 @@ typedef zfbool (*_ZFP_ZFCallbackSerializeCustomCallback)(ZF_IN_OUT ZFCallback &r
                                                          ZF_IN const ZFSerializableData &serializableData,
                                                          ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
                                                          ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */);
-extern ZF_ENV_EXPORT void _ZFP_ZFCallbackSerializeCustomTypeRegister(ZF_IN const zfchar *customType,
-                                                                     ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback);
-extern ZF_ENV_EXPORT void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfchar *customType);
-extern ZF_ENV_EXPORT _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfchar *customType);
+extern ZFLIB_ZFCore void _ZFP_ZFCallbackSerializeCustomTypeRegister(ZF_IN const zfchar *customType,
+                                                                    ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback);
+extern ZFLIB_ZFCore void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfchar *customType);
+extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfchar *customType);
 
 /**
  * @brief see #ZFTypeId_ZFCallback

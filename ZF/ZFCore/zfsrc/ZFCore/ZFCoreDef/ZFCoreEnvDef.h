@@ -30,6 +30,11 @@
     #define ZFLIB_ZFCore ZF_ENV_IMPORT
 #endif
 
+/** @brief used to export symbols */
+#ifndef ZFLIB_APP
+    #define ZFLIB_APP ZF_ENV_EXPORT
+#endif
+
 // ============================================================
 /**
  * @brief begin namespace
@@ -37,7 +42,7 @@
 #define ZF_NAMESPACE_BEGIN(NameSpace) \
     /** @brief \n */ \
     namespace NameSpace { \
-        extern ZF_ENV_EXPORT const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void);
+        extern ZFLIB_ZFCore const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void);
 
 /**
  * @brief end namespace
@@ -93,7 +98,7 @@
     #define ZF_NAMESPACE_GLOBAL_BEGIN
     #define ZF_NAMESPACE_GLOBAL_END
     #define ZF_NAMESPACE_GLOBAL_USE
-    extern ZF_ENV_EXPORT const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void);
+    extern ZFLIB_ZFCore const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void);
 #endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN

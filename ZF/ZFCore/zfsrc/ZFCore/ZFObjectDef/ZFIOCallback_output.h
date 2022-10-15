@@ -32,7 +32,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * ADVANCED:\n
  * for implementations, see #ZFCallbackTagKeyword_ioOwner if need support seek
  */
-ZFCALLBACK_DECLARE_BEGIN(ZFOutput, ZFIOCallback)
+ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 public:
     /** @brief see #ZFOutput */
     inline zfindex execute(ZF_IN const void *src,
@@ -52,7 +52,7 @@ public:
     {
         return this->execute(src, count);
     }
-_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFOutput, ZFIOCallback)
+_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 
 // ============================================================
 // custom type output
@@ -128,7 +128,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFOutput, ZFIOCallback)
  * usage:
  * @code
  *   // in header file
- *   ZFOUTPUT_TYPE_DECLARE(YourType)
+ *   ZFOUTPUT_TYPE_DECLARE(ZFLIB_APP, YourType)
  *   // in source file
  *   ZFOUTPUT_TYPE_DEFINE(YourType, {doYourStuff();})
  *
@@ -136,9 +136,9 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFOutput, ZFIOCallback)
  *   ZFOUTPUT_TYPE(YourType, {doYourStuff();})
  * @endcode
  */
-#define ZFOUTPUT_TYPE_DECLARE(T_Type) \
+#define ZFOUTPUT_TYPE_DECLARE(ZFLIB_, T_Type) \
     /** @cond ZFPrivateDoc */ \
-    extern ZF_ENV_EXPORT const ZFOutput &operator << (const ZFOutput &output, T_Type const &v); \
+    extern ZFLIB_ const ZFOutput &operator << (const ZFOutput &output, T_Type const &v); \
     _ZFP_ZFOUTPUT_EXPAND(T_Type) \
     /** @endcond */
 /** @brief see #ZFOUTPUT_TYPE_DECLARE */
@@ -167,7 +167,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFOutput, ZFIOCallback)
 /**
  * @brief a dummy output that always output nothing with success state
  */
-extern ZF_ENV_EXPORT ZFOutput ZFOutputDummy(void);
+extern ZFLIB_ZFCore ZFOutput ZFOutputDummy(void);
 
 /**
  * @brief create a output callback to output to a zfstring
@@ -177,7 +177,7 @@ extern ZF_ENV_EXPORT ZFOutput ZFOutputDummy(void);
  *
  * @note you must ensure the string to output is alive while the callback is still under use
  */
-extern ZF_ENV_EXPORT ZFOutput ZFOutputForString(ZF_IN_OUT zfstring &s);
+extern ZFLIB_ZFCore ZFOutput ZFOutputForString(ZF_IN_OUT zfstring &s);
 /**
  * @brief create a output callback to output to a buffer
  *
@@ -187,9 +187,9 @@ extern ZF_ENV_EXPORT ZFOutput ZFOutputForString(ZF_IN_OUT zfstring &s);
  *   if autoAppendNullToken, maxCount should contain the extra '\0' size
  * -  (zfbool) whether auto append '\0' to tail each time write
  */
-extern ZF_ENV_EXPORT ZFOutput ZFOutputForBufferUnsafe(ZF_IN void *buf,
-                                                      ZF_IN_OPT zfindex maxCount = zfindexMax(),
-                                                      ZF_IN_OPT zfbool autoAppendNullToken = zftrue);
+extern ZFLIB_ZFCore ZFOutput ZFOutputForBufferUnsafe(ZF_IN void *buf,
+                                                     ZF_IN_OPT zfindex maxCount = zfindexMax(),
+                                                     ZF_IN_OPT zfbool autoAppendNullToken = zftrue);
 
 // ============================================================
 // basic output

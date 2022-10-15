@@ -28,7 +28,7 @@ zfclassFwd _ZFP_ZFStyleKeyHolder;
  * and style can be copied by #ZFStyleable::styleableCopyFrom\n
  * for a list of copy method, please refer to #ZFStyleable::styleableOnCheckPropertyType
  */
-zfinterface ZF_ENV_EXPORT ZFStyleable : zfextends ZFInterface
+zfinterface ZFLIB_ZFCore ZFStyleable : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(ZFStyleable, ZFInterface)
 
@@ -151,7 +151,7 @@ protected:
  * every style, serialize and copy logic has been done by reflect,
  * if all of your properties are declared as #ZFProperty
  */
-zfclass ZF_ENV_EXPORT ZFStyleableObject : zfextends ZFObject, zfimplements ZFStyleable, zfimplements ZFSerializable, zfimplements ZFCopyable
+zfclass ZFLIB_ZFCore ZFStyleableObject : zfextends ZFObject, zfimplements ZFStyleable, zfimplements ZFSerializable, zfimplements ZFCopyable
 {
     ZFOBJECT_DECLARE(ZFStyleableObject, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFStyleable, ZFSerializable, ZFCopyable)
@@ -168,16 +168,16 @@ protected:
 // ============================================================
 // DefaultStyle
 #define _ZFP_ZFStyleableDefault_level ZFLevelZFFrameworkHigh
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFStyleableDefaultPointerHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFStyleableDefaultPointerHolder
 {
 public:
     void *d;
     _ZFP_ZFStyleableDefaultPointerHolder(void) : d(zfnull) {}
 };
 
-extern ZF_ENV_EXPORT _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfchar *name);
+extern ZFLIB_ZFCore _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfchar *name);
 typedef void (*_ZFP_ZFStyleableDefaultDeleteCallback)(ZF_IN void *instance);
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFStyleableDefaultDeleteCallbackHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFStyleableDefaultDeleteCallbackHolder
 {
 public:
     _ZFP_ZFStyleableDefaultDeleteCallbackHolder(ZF_IN _ZFP_ZFStyleableDefaultDeleteCallback deleteCallback,
@@ -333,7 +333,7 @@ private:
  * by calling this method, when #ZFStyleable::defaultStyle's property value changed,
  * it would be copied to the registered instance
  */
-extern ZF_ENV_EXPORT void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
+extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
 
 /**
  * @brief util macro to setup automatically copy style from
@@ -434,7 +434,7 @@ extern ZF_ENV_EXPORT void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  * \n
  * note, by default, all styles would be cleared during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkNormal
  */
-extern ZF_ENV_EXPORT void ZFStyleSet(ZF_IN const zfchar *styleKey, ZF_IN ZFStyleable *styleValue);
+extern ZFLIB_ZFCore void ZFStyleSet(ZF_IN const zfchar *styleKey, ZF_IN ZFStyleable *styleValue);
 /**
  * @brief see #ZFStyleSet
  *
@@ -445,25 +445,25 @@ extern ZF_ENV_EXPORT void ZFStyleSet(ZF_IN const zfchar *styleKey, ZF_IN ZFStyle
  * @note you may register your own decoder by #ZFSTYLE_DECODER_DEFINE
  *   to supply additional style
  */
-extern ZF_ENV_EXPORT zfautoObject ZFStyleGet(ZF_IN const zfchar *styleKey);
+extern ZFLIB_ZFCore zfautoObject ZFStyleGet(ZF_IN const zfchar *styleKey);
 /**
  * @brief get all styles, for debug use only, see #ZFStyleSet
  */
-extern ZF_ENV_EXPORT void ZFStyleGetAll(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &styleKey,
-                                        ZF_IN_OUT ZFCoreArrayPOD<ZFStyleable *> &styleValue);
+extern ZFLIB_ZFCore void ZFStyleGetAll(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &styleKey,
+                                       ZF_IN_OUT ZFCoreArrayPOD<ZFStyleable *> &styleValue);
 /**
  * @brief remove all styles, see #ZFStyleSet
  */
-extern ZF_ENV_EXPORT void ZFStyleRemoveAll(void);
+extern ZFLIB_ZFCore void ZFStyleRemoveAll(void);
 
 /**
  * @brief see #ZFStyleSet
  */
-extern ZF_ENV_EXPORT void ZFStyleChangeBegin();
+extern ZFLIB_ZFCore void ZFStyleChangeBegin();
 /**
  * @brief see #ZFStyleSet
  */
-extern ZF_ENV_EXPORT void ZFStyleChangeEnd();
+extern ZFLIB_ZFCore void ZFStyleChangeEnd();
 
 /**
  * @brief util macro to call #ZFStyleChangeBegin/#ZFStyleChangeEnd
@@ -488,7 +488,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *
  * notified when #ZFStyleChangeEnd
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFStyleOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnChange)
 /**
  * @brief see #ZFObject::observerNotify
  *
@@ -502,11 +502,11 @@ ZFOBSERVER_EVENT_GLOBAL(ZFStyleOnChange)
  * by default, we would assert fail if invalid style occurred,
  * you may close it by #ZFStyleInvalidCheckDisable
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFStyleOnInvalid)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /** @brief see #ZFGlobalEvent::EventZFStyleOnInvalid */
-extern ZF_ENV_EXPORT void ZFStyleInvalidCheckDisable(void);
+extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
 
 // ============================================================
 /**
@@ -546,9 +546,9 @@ extern ZF_ENV_EXPORT void ZFStyleInvalidCheckDisable(void);
     } \
     ZF_STATIC_REGISTER_END(ZFStyleDecoder_##registerSig)
 typedef zfbool (*_ZFP_ZFStyleDecoder)(ZF_OUT zfautoObject &ret, ZF_IN const zfchar *styleKey);
-extern ZF_ENV_EXPORT void _ZFP_ZFStyleDecoderRegister(ZF_IN const zfchar *registerSig,
-                                                      ZF_IN _ZFP_ZFStyleDecoder decoder);
-extern ZF_ENV_EXPORT void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfchar *registerSig);
+extern ZFLIB_ZFCore void _ZFP_ZFStyleDecoderRegister(ZF_IN const zfchar *registerSig,
+                                                     ZF_IN _ZFP_ZFStyleDecoder decoder);
+extern ZFLIB_ZFCore void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfchar *registerSig);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFStyleable_h_

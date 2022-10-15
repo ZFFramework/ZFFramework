@@ -38,7 +38,7 @@ typedef enum {
 #define ZFTOKEN_ZFFilterForZFClassTypeExcludeParentOf "ExcludeParentOf"
 
 // ============================================================
-zfclassPOD ZF_ENV_EXPORT _ZFP_ZFFilterForZFClassData
+zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFClassData
 {
 public:
     const ZFClass *filterClass;
@@ -47,7 +47,7 @@ public:
 /**
  * @brief util class to filter ZFClass
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFFilterForZFClass
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFClass
 {
 public:
     /**

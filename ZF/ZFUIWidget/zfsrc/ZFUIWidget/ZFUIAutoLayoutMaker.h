@@ -61,7 +61,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutMakerPrivate;
  * -  ZFUIAutoLayoutMaker(view)
  * -  zfal_maker(view)
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFUIAutoLayoutMaker
+zffinal zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutMaker
 {
 public:
     /** @brief main constructor */
@@ -123,12 +123,12 @@ public:
 private:
     _ZFP_ZFUIAutoLayoutMakerPrivate *d;
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFUIAutoLayoutMaker, ZFUIAutoLayoutMaker)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIAutoLayoutMaker, ZFUIAutoLayoutMaker)
 
 /** @brief see #ZFUIAutoLayoutMaker */
-ZFMETHOD_FUNC_DECLARE_1(ZFUIAutoLayoutMaker, zfal_maker, ZFMP_IN(ZFUIView *, child))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIWidget, ZFUIAutoLayoutMaker, zfal_maker, ZFMP_IN(ZFUIView *, child))
 /** @brief see #ZFUIAutoLayoutMaker */
-ZFMETHOD_FUNC_DECLARE_2(ZFUIAutoLayoutMaker, zfal_maker, ZFMP_IN(ZFUIView *, child), ZFMP_IN(ZFUIAutoLayout *, parent))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, ZFUIAutoLayoutMaker, zfal_maker, ZFMP_IN(ZFUIView *, child), ZFMP_IN(ZFUIAutoLayout *, parent))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIAutoLayoutMaker_h_

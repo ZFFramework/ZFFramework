@@ -22,7 +22,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   end)
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFOutput, ZFOutputForLua,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFLua, ZFOutput, ZFOutputForLua,
                         ZFMP_IN(const ZFListener &, luaCallback),
                         ZFMP_IN_OPT(ZFObject *, userData, zfnull))
 

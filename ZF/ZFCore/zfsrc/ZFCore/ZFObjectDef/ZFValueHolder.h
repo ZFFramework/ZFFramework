@@ -26,7 +26,7 @@ typedef void (*ZFValueHolderType)(ZF_IN void *holdedData);
 /**
  * @brief used to hold a non ZFObject type for performance
  */
-zffinal zfclass ZF_ENV_EXPORT ZFValueHolder : zfextends ZFObject
+zffinal zfclass ZFLIB_ZFCore ZFValueHolder : zfextends ZFObject
 {
     // ============================================================
 public:
@@ -116,7 +116,7 @@ public:
     zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
 };
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFValueHolderType
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFValueHolderType
 {
 public:
     static void TypePointerRef(ZF_IN void *holdedData)

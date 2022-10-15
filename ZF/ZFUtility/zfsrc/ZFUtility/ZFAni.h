@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  * aniImpl's param0 is #v_zffloat that holds progress
  */
-ZFMETHOD_FUNC_DECLARE_3(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
                         ZFMP_IN(ZFObject *, target),
                         ZFMP_IN(const ZFListener &, aniImpl),
                         ZFMP_IN_OPT(ZFObject *, userData, zfnull))
@@ -50,13 +50,13 @@ ZFMETHOD_FUNC_DECLARE_3(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
  *     #ZFTYPEID_PROGRESS_DEFINE
  *   -  string that can be serialized by #ZFSerializable::serializeFromString
  */
-ZFMETHOD_FUNC_DECLARE_4(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
                         ZFMP_IN(ZFObject *, target),
                         ZFMP_IN(const zfchar *, name),
                         ZFMP_IN(const zfchar *, from),
                         ZFMP_IN(const zfchar *, to))
 /** @brief see #ZFAni */
-ZFMETHOD_FUNC_DECLARE_4(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
                         ZFMP_IN(ZFObject *, target),
                         ZFMP_IN(const zfchar *, name),
                         ZFMP_IN(ZFObject *, from),
@@ -65,7 +65,7 @@ ZFMETHOD_FUNC_DECLARE_4(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
 // ============================================================
 // utils for impl
 /** @brief util for custom ani */
-zfclass ZF_ENV_EXPORT ZFAniForCustomAni : zfextends ZFAnimationTimeLine
+zfclass ZFLIB_ZFUtility ZFAniForCustomAni : zfextends ZFAnimationTimeLine
 {
     ZFOBJECT_DECLARE(ZFAniForCustomAni, ZFAnimationTimeLine)
 public:
@@ -109,7 +109,7 @@ private:
 
 zfclassFwd _ZFP_ZFAniForGenericPrivate;
 /** @brief util for #ZFAni */
-zfclass ZF_ENV_EXPORT ZFAniForObject : zfextends ZFAnimationTimeLine
+zfclass ZFLIB_ZFUtility ZFAniForObject : zfextends ZFAnimationTimeLine
 {
     ZFOBJECT_DECLARE(ZFAniForObject, ZFAnimationTimeLine)
 public:
@@ -141,7 +141,7 @@ private:
 };
 
 /** @brief util for #ZFAni */
-zfclass ZF_ENV_EXPORT ZFAniForGeneric : zfextends ZFAnimationTimeLine
+zfclass ZFLIB_ZFUtility ZFAniForGeneric : zfextends ZFAnimationTimeLine
 {
     ZFOBJECT_DECLARE(ZFAniForGeneric, ZFAnimationTimeLine)
 public:

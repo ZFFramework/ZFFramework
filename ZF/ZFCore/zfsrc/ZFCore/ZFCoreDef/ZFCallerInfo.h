@@ -9,9 +9,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZF_ENV_EXPORT void _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN_OUT zfstring &ret,
-                                                      ZF_IN const zfchar *filePath);
-extern ZF_ENV_EXPORT zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *filePath);
+extern ZFLIB_ZFCore void _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN_OUT zfstring &ret,
+                                                     ZF_IN const zfchar *filePath);
+extern ZFLIB_ZFCore zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *filePath);
 
 /**
  * @brief convert file path to file name
@@ -58,7 +58,7 @@ extern ZF_ENV_EXPORT zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *fi
 /**
  * @brief util class to hold caller info
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFCallerInfo
+zfclassLikePOD ZFLIB_ZFCore ZFCallerInfo
 {
 public:
     /**
@@ -203,7 +203,7 @@ public:
 #define ZFCallerInfoMake() \
     ZFCallerInfo()._ZFP_callerInfo(ZF_CALLER_FILE, ZF_CALLER_FUNCTION, ZF_CALLER_LINE)
 
-extern ZF_ENV_EXPORT const ZFCallerInfo &_ZFP_ZFCallerInfoEmpty(void);
+extern ZFLIB_ZFCore const ZFCallerInfo &_ZFP_ZFCallerInfoEmpty(void);
 /**
  * @brief empty caller info
  */

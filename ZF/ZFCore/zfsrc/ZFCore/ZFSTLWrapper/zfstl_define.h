@@ -40,7 +40,7 @@
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfcharConst_zfstlComparer
+zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlComparer
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -53,7 +53,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfchar_zfstlComparer
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlComparer
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -67,7 +67,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfstring_zfstlComparer
+zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlComparer
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -82,7 +82,7 @@ public:
 /**
  * @brief key hasher by string value hash, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfcharConst_zfstlHasher
+zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlHasher
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -95,7 +95,7 @@ public:
 /**
  * @brief key hasher by string value hash, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfchar_zfstlHasher
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHasher
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -109,7 +109,7 @@ public:
 /**
  * @brief key hasher by string value hash, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfstring_zfstlHasher
+zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHasher
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -139,7 +139,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfcharConst_zfstlHashComparer
+zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlHashComparer
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -152,7 +152,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfchar_zfstlHashComparer
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHashComparer
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -166,7 +166,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZF_ENV_EXPORT zfstring_zfstlHashComparer
+zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHashComparer
 {
 public:
     /** @cond ZFPrivateDoc */

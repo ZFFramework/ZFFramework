@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * see #ZFPathInfoChainParse for more info
  */
-ZFPATHTYPE_DECLARE(ZFCompress)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFAlgorithm, ZFCompress)
 
 // ============================================================
 // ZFInputForCompressFile
@@ -36,12 +36,12 @@ ZFPATHTYPE_DECLARE(ZFCompress)
  *   see #ZFPathType_ZFCompress for more info
  * -  (const zfchar *)relPath: the relative file path inside the compress file
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFInput, ZFInputForCompressFile,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForCompressFile,
                         ZFMP_IN(const zfchar *, compressFilePathInfo),
                         ZFMP_IN(const zfchar *, relPath),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 /** @brief see #ZFInputForCompressFile */
-ZFMETHOD_FUNC_DECLARE_3(ZFInput, ZFInputForCompressFile,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForCompressFile,
                         ZFMP_IN(const ZFPathInfo &, compressFilePathInfo),
                         ZFMP_IN(const zfchar *, relPath),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
@@ -57,12 +57,12 @@ ZFMETHOD_FUNC_DECLARE_3(ZFInput, ZFInputForCompressFile,
  *   see #ZFPathType_ZFCompress for more info
  * -  (const zfchar *)relPath: the relative file path inside the compress file
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFOutput, ZFOutputForCompressFile,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForCompressFile,
                         ZFMP_IN(const zfchar *, compressFilePathInfo),
                         ZFMP_IN(const zfchar *, relPath),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 /** @brief see #ZFOutputForCompressFile */
-ZFMETHOD_FUNC_DECLARE_3(ZFOutput, ZFOutputForCompressFile,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForCompressFile,
                         ZFMP_IN(const ZFPathInfo &, compressFilePathInfo),
                         ZFMP_IN(const zfchar *, relPath),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))

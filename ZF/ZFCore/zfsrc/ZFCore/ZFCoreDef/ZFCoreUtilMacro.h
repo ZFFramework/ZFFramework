@@ -536,7 +536,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD ZF_ENV_EXPORT _ZFP_T_##paramName \
+        zfclassLikePOD _ZFP_T_##paramName \
         { \
         public: \
             _ZFP_T_##paramName(void) \

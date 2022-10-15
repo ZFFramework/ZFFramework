@@ -14,7 +14,7 @@
  *   public:
  *       zfint myValue;
  *   };
- *   ZFTYPEID_DECLARE(MyCppType, MyCppType)
+ *   ZFTYPEID_DECLARE(ZFLIB_APP, MyCppType, MyCppType)
  *   zfclass MyClass : zfextends ZFStyleableObject
  *   {
  *       ZFOBJECT_DECLARE(MyClass, ZFStyleableObject)

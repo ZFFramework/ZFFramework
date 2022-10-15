@@ -39,7 +39,7 @@ typedef enum
 
 // ============================================================
 // callback invoker
-extern ZF_ENV_EXPORT void _ZFP_ZFCallback_executeNullCallback(void);
+extern ZFLIB_ZFCore void _ZFP_ZFCallback_executeNullCallback(void);
 /**
  * @brief dummy type for function type pointer for ZFCallback
  */
@@ -105,7 +105,7 @@ zfclassFwd _ZFP_ZFCallbackPrivate;
  * @note you may also declare a child class of ZFCallback,
  *   by ZFCALLBACK_DECLARE_XXX, see #ZFCALLBACK_DECLARE_BEGIN
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFCallback
+zfclassLikePOD ZFLIB_ZFCore ZFCallback
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -375,12 +375,12 @@ public:
 
 // ============================================================
 // child callback declare
-#define _ZFP_ZFCALLBACK_DECLARE_BEGIN(CallbackTypeName, ParentType) \
-    zfclassLikePOD ZF_ENV_EXPORT CallbackTypeName : zfextendsLikePOD ParentType \
+#define _ZFP_ZFCALLBACK_DECLARE_BEGIN(ZFLIB_, CallbackTypeName, ParentType) \
+    zfclassLikePOD ZFLIB_ CallbackTypeName : zfextendsLikePOD ParentType \
     { \
         _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(CallbackTypeName, ParentType) \
     public:
-#define _ZFP_ZFCALLBACK_DECLARE_END(CallbackTypeName, ParentType) \
+#define _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
     };
 #define _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(CallbackTypeName, ParentType) \
     public: \
@@ -411,11 +411,11 @@ public:
 /**
  * @brief see #ZFCALLBACK_DECLARE_BEGIN
  */
-#define ZFCALLBACK_DECLARE_END(CallbackTypeName, ParentType) \
-    _ZFP_ZFCALLBACK_DECLARE_END(CallbackTypeName, ParentType) \
-    ZFTYPEID_ALIAS_DECLARE(ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName)
-#define _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(CallbackTypeName, ParentType) \
-    _ZFP_ZFCALLBACK_DECLARE_END(CallbackTypeName, ParentType)
+#define ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
+    _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
+    ZFTYPEID_ALIAS_DECLARE(ZFLIB_, ZFCallback, ZFCallback, CallbackTypeName, CallbackTypeName)
+#define _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_, CallbackTypeName, ParentType) \
+    _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType)
 
 /**
  * @brief util macro to declare a child type of ZFCallback
@@ -424,26 +424,26 @@ public:
  * @code
  *   // in header file
  *   // declare by default:
- *   ZFCALLBACK_DECLARE(CallbackTypeName, ParentType)
+ *   ZFCALLBACK_DECLARE(ZFLIB_APP, CallbackTypeName, ParentType)
  *
  *   // if you need extra functions
- *   ZFCALLBACK_DECLARE_BEGIN(CallbackTypeName, ParentType)
+ *   ZFCALLBACK_DECLARE_BEGIN(ZFLIB_APP, CallbackTypeName, ParentType)
  *       // your extra functions here
  *       // it's not allowed to add member variables
- *   ZFCALLBACK_DECLARE_END(CallbackTypeName, ParentType)
+ *   ZFCALLBACK_DECLARE_END(ZFLIB_APP, CallbackTypeName, ParentType)
  *
  *   // in source file
  *   ZFCALLBACK_DEFINE(CallbackTypeName, ParentType)
  * @endcode
  */
-#define ZFCALLBACK_DECLARE_BEGIN(CallbackTypeName, ParentType) \
-    _ZFP_ZFCALLBACK_DECLARE_BEGIN(CallbackTypeName, ParentType)
+#define ZFCALLBACK_DECLARE_BEGIN(ZFLIB_, CallbackTypeName, ParentType) \
+    _ZFP_ZFCALLBACK_DECLARE_BEGIN(ZFLIB_, CallbackTypeName, ParentType)
 /**
  * @brief see #ZFCALLBACK_DECLARE_BEGIN
  */
-#define ZFCALLBACK_DECLARE(CallbackTypeName, ParentType) \
-    ZFCALLBACK_DECLARE_BEGIN(CallbackTypeName, ParentType) \
-    ZFCALLBACK_DECLARE_END(CallbackTypeName, ParentType)
+#define ZFCALLBACK_DECLARE(ZFLIB_, CallbackTypeName, ParentType) \
+    ZFCALLBACK_DECLARE_BEGIN(ZFLIB_, CallbackTypeName, ParentType) \
+    ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType)
 
 /**
  * @brief see #ZFCALLBACK_DECLARE_BEGIN

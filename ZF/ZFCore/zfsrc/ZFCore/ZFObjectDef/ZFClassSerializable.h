@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief see #ZFTYPEID_DECLARE
  */
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFClassInstanceObserverAddParam, ZFClassInstanceObserverAddParam)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassInstanceObserverAddParam, ZFClassInstanceObserverAddParam)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -24,7 +24,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFClassInstanceObserverAddParam, ZFClassInstanceObs
  *   <ZFClass value="ClassName" />
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFClass, const ZFClass *)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClass, const ZFClass *)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFClassSerializable_h_

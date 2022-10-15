@@ -22,7 +22,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * use only if necessary\n
  * typically, you should use #ZFObject::objectHolder for most case
  */
-zffinal zfclass ZF_ENV_EXPORT ZFObjectHolder : zfextends ZFObject
+zffinal zfclass ZFLIB_ZFCore ZFObjectHolder : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFObjectHolder, ZFObject)
 

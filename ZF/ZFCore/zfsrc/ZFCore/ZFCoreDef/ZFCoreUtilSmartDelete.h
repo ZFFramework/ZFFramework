@@ -42,7 +42,7 @@ _ZFP_zflineFreeContainer<T_POD> _ZFP_zflineFreeWrapper(ZF_IN T_POD *p)
 
 // ============================================================
 // zfblockedFree
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedFreeContainer
+zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedFreeContainer
 {
 public:
     _ZFP_zfblockedFreeContainer(ZF_IN void *p) : p(p) {}
@@ -101,7 +101,7 @@ void _ZFP_zfblockedDeleteOnDelete(ZF_IN void *p)
 {
     zfdelete(ZFCastStatic(T_Object *, p));
 }
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedDeleteContainer
+zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedDeleteContainer
 {
 public:
     _ZFP_zfblockedDeleteContainer(void) : p(zfnull), deleteCallback(zfnull) {}

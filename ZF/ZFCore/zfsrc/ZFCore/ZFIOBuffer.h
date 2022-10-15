@@ -27,7 +27,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * returned #ZFInput/#ZFOutput by #ZFCallbackTagKeyword_ZFIOBuffer,
  * it's ensured safe to release the owner #ZFIOBuffer's reference
  */
-zfabstract ZF_ENV_EXPORT ZFIOBuffer : zfextends ZFObject
+zfabstract ZFLIB_ZFCore ZFIOBuffer : zfextends ZFObject
 {
     ZFOBJECT_DECLARE_ABSTRACT(ZFIOBuffer, ZFObject)
 

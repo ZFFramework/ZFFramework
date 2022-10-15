@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for #ZFUIWebJSBridge
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIWebJSBridge)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIWebKit, ZFUIWebJSBridge)
 public:
     /**
      * @brief create native web JS bridge

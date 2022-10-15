@@ -11,16 +11,16 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView);
-extern ZF_ENV_EXPORT zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl,
+extern ZFLIB_ZFUIKit zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl,
                                                                                 ZF_IN ZFUIScrollView *scrollView,
                                                                                 ZF_IN zftimet recommendTimerInterval);
-extern ZF_ENV_EXPORT void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl,
+extern ZFLIB_ZFUIKit void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl,
                                                                             ZF_IN ZFUIScrollView *scrollView);
 
 /**
  * @brief protocol for ZFUIScrollView
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIScrollView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIScrollView)
     /**
      * @brief create native scroll view
      */
@@ -173,7 +173,7 @@ ZFPROTOCOL_INTERFACE_END(ZFUIScrollView)
 // ============================================================
 zfclassFwd ZFUIScrollViewImplHelper;
 /** @brief see #ZFUIScrollViewImplHelper */
-zfclassNotPOD ZF_ENV_EXPORT ZFUIScrollViewImplHelperProtocol
+zfclassNotPOD ZFLIB_ZFUIKit ZFUIScrollViewImplHelperProtocol
 {
 public:
     virtual ~ZFUIScrollViewImplHelperProtocol(void) {}
@@ -244,7 +244,7 @@ zfclassFwd _ZFP_ZFUIScrollViewImplHelperPrivate;
  * -  have all ZFUIScrollViewImplHelper's member been setup properly
  * -  intercept all mouse events by #ZFUIScrollViewImplHelper::interceptMouse
  */
-zfclassNotPOD ZF_ENV_EXPORT ZFUIScrollViewImplHelper
+zfclassNotPOD ZFLIB_ZFUIKit ZFUIScrollViewImplHelper
 {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFUIScrollViewImplHelper)
 

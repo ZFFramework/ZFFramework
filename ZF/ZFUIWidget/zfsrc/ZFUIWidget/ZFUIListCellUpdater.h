@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief update param used by #ZFUIListCellUpdater::cellOnUpdate
  */
-zfclassPOD ZF_ENV_EXPORT ZFUIListCellUpdaterParam
+zfclassPOD ZFLIB_ZFUIWidget ZFUIListCellUpdaterParam
 {
 public:
     ZFUIListCell *cell; /**< @brief the cell */
@@ -23,7 +23,7 @@ public:
     ZFUISize listContainerSize; /**< @brief owner list container's size */
     zffloat cellSizeHint; /**< @brief list cell's size hint */
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFUIListCellUpdaterParam, ZFUIListCellUpdaterParam)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIListCellUpdaterParam, ZFUIListCellUpdaterParam)
 ZFCORE_POD_COMPARER_DECLARE(ZFUIListCellUpdaterParam)
 
 // ============================================================
@@ -32,7 +32,7 @@ zfclassFwd _ZFP_ZFUIListViewPrivate;
 /**
  * @brief abstract list cell updater to update #ZFUIListCell
  */
-zfinterface ZF_ENV_EXPORT ZFUIListCellUpdater : zfextends ZFInterface
+zfinterface ZFLIB_ZFUIWidget ZFUIListCellUpdater : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFUIListCellUpdater, ZFInterface)
 

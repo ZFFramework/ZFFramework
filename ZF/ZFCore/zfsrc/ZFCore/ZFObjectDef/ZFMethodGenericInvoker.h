@@ -37,13 +37,13 @@ typedef zfbool (*ZFMethodGenericInvoker)(ZF_IN const ZFMethod *invokerMethod
     , ZF_OUT zfautoObject &ret \
     , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
 
-extern ZF_ENV_EXPORT ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef;
+extern ZFLIB_ZFCore ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef;
 /**
  * @brief mark the object as default param
  */
 #define ZFMethodGenericInvokerDefaultParam() ((ZFObject * const &)_ZFP_ZFMethodGenericInvokerDefaultParamRef)
 
-extern ZF_ENV_EXPORT zfautoObject _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
+extern ZFLIB_ZFCore zfautoObject _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
 /**
  * @brief holder of #ZFMethodGenericInvokerDefaultParam
  */
@@ -60,12 +60,12 @@ zfclassNotPOD _ZFP_MtdGICk<T_Dummy, 1>
 public:
     typedef int TypeMustRegisterByZFPROPERTY;
 };
-extern ZF_ENV_EXPORT zfbool _ZFP_MtdGIParamCheck(ZF_OUT_OPT zfstring *errorHint,
-                                                 ZF_IN zfbool zfvAccessAvailable,
-                                                 ZF_IN const ZFMethod *invokerMethod,
-                                                 ZF_IN zfindex paramIndex,
-                                                 ZF_IN const zfchar *paramType,
-                                                 ZF_IN ZFObject *param);
+extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(ZF_OUT_OPT zfstring *errorHint,
+                                                ZF_IN zfbool zfvAccessAvailable,
+                                                ZF_IN const ZFMethod *invokerMethod,
+                                                ZF_IN zfindex paramIndex,
+                                                ZF_IN const zfchar *paramType,
+                                                ZF_IN ZFObject *param);
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_DECLARE_EXPAND(N, ParamType) \
     typedef ParamType _T##N; \
     typedef zftTraits<ParamType>::TrNoRef _TR##N; \
@@ -119,9 +119,9 @@ public:
     )
 
 // ============================================================
-extern ZF_ENV_EXPORT void _ZFP_MtdGIRetError(ZF_OUT_OPT zfstring *errorHint,
-                                             ZF_IN const zfchar *returnTypeId,
-                                             ZF_IN const zfchar *returnValueInfo);
+extern ZFLIB_ZFCore void _ZFP_MtdGIRetError(ZF_OUT_OPT zfstring *errorHint,
+                                            ZF_IN const zfchar *returnTypeId,
+                                            ZF_IN const zfchar *returnValueInfo);
 
 template<typename T_ReturnType>
 zfclassNotPOD _ZFP_MtdGIARefA
@@ -332,16 +332,16 @@ public:
     (NULL DefaultExpandOrEmpty(ZFM_EMPTY(), owner::pDef##N))
 
 // ============================================================
-extern ZF_ENV_EXPORT zfbool _ZFP_ZFMethodGenericInvoke(ZF_IN const ZFMethod *invokerMethod
-                                                       , ZF_IN ZFObject *invokerObject
-                                                       , ZF_OUT_OPT zfstring *errorHint
-                                                       , ZF_OUT zfautoObject &ret
-                                                       , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
-                                                       );
-extern ZF_ENV_EXPORT void _ZFP_ZFMethodGenericInvokeError(ZF_IN const ZFMethod *method,
-                                                          ZF_IN ZFObject *obj,
-                                                          ZF_IN zfint pos,
-                                                          ZF_IN_OPT const zfchar *errorHint = zfnull);
+extern ZFLIB_ZFCore zfbool _ZFP_ZFMethodGenericInvoke(ZF_IN const ZFMethod *invokerMethod
+                                                      , ZF_IN ZFObject *invokerObject
+                                                      , ZF_OUT_OPT zfstring *errorHint
+                                                      , ZF_OUT zfautoObject &ret
+                                                      , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                                      );
+extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(ZF_IN const ZFMethod *method,
+                                                         ZF_IN ZFObject *obj,
+                                                         ZF_IN zfint pos,
+                                                         ZF_IN_OPT const zfchar *errorHint = zfnull);
 
 #define _ZFP_ZFMethodGenericInvoke_REPEAT1(N) \
         typedef typename zftTraits<Type##N>::TrNoRef _Type##N; \

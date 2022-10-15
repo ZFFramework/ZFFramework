@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFFile
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFFilePath)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFFilePath)
 public:
     /**
      * @brief see #ZFFilePathForModule

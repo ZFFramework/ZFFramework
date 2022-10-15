@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZF_ENV_EXPORT _ZFP_I_PropURDIVH : zfextends ZFObject
+zfclass ZFLIB_ZFCore _ZFP_I_PropURDIVH : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(_ZFP_I_PropURDIVH, ZFObject)
 public:
@@ -36,9 +36,9 @@ protected:
 };
 
 /** @brief see #ZFPropertyUserRegisterRetain */
-extern ZF_ENV_EXPORT void ZFPropertyUserRegisterNotifyUpdate(ZF_IN ZFObject *ownerObject,
-                                                             ZF_IN const ZFProperty *property,
-                                                             ZF_IN const void *propertyValueOld);
+extern ZFLIB_ZFCore void ZFPropertyUserRegisterNotifyUpdate(ZF_IN ZFObject *ownerObject,
+                                                            ZF_IN const ZFProperty *property,
+                                                            ZF_IN const void *propertyValueOld);
 
 // ============================================================
 /** @brief default impl for #ZFPropertyUserRegisterRetain */
@@ -661,7 +661,7 @@ private:
 
 // ============================================================
 /** @brief see #ZFPropertyUserRegisterRetain */
-extern ZF_ENV_EXPORT void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty);
+extern ZFLIB_ZFCore void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPropertyUserRegister_h_

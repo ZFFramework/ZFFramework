@@ -69,7 +69,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // no log version
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfsynchronizeContainer
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfsynchronizeContainer
 {
 public:
     _ZFP_zfsynchronizeContainer(ZF_IN ZFObject *obj)
@@ -97,7 +97,7 @@ inline void _ZFP_zfsynchronizeUnlock(ZF_IN ZFObject *obj)
 // ============================================================
 // log version
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfsynchronizeContainerWithLog
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfsynchronizeContainerWithLog
 {
 public:
     _ZFP_zfsynchronizeContainerWithLog(ZF_IN ZFObject *obj,
@@ -108,10 +108,10 @@ private:
     ZFCallerInfo callerInfo;
 };
 
-extern ZF_ENV_EXPORT void _ZFP_zfsynchronizeLockWithLog(ZF_IN ZFObject *obj,
-                                                        ZF_IN const ZFCallerInfo &callerInfo);
-extern ZF_ENV_EXPORT void _ZFP_zfsynchronizeUnlockWithLog(ZF_IN ZFObject *obj,
-                                                          ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore void _ZFP_zfsynchronizeLockWithLog(ZF_IN ZFObject *obj,
+                                                       ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore void _ZFP_zfsynchronizeUnlockWithLog(ZF_IN ZFObject *obj,
+                                                         ZF_IN const ZFCallerInfo &callerInfo);
 #endif // #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
 
 ZF_NAMESPACE_GLOBAL_END

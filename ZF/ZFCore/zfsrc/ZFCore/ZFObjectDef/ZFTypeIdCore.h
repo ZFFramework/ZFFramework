@@ -33,7 +33,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   / **
  *    * add your Doxygen docs here
  *    * /
- *   ZFTYPEID_DECLARE(YourType, YourType)
+ *   ZFTYPEID_DECLARE(ZFLIB_APP, YourType, YourType)
  *
  *   // ============================================================
  *   // in cpp file
@@ -89,9 +89,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  no inheritance support for #ZFTYPEID_DECLARE
  * -  for aliased type, you may use #ZFTYPEID_ALIAS_DECLARE
  */
-#define ZFTYPEID_DECLARE(TypeName, Type) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(TypeName, Type) \
-    _ZFP_ZFTYPEID_DECLARE(TypeName, Type)
+#define ZFTYPEID_DECLARE(ZFLIB_, TypeName, Type) \
+    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
+    _ZFP_ZFTYPEID_DECLARE(ZFLIB_, TypeName, Type)
 
 /**
  * @brief declare a type id with custom type wrapper
@@ -103,17 +103,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  specialize template #ZFTypeId
  * -  use this macro to register your type
  */
-#define ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(TypeName, Type) \
+#define ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfchar *ZFTypeId_##TypeName(void) \
     { \
         return ZFM_TOSTRING_DIRECT(TypeName); \
     } \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    extern ZF_ENV_EXPORT zfbool TypeName##FromData(ZF_OUT Type &v, \
-                                                   ZF_IN const ZFSerializableData &serializableData, \
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull, \
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull); \
+    extern ZFLIB_ zfbool TypeName##FromData(ZF_OUT Type &v, \
+                                            ZF_IN const ZFSerializableData &serializableData, \
+                                            ZF_OUT_OPT zfstring *outErrorHint = zfnull, \
+                                            ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull); \
     /** @brief see #ZFTYPEID_DECLARE */ \
     inline Type TypeName##FromData(ZF_IN const ZFSerializableData &serializableData, \
                                    ZF_OUT_OPT zfstring *outErrorHint = zfnull, \
@@ -132,9 +132,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return ret; \
     } \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    extern ZF_ENV_EXPORT zfbool TypeName##ToData(ZF_OUT ZFSerializableData &serializableData, \
-                                                 ZF_IN Type const &v, \
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull); \
+    extern ZFLIB_ zfbool TypeName##ToData(ZF_OUT ZFSerializableData &serializableData, \
+                                          ZF_IN Type const &v, \
+                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull); \
     /** @brief see #ZFTYPEID_DECLARE */ \
     inline ZFSerializableData TypeName##ToData(ZF_IN Type const &v, \
                                                ZF_OUT_OPT zfstring *outErrorHint = zfnull) \
@@ -149,7 +149,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ZFSerializableData(); \
         } \
     } \
-    ZFCORETYPE_STRING_CONVERTER_DECLARE(TypeName, Type)
+    ZFCORETYPE_STRING_CONVERTER_DECLARE(ZFLIB_, TypeName, Type)
 
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
@@ -316,13 +316,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may use this macro to disable your type explicitly\n
  * see #ZFTYPEID_DECLARE for more info
  */
-#define ZFTYPEID_ACCESS_ONLY_DECLARE(TypeName, Type) \
+#define ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfchar *ZFTypeId_##TypeName(void) \
     { \
         return ZFM_TOSTRING_DIRECT(TypeName); \
     } \
-    _ZFP_ZFTYPEID_ACCESS_ONLY_DECLARE(TypeName, Type)
+    _ZFP_ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type)
 /** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
     _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
@@ -350,13 +350,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   you should consider supply custom type id specializations (by #ZFTYPEID_ALIAS_DECLARE_CUSTOM),
  *   or, prevent to use aliased type for reflectable method
  */
-#define ZFTYPEID_ALIAS_DECLARE(AliasToTypeName, AliasToType, TypeName, Type) \
+#define ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     /** @brief see @ref ZFTypeId_##AliasToTypeName */ \
     inline const zfchar *ZFTypeId_##TypeName(void) \
     { \
         return ZFTypeId_##AliasToTypeName(); \
     } \
-    _ZFP_ZFTYPEID_ALIAS_DECLARE(AliasToTypeName, AliasToType, TypeName, Type, _ZFP_ZFTYPEID_ALIAS_EXPAND_DEFAULT)
+    _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, _ZFP_ZFTYPEID_ALIAS_EXPAND_DEFAULT)
 /** @brief see #ZFTYPEID_ALIAS_DECLARE */
 #define ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type) \
     _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type)
@@ -366,7 +366,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * the TypeIdValueConversion must supply as macro expansion with these proto type:
  * @code
- *   #define MyExpand(AliasToTypeName, AliasToType, TypeName, Type) \
+ *   #define MyExpand(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
  *       template<typename T_Access = _ZFP_PropTypeW_##TypeName \
  *           , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
  *               && zftTypeIsSame< \
@@ -411,13 +411,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       };
  * @endcode
  */
-#define ZFTYPEID_ALIAS_DECLARE_CUSTOM(AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion) \
+#define ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion) \
     /** @brief see @ref ZFTypeId_##AliasToTypeName */ \
     inline const zfchar *ZFTypeId_##TypeName(void) \
     { \
         return ZFTypeId_##AliasToTypeName(); \
     } \
-    _ZFP_ZFTYPEID_ALIAS_DECLARE(AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion)
+    _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion)
 
 // ============================================================
 /**
@@ -445,7 +445,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   />
  * @endcode
  */
-zfabstract ZF_ENV_EXPORT ZFTypeIdWrapper : zfextends ZFStyleableObject, zfimplements ZFProgressable
+zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextends ZFStyleableObject, zfimplements ZFProgressable
 {
     ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFTypeIdWrapper, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFProgressable)

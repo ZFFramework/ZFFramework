@@ -22,7 +22,7 @@ zfclassFwd _ZFP_ZFIdentityGeneratorPrivate;
  *   you must achieve thread-safe manually,
  *   such as #zfCoreMutexLock
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFIdentityGenerator
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFIdentityGenerator
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -64,11 +64,11 @@ private:
 /**
  * @brief calculate identity from string
  */
-extern ZF_ENV_EXPORT zfidentity zfidentityCalcString(ZF_IN const zfchar *src, ZF_IN_OPT zfindex srcLen = zfindexMax());
+extern ZFLIB_ZFCore zfidentity zfidentityCalcString(ZF_IN const zfchar *src, ZF_IN_OPT zfindex srcLen = zfindexMax());
 /**
  * @brief calculate identity from raw buffer
  */
-extern ZF_ENV_EXPORT zfidentity zfidentityCalcBuf(ZF_IN const void *src, ZF_IN zfindex srcLen);
+extern ZFLIB_ZFCore zfidentity zfidentityCalcBuf(ZF_IN const void *src, ZF_IN zfindex srcLen);
 /**
  * @brief calculate identity from POD object
  */
@@ -81,11 +81,11 @@ zfidentity zfidentityCalcPOD(ZF_IN T_POD const &value)
 /**
  * @brief make a identity from pointer value
  */
-extern ZF_ENV_EXPORT zfidentity zfidentityCalcPointer(ZF_IN const void *p);
+extern ZFLIB_ZFCore zfidentity zfidentityCalcPointer(ZF_IN const void *p);
 /**
  * @brief make a identity from pointer value
  */
-extern ZF_ENV_EXPORT zfidentity zfidentityCalcPointer(ZF_IN ZFFuncAddrType p);
+extern ZFLIB_ZFCore zfidentity zfidentityCalcPointer(ZF_IN ZFFuncAddrType p);
 
 ZF_NAMESPACE_GLOBAL_END
 

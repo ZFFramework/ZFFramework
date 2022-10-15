@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFProperty;
 // ============================================================
-zfclassPOD ZF_ENV_EXPORT _ZFP_ZFFilterForZFPropertySetting
+zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFPropertySetting
 {
 public:
     zfbool ignorePublicSetter;
@@ -24,7 +24,7 @@ public:
 /**
  * @brief util class to filter ZFProperty
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFFilterForZFProperty : zfextendsLikePOD ZFFilterBasic<const ZFProperty *>
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFProperty : zfextendsLikePOD ZFFilterBasic<const ZFProperty *>
 {
     ZFFILTER_DECLARE(ZFFilterForZFProperty, ZFFilterBasic<const ZFProperty *>)
 

@@ -11,7 +11,7 @@
  * example:
  * @code
  *   // in C++
- *   ZFMETHOD_FUNC_DECLARE_1(zfstring, myFunc, ZFMP_IN(const zfchar *, param))
+ *   ZFMETHOD_FUNC_DECLARE_1(ZFLIB_APP, zfstring, myFunc, ZFMP_IN(const zfchar *, param))
  *   ZFMETHOD_FUNC_DEFINE_1(zfstring, myFunc, ZFMP_IN(const zfchar *, param))
  *   {
  *       return param;
@@ -44,7 +44,7 @@
  *       int yourProp;
  *   };
  *
- *   ZFTYPEID_DECLARE(YourType, YourType)
+ *   ZFTYPEID_DECLARE(ZFLIB_APP, YourType, YourType)
  *
  *   // source file
  *   ZFTYPEID_DEFINE_BY_STRING_CONVERTER(YourType, YourType, {

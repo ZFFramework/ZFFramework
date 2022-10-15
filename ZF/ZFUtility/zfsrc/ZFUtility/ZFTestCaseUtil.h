@@ -18,13 +18,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * test case had been run can be accessed by second param,
  * may be null if the test case run and stop directly
  */
-extern ZF_ENV_EXPORT zfbool ZFTestCaseRun(ZF_IN const ZFClass *cls,
-                                          ZF_OUT_OPT ZFTestCase **testCaseHaveRun = zfnull);
+extern ZFLIB_ZFUtility zfbool ZFTestCaseRun(ZF_IN const ZFClass *cls,
+                                            ZF_OUT_OPT ZFTestCase **testCaseHaveRun = zfnull);
 /**
  * @brief see #ZFTestCaseRun
  */
-extern ZF_ENV_EXPORT zfbool ZFTestCaseRun(ZF_IN const zfchar *classNameFull,
-                                          ZF_OUT_OPT ZFTestCase **testCaseHaveRun = zfnull);
+extern ZFLIB_ZFUtility zfbool ZFTestCaseRun(ZF_IN const zfchar *classNameFull,
+                                            ZF_OUT_OPT ZFTestCase **testCaseHaveRun = zfnull);
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
@@ -33,13 +33,13 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *
  * notified when about to start test case, see #ZFTestCaseRunAllStart
  */
-ZFOBSERVER_EVENT_GLOBAL(TestCaseRunAllOnStart)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUtility, TestCaseRunAllOnStart)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified when about to stop test case, see #ZFTestCaseRunAllStop
  */
-ZFOBSERVER_EVENT_GLOBAL(TestCaseRunAllOnStop)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUtility, TestCaseRunAllOnStop)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -48,14 +48,14 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * first param can be assigned to specify a callback
  * to check whether a test case can be started
  */
-extern ZF_ENV_EXPORT void ZFTestCaseRunAllStart(ZF_IN_OPT const ZFCallbackT<zfbool, ZFTestCase *> *shouldStartChecker = zfnull);
+extern ZFLIB_ZFUtility void ZFTestCaseRunAllStart(ZF_IN_OPT const ZFCallbackT<zfbool, ZFTestCase *> *shouldStartChecker = zfnull);
 /**
  * @brief stop #ZFTestCaseRunAllStart
  */
-extern ZF_ENV_EXPORT void ZFTestCaseRunAllStop(void);
+extern ZFLIB_ZFUtility void ZFTestCaseRunAllStop(void);
 
 /** @brief see #ZFTestCaseGetAll */
-extern ZF_ENV_EXPORT void ZFTestCaseGetAllT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret);
+extern ZFLIB_ZFUtility void ZFTestCaseGetAllT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret);
 /**
  * @brief get all test case currently registered
  */

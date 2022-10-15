@@ -24,7 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   ClassName::propertyName
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFProperty, const ZFProperty *)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFProperty, const ZFProperty *)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFProperty_owner "owner"

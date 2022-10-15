@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief basic button group which layout buttons as #ZFUILinearLayout
  */
-zfclass ZF_ENV_EXPORT ZFUIButtonGroupBasic : zfextends ZFUILinearLayout, zfimplements ZFUIButtonGroup
+zfclass ZFLIB_ZFUIWidget ZFUIButtonGroupBasic : zfextends ZFUILinearLayout, zfimplements ZFUIButtonGroup
 {
     ZFOBJECT_DECLARE(ZFUIButtonGroupBasic, ZFUILinearLayout)
     ZFIMPLEMENTS_DECLARE(ZFUIButtonGroup)

@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * pathData is the res path
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFPATHTYPE_DECLARE(res)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, res)
 
 // ============================================================
 // ZFInputForResFile
@@ -28,7 +28,7 @@ ZFPATHTYPE_DECLARE(res)
  *
  * auto open and auto close files, may return a null callback if open file error
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFInput, ZFInputForResFile,
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForResFile,
                                ZFMP_IN(const zfchar *, resFilePath))
 {
     ZFInput ret;

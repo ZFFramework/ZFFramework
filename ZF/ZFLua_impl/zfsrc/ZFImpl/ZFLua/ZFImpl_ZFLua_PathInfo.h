@@ -48,9 +48,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       )
  * @endcode
  */
-extern ZF_ENV_EXPORT void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
-                                                         ZF_OUT zfstring &ret,
-                                                         ZF_IN const ZFPathInfo *pathInfo);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
+                                                            ZF_OUT zfstring &ret,
+                                                            ZF_IN const ZFPathInfo *pathInfo);
 
 /** @see #ZFImpl_ZFLua_implPathInfoSetup */
 #define ZFImpl_ZFLua_implPathInfo_DEFINE(luaFunc, luaFuncBody) \
@@ -64,9 +64,9 @@ extern ZF_ENV_EXPORT void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
     } \
     ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implPathInfo_##luaFunc)
 
-extern ZF_ENV_EXPORT void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(ZF_IN const zfchar *luaFuncName,
-                                                                 ZF_IN const zfchar *luaFuncBody);
-extern ZF_ENV_EXPORT void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfchar *luaFuncName);
+extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(ZF_IN const zfchar *luaFuncName,
+                                                                    ZF_IN const zfchar *luaFuncBody);
+extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfchar *luaFuncName);
 
 ZF_NAMESPACE_GLOBAL_END
 

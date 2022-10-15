@@ -17,7 +17,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# call #ZFMainExecute at proper time
  * -# call #ZFFrameworkCleanup at proper time
  */
-extern ZF_ENV_EXPORT zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams = ZFCoreArray<zfstring>());
+extern ZFLIB_ZFCore zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams = ZFCoreArray<zfstring>());
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFMainEntry_h_

@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Posix_ZF_impl_h_
 #define _ZFI_ZFImpl_sys_Posix_ZF_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZF_impl.h"
 
 
 #if ZF_ENV_sys_Posix

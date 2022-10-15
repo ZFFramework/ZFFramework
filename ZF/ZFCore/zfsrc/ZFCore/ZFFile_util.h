@@ -28,7 +28,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  null src is treated as error, while empty string src is not an error
  * -  single "/" src would result empty string
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFFilePathFormat,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFilePathFormat,
                         ZFMP_IN_OUT(zfstring &, ret),
                         ZFMP_IN(const zfchar *, src),
                         ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()))
@@ -36,7 +36,7 @@ ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFFilePathFormat,
 /**
  * @brief util method to resolve ".." in path
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFFilePathFormatRelative,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFilePathFormatRelative,
                         ZFMP_IN_OUT(zfstring &, ret))
 
 /**
@@ -44,22 +44,22 @@ ZFMETHOD_FUNC_DECLARE_1(void, ZFFilePathFormatRelative,
  *   e.g. "file.ext" from "/path/file.ext"
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFFileNameOf,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileNameOf,
                         ZFMP_OUT(zfstring &, ret),
                         ZFMP_IN(const zfchar *, src))
 /** @brief see #ZFFileNameOf */
-ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFileNameOf,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileNameOf,
                         ZFMP_IN(const zfchar *, src))
 /**
  * @brief get file name without extension from path or src if error,
  *   e.g. "file.ext0" from "/path/file.ext0.ext1"
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFFileNameOfWithoutExt,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileNameOfWithoutExt,
                         ZFMP_OUT(zfstring &, ret),
                         ZFMP_IN(const zfchar *, src))
 /** @brief see #ZFFileNameOfWithoutExt */
-ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFileNameOfWithoutExt,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileNameOfWithoutExt,
                         ZFMP_IN(const zfchar *, src))
 /**
  * @brief get file extension from path or empty if error,
@@ -67,11 +67,11 @@ ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFileNameOfWithoutExt,
  *   or empty if no extension
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFFileExtOf,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileExtOf,
                         ZFMP_OUT(zfstring &, ret),
                         ZFMP_IN(const zfchar *, src))
 /** @brief see #ZFFileExtOf */
-ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFileExtOf,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFileExtOf,
                         ZFMP_IN(const zfchar *, src))
 /**
  * @brief get file path without ext,
@@ -79,11 +79,11 @@ ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFileExtOf,
  *   or original string if no extension
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFFilePathOfWithoutExt,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathOfWithoutExt,
                         ZFMP_OUT(zfstring &, ret),
                         ZFMP_IN(const zfchar *, src))
 /** @brief see #ZFFileExtOf */
-ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFilePathOfWithoutExt,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFilePathOfWithoutExt,
                         ZFMP_IN(const zfchar *, src))
 /**
  * @brief get parent path
@@ -91,26 +91,26 @@ ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFilePathOfWithoutExt,
  * return empty string if no parent found
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFFilePathParentOf,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathParentOf,
                         ZFMP_OUT(zfstring &, ret),
                         ZFMP_IN(const zfchar *, src))
 /** @brief see #ZFFilePathParentOf */
-ZFMETHOD_FUNC_DECLARE_1(zfstring, ZFFilePathParentOf,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFFilePathParentOf,
                         ZFMP_IN(const zfchar *, src))
 /**
  * @brief get each file components from path or empty if error,
  *   e.g. {"path", "file.ext"}(as array) from "/path/file.ext"
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFFilePathComponentsOf,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathComponentsOf,
                         ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret),
                         ZFMP_IN(const zfchar *, src))
 /** @brief see #ZFFilePathComponentsOf */
-ZFMETHOD_FUNC_DECLARE_1(ZFCoreArray<zfstring>, ZFFilePathComponentsOf,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFCoreArray<zfstring>, ZFFilePathComponentsOf,
                         ZFMP_IN(const zfchar *, src))
 
 // ============================================================
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFFileFileCloseHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFFileFileCloseHolder
 {
 public:
     _ZFP_ZFFileFileCloseHolder(ZF_IN void *token) : token(token) {}
@@ -130,7 +130,7 @@ private:
 #define ZFFileFileCloseHolder(token) _ZFP_ZFFileFileCloseHolder ZFUniqueName(ZFFileFileCloseHolder)(token)
 
 // ============================================================
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFFileResCloseHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFFileResCloseHolder
 {
 public:
     _ZFP_ZFFileResCloseHolder(ZF_IN void *token) : token(token) {}
@@ -150,7 +150,7 @@ private:
 #define ZFFileResCloseHolder(token) _ZFP_ZFFileResCloseHolder ZFUniqueName(ZFFileResCloseHolder)(token)
 
 // ============================================================
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFFilePathInfoCloseHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFFilePathInfoCloseHolder
 {
 public:
     _ZFP_ZFFilePathInfoCloseHolder(ZF_IN const ZFPathInfo &pathInfo, ZF_IN void *token) : pathInfo(pathInfo), token(token) {}
@@ -174,7 +174,7 @@ private:
 /**
  * @brief list all files, usually for debug use
  */
-ZFMETHOD_FUNC_DECLARE_4(void, ZFFilePathInfoTreePrint,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFFilePathInfoTreePrint,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()),
                         ZFMP_IN_OPT(const zfchar *, headToken, zfnull),
@@ -197,7 +197,7 @@ ZFMETHOD_FUNC_DECLARE_4(void, ZFFilePathInfoTreePrint,
  * fileCallback's param0 is #v_ZFPathInfo that describe the child file or dir,
  * and param1 is #v_ZFFileFindData
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFFilePathInfoForEach,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFilePathInfoForEach,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const ZFListener &, fileCallback),
                         ZFMP_IN_OPT(ZFObject *, userData, zfnull))

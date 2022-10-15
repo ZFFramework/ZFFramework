@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for #ZFUIWebView
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIWebView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIWebKit, ZFUIWebView)
 public:
     /**
      * @brief create native web view

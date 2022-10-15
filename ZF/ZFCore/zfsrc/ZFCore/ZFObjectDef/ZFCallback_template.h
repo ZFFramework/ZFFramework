@@ -21,12 +21,12 @@ template<typename T_Return
     , typename T_Param7 = void
     , typename T_Dummy = void
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT : zfextendsLikePOD ZFCallback {};
+zfclassLikePOD ZFCallbackT : zfextendsLikePOD ZFCallback {};
 
 /** @cond ZFPrivateDoc */
 template<typename T_Return
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
@@ -59,7 +59,7 @@ public:
 template<typename T_Return
     , typename T_Param0
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , void
     , void
@@ -99,7 +99,7 @@ template<typename T_Return
     , typename T_Param0
     , typename T_Param1
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , T_Param1
     , void
@@ -146,7 +146,7 @@ template<typename T_Return
     , typename T_Param1
     , typename T_Param2
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , T_Param1
     , T_Param2
@@ -200,7 +200,7 @@ template<typename T_Return
     , typename T_Param2
     , typename T_Param3
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , T_Param1
     , T_Param2
@@ -261,7 +261,7 @@ template<typename T_Return
     , typename T_Param3
     , typename T_Param4
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , T_Param1
     , T_Param2
@@ -329,7 +329,7 @@ template<typename T_Return
     , typename T_Param4
     , typename T_Param5
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , T_Param1
     , T_Param2
@@ -404,7 +404,7 @@ template<typename T_Return
     , typename T_Param5
     , typename T_Param6
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , T_Param1
     , T_Param2
@@ -486,7 +486,7 @@ template<typename T_Return
     , typename T_Param6
     , typename T_Param7
     >
-zfclassLikePOD ZF_ENV_EXPORT ZFCallbackT<T_Return
+zfclassLikePOD ZFCallbackT<T_Return
     , T_Param0
     , T_Param1
     , T_Param2

@@ -53,7 +53,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  * to make it more convenient for script language,
  * you may also use #regTag to make the registration looks like singleton registration
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFDynamic
+zfclassLikePOD ZFLIB_ZFCore ZFDynamic
 {
 public:
     /** @brief main constructor */
@@ -263,7 +263,7 @@ public:
 private:
     _ZFP_ZFDynamicPrivate *d;
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFDynamic, ZFDynamic)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFDynamic, ZFDynamic)
 
 // ============================================================
 /**
@@ -271,11 +271,11 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFDynamic, ZFDynamic)
  *
  * ensured called during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkNormal
  */
-ZFMETHOD_FUNC_DECLARE_0(void, ZFDynamicRemoveAll)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFDynamicRemoveAll)
 
 // ============================================================
 /** @brief data to hold params for #ZFPropertyDynamicRegisterInitValueCallback */
-zfclass ZF_ENV_EXPORT ZFDynamicPropertyData : zfextends ZFObject
+zfclass ZFLIB_ZFCore ZFDynamicPropertyData : zfextends ZFObject
 {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFDynamicPropertyData, ZFObject)
 
@@ -307,7 +307,7 @@ public:
 // ============================================================
 zfclassFwd _ZFP_ZFMPPrivate;
 /** @brief util for #ZFDynamic::method */
-zfclassLikePOD ZF_ENV_EXPORT ZFMP
+zfclassLikePOD ZFLIB_ZFCore ZFMP
 {
 public:
     /** @brief util for #ZFDynamic::method */
@@ -338,7 +338,7 @@ public:
 private:
     _ZFP_ZFMPPrivate *d;
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFMP, ZFMP)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMP, ZFMP)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFDynamicRegisterUtil_h_

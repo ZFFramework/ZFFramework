@@ -13,19 +13,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief index output flags for #ZFTextTemplateIndexData
  */
-ZFENUM_BEGIN(ZFTextTemplateIndexFlag)
+ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexFlag)
     ZFENUM_VALUE(LeadingZero)
     ZFENUM_VALUE(LeadingSpace)
     ZFENUM_VALUE(TailSpace)
-ZFENUM_SEPARATOR(ZFTextTemplateIndexFlag)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(LeadingZero)
     ZFENUM_VALUE_REGISTER(LeadingSpace)
     ZFENUM_VALUE_REGISTER(TailSpace)
-ZFENUM_END(ZFTextTemplateIndexFlag)
+ZFENUM_END(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexFlag)
 
 // ============================================================
 /** @brief see #ZFTextTemplateApply */
-zfclassLikePOD ZF_ENV_EXPORT ZFTextTemplateIndexData
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateIndexData
 {
 public:
     /**
@@ -120,7 +120,7 @@ public:
  *   />
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFTextTemplateIndexData, ZFTextTemplateIndexData)
+ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexData, ZFTextTemplateIndexData)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart "indexStart"
@@ -140,7 +140,7 @@ ZFOUTPUT_TYPE(ZFTextTemplateIndexData, {output << v.objectInfo();})
 // ============================================================
 zfclassFwd _ZFP_ZFTextTemplateParamPrivate;
 /** @brief see #ZFTextTemplateApply */
-zfclassLikePOD ZF_ENV_EXPORT ZFTextTemplateParam
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateParam
 {
 public:
     // ============================================================
@@ -274,7 +274,7 @@ private:
  *   </ZFTextTemplateParam>
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFTextTemplateParam, ZFTextTemplateParam)
+ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFTextTemplateParam, ZFTextTemplateParam)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateParam_replace "replace"

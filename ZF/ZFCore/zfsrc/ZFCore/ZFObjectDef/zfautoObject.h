@@ -60,7 +60,7 @@ zfautoObject &zfautoObject::operator = (ZF_IN T_ZFObject const &p)
 
 // ============================================================
 /** @cond ZFPrivateDoc */
-extern ZF_ENV_EXPORT void _ZFP_zfautoObjectTError(void);
+extern ZFLIB_ZFCore void _ZFP_zfautoObjectTError(void);
 template<typename T_ZFObjectBase>
 zfautoObjectT<T_ZFObjectBase>::zfautoObjectT(ZF_IN zfautoObject const &ref)
 : zfautoObject(ref)

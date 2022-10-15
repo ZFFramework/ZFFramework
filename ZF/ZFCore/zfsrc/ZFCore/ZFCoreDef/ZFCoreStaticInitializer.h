@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 typedef void *(*_ZFP_SI_Constructor)(void);
 typedef void (*_ZFP_SI_Destructor)(ZF_IN void *p);
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_SI_Holder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_SI_Holder
 {
 public:
     _ZFP_SI_Holder(ZF_IN const zfchar *name,

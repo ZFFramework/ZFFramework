@@ -20,7 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   https://github.com/EmmyLua/EmmyLua-LanguageServer
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFLuaLSPGenFile,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaLSPGenFile,
                         ZFMP_IN(const ZFOutput &, output))
 
 ZF_NAMESPACE_GLOBAL_END

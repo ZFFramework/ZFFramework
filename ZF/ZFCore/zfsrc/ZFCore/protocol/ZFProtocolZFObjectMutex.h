@@ -35,7 +35,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZFProtocolLevelEnum _protocolLevel; \
     ZF_GLOBAL_INITIALIZER_END(_ZFP_OMI_##registerSig)
 
-extern ZF_ENV_EXPORT ZFProtocolLevelEnum *_ZFP_ZFObjectMutexImplRegistered;
+extern ZFLIB_ZFCore ZFProtocolLevelEnum *_ZFP_ZFObjectMutexImplRegistered;
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFObjectMutex_h_

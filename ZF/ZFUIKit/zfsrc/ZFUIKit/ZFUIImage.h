@@ -17,9 +17,9 @@ typedef zfbool (*_ZFP_ZFUIImageSerializeFromCallback)(ZF_IN_OUT ZFUIImage *image
                                                       ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
                                                       ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */);
 
-extern ZF_ENV_EXPORT void _ZFP_ZFUIImageSerializeTypeRegister(ZF_IN const zfchar *name,
+extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeRegister(ZF_IN const zfchar *name,
                                                               ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback);
-extern ZF_ENV_EXPORT void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfchar *name);
+extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfchar *name);
 /**
  * @brief register a serializable logic for ZFUIImage
  *
@@ -63,7 +63,7 @@ extern ZF_ENV_EXPORT void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfch
                                                                     ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
 
 /** @brief see #ZFUIImageSerializeTypeGetAll */
-extern ZF_ENV_EXPORT void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret);
+extern ZFLIB_ZFUIKit void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret);
 /**
  * @brief usually for debug use only
  */
@@ -99,7 +99,7 @@ zfclassFwd _ZFP_ZFUIImagePrivate;
  *   </ZFUIImage>
  * @endcode
  */
-zffinal zfclass ZF_ENV_EXPORT ZFUIImage : zfextends ZFStyleableObject
+zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextends ZFStyleableObject
 {
     ZFOBJECT_DECLARE(ZFUIImage, ZFStyleableObject)
 

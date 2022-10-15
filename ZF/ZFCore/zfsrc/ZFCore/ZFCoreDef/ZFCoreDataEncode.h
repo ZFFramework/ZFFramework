@@ -10,7 +10,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZF_ENV_EXPORT const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256];
+extern ZFLIB_ZFCore const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256];
 /**
  * @brief see #zfCoreDataEncode, default is all numbers and all lower and upper letters
  *
@@ -60,18 +60,18 @@ extern ZF_ENV_EXPORT const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256];
  * zero element means the char isn't printable and non-zero means printable\n
  * not printable chars would be escaped by escapeToken
  */
-extern ZF_ENV_EXPORT void zfCoreDataEncode(ZF_OUT zfstring &result,
-                                           ZF_IN const zfchar *src,
-                                           ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                           ZF_IN_OPT const zfchar *charMap = zfCoreDataEncodeCharMapDefault(),
-                                           ZF_IN_OPT zfchar escapeToken = '%');
+extern ZFLIB_ZFCore void zfCoreDataEncode(ZF_OUT zfstring &result,
+                                          ZF_IN const zfchar *src,
+                                          ZF_IN_OPT zfindex srcLen = zfindexMax(),
+                                          ZF_IN_OPT const zfchar *charMap = zfCoreDataEncodeCharMapDefault(),
+                                          ZF_IN_OPT zfchar escapeToken = '%');
 /**
  * @brief see #zfCoreDataEncode
  */
-extern ZF_ENV_EXPORT void zfCoreDataDecode(ZF_OUT zfstring &result,
-                                           ZF_IN const zfchar *src,
-                                           ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                           ZF_IN_OPT zfchar escapeToken = '%');
+extern ZFLIB_ZFCore void zfCoreDataDecode(ZF_OUT zfstring &result,
+                                          ZF_IN const zfchar *src,
+                                          ZF_IN_OPT zfindex srcLen = zfindexMax(),
+                                          ZF_IN_OPT zfchar escapeToken = '%');
 
 ZF_NAMESPACE_GLOBAL_END
 

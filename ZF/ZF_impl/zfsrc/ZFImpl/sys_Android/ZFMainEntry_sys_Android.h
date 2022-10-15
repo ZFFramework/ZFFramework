@@ -22,15 +22,15 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // return android.app.Application
-extern ZF_ENV_EXPORT JNIObjectHolder ZFImpl_sys_Android_app(void);
+extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_app(void);
 // return android.content.Context
-extern ZF_ENV_EXPORT JNIObjectHolder ZFImpl_sys_Android_appContext(void);
+extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_appContext(void);
 // return android.content.Context, may be application context if embeded to native UI
-extern ZF_ENV_EXPORT JNIObjectHolder ZFImpl_sys_Android_context(void);
+extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_context(void);
 // return android.content.res.AssetManager
-extern ZF_ENV_EXPORT JNIObjectHolder ZFImpl_sys_Android_assetManager(void);
+extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_assetManager(void);
 // return android.app.Activity, may be null if embeded to native UI
-extern ZF_ENV_EXPORT JNIObjectHolder ZFImpl_sys_Android_mainEntryActivity(void);
+extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_mainEntryActivity(void);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Android

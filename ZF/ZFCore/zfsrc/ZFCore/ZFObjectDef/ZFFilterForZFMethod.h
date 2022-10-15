@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFMethod;
 // ============================================================
-zfclassPOD ZF_ENV_EXPORT _ZFP_ZFFilterForZFMethodSetting
+zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFMethodSetting
 {
 public:
     zfbool ignorePublic;
@@ -21,7 +21,7 @@ public:
 /**
  * @brief util class to filter ZFMethod
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFFilterForZFMethod : zfextendsLikePOD ZFFilterBasic<const ZFMethod *>
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFMethod : zfextendsLikePOD ZFFilterBasic<const ZFMethod *>
 {
     ZFFILTER_DECLARE(ZFFilterForZFMethod, ZFFilterBasic<const ZFMethod *>)
 

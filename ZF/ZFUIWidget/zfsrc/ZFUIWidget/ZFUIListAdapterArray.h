@@ -24,7 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   </ZFUIListAdapterArray>
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFUIListAdapterArray : zfextends ZFStyleableObject, zfimplements ZFUIListAdapter
+zfclass ZFLIB_ZFUIWidget ZFUIListAdapterArray : zfextends ZFStyleableObject, zfimplements ZFUIListAdapter
 {
     ZFOBJECT_DECLARE(ZFUIListAdapterArray, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFUIListAdapter)

@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief iterable, see #zfiterator
  */
-zfinterface ZF_ENV_EXPORT ZFIterable : zfextends ZFInterface
+zfinterface ZFLIB_ZFCore ZFIterable : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFIterable, ZFInterface)
 
@@ -85,7 +85,7 @@ public:
 /**
  * @brief iterable that with key value pair, see #zfiterator
  */
-zfinterface ZF_ENV_EXPORT ZFIterableKeyValue : zfextends ZFInterface
+zfinterface ZFLIB_ZFCore ZFIterableKeyValue : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFIterableKeyValue, ZFIterable)
 

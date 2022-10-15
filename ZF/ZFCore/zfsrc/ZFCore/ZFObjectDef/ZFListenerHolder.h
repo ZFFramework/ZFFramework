@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief util class to hold #ZFListener
  */
-zfclass ZF_ENV_EXPORT ZFListenerHolder : zfextends ZFObject
+zfclass ZFLIB_ZFCore ZFListenerHolder : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFListenerHolder, ZFObject)
 

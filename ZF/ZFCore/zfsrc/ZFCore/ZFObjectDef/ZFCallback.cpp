@@ -15,7 +15,7 @@ void _ZFP_ZFCallback_executeNullCallback(void)
 // ============================================================
 // _ZFP_ZFCallbackPrivate
 typedef zfstlmap<zfstlstringZ, zfautoObject> _ZFP_ZFCallbackTagMap;
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFCallbackPrivate
+zfclassNotPOD _ZFP_ZFCallbackPrivate
 {
 public:
     zfuint refCount;

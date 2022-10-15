@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief store a time value
  */
-zfclassPOD ZF_ENV_EXPORT ZFTimeValue
+zfclassPOD ZFLIB_ZFCore ZFTimeValue
 {
 public:
     zftimet sec;     /**< second */
@@ -31,7 +31,7 @@ public:
  *   />
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFTimeValue, ZFTimeValue)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValue)
 
 ZFOUTPUT_TYPE(ZFTimeValue, {output << ZFTimeValueToString(v);})
 
@@ -40,11 +40,11 @@ ZFCORE_POD_COMPARER_DECLARE(ZFTimeValue)
 /**
  * @brief a zero time value
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFTimeValue, ZFTimeValueZero)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueZero)
 /**
  * @brief make a time value
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueMake,
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueMake,
                                ZFMP_IN(zftimet, sec),
                                ZFMP_IN(zftimet, usec))
 {
@@ -57,7 +57,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueMake,
  *
  * note, convert from #ZFTimeValue to #zftimet would lose accuracy
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFTimeValue, ZFTimeValueFromMiliSeconds,
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueFromMiliSeconds,
                                ZFMP_IN(zftimet, t))
 {
     ZFTimeValue ret = {(zftimet)(t / 1000), (zftimet)((t % 1000) * 1000)};
@@ -68,7 +68,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFTimeValue, ZFTimeValueFromMiliSeconds,
  *
  * note, convert from #ZFTimeValue to #zftimet would lose accuracy
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(zftimet, ZFTimeValueToMiliSeconds,
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zftimet, ZFTimeValueToMiliSeconds,
                                ZFMP_IN(const ZFTimeValue &, v))
 {
     return (zftimet)(v.sec * 1000 + v.usec / 1000);
@@ -77,13 +77,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(zftimet, ZFTimeValueToMiliSeconds,
 /**
  * @brief normalize time value
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFTimeValueNormalize,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFTimeValueNormalize,
                         ZFMP_IN_OUT(ZFTimeValue &, v))
 
 /**
  * @brief return tv1 - tv2
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFTimeValueDec,
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFCore, void, ZFTimeValueDec,
                                ZFMP_OUT(ZFTimeValue &, result),
                                ZFMP_IN(const ZFTimeValue &, tv1),
                                ZFMP_IN(const ZFTimeValue &, tv2))
@@ -95,7 +95,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFTimeValueDec,
 /**
  * @brief return tv1 - tv2
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueDec,
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueDec,
                                ZFMP_IN(const ZFTimeValue &, tv1),
                                ZFMP_IN(const ZFTimeValue &, tv2))
 {
@@ -107,7 +107,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueDec,
 /**
  * @brief return tv1 + tv2
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFTimeValueInc,
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFCore, void, ZFTimeValueInc,
                                ZFMP_OUT(ZFTimeValue &, result),
                                ZFMP_IN(const ZFTimeValue &, tv1),
                                ZFMP_IN(const ZFTimeValue &, tv2))
@@ -119,7 +119,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFTimeValueInc,
 /**
  * @brief return tv1 + tv2
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueInc,
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueInc,
                                ZFMP_IN(const ZFTimeValue &, tv1),
                                ZFMP_IN(const ZFTimeValue &, tv2))
 {
@@ -131,7 +131,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueInc,
 /**
  * @brief return tv * v
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFTimeValueMul,
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFCore, void, ZFTimeValueMul,
                                ZFMP_OUT(ZFTimeValue &, result),
                                ZFMP_IN(const ZFTimeValue &, tv),
                                ZFMP_IN(zfindex, v))
@@ -143,7 +143,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_3(void, ZFTimeValueMul,
 /**
  * @brief return tv * v
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueMul,
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueMul,
                                ZFMP_IN(const ZFTimeValue &, tv),
                                ZFMP_IN(zfindex, v))
 {
@@ -155,14 +155,14 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueMul,
 /**
  * @brief return tv / v, assert fail if v is 0
  */
-ZFMETHOD_FUNC_DECLARE_3(void, ZFTimeValueDiv,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void, ZFTimeValueDiv,
                         ZFMP_OUT(ZFTimeValue &, result),
                         ZFMP_IN(const ZFTimeValue &, tv),
                         ZFMP_IN(zfindex, v))
 /**
  * @brief return tv / v, assert fail if v is 0
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueDiv,
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValueDiv,
                                ZFMP_IN(const ZFTimeValue &, tv),
                                ZFMP_IN(zfindex, v))
 {
@@ -175,7 +175,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFTimeValue, ZFTimeValueDiv,
  * @brief compare two ZFTimeValue
  * @see ZFCompareResult
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFCompareResult, ZFTimeValueCompare,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFCompareResult, ZFTimeValueCompare,
                         ZFMP_IN(const ZFTimeValue &, tv1),
                         ZFMP_IN(const ZFTimeValue &, tv2))
 
@@ -184,11 +184,11 @@ ZFMETHOD_FUNC_DECLARE_2(ZFCompareResult, ZFTimeValueCompare,
  *
  * can't be converted back from string, usually for debug use only
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFTimeValueToStringFriendly,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFTimeValueToStringFriendly,
                         ZFMP_IN_OUT(zfstring &, s),
                         ZFMP_IN(ZFTimeValue const &, v))
 /** @brief see #ZFTimeValueToStringFriendly */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(zfstring, ZFTimeValueToStringFriendly,
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFTimeValueToStringFriendly,
                                ZFMP_IN(ZFTimeValue const &, v))
 {
     zfstring s;
@@ -197,36 +197,36 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(zfstring, ZFTimeValueToStringFriendly,
 }
 
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT zfbool operator < (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore zfbool operator < (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT zfbool operator <= (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore zfbool operator <= (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT zfbool operator > (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore zfbool operator > (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT zfbool operator >= (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore zfbool operator >= (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT ZFTimeValue operator + (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore ZFTimeValue operator + (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT ZFTimeValue operator - (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore ZFTimeValue operator - (ZF_IN const ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT void operator += (ZF_IN_OUT ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore void operator += (ZF_IN_OUT ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT void operator -= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
+extern ZFLIB_ZFCore void operator -= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN const ZFTimeValue &v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT ZFTimeValue operator * (ZF_IN const ZFTimeValue &v0, ZF_IN zfindex v1);
+extern ZFLIB_ZFCore ZFTimeValue operator * (ZF_IN const ZFTimeValue &v0, ZF_IN zfindex v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT ZFTimeValue operator / (ZF_IN const ZFTimeValue &v0, ZF_IN zfindex v1);
+extern ZFLIB_ZFCore ZFTimeValue operator / (ZF_IN const ZFTimeValue &v0, ZF_IN zfindex v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT void operator *= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN zfindex v1);
+extern ZFLIB_ZFCore void operator *= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN zfindex v1);
 /** @brief overrided operator for ZFTimeValue calculate */
-extern ZF_ENV_EXPORT void operator /= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN zfindex v1);
+extern ZFLIB_ZFCore void operator /= (ZF_IN_OUT ZFTimeValue &v0, ZF_IN zfindex v1);
 
 // ============================================================
 // ZFTimeInfo
 /**
  * @brief store a time info, internal use only
  */
-zfclassPOD ZF_ENV_EXPORT ZFTimeInfo
+zfclassPOD ZFLIB_ZFCore ZFTimeInfo
 {
 public:
     zfint year;          /**< e.g. 1999 */
@@ -239,16 +239,16 @@ public:
     zfuint microSecond;  /**< [0, 999] */
 };
 
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFTimeInfo, ZFTimeInfo)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfo)
 
 /**
  * @brief a zero time info (0000-00-00 00:00:00.000 000)
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFTimeInfo, ZFTimeInfoZero)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfoZero)
 /**
  * @brief make a time info, you should make sure value is valid
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_8(ZFTimeInfo, ZFTimeInfoMake,
+ZFMETHOD_FUNC_INLINE_DECLARE_8(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfoMake,
                                ZFMP_IN(zfint const &, year),
                                ZFMP_IN(zfuint const &, month),
                                ZFMP_IN(zfuint const &, day),
@@ -267,11 +267,11 @@ ZFCORE_POD_COMPARER_DECLARE(ZFTimeInfo)
 /**
  * @brief convert ZFTimeInfo to string
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFTimeInfoToString,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFTimeInfoToString,
                         ZFMP_IN_OUT(zfstring &, s),
                         ZFMP_IN(ZFTimeInfo const &, v))
 /** @brief see #ZFTimeInfoToString */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(zfstring, ZFTimeInfoToString,
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFTimeInfoToString,
                                ZFMP_IN(ZFTimeInfo const &, v))
 {
     zfstring s;
@@ -310,7 +310,7 @@ zfclassFwd _ZFP_ZFTimePrivate;
  *   />
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFTime : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable
+zfclass ZFLIB_ZFCore ZFTime : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable
 {
     ZFOBJECT_DECLARE(ZFTime, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)

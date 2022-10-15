@@ -34,7 +34,7 @@ zfclassFwd _ZFP_ZFUIButtonBasicPrivate;
  *   only if accessed or text/image has been set,
  *   or whenever you called #prepareButtonLabel/#prepareButtonIcon/#prepareButtonBackground
  */
-zfclass ZF_ENV_EXPORT ZFUIButtonBasic : zfextends ZFUIButton
+zfclass ZFLIB_ZFUIWidget ZFUIButtonBasic : zfextends ZFUIButton
 {
     ZFOBJECT_DECLARE(ZFUIButtonBasic, ZFUIButton)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButtonBasic)

@@ -24,7 +24,7 @@ zfclassFwd ZFClass;
 #define zfimplements public
 
 // ============================================================
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ObjI_Base
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ObjI_Base
 {
 protected:
     virtual ~_ZFP_ObjI_Base(void) {}
@@ -261,7 +261,7 @@ public:
  *   };
  * @endcode
  */
-zfinterface ZF_ENV_EXPORT ZFInterface
+zfinterface ZFLIB_ZFCore ZFInterface
 {
     _ZFP_ZFINTERFACE_DECLARE(ZFInterface, _ZFP_ObjI_Base)
 

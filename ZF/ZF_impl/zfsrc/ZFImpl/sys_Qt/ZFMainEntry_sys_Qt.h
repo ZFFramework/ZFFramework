@@ -11,7 +11,7 @@
 #include <QGraphicsWidget>
 #include <QLibrary>
 
-zfclassNotPOD ZF_ENV_EXPORT ZFImpl_sys_Qt_BaseView : public QGraphicsWidget
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_BaseView : public QGraphicsWidget
 {
     Q_OBJECT
 
@@ -29,7 +29,7 @@ public:
     ZFImpl_sys_Qt_BaseView(void);
 };
 
-zfclassNotPOD ZF_ENV_EXPORT ZFImpl_sys_Qt_BaseLayout : public QGraphicsLayout
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_BaseLayout : public QGraphicsLayout
 {
 protected:
     ZFCoreArrayPOD<QGraphicsWidget *> children;
@@ -64,14 +64,14 @@ private:
 };
 
 // ============================================================
-zfclassNotPOD ZF_ENV_EXPORT ZFImpl_sys_Qt_Window : public ZFImpl_sys_Qt_BaseView
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_Window : public ZFImpl_sys_Qt_BaseView
 {
     Q_OBJECT
 
 public:
     ZFImpl_sys_Qt_Window(void);
 };
-zfclassNotPOD ZF_ENV_EXPORT ZFImpl_sys_Qt_WindowLayout : public ZFImpl_sys_Qt_BaseLayout
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_WindowLayout : public ZFImpl_sys_Qt_BaseLayout
 {
 protected:
     virtual void onLayout(const QRectF &rect);
@@ -132,17 +132,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   }
  * @endcode
  */
-extern ZF_ENV_EXPORT int ZFMainEntry_sys_Qt(int argc, char **argv);
+extern ZFLIB_ZF_impl int ZFMainEntry_sys_Qt(int argc, char **argv);
 #define ZFImpl_sys_Qt_requireLib(libName) \
     QLibrary _lib##libName(#libName); \
     _lib##libName.load();
 
-extern ZF_ENV_EXPORT QGraphicsWidget *ZFImpl_sys_Qt_rootWindow(void);
+extern ZFLIB_ZF_impl QGraphicsWidget *ZFImpl_sys_Qt_rootWindow(void);
 
-extern ZF_ENV_EXPORT int ZFMainEntry_sys_Qt_attach(ZF_IN QGraphicsWidget *rootWindow,
+extern ZFLIB_ZF_impl int ZFMainEntry_sys_Qt_attach(ZF_IN QGraphicsWidget *rootWindow,
                                                    ZF_IN_OPT int argc = 0,
                                                    ZF_IN_OPT char **argv = NULL);
-extern ZF_ENV_EXPORT void ZFMainEntry_sys_Qt_detach(void);
+extern ZFLIB_ZF_impl void ZFMainEntry_sys_Qt_detach(void);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

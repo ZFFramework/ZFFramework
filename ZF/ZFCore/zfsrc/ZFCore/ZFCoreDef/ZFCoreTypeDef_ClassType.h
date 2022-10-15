@@ -110,13 +110,13 @@ template<typename Type> inline void _ZFP_zfdeletePlacement(Type *obj) {obj->~Typ
 
 /** @brief same as malloc defined for future use */
 #define zfmalloc(size) malloc((size_t)(size))
-extern ZF_ENV_EXPORT void *_ZFP_zfmallocZero(zfindex size);
+extern ZFLIB_ZFCore void *_ZFP_zfmallocZero(zfindex size);
 /** @brief util method to #zfmalloc and #zfmemset to zero */
 #define zfmallocZero(size) _ZFP_zfmallocZero(size)
 
 /** @brief same as realloc defined for future use */
 #define zfrealloc(oldPtr, newSize) realloc((oldPtr), (size_t)(newSize))
-extern ZF_ENV_EXPORT void *_ZFP_zfreallocZero(void *oldPtr, zfindex newSize, zfindex oldSize);
+extern ZFLIB_ZFCore void *_ZFP_zfreallocZero(void *oldPtr, zfindex newSize, zfindex oldSize);
 /** @brief util method to #zfrealloc and #zfmemset the increased memory to zero */
 #define zfreallocZero(oldPtr, newSize, oldSize) _ZFP_zfreallocZero((oldPtr), (newSize), (oldSize))
 
@@ -197,9 +197,9 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
 
 // ============================================================
 #if _ZFP_ZFMEM_LOG
-    extern ZF_ENV_EXPORT void _ZFP_ZFMEM_logNew(void *p, const char *action, const char *file, const char *func, int line);
-    extern ZF_ENV_EXPORT void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const char *func, int line);
-    extern ZF_ENV_EXPORT void _ZFP_ZFMEM_printStatus(int threshold = 10);
+    extern ZFLIB_ZFCore void _ZFP_ZFMEM_logNew(void *p, const char *action, const char *file, const char *func, int line);
+    extern ZFLIB_ZFCore void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const char *func, int line);
+    extern ZFLIB_ZFCore void _ZFP_ZFMEM_printStatus(int threshold = 10);
     template<typename T>
     T _ZFP_ZFMEM_new_action(T p, const char *action, const char *file, const char *func, int line)
     {

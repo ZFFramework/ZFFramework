@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZF_ENV_EXPORT _ZFP_ZFCore_ZFPropertyDynamic_test_Object : zfextends ZFObject
+zfclass _ZFP_ZFCore_ZFPropertyDynamic_test_Object : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFPropertyDynamic_test_Object, ZFObject)
 

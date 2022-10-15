@@ -236,7 +236,7 @@ typedef zfautoObject (*ZFMethodParamDefaultValueCallback)(ZF_IN const ZFMethod *
  *   but whether the actual run code (the code in the method body)
  *   is thread-safe, is depends on you
  */
-zffinal zfclassNotPOD ZF_ENV_EXPORT ZFMethod
+zffinal zfclassNotPOD ZFLIB_ZFCore ZFMethod
 {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFMethod)
 
@@ -679,8 +679,23 @@ public:
 };
 
 // ============================================================
-extern ZF_ENV_EXPORT void _ZFP_ZFMethodDataHolderInit(void);
-extern ZF_ENV_EXPORT ZFMethod *_ZFP_ZFMethodRegister(ZF_IN zfbool methodIsUserRegister
+extern ZFLIB_ZFCore void _ZFP_ZFMethodDataHolderInit(void);
+extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegister(ZF_IN zfbool methodIsUserRegister
+                                                    , ZF_IN zfbool methodIsDynamicRegister
+                                                    , ZF_IN ZFObject *methodDynamicRegisterUserData
+                                                    , ZF_IN ZFFuncAddrType methodInvoker
+                                                    , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
+                                                    , ZF_IN const zfchar *methodType
+                                                    , ZF_IN const ZFClass *methodOwnerClass
+                                                    , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
+                                                    , ZF_IN const zfchar *methodNamespace
+                                                    , ZF_IN const zfchar *methodName
+                                                    , ZF_IN const zfchar *returnTypeId
+                                                    , ZF_IN const zfchar *returnTypeName
+                                                    /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
+                                                    , ...
+                                                    );
+extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
                                                      , ZF_IN zfbool methodIsDynamicRegister
                                                      , ZF_IN ZFObject *methodDynamicRegisterUserData
                                                      , ZF_IN ZFFuncAddrType methodInvoker
@@ -693,26 +708,11 @@ extern ZF_ENV_EXPORT ZFMethod *_ZFP_ZFMethodRegister(ZF_IN zfbool methodIsUserRe
                                                      , ZF_IN const zfchar *returnTypeId
                                                      , ZF_IN const zfchar *returnTypeName
                                                      /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
-                                                     , ...
+                                                     , ZF_IN va_list vaList
                                                      );
-extern ZF_ENV_EXPORT ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
-                                                      , ZF_IN zfbool methodIsDynamicRegister
-                                                      , ZF_IN ZFObject *methodDynamicRegisterUserData
-                                                      , ZF_IN ZFFuncAddrType methodInvoker
-                                                      , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                                      , ZF_IN const zfchar *methodType
-                                                      , ZF_IN const ZFClass *methodOwnerClass
-                                                      , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-                                                      , ZF_IN const zfchar *methodNamespace
-                                                      , ZF_IN const zfchar *methodName
-                                                      , ZF_IN const zfchar *returnTypeId
-                                                      , ZF_IN const zfchar *returnTypeName
-                                                      /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
-                                                      , ZF_IN va_list vaList
-                                                      );
-extern ZF_ENV_EXPORT void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method);
+extern ZFLIB_ZFCore void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method);
 
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFMethodRegisterHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFMethodRegisterHolder
 {
 public:
     _ZFP_ZFMethodRegisterHolder(ZF_IN zfbool methodIsUserRegister
@@ -754,8 +754,8 @@ public:
 // ============================================================
 zfclassFwd ZFFilterForZFMethod;
 /** @brief see #ZFMethodGetAll */
-extern ZF_ENV_EXPORT void ZFMethodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
-                                          ZF_IN_OPT const ZFFilterForZFMethod *methodFilter = zfnull);
+extern ZFLIB_ZFCore void ZFMethodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
+                                         ZF_IN_OPT const ZFFilterForZFMethod *methodFilter = zfnull);
 /**
  * @brief get all method currently registered
  *
@@ -780,25 +780,25 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAll(ZF_IN_OPT const ZFFilterF
  * return first registered one if more than one method found,
  * use #ZFMethodForNameGetAll to check if you have overloaded method
  */
-extern ZF_ENV_EXPORT const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
-                                                     ZF_IN const zfchar *methodName);
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
+                                                    ZF_IN const zfchar *methodName);
 /** @brief see #ZFMethodForName */
-extern ZF_ENV_EXPORT const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
-                                                     ZF_IN const zfchar *methodName
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId0
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-                                                     , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
-                                                     );
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
+                                                    ZF_IN const zfchar *methodName
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId0
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
+                                                    , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+                                                    );
 
 /**
  * @brief util method to find method, see ZFMethodForName
  */
-extern ZF_ENV_EXPORT void ZFMethodForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
+extern ZFLIB_ZFCore void ZFMethodForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
                                                  ZF_IN const zfchar *classNameOrNamespace,
                                                  ZF_IN const zfchar *methodName);
 /** @brief see #ZFMethodForNameGetAllT */
@@ -814,12 +814,12 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodForNameGetAll(ZF_IN const zfchar
 /**
  * @brief method alias
  */
-extern ZF_ENV_EXPORT const ZFMethod *ZFMethodAlias(ZF_IN const ZFMethod *method,
-                                                   ZF_IN const zfchar *aliasName);
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodAlias(ZF_IN const ZFMethod *method,
+                                                  ZF_IN const zfchar *aliasName);
 /**
  * @brief cancel method alias
  */
-extern ZF_ENV_EXPORT void ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod);
+extern ZFLIB_ZFCore void ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFMethod_h_

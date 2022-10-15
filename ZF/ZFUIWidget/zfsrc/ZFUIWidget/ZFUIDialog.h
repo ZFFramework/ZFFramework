@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * this value would be initialized to #ZFUIDialogDefaultLayoutParamCreatorDefault
  * during #ZFFrameworkInit as level #ZFLevelZFFrameworkLow
  */
-extern ZF_ENV_EXPORT ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator;
+extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator;
 /**
  * @brief see #ZFUIDialogDefaultLayoutParamCreator
  *
@@ -27,7 +27,7 @@ extern ZF_ENV_EXPORT ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator;
  * -  have #ZFUIAlign::e_Center as #ZFUILayoutParam::layoutAlign
  * -  have #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::layoutMargin
  */
-extern ZF_ENV_EXPORT zfautoObject ZFUIDialogDefaultLayoutParamCreatorDefault(void);
+extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultLayoutParamCreatorDefault(void);
 /**
  * @brief util method to call #ZFUIDialogDefaultLayoutParamCreator
  */
@@ -42,14 +42,14 @@ inline zfautoObject ZFUIDialogDefaultLayoutParam(void)
  * this value would be initialized to #ZFUIDialogDefaultAniShowCreatorDefault
  * during #ZFFrameworkInit as level #ZFLevelZFFrameworkLow
  */
-extern ZF_ENV_EXPORT ZFObjectCreator ZFUIDialogDefaultAniShowCreator;
+extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniShowCreator;
 /**
  * @brief see #ZFUIDialogDefaultAniShowCreator
  *
  * by default, the animation would be #ZFAnimationNativeView
  * with alpha change
  */
-extern ZF_ENV_EXPORT zfautoObject ZFUIDialogDefaultAniShowCreatorDefault(void);
+extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultAniShowCreatorDefault(void);
 /**
  * @brief util method to call #ZFUIDialogDefaultAniShowCreator
  */
@@ -64,14 +64,14 @@ inline zfautoObject ZFUIDialogDefaultAniShow(void)
  * this value would be initialized to #ZFUIDialogDefaultAniHideCreatorDefault
  * during #ZFFrameworkInit as level #ZFLevelZFFrameworkLow
  */
-extern ZF_ENV_EXPORT ZFObjectCreator ZFUIDialogDefaultAniHideCreator;
+extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniHideCreator;
 /**
  * @brief see #ZFUIDialogDefaultAniHideCreator
  *
  * by default, the animation would be #ZFAnimationNativeView
  * with alpha change
  */
-extern ZF_ENV_EXPORT zfautoObject ZFUIDialogDefaultAniHideCreatorDefault(void);
+extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultAniHideCreatorDefault(void);
 /**
  * @brief util method to call #ZFUIDialogDefaultAniHideCreator
  */
@@ -90,7 +90,7 @@ zfclassFwd _ZFP_I_ZFUIDialogPrivate;
  * during #ZFFrameworkCleanup's #ZFLevelZFFrameworkLow step
  * for safe resource cleanup
  */
-zfclass ZF_ENV_EXPORT ZFUIDialog : zfextends ZFStyleableObject
+zfclass ZFLIB_ZFUIWidget ZFUIDialog : zfextends ZFStyleableObject
 {
     ZFOBJECT_DECLARE(ZFUIDialog, ZFStyleableObject)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIDialog)

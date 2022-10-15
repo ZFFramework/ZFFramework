@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_zfstringAppendPrecisionNone (zfindexMax() - 1)
 #define _ZFP_zfstringAppendFlag_alignLeft 1
 #define _ZFP_zfstringAppendFlag_leadingZero 2
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfstringAppendFlag
+zfclassLikePOD ZFLIB_ZFCore _ZFP_zfstringAppendFlag
 {
 public:
     zfflags flags;

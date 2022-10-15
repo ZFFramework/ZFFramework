@@ -63,7 +63,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD ZF_ENV_EXPORT paramName##_ZFCoreParam \
+        zfclassLikePOD paramName##_ZFCoreParam \
         { \
         public: \
             paramName##_ZFCoreParam(void) \
@@ -113,7 +113,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         T_ParamType const &paramName(void) const; \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD ZF_ENV_EXPORT paramName##_ZFCoreParam \
+        zfclassLikePOD paramName##_ZFCoreParam \
         { \
         public: \
             paramName##_ZFCoreParam(void); \
@@ -197,7 +197,7 @@ typedef enum {
     ZFClassDataChangeTypeUpdate, /**< @brief update */
 } ZFClassDataChangeType;
 /** @brief data holder for #ZFGlobalEvent::EventClassDataChange */
-zfclassPOD ZF_ENV_EXPORT ZFClassDataChangeData
+zfclassPOD ZFLIB_ZFCore ZFClassDataChangeData
 {
 public:
     ZFClassDataChangeType changeType; /**< @brief change type */
@@ -205,10 +205,10 @@ public:
     const ZFProperty *changedProperty; /**< @brief changed property */
     const ZFMethod *changedMethod; /**< @brief changed method */
 };
-extern ZF_ENV_EXPORT void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
-                                                       ZF_IN const ZFClass *changedClass,
-                                                       ZF_IN const ZFProperty *changedProperty,
-                                                       ZF_IN const ZFMethod *changedMethod);
+extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
+                                                      ZF_IN const ZFClass *changedClass,
+                                                      ZF_IN const ZFProperty *changedProperty,
+                                                      ZF_IN const ZFMethod *changedMethod);
 
 ZF_NAMESPACE_GLOBAL_END
 

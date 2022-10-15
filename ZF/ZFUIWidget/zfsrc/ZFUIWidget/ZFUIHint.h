@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief default hint duration, 1500 by default
  */
-ZFEXPORT_VAR_DECLARE(zftimet, ZFUIHintDurationDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIWidget, zftimet, ZFUIHintDurationDefault)
 
 // ============================================================
 zfclassFwd _ZFP_ZFUIHintPrivate;
@@ -21,7 +21,7 @@ zfclassFwd _ZFP_ZFUIHintPrivate;
  *
  * @note can only be created or show or hide in main thread
  */
-zfclass ZF_ENV_EXPORT ZFUIHint : zfextends ZFObject
+zfclass ZFLIB_ZFUIWidget ZFUIHint : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIHint, ZFObject)
 

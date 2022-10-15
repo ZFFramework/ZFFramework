@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for #ZFUITextView
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUITextView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUITextView)
 public:
     /**
      * @brief create native text view

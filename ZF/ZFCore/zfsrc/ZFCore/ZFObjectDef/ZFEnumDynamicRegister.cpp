@@ -15,7 +15,6 @@ zfclass _ZFP_I_ZFEnumDynamicHolder : zfextends ZFObject
     ZFOBJECT_DECLARE(_ZFP_I_ZFEnumDynamicHolder, ZFObject)
 public:
     _ZFP_ZFEnumData *d;
-    const ZFClass *enumEditableClass;
     ZFCoreArrayPOD<const ZFMethod *> userRegMethods;
 };
 zfclass _ZFP_I_ZFEnumDynamic : zfextends ZFEnum
@@ -175,14 +174,6 @@ const ZFClass *ZFEnumDynamicRegister(ZF_IN const zfchar *enumClassName,
     {
         return zfnull;
     }
-    d->enumEditableClass = ZFClassDynamicRegister(
-        zfstringWithFormat("%sEditable", enumClassName), enumClass,
-        d, errorHint);
-    if(d->enumEditableClass == zfnull)
-    {
-        ZFClassDynamicUnregister(enumClass);
-        return zfnull;
-    }
 
     // internal data
     d->d = _ZFP_ZFEnumDataAccess(enumClass);
@@ -201,7 +192,6 @@ const ZFClass *ZFEnumDynamicRegister(ZF_IN const zfchar *enumClassName,
     if(!ZFTypeIdDynamicRegister(enumClassName, typeIdDataHolder, errorHint))
     {
         ZFClassDynamicUnregister(enumClass);
-        ZFClassDynamicUnregister(d->enumEditableClass);
         return zfnull;
     }
 
@@ -234,10 +224,8 @@ void ZFEnumDynamicUnregister(ZF_IN const ZFClass *enumClass)
     {
         ZFMethodUserUnregister(d->userRegMethods[i]);
     }
-    const ZFClass *enumEditableClass = d->enumEditableClass;
     ZFTypeIdDynamicUnregister(enumClass->classNameFull());
     _ZFP_ZFEnumDataCleanup(enumClass);
-    ZFClassDynamicUnregister(enumEditableClass);
     ZFClassDynamicUnregister(enumClass);
 }
 

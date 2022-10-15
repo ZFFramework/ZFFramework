@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFThread (used in ZFSemaphore)
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFSemaphore)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFSemaphore)
 public:
     /**
      * @brief create native semaphore

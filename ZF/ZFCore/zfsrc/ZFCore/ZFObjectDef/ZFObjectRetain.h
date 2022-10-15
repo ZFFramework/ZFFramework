@@ -231,7 +231,7 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject obj)
         /** @endcond */
 
 /** @brief dummy class for #zfAllocWithCache */
-zfclassNotPOD ZF_ENV_EXPORT zfAllocCacheNoReleaseAction
+zfclassNotPOD ZFLIB_ZFCore zfAllocCacheNoReleaseAction
 {
     /** @cond ZFPrivateDoc */
 public:
@@ -244,12 +244,12 @@ public:
 /**
  * @brief remove all cache created by #zfAllocWithCache
  */
-extern ZF_ENV_EXPORT void zfAllocCacheRemoveAll(void);
+extern ZFLIB_ZFCore void zfAllocCacheRemoveAll(void);
 
-extern ZF_ENV_EXPORT void _ZFP_zfAllocWithCache_register(ZF_IN_OUT zfbool &enableFlag,
-                                                         ZF_IN_OUT ZFObject **cache,
-                                                         ZF_IN_OUT zfindex &cacheCount);
-extern ZF_ENV_EXPORT void _ZFP_zfAllocWithCache_unregister(ZF_IN_OUT zfbool &enableFlag);
+extern ZFLIB_ZFCore void _ZFP_zfAllocWithCache_register(ZF_IN_OUT zfbool &enableFlag,
+                                                        ZF_IN_OUT ZFObject **cache,
+                                                        ZF_IN_OUT zfindex &cacheCount);
+extern ZFLIB_ZFCore void _ZFP_zfAllocWithCache_unregister(ZF_IN_OUT zfbool &enableFlag);
 template<typename T_ZFObject, typename T_Cleanup = T_ZFObject, int T_MaxCache = 16>
 zfclassNotPOD _ZFP_Obj_AllocCache
 {

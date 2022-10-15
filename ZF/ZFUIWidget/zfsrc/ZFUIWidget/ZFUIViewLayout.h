@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief simple container view that measure according children
  */
-zfclass ZF_ENV_EXPORT ZFUIViewLayout : zfextends ZFUIView
+zfclass ZFLIB_ZFUIWidget ZFUIViewLayout : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIViewLayout, ZFUIView)
 

@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFCompress
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFCompress)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFAlgorithm, ZFCompress)
 public:
     // ============================================================
     /** @brief see #ZFCompressBegin */

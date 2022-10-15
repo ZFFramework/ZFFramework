@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief device type for ZFEnvInfo
  */
-ZFENUM_BEGIN(ZFEnvDeviceUIType)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFEnvDeviceUIType)
     /**
      * @brief desktop devices such as PC or laptop,
      *   usually have large display and have keyboard and mouse as input
@@ -33,12 +33,12 @@ ZFENUM_BEGIN(ZFEnvDeviceUIType)
      *   usually have huge display and have little input devices
      */
     ZFENUM_VALUE(TV)
-ZFENUM_SEPARATOR(ZFEnvDeviceUIType)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Desktop)
     ZFENUM_VALUE_REGISTER(Handheld)
     ZFENUM_VALUE_REGISTER(Wearable)
     ZFENUM_VALUE_REGISTER(TV)
-ZFENUM_END(ZFEnvDeviceUIType)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFEnvDeviceUIType)
 
 ZF_NAMESPACE_BEGIN(ZFEnvInfo)
 
@@ -46,7 +46,7 @@ ZF_NAMESPACE_BEGIN(ZFEnvInfo)
 /**
  * @brief device type, #ZFEnvDeviceUIType::e_Desktop if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFEnvDeviceUITypeEnum, deviceUIType,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, ZFEnvDeviceUITypeEnum, deviceUIType,
                         ZFMP_IN_OPT(ZFEnvDeviceUITypeEnum, defaultValue, ZFEnvDeviceUIType::e_Desktop))
 
 ZF_NAMESPACE_END(ZFEnvInfo)

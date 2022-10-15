@@ -23,7 +23,7 @@ zfclassFwd _ZFP_ZFCoreMapPrivate;
  * use #ZFCorePointerBase as value,
  * which use retain logic and can hold many types
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFCoreMap
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFCoreMap
 {
 public:
     /**

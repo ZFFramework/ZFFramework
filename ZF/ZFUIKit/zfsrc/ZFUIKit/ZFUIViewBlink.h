@@ -14,12 +14,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief default mask image for #ZFUIViewBlink, an alpha white image by default
  */
-ZFEXPORT_VAR_DECLARE(zfautoObject, ZFUIViewBlinkImageDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfautoObject, ZFUIViewBlinkImageDefault)
 
 /**
  * @brief param for #ZFUIViewBlink
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFUIViewBlinkParam
+zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewBlinkParam
 {
     ZFCORE_PARAM_DECLARE_SELF(ZFUIViewBlinkParam)
 
@@ -48,17 +48,17 @@ public:
     }
     /** @endcond */
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFUIViewBlinkParam, ZFUIViewBlinkParam)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIViewBlinkParam, ZFUIViewBlinkParam)
 /**
  * @brief blink view so that it's easy to be noticed
  */
-ZFMETHOD_FUNC_DECLARE_2(void, ZFUIViewBlink,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewBlink,
                         ZFMP_IN(ZFUIView *, view),
                         ZFMP_IN_OPT(const ZFUIViewBlinkParam &, blinkParam, ZFUIViewBlinkParam()));
 /**
  * @brief blink view so that it's easy to be noticed
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(void, ZFUIViewBlink,
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIViewBlink,
                                ZFMP_IN(ZFUIView *, view),
                                ZFMP_IN(ZFUIImage *, blinkImage),
                                ZFMP_IN_OPT(zftimet, blinkDuration, zftimetZero()),
@@ -79,14 +79,14 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * sender is the view that was blinked\n
  * notified when a view start to blink
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkOn)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkOn)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when a view stop blink
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkOff)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkOff)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 ZF_NAMESPACE_GLOBAL_END

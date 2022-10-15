@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief parse json formated data to serializable
  */
-ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFSerializableDataFromJson,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataFromJson,
                         ZFMP_OUT(ZFSerializableData &, serializableData),
                         ZFMP_IN(const ZFJsonItem &, jsonObject),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
@@ -21,14 +21,14 @@ ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFSerializableDataFromJson,
 /**
  * @brief see #ZFSerializableDataFromJson
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFSerializableData, ZFSerializableDataFromJson,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDataFromJson,
                         ZFMP_IN(const ZFJsonItem &, jsonObject),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                         ZFMP_OUT_OPT(ZFJsonItem *, outErrorPos, zfnull))
 /**
  * @brief print serializable to json formated data
  */
-ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFSerializableDataToJson,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToJson,
                         ZFMP_OUT(ZFJsonItem &, jsonObject),
                         ZFMP_IN(const ZFSerializableData &, serializableData),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
@@ -36,7 +36,7 @@ ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFSerializableDataToJson,
 /**
  * @brief see #ZFSerializableDataToJson
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFJsonItem, ZFSerializableDataToJson,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFJsonItem, ZFSerializableDataToJson,
                         ZFMP_IN(const ZFSerializableData &, serializableData),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                         ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
@@ -45,18 +45,18 @@ ZFMETHOD_FUNC_DECLARE_3(ZFJsonItem, ZFSerializableDataToJson,
 /**
  * @brief util method to parse serializable data from input with json format
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFSerializableDataFromJson,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataFromJson,
                         ZFMP_OUT(ZFSerializableData &, ret),
                         ZFMP_IN(const ZFInput &, input),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
 /** @brief see #ZFSerializableDataFromJson */
-ZFMETHOD_FUNC_DECLARE_2(ZFSerializableData, ZFSerializableDataFromJson,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDataFromJson,
                         ZFMP_IN(const ZFInput &, input),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
 /**
  * @brief util method to print serializable data in json format, usually for debug use only
  */
-ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFSerializableDataToJson,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToJson,
                         ZFMP_IN(const ZFOutput &, outputCallback),
                         ZFMP_IN(const ZFSerializableData &, serializableData),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
@@ -66,18 +66,18 @@ ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFSerializableDataToJson,
 /**
  * @brief util method to parse object from input with json format
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFObjectFromJson,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFObjectFromJson,
                         ZFMP_OUT(zfautoObject &, ret),
                         ZFMP_IN(const ZFInput &, input),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
 /** @brief see #ZFObjectFromJson */
-ZFMETHOD_FUNC_DECLARE_2(zfautoObject, ZFObjectFromJson,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfautoObject, ZFObjectFromJson,
                         ZFMP_IN(const ZFInput &, input),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
 /**
  * @brief util method to convert serializable object to json format
  */
-ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFObjectToJson,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFObjectToJson,
                         ZFMP_IN(const ZFOutput &, outputCallback),
                         ZFMP_IN(ZFObject *, obj),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),

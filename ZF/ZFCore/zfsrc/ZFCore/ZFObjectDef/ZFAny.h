@@ -60,7 +60,7 @@ public:
  *   ZFObject *orig = any.toObject();
  * @endcode
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFAny
+zfclassLikePOD ZFLIB_ZFCore ZFAny
 {
     /** @cond ZFPrivateDoc */
 public:

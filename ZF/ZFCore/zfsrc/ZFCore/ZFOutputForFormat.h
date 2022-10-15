@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #ZFOutputForFormat */
-ZFENUM_BEGIN(ZFOutputFormatStep)
+ZFENUM_BEGIN(ZFLIB_ZFCore, ZFOutputFormatStep)
     /**
      * @brief before anything would be outputed,
      *   ensured called only once for each output
@@ -28,16 +28,16 @@ ZFENUM_BEGIN(ZFOutputFormatStep)
      * @brief called only once just before finish/destroy the output
      */
     ZFENUM_VALUE(OnDealloc)
-ZFENUM_SEPARATOR(ZFOutputFormatStep)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(OnInit)
     ZFENUM_VALUE_REGISTER(OnOutput)
     ZFENUM_VALUE_REGISTER(OnOutputEnd)
     ZFENUM_VALUE_REGISTER(OnDealloc)
-ZFENUM_END(ZFOutputFormatStep)
+ZFENUM_END(ZFLIB_ZFCore, ZFOutputFormatStep)
 
 // ============================================================
 /** @brief see #ZFOutputForFormat */
-zfinterface ZF_ENV_EXPORT ZFOutputFormat : zfextends ZFInterface
+zfinterface ZFLIB_ZFCore ZFOutputFormat : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFOutputFormat, ZFInterface)
 
@@ -91,7 +91,7 @@ public:
 
 // ============================================================
 /** @brief see #ZFOutputForFormat */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFOutputForFormatT,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForFormatT,
                         ZFMP_OUT(ZFCallback &, ret),
                         ZFMP_IN(const ZFOutput &, output),
                         ZFMP_IN(ZFOutputFormat *, format))
@@ -114,7 +114,7 @@ ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFOutputForFormatT,
  * -  if output success, the original output size would be returned,
  *   instead of the formated size
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFOutput, ZFOutputForFormat,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormat,
                         ZFMP_IN(const ZFOutput &, output),
                         ZFMP_IN(ZFOutputFormat *, format))
 
@@ -123,21 +123,21 @@ ZFMETHOD_FUNC_DECLARE_2(ZFOutput, ZFOutputForFormat,
  * @brief try access the output format passed to #ZFOutputForFormat,
  *   return null if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFOutputFormat *, ZFOutputForFormatGetFormat,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutputFormat *, ZFOutputForFormatGetFormat,
                         ZFMP_IN(const ZFCallback &, callback))
 
 /**
  * @brief try access the output passed to #ZFOutputForFormat,
  *   return null callback if not available
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFOutput, ZFOutputForFormatGetOutput,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormatGetOutput,
                         ZFMP_IN(const ZFCallback &, callback))
 
 // ============================================================
 /**
  * @brief basic output format
  */
-zfclass ZF_ENV_EXPORT ZFOutputFormatBasic : zfextends ZFStyleableObject, zfimplements ZFOutputFormat
+zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextends ZFStyleableObject, zfimplements ZFOutputFormat
 {
     ZFOBJECT_DECLARE(ZFOutputFormatBasic, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFOutputFormat)

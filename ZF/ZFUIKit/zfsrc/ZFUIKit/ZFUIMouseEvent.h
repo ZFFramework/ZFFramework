@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief mouse action for ZFUIMouseEvent
  */
-ZFENUM_BEGIN(ZFUIMouseAction)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIMouseAction)
     ZFENUM_VALUE(MouseDown) /**< @brief mouse down */
     ZFENUM_VALUE(MouseMove) /**< @brief mouse move */
     ZFENUM_VALUE(MouseUp) /**< @brief mouse up */
@@ -20,7 +20,7 @@ ZFENUM_BEGIN(ZFUIMouseAction)
     ZFENUM_VALUE(MouseHoverEnter) /**< @brief mouse hover enter */
     ZFENUM_VALUE(MouseHover) /**< @brief mouse hover */
     ZFENUM_VALUE(MouseHoverExit) /**< @brief mouse hover exit */
-ZFENUM_SEPARATOR(ZFUIMouseAction)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(MouseDown)
     ZFENUM_VALUE_REGISTER(MouseMove)
     ZFENUM_VALUE_REGISTER(MouseUp)
@@ -28,26 +28,26 @@ ZFENUM_SEPARATOR(ZFUIMouseAction)
     ZFENUM_VALUE_REGISTER(MouseHoverEnter)
     ZFENUM_VALUE_REGISTER(MouseHover)
     ZFENUM_VALUE_REGISTER(MouseHoverExit)
-ZFENUM_END(ZFUIMouseAction)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIMouseAction)
 
 /**
  * @brief mouse action for ZFUIMouseEvent
  */
-ZFENUM_BEGIN(ZFUIMouseButton)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIMouseButton)
     ZFENUM_VALUE(MouseButtonLeft) /**< @brief left button */
     ZFENUM_VALUE(MouseButtonRight) /**< @brief right button */
     ZFENUM_VALUE(MouseButtonCenter) /**< @brief center button */
-ZFENUM_SEPARATOR(ZFUIMouseButton)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(MouseButtonLeft)
     ZFENUM_VALUE_REGISTER(MouseButtonRight)
     ZFENUM_VALUE_REGISTER(MouseButtonCenter)
-ZFENUM_END(ZFUIMouseButton)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIMouseButton)
 
 // ============================================================
 /**
  * @brief mouse event for ui elements
  */
-zffinal zfclass ZF_ENV_EXPORT ZFUIMouseEvent : zfextends ZFUIEvent
+zffinal zfclass ZFLIB_ZFUIKit ZFUIMouseEvent : zfextends ZFUIEvent
 {
     ZFOBJECT_DECLARE(ZFUIMouseEvent, ZFUIEvent)
 

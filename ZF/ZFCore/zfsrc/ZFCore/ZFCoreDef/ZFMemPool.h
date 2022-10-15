@@ -53,7 +53,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             : ((((size) / _ZFP_zfpoolSizeAlignMin) + 1) * _ZFP_zfpoolSizeAlignMin) \
     )
 template<int N>
-union ZF_ENV_EXPORT _ZFP_zfpoolObjectBlock
+union ZFLIB_ZFCore _ZFP_zfpoolObjectBlock
 {
 public:
     zfbyte buf[N];

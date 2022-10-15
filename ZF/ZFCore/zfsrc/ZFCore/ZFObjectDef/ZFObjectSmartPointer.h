@@ -26,7 +26,7 @@ ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
     })
 
 // ============================================================
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zflineRelease
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zflineRelease
 {
 public:
     template<typename T_ZFObject>
@@ -47,7 +47,7 @@ public:
 public:
     ZFObject *obj;
 };
-zffinal zfclassNotPOD ZF_ENV_EXPORT _ZFP_zfunsafe_zflineRelease
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfunsafe_zflineRelease
 {
 public:
     template<typename T_ZFObject>
@@ -189,7 +189,7 @@ public:
     T_ZFObject *name = (ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name).obj)
 
 // ============================================================
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfblockedReleaseContainer
+zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedReleaseContainer
 {
 public:
     template<typename T_ZFObject>
@@ -204,7 +204,7 @@ public:
 private:
     ZFObject *obj;
 };
-zffinal zfclassLikePOD ZF_ENV_EXPORT _ZFP_zfunsafe_zfblockedReleaseContainer
+zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfunsafe_zfblockedReleaseContainer
 {
 public:
     template<typename T_ZFObject>

@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief button group type
  */
-ZFENUM_BEGIN(ZFUIButtonGroupType)
+ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
     /**
      * @brief normal, all buttons are added without any modification
      */
@@ -26,10 +26,10 @@ ZFENUM_BEGIN(ZFUIButtonGroupType)
      * this type can be used as tab buttons and ratio buttons
      */
     ZFENUM_VALUE(Tab)
-ZFENUM_SEPARATOR(ZFUIButtonGroupType)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Normal)
     ZFENUM_VALUE_REGISTER(Tab)
-ZFENUM_END(ZFUIButtonGroupType)
+ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
 
 // ============================================================
 // ZFUIButtonGroup
@@ -47,7 +47,7 @@ ZFENUM_END(ZFUIButtonGroupType)
  * after buttons added, you may observe #ZFUIButton's button event to achieve your logic\n
  * see #ZFUIButtonGroup::buttonGroupOnEvent for more info
  */
-zfinterface ZF_ENV_EXPORT ZFUIButtonGroup : zfextends ZFInterface
+zfinterface ZFLIB_ZFUIWidget ZFUIButtonGroup : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFUIButtonGroup, ZFInterface)
 
@@ -267,7 +267,7 @@ protected:
 /**
  * @brief simply button group that only holds buttons
  */
-zfclass ZF_ENV_EXPORT ZFUIButtonGroupArray : zfextends ZFObject, zfimplements ZFUIButtonGroup
+zfclass ZFLIB_ZFUIWidget ZFUIButtonGroupArray : zfextends ZFObject, zfimplements ZFUIButtonGroup
 {
     ZFOBJECT_DECLARE(ZFUIButtonGroupArray, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFUIButtonGroup)

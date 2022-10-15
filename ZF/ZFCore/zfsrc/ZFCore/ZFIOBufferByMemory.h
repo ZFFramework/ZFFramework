@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief #ZFIOBuffer using memory */
-zfclass ZF_ENV_EXPORT ZFIOBufferByMemory : zfextends ZFIOBuffer
+zfclass ZFLIB_ZFCore ZFIOBufferByMemory : zfextends ZFIOBuffer
 {
     ZFOBJECT_DECLARE(ZFIOBufferByMemory, ZFIOBuffer)
 

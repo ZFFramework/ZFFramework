@@ -65,14 +65,14 @@ typedef enum
 /**
  * @brief POD data to hold index range
  */
-zfclassPOD ZF_ENV_EXPORT ZFIndexRange
+zfclassPOD ZFLIB_ZFCore ZFIndexRange
 {
 public:
     zfindex start; /**< @brief start */
     zfindex count; /**< @brief count */
 };
-extern ZF_ENV_EXPORT const ZFIndexRange _ZFP_ZFIndexRangeZero;
-extern ZF_ENV_EXPORT const ZFIndexRange _ZFP_ZFIndexRangeMax;
+extern ZFLIB_ZFCore const ZFIndexRange _ZFP_ZFIndexRangeZero;
+extern ZFLIB_ZFCore const ZFIndexRange _ZFP_ZFIndexRangeMax;
 /**
  * @brief zero index range
  */

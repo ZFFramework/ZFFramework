@@ -14,7 +14,7 @@ zfclassFwd _ZFP_ZFMapPrivate;
 /**
  * @brief container of ZFObject, see #ZFKeyValueContainer
  */
-zfclass ZF_ENV_EXPORT ZFMap: zfextends ZFKeyValueContainer
+zfclass ZFLIB_ZFCore ZFMap: zfextends ZFKeyValueContainer
 {
     ZFOBJECT_DECLARE(ZFMap, ZFKeyValueContainer)
 

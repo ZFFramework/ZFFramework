@@ -9,14 +9,14 @@
 #include "ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFAutoReleasePoolPrivate;
+zfclassNotPOD _ZFP_ZFAutoReleasePoolPrivate;
 /**
  * @brief auto release pool similar to Object-C's NSAutoreleasePool
  *
  * automatically release all object in pool upon pool's drain or delete
  * @see zfRelease
  */
-zfclass ZF_ENV_EXPORT ZFAutoReleasePool : zfextends ZFObject
+zfclass ZFLIB_ZFCore ZFAutoReleasePool : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFAutoReleasePool, ZFObject)
 

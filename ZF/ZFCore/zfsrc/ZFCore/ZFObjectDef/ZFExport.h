@@ -25,7 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * usage:
  * @code
  *   // in header file
- *   ZFEXPORT_VAR_DECLARE(YourType, yourName)
+ *   ZFEXPORT_VAR_DECLARE(ZFLIB_APP, YourType, yourName)
  *
  *   // in source file
  *   ZFEXPORT_VAR_DEFINE(YourType, yourName, yourInitValue)
@@ -44,18 +44,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   if you want to ensure the init value applied,
  *   you can use ZFExportVarEnsureInit_YourVarName
  */
-#define ZFEXPORT_VAR_DECLARE(Type, Name) \
+#define ZFEXPORT_VAR_DECLARE(ZFLIB_, Type, Name) \
     /** @cond ZFPrivateDoc */ \
-    extern ZF_ENV_EXPORT Type _ZFP_v_##Name; \
+    extern ZFLIB_ Type _ZFP_v_##Name; \
     /** @endcond */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(G, \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
         Type &, Name \
         ) \
     { \
         return _ZFP_v_##Name; \
     } \
     /** @brief see @ref Name */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(S, \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(ZFLIB_, S, \
         void, Name \
         , ZFMP_IN(Type const &, v) \
         ) \
@@ -63,7 +63,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         _ZFP_v_##Name = v; \
     } \
     /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZF_ENV_EXPORT void ZFExportVarEnsureInit_##Name(void);
+    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_DEFINE(Type, Name, initValue) \
@@ -82,15 +82,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_ALIAS_DECLARE(Type, Name, AliasName) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(G, \
+#define ZFEXPORT_VAR_ALIAS_DECLARE(ZFLIB_, Type, Name, AliasName) \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
         Type &, Name \
         ) \
     { \
         return (AliasName)(); \
     } \
     /** @brief see @ref Name */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(S, \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(ZFLIB_, S, \
         void, Name \
         , ZFMP_IN(Type const &, v) \
         ) \
@@ -98,7 +98,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         AliasName(v); \
     } \
     /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZF_ENV_EXPORT void ZFExportVarEnsureInit_##Name(void);
+    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_ALIAS_DEFINE(Type, Name, AliasName) \
@@ -115,15 +115,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_VALUEREF_DECLARE(Type, Name, ValueRef) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(G, \
+#define ZFEXPORT_VAR_VALUEREF_DECLARE(ZFLIB_, Type, Name, ValueRef) \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
         Type &, Name \
         ) \
     { \
         return ValueRef; \
     } \
     /** @brief see @ref Name */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(S, \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(ZFLIB_, S, \
         void, Name \
         , ZFMP_IN(Type const &, v) \
         ) \
@@ -147,18 +147,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_READONLY_DECLARE(Type, Name) \
+#define ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_, Type, Name) \
     /** @cond ZFPrivateDoc */ \
-    extern ZF_ENV_EXPORT Type _ZFP_v_##Name; \
+    extern ZFLIB_ Type _ZFP_v_##Name; \
     /** @endcond */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(G, \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
         Type const &, Name \
         ) \
     { \
         return _ZFP_v_##Name; \
     } \
     /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZF_ENV_EXPORT void ZFExportVarEnsureInit_##Name(void);
+    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_READONLY_DEFINE(Type, Name, initValue) \
@@ -173,15 +173,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_READONLY_ALIAS_DECLARE(Type, Name, AliasName) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(G, \
+#define ZFEXPORT_VAR_READONLY_ALIAS_DECLARE(ZFLIB_, Type, Name, AliasName) \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
         Type const &, Name \
         ) \
     { \
         return (AliasName)(); \
     } \
     /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZF_ENV_EXPORT void ZFExportVarEnsureInit_##Name(void);
+    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_READONLY_ALIAS_DEFINE(Type, Name, AliasName) \
@@ -194,8 +194,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(Type, Name, ValueRef) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(G, \
+#define ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_, Type, Name, ValueRef) \
+    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
         Type const &, Name \
         ) \
     { \

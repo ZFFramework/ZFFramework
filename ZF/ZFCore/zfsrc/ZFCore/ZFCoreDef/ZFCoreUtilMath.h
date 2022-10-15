@@ -171,7 +171,7 @@ inline T_zffloat zfmRound(ZF_IN const T_zffloat &v)
  * @brief return a random number range [0, max),
  *   max depends on implementation and is ensured at least 32767
  */
-extern ZF_ENV_EXPORT zfuint zfmRand(void);
+extern ZFLIB_ZFCore zfuint zfmRand(void);
 /**
  * @brief return a random number range [0, range) or 0 if range is 0 or negative
  */

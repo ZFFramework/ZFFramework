@@ -83,10 +83,10 @@ inline void ZFPropertyCopy(ZF_IN const ZFProperty *propertyInfo,
  * @note this function may cost much time if there are many properties in the inherit tree,
  *   you may want to use #ZFPropertyCopy directly for performance
  */
-extern ZF_ENV_EXPORT void ZFPropertyCopyAll(ZF_IN ZFObject *dstObj,
-                                            ZF_IN ZFObject *srcObj,
-                                            ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull,
-                                            ZF_OUT_OPT ZFCoreArrayPOD<const ZFProperty *> *copiedProperties = zfnull);
+extern ZFLIB_ZFCore void ZFPropertyCopyAll(ZF_IN ZFObject *dstObj,
+                                           ZF_IN ZFObject *srcObj,
+                                           ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull,
+                                           ZF_OUT_OPT ZFCoreArrayPOD<const ZFProperty *> *copiedProperties = zfnull);
 
 // ============================================================
 // ZFPropertyGetInfo

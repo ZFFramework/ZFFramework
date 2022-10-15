@@ -14,14 +14,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * pathData is the http url
  */
-ZFPATHTYPE_DECLARE(http)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFNet, http)
 
 // ============================================================
 // ZFInputForHttp
 /**
  * @brief util to create a http file input callback
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFInput, ZFInputForHttp,
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFNet, ZFInput, ZFInputForHttp,
                                ZFMP_IN(const zfchar *, url))
 {
     ZFInput ret;

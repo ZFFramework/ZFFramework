@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   </ZFAnimationGroupChildData>
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFAnimationGroupChildData : zfextends ZFObject, zfimplements ZFSerializable
+zfclass ZFLIB_ZFUtility ZFAnimationGroupChildData : zfextends ZFObject, zfimplements ZFSerializable
 {
     ZFOBJECT_DECLARE(ZFAnimationGroupChildData, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable)
@@ -67,7 +67,7 @@ zfclassFwd _ZFP_ZFAnimationGroupPrivate;
  *   </ZFAnimationGroup>
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFAnimationGroup : zfextends ZFAnimation
+zfclass ZFLIB_ZFUtility ZFAnimationGroup : zfextends ZFAnimation
 {
     ZFOBJECT_DECLARE(ZFAnimationGroup, ZFAnimation)
 

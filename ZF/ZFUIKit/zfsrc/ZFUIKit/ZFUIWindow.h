@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief window level for #ZFUIWindow, value is ensured from low to high
  */
-ZFENUM_BEGIN(ZFUIWindowLevel)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIWindowLevel)
     ZFENUM_VALUE(ZFFrameworkBgLowest)
     ZFENUM_VALUE(ZFFrameworkBgLow)
     ZFENUM_VALUE(ZFFrameworkBgNormal)
@@ -28,7 +28,7 @@ ZFENUM_BEGIN(ZFUIWindowLevel)
     ZFENUM_VALUE(ZFFrameworkFgNormal)
     ZFENUM_VALUE(ZFFrameworkFgHigh)
     ZFENUM_VALUE(ZFFrameworkFgHighest)
-ZFENUM_SEPARATOR(ZFUIWindowLevel)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(ZFFrameworkBgLowest)
     ZFENUM_VALUE_REGISTER(ZFFrameworkBgLow)
     ZFENUM_VALUE_REGISTER(ZFFrameworkBgNormal)
@@ -44,7 +44,7 @@ ZFENUM_SEPARATOR(ZFUIWindowLevel)
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgNormal)
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgHigh)
     ZFENUM_VALUE_REGISTER(ZFFrameworkFgHighest)
-ZFENUM_END_WITH_DEFAULT(ZFUIWindowLevel, ZFUIWindowLevel::e_AppNormal)
+ZFENUM_END_WITH_DEFAULT(ZFLIB_ZFUIKit, ZFUIWindowLevel, ZFUIWindowLevel::e_AppNormal)
 
 // ============================================================
 // ZFUIWindow
@@ -70,7 +70,7 @@ zfclassFwd _ZFP_ZFUIWindowPrivate;
  * you may change its owner ZFUISysWindow by #windowOwnerSysWindow,
  * but only before #windowShow is called
  */
-zfclass ZF_ENV_EXPORT ZFUIWindow : zfextends ZFUIView
+zfclass ZFLIB_ZFUIKit ZFUIWindow : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIWindow, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIWindow)
@@ -261,7 +261,7 @@ private:
  *   attach the view to the window,
  *   and show the window
  */
-ZFMETHOD_FUNC_DECLARE_3(void, ZFUIWindowShow,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIWindowShow,
                         ZFMP_IN(ZFUIView *, view),
                         ZFMP_IN_OPT(const ZFUISizeParam &, sizeParam, ZFUISizeParamFillFill()),
                         ZFMP_IN_OPT(const ZFUIAlignFlags &, layoutAlign, ZFUIAlign::e_Center))

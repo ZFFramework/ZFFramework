@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief token for impl */
-zfclassNotPOD ZF_ENV_EXPORT ZFUIDrawToken
+zfclassNotPOD ZFLIB_ZFUIKit ZFUIDrawToken
 {
 public:
     /** @brief type */
@@ -44,7 +44,7 @@ public:
 /**
  * @brief protocol for #ZFUIDrawableView
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIDrawForView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIDrawForView)
 public:
     /**
      * @brief create native drawable view
@@ -79,7 +79,7 @@ ZFPROTOCOL_INTERFACE_END(ZFUIDrawForView)
 /**
  * @brief protocol for #ZFUIDraw
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIDrawForImage)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIDrawForImage)
 public:
     /** @brief see #ZFUIDraw::beginForImage */
     virtual zfbool beginForImage(ZF_IN_OUT ZFUIDrawToken &token,
@@ -92,7 +92,7 @@ ZFPROTOCOL_INTERFACE_END(ZFUIDrawForImage)
 /**
  * @brief protocol for #ZFUIDraw
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIDraw)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIDraw)
 public:
     /** @brief see #ZFUIDraw::antialiasing */
     virtual void antialiasing(ZF_IN ZFUIDrawToken &token, ZF_IN zfbool antialiasing) {}

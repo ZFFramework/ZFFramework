@@ -20,7 +20,7 @@ zfclassFwd _ZFP_ZFTimerPrivate;
  *   zfRelease(timer); // safe to release after start, timer would be auto released after stop
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFTimer : zfextends ZFObject
+zfclass ZFLIB_ZFCore ZFTimer : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFTimer, ZFObject)
 
@@ -137,7 +137,7 @@ private:
 /**
  * @brief util to start timer
  */
-ZFMETHOD_FUNC_DECLARE_3(zfautoObjectT<ZFTimer *>, ZFTimerStart,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerStart,
                         ZFMP_IN(zftimet, timerInterval),
                         ZFMP_IN(const ZFListener &, timerCallback),
                         ZFMP_IN_OPT(ZFObject *, userData, zfnull))
@@ -147,7 +147,7 @@ ZFMETHOD_FUNC_DECLARE_3(zfautoObjectT<ZFTimer *>, ZFTimerStart,
  *
  * we would try to run the timerCallback in the same thread that call this method
  */
-ZFMETHOD_FUNC_DECLARE_3(zfautoObjectT<ZFTimer *>, ZFTimerOnce,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerOnce,
                         ZFMP_IN(zftimet, delay),
                         ZFMP_IN(const ZFListener &, timerCallback),
                         ZFMP_IN_OPT(ZFObject *, userData, zfnull))

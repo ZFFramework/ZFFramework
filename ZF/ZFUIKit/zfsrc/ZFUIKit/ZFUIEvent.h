@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief base class of all ui event
  */
-zfclass ZF_ENV_EXPORT ZFUIEvent : zfextends ZFObject
+zfclass ZFLIB_ZFUIKit ZFUIEvent : zfextends ZFObject
 {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIEvent, ZFObject)
 

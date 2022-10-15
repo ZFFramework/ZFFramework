@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for #ZFUITextEdit
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUITextEdit)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUITextEdit)
 public:
     /**
      * @brief create native text edit view

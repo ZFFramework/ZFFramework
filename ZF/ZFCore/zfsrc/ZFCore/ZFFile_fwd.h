@@ -11,18 +11,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFFileSeparator
-extern ZF_ENV_EXPORT const zfchar _ZFP_ZFFileSeparator;
-extern ZF_ENV_EXPORT const zfchar *_ZFP_ZFFileSeparatorString;
+extern ZFLIB_ZFCore const zfchar _ZFP_ZFFileSeparator;
+extern ZFLIB_ZFCore const zfchar *_ZFP_ZFFileSeparatorString;
 
 /**
  * @brief file separator (ensured to be '/' for now)
  */
-ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(zfchar, ZFFileSeparator, _ZFP_ZFFileSeparator)
+ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_ZFCore, zfchar, ZFFileSeparator, _ZFP_ZFFileSeparator)
 
 /**
  * @brief string version of #ZFFileSeparator
  */
-ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(const zfchar *, ZFFileSeparatorString, _ZFP_ZFFileSeparatorString)
+ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_ZFCore, const zfchar *, ZFFileSeparatorString, _ZFP_ZFFileSeparatorString)
 
 // ============================================================
 // ZFFileOpenOption
@@ -46,17 +46,17 @@ ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(const zfchar *, ZFFileSeparatorString, _Z
  * -  ZFFileOpenOptionAppend | ZFFileOpenOption::e_Read\n
  *   open a file for append or create new if not exist, for read/write
  */
-ZFENUM_BEGIN(ZFFileOpenOption)
+ZFENUM_BEGIN(ZFLIB_ZFCore, ZFFileOpenOption)
     ZFENUM_VALUE_WITH_INIT(Create, 1) /**< @brief create for read write */
     ZFENUM_VALUE_WITH_INIT(Read, 2) /**< @brief readonly */
     ZFENUM_VALUE_WITH_INIT(Write, 4) /**< @brief write only */
     ZFENUM_VALUE_WITH_INIT(Append, 8) /**< @brief append only */
-ZFENUM_SEPARATOR(ZFFileOpenOption)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Create)
     ZFENUM_VALUE_REGISTER(Read)
     ZFENUM_VALUE_REGISTER(Write)
     ZFENUM_VALUE_REGISTER(Append)
-ZFENUM_END_FLAGS(ZFFileOpenOption, ZFFileOpenOptionFlags)
+ZFENUM_END_FLAGS(ZFLIB_ZFCore, ZFFileOpenOption, ZFFileOpenOptionFlags)
 
 // ============================================================
 zfclassFwd _ZFP_ZFFileFindDataPrivate;
@@ -64,7 +64,7 @@ zfclassFwd _ZFP_ZFFileFindDataPrivate;
  * @brief data used by ZFFile when finding files
  * @see ZFFileFileFindFirst, ZFFileFileFindNext, ZFFileFileFindClose
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFFileFindData
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFFileFindData
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -146,7 +146,7 @@ public:
 private:
     _ZFP_ZFFileFindDataPrivate *d;
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFFileFindData, ZFFileFindData)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFileFindData, ZFFileFindData)
 ZFOUTPUT_TYPE(ZFFileFindData, {output << v.objectInfo();})
 
 // ============================================================

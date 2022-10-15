@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief #ZFIOBuffer using cache file */
-zfclass ZF_ENV_EXPORT ZFIOBufferByCacheFile : zfextends ZFIOBuffer
+zfclass ZFLIB_ZFCore ZFIOBufferByCacheFile : zfextends ZFIOBuffer
 {
     ZFOBJECT_DECLARE(ZFIOBufferByCacheFile, ZFIOBuffer)
 

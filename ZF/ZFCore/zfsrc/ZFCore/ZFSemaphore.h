@@ -13,7 +13,7 @@ zfclassFwd _ZFP_ZFSemaphorePrivate;
 /**
  * @brief semaphore utility
  */
-zfclass ZF_ENV_EXPORT ZFSemaphore : zfextends ZFObject
+zfclass ZFLIB_ZFCore ZFSemaphore : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFSemaphore, ZFObject)
 

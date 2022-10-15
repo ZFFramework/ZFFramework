@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * callback would run in new thread,
  * finishCallback would run in the same thread that called this method
  */
-ZFMETHOD_FUNC_DECLARE_4(zftaskid, zfasync,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zftaskid, zfasync,
                         ZFMP_IN(const ZFListener &, callback),
                         ZFMP_IN_OPT(ZFObject *, userData, zfnull),
                         ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback()),
@@ -25,7 +25,7 @@ ZFMETHOD_FUNC_DECLARE_4(zftaskid, zfasync,
 /**
  * @brief try to cancel the task or finishCallback started by #zfasync
  */
-ZFMETHOD_FUNC_DECLARE_1(void, zfasyncCancel,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel,
                         ZFMP_IN_OUT(zftaskid &, taskid))
 
 ZF_NAMESPACE_GLOBAL_END

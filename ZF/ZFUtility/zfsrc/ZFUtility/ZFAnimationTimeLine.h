@@ -26,7 +26,7 @@ zfclassFwd _ZFP_ZFAnimationTimeLinePrivate;
  *   <ZFAnimationTimeLine />
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFAnimationTimeLine : zfextends ZFAnimation
+zfclass ZFLIB_ZFUtility ZFAnimationTimeLine : zfextends ZFAnimation
 {
     ZFOBJECT_DECLARE(ZFAnimationTimeLine, ZFAnimation)
 

@@ -46,12 +46,12 @@ zfclassFwd ZFListener;
  *     (at this case, you should ensure the method's caller won't store
  *     the return value for a long time)
  */
-extern ZF_ENV_EXPORT const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam &param,
-                                                             ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam &param,
+                                                            ZF_OUT_OPT zfstring *errorHint = zfnull);
 /**
  * @brief see #ZFMethodDynamicRegister
  */
-extern ZF_ENV_EXPORT void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method);
+extern ZFLIB_ZFCore void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method);
 
 // ============================================================
 /* ZFMETHOD_MAX_PARAM */
@@ -72,7 +72,7 @@ zfclassFwd _ZFP_ZFMethodDynamicRegisterParamPrivate;
  * -  methodReturnTypeId, #ZFTypeId_void by default
  * -  methodReturnTypeName, empty by default
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFMethodDynamicRegisterParam
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFMethodDynamicRegisterParam
 {
 public:
     /** @brief see #ZFMethodDynamicRegister */

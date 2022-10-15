@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note this object only hold the necessary datas as pointer,
  *   without auto retain or release logic
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFListenerData
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFListenerData
 {
     ZFCORE_PARAM_DECLARE_SELF(ZFListenerData)
 public:
@@ -167,7 +167,7 @@ public:
  * what params means, is determined by invoker of the listener,
  * see each listener's comments before use it
  */
-ZFCALLBACK_DECLARE_BEGIN(ZFListener, ZFCallback)
+ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFListener, ZFCallback)
 public:
     /** @brief see #ZFListener */
     inline void execute(void) const
@@ -193,12 +193,12 @@ public:
     {
         ZFCallback::executeExact<void, const ZFListenerData &, ZFObject *>(listenerData, userData);
     }
-_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFListener, ZFCallback)
+_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFListener, ZFCallback)
 
 // ============================================================
 // ZFObserverHolder
 /** @brief see #ZFObject::observerNotify */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFObserverAddParam
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverAddParam
 {
     ZFCORE_PARAM_DECLARE_SELF(ZFObserverAddParam)
 
@@ -240,7 +240,7 @@ zfclassFwd _ZFP_ZFObserverHolderPrivate;
 /**
  * @brief holder object for observer logic, see #ZFObject::observerNotify
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFObserverHolder
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverHolder
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -371,7 +371,7 @@ private:
  *
  * use only if necessary, which may cause performance issue
  */
-extern ZF_ENV_EXPORT ZFObserverHolder &ZFGlobalObserver(void);
+extern ZFLIB_ZFCore ZFObserverHolder &ZFGlobalObserver(void);
 
 // ============================================================
 // observer
@@ -423,7 +423,7 @@ extern ZF_ENV_EXPORT ZFObserverHolder &ZFGlobalObserver(void);
  *   // in header files
  *   ZF_NAMESPACE_BEGIN(YourNamespace)
  *   / ** @brief you can add doxygen docs here * /
- *   ZFOBSERVER_EVENT_GLOBAL(YourEvent)
+ *   ZFOBSERVER_EVENT_GLOBAL(ZFLIB_APP, YourEvent)
  *   ZF_NAMESPACE_END(YourNamespace)
  *
  *   ZFOBSERVER_EVENT_GLOBAL_REGISTER(YourNamespace, YourEvent)
@@ -434,8 +434,8 @@ extern ZF_ENV_EXPORT ZFObserverHolder &ZFGlobalObserver(void);
  * unlike #ZFOBSERVER_EVENT, this macro would declare event outside of class scope,
  * typically you should use #ZFOBSERVER_EVENT_GLOBAL which have "ZFGlobalEvent" as namespace
  */
-#define ZFOBSERVER_EVENT_GLOBAL(YourEvent) \
-    ZFIDMAP_GLOBAL_DETAIL(Event, YourEvent)
+#define ZFOBSERVER_EVENT_GLOBAL(ZFLIB_, YourEvent) \
+    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, Event, YourEvent)
 
 /** @brief see #ZFOBSERVER_EVENT */
 #define ZFOBSERVER_EVENT_GLOBAL_REGISTER(YourEvent) \

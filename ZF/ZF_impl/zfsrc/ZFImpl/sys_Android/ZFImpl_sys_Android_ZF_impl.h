@@ -1,7 +1,7 @@
 #ifndef _ZFI_ZFImpl_sys_Android_ZF_impl_h_
 #define _ZFI_ZFImpl_sys_Android_ZF_impl_h_
 
-#include "ZFImpl.h"
+#include "../ZFImpl_ZF_impl.h"
 
 #if ZF_ENV_sys_Android
 
@@ -98,13 +98,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // Object
 #define ZFImpl_sys_Android_JNI_ID_Object java_lang_Object
 #define ZFImpl_sys_Android_JNI_NAME_Object "java.lang.Object"
-extern ZF_ENV_EXPORT jclass ZFImpl_sys_Android_jclassObject(void);
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassObject(void);
 
 // ============================================================
 // String
 #define ZFImpl_sys_Android_JNI_ID_String java_lang_String
 #define ZFImpl_sys_Android_JNI_NAME_String "java.lang.String"
-extern ZF_ENV_EXPORT jclass ZFImpl_sys_Android_jclassString(void);
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassString(void);
 
 // ============================================================
 // ZFAndroidLog
@@ -127,7 +127,7 @@ extern ZF_ENV_EXPORT jclass ZFImpl_sys_Android_jclassString(void);
 #endif
 
 // ============================================================
-extern ZF_ENV_EXPORT void ZFImpl_sys_Android_zfstringFromString(ZF_IN_OUT zfstring &s, ZF_IN jobject jstr);
+extern ZFLIB_ZF_impl void ZFImpl_sys_Android_zfstringFromString(ZF_IN_OUT zfstring &s, ZF_IN jobject jstr);
 inline zfstring ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr)
 {
     zfstring ret;
@@ -135,14 +135,14 @@ inline zfstring ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr)
     return ret;
 }
 // note returned object must be deleted by DeleteLocalRef
-extern ZF_ENV_EXPORT jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfstring &s);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfstring &s);
 // note returned object must be deleted by DeleteLocalRef
-extern ZF_ENV_EXPORT jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfchar *s);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfchar *s);
 
 // ============================================================
-extern ZF_ENV_EXPORT zfstring ZFImpl_sys_Android_stackTrace(void);
-extern ZF_ENV_EXPORT void ZFImpl_sys_Android_stackTracePrint(void);
-extern ZF_ENV_EXPORT void ZFImpl_sys_Android_objectInfoT(ZF_OUT zfstring &ret, ZF_IN jobject nativeObject);
+extern ZFLIB_ZF_impl zfstring ZFImpl_sys_Android_stackTrace(void);
+extern ZFLIB_ZF_impl void ZFImpl_sys_Android_stackTracePrint(void);
+extern ZFLIB_ZF_impl void ZFImpl_sys_Android_objectInfoT(ZF_OUT zfstring &ret, ZF_IN jobject nativeObject);
 inline zfstring ZFImpl_sys_Android_objectInfo(ZF_IN jobject nativeObject)
 {
     zfstring ret;
@@ -154,18 +154,18 @@ inline zfstring ZFImpl_sys_Android_objectInfo(ZF_IN jobject nativeObject)
 // ZFAndroidBuffer
 // buffer object used to access raw byte[] data from/to Java side
 // see ZFAndroidBuffer.java for more info
-zfclassPOD ZF_ENV_EXPORT ZFImpl_sys_Android_Buffer
+zfclassPOD ZFLIB_ZF_impl ZFImpl_sys_Android_Buffer
 {
 public:
     zfbyte *buffer;
     zfindex bufferSize;
 };
-extern ZF_ENV_EXPORT const ZFImpl_sys_Android_Buffer ZFImpl_sys_Android_BufferZero;
+extern ZFLIB_ZF_impl const ZFImpl_sys_Android_Buffer ZFImpl_sys_Android_BufferZero;
 #define ZFImpl_sys_Android_JNI_ID_ZFAndroidBuffer ZFImpl_sys_Android_JNI_ID(NativeUtil_ZFAndroidBuffer)
 #define ZFImpl_sys_Android_JNI_NAME_ZFAndroidBuffer ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFAndroidBuffer)
-extern ZF_ENV_EXPORT jclass ZFImpl_sys_Android_jclassZFAndroidBuffer(void);
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassZFAndroidBuffer(void);
 
-extern ZF_ENV_EXPORT void ZFImpl_sys_Android_ZFAndroidBufferFromJava(ZF_OUT ZFImpl_sys_Android_Buffer &ret, ZF_IN jobject jobjBuffer);
+extern ZFLIB_ZF_impl void ZFImpl_sys_Android_ZFAndroidBufferFromJava(ZF_OUT ZFImpl_sys_Android_Buffer &ret, ZF_IN jobject jobjBuffer);
 inline ZFImpl_sys_Android_Buffer ZFImpl_sys_Android_ZFAndroidBufferFromJava(ZF_IN jobject jobjBuffer)
 {
     ZFImpl_sys_Android_Buffer ret = ZFImpl_sys_Android_BufferZero;
@@ -173,7 +173,7 @@ inline ZFImpl_sys_Android_Buffer ZFImpl_sys_Android_ZFAndroidBufferFromJava(ZF_I
     return ret;
 }
 // note returned value must be released by DeleteLocalRef
-extern ZF_ENV_EXPORT jobject ZFImpl_sys_Android_ZFAndroidBufferToJava(ZF_IN void *buffer, ZF_IN zfindex bufferSize);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_ZFAndroidBufferToJava(ZF_IN void *buffer, ZF_IN zfindex bufferSize);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Android

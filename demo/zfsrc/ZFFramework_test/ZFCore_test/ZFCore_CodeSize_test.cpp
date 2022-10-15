@@ -1230,7 +1230,7 @@ ZFPROPERTY_USER_REGISTER_ASSIGN(_ZFP_ZFCore_CodeSize_test_PropertyUserRegister, 
 #if _ZFP_ZFCore_CodeSize_test_PropertyType_ENABLE
 #define _ZFP_ZFCore_CodeSize_test_PropertyType_EXPAND(N) \
     zfclassNotPOD _ZFP_ZFCore_CodeSize_test_PropertyType_Class##N {}; \
-    ZFTYPEID_ACCESS_ONLY_DECLARE(_ZFP_ZFCore_CodeSize_test_PropertyType_Class##N, _ZFP_ZFCore_CodeSize_test_PropertyType_Class##N) \
+    ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_APP, _ZFP_ZFCore_CodeSize_test_PropertyType_Class##N, _ZFP_ZFCore_CodeSize_test_PropertyType_Class##N) \
     ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(_ZFP_ZFCore_CodeSize_test_PropertyType_Class##N, _ZFP_ZFCore_CodeSize_test_PropertyType_Class##N)
 _ZFP_ZFCore_CodeSize_test_PropertyType_EXPAND(0)
 _ZFP_ZFCore_CodeSize_test_PropertyType_EXPAND(1)

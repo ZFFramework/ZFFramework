@@ -13,22 +13,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief check whether the toCompare matches the tokens, return the index in tokens or zfindexMax() if not matched
  */
-extern ZF_ENV_EXPORT zfindex zfsCheckMatch(ZF_IN const zfchar **tokens,
-                                           ZF_IN zfindex tokenCount,
-                                           ZF_IN const zfchar *toCompare,
-                                           ZF_IN_OPT zfindex toCompareLength = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfsCheckMatch(ZF_IN const zfchar **tokens,
+                                          ZF_IN zfindex tokenCount,
+                                          ZF_IN const zfchar *toCompare,
+                                          ZF_IN_OPT zfindex toCompareLength = zfindexMax());
 
 // ============================================================
 /**
  * @brief util macro to declare type string converter for ZFFramework
  */
-#define ZFCORETYPE_STRING_CONVERTER_DECLARE(TypeName, Type) \
+#define ZFCORETYPE_STRING_CONVERTER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @brief util method to convert TypeName from string */ \
-    extern ZF_ENV_EXPORT zfbool TypeName##FromString(ZF_OUT Type &v, \
-                                                     ZF_IN const zfchar *src, \
-                                                     ZF_IN_OPT zfindex srcLen = zfindexMax()); \
+    extern ZFLIB_ zfbool TypeName##FromString(ZF_OUT Type &v, \
+                                              ZF_IN const zfchar *src, \
+                                              ZF_IN_OPT zfindex srcLen = zfindexMax()); \
     /** @brief util method to convert TypeName to string */ \
-    extern ZF_ENV_EXPORT zfbool TypeName##ToString(ZF_IN_OUT zfstring &s, ZF_IN Type const &v); \
+    extern ZFLIB_ zfbool TypeName##ToString(ZF_IN_OUT zfstring &s, ZF_IN Type const &v); \
     /** @brief util method to convert TypeName to string */ \
     inline zfstring TypeName##ToString(ZF_IN Type const &v) \
     { \

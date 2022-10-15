@@ -62,7 +62,7 @@ public:
 #define ZFTypeId_ZFCoreArray() "ZFCoreArray"
 
 /** @brief type wrapper for #ZFTypeId::Value */
-zfclass ZF_ENV_EXPORT v_ZFCoreArray : zfextends ZFTypeIdWrapper
+zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextends ZFTypeIdWrapper
 {
     ZFOBJECT_DECLARE(v_ZFCoreArray, ZFTypeIdWrapper)
 public:

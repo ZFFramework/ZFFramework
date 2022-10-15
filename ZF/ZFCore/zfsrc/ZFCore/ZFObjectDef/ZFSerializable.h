@@ -151,7 +151,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * you may supply your custom constructor,
  * see #ZFSerializableKeyword_serializableNewInstance
  */
-zfinterface ZF_ENV_EXPORT ZFSerializable : zfextends ZFInterface
+zfinterface ZFLIB_ZFCore ZFSerializable : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFSerializable, ZFInterface)
 
@@ -403,7 +403,7 @@ public:
  *
  * note that null is treated as serializable
  */
-extern ZF_ENV_EXPORT zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj);
 
 // ============================================================
 /**
@@ -414,40 +414,40 @@ extern ZF_ENV_EXPORT zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj);
  *   which describe a null object,
  *   the result would be null
  */
-extern ZF_ENV_EXPORT zfautoObject ZFObjectFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfautoObject ZFObjectFromData(ZF_IN const ZFSerializableData &serializableData,
+                                                  ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                                  ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
 /** @brief see #ZFObjectFromData */
-extern ZF_ENV_EXPORT zfbool ZFObjectFromData(ZF_OUT zfautoObject &result,
-                                             ZF_IN const ZFSerializableData &serializableData,
-                                             ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                             ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfbool ZFObjectFromData(ZF_OUT zfautoObject &result,
+                                            ZF_IN const ZFSerializableData &serializableData,
+                                            ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                            ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
 /** @brief see #ZFObjectFromData */
-extern ZF_ENV_EXPORT zfbool ZFObjectToData(ZF_OUT ZFSerializableData &serializableData,
-                                           ZF_IN ZFObject *obj,
-                                           ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                           ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull);
+extern ZFLIB_ZFCore zfbool ZFObjectToData(ZF_OUT ZFSerializableData &serializableData,
+                                          ZF_IN ZFObject *obj,
+                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                          ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull);
 /** @brief see #ZFObjectFromData */
-extern ZF_ENV_EXPORT ZFSerializableData ZFObjectToData(ZF_IN ZFObject *obj,
-                                                       ZF_OUT_OPT zfbool *outSuccess = zfnull,
-                                                       ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                       ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull);
+extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(ZF_IN ZFObject *obj,
+                                                      ZF_OUT_OPT zfbool *outSuccess = zfnull,
+                                                      ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                                      ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull);
 
 // ============================================================
 /**
  * @brief convenient method to #ZFSerializable::serializeFromString
  */
-extern ZF_ENV_EXPORT zfbool ZFSerializeFromString(ZF_OUT zfautoObject &result,
-                                                  ZF_IN const ZFClass *cls,
-                                                  ZF_IN const zfchar *src);
+extern ZFLIB_ZFCore zfbool ZFSerializeFromString(ZF_OUT zfautoObject &result,
+                                                 ZF_IN const ZFClass *cls,
+                                                 ZF_IN const zfchar *src);
 /** @brief see #ZFSerializeFromString */
-extern ZF_ENV_EXPORT zfautoObject ZFSerializeFromString(ZF_IN const ZFClass *cls,
-                                                        ZF_IN const zfchar *src);
+extern ZFLIB_ZFCore zfautoObject ZFSerializeFromString(ZF_IN const ZFClass *cls,
+                                                       ZF_IN const zfchar *src);
 /** @brief see #ZFSerializeFromString */
-extern ZF_ENV_EXPORT zfbool ZFSerializeToString(ZF_IN_OUT zfstring &ret,
-                                                ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfbool ZFSerializeToString(ZF_IN_OUT zfstring &ret,
+                                               ZF_IN ZFObject *obj);
 /** @brief see #ZFSerializeFromString */
-extern ZF_ENV_EXPORT zfstring ZFSerializeToString(ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfstring ZFSerializeToString(ZF_IN ZFObject *obj);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFSerializable_h_

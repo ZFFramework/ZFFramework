@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief store necessary data for #ZFUIWebJSBridge::webMessageBeforeSend
  */
-zfclass ZF_ENV_EXPORT ZFUIWebJSBridgeSendData : zfextends ZFObject
+zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeSendData : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIWebJSBridgeSendData, ZFObject)
 
@@ -32,7 +32,7 @@ public:
 /**
  * @brief store necessary data for #ZFUIWebJSBridge::webMessageBeforeRecv
  */
-zfclass ZF_ENV_EXPORT ZFUIWebJSBridgeRecvData : zfextends ZFObject
+zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeRecvData : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIWebJSBridgeRecvData, ZFObject)
 
@@ -52,7 +52,7 @@ zfclassFwd _ZFP_ZFUIWebJSBridgePrivate;
 /**
  * @brief web JS bridge
  */
-zfclass ZF_ENV_EXPORT ZFUIWebJSBridge : zfextends ZFObject
+zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridge : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIWebJSBridge, ZFObject)
 

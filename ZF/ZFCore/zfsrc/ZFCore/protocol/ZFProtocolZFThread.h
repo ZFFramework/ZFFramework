@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFThread
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFThread)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFThread)
 public:
     /**
      * @brief see #ZFThread::nativeThreadUnregister
@@ -86,7 +86,7 @@ public:
 ZFPROTOCOL_INTERFACE_END(ZFThread)
 
 /** @brief see #ZFThread */
-zfclass ZF_ENV_EXPORT ZFThreadMainThread : zfextends ZFThread
+zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextends ZFThread
 {
     ZFOBJECT_DECLARE(ZFThreadMainThread, ZFThread)
 

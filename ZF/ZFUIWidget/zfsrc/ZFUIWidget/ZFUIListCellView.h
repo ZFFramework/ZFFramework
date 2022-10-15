@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract list content view
  */
-zfabstract ZF_ENV_EXPORT ZFUIListCellView : zfextends ZFUIView
+zfabstract ZFLIB_ZFUIWidget ZFUIListCellView : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE_ABSTRACT(ZFUIListCellView, ZFUIView)
 

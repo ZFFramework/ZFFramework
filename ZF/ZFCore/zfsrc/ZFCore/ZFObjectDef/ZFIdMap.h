@@ -11,26 +11,26 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-extern ZF_ENV_EXPORT const zfidentity *_ZFP_ZFIdMapRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
-                                                            ZF_IN const zfchar *idName,
-                                                            ZF_IN_OPT zfbool isDynamicRegister = zffalse);
-extern ZF_ENV_EXPORT void _ZFP_ZFIdMapUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
-                                                 ZF_IN zfidentity idValue,
-                                                 ZF_IN_OPT zfbool isDynamicRegister = zffalse);
+extern ZFLIB_ZFCore const zfidentity *_ZFP_ZFIdMapRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
+                                                           ZF_IN const zfchar *idName,
+                                                           ZF_IN_OPT zfbool isDynamicRegister = zffalse);
+extern ZFLIB_ZFCore void _ZFP_ZFIdMapUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
+                                                ZF_IN zfidentity idValue,
+                                                ZF_IN_OPT zfbool isDynamicRegister = zffalse);
 /**
  * @brief see #ZFIDMAP
  *
  * get id name from id value, or null if no such id
  * @note can be found only if accessed or registered by #ZFIDMAP_REGISTER
  */
-extern ZF_ENV_EXPORT const zfchar *ZFIdMapNameForId(ZF_IN zfidentity idValue);
+extern ZFLIB_ZFCore const zfchar *ZFIdMapNameForId(ZF_IN zfidentity idValue);
 /**
  * @brief see #ZFIDMAP
  *
  * get id value from id name, or #zfidentityInvalid if no such id name
  * @note can be found only if accessed or registered by #ZFIDMAP_REGISTER
  */
-extern ZF_ENV_EXPORT zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName);
+extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName);
 
 /**
  * @brief see #ZFIDMAP
@@ -38,23 +38,23 @@ extern ZF_ENV_EXPORT zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName);
  * get all registered id data, for debug use only
  * @note can be found only if accessed or registered by #ZFIDMAP_REGISTER
  */
-extern ZF_ENV_EXPORT void ZFIdMapGetAll(ZF_IN_OUT ZFCoreArrayPOD<zfidentity> &idValues, ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &idNames);
+extern ZFLIB_ZFCore void ZFIdMapGetAll(ZF_IN_OUT ZFCoreArrayPOD<zfidentity> &idValues, ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &idNames);
 
 /**
  * @brief dynamically register your own id
  *
  * assert fail if already registered
  */
-extern ZF_ENV_EXPORT zfidentity ZFIdMapDynamicRegister(ZF_IN const zfchar *idName);
+extern ZFLIB_ZFCore zfidentity ZFIdMapDynamicRegister(ZF_IN const zfchar *idName);
 /**
  * @brief unregister id that was registered by #ZFIdMapDynamicRegister
  *
  * do nothing if no such id,
  * assert fail if the id is not dynamically registered
  */
-extern ZF_ENV_EXPORT void ZFIdMapDynamicUnregister(ZF_IN zfidentity idValue);
+extern ZFLIB_ZFCore void ZFIdMapDynamicUnregister(ZF_IN zfidentity idValue);
 
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFIdMapHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFIdMapHolder
 {
 public:
     _ZFP_ZFIdMapHolder(ZF_IN const zfchar *idName);
@@ -122,7 +122,7 @@ public:
  *   // in header files
  *   ZF_NAMESPACE_BEGIN(YourNamespace)
  *   / ** @brief you can add doxygen docs here * /
- *   ZFIDMAP_GLOBAL(YourSth)
+ *   ZFIDMAP_GLOBAL(ZFLIB_APP, YourSth)
  *   ZF_NAMESPACE_END(YourNamespace)
  *
  *   ZFIDMAP_GLOBAL_REGISTER(YourSth)
@@ -132,12 +132,12 @@ public:
  * @endcode
  * unlike #ZFIDMAP, this macro would declare id outside of class scope
  */
-#define ZFIDMAP_GLOBAL(YourIdName) \
-    ZFIDMAP_GLOBAL_DETAIL(Id, YourIdName)
+#define ZFIDMAP_GLOBAL(ZFLIB_, YourIdName) \
+    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, Id, YourIdName)
 /** @brief see #ZFIDMAP_GLOBAL */
-#define ZFIDMAP_GLOBAL_DETAIL(prefix, YourIdName) \
+#define ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, prefix, YourIdName) \
     /** @cond ZFPrivateDoc */ \
-    zfclass ZF_ENV_EXPORT _ZFP_ZFIdMapHolder_##prefix##_##YourIdName \
+    zfclass ZFLIB_ _ZFP_ZFIdMapHolder_##prefix##_##YourIdName \
     { \
     public: \
         static _ZFP_ZFIdMapHolder &h(void) \

@@ -41,7 +41,7 @@ zfclassFwd _ZFP_ZFUIListViewPrivate;
  *   </ZFUIListView>
  * @endcode
  */
-zfclass ZF_ENV_EXPORT ZFUIListView : zfextends ZFUIScrollView
+zfclass ZFLIB_ZFUIWidget ZFUIListView : zfextends ZFUIScrollView
 {
     ZFOBJECT_DECLARE(ZFUIListView, ZFUIScrollView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIListView)

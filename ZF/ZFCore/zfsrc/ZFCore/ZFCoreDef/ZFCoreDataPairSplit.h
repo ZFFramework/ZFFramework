@@ -25,15 +25,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * if leftToken has been set, then rightToken must also be set with same order\n
  * if rightToken not set, src can only be stopped by reach end
  */
-extern ZF_ENV_EXPORT zfbool zfCoreDataPairSplitString(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &outData,
-                                                      ZF_IN zfindex desiredCountOrIndexMax,
-                                                      ZF_IN const zfchar *src,
-                                                      ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                                      ZF_IN_OPT const zfchar *separatorTokens = ",",
-                                                      ZF_IN_OPT const zfchar *leftTokens = "(",
-                                                      ZF_IN_OPT const zfchar *rightTokens = ")",
-                                                      ZF_IN_OPT zfbool allowEmptyItem = zffalse,
-                                                      ZF_OUT_OPT const zfchar **outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfbool zfCoreDataPairSplitString(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &outData,
+                                                     ZF_IN zfindex desiredCountOrIndexMax,
+                                                     ZF_IN const zfchar *src,
+                                                     ZF_IN_OPT zfindex srcLen = zfindexMax(),
+                                                     ZF_IN_OPT const zfchar *separatorTokens = ",",
+                                                     ZF_IN_OPT const zfchar *leftTokens = "(",
+                                                     ZF_IN_OPT const zfchar *rightTokens = ")",
+                                                     ZF_IN_OPT zfbool allowEmptyItem = zffalse,
+                                                     ZF_OUT_OPT const zfchar **outErrorPos = zfnull);
 
 /**
  * @brief split data to int array format, see #zfCoreDataPairSplitString

@@ -14,19 +14,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief button state
  */
-ZFENUM_BEGIN(ZFUIButtonState)
+ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIButtonState)
     ZFENUM_VALUE(Normal) /**< @brief normal state */
     ZFENUM_VALUE(Highlighted) /**< @brief pressed state */
     ZFENUM_VALUE(Checked) /**< @brief checked state */
     ZFENUM_VALUE(CheckedHighlighted) /**< @brief pressed when in checked state */
     ZFENUM_VALUE(Disabled) /**< @brief disabled state */
-ZFENUM_SEPARATOR(ZFUIButtonState)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Normal)
     ZFENUM_VALUE_REGISTER(Highlighted)
     ZFENUM_VALUE_REGISTER(Checked)
     ZFENUM_VALUE_REGISTER(CheckedHighlighted)
     ZFENUM_VALUE_REGISTER(Disabled)
-ZFENUM_END(ZFUIButtonState)
+ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonState)
 
 // ============================================================
 // ZFUIButton
@@ -38,7 +38,7 @@ zfclassFwd _ZFP_ZFUIButtonPrivate;
  * see #ZFObject::observerNotify for more info\n
  * #ZFUIButton is an abstract button, use its subclass to create
  */
-zfclass ZF_ENV_EXPORT ZFUIButton : zfextends ZFUIView
+zfclass ZFLIB_ZFUIWidget ZFUIButton : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIButton, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButton)

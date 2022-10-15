@@ -56,17 +56,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * for more advanced string encoding operation,
  * you should consider third-party library
  */
-ZFENUM_BEGIN(ZFStringEncoding)
+ZFENUM_BEGIN(ZFLIB_ZFCore, ZFStringEncoding)
     ZFENUM_VALUE(UTF8 = 1)
     ZFENUM_VALUE(UTF16LE = 2)
     ZFENUM_VALUE(UTF16BE = 3)
     ZFENUM_VALUE(UTF16 = e_UTF16LE)
-ZFENUM_SEPARATOR_ALLOW_DUPLICATE_VALUE(ZFStringEncoding)
+ZFENUM_SEPARATOR_ALLOW_DUPLICATE_VALUE()
     ZFENUM_VALUE_REGISTER(UTF8)
     ZFENUM_VALUE_REGISTER_WITH_NAME(UTF16LE, "UTF16")
     ZFENUM_VALUE_REGISTER_WITH_NAME(UTF16BE, "UTF16BE")
     ZFENUM_VALUE_REGISTER_WITH_NAME(UTF16, "UTF16")
-ZFENUM_END(ZFStringEncoding)
+ZFENUM_END(ZFLIB_ZFCore, ZFStringEncoding)
 
 // ============================================================
 // conversion
@@ -75,9 +75,9 @@ ZFENUM_END(ZFStringEncoding)
  *
  * result would be appended to tail without clear
  */
-extern ZF_ENV_EXPORT zfbool zfstringToUTF8(ZF_OUT zfstring &result,
-                                           ZF_IN const void *s,
-                                           ZF_IN ZFStringEncodingEnum srcEncoding);
+extern ZFLIB_ZFCore zfbool zfstringToUTF8(ZF_OUT zfstring &result,
+                                          ZF_IN const void *s,
+                                          ZF_IN ZFStringEncodingEnum srcEncoding);
 /** @brief see #zfstringToUTF8 */
 inline zfstring zfstringToUTF8(ZF_IN const void *s,
                                ZF_IN ZFStringEncodingEnum srcEncoding,
@@ -90,9 +90,9 @@ inline zfstring zfstringToUTF8(ZF_IN const void *s,
 }
 
 /** @brief see #zfstringToUTF8 */
-extern ZF_ENV_EXPORT zfbool zfstringToUTF16(ZF_OUT zfstringW &result,
-                                            ZF_IN const void *s,
-                                            ZF_IN ZFStringEncodingEnum srcEncoding);
+extern ZFLIB_ZFCore zfbool zfstringToUTF16(ZF_OUT zfstringW &result,
+                                           ZF_IN const void *s,
+                                           ZF_IN ZFStringEncodingEnum srcEncoding);
 /** @brief see #zfstringToUTF8 */
 inline zfstringW zfstringToUTF16(ZF_IN const void *s,
                                  ZF_IN ZFStringEncodingEnum srcEncoding,
@@ -104,9 +104,9 @@ inline zfstringW zfstringToUTF16(ZF_IN const void *s,
     return ret;
 }
 /** @brief see #zfstringToUTF8 */
-extern ZF_ENV_EXPORT zfbool zfstringToUTF16BE(ZF_OUT zfstringW &result,
-                                              ZF_IN const void *s,
-                                              ZF_IN ZFStringEncodingEnum srcEncoding);
+extern ZFLIB_ZFCore zfbool zfstringToUTF16BE(ZF_OUT zfstringW &result,
+                                             ZF_IN const void *s,
+                                             ZF_IN ZFStringEncodingEnum srcEncoding);
 /** @brief see #zfstringToUTF8 */
 inline zfstringW zfstringToUTF16BE(ZF_IN const void *s,
                                    ZF_IN ZFStringEncodingEnum srcEncoding,
@@ -121,7 +121,7 @@ inline zfstringW zfstringToUTF16BE(ZF_IN const void *s,
 /**
  * @brief get utf8 string's logical word count or -1 if invalid letter exist
  */
-extern ZF_ENV_EXPORT zfindex zfstringWordCountOfUTF8(ZF_IN const zfchar *utf8String);
+extern ZFLIB_ZFCore zfindex zfstringWordCountOfUTF8(ZF_IN const zfchar *utf8String);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFString_h_

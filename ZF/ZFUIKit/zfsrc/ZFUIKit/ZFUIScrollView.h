@@ -12,15 +12,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief state for #ZFUIScrollView
  */
-ZFENUM_BEGIN(ZFUIScrollViewState)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIScrollViewState)
     ZFENUM_VALUE(Idle)
     ZFENUM_VALUE(Dragging)
     ZFENUM_VALUE(Scrolling)
-ZFENUM_SEPARATOR(ZFUIScrollViewState)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Idle)
     ZFENUM_VALUE_REGISTER(Dragging)
     ZFENUM_VALUE_REGISTER(Scrolling)
-ZFENUM_END(ZFUIScrollViewState)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIScrollViewState)
 
 zfclassFwd _ZFP_ZFUIScrollViewPrivate;
 // ============================================================
@@ -31,7 +31,7 @@ zfclassFwd _ZFP_ZFUIScrollViewPrivate;
  * note that background view of scroll view and all other views behind scroll view
  * are ensured won't receive mouse event
  */
-zfclass ZF_ENV_EXPORT ZFUIScrollView : zfextends ZFUIView
+zfclass ZFLIB_ZFUIKit ZFUIScrollView : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIScrollView, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIScrollView)

@@ -51,7 +51,7 @@ typedef enum {
 #define ZFTOKEN_ZFObjectInstanceStateOnDealloc "ZFObjectInstanceStateOnDealloc"
 
 // ============================================================
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFObjectDummyParent
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFObjectDummyParent
 {
 public:
     static const ZFClass *ClassData(void)
@@ -223,7 +223,7 @@ zfclassFwd ZFObjectHolder;
  *   but can be modified by adding precompile flags
  *   (usually have no need, and modify at your own risk)
  */
-zfclass ZF_ENV_EXPORT ZFObject
+zfclass ZFLIB_ZFCore ZFObject
 {
     _ZFP_ZFOBJECT_DECLARE(ZFObject, _ZFP_ZFObjectDummyParent)
     _ZFP_ZFOBJECT_DECLARE_OBJECT(ZFObject, _ZFP_ZFObjectDummyParent)

@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * it's achieved by a wrapper view, which is this #ZFUIListCell\n
  * typically, the extra features are implemented by utility methods described in #ZFUIListCellUpdater
  */
-zfclass ZF_ENV_EXPORT ZFUIListCell : zfextends ZFUIView
+zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIListCell, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIListCell)

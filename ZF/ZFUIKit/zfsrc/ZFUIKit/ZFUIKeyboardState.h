@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief hardware keyboard state helper
  */
-zffinal zfclass ZF_ENV_EXPORT ZFUIKeyboardState : zfextends ZFObject
+zffinal zfclass ZFLIB_ZFUIKit ZFUIKeyboardState : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUIKeyboardState, ZFObject)
 

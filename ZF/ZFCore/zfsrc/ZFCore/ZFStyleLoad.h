@@ -14,7 +14,7 @@ zfclassFwd _ZFP_ZFStyleListPrivate;
 /**
  * @brief see #ZFStyleLoad
  */
-zfclass ZF_ENV_EXPORT ZFStyleList : zfextends ZFStyleableObject
+zfclass ZFLIB_ZFCore ZFStyleList : zfextends ZFStyleableObject
 {
     ZFOBJECT_DECLARE(ZFStyleList, ZFStyleableObject)
 
@@ -82,7 +82,7 @@ private:
  * all of its contents would be appended to current style,
  * instead of setting #ZFStyleList itself as a style value
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFStyleLoad,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull),
                         ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull))
@@ -100,13 +100,13 @@ ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFStyleLoad,
  *
  * the #ZFStyleList is a dummy holder to make the serializable data itself serializable
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFStyleLoad,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
                         ZFMP_IN(const ZFSerializableData &, serializableData))
 
 /**
  * @brief see #ZFStyleLoad
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFStyleLoad,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
                         ZFMP_IN(ZFStyleList *, styleList))
 
 ZF_NAMESPACE_GLOBAL_END

@@ -10,7 +10,7 @@
 
 // ============================================================
 // layout
-zfclassNotPOD ZF_ENV_EXPORT ZFImpl_sys_Qt_Layout : public ZFImpl_sys_Qt_BaseLayout
+zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_Qt_Layout : public ZFImpl_sys_Qt_BaseLayout
 {
 public:
     ~ZFImpl_sys_Qt_Layout(void)

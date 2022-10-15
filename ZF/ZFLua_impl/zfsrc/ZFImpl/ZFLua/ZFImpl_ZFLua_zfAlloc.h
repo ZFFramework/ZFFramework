@@ -13,11 +13,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief for impl to alloc object
  */
-extern ZF_ENV_EXPORT zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
-                                                 ZF_IN lua_State *L,
-                                                 ZF_IN const ZFClass *cls,
-                                                 ZF_IN int paramCount,
-                                                 ZF_IN int luaParamOffset);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
+                                                    ZF_IN lua_State *L,
+                                                    ZF_IN const ZFClass *cls,
+                                                    ZF_IN int paramCount,
+                                                    ZF_IN int luaParamOffset);
 
 ZF_NAMESPACE_GLOBAL_END
 

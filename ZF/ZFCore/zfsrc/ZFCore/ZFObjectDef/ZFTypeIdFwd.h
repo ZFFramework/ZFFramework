@@ -30,7 +30,7 @@ zfclassFwd ZFSerializableData;
 /**
  * @brief base protocol for #ZFTypeId
  */
-zfclassNotPOD ZF_ENV_EXPORT ZFTypeInfo
+zfclassNotPOD ZFLIB_ZFCore ZFTypeInfo
 {
 public:
     virtual ~ZFTypeInfo(void) {}
@@ -56,15 +56,15 @@ public:
 };
 
 // ============================================================
-extern ZF_ENV_EXPORT void _ZFP_ZFTypeInfoRegister(ZF_IN const zfchar *typeId,
-                                                  ZF_IN ZFTypeInfo *typeIdData);
-extern ZF_ENV_EXPORT ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfchar *typeId);
+extern ZFLIB_ZFCore void _ZFP_ZFTypeInfoRegister(ZF_IN const zfchar *typeId,
+                                                 ZF_IN ZFTypeInfo *typeIdData);
+extern ZFLIB_ZFCore ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfchar *typeId);
 /**
  * @brief access type id data
  */
-extern ZF_ENV_EXPORT const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfchar *typeId);
+extern ZFLIB_ZFCore const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfchar *typeId);
 /** @brief see #ZFTypeInfoGetAll */
-extern ZF_ENV_EXPORT void ZFTypeInfoGetAllT(ZF_IN_OUT ZFCoreArray<const ZFTypeInfo *> &ret);
+extern ZFLIB_ZFCore void ZFTypeInfoGetAllT(ZF_IN_OUT ZFCoreArray<const ZFTypeInfo *> &ret);
 /**
  * @brief access type id data
  */
@@ -216,10 +216,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
                                               ZF_IN ZFProgressable *from,
                                               ZF_IN ZFProgressable *to,
                                               ZF_IN zffloat progress);
-#define _ZFP_ZFTYPEID_WRAPPER_DECLARE(TypeName, Type) \
+#define _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     typedef Type _ZFP_PropTypeW_##TypeName; \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZF_ENV_EXPORT v_##TypeName : zfextends ZFTypeIdWrapper \
+    zfclass ZFLIB_ v_##TypeName : zfextends ZFTypeIdWrapper \
     { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper) \
     public: \
@@ -387,8 +387,8 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     }
 
 // ============================================================
-#define _ZFP_ZFTYPEID_DECLARE(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DECLARE(TypeName, Type) \
+#define _ZFP_ZFTYPEID_DECLARE(ZFLIB_, TypeName, Type) \
+    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
     zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextendsNotPOD ZFTypeInfo \
@@ -476,8 +476,8 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type)
 
 // ============================================================
-#define _ZFP_ZFTYPEID_ACCESS_ONLY_DECLARE(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DECLARE(TypeName, Type) \
+#define _ZFP_ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type) \
+    _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
     zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextendsNotPOD ZFTypeInfo \
@@ -609,7 +609,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     /** @endcond */
 
 // ============================================================
-#define _ZFP_ZFTYPEID_ALIAS_DECLARE(AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion) \
+#define _ZFP_ZFTYPEID_ALIAS_DECLARE(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type, TypeIdValueConversion) \
     /** @cond ZFPrivateDoc */ \
     typedef Type _ZFP_PropTypeW_##TypeName; \
     template<> \
@@ -644,18 +644,18 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         { \
             return ZFTypeId<AliasToType>::ValueStore(obj, (AliasToType)v); \
         } \
-        TypeIdValueConversion(AliasToTypeName, AliasToType, TypeName, Type) \
+        TypeIdValueConversion(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     }; \
     /** @endcond */ \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZF_ENV_EXPORT v_##TypeName : zfextends v_##AliasToTypeName \
+    zfclass ZFLIB_ v_##TypeName : zfextends v_##AliasToTypeName \
     { \
         ZFOBJECT_DECLARE(v_##TypeName, v_##AliasToTypeName) \
     };
 #define _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type) \
     ZFOBJECT_REGISTER(v_##TypeName)
 
-#define _ZFP_ZFTYPEID_ALIAS_EXPAND_DEFAULT(AliasToTypeName, AliasToType, TypeName, Type) \
+#define _ZFP_ZFTYPEID_ALIAS_EXPAND_DEFAULT(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
         template<typename T_Access = _ZFP_PropTypeW_##TypeName \
             , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
                 && zftTypeIsSame< \
@@ -755,14 +755,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
 // special alias implicit convert
 typedef void (*_ZFP_PropAliasDetachCallback)(ZF_IN ZFObject *obj,
                                              ZF_IN void *v);
-extern ZF_ENV_EXPORT void _ZFP_PropAliasAttach(ZF_IN ZFObject *obj,
-                                               ZF_IN void *v,
-                                               ZF_IN const zfchar *typeName,
-                                               ZF_IN _ZFP_PropAliasDetachCallback detachCallback);
-extern ZF_ENV_EXPORT void _ZFP_PropAliasDetach(ZF_IN ZFObject *obj,
-                                               ZF_IN const zfchar *typeName);
+extern ZFLIB_ZFCore void _ZFP_PropAliasAttach(ZF_IN ZFObject *obj,
+                                              ZF_IN void *v,
+                                              ZF_IN const zfchar *typeName,
+                                              ZF_IN _ZFP_PropAliasDetachCallback detachCallback);
+extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(ZF_IN ZFObject *obj,
+                                              ZF_IN const zfchar *typeName);
 
-extern ZF_ENV_EXPORT void _ZFP_ZFTypeIdWrapperMarkConst(ZF_IN_OUT_OPT ZFObject *zfv);
+extern ZFLIB_ZFCore void _ZFP_ZFTypeIdWrapperMarkConst(ZF_IN_OUT_OPT ZFObject *zfv);
 template<typename T_Type, int isConst = (zffalse
         || zftTraits<T_Type>::TrModifier == zftTraitsModifier_R
         || zftTraits<T_Type>::TrModifier == zftTraitsModifier_P

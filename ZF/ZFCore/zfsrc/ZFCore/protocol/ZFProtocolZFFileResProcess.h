@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFFile
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFFileResProcess)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFFileResProcess)
 
 public:
     /**

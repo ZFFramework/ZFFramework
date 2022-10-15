@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * impl must supply all protocol described by #ZFLuaExecute
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFLua)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFLua, ZFLua)
 public:
     /** @brief see #ZFLuaState */
     virtual void *luaState(void) zfpurevirtual;

@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * of level #ZFLevelZFFrameworkPostNormal to prevent dependency broken,
  * by setting #ZFCache::cacheMaxSize to zero
  */
-zfclass ZF_ENV_EXPORT ZFResCache : zfextends ZFCache
+zfclass ZFLIB_ZFUtility ZFResCache : zfextends ZFCache
 {
     ZFOBJECT_DECLARE(ZFResCache, ZFCache)
     ZFOBJECT_SINGLETON_DECLARE(ZFResCache, instance)
@@ -31,7 +31,7 @@ zfclass ZF_ENV_EXPORT ZFResCache : zfextends ZFCache
  * you should not modified the returned object if cache enabled\n
  * to remove cache, use #ZFCache::cacheRemove
  */
-ZFMETHOD_FUNC_DECLARE_1(zfautoObject, zfRes,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObject, zfRes,
                         ZFMP_IN(const zfchar *, resFilePath))
 
 ZF_NAMESPACE_GLOBAL_END

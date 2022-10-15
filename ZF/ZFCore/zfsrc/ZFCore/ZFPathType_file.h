@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * pathData is the file path
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFPATHTYPE_DECLARE(file)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, file)
 
 // ============================================================
 // ZFInputForFile
@@ -29,7 +29,7 @@ ZFPATHTYPE_DECLARE(file)
  * auto open and auto close files, may return a null callback if open file error\n
  * auto setup callback cache id with res file path
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFInput, ZFInputForFile,
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForFile,
                                ZFMP_IN(const zfchar *, filePath),
                                ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 {
@@ -49,7 +49,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFInput, ZFInputForFile,
  *
  * auto open and auto close files, may return a null callback if open file error
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFOutput, ZFOutputForFile,
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile,
                                ZFMP_IN(const zfchar *, filePath),
                                ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 {

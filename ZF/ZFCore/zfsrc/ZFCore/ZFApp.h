@@ -14,7 +14,7 @@ ZF_NAMESPACE_BEGIN(ZFApp)
 /**
  * @brief exit the app
  */
-ZFMETHOD_FUNC_DECLARE_0(void, appExit)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, appExit)
 
 ZF_NAMESPACE_END(ZFApp)
 ZF_NAMESPACE_GLOBAL_END

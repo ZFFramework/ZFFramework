@@ -35,7 +35,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief output callback for zfCoreLog
  */
 typedef void (*ZFCoreLogOutputCallbackType)(ZF_IN const zfchar *s);
-extern ZF_ENV_EXPORT void _ZFP_ZFCoreLogOutputCallbackDefault(ZF_IN const zfchar *s);
+extern ZFLIB_ZFCore void _ZFP_ZFCoreLogOutputCallbackDefault(ZF_IN const zfchar *s);
 /**
  * @brief default output callback for zfCoreLog
  */
@@ -46,21 +46,21 @@ extern ZF_ENV_EXPORT void _ZFP_ZFCoreLogOutputCallbackDefault(ZF_IN const zfchar
  * @warning within the callback, you must not access any other ZFFramework's module,
  *   otherwise dead lock may be occurred
  */
-extern ZF_ENV_EXPORT void zfCoreLogOutputCallback(ZF_IN ZFCoreLogOutputCallbackType callback);
+extern ZFLIB_ZFCore void zfCoreLogOutputCallback(ZF_IN ZFCoreLogOutputCallbackType callback);
 /**
  * @brief get the output callback for zfCoreLog
  */
-extern ZF_ENV_EXPORT ZFCoreLogOutputCallbackType zfCoreLogOutputCallback(void);
+extern ZFLIB_ZFCore ZFCoreLogOutputCallbackType zfCoreLogOutputCallback(void);
 
 // ============================================================
-extern ZF_ENV_EXPORT void _ZFP_zfCoreLog(ZF_IN const ZFCallerInfo &callerInfo,
+extern ZFLIB_ZFCore void _ZFP_zfCoreLog(ZF_IN const ZFCallerInfo &callerInfo,
+                                        ZF_IN zfbool isAutoEndl,
+                                        ZF_IN const zfchar *format,
+                                        ...);
+extern ZFLIB_ZFCore void _ZFP_zfCoreLogV(ZF_IN const ZFCallerInfo &callerInfo,
                                          ZF_IN zfbool isAutoEndl,
                                          ZF_IN const zfchar *format,
-                                         ...);
-extern ZF_ENV_EXPORT void _ZFP_zfCoreLogV(ZF_IN const ZFCallerInfo &callerInfo,
-                                          ZF_IN zfbool isAutoEndl,
-                                          ZF_IN const zfchar *format,
-                                          ZF_IN va_list vaList);
+                                         ZF_IN va_list vaList);
 /**
  * @brief log utility used internally
  *
@@ -122,23 +122,23 @@ typedef void (*ZFCoreCriticalErrorCallback)(ZF_IN const ZFCallerInfo &callerInfo
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZF_ENV_EXPORT void zfCoreCriticalErrorPrepareCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void zfCoreCriticalErrorPrepareCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZF_ENV_EXPORT void zfCoreCriticalErrorPrepareCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void zfCoreCriticalErrorPrepareCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
 
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZF_ENV_EXPORT void zfCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void zfCoreCriticalErrorCallbackAdd(ZF_IN ZFCoreCriticalErrorCallback callback);
 /**
  * @brief see #ZFCoreCriticalErrorCallback
  */
-extern ZF_ENV_EXPORT void zfCoreCriticalErrorCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
+extern ZFLIB_ZFCore void zfCoreCriticalErrorCallbackRemove(ZF_IN ZFCoreCriticalErrorCallback callback);
 
-extern ZF_ENV_EXPORT void _ZFP_zfCoreCriticalErrorPrepare(ZF_IN const ZFCallerInfo &callerInfo);
-extern ZF_ENV_EXPORT void _ZFP_zfCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalErrorPrepare(ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalError(ZF_IN const ZFCallerInfo &callerInfo);
 /**
  * @brief ready to output critical error, see #zfCoreCriticalError
  *

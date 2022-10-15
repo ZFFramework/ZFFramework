@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for #ZFUIImageView
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIImageView)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIImageView)
 public:
     /**
      * @brief create native image view

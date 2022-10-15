@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFEncrypt
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFEncrypt)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFAlgorithm, ZFEncrypt)
 public:
     /**
      * @brief see #ZFEncrypt

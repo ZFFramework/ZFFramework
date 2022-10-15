@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFUIImage
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUIImage)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIImage)
 public:
     /**
      * @brief load image from input as binary data,
@@ -53,7 +53,7 @@ ZFPROTOCOL_INTERFACE_END(ZFUIImage)
 /**
  * @brief see #ZFUIImageImplNinePatchCalc
  */
-ZFENUM_BEGIN(ZFUIImageImplNinePatchPos)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchPos)
     ZFENUM_VALUE(TopLeft)
     ZFENUM_VALUE(TopCenter)
     ZFENUM_VALUE(TopRight)
@@ -63,7 +63,7 @@ ZFENUM_BEGIN(ZFUIImageImplNinePatchPos)
     ZFENUM_VALUE(BottomLeft)
     ZFENUM_VALUE(BottomCenter)
     ZFENUM_VALUE(BottomRight)
-ZFENUM_SEPARATOR(ZFUIImageImplNinePatchPos)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(TopLeft)
     ZFENUM_VALUE_REGISTER(TopCenter)
     ZFENUM_VALUE_REGISTER(TopRight)
@@ -73,19 +73,19 @@ ZFENUM_SEPARATOR(ZFUIImageImplNinePatchPos)
     ZFENUM_VALUE_REGISTER(BottomLeft)
     ZFENUM_VALUE_REGISTER(BottomCenter)
     ZFENUM_VALUE_REGISTER(BottomRight)
-ZFENUM_END(ZFUIImageImplNinePatchPos)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchPos)
 
 /**
  * @brief see #ZFUIImageImplNinePatchCalc
  */
-zfclassPOD ZF_ENV_EXPORT ZFUIImageImplNinePatchDrawData
+zfclassPOD ZFLIB_ZFUIKit ZFUIImageImplNinePatchDrawData
 {
 public:
     ZFUIImageImplNinePatchPosEnum position; /**< @brief position of the nine patch piece */
     ZFUIRect src; /**< @brief src rect to draw bitmap from, ensured valid */
     ZFUIRect dst; /**< @brief dst rect to draw bitmapt to, ensured valid */
 };
-ZFOUTPUT_TYPE_DECLARE(ZFUIImageImplNinePatchDrawData)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchDrawData)
 
 /**
  * @brief util method for implementation to calculate nine patch areas
@@ -97,7 +97,7 @@ ZFOUTPUT_TYPE_DECLARE(ZFUIImageImplNinePatchDrawData)
  * to supply the buf
  * @note all size use raw pixel as size unit
  */
-extern ZF_ENV_EXPORT zfindex ZFUIImageImplNinePatchCalc(ZF_OUT ZFUIImageImplNinePatchDrawData *outBuf,
+extern ZFLIB_ZFUIKit zfindex ZFUIImageImplNinePatchCalc(ZF_OUT ZFUIImageImplNinePatchDrawData *outBuf,
                                                         ZF_IN const ZFUISize &srcSize,
                                                         ZF_IN const ZFUIMargin &srcNinePatch,
                                                         ZF_IN const ZFUISize &dstSize);

@@ -12,14 +12,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief global default animation duration, 250 by default
  */
-ZFEXPORT_VAR_DECLARE(zftimet, ZFAnimationDurationDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUtility, zftimet, ZFAnimationDurationDefault)
 
 // ============================================================
 zfclassFwd _ZFP_ZFAnimationPrivate;
 /**
  * @brief base class of all animation
  */
-zfclass ZF_ENV_EXPORT ZFAnimation : zfextends ZFStyleableObject
+zfclass ZFLIB_ZFUtility ZFAnimation : zfextends ZFStyleableObject
 {
     ZFOBJECT_DECLARE(ZFAnimation, ZFStyleableObject)
 

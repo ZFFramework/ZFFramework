@@ -16,8 +16,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-extern ZF_ENV_EXPORT UIApplication *ZFImpl_sys_iOS_application(void);
-extern ZF_ENV_EXPORT UIWindow *ZFImpl_sys_iOS_rootWindow(void);
+extern ZFLIB_ZF_impl UIApplication *ZFImpl_sys_iOS_application(void);
+extern ZFLIB_ZF_impl UIWindow *ZFImpl_sys_iOS_rootWindow(void);
 
 ZF_NAMESPACE_GLOBAL_END
 

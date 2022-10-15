@@ -27,8 +27,8 @@ zfclassFwd ZFSerializableData;
 typedef zfbool (*ZFPropertyCallbackIsValueAccessed)(ZF_IN const ZFProperty *property,
                                                     ZF_IN ZFObject *ownerObj);
 /** @brief change default impl for #ZFPropertyCallbackIsValueAccessed, use with caution */
-extern ZF_ENV_EXPORT void ZFPropertyCallbackIsValueAccessedChange(ZF_IN const ZFProperty *property,
-                                                                  ZF_IN ZFPropertyCallbackIsValueAccessed callback);
+extern ZFLIB_ZFCore void ZFPropertyCallbackIsValueAccessedChange(ZF_IN const ZFProperty *property,
+                                                                 ZF_IN ZFPropertyCallbackIsValueAccessed callback);
 
 // ============================================================
 /**
@@ -45,8 +45,8 @@ typedef zfbool (*ZFPropertyCallbackIsInitValue)(ZF_IN const ZFProperty *property
                                                 ZF_IN ZFObject *ownerObj,
                                                 ZF_OUT_OPT zfautoObject *outInitValue /* = zfnull */);
 /** @brief change default impl for #ZFPropertyCallbackIsInitValue, use with caution */
-extern ZF_ENV_EXPORT void ZFPropertyCallbackIsInitValueChange(ZF_IN const ZFProperty *property,
-                                                              ZF_IN ZFPropertyCallbackIsInitValue callback);
+extern ZFLIB_ZFCore void ZFPropertyCallbackIsInitValueChange(ZF_IN const ZFProperty *property,
+                                                             ZF_IN ZFPropertyCallbackIsInitValue callback);
 
 // ============================================================
 /**
@@ -55,8 +55,8 @@ extern ZF_ENV_EXPORT void ZFPropertyCallbackIsInitValueChange(ZF_IN const ZFProp
 typedef void (*ZFPropertyCallbackValueReset)(ZF_IN const ZFProperty *property,
                                              ZF_IN ZFObject *ownerObj);
 /** @brief change default impl for #ZFPropertyCallbackValueReset, use with caution */
-extern ZF_ENV_EXPORT void ZFPropertyCallbackValueResetChange(ZF_IN const ZFProperty *property,
-                                                             ZF_IN ZFPropertyCallbackValueReset callback);
+extern ZFLIB_ZFCore void ZFPropertyCallbackValueResetChange(ZF_IN const ZFProperty *property,
+                                                            ZF_IN ZFPropertyCallbackValueReset callback);
 
 // ============================================================
 /**
@@ -71,7 +71,7 @@ typedef void (*_ZFP_PropLifeCycleWrapper)(ZF_IN ZFObject *propertyOwnerObject,
                                           ZF_IN void *propertyValue,
                                           ZF_IN const void *propertyValueOld,
                                           ZF_IN ZFObject *userData);
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_PropLifeCycleData
+zfclassNotPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData
 {
 public:
     const ZFClass *propertyOwnerClass;

@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFXml
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFXml)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFAlgorithm, ZFXml)
 public:
     /**
      * @brief see #ZFXmlEscapeCharEncode

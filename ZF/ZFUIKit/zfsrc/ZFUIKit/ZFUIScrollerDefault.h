@@ -13,7 +13,7 @@ zfclassFwd _ZFP_ZFUIScrollerDefaultPrivate;
 /**
  * @brief default scroller of #ZFUIScroller
  */
-zfclass ZF_ENV_EXPORT ZFUIScrollerDefault : zfextends ZFObject, zfimplements ZFUIScroller
+zfclass ZFLIB_ZFUIKit ZFUIScrollerDefault : zfextends ZFObject, zfimplements ZFUIScroller
 {
     ZFOBJECT_DECLARE(ZFUIScrollerDefault, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFUIScroller)

@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief curve
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFCurve
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFCurve
 {
 public:
     /** @brief construct a linear curve */
@@ -125,35 +125,35 @@ private:
 /**
  * @brief linear curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveZero)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveZero)
 /**
  * @brief linear curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveLinear)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveLinear)
 /**
  * @brief ease in curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveEaseIn)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveEaseIn)
 /**
  * @brief ease out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveEaseOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveEaseOut)
 /**
  * @brief ease in out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveEaseInOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveEaseInOut)
 /**
  * @brief bounce in curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveBounceIn)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceIn)
 /**
  * @brief bounce out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveBounceOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceOut)
 /**
  * @brief bounce in out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveBounceInOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceInOut)
 
 // ============================================================
 /**
@@ -174,7 +174,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFCurve, ZFCurveBounceInOut)
  *   (p0x, p0y, p1x, p1y)
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFCurve, ZFCurve)
+ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurve)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFCurve_p0x "p0x"

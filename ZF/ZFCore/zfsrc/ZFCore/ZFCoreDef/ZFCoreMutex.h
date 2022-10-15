@@ -14,9 +14,9 @@ typedef void (*ZFCoreMutexImplCallbackLock)(ZF_IN void *token);
 /** @brief mutex impl */
 typedef void (*ZFCoreMutexImplCallbackUnlock)(ZF_IN void *token);
 
-extern ZF_ENV_EXPORT void *_ZFP_ZFCoreMutexImplObject;
-extern ZF_ENV_EXPORT ZFCoreMutexImplCallbackLock _ZFP_ZFCoreMutexImplLock;
-extern ZF_ENV_EXPORT ZFCoreMutexImplCallbackUnlock _ZFP_ZFCoreMutexImplUnlock;
+extern ZFLIB_ZFCore void *_ZFP_ZFCoreMutexImplObject;
+extern ZFLIB_ZFCore ZFCoreMutexImplCallbackLock _ZFP_ZFCoreMutexImplLock;
+extern ZFLIB_ZFCore ZFCoreMutexImplCallbackUnlock _ZFP_ZFCoreMutexImplUnlock;
 
 /**
  * @brief #zfCoreMutexLock's implementation, change with caution
@@ -65,7 +65,7 @@ inline zfbool ZFCoreMutexImplAvailable(void) {return (_ZFP_ZFCoreMutexImplObject
 /**
  * @brief see #zfCoreMutexLocker
  */
-zfclassLikePOD ZF_ENV_EXPORT zfCoreMutexLockerHolder
+zfclassLikePOD ZFLIB_ZFCore zfCoreMutexLockerHolder
 {
 public:
     /** @cond ZFPrivateDoc */

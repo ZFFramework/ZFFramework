@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief check box button, see #ZFUIButtonBasic
  */
-zfclass ZF_ENV_EXPORT ZFUIButtonCheckBox : zfextends ZFUIButtonBasic
+zfclass ZFLIB_ZFUIWidget ZFUIButtonCheckBox : zfextends ZFUIButtonBasic
 {
     ZFOBJECT_DECLARE(ZFUIButtonCheckBox, ZFUIButtonBasic)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButtonCheckBox)

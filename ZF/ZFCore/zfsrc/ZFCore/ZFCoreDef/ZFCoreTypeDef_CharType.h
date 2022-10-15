@@ -21,7 +21,7 @@ ZFT_INT_WEAK(_ZFT_t_zfchar, zfchar);
  * @brief get logical char's size,
  *   see #zfcharMoveNext
  */
-extern ZF_ENV_EXPORT zfindex zfcharGetSize(const zfchar *p);
+extern ZFLIB_ZFCore zfindex zfcharGetSize(const zfchar *p);
 
 /**
  * @brief move to next logical char
@@ -159,14 +159,14 @@ inline zfint zfscmp(const zfchar *s1, const zfchar *s2)
     return (zfint)strcmp(s1, s2);
 }
 /** @brief stricmp wrapper as zfchar type, no locale supported */
-extern ZF_ENV_EXPORT zfint zfsicmp(const zfchar *s1, const zfchar *s2);
+extern ZFLIB_ZFCore zfint zfsicmp(const zfchar *s1, const zfchar *s2);
 /** @brief strncmp wrapper as zfchar type */
 inline zfint zfsncmp(const zfchar *s1, const zfchar *s2, zfindex count)
 {
     return ((count == zfindexMax()) ? strcmp(s1, s2) : strncmp(s1, s2, (size_t)count));
 }
 /** @brief strnicmp wrapper as zfchar type, no locale supported */
-extern ZF_ENV_EXPORT zfint zfsnicmp(const zfchar *s1, const zfchar *s2, zfindex count);
+extern ZFLIB_ZFCore zfint zfsnicmp(const zfchar *s1, const zfchar *s2, zfindex count);
 
 ZF_NAMESPACE_GLOBAL_END
 

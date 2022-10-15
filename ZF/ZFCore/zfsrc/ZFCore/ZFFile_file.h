@@ -14,20 +14,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief return true if file specified by path is exist
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFFileFileIsExist,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileFileIsExist,
                         ZFMP_IN(const zfchar *, path))
 /**
  * @brief return true if file specified by path is a directory
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFFileFileIsDir,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileFileIsDir,
                         ZFMP_IN(const zfchar *, path))
 
 /**
  * @brief make directory
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFFileFilePathCreate,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileFilePathCreate,
                         ZFMP_IN(const zfchar *, path),
                         ZFMP_IN_OPT(zfbool, autoMakeParent, zftrue),
                         ZFMP_OUT_OPT(zfstring *, errPos, zfnull))
@@ -43,7 +43,7 @@ ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFFileFilePathCreate,
  * override file if dst is an existing file and isForce is zftrue
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_5(zfbool, ZFFileFileCopy,
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileFileCopy,
                         ZFMP_IN(const zfchar *, srcPath),
                         ZFMP_IN(const zfchar *, dstPath),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
@@ -53,7 +53,7 @@ ZFMETHOD_FUNC_DECLARE_5(zfbool, ZFFileFileCopy,
  * @brief move a file or directory from srcPath to dstPath
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_5(zfbool, ZFFileFileMove,
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileFileMove,
                         ZFMP_IN(const zfchar *, srcPath),
                         ZFMP_IN(const zfchar *, dstPath),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
@@ -65,7 +65,7 @@ ZFMETHOD_FUNC_DECLARE_5(zfbool, ZFFileFileMove,
  * fail if isRecursive is zffalse and dst is a dir
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFFileFileRemove,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFFileFileRemove,
                         ZFMP_IN(const zfchar *, path),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
                         ZFMP_IN_OPT(zfbool, isForce, zffalse),
@@ -96,45 +96,45 @@ ZFMETHOD_FUNC_DECLARE_4(zfbool, ZFFileFileRemove,
  * @see ZFFileFindData, ZFFileFileFindFirst, ZFFileFileFindNext, ZFFileFileFindClose
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(zfbool, ZFFileFileFindFirst,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileFileFindFirst,
                         ZFMP_IN_OUT(ZFFileFindData &, fd),
                         ZFMP_IN(const zfchar *, path))
 
 /**
  * @see ZFFileFindData, ZFFileFileFindFirst, ZFFileFileFindClose
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFFileFileFindNext,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileFileFindNext,
                         ZFMP_IN_OUT(ZFFileFindData &, fd))
 
 /**
  * @see ZFFileFindData, ZFFileFileFindFirst, ZFFileFileFindNext
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFFileFileFindClose,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileFileFindClose,
                         ZFMP_IN_OUT(ZFFileFindData &, fd))
 
 /**
  * @brief open a file for read or write
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_3(void *, ZFFileFileOpen,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void *, ZFFileFileOpen,
                         ZFMP_IN(const zfchar *, filePath),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, ZFFileOpenOption::e_Read),
                         ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue))
 /**
  * @brief close and save the file if need, return false if save failed
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFFileFileClose,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileFileClose,
                         ZFMP_IN(void *, token))
 
 /**
  * @brief get current file's position or zfindexMax() if error
  */
-ZFMETHOD_FUNC_DECLARE_1(zfindex, ZFFileFileTell,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFFileFileTell,
                         ZFMP_IN(void *, token))
 /**
  * @brief similar to fseek, return false if seek out of range
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFFileFileSeek,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileFileSeek,
                         ZFMP_IN(void *, token),
                         ZFMP_IN(zfindex, byteSize),
                         ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin))
@@ -168,7 +168,7 @@ ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFFileFileSeek,
  *   for text files,
  *   you must make sure the file is UTF8 encoded without BOM
  */
-ZFMETHOD_FUNC_DECLARE_3(zfindex, ZFFileFileRead,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFFileFileRead,
                         ZFMP_IN(void *, token),
                         ZFMP_IN(void *, buf),
                         ZFMP_IN(zfindex, maxByteSize))
@@ -196,24 +196,24 @@ ZFMETHOD_FUNC_DECLARE_3(zfindex, ZFFileFileRead,
  * which means #ZFFileFileWrite should be stopped when reached 0x00 in src,
  * usually to output a UTF8 string
  */
-ZFMETHOD_FUNC_DECLARE_3(zfindex, ZFFileFileWrite,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFFileFileWrite,
                         ZFMP_IN(void *, token),
                         ZFMP_IN(const void *, src),
                         ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax()))
 /**
  * @brief flush the file, useful only for files opened for write
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFFileFileFlush,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileFileFlush,
                         ZFMP_IN(void *, token))
 /**
  * @brief see #ZFFileFileRead
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFFileFileIsEof,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileFileIsEof,
                         ZFMP_IN(void *, token))
 /**
  * @brief see #ZFFileFileRead
  */
-ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFFileFileIsError,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileFileIsError,
                         ZFMP_IN(void *, token))
 
 /**
@@ -223,7 +223,7 @@ ZFMETHOD_FUNC_DECLARE_1(zfbool, ZFFileFileIsError,
  * return zfindexMax() if error\n
  * note that result is not ensured if file is opened in append mode
  */
-ZFMETHOD_FUNC_DECLARE_1(zfindex, ZFFileFileSize,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFFileFileSize,
                         ZFMP_IN(void *, token))
 
 ZF_NAMESPACE_GLOBAL_END

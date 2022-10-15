@@ -24,7 +24,7 @@ typedef ZFInterface * (*_ZFP_ZFObjectToInterfaceCastCallback)(ZF_IN ZFObject * c
 
 // ============================================================
 /** @brief see #ZFClass::instanceObserverAdd */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFClassInstanceObserverAddParam
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFClassInstanceObserverAddParam
 {
     ZFCORE_PARAM_DECLARE_SELF(ZFClassInstanceObserverAddParam)
 
@@ -68,7 +68,7 @@ zfclassFwd _ZFP_ZFClassPrivate;
  * @brief ZFObject's class info
  * @see ZFObject
  */
-zffinal zfclassNotPOD ZF_ENV_EXPORT ZFClass
+zffinal zfclassNotPOD ZFLIB_ZFCore ZFClass
 {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFClass)
 
@@ -701,7 +701,7 @@ public:
 #define ZFObjectTagKeyword_newInstanceGenericFailed "_ZFP_NIGFail"
 
 // ============================================================
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFClassRegisterHolder
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFClassRegisterHolder
 {
 public:
     _ZFP_ZFClassRegisterHolder(ZF_IN const zfchar *classNamespace,
@@ -724,8 +724,8 @@ public:
 // ============================================================
 zfclassFwd ZFFilterForZFClass;
 /** @brief see #ZFClassGetAll */
-extern ZF_ENV_EXPORT void ZFClassGetAllT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret,
-                                         ZF_IN_OPT const ZFFilterForZFClass *classFilter = zfnull);
+extern ZFLIB_ZFCore void ZFClassGetAllT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret,
+                                        ZF_IN_OPT const ZFFilterForZFClass *classFilter = zfnull);
 /**
  * @brief get all class currently registered, for debug use only
  */
@@ -765,10 +765,10 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *   but must not manually notify this event\n
  *   also, take care of performance
  */
-ZFOBSERVER_EVENT_GLOBAL(ClassDataChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ClassDataChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-extern ZF_ENV_EXPORT ZFObserverHolder &_ZFP_ZFClassDataChangeObserverRef(void);
+extern ZFLIB_ZFCore ZFObserverHolder &_ZFP_ZFClassDataChangeObserverRef(void);
 /**
  * @brief see #ZFGlobalEvent::EventClassDataChange
  *
@@ -779,7 +779,7 @@ extern ZF_ENV_EXPORT ZFObserverHolder &_ZFP_ZFClassDataChangeObserverRef(void);
 #define ZFClassDataChangeObserver (_ZFP_ZFClassDataChangeObserverRef())
 
 // ============================================================
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFCoreCriticalClassNotTypeOf
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFCoreCriticalClassNotTypeOf
 {
 public:
     static zfstring classInfo(ZF_IN const ZFClass *cls)

@@ -12,17 +12,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief native animation's curve
  */
-ZFENUM_BEGIN(ZFAnimationNativeViewCurve)
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFAnimationNativeViewCurve)
     ZFENUM_VALUE(Linear) /**< @brief linear */
     ZFENUM_VALUE(EaseIn) /**< @brief slow to fast */
     ZFENUM_VALUE(EaseOut) /**< @brief fast to slow */
     ZFENUM_VALUE(EaseInOut) /**< @brief slow to fast to slow */
-ZFENUM_SEPARATOR(ZFAnimationNativeViewCurve)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Linear)
     ZFENUM_VALUE_REGISTER(EaseIn)
     ZFENUM_VALUE_REGISTER(EaseOut)
     ZFENUM_VALUE_REGISTER(EaseInOut)
-ZFENUM_END(ZFAnimationNativeViewCurve)
+ZFENUM_END(ZFLIB_ZFUIKit, ZFAnimationNativeViewCurve)
 
 // ============================================================
 zfclassFwd _ZFP_ZFAnimationNativeViewPrivate;
@@ -33,7 +33,7 @@ zfclassFwd _ZFP_ZFAnimationNativeViewPrivate;
  * but may work incorrectly with local transform
  * (such as #ZFUIView::viewRotate)
  */
-zfclass ZF_ENV_EXPORT ZFAnimationNativeView : zfextends ZFAnimation
+zfclass ZFLIB_ZFUIKit ZFAnimationNativeView : zfextends ZFAnimation
 {
     ZFOBJECT_DECLARE(ZFAnimationNativeView, ZFAnimation)
 

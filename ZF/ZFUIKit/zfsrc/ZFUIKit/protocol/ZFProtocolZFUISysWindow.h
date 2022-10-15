@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFUISysWindow
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFUISysWindow)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUISysWindow)
     // ============================================================
     // main window impl
 public:

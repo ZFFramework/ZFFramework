@@ -20,33 +20,33 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * by #ZFLuaStateAttach/#ZFLuaStateDetach\n
  * the builtin lua state can also be changed by #ZFLuaStateChange
  */
-ZFMETHOD_FUNC_DECLARE_0(void *, ZFLuaState)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, void *, ZFLuaState)
 
 /**
  * @brief change builtin lua state
  *
  * this method can not undo, old one would be closed
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFLuaStateChange,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateChange,
                         ZFMP_IN(void *, L))
 
 /** @brief see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFLuaStateListT,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateListT,
                         ZFMP_IN_OUT(ZFCoreArray<void *> &, ret))
 /** @brief see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_0(ZFCoreArrayPOD<void *>, ZFLuaStateList)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, ZFCoreArrayPOD<void *>, ZFLuaStateList)
 
 /** @brief see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_0(void *, ZFLuaStateOpen)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, void *, ZFLuaStateOpen)
 /** @brief see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFLuaStateClose,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateClose,
                         ZFMP_IN(void *, L))
 
 /** @brief see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFLuaStateAttach,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateAttach,
                         ZFMP_IN(void *, L))
 /** @brief see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFLuaStateDetach,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateDetach,
                         ZFMP_IN(void *, L))
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
@@ -56,14 +56,14 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * notified when #ZFLuaStateAttach,
  * param0 is a #v_ZFPtr to lua state
  */
-ZFOBSERVER_EVENT_GLOBAL(LuaStateOnAttach)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFLua, LuaStateOnAttach)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified when #ZFLuaStateDetach,
  * param0 is a #v_ZFPtr to lua state
  */
-ZFOBSERVER_EVENT_GLOBAL(LuaStateOnDetach)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFLua, LuaStateOnDetach)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 ZF_NAMESPACE_GLOBAL_END

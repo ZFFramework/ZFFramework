@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFString
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFString)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFString)
 public:
     /**
      * @brief see #zfstringToUTF8

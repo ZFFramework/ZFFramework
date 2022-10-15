@@ -104,7 +104,7 @@ public:
 /**
  * @brief dummy base for #ZFCoreArray
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFCoreArrayBase
+zfclassLikePOD ZFLIB_ZFCore ZFCoreArrayBase
 {
 public:
     virtual ~ZFCoreArrayBase(void) {}

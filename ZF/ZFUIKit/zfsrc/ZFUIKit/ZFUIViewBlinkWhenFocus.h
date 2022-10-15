@@ -14,17 +14,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief filter to exclude certain view to be auto blinked, empty by default
  */
-ZFEXPORT_VAR_DECLARE(ZFFilterForZFObject, ZFUIViewBlinkWhenFocusFilter)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, ZFFilterForZFObject, ZFUIViewBlinkWhenFocusFilter)
 
 // ============================================================
 /**
  * @brief whether auto start #ZFUIViewBlinkWhenFocusAutoApplyStart, true by default
  */
-ZFEXPORT_VAR_DECLARE(zfbool, ZFUIViewBlinkWhenFocusAutoApply)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfbool, ZFUIViewBlinkWhenFocusAutoApply)
 /**
  * @brief default mask image for #ZFUIViewBlinkWhenFocusAutoApplyStart, an alpha white image by default
  */
-ZFEXPORT_VAR_DECLARE(zfautoObject, ZFUIViewBlinkWhenFocusMaskImage)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfautoObject, ZFUIViewBlinkWhenFocusMaskImage)
 
 /**
  * @brief util method to automatically blink focused view
@@ -35,27 +35,27 @@ ZFEXPORT_VAR_DECLARE(zfautoObject, ZFUIViewBlinkWhenFocusMaskImage)
  * -  #ZFUIViewBlinkWhenFocusAutoApplyStop would be called automatically during #ZFFrameworkCleanup
  *   as level #ZFLevelZFFrameworkLow
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFUIViewBlinkWhenFocusAutoApplyStart,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyStart,
                         ZFMP_IN_OPT(ZFUIImage *, img, zfnull))
 /**
  * @brief see #ZFUIViewBlinkWhenFocusAutoApplyStart
  */
-ZFMETHOD_FUNC_DECLARE_0(void, ZFUIViewBlinkWhenFocusAutoApplyStop)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyStop)
 /**
  * @brief see #ZFUIViewBlinkWhenFocusAutoApplyStart
  */
-ZFMETHOD_FUNC_DECLARE_0(zfbool, ZFUIViewBlinkWhenFocusAutoApplyStarted)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfbool, ZFUIViewBlinkWhenFocusAutoApplyStarted)
 
 /**
  * @brief temporary pause the auto blink
  *
  * can be called more than one time, but must be paired with #ZFUIViewBlinkWhenFocusAutoApplyResume
  */
-ZFMETHOD_FUNC_DECLARE_0(void, ZFUIViewBlinkWhenFocusAutoApplyPause)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyPause)
 /** @brief see #ZFUIViewBlinkWhenFocusAutoApplyPause */
-ZFMETHOD_FUNC_DECLARE_0(void, ZFUIViewBlinkWhenFocusAutoApplyResume)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyResume)
 /** @brief see #ZFUIViewBlinkWhenFocusAutoApplyPause */
-ZFMETHOD_FUNC_DECLARE_0(zfindex, ZFUIViewBlinkWhenFocusAutoApplyPaused)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, zfindex, ZFUIViewBlinkWhenFocusAutoApplyPaused)
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
@@ -65,42 +65,42 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyStart
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyStart)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyStart)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyStop
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyStop)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyStop)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyPause
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyPause)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyPause)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when #ZFUIViewBlinkWhenFocusAutoApplyResume
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkWhenFocusAutoApplyResume)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusAutoApplyResume)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when a view is blinked
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkWhenFocusViewBlinkOn)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusViewBlinkOn)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when a view is blinked
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkWhenFocusViewBlinkOff)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, ViewBlinkWhenFocusViewBlinkOff)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
@@ -111,7 +111,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  *
  * the task would be scheduled and run in future even if time is 0
  */
-ZFMETHOD_FUNC_DECLARE_1(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime,
                         ZFMP_IN_OPT(zftimet, time, zftimetZero()))
 /**
  * @brief cancel #ZFUIViewBlinkWhenFocusAutoApplyPauseForTime
@@ -119,7 +119,7 @@ ZFMETHOD_FUNC_DECLARE_1(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime,
  * typically you should not call this method manually,
  * which would cancel all the task that started by #ZFUIViewBlinkWhenFocusAutoApplyPauseForTime
  */
-ZFMETHOD_FUNC_DECLARE_0(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIViewBlinkWhenFocus_h_

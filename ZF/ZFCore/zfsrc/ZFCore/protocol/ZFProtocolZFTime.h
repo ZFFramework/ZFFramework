@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFTime
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFTime)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFTime)
 public:
     /**
      * @brief see #ZFTime::leapYear

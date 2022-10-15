@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * however the native view itself can not be serialized,
  * it should be initialized by app manually
  */
-zffinal zfclass ZF_ENV_EXPORT ZFUINativeViewWrapper : zfextends ZFUIView
+zffinal zfclass ZFLIB_ZFUIKit ZFUINativeViewWrapper : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUINativeViewWrapper, ZFUIView)
 

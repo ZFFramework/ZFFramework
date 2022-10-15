@@ -17,9 +17,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * note, the mutex would be initialized only after #ZFLevelZFFrameworkEssential
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFMutex *, ZFLogMutex)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFMutex *, ZFLogMutex)
 
-extern ZF_ENV_EXPORT zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo);
 /**
  * @brief a convenient debug header string
  *
@@ -64,7 +64,7 @@ extern ZF_ENV_EXPORT zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &c
  * @endcode
  * and they would be reset to default state after each zfLogT call
  */
-extern ZF_ENV_EXPORT ZFOutput zfLogTrimT(void);
+extern ZFLIB_ZFCore ZFOutput zfLogTrimT(void);
 
 /** @brief see #zfLogTrimT */
 #define zfLogT() (zfLogTrimT() << ZFLOG_HEADER_STRING)
@@ -81,31 +81,31 @@ zfclassNotPOD _ZFP_ZFLogAutoSpaceOn {};
 zfclassNotPOD _ZFP_ZFLogAutoSpaceOff {};
 zfclassNotPOD _ZFP_ZFLogAutoEndlOn {};
 zfclassNotPOD _ZFP_ZFLogAutoEndlOff {};
-extern ZF_ENV_EXPORT const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoSpaceOn const &v);
-extern ZF_ENV_EXPORT const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoSpaceOff const &v);
-extern ZF_ENV_EXPORT const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoEndlOn const &v);
-extern ZF_ENV_EXPORT const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoEndlOff const &v);
+extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoSpaceOn const &v);
+extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoSpaceOff const &v);
+extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoEndlOn const &v);
+extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoEndlOff const &v);
 /** @endcond */
 
 /** @brief see #zfLogTrimT */
-extern ZF_ENV_EXPORT const _ZFP_ZFLogAutoSpaceOn ZFLogAutoSpaceOn;
+extern ZFLIB_ZFCore const _ZFP_ZFLogAutoSpaceOn ZFLogAutoSpaceOn;
 /** @brief see #zfLogTrimT */
-extern ZF_ENV_EXPORT const _ZFP_ZFLogAutoSpaceOff ZFLogAutoSpaceOff;
+extern ZFLIB_ZFCore const _ZFP_ZFLogAutoSpaceOff ZFLogAutoSpaceOff;
 /** @brief see #zfLogTrimT */
-extern ZF_ENV_EXPORT const _ZFP_ZFLogAutoEndlOn ZFLogAutoEndlOn;
+extern ZFLIB_ZFCore const _ZFP_ZFLogAutoEndlOn ZFLogAutoEndlOn;
 /** @brief see #zfLogTrimT */
-extern ZF_ENV_EXPORT const _ZFP_ZFLogAutoEndlOff ZFLogAutoEndlOff;
+extern ZFLIB_ZFCore const _ZFP_ZFLogAutoEndlOff ZFLogAutoEndlOff;
 
 // ============================================================
 // other convenient method
-extern ZF_ENV_EXPORT zfstring _ZFP_zfLogCurTimeString(void);
+extern ZFLIB_ZFCore zfstring _ZFP_zfLogCurTimeString(void);
 /** @cond ZFPrivateDoc */
 #define zfLogCurTimeString() (_ZFP_zfLogCurTimeString().cString())
 /** @endcond */
 /**
  * @brief get a string contains current time with format HH:mm:ss.SSS
  */
-ZFMETHOD_FUNC_DECLARE_0(const zfchar *, zfLogCurTimeString)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, zfLogCurTimeString)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLog_h_

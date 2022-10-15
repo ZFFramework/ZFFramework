@@ -43,17 +43,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * return an index start from 0 (offset is included), ensured range in [offset, length]
  */
-extern ZF_ENV_EXPORT zfindex ZFIOCallbackCalcFSeek(ZF_IN zfindex offset,
-                                                   ZF_IN zfindex length,
-                                                   ZF_IN zfindex curPos,
-                                                   ZF_IN zfindex seekByteSize,
-                                                   ZF_IN ZFSeekPos seekPos);
+extern ZFLIB_ZFCore zfindex ZFIOCallbackCalcFSeek(ZF_IN zfindex offset,
+                                                  ZF_IN zfindex length,
+                                                  ZF_IN zfindex curPos,
+                                                  ZF_IN zfindex seekByteSize,
+                                                  ZF_IN ZFSeekPos seekPos);
 
 // ============================================================
 /**
  * @brief abstract base class, use #ZFOutput or #ZFInput
  */
-ZFCALLBACK_DECLARE_BEGIN(ZFIOCallback, ZFCallback)
+ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
 public:
     /**
      * @brief similar to FILE's #ZFFileFileSeek
@@ -70,7 +70,7 @@ public:
      * @brief calculate the callback's size or return zfindexMax() if not supported
      */
     virtual zfindex ioSize(void) const;
-_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFIOCallback, ZFCallback)
+_ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOCallback_fwd_h_

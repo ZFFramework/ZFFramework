@@ -13,7 +13,7 @@ zfclassFwd _ZFP_zftaskidPrivate;
 /**
  * @brief taskid utility, see #ZFTaskIdGenerator
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT zftaskid
+zffinal zfclassLikePOD ZFLIB_ZFCore zftaskid
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -33,16 +33,16 @@ public:
 private:
     _ZFP_zftaskidPrivate *d;
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(zftaskid, zftaskid)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zftaskid, zftaskid)
 
 /** @brief invalid taskid */
-ZFEXPORT_VAR_READONLY_DECLARE(zftaskid, zftaskidInvalid)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftaskid, zftaskidInvalid)
 
 // ============================================================
 /**
  * @brief util to manage task id
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFTaskIdGenerator
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFTaskIdGenerator
 {
 public:
     /**
@@ -78,7 +78,7 @@ public:
     inline zfbool operator != (ZF_IN ZFTaskIdGenerator const &ref) const {return d != ref.d;}
     /** @endcond */
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFTaskIdGenerator, ZFTaskIdGenerator)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFTaskIdGenerator, ZFTaskIdGenerator)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTaskIdUtil_h_

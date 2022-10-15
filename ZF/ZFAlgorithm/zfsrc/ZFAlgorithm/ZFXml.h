@@ -46,7 +46,7 @@ zfclassFwd ZFXmlItem;
 /**
  * @brief xml item type
  */
-ZFENUM_BEGIN(ZFXmlType)
+ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFXmlType)
     ZFENUM_VALUE(XmlNull)
     ZFENUM_VALUE(XmlElement)
     ZFENUM_VALUE(XmlAttribute)
@@ -56,7 +56,7 @@ ZFENUM_BEGIN(ZFXmlType)
     ZFENUM_VALUE(XmlDeclaration)
     ZFENUM_VALUE(XmlDocType)
     ZFENUM_VALUE(XmlPI)
-ZFENUM_SEPARATOR(ZFXmlType)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(XmlNull)
     ZFENUM_VALUE_REGISTER(XmlElement)
     ZFENUM_VALUE_REGISTER(XmlAttribute)
@@ -66,7 +66,7 @@ ZFENUM_SEPARATOR(ZFXmlType)
     ZFENUM_VALUE_REGISTER(XmlDeclaration)
     ZFENUM_VALUE_REGISTER(XmlDocType)
     ZFENUM_VALUE_REGISTER(XmlPI)
-ZFENUM_END(ZFXmlType)
+ZFENUM_END(ZFLIB_ZFAlgorithm, ZFXmlType)
 
 zfclassFwd ZFXmlVisitData;
 /**
@@ -83,13 +83,13 @@ zfclassFwd ZFXmlVisitData;
  *   if not visitEnter, shows that whether we should continue to visit next siblings
  */
 typedef ZFCallbackT<zfbool, const ZFXmlVisitData &> ZFXmlVisitCallback;
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFXmlVisitCallback, ZFXmlVisitCallback)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlVisitCallback, ZFXmlVisitCallback)
 
 /**
  * @brief default visit callback for visiting a xml item,
  *   you can change it at runtime
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFXmlVisitCallback, ZFXmlVisitCallbackDefault)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlVisitCallback, ZFXmlVisitCallbackDefault)
 
 // ============================================================
 // ZFXmlItem
@@ -97,7 +97,7 @@ zfclassFwd _ZFP_ZFXmlItemPrivate;
 /**
  * @brief xml item that holds the xml DOM
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFXmlItem
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlItem
 {
     // ============================================================
 public:
@@ -369,31 +369,31 @@ private:
 private:
     ZFXmlItem(ZF_IN _ZFP_ZFXmlItemPrivate *ref);
 };
-ZFTYPEID_DECLARE(ZFXmlItem, ZFXmlItem)
+ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlItem)
 ZFOUTPUT_TYPE(ZFXmlItem, {output << v.objectInfo();})
 
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_1(ZFXmlItem, ZFXmlElement,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlElement,
                         ZFMP_IN_OPT(const zfchar *, xmlName, zfnull))
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_2(ZFXmlItem, ZFXmlAttribute,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlAttribute,
                         ZFMP_IN_OPT(const zfchar *, xmlName, zfnull),
                         ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_1(ZFXmlItem, ZFXmlText,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlText,
                         ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_1(ZFXmlItem, ZFXmlComment,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlComment,
                         ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_0(ZFXmlItem, ZFXmlDocument)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlDocument)
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_0(ZFXmlItem, ZFXmlDeclaration)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlDeclaration)
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_1(ZFXmlItem, ZFXmlDocType,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlDocType,
                         ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
 /** @brief util to create #ZFXmlItem */
-ZFMETHOD_FUNC_DECLARE_2(ZFXmlItem, ZFXmlPI,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlPI,
                         ZFMP_IN_OPT(const zfchar *, xmlName, zfnull),
                         ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
 
@@ -402,7 +402,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFXmlItem, ZFXmlPI,
 /**
  * @brief visit type for #ZFXmlItem::xmlVisit
  */
-ZFENUM_BEGIN(ZFXmlVisitType)
+ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFXmlVisitType)
     /**
      * @brief entering visit the xml item
      */
@@ -427,15 +427,15 @@ ZFENUM_BEGIN(ZFXmlVisitType)
      *   7. exitChildren element
      */
     ZFENUM_VALUE(ExitChildren)
-ZFENUM_SEPARATOR(ZFXmlVisitType)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Enter)
     ZFENUM_VALUE_REGISTER(Exit)
     ZFENUM_VALUE_REGISTER(ExitChildren)
-ZFENUM_END(ZFXmlVisitType)
+ZFENUM_END(ZFLIB_ZFAlgorithm, ZFXmlVisitType)
 /**
  * @brief visit data when visiting a xml item, used in #ZFXmlVisitCallback
  */
-zfclassLikePOD ZF_ENV_EXPORT ZFXmlVisitData
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlVisitData
 {
 public:
     /**
@@ -480,13 +480,13 @@ public:
     inline zfbool operator != (ZF_IN ZFXmlVisitData const &ref) const {return !this->operator == (ref);}
     /** @endcond */
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFXmlVisitData, ZFXmlVisitData)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlVisitData, ZFXmlVisitData)
 
 // ============================================================
 /**
  * @brief token used to output a xml document
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFXmlOutputToken
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputToken
 {
 public:
     zfstring xmlNewLineToken; /**< @brief "\n" by default */
@@ -553,7 +553,7 @@ public:
 /**
  * @brief output flags for output a xml
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT ZFXmlOutputFlags
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputFlags
 {
 public:
     /**
@@ -612,25 +612,25 @@ public:
     }
     /** @endcond */
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFXmlOutputFlags, ZFXmlOutputFlags)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputFlags, ZFXmlOutputFlags)
 
 /**
  * @brief default xml output flags
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFXmlOutputFlags, ZFXmlOutputFlagsDefault)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputFlags, ZFXmlOutputFlagsDefault)
 /**
  * @brief xml output flags with trim format
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFXmlOutputFlags, ZFXmlOutputFlagsTrim)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputFlags, ZFXmlOutputFlagsTrim)
 /**
  * @brief xml output flags with detailed format
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFXmlOutputFlags, ZFXmlOutputFlagsDetailed)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputFlags, ZFXmlOutputFlagsDetailed)
 
 /**
  * @brief create a ZFXmlVisitCallback to output xml DOM tree
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFXmlVisitCallback, ZFXmlVisitCallbackForOutput,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXmlVisitCallback, ZFXmlVisitCallbackForOutput,
                         ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()),
                         ZFMP_IN_OPT(const ZFXmlOutputFlags &, flags, ZFXmlOutputFlagsDefault()))
 
@@ -638,12 +638,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFXmlVisitCallback, ZFXmlVisitCallbackForOutput,
 /**
  * @brief parse xml document, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFXmlItem, ZFXmlItemFromInput,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlItemFromInput,
                         ZFMP_IN(const ZFInput &, callback))
 /**
  * @brief parse xml document, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFXmlItem, ZFXmlItemFromString,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFXmlItemFromString,
                         ZFMP_IN(const zfchar *, src),
                         ZFMP_IN_OPT(zfindex, size, zfindexMax()))
 
@@ -654,7 +654,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFXmlItem, ZFXmlItemFromString,
  * @note result string is not ensured to be a valid xml string
  *   if source is not valid
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFXmlItemToOutput,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFXmlItemToOutput,
                         ZFMP_IN_OUT(const ZFOutput &, output),
                         ZFMP_IN(const ZFXmlItem &, xmlItem),
                         ZFMP_IN_OPT(const ZFXmlOutputFlags &, outputFlags, ZFXmlOutputFlagsDefault()))
@@ -664,12 +664,12 @@ ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFXmlItemToOutput,
  * @note result string is not ensured to be a valid xml string
  *   if source is not valid
  */
-ZFMETHOD_FUNC_DECLARE_3(zfbool, ZFXmlItemToString,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFXmlItemToString,
                         ZFMP_IN_OUT(zfstring &, ret),
                         ZFMP_IN(const ZFXmlItem &, xmlItem),
                         ZFMP_IN(const ZFXmlOutputFlags &, outputFlags))
 /** @brief see #ZFXmlItemToString */
-ZFMETHOD_FUNC_DECLARE_2(zfstring, ZFXmlItemToString,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFXmlItemToString,
                         ZFMP_IN(const ZFXmlItem &, xmlItem),
                         ZFMP_IN(const ZFXmlOutputFlags &, outputFlags))
 
@@ -689,14 +689,14 @@ ZFMETHOD_FUNC_DECLARE_2(zfstring, ZFXmlItemToString,
  *   &#x0; ~ &#xFFFF;   heximal encoded char
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_3(void, ZFXmlEscapeCharEncode,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharEncode,
                         ZFMP_OUT(zfstring &, dst),
                         ZFMP_IN(const zfchar *, src),
                         ZFMP_IN_OPT(zfindex, count, zfindexMax()))
 /**
  * @brief see #ZFXmlEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(void, ZFXmlEscapeCharEncode,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharEncode,
                         ZFMP_OUT(const ZFOutput &, dst),
                         ZFMP_IN(const zfchar *, src),
                         ZFMP_IN_OPT(zfindex, count, zfindexMax()))
@@ -704,14 +704,14 @@ ZFMETHOD_FUNC_DECLARE_3(void, ZFXmlEscapeCharEncode,
 /**
  * @brief see #ZFXmlEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(void, ZFXmlEscapeCharDecode,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharDecode,
                         ZFMP_OUT(zfstring &, dst),
                         ZFMP_IN(const zfchar *, src),
                         ZFMP_IN_OPT(zfindex, count, zfindexMax()))
 /**
  * @brief see #ZFXmlEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(void, ZFXmlEscapeCharDecode,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharDecode,
                         ZFMP_OUT(const ZFOutput &, dst),
                         ZFMP_IN(const zfchar *, src),
                         ZFMP_IN_OPT(zfindex, count, zfindexMax()))

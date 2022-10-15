@@ -20,7 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *  / **
  *    * you can add Doxygen docs for EnumName (as a ZFObject) here
  *    * /
- *   ZFENUM_BEGIN(EnumName)
+ *   ZFENUM_BEGIN(ZFLIB_APP, EnumName)
  *      / **
  *        * you can add Doxygen docs for Value1 here
  *        * /
@@ -28,7 +28,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       ZFENUM_VALUE(Value2) // /< you can add Doxygen docs for Value2 here
  *       ZFENUM_VALUE_WITH_INIT(Value3, 33) // you can assign the value for enum item
  *       ZFENUM_VALUE_WITH_INIT(Value4, e_Value2) // you can assign a same value with old value
- *   ZFENUM_SEPARATOR(EnumName)
+ *   ZFENUM_SEPARATOR()
  *       // you must use ZFENUM_VALUE_REGISTER to map the value and name
  *       ZFENUM_VALUE_REGISTER(Value1)
  *       ZFENUM_VALUE_REGISTER(Value2)
@@ -39,7 +39,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       // old name would be overrided,
  *       // as well as the value-name map
  *       ZFENUM_VALUE_REGISTER_WITH_NAME(Value4, "Value4 override Value2")
- *   ZFENUM_END(EnumName)
+ *   ZFENUM_END(ZFLIB_APP, EnumName)
  *
  *   // ============================================================
  *   // in cpp file
@@ -92,8 +92,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     void func1(MyEnumEnum e) {...}
  *   @endcode
  */
-#define ZFENUM_BEGIN(EnumName) \
-    _ZFP_ZFENUM_BEGIN(EnumName)
+#define ZFENUM_BEGIN(ZFLIB_, EnumName) \
+    _ZFP_ZFENUM_BEGIN(ZFLIB_, EnumName)
 
 /** @brief see #ZFENUM_BEGIN */
 #define ZFENUM_VALUE(Value) \
@@ -103,11 +103,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFENUM_VALUE_WITH_INIT(Value, initValue)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_SEPARATOR(EnumName) \
-    _ZFP_ZFENUM_SEPARATOR(EnumName, zffalse)
+#define ZFENUM_SEPARATOR() \
+    _ZFP_ZFENUM_SEPARATOR(zffalse)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_SEPARATOR_ALLOW_DUPLICATE_VALUE(EnumName) \
-    _ZFP_ZFENUM_SEPARATOR(EnumName, zftrue)
+#define ZFENUM_SEPARATOR_ALLOW_DUPLICATE_VALUE() \
+    _ZFP_ZFENUM_SEPARATOR(zftrue)
 
 /** @brief see #ZFENUM_BEGIN */
 #define ZFENUM_VALUE_REGISTER_WITH_NAME(Value, Name) \
@@ -117,18 +117,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, ZFM_TOSTRING_DIRECT(Value))
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END(EnumName) \
-    _ZFP_ZFENUM_END(EnumName)
+#define ZFENUM_END(ZFLIB_, EnumName) \
+    _ZFP_ZFENUM_END(ZFLIB_, EnumName)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END_WITH_DEFAULT(EnumName, defaultEnum) \
-    _ZFP_ZFENUM_END_WITH_DEFAULT(EnumName, defaultEnum)
+#define ZFENUM_END_WITH_DEFAULT(ZFLIB_, EnumName, defaultEnum) \
+    _ZFP_ZFENUM_END_WITH_DEFAULT(ZFLIB_, EnumName, defaultEnum)
 
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END_FLAGS(EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_END_FLAGS(EnumName, EnumFlagsName)
+#define ZFENUM_END_FLAGS(ZFLIB_, EnumName, EnumFlagsName) \
+    _ZFP_ZFENUM_END_FLAGS(ZFLIB_, EnumName, EnumFlagsName)
 /** @brief see #ZFENUM_BEGIN */
-#define ZFENUM_END_FLAGS_WITH_DEFAULT(EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
-    _ZFP_ZFENUM_END_FLAGS_WITH_DEFAULT(EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags)
+#define ZFENUM_END_FLAGS_WITH_DEFAULT(ZFLIB_, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
+    _ZFP_ZFENUM_END_FLAGS_WITH_DEFAULT(ZFLIB_, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags)
 
 /** @brief see #ZFENUM_BEGIN */
 #define ZFENUM_DEFINE(EnumName) \
@@ -140,7 +140,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 zfclassFwd _ZFP_ZFEnumDataPrivate;
-zfclassNotPOD ZF_ENV_EXPORT _ZFP_ZFEnumData
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFEnumData
 {
 public:
     _ZFP_ZFEnumData(void);
@@ -163,9 +163,9 @@ public:
 private:
     _ZFP_ZFEnumDataPrivate *d;
 };
-extern ZF_ENV_EXPORT _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass);
-extern ZF_ENV_EXPORT void _ZFP_ZFEnumDataCleanup(ZF_IN const ZFClass *ownerClass);
-extern ZF_ENV_EXPORT void _ZFP_ZFEnumDataCleanup(ZF_IN const _ZFP_ZFEnumData *d);
+extern ZFLIB_ZFCore _ZFP_ZFEnumData *_ZFP_ZFEnumDataAccess(ZF_IN const ZFClass *ownerClass);
+extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const ZFClass *ownerClass);
+extern ZFLIB_ZFCore void _ZFP_ZFEnumDataCleanup(ZF_IN const _ZFP_ZFEnumData *d);
 zfclassNotPOD _ZFP_ZFEnumDataHolder
 {
 public:
@@ -182,8 +182,8 @@ public:
 };
 
 // ============================================================
-#define _ZFP_ZFENUM_BEGIN(EnumName) \
-    zfclass ZF_ENV_EXPORT EnumName : zfextends ZFEnum \
+#define _ZFP_ZFENUM_BEGIN(ZFLIB_, EnumName) \
+    zfclass ZFLIB_ EnumName : zfextends ZFEnum \
     { \
         ZFOBJECT_DECLARE(EnumName, ZFEnum) \
     public: \
@@ -194,7 +194,7 @@ public:
 #define _ZFP_ZFENUM_VALUE(Value) /** \n */ e_##Value,
 #define _ZFP_ZFENUM_VALUE_WITH_INIT(Value, initValue) /** @brief \n Value(initValue)\n */ e_##Value = initValue,
 
-#define _ZFP_ZFENUM_SEPARATOR(EnumName, isEnableDuplicateValue_) \
+#define _ZFP_ZFENUM_SEPARATOR(isEnableDuplicateValue_) \
             /** @brief max enum value */ \
             ZFEnumCount, \
             /* used to ensure sizeof(enum) == sizeof(zfuint) */ \
@@ -302,7 +302,7 @@ public:
         static const _ZFP_ZFEnumData *_ZFP_ZFEnumDataInit(void) \
         { \
             zfCoreMutexLocker(); \
-            _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataAccess(EnumName::ClassData()); \
+            _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataAccess(zfself::ClassData()); \
             if(d->needInitFlag) \
             { \
                 d->needInitFlag = zffalse; \
@@ -311,19 +311,19 @@ public:
 #define _ZFP_ZFENUM_VALUE_REGISTER_WITH_NAME(Value, Name) \
                 d->add(isEnableDuplicateValue, zfself::e_##Value, Name);
 
-#define _ZFP_ZFENUM_END(EnumName) \
-    _ZFP_ZFENUM_END_DETAIL(EnumName, zffalse, ZFEnumInvalid())
-#define _ZFP_ZFENUM_END_WITH_DEFAULT(EnumName, defaultEnum) \
-    _ZFP_ZFENUM_END_DETAIL(EnumName, zffalse, defaultEnum)
+#define _ZFP_ZFENUM_END(ZFLIB_, EnumName) \
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, ZFEnumInvalid())
+#define _ZFP_ZFENUM_END_WITH_DEFAULT(ZFLIB_, EnumName, defaultEnum) \
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zffalse, defaultEnum)
 
-#define _ZFP_ZFENUM_END_FLAGS(EnumName, EnumFlagsName) \
-    _ZFP_ZFENUM_END_DETAIL(EnumName, zftrue, ZFEnumInvalid()) \
-    _ZFP_ZFENUM_FLAGS_DECLARE(EnumName, EnumFlagsName, EnumName::EnumDefault())
-#define _ZFP_ZFENUM_END_FLAGS_WITH_DEFAULT(EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
-    _ZFP_ZFENUM_END_DETAIL(EnumName, zftrue, defaultEnum) \
-    _ZFP_ZFENUM_FLAGS_DECLARE(EnumName, EnumFlagsName, defaultEnumFlags)
+#define _ZFP_ZFENUM_END_FLAGS(ZFLIB_, EnumName, EnumFlagsName) \
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, ZFEnumInvalid()) \
+    _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, EnumName::EnumDefault())
+#define _ZFP_ZFENUM_END_FLAGS_WITH_DEFAULT(ZFLIB_, EnumName, EnumFlagsName, defaultEnum, defaultEnumFlags) \
+    _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, zftrue, defaultEnum) \
+    _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, defaultEnumFlags)
 
-#define _ZFP_ZFENUM_END_DETAIL(EnumName, IsFlags, EnumDefaultAction) \
+#define _ZFP_ZFENUM_END_DETAIL(ZFLIB_, EnumName, IsFlags, EnumDefaultAction) \
                 d->enumDefault = (zfuint)(EnumDefaultAction); \
                 if(d->enumDefault == ZFEnumInvalid()) \
                 { \
@@ -348,32 +348,18 @@ public:
         zfoverride \
         virtual const zfchar *wrappedValueTypeId(void); \
     }; \
-    /** @brief editable version of @ref EnumName */ \
-    zfclass ZF_ENV_EXPORT EnumName##Editable : zfextends EnumName \
-    { \
-        ZFOBJECT_DECLARE(EnumName##Editable, EnumName) \
-    public: \
-        /** @cond ZFPrivateDoc */ \
-        zfoverride \
-        virtual void enumValue(ZF_IN zfuint value) \
-        { \
-            zfsuper::enumValue(value); \
-        } \
-        /** @endcond */ \
-    }; \
     /** @brief same as @ref EnumName##Enum, see @ref EnumName */ \
     typedef EnumName::ZFEnumType EnumName##Enum; \
-    _ZFP_ZFENUM_CONVERTER_DECLARE(EnumName) \
-    _ZFP_ZFENUM_PROP_TYPE_DECLARE(EnumName)
+    _ZFP_ZFENUM_CONVERTER_DECLARE(ZFLIB_, EnumName) \
+    _ZFP_ZFENUM_PROP_TYPE_DECLARE(ZFLIB_, EnumName)
 
 // ============================================================
-extern ZF_ENV_EXPORT const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass);
-extern ZF_ENV_EXPORT void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZFMethod *> &ret,
-                                               ZF_IN const _ZFP_ZFEnumData *d);
+extern ZFLIB_ZFCore const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass);
+extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZFMethod *> &ret,
+                                              ZF_IN const _ZFP_ZFEnumData *d);
 #define _ZFP_ZFENUM_DEFINE(EnumName) \
     _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
     ZFOBJECT_REGISTER(EnumName) \
-    ZFOBJECT_REGISTER(EnumName##Editable) \
     _ZFP_ZFENUM_PROP_TYPE_DEFINE(EnumName) \
     ZF_STATIC_REGISTER_INIT(EnumReg_##EnumName) \
     { \
@@ -402,9 +388,9 @@ extern ZF_ENV_EXPORT void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZF
     _ZFP_ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName)
 
 // ============================================================
-#define _ZFP_ZFENUM_CONVERTER_DECLARE(EnumName) \
+#define _ZFP_ZFENUM_CONVERTER_DECLARE(ZFLIB_, EnumName) \
     /** @brief see @ref EnumName, return empty string if error */ \
-    extern ZF_ENV_EXPORT zfbool EnumName##ToString(ZF_IN_OUT zfstring &ret, ZF_IN EnumName *const &value); \
+    extern ZFLIB_ zfbool EnumName##ToString(ZF_IN_OUT zfstring &ret, ZF_IN EnumName *const &value); \
     /** @brief see @ref EnumName, return empty string if error */ \
     inline zfstring EnumName##ToString(ZF_IN EnumName *const &value) \
     { \
@@ -413,10 +399,10 @@ extern ZF_ENV_EXPORT void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZF
         return ret; \
     } \
     /** @brief see @ref EnumName, return enum object if success */ \
-    extern ZF_ENV_EXPORT zfbool EnumName##FromString(ZF_OUT zfautoObject &ret, \
-                                                     ZF_IN const zfchar *src, \
-                                                     ZF_IN_OPT zfindex srcLen = zfindexMax()); \
-    ZFOUTPUT_TYPE_DECLARE(EnumName##Enum)
+    extern ZFLIB_ zfbool EnumName##FromString(ZF_OUT zfautoObject &ret, \
+                                              ZF_IN const zfchar *src, \
+                                              ZF_IN_OPT zfindex srcLen = zfindexMax()); \
+    ZFOUTPUT_TYPE_DECLARE(ZFLIB_, EnumName##Enum)
 #define _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
     zfbool EnumName##ToString(ZF_IN_OUT zfstring &ret, ZF_IN EnumName *const &value) \
     { \
@@ -447,9 +433,9 @@ extern ZF_ENV_EXPORT void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZF
     ZFOUTPUT_TYPE_DEFINE(EnumName##Enum, {output << EnumName::EnumNameForValue(v);})
 
 // ============================================================
-#define _ZFP_ZFENUM_FLAGS_DECLARE(EnumName, EnumFlagsName, defaultValue) \
+#define _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, defaultValue) \
     /** @brief EnumName as #zfflags, see @ref EnumName, @ref EnumFlagsName##ToString, @ref EnumFlagsName##FromString */ \
-    zffinal zfclassPOD ZF_ENV_EXPORT EnumFlagsName \
+    zffinal zfclassPOD ZFLIB_ EnumFlagsName \
     { /* this class should be POD-like to support enum value reinterpret cast (ZFTAG_TRICKS: EnumReinterpretCast) */ \
     public: \
         /** @brief default value for EnumFlagsName */ \
@@ -496,8 +482,8 @@ extern ZF_ENV_EXPORT void _ZFP_ZFEnumMethodReg(ZF_IN_OUT ZFCoreArrayPOD<const ZF
     private: \
         zfuint flags; \
     }; \
-    ZFOUTPUT_TYPE_DECLARE(EnumFlagsName) \
-    _ZFP_ZFENUM_FLAGS_PROP_TYPE_DECLARE(EnumName, EnumFlagsName)
+    ZFOUTPUT_TYPE_DECLARE(ZFLIB_, EnumFlagsName) \
+    _ZFP_ZFENUM_FLAGS_PROP_TYPE_DECLARE(ZFLIB_, EnumName, EnumFlagsName)
 
 #define _ZFP_ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName) \
     ZFOUTPUT_TYPE_DEFINE(EnumFlagsName, {output << v.objectInfo();}) \

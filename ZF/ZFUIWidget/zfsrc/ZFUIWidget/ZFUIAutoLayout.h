@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #ZFUIAutoLayout */
-ZFENUM_BEGIN(ZFUIAutoLayoutPos)
+ZFENUM_BEGIN(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
     ZFENUM_VALUE(None)
     ZFENUM_VALUE(Width)
     ZFENUM_VALUE(Height)
@@ -19,7 +19,7 @@ ZFENUM_BEGIN(ZFUIAutoLayoutPos)
     ZFENUM_VALUE(Top)
     ZFENUM_VALUE(Right)
     ZFENUM_VALUE(Bottom)
-ZFENUM_SEPARATOR(ZFUIAutoLayoutPos)
+ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(None)
     ZFENUM_VALUE_REGISTER(Width)
     ZFENUM_VALUE_REGISTER(Height)
@@ -27,10 +27,10 @@ ZFENUM_SEPARATOR(ZFUIAutoLayoutPos)
     ZFENUM_VALUE_REGISTER(Top)
     ZFENUM_VALUE_REGISTER(Right)
     ZFENUM_VALUE_REGISTER(Bottom)
-ZFENUM_END(ZFUIAutoLayoutPos)
+ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
 
 /** @brief see #ZFUIAutoLayout */
-zfclassLikePOD ZF_ENV_EXPORT ZFUIAutoLayoutRule
+zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule
 {
     ZFCORE_PARAM_DECLARE_SELF(ZFUIAutoLayoutRule)
 
@@ -78,13 +78,13 @@ public:
     }
     /** @endcond */
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
 
 // ============================================================
 // ZFUIAutoLayoutParam
 zfclassFwd ZFUIAutoLayout;
 /** @brief see #ZFUIAutoLayout */
-zfclass ZF_ENV_EXPORT ZFUIAutoLayoutParam : zfextends ZFUILayoutParam
+zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam
 {
     ZFOBJECT_DECLARE(ZFUIAutoLayoutParam, ZFUILayoutParam)
 
@@ -209,7 +209,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * to apply rules to finally confirm the child's frame,
  * each position can have 0 or 1 rule
  */
-zfclass ZF_ENV_EXPORT ZFUIAutoLayout : zfextends ZFUIView
+zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIAutoLayout, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIAutoLayout)

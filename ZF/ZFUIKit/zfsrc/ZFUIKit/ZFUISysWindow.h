@@ -17,7 +17,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * either by access #ZFUISysWindow::mainWindow,
  * or by #ZFUISysWindow::mainWindowRegister
  */
-ZFOBSERVER_EVENT_GLOBAL(SysWindowMainWindowOnAttach)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, SysWindowMainWindowOnAttach)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
@@ -31,7 +31,7 @@ zfclassFwd _ZFP_ZFUISysWindowPrivate;
  * use #nativeWindowEmbed to attach to native impl,
  * never create #ZFUISysWindow's instance manually
  */
-zffinal zfclass ZF_ENV_EXPORT ZFUISysWindow : zfextends ZFObject
+zffinal zfclass ZFLIB_ZFUIKit ZFUISysWindow : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFUISysWindow, ZFObject)
 
@@ -332,7 +332,7 @@ private:
 /**
  * @brief impl for #ZFUISysWindow::nativeWindowEmbed
  */
-zfinterface ZF_ENV_EXPORT ZFUISysWindowEmbedImpl : zfextends ZFInterface
+zfinterface ZFLIB_ZFUIKit ZFUISysWindowEmbedImpl : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(ZFUISysWindowEmbedImpl, ZFInterface)
 

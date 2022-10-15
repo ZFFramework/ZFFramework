@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * pathData is file's relative path within #ZFFilePathForModule
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFPATHTYPE_DECLARE(modulePath)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, modulePath)
 
 /**
  * @brief see #ZFPathInfo
@@ -23,7 +23,7 @@ ZFPATHTYPE_DECLARE(modulePath)
  * pathData is file's relative path within #ZFFilePathForStorage
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFPATHTYPE_DECLARE(storagePath)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, storagePath)
 
 /**
  * @brief see #ZFPathInfo
@@ -31,7 +31,7 @@ ZFPATHTYPE_DECLARE(storagePath)
  * pathData is file's relative path within #ZFFilePathForStorageShared
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFPATHTYPE_DECLARE(storageSharedPath)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, storageSharedPath)
 
 /**
  * @brief see #ZFPathInfo
@@ -41,14 +41,14 @@ ZFPATHTYPE_DECLARE(storageSharedPath)
  * note, the cache path's content would be removed according to #ZFFilePathForCacheClear
  * @note path must be well formed, use #ZFFilePathFormat if necessary
  */
-ZFPATHTYPE_DECLARE(cachePath)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, cachePath)
 
 /**
  * @brief see #ZFPathInfo
  *
  * pathData is plain text
  */
-ZFPATHTYPE_DECLARE(text)
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, text)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPathType_common_h_

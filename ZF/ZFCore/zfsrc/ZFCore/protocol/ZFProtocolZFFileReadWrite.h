@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFFile
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFFileReadWrite)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFFileReadWrite)
 public:
     /** @brief see #ZFFileFileOpen */
     virtual void *fileOpen(ZF_IN const zfchar *filePath,

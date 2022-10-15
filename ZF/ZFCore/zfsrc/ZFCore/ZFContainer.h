@@ -42,7 +42,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note a container would have special serializing step with ref or style logic,
  *   see #serializableOnSerializeToData for more info
  */
-zfabstract ZF_ENV_EXPORT ZFContainer : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable, zfimplements ZFIterable
+zfabstract ZFLIB_ZFCore ZFContainer : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable, zfimplements ZFIterable
 {
     ZFOBJECT_DECLARE_ABSTRACT(ZFContainer, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable, ZFIterable)

@@ -33,21 +33,21 @@ ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
  *   }
  * @endcode
  */
-extern ZF_ENV_EXPORT void invokeTimeLogBegin(ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore void invokeTimeLogBegin(ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZF_ENV_EXPORT void invokeTimeLogEnd(ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore void invokeTimeLogEnd(ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZF_ENV_EXPORT void invokeTimeRemove(ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore void invokeTimeRemove(ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZF_ENV_EXPORT void invokeTimeRemoveAll(void);
+extern ZFLIB_ZFCore void invokeTimeRemoveAll(void);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZF_ENV_EXPORT zfindex invokeTimeGetInvokeCount(ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore zfindex invokeTimeGetInvokeCount(ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZF_ENV_EXPORT ZFTimeValue invokeTimeGetAverageTime(ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore ZFTimeValue invokeTimeGetAverageTime(ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZF_ENV_EXPORT ZFTimeValue invokeTimeGetTotalTime(ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore ZFTimeValue invokeTimeGetTotalTime(ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZF_ENV_EXPORT void invokeTimeGetSummary(ZF_OUT zfstring &ret, ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore void invokeTimeGetSummary(ZF_OUT zfstring &ret, ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
 inline zfstring invokeTimeGetSummary(ZF_IN const zfchar *key)
 {
@@ -57,7 +57,7 @@ inline zfstring invokeTimeGetSummary(ZF_IN const zfchar *key)
 }
 
 // ============================================================
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFCoreStatisticInvokeTimeLogger
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLogger
 {
 public:
     _ZFP_ZFCoreStatisticInvokeTimeLogger(ZF_IN const zfchar *key)
@@ -77,7 +77,7 @@ private:
     ZFCoreStatistic::_ZFP_ZFCoreStatisticInvokeTimeLogger ZFUniqueName(ZFCoreStatisticInvokeTimeLogger_v)(key)
 
 // ============================================================
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime
 {
 public:
     _ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime(ZF_IN const zfchar *key,

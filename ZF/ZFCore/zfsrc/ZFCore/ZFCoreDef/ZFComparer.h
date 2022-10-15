@@ -20,7 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 template<typename T_Comparable0, typename T_Comparable1,
          typename TypeFix0 = void, typename TypeFix1 = void,
          typename T_ReservedFix0 = void, typename T_ReservedFix1 = void>
-zfclassNotPOD ZF_ENV_EXPORT ZFComparerDefaultHolder
+zfclassNotPOD ZFComparerDefaultHolder
 {
 public:
     /**

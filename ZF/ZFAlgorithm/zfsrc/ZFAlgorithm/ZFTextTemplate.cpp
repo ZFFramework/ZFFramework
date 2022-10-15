@@ -7,7 +7,7 @@ static const zfindex _ZFP_ZFTextTemplate_tagLSize = zfslen(_ZFP_ZFTextTemplate_t
 static const zfchar _ZFP_ZFTextTemplate_tagR = '}';
 
 // ============================================================
-zfclassLikePOD ZF_ENV_EXPORT _ZFP_ZFTextTemplateIndexDataState
+zfclassLikePOD _ZFP_ZFTextTemplateIndexDataState
 {
 public:
     const ZFTextTemplateIndexData *indexData;

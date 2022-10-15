@@ -46,7 +46,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * then you may use #data to access the stored void *pointer
  * to achieve your implementation
  */
-zffinal zfclassLikePOD ZF_ENV_EXPORT zfiterator
+zffinal zfclassLikePOD ZFLIB_ZFCore zfiterator
 {
 public:
     /**
@@ -183,7 +183,7 @@ private:
     _Data d;
 };
 
-extern ZF_ENV_EXPORT const zfiterator _ZFP_zfiteratorInvalid;
+extern ZFLIB_ZFCore const zfiterator _ZFP_zfiteratorInvalid;
 /**
  * @brief invalid iterator
  * @note compare another iterator with this value is not safe,

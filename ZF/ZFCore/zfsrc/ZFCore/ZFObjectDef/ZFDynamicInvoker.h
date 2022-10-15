@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief wrapper for unknown types for #ZFDI_invoke
  */
-zfabstract ZF_ENV_EXPORT ZFDI_WrapperBase : zfextends ZFObject
+zfabstract ZFLIB_ZFCore ZFDI_WrapperBase : zfextends ZFObject
 {
     ZFOBJECT_DECLARE_ABSTRACT(ZFDI_WrapperBase, ZFObject)
     ZFALLOC_CACHE_RELEASE_ABSTRACT({
@@ -69,7 +69,7 @@ protected:
     }
 };
 /** @brief see #ZFDI_WrapperBase */
-zfclass ZF_ENV_EXPORT ZFDI_Wrapper : zfextends ZFDI_WrapperBase
+zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextends ZFDI_WrapperBase
 {
     ZFOBJECT_DECLARE(ZFDI_Wrapper, ZFDI_WrapperBase)
 public:
@@ -84,7 +84,7 @@ private:
     zfstring _ZFP_zfv;
 };
 /** @brief see #ZFDI_WrapperBase */
-zfclass ZF_ENV_EXPORT ZFDI_WrapperRaw : zfextends ZFDI_WrapperBase
+zfclass ZFLIB_ZFCore ZFDI_WrapperRaw : zfextends ZFDI_WrapperBase
 {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFDI_WrapperRaw, ZFDI_WrapperBase)
 public:
@@ -116,7 +116,7 @@ protected:
  * -  #v_zfstring
  * -  #ZFDI_WrapperBase
  */
-extern ZF_ENV_EXPORT const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
 
 /**
  * @brief util method to find class as well as type id wrapper class
@@ -126,21 +126,21 @@ extern ZF_ENV_EXPORT const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
  * we will append #ZFTypeIdWrapperPrefixName to find again, e.g.
  * "ClassName" to "v_ClassName" or "NS.ClassName" to "NS.v_ClassName"
  */
-extern ZF_ENV_EXPORT const ZFClass *ZFDI_classForName(ZF_IN const zfchar *className,
-                                                      ZF_IN const zfchar *NS);
+extern ZFLIB_ZFCore const ZFClass *ZFDI_classForName(ZF_IN const zfchar *className,
+                                                     ZF_IN const zfchar *NS);
 /**
  * @brief util to print param info
  */
-extern ZF_ENV_EXPORT void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
-                                         , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
-                                         , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-                                         , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-                                         , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-                                         , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-                                         , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-                                         , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-                                         , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-                                         );
+extern ZFLIB_ZFCore void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
+                                        , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+                                        , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
+                                        , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
+                                        , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
+                                        , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
+                                        , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
+                                        , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
+                                        , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+                                        );
 
 /**
  * @brief perform advanced dynamic invoke
@@ -176,14 +176,14 @@ extern ZF_ENV_EXPORT void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
  * but you can still explicitly find the method by #ZFMethodForName
  * and invoke it by #ZFMethod::methodGenericInvoke
  */
-extern ZF_ENV_EXPORT zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
-                                        , ZF_OUT_OPT zfstring *errorHint
-                                        , ZF_IN_OPT ZFObject *obj
-                                        , ZF_IN_OPT const zfchar *NS
-                                        , ZF_IN ZFObject *type
-                                        , ZF_IN_OPT zfindex paramCount
-                                        , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
-                                        );
+extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
+                                       , ZF_OUT_OPT zfstring *errorHint
+                                       , ZF_IN_OPT ZFObject *obj
+                                       , ZF_IN_OPT const zfchar *NS
+                                       , ZF_IN ZFObject *type
+                                       , ZF_IN_OPT zfindex paramCount
+                                       , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                       );
 
 /**
  * @brief perform advanced dynamic invoke
@@ -202,29 +202,29 @@ extern ZF_ENV_EXPORT zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
  *
  * for the params, see #ZFDI_invoke for more info
  */
-extern ZF_ENV_EXPORT zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
-                                       , ZF_OUT_OPT zfstring *errorHint
-                                       , ZF_IN_OPT const zfchar *NS
-                                       , ZF_IN ZFObject *type
-                                       , ZF_IN_OPT zfindex paramCount
-                                       , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
-                                       );
+extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
+                                      , ZF_OUT_OPT zfstring *errorHint
+                                      , ZF_IN_OPT const zfchar *NS
+                                      , ZF_IN ZFObject *type
+                                      , ZF_IN_OPT zfindex paramCount
+                                      , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                      );
 /** @brief see #ZFDI_alloc */
-extern ZF_ENV_EXPORT zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
-                                       , ZF_OUT_OPT zfstring *errorHint
-                                       , ZF_IN const ZFClass *cls
-                                       , ZF_IN_OPT zfindex paramCount
-                                       , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
-                                       );
+extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
+                                      , ZF_OUT_OPT zfstring *errorHint
+                                      , ZF_IN const ZFClass *cls
+                                      , ZF_IN_OPT zfindex paramCount
+                                      , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                      );
 
 // ============================================================
 /**
  * @brief util method to convert param type from
  */
-extern ZF_ENV_EXPORT zfbool ZFDI_paramConvert(ZF_OUT zfautoObject &ret,
-                                              ZF_IN const zfchar *typeId,
-                                              ZF_IN ZFDI_WrapperBase *wrapper,
-                                              ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFDI_paramConvert(ZF_OUT zfautoObject &ret,
+                                             ZF_IN const zfchar *typeId,
+                                             ZF_IN ZFDI_WrapperBase *wrapper,
+                                             ZF_OUT_OPT zfstring *errorHint = zfnull);
 
 // ============================================================
 /* ZFMETHOD_MAX_PARAM */
@@ -244,31 +244,31 @@ extern ZF_ENV_EXPORT zfbool ZFDI_paramConvert(ZF_OUT zfautoObject &ret,
  *   NS.zfstring.MethodName(...)   // static member method of type wrapper
  * @endcode
  */
-extern ZF_ENV_EXPORT zfautoObject ZFInvoke(ZF_IN const zfchar *name
-                                           , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-                                           , ZF_OUT_OPT zfbool *success = zfnull
-                                           , ZF_OUT_OPT zfstring *errorHint = zfnull
-                                           );
+extern ZFLIB_ZFCore zfautoObject ZFInvoke(ZF_IN const zfchar *name
+                                          , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+                                          , ZF_OUT_OPT zfbool *success = zfnull
+                                          , ZF_OUT_OPT zfstring *errorHint = zfnull
+                                          );
 /** @brief see #ZFInvoke */
-extern ZF_ENV_EXPORT zfautoObject ZFInvoke(ZF_IN const zfchar *name
-                                           , ZF_IN const zfchar *param0
-                                           , ZF_IN_OPT const zfchar *param1 = zfnull
-                                           , ZF_IN_OPT const zfchar *param2 = zfnull
-                                           , ZF_IN_OPT const zfchar *param3 = zfnull
-                                           , ZF_IN_OPT const zfchar *param4 = zfnull
-                                           , ZF_IN_OPT const zfchar *param5 = zfnull
-                                           , ZF_IN_OPT const zfchar *param6 = zfnull
-                                           , ZF_IN_OPT const zfchar *param7 = zfnull
-                                           , ZF_OUT_OPT zfbool *success = zfnull
-                                           , ZF_OUT_OPT zfstring *errorHint = zfnull
-                                           );
+extern ZFLIB_ZFCore zfautoObject ZFInvoke(ZF_IN const zfchar *name
+                                          , ZF_IN const zfchar *param0
+                                          , ZF_IN_OPT const zfchar *param1 = zfnull
+                                          , ZF_IN_OPT const zfchar *param2 = zfnull
+                                          , ZF_IN_OPT const zfchar *param3 = zfnull
+                                          , ZF_IN_OPT const zfchar *param4 = zfnull
+                                          , ZF_IN_OPT const zfchar *param5 = zfnull
+                                          , ZF_IN_OPT const zfchar *param6 = zfnull
+                                          , ZF_IN_OPT const zfchar *param7 = zfnull
+                                          , ZF_OUT_OPT zfbool *success = zfnull
+                                          , ZF_OUT_OPT zfstring *errorHint = zfnull
+                                          );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFDynamicInvoker_h_
