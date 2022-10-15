@@ -14,6 +14,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #ifndef ZFLIB_ZFLua_impl
     #define ZFLIB_ZFLua_impl ZF_ENV_IMPORT
 #endif
+// export a dummy class to ensure the lib really "contains" something
+zfclassNotPOD ZFLIB_ZFLua_impl _ZFP_ZFLIB_ZFLua_impl {};
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFImpl_ZFLua_impl_h_
