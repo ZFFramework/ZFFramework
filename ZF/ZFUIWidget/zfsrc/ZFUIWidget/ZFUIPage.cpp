@@ -144,31 +144,45 @@ public:
 public:
     static void pageOnCreate(ZF_IN ZFUIPage *page)
     {
-        zfRetain(page);
-        page->pageOnCreate();
-        page->observerNotify(ZFUIPage::EventPageOnCreate());
-        page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnCreate());
+        if(!page->pageCreated())
+        {
+            zfRetain(page);
+            page->pageOnCreate();
+            page->observerNotify(ZFUIPage::EventPageOnCreate());
+            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnCreate());
+        }
     }
     static void pageOnResume(ZF_IN ZFUIPage *page, ZF_IN ZFUIPageResumeReasonEnum resumeReason, ZF_IN ZFUIPage *siblingPage)
     {
-        page->pageOnResume(resumeReason);
-        zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
-        page->observerNotify(ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
-        page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
+        pageOnCreate(page);
+        if(!page->pageResumed())
+        {
+            page->pageOnResume(resumeReason);
+            zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
+            page->observerNotify(ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
+            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
+        }
     }
     static void pageOnPause(ZF_IN ZFUIPage *page, ZF_IN ZFUIPagePauseReasonEnum pauseReason, ZF_IN ZFUIPage *siblingPage)
     {
-        zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
-        page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
-        page->observerNotify(ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
-        page->pageOnPause(pauseReason);
+        if(page->pageResumed())
+        {
+            zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
+            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
+            page->observerNotify(ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
+            page->pageOnPause(pauseReason);
+        }
     }
     static void pageOnDestroy(ZF_IN ZFUIPage *page)
     {
-        page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnDestroy());
-        page->observerNotify(ZFUIPage::EventPageOnDestroy());
-        page->pageOnDestroy();
-        zfRelease(page);
+        pageOnPause(page, ZFUIPagePauseReason::e_BeforeDestroy, zfnull);
+        if(page->pageCreated())
+        {
+            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnDestroy());
+            page->observerNotify(ZFUIPage::EventPageOnDestroy());
+            page->pageOnDestroy();
+            zfRelease(page);
+        }
     }
 
     static void pageAniOnPrepare(ZF_IN ZFUIPage *page, ZF_IN ZFEnum *resumeOrPauseReason, ZF_IN ZFUIPage *siblingPage)
@@ -400,21 +414,33 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerCreate)
 {
     zfCoreAssert(!d->managerCreated);
     zfRetain(this);
-    this->managerOnCreate();
     d->managerCreated = zftrue;
+    this->managerOnCreate();
     this->observerNotify(ZFUIPageManager::EventManagerOnCreate());
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerResume)
 {
     zfCoreAssert(d->managerCreated);
     zfCoreAssert(!d->managerResumed);
-    this->managerOnResume();
     d->managerResumed = zftrue;
+    this->managerOnResume();
     this->observerNotify(ZFUIPageManager::EventManagerOnResume());
+    ZFUIPage *page = this->pageForeground();
+    if(page != zfnull)
+    {
+        _ZFP_ZFUIPageManagerPrivate::pageOnResume(page, ZFUIPageResumeReason::e_ByManagerResume, zfnull);
+    }
 }
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerPause)
 {
     zfCoreAssert(d->managerResumed);
+
+    ZFUIPage *page = this->pageForeground();
+    if(page != zfnull)
+    {
+        _ZFP_ZFUIPageManagerPrivate::pageOnPause(page, ZFUIPagePauseReason::e_ByManagerPause, zfnull);
+    }
+
     this->managerOnPause();
     d->managerResumed = zffalse;
     this->observerNotify(ZFUIPageManager::EventManagerOnPause());
@@ -428,6 +454,11 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy)
     }
 
     d->pageRequestResolve(this);
+    while(this->pageCount() > 0)
+    {
+        this->pageDestroy(this->pageCount() - 1);
+        d->pageRequestResolve(this);
+    }
 
     if(d->managerOwnerWindow != zfnull)
     {

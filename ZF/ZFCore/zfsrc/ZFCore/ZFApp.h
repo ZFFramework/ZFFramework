@@ -16,6 +16,11 @@ ZF_NAMESPACE_BEGIN(ZFApp)
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, appExit)
 
+/**
+ * @brief restart the app
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, appRestart)
+
 ZF_NAMESPACE_END(ZFApp)
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFApp_h_

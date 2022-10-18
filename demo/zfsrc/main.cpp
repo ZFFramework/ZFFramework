@@ -10,22 +10,21 @@
 #include "ZFUIKit/protocol/ZFProtocolZFUIView.h"
 #include "ZFUIKit/protocol/ZFProtocolZFUISysWindow.h"
 
+static zfbool _ZFP_ZFFramework_test_luaTest(void);
 static zfbool _ZFP_ZFFramework_test_protocolCheck(void);
-static void _ZFP_ZFFramework_test_luaTest(void);
 static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void);
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView);
 
 ZFMAIN_ENTRY()
 {
-    if(_ZFP_ZFFramework_test_protocolCheck())
+    if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck())
     {
         zfautoObject containerView = _ZFP_ZFFramework_test_containerViewPrepare();
         _ZFP_ZFFramework_test_prepareTestCase(containerView);
-        _ZFP_ZFFramework_test_luaTest();
     }
 }
 
-static void _ZFP_ZFFramework_test_luaTest(void)
+static zfbool _ZFP_ZFFramework_test_luaTest(void)
 {
     ZFCoreArray<ZFPathInfo> extResList;
     extResList.add(ZFPathInfo(ZFPathType_file(), ZFFilePathForModule()));
@@ -40,9 +39,12 @@ static void _ZFP_ZFFramework_test_luaTest(void)
     ZFInput input = ZFInputForResFile("zf.lua");
     if(input)
     {
+        zfLogTrimT() << "redirect to:" << input.callbackId();
+        zfLogTrimT() << "============================================================";
         ZFLuaExecute(input);
         ZFLuaGC();
     }
+    return input;
 }
 
 static zfbool _ZFP_ZFFramework_test_protocolCheck(void)

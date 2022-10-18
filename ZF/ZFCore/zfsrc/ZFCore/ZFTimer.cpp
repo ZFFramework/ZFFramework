@@ -69,7 +69,7 @@ ZFMETHOD_DEFINE_0(ZFTimer, void *, nativeTimer)
 ZFPROPERTY_ON_VERIFY_DEFINE(ZFTimer, zftimet, timerInterval)
 {
     zfCoreAssert(!this->timerStarted());
-    zfCoreAssert(this->timerInterval() > 0);
+    zfCoreAssert(this->timerInterval() >= 0);
 }
 ZFPROPERTY_ON_VERIFY_DEFINE(ZFTimer, zftimet, timerDelay)
 {
