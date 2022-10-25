@@ -38,12 +38,11 @@ signals:
 public slots:
     void executeInMainThread_slot(void *listenerHolder)
     {
-        _ZFP_ZFThreadImpl_sys_Qt_RunnableHolder *listenerHolderTmp = (_ZFP_ZFThreadImpl_sys_Qt_RunnableHolder *)listenerHolder;
+        _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolderTmp = (_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *)listenerHolder;
         if(listenerHolderTmp->runnable)
         {
             listenerHolderTmp->runnable.execute(listenerHolderTmp->listenerData);
         }
-        zfdelete(listenerHolderTmp);
     }
 };
 
@@ -199,6 +198,7 @@ public:
         listenerHolder->runnable = zfnull;
         listenerHolder->listenerData.param0(zfnull);
         listenerHolder->listenerData.param1(zfnull);
+        zfdelete(listenerHolder);
     }
 
     virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,

@@ -129,9 +129,9 @@ public:
 };
 
 #if 0
-    #define _ZFP_ZFThreadLog(fmt, ...)
-#else
     #define _ZFP_ZFThreadLog(fmt, ...) zfCoreLogTrim(fmt, ##__VA_ARGS__)
+#else
+    #define _ZFP_ZFThreadLog(fmt, ...)
 #endif
 
 ZF_NAMESPACE_GLOBAL_END
