@@ -9,6 +9,7 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="{ZFTT_R_proj_name}"
+        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity android:name="com.ZFFramework.Android.{ZFTT_R_proj_name}.Loader">
             <intent-filter>

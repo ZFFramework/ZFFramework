@@ -25,7 +25,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, appRestart)
     ZFPROTOCOL_INTERFACE_CLASS(ZFApp) *impl = ZFPROTOCOL_TRY_ACCESS(ZFApp);
     if(impl != zfnull)
     {
-        impl->appRestart();
+        impl->appRestart(1000);
     }
     else
     {

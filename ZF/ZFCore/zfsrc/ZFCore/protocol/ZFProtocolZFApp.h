@@ -24,7 +24,7 @@ public:
     /**
      * @brief see #ZFApp::appRestart
      */
-    virtual void appRestart(void);
+    virtual void appRestart(ZF_IN zftimet delay);
 ZFPROTOCOL_INTERFACE_END(ZFApp_systemInfo)
 
 ZF_NAMESPACE_GLOBAL_END

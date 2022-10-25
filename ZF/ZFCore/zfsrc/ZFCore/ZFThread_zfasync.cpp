@@ -16,6 +16,9 @@ public:
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfasyncDataHolder, ZFLevelZFFrameworkEssential)
 {
+    // we depends on the main thread object
+    ZFThread::mainThread();
+
     this->maxThread = 8;
     this->threadPoolIndex = 0;
     this->runThreadListener = ZFCallbackForFunc(zfself::_ZFP_runThread);

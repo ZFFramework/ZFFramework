@@ -267,6 +267,7 @@ protected:
 private:
     _ZFP_ZFThreadPrivate *d;
     static void _ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &, ZF_IN ZFObject *);
+    static void _ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFListenerData &, ZF_IN ZFObject *);
     static void _ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFListenerData &, ZF_IN ZFObject *);
 };
 

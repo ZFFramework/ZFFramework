@@ -50,7 +50,6 @@ public:
     /**
      * @brief run the runnable in main thread
      *
-     * you should not retain or release runnable or params\n
      * you should queue it to run even if current thread is main thread
      */
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable,
@@ -59,30 +58,30 @@ public:
     /**
      * @brief used to cleanup nativeToken
      */
-    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken)
-    {
-    }
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) zfpurevirtual;
 
     /**
      * @brief run the runnable in new thread
      *
-     * you should not retain or release runnable or params\n
-     * you should not retain or release ownerZFThread\n
-     * you should call runnable in new thread,
-     * also, remember to register so that currentThread should work
+     * you must:
+     * -# register the native thread by #ZFThread::nativeThreadRegister
+     * -# call the runnable in new thread
+     *   (can be canceled by #executeInNewThreadCleanup,
+     *   so the runnable may not run at this case)
+     * -# unregister the native thread by #ZFThread::nativeThreadUnregister
+     * -# call the runnableCleanup, even if runnable is canceled
      *
      * NOTE: the created thread may be blocked by semaphore to achieve app level thread pool logic
      */
     virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,
                                      ZF_IN const ZFListener &runnable,
+                                     ZF_IN const ZFListener &runnableCleanup,
                                      ZF_IN ZFObject *param0,
                                      ZF_IN ZFObject *param1) zfpurevirtual;
     /**
      * @brief used to cleanup nativeToken
      */
-    virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken)
-    {
-    }
+    virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFThread)
 
 /** @brief see #ZFThread */
@@ -128,6 +127,12 @@ public:
         return zftrue;
     }
 };
+
+#if 0
+    #define _ZFP_ZFThreadLog(fmt, ...)
+#else
+    #define _ZFP_ZFThreadLog(fmt, ...) zfCoreLogTrim(fmt, ##__VA_ARGS__)
+#endif
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFThread_h_

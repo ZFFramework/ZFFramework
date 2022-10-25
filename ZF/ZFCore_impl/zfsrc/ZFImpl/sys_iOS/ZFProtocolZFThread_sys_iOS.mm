@@ -7,8 +7,10 @@
 // ============================================================
 // global type
 @interface _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner : NSObject
+@property (nonatomic, assign) BOOL cancelFlag;
 @property (nonatomic, assign) ZFThread *ownerZFThread;
 @property (nonatomic, assign) ZFListener runnable;
+@property (nonatomic, assign) ZFListener runnableCleanup;
 @property (nonatomic, assign) ZFObject *param0;
 @property (nonatomic, assign) ZFObject *param1;
 // private
@@ -20,20 +22,24 @@
 - (void)threadCallback:(id)dummy
 {
     @autoreleasepool {
-        if(self.ownerZFThread != zfnull)
+        if(!self.cancelFlag)
         {
-            self._nativeThreadRegisterToken = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(self.ownerZFThread);
-        }
+            if(self.ownerZFThread != zfnull)
+            {
+                self._nativeThreadRegisterToken = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(self.ownerZFThread);
+            }
 
-        self.runnable.execute(ZFListenerData().param0(self.param0).param1(self.param1));
+            self.runnable.execute(ZFListenerData().param0(self.param0).param1(self.param1));
 
-        if(self.ownerZFThread != zfnull)
-        {
-            ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(self._nativeThreadRegisterToken);
-            self._nativeThreadRegisterToken = zfnull;
+            if(self.ownerZFThread != zfnull)
+            {
+                ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(self._nativeThreadRegisterToken);
+                self._nativeThreadRegisterToken = zfnull;
+            }
         }
     }
 
+    self.runnableCleanup.execute(ZFListenerData().param0(self.param0).param1(self.param1));
     self._selfHolder = nil;
 }
 @end
@@ -50,7 +56,7 @@ static _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType _ZFP_ZFThreadImpl_sys_iOS_ge
     return (__bridge void *)[NSThread currentThread];
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_iOS_DataHolder, ZFLevelZFFrameworkHigh)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_iOS_DataHolder, ZFLevelZFFrameworkEssential)
 {
     mainThread = zfAlloc(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId()] = mainThread;
@@ -149,11 +155,18 @@ public:
 #else
         [threadOwner performSelectorOnMainThread:@selector(threadCallback:) withObject:zfnull waitUntilDone:NO];
 #endif
-        return zfnull;
+        return (__bridge_retained void *)threadOwner;
+    }
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken)
+    {
+        _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = (__bridge_transfer _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *)nativeToken;
+        threadOwner.cancelFlag = YES;
+        threadOwner = nil;
     }
 
     virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,
                                      ZF_IN const ZFListener &runnable,
+                                     ZF_IN const ZFListener &runnableCleanup,
                                      ZF_IN ZFObject *param0,
                                      ZF_IN ZFObject *param1)
     {
@@ -161,6 +174,7 @@ public:
         threadOwner._selfHolder = threadOwner;
         threadOwner.ownerZFThread = ownerZFThread;
         threadOwner.runnable = runnable;
+        threadOwner.runnableCleanup = runnableCleanup;
         threadOwner.param0 = param0;
         threadOwner.param1 = param1;
 
@@ -173,6 +187,7 @@ public:
     virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken)
     {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = (__bridge_transfer _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *)nativeToken;
+        threadOwner.cancelFlag = YES;
         threadOwner = nil;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFThreadImpl_sys_iOS)

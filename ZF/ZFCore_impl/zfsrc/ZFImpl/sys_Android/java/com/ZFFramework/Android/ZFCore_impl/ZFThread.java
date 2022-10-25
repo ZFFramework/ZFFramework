@@ -1,7 +1,6 @@
 package com.ZFFramework.Android.ZFCore_impl;
 
 import android.os.Handler;
-import android.os.Message;
 
 public final class ZFThread {
     // ============================================================
@@ -12,22 +11,42 @@ public final class ZFThread {
 
     // ============================================================
     // executeInMainThread
-    private static Handler _mainThreadHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            native_doExecuteInMainThread(msg.what, ZFThread.currentThreadId());
+    private static class _MainThreadRunnable implements Runnable {
+        public boolean running = true;
+        public int executeDataId;
+
+        public _MainThreadRunnable(int executeDataId) {
+            this.executeDataId = executeDataId;
         }
-    };
-    protected static void native_executeInMainThread(int executeDataId) {
-        _mainThreadHandler.sendEmptyMessage(executeDataId);
+
+        @Override
+        public void run() {
+            if (this.running) {
+                native_doExecuteInMainThread(this.executeDataId, ZFThread.currentThreadId());
+            }
+        }
     }
+
+    private static Handler _mainThreadHandler = new Handler();
+
+    protected static Object native_executeInMainThread(int executeDataId) {
+        _MainThreadRunnable taskData = new _MainThreadRunnable(executeDataId);
+        _mainThreadHandler.post(taskData);
+        return taskData;
+    }
+
+    protected static void native_executeInMainThreadCleanup(Object nativeToken) {
+        _MainThreadRunnable taskData = (_MainThreadRunnable) nativeToken;
+        taskData.running = false;
+    }
+
     private native static void native_doExecuteInMainThread(int executeDataId, long sysThread);
 
     // ============================================================
     // executeInNewThread
     private static class _NewThread extends Thread {
-        public int executeDataId = 0;
+        public boolean running = true;
+        public int executeDataId;
 
         public _NewThread(int executeDataId) {
             this.executeDataId = executeDataId;
@@ -36,13 +55,23 @@ public final class ZFThread {
         @Override
         public void run() {
             super.run();
-            native_doExecuteInNewThread(this.executeDataId, ZFThread.currentThreadId());
+            if (this.running) {
+                native_doExecuteInNewThread(this.executeDataId, ZFThread.currentThreadId());
+            }
         }
     }
-    protected static void native_executeInNewThread(int executeDataId) {
+
+    protected static Object native_executeInNewThread(int executeDataId) {
         _NewThread thread = new _NewThread(executeDataId);
         thread.start();
+        return thread;
     }
+
+    protected static void native_executeInNewThreadCleanup(Object nativeToken) {
+        _NewThread thread = (_NewThread) nativeToken;
+        thread.running = false;
+    }
+
     private native static void native_doExecuteInNewThread(int executeDataId, long sysThread);
 
     // ============================================================
@@ -50,11 +79,11 @@ public final class ZFThread {
     protected static long native_currentThread() {
         return ZFThread.currentThreadId();
     }
+
     protected static void native_sleep(long miliSecs) {
         try {
             Thread.sleep(miliSecs);
-        }
-        catch(InterruptedException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
