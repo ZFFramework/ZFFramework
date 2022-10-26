@@ -100,7 +100,6 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_default_DataHolder)
 
 void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data)
 {
-    _ZFP_ZFThreadImpl_default_NativeThreadIdType nativeCurrentThreadId = _ZFP_ZFThreadImpl_default_getNativeThreadId();
     data->runnable.execute(ZFListenerData().param0(data->param0).param1(data->param1));
     data->runnableCleanup.execute(ZFListenerData().param0(data->param0).param1(data->param1));
     zfdelete(data);
