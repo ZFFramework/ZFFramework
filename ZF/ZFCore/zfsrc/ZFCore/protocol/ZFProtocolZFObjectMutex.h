@@ -29,6 +29,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     { \
         if(&_protocolLevel == _ZFP_ZFObjectMutexImplRegistered) \
         { \
+            _ZFP_ZFObjectMutexImplRegistered = zfnull; \
             ZFObjectMutexImplSet(); \
         } \
     } \

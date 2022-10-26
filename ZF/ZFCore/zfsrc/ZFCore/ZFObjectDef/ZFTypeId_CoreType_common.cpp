@@ -32,28 +32,6 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbool, zfbool, {
         return zftrue;
     })
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(v_zfbool, ZFLevelZFFrameworkEssential)
-{
-    this->obj_zftrue = zfunsafe_zfAlloc(v_zfbool, zftrue);
-    this->obj_zffalse = zfunsafe_zfAlloc(v_zfbool, zffalse);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(v_zfbool)
-{
-    zfunsafe_zfRelease(this->obj_zftrue);
-    zfunsafe_zfRelease(this->obj_zffalse);
-}
-v_zfbool *obj_zftrue;
-v_zfbool *obj_zffalse;
-ZF_GLOBAL_INITIALIZER_END(v_zfbool)
-v_zfbool *_ZFP_v_zftrue(void)
-{
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(v_zfbool)->obj_zftrue;
-}
-v_zfbool *_ZFP_v_zffalse(void)
-{
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(v_zfbool)->obj_zffalse;
-}
-
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbyte, zfbyte, {
         return zfsToIntT(v, src, srcLen, 16, zffalse);

@@ -16,20 +16,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFThreadImpl_default_ExecuteData
 {
 public:
-    ZFThread *ownerZFThread;
     ZFListener runnable;
     ZFListener runnableCleanup;
     ZFObject *param0;
     ZFObject *param1;
 
 public:
-    _ZFP_ZFThreadImpl_default_ExecuteData(ZF_IN ZFThread *ownerZFThread,
-                                          ZF_IN ZFListener runnable,
+    _ZFP_ZFThreadImpl_default_ExecuteData(ZF_IN ZFListener runnable,
                                           ZF_IN ZFListener runnableCleanup,
                                           ZF_IN ZFObject *param0,
                                           ZF_IN ZFObject *param1)
-    : ownerZFThread(ownerZFThread)
-    , runnable(runnable)
+    : runnable(runnable)
     , runnableCleanup(runnableCleanup)
     , param0(param0)
     , param1(param1)
@@ -104,16 +101,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_default_DataHolder)
 void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data)
 {
     _ZFP_ZFThreadImpl_default_NativeThreadIdType nativeCurrentThreadId = _ZFP_ZFThreadImpl_default_getNativeThreadId();
-    zfCoreMutexLock();
-    _ZFP_ZFThreadImpl_default_threadMap[nativeCurrentThreadId] = data->ownerZFThread;
-    zfCoreMutexUnlock();
-
     data->runnable.execute(ZFListenerData().param0(data->param0).param1(data->param1));
-
-    zfCoreMutexLock();
-    _ZFP_ZFThreadImpl_default_threadMap.erase(nativeCurrentThreadId);
-    zfCoreMutexUnlock();
-
     data->runnableCleanup.execute(ZFListenerData().param0(data->param0).param1(data->param1));
     zfdelete(data);
 }
@@ -179,14 +167,12 @@ public:
     {
     }
 
-    virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,
-                                     ZF_IN const ZFListener &runnable,
+    virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
                                      ZF_IN const ZFListener &runnableCleanup,
                                      ZF_IN ZFObject *param0,
                                      ZF_IN ZFObject *param1)
     {
         _ZFP_ZFThreadImpl_default_ExecuteData *data = zfnew(_ZFP_ZFThreadImpl_default_ExecuteData
-                , ownerZFThread
                 , runnable
                 , runnableCleanup
                 , param0

@@ -64,17 +64,15 @@ public:
      * @brief run the runnable in new thread
      *
      * you must:
-     * -# register the native thread by #ZFThread::nativeThreadRegister
      * -# call the runnable in new thread
      *   (can be canceled by #executeInNewThreadCleanup,
      *   so the runnable may not run at this case)
-     * -# unregister the native thread by #ZFThread::nativeThreadUnregister
+     * -# cleanup native state if necessary
      * -# call the runnableCleanup, even if runnable is canceled
      *
      * NOTE: the created thread may be blocked by semaphore to achieve app level thread pool logic
      */
-    virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,
-                                     ZF_IN const ZFListener &runnable,
+    virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
                                      ZF_IN const ZFListener &runnableCleanup,
                                      ZF_IN ZFObject *param0,
                                      ZF_IN ZFObject *param1) zfpurevirtual;

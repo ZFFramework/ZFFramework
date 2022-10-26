@@ -8,7 +8,6 @@
 // global type
 @interface _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner : NSObject
 @property (nonatomic, assign) BOOL cancelFlag;
-@property (nonatomic, assign) ZFThread *ownerZFThread;
 @property (nonatomic, assign) ZFListener runnable;
 @property (nonatomic, assign) ZFListener runnableCleanup;
 @property (nonatomic, assign) ZFObject *param0;
@@ -24,22 +23,14 @@
     @autoreleasepool {
         if(!self.cancelFlag)
         {
-            if(self.ownerZFThread != zfnull)
-            {
-                self._nativeThreadRegisterToken = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(self.ownerZFThread);
-            }
-
             self.runnable.execute(ZFListenerData().param0(self.param0).param1(self.param1));
-
-            if(self.ownerZFThread != zfnull)
-            {
-                ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(self._nativeThreadRegisterToken);
-                self._nativeThreadRegisterToken = zfnull;
-            }
         }
     }
 
-    self.runnableCleanup.execute(ZFListenerData().param0(self.param0).param1(self.param1));
+    if(self.runnableCleanup)
+    {
+        self.runnableCleanup.execute(ZFListenerData().param0(self.param0).param1(self.param1));
+    }
     self._selfHolder = nil;
 }
 @end
@@ -144,7 +135,6 @@ public:
     {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = [_ZFP_ZFThreadImpl_sys_iOS_ThreadOwner new];
         threadOwner._selfHolder = threadOwner;
-        threadOwner.ownerZFThread = zfnull;
         threadOwner.runnable = runnable;
         threadOwner.param0 = param0;
         threadOwner.param1 = param1;
@@ -164,15 +154,13 @@ public:
         threadOwner = nil;
     }
 
-    virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,
-                                     ZF_IN const ZFListener &runnable,
+    virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
                                      ZF_IN const ZFListener &runnableCleanup,
                                      ZF_IN ZFObject *param0,
                                      ZF_IN ZFObject *param1)
     {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = [_ZFP_ZFThreadImpl_sys_iOS_ThreadOwner new];
         threadOwner._selfHolder = threadOwner;
-        threadOwner.ownerZFThread = ownerZFThread;
         threadOwner.runnable = runnable;
         threadOwner.runnableCleanup = runnableCleanup;
         threadOwner.param0 = param0;

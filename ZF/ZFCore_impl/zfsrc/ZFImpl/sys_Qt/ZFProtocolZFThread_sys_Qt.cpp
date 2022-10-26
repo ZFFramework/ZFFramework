@@ -53,7 +53,6 @@ class _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder : public QThread
 public:
     _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder(void)
     : QThread()
-    , _ZFP_ownerZFThread(zfnull)
     , _ZFP_nativeThreadRegisterToken(zfnull)
     , _ZFP_runnable()
     , _ZFP_runnableCleanup()
@@ -62,7 +61,6 @@ public:
     }
 
 public:
-    ZFThread *_ZFP_ownerZFThread;
     void *_ZFP_nativeThreadRegisterToken;
     ZFListener _ZFP_runnable;
     ZFListener _ZFP_runnableCleanup;
@@ -73,26 +71,18 @@ protected:
     {
         if(this->_ZFP_runnable)
         {
-            if(this->_ZFP_ownerZFThread != zfnull)
-            {
-                this->_ZFP_nativeThreadRegisterToken = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(this->_ZFP_ownerZFThread);
-            }
-
             if(this->_ZFP_runnable)
             {
                 this->_ZFP_runnable.execute(this->_ZFP_listenerData);
             }
-
-            if(this->_ZFP_ownerZFThread != zfnull)
-            {
-                ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(this->_ZFP_nativeThreadRegisterToken);
-                this->_ZFP_nativeThreadRegisterToken = zfnull;
-            }
         }
 
         this->_ZFP_runnable = zfnull;
-        this->_ZFP_runnableCleanup.execute(this->_ZFP_listenerData);
-        this->_ZFP_runnableCleanup = zfnull;
+        if(this->_ZFP_runnableCleanup)
+        {
+            this->_ZFP_runnableCleanup.execute(this->_ZFP_listenerData);
+            this->_ZFP_runnableCleanup = zfnull;
+        }
         this->deleteLater();
     }
 };
@@ -201,14 +191,12 @@ public:
         zfdelete(listenerHolder);
     }
 
-    virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,
-                                     ZF_IN const ZFListener &runnable,
+    virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
                                      ZF_IN const ZFListener &runnableCleanup,
                                      ZF_IN ZFObject *param0,
                                      ZF_IN ZFObject *param1)
     {
         _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder *threadHolder = new _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder();
-        threadHolder->_ZFP_ownerZFThread = ownerZFThread;
         threadHolder->_ZFP_runnable = runnable;
         threadHolder->_ZFP_runnableCleanup = runnableCleanup;
         threadHolder->_ZFP_listenerData.param0(param0);

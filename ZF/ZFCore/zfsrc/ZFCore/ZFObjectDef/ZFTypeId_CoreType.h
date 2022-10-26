@@ -127,14 +127,6 @@ extern ZFLIB_ZFCore zfbool zfflagsFromString(ZF_OUT zfflags &ret,
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbool, zfbool)
 ZFOUTPUT_TYPE(zfbool, {output.execute(v ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse);})
 
-extern ZFLIB_ZFCore v_zfbool *_ZFP_v_zftrue(void);
-extern ZFLIB_ZFCore v_zfbool *_ZFP_v_zffalse(void);
-
-/** @brief cached #v_zfbool */
-#define v_zftrue (_ZFP_v_zftrue())
-/** @brief cached #v_zfbool */
-#define v_zffalse (_ZFP_v_zffalse())
-
 /**
  * @brief see #ZFTYPEID_DECLARE
  *

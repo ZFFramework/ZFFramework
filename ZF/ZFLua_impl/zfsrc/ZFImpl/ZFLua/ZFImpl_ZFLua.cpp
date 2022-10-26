@@ -100,23 +100,9 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
         );
 
     // zftrue, zffalse
-    zfclassNotPOD _ZFP_ZFImpl_ZFLua_zfboolHolder
-    {
-    public:
-        static zfautoObject get_zftrue(void)
-        {
-            return v_zftrue;
-        }
-        static zfautoObject get_zffalse(void)
-        {
-            return v_zffalse;
-        }
-    };
-    ZFImpl_ZFLua_luaFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_zftrue", _ZFP_ZFImpl_ZFLua_zfboolHolder::get_zftrue);
-    ZFImpl_ZFLua_luaFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_zffalse", _ZFP_ZFImpl_ZFLua_zfboolHolder::get_zffalse);
     ZFImpl_ZFLua_execute(L,
-            "zftrue = _ZFP_ZFImpl_ZFLua_zftrue()\n"
-            "zffalse = _ZFP_ZFImpl_ZFLua_zffalse()\n"
+            "zftrue = true\n"
+            "zffalse = false\n"
         );
 
     // zfl_L
@@ -212,16 +198,21 @@ static void _ZFP_ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT zfstring &code,
 {
     zfstringAppend(code,
             "%s = {ZFNS='%s'};"
-            "local tbl = {};"
-            "tbl.__index = _ZFP_zfl_index;"
-            "tbl.__call = _ZFP_zfl_call;"
-            "debug.setmetatable(%s, tbl)\n"
+            "debug.setmetatable(%s, {__index = _ZFP_zfl_index, __call = _ZFP_zfl_call})\n"
         , scopeName, scopeName, scopeName);
 }
 void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList,
                                  ZF_IN ZFCoreArray<const zfchar *> const &scopeNameList)
 {
     zfstring code;
+    if(scopeNameList.count() >= 100)
+    {
+        code.capacity(10000);
+    }
+    else if(scopeNameList.count() >= 10)
+    {
+        code.capacity(1000);
+    }
     for(zfindex i = 0; i < scopeNameList.count(); ++i)
     {
         const zfchar *scopeName = scopeNameList[i];

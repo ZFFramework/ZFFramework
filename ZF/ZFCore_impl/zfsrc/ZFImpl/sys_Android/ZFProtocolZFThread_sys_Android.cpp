@@ -14,20 +14,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFThreadImpl_sys_Android_ExecuteData
 {
 public:
-    ZFThread *ownerZFThread;
     ZFListener runnable;
     ZFListener runnableCleanup;
     ZFObject *param0;
     ZFObject *param1;
 
 public:
-    _ZFP_ZFThreadImpl_sys_Android_ExecuteData(ZF_IN ZFThread *ownerZFThread,
-                                              ZF_IN ZFListener runnable,
+    _ZFP_ZFThreadImpl_sys_Android_ExecuteData(ZF_IN ZFListener runnable,
                                               ZF_IN ZFListener runnableCleanup,
                                               ZF_IN ZFObject *param0,
                                               ZF_IN ZFObject *param1)
-    : ownerZFThread(ownerZFThread)
-    , runnable(runnable)
+    : runnable(runnable)
     , runnableCleanup(runnableCleanup)
     , param0(param0)
     , param1(param1)
@@ -214,15 +211,13 @@ public:
         JNIUtilDeleteGlobalRef(jniEnv, nativeTokenTmp);
     }
 
-    virtual void *executeInNewThread(ZF_IN ZFThread *ownerZFThread,
-                                     ZF_IN const ZFListener &runnable,
+    virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
                                      ZF_IN const ZFListener &runnableCleanup,
                                      ZF_IN ZFObject *param0,
                                      ZF_IN ZFObject *param1)
     {
         zfCoreMutexLock();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
-            ownerZFThread,
             runnable,
             runnableCleanup,
             param0,
@@ -283,7 +278,6 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread,
                          jint executeDataId, jobject nativeThread)
 {
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
-
     d->runnable.execute(ZFListenerData().param0(d->param0).param1(d->param1));
     zfdelete(d);
 }
@@ -294,17 +288,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread,
                          jint executeDataId, _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType nativeThread)
 {
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
-
-    zfCoreMutexLock();
-    _ZFP_ZFThreadImpl_sys_Android_threadMap[nativeThread] = d->ownerZFThread;
-    zfCoreMutexUnlock();
-
     d->runnable.execute(ZFListenerData().param0(d->param0).param1(d->param1));
-
-    zfCoreMutexLock();
-    _ZFP_ZFThreadImpl_sys_Android_threadMap.erase(nativeThread);
-    zfCoreMutexUnlock();
-
     d->runnableCleanup.execute(ZFListenerData().param0(d->param0).param1(d->param1));
     zfdelete(d);
 }

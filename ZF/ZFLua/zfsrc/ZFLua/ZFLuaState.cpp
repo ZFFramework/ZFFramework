@@ -34,6 +34,7 @@ ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaStateOpen)
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateClose,
                        ZFMP_IN(void *, L))
 {
+    ZFPROTOCOL_ACCESS(ZFLua)->luaGC(L);
     ZFPROTOCOL_ACCESS(ZFLua)->luaStateClose(L);
 }
 

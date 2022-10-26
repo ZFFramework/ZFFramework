@@ -247,7 +247,6 @@ ZFMETHOD_DEFINE_1(ZFThread, void, threadStart,
     zfunsafe_zfRetain(userData);
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread begin %p", this);
     d->threadToken = _ZFP_ZFThreadImpl->executeInNewThread(
-        this,
         ZFCallbackForFunc(ZFThread::_ZFP_ZFThread_threadCallback),
         ZFCallbackForFunc(ZFThread::_ZFP_ZFThread_threadCleanupCallback),
         this,
@@ -433,6 +432,8 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
     _ZFP_ZFThreadPrivate *d = zfThread->d;
     ZFObject *zfThreadUserData = listenerData.param1();
     d->runningFlag = zftrue;
+
+    _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
     zfCoreMutexUnlock();
 
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread enter %p", zfThread);
@@ -486,6 +487,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
     zfThread->threadOnStop();
 
     zfCoreMutexLock();
+    _ZFP_ZFThreadImpl->nativeThreadUnregister(zfThread);
     d->runningFlag = zffalse;
     d->startFlag = zffalse;
     zfCoreMutexUnlock();
@@ -498,9 +500,12 @@ void ZFThread::_ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFListenerData &l
     _ZFP_ZFThreadPrivate *d = zfThread->d;
     ZFObject *zfThreadUserData = listenerData.param1();
 
-    _ZFP_ZFThreadLog("[ZFThread] executeInMainThread cleanup by run %p", zfThread);
-    _ZFP_ZFThreadImpl->executeInNewThreadCleanup(d->threadToken);
-    d->threadToken = zfnull;
+    if(d->threadToken != zfnull)
+    {
+        _ZFP_ZFThreadLog("[ZFThread] executeInMainThread cleanup by run %p", zfThread);
+        _ZFP_ZFThreadImpl->executeInNewThreadCleanup(d->threadToken);
+        d->threadToken = zfnull;
+    }
 
     d->threadWaitSema->semaphoreBroadcast();
 

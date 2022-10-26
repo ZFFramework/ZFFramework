@@ -10,6 +10,14 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(ZF_IN const ZFCoreArray
                                                          ZF_IN const ZFCoreArrayPOD<const ZFMethod *> &methodList)
 {
     zfstring code;
+    if(methodList.count() >= 100)
+    {
+        code.capacity(10000);
+    }
+    else if(methodList.count() >= 10)
+    {
+        code.capacity(1000);
+    }
     const zfchar *prefix = "_ZFP_";
     zfindex prefixLen = zfslen(prefix);
     for(zfindex i = 0; i < methodList.count(); ++i)
