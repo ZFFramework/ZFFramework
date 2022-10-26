@@ -176,7 +176,6 @@ public:
     {
         zfCoreMutexLock();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
-            _ZFP_ZFThreadImpl_sys_Android_mainThreadInstance,
             runnable,
             zfnull,
             param0,
