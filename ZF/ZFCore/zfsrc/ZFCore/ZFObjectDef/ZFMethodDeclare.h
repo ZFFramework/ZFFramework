@@ -404,6 +404,32 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         /** @endcond */ \
     PublicOrProtectedOrPrivate: \
+        /** @cond ZFPrivateDoc */ \
+        _ZFP_ZFMethodTypeChain(ZFMethodType_, \
+            zffinal inline zfself *c_##MethodName( \
+                    ParamExpandOrEmpty0(            ParamType0 param0 DefaultValueFix0()) \
+                    ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1 DefaultValueFix1()) \
+                    ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2 DefaultValueFix2()) \
+                    ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3 DefaultValueFix3()) \
+                    ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4 DefaultValueFix4()) \
+                    ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5 DefaultValueFix5()) \
+                    ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6 DefaultValueFix6()) \
+                    ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7 DefaultValueFix7()) \
+                ) { \
+                this->MethodName( \
+                        ParamExpandOrEmpty0(            param0) \
+                        ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                        ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                        ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                        ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                        ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                        ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                        ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+                    ); \
+                return this; \
+            } \
+        ) \
+        /** @endcond */ \
         _ZFP_ZFMethodType(ZFMethodType_) ReturnType MethodName( \
                 ParamExpandOrEmpty0(            ParamType0 param0 DefaultValueFix0()) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1 DefaultValueFix1()) \
@@ -487,6 +513,32 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             )); /* tricks to support overload method */ \
         /** @endcond */ \
     PublicOrProtectedOrPrivate: \
+        /** @cond ZFPrivateDoc */ \
+        _ZFP_ZFMethodTypeChain(ZFMethodType_, \
+            zffinal inline zfself *c_##MethodName( \
+                    ParamExpandOrEmpty0(            ParamType0 param0 DefaultValueFix0()) \
+                    ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1 DefaultValueFix1()) \
+                    ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2 DefaultValueFix2()) \
+                    ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3 DefaultValueFix3()) \
+                    ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4 DefaultValueFix4()) \
+                    ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5 DefaultValueFix5()) \
+                    ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6 DefaultValueFix6()) \
+                    ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7 DefaultValueFix7()) \
+                ) { \
+                this->MethodName( \
+                        ParamExpandOrEmpty0(            param0) \
+                        ParamExpandOrEmpty1(ZFM_COMMA() param1) \
+                        ParamExpandOrEmpty2(ZFM_COMMA() param2) \
+                        ParamExpandOrEmpty3(ZFM_COMMA() param3) \
+                        ParamExpandOrEmpty4(ZFM_COMMA() param4) \
+                        ParamExpandOrEmpty5(ZFM_COMMA() param5) \
+                        ParamExpandOrEmpty6(ZFM_COMMA() param6) \
+                        ParamExpandOrEmpty7(ZFM_COMMA() param7) \
+                    ); \
+                return this; \
+            } \
+        ) \
+        /** @endcond */ \
         _ZFP_ZFMethodType(ZFMethodType_) ReturnType MethodName( \
                 ParamExpandOrEmpty0(            ParamType0 param0 DefaultValueFix0()) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1 DefaultValueFix1()) \

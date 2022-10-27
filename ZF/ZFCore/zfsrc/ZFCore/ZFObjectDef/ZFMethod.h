@@ -34,6 +34,11 @@ typedef enum
 #define _ZFP_ZFMethodType_ZFMethodTypeVirtual() virtual
 #define _ZFP_ZFMethodType(ZFMethodType_) _ZFP_ZFMethodType_##ZFMethodType_()
 
+#define _ZFP_ZFMethodTypeChain_ZFMethodTypeNormal(...) __VA_ARGS__
+#define _ZFP_ZFMethodTypeChain_ZFMethodTypeStatic(...)
+#define _ZFP_ZFMethodTypeChain_ZFMethodTypeVirtual(...) __VA_ARGS__
+#define _ZFP_ZFMethodTypeChain(ZFMethodType_, ...) _ZFP_ZFMethodTypeChain_##ZFMethodType_(__VA_ARGS__)
+
 /**
  * @brief the method type
  */
