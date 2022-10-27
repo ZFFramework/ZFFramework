@@ -2350,6 +2350,8 @@ PREDEFINED            += ZF_NAMESPACE_GLOBAL_END:=
 PREDEFINED            += ZF_NAMESPACE_GLOBAL_USE:=
 PREDEFINED            += _ZFP_ZFIMPLEMENTS_DECLARE(...):=
 PREDEFINED            += ZFIMPLEMENTS_DECLARE(...):=
+PREDEFINED            += ZF_ENV_EXPORT:=
+PREDEFINED            += ZF_ENV_IMPORT:=
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

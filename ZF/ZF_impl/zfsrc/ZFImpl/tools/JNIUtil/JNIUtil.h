@@ -6,8 +6,10 @@
 #ifndef _JNIUtil_h_
 #define _JNIUtil_h_
 
+/** @cond ZFPrivateDoc */
 #include "../../ZFImpl_ZF_impl.h"
 #define _JNI_EXPORT ZFLIB_ZF_impl
+/** @endcond */
 
 // ============================================================
 /** @brief used to export symbols */

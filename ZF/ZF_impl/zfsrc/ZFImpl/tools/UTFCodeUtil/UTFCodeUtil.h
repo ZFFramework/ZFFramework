@@ -6,8 +6,10 @@
 #ifndef _UTFCodeUtil_h_
 #define _UTFCodeUtil_h_
 
+/** @cond ZFPrivateDoc */
 #include "../../ZFImpl_ZF_impl.h"
 #define UTFCodeUtil_EXPORT ZFLIB_ZF_impl
+/** @endcond */
 
 #include <wchar.h>
 

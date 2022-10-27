@@ -105,6 +105,8 @@ PREDEFINED            += ZF_NAMESPACE_GLOBAL_END:=
 PREDEFINED            += ZF_NAMESPACE_GLOBAL_USE:=
 PREDEFINED            += _ZFP_ZFIMPLEMENTS_DECLARE(...):=
 PREDEFINED            += ZFIMPLEMENTS_DECLARE(...):=
+PREDEFINED            += ZF_ENV_EXPORT:=
+PREDEFINED            += ZF_ENV_IMPORT:=
 /* ============================================================ */
 #endif
 

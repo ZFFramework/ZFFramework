@@ -1,23 +1,4 @@
 
-<!-- vim-markdown-toc GFM -->
-
-* [Introduction](#introduction)
-* [Quick overview](#quick-overview)
-    * [cpp hello world](#cpp-hello-world)
-    * [lua hello world](#lua-hello-world)
-    * [powerful dynamic register](#powerful-dynamic-register)
-    * [powerful abstract IO](#powerful-abstract-io)
-* [Getting started](#getting-started)
-* [Detailed](#detailed)
-    * [Requirement](#requirement)
-    * [Main features](#main-features)
-    * [Current status](#current-status)
-    * [What we do](#what-we-do)
-    * [License](#license)
-
-<!-- vim-markdown-toc -->
-
-
 # Introduction
 
 welcome to ZFFramework, a cross-platform and powerful application framework in C++
