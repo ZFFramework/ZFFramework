@@ -17,10 +17,9 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIView, view);
-        container->childAdd(view);
+        container->childAdd(view)->c_alignCenter();
         view->viewSizePrefer(ZFUISizeMake(80, 60));
         view->viewBackgroundColor(ZFUIColorRandom());
-        view->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
 
         this->ani()->aniTarget(view);
 
@@ -32,8 +31,7 @@ protected:
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         startButton->buttonLabelText("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, this->ani()->objectHolder());
-        container->childAdd(startButton);
-        startButton->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner | ZFUIAlign::e_RightInner);
+        container->childAdd(startButton)->c_alignRightTop();
     }
 
     ZFPROPERTY_RETAIN_READONLY(ZFAnimationNativeView *, ani, zflineAlloc(ZFAnimationNativeView))

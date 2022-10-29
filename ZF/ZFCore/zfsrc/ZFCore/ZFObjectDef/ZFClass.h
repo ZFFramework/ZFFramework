@@ -244,28 +244,28 @@ public:
         return this->_ZFP_ZFClass_classIsInterface;
     }
     /**
-     * @brief whether the class is private class
-     *
-     * all class that have "_ZFP_" as prefix would be treated as private class\n
-     * a private class should not be used publicly,
-     * however, you may still apply alloc observer for it,
-     * see #classIsInternal
-     */
-    inline zfbool classIsPrivate(void) const
-    {
-        return this->_ZFP_ZFClass_classIsPrivate;
-    }
-    /**
      * @brief whether the class is internal class
      *
-     * all class that have "_ZFP_I_" as prefix would be treated as internal class\n
-     * an internal class should not be used publicly,
-     * also, it would be ignored from alloc observer,
-     * see #classIsPrivate
+     * all class that have "_ZFP_" as prefix would be treated as internal class\n
+     * internal class should not be used publicly,
+     * however, you may still apply alloc observer or reflection,
+     * see #classIsInternalPrivate
      */
     inline zfbool classIsInternal(void) const
     {
         return this->_ZFP_ZFClass_classIsInternal;
+    }
+    /**
+     * @brief whether the class is internal private class
+     *
+     * all class that have "_ZFP_I_" as prefix would be treated as internal private class\n
+     * internal private class should not be used publicly,
+     * also, it would be ignored from alloc observer and reflection,
+     * see #classIsInternal
+     */
+    inline zfbool classIsInternalPrivate(void) const
+    {
+        return this->_ZFP_ZFClass_classIsInternalPrivate;
     }
 
     /**
@@ -683,8 +683,8 @@ public:
     zfbool _ZFP_ZFClass_implListNeedInit;
     zfbool _ZFP_ZFClass_classIsAbstract;
     zfbool _ZFP_ZFClass_classIsInterface;
-    zfbool _ZFP_ZFClass_classIsPrivate;
     zfbool _ZFP_ZFClass_classIsInternal;
+    zfbool _ZFP_ZFClass_classIsInternalPrivate;
     zfbool _ZFP_ZFClass_classCanAllocPublic;
     const ZFClass *_ZFP_ZFClass_classParent;
 };

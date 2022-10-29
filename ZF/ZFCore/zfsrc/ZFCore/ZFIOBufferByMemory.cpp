@@ -3,15 +3,17 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFIOBufferByMemoryData
+zfclassNotPOD _ZFP_ZFIOBufferByMemory
 {
 public:
+    zfuint refCount;
     zfstring ioBuf;
     zfindex inputIndex;
     zfindex outputIndex;
 public:
-    _ZFP_ZFIOBufferByMemoryData(void)
-    : ioBuf()
+    _ZFP_ZFIOBufferByMemory(void)
+    : refCount(1)
+    , ioBuf()
     , inputIndex(0)
     , outputIndex(0)
     {
@@ -22,7 +24,18 @@ zfclass _ZFP_ZFIOBufferByMemory_input : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByMemory_input, ZFObject)
 public:
-    _ZFP_ZFIOBufferByMemoryData *d;
+    _ZFP_ZFIOBufferByMemory *d;
+protected:
+    zfoverride
+    virtual void objectOnDealloc()
+    {
+        --(d->refCount);
+        if(d->refCount == 0)
+        {
+            zfdelete(d);
+        }
+        zfsuper::objectOnDealloc();
+    }
 
 public:
     ZFMETHOD_DECLARE_2(zfindex, onInput,
@@ -40,7 +53,18 @@ zfclass _ZFP_ZFIOBufferByMemory_output : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByMemory_output, ZFObject)
 public:
-    _ZFP_ZFIOBufferByMemoryData *d;
+    _ZFP_ZFIOBufferByMemory *d;
+protected:
+    zfoverride
+    virtual void objectOnDealloc()
+    {
+        --(d->refCount);
+        if(d->refCount == 0)
+        {
+            zfdelete(d);
+        }
+        zfsuper::objectOnDealloc();
+    }
 
 public:
     ZFMETHOD_DECLARE_2(zfindex, onOutput,
@@ -60,34 +84,32 @@ ZFOBJECT_REGISTER(ZFIOBufferByMemory)
 void ZFIOBufferByMemory::objectOnInit(void)
 {
     zfsuper::objectOnInit();
-    _ZFP_ZFIOBufferByMemoryData *d = zfpoolNew(_ZFP_ZFIOBufferByMemoryData);
+    _ZFP_ZFIOBufferByMemory *d = zfpoolNew(_ZFP_ZFIOBufferByMemory);
 
     zfblockedAlloc(_ZFP_ZFIOBufferByMemory_input, iOwner);
     iOwner->d = d;
-    this->iOwner = iOwner;
+    ++(d->refCount);
+    this->_ZFP_input = ZFCallbackForMemberMethod(iOwner, ZFMethodAccess(_ZFP_ZFIOBufferByMemory_input, onInput));
+    this->_ZFP_input.ioOwner(iOwner);
 
     zfblockedAlloc(_ZFP_ZFIOBufferByMemory_output, oOwner);
     oOwner->d = d;
-    this->oOwner = oOwner;
+    ++(d->refCount);
+    this->_ZFP_output = ZFCallbackForMemberMethod(oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByMemory_output, onOutput));
+    this->_ZFP_output.ioOwner(oOwner);
 }
 void ZFIOBufferByMemory::objectOnDealloc(void)
 {
-    _ZFP_ZFIOBufferByMemoryData *d = this->iOwner->to<_ZFP_ZFIOBufferByMemory_input *>()->d;
-    zfpoolDelete(d);
+    --(d->refCount);
+    if(d->refCount == 0)
+    {
+        zfdelete(d);
+    }
     zfsuper::objectOnDealloc();
 }
 
-ZFInput ZFIOBufferByMemory::implInput(void)
-{
-    return ZFCallbackForMemberMethod(this->iOwner, ZFMethodAccess(_ZFP_ZFIOBufferByMemory_input, onInput));
-}
-ZFOutput ZFIOBufferByMemory::implOutput(void)
-{
-    return ZFCallbackForMemberMethod(this->oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByMemory_output, onOutput));
-}
 void ZFIOBufferByMemory::implRemoveAll(void)
 {
-    _ZFP_ZFIOBufferByMemoryData *d = this->iOwner->to<_ZFP_ZFIOBufferByMemory_input *>()->d;
     d->ioBuf.removeAll();
     d->inputIndex = 0;
     d->outputIndex = 0;

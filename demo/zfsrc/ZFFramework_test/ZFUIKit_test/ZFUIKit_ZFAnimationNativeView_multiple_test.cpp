@@ -17,10 +17,9 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIView, view);
-        container->childAdd(view);
+        container->childAdd(view)->c_alignCenter();
         view->viewSizePrefer(ZFUISizeMake(80, 60));
         view->viewBackgroundColor(ZFUIColorRandom());
-        view->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
 
         ZFLISTENER(startOnClick) {
             ZFUIView *view = userData->toAny();
@@ -43,8 +42,7 @@ protected:
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         startButton->buttonLabelText("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, view);
-        container->childAdd(startButton);
-        startButton->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner | ZFUIAlign::e_RightInner);
+        container->childAdd(startButton)->c_alignRightTop();
     }
 };
 ZFOBJECT_REGISTER(ZFUIKit_ZFAnimationNativeView_multiple_test)

@@ -16,6 +16,7 @@ const ZFProperty *ZFPropertyForName(ZF_IN const zfchar *classNameOrFullName,
 }
 
 // ============================================================
+// parent or interface before child
 static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(ZF_IN const zfchar *lifeCycleName,
                                                                             ZF_IN const ZFProperty *property)
 {
@@ -48,6 +49,7 @@ void _ZFP_ZFPropertyLifeCycleRegister(ZF_IN const zfchar *lifeCycleName,
                                       ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper)
 {
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycleName, property);
+    zfindex index = d.count();
     for(zfindex i = 0; i < d.count(); ++i)
     {
         if(d[i].propertyOwnerClass == propertyOwnerClass)
@@ -55,11 +57,20 @@ void _ZFP_ZFPropertyLifeCycleRegister(ZF_IN const zfchar *lifeCycleName,
             d[i].propertyLifeCycleWrapper = propertyLifeCycleWrapper;
             return ;
         }
+        else if(d[i].propertyOwnerClass->classIsTypeOf(propertyOwnerClass))
+        {
+            index = i;
+            break;
+        }
+        else if(propertyOwnerClass->classIsTypeOf(d[i].propertyOwnerClass))
+        {
+            index = i + 1;
+        }
     }
     _ZFP_PropLifeCycleData data;
     data.propertyOwnerClass = propertyOwnerClass;
     data.propertyLifeCycleWrapper = propertyLifeCycleWrapper;
-    d.add(data);
+    d.add(index, data);
 }
 void _ZFP_ZFPropertyLifeCycleUnregister(ZF_IN const zfchar *lifeCycleName,
                                         ZF_IN const ZFProperty *property,

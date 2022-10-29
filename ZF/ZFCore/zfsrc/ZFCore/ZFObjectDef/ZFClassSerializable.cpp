@@ -44,8 +44,8 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const zfchar *, classNameFu
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const ZFClass *, classParent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsAbstract)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsInterface)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsPrivate)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsInternal)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsInternalPrivate)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classCanAllocPublic)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfautoObject, newInstance)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, zfautoObject, newInstance

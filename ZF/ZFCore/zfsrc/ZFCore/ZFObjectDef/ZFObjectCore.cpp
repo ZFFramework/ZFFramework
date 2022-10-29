@@ -22,8 +22,8 @@ public:
     _ZFP_ZFObjectTagMapType objectTagMap;
     zfstlvector<const ZFProperty *> propertyAccessed;
     enum {
-        stateFlag_objectIsPrivate = 1 << 0,
-        stateFlag_objectIsInternal = 1 << 1,
+        stateFlag_objectIsInternal = 1 << 0,
+        stateFlag_objectIsInternalPrivate = 1 << 1,
         stateFlag_observerHasAddFlag_objectAfterAlloc = 1 << 2,
         stateFlag_observerHasAddFlag_objectBeforeDealloc = 1 << 3,
         stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate = 1 << 4,
@@ -40,13 +40,13 @@ public:
     , propertyAccessed()
     , stateFlags(0)
     {
-        if(cls->classIsPrivate())
-        {
-            ZFBitSet(this->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsPrivate);
-        }
         if(cls->classIsInternal())
         {
             ZFBitSet(this->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal);
+        }
+        if(cls->classIsInternalPrivate())
+        {
+            ZFBitSet(this->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
         }
     }
 };
@@ -428,7 +428,7 @@ ZFObject *ZFObject::_ZFP_ZFObjectCheckOnInit(void)
     this->objectOnInitFinish();
     d->objectInstanceState = ZFObjectInstanceStateIdle;
 
-    if(!this->objectIsInternal())
+    if(!this->objectIsInternalPrivate())
     {
         this->classData()->_ZFP_ZFClass_instanceObserverNotify(this);
         if(ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc)
@@ -568,14 +568,14 @@ ZFObjectInstanceState ZFObject::objectInstanceState(void)
     return d->objectInstanceState;
 }
 
-zfbool ZFObject::objectIsPrivate(void)
-{
-    return ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsPrivate)
-        || ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal);
-}
 zfbool ZFObject::objectIsInternal(void)
 {
-    return ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal);
+    return ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal)
+        || ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
+}
+zfbool ZFObject::objectIsInternalPrivate(void)
+{
+    return ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
 }
 
 void ZFObject::_ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *property)
@@ -595,7 +595,7 @@ void ZFObject::_ZFP_ZFObject_objectPropertyValueDetach(ZF_IN const ZFProperty *p
 
 void ZFObject::objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_IN const void *oldValue)
 {
-    if(!this->objectIsInternal()
+    if(!this->objectIsInternalPrivate()
         && (ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate)
             || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate)))
     {
@@ -663,8 +663,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfbool, observerHasAdd, ZFM
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerNotify, ZFMP_IN(zfidentity, eventId), ZFMP_IN_OPT(ZFObject *, param0, zfnull), ZFMP_IN_OPT(ZFObject *, param1, zfnull))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, void, observerNotifyWithCustomSender, ZFMP_IN(ZFObject *, customSender), ZFMP_IN(zfidentity, eventId), ZFMP_IN_OPT(ZFObject *, param0, zfnull), ZFMP_IN_OPT(ZFObject *, param1, zfnull))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, ZFObjectInstanceState, objectInstanceState)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsPrivate)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternal)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternalPrivate)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

@@ -53,9 +53,9 @@ public:
         }
     }
     zfoverride
-    virtual inline zfbool objectIsPrivate(void) {return zftrue;}
-    zfoverride
     virtual inline zfbool objectIsInternal(void) {return zftrue;}
+    zfoverride
+    virtual inline zfbool objectIsInternalPrivate(void) {return zftrue;}
 protected:
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}

@@ -18,14 +18,12 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(ZF_IN const ZFCoreArray
     {
         code.capacity(1000);
     }
-    const zfchar *prefix = "_ZFP_";
-    zfindex prefixLen = zfslen(prefix);
     for(zfindex i = 0; i < methodList.count(); ++i)
     {
         const ZFMethod *method = methodList[i];
         if(!method->methodIsFunctionType()
             || method->methodNamespace() != zfnull
-            || zfsncmp(method->methodName(), prefix, prefixLen) == 0
+            || method->methodIsInternalPrivate()
         ) {
             continue;
         }

@@ -43,14 +43,12 @@ ZFMAIN_ENTRY() // app starts from here
 
     // show a hello world as a text view
     zfblockedAlloc(ZFUITextView, textView);
-    window->childAdd(textView);
-    textView->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner);
+    window->childAdd(textView)->c_alignTop()->c_margin(40);
     textView->text("hello world");
 
     // button and click (as observer)
     zfblockedAlloc(ZFUIButtonBasic, button);
-    window->childAdd(button);
-    button->layoutParam()->layoutAlign(ZFUIAlign::e_RightInner);
+    window->childAdd(button)->c_alignBottom()->c_margin(40);
     button->buttonLabelText("click me");
     ZFLISTENER(onClick) {
         ZFUIButtonBasic *button = userData->objectHolded();
@@ -74,13 +72,11 @@ local window = ZFUIWindow()
 window:windowShow()
 
 local textView = zfAlloc('ZFUITextView')
-window:childAdd(textView)
-textView:layoutParam():layoutAlign(ZFUIAlign.e_LeftInner())
+window:childAdd(textView):alignTop():margin(40)
 textView:text('hello wolrd')
 
 local button = ZFUIButtonBasic.ClassData():newInstance()
-window:childAdd(button)
-button:layoutParam():layoutAlign(ZFUIAlign.e_RightInner())
+window:childAdd(button):alignBottom():margin(40)
 button:buttonLabelText('click me')
 button:onClick(
     function (listenerData, userData)

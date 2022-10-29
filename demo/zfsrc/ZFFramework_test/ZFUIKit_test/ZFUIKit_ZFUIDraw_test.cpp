@@ -50,12 +50,10 @@ protected:
         container->viewBackgroundColor(ZFUIColorRandom(1));
 
         zfblockedAlloc(ZFUIKit_ZFUIDraw_test_DrawableView, view0);
-        container->childAdd(view0, ZFUISizeParamFillFill(), ZFUIAlign::e_LeftInner);
-        view0->layoutParam()->sizeHint(ZFUISizeMake(100, 100));
+        container->childAdd(view0)->c_sizeFill(100, 100)->c_alignLeft();
 
         zfblockedAlloc(ZFUIImageView, view1);
-        container->childAdd(view1, ZFUISizeParamFillFill(), ZFUIAlign::e_RightInner);
-        view1->layoutParam()->sizeHint(ZFUISizeMake(100, 100));
+        container->childAdd(view1)->c_sizeFill(100, 100)->c_alignRight();
         void *context = ZFUIDraw::beginForImage(ZFUISizeApplyScale(ZFUISizeMake(100), view1->UIScaleFixed()));
         ZFUIKit_ZFUIDraw_test_DrawableView::testDraw(
             context,

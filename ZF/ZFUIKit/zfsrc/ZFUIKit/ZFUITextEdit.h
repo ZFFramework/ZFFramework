@@ -221,7 +221,7 @@ public:
      * @brief text alignment, #ZFUIGlobalStyle::textAlign by default
      *
      * note, for some implementations, some align type may or may not be supported\n
-     * usually only LeftInner, Center, RightInner would be supported
+     * usually only Left, Center, Right would be supported
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, textAlign,
                                 ZFUIGlobalStyle::DefaultStyle()->textAlign())

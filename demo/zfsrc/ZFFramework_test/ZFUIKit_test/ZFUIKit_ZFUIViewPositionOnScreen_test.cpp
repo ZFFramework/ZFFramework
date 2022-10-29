@@ -18,8 +18,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIKit_test_Button, button);
-        container->childAdd(button);
-        button->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
+        container->childAdd(button)->c_alignCenter();
         button->buttonLabelText("click me");
 
         ZFLISTENER(buttonOnClick) {

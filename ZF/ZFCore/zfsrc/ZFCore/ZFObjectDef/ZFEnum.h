@@ -86,14 +86,14 @@ public:
 public:
     /* use ZFObject version instead of ZFTypeIdWrapper version */
     zfoverride
-    virtual zfbool objectIsPrivate(void)
-    {
-        return ZFObject::objectIsPrivate();
-    }
-    zfoverride
     virtual zfbool objectIsInternal(void)
     {
         return ZFObject::objectIsInternal();
+    }
+    zfoverride
+    virtual zfbool objectIsInternalPrivate(void)
+    {
+        return ZFObject::objectIsInternalPrivate();
     }
 
 public:

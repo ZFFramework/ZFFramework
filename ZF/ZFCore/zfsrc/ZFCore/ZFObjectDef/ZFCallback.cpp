@@ -207,6 +207,12 @@ void ZFCallback::objectInfoT(ZF_IN_OUT zfstring &ret) const
             zfsFromPointerT(ret, ZFCastReinterpret(const void *, this->callbackRawFunction()));
             ret += ZFTOKEN_ZFObjectInfoRight;
             break;
+        case ZFCallbackTypeLambda:
+            ret += ZFTOKEN_ZFObjectInfoLeft;
+            ret += "ZFCallback lambda: ";
+            zfsFromPointerT(ret, ZFCastReinterpret(const void *, this->callbackLambdaInvoker()));
+            ret += ZFTOKEN_ZFObjectInfoRight;
+            break;
         default:
             zfCoreCriticalShouldNotGoHere();
             break;
@@ -372,6 +378,19 @@ ZFFuncAddrType ZFCallback::callbackRawFunction(void) const
     return (d ? d->callbackRawFunction : zfnull);
 }
 
+void *ZFCallback::callbackLambdaImpl(void) const
+{
+    return d->callbackLambdaImpl;
+}
+ZFFuncAddrType ZFCallback::callbackLambdaInvoker(void) const
+{
+    return d->callbackLambdaInvoker;
+}
+void ZFCallback::_ZFP_ZFCallback_callbackLambdaInvoker(ZF_IN ZFFuncAddrType v) const
+{
+    d->callbackLambdaInvoker = v;
+}
+
 void ZFCallback::callbackOwnerObjectRetain(void) const
 {
     if(d != zfnull && d->callbackOwnerObject != zfnull && !d->callbackOwnerObjectRetainFlag)
@@ -491,19 +510,6 @@ void ZFCallback::pathInfo(ZF_IN const zfchar *pathType, ZF_IN const zfchar *path
             d->pathInfo = zfnull;
         }
     }
-}
-
-void *ZFCallback::_ZFP_ZFCallback_callbackLambdaImpl(void) const
-{
-    return d->callbackLambdaImpl;
-}
-void ZFCallback::_ZFP_ZFCallback_callbackLambdaInvoker(ZF_IN ZFFuncAddrType v) const
-{
-    d->callbackLambdaInvoker = v;
-}
-ZFFuncAddrType ZFCallback::_ZFP_ZFCallback_callbackLambdaInvoker(void) const
-{
-    return d->callbackLambdaInvoker;
 }
 
 ZF_NAMESPACE_GLOBAL_END

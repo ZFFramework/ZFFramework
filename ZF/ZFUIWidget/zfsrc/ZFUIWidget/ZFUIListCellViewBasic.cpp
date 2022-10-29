@@ -27,8 +27,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon)
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon)
 {
-    this->cellIconContainer()->childAdd(this->cellIcon());
-    this->cellIcon()->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
+    this->cellIconContainer()->childAdd(this->cellIcon())->c_alignCenter();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon)
 {
@@ -42,8 +41,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain)
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain)
 {
-    this->cellLabelMainContainer()->childAdd(this->cellLabelMain());
-    this->cellLabelMain()->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner);
+    this->cellLabelMainContainer()->childAdd(this->cellLabelMain())->c_alignLeft();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain)
 {
@@ -59,8 +57,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub)
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub)
 {
-    this->cellLabelSubContainer()->childAdd(this->cellLabelSub());
-    this->cellLabelSub()->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner);
+    this->cellLabelSubContainer()->childAdd(this->cellLabelSub())->c_alignLeft();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub)
 {
@@ -101,12 +98,10 @@ void ZFUIListCellViewBasic::objectOnInit(void)
         d->cellCenterContainer->layoutOrientation(ZFUIOrientation::e_Top);
 
         d->cellLabelMainContainer = zfAlloc(ZFUIViewLayout);
-        d->cellCenterContainer->childAdd(d->cellLabelMainContainer);
-        d->cellLabelMainContainer->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner);
+        d->cellCenterContainer->childAdd(d->cellLabelMainContainer)->c_alignLeft();
 
         d->cellLabelSubContainer = zfAlloc(ZFUIViewLayout);
-        d->cellCenterContainer->childAdd(d->cellLabelSubContainer);
-        d->cellLabelSubContainer->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner);
+        d->cellCenterContainer->childAdd(d->cellLabelSubContainer)->c_alignLeft();
     }
 
     d->cellAccessoryContainer = zfAlloc(ZFUIViewLayout);

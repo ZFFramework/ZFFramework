@@ -48,10 +48,10 @@ public final class ZFUITextView extends TextView {
     public static void native_textAlign(Object nativeTextView,
                                            int textAlign) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView)nativeTextView;
-        if((textAlign & ZFUIAlign.e_LeftInner) == ZFUIAlign.e_LeftInner) {
+        if((textAlign & ZFUIAlign.e_Left) == ZFUIAlign.e_Left) {
             nativeTextViewTmp.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
         }
-        else if((textAlign & ZFUIAlign.e_RightInner) == ZFUIAlign.e_RightInner) {
+        else if((textAlign & ZFUIAlign.e_Right) == ZFUIAlign.e_Right) {
             nativeTextViewTmp.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         }
         else if(textAlign == ZFUIAlign.e_Center) {

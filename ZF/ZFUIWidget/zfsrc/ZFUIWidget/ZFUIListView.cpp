@@ -133,16 +133,10 @@ public:
     }
 
 public:
-    void childAdd(ZF_IN ZFUIView *child)
+    void childAdd(ZF_IN ZFUIView *child, ZF_IN_OPT zfindex index = zfindexMax())
     {
         this->childAddOverrideFlag = zftrue;
-        this->pimplOwner->childAdd(child);
-        this->childAddOverrideFlag = zffalse;
-    }
-    void childAdd(ZF_IN ZFUIView *child, ZFUILayoutParam *layoutParam, ZF_IN zfindex index)
-    {
-        this->childAddOverrideFlag = zftrue;
-        this->pimplOwner->childAdd(child, layoutParam, index);
+        this->pimplOwner->childAdd(child, index);
         this->childAddOverrideFlag = zffalse;
     }
     void childRemoveAt(ZF_IN zfindex index)
@@ -363,7 +357,7 @@ public:
                         this->listVisibleCell.add(0, cellNew);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
-                        this->childAdd(cellNew, zfnull, 0);
+                        this->childAdd(cellNew, 0);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
                         offset -= cellSizeNew;
@@ -434,7 +428,7 @@ public:
                         this->listVisibleCell.add(0, cellNew);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
-                        this->childAdd(cellNew, zfnull, 0);
+                        this->childAdd(cellNew, 0);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
                         offset -= cellSizeNew;
@@ -505,7 +499,7 @@ public:
                         this->listVisibleCell.add(0, cellNew);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
-                        this->childAdd(cellNew, zfnull, 0);
+                        this->childAdd(cellNew, 0);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
                         offset += cellSizeNew;
@@ -568,7 +562,7 @@ public:
                         this->listVisibleCell.add(0, cellNew);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
-                        this->childAdd(cellNew, zfnull, 0);
+                        this->childAdd(cellNew, 0);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
                         offset += cellSizeNew;

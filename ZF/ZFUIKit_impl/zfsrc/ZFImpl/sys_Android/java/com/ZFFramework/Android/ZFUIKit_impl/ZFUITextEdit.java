@@ -148,10 +148,10 @@ public final class ZFUITextEdit extends EditText {
     public static void native_textAlign(Object nativeTextEdit,
                                            int textAlign) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
-        if((textAlign & ZFUIAlign.e_LeftInner) == ZFUIAlign.e_LeftInner) {
+        if((textAlign & ZFUIAlign.e_Left) == ZFUIAlign.e_Left) {
             nativeTextEditTmp.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
         }
-        else if((textAlign & ZFUIAlign.e_RightInner) == ZFUIAlign.e_RightInner) {
+        else if((textAlign & ZFUIAlign.e_Right) == ZFUIAlign.e_Right) {
             nativeTextEditTmp.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         }
         else if(textAlign == ZFUIAlign.e_Center) {

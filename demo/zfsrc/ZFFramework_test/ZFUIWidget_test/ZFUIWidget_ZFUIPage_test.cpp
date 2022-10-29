@@ -19,14 +19,12 @@ protected:
         zfsuper::pageOnCreate();
         this->pageView()->to<ZFUILinearLayout *>()->layoutOrientation(ZFUIOrientation::e_Top);
 
-        this->pageView()->childAdd(this->_titleView());
-        this->_titleView()->layoutParam()->sizeParam(ZFUISizeParamFillWrap());
+        this->pageView()->childAdd(this->_titleView())->c_widthFill();
         this->_titleView()->viewBackgroundColor(ZFUIColorRandom());
         this->_titleView()->layoutOrientation(ZFUIOrientation::e_Left);
         this->_titleView()->viewSizeMin(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton()));
 
-        this->_titleView()->childAdd(this->_titleLeftView());
-        this->_titleLeftView()->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
+        this->_titleView()->childAdd(this->_titleLeftView())->c_layoutWeight(1);
         this->_titleLeftView()->buttonLabelText("back");
         this->_titleLeftView()->viewBackgroundColor(ZFUIColorRandom());
         {
@@ -36,13 +34,11 @@ protected:
             this->_titleLeftView()->observerAdd(ZFUIButton::EventButtonOnClick(), _titleLeftViewOnClick, this->objectHolder());
         }
 
-        this->_titleView()->childAdd(this->_titleCenterView());
-        this->_titleCenterView()->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(3);
+        this->_titleView()->childAdd(this->_titleCenterView())->c_layoutWeight(3);
         this->_titleCenterView()->text(zfstringWithFormat("page %p", this));
         this->_titleCenterView()->textAlign(ZFUIAlign::e_Center);
 
-        this->pageView()->childAdd(this->_contentView());
-        this->_contentView()->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+        this->pageView()->childAdd(this->_contentView())->c_sizeFill();
         this->_contentView()->viewBackgroundColor(ZFUIColorRandom());
         this->_contentView()->buttonLabelText(zfstringWithFormat("belong to %s", this->pageGroupId().cString()));
         {
@@ -101,8 +97,7 @@ protected:
         this->managerContainer()->to<ZFUILinearLayout *>()->layoutOrientation(ZFUIOrientation::e_Top);
         this->pageContainer()->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
 
-        this->managerContainer()->childAdd(this->_buttonLayout());
-        this->_buttonLayout()->layoutParam()->sizeParam(ZFUISizeParamFillWrap());
+        this->managerContainer()->childAdd(this->_buttonLayout())->c_widthFill();
         this->_buttonLayout()->layoutOrientation(ZFUIOrientation::e_Left);
 
         for(zfindex i = 0; i < 4; ++i)
@@ -110,8 +105,7 @@ protected:
             zfblockedAlloc(v_zfstring, pageGroupId, zfstringWithFormat("pageGroup %zi", i));
 
             zfblockedAlloc(ZFUIButtonBasic, button);
-            this->_buttonLayout()->childAdd(button);
-            button->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
+            this->_buttonLayout()->childAdd(button)->c_layoutWeight(1);
             button->buttonLabelText(zfstringWithFormat("tab %zi", i));
             button->buttonCheckable(zftrue);
             ZFLISTENER(buttonOnClick) {
@@ -202,8 +196,7 @@ protected:
 
         this->_pageManager = zfAlloc(ZFUIWidget_ZFUIPage_test_PageManager);
         this->_pageManager->managerCreate();
-        container->childAdd(this->_pageManager->managerContainer(), ZFUISizeParamFillFill());
-        this->_pageManager->managerContainer()->layoutParam()->layoutMargin(ZFUIMarginMake(20));
+        container->childAdd(this->_pageManager->managerContainer())->c_sizeFill()->c_margin(20);
         this->_pageManager->managerResume();
 
         this->prepareSettingButton(window, this->_pageManager);

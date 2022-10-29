@@ -348,14 +348,14 @@ static const ZFUIAlignFlags &_ZFP_ZFUIAlignMask(void)
 {
     static ZFUIAlignFlags _alignMask = (0
         | ZFUIAlign::e_Center
+        | ZFUIAlign::e_LeftEdge
         | ZFUIAlign::e_Left
-        | ZFUIAlign::e_LeftInner
+        | ZFUIAlign::e_TopEdge
         | ZFUIAlign::e_Top
-        | ZFUIAlign::e_TopInner
+        | ZFUIAlign::e_RightEdge
         | ZFUIAlign::e_Right
-        | ZFUIAlign::e_RightInner
+        | ZFUIAlign::e_BottomEdge
         | ZFUIAlign::e_Bottom
-        | ZFUIAlign::e_BottomInner
         );
     return _alignMask;
 }
@@ -364,15 +364,15 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFUIAlignIsValid,
 {
     return (
             ZFBitGet(align, ~(_ZFP_ZFUIAlignMask())) == 0
-            && ((zffloat)ZFBitTest(align, ZFUIAlign::e_Left)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_LeftInner)
+            && ((zffloat)ZFBitTest(align, ZFUIAlign::e_LeftEdge)
+                + (zffloat)ZFBitTest(align, ZFUIAlign::e_Left)
+                + (zffloat)ZFBitTest(align, ZFUIAlign::e_RightEdge)
                 + (zffloat)ZFBitTest(align, ZFUIAlign::e_Right)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_RightInner)
                 ) <= 1
-            && ((zffloat)ZFBitTest(align, ZFUIAlign::e_Top)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_TopInner)
+            && ((zffloat)ZFBitTest(align, ZFUIAlign::e_TopEdge)
+                + (zffloat)ZFBitTest(align, ZFUIAlign::e_Top)
+                + (zffloat)ZFBitTest(align, ZFUIAlign::e_BottomEdge)
                 + (zffloat)ZFBitTest(align, ZFUIAlign::e_Bottom)
-                + (zffloat)ZFBitTest(align, ZFUIAlign::e_BottomInner)
                 ) <= 1
         );
 }
@@ -391,19 +391,19 @@ ZFMETHOD_FUNC_DEFINE_5(void, ZFUIAlignApply,
     ret.width = itemSize.width;
     ret.height = itemSize.height;
 
-    if(ZFBitTest(align, ZFUIAlign::e_LeftInner))
+    if(ZFBitTest(align, ZFUIAlign::e_Left))
     {
         ret.x = refRect.x + margin.left;
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_RightInner))
+    else if(ZFBitTest(align, ZFUIAlign::e_Right))
     {
         ret.x = refRect.x + refRect.width - margin.right - itemSize.width;
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_Left))
+    else if(ZFBitTest(align, ZFUIAlign::e_LeftEdge))
     {
         ret.x = refRect.x - margin.right - itemSize.width;
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_Right))
+    else if(ZFBitTest(align, ZFUIAlign::e_RightEdge))
     {
         ret.x = refRect.x + refRect.width + margin.left;
     }
@@ -413,19 +413,19 @@ ZFMETHOD_FUNC_DEFINE_5(void, ZFUIAlignApply,
             + (refRect.width - margin.left - margin.right - itemSize.width) / 2;
     }
 
-    if(ZFBitTest(align, ZFUIAlign::e_TopInner))
+    if(ZFBitTest(align, ZFUIAlign::e_Top))
     {
         ret.y = refRect.y + margin.top;
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_BottomInner))
+    else if(ZFBitTest(align, ZFUIAlign::e_Bottom))
     {
         ret.y = refRect.y + refRect.height - margin.bottom - itemSize.height;
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_Top))
+    else if(ZFBitTest(align, ZFUIAlign::e_TopEdge))
     {
         ret.y = refRect.y - margin.bottom - itemSize.height;
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_Bottom))
+    else if(ZFBitTest(align, ZFUIAlign::e_BottomEdge))
     {
         ret.y = refRect.y + refRect.height + margin.top;
     }
@@ -448,21 +448,21 @@ ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetX,
         return ZFUIAlign::e_Center;
     }
 
+    if(ZFBitTest(align, ZFUIAlign::e_LeftEdge))
+    {
+        return ZFUIAlign::e_LeftEdge;
+    }
     if(ZFBitTest(align, ZFUIAlign::e_Left))
     {
         return ZFUIAlign::e_Left;
     }
-    if(ZFBitTest(align, ZFUIAlign::e_LeftInner))
+    if(ZFBitTest(align, ZFUIAlign::e_RightEdge))
     {
-        return ZFUIAlign::e_LeftInner;
+        return ZFUIAlign::e_RightEdge;
     }
     if(ZFBitTest(align, ZFUIAlign::e_Right))
     {
         return ZFUIAlign::e_Right;
-    }
-    if(ZFBitTest(align, ZFUIAlign::e_RightInner))
-    {
-        return ZFUIAlign::e_RightInner;
     }
     return ZFUIAlign::e_Center;
 }
@@ -474,21 +474,21 @@ ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetY,
         return ZFUIAlign::e_Center;
     }
 
+    if(ZFBitTest(align, ZFUIAlign::e_TopEdge))
+    {
+        return ZFUIAlign::e_TopEdge;
+    }
     if(ZFBitTest(align, ZFUIAlign::e_Top))
     {
         return ZFUIAlign::e_Top;
     }
-    if(ZFBitTest(align, ZFUIAlign::e_TopInner))
+    if(ZFBitTest(align, ZFUIAlign::e_BottomEdge))
     {
-        return ZFUIAlign::e_TopInner;
+        return ZFUIAlign::e_BottomEdge;
     }
     if(ZFBitTest(align, ZFUIAlign::e_Bottom))
     {
         return ZFUIAlign::e_Bottom;
-    }
-    if(ZFBitTest(align, ZFUIAlign::e_BottomInner))
-    {
-        return ZFUIAlign::e_BottomInner;
     }
     return ZFUIAlign::e_Center;
 }

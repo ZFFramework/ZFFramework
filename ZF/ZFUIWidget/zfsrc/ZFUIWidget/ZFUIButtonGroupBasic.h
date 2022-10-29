@@ -26,7 +26,7 @@ protected:
     virtual inline void buttonOnAdd(ZF_IN ZFUIButton *button,
                                     ZF_IN zfindex buttonIndex)
     {
-        this->childAdd(button, zfnull, buttonIndex);
+        this->childAdd(button, buttonIndex);
         zfsuperI(ZFUIButtonGroup)::buttonOnAdd(button, buttonIndex);
     }
     zfoverride

@@ -16,8 +16,7 @@ static void myTestCode(void)
     window->windowShow();
 
     zfblockedAlloc(ZFUITextView, textView);
-    window->childAdd(textView);
-    textView->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
+    window->childAdd(textView)->c_alignCenter();
     textView->text("hello world\n\nhello ZFFramework");
     textView->textSingleLine(zffalse);
 

@@ -76,6 +76,7 @@ public:
     ZFUIWindow *managerOwnerWindow; // no auto retain
     zfbool managerCreated;
     zfbool managerResumed;
+    zfbool managerDestroyRunning;
     zfint managerUIBlocked;
     ZFUIView *managerContainer;
     ZFUIView *pageContainer;
@@ -93,6 +94,7 @@ public:
     : managerOwnerWindow(zfnull)
     , managerCreated(zffalse)
     , managerResumed(zffalse)
+    , managerDestroyRunning(zffalse)
     , managerUIBlocked(0)
     , managerContainer(zfnull)
     , pageContainer(zfnull)
@@ -209,7 +211,7 @@ public:
         }
         if(resumePage != zfnull && resumePage->pageView()->viewParent() == zfnull)
         {
-            resumePage->pageManager()->pageContainer()->childAdd(resumePage->pageView(), ZFUISizeParamFillFill());
+            resumePage->pageManager()->pageContainer()->childAdd(resumePage->pageView())->c_sizeFill();
         }
 
         if(manager->d->resumeAni != zfnull)
@@ -221,7 +223,11 @@ public:
             manager->d->pauseAni->aniStop();
         }
 
-        if(!manager->d->pageAniOverrideList.isEmpty())
+        if(manager->d->managerDestroyRunning)
+        {
+            // nothing to do
+        }
+        else if(!manager->d->pageAniOverrideList.isEmpty())
         {
             manager->d->resumeAni = manager->d->pageAniOverrideList[0].resumeAni;
             manager->d->pauseAni = manager->d->pageAniOverrideList[0].pauseAni;
@@ -400,7 +406,7 @@ void ZFUIPageManager::managerOnCreate(void)
     zfRetain(d->managerContainer);
     zfRetain(d->pageContainer);
 
-    d->managerContainer->childAdd(d->pageContainer, ZFUISizeParamFillFill());
+    d->managerContainer->childAdd(d->pageContainer)->c_sizeFill();
 }
 void ZFUIPageManager::managerOnDestroy(void)
 {
@@ -448,6 +454,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerPause)
 ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy)
 {
     zfCoreAssert(d->managerCreated);
+    d->managerDestroyRunning = zftrue;
     if(d->managerResumed)
     {
         this->managerPause();
@@ -473,6 +480,8 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy)
 
     this->managerOnDestroy();
     d->managerCreated = zffalse;
+    d->managerDestroyRunning = zffalse;
+    d->pageAniOverrideList.removeAll();
     this->observerNotify(ZFUIPageManager::EventManagerOnDestroy());
     zfRelease(this);
 }
@@ -493,7 +502,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow,
     d->managerOwnerWindow = window;
 
     this->managerCreate();
-    window->childAdd(this->managerContainer(), ZFUISizeParamFillFill());
+    window->childAdd(this->managerContainer())->c_sizeFill();
 
     ZFLISTENER(onShow) {
         ZFUIPageManager *t = userData->objectHolded();

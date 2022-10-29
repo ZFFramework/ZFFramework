@@ -214,11 +214,10 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod)
     {
         const ZFMethod *m = allMethod[iMethod];
-        if(!m->methodIsPublic()
+        if(!m->methodIsPublic() || m->methodIsInternal()
             || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
             || zfscmpTheSame(m->methodName(), "objectOnInit")
-            || zfsncmp(m->methodName(), "_ZFP_", zfslen("_ZFP_")) == 0)
-        {
+        ) {
             continue;
         }
         /* member methods
@@ -276,7 +275,7 @@ static void _ZFP_ZFLuaLSPGenFile_allClass(ZF_IN const ZFOutput &output)
     for(zfindex i = 0; i < allClass.count(); ++i)
     {
         const ZFClass *cls = allClass[i];
-        if(cls->classIsPrivate())
+        if(cls->classIsInternal())
         {
             continue;
         }
@@ -294,7 +293,7 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output)
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod)
     {
         const ZFMethod *m = allMethod[iMethod];
-        if(zfsncmp(m->methodName(), "_ZFP_", zfslen("_ZFP_")) == 0)
+        if(m->methodIsInternal())
         {
             continue;
         }

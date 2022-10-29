@@ -93,6 +93,9 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam
     /** @brief see #ZFUIAutoLayout */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, biasY, 0.5f)
 
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutAlign)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutMargin)
+
 public:
     /**
      * @brief for impl only, to access the low level rule
@@ -107,6 +110,8 @@ public:
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
 
 protected:
+    zfoverride
+    virtual ZFSerializablePropertyType serializableOnCheckPropertyType(ZF_IN const ZFProperty *property);
     zfoverride
     virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
                                                    ZF_OUT_OPT zfstring *outErrorHint = zfnull,
@@ -242,6 +247,12 @@ public:
 
     // ============================================================
     // override ZFUIView
+public:
+    /** @brief util method for #childAddWithParam */
+    inline ZFUIAutoLayoutParam *childAdd(ZF_IN ZFUIView *view, ZF_IN_OPT zfindex atIndex = zfindexMax())
+    {
+        return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+    }
 protected:
     zfoverride
     virtual void viewChildOnAdd(ZF_IN ZFUIView *child,

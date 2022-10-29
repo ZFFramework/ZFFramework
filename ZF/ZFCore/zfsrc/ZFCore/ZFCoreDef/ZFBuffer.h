@@ -42,24 +42,6 @@ zffinal zfclassLikePOD ZFLIB_ZFCore ZFBuffer
 {
 public:
     /**
-     * @brief malloc, #buffer would be null if malloc failed
-     *
-     * newly memory is ensured to be filled with 0\n
-     * note, for string type, you should ensure buffer size and append tail '\0' manually
-     * @note the input bufferCapacity is the minimal capacity,
-     *   the result capacity may or may not large than the requested one
-     */
-    zffinal zfbool bufferMalloc(ZF_IN zfindex bufferCapacity);
-    /**
-     * @brief realloc, #buffer won't be changed if realloc failed
-     *
-     * newly memory is ensured to be filled with 0\n
-     * note, for string type, you should ensure buffer size and append tail '\0' manually
-     * @note the input bufferCapacity is the minimal capacity,
-     *   the result capacity may or may not large than the requested one
-     */
-    zffinal zfbool bufferRealloc(ZF_IN zfindex bufferCapacity);
-    /**
      * @brief free the internal buffer and reset all to zero
      */
     zffinal void bufferFree(void);
@@ -78,9 +60,9 @@ public:
 
 public:
     /**
-     * @brief util method to change the internal buffer
+     * @brief change the internal buffer, usually for internal use only
      *
-     * note, for string type, you should ensure buffer size and append tail '\0' manually
+     * note the bufferSize <= bufferCapacity, for safty, it's recommended the actual buffer capacity is at least (bufferCapacity + 1)
      */
     zffinal void bufferChange(ZF_IN void *buffer, ZF_IN zfindex bufferCapacity, ZF_IN zfindex bufferSize, ZF_IN zfbool bufferAutoFree)
     {
@@ -93,69 +75,62 @@ public:
     /**
      * @brief util method to malloc and copy buffer, ensured NULL terminated (not included in bufferSize)
      */
-    zffinal zfbool bufferCopy(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
+    zffinal void bufferCopy(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
     {
-        if(!this->bufferRealloc(bufferSize + sizeof(zfchar)))
-        {
-            return zffalse;
-        }
+        this->bufferCapacity(bufferSize);
         zfmemcpy(this->buffer(), buffer, bufferSize);
         *((zfchar *)((zfbyte *)this->buffer() + bufferSize)) = '\0';
         d->bufferSize = bufferSize;
-        return zftrue;
     }
     /**
      * @brief util method to copy string
      */
-    zffinal zfbool bufferCopy(ZF_IN const zfchar *s, ZF_IN_OPT zfindex length = zfindexMax())
+    zffinal void bufferCopy(ZF_IN const zfchar *s, ZF_IN_OPT zfindex length = zfindexMax())
     {
-        return this->bufferCopy((const void *)s, ((length == zfindexMax()) ? zfslen(s) : length) * sizeof(zfchar));
+        this->bufferCopy((const void *)s, ((length == zfindexMax()) ? zfslen(s) : length) * sizeof(zfchar));
     }
     /**
      * @brief util method to copy string
      */
-    zffinal zfbool bufferCopy(ZF_IN const zfstring &s)
+    zffinal void bufferCopy(ZF_IN const zfstring &s)
     {
-        return this->bufferCopy(s.cString(), s.length());
+        this->bufferCopy(s.cString(), s.length());
     }
 
     /**
      * @brief util method to realloc and append buffer, ensured NULL terminated (not included in bufferSize)
      */
-    zffinal zfbool bufferAppend(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
+    zffinal void bufferAppend(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
     {
-        if(!this->bufferRealloc(this->bufferSize() + bufferSize + sizeof(zfchar)))
-        {
-            return zffalse;
-        }
+        this->bufferCapacity(this->bufferSize() + bufferSize);
         zfmemcpy((zfbyte *)this->buffer() + this->bufferSize(), buffer, bufferSize);
         *((zfchar *)((zfbyte *)this->buffer() + this->bufferSize() + bufferSize)) = '\0';
         d->bufferSize += bufferSize;
-        return zftrue;
     }
     /**
      * @brief util method to append string
      */
-    zffinal zfbool bufferAppend(ZF_IN const zfchar *s, ZF_IN_OPT zfindex length = zfindexMax())
+    zffinal void bufferAppend(ZF_IN const zfchar *s, ZF_IN_OPT zfindex length = zfindexMax())
     {
-        return this->bufferAppend((const void *)s, ((length == zfindexMax()) ? zfslen(s) : length) * sizeof(zfchar));
+        this->bufferAppend((const void *)s, ((length == zfindexMax()) ? zfslen(s) : length) * sizeof(zfchar));
     }
     /**
      * @brief util method to append string
      */
-    zffinal zfbool bufferAppend(ZF_IN const zfstring &s)
+    zffinal void bufferAppend(ZF_IN const zfstring &s)
     {
-        return this->bufferAppend(s.cString(), s.length());
+        this->bufferAppend(s.cString(), s.length());
     }
 
 public:
     /**
-     * @brief change buffer capacity, same as #bufferRealloc
+     * @brief change buffer capacity
+     *
+     * this method do nothing if memory allocate fail\n
+     * when success, for convenient, it's ensured the buffer can hold bytes up to
+     * (buffer.bufferCapacity() + sizeof(zfchar))
      */
-    zffinal void bufferCapacity(ZF_IN zfindex capacity)
-    {
-        this->bufferRealloc(capacity);
-    }
+    zffinal void bufferCapacity(ZF_IN zfindex bufferCapacity);
     /**
      * @brief return buffer capacity
      */

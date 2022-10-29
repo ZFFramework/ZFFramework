@@ -252,11 +252,11 @@ public:
                            ZF_IN ZFUIAlignFlags const &textAlign)
     {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        if(ZFBitTest(textAlign, ZFUIAlign::e_LeftInner))
+        if(ZFBitTest(textAlign, ZFUIAlign::e_Left))
         {
             nativeImplView.textAlignment = NSTextAlignmentLeft;
         }
-        else if(ZFBitTest(textAlign, ZFUIAlign::e_RightInner))
+        else if(ZFBitTest(textAlign, ZFUIAlign::e_Right))
         {
             nativeImplView.textAlignment = NSTextAlignmentRight;
         }

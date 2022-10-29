@@ -797,17 +797,17 @@ public:
 
 public:
     /**
-     * @brief whether this object is private object or its class is #ZFClass::classIsPrivate
-     *
-     * if #objectIsInternal, then it is also #objectIsPrivate
-     */
-    virtual zfbool objectIsPrivate(void);
-    /**
      * @brief whether this object is internal object or its class is #ZFClass::classIsInternal
      *
-     * if #objectIsInternal, then it is also #objectIsPrivate
+     * if #objectIsInternalPrivate, then it is also #objectIsInternal
      */
     virtual zfbool objectIsInternal(void);
+    /**
+     * @brief whether this object is internal private object or its class is #ZFClass::classIsInternalPrivate
+     *
+     * if #objectIsInternalPrivate, then it is also #objectIsInternal
+     */
+    virtual zfbool objectIsInternalPrivate(void);
 
 public:
     zffinal void _ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *property);

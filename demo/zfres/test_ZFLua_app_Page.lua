@@ -16,7 +16,7 @@ _ZFP_ZFLua_app_test_setupPage = function(page)
                 local page = listenerData:sender();
 
                 local pageView = ZFUIButtonBasic();
-                page:pageView():childAdd(pageView, ZFUISizeParamFillFill());
+                page:pageView():childAdd(pageView):sizeFill();
 
                 pageView:buttonLabelText(page:objectInfoOfInstance());
                 pageView:viewBackgroundColor(ZFUIColorRandom());

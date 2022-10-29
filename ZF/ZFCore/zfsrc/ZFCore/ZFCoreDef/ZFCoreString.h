@@ -419,7 +419,7 @@ public:
     }
 
 public:
-    /** @brief ensure the string's capacity, note the result capacity is not ensured same as required one */
+    /** @brief ensure the string's capacity, note the result capacity is not ensured same as requested one */
     inline void capacity(ZF_IN zfindex capacity) {_capacityRequire(capacity);}
     /** @brief capacity of the string */
     zfindex capacity(void)
@@ -524,7 +524,7 @@ private:
                 T_Char *buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
                 zfmemcpy(buf, d.d.buf, (d.length + 1) * sizeof(T_Char));
                 d.d.s.s = buf;
-                d.d.s.capacity = capacity;
+                d.d.s.capacity = capacity - 1;
                 d.d.s.length = d.length;
                 d.length = _ZFP_zfstr_dynamicBuf;
                 return d.d.s.s;
@@ -533,11 +533,11 @@ private:
         }
         else
         {
-            if(capacity >= d.d.s.capacity || capacity * 4 < d.d.s.capacity)
+            if(capacity > d.d.s.capacity || capacity * 4 < d.d.s.capacity)
             {
                 _capacityOptimize(capacity);
                 d.d.s.s = (T_Char *)zfrealloc(d.d.s.s, capacity * sizeof(T_Char));
-                d.d.s.capacity = capacity;
+                d.d.s.capacity = capacity - 1;
             }
             return d.d.s.s;
         }

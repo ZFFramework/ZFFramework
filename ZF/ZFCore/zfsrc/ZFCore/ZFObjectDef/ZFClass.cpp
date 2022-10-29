@@ -175,7 +175,7 @@ public:
 
         for(zfstlmap<const ZFClass *, zfbool>::iterator childIt = this->allChildren.begin(); childIt != this->allChildren.end(); ++childIt)
         {
-            if(!childIt->first->classIsInternal())
+            if(!childIt->first->classIsInternalPrivate())
             {
                 this->_instanceObserverDoAdd(childIt->first->d->instanceObserverCached, data);
             }
@@ -340,7 +340,7 @@ void ZFClass::instanceObserverAdd(ZF_IN const ZFListener &observer,
                                   ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */,
                                   ZF_IN_OPT zfbool observeAllChildType /* = zftrue */) const
 {
-    if(this->classIsInternal())
+    if(this->classIsInternalPrivate())
     {
         return ;
     }
@@ -1144,8 +1144,8 @@ ZFClass::ZFClass(void)
 , _ZFP_ZFClass_implListNeedInit(zftrue)
 , _ZFP_ZFClass_classIsAbstract(zffalse)
 , _ZFP_ZFClass_classIsInterface(zffalse)
-, _ZFP_ZFClass_classIsPrivate(zffalse)
 , _ZFP_ZFClass_classIsInternal(zffalse)
+, _ZFP_ZFClass_classIsInternalPrivate(zffalse)
 , _ZFP_ZFClass_classCanAllocPublic(zftrue)
 , _ZFP_ZFClass_classParent(zfnull)
 {
@@ -1232,15 +1232,25 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
         cls->_ZFP_ZFClass_classIsInterface = classIsInterface;
         cls->_ZFP_ZFClass_classCanAllocPublic = (classCanAllocPublic && (constructor != zfnull));
 
+        // internal
+        static const zfchar *_ZFP_ = "_ZFP_";
+        static zfindex _ZFP_len = zfslen(_ZFP_);
+        static const zfchar *_ZFP_I_ = "_ZFP_I_";
+        static zfindex _ZFP_I_len = zfslen(_ZFP_I_);
+        if(zfsncmp(className, _ZFP_I_, _ZFP_I_len) == 0)
         {
-            const zfchar *filter = "_ZFP_";
-            const zfindex filterLen = zfslen(filter);
-            cls->_ZFP_ZFClass_classIsPrivate = (zfsncmp(className, filter, filterLen) == 0);
+            cls->_ZFP_ZFClass_classIsInternal = zftrue;
+            cls->_ZFP_ZFClass_classIsInternalPrivate = zftrue;
         }
+        else if(zfsncmp(className, _ZFP_, _ZFP_len) == 0)
         {
-            const zfchar *filter = "_ZFP_I_";
-            const zfindex filterLen = zfslen(filter);
-            cls->_ZFP_ZFClass_classIsInternal = (zfsncmp(className, filter, filterLen) == 0);
+            cls->_ZFP_ZFClass_classIsInternal = zftrue;
+            cls->_ZFP_ZFClass_classIsInternalPrivate = zffalse;
+        }
+        else
+        {
+            cls->_ZFP_ZFClass_classIsInternal = zffalse;
+            cls->_ZFP_ZFClass_classIsInternalPrivate = zffalse;
         }
     }
 

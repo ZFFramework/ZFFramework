@@ -133,6 +133,11 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
                 ZFSerializableUtil::errorOccurred(outErrorHint,
                     "raw function is not supported");
                 return zffalse;
+            case ZFCallbackTypeLambda:
+                serializableData.itemClass(ZFTypeId_ZFCallback());
+                ZFSerializableUtil::errorOccurred(outErrorHint,
+                    "lambda function is not supported");
+                return zffalse;
             default:
                 zfCoreCriticalShouldNotGoHere();
                 return zffalse;

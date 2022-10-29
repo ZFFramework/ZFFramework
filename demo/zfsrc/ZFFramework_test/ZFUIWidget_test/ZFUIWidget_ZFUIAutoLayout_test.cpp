@@ -17,8 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIAutoLayout, layout);
-        container->childAdd(layout, ZFUISizeParamFillFill());
-        layout->layoutParam()->layoutMargin(ZFUIMarginMake(40));
+        container->childAdd(layout)->c_sizeFill()->c_margin(40);
         layout->viewBackgroundColor(ZFUIColorRed());
 
         ZFCoreArrayPOD<ZFUIView *> v;
@@ -57,7 +56,7 @@ private:
                 , ZFUISizeParamFillFill()
                 ));
 
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout->childAt(0)->layoutParam<ZFUIAutoLayoutParam *>(), zffloat, ZFPropertyAccess(ZFUIAutoLayoutParam, biasX),
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, layout->childAt(0)->layoutParam(), zffloat, ZFPropertyAccess(ZFUIAutoLayoutParam, biasX),
             ZFCoreArrayPODCreate(zffloat
                 , 0.5f
                 , 0.1f

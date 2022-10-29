@@ -642,6 +642,34 @@ public:
         return (this->_ZFP_ZFMethod_methodNamespace.isEmpty() ? zfnull : this->_ZFP_ZFMethod_methodNamespace.cString());
     }
 
+    // ============================================================
+    // other
+public:
+    /**
+     * @brief whether the method is internal method
+     *
+     * all method that have "_ZFP_" as prefix would be treated as internal method\n
+     * internal method should not be used publicly,
+     * however, you may still apply reflection,
+     * see #methodIsInternalPrivate
+     */
+    inline zfbool methodIsInternal(void) const
+    {
+        return this->_ZFP_ZFMethod_methodIsInternal;
+    }
+    /**
+     * @brief whether the method is internal private method
+     *
+     * all method that have "_ZFP_I_" as prefix would be treated as internal private method\n
+     * internal private method should not be used publicly,
+     * also, it would be ignored from reflection,
+     * see #methodIsInternal
+     */
+    inline zfbool methodIsInternalPrivate(void) const
+    {
+        return this->_ZFP_ZFMethod_methodIsInternalPrivate;
+    }
+
 public:
     ZFMethod *_ZFP_ZFMethod_removeConst(void) const
     {
@@ -681,6 +709,10 @@ public:
 
     // for func type
     zfstring _ZFP_ZFMethod_methodNamespace;
+
+    // other
+    zfbool _ZFP_ZFMethod_methodIsInternal;
+    zfbool _ZFP_ZFMethod_methodIsInternalPrivate;
 };
 
 // ============================================================

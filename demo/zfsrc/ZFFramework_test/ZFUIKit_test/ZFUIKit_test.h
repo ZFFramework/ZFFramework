@@ -49,7 +49,7 @@ protected:
         zfsuper::layoutParamOnUpdate(layoutParam);
 
         layoutParam->sizeParam(ZFUISizeParamFillWrap());
-        layoutParam->layoutAlign(ZFUIAlign::e_TopInner);
+        layoutParam->layoutAlign(ZFUIAlign::e_Top);
     }
     zfoverride
     virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)

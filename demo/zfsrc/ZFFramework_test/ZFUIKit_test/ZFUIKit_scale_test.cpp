@@ -17,9 +17,8 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUITextView, view);
-        container->childAdd(view);
+        container->childAdd(view)->c_alignCenter();
         view->text("test text");
-        view->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
 
         this->prepareSettingButton(window);
     }

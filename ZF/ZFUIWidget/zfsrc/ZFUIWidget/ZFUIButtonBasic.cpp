@@ -555,22 +555,22 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds)
             {
                 if(iconView != zfnull)
                 {
-                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_LeftInner, contentFrame, iconSize));
+                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Left, contentFrame, iconSize));
                 }
                 if(labelView != zfnull)
                 {
-                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_RightInner, contentFrame, labelSize));
+                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Right, contentFrame, labelSize));
                 }
             }
             else
             {
                 if(iconView != zfnull)
                 {
-                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_RightInner, contentFrame, iconSize));
+                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Right, contentFrame, iconSize));
                 }
                 if(labelView != zfnull)
                 {
-                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_LeftInner, contentFrame, labelSize));
+                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Left, contentFrame, labelSize));
                 }
             }
             break;
@@ -589,22 +589,22 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds)
             {
                 if(iconView != zfnull)
                 {
-                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_TopInner, contentFrame, iconSize));
+                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Top, contentFrame, iconSize));
                 }
                 if(labelView != zfnull)
                 {
-                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_BottomInner, contentFrame, labelSize));
+                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Bottom, contentFrame, labelSize));
                 }
             }
             else
             {
                 if(iconView != zfnull)
                 {
-                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_BottomInner, contentFrame, iconSize));
+                    iconView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Bottom, contentFrame, iconSize));
                 }
                 if(labelView != zfnull)
                 {
-                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_TopInner, contentFrame, labelSize));
+                    labelView->viewFrame(ZFUIAlignApply(ZFUIAlign::e_Top, contentFrame, labelSize));
                 }
             }
             break;

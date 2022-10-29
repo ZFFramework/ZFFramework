@@ -830,19 +830,15 @@ public:
      * otherwise, a new layout param would be created
      * and source layout param would be copied to the newly created layout param
      */
-    ZFMETHOD_DECLARE_3(void, childAdd,
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, childAddWithParam,
                        ZFMP_IN(ZFUIView *, view),
-                       ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
+                       ZFMP_IN(ZFUILayoutParam *, layoutParam),
                        ZFMP_IN_OPT(zfindex, atIndex, zfindexMax()))
-    /**
-     * @brief util method for #childAdd
-     */
-    ZFMETHOD_DECLARE_5(void, childAdd,
-                       ZFMP_IN(ZFUIView *, view),
-                       ZFMP_IN(const ZFUISizeParam &, sizeParam),
-                       ZFMP_IN_OPT(ZFUIAlignFlags const &, layoutAlign, ZFUIAlign::e_LeftInner | ZFUIAlign::e_TopInner),
-                       ZFMP_IN_OPT(ZFUIMargin const &, layoutMargin, ZFUIMarginZero()),
-                       ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeInvalid()))
+    /** @brief util method for #childAddWithParam */
+    inline ZFUILayoutParam *childAdd(ZF_IN ZFUIView *view, ZF_IN_OPT zfindex atIndex = zfindexMax())
+    {
+        return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+    }
     /**
      * @brief remove view or do nothing if view isn't added to this view
      */
@@ -933,7 +929,7 @@ protected:
     // internal views
 public:
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(void, internalImplViewAdd,
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalImplViewAdd,
                        ZFMP_IN(ZFUIView *, view),
                        ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
                        ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
@@ -961,7 +957,7 @@ public:
      * \n
      * internal views has no measure steps, its size always depends on parent's size
      */
-    ZFMETHOD_DECLARE_3(void, internalBgViewAdd,
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalBgViewAdd,
                        ZFMP_IN(ZFUIView *, view),
                        ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
                        ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
@@ -975,7 +971,7 @@ public:
 
 public:
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(void, internalFgViewAdd,
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalFgViewAdd,
                        ZFMP_IN(ZFUIView *, view),
                        ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
                        ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))

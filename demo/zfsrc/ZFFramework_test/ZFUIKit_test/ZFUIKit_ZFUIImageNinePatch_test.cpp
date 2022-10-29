@@ -17,8 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIImageView, imageView);
-        container->childAdd(imageView);
-        imageView->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
+        container->childAdd(imageView)->c_alignCenter();
         imageView->image(zfRes("test_normal.png").to<ZFCopyable *>()->copy());
         imageView->image()->imageNinePatch(ZFUIMarginMake(
             imageView->image()->imageSize().width / 2,

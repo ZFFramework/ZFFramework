@@ -12,7 +12,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, zfbool, buttonCheckable)
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, ZFUIAlignFlags, buttonContentAlign)
 {
-    propertyValue = ZFUIAlign::e_LeftInner;
+    propertyValue = ZFUIAlign::e_Left;
 }
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, ZFUIImageView *, buttonIconStyleNormal)

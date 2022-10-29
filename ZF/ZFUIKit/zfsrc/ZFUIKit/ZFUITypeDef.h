@@ -965,23 +965,23 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectApplyMarginRever
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIAlign)
     ZFENUM_VALUE_WITH_INIT(Center, 0) /**< @brief ensured 0 */
     ZFENUM_VALUE_WITH_INIT(Left, 1)
-    ZFENUM_VALUE_WITH_INIT(LeftInner, 2)
-    ZFENUM_VALUE_WITH_INIT(Top, 4)
-    ZFENUM_VALUE_WITH_INIT(TopInner, 8)
-    ZFENUM_VALUE_WITH_INIT(Right, 16)
-    ZFENUM_VALUE_WITH_INIT(RightInner, 32)
-    ZFENUM_VALUE_WITH_INIT(Bottom, 64)
-    ZFENUM_VALUE_WITH_INIT(BottomInner, 128)
+    ZFENUM_VALUE_WITH_INIT(Top, 2)
+    ZFENUM_VALUE_WITH_INIT(Right, 4)
+    ZFENUM_VALUE_WITH_INIT(Bottom, 8)
+    ZFENUM_VALUE_WITH_INIT(LeftEdge, 16)
+    ZFENUM_VALUE_WITH_INIT(TopEdge, 32)
+    ZFENUM_VALUE_WITH_INIT(RightEdge, 64)
+    ZFENUM_VALUE_WITH_INIT(BottomEdge, 128)
 ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Center)
     ZFENUM_VALUE_REGISTER(Left)
-    ZFENUM_VALUE_REGISTER(LeftInner)
     ZFENUM_VALUE_REGISTER(Top)
-    ZFENUM_VALUE_REGISTER(TopInner)
     ZFENUM_VALUE_REGISTER(Right)
-    ZFENUM_VALUE_REGISTER(RightInner)
     ZFENUM_VALUE_REGISTER(Bottom)
-    ZFENUM_VALUE_REGISTER(BottomInner)
+    ZFENUM_VALUE_REGISTER(LeftEdge)
+    ZFENUM_VALUE_REGISTER(TopEdge)
+    ZFENUM_VALUE_REGISTER(RightEdge)
+    ZFENUM_VALUE_REGISTER(BottomEdge)
 ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUIAlign, ZFUIAlignFlags)
 
 /**
@@ -990,8 +990,8 @@ ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUIAlign, ZFUIAlignFlags)
  * a align is valid only if:
  * -  only bits in #ZFUIAlign are set
  * -  x or y align type must not conflict, i.e.
- *   "Left, LeftInner, Right, RightInner" could only exist at most one,
- *   "Top, TopInner, Bottom, BottomInner" could only exist at most one
+ *   "Left, LeftEdge, Right, RightEdge" could only exist at most one,
+ *   "Top, TopEdge, Bottom, BottomEdge" could only exist at most one
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfbool, ZFUIAlignIsValid,
                         ZFMP_IN(const ZFUIAlignFlags &, align))

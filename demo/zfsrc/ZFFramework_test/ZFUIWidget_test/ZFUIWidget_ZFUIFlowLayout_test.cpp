@@ -17,8 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIFlowLayout, layout);
-        container->childAdd(layout);
-        layout->layoutParam()->layoutMargin(ZFUIMarginMake(40, 40 + ZFUIGlobalStyle::DefaultStyle()->itemSizeButton(), 40, 40));
+        container->childAdd(layout)->c_margin(40, 40 + ZFUIGlobalStyle::DefaultStyle()->itemSizeButton(), 40, 40);
         layout->viewBackgroundColor(ZFUIColorRed());
 
         this->prepareAddRemoveButton(container, layout);
@@ -51,8 +50,7 @@ private:
         addButton->buttonLabelText("add");
 
         zfblockedAlloc(ZFUIKit_test_Button, removeButton);
-        container->childAdd(removeButton);
-        removeButton->layoutParam()->layoutMargin(ZFUIMarginMake(70, 0, 0, 0));
+        container->childAdd(removeButton)->c_margin(70, 0, 0, 0);
         ZFLISTENER(removeButtonOnClick) {
             ZFUIView *layout = userData->objectHolded();
             if(layout->childCount() > 0)

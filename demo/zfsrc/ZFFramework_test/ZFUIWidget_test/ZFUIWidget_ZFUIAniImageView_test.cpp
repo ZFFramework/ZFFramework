@@ -17,7 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIAniImageView, animatedImageView);
-        container->childAdd(animatedImageView, ZFUISizeParamWrapWrap(), ZFUIAlign::e_Center);
+        container->childAdd(animatedImageView)->c_alignCenter();
         ZFLISTENER(testCaseOnStop) {
             ZFUIAniImageView *animatedImageView = userData->objectHolded();
             animatedImageView->aniStop();
@@ -69,8 +69,7 @@ private:
             animatedImageView->aniFrameNext();
         } ZFLISTENER_END(manualOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, manualButton);
-        container->childAdd(manualButton);
-        manualButton->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner | ZFUIAlign::e_BottomInner);
+        container->childAdd(manualButton)->c_alignLeftBottom();
         manualButton->buttonLabelText("manual");
         manualButton->observerAdd(ZFUIButton::EventButtonOnClick(), manualOnClick, animatedImageView->objectHolder());
 
@@ -79,8 +78,7 @@ private:
             animatedImageView->aniStart();
         } ZFLISTENER_END(startOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
-        container->childAdd(startButton);
-        startButton->layoutParam()->layoutAlign(ZFUIAlign::e_Center | ZFUIAlign::e_BottomInner);
+        container->childAdd(startButton)->c_alignBottom();
         startButton->buttonLabelText("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, animatedImageView->objectHolder());
 
@@ -89,8 +87,7 @@ private:
             animatedImageView->aniStop();
         } ZFLISTENER_END(stopOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, stopButton);
-        container->childAdd(stopButton);
-        stopButton->layoutParam()->layoutAlign(ZFUIAlign::e_RightInner | ZFUIAlign::e_BottomInner);
+        container->childAdd(stopButton)->c_alignRightBottom();
         stopButton->buttonLabelText("stop");
         stopButton->observerAdd(ZFUIButton::EventButtonOnClick(), stopOnClick, animatedImageView->objectHolder());
     }

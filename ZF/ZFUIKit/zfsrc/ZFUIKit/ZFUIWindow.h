@@ -254,18 +254,6 @@ private:
     friend zfclassFwd ZFUISysWindow;
 };
 
-// ============================================================
-// util
-/**
- * @brief util method to: create a #ZFUIWindow,
- *   attach the view to the window,
- *   and show the window
- */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIWindowShow,
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFUISizeParam &, sizeParam, ZFUISizeParamFillFill()),
-                        ZFMP_IN_OPT(const ZFUIAlignFlags &, layoutAlign, ZFUIAlign::e_Center))
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIWindow_h_
 

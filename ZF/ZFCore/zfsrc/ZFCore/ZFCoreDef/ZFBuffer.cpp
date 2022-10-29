@@ -19,42 +19,12 @@ static inline void _ZFP_ZFBufferCapacityOptimize(ZF_IN_OUT zfindex &capacity)
     }
 }
 
-zfbool ZFBuffer::bufferMalloc(ZF_IN zfindex bufferCapacity)
+void ZFBuffer::bufferCapacity(ZF_IN zfindex bufferCapacity)
 {
-    if(bufferCapacity == zfindexMax())
-    {
-        return zffalse;
-    }
-    if(bufferCapacity <= d->bufferCapacity && bufferCapacity * 4 >= d->bufferCapacity)
-    {
-        return zftrue;
-    }
-    _ZFP_ZFBufferCapacityOptimize(bufferCapacity);
-    this->bufferFree();
-    d->buffer = zfmalloc(bufferCapacity);
-    if(d->buffer != zfnull)
-    {
-        zfmemset(d->buffer, 0, bufferCapacity);
-        d->bufferCapacity = bufferCapacity;
-        d->bufferAutoFree = zftrue;
-        return zftrue;
-    }
-    else
-    {
-        d->bufferCapacity = 0;
-        d->bufferAutoFree = zffalse;
-        return zffalse;
-    }
-}
-zfbool ZFBuffer::bufferRealloc(ZF_IN zfindex bufferCapacity)
-{
-    if(bufferCapacity == zfindexMax())
-    {
-        return zffalse;
-    }
-    if(bufferCapacity <= d->bufferCapacity && bufferCapacity * 4 >= d->bufferCapacity)
-    {
-        return zftrue;
+    if(bufferCapacity == zfindexMax()
+        || (bufferCapacity <= d->bufferCapacity && bufferCapacity * 4 >= d->bufferCapacity)
+    ) {
+        return ;
     }
     _ZFP_ZFBufferCapacityOptimize(bufferCapacity);
     void *bufferOld = d->buffer;
@@ -65,7 +35,7 @@ zfbool ZFBuffer::bufferRealloc(ZF_IN zfindex bufferCapacity)
         if(d->buffer == zfnull)
         {
             d->buffer = bufferOld;
-            return zffalse;
+            return ;
         }
         if(bufferCapacity > d->bufferCapacity)
         {
@@ -78,7 +48,7 @@ zfbool ZFBuffer::bufferRealloc(ZF_IN zfindex bufferCapacity)
         if(d->buffer == zfnull)
         {
             d->buffer = bufferOld;
-            return zffalse;
+            return ;
         }
         if(bufferCapacity > d->bufferCapacity)
         {
@@ -91,20 +61,19 @@ zfbool ZFBuffer::bufferRealloc(ZF_IN zfindex bufferCapacity)
         }
     }
 
-    d->bufferCapacity = bufferCapacity;
+    d->bufferCapacity = bufferCapacity - 1;
     d->bufferAutoFree = zftrue;
-    return zftrue;
 }
 void ZFBuffer::bufferFree(void)
 {
     if(d->buffer != zfnull && d->bufferAutoFree)
     {
         zffree(d->buffer);
-        d->buffer = zfnull;
-        d->bufferCapacity = 0;
-        d->bufferSize = 0;
-        d->bufferAutoFree = zffalse;
     }
+    d->buffer = zfnull;
+    d->bufferCapacity = 0;
+    d->bufferSize = 0;
+    d->bufferAutoFree = zffalse;
 }
 
 void ZFBuffer::objectInfoT(ZF_IN_OUT zfstring &ret) const

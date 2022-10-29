@@ -17,9 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIWebView, testView);
-        container->childAdd(testView);
-        testView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-        testView->layoutParam()->layoutMargin(ZFUIMarginMake(40));
+        container->childAdd(testView)->c_sizeFill()->c_margin(40);
         testView->viewBackgroundColor(ZFUIColorRed());
 
         this->prepareSettingButton(window, testView);

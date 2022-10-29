@@ -57,16 +57,16 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
             switch(updateParam.listOrientation)
             {
                 case ZFUIOrientation::e_Left:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner);
+                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Left);
                     break;
                 case ZFUIOrientation::e_Right:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_RightInner);
+                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Right);
                     break;
                 case ZFUIOrientation::e_Top:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
+                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
                     break;
                 case ZFUIOrientation::e_Bottom:
-                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_BottomInner);
+                    separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
                     break;
                 default:
                     zfCoreCriticalShouldNotGoHere();
@@ -87,16 +87,16 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
     switch(updateParam.listOrientation)
     {
         case ZFUIOrientation::e_Left:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_RightInner);
+            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Right);
             break;
         case ZFUIOrientation::e_Right:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_LeftInner);
+            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Left);
             break;
         case ZFUIOrientation::e_Top:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_BottomInner);
+            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
             break;
         case ZFUIOrientation::e_Bottom:
-            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
+            separatorView->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
             break;
         default:
             zfCoreCriticalShouldNotGoHere();

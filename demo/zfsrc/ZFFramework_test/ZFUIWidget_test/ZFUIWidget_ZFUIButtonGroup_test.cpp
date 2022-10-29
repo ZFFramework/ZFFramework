@@ -17,8 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIButtonGroupBasic, layout);
-        container->childAdd(layout);
-        layout->layoutParam()->layoutMargin(ZFUIMarginMake(40));
+        container->childAdd(layout)->c_margin(40);
         layout->buttonGroupType(ZFUIButtonGroupType::e_Tab);
         layout->layoutOrientation(ZFUIOrientation::e_Top);
 

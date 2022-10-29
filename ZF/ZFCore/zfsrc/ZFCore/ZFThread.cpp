@@ -433,7 +433,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
     ZFObject *zfThreadUserData = listenerData.param1();
     d->runningFlag = zftrue;
 
-    _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
+    void *nativeThreadToken = _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
     zfCoreMutexUnlock();
 
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread enter %p", zfThread);
@@ -487,7 +487,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
     zfThread->threadOnStop();
 
     zfCoreMutexLock();
-    _ZFP_ZFThreadImpl->nativeThreadUnregister(zfThread);
+    _ZFP_ZFThreadImpl->nativeThreadUnregister(nativeThreadToken);
     d->runningFlag = zffalse;
     d->startFlag = zffalse;
     zfCoreMutexUnlock();

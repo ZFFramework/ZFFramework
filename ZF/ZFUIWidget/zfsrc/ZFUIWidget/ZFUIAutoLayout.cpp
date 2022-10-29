@@ -11,6 +11,25 @@ ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
 // ZFUIAutoLayoutParam
 ZFOBJECT_REGISTER(ZFUIAutoLayoutParam)
 
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIAlignFlags, layoutAlign)
+{
+    zfCoreLog("[ZFUIAutoLayout] layoutAlign not supported");
+}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIAlignFlags, layoutMargin)
+{
+    zfCoreLog("[ZFUIAutoLayout] layoutMargin not supported");
+}
+ZFSerializablePropertyType ZFUIAutoLayoutParam::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property)
+{
+    if(zffalse
+        || property == ZFPropertyAccess(zfself, layoutAlign)
+        || property == ZFPropertyAccess(zfself, layoutMargin)
+    ) {
+        return ZFSerializablePropertyTypeNotSerializable;
+    }
+    return zfsuper::serializableOnCheckPropertyType(property);
+}
+
 ZFCompareResult ZFUIAutoLayoutParam::objectCompare(ZF_IN ZFObject *anotherObj)
 {
     ZFUIAutoLayoutParam *ref = ZFCastZFObject(ZFUIAutoLayoutParam *, anotherObj);

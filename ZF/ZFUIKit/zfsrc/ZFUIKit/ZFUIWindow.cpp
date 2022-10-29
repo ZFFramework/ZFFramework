@@ -139,7 +139,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowShow)
             }
         }
     }
-    this->windowOwnerSysWindow()->rootView()->childAdd(this, d->windowLayoutParam, addToIndex);
+    this->windowOwnerSysWindow()->rootView()->childAddWithParam(this, d->windowLayoutParam, addToIndex);
     this->windowOwnerSysWindow()->rootView()->_ZFP_ZFUIRootView_windowList.add(windowIndex, this);
 }
 ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowHide)
@@ -256,18 +256,6 @@ void ZFUIWindow::viewOnRemoveFromParent(ZF_IN ZFUIView *parent)
     {
         this->windowHide();
     }
-}
-
-// ============================================================
-// util
-ZFMETHOD_FUNC_DEFINE_3(void, ZFUIWindowShow,
-                       ZFMP_IN(ZFUIView *, view),
-                       ZFMP_IN_OPT(const ZFUISizeParam &, sizeParam, ZFUISizeParamFillFill()),
-                       ZFMP_IN_OPT(const ZFUIAlignFlags &, layoutAlign, ZFUIAlign::e_Center))
-{
-    zfblockedAlloc(ZFUIWindow, window);
-    window->childAdd(view, sizeParam, layoutAlign);
-    window->windowShow();
 }
 
 ZF_NAMESPACE_GLOBAL_END

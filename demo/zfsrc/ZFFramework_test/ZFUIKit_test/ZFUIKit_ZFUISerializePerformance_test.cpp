@@ -58,21 +58,17 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIView, outputViewContainer);
-        container->childAdd(outputViewContainer);
-        outputViewContainer->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-        outputViewContainer->layoutParam()->layoutMargin(ZFUIMarginMake(0, 50, 0, 0));
+        container->childAdd(outputViewContainer)->c_sizeFill()->c_margin(0, 50, 0, 0);
         outputViewContainer->viewBackgroundColor(ZFUIColorBlack());
 
         zfblockedAlloc(ZFUITextView, outputView);
-        outputViewContainer->childAdd(outputView);
-        outputView->layoutParam()->sizeParam(ZFUISizeParamFillWrap());
+        outputViewContainer->childAdd(outputView)->c_widthFill();
         outputView->textSingleLine(zffalse);
         outputView->textColor(ZFUIColorWhite());
         outputView->text("press start");
 
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
-        container->childAdd(startButton);
-        startButton->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
+        container->childAdd(startButton)->c_alignTop();
         startButton->buttonLabelText("start");
 
         ZFLISTENER(onStart) {

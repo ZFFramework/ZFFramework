@@ -299,12 +299,12 @@ public:
         child->d->UIScaleForImpl = parent->d->UIScaleForImpl;
         UIScaleUpdateRecursively(child);
     }
-    void childAdd(ZF_IN ZFUIView *owner,
-                  ZF_IN ZFUIViewChildLayerEnum childLayer,
-                  ZF_IN _ZFP_ZFUIViewLayerData &layer,
-                  ZF_IN ZFUIView *view,
-                  ZF_IN ZFUILayoutParam *layoutParam,
-                  ZF_IN zfindex atIndex)
+    ZFUILayoutParam *childAdd(ZF_IN ZFUIView *owner,
+                              ZF_IN ZFUIViewChildLayerEnum childLayer,
+                              ZF_IN _ZFP_ZFUIViewLayerData &layer,
+                              ZF_IN ZFUIView *view,
+                              ZF_IN ZFUILayoutParam *layoutParam,
+                              ZF_IN zfindex atIndex)
     {
         zfCoreAssertWithMessageTrim(!ZFBitTest(owner->objectInstanceState(), ZFObjectInstanceStateOnDealloc),
             "[ZFUIView] add child during parent's dealloc is not allowed");
@@ -358,6 +358,8 @@ public:
         owner->viewChildOnAdd(view, childLayer);
         view->viewOnAddToParent(owner);
         owner->viewChildOnChange();
+
+        return layoutParam;
     }
     void childRemove(ZF_IN ZFUIView *owner,
                      ZF_IN ZFUIViewChildLayerEnum childLayer,
@@ -856,7 +858,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
                 return zffalse;
             }
             ZFUIView *child = element.to<ZFUIView *>();
-            this->childAdd(child, child->layoutParam());
+            this->childAddWithParam(child, child->layoutParam());
 
             categoryData.resolveMark();
         }
@@ -1940,27 +1942,16 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById,
     return zfnull;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, void, childAdd,
+ZFMETHOD_DEFINE_3(ZFUIView, ZFUILayoutParam *, childAddWithParam,
                   ZFMP_IN(ZFUIView *, view),
-                  ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
+                  ZFMP_IN(ZFUILayoutParam *, layoutParam),
                   ZFMP_IN_OPT(zfindex, atIndex, zfindexMax()))
 {
-    d->childAdd(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, view, layoutParam, atIndex);
+    return d->childAdd(this, ZFUIViewChildLayer::e_Normal, d->layerNormal, view, layoutParam, atIndex);
 }
-ZFMETHOD_DEFINE_5(ZFUIView, void, childAdd,
-                  ZFMP_IN(ZFUIView *, view),
-                  ZFMP_IN(const ZFUISizeParam &, sizeParam),
-                  ZFMP_IN_OPT(ZFUIAlignFlags const &, layoutAlign, ZFUIAlign::e_LeftInner | ZFUIAlign::e_TopInner),
-                  ZFMP_IN_OPT(ZFUIMargin const &, layoutMargin, ZFUIMarginZero()),
-                  ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeInvalid()))
-{
-    this->childAdd(view);
-    ZFUILayoutParam *lp = view->layoutParam();
-    lp->sizeParam(sizeParam);
-    lp->layoutAlign(layoutAlign);
-    lp->layoutMargin(layoutMargin);
-    lp->sizeHint(sizeHint);
-}
+
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFUIView, ZFUILayoutParam *, childAdd, ZFMP_IN(ZFUIView *, view), ZFMP_IN_OPT(zfindex, atIndex, zfindexMax()))
+
 ZFMETHOD_DEFINE_1(ZFUIView, void, childRemove,
                   ZFMP_IN(ZFUIView *, view))
 {
@@ -2081,12 +2072,12 @@ void ZFUIView::viewOnRemoveFromParent(ZF_IN ZFUIView *parent)
 
 // ============================================================
 // internal views
-ZFMETHOD_DEFINE_3(ZFUIView, void, internalImplViewAdd,
+ZFMETHOD_DEFINE_3(ZFUIView, ZFUILayoutParam *, internalImplViewAdd,
                   ZFMP_IN(ZFUIView *, view),
                   ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
                   ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
 {
-    d->childAdd(this, ZFUIViewChildLayer::e_InternalImpl, d->layerInternalImpl, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->childAdd(this, ZFUIViewChildLayer::e_InternalImpl, d->layerInternalImpl, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalImplViewRemove,
                   ZFMP_IN(ZFUIView *, view))
@@ -2098,12 +2089,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, internalImplViewArray)
     return d->layerInternalImpl.views;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, void, internalBgViewAdd,
+ZFMETHOD_DEFINE_3(ZFUIView, ZFUILayoutParam *, internalBgViewAdd,
                   ZFMP_IN(ZFUIView *, view),
                   ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
                   ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
 {
-    d->childAdd(this, ZFUIViewChildLayer::e_InternalBg, d->layerInternalBg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->childAdd(this, ZFUIViewChildLayer::e_InternalBg, d->layerInternalBg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalBgViewRemove,
                   ZFMP_IN(ZFUIView *, view))
@@ -2115,12 +2106,12 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, internalBgViewArray)
     return d->layerInternalBg.views;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, void, internalFgViewAdd,
+ZFMETHOD_DEFINE_3(ZFUIView, ZFUILayoutParam *, internalFgViewAdd,
                   ZFMP_IN(ZFUIView *, view),
                   ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
                   ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
 {
-    d->childAdd(this, ZFUIViewChildLayer::e_InternalFg, d->layerInternalFg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
+    return d->childAdd(this, ZFUIViewChildLayer::e_InternalFg, d->layerInternalFg, view, layoutParam, (addAsTopMost ? zfindexMax() : 0));
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalFgViewRemove,
                   ZFMP_IN(ZFUIView *, view))
@@ -2309,7 +2300,7 @@ void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable)
     {
         zfautoObjectT<ZFUIView *> child = ref->childAt(i)->copy();
         zfautoObjectT<ZFUILayoutParam *> childLayoutParam = ref->childAt(i)->layoutParam()->copy();
-        this->childAdd(child, childLayoutParam);
+        this->childAddWithParam(child, childLayoutParam);
     }
 }
 

@@ -90,10 +90,8 @@ public:
     }
     virtual void nativeThreadUnregister(ZF_IN void *token)
     {
-        {
-            zfCoreMutexLocker();
-            _ZFP_ZFThreadImpl_sys_iOS_threadMap.erase(_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId());
-        }
+        zfCoreMutexLocker();
+        _ZFP_ZFThreadImpl_sys_iOS_threadMap.erase(_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId());
         zfdelete(ZFCastStatic(_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *, token));
     }
     virtual ZFThread *threadForToken(ZF_IN void *token)

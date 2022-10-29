@@ -323,9 +323,9 @@ public:
 
 public:
     zfoverride
-    virtual zfbool objectIsPrivate(void) {return zftrue;}
-    zfoverride
     virtual zfbool objectIsInternal(void) {return zftrue;}
+    zfoverride
+    virtual zfbool objectIsInternalPrivate(void) {return zftrue;}
 protected:
     zfoverride
     virtual void objectOnInit(void)

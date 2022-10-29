@@ -87,8 +87,7 @@ static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void)
     window->windowShow();
 
     zfblockedAlloc(ZFUIKit_test_ListView, containerView);
-    window->childAdd(containerView);
-    containerView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+    window->childAdd(containerView)->c_sizeFill();
 
     ZFUIViewFocusNextMove(window);
     return containerView;
@@ -161,8 +160,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
         subModuleWindow->viewBackgroundColor(ZFUIColorWhite());
         subModuleWindow->windowShow();
         zfblockedAlloc(ZFUIKit_test_ListView, containerView);
-        subModuleWindow->childAdd(containerView);
-        containerView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+        subModuleWindow->childAdd(containerView)->c_sizeFill();
 
         {
             zfblockedAlloc(ZFUIKit_test_Button, closeButton);

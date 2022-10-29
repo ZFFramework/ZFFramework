@@ -60,8 +60,8 @@ extern ZFLIB_ZFCore void _ZFP_ZFCallback_executeNullCallback(void);
                 return ((T_ReturnType (*)(ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_EMPTY, ZFM_COMMA)))(this->callbackRawFunction())) \
                     (ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_EMPTY, ZFM_COMMA)); \
             case ZFCallbackTypeLambda: \
-                return ((T_ReturnType (*)(void * ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)))(this->_ZFP_ZFCallback_callbackLambdaInvoker()))( \
-                        this->_ZFP_ZFCallback_callbackLambdaImpl() \
+                return ((T_ReturnType (*)(void * ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)))(this->callbackLambdaInvoker()))( \
+                        this->callbackLambdaImpl() \
                         ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA) \
                     ); \
             case ZFCallbackTypeDummy: \
@@ -264,6 +264,16 @@ public:
     zffinal ZFFuncAddrType callbackRawFunction(void) const;
 
     /**
+     * @brief impl for lambda type
+     */
+    zffinal void *callbackLambdaImpl(void) const;
+    /**
+     * @brief impl for lambda type
+     */
+    zffinal ZFFuncAddrType callbackLambdaInvoker(void) const;
+    zffinal void _ZFP_ZFCallback_callbackLambdaInvoker(ZF_IN ZFFuncAddrType v) const;
+
+    /**
      * @brief retain owner object and auto release it
      *   after callback's retain count reduced to 0
      *
@@ -336,10 +346,6 @@ public:
 
 private:
     _ZFP_ZFCallbackPrivate *d;
-public:
-    zffinal void *_ZFP_ZFCallback_callbackLambdaImpl(void) const;
-    zffinal void _ZFP_ZFCallback_callbackLambdaInvoker(ZF_IN ZFFuncAddrType v) const;
-    zffinal ZFFuncAddrType _ZFP_ZFCallback_callbackLambdaInvoker(void) const;
 };
 
 // ============================================================

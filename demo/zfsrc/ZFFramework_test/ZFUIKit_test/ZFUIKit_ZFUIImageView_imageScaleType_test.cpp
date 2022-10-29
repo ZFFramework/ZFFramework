@@ -63,8 +63,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIKit_ZFUIImageView_imageScaleType_test_Container, layout);
-        container->childAdd(layout);
-        layout->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+        container->childAdd(layout)->c_sizeFill();
 
         zfblockedAlloc(ZFArray, imageViews);
         imageViews->add(layout->imageViewSmall());

@@ -44,7 +44,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextends ZFUILayoutParam
     /**
      * @brief whether reserve space if child is not visible, false by default
      */
-    ZFPROPERTY_ASSIGN(zfbool, layoutReserveSpaceWhenNotVisible)
+    ZFPROPERTY_ASSIGN(zfbool, reserveSpace)
 
     ZFPROPERTY_ON_INIT_INLINE(ZFUIAlignFlags, layoutAlign)
     {
@@ -121,6 +121,12 @@ public:
 
     // ============================================================
     // override ZFUIView
+public:
+    /** @brief util method for #childAddWithParam */
+    inline ZFUIFlowLayoutParam *childAdd(ZF_IN ZFUIView *view, ZF_IN_OPT zfindex atIndex = zfindexMax())
+    {
+        return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+    }
 protected:
     zfoverride
     virtual const ZFClass *layoutParamClass(void)

@@ -16,14 +16,13 @@ void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
 
     // close button
     zfblockedAlloc(ZFUIKit_test_Button, closeButton);
-    window->childAdd(closeButton);
-    closeButton->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner | ZFUIAlign::e_RightInner);
+    window->childAdd(closeButton)->c_alignRightTop();
     closeButton->buttonLabelText("close");
     ZFLISTENER(onClickCloseButton) {
         ZFUIWindow *window = userData->objectTag("window")->objectHolded();
         ZFTestCase *testCase = userData->objectTag("testCaseToStop")->objectHolded();
-        window->windowHide();
         testCase->testCaseStop();
+        window->windowHide();
     } ZFLISTENER_END(onClickCloseButton)
     zfblockedAlloc(ZFObject, closeButtonUserData);
     closeButtonUserData->objectTag("window", window->objectHolder());
@@ -33,9 +32,7 @@ void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
     // container
     container = zfAlloc(ZFUIView);
     zfblockedRelease(container);
-    window->childAdd(container);
-    container->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-    container->layoutParam()->layoutMargin(ZFUIMarginMake(0, 50, 0, 0));
+    window->childAdd(container)->c_sizeFill()->c_margin(0, 50, 0, 0);
 }
 
 zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
@@ -53,8 +50,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
     settingsButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickSetting, window->objectHolder());
 
     zfblockedAlloc(ZFUIKit_test_Button, closeButton);
-    window->childAdd(closeButton);
-    closeButton->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
+    window->childAdd(closeButton)->c_alignTop();
     closeButton->buttonLabelStyle()->text("done");
     ZFLISTENER(onClickCloseButton) {
         userData->objectHolded<ZFUIWindow *>()->windowHide();
@@ -62,9 +58,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
     closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton, window->objectHolder());
 
     zfblockedAlloc(ZFUIKit_test_ListView, listView);
-    window->childAdd(listView);
-    listView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-    listView->layoutParam()->layoutMargin(ZFUIMarginMake(0, 50, 0, 0));
+    window->childAdd(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
     for(zfindex i = 0; i < settings->count(); ++i)
     {
         ZFUIKit_test_SettingData *setting = settings->get<ZFUIKit_test_SettingData *>(i);
@@ -112,8 +106,7 @@ void ZFUIKit_test_prepareSettingButtonWithTestWindow(ZF_IN ZFUIWindow *window,
 {
     zfautoObject buttonHolder = ZFUIKit_test_prepareSettingButton(settings);
     ZFUIButton *button = buttonHolder;
-    window->childAdd(button);
-    button->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
+    window->childAdd(button)->c_alignTop();
 }
 
 void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,

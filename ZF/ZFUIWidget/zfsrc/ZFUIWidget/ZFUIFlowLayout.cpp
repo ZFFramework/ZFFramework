@@ -151,7 +151,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(ZF_IN ZFUIFlowLayout *
     {
         ZFUIView *child = parent->childAt(i);
         ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
-        if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
+        if(!child->viewVisible() && !layoutParam->reserveSpace())
         {
             continue ;
         }
@@ -203,7 +203,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(ZF_IN ZFUIFlowLayout *pa
     {
         ZFUIView *child = parent->childAt(i);
         ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
-        if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
+        if(!child->viewVisible() && !layoutParam->reserveSpace())
         {
             continue ;
         }
@@ -325,7 +325,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(ZF_IN ZFUIFlowLayout *parent,
         {
             ZFUIView *child = parent->childAt(i);
             ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
-            if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
+            if(!child->viewVisible() && !layoutParam->reserveSpace())
             {
                 continue ;
             }
@@ -390,7 +390,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(ZF_IN ZFUIFlowLayout *parent,
         {
             ZFUIView *child = parent->childAt(i);
             ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
-            if(!child->viewVisible() && !layoutParam->layoutReserveSpaceWhenNotVisible())
+            if(!child->viewVisible() && !layoutParam->reserveSpace())
             {
                 continue ;
             }

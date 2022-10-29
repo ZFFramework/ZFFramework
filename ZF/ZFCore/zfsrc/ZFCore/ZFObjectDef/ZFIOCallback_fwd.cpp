@@ -80,6 +80,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFMETHOD_USER_REGISTER_2({return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSeek(byteSize, pos);}, v_ZFCallback, zfbool, ioSeek, ZFMP_IN(zfindex, byteSize), ZFMP_IN_OPT(ZFSeekPos, pos, ZFSeekPosBegin))
 ZFMETHOD_USER_REGISTER_0({return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioTell();}, v_ZFCallback, zfindex, ioTell)
 ZFMETHOD_USER_REGISTER_0({return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioSize();}, v_ZFCallback, zfindex, ioSize)
+ZFMETHOD_USER_REGISTER_1({return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioOwner(ioOwner);}, v_ZFCallback, void, ioOwner, ZFMP_IN(ZFObject *, ioOwner))
+ZFMETHOD_USER_REGISTER_0({return ZFIOCallback(invokerObject->to<v_ZFCallback *>()->zfv).ioOwner();}, v_ZFCallback, ZFObject *, ioOwner)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

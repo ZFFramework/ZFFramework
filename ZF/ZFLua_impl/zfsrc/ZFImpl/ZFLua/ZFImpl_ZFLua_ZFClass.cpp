@@ -7,7 +7,7 @@ static void _ZFP_ZFImpl_ZFLua_ZFClass_classOnChange(ZF_IN const ZFListenerData &
 {
     const ZFClassDataChangeData &data = listenerData.param0<v_ZFClassDataChangeData *>()->zfv;
     if(data.changedClass != zfnull && data.changeType == ZFClassDataChangeTypeAttach
-        && !data.changedClass->classIsPrivate()
+        && !data.changedClass->classIsInternalPrivate()
         && data.changedClass->classNamespace() == zfnull)
     {
         ZFImpl_ZFLua_implSetupScope(
@@ -24,7 +24,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, {
             for(zfindex i = 0; i < allClass.count(); ++i)
             {
                 const ZFClass *cls = allClass[i];
-                if(!cls->classIsPrivate() && cls->classNamespace() == zfnull)
+                if(!cls->classIsInternalPrivate() && cls->classNamespace() == zfnull)
                 {
                     classNameList.add(cls->className());
                 }

@@ -251,11 +251,11 @@ void ZFImpl_sys_Qt_ZFUIAlignFlagsToQAlignmentT(ZF_OUT Qt::Alignment &ret, ZF_IN 
 {
     ret = (Qt::Alignment)0;
 
-    if(ZFBitTest(align, ZFUIAlign::e_LeftInner))
+    if(ZFBitTest(align, ZFUIAlign::e_Left))
     {
         ZFBitSet(ret, Qt::AlignLeft);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_RightInner))
+    else if(ZFBitTest(align, ZFUIAlign::e_Right))
     {
         ZFBitSet(ret, Qt::AlignRight);
     }
@@ -264,11 +264,11 @@ void ZFImpl_sys_Qt_ZFUIAlignFlagsToQAlignmentT(ZF_OUT Qt::Alignment &ret, ZF_IN 
         ZFBitSet(ret, Qt::AlignHCenter);
     }
 
-    if(ZFBitTest(align, ZFUIAlign::e_TopInner))
+    if(ZFBitTest(align, ZFUIAlign::e_Top))
     {
         ZFBitSet(ret, Qt::AlignTop);
     }
-    else if(ZFBitTest(align, ZFUIAlign::e_BottomInner))
+    else if(ZFBitTest(align, ZFUIAlign::e_Bottom))
     {
         ZFBitSet(ret, Qt::AlignBottom);
     }
@@ -283,20 +283,20 @@ void ZFImpl_sys_Qt_ZFUIAlignFlagsFromQAlignmentT(ZF_OUT ZFUIAlignFlags &ret, ZF_
 
     if(ZFBitTest(qAlign, Qt::AlignLeft))
     {
-        ZFBitSet(ret, ZFUIAlign::e_LeftInner);
+        ZFBitSet(ret, ZFUIAlign::e_Left);
     }
     else if(ZFBitTest(qAlign, Qt::AlignRight))
     {
-        ZFBitSet(ret, ZFUIAlign::e_RightInner);
+        ZFBitSet(ret, ZFUIAlign::e_Right);
     }
 
     if(ZFBitTest(qAlign, Qt::AlignTop))
     {
-        ZFBitSet(ret, ZFUIAlign::e_TopInner);
+        ZFBitSet(ret, ZFUIAlign::e_Top);
     }
     else if(ZFBitTest(qAlign, Qt::AlignBottom))
     {
-        ZFBitSet(ret, ZFUIAlign::e_BottomInner);
+        ZFBitSet(ret, ZFUIAlign::e_Bottom);
     }
 }
 

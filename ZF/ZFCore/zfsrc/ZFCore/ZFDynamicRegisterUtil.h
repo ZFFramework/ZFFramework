@@ -293,12 +293,12 @@ protected:
     /** @endcond */
 public:
     zfoverride
-    virtual zfbool objectIsPrivate(void)
+    virtual zfbool objectIsInternal(void)
     {
         return zftrue;
     }
     zfoverride
-    virtual zfbool objectIsInternal(void)
+    virtual zfbool objectIsInternalPrivate(void)
     {
         return zftrue;
     }

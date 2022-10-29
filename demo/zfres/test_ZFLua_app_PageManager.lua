@@ -8,16 +8,14 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
 
         local topView = ZFUILinearLayout();
         pm:objectTag("topView", topView);
-        managerContainer:childAdd(topView, ZFUISizeParamFillWrap());
+        managerContainer:childAdd(topView):widthFill();
         topView:layoutOrientation(ZFUIOrientation.e_Left());
 
         local leftButton = ZFUIButtonBasic();
         pm:objectTag("leftButton", leftButton);
-        topView:childAdd(leftButton, ZFUISizeParamFillWrap(), ZFUIAlign.e_Center());
-        leftButton:layoutParam():layoutWeight(1);
+        topView:childAdd(leftButton):widthFill():alignCenter():layoutWeight(1):reserveSpace(zftrue);
         leftButton:buttonLabelText("Back");
         leftButton:viewBackgroundColor(ZFUIColorRandom());
-        leftButton:layoutParam():layoutReserveSpaceWhenNotVisible(zftrue);
         leftButton:viewVisible(zffalse);
         leftButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
                 local pm = userData:objectHolded();
@@ -26,14 +24,12 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
 
         local centerButton = ZFUIButtonBasic();
         pm:objectTag("centerButton", centerButton);
-        topView:childAdd(centerButton, ZFUISizeParamFillWrap(), ZFUIAlign.e_Center());
-        centerButton:layoutParam():layoutWeight(2);
+        topView:childAdd(centerButton):widthFill():alignCenter():layoutWeight(2);
         centerButton:viewBackgroundColor(ZFUIColorRandom());
 
         local rightButton = ZFUIButtonBasic();
         pm:objectTag("rightButton", rightButton);
-        topView:childAdd(rightButton, ZFUISizeParamFillWrap(), ZFUIAlign.e_Center());
-        rightButton:layoutParam():layoutWeight(1);
+        topView:childAdd(rightButton):widthFill():alignCenter():layoutWeight(1);
         rightButton:buttonLabelText("ExitTest");
         rightButton:viewBackgroundColor(ZFUIColorRandom());
         rightButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)

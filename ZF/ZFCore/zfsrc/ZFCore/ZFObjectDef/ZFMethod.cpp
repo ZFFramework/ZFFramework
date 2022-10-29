@@ -91,6 +91,27 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
     {
         _ZFP_ZFMethod_paramCountMin = _ZFP_ZFMethod_paramDefaultBeginIndex;
     }
+
+    // internal
+    static const zfchar *_ZFP_ = "_ZFP_";
+    static zfindex _ZFP_len = zfslen(_ZFP_);
+    static const zfchar *_ZFP_I_ = "_ZFP_I_";
+    static zfindex _ZFP_I_len = zfslen(_ZFP_I_);
+    if(zfsncmp(methodName, _ZFP_I_, _ZFP_I_len) == 0)
+    {
+        this->_ZFP_ZFMethod_methodIsInternal = zftrue;
+        this->_ZFP_ZFMethod_methodIsInternalPrivate = zftrue;
+    }
+    else if(zfsncmp(methodName, _ZFP_, _ZFP_len) == 0)
+    {
+        this->_ZFP_ZFMethod_methodIsInternal = zftrue;
+        this->_ZFP_ZFMethod_methodIsInternalPrivate = zffalse;
+    }
+    else
+    {
+        this->_ZFP_ZFMethod_methodIsInternal = zffalse;
+        this->_ZFP_ZFMethod_methodIsInternalPrivate = zffalse;
+    }
 }
 void ZFMethod::_ZFP_ZFMethod_initClassMemberType(ZF_IN const ZFClass *methodOwnerClass,
                                                  ZF_IN ZFMethodPrivilegeType privilegeType)

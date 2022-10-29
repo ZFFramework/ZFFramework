@@ -88,7 +88,7 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFListenerData &
 {
     ZFUIView *view = listenerData.sender<ZFUIView *>();
 
-    if(view->objectIsPrivate())
+    if(view->objectIsInternal())
     {
         return ;
     }
@@ -119,7 +119,7 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFListenerData &
 static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
     ZFUIView *view = listenerData.sender<ZFUIView *>();
-    if(view->objectIsPrivate())
+    if(view->objectIsInternal())
     {
         return ;
     }

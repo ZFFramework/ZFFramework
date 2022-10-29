@@ -4,17 +4,19 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFIOBufferByCacheFileData
+zfclassNotPOD _ZFP_ZFIOBufferByCacheFile
 {
 public:
+    zfuint refCount;
     void *token;
     zfstring tmpFilePath;
     zfindex outputIndex;
     zfindex inputIndex;
     zfindex fileSize;
 public:
-    _ZFP_ZFIOBufferByCacheFileData(void)
-    : token(zfnull)
+    _ZFP_ZFIOBufferByCacheFile(void)
+    : refCount(1)
+    , token(zfnull)
     , tmpFilePath()
     , outputIndex(0)
     , inputIndex(0)
@@ -27,7 +29,7 @@ public:
         this->token = ZFFileFileOpen(this->tmpFilePath.cString(),
             ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write);
     }
-    ~_ZFP_ZFIOBufferByCacheFileData(void)
+    ~_ZFP_ZFIOBufferByCacheFile(void)
     {
         if(this->token != zfnull)
         {
@@ -42,7 +44,18 @@ zfclass _ZFP_ZFIOBufferByCacheFile_input : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByCacheFile_input, ZFObject)
 public:
-    _ZFP_ZFIOBufferByCacheFileData *d;
+    _ZFP_ZFIOBufferByCacheFile *d;
+protected:
+    zfoverride
+    virtual void objectOnDealloc()
+    {
+        --(d->refCount);
+        if(d->refCount == 0)
+        {
+            zfdelete(d);
+        }
+        zfsuper::objectOnDealloc();
+    }
 
 public:
     ZFMETHOD_DECLARE_2(zfindex, onInput,
@@ -60,7 +73,18 @@ zfclass _ZFP_ZFIOBufferByCacheFile_output : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByCacheFile_output, ZFObject)
 public:
-    _ZFP_ZFIOBufferByCacheFileData *d;
+    _ZFP_ZFIOBufferByCacheFile *d;
+protected:
+    zfoverride
+    virtual void objectOnDealloc()
+    {
+        --(d->refCount);
+        if(d->refCount == 0)
+        {
+            zfdelete(d);
+        }
+        zfsuper::objectOnDealloc();
+    }
 
 public:
     ZFMETHOD_DECLARE_2(zfindex, onOutput,
@@ -80,34 +104,32 @@ ZFOBJECT_REGISTER(ZFIOBufferByCacheFile)
 void ZFIOBufferByCacheFile::objectOnInit(void)
 {
     zfsuper::objectOnInit();
-    _ZFP_ZFIOBufferByCacheFileData *d = zfpoolNew(_ZFP_ZFIOBufferByCacheFileData);
+    _ZFP_ZFIOBufferByCacheFile *d = zfpoolNew(_ZFP_ZFIOBufferByCacheFile);
 
     zfblockedAlloc(_ZFP_ZFIOBufferByCacheFile_input, iOwner);
     iOwner->d = d;
-    this->iOwner = iOwner;
+    ++(d->refCount);
+    this->_ZFP_input = ZFCallbackForMemberMethod(iOwner, ZFMethodAccess(_ZFP_ZFIOBufferByCacheFile_input, onInput));
+    this->_ZFP_input.ioOwner(iOwner);
 
     zfblockedAlloc(_ZFP_ZFIOBufferByCacheFile_output, oOwner);
     oOwner->d = d;
-    this->oOwner = oOwner;
+    ++(d->refCount);
+    this->_ZFP_output = ZFCallbackForMemberMethod(oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByCacheFile_output, onOutput));
+    this->_ZFP_output.ioOwner(oOwner);
 }
 void ZFIOBufferByCacheFile::objectOnDealloc(void)
 {
-    _ZFP_ZFIOBufferByCacheFileData *d = this->iOwner->to<_ZFP_ZFIOBufferByCacheFile_input *>()->d;
-    zfpoolDelete(d);
+    --(d->refCount);
+    if(d->refCount == 0)
+    {
+        zfdelete(d);
+    }
     zfsuper::objectOnDealloc();
 }
 
-ZFInput ZFIOBufferByCacheFile::implInput(void)
-{
-    return ZFCallbackForMemberMethod(this->iOwner, ZFMethodAccess(_ZFP_ZFIOBufferByCacheFile_input, onInput));
-}
-ZFOutput ZFIOBufferByCacheFile::implOutput(void)
-{
-    return ZFCallbackForMemberMethod(this->oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByCacheFile_output, onOutput));
-}
 void ZFIOBufferByCacheFile::implRemoveAll(void)
 {
-    _ZFP_ZFIOBufferByCacheFileData *d = this->iOwner->to<_ZFP_ZFIOBufferByCacheFile_input *>()->d;
     d->inputIndex = 0;
     d->outputIndex = 0;
     d->fileSize = 0;

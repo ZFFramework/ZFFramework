@@ -12,7 +12,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, zfbool, buttonCheckable)
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, ZFUIAlignFlags, buttonContentAlign)
 {
-    propertyValue = ZFUIAlign::e_LeftInner;
+    propertyValue = ZFUIAlign::e_Left;
 }
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, ZFUIImageView *, buttonIconStyleNormal)

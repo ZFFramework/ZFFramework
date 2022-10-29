@@ -142,7 +142,7 @@ public:
 public:
     // ============================================================
     /**
-     * @brief see #ZFUILayoutParam, default is #ZFUISizeInvalid
+     * @brief see #ZFUILayoutParam, default is #ZFUISizeInvalid, which means no size limit
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, sizeHint,
                                 ZFUISizeInvalid())
@@ -152,15 +152,88 @@ public:
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISizeParam, sizeParam,
                                 ZFUISizeParamWrapWrap())
     /**
-     * @brief see #ZFUILayoutParam, default is (ZFUIAlign::e_LeftInner | ZFUIAlign::e_TopInner)
+     * @brief see #ZFUILayoutParam, default is (ZFUIAlign::e_Left | ZFUIAlign::e_Top)
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, layoutAlign,
-                                ZFUIAlign::e_LeftInner | ZFUIAlign::e_TopInner)
+                                ZFUIAlign::e_Left | ZFUIAlign::e_Top)
     /**
      * @brief see #ZFUILayoutParam, default is (0, 0, 0, 0)
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIMargin, layoutMargin,
                                 ZFUIMarginZero())
+
+public:
+    // ============================================================
+    // util
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_0(void, sizeFill)
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, sizeFill,
+                       ZFMP_IN(const ZFUISize &, size))
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_2(void, sizeFill,
+                       ZFMP_IN(zffloat, width),
+                       ZFMP_IN(zffloat, height))
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_0(void, sizeWrap)
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, sizeWrap,
+                       ZFMP_IN(const ZFUISize &, size))
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_2(void, sizeWrap,
+                       ZFMP_IN(zffloat, width),
+                       ZFMP_IN(zffloat, height))
+
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_0(void, widthFill)
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, widthFill,
+                       ZFMP_IN(zffloat, width))
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_0(void, widthWrap)
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, widthWrap,
+                       ZFMP_IN(zffloat, width))
+
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_0(void, heightFill)
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, heightFill,
+                       ZFMP_IN(zffloat, height))
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_0(void, heightWrap)
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, heightWrap,
+                       ZFMP_IN(zffloat, height))
+
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignCenter)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignLeft)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignTop)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignRight)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignBottom)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignLeftTop)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignLeftBottom)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignRightTop)
+    /** @brief util to set #layoutAlign */
+    ZFMETHOD_DECLARE_0(void, alignRightBottom)
+
+    /** @brief util to set #layoutMargin */
+    ZFMETHOD_DECLARE_1(void, margin,
+                       ZFMP_IN(zffloat, margin))
+    /** @brief util to set #layoutMargin */
+    ZFMETHOD_DECLARE_4(void, margin,
+                       ZFMP_IN(zffloat, left),
+                       ZFMP_IN(zffloat, top),
+                       ZFMP_IN(zffloat, right),
+                       ZFMP_IN(zffloat, bottom))
 
 public:
     // ============================================================

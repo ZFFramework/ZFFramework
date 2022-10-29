@@ -17,9 +17,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIScrollView, scrollView);
-        container->childAdd(scrollView);
-        scrollView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-        scrollView->layoutParam()->layoutMargin(ZFUIMarginMake(40));
+        container->childAdd(scrollView)->c_sizeFill()->c_margin(40);
         scrollView->viewBackgroundColor(ZFUIColorRed());
 
         this->setupScrollListener(scrollView);
@@ -27,10 +25,7 @@ protected:
 
 #if 1 // test embeded scroll view
         zfblockedAlloc(ZFUIScrollView, embededScrollView);
-        scrollView->childAdd(embededScrollView);
-        embededScrollView->layoutParam()->layoutMargin(ZFUIMarginMake(80));
-        embededScrollView->layoutParam()->sizeHint(ZFUISizeMake(200, 100));
-        embededScrollView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+        scrollView->childAdd(embededScrollView)->c_sizeFill(200, 100)->c_margin(80);
         embededScrollView->viewBackgroundColor(ZFUIColorMake(0, 0, 1, 0.75f));
 
         this->setupScrollListener(embededScrollView);
@@ -96,10 +91,7 @@ private:
                 x += itemSize.width + itemSpace.width)
             {
                 zfblockedAlloc(ZFUIButton, btn);
-                scrollView->childAdd(btn);
-                btn->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-                btn->layoutParam()->sizeHint(itemSize);
-                btn->layoutParam()->layoutMargin(ZFUIMarginMake(x, y, 0, 0));
+                scrollView->childAdd(btn)->c_sizeFill(itemSize)->c_margin(x, y, 0, 0);
                 btn->viewBackgroundColor(ZFUIColorRandom(0.75f));
 
                 ZFLISTENER(onClick) {

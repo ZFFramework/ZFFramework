@@ -70,6 +70,21 @@ public:
      * @brief calculate the callback's size or return zfindexMax() if not supported
      */
     virtual zfindex ioSize(void) const;
+
+    /**
+     * @brief util to set #ZFCallbackTagKeyword_ioOwner
+     */
+    virtual void ioOwner(ZF_IN ZFObject *ioOwner)
+    {
+        this->callbackTag(ZFCallbackTagKeyword_ioOwner, ioOwner);
+    }
+    /**
+     * @brief util to get #ZFCallbackTagKeyword_ioOwner
+     */
+    virtual ZFObject *ioOwner(void) const
+    {
+        return this->callbackTag(ZFCallbackTagKeyword_ioOwner);
+    }
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -143,7 +143,7 @@ ZFBuffer ZFInputReadToBuffer(ZF_IN_OUT const ZFInput &input)
     zfindex totalSize = input.ioSize();
     if(totalSize != zfindexMax())
     {
-        ret.bufferMalloc(totalSize + sizeof(zfchar));
+        ret.bufferCapacity(totalSize);
         if(input.execute(ret.buffer(), totalSize) != totalSize)
         {
             ret.bufferFree();
@@ -160,13 +160,13 @@ ZFBuffer ZFInputReadToBuffer(ZF_IN_OUT const ZFInput &input)
         zfindex size = 0;
         do
         {
-            ret.bufferRealloc(ret.bufferSize() + _ZFP_ZFInputReadToBuffer_blockSize);
+            ret.bufferCapacity(ret.bufferSize() + _ZFP_ZFInputReadToBuffer_blockSize);
             readCount = input.execute(ret.bufferT<zfbyte *>() + size, _ZFP_ZFInputReadToBuffer_blockSize - sizeof(zfchar));
             size += readCount;
+            ret.bufferSize(size);
             if(readCount < _ZFP_ZFInputReadToBuffer_blockSize - sizeof(zfchar))
             {
-                ret.bufferRealloc(size + sizeof(zfchar));
-                ret.bufferSize(size);
+                ret.bufferCapacity(size);
                 break;
             }
         } while(zftrue);

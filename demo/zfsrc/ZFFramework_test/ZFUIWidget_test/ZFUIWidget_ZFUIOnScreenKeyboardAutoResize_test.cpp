@@ -22,14 +22,12 @@ protected:
         for(zfindex i = 0; i < 3; ++i)
         {
             zfblockedAlloc(ZFUITextEdit, view);
-            container->childAdd(view);
-            view->layoutParam()->sizeParam(ZFUISizeParamFillWrap());
+            container->childAdd(view)->c_widthFill()->c_margin(10);
             view->viewBackgroundColor(ZFUIColorRandom());
-            view->layoutParam()->layoutMargin(ZFUIMarginMake(10));
         }
-        container->childAt(0)->layoutParam()->layoutAlign(ZFUIAlign::e_TopInner);
+        container->childAt(0)->layoutParam()->layoutAlign(ZFUIAlign::e_Top);
         container->childAt(1)->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
-        container->childAt(2)->layoutParam()->layoutAlign(ZFUIAlign::e_BottomInner);
+        container->childAt(2)->layoutParam()->layoutAlign(ZFUIAlign::e_Bottom);
     }
 };
 ZFOBJECT_REGISTER(ZFUIWidget_ZFUIOnScreenKeyboardAutoResize_test)

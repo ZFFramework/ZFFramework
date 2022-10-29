@@ -320,8 +320,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIView *, dialogView)
 {
     if(this->dialogView() != zfnull)
     {
-        d->dialogContainer->childAdd(this->dialogView());
-        this->dialogView()->layoutParam()->layoutAlign(ZFUIAlign::e_Center);
+        d->dialogContainer->childAdd(this->dialogView())->c_alignCenter();
     }
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIDialog, ZFUIView *, dialogView)
@@ -489,19 +488,16 @@ void ZFUIDialog::objectOnInit(void)
     d->pimplOwner = this;
 
     d->dialogWindowBg = zfAlloc(ZFUIView);
-    d->internalBgViewAdd(d->dialogWindowBg);
-    d->dialogWindowBg->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+    d->internalBgViewAdd(d->dialogWindowBg)->c_sizeFill();
 
     d->dialogClickMask = zfAlloc(_ZFP_I_ZFUIDialog_DialogClickMask);
-    d->internalBgViewAdd(d->dialogClickMask);
-    d->dialogClickMask->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+    d->internalBgViewAdd(d->dialogClickMask)->c_sizeFill();
     d->dialogClickMask->observerAdd(ZFUIButton::EventButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, dialogClickMaskOnClick)));
 
     zfblockedAlloc(_ZFP_ZFUIDialogContentHolder, dialogContentHolder);
-    d->childAdd(dialogContentHolder);
+    d->childAdd(dialogContentHolder)->c_sizeFill();
     dialogContentHolder->pimplOwner = d;
-    dialogContentHolder->layoutParam()->sizeParam(ZFUISizeParamFillFill());
     dialogContentHolder->viewUIEnable(zffalse);
 
     d->dialogBg = zfAlloc(ZFUIImageView);
@@ -510,8 +506,7 @@ void ZFUIDialog::objectOnInit(void)
     d->dialogBg->viewUIEnable(zftrue);
 
     d->dialogContainer = zfAlloc(ZFUIOnScreenKeyboardAutoFitLayout);
-    d->dialogBg->childAdd(d->dialogContainer);
-    d->dialogContainer->layoutParam()->sizeParam(ZFUISizeParamFillFill());
+    d->dialogBg->childAdd(d->dialogContainer)->c_sizeFill();
 
     d->dialogWindowAniShow = zfAlloc(ZFAnimationNativeView);
     d->dialogWindowAniShow->aniAlphaFrom(0);

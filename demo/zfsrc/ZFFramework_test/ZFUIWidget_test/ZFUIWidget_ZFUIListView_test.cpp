@@ -74,9 +74,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         zfblockedAlloc(ZFUIListView, listView);
-        container->childAdd(listView);
-        listView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
-        listView->layoutParam()->layoutMargin(ZFUIMarginMake(40));
+        container->childAdd(listView)->c_sizeFill()->c_margin(40);
         listView->viewBackgroundColor(ZFUIColorRed());
         listView->listAdapter(this->listAdapter());
         {
