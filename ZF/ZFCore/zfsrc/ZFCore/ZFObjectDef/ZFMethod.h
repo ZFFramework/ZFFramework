@@ -28,7 +28,6 @@ typedef enum
 #define ZFTOKEN_ZFMethodPrivilegeTypePrivate "private"
 
 // ============================================================
-#define _ZFP_ZFMethodTypeText(t) ((const zfchar *)ZFM_TOSTRING(ZFM_CAT(_, t())) + 1)
 #define _ZFP_ZFMethodType_ZFMethodTypeNormal()
 #define _ZFP_ZFMethodType_ZFMethodTypeStatic() static
 #define _ZFP_ZFMethodType_ZFMethodTypeVirtual() virtual
@@ -252,7 +251,7 @@ public:
                             ZF_IN ZFObject *methodDynamicRegisterUserData,
                             ZF_IN ZFFuncAddrType invoker,
                             ZF_IN ZFMethodGenericInvoker methodGenericInvoker,
-                            ZF_IN const zfchar *methodType,
+                            ZF_IN ZFMethodType methodType,
                             ZF_IN const zfchar *methodName,
                             ZF_IN const zfchar *returnTypeId,
                             ZF_IN const zfchar *returnTypeName,
@@ -722,7 +721,7 @@ extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegister(ZF_IN zfbool methodIsUserReg
                                                     , ZF_IN ZFObject *methodDynamicRegisterUserData
                                                     , ZF_IN ZFFuncAddrType methodInvoker
                                                     , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                                    , ZF_IN const zfchar *methodType
+                                                    , ZF_IN ZFMethodType methodType
                                                     , ZF_IN const ZFClass *methodOwnerClass
                                                     , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                                     , ZF_IN const zfchar *methodNamespace
@@ -737,7 +736,7 @@ extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRe
                                                      , ZF_IN ZFObject *methodDynamicRegisterUserData
                                                      , ZF_IN ZFFuncAddrType methodInvoker
                                                      , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                                     , ZF_IN const zfchar *methodType
+                                                     , ZF_IN ZFMethodType methodType
                                                      , ZF_IN const ZFClass *methodOwnerClass
                                                      , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                                      , ZF_IN const zfchar *methodNamespace
@@ -757,7 +756,7 @@ public:
                                 , ZF_IN ZFObject *methodDynamicRegisterUserData
                                 , ZF_IN ZFFuncAddrType methodInvoker
                                 , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                , ZF_IN const zfchar *methodType
+                                , ZF_IN ZFMethodType methodType
                                 , ZF_IN const ZFClass *methodOwnerClass
                                 , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                 , ZF_IN const zfchar *methodNamespace
@@ -773,7 +772,7 @@ public:
                                 , ZF_IN ZFObject *methodDynamicRegisterUserData
                                 , ZF_IN ZFFuncAddrType methodInvoker
                                 , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                , ZF_IN const zfchar *methodType
+                                , ZF_IN ZFMethodType methodType
                                 , ZF_IN const ZFClass *methodOwnerClass
                                 , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                 , ZF_IN const zfchar *methodNamespace
@@ -849,12 +848,34 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodForNameGetAll(ZF_IN const zfchar
 
 // ============================================================
 /**
- * @brief method alias
+ * @brief create new #ZFMethod and alias to existing method
+ *
+ * @code
+ *   zfclass MyClass : zfextends ZFObject
+ *   {
+ *       ZFOBJECT_DECLARE(MyClass, ZFObject)
+ *       ZFMETHOD_DECLARE_0(void, foo)
+ *   };
+ *   ZFOBJECT_REGISTER(MyClass)
+ *   ZFMETHOD_DEFINE_0(MyClass, void, foo)
+ *   {
+ *       zfLogTrimT() << "foo()";
+ *   }
+ *
+ *   ZFMethodAlias(ZFMethodAccess(MyClass, foo), "bar");
+ *   zfLogTrimT() << MyClass::ClassData()->methodForName("foo");
+ *   zfLogTrimT() << MyClass::ClassData()->methodForName("bar");
+ *   zfblockedAlloc(MyClass, obj);
+ *   obj->invoke("foo");
+ *   obj->invoke("bar");
+ * @endcode
+ *
+ * @see ZFClassAlias
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodAlias(ZF_IN const ZFMethod *method,
                                                   ZF_IN const zfchar *aliasName);
 /**
- * @brief cancel method alias
+ * @brief see #ZFMethodAlias
  */
 extern ZFLIB_ZFCore void ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod);
 

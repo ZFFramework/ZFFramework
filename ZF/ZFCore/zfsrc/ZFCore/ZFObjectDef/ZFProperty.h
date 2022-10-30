@@ -16,6 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd ZFProperty;
 typedef void (*_ZFP_ZFPropertyCallbackEnsureInit)(ZF_IN const ZFProperty *property, ZF_IN ZFObject *owner);
 typedef void (*_ZFP_ZFPropertyCallbackDealloc)(ZF_IN const ZFProperty *property, ZF_IN ZFObject *owner);
+typedef void (*_ZFP_ZFPropertyMethodCleanup)(ZF_IN const ZFMethod *method);
 /**
  * @brief info for a property for ZFObject, see #ZFPROPERTY_RETAIN for more info
  */
@@ -57,14 +58,6 @@ public:
     inline zfbool propertyIsDynamicRegister(void) const
     {
         return this->_ZFP_ZFProperty_propertyIsDynamicRegister;
-    }
-    /**
-     * @brief true if this property is registered by #ZFPropertyDynamicRegister
-     *   with #ZFPropertyDynamicRegisterParam::propertyCustomImpl
-     */
-    inline zfbool propertyIsDynamicRegisterWithCustomImpl(void) const
-    {
-        return this->_ZFP_ZFProperty_propertyIsDynamicRegisterWithCustomImpl;
     }
     /**
      * @brief see #ZFPropertyDynamicRegister
@@ -183,6 +176,8 @@ public:
                              ZF_IN const zfchar *typeIdName,
                              ZF_IN const ZFMethod *setterMethod,
                              ZF_IN const ZFMethod *getterMethod,
+                             ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup,
+                             ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup,
                              ZF_IN const ZFClass *propertyClassOfRetainProperty);
     ZFProperty *_ZFP_ZFProperty_removeConst(void) const
     {
@@ -192,7 +187,6 @@ public:
     zfstring _ZFP_ZFProperty_propertyInternalId;
     zfbool _ZFP_ZFProperty_propertyIsUserRegister;
     zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;
-    zfbool _ZFP_ZFProperty_propertyIsDynamicRegisterWithCustomImpl;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserData;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper;
     const ZFClass *_ZFP_ZFProperty_propertyOwnerClass;
@@ -201,6 +195,8 @@ public:
     zfstring _ZFP_ZFProperty_typeId;
     const ZFMethod *_ZFP_ZFProperty_setterMethod;
     const ZFMethod *_ZFP_ZFProperty_getterMethod;
+    _ZFP_ZFPropertyMethodCleanup _ZFP_ZFProperty_setterMethodCleanup;
+    _ZFP_ZFPropertyMethodCleanup _ZFP_ZFProperty_getterMethodCleanup;
     const ZFClass *_ZFP_ZFProperty_propertyClassOfRetainProperty;
     _ZFP_ZFPropertyCallbackEnsureInit _ZFP_ZFProperty_callbackEnsureInit;
     _ZFP_ZFPropertyCallbackDealloc _ZFP_ZFProperty_callbackDealloc;
@@ -235,6 +231,8 @@ extern ZFLIB_ZFCore ZFProperty *_ZFP_ZFPropertyRegister(ZF_IN zfbool propertyIsU
                                                         , ZF_IN const zfchar *typeIdName
                                                         , ZF_IN const ZFMethod *setterMethod
                                                         , ZF_IN const ZFMethod *getterMethod
+                                                        , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
+                                                        , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
                                                         , ZF_IN const ZFClass *propertyClassOfRetainProperty
                                                         , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
                                                         , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
@@ -257,6 +255,8 @@ public:
                                   , ZF_IN const zfchar *typeIdName
                                   , ZF_IN const ZFMethod *setterMethod
                                   , ZF_IN const ZFMethod *getterMethod
+                                  , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
+                                  , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
                                   , ZF_IN const ZFClass *propertyClassOfRetainProperty
                                   , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
                                   , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
@@ -274,6 +274,8 @@ public:
                                            , typeIdName
                                            , setterMethod
                                            , getterMethod
+                                           , setterMethodCleanup
+                                           , getterMethodCleanup
                                            , propertyClassOfRetainProperty
                                            , callbackIsValueAccessed
                                            , callbackIsInitValue

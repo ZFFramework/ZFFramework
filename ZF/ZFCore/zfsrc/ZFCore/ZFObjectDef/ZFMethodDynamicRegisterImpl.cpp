@@ -182,23 +182,6 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
         return zfnull;
     }
 
-    const zfchar *methodTypeText = "";
-    switch(methodType)
-    {
-        case ZFMethodTypeNormal:
-            methodTypeText = _ZFP_ZFMethodTypeText(ZFMethodTypeNormal);
-            break;
-        case ZFMethodTypeStatic:
-            methodTypeText = _ZFP_ZFMethodTypeText(ZFMethodTypeStatic);
-            break;
-        case ZFMethodTypeVirtual:
-            methodTypeText = _ZFP_ZFMethodTypeText(ZFMethodTypeVirtual);
-            break;
-        default:
-            zfCoreCriticalShouldNotGoHere();
-            break;
-    }
-
     zfCoreMutexLocker();
     const ZFMethod *method = _ZFP_ZFMethodRegister(zffalse
             , zftrue
@@ -207,7 +190,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
                 : param.methodDynamicRegisterUserData()
             , zfnull
             , methodImplValid ? _ZFP_I_ZFMethodDynamicRegisterGI : param.methodGenericInvoker()
-            , methodTypeText
+            , methodType
             , param.methodOwnerClass()
             , methodPrivilegeType
             , param.methodNamespace()

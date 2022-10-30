@@ -32,7 +32,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
         , zfnull \
         , ZFCastReinterpret(ZFFuncAddrType, methodInvoker) \
         , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(GenericInvokerOwner) \
-        , _ZFP_ZFMethodTypeText(ZFMethodTypeStatic) \
+        , ZFMethodTypeStatic \
         , zfnull \
         , ZFMethodPrivilegeTypePublic \
         , methodNamespaceString \

@@ -343,7 +343,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , zfnull \
                     , ZFCastReinterpret(ZFFuncAddrType, &zfself::_ZFP_MtdI_##MethodName##_##RegSig) \
                     , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdH_##MethodName##_##RegSig) \
-                    , _ZFP_ZFMethodTypeText(ZFMethodType_) \
+                    , ZFMethodType_ \
                     , zfself::ClassData() \
                     , _ZFP_ZFMethod_initClassMemberType_privilege(PublicOrProtectedOrPrivate) \
                     , zfnull \
@@ -482,7 +482,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     ParamExpandOrEmpty7(ZFM_COMMA() param7) \
                 ); \
         } \
-        static void _ZFP_MtdS_##MethodName(void (*)( \
+        static inline ZFFuncAddrType _ZFP_MtdS_I_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
@@ -491,15 +491,36 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-            ), \
-            ZF_OUT ZFFuncAddrType &invokerAddr, \
-            ZF_OUT ZFMethodPrivilegeType &privilegeType, \
-            ZF_OUT const zfchar *&methodTypeText) \
-            { \
-                invokerAddr = ZFCastReinterpret(ZFFuncAddrType, &zfself::_ZFP_MtdI_##MethodName##_##RegSig); \
-                privilegeType = _ZFP_ZFMethod_initClassMemberType_privilege(PublicOrProtectedOrPrivate); \
-                methodTypeText = _ZFP_ZFMethodTypeText(ZFMethodType_); \
-            } \
+            )) \
+        { \
+            return ZFCastReinterpret(ZFFuncAddrType, &zfself::_ZFP_MtdI_##MethodName##_##RegSig); \
+        } \
+        static inline ZFMethodPrivilegeType _ZFP_MtdS_P_##MethodName(void (*)( \
+                ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() ParamType3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() ParamType4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
+            )) \
+        { \
+            return _ZFP_ZFMethod_initClassMemberType_privilege(PublicOrProtectedOrPrivate); \
+        } \
+        static inline ZFMethodType _ZFP_MtdS_T_##MethodName(void (*)( \
+                ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() ParamType3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() ParamType4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
+            )) \
+        { \
+            return ZFMethodType_; \
+        } \
     public: \
         static const ZFMethod *_ZFP_Mtd_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
@@ -578,7 +599,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
             ) \
     }; \
-    const ZFMethod *OwnerClass::_ZFP_Mtd_##MethodName(void (*)( \
+    const ZFMethod *OwnerClass::_ZFP_Mtd_##MethodName(void (*_dummy)( \
             ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
             ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
             ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
@@ -589,27 +610,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
         )) \
     { \
-        ZFFuncAddrType invokerAddr = zfnull; \
-        ZFMethodPrivilegeType privilegeType = ZFMethodPrivilegeTypePublic; \
-        const zfchar *methodTypeText = zfnull; \
-        zfself::_ZFP_MtdS_##MethodName((void (*)( \
-               ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
-               ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
-               ParamExpandOrEmpty2(ZFM_COMMA() ParamType2) \
-               ParamExpandOrEmpty3(ZFM_COMMA() ParamType3) \
-               ParamExpandOrEmpty4(ZFM_COMMA() ParamType4) \
-               ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
-               ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
-               ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-           ))zfnull, invokerAddr, privilegeType, methodTypeText); \
         static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                 , zffalse \
                 , zfnull \
-                , invokerAddr \
+                , zfself::_ZFP_MtdS_I_##MethodName(_dummy) \
                 , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig) \
-                , methodTypeText \
+                , zfself::_ZFP_MtdS_T_##MethodName(_dummy) \
                 , zfself::ClassData() \
-                , privilegeType \
+                , zfself::_ZFP_MtdS_P_##MethodName(_dummy) \
                 , zfnull \
                 , ZFM_TOSTRING(MethodName) \
                 , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \

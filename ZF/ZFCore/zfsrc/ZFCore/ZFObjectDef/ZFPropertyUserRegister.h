@@ -314,6 +314,8 @@ private:
         , ZFTypeId_noneOrType \
         , setterMethod \
         , getterMethod \
+        , _ZFP_ZFPropertyMethodCleanup_UserReg \
+        , _ZFP_ZFPropertyMethodCleanup_UserReg \
         , propertyClassOfRetainProperty \
         , Func_ZFPropertyCallbackIsValueAccessed \
         , Func_ZFPropertyCallbackIsInitValue \
@@ -344,6 +346,8 @@ private:
         , ZFTypeId_noneOrType \
         , setterMethod \
         , getterMethod \
+        , _ZFP_ZFPropertyMethodCleanup_UserReg \
+        , _ZFP_ZFPropertyMethodCleanup_UserReg \
         , propertyClassOfRetainProperty \
         , Func_ZFPropertyCallbackIsValueAccessed \
         , Func_ZFPropertyCallbackIsInitValue \
@@ -354,6 +358,7 @@ private:
     )
 
 // ============================================================
+extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMethod *method);
 #define _ZFP_ZFPropertyUserRegister(resultProperty, ownerClass, \
         Type, propertyNameString, InitValueOrEmpty, \
         SetterAccessType, GetterAccessType, \

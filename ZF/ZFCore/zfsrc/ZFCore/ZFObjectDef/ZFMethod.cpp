@@ -22,7 +22,7 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
                                   ZF_IN ZFObject *methodDynamicRegisterUserData,
                                   ZF_IN ZFFuncAddrType invoker,
                                   ZF_IN ZFMethodGenericInvoker methodGenericInvoker,
-                                  ZF_IN const zfchar *methodType,
+                                  ZF_IN ZFMethodType methodType,
                                   ZF_IN const zfchar *methodName,
                                   ZF_IN const zfchar *returnTypeId,
                                   ZF_IN const zfchar *returnTypeName,
@@ -38,23 +38,11 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
     this->_ZFP_ZFMethod_invokerOrg = invoker;
     this->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodGenericInvokerOrg = methodGenericInvoker;
+    this->_ZFP_ZFMethod_methodType = methodType;
     this->_ZFP_ZFMethod_methodName = methodName;
     this->_ZFP_ZFMethod_returnTypeId = returnTypeId;
     this->_ZFP_ZFMethod_returnTypeName = returnTypeName;
     this->_ZFP_ZFMethod_paramCount = 0;
-
-    if(zfstringFind(methodType, _ZFP_ZFMethodTypeText(ZFMethodTypeStatic)) != zfindexMax())
-    {
-        this->_ZFP_ZFMethod_methodType = ZFMethodTypeStatic;
-    }
-    else if(zfstringFind(methodType, _ZFP_ZFMethodTypeText(ZFMethodTypeVirtual)) != zfindexMax())
-    {
-        this->_ZFP_ZFMethod_methodType = ZFMethodTypeVirtual;
-    }
-    else
-    {
-        this->_ZFP_ZFMethod_methodType = ZFMethodTypeNormal;
-    }
 
     va_list vaList;
     va_start(vaList, returnTypeName);
@@ -336,14 +324,12 @@ void ZFMethod::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericIn
     {
         m->_ZFP_ZFMethod_methodGenericInvoker = m->_ZFP_ZFMethod_methodGenericInvokerOrg;
     }
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeUpdate, zfnull, zfnull, this);
 }
 
 void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const
 {
     this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_invoker =
         ((methodInvoker != zfnull) ? methodInvoker : this->_ZFP_ZFMethod_invokerOrg);
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeUpdate, zfnull, zfnull, this);
 }
 
 // ============================================================
@@ -429,7 +415,7 @@ ZFMethod *_ZFP_ZFMethodRegister(ZF_IN zfbool methodIsUserRegister
                                 , ZF_IN ZFObject *methodDynamicRegisterUserData
                                 , ZF_IN ZFFuncAddrType methodInvoker
                                 , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                , ZF_IN const zfchar *methodType
+                                , ZF_IN ZFMethodType methodType
                                 , ZF_IN const ZFClass *methodOwnerClass
                                 , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                 , ZF_IN const zfchar *methodNamespace
@@ -464,7 +450,7 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
                                  , ZF_IN ZFObject *methodDynamicRegisterUserData
                                  , ZF_IN ZFFuncAddrType methodInvoker
                                  , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                 , ZF_IN const zfchar *methodType
+                                 , ZF_IN ZFMethodType methodType
                                  , ZF_IN const ZFClass *methodOwnerClass
                                  , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                  , ZF_IN const zfchar *methodNamespace
@@ -478,7 +464,6 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
     zfCoreMutexLocker();
 
     zfCoreAssert(methodGenericInvoker != zfnull);
-    zfCoreAssert(methodType != zfnull);
     zfCoreAssert(methodOwnerClass == zfnull || methodNamespace == zfnull);
     zfCoreAssert(methodName != zfnull && *methodName != '\0');
     zfCoreAssert(returnTypeId != zfnull && *returnTypeId != '\0');
@@ -658,7 +643,7 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(ZF_IN zfbool methodIsUs
                                                          , ZF_IN ZFObject *methodDynamicRegisterUserData
                                                          , ZF_IN ZFFuncAddrType methodInvoker
                                                          , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                                         , ZF_IN const zfchar *methodType
+                                                         , ZF_IN ZFMethodType methodType
                                                          , ZF_IN const ZFClass *methodOwnerClass
                                                          , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                                          , ZF_IN const zfchar *methodNamespace
@@ -694,7 +679,7 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(ZF_IN zfbool dummy
                                                          , ZF_IN ZFObject *methodDynamicRegisterUserData
                                                          , ZF_IN ZFFuncAddrType methodInvoker
                                                          , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                                         , ZF_IN const zfchar *methodType
+                                                         , ZF_IN ZFMethodType methodType
                                                          , ZF_IN const ZFClass *methodOwnerClass
                                                          , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
                                                          , ZF_IN const zfchar *methodNamespace
@@ -871,7 +856,7 @@ const ZFMethod *ZFMethodAlias(ZF_IN const ZFMethod *method,
                                 , method->methodDynamicRegisterUserData()
                                 , method->methodInvokerOrg()
                                 , method->methodGenericInvokerOrg()
-                                , ZFMethodTypeToString(method->methodType()).cString()
+                                , method->methodType()
                                 , method->methodOwnerClass()
                                 , method->methodPrivilegeType()
                                 , method->methodNamespace()

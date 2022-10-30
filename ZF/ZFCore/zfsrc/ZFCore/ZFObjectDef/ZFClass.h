@@ -189,6 +189,12 @@ public:
     zfbool classIsTypeOf(ZF_IN const ZFClass *cls) const;
 
 public:
+    /** @brief see #ZFClassAlias */
+    inline const ZFCoreArray<zfstring> &classAliasTo(void) const
+    {
+        return this->_ZFP_ZFClass_classAliasTo;
+    }
+
     /**
      * @brief class namespace, ensured null for global scope class
      */
@@ -680,6 +686,7 @@ private:
     const zfchar *classNameCache;
     const zfchar *classNameFullCache;
 public:
+    ZFCoreArray<zfstring> _ZFP_ZFClass_classAliasTo;
     zfbool _ZFP_ZFClass_implListNeedInit;
     zfbool _ZFP_ZFClass_classIsAbstract;
     zfbool _ZFP_ZFClass_classIsInterface;
@@ -808,6 +815,31 @@ public:
     zfCoreCriticalMessageDetail(callerInfo, "class %s not type of %s", \
         _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(cls).cString(), \
         _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(desired).cString())
+
+// ============================================================
+/**
+ * @brief alias class to a new name
+ *
+ * class alias only affects reflection, typically used for script binding\n
+ * you can alias more than one name to same class,
+ * all of the aliased class points to same original #ZFClass
+ * @code
+ *   ZFClassAlias(ZFObject::ClassData(), "MyObject");
+ *   ZFClassAlias(ZFObject::ClassData(), "MyClass");
+ *
+ *   // the aliased class is exactly same of the original,
+ *   // so the reflected class name still prints "ZFObject"
+ *   zfLogTrimT() << ZFClass::classForName("MyObject")->className();
+ * @endcode
+ * @see ZFMethodAlias
+ */
+extern ZFLIB_ZFCore void ZFClassAlias(ZF_IN const ZFClass *cls,
+                                      ZF_IN const zfchar *aliasName);
+/**
+ * @brief see #ZFClassAlias
+ */
+extern ZFLIB_ZFCore void ZFClassAliasRemove(ZF_IN const ZFClass *cls,
+                                            ZF_IN const zfchar *aliasName);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFClass_h_

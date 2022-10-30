@@ -194,7 +194,8 @@ ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, void (
 typedef enum {
     ZFClassDataChangeTypeAttach, /**< @brief attach */
     ZFClassDataChangeTypeDetach, /**< @brief detach */
-    ZFClassDataChangeTypeUpdate, /**< @brief update */
+    ZFClassDataChangeTypeClassAliasAttach, /**< @brief #ZFClass::classAliasTo attach */
+    ZFClassDataChangeTypeClassAliasDetach, /**< @brief #ZFClass::classAliasTo detach */
 } ZFClassDataChangeType;
 /** @brief data holder for #ZFGlobalEvent::EventClassDataChange */
 zfclassPOD ZFLIB_ZFCore ZFClassDataChangeData
@@ -204,11 +205,19 @@ public:
     const ZFClass *changedClass; /**< @brief changed class */
     const ZFProperty *changedProperty; /**< @brief changed property */
     const ZFMethod *changedMethod; /**< @brief changed method */
+    /**
+     * @brief extra data
+     *
+     * for ZFClassDataChangeTypeClassAliasAttach / ZFClassDataChangeTypeClassAliasDetach,
+     * it's the aliased class name
+     */
+    const zfchar *name;
 };
 extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
                                                       ZF_IN const ZFClass *changedClass,
                                                       ZF_IN const ZFProperty *changedProperty,
-                                                      ZF_IN const ZFMethod *changedMethod);
+                                                      ZF_IN const ZFMethod *changedMethod,
+                                                      ZF_IN_OPT const zfchar *name = zfnull);
 
 ZF_NAMESPACE_GLOBAL_END
 

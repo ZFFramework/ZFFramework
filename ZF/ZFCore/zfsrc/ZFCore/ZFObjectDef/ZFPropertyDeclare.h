@@ -353,6 +353,8 @@ public:
                     , ZFTypeId_noneOrType \
                     , ZFMethodAccessDetail_1(zfself, Name, ZFMP_IN(Type const &, propertyValue)) \
                     , ZFMethodAccessDetail_0(zfself, Name) \
+                    , zfnull \
+                    , zfnull \
                     , propertyClassOfRetainProperty \
                     , zfself::_ZFP_propCbAccessed_##Name \
                     , zfself::_ZFP_propCbIsInit_##Name \
@@ -377,6 +379,8 @@ public:
                     , ZFTypeId_noneOrType \
                     , ZFMethodAccessDetail_1(zfself, Name, ZFMP_IN(Type const &, propertyValue)) \
                     , ZFMethodAccessDetail_0(zfself, Name) \
+                    , zfnull \
+                    , zfnull \
                     , propertyClassOfRetainProperty \
                     , zfself::_ZFP_propCbAccessed_##Name \
                     , zfself::_ZFP_propCbIsInit_##Name \

@@ -3,6 +3,11 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMethod *method)
+{
+    ZFMethodUserUnregister(method);
+}
+
 zfautoObject _ZFP_I_PropURDIVH::create(ZF_IN void *v,
                                        ZF_IN DeleteCallback deleteCallback,
                                        ZF_IN_OPT ZFObject *retainValue /* = zfnull */)

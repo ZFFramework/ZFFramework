@@ -470,6 +470,10 @@ static void _ZFP_PropDynReg_callbackValueReset(ZF_IN const ZFProperty *property,
 // ============================================================
 static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFPropertyDynamicRegisterParam &param,
                                                             ZF_OUT_OPT zfstring *errorHint = zfnull);
+static void _ZFP_ZFPropertyMethodCleanup_DynamicReg(ZF_IN const ZFMethod *method)
+{
+    ZFMethodDynamicUnregister(method);
+}
 const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegisterParam &param,
                                             ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
 {
@@ -553,6 +557,8 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
             , param.propertyTypeId()
             , param.propertyCustomImplSetterMethod()
             , param.propertyCustomImplGetterMethod()
+            , zfnull
+            , zfnull
             , param.propertyClassOfRetainProperty()
             , param.propertyCustomImplCallbackIsValueAccessed()
             , param.propertyCustomImplCallbackIsInitValue()
@@ -561,7 +567,6 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
             , zfnull
             , zfnull
             );
-        property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_propertyIsDynamicRegisterWithCustomImpl = zftrue;
     }
     else
     {
@@ -614,6 +619,8 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
             , param.propertyTypeId()
             , setterMethod
             , getterMethod
+            , _ZFP_ZFPropertyMethodCleanup_DynamicReg
+            , _ZFP_ZFPropertyMethodCleanup_DynamicReg
             , param.propertyClassOfRetainProperty()
             , _ZFP_PropDynReg_callbackIsValueAccessed
             , _ZFP_PropDynReg_callbackIsInitValue

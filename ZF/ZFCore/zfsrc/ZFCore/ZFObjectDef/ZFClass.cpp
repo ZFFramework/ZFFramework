@@ -1141,6 +1141,7 @@ ZFClass::ZFClass(void)
 , classNamespaceCache(zfnull)
 , classNameCache(zfnull)
 , classNameFullCache(zfnull)
+, _ZFP_ZFClass_classAliasTo()
 , _ZFP_ZFClass_implListNeedInit(zftrue)
 , _ZFP_ZFClass_classIsAbstract(zffalse)
 , _ZFP_ZFClass_classIsInterface(zffalse)
@@ -1296,6 +1297,11 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag, ZF_IN c
     if(d->refCount != 0)
     {
         return ;
+    }
+
+    while(!cls->classAliasTo().isEmpty())
+    {
+        ZFClassAliasRemove(cls, cls->classAliasTo().getLast());
     }
 
     _ZFP_ZFClassDelayDeleteMap.set(cls->classNameFull(),
@@ -1840,7 +1846,8 @@ ZFObserverHolder &_ZFP_ZFClassDataChangeObserverRef(void)
 void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
                                   ZF_IN const ZFClass *changedClass,
                                   ZF_IN const ZFProperty *changedProperty,
-                                  ZF_IN const ZFMethod *changedMethod)
+                                  ZF_IN const ZFMethod *changedMethod,
+                                  ZF_IN_OPT const zfchar *name /* = zfnull */)
 {
     zfCoreMutexLocker();
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) == ZFFrameworkStateAvailable)
@@ -1862,9 +1869,59 @@ void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
         holder->zfv.changedClass = changedClass;
         holder->zfv.changedProperty = changedProperty;
         holder->zfv.changedMethod = changedMethod;
+        holder->zfv.name = name;
         ZFClassDataChangeObserver.observerNotify(ZFGlobalEvent::EventClassDataChange(), holder);
         zfunsafe_zfRelease(holder);
     }
+}
+
+// ============================================================
+void ZFClassAlias(ZF_IN const ZFClass *cls,
+                  ZF_IN const zfchar *aliasName)
+{
+    zfCoreMutexLocker();
+
+    if(cls == zfnull || zfsIsEmpty(aliasName)
+        || cls->classAliasTo().find(aliasName) != zfindexMax()
+        || ZFClass::classForName(aliasName, cls->classNamespace()) != zfnull
+    ) {
+        return;
+    }
+    zfstring aliasNameFull = cls->classNamespace();
+    if(!aliasNameFull.isEmpty())
+    {
+        aliasNameFull += ZFNamespaceSeparator();
+    }
+    aliasNameFull += aliasName;
+    _ZFP_ZFClassMap.set(aliasNameFull, ZFCorePointerForPointerRef<const ZFClass *>(cls));
+    cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.add(aliasName);
+
+    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeClassAliasAttach, cls, zfnull, zfnull, aliasName);
+}
+void ZFClassAliasRemove(ZF_IN const ZFClass *cls,
+                        ZF_IN const zfchar *aliasName)
+{
+    zfCoreMutexLocker();
+    if(cls == zfnull || zfsIsEmpty(aliasName))
+    {
+        return;
+    }
+    zfindex index = cls->classAliasTo().find(aliasName);
+    if(index == zfindexMax())
+    {
+        return;
+    }
+
+    zfstring aliasNameFull = cls->classNamespace();
+    if(!aliasNameFull.isEmpty())
+    {
+        aliasNameFull += ZFNamespaceSeparator();
+    }
+    aliasNameFull += aliasName;
+    _ZFP_ZFClassMap.remove(aliasNameFull);
+    cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classAliasTo.remove(index);
+
+    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeClassAliasDetach, cls, zfnull, zfnull, aliasName);
 }
 
 ZF_NAMESPACE_GLOBAL_END
@@ -1876,6 +1933,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassGetAllT, ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret), ZFMP_IN_OPT(const ZFFilterForZFClass *, classFilter, zfnull))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArrayPOD<const ZFClass *>, ZFClassGetAll, ZFMP_IN_OPT(const ZFFilterForZFClass *, classFilter, zfnull))
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAlias, ZFMP_IN(const ZFClass *, cls), ZFMP_IN(const zfchar *, aliasName))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAliasRemove, ZFMP_IN(const ZFClass *, cls), ZFMP_IN(const zfchar *, aliasName))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

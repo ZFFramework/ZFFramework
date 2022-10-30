@@ -370,7 +370,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFil
                 , zfnull \
                 , ZFCastReinterpret(ZFFuncAddrType, &_ZFP_MtdFH_##MethodName##_##RegSig::methodInvoker) \
                 , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdFH_##MethodName##_##RegSig) \
-                , _ZFP_ZFMethodTypeText(ZFMethodTypeStatic) \
+                , ZFMethodTypeStatic \
                 , zfnull \
                 , ZFMethodPrivilegeTypePublic \
                 , ZF_NAMESPACE_CURRENT() \

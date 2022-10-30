@@ -41,9 +41,9 @@ ZFProperty::ZFProperty(void)
 , callbackValueReset(zfnull)
 , callbackUserRegisterInitValueSetup(zfnull)
 , _ZFP_ZFPropertyNeedInit(zftrue)
+, _ZFP_ZFProperty_propertyInternalId()
 , _ZFP_ZFProperty_propertyIsUserRegister(zffalse)
 , _ZFP_ZFProperty_propertyIsDynamicRegister(zffalse)
-, _ZFP_ZFProperty_propertyIsDynamicRegisterWithCustomImpl(zffalse)
 , _ZFP_ZFProperty_propertyDynamicRegisterUserData(zfnull)
 , _ZFP_ZFProperty_propertyOwnerClass(zfnull)
 , _ZFP_ZFProperty_name()
@@ -51,6 +51,8 @@ ZFProperty::ZFProperty(void)
 , _ZFP_ZFProperty_typeId()
 , _ZFP_ZFProperty_setterMethod(zfnull)
 , _ZFP_ZFProperty_getterMethod(zfnull)
+, _ZFP_ZFProperty_setterMethodCleanup(zfnull)
+, _ZFP_ZFProperty_getterMethodCleanup(zfnull)
 , _ZFP_ZFProperty_propertyClassOfRetainProperty(zfnull)
 , _ZFP_ZFProperty_callbackEnsureInit(zfnull)
 , _ZFP_ZFProperty_callbackDealloc(zfnull)
@@ -72,6 +74,8 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
                                      ZF_IN const zfchar *typeIdName,
                                      ZF_IN const ZFMethod *setterMethod,
                                      ZF_IN const ZFMethod *getterMethod,
+                                     ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup,
+                                     ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup,
                                      ZF_IN const ZFClass *propertyClassOfRetainProperty)
 {
     this->_ZFP_ZFProperty_propertyIsUserRegister = propertyIsUserRegister;
@@ -90,6 +94,8 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
     }
     this->_ZFP_ZFProperty_setterMethod = setterMethod;
     this->_ZFP_ZFProperty_getterMethod = getterMethod;
+    this->_ZFP_ZFProperty_setterMethodCleanup = setterMethodCleanup;
+    this->_ZFP_ZFProperty_getterMethodCleanup = getterMethodCleanup;
     setterMethod->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodOwnerProperty = this;
     getterMethod->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodOwnerProperty = this;
     this->_ZFP_ZFProperty_propertyClassOfRetainProperty = propertyClassOfRetainProperty;
@@ -211,6 +217,8 @@ ZFProperty *_ZFP_ZFPropertyRegister(ZF_IN zfbool propertyIsUserRegister
                                     , ZF_IN const zfchar *typeIdName
                                     , ZF_IN const ZFMethod *setterMethod
                                     , ZF_IN const ZFMethod *getterMethod
+                                    , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
+                                    , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
                                     , ZF_IN const ZFClass *propertyClassOfRetainProperty
                                     , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
                                     , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
@@ -267,6 +275,8 @@ ZFProperty *_ZFP_ZFPropertyRegister(ZF_IN zfbool propertyIsUserRegister
             typeIdName,
             setterMethod,
             getterMethod,
+            setterMethodCleanup,
+            getterMethodCleanup,
             propertyClassOfRetainProperty);
         propertyInfo->callbackIsValueAccessed = callbackIsValueAccessed;
         propertyInfo->callbackIsInitValue = callbackIsInitValue;
@@ -286,25 +296,16 @@ void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo)
     zfCoreMutexLocker();
     _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, zfnull, propertyInfo, zfnull);
 
-    propertyInfo->setterMethod()->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodOwnerProperty = zfnull;
-    propertyInfo->getterMethod()->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodOwnerProperty = zfnull;
-    if(propertyInfo->propertyIsUserRegister())
+    if(propertyInfo->_ZFP_ZFProperty_setterMethodCleanup != zfnull)
     {
-        propertyInfo->propertyOwnerClass()->_ZFP_ZFClass_propertyUnregister(propertyInfo);
-        ZFMethodUserUnregister(propertyInfo->setterMethod());
-        ZFMethodUserUnregister(propertyInfo->getterMethod());
+        propertyInfo->_ZFP_ZFProperty_setterMethodCleanup(propertyInfo->setterMethod());
     }
-    else if(propertyInfo->propertyIsDynamicRegister())
+    if(propertyInfo->_ZFP_ZFProperty_getterMethodCleanup != zfnull)
     {
-        propertyInfo->propertyOwnerClass()->_ZFP_ZFClass_propertyUnregister(propertyInfo);
-        if(!propertyInfo->propertyIsDynamicRegisterWithCustomImpl())
-        {
-            ZFMethodDynamicUnregister(propertyInfo->setterMethod());
-            ZFMethodDynamicUnregister(propertyInfo->getterMethod());
-        }
-        zfRetainChange(propertyInfo->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_propertyDynamicRegisterUserData, zfnull);
+        propertyInfo->_ZFP_ZFProperty_getterMethodCleanup(propertyInfo->getterMethod());
     }
-
+    propertyInfo->propertyOwnerClass()->_ZFP_ZFClass_propertyUnregister(propertyInfo);
+    zfRetainChange(propertyInfo->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_propertyDynamicRegisterUserData, zfnull);
     _ZFP_ZFPropertyInstanceCleanup(propertyInfo);
 }
 
