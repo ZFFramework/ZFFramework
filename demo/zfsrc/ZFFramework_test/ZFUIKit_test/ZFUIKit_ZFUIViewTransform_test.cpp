@@ -25,7 +25,7 @@ protected:
         // viewTranslateX
         zfblockedAlloc(ZFUIKit_test_Button, viewTranslateXDec);
         window->childAdd(viewTranslateXDec)->c_alignBottom()->c_margin(0, 0, margin, 200);
-        viewTranslateXDec->buttonLabelText("viewTranslateX -");
+        viewTranslateXDec->label()->text("viewTranslateX -");
         ZFLISTENER(viewTranslateXOnDec) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewTranslateX(view->viewTranslateX() - 10);
@@ -34,7 +34,7 @@ protected:
 
         zfblockedAlloc(ZFUIKit_test_Button, viewTranslateXInc);
         window->childAdd(viewTranslateXInc)->c_alignBottom()->c_margin(margin, 0, 0, 200);
-        viewTranslateXInc->buttonLabelText("viewTranslateX +");
+        viewTranslateXInc->label()->text("viewTranslateX +");
         ZFLISTENER(viewTranslateXOnInc) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewTranslateX(view->viewTranslateX() + 10);
@@ -44,7 +44,7 @@ protected:
         // viewTranslateY
         zfblockedAlloc(ZFUIKit_test_Button, viewTranslateYDec);
         window->childAdd(viewTranslateYDec)->c_alignBottom()->c_margin(0, 0, margin, 150);
-        viewTranslateYDec->buttonLabelText("viewTranslateY -");
+        viewTranslateYDec->label()->text("viewTranslateY -");
         ZFLISTENER(viewTranslateYOnDec) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewTranslateY(view->viewTranslateY() - 10);
@@ -53,7 +53,7 @@ protected:
 
         zfblockedAlloc(ZFUIKit_test_Button, viewTranslateYInc);
         window->childAdd(viewTranslateYInc)->c_alignBottom()->c_margin(margin, 0, 0, 150);
-        viewTranslateYInc->buttonLabelText("viewTranslateY +");
+        viewTranslateYInc->label()->text("viewTranslateY +");
         ZFLISTENER(viewTranslateYOnInc) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewTranslateY(view->viewTranslateY() + 10);
@@ -63,7 +63,7 @@ protected:
         // viewScaleX
         zfblockedAlloc(ZFUIKit_test_Button, viewScaleXDec);
         window->childAdd(viewScaleXDec)->c_alignBottom()->c_margin(0, 0, margin, 100);
-        viewScaleXDec->buttonLabelText("viewScaleX -");
+        viewScaleXDec->label()->text("viewScaleX -");
         ZFLISTENER(viewScaleXOnDec) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewScaleX(view->viewScaleX() - 0.1f);
@@ -72,7 +72,7 @@ protected:
 
         zfblockedAlloc(ZFUIKit_test_Button, viewScaleXInc);
         window->childAdd(viewScaleXInc)->c_alignBottom()->c_margin(margin, 0, 0, 100);
-        viewScaleXInc->buttonLabelText("viewScaleX +");
+        viewScaleXInc->label()->text("viewScaleX +");
         ZFLISTENER(viewScaleXOnInc) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewScaleX(view->viewScaleX() + 0.1f);
@@ -82,7 +82,7 @@ protected:
         // viewScaleY
         zfblockedAlloc(ZFUIKit_test_Button, viewScaleYDec);
         window->childAdd(viewScaleYDec)->c_alignBottom()->c_margin(0, 0, margin, 50);
-        viewScaleYDec->buttonLabelText("viewScaleY -");
+        viewScaleYDec->label()->text("viewScaleY -");
         ZFLISTENER(viewScaleYOnDec) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewScaleY(view->viewScaleY() - 0.1f);
@@ -91,7 +91,7 @@ protected:
 
         zfblockedAlloc(ZFUIKit_test_Button, viewScaleYInc);
         window->childAdd(viewScaleYInc)->c_alignBottom()->c_margin(margin, 0, 0, 50);
-        viewScaleYInc->buttonLabelText("viewScaleY +");
+        viewScaleYInc->label()->text("viewScaleY +");
         ZFLISTENER(viewScaleYOnInc) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewScaleY(view->viewScaleY() + 0.1f);
@@ -101,7 +101,7 @@ protected:
         // viewRotate
         zfblockedAlloc(ZFUIKit_test_Button, viewRotateDec);
         window->childAdd(viewRotateDec)->c_alignBottom()->c_margin(0, 0, margin, 0);
-        viewRotateDec->buttonLabelText("viewRotate -");
+        viewRotateDec->label()->text("viewRotate -");
         ZFLISTENER(viewRotateOnDec) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewRotate(view->viewRotate() - 10);
@@ -110,7 +110,7 @@ protected:
 
         zfblockedAlloc(ZFUIKit_test_Button, viewRotateInc);
         window->childAdd(viewRotateInc)->c_alignBottom()->c_margin(margin, 0, 0, 0);
-        viewRotateInc->buttonLabelText("viewRotate +");
+        viewRotateInc->label()->text("viewRotate +");
         ZFLISTENER(viewRotateOnInc) {
             ZFUIImageView *view = userData->objectHolded();
             view->viewRotate(view->viewRotate() + 10);

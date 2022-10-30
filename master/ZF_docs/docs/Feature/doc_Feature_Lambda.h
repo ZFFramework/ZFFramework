@@ -21,7 +21,7 @@
  *   btn->observerAdd(ZFUIButton::EventButtonOnClick(), onClick);
  *
  *   zfLogTrimT() << "before invoke:" << refCapture << valueCapture;
- *   btn->buttonSimulateClick();
+ *   btn->simulateClick();
  *   zfLogTrimT() << "after invoke:" << refCapture << valueCapture;
  *
  *   // output:

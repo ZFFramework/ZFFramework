@@ -19,7 +19,7 @@ protected:
 
         zfblockedAlloc(ZFUIKit_test_Button, button);
         container->childAdd(button)->c_alignCenter();
-        button->buttonLabelText("click me");
+        button->label()->text("click me");
 
         ZFLISTENER(buttonOnClick) {
             zfLogTrimT() << "window size:" << ZFUIRectGetSize(ZFUIViewUtil::viewRoot(listenerData.sender<ZFUIView *>())->viewFrame());

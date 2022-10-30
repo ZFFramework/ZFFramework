@@ -17,14 +17,14 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUISize, viewSizeMin)
         ZFUIGlobalStyle::DefaultStyle()->itemSizeButton());
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUITextView *, buttonLabelStyleNormal)
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUITextView *, labelNormal)
 {
     ZFUITextView *value = propertyValue.to<ZFUITextView *>();
     value->textColor(ZFUIColorWhite());
     value->textSingleLine(zffalse);
     value->textSizeAutoChangeMinSize(0);
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUIImageView *, buttonBackgroundStyleNormal)
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUIImageView *, backgroundNormal)
 {
     ZFUIImageView *value = propertyValue;
     value->image(zfRes("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
@@ -45,8 +45,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIHint *>, ZFUIHintMake,
 
     zfblockedAlloc(ZFUIHintContentBasic, hintContent);
     hint->hintContent(hintContent);
-    hintContent->buttonLabelText(text);
-    hintContent->buttonIconImage(icon);
+    hintContent->label()->text(text);
+    hintContent->icon()->image(icon);
 
     return hint;
 }

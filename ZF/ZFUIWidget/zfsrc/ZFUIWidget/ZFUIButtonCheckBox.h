@@ -20,12 +20,12 @@ zfclass ZFLIB_ZFUIWidget ZFUIButtonCheckBox : zfextends ZFUIButtonBasic
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButtonCheckBox)
 
 public:
-    ZFPROPERTY_ON_INIT_DECLARE(zfbool, buttonCheckable)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIAlignFlags, buttonContentAlign)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, buttonIconStyleNormal)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, buttonIconStyleHighlighted)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, buttonIconStyleChecked)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, buttonIconStyleCheckedHighlighted)
+    ZFPROPERTY_ON_INIT_DECLARE(zfbool, checkable)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUIAlignFlags, contentAlign)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconNormal)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconHighlighted)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconChecked)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconCheckedHighlighted)
 };
 
 ZF_NAMESPACE_GLOBAL_END

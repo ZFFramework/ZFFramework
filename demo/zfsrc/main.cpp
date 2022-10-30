@@ -165,12 +165,12 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
         {
             zfblockedAlloc(ZFUIKit_test_Button, closeButton);
             containerView->childAdd(closeButton);
-            closeButton->buttonLabelText("back");
+            closeButton->label()->text("back");
             ZFLISTENER(closeButtonOnClick) {
                 userData->objectHolded<ZFUIWindow *>()->windowHide();
             } ZFLISTENER_END(closeButtonOnClick)
             closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), closeButtonOnClick, subModuleWindow->objectHolder());
-            closeButton->buttonBackgroundStyle()->viewBackgroundColor(ZFUIColorRed());
+            closeButton->background()->viewBackgroundColor(ZFUIColorRed());
 
             zfblockedAlloc(ZFUIView, separator);
             containerView->childAdd(separator);
@@ -189,7 +189,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
     subModuleData->subModuleName = subModuleName;
     subModuleData->testCases = testCases;
     button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton, subModuleData);
-    button->buttonLabelText(subModuleName);
+    button->label()->text(subModuleName);
 }
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *containerView,
                                                                ZF_IN const zfchar *subModuleName,
@@ -221,6 +221,6 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *c
     userData->objectTag("testCase", zflineAlloc(v_ZFClass, testCase));
     userData->objectTag("containerView", containerView->objectHolder());
     button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton, userData);
-    button->buttonLabelText(zfstring(testCase->classNameFull() + zfslen(subModuleName) + 1));
+    button->label()->text(zfstring(testCase->classNameFull() + zfslen(subModuleName) + 1));
 }
 

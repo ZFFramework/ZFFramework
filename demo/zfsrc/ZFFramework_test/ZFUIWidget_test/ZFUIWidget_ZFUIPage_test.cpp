@@ -25,7 +25,7 @@ protected:
         this->_titleView()->viewSizeMin(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton()));
 
         this->_titleView()->childAdd(this->_titleLeftView())->c_layoutWeight(1);
-        this->_titleLeftView()->buttonLabelText("back");
+        this->_titleLeftView()->label()->text("back");
         this->_titleLeftView()->viewBackgroundColor(ZFUIColorRandom());
         {
             ZFLISTENER(_titleLeftViewOnClick) {
@@ -40,7 +40,7 @@ protected:
 
         this->pageView()->childAdd(this->_contentView())->c_sizeFill();
         this->_contentView()->viewBackgroundColor(ZFUIColorRandom());
-        this->_contentView()->buttonLabelText(zfstringWithFormat("belong to %s", this->pageGroupId().cString()));
+        this->_contentView()->label()->text(zfstringWithFormat("belong to %s", this->pageGroupId().cString()));
         {
             ZFLISTENER(_contentViewOnClick) {
                 ZFUIPage *page = userData->objectHolded();
@@ -106,15 +106,15 @@ protected:
 
             zfblockedAlloc(ZFUIButtonBasic, button);
             this->_buttonLayout()->childAdd(button)->c_layoutWeight(1);
-            button->buttonLabelText(zfstringWithFormat("tab %zi", i));
-            button->buttonCheckable(zftrue);
+            button->label()->text(zfstringWithFormat("tab %zi", i));
+            button->checkable(zftrue);
             ZFLISTENER(buttonOnClick) {
                 ZFUIWidget_ZFUIPage_test_PageManager *pageManager = userData->objectTag("pageManager")->objectHolded();
                 v_zfstring *pageGroupId = userData->objectTag<v_zfstring *>("pageGroupId");
 
-                if(!listenerData.sender<ZFUIButton *>()->buttonChecked())
+                if(!listenerData.sender<ZFUIButton *>()->checked())
                 { // click checked tab
-                    listenerData.sender<ZFUIButton *>()->buttonChecked(zftrue);
+                    listenerData.sender<ZFUIButton *>()->checked(zftrue);
 
                     ZFCoreArrayPOD<ZFUIPage *> pageToDestroy;
                     for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i)
@@ -137,9 +137,9 @@ protected:
                     for(zfindex i = 0; i < pageManager->_buttonLayout()->childCount(); ++i)
                     {
                         ZFUIButton *button = pageManager->_buttonLayout()->childAt(i)->toAny();
-                        button->buttonChecked(zffalse);
+                        button->checked(zffalse);
                     }
-                    listenerData.sender<ZFUIButton *>()->buttonChecked(zftrue);
+                    listenerData.sender<ZFUIButton *>()->checked(zftrue);
 
                     zfblockedAlloc(ZFAnimationNativeView, resumeAni);
                     resumeAni->aniScaleXFrom(0.8f);
@@ -169,10 +169,10 @@ protected:
             zffloat r = zfmRand(255) / 255.0f;
             zffloat g = zfmRand(255) / 255.0f;
             zffloat b = zfmRand(255) / 255.0f;
-            button->buttonBackgroundStyleNormal()->image(ZFUIImageLoadFromColor(ZFUIColorMake(r, g, b, 0.25f)));
-            button->buttonBackgroundStyleHighlighted()->image(ZFUIImageLoadFromColor(ZFUIColorMake(r, g, b)));
+            button->backgroundNormal()->image(ZFUIImageLoadFromColor(ZFUIColorMake(r, g, b, 0.25f)));
+            button->backgroundHighlighted()->image(ZFUIImageLoadFromColor(ZFUIColorMake(r, g, b)));
         }
-        this->_buttonLayout()->childAt(0)->to<ZFUIButton *>()->buttonSimulateClick();
+        this->_buttonLayout()->childAt(0)->to<ZFUIButton *>()->simulateClick();
     }
 };
 

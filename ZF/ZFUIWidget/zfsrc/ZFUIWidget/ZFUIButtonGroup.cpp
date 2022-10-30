@@ -96,7 +96,7 @@ public:
             }
             else
             {
-                button->buttonChecked(zftrue);
+                button->checked(zftrue);
             }
             buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnClickChecked(button, buttonIndex);
         }
@@ -114,8 +114,8 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(ZF_IN ZFUIButtonGroup *buttonGroup,
 {
     _ZFP_ZFUIButtonGroup_setup_common(buttonGroup, button, buttonIndex);
 
-    button->buttonCheckable(zftrue);
-    button->buttonChecked(zffalse);
+    button->checkable(zftrue);
+    button->checked(zffalse);
 
     button->observerAdd(
         ZFUIButton::EventButtonOnClick(),
@@ -157,11 +157,11 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, zfindex, buttonTabChecked)
         }
         if(propertyValueOld != zfindexMax())
         {
-            this->buttonAt(propertyValueOld)->buttonChecked(zffalse);
+            this->buttonAt(propertyValueOld)->checked(zffalse);
         }
         if(this->buttonTabChecked() != zfindexMax())
         {
-            this->buttonAt(this->buttonTabChecked())->buttonChecked(zftrue);
+            this->buttonAt(this->buttonTabChecked())->checked(zftrue);
         }
     }
 }

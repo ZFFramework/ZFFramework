@@ -49,7 +49,7 @@ ZFMAIN_ENTRY() // app starts from here
     // button and click (as observer)
     zfblockedAlloc(ZFUIButtonBasic, button);
     window->childAdd(button)->c_alignBottom()->c_margin(40);
-    button->buttonLabelText("click me");
+    button->label()->text("click me");
     ZFLISTENER(onClick) {
         ZFUIButtonBasic *button = userData->objectHolded();
         zfLogTrimT() << "button clicked:" << button;
@@ -77,7 +77,7 @@ textView:text('hello wolrd')
 
 local button = ZFUIButtonBasic.ClassData():newInstance()
 window:childAdd(button):alignBottom():margin(40)
-button:buttonLabelText('click me')
+button:label():text('click me')
 button:onClick(
     function (listenerData, userData)
         zfLog('button clicked: %s', userData:objectHolded())

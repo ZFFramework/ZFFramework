@@ -21,11 +21,11 @@ zfclass ZFUIKit_test_Button : zfextends ZFUIButtonBasic
 {
     ZFOBJECT_DECLARE(ZFUIKit_test_Button, ZFUIButtonBasic)
 
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, buttonBackgroundStyleNormal)
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundNormal)
     {
         propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorGreen());
     }
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, buttonBackgroundStyleHighlighted)
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundHighlighted)
     {
         propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorBlue());
     }

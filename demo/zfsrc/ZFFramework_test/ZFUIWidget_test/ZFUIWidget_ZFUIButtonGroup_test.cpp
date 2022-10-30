@@ -42,7 +42,7 @@ private:
         {
             zfblockedAlloc(ZFUIButtonRatio, child);
             layout->buttonAdd(child);
-            child->buttonLabelText(zfstringWithFormat("btn %zi", i));
+            child->label()->text(zfstringWithFormat("btn %zi", i));
         }
     }
     void prepareSettingButton(ZF_IN ZFUIWindow *window,

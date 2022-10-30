@@ -86,7 +86,8 @@ public:
      * which has no semantic completion,
      * so that you can use keyword completion by using the tag file
      */
-    static void exportTag(ZF_IN_OUT const ZFOutput &output);
+    static void exportTag(ZF_IN_OUT const ZFOutput &output,
+                          ZF_IN_OPT zfbool exportScope = zffalse);
 
 public:
     /**

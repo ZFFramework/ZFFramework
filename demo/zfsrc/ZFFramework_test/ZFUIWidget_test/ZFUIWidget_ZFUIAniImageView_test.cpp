@@ -70,7 +70,7 @@ private:
         } ZFLISTENER_END(manualOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, manualButton);
         container->childAdd(manualButton)->c_alignLeftBottom();
-        manualButton->buttonLabelText("manual");
+        manualButton->label()->text("manual");
         manualButton->observerAdd(ZFUIButton::EventButtonOnClick(), manualOnClick, animatedImageView->objectHolder());
 
         ZFLISTENER(startOnClick) {
@@ -79,7 +79,7 @@ private:
         } ZFLISTENER_END(startOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         container->childAdd(startButton)->c_alignBottom();
-        startButton->buttonLabelText("start");
+        startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, animatedImageView->objectHolder());
 
         ZFLISTENER(stopOnClick) {
@@ -88,7 +88,7 @@ private:
         } ZFLISTENER_END(stopOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, stopButton);
         container->childAdd(stopButton)->c_alignRightBottom();
-        stopButton->buttonLabelText("stop");
+        stopButton->label()->text("stop");
         stopButton->observerAdd(ZFUIButton::EventButtonOnClick(), stopOnClick, animatedImageView->objectHolder());
     }
     void prepareSettingButton(ZF_IN ZFUIWindow *window,

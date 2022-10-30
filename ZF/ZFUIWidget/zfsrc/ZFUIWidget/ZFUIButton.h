@@ -52,7 +52,7 @@ public:
      * called when button clicked
      * (for both checkable and non-checkable button)\n
      * param0 is the #ZFUIMouseEvent or #ZFUIKeyEvent that cause the button click,
-     * or null for other clicked reason, such as #buttonSimulateClick
+     * or null for other clicked reason, such as #simulateClick
      */
     ZFOBSERVER_EVENT(ButtonOnClick)
     /**
@@ -121,22 +121,22 @@ public:
     /**
      * @brief true if the button is enabled, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, buttonEnable,
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, enable,
                                 zftrue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, buttonEnable)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, enable)
     /**
      * @brief true if the button is checkable button, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, buttonCheckable,
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, checkable,
                                 zffalse)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, buttonCheckable)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, checkable)
     /**
-     * @brief true if the button is checked, valid only if #buttonCheckable, false by default
+     * @brief true if the button is checked, valid only if #checkable, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, buttonChecked,
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, checked,
                                 zffalse)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zfbool, buttonChecked)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, buttonChecked)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zfbool, checked)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, checked)
     /**
      * @brief mouse up tolerance to detect as click, (0 - #ZFUIGlobalStyle::itemMargin) by default
      *
@@ -175,7 +175,7 @@ public:
      *
      * the optional event paran would be passed to #EventButtonOnClick
      */
-    ZFMETHOD_DECLARE_1(void, buttonSimulateClick,
+    ZFMETHOD_DECLARE_1(void, simulateClick,
                        ZFMP_IN_OPT(ZFUIEvent *, event, zfnull))
 
     /**

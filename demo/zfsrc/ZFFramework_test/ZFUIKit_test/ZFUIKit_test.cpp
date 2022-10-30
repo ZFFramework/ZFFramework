@@ -17,7 +17,7 @@ void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
     // close button
     zfblockedAlloc(ZFUIKit_test_Button, closeButton);
     window->childAdd(closeButton)->c_alignRightTop();
-    closeButton->buttonLabelText("close");
+    closeButton->label()->text("close");
     ZFLISTENER(onClickCloseButton) {
         ZFUIWindow *window = userData->objectTag("window")->objectHolded();
         ZFTestCase *testCase = userData->objectTag("testCaseToStop")->objectHolded();
@@ -38,7 +38,7 @@ void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
 zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
 {
     zfblockedAlloc(ZFUIKit_test_Button, settingsButton);
-    settingsButton->buttonLabelText("settings");
+    settingsButton->label()->text("settings");
     settingsButton->objectTag("settingsHolder", settings);
 
     zfblockedAlloc(ZFUIKit_test_Window, window);
@@ -51,7 +51,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
 
     zfblockedAlloc(ZFUIKit_test_Button, closeButton);
     window->childAdd(closeButton)->c_alignTop();
-    closeButton->buttonLabelStyle()->text("done");
+    closeButton->label()->text("done");
     ZFLISTENER(onClickCloseButton) {
         userData->objectHolded<ZFUIWindow *>()->windowHide();
     } ZFLISTENER_END(onClickCloseButton)
@@ -87,7 +87,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
             setting->buttonTextGetter().execute(
                     ZFListenerData().sender(button).param0(buttonText),
                     setting->userData());
-            button->buttonLabelText(buttonText->zfv);
+            button->label()->text(buttonText->zfv);
         } ZFLISTENER_END(settingOnChange)
         setting->observerAdd(ZFUIKit_test_SettingData::EventSettingOnChange(), settingOnChange, settingChangeUserData);
 
@@ -95,7 +95,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
         setting->buttonTextGetter().execute(
             ZFListenerData().sender(button).param0(buttonText),
             setting->userData());
-        button->buttonLabelText(buttonText->zfv);
+        button->label()->text(buttonText->zfv);
     }
 
     return settingsButton;

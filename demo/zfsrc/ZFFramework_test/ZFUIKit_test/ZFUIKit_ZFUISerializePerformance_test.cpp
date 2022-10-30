@@ -69,7 +69,7 @@ protected:
 
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         container->childAdd(startButton)->c_alignTop();
-        startButton->buttonLabelText("start");
+        startButton->label()->text("start");
 
         ZFLISTENER(onStart) {
             ZFUIKit_ZFUISerializePerformance_test *owner = userData->objectTag("owner")->objectHolded();
@@ -162,7 +162,7 @@ public:
             case 0:
             {
                 zfblockedAlloc(ZFUIKit_test_Button, v);
-                v->buttonBackgroundStyle()->viewBackgroundColor(ZFUIColorRandom());
+                v->background()->viewBackgroundColor(ZFUIColorRandom());
                 return v;
             }
             case 1:

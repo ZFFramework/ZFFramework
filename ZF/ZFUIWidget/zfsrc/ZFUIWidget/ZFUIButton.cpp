@@ -55,18 +55,18 @@ public:
     ZFCoreArrayPOD<zfidentity> ignoredMouses;
     ZFCoreArrayPOD<_ZFP_ZFUIButtonMouseData> processingMouses;
     zfstlmap<zfidentity, ZFUIPoint> prevMousePointMap;
-    zfbool buttonEnableFlag;
+    zfbool enableFlag;
     zfbool buttonHighlightedFlag;
     zftimet buttonLastClickTimestamp;
 
 public:
-    void buttonEnable(ZF_IN zfbool buttonEnable)
+    void enable(ZF_IN zfbool enable)
     {
-        if(this->buttonEnableFlag == buttonEnable)
+        if(this->enableFlag == enable)
         {
             return ;
         }
-        this->buttonEnableFlag = buttonEnable;
+        this->enableFlag = enable;
 
         this->buttonStateUpdate(this->buttonHighlightedFlag);
 
@@ -95,11 +95,11 @@ public:
     void buttonStateUpdate(ZF_IN zfbool highlighted)
     {
         this->buttonHighlightedFlag = highlighted;
-        if(this->buttonEnableFlag)
+        if(this->enableFlag)
         {
             if(this->buttonHighlightedFlag)
             {
-                if(this->pimplOwner->buttonChecked())
+                if(this->pimplOwner->checked())
                 {
                     this->buttonState = ZFUIButtonState::e_CheckedHighlighted;
                 }
@@ -112,7 +112,7 @@ public:
             }
             else
             {
-                if(this->pimplOwner->buttonChecked())
+                if(this->pimplOwner->checked())
                 {
                     this->buttonState = ZFUIButtonState::e_Checked;
                 }
@@ -139,7 +139,7 @@ public:
         {
             case ZFUIMouseAction::e_MouseDown:
             {
-                if(!this->buttonEnableFlag)
+                if(!this->enableFlag)
                 {
                     _ZFP_ZFUIButton_DEBUG_LOG("      %s disabled", ZFObjectInfo(mouseEvent).cString())
                     this->ignoredMouses.add(mouseEvent->mouseId);
@@ -276,9 +276,9 @@ private:
                 {
                     _ZFP_ZFUIButton_DEBUG_EVENT(buttonMouseOnUpInside)
                     this->pimplOwner->buttonMouseOnUpInside(mouseEvent);
-                    if(this->pimplOwner->buttonCheckable())
+                    if(this->pimplOwner->checkable())
                     {
-                        this->pimplOwner->buttonChecked(!this->pimplOwner->buttonChecked());
+                        this->pimplOwner->checked(!this->pimplOwner->checked());
                     }
                     else
                     {
@@ -348,7 +348,7 @@ public:
     , ignoredMouses()
     , processingMouses()
     , prevMousePointMap()
-    , buttonEnableFlag(zftrue)
+    , enableFlag(zftrue)
     , buttonHighlightedFlag(zffalse)
     , buttonLastClickTimestamp(0)
     {
@@ -378,25 +378,25 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButton, ZFUISize, viewSizeMin)
     propertyValue = ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeButton());
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, buttonEnable)
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, enable)
 {
-    d->buttonEnable(this->buttonEnable());
+    d->enable(this->enable());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, buttonCheckable)
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, checkable)
 {
-    if(!this->buttonCheckable() && this->buttonChecked())
+    if(!this->checkable() && this->checked())
     {
-        this->buttonChecked(zffalse);
+        this->checked(zffalse);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIButton, zfbool, buttonChecked)
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIButton, zfbool, checked)
 {
-    if(!this->buttonCheckable())
+    if(!this->checkable())
     {
         propertyValue = zffalse;
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, buttonChecked)
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButton, zfbool, checked)
 {
     d->buttonStateUpdate(d->buttonHighlightedFlag);
 }
@@ -424,14 +424,14 @@ ZFMETHOD_DEFINE_0(ZFUIButton, void, buttonClickIntervalReset)
     d->buttonLastClickTimestamp = 0;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIButton, void, buttonSimulateClick,
+ZFMETHOD_DEFINE_1(ZFUIButton, void, simulateClick,
                   ZFMP_IN_OPT(ZFUIEvent *, event, zfnull))
 {
     zfCoreAssert(ZFThread::currentThread() == ZFThread::mainThread());
     d->buttonHighlightedFlag = zffalse;
-    if(this->buttonCheckable())
+    if(this->checkable())
     {
-        this->buttonChecked(!this->buttonChecked());
+        this->checked(!this->checked());
     }
     else
     {
@@ -491,9 +491,9 @@ void ZFUIButton::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent)
                     break;
                 case ZFUIKeyAction::e_KeyUp:
                     d->buttonHighlightedFlag = zffalse;
-                    if(this->buttonCheckable())
+                    if(this->checkable())
                     {
-                        this->buttonChecked(!this->buttonChecked());
+                        this->checked(!this->checked());
                     }
                     else
                     {

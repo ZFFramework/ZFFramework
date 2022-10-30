@@ -8,7 +8,7 @@
  *   zfblockedAlloc(ZFUIView, parent);
  *   zfblockedAlloc(ZFUIButtonBasic, child);
  *   parent->childAdd(child)->c_sizeFill();
- *   child->buttonLabelText("button");
+ *   child->label()->text("button");
  *
  *   ZFSerializableData data = ZFObjectToData(parent);
  *   zfstring xmlString;
@@ -26,7 +26,7 @@
  *   serialized data:
  *   <ZFUIView>
  *       <ZFUIButtonBasic category="child" >
- *           <ZFUITextView name="buttonLabelStyleNormal" >
+ *           <ZFUITextView name="labelNormal" >
  *               <zfstring name="text" value="button" />
  *           </ZFUITextView>
  *           <ZFUILayoutParam category="layoutParam" >

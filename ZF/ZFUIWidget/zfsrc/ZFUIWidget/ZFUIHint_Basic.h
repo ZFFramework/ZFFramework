@@ -23,8 +23,8 @@ zfclass ZFLIB_ZFUIWidget ZFUIHintContentBasic : zfextends ZFUIButtonBasic
 public:
     ZFPROPERTY_ON_INIT_DECLARE(zfbool, viewUIEnableTree)
     ZFPROPERTY_ON_INIT_DECLARE(ZFUISize, viewSizeMin)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, buttonLabelStyleNormal)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, buttonBackgroundStyleNormal)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, labelNormal)
+    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, backgroundNormal)
 };
 
 /**

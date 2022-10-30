@@ -20,7 +20,7 @@ protected:
                 "local button = ZFUIButtonBasic()\n"
                 "window:childAdd(button):alignRightTop()\n"
                 "button:viewBackgroundColor(ZFUIColorRandom())\n"
-                "button:buttonLabelText('close')\n"
+                "button:label():text('close')\n"
                 "button:observerAdd(ZFUIButton.EventButtonOnClick(), function (listenerData, userData)\n"
                 "        userData:objectHolded():windowHide()\n"
                 "    end, window:objectHolder())\n"

@@ -14,7 +14,7 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
         local leftButton = ZFUIButtonBasic();
         pm:objectTag("leftButton", leftButton);
         topView:childAdd(leftButton):widthFill():alignCenter():layoutWeight(1):reserveSpace(zftrue);
-        leftButton:buttonLabelText("Back");
+        leftButton:label():text("Back");
         leftButton:viewBackgroundColor(ZFUIColorRandom());
         leftButton:viewVisible(zffalse);
         leftButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
@@ -30,7 +30,7 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
         local rightButton = ZFUIButtonBasic();
         pm:objectTag("rightButton", rightButton);
         topView:childAdd(rightButton):widthFill():alignCenter():layoutWeight(1);
-        rightButton:buttonLabelText("ExitTest");
+        rightButton:label():text("ExitTest");
         rightButton:viewBackgroundColor(ZFUIColorRandom());
         rightButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
                 local pm = userData:objectHolded();

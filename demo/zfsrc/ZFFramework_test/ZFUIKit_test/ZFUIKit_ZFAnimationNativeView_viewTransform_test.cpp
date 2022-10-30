@@ -33,7 +33,7 @@ protected:
             userData->objectHolded<ZFAnimation *>()->aniStart();
         } ZFLISTENER_END(startOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
-        startButton->buttonLabelText("start");
+        startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, this->ani()->objectHolder());
         container->childAdd(startButton)->c_alignRightTop();
     }

@@ -17,7 +17,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, ZFUIButtonBasic *, textEditClearBu
 {
     zfblockedAlloc(ZFUIButtonBasic, textEditClearButton);
     propertyValue = textEditClearButton;
-    textEditClearButton->buttonIconImage(zfRes("ZFUIWidget/ZFUITextEditWidget_clearButton.xml"));
+    textEditClearButton->icon()->image(zfRes("ZFUIWidget/ZFUITextEditWidget_clearButton.xml"));
     textEditClearButton->viewSizeMin(ZFUISizeZero());
     textEditClearButton->viewVisible(zffalse);
 }
