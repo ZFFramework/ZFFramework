@@ -1338,8 +1338,8 @@ ZFXmlItem &ZFXmlItem::childAdd(ZF_IN const ZFXmlItem &addThis,
         case ZFXmlType::e_XmlAttribute:
         case ZFXmlType::e_XmlDocument:
             zfCoreCriticalMessage("%s can not be added to %s"
-                    , ZFXmlTypeEnumToString(addThis.xmlType()).cString()
-                    , ZFXmlTypeEnumToString(this->xmlType()).cString()
+                    , ZFXmlTypeToString(addThis.xmlType()).cString()
+                    , ZFXmlTypeToString(this->xmlType()).cString()
                 );
             break;
         case ZFXmlType::e_XmlDeclaration:
@@ -1348,8 +1348,8 @@ ZFXmlItem &ZFXmlItem::childAdd(ZF_IN const ZFXmlItem &addThis,
             if(this->xmlType() != ZFXmlType::e_XmlDocument)
             {
                 zfCoreCriticalMessage("%s can not be added to %s"
-                        , ZFXmlTypeEnumToString(addThis.xmlType()).cString()
-                        , ZFXmlTypeEnumToString(this->xmlType()).cString()
+                        , ZFXmlTypeToString(addThis.xmlType()).cString()
+                        , ZFXmlTypeToString(this->xmlType()).cString()
                     );
             }
             break;

@@ -104,7 +104,7 @@ public:
         {
             zfCoreCriticalMessageTrim(
                 "pos rule specified twice: %s",
-                ZFUIAutoLayoutPosEnumToString(pos).cString());
+                ZFUIAutoLayoutPosToString(pos).cString());
         }
     }
     void targetAttach(ZF_IN ZFUIView *target, ZFUIAutoLayoutPosEnum targetPos)

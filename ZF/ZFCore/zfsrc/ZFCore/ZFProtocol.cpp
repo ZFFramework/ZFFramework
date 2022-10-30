@@ -235,7 +235,7 @@ void ZFProtocolImplInfoPrint(ZF_IN const ZFProtocolImplInfo &data,
         callback.execute(" ");
         callback.execute(data.protocolImpl->protocolImplementationName());
         callback.execute("(");
-        callback.execute(ZFProtocolLevelEnumToString(data.protocolImpl->protocolImplementationLevel()).cString());
+        callback.execute(ZFProtocolLevelToString(data.protocolImpl->protocolImplementationLevel()).cString());
         callback.execute(")");
         if(!zfsIsEmpty(data.protocolImpl->protocolImplementationPlatformHint()))
         {

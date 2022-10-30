@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // normal enum
 #define _ZFP_ZFENUM_PROP_TYPE_DECLARE(ZFLIB_, EnumName) \
-    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName##Enum, EnumName##Enum) \
+    ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName, EnumName##Enum) \
     /** @cond ZFPrivateDoc */ \
     template<> \
     zfclassNotPOD ZFTypeId<EnumName##Enum> : zfextendsNotPOD ZFTypeInfo \
@@ -24,7 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }; \
         static inline const zfchar *TypeId(void) \
         { \
-            return ZFTypeId_##EnumName##Enum(); \
+            return ZFTypeId_##EnumName(); \
         } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const \
@@ -124,7 +124,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     /** @endcond */
 
 #define _ZFP_ZFENUM_PROP_TYPE_DEFINE(EnumName) \
-    ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumName##Enum, EnumName##Enum, { \
+    ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumName, EnumName##Enum, { \
             if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) \
             { \
                 v = (EnumName##Enum)ZFEnumInvalid(); \
@@ -140,7 +140,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         }) \
     const zfchar *EnumName::wrappedValueTypeId(void) \
     { \
-        return ZFTypeId_##EnumName##Enum(); \
+        return ZFTypeId_##EnumName(); \
     }
 
 

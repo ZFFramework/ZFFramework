@@ -14,12 +14,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISizeParam, ZFUISizeParam, {
             return zffalse;
         }
 
-        if(!ZFUISizeTypeEnumFromString(v.width, src + pos[0].start, pos[0].count))
+        if(!ZFUISizeTypeFromString(v.width, src + pos[0].start, pos[0].count))
         {
             return zffalse;
         }
 
-        if(!ZFUISizeTypeEnumFromString(v.height, src + pos[1].start, pos[1].count))
+        if(!ZFUISizeTypeFromString(v.height, src + pos[1].start, pos[1].count))
         {
             return zffalse;
         }
@@ -27,9 +27,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISizeParam, ZFUISizeParam, {
         return zftrue;
     }, {
         s += "(";
-        ZFUISizeTypeEnumToString(s, v.width);
+        ZFUISizeTypeToString(s, v.width);
         s += ", ";
-        ZFUISizeTypeEnumToString(s, v.height);
+        ZFUISizeTypeToString(s, v.height);
         s += ")";
         return zftrue;
     })

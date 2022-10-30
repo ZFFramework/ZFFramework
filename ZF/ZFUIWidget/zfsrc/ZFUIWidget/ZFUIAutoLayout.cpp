@@ -72,20 +72,20 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(ZF_IN const ZFSerial
 
         // pos
         ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
-            require, ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPosEnum, pos);
+            require, ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPos, pos);
         if(pos == ZFUIAutoLayoutPos::e_None)
         {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, element,
                 "\"%s\" does not support \"%s\"",
                 ZFSerializableKeyword_ZFUIAutoLayoutParam_pos,
-                ZFUIAutoLayoutPosEnumToString(pos).cString());
+                ZFUIAutoLayoutPosToString(pos).cString());
             return zffalse;
         }
         if(_ZFP_al_d.ruleList[pos].pos() != ZFUIAutoLayoutPos::e_None)
         {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, element,
                 "\"%s\" rule already has been set",
-                ZFUIAutoLayoutPosEnumToString(pos).cString());
+                ZFUIAutoLayoutPosToString(pos).cString());
             return zffalse;
         }
 
@@ -102,7 +102,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(ZF_IN const ZFSerial
             const zfchar *valueTmp = value;
             while(*valueTmp != '\0' && *valueTmp != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token) {++valueTmp;}
             if(*valueTmp != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token
-                || !ZFUIAutoLayoutPosEnumFromString(rule.targetPos(), value, valueTmp - value))
+                || !ZFUIAutoLayoutPosFromString(rule.targetPos(), value, valueTmp - value))
             {
                 ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, element,
                     "invalid target value: %s",
@@ -149,13 +149,13 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(ZF_IN_OUT ZFSerializab
 
         // pos
         value.removeAll();
-        ZFUIAutoLayoutPosEnumToString(value, rule.pos());
+        ZFUIAutoLayoutPosToString(value, rule.pos());
         element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, value);
 
         // target
         {
             zfstring target;
-            ZFUIAutoLayoutPosEnumToString(target, rule.targetPos());
+            ZFUIAutoLayoutPosToString(target, rule.targetPos());
             target += ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token;
             target += rule.targetId();
             element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_target, target);

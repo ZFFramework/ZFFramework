@@ -24,7 +24,7 @@ void ZFTextTemplateIndexData::objectInfoT(ZF_IN_OUT zfstring &ret) const
     }
 
     ret += " ";
-    ZFTextTemplateIndexFlagEnumToString(ret, this->indexFlag);
+    ZFTextTemplateIndexFlagToString(ret, this->indexFlag);
 
     ret += ZFTOKEN_ZFObjectInfoRight;
 }
@@ -81,7 +81,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
         }
 
         element = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag);
-        if(element != zfnull && !ZFTextTemplateIndexFlagEnumFromString(v.indexFlag, element))
+        if(element != zfnull && !ZFTextTemplateIndexFlagFromString(v.indexFlag, element))
         {
             ZFSerializableUtil::errorOccurredWhile(outErrorHint, outErrorPos, serializableData, ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, element);
             return zffalse;
@@ -119,7 +119,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
 
         if(v.indexFlag != ZFTextTemplateIndexFlag::EnumDefault())
         {
-            serializableData.attr(ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlagEnumToString(v.indexFlag));
+            serializableData.attr(ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlagToString(v.indexFlag));
         }
 
         return zftrue;
