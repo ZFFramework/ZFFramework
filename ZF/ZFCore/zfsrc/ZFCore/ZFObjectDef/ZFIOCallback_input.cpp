@@ -461,35 +461,32 @@ ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
 
                 if(start != 0)
                 {
-                    ZFSerializableData startData;
-                    if(!zfindexToData(startData, start))
+                    zfstring value;
+                    if(!zfindexToString(value, start))
                     {
                         break;
                     }
-                    startData.category(ZFSerializableKeyword_ZFInputForInputInRange_start);
-                    customData.childAdd(startData);
+                    customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_start, value);
                 }
 
                 if(count != zfindexMax())
                 {
-                    ZFSerializableData countData;
-                    if(!zfindexToData(countData, count))
+                    zfstring value;
+                    if(!zfindexToString(value, count))
                     {
                         break;
                     }
-                    countData.category(ZFSerializableKeyword_ZFInputForInputInRange_count);
-                    customData.childAdd(countData);
+                    customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_count, value);
                 }
 
                 if(!autoRestorePos)
                 {
-                    ZFSerializableData autoRestorePosData;
-                    if(!zfboolToData(autoRestorePosData, autoRestorePos))
+                    zfstring value;
+                    if(!zfboolToString(value, autoRestorePos))
                     {
                         break;
                     }
-                    autoRestorePosData.category(ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos);
-                    customData.childAdd(autoRestorePosData);
+                    customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos, value);
                 }
 
                 success = zftrue;
@@ -520,31 +517,18 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerial
     }
 
     zfindex start = 0;
-    {
-        const ZFSerializableData *startData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFInputForInputInRange_start);
-        if(startData != zfnull && !zfindexFromData(start, *startData, outErrorHint, outErrorPos))
-        {
-            return zffalse;
-        }
-    }
-    zfindex count = zfindexMax();
-    {
-        const ZFSerializableData *countData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFInputForInputInRange_count);
-        if(countData != zfnull && !zfindexFromData(count, *countData, outErrorHint, outErrorPos))
-        {
-            return zffalse;
-        }
-    }
-    zfbool autoRestorePos = zftrue;
-    {
-        const ZFSerializableData *autoRestorePosData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos);
-        if(autoRestorePosData != zfnull && !zfboolFromData(autoRestorePos, *autoRestorePosData, outErrorHint, outErrorPos))
-        {
-            return zffalse;
-        }
-    }
-    serializableData.resolveMark();
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, check,
+        ZFSerializableKeyword_ZFInputForInputInRange_start, zfindex, start);
 
+    zfindex count = zfindexMax();
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, check,
+        ZFSerializableKeyword_ZFInputForInputInRange_count, zfindex, count);
+
+    zfbool autoRestorePos = zftrue;
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, check,
+        ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos, zfbool, autoRestorePos);
+
+    serializableData.resolveMark();
     ret = ZFInputForInputInRange(input, start, count, autoRestorePos);
     return zftrue;
 }

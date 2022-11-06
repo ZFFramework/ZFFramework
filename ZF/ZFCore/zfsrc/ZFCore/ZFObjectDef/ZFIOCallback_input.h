@@ -156,11 +156,12 @@ extern ZFLIB_ZFCore ZFInput ZFInputDummy(void);
  *
  * serializable data:
  * @code
- *   <node>
- *       <something category="input" ... />
- *       <zfindex category="start" ... /> // optional, 0 by default
- *       <zfindex category="count" ... /> // optional, zfindexMax() by default
- *       <zfbool category="autoRestorePos" ... /> // optional, zftrue by default
+ *   <node
+ *       start="zfindex" // optional, 0 by default
+ *       count="zfindex" // optional, zfindexMax() by default
+ *       autoRestorePos="zfbool" // optional, zftrue by default
+ *   >
+ *       <something category="input" ... /> // required, the source input callback
  *   </node>
  * @endcode
  */

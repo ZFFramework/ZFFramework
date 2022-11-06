@@ -186,12 +186,12 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(ZF_IN_OUT ZFSerializab
         }
 
         // weight
-        ZFSerializableUtilSerializeAttributeToData(element, outErrorHint, ref,
-            ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, rule.weight(), 0, 0);
+        ZFSerializableUtilSerializeAttributeToDataNoRef(element, outErrorHint,
+            ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, rule.weight(), 0);
 
         // offset
-        ZFSerializableUtilSerializeAttributeToData(element, outErrorHint, ref,
-            ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, rule.offset(), 0, 0);
+        ZFSerializableUtilSerializeAttributeToDataNoRef(element, outErrorHint,
+            ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, rule.offset(), 0);
 
         element.itemClass(ZFSerializableKeyword_ZFUIAutoLayoutParam_rule);
         serializableData.childAdd(element);

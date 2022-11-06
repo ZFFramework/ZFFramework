@@ -388,9 +388,10 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocalFile,
  *
  * serializable data:
  * @code
- *   <node>
- *       <ZFPathInfo category="pathInfo" ... />
- *       <ZFFileOpenOptionFlags category="flags" ... /> // optional, ZFFileOpenOption::e_Read by default
+ *   <node
+ *       pathInfo="ZFPathInfo" // required, the path info
+ *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Read by default
+ *   >
  *   </node>
  * @endcode
  */
@@ -443,9 +444,10 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT,
  *
  * serializable data:
  * @code
- *   <node>
- *       <ZFPathInfo category="pathInfo" ... />
- *       <ZFFileOpenOptionFlags category="flags" ... /> // optional, ZFFileOpenOption::e_Create by default
+ *   <node
+ *       pathInfo="ZFPathInfo" // required, the path info
+ *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Create by default
+ *   >
  *   </node>
  * @endcode
  */
@@ -498,9 +500,10 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT,
  *
  * serializable data:
  * @code
- *   <node>
- *       <zfstring category="filePath" ... />
- *       <ZFFileOpenOptionFlags category="flags" ... /> // optional, ZFFileOpenOption::e_Read by default
+ *   <node
+ *       filePath="zfstring" // required, the local path
+ *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Read by default
+ *   >
  *   </node>
  * @endcode
  */
@@ -538,6 +541,11 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalFileT,
  *
  * serializable data:
  * @code
+ *   <node
+ *       filePath="zfstring" // required, the local path
+ *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Create by default
+ *   >
+ *   </node>
  *   <node>
  *       <zfstring category="filePath" ... />
  *       <ZFFileOpenOptionFlags category="flags" ... /> // optional, ZFFileOpenOption::e_Create by default
@@ -559,6 +567,14 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalFileT,
  * note, additional impl can be attached by #ZFPATHTYPE_FILEIO_REGISTER
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFOutput, ZFOutputForLocalFile,
+                        ZFMP_IN(const ZFPathInfo &, pathInfo),
+                        ZFMP_IN(const zfchar *, localPath),
+                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
+/**
+ * @brief see #ZFOutputForLocalFile
+ */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalFileT,
+                        ZFMP_OUT(ZFCallback &, ret),
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const zfchar *, localPath),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))

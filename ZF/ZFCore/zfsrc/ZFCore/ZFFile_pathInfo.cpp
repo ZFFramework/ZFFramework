@@ -694,24 +694,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT,
         customData.itemClass(ZFSerializableKeyword_node);
         do
         {
-            ZFSerializableData pathInfoData;
-            if(!ZFPathInfoToData(pathInfoData, *ret.pathInfo()))
-            {
-                break;
-            }
-            pathInfoData.category(ZFSerializableKeyword_ZFFileCallback_pathInfo);
-            customData.childAdd(pathInfoData);
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, *(ret.pathInfo()), ZFPathInfo());
 
-            if(flags != ZFFileOpenOption::e_Read)
-            {
-                ZFSerializableData flagsData;
-                if(!ZFFileOpenOptionFlagsToData(flagsData, flags))
-                {
-                    break;
-                }
-                flagsData.category(ZFSerializableKeyword_ZFFileCallback_flags);
-                customData.childAdd(flagsData);
-            }
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
 
             success = zftrue;
         } while(zffalse);
@@ -730,25 +717,13 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT,
 }
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeCustomType_ZFInputForPathInfo)
 {
-    const ZFSerializableData *pathInfoData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_pathInfo, outErrorHint, outErrorPos);
-    if(pathInfoData == zfnull)
-    {
-        return zffalse;
-    }
     ZFPathInfo pathInfo;
-    if(!ZFPathInfoFromData(pathInfo, *pathInfoData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo);
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read;
-    const ZFSerializableData *flagsData = ZFSerializableUtil::checkElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_flags);
-    if(flagsData != zfnull && !ZFFileOpenOptionFlagsFromData(flags, *flagsData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
 
     ret.callbackSerializeCustomDisable(zftrue);
     ZFInputForPathInfoT(ret, pathInfo.pathType, pathInfo.pathData, flags);
@@ -904,24 +879,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT,
         customData.itemClass(ZFSerializableKeyword_node);
         do
         {
-            ZFSerializableData pathInfoData;
-            if(!ZFPathInfoToData(pathInfoData, *ret.pathInfo()))
-            {
-                break;
-            }
-            pathInfoData.category(ZFSerializableKeyword_ZFFileCallback_pathInfo);
-            customData.childAdd(pathInfoData);
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, *(ret.pathInfo()), ZFPathInfo());
 
-            if(flags != ZFFileOpenOption::e_Create)
-            {
-                ZFSerializableData flagsData;
-                if(!ZFFileOpenOptionFlagsToData(flagsData, flags))
-                {
-                    break;
-                }
-                flagsData.category(ZFSerializableKeyword_ZFFileCallback_flags);
-                customData.childAdd(flagsData);
-            }
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
 
             success = zftrue;
         } while(zffalse);
@@ -940,25 +902,13 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT,
 }
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerializeCustomType_ZFOutputForPathInfo)
 {
-    const ZFSerializableData *pathInfoData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_pathInfo, outErrorHint, outErrorPos);
-    if(pathInfoData == zfnull)
-    {
-        return zffalse;
-    }
     ZFPathInfo pathInfo;
-    if(!ZFPathInfoFromData(pathInfo, *pathInfoData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo);
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Create;
-    const ZFSerializableData *flagsData = ZFSerializableUtil::checkElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_flags);
-    if(flagsData != zfnull && !ZFFileOpenOptionFlagsFromData(flags, *flagsData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
 
     ret.callbackSerializeCustomDisable(zftrue);
     ZFOutputForPathInfoT(ret, pathInfo.pathType, pathInfo.pathData, flags);
@@ -1010,24 +960,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalFileT,
         customData.itemClass(ZFSerializableKeyword_node);
         do
         {
-            ZFSerializableData filePathData;
-            if(!zfstringToData(filePathData, localPath))
-            {
-                return zffalse;
-            }
-            filePathData.category(ZFSerializableKeyword_ZFFileCallback_filePath);
-            customData.childAdd(filePathData);
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_filePath, zfstring, localPath, "");
 
-            if(flags != ZFFileOpenOption::e_Read)
-            {
-                ZFSerializableData flagsData;
-                if(!ZFFileOpenOptionFlagsToData(flagsData, flags))
-                {
-                    break;
-                }
-                flagsData.category(ZFSerializableKeyword_ZFFileCallback_flags);
-                customData.childAdd(flagsData);
-            }
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
 
             success = zftrue;
         } while(zffalse);
@@ -1054,25 +991,15 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocalFile, ZFCallbackSerialize
         return zffalse;
     }
 
-    const ZFSerializableData *filePathData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_filePath, outErrorHint, outErrorPos);
-    if(filePathData == zfnull)
-    {
-        return zffalse;
-    }
-    const zfchar *localPath = zfnull;
-    if(!zfstringFromData(localPath, *filePathData, outErrorHint, outErrorPos))
+    const zfchar *localPath = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFFileCallback_filePath, outErrorHint, outErrorPos);
+    if(localPath == zfnull)
     {
         return zffalse;
     }
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read;
-    const ZFSerializableData *flagsData = ZFSerializableUtil::checkElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_flags);
-    if(flagsData != zfnull && !ZFFileOpenOptionFlagsFromData(flags, *flagsData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
 
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;
@@ -1100,23 +1027,32 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocalFile, ZFCallbackSerialize
 ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForLocalFile,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN(const zfchar *, localPath),
+                       ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
+{
+    ZFOutput ret;
+    ZFOutputForLocalFileT(ret, pathInfo, localPath, flags);
+    return ret;
+}
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalFileT,
+                       ZFMP_OUT(ZFCallback &, ret),
+                       ZFMP_IN(const ZFPathInfo &, pathInfo),
+                       ZFMP_IN(const zfchar *, localPath),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 {
     if(zfsIsEmpty(localPath))
     {
-        return zfnull;
+        return zffalse;
     }
 
     zfstring pathDataAbs;
     if(!ZFPathInfoForLocalFileT(pathDataAbs, pathInfo, localPath))
     {
-        return zfnull;
+        return zffalse;
     }
-    ZFOutput ret;
     ret.callbackSerializeCustomDisable(zftrue);
     if(!ZFOutputForPathInfoT(ret, pathInfo.pathType, pathDataAbs, flags))
     {
-        return zfnull;
+        return zffalse;
     }
 
     {
@@ -1125,24 +1061,11 @@ ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForLocalFile,
         customData.itemClass(ZFSerializableKeyword_node);
         do
         {
-            ZFSerializableData filePathData;
-            if(!zfstringToData(filePathData, localPath))
-            {
-                return zfnull;
-            }
-            filePathData.category(ZFSerializableKeyword_ZFFileCallback_filePath);
-            customData.childAdd(filePathData);
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_filePath, zfstring, localPath, "");
 
-            if(flags != ZFFileOpenOption::e_Create)
-            {
-                ZFSerializableData flagsData;
-                if(!ZFFileOpenOptionFlagsToData(flagsData, flags))
-                {
-                    break;
-                }
-                flagsData.category(ZFSerializableKeyword_ZFFileCallback_flags);
-                customData.childAdd(flagsData);
-            }
+            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
 
             success = zftrue;
         } while(zffalse);
@@ -1153,7 +1076,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForLocalFile,
         }
     }
 
-    return ret;
+    return zftrue;
 }
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocalFile, ZFCallbackSerializeCustomType_ZFOutputForLocalFile)
 {
@@ -1165,25 +1088,15 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocalFile, ZFCallbackSerializ
         return zffalse;
     }
 
-    const ZFSerializableData *filePathData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_filePath, outErrorHint, outErrorPos);
-    if(filePathData == zfnull)
-    {
-        return zffalse;
-    }
-    const zfchar *localPath = zfnull;
-    if(!zfstringFromData(localPath, *filePathData, outErrorHint, outErrorPos))
+    const zfchar *localPath = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFFileCallback_filePath, outErrorHint, outErrorPos);
+    if(localPath == zfnull)
     {
         return zffalse;
     }
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Create;
-    const ZFSerializableData *flagsData = ZFSerializableUtil::checkElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFFileCallback_flags);
-    if(flagsData != zfnull && !ZFFileOpenOptionFlagsFromData(flags, *flagsData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
 
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;

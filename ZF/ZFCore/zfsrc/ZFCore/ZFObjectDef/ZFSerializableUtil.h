@@ -215,6 +215,23 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(ZF_IN const ZFSerializableData &se
             serializableData.attr(key, valueString); \
         } \
     } while(zffalse)
+/** @brief util macro to impl #ZFSerializable */
+#define ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint, \
+    key, TypeName, thisValue, defaultValue) \
+    do \
+    { \
+        if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) \
+        { \
+            zfstring valueString; \
+            if(!TypeName##ToString(valueString, thisValue)) \
+            { \
+                ZFSerializableUtil::errorOccurred(outErrorHint, \
+                    "failed to convert %s to string", key); \
+                return zffalse; \
+            } \
+            serializableData.attr(key, valueString); \
+        } \
+    } while(zffalse)
 
 // ============================================================
 /** @brief util macro to impl #ZFSerializable */
