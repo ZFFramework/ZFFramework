@@ -347,7 +347,7 @@ protected:
      * set serializable class to null to show the property is in init value state
      * and have no need to be serialized
      */
-    virtual zfbool serializableOnSerializePropertyToData(ZF_OUT ZFSerializableData &propertyData,
+    virtual zfbool serializableOnSerializePropertyToData(ZF_OUT ZFSerializableData &ownerData,
                                                          ZF_IN const ZFProperty *property,
                                                          ZF_IN ZFSerializable *referencedOwnerOrNull,
                                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull);
@@ -366,7 +366,7 @@ protected:
      * set serializable class to null to show the property is in init value state
      * and have no need to be serialized
      */
-    virtual zfbool serializableOnSerializeEmbededPropertyToData(ZF_OUT ZFSerializableData &propertyData,
+    virtual zfbool serializableOnSerializeEmbededPropertyToData(ZF_OUT ZFSerializableData &ownerData,
                                                                 ZF_IN const ZFProperty *property,
                                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
                                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);

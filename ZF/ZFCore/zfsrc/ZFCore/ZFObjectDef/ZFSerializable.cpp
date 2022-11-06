@@ -64,6 +64,40 @@ zfbool ZFSerializable::serializeFromData(ZF_IN const ZFSerializableData &seriali
         }
     }
 
+    // property with wrappedValuePreferStringConverter
+    {
+        for(zfiterator it = serializableData.attrIter(); serializableData.attrIterValid(it); serializableData.attrIterNext(it))
+        {
+            const zfchar *name = serializableData.attrIterKey(it);
+            if(serializableData.attrIterResolved(it))
+            {
+                continue;
+            }
+            const ZFProperty *property = this->classData()->propertyForName(name);
+            if(property == zfnull)
+            {
+                continue;
+            }
+            const ZFTypeInfo *typeId = ZFTypeInfoForName(property->propertyTypeId());
+            if(typeId == zfnull)
+            {
+                continue;
+            }
+            const ZFClass *propertyClass = typeId->typeIdClass();
+            if(propertyClass == zfnull || propertyClass->classIsAbstract())
+            {
+                continue;
+            }
+            zfautoObject propertyValue = propertyClass->newInstance();
+            if(!ZFCastZFObject(ZFTypeIdWrapper *, propertyValue)->wrappedValueFromString(serializableData.attrIterValue(it)))
+            {
+                continue;
+            }
+            property->setterMethod()->methodGenericInvoke(this->toObject(), propertyValue);
+            serializableData.attrIterResolveMark(it);
+        }
+    }
+
     // property
     {
         const ZFCoreMap &propertyMap = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializablePropertyMap;
@@ -198,8 +232,6 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
         for(zfindex i = 0; i < allProperty.count(); ++i)
         {
             _ZFP_ZFSerializable_PropertyTypeData *data = allProperty[i];
-            ZFSerializableData propertyData;
-
             switch(data->propertyType)
             {
                 case ZFSerializablePropertyTypeSerializableProperty:
@@ -208,12 +240,15 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
                         const zfchar *styleKey = styleable->styleKeyForProperty(data->property);
                         if(styleKey != zfnull)
                         {
+                            ZFSerializableData propertyData;
                             propertyData.itemClass(data->property->propertyTypeId());
                             propertyData.attr(ZFSerializableKeyword_styleKey, styleKey);
+                            propertyData.propertyName(data->property->propertyName());
+                            serializableData.childAdd(propertyData);
                             break;
                         }
                     }
-                    if(!this->serializableOnSerializePropertyToData(propertyData,
+                    if(!this->serializableOnSerializePropertyToData(serializableData,
                                                                     data->property,
                                                                     referencedObject,
                                                                     outErrorHint))
@@ -222,7 +257,7 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
                     }
                     break;
                 case ZFSerializablePropertyTypeEmbededProperty:
-                    if(!this->serializableOnSerializeEmbededPropertyToData(propertyData,
+                    if(!this->serializableOnSerializeEmbededPropertyToData(serializableData,
                                                                            data->property,
                                                                            referencedObject,
                                                                            outErrorHint))
@@ -234,12 +269,6 @@ zfbool ZFSerializable::serializeToData(ZF_OUT ZFSerializableData &serializableDa
                 default:
                     zfCoreCriticalShouldNotGoHere();
                     return zffalse;
-            }
-
-            if(propertyData.itemClass() != zfnull)
-            {
-                propertyData.propertyName(data->property->propertyName());
-                serializableData.childAdd(propertyData);
             }
         }
     }
@@ -465,7 +494,7 @@ zfbool ZFSerializable::serializableOnSerializePropertyFromData(ZF_IN const ZFSer
         return zftrue;
     }
 }
-zfbool ZFSerializable::serializableOnSerializePropertyToData(ZF_OUT ZFSerializableData &propertyData,
+zfbool ZFSerializable::serializableOnSerializePropertyToData(ZF_OUT ZFSerializableData &ownerData,
                                                              ZF_IN const ZFProperty *property,
                                                              ZF_IN ZFSerializable *referencedOwnerOrNull,
                                                              ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
@@ -480,13 +509,31 @@ zfbool ZFSerializable::serializableOnSerializePropertyToData(ZF_OUT ZFSerializab
         return zftrue;
     }
 
+    zfautoObject propertyValue = property->getterMethod()->methodGenericInvoke(this->toObject());
+    ZFTypeIdWrapper *wrapper = propertyValue;
+    if(wrapper != zfnull && wrapper->wrappedValuePreferStringConverter())
+    {
+        zfstring value;
+        if(wrapper->wrappedValueToString(value))
+        {
+            ownerData.attr(property->propertyName(), value);
+            return zftrue;
+        }
+    }
+
     if(property->propertyIsRetainProperty())
     {
-        return ZFObjectToData(propertyData, property->getterMethod()->methodGenericInvoke(this->toObject()), outErrorHint);
+        ZFSerializableData propertyData;
+        if(!ZFObjectToData(propertyData, propertyValue, outErrorHint))
+        {
+            return zffalse;
+        }
+        propertyData.propertyName(property->propertyName());
+        ownerData.childAdd(propertyData);
+        return zftrue;
     }
     else
     {
-        zfautoObject propertyValue = property->getterMethod()->methodGenericInvoke(this->toObject());
         if(propertyValue == zfnull)
         {
             ZFSerializableUtil::errorOccurred(outErrorHint,
@@ -494,7 +541,14 @@ zfbool ZFSerializable::serializableOnSerializePropertyToData(ZF_OUT ZFSerializab
                 property->propertyName());
             return zffalse;
         }
-        return ZFCastZFObject(ZFTypeIdWrapper *, propertyValue)->wrappedValueToData(propertyData, outErrorHint);
+        ZFSerializableData propertyData;
+        if(!ZFCastZFObject(ZFTypeIdWrapper *, propertyValue)->wrappedValueToData(propertyData, outErrorHint))
+        {
+            return zffalse;
+        }
+        propertyData.propertyName(property->propertyName());
+        ownerData.childAdd(propertyData);
+        return zftrue;
     }
 }
 zfbool ZFSerializable::serializableOnSerializeEmbededPropertyFromData(ZF_IN const ZFSerializableData &propertyData,
@@ -544,7 +598,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyFromData(ZF_IN cons
     }
     return ZFCastZFObjectUnchecked(zfself *, obj)->serializeFromData(propertyData, outErrorHint, outErrorPos);
 }
-zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(ZF_OUT ZFSerializableData &propertyData,
+zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(ZF_OUT ZFSerializableData &ownerData,
                                                                     ZF_IN const ZFProperty *property,
                                                                     ZF_IN ZFSerializable *referencedOwnerOrNull,
                                                                     ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
@@ -580,6 +634,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(ZF_OUT ZFSer
         propertyRef = initValue;
     }
 
+    ZFSerializableData propertyData;
     if(!obj->to<zfself *>()->serializeToData(propertyData, outErrorHint, propertyRef))
     {
         return zffalse;
@@ -590,6 +645,8 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(ZF_OUT ZFSer
     {
         propertyData.itemClass(zfnull);
     }
+    propertyData.propertyName(property->propertyName());
+    ownerData.childAdd(propertyData);
     return zftrue;
 }
 

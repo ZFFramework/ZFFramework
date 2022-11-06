@@ -169,6 +169,9 @@ public:
     ZFMETHOD_DECLARE_0(void, sizeFill)
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_1(void, sizeFill,
+                       ZFMP_IN(zffloat, size))
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, sizeFill,
                        ZFMP_IN(const ZFUISize &, size))
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_2(void, sizeFill,
@@ -176,6 +179,9 @@ public:
                        ZFMP_IN(zffloat, height))
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_0(void, sizeWrap)
+    /** @brief util to set #sizeParam and #sizeHint */
+    ZFMETHOD_DECLARE_1(void, sizeWrap,
+                       ZFMP_IN(zffloat, size))
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_1(void, sizeWrap,
                        ZFMP_IN(const ZFUISize &, size))

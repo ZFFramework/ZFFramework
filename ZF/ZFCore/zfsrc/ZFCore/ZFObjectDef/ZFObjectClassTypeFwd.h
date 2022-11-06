@@ -59,7 +59,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     public: \
         T_ParamType const &paramName(void) const \
         { \
-            return this->paramName##_.value; \
+            return this->paramName##_PropV.value; \
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
@@ -93,7 +93,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         public: \
             T_ParamType value; \
         }; \
-        paramName##_ZFCoreParam paramName##_; \
+        paramName##_ZFCoreParam paramName##_PropV; \
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
@@ -101,9 +101,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         { \
             zfCoreMutexLock(); \
             zfunsafe_zfRetain(value); \
-            zfunsafe_zfRelease(this->paramName##_.value); \
+            zfunsafe_zfRelease(this->paramName##_PropV.value); \
             zfCoreMutexUnlock(); \
-            this->paramName##_.value = value; \
+            this->paramName##_PropV.value = value; \
             return *this; \
         }
 
@@ -123,7 +123,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         public: \
             T_ParamType value; \
         }; \
-        paramName##_ZFCoreParam paramName##_; \
+        paramName##_ZFCoreParam paramName##_PropV; \
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
@@ -131,7 +131,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFCORE_PARAM_RETAIN_DEFINE(T_Owner, T_ParamType, paramName, initValue) \
     T_ParamType const &T_Owner::paramName(void) const \
     { \
-        return this->paramName##_.value; \
+        return this->paramName##_PropV.value; \
     } \
     /** @cond ZFPrivateDoc */ \
     T_Owner::paramName##_ZFCoreParam::paramName##_ZFCoreParam(void) \
@@ -162,9 +162,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     { \
         zfCoreMutexLock(); \
         zfunsafe_zfRetain(value); \
-        zfunsafe_zfRelease(this->paramName##_.value); \
+        zfunsafe_zfRelease(this->paramName##_PropV.value); \
         zfCoreMutexUnlock(); \
-        this->paramName##_.value = value; \
+        this->paramName##_PropV.value = value; \
         return *this; \
     }
 

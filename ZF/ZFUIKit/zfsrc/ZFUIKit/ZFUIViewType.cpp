@@ -64,6 +64,12 @@ ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, sizeFill,
     this->sizeParam(ZFUISizeParamFillFill());
     this->sizeHint(size);
 }
+ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, sizeFill,
+                  ZFMP_IN(zffloat, size))
+{
+    this->sizeParam(ZFUISizeParamFillFill());
+    this->sizeHint(ZFUISizeMake(size));
+}
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, void, sizeFill,
                   ZFMP_IN(zffloat, width),
                   ZFMP_IN(zffloat, height))
@@ -80,6 +86,12 @@ ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, sizeWrap,
 {
     this->sizeParam(ZFUISizeParamWrapWrap());
     this->sizeHint(size);
+}
+ZFMETHOD_DEFINE_1(ZFUILayoutParam, void, sizeWrap,
+                  ZFMP_IN(zffloat, size))
+{
+    this->sizeParam(ZFUISizeParamWrapWrap());
+    this->sizeHint(ZFUISizeMake(size));
 }
 ZFMETHOD_DEFINE_2(ZFUILayoutParam, void, sizeWrap,
                   ZFMP_IN(zffloat, width),

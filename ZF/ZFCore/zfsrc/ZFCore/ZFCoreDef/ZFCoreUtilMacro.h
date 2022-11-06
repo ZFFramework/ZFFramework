@@ -527,27 +527,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     public: \
         inline T_ParamType const &paramName(void) const \
         { \
-            return this->_ZFP_##paramName.value; \
-        } \
-        /** @brief see @ref paramName */ \
-        inline T_ParamType &paramName(void) \
-        { \
-            return this->_ZFP_##paramName.value; \
+            return this->paramName##_PropV.value; \
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD _ZFP_T_##paramName \
+        zfclassLikePOD paramName##_ZFCoreParam \
         { \
         public: \
-            _ZFP_T_##paramName(void) \
+            paramName##_ZFCoreParam(void) \
             : value(initValue) \
             { \
             } \
-            _ZFP_T_##paramName(ZF_IN const _ZFP_T_##paramName &ref) \
+            paramName##_ZFCoreParam(ZF_IN const paramName##_ZFCoreParam &ref) \
             : value(ref.value) \
             { \
             } \
-            _ZFP_T_##paramName &operator = (ZF_IN const _ZFP_T_##paramName &ref) \
+            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref) \
             { \
                 this->value = ref.value; \
                 return *this; \
@@ -555,13 +550,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         public: \
             T_ParamType value; \
         }; \
-        _ZFP_T_##paramName _ZFP_##paramName; \
+        paramName##_ZFCoreParam paramName##_PropV; \
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
         inline _ZFP_ZFCoreParam_self &paramName(ZF_IN T_ParamType const &value) \
         { \
-            this->_ZFP_##paramName.value = value; \
+            this->paramName##_PropV.value = value; \
             return *this; \
         }
 

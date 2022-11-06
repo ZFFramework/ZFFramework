@@ -32,7 +32,7 @@ public:
                                  ZF_IN_OPT zfindex size = zfindexMax())
     {
         ZFBuffer buf;
-        buf.bufferCopy(src, size * sizeof(zfchar));
+        buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
         return this->jsonParse(buf);
     }
     virtual ZFJsonItem jsonParse(ZF_IN const ZFInput &inputCallback)

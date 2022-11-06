@@ -20,22 +20,21 @@ protected:
         container->childAdd(layout)->c_sizeFill()->c_margin(40);
         layout->viewBackgroundColor(ZFUIColorRed());
 
-        ZFCoreArrayPOD<ZFUIView *> v;
+        ZFCoreArray<zfautoObject> v;
         for(zfindex i = 0; i < 5; ++i)
         {
             zfblockedAlloc(ZFUITextView, t);
-            layout->childAdd(t);
             v.add(t);
             t->text(zfstringWithFormat("text %zi", i));
             t->viewBackgroundColor(ZFUIColorRandom());
         }
 
-        zfal_maker(v[0]).left().toParentLeft().right().toLeft(v[1]);
-        zfal_maker(v[1]).left().toRight(v[0]).right().toLeft(v[2]);
-        zfal_maker(v[2]).left().toRight(v[1]).right().toParentRight();
+        layout->childAdd(v[0])->c_left()->c_toParentLeft()->c_right()->c_toLeft(v[1]);
+        layout->childAdd(v[1])->c_left()->c_toRight(v[0])->c_right()->c_toLeft(v[2]);
+        layout->childAdd(v[2])->c_left()->c_toRight(v[1])->c_right()->c_toParentRight();
 
-        zfal_maker(v[3]).right().toLeft(v[1]).bottom().toTop(v[1]).height().toWidth(v[1]).scale(2);
-        zfal_maker(v[4]).left().toRight(v[1]).top().toBottom(v[1]).height().toWidth(v[1]).scale(3);
+        layout->childAdd(v[3])->c_right()->c_toLeft(v[1])->c_bottom()->c_toTop(v[1])->c_height()->c_toWidth(v[1])->c_weight(2);
+        layout->childAdd(v[4])->c_left()->c_toRight(v[1])->c_top()->c_toBottom(v[1])->c_height()->c_toWidth(v[1])->c_weight(3);
 
         this->prepareSettingButton(window, layout);
     }

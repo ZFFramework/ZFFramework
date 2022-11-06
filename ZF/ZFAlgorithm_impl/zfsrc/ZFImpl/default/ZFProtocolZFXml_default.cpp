@@ -31,7 +31,7 @@ public:
                                ZF_IN_OPT zfindex size = zfindexMax())
     {
         ZFBuffer buf;
-        buf.bufferCopy(src, size * sizeof(zfchar));
+        buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
         return this->xmlParse(buf);
     }
     virtual ZFXmlItem xmlParse(ZF_IN const ZFInput &inputCallback)

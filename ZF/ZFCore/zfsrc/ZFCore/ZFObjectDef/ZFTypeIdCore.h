@@ -154,7 +154,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
     ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
-    _ZFP_ZFTYPEID_DEFINE(TypeName, Type)
+    _ZFP_ZFTYPEID_DEFINE(TypeName, Type, zffalse)
 
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
@@ -245,7 +245,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE_BY_STRING_CONVERTER(TypeName, Type, convertFromStringAction, convertToStringAction) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
-    _ZFP_ZFTYPEID_DEFINE(TypeName, Type)
+    _ZFP_ZFTYPEID_DEFINE(TypeName, Type, zftrue)
 
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, convertFromStringAction, convertToStringAction) \
@@ -285,7 +285,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(TypeName, Type, serializeFromAction, serializeToAction) \
     ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction)) \
-    _ZFP_ZFTYPEID_DEFINE(TypeName, Type)
+    _ZFP_ZFTYPEID_DEFINE(TypeName, Type, zffalse)
 
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(TypeName, Type, serializeFromAction, serializeToAction) \
@@ -520,6 +520,21 @@ public:
     virtual zfbool wrappedValueIsInit(void) zfpurevirtual;
 
 public:
+    /**
+     * @brief whether prefer string converter during serialization,
+     *   which would result much shorter result
+     *
+     * @code
+     *   // default complex serializable data:
+     *   <Owner>
+     *       <TypeId name="PropertyName" value="xxx"/>
+     *   </Owner>
+     *
+     *   // if prefer string converter
+     *   <Owner PropertyName="xxx" />
+     * @endcode
+     */
+    virtual zfbool wrappedValuePreferStringConverter(void) {return zffalse;}
     /**
      * @brief convert from serializable data
      */

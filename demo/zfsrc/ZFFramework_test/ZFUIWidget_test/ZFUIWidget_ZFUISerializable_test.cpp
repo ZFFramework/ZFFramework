@@ -55,11 +55,11 @@ private:
 
         zfblockedAlloc(ZFUIView, child0);
         child0->viewUIEnableTree(zffalse);
-        zfal_maker(child0, parent).left().toParentLeft();
+        parent->childAdd(child0)->c_left()->c_toParent();
 
         zfblockedAlloc(ZFUITextView, child1);
         child1->text("special chars: \r\n\t\"'-_=+<>()[]{}");
-        zfal_maker(child1, parent).right().toParentRight();
+        parent->childAdd(child1)->c_right()->c_toParentRight();
 
         return parent;
     }

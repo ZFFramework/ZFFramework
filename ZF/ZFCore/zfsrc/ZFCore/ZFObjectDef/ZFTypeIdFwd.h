@@ -260,6 +260,8 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         virtual zfbool wrappedValueIsInit(void); \
     public: \
         zfoverride \
+        virtual zfbool wrappedValuePreferStringConverter(void); \
+        zfoverride \
         virtual zfbool wrappedValueFromData(ZF_IN const ZFSerializableData &serializableData, \
                                             ZF_OUT_OPT zfstring *outErrorHint = zfnull, \
                                             ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull); \
@@ -322,7 +324,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, value) \
         )
 
-#define _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type) \
+#define _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type, preferStringConverter) \
+    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) \
+    {return preferStringConverter;} \
     zfbool v_##TypeName::wrappedValueFromData(ZF_IN const ZFSerializableData &serializableData, \
                                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
                                               ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */) \
@@ -337,6 +341,8 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     {return TypeName##ToString(s, this->zfv);}
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_NOT_SERIALIZABLE(TypeName, Type) \
+    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) \
+    {return zffalse;} \
     zfbool v_##TypeName::wrappedValueFromData(ZF_IN const ZFSerializableData &serializableData, \
                                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
                                               ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */) \
@@ -470,9 +476,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     }; \
     /** @endcond */
 
-#define _ZFP_ZFTYPEID_DEFINE(TypeName, Type) \
+#define _ZFP_ZFTYPEID_DEFINE(TypeName, Type, preferStringConverter) \
     _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
-    _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type) \
+    _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type, preferStringConverter) \
     _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type)
 
 // ============================================================

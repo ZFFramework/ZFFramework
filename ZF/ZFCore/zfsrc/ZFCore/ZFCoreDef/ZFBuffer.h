@@ -74,6 +74,7 @@ public:
     }
     /**
      * @brief util method to malloc and copy buffer, ensured NULL terminated (not included in bufferSize)
+     * @note bufferSize must explicitly specified
      */
     zffinal void bufferCopy(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
     {

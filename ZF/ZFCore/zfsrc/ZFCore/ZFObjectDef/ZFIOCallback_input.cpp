@@ -615,11 +615,15 @@ static ZFInput _ZFP_ZFInputForBuffer(ZF_IN zfbool copy,
     {
         return zfnull;
     }
+    if(count == zfindexMax())
+    {
+        count = zfslen((const zfchar *)src);
+    }
     if(copy)
     {
         zfblockedAllocWithCache(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
         zfblockedAlloc(v_ZFBuffer, buf);
-        buf->zfv.bufferCopy(src, count);
+        buf->zfv.bufferCopy(src, count * sizeof(zfchar));
         owner->pStart = (const zfbyte *)buf->zfv.buffer();
         owner->pEnd = owner->pStart + buf->zfv.bufferSize();
         owner->p = owner->pStart;
@@ -633,7 +637,7 @@ static ZFInput _ZFP_ZFInputForBuffer(ZF_IN zfbool copy,
     {
         zfblockedAllocWithCache(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
         owner->pStart = (const zfbyte *)src;
-        owner->pEnd = owner->pStart + (count != zfindexMax() ? count : zfslen((const zfchar *)src));
+        owner->pEnd = owner->pStart + count;
         owner->p = owner->pStart;
         ZFInput ret = ZFCallbackForMemberMethod(
             owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferUnsafeOwner, onInput));

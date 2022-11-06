@@ -854,8 +854,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRectGetBounds,
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISize, ZFUIRectGetSize,
                                ZFMP_IN(const ZFUIRect &, rect))
 {
-    ZFUISize ret = {rect.width, rect.height};
-    return ret;
+    return (ZFUISize const &)(rect.width);
 }
 /**
  * @brief get center point of the rect

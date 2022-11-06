@@ -37,14 +37,45 @@ zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule
 public:
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM_WITH_INIT(ZFUIAutoLayoutPosEnum, pos, ZFUIAutoLayoutPos::e_None)
+
+private:
+    zfautoObjectT<ZFObjectHolder *> target_PropV;
+public:
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM(zfstring, targetId)
-    /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM(ZFUIView *, target)
+    inline ZFUIView *target(void) const
+    {
+        return this->target_PropV ? this->target_PropV->objectHolded<ZFUIView *>() : zfnull;
+    }
+    /** @brief see @ref target */
+    inline ZFUIAutoLayoutRule &target(ZF_IN ZFUIView * const &value)
+    {
+        if(value != zfnull)
+        {
+            this->target_PropV = value->objectHolder();
+        }
+        else
+        {
+            this->target_PropV = zfnull;
+        }
+        return *this;
+    }
+    ZFUIView *_ZFP_targetForLayout(ZF_IN ZFUIView *parent) const
+    {
+        ZFUIView *target = this->target();
+        if(target == zfnull || target == parent || target->viewParent() != parent)
+        {
+            return parent;
+        }
+        else
+        {
+            return target;
+        }
+    }
+
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM_WITH_INIT(ZFUIAutoLayoutPosEnum, targetPos, ZFUIAutoLayoutPos::e_None)
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM_WITH_INIT(zffloat, scale, 0)
+    ZFCORE_PARAM_WITH_INIT(zffloat, weight, 0)
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM(zffloat, offset)
 
@@ -52,31 +83,33 @@ public:
     /** @brief remove all contents */
     void removeAll(void)
     {
-        this->pos() = ZFUIAutoLayoutPos::e_None;
-        this->targetId().removeAll();
-        this->target() = zfnull;
-        this->targetPos() = ZFUIAutoLayoutPos::e_None;
-        this->scale() = 0;
-        this->offset() = 0;
+        this->pos(ZFUIAutoLayoutPos::e_None);
+        this->target(zfnull);
+        this->targetPos(ZFUIAutoLayoutPos::e_None);
+        this->weight(0);
+        this->offset(0);
     }
 
 public:
     /** @cond ZFPrivateDoc */
     zfbool operator == (ZF_IN const ZFUIAutoLayoutRule &ref) const
     {
-        return ((this->pos() == ZFUIAutoLayoutPos::e_None && ref.pos() == ZFUIAutoLayoutPos::e_None) || (zftrue
+        return (zftrue
                 && this->pos() == ref.pos()
                 && this->target() == ref.target()
                 && this->targetPos() == ref.targetPos()
-                && this->scale() == ref.scale()
+                && this->weight() == ref.weight()
                 && this->offset() == ref.offset()
-            ));
+            );
     }
     inline zfbool operator != (ZF_IN const ZFUIAutoLayoutRule &ref) const
     {
         return !this->operator == (ref);
     }
     /** @endcond */
+
+public:
+    zfstring _ZFP_AL_targetId;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
 
@@ -96,14 +129,73 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutAlign)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutMargin)
 
+    /** @brief the owner parent view this param attached to */
+    ZFMETHOD_DECLARE_0(ZFUIAutoLayout *, ownerParent)
+
+    /** @brief the owner child view this param attached to */
+    ZFMETHOD_DECLARE_0(ZFUIView *, ownerChild)
+
+    // ============================================================
+    // rule state
 public:
-    /**
-     * @brief for impl only, to access the low level rule
-     */
-    inline ZFUIAutoLayoutRule &implRule(ZF_IN ZFUIAutoLayoutPosEnum pos)
-    {
-        return _ZFP_al_d.ruleList[pos];
-    }
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(const ZFUIAutoLayoutRule &, rule, ZFMP_IN(ZFUIAutoLayoutPosEnum, pos))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, ruleRemove, ZFMP_IN(ZFUIAutoLayoutPosEnum, pos))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, ruleRemoveAll)
+
+    // ============================================================
+    // util methods to setup rule
+public:
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, width)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, height)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, left)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, top)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, right)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, bottom)
+
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toWidth, ZFMP_IN(ZFUIView *, target))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toHeight, ZFMP_IN(ZFUIView *, target))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toLeft, ZFMP_IN(ZFUIView *, target))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toTop, ZFMP_IN(ZFUIView *, target))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toRight, ZFMP_IN(ZFUIView *, target))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, toBottom, ZFMP_IN(ZFUIView *, target))
+
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, toParentWidth)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, toParentHeight)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, toParentLeft)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, toParentTop)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, toParentRight)
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, toParentBottom)
+
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, to, ZFMP_IN(ZFUIView *, target))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_0(void, toParent)
+
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, weight, ZFMP_IN(zffloat, weight))
+    /** @brief see #ZFUIAutoLayout */
+    ZFMETHOD_DECLARE_1(void, offset, ZFMP_IN(zffloat, offset))
 
 public:
     zfoverride
@@ -122,19 +214,19 @@ protected:
                                                  ZF_OUT_OPT zfstring *outErrorHint = zfnull);
 
 public:
-    static inline zfindex _ZFP_PosBegin(void) {return 1;}
-public:
     zfclassLikePOD _ZFP_Data
     {
     public:
-        ZFUIAutoLayout *owner;
-        ZFCoreArrayPOD<ZFUIAutoLayoutRule *> refByRule;
+        ZFUIAutoLayout *ownerParent;
+        zfautoObjectT<ZFObjectHolder *> ownerChild;
         ZFUIAutoLayoutRule ruleList[ZFUIAutoLayoutPos::ZFEnumCount];
+        zfbool posAttached[ZFUIAutoLayoutPos::ZFEnumCount];
+        zfbool posReset;
     public:
-        _ZFP_Data(void) : owner(zfnull), refByRule(), ruleList() {}
+        _ZFP_Data(void) : ownerParent(zfnull), ruleList(), posAttached(), posReset(zffalse) {}
     };
 public:
-    _ZFP_Data _ZFP_al_d;
+    _ZFP_Data _ZFP_AL_d;
 };
 
 /** @brief keyword for serialize */
@@ -152,7 +244,7 @@ public:
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_target_prev "prev"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIAutoLayoutParam_scale "scale"
+#define ZFSerializableKeyword_ZFUIAutoLayoutParam_weight "weight"
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIAutoLayoutParam_offset "offset"
 
@@ -175,7 +267,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *       <rule
  *           pos=""                 // required, #ZFUIAutoLayoutPos
  *           target=""              // required, rule target, see below
- *           scale=""               // optional, 0 by default
+ *           weight=""               // optional, 0 by default
  *           offset=""              // optional, 0 by default
  *           />
  *       ... // other rules
@@ -193,10 +285,11 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *   -  `self`, ref to self
  *   -  `N` while `N` is a #zfindex value :
  *     ref to the sibling at the index
- * -  `scale` : #zffloat value, `0` by default
+ * -  `weight` : #zffloat value, `0` by default
  *   -  for #ZFUIAutoLayoutPos::e_Width rule,
  *     `0` or negative value to show the width should be flexible,
- *     otherwise it's the scale value ref to the `target`
+ *     otherwise it's the weight value ref to the `target`
+ *     (resultWidth = targetWidth * weight)
  *   -  for #ZFUIAutoLayoutPos::e_Left rule,
  *     `0` or negative value to show the rule should be flexible,
  *     otherwise shows the rule are fixed value\n
@@ -212,38 +305,48 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *
  * during layout, a child has a list of positions (see #ZFUIAutoLayoutPos)
  * to apply rules to finally confirm the child's frame,
- * each position can have 0 or 1 rule
+ * each position can have 0 or 1 rule\n
+ * \n
+ * for convenient, #ZFUIAutoLayoutParam has many util methods to build the rule,
+ * typical case:
+ * @code
+ *   parent->childAdd(child)
+ *       ->c_widthFill(100)
+ *       ->c_left()->c_toParentLeft()
+ *       ->c_top()->c_right()->c_to(sibling)
+ *       ;
+ * @endcode
+ *
+ * a full list of util methods:
+ * -  widthFill(zffloat) / heightFill(zffloat) / sizeFill(zffloat, zffloat) :
+ *   explicitly specify the size rule,
+ *   same as setting #ZFUIView::layoutParam with sizeHint and fill sizeParam,
+ *   would be overrided by other rules if conflict,
+ *   set to negative value would reset the rule
+ * -  left(), top/right/bottom/width/height, etc :
+ *   specify the #ZFUIAutoLayoutRule::pos
+ * -  toLeft(target), top/right/bottom/width/height, etc :
+ *   specify the #ZFUIAutoLayoutRule::target and #ZFUIAutoLayoutRule::targetPos
+ * -  toParentLeft(), top/right/bottom/width/height, etc :
+ *   util to toLeft(target) with parent
+ * -  to(target) :
+ *   util to toLeft(target) with same position of left() series,
+ *   can be combined with multiple rules:
+ *   @code
+ *     parent->childAdd(child)->c_left()->c_top()->c_to(target);
+ *     parent->childAdd(child)->c_left()->c_toLeft(target)->c_top()->c_toTop(target);
+ *   @endcode
+ * -  toParent() :
+ *   util to to(target) with parent
+ * -  weight(weight) :
+ *   specify the #ZFUIAutoLayoutRule::weight
+ * -  offset(offset) :
+ *   specify the #ZFUIAutoLayoutRule::offset
  */
 zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextends ZFUIView
 {
     ZFOBJECT_DECLARE(ZFUIAutoLayout, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIAutoLayout)
-
-public:
-    /**
-     * @brief set rule
-     */
-    ZFMETHOD_DECLARE_3(void, rule,
-                       ZFMP_IN(ZFUIView *, child),
-                       ZFMP_IN(ZFUIAutoLayoutPosEnum, pos),
-                       ZFMP_IN(const ZFUIAutoLayoutRule &, rule))
-    /**
-     * @brief whether the rule has set
-     */
-    ZFMETHOD_DECLARE_2(zfbool, ruleExist,
-                       ZFMP_IN(ZFUIView *, child),
-                       ZFMP_IN(ZFUIAutoLayoutPosEnum, pos))
-    /**
-     * @brief remove rule
-     */
-    ZFMETHOD_DECLARE_2(void, ruleRemove,
-                       ZFMP_IN(ZFUIView *, child),
-                       ZFMP_IN(ZFUIAutoLayoutPosEnum, pos))
-    /**
-     * @brief remove rule
-     */
-    ZFMETHOD_DECLARE_1(void, ruleRemoveAll,
-                       ZFMP_IN(ZFUIView *, child))
 
     // ============================================================
     // override ZFUIView
@@ -287,11 +390,11 @@ protected:
     virtual void objectOnDealloc(void);
 
 private:
-    zfbool _ZFP_updateTarget(ZF_IN ZFUIView *child, ZF_IN_OUT ZFUIAutoLayoutRule &rule);
-    zfbool _ZFP_updateTargetId(ZF_IN ZFUIView *child, ZF_IN_OUT ZFUIAutoLayoutRule &rule);
-private:
     _ZFP_ZFUIAutoLayoutPrivate *d;
 };
+
+extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetUpdate(ZF_IN_OUT ZFUIAutoLayoutRule &rule, ZF_IN ZFUIAutoLayout *parent, ZF_IN ZFUIView *child, ZF_IN const zfchar *targetId);
+extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(ZF_OUT zfstring &targetId, ZF_IN const ZFUIAutoLayoutRule &rule, ZF_IN ZFUIAutoLayout *parent, ZF_IN ZFUIView *child);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIAutoLayout_h_
