@@ -36,6 +36,29 @@ protected:
         this->childRemoveAt(buttonIndex);
         zfsuperI(ZFUIButtonGroup)::buttonOnRemove(button, buttonIndex);
     }
+
+protected:
+    zfoverride
+    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
+                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
+                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull)
+    {
+        return zfsuper::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)
+            && zfsuperI(ZFUIButtonGroup)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos);
+    }
+    zfoverride
+    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
+                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
+                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull)
+    {
+        return zfsuper::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)
+            && zfsuperI(ZFUIButtonGroup)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint);
+    }
+    zfoverride
+    virtual inline zfbool serializableOnCheckNeedSerializeChildren(void)
+    {
+        return zfsuperI(ZFUIButtonGroup)::serializableOnCheckNeedSerializeChildren();
+    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

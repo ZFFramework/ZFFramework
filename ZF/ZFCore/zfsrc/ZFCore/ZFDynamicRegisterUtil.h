@@ -87,7 +87,8 @@ public:
      * so that you can use keyword completion by using the tag file
      */
     static void exportTag(ZF_IN_OUT const ZFOutput &output,
-                          ZF_IN_OPT zfbool exportScope = zffalse);
+                          ZF_IN_OPT zfbool exportScope = zffalse,
+                          ZF_IN_OPT zfbool exportInternal = zffalse);
 
 public:
     /**

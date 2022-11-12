@@ -219,17 +219,17 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, ZFUIButtonGroupTypeEnum, buttonGrou
 
 ZFMETHOD_DEFINE_0(ZFUIButtonGroup, zfindex, buttonCount)
 {
-    return this->_ZFP_ZFUIButtonGroup_buttons()->count();
+    return this->_ZFP_buttons->count();
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonGroup, zfindex, buttonFind,
                   ZFMP_IN(ZFUIButton *, button))
 {
-    return this->_ZFP_ZFUIButtonGroup_buttons()->find(button);
+    return this->_ZFP_buttons->find(button);
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonGroup, ZFUIButton *, buttonAt,
                   ZFMP_IN(zfindex, buttonIndex))
 {
-    return this->_ZFP_ZFUIButtonGroup_buttons()->get<ZFUIButton *>(buttonIndex);
+    return this->_ZFP_buttons->get<ZFUIButton *>(buttonIndex);
 }
 ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, buttonAdd,
                   ZFMP_IN(ZFUIButton *, button),
@@ -244,14 +244,14 @@ ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, buttonAdd,
         zfCoreCriticalIndexOutOfRange(atIndex, this->buttonCount());
         return ;
     }
-    this->_ZFP_ZFUIButtonGroup_buttons()->add(atIndex, button);
+    this->_ZFP_buttons->add(atIndex, button);
     _ZFP_ZFUIButtonGroup_setup(this, button, atIndex);
     this->buttonOnAdd(button, atIndex);
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemove,
                   ZFMP_IN(ZFUIButton *, button))
 {
-    this->buttonRemoveAt(this->_ZFP_ZFUIButtonGroup_buttons()->find(button));
+    this->buttonRemoveAt(this->_ZFP_buttons->find(button));
 }
 ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemoveAt,
                   ZFMP_IN(zfindex, buttonIndex))
@@ -268,7 +268,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemoveAt,
     ZFUIButton *button = this->buttonAt(buttonIndex);
     zfRetain(button);
     _ZFP_ZFUIButtonGroup_cleanup(this, button);
-    this->_ZFP_ZFUIButtonGroup_buttons()->remove(buttonIndex);
+    this->_ZFP_buttons->remove(buttonIndex);
     this->buttonOnRemove(button, buttonIndex);
     zfRelease(button);
 }

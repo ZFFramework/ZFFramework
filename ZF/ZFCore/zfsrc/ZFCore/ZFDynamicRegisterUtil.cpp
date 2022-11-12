@@ -273,7 +273,8 @@ zfbool ZFDynamic::operator == (ZF_IN const ZFDynamic &ref) const
 }
 
 void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
-                          ZF_IN_OPT zfbool exportScope /* = zffalse */)
+                          ZF_IN_OPT zfbool exportScope /* = zffalse */,
+                          ZF_IN_OPT zfbool exportInternal /* = zffalse */)
 {
     if(!output)
     {
@@ -295,64 +296,72 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
     zfstlmap<zfstlstringZ, zfbool> tags;
     const zfchar *zfpFix = "_ZFP_";
     zfindex zfpFixLen = zfslen(zfpFix);
+    const zfchar *zfpiFix = "_ZFP_I_";
+    zfindex zfpiFixLen = zfslen(zfpiFix);
 
     for(zfindex i = 0; i < allClass.count(); ++i)
     {
         const ZFClass *t = allClass[i];
-        if(zfsncmp(t->className(), zfpFix, zfpFixLen) != 0)
+        if(t->classIsInternalPrivate() || (!exportInternal && t->classIsInternal()))
         {
-            if(exportScope && !zfsIsEmpty(t->classNamespace()))
-            {
-                tags[t->classNameFull()] = zftrue;
-            }
-            else
-            {
-                tags[t->className()] = zftrue;
-            }
+            continue;
+        }
+        if(exportScope && !zfsIsEmpty(t->classNamespace()))
+        {
+            tags[t->classNameFull()] = zftrue;
+        }
+        else
+        {
+            tags[t->className()] = zftrue;
         }
     }
     for(zfindex i = 0; i < allMethod.count(); ++i)
     {
         const ZFMethod *t = allMethod[i];
-        if(zfsncmp(t->methodName(), zfpFix, zfpFixLen) != 0)
+        if(t->methodIsInternalPrivate() || (!exportInternal && t->methodIsInternal()))
         {
-            if(exportScope)
+            continue;
+        }
+        if(exportScope)
+        {
+            if(t->methodOwnerClass() != zfnull)
             {
-                if(t->methodOwnerClass() != zfnull)
-                {
-                    zfstlstringZ tag;
-                    tag += t->methodOwnerClass()->classNameFull();
-                    tag += ".";
-                    tag += t->methodName();
-                    tags[tag] = zftrue;
-                }
-                else if(!zfsIsEmpty(t->methodNamespace()))
-                {
-                    zfstlstringZ tag;
-                    tag += t->methodNamespace();
-                    tag += ".";
-                    tag += t->methodName();
-                    tags[tag] = zftrue;
-                }
-                else
-                {
-                    tags[t->methodName()] = zftrue;
-                }
+                zfstlstringZ tag;
+                tag += t->methodOwnerClass()->classNameFull();
+                tag += ".";
+                tag += t->methodName();
+                tags[tag] = zftrue;
+            }
+            else if(!zfsIsEmpty(t->methodNamespace()))
+            {
+                zfstlstringZ tag;
+                tag += t->methodNamespace();
+                tag += ".";
+                tag += t->methodName();
+                tags[tag] = zftrue;
             }
             else
             {
                 tags[t->methodName()] = zftrue;
             }
         }
+        else
+        {
+            tags[t->methodName()] = zftrue;
+        }
     }
     for(zfindex i = 0; i < allTypeId.count(); ++i)
     {
         const ZFTypeInfo *t = allTypeId[i];
-        if(!zfsIsEmpty(t->typeId())
-            && zfsncmp(t->typeId(), zfpFix, zfpFixLen) != 0)
+        if(t->typeIdClass() == zfnull || t->typeIdClass()->classIsInternalPrivate() || (!exportInternal && t->typeIdClass()->classIsInternal()))
         {
-            tags[t->typeId()] = zftrue;
+            continue;
         }
+        if(zfsncmp(t->typeId(), zfpiFix, zfpiFixLen) == 0 || (!exportInternal && zfsncmp(t->typeId(), zfpFix, zfpFixLen) == 0))
+        {
+            continue;
+        }
+        tags[t->typeId()] = zftrue;
     }
     for(zfindex i = 0; i < allNamespace.count(); ++i)
     {
@@ -1037,7 +1046,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFDynamicRemoveAllAutoNotify)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFDynamic, ZFDynamic)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_2(ZFDynamic, v_ZFDynamic, void, exportTag, ZFMP_IN_OUT(const ZFOutput &, output), ZFMP_IN_OPT(zfbool, exportScope, zffalse))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_3(ZFDynamic, v_ZFDynamic, void, exportTag, ZFMP_IN_OUT(const ZFOutput &, output), ZFMP_IN_OPT(zfbool, exportScope, zffalse), ZFMP_IN_OPT(zfbool, exportInternal, zffalse))
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         invokerObject->to<v_ZFDynamic *>()->zfv.regTag(regTag);
     }, v_ZFDynamic
