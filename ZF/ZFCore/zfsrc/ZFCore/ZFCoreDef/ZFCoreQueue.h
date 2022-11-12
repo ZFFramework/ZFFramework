@@ -104,6 +104,22 @@ public:
         return ret;
     }
 
+private:
+    static inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity)
+    {
+        if(capacity < 64)
+        {
+            capacity = ((capacity / 16) + 1) * 16;
+        }
+        else if(capacity < 256)
+        {
+            capacity = ((capacity / 64) + 1) * 64;
+        }
+        else
+        {
+            capacity = ((capacity / 256) + 1) * 256;
+        }
+    }
 public:
     /**
      * @brief get current capacity
@@ -115,20 +131,38 @@ public:
         return (_bufTail - _bufHead);
     }
     /**
+     * @brief change the capacity
+     */
+    void capacity(ZF_IN zfindex capacity)
+    {
+        if(capacity > this->capacity())
+        {
+            _capacityOptimize(capacity);
+            T_POD *bufHeadNew = (T_POD *)zfmalloc(capacity * sizeof(T_POD));
+            _bufChange(bufHeadNew, bufHeadNew + capacity, zffalse);
+        }
+    }
+    /**
      * @brief trim the buffer, call only if necessary
      */
-    zffinal void queueTrim(void)
+    zffinal void capacityTrim(void)
     {
-        zfindex capacityNew = this->count();
-        if(capacityNew < _ZFP_ZFCoreQueuePODBuiltinBufSize)
+        zfindex capacity = this->count();
+        if(capacity < _ZFP_ZFCoreQueuePODBuiltinBufSize)
         {
-            _bufChange(_bufBuiltin, _bufBuiltin + _ZFP_ZFCoreQueuePODBuiltinBufSize, zffalse);
+            if(_bufHead != _bufBuiltin)
+            {
+                _bufChange(_bufBuiltin, _bufBuiltin + _ZFP_ZFCoreQueuePODBuiltinBufSize, zffalse);
+            }
         }
         else
         {
-            capacityNew = ((capacityNew / _ZFP_ZFCoreQueuePODBuiltinBufSize) + 1) * _ZFP_ZFCoreQueuePODBuiltinBufSize;
-            T_POD *bufHeadNew = (T_POD *)zfmalloc(sizeof(T_POD) * capacityNew);
-            _bufChange(bufHeadNew, bufHeadNew + capacityNew, zftrue);
+            _capacityOptimize(capacity);
+            if(capacity != this->capacity())
+            {
+                T_POD *bufHeadNew = (T_POD *)zfmalloc(sizeof(T_POD) * capacity);
+                _bufChange(bufHeadNew, bufHeadNew + capacity, zftrue);
+            }
         }
     }
 
@@ -137,26 +171,90 @@ public:
      * @brief push element at tail of the queue,
      *   auto increase capacity if necessary
      */
-    inline void queuePut(ZF_IN T_POD const &e)
+    inline T_POD &add(void)
+    {
+        T_POD *ret = _pTail;
+        _loopNext(_pTail);
+        if(_pTail == _pHead)
+        {
+            this->capacity(this->capacity() + 1);
+        }
+        return *ret;
+    }
+    /**
+     * @brief push element at tail of the queue,
+     *   auto increase capacity if necessary
+     */
+    inline void add(ZF_IN T_POD const &e)
     {
         *_pTail = e;
         _loopNext(_pTail);
         if(_pTail == _pHead)
         {
-            zfindex capacityNew = this->capacity() * 2;
-            T_POD *bufHeadNew = (T_POD *)zfmalloc(sizeof(T_POD) * capacityNew);
-            _bufChange(bufHeadNew, bufHeadNew + capacityNew, zftrue);
+            this->capacity(this->capacity() + 1);
+        }
+    }
+    /**
+     * @brief push element at tail of the queue,
+     *   auto increase capacity if necessary
+     */
+    void addFrom(ZF_IN const ZFCoreArray<T_POD> &arr)
+    {
+        this->addFrom(arr.arrayBuf(), arr.count());
+    }
+    /**
+     * @brief push element at tail of the queue,
+     *   auto increase capacity if necessary
+     */
+    void addFrom(ZF_IN const T_POD *buf, ZF_IN zfindex count)
+    {
+        this->capacity(this->count() + count + 1);
+        if(_pHead <= _pTail)
+        {
+            if(_pTail + count <= _bufTail)
+            {
+                zfmemcpy(_pTail, buf, count * sizeof(T_POD));
+            }
+            else
+            {
+                zfindex tmp = _bufTail - _pTail;
+                zfmemcpy(_pTail, buf, tmp * sizeof(T_POD));
+                zfmemcpy(_bufHead, buf + tmp, (count - tmp) * sizeof(T_POD));
+                _pTail = _bufHead + (count - tmp);
+            }
+        }
+        else
+        {
+            zfmemcpy(_pTail, buf, count * sizeof(T_POD));
+            _pTail += count;
         }
     }
     /**
      * @brief take element at head of the queue, assert fail if empty
      */
-    inline T_POD queueTake(void)
+    inline T_POD &take(void)
     {
         zfCoreAssertWithMessage(_pHead != _pTail, "take from an empty queue");
         T_POD *ret = _pHead;
         _loopNext(_pHead);
         return *ret;
+    }
+
+    /**
+     * @brief take element at tail of the queue, assert fail if empty
+     */
+    inline T_POD &takeLast(void)
+    {
+        zfCoreAssertWithMessage(_pHead != _pTail, "take from an empty queue");
+        if(_pTail == _bufHead)
+        {
+            _pTail = _bufTail - 1;
+        }
+        else
+        {
+            --_pTail;
+        }
+        return *_pTail;
     }
 
 public:
@@ -228,20 +326,18 @@ private:
     }
     void _bufChange(ZF_IN T_POD *bufHeadNew, ZF_IN T_POD *bufTailNew, ZF_IN zfbool bufFull)
     {
-        T_POD *pNew = bufHeadNew;
-        T_POD *pOld = _pHead;
-        if(bufFull)
+        T_POD *pTailNew = bufHeadNew + this->count();
+
+        if(_pTail > _pHead || (_pTail == _pHead && !bufFull))
         {
-            *pNew = *pOld;
-            _loopNext(pOld);
-            ++pNew;
+            zfmemcpy(bufHeadNew, _pHead, (_pTail - _pHead) * sizeof(T_POD));
         }
-        while(pOld != _pTail)
+        else
         {
-            *pNew = *pOld;
-            _loopNext(pOld);
-            ++pNew;
+            zfmemcpy(bufHeadNew, _pHead, (_bufTail - _pHead) * sizeof(T_POD));
+            zfmemcpy(bufHeadNew + (_bufTail - _pHead), _bufHead, (_pTail - _bufHead) * sizeof(T_POD));
         }
+
         if(_bufHead != _bufBuiltin)
         {
             zffree(_bufHead);
@@ -249,7 +345,7 @@ private:
         _bufHead = bufHeadNew;
         _bufTail = bufTailNew;
         _pHead = _bufHead;
-        _pTail = pNew;
+        _pTail = pTailNew;
     }
 };
 

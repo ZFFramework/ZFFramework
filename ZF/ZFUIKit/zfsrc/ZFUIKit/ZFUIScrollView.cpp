@@ -538,7 +538,7 @@ private:
         this->scrollerActionRunning = zftrue;
         while(!this->scrollerActions.isEmpty())
         {
-            _ZFP_ZFUIScrollViewAction scrollerAction = this->scrollerActions.queueTake();
+            _ZFP_ZFUIScrollViewAction scrollerAction = this->scrollerActions.take();
             switch(scrollerAction)
             {
                 case _ZFP_ZFUIScrollViewActionDragBegin:
@@ -569,7 +569,7 @@ private:
     }
     void scrollerActionAdd(ZF_IN _ZFP_ZFUIScrollViewAction scrollerAction)
     {
-        this->scrollerActions.queuePut(scrollerAction);
+        this->scrollerActions.add(scrollerAction);
     }
 
     // ============================================================

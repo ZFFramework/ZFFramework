@@ -1431,12 +1431,11 @@ void ZFClass::_ZFP_ZFClassInitFinish_parentInterfaceListCache(ZF_IN ZFClass *cls
 { // init parent type list for better search performance
     ZFCoreArrayPOD<const ZFClass *> parentList;
     {
-        ZFCoreArrayPOD<const ZFClass *> clsToCheck;
+        ZFCoreQueuePOD<const ZFClass *> clsToCheck;
         clsToCheck.add(cls);
         do
         {
-            const ZFClass *clsTmp = clsToCheck.getFirst();
-            clsToCheck.removeFirst();
+            const ZFClass *clsTmp = clsToCheck.take();
             if(parentList.find(clsTmp) == zfindexMax())
             {
                 parentList.add(clsTmp);
@@ -1516,12 +1515,11 @@ void ZFClass::_ZFP_ZFClassInitFinish_interfaceCastListCache(ZF_IN ZFClass *cls)
 }
 void ZFClass::_ZFP_ZFClassInitFinish_allParentAndChildrenCache(ZF_IN ZFClass *cls)
 { // all parent and children
-    ZFCoreArrayPOD<const ZFClass *> clsToCheck;
+    ZFCoreQueuePOD<const ZFClass *> clsToCheck;
     clsToCheck.add(cls);
     do
     {
-        const ZFClass *clsTmp = clsToCheck.getFirst();
-        clsToCheck.removeFirst();
+        const ZFClass *clsTmp = clsToCheck.take();
         if(cls->d->allParent.find(clsTmp) == cls->d->allParent.end())
         {
             if(clsTmp != cls)

@@ -1921,12 +1921,11 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById,
         return zfnull;
     }
 
-    ZFCoreArrayPOD<ZFUIView *> toFind;
+    ZFCoreQueuePOD<ZFUIView *> toFind;
     toFind.add(this);
     while(!toFind.isEmpty())
     {
-        ZFUIView *view = toFind.get(0);
-        toFind.remove(0);
+        ZFUIView *view = toFind.take();
         if(zfscmpTheSame(view->viewId().cString(), viewId))
         {
             return view;

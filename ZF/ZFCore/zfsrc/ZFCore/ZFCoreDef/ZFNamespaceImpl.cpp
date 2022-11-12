@@ -199,17 +199,17 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret)
 {
     zfCoreMutexLocker();
     ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
-    toCheck.queuePut(&_ZFP_ZFNamespaceMap());
+    toCheck.add(&_ZFP_ZFNamespaceMap());
     do
     {
-        _ZFP_ZFNamespaceMapType *t = toCheck.queueTake();
+        _ZFP_ZFNamespaceMapType *t = toCheck.take();
         if(!t->ns.isEmpty())
         {
             ret.add(t->ns);
         }
         for(zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
         {
-            toCheck.queuePut(it->second.pointerValue());
+            toCheck.add(it->second.pointerValue());
         }
     } while(!toCheck.isEmpty());
 }
@@ -243,11 +243,11 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
     ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
     for(zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
     {
-        toCheck.queuePut(it->second.pointerValue());
+        toCheck.add(it->second.pointerValue());
     }
     do
     {
-        _ZFP_ZFNamespaceMapType *t = toCheck.queueTake();
+        _ZFP_ZFNamespaceMapType *t = toCheck.take();
         if(!t->ns.isEmpty())
         {
             ret.add(t->ns);
@@ -256,7 +256,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
         {
             for(zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
             {
-                toCheck.queuePut(it->second.pointerValue());
+                toCheck.add(it->second.pointerValue());
             }
         }
     } while(!toCheck.isEmpty());

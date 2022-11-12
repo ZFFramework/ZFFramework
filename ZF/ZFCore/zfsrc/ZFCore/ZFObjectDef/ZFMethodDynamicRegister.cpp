@@ -36,18 +36,18 @@ zfautoObject ZFMethodInvokeData::callSuper(void)
     do {
         if(cls->classParent() != zfnull)
         {
-            toCheck.queuePut(cls->classParent());
+            toCheck.add(cls->classParent());
         }
         for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i)
         {
-            toCheck.queuePut(cls->implementedInterfaceAt(i));
+            toCheck.add(cls->implementedInterfaceAt(i));
         }
         if(toCheck.isEmpty())
         {
             break;
         }
 
-        cls = toCheck.queueTake();
+        cls = toCheck.take();
         const ZFMethod *chain = invokerMethod;
         do {
             cls->methodForNameIgnoreParentGetAllT(buf, chain->methodName());
