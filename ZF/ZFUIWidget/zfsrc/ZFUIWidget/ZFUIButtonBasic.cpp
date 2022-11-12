@@ -158,10 +158,6 @@ public:
             { \
                 ZFPropertyCopy(property, button->T_Component##View()->toObject(), listenerData.sender()); \
             } \
-            else if(property == ZFPropertyAccess(ZFUITextView, text)) \
-            { \
-                button->d->T_Component##ViewUpdate(); \
-            } \
         }
 
     _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(label, Normal)

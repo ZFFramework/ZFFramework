@@ -208,12 +208,17 @@ public:
      */
     void addFrom(ZF_IN const T_POD *buf, ZF_IN zfindex count)
     {
+        if(buf == zfnull || count == 0)
+        {
+            return;
+        }
         this->capacity(this->count() + count + 1);
         if(_pHead <= _pTail)
         {
-            if(_pTail + count <= _bufTail)
+            if(_pTail + count < _bufTail)
             {
                 zfmemcpy(_pTail, buf, count * sizeof(T_POD));
+                _pTail += count;
             }
             else
             {
