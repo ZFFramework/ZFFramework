@@ -35,7 +35,7 @@ zfclassFwd _ZFP_ZFUIListViewPrivate;
  * @code
  *   <ZFUIListView>
  *       <ListAdapterClass category="listAdapter" /> // used only if #listAdapterSerializable
- *       <ZFArray name="cellUpdater"> // all cell updater
+ *       <ZFArray prop="cellUpdater"> // all cell updater
  *           ...
  *       </ZFArray>
  *   </ZFUIListView>

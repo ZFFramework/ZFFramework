@@ -125,7 +125,7 @@ zfclassFwd _ZFP_ZFUIAniImageViewPrivate;
  * serializable data:
  * @code
  *   <ZFUIAniImageView>
- *       <ZFUIAniImageData name="aniData"
+ *       <ZFUIAniImageData prop="aniData"
  *               frameSizePixel="(40,60)" // size of each frame (in pixel)
  *               frameCount="123" // optional, total frame count
  *               frameDurations="[33,1000]" // optional, list of duration of each frame

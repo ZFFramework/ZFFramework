@@ -113,9 +113,9 @@ public:
  * serializable data:
  * @code
  *   <ZFRegExpResult>
- *       <zfbool name="matched" value="xxx" /> // optional, false by default
- *       <ZFIndexRange name="matchedRange" value="xxx" /> // optional, ZFIndexRangeZero by default
- *       <ZFCoreArray name="namedGroups"> // optional, empty by default
+ *       <zfbool category="matched" value="xxx" /> // optional, false by default
+ *       <ZFIndexRange category="matchedRange" value="xxx" /> // optional, ZFIndexRangeZero by default
+ *       <ZFCoreArray category="namedGroups"> // optional, empty by default
  *           <ZFIndexRange /> // each namedGroups
  *       </ZFCoreArray>
  *   </ZFRegExpResult>

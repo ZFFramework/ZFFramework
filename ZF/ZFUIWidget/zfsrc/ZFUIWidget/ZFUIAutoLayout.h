@@ -262,8 +262,8 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * serializable data:
  * @code
  *   <ZFUIAutoLayoutParam>
- *       <zffloat name="biasX" />   // optional, 0.5 by default
- *       <zffloat name="biasY" />   // optional, 0.5 by default
+ *       <zffloat prop="biasX" />   // optional, 0.5 by default
+ *       <zffloat prop="biasY" />   // optional, 0.5 by default
  *       <rule
  *           pos=""                 // required, #ZFUIAutoLayoutPos
  *           target=""              // required, rule target, see below

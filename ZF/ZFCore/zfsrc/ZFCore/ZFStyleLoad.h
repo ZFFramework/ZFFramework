@@ -93,8 +93,8 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
  * data should contains:
  * @code
  *   <ZFStyleList>
- *       <Style1 name="styleKey1" ... />
- *       <Style2 name="styleKey2" ... />
+ *       <Style1 prop="styleKey1" ... />
+ *       <Style2 prop="styleKey2" ... />
  *   </ZFStyleList>
  * @endcode
  *

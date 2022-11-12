@@ -111,7 +111,7 @@ extern ZFLIB_ZFCore const ZFSerializableData *requireElementByCategory(ZF_IN con
  */
 inline const zfchar *checkPropertyName(ZF_IN const ZFSerializableData &serializableData)
 {
-    return ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_name);
+    return ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_prop);
 }
 /**
  * @brief see #checkPropertyName, output error hint if failed,
@@ -121,7 +121,7 @@ inline const zfchar *requirePropertyName(ZF_IN const ZFSerializableData &seriali
                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull,
                                          ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull)
 {
-    return ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_name, outErrorHint, outErrorPos);
+    return ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_prop, outErrorHint, outErrorPos);
 }
 
 /**
@@ -256,6 +256,22 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(ZF_IN const ZFSerializableData &se
     { \
         if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) \
             || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareTheSame)) \
+        { \
+            ZFSerializableData categoryData; \
+            if(!TypeName##ToData(categoryData, thisValue, outErrorHint)) \
+            { \
+                return zffalse; \
+            } \
+            categoryData.category(key); \
+            serializableData.childAdd(categoryData); \
+        } \
+    } while(zffalse)
+/** @brief util macro to impl #ZFSerializable */
+#define ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint, \
+    key, TypeName, thisValue, defaultValue) \
+    do \
+    { \
+        if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) \
         { \
             ZFSerializableData categoryData; \
             if(!TypeName##ToData(categoryData, thisValue, outErrorHint)) \

@@ -67,9 +67,10 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageScal
  *
  * serializable data:
  * @code
- *   <node ...>
+ *   <node
+ *       frame="ZFUIRect"
+ *   >
  *       <ZFUIImage category="ref" ... />
- *       <ZFUIRect category="frame" ... />
  *   </node>
  * @endcode
  */
@@ -106,9 +107,10 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageLoad
  *
  * serializable data:
  * @code
- *   <node>
- *       <ZFUIColor category="color" /> // optional, transparent by default
- *       <ZFUISize category="size" /> // optional, (1, 1) by default
+ *   <node
+ *       color="ZFUIColor" // optional, transparent by default
+ *       size="ZFUISize" // optional, (1, 1) by default
+ *   >
  *   </node>
  * @endcode
  */
@@ -122,7 +124,6 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageLoad
 /**
  * @brief load image from color
  *
- * size is in pixel,
  * invalid size is automatically convert to 1 pixel
  * @note this method has no cache logic
  */

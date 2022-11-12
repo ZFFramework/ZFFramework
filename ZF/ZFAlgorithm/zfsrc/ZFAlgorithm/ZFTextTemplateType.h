@@ -251,22 +251,22 @@ private:
  * @code
  *   <ZFTextTemplateParam>
  *       <node category="replace"> // optional
- *           <zfstring name="key0" value="value0" />
- *           <zfstring name="key1" value="value1" />
+ *           <zfstring prop="key0" value="value0" />
+ *           <zfstring prop="key1" value="value1" />
  *           ...
  *       </node>
  *
  *       <node category="enable"> // optional
- *           <zfbool name="key0" value="value0" />
- *           <zfbool name="key1" value="value1" />
+ *           <zfbool prop="key0" value="value0" />
+ *           <zfbool prop="key1" value="value1" />
  *           ...
  *       </node>
  *
  *       <zfbool category="enableDataDefault" ... /> // optional, false by default
  *
  *       <node category="index"> // optional
- *           <ZFTextTemplateIndexData name="key0" ... />
- *           <ZFTextTemplateIndexData name="key1" ... />
+ *           <ZFTextTemplateIndexData prop="key0" ... />
+ *           <ZFTextTemplateIndexData prop="key1" ... />
  *           ...
  *       </node>
  *

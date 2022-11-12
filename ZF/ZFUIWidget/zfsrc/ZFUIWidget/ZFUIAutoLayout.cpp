@@ -169,12 +169,9 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(ZF_IN_OUT ZFSerializab
             continue;
         }
         ZFSerializableData element;
-        zfstring value;
 
         // pos
-        value.removeAll();
-        ZFUIAutoLayoutPosToString(value, rule.pos());
-        element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, value);
+        element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPosToString(rule.pos()));
 
         // target
         {

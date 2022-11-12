@@ -59,18 +59,9 @@ ZFTYPEID_DEFINE(zfidentity, zfidentity, {
         {
             return zffalse;
         }
-        const zfchar *valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
-        if(valueString == zfnull)
-        {
-            v = zfidentityInvalid();
-            return zftrue;
-        }
-        if(!zfidentityFromString(v, valueString))
-        {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
-                "invalid value: \"%s\"", valueString);
-            return zffalse;
-        }
+        v = zfidentityInvalid();
+        ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+            check, ZFSerializableKeyword_value, zfidentity, v);
         serializableData.resolveMark();
         return zftrue;
     }, {

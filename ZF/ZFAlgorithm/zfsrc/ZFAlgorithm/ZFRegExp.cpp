@@ -43,21 +43,15 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
         const ZFSerializableData *element = zfnull;
 
         v.matched = zffalse;
-        element = ZFSerializableUtil::checkElementByName(serializableData, ZFSerializableKeyword_ZFRegExpResult_matched);
-        if(element != zfnull && !zfboolFromData(v.matched, *element, outErrorHint, outErrorPos))
-        {
-            return zffalse;
-        }
+        ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+            check, ZFSerializableKeyword_ZFRegExpResult_matched, zfbool, v.matched);
 
         v.matchedRange = ZFIndexRangeZero();
-        element = ZFSerializableUtil::checkElementByName(serializableData, ZFSerializableKeyword_ZFRegExpResult_matchedRange);
-        if(element != zfnull && !ZFIndexRangeFromData(v.matchedRange, serializableData, outErrorHint, outErrorPos))
-        {
-            return zffalse;
-        }
+        ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+            check, ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange);
 
         v.namedGroups.removeAll();
-        element = ZFSerializableUtil::checkElementByName(serializableData, ZFSerializableKeyword_ZFRegExpResult_namedGroups);
+        element = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFRegExpResult_namedGroups);
         if(element != zfnull && !ZFCoreArrayFromData(
             v.namedGroups,
             ZFIndexRangeFromData,
@@ -71,27 +65,11 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
     }, {
         serializableData.itemClass(ZFTypeId_ZFRegExpResult());
 
-        if(v.matched)
-        {
-            ZFSerializableData element;
-            if(!zfboolToData(element, v.matched, outErrorHint))
-            {
-                return zffalse;
-            }
-            element.propertyName(ZFSerializableKeyword_ZFRegExpResult_matched);
-            serializableData.childAdd(element);
-        }
+        ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
+            ZFSerializableKeyword_ZFRegExpResult_matched, zfbool, v.matched, zffalse);
 
-        if(v.matchedRange != ZFIndexRangeZero())
-        {
-            ZFSerializableData element;
-            if(!ZFIndexRangeToData(element, v.matchedRange, outErrorHint))
-            {
-                return zffalse;
-            }
-            element.propertyName(ZFSerializableKeyword_ZFRegExpResult_matchedRange);
-            serializableData.childAdd(element);
-        }
+        ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
+            ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange, ZFIndexRangeZero());
 
         if(!v.namedGroups.isEmpty())
         {
@@ -100,7 +78,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
             {
                 return zffalse;
             }
-            element.propertyName(ZFSerializableKeyword_ZFRegExpResult_namedGroups);
+            element.category(ZFSerializableKeyword_ZFRegExpResult_namedGroups);
             serializableData.childAdd(element);
         }
 

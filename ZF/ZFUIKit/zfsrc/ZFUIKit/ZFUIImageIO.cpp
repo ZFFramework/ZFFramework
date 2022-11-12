@@ -124,7 +124,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIImage *>, ZFUIImageScale,
 // ZFUIImageLoadInFrame
 static zfbool _ZFP_ZFUIImageLoadInFrame(ZF_IN_OUT ZFUIImage *ret,
                                         ZF_IN ZFUIImage *image,
-                                        ZF_IN const ZFUIRect &framePixel)
+                                        ZF_IN const ZFUIRect &framePixel,
+                                        ZF_IN zfbool storeSerializableData)
 {
     if(ret == zfnull || image == zfnull)
     {
@@ -152,18 +153,17 @@ static zfbool _ZFP_ZFUIImageLoadInFrame(ZF_IN_OUT ZFUIImage *ret,
     ret->nativeImage(nativeImage, zffalse);
 
     // only store custom type for performance
-    if(image->imageSerializableType() != zfnull)
+    if(storeSerializableData && image->imageSerializableType() != zfnull)
     {
         ZFSerializableData data;
         data.itemClass(ZFSerializableKeyword_node);
         ZFSerializableData refData;
-        ZFSerializableData frameData;
-        if(image->serializeToData(refData) && ZFUIRectToData(frameData, frame))
+        zfstring frameString;
+        if(image->serializeToData(refData) && ZFUIRectToString(frameString, frame))
         {
+            data.attr(ZFSerializableKeyword_ZFUIImageIO_ref_frame, frameString);
             refData.category(ZFSerializableKeyword_ZFUIImageIO_ref);
-            frameData.category(ZFSerializableKeyword_ZFUIImageIO_ref_frame);
             data.childAdd(refData);
-            data.childAdd(frameData);
             ret->imageSerializableType(ZFUIImageSerializeType_ref);
             ret->imageSerializableData(&data);
         }
@@ -176,22 +176,18 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ref, ZFUIImageSerializeType_ref)
     serializableData.resolveMark();
 
     zfautoObjectT<ZFUIImage *> ref;
-    const ZFSerializableData *refData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFUIImageIO_ref, outErrorHint, outErrorPos);
-    if(refData == zfnull || !ZFObjectFromData(ref, *refData, outErrorHint, outErrorPos) || ref == zfnull)
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+        require, ZFSerializableKeyword_ZFUIImageIO_ref, ZFObject, ref);
+    if(ref == zfnull)
     {
         return zffalse;
     }
 
     ZFUIRect frame = ZFUIRectMake(ZFUIPointZero(), ref->imageSizeFixed());
-    const ZFSerializableData *frameData = ZFSerializableUtil::checkElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFUIImageIO_ref_frame);
-    if(frameData == zfnull || !ZFUIRectFromData(frame, *frameData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        check, ZFSerializableKeyword_ZFUIImageIO_ref_frame, ZFUIRect, frame);
 
-    return _ZFP_ZFUIImageLoadInFrame(ret, ref, frame);;
+    return _ZFP_ZFUIImageLoadInFrame(ret, ref, frame, zffalse);;
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIImage *>, ZFUIImageLoadInFrame,
@@ -199,7 +195,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIImage *>, ZFUIImageLoadInFrame,
                        ZFMP_IN(const ZFUIRect &, framePixel))
 {
     zfautoObjectT<ZFUIImage *> ret = ZFUIImage::ClassData()->newInstance();
-    if(_ZFP_ZFUIImageLoadInFrame(ret, image, framePixel))
+    if(_ZFP_ZFUIImageLoadInFrame(ret, image, framePixel, zftrue))
     {
         return ret;
     }
@@ -229,77 +225,29 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIImage *>, ZFUIImageLoadFromNativeImage,
 ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(color, ZFUIImageSerializeType_color)
 {
     ZFUIColor color = ZFUIColorZero();
-    { // color
-        const ZFSerializableData *categoryData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageIO_color);
-        if(categoryData != zfnull)
-        {
-            if(!ZFUIColorFromData(color, *categoryData, outErrorHint, outErrorPos))
-            {
-                return zffalse;
-            }
-        }
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        check, ZFSerializableKeyword_ZFUIImageIO_color, ZFUIColor, color);
 
     ZFUISize size = ZFUISizeMake(1);
-    { // size
-        const ZFSerializableData *categoryData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImageIO_color_size);
-        if(categoryData != zfnull)
-        {
-            if(!ZFUISizeFromData(size, *categoryData, outErrorHint, outErrorPos))
-            {
-                return zffalse;
-            }
-            if(size.width <= 0 || size.height <= 0)
-            {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, *categoryData,
-                    "invalid size: %s", ZFUISizeToString(size).cString());
-                return zffalse;
-            }
-        }
-    }
-
-    ZFSerializableData imageData;
-    {
-        if(!ZFUIColorIsEqual(color, ZFUIColorZero()))
-        {
-            ZFSerializableData categoryData;
-            if(!ZFUIColorToData(categoryData, color, outErrorHint))
-            {
-                return zffalse;
-            }
-            categoryData.category(ZFSerializableKeyword_ZFUIImageIO_color);
-            imageData.childAdd(categoryData);
-        }
-        if(!ZFUISizeIsEqual(size, ZFUISizeMake(1, 1)))
-        {
-            ZFSerializableData categoryData;
-            if(!ZFUISizeToData(categoryData, size, outErrorHint))
-            {
-                return zffalse;
-            }
-            categoryData.category(ZFSerializableKeyword_ZFUIImageIO_color_size);
-            imageData.childAdd(categoryData);
-        }
-    }
+    ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+        check, ZFSerializableKeyword_ZFUIImageIO_color_size, ZFUISize, size);
 
     void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImageIO)->imageLoadFromColor(
         ZFUIGlobalStyle::DefaultStyle()->imageScale(),
         color,
         ZFUISizeApplyScale(size, ZFUIGlobalStyle::DefaultStyle()->imageScale()));
     ret->nativeImage(nativeImage, zffalse);
-    ret->imageSerializableData(&imageData);
-
     return zftrue;
 }
 ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIImage *>, ZFUIImageLoadFromColor,
                        ZFMP_IN(const ZFUIColor &, color),
-                       ZFMP_IN_OPT(const ZFUISize &, sizePixel, ZFUISizeZero()))
+                       ZFMP_IN_OPT(const ZFUISize &, size, ZFUISizeZero()))
 {
-    ZFUISize sizeTmp = ZFUISizeMake(zfmMax((zffloat)1, sizePixel.width), zfmMax((zffloat)1, sizePixel.height));
+    ZFUISize sizeTmp = ZFUISizeMake(zfmMax((zffloat)1, size.width), zfmMax((zffloat)1, size.height));
     void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImageIO)->imageLoadFromColor(
         ZFUIGlobalStyle::DefaultStyle()->imageScale(),
         color,
-        sizeTmp);
+        ZFUISizeApplyScale(sizeTmp, ZFUIGlobalStyle::DefaultStyle()->imageScale()));
     zfautoObjectT<ZFUIImage *> ret = ZFUIImageLoadFromNativeImage(nativeImage, zffalse);
     ZFUIImage *image = ret;
     if(image == zfnull)
@@ -308,40 +256,16 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIImage *>, ZFUIImageLoadFromColor,
     }
 
     ZFSerializableData imageData;
-    do
+    imageData.itemClass(ZFSerializableKeyword_node);
     {
-        // color
-        if(color != ZFUIColorZero())
-        {
-            ZFSerializableData categoryData;
-            if(!ZFUIColorToData(categoryData, color))
-            {
-                break;
-            }
-            categoryData.category(ZFSerializableKeyword_ZFUIImageIO_color);
-            imageData.childAdd(categoryData);
-        }
+        ZFSerializableUtilSerializeAttributeToDataNoRef(imageData, zfnull,
+            ZFSerializableKeyword_ZFUIImageIO_color, ZFUIColor, color, ZFUIColorZero());
 
-        // size
-        if(!ZFUISizeIsEqual(sizeTmp, ZFUISizeMake(1, 1)))
-        {
-            ZFSerializableData categoryData;
-            if(!ZFUISizeToData(categoryData, sizeTmp))
-            {
-                break;
-            }
-            categoryData.category(ZFSerializableKeyword_ZFUIImageIO_color_size);
-            imageData.childAdd(categoryData);
-        }
-
-        imageData.itemClass(ZFSerializableKeyword_node);
-    } while(zffalse);
-
-    if(imageData.itemClass() != zfnull)
-    {
-        image->imageSerializableType(ZFUIImageSerializeType_color);
-        image->imageSerializableData(&imageData);
+        ZFSerializableUtilSerializeAttributeToDataNoRef(imageData, zfnull,
+            ZFSerializableKeyword_ZFUIImageIO_color_size, ZFUISize, sizeTmp, ZFUISizeMake(1, 1));
     }
+    image->imageSerializableType(ZFUIImageSerializeType_color);
+    image->imageSerializableData(&imageData);
 
     return ret;
 }

@@ -689,28 +689,16 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT,
 
     if(!ret.callbackSerializeCustomDisabled())
     {
-        zfbool success = zffalse;
         ZFSerializableData customData;
         customData.itemClass(ZFSerializableKeyword_node);
-        do
-        {
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, *(ret.pathInfo()), ZFPathInfo());
 
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
+        customData.attr(ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfoToString(*(ret.pathInfo())));
 
-            success = zftrue;
-        } while(zffalse);
-        if(success)
-        {
-            ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForPathInfo);
-            ret.callbackSerializeCustomData(customData);
-        }
-        else
-        {
-            ret = ZFCallback();
-        }
+        ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
+
+        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForPathInfo);
+        ret.callbackSerializeCustomData(customData);
     }
 
     return ret;
@@ -874,28 +862,16 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT,
 
     if(!ret.callbackSerializeCustomDisabled())
     {
-        zfbool success = zffalse;
         ZFSerializableData customData;
         customData.itemClass(ZFSerializableKeyword_node);
-        do
-        {
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, *(ret.pathInfo()), ZFPathInfo());
 
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
+        customData.attr(ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfoToString(*(ret.pathInfo())));
 
-            success = zftrue;
-        } while(zffalse);
-        if(success)
-        {
-            ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForPathInfo);
-            ret.callbackSerializeCustomData(customData);
-        }
-        else
-        {
-            ret = ZFCallback();
-        }
+        ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
+
+        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForPathInfo);
+        ret.callbackSerializeCustomData(customData);
     }
 
     return ret;
@@ -954,29 +930,18 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalFileT,
         return zffalse;
     }
 
+    if(!ret.callbackSerializeCustomDisabled())
     {
-        zfbool success = zffalse;
         ZFSerializableData customData;
         customData.itemClass(ZFSerializableKeyword_node);
-        do
-        {
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_filePath, zfstring, localPath, "");
 
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
+        customData.attr(ZFSerializableKeyword_ZFFileCallback_filePath, localPath);
 
-            success = zftrue;
-        } while(zffalse);
-        if(success)
-        {
-            ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForLocalFile);
-            ret.callbackSerializeCustomData(customData);
-        }
-        else
-        {
-            ret = ZFCallback();
-        }
+        ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
+
+        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForLocalFile);
+        ret.callbackSerializeCustomData(customData);
     }
 
     return zftrue;
@@ -1055,25 +1020,18 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalFileT,
         return zffalse;
     }
 
+    if(!ret.callbackSerializeCustomDisabled())
     {
-        zfbool success = zffalse;
         ZFSerializableData customData;
         customData.itemClass(ZFSerializableKeyword_node);
-        do
-        {
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_filePath, zfstring, localPath, "");
 
-            ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
+        customData.attr(ZFSerializableKeyword_ZFFileCallback_filePath, localPath);
 
-            success = zftrue;
-        } while(zffalse);
-        if(success)
-        {
-            ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForLocalFile);
-            ret.callbackSerializeCustomData(customData);
-        }
+        ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
+            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
+
+        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForLocalFile);
+        ret.callbackSerializeCustomData(customData);
     }
 
     return zftrue;

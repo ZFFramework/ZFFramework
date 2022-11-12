@@ -38,7 +38,7 @@ extern ZFLIB_ZFCore zfbool ZFSerializableDataResolveCheckEnable;
  * @brief keyword for #ZFSerializable to hold attribute or property's name,
  *   see #ZFSerializableData::propertyName
  */
-#define ZFSerializableKeyword_name "name"
+#define ZFSerializableKeyword_prop "prop"
 /**
  * @brief keyword for #ZFSerializable to hold attribute or property's value,
  *   see #ZFSerializableData::propertyValue
@@ -152,15 +152,15 @@ public:
     // ============================================================
     // other types
 public:
-    /** @brief see #ZFSerializable, same as set value of attribute "name" */
+    /** @brief see #ZFSerializable, same as set value of attribute "prop" */
     inline void propertyName(ZF_IN const zfchar *name)
     {
-        this->attr(ZFSerializableKeyword_name, name);
+        this->attr(ZFSerializableKeyword_prop, name);
     }
     /** @brief see #propertyName */
     inline const zfchar *propertyName(void) const
     {
-        return this->attr(ZFSerializableKeyword_name);
+        return this->attr(ZFSerializableKeyword_prop);
     }
     /** @brief see #ZFSerializable, same as set value of attribute "value" */
     inline void propertyValue(ZF_IN const zfchar *value)
@@ -358,17 +358,17 @@ public:
     /** @brief see #resolved */
     zffinal zfbool resolvedPropertyName(void) const
     {
-        return this->resolvedAttribute(ZFSerializableKeyword_name);
+        return this->resolvedAttribute(ZFSerializableKeyword_prop);
     }
     /** @brief see #resolved */
     zffinal void resolvePropertyNameMark(void) const
     {
-        this->resolveAttributeMark(ZFSerializableKeyword_name);
+        this->resolveAttributeMark(ZFSerializableKeyword_prop);
     }
     /** @brief see #resolved */
     zffinal void resolvePropertyNameUnmark(void) const
     {
-        this->resolveAttributeUnmark(ZFSerializableKeyword_name);
+        this->resolveAttributeUnmark(ZFSerializableKeyword_prop);
     }
 
     /** @brief see #resolved */

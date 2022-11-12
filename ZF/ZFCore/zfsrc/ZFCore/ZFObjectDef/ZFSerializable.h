@@ -66,7 +66,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * -  property name:
  *   used only when the serializable belongs to another serializable,
  *   it's the property name,
- *   and is ensured stored in attributes with "name" as the attribute name
+ *   and is ensured stored in attributes with "prop" as the attribute name
  * -  property value:
  *   used only when the serializable can be converted directly to a type,
  *   and is ensured stored in attributes with "value" as the attribute name
@@ -93,7 +93,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  *
  *   // we have a ZFSerializableData like:
  *   <TestClass test="test">
- *       <ZFArray name="testProperty">
+ *       <ZFArray prop="testProperty">
  *           <v_zfstring value="string content" />
  *       </ZFArray>
  *       <SomeType category="CategoryName" />
@@ -101,7 +101,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * @endcode
  * in this example:
  * -  the "TestClass" in "<TestClass>" is a serializable class
- * -  the "testProperty" in "<ZFArray name="testProperty">" is a property name
+ * -  the "testProperty" in "<ZFArray prop="testProperty">" is a property name
  * -  the "string content" in "<v_zfstring value="string content" />" is a property value
  * -  the "test="test"" in "<TestClass test="test">" is a attribute
  * -  the "category" in "<SomeType category="CategoryName" />" is a category
@@ -109,11 +109,9 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  *
  * we have these builtin keywords for serializable data,
  * you should not use them as attribute name:
- * -  "name":
+ * -  "prop":
  *   shows the serializable is it's parent's property,
  *   and the name is the property's name
- * -  "value":
- *   for basic type only, the value for the basic type
  * -  "category":
  *   if exist this attribute,
  *   ZFSerializable would ignore this node and leave it to subclass to decode

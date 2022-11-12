@@ -453,50 +453,24 @@ ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
         {
             ZFSerializableData customData;
             customData.itemClass(ZFSerializableKeyword_node);
+            inputData.category(ZFSerializableKeyword_ZFInputForInputInRange_input);
+            customData.childAdd(inputData);
 
-            zfbool success = zffalse;
-            do {
-                inputData.category(ZFSerializableKeyword_ZFInputForInputInRange_input);
-                customData.childAdd(inputData);
-
-                if(start != 0)
-                {
-                    zfstring value;
-                    if(!zfindexToString(value, start))
-                    {
-                        break;
-                    }
-                    customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_start, value);
-                }
-
-                if(count != zfindexMax())
-                {
-                    zfstring value;
-                    if(!zfindexToString(value, count))
-                    {
-                        break;
-                    }
-                    customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_count, value);
-                }
-
-                if(!autoRestorePos)
-                {
-                    zfstring value;
-                    if(!zfboolToString(value, autoRestorePos))
-                    {
-                        break;
-                    }
-                    customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos, value);
-                }
-
-                success = zftrue;
-            } while(zffalse);
-
-            if(success)
+            if(start != 0)
             {
-                ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForInputInRange);
-                ret.callbackSerializeCustomData(customData);
+                customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_start, zfindexToString(start));
             }
+            if(count != zfindexMax())
+            {
+                customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_count, zfindexToString(count));
+            }
+            if(!autoRestorePos)
+            {
+                customData.attr(ZFSerializableKeyword_ZFInputForInputInRange_autoRestorePos, zfboolToString(autoRestorePos));
+            }
+
+            ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForInputInRange);
+            ret.callbackSerializeCustomData(customData);
         }
     }
 
@@ -504,17 +478,9 @@ ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
 }
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerializeCustomType_ZFInputForInputInRange)
 {
-    const ZFSerializableData *inputData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFInputForInputInRange_input, outErrorHint, outErrorPos);
-    if(inputData == zfnull)
-    {
-        return zffalse;
-    }
     ZFCallback input;
-    if(!ZFCallbackFromData(input, *inputData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+        require, ZFSerializableKeyword_ZFInputForInputInRange_input, ZFCallback, input);
 
     zfindex start = 0;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, check,

@@ -527,7 +527,7 @@ public:
      * @code
      *   // default complex serializable data:
      *   <Owner>
-     *       <TypeId name="PropertyName" value="xxx"/>
+     *       <TypeId prop="PropertyName" value="xxx"/>
      *   </Owner>
      *
      *   // if prefer string converter

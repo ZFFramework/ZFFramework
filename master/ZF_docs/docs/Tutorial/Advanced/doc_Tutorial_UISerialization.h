@@ -26,11 +26,11 @@
  *   serialized data:
  *   <ZFUIView>
  *       <ZFUIButtonBasic category="child" >
- *           <ZFUITextView name="labelNormal" >
- *               <zfstring name="text" value="button" />
+ *           <ZFUITextView prop="labelNormal" >
+ *               <zfstring prop="text" value="button" />
  *           </ZFUITextView>
  *           <ZFUILayoutParam category="layoutParam" >
- *               <ZFUISizeParam name="sizeParam" value="(Fill, Fill)" />
+ *               <ZFUISizeParam prop="sizeParam" value="(Fill, Fill)" />
  *           </ZFUILayoutParam>
  *       </ZFUIButtonBasic>
  *   </ZFUIView>

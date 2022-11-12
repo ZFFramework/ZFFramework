@@ -215,17 +215,9 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForFormat,
 
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCustomType_ZFOutputForFormat)
 {
-    const ZFSerializableData *outputData = ZFSerializableUtil::requireElementByCategory(
-        serializableData, ZFSerializableKeyword_ZFOutputForFormat_output, outErrorHint, outErrorPos);
-    if(outputData == zfnull)
-    {
-        return zffalse;
-    }
     ZFOutput output;
-    if(!ZFCallbackFromData(output, *outputData, outErrorHint, outErrorPos))
-    {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+        require, ZFSerializableKeyword_ZFOutputForFormat_output, ZFCallback, output);
 
     const ZFSerializableData *formatData = ZFSerializableUtil::requireElementByCategory(
         serializableData, ZFSerializableKeyword_ZFOutputForFormat_format, outErrorHint, outErrorPos);
@@ -247,7 +239,6 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
             ZFOutputFormat::ClassData()->classNameFull());
         return zffalse;
     }
-
 
     ZFOutput retTmp;
     retTmp.callbackSerializeCustomDisable(zftrue);

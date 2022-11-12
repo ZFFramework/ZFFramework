@@ -33,7 +33,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
                     return zffalse;
                 }
                 v.callbackSerializeCustomType(customType);
-                v.callbackSerializeCustomData(customData);
+                ZFSerializableData customDataTmp = customData->copy();
+                customDataTmp.category(zfnull);
+                v.callbackSerializeCustomData(customDataTmp);
 
                 serializableData.resolveMark();
                 return zftrue;
@@ -51,16 +53,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             return zffalse;
         }
 
-        const ZFSerializableData *methodData = ZFSerializableUtil::requireElementByCategory(serializableData, ZFSerializableKeyword_ZFCallback_method, outErrorHint, outErrorPos);
-        if(methodData == zfnull)
-        {
-            return zffalse;
-        }
         const ZFMethod *method = zfnull;
-        if(!ZFMethodFromData(method, *methodData, outErrorHint, outErrorPos))
-        {
-            return zffalse;
-        }
+        ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+            require, ZFSerializableKeyword_ZFCallback_method, ZFMethod, method);
 
         if(method->methodOwnerClass() == zfnull)
         {
