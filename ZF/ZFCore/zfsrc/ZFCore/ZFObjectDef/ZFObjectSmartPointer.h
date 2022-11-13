@@ -108,16 +108,6 @@ public:
     zfunsafe_zflineRelease(zfunsafe_zfAlloc(T_ZFObject, ##__VA_ARGS__))
 
 // ============================================================
-/**
- * @brief same as zflineRelease(zfAllocWithCache(...)), see #zflineRelease
- */
-#define zflineAllocWithCache(T_ZFObject, ...) \
-    zflineRelease(zfAllocWithCache(T_ZFObject, ##__VA_ARGS__))
-/** @brief no lock version of #zflineAllocWithCache, use with caution */
-#define zfunsafe_zflineAllocWithCache(T_ZFObject, ...) \
-    zfunsafe_zflineRelease(zfunsafe_zfAllocWithCache(T_ZFObject, ##__VA_ARGS__))
-
-// ============================================================
 template<typename T_ZFObject>
 zffinal zfclassLikePOD _ZFP_zfblockedAllocContainer
 {
@@ -174,18 +164,6 @@ public:
 #define zfunsafe_zfblockedAlloc(T_ZFObject, name, ...) \
     _ZFP_zfunsafe_zfblockedAllocContainer<T_ZFObject> \
         ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name) (zfunsafe_zfAlloc(T_ZFObject, ##__VA_ARGS__)); \
-    T_ZFObject *name = (ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name).obj)
-
-// ============================================================
-/** @brief see #zfblockedAlloc and #zfAllocWithCache */
-#define zfblockedAllocWithCache(T_ZFObject, name, ...) \
-    _ZFP_zfblockedAllocContainer<T_ZFObject> \
-        ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name) (zfAllocWithCache(T_ZFObject, ##__VA_ARGS__)); \
-    T_ZFObject *name = (ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name).obj)
-/** @brief no lock version of #zfblockedAllocWithCache, use with caution */
-#define zfunsafe_zfblockedAllocWithCache(T_ZFObject, name, ...) \
-    _ZFP_zfunsafe_zfblockedAllocContainer<T_ZFObject> \
-        ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name) (zfunsafe_zfAllocWithCache(T_ZFObject, ##__VA_ARGS__)); \
     T_ZFObject *name = (ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name).obj)
 
 // ============================================================

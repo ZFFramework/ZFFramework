@@ -86,7 +86,7 @@ ZFObjectHolder *ZFObject::objectHolder(void)
         zfCoreMutexLocker();
         if(d->objectHolder == zfnull)
         {
-            d->objectHolder = zfunsafe_zfAllocWithCache(ZFObjectHolder);
+            d->objectHolder = zfunsafe_zfAlloc(ZFObjectHolder);
             d->objectHolder->objectHolded(this);
         }
     }
@@ -150,7 +150,7 @@ zfautoObject ZFObject::invoke(ZF_IN const zfchar *methodName
         if(param6 == ZFMethodGenericInvokerDefaultParam()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
         if(param7 == ZFMethodGenericInvokerDefaultParam()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
     } while(zffalse);
-    zfunsafe_zfblockedAllocWithCache(v_zfstring, methodNameHolder);
+    zfunsafe_zfblockedAlloc(v_zfstring, methodNameHolder);
     methodNameHolder->zfv = methodName;
     zfCoreMutexUnlock();
 
@@ -199,7 +199,7 @@ zfautoObject ZFObject::invoke(ZF_IN const zfchar *methodName
         if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param6);}
         if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param7);}
     } while(zffalse);
-    zfunsafe_zfblockedAllocWithCache(v_zfstring, methodNameHolder);
+    zfunsafe_zfblockedAlloc(v_zfstring, methodNameHolder);
     methodNameHolder->zfv = methodName;
     zfCoreMutexUnlock();
 
@@ -599,9 +599,9 @@ void ZFObject::objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_
         && (ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate)
             || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate)))
     {
-        v_ZFProperty *param0 = zfunsafe_zfAllocWithCache(v_ZFProperty);
+        v_ZFProperty *param0 = zfunsafe_zfAlloc(v_ZFProperty);
         param0->zfv = property;
-        v_ZFPtrConst *param1 = zfunsafe_zfAllocWithCache(v_ZFPtrConst);
+        v_ZFPtrConst *param1 = zfunsafe_zfAlloc(v_ZFPtrConst);
         param1->zfv = oldValue;
         this->observerNotify(ZFObject::EventObjectPropertyValueOnUpdate(), param0, param1);
         zfunsafe_zfRelease(param0);

@@ -672,7 +672,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT,
                        ZFMP_IN(const zfchar *, pathData),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 {
-    zfblockedAllocWithCache(_ZFP_I_ZFInputForPathInfoOwner, inputOwner);
+    zfblockedAlloc(_ZFP_I_ZFInputForPathInfoOwner, inputOwner);
     if(!inputOwner->openFile(pathType, pathData, flags))
     {
         return zffalse;
@@ -845,7 +845,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT,
                        ZFMP_IN(const zfchar *, pathData),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 {
-    zfblockedAllocWithCache(_ZFP_I_ZFOutputForPathInfoOwner, outputOwner);
+    zfblockedAlloc(_ZFP_I_ZFOutputForPathInfoOwner, outputOwner);
     if(!outputOwner->openFile(pathType, pathData, flags))
     {
         return zffalse;

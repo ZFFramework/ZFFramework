@@ -220,7 +220,7 @@ public:
     static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN ZFCoreArray<T_Type> const &v)
     {
         zfCoreMutexLock();
-        v_ZFCoreArray *holder = zfunsafe_zfAllocWithCache(v_ZFCoreArray);
+        v_ZFCoreArray *holder = zfunsafe_zfAlloc(v_ZFCoreArray);
         obj = holder;
         zfunsafe_zfRelease(holder);
         zfCoreMutexUnlock();

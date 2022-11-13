@@ -95,7 +95,7 @@ protected:
     virtual void objectOnInit(void)
     {
         zfsuper::objectOnInit();
-        this->_ZFP_progressHolder = zfAllocWithCache(v_zffloat);
+        this->_ZFP_progressHolder = zfAlloc(v_zffloat);
     }
     zfoverride
     virtual void objectOnDealloc(void)

@@ -413,42 +413,42 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(ZF_IN lua_State *L,
     }
     else if(paramClass0->classIsTypeOf(v_zfbool::ClassData()) || paramClass1->classIsTypeOf(v_zfbool::ClassData()))
     {
-        zfblockedAllocWithCache(v_zfbool, ret);
+        zfblockedAlloc(v_zfbool, ret);
         ret->zfv = (zfmAbs(n) <= zffloatEpsilon);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfflags::ClassData()) || paramClass1->classIsTypeOf(v_zfflags::ClassData()))
     {
-        zfblockedAllocWithCache(v_zfflags, ret);
+        zfblockedAlloc(v_zfflags, ret);
         ret->zfv = (zfflags)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfidentity::ClassData()) || paramClass1->classIsTypeOf(v_zfidentity::ClassData()))
     {
-        zfblockedAllocWithCache(v_zfidentity, ret);
+        zfblockedAlloc(v_zfidentity, ret);
         ret->zfv = (zfidentity)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfindex::ClassData()) || paramClass1->classIsTypeOf(v_zfindex::ClassData()))
     {
-        zfblockedAllocWithCache(v_zfindex, ret);
+        zfblockedAlloc(v_zfindex, ret);
         ret->zfv = (zfindex)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zftimet::ClassData()) || paramClass1->classIsTypeOf(v_zftimet::ClassData()))
     {
-        zfblockedAllocWithCache(v_zftimet, ret);
+        zfblockedAlloc(v_zftimet, ret);
         ret->zfv = (zftimet)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfbyte::ClassData()) || paramClass1->classIsTypeOf(v_zfbyte::ClassData()))
     {
-        zfblockedAllocWithCache(v_zfbyte, ret);
+        zfblockedAlloc(v_zfbyte, ret);
         ret->zfv = (zfbyte)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;

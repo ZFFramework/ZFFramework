@@ -82,7 +82,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForLua,
     {
         return zfnull;
     }
-    zfblockedAllocWithCache(_ZFP_I_ZFInputForLuaOwner, owner);
+    zfblockedAlloc(_ZFP_I_ZFInputForLuaOwner, owner);
     owner->luaCallback = luaCallback;
     owner->userData = userData;
     ZFInput ret = ZFCallbackForMemberMethod(owner, ZFMethodAccess(_ZFP_I_ZFInputForLuaOwner, onInput));

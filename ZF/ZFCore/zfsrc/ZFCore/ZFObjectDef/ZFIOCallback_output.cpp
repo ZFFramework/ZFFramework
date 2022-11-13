@@ -72,7 +72,7 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForStringOwner, zfindex, ioSize)
 }
 ZFOutput ZFOutputForString(ZF_IN zfstring &s)
 {
-    _ZFP_I_ZFOutputForStringOwner *owner = zfAllocWithCache(_ZFP_I_ZFOutputForStringOwner);
+    _ZFP_I_ZFOutputForStringOwner *owner = zfAlloc(_ZFP_I_ZFOutputForStringOwner);
     owner->pString = &s;
     owner->savedLength = s.length();
     owner->curPos = s.length();
@@ -166,7 +166,7 @@ ZFOutput ZFOutputForBufferUnsafe(ZF_IN void *buf,
     {
         return zfnull;
     }
-    _ZFP_I_ZFOutputForBufferUnsafeOwner *owner = zfAllocWithCache(_ZFP_I_ZFOutputForBufferUnsafeOwner);
+    _ZFP_I_ZFOutputForBufferUnsafeOwner *owner = zfAlloc(_ZFP_I_ZFOutputForBufferUnsafeOwner);
     owner->autoAppendNullToken = autoAppendNullToken;
     owner->pStart = (zfbyte *)buf;
     if(maxCount == zfindexMax())

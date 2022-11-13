@@ -306,6 +306,11 @@ public:
      */
     zfautoObject newInstance(void) const;
     /**
+     * @brief same as #newInstance, but explicitly disable cache logic,
+     *   see #ZFALLOC_CACHE_RELEASE
+     */
+    zfautoObject newInstanceNoCache(void) const;
+    /**
      * @brief for advanced reflection use only
      *
      * create object by specified params,

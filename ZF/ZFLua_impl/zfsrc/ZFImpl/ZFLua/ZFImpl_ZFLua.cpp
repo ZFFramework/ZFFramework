@@ -111,7 +111,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
     public:
         static int f(ZF_IN lua_State *L)
         {
-            zfblockedAllocWithCache(v_ZFPtr, ret);
+            zfblockedAlloc(v_ZFPtr, ret);
             ret->zfv = (void *)L;
             zfautoObject tmp = ret;
             ZFImpl_ZFLua_luaPush(L, tmp);
@@ -503,7 +503,7 @@ zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
         return zftrue;
     }
 
-    zfblockedAllocWithCache(ZFDI_Wrapper, wrapper);
+    zfblockedAlloc(ZFDI_Wrapper, wrapper);
     if(lua_isnumber(L, luaStackOffset))
     {
         lua_Number n = lua_tonumber(L, luaStackOffset);
@@ -605,7 +605,7 @@ public:
             lua_pop(L, 1);
         }
 
-        zfblockedAllocWithCache(v_ZFListenerData, listenerDataTmp);
+        zfblockedAlloc(v_ZFListenerData, listenerDataTmp);
         listenerDataTmp->zfv = listenerData;
         ZFImpl_ZFLua_luaPush(L, listenerDataTmp);
 

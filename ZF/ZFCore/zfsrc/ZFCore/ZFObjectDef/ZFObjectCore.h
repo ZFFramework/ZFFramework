@@ -833,6 +833,8 @@ private:
     friend zfclassFwd ZFClass;
     friend zfclassFwd ZFObserverHolder;
     friend zfclassFwd _ZFP_ZFObserverHolderPrivate;
+    template<typename T_ZFObject, int valid>
+    friend zfclassFwd _ZFP_Obj_AllocCk;
     friend void _ZFP_zfRetainAction(ZF_IN ZFObject *obj);
     friend void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj);
 };

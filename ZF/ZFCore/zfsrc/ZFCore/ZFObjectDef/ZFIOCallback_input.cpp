@@ -429,7 +429,7 @@ ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
         return zfnull;
     }
 
-    _ZFP_I_ZFInputForInputInRangeOwner *owner = zfAllocWithCache(_ZFP_I_ZFInputForInputInRangeOwner);
+    _ZFP_I_ZFInputForInputInRangeOwner *owner = zfAlloc(_ZFP_I_ZFInputForInputInRangeOwner);
     owner->src = inputCallback;
     owner->srcStart = start;
     owner->srcCount = countFixed;
@@ -571,7 +571,7 @@ static ZFInput _ZFP_ZFInputForBuffer(ZF_IN zfbool copy,
     }
     if(copy)
     {
-        zfblockedAllocWithCache(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
+        zfblockedAlloc(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
         zfblockedAlloc(v_ZFBuffer, buf);
         buf->zfv.bufferCopy(src, count * sizeof(zfchar));
         owner->pStart = (const zfbyte *)buf->zfv.buffer();
@@ -585,7 +585,7 @@ static ZFInput _ZFP_ZFInputForBuffer(ZF_IN zfbool copy,
     }
     else
     {
-        zfblockedAllocWithCache(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
+        zfblockedAlloc(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
         owner->pStart = (const zfbyte *)src;
         owner->pEnd = owner->pStart + count;
         owner->p = owner->pStart;

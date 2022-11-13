@@ -174,7 +174,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT,
         return zffalse;
     }
 
-    _ZFP_I_ZFOutputForFormatOwner *outputOwner = zfAllocWithCache(_ZFP_I_ZFOutputForFormatOwner);
+    _ZFP_I_ZFOutputForFormatOwner *outputOwner = zfAlloc(_ZFP_I_ZFOutputForFormatOwner);
     outputOwner->output = output;
     outputOwner->format = zfRetain(format);
     ret = ZFCallbackForMemberMethod(outputOwner, ZFMethodAccess(_ZFP_I_ZFOutputForFormatOwner, onOutput));

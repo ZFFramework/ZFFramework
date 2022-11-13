@@ -1140,7 +1140,7 @@ void ZFUIView::objectOnInit(void)
 
     d = zfpoolNew(_ZFP_ZFUIViewPrivate);
 
-    d->measureResult = zfAllocWithCache(ZFUIViewMeasureResult);
+    d->measureResult = zfAlloc(ZFUIViewMeasureResult);
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkNormal) != ZFFrameworkStateAvailable)
     {
         d->nativeView = ZFPROTOCOL_ACCESS(ZFUIView)->nativeViewCreate(this);

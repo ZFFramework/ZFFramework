@@ -198,7 +198,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN zfuint const &v) \
         { \
             zfCoreMutexLock(); \
-            v_##EnumFlagsName *t = zfunsafe_zfAllocWithCache(v_##EnumFlagsName); \
+            v_##EnumFlagsName *t = zfunsafe_zfAlloc(v_##EnumFlagsName); \
             t->zfv = v; \
             obj = t; \
             zfunsafe_zfRelease(t); \

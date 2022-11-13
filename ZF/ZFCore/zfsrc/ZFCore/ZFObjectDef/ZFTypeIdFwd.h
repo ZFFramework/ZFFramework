@@ -432,7 +432,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN _ZFP_PropTypeW_##TypeName const &v) \
         { \
             zfCoreMutexLock(); \
-            v_##TypeName *t = zfunsafe_zfAllocWithCache(v_##TypeName); \
+            v_##TypeName *t = zfunsafe_zfAlloc(v_##TypeName); \
             t->zfv = v; \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \
@@ -521,7 +521,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN _ZFP_PropTypeW_##TypeName const &v) \
         { \
             zfCoreMutexLock(); \
-            v_##TypeName *t = zfunsafe_zfAllocWithCache(v_##TypeName); \
+            v_##TypeName *t = zfunsafe_zfAlloc(v_##TypeName); \
             t->zfv = v; \
             obj.zfunsafe_assign(t); \
             zfunsafe_zfRelease(t); \

@@ -562,6 +562,20 @@ zfautoObject ZFClass::newInstance(void) const
     zfunsafe_zfRelease(obj);
     return ret;
 }
+zfautoObject ZFClass::newInstanceNoCache(void) const
+{
+    zfCoreMutexLocker();
+    ZFObject *obj = d->objectConstruct();
+    if(obj != zfnull)
+    {
+        obj->objectOnInit();
+        obj->_ZFP_ZFObjectCheckOnInit();
+    }
+    zfautoObject ret;
+    ret.zfunsafe_assign(obj);
+    zfunsafe_zfRelease(obj);
+    return ret;
+}
 
 zfautoObject ZFClass::newInstance(
                                     ZF_IN     ZFObject *param0
@@ -578,16 +592,7 @@ zfautoObject ZFClass::newInstance(
     {
         return zfnull;
     }
-    if(zftrue
-        && param0 == ZFMethodGenericInvokerDefaultParam()
-        && param1 == ZFMethodGenericInvokerDefaultParam()
-        && param2 == ZFMethodGenericInvokerDefaultParam()
-        && param3 == ZFMethodGenericInvokerDefaultParam()
-        && param4 == ZFMethodGenericInvokerDefaultParam()
-        && param5 == ZFMethodGenericInvokerDefaultParam()
-        && param6 == ZFMethodGenericInvokerDefaultParam()
-        && param7 == ZFMethodGenericInvokerDefaultParam()
-        )
+    if(param0 == ZFMethodGenericInvokerDefaultParam())
     {
         return this->newInstance();
     }
@@ -1921,7 +1926,7 @@ void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
             }
         }
 
-        v_ZFClassDataChangeData *holder = zfunsafe_zfAllocWithCache(v_ZFClassDataChangeData);
+        v_ZFClassDataChangeData *holder = zfunsafe_zfAlloc(v_ZFClassDataChangeData);
         holder->zfv.changeType = changeType;
         holder->zfv.changedClass = changedClass;
         holder->zfv.changedProperty = changedProperty;
