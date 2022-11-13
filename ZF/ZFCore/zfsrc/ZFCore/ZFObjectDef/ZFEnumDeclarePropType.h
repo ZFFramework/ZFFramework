@@ -152,6 +152,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     zfclass ZFLIB_ v_##EnumFlagsName : zfextends EnumName \
     { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, EnumName) \
+        ZFALLOC_CACHE_RELEASE({ \
+            cache->wrappedValueReset(); \
+        }) \
     public: \
         zfoverride \
         virtual const zfchar *wrappedValueTypeId(void) \

@@ -135,6 +135,12 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
             "end;"
         );
 
+    // global NS
+    ZFImpl_ZFLua_implSetupScope(
+            ZFCoreArrayPODCreate(lua_State *, L),
+            ZFCoreArrayPODCreate(const zfchar *, ZF_NAMESPACE_GLOBAL_NAME, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
+        );
+
     // each impl setup callback
     for(zfindex i = 0; i < d->setupAttach.count(); ++i)
     {

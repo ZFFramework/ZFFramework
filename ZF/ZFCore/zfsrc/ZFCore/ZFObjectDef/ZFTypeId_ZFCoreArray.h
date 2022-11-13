@@ -65,6 +65,9 @@ public:
 zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextends ZFTypeIdWrapper
 {
     ZFOBJECT_DECLARE(v_ZFCoreArray, ZFTypeIdWrapper)
+    ZFALLOC_CACHE_RELEASE({
+        cache->wrappedValueReset();
+    })
 public:
     /** @brief the value, see #ZFTypeId::Value */
     ZFCoreArray<zfautoObject> zfv;

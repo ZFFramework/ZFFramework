@@ -147,6 +147,9 @@ public:
      *   zfclass v_YourType : zfextends ZFTypeIdWrapper
      *   {
      *       ZFOBJECT_DECLARE(v_YourType, ZFTypeIdWrapper)
+     *       ZFALLOC_CACHE_RELEASE({
+     *           cache->wrappedValueReset();
+     *       })
      *   public:
      *       YourType zfv;
      *   };
@@ -222,6 +225,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     zfclass ZFLIB_ v_##TypeName : zfextends ZFTypeIdWrapper \
     { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper) \
+        ZFALLOC_CACHE_RELEASE({ \
+            cache->wrappedValueReset(); \
+        }) \
     public: \
         /** @brief the value, see #ZFTypeId::Value */ \
         _ZFP_PropTypeW_##TypeName zfv; \
@@ -657,6 +663,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     zfclass ZFLIB_ v_##TypeName : zfextends v_##AliasToTypeName \
     { \
         ZFOBJECT_DECLARE(v_##TypeName, v_##AliasToTypeName) \
+        ZFALLOC_CACHE_RELEASE({ \
+            cache->wrappedValueReset(); \
+        }) \
     };
 #define _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type) \
     ZFOBJECT_REGISTER(v_##TypeName)
