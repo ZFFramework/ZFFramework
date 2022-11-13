@@ -213,7 +213,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
         }
         else
         {
-            ZFMethodForNameGetAllT(methodList, NS, methodName);
+            ZFMethodFuncForNameGetAllT(methodList, NS, methodName);
             if(methodList.isEmpty())
             {
                 const ZFClass *cls = ZFDI_classForName(NS, zfnull);

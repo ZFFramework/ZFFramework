@@ -749,7 +749,7 @@ const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
     }
     else
     {
-        return _ZFP_ZFMethodFuncForName(classNameOrNamespace, methodName);
+        return ZFMethodFuncForName(classNameOrNamespace, methodName);
     }
 }
 const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
@@ -780,7 +780,7 @@ const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
     }
     else
     {
-        return _ZFP_ZFMethodFuncForName(classNameOrNamespace, methodName
+        return ZFMethodFuncForName(classNameOrNamespace, methodName
                 , methodParamTypeId0
                 , methodParamTypeId1
                 , methodParamTypeId2
@@ -803,7 +803,7 @@ void ZFMethodForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
     }
     else
     {
-        return _ZFP_ZFMethodFuncForNameGetAllT(ret, classNameOrNamespace, methodName);
+        return ZFMethodFuncForNameGetAllT(ret, classNameOrNamespace, methodName);
     }
 }
 
@@ -823,7 +823,7 @@ const ZFMethod *ZFMethodAlias(ZF_IN const ZFMethod *method,
     }
     else
     {
-        ZFMethodForNameGetAllT(exist, method->methodNamespace(), aliasName);
+        ZFMethodFuncForNameGetAllT(exist, method->methodNamespace(), aliasName);
     }
     if(!exist.isEmpty())
     {

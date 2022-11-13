@@ -133,6 +133,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
             "_ZFP_zfl_call = function(tbl, ...);"
             "    return zfl_callStatic(tbl.ZFNS, ...);"
             "end;"
+            "_ZFP_zfl_metatable = {__index = _ZFP_zfl_index, __call = _ZFP_zfl_call};"
         );
 
     // global NS
@@ -204,7 +205,7 @@ static void _ZFP_ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT zfstring &code,
 {
     zfstringAppend(code,
             "%s = {ZFNS='%s'};"
-            "debug.setmetatable(%s, {__index = _ZFP_zfl_index, __call = _ZFP_zfl_call})\n"
+            "debug.setmetatable(%s, _ZFP_zfl_metatable)\n"
         , scopeName, scopeName, scopeName);
 }
 void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList,

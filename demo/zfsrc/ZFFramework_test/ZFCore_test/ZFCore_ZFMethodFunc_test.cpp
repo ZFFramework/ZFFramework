@@ -136,7 +136,7 @@ protected:
             };
             filter.customFilterCallbackAdd(_Holder::filter);
         }
-        ZFMethodGetAllFuncT(methods, &filter);
+        ZFMethodFuncGetAllT(methods, &filter);
         this->testCaseOutput(methods.objectInfoOfContent(
                 zfindexMax(),
                 ZFTokenForContainerPlainList()

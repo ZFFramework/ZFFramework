@@ -69,7 +69,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
         luaStateList.add(L);
         ZFCoreArrayPOD<const zfchar *> scopeNameList;
 
-        ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodGetAllFunc();
+        ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
         zfstlmap<zfstlstringZ, zfbool> methodNamespaceList;
         if(!allMethod.isEmpty())
         {

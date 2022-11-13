@@ -289,7 +289,7 @@ static void _ZFP_ZFLuaLSPGenFile_allClass(ZF_IN const ZFOutput &output)
 
 static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output)
 {
-    ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodGetAllFunc();
+    ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod)
     {
         const ZFMethod *m = allMethod[iMethod];

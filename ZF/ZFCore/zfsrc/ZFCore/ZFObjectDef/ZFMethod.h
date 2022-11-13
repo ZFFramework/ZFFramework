@@ -798,7 +798,7 @@ extern ZFLIB_ZFCore void ZFMethodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *>
  * note, this method may cause performance issue
  * if you have many method registered,
  * use with caution\n
- * use #ZFMethodForName or #ZFMethodGetAllFunc if necessary
+ * use #ZFClass::methodForName or #ZFMethodFuncForName if necessary
  */
 inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAll(ZF_IN_OPT const ZFFilterForZFMethod *methodFilter = zfnull)
 {
@@ -814,7 +814,8 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAll(ZF_IN_OPT const ZFFilterF
  *
  * method can be class member or function type method,
  * return first registered one if more than one method found,
- * use #ZFMethodForNameGetAll to check if you have overloaded method
+ * use #ZFMethodForNameGetAll to check if you have overloaded method,
+ * use #ZFMethodFuncForName to explicitly find function type method
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodForName(ZF_IN const zfchar *classNameOrNamespace,
                                                     ZF_IN const zfchar *methodName);

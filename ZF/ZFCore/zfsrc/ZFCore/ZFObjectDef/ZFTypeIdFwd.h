@@ -208,7 +208,7 @@ public:
     } \
     ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) \
     { \
-        ZFMethodFuncUserUnregister(ZFMethodForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
         zfdelete(_ZFP_ZFTypeInfoUnregister(ZFTypeId_##TypeName())); \
     } \
     ZF_STATIC_REGISTER_END(PropTIReg_##TypeName)

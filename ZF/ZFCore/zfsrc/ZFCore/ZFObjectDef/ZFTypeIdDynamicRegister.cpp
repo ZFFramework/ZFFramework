@@ -77,7 +77,7 @@ void ZFTypeIdDynamicUnregister(ZF_IN const zfchar *typeIdName)
         zfstlmap<zfstlstringZ, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = d->m.find(typeIdName);
         if(it != d->m.end())
         {
-            ZFMethodDynamicUnregister(ZFMethodForName(ZF_NAMESPACE_GLOBAL_NAME,
+            ZFMethodDynamicUnregister(ZFMethodFuncForName(ZF_NAMESPACE_GLOBAL_NAME,
                 zfstringWithFormat("ZFTypeId_%s", typeIdName)));
             _ZFP_ZFTypeInfoUnregister(typeIdName);
             d->m.erase(it);

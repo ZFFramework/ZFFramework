@@ -12,33 +12,57 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 extern ZFLIB_ZFCore void _ZFP_ZFMethodFuncRegister(ZF_IN const ZFMethod *method);
 extern ZFLIB_ZFCore void _ZFP_ZFMethodFuncUnregister(ZF_IN const ZFMethod *method);
-extern ZFLIB_ZFCore const ZFMethod *_ZFP_ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
-                                                             ZF_IN const zfchar *methodName);
-extern ZFLIB_ZFCore const ZFMethod *_ZFP_ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
-                                                             ZF_IN const zfchar *methodName
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId0
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-                                                             , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
-                                                             );
-extern ZFLIB_ZFCore void _ZFP_ZFMethodFuncForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
-                                                         ZF_IN const zfchar *methodNamespace,
-                                                         ZF_IN const zfchar *methodName);
 
-/** @brief see #ZFMethodGetAllFunc */
-extern ZFLIB_ZFCore void ZFMethodGetAllFuncT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
+/**
+ * @brief get function type method for name
+ *
+ * note this method would only find function type method declared by ZFMETHOD_FUNC_DECLARE_xxx series,
+ * use #ZFClass::methodForName to find class static member method,
+ * or use #ZFMethodForName for short
+ */
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
+                                                        ZF_IN const zfchar *methodName);
+/**
+ * @brief see #ZFMethodFuncForName
+ */
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
+                                                        ZF_IN const zfchar *methodName
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId0
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
+                                                        , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+                                                        );
+/**
+ * @brief see #ZFMethodFuncForName
+ */
+extern ZFLIB_ZFCore void ZFMethodFuncForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
+                                                    ZF_IN const zfchar *methodNamespace,
+                                                    ZF_IN const zfchar *methodName);
+/**
+ * @brief see #ZFMethodFuncForName
+ */
+inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncForNameGetAll(ZF_IN const zfchar *methodNamespace,
+                                                                  ZF_IN const zfchar *methodName)
+{
+    ZFCoreArrayPOD<const ZFMethod *> ret;
+    ZFMethodFuncForNameGetAllT(ret, methodNamespace, methodName);
+    return ret;
+}
+
+/** @brief see #ZFMethodFuncGetAll */
+extern ZFLIB_ZFCore void ZFMethodFuncGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
                                              ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull);
 /**
  * @brief get all function type method currently registered, for debug use only
  */
-inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull)
+inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull)
 {
     ZFCoreArrayPOD<const ZFMethod *> ret;
-    ZFMethodGetAllFuncT(ret, filter);
+    ZFMethodFuncGetAllT(ret, filter);
     return ret;
 }
 
@@ -472,7 +496,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAllFunc(ZF_IN_OPT const ZFFil
  * @endcode
  *
  * similar to #ZFMETHOD_INLINE_0, but declared in global scope instead of class scope,
- * declared method can be reflected by #ZFMethodForName,
+ * declared method can be reflected by #ZFMethodFuncForName,
  * and can be invoked by by #ZFMethod::execute with null as first param\n
  * function type method support at most one level namespace
  */
