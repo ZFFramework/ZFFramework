@@ -254,8 +254,6 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
 /**
  * @brief auto layout with constraint rule
  *
- * recommended to use #ZFUIAutoLayoutMaker to create rules\n
- * \n
  * for #ZFUIAutoLayout,
  * base class #ZFUILayoutParam's params would take no effect\n
  * \n
