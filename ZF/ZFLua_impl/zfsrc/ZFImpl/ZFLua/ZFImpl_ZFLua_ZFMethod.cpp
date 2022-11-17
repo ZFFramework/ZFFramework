@@ -28,7 +28,7 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(ZF_IN const ZFCoreArray
             continue;
         }
         zfstringAppend(code,
-                "function %s(...) return zfl_callStatic2('', '%s', ...) end\n"
+                "function %s(...) return zfl_call(zfnull, '%s', ...) end\n"
             , method->methodName(), method->methodName());
         if(i != 0 && (i % 100) == 0)
         {

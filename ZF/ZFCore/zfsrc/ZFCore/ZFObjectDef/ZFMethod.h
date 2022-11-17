@@ -547,6 +547,9 @@ public:
     }
     /**
      * @brief util method to invoke #ZFMethodGenericInvoker
+     *
+     * note all params must be exactly same type,
+     * use #ZFDI_invoke if you want auto param conversion
      */
     zfautoObject methodGenericInvoke(ZF_IN_OPT ZFObject *ownerObjOrNull = zfnull
                                      , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()

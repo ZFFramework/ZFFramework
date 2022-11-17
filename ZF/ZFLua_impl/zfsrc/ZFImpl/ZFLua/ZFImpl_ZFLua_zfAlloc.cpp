@@ -41,11 +41,17 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
     }
     int paramCount = (count - (luaParamOffset - 1));
 
-    zfautoObject clsHolder;
-    if(!ZFImpl_ZFLua_toGeneric(clsHolder, L, 1))
+    const zfchar *clsName = zfnull;
+    if(!ZFImpl_ZFLua_toString(clsName, L, 1) || zfsIsEmpty(clsName))
     {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfAlloc] unable to access class");
+            "[zfAlloc] unable to access class name");
+    }
+    const ZFClass *cls = ZFDI_classForName(clsName, zfnull);
+    if(cls == zfnull)
+    {
+        return ZFImpl_ZFLua_luaError(L,
+            "[zfAlloc] unable to find class: %s", clsName);
     }
 
     zfautoObject paramList[ZFMETHOD_MAX_PARAM];
@@ -57,12 +63,13 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
     {
         if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
         {
-            return zffalse;
+            return ZFImpl_ZFLua_luaError(L,
+                "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString());
         }
     }
 
     zfautoObject ret;
-    ZFDI_alloc(ret, zfnull, zfnull, clsHolder, (zfindex)paramCount, paramList);
+    ZFDI_alloc(ret, zfnull, cls, (zfindex)paramCount, paramList);
     ZFImpl_ZFLua_luaPush(L, ret);
     return 1;
 }

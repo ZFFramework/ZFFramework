@@ -1,6 +1,9 @@
 #include "ZFDynamicInvoker.h"
 #include "ZFObjectImpl.h"
 
+#include "../ZFSTLWrapper/zfstl_string.h" // for ZFDI_invoke method cache
+#include "../ZFSTLWrapper/zfstl_hashmap.h" // for ZFDI_invoke method cache
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -35,7 +38,7 @@ const zfchar *ZFDI_toString(ZF_IN ZFObject *obj)
 }
 
 const ZFClass *ZFDI_classForName(ZF_IN const zfchar *className,
-                                 ZF_IN const zfchar *NS)
+                                 ZF_IN_OPT const zfchar *NS /* = zfnull */)
 {
     if(className == zfnull)
     {
@@ -119,8 +122,36 @@ void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
 }
 
 // ============================================================
-static void _ZFP_ZFDI_paramCount(ZF_IN_OUT zfindex &paramCount,
-                                 ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM])
+typedef zfstlhashmap<zfstlstringZ, ZFCoreArrayPOD<const ZFMethod *> > _ZFP_ZFDI_MethodCacheMap;
+static _ZFP_ZFDI_MethodCacheMap _ZFP_ZFDI_methodCacheMap;
+static zfbool _ZFP_ZFDI_methodCacheEnable = zffalse;
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal)
+{
+    zfCoreMutexLocker();
+    this->classDataChangeListener = ZFCallbackForFunc(zfself::classDataChange);
+    ZFClassDataChangeObserver.observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+
+    _ZFP_ZFDI_methodCacheMap.clear();
+    _ZFP_ZFDI_methodCacheEnable = zftrue;
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache)
+{
+    zfCoreMutexLocker();
+    _ZFP_ZFDI_methodCacheEnable = zffalse;
+    _ZFP_ZFDI_methodCacheMap.clear();
+    ZFClassDataChangeObserver.observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+}
+private:
+    ZFListener classDataChangeListener;
+    static void classDataChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    {
+        zfCoreMutexLocker();
+        _ZFP_ZFDI_methodCacheMap.clear();
+    }
+ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
+
+static inline void _ZFP_ZFDI_paramCount(ZF_IN_OUT zfindex &paramCount,
+                                        ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM])
 {
     paramCount = 0;
     while(paramCount < ZFMETHOD_MAX_PARAM && paramList[paramCount] != ZFMethodGenericInvokerDefaultParam())
@@ -128,126 +159,157 @@ static void _ZFP_ZFDI_paramCount(ZF_IN_OUT zfindex &paramCount,
         ++paramCount;
     }
 }
-zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
-                   , ZF_OUT_OPT zfstring *errorHint
-                   , ZF_IN_OPT ZFObject *obj
-                   , ZF_IN_OPT const zfchar *NS
-                   , ZF_IN ZFObject *type
-                   , ZF_IN zfindex paramCount
-                   , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
-                   )
+static zfbool _ZFP_ZFDI_invoke(ZF_OUT zfautoObject &ret
+                               , ZF_OUT_OPT zfstring *errorHint
+                               , ZF_IN_OPT ZFObject *obj
+                               , ZF_IN const zfchar *name
+                               , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
+                               , ZF_IN_OPT zfindex paramCount
+                               , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                               )
 {
-    if(type == zfnull)
+    if(methodList.isEmpty())
     {
         if(errorHint != zfnull)
         {
-            zfstringAppend(errorHint, "null methodName or ClassName");
+            *errorHint += "no matching method to call ";
+            *errorHint += name;
+            *errorHint += "(";
+            ZFDI_paramInfo(*errorHint
+                    , paramList[0]
+                    , paramList[1]
+                    , paramList[2]
+                    , paramList[3]
+                    , paramList[4]
+                    , paramList[5]
+                    , paramList[6]
+                    , paramList[7]
+                );
+            *errorHint += ")";
         }
         return zffalse;
     }
-
-    if(obj == zfnull)
+    else
     {
-        v_ZFClass *clsWrapper = ZFCastZFObject(v_ZFClass *, type);
-        if(clsWrapper != zfnull)
+        if(_ZFP_ZFDI_methodCacheEnable)
         {
-            if(clsWrapper->zfv == zfnull)
+            zfCoreMutexLocker();
+            zfstlstringZ key;
+            if(obj != zfnull)
             {
-                if(errorHint != zfnull)
-                {
-                    zfstringAppend(errorHint, "null class");
-                }
-                return zffalse;
+                key += obj->classData()->classNameFull();
             }
-            else
-            {
-                return ZFDI_alloc(ret, errorHint, clsWrapper->zfv, paramCount, paramList);
-            }
+            key += ':';
+            key += name;
+            _ZFP_ZFDI_methodCacheMap[key].addFrom(methodList);
         }
+        return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList);
     }
-
-    const zfchar *methodName = ZFDI_toString(type);
-    zfstring NSHolder;
-    if(methodName != zfnull && ZFNamespaceSkipGlobal(NS) == zfnull)
+}
+zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
+                   , ZF_OUT_OPT zfstring *errorHint
+                   , ZF_IN_OPT ZFObject *obj
+                   , ZF_IN const zfchar *name
+                   , ZF_IN_OPT zfindex paramCount
+                   , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                   )
+{
+    if(_ZFP_ZFDI_methodCacheEnable)
     {
-        zfindex dotPos = zfstringFindReversely(methodName, zfindexMax(), ZFNamespaceSeparator(), ZFNamespaceSeparatorLen());
-        if(dotPos != zfindexMax())
+        zfCoreMutexLock();
+        zfstlstringZ key;
+        if(obj != zfnull)
         {
-            NSHolder.append(methodName, dotPos);
-            NS = NSHolder;
-            methodName = methodName + dotPos + ZFNamespaceSeparatorLen();
+            key += obj->classData()->classNameFull();
         }
-    }
-    if(methodName != zfnull && obj == zfnull)
-    {
-        const ZFClass *cls = ZFDI_classForName(methodName, NS);
-        if(cls != zfnull)
+        key += ':';
+        key += name;
+        _ZFP_ZFDI_MethodCacheMap::iterator it = _ZFP_ZFDI_methodCacheMap.find(key);
+        zfCoreMutexUnlock();
+        if(it != _ZFP_ZFDI_methodCacheMap.end())
         {
-            return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList);
+            return ZFDI_invoke(ret, errorHint, obj, it->second, paramCount, paramList);
         }
     }
 
     ZFCoreArrayPOD<const ZFMethod *> methodList;
-    if(methodName == zfnull)
+
+    // obj->methodName()
+    if(obj != zfnull)
     {
-        v_ZFMethod *methodWrapper = ZFCastZFObject(v_ZFMethod *, type);
-        if(methodWrapper != zfnull)
+        obj->classData()->methodForNameGetAllT(methodList, name);
+        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList);
+    }
+
+    zfindex dotPos = zfstringFindReversely(name, zfslen(name), ZFNamespaceSeparator());
+    if(dotPos == zfindexMax())
+    {
+        // methodName()
+        ZFMethodFuncForNameGetAllT(methodList, zfnull, name);
+        if(!methodList.isEmpty())
         {
-            methodList.add(methodWrapper->zfv);
+            return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList);
         }
-        else
+
+        // ClassName()
+        // v_ClassName()
+        const ZFClass *cls = ZFDI_classForName(name, zfnull);
+        if(cls != zfnull)
         {
-            if(errorHint != zfnull)
-            {
-                zfstringAppend(errorHint, "unable to detect methodName from: \"%s\"",
-                    ZFObjectInfo(type).cString());
-            }
-            return zffalse;
+            return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList);
         }
+
+        // fail
+        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList);
     }
     else
     {
-        if(obj != zfnull)
-        {
-            obj->classData()->methodForNameGetAllT(methodList, methodName);
-        }
-        else
-        {
-            ZFMethodFuncForNameGetAllT(methodList, NS, methodName);
-            if(methodList.isEmpty())
-            {
-                const ZFClass *cls = ZFDI_classForName(NS, zfnull);
-                if(cls != zfnull)
-                {
-                    cls->methodForNameGetAllT(methodList, methodName);
-                }
-            }
-        }
-        if(methodList.isEmpty())
-        {
-            if(errorHint != zfnull)
-            {
-                if(obj != zfnull)
-                {
-                    zfstringAppend(errorHint, "no such method \"%s\" for object: %s",
-                        methodName, obj->objectInfoOfInstance().cString());
-                }
-                else
-                {
-                    zfstringAppend(errorHint, "no such method \"%s\" in scope \"%s\"",
-                        methodName, NS);
-                }
-            }
-            return zffalse;
-        }
-    }
+        zfstring scopeTmp(name, dotPos);
+        const zfchar *nameTmp = name + dotPos + 1;
 
-    if(paramCount == zfindexMax())
+        // NS.ClassName.methodName()
+        // NS.v_ClassName.methodName()
+        {
+            const ZFClass *cls = ZFDI_classForName(scopeTmp, zfnull);
+            if(cls != zfnull)
+            {
+                cls->methodForNameGetAllT(methodList, nameTmp);
+                return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList);
+            }
+        }
+
+        // NS.ClassName()
+        // NS.v_ClassName()
+        {
+            const ZFClass *cls = ZFDI_classForName(name, zfnull);
+            if(cls != zfnull)
+            {
+                return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList);
+            }
+        }
+
+        // NS.methodName()
+        ZFMethodFuncForNameGetAllT(methodList, scopeTmp, nameTmp);
+        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList);
+    }
+}
+zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
+                   , ZF_OUT_OPT zfstring *errorHint
+                   , ZF_IN_OPT ZFObject *obj
+                   , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
+                   , ZF_IN_OPT zfindex paramCount
+                   , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                   )
+{
+    if(methodList.isEmpty())
     {
-        _ZFP_ZFDI_paramCount(paramCount, paramList);
+        if(errorHint != zfnull)
+        {
+            *errorHint += "no matching method to call";
+        }
+        return zffalse;
     }
 
-    // try to invoke each method
     zfstring _errorHintTmp;
     zfstring *errorHintTmp = errorHint ? &_errorHintTmp : zfnull;
     if(methodList.count() == 1)
@@ -313,7 +375,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
         for(zfindex iMethod = 0; iMethod < methodList.count(); ++iMethod)
         {
             const ZFMethod *method = methodList[iMethod];
-            if(!_errorHintTmp.isEmpty())
+            if(errorHintTmp != zfnull && !_errorHintTmp.isEmpty())
             {
                 _errorHintTmp += "\n    ";
             }
@@ -403,54 +465,6 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
     return zffalse;
 }
 
-zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
-                  , ZF_OUT_OPT zfstring *errorHint
-                  , ZF_IN_OPT const zfchar *NS
-                  , ZF_IN ZFObject *type
-                  , ZF_IN zfindex paramCount
-                  , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
-                  )
-{
-    if(type == zfnull)
-    {
-        if(errorHint != zfnull)
-        {
-            zfstringAppend(errorHint, "null class name");
-        }
-        return zffalse;
-    }
-    const ZFClass *cls = zfnull;
-    v_ZFClass *clsWrapper = ZFCastZFObject(v_ZFClass *, type);
-    if(clsWrapper != zfnull)
-    {
-        cls = clsWrapper->zfv;
-        if(cls == zfnull)
-        {
-            if(errorHint != zfnull)
-            {
-                zfstringAppend(errorHint, "null class");
-            }
-            return zffalse;
-        }
-    }
-    else
-    {
-        cls = ZFDI_classForName(ZFDI_toString(type), NS);
-    }
-    if(cls == zfnull)
-    {
-        if(errorHint != zfnull)
-        {
-            zfstringAppend(errorHint, "no such class \"%s\" in scope \"%s\"",
-                ZFObjectInfo(type).cString(), NS);
-        }
-        return zffalse;
-    }
-    else
-    {
-        return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList);
-    }
-}
 zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
                   , ZF_OUT_OPT zfstring *errorHint
                   , ZF_IN const ZFClass *cls
@@ -734,11 +748,9 @@ zfautoObject ZFInvoke(ZF_IN const zfchar *name
         if(param6 == ZFMethodGenericInvokerDefaultParam()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
         if(param7 == ZFMethodGenericInvokerDefaultParam()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
     } while(zffalse);
-    zfunsafe_zfblockedAlloc(v_zfstring, nameHolder);
-    nameHolder->zfv = name;
     zfCoreMutexUnlock();
     zfautoObject ret;
-    if(ZFDI_invoke(ret, errorHint, zfnull, zfnull, nameHolder, paramCount, paramList))
+    if(ZFDI_invoke(ret, errorHint, zfnull, name, paramCount, paramList))
     {
         if(success != zfnull) {*success = zftrue;}
         return ret;
@@ -775,11 +787,9 @@ zfautoObject ZFInvoke(ZF_IN const zfchar *name
         if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param6);}
         if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param7);}
     } while(zffalse);
-    zfunsafe_zfblockedAlloc(v_zfstring, nameHolder);
-    nameHolder->zfv = name;
     zfCoreMutexUnlock();
     zfautoObject ret;
-    if(ZFDI_invoke(ret, errorHint, zfnull, zfnull, nameHolder, paramCount, paramList))
+    if(ZFDI_invoke(ret, errorHint, zfnull, name, paramCount, paramList))
     {
         if(success != zfnull) {*success = zftrue;}
         return ret;

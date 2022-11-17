@@ -49,7 +49,7 @@ protected:
                 "local obj = _ZFP_ZFLua_gc_test_Object();\n"
             );
         zfLogTrimT() << "normal gc begin";
-        ZFLuaGC();
+        ZFLuaGCImmediately();
         zfLogTrimT() << "normal gc end";
         zfLogTrimT() << "normal end";
 
@@ -65,7 +65,7 @@ protected:
                     "ZFObject.notExistFunc(obj);\n"
                 );
             zfLogTrimT() << "lua exception gc begin";
-            ZFLuaGC();
+            ZFLuaGCImmediately();
             zfLogTrimT() << "lua exception gc end";
         #else
             zfLogTrimT() << "lua exception disabled";

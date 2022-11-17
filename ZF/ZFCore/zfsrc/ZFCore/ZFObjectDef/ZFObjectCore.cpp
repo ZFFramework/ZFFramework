@@ -150,8 +150,6 @@ zfautoObject ZFObject::invoke(ZF_IN const zfchar *methodName
         if(param6 == ZFMethodGenericInvokerDefaultParam()) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(param6);}
         if(param7 == ZFMethodGenericInvokerDefaultParam()) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(param7);}
     } while(zffalse);
-    zfunsafe_zfblockedAlloc(v_zfstring, methodNameHolder);
-    methodNameHolder->zfv = methodName;
     zfCoreMutexUnlock();
 
     zfautoObject ret;
@@ -159,8 +157,7 @@ zfautoObject ZFObject::invoke(ZF_IN const zfchar *methodName
         ret
         , errorHint
         , this
-        , zfnull
-        , methodNameHolder
+        , methodName
         , paramCount
         , paramList
     )) {
@@ -199,8 +196,6 @@ zfautoObject ZFObject::invoke(ZF_IN const zfchar *methodName
         if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param6);}
         if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param7);}
     } while(zffalse);
-    zfunsafe_zfblockedAlloc(v_zfstring, methodNameHolder);
-    methodNameHolder->zfv = methodName;
     zfCoreMutexUnlock();
 
     zfautoObject ret;
@@ -208,8 +203,7 @@ zfautoObject ZFObject::invoke(ZF_IN const zfchar *methodName
         ret
         , errorHint
         , this
-        , zfnull
-        , methodNameHolder
+        , methodName
         , paramCount
         , paramList
     )) {

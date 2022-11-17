@@ -131,7 +131,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
             "    return t;"
             "end;"
             "_ZFP_zfl_call = function(tbl, ...);"
-            "    return zfl_callStatic(tbl.ZFNS, ...);"
+            "    return zfl_call(zfnull, tbl.ZFNS, ...);"
             "end;"
             "_ZFP_zfl_metatable = {__index = _ZFP_zfl_index, __call = _ZFP_zfl_call};"
         );

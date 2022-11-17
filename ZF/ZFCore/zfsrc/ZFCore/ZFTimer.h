@@ -23,6 +23,11 @@ zfclassFwd _ZFP_ZFTimerPrivate;
 zfclass ZFLIB_ZFCore ZFTimer : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(ZFTimer, ZFObject)
+    ZFALLOC_CACHE_RELEASE({
+            cache->timerStop();
+            cache->timerInterval(1000);
+            cache->timerDelay(0);
+        })
 
     // ============================================================
     // observer events

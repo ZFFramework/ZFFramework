@@ -35,7 +35,7 @@ extern ZFLIB_ZFLua_impl lua_State *_ZFP_ZFImpl_ZFLua_luaState(void);
  *   and should be registered by #ZFImpl_ZFLua_implSetupScope\n
  *   these things are equal:
  *   -  `MyClass.myFunc(param);`
- *   -  `zfl_callStatic("MyClass.myFunc", param);`
+ *   -  `zfl_call(zfnull, "MyClass.myFunc", param);`
  *   -  `local cls = MyClass; cls.myFunc(param);`
  * -  member functions are dispatched as `obj:myFunc(param)`,
  *   which equals to `obj.myFunc(obj, param)`

@@ -127,9 +127,12 @@ extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
  * "ClassName" to "v_ClassName" or "NS.ClassName" to "NS.v_ClassName"
  */
 extern ZFLIB_ZFCore const ZFClass *ZFDI_classForName(ZF_IN const zfchar *className,
-                                                     ZF_IN const zfchar *NS);
+                                                     ZF_IN_OPT const zfchar *NS = zfnull);
 /**
  * @brief util to print param info
+ *
+ * output format:
+ *   (Class0)param0, (Class1)param1, ...
  */
 extern ZFLIB_ZFCore void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
                                         , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
@@ -148,25 +151,17 @@ extern ZFLIB_ZFCore void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
  * note: when mentioned `string`, we means any type
  * that can be converted by #ZFDI_toString
  *
- * NS can be any string describe namespace,
- * and these values are considered in global scope:
- * -  null or empty string
- * -  #ZF_NAMESPACE_GLOBAL_NAME
- * -  #ZF_NAMESPACE_GLOBAL_ABBR_NAME
+ * name can be:
+ * -# "methodName" : only when obj is not null, call class member method
+ * -# "NS.methodName" : call static method
+ * -# "NS.ClassName.methodName" : call class static member method
+ * -# "NS.v_ClassName.methodName" : call class static member method
+ * -# "NS.ClassName" : use #ZFDI_alloc to alloc object
+ * -# "NS.v_ClassName" : use #ZFDI_alloc to alloc object
  *
- * type can be:
- * -  #v_ZFClass : same as #ZFDI_alloc
- * -  #v_ZFMethod : invoke using the method
- * -  string :
- *   -  holds method name ("methodName")
- *     or method name with namespace ("NS.methodName")
- *   -  holds #ZFClass::className or #ZFClass::classNameFull,
- *     see #ZFDI_alloc for how to find the class\n
- *     this rule only applied when obj is null
- *
- * params can be :
- * -  #ZFObject type for retain type
- * -  #ZFTypeIdWrapper for assign type
+ * params can be:
+ * -  #ZFObject type for ZFObject type
+ * -  #ZFTypeIdWrapper for non-ZFObject type
  * -  #ZFMethodGenericInvokerDefaultParam for default param
  * -  #ZFDI_WrapperBase, we will try to convert to desired type if possible
  *
@@ -179,37 +174,27 @@ extern ZFLIB_ZFCore void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
 extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
                                        , ZF_OUT_OPT zfstring *errorHint
                                        , ZF_IN_OPT ZFObject *obj
-                                       , ZF_IN_OPT const zfchar *NS
-                                       , ZF_IN ZFObject *type
+                                       , ZF_IN const zfchar *name
+                                       , ZF_IN_OPT zfindex paramCount
+                                       , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                       );
+/**
+ * @brief perform advanced dynamic invoke
+ */
+extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
+                                       , ZF_OUT_OPT zfstring *errorHint
+                                       , ZF_IN_OPT ZFObject *obj
+                                       , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
                                        , ZF_IN_OPT zfindex paramCount
                                        , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
                                        );
 
 /**
- * @brief perform advanced dynamic invoke
+ * @brief perform advanced dynamic class alloc
  *
- * for string type, NS, and more info, see also #ZFDI_invoke
- *
- * type can be:
- * -  #v_ZFClass : alloc using the class
- * -  string : holds #ZFClass::className or #ZFClass::classNameFull
- *
- * when finding class using string, we would try to find by:
- * -  #ZFClass::classForName
- * -  if not able to find, we would try to add the "v_" prefix
- *   to the class name then find again, e.g.
- *   "ClassName" to "v_ClassName" or "NS.ClassName" to "NS.v_ClassName"
- *
+ * use #ZFDI_classForName to find class,
  * for the params, see #ZFDI_invoke for more info
  */
-extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
-                                      , ZF_OUT_OPT zfstring *errorHint
-                                      , ZF_IN_OPT const zfchar *NS
-                                      , ZF_IN ZFObject *type
-                                      , ZF_IN_OPT zfindex paramCount
-                                      , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
-                                      );
-/** @brief see #ZFDI_alloc */
 extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
                                       , ZF_OUT_OPT zfstring *errorHint
                                       , ZF_IN const ZFClass *cls
@@ -229,7 +214,7 @@ extern ZFLIB_ZFCore zfbool ZFDI_paramConvert(ZF_OUT zfautoObject &ret,
 // ============================================================
 /* ZFMETHOD_MAX_PARAM */
 /**
- * @brief util to #ZFDI_invoke for static method or object allocation
+ * @brief util to #ZFDI_invoke/#ZFDI_alloc for static method or object allocation
  *
  * cases:
  * @code

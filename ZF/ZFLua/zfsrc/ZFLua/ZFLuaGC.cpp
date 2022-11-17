@@ -31,7 +31,12 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder)
     ZFGlobalObserver().observerRemove(
         ZFGlobalEvent::EventLuaStateOnDetach(),
         this->luaStateOnDetachListener);
+    if(this->gcTask != zfnull)
+    {
+        this->gcTask->timerStop();
+    }
 }
+zfautoObjectT<ZFTimer *> gcTask;
 zfstlmap<void *, zfbool> m;
 ZFListener luaStateOnDetachListener;
 static void luaStateOnDetach(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
@@ -44,8 +49,10 @@ ZF_GLOBAL_INITIALIZER_END(ZFLuaGCHolder)
 
 static void _ZFP_ZFLuaGCResolve(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
-    zfstlmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
+    zfstlmap<void *, zfbool> &m = d->m;
     zfCoreMutexLock();
+    d->gcTask = zfnull;
     while(!m.empty())
     {
         zfstlmap<void *, zfbool>::iterator it = m.begin();
@@ -68,13 +75,14 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC,
     }
 
     zfCoreMutexLocker();
-    zfstlmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
+    zfstlmap<void *, zfbool> &m = d->m;
     if(m.find(L) == m.end())
     {
         m[L] = zftrue;
-        if(m.size() == 1)
+        if(d->gcTask == zfnull)
         {
-            ZFThread::post(ZFCallbackForFunc(_ZFP_ZFLuaGCResolve));
+            d->gcTask = ZFTimerOnce(1000, ZFCallbackForFunc(_ZFP_ZFLuaGCResolve));
         }
     }
 }
