@@ -759,13 +759,19 @@ protected:
      *
      * usually used to initialize independent resources other than self's internal resources
      */
-    virtual void objectOnInitFinish(void);
+    virtual inline void objectOnInitFinish(void)
+    {
+    }
     /**
      * @brief called before #objectOnDealloc, safe to call virtual functions here
      *
      * usually used to cleanup resources attached to this object other than self's internal resources
      */
-    virtual void objectOnDeallocPrepare(void);
+    virtual inline void objectOnDeallocPrepare(void)
+    {
+        this->objectTagRemoveAll();
+        this->observerRemoveAll();
+    }
     /**
      * @brief override this to destroy your object
      *

@@ -452,27 +452,16 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void)
         }
     }
 
+    if(this->_ZFP_ZFObject_zfAllocCacheRelease && d->objectRetainCount == 1)
+    { // check to save cache
+        this->observerRemoveAll();
+        this->_ZFP_ZFObject_zfAllocCacheRelease(this);
+        return ;
+    }
+
     this->objectOnRelease();
     if(d->objectRetainCount > 0)
     {
-        // check to save cache
-        if(this->_ZFP_ZFObject_zfAllocCacheRelease && d->objectRetainCount == 1)
-        {
-            if(ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
-                || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc))
-            {
-                this->observerNotify(ZFObject::EventObjectBeforeDealloc());
-                if(d->objectRetainCount > 1)
-                {
-                    this->_ZFP_ZFObject_zfAllocCacheRelease = zfnull;
-                    this->objectOnRelease();
-                    this->observerRemoveAll(ZFObject::EventObjectBeforeDealloc());
-                    return ;
-                }
-            }
-            this->observerRemoveAll();
-            this->_ZFP_ZFObject_zfAllocCacheRelease(this);
-        }
         return ;
     }
 
@@ -537,14 +526,6 @@ void ZFObject::objectOnDealloc(void)
     zfpoolDelete(d);
     // note that (d == zfnull) is also used to check whether ZFObject::objectOnDealloc() is called
     d = zfnull;
-}
-void ZFObject::objectOnInitFinish(void)
-{
-}
-void ZFObject::objectOnDeallocPrepare(void)
-{
-    this->objectTagRemoveAll();
-    this->observerRemoveAll();
 }
 void ZFObject::objectOnRetain(void)
 {
