@@ -14,6 +14,45 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFDI_WrapperBase, void, zfv, ZFMP_IN(
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv)
 
 // ============================================================
+static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
+
+typedef zfstlhashmap<zfstlstringZ, const ZFClass *> _ZFP_ZFDI_ClassMapCache;
+static _ZFP_ZFDI_ClassMapCache _ZFP_ZFDI_classMapCache;
+
+typedef zfstlhashmap<zfstlstringZ, ZFCoreArrayPOD<const ZFMethod *> > _ZFP_ZFDI_MethodMapCache;
+static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
+
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal)
+{
+    zfCoreMutexLocker();
+    this->classDataChangeListener = ZFCallbackForFunc(zfself::classDataChange);
+    ZFClassDataChangeObserver.observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+
+    _ZFP_ZFDI_methodMapCache.clear();
+    _ZFP_ZFDI_cacheEnable = zftrue;
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache)
+{
+    zfCoreMutexLocker();
+    _ZFP_ZFDI_cacheEnable = zffalse;
+    _ZFP_ZFDI_methodMapCache.clear();
+    ZFClassDataChangeObserver.observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+}
+private:
+    ZFListener classDataChangeListener;
+    static void classDataChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    {
+        zfCoreMutexLocker();
+        const ZFClassDataChangeData &changed = ZFCastZFObjectUnchecked(v_ZFClassDataChangeData *, listenerData.param0())->zfv;
+        if(changed.changedClass != zfnull)
+        {
+            _ZFP_ZFDI_classMapCache.clear();
+        }
+        _ZFP_ZFDI_methodMapCache.clear();
+    }
+ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
+
+// ============================================================
 const zfchar *ZFDI_toString(ZF_IN ZFObject *obj)
 {
     if(obj == zfnull)
@@ -44,27 +83,41 @@ const ZFClass *ZFDI_classForName(ZF_IN const zfchar *className,
     {
         return zfnull;
     }
+    zfstlstringZ key;
+    key += className;
+    if(NS != zfnull)
+    {
+        key += ":";
+        key += NS;
+    }
+    _ZFP_ZFDI_ClassMapCache::iterator it = _ZFP_ZFDI_classMapCache.find(key);
+    if(it != _ZFP_ZFDI_classMapCache.end())
+    {
+        return it->second;
+    }
+
     const ZFClass *cls = ZFClass::classForName(className, NS);
-    if(cls != zfnull)
+    if(cls == zfnull)
     {
-        return cls;
+        zfindex dotPos = zfstringFindReversely(className, zfindexMax(), ZFNamespaceSeparator(), ZFNamespaceSeparatorLen());
+        if(dotPos == zfindexMax())
+        {
+            zfstring classNameTmp;
+            classNameTmp += ZFTypeIdWrapperPrefixName;
+            classNameTmp += className;
+            cls = ZFClass::classForName(classNameTmp, NS);
+        }
+        else
+        {
+            zfstring classNameTmp;
+            classNameTmp.append(className, dotPos + ZFNamespaceSeparatorLen());
+            classNameTmp += ZFTypeIdWrapperPrefixName;
+            classNameTmp += className + dotPos + ZFNamespaceSeparatorLen();
+            cls = ZFClass::classForName(classNameTmp, NS);
+        }
     }
-    zfindex dotPos = zfstringFindReversely(className, zfindexMax(), ZFNamespaceSeparator(), ZFNamespaceSeparatorLen());
-    if(dotPos == zfindexMax())
-    {
-        zfstring classNameTmp;
-        classNameTmp += ZFTypeIdWrapperPrefixName;
-        classNameTmp += className;
-        cls = ZFClass::classForName(classNameTmp, NS);
-    }
-    else
-    {
-        zfstring classNameTmp;
-        classNameTmp.append(className, dotPos + ZFNamespaceSeparatorLen());
-        classNameTmp += ZFTypeIdWrapperPrefixName;
-        classNameTmp += className + dotPos + ZFNamespaceSeparatorLen();
-        cls = ZFClass::classForName(classNameTmp, NS);
-    }
+
+    _ZFP_ZFDI_classMapCache[key] = cls;
     return cls;
 }
 
@@ -122,34 +175,6 @@ void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
 }
 
 // ============================================================
-typedef zfstlhashmap<zfstlstringZ, ZFCoreArrayPOD<const ZFMethod *> > _ZFP_ZFDI_MethodCacheMap;
-static _ZFP_ZFDI_MethodCacheMap _ZFP_ZFDI_methodCacheMap;
-static zfbool _ZFP_ZFDI_methodCacheEnable = zffalse;
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal)
-{
-    zfCoreMutexLocker();
-    this->classDataChangeListener = ZFCallbackForFunc(zfself::classDataChange);
-    ZFClassDataChangeObserver.observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
-
-    _ZFP_ZFDI_methodCacheMap.clear();
-    _ZFP_ZFDI_methodCacheEnable = zftrue;
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache)
-{
-    zfCoreMutexLocker();
-    _ZFP_ZFDI_methodCacheEnable = zffalse;
-    _ZFP_ZFDI_methodCacheMap.clear();
-    ZFClassDataChangeObserver.observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
-}
-private:
-    ZFListener classDataChangeListener;
-    static void classDataChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        zfCoreMutexLocker();
-        _ZFP_ZFDI_methodCacheMap.clear();
-    }
-ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
-
 static inline void _ZFP_ZFDI_paramCount(ZF_IN_OUT zfindex &paramCount,
                                         ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM])
 {
@@ -191,7 +216,7 @@ static zfbool _ZFP_ZFDI_invoke(ZF_OUT zfautoObject &ret
     }
     else
     {
-        if(_ZFP_ZFDI_methodCacheEnable)
+        if(_ZFP_ZFDI_cacheEnable)
         {
             zfCoreMutexLocker();
             zfstlstringZ key;
@@ -201,7 +226,7 @@ static zfbool _ZFP_ZFDI_invoke(ZF_OUT zfautoObject &ret
             }
             key += ':';
             key += name;
-            _ZFP_ZFDI_methodCacheMap[key].addFrom(methodList);
+            _ZFP_ZFDI_methodMapCache[key].addFrom(methodList);
         }
         return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList);
     }
@@ -214,7 +239,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
                    , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
                    )
 {
-    if(_ZFP_ZFDI_methodCacheEnable)
+    if(_ZFP_ZFDI_cacheEnable)
     {
         zfCoreMutexLock();
         zfstlstringZ key;
@@ -224,9 +249,9 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
         }
         key += ':';
         key += name;
-        _ZFP_ZFDI_MethodCacheMap::iterator it = _ZFP_ZFDI_methodCacheMap.find(key);
+        _ZFP_ZFDI_MethodMapCache::iterator it = _ZFP_ZFDI_methodMapCache.find(key);
         zfCoreMutexUnlock();
-        if(it != _ZFP_ZFDI_methodCacheMap.end())
+        if(it != _ZFP_ZFDI_methodMapCache.end())
         {
             return ZFDI_invoke(ret, errorHint, obj, it->second, paramCount, paramList);
         }

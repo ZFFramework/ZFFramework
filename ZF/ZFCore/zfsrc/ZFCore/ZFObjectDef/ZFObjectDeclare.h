@@ -227,7 +227,7 @@ public:
 #define ZFOBJECT_REGISTER(T_ZFObject) \
     ZF_STATIC_REGISTER_INIT(ObjR_##T_ZFObject) \
     { \
-        (void)T_ZFObject::ClassData()->_ZFP_ZFClass_methodAndPropertyAutoRegister(); \
+        (void)T_ZFObject::ClassData()->_ZFP_ZFClass_autoRegister(); \
     } \
     ZF_STATIC_REGISTER_END(ObjR_##T_ZFObject)
 

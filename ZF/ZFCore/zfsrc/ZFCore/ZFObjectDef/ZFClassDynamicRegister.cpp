@@ -75,6 +75,7 @@ const ZFClass *ZFClassDynamicRegister(ZF_IN const zfchar *classNameFull,
         zffalse,
         zftrue,
         classDynamicRegisterUserData);
+    cls->_ZFP_ZFClass_autoRegister();
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m[cls] = zftrue;
     return cls;
 }

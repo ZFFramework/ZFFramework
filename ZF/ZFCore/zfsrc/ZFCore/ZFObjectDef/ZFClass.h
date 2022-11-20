@@ -200,21 +200,21 @@ public:
      */
     inline const zfchar *classNamespace(void) const
     {
-        return this->classNamespaceCache;
+        return this->_ZFP_ZFClass_classNamespaceCache;
     }
     /**
      * @brief class name, e.g. "ZFObject"
      */
     inline const zfchar *className(void) const
     {
-        return this->classNameCache;
+        return this->_ZFP_ZFClass_classNameCache;
     }
     /**
      * @brief class full name, e.g. "NS0.NS1.YourObject"
      */
     inline const zfchar *classNameFull(void) const
     {
-        return this->classNameFullCache;
+        return this->_ZFP_ZFClass_classNameFullCache;
     }
 
     /**
@@ -646,6 +646,7 @@ public:
     ZFClass(void);
     ~ZFClass(void);
     /** @endcond */
+    void _ZFP_ZFClass_autoRegister(void) const;
     zfbool _ZFP_ZFClass_interfaceNeedRegister(void);
     void _ZFP_ZFClass_interfaceRegister(ZF_IN zfint dummy,
                                         ZF_IN const ZFClass *cls,
@@ -654,22 +655,12 @@ public:
     ZFInterface *_ZFP_ZFClass_interfaceCast(ZF_IN ZFObject * const &obj,
                                             ZF_IN const ZFClass *interfaceClass) const;
 
-    static void _ZFP_ZFClassInitFinish(ZF_IN ZFClass *cls);
-    static void _ZFP_ZFClassInitFinish_parentListCache(ZF_IN ZFClass *cls);
-    static void _ZFP_ZFClassInitFinish_parentInterfaceListCache(ZF_IN ZFClass *cls);
-    static void _ZFP_ZFClassInitFinish_interfaceCastListCache(ZF_IN ZFClass *cls);
-    static void _ZFP_ZFClassInitFinish_allParentAndChildrenCache(ZF_IN ZFClass *cls);
-    static void _ZFP_ZFClassInitFinish_methodAndPropertyFindCache(ZF_IN ZFClass *cls);
-    static void _ZFP_ZFClassInitFinish_propertyMetaDataCache(ZF_IN ZFClass *cls);
-    static void _ZFP_ZFClassInitFinish_instanceObserverCache(ZF_IN ZFClass *cls);
-
     void _ZFP_ZFClass_objectDesctuct(ZF_IN ZFObject *obj) const;
     ZFClass *_ZFP_ZFClass_removeConst(void) const
     {
         return const_cast<ZFClass *>(this);
     }
 
-    void _ZFP_ZFClass_methodAndPropertyAutoRegister(void) const;
     void _ZFP_ZFClass_methodRegister(ZF_IN const ZFMethod *method) const;
     void _ZFP_ZFClass_methodUnregister(ZF_IN const ZFMethod *method) const;
     void _ZFP_ZFClass_propertyRegister(ZF_IN const ZFProperty *zfproperty) const;
@@ -679,6 +670,7 @@ public:
     void _ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *property) const;
     zfbool _ZFP_ZFClass_propertyInitStepIsTheSame(ZF_IN const ZFProperty *property,
                                                   ZF_IN const ZFClass *refClass) const;
+
     _ZFP_zfAllocWithCacheCallback _ZFP_objectAllocWithCacheCallback(void) const;
     _ZFP_ZFObjectConstructor _ZFP_objectConstructor(void) const;
     _ZFP_ZFObjectDestructor _ZFP_objectDestructor(void) const;
@@ -687,18 +679,18 @@ public:
 private:
     _ZFP_ZFClassPrivate *d;
     friend zfclassFwd _ZFP_ZFClassPrivate;
-    const zfchar *classNamespaceCache;
-    const zfchar *classNameCache;
-    const zfchar *classNameFullCache;
-public:
-    ZFCoreArray<zfstring> _ZFP_ZFClass_classAliasTo;
-    zfbool _ZFP_ZFClass_implListNeedInit;
+    const ZFClass *_ZFP_ZFClass_classParent;
+    const zfchar *_ZFP_ZFClass_classNamespaceCache;
+    const zfchar *_ZFP_ZFClass_classNameCache;
+    const zfchar *_ZFP_ZFClass_classNameFullCache;
     zfbool _ZFP_ZFClass_classIsAbstract;
     zfbool _ZFP_ZFClass_classIsInterface;
     zfbool _ZFP_ZFClass_classIsInternal;
     zfbool _ZFP_ZFClass_classIsInternalPrivate;
+public:
+    zfbool _ZFP_ZFClass_implListNeedInit;
     zfbool _ZFP_ZFClass_classCanAllocPublic;
-    const ZFClass *_ZFP_ZFClass_classParent;
+    ZFCoreArray<zfstring> _ZFP_ZFClass_classAliasTo;
 };
 
 /**
