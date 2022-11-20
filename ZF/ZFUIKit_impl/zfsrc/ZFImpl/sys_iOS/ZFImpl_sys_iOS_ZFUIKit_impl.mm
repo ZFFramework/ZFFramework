@@ -3,68 +3,6 @@
 #if ZF_ENV_sys_iOS
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-// convert utility
-void ZFImpl_sys_iOS_ZFUIPointToCGPointT(ZF_OUT CGPoint &ret, ZF_IN const ZFUIPoint &point)
-{
-    ret.x = point.x;
-    ret.y = point.y;
-}
-void ZFImpl_sys_iOS_ZFUIPointFromCGPointT(ZF_OUT ZFUIPoint &ret, ZF_IN const CGPoint &cgPoint)
-{
-    ret.x = cgPoint.x;
-    ret.y = cgPoint.y;
-}
-void ZFImpl_sys_iOS_ZFUISizeToCGSizeT(ZF_OUT CGSize &ret, ZF_IN const ZFUISize &size)
-{
-    ret.width = size.width;
-    ret.height = size.height;
-}
-void ZFImpl_sys_iOS_ZFUISizeFromCGSizeT(ZF_OUT ZFUISize &ret, ZF_IN const CGSize &cgSize)
-{
-    ret.width = cgSize.width;
-    ret.height = cgSize.height;
-}
-void ZFImpl_sys_iOS_ZFUIRectToCGRectT(ZF_OUT CGRect &ret, ZF_IN const ZFUIRect &rect)
-{
-    ret.origin.x = rect.x;
-    ret.origin.y = rect.y;
-    ret.size.width = rect.width;
-    ret.size.height = rect.height;
-}
-void ZFImpl_sys_iOS_ZFUIRectFromCGRectT(ZF_OUT ZFUIRect &ret, ZF_IN const CGRect &cgRect)
-{
-    ret.x = cgRect.origin.x;
-    ret.y = cgRect.origin.y;
-    ret.width = cgRect.size.width;
-    ret.height = cgRect.size.height;
-}
-
-void ZFImpl_sys_iOS_ZFUIMarginToUIEdgeInsetsT(ZF_OUT UIEdgeInsets &ret, ZF_IN const ZFUIMargin &margin)
-{
-    ret.left = margin.left;
-    ret.top = margin.top;
-    ret.right = margin.right;
-    ret.bottom = margin.bottom;
-}
-void ZFImpl_sys_iOS_ZFUIMarginFromUIEdgeInsetsT(ZF_OUT ZFUIMargin &ret, ZF_IN const UIEdgeInsets &edgeInsets)
-{
-    ret.left = edgeInsets.left;
-    ret.top = edgeInsets.top;
-    ret.right = edgeInsets.right;
-    ret.bottom = edgeInsets.bottom;
-}
-
-UIColor *ZFImpl_sys_iOS_ZFUIColorToUIColor(ZF_IN const ZFUIColor &color)
-{
-    return [UIColor colorWithRed:ZFUIColorGetR(color) green:ZFUIColorGetG(color) blue:ZFUIColorGetB(color) alpha:ZFUIColorGetA(color)];
-}
-void ZFImpl_sys_iOS_ZFUIColorFromUIColorT(ZF_OUT ZFUIColor &ret, ZF_IN UIColor *uiColor)
-{
-    zffloat argb[4] = {0};
-    ZFImpl_sys_iOS_UIColorToARGB(argb, uiColor);
-    ret = ZFUIColorMake(argb[1], argb[2], argb[3], argb[0]);
-}
-
 // ============================================================
 // util method
 zfbool ZFImpl_sys_iOS_UIColorToARGB(ZF_IN_OUT zffloat *pARGB, ZF_IN UIColor *color)
@@ -110,14 +48,6 @@ zfbool ZFImpl_sys_iOS_UIColorToARGB(ZF_IN_OUT zffloat *pARGB, ZF_IN UIColor *col
     }
 
     return zftrue;
-}
-void ZFImpl_sys_iOS_UIColorInfoT(ZF_OUT zfstring &ret, ZF_IN UIColor *color)
-{
-    if(color != nil)
-    {
-        ZFUIColor t = ZFImpl_sys_iOS_ZFUIColorFromUIColor(color);
-        ZFUIColorToString(ret, t);
-    }
 }
 
 static void _ZFP_ZFImpl_sys_iOS_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, UIView *view, zfindex depth, zfindex siblingIndex)
@@ -165,7 +95,7 @@ static void _ZFP_ZFImpl_sys_iOS_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, U
 #if 1 // bg
     if(view.backgroundColor != nil)
     {
-        zfstring colorInfo = ZFImpl_sys_iOS_UIColorInfo(view.backgroundColor);
+        zfstring colorInfo = ZFUIColorToString(ZFImpl_sys_iOS_ZFUIColorFromUIColor(view.backgroundColor));
         viewInfo = [viewInfo stringByAppendingFormat:@" bg:%@", [NSString stringWithUTF8String:colorInfo]];
     }
 #endif // bg

@@ -39,7 +39,7 @@ extern ZFLIB_ZFLua_impl lua_State *_ZFP_ZFImpl_ZFLua_luaState(void);
  *   -  `local cls = MyClass; cls.myFunc(param);`
  * -  member functions are dispatched as `obj:myFunc(param)`,
  *   which equals to `obj.myFunc(obj, param)`
- * -  all #zfautoObject must be registered by #ZFImpl_ZFLua_implSetupObject,
+ * -  #zfautoObject type must be registered by #ZFImpl_ZFLua_implSetupMetatable,
  *   and all methods would be dispatched internally,
  *   you should not modify #zfautoObject's "__index" by other lua bind tools
  */
@@ -129,8 +129,10 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN
 /** @brief see #ZFImpl_ZFLua_luaState */
 extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList,
                                                          ZF_IN ZFCoreArray<const zfchar *> const &scopeNameList);
-/** @brief see #ZFImpl_ZFLua_luaState */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupObject(ZF_IN_OUT lua_State *L, ZF_IN_OPT int objIndex = -1);
+/**
+ * @brief setup metatable for zfautoObject in lua env
+ */
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupMetatable(ZF_IN_OUT lua_State *L, ZF_IN_OPT int metatableIndex = -1);
 
 // ============================================================
 /** @brief class prefix for #ZFTypeIdWrapper impl */
@@ -387,7 +389,6 @@ inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN zfautoObject &v)
         return;
     }
     ELuna::convert2LuaType<zfautoObject>::convertType(L, v);
-    ZFImpl_ZFLua_implSetupObject(L);
 }
 /** @brief util for impl */
 inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN const zfautoObject &v)

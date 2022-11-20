@@ -14,10 +14,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief return a scaled int
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScale,
-                        ZFMP_OUT(zffloat &, ret),
-                        ZFMP_IN(zffloat const &, v),
-                        ZFMP_IN(zffloat, scale))
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScale,
+                               ZFMP_OUT(zffloat &, ret),
+                               ZFMP_IN(zffloat const &, v),
+                               ZFMP_IN(zffloat, scale))
+{
+    ret = v * scale;
+}
 /**
  * @brief return a scaled int
  */
@@ -32,10 +35,13 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, zffloat, ZFUISizeApplyScale,
 /**
  * @brief return a scaled int reversely
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleReversely,
-                        ZFMP_OUT(zffloat &, ret),
-                        ZFMP_IN(zffloat const &, v),
-                        ZFMP_IN(zffloat, scale))
+ZFMETHOD_FUNC_INLINE_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUISizeApplyScaleReversely,
+                               ZFMP_OUT(zffloat &, ret),
+                               ZFMP_IN(zffloat const &, v),
+                               ZFMP_IN(zffloat, scale))
+{
+    ret = v / scale;
+}
 /**
  * @brief return a scaled int reversely
  */

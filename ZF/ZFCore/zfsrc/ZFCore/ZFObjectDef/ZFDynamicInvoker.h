@@ -204,12 +204,19 @@ extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
 
 // ============================================================
 /**
- * @brief util method to convert param type from
+ * @brief util to convert object from string
  */
-extern ZFLIB_ZFCore zfbool ZFDI_paramConvert(ZF_OUT zfautoObject &ret,
-                                             ZF_IN const zfchar *typeId,
-                                             ZF_IN ZFDI_WrapperBase *wrapper,
-                                             ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(ZF_OUT zfautoObject &ret,
+                                                 ZF_IN const ZFClass *cls,
+                                                 ZF_IN const zfchar *s,
+                                                 ZF_OUT_OPT zfstring *errorHint = zfnull);
+/**
+ * @brief util to convert object from string
+ */
+extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(ZF_OUT zfautoObject &ret,
+                                                 ZF_IN const zfchar *typeId,
+                                                 ZF_IN const zfchar *s,
+                                                 ZF_OUT_OPT zfstring *errorHint = zfnull);
 
 // ============================================================
 /* ZFMETHOD_MAX_PARAM */

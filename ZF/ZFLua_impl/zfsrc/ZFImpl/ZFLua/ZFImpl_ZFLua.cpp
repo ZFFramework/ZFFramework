@@ -1,5 +1,4 @@
 #include "ZFImpl_ZFLua.h"
-#include "ZFImpl_ZFLua_metatable.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstl_string.h"
 #include "ZFCore/ZFSTLWrapper/zfstl_vector.h"
@@ -84,6 +83,11 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
     d->attachedStateList.add(L);
 
     ZFImpl_ZFLua_luaClassRegister<zfautoObject>(L, "zfautoObject");
+    { // metatable for zfautoObject
+        luaL_getmetatable(L, "zfautoObject");
+        ZFImpl_ZFLua_implSetupMetatable(L, -1);
+        lua_pop(L, 1);
+    }
 
     // zfnull
     zfclassNotPOD _ZFP_ZFImpl_ZFLua_zfnullHolder
@@ -252,10 +256,6 @@ void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT ZFCoreArray<lua_State *> const &luaSt
             ZFImpl_ZFLua_execute(luaStateList[iL], code);
         }
     }
-}
-void ZFImpl_ZFLua_implSetupObject(ZF_IN_OUT lua_State *L, ZF_IN_OPT int objIndex /* = -1 */)
-{
-    ZFImpl_ZFLua_implSetupObject_metatable(L, objIndex);
 }
 
 // ============================================================

@@ -288,87 +288,100 @@ static int _ZFP_ZFImpl_ZFLua_metatable_tostring(ZF_IN lua_State *L)
 }
 
 // ============================================================
-void ZFImpl_ZFLua_implSetupObject_metatable(ZF_IN_OUT lua_State *L, ZF_IN_OPT int objIndex /* = -1 */)
+void ZFImpl_ZFLua_implSetupMetatable(ZF_IN_OUT lua_State *L, ZF_IN_OPT int metatableIndex /* = -1 */)
 {
-    lua_getglobal(L, "_ZFP_ZFImpl_ZFLua_implSetupObject");
-    if(!lua_isfunction(L, -1))
+    ZFImpl_ZFLua_execute(L,
+            "function _ZFP_ZFImpl_ZFLua_metatable_index(obj, k)\n"
+            "    return function(obj, ...)\n"
+            "        return zfl_call(obj, k, ...)\n"
+            "    end\n"
+            "end\n"
+        );
+
+    if(metatableIndex >= 0)
     {
-        lua_pop(L, 1);
-
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_add", _ZFP_ZFImpl_ZFLua_metatable_add);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_sub", _ZFP_ZFImpl_ZFLua_metatable_sub);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_mul", _ZFP_ZFImpl_ZFLua_metatable_mul);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_div", _ZFP_ZFImpl_ZFLua_metatable_div);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_mod", _ZFP_ZFImpl_ZFLua_metatable_mod);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_unm", _ZFP_ZFImpl_ZFLua_metatable_unm);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_band", _ZFP_ZFImpl_ZFLua_metatable_band);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_bor", _ZFP_ZFImpl_ZFLua_metatable_bor);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_bxor", _ZFP_ZFImpl_ZFLua_metatable_bxor);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_bnot", _ZFP_ZFImpl_ZFLua_metatable_bnot);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_shl", _ZFP_ZFImpl_ZFLua_metatable_shl);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_shr", _ZFP_ZFImpl_ZFLua_metatable_shr);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_concat", _ZFP_ZFImpl_ZFLua_metatable_concat);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_len", _ZFP_ZFImpl_ZFLua_metatable_len);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_eq", _ZFP_ZFImpl_ZFLua_metatable_eq);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_lt", _ZFP_ZFImpl_ZFLua_metatable_lt);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_le", _ZFP_ZFImpl_ZFLua_metatable_le);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFImpl_ZFLua_metatable_tostring", _ZFP_ZFImpl_ZFLua_metatable_tostring);
-
-        ZFImpl_ZFLua_execute(L,
-                "function _ZFP_ZFImpl_ZFLua_implSetupObject_index(obj, k)\n"
-                "    return function(obj, ...)\n"
-                "        return zfl_call(obj, k, ...)\n"
-                "    end\n"
-                "end\n"
-                "_ZFP_ZFImpl_ZFLua_metatable = {\n"
-                "    __index = _ZFP_ZFImpl_ZFLua_implSetupObject_index,\n"
-                "    __add = _ZFP_ZFImpl_ZFLua_metatable_add,\n"
-                "    __sub = _ZFP_ZFImpl_ZFLua_metatable_sub,\n"
-                "    __mul = _ZFP_ZFImpl_ZFLua_metatable_mul,\n"
-                "    __div = _ZFP_ZFImpl_ZFLua_metatable_div,\n"
-                "    __mod = _ZFP_ZFImpl_ZFLua_metatable_mod,\n"
-                "    __unm = _ZFP_ZFImpl_ZFLua_metatable_unm,\n"
-                "    __band = _ZFP_ZFImpl_ZFLua_metatable_band,\n"
-                "    __bor = _ZFP_ZFImpl_ZFLua_metatable_bor,\n"
-                "    __bxor = _ZFP_ZFImpl_ZFLua_metatable_bxor,\n"
-                "    __bnot = _ZFP_ZFImpl_ZFLua_metatable_bnot,\n"
-                "    __shl = _ZFP_ZFImpl_ZFLua_metatable_shl,\n"
-                "    __shr = _ZFP_ZFImpl_ZFLua_metatable_shr,\n"
-                "    __concat = _ZFP_ZFImpl_ZFLua_metatable_concat,\n"
-                "    __len = _ZFP_ZFImpl_ZFLua_metatable_len,\n"
-                "    __eq = _ZFP_ZFImpl_ZFLua_metatable_eq,\n"
-                "    __lt = _ZFP_ZFImpl_ZFLua_metatable_lt,\n"
-                "    __le = _ZFP_ZFImpl_ZFLua_metatable_le,\n"
-                "    __tostring = _ZFP_ZFImpl_ZFLua_metatable_tostring,\n"
-                "}\n"
-                "\n"
-                "function _ZFP_ZFImpl_ZFLua_implSetupObject(obj)\n"
-                "    local tbl = debug.getmetatable(obj)\n"
-                "    if tbl == nil then\n"
-                "        debug.setmetatable(obj, tbl)\n"
-                "    elseif tbl ~= _ZFP_ZFImpl_ZFLua_metatable then\n"
-                "        for k,v in pairs(_ZFP_ZFImpl_ZFLua_metatable) do\n"
-                "            tbl[k] = v\n"
-                "        end\n"
-                "    end\n"
-                "end\n"
-            );
-
-        lua_getglobal(L, "_ZFP_ZFImpl_ZFLua_implSetupObject");
+        metatableIndex += 2;
+    }
+    else
+    {
+        metatableIndex -= 2;
     }
 
-    lua_pushvalue(L, (objIndex > 0) ? objIndex : (objIndex - 1));
+    lua_pushstring(L, "__index");
+    lua_getglobal(L, "_ZFP_ZFImpl_ZFLua_metatable_index");
+    lua_rawset(L, metatableIndex);
 
-    int error = lua_pcall(L, 1, 0, 0);
-    if(error != 0)
-    {
-        zfstring errorHint = lua_tostring(L, -1);
-        lua_pop(L, 1);
+    lua_pushstring(L, "__add");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_add);
+    lua_rawset(L, metatableIndex);
 
-        ZFLuaErrorOccurredTrim(
-            "[ZFLua] failed to setup object metatable: %s",
-            errorHint.cString());
-    }
+    lua_pushstring(L, "__sub");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_sub);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__mul");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_mul);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__div");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_div);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__mod");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_mod);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__unm");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_unm);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__band");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_band);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__bor");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_bor);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__bxor");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_bxor);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__bnot");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_bnot);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__shl");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_shl);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__shr");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_shr);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__concat");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_concat);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__len");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_len);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__eq");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_eq);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__lt");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_lt);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__le");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_le);
+    lua_rawset(L, metatableIndex);
+
+    lua_pushstring(L, "__tostring");
+    lua_pushcfunction(L, _ZFP_ZFImpl_ZFLua_metatable_tostring);
+    lua_rawset(L, metatableIndex);
 }
 
 // ============================================================
