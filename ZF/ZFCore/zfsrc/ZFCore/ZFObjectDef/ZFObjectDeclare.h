@@ -110,10 +110,9 @@ public:
                     ZFM_TOSTRING_DIRECT(ChildClass), \
                     zfsuper::ClassData(), \
                     (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
-                    (&zfself::_ZFP_zfAllocWithCache == &zfsuper::_ZFP_zfAllocWithCache \
-                        || &zfself::_ZFP_zfAllocWithCache == &ZFObject::_ZFP_zfAllocWithCache) \
-                            ? zfnull \
-                            : &zfself::_ZFP_zfAllocWithCache, \
+                    (&zfself::_ZFP_zfAllocCacheIvk != &zfsuper::_ZFP_zfAllocCacheIvk) \
+                        ? &zfself::_ZFP_zfAllocCacheIvk \
+                        : zfnull, \
                     &zfself::_ZFP_Obj_ctor, \
                     &zfself::_ZFP_Obj_dtor, \
                     &zfself::_ZFP_Obj_initImplCk \

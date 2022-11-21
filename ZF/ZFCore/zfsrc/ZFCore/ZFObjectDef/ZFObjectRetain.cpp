@@ -3,31 +3,31 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassPOD _ZFP_zfAllocWithCache_Data
+zfclassPOD _ZFP_zfAllocCacheData
 {
 public:
     zfbool *enableFlag;
     ZFObject **cache;
     zfindex *cacheCount;
 };
-static ZFCoreArrayPOD<_ZFP_zfAllocWithCache_Data> &_ZFP_zfAllocWithCache_DataList(void)
+static ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &_ZFP_zfAllocCacheDataList(void)
 {
-    static ZFCoreArrayPOD<_ZFP_zfAllocWithCache_Data> d;
+    static ZFCoreArrayPOD<_ZFP_zfAllocCacheData> d;
     return d;
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfAllocWithCache, ZFLevelZFFrameworkNormal)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ObjCacheDataHolder, ZFLevelZFFrameworkNormal)
 {
-    ZFCoreArrayPOD<_ZFP_zfAllocWithCache_Data> &d = _ZFP_zfAllocWithCache_DataList();
+    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = d.count() - 1; i != zfindexMax(); --i)
     {
         *(d[i].enableFlag) = zftrue;
     }
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(zfAllocWithCache)
+ZF_GLOBAL_INITIALIZER_DESTROY(ObjCacheDataHolder)
 {
     ZFCoreArrayPOD<ZFObject *> toRelease;
-    ZFCoreArrayPOD<_ZFP_zfAllocWithCache_Data> &d = _ZFP_zfAllocWithCache_DataList();
+    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = d.count() - 1; i != zfindexMax(); --i)
     {
         *(d[i].enableFlag) = zffalse;
@@ -39,13 +39,13 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfAllocWithCache)
         zfunsafe_zfRelease(toRelease[i]);
     }
 }
-ZF_GLOBAL_INITIALIZER_END(zfAllocWithCache)
+ZF_GLOBAL_INITIALIZER_END(ObjCacheDataHolder)
 
 void zfAllocCacheRemoveAll(void)
 {
     zfCoreMutexLocker();
     ZFCoreArrayPOD<ZFObject *> toRelease;
-    ZFCoreArrayPOD<_ZFP_zfAllocWithCache_Data> &d = _ZFP_zfAllocWithCache_DataList();
+    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = d.count() - 1; i != zfindexMax(); --i)
     {
         toRelease.addFrom(d[i].cache, *(d[i].cacheCount));
@@ -57,12 +57,12 @@ void zfAllocCacheRemoveAll(void)
     }
 }
 
-void _ZFP_zfAllocWithCache_register(ZF_IN_OUT zfbool &enableFlag,
-                                    ZF_IN_OUT ZFObject **cache,
-                                    ZF_IN_OUT zfindex &cacheCount)
+void _ZFP_zfAllocCacheImplRegister(ZF_IN_OUT zfbool &enableFlag,
+                                   ZF_IN_OUT ZFObject **cache,
+                                   ZF_IN_OUT zfindex &cacheCount)
 {
-    ZFCoreArrayPOD<_ZFP_zfAllocWithCache_Data> &d = _ZFP_zfAllocWithCache_DataList();
-    _ZFP_zfAllocWithCache_Data item;
+    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
+    _ZFP_zfAllocCacheData item;
     item.enableFlag = &enableFlag;
     item.cache = cache;
     item.cacheCount = &cacheCount;
@@ -72,9 +72,9 @@ void _ZFP_zfAllocWithCache_register(ZF_IN_OUT zfbool &enableFlag,
         enableFlag = zftrue;
     }
 }
-void _ZFP_zfAllocWithCache_unregister(ZF_IN_OUT zfbool &enableFlag)
+void _ZFP_zfAllocCacheImplUnregister(ZF_IN_OUT zfbool &enableFlag)
 {
-    ZFCoreArrayPOD<_ZFP_zfAllocWithCache_Data> &d = _ZFP_zfAllocWithCache_DataList();
+    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = 0; i < d.count(); ++i)
     {
         if(&enableFlag == d[i].enableFlag)

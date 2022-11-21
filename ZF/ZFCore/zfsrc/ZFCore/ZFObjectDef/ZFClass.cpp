@@ -87,7 +87,7 @@ public:
     zfbool classIsDynamicRegister;
     zfautoObject classDynamicRegisterUserData;
     zfstlmap<ZFObject *, zfbool> classDynamicRegisterObjectInstanceMap;
-    _ZFP_zfAllocWithCacheCallback objectAllocWithCacheCallback;
+    _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback;
     _ZFP_ZFObjectConstructor constructor;
     _ZFP_ZFObjectDestructor destructor;
     zfstring classNamespace;
@@ -1357,7 +1357,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
                                        ZF_IN const zfchar *className,
                                        ZF_IN const ZFClass *parent,
                                        ZF_IN zfbool classCanAllocPublic,
-                                       ZF_IN _ZFP_zfAllocWithCacheCallback objectAllocWithCacheCallback,
+                                       ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback,
                                        ZF_IN _ZFP_ZFObjectConstructor constructor,
                                        ZF_IN _ZFP_ZFObjectDestructor destructor,
                                        ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback,
@@ -1406,7 +1406,14 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
 
         cls->d->classIsDynamicRegister = classIsDynamicRegister;
         cls->d->classDynamicRegisterUserData = classDynamicRegisterUserData;
-        cls->d->objectAllocWithCacheCallback = objectAllocWithCacheCallback;
+        if(objectAllocWithCacheCallback == ZFObject::_ZFP_zfAllocCacheIvk)
+        {
+            cls->d->objectAllocWithCacheCallback = zfnull;
+        }
+        else
+        {
+            cls->d->objectAllocWithCacheCallback = objectAllocWithCacheCallback;
+        }
         cls->d->constructor = constructor;
         cls->d->destructor = destructor;
 
@@ -1767,7 +1774,7 @@ zfbool ZFClass::_ZFP_ZFClass_propertyInitStepIsTheSame(ZF_IN const ZFProperty *p
     return zftrue;
 }
 
-_ZFP_zfAllocWithCacheCallback ZFClass::_ZFP_objectAllocWithCacheCallback(void) const
+_ZFP_zfAllocCacheCallback ZFClass::_ZFP_objectAllocWithCacheCallback(void) const
 {
     return d->objectAllocWithCacheCallback;
 }
@@ -1789,7 +1796,7 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(ZF_IN const zfchar *class
                                                        ZF_IN const zfchar *className,
                                                        ZF_IN const ZFClass *parent,
                                                        ZF_IN zfbool classCanAllocPublic,
-                                                       ZF_IN _ZFP_zfAllocWithCacheCallback objectAllocWithCacheCallback,
+                                                       ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback,
                                                        ZF_IN _ZFP_ZFObjectConstructor constructor,
                                                        ZF_IN _ZFP_ZFObjectDestructor destructor,
                                                        ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback,

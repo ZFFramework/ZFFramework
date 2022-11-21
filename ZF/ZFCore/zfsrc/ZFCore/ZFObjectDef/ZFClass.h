@@ -17,7 +17,7 @@ zfclassFwd ZFMethod;
 zfclassFwd ZFProperty;
 
 typedef ZFObject *(*_ZFP_ZFObjectConstructor)(void);
-typedef ZFObject *(*_ZFP_zfAllocWithCacheCallback)(void);
+typedef ZFObject *(*_ZFP_zfAllocCacheCallback)(void);
 typedef void (*_ZFP_ZFObjectDestructor)(ZF_IN ZFObject *obj);
 typedef void (*_ZFP_ZFObjectCheckInitImplementationListCallback)(ZF_IN_OUT ZFClass *cls);
 typedef ZFInterface * (*_ZFP_ZFObjectToInterfaceCastCallback)(ZF_IN ZFObject * const &obj);
@@ -634,7 +634,7 @@ public:
                                          ZF_IN const zfchar *className,
                                          ZF_IN const ZFClass *parent,
                                          ZF_IN zfbool classCanAllocPublic,
-                                         ZF_IN _ZFP_zfAllocWithCacheCallback objectAllocWithCacheCallback,
+                                         ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback,
                                          ZF_IN _ZFP_ZFObjectConstructor constructor,
                                          ZF_IN _ZFP_ZFObjectDestructor destructor,
                                          ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback,
@@ -671,7 +671,7 @@ public:
     zfbool _ZFP_ZFClass_propertyInitStepIsTheSame(ZF_IN const ZFProperty *property,
                                                   ZF_IN const ZFClass *refClass) const;
 
-    _ZFP_zfAllocWithCacheCallback _ZFP_objectAllocWithCacheCallback(void) const;
+    _ZFP_zfAllocCacheCallback _ZFP_objectAllocWithCacheCallback(void) const;
     _ZFP_ZFObjectConstructor _ZFP_objectConstructor(void) const;
     _ZFP_ZFObjectDestructor _ZFP_objectDestructor(void) const;
     void _ZFP_classDynamicRegisterObjectInstanceDetach(ZF_IN ZFObject *obj) const;
@@ -712,7 +712,7 @@ public:
                                ZF_IN const zfchar *className,
                                ZF_IN const ZFClass *parent,
                                ZF_IN zfbool classCanAllocPublic,
-                               ZF_IN _ZFP_zfAllocWithCacheCallback objectAllocWithCacheCallback,
+                               ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback,
                                ZF_IN _ZFP_ZFObjectConstructor constructor,
                                ZF_IN _ZFP_ZFObjectDestructor destructor,
                                ZF_IN _ZFP_ZFObjectCheckInitImplementationListCallback checkInitImplListCallback,
