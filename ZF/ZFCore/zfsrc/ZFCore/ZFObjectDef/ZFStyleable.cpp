@@ -241,7 +241,7 @@ public:
     {
         zfCoreMutexLocker();
 
-        ZFStyleable *defaultStyle = listenerData.sender<ZFStyleable *>()->defaultStyle();
+        ZFStyleable *defaultStyle = listenerData.sender()->to<ZFStyleable *>()->defaultStyle();
         zfCoreAssert(defaultStyle != zfnull);
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
             ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
@@ -260,8 +260,8 @@ public:
     {
         zfCoreMutexLocker();
 
-        const ZFProperty *property = listenerData.param0<v_ZFProperty *>()->zfv;
-        ZFStyleable *defaultStyle = listenerData.sender<ZFStyleable *>();
+        const ZFProperty *property = listenerData.param0()->to<v_ZFProperty *>()->zfv;
+        ZFStyleable *defaultStyle = listenerData.senderT();
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
             ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
 
@@ -440,8 +440,8 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleInvalidAssert, ZFLevelZFFrameworkHi
 {
     ZFLISTENER(action) {
         if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return ;}
-        const zfchar *propertyName = listenerData.param0<v_zfstring *>()->zfv;
-        const zfchar *styleKey = listenerData.param1<v_zfstring *>()->zfv;
+        const zfchar *propertyName = listenerData.param0()->to<v_zfstring *>()->zfv;
+        const zfchar *styleKey = listenerData.param1()->to<v_zfstring *>()->zfv;
         if(zfsIsEmpty(propertyName))
         {
             zfCoreCriticalMessageTrim(

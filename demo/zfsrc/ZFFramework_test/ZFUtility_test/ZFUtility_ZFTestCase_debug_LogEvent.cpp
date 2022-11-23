@@ -9,7 +9,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent)
         zfLogTrimT()
             << zfLogCurTimeString()
             << zfstringWithFormat("[%s]", listenerData.sender()->classData()->classNameFull())
-            << listenerData.param0<v_zfstring *>()->zfv;
+            << listenerData.param0()->to<v_zfstring *>()->zfv;
     } ZFLISTENER_END(testCaseOnOutput)
     this->testCaseOnOutputListener = testCaseOnOutput;
     ZFGlobalObserver().observerAdd(ZFTestCase::EventTestCaseOnOutput(), this->testCaseOnOutputListener);

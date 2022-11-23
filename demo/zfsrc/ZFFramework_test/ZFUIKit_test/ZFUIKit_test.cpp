@@ -128,7 +128,7 @@ void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
         ZFObject *obj = userData->objectTag("obj")->objectHolded();
         const ZFProperty *property = userData->objectTag<v_ZFProperty *>("property")->zfv;
 
-        v_zfstring *text = listenerData.param0<v_zfstring *>();
+        v_zfstring *text = listenerData.param0T();
         text->zfv = zfstringWithFormat("%s : %s", property->propertyName(), ZFPropertyGetInfo(property, obj).cString());
     } ZFLISTENER_END(buttonTextGetter)
     ZFLISTENER(buttonClickListener) {
@@ -159,7 +159,7 @@ void ZFUIKit_test_prepareSettingForLayoutRequest(ZF_IN_OUT ZFArray *settings,
     zfCoreAssert(view != zfnull);
 
     ZFLISTENER(buttonTextGetter) {
-        v_zfstring *text = listenerData.param0<v_zfstring *>();
+        v_zfstring *text = listenerData.param0T();
         text->zfv = "layoutRequest";
     } ZFLISTENER_END(buttonTextGetter)
     ZFLISTENER(buttonClickListener) {
@@ -180,7 +180,7 @@ void ZFUIKit_test_prepareSettingForResetProperty(ZF_IN_OUT ZFArray *settings,
     setting->userData()->objectTag("settings", settings->objectHolder());
 
     ZFLISTENER(buttonTextGetter) {
-        v_zfstring *text = listenerData.param0<v_zfstring *>();
+        v_zfstring *text = listenerData.param0T();
         text->zfv = "reset setting";
     } ZFLISTENER_END(buttonTextGetter)
     setting->buttonTextGetter(buttonTextGetter);

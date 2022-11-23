@@ -554,7 +554,7 @@ void classOnChangeCheckAttach(void)
 }
 static void classOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
-    const ZFClassDataChangeData &data = listenerData.param0<v_ZFClassDataChangeData *>()->zfv;
+    const ZFClassDataChangeData &data = listenerData.param0()->to<v_ZFClassDataChangeData *>()->zfv;
     if(data.changeType == ZFClassDataChangeTypeDetach && data.changedClass != zfnull)
     {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);

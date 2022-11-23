@@ -187,8 +187,8 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFFilePathInfoTreePrint,
  * usage:
  * @code
  *   ZFLISTENER(fileCallback) {
- *       const ZFPathInfo &pathInfo = listenerData.param0<v_ZFPathInfo *>()->zfv;
- *       const ZFFileFindData &fd = listenerData.param1<v_ZFFileFindData *>()->zfv;
+ *       const ZFPathInfo &pathInfo = listenerData.param0()->to<v_ZFPathInfo *>()->zfv;
+ *       const ZFFileFindData &fd = listenerData.param1()->to<v_ZFFileFindData *>()->zfv;
  *       // do your things with the file
  *   } ZFLISTENER_END(fileCallback)
  *   ZFFilePathInfoForEach(pathInfo, fileCallback);

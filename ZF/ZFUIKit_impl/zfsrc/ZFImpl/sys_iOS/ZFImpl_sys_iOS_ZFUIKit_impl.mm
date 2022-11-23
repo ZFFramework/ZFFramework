@@ -176,7 +176,7 @@ ZF_NAMESPACE_GLOBAL_END
             return ;
         }
         ZFLISTENER(windowOnPause) {
-            ZFUISysWindow *sysWindow = listenerData.sender<ZFUISysWindow *>();
+            ZFUISysWindow *sysWindow = listenerData.senderT();
             zfstring s;
             ZFImpl_sys_iOS_viewTreePrintT(s, (__bridge UIView *)sysWindow->rootView()->nativeView());
             zfLogTrimT() << s;

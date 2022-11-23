@@ -23,7 +23,7 @@ public:
     ZFListener viewOnEventListener;
     static void viewOnEvent(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
     {
-        ZFUIKeyEvent *event = listenerData.param0<ZFUIKeyEvent *>();
+        ZFUIKeyEvent *event = listenerData.param0T();
         if(event != zfnull)
         {
             ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(event);

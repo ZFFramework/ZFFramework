@@ -39,7 +39,7 @@ public:
     ZFIdentityGenerator delayTaskIdGenerator;
     static void viewOnDealloc(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
     {
-        _ZFP_ZFUIViewBlinkDoOff(listenerData.sender<ZFUIView *>());
+        _ZFP_ZFUIViewBlinkDoOff(listenerData.senderT());
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkDataHolder)
 
@@ -108,7 +108,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(ZF_IN ZFUIView *view, ZF_IN const ZFUIViewBli
         #endif
 
         ZFLISTENER(aniOnStopListener) {
-            ZFAnimation *ani = listenerData.sender<ZFAnimation *>();
+            ZFAnimation *ani = listenerData.senderT();
             ZFUIView *blinkView = ani->aniTarget()->to<ZFUIView *>();
             ZFUIView *view = userData->objectHolded();
 

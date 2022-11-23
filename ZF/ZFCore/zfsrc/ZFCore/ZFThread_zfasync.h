@@ -14,7 +14,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief util to run code asynchronizely
  *
  * callback would run in new thread,
- * finishCallback would run in the same thread that called this method
+ * finishCallback would run in the same thread that called this method\n
+ * \n
+ * you may store result to callback's #ZFListenerData::result,
+ * and obtain the result from finishCallback's #ZFListenerData::param0
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zftaskid, zfasync,
                         ZFMP_IN(const ZFListener &, callback),

@@ -9,6 +9,7 @@ public:
     zftaskid taskId;
     ZFListener callback;
     zfautoObject userData;
+    zfautoObject result;
     ZFListener finishCallback;
     zfautoObject finishCallbackUserData;
     zfautoObjectT<ZFThread *> callerThread;
@@ -62,9 +63,12 @@ public:
         }
         zfCoreMutexUnlock();
 
-        taskData->callback.execute(ZFListenerData(), taskData->userData);
+        ZFListenerData listenerDataTmp;
+        listenerDataTmp.resultEnable(zftrue);
+        taskData->callback.execute(listenerDataTmp, taskData->userData);
 
         zfCoreMutexLock();
+        taskData->result = listenerDataTmp.result();
         if(!d->taskIdGenerator.idExist(taskData->taskId))
         {
             _ZFP_taskDataCleanup(d, taskData);
@@ -94,7 +98,7 @@ public:
         }
         zfCoreMutexUnlock();
 
-        taskData->finishCallback.execute(ZFListenerData(), taskData->finishCallbackUserData);
+        taskData->finishCallback.execute(ZFListenerData().param0(taskData->result), taskData->finishCallbackUserData);
 
         zfCoreMutexLock();
         _ZFP_taskDataCleanup(d, taskData);
@@ -106,6 +110,7 @@ private:
         d->taskIdGenerator.idRelease(taskData->taskId);
         taskData->callback = zfnull;
         taskData->userData = zfnull;
+        taskData->result = zfnull;
         taskData->finishCallback = zfnull;
         taskData->finishCallbackUserData = zfnull;
         taskData->callerThread = zfnull;
@@ -129,9 +134,10 @@ ZFMETHOD_FUNC_DEFINE_4(zftaskid, zfasync,
     zfautoObjectT<ZFThread *> thread;
     for(zfindex i = 0; i < d->threadPool.count(); ++i)
     {
-        if(d->threadPool[i]->taskQueueCount() == 0)
+        zfautoObjectT<ZFThread *> &tmp = d->threadPool[i];
+        if(tmp->taskQueueCount() == 0 && !tmp->taskQueueRunning())
         {
-            thread = d->threadPool[i];
+            thread = tmp;
             break;
         }
     }

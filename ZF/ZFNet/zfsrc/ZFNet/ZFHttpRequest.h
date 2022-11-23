@@ -83,7 +83,7 @@ private:
  * typical usage:
  * @code
  *   ZFLISTENER(onRecv) {
- *       ZFJsonItem response = listenerData.param0<ZFHttpResponse *>()->bodyJson();
+ *       ZFJsonItem response = listenerData.param0()->to<ZFHttpResponse *>()->bodyJson();
  *       zfLogTrimT() << response;
  *   } ZFLISTENER_END(onRecv)
  *   zflineAlloc(ZFHttpRequest, "http://xxx", "POST")

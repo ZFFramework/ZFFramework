@@ -86,7 +86,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkWhenFocusDataHolder)
 // ============================================================
 static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
-    ZFUIView *view = listenerData.sender<ZFUIView *>();
+    ZFUIView *view = listenerData.senderT();
 
     if(view->objectIsInternal())
     {
@@ -118,13 +118,13 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFListenerData &
 }
 static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
-    ZFUIView *view = listenerData.sender<ZFUIView *>();
+    ZFUIView *view = listenerData.senderT();
     if(view->objectIsInternal())
     {
         return ;
     }
 
-    ZFUIMouseEvent *event = listenerData.param0<ZFUIMouseEvent *>();
+    ZFUIMouseEvent *event = listenerData.param0T();
     if(event == zfnull || event->mouseAction != ZFUIMouseAction::e_MouseDown)
     {
         return ;
@@ -142,7 +142,7 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFListenerData &li
 static void _ZFP_ZFUIViewBlinkWhenFocus_viewOnDealloc(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusDataHolder);
-    ZFUIView *view = listenerData.sender<ZFUIView *>();
+    ZFUIView *view = listenerData.senderT();
     d->focusedViews.removeElement(view);
     view->observerRemove(ZFUIView::EventObjectBeforeDealloc(), d->viewOnDeallocListener);
     view->observerRemove(ZFUIView::EventViewOnEvent(), d->mouseDownListener);

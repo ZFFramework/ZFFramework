@@ -615,6 +615,7 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const
     if(!d->instanceObserverCached.empty())
     {
         ZFListenerData listenerData(ZFObject::EventObjectAfterAlloc(), obj);
+        listenerData.eventFilterEnable(zftrue);
         for(zfstlsize i = 0; i < d->instanceObserverCached.size() && !listenerData.eventFiltered(); ++i)
         {
             _ZFP_ZFClassPrivate::InstanceObserverData &data = *(d->instanceObserverCached[i]);

@@ -112,9 +112,9 @@ protected:
                 ZFUIWidget_ZFUIPage_test_PageManager *pageManager = userData->objectTag("pageManager")->objectHolded();
                 v_zfstring *pageGroupId = userData->objectTag<v_zfstring *>("pageGroupId");
 
-                if(!listenerData.sender<ZFUIButton *>()->checked())
+                if(!listenerData.sender()->to<ZFUIButton *>()->checked())
                 { // click checked tab
-                    listenerData.sender<ZFUIButton *>()->checked(zftrue);
+                    listenerData.sender()->to<ZFUIButton *>()->checked(zftrue);
 
                     ZFCoreArrayPOD<ZFUIPage *> pageToDestroy;
                     for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i)
@@ -139,7 +139,7 @@ protected:
                         ZFUIButton *button = pageManager->_buttonLayout()->childAt(i)->toAny();
                         button->checked(zffalse);
                     }
-                    listenerData.sender<ZFUIButton *>()->checked(zftrue);
+                    listenerData.sender()->to<ZFUIButton *>()->checked(zftrue);
 
                     zfblockedAlloc(ZFAnimationNativeView, resumeAni);
                     resumeAni->aniScaleXFrom(0.8f);

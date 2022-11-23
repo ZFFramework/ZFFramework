@@ -129,7 +129,7 @@ private:
             settings->add(setting);
             setting->userData(this->objectHolder());
             ZFLISTENER(buttonTextGetter) {
-                v_zfstring *text = listenerData.param0<v_zfstring *>();
+                v_zfstring *text = listenerData.param0T();
                 text->zfv = "change test object";
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);

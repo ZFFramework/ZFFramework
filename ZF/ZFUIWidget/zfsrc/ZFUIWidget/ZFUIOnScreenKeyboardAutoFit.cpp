@@ -129,7 +129,7 @@ public:
 public:
     static void onScreenKeyboardStateOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
     {
-        ZFUIOnScreenKeyboardState *keyboardState = listenerData.sender<ZFUIOnScreenKeyboardState *>();
+        ZFUIOnScreenKeyboardState *keyboardState = listenerData.senderT();
         ZFUIOnScreenKeyboardAutoFitLayout *layout = userData->objectHolded();
         if(keyboardState->keyboardShowing())
         {
@@ -156,7 +156,7 @@ public:
     static void viewFocusOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
     {
         ZFUIOnScreenKeyboardAutoFitLayout *layout = userData->objectHolded();
-        ZFUIView *view = listenerData.sender<ZFUIView *>();
+        ZFUIView *view = listenerData.senderT();
         if(!view->viewFocused())
         {
             if(view == layout->d->autoFitFocusedView)

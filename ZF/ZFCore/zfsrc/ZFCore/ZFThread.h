@@ -241,6 +241,8 @@ public:
     ZFMETHOD_DECLARE_2(void, taskQueueRemove,
                        ZFMP_IN(const ZFListener &, task),
                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    /** @brief try if any task add by #taskQueueAdd is running */
+    ZFMETHOD_DECLARE_0(zfbool, taskQueueRunning)
 
 protected:
     /**

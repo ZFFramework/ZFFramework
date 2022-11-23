@@ -94,32 +94,32 @@ private:
     {
 #if 0 // output logs during scroll event may cause performance issue
         ZFLISTENER(onDragBegin) {
-            zfLogTrimT() << "onDragBegin  " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrimT() << "onDragBegin  " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END(onDragBegin)
         listView->observerAdd(ZFUIListView::EventScrollOnDragBegin(), onDragBegin);
 
         ZFLISTENER(onDrag) {
-            zfLogTrimT() << "onDrag       " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrimT() << "onDrag       " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END(onDrag)
         listView->observerAdd(ZFUIListView::EventScrollOnDrag(), onDrag);
 
         ZFLISTENER(onDragEnd) {
-            zfLogTrimT() << "onDragEnd    " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrimT() << "onDragEnd    " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END(onDragEnd)
         listView->observerAdd(ZFUIListView::EventScrollOnDragEnd(), onDragEnd);
 
         ZFLISTENER(onScrollBegin) {
-            zfLogTrimT() << "onScrollBegin" << listenerData.sender()->objectInfoOfInstance() << listenerData.sender<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrimT() << "onScrollBegin" << listenerData.sender()->objectInfoOfInstance() << listenerData.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END(onScrollBegin)
         listView->observerAdd(ZFUIListView::EventScrollOnScrollBegin(), onScrollBegin);
 
         ZFLISTENER(onScroll) {
-            zfLogTrimT() << "onScroll     " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrimT() << "onScroll     " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END(onScroll)
         listView->observerAdd(ZFUIListView::EventScrollOnScroll(), onScroll);
 
         ZFLISTENER(onScrollEnd) {
-            zfLogTrimT() << "onScrollEnd  " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrimT() << "onScrollEnd  " << listenerData.sender()->objectInfoOfInstance() << listenerData.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END(onScrollEnd)
         listView->observerAdd(ZFUIListView::EventScrollOnScrollEnd(), onScrollEnd);
 #endif
@@ -150,7 +150,7 @@ private:
             setting->userData()->objectTag("listView", listView->objectHolder());
             ZFLISTENER(buttonTextGetter) {
                 ZFUIListView *listView = userData->objectTag("listView")->objectHolded();
-                v_zfstring *text = listenerData.param0<v_zfstring *>();
+                v_zfstring *text = listenerData.param0T();
                 text->zfv = zfstringWithFormat("autoScrollSpeedX: %f", listView->autoScrollSpeedX());
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);
@@ -174,7 +174,7 @@ private:
             setting->userData()->objectTag("listView", listView->objectHolder());
             ZFLISTENER(buttonTextGetter) {
                 ZFUIListView *listView = userData->objectTag("listView")->objectHolded();
-                v_zfstring *text = listenerData.param0<v_zfstring *>();
+                v_zfstring *text = listenerData.param0T();
                 text->zfv = zfstringWithFormat("autoScrollSpeedY: %f", listView->autoScrollSpeedY());
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);
@@ -228,7 +228,7 @@ private:
             setting->userData()->objectTag("listView", listView->objectHolder());
             ZFLISTENER(buttonTextGetter) {
                 ZFUIScrollView *listView = userData->objectTag("listView")->objectHolded();
-                v_zfstring *text = listenerData.param0<v_zfstring *>();
+                v_zfstring *text = listenerData.param0T();
                 text->zfv = zfstringWithFormat("scrollAreaMargin: %s",
                     ZFUIMarginToString(listView->scrollAreaMargin()).cString());
             } ZFLISTENER_END(buttonTextGetter)

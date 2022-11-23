@@ -232,7 +232,7 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStop(ZF_IN ZFUIWindow *window,
 }
 static void _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
-    ZFUIOnScreenKeyboardState *state = listenerData.sender<ZFUIOnScreenKeyboardState *>();
+    ZFUIOnScreenKeyboardState *state = listenerData.senderT();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIOnScreenKeyboardAutoResizeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIOnScreenKeyboardAutoResizeDataHolder);
     for(zfindex i = 0; i < d->windowList.count(); ++i)
     {
@@ -247,7 +247,7 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(ZF_I
 }
 static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
-    ZFUIRootView *rootView = listenerData.sender<ZFUIRootView *>();
+    ZFUIRootView *rootView = listenerData.senderT();
     ZFUIWindow *window = userData->objectHolded();
     if(rootView->viewFrame() != rootView->viewFramePrev())
     {
@@ -258,8 +258,8 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(ZF_IN co
 {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIOnScreenKeyboardAutoResizeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIOnScreenKeyboardAutoResizeDataHolder);
 
-    ZFUIWindow *window = listenerData.sender<ZFUIWindow *>();
-    ZFUIRootView *rootViewOld = listenerData.param0<ZFUISysWindow *>()->rootView();
+    ZFUIWindow *window = listenerData.senderT();
+    ZFUIRootView *rootViewOld = listenerData.param0()->to<ZFUISysWindow *>()->rootView();
     rootViewOld->observerRemove(
         ZFUIView::EventViewLayoutOnLayoutPrepare(),
         d->windowOnUpdateLayoutListener);
@@ -270,13 +270,13 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(ZF_IN co
 }
 static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
 {
-    const ZFProperty *property = listenerData.param0<v_ZFProperty *>()->zfv;
+    const ZFProperty *property = listenerData.param0()->to<v_ZFProperty *>()->zfv;
     if(property != ZFPropertyAccess(ZFUILayoutParam, layoutMargin))
     {
         return ;
     }
 
-    ZFUILayoutParam *layoutParam = listenerData.sender<ZFUILayoutParam *>();
+    ZFUILayoutParam *layoutParam = listenerData.senderT();
     ZFUIWindow *window = userData->objectHolded();
     _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = ZFAny(window->objectTag(
         _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));

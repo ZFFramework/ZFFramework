@@ -8,41 +8,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFListenerData
-void ZFListenerData::objectInfoT(ZF_IN_OUT zfstring &ret) const
-{
-    ret += ZFTOKEN_ZFObjectInfoLeft;
-    zfstringAppend(ret, "ZFListenerData(%p)", this);
-    const zfchar *eventName = ZFIdMapNameForId(this->eventId());
-    if(eventName != zfnull)
-    {
-        ret += ", event: ";
-        ret += eventName;
-    }
-    if(this->sender() != zfnull)
-    {
-        ret += ", sender: ";
-        ZFObjectInfoT(ret, this->sender());
-    }
-    if(this->param0() != zfnull)
-    {
-        ret += ", param0: ";
-        ZFObjectInfoT(ret, this->param0());
-    }
-    if(this->param1() != zfnull)
-    {
-        ret += ", param1: ";
-        ZFObjectInfoT(ret, this->param1());
-    }
-    if(this->eventFiltered())
-    {
-        ret += ", filtered: ";
-        ret += ZFTOKEN_zfbool_zftrue;
-    }
-    ret += ZFTOKEN_ZFObjectInfoRight;
-}
-
-// ============================================================
 // ZFObserverHolder types
 zfclassLikePOD _ZFP_ZFObserverData
 {
@@ -575,6 +540,7 @@ void ZFObserverHolder::observerNotifyWithCustomSender(ZF_IN ZFObject *customSend
 
     d->observerNotifyPrepare(toNotify, toDelete, eventId, this->observerOwner());
     ZFListenerData listenerData(eventId, customSender, param0, param1);
+    listenerData.eventFilterEnable(zftrue);
     if(this->observerOwner() != zfnull)
     {
         this->observerOwner()->observerOnEvent(listenerData);

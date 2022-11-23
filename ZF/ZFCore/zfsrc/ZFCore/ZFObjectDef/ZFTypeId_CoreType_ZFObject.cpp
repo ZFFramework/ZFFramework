@@ -185,9 +185,13 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, zfidentity, e
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, ZFObject *, sender)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, ZFObject *, param0)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, ZFObject *, param1)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFListenerData, ZFObject *, result)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFListenerData, ZFListenerData &, resultEnable, ZFMP_IN(zfbool, enable))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFListenerData, zfbool, resultEnabled)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFListenerData, void, eventFiltered, ZFMP_IN(zfbool, eventFiltered))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFListenerData, zfbool, eventFiltered)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFListenerData, ZFListenerData &, eventFilterEnable)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFListenerData, ZFListenerData &, eventFilterEnable, ZFMP_IN(zfbool, enable))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFListenerData, zfbool, eventFilterEnabled)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserverAddParam, ZFObserverAddParam)

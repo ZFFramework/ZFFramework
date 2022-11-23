@@ -22,7 +22,7 @@ public:
     static void buttonEvent(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
     {
         ZFUIButtonGroup *buttonGroup = userData->objectHolded();
-        ZFUIButton *button = listenerData.sender<ZFUIButton *>();
+        ZFUIButton *button = listenerData.senderT();
         zfindex buttonIndex = buttonGroup->buttonFind(button);
         zfCoreAssert(buttonIndex != zfindexMax());
         buttonGroup->_ZFP_ZFUIButtonGroup_buttonGroupOnEvent(button, buttonIndex, listenerData.eventId());
@@ -84,7 +84,7 @@ public:
     static void buttonOnClick(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
     {
         ZFUIButtonGroup *buttonGroup = userData->objectHolded();
-        ZFUIButton *button = listenerData.sender<ZFUIButton *>();
+        ZFUIButton *button = listenerData.senderT();
         zfindex buttonIndex = buttonGroup->buttonFind(button);
         zfCoreAssert(buttonIndex != zfindexMax());
         if(buttonIndex == buttonGroup->buttonTabChecked())

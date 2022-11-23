@@ -92,10 +92,6 @@ ZFObjectHolder *ZFObject::objectHolder(void)
     }
     return d->objectHolder;
 }
-ZFAny ZFObject::objectHolded(void)
-{
-    return this->to<ZFObjectHolder *>()->_ZFP_objectHolded;
-}
 
 void ZFObject::objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret)
 {

@@ -71,7 +71,7 @@ public:
     static void listAdapterOnReload(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
     {
         ZFUIListView *listView = userData->objectHolded();
-        v_zfindex *atIndex = listenerData.param0<v_zfindex *>();
+        v_zfindex *atIndex = listenerData.param0T();
         if(atIndex == zfnull || atIndex->zfv == zfindexMax())
         {
             listView->listReload();

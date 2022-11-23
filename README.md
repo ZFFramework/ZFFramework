@@ -100,7 +100,7 @@ ZFMAIN_ENTRY()
             .method("void", "testFunc", ZFMP()
                 .mp("zfstring", "testParam0")
                 , ZFListenerForLambda({
-                    ZFMethodInvokeData *m = listenerData.param0<ZFMethodInvokeData *>();
+                    ZFMethodInvokeData *m = listenerData.param0T();
                     zfLogTrimT() << m->invokerMethod << "called, param0:" << m->param0;
                 }))
         .classEnd();

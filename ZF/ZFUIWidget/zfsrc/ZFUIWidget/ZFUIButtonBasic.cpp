@@ -151,7 +151,7 @@ public:
     #define _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(T_Component, T_State) \
         static void T_Component##T_State##Changed(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData) \
         { \
-            const ZFProperty *property = listenerData.param0<v_ZFProperty *>()->zfv; \
+            const ZFProperty *property = listenerData.param0()->to<v_ZFProperty *>()->zfv; \
             ZFUIButtonBasic *button = userData->objectHolded(); \
             button->d->T_Component##ViewPrepare(); \
             if(button->buttonState() == ZFUIButtonState::e_##T_State) \

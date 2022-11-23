@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return ;
         }
         ZFLISTENER(windowOnPause) {
-            ZFUISysWindow *sysWindow = listenerData.sender<ZFUISysWindow *>();
+            ZFUISysWindow *sysWindow = listenerData.senderT();
             ZFUIViewTreePrint(sysWindow->rootView());
         } ZFLISTENER_END(windowOnPause)
         this->windowOnPauseListener = windowOnPause;

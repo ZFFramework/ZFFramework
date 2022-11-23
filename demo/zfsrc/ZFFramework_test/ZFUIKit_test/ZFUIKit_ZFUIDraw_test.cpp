@@ -78,7 +78,7 @@ private:
             settings->add(setting);
             setting->userData(views);
             ZFLISTENER(buttonTextGetter) {
-                v_zfstring *text = listenerData.param0<v_zfstring *>();
+                v_zfstring *text = listenerData.param0T();
                 text->zfv = "change layout";
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);

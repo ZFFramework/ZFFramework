@@ -307,7 +307,10 @@ public:
     /**
      * @brief util method to access the original object holded by #objectHolder
      */
-    zffinal ZFAny objectHolded(void);
+    virtual inline ZFAny objectHolded(void)
+    {
+        return zfnull;
+    }
     /**
      * @brief util method to access the original object holded by #objectHolder
      */

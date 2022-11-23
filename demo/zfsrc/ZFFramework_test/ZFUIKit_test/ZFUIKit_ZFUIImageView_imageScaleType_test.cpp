@@ -94,7 +94,7 @@ private:
             setting->userData(imageViews);
             ZFLISTENER(buttonTextGetter) {
                 ZFArray *imageViews = userData->to<ZFArray *>();
-                v_zfstring *text = listenerData.param0<v_zfstring *>();
+                v_zfstring *text = listenerData.param0T();
 
                 ZFUIImageView *imageView = imageViews->getFirst<ZFUIImageView *>();
                 text->zfv = ZFUIContentScaleType::EnumNameForValue(imageView->imageScaleType());

@@ -244,7 +244,7 @@ ZF_NAMESPACE_GLOBAL_END
             return ;
         }
         ZFLISTENER(windowOnPause) {
-            ZFUISysWindow *sysWindow = listenerData.sender<ZFUISysWindow *>();
+            ZFUISysWindow *sysWindow = listenerData.senderT();
             zfstring s;
             ZFImpl_sys_Android_viewTreePrintT(s, (jobject)sysWindow->rootView()->nativeView());
             zfLogTrimT() << s;

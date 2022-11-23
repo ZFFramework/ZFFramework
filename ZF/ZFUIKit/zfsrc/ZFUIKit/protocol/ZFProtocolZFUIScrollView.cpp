@@ -47,7 +47,7 @@ void ZFUIScrollViewImplHelperProtocol::trackDelayStart(ZF_IN zftimet timeoutMili
         ZFLISTENER_1(timerActivated
                 , ZFUIScrollViewImplHelper *, owner
                 ) {
-            listenerData.sender<ZFTimer *>()->timerStop();
+            listenerData.sender()->to<ZFTimer *>()->timerStop();
             owner->trackDelayNotifyTimeout();
         } ZFLISTENER_END(timerActivated)
         owner->_trackDelayDefaultImplTimer->observerAdd(ZFTimer::EventTimerOnActivate(), timerActivated);

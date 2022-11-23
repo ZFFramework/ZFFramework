@@ -39,7 +39,7 @@ private:
             setting->userData()->objectTag("imageView", imageView->objectHolder());
             ZFLISTENER(buttonTextGetter) {
                 ZFUIImageView *imageView = userData->objectTag("imageView")->objectHolded();
-                v_zfstring *text = listenerData.param0<v_zfstring *>();
+                v_zfstring *text = listenerData.param0T();
                 zfbool fill = (imageView->layoutParam()->sizeParam().width == ZFUISizeType::e_Fill);
                 text->zfv = fill ? "fill" : "wrap";
             } ZFLISTENER_END(buttonTextGetter)

@@ -43,21 +43,21 @@ private:
         ZFLISTENER(onFrame) {
             userData->objectHolded<ZFTestCase *>()->testCaseOutput(
                 "onFrame: %zi",
-                listenerData.sender<ZFUIAniImageView *>()->aniFrame());
+                listenerData.sender()->to<ZFUIAniImageView *>()->aniFrame());
         } ZFLISTENER_END(onFrame)
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnFrame(), onFrame, this->objectHolder());
 
         ZFLISTENER(onLoop) {
             userData->objectHolded<ZFTestCase *>()->testCaseOutput(
                 "onLoop: %zi",
-                listenerData.sender<ZFUIAniImageView *>()->aniFrame());
+                listenerData.sender()->to<ZFUIAniImageView *>()->aniFrame());
         } ZFLISTENER_END(onLoop)
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnLoop(), onLoop, this->objectHolder());
 
         ZFLISTENER(onStop) {
             userData->objectHolded<ZFTestCase *>()->testCaseOutput(
                 "onStop: %zi",
-                listenerData.sender<ZFUIAniImageView *>()->aniFrame());
+                listenerData.sender()->to<ZFUIAniImageView *>()->aniFrame());
         } ZFLISTENER_END(onStop)
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnStop(), onStop, this->objectHolder());
     }
