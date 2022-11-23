@@ -489,10 +489,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief see #ZFCORE_PARAM
  */
 #define ZFCORE_PARAM_DECLARE_SELF(T_self) \
-    protected: \
-        /** @cond ZFPrivateDoc */ \
-        typedef T_self _ZFP_ZFCoreParam_self; \
-        /** @endcond */ \
+    public: \
+        /** @brief typedef for self */ \
+        typedef T_self zfself; \
     public:
 /**
  * @brief a util macro to generate setter and getter for POD like object
@@ -554,7 +553,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
-        inline _ZFP_ZFCoreParam_self &paramName(ZF_IN T_ParamType const &value) \
+        inline zfself &paramName(ZF_IN T_ParamType const &value) \
         { \
             this->paramName##_PropV.value = value; \
             return *this; \

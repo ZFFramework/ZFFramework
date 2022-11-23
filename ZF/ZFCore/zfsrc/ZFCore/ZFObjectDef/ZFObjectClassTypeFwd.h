@@ -97,7 +97,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
-        _ZFP_ZFCoreParam_self &paramName(ZF_IN T_ParamType const &value) \
+        zfself &paramName(ZF_IN T_ParamType const &value) \
         { \
             zfCoreMutexLock(); \
             zfunsafe_zfRetain(value); \
@@ -127,7 +127,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
-        _ZFP_ZFCoreParam_self &paramName(ZF_IN T_ParamType const &value);
+        zfself &paramName(ZF_IN T_ParamType const &value);
 #define _ZFP_ZFCORE_PARAM_RETAIN_DEFINE(T_Owner, T_ParamType, paramName, initValue) \
     T_ParamType const &T_Owner::paramName(void) const \
     { \
@@ -158,7 +158,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return *this; \
     } \
     /** @endcond */ \
-    T_Owner::_ZFP_ZFCoreParam_self &T_Owner::paramName(ZF_IN T_ParamType const &value) \
+    T_Owner::zfself &T_Owner::paramName(ZF_IN T_ParamType const &value) \
     { \
         zfCoreMutexLock(); \
         zfunsafe_zfRetain(value); \
