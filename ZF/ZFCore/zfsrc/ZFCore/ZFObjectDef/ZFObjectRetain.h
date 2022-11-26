@@ -246,14 +246,14 @@ public:
             if(cacheCount() > 0)
             {
                 ZFObject *ret = cache()[--(cacheCount())];
-                ret->_ZFP_ZFObject_zfAllocCacheRelease = zfself::_ZFP_zfAllocCacheRelease;
+                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_zfAllocCacheRelease);
                 ret->classData()->_ZFP_ZFClass_instanceObserverNotify(ret);
                 return ZFCastZFObjectUnchecked(T_ZFObject *, ret);
             }
             else
             {
                 T_ZFObject *ret = _ZFP_zfAllocInternal(T_ZFObject);
-                ret->_ZFP_ZFObject_zfAllocCacheRelease = zfself::_ZFP_zfAllocCacheRelease;
+                ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_zfAllocCacheRelease);
                 return ret;
             }
         }
@@ -264,7 +264,7 @@ public:
     }
     static void _ZFP_zfAllocCacheRelease(ZF_IN ZFObject *obj)
     {
-        obj->_ZFP_ZFObject_zfAllocCacheRelease = zfnull;
+        obj->_ZFP_ZFObject_zfAllocCacheRelease(zfnull);
         if(enableFlag() && cacheCount() < T_MaxCache)
         {
             T_ZFObject::_ZFP_zfAllocCacheRelease(obj);

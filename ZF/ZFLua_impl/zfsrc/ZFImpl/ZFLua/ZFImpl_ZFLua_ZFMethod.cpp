@@ -105,13 +105,13 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
             }
         }
 
-        ZFClassDataChangeObserver.observerAdd(
+        ZFClassDataChangeObserver().observerAdd(
             ZFGlobalEvent::EventClassDataChange(),
             ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFMethod_methodOnChange));
 
         ZFImpl_ZFLua_implSetupScope(luaStateList, scopeNameList);
     }), {
-        ZFClassDataChangeObserver.observerRemove(
+        ZFClassDataChangeObserver().observerRemove(
             ZFGlobalEvent::EventClassDataChange(),
             ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFMethod_methodOnChange));
     })

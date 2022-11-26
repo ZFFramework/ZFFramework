@@ -63,16 +63,9 @@ public:
         /** @endcond */ \
     public: \
         /** @brief get instance's class info */ \
-        virtual const ZFClass *classData(void) \
+        virtual inline const ZFClass *classData(void) \
         { \
-            if(this->_ZFP_ZFObject_classData) \
-            { \
-                return this->_ZFP_ZFObject_classData; \
-            } \
-            else \
-            { \
-                return zfself::ClassData(); \
-            } \
+            return this->_ZFP_ZFObject_classFix(zfself::ClassData()); \
         } \
     private: \
         static void _ZFP_Obj_initImplCk(ZF_IN ZFClass *cls) \

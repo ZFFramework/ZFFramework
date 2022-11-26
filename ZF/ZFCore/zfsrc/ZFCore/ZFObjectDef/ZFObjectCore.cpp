@@ -30,6 +30,9 @@ public:
     };
     zfuint stateFlags;
 
+    const ZFClass *classDynamic;
+    _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
+
 public:
     _ZFP_ZFObjectPrivate(ZF_IN const ZFClass *cls)
     : objectRetainCount(1)
@@ -39,6 +42,8 @@ public:
     , objectTagMap()
     , propertyAccessed()
     , stateFlags(0)
+    , classDynamic(zfnull)
+    , zfAllocCacheRelease(zfnull)
     {
         if(cls->classIsInternal())
         {
@@ -440,7 +445,7 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void)
             this->observerNotify(ZFObject::EventObjectBeforeDealloc());
             if(d->objectRetainCount > 1)
             {
-                this->_ZFP_ZFObject_zfAllocCacheRelease = zfnull;
+                d->zfAllocCacheRelease = zfnull;
                 this->objectOnRelease();
                 this->observerRemoveAll(ZFObject::EventObjectBeforeDealloc());
                 return ;
@@ -448,10 +453,10 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void)
         }
     }
 
-    if(this->_ZFP_ZFObject_zfAllocCacheRelease && d->objectRetainCount == 1)
+    if(d->zfAllocCacheRelease && d->objectRetainCount == 1)
     { // check to save cache
         this->observerRemoveAll();
-        this->_ZFP_ZFObject_zfAllocCacheRelease(this);
+        d->zfAllocCacheRelease(this);
         return ;
     }
 
@@ -502,9 +507,9 @@ void ZFObject::objectOnDealloc(void)
         return ;
     }
 
-    if(this->_ZFP_ZFObject_classData)
+    if(d->classDynamic)
     {
-        this->_ZFP_ZFObject_classData->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
+        d->classDynamic->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
     }
 
     if(d->mutexImpl)
@@ -578,6 +583,32 @@ void ZFObject::objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_
         zfunsafe_zfRelease(param0);
         zfunsafe_zfRelease(param1);
     }
+}
+
+// ============================================================
+void ZFObject::_ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *classDynamic)
+{
+    d->classDynamic = classDynamic;
+}
+const ZFClass *ZFObject::_ZFP_ZFObject_classFix(ZF_IN const ZFClass *cls)
+{
+    if(d && d->classDynamic)
+    {
+        return d->classDynamic;
+    }
+    else
+    {
+        return cls;
+    }
+}
+
+void ZFObject::_ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseCallback callback)
+{
+    d->zfAllocCacheRelease = callback;
+}
+_ZFP_zfAllocCacheReleaseCallback ZFObject::_ZFP_ZFObject_zfAllocCacheRelease(void)
+{
+    return d->zfAllocCacheRelease;
 }
 
 ZF_NAMESPACE_GLOBAL_END

@@ -17,10 +17,12 @@ zfclassFwd ZFMethod;
 zfclassFwd ZFProperty;
 
 typedef ZFObject *(*_ZFP_ZFObjectConstructor)(void);
-typedef ZFObject *(*_ZFP_zfAllocCacheCallback)(void);
 typedef void (*_ZFP_ZFObjectDestructor)(ZF_IN ZFObject *obj);
 typedef void (*_ZFP_ZFObjectCheckInitImplementationListCallback)(ZF_IN_OUT ZFClass *cls);
 typedef ZFInterface * (*_ZFP_ZFObjectToInterfaceCastCallback)(ZF_IN ZFObject * const &obj);
+
+typedef ZFObject *(*_ZFP_zfAllocCacheCallback)(void);
+typedef void (*_ZFP_zfAllocCacheReleaseCallback)(ZF_IN ZFObject *obj);
 
 // ============================================================
 /** @brief see #ZFClass::instanceObserverAdd */
@@ -775,7 +777,7 @@ extern ZFLIB_ZFCore ZFObserverHolder &_ZFP_ZFClassDataChangeObserverRef(void);
  *   but must not manually notify this event\n
  *   also, take care of performance
  */
-#define ZFClassDataChangeObserver (_ZFP_ZFClassDataChangeObserverRef())
+#define ZFClassDataChangeObserver() (_ZFP_ZFClassDataChangeObserverRef())
 
 // ============================================================
 zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFCoreCriticalClassNotTypeOf

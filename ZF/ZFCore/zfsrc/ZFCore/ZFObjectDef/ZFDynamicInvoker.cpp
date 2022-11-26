@@ -26,7 +26,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal
 {
     zfCoreMutexLocker();
     this->classDataChangeListener = ZFCallbackForFunc(zfself::classDataChange);
-    ZFClassDataChangeObserver.observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+    ZFClassDataChangeObserver().observerAdd(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
 
     _ZFP_ZFDI_methodMapCache.clear();
     _ZFP_ZFDI_cacheEnable = zftrue;
@@ -36,7 +36,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache)
     zfCoreMutexLocker();
     _ZFP_ZFDI_cacheEnable = zffalse;
     _ZFP_ZFDI_methodMapCache.clear();
-    ZFClassDataChangeObserver.observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
+    ZFClassDataChangeObserver().observerRemove(ZFGlobalEvent::EventClassDataChange(), this->classDataChangeListener);
 }
 private:
     ZFListener classDataChangeListener;

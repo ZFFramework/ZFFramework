@@ -527,7 +527,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFDynamicClassEventDataHolder)
 {
     if(this->classOnChangeListener)
     {
-        ZFClassDataChangeObserver.observerRemove(
+        ZFClassDataChangeObserver().observerRemove(
             ZFGlobalEvent::EventClassDataChange(),
             this->classOnChangeListener);
     }
@@ -539,7 +539,7 @@ void classOnChangeCheckAttach(void)
     if(!this->classOnChangeListener)
     {
         this->classOnChangeListener = ZFCallbackForFunc(zfself::classOnChange);
-        ZFClassDataChangeObserver.observerAdd(
+        ZFClassDataChangeObserver().observerAdd(
             ZFGlobalEvent::EventClassDataChange(),
             this->classOnChangeListener);
     }

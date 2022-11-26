@@ -91,13 +91,13 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC,
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCAutoApply, ZFLevelZFFrameworkNormal)
 {
     this->classChangeListener = ZFCallbackForFunc(zfself::classChange);
-    ZFClassDataChangeObserver.observerAdd(
+    ZFClassDataChangeObserver().observerAdd(
         ZFGlobalEvent::EventClassDataChange(),
         this->classChangeListener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCAutoApply)
 {
-    ZFClassDataChangeObserver.observerRemove(
+    ZFClassDataChangeObserver().observerRemove(
         ZFGlobalEvent::EventClassDataChange(),
         this->classChangeListener);
 }

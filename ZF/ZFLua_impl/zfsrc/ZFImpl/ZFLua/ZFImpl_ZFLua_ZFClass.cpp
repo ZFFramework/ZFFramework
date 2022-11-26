@@ -44,11 +44,11 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, {
                 classNameList);
         }
 
-        ZFClassDataChangeObserver.observerAdd(
+        ZFClassDataChangeObserver().observerAdd(
             ZFGlobalEvent::EventClassDataChange(),
             ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFClass_classOnChange));
     }, {
-        ZFClassDataChangeObserver.observerRemove(
+        ZFClassDataChangeObserver().observerRemove(
             ZFGlobalEvent::EventClassDataChange(),
             ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFClass_classOnChange));
     })

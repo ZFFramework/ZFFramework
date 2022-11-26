@@ -211,7 +211,7 @@ public:
             ZFObject *obj = this->constructor();
             if(this->pimplOwner->classIsDynamicRegister())
             {
-                obj->_ZFP_ZFObject_classData = this->pimplOwner;
+                obj->_ZFP_ZFObject_classDynamic(this->pimplOwner);
                 this->classDynamicRegisterObjectInstanceMap[obj] = zftrue;
             }
             return obj;
@@ -1478,7 +1478,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag, ZF_IN c
         // the existing object instance would fallback to parent class
         for(zfstlmap<ZFObject *, zfbool>::iterator it = cls->d->classDynamicRegisterObjectInstanceMap.begin(); it != cls->d->classDynamicRegisterObjectInstanceMap.end(); ++it)
         {
-            it->first->_ZFP_ZFObject_classData = zfnull;
+            it->first->_ZFP_ZFObject_classDynamic(zfnull);
         }
         cls->d->classDynamicRegisterObjectInstanceMap.clear();
     }
@@ -1883,7 +1883,7 @@ void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
         holder->zfv.changedProperty = changedProperty;
         holder->zfv.changedMethod = changedMethod;
         holder->zfv.name = name;
-        ZFClassDataChangeObserver.observerNotify(ZFGlobalEvent::EventClassDataChange(), holder);
+        ZFClassDataChangeObserver().observerNotify(ZFGlobalEvent::EventClassDataChange(), holder);
         zfunsafe_zfRelease(holder);
     }
 }

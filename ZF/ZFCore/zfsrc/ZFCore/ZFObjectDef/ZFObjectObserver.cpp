@@ -177,30 +177,44 @@ public:
 // ============================================================
 // ZFObserverHolder
 ZFObserverHolder::ZFObserverHolder(void)
+: d(zfnull)
+, _observerOwner(zfnull)
 {
-    d = zfpoolNew(_ZFP_ZFObserverHolderPrivate);
-    _observerOwner = zfnull;
 }
 ZFObserverHolder::ZFObserverHolder(ZF_IN ZFObserverHolder const &ref)
 {
     d = ref.d;
-    ++(d->refCount);
+    if(d)
+    {
+        ++(d->refCount);
+    }
     _observerOwner = ref._observerOwner;
 }
 ZFObserverHolder::~ZFObserverHolder(void)
 {
-    zfpoolDelete(d);
-}
-ZFObserverHolder &ZFObserverHolder::operator = (ZF_IN ZFObserverHolder const &ref)
-{
-    ++(ref.d->refCount);
-    --(d->refCount);
-    if(d->refCount == 0)
+    if(d)
     {
         zfpoolDelete(d);
     }
+}
+ZFObserverHolder &ZFObserverHolder::operator = (ZF_IN ZFObserverHolder const &ref)
+{
+    _ZFP_ZFObserverHolderPrivate *dTmp = d;
+    if(ref.d)
+    {
+        ++(ref.d->refCount);
+    }
     d = ref.d;
     this->_observerOwner = ref._observerOwner;
+
+    if(dTmp)
+    {
+        --(dTmp->refCount);
+        if(dTmp->refCount == 0)
+        {
+            zfpoolDelete(dTmp);
+        }
+    }
     return *this;
 }
 zfbool ZFObserverHolder::operator == (ZF_IN ZFObserverHolder const &ref) const
@@ -212,7 +226,7 @@ zfidentity ZFObserverHolder::observerAdd(ZF_IN zfidentity eventId,
                                          ZF_IN const ZFListener &observer,
                                          ZF_IN_OPT ZFObject *owner /* = zfnull */,
                                          ZF_IN_OPT zfbool autoRemoveAfterActivate /* = zffalse */,
-                                         ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */) const
+                                         ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */)
 {
     zfCoreMutexLocker();
 
@@ -229,6 +243,10 @@ zfidentity ZFObserverHolder::observerAdd(ZF_IN zfidentity eventId,
         return zfidentityInvalid();
     }
 
+    if(d == zfnull)
+    {
+        d = zfpoolNew(_ZFP_ZFObserverHolderPrivate);
+    }
     d->attachMapAttach(eventId);
 
     zfidentity taskId = d->taskIdGenerator.idAcquire();
@@ -278,7 +296,7 @@ zfidentity ZFObserverHolder::observerAdd(ZF_IN zfidentity eventId,
 
     return taskId;
 }
-zfidentity ZFObserverHolder::observerAdd(ZF_IN const ZFObserverAddParam &param) const
+zfidentity ZFObserverHolder::observerAdd(ZF_IN const ZFObserverAddParam &param)
 {
     return this->observerAdd(
         param.eventId(),
@@ -287,8 +305,12 @@ zfidentity ZFObserverHolder::observerAdd(ZF_IN const ZFObserverAddParam &param) 
         param.autoRemoveAfterActivate(),
         param.observerLevel());
 }
-void ZFObserverHolder::observerMoveToFirst(ZF_IN zfidentity taskId) const
+void ZFObserverHolder::observerMoveToFirst(ZF_IN zfidentity taskId)
 {
+    if(d == zfnull)
+    {
+        return ;
+    }
     zfCoreMutexLocker();
     zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator itTaskId = d->observerTaskIdMap.find(taskId);
     if(itTaskId == d->observerTaskIdMap.end())
@@ -327,8 +349,12 @@ void ZFObserverHolder::observerMoveToFirst(ZF_IN zfidentity taskId) const
     p->pNext = pos;
 }
 void ZFObserverHolder::observerRemove(ZF_IN zfidentity eventId,
-                                      ZF_IN const ZFListener &callback) const
+                                      ZF_IN const ZFListener &callback)
 {
+    if(d == zfnull)
+    {
+        return ;
+    }
     zfCoreMutexLocker();
 
     zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
@@ -357,8 +383,12 @@ void ZFObserverHolder::observerRemove(ZF_IN zfidentity eventId,
         } while(p != zfnull);
     }
 }
-void ZFObserverHolder::observerRemoveByTaskId(ZF_IN zfidentity taskId) const
+void ZFObserverHolder::observerRemoveByTaskId(ZF_IN zfidentity taskId)
 {
+    if(d == zfnull)
+    {
+        return ;
+    }
     zfCoreMutexLocker();
     zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator itTaskId = d->observerTaskIdMap.find(taskId);
     if(itTaskId == d->observerTaskIdMap.end())
@@ -380,8 +410,12 @@ void ZFObserverHolder::observerRemoveByTaskId(ZF_IN zfidentity taskId) const
     }
     zfpoolDelete(p);
 }
-void ZFObserverHolder::observerRemoveByOwner(ZF_IN ZFObject *owner) const
+void ZFObserverHolder::observerRemoveByOwner(ZF_IN ZFObject *owner)
 {
+    if(d == zfnull)
+    {
+        return ;
+    }
     zfCoreMutexLocker();
     zfstlmap<ZFObject *, zfstlmap<_ZFP_ZFObserverData *, zfidentity> >::iterator itOwner = d->observerOwnerMap.find(owner);
     if(itOwner == d->observerOwnerMap.end())
@@ -411,8 +445,12 @@ void ZFObserverHolder::observerRemoveByOwner(ZF_IN ZFObject *owner) const
         zfpoolDelete(p);
     }
 }
-void ZFObserverHolder::observerRemoveAll(ZF_IN zfidentity eventId) const
+void ZFObserverHolder::observerRemoveAll(ZF_IN zfidentity eventId)
 {
+    if(d == zfnull)
+    {
+        return ;
+    }
     zfCoreMutexLocker();
     zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
     if(it == d->observerMap.end())
@@ -438,9 +476,9 @@ void ZFObserverHolder::observerRemoveAll(ZF_IN zfidentity eventId) const
         zfpoolDelete(toDelete[i]);
     }
 }
-void ZFObserverHolder::observerRemoveAll(void) const
+void ZFObserverHolder::observerRemoveAll(void)
 {
-    if(d->observerMap.empty())
+    if(d == zfnull || d->observerMap.empty())
     {
         return ;
     }
@@ -489,25 +527,24 @@ zfbool ZFObserverHolder::observerHasAdd(void) const
 {
     if(this->observerOwner() != zfnull)
     {
-        return !d->observerMap.empty()
-            || !ZFGlobalObserver().d->observerMap.empty();
+        return (d && !d->observerMap.empty())
+            || ZFGlobalObserver().observerHasAdd();
     }
     else
     {
-        return !d->observerMap.empty();
+        return d && !d->observerMap.empty();
     }
 }
 zfbool ZFObserverHolder::observerHasAdd(ZF_IN zfidentity eventId) const
 {
     if(this->observerOwner() != zfnull)
     {
-        zfstlmap<zfidentity, _ZFP_ZFObserverData *> &g = ZFGlobalObserver().d->observerMap;
-        return (d->observerMap.find(eventId) != d->observerMap.end())
-            || (g.find(eventId) != g.end());
+        return (d && d->observerMap.find(eventId) != d->observerMap.end())
+            || ZFGlobalObserver().observerHasAdd(eventId);
     }
     else
     {
-        return (d->observerMap.find(eventId) != d->observerMap.end());
+        return (d && d->observerMap.find(eventId) != d->observerMap.end());
     }
 }
 
@@ -516,7 +553,7 @@ void ZFObserverHolder::observerNotifyWithCustomSender(ZF_IN ZFObject *customSend
                                                       ZF_IN_OPT ZFObject *param0 /* = zfnull */,
                                                       ZF_IN_OPT ZFObject *param1 /* = zfnull */) const
 {
-    if(eventId == zfidentityInvalid())
+    if(d == zfnull || eventId == zfidentityInvalid())
     {
         return ;
     }
@@ -561,6 +598,14 @@ void ZFObserverHolder::observerHasAddStateAttach(ZF_IN zfidentity eventId,
                                                  ZF_IN_OUT zfuint *flag,
                                                  ZF_IN_OUT zfuint flagBit)
 {
+    if(d == zfnull)
+    {
+        zfCoreMutexLocker();
+        if(d == zfnull)
+        {
+            d = zfpoolNew(_ZFP_ZFObserverHolderPrivate);
+        }
+    }
     _ZFP_ZFObserverHolderAttachState state;
     state.flag = flag;
     state.flagBit = flagBit;
@@ -570,6 +615,10 @@ void ZFObserverHolder::observerHasAddStateDetach(ZF_IN zfidentity eventId,
                                                  ZF_IN_OUT zfuint *flag,
                                                  ZF_IN_OUT zfuint flagBit)
 {
+    if(d == zfnull)
+    {
+        return;
+    }
     _ZFP_ZFObserverHolderAttachStateMapType::iterator it = d->attachMap.find(eventId);
     if(it != d->attachMap.end())
     {
@@ -596,7 +645,7 @@ void ZFObserverHolder::objectInfoT(ZF_OUT zfstring &ret) const
         this->observerOwner()->objectInfoT(ret);
     }
 
-    if(d->observerMap.empty())
+    if(d == zfnull || d->observerMap.empty())
     {
         ret += ">";
     }
@@ -623,7 +672,7 @@ void ZFObserverHolder::objectInfoT(ZF_OUT zfstring &ret) const
     }
 }
 
-void ZFObserverHolder::_ZFP_ZFObserverHolder_observerOwner(ZF_IN ZFObject *obj) const
+void ZFObserverHolder::_ZFP_ZFObserverHolder_observerOwner(ZF_IN ZFObject *obj)
 {
     /*
      * if observerOwner is not null,

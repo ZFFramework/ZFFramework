@@ -240,9 +240,7 @@ public:
 protected:
     /** @cond ZFPrivateDoc */
     ZFObject(void)
-    : _ZFP_ZFObject_classData(zfnull)
-    , _ZFP_ZFObject_zfAllocCacheRelease(zfnull)
-    , d(zfnull)
+    : d(zfnull)
     , _observerHolder()
     {
     }
@@ -472,7 +470,7 @@ public:
      * @brief internal observer holder,
      *   notifying to the holder is equivalent to notifying to the object
      */
-    inline const ZFObserverHolder &observerHolder(void)
+    inline ZFObserverHolder &observerHolder(void)
     {
         return this->_observerHolder;
     }
@@ -797,10 +795,14 @@ protected:
      */
     virtual void objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_IN const void *oldValue);
 
+    // ============================================================
 public:
-    const ZFClass *_ZFP_ZFObject_classData;
-public:
-    void (*_ZFP_ZFObject_zfAllocCacheRelease)(ZF_IN ZFObject *obj);
+    zffinal void _ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *classDynamic);
+    zffinal const ZFClass *_ZFP_ZFObject_classFix(ZF_IN const ZFClass *cls);
+
+    zffinal void _ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseCallback callback);
+    zffinal _ZFP_zfAllocCacheReleaseCallback _ZFP_ZFObject_zfAllocCacheRelease(void);
+
 private:
     _ZFP_ZFObjectPrivate *d;
     ZFObserverHolder _observerHolder;

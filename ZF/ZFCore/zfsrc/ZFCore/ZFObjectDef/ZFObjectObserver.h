@@ -107,30 +107,30 @@ public:
                                    ZF_IN const ZFListener &observer,
                                    ZF_IN_OPT ZFObject *owner = zfnull,
                                    ZF_IN_OPT zfbool autoRemoveAfterActivate = zffalse,
-                                   ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal) const;
+                                   ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
     /** @brief see #ZFObject::observerNotify */
-    zffinal zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param) const;
+    zffinal zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param);
     /** @brief see #ZFObject::observerNotify */
     zffinal inline zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
                                                  ZF_IN const ZFListener &observer,
                                                  ZF_IN_OPT ZFObject *owner = zfnull,
-                                                 ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal) const
+                                                 ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal)
     {
         return this->observerAdd(eventId, observer, owner, zftrue, observerLevel);
     }
     /** @brief see #ZFObject::observerMoveToFirst */
-    zffinal void observerMoveToFirst(ZF_IN zfidentity taskId) const;
+    zffinal void observerMoveToFirst(ZF_IN zfidentity taskId);
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerRemove(ZF_IN zfidentity eventId,
-                                ZF_IN const ZFListener &callback) const;
+                                ZF_IN const ZFListener &callback);
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerRemoveByTaskId(ZF_IN zfidentity taskId) const;
+    zffinal void observerRemoveByTaskId(ZF_IN zfidentity taskId);
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerRemoveByOwner(ZF_IN ZFObject *owner) const;
+    zffinal void observerRemoveByOwner(ZF_IN ZFObject *owner);
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerRemoveAll(ZF_IN zfidentity eventId) const;
+    zffinal void observerRemoveAll(ZF_IN zfidentity eventId);
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerRemoveAll(void) const;
+    zffinal void observerRemoveAll(void);
     /** @brief see #ZFObject::observerNotify */
     zffinal zfbool observerHasAdd(void) const;
     /** @brief see #ZFObject::observerNotify */
@@ -202,7 +202,7 @@ public:
     {
         return this->_observerOwner;
     }
-    zffinal void _ZFP_ZFObserverHolder_observerOwner(ZF_IN ZFObject *obj) const;
+    zffinal void _ZFP_ZFObserverHolder_observerOwner(ZF_IN ZFObject *obj);
 
 private:
     _ZFP_ZFObserverHolderPrivate *d;
