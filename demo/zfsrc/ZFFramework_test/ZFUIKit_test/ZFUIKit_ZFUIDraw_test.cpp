@@ -76,14 +76,14 @@ private:
         { // imageScaleType
             zfblockedAlloc(ZFUIKit_test_SettingData, setting);
             settings->add(setting);
-            setting->userData(views);
             ZFLISTENER(buttonTextGetter) {
-                v_zfstring *text = listenerData.param0T();
+                v_zfstring *text = zfargs.param0T();
                 text->zfv = "change layout";
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);
-            ZFLISTENER(buttonClickListener) {
-                ZFArray *views = userData->to<ZFArray *>();
+            ZFLISTENER_1(buttonClickListener
+                    , zfautoObjectT<ZFArray *>, views
+                    ) {
                 ZFUISize sizeHint = views->get<ZFUIView *>(0)->layoutParam()->sizeHint();
                 if(sizeHint.height == 100)
                 {

@@ -369,7 +369,7 @@ public:
      */
     inline zfindex methodParamCount(void) const
     {
-        return this->_ZFP_ZFMethod_paramCount;
+        return (zfindex)this->_ZFP_ZFMethod_paramCount;
     }
     /**
      * @brief get the method's minimum param num,
@@ -377,7 +377,7 @@ public:
      */
     inline zfindex methodParamCountMin(void) const
     {
-        return this->_ZFP_ZFMethod_paramCountMin;
+        return (zfindex)this->_ZFP_ZFMethod_paramCountMin;
     }
     /**
      * @brief check whether method param type id matches
@@ -451,7 +451,7 @@ public:
      */
     inline zfindex methodParamDefaultBeginIndex(void) const
     {
-        return this->_ZFP_ZFMethod_paramDefaultBeginIndex;
+        return (this->_ZFP_ZFMethod_paramDefaultBeginIndex == (zfuint)-1 ? zfindexMax() : (zfindex)this->_ZFP_ZFMethod_paramDefaultBeginIndex);
     }
 
     /**
@@ -680,6 +680,7 @@ public:
 
 public:
     // general
+    zfuint _ZFP_ZFMethod_refCount;
     const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
     ZFCoreArrayPOD<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
     zfstring _ZFP_ZFMethod_methodInternalId;
@@ -694,14 +695,14 @@ public:
     zfstring _ZFP_ZFMethod_methodName;
     zfstring _ZFP_ZFMethod_returnTypeId;
     zfstring _ZFP_ZFMethod_returnTypeName;
-    zfindex _ZFP_ZFMethod_paramCount;
-    zfindex _ZFP_ZFMethod_paramCountMin;
+    zfuint _ZFP_ZFMethod_paramCount;
+    zfuint _ZFP_ZFMethod_paramCountMin;
     zfstring _ZFP_ZFMethod_paramTypeIdList[ZFMETHOD_MAX_PARAM];
     zfstring _ZFP_ZFMethod_paramTypeNameList[ZFMETHOD_MAX_PARAM];
     zfstring _ZFP_ZFMethod_paramNameList[ZFMETHOD_MAX_PARAM];
     ZFMethodParamDefaultValueCallback _ZFP_ZFMethod_paramDefaultValueCallbackList[ZFMETHOD_MAX_PARAM];
     zfautoObject _ZFP_ZFMethod_paramDefaultValueList[ZFMETHOD_MAX_PARAM];
-    zfindex _ZFP_ZFMethod_paramDefaultBeginIndex;
+    zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
 
     // for class member type
     const ZFClass *_ZFP_ZFMethod_methodOwnerClass;

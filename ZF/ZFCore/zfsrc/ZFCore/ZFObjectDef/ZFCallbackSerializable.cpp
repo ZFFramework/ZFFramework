@@ -141,16 +141,15 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_0({
-        ZFListenerData listenerData;
-        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(listenerData, zfnull);
+        ZFArgs zfargs;
+        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(zfargs);
     }, v_ZFCallback,
     void, execute)
-ZFMETHOD_USER_REGISTER_2({
-        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(listenerData, userData);
+ZFMETHOD_USER_REGISTER_1({
+        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(zfargs);
     }, v_ZFCallback,
     void, execute
-    , ZFMP_IN(const ZFListenerData &, listenerData)
-    , ZFMP_IN_OPT(ZFObject *, userData, zfnull)
+    , ZFMP_IN(const ZFArgs &, zfargs)
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackId, ZFMP_IN(const zfchar *, callbackId))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, const zfchar *, callbackId)

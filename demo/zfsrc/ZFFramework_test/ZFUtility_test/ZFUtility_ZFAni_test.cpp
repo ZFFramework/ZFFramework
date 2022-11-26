@@ -54,13 +54,18 @@ protected:
         ZFAnimation *ani = aniHolder;
         ani->aniDuration(2000);
 
-        ZFLISTENER(aniOnStop) {
-            userData->objectHolded<ZFTestCase *>()->testCaseStop();
-        } ZFLISTENER_END(aniOnStop)
-        ani->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop, this->objectHolder());
+        ZFTestCase *owner = this;
 
-        ZFLISTENER(aniOnDealloc) {
-            zfLogTrimT() << "[ZFAni_test] aniOnDealloc" << listenerData.sender()->objectHash();
+        ZFLISTENER_1(aniOnStop
+                , ZFTestCase *, owner
+                ) {
+            owner->testCaseStop();
+        } ZFLISTENER_END(aniOnStop)
+        ani->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
+
+        ZFLISTENER(aniOnDealloc
+                ) {
+            zfLogTrimT() << "[ZFAni_test] aniOnDealloc" << zfargs.sender()->objectHash();
         } ZFLISTENER_END(aniOnDealloc)
         ani->observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc);
 

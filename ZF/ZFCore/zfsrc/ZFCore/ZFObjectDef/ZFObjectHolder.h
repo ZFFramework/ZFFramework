@@ -47,6 +47,15 @@ public:
         this->_ZFP_objectHolded = obj;
     }
 
+public:
+    /**
+     * @brief get the holded object
+     */
+    inline ZFAny objectHolded(void)
+    {
+        return ZFAny(this->_ZFP_objectHolded);
+    }
+
 protected:
     /** @brief see #ZFObject::objectOnInit */
     virtual void objectOnInit(ZF_IN ZFObject *obj)
@@ -88,21 +97,6 @@ public:
     {
         return zftrue;
     }
-
-public:
-    // override for performance
-    /** @cond ZFPrivateDoc */
-    zfoverride
-    virtual inline ZFAny objectHolded(void)
-    {
-        return this->_ZFP_objectHolded;
-    }
-    template<typename T_ZFObject>
-    T_ZFObject objectHolded(void)
-    {
-        return this->_ZFP_objectHolded;
-    }
-    /** @endcond */
 
 public:
     ZFAny _ZFP_objectHolded;

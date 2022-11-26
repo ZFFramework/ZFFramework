@@ -18,25 +18,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * upon input failure,
  * the lua code should change the param1's value
  * @code
- *   ZFInputForLua(function(listenerData, userData)
- *       if listenerData:param1() == zfindexMax() then
+ *   ZFInputForLua(function(zfargs)
+ *       if zfargs:param1() == zfindexMax() then
  *           // return total input size
- *           listenerData:param1():zfv(yourTotalLength)
+ *           zfargs:param1():zfv(yourTotalLength)
  *           return
  *       end
  *
- *       local buf = listenerData:param0()
- *       local count = listenerData:param1()
+ *       local buf = zfargs:param0()
+ *       local count = zfargs:param1()
  *       // write to the buf
  *       buf:zfv(yourData)
  *       // save written length
- *       listenerData:param1():zfv(yourWrittenLength)
+ *       zfargs:param1():zfv(yourWrittenLength)
  *   end)
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFLua, ZFInput, ZFInputForLua,
-                        ZFMP_IN(const ZFListener &, luaCallback),
-                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, ZFInput, ZFInputForLua,
+                        ZFMP_IN(const ZFListener &, luaCallback))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFInputForLua_h_

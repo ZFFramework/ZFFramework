@@ -70,13 +70,13 @@ typedef void (*_ZFP_PropLifeCycleWrapper)(ZF_IN ZFObject *propertyOwnerObject,
                                           ZF_IN const ZFProperty *property,
                                           ZF_IN void *propertyValue,
                                           ZF_IN const void *propertyValueOld,
-                                          ZF_IN ZFObject *userData);
+                                          ZF_IN ZFObject *propertyLifeCycleUserData);
 zfclassNotPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData
 {
 public:
     const ZFClass *propertyOwnerClass;
     _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper;
-    zfautoObject userData;
+    zfautoObject propertyLifeCycleUserData;
 };
 
 ZF_NAMESPACE_GLOBAL_END

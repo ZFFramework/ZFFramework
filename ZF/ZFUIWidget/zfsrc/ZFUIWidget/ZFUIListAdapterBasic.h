@@ -33,25 +33,25 @@ public:
  *   listView:listAdapterAutoRetain(ZFUIListAdapterBasic());
  *
  *   -- required
- *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCount(), function(listenerData, userData)
- *       listenerData:param0():zfv(yourListCellCount());
+ *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCount(), function(zfargs)
+ *       zfargs:param0():zfv(yourListCellCount());
  *   end);
- *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellAt(), function(listenerData, userData)
- *       local param = listenerData:param0();
+ *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellAt(), function(zfargs)
+ *       local param = zfargs:param0();
  *       param:cell(yourListCellAt(param:cellIndex()));
  *   end);
  *
  *   -- optional
- *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellSizeAt(), function(listenerData, userData)
- *       local param = listenerData:param0();
+ *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellSizeAt(), function(zfargs)
+ *       local param = zfargs:param0();
  *       param:cellSize(yourListCellSizeAt(param:cellIndex(), param:cell()));
  *   end);
- *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCacheOnAccess(), function(listenerData, userData)
- *       local param = listenerData:param0();
+ *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCacheOnAccess(), function(zfargs)
+ *       local param = zfargs:param0();
  *       param:cell(yourListCellCacheAt(param:cellIndex()));
  *   end);
- *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCacheOnRecycle(), function(listenerData, userData)
- *       local cell = listenerData:param0();
+ *   listView:listAdapter():observerAdd(ZFUIListAdapterBasic.EventListCellCacheOnRecycle(), function(zfargs)
+ *       local cell = zfargs:param0();
  *       yourListCellRecycle(cell);
  *   end);
  * @endcode

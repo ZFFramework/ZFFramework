@@ -3,9 +3,9 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static void _ZFP_ZFImpl_ZFLua_ZFClass_classOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFImpl_ZFLua_ZFClass_classOnChange(ZF_IN const ZFArgs &zfargs)
 {
-    const ZFClassDataChangeData &data = listenerData.param0()->to<v_ZFClassDataChangeData *>()->zfv;
+    const ZFClassDataChangeData &data = zfargs.param0()->to<v_ZFClassDataChangeData *>()->zfv;
     if(data.changedClass != zfnull && data.changedClass != zfnull
         && !data.changedClass->classIsInternalPrivate()
         && data.changedClass->classNamespace() == zfnull)

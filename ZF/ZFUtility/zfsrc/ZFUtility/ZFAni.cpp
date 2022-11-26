@@ -3,10 +3,9 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
+ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
                        ZFMP_IN(ZFObject *, target),
-                       ZFMP_IN(const ZFListener &, aniImpl),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                       ZFMP_IN(const ZFListener &, aniImpl))
 {
     if(!aniImpl)
     {
@@ -14,10 +13,6 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
     }
     zfblockedAlloc(ZFAniForCustomAni, ani);
     ani->customAniCallback(aniImpl);
-    if(userData != zfnull)
-    {
-        ani->customAniUserData(userData);
-    }
     return ani;
 }
 

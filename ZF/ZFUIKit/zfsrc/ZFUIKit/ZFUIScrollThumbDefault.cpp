@@ -69,25 +69,23 @@ public:
     _ZFP_ZFUIScrollThumbDefaultPrivate(void)
     : thumbView(zfnull)
     , thumbHideAni(zfnull)
-    , thumbHideAniAutoStopListener(ZFCallbackForFunc(thumbHideAniAutoStop))
+    , thumbHideAniAutoStopListener()
     , lastPos(0)
     , lastSize(0)
     , lastVisibleTime(ZFTime::timestamp() - 1000)
     {
     }
 public:
-    static void aniOnStop(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void aniOnStop(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIScrollThumbDefault *owner)
     {
-        ZFUIScrollThumbDefault *owner = userData->objectHolded();
         if(owner != zfnull)
         {
             owner->d->thumbView->viewAlpha(1);
             owner->d->thumbView->viewVisible(zffalse);
         }
     }
-    static void thumbHideAniAutoStop(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void thumbHideAniAutoStop(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIScrollThumbDefault *owner)
     {
-        ZFUIScrollThumbDefault *owner = userData->objectHolded();
         if(owner != zfnull)
         {
             owner->d->thumbHideAni->aniStop();
@@ -118,15 +116,21 @@ void ZFUIScrollThumbDefault::objectOnInitFinish(void)
 {
     zfsuper::objectOnInitFinish();
 
-    d->thumbHideAni->observerAdd(
-        ZFAnimation::EventAniOnStop(),
-        ZFCallbackForFunc(_ZFP_ZFUIScrollThumbDefaultPrivate::aniOnStop),
-        this->objectHolder());
+    ZFUIScrollThumbDefault *owner = this;
+    ZFLISTENER_1(aniOnStop
+            , ZFUIScrollThumbDefault *, owner
+            ) {
+        _ZFP_ZFUIScrollThumbDefaultPrivate::aniOnStop(zfargs, owner);
+    } ZFLISTENER_END(aniOnStop)
+    d->thumbHideAni->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
 
-    ZFGlobalObserver().observerAdd(
-        ZFUIWindow::EventWindowOnHide(),
-        d->thumbHideAniAutoStopListener,
-        this->objectHolder());
+    ZFLISTENER_1(thumbHideAniAutoStop
+            , ZFUIScrollThumbDefault *, owner
+            ) {
+        _ZFP_ZFUIScrollThumbDefaultPrivate::thumbHideAniAutoStop(zfargs, owner);
+    } ZFLISTENER_END(thumbHideAniAutoStop)
+    d->thumbHideAniAutoStopListener = thumbHideAniAutoStop;
+    ZFGlobalObserver().observerAdd(ZFUIWindow::EventWindowOnHide(), d->thumbHideAniAutoStopListener);
 }
 void ZFUIScrollThumbDefault::objectOnDeallocPrepare(void)
 {

@@ -89,13 +89,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     create a #ZFListener from lua function\n
  *     the lua function's proto type must be:
  *     @code
- *       function myLuaCallback(listenerData, userData)
+ *       function myLuaCallback(zfargs)
  *       end
  *     @endcode
  *     \n
  *     further more, lua function can be converted to #ZFListener implicitly
  *     @code
- *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function (listenerData, userData)
+ *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
  *           end)
  *     @endcode
  *   -  `output:output(text, size)`\n
@@ -157,8 +157,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       // and use the module
  *       local obj = YourClass()
  *     @endcode
- *   -  `ZFLuaImportAll(localFilePath [, importCallback, importCallbackUserData, recursive])`
- *     or `ZFLuaImportAll(pathInfo [, importCallback, importCallbackUserData, recursive])`\n
+ *   -  `ZFLuaImportAll(localFilePath [, importCallback, recursive])`
+ *     or `ZFLuaImportAll(pathInfo [, importCallback, recursive])`\n
  *     util method to import all lua files under specified path,
  *     files are looped by #ZFFilePathInfoCallbackFindFirst,
  *     and lua files are imported by ZFLuaImportOnce\n

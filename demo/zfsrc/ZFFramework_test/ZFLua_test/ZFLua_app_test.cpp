@@ -22,9 +22,8 @@ protected:
     }
 
 private:
-    ZFMETHOD_INLINE_2(void, managerOnDestroy,
-                      ZFMP_IN(const ZFListenerData &, listenerData),
-                      ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_INLINE_1(void, managerOnDestroy,
+                      ZFMP_IN(const ZFArgs &, zfargs))
     {
         this->testCaseStop(ZFResultType::e_Success);
         ZFLuaGC();

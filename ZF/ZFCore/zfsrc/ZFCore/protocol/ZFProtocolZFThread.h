@@ -89,7 +89,7 @@ zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextends ZFThread
 
 public:
     zfoverride
-    virtual void threadStart(ZF_IN_OPT ZFObject *userData = zfnull)
+    virtual void threadStart(ZF_IN_OPT ZFObject *param0 = zfnull, ZF_IN_OPT ZFObject *param1 = zfnull)
     {
         zfCoreLogTrim("you must not start main thread");
     }

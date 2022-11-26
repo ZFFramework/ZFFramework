@@ -91,17 +91,20 @@ private:
         { // imageScaleType
             zfblockedAlloc(ZFUIKit_test_SettingData, setting);
             settings->add(setting);
-            setting->userData(imageViews);
-            ZFLISTENER(buttonTextGetter) {
-                ZFArray *imageViews = userData->to<ZFArray *>();
-                v_zfstring *text = listenerData.param0T();
+
+            ZFLISTENER_1(buttonTextGetter
+                    , zfautoObjectT<ZFArray *>, imageViews
+                    ) {
+                v_zfstring *text = zfargs.param0T();
 
                 ZFUIImageView *imageView = imageViews->getFirst<ZFUIImageView *>();
                 text->zfv = ZFUIContentScaleType::EnumNameForValue(imageView->imageScaleType());
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);
-            ZFLISTENER(buttonClickListener) {
-                ZFArray *imageViews = userData->to<ZFArray *>();
+
+            ZFLISTENER_1(buttonClickListener
+                    , zfautoObjectT<ZFArray *>, imageViews
+                    ) {
                 ZFUIContentScaleTypeEnum value = imageViews->getFirst<ZFUIImageView *>()->imageScaleType();
                 _nextValue(value);
                 for(zfindex i = 0; i < imageViews->count(); ++i)

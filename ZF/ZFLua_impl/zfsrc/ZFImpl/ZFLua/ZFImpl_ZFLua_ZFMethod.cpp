@@ -47,9 +47,9 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(ZF_IN const ZFCoreArray
         }
     }
 }
-static void _ZFP_ZFImpl_ZFLua_ZFMethod_methodOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFImpl_ZFLua_ZFMethod_methodOnChange(ZF_IN const ZFArgs &zfargs)
 {
-    const ZFClassDataChangeData &data = listenerData.param0()->to<v_ZFClassDataChangeData *>()->zfv;
+    const ZFClassDataChangeData &data = zfargs.param0()->to<v_ZFClassDataChangeData *>()->zfv;
     if(data.changedMethod != zfnull && data.changeType == ZFClassDataChangeTypeAttach)
     {
         if(data.changedMethod->methodIsFunctionType())

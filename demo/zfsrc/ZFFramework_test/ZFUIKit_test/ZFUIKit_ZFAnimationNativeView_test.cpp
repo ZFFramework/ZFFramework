@@ -25,12 +25,15 @@ protected:
 
         this->prepareSettingButton(window, this->ani());
 
-        ZFLISTENER(startOnClick) {
-            userData->objectHolded<ZFAnimation *>()->aniStart();
+        ZFAnimation *ani = this->ani();
+        ZFLISTENER_1(startOnClick
+                , ZFAnimation *, ani
+                ) {
+            ani->aniStart();
         } ZFLISTENER_END(startOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         startButton->label()->text("start");
-        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, this->ani()->objectHolder());
+        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
         container->childAdd(startButton)->c_alignRightTop();
     }
 

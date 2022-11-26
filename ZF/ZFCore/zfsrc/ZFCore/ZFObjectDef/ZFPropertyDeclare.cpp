@@ -100,7 +100,7 @@ static void _ZFP_ZFPropertyLifeCycleCallAction(ZF_IN ZFCoreArrayPOD<_ZFP_PropLif
         {
             if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
             {
-                p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->userData);
+                p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
             }
         }
     }
@@ -110,7 +110,7 @@ static void _ZFP_ZFPropertyLifeCycleCallAction(ZF_IN ZFCoreArrayPOD<_ZFP_PropLif
         {
             if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
             {
-                p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->userData);
+                p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
             }
         }
     }
@@ -291,68 +291,31 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_assign(ZF_IN const ZFProperty *property
 }
 
 // ============================================================
-zfclass _ZFP_I_ZFPropertyWeakTaskData : zfextends ZFObject
-{
-    ZFOBJECT_DECLARE(_ZFP_I_ZFPropertyWeakTaskData, ZFObject)
-
-public:
-    ZFObject *propertyOwnerObject;
-    const ZFProperty *property;
-};
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyWeakDataHolder, ZFLevelZFFrameworkEssential)
-{
-    this->propertyOnDeallocListener = ZFCallbackForFunc(zfself::propertyOnDealloc);
-}
-public:
-    ZFListener propertyOnDeallocListener;
-    static void propertyOnDealloc(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        _ZFP_I_ZFPropertyWeakTaskData *taskData = userData->to<_ZFP_I_ZFPropertyWeakTaskData *>();
-        taskData->property->callbackValueReset(
-            taskData->property,
-            taskData->propertyOwnerObject);
-    }
-ZF_GLOBAL_INITIALIZER_END(ZFPropertyWeakDataHolder)
-static ZFCompareResult _ZFP_ZFPropertyWeakUserDataComparer(ZF_IN ZFObject *const &v0, ZF_IN ZFObject *const &v1)
-{
-    _ZFP_I_ZFPropertyWeakTaskData *v0_ = ZFCastZFObject(_ZFP_I_ZFPropertyWeakTaskData *, v0);
-    _ZFP_I_ZFPropertyWeakTaskData *v1_ = ZFCastZFObject(_ZFP_I_ZFPropertyWeakTaskData *, v1);
-    if(v0_ != zfnull && v1_ != zfnull
-        && v0_->propertyOwnerObject == v1_->propertyOwnerObject
-        && v0_->property == v1_->property
-        )
-    {
-        return ZFCompareTheSame;
-    }
-    else
-    {
-        return ZFCompareUncomparable;
-    }
-}
 static void _ZFP_ZFPropertyWeakAttach(ZF_IN ZFObject *propertyOwnerObject,
                                       ZF_IN const ZFProperty *property,
                                       ZF_IN ZFObject *valueNew)
 {
-    zfblockedAlloc(_ZFP_I_ZFPropertyWeakTaskData, taskData);
-    taskData->propertyOwnerObject = propertyOwnerObject;
-    taskData->property = property;
+    ZFLISTENER_2(propertyOnDealloc
+            , ZFObject *, propertyOwnerObject
+            , const ZFProperty *, property
+            ) {
+        property->callbackValueReset(property, propertyOwnerObject);
+    } ZFLISTENER_END(propertyOnDealloc)
+    zfblockedAlloc(v_ZFListener, holder, propertyOnDealloc);
+    propertyOwnerObject->objectTag(zfstringWithFormat("_ZFP_PropWeak_%s", property->propertyName()), holder);
+
     valueNew->observerAdd(
         ZFObject::EventObjectBeforeDealloc(),
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyWeakDataHolder)->propertyOnDeallocListener,
-        taskData);
+        propertyOnDealloc);
 }
 static void _ZFP_ZFPropertyWeakDetach(ZF_IN ZFObject *propertyOwnerObject,
                                       ZF_IN const ZFProperty *property,
                                       ZF_IN ZFObject *valueOld)
 {
-    zfblockedAlloc(_ZFP_I_ZFPropertyWeakTaskData, taskData);
-    taskData->propertyOwnerObject = propertyOwnerObject;
-    taskData->property = property;
+    v_ZFListener *holder = propertyOwnerObject->objectTag<v_ZFListener *>(zfstringWithFormat("_ZFP_PropWeak_%s", property->propertyName()));
     valueOld->observerRemove(
         ZFObject::EventObjectBeforeDealloc(),
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyWeakDataHolder)->propertyOnDeallocListener,
-        taskData,
-        _ZFP_ZFPropertyWeakUserDataComparer);
+        holder->zfv);
 }
 
 ZF_NAMESPACE_GLOBAL_END

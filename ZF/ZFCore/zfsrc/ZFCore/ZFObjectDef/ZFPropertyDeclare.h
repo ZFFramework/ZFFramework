@@ -705,7 +705,7 @@ public:
             ZF_IN const ZFProperty *property, \
             ZF_IN void *propertyValue, \
             ZF_IN const void *propertyValueOld, \
-            ZF_IN ZFObject *userData) \
+            ZF_IN ZFObject *propertyLifeCycleUserData) \
         { \
             ZFCastZFObjectUnchecked(zfself *, propertyOwnerObject)->zfself::_ZFP_propL_##lifeCycleName##_##Name( \
                 *(constFix(const) zfself::PropHT_##Name *)propertyValue, \
@@ -736,7 +736,7 @@ public:
             ZF_IN const ZFProperty *property, \
             ZF_IN void *propertyValue, \
             ZF_IN const void *propertyValueOld, \
-            ZF_IN ZFObject *userData) \
+            ZF_IN ZFObject *propertyLifeCycleUserData) \
         { \
             ZFCastZFObjectUnchecked(OwnerClass *, propertyOwnerObject)->OwnerClass::_ZFP_propL_##lifeCycleName##_##Name( \
                 *(constFix(const) OwnerClass::PropHT_##Name *)propertyValue, \

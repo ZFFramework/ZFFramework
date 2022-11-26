@@ -5,29 +5,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageViewListenerHolder, ZFLevelZFFrameworkEssential)
-{
-    this->imageNinePatchChangedListener = ZFCallbackForFunc(zfself::imageNinePatchChanged);
-}
-public:
-    ZFListener imageNinePatchChangedListener;
-    static void imageNinePatchChanged(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        const ZFProperty *property = listenerData.param0()->to<v_ZFProperty *>()->zfv;
-        if(property == ZFPropertyAccess(ZFUIImage, imageNinePatch)
-            || property == ZFPropertyAccess(ZFUIImage, imageScale))
-        {
-            ZFUIImageView *imageView = userData->objectHolded();
-            ZFUIImage *image = imageView->image();
-            ZFPROTOCOL_ACCESS(ZFUIImageView)->imageNinePatchChanged(
-                imageView,
-                image->imageScaleFixed(),
-                ZFUIMarginApplyScale(image->imageNinePatch(), image->imageScaleFixed()));
-        }
-    }
-ZF_GLOBAL_INITIALIZER_END(ZFUIImageViewListenerHolder)
-
-// ============================================================
 // ZFUIImageView
 ZFOBJECT_REGISTER(ZFUIImageView)
 ZFSTYLE_DEFAULT_DEFINE(ZFUIImageView)
@@ -43,10 +20,28 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIImageView, zfbool, viewUIEnableTree)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIImage *, image)
 {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIImageViewListenerHolder) *listenerHolder = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIImageViewListenerHolder);
     if(this->image() != zfnull)
     {
-        this->image()->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(), listenerHolder->imageNinePatchChangedListener, this->objectHolder());
+        if(!this->imageUpdateListener)
+        {
+            ZFUIImageView *owner = this;
+            ZFLISTENER_1(imageNinePatchChanged
+                    , ZFUIImageView *, owner
+                    ) {
+                const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
+                if(property == ZFPropertyAccess(ZFUIImage, imageNinePatch)
+                    || property == ZFPropertyAccess(ZFUIImage, imageScale))
+                {
+                    ZFUIImage *image = owner->image();
+                    ZFPROTOCOL_ACCESS(ZFUIImageView)->imageNinePatchChanged(
+                        owner,
+                        image->imageScaleFixed(),
+                        ZFUIMarginApplyScale(image->imageNinePatch(), image->imageScaleFixed()));
+                }
+            } ZFLISTENER_END(imageNinePatchChanged)
+            this->imageUpdateListener = imageNinePatchChanged;
+        }
+        this->image()->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(), this->imageUpdateListener);
     }
 
     ZFPROTOCOL_ACCESS(ZFUIImageView)->image(this,
@@ -70,10 +65,12 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIImage *, image)
 }
 ZFPROPERTY_ON_DETACH_DEFINE(ZFUIImageView, ZFUIImage *, image)
 {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIImageViewListenerHolder) *listenerHolder = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIImageViewListenerHolder);
     if(this->image() != zfnull)
     {
-        this->image()->observerRemove(ZFObject::EventObjectPropertyValueOnUpdate(), listenerHolder->imageNinePatchChangedListener);
+        if(this->imageUpdateListener)
+        {
+            this->image()->observerRemove(ZFObject::EventObjectPropertyValueOnUpdate(), this->imageUpdateListener);
+        }
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIContentScaleTypeEnum, imageScaleType)

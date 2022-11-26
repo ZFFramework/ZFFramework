@@ -32,9 +32,6 @@ zffinal zfclassLikePOD ZFLIB_ZFCore ZFClassInstanceObserverAddParam
     ZFCORE_PARAM(ZFListener, observer)
 
     /** @brief see #ZFClass::instanceObserverAdd */
-    ZFCORE_PARAM_WITH_INIT(ZFObject *, userData, zfnull)
-
-    /** @brief see #ZFClass::instanceObserverAdd */
     ZFCORE_PARAM_WITH_INIT(ZFObject *, owner, zfnull)
 
     /** @brief see #ZFClass::instanceObserverAdd */
@@ -49,7 +46,6 @@ public:
     {
         return (zftrue
                 && this->observer() == ref.observer()
-                && this->userData() == ref.userData()
                 && this->owner() == ref.owner()
                 && this->observerLevel() == ref.observerLevel()
                 && this->observeAllChildType() == ref.observeAllChildType()
@@ -112,14 +108,13 @@ public:
      * @brief add an observer which would be called if any of this class's instance created
      */
     void instanceObserverAdd(ZF_IN const ZFListener &observer,
-                             ZF_IN_OPT ZFObject *userData = zfnull,
                              ZF_IN_OPT ZFObject *owner = zfnull,
                              ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal,
                              ZF_IN_OPT zfbool observeAllChildType = zftrue) const;
     /** @brief see #instanceObserverAdd */
     inline void instanceObserverAdd(ZF_IN const ZFClassInstanceObserverAddParam &param) const
     {
-        this->instanceObserverAdd(param.observer(), param.userData(), param.owner(), param.observerLevel(), param.observeAllChildType());
+        this->instanceObserverAdd(param.observer(), param.owner(), param.observerLevel(), param.observeAllChildType());
     }
     /** @brief see #instanceObserverAdd */
     void instanceObserverRemove(ZF_IN const ZFListener &observer) const;

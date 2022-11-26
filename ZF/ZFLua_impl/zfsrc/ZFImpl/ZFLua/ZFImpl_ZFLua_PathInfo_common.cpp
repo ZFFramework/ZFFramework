@@ -141,17 +141,14 @@ static void _ZFP_ZFLuaImportAllLoop(ZF_IN lua_State *L,
                                     ZF_IN const ZFFilePathInfoImpl &impl,
                                     ZF_IN const ZFPathInfo &pathInfo,
                                     ZF_IN const ZFListener &importCallback,
-                                    ZF_IN ZFObject *importCallbackUserData,
                                     ZF_IN zfbool recursive);
 static int _ZFP_ZFLuaImportAllExecute(ZF_IN lua_State *L,
                                       ZF_IN const ZFFilePathInfoImpl &impl,
                                       ZF_IN v_ZFPathInfo *pathInfo,
-                                      ZF_IN const ZFListener &importCallback,
-                                      ZF_IN ZFObject *importCallbackUserData);
+                                      ZF_IN const ZFListener &importCallback);
 static int _ZFP_ZFLuaImportAllWrap(ZF_IN lua_State *L,
                                    ZF_IN const ZFPathInfo &pathInfo,
                                    ZF_IN const ZFListener &importCallback,
-                                   ZF_IN ZFObject *importCallbackUserData,
                                    ZF_IN zfbool recursive);
 static int _ZFP_ZFLuaImportAll(ZF_IN lua_State *L)
 {
@@ -167,14 +164,8 @@ static int _ZFP_ZFLuaImportAll(ZF_IN lua_State *L)
         }
     }
 
-    zfautoObject importCallbackUserData;
-    if(count >= 4)
-    {
-        ZFImpl_ZFLua_toObject(importCallbackUserData, L, 4);
-    }
-
     zfbool recursive = zftrue;
-    if(count >= 5)
+    if(count >= 4)
     {
         zfautoObject recursiveHolder;
         if(ZFImpl_ZFLua_toObject(recursiveHolder, L, 5))
@@ -195,7 +186,6 @@ static int _ZFP_ZFLuaImportAll(ZF_IN lua_State *L)
             L,
             ZFCastZFObject(v_ZFPathInfo *, paramHolder)->zfv,
             importCallback,
-            importCallbackUserData,
             recursive);
     }
     else
@@ -236,13 +226,12 @@ static int _ZFP_ZFLuaImportAll(ZF_IN lua_State *L)
             }
         }
 
-        return _ZFP_ZFLuaImportAllWrap(L, localPathInfo, importCallback, importCallbackUserData, recursive);
+        return _ZFP_ZFLuaImportAllWrap(L, localPathInfo, importCallback, recursive);
     }
 }
 static int _ZFP_ZFLuaImportAllWrap(ZF_IN lua_State *L,
                                    ZF_IN const ZFPathInfo &pathInfo,
                                    ZF_IN const ZFListener &importCallback,
-                                   ZF_IN ZFObject *importCallbackUserData,
                                    ZF_IN zfbool recursive)
 {
     const ZFFilePathInfoImpl *impl = ZFFilePathInfoImplForPathType(pathInfo.pathType);
@@ -254,20 +243,19 @@ static int _ZFP_ZFLuaImportAllWrap(ZF_IN lua_State *L,
     }
     if(impl->callbackIsDir(pathInfo.pathData))
     {
-        _ZFP_ZFLuaImportAllLoop(L, *impl, pathInfo, importCallback, importCallbackUserData, recursive);
+        _ZFP_ZFLuaImportAllLoop(L, *impl, pathInfo, importCallback, recursive);
         return 0;
     }
     else
     {
         zfblockedAlloc(v_ZFPathInfo, pathInfoHolder, pathInfo);
-        return _ZFP_ZFLuaImportAllExecute(L, *impl, pathInfoHolder, importCallback, importCallbackUserData);
+        return _ZFP_ZFLuaImportAllExecute(L, *impl, pathInfoHolder, importCallback);
     }
 }
 static int _ZFP_ZFLuaImportAllExecute(ZF_IN lua_State *L,
                                       ZF_IN const ZFFilePathInfoImpl &impl,
                                       ZF_IN v_ZFPathInfo *pathInfo,
-                                      ZF_IN const ZFListener &importCallback,
-                                      ZF_IN ZFObject *importCallbackUserData)
+                                      ZF_IN const ZFListener &importCallback)
 {
     zfstring nameTmp;
     if(!impl.callbackToFileName(pathInfo->zfv.pathData, nameTmp)
@@ -295,7 +283,7 @@ static int _ZFP_ZFLuaImportAllExecute(ZF_IN lua_State *L,
 
     if(importCallback)
     {
-        importCallback.execute(ZFListenerData().param0(pathInfo), importCallbackUserData);
+        importCallback.execute(ZFArgs().param0(pathInfo));
     }
     ZFLuaExecute(input, zfnull, L);
     return 0;
@@ -304,7 +292,6 @@ static void _ZFP_ZFLuaImportAllLoop(ZF_IN lua_State *L,
                                     ZF_IN const ZFFilePathInfoImpl &impl,
                                     ZF_IN const ZFPathInfo &pathInfo,
                                     ZF_IN const ZFListener &importCallback,
-                                    ZF_IN ZFObject *importCallbackUserData,
                                     ZF_IN zfbool recursive)
 {
     ZFFileFindData fd;
@@ -326,11 +313,11 @@ static void _ZFP_ZFLuaImportAllLoop(ZF_IN lua_State *L,
                 {
                     continue;
                 }
-                _ZFP_ZFLuaImportAllLoop(L, impl, childPathInfo->zfv, importCallback, importCallbackUserData, recursive);
+                _ZFP_ZFLuaImportAllLoop(L, impl, childPathInfo->zfv, importCallback, recursive);
             }
             else
             {
-                _ZFP_ZFLuaImportAllExecute(L, impl, childPathInfo, importCallback, importCallbackUserData);
+                _ZFP_ZFLuaImportAllExecute(L, impl, childPathInfo, importCallback);
             }
         } while(impl.callbackFindNext(fd));
         impl.callbackFindClose(fd);

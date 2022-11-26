@@ -1,8 +1,9 @@
 local pm = ZFUIPageManager();
 
-pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, userData)
+pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(zfargs)
         zfLog("manager onCreate");
-        local pm = listenerData:sender();
+        local pm = zfargs:sender();
+        local pmHolder = pm:objectHolder();
 
         local managerContainer = pm:managerContainer();
 
@@ -17,10 +18,11 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
         leftButton:label():text("Back");
         leftButton:viewBackgroundColor(ZFUIColorRandom());
         leftButton:viewVisible(zffalse);
-        leftButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
-                local pm = userData:objectHolded();
+
+        leftButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
+                local pm = pmHolder:objectHolded();
                 pm:pageAt(pm:pageCount() - 1):pageDestroy();
-            end, pm:objectHolder());
+            end);
 
         local centerButton = ZFUIButtonBasic();
         pm:objectTag("centerButton", centerButton);
@@ -32,10 +34,10 @@ pm:observerAdd(ZFUIPageManager.EventManagerOnCreate(), function(listenerData, us
         topView:childAdd(rightButton):widthFill():alignCenter():layoutWeight(1);
         rightButton:label():text("ExitTest");
         rightButton:viewBackgroundColor(ZFUIColorRandom());
-        rightButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
-                local pm = userData:objectHolded();
+        rightButton:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
+                local pm = pmHolder:objectHolded();
                 pm:managerDestroy();
-            end, pm:objectHolder());
+            end);
     end);
 
 return pm;

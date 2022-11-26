@@ -17,7 +17,7 @@ protected:
         this->testCaseOutput("ZFDynamic");
 
         ZFLISTENER(methodCallback) {
-            ZFMethodInvokeData *d = listenerData.param0()->toAny();
+            ZFMethodInvokeData *d = zfargs.param0()->toAny();
             zfblockedAlloc(v_zfstring, ret);
             ret->zfv += d->param0->to<v_zfstring *>()->zfv;
             ret->zfv += "(modified)";

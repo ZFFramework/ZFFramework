@@ -29,7 +29,7 @@ ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, ZFUIView *, ownerChild)
 {
     if(_ZFP_AL_d.ownerChild != zfnull)
     {
-        return _ZFP_AL_d.ownerChild->objectHolded<ZFUIView *>();
+        return _ZFP_AL_d.ownerChild->objectHolded();
     }
     else
     {

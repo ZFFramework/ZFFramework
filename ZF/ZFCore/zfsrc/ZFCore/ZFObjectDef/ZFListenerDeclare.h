@@ -18,13 +18,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * usage:
  * @code
  *   obj->observerAdd(eventId, ZFListenerForLambda({
- *       zfLogT() << listenerData.sender();
+ *       zfLogT() << zfargs.sender();
  *   }));
  * @endcode
  */
 #if ZF_ENV_LAMBDA
     #define ZFListenerForLambda(content) \
-        ZFCallbackForFunc(((void (*)(const ZFListenerData &, ZFObject *))[](const ZFListenerData &listenerData, ZFObject *userData) {content}))
+        ZFCallbackForFunc(((void (*)(const ZFArgs &))[](const ZFArgs &zfargs) {content}))
 #else
     #define ZFListenerForLambda(content) ZF_ENV_LAMBDA_NOT_AVAILABLE
 #endif
@@ -43,7 +43,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * usage:
  * @code
  *   // proto type:
- *   // void listenerName(ZF_IN const ZFListenerData &listenerData, ZFObject *userData);
+ *   // void listenerName(ZF_IN const ZFArgs &zfargs);
  *   ZFLISTENER(yourListener) {
  *       // your code
  *   } ZFLISTENER_END(yourListener)
@@ -55,7 +55,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   zfstring text0 = "text0";
  *   zfstring text1 = "text1";
  *   // proto type:
- *   // void listenerName(ZF_IN const ZFListenerData &listenerData, ZFObject *userData);
+ *   // void listenerName(ZF_IN const ZFArgs &zfargs);
  *   ZFLISTENER_2(yourListener
  *           , zfstring, text0
  *           , zfstring &, text1
@@ -73,8 +73,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     ZFLAMBDA(name \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -82,8 +81,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ) \
     ZFLAMBDA_0(name \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -93,8 +91,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZFLAMBDA_1(name \
         , CaptureParam0, capture0 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -106,8 +103,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , CaptureParam0, capture0 \
         , CaptureParam1, capture1 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -121,8 +117,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , CaptureParam1, capture1 \
         , CaptureParam2, capture2 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -138,8 +133,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , CaptureParam2, capture2 \
         , CaptureParam3, capture3 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -157,8 +151,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , CaptureParam3, capture3 \
         , CaptureParam4, capture4 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -178,8 +171,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , CaptureParam4, capture4 \
         , CaptureParam5, capture5 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -201,8 +193,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , CaptureParam5, capture5 \
         , CaptureParam6, capture6 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 /** @brief see #ZFLISTENER */
@@ -226,8 +217,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , CaptureParam6, capture6 \
         , CaptureParam7, capture7 \
         , void \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFListenerData &, listenerData)) \
-        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(ZFObject *, userData)) \
+        , _ZFP_ZFLISTENER_EXPAND(ZFMP_IN(const ZFArgs &, zfargs)) \
         )
 
 ZF_NAMESPACE_GLOBAL_END

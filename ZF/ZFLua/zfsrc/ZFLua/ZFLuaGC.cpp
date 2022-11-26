@@ -39,15 +39,15 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder)
 zfautoObjectT<ZFTimer *> gcTask;
 zfstlmap<void *, zfbool> m;
 ZFListener luaStateOnDetachListener;
-static void luaStateOnDetach(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs)
 {
     zfCoreMutexLocker();
     zfstlmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
-    m.erase(listenerData.param0()->to<v_ZFPtr *>()->zfv);
+    m.erase(zfargs.param0()->to<v_ZFPtr *>()->zfv);
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLuaGCHolder)
 
-static void _ZFP_ZFLuaGCResolve(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFLuaGCResolve(ZF_IN const ZFArgs &zfargs)
 {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFLuaGCHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder);
     zfstlmap<void *, zfbool> &m = d->m;
@@ -102,9 +102,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCAutoApply)
         this->classChangeListener);
 }
 ZFListener classChangeListener;
-static void classChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void classChange(ZF_IN const ZFArgs &zfargs)
 {
-    const ZFClassDataChangeData &data = listenerData.param0()->to<v_ZFClassDataChangeData *>()->zfv;
+    const ZFClassDataChangeData &data = zfargs.param0()->to<v_ZFClassDataChangeData *>()->zfv;
     if(data.changedClass != zfnull && data.changeType == ZFClassDataChangeTypeDetach)
     {
         ZFCoreArrayPOD<void *> L;

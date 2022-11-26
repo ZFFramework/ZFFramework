@@ -219,6 +219,8 @@ extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeTyp
                                                       ZF_IN const ZFMethod *changedMethod,
                                                       ZF_IN_OPT const zfchar *name = zfnull);
 
+extern ZFLIB_ZFCore zfindex _ZFP_ZFSigForName(ZF_IN const zfchar *name);
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFObjectClassTypeFwd_h_

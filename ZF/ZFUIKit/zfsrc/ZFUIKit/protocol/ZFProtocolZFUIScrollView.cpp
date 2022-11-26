@@ -13,13 +13,18 @@ zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTE
 {
     zfblockedAlloc(ZFTimer, scrollTimer);
     scrollTimer->timerInterval(recommendTimerInterval);
-    ZFLISTENER_1(scrollTimerEvent
+    ZFObjectHolder *ownerHolder = scrollView->objectHolder();
+    ZFLISTENER_2(scrollTimerEvent
             , ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *, impl
+            , zfautoObjectT<ZFObjectHolder *>, ownerHolder
             ) {
-        ZFUIScrollView *scrollView = userData->objectHolded();
-        impl->notifyScrollViewScrollAnimation(scrollView, ZFTime::timestamp());
+        ZFUIScrollView *scrollView = ownerHolder->objectHolded();
+        if(scrollView != zfnull)
+        {
+            impl->notifyScrollViewScrollAnimation(scrollView, ZFTime::timestamp());
+        }
     } ZFLISTENER_END(scrollTimerEvent)
-    scrollTimer->observerAdd(ZFTimer::EventTimerOnActivate(), scrollTimerEvent, scrollView->objectHolder());
+    scrollTimer->observerAdd(ZFTimer::EventTimerOnActivate(), scrollTimerEvent);
 
     scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer", scrollTimer);
     scrollTimer->timerStart();
@@ -47,7 +52,7 @@ void ZFUIScrollViewImplHelperProtocol::trackDelayStart(ZF_IN zftimet timeoutMili
         ZFLISTENER_1(timerActivated
                 , ZFUIScrollViewImplHelper *, owner
                 ) {
-            listenerData.sender()->to<ZFTimer *>()->timerStop();
+            zfargs.sender()->to<ZFTimer *>()->timerStop();
             owner->trackDelayNotifyTimeout();
         } ZFLISTENER_END(timerActivated)
         owner->_trackDelayDefaultImplTimer->observerAdd(ZFTimer::EventTimerOnActivate(), timerActivated);

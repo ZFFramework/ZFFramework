@@ -542,15 +542,13 @@ public:
      *   used to ensure execute order when mixed with page management
      *   (#pageCreate, #pageDestroy, etc)
      */
-    ZFMETHOD_DECLARE_2(void, pageRequest,
-                       ZFMP_IN(const ZFListener &, callback),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    ZFMETHOD_DECLARE_1(void, pageRequest,
+                       ZFMP_IN(const ZFListener &, callback))
     /**
      * @brief remove callback for #pageRequest
      */
-    ZFMETHOD_DECLARE_2(void, pageRequestCancel,
-                       ZFMP_IN(const ZFListener &, callback),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    ZFMETHOD_DECLARE_1(void, pageRequestCancel,
+                       ZFMP_IN(const ZFListener &, callback))
 
 protected:
     zfoverride

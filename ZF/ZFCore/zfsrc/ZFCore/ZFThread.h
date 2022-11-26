@@ -30,13 +30,15 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called in the same thread of the thread task
+     * called in the same thread of the thread task,
+     * param0 and param0 is the params passed from #threadStart
      */
     ZFOBSERVER_EVENT(ThreadOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called in the same thread of the thread task
+     * called in the same thread of the thread task,
+     * param0 and param0 is the params passed from #threadStart
      */
     ZFOBSERVER_EVENT(ThreadOnStop)
 
@@ -89,10 +91,9 @@ public:
      * return the actual thread that added the task,
      * you may use #taskQueueRemove to remove the task
      */
-    ZFMETHOD_DECLARE_STATIC_3(ZFThread *, executeInThread,
+    ZFMETHOD_DECLARE_STATIC_2(ZFThread *, executeInThread,
                               ZFMP_IN(ZFThread *, thread),
-                              ZFMP_IN(const ZFListener &, callback),
-                              ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                              ZFMP_IN(const ZFListener &, callback))
 
     /**
      * @brief util to run callback in current thread's #taskQueueAdd,
@@ -101,9 +102,8 @@ public:
      * return the actual thread that added the task,
      * you may use #taskQueueRemove to remove the task
      */
-    ZFMETHOD_DECLARE_STATIC_2(ZFThread *, post,
-                              ZFMP_IN(const ZFListener &, callback),
-                              ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    ZFMETHOD_DECLARE_STATIC_1(ZFThread *, post,
+                              ZFMP_IN(const ZFListener &, callback))
 
     // ============================================================
     // thread instance method
@@ -137,8 +137,9 @@ public:
     /**
      * @brief start thread, do nothing if already started
      */
-    ZFMETHOD_DECLARE_1(void, threadStart,
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    ZFMETHOD_DECLARE_2(void, threadStart,
+                       ZFMP_IN_OPT(ZFObject *, param0, zfnull),
+                       ZFMP_IN_OPT(ZFObject *, param1, zfnull))
     /**
      * @brief return true if start is called and hasn't been stopped or end
      */
@@ -234,13 +235,11 @@ public:
     /** @brief see #taskQueueInit */
     ZFMETHOD_DECLARE_0(zfindex, taskQueueCount)
     /** @brief see #taskQueueInit */
-    ZFMETHOD_DECLARE_2(void, taskQueueAdd,
-                       ZFMP_IN(const ZFListener &, task),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    ZFMETHOD_DECLARE_1(void, taskQueueAdd,
+                       ZFMP_IN(const ZFListener &, task))
     /** @brief see #taskQueueRemove */
-    ZFMETHOD_DECLARE_2(void, taskQueueRemove,
-                       ZFMP_IN(const ZFListener &, task),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    ZFMETHOD_DECLARE_1(void, taskQueueRemove,
+                       ZFMP_IN(const ZFListener &, task))
     /** @brief try if any task add by #taskQueueAdd is running */
     ZFMETHOD_DECLARE_0(zfbool, taskQueueRunning)
 
@@ -250,9 +249,8 @@ protected:
      *
      * note: called before #threadRunnable
      */
-    ZFMETHOD_DECLARE_PROTECTED_2(void, threadOnRun,
-                                 ZFMP_IN(const ZFListenerData &, listenerData),
-                                 ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_DECLARE_PROTECTED_1(void, threadOnRun,
+                                 ZFMP_IN(const ZFArgs &, zfargs))
 
 protected:
     /** @brief see #EventThreadOnStart */
@@ -268,9 +266,9 @@ protected:
 
 private:
     _ZFP_ZFThreadPrivate *d;
-    static void _ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &, ZF_IN ZFObject *);
-    static void _ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFListenerData &, ZF_IN ZFObject *);
-    static void _ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFListenerData &, ZF_IN ZFObject *);
+    static void _ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs);
+    static void _ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFArgs &zfargs);
+    static void _ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFArgs &zfargs);
 };
 
 ZF_NAMESPACE_GLOBAL_END

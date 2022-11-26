@@ -40,10 +40,10 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFDI_MethodCache)
 }
 private:
     ZFListener classDataChangeListener;
-    static void classDataChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void classDataChange(ZF_IN const ZFArgs &zfargs)
     {
         zfCoreMutexLocker();
-        const ZFClassDataChangeData &changed = ZFCastZFObjectUnchecked(v_ZFClassDataChangeData *, listenerData.param0())->zfv;
+        const ZFClassDataChangeData &changed = ZFCastZFObjectUnchecked(v_ZFClassDataChangeData *, zfargs.param0())->zfv;
         if(changed.changedClass != zfnull)
         {
             _ZFP_ZFDI_classMapCache.clear();

@@ -3,12 +3,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData;
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStart(ZF_IN ZFUIWindow *window);
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStart(ZF_IN ZFUIWindow *window, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData);
 static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStop(ZF_IN ZFUIWindow *window, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData);
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData);
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData);
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData);
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData);
 
 zfclass _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData : zfextends ZFObject
 {
@@ -23,6 +23,36 @@ protected:
         this->startCount = 1;
         this->layoutMarginSaved = ZFUIMarginZero();
         this->layoutMarginHasStored = zffalse;
+
+        _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = this;
+
+        ZFLISTENER_1(onScreenKeyboardStateChangeListener
+                , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
+                ) {
+            _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(zfargs, taskData);
+        } ZFLISTENER_END(onScreenKeyboardStateChangeListener)
+        this->onScreenKeyboardStateChangeListener = onScreenKeyboardStateChangeListener;
+
+        ZFLISTENER_1(windowOnUpdateLayoutListener
+                , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
+                ) {
+            _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout(zfargs, taskData);
+        } ZFLISTENER_END(windowOnUpdateLayoutListener)
+        this->windowOnUpdateLayoutListener = windowOnUpdateLayoutListener;
+
+        ZFLISTENER_1(windowOnSysWindowChangeListener
+                , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
+                ) {
+            _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(zfargs, taskData);
+        } ZFLISTENER_END(windowOnSysWindowChangeListener)
+        this->windowOnSysWindowChangeListener = windowOnSysWindowChangeListener;
+
+        ZFLISTENER_1(windowLayoutMarginChangeListener
+                , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
+                ) {
+            _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(zfargs, taskData);
+        } ZFLISTENER_END(windowLayoutMarginChangeListener)
+        this->windowLayoutMarginChangeListener = windowLayoutMarginChangeListener;
     }
     zfoverride
     virtual void objectOnDeallocPrepare(void)
@@ -36,6 +66,11 @@ public:
     zfindex startCount;
     ZFUIMargin layoutMarginSaved;
     zfbool layoutMarginHasStored;
+
+    ZFListener onScreenKeyboardStateChangeListener;
+    ZFListener windowOnUpdateLayoutListener;
+    ZFListener windowOnSysWindowChangeListener;
+    ZFListener windowLayoutMarginChangeListener;
 };
 
 ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStart,
@@ -60,7 +95,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStart,
     taskData->ownerWindow = window;
     window->objectTag(_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull(), taskDataTmp);
 
-    _ZFP_ZFUIOnScreenKeyboardAutoResize_doStart(window);
+    _ZFP_ZFUIOnScreenKeyboardAutoResize_doStart(window, taskData);
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStop,
                        ZFMP_IN(ZFUIWindow *, window))
@@ -89,10 +124,6 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStop,
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardAutoResizeDataHolder, ZFLevelZFFrameworkEssential)
 {
-    this->onScreenKeyboardStateChangeListener = ZFCallbackForFunc(_ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange);
-    this->windowOnUpdateLayoutListener = ZFCallbackForFunc(_ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout);
-    this->windowOnSysWindowChangeListener = ZFCallbackForFunc(_ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange);
-    this->windowLayoutMarginChangeListener = ZFCallbackForFunc(_ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardAutoResizeDataHolder)
 {
@@ -101,10 +132,6 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardAutoResizeDataHolder)
 }
 public:
     ZFCoreArrayPOD<ZFUIWindow *> windowList;
-    ZFListener onScreenKeyboardStateChangeListener;
-    ZFListener windowOnUpdateLayoutListener;
-    ZFListener windowOnSysWindowChangeListener;
-    ZFListener windowLayoutMarginChangeListener;
 ZF_GLOBAL_INITIALIZER_END(ZFUIOnScreenKeyboardAutoResizeDataHolder)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardAutoResizeAutoStop, ZFLevelZFFrameworkEssential)
@@ -121,15 +148,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardAutoResizeAutoStop)
 }
 ZF_GLOBAL_INITIALIZER_END(ZFUIOnScreenKeyboardAutoResizeAutoStop)
 
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(ZF_IN ZFUIWindow *window, ZF_IN ZFUIOnScreenKeyboardState *state)
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData, ZF_IN ZFUIWindow *window, ZF_IN ZFUIOnScreenKeyboardState *state)
 {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIOnScreenKeyboardAutoResizeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIOnScreenKeyboardAutoResizeDataHolder);
-    _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = ZFAny(window->objectTag(
-        _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));
-    if(taskData == zfnull)
-    {
-        return ;
-    }
     const ZFUIMargin &layoutMarginOld = (taskData->layoutMarginHasStored ? taskData->layoutMarginSaved : window->windowLayoutParam()->layoutMargin());
     if(state->keyboardShowing() && window->windowShowing())
     {
@@ -168,40 +188,38 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(ZF_IN ZFUIWindow *window, 
 
         window->windowLayoutParam()->observerRemove(
             ZFObject::EventObjectPropertyValueOnUpdate(),
-            d->windowLayoutMarginChangeListener);
+            taskData->windowLayoutMarginChangeListener);
         window->windowLayoutParam()->layoutMargin(margin);
         window->windowLayoutParam()->observerAdd(
             ZFObject::EventObjectPropertyValueOnUpdate(),
-            d->windowLayoutMarginChangeListener,
-            window->objectHolder());
+            taskData->windowLayoutMarginChangeListener);
     }
     else
     {
         window->windowLayoutParam()->observerRemove(
             ZFObject::EventObjectPropertyValueOnUpdate(),
-            d->windowLayoutMarginChangeListener);
+            taskData->windowLayoutMarginChangeListener);
         taskData->layoutMarginHasStored = zffalse;
         window->windowLayoutParam()->layoutMargin(layoutMarginOld);
     }
 }
 
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStart(ZF_IN ZFUIWindow *window)
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStart(ZF_IN ZFUIWindow *window, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData)
 {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIOnScreenKeyboardAutoResizeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIOnScreenKeyboardAutoResizeDataHolder);
     if(d->windowList.isEmpty())
     {
-        ZFGlobalObserver().observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), d->onScreenKeyboardStateChangeListener);
+        ZFGlobalObserver().observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), taskData->onScreenKeyboardStateChangeListener);
     }
     d->windowList.add(window);
 
     window->windowOwnerSysWindow()->rootView()->observerAdd(
         ZFUIView::EventViewLayoutOnLayoutPrepare(),
-        d->windowOnUpdateLayoutListener,
-        window->objectHolder());
+        taskData->windowOnUpdateLayoutListener);
     window->observerAdd(
         ZFUIWindow::EventWindowOwnerSysWindowOnChange(),
-        d->windowOnSysWindowChangeListener);
-    _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(window, ZFUIOnScreenKeyboardState::instanceForView(window));
+        taskData->windowOnSysWindowChangeListener);
+    _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(taskData, window, ZFUIOnScreenKeyboardState::instanceForView(window));
 }
 static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStop(ZF_IN ZFUIWindow *window, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData)
 {
@@ -209,13 +227,13 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStop(ZF_IN ZFUIWindow *window,
 
     window->windowOwnerSysWindow()->rootView()->observerRemove(
         ZFUIView::EventViewLayoutOnLayoutPrepare(),
-        d->windowOnUpdateLayoutListener);
+        taskData->windowOnUpdateLayoutListener);
     window->observerRemove(
         ZFUIWindow::EventWindowOwnerSysWindowOnChange(),
-        d->windowOnSysWindowChangeListener);
+        taskData->windowOnSysWindowChangeListener);
     window->windowLayoutParam()->observerRemove(
         ZFObject::EventObjectPropertyValueOnUpdate(),
-        d->windowLayoutMarginChangeListener);
+        taskData->windowLayoutMarginChangeListener);
     window->layoutRequest();
 
     if(taskData->layoutMarginHasStored)
@@ -227,12 +245,12 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_doStop(ZF_IN ZFUIWindow *window,
     d->windowList.removeElement(window);
     if(d->windowList.isEmpty())
     {
-        ZFGlobalObserver().observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), d->onScreenKeyboardStateChangeListener);
+        ZFGlobalObserver().observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), taskData->onScreenKeyboardStateChangeListener);
     }
 }
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData)
 {
-    ZFUIOnScreenKeyboardState *state = listenerData.senderT();
+    ZFUIOnScreenKeyboardState *state = zfargs.senderT();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIOnScreenKeyboardAutoResizeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIOnScreenKeyboardAutoResizeDataHolder);
     for(zfindex i = 0; i < d->windowList.count(); ++i)
     {
@@ -242,48 +260,38 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(ZF_I
             continue;
         }
 
-        _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(window, state);
+        _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(taskData, window, state);
     }
 }
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData)
 {
-    ZFUIRootView *rootView = listenerData.senderT();
-    ZFUIWindow *window = userData->objectHolded();
+    ZFUIRootView *rootView = zfargs.senderT();
+    ZFUIWindow *window = taskData->ownerWindow;
     if(rootView->viewFrame() != rootView->viewFramePrev())
     {
-        _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(window, ZFUIOnScreenKeyboardState::instanceForView(window));
+        _ZFP_ZFUIOnScreenKeyboardAutoResize_apply(taskData, window, ZFUIOnScreenKeyboardState::instanceForView(window));
     }
 }
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData)
 {
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIOnScreenKeyboardAutoResizeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIOnScreenKeyboardAutoResizeDataHolder);
-
-    ZFUIWindow *window = listenerData.senderT();
-    ZFUIRootView *rootViewOld = listenerData.param0()->to<ZFUISysWindow *>()->rootView();
+    ZFUIWindow *window = zfargs.senderT();
+    ZFUIRootView *rootViewOld = zfargs.param0()->to<ZFUISysWindow *>()->rootView();
     rootViewOld->observerRemove(
         ZFUIView::EventViewLayoutOnLayoutPrepare(),
-        d->windowOnUpdateLayoutListener);
+        taskData->windowOnUpdateLayoutListener);
     window->windowOwnerSysWindow()->rootView()->observerAdd(
         ZFUIView::EventViewLayoutOnLayoutPrepare(),
-        d->windowOnUpdateLayoutListener,
-        window->objectHolder());
+        taskData->windowOnUpdateLayoutListener);
 }
-static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData)
 {
-    const ZFProperty *property = listenerData.param0()->to<v_ZFProperty *>()->zfv;
+    const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
     if(property != ZFPropertyAccess(ZFUILayoutParam, layoutMargin))
     {
         return ;
     }
 
-    ZFUILayoutParam *layoutParam = listenerData.senderT();
-    ZFUIWindow *window = userData->objectHolded();
-    _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = ZFAny(window->objectTag(
-        _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));
-    if(taskData == zfnull)
-    {
-        return ;
-    }
+    ZFUILayoutParam *layoutParam = zfargs.senderT();
     if(taskData->layoutMarginHasStored)
     {
         taskData->layoutMarginSaved = layoutParam->layoutMargin();

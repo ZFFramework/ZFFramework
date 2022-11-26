@@ -38,7 +38,13 @@ public:
             owner->d->isGlobalTimer = zftrue;
             owner->d->globalTimerFrameCount = (zfuint)zfmRound(owner->aniDurationFixed() / ZFGlobalTimerIntervalDefault());
             owner->d->globalTimerFrameIndex = 0;
-            owner->d->globalTimerTaskId = ZFGlobalTimerAttach(ZFCallbackForFunc(globalTimerOnActivate), owner->objectHolder());
+
+            ZFLISTENER_1(globalTimerOnActivate
+                    , ZFAnimationTimeLine *, owner
+                    ) {
+                _ZFP_ZFAnimationTimeLinePrivate::globalTimerOnActivate(zfargs, owner);
+            } ZFLISTENER_END(globalTimerOnActivate)
+            owner->d->globalTimerTaskId = ZFGlobalTimerAttach(globalTimerOnActivate);
         }
         else
         {
@@ -46,7 +52,13 @@ public:
             if(owner->d->builtinTimer == zfnull)
             {
                 owner->d->builtinTimer = zfAlloc(ZFTimer);
-                owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), ZFCallbackForFunc(builtinTimerOnActivate), owner->objectHolder());
+
+                ZFLISTENER_1(builtinTimerOnActivate
+                        , ZFAnimationTimeLine *, owner
+                        ) {
+                    _ZFP_ZFAnimationTimeLinePrivate::builtinTimerOnActivate(zfargs, owner);
+                } ZFLISTENER_END(builtinTimerOnActivate)
+                owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
             }
             owner->d->builtinTimer->timerInterval(owner->aniTimeLineInterval());
             owner->d->builtinTimer->timerStart();
@@ -67,9 +79,8 @@ public:
     }
 
 private:
-    static void globalTimerOnActivate(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void globalTimerOnActivate(ZF_IN const ZFArgs &zfargs, ZF_IN ZFAnimationTimeLine *owner)
     {
-        ZFAnimationTimeLine *owner = userData->objectHolded();
         ++(owner->d->globalTimerFrameIndex);
         zffloat progress = 1;
         if(owner->d->globalTimerFrameIndex < owner->d->globalTimerFrameCount)
@@ -83,9 +94,8 @@ private:
             owner->aniImplNotifyStop();
         }
     }
-    static void builtinTimerOnActivate(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void builtinTimerOnActivate(ZF_IN const ZFArgs &zfargs, ZF_IN ZFAnimationTimeLine *owner)
     {
-        ZFAnimationTimeLine *owner = userData->objectHolded();
         zftimet curTime = ZFTime::timestamp();
         zffloat progress = ((zffloat)(curTime - owner->d->builtinTimerStartTime)) / owner->aniDurationFixed();
         _update(owner, progress);

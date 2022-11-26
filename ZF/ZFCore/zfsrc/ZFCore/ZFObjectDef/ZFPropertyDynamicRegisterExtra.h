@@ -35,7 +35,6 @@ extern ZFLIB_ZFCore zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProp
                                                               ZF_IN const ZFClass *ownerClassOrNull,
                                                               ZF_IN ZFPropertyLifeCycle lifeCycle,
                                                               ZF_IN const ZFListener &callback,
-                                                              ZF_IN_OPT ZFObject *userData = zfnull,
                                                               ZF_OUT_OPT zfstring *errorHint = zfnull);
 /** @brief see #ZFPropertyDynamicRegisterLifeCycle */
 extern ZFLIB_ZFCore zfbool ZFPropertyDynamicUnregisterLifeCycle(ZF_IN const ZFProperty *property,

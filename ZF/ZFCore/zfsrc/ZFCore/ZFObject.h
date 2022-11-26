@@ -7,6 +7,7 @@
 #define _ZFI_ZFObject_h_
 
 #include "ZFObjectDef/ZFAny.h"
+#include "ZFObjectDef/ZFArgs.h"
 #include "ZFObjectDef/ZFCallback.h"
 #include "ZFObjectDef/ZFCallbackSerializable.h"
 #include "ZFObjectDef/ZFCallback_lambda.h"
@@ -30,7 +31,6 @@
 #include "ZFObjectDef/ZFFilterForZFProperty.h"
 #include "ZFObjectDef/ZFIOCallback.h"
 #include "ZFObjectDef/ZFIdMap.h"
-#include "ZFObjectDef/ZFListenerData.h"
 #include "ZFObjectDef/ZFListenerDeclare.h"
 #include "ZFObjectDef/ZFMethod.h"
 #include "ZFObjectDef/ZFMethodDeclare.h"

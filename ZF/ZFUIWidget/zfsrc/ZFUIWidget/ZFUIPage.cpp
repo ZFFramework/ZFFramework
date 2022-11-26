@@ -87,7 +87,6 @@ public:
     zfint pageMoveFlag;
     ZFUIPage *pageMoveLastResumePage;
     ZFCoreArray<ZFListener> pageRequestQueue;
-    ZFCoreArray<zfautoObject> pageRequestUserDataQueue;
     zfbool pageRequestRunningFlag;
 public:
     _ZFP_ZFUIPageManagerPrivate(void)
@@ -105,26 +104,23 @@ public:
     , pageMoveFlag(0)
     , pageMoveLastResumePage(zfnull)
     , pageRequestQueue()
-    , pageRequestUserDataQueue()
     , pageRequestRunningFlag(zffalse)
     {
     }
 
 public:
     void pageRequestAdd(ZF_IN ZFUIPageManager *owner,
-                        ZF_IN const ZFListener &callback,
-                        ZF_IN_OPT ZFObject *userData = zfnull)
+                        ZF_IN const ZFListener &callback)
     {
         if(this->pageRequestRunningFlag || !this->pageRequestQueue.isEmpty())
         {
             this->pageRequestQueue.add(callback);
-            this->pageRequestUserDataQueue.add(userData);
             return;
         }
         if(this->pageRequestQueue.isEmpty())
         {
             this->pageRequestRunningFlag = zftrue;
-            callback.execute(ZFListenerData(zfidentityInvalid(), owner), userData);
+            callback.execute(ZFArgs(zfidentityInvalid(), owner));
             this->pageRequestRunningFlag = zffalse;
         }
         this->pageRequestResolve(owner);
@@ -134,11 +130,9 @@ public:
         while(!this->pageRequestQueue.isEmpty())
         {
             ZFListener callback = this->pageRequestQueue[0];
-            zfautoObject userData = this->pageRequestUserDataQueue[0];
             this->pageRequestQueue.remove(0);
-            this->pageRequestUserDataQueue.remove(0);
             this->pageRequestRunningFlag = zftrue;
-            callback.execute(ZFListenerData(zfidentityInvalid(), owner), userData);
+            callback.execute(ZFArgs(zfidentityInvalid(), owner));
             this->pageRequestRunningFlag = zffalse;
         }
     }
@@ -504,29 +498,34 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow,
     this->managerCreate();
     window->childAdd(this->managerContainer())->c_sizeFill();
 
-    ZFLISTENER(onShow) {
-        ZFUIPageManager *t = userData->objectHolded();
-        if(!t->managerResumed())
+    ZFUIPageManager *owner = this;
+
+    ZFLISTENER_1(onShow
+            , ZFUIPageManager *, owner
+            ) {
+        if(!owner->managerResumed())
         {
-            t->managerResume();
+            owner->managerResume();
         }
     } ZFLISTENER_END(onShow)
-    window->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnResume(), onShow, this->objectHolder(), this);
+    window->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnResume(), onShow, this);
 
-    ZFLISTENER(onHide) {
-        ZFUIPageManager *t = userData->objectHolded();
-        if(t->managerResumed())
+    ZFLISTENER_1(onHide
+            , ZFUIPageManager *, owner
+            ) {
+        if(owner->managerResumed())
         {
-            t->managerOnPause();
+            owner->managerOnPause();
         }
     } ZFLISTENER_END(onHide)
-    window->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnPause(), onHide, this->objectHolder(), this);
+    window->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnPause(), onHide, this);
 
-    ZFLISTENER(onDestroy) {
-        ZFUIPageManager *t = userData->objectHolded();
-        t->managerDestroy();
+    ZFLISTENER_1(onDestroy
+            , ZFUIPageManager *, owner
+            ) {
+        owner->managerDestroy();
     } ZFLISTENER_END(onDestroy)
-    window->observerAdd(ZFUIWindow::EventObjectBeforeDealloc(), onDestroy, this->objectHolder(), this);
+    window->observerAdd(ZFUIWindow::EventObjectBeforeDealloc(), onDestroy, this);
 
     window->windowShow();
     if(window->windowOwnerSysWindow()->nativeWindowIsResumed())
@@ -808,25 +807,22 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, pageMoveEnd)
         pausePage, ZFUIPagePauseReason::e_ToBackground);
 }
 
-ZFMETHOD_DEFINE_2(ZFUIPageManager, void, pageRequest,
-                  ZFMP_IN(const ZFListener &, callback),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageRequest,
+                  ZFMP_IN(const ZFListener &, callback))
 {
     if(callback)
     {
-        d->pageRequestAdd(this, callback, userData);
+        d->pageRequestAdd(this, callback);
     }
 }
-ZFMETHOD_DEFINE_2(ZFUIPageManager, void, pageRequestCancel,
-                  ZFMP_IN(const ZFListener &, callback),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageRequestCancel,
+                  ZFMP_IN(const ZFListener &, callback))
 {
     for(zfindex i = 0; i < d->pageRequestQueue.count(); ++i)
     {
-        if(d->pageRequestQueue[i] == callback && d->pageRequestUserDataQueue[i] == userData)
+        if(d->pageRequestQueue[i] == callback)
         {
             d->pageRequestQueue.remove(i);
-            d->pageRequestUserDataQueue.remove(i);
             break;
         }
     }

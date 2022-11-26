@@ -237,17 +237,17 @@ public:
     ZFListener styleOnDeallocListener;
     ZFListener defaultStyleOnChangeListener;
 public:
-    static void styleOnDealloc(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void styleOnDealloc(ZF_IN const ZFArgs &zfargs)
     {
         zfCoreMutexLocker();
 
-        ZFStyleable *defaultStyle = listenerData.sender()->to<ZFStyleable *>()->defaultStyle();
+        ZFStyleable *defaultStyle = zfargs.sender()->to<ZFStyleable *>()->defaultStyle();
         zfCoreAssert(defaultStyle != zfnull);
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
             ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
         zfCoreAssert(taskData != zfnull);
 
-        taskData->styles.removeElement(listenerData.sender()->objectHolder());
+        taskData->styles.removeElement(zfargs.sender()->objectHolder());
 
         if(taskData->styles.isEmpty())
         {
@@ -256,12 +256,12 @@ public:
                 ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnChangeListener);
         }
     }
-    static void defaultStyleOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void defaultStyleOnChange(ZF_IN const ZFArgs &zfargs)
     {
         zfCoreMutexLocker();
 
-        const ZFProperty *property = listenerData.param0()->to<v_ZFProperty *>()->zfv;
-        ZFStyleable *defaultStyle = listenerData.senderT();
+        const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
+        ZFStyleable *defaultStyle = zfargs.senderT();
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
             ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
 
@@ -269,7 +269,7 @@ public:
         styles.copyFrom(taskData->styles);
         for(zfindex i = 0; i < styles.count(); ++i)
         {
-            ZFPropertyCopy(property, styles[i]->objectHolded(), listenerData.sender());
+            ZFPropertyCopy(property, styles[i]->objectHolded(), zfargs.sender());
         }
     }
 ZF_GLOBAL_INITIALIZER_END(ZFStyleDefaultApplyAutoCopyDataHolder)
@@ -440,20 +440,20 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleInvalidAssert, ZFLevelZFFrameworkHi
 {
     ZFLISTENER(action) {
         if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return ;}
-        const zfchar *propertyName = listenerData.param0()->to<v_zfstring *>()->zfv;
-        const zfchar *styleKey = listenerData.param1()->to<v_zfstring *>()->zfv;
+        const zfchar *propertyName = zfargs.param0()->to<v_zfstring *>()->zfv;
+        const zfchar *styleKey = zfargs.param1()->to<v_zfstring *>()->zfv;
         if(zfsIsEmpty(propertyName))
         {
             zfCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\"",
-                    listenerData.sender()->objectInfoOfInstance().cString(),
+                    zfargs.sender()->objectInfoOfInstance().cString(),
                     styleKey);
         }
         else
         {
             zfCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\" for property \"%s\"",
-                    listenerData.sender()->objectInfoOfInstance().cString(),
+                    zfargs.sender()->objectInfoOfInstance().cString(),
                     styleKey,
                     propertyName);
         }

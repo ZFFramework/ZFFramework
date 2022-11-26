@@ -228,7 +228,7 @@ ZF_NAMESPACE_GLOBAL_END
             return ;
         }
         ZFLISTENER(windowOnPause) {
-            ZFUISysWindow *sysWindow = listenerData.senderT();
+            ZFUISysWindow *sysWindow = zfargs.senderT();
             zfstring s;
             ZFImpl_sys_Qt_viewTreePrintT(s, (QGraphicsWidget *)sysWindow->rootView()->nativeView());
             zfLogTrimT() << s;

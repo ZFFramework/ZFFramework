@@ -497,10 +497,9 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFFilePathInfoTreePrint,
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFilePathInfoForEach,
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathInfoForEach,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
-                       ZFMP_IN(const ZFListener &, fileCallback),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                       ZFMP_IN(const ZFListener &, fileCallback))
 {
     const ZFFilePathInfoImpl *impl = ZFFilePathInfoImplForPathType(pathInfo.pathType);
     if(impl == zfnull)
@@ -521,9 +520,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFilePathInfoForEach,
             {
                 break;
             }
-            fileCallback.execute(
-                ZFListenerData().param0(childPathInfo).param1(childFd),
-                userData);
+            fileCallback.execute(ZFArgs().param0(childPathInfo).param1(childFd));
         } while(impl->callbackFindNext(fd));
         impl->callbackFindClose(fd);
     }

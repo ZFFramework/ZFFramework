@@ -8,33 +8,33 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent)
     this->taskOwner = zfAlloc(ZFObject);
 
     ZFLISTENER(aniOnAlloc) {
-        if(listenerData.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData()))
+        if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData()))
         {
-            zfLogTrimT() << zfLogCurTimeString() << listenerData.sender() << "alloc";
+            zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "alloc";
         }
     } ZFLISTENER_END(aniOnAlloc)
     ZFGlobalObserver().observerAdd(ZFObject::EventObjectAfterAlloc(), aniOnAlloc);
 
     ZFLISTENER(aniOnDealloc) {
-        if(listenerData.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData()))
+        if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData()))
         {
-            zfLogTrimT() << zfLogCurTimeString() << listenerData.sender() << "dealloc";
+            zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "dealloc";
         }
     } ZFLISTENER_END(aniOnDealloc)
     ZFGlobalObserver().observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc);
 
     ZFLISTENER(aniOnInvalid) {
-        zfLogTrimT() << zfLogCurTimeString() << listenerData.sender() << "invalid";
+        zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "invalid";
     } ZFLISTENER_END(aniOnInvalid)
     ZFGlobalObserver().observerAdd(ZFAnimation::EventAniOnInvalid(), aniOnInvalid);
 
     ZFLISTENER(aniOnStart) {
-        zfLogTrimT() << zfLogCurTimeString() << listenerData.sender() << "start";
+        zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "start";
     } ZFLISTENER_END(aniOnStart)
     ZFGlobalObserver().observerAdd(ZFAnimation::EventAniOnStart(), aniOnStart);
 
     ZFLISTENER(aniOnStop) {
-        zfLogTrimT() << zfLogCurTimeString() << listenerData.sender() << "stop";
+        zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "stop";
     } ZFLISTENER_END(aniOnStop)
     ZFGlobalObserver().observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
 }

@@ -376,7 +376,7 @@ private:
  */
 #define ZFCallbackForFunc(callbackRawFunction) \
     ZFCallback::_ZFP_ZFCallbackCreateRawFunction( \
-        (ZFFuncAddrType)(void (*)(const ZFListenerData &, ZFObject *))(callbackRawFunction) \
+        (ZFFuncAddrType)(void (*)(const ZFArgs &))(callbackRawFunction) \
         )
 
 // ============================================================

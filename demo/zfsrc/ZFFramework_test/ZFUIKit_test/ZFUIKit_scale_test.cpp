@@ -32,7 +32,7 @@ private:
             zfblockedAlloc(ZFUIKit_test_SettingData, setting);
             settings->add(setting);
             ZFLISTENER(buttonTextGetter) {
-                v_zfstring *text = listenerData.param0T();
+                v_zfstring *text = zfargs.param0T();
                 text->zfv = zfstringWithFormat(
                     "scale: %f",
                     ZFUISysWindow::mainWindow()->rootView()->UIScale());

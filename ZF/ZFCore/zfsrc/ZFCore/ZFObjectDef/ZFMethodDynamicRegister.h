@@ -66,7 +66,6 @@ zfclassFwd _ZFP_ZFMethodDynamicRegisterParamPrivate;
  *
  * optional:
  * -  methodDynamicRegisterUserData, null by default
- * -  methodImplUserData, null by default
  * -  methodType, #ZFMethodTypeVirtual by default, auto fallback to #ZFMethodTypeStatic for function type method
  * -  methodPrivilegeType, #ZFMethodPrivilegeTypePublic by default
  * -  methodReturnTypeId, #ZFTypeId_void by default
@@ -103,11 +102,6 @@ public:
     ZFMethodDynamicRegisterParam &methodImpl(ZF_IN const ZFListener &methodImpl);
     /** @brief see #ZFMethodDynamicRegister */
     const ZFListener &methodImpl(void) const;
-
-    /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodImplUserData(ZF_IN ZFObject *methodImplUserData);
-    /** @brief see #ZFMethodDynamicRegister */
-    ZFObject *methodImplUserData(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodDynamicRegisterParam &methodType(ZF_IN ZFMethodType methodType);

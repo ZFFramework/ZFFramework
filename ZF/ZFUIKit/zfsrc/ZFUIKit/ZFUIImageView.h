@@ -80,6 +80,8 @@ protected:
     virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
                                  ZF_IN const ZFUISize &sizeHint,
                                  ZF_IN const ZFUISizeParam &sizeParam);
+private:
+    ZFListener imageUpdateListener;
 };
 
 ZF_NAMESPACE_GLOBAL_END

@@ -12,7 +12,6 @@ public:
     zfautoObjectT<ZFThread *> ownerThread;
     zfautoObjectT<ZFHttpResponse *> response;
     ZFListener callback;
-    zfautoObject userData;
     ZFBuffer body;
     ZFJsonItem *bodyJsonCache;
 public:
@@ -22,7 +21,6 @@ public:
     , ownerThread()
     , response(ZFHttpResponse::ClassData()->newInstance())
     , callback()
-    , userData()
     , body()
     , bodyJsonCache(zfnull)
     {
@@ -48,13 +46,12 @@ public:
         owner->observerNotify(ZFHttpRequest::EventOnResponsePrepare(), this->response);
         if(this->callback)
         {
-            this->callback.execute(ZFListenerData()
+            this->callback.execute(ZFArgs()
                 .sender(owner)
                 .param0(this->response)
-                , this->userData);
+                );
         }
         this->callback = ZFCallback();
-        this->userData = zfnull;
         owner->observerNotify(ZFHttpRequest::EventOnResponse(), this->response);
         this->response = zfnull;
         this->ownerThread = zfnull;
@@ -63,7 +60,6 @@ public:
     void notifyCancel(ZF_IN ZFHttpRequest *owner)
     {
         this->callback = ZFCallback();
-        this->userData = zfnull;
         this->response = zfnull;
         this->ownerThread = zfnull;
         zfRelease(owner);
@@ -180,15 +176,13 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, ZFBuffer, body)
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(ZFHttpRequest, ZFHttpRequest *, request,
-                  ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, request,
+                  ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()))
 {
     zfRetain(this); // release in notifyResponse
 
     d->ownerThread = ZFThread::currentThread();
     d->callback = callback;
-    d->userData = userData;
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask);
 
     return this;
@@ -214,7 +208,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoObjectT<ZFHttpResponse *>, requestSync)
                 , ZFSemaphore *, waitLock
                 , zfautoObjectT<ZFHttpResponse *> &, recv
                 ) {
-            recv = listenerData.param0();
+            recv = zfargs.param0();
             waitLock->semaphoreBroadcast();
         } ZFLISTENER_END(onResponse)
         send->request(onResponse);

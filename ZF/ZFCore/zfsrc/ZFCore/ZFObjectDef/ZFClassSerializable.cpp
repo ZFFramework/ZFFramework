@@ -5,7 +5,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFClassInstanceObserverAddParam, ZFClassInstanceObserverAddParam)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFListener, observer)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFObject *, userData)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFObject *, owner)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFLevel, observerLevel)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, zfbool , observeAllChildType)
@@ -22,9 +21,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClass, const ZFClass *, {
     })
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFClass, v_ZFClass, const ZFClass *, classForName, ZFMP_IN(const zfchar *, className))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_2(ZFClass, v_ZFClass, const ZFClass *, classForName, ZFMP_IN(const zfchar *, className), ZFMP_IN(const zfchar *, classNamespace))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFClass, void, instanceObserverAdd
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFClass, void, instanceObserverAdd
     , ZFMP_IN(const ZFListener &, observer)
-    , ZFMP_IN_OPT(ZFObject *, userData, zfnull)
     , ZFMP_IN_OPT(ZFObject *, owner, zfnull)
     , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
     , ZFMP_IN_OPT(zfbool, observeAllChildType, zftrue)

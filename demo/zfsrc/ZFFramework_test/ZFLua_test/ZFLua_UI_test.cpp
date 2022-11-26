@@ -21,22 +21,26 @@ protected:
                 "window:childAdd(button):alignRightTop()\n"
                 "button:viewBackgroundColor(ZFUIColorRandom())\n"
                 "button:label():text('close')\n"
-                "button:observerAdd(ZFUIButton.EventButtonOnClick(), function (listenerData, userData)\n"
-                "        userData:objectHolded():windowHide()\n"
-                "    end, window:objectHolder())\n"
+                "button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)\n"
+                "    window:windowHide()\n"
+                "end)\n"
                 "return window\n"
             );
         zfCoreAssert(result != zfnull);
 
-        ZFLISTENER(windowOnHide) {
-            ZFLISTENER(testCaseStopDelay) {
+        ZFTestCase *testCase = this;
+        ZFLISTENER_1(windowOnHide
+                , ZFTestCase *, testCase
+                ) {
+            ZFLISTENER_1(testCaseStopDelay
+                    , ZFTestCase *, testCase
+                    ) {
                 ZFLuaGC();
-                ZFTestCase *testCase = userData->objectHolded();
                 testCase->testCaseStop();
             } ZFLISTENER_END(testCaseStopDelay)
-            ZFThread::post(testCaseStopDelay, userData);
+            ZFThread::post(testCaseStopDelay);
         } ZFLISTENER_END(windowOnHide)
-        result->observerAdd(ZFUIWindow::EventWindowOnHide(), windowOnHide, this->objectHolder());
+        result->observerAdd(ZFUIWindow::EventWindowOnHide(), windowOnHide);
     }
 };
 ZFOBJECT_REGISTER(ZFLua_UI_test)

@@ -10,7 +10,15 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIKeyboardStateBuiltinImpl_DataHolder, Z
 {
     _ZFP_ZFUIKeyboardStateBuiltinImpl_available = zftrue;
     this->implRegisterFlag = zffalse;
-    this->viewOnEventListener = ZFCallbackForFunc(zfself::viewOnEvent);
+
+    ZFLISTENER(viewOnEvent) {
+        ZFUIKeyEvent *event = zfargs.param0T();
+        if(event != zfnull)
+        {
+            ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(event);
+        }
+    } ZFLISTENER_END(viewOnEvent)
+    this->viewOnEventListener = viewOnEvent;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKeyboardStateBuiltinImpl_DataHolder)
 {
@@ -21,14 +29,6 @@ public:
     ZFCoreArrayPOD<ZFUIKeyCodeEnum> keyPressed;
     ZFCoreArrayPOD<zfflags> keyPressedRaw;
     ZFListener viewOnEventListener;
-    static void viewOnEvent(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        ZFUIKeyEvent *event = listenerData.param0T();
-        if(event != zfnull)
-        {
-            ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(event);
-        }
-    }
 
     zfbool implRegisterFlag;
     void implRegister(void)

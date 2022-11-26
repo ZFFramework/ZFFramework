@@ -8,8 +8,8 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent)
     ZFLISTENER(testCaseOnOutput) {
         zfLogTrimT()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", listenerData.sender()->classData()->classNameFull())
-            << listenerData.param0()->to<v_zfstring *>()->zfv;
+            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
+            << zfargs.param0()->to<v_zfstring *>()->zfv;
     } ZFLISTENER_END(testCaseOnOutput)
     this->testCaseOnOutputListener = testCaseOnOutput;
     ZFGlobalObserver().observerAdd(ZFTestCase::EventTestCaseOnOutput(), this->testCaseOnOutputListener);
@@ -17,7 +17,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent)
     ZFLISTENER(testCaseOnStart) {
         zfLogTrimT()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", listenerData.sender()->classData()->classNameFull())
+            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
             << "========================== start ===========================";
     } ZFLISTENER_END(testCaseOnStart)
     this->testCaseOnStartListener = testCaseOnStart;
@@ -26,7 +26,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent)
     ZFLISTENER(testCaseOnProgress) {
         zfLogTrimT()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", listenerData.sender()->classData()->classNameFull())
+            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
             << "progress updated";
     } ZFLISTENER_END(testCaseOnProgress)
     this->testCaseOnProgressListener = testCaseOnProgress;
@@ -35,7 +35,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent)
     ZFLISTENER(testCaseOnStop) {
         zfLogTrimT()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", listenerData.sender()->classData()->classNameFull())
+            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
             << "-------------------------- stop ----------------------------";
     } ZFLISTENER_END(testCaseOnStop)
     this->testCaseOnStopListener = testCaseOnStop;

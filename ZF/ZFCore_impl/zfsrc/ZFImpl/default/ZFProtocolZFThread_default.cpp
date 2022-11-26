@@ -100,8 +100,8 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_default_DataHolder)
 
 void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data)
 {
-    data->runnable.execute(ZFListenerData().param0(data->param0).param1(data->param1));
-    data->runnableCleanup.execute(ZFListenerData().param0(data->param0).param1(data->param1));
+    data->runnable.execute(ZFArgs().param0(data->param0).param1(data->param1));
+    data->runnableCleanup.execute(ZFArgs().param0(data->param0).param1(data->param1));
     zfdelete(data);
 }
 

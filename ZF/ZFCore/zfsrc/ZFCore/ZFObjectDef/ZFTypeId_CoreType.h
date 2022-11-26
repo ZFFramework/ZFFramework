@@ -568,7 +568,7 @@ ZFOUTPUT_TYPE(ZFMethodType, {output.execute(ZFMethodTypeToString(v));})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodParamDefaultValueCallback, ZFMethodParamDefaultValueCallback)
 
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFListenerData, ZFListenerData)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFArgs, ZFArgs)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserverAddParam, ZFObserverAddParam)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserverHolder, ZFObserverHolder)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClass, ZFFilterForZFClass)

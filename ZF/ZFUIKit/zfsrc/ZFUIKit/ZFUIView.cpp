@@ -12,21 +12,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFSTYLE_DEFAULT_DEFINE(ZFUIView)
 
 // ============================================================
-// attached listeners
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewListenerHolder, ZFLevelZFFrameworkEssential)
-{
-    this->layoutParamChangedListener = ZFCallbackForFunc(zfself::layoutParamChanged);
-}
-public:
-    ZFListener layoutParamChangedListener;
-private:
-    static void layoutParamChanged(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        userData->objectHolded<ZFUIView *>()->layoutRequest();
-    }
-ZF_GLOBAL_INITIALIZER_END(ZFUIViewListenerHolder)
-
-// ============================================================
 // _ZFP_ZFUIViewPrivate
 zfclassLikePOD _ZFP_ZFUIViewLayerData
 {
@@ -63,6 +48,8 @@ public:
     _ZFP_ZFUIViewLayerData layerInternalBg;
     _ZFP_ZFUIViewLayerData layerNormal;
     _ZFP_ZFUIViewLayerData layerInternalFg;
+    ZFListener layoutParamOnUpdate;
+
     enum {
         stateFlag_layoutRequested = 1 << 0,
         stateFlag_layoutRequestedRecursively = 1 << 1,
@@ -104,6 +91,7 @@ public:
     , layerInternalBg()
     , layerNormal()
     , layerInternalFg()
+    , layoutParamOnUpdate()
     , stateFlag(0)
     {
         ZFBitSet(this->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested);
@@ -184,18 +172,26 @@ public:
     }
     void layoutParamChange(ZF_IN ZFUIView *owner, ZF_IN ZFUILayoutParam *newLayoutParam)
     {
-        ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewListenerHolder) *listenerHolder = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewListenerHolder);
+        if(!owner->d->layoutParamOnUpdate)
+        {
+            ZFLISTENER_1(layoutParamOnUpdate
+                    , ZFUIView *, owner
+                    ) {
+                owner->layoutRequest();
+            } ZFLISTENER_END(layoutParamOnUpdate)
+            owner->d->layoutParamOnUpdate = layoutParamOnUpdate;
+        }
+
         zfRetain(newLayoutParam);
         if(newLayoutParam)
         {
             newLayoutParam->observerAdd(
                 ZFUILayoutParam::EventLayoutParamOnChange(),
-                listenerHolder->layoutParamChangedListener,
-                owner->objectHolder());
+                owner->d->layoutParamOnUpdate);
         }
         if(this->layoutParam)
         {
-            this->layoutParam->observerRemove(ZFUILayoutParam::EventLayoutParamOnChange(), listenerHolder->layoutParamChangedListener);
+            this->layoutParam->observerRemove(ZFUILayoutParam::EventLayoutParamOnChange(), owner->d->layoutParamOnUpdate);
         }
         zfRelease(this->layoutParam);
         this->layoutParam = newLayoutParam;

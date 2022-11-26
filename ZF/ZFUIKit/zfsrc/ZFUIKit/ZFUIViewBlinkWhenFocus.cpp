@@ -41,9 +41,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewBlinkWhenFocusAutoApply_autoStart)
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkWhenFocusAutoApply_autoStart)
 
 // ============================================================
-static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
-static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
-static void _ZFP_ZFUIViewBlinkWhenFocus_viewOnDealloc(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
+static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFArgs &zfargs);
+static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFArgs &zfargs);
+static void _ZFP_ZFUIViewBlinkWhenFocus_viewOnDealloc(ZF_IN const ZFArgs &zfargs);
 static zfbool _ZFP_ZFUIViewBlinkWhenFocus_started = zffalse;
 static zffloat _ZFP_ZFUIViewBlinkWhenFocus_paused = 0;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkWhenFocusDataHolder, ZFLevelZFFrameworkNormal)
@@ -71,22 +71,22 @@ public:
     ZFListener mouseDownListener;
     ZFListener viewOnDeallocListener;
     ZFCoreArrayPOD<ZFUIView *> focusedViews;
-    static void viewBlinkOn(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void viewBlinkOn(ZF_IN const ZFArgs &zfargs)
     {
         ZFGlobalObserver().observerNotifyWithCustomSender(
-            listenerData.sender(), ZFGlobalEvent::EventViewBlinkWhenFocusViewBlinkOn());
+            zfargs.sender(), ZFGlobalEvent::EventViewBlinkWhenFocusViewBlinkOn());
     }
-    static void viewBlinkOff(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void viewBlinkOff(ZF_IN const ZFArgs &zfargs)
     {
         ZFGlobalObserver().observerNotifyWithCustomSender(
-            listenerData.sender(), ZFGlobalEvent::EventViewBlinkWhenFocusViewBlinkOff());
+            zfargs.sender(), ZFGlobalEvent::EventViewBlinkWhenFocusViewBlinkOff());
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkWhenFocusDataHolder)
 
 // ============================================================
-static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFArgs &zfargs)
 {
-    ZFUIView *view = listenerData.senderT();
+    ZFUIView *view = zfargs.senderT();
 
     if(view->objectIsInternal())
     {
@@ -116,15 +116,15 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFListenerData &
         view->observerRemove(ZFUIView::EventViewOnEvent(), d->mouseDownListener);
     }
 }
-static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFArgs &zfargs)
 {
-    ZFUIView *view = listenerData.senderT();
+    ZFUIView *view = zfargs.senderT();
     if(view->objectIsInternal())
     {
         return ;
     }
 
-    ZFUIMouseEvent *event = listenerData.param0T();
+    ZFUIMouseEvent *event = zfargs.param0T();
     if(event == zfnull || event->mouseAction != ZFUIMouseAction::e_MouseDown)
     {
         return ;
@@ -139,10 +139,10 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFListenerData &li
         ZFUIViewBlink(view, d->maskImageCur);
     }
 }
-static void _ZFP_ZFUIViewBlinkWhenFocus_viewOnDealloc(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFUIViewBlinkWhenFocus_viewOnDealloc(ZF_IN const ZFArgs &zfargs)
 {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusDataHolder);
-    ZFUIView *view = listenerData.senderT();
+    ZFUIView *view = zfargs.senderT();
     d->focusedViews.removeElement(view);
     view->observerRemove(ZFUIView::EventObjectBeforeDealloc(), d->viewOnDeallocListener);
     view->observerRemove(ZFUIView::EventViewOnEvent(), d->mouseDownListener);
@@ -225,7 +225,7 @@ public:
     ZFTimer *delayTimer;
     zftimet endTime;
     ZFListener doStopListener;
-    static void doStop(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void doStop(ZF_IN const ZFArgs &zfargs, ZF_IN ZFObject *userData)
     {
         ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel();
     }

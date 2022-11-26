@@ -11,12 +11,10 @@ public:
         cache->_bufCache->zfv.removeAll();
         cache->_countCache->zfv = 0;
         cache->luaCallback = zfnull;
-        cache->userData = zfnull;
     })
 
 public:
     ZFListener luaCallback;
-    zfautoObject userData;
 
 private:
     v_zfstring *_bufCache;
@@ -51,12 +49,12 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForLuaOwner, zfindex, onInput,
     {
         this->_bufCache->zfv.removeAll();
         this->_countCache->zfv = ((buf == zfnull) ? zfindexMax() : count);
-        this->luaCallback.execute(ZFListenerData(
+        this->luaCallback.execute(ZFArgs(
                 zfidentityInvalid(),
                 zfnull,
                 this->_bufCache,
                 this->_countCache
-            ), this->userData);
+            ));
         if(buf == zfnull || count == zfindexMax())
         {
             count = this->_countCache->zfv;
@@ -74,9 +72,8 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForLuaOwner, zfindex, onInput,
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForLua,
-                       ZFMP_IN(const ZFListener &, luaCallback),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForLua,
+                       ZFMP_IN(const ZFListener &, luaCallback))
 {
     if(!luaCallback)
     {
@@ -84,7 +81,6 @@ ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForLua,
     }
     zfblockedAlloc(_ZFP_I_ZFInputForLuaOwner, owner);
     owner->luaCallback = luaCallback;
-    owner->userData = userData;
     ZFInput ret = ZFCallbackForMemberMethod(owner, ZFMethodAccess(_ZFP_I_ZFInputForLuaOwner, onInput));
     ret.callbackOwnerObjectRetain();
     return ret;

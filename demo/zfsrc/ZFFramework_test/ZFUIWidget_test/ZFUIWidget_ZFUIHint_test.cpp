@@ -15,13 +15,18 @@ protected:
         ZFFramework_test_protocolCheck(ZFUISysWindow);
 
         zfautoObject hint = ZFUIHintShow("this is a normal hint");
+        ZFTestCase *testCase = this;
 #if 0
-        ZFLISTENER(hintOnHide) {
+        ZFLISTENER_1(hintOnHide
+                , ZFTestCase *, testCase
+                ) {
             zfLogT();
-            userData->objectHolded<ZFTestCase *>()->testCaseStop();
+            testCase->testCaseStop();
         } ZFLISTENER_END(hintOnHide)
 #else
-        ZFLISTENER(hintOnHide) {
+        ZFLISTENER_1(hintOnHide
+                , ZFTestCase *, testCase
+                ) {
             for(zfindex i = 0; i < 3; ++i)
             {
                 ZFUIHintShow(zfstringWithFormat("this is a stacked hint %zi", i));
@@ -30,13 +35,15 @@ protected:
                 " long long long long long long long long long long"
                 " long long long long long long long long long long"
                 " long long long long long long long long long hint");
-            ZFLISTENER(lastHintOnHide) {
-                userData->objectHolded<ZFTestCase *>()->testCaseStop();
+            ZFLISTENER_1(lastHintOnHide
+                , ZFTestCase *, testCase
+                ) {
+                testCase->testCaseStop();
             } ZFLISTENER_END(lastHintOnHide)
-            last.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), lastHintOnHide, userData);
+            last.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), lastHintOnHide);
         } ZFLISTENER_END(hintOnHide)
 #endif
-        hint.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), hintOnHide, this->objectHolder());
+        hint.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), hintOnHide);
     }
 };
 ZFOBJECT_REGISTER(ZFUIWidget_ZFUIHint_test)

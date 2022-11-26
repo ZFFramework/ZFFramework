@@ -184,6 +184,7 @@ public:
         return const_cast<ZFProperty *>(this);
     }
 public:
+    zfuint _ZFP_ZFProperty_refCount;
     zfstring _ZFP_ZFProperty_propertyInternalId;
     zfbool _ZFP_ZFProperty_propertyIsUserRegister;
     zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;

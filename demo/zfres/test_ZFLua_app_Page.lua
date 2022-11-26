@@ -3,31 +3,33 @@ local argsCount = #args;
 
 local pm = args[1];
 
-pm:observerAdd(ZFUIPage.EventPageOnResume(), function(listenerData, userData)
-        local page = listenerData:sender();
+pm:observerAdd(ZFUIPage.EventPageOnResume(), function(zfargs)
+        local page = zfargs:sender();
         local pm = page:pageManager();
         pm:objectTag("leftButton"):viewVisible(pm:pageCount() > 1);
         pm:objectTag("centerButton"):label():text(page:objectInfoOfInstance());
     end, pm:objectHolder());
 
 _ZFP_ZFLua_app_test_setupPage = function(page)
-        page:observerAdd(ZFUIPage.EventPageOnCreate(), function(listenerData, userData)
+        page:observerAdd(ZFUIPage.EventPageOnCreate(), function(zfargs)
                 zfLog("page onCreate");
-                local page = listenerData:sender();
+                local page = zfargs:sender();
 
                 local pageView = ZFUIButtonBasic();
                 page:pageView():childAdd(pageView):sizeFill();
 
                 pageView:label():text(page:objectInfoOfInstance());
                 pageView:viewBackgroundColor(ZFUIColorRandom());
-                pageView:observerAdd(ZFUIButton.EventButtonOnClick(), function(listenerData, userData)
-                        local page = userData:objectHolded();
+
+                local pageHolder = page:objectHolder();
+                pageView:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
+                        local page = pageHolder:objectHolded();
                         page:pageManager():pageCreate(_ZFP_ZFLua_app_test_setupPage(ZFUIPage()));
-                    end, page:objectHolder());
+                    end);
             end);
-        page:observerAdd(ZFUIPage.EventPageAniOnPrepare(), function(listenerData, userData)
+        page:observerAdd(ZFUIPage.EventPageAniOnPrepare(), function(zfargs)
                 zfLog("page aniOnPrepare");
-                ZFUIPageAniPrepareForSlide(listenerData:sender(), listenerData:param0(), listenerData:param1());
+                ZFUIPageAniPrepareForSlide(zfargs:sender(), zfargs:param0(), zfargs:param1());
             end);
         return page;
     end

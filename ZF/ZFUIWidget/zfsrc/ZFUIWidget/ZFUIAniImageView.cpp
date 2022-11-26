@@ -282,14 +282,13 @@ public:
     , aniFrame(zfindexMax())
     , frameTimerToNext(0)
     , aniCount(0)
-    , onTimerListener(ZFCallbackForFunc(onTimer))
+    , onTimerListener()
     {
     }
 
 public:
-    static void onTimer(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void onTimer(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIAniImageView *pimplOwner)
     {
-        ZFUIAniImageView *pimplOwner = userData->objectHolded();
         _ZFP_ZFUIAniImageViewPrivate *d = pimplOwner->d;
         --(d->frameTimerToNext);
         if(d->frameTimerToNext > 0)
@@ -381,7 +380,17 @@ ZFMETHOD_DEFINE_1(ZFUIAniImageView, void, aniStart,
     }
     d->frameTimerToNext = this->aniData()->frameTimers()[d->aniFrame];
     d->aniCount = aniCount;
-    ZFGlobalTimerAttach(d->onTimerListener, this->objectHolder());
+    if(!d->onTimerListener)
+    {
+        ZFUIAniImageView *owner = this;
+        ZFLISTENER_1(onTimer
+                , ZFUIAniImageView *, owner
+                ) {
+            _ZFP_ZFUIAniImageViewPrivate::onTimer(zfargs, owner);
+        } ZFLISTENER_END(onTimer)
+        d->onTimerListener = onTimer;
+    }
+    ZFGlobalTimerAttach(d->onTimerListener);
 
     this->image(this->aniData()->frameImages()[d->aniFrame]);
     this->aniOnStart();
@@ -394,7 +403,7 @@ ZFMETHOD_DEFINE_0(ZFUIAniImageView, void, aniStop)
         return;
     }
     ZFBitUnset(d->stateFlag, _ZFP_ZFUIAniImageViewPrivate::stateFlag_aniStarted);
-    ZFGlobalTimerDetach(d->onTimerListener, this->objectHolder());
+    ZFGlobalTimerDetach(d->onTimerListener);
     this->aniOnStop();
     zfRelease(this);
 }

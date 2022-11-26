@@ -13,50 +13,45 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnClickChecked)
 
 // ============================================================
 // common
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIButtonGroupListenerHolder, ZFLevelZFFrameworkEssential)
-{
-    this->buttonEventListener = ZFCallbackForFunc(zfself::buttonEvent);
-}
-public:
-    ZFListener buttonEventListener;
-    static void buttonEvent(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        ZFUIButtonGroup *buttonGroup = userData->objectHolded();
-        ZFUIButton *button = listenerData.senderT();
-        zfindex buttonIndex = buttonGroup->buttonFind(button);
-        zfCoreAssert(buttonIndex != zfindexMax());
-        buttonGroup->_ZFP_ZFUIButtonGroup_buttonGroupOnEvent(button, buttonIndex, listenerData.eventId());
-    }
-ZF_GLOBAL_INITIALIZER_END(ZFUIButtonGroupListenerHolder)
 static void _ZFP_ZFUIButtonGroup_setup_common(ZF_IN ZFUIButtonGroup *buttonGroup,
                                               ZF_IN ZFUIButton *button,
                                               ZF_IN zfindex buttonIndex)
 {
-    const ZFListener &buttonEventListener = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIButtonGroupListenerHolder)->buttonEventListener;
-    ZFObject *buttonGroupHolder = buttonGroup->toObject()->objectHolder();
-    button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonStateOnUpdate(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnDown(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveEnter(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveExit(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveInside(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveOutside(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnUpInside(), buttonEventListener, buttonGroupHolder);
-    button->observerAdd(ZFUIButton::EventButtonMouseOnUp(), buttonEventListener, buttonGroupHolder);
+    if(!buttonGroup->_ZFP_buttonOnEvent)
+    {
+        ZFLISTENER_1(buttonEvent
+                , ZFUIButtonGroup *, buttonGroup
+                ) {
+            ZFUIButton *button = zfargs.senderT();
+            zfindex buttonIndex = buttonGroup->buttonFind(button);
+            zfCoreAssert(buttonIndex != zfindexMax());
+            buttonGroup->_ZFP_ZFUIButtonGroup_buttonGroupOnEvent(button, buttonIndex, zfargs.eventId());
+        } ZFLISTENER_END(buttonEvent)
+        buttonGroup->_ZFP_buttonOnEvent = buttonEvent;
+    }
+
+    button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonStateOnUpdate(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonMouseOnDown(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveEnter(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveExit(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonMouseOnMoveOutside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonMouseOnUpInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerAdd(ZFUIButton::EventButtonMouseOnUp(), buttonGroup->_ZFP_buttonOnEvent);
 }
 static void _ZFP_ZFUIButtonGroup_cleanup_common(ZF_IN ZFUIButtonGroup *buttonGroup,
                                                 ZF_IN ZFUIButton *button)
 {
-    const ZFListener &buttonEventListener = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIButtonGroupListenerHolder)->buttonEventListener;
-    button->observerRemove(ZFUIButton::EventButtonOnClick(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonStateOnUpdate(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnDown(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveEnter(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveExit(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveInside(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveOutside(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnUpInside(), buttonEventListener);
-    button->observerRemove(ZFUIButton::EventButtonMouseOnUp(), buttonEventListener);
+    button->observerRemove(ZFUIButton::EventButtonOnClick(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonStateOnUpdate(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonMouseOnDown(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveEnter(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveExit(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonMouseOnMoveOutside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonMouseOnUpInside(), buttonGroup->_ZFP_buttonOnEvent);
+    button->observerRemove(ZFUIButton::EventButtonMouseOnUp(), buttonGroup->_ZFP_buttonOnEvent);
 }
 
 // ============================================================
@@ -75,39 +70,6 @@ static void _ZFP_ZFUIButtonGroup_cleanup_Normal(ZF_IN ZFUIButtonGroup *buttonGro
 
 // ============================================================
 // ZFUIButtonGroupType::e_Tab
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIButtonGroupListenerHolder_Tab, ZFLevelZFFrameworkEssential)
-{
-    this->buttonOnClickListener = ZFCallbackForFunc(zfself::buttonOnClick);
-}
-public:
-    ZFListener buttonOnClickListener;
-    static void buttonOnClick(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        ZFUIButtonGroup *buttonGroup = userData->objectHolded();
-        ZFUIButton *button = listenerData.senderT();
-        zfindex buttonIndex = buttonGroup->buttonFind(button);
-        zfCoreAssert(buttonIndex != zfindexMax());
-        if(buttonIndex == buttonGroup->buttonTabChecked())
-        {
-            if(buttonGroup->buttonTabAllowUnchecked())
-            {
-                buttonGroup->buttonTabChecked(zfindexMax());
-                buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnChange(button, buttonIndex);
-            }
-            else
-            {
-                button->checked(zftrue);
-            }
-            buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnClickChecked(button, buttonIndex);
-        }
-        else
-        {
-            zfindex buttonIndexPrev = buttonGroup->buttonTabChecked();
-            buttonGroup->buttonTabChecked(buttonIndex);
-            buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnChange(button, buttonIndexPrev);
-        }
-    }
-ZF_GLOBAL_INITIALIZER_END(ZFUIButtonGroupListenerHolder_Tab)
 static void _ZFP_ZFUIButtonGroup_setup_Tab(ZF_IN ZFUIButtonGroup *buttonGroup,
                                            ZF_IN ZFUIButton *button,
                                            ZF_IN zfindex buttonIndex)
@@ -117,10 +79,39 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(ZF_IN ZFUIButtonGroup *buttonGroup,
     button->checkable(zftrue);
     button->checked(zffalse);
 
+    if(!buttonGroup->_ZFP_buttonOnClick)
+    {
+        ZFLISTENER_1(buttonOnClick
+                , ZFUIButtonGroup *, buttonGroup
+                ) {
+            ZFUIButton *button = zfargs.senderT();
+            zfindex buttonIndex = buttonGroup->buttonFind(button);
+            zfCoreAssert(buttonIndex != zfindexMax());
+            if(buttonIndex == buttonGroup->buttonTabChecked())
+            {
+                if(buttonGroup->buttonTabAllowUnchecked())
+                {
+                    buttonGroup->buttonTabChecked(zfindexMax());
+                    buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnChange(button, buttonIndex);
+                }
+                else
+                {
+                    button->checked(zftrue);
+                }
+                buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnClickChecked(button, buttonIndex);
+            }
+            else
+            {
+                zfindex buttonIndexPrev = buttonGroup->buttonTabChecked();
+                buttonGroup->buttonTabChecked(buttonIndex);
+                buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnChange(button, buttonIndexPrev);
+            }
+        } ZFLISTENER_END(buttonOnClick)
+        buttonGroup->_ZFP_buttonOnClick = buttonOnClick;
+    }
     button->observerAdd(
         ZFUIButton::EventButtonOnClick(),
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIButtonGroupListenerHolder_Tab)->buttonOnClickListener,
-        buttonGroup->toObject()->objectHolder());
+        buttonGroup->_ZFP_buttonOnClick);
 
     if(!buttonGroup->buttonTabAllowUnchecked() && buttonGroup->buttonTabChecked() == zfindexMax())
     {
@@ -134,7 +125,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup_Tab(ZF_IN ZFUIButtonGroup *buttonGroup,
 
     button->observerRemove(
         ZFUIButton::EventButtonOnClick(),
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIButtonGroupListenerHolder_Tab)->buttonOnClickListener);
+        buttonGroup->_ZFP_buttonOnClick);
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, zfbool, buttonTabAllowUnchecked)
 {

@@ -28,10 +28,13 @@ protected:
         this->_titleLeftView()->label()->text("back");
         this->_titleLeftView()->viewBackgroundColor(ZFUIColorRandom());
         {
-            ZFLISTENER(_titleLeftViewOnClick) {
-                userData->objectHolded<ZFUIPage *>()->pageDestroy();
+            ZFUIPage *page = this;
+            ZFLISTENER_1(_titleLeftViewOnClick
+                    , ZFUIPage *, page
+                    ) {
+                page->pageDestroy();
             } ZFLISTENER_END(_titleLeftViewOnClick)
-            this->_titleLeftView()->observerAdd(ZFUIButton::EventButtonOnClick(), _titleLeftViewOnClick, this->objectHolder());
+            this->_titleLeftView()->observerAdd(ZFUIButton::EventButtonOnClick(), _titleLeftViewOnClick);
         }
 
         this->_titleView()->childAdd(this->_titleCenterView())->c_layoutWeight(3);
@@ -42,14 +45,16 @@ protected:
         this->_contentView()->viewBackgroundColor(ZFUIColorRandom());
         this->_contentView()->label()->text(zfstringWithFormat("belong to %s", this->pageGroupId().cString()));
         {
-            ZFLISTENER(_contentViewOnClick) {
-                ZFUIPage *page = userData->objectHolded();
+            ZFUIPage *page = this;
+            ZFLISTENER_1(_contentViewOnClick
+                    , ZFUIPage *, page
+                    ) {
                 zfblockedAlloc(ZFUIWidget_ZFUIPage_test_Page, newPage);
                 newPage->pageGroupId(page->pageGroupId());
                 page->pageManager()->pageCreate(newPage);
                 page->pageView()->viewId(zfstringWithFormat("%s:%p", page->pageGroupId().cString(), page));
             } ZFLISTENER_END(_contentViewOnClick)
-            this->_contentView()->observerAdd(ZFUIButton::EventButtonOnClick(), _contentViewOnClick, this->objectHolder());
+            this->_contentView()->observerAdd(ZFUIButton::EventButtonOnClick(), _contentViewOnClick);
         }
     }
     static ZFCompareResult pageFindFirstByPageGroupId(ZF_IN ZFUIPage * const &e0,
@@ -108,13 +113,14 @@ protected:
             this->_buttonLayout()->childAdd(button)->c_layoutWeight(1);
             button->label()->text(zfstringWithFormat("tab %zi", i));
             button->checkable(zftrue);
-            ZFLISTENER(buttonOnClick) {
-                ZFUIWidget_ZFUIPage_test_PageManager *pageManager = userData->objectTag("pageManager")->objectHolded();
-                v_zfstring *pageGroupId = userData->objectTag<v_zfstring *>("pageGroupId");
-
-                if(!listenerData.sender()->to<ZFUIButton *>()->checked())
+            ZFUIWidget_ZFUIPage_test_PageManager *pageManager = this;
+            ZFLISTENER_2(buttonOnClick
+                    , ZFUIWidget_ZFUIPage_test_PageManager *, pageManager
+                    , zfautoObjectT<v_zfstring *>, pageGroupId
+                    ) {
+                if(!zfargs.sender()->to<ZFUIButton *>()->checked())
                 { // click checked tab
-                    listenerData.sender()->to<ZFUIButton *>()->checked(zftrue);
+                    zfargs.sender()->to<ZFUIButton *>()->checked(zftrue);
 
                     ZFCoreArrayPOD<ZFUIPage *> pageToDestroy;
                     for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i)
@@ -139,7 +145,7 @@ protected:
                         ZFUIButton *button = pageManager->_buttonLayout()->childAt(i)->toAny();
                         button->checked(zffalse);
                     }
-                    listenerData.sender()->to<ZFUIButton *>()->checked(zftrue);
+                    zfargs.sender()->to<ZFUIButton *>()->checked(zftrue);
 
                     zfblockedAlloc(ZFAnimationNativeView, resumeAni);
                     resumeAni->aniScaleXFrom(0.8f);
@@ -162,10 +168,7 @@ protected:
                     }
                 }
             } ZFLISTENER_END(buttonOnClick)
-            zfblockedAlloc(ZFObject, userData);
-            userData->objectTag("pageManager", this->objectHolder());
-            userData->objectTag("pageGroupId", pageGroupId);
-            button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick, userData);
+            button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick);
             zffloat r = zfmRand(255) / 255.0f;
             zffloat g = zfmRand(255) / 255.0f;
             zffloat b = zfmRand(255) / 255.0f;

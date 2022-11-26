@@ -227,7 +227,7 @@ public:
             {
                 if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
                 {
-                    p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->userData);
+                    p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
                 }
             }
         }
@@ -237,7 +237,7 @@ public:
             {
                 if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
                 {
-                    p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->userData);
+                    p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
                 }
             }
         }
@@ -245,11 +245,10 @@ public:
 private:
     zfstlmap<ZFObject *, zfbool> _objAttached;
     ZFListener _objOnDeallocListener;
-    ZFMETHOD_INLINE_2(void, _objOnDealloc,
-                      ZFMP_IN(const ZFListenerData &, listenerData),
-                      ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_INLINE_1(void, _objOnDealloc,
+                      ZFMP_IN(const ZFArgs &, zfargs))
     {
-        this->objectDetach(listenerData.sender());
+        this->objectDetach(zfargs.sender());
     }
 protected:
     zfoverride
@@ -731,16 +730,15 @@ zfclass _ZFP_I_PropDynRegLifeCycleData : zfextends ZFObject
 public:
     ZFPropertyLifeCycle lifeCycle;
     ZFListener callback;
-    zfautoObject userData;
 };
 
 static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *propertyOwnerObject,
                                                            ZF_IN const ZFProperty *property,
                                                            ZF_IN void *propertyValue,
                                                            ZF_IN const void *propertyValueOld,
-                                                           ZF_IN ZFObject *userData)
+                                                           ZF_IN ZFObject *propertyLifeCycleUserData)
 {
-    _ZFP_I_PropDynRegLifeCycleData *implUserData = ZFCastZFObject(_ZFP_I_PropDynRegLifeCycleData *, userData);
+    _ZFP_I_PropDynRegLifeCycleData *implUserData = ZFCastZFObject(_ZFP_I_PropDynRegLifeCycleData *, propertyLifeCycleUserData);
     if(implUserData == zfnull || !implUserData->callback)
     {
         return;
@@ -756,8 +754,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
         invokeData->propertyValueOld = *(zfautoObject *)propertyValueOld;
 
         implUserData->callback.execute(
-                ZFListenerData().sender(propertyOwnerObject).param0(invokeData),
-                implUserData->userData
+                ZFArgs().sender(propertyOwnerObject).param0(invokeData)
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
         {
@@ -785,8 +782,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
         propertyValueOldHolder->wrappedValue(propertyValueOld);
 
         implUserData->callback.execute(
-                ZFListenerData().sender(propertyOwnerObject).param0(invokeData),
-                implUserData->userData
+                ZFArgs().sender(propertyOwnerObject).param0(invokeData)
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
         {
@@ -799,7 +795,6 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProperty *property,
                                           ZF_IN const ZFClass *ownerClassOrNull,
                                           ZF_IN ZFPropertyLifeCycle lifeCycle,
                                           ZF_IN const ZFListener &callback,
-                                          ZF_IN_OPT ZFObject *userData /* = zfnull */,
                                           ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
 {
     if(property == zfnull)
@@ -855,8 +850,7 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProperty *property,
     zfblockedAlloc(_ZFP_I_PropDynRegLifeCycleData, implUserData);
     implUserData->lifeCycle = lifeCycle;
     implUserData->callback = callback;
-    implUserData->userData = userData;
-    data.userData = implUserData;
+    data.propertyLifeCycleUserData = implUserData;
     d.add(data);
     return zftrue;
 }
@@ -875,7 +869,7 @@ zfbool ZFPropertyDynamicUnregisterLifeCycle(ZF_IN const ZFProperty *property,
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycle, property);
     for(zfindex i = 0; i < d.count(); ++i)
     {
-        _ZFP_I_PropDynRegLifeCycleData *implUserData = d[i].userData;
+        _ZFP_I_PropDynRegLifeCycleData *implUserData = d[i].propertyLifeCycleUserData;
         if(d[i].propertyOwnerClass == ownerClassOrNull && implUserData != zfnull)
         {
             d.remove(i);

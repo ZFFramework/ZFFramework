@@ -16,17 +16,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * usage:
  * @code
  *   ZFLISTENER(aniImpl) {
- *       zffloat progress = listenerData.param0()->to<v_zffloat *>()->zfv;
- *       yourAniImpl(progress, listenerData.sender(), userData);
+ *       zffloat progress = zfargs.param0()->to<v_zffloat *>()->zfv;
+ *       yourAniImpl(progress, zfargs.sender());
  *   } ZFLISTENER_END(aniImpl)
- *   ZFAni(target, aniImpl, userData)->aniStart();
+ *   ZFAni(target, aniImpl)->aniStart();
  * @endcode
  * aniImpl's param0 is #v_zffloat that holds progress
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni,
                         ZFMP_IN(ZFObject *, target),
-                        ZFMP_IN(const ZFListener &, aniImpl),
-                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                        ZFMP_IN(const ZFListener &, aniImpl))
 
 // ============================================================
 /**
@@ -73,12 +72,9 @@ public:
      * @brief the custom ani callback
      *
      * sender is the #ZFAniForCustomAni,
-     * param0 is #v_zffloat holds progress of the ani,
-     * userData is #customAniUserData
+     * param0 is #v_zffloat holds progress of the ani
      */
     ZFPROPERTY_ASSIGN(ZFListener, customAniCallback)
-    /** @brief see #customAniCallback */
-    ZFPROPERTY_RETAIN(ZFObject *, customAniUserData)
 protected:
     zfoverride
     virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress)
@@ -86,9 +82,7 @@ protected:
         if(this->customAniCallback())
         {
             this->_ZFP_progressHolder->zfv = progress;
-            this->customAniCallback().execute(
-                ZFListenerData(zfidentityInvalid(), this, this->_ZFP_progressHolder),
-                this->customAniUserData());
+            this->customAniCallback().execute(ZFArgs(zfidentityInvalid(), this, this->_ZFP_progressHolder));
         }
     }
     zfoverride

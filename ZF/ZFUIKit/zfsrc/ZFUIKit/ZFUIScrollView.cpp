@@ -809,8 +809,11 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
         d->yScroll->scrollOwnerSizeChanged(yScrollOwnerSize);
         d->scrollerUpdate();
 
-        ZFLISTENER(action) {
-            ZFUIScrollView *scrollView = userData->objectHolded();
+        ZFObjectHolder *scrollViewHolder = this->objectHolder();
+        ZFLISTENER_1(action
+                , zfautoObjectT<ZFObjectHolder *>, scrollViewHolder
+                ) {
+            ZFUIScrollView *scrollView = scrollViewHolder->objectHolded();
             if(scrollView == zfnull)
             {
                 return ;
@@ -824,7 +827,7 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
                     zffalse);
             }
         } ZFLISTENER_END(action)
-        ZFThread::post(action, this->objectHolder());
+        ZFThread::post(action);
     }
 
     d->scrollThumbUpdate();

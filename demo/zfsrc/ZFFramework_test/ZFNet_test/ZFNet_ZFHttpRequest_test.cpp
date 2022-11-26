@@ -16,8 +16,8 @@ protected:
         ZFLISTENER_1(onRecv
                 , ZFTestCase *, testCase
                 ) {
-            ZFHttpRequest *request = listenerData.senderT();
-            ZFHttpResponse *response = listenerData.param0T();
+            ZFHttpRequest *request = zfargs.senderT();
+            ZFHttpResponse *response = zfargs.param0T();
 
             testCase->testCaseOutput("send: %s", request->objectInfo().cString());
             testCase->testCaseOutput("%s", request->contentInfo().cString());

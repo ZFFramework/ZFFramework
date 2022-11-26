@@ -8,10 +8,8 @@ zfclass _ZFP_I_zfasyncTaskData : zfextends ZFObject
 public:
     zftaskid taskId;
     ZFListener callback;
-    zfautoObject userData;
     zfautoObject result;
     ZFListener finishCallback;
-    zfautoObject finishCallbackUserData;
     zfautoObjectT<ZFThread *> callerThread;
 };
 
@@ -22,8 +20,6 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfasyncDataHolder, ZFLevelZFFrameworkEssen
 
     this->maxThread = 8;
     this->threadPoolIndex = 0;
-    this->runThreadListener = ZFCallbackForFunc(zfself::_ZFP_runThread);
-    this->callerThreadListener = ZFCallbackForFunc(zfself::_ZFP_callerThread);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder)
 {
@@ -46,15 +42,11 @@ public:
     ZFCoreArray<zfautoObjectT<ZFThread *> > threadPool;
     zfindex threadPoolIndex;
     ZFTaskIdGenerator taskIdGenerator;
-
-    ZFListener runThreadListener;
-    ZFListener callerThreadListener;
 public:
-    static void _ZFP_runThread(ZF_IN const ZFListener &listenerData, ZF_IN ZFObject *userData)
+    static void _ZFP_runThread(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_zfasyncTaskData *taskData)
     {
         zfCoreMutexLock();
         ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-        _ZFP_I_zfasyncTaskData *taskData = userData->to<_ZFP_I_zfasyncTaskData *>();
         if(!d->taskIdGenerator.idExist(taskData->taskId))
         {
             _ZFP_taskDataCleanup(d, taskData);
@@ -63,12 +55,12 @@ public:
         }
         zfCoreMutexUnlock();
 
-        ZFListenerData listenerDataTmp;
-        listenerDataTmp.resultEnable(zftrue);
-        taskData->callback.execute(listenerDataTmp, taskData->userData);
+        ZFArgs zfargsTmp;
+        zfargsTmp.resultEnable(zftrue);
+        taskData->callback.execute(zfargsTmp);
 
         zfCoreMutexLock();
-        taskData->result = listenerDataTmp.result();
+        taskData->result = zfargsTmp.result();
         if(!d->taskIdGenerator.idExist(taskData->taskId))
         {
             _ZFP_taskDataCleanup(d, taskData);
@@ -83,13 +75,17 @@ public:
         }
         zfCoreMutexUnlock();
 
-        ZFThread::executeInThread(taskData->callerThread, d->callerThreadListener, taskData);
+        ZFLISTENER_1(callerThread
+                , zfautoObjectT<_ZFP_I_zfasyncTaskData *>, taskData
+                ) {
+            ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_callerThread(zfargs, taskData);
+        } ZFLISTENER_END(callerThread)
+        ZFThread::executeInThread(taskData->callerThread, callerThread);
     }
-    static void _ZFP_callerThread(ZF_IN const ZFListener &listenerData, ZF_IN ZFObject *userData)
+    static void _ZFP_callerThread(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_zfasyncTaskData *taskData)
     {
         zfCoreMutexLock();
         ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-        _ZFP_I_zfasyncTaskData *taskData = userData->to<_ZFP_I_zfasyncTaskData *>();
         if(!d->taskIdGenerator.idExist(taskData->taskId))
         {
             _ZFP_taskDataCleanup(d, taskData);
@@ -98,7 +94,7 @@ public:
         }
         zfCoreMutexUnlock();
 
-        taskData->finishCallback.execute(ZFListenerData().param0(taskData->result), taskData->finishCallbackUserData);
+        taskData->finishCallback.execute(ZFArgs().param0(taskData->result));
 
         zfCoreMutexLock();
         _ZFP_taskDataCleanup(d, taskData);
@@ -109,20 +105,16 @@ private:
     {
         d->taskIdGenerator.idRelease(taskData->taskId);
         taskData->callback = zfnull;
-        taskData->userData = zfnull;
         taskData->result = zfnull;
         taskData->finishCallback = zfnull;
-        taskData->finishCallbackUserData = zfnull;
         taskData->callerThread = zfnull;
     }
 ZF_GLOBAL_INITIALIZER_END(zfasyncDataHolder)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_4(zftaskid, zfasync,
+ZFMETHOD_FUNC_DEFINE_2(zftaskid, zfasync,
                        ZFMP_IN(const ZFListener &, callback),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull),
-                       ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback()),
-                       ZFMP_IN_OPT(ZFObject *, finishCallbackUserData, zfnull))
+                       ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback()))
 {
     if(!callback)
     {
@@ -176,16 +168,19 @@ ZFMETHOD_FUNC_DEFINE_4(zftaskid, zfasync,
     zfblockedAlloc(_ZFP_I_zfasyncTaskData, taskData);
     taskData->taskId = d->taskIdGenerator.idAcquire();
     taskData->callback = callback;
-    taskData->userData = userData;
     taskData->finishCallback = finishCallback;
-    taskData->finishCallbackUserData = finishCallbackUserData;
     if(finishCallback)
     {
         taskData->callerThread = ZFThread::currentThread();
     }
     zfCoreMutexUnlock();
 
-    thread->taskQueueAdd(d->runThreadListener, taskData);
+    ZFLISTENER_1(taskImpl
+            , zfautoObjectT<_ZFP_I_zfasyncTaskData *>, taskData
+            ) {
+        ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_runThread(zfargs, taskData);
+    } ZFLISTENER_END(taskImpl)
+    thread->taskQueueAdd(taskImpl);
     return taskData->taskId;
 }
 

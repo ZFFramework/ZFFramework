@@ -3,16 +3,16 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFListenerData::~ZFListenerData(void)
+ZFArgs::~ZFArgs(void)
 {
     zfRelease(this->_ZFP_resultHolder);
 }
 
-ZFObject *const &ZFListenerData::result(void) const
+ZFObject *const &ZFArgs::result(void) const
 {
     return this->_ZFP_resultHolder;
 }
-ZFListenerData const &ZFListenerData::result(ZF_IN ZFObject * const &result) const
+ZFArgs const &ZFArgs::result(ZF_IN ZFObject * const &result) const
 {
     if(this->_ZFP_result != zfnull)
     {
@@ -21,7 +21,7 @@ ZFListenerData const &ZFListenerData::result(ZF_IN ZFObject * const &result) con
     return *this;
 }
 
-ZFListenerData const &ZFListenerData::resultEnable(ZF_IN zfbool enable)
+ZFArgs const &ZFArgs::resultEnable(ZF_IN zfbool enable)
 {
     this->_ZFP_result = enable ? &(this->_ZFP_resultHolder) : zfnull;
     if(!enable)
@@ -30,15 +30,15 @@ ZFListenerData const &ZFListenerData::resultEnable(ZF_IN zfbool enable)
     }
     return *this;
 }
-zfbool ZFListenerData::resultEnabled(void) const
+zfbool ZFArgs::resultEnabled(void) const
 {
     return (this->_ZFP_result != zfnull);
 }
 
-void ZFListenerData::objectInfoT(ZF_IN_OUT zfstring &ret) const
+void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const
 {
     ret += ZFTOKEN_ZFObjectInfoLeft;
-    zfstringAppend(ret, "ZFListenerData(%p)", this);
+    zfstringAppend(ret, "ZFArgs(%p)", this);
     const zfchar *eventName = ZFIdMapNameForId(this->eventId());
     if(eventName != zfnull)
     {

@@ -153,18 +153,16 @@ public:
     }
 
 public:
-    ZFMETHOD_INLINE_2(void, dialogClickMaskOnClick,
-                      ZFMP_IN(const ZFListenerData &, listenerData),
-                      ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_INLINE_1(void, dialogClickMaskOnClick,
+                      ZFMP_IN(const ZFArgs &, zfargs))
     {
         if(this->pimplOwner->dialogHideWhenTouchOutside())
         {
             this->pimplOwner->dialogHide();
         }
     }
-    ZFMETHOD_INLINE_2(void, aniShowOnStop,
-                      ZFMP_IN(const ZFListenerData &, listenerData),
-                      ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_INLINE_1(void, aniShowOnStop,
+                      ZFMP_IN(const ZFArgs &, zfargs))
     {
         if(!this->dialogWindowAniShow->aniRunning()
             && !this->dialogWindowAniHide->aniRunning()
@@ -199,9 +197,8 @@ public:
             this->pimplOwner->dialogAfterShow();
         }
     }
-    ZFMETHOD_INLINE_2(void, aniHideOnStop,
-                      ZFMP_IN(const ZFListenerData &, listenerData),
-                      ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_INLINE_1(void, aniHideOnStop,
+                      ZFMP_IN(const ZFArgs &, zfargs))
     {
         if(!this->dialogWindowAniShow->aniRunning()
             && !this->dialogWindowAniHide->aniRunning()
@@ -450,13 +447,15 @@ ZFMETHOD_DEFINE_1(ZFUIDialog, void, dialogApplyAutoHide,
     {
         return ;
     }
-    ZFLISTENER(buttonOnClick) {
-        userData->objectHolded<ZFUIDialog *>()->dialogHide();
+    ZFUIDialog *owner = this;
+    ZFLISTENER_1(buttonOnClick
+            , ZFUIDialog *, owner
+            ) {
+        owner->dialogHide();
     } ZFLISTENER_END(buttonOnClick)
     button->observerAdd(ZFObserverAddParam()
             .eventId(ZFUIButton::EventButtonOnClick())
             .observer(buttonOnClick)
-            .userData(this->objectHolder())
             .observerLevel(ZFLevelZFFrameworkPostNormal)
         );
 }

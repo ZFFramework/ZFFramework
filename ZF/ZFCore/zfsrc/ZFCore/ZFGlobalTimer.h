@@ -26,16 +26,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * you may also use #ZFGlobalTimerManualStep to manually control the timer steps
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfidentity, ZFGlobalTimerAttach,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfidentity, ZFGlobalTimerAttach,
                         ZFMP_IN(const ZFListener &, timerCallback),
-                        ZFMP_IN_OPT(ZFObject *, timerCallbackUserData, zfnull),
                         ZFMP_IN_OPT(ZFObject *, owner, zfnull),
                         ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse),
                         ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 /** @brief see #ZFGlobalTimerAttach */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerDetach,
-                        ZFMP_IN(const ZFListener &, timerCallback),
-                        ZFMP_IN_OPT(ZFObject *, timerCallbackUserData, zfnull))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerDetach,
+                        ZFMP_IN(const ZFListener &, timerCallback))
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerDetachByTaskId,
                         ZFMP_IN(zfidentity, taskId))

@@ -322,8 +322,10 @@ protected:
         return zffalse;
     }
 
-private:
+public:
     ZFArray *_ZFP_buttons;
+    ZFListener _ZFP_buttonOnEvent;
+    ZFListener _ZFP_buttonOnClick;
 };
 
 // ============================================================

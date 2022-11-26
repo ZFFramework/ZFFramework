@@ -153,9 +153,13 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
     zfblockedAlloc(ZFUIKit_test_Button, button);
     containerView->childAdd(button);
 
-    ZFLISTENER(onClickButton) {
-        _ZFP_ZFFramework_test_TestCaseSubModuleData *subModuleData = userData->toAny();
+    zfblockedAlloc(_ZFP_ZFFramework_test_TestCaseSubModuleData, subModuleData);
+    subModuleData->subModuleName = subModuleName;
+    subModuleData->testCases = testCases;
 
+    ZFLISTENER_1(onClickButton
+            , zfautoObjectT<_ZFP_ZFFramework_test_TestCaseSubModuleData *>, subModuleData
+            ) {
         zfblockedAlloc(ZFUIWindow, subModuleWindow);
         subModuleWindow->viewBackgroundColor(ZFUIColorWhite());
         subModuleWindow->windowShow();
@@ -166,10 +170,12 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
             zfblockedAlloc(ZFUIKit_test_Button, closeButton);
             containerView->childAdd(closeButton);
             closeButton->label()->text("back");
-            ZFLISTENER(closeButtonOnClick) {
-                userData->objectHolded<ZFUIWindow *>()->windowHide();
+            ZFLISTENER_1(closeButtonOnClick
+                    , ZFUIWindow *, subModuleWindow
+                    ) {
+                subModuleWindow->windowHide();
             } ZFLISTENER_END(closeButtonOnClick)
-            closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), closeButtonOnClick, subModuleWindow->objectHolder());
+            closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), closeButtonOnClick);
             closeButton->background()->viewBackgroundColor(ZFUIColorRed());
 
             zfblockedAlloc(ZFUIView, separator);
@@ -185,10 +191,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
         }
         ZFUIViewFocusNextMove(subModuleWindow);
     } ZFLISTENER_END(onClickButton)
-    zfblockedAlloc(_ZFP_ZFFramework_test_TestCaseSubModuleData, subModuleData);
-    subModuleData->subModuleName = subModuleName;
-    subModuleData->testCases = testCases;
-    button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton, subModuleData);
+    button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton);
     button->label()->text(subModuleName);
 }
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *containerView,
@@ -198,29 +201,28 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *c
     zfblockedAlloc(ZFUIKit_test_Button, button);
     containerView->childAdd(button);
 
-    ZFLISTENER(onClickButton) {
-        const ZFClass *testCase = userData->objectTag<v_ZFClass *>("testCase")->zfv;
-        ZFUIView *containerView = userData->objectTag("containerView")->objectHolded();
+    ZFLISTENER_2(onClickButton
+            , const ZFClass *, testCase
+            , ZFUIView *, containerView
+            ) {
         ZFTestCase *running = zfnull;
         containerView->viewUIEnableTree(zffalse);
         ZFTestCaseRun(testCase, &running);
         if(running != zfnull)
         {
-            ZFLISTENER(testCaseOnStop) {
-                ZFUIView *containerView = userData->objectTag("containerView")->objectHolded();
+            ZFLISTENER_1(testCaseOnStop
+                    , ZFUIView *, containerView
+                    ) {
                 containerView->viewUIEnableTree(zftrue);
             } ZFLISTENER_END(testCaseOnStop)
-            running->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop, userData);
+            running->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
         }
         else
         {
             containerView->viewUIEnableTree(zftrue);
         }
     } ZFLISTENER_END(onClickButton)
-    zfblockedAlloc(ZFObject, userData);
-    userData->objectTag("testCase", zflineAlloc(v_ZFClass, testCase));
-    userData->objectTag("containerView", containerView->objectHolder());
-    button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton, userData);
+    button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton);
     button->label()->text(zfstring(testCase->classNameFull() + zfslen(subModuleName) + 1));
 }
 

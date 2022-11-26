@@ -85,7 +85,6 @@ public:
     zfstring methodNamespace;
     ZFMethodGenericInvoker methodGenericInvoker;
     ZFListener methodImpl;
-    zfautoObject methodImplUserData;
     ZFMethodType methodType;
     ZFMethodPrivilegeType methodPrivilegeType;
     zfstring methodName;
@@ -106,7 +105,6 @@ public:
     , methodNamespace()
     , methodGenericInvoker(zfnull)
     , methodImpl()
-    , methodImplUserData()
     , methodType(ZFMethodTypeVirtual)
     , methodPrivilegeType(ZFMethodPrivilegeTypePublic)
     , methodName()
@@ -171,16 +169,6 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodImpl(ZF_IN con
 const ZFListener &ZFMethodDynamicRegisterParam::methodImpl(void) const
 {
     return d->methodImpl;
-}
-
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodImplUserData(ZF_IN ZFObject *methodImplUserData)
-{
-    d->methodImplUserData = methodImplUserData;
-    return *this;
-}
-ZFObject *ZFMethodDynamicRegisterParam::methodImplUserData(void) const
-{
-    return d->methodImplUserData;
 }
 
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodType(ZF_IN ZFMethodType methodType)

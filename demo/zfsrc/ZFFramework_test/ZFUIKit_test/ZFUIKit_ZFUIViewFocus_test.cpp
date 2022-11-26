@@ -14,11 +14,11 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewFocusState_test)
 }
 private:
     ZFListener listener;
-    static void viewFocusOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void viewFocusOnChange(ZF_IN const ZFArgs &zfargs)
     {
         zfLogTrimT() << "[ZFUIViewFocus]"
-            << listenerData.sender()
-            << "changed to" << listenerData.sender()->to<ZFUIView *>()->viewFocused();
+            << zfargs.sender()
+            << "changed to" << zfargs.sender()->to<ZFUIView *>()->viewFocused();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewFocusState_test)
 #endif

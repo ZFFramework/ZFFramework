@@ -48,7 +48,7 @@ public:
     , childAddOverrideFlag(zffalse)
     , scrollContentFrameOverrideFlag(zffalse)
     , listAdapter(zfnull)
-    , listAdapterOnReloadListener(ZFCallbackForFunc(listAdapterOnReload))
+    , listAdapterOnReloadListener()
     , listReloadRequested(zftrue)
     , listQuickReloadRequested(zftrue)
     , cellNeedUpdate(zftrue)
@@ -68,10 +68,9 @@ public:
     }
 
 public:
-    static void listAdapterOnReload(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void listAdapterOnReload(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIListView *listView)
     {
-        ZFUIListView *listView = userData->objectHolded();
-        v_zfindex *atIndex = listenerData.param0T();
+        v_zfindex *atIndex = zfargs.param0T();
         if(atIndex == zfnull || atIndex->zfv == zfindexMax())
         {
             listView->listReload();
@@ -115,10 +114,18 @@ public:
     {
         if(this->listAdapter != zfnull)
         {
+            if(!this->listAdapterOnReloadListener)
+            {
+                ZFLISTENER_1(callback
+                        , ZFUIListView *, pimplOwner
+                        ) {
+                    _ZFP_ZFUIListViewPrivate::listAdapterOnReload(zfargs, pimplOwner);
+                } ZFLISTENER_END(callback)
+                this->listAdapterOnReloadListener = callback;
+            }
             this->listAdapter->toObject()->observerAdd(
                 ZFUIListAdapter::EventListAdapterOnReload(),
-                this->listAdapterOnReloadListener,
-                this->pimplOwner->objectHolder());
+                this->listAdapterOnReloadListener);
             this->listAdaptertingUpdate();
         }
     }

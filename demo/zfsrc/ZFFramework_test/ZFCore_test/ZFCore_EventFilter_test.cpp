@@ -27,7 +27,7 @@ protected:
 
         ZFLISTENER(eventFilter) {
             zfLogT() << "event filter";
-            listenerData.eventFiltered(zftrue);
+            zfargs.eventFiltered(zftrue);
         } ZFLISTENER_END(eventFilter)
         ZFGlobalObserver().observerAdd(ZFObserverAddParam()
             .eventId(ZFGlobalEvent::EventZFCore_EventFilter_test())

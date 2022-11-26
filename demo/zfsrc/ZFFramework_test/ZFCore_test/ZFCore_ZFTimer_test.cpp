@@ -2,20 +2,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static void _ZFP_ZFCore_ZFTimer_test_timerEvent(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-{
-    ZFTimer *timer = listenerData.senderT();
-    zfLogTrim("timer event, current thread: %s", ZFThread::currentThread()->objectInfo().cString());
-    if(timer->timerActivatedCount() >= 3)
-    {
-        timer->timerStop();
-
-        ZFLISTENER(action) {
-            userData->to<ZFTestCase *>()->testCaseStop();
-        } ZFLISTENER_END(action)
-        ZFThread::mainThread()->taskQueueAdd(action, userData);
-    }
-}
 zfclass ZFCore_ZFTimer_test : zfextends ZFFramework_test_TestCase
 {
     ZFOBJECT_DECLARE(ZFCore_ZFTimer_test, ZFFramework_test_TestCase)
@@ -32,7 +18,26 @@ protected:
         this->testCaseOutput("current thread: %s", ZFThread::currentThread()->objectInfo().cString());
 
         zfblockedAlloc(ZFTimer, timer);
-        timer->observerAdd(ZFTimer::EventTimerOnActivate(), ZFCallbackForFunc(_ZFP_ZFCore_ZFTimer_test_timerEvent), this);
+
+        ZFTestCase *owner = this;
+        ZFLISTENER_1(timerOnActivate
+                , ZFTestCase *, owner
+                ) {
+            ZFTimer *timer = zfargs.senderT();
+            zfLogTrim("timer event, current thread: %s", ZFThread::currentThread()->objectInfo().cString());
+            if(timer->timerActivatedCount() >= 3)
+            {
+                timer->timerStop();
+
+                ZFLISTENER_1(action
+                        , ZFTestCase *, owner
+                        ) {
+                    owner->testCaseStop();
+                } ZFLISTENER_END(action)
+                ZFThread::mainThread()->taskQueueAdd(action);
+            }
+        } ZFLISTENER_END(timerOnActivate)
+        timer->observerAdd(ZFTimer::EventTimerOnActivate(), timerOnActivate);
         timer->timerInterval((zftimet)1000);
         timer->timerStart();
 

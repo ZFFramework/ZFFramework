@@ -142,20 +142,18 @@ private:
 /**
  * @brief util to start timer
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerStart,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerStart,
                         ZFMP_IN(zftimet, timerInterval),
-                        ZFMP_IN(const ZFListener &, timerCallback),
-                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                        ZFMP_IN(const ZFListener &, timerCallback))
 
 /**
  * @brief util to start timer to run only once
  *
  * we would try to run the timerCallback in the same thread that call this method
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerOnce,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerOnce,
                         ZFMP_IN(zftimet, delay),
-                        ZFMP_IN(const ZFListener &, timerCallback),
-                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                        ZFMP_IN(const ZFListener &, timerCallback))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTimer_h_

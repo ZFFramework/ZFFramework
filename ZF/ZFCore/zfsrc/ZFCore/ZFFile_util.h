@@ -187,8 +187,8 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFFilePathInfoTreePrint,
  * usage:
  * @code
  *   ZFLISTENER(fileCallback) {
- *       const ZFPathInfo &pathInfo = listenerData.param0()->to<v_ZFPathInfo *>()->zfv;
- *       const ZFFileFindData &fd = listenerData.param1()->to<v_ZFFileFindData *>()->zfv;
+ *       const ZFPathInfo &pathInfo = zfargs.param0()->to<v_ZFPathInfo *>()->zfv;
+ *       const ZFFileFindData &fd = zfargs.param1()->to<v_ZFFileFindData *>()->zfv;
  *       // do your things with the file
  *   } ZFLISTENER_END(fileCallback)
  *   ZFFilePathInfoForEach(pathInfo, fileCallback);
@@ -197,10 +197,9 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFFilePathInfoTreePrint,
  * fileCallback's param0 is #v_ZFPathInfo that describe the child file or dir,
  * and param1 is #v_ZFFileFindData
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFilePathInfoForEach,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoForEach,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
-                        ZFMP_IN(const ZFListener &, fileCallback),
-                        ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                        ZFMP_IN(const ZFListener &, fileCallback))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFFile_util_h_

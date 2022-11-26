@@ -30,8 +30,9 @@ private:
     {
         zfblockedAlloc(ZFUIKit_test_Button, addButton);
         container->childAdd(addButton);
-        ZFLISTENER(addButtonOnClick) {
-            ZFUIView *layout = userData->objectHolded();
+        ZFLISTENER_1(addButtonOnClick
+                , ZFUIView *, layout
+                ) {
             zfblockedAlloc(ZFUITextView, view);
             layout->childAdd(view);
             view->viewBackgroundColor(ZFUIColorRandom());
@@ -46,19 +47,20 @@ private:
             }
             view->text(text);
         } ZFLISTENER_END(addButtonOnClick)
-        addButton->observerAdd(ZFUIButton::EventButtonOnClick(), addButtonOnClick, layout->objectHolder());
+        addButton->observerAdd(ZFUIButton::EventButtonOnClick(), addButtonOnClick);
         addButton->label()->text("add");
 
         zfblockedAlloc(ZFUIKit_test_Button, removeButton);
         container->childAdd(removeButton)->c_margin(70, 0, 0, 0);
-        ZFLISTENER(removeButtonOnClick) {
-            ZFUIView *layout = userData->objectHolded();
+        ZFLISTENER_1(removeButtonOnClick
+                , ZFUIView *, layout
+                ) {
             if(layout->childCount() > 0)
             {
                 layout->childRemoveAt(layout->childCount() - 1);
             }
         } ZFLISTENER_END(removeButtonOnClick)
-        removeButton->observerAdd(ZFUIButton::EventButtonOnClick(), removeButtonOnClick, layout->objectHolder());
+        removeButton->observerAdd(ZFUIButton::EventButtonOnClick(), removeButtonOnClick);
         removeButton->label()->text("remove");
     }
     void prepareSettingButton(ZF_IN ZFUIWindow *window,

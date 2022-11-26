@@ -12,7 +12,7 @@ zfclassNotPOD _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder
 {
 public:
     ZFListener runnable;
-    ZFListenerData listenerData;
+    ZFArgs zfargs;
 };
 
 class _ZFP_ZFThreadImpl_sys_Qt_MainThreadHolder : public QObject
@@ -41,7 +41,7 @@ public slots:
         _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolderTmp = (_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *)listenerHolder;
         if(listenerHolderTmp->runnable)
         {
-            listenerHolderTmp->runnable.execute(listenerHolderTmp->listenerData);
+            listenerHolderTmp->runnable.execute(listenerHolderTmp->zfargs);
         }
     }
 };
@@ -56,7 +56,7 @@ public:
     , _ZFP_nativeThreadRegisterToken(zfnull)
     , _ZFP_runnable()
     , _ZFP_runnableCleanup()
-    , _ZFP_listenerData()
+    , _ZFP_zfargs()
     {
     }
 
@@ -64,7 +64,7 @@ public:
     void *_ZFP_nativeThreadRegisterToken;
     ZFListener _ZFP_runnable;
     ZFListener _ZFP_runnableCleanup;
-    ZFListenerData _ZFP_listenerData;
+    ZFArgs _ZFP_zfargs;
 
 protected:
     virtual void run()
@@ -73,14 +73,14 @@ protected:
         {
             if(this->_ZFP_runnable)
             {
-                this->_ZFP_runnable.execute(this->_ZFP_listenerData);
+                this->_ZFP_runnable.execute(this->_ZFP_zfargs);
             }
         }
 
         this->_ZFP_runnable = zfnull;
         if(this->_ZFP_runnableCleanup)
         {
-            this->_ZFP_runnableCleanup.execute(this->_ZFP_listenerData);
+            this->_ZFP_runnableCleanup.execute(this->_ZFP_zfargs);
             this->_ZFP_runnableCleanup = zfnull;
         }
         this->deleteLater();
@@ -177,8 +177,8 @@ public:
     {
         _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolder = zfnew(_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder);
         listenerHolder->runnable = runnable;
-        listenerHolder->listenerData.param0(param0);
-        listenerHolder->listenerData.param1(param1);
+        listenerHolder->zfargs.param0(param0);
+        listenerHolder->zfargs.param1(param1);
         this->_mainThreadHolder.executeInMainThread(listenerHolder);
         return listenerHolder;
     }
@@ -186,8 +186,8 @@ public:
     {
         _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolder = (_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *)nativeToken;
         listenerHolder->runnable = zfnull;
-        listenerHolder->listenerData.param0(zfnull);
-        listenerHolder->listenerData.param1(zfnull);
+        listenerHolder->zfargs.param0(zfnull);
+        listenerHolder->zfargs.param1(zfnull);
         zfdelete(listenerHolder);
     }
 
@@ -199,8 +199,8 @@ public:
         _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder *threadHolder = new _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder();
         threadHolder->_ZFP_runnable = runnable;
         threadHolder->_ZFP_runnableCleanup = runnableCleanup;
-        threadHolder->_ZFP_listenerData.param0(param0);
-        threadHolder->_ZFP_listenerData.param1(param1);
+        threadHolder->_ZFP_zfargs.param0(param0);
+        threadHolder->_ZFP_zfargs.param1(param1);
         threadHolder->start();
         return threadHolder;
     }
@@ -210,8 +210,8 @@ public:
         threadHolder->_ZFP_runnable = zfnull;
         // run and cleanup during thread
         // threadHolder->_ZFP_runnableCleanup = zfnull;
-        threadHolder->_ZFP_listenerData.param0(zfnull);
-        threadHolder->_ZFP_listenerData.param1(zfnull);
+        threadHolder->_ZFP_zfargs.param0(zfnull);
+        threadHolder->_ZFP_zfargs.param1(zfnull);
     }
 
 private:

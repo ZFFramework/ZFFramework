@@ -35,7 +35,7 @@ public:
     , modalWindowOwner(zfnull)
     , modalWindowShowing(zfnull)
     , sysWindowLayoutParam(zfnull)
-    , sysWindowLayoutParamOnChangeListener(ZFCallbackForFunc(_ZFP_ZFUISysWindowPrivate::sysWindowLayoutParamOnChange))
+    , sysWindowLayoutParamOnChangeListener()
     , nativeWindowCreated(zffalse)
     , nativeWindowResumed(zffalse)
     , sysWindowSize()
@@ -45,13 +45,6 @@ public:
     ~_ZFP_ZFUISysWindowPrivate(void)
     {
         zfRelease(this->embedImpl);
-    }
-
-public:
-    static void sysWindowLayoutParamOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        ZFUISysWindow *sysWindow = userData->objectHolded();
-        sysWindow->_ZFP_ZFUISysWindow_sysWindowLayoutUpdate();
     }
 };
 
@@ -218,7 +211,15 @@ void ZFUISysWindow::objectOnInitFinish(void)
 {
     zfsuper::objectOnInitFinish();
     ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnInit(this);
-    d->sysWindowLayoutParam->observerAdd(ZFUILayoutParam::EventLayoutParamOnChange(), d->sysWindowLayoutParamOnChangeListener, this->objectHolder());
+
+    ZFUISysWindow *owner = this;
+    ZFLISTENER_1(sysWindowLayoutParamOnChange
+            , ZFUISysWindow *, owner
+            ) {
+        owner->_ZFP_ZFUISysWindow_sysWindowLayoutUpdate();
+    } ZFLISTENER_END(sysWindowLayoutParamOnChange)
+    d->sysWindowLayoutParamOnChangeListener = sysWindowLayoutParamOnChange;
+    d->sysWindowLayoutParam->observerAdd(ZFUILayoutParam::EventLayoutParamOnChange(), d->sysWindowLayoutParamOnChangeListener);
 }
 void ZFUISysWindow::objectOnDeallocPrepare(void)
 {

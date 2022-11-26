@@ -96,9 +96,9 @@ public:
     , hintDelaying(zffalse)
     , hintAnimating(zfnull)
     , hintShowDelayTimer()
-    , hintAniShowOnStopListener(ZFCallbackForFunc(_ZFP_ZFUIHintPrivate::hintAniShowOnStop))
-    , hintShowDelayTimeoutListener(ZFCallbackForFunc(_ZFP_ZFUIHintPrivate::hintShowDelayTimeout))
-    , hintAniHideOnStopListener(ZFCallbackForFunc(_ZFP_ZFUIHintPrivate::hintAniHideOnStop))
+    , hintAniShowOnStopListener()
+    , hintShowDelayTimeoutListener()
+    , hintAniHideOnStopListener()
     {
     }
 
@@ -118,10 +118,18 @@ public:
         zfRetainChange(this->hintAnimating, this->pimplOwner->hintAniShow());
         if(this->hintAnimating != zfnull)
         {
+            if(!this->hintAniShowOnStopListener)
+            {
+                ZFLISTENER_1(callback
+                        , ZFUIHint *, pimplOwner
+                        ) {
+                    _ZFP_ZFUIHintPrivate::hintAniShowOnStop(zfargs, pimplOwner);
+                } ZFLISTENER_END(callback)
+                this->hintAniShowOnStopListener = callback;
+            }
             this->hintAnimating->observerAddForOnce(
                 ZFAnimation::EventAniOnStopOrInvalid(),
-                this->hintAniShowOnStopListener,
-                this->pimplOwner->objectHolder());
+                this->hintAniShowOnStopListener);
             this->hintAnimating->aniTarget(this->pimplOwner->hintWindow());
             this->hintAnimating->aniStart();
         }
@@ -130,22 +138,29 @@ public:
             this->hintDoShowDelay();
         }
     }
-    static void hintAniShowOnStop(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void hintAniShowOnStop(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIHint *hint)
     {
-        ZFUIHint *hint = userData->objectHolded();
         hint->d->hintDoShowDelay();
     }
     void hintDoShowDelay(void)
     {
         zfRetainChange(this->hintAnimating, zfnull);
+
+        if(!this->hintShowDelayTimeoutListener)
+        {
+            ZFLISTENER_1(callback
+                    , ZFUIHint *, pimplOwner
+                    ) {
+                _ZFP_ZFUIHintPrivate::hintShowDelayTimeout(zfargs, pimplOwner);
+            } ZFLISTENER_END(callback)
+            this->hintShowDelayTimeoutListener = callback;
+        }
         this->hintShowDelayTimer = ZFTimerOnce(
             this->pimplOwner->hintDurationFixed(),
-            this->hintShowDelayTimeoutListener,
-            this->pimplOwner->objectHolder());
+            this->hintShowDelayTimeoutListener);
     }
-    static void hintShowDelayTimeout(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void hintShowDelayTimeout(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIHint *hint)
     {
-        ZFUIHint *hint = userData->objectHolded();
         hint->d->hintShowDelayTimer = zfnull;
         hint->d->hintDoHide();
     }
@@ -154,10 +169,18 @@ public:
         zfRetainChange(this->hintAnimating, this->pimplOwner->hintAniHide());
         if(this->hintAnimating != zfnull)
         {
+            if(!this->hintAniHideOnStopListener)
+            {
+                ZFLISTENER_1(callback
+                        , ZFUIHint *, pimplOwner
+                        ) {
+                    _ZFP_ZFUIHintPrivate::hintAniHideOnStop(zfargs, pimplOwner);
+                } ZFLISTENER_END(callback)
+                this->hintAniHideOnStopListener = callback;
+            }
             this->hintAnimating->observerAddForOnce(
                 ZFAnimation::EventAniOnStopOrInvalid(),
-                ZFCallbackForFunc(_ZFP_ZFUIHintPrivate::hintAniHideOnStop),
-                this->pimplOwner->objectHolder());
+                this->hintAniHideOnStopListener);
             this->hintAnimating->aniTarget(this->pimplOwner->hintWindow());
             this->hintAnimating->aniStart();
         }
@@ -166,9 +189,8 @@ public:
             this->hintDoFinish();
         }
     }
-    static void hintAniHideOnStop(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void hintAniHideOnStop(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIHint *hint)
     {
-        ZFUIHint *hint = userData->objectHolded();
         hint->d->hintDoFinish();
     }
     void hintDoFinish(void)
@@ -360,10 +382,12 @@ void ZFUIHint::objectOnInit(void)
     d->hintWindow->windowLayoutParam()->layoutMargin(ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
     d->hintWindow->viewUIEnableTree(zffalse);
 
-    ZFLISTENER(hintWindowChanged) {
-        ZFUIHint *hint = userData->objectHolded();
+    ZFUIHint *hint = this;
+    ZFLISTENER_1(hintWindowChanged
+            , ZFUIHint *, hint
+            ) {
         zfCoreAssertWithMessage(!hint->hintShowing(), "you must not change ZFUIHint's window while it's showing or delaying");
-        ZFUISysWindow *sysWindowOld = listenerData.param0T();
+        ZFUISysWindow *sysWindowOld = zfargs.param0T();
         ZFArray *hintListOld = _ZFP_ZFUIHint_hintListForWrite(sysWindowOld);
         ZFArray *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->hintWindow()->windowOwnerSysWindow());
         hintListNew->add(hint);
@@ -385,13 +409,14 @@ void ZFUIHint::objectOnInit(void)
             }
         }
     } ZFLISTENER_END(hintWindowChanged)
-    d->hintWindow->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnChange(), hintWindowChanged, this->objectHolder());
+    d->hintWindow->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnChange(), hintWindowChanged);
 
-    ZFLISTENER(hintWindowOnLayoutPrepare) {
-        ZFUIHint *hint = userData->objectHolded();
+    ZFLISTENER_1(hintWindowOnLayoutPrepare
+            , ZFUIHint *, hint
+            ) {
         hint->hintOnUpdate();
     } ZFLISTENER_END(hintWindowOnLayoutPrepare)
-    d->hintWindow->observerAdd(ZFUIView::EventViewLayoutOnLayoutPrepare(), hintWindowOnLayoutPrepare, this->objectHolder());
+    d->hintWindow->observerAdd(ZFUIView::EventViewLayoutOnLayoutPrepare(), hintWindowOnLayoutPrepare);
 
     _ZFP_ZFUIHint_allHint.add(this);
 }

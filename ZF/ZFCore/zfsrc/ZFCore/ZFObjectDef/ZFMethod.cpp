@@ -10,11 +10,11 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-void ZFMethod::methodUserRegisterUserData(ZF_IN ZFObject *userData) const
+void ZFMethod::methodUserRegisterUserData(ZF_IN ZFObject *methodUserRegisterUserData) const
 {
     zfCoreAssertWithMessage(this->methodIsUserRegister(),
         "methodUserRegisterUserData can only be changed for user registered method");
-    zfRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserRegisterUserData, userData);
+    zfRetainChange(this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodUserRegisterUserData, methodUserRegisterUserData);
 }
 
 void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
@@ -60,7 +60,7 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
         ZFMethodParamDefaultValueCallback paramDefaultValueCallback = va_arg(vaList, ZFMethodParamDefaultValueCallback);
         if(paramDefaultValueCallback != zfnull)
         {
-            if(this->_ZFP_ZFMethod_paramDefaultBeginIndex == zfindexMax())
+            if(this->_ZFP_ZFMethod_paramDefaultBeginIndex == (zfuint)-1)
             {
                 this->_ZFP_ZFMethod_paramDefaultBeginIndex = this->_ZFP_ZFMethod_paramCount;
             }
@@ -71,7 +71,7 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
     } while(zftrue);
     va_end(vaList);
 
-    if(_ZFP_ZFMethod_paramDefaultBeginIndex == zfindexMax())
+    if(_ZFP_ZFMethod_paramDefaultBeginIndex == (zfuint)-1)
     {
         _ZFP_ZFMethod_paramCountMin = _ZFP_ZFMethod_paramCount;
     }
@@ -121,6 +121,7 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfchar *methodNamespace)
 
 ZFMethod::ZFMethod(void)
 : _ZFP_ZFMethodNeedInit(zftrue)
+, _ZFP_ZFMethod_refCount(1)
 , _ZFP_ZFMethod_methodAliasFrom(zfnull)
 , _ZFP_ZFMethod_methodAliasTo()
 , _ZFP_ZFMethod_methodIsUserRegister(zffalse)
@@ -141,7 +142,7 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_paramNameList()
 , _ZFP_ZFMethod_paramDefaultValueCallbackList()
 , _ZFP_ZFMethod_paramDefaultValueList()
-, _ZFP_ZFMethod_paramDefaultBeginIndex(zfindexMax())
+, _ZFP_ZFMethod_paramDefaultBeginIndex((zfuint)-1)
 , _ZFP_ZFMethod_methodOwnerClass(zfnull)
 , _ZFP_ZFMethod_methodOwnerProperty(zfnull)
 , _ZFP_ZFMethod_privilegeType(ZFMethodPrivilegeTypePublic)
@@ -333,26 +334,10 @@ void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const
 }
 
 // ============================================================
-zfclassLikePOD _ZFP_ZFMethodMapData
-{
-public:
-    zfuint refCount;
-    ZFMethod *method;
-public:
-    explicit _ZFP_ZFMethodMapData(ZF_IN ZFMethod *method)
-    : refCount(1)
-    , method(method)
-    {
-    }
-    ~_ZFP_ZFMethodMapData(void)
-    {
-        zfdelete(this->method);
-    }
-};
 ZF_STATIC_INITIALIZER_INIT(ZFMethodDataHolder)
 {
 }
-ZFCoreMap methodMap; // _ZFP_ZFMethodMapData *
+ZFCoreMap methodMap; // ZFMethod *
 ZF_STATIC_INITIALIZER_END(ZFMethodDataHolder)
 #define _ZFP_ZFMethodMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFMethodDataHolder)->methodMap)
 
@@ -375,39 +360,40 @@ static void _ZFP_ZFMethodInstanceSig(ZF_OUT zfstring &ret,
                                      , ZF_IN_OPT const zfchar *methodParamTypeId7 /* = zfnull */
                                      )
 {
-    if(!zfscmpTheSame(methodScope, ZF_NAMESPACE_GLOBAL_NAME)
-        && !zfscmpTheSame(methodScope, ZF_NAMESPACE_GLOBAL_ABBR_NAME))
-    {
-        ret += methodScope;
+    if(methodScope
+        && !zfscmpTheSame(methodScope, ZF_NAMESPACE_GLOBAL_NAME)
+        && !zfscmpTheSame(methodScope, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
+    ) {
+        zfindexToString(ret, _ZFP_ZFSigForName(methodScope));
     }
     ret += ':';
-    ret += methodName;
+    zfindexToString(ret, _ZFP_ZFSigForName(methodName));
 
-    ret += '+'; ret += methodParamTypeId0;
-    ret += '+'; ret += methodParamTypeId1;
-    ret += '+'; ret += methodParamTypeId2;
-    ret += '+'; ret += methodParamTypeId3;
-    ret += '+'; ret += methodParamTypeId4;
-    ret += '+'; ret += methodParamTypeId5;
-    ret += '+'; ret += methodParamTypeId6;
-    ret += '+'; ret += methodParamTypeId7;
+    if(zfsIsEmpty(methodParamTypeId0)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId0));
+    if(zfsIsEmpty(methodParamTypeId1)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId1));
+    if(zfsIsEmpty(methodParamTypeId2)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId2));
+    if(zfsIsEmpty(methodParamTypeId3)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId3));
+    if(zfsIsEmpty(methodParamTypeId4)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId4));
+    if(zfsIsEmpty(methodParamTypeId5)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId5));
+    if(zfsIsEmpty(methodParamTypeId6)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId6));
+    if(zfsIsEmpty(methodParamTypeId7)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId7));
 }
 
 static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfchar *methodInternalId)
 {
     zfCoreMutexLocker();
-    _ZFP_ZFMethodMapData *v = _ZFP_ZFMethodMap.get<_ZFP_ZFMethodMapData *>(methodInternalId);
+    ZFMethod *v = _ZFP_ZFMethodMap.get<ZFMethod *>(methodInternalId);
     if(v == zfnull)
     {
-        v = zfnew(_ZFP_ZFMethodMapData, zfnew(ZFMethod));
-        _ZFP_ZFMethodMap.set(methodInternalId, ZFCorePointerForObject<_ZFP_ZFMethodMapData *>(v));
-        v->method->_ZFP_ZFMethod_methodInternalId = methodInternalId;
+        v = zfnew(ZFMethod);
+        _ZFP_ZFMethodMap.set(methodInternalId, ZFCorePointerForObject<ZFMethod *>(v));
+        v->_ZFP_ZFMethod_methodInternalId = methodInternalId;
     }
     else
     {
-        ++(v->refCount);
+        ++(v->_ZFP_ZFMethod_refCount);
     }
-    return v->method;
+    return v;
 }
 
 ZFMethod *_ZFP_ZFMethodRegister(ZF_IN zfbool methodIsUserRegister
@@ -502,10 +488,9 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
             , paramTypeId[7]
         );
 
-    _ZFP_ZFMethodMapData *methodData = _ZFP_ZFMethodMap.get<_ZFP_ZFMethodMapData *>(methodInternalId);
-    if(methodData != zfnull)
+    method = _ZFP_ZFMethodMap.get<ZFMethod *>(methodInternalId);
+    if(method != zfnull)
     {
-        method = methodData->method;
         if(method->methodIsUserRegister())
         {
             if(methodOwnerClass != zfnull)
@@ -563,6 +548,8 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
             "[ZFMethod] redefine of method: %s, existing: %s",
             methodInternalId.cString(),
             method->objectInfo().cString());
+
+        ++method->_ZFP_ZFMethod_refCount;
     }
     else
     {
@@ -611,13 +598,13 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
 void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method)
 {
     zfCoreMutexLocker();
-    _ZFP_ZFMethodMapData *v = _ZFP_ZFMethodMap.get<_ZFP_ZFMethodMapData *>(method->methodInternalId());
+    ZFMethod *v = _ZFP_ZFMethodMap.get<ZFMethod *>(method->methodInternalId());
     if(v == zfnull)
     {
         return ;
     }
-    --(v->refCount);
-    if(v->refCount != 0)
+    --(v->_ZFP_ZFMethod_refCount);
+    if(v->_ZFP_ZFMethod_refCount != 0)
     {
         return ;
     }
@@ -720,10 +707,10 @@ void ZFMethodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
     {
         for(zfiterator it = m.iter(); m.iterValid(it); m.iterNext(it))
         {
-            _ZFP_ZFMethodMapData *v = m.iterValue<_ZFP_ZFMethodMapData *>(it);
-            if(methodFilter->filterCheckActive(v->method))
+            ZFMethod *v = m.iterValue<ZFMethod *>(it);
+            if(methodFilter->filterCheckActive(v))
             {
-                ret.add(v->method);
+                ret.add(v);
             }
         }
     }
@@ -731,8 +718,8 @@ void ZFMethodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
     {
         for(zfiterator it = m.iter(); m.iterValid(it); m.iterNext(it))
         {
-            _ZFP_ZFMethodMapData *v = m.iterValue<_ZFP_ZFMethodMapData *>(it);
-            ret.add(v->method);
+            ZFMethod *v = m.iterValue<ZFMethod *>(it);
+            ret.add(v);
         }
     }
 }

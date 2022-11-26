@@ -12,13 +12,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFThreadPrivate
-zfclassLikePOD _ZFP_ZFThreadTaskData
-{
-public:
-    ZFListener task;
-    zfautoObject taskUserData;
-};
-
 zfclassNotPOD _ZFP_ZFThreadPrivate
 {
 public:
@@ -31,7 +24,7 @@ public:
     zfbool taskQueueInitFlag;
     zfbool taskQueueRunning;
     ZFSemaphore *taskQueueSema;
-    zfstllist<_ZFP_ZFThreadTaskData> taskQueue;
+    zfstllist<ZFListener> taskQueue;
 
     void *threadToken;
     zfbool mainThreadTaskRunning;
@@ -75,7 +68,7 @@ public:
     }
 
     zfoverride
-    virtual void threadStart(ZF_IN_OPT ZFObject *userData = zfnull)
+    virtual void threadStart(ZF_IN_OPT ZFObject *param0 = zfnull, ZF_IN_OPT ZFObject *param1 = zfnull)
     {
         zfCoreLogTrim("you must not start a user registered thread");
     }
@@ -94,6 +87,19 @@ public:
     {
         zfCoreLogTrim("you must not stop a user registered thread");
     }
+};
+
+zfclass _ZFP_I_ZFThreadParamHolder : zfextends ZFObject
+{
+    ZFOBJECT_DECLARE(_ZFP_I_ZFThreadParamHolder, ZFObject)
+    ZFALLOC_CACHE_RELEASE({
+            cache->param0 = zfnull;
+            cache->param1 = zfnull;
+        })
+
+public:
+    zfautoObject param0;
+    zfautoObject param1;
 };
 
 // ============================================================
@@ -120,15 +126,15 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
     zfCoreMutexLock();
     while(!zfThread->d->taskQueue.empty())
     {
-        _ZFP_ZFThreadTaskData task = *(zfThread->d->taskQueue.begin());
+        ZFListener task = *(zfThread->d->taskQueue.begin());
         zfThread->d->taskQueue.pop_front();
-        if(!task.task)
+        if(!task)
         {
             continue;
         }
         zfThread->d->taskQueueRunning = zftrue;
         zfCoreMutexUnlock();
-        task.task.execute(ZFListenerData(zfidentityInvalid(), zfThread), task.taskUserData);
+        task.execute(ZFArgs(zfidentityInvalid(), zfThread));
         zfCoreMutexLock();
         zfThread->d->taskQueueRunning = zffalse;
         zfThread->d->autoReleasePool->poolDrain();
@@ -156,26 +162,24 @@ ZFMETHOD_DEFINE_1(ZFThread, void, sleep,
     _ZFP_ZFThreadImpl->sleep(miliSecs);
 }
 
-ZFMETHOD_DEFINE_3(ZFThread, ZFThread *, executeInThread,
+ZFMETHOD_DEFINE_2(ZFThread, ZFThread *, executeInThread,
                   ZFMP_IN(ZFThread *, thread),
-                  ZFMP_IN(const ZFListener &, callback),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                  ZFMP_IN(const ZFListener &, callback))
 {
     ZFThread *ret = (thread != zfnull && thread->taskQueueAvailable() ? thread : ZFThread::mainThread());
-    ret->taskQueueAdd(callback, userData);
+    ret->taskQueueAdd(callback);
     return ret;
 }
 
-ZFMETHOD_DEFINE_2(ZFThread, ZFThread *, post,
-                  ZFMP_IN(const ZFListener &, callback),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_DEFINE_1(ZFThread, ZFThread *, post,
+                  ZFMP_IN(const ZFListener &, callback))
 {
     ZFThread *ret = ZFThread::currentThread();
     if(ret == zfnull || !ret->taskQueueAvailable())
     {
         ret = ZFThread::mainThread();
     }
-    ret->taskQueueAdd(callback, userData);
+    ret->taskQueueAdd(callback);
     return ret;
 }
 
@@ -233,8 +237,9 @@ void ZFThread::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFThread, void, threadStart,
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_DEFINE_2(ZFThread, void, threadStart,
+                  ZFMP_IN_OPT(ZFObject *, param0, zfnull),
+                  ZFMP_IN_OPT(ZFObject *, param1, zfnull))
 {
     zfCoreMutexLocker();
     if(d->startFlag)
@@ -248,13 +253,15 @@ ZFMETHOD_DEFINE_1(ZFThread, void, threadStart,
     }
     d->startFlag = zftrue;
     zfunsafe_zfRetain(this);
-    zfunsafe_zfRetain(userData);
+    _ZFP_I_ZFThreadParamHolder *paramHolder = zfunsafe_zfAlloc(_ZFP_I_ZFThreadParamHolder);
+    paramHolder->param0 = param0;
+    paramHolder->param1 = param1;
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread begin %p", this);
     d->threadToken = _ZFP_ZFThreadImpl->executeInNewThread(
         ZFCallbackForFunc(ZFThread::_ZFP_ZFThread_threadCallback),
         ZFCallbackForFunc(ZFThread::_ZFP_ZFThread_threadCleanupCallback),
         this,
-        userData);
+        paramHolder);
 }
 
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, threadStarted)
@@ -324,9 +331,8 @@ void ZFThread::autoReleasePoolDrain()
     d->autoReleasePool->poolDrain();
 }
 
-ZFMETHOD_DEFINE_2(ZFThread, void, threadOnRun,
-                  ZFMP_IN(const ZFListenerData &, listenerData),
-                  ZFMP_IN(ZFObject *, userData))
+ZFMETHOD_DEFINE_1(ZFThread, void, threadOnRun,
+                  ZFMP_IN(const ZFArgs &, zfargs))
 {
     // nothing to do
 }
@@ -373,22 +379,18 @@ ZFMETHOD_DEFINE_0(ZFThread, zfindex, taskQueueCount)
     zfCoreMutexLocker();
     return (zfindex)d->taskQueue.size();
 }
-ZFMETHOD_DEFINE_2(ZFThread, void, taskQueueAdd,
-                  ZFMP_IN(const ZFListener &, task),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd,
+                  ZFMP_IN(const ZFListener &, task))
 {
     if(!task)
     {
         return;
     }
     zfCoreMutexLocker();
-    _ZFP_ZFThreadTaskData taskData;
-    taskData.task = task;
-    taskData.taskUserData = userData;
 
     if(this->isMainThread())
     {
-        d->taskQueue.push_back(taskData);
+        d->taskQueue.push_back(task);
         if(!d->mainThreadTaskRunning)
         {
             d->mainThreadTaskRunning = zftrue;
@@ -403,24 +405,23 @@ ZFMETHOD_DEFINE_2(ZFThread, void, taskQueueAdd,
     {
         if(d->taskQueueInitFlag)
         {
-            d->taskQueue.push_back(taskData);
+            d->taskQueue.push_back(task);
             d->taskQueueSema->semaphoreBroadcast();
         }
         else
         {
             zfCoreLogTrim("taskQueueAdd() called without taskQueueInit(), thread: %s", this->objectInfo().cString());
-            ZFThread::mainThread()->taskQueueAdd(task, userData);
+            ZFThread::mainThread()->taskQueueAdd(task);
         }
     }
 }
-ZFMETHOD_DEFINE_2(ZFThread, void, taskQueueRemove,
-                  ZFMP_IN(const ZFListener &, task),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueRemove,
+                  ZFMP_IN(const ZFListener &, task))
 {
     zfCoreMutexLocker();
-    for(zfstllist<_ZFP_ZFThreadTaskData>::iterator it = d->taskQueue.begin(); it != d->taskQueue.end(); ++it)
+    for(zfstllist<ZFListener>::iterator it = d->taskQueue.begin(); it != d->taskQueue.end(); ++it)
     {
-        if(it->task == task && it->taskUserData == userData)
+        if(*it == task)
         {
             d->taskQueue.erase(it);
             break;
@@ -434,12 +435,12 @@ ZFMETHOD_DEFINE_0(ZFThread, zfbool, taskQueueRunning)
 }
 
 // ============================================================
-void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
 {
     zfCoreMutexLock();
-    ZFThread *zfThread = listenerData.param0T();
+    ZFThread *zfThread = zfargs.param0T();
+    _ZFP_I_ZFThreadParamHolder *paramHolder = zfargs.param1T();
     _ZFP_ZFThreadPrivate *d = zfThread->d;
-    ZFObject *zfThreadUserData = listenerData.param1();
     d->runningFlag = zftrue;
 
     void *nativeThreadToken = _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
@@ -449,16 +450,17 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
 
     zfThread->threadOnStart();
 
+    ZFArgs zfargsTmp(zfidentityInvalid(), zfThread, paramHolder->param0, paramHolder->param1);
     if(!d->stopRequestedFlag)
     {
-        zfThread->threadOnRun(ZFListenerData(zfidentityInvalid(), zfThread), zfThreadUserData);
+        zfThread->threadOnRun(zfargsTmp);
     }
     zfCoreMutexLock();
     if(zfThread->threadRunnable())
     {
         ZFListener tmp = zfThread->threadRunnable();
         zfCoreMutexUnlock();
-        tmp.execute(ZFListenerData(zfidentityInvalid(), zfThread), zfThreadUserData);
+        tmp.execute(zfargsTmp);
     }
     else
     {
@@ -482,14 +484,14 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
             continue;
         }
 
-        _ZFP_ZFThreadTaskData task = *(zfThread->d->taskQueue.begin());
+        ZFListener task = *(zfThread->d->taskQueue.begin());
         d->taskQueue.pop_front();
 
         d->taskQueueRunning = zftrue;
         zfCoreMutexUnlock();
-        if(task.task)
+        if(task)
         {
-            task.task.execute(ZFListenerData(zfidentityInvalid(), zfThread), task.taskUserData);
+            task.execute(ZFArgs(zfidentityInvalid(), zfThread));
         }
     } while(zftrue);
 
@@ -501,13 +503,13 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFListenerData &listener
     d->startFlag = zffalse;
     zfCoreMutexUnlock();
 }
-void ZFThread::_ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+void ZFThread::_ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFArgs &zfargs)
 {
     zfCoreMutexLocker();
 
-    ZFThread *zfThread = listenerData.param0T();
+    ZFThread *zfThread = zfargs.param0T();
+    _ZFP_I_ZFThreadParamHolder *paramHolder = zfargs.param1T();
     _ZFP_ZFThreadPrivate *d = zfThread->d;
-    ZFObject *zfThreadUserData = listenerData.param1();
 
     if(d->threadToken != zfnull)
     {
@@ -519,14 +521,14 @@ void ZFThread::_ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFListenerData &l
     d->threadWaitSema->semaphoreBroadcast();
 
     zfunsafe_zfRelease(zfThread);
-    zfunsafe_zfRelease(zfThreadUserData);
+    zfunsafe_zfRelease(paramHolder);
 
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread exit %p", zfThread);
 }
 
-void ZFThread::_ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+void ZFThread::_ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFArgs &zfargs)
 {
-    ZFThread *zfThread = listenerData.param0T();
+    ZFThread *zfThread = zfargs.param0T();
     _ZFP_ZFThreadPrivate *d = zfThread->d;
 
     _ZFP_ZFThreadLog("[ZFThread] executeInMainThread enter %p", zfThread);
@@ -552,15 +554,15 @@ void ZFThread::_ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFListenerData &list
             break;
         }
 
-        _ZFP_ZFThreadTaskData task = *(zfThread->d->taskQueue.begin());
+        ZFListener task = *(zfThread->d->taskQueue.begin());
         d->taskQueue.pop_front();
 
         d->taskQueueRunning = zftrue;
         zfCoreMutexUnlock();
 
-        if(task.task)
+        if(task)
         {
-            task.task.execute(ZFListenerData(zfidentityInvalid(), zfThread), task.taskUserData);
+            task.execute(ZFArgs(zfidentityInvalid(), zfThread));
         }
     } while(zftrue);
 }

@@ -50,7 +50,7 @@ ZFOUTPUT_TYPE(const ZFProperty *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
 
 ZFOUTPUT_TYPE(ZFObserverHolder, {output << v.objectInfo();})
 
-ZFOUTPUT_TYPE(ZFListenerData, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFArgs, {output << v.objectInfo();})
 
 ZFOUTPUT_TYPE(ZFAny, {output << v.toObject();})
 

@@ -8,7 +8,7 @@
 
 #include "ZFCallback.h"
 #include "ZFIdMap.h"
-#include "ZFListenerData.h"
+#include "ZFArgs.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -27,26 +27,24 @@ public:
     /** @brief see #ZFListener */
     inline void execute(void) const
     {
-        ZFListenerData listenerData;
-        ZFCallback::executeExact<void, const ZFListenerData &, ZFObject *>(listenerData, zfnull);
+        ZFArgs zfargs;
+        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */
-    inline void execute(ZF_IN const ZFListenerData &listenerData,
-                        ZF_IN_OPT ZFObject *userData = zfnull) const
+    inline void execute(ZF_IN const ZFArgs &zfargs) const
     {
-        ZFCallback::executeExact<void, const ZFListenerData &, ZFObject *>(listenerData, userData);
+        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */
     inline void operator () (void) const
     {
-        ZFListenerData listenerData;
-        ZFCallback::executeExact<void, const ZFListenerData &, ZFObject *>(listenerData, zfnull);
+        ZFArgs zfargs;
+        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */
-    inline void operator () (ZF_IN const ZFListenerData &listenerData,
-                             ZF_IN_OPT ZFObject *userData = zfnull) const
+    inline void operator () (ZF_IN const ZFArgs &zfargs) const
     {
-        ZFCallback::executeExact<void, const ZFListenerData &, ZFObject *>(listenerData, userData);
+        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFListener, ZFCallback)
 
@@ -64,9 +62,6 @@ zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverAddParam
     ZFCORE_PARAM(ZFListener, observer)
 
     /** @brief see #ZFObject::observerNotify */
-    ZFCORE_PARAM_WITH_INIT(ZFObject *, userData, zfnull)
-
-    /** @brief see #ZFObject::observerNotify */
     ZFCORE_PARAM_WITH_INIT(ZFObject *, owner, zfnull)
 
     /** @brief see #ZFObject::observerNotify */
@@ -81,7 +76,6 @@ public:
     {
         return (this->eventId() == ref.eventId()
             && this->observer() == ref.observer()
-            && this->userData() == ref.userData()
             && this->owner() == ref.owner()
             && this->autoRemoveAfterActivate() == ref.autoRemoveAfterActivate()
             && this->observerLevel() == ref.observerLevel()
@@ -111,7 +105,6 @@ public:
     /** @brief see #ZFObject::observerNotify */
     zffinal zfidentity observerAdd(ZF_IN zfidentity eventId,
                                    ZF_IN const ZFListener &observer,
-                                   ZF_IN_OPT ZFObject *userData = zfnull,
                                    ZF_IN_OPT ZFObject *owner = zfnull,
                                    ZF_IN_OPT zfbool autoRemoveAfterActivate = zffalse,
                                    ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal) const;
@@ -120,19 +113,16 @@ public:
     /** @brief see #ZFObject::observerNotify */
     zffinal inline zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
                                                  ZF_IN const ZFListener &observer,
-                                                 ZF_IN_OPT ZFObject *userData = zfnull,
                                                  ZF_IN_OPT ZFObject *owner = zfnull,
                                                  ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal) const
     {
-        return this->observerAdd(eventId, observer, userData, owner, zftrue, observerLevel);
+        return this->observerAdd(eventId, observer, owner, zftrue, observerLevel);
     }
     /** @brief see #ZFObject::observerMoveToFirst */
     zffinal void observerMoveToFirst(ZF_IN zfidentity taskId) const;
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerRemove(ZF_IN zfidentity eventId,
-                                ZF_IN const ZFListener &callback,
-                                ZF_IN_OPT ZFObject *userData = zfnull,
-                                ZF_IN_OPT ZFComparer<ZFObject *>::Comparer userDataComparer = ZFComparerCheckEqual) const;
+                                ZF_IN const ZFListener &callback) const;
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerRemoveByTaskId(ZF_IN zfidentity taskId) const;
     /** @brief see #ZFObject::observerNotify */

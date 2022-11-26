@@ -18,18 +18,26 @@ public:
     ZFUIMargin autoFitMargin;
     ZFListener onScreenKeyboardStateOnChangeListener;
     ZFListener viewFocusOnChangeListener;
-    ZFListener scrollFocusedViewToVisibleDelayListener;
     zfbool autoFitFocusedViewNeedUpdate;
 
 public:
     void autoFitEnable(ZF_IN zfbool value)
     {
+        if(!this->onScreenKeyboardStateOnChangeListener)
+        {
+            ZFLISTENER_1(onScreenKeyboardStateOnChange
+                    , ZFUIOnScreenKeyboardAutoFitLayout *, pimplOwner
+                    ) {
+                _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::onScreenKeyboardStateOnChange(zfargs, pimplOwner);
+            } ZFLISTENER_END(onScreenKeyboardStateOnChange)
+            this->onScreenKeyboardStateOnChangeListener = onScreenKeyboardStateOnChange;
+        }
+
         if(value)
         {
             ZFGlobalObserver().observerAdd(
                 ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(),
-                this->onScreenKeyboardStateOnChangeListener,
-                this->pimplOwner->objectHolder());
+                this->onScreenKeyboardStateOnChangeListener);
 
             this->pimplOwner->layoutRequest();
         }
@@ -55,12 +63,21 @@ public:
     }
     void autoFitFocusedViewToVisible(ZF_IN zfbool value)
     {
+        if(!this->viewFocusOnChangeListener)
+        {
+            ZFLISTENER_1(viewFocusOnChange
+                    , ZFUIOnScreenKeyboardAutoFitLayout *, pimplOwner
+                    ) {
+                _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::viewFocusOnChange(zfargs, pimplOwner);
+            } ZFLISTENER_END(viewFocusOnChange)
+            this->viewFocusOnChangeListener = viewFocusOnChange;
+        }
+
         if(value)
         {
             ZFGlobalObserver().observerAdd(
                 ZFUIView::EventViewFocusOnChange(),
-                this->viewFocusOnChangeListener,
-                this->pimplOwner->objectHolder());
+                this->viewFocusOnChangeListener);
         }
         else
         {
@@ -127,10 +144,9 @@ public:
     }
 
 public:
-    static void onScreenKeyboardStateOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void onScreenKeyboardStateOnChange(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIOnScreenKeyboardAutoFitLayout *layout)
     {
-        ZFUIOnScreenKeyboardState *keyboardState = listenerData.senderT();
-        ZFUIOnScreenKeyboardAutoFitLayout *layout = userData->objectHolded();
+        ZFUIOnScreenKeyboardState *keyboardState = zfargs.senderT();
         if(keyboardState->keyboardShowing())
         {
             if(layout->autoFitFocusedView() != zfnull)
@@ -153,10 +169,9 @@ public:
             layout->scrollContentFrame(ZFUIRectGetBounds(layout->viewFrame()));
         }
     }
-    static void viewFocusOnChange(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+    static void viewFocusOnChange(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIOnScreenKeyboardAutoFitLayout *layout)
     {
-        ZFUIOnScreenKeyboardAutoFitLayout *layout = userData->objectHolded();
-        ZFUIView *view = listenerData.senderT();
+        ZFUIView *view = zfargs.senderT();
         if(!view->viewFocused())
         {
             if(view == layout->d->autoFitFocusedView)
@@ -185,17 +200,6 @@ public:
         layout->d->autoFitFocusedViewNeedUpdate = zftrue;
         layout->layoutRequest();
     }
-    static void scrollFocusedViewToVisibleDelay(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        ZFUIOnScreenKeyboardAutoFitLayout *layout = userData->objectHolded();
-        if(layout->autoFitFocusedView() != zfnull)
-        {
-            #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
-                zfLogTrimT() << "[ZFUIOnScreenKeyboardAutoFitLayout] scrollFocusedViewToVisible" << layout->autoFitFocusedView();
-            #endif
-            layout->scrollChildToVisible(layout->autoFitFocusedView());
-        }
-    }
 
 public:
     _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate(void)
@@ -203,9 +207,8 @@ public:
     , scrollEnableFlag(zffalse)
     , autoFitFocusedView(zfnull)
     , autoFitMargin(ZFUIMarginZero())
-    , onScreenKeyboardStateOnChangeListener(ZFCallbackForFunc(_ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::onScreenKeyboardStateOnChange))
-    , viewFocusOnChangeListener(ZFCallbackForFunc(_ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::viewFocusOnChange))
-    , scrollFocusedViewToVisibleDelayListener(ZFCallbackForFunc(_ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::scrollFocusedViewToVisibleDelay))
+    , onScreenKeyboardStateOnChangeListener()
+    , viewFocusOnChangeListener()
     , autoFitFocusedViewNeedUpdate(zffalse)
     {
     }
@@ -315,7 +318,20 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
         if(d->autoFitFocusedViewNeedUpdate)
         {
             d->autoFitFocusedViewNeedUpdate = zffalse;
-            ZFThread::post(d->scrollFocusedViewToVisibleDelayListener, this->objectHolder());
+
+            ZFUIOnScreenKeyboardAutoFitLayout *owner = this;
+            ZFLISTENER_1(scrollFocusedViewToVisibleDelay
+                    , ZFUIOnScreenKeyboardAutoFitLayout *, owner
+                    ) {
+                if(owner->autoFitFocusedView() != zfnull)
+                {
+                    #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
+                        zfLogTrimT() << "[ZFUIOnScreenKeyboardAutoFitLayout] scrollFocusedViewToVisible" << owner->autoFitFocusedView();
+                    #endif
+                    owner->scrollChildToVisible(owner->autoFitFocusedView());
+                }
+            } ZFLISTENER_END(scrollFocusedViewToVisibleDelay)
+            ZFThread::post(scrollFocusedViewToVisibleDelay);
         }
     }
 }

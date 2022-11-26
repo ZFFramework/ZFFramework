@@ -9,22 +9,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextSetupDataHolder, ZFLevelZFFrameworkEssential)
 {
-    this->nextFocusOnDeallocListener = ZFCallbackForFunc(zfself::nextFocusOnDealloc);
-}
-public:
-    ZFListener nextFocusOnDeallocListener;
-    static void nextFocusOnDealloc(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
-    {
-        ZFObjectHolder *nextFocusOwner = listenerData.sender()->objectTag<ZFObjectHolder *>(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
+    ZFLISTENER(nextFocusOnDealloc) {
+        ZFObjectHolder *nextFocusOwner = zfargs.sender()->objectTag<ZFObjectHolder *>(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
         if(nextFocusOwner == zfnull)
         {
             return ;
         }
         nextFocusOwner->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocus);
-        listenerData.sender()->observerRemove(ZFObject::EventObjectBeforeDealloc(),
+        zfargs.sender()->observerRemove(ZFObject::EventObjectBeforeDealloc(),
             ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewFocusNextSetupDataHolder)->nextFocusOnDeallocListener);
-        listenerData.sender()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
-    }
+        zfargs.sender()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
+    } ZFLISTENER_END(nextFocusOnDealloc)
+    this->nextFocusOnDeallocListener = nextFocusOnDealloc;
+}
+public:
+    ZFListener nextFocusOnDeallocListener;
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewFocusNextSetupDataHolder)
 
 ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup,

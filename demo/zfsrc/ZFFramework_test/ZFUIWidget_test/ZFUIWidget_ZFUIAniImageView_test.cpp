@@ -18,11 +18,12 @@ protected:
 
         zfblockedAlloc(ZFUIAniImageView, animatedImageView);
         container->childAdd(animatedImageView)->c_alignCenter();
-        ZFLISTENER(testCaseOnStop) {
-            ZFUIAniImageView *animatedImageView = userData->objectHolded();
+        ZFLISTENER_1(testCaseOnStop
+                , ZFUIAniImageView *, animatedImageView
+                ) {
             animatedImageView->aniStop();
         } ZFLISTENER_END(testCaseOnStop)
-        this->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop, animatedImageView->objectHolder());
+        this->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
 
         zfautoObjectT<ZFUIImage *> frameSrc = zfRes("test_normal.png");
         animatedImageView->aniLoad(frameSrc, ZFUISizeMake(
@@ -40,56 +41,67 @@ protected:
 private:
     void prepareActionLog(ZF_IN ZFUIAniImageView *animatedImageView)
     {
-        ZFLISTENER(onFrame) {
-            userData->objectHolded<ZFTestCase *>()->testCaseOutput(
+        ZFTestCase *testCase = this;
+
+        ZFLISTENER_1(onFrame
+                , ZFTestCase *, testCase
+                ) {
+            testCase->testCaseOutput(
                 "onFrame: %zi",
-                listenerData.sender()->to<ZFUIAniImageView *>()->aniFrame());
+                zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
         } ZFLISTENER_END(onFrame)
-        animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnFrame(), onFrame, this->objectHolder());
+        animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnFrame(), onFrame);
 
-        ZFLISTENER(onLoop) {
-            userData->objectHolded<ZFTestCase *>()->testCaseOutput(
+        ZFLISTENER_1(onLoop
+                , ZFTestCase *, testCase
+                ) {
+            testCase->testCaseOutput(
                 "onLoop: %zi",
-                listenerData.sender()->to<ZFUIAniImageView *>()->aniFrame());
+                zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
         } ZFLISTENER_END(onLoop)
-        animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnLoop(), onLoop, this->objectHolder());
+        animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnLoop(), onLoop);
 
-        ZFLISTENER(onStop) {
-            userData->objectHolded<ZFTestCase *>()->testCaseOutput(
+        ZFLISTENER_1(onStop
+                , ZFTestCase *, testCase
+                ) {
+            testCase->testCaseOutput(
                 "onStop: %zi",
-                listenerData.sender()->to<ZFUIAniImageView *>()->aniFrame());
+                zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
         } ZFLISTENER_END(onStop)
-        animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnStop(), onStop, this->objectHolder());
+        animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnStop(), onStop);
     }
     void prepareActionButton(ZF_IN ZFUIView *container,
                              ZF_IN ZFUIAniImageView *animatedImageView)
     {
-        ZFLISTENER(manualOnClick) {
-            ZFUIAniImageView *animatedImageView = userData->objectHolded();
+        ZFLISTENER_1(manualOnClick
+                , ZFUIAniImageView *, animatedImageView
+                ) {
             animatedImageView->aniFrameNext();
         } ZFLISTENER_END(manualOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, manualButton);
         container->childAdd(manualButton)->c_alignLeftBottom();
         manualButton->label()->text("manual");
-        manualButton->observerAdd(ZFUIButton::EventButtonOnClick(), manualOnClick, animatedImageView->objectHolder());
+        manualButton->observerAdd(ZFUIButton::EventButtonOnClick(), manualOnClick);
 
-        ZFLISTENER(startOnClick) {
-            ZFUIAniImageView *animatedImageView = userData->objectHolded();
+        ZFLISTENER_1(startOnClick
+                , ZFUIAniImageView *, animatedImageView
+                ) {
             animatedImageView->aniStart();
         } ZFLISTENER_END(startOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         container->childAdd(startButton)->c_alignBottom();
         startButton->label()->text("start");
-        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, animatedImageView->objectHolder());
+        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
 
-        ZFLISTENER(stopOnClick) {
-            ZFUIAniImageView *animatedImageView = userData->objectHolded();
+        ZFLISTENER_1(stopOnClick
+                , ZFUIAniImageView *, animatedImageView
+                ) {
             animatedImageView->aniStop();
         } ZFLISTENER_END(stopOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, stopButton);
         container->childAdd(stopButton)->c_alignRightBottom();
         stopButton->label()->text("stop");
-        stopButton->observerAdd(ZFUIButton::EventButtonOnClick(), stopOnClick, animatedImageView->objectHolder());
+        stopButton->observerAdd(ZFUIButton::EventButtonOnClick(), stopOnClick);
     }
     void prepareSettingButton(ZF_IN ZFUIWindow *window,
                               ZF_IN ZFUIAniImageView *animatedImageView)

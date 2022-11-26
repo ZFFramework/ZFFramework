@@ -83,7 +83,7 @@ private:
  * typical usage:
  * @code
  *   ZFLISTENER(onRecv) {
- *       ZFJsonItem response = listenerData.param0()->to<ZFHttpResponse *>()->bodyJson();
+ *       ZFJsonItem response = zfargs.param0()->to<ZFHttpResponse *>()->bodyJson();
  *       zfLogTrimT() << response;
  *   } ZFLISTENER_END(onRecv)
  *   zflineAlloc(ZFHttpRequest, "http://xxx", "POST")
@@ -189,9 +189,8 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
      * sender is the owner #ZFHttpRequest,
      * param0 is the #ZFHttpResponse
      */
-    ZFMETHOD_DECLARE_2(ZFHttpRequest *, request,
-                       ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+    ZFMETHOD_DECLARE_1(ZFHttpRequest *, request,
+                       ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()))
 
     /** @brief cancel the request */
     ZFMETHOD_DECLARE_0(void, requestCancel)

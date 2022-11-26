@@ -15,7 +15,6 @@ public:
     zfidentity taskId;
     zfidentity eventId;
     ZFListener observer;
-    ZFObject *userData; // no auto retain, manually retain or release
     ZFObject *owner;
     ZFLevel observerLevel;
     zfbool autoRemoveAfterActivate;
@@ -26,24 +25,18 @@ public:
     explicit _ZFP_ZFObserverData(ZF_IN zfidentity taskId,
                                  ZF_IN zfidentity eventId,
                                  ZF_IN const ZFListener &observer,
-                                 ZF_IN ZFObject *userData,
                                  ZF_IN ZFObject *owner,
                                  ZF_IN ZFLevel observerLevel,
                                  ZF_IN zfbool autoRemoveAfterActivate)
     : taskId(taskId)
     , eventId(eventId)
     , observer(observer)
-    , userData(userData)
     , owner(owner)
     , observerLevel(observerLevel)
     , autoRemoveAfterActivate(autoRemoveAfterActivate)
     , pPrev(zfnull)
     , pNext(zfnull)
     {
-    }
-    ~_ZFP_ZFObserverData(void)
-    {
-        zfunsafe_zfRelease(this->userData);
     }
 private:
     _ZFP_ZFObserverData(ZF_IN const _ZFP_ZFObserverData &ref);
@@ -217,7 +210,6 @@ zfbool ZFObserverHolder::operator == (ZF_IN ZFObserverHolder const &ref) const
 
 zfidentity ZFObserverHolder::observerAdd(ZF_IN zfidentity eventId,
                                          ZF_IN const ZFListener &observer,
-                                         ZF_IN_OPT ZFObject *userData /* = zfnull */,
                                          ZF_IN_OPT ZFObject *owner /* = zfnull */,
                                          ZF_IN_OPT zfbool autoRemoveAfterActivate /* = zffalse */,
                                          ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */) const
@@ -244,7 +236,6 @@ zfidentity ZFObserverHolder::observerAdd(ZF_IN zfidentity eventId,
             , taskId
             , eventId
             , observer
-            , zfunsafe_zfRetain(userData)
             , owner
             , observerLevel
             , autoRemoveAfterActivate
@@ -292,7 +283,6 @@ zfidentity ZFObserverHolder::observerAdd(ZF_IN const ZFObserverAddParam &param) 
     return this->observerAdd(
         param.eventId(),
         param.observer(),
-        param.userData(),
         param.owner(),
         param.autoRemoveAfterActivate(),
         param.observerLevel());
@@ -337,9 +327,7 @@ void ZFObserverHolder::observerMoveToFirst(ZF_IN zfidentity taskId) const
     p->pNext = pos;
 }
 void ZFObserverHolder::observerRemove(ZF_IN zfidentity eventId,
-                                      ZF_IN const ZFListener &callback,
-                                      ZF_IN_OPT ZFObject *userData /* = zfnull */,
-                                      ZF_IN_OPT ZFComparer<ZFObject *>::Comparer userDataComparer /* = ZFComparerCheckEqual */) const
+                                      ZF_IN const ZFListener &callback) const
 {
     zfCoreMutexLocker();
 
@@ -349,8 +337,7 @@ void ZFObserverHolder::observerRemove(ZF_IN zfidentity eventId,
         _ZFP_ZFObserverData *p = it->second;
         do
         {
-            if(p->observer.objectCompareByInstance(callback) == ZFCompareTheSame
-                && (userData == zfnull || userDataComparer(userData, p->userData) == ZFCompareTheSame))
+            if(p->observer.objectCompareByInstance(callback) == ZFCompareTheSame)
             {
                 d->observerDetach(it, p);
 
@@ -539,21 +526,21 @@ void ZFObserverHolder::observerNotifyWithCustomSender(ZF_IN ZFObject *customSend
     _ZFP_ZFObserverData *toDelete = zfnull;
 
     d->observerNotifyPrepare(toNotify, toDelete, eventId, this->observerOwner());
-    ZFListenerData listenerData(eventId, customSender, param0, param1);
-    listenerData.eventFilterEnable(zftrue);
+    ZFArgs zfargs(eventId, customSender, param0, param1);
+    zfargs.eventFilterEnable(zftrue);
     if(this->observerOwner() != zfnull)
     {
-        this->observerOwner()->observerOnEvent(listenerData);
+        this->observerOwner()->observerOnEvent(zfargs);
         ZFGlobalObserver().d->observerNotifyPrepare(toNotify, toDelete, eventId, this->observerOwner());
     }
     zfCoreMutexUnlock();
 
     if(!toNotify.empty())
     {
-        for(zfstlsize i = 0; i < toNotify.size() && !listenerData.eventFiltered(); ++i)
+        for(zfstlsize i = 0; i < toNotify.size() && !zfargs.eventFiltered(); ++i)
         {
             const _ZFP_ZFObserverData &observerData = *(toNotify[i]);
-            observerData.observer.execute(listenerData, observerData.userData);
+            observerData.observer.execute(zfargs);
         }
     }
 

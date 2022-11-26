@@ -440,25 +440,23 @@ ZFMETHOD_DEFINE_1(ZFUIButton, void, simulateClick,
     d->buttonClicked(event);
 }
 
-ZFMETHOD_DEFINE_5(ZFUIButton, zfidentity, onClick,
+ZFMETHOD_DEFINE_4(ZFUIButton, zfidentity, onClick,
                   ZFMP_IN(const ZFListener &, observer),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull),
                   ZFMP_IN_OPT(ZFObject *, owner, zfnull),
                   ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse),
                   ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 {
     return this->observerAdd(ZFUIButton::EventButtonOnClick(),
-            observer, userData, owner, autoRemoveAfterActivate, observerLevel
+            observer, owner, autoRemoveAfterActivate, observerLevel
         );
 }
-ZFMETHOD_DEFINE_4(ZFUIButton, zfidentity, onClickForOnce,
+ZFMETHOD_DEFINE_3(ZFUIButton, zfidentity, onClickForOnce,
                   ZFMP_IN(const ZFListener &, observer),
-                  ZFMP_IN_OPT(ZFObject *, userData, zfnull),
                   ZFMP_IN_OPT(ZFObject *, owner, zfnull),
                   ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 {
     return this->observerAddForOnce(ZFUIButton::EventButtonOnClick(),
-            observer, userData, owner, observerLevel
+            observer, owner, observerLevel
         );
 }
 

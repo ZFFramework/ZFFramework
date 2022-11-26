@@ -96,7 +96,6 @@ public:
      */
     ZFPROPERTY_ASSIGN(ZFListener, buttonTextGetter)
     ZFPROPERTY_ASSIGN(ZFListener, buttonClickListener)
-    ZFPROPERTY_RETAIN(ZFObject *, userData)
 
 public:
     zffinal void settingUpdate(void)
@@ -106,13 +105,11 @@ public:
 
 protected:
     virtual void objectOnInit(ZF_IN const ZFListener &buttonTextGetter,
-                              ZF_IN const ZFListener &buttonClickListener,
-                              ZF_IN_OPT ZFObject *userData = zfnull)
+                              ZF_IN const ZFListener &buttonClickListener)
     {
         this->objectOnInit();
         this->buttonTextGetter(buttonTextGetter);
         this->buttonClickListener(buttonClickListener);
-        this->userData(userData);
     }
     zfoverride
     virtual void objectOnInit(void)
@@ -126,8 +123,7 @@ extern void ZFUIKit_test_prepareSettingButtonWithTestWindow(ZF_IN ZFUIWindow *wi
 extern void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
                                                    ZF_IN ZFObject *obj,
                                                    ZF_IN const ZFProperty *property,
-                                                   ZF_IN const ZFListener &nextCallback,
-                                                   ZF_IN ZFObject *userData);
+                                                   ZF_IN const ZFListener &nextCallback);
 
 // ============================================================
 extern void ZFUIKit_test_prepareSettingForBoolProperty(ZF_IN_OUT ZFArray *settings,
@@ -162,12 +158,14 @@ protected:
 };
 #define ZFUIKit_test_prepareSettingForNormalProperty(settings, obj_, PropertyType, property_, propertyValues_) \
     do { \
-        zfblockedAlloc(_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder, userData); \
-        userData->obj = obj_; \
-        userData->property = property_; \
-        userData->propertyValues = propertyValues_.refNew(); \
-        ZFLISTENER(nextCallback) { \
-            _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *holder = userData->toAny(); \
+        zfblockedAlloc(_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder, taskData); \
+        taskData->obj = obj_; \
+        taskData->property = property_; \
+        taskData->propertyValues = propertyValues_.refNew(); \
+        ZFLISTENER_1(nextCallback \
+                , zfautoObjectT<_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *>, taskData \
+                ) { \
+            _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *holder = taskData; \
             ZFCoreArray<PropertyType> const &propertyValues = *(const ZFCoreArray<PropertyType> *)holder->propertyValues; \
             ++(holder->index); \
             if(holder->index >= propertyValues.count()) \
@@ -177,7 +175,7 @@ protected:
             holder->property->setterMethod()->execute<void ZFM_COMMA() PropertyType const &>( \
                 holder->obj, propertyValues[holder->index]); \
         } ZFLISTENER_END(nextCallback) \
-        ZFUIKit_test_prepareSettingForProperty(settings, userData->obj, userData->property, nextCallback, userData); \
+        ZFUIKit_test_prepareSettingForProperty(settings, taskData->obj, taskData->property, nextCallback); \
     } while(zffalse)
 
 extern void ZFUIKit_test_prepareSettingForLayoutRequest(ZF_IN_OUT ZFArray *settings,

@@ -41,6 +41,7 @@ ZFProperty::ZFProperty(void)
 , callbackValueReset(zfnull)
 , callbackUserRegisterInitValueSetup(zfnull)
 , _ZFP_ZFPropertyNeedInit(zftrue)
+, _ZFP_ZFProperty_refCount(1)
 , _ZFP_ZFProperty_propertyInternalId()
 , _ZFP_ZFProperty_propertyIsUserRegister(zffalse)
 , _ZFP_ZFProperty_propertyIsDynamicRegister(zffalse)
@@ -102,22 +103,10 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
 }
 
 // ============================================================
-zfclassLikePOD _ZFP_ZFPropertyMapData
-{
-public:
-    zfuint refCount;
-    ZFProperty propertyInfo;
-public:
-    _ZFP_ZFPropertyMapData(void)
-    : refCount(1)
-    , propertyInfo()
-    {
-    }
-};
 ZF_STATIC_INITIALIZER_INIT(ZFPropertyDataHolder)
 {
 }
-ZFCoreMap propertyMap; // _ZFP_ZFPropertyMapData *
+ZFCoreMap propertyMap; // ZFProperty *
 ZF_STATIC_INITIALIZER_END(ZFPropertyDataHolder)
 #define _ZFP_ZFPropertyMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFPropertyDataHolder)->propertyMap)
 
@@ -131,10 +120,10 @@ void ZFPropertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
     {
         for(zfiterator it = m.iter(); m.iterValid(it); m.iterNext(it))
         {
-            _ZFP_ZFPropertyMapData *v = m.iterValue<_ZFP_ZFPropertyMapData *>(it);
-            if(propertyFilter->filterCheckActive(&(v->propertyInfo)))
+            ZFProperty *v = m.iterValue<ZFProperty *>(it);
+            if(propertyFilter->filterCheckActive(v))
             {
-                ret.add(&(v->propertyInfo));
+                ret.add(v);
             }
         }
     }
@@ -142,8 +131,8 @@ void ZFPropertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
     {
         for(zfiterator it = m.iter(); m.iterValid(it); m.iterNext(it))
         {
-            _ZFP_ZFPropertyMapData *v = m.iterValue<_ZFP_ZFPropertyMapData *>(it);
-            ret.add(&(v->propertyInfo));
+            ZFProperty *v = m.iterValue<ZFProperty *>(it);
+            ret.add(v);
         }
     }
 }
@@ -155,53 +144,53 @@ static void _ZFP_ZFPropertyInstanceSig(ZF_OUT zfstring &ret,
 {
     if(classNameFull)
     {
-        ret += classNameFull;
+        zfindexToString(ret, _ZFP_ZFSigForName(classNameFull));
     }
     ret += ':';
     if(propertyName)
     {
-        ret += propertyName;
+        zfindexToString(ret, _ZFP_ZFSigForName(propertyName));
     }
 }
 static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfchar *propertyInternalId)
 {
     zfCoreMutexLocker();
-    _ZFP_ZFPropertyMapData *v = _ZFP_ZFPropertyMap.get<_ZFP_ZFPropertyMapData *>(propertyInternalId);
+    ZFProperty *v = _ZFP_ZFPropertyMap.get<ZFProperty *>(propertyInternalId);
     if(v == zfnull)
     {
         return zfnull;
     }
     else
     {
-        return &(v->propertyInfo);
+        return v;
     }
 }
 static ZFProperty *_ZFP_ZFPropertyInstanceAccess(ZF_IN const zfchar *propertyInternalId)
 {
     zfCoreMutexLocker();
-    _ZFP_ZFPropertyMapData *v = _ZFP_ZFPropertyMap.get<_ZFP_ZFPropertyMapData *>(propertyInternalId);
+    ZFProperty *v = _ZFP_ZFPropertyMap.get<ZFProperty *>(propertyInternalId);
     if(v == zfnull)
     {
-        v = zfnew(_ZFP_ZFPropertyMapData);
-        _ZFP_ZFPropertyMap.set(propertyInternalId, ZFCorePointerForObject<_ZFP_ZFPropertyMapData *>(v));
-        v->propertyInfo._ZFP_ZFProperty_propertyInternalId = propertyInternalId;
+        v = zfnew(ZFProperty);
+        _ZFP_ZFPropertyMap.set(propertyInternalId, ZFCorePointerForObject<ZFProperty *>(v));
+        v->_ZFP_ZFProperty_propertyInternalId = propertyInternalId;
     }
     else
     {
-        ++(v->refCount);
+        ++(v->_ZFP_ZFProperty_refCount);
     }
-    return &(v->propertyInfo);
+    return v;
 }
 static zfbool _ZFP_ZFPropertyInstanceCleanup(ZF_IN const ZFProperty *property)
 {
     zfCoreMutexLocker();
-    _ZFP_ZFPropertyMapData *v = _ZFP_ZFPropertyMap.get<_ZFP_ZFPropertyMapData *>(property->propertyInternalId());
+    ZFProperty *v = _ZFP_ZFPropertyMap.get<ZFProperty *>(property->propertyInternalId());
     if(v == zfnull)
     {
         return zffalse;
     }
-    --(v->refCount);
-    if(v->refCount == 0)
+    --(v->_ZFP_ZFProperty_refCount);
+    if(v->_ZFP_ZFProperty_refCount == 0)
     {
         _ZFP_ZFPropertyMap.remove(property->propertyInternalId());
     }

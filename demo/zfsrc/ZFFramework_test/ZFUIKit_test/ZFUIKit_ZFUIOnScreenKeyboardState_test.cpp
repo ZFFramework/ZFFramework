@@ -6,35 +6,37 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
 {
     this->observerOwner = zflineAlloc(ZFArray);
 
-    ZFLISTENER(sysWindowOnCreate) {
+    ZFLISTENER_1(sysWindowOnCreate
+            , ZFArray *, observerOwner
+            ) {
         ZFLISTENER(action) {
-            zfLogTrimT() << "[ZFUIOnScreenKeyboardState] state changed:" << listenerData.sender();
+            zfLogTrimT() << "[ZFUIOnScreenKeyboardState] state changed:" << zfargs.sender();
         } ZFLISTENER_END(action)
-        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(listenerData.sender()->toAny());
+        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
         state->observerAdd(ZFObserverAddParam()
             .eventId(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange())
             .observer(action)
-            .owner(userData)
+            .owner(observerOwner)
             );
-        userData->to<ZFArray *>()->add(state->objectHolder());
+        observerOwner->add(state->objectHolder());
     } ZFLISTENER_END(sysWindowOnCreate)
     ZFGlobalObserver().observerAdd(ZFObserverAddParam()
             .eventId(ZFUISysWindow::EventSysWindowOnCreate())
             .observer(sysWindowOnCreate)
             .owner(this->observerOwner)
-            .userData(this->observerOwner)
         );
 
-    ZFLISTENER(sysWindowOnDestroy) {
-        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(listenerData.sender()->toAny());
-        state->observerRemoveByOwner(userData);
-        userData->to<ZFArray *>()->removeElement(state->objectHolder());
+    ZFLISTENER_1(sysWindowOnDestroy
+            , ZFArray *, observerOwner
+            ) {
+        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
+        state->observerRemoveByOwner(observerOwner);
+        observerOwner->removeElement(state->objectHolder());
     } ZFLISTENER_END(sysWindowOnDestroy)
     ZFGlobalObserver().observerAdd(ZFObserverAddParam()
             .eventId(ZFUISysWindow::EventSysWindowOnDestroy())
             .observer(sysWindowOnDestroy)
             .owner(this->observerOwner)
-            .userData(this->observerOwner)
         );
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardState_test)
@@ -43,7 +45,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardState_test)
     ZFArray *attached = this->observerOwner;
     for(zfindex i = 0; i < attached->count(); ++i)
     {
-        attached->get(i)->objectHolded()->observerRemoveByOwner(this->observerOwner);
+        ZFObjectHolder *stateHolder = attached->get(i)->toAny();
+        stateHolder->objectHolded()->observerRemoveByOwner(this->observerOwner);
     }
 }
 zfautoObject observerOwner;

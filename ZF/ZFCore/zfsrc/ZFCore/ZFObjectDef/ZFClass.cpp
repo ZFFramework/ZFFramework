@@ -142,7 +142,6 @@ public:
     {
     public:
         ZFListener observer;
-        zfautoObject userData;
         ZFObject *owner;
         ZFLevel observerLevel;
     };
@@ -554,7 +553,6 @@ const ZFClass *ZFClass::classForName(ZF_IN const zfchar *className,
 // ============================================================
 // instance observer
 void ZFClass::instanceObserverAdd(ZF_IN const ZFListener &observer,
-                                  ZF_IN_OPT ZFObject *userData /* = zfnull */,
                                   ZF_IN_OPT ZFObject *owner /* = zfnull */,
                                   ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */,
                                   ZF_IN_OPT zfbool observeAllChildType /* = zftrue */) const
@@ -566,7 +564,6 @@ void ZFClass::instanceObserverAdd(ZF_IN const ZFListener &observer,
 
     _ZFP_ZFClassPrivate::InstanceObserverData *data = zfnew(_ZFP_ZFClassPrivate::InstanceObserverData);
     data->observer = observer;
-    data->userData = userData;
     data->owner = owner;
     data->observerLevel = observerLevel;
     d->instanceObserver.push_back(ZFCorePointerForObject<_ZFP_ZFClassPrivate::InstanceObserverData *>(data));
@@ -614,12 +611,12 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const
 {
     if(!d->instanceObserverCached.empty())
     {
-        ZFListenerData listenerData(ZFObject::EventObjectAfterAlloc(), obj);
-        listenerData.eventFilterEnable(zftrue);
-        for(zfstlsize i = 0; i < d->instanceObserverCached.size() && !listenerData.eventFiltered(); ++i)
+        ZFArgs zfargs(ZFObject::EventObjectAfterAlloc(), obj);
+        zfargs.eventFilterEnable(zftrue);
+        for(zfstlsize i = 0; i < d->instanceObserverCached.size() && !zfargs.eventFiltered(); ++i)
         {
             _ZFP_ZFClassPrivate::InstanceObserverData &data = *(d->instanceObserverCached[i]);
-            data.observer.execute(listenerData, data.userData.toObject());
+            data.observer.execute(zfargs);
         }
     }
 }

@@ -49,13 +49,12 @@ public:
     }
 
 public:
-    ZFMETHOD_INLINE_2(void, threadCallback,
-                      ZFMP_IN(const ZFListenerData &, listenerData),
-                      ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_INLINE_1(void, threadCallback,
+                      ZFMP_IN(const ZFArgs &, zfargs))
     {
         zfRetain(this);
         zfblockedRelease(this);
-        zfidentity curId = userData->to<v_zfidentity *>()->zfv;
+        zfidentity curId = zfargs.param0()->to<v_zfidentity *>()->zfv;
 
         // delay
         if(curId != this->threadCallbackTaskId) {return ;}

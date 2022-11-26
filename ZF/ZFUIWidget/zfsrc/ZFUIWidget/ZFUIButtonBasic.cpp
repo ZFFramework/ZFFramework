@@ -12,12 +12,44 @@ public:
     ZFUIImageView *iconView;
     ZFUIImageView *backgroundView;
 
+    ZFListener labelNormalChangedListener;
+    ZFListener labelHighlightedChangedListener;
+    ZFListener labelCheckedChangedListener;
+    ZFListener labelCheckedHighlightedChangedListener;
+    ZFListener labelDisabledChangedListener;
+    ZFListener iconNormalChangedListener;
+    ZFListener iconHighlightedChangedListener;
+    ZFListener iconCheckedChangedListener;
+    ZFListener iconCheckedHighlightedChangedListener;
+    ZFListener iconDisabledChangedListener;
+    ZFListener backgroundNormalChangedListener;
+    ZFListener backgroundHighlightedChangedListener;
+    ZFListener backgroundCheckedChangedListener;
+    ZFListener backgroundCheckedHighlightedChangedListener;
+    ZFListener backgroundDisabledChangedListener;
+
 public:
     _ZFP_ZFUIButtonBasicPrivate(void)
     : pimplOwner(zfnull)
     , labelView(zfnull)
     , iconView(zfnull)
     , backgroundView(zfnull)
+
+    , labelNormalChangedListener()
+    , labelHighlightedChangedListener()
+    , labelCheckedChangedListener()
+    , labelCheckedHighlightedChangedListener()
+    , labelDisabledChangedListener()
+    , iconNormalChangedListener()
+    , iconHighlightedChangedListener()
+    , iconCheckedChangedListener()
+    , iconCheckedHighlightedChangedListener()
+    , iconDisabledChangedListener()
+    , backgroundNormalChangedListener()
+    , backgroundHighlightedChangedListener()
+    , backgroundCheckedChangedListener()
+    , backgroundCheckedHighlightedChangedListener()
+    , backgroundDisabledChangedListener()
     {
     }
 
@@ -146,111 +178,63 @@ public:
         }
         this->backgroundView->image(value);
     }
-
-public:
-    #define _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(T_Component, T_State) \
-        static void T_Component##T_State##Changed(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData) \
-        { \
-            const ZFProperty *property = listenerData.param0()->to<v_ZFProperty *>()->zfv; \
-            ZFUIButtonBasic *button = userData->objectHolded(); \
-            button->d->T_Component##ViewPrepare(); \
-            if(button->buttonState() == ZFUIButtonState::e_##T_State) \
-            { \
-                ZFPropertyCopy(property, button->T_Component##View()->toObject(), listenerData.sender()); \
-            } \
-        }
-
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(label, Normal)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(label, Highlighted)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(label, Checked)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(label, CheckedHighlighted)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(label, Disabled)
-
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(icon, Normal)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(icon, Highlighted)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(icon, Checked)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(icon, CheckedHighlighted)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(icon, Disabled)
-
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(background, Normal)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(background, Highlighted)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(background, Checked)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(background, CheckedHighlighted)
-    _ZFP_ZFUIButtonBasic_LISTENER_EXPAND_STYLE_CHANGED(background, Disabled)
 };
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIButtonBasicListenerHolder, ZFLevelZFFrameworkEssential)
-{
-    this->labelNormalChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::labelNormalChanged);
-    this->labelHighlightedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::labelHighlightedChanged);
-    this->labelCheckedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::labelCheckedChanged);
-    this->labelCheckedHighlightedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::labelCheckedHighlightedChanged);
-    this->labelDisabledChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::labelDisabledChanged);
-    this->iconNormalChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::iconNormalChanged);
-    this->iconHighlightedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::iconHighlightedChanged);
-    this->iconCheckedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::iconCheckedChanged);
-    this->iconCheckedHighlightedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::iconCheckedHighlightedChanged);
-    this->iconDisabledChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::iconDisabledChanged);
-    this->backgroundNormalChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::backgroundNormalChanged);
-    this->backgroundHighlightedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::backgroundHighlightedChanged);
-    this->backgroundCheckedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::backgroundCheckedChanged);
-    this->backgroundCheckedHighlightedChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::backgroundCheckedHighlightedChanged);
-    this->backgroundDisabledChangedListener = ZFCallbackForFunc(_ZFP_ZFUIButtonBasicPrivate::backgroundDisabledChanged);
-}
-public:
-    ZFListener labelNormalChangedListener;
-    ZFListener labelHighlightedChangedListener;
-    ZFListener labelCheckedChangedListener;
-    ZFListener labelCheckedHighlightedChangedListener;
-    ZFListener labelDisabledChangedListener;
-    ZFListener iconNormalChangedListener;
-    ZFListener iconHighlightedChangedListener;
-    ZFListener iconCheckedChangedListener;
-    ZFListener iconCheckedHighlightedChangedListener;
-    ZFListener iconDisabledChangedListener;
-    ZFListener backgroundNormalChangedListener;
-    ZFListener backgroundHighlightedChangedListener;
-    ZFListener backgroundCheckedChangedListener;
-    ZFListener backgroundCheckedHighlightedChangedListener;
-    ZFListener backgroundDisabledChangedListener;
-ZF_GLOBAL_INITIALIZER_END(ZFUIButtonBasicListenerHolder)
 
 // ============================================================
 // ZFUIButtonBasic
 ZFOBJECT_REGISTER(ZFUIButtonBasic)
 ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
 
-#define _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(T_Type, T_Component, T_State) \
+#define _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(T_Type, T_Component, T_State, CkClass, CkProp) \
     ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonBasic, T_Type, T_Component##T_State) \
     { \
+        if(!d->T_Component##T_State##ChangedListener) \
+        { \
+            ZFUIButtonBasic *button = this; \
+            ZFLISTENER_1(callback \
+                    , ZFUIButtonBasic *, button \
+                    ) { \
+                const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv; \
+                button->d->T_Component##ViewPrepare(); \
+                if(button->buttonState() == ZFUIButtonState::e_##T_State) \
+                { \
+                    ZFPropertyCopy(property, button->T_Component##View()->toObject(), zfargs.sender()); \
+                } \
+                else if(property == ZFPropertyAccess(CkClass, CkProp)) \
+                { \
+                    button->d->T_Component##ViewUpdate(); \
+                } \
+            } ZFLISTENER_END(callback) \
+            d->T_Component##T_State##ChangedListener = callback; \
+        } \
         this->T_Component##T_State()->toObject()->observerAdd( \
             ZFObject::EventObjectPropertyValueOnUpdate(), \
-            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIButtonBasicListenerHolder)->T_Component##T_State##ChangedListener, \
-            this->objectHolder()); \
+            d->T_Component##T_State##ChangedListener); \
     } \
     ZFPROPERTY_ON_DETACH_DEFINE(ZFUIButtonBasic, T_Type, T_Component##T_State) \
     { \
         this->T_Component##T_State()->toObject()->observerRemove( \
             ZFObject::EventObjectPropertyValueOnUpdate(), \
-            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIButtonBasicListenerHolder)->T_Component##T_State##ChangedListener); \
+            d->T_Component##T_State##ChangedListener); \
     }
 
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Normal)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Highlighted)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Checked)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, CheckedHighlighted)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Disabled)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Normal, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Highlighted, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Checked, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, CheckedHighlighted, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Disabled, ZFUITextView, text)
 
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Normal)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Highlighted)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Checked)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, CheckedHighlighted)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Disabled)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Normal, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Highlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Checked, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, CheckedHighlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Disabled, ZFUIImageView, image)
 
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Normal)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Highlighted)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Checked)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, CheckedHighlighted)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Disabled)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Normal, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Highlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Checked, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, CheckedHighlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Disabled, ZFUIImageView, image)
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelNormal)
 {

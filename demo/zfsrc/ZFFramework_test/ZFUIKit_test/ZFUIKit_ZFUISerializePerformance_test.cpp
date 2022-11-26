@@ -71,10 +71,12 @@ protected:
         container->childAdd(startButton)->c_alignTop();
         startButton->label()->text("start");
 
-        ZFLISTENER(onStart) {
-            ZFUIKit_ZFUISerializePerformance_test *owner = userData->objectTag("owner")->objectHolded();
+        zfself *owner = this;
+        ZFLISTENER_2(onStart
+                , zfself *, owner
+                , zfautoObjectT<ZFUITextView *>, outputView
+                ) {
             zfautoObject testObject = owner->prepareTestObject();
-            ZFUITextView *outputView = userData->objectTag<ZFUITextView *>("outputView");
             outputView->text("running...");
             ZFSerializableData data = ZFObjectToData(testObject);
 
@@ -111,10 +113,7 @@ protected:
             ZFCoreStatistic::invokeTimeRemove("ZFUISerializePerformance_test_toData");
             ZFCoreStatistic::invokeTimeRemove("ZFUISerializePerformance_test_fromData");
         } ZFLISTENER_END(onStart)
-        zfblockedAlloc(ZFObject, userData);
-        userData->objectTag("owner", this->objectHolder());
-        userData->objectTag("outputView", outputView);
-        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), onStart, userData);
+        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), onStart);
 
         this->prepareSettingButton(window);
     }
@@ -127,15 +126,18 @@ private:
         { // auto scroll x
             zfblockedAlloc(ZFUIKit_test_SettingData, setting);
             settings->add(setting);
-            setting->userData(this->objectHolder());
+
             ZFLISTENER(buttonTextGetter) {
-                v_zfstring *text = listenerData.param0T();
+                v_zfstring *text = zfargs.param0T();
                 text->zfv = "change test object";
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);
-            ZFLISTENER(buttonClickListener) {
-                ZFUIKit_ZFUISerializePerformance_test *t = userData->objectHolded();
-                t->testObjectType = ((t->testObjectType + 1) % t->testObjectTypeCount);
+
+            zfself *owner = this;
+            ZFLISTENER_1(buttonClickListener
+                    , zfself *, owner
+                    ) {
+                owner->testObjectType = ((owner->testObjectType + 1) % owner->testObjectTypeCount);
             } ZFLISTENER_END(buttonClickListener)
             setting->buttonClickListener(buttonClickListener);
         }

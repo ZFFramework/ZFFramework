@@ -49,7 +49,6 @@ public:
      * customAniCallback's param0 is a #v_zffloat holds the ani progress
      */
     const ZFAniBuilder &customAni(ZF_IN const ZFListener &customAniCallback,
-                                  ZF_IN_OPT ZFObject *userData = zfnull,
                                   ZF_IN_OPT zftimet aniDuration = 0,
                                   ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull) const;
 
@@ -61,19 +60,19 @@ public:
 
 public:
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnInvalid(ZF_IN const ZFListener &cb, ZF_IN_OPT ZFObject *userData = zfnull) const;
+    const ZFAniBuilder &aniOnInvalid(ZF_IN const ZFListener &cb) const;
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnStart(ZF_IN const ZFListener &cb, ZF_IN_OPT ZFObject *userData = zfnull) const;
+    const ZFAniBuilder &aniOnStart(ZF_IN const ZFListener &cb) const;
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnStop(ZF_IN const ZFListener &cb, ZF_IN_OPT ZFObject *userData = zfnull) const;
+    const ZFAniBuilder &aniOnStop(ZF_IN const ZFListener &cb) const;
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnStopOrInvalid(ZF_IN const ZFListener &cb, ZF_IN_OPT ZFObject *userData = zfnull) const;
+    const ZFAniBuilder &aniOnStopOrInvalid(ZF_IN const ZFListener &cb) const;
 
 public:
     /** @brief get the impl animation */
     const ZFAniBuilder &aniStart(void) const;
     /** @brief get the impl animation */
-    const ZFAniBuilder &aniStart(ZF_IN const ZFListener &onStopOrOnInvalidCallback, ZF_IN_OPT ZFObject *userData = zfnull) const;
+    const ZFAniBuilder &aniStart(ZF_IN const ZFListener &onStopOrOnInvalidCallback) const;
 
     /** @brief get the aniTarget */
     ZFObject *aniTarget(void) const;

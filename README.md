@@ -51,9 +51,8 @@ ZFMAIN_ENTRY() // app starts from here
     window->childAdd(button)->c_alignBottom()->c_margin(40);
     button->label()->text("click me");
     ZFLISTENER(onClick) {
-        ZFUIButtonBasic *button = userData->objectHolded();
+        ZFUIButtonBasic *button = zfargs.senderT();
         zfLogTrimT() << "button clicked:" << button;
-        zfLogTrimT() << "sender:" << listenerData.sender();
     } ZFLISTENER_END(onClick)
     button->onClick(onClick, button->objectHolder());
 }
@@ -79,9 +78,8 @@ local button = ZFUIButtonBasic.ClassData():newInstance()
 window:childAdd(button):alignBottom():margin(40)
 button:label():text('click me')
 button:onClick(
-    function (listenerData, userData)
-        zfLog('button clicked: %s', userData:objectHolded())
-        zfLog('sender: %s', listenerData:sender())
+    function (zfargs)
+        zfLog('button clicked: %s', zfargs:sender())
     end,
     button:objectHolder())
 ```
@@ -100,7 +98,7 @@ ZFMAIN_ENTRY()
             .method("void", "testFunc", ZFMP()
                 .mp("zfstring", "testParam0")
                 , ZFListenerForLambda({
-                    ZFMethodInvokeData *m = listenerData.param0T();
+                    ZFMethodInvokeData *m = zfargs.param0T();
                     zfLogTrimT() << m->invokerMethod << "called, param0:" << m->param0;
                 }))
         .classEnd();
@@ -110,8 +108,8 @@ ZFMAIN_ENTRY()
         "    :classBegin('MyChildView', 'MyBaseView')\n"
         "        :method('void', 'testFunc', ZFMP()\n"
         "            :mp('zfstring', 'testParam0')\n"
-        "            , function(listenerData, userData)\n"
-        "                local m = listenerData:param0()\n"
+        "            , function(zfargs)\n"
+        "                local m = zfargs:param0()\n"
         "                m:callSuper()\n"
         "                zfLogTrim('%s called, param0: %s', m:invokerMethod(), m:param0())\n"
         "            end)\n"

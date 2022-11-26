@@ -35,17 +35,19 @@ private:
         { // wrap or fill
             zfblockedAlloc(ZFUIKit_test_SettingData, setting);
             settings->add(setting);
-            setting->userData(zflineAlloc(ZFObject));
-            setting->userData()->objectTag("imageView", imageView->objectHolder());
-            ZFLISTENER(buttonTextGetter) {
-                ZFUIImageView *imageView = userData->objectTag("imageView")->objectHolded();
-                v_zfstring *text = listenerData.param0T();
+
+            ZFLISTENER_1(buttonTextGetter
+                    , ZFUIImageView *, imageView
+                    ) {
+                v_zfstring *text = zfargs.param0T();
                 zfbool fill = (imageView->layoutParam()->sizeParam().width == ZFUISizeType::e_Fill);
                 text->zfv = fill ? "fill" : "wrap";
             } ZFLISTENER_END(buttonTextGetter)
             setting->buttonTextGetter(buttonTextGetter);
-            ZFLISTENER(buttonClickListener) {
-                ZFUIImageView *imageView = userData->objectTag("imageView")->objectHolded();
+
+            ZFLISTENER_1(buttonClickListener
+                    , ZFUIImageView *, imageView
+                    ) {
                 zfbool fill = (imageView->layoutParam()->sizeParam().width == ZFUISizeType::e_Fill);
                 imageView->layoutParam()->sizeParam(fill ? ZFUISizeParamWrapWrap() : ZFUISizeParamFillFill());
             } ZFLISTENER_END(buttonClickListener)

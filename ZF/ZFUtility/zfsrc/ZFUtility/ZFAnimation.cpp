@@ -190,16 +190,16 @@ void ZFAnimation::aniImplDelay(void)
 {
     ++(d->aniDelayTaskId);
     zfidentity aniDelayTaskId = d->aniDelayTaskId;
-    ZFLISTENER_1(delayOnFinish
+    ZFAnimation *owner = this;
+    ZFLISTENER_2(delayOnFinish
             , zfidentity, aniDelayTaskId
+            , ZFAnimation *, owner
             ) {
-        ZFAnimation *ani = userData->objectHolded();
-        ani->_ZFP_ZFAnimation_aniImplDelayNotifyFinish(aniDelayTaskId);
+        owner->_ZFP_ZFAnimation_aniImplDelayNotifyFinish(aniDelayTaskId);
     } ZFLISTENER_END(delayOnFinish)
     d->aniDelayTimer = ZFTimerOnce(
         this->aniDelay(),
-        delayOnFinish,
-        this->objectHolder());
+        delayOnFinish);
 }
 void ZFAnimation::aniImplDelayCancel(void)
 {
@@ -222,14 +222,15 @@ void ZFAnimation::aniImplStart(void)
     // start a dummy animation if not implemented
     if(this->classData() == ZFAnimation::ClassData())
     {
-        ZFLISTENER(dummyOnFinish) {
-            ZFAnimation *ani = userData->objectHolded();
-            ani->_ZFP_ZFAnimation_aniDummyNotifyStop();
+        ZFAnimation *owner = this;
+        ZFLISTENER_1(dummyOnFinish
+                , ZFAnimation *, owner
+                ) {
+            owner->_ZFP_ZFAnimation_aniDummyNotifyStop();
         } ZFLISTENER_END(dummyOnFinish)
         d->aniDummyTimer = ZFTimerOnce(
             this->aniDurationFixed(),
-            dummyOnFinish,
-            this->objectHolder());
+            dummyOnFinish);
     }
 }
 void ZFAnimation::aniImplStop(void)

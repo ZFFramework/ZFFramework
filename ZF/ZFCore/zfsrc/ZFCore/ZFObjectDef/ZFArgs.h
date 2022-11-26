@@ -1,26 +1,26 @@
 /**
- * @file ZFListenerData.h
+ * @file ZFArgs.h
  * @brief params for #ZFListener
  */
 
-#ifndef _ZFI_ZFListenerData_h_
-#define _ZFI_ZFListenerData_h_
+#ifndef _ZFI_ZFArgs_h_
+#define _ZFI_ZFArgs_h_
 
 #include "ZFAny.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFListenerData
+// ZFArgs
 /**
  * @brief listener data used by #ZFListener
  *
  * @note this object only hold the necessary datas as pointer,
  *   without auto retain or release logic
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFListenerData
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFArgs
 {
-    ZFCORE_PARAM_DECLARE_SELF(ZFListenerData)
+    ZFCORE_PARAM_DECLARE_SELF(ZFArgs)
 public:
     /**
      * @brief event id, may be #zfidentityInvalid
@@ -48,10 +48,10 @@ public:
      */
     ZFObject *const &result(void) const;
     /** @brief see #result */
-    ZFListenerData const &result(ZF_IN ZFObject * const &result) const;
+    ZFArgs const &result(ZF_IN ZFObject * const &result) const;
 
     /** @brief see #result */
-    ZFListenerData const &resultEnable(ZF_IN zfbool enable);
+    ZFArgs const &resultEnable(ZF_IN zfbool enable);
     /** @brief see #result */
     zfbool resultEnabled(void) const;
 
@@ -79,14 +79,14 @@ public:
      * then the event would not be further dispatched\n
      * the #eventFilterEnable must be called to enable filter logic
      */
-    inline ZFListenerData const &eventFiltered(ZF_IN zfbool eventFiltered) const {if(this->_ZFP_eventFiltered) {*(this->_ZFP_eventFiltered) = eventFiltered;} return *this;}
+    inline ZFArgs const &eventFiltered(ZF_IN zfbool eventFiltered) const {if(this->_ZFP_eventFiltered) {*(this->_ZFP_eventFiltered) = eventFiltered;} return *this;}
     /** @brief see #eventFiltered */
-    inline ZFListenerData &eventFiltered(ZF_IN zfbool eventFiltered) {if(this->_ZFP_eventFiltered) {*(this->_ZFP_eventFiltered) = eventFiltered;} return *this;}
+    inline ZFArgs &eventFiltered(ZF_IN zfbool eventFiltered) {if(this->_ZFP_eventFiltered) {*(this->_ZFP_eventFiltered) = eventFiltered;} return *this;}
     /** @brief see #eventFiltered */
     inline zfbool eventFiltered(void) const {if(this->_ZFP_eventFiltered) {return *(this->_ZFP_eventFiltered);} else {return zffalse;}}
 
     /** @brief see #eventFiltered */
-    inline ZFListenerData &eventFilterEnable(ZF_IN zfbool enable) {this->_ZFP_eventFiltered = enable ? &(this->_ZFP_eventFilteredHolder) : zfnull; return *this;}
+    inline ZFArgs &eventFilterEnable(ZF_IN zfbool enable) {this->_ZFP_eventFiltered = enable ? &(this->_ZFP_eventFilteredHolder) : zfnull; return *this;}
     /** @brief see #eventFiltered */
     inline zfbool eventFilterEnabled(void) const {return this->_ZFP_eventFiltered != zfnull;}
 
@@ -95,7 +95,7 @@ public:
     /**
      * @brief main constructor
      */
-    ZFListenerData(void)
+    ZFArgs(void)
     : _ZFP_resultHolder(zfnull)
     , _ZFP_result(zfnull)
     , _ZFP_eventFilteredHolder(zffalse)
@@ -105,10 +105,10 @@ public:
     /**
      * @brief construct with sender and params
      */
-    ZFListenerData(ZF_IN zfidentity eventId,
-                   ZF_IN ZFObject *sender,
-                   ZF_IN_OPT ZFObject *param0 = zfnull,
-                   ZF_IN_OPT ZFObject *param1 = zfnull)
+    ZFArgs(ZF_IN zfidentity eventId,
+           ZF_IN ZFObject *sender,
+           ZF_IN_OPT ZFObject *param0 = zfnull,
+           ZF_IN_OPT ZFObject *param1 = zfnull)
     : _ZFP_resultHolder(zfnull)
     , _ZFP_result(zfnull)
     , _ZFP_eventFilteredHolder(zffalse)
@@ -122,15 +122,15 @@ public:
     /**
      * @brief construct with another data
      */
-    ZFListenerData(ZF_IN const ZFListenerData &ref)
+    ZFArgs(ZF_IN const ZFArgs &ref)
     {
         this->operator = (ref);
     }
 
 public:
     /** @cond ZFPrivateDoc */
-    zffinal ~ZFListenerData(void);
-    ZFListenerData &operator = (ZF_IN const ZFListenerData &ref)
+    zffinal ~ZFArgs(void);
+    ZFArgs &operator = (ZF_IN const ZFArgs &ref)
     {
         this->eventId(ref.eventId());
         this->sender(ref.sender());
@@ -142,7 +142,7 @@ public:
         this->eventFilterEnable(ref.eventFilterEnabled());
         return *this;
     }
-    zfbool operator == (ZF_IN const ZFListenerData &ref) const
+    zfbool operator == (ZF_IN const ZFArgs &ref) const
     {
         return (zftrue
                 && this->eventId() == ref.eventId()
@@ -155,7 +155,7 @@ public:
                 && this->eventFilterEnabled() == ref.eventFilterEnabled()
             );
     }
-    inline zfbool operator != (ZF_IN const ZFListenerData &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFArgs &ref) const {return !this->operator == (ref);}
     /** @endcond */
 
 public:
@@ -177,5 +177,5 @@ private:
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFListenerData_h_
+#endif // #ifndef _ZFI_ZFArgs_h_
 

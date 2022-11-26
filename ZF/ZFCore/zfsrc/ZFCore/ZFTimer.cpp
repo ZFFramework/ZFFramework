@@ -138,35 +138,31 @@ void ZFTimer::_ZFP_ZFTimer_timerOnStop(void)
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(zfautoObjectT<ZFTimer *>, ZFTimerStart,
+ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerStart,
                        ZFMP_IN(zftimet, timerInterval),
-                       ZFMP_IN(const ZFListener &, timerCallback),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                       ZFMP_IN(const ZFListener &, timerCallback))
 {
     zfblockedAlloc(ZFTimer, ret);
     ret->timerInterval(timerInterval);
-    ret->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback, userData);
+    ret->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback);
     ret->timerStart();
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfautoObjectT<ZFTimer *>, ZFTimerOnce,
+ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce,
                        ZFMP_IN(zftimet, delay),
-                       ZFMP_IN(const ZFListener &, timerCallback),
-                       ZFMP_IN_OPT(ZFObject *, userData, zfnull))
+                       ZFMP_IN(const ZFListener &, timerCallback))
 {
     zfblockedAlloc(ZFTimer, ret);
     ret->timerInterval(delay);
 
-    ZFObject *timerCallbackUserData = userData;
-    ZFLISTENER_3(implThreadCallback
+    ZFLISTENER_2(implThreadCallback
             , zfautoObjectT<ZFTimer *>, ret
             , ZFListener, timerCallback
-            , zfautoObject, timerCallbackUserData
             ) {
         if(ret->timerStarted())
         {
-            timerCallback.execute(ZFListenerData(zfidentityInvalid(), ret), timerCallbackUserData);
+            timerCallback.execute(ZFArgs(zfidentityInvalid(), ret));
         }
         ret->timerStop();
     } ZFLISTENER_END(implThreadCallback)

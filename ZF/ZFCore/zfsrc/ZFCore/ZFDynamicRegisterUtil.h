@@ -20,11 +20,11 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  * usage:
  * @code
  *   ZFDynamic()
- *       .classBegin(classNameFull [, parent, userData])
+ *       .classBegin(classNameFull [, parent, classDynamicRegisterUserData])
  *           .event(eventName)
  *           .method(returnTypeId, methodName, ZFMP()
  *               .mp(paramTypeId0 [, paramName0, paramDefault0])
- *               , methodImpl [, methodImplUserData]
+ *               , methodImpl
  *           )
  *           .property(typeIdOrRetainClass, propertyName [, propertyInitValue])
  *           .on(ZFObject::EventObjectAfterAlloc(), callback)
@@ -35,7 +35,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  *           .event(eventName)
  *           .method(returnTypeId, methodName, ZFMP()
  *               .mp(paramTypeId0 [, paramName0, paramDefault0])
- *               , methodImpl [, methodImplUserData]
+ *               , methodImpl
  *           )
  *       .NSEnd()
  *       .enumBegin(enumClassName) // or enumBeginFlags()
@@ -137,19 +137,16 @@ public:
 
     /** @brief see #ZFDynamic */
     ZFDynamic &on(ZF_IN zfidentity eventId,
-                  ZF_IN const ZFListener &callback,
-                  ZF_IN_OPT ZFObject *userData = zfnull);
+                  ZF_IN const ZFListener &callback);
     /** @brief see #ZFDynamic */
-    ZFDynamic &onInit(ZF_IN const ZFListener &callback,
-                      ZF_IN_OPT ZFObject *userData = zfnull)
+    ZFDynamic &onInit(ZF_IN const ZFListener &callback)
     {
-        return this->on(ZFObject::EventObjectAfterAlloc(), callback, userData);
+        return this->on(ZFObject::EventObjectAfterAlloc(), callback);
     }
     /** @brief see #ZFDynamic */
-    ZFDynamic &onDealloc(ZF_IN const ZFListener &callback,
-                         ZF_IN_OPT ZFObject *userData = zfnull)
+    ZFDynamic &onDealloc(ZF_IN const ZFListener &callback)
     {
-        return this->on(ZFObject::EventObjectBeforeDealloc(), callback, userData);
+        return this->on(ZFObject::EventObjectBeforeDealloc(), callback);
     }
 
 public:
@@ -187,8 +184,7 @@ public:
      * @brief see #ZFDynamic
      *
      * util method to register method (global method or class member method),
-     * methodImpl's param0 is #ZFMethodInvokeData,
-     * userData is methodImplUserData
+     * methodImpl's param0 is #ZFMethodInvokeData
      *
      * usage:
      * @code
@@ -202,8 +198,7 @@ public:
     ZFDynamic &method(ZF_IN const zfchar *methodReturnTypeId,
                       ZF_IN const zfchar *methodName,
                       ZF_IN const ZFMP &methodParam,
-                      ZF_IN const ZFListener &methodImpl,
-                      ZF_IN_OPT ZFObject *methodImplUserData = zfnull);
+                      ZF_IN const ZFListener &methodImpl);
 
     /** @brief see #ZFDynamic */
     ZFDynamic &method(ZF_IN const ZFMethodDynamicRegisterParam &param);
@@ -213,8 +208,7 @@ public:
      * @brief see #ZFDynamic
      *
      * initValueCallback can be specified to setup property's init value,
-     * param0 is #ZFDynamicPropertyData,
-     * userData is the initValueCallbackUserData
+     * param0 is #ZFDynamicPropertyData
      */
     ZFDynamic &property(ZF_IN const zfchar *propertyTypeId,
                         ZF_IN const zfchar *propertyName,
@@ -232,26 +226,21 @@ public:
 
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnInit(ZF_IN const zfchar *propertyName,
-                              ZF_IN const ZFListener &callback,
-                              ZF_IN_OPT ZFObject *userData = zfnull);
+                              ZF_IN const ZFListener &callback);
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnVerify(ZF_IN const zfchar *propertyName,
-                                ZF_IN const ZFListener &callback,
-                                ZF_IN_OPT ZFObject *userData = zfnull);
+                                ZF_IN const ZFListener &callback);
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnAttach(ZF_IN const zfchar *propertyName,
-                                ZF_IN const ZFListener &callback,
-                                ZF_IN_OPT ZFObject *userData = zfnull);
+                                ZF_IN const ZFListener &callback);
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnDetach(ZF_IN const zfchar *propertyName,
-                                ZF_IN const ZFListener &callback,
-                                ZF_IN_OPT ZFObject *userData = zfnull);
+                                ZF_IN const ZFListener &callback);
 
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyLifeCycle(ZF_IN const zfchar *propertyName,
                                  ZF_IN ZFPropertyLifeCycle lifeCycle,
-                                 ZF_IN const ZFListener &callback,
-                                 ZF_IN_OPT ZFObject *userData = zfnull);
+                                 ZF_IN const ZFListener &callback);
 
 public:
     /**

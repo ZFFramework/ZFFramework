@@ -570,7 +570,7 @@ zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
 }
 
 zfclassFwd _ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder;
-static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData);
+static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFArgs &zfargs);
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_ZFCallbackAutoClean, ZFLevelZFFrameworkNormal)
 {
     this->luaStateOnDetachListener = ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback);
@@ -592,9 +592,8 @@ public:
     int luaFunc;
     zfstring luaFuncInfo;
 
-    ZFMETHOD_INLINE_2(void, callback,
-                      ZFMP_IN(const ZFListenerData &, listenerData),
-                      ZFMP_IN(ZFObject *, userData))
+    ZFMETHOD_INLINE_1(void, callback,
+                      ZFMP_IN(const ZFArgs &, zfargs))
     {
         if(L == zfnull)
         {
@@ -606,13 +605,11 @@ public:
             lua_pop(L, 1);
         }
 
-        zfblockedAlloc(v_ZFListenerData, listenerDataTmp);
-        listenerDataTmp->zfv = listenerData;
-        ZFImpl_ZFLua_luaPush(L, listenerDataTmp);
+        zfblockedAlloc(v_ZFArgs, zfargsHolder);
+        zfargsHolder->zfv = zfargs;
+        ZFImpl_ZFLua_luaPush(L, zfargsHolder);
 
-        ZFImpl_ZFLua_luaPush(L, userData);
-
-        int error = lua_pcall(L, 2, 0, 0);
+        int error = lua_pcall(L, 1, 0, 0);
         ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, this->luaFuncInfo);
     }
 protected:
@@ -638,9 +635,9 @@ protected:
 
 ZFOBJECT_REGISTER(ZFImpl_ZFLuaValue)
 
-static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFListenerData &listenerData, ZF_IN ZFObject *userData)
+static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFArgs &zfargs)
 {
-    lua_State *L = (lua_State *)listenerData.param0()->to<v_ZFPtr *>()->zfv;
+    lua_State *L = (lua_State *)zfargs.param0()->to<v_ZFPtr *>()->zfv;
     ZFCoreArrayPOD<_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder *> &attachList = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_ZFCallbackAutoClean)->attachList;
     for(zfindex i = attachList.count() - 1; i != zfindexMax(); --i)
     {

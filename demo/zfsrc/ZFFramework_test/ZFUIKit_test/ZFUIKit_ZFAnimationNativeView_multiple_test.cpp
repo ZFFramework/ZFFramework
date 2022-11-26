@@ -21,9 +21,9 @@ protected:
         view->viewSizePrefer(ZFUISizeMake(80, 60));
         view->viewBackgroundColor(ZFUIColorRandom());
 
-        ZFLISTENER(startOnClick) {
-            ZFUIView *view = userData->toAny();
-
+        ZFLISTENER_1(startOnClick
+                , ZFUIView *, view
+                ) {
             zfblockedAlloc(ZFAnimationGroup, aniGroup);
             aniGroup->aniTarget(view);
 
@@ -41,7 +41,7 @@ protected:
         } ZFLISTENER_END(startOnClick)
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         startButton->label()->text("start");
-        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick, view);
+        startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
         container->childAdd(startButton)->c_alignRightTop();
     }
 };

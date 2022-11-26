@@ -29,21 +29,6 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodDynamicRegisterAutoRemove)
 ZF_GLOBAL_INITIALIZER_END(ZFMethodDynamicRegisterAutoRemove)
 
 // ============================================================
-zfclass _ZFP_I_ZFMethodDynamicRegisterGITask : zfextends ZFObject
-{
-    ZFOBJECT_DECLARE(_ZFP_I_ZFMethodDynamicRegisterGITask, ZFObject)
-public:
-    ZFListener methodImpl;
-    zfautoObject methodImplUserData;
-public:
-    static zfautoObject create(ZF_IN const ZFListener &methodImpl, ZF_IN ZFObject *methodImplUserData)
-    {
-        zfblockedAlloc(_ZFP_I_ZFMethodDynamicRegisterGITask, task);
-        task->methodImpl = methodImpl;
-        task->methodImplUserData = methodImplUserData;
-        return task;
-    }
-};
 static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
 {
     zfblockedAlloc(ZFMethodInvokeData, d);
@@ -58,8 +43,8 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
     d->param6 = paramList[6];
     d->param7 = paramList[7];
 
-    _ZFP_I_ZFMethodDynamicRegisterGITask *task = ZFCastZFObjectUnchecked(_ZFP_I_ZFMethodDynamicRegisterGITask *, invokerMethod->methodDynamicRegisterUserData());
-    task->methodImpl.execute(ZFListenerData().sender(invokerObject).param0(d), task->methodImplUserData);
+    ZFListener methodImpl = ZFCastZFObjectUnchecked(v_ZFListener *, invokerMethod->methodDynamicRegisterUserData())->zfv;
+    methodImpl.execute(ZFArgs().sender(invokerObject).param0(d));
     ret = d->ret;
     if(errorHint != zfnull)
     {
@@ -108,7 +93,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
     if(methodImplValid && param.methodDynamicRegisterUserData() != zfnull)
     {
         zfstringAppend(errorHint,
-            "when methodImpl specified, methodDynamicRegisterUserData must not set, use methodImplUserData instead");
+            "when methodImpl specified, methodDynamicRegisterUserData must not set");
         return zfnull;
     }
     ZFMethodType methodType = param.methodType();
@@ -186,7 +171,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
     const ZFMethod *method = _ZFP_ZFMethodRegister(zffalse
             , zftrue
             , methodImplValid
-                ? _ZFP_I_ZFMethodDynamicRegisterGITask::create(param.methodImpl(), param.methodImplUserData()).toObject()
+                ? zflineAlloc(v_ZFListener, param.methodImpl())
                 : param.methodDynamicRegisterUserData()
             , zfnull
             , methodImplValid ? _ZFP_I_ZFMethodDynamicRegisterGI : param.methodGenericInvoker()

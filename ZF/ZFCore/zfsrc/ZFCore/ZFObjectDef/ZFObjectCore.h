@@ -304,21 +304,6 @@ public:
      * it's safe to retain the holder for future use or check
      */
     zffinal ZFObjectHolder *objectHolder(void);
-    /**
-     * @brief util method to access the original object holded by #objectHolder
-     */
-    virtual inline ZFAny objectHolded(void)
-    {
-        return zfnull;
-    }
-    /**
-     * @brief util method to access the original object holded by #objectHolder
-     */
-    template<typename T_ZFObject>
-    T_ZFObject objectHolded(void)
-    {
-        return this->objectHolded().to<T_ZFObject>();
-    }
 
     /** @brief see #objectInfoOfInstance */
     virtual void objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret);
@@ -496,7 +481,6 @@ public:
      */
     zffinal inline zfidentity observerAdd(ZF_IN zfidentity eventId,
                                           ZF_IN const ZFListener &observer,
-                                          ZF_IN_OPT ZFObject *userData = zfnull,
                                           ZF_IN_OPT ZFObject *owner = zfnull,
                                           ZF_IN_OPT zfbool autoRemoveAfterActivate = zffalse,
                                           ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal)
@@ -504,7 +488,6 @@ public:
         return this->observerHolder().observerAdd(
             eventId,
             observer,
-            userData,
             owner,
             autoRemoveAfterActivate,
             observerLevel);
@@ -521,14 +504,12 @@ public:
      */
     zffinal inline zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
                                                  ZF_IN const ZFListener &observer,
-                                                 ZF_IN_OPT ZFObject *userData = zfnull,
                                                  ZF_IN_OPT ZFObject *owner = zfnull,
                                                  ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal)
     {
         return this->observerHolder().observerAddForOnce(
             eventId,
             observer,
-            userData,
             owner,
             observerLevel);
     }
@@ -547,11 +528,9 @@ public:
      * @brief see #observerNotify
      */
     zffinal inline void observerRemove(ZF_IN zfidentity eventId,
-                                       ZF_IN const ZFListener &callback,
-                                       ZF_IN_OPT ZFObject *userData = zfnull,
-                                       ZF_IN_OPT ZFComparer<ZFObject *>::Comparer userDataComparer = ZFComparerCheckEqual)
+                                       ZF_IN const ZFListener &callback)
     {
-        this->observerHolder().observerRemove(eventId, callback, userData, userDataComparer);
+        this->observerHolder().observerRemove(eventId, callback);
     }
     /**
      * @brief see #observerNotify
@@ -628,21 +607,8 @@ public:
      *   by #ZFCallback::objectCompareByInstance when add or remove
      *
      * \n
-     * due to lack of lambda capture support,
-     * it's hard to pass param outside of a standalone callback into it,
-     * so it's recommended to pass by attaching tags to the userData:
-     * @code
-     *   ZFObject *paramToPass = ...;
-     *   ZFObject *userData = ...;
-     *   // store param as tag
-     *   // make sure the tag name is unique and would be removed properly
-     *   userData->objectTag(paramToPass, uniqueTagName);
-     *   ZFListener yourStandaloneListener = SOME_CREATE_LOGIC {
-     *       // here you can used the passed param
-     *       ZFObject *paramPassed = userData->objectTag(uniqueTagName);
-     *   };
-     *   someEventSender->observerAdd(someEvent, yourStandaloneListener, userData);
-     * @endcode
+     * to pass extra params to the callback,
+     * see #ZFLISTENER for more info
      */
     zffinal inline void observerNotify(ZF_IN zfidentity eventId,
                                        ZF_IN_OPT ZFObject *param0 = zfnull,
@@ -675,7 +641,7 @@ protected:
      *
      * ensured called before any other registered observer
      */
-    virtual inline void observerOnEvent(ZF_IN const ZFListenerData &listenerData)
+    virtual inline void observerOnEvent(ZF_IN const ZFArgs &zfargs)
     {
     }
 
