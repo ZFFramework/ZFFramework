@@ -346,7 +346,7 @@ public:
      */
     inline const zfchar *methodName(void) const
     {
-        return this->_ZFP_ZFMethod_methodName.cString();
+        return this->_ZFP_ZFMethod_methodName;
     }
 
     /**
@@ -354,14 +354,14 @@ public:
      */
     inline const zfchar *methodReturnTypeId(void) const
     {
-        return this->_ZFP_ZFMethod_returnTypeId.cString();
+        return this->_ZFP_ZFMethod_returnTypeId;
     }
     /**
      * @brief get the method's return value's type name
      */
     inline const zfchar *methodReturnTypeName(void) const
     {
-        return this->_ZFP_ZFMethod_returnTypeName.cString();
+        return this->_ZFP_ZFMethod_returnTypeName;
     }
 
     /**
@@ -641,7 +641,7 @@ public:
      */
     inline const zfchar *methodNamespace(void) const
     {
-        return (this->_ZFP_ZFMethod_methodNamespace.isEmpty() ? zfnull : this->_ZFP_ZFMethod_methodNamespace.cString());
+        return this->_ZFP_ZFMethod_methodNamespace;
     }
 
     // ============================================================
@@ -683,7 +683,7 @@ public:
     zfuint _ZFP_ZFMethod_refCount;
     const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
     ZFCoreArrayPOD<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
-    zfstring _ZFP_ZFMethod_methodInternalId;
+    zfchar *_ZFP_ZFMethod_methodInternalId;
     zfbool _ZFP_ZFMethod_methodIsUserRegister;
     ZFObject *_ZFP_ZFMethod_methodUserRegisterUserData;
     zfbool _ZFP_ZFMethod_methodIsDynamicRegister;
@@ -692,16 +692,17 @@ public:
     ZFFuncAddrType _ZFP_ZFMethod_invokerOrg;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvokerOrg;
-    zfstring _ZFP_ZFMethod_methodName;
-    zfstring _ZFP_ZFMethod_returnTypeId;
-    zfstring _ZFP_ZFMethod_returnTypeName;
+    zfchar *_ZFP_ZFMethod_methodName;
+    zfchar *_ZFP_ZFMethod_returnTypeId;
+    zfchar *_ZFP_ZFMethod_returnTypeName;
     zfuint _ZFP_ZFMethod_paramCount;
     zfuint _ZFP_ZFMethod_paramCountMin;
-    zfstring _ZFP_ZFMethod_paramTypeIdList[ZFMETHOD_MAX_PARAM];
-    zfstring _ZFP_ZFMethod_paramTypeNameList[ZFMETHOD_MAX_PARAM];
-    zfstring _ZFP_ZFMethod_paramNameList[ZFMETHOD_MAX_PARAM];
-    ZFMethodParamDefaultValueCallback _ZFP_ZFMethod_paramDefaultValueCallbackList[ZFMETHOD_MAX_PARAM];
-    zfautoObject _ZFP_ZFMethod_paramDefaultValueList[ZFMETHOD_MAX_PARAM];
+    zfchar *_ZFP_ZFMethod_paramBuf;
+    const zfchar **_ZFP_ZFMethod_paramTypeIdList;
+    const zfchar **_ZFP_ZFMethod_paramTypeNameList;
+    const zfchar **_ZFP_ZFMethod_paramNameList;
+    ZFMethodParamDefaultValueCallback *_ZFP_ZFMethod_paramDefaultValueCallbackList;
+    ZFCoreArray<zfautoObject> _ZFP_ZFMethod_paramDefaultValueList;
     zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
 
     // for class member type
@@ -711,7 +712,7 @@ public:
     ZFMethodType _ZFP_ZFMethod_methodType;
 
     // for func type
-    zfstring _ZFP_ZFMethod_methodNamespace;
+    zfchar *_ZFP_ZFMethod_methodNamespace;
 
     // other
     zfbool _ZFP_ZFMethod_methodIsInternal;

@@ -198,15 +198,11 @@ public:
 
 public:
     /** @brief owner object of this observer holder, or null if none */
-    inline ZFObject *observerOwner(void) const
-    {
-        return this->_observerOwner;
-    }
+    zffinal ZFObject *observerOwner(void) const;
     zffinal void _ZFP_ZFObserverHolder_observerOwner(ZF_IN ZFObject *obj);
 
 private:
     _ZFP_ZFObserverHolderPrivate *d;
-    ZFObject *_observerOwner;
 };
 
 // ============================================================

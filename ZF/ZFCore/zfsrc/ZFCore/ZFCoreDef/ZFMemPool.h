@@ -45,7 +45,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // impl
-#define _ZFP_zfpoolSizeAlignMin (sizeof(void *) * 4)
+#define _ZFP_zfpoolSizeAlignMin (sizeof(void *))
 #define _ZFP_zfpoolSizeAlign(size) \
     ( \
         (((size) % _ZFP_zfpoolSizeAlignMin) == 0) \

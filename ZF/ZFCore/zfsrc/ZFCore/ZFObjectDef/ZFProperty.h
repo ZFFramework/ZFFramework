@@ -90,7 +90,7 @@ public:
      */
     inline const zfchar *propertyName(void) const
     {
-        return this->_ZFP_ZFProperty_name.cString();
+        return this->_ZFP_ZFProperty_name;
     }
 
     /**
@@ -102,7 +102,7 @@ public:
      */
     inline const zfchar *propertyTypeName(void) const
     {
-        return this->_ZFP_ZFProperty_typeName.cString();
+        return this->_ZFP_ZFProperty_typeName;
     }
     /**
      * @brief type id string declared in ZFPROPERTY_XXX
@@ -114,7 +114,7 @@ public:
      */
     inline const zfchar *propertyTypeId(void) const
     {
-        return this->_ZFP_ZFProperty_typeId.cString();
+        return this->_ZFP_ZFProperty_typeId;
     }
     /**
      * @brief get the getter method
@@ -185,15 +185,15 @@ public:
     }
 public:
     zfuint _ZFP_ZFProperty_refCount;
-    zfstring _ZFP_ZFProperty_propertyInternalId;
+    zfchar *_ZFP_ZFProperty_propertyInternalId;
     zfbool _ZFP_ZFProperty_propertyIsUserRegister;
     zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserData;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper;
     const ZFClass *_ZFP_ZFProperty_propertyOwnerClass;
-    zfstring _ZFP_ZFProperty_name;
-    zfstring _ZFP_ZFProperty_typeName;
-    zfstring _ZFP_ZFProperty_typeId;
+    zfchar *_ZFP_ZFProperty_name;
+    zfchar *_ZFP_ZFProperty_typeName;
+    zfchar *_ZFP_ZFProperty_typeId;
     const ZFMethod *_ZFP_ZFProperty_setterMethod;
     const ZFMethod *_ZFP_ZFProperty_getterMethod;
     _ZFP_ZFPropertyMethodCleanup _ZFP_ZFProperty_setterMethodCleanup;

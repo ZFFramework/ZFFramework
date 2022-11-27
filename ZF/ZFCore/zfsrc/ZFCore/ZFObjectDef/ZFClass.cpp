@@ -50,8 +50,8 @@ static _ZFP_ZFObjectToInterfaceCastCallback _ZFP_ZFClassInterfaceCastCallbackDum
 typedef zfstlmap<zfstlstringZ, zfautoObject> _ZFP_ZFClassTagMapType;
 typedef zfstlmap<const ZFProperty *, zfstlmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
 
-typedef zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > _ZFP_ZFClassMethodMapType;
-typedef zfstlmap<zfstlstringZ, const ZFProperty *> _ZFP_ZFClassPropertyMapType;
+typedef zfstlmap<const zfchar *, zfstlvector<const ZFMethod *>, zfcharConst_zfstlComparer> _ZFP_ZFClassMethodMapType;
+typedef zfstlmap<const zfchar *, const ZFProperty *, zfcharConst_zfstlComparer> _ZFP_ZFClassPropertyMapType;
 
 zfclassNotPOD _ZFP_ZFClassPrivate
 {
@@ -488,12 +488,12 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
 
         for(_ZFP_ZFClassMethodMapType::iterator it = t->d->methodMap.begin(); it != t->d->methodMap.end(); ++it)
         {
-            zfstlvector<const ZFMethod *> &methodList = methodMapCache[it->first];
+            zfstlvector<const ZFMethod *> &methodList = methodMapCache[_ZFP_ZFSigNameAddr(it->first)];
             methodList.insert(methodList.end(), it->second.begin(), it->second.end());
         }
         for(_ZFP_ZFClassPropertyMapType::iterator it = t->d->propertyMap.begin(); it != t->d->propertyMap.end(); ++it)
         {
-            propertyMapCache[it->first] = it->second;
+            propertyMapCache[_ZFP_ZFSigNameAddr(it->first)] = it->second;
         }
     } while(!toCheck.isEmpty());
 }
@@ -1141,7 +1141,7 @@ const ZFMethod *ZFClass::propertySetterForNameIgnoreParent(const zfchar *propert
     if(propertyName != zfnull)
     {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
-        zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = d->methodMap.find(propertyName);
+        _ZFP_ZFClassMethodMapType::iterator itName = d->methodMap.find(propertyName);
         if(itName != d->methodMap.end())
         {
             zfstlvector<const ZFMethod *> &l = itName->second;
@@ -1162,7 +1162,7 @@ const ZFMethod *ZFClass::propertySetterForName(const zfchar *propertyName) const
     if(propertyName != zfnull)
     {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
-        zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = d->methodMapCache.find(propertyName);
+        _ZFP_ZFClassMethodMapType::iterator itName = d->methodMapCache.find(propertyName);
         if(itName != d->methodMapCache.end())
         {
             zfstlvector<const ZFMethod *> &l = itName->second;
@@ -1183,7 +1183,7 @@ const ZFMethod *ZFClass::propertyGetterForNameIgnoreParent(const zfchar *propert
     if(propertyName != zfnull)
     {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
-        zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = d->methodMap.find(propertyName);
+        _ZFP_ZFClassMethodMapType::iterator itName = d->methodMap.find(propertyName);
         if(itName != d->methodMap.end())
         {
             zfstlvector<const ZFMethod *> &l = itName->second;
@@ -1204,7 +1204,7 @@ const ZFMethod *ZFClass::propertyGetterForName(const zfchar *propertyName) const
     if(propertyName != zfnull)
     {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
-        zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = d->methodMapCache.find(propertyName);
+        _ZFP_ZFClassMethodMapType::iterator itName = d->methodMapCache.find(propertyName);
         if(itName != d->methodMapCache.end())
         {
             zfstlvector<const ZFMethod *> &l = itName->second;
@@ -1641,14 +1641,14 @@ void ZFClass::_ZFP_ZFClass_objectDesctuct(ZF_IN ZFObject *obj) const
 
 void ZFClass::_ZFP_ZFClass_methodRegister(ZF_IN const ZFMethod *method) const
 {
-    zfstlvector<const ZFMethod *> &methodList = d->methodMap[method->methodName()];
+    zfstlvector<const ZFMethod *> &methodList = d->methodMap[_ZFP_ZFSigNameAddr(method->methodName())];
     methodList.push_back(method);
     d->methodList.add(method);
     d->methodAndPropertyCacheNeedUpdate = zftrue;
 }
 void ZFClass::_ZFP_ZFClass_methodUnregister(ZF_IN const ZFMethod *method) const
 {
-    zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = d->methodMap.find(method->methodName());
+    _ZFP_ZFClassMethodMapType::iterator itName = d->methodMap.find(method->methodName());
     if(itName != d->methodMap.end())
     {
         zfstlvector<const ZFMethod *> &l = itName->second;
@@ -1678,7 +1678,7 @@ void ZFClass::_ZFP_ZFClass_propertyRegister(ZF_IN const ZFProperty *zfproperty) 
         this->className(),
         zfproperty->propertyName());
 
-    d->propertyMap[zfproperty->propertyName()] = zfproperty;
+    d->propertyMap[_ZFP_ZFSigNameAddr(zfproperty->propertyName())] = zfproperty;
     d->propertyList.add(zfproperty);
     d->methodAndPropertyCacheNeedUpdate = zftrue;
 }

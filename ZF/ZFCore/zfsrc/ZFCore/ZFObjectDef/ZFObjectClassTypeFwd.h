@@ -220,6 +220,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeTyp
                                                       ZF_IN_OPT const zfchar *name = zfnull);
 
 extern ZFLIB_ZFCore zfindex _ZFP_ZFSigForName(ZF_IN const zfchar *name);
+extern ZFLIB_ZFCore const zfchar *_ZFP_ZFSigNameAddr(ZF_IN const zfchar *name);
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -8,31 +8,30 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZF_STATIC_INITIALIZER_INIT(ZFMethodFuncDataHolder)
+typedef zfstlmap<const zfchar *, zfstlvector<const ZFMethod *>, zfcharConst_zfstlComparer> _ZFP_ZFMethodFuncNameMapType;
+typedef zfstlmap<const zfchar *, _ZFP_ZFMethodFuncNameMapType, zfcharConst_zfstlComparer> _ZFP_ZFMethodFuncMapType;
+static _ZFP_ZFMethodFuncMapType &_ZFP_ZFMethodFuncMap(void)
 {
+     static _ZFP_ZFMethodFuncMapType m;
+     return m;
 }
-zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > > methodMap;
-ZF_STATIC_INITIALIZER_END(ZFMethodFuncDataHolder)
-#define _ZFP_ZFMethodFuncMethodMap ZF_STATIC_INITIALIZER_INSTANCE(ZFMethodFuncDataHolder)->methodMap
 
 void _ZFP_ZFMethodFuncRegister(ZF_IN const ZFMethod *method)
 {
+    _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
     const zfchar *methodNamespace = method->methodNamespace() ? method->methodNamespace() : "";
-    _ZFP_ZFMethodFuncMethodMap
-        [methodNamespace]
-        [method->methodName()]
-        .push_back(method);
+    m[_ZFP_ZFSigNameAddr(methodNamespace)][_ZFP_ZFSigNameAddr(method->methodName())].push_back(method);
 }
 void _ZFP_ZFMethodFuncUnregister(ZF_IN const ZFMethod *method)
 {
+    _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
     const zfchar *methodNamespace = method->methodNamespace() ? method->methodNamespace() : "";
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > > &m = _ZFP_ZFMethodFuncMethodMap;
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > >::iterator itNS = m.find(methodNamespace);
+    _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end())
     {
         return ;
     }
-    zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = itNS->second.find(method->methodName());
+    _ZFP_ZFMethodFuncNameMapType::iterator itName = itNS->second.find(method->methodName());
     if(itName == itNS->second.end())
     {
         return ;
@@ -61,18 +60,18 @@ const ZFMethod *ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
                                     ZF_IN const zfchar *methodName)
 {
     zfCoreMutexLocker();
+    _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
     methodNamespace = ZFNamespaceSkipGlobal(methodNamespace);
     if(methodNamespace == zfnull)
     {
         methodNamespace = "";
     }
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > > &m = _ZFP_ZFMethodFuncMethodMap;
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > >::iterator itNS = m.find(methodNamespace);
+    _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end())
     {
         return zfnull;
     }
-    zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = itNS->second.find(methodName);
+    _ZFP_ZFMethodFuncNameMapType::iterator itName = itNS->second.find(methodName);
     if(itName == itNS->second.end())
     {
         return zfnull;
@@ -106,18 +105,18 @@ const ZFMethod *ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
                                     )
 {
     zfCoreMutexLocker();
+    _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
     methodNamespace = ZFNamespaceSkipGlobal(methodNamespace);
     if(methodNamespace == zfnull)
     {
         methodNamespace = "";
     }
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > > &m = _ZFP_ZFMethodFuncMethodMap;
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > >::iterator itNS = m.find(methodNamespace);
+    _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end())
     {
         return zfnull;
     }
-    zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = itNS->second.find(methodName);
+    _ZFP_ZFMethodFuncNameMapType::iterator itName = itNS->second.find(methodName);
     if(itName == itNS->second.end())
     {
         return zfnull;
@@ -149,18 +148,18 @@ void ZFMethodFuncForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
                                 ZF_IN const zfchar *methodName)
 {
     zfCoreMutexLocker();
+    _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
     methodNamespace = ZFNamespaceSkipGlobal(methodNamespace);
     if(methodNamespace == zfnull)
     {
         methodNamespace = "";
     }
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > > &m = _ZFP_ZFMethodFuncMethodMap;
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > >::iterator itNS = m.find(methodNamespace);
+    _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end())
     {
         return ;
     }
-    zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = itNS->second.find(methodName);
+    _ZFP_ZFMethodFuncNameMapType::iterator itName = itNS->second.find(methodName);
     if(itName == itNS->second.end())
     {
         return ;
@@ -177,15 +176,10 @@ void ZFMethodFuncGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
                          ZF_IN_OPT const ZFFilterForZFMethod *filter /* = zfnull */)
 {
     zfCoreMutexLocker();
-
-    zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > > &m = _ZFP_ZFMethodFuncMethodMap;
-    for(zfstlmap<zfstlstringZ, zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> > >::iterator itNS = m.begin();
-        itNS != m.end();
-        ++itNS)
+    _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
+    for(_ZFP_ZFMethodFuncMapType::iterator itNS = m.begin(); itNS != m.end(); ++itNS)
     {
-        for(zfstlmap<zfstlstringZ, zfstlvector<const ZFMethod *> >::iterator itName = itNS->second.begin();
-            itName != itNS->second.end();
-            ++itName)
+        for(_ZFP_ZFMethodFuncNameMapType::iterator itName = itNS->second.begin(); itName != itNS->second.end(); ++itName)
         {
             if(filter == zfnull)
             {

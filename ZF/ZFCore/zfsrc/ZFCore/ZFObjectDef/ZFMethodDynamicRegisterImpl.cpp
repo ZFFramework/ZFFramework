@@ -168,7 +168,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
     }
 
     zfCoreMutexLocker();
-    const ZFMethod *method = _ZFP_ZFMethodRegister(zffalse
+    ZFMethod *method = _ZFP_ZFMethodRegister(zffalse
             , zftrue
             , methodImplValid
                 ? zflineAlloc(v_ZFListener, param.methodImpl())
@@ -192,9 +192,10 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
             , param.methodParamTypeIdAt(7), param.methodParamTypeNameAt(7), param.methodParamNameAt(7), param.methodParamDefaultValueCallbackAt(7)
             , (const zfchar *)zfnull
         );
+    method->_ZFP_ZFMethod_paramDefaultValueList.capacity(param.methodParamCount());
     for(zfindex i = 0; i < param.methodParamCount(); ++i)
     {
-        method->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_paramDefaultValueList[i] = param.methodParamDefaultValueAt(i);
+        method->_ZFP_ZFMethod_paramDefaultValueList.add(param.methodParamDefaultValueAt(i));
     }
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m[method] = zftrue;
     return method;

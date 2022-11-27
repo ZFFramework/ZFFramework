@@ -29,6 +29,7 @@ public:
         stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate = 1 << 4,
     };
     zfuint stateFlags;
+    ZFObserverHolder *observerHolder;
 
     const ZFClass *classDynamic;
     _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
@@ -42,6 +43,7 @@ public:
     , objectTagMap()
     , propertyAccessed()
     , stateFlags(0)
+    , observerHolder(zfnull)
     , classDynamic(zfnull)
     , zfAllocCacheRelease(zfnull)
     {
@@ -53,6 +55,28 @@ public:
         {
             ZFBitSet(this->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
         }
+    }
+    ~_ZFP_ZFObjectPrivate(void)
+    {
+        if(this->observerHolder)
+        {
+            zfdelete(this->observerHolder);
+        }
+    }
+
+public:
+    ZFObserverHolder &observerHolderCheck(ZF_IN ZFObject *owner)
+    {
+        if(this->observerHolder == zfnull)
+        {
+            zfCoreMutexLocker();
+            if(this->observerHolder == zfnull)
+            {
+                this->observerHolder = zfpoolNew(ZFObserverHolder);
+                this->observerHolder->_ZFP_ZFObserverHolder_observerOwner(owner);
+            }
+        }
+        return *this->observerHolder;
     }
 };
 
@@ -313,6 +337,115 @@ void ZFObject::objectTagRemoveAll(void)
     }
 }
 
+zfidentity ZFObject::observerAdd(ZF_IN zfidentity eventId,
+                                 ZF_IN const ZFListener &observer,
+                                 ZF_IN_OPT ZFObject *owner /* = zfnull */,
+                                 ZF_IN_OPT zfbool autoRemoveAfterActivate /* = zffalse */,
+                                 ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */)
+{
+    return d->observerHolderCheck(this).observerAdd(
+        eventId,
+        observer,
+        owner,
+        autoRemoveAfterActivate,
+        observerLevel);
+}
+zfidentity ZFObject::observerAdd(ZF_IN const ZFObserverAddParam &param)
+{
+    return d->observerHolderCheck(this).observerAdd(param);
+}
+zfidentity ZFObject::observerAddForOnce(ZF_IN zfidentity eventId,
+                                        ZF_IN const ZFListener &observer,
+                                        ZF_IN_OPT ZFObject *owner /* = zfnull */,
+                                        ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */)
+{
+    return d->observerHolderCheck(this).observerAddForOnce(
+        eventId,
+        observer,
+        owner,
+        observerLevel);
+}
+void ZFObject::observerMoveToFirst(ZF_IN zfidentity taskId)
+{
+    return d->observerHolderCheck(this).observerMoveToFirst(taskId);
+}
+void ZFObject::observerRemove(ZF_IN zfidentity eventId,
+                              ZF_IN const ZFListener &callback)
+{
+    if(d->observerHolder)
+    {
+        d->observerHolder->observerRemove(eventId, callback);
+    }
+}
+void ZFObject::observerRemoveByTaskId(ZF_IN zfidentity taskId)
+{
+    if(d->observerHolder)
+    {
+        d->observerHolder->observerRemoveByTaskId(taskId);
+    }
+}
+void ZFObject::observerRemoveByOwner(ZF_IN ZFObject *owner)
+{
+    if(d->observerHolder)
+    {
+        d->observerHolder->observerRemoveByOwner(owner);
+    }
+}
+void ZFObject::observerRemoveAll(ZF_IN zfidentity eventId)
+{
+    if(d->observerHolder)
+    {
+        d->observerHolder->observerRemoveAll(eventId);
+    }
+}
+void ZFObject::observerRemoveAll(void)
+{
+    if(d->observerHolder)
+    {
+        d->observerHolder->observerRemoveAll();
+    }
+}
+zfbool ZFObject::observerHasAdd(void)
+{
+    if(d->observerHolder)
+    {
+        return d->observerHolder->observerHasAdd();
+    }
+    else
+    {
+        return zffalse;
+    }
+}
+zfbool ZFObject::observerHasAdd(ZF_IN zfidentity eventId)
+{
+    if(d->observerHolder)
+    {
+        return d->observerHolder->observerHasAdd(eventId);
+    }
+    else
+    {
+        return zffalse;
+    }
+}
+void ZFObject::observerNotify(ZF_IN zfidentity eventId,
+                              ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                              ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+{
+    if(d->observerHolder)
+    {
+        d->observerHolder->observerNotify(eventId, param0, param1);
+    }
+}
+void ZFObject::observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
+                                              ZF_IN zfidentity eventId,
+                                              ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                                              ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+{
+    if(d->observerHolder)
+    {
+        d->observerHolder->observerNotifyWithCustomSender(customSender, eventId, param0, param1);
+    }
+}
 
 void ZFObject::observerOnAdd(ZF_IN zfidentity eventId)
 {
@@ -497,7 +630,6 @@ void ZFObject::objectOnInit(void)
 
     // note that (d != zfnull) is also used to check whether ZFObject::objectOnInit() is called
     d = zfpoolNew(_ZFP_ZFObjectPrivate, this->classData());
-    this->observerHolder()._ZFP_ZFObserverHolder_observerOwner(this);
 }
 void ZFObject::objectOnDealloc(void)
 {
@@ -648,7 +780,6 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTagGetAllKeyVal
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectTagRemove, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfautoObject, objectTagRemoveAndGet, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, void, objectTagRemoveAll)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, const ZFObserverHolder &, observerHolder)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_5(ZFObject, zfidentity, observerAdd, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFObject *, owner, zfnull), ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfidentity, observerAdd, ZFMP_IN(const ZFObserverAddParam &, param))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, zfidentity, observerAddForOnce, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFObject *, owner, zfnull), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))

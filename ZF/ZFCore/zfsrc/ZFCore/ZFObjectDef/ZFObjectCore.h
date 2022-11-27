@@ -241,7 +241,6 @@ protected:
     /** @cond ZFPrivateDoc */
     ZFObject(void)
     : d(zfnull)
-    , _observerHolder()
     {
     }
     virtual ~ZFObject(void)
@@ -467,50 +466,24 @@ public:
 
 public:
     /**
-     * @brief internal observer holder,
-     *   notifying to the holder is equivalent to notifying to the object
+     * @brief see #observerNotify
      */
-    inline ZFObserverHolder &observerHolder(void)
-    {
-        return this->_observerHolder;
-    }
+    zffinal zfidentity observerAdd(ZF_IN zfidentity eventId,
+                                   ZF_IN const ZFListener &observer,
+                                   ZF_IN_OPT ZFObject *owner = zfnull,
+                                   ZF_IN_OPT zfbool autoRemoveAfterActivate = zffalse,
+                                   ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
     /**
      * @brief see #observerNotify
      */
-    zffinal inline zfidentity observerAdd(ZF_IN zfidentity eventId,
+    zffinal zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param);
+    /**
+     * @brief see #observerNotify
+     */
+    zffinal zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
                                           ZF_IN const ZFListener &observer,
                                           ZF_IN_OPT ZFObject *owner = zfnull,
-                                          ZF_IN_OPT zfbool autoRemoveAfterActivate = zffalse,
-                                          ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal)
-    {
-        return this->observerHolder().observerAdd(
-            eventId,
-            observer,
-            owner,
-            autoRemoveAfterActivate,
-            observerLevel);
-    }
-    /**
-     * @brief see #observerNotify
-     */
-    zffinal inline zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param)
-    {
-        return this->observerHolder().observerAdd(param);
-    }
-    /**
-     * @brief see #observerNotify
-     */
-    zffinal inline zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
-                                                 ZF_IN const ZFListener &observer,
-                                                 ZF_IN_OPT ZFObject *owner = zfnull,
-                                                 ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal)
-    {
-        return this->observerHolder().observerAddForOnce(
-            eventId,
-            observer,
-            owner,
-            observerLevel);
-    }
+                                          ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
     /**
      * @brief move observer to head of same #ZFLevel
      *
@@ -518,32 +491,20 @@ public:
      * which means it would be called last of the same level,
      * you may use this method to make it to be called first for same level
      */
-    zffinal inline void observerMoveToFirst(ZF_IN zfidentity taskId)
-    {
-        return this->observerHolder().observerMoveToFirst(taskId);
-    }
+    zffinal void observerMoveToFirst(ZF_IN zfidentity taskId);
     /**
      * @brief see #observerNotify
      */
-    zffinal inline void observerRemove(ZF_IN zfidentity eventId,
-                                       ZF_IN const ZFListener &callback)
-    {
-        this->observerHolder().observerRemove(eventId, callback);
-    }
+    zffinal void observerRemove(ZF_IN zfidentity eventId,
+                                ZF_IN const ZFListener &callback);
     /**
      * @brief see #observerNotify
      */
-    zffinal inline void observerRemoveByTaskId(ZF_IN zfidentity taskId)
-    {
-        this->observerHolder().observerRemoveByTaskId(taskId);
-    }
+    zffinal void observerRemoveByTaskId(ZF_IN zfidentity taskId);
     /**
      * @brief see #observerNotify
      */
-    zffinal inline void observerRemoveByOwner(ZF_IN ZFObject *owner)
-    {
-        this->observerHolder().observerRemoveByOwner(owner);
-    }
+    zffinal void observerRemoveByOwner(ZF_IN ZFObject *owner);
     /**
      * @brief see #observerNotify
      *
@@ -552,10 +513,7 @@ public:
      *   remove only if necessary\n
      *   typically, you should remove exactly the one you have added
      */
-    zffinal inline void observerRemoveAll(ZF_IN zfidentity eventId)
-    {
-        this->observerHolder().observerRemoveAll(eventId);
-    }
+    zffinal void observerRemoveAll(ZF_IN zfidentity eventId);
     /**
      * @brief see #observerNotify
      *
@@ -564,24 +522,15 @@ public:
      *   remove only if necessary\n
      *   typically, you should remove exactly the one you have added
      */
-    zffinal inline void observerRemoveAll(void)
-    {
-        this->observerHolder().observerRemoveAll();
-    }
+    zffinal void observerRemoveAll(void);
     /**
      * @brief true if any observer has been added
      */
-    zffinal inline zfbool observerHasAdd(void)
-    {
-        return this->observerHolder().observerHasAdd();
-    }
+    zffinal zfbool observerHasAdd(void);
     /**
      * @brief true if any observer with eventId has been added
      */
-    zffinal inline zfbool observerHasAdd(ZF_IN zfidentity eventId)
-    {
-        return this->observerHolder().observerHasAdd(eventId);
-    }
+    zffinal zfbool observerHasAdd(ZF_IN zfidentity eventId);
     /**
      * @brief notify the observer with eventId
      *
@@ -608,22 +557,16 @@ public:
      * to pass extra params to the callback,
      * see #ZFLISTENER for more info
      */
-    zffinal inline void observerNotify(ZF_IN zfidentity eventId,
-                                       ZF_IN_OPT ZFObject *param0 = zfnull,
-                                       ZF_IN_OPT ZFObject *param1 = zfnull)
-    {
-        this->observerHolder().observerNotify(eventId, param0, param1);
-    }
+    zffinal void observerNotify(ZF_IN zfidentity eventId,
+                                ZF_IN_OPT ZFObject *param0 = zfnull,
+                                ZF_IN_OPT ZFObject *param1 = zfnull);
     /**
      * @brief see #observerNotify
      */
-    zffinal inline void observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
-                                                       ZF_IN zfidentity eventId,
-                                                       ZF_IN_OPT ZFObject *param0 = zfnull,
-                                                       ZF_IN_OPT ZFObject *param1 = zfnull)
-    {
-        this->observerHolder().observerNotifyWithCustomSender(customSender, eventId, param0, param1);
-    }
+    zffinal void observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
+                                                ZF_IN zfidentity eventId,
+                                                ZF_IN_OPT ZFObject *param0 = zfnull,
+                                                ZF_IN_OPT ZFObject *param1 = zfnull);
 
 protected:
     /**
@@ -805,7 +748,6 @@ public:
 
 private:
     _ZFP_ZFObjectPrivate *d;
-    ZFObserverHolder _observerHolder;
 private:
     friend zfclassFwd ZFClass;
     friend zfclassFwd ZFObserverHolder;

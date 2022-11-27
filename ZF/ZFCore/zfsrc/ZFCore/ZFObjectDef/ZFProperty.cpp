@@ -1,6 +1,9 @@
 #include "ZFProperty.h"
 #include "ZFObjectImpl.h"
 
+#include "../ZFSTLWrapper/zfstl_string.h"
+#include "../ZFSTLWrapper/zfstl_hashmap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -42,14 +45,14 @@ ZFProperty::ZFProperty(void)
 , callbackUserRegisterInitValueSetup(zfnull)
 , _ZFP_ZFPropertyNeedInit(zftrue)
 , _ZFP_ZFProperty_refCount(1)
-, _ZFP_ZFProperty_propertyInternalId()
+, _ZFP_ZFProperty_propertyInternalId(zfnull)
 , _ZFP_ZFProperty_propertyIsUserRegister(zffalse)
 , _ZFP_ZFProperty_propertyIsDynamicRegister(zffalse)
 , _ZFP_ZFProperty_propertyDynamicRegisterUserData(zfnull)
 , _ZFP_ZFProperty_propertyOwnerClass(zfnull)
-, _ZFP_ZFProperty_name()
-, _ZFP_ZFProperty_typeName()
-, _ZFP_ZFProperty_typeId()
+, _ZFP_ZFProperty_name(zfnull)
+, _ZFP_ZFProperty_typeName(zfnull)
+, _ZFP_ZFProperty_typeId(zfnull)
 , _ZFP_ZFProperty_setterMethod(zfnull)
 , _ZFP_ZFProperty_getterMethod(zfnull)
 , _ZFP_ZFProperty_setterMethodCleanup(zfnull)
@@ -65,6 +68,11 @@ ZFProperty::ZFProperty(void)
 }
 ZFProperty::~ZFProperty(void)
 {
+    zffree(this->_ZFP_ZFProperty_propertyInternalId);
+
+    zffree(this->_ZFP_ZFProperty_name);
+    // zffree(this->_ZFP_ZFProperty_typeName); // free in _ZFP_ZFProperty_name
+    // zffree(this->_ZFP_ZFProperty_typeId); // free in _ZFP_ZFProperty_name
 }
 void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
                                      ZF_IN zfbool propertyIsDynamicRegister,
@@ -83,15 +91,31 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
     this->_ZFP_ZFProperty_propertyIsDynamicRegister = propertyIsDynamicRegister;
     this->_ZFP_ZFProperty_propertyDynamicRegisterUserData = zfRetain(propertyDynamicRegisterUserData);
     this->_ZFP_ZFProperty_propertyOwnerClass = propertyOwnerClass;
-    this->_ZFP_ZFProperty_name = name;
-    this->_ZFP_ZFProperty_typeName = typeName;
     if(propertyClassOfRetainProperty == zfnull && ZFClass::classForName(typeIdName) != zfnull)
     { // assign property with ZFObject type, is not serializable
-        this->_ZFP_ZFProperty_typeId = ZFTypeId_none();
+        typeIdName = ZFTypeId_none();
     }
-    else
     {
-        this->_ZFP_ZFProperty_typeId = typeIdName;
+        zfindex nameLen = zfslen(name);
+        zfindex typeNameLen = zfslen(typeName);
+        zfindex typeIdNameLen = zfslen(typeIdName);
+        zfchar *base = (zfchar *)zfmalloc(sizeof(zfchar) * (0
+                + nameLen + 1
+                + typeNameLen + 1
+                + typeIdNameLen + 1
+            ));
+
+        zfscpy(base, name);
+        this->_ZFP_ZFProperty_name = base;
+        base += nameLen + 1;
+
+        zfscpy(base, typeName);
+        this->_ZFP_ZFProperty_typeName = base;
+        base += typeNameLen + 1;
+
+        zfscpy(base, typeIdName);
+        this->_ZFP_ZFProperty_typeId = base;
+        base += typeIdNameLen + 1;
     }
     this->_ZFP_ZFProperty_setterMethod = setterMethod;
     this->_ZFP_ZFProperty_getterMethod = getterMethod;
@@ -103,24 +127,24 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
 }
 
 // ============================================================
-ZF_STATIC_INITIALIZER_INIT(ZFPropertyDataHolder)
+typedef zfstlhashmap<const zfchar *, ZFProperty *, zfcharConst_zfstlHasher, zfcharConst_zfstlHashComparer> _ZFP_ZFPropertyMapType;
+static _ZFP_ZFPropertyMapType &_ZFP_ZFPropertyMap(void)
 {
+    static _ZFP_ZFPropertyMapType m;
+    return m;
 }
-ZFCoreMap propertyMap; // ZFProperty *
-ZF_STATIC_INITIALIZER_END(ZFPropertyDataHolder)
-#define _ZFP_ZFPropertyMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFPropertyDataHolder)->propertyMap)
 
 // ============================================================
 void ZFPropertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
                        ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter /* = zfnull */)
 {
     zfCoreMutexLocker();
-    const ZFCoreMap &m = _ZFP_ZFPropertyMap;
+    _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     if(propertyFilter != zfnull)
     {
-        for(zfiterator it = m.iter(); m.iterValid(it); m.iterNext(it))
+        for(_ZFP_ZFPropertyMapType::iterator it = m.begin(); it != m.end(); ++it)
         {
-            ZFProperty *v = m.iterValue<ZFProperty *>(it);
+            ZFProperty *v = it->second;
             if(propertyFilter->filterCheckActive(v))
             {
                 ret.add(v);
@@ -129,9 +153,9 @@ void ZFPropertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
     }
     else
     {
-        for(zfiterator it = m.iter(); m.iterValid(it); m.iterNext(it))
+        for(_ZFP_ZFPropertyMapType::iterator it = m.begin(); it != m.end(); ++it)
         {
-            ZFProperty *v = m.iterValue<ZFProperty *>(it);
+            ZFProperty *v = it->second;
             ret.add(v);
         }
     }
@@ -155,46 +179,35 @@ static void _ZFP_ZFPropertyInstanceSig(ZF_OUT zfstring &ret,
 static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfchar *propertyInternalId)
 {
     zfCoreMutexLocker();
-    ZFProperty *v = _ZFP_ZFPropertyMap.get<ZFProperty *>(propertyInternalId);
-    if(v == zfnull)
+    _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
+    _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInternalId);
+    if(it != m.end())
     {
-        return zfnull;
+        return it->second;
     }
     else
     {
-        return v;
+        return zfnull;
     }
 }
 static ZFProperty *_ZFP_ZFPropertyInstanceAccess(ZF_IN const zfchar *propertyInternalId)
 {
     zfCoreMutexLocker();
-    ZFProperty *v = _ZFP_ZFPropertyMap.get<ZFProperty *>(propertyInternalId);
-    if(v == zfnull)
+    _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
+    _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInternalId);
+    if(it != m.end())
     {
-        v = zfnew(ZFProperty);
-        _ZFP_ZFPropertyMap.set(propertyInternalId, ZFCorePointerForObject<ZFProperty *>(v));
-        v->_ZFP_ZFProperty_propertyInternalId = propertyInternalId;
+        ZFProperty *v = it->second;
+        ++(v->_ZFP_ZFProperty_refCount);
+        return v;
     }
     else
     {
-        ++(v->_ZFP_ZFProperty_refCount);
+        ZFProperty *v = zfnew(ZFProperty);
+        v->_ZFP_ZFProperty_propertyInternalId = zfsCopy(propertyInternalId);
+        m[v->propertyInternalId()] = v;
+        return v;
     }
-    return v;
-}
-static zfbool _ZFP_ZFPropertyInstanceCleanup(ZF_IN const ZFProperty *property)
-{
-    zfCoreMutexLocker();
-    ZFProperty *v = _ZFP_ZFPropertyMap.get<ZFProperty *>(property->propertyInternalId());
-    if(v == zfnull)
-    {
-        return zffalse;
-    }
-    --(v->_ZFP_ZFProperty_refCount);
-    if(v->_ZFP_ZFProperty_refCount == 0)
-    {
-        _ZFP_ZFPropertyMap.remove(property->propertyInternalId());
-    }
-    return zftrue;
 }
 
 ZFProperty *_ZFP_ZFPropertyRegister(ZF_IN zfbool propertyIsUserRegister
@@ -283,19 +296,35 @@ ZFProperty *_ZFP_ZFPropertyRegister(ZF_IN zfbool propertyIsUserRegister
 void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo)
 {
     zfCoreMutexLocker();
-    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, zfnull, propertyInfo, zfnull);
+    _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
+    _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInfo->propertyInternalId());
+    if(it == m.end())
+    {
+        return;
+    }
 
-    if(propertyInfo->_ZFP_ZFProperty_setterMethodCleanup != zfnull)
+    ZFProperty *v = it->second;
+    --(v->_ZFP_ZFProperty_refCount);
+    if(v->_ZFP_ZFProperty_refCount != 0)
     {
-        propertyInfo->_ZFP_ZFProperty_setterMethodCleanup(propertyInfo->setterMethod());
+        return;
     }
-    if(propertyInfo->_ZFP_ZFProperty_getterMethodCleanup != zfnull)
+    m.erase(it);
+
+    if(v->_ZFP_ZFProperty_setterMethodCleanup != zfnull)
     {
-        propertyInfo->_ZFP_ZFProperty_getterMethodCleanup(propertyInfo->getterMethod());
+        v->_ZFP_ZFProperty_setterMethodCleanup(v->setterMethod());
     }
-    propertyInfo->propertyOwnerClass()->_ZFP_ZFClass_propertyUnregister(propertyInfo);
-    zfRetainChange(propertyInfo->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_propertyDynamicRegisterUserData, zfnull);
-    _ZFP_ZFPropertyInstanceCleanup(propertyInfo);
+    if(v->_ZFP_ZFProperty_getterMethodCleanup != zfnull)
+    {
+        v->_ZFP_ZFProperty_getterMethodCleanup(v->getterMethod());
+    }
+    v->propertyOwnerClass()->_ZFP_ZFClass_propertyUnregister(v);
+    zfRetainChange(v->_ZFP_ZFProperty_removeConst()->_ZFP_ZFProperty_propertyDynamicRegisterUserData, zfnull);
+
+    _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, zfnull, v, zfnull);
+
+    zfdelete(v);
 }
 
 ZF_NAMESPACE_GLOBAL_END
