@@ -162,7 +162,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce,
             ) {
         if(ret->timerStarted())
         {
-            timerCallback.execute(ZFArgs(zfidentityInvalid(), ret));
+            timerCallback.execute(ZFArgs()
+                    .sender(ret)
+                );
         }
         ret->timerStop();
     } ZFLISTENER_END(implThreadCallback)

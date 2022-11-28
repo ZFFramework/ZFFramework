@@ -42,7 +42,7 @@
  * @code
  *   // the object to test observer
  *   zfblockedAlloc(MyObject, obj);
- *   // the object to test userData passing
+ *   // the object to test user data passing
  *   zfblockedAlloc(v_zfstring, myUserData, "myUserData");
  *
  *   // we use ZFListener as observer callback type,

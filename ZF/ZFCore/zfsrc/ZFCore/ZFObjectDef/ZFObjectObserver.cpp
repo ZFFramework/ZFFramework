@@ -538,8 +538,14 @@ void ZFObserverHolder::observerNotifyWithCustomSender(ZF_IN ZFObject *customSend
     _ZFP_ZFObserverData *toDelete = zfnull;
 
     d->observerNotifyPrepare(toNotify, toDelete, eventId, d->observerOwner);
-    ZFArgs zfargs(eventId, customSender, param0, param1);
-    zfargs.eventFilterEnable(zftrue);
+    ZFArgs zfargs;
+    zfargs
+        .eventId(eventId)
+        .sender(customSender)
+        .param0(param0)
+        .param1(param1)
+        .eventFilterEnable(zftrue)
+        ;
     if(d->observerOwner != zfnull)
     {
         d->observerOwner->observerOnEvent(zfargs);

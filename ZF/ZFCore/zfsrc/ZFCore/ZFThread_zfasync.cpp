@@ -94,7 +94,9 @@ public:
         }
         zfCoreMutexUnlock();
 
-        taskData->finishCallback.execute(ZFArgs().param0(taskData->result));
+        taskData->finishCallback.execute(ZFArgs()
+                .param0(taskData->result)
+            );
 
         zfCoreMutexLock();
         _ZFP_taskDataCleanup(d, taskData);

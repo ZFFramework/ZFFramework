@@ -49,12 +49,10 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForLuaOwner, zfindex, onOutput,
     {
         this->_srcCache->zfv.assign((const zfchar *)src, count / sizeof(zfchar));
         this->_countCache->zfv = count;
-        this->luaCallback.execute(ZFArgs(
-                zfidentityInvalid(),
-                zfnull,
-                this->_srcCache,
-                this->_countCache
-            ));
+        this->luaCallback.execute(ZFArgs()
+                .param0(this->_srcCache)
+                .param1(this->_countCache)
+            );
         return this->_countCache->zfv;
     }
     else

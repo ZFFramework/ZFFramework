@@ -49,12 +49,10 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForLuaOwner, zfindex, onInput,
     {
         this->_bufCache->zfv.removeAll();
         this->_countCache->zfv = ((buf == zfnull) ? zfindexMax() : count);
-        this->luaCallback.execute(ZFArgs(
-                zfidentityInvalid(),
-                zfnull,
-                this->_bufCache,
-                this->_countCache
-            ));
+        this->luaCallback.execute(ZFArgs()
+                .param0(this->_bufCache)
+                .param1(this->_countCache)
+            );
         if(buf == zfnull || count == zfindexMax())
         {
             count = this->_countCache->zfv;

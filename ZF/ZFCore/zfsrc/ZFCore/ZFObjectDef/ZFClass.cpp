@@ -611,8 +611,12 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const
 {
     if(!d->instanceObserverCached.empty())
     {
-        ZFArgs zfargs(ZFObject::EventObjectAfterAlloc(), obj);
-        zfargs.eventFilterEnable(zftrue);
+        ZFArgs zfargs;
+        zfargs
+            .eventId(ZFObject::EventObjectAfterAlloc())
+            .sender(obj)
+            .eventFilterEnable(zftrue)
+            ;
         for(zfstlsize i = 0; i < d->instanceObserverCached.size() && !zfargs.eventFiltered(); ++i)
         {
             _ZFP_ZFClassPrivate::InstanceObserverData &data = *(d->instanceObserverCached[i]);

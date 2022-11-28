@@ -520,7 +520,10 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathInfoForEach,
             {
                 break;
             }
-            fileCallback.execute(ZFArgs().param0(childPathInfo).param1(childFd));
+            fileCallback.execute(ZFArgs()
+                    .param0(childPathInfo)
+                    .param1(childFd)
+                );
         } while(impl->callbackFindNext(fd));
         impl->callbackFindClose(fd);
     }

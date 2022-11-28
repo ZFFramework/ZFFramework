@@ -134,7 +134,9 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
         }
         zfThread->d->taskQueueRunning = zftrue;
         zfCoreMutexUnlock();
-        task.execute(ZFArgs(zfidentityInvalid(), zfThread));
+        task.execute(ZFArgs()
+                .sender(zfThread)
+            );
         zfCoreMutexLock();
         zfThread->d->taskQueueRunning = zffalse;
         zfThread->d->autoReleasePool->poolDrain();
@@ -450,7 +452,12 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
 
     zfThread->threadOnStart();
 
-    ZFArgs zfargsTmp(zfidentityInvalid(), zfThread, paramHolder->param0, paramHolder->param1);
+    ZFArgs zfargsTmp;
+    zfargsTmp
+        .sender(zfThread)
+        .param0(paramHolder->param0)
+        .param0(paramHolder->param1)
+        ;
     if(!d->stopRequestedFlag)
     {
         zfThread->threadOnRun(zfargsTmp);
@@ -491,7 +498,9 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
         zfCoreMutexUnlock();
         if(task)
         {
-            task.execute(ZFArgs(zfidentityInvalid(), zfThread));
+            task.execute(ZFArgs()
+                    .sender(zfThread)
+                );
         }
     } while(zftrue);
 
@@ -562,7 +571,9 @@ void ZFThread::_ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFArgs &zfargs)
 
         if(task)
         {
-            task.execute(ZFArgs(zfidentityInvalid(), zfThread));
+            task.execute(ZFArgs()
+                    .sender(zfThread)
+                );
         }
     } while(zftrue);
 }

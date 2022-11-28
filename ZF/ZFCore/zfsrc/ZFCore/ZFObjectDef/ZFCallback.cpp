@@ -119,16 +119,7 @@ ZFCallback &ZFCallback::operator = (ZF_IN const zfnullT &dummy)
 }
 ZFCallback::~ZFCallback(void)
 {
-    zfCoreMutexLock();
-    if(d != zfnull)
-    {
-        --d->refCount;
-        if(d->refCount == 0)
-        {
-            zfdelete(d);
-        }
-    }
-    zfCoreMutexUnlock();
+    _ZFP_ZFCallbackPrivateDataChange(d, zfnull);
 }
 ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMethod(ZF_IN const ZFMethod *callbackMethod)
 {
@@ -254,6 +245,7 @@ ZFCompareResult ZFCallback::objectCompare(ZF_IN const ZFCallback &ref) const
 
 void ZFCallback::callbackId(ZF_IN const zfchar *callbackId)
 {
+    zfCoreMutexLocker();
     if(d == zfnull)
     {
         d = zfnew(_ZFP_ZFCallbackPrivate);
@@ -276,6 +268,7 @@ void ZFCallback::callbackTag(ZF_IN const zfchar *key,
     {
         return ;
     }
+    zfCoreMutexLocker();
     if(d == zfnull)
     {
         d = zfnew(_ZFP_ZFCallbackPrivate);
@@ -310,6 +303,7 @@ ZFObject *ZFCallback::callbackTag(ZF_IN const zfchar *key) const
 {
     if(d != zfnull && key != zfnull)
     {
+        zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
         _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
         if(it != m.end())
@@ -324,6 +318,7 @@ void ZFCallback::callbackTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray<const zfchar *>
 {
     if(d != zfnull)
     {
+        zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
         allKey.capacity(allKey.count() + m.size());
         allValue.capacity(allValue.count() + m.size());
@@ -338,6 +333,7 @@ zfautoObject ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfchar *key)
 {
     if(d != zfnull && key != zfnull)
     {
+        zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
         _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
         if(it != m.end())
@@ -353,6 +349,7 @@ void ZFCallback::callbackTagRemoveAll(void)
 {
     if(d != zfnull && !d->callbackTagMap.empty())
     {
+        zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap tmp;
         tmp.swap(d->callbackTagMap);
     }
@@ -413,6 +410,7 @@ void ZFCallback::callbackOwnerObjectRelease(void) const
 
 void ZFCallback::callbackSerializeCustomType(ZF_IN const zfchar *customType)
 {
+    zfCoreMutexLocker();
     if(d == zfnull)
     {
         d = zfnew(_ZFP_ZFCallbackPrivate);
@@ -460,6 +458,7 @@ const ZFPathInfo *ZFCallback::pathInfo(void) const
 }
 void ZFCallback::pathInfo(ZF_IN const ZFPathInfo *pathInfo)
 {
+    zfCoreMutexLocker();
     if(d == zfnull)
     {
         d = zfnew(_ZFP_ZFCallbackPrivate);
@@ -486,6 +485,7 @@ void ZFCallback::pathInfo(ZF_IN const ZFPathInfo *pathInfo)
 }
 void ZFCallback::pathInfo(ZF_IN const zfchar *pathType, ZF_IN const zfchar *pathData)
 {
+    zfCoreMutexLocker();
     if(d == zfnull)
     {
         d = zfnew(_ZFP_ZFCallbackPrivate);

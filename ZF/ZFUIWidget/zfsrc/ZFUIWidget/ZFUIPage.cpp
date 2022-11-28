@@ -120,7 +120,9 @@ public:
         if(this->pageRequestQueue.isEmpty())
         {
             this->pageRequestRunningFlag = zftrue;
-            callback.execute(ZFArgs(zfidentityInvalid(), owner));
+            callback.execute(ZFArgs()
+                    .sender(owner)
+                );
             this->pageRequestRunningFlag = zffalse;
         }
         this->pageRequestResolve(owner);
@@ -132,7 +134,9 @@ public:
             ZFListener callback = this->pageRequestQueue[0];
             this->pageRequestQueue.remove(0);
             this->pageRequestRunningFlag = zftrue;
-            callback.execute(ZFArgs(zfidentityInvalid(), owner));
+            callback.execute(ZFArgs()
+                    .sender(owner)
+                );
             this->pageRequestRunningFlag = zffalse;
         }
     }

@@ -753,8 +753,9 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
         invokeData->propertyValue = ((zfautoObject *)propertyValue)->toObject();
         invokeData->propertyValueOld = *(zfautoObject *)propertyValueOld;
 
-        implUserData->callback.execute(
-                ZFArgs().sender(propertyOwnerObject).param0(invokeData)
+        implUserData->callback.execute(ZFArgs()
+                .sender(propertyOwnerObject)
+                .param0(invokeData)
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
         {
@@ -781,8 +782,9 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
         propertyValueHolder->wrappedValue(propertyValue);
         propertyValueOldHolder->wrappedValue(propertyValueOld);
 
-        implUserData->callback.execute(
-                ZFArgs().sender(propertyOwnerObject).param0(invokeData)
+        implUserData->callback.execute(ZFArgs()
+                .sender(propertyOwnerObject)
+                .param0(invokeData)
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
         {

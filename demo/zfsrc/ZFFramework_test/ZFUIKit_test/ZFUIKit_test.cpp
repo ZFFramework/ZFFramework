@@ -74,7 +74,9 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
                 ) {
             ZFUIButtonBasic *button = ZFAny(zfargs.sender());
 
-            setting->buttonClickListener().execute(ZFArgs().sender(button));
+            setting->buttonClickListener().execute(ZFArgs()
+                    .sender(button)
+                );
             setting->settingUpdate();
         } ZFLISTENER_END(onButtonClick)
         button->observerAdd(ZFUIButton::EventButtonOnClick(), onButtonClick);
@@ -84,13 +86,19 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
                 , ZFUIButtonBasic *, button
                 ) {
             zfblockedAlloc(v_zfstring, buttonText);
-            setting->buttonTextGetter().execute(ZFArgs().sender(button).param0(buttonText));
+            setting->buttonTextGetter().execute(ZFArgs()
+                    .sender(button)
+                    .param0(buttonText)
+                );
             button->label()->text(buttonText->zfv);
         } ZFLISTENER_END(settingOnChange)
         setting->observerAdd(ZFUIKit_test_SettingData::EventSettingOnChange(), settingOnChange);
 
         zfblockedAlloc(v_zfstring, buttonText);
-        setting->buttonTextGetter().execute(ZFArgs().sender(button).param0(buttonText));
+        setting->buttonTextGetter().execute(ZFArgs()
+                .sender(button)
+                .param0(buttonText)
+            );
         button->label()->text(buttonText->zfv);
     }
 
@@ -123,7 +131,7 @@ void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
     ZFLISTENER_1(buttonClickListener
             , ZFListener, nextCallback
             ) {
-        nextCallback.execute(ZFArgs());
+        nextCallback.execute();
     } ZFLISTENER_END(buttonClickListener)
 
     settings->add(zflineAlloc(ZFUIKit_test_SettingData, buttonTextGetter, buttonClickListener));

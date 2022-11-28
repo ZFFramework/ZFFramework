@@ -20,27 +20,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFArgs
 {
-    ZFCORE_PARAM_DECLARE_SELF(ZFArgs)
 public:
     /**
      * @brief event id, may be #zfidentityInvalid
      */
-    ZFCORE_PARAM_WITH_INIT(zfidentity, eventId, zfidentityInvalid())
+    ZFArgs &eventId(ZF_IN zfidentity const &v) {d.eventId = v; return *this;}
+    /** @brief see #eventId */
+    zfidentity const &eventId(void) const {return d.eventId;}
     /**
      * @brief who notified the listener event, may be null
      * @note the sneder has no auto retain
      */
-    ZFCORE_PARAM(ZFObject *, sender)
+    ZFArgs &sender(ZF_IN ZFObject * const &v) {d.sender = v; return *this;}
+    /** @brief see #sender */
+    ZFObject * const &sender(void) const {return d.sender;}
     /**
      * @brief params, may be null
      * @note the param has no auto retain
      */
-    ZFCORE_PARAM(ZFObject *, param0)
+    ZFArgs &param0(ZF_IN ZFObject * const &v) {d.param0 = v; return *this;}
+    /** @brief see #param0 */
+    ZFObject * const &param0(void) const {return d.param0;}
     /**
      * @brief params, may be null
      * @note the param has no auto retain
      */
-    ZFCORE_PARAM(ZFObject *, param1)
+    ZFArgs &param1(ZF_IN ZFObject * const &v) {d.param1 = v; return *this;}
+    /** @brief see #param1 */
+    ZFObject * const &param1(void) const {return d.param1;}
 
     /**
      * @brief result, must first enabled by #resultEnable
@@ -101,23 +108,8 @@ public:
     , _ZFP_eventFilteredHolder(zffalse)
     , _ZFP_eventFiltered(zfnull)
     {
-    }
-    /**
-     * @brief construct with sender and params
-     */
-    ZFArgs(ZF_IN zfidentity eventId,
-           ZF_IN ZFObject *sender,
-           ZF_IN_OPT ZFObject *param0 = zfnull,
-           ZF_IN_OPT ZFObject *param1 = zfnull)
-    : _ZFP_resultHolder(zfnull)
-    , _ZFP_result(zfnull)
-    , _ZFP_eventFilteredHolder(zffalse)
-    , _ZFP_eventFiltered(zfnull)
-    {
-        this->eventId(eventId);
-        this->sender(sender);
-        this->param0(param0);
-        this->param1(param1);
+        zfmemset(&d, 0, sizeof(_ZFP_D));
+        d.eventId = zfidentityInvalid();
     }
     /**
      * @brief construct with another data
@@ -132,10 +124,7 @@ public:
     zffinal ~ZFArgs(void);
     ZFArgs &operator = (ZF_IN const ZFArgs &ref)
     {
-        this->eventId(ref.eventId());
-        this->sender(ref.sender());
-        this->param0(ref.param0());
-        this->param1(ref.param1());
+        zfmemcpy(&d, &ref.d, sizeof(_ZFP_D));
         this->resultEnable(ref.resultEnabled());
         this->result(ref.result());
         this->_ZFP_eventFilteredHolder = ref._ZFP_eventFilteredHolder;
@@ -145,10 +134,7 @@ public:
     zfbool operator == (ZF_IN const ZFArgs &ref) const
     {
         return (zftrue
-                && this->eventId() == ref.eventId()
-                && this->sender() == ref.sender()
-                && this->param0() == ref.param0()
-                && this->param1() == ref.param1()
+                && zfmemcmp(&d, &ref.d, sizeof(_ZFP_D)) == 0
                 && this->_ZFP_resultHolder == ref._ZFP_resultHolder
                 && this->resultEnabled() == ref.resultEnabled()
                 && this->_ZFP_eventFilteredHolder == ref._ZFP_eventFilteredHolder
@@ -170,6 +156,15 @@ public:
     }
 
 private:
+    zfclassPOD _ZFP_D
+    {
+    public:
+        zfidentity eventId;
+        ZFObject *sender;
+        ZFObject *param0;
+        ZFObject *param1;
+    };
+    _ZFP_D d;
     ZFObject *_ZFP_resultHolder;
     ZFObject **_ZFP_result;
     zfbool _ZFP_eventFilteredHolder;

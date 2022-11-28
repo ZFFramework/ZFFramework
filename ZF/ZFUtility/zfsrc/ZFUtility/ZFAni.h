@@ -82,7 +82,10 @@ protected:
         if(this->customAniCallback())
         {
             this->_ZFP_progressHolder->zfv = progress;
-            this->customAniCallback().execute(ZFArgs(zfidentityInvalid(), this, this->_ZFP_progressHolder));
+            this->customAniCallback().execute(ZFArgs()
+                    .sender(this)
+                    .param0(this->_ZFP_progressHolder)
+                );
         }
     }
     zfoverride

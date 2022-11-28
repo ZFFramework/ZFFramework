@@ -225,7 +225,7 @@ public:
     ZFTimer *delayTimer;
     zftimet endTime;
     ZFListener doStopListener;
-    static void doStop(ZF_IN const ZFArgs &zfargs, ZF_IN ZFObject *userData)
+    static void doStop(ZF_IN const ZFArgs &zfargs)
     {
         ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel();
     }

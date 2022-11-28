@@ -44,7 +44,10 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
     d->param7 = paramList[7];
 
     ZFListener methodImpl = ZFCastZFObjectUnchecked(v_ZFListener *, invokerMethod->methodDynamicRegisterUserData())->zfv;
-    methodImpl.execute(ZFArgs().sender(invokerObject).param0(d));
+    methodImpl.execute(ZFArgs()
+            .sender(invokerObject)
+            .param0(d)
+        );
     ret = d->ret;
     if(errorHint != zfnull)
     {

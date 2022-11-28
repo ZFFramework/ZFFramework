@@ -23,13 +23,19 @@
     @autoreleasepool {
         if(!self.cancelFlag)
         {
-            self.runnable.execute(ZFArgs().param0(self.param0).param1(self.param1));
+            self.runnable.execute(ZFArgs()
+                    .param0(self.param0)
+                    .param1(self.param1)
+                );
         }
     }
 
     if(self.runnableCleanup)
     {
-        self.runnableCleanup.execute(ZFArgs().param0(self.param0).param1(self.param1));
+        self.runnableCleanup.execute(ZFArgs()
+                .param0(self.param0)
+                .param1(self.param1)
+            );
     }
     self._selfHolder = nil;
 }
