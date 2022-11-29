@@ -12,7 +12,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 enum {
-    _ZFP_zfstr_bufSize = (sizeof(void *) + sizeof(zfindex) * 2),
+    _ZFP_zfstr_bufSize = (sizeof(void *) + sizeof(zfuint) * 2),
 };
 #define _ZFP_zfstr_dynamicBuf ((zfuint)-1)
 
@@ -25,8 +25,8 @@ public:
     union {
         struct {
             T_Char *s;
-            zfindex capacity;
-            zfindex length;
+            zfuint capacity;
+            zfuint length;
         } s;
         T_Char buf[_ZFP_zfstr_bufSize];
     } d;
@@ -297,8 +297,8 @@ public:
         }
         d.length = _ZFP_zfstr_dynamicBuf;
         d.d.s.s = s;
-        d.d.s.capacity = capacity;
-        d.d.s.length = length;
+        d.d.s.capacity = (zfuint)capacity;
+        d.d.s.length = (zfuint)length;
     }
     /**
      * @brief directly access internal writable buffer
@@ -316,7 +316,7 @@ public:
         {
             if(d.length == _ZFP_zfstr_dynamicBuf)
             {
-                d.d.s.length = length;
+                d.d.s.length = (zfuint)length;
             }
             else
             {
@@ -398,11 +398,11 @@ public:
     {
         if(d.length != _ZFP_zfstr_dynamicBuf)
         {
-            return d.length;
+            return (zfindex)d.length;
         }
         else
         {
-            return d.d.s.length;
+            return (zfindex)d.d.s.length;
         }
     }
     /** @brief true if empty */
@@ -524,7 +524,7 @@ private:
                 T_Char *buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
                 zfmemcpy(buf, d.d.buf, (d.length + 1) * sizeof(T_Char));
                 d.d.s.s = buf;
-                d.d.s.capacity = capacity - 1;
+                d.d.s.capacity = (zfuint)capacity - 1;
                 d.d.s.length = d.length;
                 d.length = _ZFP_zfstr_dynamicBuf;
                 return d.d.s.s;
@@ -537,7 +537,7 @@ private:
             {
                 _capacityOptimize(capacity);
                 d.d.s.s = (T_Char *)zfrealloc(d.d.s.s, capacity * sizeof(T_Char));
-                d.d.s.capacity = capacity - 1;
+                d.d.s.capacity = (zfuint)capacity - 1;
             }
             return d.d.s.s;
         }
@@ -550,7 +550,7 @@ private:
         }
         else
         {
-            d.d.s.length = len;
+            d.d.s.length = (zfuint)len;
         }
     }
     static zfindex _len(ZF_IN const T_Char *s)

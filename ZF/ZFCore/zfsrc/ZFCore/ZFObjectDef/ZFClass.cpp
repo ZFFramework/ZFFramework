@@ -1673,8 +1673,31 @@ void ZFClass::_ZFP_ZFClass_methodUnregister(ZF_IN const ZFMethod *method) const
 
 void ZFClass::_ZFP_ZFClass_propertyRegister(ZF_IN const ZFProperty *zfproperty) const
 {
+#if 0
     _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
     const ZFProperty *existProp = this->propertyForName(zfproperty->propertyName());
+#else
+    const ZFProperty *existProp = zfnull;
+    {
+        ZFCoreQueuePOD<const ZFClass *> toCheck;
+        toCheck.add(this);
+        do {
+            const ZFClass *t = toCheck.take();
+            if(t->classParent() != zfnull)
+            {
+                toCheck.add(t->classParent());
+            }
+            toCheck.addFrom(t->d->implementedInterface);
+
+            _ZFP_ZFClassPropertyMapType::iterator it = t->d->propertyMap.find(zfproperty->propertyName());
+            if(it != t->d->propertyMap.end())
+            {
+                existProp = it->second;
+                break;
+            }
+        } while(!toCheck.isEmpty());
+    }
+#endif
     zfCoreAssertWithMessageTrim(existProp == zfnull,
         "class %s already has property named %s",
         this->className(),
