@@ -45,13 +45,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // impl
-#define _ZFP_zfpoolSizeAlignMin (sizeof(void *))
-#define _ZFP_zfpoolSizeAlign(size) \
-    ( \
-        (((size) % _ZFP_zfpoolSizeAlignMin) == 0) \
-            ? (size) \
-            : ((((size) / _ZFP_zfpoolSizeAlignMin) + 1) * _ZFP_zfpoolSizeAlignMin) \
-    )
+template<int N>
+zfclassNotPOD _ZFP_zfpoolSizeAlign
+{
+public:
+    enum {
+        _A = sizeof(const void *) * 2,
+        V = ((N % _A) == 0 ? N : ((N / _A) + 1) * _A),
+    };
+};
 template<int N>
 union ZFLIB_ZFCore _ZFP_zfpoolObjectBlock
 {
@@ -78,9 +80,9 @@ public:
     }
     void poolFree(ZF_IN void *obj)
     {
-        _ZFP_zfpoolObjectBlock<N> *t = _available;
-        _available = (_ZFP_zfpoolObjectBlock<N> *)obj;
-        _available->next = t;
+        _ZFP_zfpoolObjectBlock<N> *t = (_ZFP_zfpoolObjectBlock<N> *)obj;
+        t->next = _available;
+        _available = t;
     }
 public:
     _ZFP_zfpoolObject(void)
@@ -111,12 +113,12 @@ zfclassNotPOD _ZFP_zfpoolObjectHolder
 public:
     static void *poolMalloc(void)
     {
-        return _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign(sizeof(T_Type))>::instance().poolMalloc();
+        return _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign<sizeof(T_Type)>::V>::instance().poolMalloc();
     }
     static void poolDelete(ZF_IN T_Type *obj)
     {
         obj->~T_Type();
-        _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign(sizeof(T_Type))>::instance().poolFree(obj);
+        _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign<sizeof(T_Type)>::V>::instance().poolFree(obj);
     }
 };
 template<typename T_Type>

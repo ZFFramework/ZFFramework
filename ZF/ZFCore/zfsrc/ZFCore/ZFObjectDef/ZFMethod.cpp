@@ -43,8 +43,8 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
     this->_ZFP_ZFMethod_methodGenericInvokerOrg = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodType = methodType;
     this->_ZFP_ZFMethod_methodName = zfsCopy(methodName);
-    this->_ZFP_ZFMethod_returnTypeId = zfsCopy(returnTypeId);
-    this->_ZFP_ZFMethod_returnTypeName = zfsCopy(returnTypeName);
+    this->_ZFP_ZFMethod_returnTypeId = _ZFP_ZFSigNameAddr(returnTypeId);
+    this->_ZFP_ZFMethod_returnTypeName = _ZFP_ZFSigNameAddr(returnTypeName);
 
     const zfchar *paramTypeIdList[ZFMETHOD_MAX_PARAM];
     const zfchar *paramTypeNameList[ZFMETHOD_MAX_PARAM];
@@ -66,8 +66,6 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
         paramTypeNameList[paramCount] = va_arg(vaList, const zfchar *);
         paramNameList[paramCount] = va_arg(vaList, const zfchar *);
         paramBufLen += 0
-            + zfslen(paramTypeIdList[paramCount]) + 1
-            + zfslen(paramTypeNameList[paramCount]) + 1
             + zfslen(paramNameList[paramCount]) + 1
             ;
 
@@ -109,13 +107,8 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
 
         for(zfuint i = 0; i < paramCount; ++i)
         {
-            _ZFP_ZFMethod_paramTypeIdList[i] = p;
-            zfscpy(p, paramTypeIdList[i]);
-            p += zfslen(paramTypeIdList[i]) + 1;
-
-            _ZFP_ZFMethod_paramTypeNameList[i] = p;
-            zfscpy(p, paramTypeNameList[i]);
-            p += zfslen(paramTypeNameList[i]) + 1;
+            _ZFP_ZFMethod_paramTypeIdList[i] = _ZFP_ZFSigNameAddr(paramTypeIdList[i]);
+            _ZFP_ZFMethod_paramTypeNameList[i] = _ZFP_ZFSigNameAddr(paramTypeNameList[i]);
 
             _ZFP_ZFMethod_paramNameList[i] = p;
             zfscpy(p, paramNameList[i]);
@@ -202,8 +195,6 @@ ZFMethod::ZFMethod(void)
 {
     zffree(_ZFP_ZFMethod_methodName);
     zffree(_ZFP_ZFMethod_methodNamespace);
-    zffree(_ZFP_ZFMethod_returnTypeId);
-    zffree(_ZFP_ZFMethod_returnTypeName);
 
     zffree(_ZFP_ZFMethod_paramBuf);
     zffree(_ZFP_ZFMethod_paramTypeIdList); // fixed lengh for performance, ZFMETHOD_MAX_PARAM

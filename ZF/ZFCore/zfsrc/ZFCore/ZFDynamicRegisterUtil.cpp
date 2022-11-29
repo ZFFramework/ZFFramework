@@ -1101,6 +1101,7 @@ ZFMP &ZFMP::mp(ZF_IN const zfchar *methodParamTypeId,
                ZF_IN_OPT const zfchar *methodParamName /* = zfnull */,
                ZF_IN_OPT ZFObject *methodParamDefaultValue /* = ZFMethodGenericInvokerDefaultParam() */)
 {
+    zfCoreAssert(d->methodParamCount <= ZFMETHOD_MAX_PARAM);
     d->methodParamTypeId[d->methodParamCount] = methodParamTypeId;
     d->methodParamName[d->methodParamCount] = methodParamName;
     d->methodParamDefaultValue[d->methodParamCount] = methodParamDefaultValue;

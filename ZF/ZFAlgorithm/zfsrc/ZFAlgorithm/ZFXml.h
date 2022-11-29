@@ -567,10 +567,6 @@ public:
     zfstring xmlGlobalLineBeginToken;
 
     /**
-     * @brief add new line before entering a element if the element isn't single line, zffalse by default
-     */
-    zfbool xmlElementAddNewLineAtHeadIfNotSingleLine;
-    /**
      * @brief how many attributes before add new line, 3 by default
      *
      * e.g. if zfindexMax(), never add new line,
@@ -578,6 +574,10 @@ public:
      * if 1, add before every attributes except first one
      */
     zfindex xmlElementAttributeCountBeforeAddNewLine;
+    /**
+     * @brief add new line before entering a element if the element isn't single line, zffalse by default
+     */
+    zfbool xmlElementAddNewLineAtHeadIfNotSingleLine;
     /**
      * @brief trim "<element></element>" to "<element/>" if no children, zffalse by default
      */
@@ -598,8 +598,8 @@ public:
     ZFXmlOutputFlags(void)
     : xmlToken()
     , xmlGlobalLineBeginToken()
-    , xmlElementAddNewLineAtHeadIfNotSingleLine(zffalse)
     , xmlElementAttributeCountBeforeAddNewLine(3)
+    , xmlElementAddNewLineAtHeadIfNotSingleLine(zffalse)
     , xmlElementTrimTagIfNoChildren(zftrue)
     , xmlElementEndTagAtSameLineIfNoChildElement(zftrue)
     , xmlAttributeUseSingleQuote(zffalse)

@@ -693,8 +693,8 @@ public:
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvokerOrg;
     zfchar *_ZFP_ZFMethod_methodName;
-    zfchar *_ZFP_ZFMethod_returnTypeId;
-    zfchar *_ZFP_ZFMethod_returnTypeName;
+    const zfchar *_ZFP_ZFMethod_returnTypeId;
+    const zfchar *_ZFP_ZFMethod_returnTypeName;
     zfuint _ZFP_ZFMethod_paramCount;
     zfuint _ZFP_ZFMethod_paramCountMin;
     zfchar *_ZFP_ZFMethod_paramBuf;

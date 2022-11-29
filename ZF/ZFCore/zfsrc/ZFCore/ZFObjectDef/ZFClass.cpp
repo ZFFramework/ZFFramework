@@ -90,9 +90,6 @@ public:
     _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback;
     _ZFP_ZFObjectConstructor constructor;
     _ZFP_ZFObjectDestructor destructor;
-    zfstring classNamespace;
-    zfstring className;
-    zfstring classNameFull;
 
 public:
     zfbool needAutoRegister;
@@ -232,9 +229,6 @@ public:
     , classDynamicRegisterObjectInstanceMap()
     , constructor(zfnull)
     , destructor(zfnull)
-    , classNamespace()
-    , className()
-    , classNameFull()
     , needAutoRegister(zftrue)
     , needRegisterImplementedInterface(zftrue)
     , needFinalInit(zftrue)
@@ -1328,9 +1322,9 @@ void ZFClass::classTagRemoveAll(void) const
 ZFClass::ZFClass(void)
 : d(zfnull)
 , _ZFP_ZFClass_classParent(zfnull)
-, _ZFP_ZFClass_classNamespaceCache(zfnull)
-, _ZFP_ZFClass_classNameCache(zfnull)
-, _ZFP_ZFClass_classNameFullCache(zfnull)
+, _ZFP_ZFClass_classNamespace(zfnull)
+, _ZFP_ZFClass_className(zfnull)
+, _ZFP_ZFClass_classNameFull(zfnull)
 , _ZFP_ZFClass_classIsAbstract(zffalse)
 , _ZFP_ZFClass_classIsInterface(zffalse)
 , _ZFP_ZFClass_classIsInternal(zffalse)
@@ -1352,6 +1346,13 @@ ZFClass::~ZFClass(void)
 
     zfdelete(d);
     d = zfnull;
+
+    if(this->_ZFP_ZFClass_classNamespace != zfnull)
+    {
+        zffree(this->_ZFP_ZFClass_classNamespace);
+    }
+    zffree(this->_ZFP_ZFClass_className);
+    zffree(this->_ZFP_ZFClass_classNameFull);
 }
 
 ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
@@ -1419,12 +1420,9 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
         cls->d->constructor = constructor;
         cls->d->destructor = destructor;
 
-        cls->d->classNamespace = classNamespace;
-        cls->d->className = className;
-        cls->d->classNameFull = classNameFull;
-        cls->_ZFP_ZFClass_classNamespaceCache = (cls->d->classNamespace.isEmpty() ? zfnull : cls->d->classNamespace.cString());
-        cls->_ZFP_ZFClass_classNameCache = cls->d->className.cString();
-        cls->_ZFP_ZFClass_classNameFullCache = cls->d->classNameFull.cString();
+        cls->_ZFP_ZFClass_classNamespace = (zfsIsEmpty(classNamespace) ? zfnull : zfsCopy(classNamespace));
+        cls->_ZFP_ZFClass_className = zfsCopy(className);
+        cls->_ZFP_ZFClass_classNameFull = zfsCopy(classNameFull);
 
         cls->_ZFP_ZFClass_classParent = parent;
         cls->_ZFP_ZFClass_classIsAbstract = (constructor == zfnull);

@@ -45,8 +45,8 @@ zfbool ZFXmlOutputFlags::operator == (ZF_IN ZFXmlOutputFlags const &ref) const
     return (zftrue
             && this->xmlToken == ref.xmlToken
             && this->xmlGlobalLineBeginToken == ref.xmlGlobalLineBeginToken
-            && this->xmlElementAddNewLineAtHeadIfNotSingleLine == ref.xmlElementAddNewLineAtHeadIfNotSingleLine
             && this->xmlElementAttributeCountBeforeAddNewLine == ref.xmlElementAttributeCountBeforeAddNewLine
+            && this->xmlElementAddNewLineAtHeadIfNotSingleLine == ref.xmlElementAddNewLineAtHeadIfNotSingleLine
             && this->xmlElementTrimTagIfNoChildren == ref.xmlElementTrimTagIfNoChildren
             && this->xmlElementEndTagAtSameLineIfNoChildElement == ref.xmlElementEndTagAtSameLineIfNoChildElement
             && this->xmlAttributeUseSingleQuote == ref.xmlAttributeUseSingleQuote
