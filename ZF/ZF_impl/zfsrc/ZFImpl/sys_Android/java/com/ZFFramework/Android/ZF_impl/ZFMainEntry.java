@@ -49,7 +49,6 @@ public final class ZFMainEntry extends Activity {
         }
         _app = new WeakReference<>(loaderActivity.getApplication());
         _appContext = new WeakReference<>(loaderActivity.getApplicationContext());
-        _context = null;
         Intent intent = new Intent(loaderActivity, ZFMainEntry.class);
         loaderActivity.startActivity(intent);
         loaderActivity.finish();
@@ -115,14 +114,14 @@ public final class ZFMainEntry extends Activity {
             return;
         }
         _mainEntryCalled = true;
-        _context = new WeakReference<Context>(this);
+        _appContext = new WeakReference<Context>(this.getApplicationContext());
         mainEntryActivity(this);
         ZFFrameworkInit();
         ZFMainExecute(null);
     }
 
     // ============================================================
-    public static void mainEntryEmbedAttach(Application app, Context context, Activity ownerActivity) {
+    public static void mainEntryEmbedAttach(Application app, Activity ownerActivity) {
         if (_app != null && _app.get() != null) {
             return;
         }
@@ -130,13 +129,7 @@ public final class ZFMainEntry extends Activity {
             return;
         }
         _app = new WeakReference<>(app);
-        if (context == null) {
-            _appContext = new WeakReference<>(app.getApplicationContext());
-            _context = new WeakReference<>(app.getApplicationContext());
-        } else {
-            _appContext = new WeakReference<>(context.getApplicationContext());
-            _context = new WeakReference<>(context);
-        }
+        _appContext = new WeakReference<>(app.getApplicationContext());
         mainEntryActivity(ownerActivity);
         ZFFrameworkInit();
     }
@@ -152,7 +145,6 @@ public final class ZFMainEntry extends Activity {
         ZFFrameworkCleanup();
         _app = null;
         _appContext = null;
-        _context = null;
         mainEntryActivity(null);
     }
 
@@ -187,7 +179,6 @@ public final class ZFMainEntry extends Activity {
     // global state
     private static WeakReference<Application> _app = null;
     private static WeakReference<Context> _appContext = null;
-    private static WeakReference<Context> _context = null;
 
     public static Application app() {
         return _app != null ? _app.get() : null;
@@ -195,10 +186,6 @@ public final class ZFMainEntry extends Activity {
 
     public static Context appContext() {
         return _appContext != null ? _appContext.get() : null;
-    }
-
-    public static Context context() {
-        return _context != null ? _context.get() : null;
     }
 
     public static AssetManager assetManager() {
@@ -249,10 +236,6 @@ public final class ZFMainEntry extends Activity {
 
     protected static Object native_appContext() {
         return ZFMainEntry.appContext();
-    }
-
-    protected static Object native_context() {
-        return ZFMainEntry.context();
     }
 
     protected static Object native_assetManager() {

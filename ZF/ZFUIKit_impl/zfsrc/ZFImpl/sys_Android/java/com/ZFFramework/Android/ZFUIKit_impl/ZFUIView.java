@@ -56,7 +56,7 @@ public class ZFUIView extends ViewGroup {
     }
 
     public static Object native_nativeViewCreate(long zfjniPointerOwnerZFUIView) {
-        ZFUIView ret = new ZFUIView(ZFMainEntry.context());
+        ZFUIView ret = new ZFUIView(ZFMainEntry.appContext());
         ret.zfjniPointerOwnerZFUIView = zfjniPointerOwnerZFUIView;
         return ret;
     }

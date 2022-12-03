@@ -79,8 +79,11 @@ public:
     zffinal void bufferCopy(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
     {
         this->bufferCapacity(bufferSize);
-        zfmemcpy(this->buffer(), buffer, bufferSize);
-        *((zfchar *)((zfbyte *)this->buffer() + bufferSize)) = '\0';
+        if(bufferSize > 0)
+        {
+            zfmemcpy(this->buffer(), buffer, bufferSize);
+            *((zfchar *)((zfbyte *)this->buffer() + bufferSize)) = '\0';
+        }
         d->bufferSize = bufferSize;
     }
     /**

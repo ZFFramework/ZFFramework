@@ -16,6 +16,18 @@ void _ZFP_zfCoreLogCriticalMessageV(ZF_IN const ZFCallerInfo &callerInfo,
                                     ZF_IN const zfchar *fmt,
                                     ZF_IN va_list vaList)
 {
+#ifdef zfzfzfLog
+    {
+        zfzfzfLog("============================================================");
+        zfstring tmp;
+        tmp += "| ";
+        zfstringAppend(tmp, "[%s %s(%u)] ", callerInfo.callerFile(), callerInfo.callerFunc(), callerInfo.callerLine());
+        zfstringAppendV(tmp, fmt, vaList);
+        zfzfzfLog("%s", tmp.cString());
+        zfzfzfLog("============================================================");
+    }
+#endif
+
     zfCoreLogTrim("============================================================");
     zfCoreLogTrimNoEndl("| ");
     zfCoreLogDetailV(callerInfo, fmt, vaList);

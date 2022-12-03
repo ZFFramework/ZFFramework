@@ -112,19 +112,6 @@ JNIObjectHolder ZFImpl_sys_Android_appContext(void)
     JNIUtilDeleteLocalRef(jniEnv, tmp);
     return ret;
 }
-JNIObjectHolder ZFImpl_sys_Android_context(void)
-{
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, _ZFP_ZFMainEntry_sys_Android_ownerJClass, "native_context",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-        ).c_str());
-    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
-        _ZFP_ZFMainEntry_sys_Android_ownerJClass,
-        jmId);
-    JNIObjectHolder ret(tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-    return ret;
-}
 JNIObjectHolder ZFImpl_sys_Android_assetManager(void)
 {
     JNIEnv *jniEnv = JNIGetJNIEnv();

@@ -1,16 +1,11 @@
 package com.ZFFramework.Android.ZFUIKit_impl;
 
-import java.lang.ref.WeakReference;
-import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
-import com.ZFFramework.Android.NativeUtil.ZFAndroidUI;
-import com.ZFFramework.Android.ZF_impl.ZFMainEntry;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -23,15 +18,22 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
+import com.ZFFramework.Android.NativeUtil.ZFAndroidUI;
+import com.ZFFramework.Android.ZF_impl.ZFMainEntry;
+
+import java.lang.ref.WeakReference;
+
 @SuppressLint("RtlHardcoded")
 public final class ZFUITextEdit extends EditText {
     public static Object native_nativeTextEditCreate(long zfjniPointerOwnerZFUITextEdit) {
-        ZFUITextEdit ret = new ZFUITextEdit(ZFMainEntry.context());
+        ZFUITextEdit ret = new ZFUITextEdit(ZFMainEntry.appContext());
         ret.zfjniPointerOwnerZFUITextEdit = zfjniPointerOwnerZFUITextEdit;
         return ret;
     }
+
     public static void native_nativeTextEditDestroy(Object nativeTextEdit) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.removeTextChangedListener(nativeTextEditTmp._textWatcher);
         nativeTextEditTmp._textWatcher = null;
         nativeTextEditTmp.setText(null);
@@ -41,164 +43,157 @@ public final class ZFUITextEdit extends EditText {
 
     // ============================================================
     public static void native_textEditEnable(Object nativeTextEdit,
-                                                boolean textEditEnable) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+                                             boolean textEditEnable) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.setEnabled(textEditEnable);
     }
+
     public static void native_textEditSecure(Object nativeTextEdit,
-                                                 boolean textEditSecured) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
-        if(textEditSecured) {
+                                             boolean textEditSecured) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
+        if (textEditSecured) {
             nativeTextEditTmp.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        }
-        else {
+        } else {
             nativeTextEditTmp.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         }
     }
+
     public static void native_textEditKeyboardType(Object nativeTextEdit,
-                                                      int textEditKeyboardType) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
-        if(textEditKeyboardType == ZFUITextEditKeyboardType.e_Normal) {
+                                                   int textEditKeyboardType) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
+        if (textEditKeyboardType == ZFUITextEditKeyboardType.e_Normal) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-        }
-        else if(textEditKeyboardType == ZFUITextEditKeyboardType.e_CharBased) {
+        } else if (textEditKeyboardType == ZFUITextEditKeyboardType.e_CharBased) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_TEXT);
-        }
-        else if(textEditKeyboardType == ZFUITextEditKeyboardType.e_PhonePad) {
+        } else if (textEditKeyboardType == ZFUITextEditKeyboardType.e_PhonePad) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_PHONE);
-        }
-        else if(textEditKeyboardType == ZFUITextEditKeyboardType.e_NumberPad) {
+        } else if (textEditKeyboardType == ZFUITextEditKeyboardType.e_NumberPad) {
             nativeTextEditTmp.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
-        }
-        else {
+        } else {
             ZFAndroidLog.shouldNotGoHere();
         }
     }
+
     public static void native_textEditKeyboardReturnType(Object nativeTextEdit,
-                                                            int textEditKeyboardReturnType) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
-        if(textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Normal) {
+                                                         int textEditKeyboardReturnType) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
+        if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Normal) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_NONE);
-        }
-        else if(textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Next) {
+        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Next) {
             nativeTextEditTmp.setImeActionLabel(null, 0);
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_NEXT);
-        }
-        else if(textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Search) {
+        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Search) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        }
-        else if(textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Done) {
+        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Done) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        }
-        else if(textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Go) {
+        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Go) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_GO);
-        }
-        else if(textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Send) {
+        } else if (textEditKeyboardReturnType == ZFUITextEditKeyboardReturnType.e_Send) {
             nativeTextEditTmp.setImeOptions(EditorInfo.IME_ACTION_SEND);
-        }
-        else {
+        } else {
             ZFAndroidLog.shouldNotGoHere();
         }
     }
 
     public static int native_textSelectRange_start(Object nativeTextEdit) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         return nativeTextEditTmp.getSelectionStart();
     }
+
     public static int native_textSelectRange_count(Object nativeTextEdit) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         return nativeTextEditTmp.getSelectionEnd() - nativeTextEditTmp.getSelectionStart();
     }
 
     public static void native_textSelectRange(Object nativeTextEdit, int start, int count) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
-        if(count == 0) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
+        if (count == 0) {
             nativeTextEditTmp.setSelection(start);
-        }
-        else {
+        } else {
             nativeTextEditTmp.setSelection(start, start + count);
         }
     }
 
     // ============================================================
     public static void native_text(Object nativeTextEdit,
-                                      Object nativeText) {
-        ((ZFUITextEdit)nativeTextEdit).setText((String)nativeText);
+                                   Object nativeText) {
+        ((ZFUITextEdit) nativeTextEdit).setText((String) nativeText);
     }
+
     public static void native_textAppearance(Object nativeTextEdit,
-                                                int textAppearance) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
-        if(textAppearance == ZFUITextAppearance.e_Normal) {
+                                             int textAppearance) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
+        if (textAppearance == ZFUITextAppearance.e_Normal) {
             nativeTextEditTmp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-        }
-        else if(textAppearance == ZFUITextAppearance.e_Bold) {
+        } else if (textAppearance == ZFUITextAppearance.e_Bold) {
             nativeTextEditTmp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        }
-        else if(textAppearance == ZFUITextAppearance.e_Italic) {
+        } else if (textAppearance == ZFUITextAppearance.e_Italic) {
             nativeTextEditTmp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.ITALIC));
-        }
-        else if(textAppearance == ZFUITextAppearance.e_BoldItalic) {
+        } else if (textAppearance == ZFUITextAppearance.e_BoldItalic) {
             nativeTextEditTmp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC));
-        }
-        else {
+        } else {
             ZFAndroidLog.shouldNotGoHere();
             nativeTextEditTmp.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         }
     }
+
     public static void native_textAlign(Object nativeTextEdit,
-                                           int textAlign) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
-        if((textAlign & ZFUIAlign.e_Left) == ZFUIAlign.e_Left) {
+                                        int textAlign) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
+        if ((textAlign & ZFUIAlign.e_Left) == ZFUIAlign.e_Left) {
             nativeTextEditTmp.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-        }
-        else if((textAlign & ZFUIAlign.e_Right) == ZFUIAlign.e_Right) {
+        } else if ((textAlign & ZFUIAlign.e_Right) == ZFUIAlign.e_Right) {
             nativeTextEditTmp.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
-        }
-        else if(textAlign == ZFUIAlign.e_Center) {
+        } else if (textAlign == ZFUIAlign.e_Center) {
             nativeTextEditTmp.setGravity(Gravity.CENTER);
-        }
-        else {
+        } else {
             nativeTextEditTmp.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
         }
     }
+
     public static void native_textColor(Object nativeTextEdit,
-                                           int textColor) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+                                        int textColor) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.setTextColor(textColor);
     }
+
     public static void native_textShadowColor(Object nativeTextEdit,
-                                                 int textShadowColor) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+                                              int textShadowColor) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp._textShadowColor = textShadowColor;
         nativeTextEditTmp.setShadowLayer(
-            1,
-            nativeTextEditTmp._textShadowOffsetX,
-            nativeTextEditTmp._textShadowOffsetY,
-            nativeTextEditTmp._textShadowColor);
+                1,
+                nativeTextEditTmp._textShadowOffsetX,
+                nativeTextEditTmp._textShadowOffsetY,
+                nativeTextEditTmp._textShadowColor);
     }
+
     public static void native_textShadowOffset(Object nativeTextEdit,
-                                                  int textShadowOffsetX,
-                                                  int textShadowOffsetY) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+                                               int textShadowOffsetX,
+                                               int textShadowOffsetY) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp._textShadowOffsetX = textShadowOffsetX;
         nativeTextEditTmp._textShadowOffsetY = textShadowOffsetY;
         nativeTextEditTmp.setShadowLayer(
-            1,
-            nativeTextEditTmp._textShadowOffsetX,
-            nativeTextEditTmp._textShadowOffsetY,
-            nativeTextEditTmp._textShadowColor);
+                1,
+                nativeTextEditTmp._textShadowOffsetX,
+                nativeTextEditTmp._textShadowOffsetY,
+                nativeTextEditTmp._textShadowColor);
     }
+
     public static void native_textSize(Object nativeTextEdit,
-                                          int textSize) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+                                       int textSize) {
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
     }
+
     private static int[] _native_measureNativeTextEdit_sizeCache = new int[2]; // width, height
+
     public static int[] native_measureNativeTextEdit(Object nativeTextEdit,
                                                      int maxWidthOrNegative,
                                                      int maxHeightOrNegative,
                                                      int textSize) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         float savedTextSize = nativeTextEditTmp.getTextSize();
         nativeTextEditTmp.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 
@@ -206,14 +201,14 @@ public final class ZFUITextEdit extends EditText {
         int heightOld = nativeTextEditTmp.getMeasuredHeight();
 
         nativeTextEditTmp.measure(
-            (maxWidthOrNegative >= 0)
-                ? MeasureSpec.makeMeasureSpec(maxWidthOrNegative, MeasureSpec.AT_MOST)
-                : MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-            (maxHeightOrNegative >= 0)
-                ? MeasureSpec.makeMeasureSpec(maxHeightOrNegative, MeasureSpec.AT_MOST)
-                : MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                (maxWidthOrNegative >= 0)
+                        ? MeasureSpec.makeMeasureSpec(maxWidthOrNegative, MeasureSpec.AT_MOST)
+                        : MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+                (maxHeightOrNegative >= 0)
+                        ? MeasureSpec.makeMeasureSpec(maxHeightOrNegative, MeasureSpec.AT_MOST)
+                        : MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 
-        int padding = (int)(2 * ZFAndroidUI.screenDensity(nativeTextEditTmp.getContext()));
+        int padding = (int) (2 * ZFAndroidUI.screenDensity(nativeTextEditTmp.getContext()));
         _native_measureNativeTextEdit_sizeCache[0] = nativeTextEditTmp.getMeasuredWidth() + padding;
         _native_measureNativeTextEdit_sizeCache[1] = nativeTextEditTmp.getMeasuredHeight() + padding;
         nativeTextEditTmp.setTextSize(TypedValue.COMPLEX_UNIT_PX, savedTextSize);
@@ -226,64 +221,75 @@ public final class ZFUITextEdit extends EditText {
 
     // ============================================================
     public static void native_textEditBegin(Object nativeTextEdit) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.requestFocus();
     }
+
     public static void native_textEditEnd(Object nativeTextEdit) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit)nativeTextEdit;
+        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
         nativeTextEditTmp.clearFocus();
     }
 
     // ============================================================
     private static native boolean native_notifyCheckTextShouldChange(long zfjniPointerOwnerZFUITextEdit,
                                                                      Object newString);
+
     private static native void native_notifyTextChange(long zfjniPointerOwnerZFUITextEdit,
                                                        Object newString);
+
     private static native void native_notifyTextSelectRangeChange(long zfjniPointerOwnerZFUITextEdit);
+
     private static native void native_notifyTextReturnClicked(long zfjniPointerOwnerZFUITextEdit);
+
     private static native void native_notifyTextEditBegin(long zfjniPointerOwnerZFUITextEdit);
+
     private static native void native_notifyTextEditEnd(long zfjniPointerOwnerZFUITextEdit);
 
     // ============================================================
     private int _ZFP_textSelectRangeUpdateFlag = 0;
+
     @Override
     public void setSelection(int start, int stop) {
         ++_ZFP_textSelectRangeUpdateFlag;
         super.setSelection(start, stop);
         --_ZFP_textSelectRangeUpdateFlag;
-        if(_ZFP_textSelectRangeUpdateFlag == 0) {
+        if (_ZFP_textSelectRangeUpdateFlag == 0) {
             ZFUITextEdit.native_notifyTextSelectRangeChange(this.zfjniPointerOwnerZFUITextEdit);
         }
     }
+
     @Override
     public void setSelection(int index) {
         ++_ZFP_textSelectRangeUpdateFlag;
         super.setSelection(index);
         --_ZFP_textSelectRangeUpdateFlag;
-        if(_ZFP_textSelectRangeUpdateFlag == 0) {
+        if (_ZFP_textSelectRangeUpdateFlag == 0) {
             ZFUITextEdit.native_notifyTextSelectRangeChange(this.zfjniPointerOwnerZFUITextEdit);
         }
     }
+
     @Override
     protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
         super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-        if(gainFocus) {
+        if (gainFocus) {
             ZFUITextEdit.native_notifyTextEditBegin(this.zfjniPointerOwnerZFUITextEdit);
-        }
-        else {
-            InputMethodManager imm = (InputMethodManager)this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        } else {
+            InputMethodManager imm = (InputMethodManager) this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(this.getWindowToken(), 0);
             ZFUITextEdit.native_notifyTextEditEnd(this.zfjniPointerOwnerZFUITextEdit);
         }
     }
+
     private static class _TextWatcher implements TextWatcher {
         private WeakReference<ZFUITextEdit> owner = null;
+
         public _TextWatcher(ZFUITextEdit owner) {
             this.owner = new WeakReference<ZFUITextEdit>(owner);
         }
 
         private String savedString = null;
         private boolean overrided = false;
+
         @Override
         public void beforeTextChanged(CharSequence s,
                                       int start,
@@ -291,39 +297,41 @@ public final class ZFUITextEdit extends EditText {
                                       int after) {
             this.savedString = s.toString();
         }
+
         @Override
         public void onTextChanged(CharSequence s,
                                   int start,
                                   int before,
                                   int count) {
         }
+
         @Override
         public void afterTextChanged(Editable s) {
-            if(this.owner.get() == null || this.overrided) {
-                return ;
+            if (this.owner.get() == null || this.overrided) {
+                return;
             }
 
             String newString = s.toString();
-            if(newString.compareTo(this.savedString) == 0) {
-                return ;
+            if (newString.compareTo(this.savedString) == 0) {
+                return;
             }
-            if(newString.contains("\n")) {
+            if (newString.contains("\n")) {
                 this.overrided = true;
                 this.owner.get().setText(this.savedString);
                 this.overrided = false;
                 ZFUITextEdit.native_notifyTextReturnClicked(this.owner.get().zfjniPointerOwnerZFUITextEdit);
-                return ;
+                return;
             }
-            if(!ZFUITextEdit.native_notifyCheckTextShouldChange(this.owner.get().zfjniPointerOwnerZFUITextEdit, newString)) {
+            if (!ZFUITextEdit.native_notifyCheckTextShouldChange(this.owner.get().zfjniPointerOwnerZFUITextEdit, newString)) {
                 this.overrided = true;
                 this.owner.get().setText(this.savedString);
                 this.overrided = false;
-            }
-            else {
+            } else {
                 ZFUITextEdit.native_notifyTextChange(this.owner.get().zfjniPointerOwnerZFUITextEdit, newString);
             }
         }
     }
+
     private long zfjniPointerOwnerZFUITextEdit = 0;
     private int _textShadowColor = Color.TRANSPARENT;
     private int _textShadowOffsetX = 1;
@@ -349,8 +357,8 @@ public final class ZFUITextEdit extends EditText {
         this.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_ENTER) {
-                    if(event.getAction() == KeyEvent.ACTION_UP) {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_UP) {
                         ZFUITextEdit.native_notifyTextReturnClicked(ZFUITextEdit.this.zfjniPointerOwnerZFUITextEdit);
                     }
                     return true;
@@ -361,7 +369,7 @@ public final class ZFUITextEdit extends EditText {
         this.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch(actionId) {
+                switch (actionId) {
                     case EditorInfo.IME_ACTION_NONE:
                     case EditorInfo.IME_ACTION_NEXT:
                     case EditorInfo.IME_ACTION_SEARCH:
@@ -373,8 +381,8 @@ public final class ZFUITextEdit extends EditText {
                     default:
                         break;
                 }
-                if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    if(event.getAction() == KeyEvent.ACTION_UP) {
+                if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                    if (event.getAction() == KeyEvent.ACTION_UP) {
                         ZFUITextEdit.native_notifyTextReturnClicked(ZFUITextEdit.this.zfjniPointerOwnerZFUITextEdit);
                     }
                     return true;
@@ -383,22 +391,24 @@ public final class ZFUITextEdit extends EditText {
             }
         });
     }
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        if(event.getKeyCode() != KeyEvent.KEYCODE_ENTER) {
+        if (event.getKeyCode() != KeyEvent.KEYCODE_ENTER) {
             return super.dispatchKeyEvent(event);
         }
-        if(event.getAction() == KeyEvent.ACTION_UP) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
             ZFUITextEdit.native_notifyTextReturnClicked(this.zfjniPointerOwnerZFUITextEdit);
         }
         return true;
     }
+
     @Override
     public boolean dispatchKeyEventPreIme(KeyEvent event) {
-        if(event.getKeyCode() != KeyEvent.KEYCODE_ENTER) {
+        if (event.getKeyCode() != KeyEvent.KEYCODE_ENTER) {
             return super.dispatchKeyEventPreIme(event);
         }
-        if(event.getAction() == KeyEvent.ACTION_UP) {
+        if (event.getAction() == KeyEvent.ACTION_UP) {
             ZFUITextEdit.native_notifyTextReturnClicked(this.zfjniPointerOwnerZFUITextEdit);
         }
         return true;

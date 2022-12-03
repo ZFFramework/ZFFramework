@@ -25,8 +25,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_app(void);
 // return android.content.Context
 extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_appContext(void);
-// return android.content.Context, may be application context if embeded to native UI
-extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_context(void);
 // return android.content.res.AssetManager
 extern ZFLIB_ZF_impl JNIObjectHolder ZFImpl_sys_Android_assetManager(void);
 // return android.app.Activity, may be null if embeded to native UI

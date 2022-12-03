@@ -13,7 +13,7 @@ public final class ZFUIDrawableView extends View {
 
     // ============================================================
     public static Object native_nativeDrawableViewCreate(long zfjniPointerOwnerZFUIDrawableView) {
-        ZFUIDrawableView ret = new ZFUIDrawableView(ZFMainEntry.context());
+        ZFUIDrawableView ret = new ZFUIDrawableView(ZFMainEntry.appContext());
         ret.zfjniPointerOwnerZFUIDrawableView = zfjniPointerOwnerZFUIDrawableView;
         return ret;
     }

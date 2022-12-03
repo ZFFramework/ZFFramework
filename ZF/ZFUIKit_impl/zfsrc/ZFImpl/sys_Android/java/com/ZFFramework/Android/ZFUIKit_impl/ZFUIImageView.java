@@ -13,25 +13,27 @@ import com.ZFFramework.Android.ZF_impl.ZFMainEntry;
 
 public final class ZFUIImageView extends ImageView {
     public static Object native_nativeImageViewCreate() {
-        return new ZFUIImageView(ZFMainEntry.context());
+        return new ZFUIImageView(ZFMainEntry.appContext());
     }
+
     public static void native_nativeImageViewDestroy(Object nativeImageView) {
-        ((ZFUIImageView)nativeImageView).setImageDrawable(null);
+        ((ZFUIImageView) nativeImageView).setImageDrawable(null);
     }
 
     public static void native_image(Object nativeImageView,
-                                       Object nativeImage) {
-        ZFUIImageView nativeImageViewTmp = (ZFUIImageView)nativeImageView;
-        nativeImageViewTmp.setImageDrawable((Drawable)nativeImage);
+                                    Object nativeImage) {
+        ZFUIImageView nativeImageViewTmp = (ZFUIImageView) nativeImageView;
+        nativeImageViewTmp.setImageDrawable((Drawable) nativeImage);
         nativeImageViewTmp.invalidate();
     }
+
     public static void native_imageNinePatchChanged(Object nativeImageView,
                                                     float imageScale,
                                                     int ninePatch_left,
                                                     int ninePatch_top,
                                                     int ninePatch_right,
                                                     int ninePatch_bottom) {
-        ZFUIImageView nativeImageViewTmp = (ZFUIImageView)nativeImageView;
+        ZFUIImageView nativeImageViewTmp = (ZFUIImageView) nativeImageView;
         nativeImageViewTmp._imageScale = imageScale;
         nativeImageViewTmp._ninePatchLeft = ninePatch_left;
         nativeImageViewTmp._ninePatchTop = ninePatch_top;
@@ -53,35 +55,36 @@ public final class ZFUIImageView extends ImageView {
 
         this.setScaleType(ScaleType.FIT_XY);
     }
+
     @Override
     public void setImageDrawable(Drawable drawable) {
-        if(drawable != null) {
+        if (drawable != null) {
             drawable = drawable.getConstantState().newDrawable();
         }
 
         _image = drawable;
         super.setImageDrawable(drawable);
     }
+
     private static final Rect _srcRectCache = new Rect();
     private static final Rect _dstRectCache = new Rect();
+
     @Override
     protected void onDraw(Canvas canvas) {
-        if(_image == null) {
+        if (_image == null) {
             // nothing to do
-        }
-        else if(_ninePatchLeft == 0 && _ninePatchTop == 0 && _ninePatchRight == 0 && _ninePatchBottom == 0) {
-            Bitmap src = ((BitmapDrawable)_image).getBitmap();
+        } else if (_ninePatchLeft == 0 && _ninePatchTop == 0 && _ninePatchRight == 0 && _ninePatchBottom == 0) {
+            Bitmap src = ((BitmapDrawable) _image).getBitmap();
             _srcRectCache.set(0, 0, src.getWidth(), src.getHeight());
             _dstRectCache.set(0, 0, this.getWidth(), this.getHeight());
             canvas.drawBitmap(src, _srcRectCache, _dstRectCache, null);
-        }
-        else {
+        } else {
             ZFAndroidNinePatch.drawNinePatch(
-                ((BitmapDrawable)_image).getBitmap(),
-                _imageScale,
-                _ninePatchLeft, _ninePatchTop, _ninePatchRight, _ninePatchBottom,
-                canvas,
-                this.getWidth(), this.getHeight());
+                    ((BitmapDrawable) _image).getBitmap(),
+                    _imageScale,
+                    _ninePatchLeft, _ninePatchTop, _ninePatchRight, _ninePatchBottom,
+                    canvas,
+                    this.getWidth(), this.getHeight());
         }
     }
 }

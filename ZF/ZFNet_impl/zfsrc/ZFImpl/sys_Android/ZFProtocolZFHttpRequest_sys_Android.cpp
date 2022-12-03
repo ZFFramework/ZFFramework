@@ -494,6 +494,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest,
                          jstring errorHint,
                          jobject body)
 {
+    ZFHttpRequest *request = ZFCastZFObject(ZFHttpRequest *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpRequest));
     ZFHttpResponse *response = ZFCastZFObject(ZFHttpResponse *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpResponse));
     response->success(code == 200);
     response->code(code);
@@ -503,8 +504,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest,
     {
         response->body().bufferCopy(buffer.buffer, buffer.bufferSize);
     }
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(
-        ZFCastZFObject(ZFHttpRequest *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpRequest)));
+    ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(request);
 }
 JNI_METHOD_DECLARE_END()
 
