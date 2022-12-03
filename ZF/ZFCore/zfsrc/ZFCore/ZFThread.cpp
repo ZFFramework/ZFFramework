@@ -10,6 +10,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 #define _ZFP_ZFThreadImpl ZFPROTOCOL_ACCESS(ZFThread)
 
+static ZFCoreArrayPOD<ZFThread *> _ZFP_ZFThread_allThread;
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThread_allThreadCleanup, ZFLevelZFFrameworkEssential)
+{
+    _ZFP_ZFThread_allThread.add(ZFThread::mainThread());
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup)
+{
+    _ZFP_ZFThread_allThread.removeAll();
+}
+ZF_GLOBAL_INITIALIZER_END(ZFThread_allThreadCleanup)
+
 // ============================================================
 // _ZFP_ZFThreadPrivate
 zfclassNotPOD _ZFP_ZFThreadPrivate
@@ -111,7 +122,15 @@ ZFOBSERVER_EVENT_REGISTER(ZFThread, ThreadOnStop)
 
 ZFMETHOD_DEFINE_0(ZFThread, void *, nativeThreadRegister)
 {
-    return _ZFP_ZFThreadImpl->nativeThreadRegister(zfAlloc(_ZFP_I_ZFThreadNativeRegisterThread));
+    zfCoreMutexLocker();
+    ZFThread *zfThread = ZFThread::currentThread();
+    zfCoreAssert(zfThread == zfnull);
+
+    zfThread = zfAlloc(_ZFP_I_ZFThreadNativeRegisterThread);
+    void *ret = _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
+    _ZFP_ZFThread_allThread.add(zfThread);
+    zfThread->threadOnRegister();
+    return ret;
 }
 ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
                   ZFMP_IN(void *, token))
@@ -142,14 +161,22 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
         zfThread->d->taskQueueRunning = zffalse;
         zfThread->d->autoReleasePool->poolDrain();
     }
-    zfCoreMutexUnlock();
     zfThread->taskQueueCleanup();
+    zfCoreMutexUnlock();
 
     zfThread->d->threadWaitSema->semaphoreBroadcast();
+
+    zfCoreMutexLocker();
+    zfThread->threadOnUnregister();
+    _ZFP_ZFThread_allThread.removeElement(zfThread);
     _ZFP_ZFThreadImpl->nativeThreadUnregister(token);
-    zfRelease(zfThread);
+    zfunsafe_zfRelease(zfThread);
 }
 
+ZFMETHOD_DEFINE_0(ZFThread, const ZFCoreArrayPOD<ZFThread *> &, allThread)
+{
+    return _ZFP_ZFThread_allThread;
+}
 ZFMETHOD_DEFINE_0(ZFThread, ZFThread *, mainThread)
 {
     return _ZFP_ZFThreadImpl->mainThread();
@@ -447,11 +474,11 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
     d->runningFlag = zftrue;
 
     void *nativeThreadToken = _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
+    _ZFP_ZFThread_allThread.add(zfThread);
+    zfThread->threadOnRegister();
     zfCoreMutexUnlock();
 
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread enter %p", zfThread);
-
-    zfThread->threadOnStart();
 
     ZFArgs zfargsTmp;
     zfargsTmp
@@ -459,6 +486,9 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
         .param0(paramHolder->param0)
         .param0(paramHolder->param1)
         ;
+
+    zfThread->threadOnStart(zfargsTmp);
+
     if(!d->stopRequestedFlag)
     {
         zfThread->threadOnRun(zfargsTmp);
@@ -471,6 +501,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
         tmp.execute(zfargsTmp
                 .userData(tmp.userData())
             );
+        zfargsTmp.userData(zfnull);
     }
     else
     {
@@ -508,9 +539,11 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
         }
     } while(zftrue);
 
-    zfThread->threadOnStop();
+    zfThread->threadOnStop(zfargsTmp);
 
     zfCoreMutexLock();
+    zfThread->threadOnUnregister();
+    _ZFP_ZFThread_allThread.removeElement(zfThread);
     _ZFP_ZFThreadImpl->nativeThreadUnregister(nativeThreadToken);
     d->runningFlag = zffalse;
     d->startFlag = zffalse;

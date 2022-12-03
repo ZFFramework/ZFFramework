@@ -30,15 +30,28 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * called in the same thread of the thread task
+     */
+    ZFOBSERVER_EVENT(ThreadOnRegister)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called in the same thread of the thread task
+     */
+    ZFOBSERVER_EVENT(ThreadOnUnregister)
+
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * called in the same thread of the thread task,
-     * param0 and param0 is the params passed from #threadStart
+     * param0 and param1 is the params passed from #threadStart
      */
     ZFOBSERVER_EVENT(ThreadOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called in the same thread of the thread task,
-     * param0 and param0 is the params passed from #threadStart
+     * param0 and param1 is the params passed from #threadStart
      */
     ZFOBSERVER_EVENT(ThreadOnStop)
 
@@ -65,6 +78,14 @@ public:
                               ZFMP_IN(void *, token))
 
 public:
+    /**
+     * @brief access all thread,
+     *   #mainThread is ensured at first
+     *
+     * use with caution, use with #zfCoreMutexLock
+     */
+    ZFMETHOD_DECLARE_STATIC_0(const ZFCoreArrayPOD<ZFThread *> &, allThread)
+
     /**
      * @brief return main thread
      */
@@ -253,15 +274,25 @@ protected:
                                  ZFMP_IN(const ZFArgs &, zfargs))
 
 protected:
-    /** @brief see #EventThreadOnStart */
-    virtual inline void threadOnStart(void)
+    /** @brief see #EventThreadOnRegister */
+    virtual inline void threadOnRegister(void)
     {
-        this->observerNotify(ZFThread::EventThreadOnStart());
+        this->observerNotify(ZFThread::EventThreadOnRegister());
+    }
+    /** @brief see #EventThreadOnUnregister */
+    virtual inline void threadOnUnregister(void)
+    {
+        this->observerNotify(ZFThread::EventThreadOnUnregister());
+    }
+    /** @brief see #EventThreadOnStart */
+    virtual inline void threadOnStart(ZF_IN const ZFArgs &zfargs)
+    {
+        this->observerNotify(ZFThread::EventThreadOnStart(), zfargs.param0(), zfargs.param1());
     }
     /** @brief see #EventThreadOnStop */
-    virtual inline void threadOnStop(void)
+    virtual inline void threadOnStop(ZF_IN const ZFArgs &zfargs)
     {
-        this->observerNotify(ZFThread::EventThreadOnStop());
+        this->observerNotify(ZFThread::EventThreadOnStop(), zfargs.param0(), zfargs.param1());
     }
 
 private:

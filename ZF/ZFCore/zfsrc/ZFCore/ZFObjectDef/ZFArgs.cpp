@@ -20,8 +20,16 @@ ZFArgs const &ZFArgs::result(ZF_IN ZFObject * const &result) const
     }
     return *this;
 }
+ZFArgs &ZFArgs::result(ZF_IN ZFObject * const &result)
+{
+    if(this->_ZFP_result != zfnull)
+    {
+        zfRetainChange(*(this->_ZFP_result), result);
+    }
+    return *this;
+}
 
-ZFArgs const &ZFArgs::resultEnable(ZF_IN zfbool enable)
+ZFArgs &ZFArgs::resultEnable(ZF_IN zfbool enable)
 {
     this->_ZFP_result = enable ? &(this->_ZFP_resultHolder) : zfnull;
     if(!enable)

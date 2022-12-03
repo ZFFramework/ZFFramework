@@ -20,11 +20,16 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call_impl(ZF_IN lua_State *L,
                                            ZF_IN int paramCount,
                                            ZF_IN int luaParamOffset)
 {
-    zfautoObject paramList[ZFMETHOD_MAX_PARAM];
-    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i)
-    {
-        paramList[i] = ZFMethodGenericInvokerDefaultParamHolder();
-    }
+    zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+    };
 
     for(int i = 0; i < paramCount; ++i)
     {

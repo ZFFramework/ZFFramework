@@ -22,6 +22,7 @@
 #include "ZFCore/ZFIOBuffer.h"
 #include "ZFCore/ZFIOBufferByCacheFile.h"
 #include "ZFCore/ZFIOBufferByMemory.h"
+#include "ZFCore/ZFInputForImpl.h"
 #include "ZFCore/ZFIterable.h"
 #include "ZFCore/ZFKeyValueContainer.h"
 #include "ZFCore/ZFLog.h"

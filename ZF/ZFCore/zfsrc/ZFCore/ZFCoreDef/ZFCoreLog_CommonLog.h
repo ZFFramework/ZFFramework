@@ -162,20 +162,22 @@ ZF_NAMESPACE_GLOBAL_END
     #if (defined(ANDROID) || defined(__ANDROID__))
         #include <jni.h>
         #include <android/log.h>
-        #define zfzfzfLog(fmt, ...) \
+        #define _ZFP_I_log(fmt, ...) \
             ((void)__android_log_print(ANDROID_LOG_ERROR, "JNILog", fmt, ##__VA_ARGS__))
     #elif (defined(QT_VERSION) || defined(QT_CORE_LIB))
         #include <QDebug>
-        #define zfzfzfLog(fmt, ...) \
+        #define _ZFP_I_log(fmt, ...) \
             qDebug(fmt, ##__VA_ARGS__)
     #else
         #include <stdio.h>
-        #define zfzfzfLog(fmt, ...) \
+        #define _ZFP_I_log(fmt, ...) \
             do { \
                 printf(fmt, ##__VA_ARGS__); \
                 printf("\n"); \
             } while(false)
     #endif
+    #define zfzfzfLog(fmt, ...) \
+        _ZFP_I_log(fmt, ##__VA_ARGS__)
 #endif
 
 #endif // #ifndef _ZFI_ZFCoreLog_CommonLog_h_

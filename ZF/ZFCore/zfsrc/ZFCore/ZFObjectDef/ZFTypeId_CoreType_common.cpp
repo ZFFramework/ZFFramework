@@ -631,5 +631,8 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, tokenValueRight)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTokenForKeyValueContainer, zfstring, tokenEtc)
 
+ZFMETHOD_FUNC_USER_REGISTER_0({zfCoreMutexLock();}, void, zfCoreMutexLock)
+ZFMETHOD_FUNC_USER_REGISTER_0({zfCoreMutexUnlock();}, void, zfCoreMutexUnlock)
+
 ZF_NAMESPACE_GLOBAL_END
 

@@ -11,7 +11,7 @@ zfindex ZFInputReadToOutput(ZF_IN_OUT const ZFOutput &output,
     if(input && output)
     {
         #define _ZFP_ZFInputReadToOutput_blockSize 256
-        zfchar buf[_ZFP_ZFInputReadToOutput_blockSize] = {0};
+        zfchar buf[_ZFP_ZFInputReadToOutput_blockSize];
         zfindex readCount = 0;
         zfindex writeCount = 0;
         do

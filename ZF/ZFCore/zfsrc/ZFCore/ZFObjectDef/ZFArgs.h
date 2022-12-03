@@ -63,9 +63,11 @@ public:
     ZFObject *const &result(void) const;
     /** @brief see #result */
     ZFArgs const &result(ZF_IN ZFObject * const &result) const;
+    /** @brief see #result */
+    ZFArgs &result(ZF_IN ZFObject * const &result);
 
     /** @brief see #result */
-    ZFArgs const &resultEnable(ZF_IN zfbool enable);
+    ZFArgs &resultEnable(ZF_IN zfbool enable);
     /** @brief see #result */
     zfbool resultEnabled(void) const;
 

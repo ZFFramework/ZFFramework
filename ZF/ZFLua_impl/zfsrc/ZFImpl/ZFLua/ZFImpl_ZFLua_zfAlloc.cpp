@@ -14,11 +14,16 @@ zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
         return zftrue;
     }
 
-    zfautoObject paramList[ZFMETHOD_MAX_PARAM];
-    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i)
-    {
-        paramList[i] = ZFMethodGenericInvokerDefaultParamHolder();
-    }
+    zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+    };
     for(int i = 0; i < paramCount; ++i)
     {
         if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
@@ -54,11 +59,16 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
             "[zfAlloc] unable to find class: %s", clsName);
     }
 
-    zfautoObject paramList[ZFMETHOD_MAX_PARAM];
-    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i)
-    {
-        paramList[i] = ZFMethodGenericInvokerDefaultParamHolder();
-    }
+    zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+        ZFMethodGenericInvokerDefaultParamHolder(),
+    };
     for(int i = 0; i < paramCount; ++i)
     {
         if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))

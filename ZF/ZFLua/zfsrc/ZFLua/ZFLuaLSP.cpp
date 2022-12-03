@@ -98,6 +98,25 @@ static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const zfchar *typeId)
     return _ZFP_ZFLuaLSPGenFile_typeIdToSig(typeInfo->typeIdClass());
 }
 
+static void _ZFP_ZFLuaLSPGenFile_param_ZFListener(ZF_IN const ZFOutput &output,
+                                                  ZF_IN const zfchar *paramTypeId,
+                                                  ZF_IN const zfchar *paramName)
+{
+    zfstring sig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(paramTypeId);
+    if(zfscmpTheSame(paramTypeId, ZFTypeId_ZFListener()))
+    {
+        // ---@param P0 v_ZFListener|fun(zfargs:v_ZFArgs)
+        output << "---@param " << paramName << " " << sig
+            << "|fun(zfargs:" << _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZFTypeId_ZFArgs()) << ")"
+            << "\n";
+    }
+    else
+    {
+        // ---@param P0 P0
+        output << "---@param " << paramName << " " << sig << "\n";
+    }
+}
+
 static void _ZFP_ZFLuaLSPGenFile_NS(ZF_IN const ZFOutput &output,
                                     ZF_IN_OUT zfstlmap<zfstlstringZ, zfbool> &NSMap,
                                     ZF_IN const zfchar *NS)
@@ -195,14 +214,12 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
         zfstring paramList;
         for(zfindex i = 0; i < m->methodParamCount(); ++i)
         {
-            zfstring tN = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodParamTypeIdAt(i));
-            zfstring pN = m->methodParamNameAt(i);
-            output << "---@param " << pN << " " << tN << "\n";
+            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
             if(!paramList.isEmpty())
             {
                 paramList += ", ";
             }
-            paramList += pN;
+            paramList += m->methodParamNameAt(i);
         }
         output
             << "---@return " << classSig << "\n"
@@ -230,14 +247,12 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
         zfstring paramList;
         for(zfindex i = 0; i < m->methodParamCount(); ++i)
         {
-            zfstring tN = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodParamTypeIdAt(i));
-            zfstring pN = m->methodParamNameAt(i);
-            output << "---@param " << pN << " " << tN << "\n";
+            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
             if(!paramList.isEmpty())
             {
                 paramList += ", ";
             }
-            paramList += pN;
+            paramList += m->methodParamNameAt(i);
         }
         if(!zfscmpTheSame(m->methodReturnTypeId(), ZFTypeId_void()))
         {
@@ -305,14 +320,12 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output)
         zfstring paramList;
         for(zfindex i = 0; i < m->methodParamCount(); ++i)
         {
-            zfstring tN = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodParamTypeIdAt(i));
-            zfstring pN = m->methodParamNameAt(i);
-            output << "---@param " << pN << " " << tN << "\n";
+            _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
             if(!paramList.isEmpty())
             {
                 paramList += ", ";
             }
-            paramList += pN;
+            paramList += m->methodParamNameAt(i);
         }
         if(!zfscmpTheSame(m->methodReturnTypeId(), ZFTypeId_void()))
         {

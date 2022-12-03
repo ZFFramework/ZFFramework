@@ -26,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *  (at this case, src must be NULL-terminated zfchar string)
  *
  * return:
- * -  char count written to output,
+ * -  byte size written to output,
  *   return a value less than count indicates error state
  *
  * ADVANCED:\n

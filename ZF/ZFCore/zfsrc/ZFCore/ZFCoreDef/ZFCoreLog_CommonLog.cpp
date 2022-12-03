@@ -16,15 +16,15 @@ void _ZFP_zfCoreLogCriticalMessageV(ZF_IN const ZFCallerInfo &callerInfo,
                                     ZF_IN const zfchar *fmt,
                                     ZF_IN va_list vaList)
 {
-#ifdef zfzfzfLog
+#ifdef _ZFP_I_log
     {
-        zfzfzfLog("============================================================");
+        _ZFP_I_log("============================================================");
         zfstring tmp;
         tmp += "| ";
         zfstringAppend(tmp, "[%s %s(%u)] ", callerInfo.callerFile(), callerInfo.callerFunc(), callerInfo.callerLine());
         zfstringAppendV(tmp, fmt, vaList);
-        zfzfzfLog("%s", tmp.cString());
-        zfzfzfLog("============================================================");
+        _ZFP_I_log("%s", tmp.cString());
+        _ZFP_I_log("============================================================");
     }
 #endif
 

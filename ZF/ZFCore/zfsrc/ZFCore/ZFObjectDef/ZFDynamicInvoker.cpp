@@ -4,7 +4,11 @@
 #include "../ZFSTLWrapper/zfstl_string.h" // for ZFDI_invoke method cache
 #include "../ZFSTLWrapper/zfstl_hashmap.h" // for ZFDI_invoke method cache
 
+#include "../ZFSTLWrapper/zfstl_map.h" // for ZFDI_invoke param convert backup
+
 ZF_NAMESPACE_GLOBAL_BEGIN
+
+typedef zfstlmap<zfindex, zfautoObject> _ZFP_ZFDI_ParamBackupMapType;
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFDI_WrapperBase)
@@ -250,10 +254,15 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
         key += ':';
         key += name;
         _ZFP_ZFDI_MethodMapCache::iterator it = _ZFP_ZFDI_methodMapCache.find(key);
-        zfCoreMutexUnlock();
         if(it != _ZFP_ZFDI_methodMapCache.end())
         {
-            return ZFDI_invoke(ret, errorHint, obj, it->second, paramCount, paramList);
+            ZFCoreArrayPOD<const ZFMethod *> methodList = it->second;
+            zfCoreMutexUnlock();
+            return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList);
+        }
+        else
+        {
+            zfCoreMutexUnlock();
         }
     }
 
@@ -336,69 +345,17 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
     }
 
     zfstring _errorHintTmp;
-    zfstring *errorHintTmp = errorHint ? &_errorHintTmp : zfnull;
-    if(methodList.count() == 1)
     {
-        do {
-            const ZFMethod *method = methodList[0];
-            if(!method->methodIsPublic())
-            {
-                if(errorHintTmp != zfnull)
-                {
-                    zfstringAppend(_errorHintTmp, "can not invoke %s method: %s",
-                        ZFMethodPrivilegeTypeToString(method->methodPrivilegeType()).cString(),
-                        method->objectInfo().cString());
-                }
-                break;
-            }
-            if(paramCount < method->methodParamCountMin() || paramCount > method->methodParamCount())
-            {
-                if(errorHintTmp != zfnull)
-                {
-                    zfstringAppend(_errorHintTmp, "expect %s param, got %zi",
-                        ((method->methodParamCountMin() == method->methodParamCount())
-                            ? zfindexToString(method->methodParamCount()).cString()
-                            : zfstringWithFormat("%zi~%zi", method->methodParamCountMin(), method->methodParamCount()).cString()),
-                        paramCount);
-                }
-                break;
-            }
-            zfbool paramConvertSuccess = zftrue;
-            zfautoObject paramConvertCache;
-            for(zfindex iParam = 0; iParam < paramCount; ++iParam)
-            {
-                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
-                if(wrapper != zfnull)
-                {
-                    paramConvertCache.zfunsafe_assign(paramList[iParam]);
-                    if(!ZFDI_objectFromString(
-                        paramList[iParam], method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp))
-                    {
-                        paramList[iParam].zfunsafe_assign(paramConvertCache);
-                        paramConvertSuccess = zffalse;
-                        break;
-                    }
-                }
-            }
-            if(!paramConvertSuccess)
-            {
-                break;
-            }
-            if(method->methodGenericInvoker()(method, obj, errorHintTmp, ret, paramList))
-            {
-                if(zfscmpTheSame(method->methodReturnTypeId(), ZFTypeId_void()))
-                {
-                    ret = obj;
-                }
-                return zftrue;
-            }
-        } while(zffalse);
-    }
-    else
-    {
-        zfautoObject paramListTmp[ZFMETHOD_MAX_PARAM];
+        zfstring *errorHintTmp = errorHint ? &_errorHintTmp : zfnull;
+        _ZFP_ZFDI_ParamBackupMapType paramBackup;
         for(zfindex iMethod = 0; iMethod < methodList.count(); ++iMethod)
         {
+            for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it)
+            {
+                paramList[it->first] = it->second;
+            }
+            paramBackup.clear();
+
             const ZFMethod *method = methodList[iMethod];
             if(errorHintTmp != zfnull && !_errorHintTmp.isEmpty())
             {
@@ -427,30 +384,28 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
                 continue;
             }
 
-            for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i)
-            {
-                paramListTmp[i].zfunsafe_assign(paramList[i]);
-            }
-
             zfbool paramConvertSuccess = zftrue;
             for(zfindex iParam = 0; iParam < paramCount; ++iParam)
             {
-                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramListTmp[iParam]);
+                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
                 if(wrapper != zfnull)
                 {
+                    zfautoObject paramTmp;
                     if(!ZFDI_objectFromString(
-                        paramListTmp[iParam], method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp))
+                        paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp))
                     {
                         paramConvertSuccess = zffalse;
                         break;
                     }
+                    paramBackup[iParam] = paramList[iParam];
+                    paramList[iParam] = paramTmp;
                 }
             }
             if(!paramConvertSuccess)
             {
                 continue;
             }
-            if(method->methodGenericInvoker()(method, obj, errorHintTmp, ret, paramListTmp))
+            if(method->methodGenericInvoker()(method, obj, errorHintTmp, ret, paramList))
             {
                 if(zfscmpTheSame(method->methodReturnTypeId(), ZFTypeId_void()))
                 {
@@ -564,56 +519,17 @@ zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
     }
 
     zfstring _errorHintTmp;
-    zfstring *errorHintTmp = errorHint ? &_errorHintTmp : zfnull;
-    if(methodList.count() == 1)
     {
-        do {
-            const ZFMethod *method = methodList[0];
-            if(paramCount < method->methodParamCountMin() || paramCount > method->methodParamCount())
-            {
-                if(errorHintTmp != zfnull)
-                {
-                    zfstringAppend(_errorHintTmp, "expect %s param, got %zi",
-                        ((method->methodParamCountMin() == method->methodParamCount())
-                            ? zfindexToString(method->methodParamCount()).cString()
-                            : zfstringWithFormat("%zi~%zi", method->methodParamCountMin(), method->methodParamCount()).cString()),
-                        paramCount);
-                }
-                continue;
-            }
-            zfbool paramConvertSuccess = zftrue;
-            zfautoObject paramConvertCache;
-            for(zfindex iParam = 0; iParam < paramCount; ++iParam)
-            {
-                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
-                if(wrapper != zfnull)
-                {
-                    paramConvertCache.zfunsafe_assign(paramList[iParam]);
-                    if(!ZFDI_objectFromString(
-                        paramList[iParam], method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp))
-                    {
-                        paramList[iParam].zfunsafe_assign(paramConvertCache);
-                        paramConvertSuccess = zffalse;
-                        break;
-                    }
-                }
-            }
-            if(!paramConvertSuccess)
-            {
-                break;
-            }
-            if(cls->newInstanceGenericCheck(token, method, paramList, errorHintTmp))
-            {
-                ret = cls->newInstanceGenericEnd(token, zftrue);
-                return zftrue;
-            }
-        } while(zffalse);
-    }
-    else
-    {
-        zfautoObject paramListTmp[ZFMETHOD_MAX_PARAM];
+        zfstring *errorHintTmp = errorHint ? &_errorHintTmp : zfnull;
+        _ZFP_ZFDI_ParamBackupMapType paramBackup;
         for(zfindex iMethod = 0; iMethod < methodList.count(); ++iMethod)
         {
+            for(_ZFP_ZFDI_ParamBackupMapType::iterator it = paramBackup.begin(); it != paramBackup.end(); ++it)
+            {
+                paramList[it->first] = it->second;
+            }
+            paramBackup.clear();
+
             const ZFMethod *method = methodList[iMethod];
             if(!_errorHintTmp.isEmpty())
             {
@@ -632,30 +548,28 @@ zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
                 continue;
             }
 
-            for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i)
-            {
-                paramListTmp[i].zfunsafe_assign(paramList[i]);
-            }
-
             zfbool paramConvertSuccess = zftrue;
             for(zfindex iParam = 0; iParam < paramCount; ++iParam)
             {
-                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramListTmp[iParam]);
+                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
                 if(wrapper != zfnull)
                 {
+                    zfautoObject paramTmp;
                     if(!ZFDI_objectFromString(
-                        paramListTmp[iParam], method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp))
+                        paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp))
                     {
                         paramConvertSuccess = zffalse;
                         break;
                     }
+                    paramBackup[iParam] = paramList[iParam];
+                    paramList[iParam] = paramTmp;
                 }
             }
             if(!paramConvertSuccess)
             {
                 continue;
             }
-            if(cls->newInstanceGenericCheck(token, method, paramListTmp, errorHintTmp))
+            if(cls->newInstanceGenericCheck(token, method, paramList, errorHintTmp))
             {
                 ret = cls->newInstanceGenericEnd(token, zftrue);
                 return zftrue;
