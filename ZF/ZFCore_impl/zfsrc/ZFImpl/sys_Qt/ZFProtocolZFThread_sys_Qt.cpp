@@ -41,7 +41,9 @@ public slots:
         _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolderTmp = (_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *)listenerHolder;
         if(listenerHolderTmp->runnable)
         {
-            listenerHolderTmp->runnable.execute(listenerHolderTmp->zfargs);
+            listenerHolderTmp->runnable.execute(listenerHolderTmp->zfargs
+                    .userData(listenerHolderTmp->runnable.userData())
+                );
         }
     }
 };
@@ -73,14 +75,18 @@ protected:
         {
             if(this->_ZFP_runnable)
             {
-                this->_ZFP_runnable.execute(this->_ZFP_zfargs);
+                this->_ZFP_runnable.execute(this->_ZFP_zfargs
+                        .userData(this->_ZFP_runnable.userData())
+                    );
             }
         }
 
         this->_ZFP_runnable = zfnull;
         if(this->_ZFP_runnableCleanup)
         {
-            this->_ZFP_runnableCleanup.execute(this->_ZFP_zfargs);
+            this->_ZFP_runnableCleanup.execute(this->_ZFP_zfargs
+                    .userData(this->_ZFP_runnableCleanup.userData())
+                );
             this->_ZFP_runnableCleanup = zfnull;
         }
         this->deleteLater();

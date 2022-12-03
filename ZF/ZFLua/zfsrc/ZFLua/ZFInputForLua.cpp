@@ -52,6 +52,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForLuaOwner, zfindex, onInput,
         this->luaCallback.execute(ZFArgs()
                 .param0(this->_bufCache)
                 .param1(this->_countCache)
+                .userData(this->luaCallback.userData())
             );
         if(buf == zfnull || count == zfindexMax())
         {

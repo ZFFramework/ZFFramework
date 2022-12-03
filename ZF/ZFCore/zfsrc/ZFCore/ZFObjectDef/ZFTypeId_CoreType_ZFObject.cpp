@@ -168,23 +168,11 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFMethodParamDefaultValueCallback, ZFMethodParamDefa
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFArgs, ZFArgs)
-ZFOBJECT_ON_INIT_USER_REGISTER_4({
-        invokerObject->to<v_ZFArgs *>()->zfv
-            .eventId(eventId)
-            .sender(sender)
-            .param0(param0)
-            .param1(param1)
-            ;
-    }, v_ZFArgs
-    , ZFMP_IN(zfidentity, eventId)
-    , ZFMP_IN(ZFObject *, sender)
-    , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
-    , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
-    )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFArgs, zfidentity, eventId)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFArgs, ZFObject *, sender)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFArgs, ZFObject *, param0)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFArgs, ZFObject *, param1)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFArgs, ZFObject *, userData)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFArgs, ZFObject *, result)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, ZFArgs &, resultEnable, ZFMP_IN(zfbool, enable))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfbool, resultEnabled)

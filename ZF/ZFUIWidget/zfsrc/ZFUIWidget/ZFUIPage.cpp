@@ -122,6 +122,7 @@ public:
             this->pageRequestRunningFlag = zftrue;
             callback.execute(ZFArgs()
                     .sender(owner)
+                    .userData(callback.userData())
                 );
             this->pageRequestRunningFlag = zffalse;
         }
@@ -136,6 +137,7 @@ public:
             this->pageRequestRunningFlag = zftrue;
             callback.execute(ZFArgs()
                     .sender(owner)
+                    .userData(callback.userData())
                 );
             this->pageRequestRunningFlag = zffalse;
         }

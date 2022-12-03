@@ -57,7 +57,9 @@ public:
 
         ZFArgs zfargsTmp;
         zfargsTmp.resultEnable(zftrue);
-        taskData->callback.execute(zfargsTmp);
+        taskData->callback.execute(zfargsTmp
+                .userData(taskData->callback.userData())
+            );
 
         zfCoreMutexLock();
         taskData->result = zfargsTmp.result();
@@ -96,6 +98,7 @@ public:
 
         taskData->finishCallback.execute(ZFArgs()
                 .param0(taskData->result)
+                .userData(taskData->finishCallback.userData())
             );
 
         zfCoreMutexLock();

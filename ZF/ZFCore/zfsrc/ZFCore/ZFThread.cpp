@@ -136,6 +136,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
         zfCoreMutexUnlock();
         task.execute(ZFArgs()
                 .sender(zfThread)
+                .userData(task.userData())
             );
         zfCoreMutexLock();
         zfThread->d->taskQueueRunning = zffalse;
@@ -467,7 +468,9 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
     {
         ZFListener tmp = zfThread->threadRunnable();
         zfCoreMutexUnlock();
-        tmp.execute(zfargsTmp);
+        tmp.execute(zfargsTmp
+                .userData(tmp.userData())
+            );
     }
     else
     {
@@ -500,6 +503,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
         {
             task.execute(ZFArgs()
                     .sender(zfThread)
+                    .userData(task.userData())
                 );
         }
     } while(zftrue);
@@ -573,6 +577,7 @@ void ZFThread::_ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFArgs &zfargs)
         {
             task.execute(ZFArgs()
                     .sender(zfThread)
+                    .userData(task.userData())
                 );
         }
     } while(zftrue);

@@ -523,6 +523,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathInfoForEach,
             fileCallback.execute(ZFArgs()
                     .param0(childPathInfo)
                     .param1(childFd)
+                    .userData(fileCallback.userData())
                 );
         } while(impl->callbackFindNext(fd));
         impl->callbackFindClose(fd);

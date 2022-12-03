@@ -141,8 +141,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_0({
-        ZFArgs zfargs;
-        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(zfargs);
+        return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute();
     }, v_ZFCallback,
     void, execute)
 ZFMETHOD_USER_REGISTER_1({

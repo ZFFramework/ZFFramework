@@ -26,6 +26,7 @@
             self.runnable.execute(ZFArgs()
                     .param0(self.param0)
                     .param1(self.param1)
+                    .userData(self.runnable.userData())
                 );
         }
     }
@@ -35,6 +36,7 @@
         self.runnableCleanup.execute(ZFArgs()
                 .param0(self.param0)
                 .param1(self.param1)
+                .userData(self.runnableCleanup.userData())
             );
     }
     self._selfHolder = nil;

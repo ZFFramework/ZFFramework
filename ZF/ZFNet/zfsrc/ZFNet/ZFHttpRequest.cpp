@@ -47,8 +47,9 @@ public:
         if(this->callback)
         {
             this->callback.execute(ZFArgs()
-                .sender(owner)
-                .param0(this->response)
+                    .sender(owner)
+                    .param0(this->response)
+                    .userData(this->callback.userData())
                 );
         }
         this->callback = ZFCallback();

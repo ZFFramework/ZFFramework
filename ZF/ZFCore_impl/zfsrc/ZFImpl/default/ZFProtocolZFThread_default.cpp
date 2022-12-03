@@ -103,10 +103,12 @@ void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteD
     data->runnable.execute(ZFArgs()
             .param0(data->param0)
             .param1(data->param1)
+            .userData(data->runnable.userData())
         );
     data->runnableCleanup.execute(ZFArgs()
             .param0(data->param0)
             .param1(data->param1)
+            .userData(data->runnableCleanup.userData())
         );
     zfdelete(data);
 }

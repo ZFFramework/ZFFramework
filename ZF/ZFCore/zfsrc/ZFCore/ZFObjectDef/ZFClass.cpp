@@ -607,14 +607,16 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const
     {
         ZFArgs zfargs;
         zfargs
+            .eventFilterEnable(zftrue)
             .eventId(ZFObject::EventObjectAfterAlloc())
             .sender(obj)
-            .eventFilterEnable(zftrue)
             ;
         for(zfstlsize i = 0; i < d->instanceObserverCached.size() && !zfargs.eventFiltered(); ++i)
         {
             _ZFP_ZFClassPrivate::InstanceObserverData &data = *(d->instanceObserverCached[i]);
-            data.observer.execute(zfargs);
+            data.observer.execute(zfargs
+                    .userData(data.observer.userData())
+                );
         }
     }
 }

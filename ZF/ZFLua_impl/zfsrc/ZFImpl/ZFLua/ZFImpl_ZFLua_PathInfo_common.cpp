@@ -285,6 +285,7 @@ static int _ZFP_ZFLuaImportAllExecute(ZF_IN lua_State *L,
     {
         importCallback.execute(ZFArgs()
                 .param0(pathInfo)
+                .userData(importCallback.userData())
             );
     }
     ZFLuaExecute(input, zfnull, L);

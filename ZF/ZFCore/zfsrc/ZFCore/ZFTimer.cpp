@@ -164,6 +164,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce,
         {
             timerCallback.execute(ZFArgs()
                     .sender(ret)
+                    .userData(timerCallback.userData())
                 );
         }
         ret->timerStop();

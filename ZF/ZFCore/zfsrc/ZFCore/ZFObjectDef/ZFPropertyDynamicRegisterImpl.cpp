@@ -756,6 +756,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
         implUserData->callback.execute(ZFArgs()
                 .sender(propertyOwnerObject)
                 .param0(invokeData)
+                .userData(implUserData->callback.userData())
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
         {
@@ -785,6 +786,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
         implUserData->callback.execute(ZFArgs()
                 .sender(propertyOwnerObject)
                 .param0(invokeData)
+                .userData(implUserData->callback.userData())
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
         {

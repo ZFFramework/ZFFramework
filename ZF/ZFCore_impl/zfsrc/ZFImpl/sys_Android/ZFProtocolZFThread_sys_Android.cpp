@@ -280,6 +280,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread,
     d->runnable.execute(ZFArgs()
             .param0(d->param0)
             .param1(d->param1)
+            .userData(d->runnable.userData())
         );
     zfdelete(d);
 }
@@ -293,10 +294,12 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread,
     d->runnable.execute(ZFArgs()
             .param0(d->param0)
             .param1(d->param1)
+            .userData(d->runnable.userData())
         );
     d->runnableCleanup.execute(ZFArgs()
             .param0(d->param0)
             .param1(d->param1)
+            .userData(d->runnableCleanup.userData())
         );
     zfdelete(d);
 }

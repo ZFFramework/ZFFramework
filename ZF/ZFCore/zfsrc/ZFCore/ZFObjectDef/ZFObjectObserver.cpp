@@ -558,7 +558,9 @@ void ZFObserverHolder::observerNotifyWithCustomSender(ZF_IN ZFObject *customSend
         for(zfstlsize i = 0; i < toNotify.size() && !zfargs.eventFiltered(); ++i)
         {
             const _ZFP_ZFObserverData &observerData = *(toNotify[i]);
-            observerData.observer.execute(zfargs);
+            observerData.observer.execute(zfargs
+                    .userData(observerData.observer.userData())
+                );
         }
     }
 

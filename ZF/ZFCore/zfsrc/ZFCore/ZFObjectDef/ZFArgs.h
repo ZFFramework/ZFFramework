@@ -48,6 +48,13 @@ public:
     ZFArgs &param1(ZF_IN ZFObject * const &v) {d.param1 = v; return *this;}
     /** @brief see #param1 */
     ZFObject * const &param1(void) const {return d.param1;}
+    /**
+     * @brief extra user data passed from #ZFCallback::userData
+     * @note the userData stored in #ZFArgs has no auto retain
+     */
+    ZFArgs &userData(ZF_IN ZFObject * const &v) {d.userData = v; return *this;}
+    /** @brief see #userData */
+    ZFObject * const &userData(void) const {return d.userData;}
 
     /**
      * @brief result, must first enabled by #resultEnable
@@ -71,6 +78,8 @@ public:
     ZFAny param0T(void) const {return ZFAny(this->param0());}
     /** @brief util to #param1 */
     ZFAny param1T(void) const {return ZFAny(this->param1());}
+    /** @brief util to #userData */
+    ZFAny userDataT(void) const {return ZFAny(this->userData());}
     /** @brief util to #result */
     ZFAny resultT(void) const {return ZFAny(this->result());}
 
@@ -163,6 +172,7 @@ private:
         ZFObject *sender;
         ZFObject *param0;
         ZFObject *param1;
+        ZFObject *userData;
     };
     _ZFP_D d;
     ZFObject *_ZFP_resultHolder;

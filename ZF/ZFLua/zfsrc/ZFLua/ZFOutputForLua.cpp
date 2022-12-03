@@ -52,6 +52,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForLuaOwner, zfindex, onOutput,
         this->luaCallback.execute(ZFArgs()
                 .param0(this->_srcCache)
                 .param1(this->_countCache)
+                .userData(this->luaCallback.userData())
             );
         return this->_countCache->zfv;
     }
