@@ -3,28 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static void _ZFP_ZFImpl_ZFLua_ZFClass_classOnChange(ZF_IN const ZFArgs &zfargs)
-{
-    const ZFClassDataChangeData &data = zfargs.param0()->to<v_ZFClassDataChangeData *>()->zfv;
-    if(data.changedClass != zfnull && data.changedClass != zfnull
-        && !data.changedClass->classIsInternalPrivate()
-        && data.changedClass->classNamespace() == zfnull)
-    {
-        if(data.changeType == ZFClassDataChangeTypeAttach)
-        {
-            ZFImpl_ZFLua_implSetupScope(
-                ZFImpl_ZFLua_luaStateList(),
-                ZFCoreArrayPODCreate(const zfchar *, data.changedClass->className()));
-        }
-        else if(data.changeType == ZFClassDataChangeTypeClassAliasAttach)
-        {
-            ZFImpl_ZFLua_implSetupScope(
-                ZFImpl_ZFLua_luaStateList(),
-                ZFCoreArrayPODCreate(const zfchar *, data.name));
-        }
-    }
-}
-ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
         ZFCoreArrayPOD<const ZFClass *> allClass = ZFClassGetAll();
         if(!allClass.isEmpty())
         {
@@ -43,15 +22,28 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, {
                 ZFCoreArrayPODCreate(lua_State *, L),
                 classNameList);
         }
-
-        ZFClassDataChangeObserver().observerAdd(
-            ZFGlobalEvent::EventClassDataChange(),
-            ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFClass_classOnChange));
-    }, {
-        ZFClassDataChangeObserver().observerRemove(
-            ZFGlobalEvent::EventClassDataChange(),
-            ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFClass_classOnChange));
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+        if(data.changedClass != zfnull && data.changedClass != zfnull
+            && !data.changedClass->classIsInternalPrivate()
+            && data.changedClass->classNamespace() == zfnull)
+        {
+            ZFCoreArrayPOD<lua_State *> stateList;
+            stateList.add(L);
+            if(data.changeType == ZFClassDataChangeTypeAttach)
+            {
+                ZFImpl_ZFLua_implSetupScope(
+                    stateList,
+                    ZFCoreArrayPODCreate(const zfchar *, data.changedClass->className()));
+            }
+            else if(data.changeType == ZFClassDataChangeTypeClassAliasAttach)
+            {
+                ZFImpl_ZFLua_implSetupScope(
+                    stateList,
+                    ZFCoreArrayPODCreate(const zfchar *, data.name));
+            }
+        }
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

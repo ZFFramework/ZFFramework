@@ -6,49 +6,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-// ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_luaStateHolder, ZFLevelAppEssential)
-{
-    L = (lua_State *)ZFLuaStateOpen();
-    this->builtinLuaEnv = zftrue;
-    ZFLuaStateAttach(L);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_luaStateHolder)
-{
-    ZFLuaStateDetach(L);
-    if(this->builtinLuaEnv)
-    {
-        ZFLuaStateClose(L);
-    }
-}
-lua_State *L;
-zfbool builtinLuaEnv;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateHolder)
-lua_State *_ZFP_ZFImpl_ZFLua_luaState(void)
-{
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateHolder)->L;
-}
-void ZFImpl_ZFLua_luaStateChange(ZF_IN lua_State *L)
-{
-    zfCoreMutexLocker();
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateHolder);
-
-    zfCoreAssert(L != zfnull);
-    if(L == d->L)
-    {
-        return ;
-    }
-
-    ZFLuaStateDetach(d->L);
-    if(d->builtinLuaEnv)
-    {
-        d->builtinLuaEnv = zffalse;
-        ZFLuaStateClose(d->L);
-    }
-    d->L = L;
-    ZFLuaStateAttach(d->L);
-}
-
 void *ZFImpl_ZFLua_luaStateOpen(void)
 {
     return ZFImpl_ZFLua_luaOpen();
@@ -62,10 +19,9 @@ void ZFImpl_ZFLua_luaStateClose(ZF_IN lua_State *L)
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_luaStateGlobalHolder, ZFLevelZFFrameworkLow)
 {
 }
-zfstlmap<lua_State *, zfbool> attachedState;
-ZFCoreArrayPOD<lua_State *> attachedStateList;
 ZFCoreArrayPOD<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupAttach;
 ZFCoreArrayPOD<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupDetach;
+ZFCoreArrayPOD<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange> setupClassDataChange;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateGlobalHolder)
 
 void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
@@ -75,12 +31,6 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L)
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
-
-    zfCoreAssertWithMessageTrim(d->attachedState.find(L) == d->attachedState.end(),
-        "[ZFImpl_ZFLua_luaStateAttach] lua state %p already attached",
-        L);
-    d->attachedState[L] = zftrue;
-    d->attachedStateList.add(L);
 
     ZFImpl_ZFLua_luaClassRegister<zfautoObject>(L, "zfautoObject");
     { // metatable for zfautoObject
@@ -159,31 +109,29 @@ void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L)
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
 
-    zfCoreAssertWithMessageTrim(d->attachedState.find(L) != d->attachedState.end(),
-        "[ZFImpl_ZFLua_luaStateDetach] lua state %p not attached",
-        L);
-
     // each impl setup callback
     for(zfindex i = 0; i < d->setupDetach.count(); ++i)
     {
         d->setupDetach[i](L);
     }
+}
 
-    d->attachedState.erase(L);
-    d->attachedStateList.removeElement(L);
-}
-void ZFImpl_ZFLua_luaStateListT(ZF_IN_OUT ZFCoreArray<lua_State *> &ret)
+void ZFImpl_ZFLua_classDataChange(ZF_IN lua_State *L,
+                                  ZF_IN const ZFClassDataChangeData &data)
 {
-    ret.addFrom(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder)->attachedStateList);
-}
-const ZFCoreArrayPOD<lua_State *> &ZFImpl_ZFLua_luaStateList(void)
-{
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder)->attachedStateList;
+    zfCoreMutexLocker();
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
+        = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
+    for(zfindex i = 0; i < d->setupAttach.count(); ++i)
+    {
+        d->setupAttach[i](L);
+    }
 }
 
 // ============================================================
 void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback,
-                                                 ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback)
+                                                 ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback,
+                                                 ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange)
 {
     zfCoreMutexLocker();
 
@@ -191,9 +139,11 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplSet
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
     d->setupAttach.add(setupAttachCallback);
     d->setupDetach.add(setupDetachCallback);
+    d->setupClassDataChange.add(setupClassDataChange);
 }
 void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback,
-                                                   ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback)
+                                                   ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback,
+                                                   ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange)
 {
     zfCoreMutexLocker();
 
@@ -201,6 +151,7 @@ void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplS
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
     d->setupAttach.removeElement(setupAttachCallback);
     d->setupDetach.removeElement(setupDetachCallback);
+    d->setupClassDataChange.removeElement(setupClassDataChange);
 }
 
 // ============================================================
@@ -270,17 +221,6 @@ zfbool ZFImpl_ZFLua_execute(ZF_IN lua_State *L,
     #if ZF_ENV_DEBUG
     int DEBUG_luaStackNum = lua_gettop(L);
     #endif
-
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
-        = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
-    if(d->attachedState.find(L) == d->attachedState.end())
-    {
-        if(errHint != zfnull)
-        {
-            zfstringAppend(*errHint, "lua_State %p not attached", L);
-        }
-        return zffalse;
-    }
 
     int luaStackNum = lua_gettop(L);
     int error = luaL_loadbuffer(L, buf, (bufLen == zfindexMax()) ? zfslen(buf) : bufLen, zfnull);

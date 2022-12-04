@@ -13,17 +13,10 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZFLIB_ZFLua_impl lua_State *_ZFP_ZFImpl_ZFLua_luaState(void);
 /**
- * @brief global lua state for lua impl
+ * @brief create new lua state
  *
- * lua state would be initialized during #ZFFrameworkInit as level #ZFLevelAppEssential\n
- * \n
- * if you want to setup existing lua_State instead of #ZFImpl_ZFLua_luaState,
- * you must first invoke #ZFImpl_ZFLua_luaStateAttach\n
- * \n
- * \n
- * ADVANCED: how the impl works:
+ * how the impl works:
  * -  all attach steps can be registered by #ZFImpl_ZFLua_implSetupCallback_DEFINE,
  *   when #ZFImpl_ZFLua_luaStateAttach,
  *   all necessary register steps would be performed
@@ -43,26 +36,14 @@ extern ZFLIB_ZFLua_impl lua_State *_ZFP_ZFImpl_ZFLua_luaState(void);
  *   and all methods would be dispatched internally,
  *   you should not modify #zfautoObject's "__index" by other lua bind tools
  */
-#define ZFImpl_ZFLua_luaState _ZFP_ZFImpl_ZFLua_luaState()
-
-/**
- * @brief change #ZFImpl_ZFLua_luaState, can not undo
- */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaStateChange(ZF_IN lua_State *L);
-
-/**
- * @brief see #ZFImpl_ZFLua_luaState
- *
- * must not be attached more than one time
- */
 extern ZFLIB_ZFLua_impl void *ZFImpl_ZFLua_luaStateOpen(void);
 /**
- * @brief see #ZFImpl_ZFLua_luaState
+ * @brief see #ZFImpl_ZFLua_luaStateOpen
  */
 extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaStateClose(ZF_IN lua_State *L);
 
 /**
- * @brief see #ZFImpl_ZFLua_luaState
+ * @brief see #ZFImpl_ZFLua_luaStateOpen
  *
  * must not be attached more than one time
  */
@@ -76,20 +57,21 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L);
 extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L);
 
 /**
- * @brief return all lua_State that currently registered, for impl or debug use only
+ * @brief called when class data changed, for each lua state of each thread
  */
-extern ZFLIB_ZFLua_impl const ZFCoreArrayPOD<lua_State *> &ZFImpl_ZFLua_luaStateList(void);
-/**
- * @brief see #ZFImpl_ZFLua_luaStateList
- */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaStateListT(ZF_IN_OUT ZFCoreArray<lua_State *> &ret);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_classDataChange(ZF_IN lua_State *L,
+                                                          ZF_IN const ZFClassDataChangeData &data);
 
 // ============================================================
 typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupCallback)(ZF_IN_OUT lua_State *L);
+typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange)(ZF_IN_OUT lua_State *L,
+                                                           ZF_IN const ZFClassDataChangeData &data);
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback,
-                                                                         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback);
+                                                                         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback,
+                                                                         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange);
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback,
-                                                                           ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback);
+                                                                           ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback,
+                                                                           ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange);
 
 /**
  * @brief for impl to add attach and detach actions
@@ -98,21 +80,25 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN
  * @code
  *   ZFImpl_ZFLua_implSetupCallback_DEFINE(YourSetupSig, {
  *           // your own attach action, callback proto type:
- *           //   zfbool implSetupAttach(ZF_IN_OUT lua_State *L);
+ *           //   void implSetupAttach(ZF_IN_OUT lua_State *L);
  *       }, {
  *           // your own detach action, callback proto type:
- *           //   zfbool implSetupDetach(ZF_IN_OUT lua_State *L);
+ *           //   void implSetupDetach(ZF_IN_OUT lua_State *L);
+ *       }, {
+ *           // your own class data change action, callback proto type:
+ *           //   void implSetupClassDataChange(ZF_IN_OUT lua_State *L,
+ *           //                                 ZF_IN const ZFClassDataChangeData &data);
  *       })
  * @endcode
  */
-#define ZFImpl_ZFLua_implSetupCallback_DEFINE(SetupSig, setupAttachAction, setupDetachAction) \
+#define ZFImpl_ZFLua_implSetupCallback_DEFINE(SetupSig, setupAttachAction, setupDetachAction, setupClassDataChange) \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implSetupAction_##SetupSig, ZFLevelZFFrameworkLow) \
     { \
-        _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(zfself::implSetupAttach, zfself::implSetupDetach); \
+        _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataChange); \
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implSetupAction_##SetupSig) \
     { \
-        _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(zfself::implSetupAttach, zfself::implSetupDetach); \
+        _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataChange); \
     } \
     public: \
         static void implSetupAttach(ZF_IN_OUT lua_State *L) \
@@ -123,10 +109,15 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN
         { \
             setupDetachAction \
         } \
+        static void implSetupClassDataChange(ZF_IN_OUT lua_State *L, \
+                                             ZF_IN const ZFClassDataChangeData &data) \
+        { \
+            setupClassDataChange \
+        } \
     ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implSetupAction_##SetupSig)
 
 // ============================================================
-/** @brief see #ZFImpl_ZFLua_luaState */
+/** @brief see #ZFImpl_ZFLua_luaStateOpen */
 extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList,
                                                          ZF_IN ZFCoreArray<const zfchar *> const &scopeNameList);
 /**

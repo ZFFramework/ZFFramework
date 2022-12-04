@@ -12,11 +12,6 @@ static zfbool _ZFP_ZFLuaExecute(ZF_IN const ZFPathInfo *pathInfoOrNull,
                                 ZF_IN const ZFCoreArray<zfautoObject> *luaParams,
                                 ZF_IN void *L)
 {
-    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
-    {
-        zfCoreAssertWithMessageTrim(ZFThread::currentThread()->isMainThread(),
-            "[ZFLua] ZFLuaExecute can only called in main thread");
-    }
     if(!input)
     {
         return zffalse;
@@ -41,6 +36,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoObject, ZFLuaExecute,
                        ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull),
                        ZFMP_IN_OPT(void *, L, zfnull))
 {
+    if(L == zfnull)
+    {
+        L = ZFLuaState();
+    }
     zfautoObject ret;
     if(_ZFP_ZFLuaExecute(input.pathInfo(), input, &ret, luaParams, L))
     {
@@ -58,6 +57,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfautoObject, ZFLuaExecute,
                        ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull),
                        ZFMP_IN_OPT(void *, L, zfnull))
 {
+    if(L == zfnull)
+    {
+        L = ZFLuaState();
+    }
     zfautoObject ret;
     if(_ZFP_ZFLuaExecute(zfnull, ZFInputForBufferUnsafe(buf), &ret, luaParams, L))
     {

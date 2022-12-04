@@ -68,6 +68,10 @@ static void _ZFP_ZFLuaGCResolve(ZF_IN const ZFArgs &zfargs)
 ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC,
                        ZFMP_IN_OPT(void *, L, zfnull))
 {
+    if(L == zfnull)
+    {
+        L = ZFLuaState();
+    }
     if(!ZFPROTOCOL_IS_AVAILABLE(ZFThread))
     {
         ZFLuaGCImmediately(L);
@@ -86,36 +90,6 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC,
         }
     }
 }
-
-// ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaGCAutoApply, ZFLevelZFFrameworkNormal)
-{
-    this->classChangeListener = ZFCallbackForFunc(zfself::classChange);
-    ZFClassDataChangeObserver().observerAdd(
-        ZFGlobalEvent::EventClassDataChange(),
-        this->classChangeListener);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCAutoApply)
-{
-    ZFClassDataChangeObserver().observerRemove(
-        ZFGlobalEvent::EventClassDataChange(),
-        this->classChangeListener);
-}
-ZFListener classChangeListener;
-static void classChange(ZF_IN const ZFArgs &zfargs)
-{
-    const ZFClassDataChangeData &data = zfargs.param0()->to<v_ZFClassDataChangeData *>()->zfv;
-    if(data.changedClass != zfnull && data.changeType == ZFClassDataChangeTypeDetach)
-    {
-        ZFCoreArrayPOD<void *> L;
-        ZFLuaStateListT(L);
-        for(zfindex i = 0; i < L.count(); ++i)
-        {
-            ZFLuaGC(L[i]);
-        }
-    }
-}
-ZF_GLOBAL_INITIALIZER_END(ZFLuaGCAutoApply)
 
 ZF_NAMESPACE_GLOBAL_END
 

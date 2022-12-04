@@ -47,23 +47,6 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(ZF_IN const ZFCoreArray
         }
     }
 }
-static void _ZFP_ZFImpl_ZFLua_ZFMethod_methodOnChange(ZF_IN const ZFArgs &zfargs)
-{
-    const ZFClassDataChangeData &data = zfargs.param0()->to<v_ZFClassDataChangeData *>()->zfv;
-    if(data.changedMethod != zfnull && data.changeType == ZFClassDataChangeTypeAttach)
-    {
-        if(data.changedMethod->methodIsFunctionType())
-        {
-            ZFImpl_ZFLua_implSetupScope(
-                ZFImpl_ZFLua_luaStateList(),
-                ZFCoreArrayPODCreate(const zfchar *, data.changedMethod->methodNamespace()));
-
-            _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
-                ZFImpl_ZFLua_luaStateList(),
-                ZFCoreArrayPODCreate(const ZFMethod *, data.changedMethod));
-        }
-    }
-}
 ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
         ZFCoreArrayPOD<lua_State *> luaStateList;
         luaStateList.add(L);
@@ -105,16 +88,25 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
             }
         }
 
-        ZFClassDataChangeObserver().observerAdd(
-            ZFGlobalEvent::EventClassDataChange(),
-            ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFMethod_methodOnChange));
-
         ZFImpl_ZFLua_implSetupScope(luaStateList, scopeNameList);
-    }), {
-        ZFClassDataChangeObserver().observerRemove(
-            ZFGlobalEvent::EventClassDataChange(),
-            ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFMethod_methodOnChange));
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+        if(data.changedMethod != zfnull && data.changeType == ZFClassDataChangeTypeAttach)
+        {
+            if(data.changedMethod->methodIsFunctionType())
+            {
+                ZFCoreArrayPOD<lua_State *> stateList;
+                stateList.add(L);
+                ZFImpl_ZFLua_implSetupScope(
+                    stateList,
+                    ZFCoreArrayPODCreate(const zfchar *, data.changedMethod->methodNamespace()));
+
+                _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
+                    stateList,
+                    ZFCoreArrayPODCreate(const ZFMethod *, data.changedMethod));
+            }
+        }
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -22,10 +22,11 @@ static int _ZFP_ZFImpl_ZFLua_zfl_luaValue(ZF_IN lua_State *L)
     return ZFImpl_ZFLua_toLuaValue(L, ZFImpl_ZFLua_luaGet(L, 1));
 }
 
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_luaValue, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_luaValue, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfl_luaValue", _ZFP_ZFImpl_ZFLua_zfl_luaValue);
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

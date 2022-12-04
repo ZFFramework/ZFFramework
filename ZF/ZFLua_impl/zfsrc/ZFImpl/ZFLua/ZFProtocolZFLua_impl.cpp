@@ -7,22 +7,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLua_impl, ZFLua, ZFProtocolLevel::e_Default)
 public:
-    virtual void *luaState(void)
-    {
-        return ZFImpl_ZFLua_luaState;
-    }
-
-    virtual void luaStateChange(ZF_IN void *L)
-    {
-        ZFImpl_ZFLua_luaStateChange((lua_State *)L);
-    }
-
-    virtual void luaStateList(ZF_IN_OUT ZFCoreArray<void *> &ret)
-    {
-        typedef void *_T;
-        ret.addFrom((const _T *)ZFImpl_ZFLua_luaStateList().arrayBuf(), ZFImpl_ZFLua_luaStateList().count());
-    }
-
     virtual void *luaStateOpen(void)
     {
         return ZFImpl_ZFLua_luaStateOpen();
@@ -39,6 +23,12 @@ public:
     virtual void luaStateDetach(ZF_IN void *L)
     {
         ZFImpl_ZFLua_luaStateDetach((lua_State *)L);
+    }
+
+    virtual void classDataChange(ZF_IN void *L,
+                                 ZF_IN const ZFClassDataChangeData &data)
+    {
+        ZFImpl_ZFLua_classDataChange((lua_State *)L, data);
     }
 
     virtual zfbool luaExecute(ZF_IN void *L,

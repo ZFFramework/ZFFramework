@@ -17,6 +17,9 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
 
 ZFMAIN_ENTRY()
 {
+    zfasync(ZFListenerForLambda({
+        ZFLuaExecute("zfLog('123')");
+    }));
     if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck())
     {
         zfautoObject containerView = _ZFP_ZFFramework_test_containerViewPrepare();

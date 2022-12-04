@@ -34,10 +34,11 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L)
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFCoreArrayCreate, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFCoreArrayCreate, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "ZFCoreArrayCreate", _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate);
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

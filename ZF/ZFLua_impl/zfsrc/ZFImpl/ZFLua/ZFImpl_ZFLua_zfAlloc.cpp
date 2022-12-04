@@ -85,10 +85,11 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfAlloc, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfAlloc, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfAlloc", _ZFP_ZFImpl_ZFLua_zfAlloc);
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

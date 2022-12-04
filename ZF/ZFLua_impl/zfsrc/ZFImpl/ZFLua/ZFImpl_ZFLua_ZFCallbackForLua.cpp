@@ -27,10 +27,11 @@ static int _ZFP_ZFImpl_ZFLua_ZFCallbackForLua(ZF_IN lua_State *L)
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFCallbackForLua, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFCallbackForLua, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "ZFCallbackForLua", _ZFP_ZFImpl_ZFLua_ZFCallbackForLua);
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

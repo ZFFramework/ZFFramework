@@ -8,10 +8,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L);
 
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_call, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_call, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfl_call", _ZFP_ZFImpl_ZFLua_zfl_call);
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 // ============================================================
 static int _ZFP_ZFImpl_ZFLua_zfl_call_impl(ZF_IN lua_State *L,

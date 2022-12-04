@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_tableInfo, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_tableInfo, ZFM_EXPAND({
         ZFImpl_ZFLua_execute(L,
                 "function zfl_tableInfo(root)\n"
                 "    if type(root) ~= 'table' then\n"
@@ -31,8 +31,9 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_tableInfo, {
                 "    print(zfl_tableInfo(root))\n"
                 "end\n"
             );
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

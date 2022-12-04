@@ -56,11 +56,12 @@ static int _ZFP_ZFImpl_ZFLua_zfstringWithFormat(ZF_IN lua_State *L)
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfstringAppend, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfstringAppend, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfstringAppend", _ZFP_ZFImpl_ZFLua_zfstringAppend);
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfstringWithFormat", _ZFP_ZFImpl_ZFLua_zfstringWithFormat);
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 ZF_NAMESPACE_GLOBAL_END
 

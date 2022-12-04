@@ -7,6 +7,7 @@
 * optimize lua meta info registration
 * support return non-ZFObject type for ZFLuaImport
 * add network module
+* add native thread support for lua
 
 # 0.9.0
 

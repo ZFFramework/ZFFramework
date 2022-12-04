@@ -17,27 +17,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFLua, ZFLua)
 public:
-    /** @brief see #ZFLuaState */
-    virtual void *luaState(void) zfpurevirtual;
-
-    /** @brief see #ZFLuaStateChange */
-    virtual void luaStateChange(ZF_IN void *L) zfpurevirtual;
-
-    /** @brief see #ZFLuaStateListT */
-    virtual void luaStateList(ZF_IN_OUT ZFCoreArray<void *> &ret) zfpurevirtual;
-
-    /** @brief see #ZFLuaStateAttach */
+    /** @brief see #ZFLuaStateOpen, ensured called in proper thread with proper mutex */
     virtual void *luaStateOpen(void) zfpurevirtual;
-    /** @brief see #ZFLuaStateAttach */
+    /** @brief see #ZFLuaStateClose, ensured called in proper thread with proper mutex */
     virtual void luaStateClose(ZF_IN void *L) zfpurevirtual;
 
-    /** @brief see #ZFLuaStateAttach */
+    /** @brief see #ZFLuaStateAttach, ensured called in proper thread with proper mutex */
     virtual void luaStateAttach(ZF_IN void *L) zfpurevirtual;
-    /** @brief see #ZFLuaStateDetach */
+    /** @brief see #ZFLuaStateDetach, ensured called in proper thread with proper mutex */
     virtual void luaStateDetach(ZF_IN void *L) zfpurevirtual;
 
+    /** @brief called when class or method changed, ensured called in proper thread with proper mutex */
+    virtual void classDataChange(ZF_IN void *L,
+                                 ZF_IN const ZFClassDataChangeData &data) zfpurevirtual;
+
     /**
-     * @brief see #ZFLuaExecute,
+     * @brief see #ZFLuaExecute, ensured called in proper thread with proper mutex,
      *   impl must supply all methods mentioned in #ZFLuaExecute
      */
     virtual zfbool luaExecute(ZF_IN void *L,
@@ -47,7 +42,7 @@ public:
                               ZF_IN_OPT const ZFCoreArray<zfautoObject> *luaParams = zfnull,
                               ZF_OUT_OPT zfstring *errorHint = zfnull) zfpurevirtual;
 
-    /** @brief see #ZFLuaGC */
+    /** @brief see #ZFLuaGC, ensured called in proper thread with proper mutex */
     virtual void luaGC(ZF_IN void *L) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFLua)
 

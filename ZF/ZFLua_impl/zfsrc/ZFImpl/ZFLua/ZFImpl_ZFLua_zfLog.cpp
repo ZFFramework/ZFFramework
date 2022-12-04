@@ -58,13 +58,14 @@ static int _ZFP_ZFImpl_ZFLua_zfLogTrimT(ZF_IN lua_State *L)
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfLog, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfLog, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLog", _ZFP_ZFImpl_ZFLua_zfLog);
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLogTrim", _ZFP_ZFImpl_ZFLua_zfLogTrim);
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLogT", _ZFP_ZFImpl_ZFLua_zfLogT);
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLogTrimT", _ZFP_ZFImpl_ZFLua_zfLogTrimT);
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 #if _ZFP_ZFImpl_ZFLua_zfLog_DEBUG_ENABLE
     ZFImpl_ZFLua_implPathInfo_DEFINE(zfLog,

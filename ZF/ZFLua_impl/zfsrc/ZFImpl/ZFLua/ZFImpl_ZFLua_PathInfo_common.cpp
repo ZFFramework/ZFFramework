@@ -328,7 +328,7 @@ static void _ZFP_ZFLuaImportAllLoop(ZF_IN lua_State *L,
 }
 
 // ============================================================
-ZFImpl_ZFLua_implSetupCallback_DEFINE(PathInfo, {
+ZFImpl_ZFLua_implSetupCallback_DEFINE(PathInfo, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFLuaImport", _ZFP_ZFLuaImport);
         ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFLuaImportOnce", _ZFP_ZFLuaImportOnce);
         ZFImpl_ZFLua_luaCFunctionRegister(L, "_ZFP_ZFLuaImportAll", _ZFP_ZFLuaImportAll);
@@ -344,8 +344,9 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(PathInfo, {
                 "    return zfnull;\n"
                 "end\n"
             );
-    }, {
-    })
+    }), ZFM_EXPAND({
+    }), ZFM_EXPAND({
+    }))
 
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaPathInfo,
         "function ()"
