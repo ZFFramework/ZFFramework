@@ -84,6 +84,16 @@ button:onClick(
     button:objectHolder())
 ```
 
+further more, it's easy to run lua code in thread (real native thread, not lua coroutine):
+
+```lua
+local capture = 123
+zfLog('thread: %s, capture: %s', ZFThread.currentThread(), capture)
+zfasync(function(zfargs)
+        zfLog('thread: %s, capture: %s', ZFThread.currentThread(), capture)
+    end)
+```
+
 
 ## powerful dynamic register
 

@@ -85,7 +85,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  lua number
  *     -  lua boolean
  * -  callback
- *   -  `ZFCallbackForLua(luaFunc)`\n
+ *   -  `ZFCallbackForLua(luaFunc)` or `ZFCallbackForLuaAsync(luaFunc)`\n
  *     create a #ZFListener from lua function\n
  *     the lua function's proto type must be:
  *     @code
@@ -93,7 +93,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       end
  *     @endcode
  *     \n
- *     further more, lua function can be converted to #ZFListener implicitly
+ *     the difference of ZFCallbackForLua/ZFCallbackForLuaAsync:
+ *     -  result of ZFCallbackForLua can only be called in same lua state,
+ *       and would assert fail if called in different lua state
+ *     -  result of ZFCallbackForLuaAsync is safe to be called in different lua state,
+ *       but it has worse performance,
+ *       and it only capture upvalues by value copy,
+ *       and only these value types can be captured:
+ *       -  lua primitive types: boolean, integer, number, string
+ *       -  ZFObject types
+ *     \n
+ *     further more, lua function can be converted to #ZFListener implicitly,
+ *     which by default use ZFCallbackForLuaAsync when automatically converted
  *     @code
  *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
  *           end)

@@ -1,8 +1,7 @@
 #include "ZFImpl_ZFLua.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_vector.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+#include "ZFImpl_ZFLua_ZFCallbackForLua.h"
+#include "ZFImpl_ZFLua_ZFCallbackForLuaAsync.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -509,155 +508,19 @@ zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
     }
 }
 
-zfclassFwd _ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder;
-static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFArgs &zfargs);
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_ZFCallbackAutoClean, ZFLevelZFFrameworkNormal)
-{
-    this->luaStateOnDetachListener = ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback);
-    ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_ZFCallbackAutoClean)
-{
-    ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
-}
-ZFListener luaStateOnDetachListener;
-ZFCoreArrayPOD<_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder *> attachList;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_ZFCallbackAutoClean)
-
-zfclass _ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder : zfextends ZFObject
-{
-    ZFOBJECT_DECLARE(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, ZFObject)
-public:
-    lua_State *L;
-    int luaFunc;
-    zfstring luaFuncInfo;
-
-    ZFMETHOD_INLINE_1(void, callback,
-                      ZFMP_IN(const ZFArgs &, zfargs))
-    {
-        if(L == zfnull)
-        {
-            return;
-        }
-        lua_rawgeti(L, LUA_REGISTRYINDEX, luaFunc);
-        if(!lua_isfunction(L, -1))
-        {
-            lua_pop(L, 1);
-        }
-
-        zfblockedAlloc(v_ZFArgs, zfargsHolder);
-        zfargsHolder->zfv = zfargs;
-        ZFImpl_ZFLua_luaPush(L, zfargsHolder);
-
-        int error = lua_pcall(L, 1, 0, 0);
-        ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, this->luaFuncInfo);
-    }
-protected:
-    zfoverride
-    virtual void objectOnInitFinish(void)
-    {
-        zfsuper::objectOnInitFinish();
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_ZFCallbackAutoClean)->attachList.add(this);
-        this->L = zfnull;
-    }
-    zfoverride
-    virtual void objectOnDeallocPrepare(void)
-    {
-        if(L != zfnull)
-        {
-            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_ZFCallbackAutoClean)->attachList.removeElement(this);
-            luaL_unref(L, LUA_REGISTRYINDEX, luaFunc);
-            L = zfnull;
-        }
-        zfsuper::objectOnDeallocPrepare();
-    }
-};
-
-ZFOBJECT_REGISTER(ZFImpl_ZFLuaValue)
-
-static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFArgs &zfargs)
-{
-    lua_State *L = (lua_State *)zfargs.param0()->to<v_ZFPtr *>()->zfv;
-    ZFCoreArrayPOD<_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder *> &attachList = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_ZFCallbackAutoClean)->attachList;
-    for(zfindex i = attachList.count() - 1; i != zfindexMax(); --i)
-    {
-        _ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder *p = attachList[i];
-        if(p->L == L)
-        {
-            attachList.remove(i);
-            luaL_unref(p->L, LUA_REGISTRYINDEX, p->luaFunc);
-            p->L = zfnull;
-        }
-    }
-}
-
-zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &param,
+zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
                                ZF_IN lua_State *L,
-                               ZF_IN int luaStackOffset)
+                               ZF_IN int luaStackOffset,
+                               ZF_OUT_OPT zfstring *errorHint /* = zfnull */,
+                               ZF_IN_OPT zfbool threadSafe /* = zftrue */)
 {
-    if(ZFImpl_ZFLua_toObject(param, L, luaStackOffset))
+    if(threadSafe)
     {
-        v_ZFCallback *callbackTmp = param;
-        if(callbackTmp != zfnull)
-        {
-            return zftrue;
-        }
-        else
-        {
-            return zffalse;
-        }
-    }
-
-    if(lua_isfunction(L, luaStackOffset))
-    {
-        zfblockedAlloc(v_ZFCallback, ret);
-        zfblockedAlloc(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, holder);
-        holder->L = L;
-        lua_pushvalue(L, luaStackOffset);
-        holder->luaFunc = luaL_ref(L, LUA_REGISTRYINDEX);
-        ret->zfv = ZFCallbackForMemberMethod(holder, ZFMethodAccess(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, callback));
-        ret->zfv.callbackOwnerObjectRetain();
-        param = ret;
-
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
-        {
-            const zfchar *buf =
-                    "local arg={...}\n"
-                    "local info=debug.getinfo(arg[1])\n"
-                    "local i = 1\n"
-                    "while true do\n"
-                    "    local n,v = debug.getlocal(4, i)\n"
-                    "    if not n then break end\n"
-                    "    if n == 'ZFLuaPathInfo' then\n"
-                    "        return v() .. ':' .. info['linedefined']\n"
-                    "    end\n"
-                    "    i = i + 1\n"
-                    "end\n"
-                    "return info['source'] .. ':' .. info['linedefined']\n"
-                ;
-            int error = luaL_loadbuffer(L, buf, zfslen(buf), "[ZFLuaDebug]");
-            if(error == 0)
-            {
-                lua_pushvalue(L, luaStackOffset);
-                error = lua_pcall(L, 1, 1, 0);
-                if(error == 0)
-                {
-                    ZFImpl_ZFLua_toString(holder->luaFuncInfo, L, -1, zftrue);
-                    lua_pop(L, 1);
-                }
-            }
-            if(error != 0)
-            {
-                const char *nativeError = lua_tostring(L, -1);
-                zfCoreCriticalMessageTrim("[ZFLuaDebug] %s", nativeError);
-                lua_pop(L, 1);
-            }
-        }
-        return zftrue;
+        return ZFImpl_ZFLua_ZFCallbackForLuaAsync(ret, L, luaStackOffset, errorHint);
     }
     else
     {
-        return zffalse;
+        return ZFImpl_ZFLua_ZFCallbackForLua(ret, L, luaStackOffset, errorHint);
     }
 }
 

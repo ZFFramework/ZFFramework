@@ -20,9 +20,6 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaGCImmediately,
 /**
  * @brief schedule #ZFLuaGC to run at proper time
  *
- * @note #ZFLuaGC would be called each time #ZFGlobalEvent::EventClassDataChange notified
- *   when class detach,
- *   to all lua state attached #ZFLuaStateListT
  * @note #ZFLuaGC would be called after each #ZFLuaExecute
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaGC,

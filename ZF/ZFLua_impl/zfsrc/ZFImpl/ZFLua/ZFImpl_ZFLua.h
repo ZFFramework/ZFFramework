@@ -202,9 +202,11 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param
  * -  #v_ZFCallback
  * -  lua function, converted by ZFCallbackForLua (available in lua code only)
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &param,
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
                                                        ZF_IN lua_State *L,
-                                                       ZF_IN int luaStackOffset);
+                                                       ZF_IN int luaStackOffset,
+                                                       ZF_OUT_OPT zfstring *errorHint = zfnull,
+                                                       ZF_IN_OPT zfbool threadSafe = zftrue);
 
 /**
  * @brief get params from lua
@@ -383,6 +385,12 @@ inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN zfautoObject &v)
 }
 /** @brief util for impl */
 inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN const zfautoObject &v)
+{
+    zfautoObject t = v;
+    ZFImpl_ZFLua_luaPush(L, t);
+}
+/** @brief util for impl */
+inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN ZFObject *v)
 {
     zfautoObject t = v;
     ZFImpl_ZFLua_luaPush(L, t);

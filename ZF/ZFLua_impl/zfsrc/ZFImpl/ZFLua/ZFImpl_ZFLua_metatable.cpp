@@ -1,7 +1,5 @@
 #include "ZFImpl_ZFLua.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(param, luaStackOffset) \
