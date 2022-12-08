@@ -116,85 +116,67 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLua(ZF_OUT zfautoObject &ret,
                                      ZF_IN int luaStackOffset,
                                      ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
 {
-    if(ZFImpl_ZFLua_toObject(ret, L, luaStackOffset))
-    {
-        v_ZFCallback *callbackTmp = ret;
-        if(callbackTmp != zfnull)
-        {
-            return zftrue;
-        }
-        else
-        {
-            zfstringAppend(errorHint,
-                "[ZFCallbackForLua] invalid param: %s",
-                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
-            return zffalse;
-        }
-    }
-
-    if(lua_isfunction(L, luaStackOffset))
-    {
-        zfblockedAlloc(v_ZFCallback, callback);
-        zfblockedAlloc(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, holder);
-        holder->L = L;
-        lua_pushvalue(L, luaStackOffset);
-        holder->luaFunc = luaL_ref(L, LUA_REGISTRYINDEX);
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread))
-        {
-            zfCoreMutexLocker();
-            ZFThread *curThread = ZFThread::currentThread();
-            if(curThread != zfnull)
-            {
-                holder->ownerThread = curThread->objectHolder();
-            }
-        }
-        callback->zfv = ZFCallbackForMemberMethod(holder, ZFMethodAccess(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, callback));
-        callback->zfv.callbackOwnerObjectRetain();
-        ret = callback;
-
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
-        {
-            const zfchar *buf =
-                    "local arg={...}\n"
-                    "local info=debug.getinfo(arg[1])\n"
-                    "local i = 1\n"
-                    "while true do\n"
-                    "    local n,v = debug.getlocal(4, i)\n"
-                    "    if not n then break end\n"
-                    "    if n == 'ZFLuaPathInfo' then\n"
-                    "        return v() .. ':' .. info['linedefined']\n"
-                    "    end\n"
-                    "    i = i + 1\n"
-                    "end\n"
-                    "return info['source'] .. ':' .. info['linedefined']\n"
-                ;
-            int error = luaL_loadbuffer(L, buf, zfslen(buf), "[ZFLuaDebug]");
-            if(error == 0)
-            {
-                lua_pushvalue(L, luaStackOffset);
-                error = lua_pcall(L, 1, 1, 0);
-                if(error == 0)
-                {
-                    ZFImpl_ZFLua_toString(holder->luaFuncInfo, L, -1, zftrue);
-                    lua_pop(L, 1);
-                }
-            }
-            if(error != 0)
-            {
-                const char *nativeError = lua_tostring(L, -1);
-                zfCoreCriticalMessageTrim("[ZFLuaDebug] %s", nativeError);
-                lua_pop(L, 1);
-            }
-        }
-        return zftrue;
-    }
-    else
+    if(!lua_isfunction(L, luaStackOffset))
     {
         zfstringAppend(errorHint,
             "[ZFCallbackForLua] invalid param: %s",
             ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
         return zffalse;
     }
+
+    zfblockedAlloc(v_ZFCallback, callback);
+    zfblockedAlloc(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, holder);
+    holder->L = L;
+    lua_pushvalue(L, luaStackOffset);
+    holder->luaFunc = luaL_ref(L, LUA_REGISTRYINDEX);
+    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+    {
+        zfCoreMutexLocker();
+        ZFThread *curThread = ZFThread::currentThread();
+        if(curThread != zfnull)
+        {
+            holder->ownerThread = curThread->objectHolder();
+        }
+    }
+    callback->zfv = ZFCallbackForMemberMethod(holder, ZFMethodAccess(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, callback));
+    callback->zfv.callbackOwnerObjectRetain();
+    ret = callback;
+
+    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
+    {
+        const zfchar *buf =
+                "local arg={...}\n"
+                "local info=debug.getinfo(arg[1])\n"
+                "local i = 1\n"
+                "while true do\n"
+                "    local n,v = debug.getlocal(4, i)\n"
+                "    if not n then break end\n"
+                "    if n == 'ZFLuaPathInfo' then\n"
+                "        return v() .. ':' .. info['linedefined']\n"
+                "    end\n"
+                "    i = i + 1\n"
+                "end\n"
+                "return info['source'] .. ':' .. info['linedefined']\n"
+            ;
+        int error = luaL_loadbuffer(L, buf, zfslen(buf), "[ZFLuaDebug]");
+        if(error == 0)
+        {
+            lua_pushvalue(L, luaStackOffset);
+            error = lua_pcall(L, 1, 1, 0);
+            if(error == 0)
+            {
+                ZFImpl_ZFLua_toString(holder->luaFuncInfo, L, -1, zftrue);
+                lua_pop(L, 1);
+            }
+        }
+        if(error != 0)
+        {
+            const char *nativeError = lua_tostring(L, -1);
+            zfCoreCriticalMessageTrim("[ZFLuaDebug] %s", nativeError);
+            lua_pop(L, 1);
+        }
+    }
+    return zftrue;
 }
 
 // ============================================================

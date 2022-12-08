@@ -514,6 +514,35 @@ zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
                                ZF_OUT_OPT zfstring *errorHint /* = zfnull */,
                                ZF_IN_OPT zfbool threadSafe /* = zftrue */)
 {
+    if(ZFImpl_ZFLua_toObject(ret, L, luaStackOffset))
+    {
+        v_ZFCallback *callbackTmp = ret;
+        if(callbackTmp != zfnull)
+        {
+            return zftrue;
+        }
+        else
+        {
+            if(errorHint != zfnull)
+            {
+                zfstringAppend(errorHint,
+                    "[ZFCallbackForLua] invalid param: %s",
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+            }
+            return zffalse;
+        }
+    }
+    else if(!lua_isfunction(L, luaStackOffset))
+    {
+        if(errorHint != zfnull)
+        {
+            zfstringAppend(errorHint,
+                "[ZFCallbackForLua] invalid param: %s",
+                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+        }
+        return zffalse;
+    }
+
     if(threadSafe)
     {
         return ZFImpl_ZFLua_ZFCallbackForLuaAsync(ret, L, luaStackOffset, errorHint);

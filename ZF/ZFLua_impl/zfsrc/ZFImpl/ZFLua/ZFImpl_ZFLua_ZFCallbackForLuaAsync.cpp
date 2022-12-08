@@ -228,6 +228,14 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLuaAsync(ZF_OUT zfautoObject &ret,
                                           ZF_IN int luaStackOffset,
                                           ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
 {
+    if(!lua_isfunction(L, luaStackOffset))
+    {
+        zfstringAppend(errorHint,
+            "[ZFCallbackForLuaAsync] invalid param: %s",
+            ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+        return zffalse;
+    }
+
     zfblockedAlloc(_ZFP_I_ZFCallbackForLuaAsyncCallback, callbackOwner);
 
     // dump the function
@@ -259,12 +267,17 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLuaAsync(ZF_OUT zfautoObject &ret,
         if(!_ZFP_ZFCallbackForLuaAsync_fromUpvalue(upvalue, L, upvalueIndex))
         {
             zfstringAppend(errorHint,
-                "[ZFCallbackForLuaAsync] unable to obtain upvalue at index %d",
-                (zfint)upvalueIndex);
+                "[ZFCallbackForLuaAsync] unable to store upvalue at index %d: %s",
+                (zfint)upvalueIndex,
+                ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue).cString());
+            lua_pop(L, 1);
+            return zffalse;
         }
+        lua_pop(L, 1);
         callbackOwner->upvalues.add(upvalue);
     }
 
+    // result
     zfblockedAlloc(v_ZFCallback, callback);
     callback->zfv = ZFCallbackForMemberMethod(callbackOwner, ZFMethodAccess(_ZFP_I_ZFCallbackForLuaAsyncCallback, callback));
     callback->zfv.callbackOwnerObjectRetain();
@@ -276,6 +289,8 @@ ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaAsyncCallback, void, callback,
                   ZFMP_IN(const ZFArgs &, zfargs))
 {
     lua_State *L = (lua_State *)ZFLuaState();
+
+    // restore function
     this->funcReaderDone = zffalse;
     int loadError = lua_load(L, _ZFP_ZFCallbackForLuaAsync_funcReader, this, "[ZFCallbackForLuaAsync]", "b");
     if(loadError != LUA_OK)
@@ -284,6 +299,7 @@ ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaAsyncCallback, void, callback,
         return;
     }
 
+    // set function args
     zfblockedAlloc(v_ZFArgs, zfargsHolder);
     zfargsHolder->zfv = zfargs;
     ZFImpl_ZFLua_luaPush(L, zfargsHolder);
