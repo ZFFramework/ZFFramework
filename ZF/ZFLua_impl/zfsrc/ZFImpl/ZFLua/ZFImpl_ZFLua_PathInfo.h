@@ -50,7 +50,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
                                                             ZF_OUT zfstring &ret,
-                                                            ZF_IN const ZFPathInfo *pathInfo);
+                                                            ZF_IN const ZFPathInfo *pathInfo,
+                                                            ZF_IN_OPT zfbool localMode = zftrue);
+
+/** @brief check whether luaFuncName registered */
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_implPathInfoExist(ZF_IN const zfchar *luaFuncName);
+
+/** @brief return luaFuncName list registered */
+extern ZFLIB_ZFLua_impl const ZFCoreArrayPOD<const zfchar *> &ZFImpl_ZFLua_implPathInfoList(void);
 
 /** @see #ZFImpl_ZFLua_implPathInfoSetup */
 #define ZFImpl_ZFLua_implPathInfo_DEFINE(luaFunc, luaFuncBody) \

@@ -355,12 +355,12 @@ ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaPathInfo,
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaImport,
         "function (l, ...)"
-        "    return ZFLuaExecute(_ZFP_ZFLuaImport(zfl_l, l), ZFCoreArrayCreate(...), zfl_L());"
+        "    return ZF.ZFLuaExecute(_ZFP_ZFLuaImport(zfl_l, l), ZFCoreArrayCreate(...), zfl_L());"
         "end"
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaImportOnce,
         "function (l, ...)"
-        "    return ZFLuaExecute(_ZFP_ZFLuaImportOnce(zfl_l, l), ZFCoreArrayCreate(...), zfl_L());"
+        "    return ZF.ZFLuaExecute(_ZFP_ZFLuaImportOnce(zfl_l, l), ZFCoreArrayCreate(...), zfl_L());"
         "end"
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaImportAll,
@@ -376,7 +376,7 @@ ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaRes,
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaExecute,
         "function (...)"
         "    local arg={...};"
-        "    ZF.ZFLuaExecute(arg[1] or ZFCallback(), arg[2] or ZFCoreArray(), arg[3] or zfl_L());"
+        "    return ZF.ZFLuaExecute(arg[1] or ZFCallback(), arg[2] or ZFCoreArray(), arg[3] or zfl_L());"
         "end"
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaGC,
