@@ -436,6 +436,7 @@ public:
             stackSaved, cur);
     }
 };
+/** @brief util to debug lua stack, assert fail if stack messed up */
 #if ZF_ENV_DEBUG
     #define ZFImpl_ZFLua_DEBUG_luaStackChecker(name, L, stackChange) \
         _ZFP_ZFLuaStackChecker _DEBUG_luaStackChecker_##name(L, stackChange)

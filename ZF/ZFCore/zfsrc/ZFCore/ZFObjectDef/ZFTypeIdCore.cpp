@@ -31,8 +31,12 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         if(src != zfnull)
         {
-            if(src->classData()->classIsTypeOf(invokerObject->classData()))
-            {
+            if(src->classData()->classIsTypeOf(invokerObject->classData())
+                || (
+                    invokerObject->classData()->classIsTypeOf(src->classData())
+                    && zfscmpTheSame(src->wrappedValueTypeId(), invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueTypeId())
+                )
+            ) {
                 invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueAssign(src);
             }
             else
