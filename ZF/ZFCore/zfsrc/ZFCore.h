@@ -50,6 +50,7 @@
 #include "ZFCore/ZFThread_zfautoRelease.h"
 #include "ZFCore/ZFTime.h"
 #include "ZFCore/ZFTimer.h"
+#include "ZFCore/zfimport.h"
 
 #endif // #ifndef _ZFI_ZFCore_h_
 

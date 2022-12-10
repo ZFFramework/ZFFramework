@@ -181,7 +181,7 @@ const ZFPathInfo *ZFSerializableData::pathInfo(void) const
 }
 void ZFSerializableData::pathInfo(ZF_IN const ZFPathInfo *pathInfo)
 {
-    if(pathInfo != zfnull && !(pathInfo->pathType.isEmpty() && pathInfo->pathData.isEmpty()))
+    if(pathInfo != zfnull && !pathInfo->isEmpty())
     {
         if(d->pathInfo == zfnull)
         {
@@ -229,7 +229,7 @@ const ZFPathInfo *ZFSerializableData::pathInfoCheck(void) const
     _ZFP_ZFSerializableDataPrivate *check = d;
     do
     {
-        if(check->pathInfo != zfnull && !check->pathInfo->pathData.isEmpty())
+        if(check->pathInfo != zfnull && !check->pathInfo->isEmpty())
         {
             return check->pathInfo;
         }

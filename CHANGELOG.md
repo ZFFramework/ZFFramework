@@ -5,7 +5,7 @@
 * optimize native UI embed logic
 * optimize external res logic
 * optimize lua meta info registration
-* support return non-ZFObject type for ZFLuaImport
+* advanced zfimport
 * add network module
 * add native thread support for lua
 

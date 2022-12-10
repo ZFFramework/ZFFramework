@@ -205,8 +205,7 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param
 extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
                                                        ZF_IN lua_State *L,
                                                        ZF_IN int luaStackOffset,
-                                                       ZF_OUT_OPT zfstring *errorHint = zfnull,
-                                                       ZF_IN_OPT zfbool threadSafe = zftrue);
+                                                       ZF_OUT_OPT zfstring *errorHint = zfnull);
 
 /**
  * @brief get params from lua
@@ -302,6 +301,12 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toLuaValue(ZF_IN lua_State *L,
 extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_zfstringAppend(ZF_IN lua_State *L,
                                                            ZF_IN_OUT zfstring &s,
                                                            ZF_IN_OPT int luaParamOffset = 1);
+
+/**
+ * @brief return info of current stack
+ */
+extern ZFLIB_ZFLua_impl zfstring ZFImpl_ZFLua_luaStackInfo(ZF_IN lua_State *L,
+                                                           ZF_IN_OPT int luaStackOffset = 1);
 
 // ============================================================
 /**
@@ -410,6 +415,33 @@ inline int ZFImpl_ZFLua_luaError(ZF_IN lua_State *L, ZF_IN const zfchar *fmt, ..
     va_end(vaList);
     return luaL_error(L, "%s", errHint.cString());
 }
+
+zfclassLikePOD ZFLIB_ZFLua_impl _ZFP_ZFLuaStackChecker
+{
+public:
+    lua_State *L;
+    int stackChange;
+    int stackSaved;
+public:
+    _ZFP_ZFLuaStackChecker(ZF_IN lua_State *L, ZF_IN_OPT int stackChange = 0)
+    : L(L), stackChange(stackChange), stackSaved(lua_gettop(L))
+    {
+    }
+    ~_ZFP_ZFLuaStackChecker(void)
+    {
+        int cur = lua_gettop(L);
+        zfCoreAssertWithMessageTrim(
+            cur == stackSaved + stackChange,
+            "[ZFLua] stack messed up: %d => %d",
+            stackSaved, cur);
+    }
+};
+#if ZF_ENV_DEBUG
+    #define ZFImpl_ZFLua_DEBUG_luaStackChecker(name, L, stackChange) \
+        _ZFP_ZFLuaStackChecker _DEBUG_luaStackChecker_##name(L, stackChange)
+#else
+    #define ZFImpl_ZFLua_DEBUG_luaStackChecker(name, L, stackChange)
+#endif
 
 ZF_NAMESPACE_GLOBAL_END
 

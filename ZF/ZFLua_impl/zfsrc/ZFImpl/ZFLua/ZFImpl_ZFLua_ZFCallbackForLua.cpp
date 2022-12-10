@@ -1,46 +1,78 @@
 #include "ZFImpl_ZFLua.h"
+#include "ZFImpl_ZFLua_PathInfo.h"
+
 #include "ZFCore/protocol/ZFProtocolZFThread.h"
+#include "ZFCore//ZFSTLWrapper/zfstl_map.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd _ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder;
-static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFArgs &zfargs);
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_ZFCallbackAutoClean, ZFLevelZFFrameworkNormal)
+// ============================================================
+zfclassLikePOD _ZFP_ZFCallbackForLua_SyncMode
 {
-    this->luaStateOnDetachListener = ZFCallbackForFunc(_ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback);
-    ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_ZFCallbackAutoClean)
-{
-    ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
-}
-ZFListener luaStateOnDetachListener;
-ZFCoreArrayPOD<_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder *> attachList;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_ZFCallbackAutoClean)
-
-zfclass _ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder : zfextends ZFObject
-{
-    ZFOBJECT_DECLARE(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, ZFObject)
-    ZFALLOC_CACHE_RELEASE({
-        cache->luaFuncInfo.removeAll();
-        cache->ownerThread = zfnull;
-    })
+protected:
+    typedef _ZFP_ZFCallbackForLua_SyncMode zfself;
 
 public:
-    lua_State *L;
-    int luaFunc;
-    zfstring luaFuncInfo;
     zfautoObjectT<ZFObjectHolder *> ownerThread;
+    lua_State *ownerL;
+    int luaFunc;
 
-    ZFMETHOD_INLINE_1(void, callback,
-                      ZFMP_IN(const ZFArgs &, zfargs))
+public:
+    _ZFP_ZFCallbackForLua_SyncMode(void)
+    : ownerThread()
+    , ownerL(zfnull)
+    , luaFunc(0)
     {
-        if(L == zfnull)
+    }
+    ~_ZFP_ZFCallbackForLua_SyncMode(void)
+    {
+        this->removeAll();
+    }
+
+public:
+    void removeAll(void)
+    {
+        if(ownerL != zfnull)
+        {
+            luaL_unref(ownerL, LUA_REGISTRYINDEX, luaFunc);
+            ownerL = zfnull;
+        }
+    }
+
+public:
+    void luaStateOnDetach(ZF_IN lua_State *L)
+    {
+        if(L == this->ownerL)
+        {
+            this->removeAll();
+        }
+    }
+    zfbool setup(ZF_IN lua_State *L,
+                 ZF_IN int luaStackOffset,
+                 ZF_OUT_OPT zfstring *errorHint)
+    {
+        this->ownerL = L;
+        lua_pushvalue(this->ownerL, luaStackOffset);
+        this->luaFunc = luaL_ref(this->ownerL, LUA_REGISTRYINDEX);
+        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+        {
+            zfCoreMutexLocker();
+            ZFThread *curThread = ZFThread::currentThread();
+            if(curThread != zfnull)
+            {
+                this->ownerThread = curThread->objectHolder();
+            }
+        }
+        return zftrue;
+    }
+    void invoke(ZF_IN lua_State *L, ZF_IN const ZFArgs &zfargs)
+    {
+        if(this->ownerL == zfnull)
         {
             return;
         }
 
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread) && this->ownerThread != zfnull)
+        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread))
         {
             zfCoreMutexLocker();
             if(this->ownerThread != zfnull && this->ownerThread->objectHolded() != zfnull)
@@ -49,64 +81,582 @@ public:
                 if(curThread != zfnull && curThread != this->ownerThread->objectHolded())
                 {
                     zfCoreCriticalMessageTrim(
-                        "[ZFCallbackForLua] can not execute in different thread, use ZFCallbackForLuaAsync instead, func: %s",
-                        this->luaFuncInfo.cString());
+                        "[ZFCallbackForLua] can not execute in different thread");
                     return;
                 }
             }
         }
 
-        lua_rawgeti(L, LUA_REGISTRYINDEX, luaFunc);
-        if(!lua_isfunction(L, -1))
+        lua_rawgeti(this->ownerL, LUA_REGISTRYINDEX, luaFunc);
+        if(!lua_isfunction(this->ownerL, -1))
         {
             zfCoreCriticalMessageTrim(
                 "[ZFCallbackForLua] invalid function: %s",
-                ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue).cString());
+                ZFImpl_ZFLua_luaObjectInfo(this->ownerL, -1, zftrue).cString());
             return;
         }
 
         zfblockedAlloc(v_ZFArgs, zfargsHolder);
         zfargsHolder->zfv = zfargs;
-        ZFImpl_ZFLua_luaPush(L, zfargsHolder);
+        ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
-        int error = lua_pcall(L, 1, 0, 0);
-        ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, this->luaFuncInfo);
-    }
-protected:
-    zfoverride
-    virtual void objectOnInitFinish(void)
-    {
-        zfsuper::objectOnInitFinish();
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_ZFCallbackAutoClean)->attachList.add(this);
-        this->L = zfnull;
-    }
-    zfoverride
-    virtual void objectOnDeallocPrepare(void)
-    {
-        if(L != zfnull)
-        {
-            ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_ZFCallbackAutoClean)->attachList.removeElement(this);
-            luaL_unref(L, LUA_REGISTRYINDEX, luaFunc);
-            L = zfnull;
-        }
-        zfsuper::objectOnDeallocPrepare();
+        int error = lua_pcall(this->ownerL, 1, 0, 0);
+        ZFImpl_ZFLua_execute_errorHandle(this->ownerL, error, zfnull, "[ZFCallbackForLua]");
     }
 };
-ZFOBJECT_REGISTER(ZFImpl_ZFLuaValue)
 
-static void _ZFP_ZFImpl_ZFLua_ZFCallbackAutoClean_callback(ZF_IN const ZFArgs &zfargs)
+// ============================================================
+zfclassLikePOD _ZFP_ZFCallbackForLua_AsyncMode
 {
-    lua_State *L = (lua_State *)zfargs.param0()->to<v_ZFPtr *>()->zfv;
-    ZFCoreArrayPOD<_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder *> &attachList = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_ZFCallbackAutoClean)->attachList;
-    for(zfindex i = attachList.count() - 1; i != zfindexMax(); --i)
+protected:
+    typedef _ZFP_ZFCallbackForLua_AsyncMode zfself;
+
+public:
+    typedef enum {
+        ValueType_Invalid,
+        ValueType_ENV,
+        ValueType_ZFObject,
+        ValueType_localFunc,
+        ValueType_bool,
+        ValueType_int,
+        ValueType_number,
+        ValueType_string,
+    } ValueType;
+
+public:
+    zfclassPOD ValueHolder
     {
-        _ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder *p = attachList[i];
-        if(p->L == L)
+    public:
+        ValueType valueType;
+        union {
+            ZFObject *objectValue;
+            zfchar *localFuncName;
+            int boolValue;
+            lua_Integer intValue;
+            lua_Number numberValue;
+            zfchar *stringValue;
+        } v;
+        int upvalueIndex;
+    };
+
+public:
+    static void valueHolderCleanup(ZF_IN const ValueHolder &v)
+    {
+        switch(v.valueType)
         {
-            attachList.remove(i);
-            luaL_unref(p->L, LUA_REGISTRYINDEX, p->luaFunc);
-            p->L = zfnull;
+            case ValueType_Invalid:
+                break;
+            case ValueType_ENV:
+                break;
+            case ValueType_ZFObject:
+                zfRelease(v.v.objectValue);
+                break;
+            case ValueType_localFunc:
+                zffree(v.v.localFuncName);
+                break;
+            case ValueType_bool:
+                break;
+            case ValueType_int:
+                break;
+            case ValueType_number:
+                break;
+            case ValueType_string:
+                zffree(v.v.stringValue);
+                break;
+            default:
+                zfCoreCriticalShouldNotGoHere();
+                break;
         }
+    }
+    static zfstring valueHolderInfo(ZF_IN const ValueHolder &v)
+    {
+        zfstring ret;
+        switch(v.valueType)
+        {
+            case ValueType_Invalid:
+                ret += "(Invalid)";
+                break;
+            case ValueType_ENV:
+                ret += "(ENV)";
+                break;
+            case ValueType_ZFObject:
+                ret += "(ZFObject)";
+                ZFObjectInfoT(ret, v.v.objectValue);
+                break;
+            case ValueType_localFunc:
+                ret += "(localFunc)";
+                ret += v.v.localFuncName;
+                break;
+            case ValueType_bool:
+                ret += "(bool)";
+                zfboolToString(ret, (zfbool)v.v.boolValue);
+                break;
+            case ValueType_int:
+                ret += "(int)";
+                zfintToString(ret, (zfint)v.v.intValue);
+                break;
+            case ValueType_number:
+                ret += "(number)";
+                zflongdoubleToString(ret, (zflongdouble)v.v.numberValue);
+                break;
+            case ValueType_string:
+                ret += "(string)";
+                ret += v.v.stringValue;
+                break;
+            default:
+                ret += "(Unknown)";
+                zfintToString(ret, (zfint)v.valueType);
+                break;
+        }
+        return ret;
+    }
+
+public:
+    typedef zfstlmap<lua_State *, ZFCorePointerForObject<_ZFP_ZFCallbackForLua_SyncMode *> > FuncCacheMap;
+
+public:
+    ZFPathInfo pathInfo;
+    ZFBuffer func;
+    zfbool funcReaderDone;
+    ZFCoreArrayPOD<ValueHolder> upvalues;
+    FuncCacheMap funcCacheMap;
+
+public:
+    ~_ZFP_ZFCallbackForLua_AsyncMode(void)
+    {
+        removeAll();
+    }
+
+public:
+    void removeAll(void)
+    {
+        this->pathInfo.removeAll();
+        this->func.bufferFree();
+        if(!this->upvalues.isEmpty())
+        {
+            ZFCoreArrayPOD<ValueHolder> tmp = this->upvalues;
+            this->upvalues = ZFCoreArrayPOD<ValueHolder>();
+            for(zfindex i = 0; i < tmp.count(); ++i)
+            {
+                valueHolderCleanup(tmp[i]);
+            }
+        }
+    }
+
+private:
+    static int _funcWriter(lua_State *L, const void *p, size_t sz, void *ud)
+    {
+        zfself *owner = (zfself *)ud;
+        owner->func.bufferAppend(p, (zfindex)sz);
+        return 0;
+    }
+    static const char *_funcReader(lua_State *L, void *data, size_t *size)
+    {
+        zfself *owner = (zfself *)data;
+        if(owner->funcReaderDone)
+        {
+            return NULL;
+        }
+        owner->funcReaderDone = zftrue;
+        *size = (size_t)owner->func.textLength();
+        return owner->func.text();
+    }
+
+private:
+    // convert upvalue from top stack, pop one value
+    static zfbool _fromUpvalue(ZF_OUT ValueHolder &ret, ZF_IN lua_State *L, ZF_IN const char *name, ZF_IN int upvalueIndex)
+    {
+        ret.upvalueIndex = upvalueIndex;
+        if(lua_isboolean(L, -1))
+        {
+            ret.v.boolValue = lua_toboolean(L, -1);
+            ret.valueType = ValueType_bool;
+        }
+        else if(lua_isinteger(L, -1))
+        {
+            ret.v.intValue = lua_tointeger(L, -1);
+            ret.valueType = ValueType_int;
+        }
+        else if(lua_isnumber(L, -1))
+        {
+            ret.v.numberValue = lua_tonumber(L, -1);
+            ret.valueType = ValueType_number;
+        }
+        else if(lua_isstring(L, -1))
+        {
+            ret.v.stringValue = zfsCopy(lua_tostring(L, -1));
+            ret.valueType = ValueType_string;
+        }
+        else if(lua_isuserdata(L, -1))
+        {
+            zfautoObject obj;
+            if(!ZFImpl_ZFLua_toObject(obj, L, -1))
+            {
+                return zffalse;
+            }
+            ret.v.objectValue = zfRetain(obj);
+            ret.valueType = ValueType_ZFObject;
+        }
+        else if(lua_isfunction(L, -1))
+        {
+            if(!ZFImpl_ZFLua_implPathInfoExist(name))
+            {
+                return zffalse;
+            }
+            ret.v.localFuncName = zfsCopy(name);
+            ret.valueType = ValueType_localFunc;
+        }
+        else if(strcmp(name, "_ENV") == 0)
+        {
+            ret.valueType = ValueType_ENV;
+        }
+        else
+        {
+            return zffalse;
+        }
+        return zftrue;
+    }
+    // convert to upvalue and push to stack top
+    static zfbool _ZFP_ZFCallbackForLua_toUpvalue(ZF_IN const ValueHolder &v, ZF_IN lua_State *L, ZF_IN int luaFuncIndex,
+                                                  ZF_IN const ZFCoreArrayPOD<const zfchar *> &luaLocalFuncNameList, ZF_IN int luaLocalFuncIndex)
+    {
+        switch(v.valueType)
+        {
+            case ValueType_Invalid:
+                return zffalse;
+            case ValueType_ENV:
+                lua_getglobal(L, "_G");
+                lua_setupvalue(L, luaFuncIndex < 0 ? luaFuncIndex - 1 : luaFuncIndex, v.upvalueIndex);
+                return zftrue;
+            case ValueType_ZFObject:
+                ZFImpl_ZFLua_luaPush(L, v.v.objectValue);
+                lua_setupvalue(L, luaFuncIndex < 0 ? luaFuncIndex - 1 : luaFuncIndex, v.upvalueIndex);
+                return zftrue;
+            case ValueType_localFunc:
+            {
+                const zfchar *name = v.v.localFuncName;
+                int offset = -1;
+                for(zfindex i = 0; i < luaLocalFuncNameList.count(); ++i)
+                {
+                    if(zfscmpTheSame(name, luaLocalFuncNameList[i]))
+                    {
+                        offset = (int)i;
+                        break;
+                    }
+                }
+                if(offset == zfindexMax())
+                {
+                    return zffalse;
+                }
+                lua_pushvalue(L, luaLocalFuncIndex + offset);
+                lua_setupvalue(L, luaFuncIndex < 0 ? luaFuncIndex - 1 : luaFuncIndex, v.upvalueIndex);
+                return zftrue;
+            }
+            case ValueType_bool:
+                lua_pushboolean(L, v.v.boolValue);
+                lua_setupvalue(L, luaFuncIndex < 0 ? luaFuncIndex - 1 : luaFuncIndex, v.upvalueIndex);
+                return zftrue;
+            case ValueType_int:
+                lua_pushinteger(L, v.v.intValue);
+                lua_setupvalue(L, luaFuncIndex < 0 ? luaFuncIndex - 1 : luaFuncIndex, v.upvalueIndex);
+                return zftrue;
+            case ValueType_number:
+                lua_pushnumber(L, v.v.numberValue);
+                lua_setupvalue(L, luaFuncIndex < 0 ? luaFuncIndex - 1 : luaFuncIndex, v.upvalueIndex);
+                return zftrue;
+            case ValueType_string:
+                lua_pushstring(L, v.v.stringValue);
+                lua_setupvalue(L, luaFuncIndex < 0 ? luaFuncIndex - 1 : luaFuncIndex, v.upvalueIndex);
+                return zftrue;
+            default:
+                return zffalse;
+        }
+    }
+
+public:
+    zfstring logTag(void)
+    {
+        if(this->pathInfo.isEmpty())
+        {
+            return "[ZFCallbackForLua]";
+        }
+        else
+        {
+            return zfstringWithFormat("[ZFCallbackForLua:%s]", ZFPathInfoToString(this->pathInfo).cString());
+        }
+    }
+
+    void luaStateOnDetach(ZF_IN lua_State *L)
+    {
+        this->funcCacheMap.erase(L);
+    }
+
+    zfbool setup(ZF_IN lua_State *L,
+                 ZF_IN int luaStackOffset,
+                 ZF_OUT_OPT zfstring *errorHint)
+    {
+        // store path info
+        {
+            lua_Debug ar;
+            for(int iStack = 1; ; ++iStack)
+            {
+                int success = lua_getstack(L, iStack, &ar);
+                if(!success)
+                {
+                    break;
+                }
+                for(int iLocal = 1; ; ++iLocal)
+                {
+                    const char *varName = lua_getlocal(L, &ar, iLocal);
+                    if(varName == NULL)
+                    {
+                        break;
+                    }
+                    if(strcmp(varName, "_ENV") == 0)
+                    {
+                        // [var]
+                        lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
+                        lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
+                        lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
+                        zfautoObject pathInfoHolder;
+                        ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
+                        lua_pop(L, 2); // []
+
+                        v_ZFPathInfo *pathInfo = pathInfoHolder;
+                        if(pathInfo != zfnull)
+                        {
+                            this->pathInfo = pathInfo->zfv;
+                            break;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else if(strcmp(varName, "ZFLocalPathInfo") == 0)
+                    {
+                        int error = lua_pcall(L, 0, 1, 0);
+                        if(error != 0)
+                        {
+                            lua_pop(L, 1);
+                            zfstringAppend(errorHint,
+                                "[ZFCallbackForLua] unable to obtain path info, invoke fail");
+                            return zffalse;
+                        }
+                        zfautoObject pathInfoHolder;
+                        if(!ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1))
+                        {
+                            lua_pop(L, 1);
+                            zfstringAppend(errorHint,
+                                "[ZFCallbackForLua] unable to obtain path info");
+                            return zffalse;
+                        }
+                        v_ZFPathInfo *pathInfo = pathInfoHolder;
+                        if(pathInfo != zfnull)
+                        {
+                            this->pathInfo = pathInfo->zfv;
+                        }
+                        lua_pop(L, 1);
+                        break;
+                    }
+                    else
+                    {
+                        lua_pop(L, 1);
+                    }
+                }
+            }
+        }
+
+        // dump the function
+        lua_pushvalue(L, luaStackOffset);
+        int dumpError = lua_dump(L, _funcWriter, this, 0);
+        if(dumpError != 0)
+        {
+            lua_pop(L, 1);
+            zfstringAppend(errorHint,
+                "%s unable to dump function: %s",
+                this->logTag().cString(),
+                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+            return zffalse;
+        }
+
+        // save upvalue
+        for(int upvalueIndex = 1; ; ++upvalueIndex)
+        {
+            const char *name = lua_getupvalue(L, luaStackOffset, upvalueIndex);
+            if(name == NULL)
+            {
+                break;
+            }
+            ValueHolder v;
+            if(!_fromUpvalue(v, L, name, upvalueIndex))
+            {
+                zfstringAppend(errorHint,
+                    "%s unable to store upvalue at index %d: %s",
+                    this->logTag().cString(),
+                    (zfint)upvalueIndex,
+                    ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue).cString());
+                lua_pop(L, 1);
+                return zffalse;
+            }
+            lua_pop(L, 1);
+            this->upvalues.add(v);
+        }
+
+        // pop the function
+        lua_pop(L, 1);
+        return zftrue;
+    }
+
+    void invoke(ZF_IN lua_State *L, ZF_IN const ZFArgs &zfargs)
+    {
+        zfstring logTag = this->logTag();
+
+        { // stack from empty to [func, zfargs]
+            zfCoreMutexLocker();
+            FuncCacheMap::iterator itCache = this->funcCacheMap.find(L);
+            if(itCache != this->funcCacheMap.end())
+            {
+                // restore function from cache
+                _ZFP_ZFCallbackForLua_SyncMode &funcCache = *itCache->second.pointerValue();
+                lua_rawgeti(L, LUA_REGISTRYINDEX, funcCache.luaFunc);
+
+                // push params
+                zfblockedAlloc(v_ZFArgs, zfargsHolder);
+                zfargsHolder->zfv = zfargs;
+                ZFImpl_ZFLua_luaPush(L, zfargsHolder);
+            }
+            else
+            {
+                ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 2);
+
+                // restore function, stack: [func]
+                this->funcReaderDone = zffalse;
+                int loadError = lua_load(L, _funcReader, this, logTag.cString(), "b");
+                if(loadError != LUA_OK)
+                {
+                    zfCoreCriticalMessageTrim(
+                        "%s unable to load function",
+                        logTag.cString());
+                    return;
+                }
+                int luaFuncIndex = lua_gettop(L);
+
+                // set function args, stack: [func, zfargs]
+                zfblockedAlloc(v_ZFArgs, zfargsHolder);
+                zfargsHolder->zfv = zfargs;
+                ZFImpl_ZFLua_luaPush(L, zfargsHolder);
+
+                // restore local path info, stack: [func, zfargs, localFunc0, localFunc1, ...]
+                const ZFCoreArrayPOD<const zfchar *> &luaLocalFuncNameList = ZFImpl_ZFLua_implPathInfoList();
+                int luaLocalFuncIndex = lua_gettop(L) + 1;
+                {
+                    zfstring code;
+                    ZFImpl_ZFLua_implPathInfoSetup(L, code, &(this->pathInfo), zffalse);
+                    int error = luaL_loadbuffer(L, code.cString(), code.length(), zfnull);
+                    ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag.cString());
+                    error = lua_pcall(L, 0, (int)luaLocalFuncNameList.count(), 0);
+                    ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag.cString());
+                }
+
+                // restore upvalue
+                for(zfindex i = 0; i < this->upvalues.count(); ++i)
+                {
+                    const ValueHolder &v = this->upvalues[i];
+                    if(!_ZFP_ZFCallbackForLua_toUpvalue(v, L, luaFuncIndex, luaLocalFuncNameList, luaLocalFuncIndex))
+                    {
+                        zfCoreCriticalMessageTrim("%s unable to restore upvalue: %s",
+                            logTag.cString(),
+                            valueHolderInfo(v).cString());
+                        return;
+                    }
+                }
+
+                // cleanup local path info, stack: [func, zfargs]
+                lua_pop(L, (int)luaLocalFuncNameList.count());
+
+                // save func cache
+                ZFCorePointerForObject<_ZFP_ZFCallbackForLua_SyncMode *> funcCache(zfnew(_ZFP_ZFCallbackForLua_SyncMode));
+                if(!funcCache->setup(L, -2, zfnull))
+                {
+                    zfCoreCriticalMessageTrim("%s unable to store function cache",
+                        logTag.cString());
+                    return;
+                }
+                this->funcCacheMap[L] = funcCache;
+            }
+        }
+
+        // finally call, stack: [func, zfargs]
+        int error = lua_pcall(L, 1, 0, 0);
+        ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag.cString());
+    }
+};
+
+// ============================================================
+zfclass _ZFP_I_ZFCallbackForLuaCallback : zfextends ZFObject
+{
+    ZFOBJECT_DECLARE(_ZFP_I_ZFCallbackForLuaCallback, ZFObject)
+    ZFALLOC_CACHE_RELEASE({
+        cache->_cleanup();
+    })
+
+private:
+    ZFListener luaStateOnDetachListener;
+protected:
+    zfoverride
+    virtual void objectOnInit(void)
+    {
+        zfsuper::objectOnInit();
+        this->luaStateOnDetachListener = ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, luaStateOnDetach));
+        ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
+    }
+    zfoverride
+    virtual void objectOnDealloc(void)
+    {
+        ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventLuaStateOnDetach(), this->luaStateOnDetachListener);
+        this->_cleanup();
+        zfsuper::objectOnDealloc();
+    }
+
+public:
+    _ZFP_ZFCallbackForLua_SyncMode syncMode;
+    _ZFP_ZFCallbackForLua_AsyncMode asyncMode;
+
+public:
+    void _cleanup(void)
+    {
+        this->syncMode.removeAll();
+        this->asyncMode.removeAll();
+    }
+
+private:
+    ZFMETHOD_DECLARE_1(void, luaStateOnDetach,
+                       ZFMP_IN(const ZFArgs &, zfargs))
+    ZFMETHOD_DECLARE_1(void, callback,
+                       ZFMP_IN(const ZFArgs &, zfargs))
+};
+ZFOBJECT_REGISTER(_ZFP_I_ZFCallbackForLuaCallback)
+
+ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaCallback, void, luaStateOnDetach,
+                  ZFMP_IN(const ZFArgs &, zfargs))
+{
+    v_ZFPtr *L = zfargs.param0T();
+    this->syncMode.luaStateOnDetach((lua_State *)L->zfv);
+    this->asyncMode.luaStateOnDetach((lua_State *)L->zfv);
+}
+
+ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaCallback, void, callback,
+                  ZFMP_IN(const ZFArgs &, zfargs))
+{
+    lua_State *L = (lua_State *)ZFLuaState();
+    if(this->syncMode.ownerL == L)
+    {
+        this->syncMode.invoke(L, zfargs);
+    }
+    else
+    {
+        this->asyncMode.invoke(L, zfargs);
     }
 }
 
@@ -118,75 +668,41 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLua(ZF_OUT zfautoObject &ret,
 {
     if(!lua_isfunction(L, luaStackOffset))
     {
-        zfstringAppend(errorHint,
-            "[ZFCallbackForLua] invalid param: %s",
-            ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+        if(errorHint != zfnull)
+        {
+            zfstringAppend(errorHint,
+                "[ZFCallbackForLua] invalid param: %s",
+                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+        }
         return zffalse;
     }
 
-    zfblockedAlloc(v_ZFCallback, callback);
-    zfblockedAlloc(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, holder);
-    holder->L = L;
-    lua_pushvalue(L, luaStackOffset);
-    holder->luaFunc = luaL_ref(L, LUA_REGISTRYINDEX);
-    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+    zfCoreMutexLocker();
+    ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 0);
+
+    zfblockedAlloc(_ZFP_I_ZFCallbackForLuaCallback, callbackOwner);
+    if(!callbackOwner->syncMode.setup(L, luaStackOffset, errorHint)
+        || !callbackOwner->asyncMode.setup(L, luaStackOffset, errorHint))
     {
-        zfCoreMutexLocker();
-        ZFThread *curThread = ZFThread::currentThread();
-        if(curThread != zfnull)
-        {
-            holder->ownerThread = curThread->objectHolder();
-        }
+        return zffalse;
     }
-    callback->zfv = ZFCallbackForMemberMethod(holder, ZFMethodAccess(_ZFP_I_ZFImpl_ZFLua_ZFCallbackForLuaHolder, callback));
+
+    // result
+    zfblockedAlloc(v_ZFCallback, callback);
+    callback->zfv = ZFCallbackForMemberMethod(callbackOwner, ZFMethodAccess(_ZFP_I_ZFCallbackForLuaCallback, callback));
     callback->zfv.callbackOwnerObjectRetain();
     ret = callback;
-
-    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
-    {
-        const zfchar *buf =
-                "local arg={...}\n"
-                "local info=debug.getinfo(arg[1])\n"
-                "local i = 1\n"
-                "while true do\n"
-                "    local n,v = debug.getlocal(4, i)\n"
-                "    if not n then break end\n"
-                "    if n == 'ZFLuaPathInfo' then\n"
-                "        return v() .. ':' .. info['linedefined']\n"
-                "    end\n"
-                "    i = i + 1\n"
-                "end\n"
-                "return info['source'] .. ':' .. info['linedefined']\n"
-            ;
-        int error = luaL_loadbuffer(L, buf, zfslen(buf), "[ZFLuaDebug]");
-        if(error == 0)
-        {
-            lua_pushvalue(L, luaStackOffset);
-            error = lua_pcall(L, 1, 1, 0);
-            if(error == 0)
-            {
-                ZFImpl_ZFLua_toString(holder->luaFuncInfo, L, -1, zftrue);
-                lua_pop(L, 1);
-            }
-        }
-        if(error != 0)
-        {
-            const char *nativeError = lua_tostring(L, -1);
-            zfCoreCriticalMessageTrim("[ZFLuaDebug] %s", nativeError);
-            lua_pop(L, 1);
-        }
-    }
     return zftrue;
 }
 
 // ============================================================
-static int _ZFP_ZFImpl_ZFLua_ZFCallbackForLua(ZF_IN lua_State *L)
+static int _ZFP_ZFCallbackForLua(ZF_IN lua_State *L)
 {
     int count = (int)lua_gettop(L);
     if(count != 1)
     {
         return ZFImpl_ZFLua_luaError(L,
-            "[ZFCallbackForLua] expect one param, got %zi",
+            "[ZFCallbackForLua] expect one param, got %zi param",
             (zfindex)count);
     }
     if(!lua_isfunction(L, 1))
@@ -208,10 +724,8 @@ static int _ZFP_ZFImpl_ZFLua_ZFCallbackForLua(ZF_IN lua_State *L)
         return 1;
     }
 }
-
-// ============================================================
 ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFCallbackForLua, ZFM_EXPAND({
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "ZFCallbackForLua", _ZFP_ZFImpl_ZFLua_ZFCallbackForLua);
+        ZFImpl_ZFLua_luaCFunctionRegister(L, "ZFCallbackForLua", _ZFP_ZFCallbackForLua);
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
     }))

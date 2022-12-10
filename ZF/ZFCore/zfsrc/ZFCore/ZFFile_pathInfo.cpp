@@ -1,4 +1,5 @@
 #include "ZFFile_impl.h"
+#include "ZFPathType_file.h"
 
 #include "ZFSTLWrapper/zfstl_map.h"
 #include "ZFSTLWrapper/zfstl_string.h"
@@ -509,20 +510,20 @@ void ZFFilePathInfoImplGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret)
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalFileT,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalT,
                        ZFMP_OUT(ZFPathInfo &, ret),
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN(const zfchar *, childPath))
 {
     ret.pathData.removeAll();
-    if(ZFPathInfoForLocalFileT(ret.pathData, pathInfo, childPath))
+    if(ZFPathInfoForLocalT(ret.pathData, pathInfo, childPath))
     {
         ret.pathType = pathInfo.pathType;
         return zftrue;
     }
     return zffalse;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalFileT,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalT,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN(const zfchar *, childPath))
@@ -543,12 +544,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalFileT,
         return impl->callbackToChild(pathInfo.pathData, ret, childPath);
     }
 }
-ZFMETHOD_FUNC_DEFINE_2(ZFPathInfo, ZFPathInfoForLocalFile,
+ZFMETHOD_FUNC_DEFINE_2(ZFPathInfo, ZFPathInfoForLocal,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN(const zfchar *, childPath))
 {
     ZFPathInfo ret;
-    ZFPathInfoForLocalFileT(ret, pathInfo, childPath);
+    ZFPathInfoForLocalT(ret, pathInfo, childPath);
     return ret;
 }
 
@@ -899,33 +900,37 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerialize
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForLocalFile,
-                       ZFMP_IN(const ZFPathInfo &, pathInfo),
+ZFMETHOD_FUNC_DEFINE_3(ZFInput, ZFInputForLocal,
                        ZFMP_IN(const zfchar *, localPath),
+                       ZFMP_IN(const ZFPathInfo *, pathInfo),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 {
     ZFInput ret;
-    ZFInputForLocalFileT(ret, pathInfo, localPath, flags);
+    ZFInputForLocalT(ret, localPath, pathInfo, flags);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalFileT,
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalT,
                        ZFMP_OUT(ZFCallback &, ret),
-                       ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN(const zfchar *, localPath),
+                       ZFMP_IN(const ZFPathInfo *, pathInfo),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 {
     if(zfsIsEmpty(localPath))
     {
         return zffalse;
     }
+    if(pathInfo == zfnull || pathInfo->isEmpty())
+    {
+        return ZFInputForPathInfoT(ret, ZFPathType_file(), localPath, flags);
+    }
 
     zfstring pathDataAbs;
-    if(!ZFPathInfoForLocalFileT(pathDataAbs, pathInfo, localPath))
+    if(!ZFPathInfoForLocalT(pathDataAbs, *pathInfo, localPath))
     {
         return zffalse;
     }
     ret.callbackSerializeCustomDisable(zftrue);
-    if(!ZFInputForPathInfoT(ret, pathInfo.pathType, pathDataAbs, flags))
+    if(!ZFInputForPathInfoT(ret, pathInfo->pathType, pathDataAbs, flags))
     {
         return zffalse;
     }
@@ -940,13 +945,13 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalFileT,
         ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
             ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
 
-        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForLocalFile);
+        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForLocal);
         ret.callbackSerializeCustomData(customData);
     }
 
     return zftrue;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocalFile, ZFCallbackSerializeCustomType_ZFInputForLocalFile)
+ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeCustomType_ZFInputForLocal)
 {
     const ZFPathInfo *pathInfo = serializableData.pathInfoCheck();
     if(pathInfo == zfnull)
@@ -968,7 +973,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocalFile, ZFCallbackSerialize
 
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;
-    if(!ZFPathInfoForLocalFileT(pathDataAbs, *pathInfo, localPath))
+    if(!ZFPathInfoForLocalT(pathDataAbs, *pathInfo, localPath))
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
             "failed to get file path: %s, localPath: %s",
@@ -989,33 +994,37 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocalFile, ZFCallbackSerialize
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForLocalFile,
-                       ZFMP_IN(const ZFPathInfo &, pathInfo),
+ZFMETHOD_FUNC_DEFINE_3(ZFOutput, ZFOutputForLocal,
                        ZFMP_IN(const zfchar *, localPath),
+                       ZFMP_IN(const ZFPathInfo *, pathInfo),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 {
     ZFOutput ret;
-    ZFOutputForLocalFileT(ret, pathInfo, localPath, flags);
+    ZFOutputForLocalT(ret, localPath, pathInfo, flags);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalFileT,
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalT,
                        ZFMP_OUT(ZFCallback &, ret),
-                       ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN(const zfchar *, localPath),
+                       ZFMP_IN(const ZFPathInfo *, pathInfo),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 {
     if(zfsIsEmpty(localPath))
     {
         return zffalse;
     }
+    if(pathInfo == zfnull || pathInfo->isEmpty())
+    {
+        return ZFOutputForPathInfoT(ret, ZFPathType_file(), localPath, flags);
+    }
 
     zfstring pathDataAbs;
-    if(!ZFPathInfoForLocalFileT(pathDataAbs, pathInfo, localPath))
+    if(!ZFPathInfoForLocalT(pathDataAbs, *pathInfo, localPath))
     {
         return zffalse;
     }
     ret.callbackSerializeCustomDisable(zftrue);
-    if(!ZFOutputForPathInfoT(ret, pathInfo.pathType, pathDataAbs, flags))
+    if(!ZFOutputForPathInfoT(ret, pathInfo->pathType, pathDataAbs, flags))
     {
         return zffalse;
     }
@@ -1030,13 +1039,13 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalFileT,
         ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
             ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
 
-        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForLocalFile);
+        ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForLocal);
         ret.callbackSerializeCustomData(customData);
     }
 
     return zftrue;
 }
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocalFile, ZFCallbackSerializeCustomType_ZFOutputForLocalFile)
+ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeCustomType_ZFOutputForLocal)
 {
     const ZFPathInfo *pathInfo = serializableData.pathInfoCheck();
     if(pathInfo == zfnull)
@@ -1058,7 +1067,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocalFile, ZFCallbackSerializ
 
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;
-    if(!ZFPathInfoForLocalFileT(pathDataAbs, *pathInfo, localPath))
+    if(!ZFPathInfoForLocalT(pathDataAbs, *pathInfo, localPath))
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
             "failed to get file path: %s, localPath: %s",

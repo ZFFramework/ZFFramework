@@ -20,5 +20,5 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_ZFCallbackForLua(ZF_OUT zfautoObject
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #ifndef _ZFI_ZFImpl_ZFLua_ZFCallbackForLuaAsync_h_
+#endif // #ifndef _ZFI_ZFImpl_ZFLua_ZFCallbackForLua_h_
 

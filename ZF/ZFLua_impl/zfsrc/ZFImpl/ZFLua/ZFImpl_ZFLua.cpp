@@ -1,7 +1,6 @@
 #include "ZFImpl_ZFLua.h"
 
 #include "ZFImpl_ZFLua_ZFCallbackForLua.h"
-#include "ZFImpl_ZFLua_ZFCallbackForLuaAsync.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -217,9 +216,7 @@ zfbool ZFImpl_ZFLua_execute(ZF_IN lua_State *L,
                             ZF_OUT_OPT zfstring *errHint /* = zfnull */,
                             ZF_IN_OPT const zfchar *chunkInfo /* = zfnull */)
 {
-    #if ZF_ENV_DEBUG
-    int DEBUG_luaStackNum = lua_gettop(L);
-    #endif
+    ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 0);
 
     int luaStackNum = lua_gettop(L);
     int error = luaL_loadbuffer(L, buf, (bufLen == zfindexMax()) ? zfslen(buf) : bufLen, zfnull);
@@ -268,14 +265,6 @@ zfbool ZFImpl_ZFLua_execute(ZF_IN lua_State *L,
     {
         lua_pop(L, luaResultNum);
     }
-
-    #if ZF_ENV_DEBUG
-    if(DEBUG_luaStackNum != lua_gettop(L))
-    {
-        zfCoreCriticalMessage("[ZFLua] stack messed up after execute: %d => %d",
-            (zfint)DEBUG_luaStackNum, (zfint)lua_gettop(L));
-    }
-    #endif
 
     return zftrue;
 }
@@ -511,8 +500,7 @@ zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
 zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
                                ZF_IN lua_State *L,
                                ZF_IN int luaStackOffset,
-                               ZF_OUT_OPT zfstring *errorHint /* = zfnull */,
-                               ZF_IN_OPT zfbool threadSafe /* = zftrue */)
+                               ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
 {
     if(ZFImpl_ZFLua_toObject(ret, L, luaStackOffset))
     {
@@ -531,21 +519,6 @@ zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
             }
             return zffalse;
         }
-    }
-    else if(!lua_isfunction(L, luaStackOffset))
-    {
-        if(errorHint != zfnull)
-        {
-            zfstringAppend(errorHint,
-                "[ZFCallbackForLua] invalid param: %s",
-                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
-        }
-        return zffalse;
-    }
-
-    if(threadSafe)
-    {
-        return ZFImpl_ZFLua_ZFCallbackForLuaAsync(ret, L, luaStackOffset, errorHint);
     }
     else
     {
@@ -996,6 +969,23 @@ zfbool ZFImpl_ZFLua_zfstringAppend(ZF_IN lua_State *L,
     s.append(pFmtL, (fmt + zfslen(fmt)) - pFmtL);
 
     return zftrue;
+}
+
+// ============================================================
+zfstring ZFImpl_ZFLua_luaStackInfo(ZF_IN lua_State *L,
+                                   ZF_IN_OPT int luaStackOffset /* = 1 */)
+{
+    zfstring ret;
+    int count = lua_gettop(L);
+    ret += "========== lua stack begin ==========\n";
+    for(int i = count; i >= luaStackOffset; --i)
+    {
+        zfstringAppend(ret, "\t%d: ", i);
+        ZFImpl_ZFLua_luaObjectInfoT(ret, L, i, zftrue);
+        ret += '\n';
+    }
+    ret += "---------- lua stack end   ----------\n";
+    return ret;
 }
 
 ZF_NAMESPACE_GLOBAL_END

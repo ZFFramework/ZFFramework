@@ -29,10 +29,14 @@ zfclass ZFLIB_ZFUtility ZFResCache : zfextends ZFCache
  *
  * automatically cache the resource in #ZFResCache,
  * you should not modified the returned object if cache enabled\n
- * to remove cache, use #ZFCache::cacheRemove
+ * to remove cache, use #ZFCache::cacheRemove\n
+ * \n
+ * when pathInfo is specified, the resFilePath can be relative path to pathInfo,
+ * at this case, the pathInfo must be well formed
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObject, zfRes,
-                        ZFMP_IN(const zfchar *, resFilePath))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObject, zfRes,
+                        ZFMP_IN(const zfchar *, resFilePath),
+                        ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFResCache_h_

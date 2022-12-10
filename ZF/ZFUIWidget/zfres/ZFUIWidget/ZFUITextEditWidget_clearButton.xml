@@ -1,5 +1,5 @@
 <ZFUIImage imageType="input">
-    <ZFCallback callbackType="ZFInputForLocalFile" category="imageData">
+    <ZFCallback callbackType="ZFInputForLocal" category="imageData">
         <node category="callbackData" filePath="ZFUITextEditWidget_clearButton.png" />
     </ZFCallback>
 </ZFUIImage>

@@ -466,7 +466,7 @@ void ZFCallback::pathInfo(ZF_IN const ZFPathInfo *pathInfo)
     {
         d = zfnew(_ZFP_ZFCallbackPrivate);
     }
-    if(pathInfo != zfnull && !(pathInfo->pathType.isEmpty() && pathInfo->pathData.isEmpty()))
+    if(pathInfo != zfnull && !pathInfo->isEmpty())
     {
         if(d->pathInfo == zfnull)
         {

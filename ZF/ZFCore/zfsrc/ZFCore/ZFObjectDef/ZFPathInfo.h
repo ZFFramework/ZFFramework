@@ -51,6 +51,12 @@ public:
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return (this->pathType == zfnull && this->pathData == zfnull);}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->operator == (dummy);}
     /** @endcond */
+
+public:
+    /** @brief true if #pathType and #pathData is both empty */
+    zfbool isEmpty(void) const {return this->pathType.isEmpty() && this->pathData.isEmpty();}
+    /** @brief util to remove #pathType and #pathData */
+    void removeAll(void) {this->pathType.removeAll(); this->pathData.removeAll();}
 };
 
 /**

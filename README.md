@@ -235,7 +235,6 @@ ZFFramework is under MIT license ([see here](https://github.com/ZFFramework/ZFFr
 feel free to copy or modify or use it
 
 * project home page: [http://ZFFramework.com](http://ZFFramework.com)
-* blog: [http://zsaber.com](http://zsaber.com)
 * repo: [https://github.com/ZFFramework/ZFFramework](https://github.com/ZFFramework/ZFFramework)
 
     [Issues](https://github.com/ZFFramework/ZFFramework/issues) or [Pull Request](https://github.com/ZFFramework/ZFFramework/pulls) are welcome

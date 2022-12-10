@@ -52,10 +52,6 @@ void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
                                     ZF_IN const ZFPathInfo *pathInfo,
                                     ZF_IN_OPT zfbool localMode /* = zftrue */)
 {
-    if(pathInfo == zfnull ||  pathInfo->pathType.isEmpty() || pathInfo->pathData.isEmpty())
-    {
-        return;
-    }
     zfCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
     if(d->pathInfoMap.empty())
@@ -122,11 +118,19 @@ void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
     {
         ret += "return ";
     }
-    ret += "_ZFP_l(ZFPathInfo('";
-    _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo->pathType);
-    ret += ZFSerializableKeyword_ZFPathInfo_separator;
-    _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo->pathData);
-    ret += "'));";
+
+    if(pathInfo == zfnull || pathInfo->isEmpty())
+    {
+        ret += "_ZFP_l(nil);";
+    }
+    else
+    {
+        ret += "_ZFP_l(ZFPathInfo('";
+        _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo->pathType);
+        ret += ZFSerializableKeyword_ZFPathInfo_separator;
+        _ZFP_ZFImpl_ZFLua_implPathInfoSetup_escape(ret, pathInfo->pathData);
+        ret += "'));";
+    }
 }
 void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(ZF_IN const zfchar *luaFuncName,
                                             ZF_IN const zfchar *luaFuncBody)

@@ -70,23 +70,23 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfLog, ZFM_EXPAND({
 #if _ZFP_ZFImpl_ZFLua_zfLog_DEBUG_ENABLE
     ZFImpl_ZFLua_implPathInfo_DEFINE(zfLog,
             "function (f, ...)"
-            "    return _G['zfLog']('[' .. tostring(zfl_l) .. ' (' .. debug.getinfo(2).currentline .. ')] ' .. (f or ''), ...);"
+            "    return _G['zfLog']('[' .. tostring(zfl_l or 'unknown') .. ' (' .. debug.getinfo(2).currentline .. ')] ' .. (f or ''), ...);"
             "end"
         )
     ZFImpl_ZFLua_implPathInfo_DEFINE(zfLogT,
             "function ()"
-            "    return _G['zfLogT']():log('[%s (%s)]', zfl_l, zfint(debug.getinfo(2).currentline));"
+            "    return _G['zfLogT']():log('[%s (%s)]', zfl_l or 'unknown', zfint(debug.getinfo(2).currentline));"
             "end"
         )
 #else
     ZFImpl_ZFLua_implPathInfo_DEFINE(zfLog,
             "function (f, ...)"
-            "    return _G['zfLog']('[' .. tostring(zfl_l) .. '] ' .. (f or ''), ...);"
+            "    return _G['zfLog']('[' .. tostring(zfl_l or 'unknown') .. '] ' .. (f or ''), ...);"
             "end"
         )
     ZFImpl_ZFLua_implPathInfo_DEFINE(zfLogT,
             "function ()"
-            "    return _G['zfLogT']():log('[%s]', zfl_l);"
+            "    return _G['zfLogT']():log('[%s]', zfl_l or 'unknown');"
             "end"
         )
 #endif

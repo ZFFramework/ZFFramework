@@ -362,7 +362,7 @@ inline ZFCoreArrayPOD<const zfchar *> ZFFilePathInfoImplGetAll(void)
  * @brief util to make a child path info relative to existing one,
  *   see also #ZFFilePathInfoCallbackToChild
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalFileT,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalT,
                         ZFMP_OUT(ZFPathInfo &, ret),
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const zfchar *, childPath))
@@ -370,14 +370,14 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalFileT,
  * @brief util to make a child path info relative to existing one,
  *   see also #ZFFilePathInfoCallbackToChild
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalFileT,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalT,
                         ZFMP_OUT(zfstring &, ret),
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const zfchar *, childPath))
 /**
- * @brief see #ZFPathInfoForLocalFileT
+ * @brief see #ZFPathInfoForLocalT
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocalFile,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocal,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const zfchar *, childPath))
 
@@ -494,7 +494,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT,
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 
 // ============================================================
-// ZFInputForLocalFile
+// ZFInputForLocal
 /**
  * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
  *
@@ -507,35 +507,47 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT,
  *   </node>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFInputForLocalFile "ZFInputForLocalFile"
+#define ZFCallbackSerializeCustomType_ZFInputForLocal "ZFInputForLocal"
 
 /**
  * @brief util to create a file input callback
  *
  * param:
- * -  (const ZFPathInfo &)pathInfo: see #ZFPathInfo
  * -  (const zfchar *)localPath: local file path to use
+ * -  (const ZFPathInfo *)pathInfo: see #ZFPathInfo, when not valid,
+ *   this method behaves same as #ZFInputForFile
  * -  (ZFFileOpenOption)flags: flags to open file
  *
  * auto open and auto close files, may return a null callback if open file error\n
  * \n
  * note, additional impl can be attached by #ZFPATHTYPE_FILEIO_REGISTER
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFInput, ZFInputForLocalFile,
-                        ZFMP_IN(const ZFPathInfo &, pathInfo),
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFInput, ZFInputForLocal,
                         ZFMP_IN(const zfchar *, localPath),
+                        ZFMP_IN(const ZFPathInfo *, pathInfo),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 /**
- * @brief see #ZFInputForLocalFile
+ * @brief see #ZFInputForLocal
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalFileT,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalT,
                         ZFMP_OUT(ZFCallback &, ret),
-                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const zfchar *, localPath),
+                        ZFMP_IN(const ZFPathInfo *, pathInfo),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 
+/** @cond ZFPrivateDoc */
+inline ZFInput ZFInputForLocal(ZF_IN const zfchar *localPath, ZF_IN const ZFPathInfo &pathInfo, ZF_IN_OPT ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read)
+{
+    return ZFInputForLocal(localPath, &pathInfo, flags);
+}
+inline zfbool ZFInputForLocalT(ZF_OUT ZFCallback &ret, ZF_IN const zfchar *localPath, ZF_IN const ZFPathInfo &pathInfo, ZF_IN_OPT ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read)
+{
+    return ZFInputForLocalT(ret, localPath, &pathInfo, flags);
+}
+/** @endcond */
+
 // ============================================================
-// ZFOutputForLocalFile
+// ZFOutputForLocal
 /**
  * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
  *
@@ -552,32 +564,45 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForLocalFileT,
  *   </node>
  * @endcode
  */
-#define ZFCallbackSerializeCustomType_ZFOutputForLocalFile "ZFOutputForLocalFile"
+#define ZFCallbackSerializeCustomType_ZFOutputForLocal "ZFOutputForLocal"
 
 /**
  * @brief util to create a file output callback
  *
  * param:
- * -  (const ZFPathInfo &)pathInfo: see #ZFPathInfo
  * -  (const zfchar *)localPath: local file path to use
+ * -  (const ZFPathInfo *)pathInfo: see #ZFPathInfo, when not valid,
+ *   this method behaves same as #ZFOutputForFile
  * -  (ZFFileOpenOption)flags: flags to open file
+ *
  *
  * auto open and auto close files, may return a null callback if open file error\n
  * \n
  * note, additional impl can be attached by #ZFPATHTYPE_FILEIO_REGISTER
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFOutput, ZFOutputForLocalFile,
-                        ZFMP_IN(const ZFPathInfo &, pathInfo),
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, ZFOutput, ZFOutputForLocal,
                         ZFMP_IN(const zfchar *, localPath),
+                        ZFMP_IN(const ZFPathInfo *, pathInfo),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 /**
- * @brief see #ZFOutputForLocalFile
+ * @brief see #ZFOutputForLocal
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalFileT,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForLocalT,
                         ZFMP_OUT(ZFCallback &, ret),
-                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(const zfchar *, localPath),
+                        ZFMP_IN(const ZFPathInfo *, pathInfo),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
+
+/** @cond ZFPrivateDoc */
+inline ZFOutput ZFOutputForLocal(ZF_IN const zfchar *localPath, ZF_IN const ZFPathInfo &pathInfo, ZF_IN_OPT ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read)
+{
+    return ZFOutputForLocal(localPath, &pathInfo, flags);
+}
+inline zfbool ZFOutputForLocalT(ZF_OUT ZFCallback &ret, ZF_IN const zfchar *localPath, ZF_IN const ZFPathInfo &pathInfo, ZF_IN_OPT ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read)
+{
+    return ZFOutputForLocalT(ret, localPath, &pathInfo, flags);
+}
+/** @endcond */
 
 // ============================================================
 /**

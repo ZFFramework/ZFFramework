@@ -85,7 +85,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  lua number
  *     -  lua boolean
  * -  callback
- *   -  `ZFCallbackForLua(luaFunc)` or `ZFCallbackForLuaAsync(luaFunc)`\n
+ *   -  `ZFCallbackForLua(luaFunc)`\n
  *     create a #ZFListener from lua function\n
  *     the lua function's proto type must be:
  *     @code
@@ -93,18 +93,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       end
  *     @endcode
  *     \n
- *     the difference of ZFCallbackForLua/ZFCallbackForLuaAsync:
- *     -  result of ZFCallbackForLua can only be called in same lua state,
- *       and would assert fail if called in different lua state
- *     -  result of ZFCallbackForLuaAsync is safe to be called in different lua state,
- *       but it has worse performance,
- *       and it only capture upvalues by value copy,
- *       and only these value types can be captured:
- *       -  lua primitive types: boolean, integer, number, string
- *       -  ZFObject types
+ *     about thread safe:
+ *     -  when the callback called in the same #ZFThread where the callback created,
+ *       the callback should work as expected,
+ *       all variable capture should work
+ *     -  when the callback called in different #ZFThread:
+ *       -  the callback and all captured upvalues would be copied to a new lua state
+ *         managed by the #ZFThread
+ *       -  only these value types can be captured:
+ *         -  lua primitive types: boolean, integer, number, string
+ *         -  ZFObject types
+ *
  *     \n
- *     further more, lua function can be converted to #ZFListener implicitly,
- *     which by default use ZFCallbackForLuaAsync when automatically converted
+ *     further more, lua function can be converted to #ZFListener implicitly
  *     @code
  *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
  *           end)
@@ -141,43 +142,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  any lua type that supports convert to string
  *
  *     note: the va_args support params up to #ZFMETHOD_MAX_PARAM
- * -  path info
+ * -  local path info spec
  *   -  `zfl_L()`\n
  *     lua_State of current chunk, stored as #v_ZFPtr
- *   -  `ZFLuaPathInfo()`\n
+ *   -  `ZFLocalPathInfo()`\n
  *     return path info of current context, null if not available
- *   -  `ZFLuaImport(localFilePath [, param0, param1, ...])`
- *     or `ZFLuaImport(inputCallback [, param0, param1, ...])`\n
- *     util method for #ZFLuaExecute + #ZFInputForLocalFile
- *   -  `ZFLuaImportOnce(localFilePath [, param0, param1, ...])`
- *     or `ZFLuaImportOnce(inputCallback [, param0, param1, ...])`\n
- *     same as ZFLuaImport, but only run once for each input with same #ZFCallback::callbackId,
- *     you may also use ZFLuaImportOnceReset to reset the cache state\n
- *     the recommended way to achieve "import" similar to other languages:
- *     @code
- *       // some lua module
- *       if YourClass then return YourClass end
- *       ZFDynamic()
- *           :classBegin('YourClass')
- *           :classEnd()
- *
- *       // other lua file that used the module:
- *       ZFLuaImportOnce('SomePath/YourClass.lua')
- *       // or import multiple quickly
- *       // ZFLuaImportAll('SomePath')
- *       // and use the module
- *       local obj = YourClass()
- *     @endcode
- *   -  `ZFLuaImportAll(localFilePath [, importCallback, recursive])`
- *     or `ZFLuaImportAll(pathInfo [, importCallback, recursive])`\n
- *     util method to import all lua files under specified path,
- *     files are looped by #ZFFilePathInfoCallbackFindFirst,
- *     and lua files are imported by ZFLuaImportOnce\n
- *     importCallback's param0 holds a #v_ZFPathInfo that points to the file
- *     which would be loaded
- *   -  `ZFLuaRes(localFilePath)`
- *     or `ZFLuaRes(inputCallback)`\n
- *     util method for #ZFObjectIOLoad + #ZFInputForLocalFile
+ *   -  `zfimport(localFilePath)`\n
+ *     util method for #ZFLuaExecute + #ZFInputForLocal,
+ *     useful to load local resource or class definition
  * -  debug helper
  *   -  `zfLog(fmt, ...)`
  *     or zfLogTrim(fmt, ...)\n

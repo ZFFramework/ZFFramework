@@ -24,10 +24,19 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFResCacheAutoCleanup)
 ZF_GLOBAL_INITIALIZER_END(ZFResCacheAutoCleanup)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(zfautoObject, zfRes,
-                       ZFMP_IN(const zfchar *, resFilePath))
+ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfRes,
+                       ZFMP_IN(const zfchar *, resFilePath),
+                       ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull))
 {
-    ZFInput input = ZFInputForResFile(resFilePath);
+    ZFInput input;
+    if(pathInfo == zfnull || pathInfo->isEmpty())
+    {
+        input = ZFInputForResFile(resFilePath);
+    }
+    else
+    {
+        input = ZFInputForLocal(resFilePath, pathInfo);
+    }
     if(!input)
     {
         return zfnull;

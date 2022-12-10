@@ -1,5 +1,5 @@
 <ZFUIImage imageNinePatch="(4, 4, 4, 4)" imageType="input">
-    <ZFCallback callbackType="ZFInputForLocalFile" category="imageData">
+    <ZFCallback callbackType="ZFInputForLocal" category="imageData">
         <node category="callbackData" filePath="ZFUIHintContentBasic_background.png" />
     </ZFCallback>
 </ZFUIImage>

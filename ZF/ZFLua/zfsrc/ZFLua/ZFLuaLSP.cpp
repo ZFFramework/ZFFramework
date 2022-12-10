@@ -362,18 +362,7 @@ static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output)
         << "function zfl_L(...) end\n"
 
         << "---@return v_ZFPathInfo\n"
-        << "function ZFLuaPathInfo() end\n"
-
-        << "---@return ZFObject\n"
-        << "function ZFLuaImport(localPath, ...) end\n"
-        << "---@return ZFObject\n"
-        << "function ZFLuaImportOnce(localPath, ...) end\n"
-        << "---@return ZFObject\n"
-        << "function ZFLuaImportOnceReset() end\n"
-        << "function ZFLuaImportAll() end\n"
-
-        << "---@return ZFObject\n"
-        << "function ZFLuaRes(localPath) end\n"
+        << "function ZFLocalPathInfo() end\n"
 
         << "---@param v_zfstring\n"
         << "function zfLog(fmt, ...) end\n"

@@ -565,6 +565,8 @@ ZFOBJECT_ON_INIT_USER_REGISTER_2({
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFPathInfo, zfstring, pathType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFPathInfo, zfstring, pathData)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPathInfo, zfbool, isEmpty)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPathInfo, void, removeAll)
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTokenForContainer, ZFTokenForContainer, {

@@ -1,5 +1,5 @@
 <ZFUIImage imageNinePatch="(2, 2, 2, 2)" imageType="input">
-    <ZFCallback callbackType="ZFInputForLocalFile" category="imageData">
+    <ZFCallback callbackType="ZFInputForLocal" category="imageData">
         <node category="callbackData" filePath="ZFUIScrollThumbDefault_thumb.png" />
     </ZFCallback>
 </ZFUIImage>

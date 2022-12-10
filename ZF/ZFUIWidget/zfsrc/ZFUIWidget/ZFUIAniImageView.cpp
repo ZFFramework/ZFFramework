@@ -688,7 +688,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(ZF_IN const ZFClass *desiredClass,
     }
 
     imgOutput = zfnull; // clear to make the file readable
-    ZFInput imgInput = ZFInputForLocalFile(pathInfo, imgFileName);
+    ZFInput imgInput = ZFInputForLocal(imgFileName, pathInfo);
     if(!imgInput)
     {
         return zffalse;
