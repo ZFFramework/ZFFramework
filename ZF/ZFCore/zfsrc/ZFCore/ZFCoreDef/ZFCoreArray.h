@@ -14,8 +14,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-#define _ZFP_ZFCoreArrayMinCapacity 8
-
 template<typename T_Element>
 static void _ZFP_ZFCoreArray_objCreate(ZF_IN T_Element *p, ZF_IN T_Element *pEnd, ZF_IN zfbool PODType)
 {
@@ -100,6 +98,75 @@ public:
     }
 };
 
+template<int sizeFix>
+zfclassNotPOD _ZFP_ZFCoreArrayCapacity
+{
+public:
+    // for size <= sizeof(void *)
+    static void capacityOptimize(ZF_IN_OUT zfindex &capacity)
+    {
+        if(capacity == 0)
+        {
+        }
+        else if(capacity < 64)
+        {
+            capacity = ((capacity / 16) + 1) * 16;
+        }
+        else if(capacity < 256)
+        {
+            capacity = ((capacity / 64) + 1) * 64;
+        }
+        else
+        {
+            capacity = ((capacity / 256) + 1) * 256;
+        }
+    }
+};
+template<>
+zfclassNotPOD _ZFP_ZFCoreArrayCapacity<1>
+{
+public:
+    // for size <= 4 * sizeof(void *)
+    static void capacityOptimize(ZF_IN_OUT zfindex &capacity)
+    {
+        if(capacity == 0)
+        {
+        }
+        else if(capacity < 32)
+        {
+            capacity = ((capacity / 8) + 1) * 8;
+        }
+        else if(capacity < 128)
+        {
+            capacity = ((capacity / 32) + 1) * 32;
+        }
+        else
+        {
+            capacity = ((capacity / 64) + 1) * 64;
+        }
+    }
+};
+template<>
+zfclassNotPOD _ZFP_ZFCoreArrayCapacity<2>
+{
+public:
+    // for size > 4 * sizeof(void *)
+    static void capacityOptimize(ZF_IN_OUT zfindex &capacity)
+    {
+        if(capacity == 0)
+        {
+        }
+        else if(capacity < 32)
+        {
+            capacity = ((capacity / 4) + 1) * 4;
+        }
+        else
+        {
+            capacity = ((capacity / 8) + 1) * 8;
+        }
+    }
+};
+
 // ============================================================
 /**
  * @brief dummy base for #ZFCoreArray
@@ -159,14 +226,6 @@ public:
     ZFCoreArray(void)
     {
         d = zfnew(_ZFP_ZFCoreArrayPrivate<T_Element>);
-    }
-    /**
-     * @brief main constructor
-     */
-    ZFCoreArray(ZF_IN zfindex capacity)
-    {
-        d = zfnew(_ZFP_ZFCoreArrayPrivate<T_Element>);
-        this->capacity(capacity);
     }
     /**
      * @brief construct from another array
@@ -236,7 +295,7 @@ public:
                 _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
                 d->count = 0;
             }
-            this->capacity(ref.count());
+            _capacityRequire(ref.count());
             _ZFP_ZFCoreArray_objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf(), d->PODType);
             d->count = (zfuint)ref.count();
         }
@@ -335,28 +394,20 @@ public:
      */
     void capacity(ZF_IN zfindex newCapacity)
     {
-        zfindex fixedCapacity = zfmMax<zfindex>(this->capacity(), _ZFP_ZFCoreArrayMinCapacity);
-        while(fixedCapacity < newCapacity)
-        {
-            fixedCapacity *= 2;
-        }
-        this->capacityDoChange(fixedCapacity);
+        _capacityRequire(newCapacity);
     }
     /**
      * @brief trim current capacity
      *
-     * do nothing if not necessary to trim\n
-     * this method would be called automatically when remove elements
+     * do nothing if not necessary to trim
      */
     void capacityTrim(void)
     {
-        if(this->capacity() > _ZFP_ZFCoreArrayMinCapacity
-            && this->capacity() > this->count() * 2)
+        zfindex capacity = this->count();
+        _capacityOptimize(capacity);
+        if(capacity != this->capacity())
         {
-            zfindex fixedCapacity = this->capacity();
-            zfindex end = zfmMax<zfindex>(this->count(), _ZFP_ZFCoreArrayMinCapacity) * 2;
-            while(fixedCapacity >= end) {fixedCapacity /= 2;}
-            this->capacityDoChange(fixedCapacity);
+            _capacityDoChange(capacity);
         }
     }
     /**
@@ -371,7 +422,7 @@ public:
     void add(ZF_IN T_Element const &e)
     {
         T_Element t = e;
-        this->capacity(this->count() + 1);
+        _capacityRequire(this->count() + 1);
         _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, &t, d->PODType);
         ++(d->count);
     }
@@ -387,7 +438,7 @@ public:
             return ;
         }
         T_Element t = e;
-        this->capacity(this->count() + 1);
+        _capacityRequire(this->count() + 1);
         _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, d->PODType);
         T_Element *pos = d->buf + index;
         _ZFP_ZFCoreArray_objMove(pos + 1, pos, this->count() - index, d->PODType);
@@ -406,13 +457,14 @@ public:
         }
         if(src < d->buf || src >= d->buf + d->capacity)
         {
-            this->capacity(this->count() + count);
+            _capacityRequire(this->count() + count);
             _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + count, src, d->PODType);
             d->count += (zfuint)count;
         }
         else
         {
-            ZFCoreArray<T_Element> tmp(count);
+            ZFCoreArray<T_Element> tmp;
+            tmp.capacity(count);
             tmp.addFrom(src, count);
             this->addFrom(tmp.arrayBuf(), count);
         }
@@ -618,7 +670,6 @@ public:
         _ZFP_ZFCoreArray_objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1, d->PODType);
         _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - 1, d->buf + d->count, d->PODType);
         --(d->count);
-        this->capacityTrim();
     }
     /**
      * @brief remove element at index with count, assert fail if out of range
@@ -638,7 +689,6 @@ public:
         _ZFP_ZFCoreArray_objMove(d->buf + index, d->buf + index + count, this->count() - (index + count), d->PODType);
         _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - count, d->buf + d->count, d->PODType);
         d->count -= count;
-        this->capacityTrim();
     }
     /**
      * @brief remove and return the removed value
@@ -865,33 +915,50 @@ protected:
     void _ZFP_PODType(void) {d->PODType = zftrue;}
 private:
     _ZFP_ZFCoreArrayPrivate<T_Element> *d;
-    void capacityDoChange(ZF_IN zfindex newCapacity)
+private:
+    inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity)
     {
-        if(newCapacity != this->capacity())
+        _ZFP_ZFCoreArrayCapacity<
+                sizeof(T_Element) <= sizeof(void *)
+                ? 0
+                : (sizeof(T_Element) <= 4 * sizeof(void *)
+                    ? 1
+                    : 2
+                )
+            >::capacityOptimize(capacity);
+    }
+    inline void _capacityRequire(ZF_IN zfindex capacity)
+    {
+        _capacityOptimize(capacity);
+        if(capacity > this->capacity())
         {
-            if(newCapacity == 0)
-            {
-                _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
-                zffree(d->buf);
-                d->buf = zfnull;
-                d->capacity = 0;
-                d->count = 0;
-            }
-            else
-            {
-                T_Element *oldBuf = d->buf;
-                zfuint oldCount = d->count;
+            _capacityDoChange(capacity);
+        }
+    }
+    void _capacityDoChange(ZF_IN zfindex capacity)
+    {
+        if(capacity == 0)
+        {
+            _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
+            zffree(d->buf);
+            d->buf = zfnull;
+            d->capacity = 0;
+            d->count = 0;
+        }
+        else
+        {
+            T_Element *oldBuf = d->buf;
+            zfuint oldCount = d->count;
 
-                T_Element *newBuf = (T_Element *)zfmalloc(newCapacity * sizeof(T_Element));
-                _ZFP_ZFCoreArray_objCreate(newBuf, newBuf + oldCount, oldBuf, d->PODType);
+            T_Element *newBuf = (T_Element *)zfmalloc(capacity * sizeof(T_Element));
+            _ZFP_ZFCoreArray_objCreate(newBuf, newBuf + oldCount, oldBuf, d->PODType);
 
-                d->buf = newBuf;
-                d->capacity = (zfuint)newCapacity;
-                d->count = oldCount;
+            d->buf = newBuf;
+            d->capacity = (zfuint)capacity;
+            d->count = oldCount;
 
-                _ZFP_ZFCoreArray_objDestroy(oldBuf, oldBuf + oldCount, d->PODType);
-                zffree(oldBuf);
-            }
+            _ZFP_ZFCoreArray_objDestroy(oldBuf, oldBuf + oldCount, d->PODType);
+            zffree(oldBuf);
         }
     }
 };

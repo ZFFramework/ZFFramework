@@ -5,7 +5,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 static inline void _ZFP_ZFBufferCapacityOptimize(ZF_IN_OUT zfindex &capacity)
 {
-    if(capacity < 256)
+    if(capacity == 0)
+    {
+        // nothing to do
+    }
+    else if(capacity < 256)
     {
         capacity = ((capacity / 64) + 1) * 64;
     }
@@ -21,12 +25,39 @@ static inline void _ZFP_ZFBufferCapacityOptimize(ZF_IN_OUT zfindex &capacity)
 
 void ZFBuffer::bufferCapacity(ZF_IN zfindex bufferCapacity)
 {
-    if(bufferCapacity == zfindexMax()
-        || (bufferCapacity <= d->bufferCapacity && bufferCapacity * 4 >= d->bufferCapacity)
-    ) {
-        return ;
+    if(bufferCapacity == zfindexMax())
+    {
+        return;
     }
     _ZFP_ZFBufferCapacityOptimize(bufferCapacity);
+    if(bufferCapacity >= d->bufferCapacity)
+    {
+        _bufferCapacityDoChange(bufferCapacity);
+    }
+}
+void ZFBuffer::bufferCapacityTrim(void)
+{
+    zfindex bufferCapacity = this->bufferSize();
+    _ZFP_ZFBufferCapacityOptimize(bufferCapacity);
+    if(bufferCapacity - 1 != this->bufferCapacity())
+    {
+        _bufferCapacityDoChange(bufferCapacity);
+    }
+}
+void ZFBuffer::_bufferCapacityDoChange(ZF_IN zfindex bufferCapacity)
+{
+    if(bufferCapacity == 0)
+    {
+        if(d->bufferAutoFree)
+        {
+            zffree(d->buffer);
+        }
+        d->buffer = zfnull;
+        d->bufferCapacity = 0;
+        d->bufferAutoFree = zffalse;
+        return;
+    }
+
     void *bufferOld = d->buffer;
 
     if(d->bufferAutoFree)
@@ -37,10 +68,7 @@ void ZFBuffer::bufferCapacity(ZF_IN zfindex bufferCapacity)
             d->buffer = bufferOld;
             return ;
         }
-        if(bufferCapacity > d->bufferCapacity)
-        {
-            zfmemset((zfbyte *)d->buffer + d->bufferCapacity, 0, bufferCapacity - d->bufferCapacity);
-        }
+        zfmemset((zfbyte *)d->buffer + d->bufferCapacity, 0, bufferCapacity - d->bufferCapacity);
     }
     else
     {
@@ -50,20 +78,13 @@ void ZFBuffer::bufferCapacity(ZF_IN zfindex bufferCapacity)
             d->buffer = bufferOld;
             return ;
         }
-        if(bufferCapacity > d->bufferCapacity)
-        {
-            zfmemcpy(d->buffer, bufferOld, d->bufferCapacity);
-            zfmemset((zfbyte *)d->buffer + d->bufferCapacity, 0, bufferCapacity - d->bufferCapacity);
-        }
-        else
-        {
-            zfmemcpy(d->buffer, bufferOld, bufferCapacity);
-        }
+        zfmemcpy(d->buffer, bufferOld, d->bufferCapacity);
     }
 
     d->bufferCapacity = bufferCapacity - 1;
     d->bufferAutoFree = zftrue;
 }
+
 void ZFBuffer::bufferFree(void)
 {
     if(d->buffer != zfnull && d->bufferAutoFree)

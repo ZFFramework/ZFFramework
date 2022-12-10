@@ -433,6 +433,20 @@ public:
             return (zfindex)d.d.s.capacity;
         }
     }
+    /**
+     * @brief trim current capacity
+     *
+     * do nothing if not necessary to trim
+     */
+    void capacityTrim(void)
+    {
+        zfindex capacity = this->count();
+        _capacityOptimize(capacity);
+        if(capacity - 1 != this->capacity())
+        {
+            _capacityDoChange(capacity);
+        }
+    }
     /** @brief remove part of the string */
     void remove(ZF_IN zfindex pos, ZF_IN_OPT zfindex len = zfindexMax())
     {
@@ -501,7 +515,11 @@ private:
 private:
     static inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity)
     {
-        if(capacity < 256)
+        if(capacity < _ZFP_zfstr_bufSize)
+        {
+            capacity = _ZFP_zfstr_bufSize;
+        }
+        else if(capacity < 256)
         {
             capacity = ((capacity / 64) + 1) * 64;
         }
@@ -516,11 +534,33 @@ private:
     }
     T_Char *_capacityRequire(ZF_IN zfindex capacity)
     {
-        if(d.length != _ZFP_zfstr_dynamicBuf)
+        _capacityOptimize(capacity);
+        if(capacity >= this->capacity())
         {
-            if(capacity >= _ZFP_zfstr_bufSize)
+            return _capacityDoChange(capacity);
+        }
+        else
+        {
+            return d.buf();
+        }
+    }
+    T_Char *_capacityDoChange(ZF_IN zfindex capacity)
+    {
+        if(capacity <= _ZFP_zfstr_bufSize)
+        {
+            if(d.length == _ZFP_zfstr_dynamicBuf)
             {
-                _capacityOptimize(capacity);
+                T_Char *bufOld = d.d.s.s;
+                d.length = d.d.s.length;
+                zfmemcpy(d.d.buf, bufOld, (d.length + 1) * sizeof(T_Char));
+                zffree(bufOld);
+            }
+            return d.d.buf;
+        }
+        else
+        {
+            if(d.length != _ZFP_zfstr_dynamicBuf)
+            {
                 T_Char *buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
                 zfmemcpy(buf, d.d.buf, (d.length + 1) * sizeof(T_Char));
                 d.d.s.s = buf;
@@ -529,17 +569,12 @@ private:
                 d.length = _ZFP_zfstr_dynamicBuf;
                 return d.d.s.s;
             }
-            return d.d.buf;
-        }
-        else
-        {
-            if(capacity > d.d.s.capacity || capacity * 4 < d.d.s.capacity)
+            else
             {
-                _capacityOptimize(capacity);
                 d.d.s.s = (T_Char *)zfrealloc(d.d.s.s, capacity * sizeof(T_Char));
                 d.d.s.capacity = (zfuint)capacity - 1;
+                return d.d.s.s;
             }
-            return d.d.s.s;
         }
     }
     inline void _updateLength(ZF_IN zfindex len)

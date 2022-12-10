@@ -143,6 +143,10 @@ public:
         return d->bufferCapacity;
     }
     /**
+     * @brief trim buffer capacity
+     */
+    zffinal void bufferCapacityTrim(void);
+    /**
      * @brief change #bufferSize only, no memory change would be applied
      *
      * new size must be smaller than current #bufferCapacity\n
@@ -301,6 +305,8 @@ public:
 
 private:
     _ZFP_ZFBufferPrivate *d;
+private:
+    void _bufferCapacityDoChange(ZF_IN zfindex bufferCapacity);
 };
 
 ZF_NAMESPACE_GLOBAL_END
