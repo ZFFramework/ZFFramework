@@ -7,7 +7,7 @@ ZFOBJECT_REGISTER(ZFUIKeyboardState)
 
 ZFOBSERVER_EVENT_REGISTER(ZFUIKeyboardState, KeyPressedOnChange)
 
-ZFOBJECT_SINGLETON_DEFINE_DETAIL(ZFUIKeyboardState, ZFUIKeyboardState, ZFUIKeyboardState, instance, ZFLevelZFFrameworkHigh)
+ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFUIKeyboardState, instance, ZFLevelZFFrameworkHigh)
 
 ZFMETHOD_DEFINE_1(ZFUIKeyboardState, zfbool, keyPressed,
                   ZFMP_IN(ZFUIKeyCodeEnum, keyCode))

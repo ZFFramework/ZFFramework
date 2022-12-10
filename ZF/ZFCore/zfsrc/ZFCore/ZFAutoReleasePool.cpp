@@ -22,7 +22,7 @@ public:
 };
 
 ZFOBJECT_REGISTER(ZFAutoReleasePool)
-ZFOBJECT_SINGLETON_DEFINE_DETAIL(ZFAutoReleasePool, ZFAutoReleasePool, ZFAutoReleasePool, instance, ZFLevelZFFrameworkHigh)
+ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFAutoReleasePool, instance, ZFLevelZFFrameworkHigh)
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAutoReleasePoolCleanup, ZFLevelZFFrameworkNormal)
 {
     ZFAutoReleasePool::instance()->poolDrain();

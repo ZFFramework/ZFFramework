@@ -6,7 +6,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFResCache)
-ZFOBJECT_SINGLETON_DEFINE_DETAIL(ZFResCache, ZFResCache, ZFResCache, instance, ZFLevelZFFrameworkEssential)
+ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFResCache, instance, ZFLevelZFFrameworkEssential)
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFResCache, zfindex, cacheMaxSize)
 {

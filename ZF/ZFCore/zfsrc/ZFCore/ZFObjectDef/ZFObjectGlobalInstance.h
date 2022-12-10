@@ -152,7 +152,7 @@ public:
  *       ZFCLASS_SINGLETON_DECLARE(YourObject, instance)
  *   };
  *   // in *.cpp file
- *   ZFCLASS_SINGLETON_DEFINE(YourObject, YourObject, instance)
+ *   ZFCLASS_SINGLETON_DEFINE(YourObject, instance)
  *
  *   // then you can access the instance by
  *   YourObject::instance();
@@ -174,8 +174,13 @@ public:
 /**
  * @brief see #ZFCLASS_SINGLETON_DECLARE
  */
-#define ZFCLASS_SINGLETON_DEFINE(OwnerClass, AccessTypeName, ObjectTypeName, accessMethodName) \
-    ZFCLASS_SINGLETON_DEFINE_DETAIL(OwnerClass, AccessTypeName, ObjectTypeName, accessMethodName, ZFLevelAppNormal)
+#define ZFCLASS_SINGLETON_DEFINE(OwnerClass, accessMethodName) \
+    ZFCLASS_SINGLETON_DEFINE_DETAIL(OwnerClass, OwnerClass, OwnerClass, accessMethodName, ZFLevelAppNormal)
+/**
+ * @brief see #ZFCLASS_SINGLETON_DECLARE
+ */
+#define ZFCLASS_SINGLETON_DEFINE_WITH_LEVEL(OwnerClass, accessMethodName, ZFLevel_) \
+    ZFCLASS_SINGLETON_DEFINE_DETAIL(OwnerClass, OwnerClass, OwnerClass, accessMethodName, ZFLevel_)
 /**
  * @brief see #ZFCLASS_SINGLETON_DECLARE
  */
@@ -247,7 +252,7 @@ public:
  *       ZFOBJECT_SINGLETON_DECLARE(YourObject, instance)
  *   };
  *   // in *.cpp file
- *   ZFOBJECT_SINGLETON_DEFINE(YourObject, YourObject, instance)
+ *   ZFOBJECT_SINGLETON_DEFINE(YourObject, instance)
  *
  *   // then you can access the instance by
  *   YourObject::instance();
@@ -269,8 +274,13 @@ public:
 /**
  * @brief see #ZFOBJECT_SINGLETON_DECLARE
  */
-#define ZFOBJECT_SINGLETON_DEFINE(OwnerClass, AccessTypeName, ObjectTypeName, accessMethodName) \
-    ZFOBJECT_SINGLETON_DEFINE_DETAIL(OwnerClass, AccessTypeName, ObjectTypeName, accessMethodName, ZFLevelAppNormal)
+#define ZFOBJECT_SINGLETON_DEFINE(OwnerClass, accessMethodName) \
+    ZFOBJECT_SINGLETON_DEFINE_DETAIL(OwnerClass, OwnerClass, OwnerClass, accessMethodName, ZFLevelAppNormal)
+/**
+ * @brief see #ZFOBJECT_SINGLETON_DECLARE
+ */
+#define ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(OwnerClass, accessMethodName, ZFLevel_) \
+    ZFOBJECT_SINGLETON_DEFINE_DETAIL(OwnerClass, OwnerClass, OwnerClass, accessMethodName, ZFLevel_)
 /**
  * @brief see #ZFOBJECT_SINGLETON_DECLARE
  */

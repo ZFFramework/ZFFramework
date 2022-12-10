@@ -151,7 +151,7 @@ protected:
         zfsuper::objectOnDeallocPrepare();
     }
 };
-ZFOBJECT_SINGLETON_DEFINE_DETAIL(_ZFP_I_ZFLuaStateHolder, _ZFP_I_ZFLuaStateHolder, _ZFP_I_ZFLuaStateHolder, instance, ZFLevelZFFrameworkNormal)
+ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(_ZFP_I_ZFLuaStateHolder, instance, ZFLevelZFFrameworkNormal)
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaState)
