@@ -692,7 +692,7 @@ public:
     ZFFuncAddrType _ZFP_ZFMethod_invokerOrg;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvokerOrg;
-    zfchar *_ZFP_ZFMethod_methodName;
+    const zfchar *_ZFP_ZFMethod_methodName;
     const zfchar *_ZFP_ZFMethod_returnTypeId;
     const zfchar *_ZFP_ZFMethod_returnTypeName;
     zfuint _ZFP_ZFMethod_paramCount;
@@ -712,7 +712,7 @@ public:
     ZFMethodType _ZFP_ZFMethod_methodType;
 
     // for func type
-    zfchar *_ZFP_ZFMethod_methodNamespace;
+    const zfchar *_ZFP_ZFMethod_methodNamespace;
 
     // other
     zfbool _ZFP_ZFMethod_methodIsInternal;

@@ -677,9 +677,9 @@ private:
     _ZFP_ZFClassPrivate *d;
     friend zfclassFwd _ZFP_ZFClassPrivate;
     const ZFClass *_ZFP_ZFClass_classParent;
-    zfchar *_ZFP_ZFClass_classNamespace;
-    zfchar *_ZFP_ZFClass_className;
-    zfchar *_ZFP_ZFClass_classNameFull;
+    const zfchar *_ZFP_ZFClass_classNamespace;
+    const zfchar *_ZFP_ZFClass_className;
+    const zfchar *_ZFP_ZFClass_classNameFull;
     zfbool _ZFP_ZFClass_classIsAbstract;
     zfbool _ZFP_ZFClass_classIsInterface;
     zfbool _ZFP_ZFClass_classIsInternal;

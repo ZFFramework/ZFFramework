@@ -41,9 +41,9 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
     this->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodGenericInvokerOrg = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodType = methodType;
-    this->_ZFP_ZFMethod_methodName = zfsCopy(methodName);
-    this->_ZFP_ZFMethod_returnTypeId = _ZFP_ZFSigNameAddr(returnTypeId);
-    this->_ZFP_ZFMethod_returnTypeName = _ZFP_ZFSigNameAddr(returnTypeName);
+    this->_ZFP_ZFMethod_methodName = zfstringRO::attach(methodName);
+    this->_ZFP_ZFMethod_returnTypeId = zfstringRO::attach(returnTypeId);
+    this->_ZFP_ZFMethod_returnTypeName = zfstringRO::attach(returnTypeName);
 
     const zfchar *paramTypeIdList[ZFMETHOD_MAX_PARAM];
     const zfchar *paramTypeNameList[ZFMETHOD_MAX_PARAM];
@@ -106,8 +106,8 @@ void ZFMethod::_ZFP_ZFMethod_init(ZF_IN zfbool methodIsUserRegister,
 
         for(zfuint i = 0; i < paramCount; ++i)
         {
-            _ZFP_ZFMethod_paramTypeIdList[i] = _ZFP_ZFSigNameAddr(paramTypeIdList[i]);
-            _ZFP_ZFMethod_paramTypeNameList[i] = _ZFP_ZFSigNameAddr(paramTypeNameList[i]);
+            _ZFP_ZFMethod_paramTypeIdList[i] = zfstringRO::attach(paramTypeIdList[i]);
+            _ZFP_ZFMethod_paramTypeNameList[i] = zfstringRO::attach(paramTypeNameList[i]);
 
             _ZFP_ZFMethod_paramNameList[i] = p;
             zfscpy(p, paramNameList[i]);
@@ -151,7 +151,7 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfchar *methodNamespace)
         && !zfscmpTheSame(methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
         && !zfscmpTheSame(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
     ) {
-        this->_ZFP_ZFMethod_methodNamespace = zfsCopy(methodNamespace);
+        this->_ZFP_ZFMethod_methodNamespace = zfstringRO::attach(methodNamespace);
     }
 
     this->_ZFP_ZFMethod_methodOwnerClass = zfnull;
@@ -192,15 +192,6 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_methodIsInternal(zffalse)
 , _ZFP_ZFMethod_methodIsInternalPrivate(zffalse)
 {
-    zffree(_ZFP_ZFMethod_methodName);
-    zffree(_ZFP_ZFMethod_methodNamespace);
-
-    zffree(_ZFP_ZFMethod_paramBuf);
-    zffree(_ZFP_ZFMethod_paramTypeIdList); // fixed lengh for performance, ZFMETHOD_MAX_PARAM
-    zffree(_ZFP_ZFMethod_paramTypeNameList); // depends on paramCount
-    zffree(_ZFP_ZFMethod_paramNameList); // depends on paramCount
-
-    zffree(_ZFP_ZFMethod_paramDefaultValueCallbackList);
 }
 ZFMethod::~ZFMethod(void)
 {
@@ -208,6 +199,23 @@ ZFMethod::~ZFMethod(void)
     zfRelease(this->_ZFP_ZFMethod_methodDynamicRegisterUserData);
 
     zffree(this->_ZFP_ZFMethod_methodInternalId);
+
+    zfstringRO::detach(_ZFP_ZFMethod_methodName);
+    zfstringRO::detach(_ZFP_ZFMethod_returnTypeId);
+    zfstringRO::detach(_ZFP_ZFMethod_returnTypeName);
+    zfstringRO::detach(_ZFP_ZFMethod_methodNamespace);
+
+    for(zfindex i = 0; i < _ZFP_ZFMethod_paramCount; ++i)
+    {
+        zfstringRO::detach(_ZFP_ZFMethod_paramTypeIdList[i]);
+        zfstringRO::detach(_ZFP_ZFMethod_paramTypeNameList[i]);
+    }
+    zffree(_ZFP_ZFMethod_paramBuf);
+    zffree(_ZFP_ZFMethod_paramTypeIdList); // fixed lengh for performance, ZFMETHOD_MAX_PARAM
+    zffree(_ZFP_ZFMethod_paramTypeNameList); // depends on paramCount
+    zffree(_ZFP_ZFMethod_paramNameList); // depends on paramCount
+
+    zffree(_ZFP_ZFMethod_paramDefaultValueCallbackList);
 }
 
 void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const

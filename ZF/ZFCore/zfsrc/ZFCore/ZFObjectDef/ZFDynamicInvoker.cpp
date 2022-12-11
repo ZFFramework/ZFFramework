@@ -226,8 +226,8 @@ static zfbool _ZFP_ZFDI_invoke(ZF_OUT zfautoObject &ret
             if(obj != zfnull)
             {
                 key += obj->classData()->classNameFull();
+                key += ':';
             }
-            key += ':';
             key += name;
             _ZFP_ZFDI_methodMapCache[key].addFrom(methodList);
         }
@@ -249,8 +249,8 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
         if(obj != zfnull)
         {
             key += obj->classData()->classNameFull();
+            key += ':';
         }
-        key += ':';
         key += name;
         _ZFP_ZFDI_MethodMapCache::iterator it = _ZFP_ZFDI_methodMapCache.find(key);
         if(it != _ZFP_ZFDI_methodMapCache.end())

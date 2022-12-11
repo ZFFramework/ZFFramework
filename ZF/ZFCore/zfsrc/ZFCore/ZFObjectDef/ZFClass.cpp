@@ -1348,12 +1348,9 @@ ZFClass::~ZFClass(void)
     zfdelete(d);
     d = zfnull;
 
-    if(this->_ZFP_ZFClass_classNamespace != zfnull)
-    {
-        zffree(this->_ZFP_ZFClass_classNamespace);
-    }
-    zffree(this->_ZFP_ZFClass_className);
-    zffree(this->_ZFP_ZFClass_classNameFull);
+    zfstringRO::detach(this->_ZFP_ZFClass_classNamespace);
+    zfstringRO::detach(this->_ZFP_ZFClass_className);
+    zfstringRO::detach(this->_ZFP_ZFClass_classNameFull);
 }
 
 ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
@@ -1421,9 +1418,12 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
         cls->d->constructor = constructor;
         cls->d->destructor = destructor;
 
-        cls->_ZFP_ZFClass_classNamespace = (zfsIsEmpty(classNamespace) ? zfnull : zfsCopy(classNamespace));
-        cls->_ZFP_ZFClass_className = zfsCopy(className);
-        cls->_ZFP_ZFClass_classNameFull = zfsCopy(classNameFull);
+        if(!zfsIsEmpty(classNamespace))
+        {
+            cls->_ZFP_ZFClass_classNamespace = zfstringRO::attach(classNamespace);
+        }
+        cls->_ZFP_ZFClass_className = zfstringRO::attach(className);
+        cls->_ZFP_ZFClass_classNameFull = zfstringRO::attach(classNameFull);
 
         cls->_ZFP_ZFClass_classParent = parent;
         cls->_ZFP_ZFClass_classIsAbstract = (constructor == zfnull);

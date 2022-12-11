@@ -21,7 +21,8 @@ static _ZFP_ZFSigMapType::iterator _ZFP_ZFSigAccess(ZF_IN const zfchar *name)
 {
     static _ZFP_ZFSigMapType &m = _ZFP_ZFSigMap();
     static zfindex &idx = _ZFP_ZFSigIdx();
-    _ZFP_ZFSigMapType::iterator it = m.find(name);
+    zfstringRO nameTmp(name);
+    _ZFP_ZFSigMapType::iterator it = m.find(nameTmp);
     if(it != m.end())
     {
         return it;
@@ -29,8 +30,8 @@ static _ZFP_ZFSigMapType::iterator _ZFP_ZFSigAccess(ZF_IN const zfchar *name)
     else
     {
         ++idx;
-        m[name] = idx;
-        it = m.find(name);
+        m[nameTmp] = idx;
+        it = m.find(nameTmp);
         return it;
     }
 }

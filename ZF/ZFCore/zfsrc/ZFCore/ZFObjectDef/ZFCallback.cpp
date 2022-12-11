@@ -13,7 +13,7 @@ void _ZFP_ZFCallback_executeNullCallback(void)
 
 // ============================================================
 // _ZFP_ZFCallbackPrivate
-typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFCallbackTagMap;
+typedef zfstlmap<zfstring, zfautoObject> _ZFP_ZFCallbackTagMap;
 zfclassNotPOD _ZFP_ZFCallbackPrivate
 {
 public:

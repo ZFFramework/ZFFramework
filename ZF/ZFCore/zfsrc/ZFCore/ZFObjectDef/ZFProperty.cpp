@@ -69,9 +69,9 @@ ZFProperty::~ZFProperty(void)
 {
     zffree(this->_ZFP_ZFProperty_propertyInternalId);
 
-    zffree(this->_ZFP_ZFProperty_name);
-    // zffree(this->_ZFP_ZFProperty_typeName); // free in _ZFP_ZFProperty_name
-    // zffree(this->_ZFP_ZFProperty_typeId); // free in _ZFP_ZFProperty_name
+    zfstringRO::detach(this->_ZFP_ZFProperty_name);
+    zfstringRO::detach(this->_ZFP_ZFProperty_typeName);
+    zfstringRO::detach(this->_ZFP_ZFProperty_typeId);
 }
 void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
                                      ZF_IN zfbool propertyIsDynamicRegister,
@@ -94,28 +94,9 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
     { // assign property with ZFObject type, is not serializable
         typeIdName = ZFTypeId_none();
     }
-    {
-        zfindex nameLen = zfslen(name);
-        zfindex typeNameLen = zfslen(typeName);
-        zfindex typeIdNameLen = zfslen(typeIdName);
-        zfchar *base = (zfchar *)zfmalloc(sizeof(zfchar) * (0
-                + nameLen + 1
-                + typeNameLen + 1
-                + typeIdNameLen + 1
-            ));
-
-        zfscpy(base, name);
-        this->_ZFP_ZFProperty_name = base;
-        base += nameLen + 1;
-
-        zfscpy(base, typeName);
-        this->_ZFP_ZFProperty_typeName = base;
-        base += typeNameLen + 1;
-
-        zfscpy(base, typeIdName);
-        this->_ZFP_ZFProperty_typeId = base;
-        base += typeIdNameLen + 1;
-    }
+    this->_ZFP_ZFProperty_name = zfstringRO::attach(name);
+    this->_ZFP_ZFProperty_typeName = zfstringRO::attach(typeName);
+    this->_ZFP_ZFProperty_typeId = zfstringRO::attach(typeIdName);
     this->_ZFP_ZFProperty_setterMethod = setterMethod;
     this->_ZFP_ZFProperty_getterMethod = getterMethod;
     this->_ZFP_ZFProperty_setterMethodCleanup = setterMethodCleanup;

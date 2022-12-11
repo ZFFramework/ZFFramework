@@ -92,12 +92,12 @@ _zfstrD_RO<T_Char> *_ZFP_zfstrRO_attach(ZF_IN const T_Char *src)
     return zfnull;
 }
 template<typename T_Char>
-void _ZFP_zfstrRO_detach(ZF_IN _zfstrD_RO<T_Char> *RO)
+void _ZFP_zfstrRO_detach(ZF_IN const T_Char *src)
 {
 }
 
 extern ZFLIB_ZFCore _zfstrD_RO<zfchar> *_ZFP_zfstrRO_attach(ZF_IN const zfchar *src);
-extern ZFLIB_ZFCore void _ZFP_zfstrRO_detach(ZF_IN _zfstrD_RO<zfchar> *RO);
+extern ZFLIB_ZFCore void _ZFP_zfstrRO_detach(ZF_IN const zfchar *src);
 
 /** @endcond */
 /**
@@ -116,21 +116,22 @@ protected:
                 zffree(d.d.s.s);
                 break;
             case _ZFP_zfstrType_Readonly:
-                _ZFP_zfstrRO_detach(d.d.RO);
+                _ZFP_zfstrRO_detach(d.d.RO->s);
                 break;
             default:
                 break;
         }
-        d.d.RO = _ZFP_zfstrRO_attach(s);
-        if(d.d.RO != zfnull)
+        zfindex len = _len(s);
+        if(len > _ZFP_zfstr_bufSize - 1)
         {
-            d.length = _ZFP_zfstrType_Readonly;
+            d.d.RO = _ZFP_zfstrRO_attach(s);
+            if(d.d.RO != zfnull)
+            {
+                d.length = _ZFP_zfstrType_Readonly;
+                return;
+            }
         }
-        else
-        {
-            d.d.buf[0] = '\0';
-            d.length = 0;
-        }
+        this->assign(s, len);
     }
     void detachRO(void)
     {
@@ -139,7 +140,7 @@ protected:
             _zfstrD_RO<T_Char> *RO = d.d.RO;
             d.length = 0;
             this->assign(RO->s, RO->length);
-            _ZFP_zfstrRO_detach(RO);
+            _ZFP_zfstrRO_detach(RO->s);
         }
     }
     /** @endcond */
@@ -150,7 +151,7 @@ public:
     {
     }
     /** @brief copy content from another string */
-    _zfstr(ZF_IN const _zfstr &s)
+    _zfstr(ZF_IN const _zfstr<T_Char> &s)
     : d()
     {
         T_Char *buf = _capacityRequire(s.length());
@@ -158,7 +159,7 @@ public:
         _updateLength(s.length());
     }
     /** @brief copy content from another string */
-    _zfstr(ZF_IN const _zfstr &s, zfindex pos)
+    _zfstr(ZF_IN const _zfstr<T_Char> &s, zfindex pos)
     : d()
     {
         if(pos < s.length())
@@ -170,7 +171,7 @@ public:
         }
     }
     /** @brief copy content from another string */
-    _zfstr(ZF_IN const _zfstr &s, zfindex pos, zfindex len)
+    _zfstr(ZF_IN const _zfstr<T_Char> &s, zfindex pos, zfindex len)
     : d()
     {
         if(pos < s.length())
@@ -220,7 +221,7 @@ public:
                 zffree(d.d.s.s);
                 break;
             case _ZFP_zfstrType_Readonly:
-                _ZFP_zfstrRO_detach(d.d.RO);
+                _ZFP_zfstrRO_detach(d.d.RO->s);
                 break;
             default:
                 break;
@@ -234,7 +235,7 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    inline _zfstr &operator = (ZF_IN const _zfstr &s)
+    inline _zfstr<T_Char> &operator = (ZF_IN const _zfstr<T_Char> &s)
     {
         if(&s == this)
         {
@@ -245,12 +246,12 @@ public:
             return this->assign(s);
         }
     }
-    inline _zfstr &operator = (ZF_IN const T_Char *s) {return this->assign(s);}
-    zfbool operator == (ZF_IN const _zfstr &ref) const
+    inline _zfstr<T_Char> &operator = (ZF_IN const T_Char *s) {return this->assign(s);}
+    zfbool operator == (ZF_IN const _zfstr<T_Char> &ref) const
     {
         return (this->compare(ref) == 0);
     }
-    zfbool operator != (ZF_IN const _zfstr &ref) const
+    zfbool operator != (ZF_IN const _zfstr<T_Char> &ref) const
     {
         return (this->compare(ref) != 0);
     }
@@ -274,9 +275,9 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    inline _zfstr &operator += (ZF_IN const _zfstr &s) {return this->append(s);}
-    inline _zfstr &operator += (ZF_IN const T_Char *s) {return this->append(s);}
-    _zfstr &operator += (ZF_IN T_Char c)
+    inline _zfstr<T_Char> &operator += (ZF_IN const _zfstr<T_Char> &s) {return this->append(s);}
+    inline _zfstr<T_Char> &operator += (ZF_IN const T_Char *s) {return this->append(s);}
+    _zfstr<T_Char> &operator += (ZF_IN T_Char c)
     {
         zfindex len = this->length();
         T_Char *buf = _capacityRequire(len + 1);
@@ -324,7 +325,7 @@ public:
      * @brief swap internal data without deep copy,
      *   designed for performance
      */
-    void swap(ZF_IN_OUT _zfstr &ref)
+    void swap(ZF_IN_OUT _zfstr<T_Char> &ref)
     {
         zfbyte buf[sizeof(d)];
         zfmemcpy(buf, &d, sizeof(d));
@@ -334,11 +335,11 @@ public:
 
 public:
     /** @brief append string */
-    inline _zfstr &append(ZF_IN const _zfstr &s) {this->append(s.cString(), s.length()); return *this;}
+    inline _zfstr<T_Char> &append(ZF_IN const _zfstr<T_Char> &s) {this->append(s.cString(), s.length()); return *this;}
     /** @brief append string */
-    inline _zfstr &append(ZF_IN const T_Char *s) {return this->append(s, zfindexMax());}
+    inline _zfstr<T_Char> &append(ZF_IN const T_Char *s) {return this->append(s, zfindexMax());}
     /** @brief append string */
-    _zfstr &append(ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &append(ZF_IN const T_Char *s, ZF_IN zfindex len)
     {
         if(s)
         {
@@ -358,11 +359,11 @@ public:
 
 public:
     /** @brief replace all content of the string */
-    inline _zfstr &assign(ZF_IN const _zfstr &s) {return this->assign(s.cString(), s.length());}
+    inline _zfstr<T_Char> &assign(ZF_IN const _zfstr<T_Char> &s) {return this->assign(s.cString(), s.length());}
     /** @brief replace all content of the string */
-    inline _zfstr &assign(ZF_IN const T_Char *s) {return this->assign(s, zfindexMax());}
+    inline _zfstr<T_Char> &assign(ZF_IN const T_Char *s) {return this->assign(s, zfindexMax());}
     /** @brief replace all content of the string */
-    _zfstr &assign(ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &assign(ZF_IN const T_Char *s, ZF_IN zfindex len)
     {
         if(s)
         {
@@ -432,11 +433,11 @@ public:
 
 public:
     /** @brief insert string */
-    inline _zfstr &insert(ZF_IN zfindex insertAt, ZF_IN const _zfstr &s) {return this->insert(insertAt, s.cString(), s.length());}
+    inline _zfstr<T_Char> &insert(ZF_IN zfindex insertAt, ZF_IN const _zfstr<T_Char> &s) {return this->insert(insertAt, s.cString(), s.length());}
     /** @brief insert string */
-    inline _zfstr &insert(ZF_IN zfindex insertAt, ZF_IN const T_Char *s) {return this->insert(insertAt, s, zfindexMax());}
+    inline _zfstr<T_Char> &insert(ZF_IN zfindex insertAt, ZF_IN const T_Char *s) {return this->insert(insertAt, s, zfindexMax());}
     /** @brief insert string */
-    _zfstr &insert(ZF_IN zfindex insertAt, ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &insert(ZF_IN zfindex insertAt, ZF_IN const T_Char *s, ZF_IN zfindex len)
     {
         if(insertAt >= this->length())
         {
@@ -461,11 +462,11 @@ public:
 
 public:
     /** @brief replace string in range */
-    inline _zfstr &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const _zfstr &s) {return this->replace(replacePos, replaceLen, s.cString(), s.length());}
+    inline _zfstr<T_Char> &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const _zfstr<T_Char> &s) {return this->replace(replacePos, replaceLen, s.cString(), s.length());}
     /** @brief replace string in range */
-    inline _zfstr &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const T_Char *s) {return this->replace(replacePos, replaceLen, s, zfindexMax());}
+    inline _zfstr<T_Char> &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const T_Char *s) {return this->replace(replacePos, replaceLen, s, zfindexMax());}
     /** @brief replace string in range */
-    _zfstr &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const T_Char *s, ZF_IN zfindex len)
     {
         if(replacePos >= this->length())
         {
@@ -586,7 +587,7 @@ public:
 
 public:
     /** @brief compare with another string */
-    inline zfint compare(ZF_IN const _zfstr &s) const {return _cmp(this->cString(), s.cString());}
+    inline zfint compare(ZF_IN const _zfstr<T_Char> &s) const {return _cmp(this->cString(), s.cString());}
     /** @brief compare with another string */
     zfint compare(ZF_IN const T_Char *s, ZF_IN zfindex len = zfindexMax()) const
     {
@@ -726,6 +727,11 @@ public:
     {
         this->assignRO(s.cString());
     }
+    _zfstrRO(ZF_IN const _zfstrRO<T_Char> &s)
+    : _zfstr<T_Char>()
+    {
+        this->assignRO(s.cString());
+    }
     _zfstrRO(ZF_IN const _zfstr<T_Char> &s, zfindex pos)
     : _zfstr<T_Char>()
     {
@@ -767,7 +773,7 @@ public:
         }
     }
 public:
-    inline _zfstrRO &operator = (ZF_IN const _zfstr<T_Char> &s)
+    inline _zfstrRO<T_Char> &operator = (ZF_IN const _zfstr<T_Char> &s)
     {
         if(&s == this)
         {
@@ -779,22 +785,34 @@ public:
             return *this;
         }
     }
-    inline _zfstrRO &operator = (ZF_IN const T_Char *s)
+    inline _zfstrRO<T_Char> &operator = (ZF_IN const _zfstrRO<T_Char> &s)
+    {
+        if(&s == this)
+        {
+            return *this;
+        }
+        else
+        {
+            this->assignRO(s.cString());
+            return *this;
+        }
+    }
+    inline _zfstrRO<T_Char> &operator = (ZF_IN const T_Char *s)
     {
         this->assignRO(s);
         return *this;
     }
-    inline _zfstrRO &assign(ZF_IN const _zfstr<T_Char> &s)
+    inline _zfstrRO<T_Char> &assign(ZF_IN const _zfstr<T_Char> &s)
     {
         this->assignRO(s.cString());
         return *this;
     }
-    inline _zfstrRO &assign(ZF_IN const T_Char *s)
+    inline _zfstrRO<T_Char> &assign(ZF_IN const T_Char *s)
     {
         this->assignRO(s);
         return *this;
     }
-    inline _zfstrRO &assign(ZF_IN const T_Char *s, ZF_IN zfindex len)
+    inline _zfstrRO<T_Char> &assign(ZF_IN const T_Char *s, ZF_IN zfindex len)
     {
         if(len == zfindexMax())
         {
@@ -812,6 +830,33 @@ public:
         return this->get(pos);
     }
     /** @endcond */
+
+public:
+    /**
+     * @brief attach a readonly string
+     *
+     * all string with same content would share same internal buffer addr,
+     * use #detach to release it
+     */
+    static const T_Char *attach(ZF_IN const T_Char *src)
+    {
+        _zfstrD_RO<T_Char> *RO = _ZFP_zfstrRO_attach(src);
+        if(RO != zfnull)
+        {
+            return RO->s;
+        }
+        else
+        {
+            return zfnull;
+        }
+    }
+    /**
+     * @brief see #attach
+     */
+    static void detach(ZF_IN const T_Char *src)
+    {
+        _ZFP_zfstrRO_detach(src);
+    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

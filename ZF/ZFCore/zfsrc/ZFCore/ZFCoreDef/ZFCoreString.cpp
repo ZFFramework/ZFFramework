@@ -36,14 +36,19 @@ _zfstrD_RO<zfchar> *_ZFP_zfstrRO_attach(ZF_IN const zfchar *src)
     m[RO->s] = RO;
     return RO;
 }
-void _ZFP_zfstrRO_detach(ZF_IN _zfstrD_RO<zfchar> *RO)
+void _ZFP_zfstrRO_detach(ZF_IN const zfchar *src)
 {
+    if(src == zfnull)
+    {
+        return;
+    }
     zfCoreMutexLocker();
     _ZFP_zfstrRO_Map &m = _ZFP_zfstrRO_map();
-    _ZFP_zfstrRO_Map::iterator it = m.find(RO->s);
-    --(RO->refCount);
-    if(RO->refCount == 0)
+    _ZFP_zfstrRO_Map::iterator it = m.find(src);
+    --(it->second->refCount);
+    if(it->second->refCount == 0)
     {
+        _zfstrD_RO<zfchar> *RO = it->second;
         m.erase(it);
         zffree(RO->s);
         zfdelete(RO);

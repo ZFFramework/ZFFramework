@@ -277,7 +277,9 @@ public:
     virtual ZFBuffer body(ZF_IN void *nativeTask)
     {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        return ZFBuffer(task->body.data(), task->body.capacity(), task->body.size(), false);
+        ZFBuffer ret;
+        ret.zfunsafe_bufferChange(task->body.data(), task->body.capacity(), task->body.size(), false);
+        return ret;
     }
 
     virtual void request(ZF_IN void *nativeTask)
