@@ -117,7 +117,7 @@ static void _ZFP_ZFLuaLSPGenFile_param_ZFListener(ZF_IN const ZFOutput &output,
 }
 
 static void _ZFP_ZFLuaLSPGenFile_NS(ZF_IN const ZFOutput &output,
-                                    ZF_IN_OUT zfstlmap<zfstringRO, zfbool> &NSMap,
+                                    ZF_IN_OUT zfstlmap<zfstring, zfbool> &NSMap,
                                     ZF_IN const zfchar *NS)
 {
     if(NSMap.find(NS) != NSMap.end())
@@ -139,7 +139,7 @@ static void _ZFP_ZFLuaLSPGenFile_NS(ZF_IN const ZFOutput &output,
 static void _ZFP_ZFLuaLSPGenFile_allNS(ZF_IN const ZFOutput &output)
 {
     ZFCoreArrayPOD<const zfchar *> allNS = ZFNamespaceGetAll();
-    zfstlmap<zfstringRO, zfbool> NSMap;
+    zfstlmap<zfstring, zfbool> NSMap;
     for(zfindex i = 0; i < allNS.count(); ++i)
     {
         _ZFP_ZFLuaLSPGenFile_NS(output, NSMap, allNS[i]);

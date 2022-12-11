@@ -17,9 +17,9 @@ zfclassNotPOD _ZFP_ZFCoreMapPrivate
 {
 public:
 #if ZF_ENV_ZFCOREMAP_USE_HASHMAP
-    typedef zfimplhashmap<zfstringRO, ZFCorePointerBase *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> MapType;
+    typedef zfimplhashmap<zfstring, ZFCorePointerBase *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> MapType;
 #else
-    typedef zfimplmap<zfstringRO, ZFCorePointerBase *> MapType;
+    typedef zfimplmap<zfstring, ZFCorePointerBase *> MapType;
 #endif
 
 public:

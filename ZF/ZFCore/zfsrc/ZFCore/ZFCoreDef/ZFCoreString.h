@@ -306,12 +306,14 @@ public:
     }
 
     /** @cond ZFPrivateDoc */
-    inline T_Char &operator [] (ZF_IN zfindex pos)
+    template<typename T_Int>
+    inline T_Char &operator [] (ZF_IN T_Int pos)
     {
         this->detachRO();
         return d.buf()[pos];
     }
-    inline const T_Char &operator [] (ZF_IN zfindex pos) const
+    template<typename T_Int>
+    inline const T_Char &operator [] (ZF_IN T_Int pos) const
     {
         return d.buf()[pos];
     }
@@ -804,7 +806,8 @@ public:
         }
         return *this;
     }
-    inline const T_Char &operator [] (ZF_IN zfindex pos) const
+    template<typename T_Int>
+    inline const T_Char &operator [] (ZF_IN T_Int pos) const
     {
         return this->get(pos);
     }

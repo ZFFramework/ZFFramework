@@ -10,7 +10,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFObjectPrivate
-typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFObjectTagMapType;
+typedef zfstlmap<zfstring, zfautoObject> _ZFP_ZFObjectTagMapType;
 zfclassNotPOD _ZFP_ZFObjectPrivate
 {
 public:

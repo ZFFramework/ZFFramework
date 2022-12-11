@@ -21,7 +21,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implPathInfoData)
 }
 public:
     _ZFP_ZFImpl_ZFLua_PathInfoStateMapType stateMap; // <lua_State *, needUpdate>
-    _ZFP_ZFImpl_ZFLua_PathInfoMapType pathInfoMap;
+    _ZFP_ZFImpl_ZFLua_PathInfoMapType pathInfoMap; // <luaFuncName, luaFuncBody>
     ZFCoreArrayPOD<const zfchar *> luaFuncNameList;
 private:
     ZFListener luaStateOnAttachListener;

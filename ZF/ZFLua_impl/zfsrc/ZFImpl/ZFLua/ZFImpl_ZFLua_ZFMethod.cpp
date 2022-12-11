@@ -52,7 +52,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
         ZFCoreArrayPOD<const zfchar *> scopeNameList;
 
         ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
-        zfstlmap<zfstringRO, zfbool> methodNamespaceList;
+        zfstlmap<zfstring, zfbool> methodNamespaceList;
         if(!allMethod.isEmpty())
         {
             _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
@@ -79,7 +79,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
             {
                 scopeNameList.capacity(scopeNameList.capacity() + (zfindex)methodNamespaceList.size());
                 zfindex i = 0;
-                for(zfstlmap<zfstringRO, zfbool>::iterator it = methodNamespaceList.begin(); it != methodNamespaceList.end(); ++it)
+                for(zfstlmap<zfstring, zfbool>::iterator it = methodNamespaceList.begin(); it != methodNamespaceList.end(); ++it)
                 {
                     scopeNameList.add(it->first);
                     ++i;
