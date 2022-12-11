@@ -1,10 +1,9 @@
 #include "ZFObjectCore.h"
 #include "ZFObjectImpl.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_vector.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_deque.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
+#include "ZFCore/ZFSTLWrapper/zfstldeque.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -47,7 +46,7 @@ ZF_STATIC_INITIALIZER_END(ZFClassDataHolder)
 static const ZFClass *_ZFP_ZFClassDummy[1] = {0};
 static _ZFP_ZFObjectToInterfaceCastCallback _ZFP_ZFClassInterfaceCastCallbackDummy[1] = {0};
 
-typedef zfstlmap<zfstlstringZ, zfautoObject> _ZFP_ZFClassTagMapType;
+typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFClassTagMapType;
 typedef zfstlmap<const ZFProperty *, zfstlmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
 
 typedef zfstlmap<const zfchar *, zfstlvector<const ZFMethod *>, zfcharConst_zfstlComparer> _ZFP_ZFClassMethodMapType;
@@ -122,7 +121,7 @@ public:
     _ZFP_ZFClassTagMapType classTagMap;
 
 public:
-    zfstlmap<zfstlstringZ, zfbool> classDataChangeAutoRemoveTagList;
+    zfstlmap<zfstringRO, zfbool> classDataChangeAutoRemoveTagList;
 
 public:
     zfstlmap<const ZFClass *, zfbool> allParent; // all parent and interface excluding self
@@ -627,10 +626,10 @@ void ZFClass::_ZFP_ZFClass_classDataChangeNotify(void) const
 {
     if(!d->classDataChangeAutoRemoveTagList.empty())
     {
-        zfstlmap<zfstlstringZ, zfbool> t = d->classDataChangeAutoRemoveTagList;
-        for(zfstlmap<zfstlstringZ, zfbool>::iterator it = t.begin(); it != t.end(); ++it)
+        zfstlmap<zfstringRO, zfbool> t = d->classDataChangeAutoRemoveTagList;
+        for(zfstlmap<zfstringRO, zfbool>::iterator it = t.begin(); it != t.end(); ++it)
         {
-            this->classTagRemove(it->first.c_str());
+            this->classTagRemove(it->first);
         }
     }
 }
@@ -1289,7 +1288,7 @@ void ZFClass::classTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray<const zfchar *> &allK
     allValue.capacity(allValue.count() + m.size());
     for(_ZFP_ZFClassTagMapType::iterator it = m.begin(); it != m.end(); ++it)
     {
-        allKey.add(it->first.c_str());
+        allKey.add(it->first);
         allValue.add(it->second.toObject());
     }
 }

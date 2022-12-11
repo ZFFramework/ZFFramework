@@ -3,9 +3,8 @@
 #include "ZFSerializableUtil.h"
 #include "ZFSerializableDataSerializableConverter.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_deque.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+#include "ZFCore/ZFSTLWrapper/zfstldeque.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -16,7 +15,7 @@ zfbool ZFSerializableDataResolveCheckEnable = zftrue;
 zfclassNotPOD _ZFP_ZFSerializableDataAttributeData
 {
 public:
-    zfstlstringZ attrValue;
+    zfstring attrValue;
     zfbool resolved;
 public:
     _ZFP_ZFSerializableDataAttributeData(void)
@@ -31,14 +30,14 @@ public:
     {
     }
 };
-typedef zfimplmap<zfstlstringZ, _ZFP_ZFSerializableDataAttributeData> _ZFP_ZFSerializableDataAttributeMapType;
-typedef zfstlmap<zfstlstringZ, zfautoObject> _ZFP_ZFSerializableDataTagMapType;
+typedef zfimplmap<zfstringRO, _ZFP_ZFSerializableDataAttributeData> _ZFP_ZFSerializableDataAttributeMapType;
+typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFSerializableDataTagMapType;
 zfclassNotPOD _ZFP_ZFSerializableDataPrivate
 {
 public:
     zfuint refCount;
     _ZFP_ZFSerializableDataPrivate *serializableDataParent;
-    zfstlstringZ classNameFull;
+    zfstringRO classNameFull;
     zfbool resolved;
     ZFPathInfo *pathInfo;
     _ZFP_ZFSerializableDataAttributeMapType attributes;
@@ -48,7 +47,7 @@ public:
 public:
     void removeAll(void)
     {
-        this->classNameFull.clear();
+        this->classNameFull.removeAll();
         this->attributes.clear();
         if(!this->elements.empty())
         {
@@ -259,7 +258,7 @@ void ZFSerializableData::itemClass(ZF_IN const zfchar *classNameFull)
 {
     if(classNameFull == zfnull)
     {
-        d->classNameFull.clear();
+        d->classNameFull.removeAll();
     }
     else
     {
@@ -268,7 +267,7 @@ void ZFSerializableData::itemClass(ZF_IN const zfchar *classNameFull)
 }
 const zfchar *ZFSerializableData::itemClass(void) const
 {
-    return d->classNameFull.empty() ? zfnull : d->classNameFull.c_str();
+    return d->classNameFull.isEmpty() ? zfnull : d->classNameFull.cString();
 }
 
 // ============================================================
@@ -333,7 +332,7 @@ void ZFSerializableData::serializableDataTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray
     allValue.capacity(allValue.count() + m.size());
     for(_ZFP_ZFSerializableDataTagMapType::iterator it = m.begin(); it != m.end(); ++it)
     {
-        allKey.add(it->first.c_str());
+        allKey.add(it->first);
         allValue.add(it->second.toObject());
     }
 }
@@ -405,7 +404,7 @@ const zfchar *ZFSerializableData::attr(ZF_IN const zfchar *name) const
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end())
         {
-            return it->second.attrValue.c_str();
+            return it->second.attrValue;
         }
     }
     return zfnull;
@@ -445,11 +444,11 @@ zfbool ZFSerializableData::attrIterValid(ZF_IN const zfiterator &it) const
 }
 const zfchar *ZFSerializableData::attrIterKey(ZF_IN const zfiterator &it) const
 {
-    return d->attributes.iterKey(it).c_str();
+    return d->attributes.iterKey(it);
 }
 const zfchar *ZFSerializableData::attrIterValue(ZF_IN const zfiterator &it) const
 {
-    return d->attributes.iterValue(it).attrValue.c_str();
+    return d->attributes.iterValue(it).attrValue;
 }
 void ZFSerializableData::attrIterValue(ZF_IN_OUT zfiterator &it,
                                        ZF_IN const zfchar *value)
@@ -681,7 +680,7 @@ zfbool ZFSerializableData::resolvedAll(ZF_OUT_OPT const ZFSerializableData **fir
             }
             if(firstNotResolvedAttribute != zfnull)
             {
-                *firstNotResolvedAttribute += it->first.c_str();
+                *firstNotResolvedAttribute += it->first;
             }
             return zffalse;
         }
@@ -782,7 +781,7 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
 zfbool ZFSerializableData::isEmpty(void) const
 {
     return (
-        d->classNameFull.empty()
+        d->classNameFull.isEmpty()
         && d->attributes.empty()
         && d->elements.empty()
         );

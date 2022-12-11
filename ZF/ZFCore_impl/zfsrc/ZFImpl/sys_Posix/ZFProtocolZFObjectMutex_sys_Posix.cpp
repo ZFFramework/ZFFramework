@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_Posix_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFObjectMutex.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 #if ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
 #include <pthread.h>

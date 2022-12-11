@@ -5,7 +5,7 @@
 #include "ZFMethodUserRegister.h"
 #include "ZFTypeIdDynamicRegister.h"
 
-#include "../ZFSTLWrapper/zfstl_map.h"
+#include "../ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

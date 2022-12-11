@@ -283,6 +283,18 @@ public:
         return this->operator == ((const ZFCoreArray<T_Element> &)ref);
     }
     /** @endcond */
+
+public:
+    /**
+     * @brief swap internal data
+     */
+    void swap(ZF_IN_OUT ZFCoreArray<T_Element> &ref)
+    {
+        _ZFP_ZFCoreArrayPrivate<T_Element> *dTmp = d;
+        d = ref.d;
+        ref.d = dTmp;
+    }
+
     /**
      * @brief copy all settings and contents from another array
      */

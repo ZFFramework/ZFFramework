@@ -7,8 +7,7 @@
 #include "ZFMethodFuncDeclare.h"
 #include "ZFMethodFuncUserRegister.h"
 
-#include "../ZFSTLWrapper/zfstl_string.h"
-#include "../ZFSTLWrapper/zfstl_hashmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

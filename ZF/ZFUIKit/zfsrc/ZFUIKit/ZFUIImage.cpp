@@ -2,23 +2,23 @@
 #include "ZFUIImageIO.h"
 #include "protocol/ZFProtocolZFUIImage.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // serializabel data
-static zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback> &_ZFP_ZFUIImageSerializeDataMap(void)
+typedef zfstlmap<zfstringRO, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
+static _ZFP_ZFUIImageSerializeDataMapType &_ZFP_ZFUIImageSerializeDataMap(void)
 {
-    static zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback> d;
+    static _ZFP_ZFUIImageSerializeDataMapType d;
     return d;
 }
 void _ZFP_ZFUIImageSerializeTypeRegister(ZF_IN const zfchar *name,
                                          ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback)
 {
     zfCoreMutexLocker();
-    zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback> &m = _ZFP_ZFUIImageSerializeDataMap();
+    _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
     zfCoreAssert(name != zfnull && fromCallback != zfnull);
     zfCoreAssertWithMessageTrim(m.find(name) == m.end(),
         "[ZFUIIMAGE_SERIALIZE_TYPE_DEFINE] %s already registered",
@@ -28,17 +28,17 @@ void _ZFP_ZFUIImageSerializeTypeRegister(ZF_IN const zfchar *name,
 void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfchar *name)
 {
     zfCoreMutexLocker();
-    zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback> &m = _ZFP_ZFUIImageSerializeDataMap();
+    _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
     m.erase(name);
 }
 
 void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret)
 {
     zfCoreMutexLocker();
-    zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback> &m = _ZFP_ZFUIImageSerializeDataMap();
-    for(zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback>::iterator it = m.begin(); it != m.end(); ++it)
+    _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
+    for(_ZFP_ZFUIImageSerializeDataMapType::iterator it = m.begin(); it != m.end(); ++it)
     {
-        ret.add(it->first.c_str());
+        ret.add(it->first);
     }
 }
 
@@ -185,8 +185,8 @@ zfbool ZFUIImage::serializableOnSerializeFromData(ZF_IN const ZFSerializableData
     _ZFP_ZFUIImageSerializeFromCallback fromCallback = zfnull;
     {
         zfCoreMutexLocker();
-        zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback> &m = _ZFP_ZFUIImageSerializeDataMap();
-        zfstlmap<zfstlstringZ, _ZFP_ZFUIImageSerializeFromCallback>::iterator it = m.find(typeName);
+        _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
+        _ZFP_ZFUIImageSerializeDataMapType::iterator it = m.find(typeName);
         if(it != m.end())
         {
             fromCallback = it->second;

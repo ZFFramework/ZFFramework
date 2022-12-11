@@ -1,7 +1,7 @@
 #include "ZFObjectIO.h"
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstl_deque.h"
+#include "../ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

@@ -1,14 +1,14 @@
 #include "ZFObjectIO_image.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static zfstlmap<zfstlstringZ, zfbool> &_ZFP_ZFObjectIO_image_imageExtMap(void)
+typedef zfstlmap<zfstringRO, zfbool> _ZFP_ZFObjectIO_image_imageExtMapType;
+static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(void)
 {
-    static zfstlmap<zfstlstringZ, zfbool> m;
+    static _ZFP_ZFObjectIO_image_imageExtMapType m;
     return m;
 }
 
@@ -23,10 +23,10 @@ void ZFObjectIO_image_imageExtRemove(ZF_IN const zfchar *imageExt)
 }
 void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret)
 {
-    zfstlmap<zfstlstringZ, zfbool> &m = _ZFP_ZFObjectIO_image_imageExtMap();
-    for(zfstlmap<zfstlstringZ, zfbool>::iterator it = m.begin(); it != m.end(); ++it)
+    _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
+    for(_ZFP_ZFObjectIO_image_imageExtMapType::iterator it = m.begin(); it != m.end(); ++it)
     {
-        ret.add(it->first.c_str());
+        ret.add(it->first);
     }
 }
 
@@ -40,7 +40,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFObjectIO_image_imageExtDefault)
 
 // ============================================================
 ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
-        zfstlmap<zfstlstringZ, zfbool> &m = _ZFP_ZFObjectIO_image_imageExtMap();
+        _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
         const zfchar *fileExt = ZFObjectIOImplCheckFileExt(pathInfo);
         return (fileExt != zfnull && m.find(fileExt) != m.end());
     }), {

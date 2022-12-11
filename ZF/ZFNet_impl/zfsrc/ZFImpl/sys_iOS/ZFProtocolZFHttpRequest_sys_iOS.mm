@@ -144,7 +144,7 @@ public:
     {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
         ZFBuffer ret;
-        ret.bufferChange(task.requestBody.mutableBytes, (zfindex)task.requestBody.length, (zfindex)task.requestBody.length, zffalse);
+        ret.zfunsafe_bufferChange(task.requestBody.mutableBytes, (zfindex)task.requestBody.length, (zfindex)task.requestBody.length, zffalse);
         return ret;
     }
 

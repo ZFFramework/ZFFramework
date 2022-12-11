@@ -1,9 +1,8 @@
 #include "ZFObjectCore.h"
 #include "ZFObjectImpl.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_deque.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

@@ -1,16 +1,15 @@
 #include "ZFDynamicRegisterUtil.h"
 
-#include "ZFSTLWrapper/zfstl_string.h"
-#include "ZFSTLWrapper/zfstl_map.h"
-#include "ZFSTLWrapper/zfstl_deque.h"
+#include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 /* ZFMETHOD_MAX_PARAM */
 
 // ============================================================
-static zfstlmap<zfstlstringZ, ZFDynamic> &_ZFP_ZFDynamicRegTagMap(void)
+static zfstlmap<zfstringRO, ZFDynamic> &_ZFP_ZFDynamicRegTagMap(void)
 {
-    static zfstlmap<zfstlstringZ, ZFDynamic> m;
+    static zfstlmap<zfstringRO, ZFDynamic> m;
     return m;
 }
 
@@ -28,7 +27,7 @@ public:
     // global
     zfuint refCount;
     zfbool errorOccurred;
-    zfstlstringZ regTag;
+    zfstringRO regTag;
 
     // scope
     const ZFClass *cls;
@@ -182,10 +181,10 @@ public:
         }
 
         this->errorOccurred = zffalse;
-        if(!this->regTag.empty())
+        if(!this->regTag.isEmpty())
         {
             _ZFP_ZFDynamicRegTagMap().erase(this->regTag);
-            this->regTag.clear();
+            this->regTag.removeAll();
         }
         this->cls = zfnull;
         this->enumClassName.removeAll();
@@ -293,7 +292,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
     ZFCoreArrayPOD<const zfchar *> allNamespace;
     ZFNamespaceGetAllT(allNamespace);
 
-    zfstlmap<zfstlstringZ, zfbool> tags;
+    zfstlmap<zfstringRO, zfbool> tags;
     const zfchar *zfpFix = "_ZFP_";
     zfindex zfpFixLen = zfslen(zfpFix);
     const zfchar *zfpiFix = "_ZFP_I_";
@@ -326,7 +325,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
         {
             if(t->methodOwnerClass() != zfnull)
             {
-                zfstlstringZ tag;
+                zfstring tag;
                 tag += t->methodOwnerClass()->classNameFull();
                 tag += ".";
                 tag += t->methodName();
@@ -334,7 +333,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
             }
             else if(!zfsIsEmpty(t->methodNamespace()))
             {
-                zfstlstringZ tag;
+                zfstring tag;
                 tag += t->methodNamespace();
                 tag += ".";
                 tag += t->methodName();
@@ -368,27 +367,27 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
         tags[allNamespace[i]] = zftrue;
     }
 
-    for(zfstlmap<zfstlstringZ, zfbool>::iterator it = tags.begin(); it != tags.end(); ++it)
+    for(zfstlmap<zfstringRO, zfbool>::iterator it = tags.begin(); it != tags.end(); ++it)
     {
-        output << it->first.c_str() << "\n";
+        output << it->first << "\n";
     }
 }
 
 ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag)
 {
-    zfstlmap<zfstlstringZ, ZFDynamic> &m = _ZFP_ZFDynamicRegTagMap();
-    if(!d->regTag.empty())
+    zfstlmap<zfstringRO, ZFDynamic> &m = _ZFP_ZFDynamicRegTagMap();
+    if(!d->regTag.isEmpty())
     {
         m.erase(d->regTag);
     }
 
     if(regTag == zfnull)
     {
-        d->regTag.clear();
+        d->regTag.removeAll();
         return *this;
     }
 
-    zfstlmap<zfstlstringZ, ZFDynamic>::iterator it = m.find(regTag);
+    zfstlmap<zfstringRO, ZFDynamic>::iterator it = m.find(regTag);
     if(it != m.end() && it->second != *this)
     {
         // remove may cause unexpect dealloc, retain once
@@ -401,7 +400,7 @@ ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag)
 }
 const zfchar *ZFDynamic::regTag(void) const
 {
-    return (d->regTag.empty() ? zfnull : d->regTag.c_str());
+    return (d->regTag.isEmpty() ? zfnull : d->regTag.cString());
 }
 
 void ZFDynamic::removeAll(void)

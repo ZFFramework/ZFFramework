@@ -258,10 +258,31 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
     #undef zfdeletePlacement
     #define zfdeletePlacement(instance) _ZFP_zfdeletePlacement(_ZFP_ZFMEM_delete((instance), "zfdeletePlacement"))
 
+    inline void *_ZFP_ZFMEM_zfmalloc(zfindex size, zfbool mallocZero, const char *file, const char *func, int line)
+    {
+        void *ret = malloc((size_t)size);
+        if(mallocZero && ret)
+        {
+            zfmemset(ret, 0, size);
+        }
+
+        #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
+            _ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(ret, size);
+        #endif
+        if(mallocZero)
+        {
+            _ZFP_ZFMEM_logNew(ret, "zfmallocZero     ", file, func, line);
+        }
+        else
+        {
+            _ZFP_ZFMEM_logNew(ret, "zfmalloc         ", file, func, line);
+        }
+        return ret;
+    }
     #undef zfmalloc
-    #define zfmalloc(size) _ZFP_ZFMEM_new((malloc((size_t)(size))), "zfmalloc         ")
+    #define zfmalloc(size) _ZFP_ZFMEM_zfmalloc((size), zffalse, __FILE__, __FUNCTION__, __LINE__)
     #undef zfmallocZero
-    #define zfmallocZero(size) _ZFP_ZFMEM_new(_ZFP_zfmallocZero((size_t)(size)), "zfmallocZero     ")
+    #define zfmallocZero(size) _ZFP_ZFMEM_zfmalloc((size), zftrue, __FILE__, __FUNCTION__, __LINE__)
 
     inline void *_ZFP_ZFMEM_zfrealloc(void *oldPtr, zfindex newSize, const char *file, const char *func, int line)
     {

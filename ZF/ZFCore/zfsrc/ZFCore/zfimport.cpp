@@ -3,12 +3,11 @@
 #include "ZFFile.h"
 #include "ZFPathType_res.h"
 
-#include "ZFSTLWrapper/zfstl_string.h"
-#include "ZFSTLWrapper/zfstl_map.h"
+#include "ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-typedef zfstlmap<zfstlstringZ, zfautoObject> _ZFP_zfimportCacheMapType;
+typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_zfimportCacheMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfimportDataHolder, ZFLevelZFFrameworkNormal)
 {
 }

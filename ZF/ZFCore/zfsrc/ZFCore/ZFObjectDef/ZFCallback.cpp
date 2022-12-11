@@ -1,9 +1,8 @@
 #include "ZFCallback.h"
 #include "ZFObjectImpl.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_vector.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -14,7 +13,7 @@ void _ZFP_ZFCallback_executeNullCallback(void)
 
 // ============================================================
 // _ZFP_ZFCallbackPrivate
-typedef zfstlmap<zfstlstringZ, zfautoObject> _ZFP_ZFCallbackTagMap;
+typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFCallbackTagMap;
 zfclassNotPOD _ZFP_ZFCallbackPrivate
 {
 public:
@@ -227,7 +226,7 @@ void ZFCallback::objectInfoT(ZF_IN_OUT zfstring &ret) const
                 ret += ", ";
             }
             ret += "<";
-            ret += it->first.c_str();
+            ret += it->first;
             ret += ", ";
             ZFObjectInfoT(ret, it->second);
             ret += ">";
@@ -327,7 +326,7 @@ void ZFCallback::callbackTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray<const zfchar *>
         allValue.capacity(allValue.count() + m.size());
         for(_ZFP_ZFCallbackTagMap::iterator it = m.begin(); it != m.end(); ++it)
         {
-            allKey.add(it->first.c_str());
+            allKey.add(it->first);
             allValue.add(it->second.toObject());
         }
     }

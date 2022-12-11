@@ -1,6 +1,6 @@
 #include "ZFMap.h"
-#include "ZFSTLWrapper/zfstl_map.h"
-#include "ZFSTLWrapper/zfstl_vector.h"
+#include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

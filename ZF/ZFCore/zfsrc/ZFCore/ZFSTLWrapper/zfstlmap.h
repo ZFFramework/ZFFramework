@@ -1,12 +1,12 @@
 /**
- * @file zfstl_map.h
+ * @file zfstlmap.h
  * @brief stl wrapper, note it's internal use only
  */
 
-#ifndef _ZFI_zfstl_map_h_
-#define _ZFI_zfstl_map_h_
+#ifndef _ZFI_zfstlmap_h_
+#define _ZFI_zfstlmap_h_
 
-#include "zfstl_pair.h"
+#include "zfstlpair.h"
 #include <map>
 
 // ============================================================
@@ -92,5 +92,5 @@ public:
 };
 /** @endcond */
 
-#endif // #ifndef _ZFI_zfstl_map_h_
+#endif // #ifndef _ZFI_zfstlmap_h_
 

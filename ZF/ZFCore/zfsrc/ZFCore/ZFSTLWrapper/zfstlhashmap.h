@@ -1,12 +1,12 @@
 /**
- * @file zfstl_hashmap.h
+ * @file zfstlhashmap.h
  * @brief stl wrapper, note it's internal use only
  */
 
-#ifndef _ZFI_zfstl_hashmap_h_
-#define _ZFI_zfstl_hashmap_h_
+#ifndef _ZFI_zfstlhashmap_h_
+#define _ZFI_zfstlhashmap_h_
 
-#include "zfstl_pair.h"
+#include "zfstlpair.h"
 
 // ============================================================
 /** @brief stl wrapper */
@@ -92,5 +92,5 @@ public:
 };
 /** @endcond */
 
-#endif // #ifndef _ZFI_zfstl_hashmap_h_
+#endif // #ifndef _ZFI_zfstlhashmap_h_
 

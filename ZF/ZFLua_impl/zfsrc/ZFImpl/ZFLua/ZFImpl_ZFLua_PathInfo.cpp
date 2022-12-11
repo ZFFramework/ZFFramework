@@ -1,13 +1,12 @@
 #include "ZFImpl_ZFLua_PathInfo.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 typedef zfstlmap<lua_State *, zfbool> _ZFP_ZFImpl_ZFLua_PathInfoStateMapType;
-typedef zfstlmap<zfstlstringZ, zfstring> _ZFP_ZFImpl_ZFLua_PathInfoMapType;
+typedef zfstlmap<zfstringRO, zfstring> _ZFP_ZFImpl_ZFLua_PathInfoMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implPathInfoData, ZFLevelZFFrameworkEssential)
 {
     this->luaStateOnAttachListener = ZFCallbackForFunc(zfself::luaStateOnAttach);
@@ -110,7 +109,7 @@ void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
             {
                 ret += ',';
             }
-            ret += it->first.c_str();
+            ret += it->first;
         }
         ret += '=';
     }
@@ -146,7 +145,7 @@ void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(ZF_IN const zfchar *luaFuncName,
     d->luaFuncNameList.removeAll();
     for(_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator it = d->pathInfoMap.begin(); it != d->pathInfoMap.end(); ++it)
     {
-        d->luaFuncNameList.add(it->first.c_str());
+        d->luaFuncNameList.add(it->first);
     }
 }
 void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfchar *luaFuncName)
@@ -162,7 +161,7 @@ void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfchar *luaFuncName)
     d->luaFuncNameList.removeAll();
     for(_ZFP_ZFImpl_ZFLua_PathInfoMapType::iterator it = d->pathInfoMap.begin(); it != d->pathInfoMap.end(); ++it)
     {
-        d->luaFuncNameList.add(it->first.c_str());
+        d->luaFuncNameList.add(it->first);
     }
 }
 

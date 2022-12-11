@@ -1,10 +1,10 @@
 /**
- * @file zfstl_list.h
+ * @file zfstllist.h
  * @brief stl wrapper, note it's internal use only
  */
 
-#ifndef _ZFI_zfstl_list_h_
-#define _ZFI_zfstl_list_h_
+#ifndef _ZFI_zfstllist_h_
+#define _ZFI_zfstllist_h_
 
 #include "zfstl_define.h"
 #include <list>
@@ -15,5 +15,5 @@
     #define zfstllist std::list
 #endif
 
-#endif // #ifndef _ZFI_zfstl_list_h_
+#endif // #ifndef _ZFI_zfstllist_h_
 

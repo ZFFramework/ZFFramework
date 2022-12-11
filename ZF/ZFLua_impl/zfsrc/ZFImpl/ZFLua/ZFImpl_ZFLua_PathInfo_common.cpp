@@ -1,7 +1,6 @@
 #include "ZFImpl_ZFLua_PathInfo.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

@@ -1,7 +1,6 @@
 #include "ZFImpl_ZFLua.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -53,7 +52,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
         ZFCoreArrayPOD<const zfchar *> scopeNameList;
 
         ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
-        zfstlmap<zfstlstringZ, zfbool> methodNamespaceList;
+        zfstlmap<zfstringRO, zfbool> methodNamespaceList;
         if(!allMethod.isEmpty())
         {
             _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
@@ -80,9 +79,9 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
             {
                 scopeNameList.capacity(scopeNameList.capacity() + (zfindex)methodNamespaceList.size());
                 zfindex i = 0;
-                for(zfstlmap<zfstlstringZ, zfbool>::iterator it = methodNamespaceList.begin(); it != methodNamespaceList.end(); ++it)
+                for(zfstlmap<zfstringRO, zfbool>::iterator it = methodNamespaceList.begin(); it != methodNamespaceList.end(); ++it)
                 {
-                    scopeNameList.add(it->first.c_str());
+                    scopeNameList.add(it->first);
                     ++i;
                 }
             }

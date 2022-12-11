@@ -1,10 +1,10 @@
 /**
- * @file zfstl_string.h
+ * @file zfstlstring.h
  * @brief stl wrapper, note it's internal use only
  */
 
-#ifndef _ZFI_zfstl_string_h_
-#define _ZFI_zfstl_string_h_
+#ifndef _ZFI_zfstlstring_h_
+#define _ZFI_zfstlstring_h_
 
 #include "zfstl_define.h"
 #include <string>
@@ -26,5 +26,5 @@
     #define zfstlstringZ zfstlbasicstring<zfchar>
 #endif
 
-#endif // #ifndef _ZFI_zfstl_string_h_
+#endif // #ifndef _ZFI_zfstlstring_h_
 

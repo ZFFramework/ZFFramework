@@ -1,19 +1,19 @@
 /**
- * @file zfstl_deque.h
+ * @file zfstlpair.h
  * @brief stl wrapper, note it's internal use only
  */
 
-#ifndef _ZFI_zfstl_deque_h_
-#define _ZFI_zfstl_deque_h_
+#ifndef _ZFI_zfstlpair_h_
+#define _ZFI_zfstlpair_h_
 
 #include "zfstl_define.h"
-#include <deque>
+#include <utility>
 
 // ============================================================
 /** @brief stl wrapper */
-#ifndef zfstldeque
-    #define zfstldeque std::deque
+#ifndef zfstlpair
+    #define zfstlpair std::pair
 #endif
 
-#endif // #ifndef _ZFI_zfstl_deque_h_
+#endif // #ifndef _ZFI_zfstlpair_h_
 

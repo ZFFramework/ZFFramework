@@ -75,6 +75,12 @@ public:
 
 public:
     /**
+     * @brief swap internal data
+     */
+    zffinal void swap(ZF_IN_OUT ZFCoreMap &ref);
+
+public:
+    /**
      * @brief copy all contents from ref, remove all before copy
      */
     zffinal void copyFrom(ZF_IN const ZFCoreMap &ref);

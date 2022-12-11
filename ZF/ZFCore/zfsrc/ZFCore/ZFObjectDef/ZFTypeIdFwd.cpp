@@ -2,9 +2,8 @@
 #include "ZFObjectImpl.h"
 #include "ZFListenerDeclare.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_hashmap.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_vector.h"
+#include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

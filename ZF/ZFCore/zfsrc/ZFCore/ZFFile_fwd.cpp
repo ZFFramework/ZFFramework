@@ -1,7 +1,6 @@
 #include "ZFFile_impl.h"
 
-#include "ZFSTLWrapper/zfstl_map.h"
-#include "ZFSTLWrapper/zfstl_string.h"
+#include "ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -21,7 +20,7 @@ ZFENUM_DEFINE_FLAGS(ZFFileOpenOption, ZFFileOpenOptionFlags)
 zfclassNotPOD _ZFP_ZFFileFindDataPrivate
 {
 public:
-    typedef zfstlmap<zfstlstringZ, zfautoObject> ImplTagMapType;
+    typedef zfstlmap<zfstringRO, zfautoObject> ImplTagMapType;
 
 public:
     zfuint refCount;

@@ -1,12 +1,11 @@
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstl_string.h"
-#include "../ZFSTLWrapper/zfstl_hashmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // used to reduce memory usage for static names (class/method/property's name/internalId/...)
-typedef zfstlhashmap<zfstlstringZ, zfindex> _ZFP_ZFSigMapType;
+typedef zfstlhashmap<zfstringRO, zfindex, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFSigMapType;
 static _ZFP_ZFSigMapType &_ZFP_ZFSigMap(void)
 {
     static _ZFP_ZFSigMapType m;
@@ -43,7 +42,7 @@ zfindex _ZFP_ZFSigForName(ZF_IN const zfchar *name)
 
 const zfchar *_ZFP_ZFSigNameAddr(ZF_IN const zfchar *name)
 {
-    return _ZFP_ZFSigAccess(name)->first.c_str();
+    return _ZFP_ZFSigAccess(name)->first;
 }
 
 ZF_NAMESPACE_GLOBAL_END

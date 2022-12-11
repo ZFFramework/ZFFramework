@@ -26,9 +26,9 @@ ZF_NAMESPACE_GLOBAL_END
 
 // ============================================================
 #if _ZFP_ZFMEM_LOG
-#include "../ZFSTLWrapper/zfstl_map.h"
-#include "../ZFSTLWrapper/zfstl_string.h"
-#include "../ZFSTLWrapper/zfstl_deque.h"
+#include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlstring.h"
+#include "../ZFSTLWrapper/zfstldeque.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 static const char *_ZFP_ZFMEM_file(const char *file)
@@ -125,21 +125,6 @@ void _ZFP_ZFMEM_printStatus(int threshold /* = 10 */)
 }
 
 ZF_NAMESPACE_GLOBAL_END
-
-#if 1
-    #import <Foundation/Foundation.h>
-    class _ZFP_MEM_AutoLog
-    {
-    public:
-        _ZFP_MEM_AutoLog(void)
-        {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                _ZFP_ZFMEM_printStatus();
-            });
-        }
-    };
-    static _ZFP_MEM_AutoLog _ZFP_MEM_AutoLogRef;
-#endif
 
 #endif
 

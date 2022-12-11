@@ -4,8 +4,7 @@
 #include "protocol/ZFProtocolZFUIViewTransform.h"
 #include "ZFUIViewFocus.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -18,7 +17,7 @@ zfclassLikePOD _ZFP_ZFUIViewLayerData
 public:
     ZFCoreArrayPOD<ZFUIView *> views;
 };
-typedef zfstlmap<zfstlstringZ, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
+typedef zfstlmap<zfstringRO, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
 zfclassNotPOD _ZFP_ZFUIViewPrivate
 {
 public:
@@ -2150,7 +2149,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagGetAllT,
         it != d->internalViewAutoSerializeTags.end();
         ++it)
     {
-        ret.add(it->first.c_str());
+        ret.add(it->first);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfstring>, internalViewAutoSerializeTagGetAll)

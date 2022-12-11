@@ -15,7 +15,7 @@ zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFBufferPrivate
 public:
     zfuint refCount;
     void *buffer;
-    zfindex bufferCapacity;
+    zfindex bufferCapacity; // capacity exclude tail '\0'
     zfindex bufferSize;
     zfbool bufferAutoFree;
 public:
@@ -62,9 +62,9 @@ public:
     /**
      * @brief change the internal buffer, usually for internal use only
      *
-     * note the bufferSize <= bufferCapacity, for safty, it's recommended the actual buffer capacity is at least (bufferCapacity + 1)
+     * note the bufferSize <= bufferCapacity, the actual buffer capacity must at least (bufferCapacity + sizeof(zfchar))
      */
-    zffinal void bufferChange(ZF_IN void *buffer, ZF_IN zfindex bufferCapacity, ZF_IN zfindex bufferSize, ZF_IN zfbool bufferAutoFree)
+    zffinal void zfunsafe_bufferChange(ZF_IN void *buffer, ZF_IN zfindex bufferCapacity, ZF_IN zfindex bufferSize, ZF_IN zfbool bufferAutoFree)
     {
         this->bufferFree();
         d->buffer = buffer;
@@ -243,17 +243,6 @@ public:
     : d(ref.d)
     {
         ++(d->refCount);
-    }
-    /**
-     * @brief construct from exist buffer, see #bufferChange
-     */
-    ZFBuffer(ZF_IN void *buffer, ZF_IN zfindex bufferCapacity, ZF_IN zfindex bufferSize, ZF_IN zfbool bufferAutoFree)
-    {
-        d = zfnew(_ZFP_ZFBufferPrivate);
-        d->buffer = buffer;
-        d->bufferCapacity = bufferCapacity;
-        d->bufferSize = bufferSize;
-        d->bufferAutoFree = bufferAutoFree;
     }
     /** @cond ZFPrivateDoc */
     zffinal ZFBuffer &operator = (ZF_IN const ZFBuffer &ref)

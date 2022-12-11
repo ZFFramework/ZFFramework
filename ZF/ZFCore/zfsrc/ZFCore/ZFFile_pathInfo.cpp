@@ -1,8 +1,7 @@
 #include "ZFFile_impl.h"
 #include "ZFPathType_file.h"
 
-#include "ZFSTLWrapper/zfstl_map.h"
-#include "ZFSTLWrapper/zfstl_string.h"
+#include "ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -140,15 +139,15 @@ zfindex ZFFilePathInfoCallbackSizeDefault(ZF_IN void *token)
 }
 
 // ============================================================
-static zfstlmap<zfstlstringZ, ZFFilePathInfoImpl> &_ZFP_ZFFilePathInfoImplMap(void)
+static zfstlmap<zfstringRO, ZFFilePathInfoImpl> &_ZFP_ZFFilePathInfoImplMap(void)
 {
-    static zfstlmap<zfstlstringZ, ZFFilePathInfoImpl> d;
+    static zfstlmap<zfstringRO, ZFFilePathInfoImpl> d;
     return d;
 }
 static ZFFilePathInfoImpl *_ZFP_ZFFilePathInfoImplForPathType(ZF_IN const zfchar *pathType)
 {
-    zfstlmap<zfstlstringZ, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
-    zfstlmap<zfstlstringZ, ZFFilePathInfoImpl>::iterator it = m.find(pathType);
+    zfstlmap<zfstringRO, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
+    zfstlmap<zfstringRO, ZFFilePathInfoImpl>::iterator it = m.find(pathType);
     if(it != m.end())
     {
         return &(it->second);
@@ -454,7 +453,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFFilePathInfoSize,
 void _ZFP_ZFFilePathInfoRegister(ZF_IN const zfchar *pathType,
                                  ZF_IN const ZFFilePathInfoImpl &data)
 {
-    zfstlmap<zfstlstringZ, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
+    zfstlmap<zfstringRO, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
     zfCoreAssertWithMessage(m.find(pathType) == m.end(),
         "pathType \"%s\" already registered",
         pathType);
@@ -484,13 +483,13 @@ void _ZFP_ZFFilePathInfoRegister(ZF_IN const zfchar *pathType,
 }
 void _ZFP_ZFFilePathInfoUnregister(ZF_IN const zfchar *pathType)
 {
-    zfstlmap<zfstlstringZ, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
+    zfstlmap<zfstringRO, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
     m.erase(pathType);
 }
 const ZFFilePathInfoImpl *ZFFilePathInfoImplForPathType(ZF_IN const zfchar *pathType)
 {
-    zfstlmap<zfstlstringZ, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
-    zfstlmap<zfstlstringZ, ZFFilePathInfoImpl>::iterator it = m.find(pathType);
+    zfstlmap<zfstringRO, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
+    zfstlmap<zfstringRO, ZFFilePathInfoImpl>::iterator it = m.find(pathType);
     if(it == m.end())
     {
         return zfnull;
@@ -502,10 +501,10 @@ const ZFFilePathInfoImpl *ZFFilePathInfoImplForPathType(ZF_IN const zfchar *path
 }
 void ZFFilePathInfoImplGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret)
 {
-    zfstlmap<zfstlstringZ, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
-    for(zfstlmap<zfstlstringZ, ZFFilePathInfoImpl>::iterator it = m.begin(); it != m.end(); ++it)
+    zfstlmap<zfstringRO, ZFFilePathInfoImpl> &m = _ZFP_ZFFilePathInfoImplMap();
+    for(zfstlmap<zfstringRO, ZFFilePathInfoImpl>::iterator it = m.begin(); it != m.end(); ++it)
     {
-        ret.add(it->first.c_str());
+        ret.add(it->first);
     }
 }
 

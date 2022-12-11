@@ -1,7 +1,6 @@
 #include "../ZFCoreDef.h"
 
-#include "../ZFSTLWrapper/zfstl_map.h"
-#include "../ZFSTLWrapper/zfstl_string.h"
+#include "../ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -124,7 +123,7 @@ zfclassLikePOD _ZFP_ZFNamespaceMapType
 {
 public:
     zfstring ns;
-    zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> > d;
+    zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> > d;
 };
 
 static _ZFP_ZFNamespaceMapType &_ZFP_ZFNamespaceMap(void)
@@ -148,8 +147,8 @@ zfstring _ZFP_ZFNamespaceRegister(ZF_IN const char *parent,
     _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
     for(zfindex i = 0; i < pos.count(); ++i)
     {
-        zfstlstringZ key(ns.cString() + pos[i].start, pos[i].count);
-        zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+        zfstring key(ns.cString() + pos[i].start, pos[i].count);
+        zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
         if(it == t->d.end())
         {
             _ZFP_ZFNamespaceMapType *tNew = zfnew(_ZFP_ZFNamespaceMapType);
@@ -177,8 +176,8 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns)
     _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
     for(zfindex i = 0; i < pos.count() - 1; ++i)
     {
-        zfstlstringZ key(nsTmp.cString() + pos[i].start, pos[i].count);
-        zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+        zfstring key(nsTmp.cString() + pos[i].start, pos[i].count);
+        zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
         if(it == t->d.end())
         {
             t = zfnull;
@@ -191,7 +190,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns)
     }
     if(t != zfnull)
     {
-        t->d.erase(zfstlstringZ(nsTmp.cString() + pos[pos.count() - 1].start));
+        t->d.erase(zfstring(nsTmp.cString() + pos[pos.count() - 1].start));
     }
 }
 
@@ -207,7 +206,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret)
         {
             ret.add(t->ns);
         }
-        for(zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
+        for(zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
         {
             toCheck.add(it->second.pointerValue());
         }
@@ -227,8 +226,8 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
         ZFNamespaceSplit(pos, parent);
         for(zfindex i = 0; i < pos.count(); ++i)
         {
-            zfstlstringZ key(parent + pos[i].start, pos[i].count);
-            zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+            zfstring key(parent + pos[i].start, pos[i].count);
+            zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
             if(it == t->d.end())
             {
                 return ;
@@ -241,7 +240,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
     }
 
     ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
-    for(zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
+    for(zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
     {
         toCheck.add(it->second.pointerValue());
     }
@@ -254,7 +253,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
         }
         if(recursive)
         {
-            for(zfstlmap<zfstlstringZ, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
+            for(zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
             {
                 toCheck.add(it->second.pointerValue());
             }

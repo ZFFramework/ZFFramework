@@ -3,15 +3,14 @@
 #include "zfsynchronize.h"
 #include "ZFDynamicInvoker.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_map.h"
-#include "ZFCore/ZFSTLWrapper/zfstl_vector.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+#include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // _ZFP_ZFObjectPrivate
-typedef zfstlmap<zfstlstringZ, zfautoObject> _ZFP_ZFObjectTagMapType;
+typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFObjectTagMapType;
 zfclassNotPOD _ZFP_ZFObjectPrivate
 {
 public:
@@ -307,7 +306,7 @@ void ZFObject::objectTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray<const zfchar *> &al
     allValue.capacity(allValue.count() + m.size());
     for(_ZFP_ZFObjectTagMapType::iterator it = m.begin(); it != m.end(); ++it)
     {
-        allKey.add(it->first.c_str());
+        allKey.add(it->first);
         allValue.add(it->second.toObject());
     }
 }

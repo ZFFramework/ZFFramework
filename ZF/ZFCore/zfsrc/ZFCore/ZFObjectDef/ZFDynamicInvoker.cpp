@@ -1,10 +1,9 @@
 #include "ZFDynamicInvoker.h"
 #include "ZFObjectImpl.h"
 
-#include "../ZFSTLWrapper/zfstl_string.h" // for ZFDI_invoke method cache
-#include "../ZFSTLWrapper/zfstl_hashmap.h" // for ZFDI_invoke method cache
+#include "../ZFSTLWrapper/zfstlhashmap.h" // for ZFDI_invoke method cache
 
-#include "../ZFSTLWrapper/zfstl_map.h" // for ZFDI_invoke param convert backup
+#include "../ZFSTLWrapper/zfstlmap.h" // for ZFDI_invoke param convert backup
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -20,10 +19,10 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
 // ============================================================
 static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
 
-typedef zfstlhashmap<zfstlstringZ, const ZFClass *> _ZFP_ZFDI_ClassMapCache;
+typedef zfstlhashmap<zfstringRO, const ZFClass *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_ClassMapCache;
 static _ZFP_ZFDI_ClassMapCache _ZFP_ZFDI_classMapCache;
 
-typedef zfstlhashmap<zfstlstringZ, ZFCoreArrayPOD<const ZFMethod *> > _ZFP_ZFDI_MethodMapCache;
+typedef zfstlhashmap<zfstringRO, ZFCoreArrayPOD<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
 static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal)
@@ -87,7 +86,7 @@ const ZFClass *ZFDI_classForName(ZF_IN const zfchar *className,
     {
         return zfnull;
     }
-    zfstlstringZ key;
+    zfstring key;
     key += className;
     if(NS != zfnull)
     {
@@ -223,7 +222,7 @@ static zfbool _ZFP_ZFDI_invoke(ZF_OUT zfautoObject &ret
         if(_ZFP_ZFDI_cacheEnable)
         {
             zfCoreMutexLocker();
-            zfstlstringZ key;
+            zfstring key;
             if(obj != zfnull)
             {
                 key += obj->classData()->classNameFull();
@@ -246,7 +245,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
     if(_ZFP_ZFDI_cacheEnable)
     {
         zfCoreMutexLock();
-        zfstlstringZ key;
+        zfstringRO key;
         if(obj != zfnull)
         {
             key += obj->classData()->classNameFull();

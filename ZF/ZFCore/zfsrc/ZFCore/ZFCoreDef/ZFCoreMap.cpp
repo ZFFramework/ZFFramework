@@ -1,15 +1,13 @@
 #include "ZFCoreMap.h"
 
-#include "ZFCore/ZFSTLWrapper/zfstl_string.h"
-
 #ifndef ZF_ENV_ZFCOREMAP_USE_HASHMAP
     #define ZF_ENV_ZFCOREMAP_USE_HASHMAP 1
 #endif
 
 #if ZF_ENV_ZFCOREMAP_USE_HASHMAP
-    #include "ZFCore/ZFSTLWrapper/zfstl_hashmap.h"
+    #include "ZFCore/ZFSTLWrapper/zfstlhashmap.h"
 #else
-    #include "ZFCore/ZFSTLWrapper/zfstl_map.h"
+    #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 #endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -19,9 +17,9 @@ zfclassNotPOD _ZFP_ZFCoreMapPrivate
 {
 public:
 #if ZF_ENV_ZFCOREMAP_USE_HASHMAP
-    typedef zfimplhashmap<zfstlstringZ, ZFCorePointerBase *> MapType;
+    typedef zfimplhashmap<zfstringRO, ZFCorePointerBase *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> MapType;
 #else
-    typedef zfimplmap<zfstlstringZ, ZFCorePointerBase *> MapType;
+    typedef zfimplmap<zfstringRO, ZFCorePointerBase *> MapType;
 #endif
 
 public:
@@ -143,6 +141,13 @@ void ZFCoreMap::objectInfoOfContentT(ZF_IN_OUT zfstring &ret,
     ret += token.tokenRight;
 }
 
+void ZFCoreMap::swap(ZF_IN_OUT ZFCoreMap &ref)
+{
+    _ZFP_ZFCoreMapPrivate *dTmp = d;
+    d = ref.d;
+    ref.d = dTmp;
+}
+
 void ZFCoreMap::copyFrom(ZF_IN const ZFCoreMap &ref)
 {
     if(d != ref.d)
@@ -228,7 +233,7 @@ void ZFCoreMap::allKeyT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret) const
         it != d->m.end();
         ++it)
     {
-        ret.add(it->first.c_str());
+        ret.add(it->first);
     }
 }
 void ZFCoreMap::allValueT(ZF_IN_OUT ZFCoreArray<ZFCorePointerBase *> &ret) const
@@ -290,7 +295,7 @@ void ZFCoreMap::iterNext(ZF_IN_OUT zfiterator &it) const
 
 const zfchar *ZFCoreMap::iterKey(ZF_IN const zfiterator &it) const
 {
-    return d->m.iterKey(it).c_str();
+    return d->m.iterKey(it);
 }
 ZFCorePointerBase *ZFCoreMap::iterValue(ZF_IN const zfiterator &it) const
 {
