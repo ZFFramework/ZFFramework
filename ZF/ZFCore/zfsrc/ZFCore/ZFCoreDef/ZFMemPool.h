@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief whether enable memory pool, true by default
  */
 #ifndef ZF_ENV_ZFMEMPOOL_ENABLE
-    #if _ZFP_ZFMEM_LOG
+    #if _ZFP_ZFMEM_LOG_DISABLE_MEMPOOL
         #define ZF_ENV_ZFMEMPOOL_ENABLE 0
     #else
         #define ZF_ENV_ZFMEMPOOL_ENABLE 1

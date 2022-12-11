@@ -12,9 +12,11 @@
 #include <string.h>
 
 // for internal debug use only
-#define _ZFP_ZFMEM_LOG 0
-#define _ZFP_ZFMEM_LOG_VERBOSE 0
-#define _ZFP_ZFMEM_LOG_LARGE_OBJECT 0
+// #define _ZFP_ZFMEM_LOG_DISABLE_MEMPOOL 1
+// #define _ZFP_ZFMEM_LOG 1
+// #define _ZFP_ZFMEM_LOG_VERBOSE 1
+// #define _ZFP_ZFMEM_LOG_LARGE_OBJECT 1
+
 #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
     inline void _ZFP_ZFMEM_LOG_LARGE_OBJECT_action(zfindex size)
     {
