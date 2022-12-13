@@ -1,6 +1,7 @@
 #include "ZFImpl_default_ZFAlgorithm_impl.h"
 #include "ZFAlgorithm/protocol/ZFProtocolZFJson.h"
 
+#define RAPIDJSON_DEFAULT_ALLOCATOR ::RAPIDJSON_NAMESPACE::MemoryPoolAllocator< ::RAPIDJSON_NAMESPACE::CrtAllocator >
 #include "../_repo/rapidjson/document.h"
 #include "../_repo/rapidjson/reader.h"
 

@@ -313,7 +313,7 @@ protected:
     {
         ZFUIButtonGroup *ref = ZFCastZFObject(ZFUIButtonGroup *, referencedOwnerOrNull);
         ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref,
-            ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, this->_ZFP_buttons, ref->_ZFP_buttons, zfnull);
+            ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, this->_ZFP_buttons, ref->_ZFP_buttons, (ZFArray *)zfnull);
         return zftrue;
     }
     /** @brief util for serialization */
