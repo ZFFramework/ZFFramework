@@ -13,7 +13,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 static ZFCoreArrayPOD<ZFThread *> _ZFP_ZFThread_allThread;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThread_allThreadCleanup, ZFLevelZFFrameworkEssential)
 {
-    _ZFP_ZFThread_allThread.add(ZFThread::mainThread());
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup)
 {

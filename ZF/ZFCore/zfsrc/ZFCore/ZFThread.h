@@ -80,7 +80,7 @@ public:
 public:
     /**
      * @brief access all thread,
-     *   #mainThread is ensured at first
+     *   #mainThread is not included
      *
      * use with caution, use with #zfCoreMutexLock
      */
