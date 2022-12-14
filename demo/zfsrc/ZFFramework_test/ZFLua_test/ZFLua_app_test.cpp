@@ -12,6 +12,7 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFLua);
 
         zfautoObject luaResult = ZFLuaExecute(ZFInputForResFile("test_ZFLua_app.lua"));
         ZFUIPageManager *pm = luaResult;

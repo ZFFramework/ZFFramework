@@ -48,6 +48,13 @@ public:
     virtual void sleep(ZF_IN zftimet miliSecs) zfpurevirtual;
 
     /**
+     * @brief whether #executeInMainThread available
+     */
+    virtual zfbool executeInMainThreadAvailable(void)
+    {
+        return zftrue;
+    }
+    /**
      * @brief run the runnable in main thread
      *
      * you should queue it to run even if current thread is main thread

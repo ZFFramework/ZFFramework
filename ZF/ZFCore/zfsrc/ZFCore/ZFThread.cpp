@@ -172,6 +172,22 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
     zfunsafe_zfRelease(zfThread);
 }
 
+ZFMETHOD_DEFINE_0(ZFThread, zfbool, implAvailable)
+{
+    zfCoreMutexLocker();
+    return ZFPROTOCOL_IS_AVAILABLE(ZFThread);
+}
+ZFMETHOD_DEFINE_0(ZFThread, zfbool, implMainThreadTaskAvailable)
+{
+    zfCoreMutexLocker();
+    ZFPROTOCOL_INTERFACE_CLASS(ZFThread) *impl = ZFPROTOCOL_TRY_ACCESS(ZFThread);
+    if(impl == zfnull)
+    {
+        return zffalse;
+    }
+    return impl->executeInMainThreadAvailable();
+}
+
 ZFMETHOD_DEFINE_0(ZFThread, const ZFCoreArrayPOD<ZFThread *> &, allThread)
 {
     return _ZFP_ZFThread_allThread;
@@ -483,7 +499,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
     zfargsTmp
         .sender(zfThread)
         .param0(paramHolder->param0)
-        .param0(paramHolder->param1)
+        .param1(paramHolder->param1)
         ;
 
     zfThread->threadOnStart(zfargsTmp);

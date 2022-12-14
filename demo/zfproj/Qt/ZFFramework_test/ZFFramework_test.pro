@@ -156,7 +156,6 @@ RCC_DIR = $${DESTDIR}/.rcc
 UI_DIR = $${DESTDIR}/.ui
 
 # ======================================================================
-system($${_ZF_SCRIPT_CALL} $$system_path($$clean_path($${_PRO_FILE_PWD_}/../../../../zfsetup.$${_ZF_SCRIPT_EXT})))
 system($${_ZF_SCRIPT_CALL} $$system_path($$clean_path($${ZF_TOOLS_PATH}/release/release_$${_ZF_QT_TYPE}.$${_ZF_SCRIPT_EXT})) 1)
 
 exists(qt_main.cpp) {

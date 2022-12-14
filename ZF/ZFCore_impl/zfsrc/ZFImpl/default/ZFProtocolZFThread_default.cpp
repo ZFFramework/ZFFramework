@@ -163,6 +163,10 @@ public:
         _ZFP_ZFThreadImpl_default_sleep(miliSecs);
     }
 
+    virtual zfbool executeInMainThreadAvailable(void)
+    {
+        return zffalse;
+    }
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable,
                                       ZF_IN ZFObject *param0,
                                       ZF_IN ZFObject *param1)

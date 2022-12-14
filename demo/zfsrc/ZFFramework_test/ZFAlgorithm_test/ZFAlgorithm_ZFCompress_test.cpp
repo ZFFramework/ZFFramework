@@ -11,6 +11,7 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFCompress);
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("compress buffer");

@@ -1,6 +1,5 @@
 #include "ZFThread_zfautoRelease.h"
 #include "ZFAutoReleasePool.h"
-#include "protocol/ZFProtocolZFThread.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -12,7 +11,7 @@ void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj)
     {
         zfCoreMutexLocker();
 
-        if(ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+        if(ZFThread::implAvailable())
         {
             ZFThread *threadCur = ZFThread::currentThread();
             if(threadCur == zfnull)

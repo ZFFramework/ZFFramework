@@ -240,7 +240,8 @@ public:
 protected:
     /** @cond ZFPrivateDoc */
     ZFObject(void)
-    : d(zfnull)
+    : _ZFP_ZFObject_classDynamic(zfnull)
+    , d(zfnull)
     {
     }
     virtual ~ZFObject(void)
@@ -740,12 +741,11 @@ protected:
 
     // ============================================================
 public:
-    zffinal void _ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *classDynamic);
-    zffinal const ZFClass *_ZFP_ZFObject_classFix(ZF_IN const ZFClass *cls);
-
     zffinal void _ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseCallback callback);
     zffinal _ZFP_zfAllocCacheReleaseCallback _ZFP_ZFObject_zfAllocCacheRelease(void);
 
+public:
+    const ZFClass *_ZFP_ZFObject_classDynamic;
 private:
     _ZFP_ZFObjectPrivate *d;
 private:

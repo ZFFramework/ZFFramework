@@ -65,7 +65,7 @@ public:
         /** @brief get instance's class info */ \
         virtual inline const ZFClass *classData(void) \
         { \
-            return this->_ZFP_ZFObject_classFix(zfself::ClassData()); \
+            return this->_ZFP_ZFObject_classDynamic ? this->_ZFP_ZFObject_classDynamic : zfself::ClassData(); \
         } \
     private: \
         static void _ZFP_Obj_initImplCk(ZF_IN ZFClass *cls) \

@@ -11,6 +11,7 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFRegExp);
 
         zfblockedAlloc(ZFRegExp, regexp);
         const zfchar *patternFrom = "(ab*c)(?<n0>ab*c)";

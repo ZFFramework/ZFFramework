@@ -182,7 +182,10 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, request,
 {
     zfRetain(this); // release in notifyResponse
 
-    d->ownerThread = ZFThread::currentThread();
+    if(ZFThread::implAvailable())
+    {
+        d->ownerThread = ZFThread::currentThread();
+    }
     d->callback = callback;
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask);
 
@@ -262,14 +265,21 @@ void ZFHttpRequest::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
 
 void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void)
 {
-    ZFHttpRequest *owner = this;
-    ZFLISTENER_2(notifyResponse
-            , zfautoObjectT<ZFHttpRequest *>, owner
-            , _ZFP_ZFHttpRequestPrivate *, d
-            ) {
-        d->notifyResponse(owner);
-    } ZFLISTENER_END(notifyResponse)
-    ZFThread::executeInThread(d->ownerThread, notifyResponse);
+    if(ZFThread::implAvailable())
+    {
+        ZFHttpRequest *owner = this;
+        ZFLISTENER_2(notifyResponse
+                , zfautoObjectT<ZFHttpRequest *>, owner
+                , _ZFP_ZFHttpRequestPrivate *, d
+                ) {
+            d->notifyResponse(owner);
+        } ZFLISTENER_END(notifyResponse)
+        ZFThread::executeInThread(d->ownerThread, notifyResponse);
+    }
+    else
+    {
+        d->notifyResponse(this);
+    }
 }
 
 // ============================================================

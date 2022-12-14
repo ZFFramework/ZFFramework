@@ -11,6 +11,7 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFXml);
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFXml");

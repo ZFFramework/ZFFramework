@@ -3,12 +3,6 @@ project(ZFCore_impl)
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../../ZFFramework)
 
-if(WIN32)
-    execute_process(COMMAND ${ZF_ROOT_PATH}/zfsetup.bat)
-else()
-    execute_process(COMMAND ${ZF_ROOT_PATH}/zfsetup.sh)
-endif()
-
 file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.cpp

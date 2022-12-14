@@ -2,7 +2,6 @@
 #include "ZFLuaState.h"
 #include "protocol/ZFProtocolZFLua.h"
 
-#include "ZFCore/protocol/ZFProtocolZFThread.h"
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -72,7 +71,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC,
     {
         L = ZFLuaState();
     }
-    if(!ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+    if(!ZFThread::implMainThreadTaskAvailable())
     {
         ZFLuaGCImmediately(L);
         return ;

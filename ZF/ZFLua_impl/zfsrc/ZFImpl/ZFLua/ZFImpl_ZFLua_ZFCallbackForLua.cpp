@@ -1,7 +1,6 @@
 #include "ZFImpl_ZFLua.h"
 #include "ZFImpl_ZFLua_PathInfo.h"
 
-#include "ZFCore/protocol/ZFProtocolZFThread.h"
 #include "ZFCore//ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -54,7 +53,7 @@ public:
         this->ownerL = L;
         lua_pushvalue(this->ownerL, luaStackOffset);
         this->luaFunc = luaL_ref(this->ownerL, LUA_REGISTRYINDEX);
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable())
         {
             zfCoreMutexLocker();
             ZFThread *curThread = ZFThread::currentThread();
@@ -72,7 +71,7 @@ public:
             return;
         }
 
-        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+        if(ZFLogLevelIsActive(ZFLogLevel::e_Debug) && ZFThread::implAvailable())
         {
             zfCoreMutexLocker();
             if(this->ownerThread != zfnull && this->ownerThread->objectHolded() != zfnull)

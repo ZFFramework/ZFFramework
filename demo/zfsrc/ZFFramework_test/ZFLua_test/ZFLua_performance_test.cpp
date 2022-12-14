@@ -71,6 +71,7 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFLua);
 
         ZFImpl_ZFLua_luaCFunctionRegister((lua_State *)ZFLuaState(), "_ZFP_ZFLua_performance_test_begin", _ZFP_ZFLua_performance_test_begin);
         ZFImpl_ZFLua_luaCFunctionRegister((lua_State *)ZFLuaState(), "_ZFP_ZFLua_performance_test_end", _ZFP_ZFLua_performance_test_end);

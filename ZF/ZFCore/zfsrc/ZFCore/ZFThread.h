@@ -79,6 +79,15 @@ public:
 
 public:
     /**
+     * @brief whether thread impl is available
+     */
+    ZFMETHOD_DECLARE_STATIC_0(zfbool, implAvailable)
+    /**
+     * @brief whether #mainThread's #taskQueueAdd is available
+     */
+    ZFMETHOD_DECLARE_STATIC_0(zfbool, implMainThreadTaskAvailable)
+
+    /**
      * @brief access all thread,
      *   #mainThread is not included
      *
@@ -244,7 +253,8 @@ public:
      * and the #mainThread is always considered #taskQueueInit has been called, the difference:
      * -  #taskQueueInit : do nothing
      * -  #taskQueueCleanup : do nothing
-     * -  #taskQueueAdd / #taskQueueRemove : similar behavior, but add/remove task to main thread loop queue
+     * -  #taskQueueAdd / #taskQueueRemove : similar behavior, but add/remove task to main thread loop queue,
+     *   available only if #implMainThreadTaskAvailable
      *
      * once #taskQueueInit called, you may post runnable to be run in the specified thread by #taskQueueAdd
      */

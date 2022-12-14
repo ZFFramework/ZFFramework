@@ -205,9 +205,8 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *c
             , const ZFClass *, testCase
             , ZFUIView *, containerView
             ) {
-        ZFTestCase *running = zfnull;
         containerView->viewUIEnableTree(zffalse);
-        ZFTestCaseRun(testCase, &running);
+        zfautoObjectT<ZFTestCase *> running = ZFTestCaseRun(testCase);
         if(running != zfnull)
         {
             ZFLISTENER_1(testCaseOnStop

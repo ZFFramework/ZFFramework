@@ -7,5 +7,6 @@ if test ! "x-$CHECK_ONLY" = "x-" && test -e "$ZF_ROOT_PATH/_release/Qt_Posix/all
     exit 0
 fi
 
+sh "$ZF_ROOT_PATH/zfsetup.sh"
 sh "$ZF_TOOLS_PATH/common/zfsh.sh" "$WORK_DIR/release.zfsh" Qt_Posix
 

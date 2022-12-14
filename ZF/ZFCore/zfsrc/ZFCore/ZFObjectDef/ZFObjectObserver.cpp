@@ -499,15 +499,7 @@ void ZFObserverHolder::observerRemoveAll(void)
 }
 zfbool ZFObserverHolder::observerHasAdd(void) const
 {
-    if(d->observerOwner != zfnull)
-    {
-        return !d->observerMap.empty()
-            || ZFGlobalObserver().observerHasAdd();
-    }
-    else
-    {
-        return !d->observerMap.empty();
-    }
+    return !d->observerMap.empty();
 }
 zfbool ZFObserverHolder::observerHasAdd(ZF_IN zfidentity eventId) const
 {

@@ -11,5 +11,6 @@ if not exist "%ZF_ROOT_PATH%\_release\Qt_Windows\all\lib" goto :run
 exit /b 0
 :run
 
+call "%ZF_ROOT_PATH%\zfsetup.bat"
 call "%ZF_TOOLS_PATH%\common\zfsh.bat" "%WORK_DIR%\release.zfsh" Qt_Windows
 

@@ -30,7 +30,6 @@ public:
     zfuint stateFlags;
     ZFObserverHolder *observerHolder;
 
-    const ZFClass *classDynamic;
     _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
 
 public:
@@ -43,7 +42,6 @@ public:
     , propertyAccessed()
     , stateFlags(0)
     , observerHolder(zfnull)
-    , classDynamic(zfnull)
     , zfAllocCacheRelease(zfnull)
     {
         if(cls->classIsInternal())
@@ -423,7 +421,7 @@ zfbool ZFObject::observerHasAdd(ZF_IN zfidentity eventId)
     }
     else
     {
-        return zffalse;
+        return ZFGlobalObserver().observerHasAdd(eventId);
     }
 }
 void ZFObject::observerNotify(ZF_IN zfidentity eventId,
@@ -434,6 +432,10 @@ void ZFObject::observerNotify(ZF_IN zfidentity eventId,
     {
         d->observerHolder->observerNotify(eventId, param0, param1);
     }
+    else
+    {
+        ZFGlobalObserver().observerNotifyWithCustomSender(this, eventId, param0, param1);
+    }
 }
 void ZFObject::observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
                                               ZF_IN zfidentity eventId,
@@ -443,6 +445,10 @@ void ZFObject::observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
     if(d->observerHolder)
     {
         d->observerHolder->observerNotifyWithCustomSender(customSender, eventId, param0, param1);
+    }
+    else
+    {
+        ZFGlobalObserver().observerNotifyWithCustomSender(customSender, eventId, param0, param1);
     }
 }
 
@@ -638,9 +644,9 @@ void ZFObject::objectOnDealloc(void)
         return ;
     }
 
-    if(d->classDynamic)
+    if(_ZFP_ZFObject_classDynamic)
     {
-        d->classDynamic->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
+        _ZFP_ZFObject_classDynamic->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
     }
 
     if(d->mutexImpl)
@@ -717,22 +723,6 @@ void ZFObject::objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_
 }
 
 // ============================================================
-void ZFObject::_ZFP_ZFObject_classDynamic(ZF_IN const ZFClass *classDynamic)
-{
-    d->classDynamic = classDynamic;
-}
-const ZFClass *ZFObject::_ZFP_ZFObject_classFix(ZF_IN const ZFClass *cls)
-{
-    if(d && d->classDynamic)
-    {
-        return d->classDynamic;
-    }
-    else
-    {
-        return cls;
-    }
-}
-
 void ZFObject::_ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseCallback callback)
 {
     d->zfAllocCacheRelease = callback;

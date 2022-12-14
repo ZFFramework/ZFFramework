@@ -11,6 +11,9 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFFile);
+        ZFFramework_test_protocolCheck(ZFFileReadWrite);
+        ZFFramework_test_protocolCheck(ZFFileResProcess);
 
         zfLogTrimT() << "============================================================";
         zfLogTrimT() << "res tree:";

@@ -8,16 +8,12 @@ ZFOBSERVER_EVENT_GLOBAL_REGISTER(TestCaseRunAllOnStop)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
-zfbool ZFTestCaseRun(ZF_IN const ZFClass *cls,
-                     ZF_OUT_OPT ZFTestCase **testCaseHaveRun /* = zfnull */)
+ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFTestCase *>, ZFTestCaseRun,
+                       ZFMP_IN(const ZFClass *, cls))
 {
-    if(testCaseHaveRun != zfnull)
-    {
-        *testCaseHaveRun = zfnull;
-    }
     if(cls == zfnull || !cls->classIsTypeOf(ZFTestCase::ClassData()))
     {
-        return zffalse;
+        return zfnull;
     }
     zfautoObject testCaseTmp = cls->newInstance();
     if(testCaseTmp == zfnull || !testCaseTmp.toObject()->classData()->classIsTypeOf(ZFTestCase::ClassData()))
@@ -26,36 +22,31 @@ zfbool ZFTestCaseRun(ZF_IN const ZFClass *cls,
     }
     ZFTestCase *testCase = testCaseTmp.to<ZFTestCase *>();
     testCase->testCaseStart();
-    if(testCase->testCaseIsRunning())
-    {
-        if(testCaseHaveRun != zfnull)
-        {
-            *testCaseHaveRun = testCase;
-        }
-    }
-    return zftrue;
+    return testCase->testCaseIsRunning() ? testCase : zfnull;
 }
-zfbool ZFTestCaseRun(ZF_IN const zfchar *classNameFull,
-                     ZF_OUT_OPT ZFTestCase **testCase /* = zfnull */)
+ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFTestCase *>, ZFTestCaseRun,
+                       ZFMP_IN(const zfchar *, classNameFull))
 {
-    return ZFTestCaseRun(ZFClass::classForName(classNameFull), testCase);
+    return ZFTestCaseRun(ZFClass::classForName(classNameFull));
 }
 
 // ============================================================
-static void _ZFP_ZFTestCaseRunAllHolder_testCaseOnFinish(ZF_IN const ZFArgs &zfargs);
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTestCaseRunAllHolder, ZFLevelZFFrameworkEssential)
 {
     this->running = zffalse;
     this->testCaseRunning = zfnull;
-    this->testCaseFinishListener = ZFCallbackForFunc(_ZFP_ZFTestCaseRunAllHolder_testCaseOnFinish);
+    ZFLISTENER(testCaseOnFinish
+            ) {
+        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseRunNext();
+    } ZFLISTENER_END(testCaseOnFinish)
+    this->testCaseFinishListener = testCaseOnFinish;
 }
 public:
     void testCaseList(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret)
     {
-        this->testCaseListPrepare();
-        ret.addFrom(this->testCases);
+        this->testCaseListPrepare(ret);
     }
-    void testCaseStart(ZF_IN const ZFCallbackT<zfbool, ZFTestCase *> *shouldStartChecker)
+    void testCaseStart(ZF_IN_OPT const ZFCoreArray<const ZFClass *> *toStart = zfnull)
     {
         if(this->running)
         {
@@ -63,7 +54,7 @@ public:
         }
         this->running = zftrue;
 
-        this->testCaseListPrepare();
+        this->testCaseListPrepare(this->testCases, toStart);
 
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventTestCaseRunAllOnStart());
 
@@ -109,7 +100,8 @@ public:
 
         const ZFClass *cls = this->testCases.getLast();
         this->testCases.removeLast();
-        if(!ZFTestCaseRun(cls, &(this->testCaseRunning)) || this->testCaseRunning == zfnull)
+        this->testCaseRunning = ZFTestCaseRun(cls);
+        if(this->testCaseRunning == zfnull)
         {
             this->testCaseRunNext();
             return ;
@@ -119,43 +111,55 @@ public:
 private:
     zfbool running;
     ZFCoreArrayPOD<const ZFClass *> testCases;
-    ZFTestCase *testCaseRunning;
+    zfautoObjectT<ZFTestCase *> testCaseRunning;
     ZFListener testCaseFinishListener;
 private:
-    void testCaseListPrepare(void)
+    static void testCaseListPrepare(ZF_OUT ZFCoreArray<const ZFClass *> &ret, ZF_IN_OPT const ZFCoreArray<const ZFClass *> *toStart = zfnull)
     {
-        this->testCases.removeAll();
+        ZFCoreArrayPOD<const ZFClass *> allClass;
+        if(toStart == zfnull || toStart->isEmpty())
+        {
+            allClass = ZFClassGetAll();
+        }
+        else
+        {
+            allClass = *toStart;
+        }
 
-        ZFCoreArrayPOD<const ZFClass *> allClass = ZFClassGetAll();
+        ret.removeAll();
         const ZFClass *desired = ZFTestCase::ClassData();
         for(zfindex i = 0; i < allClass.count(); ++i)
         {
             const ZFClass *cls = allClass[i];
             if(cls->classIsTypeOf(desired) && !cls->classIsAbstract())
             {
-                this->testCases.add(cls);
+                ret.add(cls);
             }
         }
     }
 ZF_GLOBAL_INITIALIZER_END(ZFTestCaseRunAllHolder)
 
-static void _ZFP_ZFTestCaseRunAllHolder_testCaseOnFinish(ZF_IN const ZFArgs &zfargs)
+ZFMETHOD_FUNC_DEFINE_1(void, ZFTestCaseRunAllStart,
+                       ZFMP_IN_OPT(const ZFCoreArray<const ZFClass *> *, toStart, zfnull))
 {
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseRunNext();
+    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseStart(toStart);
 }
-
-void ZFTestCaseRunAllStart(ZF_IN_OPT const ZFCallbackT<zfbool, ZFTestCase *> *shouldStartChecker /* = zfnull */)
-{
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseStart(shouldStartChecker);
-}
-void ZFTestCaseRunAllStop(void)
+ZFMETHOD_FUNC_DEFINE_0(void, ZFTestCaseRunAllStop)
 {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseStop();
 }
 
-void ZFTestCaseGetAllT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret)
+ZFMETHOD_FUNC_DEFINE_1(void, ZFTestCaseGetAllT,
+                       ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret))
 {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseList(ret);
+}
+
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArrayPOD<const ZFClass *>, ZFTestCaseGetAll)
+{
+    ZFCoreArrayPOD<const ZFClass *> ret;
+    ZFTestCaseGetAllT(ret);
+    return ret;
 }
 
 ZF_NAMESPACE_GLOBAL_END

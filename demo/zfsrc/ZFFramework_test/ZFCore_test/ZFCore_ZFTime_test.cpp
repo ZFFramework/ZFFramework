@@ -58,6 +58,7 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFTime);
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFTime");

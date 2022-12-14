@@ -7,5 +7,6 @@ if test ! "x-$CHECK_ONLY" = "x-" && test -e "$ZF_ROOT_PATH/_release/Android/all/
     exit 0
 fi
 
+sh "$ZF_ROOT_PATH/zfsetup.sh"
 sh "$ZF_TOOLS_PATH/common/zfsh.sh" "$WORK_DIR/release.zfsh" Android
 

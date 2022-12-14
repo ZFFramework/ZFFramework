@@ -11,12 +11,13 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFHttpRequest);
 
         ZFTestCase *testCase = this;
         ZFLISTENER_1(onRecv
                 , ZFTestCase *, testCase
                 ) {
-            ZFHttpRequest *request = zfargs.senderT();
+             ZFHttpRequest *request = zfargs.senderT();
             ZFHttpResponse *response = zfargs.param0T();
 
             testCase->testCaseOutput("send: %s", request->objectInfo().cString());

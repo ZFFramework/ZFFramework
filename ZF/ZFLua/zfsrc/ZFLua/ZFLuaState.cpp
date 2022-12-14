@@ -1,5 +1,4 @@
 #include "ZFLuaState.h"
-#include "ZFCore/protocol/ZFProtocolZFThread.h"
 #include "protocol/ZFProtocolZFLua.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -30,7 +29,7 @@ public:
 public:
     static _ZFP_I_ZFLuaStateHolder *prepareForCurrentThread(void)
     {
-        if(!ZFPROTOCOL_IS_AVAILABLE(ZFThread))
+        if(!ZFThread::implAvailable())
         {
             return _ZFP_I_ZFLuaStateHolder::instance();
         }

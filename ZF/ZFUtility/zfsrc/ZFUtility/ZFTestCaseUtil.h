@@ -11,20 +11,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief run a single test case,
- *   return whether successful running
+ * @brief run a single test case
  *
  * we would create an instance of the test case and running it\n
- * test case had been run can be accessed by second param,
- * may be null if the test case run and stop directly
+ * return the test case if success and not stopped immediately
  */
-extern ZFLIB_ZFUtility zfbool ZFTestCaseRun(ZF_IN const ZFClass *cls,
-                                            ZF_OUT_OPT ZFTestCase **testCaseHaveRun = zfnull);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObjectT<ZFTestCase *>, ZFTestCaseRun,
+                        ZFMP_IN(const ZFClass *, cls))
 /**
  * @brief see #ZFTestCaseRun
  */
-extern ZFLIB_ZFUtility zfbool ZFTestCaseRun(ZF_IN const zfchar *classNameFull,
-                                            ZF_OUT_OPT ZFTestCase **testCaseHaveRun = zfnull);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObjectT<ZFTestCase *>, ZFTestCaseRun,
+                        ZFMP_IN(const zfchar *, classNameFull))
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
@@ -48,23 +46,20 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * first param can be assigned to specify a callback
  * to check whether a test case can be started
  */
-extern ZFLIB_ZFUtility void ZFTestCaseRunAllStart(ZF_IN_OPT const ZFCallbackT<zfbool, ZFTestCase *> *shouldStartChecker = zfnull);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFTestCaseRunAllStart,
+                        ZFMP_IN_OPT(const ZFCoreArray<const ZFClass *> *, toStart, zfnull))
 /**
  * @brief stop #ZFTestCaseRunAllStart
  */
-extern ZFLIB_ZFUtility void ZFTestCaseRunAllStop(void);
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUtility, void, ZFTestCaseRunAllStop)
 
 /** @brief see #ZFTestCaseGetAll */
-extern ZFLIB_ZFUtility void ZFTestCaseGetAllT(ZF_IN_OUT ZFCoreArray<const ZFClass *> &ret);
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFTestCaseGetAllT,
+                        ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret))
 /**
  * @brief get all test case currently registered
  */
-inline ZFCoreArrayPOD<const ZFClass *> ZFTestCaseGetAll(void)
-{
-    ZFCoreArrayPOD<const ZFClass *> ret;
-    ZFTestCaseGetAllT(ret);
-    return ret;
-}
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUtility, ZFCoreArrayPOD<const ZFClass *>, ZFTestCaseGetAll)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTestCaseUtil_h_
