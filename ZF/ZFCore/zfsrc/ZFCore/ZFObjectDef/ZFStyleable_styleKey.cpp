@@ -12,7 +12,7 @@ zfclassNotPOD _ZFP_ZFStyleKeyHolder
 {
 public:
     zfchar *styleKey;
-    zfstlmap<zfstringRO, zfstring> stylePropertyKeyMap;
+    zfstlmap<zfstring, zfstring> stylePropertyKeyMap;
     ZFListener styleOnChangeListener;
     ZFListener stylePropertyOnChangeListener;
 public:
@@ -143,8 +143,8 @@ static zfbool _ZFP_ZFStylePropertyCopy(ZF_IN ZFObject *propertyOwner,
 void _ZFP_ZFStyleKeyHolder::stylePropertyOnChange(ZF_IN const ZFArgs &zfargs, ZF_IN ZFStyleable *owner)
 {
     zfCoreMutexLocker();
-    zfstlmap<zfstringRO, zfstring> &m = owner->_ZFP_styleKey->stylePropertyKeyMap;
-    for(zfstlmap<zfstringRO, zfstring>::iterator it = m.begin(); it != m.end(); ++it)
+    zfstlmap<zfstring, zfstring> &m = owner->_ZFP_styleKey->stylePropertyKeyMap;
+    for(zfstlmap<zfstring, zfstring>::iterator it = m.begin(); it != m.end(); ++it)
     {
         _ZFP_ZFStylePropertyCopy(owner->toObject(), it->first, it->second);
     }
@@ -225,7 +225,7 @@ const zfchar *ZFStyleable::styleKeyForProperty(ZF_IN const zfchar *propertyName)
     zfCoreMutexLocker();
     if(_ZFP_styleKey != zfnull)
     {
-        zfstlmap<zfstringRO, zfstring>::iterator it = _ZFP_styleKey->stylePropertyKeyMap.find(propertyName);
+        zfstlmap<zfstring, zfstring>::iterator it = _ZFP_styleKey->stylePropertyKeyMap.find(propertyName);
         if(it != _ZFP_styleKey->stylePropertyKeyMap.end())
         {
             return it->second;

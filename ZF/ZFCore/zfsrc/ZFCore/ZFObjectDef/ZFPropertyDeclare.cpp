@@ -87,7 +87,7 @@ void _ZFP_ZFPropertyLifeCycleUnregister(ZF_IN const zfchar *lifeCycleName,
     }
 }
 
-static void _ZFP_ZFPropertyLifeCycleCallAction(ZF_IN ZFCoreArrayPOD<_ZFP_PropLifeCycleData> const &d,
+static void _ZFP_ZFPropertyLifeCycleCallAction(ZF_IN ZFCoreArray<_ZFP_PropLifeCycleData> const &d,
                                                ZF_IN ZFObject *propertyOwnerObject,
                                                ZF_IN const ZFProperty *property,
                                                ZF_IN void *propertyValue,

@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_zfimportCacheMapType;
+typedef zfstlmap<zfstring, zfautoObject> _ZFP_zfimportCacheMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfimportDataHolder, ZFLevelZFFrameworkNormal)
 {
 }

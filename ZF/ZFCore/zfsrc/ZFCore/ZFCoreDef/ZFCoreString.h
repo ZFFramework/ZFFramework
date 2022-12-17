@@ -15,19 +15,9 @@ enum {
     _ZFP_zfstr_bufSize = (sizeof(void *) + sizeof(zfuint) * 2),
 };
 #define _ZFP_zfstrType_DynamicBuf ((zfuint)-1)
-#define _ZFP_zfstrType_Readonly ((zfuint)-2)
 
 // ============================================================
 /** @cond ZFPrivateDoc */
-template<typename T_Char>
-zffinal zfclassPOD _zfstrD_RO
-{
-public:
-    zfuint refCount;
-    zfuint length;
-    T_Char *s;
-};
-
 template<typename T_Char>
 zffinal zfclassPOD _zfstrD
 {
@@ -39,9 +29,6 @@ public:
             zfuint capacity; // capacity exclude '\0'
             zfuint length;
         } s;
-
-        // _ZFP_zfstrType_Readonly
-        _zfstrD_RO<T_Char> *RO;
 
         // builtin
         T_Char buf[_ZFP_zfstr_bufSize]; // capacity = _ZFP_zfstr_bufSize - 1
@@ -66,8 +53,6 @@ public:
         {
             case _ZFP_zfstrType_DynamicBuf:
                 return d.s.s;
-            case _ZFP_zfstrType_Readonly:
-                return d.RO->s;
             default:
                 return d.buf;
         }
@@ -78,72 +63,19 @@ public:
         {
             case _ZFP_zfstrType_DynamicBuf:
                 return d.s.s;
-            case _ZFP_zfstrType_Readonly:
-                return d.RO->s;
             default:
                 return d.buf;
         }
     }
 };
-
-template<typename T_Char>
-_zfstrD_RO<T_Char> *_ZFP_zfstrRO_attach(ZF_IN const T_Char *src)
-{
-    return zfnull;
-}
-template<typename T_Char>
-void _ZFP_zfstrRO_detach(ZF_IN const T_Char *src)
-{
-}
-
-extern ZFLIB_ZFCore _zfstrD_RO<zfchar> *_ZFP_zfstrRO_attach(ZF_IN const zfchar *src);
-extern ZFLIB_ZFCore void _ZFP_zfstrRO_detach(ZF_IN const zfchar *src);
-
 /** @endcond */
+
 /**
  * @brief low level string container
  */
 template<typename T_Char>
 zfclassLikePOD _zfstr
 {
-protected:
-    /** @cond ZFPrivateDoc */
-    void assignRO(ZF_IN const T_Char *s)
-    {
-        switch(d.length)
-        {
-            case _ZFP_zfstrType_DynamicBuf:
-                zffree(d.d.s.s);
-                break;
-            case _ZFP_zfstrType_Readonly:
-                _ZFP_zfstrRO_detach(d.d.RO->s);
-                break;
-            default:
-                break;
-        }
-        zfindex len = _len(s);
-        if(len > _ZFP_zfstr_bufSize - 1)
-        {
-            d.d.RO = _ZFP_zfstrRO_attach(s);
-            if(d.d.RO != zfnull)
-            {
-                d.length = _ZFP_zfstrType_Readonly;
-                return;
-            }
-        }
-        this->assign(s, len);
-    }
-    void detachRO(void)
-    {
-        if(d.length == _ZFP_zfstrType_Readonly)
-        {
-            _zfstrD_RO<T_Char> *RO = d.d.RO;
-            d.length = 0;
-            this->assign(RO->s, RO->length);
-            _ZFP_zfstrRO_detach(RO->s);
-        }
-    }
-    /** @endcond */
 public:
     /** @brief construct an empty string */
     _zfstr(void)
@@ -220,9 +152,6 @@ public:
             case _ZFP_zfstrType_DynamicBuf:
                 zffree(d.d.s.s);
                 break;
-            case _ZFP_zfstrType_Readonly:
-                _ZFP_zfstrRO_detach(d.d.RO->s);
-                break;
             default:
                 break;
         }
@@ -295,7 +224,6 @@ public:
      */
     void set(ZF_IN zfindex pos, ZF_IN T_Char c)
     {
-        this->detachRO();
         d.buf()[pos] = c;
     }
     /**
@@ -310,7 +238,6 @@ public:
     template<typename T_Int>
     inline T_Char &operator [] (ZF_IN T_Int pos)
     {
-        this->detachRO();
         return d.buf()[pos];
     }
     template<typename T_Int>
@@ -409,7 +336,6 @@ public:
      */
     T_Char *zfunsafe_buffer(void)
     {
-        this->detachRO();
         return d.buf();
     }
     /**
@@ -419,7 +345,6 @@ public:
     {
         if(length <= this->capacity())
         {
-            this->detachRO();
             if(d.length == _ZFP_zfstrType_DynamicBuf)
             {
                 d.d.s.length = (zfuint)length;
@@ -506,8 +431,6 @@ public:
         {
             case _ZFP_zfstrType_DynamicBuf:
                 return (zfindex)d.d.s.length;
-            case _ZFP_zfstrType_Readonly:
-                return (zfindex)d.d.RO->length;
             default:
                 return (zfindex)d.length;
         }
@@ -519,8 +442,6 @@ public:
         {
             case _ZFP_zfstrType_DynamicBuf:
                 return d.d.s.length == 0;
-            case _ZFP_zfstrType_Readonly:
-                return zffalse;
             default:
                 return d.length == 0;
         }
@@ -536,8 +457,6 @@ public:
         {
             case _ZFP_zfstrType_DynamicBuf:
                 return (zfindex)d.d.s.capacity;
-            case _ZFP_zfstrType_Readonly:
-                return (zfindex)d.d.RO->length;
             default:
                 return (zfindex)(_ZFP_zfstr_bufSize - 1);
         }
@@ -559,7 +478,6 @@ public:
     /** @brief remove part of the string */
     void remove(ZF_IN zfindex pos, ZF_IN_OPT zfindex len = zfindexMax())
     {
-        this->detachRO();
         zfindex lenTmp = this->length();
         if(pos < lenTmp)
         {
@@ -580,7 +498,6 @@ public:
     /** @brief remove all content of the string */
     inline void removeAll(void)
     {
-        this->detachRO();
         d.buf()[0] = '\0';
         _updateLength(0);
     }
@@ -630,7 +547,6 @@ private:
     }
     T_Char *_capacityRequire(ZF_IN zfindex capacity)
     {
-        this->detachRO();
         _capacityOptimize(capacity);
         if(capacity > this->capacity())
         {
@@ -681,9 +597,6 @@ private:
             case _ZFP_zfstrType_DynamicBuf:
                 d.d.s.length = (zfuint)len;
                 break;
-            case _ZFP_zfstrType_Readonly:
-                // should not go here
-                break;
             default:
                 d.length = (zfuint)len;
                 break;
@@ -704,158 +617,6 @@ private:
     {
         while(len && *s1 && *s2 && *s1 == *s2) {++s1, ++s2, --len;}
         return *s1 - *s2;
-    }
-};
-
-/**
- * @brief readonly low level string container
- *
- * when string content is same, this class shares same internal string buffer,
- * useful for impl to save memory
- */
-template<typename T_Char>
-zfclassLikePOD _zfstrRO : zfextendsLikePOD _zfstr<T_Char>
-{
-public:
-    /** @cond ZFPrivateDoc */
-    _zfstrRO(void)
-    : _zfstr<T_Char>()
-    {
-    }
-    _zfstrRO(ZF_IN const _zfstr<T_Char> &s)
-    : _zfstr<T_Char>()
-    {
-        this->assignRO(s.cString());
-    }
-    _zfstrRO(ZF_IN const _zfstrRO<T_Char> &s)
-    : _zfstr<T_Char>()
-    {
-        this->assignRO(s.cString());
-    }
-    _zfstrRO(ZF_IN const _zfstr<T_Char> &s, zfindex pos)
-    : _zfstr<T_Char>()
-    {
-        if(pos < s.length())
-        {
-            this->assignRO(s.cString() + pos);
-        }
-    }
-    _zfstrRO(ZF_IN const _zfstr<T_Char> &s, zfindex pos, zfindex len)
-    : _zfstr<T_Char>()
-    {
-        if(pos < s.length())
-        {
-            if(len <= s.length() - pos)
-            {
-                this->assignRO(_zfstr<T_Char>(s.cString() + pos, len));
-            }
-            else
-            {
-                this->assignRO(s.cString() + pos);
-            }
-        }
-    }
-    _zfstrRO(ZF_IN const T_Char *s)
-    : _zfstr<T_Char>()
-    {
-        this->assignRO(s);
-    }
-    _zfstrRO(ZF_IN const T_Char *s, zfindex len)
-    : _zfstr<T_Char>()
-    {
-        if(len == zfindexMax())
-        {
-            this->assignRO(s);
-        }
-        else
-        {
-            this->assignRO(_zfstr<T_Char>(s, len));
-        }
-    }
-public:
-    inline _zfstrRO<T_Char> &operator = (ZF_IN const _zfstr<T_Char> &s)
-    {
-        if(&s == this)
-        {
-            return *this;
-        }
-        else
-        {
-            this->assignRO(s.cString());
-            return *this;
-        }
-    }
-    inline _zfstrRO<T_Char> &operator = (ZF_IN const _zfstrRO<T_Char> &s)
-    {
-        if(&s == this)
-        {
-            return *this;
-        }
-        else
-        {
-            this->assignRO(s.cString());
-            return *this;
-        }
-    }
-    inline _zfstrRO<T_Char> &operator = (ZF_IN const T_Char *s)
-    {
-        this->assignRO(s);
-        return *this;
-    }
-    inline _zfstrRO<T_Char> &assign(ZF_IN const _zfstr<T_Char> &s)
-    {
-        this->assignRO(s.cString());
-        return *this;
-    }
-    inline _zfstrRO<T_Char> &assign(ZF_IN const T_Char *s)
-    {
-        this->assignRO(s);
-        return *this;
-    }
-    inline _zfstrRO<T_Char> &assign(ZF_IN const T_Char *s, ZF_IN zfindex len)
-    {
-        if(len == zfindexMax())
-        {
-            this->assignRO(s);
-        }
-        else
-        {
-            this->assignRO(_zfstr<T_Char>(s, len));
-        }
-        return *this;
-    }
-    template<typename T_Int>
-    inline const T_Char &operator [] (ZF_IN T_Int pos) const
-    {
-        return this->get(pos);
-    }
-    /** @endcond */
-
-public:
-    /**
-     * @brief attach a readonly string
-     *
-     * all string with same content would share same internal buffer addr,
-     * use #detach to release it
-     */
-    static const T_Char *attach(ZF_IN const T_Char *src)
-    {
-        _zfstrD_RO<T_Char> *RO = _ZFP_zfstrRO_attach(src);
-        if(RO != zfnull)
-        {
-            return RO->s;
-        }
-        else
-        {
-            return zfnull;
-        }
-    }
-    /**
-     * @brief see #attach
-     */
-    static void detach(ZF_IN const T_Char *src)
-    {
-        _ZFP_zfstrRO_detach(src);
     }
 };
 

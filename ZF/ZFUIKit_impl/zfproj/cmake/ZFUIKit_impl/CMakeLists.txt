@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 project(ZFUIKit_impl)
+message("Build with type: ${CMAKE_BUILD_TYPE}")
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 

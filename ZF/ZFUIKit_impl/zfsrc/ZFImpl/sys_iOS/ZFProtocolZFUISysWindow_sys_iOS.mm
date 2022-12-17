@@ -267,6 +267,7 @@ public:
             }
             zfblockedRelease(this->_mainWindow);
             this->notifyOnDestroy(this->_mainWindow);
+            this->_mainWindow = zfnull;
             nativeWindow = nil;
         }
     }

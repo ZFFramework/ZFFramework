@@ -17,7 +17,7 @@ zfclassLikePOD _ZFP_ZFUIViewLayerData
 public:
     ZFCoreArrayPOD<ZFUIView *> views;
 };
-typedef zfstlmap<zfstringRO, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
+typedef zfstlmap<zfstring, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
 zfclassNotPOD _ZFP_ZFUIViewPrivate
 {
 public:

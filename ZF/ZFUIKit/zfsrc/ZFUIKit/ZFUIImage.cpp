@@ -8,7 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // serializabel data
-typedef zfstlmap<zfstringRO, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
+typedef zfstlmap<zfstring, _ZFP_ZFUIImageSerializeFromCallback> _ZFP_ZFUIImageSerializeDataMapType;
 static _ZFP_ZFUIImageSerializeDataMapType &_ZFP_ZFUIImageSerializeDataMap(void)
 {
     static _ZFP_ZFUIImageSerializeDataMapType d;

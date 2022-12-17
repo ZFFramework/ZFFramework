@@ -5,7 +5,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // used to reduce memory usage for static names (class/method/property's name/internalId/...)
-typedef zfstlhashmap<zfstringRO, zfindex, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFSigMapType;
+typedef zfstlhashmap<zfstring, zfindex, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFSigMapType;
 static _ZFP_ZFSigMapType &_ZFP_ZFSigMap(void)
 {
     static _ZFP_ZFSigMapType m;
@@ -21,7 +21,7 @@ static _ZFP_ZFSigMapType::iterator _ZFP_ZFSigAccess(ZF_IN const zfchar *name)
 {
     static _ZFP_ZFSigMapType &m = _ZFP_ZFSigMap();
     static zfindex &idx = _ZFP_ZFSigIdx();
-    zfstringRO nameTmp(name);
+    zfstring nameTmp(name);
     _ZFP_ZFSigMapType::iterator it = m.find(nameTmp);
     if(it != m.end())
     {

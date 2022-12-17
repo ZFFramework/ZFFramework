@@ -13,6 +13,7 @@ protected:
     {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
+        ZFFramework_test_protocolCheck(ZFUIView);
 
         zfautoObject result = ZFLuaExecute(
                 "local window = ZFUIWindow()\n"

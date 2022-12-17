@@ -64,9 +64,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove)
 {
     while(!m.empty())
     {
-        zfstlmap<zfstringRO, zfbool> tmp;
+        zfstlmap<zfstring, zfbool> tmp;
         tmp.swap(m);
-        for(zfstlmap<zfstringRO, zfbool>::iterator it = tmp.begin(); it != tmp.end(); ++it)
+        for(zfstlmap<zfstring, zfbool>::iterator it = tmp.begin(); it != tmp.end(); ++it)
         {
             const ZFMethod *method = ZFMethodFuncForName(zfnull, it->first);
             if(method != zfnull && method->methodIsUserRegister())
@@ -76,7 +76,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove)
         }
     }
 }
-zfstlmap<zfstringRO, zfbool> m;
+zfstlmap<zfstring, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFUISysWindowEmbedNativeViewAutoRemove)
 ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmbedNativeView,
                   ZFMP_IN(void *, nativeParent),

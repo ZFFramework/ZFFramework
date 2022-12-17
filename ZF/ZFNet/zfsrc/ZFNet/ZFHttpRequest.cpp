@@ -213,13 +213,13 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoObjectT<ZFHttpResponse *>, requestSync)
                 , zfautoObjectT<ZFHttpResponse *> &, recv
                 ) {
             recv = zfargs.param0();
-            waitLock->semaphoreBroadcast();
+            waitLock->lockAndBroadcast();
         } ZFLISTENER_END(onResponse)
         send->request(onResponse);
     } ZFLISTENER_END(onRequest)
     zfasync(onRequest);
 
-    waitLock->semaphoreWait();
+    waitLock->lockAndWait();
     return recv;
 }
 

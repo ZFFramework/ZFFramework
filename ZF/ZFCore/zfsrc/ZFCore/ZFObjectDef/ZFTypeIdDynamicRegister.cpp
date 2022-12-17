@@ -8,7 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTypeIdDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic)
 {
 }
-zfstlmap<zfstringRO, ZFCorePointerForObject<ZFTypeInfo *> > m;
+zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > m;
 ZF_GLOBAL_INITIALIZER_END(ZFTypeIdDynamicRegisterDataHolder)
 
 // ============================================================
@@ -17,12 +17,12 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTypeIdDynamicRegisterAutoRemove, ZFLevel
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFTypeIdDynamicRegisterAutoRemove)
 {
-    zfstlmap<zfstringRO, ZFCorePointerForObject<ZFTypeInfo *> > &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder)->m;
+    zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder)->m;
     if(!m.empty())
     {
-        zfstlmap<zfstringRO, ZFCorePointerForObject<ZFTypeInfo *> > t;
+        zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> > t;
         t.swap(m);
-        for(zfstlmap<zfstringRO, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = t.begin(); it != t.end(); ++it)
+        for(zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = t.begin(); it != t.end(); ++it)
         {
             _ZFP_ZFTypeInfoUnregister(it->first);
         }
@@ -73,7 +73,7 @@ void ZFTypeIdDynamicUnregister(ZF_IN const zfchar *typeIdName)
     if(!zfsIsEmpty(typeIdName))
     {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFTypeIdDynamicRegisterDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder);
-        zfstlmap<zfstringRO, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = d->m.find(typeIdName);
+        zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = d->m.find(typeIdName);
         if(it != d->m.end())
         {
             ZFMethodDynamicUnregister(ZFMethodFuncForName(ZF_NAMESPACE_GLOBAL_NAME,

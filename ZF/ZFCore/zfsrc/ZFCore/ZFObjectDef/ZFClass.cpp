@@ -46,7 +46,7 @@ ZF_STATIC_INITIALIZER_END(ZFClassDataHolder)
 static const ZFClass *_ZFP_ZFClassDummy[1] = {0};
 static _ZFP_ZFObjectToInterfaceCastCallback _ZFP_ZFClassInterfaceCastCallbackDummy[1] = {0};
 
-typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFClassTagMapType;
+typedef zfstlmap<zfstring, zfautoObject> _ZFP_ZFClassTagMapType;
 typedef zfstlmap<const ZFProperty *, zfstlmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
 
 typedef zfstlmap<const zfchar *, zfstlvector<const ZFMethod *>, zfcharConst_zfstlComparer> _ZFP_ZFClassMethodMapType;
@@ -121,7 +121,7 @@ public:
     _ZFP_ZFClassTagMapType classTagMap;
 
 public:
-    zfstlmap<zfstringRO, zfbool> classDataChangeAutoRemoveTagList;
+    zfstlmap<zfstring, zfbool> classDataChangeAutoRemoveTagList;
 
 public:
     zfstlmap<const ZFClass *, zfbool> allParent; // all parent and interface excluding self
@@ -626,8 +626,8 @@ void ZFClass::_ZFP_ZFClass_classDataChangeNotify(void) const
 {
     if(!d->classDataChangeAutoRemoveTagList.empty())
     {
-        zfstlmap<zfstringRO, zfbool> t = d->classDataChangeAutoRemoveTagList;
-        for(zfstlmap<zfstringRO, zfbool>::iterator it = t.begin(); it != t.end(); ++it)
+        zfstlmap<zfstring, zfbool> t = d->classDataChangeAutoRemoveTagList;
+        for(zfstlmap<zfstring, zfbool>::iterator it = t.begin(); it != t.end(); ++it)
         {
             this->classTagRemove(it->first);
         }
@@ -1348,9 +1348,10 @@ ZFClass::~ZFClass(void)
     zfdelete(d);
     d = zfnull;
 
-    zfstringRO::detach(this->_ZFP_ZFClass_classNamespace);
-    zfstringRO::detach(this->_ZFP_ZFClass_className);
-    zfstringRO::detach(this->_ZFP_ZFClass_classNameFull);
+    // registered by _ZFP_ZFSigNameAddr, no need to free
+    // this->_ZFP_ZFClass_classNamespace;
+    // this->_ZFP_ZFClass_className;
+    // this->_ZFP_ZFClass_classNameFull;
 }
 
 ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
@@ -1420,10 +1421,10 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
 
         if(!zfsIsEmpty(classNamespace))
         {
-            cls->_ZFP_ZFClass_classNamespace = zfstringRO::attach(classNamespace);
+            cls->_ZFP_ZFClass_classNamespace = _ZFP_ZFSigNameAddr(classNamespace);
         }
-        cls->_ZFP_ZFClass_className = zfstringRO::attach(className);
-        cls->_ZFP_ZFClass_classNameFull = zfstringRO::attach(classNameFull);
+        cls->_ZFP_ZFClass_className = _ZFP_ZFSigNameAddr(className);
+        cls->_ZFP_ZFClass_classNameFull = _ZFP_ZFSigNameAddr(classNameFull);
 
         cls->_ZFP_ZFClass_classParent = parent;
         cls->_ZFP_ZFClass_classIsAbstract = (constructor == zfnull);
@@ -1889,6 +1890,8 @@ void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
                                   ZF_IN_OPT const zfchar *name /* = zfnull */)
 {
     zfCoreMutexLocker();
+    (void)ZFClassDataChangeObserver(); // ensure init order
+    (void)ZFGlobalObserver(); // ensure init order
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) == ZFFrameworkStateAvailable)
     {
         if(changedProperty != zfnull)

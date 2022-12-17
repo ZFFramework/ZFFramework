@@ -1,5 +1,6 @@
 #include "ZFProtocolZFMainEntry.h"
 #include "ZFCore/ZFMainEntry.h"
+#include "ZFCore/ZFThread.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -12,6 +13,10 @@ zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams /* = ZFCoreArra
     if(func != zfnull)
     {
         func();
+        if(!ZFThread::implMainThreadTaskAvailable())
+        {
+            ZFFrameworkCleanup();
+        }
     }
     else
     {

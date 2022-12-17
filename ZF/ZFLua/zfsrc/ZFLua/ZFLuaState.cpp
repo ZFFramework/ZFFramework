@@ -152,6 +152,22 @@ protected:
 };
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(_ZFP_I_ZFLuaStateHolder, instance, ZFLevelZFFrameworkNormal)
 
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoClean, ZFLevelZFFrameworkNormal)
+{
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoClean)
+{
+    zfCoreMutexLocker();
+    ZFCoreArrayPOD<void *> stateList;
+    ZFCoreArrayPOD<ZFThread *> threadList;
+    ZFLuaStateListForAllThread(stateList, threadList);
+    for(zfindex i = threadList.count() - 1; i != zfindexMax(); --i)
+    {
+        threadList[i]->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), zfnull);
+    }
+}
+ZF_GLOBAL_INITIALIZER_END(ZFLuaStateAutoClean)
+
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_0(void *, ZFLuaState)
 {

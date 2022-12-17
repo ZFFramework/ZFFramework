@@ -69,9 +69,10 @@ ZFProperty::~ZFProperty(void)
 {
     zffree(this->_ZFP_ZFProperty_propertyInternalId);
 
-    zfstringRO::detach(this->_ZFP_ZFProperty_name);
-    zfstringRO::detach(this->_ZFP_ZFProperty_typeName);
-    zfstringRO::detach(this->_ZFP_ZFProperty_typeId);
+    // registered by _ZFP_ZFSigNameAddr, no need to free
+    // this->_ZFP_ZFProperty_name;
+    // this->_ZFP_ZFProperty_typeName;
+    // this->_ZFP_ZFProperty_typeId;
 }
 void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
                                      ZF_IN zfbool propertyIsDynamicRegister,
@@ -94,9 +95,9 @@ void ZFProperty::_ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
     { // assign property with ZFObject type, is not serializable
         typeIdName = ZFTypeId_none();
     }
-    this->_ZFP_ZFProperty_name = zfstringRO::attach(name);
-    this->_ZFP_ZFProperty_typeName = zfstringRO::attach(typeName);
-    this->_ZFP_ZFProperty_typeId = zfstringRO::attach(typeIdName);
+    this->_ZFP_ZFProperty_name = _ZFP_ZFSigNameAddr(name);
+    this->_ZFP_ZFProperty_typeName = _ZFP_ZFSigNameAddr(typeName);
+    this->_ZFP_ZFProperty_typeId = _ZFP_ZFSigNameAddr(typeIdName);
     this->_ZFP_ZFProperty_setterMethod = setterMethod;
     this->_ZFP_ZFProperty_getterMethod = getterMethod;
     this->_ZFP_ZFProperty_setterMethodCleanup = setterMethodCleanup;

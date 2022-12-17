@@ -208,10 +208,13 @@ protected:
     zfoverride
     virtual void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult)
     {
-        this->_pageManager->managerPause();
-        this->_pageManager->managerDestroy();
-        zfRelease(this->_pageManager);
-        this->_pageManager = zfnull;
+        if(this->_pageManager != zfnull)
+        {
+            this->_pageManager->managerPause();
+            this->_pageManager->managerDestroy();
+            zfRelease(this->_pageManager);
+            this->_pageManager = zfnull;
+        }
         zfsuper::testCaseOnStop(testCaseResult);
     }
 

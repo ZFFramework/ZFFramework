@@ -17,13 +17,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     typedef _ZFT_zfstring zfstring;
 #endif
 
-/** @brief see #_zfstrRO */
-#ifndef _ZFT_zfstringRO
-    typedef _zfstrRO<zfchar> zfstringRO;
-#else
-    typedef _ZFT_zfstringRO zfstringRO;
-#endif
-
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFCoreTypeDef_StringType_h_

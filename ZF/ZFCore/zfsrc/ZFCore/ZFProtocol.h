@@ -182,6 +182,7 @@ ZFOUTPUT_TYPE(ZFProtocol, {output << (const ZFProtocol *)&v;})
 zfclassFwd _ZFP_ZFProtocolData;
 typedef ZFProtocol *(*_ZFP_ZFProtocolTryAccessCallback)(void);
 typedef ZFProtocol *(*_ZFP_ZFProtocolConstructor)(void);
+typedef zfbool (*_ZFP_ZFProtocolIsAvailableCkCallback)(void);
 typedef void (*_ZFP_ZFProtocolCleanupCallback)(ZF_IN _ZFP_ZFProtocolData *implData);
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFProtocolData
 {
@@ -190,6 +191,7 @@ public:
     zfbool protocolOptional;
     _ZFP_ZFProtocolTryAccessCallback implTryAccessCallback;
     _ZFP_ZFProtocolConstructor implConstructor;
+    _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk;
     zfstring implName;
     ZFProtocolLevelEnum implLevel;
     _ZFP_ZFProtocolCleanupCallback implCleanupCallback;
@@ -257,6 +259,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 } \
             } \
             static void _ZFP_ZFProtocolImplementationRegister(ZF_IN _ZFP_ZFProtocolConstructor implConstructor, \
+                                                              ZF_IN _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk, \
                                                               ZF_IN const zfchar *implName, \
                                                               ZF_IN ZFProtocolLevelEnum implLevel) \
             { \
@@ -288,11 +291,13 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     } \
                 } \
                 _d.implConstructor = implConstructor; \
+                _d.isAvailableCk = isAvailableCk; \
                 _d.implName = implName; \
                 _d.implLevel = implLevel; \
                 _d.implCleanupCallback = zfself::_ZFP_ZFProtocolInstanceCleanupCallback; \
             } \
             static void _ZFP_ZFProtocolImplementationChange(ZF_IN _ZFP_ZFProtocolConstructor implConstructor, \
+                                                            ZF_IN _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk, \
                                                             ZF_IN const zfchar *implName, \
                                                             ZF_IN ZFProtocolLevelEnum implLevel) \
             { \
@@ -309,26 +314,29 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 if(implConstructor != zfnull && !zfsIsEmpty(implName)) \
                 { \
                     _d.implConstructor = implConstructor; \
+                    _d.isAvailableCk = isAvailableCk; \
                     _d.implName = implName; \
                     _d.implLevel = implLevel; \
                 } \
                 else \
                 { \
                     _d.implConstructor = zfnull; \
+                    _d.isAvailableCk = zfnull; \
                     _d.implName.removeAll(); \
                     _d.implLevel = ZFProtocolLevel::e_Default; \
                 } \
             } \
             static inline zfbool _ZFP_ZFProtocolIsAvailable(void) \
             { \
-                return (zfself::_ZFP_ZFProtocolDataRef().implConstructor != zfnull); \
+                _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
+                return _d.implConstructor != zfnull && _d.isAvailableCk(); \
             } \
             static zfself *_ZFP_ZFProtocolNewInstance(void) \
             { \
                 _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
                 _ZFP_ZFProtocolImplAccess(); \
                 zfself *retVal = zfnull; \
-                if(_d.implConstructor != zfnull) \
+                if(_d.isAvailableCk != zfnull && _d.isAvailableCk()) \
                 { \
                     retVal = ZFCastStatic(zfself *, _d.implConstructor()); \
                     if(retVal != zfnull) \
@@ -401,6 +409,10 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     } \
                 } \
                 return ZFCastStatic(zfself *, impl); \
+            } \
+            static zfbool _ZFP_ZFProtocolIsAvailableCk(void) \
+            { \
+                return zftrue; \
             }
 #define _ZFP_ZFPROTOCOL_INTERFACE_END(ModuleName) \
     };
@@ -552,7 +564,7 @@ private:
             { \
                 if(ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolDataRef().implConstructor == &ImplementationClass::_ZFP_##ImplementationClass##_ctor) \
                 { \
-                    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationChange(zfnull, zfnull, ZFProtocolLevel::e_Default); \
+                    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default); \
                 } \
                 _ZFP_ZFProtocolImplDataUnregister(zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), ZFM_TOSTRING_DIRECT(ModuleName)); \
             } \
@@ -560,6 +572,7 @@ private:
             { \
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationRegister( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
+                    &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
                     ZFM_TOSTRING_DIRECT(ImplementationName), \
                     implLevel); \
                 static _ZFP_ZFProtocolImplRegisterHolder _holder( \
@@ -571,6 +584,7 @@ private:
             { \
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationChange( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
+                    &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
                     ZFM_TOSTRING_DIRECT(ImplementationName), \
                     implLevel); \
                 return zftrue; \
@@ -594,6 +608,11 @@ private:
     ZF_STATIC_REGISTER_END(ZFPImplReg_##ImplementationClass)
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_REGISTER(ImplementationName, ImplementationClass) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_REGISTER_(ImplementationName, ImplementationClass)
+#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_CHECK(CheckAction) \
+    static zfbool _ZFP_ZFProtocolIsAvailableCk(void) \
+    { \
+        CheckAction \
+    }
 
 /**
  * @brief register platform hint for an implementation,
@@ -738,7 +757,18 @@ private:
  * for how to declare a protocol, see #ZFPROTOCOL_INTERFACE_BEGIN\n
  * \n
  * advanced: \n
- * you may change implementation at runtime, see #ZFProtocolChangeImplementation
+ * you may change implementation at runtime, see #ZFProtocolChangeImplementation\n
+ * \n
+ * you may define implementation which depends on other implementation:
+ * @code
+ *   ZFPROTOCOL_IMPLEMENTATION_BEGIN(YourImplementation, ModuleName, implLevel)
+ *       ZFPROTOCOL_IMPLEMENTATION_CHECK({
+ *           return ZFPROTOCOL_IS_AVAILABLE(OtherProtocol);
+ *       })
+ *       ...
+ *   ZFPROTOCOL_IMPLEMENTATION_END(YourImplementation)
+ *   ZFPROTOCOL_IMPLEMENTATION_REGISTER(YourImplementation)
+ * @endcode
  */
 #define ZFPROTOCOL_IMPLEMENTATION_BEGIN(ImplementationName, ModuleName, implLevel) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_BEGIN(ImplementationName, ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName), ModuleName, implLevel)
@@ -752,6 +782,11 @@ private:
  */
 #define ZFPROTOCOL_IMPLEMENTATION_REGISTER(ImplementationName) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_REGISTER(ImplementationName, ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName))
+/**
+ * @brief for more information, please refer to #ZFPROTOCOL_IMPLEMENTATION_BEGIN
+ */
+#define ZFPROTOCOL_IMPLEMENTATION_CHECK(CheckAction) \
+    _ZFP_ZFPROTOCOL_IMPLEMENTATION_CHECK(CheckAction)
 
 // ============================================================
 #define _ZFP_ZFProtocolChangeImplementation(ImplementationName, ImplementationClass) \

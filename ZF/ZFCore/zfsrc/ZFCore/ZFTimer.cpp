@@ -25,6 +25,30 @@ public:
     }
 };
 
+static ZFCoreArrayPOD<ZFTimer *> &_ZFP_ZFTimerList(void)
+{
+    static ZFCoreArrayPOD<ZFTimer *> d;
+    return d;
+}
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTimerList, ZFLevelZFFrameworkNormal)
+{
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFTimerList)
+{
+    zfCoreMutexLock();
+    ZFCoreArrayPOD<ZFTimer *> &d = _ZFP_ZFTimerList();
+    while(!d.isEmpty())
+    {
+        ZFTimer *timer = d.removeLastAndGet();
+        zfblockedRelease(zfRetain(timer));
+        zfCoreMutexUnlock();
+        timer->timerStop();
+        zfCoreMutexLock();
+    }
+    zfCoreMutexUnlock();
+}
+ZF_GLOBAL_INITIALIZER_END(ZFTimerList)
+
 // ============================================================
 // ZFTimer
 ZFOBJECT_REGISTER(ZFTimer)
@@ -111,6 +135,11 @@ ZFMETHOD_DEFINE_0(ZFTimer, zfindex, timerActivatedCount)
 
 void ZFTimer::_ZFP_ZFTimer_timerOnStart(void)
 {
+    {
+        zfCoreMutexLocker();
+        _ZFP_ZFTimerList().add(this);
+    }
+
     if(ZFThread::currentThread() == zfnull)
     {
         d->timerThreadToken = ZFThread::nativeThreadRegister();
@@ -128,6 +157,11 @@ void ZFTimer::_ZFP_ZFTimer_timerOnActivate(void)
 }
 void ZFTimer::_ZFP_ZFTimer_timerOnStop(void)
 {
+    {
+        zfCoreMutexLocker();
+        _ZFP_ZFTimerList().removeElement(this);
+    }
+
     this->timerOnStop();
     if(d->timerThreadToken != zfnull)
     {

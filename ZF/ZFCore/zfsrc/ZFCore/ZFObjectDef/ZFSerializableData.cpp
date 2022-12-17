@@ -30,14 +30,14 @@ public:
     {
     }
 };
-typedef zfimplmap<zfstringRO, _ZFP_ZFSerializableDataAttributeData> _ZFP_ZFSerializableDataAttributeMapType;
-typedef zfstlmap<zfstringRO, zfautoObject> _ZFP_ZFSerializableDataTagMapType;
+typedef zfimplmap<zfstring, _ZFP_ZFSerializableDataAttributeData> _ZFP_ZFSerializableDataAttributeMapType;
+typedef zfstlmap<zfstring, zfautoObject> _ZFP_ZFSerializableDataTagMapType;
 zfclassNotPOD _ZFP_ZFSerializableDataPrivate
 {
 public:
     zfuint refCount;
     _ZFP_ZFSerializableDataPrivate *serializableDataParent;
-    zfstringRO classNameFull;
+    zfstring classNameFull;
     zfbool resolved;
     ZFPathInfo *pathInfo;
     _ZFP_ZFSerializableDataAttributeMapType attributes;

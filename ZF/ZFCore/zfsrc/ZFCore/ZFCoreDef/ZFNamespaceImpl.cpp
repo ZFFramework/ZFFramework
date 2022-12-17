@@ -123,7 +123,7 @@ zfclassLikePOD _ZFP_ZFNamespaceMapType
 {
 public:
     zfstring ns;
-    zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> > d;
+    zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> > d;
 };
 
 static _ZFP_ZFNamespaceMapType &_ZFP_ZFNamespaceMap(void)
@@ -148,7 +148,7 @@ zfstring _ZFP_ZFNamespaceRegister(ZF_IN const char *parent,
     for(zfindex i = 0; i < pos.count(); ++i)
     {
         zfstring key(ns.cString() + pos[i].start, pos[i].count);
-        zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+        zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
         if(it == t->d.end())
         {
             _ZFP_ZFNamespaceMapType *tNew = zfnew(_ZFP_ZFNamespaceMapType);
@@ -177,7 +177,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns)
     for(zfindex i = 0; i < pos.count() - 1; ++i)
     {
         zfstring key(nsTmp.cString() + pos[i].start, pos[i].count);
-        zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+        zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
         if(it == t->d.end())
         {
             t = zfnull;
@@ -206,7 +206,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret)
         {
             ret.add(t->ns);
         }
-        for(zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
+        for(zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
         {
             toCheck.add(it->second.pointerValue());
         }
@@ -227,7 +227,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
         for(zfindex i = 0; i < pos.count(); ++i)
         {
             zfstring key(parent + pos[i].start, pos[i].count);
-            zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
+            zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
             if(it == t->d.end())
             {
                 return ;
@@ -240,7 +240,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
     }
 
     ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
-    for(zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
+    for(zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
     {
         toCheck.add(it->second.pointerValue());
     }
@@ -253,7 +253,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
         }
         if(recursive)
         {
-            for(zfstlmap<zfstringRO, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
+            for(zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.begin(); it != t->d.end(); ++it)
             {
                 toCheck.add(it->second.pointerValue());
             }

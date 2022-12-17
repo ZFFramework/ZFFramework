@@ -19,10 +19,10 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
 // ============================================================
 static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
 
-typedef zfstlhashmap<zfstringRO, const ZFClass *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_ClassMapCache;
+typedef zfstlhashmap<zfstring, const ZFClass *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_ClassMapCache;
 static _ZFP_ZFDI_ClassMapCache _ZFP_ZFDI_classMapCache;
 
-typedef zfstlhashmap<zfstringRO, ZFCoreArrayPOD<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
+typedef zfstlhashmap<zfstring, ZFCoreArrayPOD<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
 static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal)
@@ -245,7 +245,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
     if(_ZFP_ZFDI_cacheEnable)
     {
         zfCoreMutexLock();
-        zfstringRO key;
+        zfstring key;
         if(obj != zfnull)
         {
             key += obj->classData()->classNameFull();

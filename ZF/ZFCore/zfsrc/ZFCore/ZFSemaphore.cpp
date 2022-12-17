@@ -8,17 +8,6 @@ zfclassNotPOD _ZFP_ZFSemaphorePrivate
 public:
     void *nativeSemaphore;
     ZFPROTOCOL_INTERFACE_CLASS(ZFSemaphore) *impl;
-public:
-    void lock(ZF_IN ZFSemaphore *owner)
-    {
-        zfRetain(owner);
-        this->impl->semaphoreLock(owner);
-    }
-    void unlock(ZF_IN ZFSemaphore *owner)
-    {
-        this->impl->semaphoreUnlock(owner);
-        zfRelease(owner);
-    }
 };
 
 // ============================================================
@@ -39,37 +28,75 @@ void ZFSemaphore::objectOnDealloc(void)
     zfsuper::objectOnDealloc();
 }
 
-void *ZFSemaphore::nativeSemaphore(void)
+ZFMETHOD_DEFINE_0(ZFSemaphore, void *, nativeSemaphore)
 {
     return d->nativeSemaphore;
 }
 
-void ZFSemaphore::semaphoreSignal(void)
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreLock)
 {
-    d->lock(this);
+    zfRetain(this);
+    d->impl->semaphoreLock(this);
+}
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreUnlock)
+{
+    d->impl->semaphoreUnlock(this);
+    zfRelease(this);
+}
+
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreSignal)
+{
     d->impl->semaphoreSignal(this);
-    d->unlock(this);
 }
 
-void ZFSemaphore::semaphoreBroadcast(void)
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreBroadcast)
 {
-    d->lock(this);
     d->impl->semaphoreBroadcast(this);
-    d->unlock(this);
 }
 
-void ZFSemaphore::semaphoreWait(void)
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, semaphoreWait)
 {
-    d->lock(this);
     d->impl->semaphoreWait(this);
-    d->unlock(this);
 }
 
-zfbool ZFSemaphore::semaphoreWait(ZF_IN zftimet miliSecs)
+ZFMETHOD_DEFINE_1(ZFSemaphore, zfbool, semaphoreWait,
+                  ZFMP_IN(zftimet, miliSecs))
 {
-    d->lock(this);
+    return d->impl->semaphoreWait(this, miliSecs);
+}
+
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, lockAndSignal)
+{
+    zfRetain(this);
+    d->impl->semaphoreLock(this);
+    d->impl->semaphoreSignal(this);
+    d->impl->semaphoreUnlock(this);
+    zfRelease(this);
+}
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, lockAndBroadcast)
+{
+    zfRetain(this);
+    d->impl->semaphoreLock(this);
+    d->impl->semaphoreBroadcast(this);
+    d->impl->semaphoreUnlock(this);
+    zfRelease(this);
+}
+ZFMETHOD_DEFINE_0(ZFSemaphore, void, lockAndWait)
+{
+    zfRetain(this);
+    d->impl->semaphoreLock(this);
+    d->impl->semaphoreWait(this);
+    d->impl->semaphoreUnlock(this);
+    zfRelease(this);
+}
+ZFMETHOD_DEFINE_1(ZFSemaphore, zfbool, lockAndWait,
+                  ZFMP_IN(zftimet, miliSecs))
+{
+    zfRetain(this);
+    d->impl->semaphoreLock(this);
     zfbool ret = d->impl->semaphoreWait(this, miliSecs);
-    d->unlock(this);
+    d->impl->semaphoreUnlock(this);
+    zfRelease(this);
     return ret;
 }
 

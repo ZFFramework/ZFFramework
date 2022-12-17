@@ -5,18 +5,31 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstllist.h"
 
+#if 0
+    #define _ZFP_ZFThreadLog(fmt, ...) zfCoreLogTrim(fmt, ##__VA_ARGS__)
+#else
+    #define _ZFP_ZFThreadLog(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-#define _ZFP_ZFThreadImpl ZFPROTOCOL_ACCESS(ZFThread)
-
 static ZFCoreArrayPOD<ZFThread *> _ZFP_ZFThread_allThread;
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThread_allThreadCleanup, ZFLevelZFFrameworkEssential)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThread_allThreadCleanup, ZFLevelZFFrameworkHigh)
 {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup)
 {
-    _ZFP_ZFThread_allThread.removeAll();
+    zfCoreMutexLock();
+    while(!_ZFP_ZFThread_allThread.isEmpty())
+    {
+        ZFThread *zfThread = _ZFP_ZFThread_allThread.getLast();
+        zfblockedRelease(zfRetain(zfThread));
+        zfCoreAssert(zfThread->threadStarted());
+        zfCoreMutexUnlock();
+        zfThread->taskQueueCleanup();
+        zfThread->threadWait();
+    }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFThread_allThreadCleanup)
 
@@ -126,7 +139,7 @@ ZFMETHOD_DEFINE_0(ZFThread, void *, nativeThreadRegister)
     zfCoreAssert(zfThread == zfnull);
 
     zfThread = zfAlloc(_ZFP_I_ZFThreadNativeRegisterThread);
-    void *ret = _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
+    void *ret = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(zfThread);
     _ZFP_ZFThread_allThread.add(zfThread);
     zfThread->threadOnRegister();
     return ret;
@@ -163,12 +176,12 @@ ZFMETHOD_DEFINE_1(ZFThread, void, nativeThreadUnregister,
     zfThread->taskQueueCleanup();
     zfCoreMutexUnlock();
 
-    zfThread->d->threadWaitSema->semaphoreBroadcast();
+    zfThread->d->threadWaitSema->lockAndBroadcast();
 
     zfCoreMutexLocker();
     zfThread->threadOnUnregister();
     _ZFP_ZFThread_allThread.removeElement(zfThread);
-    _ZFP_ZFThreadImpl->nativeThreadUnregister(token);
+    ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(token);
     zfunsafe_zfRelease(zfThread);
 }
 
@@ -194,17 +207,17 @@ ZFMETHOD_DEFINE_0(ZFThread, const ZFCoreArrayPOD<ZFThread *> &, allThread)
 }
 ZFMETHOD_DEFINE_0(ZFThread, ZFThread *, mainThread)
 {
-    return _ZFP_ZFThreadImpl->mainThread();
+    return ZFPROTOCOL_ACCESS(ZFThread)->mainThread();
 }
 ZFMETHOD_DEFINE_0(ZFThread, ZFThread *, currentThread)
 {
-    return _ZFP_ZFThreadImpl->currentThread();
+    return ZFPROTOCOL_ACCESS(ZFThread)->currentThread();
 }
 
 ZFMETHOD_DEFINE_1(ZFThread, void, sleep,
                   ZFMP_IN(zftimet, miliSecs))
 {
-    _ZFP_ZFThreadImpl->sleep(miliSecs);
+    ZFPROTOCOL_ACCESS(ZFThread)->sleep(miliSecs);
 }
 
 ZFMETHOD_DEFINE_2(ZFThread, ZFThread *, executeInThread,
@@ -256,7 +269,7 @@ void ZFThread::objectOnDeallocPrepare(void)
     if(d->mainThreadToken != zfnull)
     {
         _ZFP_ZFThreadLog("[ZFThread] executeInMainThread cleanup by dealloc %p", this);
-        _ZFP_ZFThreadImpl->executeInMainThreadCleanup(d->mainThreadToken);
+        ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(d->mainThreadToken);
         d->mainThreadToken = zfnull;
     }
 
@@ -302,7 +315,7 @@ ZFMETHOD_DEFINE_2(ZFThread, void, threadStart,
     paramHolder->param0 = param0;
     paramHolder->param1 = param1;
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread begin %p", this);
-    d->threadToken = _ZFP_ZFThreadImpl->executeInNewThread(
+    d->threadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThread(
         ZFCallbackForFunc(ZFThread::_ZFP_ZFThread_threadCallback),
         ZFCallbackForFunc(ZFThread::_ZFP_ZFThread_threadCleanupCallback),
         this,
@@ -341,7 +354,7 @@ ZFMETHOD_DEFINE_0(ZFThread, void, threadWait)
     }
     zfCoreMutexUnlock();
     _ZFP_ZFThreadLog("[ZFThread] threadWait begin %p", this);
-    d->threadWaitSema->semaphoreWait();
+    d->threadWaitSema->lockAndWait();
     _ZFP_ZFThreadLog("[ZFThread] threadWait end %p", this);
 }
 ZFMETHOD_DEFINE_1(ZFThread, zfbool, threadWait,
@@ -354,7 +367,7 @@ ZFMETHOD_DEFINE_1(ZFThread, zfbool, threadWait,
         return zftrue;
     }
     zfCoreMutexUnlock();
-    return d->threadWaitSema->semaphoreWait(miliSecs);
+    return d->threadWaitSema->lockAndWait(miliSecs);
 }
 
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, isMainThread)
@@ -412,7 +425,7 @@ ZFMETHOD_DEFINE_0(ZFThread, void, taskQueueCleanup)
     }
     zfCoreMutexUnlock();
     d->taskQueueInitFlag = zffalse;
-    d->taskQueueSema->semaphoreBroadcast();
+    d->taskQueueSema->lockAndBroadcast();
     zfunsafe_zfRelease(this);
 }
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, taskQueueAvailable)
@@ -440,7 +453,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd,
         {
             d->mainThreadTaskRunning = zftrue;
             _ZFP_ZFThreadLog("[ZFThread] executeInMainThread begin %p", this);
-            d->mainThreadToken = _ZFP_ZFThreadImpl->executeInMainThread(
+            d->mainThreadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThread(
                 ZFCallbackForFunc(ZFThread::_ZFP_ZFThread_mainThreadCallback),
                 this,
                 zfnull);
@@ -451,7 +464,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd,
         if(d->taskQueueInitFlag)
         {
             d->taskQueue.push_back(task);
-            d->taskQueueSema->semaphoreBroadcast();
+            d->taskQueueSema->lockAndBroadcast();
         }
         else
         {
@@ -488,7 +501,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
     _ZFP_ZFThreadPrivate *d = zfThread->d;
     d->runningFlag = zftrue;
 
-    void *nativeThreadToken = _ZFP_ZFThreadImpl->nativeThreadRegister(zfThread);
+    void *nativeThreadToken = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(zfThread);
     _ZFP_ZFThread_allThread.add(zfThread);
     zfThread->threadOnRegister();
     zfCoreMutexUnlock();
@@ -536,7 +549,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
         if(d->taskQueue.empty())
         {
             zfCoreMutexUnlock();
-            d->taskQueueSema->semaphoreWait();
+            d->taskQueueSema->lockAndWait();
             continue;
         }
 
@@ -559,7 +572,7 @@ void ZFThread::_ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs)
     zfCoreMutexLock();
     zfThread->threadOnUnregister();
     _ZFP_ZFThread_allThread.removeElement(zfThread);
-    _ZFP_ZFThreadImpl->nativeThreadUnregister(nativeThreadToken);
+    ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadUnregister(nativeThreadToken);
     d->runningFlag = zffalse;
     d->startFlag = zffalse;
     zfCoreMutexUnlock();
@@ -575,11 +588,11 @@ void ZFThread::_ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFArgs &zfargs)
     if(d->threadToken != zfnull)
     {
         _ZFP_ZFThreadLog("[ZFThread] executeInMainThread cleanup by run %p", zfThread);
-        _ZFP_ZFThreadImpl->executeInNewThreadCleanup(d->threadToken);
+        ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThreadCleanup(d->threadToken);
         d->threadToken = zfnull;
     }
 
-    d->threadWaitSema->semaphoreBroadcast();
+    d->threadWaitSema->lockAndBroadcast();
 
     zfunsafe_zfRelease(zfThread);
     zfunsafe_zfRelease(paramHolder);
@@ -598,7 +611,7 @@ void ZFThread::_ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFArgs &zfargs)
     if(d->mainThreadToken != zfnull)
     {
         _ZFP_ZFThreadLog("[ZFThread] executeInMainThread cleanup by run %p", zfThread);
-        _ZFP_ZFThreadImpl->executeInMainThreadCleanup(d->mainThreadToken);
+        ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(d->mainThreadToken);
         d->mainThreadToken = zfnull;
     }
     zfCoreMutexUnlock();

@@ -7,9 +7,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /* ZFMETHOD_MAX_PARAM */
 
 // ============================================================
-static zfstlmap<zfstringRO, ZFDynamic> &_ZFP_ZFDynamicRegTagMap(void)
+static zfstlmap<zfstring, ZFDynamic> &_ZFP_ZFDynamicRegTagMap(void)
 {
-    static zfstlmap<zfstringRO, ZFDynamic> m;
+    static zfstlmap<zfstring, ZFDynamic> m;
     return m;
 }
 
@@ -27,7 +27,7 @@ public:
     // global
     zfuint refCount;
     zfbool errorOccurred;
-    zfstringRO regTag;
+    zfstring regTag;
 
     // scope
     const ZFClass *cls;
@@ -292,7 +292,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
     ZFCoreArrayPOD<const zfchar *> allNamespace;
     ZFNamespaceGetAllT(allNamespace);
 
-    zfstlmap<zfstringRO, zfbool> tags;
+    zfstlmap<zfstring, zfbool> tags;
     const zfchar *zfpFix = "_ZFP_";
     zfindex zfpFixLen = zfslen(zfpFix);
     const zfchar *zfpiFix = "_ZFP_I_";
@@ -367,7 +367,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
         tags[allNamespace[i]] = zftrue;
     }
 
-    for(zfstlmap<zfstringRO, zfbool>::iterator it = tags.begin(); it != tags.end(); ++it)
+    for(zfstlmap<zfstring, zfbool>::iterator it = tags.begin(); it != tags.end(); ++it)
     {
         output << it->first << "\n";
     }
@@ -375,7 +375,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
 
 ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag)
 {
-    zfstlmap<zfstringRO, ZFDynamic> &m = _ZFP_ZFDynamicRegTagMap();
+    zfstlmap<zfstring, ZFDynamic> &m = _ZFP_ZFDynamicRegTagMap();
     if(!d->regTag.isEmpty())
     {
         m.erase(d->regTag);
@@ -387,7 +387,7 @@ ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag)
         return *this;
     }
 
-    zfstlmap<zfstringRO, ZFDynamic>::iterator it = m.find(regTag);
+    zfstlmap<zfstring, ZFDynamic>::iterator it = m.find(regTag);
     if(it != m.end() && it->second != *this)
     {
         // remove may cause unexpect dealloc, retain once

@@ -10,7 +10,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummaryDataHolder, ZFLevelZFFramework
 {
 }
 public:
-    zfstlmap<zfstringRO, ZFEnvSummaryCallback> envSummaryCallbackMap;
+    zfstlmap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
 ZF_GLOBAL_INITIALIZER_END(ZFEnvSummaryDataHolder)
 
 // ============================================================
@@ -31,8 +31,8 @@ ZFMETHOD_FUNC_DEFINE_1(void, envSummary,
     zfstring tmp;
 
     zfbool first = zftrue;
-    zfstlmap<zfstringRO, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
-    for(zfstlmap<zfstringRO, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it)
+    zfstlmap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
+    for(zfstlmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it)
     {
         if(first)
         {

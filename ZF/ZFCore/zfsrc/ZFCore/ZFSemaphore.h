@@ -25,7 +25,13 @@ protected:
 
 public:
     /** @brief for internal use only */
-    virtual void *nativeSemaphore(void);
+    ZFMETHOD_DECLARE_0(void *, nativeSemaphore)
+
+public:
+    /** @brief lock */
+    ZFMETHOD_DECLARE_0(void, semaphoreLock)
+    /** @brief unlock */
+    ZFMETHOD_DECLARE_0(void, semaphoreUnlock)
 
 public:
     /**
@@ -34,23 +40,39 @@ public:
      * which waiter is notified, is decided by system\n
      * if there's no waiter, do nothing (this signal is ignored),
      * and new waiter need to wait new signal
+     * @note must wrapped by #semaphoreLock/#semaphoreUnlock
      */
-    virtual void semaphoreSignal(void);
+    ZFMETHOD_DECLARE_0(void, semaphoreSignal)
 
     /**
      * @brief notify all waiters
+     * @note must wrapped by #semaphoreLock/#semaphoreUnlock
      */
-    virtual void semaphoreBroadcast(void);
+    ZFMETHOD_DECLARE_0(void, semaphoreBroadcast)
 
     /**
      * @brief wait until signal
+     * @note must wrapped by #semaphoreLock/#semaphoreUnlock
      */
-    virtual void semaphoreWait(void);
+    ZFMETHOD_DECLARE_0(void, semaphoreWait)
 
     /**
      * @brief wait until signal or timeout
+     * @note must wrapped by #semaphoreLock/#semaphoreUnlock
      */
-    virtual zfbool semaphoreWait(ZF_IN zftimet miliSecs);
+    ZFMETHOD_DECLARE_1(zfbool, semaphoreWait,
+                       ZFMP_IN(zftimet, miliSecs))
+
+public:
+    /** @brief util to #semaphoreLock/#semaphoreSignal/#semaphoreUnlock */
+    ZFMETHOD_DECLARE_0(void, lockAndSignal)
+    /** @brief util to #semaphoreLock/#semaphoreBroadcast/#semaphoreUnlock */
+    ZFMETHOD_DECLARE_0(void, lockAndBroadcast)
+    /** @brief util to #semaphoreLock/#semaphoreWait/#semaphoreUnlock */
+    ZFMETHOD_DECLARE_0(void, lockAndWait)
+    /** @brief util to #semaphoreLock/#semaphoreWait/#semaphoreUnlock */
+    ZFMETHOD_DECLARE_1(zfbool, lockAndWait,
+                       ZFMP_IN(zftimet, miliSecs))
 
 private:
     _ZFP_ZFSemaphorePrivate *d;

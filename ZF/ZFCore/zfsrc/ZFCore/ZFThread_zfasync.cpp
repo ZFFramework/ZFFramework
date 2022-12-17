@@ -13,7 +13,7 @@ public:
     zfautoObjectT<ZFThread *> callerThread;
 };
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfasyncDataHolder, ZFLevelZFFrameworkEssential)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfasyncDataHolder, ZFLevelZFFrameworkHigh)
 {
     this->maxThread = 8;
     this->threadPoolIndex = 0;

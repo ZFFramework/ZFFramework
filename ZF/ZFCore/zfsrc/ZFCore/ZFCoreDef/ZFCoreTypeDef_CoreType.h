@@ -80,7 +80,7 @@ ZFT_INT_WEAK(_ZFT_t_zfbool, zfbool);
  *
  *
  * @warning take good care of that, zfindex is not ensured same as size_t,
- *   so it is not ensured that zfindexMax() is equal to zfstring::npos,
+ *   so it is not ensured that zfindexMax() is equal to string::npos,
  *   e.g.:
  *   @code
  *     zfindex n = std::string::npos;

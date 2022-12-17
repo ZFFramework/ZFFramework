@@ -48,6 +48,7 @@ protected:
     virtual void testCaseOnStart(void)
     {
         zfsuper::testCaseOnStart();
+        ZFFramework_test_protocolCheck(ZFTimer);
 
         zfblockedAlloc(_ZFP_ZFUtility_ZFAni_test_Object, target);
         zfautoObject aniHolder = ZFAni(target, "testProp", "-100", "200");
