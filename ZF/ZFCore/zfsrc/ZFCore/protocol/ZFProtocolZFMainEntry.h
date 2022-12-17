@@ -19,6 +19,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 extern ZFLIB_ZFCore zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams = ZFCoreArray<zfstring>());
 
+/**
+ * @brief extra callback for impl, called in #ZFMainExecute, recommend to set by #ZF_GLOBAL_INITIALIZER_INIT
+ */
+extern ZFLIB_ZFCore ZFCoreArrayPOD<ZFFuncAddrType> &ZFMainExtraImpl(void);
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFMainEntry_h_
 

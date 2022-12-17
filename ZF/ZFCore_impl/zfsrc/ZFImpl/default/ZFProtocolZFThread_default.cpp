@@ -165,17 +165,25 @@ public:
 
     virtual zfbool executeInMainThreadAvailable(void)
     {
-        return zffalse;
+        return ZFMainThreadTaskImplGetExecute() != zfnull;
     }
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable,
                                       ZF_IN ZFObject *param0,
                                       ZF_IN ZFObject *param1)
     {
-        zfCoreCriticalMessageTrim("[ZFThread] executeInMainThread not available");
-        return zfnull;
+        if(ZFMainThreadTaskImplGetExecute() == zfnull)
+        {
+            zfCoreCriticalMessageTrim("[ZFThread] executeInMainThread not available");
+            return zfnull;
+        }
+        return ZFMainThreadTaskImplGetExecute()(runnable, param0, param1);
     }
     virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken)
     {
+        if(ZFMainThreadTaskImplGetCleanup() != zfnull)
+        {
+            ZFMainThreadTaskImplGetCleanup()(nativeToken);
+        }
     }
 
     virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,

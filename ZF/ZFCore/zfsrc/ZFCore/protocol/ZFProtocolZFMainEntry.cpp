@@ -13,17 +13,32 @@ zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams /* = ZFCoreArra
     if(func != zfnull)
     {
         func();
-        if(!ZFThread::implMainThreadTaskAvailable())
-        {
-            ZFFrameworkCleanup();
-        }
     }
     else
     {
         zfCoreLog("ZFMAIN_ENTRY not set");
     }
+    for(zfindex i = 0; i < ZFMainExtraImpl().count(); ++i)
+    {
+        ZFMainExtraImpl()[i]();
+    }
     return _ZFP_ZFApp_appExitCode();
 }
+
+ZFCoreArrayPOD<ZFFuncAddrType> &ZFMainExtraImpl(void)
+{
+    static ZFCoreArrayPOD<ZFFuncAddrType> d;
+    return d;
+}
+
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainExtraImplCleanup, ZFLevelZFFrameworkStatic)
+{
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainExtraImplCleanup)
+{
+    ZFMainExtraImpl().removeAll();
+}
+ZF_GLOBAL_INITIALIZER_END(ZFMainExtraImplCleanup)
 
 ZF_NAMESPACE_GLOBAL_END
 

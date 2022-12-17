@@ -89,6 +89,7 @@ public:
     virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFThread)
 
+// ============================================================
 /** @brief see #ZFThread */
 zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextends ZFThread
 {
@@ -132,6 +133,36 @@ public:
         return zftrue;
     }
 };
+
+// ============================================================
+/** @brief see #ZFMainThreadTaskImplSet */
+typedef void *(*ZFMainThreadTaskImplCallbackExecute)(ZF_IN const ZFListener &runnable,
+                                                     ZF_IN ZFObject *param0,
+                                                     ZF_IN ZFObject *param1);
+/** @brief see #ZFMainThreadTaskImplSet */
+typedef void (*ZFMainThreadTaskImplCallbackCleanup)(ZF_IN void *nativeToken);
+
+/**
+ * @brief set custom impl for #ZFThread::taskQueueAdd for main thread
+ *
+ * main thread is a special case for thread task management,
+ * in ZFFramework, there are mainly two way of main thread task management:
+ * -  most platforms (Android, iOS, etc) has builtin event loop logic which can not be touched by ZFFramework,
+ *   but supplies task post API,
+ *   ZFFramework would use the platform specified API to achieve main thread task queue logic
+ * -  some platforms (SDL for example) let app to supply event loop,
+ *   which requires app to manually implement the main thread task queue logic,
+ *   at this case, ZFFramework allow impl to specify custom impl to resolve main thread task,
+ *   by using this method, app can embed default thread impl to the customized main event loop
+ *
+ * whether the custom impl would be used, depends on the ZFThread protocol impl
+ */
+extern ZFLIB_ZFCore void ZFMainThreadTaskImplSet(ZF_IN ZFMainThreadTaskImplCallbackExecute executeImpl,
+                                                 ZF_IN ZFMainThreadTaskImplCallbackCleanup cleanupImpl);
+/** @brief see #ZFMainThreadTaskImplSet */
+extern ZFLIB_ZFCore ZFMainThreadTaskImplCallbackExecute ZFMainThreadTaskImplGetExecute(void);
+/** @brief see #ZFMainThreadTaskImplSet */
+extern ZFLIB_ZFCore ZFMainThreadTaskImplCallbackCleanup ZFMainThreadTaskImplGetCleanup(void);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFThread_h_

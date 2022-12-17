@@ -7,9 +7,15 @@ if test "x-$PROJ_NAME" = "x-" || test "x-$PROJ_PATH" = "x-" ; then
     exit 1
 fi
 
+if test "x-$CMAKE_BUILD_TYPE" = "x-" ; then
+    _CONFIG=Release
+else
+    _CONFIG=$CMAKE_BUILD_TYPE
+fi
+
 ZF_ROOT_PATH=$WORK_DIR/../../..
 ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
-_TMP_PATH=$PROJ_PATH/../../../../_tmp/cmake/$PROJ_NAME/release
+_TMP_PATH=$PROJ_PATH/../../../../_tmp/cmake/$PROJ_NAME/$_CONFIG
 
 _OLD_DIR=$(pwd)
 cd "$PROJ_PATH"
