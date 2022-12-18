@@ -40,6 +40,16 @@ private:
         } \
     } while(zffalse)
 
+#define ZFFramework_test_asyncTestCheck() \
+    do { \
+        if(!ZFThread::implMainThreadTaskAvailable()) \
+        { \
+            this->testCaseOutput("ZFThread::implMainThreadTaskAvailable() not available, skip test case"); \
+            this->testCaseStop(); \
+            return ; \
+        } \
+    } while(zffalse)
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFFramework_test_global_h_

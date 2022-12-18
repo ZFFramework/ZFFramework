@@ -14,6 +14,7 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
         ZFFramework_test_protocolCheck(ZFUIView);
+        ZFFramework_test_asyncTestCheck();
 
         zfautoObject luaResult = ZFLuaExecute(ZFInputForResFile("test_ZFLua_app.lua"));
         ZFUIPageManager *pm = luaResult;

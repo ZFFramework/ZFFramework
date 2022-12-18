@@ -44,6 +44,7 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUIDraw);
+        ZFFramework_test_asyncTestCheck();
 
         ZFUIWindow *window = zfnull;
         ZFUIView *container = zfnull;

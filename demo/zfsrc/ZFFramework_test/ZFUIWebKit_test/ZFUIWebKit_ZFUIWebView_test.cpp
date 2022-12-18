@@ -13,6 +13,7 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUIWebView);
+        ZFFramework_test_asyncTestCheck();
 
         ZFUIWindow *window = zfnull;
         ZFUIView *container = zfnull;

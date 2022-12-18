@@ -105,7 +105,7 @@ static zfbool _ZFP_ZFFilePathInfoCopy_copyDir(ZF_IN const ZFPathInfo &srcPath,
                         return zffalse;
                     }
                 }
-            } while(ZFFilePathInfoFindFirst(srcDir, fd));
+            } while(ZFFilePathInfoFindNext(srcDir, fd));
             ZFFilePathInfoFindClose(srcDir, fd);
         } // if(ZFFilePathInfoFindFirst(srcDir, fd))
     } // while(!stacksDirSrc.isEmpty())

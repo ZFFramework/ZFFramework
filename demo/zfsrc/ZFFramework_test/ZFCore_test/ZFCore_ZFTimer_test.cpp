@@ -12,6 +12,7 @@ protected:
     {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFTimer);
+        ZFFramework_test_asyncTestCheck();
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFTimer");

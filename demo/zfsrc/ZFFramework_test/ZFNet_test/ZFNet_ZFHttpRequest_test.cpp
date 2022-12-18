@@ -12,6 +12,7 @@ protected:
     {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFHttpRequest);
+        ZFFramework_test_asyncTestCheck();
 
         ZFTestCase *testCase = this;
         ZFLISTENER_1(onRecv

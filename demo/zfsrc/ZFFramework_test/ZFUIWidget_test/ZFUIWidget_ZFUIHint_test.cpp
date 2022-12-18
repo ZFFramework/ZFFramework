@@ -13,6 +13,7 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUISysWindow);
+        ZFFramework_test_asyncTestCheck();
 
         zfautoObject hint = ZFUIHintShow("this is a normal hint");
         ZFTestCase *testCase = this;

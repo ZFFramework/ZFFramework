@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.17)
 project({ZFTT_R_proj_name})
-message("Build with type: ${CMAKE_BUILD_TYPE}")
+message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../ZFFramework)
 
 if(WIN32)
-    execute_process(COMMAND ${ZF_ROOT_PATH}/zfsetup.bat)
+    execute_process(COMMAND "${ZF_ROOT_PATH}/zfsetup.bat")
 else()
-    execute_process(COMMAND ${ZF_ROOT_PATH}/zfsetup.sh)
+    execute_process(COMMAND sh "${ZF_ROOT_PATH}/zfsetup.sh")
 endif()
 
 function(ZFAddSrc ZF_SRC_FILES_ PROJ_PATH_)
@@ -24,7 +24,7 @@ function(ZFAddSrc ZF_SRC_FILES_ PROJ_PATH_)
     if(WIN32)
         execute_process(COMMAND "${ZF_ROOT_PATH}/tools/util/copy_res.bat" "${PROJ_PATH_}/zfres/" "${PROJECT_BINARY_DIR}/zfres")
     else()
-        execute_process(COMMAND "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJ_PATH_}/zfres/" "${PROJECT_BINARY_DIR}/zfres")
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${PROJ_PATH_}/zfres/" "${PROJECT_BINARY_DIR}/zfres")
     endif()
 endfunction(ZFAddSrc)
 
@@ -159,6 +159,10 @@ ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/../ZFModule/ZF/{ZFTT_R_impl_ext_name_29}){
 ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/../ZFModule/ZF/{ZFTT_R_impl_ext_name_30}){ZFTT_CE}{ZFTT_C_impl_ext_require_31}
 ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/../ZFModule/ZF/{ZFTT_R_impl_ext_name_31}){ZFTT_CE}
 
+include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
+if(DEFINED zfprojConfig)
+    zfprojConfig({ZFTT_R_proj_name} ZF_SRC_FILES)
+endif()
 add_executable({ZFTT_R_proj_name} ${ZF_SRC_FILES})
 set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 

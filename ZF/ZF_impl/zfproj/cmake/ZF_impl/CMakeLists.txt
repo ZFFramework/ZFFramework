@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.17)
 project(ZF_impl)
-message("Build with type: ${CMAKE_BUILD_TYPE}")
+message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 
@@ -10,6 +10,10 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
+include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
+if(DEFINED zfprojConfig)
+    zfprojConfig(ZF_impl srcfiles)
+endif()
 add_library(ZF_impl STATIC ${srcfiles})
 set_target_properties(ZF_impl PROPERTIES LINKER_LANGUAGE CXX)
 

@@ -14,6 +14,7 @@ protected:
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUIImage);
         ZFFramework_test_protocolCheck(ZFUIImageView);
+        ZFFramework_test_asyncTestCheck();
 
         ZFUIWindow *window = zfnull;
         ZFUIView *container = zfnull;

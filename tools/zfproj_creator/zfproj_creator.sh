@@ -173,11 +173,15 @@ if test "x-$DST_PATH" = "x-" ; then
     echo "ZF_OUTPUT not set"
     exit 1
 fi
+
 _OLD_DIR=$(pwd)
-cd "${CONFIG_FILE_PATH%[/\\]*}"
 mkdir -p "$DST_PATH" >/dev/null 2>&1
 cd "$DST_PATH"
 DST_PATH=$(pwd)
+cd "$_OLD_DIR"
+
+_OLD_DIR=$(pwd)
+cd "${CONFIG_FILE_PATH%[/\\]*}"
 cd "$_OLD_DIR"
 
 if test "x-$ZF_TYPE" = "x-app" ; then

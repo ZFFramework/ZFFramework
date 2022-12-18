@@ -13,6 +13,7 @@ protected:
     {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFThread);
+        ZFFramework_test_asyncTestCheck();
 
         zfLogTrim("============================================================");
         zfLogTrim("ZFThread");
