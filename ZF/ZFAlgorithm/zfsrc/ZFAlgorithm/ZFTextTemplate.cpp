@@ -119,7 +119,8 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFTextTemplateApply,
                        ZFMP_IN(const ZFOutput &, output),
                        ZFMP_IN(const ZFInput &, input))
 {
-    ZFBuffer buffer = ZFInputReadToBuffer(input);
+    ZFBuffer buffer;
+    ZFInputReadAll(buffer, input);
     if(buffer.buffer() == zfnull)
     {
         return zfindexMax();

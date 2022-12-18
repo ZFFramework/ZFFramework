@@ -36,7 +36,8 @@ public:
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
                 .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
             ).c_str());
-        ZFBuffer buf = ZFInputReadToBuffer(inputCallback);
+        ZFBuffer buf;
+        ZFInputReadAll(buf, inputCallback);
         if(buf.buffer() == zfnull)
         {
             return zfnull;

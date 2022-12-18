@@ -16,7 +16,7 @@ protected:
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
 
-        zfautoObject luaResult = ZFLuaExecute(ZFInputForResFile("test_ZFLua_app.lua"));
+        zfautoObject luaResult = ZFLuaExecute(ZFInputForRes("test_ZFLua_app.lua"));
         ZFUIPageManager *pm = luaResult;
         zfCoreAssert(pm != zfnull);
         pm->observerAdd(

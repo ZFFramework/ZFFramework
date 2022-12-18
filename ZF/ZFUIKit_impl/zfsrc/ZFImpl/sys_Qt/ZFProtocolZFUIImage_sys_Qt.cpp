@@ -16,7 +16,8 @@ public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback)
     {
         QImage *nativeImage = new QImage();
-        ZFBuffer buf = ZFInputReadToBuffer(inputCallback);
+        ZFBuffer buf;
+        ZFInputReadAll(buf, inputCallback);
         if(!nativeImage->loadFromData((const uchar *)buf.buffer(), buf.bufferSize()))
         {
             delete nativeImage;

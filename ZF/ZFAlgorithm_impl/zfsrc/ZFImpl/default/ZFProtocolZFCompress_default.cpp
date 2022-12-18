@@ -128,7 +128,7 @@ public:
         zfindex inputSize = inputZip.ioSize();
         if(inputSize == zfindexMax())
         {
-            pOpaque->zipBuffer = ZFInputReadToBuffer(inputZip);
+            ZFInputReadAll(pOpaque->zipBuffer, inputZip);
             if(pOpaque->zipBuffer.buffer() == zfnull)
             {
                 zfdelete(pOpaque);
@@ -225,7 +225,8 @@ private:
         zfindex inputSize = input.ioSize();
         if(inputSize == zfindexMax())
         {
-            ZFBuffer buffer = ZFInputReadToBuffer(input);
+            ZFBuffer buffer;
+            ZFInputReadAll(buffer, input);
             return mz_zip_writer_add_mem(&zip, filePath, buffer.buffer(), buffer.bufferSize(), flags);
         }
 

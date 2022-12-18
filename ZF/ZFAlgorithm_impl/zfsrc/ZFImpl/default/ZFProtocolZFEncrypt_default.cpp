@@ -21,7 +21,8 @@ public:
         }
         else
         {
-            ZFBuffer inputBuf = ZFInputReadToBuffer(input);
+            ZFBuffer inputBuf;
+            ZFInputReadAll(inputBuf, input);
             if(inputBuf.buffer() == zfnull)
             {
                 return zffalse;

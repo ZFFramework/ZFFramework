@@ -150,7 +150,7 @@ chain http file and zip file, and R/W contents in the zip file just like normal 
 ZFMAIN_ENTRY()
 {
     ZFFileResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
-    ZFInputReadToOutput(zfLogTrimT(), ZFInputForResFile("path/in/zip/file.txt"));
+    ZFInputReadAll(zfLogTrimT(), ZFInputForRes("path/in/zip/file.txt"));
     ZFFilePathInfoTreePrint(ZFPathInfo("res:"));
 }
 ```

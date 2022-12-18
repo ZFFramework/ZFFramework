@@ -11,7 +11,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_iOS, ZFUIImage, ZFProtocolLeve
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback)
     {
-        ZFBuffer dataBuf = ZFInputReadToBuffer(inputCallback);
+        ZFBuffer dataBuf;
+        ZFInputReadAll(dataBuf, inputCallback);
         if(dataBuf.buffer() == zfnull)
         {
             return zfnull;

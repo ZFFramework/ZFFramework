@@ -20,10 +20,10 @@ protected:
         ZFFilePathInfoTreePrint(ZFPathInfo(ZFPathType_res(), "test_ZFFileIO"), ZFOutputDefault(), "  ");
 
         zfLogTrimT() << "try read content:";
-        ZFInputReadToOutput(ZFOutputDefault(),
-            ZFInputForResFile("test_ZFFileIO/fileExist"));
-        ZFInputReadToOutput(ZFOutputDefault(),
-            ZFInputForResFile("test_ZFFileIO/dirExist/fileExist2"));
+        ZFInputReadAll(ZFOutputDefault(),
+            ZFInputForRes("test_ZFFileIO/fileExist"));
+        ZFInputReadAll(ZFOutputDefault(),
+            ZFInputForRes("test_ZFFileIO/dirExist/fileExist2"));
 
         zfLogTrimT() << "============================================================";
         zfLogTrimT() << "copy to cache dir, tree:";
@@ -31,9 +31,9 @@ protected:
         ZFFilePathInfoTreePrint(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO"), ZFOutputDefault(), "  ");
 
         zfLogTrimT() << "try read content:";
-        ZFInputReadToOutput(ZFOutputDefault(),
+        ZFInputReadAll(ZFOutputDefault(),
             ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/fileExist")));
-        ZFInputReadToOutput(ZFOutputDefault(),
+        ZFInputReadAll(ZFOutputDefault(),
             ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist/fileExist2")));
 
         zfLogTrimT() << "============================================================";

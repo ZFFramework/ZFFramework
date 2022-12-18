@@ -72,68 +72,6 @@ public:
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
 
 // ============================================================
-/**
- * @brief read single logic char to buf, return count of sizoef(zfchar) if success, or 0 if fail
- *
- * since UTF-8 has variable logic char size, use this method to read a single logic char\n
- * note: result may have more than one char for invalid encoding,
- * and buf size must at least 9 byte size
- */
-extern ZFLIB_ZFCore zfindex ZFInputReadChar(ZF_OUT zfchar *buf, ZF_IN_OUT const ZFInput &input);
-/**
- * @brief see #ZFInputReadChar
- */
-extern ZFLIB_ZFCore zfindex ZFInputReadChar(ZF_IN_OUT zfstring &buf, ZF_IN_OUT const ZFInput &input);
-/**
- * @brief util method to read all contents from input to string
- */
-extern ZFLIB_ZFCore void ZFInputReadToString(ZF_IN_OUT zfstring &ret, ZF_IN_OUT const ZFInput &input);
-/**
- * @brief util method to read all contents from input to a buffer
- *
- * returned buffer is ensured null-terminated,
- * and buffer's size shows the content's size excluding tail '\0'\n
- * return null buffer if input invalid or input error
- */
-extern ZFLIB_ZFCore ZFBuffer ZFInputReadToBuffer(ZF_IN_OUT const ZFInput &input);
-
-/**
- * @brief util method to skip chars in set
- *
- * return false if all chars are skipped before end,
- * other wise, buf stores the first logic char (see #ZFInputReadChar)
- */
-extern ZFLIB_ZFCore zfbool ZFInputSkipChars(ZF_OUT zfchar *buf,
-                                            ZF_IN_OUT const ZFInput &input,
-                                            ZF_IN_OPT const zfchar *charSet = " \t\r\n");
-
-/**
- * @brief read until any char in charSet shows up, or reached maxCount,
- *   return count read so far
- *
- * the first char matched charSet would be read and discarded,
- * and you may check it by firstMatchedChar,
- * if reached end or maxCount before matched charSet,
- * 0 would be returned to firstMatchedChar
- */
-extern ZFLIB_ZFCore zfindex ZFInputReadUntil(ZF_IN_OUT zfstring &ret,
-                                             ZF_IN_OUT const ZFInput &input,
-                                             ZF_IN_OPT const zfchar *charSet = " \t\r\n",
-                                             ZF_IN_OPT zfindex maxCount = zfindexMax(),
-                                             ZF_OUT_OPT zfchar *firstMatchedChar = zfnull);
-
-/**
- * @brief util method to check whether the input match the tokens
- *
- * return token's index if match or zfindexMax() if no match or error,
- * header white spaces would be skipped automatically\n
- * if no match, this method would try to restore the callback state by ioSeek to original position
- */
-extern ZFLIB_ZFCore zfindex ZFInputCheckMatch(ZF_IN const zfchar **tokens,
-                                              ZF_IN zfindex tokenCount,
-                                              ZF_IN_OUT const ZFInput &input);
-
-// ============================================================
 // common input callbacks
 /**
  * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE

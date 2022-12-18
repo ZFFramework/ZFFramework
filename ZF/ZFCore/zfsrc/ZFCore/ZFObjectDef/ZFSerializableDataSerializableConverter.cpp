@@ -78,7 +78,8 @@ zfbool ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableData,
         ZFSerializableUtil::errorOccurred(outErrorHint, "invalid input callback");
         return zffalse;
     }
-    ZFBuffer buf = ZFInputReadToBuffer(input);
+    ZFBuffer buf;
+    ZFInputReadAll(buf, input);
     if(buf.buffer() == zfnull)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, "unable to load data from input");

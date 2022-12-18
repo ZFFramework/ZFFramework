@@ -17,7 +17,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * of other script language such as Javascript\n
  * \n
  * what the path and pathInfo means:
- * -  when pathInfo is not specified, the path is used as #ZFInputForResFile
+ * -  when pathInfo is not specified, the path is used as #ZFInputForRes
  * -  when pathInfo is specified, the path is the relative path to pathInfo,
  *   and would be used as #ZFInputForLocal
  *

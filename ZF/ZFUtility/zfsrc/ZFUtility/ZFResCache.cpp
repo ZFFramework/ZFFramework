@@ -30,7 +30,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfRes,
     ZFInput input;
     if(pathInfo == zfnull || pathInfo->isEmpty())
     {
-        input = ZFInputForResFile(resFilePath);
+        input = ZFInputForRes(resFilePath);
     }
     else
     {

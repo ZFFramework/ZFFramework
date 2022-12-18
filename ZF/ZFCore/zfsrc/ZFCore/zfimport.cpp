@@ -109,7 +109,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport,
         }
         else
         {
-            return _ZFP_zfimportFile(ZFInputForResFile(pathFormated));
+            return _ZFP_zfimportFile(ZFInputForRes(pathFormated));
         }
     }
     else

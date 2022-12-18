@@ -36,7 +36,7 @@ static zfbool _ZFP_ZFFramework_test_luaTest(void)
         ZFFileResExtPathAdd(extResList[i]);
     }
 
-    ZFInput input = ZFInputForResFile("zf.lua");
+    ZFInput input = ZFInputForRes("zf.lua");
     if(input)
     {
         zfLogTrimT() << "redirect to:" << input.callbackId();
