@@ -147,9 +147,9 @@ void ZFMethod::_ZFP_ZFMethod_initClassMemberType(ZF_IN const ZFClass *methodOwne
 }
 void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfchar *methodNamespace)
 {
-    if(!zfsIsEmpty(methodNamespace)
-        && !zfscmpTheSame(methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
-        && !zfscmpTheSame(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
+    if(!zfstringIsEmpty(methodNamespace)
+        && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
+        && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
     ) {
         this->_ZFP_ZFMethod_methodNamespace = _ZFP_ZFSigNameAddr(methodNamespace);
     }
@@ -249,7 +249,7 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const
 
     if(this->methodIsFunctionType())
     {
-        if(!zfsIsEmpty(this->methodNamespace()))
+        if(!zfstringIsEmpty(this->methodNamespace()))
         {
             ret += this->methodNamespace();
             ret += "::";
@@ -309,8 +309,8 @@ zfbool ZFMethod::methodParamTypeIdIsMatch(
                                           ) const
 {
     #define _ZFP_ZFMethodParamCheck_paramLoop(N) \
-        if(zfsIsEmpty(methodParamTypeId##N) || zfscmpTheSame(methodParamTypeId##N, ZFTypeId_void())) {return (this->methodParamCount() == N);} \
-        if(this->methodParamCount() <= N || !zfscmpTheSame(this->methodParamTypeIdAt(N), methodParamTypeId##N)) {return zffalse;}
+        if(zfstringIsEmpty(methodParamTypeId##N) || zfstringIsEqual(methodParamTypeId##N, ZFTypeId_void())) {return (this->methodParamCount() == N);} \
+        if(this->methodParamCount() <= N || !zfstringIsEqual(this->methodParamTypeIdAt(N), methodParamTypeId##N)) {return zffalse;}
     _ZFP_ZFMethodParamCheck_paramLoop(0)
     _ZFP_ZFMethodParamCheck_paramLoop(1)
     _ZFP_ZFMethodParamCheck_paramLoop(2)
@@ -421,22 +421,22 @@ static void _ZFP_ZFMethodInstanceSig(ZF_OUT zfstring &ret,
                                      )
 {
     if(methodScope
-        && !zfscmpTheSame(methodScope, ZF_NAMESPACE_GLOBAL_NAME)
-        && !zfscmpTheSame(methodScope, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
+        && !zfstringIsEqual(methodScope, ZF_NAMESPACE_GLOBAL_NAME)
+        && !zfstringIsEqual(methodScope, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
     ) {
         zfindexToString(ret, _ZFP_ZFSigForName(methodScope));
     }
     ret += ':';
     zfindexToString(ret, _ZFP_ZFSigForName(methodName));
 
-    if(zfsIsEmpty(methodParamTypeId0)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId0));
-    if(zfsIsEmpty(methodParamTypeId1)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId1));
-    if(zfsIsEmpty(methodParamTypeId2)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId2));
-    if(zfsIsEmpty(methodParamTypeId3)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId3));
-    if(zfsIsEmpty(methodParamTypeId4)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId4));
-    if(zfsIsEmpty(methodParamTypeId5)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId5));
-    if(zfsIsEmpty(methodParamTypeId6)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId6));
-    if(zfsIsEmpty(methodParamTypeId7)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId7));
+    if(zfstringIsEmpty(methodParamTypeId0)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId0));
+    if(zfstringIsEmpty(methodParamTypeId1)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId1));
+    if(zfstringIsEmpty(methodParamTypeId2)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId2));
+    if(zfstringIsEmpty(methodParamTypeId3)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId3));
+    if(zfstringIsEmpty(methodParamTypeId4)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId4));
+    if(zfstringIsEmpty(methodParamTypeId5)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId5));
+    if(zfstringIsEmpty(methodParamTypeId6)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId6));
+    if(zfstringIsEmpty(methodParamTypeId7)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId7));
 }
 
 static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfchar *methodInternalId)
@@ -602,7 +602,7 @@ ZFMethod *_ZFP_ZFMethodRegisterV(ZF_IN zfbool methodIsUserRegister
         {
             for(zfindex i = 0; i < paramCount; ++i)
             {
-                if(!zfscmpTheSame(paramTypeName[i], method->methodParamTypeNameAt(i)))
+                if(!zfstringIsEqual(paramTypeName[i], method->methodParamTypeNameAt(i)))
                 {
                     isRedefine = zftrue;
                     break;
@@ -868,7 +868,7 @@ const ZFMethod *ZFMethodAlias(ZF_IN const ZFMethod *method,
                               ZF_IN const zfchar *aliasName)
 {
     zfCoreMutexLocker();
-    if(method == zfnull || zfsIsEmpty(aliasName))
+    if(method == zfnull || zfstringIsEmpty(aliasName))
     {
         return zfnull;
     }

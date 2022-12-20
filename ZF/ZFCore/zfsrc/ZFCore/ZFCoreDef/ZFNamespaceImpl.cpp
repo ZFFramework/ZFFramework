@@ -9,7 +9,7 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns)
 {
     static zfstring namePrefix(ZF_NAMESPACE_GLOBAL_NAME);
     static zfstring abbrNamePrefix(ZF_NAMESPACE_GLOBAL_ABBR_NAME);
-    if(zfsIsEmpty(ns))
+    if(zfstringIsEmpty(ns))
     {
         return zfnull;
     }

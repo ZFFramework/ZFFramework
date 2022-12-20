@@ -54,7 +54,7 @@ void _ZFP_ZFEnumData::add(ZF_IN zfbool isEnableDuplicateValue,
                           ZF_IN const zfchar *name)
 {
     zfCoreAssert(value != ZFEnumInvalid());
-    zfCoreAssert(!zfsIsEmpty(name));
+    zfCoreAssert(!zfstringIsEmpty(name));
     _ZFP_ZFEnumDataPrivate::ValueMapType::iterator it = d->valueMap.find(value);
     if(it != d->valueMap.end())
     {
@@ -114,7 +114,7 @@ zfbool _ZFP_ZFEnumData::enumContainValue(ZF_IN zfuint value) const
 }
 zfuint _ZFP_ZFEnumData::enumValueForName(ZF_IN const zfchar *name) const
 {
-    if(!zfsIsEmpty(name))
+    if(!zfstringIsEmpty(name))
     {
         _ZFP_ZFEnumDataPrivate::NameMapType::iterator it = d->nameMap.find(name);
         if(it != d->nameMap.end())

@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFCoreStringUtil_h_
 #define _ZFI_ZFCoreStringUtil_h_
 
-#include "ZFCoreTypeDef.h"
+#include "ZFCoreArray.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -379,38 +379,6 @@ inline zfstring zfsFromPointer(ZF_IN const void *p)
 
 // ============================================================
 /**
- * @brief util to compare two c strings,
- *   while null is regarded as equal to empty string
- */
-inline zfbool zfscmpTheSame(ZF_IN const zfchar *s1, ZF_IN const zfchar *s2)
-{
-    if(s1 == s2)
-    {
-        return zftrue;
-    }
-    else if(!s1)
-    {
-        return (*s2 == '\0');
-    }
-    else if(!s2)
-    {
-        return (*s1 == '\0');
-    }
-    else
-    {
-        return (zfscmp(s1, s2) == 0);
-    }
-}
-/**
- * @brief util to check whether string is empty (null or empty string)
- */
-inline zfbool zfsIsEmpty(ZF_IN const zfchar *s1)
-{
-    return (s1 == zfnull || *s1 == '\0');
-}
-
-// ============================================================
-/**
  * @brief util method to copy the contents of src,
  *   return null if src null, or empty string if src is empty string
  */
@@ -580,6 +548,38 @@ inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src,
 #define zfsConnect(src, ...) _ZFP_zfsConnect(src, ##__VA_ARGS__, _ZFP_zfsConnectEndPtr)
 
 // ============================================================
+/**
+ * @brief util to compare two c strings,
+ *   while null is regarded as equal to empty string
+ */
+inline zfbool zfstringIsEqual(ZF_IN const zfchar *s1, ZF_IN const zfchar *s2)
+{
+    if(s1 == s2)
+    {
+        return zftrue;
+    }
+    else if(!s1)
+    {
+        return (*s2 == '\0');
+    }
+    else if(!s2)
+    {
+        return (*s1 == '\0');
+    }
+    else
+    {
+        return (zfscmp(s1, s2) == 0);
+    }
+}
+/**
+ * @brief util to check whether string is empty (null or empty string)
+ */
+inline zfbool zfstringIsEmpty(ZF_IN const zfchar *s1)
+{
+    return (s1 == zfnull || *s1 == '\0');
+}
+
+// ============================================================
 // zfstringFind
 /** @brief find string */
 extern ZFLIB_ZFCore zfindex zfstringFind(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
@@ -737,6 +737,11 @@ inline zfindex zfstringFindLastNotOf(ZF_IN const zfstring &src, ZF_IN zfchar fin
 extern ZFLIB_ZFCore zfindex zfstringReplace(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
 /** @brief replace string, return replaced count */
 extern ZFLIB_ZFCore zfindex zfstringReplaceReversely(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
+
+// ============================================================
+// zfstringSplit
+/** @brief split string */
+extern ZFLIB_ZFCore ZFCoreArray<zfstring> zfstringSplit(ZF_IN const zfchar *src, ZF_IN const zfchar *separator, ZF_IN_OPT zfbool keepEmpty = zffalse);
 
 ZF_NAMESPACE_GLOBAL_END
 

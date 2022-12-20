@@ -625,7 +625,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFCoreArrayPOD<ZFUIPage *>, pageListForGroupI
     ZFCoreArrayPOD<ZFUIPage *> ret;
     for(zfindex i = 0; i < d->pageList.count(); ++i)
     {
-        if(zfscmpTheSame(d->pageList[i]->pageGroupId(), pageGroupId))
+        if(zfstringIsEqual(d->pageList[i]->pageGroupId(), pageGroupId))
         {
             ret.add(d->pageList[i]);
         }
@@ -723,7 +723,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResumeForGroupId,
         zfindex moveTo = pm->d->pageList.count() - 1;
         for(zfindex i = pm->d->pageList.count() - 1; i != zfindexMax(); --i)
         {
-            if(zfscmpTheSame(pm->d->pageList[i]->pageGroupId(), pageGroupId))
+            if(zfstringIsEqual(pm->d->pageList[i]->pageGroupId(), pageGroupId))
             {
                 pm->d->pageList.move(i, moveTo);
                 --moveTo;

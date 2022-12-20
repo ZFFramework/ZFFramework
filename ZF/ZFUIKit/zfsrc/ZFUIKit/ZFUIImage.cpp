@@ -249,7 +249,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &se
     if(this->imageSerializableType() != zfnull)
     { // custom serialize
         if(ref != zfnull
-            && zfscmpTheSame(this->imageSerializableType(), ref->imageSerializableType())
+            && zfstringIsEqual(this->imageSerializableType(), ref->imageSerializableType())
             && this->imageSerializableData() != zfnull && ref->imageSerializableData() != zfnull
             && this->imageSerializableData()->objectCompare(*(ref->imageSerializableData())))
         {
@@ -382,7 +382,7 @@ ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj)
 
     if(d->nativeImage == another->d->nativeImage
         && this->imageNinePatch() == another->imageNinePatch()
-        && zfscmpTheSame(d->serializableType, another->d->serializableType)
+        && zfstringIsEqual(d->serializableType, another->d->serializableType)
         && ((d->serializableData == zfnull && another->d->serializableData == zfnull)
             || (d->serializableData != zfnull && another->d->serializableData != zfnull
                 && d->serializableData->objectCompare(*(another->d->serializableData)) == ZFCompareTheSame)))

@@ -230,7 +230,7 @@ public:
         {
             ++relPath;
         }
-        if(zfsIsEmpty(relPath))
+        if(zfstringIsEmpty(relPath))
         {
             return zftrue;
         }
@@ -251,7 +251,7 @@ public:
         {
             ++relPath;
         }
-        if(zfsIsEmpty(relPath))
+        if(zfstringIsEmpty(relPath))
         {
             return zftrue;
         }

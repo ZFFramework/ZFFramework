@@ -395,7 +395,7 @@ private:
     void resPathFormat(ZF_OUT zfstring &ret, ZF_IN const zfchar *s)
     {
         ret = this->zfresPrefix;
-        if(zfscmpTheSame(s, "."))
+        if(zfstringIsEqual(s, "."))
         {
             return ;
         }

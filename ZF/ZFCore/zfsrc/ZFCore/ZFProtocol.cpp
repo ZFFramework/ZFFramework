@@ -130,11 +130,11 @@ ZFProtocol *ZFProtocolForName(ZF_IN const zfchar *name,
     for(zfindex i = 0; i < allValue.count(); ++i)
     {
         _ZFP_ZFProtocolData &implData = allValue[i]->data;
-        if(zfscmpTheSame(implData.protocolName.cString(), name))
+        if(zfstringIsEqual(implData.protocolName.cString(), name))
         {
             implData.implTryAccessCallback();
             if(implData.implInstance != zfnull
-                && (desiredImpl == zfnull || zfscmpTheSame(desiredImpl, implData.implInstance->protocolImplementationPlatformHint())))
+                && (desiredImpl == zfnull || zfstringIsEqual(desiredImpl, implData.implInstance->protocolImplementationPlatformHint())))
             {
                 return implData.implInstance;
             }
@@ -243,7 +243,7 @@ void ZFProtocolImplInfoPrint(ZF_IN const ZFProtocolImplInfo &data,
         callback.execute("(");
         callback.execute(ZFProtocolLevelToString(data.protocolImpl->protocolImplementationLevel()).cString());
         callback.execute(")");
-        if(!zfsIsEmpty(data.protocolImpl->protocolImplementationPlatformHint()))
+        if(!zfstringIsEmpty(data.protocolImpl->protocolImplementationPlatformHint()))
         {
             callback.execute(" ");
             callback.execute(data.protocolImpl->protocolImplementationPlatformHint());

@@ -374,7 +374,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) \
     { \
         ZFTypeIdWrapper *t = ZFCastZFObject(ZFTypeIdWrapper *, anotherObj); \
-        if(t == zfnull || !zfscmpTheSame(this->wrappedValueTypeId(), t->wrappedValueTypeId())) \
+        if(t == zfnull || !zfstringIsEqual(this->wrappedValueTypeId(), t->wrappedValueTypeId())) \
         { \
             return ZFCompareUncomparable; \
         } \

@@ -7,6 +7,7 @@
 #define _ZFI_ZFCoreDataPairSplit_h_
 
 #include "ZFCoreArray.h"
+#include "ZFCoreStringUtil.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

@@ -441,7 +441,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleInvalidAssert, ZFLevelZFFrameworkHi
         if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return ;}
         const zfchar *propertyName = zfargs.param0()->to<v_zfstring *>()->zfv;
         const zfchar *styleKey = zfargs.param1()->to<v_zfstring *>()->zfv;
-        if(zfsIsEmpty(propertyName))
+        if(zfstringIsEmpty(propertyName))
         {
             zfCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\"",

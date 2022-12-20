@@ -140,7 +140,7 @@ public:
         zfstringAppend(ret, "<[%s] %s%s>",
             this->protocolName(),
             this->protocolImplementationName(),
-            (!zfsIsEmpty(this->protocolImplementationPlatformHint()) ? zfstringWithFormat(" (%s)", this->protocolImplementationPlatformHint()).cString() : "")
+            (!zfstringIsEmpty(this->protocolImplementationPlatformHint()) ? zfstringWithFormat(" (%s)", this->protocolImplementationPlatformHint()).cString() : "")
             );
     }
     /**
@@ -311,7 +311,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnInit; \
                 } \
                 zfself::_ZFP_ZFProtocolInstanceCleanupCallback(&_d); \
-                if(implConstructor != zfnull && !zfsIsEmpty(implName)) \
+                if(implConstructor != zfnull && !zfstringIsEmpty(implName)) \
                 { \
                     _d.implConstructor = implConstructor; \
                     _d.isAvailableCk = isAvailableCk; \
@@ -670,7 +670,7 @@ private:
 /** @brief see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN */
 #define ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(Protocol, DependencyPlatformHint) \
             if(ZFPROTOCOL_TRY_ACCESS(Protocol) == zfnull \
-                || !zfscmpTheSame(ZFPROTOCOL_ACCESS(Protocol)->protocolImplementationPlatformHint(), DependencyPlatformHint)) \
+                || !zfstringIsEqual(ZFPROTOCOL_ACCESS(Protocol)->protocolImplementationPlatformHint(), DependencyPlatformHint)) \
             { \
                 desiredImplPlatformHint = DependencyPlatformHint; \
                 mismatchProtocolName = ZFM_TOSTRING(Protocol); \

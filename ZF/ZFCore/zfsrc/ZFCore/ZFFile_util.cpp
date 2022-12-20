@@ -172,7 +172,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOf,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
-    if(zfsIsEmpty(src) || zfscmpTheSame(src, "."))
+    if(zfstringIsEmpty(src) || zfstringIsEqual(src, "."))
     {
         return zffalse;
     }
@@ -213,7 +213,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOfWithoutExt,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
-    if(zfsIsEmpty(src) || zfscmpTheSame(src, "."))
+    if(zfstringIsEmpty(src) || zfstringIsEqual(src, "."))
     {
         return zffalse;
     }
@@ -269,7 +269,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileExtOf,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
-    if(zfsIsEmpty(src) || zfscmpTheSame(src, "."))
+    if(zfstringIsEmpty(src) || zfstringIsEqual(src, "."))
     {
         return zffalse;
     }
@@ -315,7 +315,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathOfWithoutExt,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
-    if(zfsIsEmpty(src))
+    if(zfstringIsEmpty(src))
     {
         return zffalse;
     }
@@ -356,7 +356,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathParentOf,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
-    if(zfsIsEmpty(src) || zfscmpTheSame(src, "."))
+    if(zfstringIsEmpty(src) || zfstringIsEqual(src, "."))
     {
         return zffalse;
     }
@@ -398,7 +398,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathComponentsOf,
                        ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
-    if(zfsIsEmpty(src) || zfscmpTheSame(src, "."))
+    if(zfstringIsEmpty(src) || zfstringIsEqual(src, "."))
     {
         return zffalse;
     }

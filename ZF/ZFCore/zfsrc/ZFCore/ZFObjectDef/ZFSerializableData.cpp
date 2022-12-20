@@ -202,7 +202,7 @@ void ZFSerializableData::pathInfo(ZF_IN const ZFPathInfo *pathInfo)
 }
 void ZFSerializableData::pathInfo(ZF_IN const zfchar *pathType, ZF_IN const zfchar *pathData)
 {
-    if(!zfsIsEmpty(pathType) || !zfsIsEmpty(pathData))
+    if(!zfstringIsEmpty(pathType) || !zfstringIsEmpty(pathData))
     {
         if(d->pathInfo == zfnull)
         {
@@ -546,7 +546,7 @@ zfindex ZFSerializableData::childForName(ZF_IN const zfchar *name) const
     {
         for(zfstlsize i = 0; i < d->elements.size(); ++i)
         {
-            if(zfscmpTheSame(d->elements[i].propertyName(), name))
+            if(zfstringIsEqual(d->elements[i].propertyName(), name))
             {
                 return i;
             }
@@ -560,7 +560,7 @@ zfindex ZFSerializableData::childForCategory(ZF_IN const zfchar *category) const
     {
         for(zfstlsize i = 0; i < d->elements.size(); ++i)
         {
-            if(zfscmpTheSame(d->elements[i].category(), category))
+            if(zfstringIsEqual(d->elements[i].category(), category))
             {
                 return i;
             }
@@ -753,7 +753,7 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
         return ZFCompareTheSame;
     }
 
-    if(!zfscmpTheSame(this->itemClass(), another.itemClass())
+    if(!zfstringIsEqual(this->itemClass(), another.itemClass())
         || this->attrCount() != another.attrCount()
         || this->childCount() != another.childCount())
     {
@@ -763,7 +763,7 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
     for(zfiterator it = another.attrIter(); another.attrIterValid(it); another.attrIterNext(it))
     {
         const zfchar *value = this->attr(another.attrIterKey(it));
-        if(value == zfnull || !zfscmpTheSame(another.attrIterValue(it), value))
+        if(value == zfnull || !zfstringIsEqual(another.attrIterValue(it), value))
         {
             return ZFCompareUncomparable;
         }

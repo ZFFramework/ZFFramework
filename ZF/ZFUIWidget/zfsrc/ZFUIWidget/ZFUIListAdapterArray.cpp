@@ -17,7 +17,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(ZF_IN const ZFSeria
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
-        if(!zfscmpTheSame(category, ZFSerializableKeyword_ZFUIListAdapterArray_cell)) {continue;}
+        if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListAdapterArray_cell)) {continue;}
 
         zfautoObject element;
         if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))

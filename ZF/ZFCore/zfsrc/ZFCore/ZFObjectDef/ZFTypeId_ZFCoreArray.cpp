@@ -9,7 +9,6 @@ void v_ZFCoreArray::objectInfoT(ZF_IN_OUT zfstring &ret)
 }
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, void, copyFrom, ZFMP_IN(const ZFCoreArray<zfautoObject> &, ref))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfindex, objectRetainCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, ZFCompareResult, objectCompare, ZFMP_IN(const ZFCoreArray<zfautoObject> &, ref))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFCoreArray, void, objectInfoOfContentT, ZFMP_IN_OUT(zfstring &, ret), ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()), ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault()))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCoreArray, zfstring, objectInfoOfContent, ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()), ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault()))

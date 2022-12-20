@@ -81,10 +81,10 @@ public:
     virtual void regExpReplace(ZF_IN ZFRegExp *regExp,
                                ZF_OUT zfstring &ret,
                                ZF_OUT ZFRegExpResult &result,
-                               ZF_IN const zfchar *src,
                                ZF_IN const zfchar *replacePattern,
-                               ZF_IN_OPT zfindex maxReplaceCount = zfindexMax(),
-                               ZF_IN_OPT zfindex srcLength = zfindexMax())
+                               ZF_IN const zfchar *src,
+                               ZF_IN_OPT zfindex srcLength = zfindexMax(),
+                               ZF_IN_OPT zfindex maxReplaceCount = zfindexMax())
     {
         CRegexpT<zfchar> *regexp = ZFCastStatic(CRegexpT<zfchar> *, regExp->nativeRegExp());
 
@@ -115,6 +115,10 @@ private:
         {
             result.matchedRange = ZFIndexRangeMake(regexpResult.GetStart(), regexpResult.GetEnd() - regexpResult.GetStart());
         }
+        else
+        {
+            result.matchedRange = ZFIndexRangeZero();
+        }
         zfindex n = regexpResult.MaxGroupNumber() + 1;
         for(zfindex i = 1; i < n; ++i)
         {
@@ -125,10 +129,6 @@ private:
             {
                 result.namedGroups.add(indexPair);
             }
-        }
-        if(result.namedGroups.isEmpty())
-        {
-            result.matchedRange = ZFIndexRangeZero();
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFRegExpImpl_default)

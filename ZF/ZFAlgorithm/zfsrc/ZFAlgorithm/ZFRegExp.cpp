@@ -187,7 +187,7 @@ ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj)
     zfself *another = ZFCastZFObject(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
-    if(zfscmpTheSame(this->regExpPattern(), another->regExpPattern())
+    if(zfstringIsEqual(this->regExpPattern(), another->regExpPattern())
         && this->regExpFlag() == another->regExpFlag())
     {
         return ZFCompareTheSame;
@@ -248,13 +248,76 @@ ZFMETHOD_DEFINE_3(ZFRegExp, void, regExpMatchExact,
 ZFMETHOD_DEFINE_6(ZFRegExp, void, regExpReplace,
                   ZFMP_OUT(zfstring &, ret),
                   ZFMP_OUT(ZFRegExpResult &, result),
-                  ZFMP_IN(const zfchar *, src),
                   ZFMP_IN(const zfchar *, replacePattern),
-                  ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()),
-                  ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()))
+                  ZFMP_IN(const zfchar *, src),
+                  ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()),
+                  ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
 {
     result.namedGroups.removeAll();
-    ZFPROTOCOL_ACCESS(ZFRegExp)->regExpReplace(this, ret, result, src, replacePattern, maxReplaceCount, srcLength);
+    ZFPROTOCOL_ACCESS(ZFRegExp)->regExpReplace(this, ret, result, replacePattern, src, srcLength, maxReplaceCount);
+}
+
+// ============================================================
+ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind,
+                       ZFMP_IN(const zfchar *, src),
+                       ZFMP_IN(const zfchar *, pattern))
+{
+    zfblockedAlloc(ZFRegExp, regexp);
+    ZFRegExpResult result;
+    regexp->regExpCompile(pattern);
+    regexp->regExpMatch(result, src);
+    return result.matchedRange;
+}
+ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace,
+                       ZFMP_IN(const zfchar *, src),
+                       ZFMP_IN(const zfchar *, patternFrom),
+                       ZFMP_IN(const zfchar *, patternTo),
+                       ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
+{
+    zfblockedAlloc(ZFRegExp, regexp);
+    regexp->regExpCompile(patternFrom);
+    zfstring ret;
+    ZFRegExpResult result;
+    regexp->regExpReplace(ret, result, patternTo, src, zfindexMax(), maxReplaceCount);
+    return ret;
+}
+ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit,
+                       ZFMP_IN(const zfchar *, src),
+                       ZFMP_IN(const zfchar *, separatorPattern),
+                       ZFMP_IN_OPT(zfbool, keepEmpty, zffalse))
+{
+    ZFCoreArray<zfstring> ret;
+    if(src != zfnull && separatorPattern != zfnull && *separatorPattern)
+    {
+        zfblockedAlloc(ZFRegExp, regexp);
+        regexp->regExpCompile(separatorPattern);
+        ZFRegExpResult result;
+        do {
+            regexp->regExpMatch(result, src);
+            if(!result.matched || result.matchedRange == ZFIndexRangeZero())
+            {
+                if(*src || keepEmpty)
+                {
+                    ret.add(src);
+                }
+                break;
+            }
+
+            if(result.matchedRange.start > 0 || keepEmpty)
+            {
+                ret.add(zfstring(src, result.matchedRange.start));
+            }
+            src += result.matchedRange.start + result.matchedRange.count;
+        } while(zftrue);
+    }
+    else if(src != zfnull)
+    {
+        if(*src || keepEmpty)
+        {
+            ret.add(src);
+        }
+    }
+    return ret;
 }
 
 ZF_NAMESPACE_GLOBAL_END

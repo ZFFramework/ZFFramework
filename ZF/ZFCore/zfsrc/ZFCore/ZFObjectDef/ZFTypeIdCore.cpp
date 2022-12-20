@@ -34,7 +34,7 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
             if(src->classData()->classIsTypeOf(invokerObject->classData())
                 || (
                     invokerObject->classData()->classIsTypeOf(src->classData())
-                    && zfscmpTheSame(src->wrappedValueTypeId(), invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueTypeId())
+                    && zfstringIsEqual(src->wrappedValueTypeId(), invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueTypeId())
                 )
             ) {
                 invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueAssign(src);

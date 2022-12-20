@@ -305,7 +305,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
         {
             continue;
         }
-        if(exportScope && !zfsIsEmpty(t->classNamespace()))
+        if(exportScope && !zfstringIsEmpty(t->classNamespace()))
         {
             tags[t->classNameFull()] = zftrue;
         }
@@ -331,7 +331,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
                 tag += t->methodName();
                 tags[tag] = zftrue;
             }
-            else if(!zfsIsEmpty(t->methodNamespace()))
+            else if(!zfstringIsEmpty(t->methodNamespace()))
             {
                 zfstring tag;
                 tag += t->methodNamespace();
@@ -462,7 +462,7 @@ ZFDynamic &ZFDynamic::classBegin(ZF_IN const zfchar *classNameFull,
 {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeBeginCheck()) {return *this;}
-    if(zfsIsEmpty(parentClassNameFull))
+    if(zfstringIsEmpty(parentClassNameFull))
     {
         return this->classBegin(classNameFull, ZFObject::ClassData(), classDynamicRegisterUserData);
     }
@@ -619,7 +619,7 @@ ZFDynamic &ZFDynamic::NSBegin(ZF_IN_OPT const zfchar *methodNamespace /* = ZF_NA
 {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeBeginCheck()) {return *this;}
-    if(zfsIsEmpty(methodNamespace) || zfscmpTheSame(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME))
+    if(zfstringIsEmpty(methodNamespace) || zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME))
     {
         d->methodNamespace = ZF_NAMESPACE_GLOBAL_NAME;
     }
@@ -726,7 +726,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName)
         d->error("can not be called within enumBegin");
         return *this;
     }
-    if(zfsIsEmpty(eventName))
+    if(zfstringIsEmpty(eventName))
     {
         d->error("empty event name");
         return *this;

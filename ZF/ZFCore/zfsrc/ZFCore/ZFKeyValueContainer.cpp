@@ -90,7 +90,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(ZF_IN const ZFSerial
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
-        if(zfscmpTheSame(category, ZFSerializableKeyword_ZFKeyValueContainer_key))
+        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_key))
         {
             if(key != zfnull)
             {
@@ -110,7 +110,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(ZF_IN const ZFSerial
                 return zffalse;
             }
         }
-        else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFKeyValueContainer_value))
+        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_value))
         {
             if(key == zfnull)
             {

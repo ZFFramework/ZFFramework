@@ -111,7 +111,7 @@ void ZFFileFindData::implAttach(ZF_IN const zfchar *implName,
     zfCoreAssertWithMessage(d->implName.isEmpty(),
         "have you forgot to close find? current module: %s",
         d->implName.cString());
-    zfCoreAssert(!zfsIsEmpty(implName));
+    zfCoreAssert(!zfstringIsEmpty(implName));
     d->implName = implName;
     d->implUserData = implUserData;
 }
@@ -123,7 +123,7 @@ void ZFFileFindData::implDetach(void)
 void *ZFFileFindData::implCheck(ZF_IN const zfchar *implName) const
 {
     zfCoreAssertWithMessage(!d->implName.isEmpty(), "find not started");
-    zfCoreAssertWithMessage(zfscmpTheSame(d->implName.cString(), implName),
+    zfCoreAssertWithMessage(zfstringIsEqual(d->implName.cString(), implName),
         "have you forgot to close find? desired, %s, got: %s",
         implName, d->implName.cString());
     return d->implUserData;
@@ -131,7 +131,7 @@ void *ZFFileFindData::implCheck(ZF_IN const zfchar *implName) const
 
 void ZFFileFindData::implTag(ZF_IN const zfchar *key, ZF_IN ZFObject *value) const
 {
-    if(zfsIsEmpty(key))
+    if(zfstringIsEmpty(key))
     {
         return;
     }
@@ -153,7 +153,7 @@ void ZFFileFindData::implTag(ZF_IN const zfchar *key, ZF_IN ZFObject *value) con
 }
 ZFObject *ZFFileFindData::implTag(ZF_IN const zfchar *key) const
 {
-    if(zfsIsEmpty(key) || d->implTagMap)
+    if(zfstringIsEmpty(key) || d->implTagMap)
     {
         return zfnull;
     }

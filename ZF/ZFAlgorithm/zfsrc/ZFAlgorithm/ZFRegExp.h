@@ -240,14 +240,30 @@ public:
     ZFMETHOD_DECLARE_6(void, regExpReplace,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_OUT(ZFRegExpResult &, result),
-                       ZFMP_IN(const zfchar *, src),
                        ZFMP_IN(const zfchar *, replacePattern),
-                       ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()),
-                       ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()))
+                       ZFMP_IN(const zfchar *, src),
+                       ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()),
+                       ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
 
 private:
     _ZFP_ZFRegExpPrivate *d;
 };
+
+/** @brief util to find by regexp */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFIndexRange, ZFRegExpFind,
+                        ZFMP_IN(const zfchar *, src),
+                        ZFMP_IN(const zfchar *, pattern))
+/** @brief util to replace by regexp */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfstring, ZFRegExpReplace,
+                        ZFMP_IN(const zfchar *, src),
+                        ZFMP_IN(const zfchar *, patternFrom),
+                        ZFMP_IN(const zfchar *, patternTo),
+                        ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
+/** @brief util to split by regexp */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFCoreArray<zfstring>, ZFRegExpSplit,
+                        ZFMP_IN(const zfchar *, src),
+                        ZFMP_IN(const zfchar *, separatorPattern),
+                        ZFMP_IN_OPT(zfbool, keepEmpty, zffalse))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFRegExp_h_

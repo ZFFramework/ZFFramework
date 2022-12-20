@@ -316,7 +316,7 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
             {
                 ZFTypeIdWrapper *wrapper = ZFCastZFObject(ZFTypeIdWrapper *, valueNew);
                 if(wrapper == zfnull
-                    || !zfscmpTheSame(wrapper->wrappedValueTypeId(), property->propertyTypeId()))
+                    || !zfstringIsEqual(wrapper->wrappedValueTypeId(), property->propertyTypeId()))
                 {
                     break;
                 }
@@ -503,7 +503,7 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
     }
     else
     {
-        if(!zfscmpTheSame(param.propertyTypeId(), param.propertyClassOfRetainProperty()->classNameFull()))
+        if(!zfstringIsEqual(param.propertyTypeId(), param.propertyClassOfRetainProperty()->classNameFull()))
         {
             zfstringAppend(errorHint,
                 "propertyTypeId must be same as propertyClassOfRetainProperty for retain property");
@@ -672,8 +672,8 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
         return zffalse;
     }
     if(param.propertyCustomImplSetterMethod()->methodParamCount() != 1
-        || !zfscmpTheSame(param.propertyCustomImplSetterMethod()->methodReturnTypeId(), ZFTypeId_void())
-        || !zfscmpTheSame(param.propertyCustomImplSetterMethod()->methodParamTypeIdAt(0), param.propertyTypeId())
+        || !zfstringIsEqual(param.propertyCustomImplSetterMethod()->methodReturnTypeId(), ZFTypeId_void())
+        || !zfstringIsEqual(param.propertyCustomImplSetterMethod()->methodParamTypeIdAt(0), param.propertyTypeId())
         )
     {
         zfstringAppend(errorHint,
@@ -683,7 +683,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
         return zffalse;
     }
 
-    if(!zfscmpTheSame(param.propertyCustomImplGetterMethod()->methodName(), param.propertyName()))
+    if(!zfstringIsEqual(param.propertyCustomImplGetterMethod()->methodName(), param.propertyName()))
     {
         zfstringAppend(errorHint,
             "getter method name \"%s\" does not match property name \"%s\"",
@@ -692,7 +692,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
         return zffalse;
     }
     if(param.propertyCustomImplGetterMethod()->methodParamCount() != 0
-        || !zfscmpTheSame(param.propertyCustomImplGetterMethod()->methodReturnTypeId(), param.propertyTypeId())
+        || !zfstringIsEqual(param.propertyCustomImplGetterMethod()->methodReturnTypeId(), param.propertyTypeId())
         )
     {
         zfstringAppend(errorHint,

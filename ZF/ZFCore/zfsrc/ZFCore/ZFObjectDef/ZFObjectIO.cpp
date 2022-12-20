@@ -161,7 +161,7 @@ zfbool ZFObjectIOImplCheck(ZF_IN const ZFPathInfo &pathInfo,
 {
     zfindex len = zfslen(desiredFileExt);
     return (pathInfo.pathData.length() >= len
-        && zfscmpTheSame(pathInfo.pathData.cString() + pathInfo.pathData.length() - len, desiredFileExt));
+        && zfstringIsEqual(pathInfo.pathData.cString() + pathInfo.pathData.length() - len, desiredFileExt));
 }
 
 ZF_NAMESPACE_GLOBAL_END

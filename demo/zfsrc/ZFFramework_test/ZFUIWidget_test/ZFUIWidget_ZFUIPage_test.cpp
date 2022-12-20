@@ -60,7 +60,7 @@ protected:
     static ZFCompareResult pageFindFirstByPageGroupId(ZF_IN ZFUIPage * const &e0,
                                                       ZF_IN const zfchar * const &e1)
     {
-        if(zfscmpTheSame(e0->pageGroupId().cString(), e1))
+        if(zfstringIsEqual(e0->pageGroupId().cString(), e1))
         {
             return ZFCompareTheSame;
         }

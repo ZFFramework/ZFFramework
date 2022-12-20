@@ -1,4 +1,5 @@
 #include "ZFCoreArg.h"
+#include "ZFCoreStringUtil.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

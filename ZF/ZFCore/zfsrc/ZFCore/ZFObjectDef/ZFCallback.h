@@ -176,6 +176,13 @@ public:
 
 public:
     /**
+     * @brief explicitly clear reference of this callback
+     *
+     * useful for script with GC logic, to explicitly release reference of callback
+     */
+    zffinal void callbackClear(void);
+
+    /**
      * @brief an unique id for the callback, used for cache logic
      *
      * two callback with same callback id is treated as same callback,
@@ -329,7 +336,7 @@ public:
      */
     zffinal zfbool callbackSerializeCustomDisabled(void) const
     {
-        return zfscmpTheSame(this->callbackSerializeCustomType(), ZFCallbackSerializeCustomTypeDisable);
+        return zfstringIsEqual(this->callbackSerializeCustomType(), ZFCallbackSerializeCustomTypeDisable);
     }
 
     // ============================================================

@@ -82,14 +82,14 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmb
                   ZFMP_IN(void *, nativeParent),
                   ZFMP_IN(const zfchar *, sysWindowName))
 {
-    if(!zfsIsEmpty(sysWindowName) && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull)
+    if(!zfstringIsEmpty(sysWindowName) && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull)
     {
         zfCoreLog("window \"%s\" already registered", sysWindowName);
         return zfnull;
     }
 
     zfautoObjectT<ZFUISysWindow *> sysWindow = ZFUISysWindow::nativeWindowEmbedNativeView(nativeParent);
-    if(sysWindow == zfnull || zfsIsEmpty(sysWindowName))
+    if(sysWindow == zfnull || zfstringIsEmpty(sysWindowName))
     {
         return sysWindow;
     }

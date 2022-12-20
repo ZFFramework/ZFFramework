@@ -836,7 +836,7 @@ zfbool ZFClass::newInstanceGenericCheck(ZF_IN void *&token
 {
     if(objectOnInitMethod == zfnull
         || !this->classIsTypeOf(objectOnInitMethod->methodOwnerClass())
-        || !zfscmpTheSame(objectOnInitMethod->methodName(), "objectOnInit")
+        || !zfstringIsEqual(objectOnInitMethod->methodName(), "objectOnInit")
         )
     {
         return zffalse;
@@ -1419,7 +1419,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
         cls->d->constructor = constructor;
         cls->d->destructor = destructor;
 
-        if(!zfsIsEmpty(classNamespace))
+        if(!zfstringIsEmpty(classNamespace))
         {
             cls->_ZFP_ZFClass_classNamespace = _ZFP_ZFSigNameAddr(classNamespace);
         }
@@ -1923,7 +1923,7 @@ void ZFClassAlias(ZF_IN const ZFClass *cls,
 {
     zfCoreMutexLocker();
 
-    if(cls == zfnull || zfsIsEmpty(aliasName)
+    if(cls == zfnull || zfstringIsEmpty(aliasName)
         || cls->classAliasTo().find(aliasName) != zfindexMax()
         || ZFClass::classForName(aliasName, cls->classNamespace()) != zfnull
     ) {
@@ -1944,7 +1944,7 @@ void ZFClassAliasRemove(ZF_IN const ZFClass *cls,
                         ZF_IN const zfchar *aliasName)
 {
     zfCoreMutexLocker();
-    if(cls == zfnull || zfsIsEmpty(aliasName))
+    if(cls == zfnull || zfstringIsEmpty(aliasName))
     {
         return;
     }

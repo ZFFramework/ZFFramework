@@ -299,7 +299,7 @@ zfbool ZFAnimationGroup::serializableOnSerializeFromData(ZF_IN const ZFSerializa
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
-        if(zfscmpTheSame(category, ZFSerializableKeyword_ZFAnimationGroup_child))
+        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFAnimationGroup_child))
         {
             zfautoObject element;
             if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))

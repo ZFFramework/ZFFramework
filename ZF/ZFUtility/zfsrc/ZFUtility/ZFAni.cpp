@@ -115,7 +115,7 @@ public:
             {
                 return zffalse;
             }
-            if(!zfsIsEmpty(from))
+            if(!zfstringIsEmpty(from))
             {
                 _from = typeClass->newInstance();
                 if(!_from.to<ZFSerializable *>()->serializeFromString(from))
@@ -123,7 +123,7 @@ public:
                     return zffalse;
                 }
             }
-            if(!zfsIsEmpty(to))
+            if(!zfstringIsEmpty(to))
             {
                 _to = typeClass->newInstance();
                 if(!_to.to<ZFSerializable *>()->serializeFromString(to))
@@ -139,7 +139,7 @@ public:
             {
                 return zffalse;
             }
-            if(!zfsIsEmpty(from))
+            if(!zfstringIsEmpty(from))
             {
                 _from = typeInfo->typeIdClass()->newInstance();
                 if(!_from.to<ZFTypeIdWrapper *>()->wrappedValueFromString(from))
@@ -147,7 +147,7 @@ public:
                     return zffalse;
                 }
             }
-            if(!zfsIsEmpty(to))
+            if(!zfstringIsEmpty(to))
             {
                 _to = typeInfo->typeIdClass()->newInstance();
                 if(!_to.to<ZFTypeIdWrapper *>()->wrappedValueFromString(to))

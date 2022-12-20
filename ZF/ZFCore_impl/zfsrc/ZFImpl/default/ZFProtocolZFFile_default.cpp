@@ -229,8 +229,8 @@ public:
         } while(zffalse);
         if(success)
         {
-            while(zfscmpTheSame(fd.fileName.cString(), ".")
-                || zfscmpTheSame(fd.fileName.cString(), ".."))
+            while(zfstringIsEqual(fd.fileName.cString(), ".")
+                || zfstringIsEqual(fd.fileName.cString(), ".."))
             {
                 if(!this->fileFindNext(fd))
                 {
@@ -257,8 +257,8 @@ public:
             if(nativeFd->pDirent == zfnull) {return zffalse;}
             nativeFd->setup(fd);
         #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
-        if(zfscmpTheSame(fd.fileName.cString(), ".")
-            || zfscmpTheSame(fd.fileName.cString(), ".."))
+        if(zfstringIsEqual(fd.fileName.cString(), ".")
+            || zfstringIsEqual(fd.fileName.cString(), ".."))
         {
             return this->fileFindNext(fd);
         }

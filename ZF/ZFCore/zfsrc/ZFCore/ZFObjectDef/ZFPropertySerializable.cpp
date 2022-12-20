@@ -8,7 +8,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
-        if(zfscmpTheSame(serializableData.itemClass(), ZFSerializableKeyword_null))
+        if(zfstringIsEqual(serializableData.itemClass(), ZFSerializableKeyword_null))
         {
             v = zfnull;
             serializableData.resolveMark();

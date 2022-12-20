@@ -337,7 +337,7 @@ private:
                 int offset = -1;
                 for(zfindex i = 0; i < luaLocalFuncNameList.count(); ++i)
                 {
-                    if(zfscmpTheSame(name, luaLocalFuncNameList[i]))
+                    if(zfstringIsEqual(name, luaLocalFuncNameList[i]))
                     {
                         offset = (int)i;
                         break;

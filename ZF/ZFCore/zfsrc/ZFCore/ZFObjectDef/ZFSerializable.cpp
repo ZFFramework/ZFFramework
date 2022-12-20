@@ -693,7 +693,7 @@ zfbool ZFObjectFromData(ZF_OUT zfautoObject &result,
     {
         return zffalse;
     }
-    if(zfscmpTheSame(serializableClass, ZFSerializableKeyword_null))
+    if(zfstringIsEqual(serializableClass, ZFSerializableKeyword_null))
     {
         serializableData.resolveMark();
         return zftrue;

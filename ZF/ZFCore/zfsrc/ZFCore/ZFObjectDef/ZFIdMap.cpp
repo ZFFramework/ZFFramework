@@ -65,7 +65,7 @@ const zfidentity *_ZFP_ZFIdMapRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
                                        ZF_IN const zfchar *idName,
                                        ZF_IN_OPT zfbool isDynamicRegister /* = zffalse */)
 {
-    if(zfsIsEmpty(idName))
+    if(zfstringIsEmpty(idName))
     {
         zfCoreCriticalMessageTrim("[ZFIdMapDynamicRegister] empty name");
     }

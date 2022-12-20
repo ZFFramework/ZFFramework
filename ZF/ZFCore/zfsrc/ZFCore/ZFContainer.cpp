@@ -72,7 +72,7 @@ zfbool ZFContainer::serializableOnSerializeFromData(ZF_IN const ZFSerializableDa
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
-        if(zfscmpTheSame(category, ZFSerializableKeyword_ZFContainer_element))
+        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFContainer_element))
         {
             zfautoObject element;
             if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))

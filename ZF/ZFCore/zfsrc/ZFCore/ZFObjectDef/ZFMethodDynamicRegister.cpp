@@ -231,7 +231,7 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(ZF_IN
     {
         d->methodParamTypeId[d->methodParamCount] = methodParamTypeId;
         d->methodParamTypeName[d->methodParamCount] = methodParamTypeName;
-        if(!zfsIsEmpty(methodParamName))
+        if(!zfstringIsEmpty(methodParamName))
         {
             d->methodParamName[d->methodParamCount] = methodParamName;
         }

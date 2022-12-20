@@ -406,7 +406,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
             }
             if(method->methodGenericInvoker()(method, obj, errorHintTmp, ret, paramList))
             {
-                if(zfscmpTheSame(method->methodReturnTypeId(), ZFTypeId_void()))
+                if(zfstringIsEqual(method->methodReturnTypeId(), ZFTypeId_void()))
                 {
                     ret = obj;
                 }
@@ -661,6 +661,13 @@ zfbool ZFDI_objectFromString(ZF_OUT zfautoObject &ret,
         zfstringAppend(errorHint, "no such type \"%s\"",
             typeId);
         return zffalse;
+    }
+    else if(cls == ZFObject::ClassData())
+    {
+        zfblockedAlloc(v_zfstring, tmp);
+        tmp->zfv = s;
+        ret = tmp;
+        return zftrue;
     }
     else
     {

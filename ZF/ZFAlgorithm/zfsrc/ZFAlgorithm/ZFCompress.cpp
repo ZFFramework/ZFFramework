@@ -37,7 +37,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFCompressContent,
                        ZFMP_IN_OUT(const ZFInput &, inputRaw),
                        ZFMP_IN(const zfchar *, filePathInZip))
 {
-    if(compressToken == zfnull || !inputRaw || zfsIsEmpty(filePathInZip))
+    if(compressToken == zfnull || !inputRaw || zfstringIsEmpty(filePathInZip))
     {
         return zffalse;
     }
@@ -50,7 +50,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFCompressContentDir,
                        ZFMP_IN_OUT(void *, compressToken),
                        ZFMP_IN(const zfchar *, filePathInZip))
 {
-    if(compressToken == zfnull || zfsIsEmpty(filePathInZip))
+    if(compressToken == zfnull || zfstringIsEmpty(filePathInZip))
     {
         return zffalse;
     }
@@ -63,7 +63,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFCompressContentRemove,
                        ZFMP_IN_OUT(void *, compressToken),
                        ZFMP_IN(const zfchar *, filePathInZip))
 {
-    if(compressToken == zfnull || zfsIsEmpty(filePathInZip))
+    if(compressToken == zfnull || zfstringIsEmpty(filePathInZip))
     {
         return zffalse;
     }
@@ -116,7 +116,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFDecompressContent,
                        ZFMP_IN_OUT(const ZFOutput &, outputRaw),
                        ZFMP_IN(const zfchar *, filePathInZip))
 {
-    if(decompressToken == zfnull || !outputRaw || zfsIsEmpty(filePathInZip))
+    if(decompressToken == zfnull || !outputRaw || zfstringIsEmpty(filePathInZip))
     {
         return zffalse;
     }
@@ -142,7 +142,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfindex, ZFDecompressContentIndex,
                        ZFMP_IN(void *, decompressToken),
                        ZFMP_IN(const zfchar *, filePathInZip))
 {
-    if(decompressToken == zfnull || zfsIsEmpty(filePathInZip))
+    if(decompressToken == zfnull || zfstringIsEmpty(filePathInZip))
     {
         return zffalse;
     }

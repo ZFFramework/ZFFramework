@@ -1505,7 +1505,7 @@ zfbool ZFUIListView::serializableOnSerializeFromData(ZF_IN const ZFSerializableD
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
-        if(!zfscmpTheSame(category, ZFSerializableKeyword_ZFUIListView_listAdapter)) {continue;}
+        if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListView_listAdapter)) {continue;}
 
         zfautoObject element;
         if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))

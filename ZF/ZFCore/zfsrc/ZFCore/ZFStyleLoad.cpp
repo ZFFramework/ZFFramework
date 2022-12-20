@@ -170,7 +170,7 @@ ZFMETHOD_DEFINE_2(ZFStyleList, void, itemForKey,
 {
     for(zfindex i = 0; i < d->keyList.count(); ++i)
     {
-        if(zfscmpTheSame(d->keyList[i], key))
+        if(zfstringIsEqual(d->keyList[i], key))
         {
             if(value == zfnull)
             {

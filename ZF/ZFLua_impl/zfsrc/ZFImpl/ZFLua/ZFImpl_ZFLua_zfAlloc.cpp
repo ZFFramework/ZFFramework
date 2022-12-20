@@ -47,7 +47,7 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
     int paramCount = (count - (luaParamOffset - 1));
 
     const zfchar *clsName = zfnull;
-    if(!ZFImpl_ZFLua_toString(clsName, L, 1) || zfsIsEmpty(clsName))
+    if(!ZFImpl_ZFLua_toString(clsName, L, 1) || zfstringIsEmpty(clsName))
     {
         return ZFImpl_ZFLua_luaError(L,
             "[zfAlloc] unable to access class name");

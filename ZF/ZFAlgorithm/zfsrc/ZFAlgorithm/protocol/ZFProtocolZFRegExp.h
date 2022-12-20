@@ -49,10 +49,10 @@ public:
     virtual void regExpReplace(ZF_IN ZFRegExp *regExp,
                                ZF_OUT zfstring &ret,
                                ZF_OUT ZFRegExpResult &result,
-                               ZF_IN const zfchar *src,
                                ZF_IN const zfchar *replacePattern,
-                               ZF_IN_OPT zfindex maxReplaceCount = zfindexMax(),
-                               ZF_IN_OPT zfindex srcLength = zfindexMax()) zfpurevirtual;
+                               ZF_IN const zfchar *src,
+                               ZF_IN_OPT zfindex srcLength = zfindexMax(),
+                               ZF_IN_OPT zfindex maxReplaceCount = zfindexMax()) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFRegExp)
 
 ZF_NAMESPACE_GLOBAL_END

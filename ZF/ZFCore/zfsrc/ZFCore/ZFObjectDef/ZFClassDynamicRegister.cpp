@@ -47,7 +47,7 @@ const ZFClass *ZFClassDynamicRegister(ZF_IN const zfchar *classNameFull,
             parent->objectInfo().cString());
         return zfnull;
     }
-    if(zfsIsEmpty(classNameFull))
+    if(zfstringIsEmpty(classNameFull))
     {
         zfstringAppend(errorHint, "null classNameFull");
         return zfnull;

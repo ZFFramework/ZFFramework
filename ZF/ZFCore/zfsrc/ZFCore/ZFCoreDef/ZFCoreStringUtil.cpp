@@ -268,5 +268,59 @@ zfindex zfstringReplaceReversely(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *repl
     return replacedCount;
 }
 
+// ============================================================
+// zfstringSplit
+ZFCoreArray<zfstring> zfstringSplit(ZF_IN const zfchar *src, ZF_IN const zfchar *separator, ZF_IN_OPT zfbool keepEmpty /* = zffalse */)
+{
+    ZFCoreArray<zfstring> ret;
+    if(src != zfnull && separator != zfnull && *separator)
+    {
+        zfindex len = zfslen(separator);
+        const zfchar *srcEnd = src + zfslen(src);
+        if(src <= srcEnd - len)
+        {
+            const zfchar *p = src;
+            while(p < srcEnd)
+            {
+                if(zfsncmp(p, separator, len) == 0)
+                {
+                    if(p > src || keepEmpty)
+                    {
+                        ret.add(zfstring(src, p - src));
+                        src = p;
+                    }
+                    p += len;
+                    src = p;
+
+                    if(p == srcEnd && keepEmpty)
+                    {
+                        ret.add(zfstring());
+                    }
+                }
+                else
+                {
+                    ++p;
+                }
+            }
+            if(p > src)
+            {
+                ret.add(zfstring(src, p - src));
+            }
+        }
+        else if(*src || keepEmpty)
+        {
+            ret.add(src);
+        }
+    }
+    else if(src != zfnull)
+    {
+        if(*src || keepEmpty)
+        {
+            ret.add(src);
+        }
+    }
+    return ret;
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

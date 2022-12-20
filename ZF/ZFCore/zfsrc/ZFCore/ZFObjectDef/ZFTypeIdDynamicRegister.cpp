@@ -40,7 +40,7 @@ zfbool ZFTypeIdDynamicRegister(ZF_IN const zfchar *typeIdName,
                                ZF_IN const ZFCorePointerForObject<ZFTypeInfo *> &typeIdData,
                                ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
 {
-    if(zfsIsEmpty(typeIdName))
+    if(zfstringIsEmpty(typeIdName))
     {
         zfstringAppend(errorHint, "empty typeIdName");
         return zffalse;
@@ -70,7 +70,7 @@ zfbool ZFTypeIdDynamicRegister(ZF_IN const zfchar *typeIdName,
 }
 void ZFTypeIdDynamicUnregister(ZF_IN const zfchar *typeIdName)
 {
-    if(!zfsIsEmpty(typeIdName))
+    if(!zfstringIsEmpty(typeIdName))
     {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFTypeIdDynamicRegisterDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder);
         zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = d->m.find(typeIdName);

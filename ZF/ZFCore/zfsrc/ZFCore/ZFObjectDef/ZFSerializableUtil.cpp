@@ -96,13 +96,13 @@ const zfchar *checkItemClass(ZF_IN const ZFSerializableData &serializableData,
                              ZF_IN const zfchar *desiredClass)
 {
     const zfchar *serializableClass = serializableData.itemClass();
-    if(zfscmpTheSame(desiredClass, ZFTypeId_none()))
+    if(zfstringIsEqual(desiredClass, ZFTypeId_none()))
     {
         return serializableClass;
     }
     else
     {
-        if(zfscmpTheSame(serializableClass, desiredClass))
+        if(zfstringIsEqual(serializableClass, desiredClass))
         {
             return serializableClass;
         }

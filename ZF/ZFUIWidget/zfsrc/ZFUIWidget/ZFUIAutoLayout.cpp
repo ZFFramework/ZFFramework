@@ -245,17 +245,17 @@ zfbool _ZFP_ZFUIAutoLayout_targetUpdate(ZF_IN_OUT ZFUIAutoLayoutRule &rule, ZF_I
         return zftrue;
     }
     rule.target(zfnull);
-    if(!zfsIsEmpty(targetId))
+    if(!zfstringIsEmpty(targetId))
     {
         if(targetId[0] == '@')
         {
             rule.target(parent->childFindById(targetId + 1, zfHint("findRecursively")zffalse));
         }
-        else if(zfscmpTheSame(targetId, ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent))
+        else if(zfstringIsEqual(targetId, ZFSerializableKeyword_ZFUIAutoLayoutParam_target_parent))
         {
             rule.target(parent);
         }
-        else if(zfscmpTheSame(targetId, ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self))
+        else if(zfstringIsEqual(targetId, ZFSerializableKeyword_ZFUIAutoLayoutParam_target_self))
         {
             rule.target(child);
         }

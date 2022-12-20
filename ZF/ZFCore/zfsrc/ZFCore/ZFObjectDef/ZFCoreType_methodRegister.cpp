@@ -69,6 +69,19 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, invokeCountGet, ZFMP_IN(const zf
 ZF_NAMESPACE_END(ZFCoreStatistic)
 
 // ============================================================
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, zfstringIsEqual, ZFMP_IN(const zfchar *, s1), ZFMP_IN(const zfchar *, s2))
+ZFMETHOD_FUNC_USER_REGISTER_2({
+        v_zfstring *t1 = ZFCastZFObject(v_zfstring *, s1);
+        v_zfstring *t2 = ZFCastZFObject(v_zfstring *, s2);
+        return ((t1 == zfnull || t1->zfv.isEmpty()) && t2 == zfnull || t2->zfv.isEmpty()) || ZFObjectCompare(t1, t2) == ZFCompareTheSame;
+    }, zfbool, zfstringIsEqual, ZFMP_IN(ZFObject *, s1), ZFMP_IN(ZFObject *, s2))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfbool, zfstringIsEmpty, ZFMP_IN(const zfchar *, s1))
+ZFMETHOD_FUNC_USER_REGISTER_1({
+        v_zfstring *t = ZFCastZFObject(v_zfstring *, s1);
+        return t == zfnull || t->zfv.isEmpty();
+    }, zfbool, zfstringIsEmpty, ZFMP_IN(ZFObject *, s1))
+
+// ============================================================
 // zfstringFind
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFind, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFind, ZFMP_IN(const zfstring &, src), ZFMP_IN(const zfstring &, find))
@@ -102,6 +115,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindLastNotOf, ZFMP_IN(c
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindLastNotOf, ZFMP_IN(const zfstring &, src), ZFMP_IN(const zfstring &, find))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastNotOf, ZFMP_IN(const zfstring &, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindLastNotOf, ZFMP_IN(const zfstring &, src), ZFMP_IN(zfchar, find))
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplace, ZFMP_IN_OUT(zfstring &, s), ZFMP_IN(const zfchar *, replaceFrom), ZFMP_IN(const zfchar *, replaceTo), ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplaceReversely, ZFMP_IN_OUT(zfstring &, s), ZFMP_IN(const zfchar *, replaceFrom), ZFMP_IN(const zfchar *, replaceTo), ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()))
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArray<zfstring>, zfstringSplit, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, separator), ZFMP_IN_OPT(zfbool, keepEmpty, zffalse))
 
 // ============================================================
 // namespace

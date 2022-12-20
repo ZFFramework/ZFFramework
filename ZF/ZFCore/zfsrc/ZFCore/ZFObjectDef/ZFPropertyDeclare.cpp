@@ -23,19 +23,19 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(ZF_I
     if(zffalse)
     {
     }
-    else if(zfscmpTheSame(lifeCycleName, "OnInit"))
+    else if(zfstringIsEqual(lifeCycleName, "OnInit"))
     {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
     }
-    else if(zfscmpTheSame(lifeCycleName, "OnVerify"))
+    else if(zfstringIsEqual(lifeCycleName, "OnVerify"))
     {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnVerify;
     }
-    else if(zfscmpTheSame(lifeCycleName, "OnAttach"))
+    else if(zfstringIsEqual(lifeCycleName, "OnAttach"))
     {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnAttach;
     }
-    else if(zfscmpTheSame(lifeCycleName, "OnDetach"))
+    else if(zfstringIsEqual(lifeCycleName, "OnDetach"))
     {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnDetach;
     }

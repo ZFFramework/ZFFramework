@@ -17,7 +17,7 @@ zfbool ZFEnum::serializableOnSerializeFromData(ZF_IN const ZFSerializableData &s
     if(valueString != zfnull)
     {
         zfuint enumValue = ZFEnumInvalid();
-        if(!zfscmpTheSame(valueString, ZFEnumNameInvalid()))
+        if(!zfstringIsEqual(valueString, ZFEnumNameInvalid()))
         {
             if(this->enumIsFlags())
             {

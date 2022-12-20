@@ -1215,7 +1215,7 @@ ZFXmlItem &ZFXmlItem::attr(ZF_IN const zfchar *key,
                            ZF_IN const zfchar *value,
                            ZF_IN_OPT const ZFXmlItem *beforeThis /* = zfnull */)
 {
-    if(!zfsIsEmpty(key))
+    if(!zfstringIsEmpty(key))
     {
         ZFXmlItem xmlAttribute(ZFXmlType::e_XmlAttribute);
         xmlAttribute.xmlName(key);
@@ -1226,14 +1226,14 @@ ZFXmlItem &ZFXmlItem::attr(ZF_IN const zfchar *key,
 }
 ZFXmlItem &ZFXmlItem::attrRemove(ZF_IN const zfchar *name /* = zfnull */)
 {
-    if(d == zfnull || d->attrFirst == zfnull || zfsIsEmpty(name))
+    if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name))
     {
         return *this;
     }
 
     for(_ZFP_ZFXmlItemPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
     {
-        if(zfscmpTheSame(xmlAttribute->xmlName.value(), name))
+        if(zfstringIsEqual(xmlAttribute->xmlName.value(), name))
         {
             d->attrDetach(xmlAttribute);
             break;
@@ -1261,14 +1261,14 @@ ZFXmlItem &ZFXmlItem::attrRemoveAll(void)
 
 ZFXmlItem ZFXmlItem::attr(ZF_IN const zfchar *name) const
 {
-    if(d == zfnull || d->attrFirst == zfnull || zfsIsEmpty(name))
+    if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name))
     {
         return ZFXmlItem();
     }
 
     for(_ZFP_ZFXmlItemPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
     {
-        if(zfscmpTheSame(xmlAttribute->xmlName.value(), name))
+        if(zfstringIsEqual(xmlAttribute->xmlName.value(), name))
         {
             return ZFXmlItem(xmlAttribute);
         }
@@ -1277,14 +1277,14 @@ ZFXmlItem ZFXmlItem::attr(ZF_IN const zfchar *name) const
 }
 const zfchar *ZFXmlItem::attrValue(ZF_IN const zfchar *name) const
 {
-    if(d == zfnull || d->attrFirst == zfnull || zfsIsEmpty(name))
+    if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name))
     {
         return zfnull;
     }
 
     for(_ZFP_ZFXmlItemPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
     {
-        if(zfscmpTheSame(xmlAttribute->xmlName.value(), name))
+        if(zfstringIsEqual(xmlAttribute->xmlName.value(), name))
         {
             return xmlAttribute->xmlValue.value();
         }
@@ -1397,13 +1397,13 @@ ZFXmlItem ZFXmlItem::childFirst(ZF_IN_OPT const zfchar *name /* = zfnull */,
         ? afterThis->d->siblingNext
         : d->childFirst;
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(xmlChild);
     }
     else
     {
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name))
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name))
         {
             xmlChild = xmlChild->siblingNext;
         }
@@ -1421,13 +1421,13 @@ ZFXmlItem ZFXmlItem::childLast(ZF_IN_OPT const zfchar *name /* = zfnull */,
         ? beforeThis->d->siblingPrev
         : d->childLast;
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(xmlChild);
     }
     else
     {
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name))
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name))
         {
             xmlChild = xmlChild->siblingPrev;
         }
@@ -1445,13 +1445,13 @@ ZFXmlItem ZFXmlItem::childFirstElement(ZF_IN_OPT const zfchar *name /* = zfnull 
         ? afterThis->d->siblingNext
         : d->childFirst;
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(xmlChild);
     }
     else
     {
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
         {
             xmlChild = xmlChild->siblingNext;
         }
@@ -1469,13 +1469,13 @@ ZFXmlItem ZFXmlItem::childLastElement(ZF_IN_OPT const zfchar *name /* = zfnull *
         ? beforeThis->d->siblingPrev
         : d->childLast;
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(xmlChild);
     }
     else
     {
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
         {
             xmlChild = xmlChild->siblingPrev;
         }
@@ -1490,14 +1490,14 @@ ZFXmlItem ZFXmlItem::siblingNext(ZF_IN const zfchar *name /* = zfnull */) const
         return ZFXmlItem();
     }
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(d->siblingNext);
     }
     else
     {
         _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingNext;
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name))
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name))
         {
             xmlChild = xmlChild->siblingNext;
         }
@@ -1511,14 +1511,14 @@ ZFXmlItem ZFXmlItem::siblingPrev(ZF_IN const zfchar *name /* = zfnull */) const
         return ZFXmlItem();
     }
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(d->siblingPrev);
     }
     else
     {
         _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingPrev;
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name))
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name))
         {
             xmlChild = xmlChild->siblingPrev;
         }
@@ -1532,14 +1532,14 @@ ZFXmlItem ZFXmlItem::siblingNextElement(ZF_IN const zfchar *name /* = zfnull */)
         return ZFXmlItem();
     }
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(d->siblingNext);
     }
     else
     {
         _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingNext;
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
         {
             xmlChild = xmlChild->siblingNext;
         }
@@ -1553,14 +1553,14 @@ ZFXmlItem ZFXmlItem::siblingPrevElement(ZF_IN const zfchar *name /* = zfnull */)
         return ZFXmlItem();
     }
 
-    if(zfsIsEmpty(name))
+    if(zfstringIsEmpty(name))
     {
         return ZFXmlItem(d->siblingPrev);
     }
     else
     {
         _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingPrev;
-        while(xmlChild != zfnull && !zfscmpTheSame(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
+        while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
         {
             xmlChild = xmlChild->siblingPrev;
         }
@@ -1601,7 +1601,6 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, void, objectInfoT, ZFMP_IN_OUT(zfstring &, ret))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfstring, objectInfo)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfindex, objectRetainCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlTypeEnum, xmlType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfbool, xmlTypeValid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, xmlParent)

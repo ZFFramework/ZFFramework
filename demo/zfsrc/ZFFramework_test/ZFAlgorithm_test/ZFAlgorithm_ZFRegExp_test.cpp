@@ -34,10 +34,9 @@ protected:
         {
             ZFRegExpResult result;
             zfstring stringTo;
-            zfindex maxCount = zfindexMax();
             this->testCaseOutputSeparator();
             this->testCaseOutput("replace:");
-            regexp->regExpReplace(stringTo, result, stringFrom, patternTo, maxCount);
+            regexp->regExpReplace(stringTo, result, patternTo, stringFrom);
             this->testCaseOutput("  pattern from: %s", patternFrom);
             this->testCaseOutput("  pattern to  : %s", patternTo);
             this->testCaseOutput("  string  from: %s", stringFrom);

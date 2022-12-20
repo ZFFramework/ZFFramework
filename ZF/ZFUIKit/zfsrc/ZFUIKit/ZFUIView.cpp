@@ -832,7 +832,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
-        if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_child))
+        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_child))
         {
             zfautoObject element;
             if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))
@@ -857,7 +857,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
 
             categoryData.resolveMark();
         }
-        else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_layoutParam))
+        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_layoutParam))
         {
             zfautoObject layoutParam;
             if(!ZFObjectFromData(layoutParam, categoryData, outErrorHint, outErrorPos))
@@ -880,7 +880,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
 
             d->layoutParamChange(this, layoutParam);
         }
-        else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_internalImplView))
+        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_internalImplView))
         {
             if(!d->serializeInternalViewFromCategoryData(this,
                 ZFUIViewChildLayer::e_InternalImpl,
@@ -891,7 +891,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
                 return zffalse;
             }
         }
-        else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_internalBgView))
+        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_internalBgView))
         {
             if(!d->serializeInternalViewFromCategoryData(this,
                 ZFUIViewChildLayer::e_InternalBg,
@@ -902,7 +902,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
                 return zffalse;
             }
         }
-        else if(zfscmpTheSame(category, ZFSerializableKeyword_ZFUIView_internalFgView))
+        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_internalFgView))
         {
             if(!d->serializeInternalViewFromCategoryData(this,
                 ZFUIViewChildLayer::e_InternalFg,
@@ -1884,7 +1884,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById,
     {
         for(zfindex i = 0; i < d->layerNormal.views.count(); ++i)
         {
-            if(zfscmpTheSame(d->layerNormal.views[i]->viewId().cString(), viewId))
+            if(zfstringIsEqual(d->layerNormal.views[i]->viewId().cString(), viewId))
             {
                 return d->layerNormal.views[i];
             }
@@ -1893,21 +1893,21 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById,
         {
             for(zfindex i = 0; i < d->layerInternalImpl.views.count(); ++i)
             {
-                if(zfscmpTheSame(d->layerInternalImpl.views[i]->viewId().cString(), viewId))
+                if(zfstringIsEqual(d->layerInternalImpl.views[i]->viewId().cString(), viewId))
                 {
                     return d->layerInternalImpl.views[i];
                 }
             }
             for(zfindex i = 0; i < d->layerInternalBg.views.count(); ++i)
             {
-                if(zfscmpTheSame(d->layerInternalBg.views[i]->viewId().cString(), viewId))
+                if(zfstringIsEqual(d->layerInternalBg.views[i]->viewId().cString(), viewId))
                 {
                     return d->layerInternalBg.views[i];
                 }
             }
             for(zfindex i = 0; i < d->layerInternalFg.views.count(); ++i)
             {
-                if(zfscmpTheSame(d->layerInternalFg.views[i]->viewId().cString(), viewId))
+                if(zfstringIsEqual(d->layerInternalFg.views[i]->viewId().cString(), viewId))
                 {
                     return d->layerInternalFg.views[i];
                 }
@@ -1921,7 +1921,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById,
     while(!toFind.isEmpty())
     {
         ZFUIView *view = toFind.take();
-        if(zfscmpTheSame(view->viewId().cString(), viewId))
+        if(zfstringIsEqual(view->viewId().cString(), viewId))
         {
             return view;
         }
@@ -2122,7 +2122,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, internalFgViewArray)
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd,
                   ZFMP_IN(const zfchar *, tag))
 {
-    if(zfsIsEmpty(tag))
+    if(zfstringIsEmpty(tag))
     {
         return ;
     }
@@ -2131,7 +2131,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd,
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagRemove,
                   ZFMP_IN(const zfchar *, tag))
 {
-    if(zfsIsEmpty(tag))
+    if(zfstringIsEmpty(tag))
     {
         return ;
     }

@@ -36,7 +36,7 @@ zfbool ZFFilePathInfoCallbackToChildDefault(ZF_IN const zfchar *pathData,
         else
         {
             zfstring t;
-            if(!zfsIsEmpty(pathData))
+            if(!zfstringIsEmpty(pathData))
             {
                 t += pathData;
                 t += ZFFileSeparator();
@@ -47,7 +47,7 @@ zfbool ZFFilePathInfoCallbackToChildDefault(ZF_IN const zfchar *pathData,
     }
     else
     {
-        if(!zfsIsEmpty(pathData))
+        if(!zfstringIsEmpty(pathData))
         {
             pathDataChild += pathData;
             pathDataChild += ZFFileSeparator();
@@ -914,7 +914,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalT,
                        ZFMP_IN(const ZFPathInfo *, pathInfo),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
 {
-    if(zfsIsEmpty(localPath))
+    if(zfstringIsEmpty(localPath))
     {
         return zffalse;
     }
@@ -1008,7 +1008,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalT,
                        ZFMP_IN(const ZFPathInfo *, pathInfo),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
 {
-    if(zfsIsEmpty(localPath))
+    if(zfstringIsEmpty(localPath))
     {
         return zffalse;
     }

@@ -147,7 +147,7 @@ void ZFUIKit_test_prepareSettingForBoolProperty(ZF_IN_OUT ZFArray *settings,
     zfCoreAssert(settings != zfnull);
     zfCoreAssert(obj != zfnull && property != zfnull);
     zfCoreAssert(obj->classData()->classIsTypeOf(property->propertyOwnerClass()));
-    zfCoreAssert(zfscmpTheSame(property->propertyTypeId(), ZFTypeId_zfbool()));
+    zfCoreAssert(zfstringIsEqual(property->propertyTypeId(), ZFTypeId_zfbool()));
 
     zfbool value = property->getterMethod()->execute<zfbool const &>(obj);
     ZFUIKit_test_prepareSettingForNormalProperty(settings, obj, zfbool, property, ZFCoreArrayPODCreate(zfbool, value, !value));

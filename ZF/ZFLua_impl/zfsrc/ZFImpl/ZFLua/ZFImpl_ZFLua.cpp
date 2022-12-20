@@ -176,12 +176,12 @@ void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT ZFCoreArray<lua_State *> const &luaSt
     for(zfindex i = 0; i < scopeNameList.count(); ++i)
     {
         const zfchar *scopeName = scopeNameList[i];
-        if(zfsIsEmpty(scopeName))
+        if(zfstringIsEmpty(scopeName))
         {
             continue;
         }
         if(zfsncmp(scopeName, ZFImpl_ZFLua_PropTypePrefix, ZFImpl_ZFLua_PropTypePrefixLen) == 0
-            && !zfsIsEmpty(scopeName + ZFImpl_ZFLua_PropTypePrefixLen))
+            && !zfstringIsEmpty(scopeName + ZFImpl_ZFLua_PropTypePrefixLen))
         {
             _ZFP_ZFImpl_ZFLua_implSetupScope(code, scopeName + ZFImpl_ZFLua_PropTypePrefixLen);
         }
@@ -299,7 +299,7 @@ void ZFImpl_ZFLua_execute_errorHandle(ZF_IN lua_State *L,
 
     zfstring errHintTmp;
     errHintTmp += nativeError;
-    if(!zfsIsEmpty(chunkInfo))
+    if(!zfstringIsEmpty(chunkInfo))
     {
         errHintTmp += ", at: [";
         errHintTmp += chunkInfo;

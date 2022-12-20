@@ -102,7 +102,7 @@ static void _ZFP_ZFLuaLSPGenFile_param_ZFListener(ZF_IN const ZFOutput &output,
                                                   ZF_IN const zfchar *paramName)
 {
     zfstring sig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(paramTypeId);
-    if(zfscmpTheSame(paramTypeId, ZFTypeId_ZFListener()))
+    if(zfstringIsEqual(paramTypeId, ZFTypeId_ZFListener()))
     {
         // ---@param P0 v_ZFListener|fun(zfargs:v_ZFArgs)
         output << "---@param " << paramName << " " << sig
@@ -232,7 +232,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
         const ZFMethod *m = allMethod[iMethod];
         if(!m->methodIsPublic() || m->methodIsInternal()
             || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
-            || zfscmpTheSame(m->methodName(), "objectOnInit")
+            || zfstringIsEqual(m->methodName(), "objectOnInit")
         ) {
             continue;
         }
@@ -253,7 +253,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
             }
             paramList += m->methodParamNameAt(i);
         }
-        if(!zfscmpTheSame(m->methodReturnTypeId(), ZFTypeId_void()))
+        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void()))
         {
             zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodReturnTypeId());
             output << "---@return " << retSig << "\n";
@@ -326,7 +326,7 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output)
             }
             paramList += m->methodParamNameAt(i);
         }
-        if(!zfscmpTheSame(m->methodReturnTypeId(), ZFTypeId_void()))
+        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void()))
         {
             zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodReturnTypeId());
             output << "---@return " << retSig << "\n";
