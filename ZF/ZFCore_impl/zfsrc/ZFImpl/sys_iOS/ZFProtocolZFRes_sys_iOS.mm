@@ -1,5 +1,5 @@
 #include "ZFImpl_sys_iOS_ZFCore_impl.h"
-#include "ZFCore/protocol/ZFProtocolZFFileResProcess.h"
+#include "ZFCore/protocol/ZFProtocolZFRes.h"
 #include "ZFCore/ZFString.h"
 
 #if ZF_ENV_sys_iOS
@@ -15,7 +15,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileResProcessImpl_sys_iOS, ZFFileResProcess, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_sys_iOS, ZFRes, ZFProtocolLevel::e_SystemNormal)
 public:
     zfoverride
     virtual void protocolOnInit(void)
@@ -34,8 +34,8 @@ public:
     }
 private:
     zfstring _resRootPath;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFFileResProcessImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileResProcessImpl_sys_iOS)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFResImpl_sys_iOS)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFResImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -1,5 +1,5 @@
 #include "ZFImpl_sys_Qt_ZFCore_impl.h"
-#include "ZFCore/protocol/ZFProtocolZFFilePath.h"
+#include "ZFCore/protocol/ZFProtocolZFPath.h"
 #include "ZFCore/ZFString.h"
 
 #if ZF_ENV_sys_Qt
@@ -8,7 +8,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFilePathImpl_sys_Qt, ZFFilePath, ZFProtocolLevel::e_SystemHigh)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Qt, ZFPath, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt::applicationDirPath")
 public:
     virtual const zfchar *pathForModule(void)
@@ -40,7 +40,7 @@ public:
     {
         if(this->_pathForSetting.isEmpty())
         {
-            ZFFilePathFormat(this->_pathForSetting, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation).toStdString().c_str());
+            ZFPathFormat(this->_pathForSetting, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation).toStdString().c_str());
             if(this->_pathForSetting.isEmpty())
             {
                 this->_pathForSetting = this->pathForModule();
@@ -59,7 +59,7 @@ public:
     {
         if(this->_pathForStorage.isEmpty())
         {
-            ZFFilePathFormat(this->_pathForStorage, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdString().c_str());
+            ZFPathFormat(this->_pathForStorage, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdString().c_str());
             if(this->_pathForStorage.isEmpty())
             {
                 this->_pathForStorage = this->pathForModule();
@@ -78,7 +78,7 @@ public:
     {
         if(this->_pathForStorageShared.isEmpty())
         {
-            ZFFilePathFormat(this->_pathForStorageShared, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString().c_str());
+            ZFPathFormat(this->_pathForStorageShared, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString().c_str());
             if(this->_pathForStorageShared.isEmpty())
             {
                 this->_pathForStorageShared = this->pathForModule();
@@ -97,7 +97,7 @@ public:
     {
         if(this->_pathForCache.isEmpty())
         {
-            ZFFilePathFormat(this->_pathForCache, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString().c_str());
+            ZFPathFormat(this->_pathForCache, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString().c_str());
             if(this->_pathForCache.isEmpty())
             {
                 this->_pathForCache = this->pathForModule();
@@ -113,7 +113,7 @@ public:
     }
     virtual void pathForCacheClear(void)
     {
-        ZFFileFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
+        ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
     }
 
 private:
@@ -123,8 +123,8 @@ private:
     zfstring _pathForStorage;
     zfstring _pathForStorageShared;
     zfstring _pathForCache;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFFilePathImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFilePathImpl_sys_Qt)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFPathImpl_sys_Qt)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFPathImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

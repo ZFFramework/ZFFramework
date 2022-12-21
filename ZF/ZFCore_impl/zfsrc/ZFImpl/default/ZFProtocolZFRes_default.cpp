@@ -1,17 +1,17 @@
 #include "ZFImpl_default_ZFCore_impl.h"
-#include "ZFCore/protocol/ZFProtocolZFFileResProcess.h"
+#include "ZFCore/protocol/ZFProtocolZFRes.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // res files must be placed at "zfres/" in the same dir of your executable
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileResProcessImpl_default, ZFFileResProcess, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_default, ZFRes, ZFProtocolLevel::e_Default)
 public:
     zfoverride
     virtual void protocolOnInit(void)
     {
         zfsuper::protocolOnInit();
-        this->_resRootPath = ZFFilePathForModule();
+        this->_resRootPath = ZFPathForModule();
         this->_resRootPath += ZFFileSeparator();
         #if ZF_ENV_sys_MacOS
             this->_resRootPath += "..";
@@ -31,8 +31,8 @@ public:
     }
 private:
     zfstring _resRootPath;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFFileResProcessImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileResProcessImpl_default)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFResImpl_default)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFResImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief see #ZFPathInfo
  *
  * pathData is the res path
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, res)
 
@@ -21,7 +21,7 @@ ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, res)
 // ZFInputForRes
 /**
  * @brief util to create a resource file input callback,
- *   see #ZFFileResOpen for what resource file is
+ *   see #ZFResOpen for what resource file is
  *
  * param:
  * -  (const zfchar *)resFilePath: resource file path to use

@@ -9,26 +9,26 @@ ZFPATHTYPE_DEFINE(file)
 
 // ============================================================
 ZFPATHTYPE_FILEIO_REGISTER(file, ZFPathType_file()
-        , ZFFileFileIsExist
-        , ZFFileFileIsDir
-        , ZFFilePathInfoCallbackToFileNameDefault
-        , ZFFilePathInfoCallbackToChildDefault
-        , ZFFilePathInfoCallbackToParentDefault
-        , ZFFileFilePathCreate
-        , ZFFileFileRemove
-        , ZFFileFileFindFirst
-        , ZFFileFileFindNext
-        , ZFFileFileFindClose
-        , ZFFileFileOpen
-        , ZFFileFileClose
-        , ZFFileFileTell
-        , ZFFileFileSeek
-        , ZFFileFileRead
-        , ZFFileFileWrite
-        , ZFFileFileFlush
-        , ZFFileFileIsEof
-        , ZFFileFileIsError
-        , ZFFileFileSize
+        , ZFFileIsExist
+        , ZFFileIsDir
+        , ZFPathInfoCallbackToFileNameDefault
+        , ZFPathInfoCallbackToChildDefault
+        , ZFPathInfoCallbackToParentDefault
+        , ZFPathCreate
+        , ZFFileRemove
+        , ZFFileFindFirst
+        , ZFFileFindNext
+        , ZFFileFindClose
+        , ZFFileOpen
+        , ZFFileClose
+        , ZFFileTell
+        , ZFFileSeek
+        , ZFFileRead
+        , ZFFileWrite
+        , ZFFileFlush
+        , ZFFileIsEof
+        , ZFFileIsError
+        , ZFFileSize
     )
 
 // ============================================================

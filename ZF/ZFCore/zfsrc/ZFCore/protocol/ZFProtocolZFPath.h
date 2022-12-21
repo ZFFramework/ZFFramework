@@ -1,10 +1,10 @@
 /**
- * @file ZFProtocolZFFilePath.h
+ * @file ZFProtocolZFPath.h
  * @brief protocol for ZFFile
  */
 
-#ifndef _ZFI_ZFProtocolZFFilePath_h_
-#define _ZFI_ZFProtocolZFFilePath_h_
+#ifndef _ZFI_ZFProtocolZFPath_h_
+#define _ZFI_ZFProtocolZFPath_h_
 
 #include "ZFCore/ZFProtocol.h"
 #include "ZFCore/ZFFile.h"
@@ -13,58 +13,58 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFFile
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFFilePath)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFPath)
 public:
     /**
-     * @brief see #ZFFilePathForModule
+     * @brief see #ZFPathForModule
      */
     virtual const zfchar *pathForModule(void) zfpurevirtual;
     /**
-     * @brief see #ZFFilePathForModuleFile
+     * @brief see #ZFPathForModuleFile
      */
     virtual const zfchar *pathForModuleFile(void) zfpurevirtual;
 
     /**
-     * @brief see #ZFFilePathForSetting
+     * @brief see #ZFPathForSetting
      */
     virtual const zfchar *pathForSetting(void) zfpurevirtual;
     /**
-     * @brief see #ZFFilePathForSetting
+     * @brief see #ZFPathForSetting
      */
     virtual void pathForSetting(ZF_IN const zfchar *path) zfpurevirtual;
 
     /**
-     * @brief see #ZFFilePathForStorage
+     * @brief see #ZFPathForStorage
      */
     virtual const zfchar *pathForStorage(void) zfpurevirtual;
     /**
-     * @brief see #ZFFilePathForStorage
+     * @brief see #ZFPathForStorage
      */
     virtual void pathForStorage(ZF_IN const zfchar *path) zfpurevirtual;
 
     /**
-     * @brief see #ZFFilePathForStorageShared
+     * @brief see #ZFPathForStorageShared
      */
     virtual const zfchar *pathForStorageShared(void) zfpurevirtual;
     /**
-     * @brief see #ZFFilePathForStorageShared
+     * @brief see #ZFPathForStorageShared
      */
     virtual void pathForStorageShared(ZF_IN const zfchar *path) zfpurevirtual;
 
     /**
-     * @brief see #ZFFilePathForCache
+     * @brief see #ZFPathForCache
      */
     virtual const zfchar *pathForCache(void) zfpurevirtual;
     /**
-     * @brief see #ZFFilePathForCache
+     * @brief see #ZFPathForCache
      */
     virtual void pathForCache(ZF_IN const zfchar *path) zfpurevirtual;
     /**
-     * @brief see #ZFFilePathForCacheClear
+     * @brief see #ZFPathForCacheClear
      */
     virtual void pathForCacheClear(void) zfpurevirtual;
-ZFPROTOCOL_INTERFACE_END(ZFFilePath)
+ZFPROTOCOL_INTERFACE_END(ZFPath)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFProtocolZFFilePath_h_
+#endif // #ifndef _ZFI_ZFProtocolZFPath_h_
 

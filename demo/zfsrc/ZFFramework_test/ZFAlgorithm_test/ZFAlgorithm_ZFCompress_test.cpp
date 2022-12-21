@@ -28,16 +28,16 @@ protected:
             ZFPathInfo pathInfoDst(ZFPathType_cachePath(), "ZFCompress_test");
 
             this->testCaseOutput("original src tree:");
-            ZFFilePathInfoTreePrint(pathInfoSrc, ZFOutputDefault(), "    ");
+            ZFPathInfoTreePrint(pathInfoSrc, ZFOutputDefault(), "    ");
             this->testCaseOutput("original dst tree:");
-            ZFFilePathInfoTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
+            ZFPathInfoTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
 
             zfblockedAlloc(ZFIOBufferByCacheFile, io);
             ZFCompressDir(io->output(), pathInfoSrc);
 
             ZFDecompressDir(pathInfoDst, io->input());
             this->testCaseOutput("decompressed dst tree:");
-            ZFFilePathInfoTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
+            ZFPathInfoTreePrint(pathInfoDst, ZFOutputDefault(), "    ");
         }
 
         this->testCaseStop();

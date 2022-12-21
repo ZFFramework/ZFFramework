@@ -264,7 +264,7 @@ public:
     static zfbool callbackToFileName(ZF_IN const zfchar *pathData,
                                      ZF_IN_OUT zfstring &fileName)
     {
-        return ZFFilePathInfoCallbackToFileNameDefault(pathData, fileName);
+        return ZFPathInfoCallbackToFileNameDefault(pathData, fileName);
     }
     static zfbool callbackToChild(ZF_IN const zfchar *pathData,
                                   ZF_IN_OUT zfstring &pathDataChild,
@@ -298,7 +298,7 @@ public:
             return zffalse;
         }
         zfCoreDataEncode(pathDataParent, compressFilePathInfo, compressFilePathInfo.length(), ZFPathInfoChainCharMap());
-        return ZFFilePathInfoCallbackToParentDefault(pathDataTmp, pathDataParent);
+        return ZFPathInfoCallbackToParentDefault(pathDataTmp, pathDataParent);
     }
     static zfbool callbackPathCreate(ZF_IN const zfchar *pathData,
                                      ZF_IN_OPT zfbool autoMakeParent,

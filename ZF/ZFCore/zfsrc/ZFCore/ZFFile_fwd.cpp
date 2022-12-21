@@ -1,4 +1,4 @@
-#include "ZFFile_impl.h"
+#include "ZFFile.h"
 
 #include "ZFSTLWrapper/zfstlmap.h"
 

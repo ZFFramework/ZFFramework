@@ -16,22 +16,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFFile)
 public:
     /**
-     * @brief see #ZFFileFileIsExist
+     * @brief see #ZFFileIsExist
      */
     virtual zfbool fileIsExist(ZF_IN const zfchar *path) zfpurevirtual;
     /**
-     * @brief see #ZFFileFileIsDir
+     * @brief see #ZFFileIsDir
      */
     virtual zfbool fileIsDir(ZF_IN const zfchar *path) zfpurevirtual;
 
     /**
-     * @brief see #ZFFileFilePathCreate
+     * @brief see #ZFPathCreate
      */
     virtual zfbool filePathCreate(ZF_IN const zfchar *path,
                                   ZF_IN_OPT zfbool autoMakeParent = zffalse,
                                   ZF_OUT_OPT zfstring *errPos = zfnull) zfpurevirtual;
     /**
-     * @brief see #ZFFileFileCopy
+     * @brief see #ZFFileCopy
      */
     virtual zfbool fileCopy(ZF_IN const zfchar *srcPath,
                             ZF_IN const zfchar *dstPath,
@@ -39,7 +39,7 @@ public:
                             ZF_IN_OPT zfbool isForce = zffalse,
                             ZF_IN_OPT zfstring *errPos = zfnull) zfpurevirtual;
     /**
-     * @brief see #ZFFileFileMove
+     * @brief see #ZFFileMove
      */
     virtual zfbool fileMove(ZF_IN const zfchar *srcPath,
                             ZF_IN const zfchar *dstPath,
@@ -47,7 +47,7 @@ public:
                             ZF_IN_OPT zfbool isForce = zffalse,
                             ZF_IN_OPT zfstring *errPos = zfnull) zfpurevirtual;
     /**
-     * @brief see #ZFFileFileRemove
+     * @brief see #ZFFileRemove
      */
     virtual zfbool fileRemove(ZF_IN const zfchar *path,
                               ZF_IN_OPT zfbool isRecursive = zftrue,
@@ -55,7 +55,7 @@ public:
                               ZF_IN_OPT zfstring *errPos = zfnull) zfpurevirtual;
 
     /**
-     * @brief see #ZFFileFileFindFirst
+     * @brief see #ZFFileFindFirst
      *
      * use ZFFileFindData::Impl to store find result\n
      * remember that you must remove the dir "." and "..",
@@ -70,13 +70,42 @@ public:
     virtual zfbool fileFindFirst(ZF_IN_OUT ZFFileFindData::Impl &fd,
                                  ZF_IN const zfchar *path) zfpurevirtual;
     /**
-     * @brief see #ZFFileFileFindNext, fileFindFirst
+     * @brief see #ZFFileFindNext, fileFindFirst
      */
     virtual zfbool fileFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) zfpurevirtual;
     /**
-     * @brief see #ZFFileFileFindClose, fileFindFirst
+     * @brief see #ZFFileFindClose, fileFindFirst
      */
     virtual void fileFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) zfpurevirtual;
+
+    /** @brief see #ZFFileOpen */
+    virtual void *fileOpen(ZF_IN const zfchar *filePath,
+                           ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read) zfpurevirtual;
+    /** @brief see #ZFFileClose */
+    virtual zfbool fileClose(ZF_IN void *token) zfpurevirtual;
+
+    /** @brief see #ZFFileTell */
+    virtual zfindex fileTell(ZF_IN void *token) zfpurevirtual;
+    /** @brief see #ZFFileSeek */
+    virtual zfbool fileSeek(ZF_IN void *token,
+                            ZF_IN zfindex byteSize,
+                            ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin) zfpurevirtual;
+
+    /** @brief see #ZFFileRead */
+    virtual zfindex fileRead(ZF_IN void *token,
+                             ZF_IN void *buf,
+                             ZF_IN zfindex maxByteSize) zfpurevirtual;
+
+    /** @brief see #ZFFileWrite */
+    virtual zfindex fileWrite(ZF_IN void *token,
+                              ZF_IN const void *src,
+                              ZF_IN zfindex maxByteSize) zfpurevirtual;
+    /** @brief see #ZFFileFlush */
+    virtual void fileFlush(ZF_IN void *token) zfpurevirtual;
+    /** @brief see #ZFFileIsEof */
+    virtual zfbool fileIsEof(ZF_IN void *token) zfpurevirtual;
+    /** @brief see #ZFFileIsError */
+    virtual zfbool fileIsError(ZF_IN void *token) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFFile)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -643,7 +643,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(ZF_IN const ZFClass *desiredClass,
         return zffalse;
     }
     zfstring imgFileName;
-    if(!ZFFilePathInfoToFileName(imgPathInfo, imgFileName))
+    if(!ZFPathInfoToFileName(imgPathInfo, imgFileName))
     {
         return zffalse;
     }

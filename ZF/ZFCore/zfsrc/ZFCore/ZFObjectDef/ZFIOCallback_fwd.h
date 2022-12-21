@@ -19,11 +19,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * set an auto released data by #ZFCallback::callbackTag,
  * whose key is #ZFCallbackTagKeyword_ioOwner and value is a ZFObject
  * that optionally implements those method (as #ZFMethod):
- * -  ioSeek, similar to FILE's #ZFFileFileSeek, proto type:\n
+ * -  ioSeek, similar to FILE's #ZFFileSeek, proto type:\n
  *   zfbool ioSeek(ZF_IN zfindex byteSize,
  *                 ZF_IN ZFSeekPos pos);\n
  *   return false if the callback doesn't support seek or error occurred
- * -  ioTell, similar to FILE's #ZFFileFileTell, proto type:\n
+ * -  ioTell, similar to FILE's #ZFFileTell, proto type:\n
  *   zfindex ioTell(void);\n
  *   return current's index or zfindexMax() if the callback doesn't support seek
  * -  ioSize, calculate callback's size, proto type:\n
@@ -56,14 +56,14 @@ extern ZFLIB_ZFCore zfindex ZFIOCallbackCalcFSeek(ZF_IN zfindex offset,
 ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)
 public:
     /**
-     * @brief similar to FILE's #ZFFileFileSeek
+     * @brief similar to FILE's #ZFFileSeek
      *
      * return false if the callback doesn't support seek
      */
     virtual zfbool ioSeek(ZF_IN zfindex byteSize,
                           ZF_IN_OPT ZFSeekPos pos = ZFSeekPosBegin) const;
     /**
-     * @brief similar to FILE's #ZFFileFileTell, return current's index or zfindexMax() if the callback doesn't support seek
+     * @brief similar to FILE's #ZFFileTell, return current's index or zfindexMax() if the callback doesn't support seek
      */
     virtual zfindex ioTell(void) const;
     /**

@@ -1,29 +1,31 @@
-#include "ZFFile_impl.h"
+#include "ZFFile.h"
+
+#include "protocol/ZFProtocolZFFile.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileFileIsExist,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsExist,
                        ZFMP_IN(const zfchar *, path))
 {
     if(path == zfnull)
     {
         return zffalse;
     }
-    return _ZFP_ZFFileImpl->fileIsExist(path);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileIsExist(path);
 }
 
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileFileIsDir,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsDir,
                        ZFMP_IN(const zfchar *, path))
 {
     if(path == zfnull)
     {
         return zffalse;
     }
-    return _ZFP_ZFFileImpl->fileIsDir(path);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileIsDir(path);
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileFilePathCreate,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathCreate,
                        ZFMP_IN(const zfchar *, path),
                        ZFMP_IN_OPT(zfbool, autoMakeParent, zftrue),
                        ZFMP_OUT_OPT(zfstring *, errPos, zfnull))
@@ -36,10 +38,10 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileFilePathCreate,
     {
         return zftrue;
     }
-    return _ZFP_ZFFileImpl->filePathCreate(path, autoMakeParent, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->filePathCreate(path, autoMakeParent, errPos);
 }
 
-ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileFileCopy,
+ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileCopy,
                        ZFMP_IN(const zfchar *, srcPath),
                        ZFMP_IN(const zfchar *, dstPath),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
@@ -50,10 +52,10 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileFileCopy,
     {
         return zffalse;
     }
-    return _ZFP_ZFFileImpl->fileCopy(srcPath, dstPath, isRecursive, isForce, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileCopy(srcPath, dstPath, isRecursive, isForce, errPos);
 }
 
-ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileFileMove,
+ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileMove,
                        ZFMP_IN(const zfchar *, srcPath),
                        ZFMP_IN(const zfchar *, dstPath),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
@@ -64,9 +66,9 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileFileMove,
     {
         return zffalse;
     }
-    return _ZFP_ZFFileImpl->fileMove(srcPath, dstPath, isRecursive, isForce, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileMove(srcPath, dstPath, isRecursive, isForce, errPos);
 }
-ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFFileFileRemove,
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFFileRemove,
                        ZFMP_IN(const zfchar *, path),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
                        ZFMP_IN_OPT(zfbool, isForce, zffalse),
@@ -76,12 +78,12 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFFileFileRemove,
     {
         return zffalse;
     }
-    return _ZFP_ZFFileImpl->fileRemove(path, isRecursive, isForce, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileRemove(path, isRecursive, isForce, errPos);
 }
 
-#define _ZFP_ZFFileFindType_file "ZFFileFileFindFirst"
+#define _ZFP_ZFFileFindType_file "ZFFileFindFirst"
 
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileFileFindFirst,
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileFindFirst,
                        ZFMP_IN_OUT(ZFFileFindData &, fd),
                        ZFMP_IN(const zfchar *, path))
 {
@@ -90,28 +92,28 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileFileFindFirst,
         return zffalse;
     }
     fd.implAttach(_ZFP_ZFFileFindType_file);
-    if(!_ZFP_ZFFileImpl->fileFindFirst(fd.impl(), path))
+    if(!ZFPROTOCOL_ACCESS(ZFFile)->fileFindFirst(fd.impl(), path))
     {
         fd.implDetach();
         return zffalse;
     }
     return zftrue;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileFileFindNext,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileFindNext,
                        ZFMP_IN_OUT(ZFFileFindData &, fd))
 {
     fd.implCheck(_ZFP_ZFFileFindType_file);
-    return _ZFP_ZFFileImpl->fileFindNext(fd.impl());
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileFindNext(fd.impl());
 }
-ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFileFindClose,
+ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFindClose,
                        ZFMP_IN_OUT(ZFFileFindData &, fd))
 {
     fd.implCheck(_ZFP_ZFFileFindType_file);
-    _ZFP_ZFFileImpl->fileFindClose(fd.impl());
+    ZFPROTOCOL_ACCESS(ZFFile)->fileFindClose(fd.impl());
     fd.implDetach();
 }
 
-ZFMETHOD_FUNC_DEFINE_3(void *, ZFFileFileOpen,
+ZFMETHOD_FUNC_DEFINE_3(void *, ZFFileOpen,
                        ZFMP_IN(const zfchar *, filePath),
                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, ZFFileOpenOption::e_Read),
                        ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue))
@@ -123,50 +125,51 @@ ZFMETHOD_FUNC_DEFINE_3(void *, ZFFileFileOpen,
         ))
     {
         zfstring parentPath;
-        if(ZFFilePathParentOf(parentPath, filePath))
+        if(ZFPathParentOf(parentPath, filePath))
         {
-            ZFFileFilePathCreate(parentPath);
+            ZFPathCreate(parentPath);
         }
     }
-    return _ZFP_ZFFileReadWriteImpl->fileOpen(filePath, flag);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileOpen(filePath, flag);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileFileClose,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileClose,
                        ZFMP_IN(void *, token))
 {
-    return _ZFP_ZFFileReadWriteImpl->fileClose(token);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileClose(token);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileFileTell,
+ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileTell,
                        ZFMP_IN(void *, token))
 {
-    return _ZFP_ZFFileReadWriteImpl->fileTell(token);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileTell(token);
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileFileSeek,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileSeek,
                        ZFMP_IN(void *, token),
                        ZFMP_IN(zfindex, byteSize),
                        ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin))
 {
-    return _ZFP_ZFFileReadWriteImpl->fileSeek(token, byteSize, position);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileSeek(token, byteSize, position);
 }
-ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileFileRead,
+ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileRead,
                        ZFMP_IN(void *, token),
                        ZFMP_IN(void *, buf),
                        ZFMP_IN(zfindex, maxByteSize))
 {
+    ZFPROTOCOL_INTERFACE_CLASS(ZFFile) *impl = ZFPROTOCOL_ACCESS(ZFFile);
     if(buf == zfnull)
     {
-        zfindex curPos = _ZFP_ZFFileReadWriteImpl->fileTell(token);
-        _ZFP_ZFFileReadWriteImpl->fileSeek(token, 0, ZFSeekPosEnd);
-        zfindex endPos = _ZFP_ZFFileReadWriteImpl->fileTell(token);
-        _ZFP_ZFFileReadWriteImpl->fileSeek(token, curPos, ZFSeekPosBegin);
+        zfindex curPos = impl->fileTell(token);
+        impl->fileSeek(token, 0, ZFSeekPosEnd);
+        zfindex endPos = impl->fileTell(token);
+        impl->fileSeek(token, curPos, ZFSeekPosBegin);
         return endPos - curPos;
     }
     if(maxByteSize == zfindexMax())
     {
         return 0;
     }
-    return _ZFP_ZFFileReadWriteImpl->fileRead(token, buf, maxByteSize);
+    return impl->fileRead(token, buf, maxByteSize);
 }
-ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileFileWrite,
+ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileWrite,
                        ZFMP_IN(void *, token),
                        ZFMP_IN(const void *, src),
                        ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax()))
@@ -175,42 +178,42 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileFileWrite,
     {
         return 0;
     }
-    return _ZFP_ZFFileReadWriteImpl->fileWrite(token, src,
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileWrite(token, src,
         (maxByteSize == zfindexMax()) ? (sizeof(zfchar) * zfslen((const zfchar *)src)) : maxByteSize);
 }
-ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFileFlush,
+ZFMETHOD_FUNC_DEFINE_1(void, ZFFileFlush,
                        ZFMP_IN(void *, token))
 {
-    return _ZFP_ZFFileReadWriteImpl->fileFlush(token);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileFlush(token);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileFileIsEof,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsEof,
                        ZFMP_IN(void *, token))
 {
-    return _ZFP_ZFFileReadWriteImpl->fileIsEof(token);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileIsEof(token);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileFileIsError,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileIsError,
                        ZFMP_IN(void *, token))
 {
-    return _ZFP_ZFFileReadWriteImpl->fileIsError(token);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileIsError(token);
 }
-ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileFileSize,
+ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileSize,
                        ZFMP_IN(void *, token))
 {
     if(token == zfnull)
     {
         return zfindexMax();
     }
-    zfindex saved = ZFFileFileTell(token);
+    zfindex saved = ZFFileTell(token);
     if(saved == zfindexMax())
     {
         return zfindexMax();
     }
-    if(!ZFFileFileSeek(token, 0, ZFSeekPosEnd))
+    if(!ZFFileSeek(token, 0, ZFSeekPosEnd))
     {
         return zfindexMax();
     }
-    zfindex size = ZFFileFileTell(token);
-    ZFFileFileSeek(token, saved, ZFSeekPosBegin);
+    zfindex size = ZFFileTell(token);
+    ZFFileSeek(token, saved, ZFSeekPosBegin);
     return size;
 }
 

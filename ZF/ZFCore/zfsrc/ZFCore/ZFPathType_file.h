@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief see #ZFPathInfo
  *
  * pathData is the file path
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, file)
 
@@ -91,29 +91,29 @@ public:
     {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        return ZFFileFileIsExist(pathDataAbs);
+        return ZFFileIsExist(pathDataAbs);
     }
     static zfbool callbackIsDir(ZF_IN const zfchar *pathData)
     {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        return ZFFileFileIsDir(pathDataAbs);
+        return ZFFileIsDir(pathDataAbs);
     }
     static zfbool callbackToFileName(ZF_IN const zfchar *pathData,
                                      ZF_IN_OUT zfstring &fileName)
     {
-        return ZFFilePathInfoCallbackToFileNameDefault(pathData, fileName);
+        return ZFPathInfoCallbackToFileNameDefault(pathData, fileName);
     }
     static zfbool callbackToChild(ZF_IN const zfchar *pathData,
                                   ZF_IN_OUT zfstring &pathDataChild,
                                   ZF_IN const zfchar *childName)
     {
-        return ZFFilePathInfoCallbackToChildDefault(pathData, pathDataChild, childName);
+        return ZFPathInfoCallbackToChildDefault(pathData, pathDataChild, childName);
     }
     static zfbool callbackToParent(ZF_IN const zfchar *pathData,
                                    ZF_IN_OUT zfstring &pathDataParent)
     {
-        return ZFFilePathInfoCallbackToParentDefault(pathData, pathDataParent);
+        return ZFPathInfoCallbackToParentDefault(pathData, pathDataParent);
     }
     static zfbool callbackPathCreate(ZF_IN const zfchar *pathData,
                                      ZF_IN_OPT zfbool autoMakeParent,
@@ -121,7 +121,7 @@ public:
     {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(!ZFFileFilePathCreate(pathDataAbs, autoMakeParent, errPos))
+        if(!ZFPathCreate(pathDataAbs, autoMakeParent, errPos))
         {
             if(errPos != zfnull)
             {
@@ -141,7 +141,7 @@ public:
     {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(!ZFFileFileRemove(pathDataAbs, isRecursive, isForce, errPos))
+        if(!ZFFileRemove(pathDataAbs, isRecursive, isForce, errPos))
         {
             if(errPos != zfnull)
             {
@@ -159,7 +159,7 @@ public:
     {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(ZFFileFileFindFirst(fd, pathDataAbs))
+        if(ZFFileFindFirst(fd, pathDataAbs))
         {
             return zftrue;
         }
@@ -170,7 +170,7 @@ public:
     }
     static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd)
     {
-        if(ZFFileFileFindNext(fd))
+        if(ZFFileFindNext(fd))
         {
             return zftrue;
         }
@@ -181,7 +181,7 @@ public:
     }
     static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd)
     {
-        ZFFileFileFindClose(fd);
+        ZFFileFindClose(fd);
     }
     static void *callbackOpen(ZF_IN const zfchar *pathData,
                               ZF_IN_OPT ZFFileOpenOptionFlags flag,
@@ -189,49 +189,49 @@ public:
     {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        return ZFFileFileOpen(pathDataAbs, flag, autoCreateParent);
+        return ZFFileOpen(pathDataAbs, flag, autoCreateParent);
     }
     static zfbool callbackClose(ZF_IN void *token)
     {
-        return ZFFileFileClose(token);
+        return ZFFileClose(token);
     }
     static zfindex callbackTell(ZF_IN void *token)
     {
-        return ZFFileFileTell(token);
+        return ZFFileTell(token);
     }
     static zfbool callbackSeek(ZF_IN void *token,
                                ZF_IN zfindex byteSize,
                                ZF_IN_OPT ZFSeekPos position)
     {
-        return ZFFileFileSeek(token, byteSize, position);
+        return ZFFileSeek(token, byteSize, position);
     }
     static zfindex callbackRead(ZF_IN void *token,
                                 ZF_IN void *buf,
                                 ZF_IN zfindex maxByteSize)
     {
-        return ZFFileFileRead(token, buf, maxByteSize);
+        return ZFFileRead(token, buf, maxByteSize);
     }
     static zfindex callbackWrite(ZF_IN void *token,
                                  ZF_IN const void *src,
                                  ZF_IN_OPT zfindex maxByteSize)
     {
-        return ZFFileFileWrite(token, src, maxByteSize);
+        return ZFFileWrite(token, src, maxByteSize);
     }
     static void callbackFlush(ZF_IN void *token)
     {
-        ZFFileFileFlush(token);
+        ZFFileFlush(token);
     }
     static zfbool callbackIsEof(ZF_IN void *token)
     {
-        return ZFFileFileIsEof(token);
+        return ZFFileIsEof(token);
     }
     static zfbool callbackIsError(ZF_IN void *token)
     {
-        return ZFFileFileIsError(token);
+        return ZFFileIsError(token);
     }
     static zfindex callbackSize(ZF_IN void *token)
     {
-        return ZFFileFileSize(token);
+        return ZFFileSize(token);
     }
     /** @endcond */
 };

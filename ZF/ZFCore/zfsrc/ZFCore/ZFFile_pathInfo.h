@@ -11,212 +11,219 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackIsExist)(ZF_IN const zfchar *pathData);
+typedef zfbool (*ZFPathInfoCallbackIsExist)(ZF_IN const zfchar *pathData);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackIsDir)(ZF_IN const zfchar *pathData);
+typedef zfbool (*ZFPathInfoCallbackIsDir)(ZF_IN const zfchar *pathData);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackToFileName)(ZF_IN const zfchar *pathData,
-                                                   ZF_IN_OUT zfstring &fileName);
+typedef zfbool (*ZFPathInfoCallbackToFileName)(ZF_IN const zfchar *pathData,
+                                               ZF_IN_OUT zfstring &fileName);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackToChild)(ZF_IN const zfchar *pathData,
-                                                ZF_IN_OUT zfstring &pathDataChild,
-                                                ZF_IN const zfchar *childName);
+typedef zfbool (*ZFPathInfoCallbackToChild)(ZF_IN const zfchar *pathData,
+                                            ZF_IN_OUT zfstring &pathDataChild,
+                                            ZF_IN const zfchar *childName);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackToParent)(ZF_IN const zfchar *pathData,
-                                                 ZF_IN_OUT zfstring &pathDataParent);
+typedef zfbool (*ZFPathInfoCallbackToParent)(ZF_IN const zfchar *pathData,
+                                             ZF_IN_OUT zfstring &pathDataParent);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackPathCreate)(ZF_IN const zfchar *pathData,
-                                                   ZF_IN_OPT zfbool autoMakeParent,
-                                                   ZF_OUT_OPT zfstring *errPos);
+typedef zfbool (*ZFPathInfoCallbackPathCreate)(ZF_IN const zfchar *pathData,
+                                               ZF_IN_OPT zfbool autoMakeParent,
+                                               ZF_OUT_OPT zfstring *errPos);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackRemove)(ZF_IN const zfchar *pathData,
-                                               ZF_IN_OPT zfbool isRecursive,
-                                               ZF_IN_OPT zfbool isForce,
-                                               ZF_IN_OPT zfstring *errPos);
+typedef zfbool (*ZFPathInfoCallbackRemove)(ZF_IN const zfchar *pathData,
+                                           ZF_IN_OPT zfbool isRecursive,
+                                           ZF_IN_OPT zfbool isForce,
+                                           ZF_IN_OPT zfstring *errPos);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackFindFirst)(ZF_IN_OUT ZFFileFindData &fd,
-                                                  ZF_IN const zfchar *pathData);
+typedef zfbool (*ZFPathInfoCallbackFindFirst)(ZF_IN_OUT ZFFileFindData &fd,
+                                              ZF_IN const zfchar *pathData);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackFindNext)(ZF_IN_OUT ZFFileFindData &fd);
+typedef zfbool (*ZFPathInfoCallbackFindNext)(ZF_IN_OUT ZFFileFindData &fd);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef void (*ZFFilePathInfoCallbackFindClose)(ZF_IN_OUT ZFFileFindData &fd);
+typedef void (*ZFPathInfoCallbackFindClose)(ZF_IN_OUT ZFFileFindData &fd);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef void *(*ZFFilePathInfoCallbackOpen)(ZF_IN const zfchar *pathData,
-                                            ZF_IN_OPT ZFFileOpenOptionFlags flag,
-                                            ZF_IN_OPT zfbool autoCreateParent);
+typedef void *(*ZFPathInfoCallbackOpen)(ZF_IN const zfchar *pathData,
+                                        ZF_IN_OPT ZFFileOpenOptionFlags flag,
+                                        ZF_IN_OPT zfbool autoCreateParent);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackClose)(ZF_IN void *token);
+typedef zfbool (*ZFPathInfoCallbackClose)(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfindex (*ZFFilePathInfoCallbackTell)(ZF_IN void *token);
+typedef zfindex (*ZFPathInfoCallbackTell)(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackSeek)(ZF_IN void *token,
-                                             ZF_IN zfindex byteSize,
-                                             ZF_IN_OPT ZFSeekPos position);
+typedef zfbool (*ZFPathInfoCallbackSeek)(ZF_IN void *token,
+                                         ZF_IN zfindex byteSize,
+                                         ZF_IN_OPT ZFSeekPos position);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfindex (*ZFFilePathInfoCallbackRead)(ZF_IN void *token,
-                                              ZF_IN void *buf,
-                                              ZF_IN zfindex maxByteSize);
+typedef zfindex (*ZFPathInfoCallbackRead)(ZF_IN void *token,
+                                          ZF_IN void *buf,
+                                          ZF_IN zfindex maxByteSize);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfindex (*ZFFilePathInfoCallbackWrite)(ZF_IN void *token,
-                                               ZF_IN const void *src,
-                                               ZF_IN_OPT zfindex maxByteSize);
+typedef zfindex (*ZFPathInfoCallbackWrite)(ZF_IN void *token,
+                                           ZF_IN const void *src,
+                                           ZF_IN_OPT zfindex maxByteSize);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef void (*ZFFilePathInfoCallbackFlush)(ZF_IN void *token);
+typedef void (*ZFPathInfoCallbackFlush)(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackIsEof)(ZF_IN void *token);
+typedef zfbool (*ZFPathInfoCallbackIsEof)(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfbool (*ZFFilePathInfoCallbackIsError)(ZF_IN void *token);
+typedef zfbool (*ZFPathInfoCallbackIsError)(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-typedef zfindex (*ZFFilePathInfoCallbackSize)(ZF_IN void *token);
+typedef zfindex (*ZFPathInfoCallbackSize)(ZF_IN void *token);
 
 // ============================================================
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackIsExistDefault(ZF_IN const zfchar *pathData);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackIsExistDefault(ZF_IN const zfchar *pathData);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackIsDirDefault(ZF_IN const zfchar *pathData);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackIsDirDefault(ZF_IN const zfchar *pathData);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackToFileNameDefault(ZF_IN const zfchar *pathData,
-                                                                   ZF_IN_OUT zfstring &fileName);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackToFileNameDefault(ZF_IN const zfchar *pathData,
+                                                               ZF_IN_OUT zfstring &fileName);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackToChildDefault(ZF_IN const zfchar *pathData,
-                                                                ZF_IN_OUT zfstring &pathDataChild,
-                                                                ZF_IN const zfchar *childName);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackToChildDefault(ZF_IN const zfchar *pathData,
+                                                            ZF_IN_OUT zfstring &pathDataChild,
+                                                            ZF_IN const zfchar *childName);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackToParentDefault(ZF_IN const zfchar *pathData,
-                                                                 ZF_IN_OUT zfstring &pathDataParent);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackToParentDefault(ZF_IN const zfchar *pathData,
+                                                             ZF_IN_OUT zfstring &pathDataParent);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackPathCreateDefault(ZF_IN const zfchar *pathData,
-                                                                   ZF_IN_OPT zfbool autoMakeParent = zftrue,
-                                                                   ZF_OUT_OPT zfstring *errPos = zfnull);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackPathCreateDefault(ZF_IN const zfchar *pathData,
+                                                               ZF_IN_OPT zfbool autoMakeParent = zftrue,
+                                                               ZF_OUT_OPT zfstring *errPos = zfnull);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackRemoveDefault(ZF_IN const zfchar *pathData,
-                                                               ZF_IN_OPT zfbool isRecursive = zftrue,
-                                                               ZF_IN_OPT zfbool isForce = zffalse,
-                                                               ZF_IN_OPT zfstring *errPos = zfnull);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackRemoveDefault(ZF_IN const zfchar *pathData,
+                                                           ZF_IN_OPT zfbool isRecursive = zftrue,
+                                                           ZF_IN_OPT zfbool isForce = zffalse,
+                                                           ZF_IN_OPT zfstring *errPos = zfnull);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackFindFirstDefault(ZF_IN_OUT ZFFileFindData &fd,
-                                                                  ZF_IN const zfchar *pathData);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackFindFirstDefault(ZF_IN_OUT ZFFileFindData &fd,
+                                                              ZF_IN const zfchar *pathData);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackFindNextDefault(ZF_IN_OUT ZFFileFindData &fd);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackFindNextDefault(ZF_IN_OUT ZFFileFindData &fd);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore void ZFFilePathInfoCallbackFindCloseDefault(ZF_IN_OUT ZFFileFindData &fd);
+extern ZFLIB_ZFCore void ZFPathInfoCallbackFindCloseDefault(ZF_IN_OUT ZFFileFindData &fd);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore void *ZFFilePathInfoCallbackOpenDefault(ZF_IN const zfchar *pathData,
-                                                            ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read,
-                                                            ZF_IN_OPT zfbool autoCreateParent = zftrue);
+extern ZFLIB_ZFCore void *ZFPathInfoCallbackOpenDefault(ZF_IN const zfchar *pathData,
+                                                        ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read,
+                                                        ZF_IN_OPT zfbool autoCreateParent = zftrue);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackCloseDefault(ZF_IN void *token);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackCloseDefault(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfindex ZFFilePathInfoCallbackTellDefault(ZF_IN void *token);
+extern ZFLIB_ZFCore zfindex ZFPathInfoCallbackTellDefault(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackSeekDefault(ZF_IN void *token,
-                                                             ZF_IN zfindex byteSize,
-                                                             ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackSeekDefault(ZF_IN void *token,
+                                                         ZF_IN zfindex byteSize,
+                                                         ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfindex ZFFilePathInfoCallbackReadDefault(ZF_IN void *token,
-                                                              ZF_IN void *buf,
-                                                              ZF_IN zfindex maxByteSize);
+extern ZFLIB_ZFCore zfindex ZFPathInfoCallbackReadDefault(ZF_IN void *token,
+                                                          ZF_IN void *buf,
+                                                          ZF_IN zfindex maxByteSize);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfindex ZFFilePathInfoCallbackWriteDefault(ZF_IN void *token,
-                                                               ZF_IN const void *src,
-                                                               ZF_IN_OPT zfindex maxByteSize = zfindexMax());
+extern ZFLIB_ZFCore zfindex ZFPathInfoCallbackWriteDefault(ZF_IN void *token,
+                                                           ZF_IN const void *src,
+                                                           ZF_IN_OPT zfindex maxByteSize = zfindexMax());
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore void ZFFilePathInfoCallbackFlushDefault(ZF_IN void *token);
+extern ZFLIB_ZFCore void ZFPathInfoCallbackFlushDefault(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackIsEofDefault(ZF_IN void *token);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackIsEofDefault(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfbool ZFFilePathInfoCallbackIsErrorDefault(ZF_IN void *token);
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackIsErrorDefault(ZF_IN void *token);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-extern ZFLIB_ZFCore zfindex ZFFilePathInfoCallbackSizeDefault(ZF_IN void *token);
+extern ZFLIB_ZFCore zfindex ZFPathInfoCallbackSizeDefault(ZF_IN void *token);
 
 // ============================================================
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFilePathInfoIsExist,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathInfoIsExist,
                         ZFMP_IN(const ZFPathInfo &, pathInfo))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFilePathInfoIsDir,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathInfoIsDir,
                         ZFMP_IN(const ZFPathInfo &, pathInfo))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoToFileName,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoToFileName,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OUT(zfstring &, fileName))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFilePathInfoToChild,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoToChild,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OUT(zfstring &, pathDataChild),
                         ZFMP_IN(const zfchar *, childName))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoToParent,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoToChild,
+                        ZFMP_IN_OUT(ZFPathInfo &, pathInfo),
+                        ZFMP_IN(const zfchar *, childName))
+/** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoToParent,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OUT(zfstring &, pathDataParent))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFilePathInfoPathCreate,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathInfoToParent,
+                        ZFMP_IN_OUT(const ZFPathInfo &, pathInfo))
+/** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoPathCreate,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OPT(zfbool, autoMakeParent, zftrue),
                         ZFMP_OUT_OPT(zfstring *, errPos, zfnull))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFFilePathInfoRemove,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFPathInfoRemove,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
                         ZFMP_IN_OPT(zfbool, isForce, zffalse),
                         ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoFindFirst,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoFindFirst,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OUT(ZFFileFindData &, fd))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoFindNext,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoFindNext,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OUT(ZFFileFindData &, fd))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFFilePathInfoFindClose,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFPathInfoFindClose,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OUT(ZFFileFindData &, fd))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void *, ZFFilePathInfoOpen,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, void *, ZFPathInfoOpen,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OPT(ZFFileOpenOptionFlags, flag, ZFFileOpenOption::e_Read),
                         ZFMP_IN_OPT(zfbool, autoCreateParent, zftrue))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoClose,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoClose,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfindex, ZFFilePathInfoTell,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfindex, ZFPathInfoTell,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFFilePathInfoSeek,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFPathInfoSeek,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token),
                         ZFMP_IN(zfindex, byteSize),
                         ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfindex, ZFFilePathInfoRead,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfindex, ZFPathInfoRead,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token),
                         ZFMP_IN(void *, buf),
                         ZFMP_IN(zfindex, maxByteSize))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfindex, ZFFilePathInfoWrite,
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfindex, ZFPathInfoWrite,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token),
                         ZFMP_IN(const void *, src),
                         ZFMP_IN_OPT(zfindex, maxByteSize, zfindexMax()))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFFilePathInfoFlush,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFPathInfoFlush,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoIsEof,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoIsEof,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFilePathInfoIsError,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoIsError,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfindex, ZFFilePathInfoSize,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfindex, ZFPathInfoSize,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN(void *, token))
 
@@ -229,11 +236,11 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfindex, ZFFilePathInfoSize,
  * (if isForce not set,
  * would return false if dst has a child file with the same path in src)\n
  * override file if dst is an existing file and isForce is zftrue
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  * @note always use read/write to copy files,
- *   use #ZFFileFileCopy for better performance
+ *   use #ZFFileCopy for better performance
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFilePathInfoCopy,
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFPathInfoCopy,
                         ZFMP_IN(const ZFPathInfo &, srcPath),
                         ZFMP_IN(const ZFPathInfo &, dstPath),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
@@ -242,34 +249,34 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFilePathInfoCopy,
 
 // ============================================================
 /** @brief callback data for #ZFPATHTYPE_FILEIO_REGISTER */
-zfclassPOD ZFLIB_ZFCore ZFFilePathInfoImpl
+zfclassPOD ZFLIB_ZFCore ZFPathInfoImpl
 {
 public:
-    ZFFilePathInfoCallbackIsExist callbackIsExist; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackIsDir callbackIsDir; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackToFileName callbackToFileName; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackToChild callbackToChild; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackToParent callbackToParent; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackPathCreate callbackPathCreate; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackRemove callbackRemove; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackFindFirst callbackFindFirst; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackFindNext callbackFindNext; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackFindClose callbackFindClose; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackOpen callbackOpen; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackClose callbackClose; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackTell callbackTell; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackSeek callbackSeek; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackRead callbackRead; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackWrite callbackWrite; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackFlush callbackFlush; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackIsEof callbackIsEof; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackIsError callbackIsError; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
-    ZFFilePathInfoCallbackSize callbackSize; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackIsExist callbackIsExist; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackIsDir callbackIsDir; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackToFileName callbackToFileName; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackToChild callbackToChild; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackToParent callbackToParent; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackPathCreate callbackPathCreate; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackRemove callbackRemove; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackFindFirst callbackFindFirst; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackFindNext callbackFindNext; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackFindClose callbackFindClose; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackOpen callbackOpen; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackClose callbackClose; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackTell callbackTell; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackSeek callbackSeek; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackRead callbackRead; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackWrite callbackWrite; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackFlush callbackFlush; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackIsEof callbackIsEof; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackIsError callbackIsError; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackSize callbackSize; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 };
 
-extern ZFLIB_ZFCore void _ZFP_ZFFilePathInfoRegister(ZF_IN const zfchar *pathType,
-                                                     ZF_IN const ZFFilePathInfoImpl &data);
-extern ZFLIB_ZFCore void _ZFP_ZFFilePathInfoUnregister(ZF_IN const zfchar *pathType);
+extern ZFLIB_ZFCore void _ZFP_ZFPathInfoRegister(ZF_IN const zfchar *pathType,
+                                                     ZF_IN const ZFPathInfoImpl &data);
+extern ZFLIB_ZFCore void _ZFP_ZFPathInfoUnregister(ZF_IN const zfchar *pathType);
 
 /**
  * @brief register pathType for generic file processing
@@ -279,7 +286,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFFilePathInfoUnregister(ZF_IN const zfchar *pathT
  * which have quite similar read/write functions,
  * so we introduced this generic version to achieve advanced file processing\n
  * to use, register your path type by this macro,
- * then use #ZFFilePathInfoOpen series to process files
+ * then use #ZFPathInfoOpen series to process files
  *
  * note, for performance, these impl functions must support
  * path conversion inplace: (the input and output string may or may not be same object)
@@ -309,9 +316,9 @@ extern ZFLIB_ZFCore void _ZFP_ZFFilePathInfoUnregister(ZF_IN const zfchar *pathT
         , callbackIsError_ \
         , callbackSize_ \
     ) \
-    ZF_STATIC_REGISTER_INIT(ZFFilePathInfoReg_##registerSig) \
+    ZF_STATIC_REGISTER_INIT(ZFPathInfoReg_##registerSig) \
     { \
-        ZFFilePathInfoImpl data; \
+        ZFPathInfoImpl data; \
         data.callbackIsExist = callbackIsExist_; \
         data.callbackIsDir = callbackIsDir_; \
         data.callbackToFileName = callbackToFileName_; \
@@ -332,27 +339,27 @@ extern ZFLIB_ZFCore void _ZFP_ZFFilePathInfoUnregister(ZF_IN const zfchar *pathT
         data.callbackIsEof = callbackIsEof_; \
         data.callbackIsError = callbackIsError_; \
         data.callbackSize = callbackSize_; \
-        _ZFP_ZFFilePathInfoRegister(pathType, data); \
+        _ZFP_ZFPathInfoRegister(pathType, data); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(ZFFilePathInfoReg_##registerSig) \
+    ZF_STATIC_REGISTER_DESTROY(ZFPathInfoReg_##registerSig) \
     { \
-        _ZFP_ZFFilePathInfoUnregister(pathType); \
+        _ZFP_ZFPathInfoUnregister(pathType); \
     } \
-    ZF_STATIC_REGISTER_END(ZFFilePathInfoReg_##registerSig)
+    ZF_STATIC_REGISTER_END(ZFPathInfoReg_##registerSig)
 
 /**
  * @brief get data registered by #ZFPATHTYPE_FILEIO_REGISTER
  */
-extern ZFLIB_ZFCore const ZFFilePathInfoImpl *ZFFilePathInfoImplForPathType(ZF_IN const zfchar *pathType);
-/** @brief see #ZFFilePathInfoImplGetAll */
-extern ZFLIB_ZFCore void ZFFilePathInfoImplGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret);
+extern ZFLIB_ZFCore const ZFPathInfoImpl *ZFPathInfoImplForPathType(ZF_IN const zfchar *pathType);
+/** @brief see #ZFPathInfoImplGetAll */
+extern ZFLIB_ZFCore void ZFPathInfoImplGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret);
 /**
  * @brief get all data registered by #ZFPATHTYPE_FILEIO_REGISTER
  */
-inline ZFCoreArrayPOD<const zfchar *> ZFFilePathInfoImplGetAll(void)
+inline ZFCoreArrayPOD<const zfchar *> ZFPathInfoImplGetAll(void)
 {
     ZFCoreArrayPOD<const zfchar *> ret;
-    ZFFilePathInfoImplGetAllT(ret);
+    ZFPathInfoImplGetAllT(ret);
     return ret;
 }
 
@@ -360,7 +367,7 @@ inline ZFCoreArrayPOD<const zfchar *> ZFFilePathInfoImplGetAll(void)
 // utils
 /**
  * @brief util to make a child path info relative to existing one,
- *   see also #ZFFilePathInfoCallbackToChild
+ *   see also #ZFPathInfoCallbackToChild
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalT,
                         ZFMP_OUT(ZFPathInfo &, ret),
@@ -368,7 +375,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalT,
                         ZFMP_IN(const zfchar *, childPath))
 /**
  * @brief util to make a child path info relative to existing one,
- *   see also #ZFFilePathInfoCallbackToChild
+ *   see also #ZFPathInfoCallbackToChild
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForLocalT,
                         ZFMP_OUT(zfstring &, ret),
@@ -628,17 +635,17 @@ extern ZFLIB_ZFCore zfbool ZFPathInfoParse(ZF_OUT zfstring &pathType,
                                            ZF_OUT zfstring &pathData,
                                            ZF_IN const zfchar *pathInfo);
 /**
- * @brief util for impl to parse path info and verify by #ZFFilePathInfoImplForPathType,
- *   and return the result #ZFFilePathInfoImpl if success
+ * @brief util for impl to parse path info and verify by #ZFPathInfoImplForPathType,
+ *   and return the result #ZFPathInfoImpl if success
  */
-extern ZFLIB_ZFCore const ZFFilePathInfoImpl *ZFPathInfoVerify(ZF_IN const zfchar *pathInfo);
+extern ZFLIB_ZFCore const ZFPathInfoImpl *ZFPathInfoVerify(ZF_IN const zfchar *pathInfo);
 /**
- * @brief util for impl to parse path info and verify by #ZFFilePathInfoImplForPathType,
- *   and return the result #ZFFilePathInfoImpl if success
+ * @brief util for impl to parse path info and verify by #ZFPathInfoImplForPathType,
+ *   and return the result #ZFPathInfoImpl if success
  */
-extern ZFLIB_ZFCore const ZFFilePathInfoImpl *ZFPathInfoParseAndVerify(ZF_OUT zfstring &pathType,
-                                                                       ZF_OUT const zfchar *&pathData,
-                                                                       ZF_IN const zfchar *pathInfo);
+extern ZFLIB_ZFCore const ZFPathInfoImpl *ZFPathInfoParseAndVerify(ZF_OUT zfstring &pathType,
+                                                                   ZF_OUT const zfchar *&pathData,
+                                                                   ZF_IN const zfchar *pathInfo);
 
 // ============================================================
 /**

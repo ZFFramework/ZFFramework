@@ -14,7 +14,7 @@ static void _ZFP_ZFStyleLoad_ZFStyleSet(ZF_IN const zfchar *styleKey, ZF_IN ZFSt
         ZFStyleSet(styleKey, styleValue);
     }
 }
-static void _ZFP_ZFStyleLoadImpl(ZF_IN const ZFFilePathInfoImpl &fileImpl,
+static void _ZFP_ZFStyleLoadImpl(ZF_IN const ZFPathInfoImpl &fileImpl,
                                  ZF_IN const zfchar *pathType,
                                  ZF_IN const zfchar *pathData,
                                  ZF_IN const ZFFilterForString *fileNameFilter,
@@ -58,7 +58,7 @@ static void _ZFP_ZFStyleLoadImpl(ZF_IN const ZFFilePathInfoImpl &fileImpl,
                 zfautoObject styleValue;
                 if(ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathType, pathDataChild))))
                 {
-                    ZFFilePathOfWithoutExt(relativePathTmp, relativePathTmp);
+                    ZFPathOfWithoutExt(relativePathTmp, relativePathTmp);
                     _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
                 }
             }
@@ -72,7 +72,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad,
                        ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull),
                        ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull))
 {
-    const ZFFilePathInfoImpl *fileImpl = ZFFilePathInfoImplForPathType(pathInfo.pathType);
+    const ZFPathInfoImpl *fileImpl = ZFPathInfoImplForPathType(pathInfo.pathType);
     if(fileImpl == zfnull)
     {
         return zffalse;
@@ -95,7 +95,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad,
         {
             return zffalse;
         }
-        ZFFilePathOfWithoutExt(fileName, fileName);
+        ZFPathOfWithoutExt(fileName, fileName);
         _ZFP_ZFStyleLoad_ZFStyleSet(fileName, styleValue);
         return zftrue;
     }

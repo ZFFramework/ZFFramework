@@ -74,7 +74,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindFirst(ZF_IN_
     _ZFP_ZFProtocolZFCompress_FindData *d = zfnew(_ZFP_ZFProtocolZFCompress_FindData);
     d->decompressToken = decompressToken;
     d->lastIndex = zfindexMax();
-    ZFFilePathFormat(d->relPath, filePathInZip);
+    ZFPathFormat(d->relPath, filePathInZip);
     while(!d->relPath.isEmpty() && d->relPath[0] == ZFFileSeparator())
     {
         d->relPath.remove(0, 1);

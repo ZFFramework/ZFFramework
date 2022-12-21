@@ -149,9 +149,9 @@ chain http file and zip file, and R/W contents in the zip file just like normal 
 #include "ZFCore.h"
 ZFMAIN_ENTRY()
 {
-    ZFFileResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
+    ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
     ZFInputReadAll(zfLogTrimT(), ZFInputForRes("path/in/zip/file.txt"));
-    ZFFilePathInfoTreePrint(ZFPathInfo("res:"));
+    ZFPathInfoTreePrint(ZFPathInfo("res:"));
 }
 ```
 

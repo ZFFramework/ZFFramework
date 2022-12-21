@@ -1,7 +1,9 @@
-#include "ZFFile_impl.h"
+#include "ZFFile.h"
 
-#include "ZFCore/ZFPathType_res.h"
-#include "ZFCore/ZFPathType_file.h"
+#include "ZFPathType_res.h"
+#include "ZFPathType_file.h"
+
+#include "protocol/ZFProtocolZFRes.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -9,8 +11,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassLikePOD _ZFP_ZFFileTokenForRes
 {
 public:
-    void *fd; // fd returned by ZFFileResOpen or ZFFilePathInfoOpen
-    ZFPathInfo resExtPath; // true if fd created by ZFFilePathInfoOpen
+    void *fd; // fd returned by ZFResOpen or ZFPathInfoOpen
+    ZFPathInfo resExtPath; // true if fd created by ZFPathInfoOpen
 
 public:
     _ZFP_ZFFileTokenForRes(void)
@@ -21,45 +23,45 @@ public:
 };
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFFileResExtPathDataHolder, ZFLevelZFFrameworkStatic)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFResExtPathDataHolder, ZFLevelZFFrameworkStatic)
 {
 }
 public:
     ZFCoreArray<ZFPathInfo> resExtPathList;
-ZF_GLOBAL_INITIALIZER_END(ZFFileResExtPathDataHolder)
-#define _ZFP_ZFFileResExtPathList (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFFileResExtPathDataHolder)->resExtPathList)
+ZF_GLOBAL_INITIALIZER_END(ZFResExtPathDataHolder)
+#define _ZFP_ZFResExtPathList (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFResExtPathDataHolder)->resExtPathList)
 
-ZFMETHOD_FUNC_DEFINE_1(void, ZFFileResExtPathAdd,
+ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd,
                        ZFMP_IN(const ZFPathInfo &, pathInfo))
 {
     if(pathInfo.pathType.isEmpty())
     {
         return ;
     }
-    _ZFP_ZFFileResExtPathList.add(pathInfo);
+    _ZFP_ZFResExtPathList.add(pathInfo);
 }
-ZFMETHOD_FUNC_DEFINE_1(void, ZFFileResExtPathRemove,
+ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathRemove,
                        ZFMP_IN(const ZFPathInfo &, pathInfo))
 {
     if(pathInfo.pathType.isEmpty())
     {
         return ;
     }
-    _ZFP_ZFFileResExtPathList.removeElement(pathInfo);
+    _ZFP_ZFResExtPathList.removeElement(pathInfo);
 }
-ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFPathInfo>, ZFFileResExtPathList)
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFPathInfo>, ZFResExtPathList)
 {
-    return _ZFP_ZFFileResExtPathList;
+    return _ZFP_ZFResExtPathList;
 }
-ZFMETHOD_FUNC_DEFINE_1(const ZFPathInfo *, ZFFileResExtPathCheck,
+ZFMETHOD_FUNC_DEFINE_1(const ZFPathInfo *, ZFResExtPathCheck,
                        ZFMP_IN(const zfchar *, resPath))
 {
-    ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFFileResExtPathList;
+    ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i)
     {
         ZFPathInfo t = l[i];
-        ZFFilePathInfoToChild(t, t.pathData, resPath);
-        if(ZFFilePathInfoIsExist(t))
+        ZFPathInfoToChild(t, t.pathData, resPath);
+        if(ZFPathInfoIsExist(t))
         {
             return &(l[i]);
         }
@@ -68,50 +70,50 @@ ZFMETHOD_FUNC_DEFINE_1(const ZFPathInfo *, ZFFileResExtPathCheck,
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResIsExist,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsExist,
                        ZFMP_IN(const zfchar *, resPath))
 {
-    const ZFPathInfo *resExtPath = ZFFileResExtPathCheck(resPath);
+    const ZFPathInfo *resExtPath = ZFResExtPathCheck(resPath);
     if(resExtPath != zfnull)
     {
         return zftrue;
     }
     else
     {
-        return ZFPROTOCOL_ACCESS(ZFFileResProcess)->resIsExist(resPath);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resIsExist(resPath);
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResIsDir,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsDir,
                        ZFMP_IN(const zfchar *, resPath))
 {
-    const ZFPathInfo *resExtPath = ZFFileResExtPathCheck(resPath);
+    const ZFPathInfo *resExtPath = ZFResExtPathCheck(resPath);
     if(resExtPath != zfnull)
     {
         ZFPathInfo tmp = *resExtPath;
-        ZFFilePathInfoToChild(tmp, tmp.pathData, resPath);
-        return ZFFilePathInfoIsDir(tmp);
+        ZFPathInfoToChild(tmp, tmp.pathData, resPath);
+        return ZFPathInfoIsDir(tmp);
     }
     else
     {
-        return ZFPROTOCOL_ACCESS(ZFFileResProcess)->resIsDir(resPath);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resIsDir(resPath);
     }
 }
-ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileResCopy,
+ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy,
                        ZFMP_IN(const zfchar *, resPath),
                        ZFMP_IN(const zfchar *, dstPath),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
                        ZFMP_IN_OPT(zfbool, isForce, zffalse),
                        ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 {
-    const ZFPathInfo *resExtPath = ZFFileResExtPathCheck(resPath);
+    const ZFPathInfo *resExtPath = ZFResExtPathCheck(resPath);
     if(resExtPath == zfnull)
     {
-        return _ZFP_ZFFileResProcessImpl->resCopy(resPath, dstPath, isRecursive, isForce, errPos);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resCopy(resPath, dstPath, isRecursive, isForce, errPos);
     }
     else
     {
         ZFPathInfo errPosTmp;
-        zfbool ret = ZFFilePathInfoCopy(
+        zfbool ret = ZFPathInfoCopy(
             ZFPathInfo(ZFPathType_res(), resPath),
             ZFPathInfo(ZFPathType_file(), dstPath),
             isRecursive,
@@ -125,9 +127,9 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileResCopy,
     }
 }
 
-#define _ZFP_ZFFileFindType_res "ZFFileResFindFirst"
+#define _ZFP_ZFFileFindType_res "ZFResFindFirst"
 
-zfclassNotPOD _ZFP_ZFFileResFindData
+zfclassNotPOD _ZFP_ZFResFindData
 {
 public:
     zfstring resPathSaved;
@@ -140,7 +142,7 @@ public:
     ZFPathInfo resExtPath;
     zfbool resFindFirstStarted;
 public:
-    _ZFP_ZFFileResFindData(void)
+    _ZFP_ZFResFindData(void)
     : resPathSaved()
     , resExtFd()
     , resExtPath()
@@ -155,7 +157,7 @@ public:
     }
 };
 
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileResFindFirst,
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst,
                        ZFMP_IN_OUT(ZFFileFindData &, fd),
                        ZFMP_IN(const zfchar *, resPath))
 {
@@ -163,14 +165,14 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileResFindFirst,
     {
         return zffalse;
     }
-    _ZFP_ZFFileResFindData *implUserData = zfnew(_ZFP_ZFFileResFindData);
+    _ZFP_ZFResFindData *implUserData = zfnew(_ZFP_ZFResFindData);
     fd.implAttach(_ZFP_ZFFileFindType_res, implUserData);
     implUserData->resPathSaved = resPath;
 
-    const ZFPathInfo *resExtPath = ZFFileResExtPathCheck(resPath);
+    const ZFPathInfo *resExtPath = ZFResExtPathCheck(resPath);
     if(resExtPath == zfnull)
     {
-        if(!_ZFP_ZFFileResProcessImpl->resFindFirst(fd.impl(), resPath))
+        if(!ZFPROTOCOL_ACCESS(ZFRes)->resFindFirst(fd.impl(), resPath))
         {
             fd.implDetach();
             zfdelete(implUserData);
@@ -182,8 +184,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileResFindFirst,
     {
         implUserData->resExtPath = *resExtPath;
         ZFPathInfo resPathTmp = implUserData->resExtPath;
-        ZFFilePathInfoToChild(resPathTmp, resPathTmp.pathData, resPath);
-        if(ZFFilePathInfoFindFirst(resPathTmp, implUserData->resExtFd))
+        ZFPathInfoToChild(resPathTmp, resPathTmp.pathData, resPath);
+        if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd))
         {
             implUserData->copyToFd(fd.impl());
             return zftrue;
@@ -191,7 +193,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileResFindFirst,
         else
         {
             implUserData->resExtPath.removeAll();
-            if(!_ZFP_ZFFileResProcessImpl->resFindFirst(fd.impl(), resPath))
+            if(!ZFPROTOCOL_ACCESS(ZFRes)->resFindFirst(fd.impl(), resPath))
             {
                 fd.implDetach();
                 zfdelete(implUserData);
@@ -201,46 +203,46 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileResFindFirst,
         }
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResFindNext,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext,
                        ZFMP_IN_OUT(ZFFileFindData &, fd))
 {
-    _ZFP_ZFFileResFindData *implUserData = (_ZFP_ZFFileResFindData *)fd.implCheck(_ZFP_ZFFileFindType_res);
+    _ZFP_ZFResFindData *implUserData = (_ZFP_ZFResFindData *)fd.implCheck(_ZFP_ZFFileFindType_res);
 
     if(!implUserData->resExtPath.pathType.isEmpty())
     {
-        if(ZFFilePathInfoFindNext(implUserData->resExtPath, implUserData->resExtFd))
+        if(ZFPathInfoFindNext(implUserData->resExtPath, implUserData->resExtFd))
         {
             implUserData->copyToFd(fd.impl());
             return zftrue;
         }
 
-        ZFFilePathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
+        ZFPathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
         implUserData->resExtPath.removeAll();
 
-        implUserData->resFindFirstStarted = _ZFP_ZFFileResProcessImpl->resFindFirst(fd.impl(), implUserData->resPathSaved);
+        implUserData->resFindFirstStarted = ZFPROTOCOL_ACCESS(ZFRes)->resFindFirst(fd.impl(), implUserData->resPathSaved);
         return implUserData->resFindFirstStarted;
     }
-    return _ZFP_ZFFileResProcessImpl->resFindNext(fd.impl());
+    return ZFPROTOCOL_ACCESS(ZFRes)->resFindNext(fd.impl());
 }
-ZFMETHOD_FUNC_DEFINE_1(void, ZFFileResFindClose,
+ZFMETHOD_FUNC_DEFINE_1(void, ZFResFindClose,
                        ZFMP_IN_OUT(ZFFileFindData &, fd))
 {
-    _ZFP_ZFFileResFindData *implUserData = (_ZFP_ZFFileResFindData *)fd.implCheck(_ZFP_ZFFileFindType_res);
+    _ZFP_ZFResFindData *implUserData = (_ZFP_ZFResFindData *)fd.implCheck(_ZFP_ZFFileFindType_res);
 
     if(!implUserData->resExtPath.pathType.isEmpty())
     {
-        ZFFilePathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
+        ZFPathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
         implUserData->resExtPath.removeAll();
     }
     if(implUserData->resFindFirstStarted)
     {
-        _ZFP_ZFFileResProcessImpl->resFindClose(fd.impl());
+        ZFPROTOCOL_ACCESS(ZFRes)->resFindClose(fd.impl());
     }
     fd.implDetach();
     zfdelete(implUserData);
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void *, ZFFileResOpen,
+ZFMETHOD_FUNC_DEFINE_1(void *, ZFResOpen,
                        ZFMP_IN(const zfchar *, resPath))
 {
     if(resPath == zfnull)
@@ -249,16 +251,16 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFFileResOpen,
     }
 
     _ZFP_ZFFileTokenForRes *ret = zfnew(_ZFP_ZFFileTokenForRes);
-    const ZFPathInfo *resExtPath = ZFFileResExtPathCheck(resPath);
+    const ZFPathInfo *resExtPath = ZFResExtPathCheck(resPath);
     if(resExtPath == zfnull)
     {
-        ret->fd = _ZFP_ZFFileResProcessImpl->resOpen(resPath);
+        ret->fd = ZFPROTOCOL_ACCESS(ZFRes)->resOpen(resPath);
     }
     else
     {
         ret->resExtPath = *resExtPath;
-        ZFFilePathInfoToChild(ret->resExtPath, ret->resExtPath.pathData, resPath);
-        ret->fd = ZFFilePathInfoOpen(ret->resExtPath, ZFFileOpenOption::e_Read);
+        ZFPathInfoToChild(ret->resExtPath, ret->resExtPath.pathData, resPath);
+        ret->fd = ZFPathInfoOpen(ret->resExtPath, ZFFileOpenOption::e_Read);
     }
     if(ret->fd == zfnull)
     {
@@ -267,7 +269,7 @@ ZFMETHOD_FUNC_DEFINE_1(void *, ZFFileResOpen,
     }
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResClose,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResClose,
                        ZFMP_IN(void *, token))
 {
     if(token == zfnull)
@@ -279,14 +281,14 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResClose,
     zfblockedDelete(resToken);
     if(resToken->resExtPath.pathType.isEmpty())
     {
-        return _ZFP_ZFFileResProcessImpl->resClose(resToken->fd);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resClose(resToken->fd);
     }
     else
     {
-        return ZFFilePathInfoClose(resToken->resExtPath, resToken->fd);
+        return ZFPathInfoClose(resToken->resExtPath, resToken->fd);
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileResTell,
+ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResTell,
                        ZFMP_IN(void *, token))
 {
     if(token == zfnull)
@@ -297,14 +299,14 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileResTell,
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType.isEmpty())
     {
-        return _ZFP_ZFFileResProcessImpl->resTell(resToken->fd);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resTell(resToken->fd);
     }
     else
     {
-        return ZFFilePathInfoTell(resToken->resExtPath, resToken->fd);
+        return ZFPathInfoTell(resToken->resExtPath, resToken->fd);
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileResSeek,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFResSeek,
                        ZFMP_IN(void *, token),
                        ZFMP_IN(zfindex, byteSize),
                        ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin))
@@ -317,14 +319,14 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileResSeek,
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType.isEmpty())
     {
-        return _ZFP_ZFFileResProcessImpl->resSeek(resToken->fd, byteSize, position);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resSeek(resToken->fd, byteSize, position);
     }
     else
     {
-        return ZFFilePathInfoSeek(resToken->resExtPath, resToken->fd, byteSize, position);
+        return ZFPathInfoSeek(resToken->resExtPath, resToken->fd, byteSize, position);
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileResRead,
+ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFResRead,
                        ZFMP_IN(void *, token),
                        ZFMP_IN(void *, buf),
                        ZFMP_IN(zfindex, maxByteSize))
@@ -338,43 +340,44 @@ ZFMETHOD_FUNC_DEFINE_3(zfindex, ZFFileResRead,
     {
         if(buf == zfnull)
         {
-            zfindex curPos = _ZFP_ZFFileResProcessImpl->resTell(resToken->fd);
-            _ZFP_ZFFileResProcessImpl->resSeek(resToken->fd, 0, ZFSeekPosEnd);
-            zfindex endPos = _ZFP_ZFFileResProcessImpl->resTell(resToken->fd);
-            _ZFP_ZFFileResProcessImpl->resSeek(resToken->fd, curPos, ZFSeekPosBegin);
+            ZFPROTOCOL_INTERFACE_CLASS(ZFRes) *impl = ZFPROTOCOL_ACCESS(ZFRes);
+            zfindex curPos = impl->resTell(resToken->fd);
+            impl->resSeek(resToken->fd, 0, ZFSeekPosEnd);
+            zfindex endPos = impl->resTell(resToken->fd);
+            impl->resSeek(resToken->fd, curPos, ZFSeekPosBegin);
             return endPos - curPos;
         }
         if(maxByteSize == zfindexMax())
         {
             return 0;
         }
-        return _ZFP_ZFFileResProcessImpl->resRead(resToken->fd, buf, maxByteSize);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resRead(resToken->fd, buf, maxByteSize);
     }
     else
     {
         if(buf == zfnull)
         {
-            zfindex curPos = ZFFilePathInfoTell(resToken->resExtPath, resToken->fd);
+            zfindex curPos = ZFPathInfoTell(resToken->resExtPath, resToken->fd);
             if(curPos == zfindexMax())
             {
                 return zfindexMax();
             }
-            if(!ZFFilePathInfoSeek(resToken->resExtPath, resToken->fd, 0, ZFSeekPosEnd))
+            if(!ZFPathInfoSeek(resToken->resExtPath, resToken->fd, 0, ZFSeekPosEnd))
             {
                 return zfindexMax();
             }
-            zfindex endPos = ZFFilePathInfoTell(resToken->resExtPath, resToken->fd);
-            ZFFilePathInfoSeek(resToken->resExtPath, resToken->fd, curPos, ZFSeekPosBegin);
+            zfindex endPos = ZFPathInfoTell(resToken->resExtPath, resToken->fd);
+            ZFPathInfoSeek(resToken->resExtPath, resToken->fd, curPos, ZFSeekPosBegin);
             return endPos - curPos;
         }
         if(maxByteSize == zfindexMax())
         {
             return 0;
         }
-        return ZFFilePathInfoRead(resToken->resExtPath, resToken->fd, buf, maxByteSize);
+        return ZFPathInfoRead(resToken->resExtPath, resToken->fd, buf, maxByteSize);
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResIsEof,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsEof,
                        ZFMP_IN(void *, token))
 {
     if(token == zfnull)
@@ -385,14 +388,14 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResIsEof,
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType.isEmpty())
     {
-        return _ZFP_ZFFileResProcessImpl->resIsEof(resToken->fd);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resIsEof(resToken->fd);
     }
     else
     {
-        return ZFFilePathInfoIsEof(resToken->resExtPath, resToken->fd);
+        return ZFPathInfoIsEof(resToken->resExtPath, resToken->fd);
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResIsError,
+ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResIsError,
                        ZFMP_IN(void *, token))
 {
     if(token == zfnull)
@@ -403,15 +406,15 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFFileResIsError,
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType.isEmpty())
     {
-        return _ZFP_ZFFileResProcessImpl->resIsError(resToken->fd);
+        return ZFPROTOCOL_ACCESS(ZFRes)->resIsError(resToken->fd);
     }
     else
     {
-        return ZFFilePathInfoIsError(resToken->resExtPath, resToken->fd);
+        return ZFPathInfoIsError(resToken->resExtPath, resToken->fd);
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileResSize,
+ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFResSize,
                        ZFMP_IN(void *, token))
 {
     if(token == zfnull)
@@ -422,25 +425,26 @@ ZFMETHOD_FUNC_DEFINE_1(zfindex, ZFFileResSize,
     _ZFP_ZFFileTokenForRes *resToken = (_ZFP_ZFFileTokenForRes *)token;
     if(resToken->resExtPath.pathType.isEmpty())
     {
-        zfindex saved = _ZFP_ZFFileResProcessImpl->resTell(resToken->fd);
-        _ZFP_ZFFileResProcessImpl->resSeek(resToken->fd, 0, ZFSeekPosEnd);
-        zfindex size = _ZFP_ZFFileResProcessImpl->resTell(resToken->fd);
-        _ZFP_ZFFileResProcessImpl->resSeek(resToken->fd, saved, ZFSeekPosBegin);
+        ZFPROTOCOL_INTERFACE_CLASS(ZFRes) *impl = ZFPROTOCOL_ACCESS(ZFRes);
+        zfindex saved = impl->resTell(resToken->fd);
+        impl->resSeek(resToken->fd, 0, ZFSeekPosEnd);
+        zfindex size = impl->resTell(resToken->fd);
+        impl->resSeek(resToken->fd, saved, ZFSeekPosBegin);
         return size;
     }
     else
     {
-        zfindex saved = ZFFilePathInfoTell(resToken->resExtPath, resToken->fd);
+        zfindex saved = ZFPathInfoTell(resToken->resExtPath, resToken->fd);
         if(saved == zfindexMax())
         {
             return zfindexMax();
         }
-        if(!ZFFilePathInfoSeek(resToken->resExtPath, resToken->fd, 0, ZFSeekPosEnd))
+        if(!ZFPathInfoSeek(resToken->resExtPath, resToken->fd, 0, ZFSeekPosEnd))
         {
             return zfindexMax();
         }
-        zfindex size = ZFFilePathInfoTell(resToken->resExtPath, resToken->fd);
-        ZFFilePathInfoSeek(resToken->resExtPath, resToken->fd, saved, ZFSeekPosBegin);
+        zfindex size = ZFPathInfoTell(resToken->resExtPath, resToken->fd);
+        ZFPathInfoSeek(resToken->resExtPath, resToken->fd, saved, ZFSeekPosBegin);
         return size;
     }
 }

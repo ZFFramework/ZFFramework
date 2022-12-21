@@ -1,5 +1,5 @@
 #include "ZFImpl_sys_Android_ZFCore_impl.h"
-#include "ZFCore/protocol/ZFProtocolZFFileResProcess.h"
+#include "ZFCore/protocol/ZFProtocolZFRes.h"
 #include "ZFCore/ZFString.h"
 #include "ZFImpl/sys_Android/ZFMainEntry_sys_Android.h"
 
@@ -21,10 +21,10 @@
 #include <android/asset_manager_jni.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-#define ZFImpl_sys_Android_JNI_ID_ZFFileResProcess ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFFileResProcess)
-#define ZFImpl_sys_Android_JNI_NAME_ZFFileResProcess ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFFileResProcess)
+#define ZFImpl_sys_Android_JNI_ID_ZFRes ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFRes)
+#define ZFImpl_sys_Android_JNI_NAME_ZFRes ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFRes)
 
-zfclassLikePOD _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken
+zfclassLikePOD _ZFP_ZFProtocolZFRes_sys_Android_FileToken
 {
 public:
     JNIObjectHolder assetManagerHolder;
@@ -33,7 +33,7 @@ public:
     zfbool isEof;
     zfbool isError;
 public:
-    _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken(void)
+    _ZFP_ZFProtocolZFRes_sys_Android_FileToken(void)
     : assetManagerHolder()
     , assetManager(NULL)
     , token(NULL)
@@ -43,25 +43,25 @@ public:
     }
 };
 
-zfclassNotPOD _ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData
+zfclassNotPOD _ZFP_ZFProtocolZFRes_sys_Android_FindData
 {
 public:
     zfstring parentPath;
     jobjectArray files; // jstring[]
     zfindex curFileIndex;
 public:
-    _ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData(void)
+    _ZFP_ZFProtocolZFRes_sys_Android_FindData(void)
     : parentPath()
     , files(zfnull)
     , curFileIndex(0)
     {
     }
-    virtual ~_ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData(void)
+    virtual ~_ZFP_ZFProtocolZFRes_sys_Android_FindData(void)
     {
     }
 };
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileResProcessImpl_sys_Android, ZFFileResProcess, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_sys_Android, ZFRes, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:AssetsFile")
 private:
     const zfchar *zfresPrefix;
@@ -81,7 +81,7 @@ public:
         this->zfresPostfixLen = zfslen(this->zfresPostfix);
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFFileResProcess).c_str());
+        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFRes).c_str());
         this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
@@ -163,7 +163,7 @@ public:
     virtual void *resOpen(ZF_IN const zfchar *resPath)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *d = zfnew(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = zfnew(_ZFP_ZFProtocolZFRes_sys_Android_FileToken);
         d->assetManagerHolder = ZFImpl_sys_Android_assetManager();
         d->assetManager = AAssetManager_fromJava(jniEnv, d->assetManagerHolder);
         zfCoreAssert(d->assetManager != zfnull);
@@ -195,7 +195,7 @@ public:
             return zffalse;
         }
 
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         AAsset_close(d->token);
         zfdelete(d);
         return zftrue;
@@ -206,7 +206,7 @@ public:
         {
             return zfindexMax();
         }
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         return (AAsset_getLength(d->token) - AAsset_getRemainingLength(d->token));
     }
     virtual zfbool resSeek(ZF_IN void *token,
@@ -217,7 +217,7 @@ public:
         {
             return zffalse;
         }
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         zfint seekPos = SEEK_SET;
         long seekSize = (long)byteSize;
         switch(position)
@@ -249,7 +249,7 @@ public:
         {
             return 0;
         }
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         if(d->isEof || d->isError)
         {
             return 0;
@@ -272,7 +272,7 @@ public:
         {
             return zffalse;
         }
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         return d->isEof;
     }
     virtual zfbool resIsError(ZF_IN void *token)
@@ -281,7 +281,7 @@ public:
         {
             return zffalse;
         }
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         return d->isError;
     }
 
@@ -293,7 +293,7 @@ public:
         zfstring absPath;
         this->resPathFormat(absPath, resPath);
 
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData *d = zfnew(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData);
+        _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = zfnew(_ZFP_ZFProtocolZFRes_sys_Android_FindData);
         d->parentPath = absPath.cString() + this->zfresPrefixLen
             + ((absPath.length() > this->zfresPrefixLen) ? 1 : 0);
         fd.nativeFd = d;
@@ -325,7 +325,7 @@ public:
             return zffalse;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData *, fd.nativeFd);
+        _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FindData *, fd.nativeFd);
         if(d->curFileIndex >= JNIUtilGetArrayLength(jniEnv, d->files))
         {
             return zffalse;
@@ -372,7 +372,7 @@ public:
             return ;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        _ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFFileResProcess_sys_Android_FindData *, fd.nativeFd);
+        _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FindData *, fd.nativeFd);
         if(d->files != zfnull)
         {
             JNIUtilDeleteGlobalRef(jniEnv, d->files);
@@ -427,8 +427,8 @@ private:
             ret.remove(ret.length() - 1);
         }
     }
-ZFPROTOCOL_IMPLEMENTATION_END(ZFFileResProcessImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileResProcessImpl_sys_Android)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFResImpl_sys_Android)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFResImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

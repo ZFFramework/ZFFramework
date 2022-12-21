@@ -21,11 +21,11 @@ protected:
         ZFTestCaseAssert(value == testValue);
 
         zfstring tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32.txt");
-        void *fp = ZFFileFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
+        void *fp = ZFFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
         if(fp != zfnull)
         {
-            ZFFileFileWrite(fp, testString);
-            ZFFileFileClose(fp);
+            ZFFileWrite(fp, testString);
+            ZFFileClose(fp);
             fp = zfnull;
         }
         this->testCaseOutput("write it to file %s, file's CRC32: %x",
@@ -34,7 +34,7 @@ protected:
 
         this->testCaseOutputSeparator();
         tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32_big.txt");
-        fp = ZFFileFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
+        fp = ZFFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
         zfindex fileSize = 0;
         if(fp != zfnull)
         {
@@ -42,11 +42,11 @@ protected:
             {
                 for(zfindex j = 0; j < 1000; j++)
                 {
-                    ZFFileFileWrite(fp, testString);
+                    ZFFileWrite(fp, testString);
                 }
             }
-            fileSize = ZFFileFileTell(fp);
-            ZFFileFileClose(fp);
+            fileSize = ZFFileTell(fp);
+            ZFFileClose(fp);
             fp = zfnull;
         }
         ZFTimeValue tv1 = ZFTime::currentTimeValue();

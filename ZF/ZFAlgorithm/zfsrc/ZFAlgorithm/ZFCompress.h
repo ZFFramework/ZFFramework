@@ -135,7 +135,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfbool, ZFDecompressContentIsDir,
                         ZFMP_IN(void *, decompressToken),
                         ZFMP_IN(zfindex, fileIndexInZip))
 
-/** @brief find content in the compress file, see #ZFFileFileFindFirst */
+/** @brief find content in the compress file, see #ZFFileFindFirst */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFDecompressContentFindFirst,
                         ZFMP_IN_OUT(ZFFileFindData &, fd),
                         ZFMP_IN(void *, decompressToken),

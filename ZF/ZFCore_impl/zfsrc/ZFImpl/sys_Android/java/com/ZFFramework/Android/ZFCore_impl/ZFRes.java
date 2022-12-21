@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import com.ZFFramework.Android.ZF_impl.ZFMainEntry;
 import android.content.res.AssetManager;
 
-public final class ZFFileResProcess {
+public final class ZFRes {
     private static final String _resPostfix = ".mp2";
 
     public static String[] native_listAssets(String resPath) {

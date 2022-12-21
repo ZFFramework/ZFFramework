@@ -1,12 +1,12 @@
 #include "ZFImpl_sys_iOS_ZFCore_impl.h"
-#include "ZFCore/protocol/ZFProtocolZFFilePath.h"
+#include "ZFCore/protocol/ZFProtocolZFPath.h"
 
 #if ZF_ENV_sys_iOS
 #import <Foundation/Foundation.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFilePathImpl_sys_iOS, ZFFilePath, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_iOS, ZFPath, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:SandboxPath")
 public:
     virtual const zfchar *pathForModule(void)
@@ -28,7 +28,7 @@ public:
         {
             zfstring tmp;
             ZFImpl_sys_iOS_zfstringFromNSString(tmp, [[NSBundle mainBundle] bundlePath]);
-            ZFFilePathFormat(this->_pathForModuleFile, tmp.cString());
+            ZFPathFormat(this->_pathForModuleFile, tmp.cString());
         }
         return this->_pathForModuleFile;
     }
@@ -92,7 +92,7 @@ public:
     }
     virtual void pathForCacheClear(void)
     {
-        ZFFileFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
+        ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
     }
 
 private:
@@ -104,7 +104,7 @@ private:
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             zfstring tmp;
             ZFImpl_sys_iOS_zfstringFromNSString(tmp, (NSString *)[paths objectAtIndex:0]);
-            ZFFilePathFormat(_nativeDocumentPath, tmp.cString());
+            ZFPathFormat(_nativeDocumentPath, tmp.cString());
         }
         return _nativeDocumentPath;
     }
@@ -116,7 +116,7 @@ private:
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
             zfstring tmp;
             ZFImpl_sys_iOS_zfstringFromNSString(tmp, (NSString *)[paths objectAtIndex:0]);
-            ZFFilePathFormat(_nativeCachePath, tmp.cString());
+            ZFPathFormat(_nativeCachePath, tmp.cString());
         }
         return _nativeCachePath;
     }
@@ -128,8 +128,8 @@ private:
     zfstring _pathForStorage;
     zfstring _pathForStorageShared;
     zfstring _pathForCache;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFFilePathImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFilePathImpl_sys_iOS)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFPathImpl_sys_iOS)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFPathImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_iOS

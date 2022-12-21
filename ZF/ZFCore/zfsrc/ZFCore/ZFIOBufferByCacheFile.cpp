@@ -23,20 +23,20 @@ public:
     , fileSize(0)
     {
         zfstringAppend(this->tmpFilePath, "%s%cZFIOBufferByCacheFile_%s",
-            ZFFilePathForCache(),
+            ZFPathForCache(),
             ZFFileSeparator(),
             zfsFromInt(zfidentityCalcPointer(this)).cString());
-        this->token = ZFFileFileOpen(this->tmpFilePath.cString(),
+        this->token = ZFFileOpen(this->tmpFilePath.cString(),
             ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write);
     }
     ~_ZFP_ZFIOBufferByCacheFile(void)
     {
         if(this->token != zfnull)
         {
-            ZFFileFileClose(this->token);
+            ZFFileClose(this->token);
             this->token = zfnull;
         }
-        ZFFileFileRemove(this->tmpFilePath.cString(), zfHint("recursive")zffalse, zfHint("force")zftrue);
+        ZFFileRemove(this->tmpFilePath.cString(), zfHint("recursive")zffalse, zfHint("force")zftrue);
     }
 };
 
@@ -150,8 +150,8 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_input, zfindex, onInput,
     }
     else
     {
-        ZFFileFileSeek(d->token, d->inputIndex);
-        zfindex read = ZFFileFileRead(d->token, buf, zfmMin(count, d->fileSize - d->inputIndex));
+        ZFFileSeek(d->token, d->inputIndex);
+        zfindex read = ZFFileRead(d->token, buf, zfmMin(count, d->fileSize - d->inputIndex));
         d->inputIndex += read;
         return read;
     }
@@ -185,8 +185,8 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_output, zfindex, onOutput,
     {
         return 0;
     }
-    ZFFileFileSeek(d->token, d->outputIndex);
-    zfindex written = ZFFileFileWrite(d->token, buf, count);
+    ZFFileSeek(d->token, d->outputIndex);
+    zfindex written = ZFFileWrite(d->token, buf, count);
     d->outputIndex += written;
     if(d->outputIndex > d->fileSize)
     {

@@ -16,19 +16,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * return null if not available
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForCwd)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCwd)
 /**
  * @brief change current working directory
  *
  * return false if failed
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFilePathForCwdChange,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathForCwdChange,
                         ZFMP_IN(const zfchar *, path))
 /**
- * @brief util method to access #ZFFilePathForCwd,
- *   return #ZFFilePathForModule if not available
+ * @brief util method to access #ZFPathForCwd,
+ *   return #ZFPathForModule if not available
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForCwdOrModule)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCwdOrModule)
 
 // ============================================================
 // module
@@ -38,15 +38,15 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForCwdOrModule)
  * path is ensured to use ZFFileSeparator as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForModule)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForModule)
 /**
  * @brief get module's path, e.g. "/path/module.exe"
  *
  * path is ensured to use ZFFileSeparator as separator\n
  * it's not ensured module path is actually executable's path,
- * use other path types for data storage such as #ZFFilePathForSetting
+ * use other path types for data storage such as #ZFPathForSetting
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForModuleFile)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForModuleFile)
 
 // ============================================================
 // setting
@@ -58,7 +58,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFFilePathForSettingOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForSettingOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -67,11 +67,11 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use ZFFileSeparator as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForSetting)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForSetting)
 /**
  * @brief change the data path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFilePathForSetting,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForSetting,
                         ZFMP_IN(const zfchar *, path))
 
 // ============================================================
@@ -84,7 +84,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFFilePathForStorageOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -93,11 +93,11 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use ZFFileSeparator as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForStorage)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForStorage)
 /**
  * @brief change the storage path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFilePathForStorage,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorage,
                         ZFMP_IN(const zfchar *, path))
 
 // ============================================================
@@ -110,7 +110,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFFilePathForStorageSharedOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageSharedOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -123,11 +123,11 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use ZFFileSeparator as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForStorageShared)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForStorageShared)
 /**
  * @brief change the storage path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFilePathForStorageShared,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorageShared,
                         ZFMP_IN(const zfchar *, path))
 
 // ============================================================
@@ -140,19 +140,19 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFFilePathForCacheOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheOnChange)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFFilePathForCacheBeforeClear)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheBeforeClear)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFFilePathForCacheAfterClear)
+ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheAfterClear)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -163,19 +163,19 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use ZFFileSeparator as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFFilePathForCache)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCache)
 /**
  * @brief change the cache path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFilePathForCache,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForCache,
                         ZFMP_IN(const zfchar *, path))
 /**
- * @brief clear all caches under #ZFFilePathForCache
+ * @brief clear all caches under #ZFPathForCache
  *
  * note, this method is ensured called during #ZFFrameworkCleanup
  * as level #ZFLevelZFFrameworkLow
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFFilePathForCacheClear)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFPathForCacheClear)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFFile_path_h_

@@ -1,10 +1,10 @@
 #include "ZFImpl_default_ZFCore_impl.h"
-#include "ZFCore/protocol/ZFProtocolZFFilePath.h"
+#include "ZFCore/protocol/ZFProtocolZFPath.h"
 #include "ZFCore/ZFString.h"
 
-#define _ZFP_ZFFilePathImpl_default_whereami 1
+#define _ZFP_ZFPathImpl_default_whereami 1
 
-#if _ZFP_ZFFilePathImpl_default_whereami
+#if _ZFP_ZFPathImpl_default_whereami
     #define WHEREAMI_H
     #ifndef WAI_FUNCSPEC
         #define WAI_FUNCSPEC
@@ -23,7 +23,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFilePathImpl_default, ZFFilePath, ZFProtocolLevel::e_Default)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_default, ZFPath, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ModuleLocalPath")
 public:
     virtual const zfchar *pathForModule(void)
@@ -41,7 +41,7 @@ public:
     {
         if(this->_pathForModuleFile.isEmpty())
         {
-            #if _ZFP_ZFFilePathImpl_default_whereami
+            #if _ZFP_ZFPathImpl_default_whereami
                 zfstring tmp;
                 {
                     int len = wai_getExecutablePath(NULL, 0, NULL);
@@ -72,7 +72,7 @@ public:
                     }
                 #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
             #endif
-            zfbool result = ZFFilePathFormat(this->_pathForModuleFile, tmp);
+            zfbool result = ZFPathFormat(this->_pathForModuleFile, tmp);
             zfCoreAssert(result);
         }
         return this->_pathForModuleFile;
@@ -139,7 +139,7 @@ public:
     }
     virtual void pathForCacheClear(void)
     {
-        ZFFileFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
+        ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
     }
 
 private:
@@ -149,8 +149,8 @@ private:
     zfstring _pathForStorage;
     zfstring _pathForStorageShared;
     zfstring _pathForCache;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFFilePathImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFilePathImpl_default)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFPathImpl_default)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFPathImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -3,7 +3,7 @@ package com.ZFFramework.Android.ZFCore_impl;
 import com.ZFFramework.Android.ZF_impl.ZFMainEntry;
 import android.os.Environment;
 
-public final class ZFFilePath {
+public final class ZFPath {
     public static Object native_pathForModuleFile() {
         try {
             return ZFMainEntry.appContext().getPackageManager().getApplicationInfo(

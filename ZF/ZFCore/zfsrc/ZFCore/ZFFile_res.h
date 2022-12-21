@@ -24,47 +24,47 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  *
  * this method would affect all methods that process with resource files,
- * such as #ZFFileResCopy, #ZFFileResOpen, #ZFFileResRead\n
+ * such as #ZFResCopy, #ZFResOpen, #ZFResRead\n
  * typically, additional resource path should be modified during startup only
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileResExtPathAdd,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResExtPathAdd,
                         ZFMP_IN(const ZFPathInfo &, pathInfo))
-/** @brief see #ZFFileResExtPathAdd */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileResExtPathRemove,
+/** @brief see #ZFResExtPathAdd */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResExtPathRemove,
                         ZFMP_IN(const ZFPathInfo &, pathInfo))
-/** @brief see #ZFFileResExtPathAdd */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFPathInfo>, ZFFileResExtPathList)
+/** @brief see #ZFResExtPathAdd */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFPathInfo>, ZFResExtPathList)
 /**
- * @brief see #ZFFileResExtPathAdd
+ * @brief see #ZFResExtPathAdd
  *
  * return the registered additional resource path if file exist,
  * or null if not exist\n
  * if return value is not null,
  * the final file path should be "return value + '/' + resPath"
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, const ZFPathInfo *, ZFFileResExtPathCheck,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, const ZFPathInfo *, ZFResExtPathCheck,
                         ZFMP_IN(const zfchar *, resPath))
 
 // ============================================================
 /**
  * @brief return true if res file specified by path is exist
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileResIsExist,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsExist,
                         ZFMP_IN(const zfchar *, resPath))
 /**
  * @brief return true if res file specified by path is a directory
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileResIsDir,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsDir,
                         ZFMP_IN(const zfchar *, resPath))
 
 /**
- * @brief res version of #ZFFileFileCopy
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @brief res version of #ZFFileCopy
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileResCopy,
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFResCopy,
                         ZFMP_IN(const zfchar *, resPath),
                         ZFMP_IN(const zfchar *, dstPath),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
@@ -72,88 +72,88 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileResCopy,
                         ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 
 /**
- * @see see #ZFFileResOpen, #ZFFileFileFindFirst
+ * @see see #ZFResOpen, #ZFFileFindFirst
  *
  * use empty string to find resource's root directory
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFFileResFindFirst,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFResFindFirst,
                         ZFMP_IN_OUT(ZFFileFindData &, fd),
                         ZFMP_IN(const zfchar *, resPath))
 /**
- * @see see #ZFFileResOpen, #ZFFileFileFindNext
+ * @see see #ZFResOpen, #ZFFileFindNext
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileResFindNext,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResFindNext,
                         ZFMP_IN_OUT(ZFFileFindData &, fd))
 /**
- * @see see #ZFFileResOpen, #ZFFileFileFindClose
+ * @see see #ZFResOpen, #ZFFileFindClose
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFFileResFindClose,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResFindClose,
                         ZFMP_IN_OUT(ZFFileFindData &, fd))
 
 /**
- * @brief open a resource file for read only, see #ZFFileFileOpen
+ * @brief open a resource file for read only, see #ZFFileOpen
  *
  * since the resource files may or may not be opened by normal method
- * (i.e. #ZFFileFileOpen), such as those in Android project which are located in
- * apk/assets, so use #ZFFileResOpen and #ZFFileResFindFirst to access it for cross-platform\n
+ * (i.e. #ZFFileOpen), such as those in Android project which are located in
+ * apk/assets, so use #ZFResOpen and #ZFResFindFirst to access it for cross-platform\n
  * also, since the resource files may or may not be compressed into app,
  * accessing them may or may not take much time
  * \n
  * a resource file is a file in "zfres" directory of native project,
  * such as "project_path/zfres/1.png" and "project_path/zfres/subdir/1.png",
- * which should be "1.png" and "subdir/1.png" when ZFFileResOpen\n
+ * which should be "1.png" and "subdir/1.png" when ZFResOpen\n
  * file name could be the same if under different directories,
  * and is recommended to keep all lower case for cross-platform\n
  * \n
- * note that the token is defined same type as the one used by #ZFFileFileOpen,
+ * note that the token is defined same type as the one used by #ZFFileOpen,
  * it's your responsibility to make sure not to misuse it
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void *, ZFFileResOpen,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void *, ZFResOpen,
                         ZFMP_IN(const zfchar *, resPath))
 /**
- * @brief see #ZFFileResOpen #ZFFileFileClose
+ * @brief see #ZFResOpen #ZFFileClose
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileResClose,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResClose,
                         ZFMP_IN(void *, token))
 
 /**
- * @brief see #ZFFileResOpen #ZFFileFileTell
+ * @brief see #ZFResOpen #ZFFileTell
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFFileResTell,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResTell,
                         ZFMP_IN(void *, token))
 /**
- * @brief see #ZFFileResOpen #ZFFileFileSeek
+ * @brief see #ZFResOpen #ZFFileSeek
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileResSeek,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFResSeek,
                         ZFMP_IN(void *, token),
                         ZFMP_IN(zfindex, byteSize),
                         ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin))
 
 /**
- * @brief see #ZFFileResOpen #ZFFileFileRead
+ * @brief see #ZFResOpen #ZFFileRead
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFFileResRead,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFResRead,
                         ZFMP_IN(void *, token),
                         ZFMP_IN(void *, buf),
                         ZFMP_IN(zfindex, maxByteSize))
 
 /**
- * @brief see #ZFFileResOpen #ZFFileFileIsEof
+ * @brief see #ZFResOpen #ZFFileIsEof
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileResIsEof,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsEof,
                         ZFMP_IN(void *, token))
 /**
- * @brief see #ZFFileResOpen #ZFFileFileIsEof
+ * @brief see #ZFResOpen #ZFFileIsEof
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFFileResIsError,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsError,
                         ZFMP_IN(void *, token))
 
 /**
- * @brief see #ZFFileResOpen, #ZFFileFileSize
+ * @brief see #ZFResOpen, #ZFFileSize
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFFileResSize,
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResSize,
                         ZFMP_IN(void *, token))
 
 ZF_NAMESPACE_GLOBAL_END

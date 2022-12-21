@@ -12,34 +12,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief see #ZFPathInfo
  *
- * pathData is file's relative path within #ZFFilePathForModule
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * pathData is file's relative path within #ZFPathForModule
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, modulePath)
 
 /**
  * @brief see #ZFPathInfo
  *
- * pathData is file's relative path within #ZFFilePathForStorage
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * pathData is file's relative path within #ZFPathForStorage
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, storagePath)
 
 /**
  * @brief see #ZFPathInfo
  *
- * pathData is file's relative path within #ZFFilePathForStorageShared
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * pathData is file's relative path within #ZFPathForStorageShared
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, storageSharedPath)
 
 /**
  * @brief see #ZFPathInfo
  *
- * pathData is file's relative path within #ZFFilePathForCache
+ * pathData is file's relative path within #ZFPathForCache
  *
- * note, the cache path's content would be removed according to #ZFFilePathForCacheClear
- * @note path must be well formed, use #ZFFilePathFormat if necessary
+ * note, the cache path's content would be removed according to #ZFPathForCacheClear
+ * @note path must be well formed, use #ZFPathFormat if necessary
  */
 ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, cachePath)
 

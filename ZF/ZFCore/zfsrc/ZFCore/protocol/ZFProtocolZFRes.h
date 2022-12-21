@@ -1,10 +1,10 @@
 /**
- * @file ZFProtocolZFFileResProcess.h
+ * @file ZFProtocolZFRes.h
  * @brief protocol for ZFFile
  */
 
-#ifndef _ZFI_ZFProtocolZFFileResProcess_h_
-#define _ZFI_ZFProtocolZFFileResProcess_h_
+#ifndef _ZFI_ZFProtocolZFRes_h_
+#define _ZFI_ZFProtocolZFRes_h_
 
 #include "ZFProtocolZFFile.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief protocol for ZFFile
  */
-ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFFileResProcess)
+ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFRes)
 
 public:
     /**
@@ -28,16 +28,16 @@ public:
 
 public:
     /**
-     * @brief see #ZFFileResIsExist
+     * @brief see #ZFResIsExist
      */
     virtual zfbool resIsExist(ZF_IN const zfchar *resPath);
     /**
-     * @brief see #ZFFileResIsDir
+     * @brief see #ZFResIsDir
      */
     virtual zfbool resIsDir(ZF_IN const zfchar *resPath);
 
     /**
-     * @brief see #ZFFileResCopy
+     * @brief see #ZFResCopy
      */
     virtual zfbool resCopy(ZF_IN const zfchar *resPath,
                            ZF_IN const zfchar *dstPath,
@@ -45,56 +45,56 @@ public:
                            ZF_IN_OPT zfbool isForce = zffalse,
                            ZF_IN_OPT zfstring *errPos = zfnull);
     /**
-     * @brief see #ZFFileResOpen
+     * @brief see #ZFResOpen
      */
     virtual void *resOpen(ZF_IN const zfchar *resPath);
     /**
-     * @brief see #ZFFileResClose
+     * @brief see #ZFResClose
      */
     virtual zfbool resClose(ZF_IN void *token);
 
     /**
-     * @brief see #ZFFileResTell
+     * @brief see #ZFResTell
      */
     virtual zfindex resTell(ZF_IN void *token);
     /**
-     * @brief see #ZFFileResSeek
+     * @brief see #ZFResSeek
      */
     virtual zfbool resSeek(ZF_IN void *token,
                            ZF_IN zfindex byteSize,
                            ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin);
 
     /**
-     * @brief see #ZFFileResRead
+     * @brief see #ZFResRead
      */
     virtual zfindex resRead(ZF_IN void *token,
                             ZF_IN void *buf,
                             ZF_IN zfindex maxByteSize);
 
     /**
-     * @brief see #ZFFileResIsEof
+     * @brief see #ZFResIsEof
      */
     virtual zfbool resIsEof(ZF_IN void *token);
     /**
-     * @brief see #ZFFileResIsError
+     * @brief see #ZFResIsError
      */
     virtual zfbool resIsError(ZF_IN void *token);
 
     /**
-     * @brief see #ZFFileResFindFirst, #ZFFileFileFindFirst
+     * @brief see #ZFResFindFirst, #ZFFileFindFirst
      */
     virtual zfbool resFindFirst(ZF_IN_OUT ZFFileFindData::Impl &fd,
                                 ZF_IN const zfchar *resPath);
     /**
-     * @brief see #ZFFileResFindNext, #ZFFileFileFindNext
+     * @brief see #ZFResFindNext, #ZFFileFindNext
      */
     virtual zfbool resFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd);
     /**
-     * @brief see #ZFFileResFindClose, #ZFFileFileFindClose
+     * @brief see #ZFResFindClose, #ZFFileFindClose
      */
     virtual void resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd);
-ZFPROTOCOL_INTERFACE_END(ZFFileResProcess)
+ZFPROTOCOL_INTERFACE_END(ZFRes)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFProtocolZFFileResProcess_h_
+#endif // #ifndef _ZFI_ZFProtocolZFRes_h_
 

@@ -62,7 +62,7 @@ ZFENUM_END_FLAGS(ZFLIB_ZFCore, ZFFileOpenOption, ZFFileOpenOptionFlags)
 zfclassFwd _ZFP_ZFFileFindDataPrivate;
 /**
  * @brief data used by ZFFile when finding files
- * @see ZFFileFileFindFirst, ZFFileFileFindNext, ZFFileFileFindClose
+ * @see ZFFileFindFirst, ZFFileFindNext, ZFFileFindClose
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFFileFindData
 {

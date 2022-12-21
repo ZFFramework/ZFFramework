@@ -11,7 +11,7 @@ void ZFFramework_test_TestCase::objectOnInit(void)
 {
     zfsuper::objectOnInit();
     this->_testCaseTmpPath = zfstringWithFormat("%s%cZFFramework_test%c%s",
-        ZFFilePathForCache(),
+        ZFPathForCache(),
         ZFFileSeparator(),
         ZFFileSeparator(),
         this->classData()->classNameFull());
@@ -22,7 +22,7 @@ void ZFFramework_test_TestCase::objectOnDealloc(void)
 }
 void ZFFramework_test_TestCase::objectOnDeallocPrepare(void)
 {
-    ZFFileFileRemove(this->testCaseTmpPath());
+    ZFFileRemove(this->testCaseTmpPath());
     zfsuper::objectOnDeallocPrepare();
 }
 
@@ -30,7 +30,7 @@ void ZFFramework_test_TestCase::testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseRe
 {
     for(zfindex i = 0; i < this->_filesToRemove.count(); ++i)
     {
-        ZFFileFileRemove(this->_filesToRemove[i]);
+        ZFFileRemove(this->_filesToRemove[i]);
     }
     zfsuper::testCaseOnStop(testCaseResult);
 }

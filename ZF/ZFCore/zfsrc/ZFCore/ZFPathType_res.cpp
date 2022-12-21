@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPATHTYPE_DEFINE(res)
 
 // ============================================================
-static void *_ZFP_ZFFilePathInfoOpenForRes(ZF_IN const zfchar *filePath,
+static void *_ZFP_ZFPathInfoOpenForRes(ZF_IN const zfchar *filePath,
                                            ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read,
                                            ZF_IN_OPT zfbool autoCreateParent = zftrue)
 {
@@ -13,29 +13,29 @@ static void *_ZFP_ZFFilePathInfoOpenForRes(ZF_IN const zfchar *filePath,
     {
         return zfnull;
     }
-    return ZFFileResOpen(filePath);
+    return ZFResOpen(filePath);
 }
 ZFPATHTYPE_FILEIO_REGISTER(res, ZFPathType_res()
-        , ZFFileResIsExist
-        , ZFFileResIsDir
-        , ZFFilePathInfoCallbackToFileNameDefault
-        , ZFFilePathInfoCallbackToChildDefault
-        , ZFFilePathInfoCallbackToParentDefault
-        , ZFFilePathInfoCallbackPathCreateDefault
-        , ZFFilePathInfoCallbackRemoveDefault
-        , ZFFileResFindFirst
-        , ZFFileResFindNext
-        , ZFFileResFindClose
-        , _ZFP_ZFFilePathInfoOpenForRes
-        , ZFFileResClose
-        , ZFFileResTell
-        , ZFFileResSeek
-        , ZFFileResRead
-        , ZFFilePathInfoCallbackWriteDefault
-        , ZFFilePathInfoCallbackFlushDefault
-        , ZFFileResIsEof
-        , ZFFileResIsError
-        , ZFFileResSize
+        , ZFResIsExist
+        , ZFResIsDir
+        , ZFPathInfoCallbackToFileNameDefault
+        , ZFPathInfoCallbackToChildDefault
+        , ZFPathInfoCallbackToParentDefault
+        , ZFPathInfoCallbackPathCreateDefault
+        , ZFPathInfoCallbackRemoveDefault
+        , ZFResFindFirst
+        , ZFResFindNext
+        , ZFResFindClose
+        , _ZFP_ZFPathInfoOpenForRes
+        , ZFResClose
+        , ZFResTell
+        , ZFResSeek
+        , ZFResRead
+        , ZFPathInfoCallbackWriteDefault
+        , ZFPathInfoCallbackFlushDefault
+        , ZFResIsEof
+        , ZFResIsError
+        , ZFResSize
     )
 
 // ============================================================

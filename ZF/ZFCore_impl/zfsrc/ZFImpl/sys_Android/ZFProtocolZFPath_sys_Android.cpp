@@ -1,12 +1,12 @@
 #include "ZFImpl_sys_Android_ZFCore_impl.h"
-#include "ZFCore/protocol/ZFProtocolZFFilePath.h"
+#include "ZFCore/protocol/ZFProtocolZFPath.h"
 
 #if ZF_ENV_sys_Android
 ZF_NAMESPACE_GLOBAL_BEGIN
-#define ZFImpl_sys_Android_JNI_ID_ZFFilePath ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFFilePath)
-#define ZFImpl_sys_Android_JNI_NAME_ZFFilePath ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFFilePath)
+#define ZFImpl_sys_Android_JNI_ID_ZFPath ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFPath)
+#define ZFImpl_sys_Android_JNI_NAME_ZFPath ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFPath)
 
-ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFilePathImpl_sys_Android, ZFFilePath, ZFProtocolLevel::e_SystemNormal)
+ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Android, ZFPath, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:FileSystem")
 public:
     zfoverride
@@ -14,7 +14,7 @@ public:
     {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFFilePath).c_str());
+        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFPath).c_str());
         this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
@@ -129,7 +129,7 @@ public:
     }
     virtual void pathForCacheClear(void)
     {
-        ZFFileFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
+        ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
     }
 
 private:
@@ -141,8 +141,8 @@ private:
     zfstring _pathForStorage;
     zfstring _pathForStorageShared;
     zfstring _pathForCache;
-ZFPROTOCOL_IMPLEMENTATION_END(ZFFilePathImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFilePathImpl_sys_Android)
+ZFPROTOCOL_IMPLEMENTATION_END(ZFPathImpl_sys_Android)
+ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFPathImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

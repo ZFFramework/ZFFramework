@@ -1,11 +1,11 @@
-#include "ZFFile_impl.h"
+#include "ZFFile.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static zfbool _ZFP_ZFFilePathFormat(ZF_IN_OUT zfstring &ret,
-                                    ZF_IN const zfchar *src,
-                                    ZF_IN const zfchar *srcEnd)
+static zfbool _ZFP_ZFPathFormat(ZF_IN_OUT zfstring &ret,
+                                ZF_IN const zfchar *src,
+                                ZF_IN const zfchar *srcEnd)
 {
     const zfchar *p = src;
 
@@ -89,7 +89,7 @@ static zfbool _ZFP_ZFFilePathFormat(ZF_IN_OUT zfstring &ret,
     }
     return zftrue;
 }
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFilePathFormat,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathFormat,
                        ZFMP_IN_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src),
                        ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()))
@@ -103,15 +103,15 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFilePathFormat,
     {
         zfstring tmp;
         ret.swap(tmp);
-        return _ZFP_ZFFilePathFormat(ret, tmp.cString(), tmp.cString() + tmp.length());
+        return _ZFP_ZFPathFormat(ret, tmp.cString(), tmp.cString() + tmp.length());
     }
     else
     {
-        return _ZFP_ZFFilePathFormat(ret, src, srcEnd);
+        return _ZFP_ZFPathFormat(ret, src, srcEnd);
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void, ZFFilePathFormatRelative,
+ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative,
                        ZFMP_IN_OUT(zfstring &, ret))
 {
     if(ret.isEmpty())
@@ -311,7 +311,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFileExtOf,
     ZFFileExtOf(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathOfWithoutExt,
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathOfWithoutExt,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
@@ -345,14 +345,14 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathOfWithoutExt,
     }
     return zftrue;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFilePathOfWithoutExt,
+ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFPathOfWithoutExt,
                        ZFMP_IN(const zfchar *, src))
 {
     zfstring ret;
-    ZFFilePathOfWithoutExt(ret, src);
+    ZFPathOfWithoutExt(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathParentOf,
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathParentOf,
                        ZFMP_OUT(zfstring &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
@@ -387,14 +387,14 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathParentOf,
         }
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFFilePathParentOf,
+ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFPathParentOf,
                        ZFMP_IN(const zfchar *, src))
 {
     zfstring ret;
-    ZFFilePathParentOf(ret, src);
+    ZFPathParentOf(ret, src);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathComponentsOf,
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathComponentsOf,
                        ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret),
                        ZFMP_IN(const zfchar *, src))
 {
@@ -427,11 +427,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathComponentsOf,
     } while(zftrue);
     return zftrue;
 }
-ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<zfstring>, ZFFilePathComponentsOf,
+ZFMETHOD_FUNC_DEFINE_1(ZFCoreArray<zfstring>, ZFPathComponentsOf,
                        ZFMP_IN(const zfchar *, src))
 {
     ZFCoreArray<zfstring> ret;
-    ZFFilePathComponentsOf(ret, src);
+    ZFPathComponentsOf(ret, src);
     return ret;
 }
 
@@ -441,7 +441,7 @@ static void _ZFP_ZFFileTreePrint(ZF_IN const zfchar *pathData,
                                  ZF_IN const zfchar *headToken,
                                  ZF_IN const zfchar *indentToken,
                                  ZF_IN zfindex indentLevel,
-                                 ZF_IN ZFFilePathInfoImpl const &fileImpl)
+                                 ZF_IN ZFPathInfoImpl const &fileImpl)
 {
     ZFFileFindData fd;
     if(fileImpl.callbackFindFirst(fd, pathData))
@@ -479,13 +479,13 @@ static void _ZFP_ZFFileTreePrint(ZF_IN const zfchar *pathData,
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_4(void, ZFFilePathInfoTreePrint,
+ZFMETHOD_FUNC_DEFINE_4(void, ZFPathInfoTreePrint,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()),
                        ZFMP_IN_OPT(const zfchar *, headToken, zfnull),
                        ZFMP_IN_OPT(const zfchar *, indentToken, "  "))
 {
-    const ZFFilePathInfoImpl *data = ZFFilePathInfoImplForPathType(pathInfo.pathType);
+    const ZFPathInfoImpl *data = ZFPathInfoImplForPathType(pathInfo.pathType);
     if(data != zfnull
         && data->callbackFindFirst
         && data->callbackFindNext
@@ -497,11 +497,11 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFFilePathInfoTreePrint,
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFilePathInfoForEach,
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoForEach,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN(const ZFListener &, fileCallback))
 {
-    const ZFFilePathInfoImpl *impl = ZFFilePathInfoImplForPathType(pathInfo.pathType);
+    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
     if(impl == zfnull)
     {
         return zffalse;

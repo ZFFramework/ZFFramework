@@ -50,7 +50,7 @@ static zfautoObject _ZFP_zfimportFile(ZF_IN const ZFInput &input)
     return ret;
 }
 static void _ZFP_zfimportDir(ZF_IN_OUT ZFMap *ret,
-                             ZF_IN const ZFFilePathInfoImpl &impl,
+                             ZF_IN const ZFPathInfoImpl &impl,
                              ZF_IN const ZFPathInfo &pathInfoRoot,
                              ZF_IN const zfchar *path)
 {
@@ -89,16 +89,16 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport,
                        ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull))
 {
     zfstring pathFormated;
-    if(!ZFFilePathFormat(pathFormated, path))
+    if(!ZFPathFormat(pathFormated, path))
     {
         return zfnull;
     }
 
     if(pathInfo == zfnull || pathInfo->isEmpty())
     {
-        if(ZFFileResIsDir(pathFormated))
+        if(ZFResIsDir(pathFormated))
         {
-            const ZFFilePathInfoImpl *impl = ZFFilePathInfoImplForPathType(ZFPathType_res());
+            const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(ZFPathType_res());
             if(impl == zfnull)
             {
                 return zfnull;
@@ -114,7 +114,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport,
     }
     else
     {
-        const ZFFilePathInfoImpl *impl = ZFFilePathInfoImplForPathType(pathInfo->pathType);
+        const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo->pathType);
         if(impl == zfnull)
         {
             return zfnull;

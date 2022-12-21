@@ -36,18 +36,18 @@ public:
     static zfbool callbackToFileName(ZF_IN const zfchar *pathData,
                                      ZF_IN_OUT zfstring &fileName)
     {
-        return ZFFilePathInfoCallbackToFileNameDefault(pathData, fileName);
+        return ZFPathInfoCallbackToFileNameDefault(pathData, fileName);
     }
     static zfbool callbackToChild(ZF_IN const zfchar *pathData,
                                   ZF_IN_OUT zfstring &pathDataChild,
                                   ZF_IN const zfchar *childName)
     {
-        return ZFFilePathInfoCallbackToChildDefault(pathData, pathDataChild, childName);
+        return ZFPathInfoCallbackToChildDefault(pathData, pathDataChild, childName);
     }
     static zfbool callbackToParent(ZF_IN const zfchar *pathData,
                                    ZF_IN_OUT zfstring &pathDataParent)
     {
-        return ZFFilePathInfoCallbackToParentDefault(pathData, pathDataParent);
+        return ZFPathInfoCallbackToParentDefault(pathData, pathDataParent);
     }
     static zfbool callbackPathCreate(ZF_IN const zfchar *pathData,
                                      ZF_IN_OPT zfbool autoMakeParent,

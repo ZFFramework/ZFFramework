@@ -53,10 +53,10 @@ ZFPATHTYPE_DEFINE(text)
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackSize \
         )
 
-_ZFP_ZFPathType_common_DEFINE(modulePath, ZFPathType_modulePath(), ZFFilePathForModule)
-_ZFP_ZFPathType_common_DEFINE(storagePath, ZFPathType_storagePath(), ZFFilePathForStorage)
-_ZFP_ZFPathType_common_DEFINE(storageSharedPath, ZFPathType_storageSharedPath(), ZFFilePathForStorageShared)
-_ZFP_ZFPathType_common_DEFINE(cachePath, ZFPathType_cachePath(), ZFFilePathForCache)
+_ZFP_ZFPathType_common_DEFINE(modulePath, ZFPathType_modulePath(), ZFPathForModule)
+_ZFP_ZFPathType_common_DEFINE(storagePath, ZFPathType_storagePath(), ZFPathForStorage)
+_ZFP_ZFPathType_common_DEFINE(storageSharedPath, ZFPathType_storageSharedPath(), ZFPathForStorageShared)
+_ZFP_ZFPathType_common_DEFINE(cachePath, ZFPathType_cachePath(), ZFPathForCache)
 
 // ============================================================
 // text

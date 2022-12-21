@@ -42,14 +42,14 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFTextTemplateRun,
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
 {
     zfstring pathTmp;
-    ZFFilePathFormat(pathTmp, path);
-    if(!ZFFileFileIsExist(pathTmp))
+    ZFPathFormat(pathTmp, path);
+    if(!ZFFileIsExist(pathTmp))
     {
         zfstringAppend(outErrorHint, "path not exist: \"%s\"", path);
         return zffalse;
     }
 
-    if(ZFFileFileIsDir(pathTmp))
+    if(ZFFileIsDir(pathTmp))
     {
         return _ZFP_ZFTextTemplateRun_applyDir(pathTmp, textTemplateParam, runParam, outErrorHint);
     }
@@ -80,19 +80,19 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(ZF_IN_OUT zfstring &path,
     }
     if(fileNameNew.isEmpty())
     {
-        ZFFileFileRemove(path);
+        ZFFileRemove(path);
         path.removeAll();
         return zftrue;
     }
 
     zfstring pathNew;
-    if(ZFFilePathParentOf(pathNew, path))
+    if(ZFPathParentOf(pathNew, path))
     {
         pathNew += ZFFileSeparator();
     }
     pathNew += fileNameNew;
 
-    if(!ZFFileFileMove(path, pathNew))
+    if(!ZFFileMove(path, pathNew))
     {
         zfstringAppend(outErrorHint,
             "failed to move from \"%s\" to \"%s\"",
@@ -123,7 +123,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyDir(ZF_IN_OUT zfstring &path,
 
     zfbool ret = zftrue;
     ZFFileFindData fd;
-    if(ZFFileFileFindFirst(fd, path))
+    if(ZFFileFindFirst(fd, path))
     {
         do
         {
@@ -146,8 +146,8 @@ static zfbool _ZFP_ZFTextTemplateRun_applyDir(ZF_IN_OUT zfstring &path,
                     break;
                 }
             }
-        } while(ZFFileFileFindNext(fd));
-        ZFFileFileFindClose(fd);
+        } while(ZFFileFindNext(fd));
+        ZFFileFindClose(fd);
     }
     return ret;
 }
@@ -173,15 +173,15 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(ZF_IN_OUT zfstring &path,
     zfchar *buf = zfnull;
     zfchar *bufEnd = zfnull;
     {
-        void *token = ZFFileFileOpen(path, ZFFileOpenOption::e_Read);
+        void *token = ZFFileOpen(path, ZFFileOpenOption::e_Read);
         if(token == zfnull)
         {
             zfstringAppend(outErrorHint, "failed to open file %s", path.cString());
             return zffalse;
         }
-        ZFFileFileCloseHolder(token);
+        ZFFileCloseHolder(token);
 
-        zfindex fileSize = ZFFileFileSize(token);
+        zfindex fileSize = ZFFileSize(token);
         if(fileSize == 0)
         {
             return zftrue;
@@ -194,7 +194,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(ZF_IN_OUT zfstring &path,
             return zffalse;
         }
 
-        if(ZFFileFileRead(token, buf, fileSize) != fileSize)
+        if(ZFFileRead(token, buf, fileSize) != fileSize)
         {
             zfstringAppend(outErrorHint, "failed to read file %s", path.cString());
             zffree(buf);
