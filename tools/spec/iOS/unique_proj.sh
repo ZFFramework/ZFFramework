@@ -7,7 +7,6 @@ if test "x-$PROJ_PATH" = "x-" ; then
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 
 if test "x-$_PY" = "x-" ; then
     python --version && export _PY=python || export _PY=
@@ -20,7 +19,7 @@ if test "x-$_PY" = "x-" ; then
     exit 1
 fi
 
-sh "$ZF_TOOLS_PATH/common/zfsh.sh" "$WORK_DIR/zf3rd/zfautoscript_zf3rd_setup_xUnique.zfsh"
+sh "$ZF_ROOT_PATH/tools/common/zfsh.sh" "$WORK_DIR/zf3rd/zfautoscript_zf3rd_setup_xUnique.zfsh"
 
 if test -d "$PROJ_PATH" ; then
     _SRC_PATH="$PROJ_PATH/project.pbxproj"

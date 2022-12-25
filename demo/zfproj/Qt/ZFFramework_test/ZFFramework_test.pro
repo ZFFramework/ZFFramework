@@ -18,7 +18,6 @@ win32 {
 
 # ZFFramework's root path
 ZF_ROOT_PATH = $$clean_path($${_PRO_FILE_PWD_}/../../../../../ZFFramework)
-ZF_TOOLS_PATH = $${ZF_ROOT_PATH}/tools
 
 # name of your project
 ZF_PROJ_NAME = ZFFramework_test
@@ -79,12 +78,12 @@ defineReplace(ZFAddLib) {
     LIBS += -L$${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/all/lib -l$${_ZF_LIBNAME}
     export(LIBS)
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
-        $$system_path($$clean_path($${ZF_TOOLS_PATH}/util/copy_res.$${_ZF_SCRIPT_EXT})) \
+        $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/util/copy_res.$${_ZF_SCRIPT_EXT})) \
         $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${_ZF_LIBNAME}/zfres)) \
         $${_ZF_RES_DEPLOY_PATH} \
         $$escape_expand(\\n\\t)
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
-        $$system_path($$clean_path($${ZF_TOOLS_PATH}/spec/Qt/install_lib.$${_ZF_SCRIPT_EXT})) \
+        $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/spec/Qt/install_lib.$${_ZF_SCRIPT_EXT})) \
         $${_ZF_LIBNAME} \
         $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${_ZF_LIBNAME}/lib)) \
         $${_ZF_LIB_DEPLOY_PATH} \
@@ -156,7 +155,7 @@ RCC_DIR = $${DESTDIR}/.rcc
 UI_DIR = $${DESTDIR}/.ui
 
 # ======================================================================
-system($${_ZF_SCRIPT_CALL} $$system_path($$clean_path($${ZF_TOOLS_PATH}/release/release_$${_ZF_QT_TYPE}.$${_ZF_SCRIPT_EXT})) 1)
+system($${_ZF_SCRIPT_CALL} $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/release/release_$${_ZF_QT_TYPE}.$${_ZF_SCRIPT_EXT})) 1)
 
 exists(qt_main.cpp) {
     SOURCES += qt_main.cpp
@@ -169,7 +168,7 @@ equals(ZF_UNITY_BUILD, 1) {
         _ZF_COMPILE_MODULE_NAME = $$replace(_ZF_COMPILE_MODULE_NAME,__+,_)
         _ZF_UNITY_BUILD_FILE = $${_PRO_FILE_PWD_}/zfgensrc_$${ZF_PROJ_NAME}_$${_ZF_COMPILE_MODULE_NAME}.cpp
         system($${_ZF_SCRIPT_CALL} \
-            $$system_path($$clean_path($${ZF_TOOLS_PATH}/common/unity_build.$${_ZF_SCRIPT_EXT})) \
+            $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/common/unity_build.$${_ZF_SCRIPT_EXT})) \
             $$system_path($$clean_path($${_ZF_UNITY_BUILD_FILE})) \
             $$system_path($$clean_path($${src_path})))
         SOURCES += $$system_path($$clean_path($${_ZF_UNITY_BUILD_FILE}))
@@ -215,7 +214,7 @@ win32 {
 # ======================================================================
 for(path, ZF_PROJ_RES_PATH) {
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
-        $$system_path($$clean_path($${ZF_TOOLS_PATH}/util/copy_res.$${_ZF_SCRIPT_EXT})) \
+        $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/util/copy_res.$${_ZF_SCRIPT_EXT})) \
         $$system_path($$clean_path($${path})) \
         $${_ZF_RES_DEPLOY_PATH} \
         $$escape_expand(\\n\\t)

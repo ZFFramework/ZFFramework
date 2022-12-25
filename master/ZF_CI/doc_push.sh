@@ -1,6 +1,5 @@
 WORK_DIR=$(cd "$(dirname "$0")"; pwd)
 ZF_ROOT_PATH=$WORK_DIR/../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 
 if test "x-$ZFCI_TOKEN" = "x-" ; then
     echo "ZFCI_TOKEN not set"
@@ -17,7 +16,7 @@ fi
 DOC_REPO_PATH="$OUTPUT_PATH/../DoxygenDoc_repo"
 mkdir -p "$DOC_REPO_PATH"
 
-sh "$ZF_TOOLS_PATH/common/git_check.sh" "https://github.com/ZFFramework/zfframework.github.com" master "$DOC_REPO_PATH"
+sh "$ZF_ROOT_PATH/tools/common/git_check.sh" "https://github.com/ZFFramework/zfframework.github.com" master "$DOC_REPO_PATH"
 
 _OLD_DIR=$(pwd)
 cd "$DOC_REPO_PATH"

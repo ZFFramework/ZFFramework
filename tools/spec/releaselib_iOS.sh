@@ -8,10 +8,9 @@ if test "x-$PROJ_NAME" = "x-" || test "x-$PROJ_PATH" = "x-" ; then
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 RELEASE_PATH=$ZF_ROOT_PATH/_release/iOS
 
-sh "$ZF_TOOLS_PATH/common/file_exist.sh" "$RELEASE_PATH/module/$PROJ_NAME/lib" "*$PROJ_NAME*"
+sh "$ZF_ROOT_PATH/tools/common/file_exist.sh" "$RELEASE_PATH/module/$PROJ_NAME/lib" "*$PROJ_NAME*"
 if test "$?" = "0" ; then
     exit 0
 fi

@@ -53,13 +53,12 @@
  *   to copy all resource files:
  *   @code
  *     ZF_ROOT_PATH=${SRCROOT}/path_to_ZFFramework
- *     ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
  *     RES_DST_PATH=${CONFIGURATION_BUILD_DIR}/${CONTENTS_FOLDER_PATH}/zfres
  *
- *     sh "$ZF_TOOLS_PATH/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/required_ZF_lib_name/zfres" "$RES_DST_PATH"
+ *     sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "$ZF_ROOT_PATH/_release/iOS/module/required_ZF_lib_name/zfres" "$RES_DST_PATH"
  *     # ...
  *
- *     sh "$ZF_TOOLS_PATH/util/copy_res.sh" "${SRCROOT}/../../../zfres" "$RES_DST_PATH"
+ *     sh "$ZF_ROOT_PATH/tools/util/copy_res.sh" "${SRCROOT}/../../../zfres" "$RES_DST_PATH"
  *   @endcode
  *   or, if you prefer to make it manually,
  *   please ensure all resource files of all modules are placed like this:

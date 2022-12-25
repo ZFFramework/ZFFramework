@@ -18,7 +18,6 @@ if test "x-$PROJ_NAME" = "x-"\
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 
 # ============================================================
 # no need to change these
@@ -65,11 +64,11 @@ xcodebuild -create-xcframework -library "$DEVICE_DIR/lib$PROJ_NAME.a" -library "
 
 # copy headers
 if ! test "x-$HEADER_SRC_PATH" = "x-" && ! test "x-$HEADER_DST_PATH" = "x-" ; then
-    sh $ZF_TOOLS_PATH/util/copy_header.sh $HEADER_SRC_PATH $HEADER_DST_PATH
+    sh $ZF_ROOT_PATH/tools/util/copy_header.sh $HEADER_SRC_PATH $HEADER_DST_PATH
 fi
 
 # copy res
 if ! test "x-$RES_SRC_PATH" = "x-" && ! test "x-$RES_DST_PATH" = "x-" ; then
-    sh $ZF_TOOLS_PATH/util/copy_res.sh $RES_SRC_PATH $RES_DST_PATH
+    sh $ZF_ROOT_PATH/tools/util/copy_res.sh $RES_SRC_PATH $RES_DST_PATH
 fi
 

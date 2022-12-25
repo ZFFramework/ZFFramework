@@ -19,11 +19,10 @@ if ! test -e "$APP_PATH" ; then
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 REPO_PATH="$ZF_ROOT_PATH/_tmp/upload_app"
 REPO_PATH_TMP="$ZF_ROOT_PATH/_tmp/upload_app_tmp"
 
-sh "$ZF_TOOLS_PATH/common/git_check.sh" "https://github.com/ZFFramework/AppArchive" master "$REPO_PATH"
+sh "$ZF_ROOT_PATH/tools/common/git_check.sh" "https://github.com/ZFFramework/AppArchive" master "$REPO_PATH"
 
 _OLD_DIR=$(pwd)
 cd "$REPO_PATH"
@@ -35,12 +34,12 @@ git reset --hard
 git clean -xdf
 git pull
 
-sh "$ZF_TOOLS_PATH/common/copy_check.sh" "$REPO_PATH" "$REPO_PATH_TMP"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$REPO_PATH" "$REPO_PATH_TMP"
 cd "$_OLD_DIR"
 cp -r "$APP_PATH" "$REPO_PATH_TMP/$REMOTE_FILE"
 cd "$REPO_PATH"
 git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch *' --prune-empty --tag-name-filter cat -- --all
-sh "$ZF_TOOLS_PATH/common/copy_check.sh" "$REPO_PATH_TMP" "$REPO_PATH"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$REPO_PATH_TMP" "$REPO_PATH"
 
 git add -A
 git commit -a -m "update by CI"

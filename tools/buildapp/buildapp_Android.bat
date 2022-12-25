@@ -15,7 +15,6 @@ exit /b 1
 :run
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-set ZF_TOOLS_PATH=%ZF_ROOT_PATH%\tools
 
 set _OLD_DIR=%cd%
 cd /d "%PROJ_PATH%\Android\%PROJ_NAME%"

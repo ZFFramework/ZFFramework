@@ -18,7 +18,6 @@ win32 {
 
 # ZFFramework's root path
 ZF_ROOT_PATH = $$clean_path($${_PRO_FILE_PWD_}/../../../../../../ZFFramework)
-ZF_TOOLS_PATH = $${ZF_ROOT_PATH}/tools
 
 # name of your project
 ZF_PROJ_NAME = ZFCore
@@ -114,7 +113,7 @@ equals(ZF_UNITY_BUILD, 1) {
         _ZF_COMPILE_MODULE_NAME = $$replace(_ZF_COMPILE_MODULE_NAME,__+,_)
         _ZF_UNITY_BUILD_FILE = $${_PRO_FILE_PWD_}/zfgensrc_$${ZF_PROJ_NAME}_$${_ZF_COMPILE_MODULE_NAME}.cpp
         system($${_ZF_SCRIPT_CALL} \
-            $$system_path($$clean_path($${ZF_TOOLS_PATH}/common/unity_build.$${_ZF_SCRIPT_EXT})) \
+            $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/common/unity_build.$${_ZF_SCRIPT_EXT})) \
             $$system_path($$clean_path($${_ZF_UNITY_BUILD_FILE})) \
             $$system_path($$clean_path($${src_path})))
         SOURCES += $$system_path($$clean_path($${_ZF_UNITY_BUILD_FILE}))
@@ -164,27 +163,27 @@ win32 {
     _ZF_LIB_SRC_PATH = $$system_path($$clean_path($${OUT_PWD}))
 }
 QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
-    $$system_path($$clean_path($${ZF_TOOLS_PATH}/util/copy_lib.$${_ZF_SCRIPT_EXT})) \
+    $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/util/copy_lib.$${_ZF_SCRIPT_EXT})) \
     $${ZF_PROJ_NAME} \
     $$system_path($$clean_path($${_ZF_LIB_SRC_PATH})) \
     $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${ZF_PROJ_NAME}/lib)) \
     $$escape_expand(\\n\\t)
 for(path, ZF_PROJ_HEADER_PATH) {
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
-        $$system_path($$clean_path($${ZF_TOOLS_PATH}/util/copy_header.$${_ZF_SCRIPT_EXT})) \
+        $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/util/copy_header.$${_ZF_SCRIPT_EXT})) \
         $$system_path($$clean_path($${path})) \
         $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${ZF_PROJ_NAME}/include)) \
         $$escape_expand(\\n\\t)
 }
 for(path, ZF_PROJ_RES_PATH) {
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
-        $$system_path($$clean_path($${ZF_TOOLS_PATH}/util/copy_res.$${_ZF_SCRIPT_EXT})) \
+        $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/util/copy_res.$${_ZF_SCRIPT_EXT})) \
         $$system_path($$clean_path($${path})) \
         $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${ZF_PROJ_NAME}/zfres)) \
         $$escape_expand(\\n\\t)
 }
 QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
-    $$system_path($$clean_path($${ZF_TOOLS_PATH}/common/copy_check.$${_ZF_SCRIPT_EXT})) \
+    $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/common/copy_check.$${_ZF_SCRIPT_EXT})) \
     $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/module/$${ZF_PROJ_NAME})) \
     $$system_path($$clean_path($${ZF_ROOT_PATH}/_release/$${_ZF_QT_TYPE}/all)) \
     $$escape_expand(\\n\\t)

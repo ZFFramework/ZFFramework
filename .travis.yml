@@ -23,7 +23,7 @@ matrix:
       - ../ZFFramework/tools/buildapp/buildapp_Android.sh ${ZF_PROJ_NAME} ${ZF_PROJ_PATH}
       - if [ `basename $(dirname $(git remote get-url origin)) .git` = "ZFFramework" ]; then
           chmod +x ../ZFFramework/master/ZF_CI/upload_app.sh;
-          ../ZFFramework/master/ZF_CI/upload_app.sh "${ZF_PROJ_PATH}/Android/${ZF_PROJ_NAME}/zfapp/build/outputs/apk/release/zfapp-release.apk" "${ZF_PROJ_NAME}.src.apk";
+          ../ZFFramework/master/ZF_CI/upload_app.sh "${ZF_PROJ_PATH}/../../_tmp/Android/${ZF_PROJ_NAME}/app/${ZF_PROJ_NAME}.apk" "${ZF_PROJ_NAME}.src.apk";
         fi
 
   - language: android
@@ -48,7 +48,7 @@ matrix:
       - ../ZFFramework/tools/buildapp/buildapp_Android.sh ${ZF_PROJ_NAME} ${ZF_PROJ_PATH}
       - if [ `basename $(dirname $(git remote get-url origin)) .git` = "ZFFramework" ]; then
           chmod +x ../ZFFramework/master/ZF_CI/upload_app.sh;
-          ../ZFFramework/master/ZF_CI/upload_app.sh "${ZF_PROJ_PATH}/Android/${ZF_PROJ_NAME}/zfapp/build/outputs/apk/release/zfapp-release.apk" "${ZF_PROJ_NAME}.apk";
+          ../ZFFramework/master/ZF_CI/upload_app.sh "${ZF_PROJ_PATH}/../../_tmp/Android/${ZF_PROJ_NAME}/app/${ZF_PROJ_NAME}.apk" "${ZF_PROJ_NAME}.apk";
         fi
 
   - language: objective-c

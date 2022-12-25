@@ -11,7 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = A1A1E87EBC09A730E6D932AF6BF13CBF /* Build configuration list for PBXAggregateTarget "ZFUtility_aggregate" */;
 			buildPhases = (
-				6DC04451E25F8D70C97F72D7F4918FDC /* ShellScript */,
+				AB0EC6BE0F9B070E24B58E5F724300EB /* ShellScript */,
 			);
 			dependencies = (
 			);
@@ -159,7 +159,7 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6DC04451E25F8D70C97F72D7F4918FDC /* ShellScript */ = {
+		AB0EC6BE0F9B070E24B58E5F724300EB /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -170,7 +170,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\nZF_TOOLS_PATH=$ZF_ROOT_PATH/tools\n\nsh $ZF_TOOLS_PATH/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
+			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
 		};
 		BEBE82E091C0EB3345AB96152B6AB7D5 /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;

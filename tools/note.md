@@ -123,6 +123,9 @@
         Qt_Posix/
         Qt_Windows/
             ProjName/
+                app/
+                    zfres/
+                    AppName.xxx
                 build/
                 release/
                     ProjName.xxx

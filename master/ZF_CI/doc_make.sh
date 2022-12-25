@@ -1,6 +1,5 @@
 WORK_DIR=$(cd "$(dirname "$0")"; pwd)
 ZF_ROOT_PATH=$WORK_DIR/../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 
 OUTPUT_PATH="$ZF_ROOT_PATH/_tmp/DoxygenDoc"
 mkdir -p "$OUTPUT_PATH"

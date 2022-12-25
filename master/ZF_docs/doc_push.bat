@@ -3,7 +3,6 @@ setlocal
 
 set WORK_DIR=%~dp0
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-set ZF_TOOLS_PATH=%ZF_ROOT_PATH%\tools
 set OUTPUT_PATH=%WORK_DIR%\Doxygen\..\..\..\_tmp\DoxygenDoc
 
 set PASSWORD=%~1%
@@ -23,7 +22,7 @@ if not exist "%OUTPUT_PATH%\html\index.html" (
 
 set DOC_REPO_PATH=%OUTPUT_PATH%\..\DoxygenDoc_repo
 
-call "%ZF_TOOLS_PATH%\common\git_check.bat" "https://github.com/ZFFramework/zfframework.github.com" master "%DOC_REPO_PATH%"
+call "%ZF_ROOT_PATH%\tools\common\git_check.bat" "https://github.com/ZFFramework/zfframework.github.com" master "%DOC_REPO_PATH%"
 xcopy /s/e/y/r/h "%WORK_DIR%\doc_repo" "%DOC_REPO_PATH%"
 rmdir /s/q "%DOC_REPO_PATH%\doc" >nul 2>&1
 mkdir "%DOC_REPO_PATH%\doc" >nul 2>&1

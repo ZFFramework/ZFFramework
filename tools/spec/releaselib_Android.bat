@@ -15,9 +15,8 @@ exit /b 1
 :run
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-set ZF_TOOLS_PATH=%ZF_ROOT_PATH%\tools
 
-call "%ZF_TOOLS_PATH%\common\file_exist.bat" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\aar" "*.aar"
+call "%ZF_ROOT_PATH%\tools\common\file_exist.bat" "%ZF_ROOT_PATH%\_release\Android\module\%PROJ_NAME%\aar" "*.aar"
 if "%errorlevel%" == "0" (
     exit /b 0
 )

@@ -8,7 +8,6 @@ if test "x-$PROJ_NAME" = "x-" || test "x-$PROJ_PATH" = "x-" ; then
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 _TMP_PATH=$PROJ_PATH/../../_tmp/Qt_MacOS/$PROJ_NAME/release
 
 _OLD_DIR=$(pwd)

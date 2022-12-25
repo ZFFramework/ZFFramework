@@ -28,11 +28,10 @@ if not defined ZF_QT_MAKE (
 )
 
 set ZF_ROOT_PATH=%WORK_DIR%\..\..
-set ZF_TOOLS_PATH=%ZF_ROOT_PATH%\tools
 set QT_TYPE=Qt_Windows
 set RELEASE_PATH=%ZF_ROOT_PATH%\_release\%QT_TYPE%
 
-call "%ZF_TOOLS_PATH%\common\file_exist.bat" "%RELEASE_PATH%\module\%PROJ_NAME%\lib" "*%PROJ_NAME%*"
+call "%ZF_ROOT_PATH%\tools\common\file_exist.bat" "%RELEASE_PATH%\module\%PROJ_NAME%\lib" "*%PROJ_NAME%*"
 if "%errorlevel%" == "0" (
     goto :EOF
 )

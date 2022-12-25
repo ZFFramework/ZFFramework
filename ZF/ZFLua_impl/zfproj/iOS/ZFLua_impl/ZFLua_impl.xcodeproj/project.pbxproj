@@ -11,7 +11,7 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 24A243CE1D2AE6B039F4F045508ADCF7 /* Build configuration list for PBXAggregateTarget "ZFLua_impl_aggregate" */;
 			buildPhases = (
-				9660E4B7FEC90AD97961DFA5AD35760E /* ShellScript */,
+				CF4F59FCC3FAFDF09CEE028678EF9146 /* ShellScript */,
 			);
 			dependencies = (
 			);
@@ -189,7 +189,7 @@
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh \"${SRCROOT}/ProjectFiles/zfgensrc_ZFLua_impl.mm\" \"${SRCROOT}/../../../zfsrc\"";
 		};
-		9660E4B7FEC90AD97961DFA5AD35760E /* ShellScript */ = {
+		CF4F59FCC3FAFDF09CEE028678EF9146 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -200,7 +200,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\nZF_TOOLS_PATH=$ZF_ROOT_PATH/tools\n\nsh $ZF_TOOLS_PATH/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
+			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

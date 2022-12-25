@@ -14,7 +14,6 @@ else
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 _TMP_PATH=$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/$_CONFIG
 
 _OLD_DIR=$(pwd)
@@ -29,6 +28,9 @@ cmake "$_PROJ_PATH"
 make -j4
 _RESULT="$?"
 cd "$_OLD_DIR"
+
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_TMP_PATH/$PROJ_NAME" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app/$PROJ_NAME"
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$_TMP_PATH/zfres" "$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/app/zfres"
 
 exit $_RESULT
 

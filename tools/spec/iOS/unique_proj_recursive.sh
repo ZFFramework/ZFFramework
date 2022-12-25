@@ -7,7 +7,6 @@ if test "x-$PROJ_PATH" = "x-" ; then
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 
 for line in $(find "$PROJ_PATH" -name "project.pbxproj" -type f 2>/dev/null); do
     echo "$line" | grep -q "Pods.xcodeproj" && continue

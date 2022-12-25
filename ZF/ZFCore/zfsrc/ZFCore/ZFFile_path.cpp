@@ -170,6 +170,9 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFPathForCacheClear)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPathForCacheAutoClear, ZFLevelZFFrameworkLow)
 {
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFPathForCacheAutoClear)
+{
     ZFPathForCacheClear();
 }
 ZF_GLOBAL_INITIALIZER_END(ZFPathForCacheAutoClear)

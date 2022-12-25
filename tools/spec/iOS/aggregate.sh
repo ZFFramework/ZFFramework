@@ -9,7 +9,6 @@ if test "x-$PROJ_NAME" = "x-" || test "x-$PROJ_PATH" = "x-" ; then
 fi
 
 ZF_ROOT_PATH=$WORK_DIR/../../..
-ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
 RELEASE_PATH=$ZF_ROOT_PATH/_release/iOS
 
 if test "x-$COCOAPODS_PROJECT_OR_EMPTY" = "x-" ; then
@@ -25,5 +24,5 @@ HEADER_PATH_OR_DUMMY=$PROJ_PATH/zfsrc
 RES_PATH_OR_DUMMY=$PROJ_PATH/zfres
 
 sh "$WORK_DIR/aggregate_impl.sh" $PROJ_NAME "$RELEASE_PATH/module/$PROJ_NAME" "$BUILD_PATH" $COCOAPODS_PROJECT_TRUE_OR_FALSE "$HEADER_PATH_OR_DUMMY" "$RES_PATH_OR_DUMMY"
-sh "$ZF_TOOLS_PATH/common/copy_check.sh" "$RELEASE_PATH/module/$PROJ_NAME" "$RELEASE_PATH/all" >/dev/null 2>&1
+sh "$ZF_ROOT_PATH/tools/common/copy_check.sh" "$RELEASE_PATH/module/$PROJ_NAME" "$RELEASE_PATH/all" >/dev/null 2>&1
 
