@@ -102,7 +102,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy,
                        ZFMP_IN(const zfchar *, resPath),
                        ZFMP_IN(const zfchar *, dstPath),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                       ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                       ZFMP_IN_OPT(zfbool, isForce, zftrue),
                        ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 {
     const ZFPathInfo *resExtPath = ZFResExtPathCheck(resPath);

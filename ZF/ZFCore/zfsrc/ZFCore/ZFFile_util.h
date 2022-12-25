@@ -182,7 +182,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFPathInfoTreePrint,
 
 // ============================================================
 /**
- * @brief util method to loop each child file in specified pathInfo
+ * @brief util method to loop each child file or dir in specified pathInfo
  *
  * usage:
  * @code
@@ -197,9 +197,20 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, ZFPathInfoTreePrint,
  * fileCallback's param0 is #v_ZFPathInfo that describe the child file or dir,
  * and param1 is #v_ZFFileFindData
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoForEach,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForEach,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
-                        ZFMP_IN(const ZFListener &, fileCallback))
+                        ZFMP_IN(const ZFListener &, fileCallback),
+                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue))
+/** @brief util method to loop each file, see #ZFPathInfoForEach */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForEachFile,
+                        ZFMP_IN(const ZFPathInfo &, pathInfo),
+                        ZFMP_IN(const ZFListener &, fileCallback),
+                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue))
+/** @brief util method to loop each dir, see #ZFPathInfoForEach */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoForEachDir,
+                        ZFMP_IN(const ZFPathInfo &, pathInfo),
+                        ZFMP_IN(const ZFListener &, fileCallback),
+                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFFile_util_h_

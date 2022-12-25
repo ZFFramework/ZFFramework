@@ -73,7 +73,7 @@ zfbool ZFPathInfoCallbackPathCreateDefault(ZF_IN const zfchar *pathData,
 }
 zfbool ZFPathInfoCallbackRemoveDefault(ZF_IN const zfchar *pathData,
                                        ZF_IN_OPT zfbool isRecursive /* = zftrue */,
-                                       ZF_IN_OPT zfbool isForce /* = zffalse */,
+                                       ZF_IN_OPT zfbool isForce /* = zftrue */,
                                        ZF_IN_OPT zfstring *errPos /* = zfnull */)
 {
     return zffalse;
@@ -273,7 +273,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoPathCreate,
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFPathInfoRemove,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                       ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                       ZFMP_IN_OPT(zfbool, isForce, zftrue),
                        ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 {
     ZFPathInfoImpl *data = _ZFP_ZFPathInfoImplForPathType(pathInfo.pathType);

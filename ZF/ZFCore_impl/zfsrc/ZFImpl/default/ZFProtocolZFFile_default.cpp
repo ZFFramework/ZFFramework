@@ -109,7 +109,7 @@ public:
     virtual zfbool fileCopy(ZF_IN const zfchar *srcPath,
                             ZF_IN const zfchar *dstPath,
                             ZF_IN_OPT zfbool isRecursive = zftrue,
-                            ZF_IN_OPT zfbool isForce = zffalse,
+                            ZF_IN_OPT zfbool isForce = zftrue,
                             ZF_IN_OPT zfstring *errPos = zfnull)
     {
         zfstring dstPathParent;
@@ -122,14 +122,14 @@ public:
     virtual zfbool fileMove(ZF_IN const zfchar *srcPath,
                             ZF_IN const zfchar *dstPath,
                             ZF_IN_OPT zfbool isRecursive = zftrue,
-                            ZF_IN_OPT zfbool isForce = zffalse,
+                            ZF_IN_OPT zfbool isForce = zftrue,
                             ZF_IN_OPT zfstring *errPos = zfnull)
     {
         return this->cp_or_mv(zffalse, srcPath, dstPath, isRecursive, isForce, errPos);
     }
     virtual zfbool fileRemove(ZF_IN const zfchar *path,
                               ZF_IN_OPT zfbool isRecursive = zftrue,
-                              ZF_IN_OPT zfbool isForce = zffalse,
+                              ZF_IN_OPT zfbool isForce = zftrue,
                               ZF_IN_OPT zfstring *errPos = zfnull)
     {
         if(!this->fileIsExist(path)) {return zftrue;}

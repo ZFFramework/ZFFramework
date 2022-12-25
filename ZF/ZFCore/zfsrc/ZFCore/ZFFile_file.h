@@ -47,7 +47,7 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileCopy,
                         ZFMP_IN(const zfchar *, srcPath),
                         ZFMP_IN(const zfchar *, dstPath),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                        ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                        ZFMP_IN_OPT(zfbool, isForce, zftrue),
                         ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 /**
  * @brief move a file or directory from srcPath to dstPath
@@ -57,7 +57,7 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileMove,
                         ZFMP_IN(const zfchar *, srcPath),
                         ZFMP_IN(const zfchar *, dstPath),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                        ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                        ZFMP_IN_OPT(zfbool, isForce, zftrue),
                         ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 /**
  * @brief delete a file or directory from srcPath to dstPath
@@ -68,7 +68,7 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileMove,
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFFileRemove,
                         ZFMP_IN(const zfchar *, path),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                        ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                        ZFMP_IN_OPT(zfbool, isForce, zftrue),
                         ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 
 /**

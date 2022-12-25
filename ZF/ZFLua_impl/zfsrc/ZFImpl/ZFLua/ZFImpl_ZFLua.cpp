@@ -421,13 +421,14 @@ zfbool ZFImpl_ZFLua_toObject(ZF_OUT zfautoObject &param,
 
 zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
                               ZF_IN lua_State *L,
-                              ZF_IN int luaStackOffset)
+                              ZF_IN int luaStackOffset,
+                              ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
 {
     if(ZFImpl_ZFLua_toObject(param, L, luaStackOffset))
     {
         return zftrue;
     }
-    else if(ZFImpl_ZFLua_toCallback(param, L, luaStackOffset))
+    else if(ZFImpl_ZFLua_toCallback(param, L, luaStackOffset, errorHint))
     {
         return zftrue;
     }
@@ -471,7 +472,7 @@ zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
         lua_pushvalue(L, luaStackOffset);
         holder->luaValue = luaL_ref(L, LUA_REGISTRYINDEX);
         param = holder;
-        return zffalse;
+        return zftrue;
     }
 
     zfautoObject const &obj = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
@@ -493,6 +494,7 @@ zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
     }
     else
     {
+        zfstringAppend(errorHint, "unknown param type: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
         return zffalse;
     }
 }
@@ -774,7 +776,7 @@ zfbool ZFImpl_ZFLua_toLuaValue(ZF_IN lua_State *L,
     }
 
     ZFImpl_ZFLua_luaError(L,
-        "[zfl_luaValue] unknown param type, got %s",
+        "[zfl_value] unknown param type, got %s",
         obj->objectInfo().cString());
     return zffalse;
 }

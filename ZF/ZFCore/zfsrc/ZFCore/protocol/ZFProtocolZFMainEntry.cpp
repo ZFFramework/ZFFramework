@@ -8,37 +8,38 @@ zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams /* = ZFCoreArra
 {
     _ZFP_ZFApp_appParams().removeAll();
     _ZFP_ZFApp_appParams().addFrom(appParams);
-
-    _ZFP_ZFMainFuncType const &func = _ZFP_ZFMainFunc();
-    if(func != zfnull)
-    {
-        func();
-    }
-    else
-    {
-        zfCoreLog("ZFMAIN_ENTRY not set");
-    }
-    for(zfindex i = 0; i < ZFMainExtraImpl().count(); ++i)
-    {
-        ZFMainExtraImpl()[i]();
-    }
+    ZFGlobalObserver().observerNotify(ZFApp::EventAppParamDispatch());
+    ZFGlobalObserver().observerNotify(ZFApp::EventAppEntry());
     return _ZFP_ZFApp_appExitCode();
 }
 
-ZFCoreArrayPOD<ZFFuncAddrType> &ZFMainExtraImpl(void)
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic)
 {
-    static ZFCoreArrayPOD<ZFFuncAddrType> d;
-    return d;
+    ZFLISTENER(action) {
+        _ZFP_ZFMainFuncType const &func = _ZFP_ZFMainFunc();
+        if(func != zfnull)
+        {
+            func();
+        }
+        else
+        {
+            zfCoreLogTrim("ZFMAIN_ENTRY not set");
+        }
+    } ZFLISTENER_END(action)
+    this->callback = action;
+    ZFGlobalObserver().observerAdd(ZFObserverAddParam()
+            .eventId(ZFApp::EventAppEntry())
+            .observer(this->callback)
+            .observerLevel(ZFLevelZFFrameworkNormal)
+        );
 }
-
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainExtraImplCleanup, ZFLevelZFFrameworkStatic)
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntrySetup)
 {
+    ZFGlobalObserver().observerRemove(ZFApp::EventAppEntry(), this->callback);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainExtraImplCleanup)
-{
-    ZFMainExtraImpl().removeAll();
-}
-ZF_GLOBAL_INITIALIZER_END(ZFMainExtraImplCleanup)
+private:
+    ZFListener callback;
+ZF_GLOBAL_INITIALIZER_END(ZFMainEntrySetup)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -468,7 +468,7 @@ public:
 
         // dump the function
         lua_pushvalue(L, luaStackOffset);
-        int dumpError = lua_dump(L, _funcWriter, this, 0);
+        int dumpError = lua_dump(L, _funcWriter, this, ZFLogLevelIsActive(ZFLogLevel::e_Debug) ? 0 : 1);
         if(dumpError != 0)
         {
             lua_pop(L, 1);
@@ -491,8 +491,9 @@ public:
             if(!_fromUpvalue(v, L, name, upvalueIndex))
             {
                 zfstringAppend(errorHint,
-                    "%s unable to store upvalue at index %d: %s",
+                    "%s unable to store upvalue \"%s\" at index %d: %s",
                     this->logTag().cString(),
+                    name,
                     (zfint)upvalueIndex,
                     ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue).cString());
                 lua_pop(L, 1);

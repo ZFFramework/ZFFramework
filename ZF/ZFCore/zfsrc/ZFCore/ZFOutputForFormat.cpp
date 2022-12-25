@@ -226,7 +226,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
         return zffalse;
     }
     zfautoObject formatHolder;
-    if(!zfautoObjectFromData(formatHolder, *formatData, outErrorHint, outErrorPos))
+    if(!ZFObjectFromData(formatHolder, *formatData, outErrorHint, outErrorPos))
     {
         return zffalse;
     }

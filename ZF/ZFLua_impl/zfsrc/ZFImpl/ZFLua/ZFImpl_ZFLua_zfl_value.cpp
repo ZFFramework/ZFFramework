@@ -3,13 +3,13 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static int _ZFP_ZFImpl_ZFLua_zfl_luaValue(ZF_IN lua_State *L)
+static int _ZFP_ZFImpl_ZFLua_zfl_value(ZF_IN lua_State *L)
 {
     int count = (int)lua_gettop(L);
     if(count != 1)
     {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfl_luaValue] takes only one param, got %zi",
+            "[zfl_value] takes only one param, got %zi",
             (zfindex)count);
     }
 
@@ -22,8 +22,8 @@ static int _ZFP_ZFImpl_ZFLua_zfl_luaValue(ZF_IN lua_State *L)
     return ZFImpl_ZFLua_toLuaValue(L, ZFImpl_ZFLua_luaGet(L, 1));
 }
 
-ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_luaValue, ZFM_EXPAND({
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfl_luaValue", _ZFP_ZFImpl_ZFLua_zfl_luaValue);
+ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_value, ZFM_EXPAND({
+        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfl_value", _ZFP_ZFImpl_ZFLua_zfl_value);
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
     }))

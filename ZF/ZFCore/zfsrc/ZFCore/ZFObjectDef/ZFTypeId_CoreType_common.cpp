@@ -60,6 +60,14 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfstring, zfstring, {
         s += v;
         return zftrue;
     })
+ZFOBJECT_ON_INIT_USER_REGISTER_3({
+        zfstring &zfv = invokerObject->to<v_zfstring *>()->zfv;
+        zfv.assign(src + pos, len);
+    }, v_zfstring
+    , ZFMP_IN(const zfchar *, src)
+    , ZFMP_IN(zfindex, pos)
+    , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+    )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, append, ZFMP_IN(const zfstring &, s))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, append, ZFMP_IN(const zfchar *, s), ZFMP_IN(zfindex, len))
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, assign, ZFMP_IN(const zfstring &, s))

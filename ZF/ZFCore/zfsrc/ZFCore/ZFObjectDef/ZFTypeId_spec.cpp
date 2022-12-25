@@ -9,11 +9,6 @@ _ZFP_ZFTYPEID_ID_DATA_REGISTER(void, void)
 
 // ============================================================
 // zfautoObject
-ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER_WITH_CUSTOM_WRAPPER(zfautoObject, zfautoObject, {
-        return ZFObjectFromData(v, serializableData, outErrorHint, outErrorPos);
-    }, {
-        return ZFObjectToData(serializableData, v, outErrorHint);
-    })
 ZFOUTPUT_TYPE_DEFINE(zfautoObject, {
         output.execute(
             (v == zfnull)

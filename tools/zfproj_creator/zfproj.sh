@@ -3,10 +3,11 @@ CONFIG_FILE_PATH=$1
 DST_PATH=$2
 printUsage() {
     echo "usage:"
-    echo "  zfproj_creator.sh CONFIG_FILE_PATH [ZF_OUTPUT]"
-    echo "  zfproj_creator.sh -app PROJ_NAME OUTPUT_PATH"
-    echo "  zfproj_creator.sh -lib PROJ_NAME OUTPUT_PATH"
-    echo "  zfproj_creator.sh -impl PROJ_NAME OUTPUT_PATH"
+    echo "  zfproj.sh -app PROJ_NAME OUTPUT_PATH"
+    echo "  zfproj.sh -lib PROJ_NAME OUTPUT_PATH"
+    echo "  zfproj.sh -impl PROJ_NAME OUTPUT_PATH"
+    echo "  zfproj.sh CONFIG_FILE_PATH [ZF_OUTPUT]"
+    echo "  zfproj.sh -r SRC_DIR DST_DIR"
     echo ""
     echo "config file format:"
     echo "  these are required:"
@@ -102,8 +103,38 @@ elif test "x-$CONFIG_FILE_PATH" = "x--app" || test "x-$CONFIG_FILE_PATH" = "x--l
     }
     _configFileTemplate > "$_CONFIG_FILE_PATH"
     echo "config file created: $_CONFIG_FILE_PATH"
-    echo "    use 'zfproj_recursive.sh $OUTPUT_PATH/$PROJ_NAME dstPath' to create entire project folder structure"
-    echo "    or use 'zfproj_recursive.sh $OUTPUT_PATH/$PROJ_NAME' to update existing proejct inplace"
+    echo "    use 'zfproj.sh -r $OUTPUT_PATH/$PROJ_NAME dstPath' to create entire project folder structure"
+    echo "    or use 'zfproj.sh -r $OUTPUT_PATH/$PROJ_NAME' to update existing proejct inplace"
+    exit 0
+elif test "x-$CONFIG_FILE_PATH" = "x--r" ; then
+    SRC_DIR=$2
+    DST_DIR=$3
+    if test "x-$SRC_DIR" = "x-" ; then
+        echo "usage:"
+        echo "  zfproj.sh -r SRC_DIR [DST_DIR]"
+        echo "set ZF_EXCLUDE_FILE to exclude dirs, separated by space, match exact, e.g."
+        echo "  export ZF_EXCLUDE_FILE=f0 f1"
+        exit 1
+    fi
+
+    # ============================================================
+    # default exclude dirs
+    ZF_EXCLUDE_FILE_TMP=$ZF_EXCLUDE_FILE
+    ZF_EXCLUDE_FILE_TMP="$ZF_EXCLUDE_FILE_TMP private zfres _release _tmp"
+
+    # ============================================================
+    ZF_ROOT_PATH=$WORK_DIR/../../../ZFFramework
+
+    _FULL_CMD="find '$SRC_DIR' -name 'zfautoscript_zfproj.txt' | grep -v '\(_zf_dummy_\)"
+    for e in $ZF_EXCLUDE_FILE_TMP ; do
+        _FULL_CMD="${_FULL_CMD}\|\(/$e/\)"
+    done
+    _FULL_CMD="${_FULL_CMD}'"
+
+    for f in `eval $_FULL_CMD` ; do
+        sh "$WORK_DIR/zfproj.sh" "$f" "$DST_DIR"
+    done
+
     exit 0
 fi
 

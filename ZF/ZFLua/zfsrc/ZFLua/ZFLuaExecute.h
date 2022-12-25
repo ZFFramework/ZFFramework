@@ -77,13 +77,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     to its wrapper type `YourTypeName`,
  *     then the methods can be invoked directly to your value type
  * -  value converter
- *   -  `zfl_luaValue(v)`\n
+ *   -  `zfl_value(v)`\n
  *     convert a value to lua's raw value,
  *     the result lua value can be:
  *     -  lua string
  *     -  lua integer
  *     -  lua number
  *     -  lua boolean
+ *   -  these types are automatically converted when return from cpp to lua:
+ *     -  v_zfbool => lua boolean
  * -  callback
  *   -  `ZFCallbackForLua(luaFunc)`\n
  *     create a #ZFListener from lua function\n

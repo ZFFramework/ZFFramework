@@ -91,7 +91,7 @@ extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackPathCreateDefault(ZF_IN const zfcha
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackRemoveDefault(ZF_IN const zfchar *pathData,
                                                            ZF_IN_OPT zfbool isRecursive = zftrue,
-                                                           ZF_IN_OPT zfbool isForce = zffalse,
+                                                           ZF_IN_OPT zfbool isForce = zftrue,
                                                            ZF_IN_OPT zfstring *errPos = zfnull);
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackFindFirstDefault(ZF_IN_OUT ZFFileFindData &fd,
@@ -165,7 +165,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoPathCreate,
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFPathInfoRemove,
                         ZFMP_IN(const ZFPathInfo &, pathInfo),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                        ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                        ZFMP_IN_OPT(zfbool, isForce, zftrue),
                         ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoFindFirst,
@@ -244,7 +244,7 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFPathInfoCopy,
                         ZFMP_IN(const ZFPathInfo &, srcPath),
                         ZFMP_IN(const ZFPathInfo &, dstPath),
                         ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                        ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                        ZFMP_IN_OPT(zfbool, isForce, zftrue),
                         ZFMP_IN_OPT(ZFPathInfo *, errPos, zfnull))
 
 // ============================================================

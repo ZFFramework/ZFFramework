@@ -32,15 +32,35 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call_impl(ZF_IN lua_State *L,
         ZFMethodGenericInvokerDefaultParamHolder(),
     };
 
-    for(int i = 0; i < paramCount; ++i)
+    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
     {
-        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
+        zfstring errorHint;
+        for(int i = 0; i < paramCount; ++i)
         {
-            return ZFImpl_ZFLua_luaError(L,
-                "[zfl_call] failed to get param%d, got %s, while executing: %s",
-                i,
-                ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue).cString(),
-                name);
+            errorHint.removeAll();
+            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, &errorHint))
+            {
+                return ZFImpl_ZFLua_luaError(L,
+                    "[zfl_call] failed to get param%d, got %s, error: %s, while executing: %s",
+                    i,
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue).cString(),
+                    errorHint.cString(),
+                    name);
+            }
+        }
+    }
+    else
+    {
+        for(int i = 0; i < paramCount; ++i)
+        {
+            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
+            {
+                return ZFImpl_ZFLua_luaError(L,
+                    "[zfl_call] failed to get param%d, got %s, while executing: %s",
+                    i,
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue).cString(),
+                    name);
+            }
         }
     }
 

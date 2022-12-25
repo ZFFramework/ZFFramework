@@ -45,7 +45,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileCopy,
                        ZFMP_IN(const zfchar *, srcPath),
                        ZFMP_IN(const zfchar *, dstPath),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                       ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                       ZFMP_IN_OPT(zfbool, isForce, zftrue),
                        ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 {
     if(srcPath == zfnull || dstPath == zfnull)
@@ -59,7 +59,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileMove,
                        ZFMP_IN(const zfchar *, srcPath),
                        ZFMP_IN(const zfchar *, dstPath),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                       ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                       ZFMP_IN_OPT(zfbool, isForce, zftrue),
                        ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 {
     if(srcPath == zfnull || dstPath == zfnull)
@@ -71,7 +71,7 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileMove,
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFFileRemove,
                        ZFMP_IN(const zfchar *, path),
                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                       ZFMP_IN_OPT(zfbool, isForce, zffalse),
+                       ZFMP_IN_OPT(zfbool, isForce, zftrue),
                        ZFMP_IN_OPT(zfstring *, errPos, zfnull))
 {
     if(path == zfnull)

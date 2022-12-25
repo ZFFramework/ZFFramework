@@ -125,7 +125,7 @@ public:
     virtual zfbool resCopy(ZF_IN const zfchar *resPath,
                            ZF_IN const zfchar *dstPath,
                            ZF_IN_OPT zfbool isRecursive = zftrue,
-                           ZF_IN_OPT zfbool isForce = zffalse,
+                           ZF_IN_OPT zfbool isForce = zftrue,
                            ZF_IN_OPT zfstring *errPos = zfnull)
     {
         zfstring resPathFixed;

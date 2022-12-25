@@ -6,7 +6,8 @@ zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
                             ZF_IN lua_State *L,
                             ZF_IN const ZFClass *cls,
                             ZF_IN int paramCount,
-                            ZF_IN int luaParamOffset)
+                            ZF_IN int luaParamOffset,
+                            ZF_IN_OPT zfstring *errorHint /* = zfnull */)
 {
     if(paramCount == 0)
     {
@@ -26,12 +27,12 @@ zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
     };
     for(int i = 0; i < paramCount; ++i)
     {
-        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
+        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, errorHint))
         {
             return zffalse;
         }
     }
-    return ZFDI_alloc(ret, zfnull, cls, (zfindex)paramCount, paramList);
+    return ZFDI_alloc(ret, errorHint, cls, (zfindex)paramCount, paramList);
 }
 
 // ============================================================
@@ -69,12 +70,30 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
     };
-    for(int i = 0; i < paramCount; ++i)
+    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
     {
-        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
+        zfstring errorHint;
+        for(int i = 0; i < paramCount; ++i)
         {
-            return ZFImpl_ZFLua_luaError(L,
-                "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString());
+            errorHint.removeAll();
+            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, &errorHint))
+            {
+                return ZFImpl_ZFLua_luaError(L,
+                    "[zfAlloc] invalid param: %s, error: %s",
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString(),
+                    errorHint.cString());
+            }
+        }
+    }
+    else
+    {
+        for(int i = 0; i < paramCount; ++i)
+        {
+            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
+            {
+                return ZFImpl_ZFLua_luaError(L,
+                    "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString());
+            }
         }
     }
 

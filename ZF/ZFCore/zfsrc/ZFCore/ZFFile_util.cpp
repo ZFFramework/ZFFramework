@@ -497,38 +497,107 @@ ZFMETHOD_FUNC_DEFINE_4(void, ZFPathInfoTreePrint,
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoForEach,
+template<bool isRecursive, bool forEachFile, bool forEachDir>
+zfclassNotPOD _ZFP_ZFPathInfoForEach
+{
+public:
+    static zfbool action(ZF_IN const ZFPathInfoImpl &impl,
+                         ZF_IN const ZFListener &fileCallback,
+                         ZF_IN v_ZFPathInfo *pathInfo)
+    {
+        zfblockedAlloc(v_ZFFileFindData, fd);
+        if(impl.callbackFindFirst(fd->zfv, pathInfo->zfv.pathData))
+        {
+            do {
+                if(!impl.callbackToChild(pathInfo->zfv.pathData, pathInfo->zfv.pathData, fd->zfv.fileName()))
+                {
+                    return zffalse;
+                }
+
+                if((fd->zfv.fileIsDir() && forEachDir) || (!fd->zfv.fileIsDir() && forEachFile))
+                {
+                    fileCallback.execute(ZFArgs()
+                            .param0(pathInfo)
+                            .param1(fd)
+                        );
+                }
+                if(isRecursive && fd->zfv.fileIsDir())
+                {
+                    action(impl, fileCallback, pathInfo);
+                }
+
+                if(!impl.callbackToParent(pathInfo->zfv.pathData, pathInfo->zfv.pathData))
+                {
+                    return zffalse;
+                }
+            } while(impl.callbackFindNext(fd->zfv));
+            impl.callbackFindClose(fd->zfv);
+        }
+        return zftrue;
+    }
+};
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEach,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
-                       ZFMP_IN(const ZFListener &, fileCallback))
+                       ZFMP_IN(const ZFListener &, fileCallback),
+                       ZFMP_IN_OPT(zfbool, isRecursive, zftrue))
 {
     const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
     if(impl == zfnull)
     {
         return zffalse;
     }
-    ZFFileFindData fd;
-    if(impl->callbackFindFirst(fd, pathInfo.pathData))
+    zfblockedAlloc(v_ZFPathInfo, pathInfoHolder);
+    pathInfoHolder->zfv = pathInfo;
+    if(isRecursive)
     {
-        zfblockedAlloc(v_ZFPathInfo, childPathInfo);
-        zfblockedAlloc(v_ZFFileFindData, childFd);
-        childPathInfo->zfv.pathType = pathInfo.pathType;
-        do
-        {
-            childFd->zfv = fd;
-            childPathInfo->zfv.pathData.removeAll();
-            if(!impl->callbackToChild(pathInfo.pathData, childPathInfo->zfv.pathData, fd.fileName()))
-            {
-                break;
-            }
-            fileCallback.execute(ZFArgs()
-                    .param0(childPathInfo)
-                    .param1(childFd)
-                    .userData(fileCallback.userData())
-                );
-        } while(impl->callbackFindNext(fd));
-        impl->callbackFindClose(fd);
+        return _ZFP_ZFPathInfoForEach<true, true, true>::action(*impl, fileCallback, pathInfoHolder);
     }
-    return zftrue;
+    else
+    {
+        return _ZFP_ZFPathInfoForEach<false, true, true>::action(*impl, fileCallback, pathInfoHolder);
+    }
+}
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachFile,
+                       ZFMP_IN(const ZFPathInfo &, pathInfo),
+                       ZFMP_IN(const ZFListener &, fileCallback),
+                       ZFMP_IN_OPT(zfbool, isRecursive, zftrue))
+{
+    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
+    if(impl == zfnull)
+    {
+        return zffalse;
+    }
+    zfblockedAlloc(v_ZFPathInfo, pathInfoHolder);
+    pathInfoHolder->zfv = pathInfo;
+    if(isRecursive)
+    {
+        return _ZFP_ZFPathInfoForEach<true, true, false>::action(*impl, fileCallback, pathInfoHolder);
+    }
+    else
+    {
+        return _ZFP_ZFPathInfoForEach<false, true, false>::action(*impl, fileCallback, pathInfoHolder);
+    }
+}
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForEachDir,
+                       ZFMP_IN(const ZFPathInfo &, pathInfo),
+                       ZFMP_IN(const ZFListener &, fileCallback),
+                       ZFMP_IN_OPT(zfbool, isRecursive, zftrue))
+{
+    const ZFPathInfoImpl *impl = ZFPathInfoImplForPathType(pathInfo.pathType);
+    if(impl == zfnull)
+    {
+        return zffalse;
+    }
+    zfblockedAlloc(v_ZFPathInfo, pathInfoHolder);
+    pathInfoHolder->zfv = pathInfo;
+    if(isRecursive)
+    {
+        return _ZFP_ZFPathInfoForEach<true, false, true>::action(*impl, fileCallback, pathInfoHolder);
+    }
+    else
+    {
+        return _ZFP_ZFPathInfoForEach<false, false, true>::action(*impl, fileCallback, pathInfoHolder);
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

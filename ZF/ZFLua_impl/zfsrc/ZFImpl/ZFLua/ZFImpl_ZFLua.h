@@ -193,7 +193,8 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toObject(ZF_OUT zfautoObject &param,
  */
 extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
                                                       ZF_IN lua_State *L,
-                                                      ZF_IN int luaStackOffset);
+                                                      ZF_IN int luaStackOffset,
+                                                      ZF_OUT_OPT zfstring *errorHint = zfnull);
 
 /**
  * @brief get params from lua
@@ -342,7 +343,20 @@ protected:
             luaL_unref(L, LUA_REGISTRYINDEX, luaValue);
             L = zfnull;
         }
+        luaValue = -1;
         zfsuper::objectOnDeallocPrepare();
+    }
+    zfoverride
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
+    {
+        zfsuper::objectInfoOnAppend(ret);
+        if(L != zfnull && luaValue != -1)
+        {
+            lua_rawgeti(L, LUA_REGISTRYINDEX, luaValue);
+            ret += " luaValue=";
+            ZFImpl_ZFLua_luaObjectInfoT(ret, L, -1, zftrue);
+            lua_pop(L, 1);
+        }
     }
 };
 

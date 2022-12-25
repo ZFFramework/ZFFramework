@@ -208,15 +208,6 @@ public:
 
 // ============================================================
 // zfautoObject
-/**
- * @brief see #ZFTYPEID_DECLARE
- *
- * serializable data:
- * @code
- *   <MyObject />
- * @endcode
- */
-ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_ZFCore, zfautoObject, zfautoObject)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, zfautoObject)
 
 /** @cond ZFPrivateDoc */
@@ -230,7 +221,7 @@ public:
     };
     static inline const zfchar *TypeId(void)
     {
-        return ZFTypeId_zfautoObject();
+        return ZFObject::ClassData()->classNameFull();
     }
     zfoverride
     virtual zfbool typeIdSerializable(void) const

@@ -1,7 +1,7 @@
 <ZF_COMMENT> ============================================================
 <ZF_COMMENT> how to use:
-<ZF_COMMENT> 1. use zfproj_creator.sh to create "lib" or "impl" type module
-<ZF_COMMENT>    https://github.com/ZFFramework/ZFFramework/blob/master/tools/zfproj_creator/zfproj_creator.sh
+<ZF_COMMENT> 1. use zfproj.sh to create "lib" or "impl" type module
+<ZF_COMMENT>    https://github.com/ZFFramework/ZFFramework/blob/master/tools/zfproj_creator/zfproj.sh
 <ZF_COMMENT>    result structure should be:
 <ZF_COMMENT>        ZFModule/ZF/YourLibName/
 <ZF_COMMENT>            .git/
@@ -16,7 +16,7 @@
 <ZF_COMMENT>    the lib would be built when needed,
 <ZF_COMMENT>    and would be installed to
 <ZF_COMMENT>        ZFFramework/_release
-<ZF_COMMENT> 4. use zfproj_creator.sh to create "app" type project files for your app
+<ZF_COMMENT> 4. use zfproj.sh to create "app" type project files for your app
 <ZF_COMMENT> ============================================================
 
 

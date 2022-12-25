@@ -36,7 +36,7 @@ public:
     virtual zfbool fileCopy(ZF_IN const zfchar *srcPath,
                             ZF_IN const zfchar *dstPath,
                             ZF_IN_OPT zfbool isRecursive = zftrue,
-                            ZF_IN_OPT zfbool isForce = zffalse,
+                            ZF_IN_OPT zfbool isForce = zftrue,
                             ZF_IN_OPT zfstring *errPos = zfnull) zfpurevirtual;
     /**
      * @brief see #ZFFileMove
@@ -44,14 +44,14 @@ public:
     virtual zfbool fileMove(ZF_IN const zfchar *srcPath,
                             ZF_IN const zfchar *dstPath,
                             ZF_IN_OPT zfbool isRecursive = zftrue,
-                            ZF_IN_OPT zfbool isForce = zffalse,
+                            ZF_IN_OPT zfbool isForce = zftrue,
                             ZF_IN_OPT zfstring *errPos = zfnull) zfpurevirtual;
     /**
      * @brief see #ZFFileRemove
      */
     virtual zfbool fileRemove(ZF_IN const zfchar *path,
                               ZF_IN_OPT zfbool isRecursive = zftrue,
-                              ZF_IN_OPT zfbool isForce = zffalse,
+                              ZF_IN_OPT zfbool isForce = zftrue,
                               ZF_IN_OPT zfstring *errPos = zfnull) zfpurevirtual;
 
     /**
