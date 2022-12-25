@@ -27,6 +27,6 @@ jobs:
 
     - name: ZF build zfproj
       run: |
-        chmod +x ../ZFFramework/master/ZF_CI/testbuild/testbuild_iOS.sh
-        ../ZFFramework/master/ZF_CI/testbuild/testbuild_iOS.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}/iOS/${ZF_PROJ_NAME}"
+        chmod +x ../ZFFramework/tools/buildapp/buildapp_iOS.sh
+        ../ZFFramework/tools/buildapp/buildapp_iOS.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
 

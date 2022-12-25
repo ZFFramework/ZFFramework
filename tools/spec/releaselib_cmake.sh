@@ -19,7 +19,7 @@ _OLD_DIR=$(pwd)
 
 mkdir -p "$ZF_ROOT_PATH/_tmp/cmake/$PROJ_NAME/build" >/dev/null 2>&1
 cd "$ZF_ROOT_PATH/_tmp/cmake/$PROJ_NAME/build"
-cmake "$PROJ_PATH/zfproj/cmake/$PROJ_NAME"
+cmake "$PROJ_PATH/cmake/$PROJ_NAME"
 make -j4
 make install
 

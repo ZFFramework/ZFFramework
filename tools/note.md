@@ -12,6 +12,9 @@
                     build.gradle
                     CMakeLists.txt
                 build.gradle
+        cmake/
+            LibName/
+                CMakeLists.txt
         iOS/
             LibName/
                 LibName.xcodeproj/
@@ -32,6 +35,9 @@
                     build.gradle
                     CMakeLists.txt
                 build.gradle
+        cmake/
+            ImplLibName_impl/
+                CMakeLists.txt
         iOS/
             ImplLibName_impl/
                 ImplLibName_impl.xcodeproj/
@@ -52,6 +58,9 @@
                     build.gradle
                     CMakeLists.txt
                 build.gradle
+        cmake/
+            AppName/
+                CMakeLists.txt
         iOS/
             AppName/
                 AppName.xcodeproj/

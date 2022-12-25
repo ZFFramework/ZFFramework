@@ -428,9 +428,9 @@ zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
     {
         return zftrue;
     }
-    else if(ZFImpl_ZFLua_toCallback(param, L, luaStackOffset, errorHint))
+    else if(lua_isfunction(L, luaStackOffset))
     {
-        return zftrue;
+        return ZFImpl_ZFLua_toCallback(param, L, luaStackOffset, errorHint);
     }
 
     zfblockedAlloc(ZFDI_Wrapper, wrapper);

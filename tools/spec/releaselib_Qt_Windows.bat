@@ -42,7 +42,7 @@ mkdir "%ZF_ROOT_PATH%\_tmp\%QT_TYPE%\%PROJ_NAME%\build" >nul 2>&1
 cd /d "%ZF_ROOT_PATH%\_tmp\%QT_TYPE%\%PROJ_NAME%\build"
 del /f/s/q ".\*.dll" /f/s/q/a >nul 2>&1
 del /f/s/q ".\*.a" /f/s/q/a >nul 2>&1
-qmake "%PROJ_PATH%\zfproj\Qt\%PROJ_NAME%\%PROJ_NAME%.pro" CONFIG+=release
+qmake "%PROJ_PATH%\Qt\%PROJ_NAME%\%PROJ_NAME%.pro" CONFIG+=release
 %ZF_QT_MAKE%
 cd /d "%_OLD_DIR%"
 

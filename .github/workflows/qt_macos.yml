@@ -33,6 +33,6 @@ jobs:
 
     - name: ZF build zfproj
       run: |
-        chmod +x ../ZFFramework/master/ZF_CI/testbuild/testbuild_Qt_MacOS.sh
-        ../ZFFramework/master/ZF_CI/testbuild/testbuild_Qt_MacOS.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}/Qt/${ZF_PROJ_NAME}"
+        chmod +x ../ZFFramework/tools/buildapp/buildapp_Qt_MacOS.sh
+        ../ZFFramework/tools/buildapp/buildapp_Qt_MacOS.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
 

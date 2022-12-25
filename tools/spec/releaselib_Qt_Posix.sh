@@ -23,7 +23,7 @@ cd "$ZF_ROOT_PATH/_tmp/$QT_TYPE/$PROJ_NAME/build"
 find . -name "*.a.*" | xargs -I{} rm {}
 find . -name "*.so.*" | xargs -I{} rm {}
 find . -name "*.dylib.*" | xargs -I{} rm {}
-qmake "$PROJ_PATH/zfproj/Qt/$PROJ_NAME/$PROJ_NAME.pro" CONFIG+=release
+qmake "$PROJ_PATH/Qt/$PROJ_NAME/$PROJ_NAME.pro" CONFIG+=release
 make -j4
 cd "$_OLD_DIR"
 

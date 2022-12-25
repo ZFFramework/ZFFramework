@@ -17,7 +17,7 @@ if test "$?" = "0" ; then
 fi
 
 _OLD_DIR=$(pwd)
-cd "$PROJ_PATH/zfproj/iOS/$PROJ_NAME"
+cd "$PROJ_PATH/iOS/$PROJ_NAME"
 xcodebuild -configuration "Release" -target "${PROJ_NAME}_aggregate" SYMROOT="$ZF_ROOT_PATH/_tmp/iOS/$PROJ_NAME/build"
 cd "$_OLD_DIR"
 

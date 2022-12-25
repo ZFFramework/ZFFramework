@@ -132,5 +132,5 @@
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh_recursive.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\..\ZFModule" "zfautoscript_release_{ZFTT_R_impl_ext_name_30}.zfsh" <ZF_PL>ZF_PLATFORM<ZF_PR>{ZFTT_CE}{ZFTT_C_impl_ext_require_31}
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh_recursive.<ZF_SH_EXT>" "<ZF_ROOT_PATH>\..\ZFModule" "zfautoscript_release_{ZFTT_R_impl_ext_name_31}.zfsh" <ZF_PL>ZF_PLATFORM<ZF_PR>{ZFTT_CE}
 
-<ZF_SH> "<ZF_ROOT_PATH>\tools\spec\releaselib_<ZF_PL>ZF_PLATFORM<ZF_PR>.<ZF_SH_EXT>" {ZFTT_R_proj_name} <ZF_WORK_DIR>\..
+<ZF_SH> "<ZF_ROOT_PATH>\tools\spec\releaselib_<ZF_PL>ZF_PLATFORM<ZF_PR>.<ZF_SH_EXT>" {ZFTT_R_proj_name} <ZF_WORK_DIR>\..\zfproj
 

@@ -17,7 +17,7 @@ fi
 
 _OLD_DIR=$(pwd)
 
-cd "$PROJ_PATH/zfproj/Android/$PROJ_NAME"
+cd "$PROJ_PATH/Android/$PROJ_NAME"
 chmod +x gradlew
 ./gradlew assembleRelease
 

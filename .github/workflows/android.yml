@@ -41,8 +41,8 @@ jobs:
 
     - name: ZF build zfproj
       run: |
-        chmod +x ../ZFFramework/master/ZF_CI/testbuild/testbuild_Android.sh
-        ../ZFFramework/master/ZF_CI/testbuild/testbuild_Android.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}/Android/${ZF_PROJ_NAME}"
+        chmod +x ../ZFFramework/tools/buildapp/buildapp_Android.sh
+        ../ZFFramework/tools/buildapp/buildapp_Android.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
 
     - name: ZF upload archive
       run: |

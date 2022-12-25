@@ -3,20 +3,29 @@ PROJ_NAME=$1
 PROJ_PATH=$2
 if test "x-$PROJ_NAME" = "x-" || test "x-$PROJ_PATH" = "x-" ; then
     echo "usage:"
-    echo "  testbuild_Qt_MacOS.sh PROJ_NAME PROJ_PATH"
+    echo "  buildapp_cmake.sh PROJ_NAME PROJ_PATH"
     exit 1
 fi
 
-ZF_ROOT_PATH=$WORK_DIR/../../..
+if test "x-$CMAKE_BUILD_TYPE" = "x-" ; then
+    _CONFIG=Release
+else
+    _CONFIG=$CMAKE_BUILD_TYPE
+fi
+
+ZF_ROOT_PATH=$WORK_DIR/../..
 ZF_TOOLS_PATH=$ZF_ROOT_PATH/tools
-_TMP_PATH=$ZF_ROOT_PATH/_tmp/Qt_MacOS/$PROJ_NAME/release
+_TMP_PATH=$PROJ_PATH/../../_tmp/cmake/$PROJ_NAME/$_CONFIG
 
 _OLD_DIR=$(pwd)
-cd "$PROJ_PATH"
+cd "$PROJ_PATH/cmake/$PROJ_NAME"
 _PROJ_PATH=$(pwd)
+cd "$_OLD_DIR"
+
+_OLD_DIR=$(pwd)
 mkdir -p "$_TMP_PATH" >/dev/null 2>&1
 cd "$_TMP_PATH"
-qmake "$_PROJ_PATH/$PROJ_NAME.pro" CONFIG+=release
+cmake "$_PROJ_PATH"
 make -j4
 _RESULT="$?"
 cd "$_OLD_DIR"

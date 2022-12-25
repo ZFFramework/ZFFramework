@@ -38,5 +38,5 @@ jobs:
 
     - name: ZF build zfproj
       run: |
-        Invoke-Expression -Command 'cmd.exe /C "..\\ZFFramework\\master\\ZF_CI\\testbuild\\testbuild_Qt_Windows.bat" "$env:ZF_PROJ_NAME" "$env:ZF_PROJ_PATH\\Qt\\$env:ZF_PROJ_NAME"'
+        Invoke-Expression -Command 'cmd.exe /C "..\\ZFFramework\\tools\\buildapp\\buildapp_Qt_Windows.bat" "$env:ZF_PROJ_NAME" "$env:ZF_PROJ_PATH"'
 
