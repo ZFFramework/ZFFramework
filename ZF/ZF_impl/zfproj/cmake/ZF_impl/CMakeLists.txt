@@ -11,10 +11,13 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-if(DEFINED zfprojConfig)
-    zfprojConfig(ZF_impl srcfiles)
+if(COMMAND zfprojConfigBefore_ZF_impl)
+    zfprojConfigBefore_ZF_impl(ZF_impl srcfiles)
 endif()
 add_library(ZF_impl STATIC ${srcfiles})
+if(COMMAND zfprojConfigAfter_ZF_impl)
+    zfprojConfigAfter_ZF_impl(ZF_impl)
+endif()
 set_target_properties(ZF_impl PROPERTIES LINKER_LANGUAGE CXX)
 
 include_directories(${PROJECT_SOURCE_DIR}/../../../zfsrc)

@@ -11,10 +11,13 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-if(DEFINED zfprojConfig)
-    zfprojConfig(ZFUIWidget srcfiles)
+if(COMMAND zfprojConfigBefore_ZFUIWidget)
+    zfprojConfigBefore_ZFUIWidget(ZFUIWidget srcfiles)
 endif()
 add_library(ZFUIWidget STATIC ${srcfiles})
+if(COMMAND zfprojConfigAfter_ZFUIWidget)
+    zfprojConfigAfter_ZFUIWidget(ZFUIWidget)
+endif()
 set_target_properties(ZFUIWidget PROPERTIES LINKER_LANGUAGE CXX)
 
 include_directories(${PROJECT_SOURCE_DIR}/../../../zfsrc)

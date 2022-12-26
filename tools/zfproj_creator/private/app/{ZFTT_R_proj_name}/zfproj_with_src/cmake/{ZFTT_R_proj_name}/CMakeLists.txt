@@ -160,9 +160,12 @@ ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/../ZFModule/ZF/{ZFTT_R_impl_ext_name_30}){
 ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/../ZFModule/ZF/{ZFTT_R_impl_ext_name_31}){ZFTT_CE}
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-if(DEFINED zfprojConfig)
-    zfprojConfig({ZFTT_R_proj_name} ZF_SRC_FILES)
+if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
+    zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} ZF_SRC_FILES)
 endif()
 add_executable({ZFTT_R_proj_name} ${ZF_SRC_FILES})
+if(COMMAND zfprojConfigAfter_{ZFTT_R_proj_name})
+    zfprojConfigAfter_{ZFTT_R_proj_name}({ZFTT_R_proj_name})
+endif()
 set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 

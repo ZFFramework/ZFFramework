@@ -13,10 +13,13 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-if(DEFINED zfprojConfig)
-    zfprojConfig(ZFFramework_test srcfiles)
+if(COMMAND zfprojConfigBefore_ZFFramework_test)
+    zfprojConfigBefore_ZFFramework_test(ZFFramework_test srcfiles)
 endif()
 add_executable(ZFFramework_test ${srcfiles})
+if(COMMAND zfprojConfigAfter_ZFFramework_test)
+    zfprojConfigAfter_ZFFramework_test(ZFFramework_test)
+endif()
 set_target_properties(ZFFramework_test PROPERTIES LINKER_LANGUAGE CXX)
 
 include_directories(${PROJECT_SOURCE_DIR}/../../../zfsrc)
