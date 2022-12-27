@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFImpl_ZFUIKit_impl_h_
 #define _ZFI_ZFImpl_ZFUIKit_impl_h_
 
-#include "ZFImpl.h"
+#include "ZFImpl/ZFImpl_ZF_impl.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

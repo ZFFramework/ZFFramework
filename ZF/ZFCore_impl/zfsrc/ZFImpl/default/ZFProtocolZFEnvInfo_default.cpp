@@ -52,6 +52,7 @@ public:
             return ;
         }
         #endif
+
         #if ZF_ENV_sys_Windows
         {
             OSVERSIONINFO osvi;

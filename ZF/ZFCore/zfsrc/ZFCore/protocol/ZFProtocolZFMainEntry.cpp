@@ -28,9 +28,9 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic
     } ZFLISTENER_END(action)
     this->callback = action;
     ZFGlobalObserver().observerAdd(ZFObserverAddParam()
-            .eventId(ZFApp::EventAppEntry())
+            .eventId(ZFApp::EventAppParamDispatch())
             .observer(this->callback)
-            .observerLevel(ZFLevelZFFrameworkNormal)
+            .observerLevel(ZFLevelZFFrameworkPostNormal)
         );
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntrySetup)

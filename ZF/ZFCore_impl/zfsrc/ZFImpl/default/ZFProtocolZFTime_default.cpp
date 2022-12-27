@@ -9,10 +9,10 @@
     #include <sys/time.h>
     #include <mach/mach.h>
     #include <mach/mach_time.h>
-#elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+#else
     // need -lrt for Posix
     #include <sys/time.h>
-#endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+#endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -165,11 +165,11 @@ public:
                 (void)mach_timebase_info(&_timebaseInfo);
             }
             return (zftimet)(((mach_absolute_time() / 1000000) * _timebaseInfo.numer) / _timebaseInfo.denom);
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else
             struct timespec ts;
             clock_gettime(CLOCK_MONOTONIC, &ts);
             return (zftimet)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif
     }
     virtual void currentTimeValue(ZF_OUT ZFTimeValue &tv)
     {
@@ -198,12 +198,12 @@ public:
                 tv.sec = (time_t)((now.ns100 - 116444736000000000LL) / 10000000LL);
                 tv.usec = (time_t)((now.ns100 / 10LL) % 1000000LL);
             #endif
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else
             struct timeval tvTmp;
             gettimeofday(&tvTmp, zfnull);
             tv.sec = tvTmp.tv_sec;
             tv.usec = tvTmp.tv_usec;
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif
 
         // offset from 0 to 1970
         static const zftimet secondsBetween1970 = (zftimet)(1970 * zftimetOneYear + (-_ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(0) + 1) * zftimetOneDay);
@@ -351,7 +351,7 @@ public:
                 _tv.sec = -tzInfo.Bias * zftimetOneMinute;
                 _tv.usec = 0;
             }
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #else
             struct timeval tvDummy;
             struct timezone tz;
             if(gettimeofday(&tvDummy,&tz) == 0)

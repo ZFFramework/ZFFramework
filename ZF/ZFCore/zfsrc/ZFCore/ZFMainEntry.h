@@ -31,9 +31,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  *
  * advanced:
- * -  #ZFMAIN_ENTRY was added to #ZFApp::EventAppEntry as ZFLevelZFFrameworkNormal infact,
+ * -  #ZFMAIN_ENTRY was added to #ZFApp::EventAppParamDispatch as ZFLevelZFFrameworkPostNormal infact,
  *   you may add your own impl to run custom code before or after #ZFMAIN_ENTRY,
- *   by specify different observer level
+ *   by specify different observer level,
+ *   or ignore the default entry by #ZFArgs::eventFiltered
  */
 #define ZFMAIN_ENTRY() \
     static void _ZFMain(void); \

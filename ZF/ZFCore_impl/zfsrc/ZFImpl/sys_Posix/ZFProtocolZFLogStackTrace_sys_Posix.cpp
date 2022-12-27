@@ -3,7 +3,9 @@
 #include "ZFCore/ZFLog_StackTrace.h"
 #include "ZFCore/ZFString.h"
 
-#if (ZF_ENV_sys_Posix || ZF_ENV_sys_unknown) && !ZF_ENV_sys_Android && defined(__GLIBC__)
+#include "ZFImpl/ZFImpl_env.h"
+
+#if ZF_ENV_sys_Posix && !ZF_ENV_sys_Android && defined(__GLIBC__)
 
 #include <execinfo.h>
 #include <memory.h>
@@ -61,5 +63,5 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFLogStackTraceImpl_sys_Posix)
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #if (ZF_ENV_sys_Posix || ZF_ENV_sys_unknown) && !ZF_ENV_sys_Android
+#endif // #if ZF_ENV_sys_Posix && !ZF_ENV_sys_Android && defined(__GLIBC__)
 

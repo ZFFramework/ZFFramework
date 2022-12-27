@@ -1,4 +1,3 @@
-#include "ZFImpl.h"
 #include "ZFLua/protocol/ZFProtocolZFLua.h"
 #include "ZFImpl_ZFLua.h"
 #include "ZFImpl_ZFLua_PathInfo.h"

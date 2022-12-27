@@ -2,6 +2,7 @@
 #define _ZFI_ZFImpl_sys_Qt_ZF_impl_h_
 
 #include "../ZFImpl_ZF_impl.h"
+#include "ZFImpl_sys_Qt.h"
 
 
 #if ZF_ENV_sys_Qt

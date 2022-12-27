@@ -2,6 +2,8 @@
 #include "ZFCore/protocol/ZFProtocolZFPath.h"
 #include "ZFCore/ZFString.h"
 
+#include "ZFImpl/ZFImpl_env.h"
+
 #define _ZFP_ZFPathImpl_default_whereami 1
 
 #if _ZFP_ZFPathImpl_default_whereami
@@ -16,9 +18,9 @@
 #else
     #if ZF_ENV_sys_Windows
         #include <Windows.h>
-    #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+    #else // #if ZF_ENV_sys_Windows
         #include <unistd.h>
-    #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+    #endif // #if ZF_ENV_sys_Windows #else
 #endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -59,7 +61,7 @@ public:
                     zfcharW buf[1024] = {0};
                     GetModuleFileNameW(zfnull, buf, 1024);
                     zfstringToUTF8(tmp, buf, ZFStringEncoding::e_UTF16);
-                #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+                #else // #if ZF_ENV_sys_Windows
                     zfchar tmp[1024] = {0};
                     zfint len = (zfint)readlink("/proc/self/exe", tmp, 1024);
                     if(len > 0)
@@ -70,7 +72,7 @@ public:
                     {
                         zfscpy(tmp, zfstringWithFormat("./unknown").cString());
                     }
-                #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+                #endif // #if ZF_ENV_sys_Windows #else
             #endif
             zfbool result = ZFPathFormat(this->_pathForModuleFile, tmp);
             zfCoreAssert(result);

@@ -109,5 +109,5 @@ ZF_STATIC_REGISTER_END(_ZFP_ZFImpl_sys_iOS_AppEventHolder)
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif
+#endif // #if ZF_ENV_sys_iOS
 

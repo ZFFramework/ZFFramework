@@ -21,6 +21,6 @@ extern ZFLIB_ZF_impl UIWindow *ZFImpl_sys_iOS_rootWindow(void);
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif
+#endif // #if ZF_ENV_sys_iOS
 #endif // #ifndef _ZFI_ZFMainEntry_sys_iOS_h_
 

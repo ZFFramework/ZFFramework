@@ -2,12 +2,14 @@
 #include "ZFCore/protocol/ZFProtocolZFThread.h"
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
+#include "ZFImpl/ZFImpl_env.h"
+
 #if ZF_ENV_sys_Windows
     #include <Windows.h>
-#elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+#else // #if ZF_ENV_sys_Windows
     #include <pthread.h>
     #include <unistd.h>
-#endif
+#endif // #if ZF_ENV_sys_Windows #else
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -56,7 +58,7 @@ static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_defaul
 {
     CreateThread(NULL, 0, _ZFP_ZFThreadImpl_default_nativeCallback, data, 0, NULL);
 }
-#elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+#else // #if ZF_ENV_sys_Windows
 typedef pthread_t _ZFP_ZFThreadImpl_default_NativeThreadIdType;
 static _ZFP_ZFThreadImpl_default_NativeThreadIdType _ZFP_ZFThreadImpl_default_getNativeThreadId(void)
 {
@@ -77,7 +79,7 @@ static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_defaul
     pthread_t tid = 0;
     pthread_create(&tid, NULL, _ZFP_ZFThreadImpl_default_nativeCallback, data);
 }
-#endif
+#endif // #if ZF_ENV_sys_Windows #else
 
 // ============================================================
 // global data

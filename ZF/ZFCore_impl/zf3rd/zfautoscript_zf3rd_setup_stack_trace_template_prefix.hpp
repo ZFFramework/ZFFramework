@@ -3,7 +3,7 @@
 
 #include "ZFCore/protocol/ZFProtocolZFLogStackTrace.h"
 #include "ZFCore/ZFLog_StackTrace.h"
-#include "ZFImpl.h"
+#include "ZFImpl/ZFImpl_env.h"
 
 #if ZF_ENV_sys_iOS
     #undef ZF_ENV_EDD_STACK_TRACE_ENABLE

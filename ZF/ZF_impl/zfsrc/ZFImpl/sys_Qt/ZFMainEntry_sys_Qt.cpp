@@ -267,5 +267,5 @@ void ZFMainEntry_sys_Qt_detach(void)
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif
+#endif // #if ZF_ENV_sys_Qt
 

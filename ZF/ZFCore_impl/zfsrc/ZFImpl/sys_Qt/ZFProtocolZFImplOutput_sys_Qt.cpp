@@ -72,5 +72,5 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFImplOutputImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif
+#endif // #if ZF_ENV_sys_Qt
 

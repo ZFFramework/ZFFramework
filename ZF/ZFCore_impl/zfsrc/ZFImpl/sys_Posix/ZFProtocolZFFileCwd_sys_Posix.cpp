@@ -2,7 +2,7 @@
 #include "ZFCore/protocol/ZFProtocolZFFileCwd.h"
 #include "ZFCore/ZFString.h"
 
-#if ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+#if !ZF_ENV_sys_Windows
 #include <unistd.h>
 #include <limits.h>
 
@@ -30,5 +30,5 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_Posix)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileCwdImpl_sys_Posix)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #if ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+#endif // #if !ZF_ENV_sys_Windows
 

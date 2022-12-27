@@ -145,6 +145,6 @@ extern ZFLIB_ZF_impl int ZFMainEntry_sys_Qt_attach(ZF_IN QGraphicsWidget *rootWi
 extern ZFLIB_ZF_impl void ZFMainEntry_sys_Qt_detach(void);
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
+#endif // #if ZF_ENV_sys_Qt
 #endif // #ifndef _ZFI_ZFMainEntry_sys_Qt_h_
 

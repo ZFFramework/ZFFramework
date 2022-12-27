@@ -2,6 +2,7 @@
 #define _ZFI_ZFImpl_sys_Windows_ZF_impl_h_
 
 #include "../ZFImpl_ZF_impl.h"
+#include "ZFImpl_sys_Windows.h"
 
 
 #if ZF_ENV_sys_Windows

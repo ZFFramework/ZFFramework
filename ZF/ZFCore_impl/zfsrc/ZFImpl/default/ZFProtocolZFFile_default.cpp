@@ -3,14 +3,16 @@
 #include "ZFCore/ZFString.h"
 #include "ZFCore/ZFFile.h"
 
+#include "ZFImpl/ZFImpl_env.h"
+
 #if ZF_ENV_sys_Windows
     #include <Windows.h>
-#elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+#else // #if ZF_ENV_sys_Windows
     #include <unistd.h>
     #include <dirent.h>
     #include <errno.h>
     #include <sys/stat.h>
-#endif
+#endif // #if ZF_ENV_sys_Windows #else
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -22,22 +24,22 @@ public:
         if(path == zfnull) {return zffalse;}
         #if ZF_ENV_sys_Windows
             return (GetFileAttributesW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString()) != 0xFFFFFFFF);
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else // #if ZF_ENV_sys_Windows
             return (access(path, F_OK) != -1);
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif // #if ZF_ENV_sys_Windows #else
     }
     virtual zfbool fileIsDir(ZF_IN const zfchar *path)
     {
         #if ZF_ENV_sys_Windows
             return ((GetFileAttributesW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString())
                 & FILE_ATTRIBUTE_DIRECTORY) != 0);
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else // #if ZF_ENV_sys_Windows
             zfstring tmp = path;
             tmp += ZFFileSeparator();
             struct stat statbuf;
             if(lstat(tmp.cString(), &statbuf) < 0) {return zffalse;}
             return S_ISDIR(statbuf.st_mode);
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif // #if ZF_ENV_sys_Windows #else
     }
 
     virtual zfbool filePathCreate(ZF_IN const zfchar *path,
@@ -171,7 +173,7 @@ public:
 
             zfd.fileIsDir = ZFFileIsDir(filePath);
         }
-    #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+    #else // #if ZF_ENV_sys_Windows
         _ZFP_ZFFileNativeFd(void)
         {
             this->pDir = zfnull;
@@ -191,7 +193,7 @@ public:
 
             zfd.fileIsDir = ZFFileIsDir(filePath);
         }
-    #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+    #endif // #if ZF_ENV_sys_Windows #else
     };
 
     virtual zfbool fileFindFirst(ZF_IN_OUT ZFFileFindData::Impl &fd,
@@ -217,7 +219,7 @@ public:
 
             nativeFd->setup(fd);
             success = zftrue;
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else // #if ZF_ENV_sys_Windows
             nativeFd->pDir = opendir(path);
             if(nativeFd->pDir == zfnull) {break;}
             nativeFd->pDirent = readdir(nativeFd->pDir);
@@ -225,7 +227,7 @@ public:
 
             nativeFd->setup(fd);
             success = zftrue;
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif // #if ZF_ENV_sys_Windows #else
         } while(zffalse);
         if(success)
         {
@@ -252,11 +254,11 @@ public:
         #if ZF_ENV_sys_Windows
             if(!FindNextFileW(nativeFd->hFind, &(nativeFd->fd))) {return zffalse;}
             nativeFd->setup(fd);
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else // #if ZF_ENV_sys_Windows
             nativeFd->pDirent = readdir(nativeFd->pDir);
             if(nativeFd->pDirent == zfnull) {return zffalse;}
             nativeFd->setup(fd);
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif // #if ZF_ENV_sys_Windows #else
         if(zfstringIsEqual(fd.fileName.cString(), ".")
             || zfstringIsEqual(fd.fileName.cString(), ".."))
         {
@@ -273,12 +275,12 @@ public:
             {
                 FindClose(nativeFd->hFind);
             }
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else // #if ZF_ENV_sys_Windows
             if(nativeFd->pDir != zfnull)
             {
                 closedir(nativeFd->pDir);
             }
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif // #if ZF_ENV_sys_Windows #else
 
         zfdelete(nativeFd);
         fd.nativeFd = zfnull;
@@ -310,13 +312,13 @@ private:
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else // #if ZF_ENV_sys_Windows
             if(mkdir(path, 0777) != 0)
             {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif // #if ZF_ENV_sys_Windows #else
         return zftrue;
     }
     zfbool makePath(ZF_IN const zfchar *path,
@@ -399,7 +401,7 @@ private:
                 return zffalse;
             }
             return zftrue;
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #else // #if ZF_ENV_sys_Windows
             if(this->fileIsExist(dstPath) && !isForce)
             {
                 zfself::SetErrPos(errPos, dstPath);
@@ -431,7 +433,7 @@ private:
             fclose(fpDst);
             #undef _copyFile_bufSize
             return zftrue;
-        #endif // #if ZF_ENV_sys_Windows
+        #endif // #if ZF_ENV_sys_Windows #else
     }
     zfbool moveFile(ZF_IN const zfchar *srcPath,
                     ZF_IN const zfchar *dstPath,
@@ -452,14 +454,14 @@ private:
                 return zffalse;
             }
             return zftrue;
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+        #else // #if ZF_ENV_sys_Windows
             if(rename(srcPath, dstPath) != 0)
             {
                 zfself::SetErrPos(errPos, dstPath);
                 return zffalse;
             }
             return zftrue;
-        #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #endif // #if ZF_ENV_sys_Windows #else
     }
     zfbool copyOrMoveDir(ZF_IN zfbool isCopy,
                          ZF_IN const zfchar *srcPath,
@@ -554,7 +556,7 @@ private:
                 return zffalse;
             }
             return zftrue;
-        #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+        #else // #if ZF_ENV_sys_Windows
             if(isForce)
             {
                 chmod(srcPath, 0777);
@@ -565,7 +567,7 @@ private:
                 return zffalse;
             }
             return zftrue;
-        #endif
+        #endif // #if ZF_ENV_sys_Windows #else
     }
     zfbool removeDir(ZF_IN const zfchar *srcPath,
                      ZF_IN zfbool isForce,
@@ -588,9 +590,9 @@ private:
                     SetFileAttributesW(
                         zfstringToUTF16(dirPath.cString(), ZFStringEncoding::e_UTF8).cString(),
                         FILE_ATTRIBUTE_NORMAL);
-                #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+                #else // #if ZF_ENV_sys_Windows
                     chmod(dirPath.cString(), 0777);
-                #endif
+                #endif // #if ZF_ENV_sys_Windows #else
             }
 
             ZFFileFindData::Impl fd;
@@ -630,13 +632,13 @@ private:
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
-            #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown // #if ZF_ENV_sys_Windows
+            #else // #if ZF_ENV_sys_Windows
                 if(rmdir(pathTmp.cString()) != 0)
                 {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
-            #endif // #elif ZF_ENV_sys_Posix || ZF_ENV_sys_unknown
+            #endif // #if ZF_ENV_sys_Windows #else
         } // while(!stacksDirToDel.empty())
 
         return zftrue;

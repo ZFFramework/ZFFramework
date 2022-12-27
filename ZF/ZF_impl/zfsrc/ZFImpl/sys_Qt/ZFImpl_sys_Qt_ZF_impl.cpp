@@ -76,5 +76,5 @@ QString ZFImpl_sys_Qt_zfstringToQString(ZF_IN const zfchar *s)
 }
 
 ZF_NAMESPACE_GLOBAL_END
-#endif
+#endif // #if ZF_ENV_sys_Qt
 
