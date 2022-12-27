@@ -779,12 +779,12 @@ extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(ZF_IN ZFObject *obj,
 
 extern ZFLIB_ZFCore void _ZFP_ZFTypeIdWrapperMarkConst(ZF_IN_OUT_OPT ZFObject *zfv);
 template<typename T_Type, int isConst = (zffalse
-        || zftTraits<T_Type>::TrModifier == zftTraitsModifier_R
-        || zftTraits<T_Type>::TrModifier == zftTraitsModifier_P
-        || zftTraits<T_Type>::TrModifier == zftTraitsModifier_PR
-        || zftTraits<T_Type>::TrModifier == zftTraitsModifier_PCR
-        || zftTraits<T_Type>::TrModifier == zftTraitsModifier_CPR
-        || zftTraits<T_Type>::TrModifier == zftTraitsModifier_CPR
+        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_R
+        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_P
+        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_PR
+        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_PCR
+        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_CPR
+        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_CPR
     ) ? 1 : 0>
 zfclassNotPOD _ZFP_ZFTypeIdWrapperMarkConstCheck
 {

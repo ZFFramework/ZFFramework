@@ -2,7 +2,7 @@
 #include "ZFCore/protocol/ZFProtocolZFObjectMutex.h"
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
-#if !ZF_ENV_sys_Windows
+#if ZF_ENV_sys_Posix
 #include <pthread.h>
 #include <sys/syscall.h>
 #include <sys/types.h>
@@ -53,5 +53,5 @@ ZFOBJECT_MUTEX_IMPL_DEFINE(ZFObjectMutexImpl_sys_Posix, ZFProtocolLevel::e_Syste
     })
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #if !ZF_ENV_sys_Windows
+#endif // #if ZF_ENV_sys_Posix
 

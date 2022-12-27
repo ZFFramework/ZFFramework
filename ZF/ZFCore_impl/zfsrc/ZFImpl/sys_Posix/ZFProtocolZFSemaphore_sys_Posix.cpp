@@ -1,7 +1,7 @@
 #include "ZFImpl_sys_Posix_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFSemaphore.h"
 
-#if !ZF_ENV_sys_Windows
+#if ZF_ENV_sys_Posix
 #include <pthread.h>
 #include <sys/time.h>
 
@@ -125,5 +125,5 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFSemaphoreImpl_sys_Posix)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFSemaphoreImpl_sys_Posix)
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #if !ZF_ENV_sys_Windows
+#endif // #if ZF_ENV_sys_Posix
 
