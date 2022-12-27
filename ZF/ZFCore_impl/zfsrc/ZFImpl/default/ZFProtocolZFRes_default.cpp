@@ -1,6 +1,8 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFRes.h"
 
+#include "ZFImpl/ZFImpl_env.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // res files must be placed at "zfres/" in the same dir of your executable

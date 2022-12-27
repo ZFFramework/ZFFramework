@@ -1,6 +1,8 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFEnvInfo.h"
 
+#include "ZFImpl/ZFImpl_env.h"
+
 #if ZF_ENV_sys_Qt
     #include <QSysInfo>
     #include <QString>

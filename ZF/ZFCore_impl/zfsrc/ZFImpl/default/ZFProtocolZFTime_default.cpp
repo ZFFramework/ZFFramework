@@ -2,6 +2,8 @@
 #include "ZFCore/protocol/ZFProtocolZFTime.h"
 #include "ZFCore/ZFTime.h"
 
+#include "ZFImpl/ZFImpl_env.h"
+
 #include <time.h>
 #if ZF_ENV_sys_Windows
     #include <Windows.h>
