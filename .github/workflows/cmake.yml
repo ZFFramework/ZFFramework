@@ -1,0 +1,37 @@
+name: CMake
+
+on:
+  push:
+    branches: [ "master" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ZFCI_TOKEN: ${{secrets.ZFCI_TOKEN}}
+      ZF_PROJ_PATH: demo/zfproj
+      ZF_PROJ_NAME: ZFFramework_test
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: ZFSetup
+      run: |
+        chmod +x ./zfsetup.sh
+        ./zfsetup.sh
+
+    - name: ZF build zfproj
+      run: |
+        chmod +x ../ZFFramework/tools/buildapp/buildapp_cmake.sh
+        ../ZFFramework/tools/buildapp/buildapp_cmake.sh "${ZF_PROJ_NAME}" "${ZF_PROJ_PATH}"
+
