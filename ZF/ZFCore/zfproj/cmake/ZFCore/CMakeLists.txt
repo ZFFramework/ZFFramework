@@ -4,6 +4,7 @@ message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 
+add_compile_definitions(ZFLIB_ZFCore=ZF_ENV_EXPORT)
 file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
