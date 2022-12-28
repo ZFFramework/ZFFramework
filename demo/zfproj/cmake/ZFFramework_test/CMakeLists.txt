@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.0.0)
 project(ZFFramework_test)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
