@@ -26,9 +26,6 @@ del /f/s/q "%DST_PATH%\*.java" >nul 2>&1
 del /f/s/q "%DST_PATH%\.*" >nul 2>&1
 
 for /f "tokens=*" %%i in ('dir /s/b/ad "%DST_PATH%" 2^>nul') do (
-    if "%%~ni" == "_repo" (
-        rmdir /s/q "%%i" >nul 2>&1
-    )
     if "%%~ni" == "_tmp" (
         rmdir /s/q "%%i" >nul 2>&1
     )

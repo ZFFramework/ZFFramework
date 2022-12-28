@@ -20,7 +20,6 @@ find "$DST_PATH" -type f -name "*.mm" 2>/dev/null | xargs -I{} rm {} >/dev/null 
 find "$DST_PATH" -type f -name "*.java" 2>/dev/null | xargs -I{} rm {} >/dev/null 2>&1
 find "$DST_PATH" -type f -name ".*" 2>/dev/null | xargs -I{} rm {} >/dev/null 2>&1
 
-find "$DST_PATH" -type d -name "_repo" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
 find "$DST_PATH" -type d -name "_tmp" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
 find "$DST_PATH" -depth -type d -empty -exec rm -rf {} ';' >/dev/null 2>&1
 
