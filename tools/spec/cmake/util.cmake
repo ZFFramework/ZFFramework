@@ -1,0 +1,15 @@
+
+function(strip_file_macro targetname)
+    if(WIN32)
+    else()
+        target_compile_options(${targetname} PUBLIC "-Wno-builtin-macro-redefined")
+    endif()
+    get_target_property(source_files "${targetname}" SOURCES)
+    foreach(sourcefile ${source_files})
+        get_property(defs SOURCE "${sourcefile}" PROPERTY COMPILE_DEFINITIONS)
+        get_filename_component(filename "${sourcefile}" NAME)
+        list(APPEND defs "__FILE__=\"${filename}\"")
+        set_property(SOURCE "${sourcefile}" PROPERTY COMPILE_DEFINITIONS ${defs})
+    endforeach()
+endfunction()
+

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.4.1)
 project({ZFTT_R_proj_name})
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../../ZFFramework)
+include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
 file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.c
@@ -10,6 +11,7 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
 add_library({ZFTT_R_proj_name} SHARED ${srcfiles})
+strip_file_macro({ZFTT_R_proj_name})
 set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)

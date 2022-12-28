@@ -3,6 +3,7 @@ project(ZFFramework_test)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../ZFFramework)
+include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
 if(WIN32)
     execute_process(COMMAND "${ZF_ROOT_PATH}/zfsetup.bat")
@@ -51,8 +52,9 @@ if(COMMAND zfprojConfigBefore_ZFFramework_test)
     zfprojConfigBefore_ZFFramework_test(ZFFramework_test ZF_SRC_FILES)
 endif()
 add_executable(ZFFramework_test ${ZF_SRC_FILES})
+strip_file_macro(ZFFramework_test)
+set_target_properties(ZFFramework_test PROPERTIES LINKER_LANGUAGE CXX)
 if(COMMAND zfprojConfigAfter_ZFFramework_test)
     zfprojConfigAfter_ZFFramework_test(ZFFramework_test)
 endif()
-set_target_properties(ZFFramework_test PROPERTIES LINKER_LANGUAGE CXX)
 

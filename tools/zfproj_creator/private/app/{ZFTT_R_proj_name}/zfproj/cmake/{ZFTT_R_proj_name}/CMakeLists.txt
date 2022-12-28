@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.17)
 project({ZFTT_R_proj_name})
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
+set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../../../../_tmp/cmake/{ZFTT_R_proj_name}/app")
 
 set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
+include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
 execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh")
 
@@ -17,16 +20,17 @@ if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
     zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} srcfiles)
 endif()
 add_executable({ZFTT_R_proj_name} ${srcfiles})
+strip_file_macro({ZFTT_R_proj_name})
+set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 if(COMMAND zfprojConfigAfter_{ZFTT_R_proj_name})
     zfprojConfigAfter_{ZFTT_R_proj_name}({ZFTT_R_proj_name})
 endif()
-set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 
 include_directories(${PROJECT_SOURCE_DIR}/../../../zfsrc)
 include_directories(${ZF_ROOT_PATH}/_release/cmake/all/include)
 
 function(ZFAddLib ZF_LIB_TARGETS_ ZF_LIB_NAME_)
-    add_library(${ZF_LIB_NAME_} STATIC IMPORTED)
+    add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     file(GLOB_RECURSE libPath "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*")
     if(NOT libPath)
         message(FATAL_ERROR "unable to find lib ${ZF_LIB_NAME_}")
@@ -36,8 +40,10 @@ function(ZFAddLib ZF_LIB_TARGETS_ ZF_LIB_NAME_)
     set(${ZF_LIB_TARGETS_} ${${ZF_LIB_TARGETS_}} ${ZF_LIB_NAME_} PARENT_SCOPE)
 
     if(WIN32)
+        execute_process(COMMAND "${ZF_ROOT_PATH}/tools/common/copy_check.bat" "${libPath}" "${CMAKE_INSTALL_PREFIX}/.")
         execute_process(COMMAND "${ZF_ROOT_PATH}/tools/util/copy_res.bat" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${PROJECT_BINARY_DIR}/zfres")
     else()
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/copy_check.sh" "${libPath}" "${CMAKE_INSTALL_PREFIX}/.")
         execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/util/copy_res.sh" "${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/zfres/" "${PROJECT_BINARY_DIR}/zfres")
     endif()
 endfunction(ZFAddLib)
@@ -172,4 +178,10 @@ ZFAddLib(ZF_LIB_TARGETS {ZFTT_R_impl_ext_name_30}){ZFTT_CE}{ZFTT_C_impl_ext_requ
 ZFAddLib(ZF_LIB_TARGETS {ZFTT_R_impl_ext_name_31}){ZFTT_CE}
 
 target_link_libraries({ZFTT_R_proj_name} PRIVATE ${ZF_LIB_TARGETS})
+if(APPLE)
+    set_target_properties({ZFTT_R_proj_name} PROPERTIES INSTALL_RPATH "@loader_path")
+elseif(WIN32)
+else()
+    set_target_properties({ZFTT_R_proj_name} PROPERTIES INSTALL_RPATH "\\\${ORIGIN}")
+endif()
 

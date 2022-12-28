@@ -3,6 +3,7 @@ project({ZFTT_R_proj_name})
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../ZFFramework)
+include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
 if(WIN32)
     execute_process(COMMAND "${ZF_ROOT_PATH}/zfsetup.bat")
@@ -164,8 +165,9 @@ if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
     zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} ZF_SRC_FILES)
 endif()
 add_executable({ZFTT_R_proj_name} ${ZF_SRC_FILES})
+strip_file_macro({ZFTT_R_proj_name})
+set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 if(COMMAND zfprojConfigAfter_{ZFTT_R_proj_name})
     zfprojConfigAfter_{ZFTT_R_proj_name}({ZFTT_R_proj_name})
 endif()
-set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 
