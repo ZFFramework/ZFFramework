@@ -30,14 +30,13 @@ function(ZFAddLib ZF_LIB_NAME_)
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     file(GLOB_RECURSE libPath ${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*)
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION ${libPath})
-    target_link_libraries(ZF_impl ${ZF_LIB_NAME_})
+    target_link_libraries(ZF_impl PUBLIC ${ZF_LIB_NAME_})
 endfunction(ZFAddLib)
 
 ZFAddLib(ZFCore)
 
-
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfsrc/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/include"
     FILES_MATCHING
         PATTERN "*.h"
@@ -48,7 +47,7 @@ install(TARGETS ZF_impl EXPORT ZF_impl
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/lib"
     RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/bin")
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfres/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZF_impl/zfres"
     PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
     )

@@ -62,6 +62,7 @@ sed -e 's/\\/\//g' \
     -e 's/<ZF_IF_SUCCESS_END>/fi/g' \
     -e 's/<ZF_IF_FAILED_BEGIN>/if test ! \"\$?\" = \"0\" ; then/g' \
     -e 's/<ZF_IF_FAILED_END>/fi/g' \
+    -e 's/<ZF_ELSE>/else/g' \
     "$TMP_PATH.tmp" > "$TMP_PATH"
 rm -rf "$TMP_PATH.tmp" >/dev/null 2>&1
 

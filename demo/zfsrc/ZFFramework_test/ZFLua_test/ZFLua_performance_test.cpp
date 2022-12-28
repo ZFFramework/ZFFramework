@@ -1,7 +1,7 @@
 #include "ZFLua_test.h"
 #include "ZFUIKit.h"
 
-#include "ZFImpl/ZFLua/ZFImpl_ZFLua.h"
+#include "ZFImpl/default/ZFImpl_ZFLua.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

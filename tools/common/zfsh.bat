@@ -64,6 +64,7 @@ for /f "tokens=*" %%a in (%ZFSH_PATH%) do (
     set line=!line:^<ZF_IF_SUCCESS_END^>=^)!
     set line=!line:^<ZF_IF_FAILED_BEGIN^>=if not "%%errorlevel%%" == "0" (!
     set line=!line:^<ZF_IF_FAILED_END^>=^)!
+    set line=!line:^<ZF_ELSE^>=^) else (!
 
     echo !line!>>"%TMP_PATH%"
 )

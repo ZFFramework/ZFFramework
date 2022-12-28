@@ -30,16 +30,15 @@ function(ZFAddLib ZF_LIB_NAME_)
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     file(GLOB_RECURSE libPath ${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*)
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION ${libPath})
-    target_link_libraries(ZFUIKit ${ZF_LIB_NAME_})
+    target_link_libraries(ZFUIKit PUBLIC ${ZF_LIB_NAME_})
 endfunction(ZFAddLib)
 
 ZFAddLib(ZFCore)
 ZFAddLib(ZFAlgorithm)
 ZFAddLib(ZFUtility)
 
-
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfsrc/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/include"
     FILES_MATCHING
         PATTERN "*.h"
@@ -50,7 +49,7 @@ install(TARGETS ZFUIKit EXPORT ZFUIKit
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/lib"
     RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/bin")
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfres/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIKit/zfres"
     PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
     )

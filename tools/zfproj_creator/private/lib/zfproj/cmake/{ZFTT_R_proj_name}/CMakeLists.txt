@@ -30,7 +30,7 @@ function(ZFAddLib ZF_LIB_NAME_)
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     file(GLOB_RECURSE libPath ${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*)
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION ${libPath})
-    target_link_libraries({ZFTT_R_proj_name} ${ZF_LIB_NAME_})
+    target_link_libraries({ZFTT_R_proj_name} PUBLIC ${ZF_LIB_NAME_})
 endfunction(ZFAddLib)
 {ZFTT_C_lib_require_0}
 ZFAddLib({ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}
@@ -162,9 +162,8 @@ ZFAddLib({ZFTT_R_impl_ext_name_29}){ZFTT_CE}{ZFTT_C_impl_ext_require_30}
 ZFAddLib({ZFTT_R_impl_ext_name_30}){ZFTT_CE}{ZFTT_C_impl_ext_require_31}
 ZFAddLib({ZFTT_R_impl_ext_name_31}){ZFTT_CE}
 
-
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfsrc/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/include"
     FILES_MATCHING
         PATTERN "*.h"
@@ -175,7 +174,7 @@ install(TARGETS {ZFTT_R_proj_name} EXPORT {ZFTT_R_proj_name}
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/lib"
     RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/bin")
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfres/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/{ZFTT_R_proj_name}/zfres"
     PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
     )

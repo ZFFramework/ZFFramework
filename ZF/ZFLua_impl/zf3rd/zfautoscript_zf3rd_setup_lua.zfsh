@@ -75,5 +75,5 @@
 
 
 
-<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_tmp\lua" "<ZF_WORK_DIR>\..\zfsrc\ZFImpl\ZFLua\_impl\lua"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_tmp\lua" "<ZF_WORK_DIR>\..\zfsrc\ZFImpl\_repo\lua"
 

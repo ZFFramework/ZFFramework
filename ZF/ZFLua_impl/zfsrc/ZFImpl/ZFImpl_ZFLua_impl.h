@@ -7,6 +7,7 @@
 #define _ZFI_ZFImpl_ZFLua_impl_h_
 
 #include "ZFImpl/ZFImpl_ZF_impl.h"
+#include "_repo/lua/ELuna.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

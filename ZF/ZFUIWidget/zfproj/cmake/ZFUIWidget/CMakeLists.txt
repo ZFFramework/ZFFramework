@@ -30,7 +30,7 @@ function(ZFAddLib ZF_LIB_NAME_)
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     file(GLOB_RECURSE libPath ${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*)
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION ${libPath})
-    target_link_libraries(ZFUIWidget ${ZF_LIB_NAME_})
+    target_link_libraries(ZFUIWidget PUBLIC ${ZF_LIB_NAME_})
 endfunction(ZFAddLib)
 
 ZFAddLib(ZFCore)
@@ -38,9 +38,8 @@ ZFAddLib(ZFAlgorithm)
 ZFAddLib(ZFUtility)
 ZFAddLib(ZFUIKit)
 
-
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfsrc/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/include"
     FILES_MATCHING
         PATTERN "*.h"
@@ -51,7 +50,7 @@ install(TARGETS ZFUIWidget EXPORT ZFUIWidget
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/lib"
     RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/bin")
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfres/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUIWidget/zfres"
     PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
     )

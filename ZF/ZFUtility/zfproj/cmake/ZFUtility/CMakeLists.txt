@@ -30,14 +30,13 @@ function(ZFAddLib ZF_LIB_NAME_)
     add_library(${ZF_LIB_NAME_} SHARED IMPORTED)
     file(GLOB_RECURSE libPath ${ZF_ROOT_PATH}/_release/cmake/module/${ZF_LIB_NAME_}/lib/*${ZF_LIB_NAME_}*)
     set_target_properties(${ZF_LIB_NAME_} PROPERTIES IMPORTED_LOCATION ${libPath})
-    target_link_libraries(ZFUtility ${ZF_LIB_NAME_})
+    target_link_libraries(ZFUtility PUBLIC ${ZF_LIB_NAME_})
 endfunction(ZFAddLib)
 
 ZFAddLib(ZFCore)
 
-
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfsrc/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/include"
     FILES_MATCHING
         PATTERN "*.h"
@@ -48,7 +47,7 @@ install(TARGETS ZFUtility EXPORT ZFUtility
     ARCHIVE DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/lib"
     RUNTIME DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/bin")
 install(
-    DIRECTORY ${PROJECT_SOURCE_DIR}/../../../zfres/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfres/"
     DESTINATION "${ZF_ROOT_PATH}/_release/cmake/module/ZFUtility/zfres"
     PATTERN "ZF_PUT_RES_FILES_HERE" EXCLUDE
     )

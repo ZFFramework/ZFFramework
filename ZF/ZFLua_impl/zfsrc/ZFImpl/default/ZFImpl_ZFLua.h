@@ -9,8 +9,6 @@
 #include "ZFLua.h"
 #include "../ZFImpl_ZFLua_impl.h"
 
-#include "_impl/lua/ELuna.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
