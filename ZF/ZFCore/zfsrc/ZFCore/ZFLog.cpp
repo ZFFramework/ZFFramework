@@ -186,9 +186,9 @@ zfstring _ZFP_zfLogCurTimeString(void)
         ti.miliSecond);
     return s;
 }
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, zfLogCurTimeString)
+ZFMETHOD_FUNC_DEFINE_0(zfstring, zfLogCurTimeString)
 {
-    return zfLogCurTimeString();
+    return _ZFP_zfLogCurTimeString();
 }
 
 ZF_NAMESPACE_GLOBAL_END

@@ -105,7 +105,7 @@ extern ZFLIB_ZFCore zfstring _ZFP_zfLogCurTimeString(void);
 /**
  * @brief get a string contains current time with format HH:mm:ss.SSS
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, zfLogCurTimeString)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, zfLogCurTimeString)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLog_h_
