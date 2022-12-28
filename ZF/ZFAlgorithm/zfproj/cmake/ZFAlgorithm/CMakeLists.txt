@@ -5,7 +5,6 @@ message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-add_compile_definitions(ZFLIB_ZFAlgorithm=ZF_ENV_EXPORT)
 file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
@@ -19,6 +18,7 @@ endif()
 add_library(ZFAlgorithm SHARED ${srcfiles})
 strip_file_macro(ZFAlgorithm)
 set_target_properties(ZFAlgorithm PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_definitions(ZFAlgorithm PUBLIC ZFLIB_ZFAlgorithm=ZF_ENV_EXPORT)
 if(COMMAND zfprojConfigAfter_ZFAlgorithm)
     zfprojConfigAfter_ZFAlgorithm(ZFAlgorithm)
 endif()

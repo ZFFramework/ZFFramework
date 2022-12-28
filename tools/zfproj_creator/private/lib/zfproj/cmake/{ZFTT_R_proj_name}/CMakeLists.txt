@@ -5,7 +5,6 @@ message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-add_compile_definitions(ZFLIB_{ZFTT_R_proj_name}=ZF_ENV_EXPORT)
 file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
@@ -19,6 +18,7 @@ endif()
 add_library({ZFTT_R_proj_name} SHARED ${srcfiles})
 strip_file_macro({ZFTT_R_proj_name})
 set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_definitions({ZFTT_R_proj_name} PUBLIC ZFLIB_{ZFTT_R_proj_name}=ZF_ENV_EXPORT)
 if(COMMAND zfprojConfigAfter_{ZFTT_R_proj_name})
     zfprojConfigAfter_{ZFTT_R_proj_name}({ZFTT_R_proj_name})
 endif()

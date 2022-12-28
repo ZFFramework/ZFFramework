@@ -5,7 +5,6 @@ message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-add_compile_definitions(ZFLIB_ZFLua=ZF_ENV_EXPORT)
 file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
@@ -19,6 +18,7 @@ endif()
 add_library(ZFLua SHARED ${srcfiles})
 strip_file_macro(ZFLua)
 set_target_properties(ZFLua PROPERTIES LINKER_LANGUAGE CXX)
+target_compile_definitions(ZFLua PUBLIC ZFLIB_ZFLua=ZF_ENV_EXPORT)
 if(COMMAND zfprojConfigAfter_ZFLua)
     zfprojConfigAfter_ZFLua(ZFLua)
 endif()
