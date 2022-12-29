@@ -15,6 +15,9 @@ function(zfprojConfigAfter_ZF_impl projName)
         set_target_properties(${projName} PROPERTIES
             LINK_FLAGS "-Wl,--whole-archive"
             )
+        set_target_properties(${projName} PROPERTIES
+            LINK_FLAGS "-Wl,--allow-multiple-definition"
+            )
     endif()
 endfunction(zfprojConfigAfter_ZF_impl)
 
