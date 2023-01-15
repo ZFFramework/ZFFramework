@@ -33,6 +33,7 @@
 #include "ZFCore/ZFMutex.h"
 #include "ZFCore/ZFObject.h"
 #include "ZFCore/ZFObjectIO_zfsd.h"
+#include "ZFCore/ZFObserverGroup.h"
 #include "ZFCore/ZFOutputForConsole.h"
 #include "ZFCore/ZFOutputForFormat.h"
 #include "ZFCore/ZFPathType_common.h"

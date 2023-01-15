@@ -469,43 +469,20 @@ public:
     /**
      * @brief see #observerNotify
      */
-    zffinal zfidentity observerAdd(ZF_IN zfidentity eventId,
-                                   ZF_IN const ZFListener &observer,
-                                   ZF_IN_OPT ZFObject *owner = zfnull,
-                                   ZF_IN_OPT zfbool autoRemoveAfterActivate = zffalse,
-                                   ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
+    zffinal void observerAdd(ZF_IN zfidentity eventId,
+                             ZF_IN const ZFListener &observer,
+                             ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
     /**
      * @brief see #observerNotify
      */
-    zffinal zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param);
-    /**
-     * @brief see #observerNotify
-     */
-    zffinal zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
-                                          ZF_IN const ZFListener &observer,
-                                          ZF_IN_OPT ZFObject *owner = zfnull,
-                                          ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
-    /**
-     * @brief move observer to head of same #ZFLevel
-     *
-     * by default, all newly added observer would be appended to tail of same level,
-     * which means it would be called last of the same level,
-     * you may use this method to make it to be called first for same level
-     */
-    zffinal void observerMoveToFirst(ZF_IN zfidentity taskId);
+    zffinal void observerAddForOnce(ZF_IN zfidentity eventId,
+                                    ZF_IN const ZFListener &observer,
+                                    ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
     /**
      * @brief see #observerNotify
      */
     zffinal void observerRemove(ZF_IN zfidentity eventId,
                                 ZF_IN const ZFListener &callback);
-    /**
-     * @brief see #observerNotify
-     */
-    zffinal void observerRemoveByTaskId(ZF_IN zfidentity taskId);
-    /**
-     * @brief see #observerNotify
-     */
-    zffinal void observerRemoveByOwner(ZF_IN ZFObject *owner);
     /**
      * @brief see #observerNotify
      *
@@ -536,8 +513,7 @@ public:
      * @brief notify the observer with eventId
      *
      * the #ZFListener would be executed\n
-     * it's ensured the first added observer would be executed first
-     * unless #observerMoveToFirst is called\n
+     * it's ensured the first added observer would be executed first\n
      * use #ZFGlobalObserver for global observer\n
      * for instance observer:
      * @code
@@ -564,10 +540,19 @@ public:
     /**
      * @brief see #observerNotify
      */
-    zffinal void observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
-                                                ZF_IN zfidentity eventId,
-                                                ZF_IN_OPT ZFObject *param0 = zfnull,
-                                                ZF_IN_OPT ZFObject *param1 = zfnull);
+    zffinal void observerNotifyWithSender(ZF_IN ZFObject *customSender,
+                                          ZF_IN zfidentity eventId,
+                                          ZF_IN_OPT ZFObject *param0 = zfnull,
+                                          ZF_IN_OPT ZFObject *param1 = zfnull);
+
+    /**
+     * @brief access the internal observer holder
+     *
+     * usually for internal use only\n
+     * calling owner object's #observerAdd series is ensured
+     * same with calling the observerHolder's proper method
+     */
+    zffinal ZFObserver &observerHolder(void);
 
 protected:
     /**
@@ -750,8 +735,8 @@ private:
     _ZFP_ZFObjectPrivate *d;
 private:
     friend zfclassFwd ZFClass;
-    friend zfclassFwd ZFObserverHolder;
-    friend zfclassFwd _ZFP_ZFObserverHolderPrivate;
+    friend zfclassFwd ZFObserver;
+    friend zfclassFwd _ZFP_ZFObserverPrivate;
     template<typename T_ZFObject, int valid>
     friend zfclassFwd _ZFP_Obj_AllocCk;
     friend void _ZFP_zfRetainAction(ZF_IN ZFObject *obj);

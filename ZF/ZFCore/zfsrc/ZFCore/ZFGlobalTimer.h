@@ -26,20 +26,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * you may also use #ZFGlobalTimerManualStep to manually control the timer steps
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfidentity, ZFGlobalTimerAttach,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttach,
                         ZFMP_IN(const ZFListener &, timerCallback),
-                        ZFMP_IN_OPT(ZFObject *, owner, zfnull),
-                        ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse),
+                        ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttachOnce,
+                        ZFMP_IN(const ZFListener &, timerCallback),
                         ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerDetach,
                         ZFMP_IN(const ZFListener &, timerCallback))
-/** @brief see #ZFGlobalTimerAttach */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerDetachByTaskId,
-                        ZFMP_IN(zfidentity, taskId))
-/** @brief see #ZFGlobalTimerAttach */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerDetachByOwner,
-                        ZFMP_IN(ZFObject *, owner))
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFGlobalTimerDetachAll)
 

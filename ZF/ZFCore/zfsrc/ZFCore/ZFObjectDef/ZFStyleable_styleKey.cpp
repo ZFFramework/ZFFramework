@@ -84,7 +84,7 @@ void ZFStyleable::styleKey(ZF_IN const zfchar *styleKey)
             v_zfstring *param0 = zfunsafe_zfAlloc(v_zfstring);
             v_zfstring *param1 = zfunsafe_zfAlloc(v_zfstring);
             param1->zfv = styleKey;
-            ZFGlobalObserver().observerNotifyWithCustomSender(
+            ZFGlobalObserver().observerNotifyWithSender(
                 this->toObject(),
                 ZFGlobalEvent::EventZFStyleOnInvalid(),
                 param0,
@@ -206,7 +206,7 @@ void ZFStyleable::styleKeyForProperty(ZF_IN const zfchar *propertyName, ZF_IN co
             param0->zfv = propertyName;
             v_zfstring *param1 = zfunsafe_zfAlloc(v_zfstring);
             param1->zfv = styleKey;
-            ZFGlobalObserver().observerNotifyWithCustomSender(
+            ZFGlobalObserver().observerNotifyWithSender(
                 this->toObject(),
                 ZFGlobalEvent::EventZFStyleOnInvalid(),
                 param0,

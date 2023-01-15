@@ -174,7 +174,7 @@ protected:
                                            ZF_IN zfindex buttonIndex,
                                            ZF_IN zfidentity eventId)
     {
-        this->toObject()->observerNotifyWithCustomSender(
+        this->toObject()->observerNotifyWithSender(
             button,
             eventId,
             this->toObject(),
@@ -184,7 +184,7 @@ protected:
     virtual inline void buttonOnAdd(ZF_IN ZFUIButton *button,
                                     ZF_IN zfindex buttonIndex)
     {
-        this->toObject()->observerNotifyWithCustomSender(
+        this->toObject()->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonOnAdd(),
             this->toObject(),
@@ -194,7 +194,7 @@ protected:
     virtual inline void buttonOnRemove(ZF_IN ZFUIButton *button,
                                        ZF_IN zfindex buttonIndex)
     {
-        this->toObject()->observerNotifyWithCustomSender(
+        this->toObject()->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonOnRemove(),
             this->toObject(),
@@ -255,7 +255,7 @@ protected:
     virtual inline void buttonTabOnChange(ZF_IN ZFUIButton *button,
                                           ZF_IN zfindex buttonIndexPrev)
     {
-        this->toObject()->observerNotifyWithCustomSender(
+        this->toObject()->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonTabOnChange(),
             this->toObject(),
@@ -265,7 +265,7 @@ protected:
     virtual inline void buttonTabOnClickChecked(ZF_IN ZFUIButton *button,
                                                 ZF_IN zfindex buttonIndex)
     {
-        this->toObject()->observerNotifyWithCustomSender(
+        this->toObject()->observerNotifyWithSender(
             button,
             ZFUIButtonGroup::EventButtonTabOnClickChecked(),
             this->toObject(),

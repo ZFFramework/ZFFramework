@@ -7,7 +7,7 @@ return function(zfargs)
             local pm = page:pageManager();
             pm:objectTag("leftButton"):viewVisible(pm:pageCount() > 1);
             pm:objectTag("centerButton"):label():text(page:objectInfoOfInstance());
-        end, pm:objectHolder());
+        end);
 
     _ZFP_ZFLua_app_test_setupPage = function(page)
             page:observerAdd(ZFUIPage.EventPageOnCreate(), function(zfargs)

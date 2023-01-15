@@ -29,10 +29,11 @@ protected:
             zfLogT() << "event filter";
             zfargs.eventFiltered(zftrue);
         } ZFLISTENER_END(eventFilter)
-        ZFGlobalObserver().observerAdd(ZFObserverAddParam()
-            .eventId(ZFGlobalEvent::EventZFCore_EventFilter_test())
-            .observer(eventFilter)
-            .observerLevel(ZFLevelAppHigh));
+        ZFGlobalObserver().observerAdd(
+                ZFGlobalEvent::EventZFCore_EventFilter_test(),
+                eventFilter,
+                ZFLevelAppHigh
+            );
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("notify with event filter, only filter would be called");

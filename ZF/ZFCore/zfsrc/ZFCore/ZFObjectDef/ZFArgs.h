@@ -92,7 +92,7 @@ public:
      * @brief used to achieve event filter logic
      *
      * to achieve event filter,
-     * you may attach an #ZFObserverHolder::observerAdd with higher #ZFLevel,
+     * you may attach an #ZFObserver::observerAdd with higher #ZFLevel,
      * and set #eventFiltered to true,
      * then the event would not be further dispatched\n
      * the #eventFilterEnable must be called to enable filter logic

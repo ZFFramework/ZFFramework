@@ -28,6 +28,7 @@
 		7AFFB7A7412D4A9588C815CE4CD4EAAD /* ZFUIWebKit_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A02322216AB599DF32E7476DD98E5E /* ZFUIWebKit_impl.xcframework */; };
 		8C685169DF0F9CAEA05119F61AA2CC7D /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */; };
 		8DDA23BA83C17DBF7693CF6AB19F9BF4 /* ZFUIKit_impl.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA36B1D2B30F162E8BEB57385E64B93 /* ZFUIKit_impl.xcframework */; };
+		923EBA8CE0775832E1FCB5338E43721F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */; };
 		9C424F0584E327DD77DD241C14240DB1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = D01A9F9B443A7DB46BCE695ADBBFC55D /* Icon-72.png */; };
 		9F74A258BD406F304D89045DF5E40A34 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D108275A6468BEA69C8E0941D81453E6 /* Default-568h@2x.png */; };
 		B444E1034EE4F71F860956EDA8CD79F3 /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E6076B3FC80DEDD41ADEAD3C95FB9E9 /* Icon-50.png */; };
@@ -76,6 +77,7 @@
 		D108275A6468BEA69C8E0941D81453E6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D6BB508B5C240484B578BAA4D4509AFA /* ZF_impl.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZF_impl.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZF_impl.xcframework; sourceTree = "<group>"; };
 		D9FBB9DE01E47F0D050ADC723ACCB396 /* ZFUIWidget.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ZFUIWidget.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/ZFUIWidget.xcframework; sourceTree = "<group>"; };
+		E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F061EB7C9BD5F52121B0557A615D83C0 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		F83F53F7BBBB8AC77B4AA39ED59AA7A2 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				923EBA8CE0775832E1FCB5338E43721F /* AVFoundation.framework in Frameworks */,
 				5A2D1B7E525EFA11B011F293A9612C7A /* CoreGraphics.framework in Frameworks */,
 				5AD62590FCBED9C00949DDFDAFD129D9 /* Foundation.framework in Frameworks */,
 				7978EADE23C4EF15B96506A4AF0CDAB2 /* QuartzCore.framework in Frameworks */,
@@ -140,6 +143,7 @@
 		857E4486077F9081AF5D079A9C170609 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */,
 				ACA60027D62B88AEAE715B00485C4449 /* CoreGraphics.framework */,
 				8B0EB20273DFFC54E3E2B05F6BA13015 /* Foundation.framework */,
 				83E96AC3B662FD2F9BBE9FA0548335E2 /* QuartzCore.framework */,

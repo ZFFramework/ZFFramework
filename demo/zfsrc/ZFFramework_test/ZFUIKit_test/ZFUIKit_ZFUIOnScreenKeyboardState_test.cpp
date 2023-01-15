@@ -2,54 +2,65 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfclassNotPOD _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData
+{
+public:
+    ZFUIOnScreenKeyboardState *state;
+    ZFListener callback;
+};
+
 ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
 {
-    this->observerOwner = zflineAlloc(ZFArray);
-
     ZFLISTENER_1(sysWindowOnCreate
-            , ZFArray *, observerOwner
+            , ZFCoreArray<_ZFP_ZFUIOnScreenKeyboardState_test_ObserverData>, taskList
             ) {
         ZFLISTENER(action) {
             zfLogTrimT() << "[ZFUIOnScreenKeyboardState] state changed:" << zfargs.sender();
         } ZFLISTENER_END(action)
         ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
-        state->observerAdd(ZFObserverAddParam()
-            .eventId(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange())
-            .observer(action)
-            .owner(observerOwner)
-            );
-        observerOwner->add(state->objectHolder());
+        state->observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), action);
+        _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData task;
+        task.state = state;
+        task.callback = action;
+        taskList.add(task);
     } ZFLISTENER_END(sysWindowOnCreate)
-    ZFGlobalObserver().observerAdd(ZFObserverAddParam()
-            .eventId(ZFUISysWindow::EventSysWindowOnCreate())
-            .observer(sysWindowOnCreate)
-            .owner(this->observerOwner)
-        );
+    this->sysWindowOnCreateListener = sysWindowOnCreate;
+    ZFGlobalObserver().observerAdd(ZFUISysWindow::EventSysWindowOnCreate(), this->sysWindowOnDestroyListener);
 
     ZFLISTENER_1(sysWindowOnDestroy
-            , ZFArray *, observerOwner
+            , ZFCoreArray<_ZFP_ZFUIOnScreenKeyboardState_test_ObserverData>, taskList
             ) {
         ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
-        state->observerRemoveByOwner(observerOwner);
-        observerOwner->removeElement(state->objectHolder());
+        for(zfindex i = taskList.count() - 1; i != zfindexMax(); --i)
+        {
+            _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData const &task = taskList[i];
+            if(task.state == state)
+            {
+                state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), task.callback);
+                taskList.remove(i);
+            }
+        }
     } ZFLISTENER_END(sysWindowOnDestroy)
-    ZFGlobalObserver().observerAdd(ZFObserverAddParam()
-            .eventId(ZFUISysWindow::EventSysWindowOnDestroy())
-            .observer(sysWindowOnDestroy)
-            .owner(this->observerOwner)
-        );
+    this->sysWindowOnDestroyListener = sysWindowOnDestroy;
+    ZFGlobalObserver().observerAdd(ZFUISysWindow::EventSysWindowOnDestroy(), this->sysWindowOnDestroyListener);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardState_test)
 {
-    ZFGlobalObserver().observerRemoveByOwner(this->observerOwner);
-    ZFArray *attached = this->observerOwner;
-    for(zfindex i = 0; i < attached->count(); ++i)
+    ZFGlobalObserver().observerRemove(ZFUISysWindow::EventSysWindowOnCreate(), this->sysWindowOnCreateListener);
+    ZFGlobalObserver().observerRemove(ZFUISysWindow::EventSysWindowOnDestroy(), this->sysWindowOnDestroyListener);
+
+    for(zfindex i = 0; i < taskList.count(); ++i)
     {
-        ZFObjectHolder *stateHolder = attached->get(i)->toAny();
-        stateHolder->objectHolded()->observerRemoveByOwner(this->observerOwner);
+        _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData const &task = taskList[i];
+        task.state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), task.callback);
+        taskList.remove(i);
     }
+    taskList.removeAll();
 }
-zfautoObject observerOwner;
+private:
+    ZFCoreArray<_ZFP_ZFUIOnScreenKeyboardState_test_ObserverData> taskList;
+    ZFListener sysWindowOnCreateListener;
+    ZFListener sysWindowOnDestroyListener;
 ZF_GLOBAL_INITIALIZER_END(ZFUIOnScreenKeyboardState_test)
 
 ZF_NAMESPACE_GLOBAL_END

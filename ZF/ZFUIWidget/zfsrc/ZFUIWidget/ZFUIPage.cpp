@@ -151,7 +151,7 @@ public:
             zfRetain(page);
             page->pageOnCreate();
             page->observerNotify(ZFUIPage::EventPageOnCreate());
-            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnCreate());
+            page->pageManager()->observerNotifyWithSender(page, ZFUIPage::EventPageOnCreate());
         }
     }
     static void pageOnResume(ZF_IN ZFUIPage *page, ZF_IN ZFUIPageResumeReasonEnum resumeReason, ZF_IN ZFUIPage *siblingPage)
@@ -162,7 +162,7 @@ public:
             page->pageOnResume(resumeReason);
             zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
             page->observerNotify(ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
-            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
+            page->pageManager()->observerNotifyWithSender(page, ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
         }
     }
     static void pageOnPause(ZF_IN ZFUIPage *page, ZF_IN ZFUIPagePauseReasonEnum pauseReason, ZF_IN ZFUIPage *siblingPage)
@@ -170,7 +170,7 @@ public:
         if(page->pageResumed())
         {
             zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
-            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
+            page->pageManager()->observerNotifyWithSender(page, ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
             page->observerNotify(ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
             page->pageOnPause(pauseReason);
         }
@@ -180,7 +180,7 @@ public:
         pageOnPause(page, ZFUIPagePauseReason::e_BeforeDestroy, zfnull);
         if(page->pageCreated())
         {
-            page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageOnDestroy());
+            page->pageManager()->observerNotifyWithSender(page, ZFUIPage::EventPageOnDestroy());
             page->observerNotify(ZFUIPage::EventPageOnDestroy());
             page->pageOnDestroy();
             zfRelease(page);
@@ -191,7 +191,7 @@ public:
     {
         page->pageAniOnPrepare(resumeOrPauseReason, siblingPage);
         page->observerNotify(ZFUIPage::EventPageAniOnPrepare(), resumeOrPauseReason, siblingPage);
-        page->pageManager()->observerNotifyWithCustomSender(page, ZFUIPage::EventPageAniOnPrepare(), resumeOrPauseReason, siblingPage);
+        page->pageManager()->observerNotifyWithSender(page, ZFUIPage::EventPageAniOnPrepare(), resumeOrPauseReason, siblingPage);
     }
 
 public:
@@ -341,13 +341,13 @@ public:
         {
             zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
             pausePage->observerNotify(ZFUIPage::EventPageAniOnStart(), pauseReasonHolder);
-            manager->observerNotifyWithCustomSender(pausePage, ZFUIPage::EventPageAniOnStart(), pauseReasonHolder);
+            manager->observerNotifyWithSender(pausePage, ZFUIPage::EventPageAniOnStart(), pauseReasonHolder);
         }
         if(resumePage != zfnull)
         {
             zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
             resumePage->observerNotify(ZFUIPage::EventPageAniOnStart(), resumeReasonHolder);
-            manager->observerNotifyWithCustomSender(resumePage, ZFUIPage::EventPageAniOnStart(), resumeReasonHolder);
+            manager->observerNotifyWithSender(resumePage, ZFUIPage::EventPageAniOnStart(), resumeReasonHolder);
         }
     }
     static void pageAniOnStop(ZF_IN ZFUIPageManager *manager,
@@ -364,13 +364,13 @@ public:
 
             zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
             pausePage->observerNotify(ZFUIPage::EventPageAniOnStop(), pauseReasonHolder);
-            manager->observerNotifyWithCustomSender(pausePage, ZFUIPage::EventPageAniOnStop(), pauseReasonHolder);
+            manager->observerNotifyWithSender(pausePage, ZFUIPage::EventPageAniOnStop(), pauseReasonHolder);
         }
         if(resumePage != zfnull)
         {
             zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
             resumePage->observerNotify(ZFUIPage::EventPageAniOnStop(), resumeReasonHolder);
-            manager->observerNotifyWithCustomSender(resumePage, ZFUIPage::EventPageAniOnStop(), resumeReasonHolder);
+            manager->observerNotifyWithSender(resumePage, ZFUIPage::EventPageAniOnStop(), resumeReasonHolder);
         }
         if(pausePage != zfnull)
         {
@@ -471,7 +471,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, managerDestroy)
     {
         ZFUIWindow *managerOwnerWindowTmp = d->managerOwnerWindow;
         d->managerOwnerWindow = zfnull;
-        managerOwnerWindowTmp->observerRemoveByOwner(this);
+        ZFObserverGroupRemove(this);
         if(managerOwnerWindowTmp->windowShowing())
         {
             managerOwnerWindowTmp->windowHide();
@@ -514,7 +514,6 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow,
             owner->managerResume();
         }
     } ZFLISTENER_END(onShow)
-    window->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnResume(), onShow, this);
 
     ZFLISTENER_1(onHide
             , ZFUIPageManager *, owner
@@ -524,14 +523,18 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow,
             owner->managerOnPause();
         }
     } ZFLISTENER_END(onHide)
-    window->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnPause(), onHide, this);
 
     ZFLISTENER_1(onDestroy
             , ZFUIPageManager *, owner
             ) {
         owner->managerDestroy();
     } ZFLISTENER_END(onDestroy)
-    window->observerAdd(ZFUIWindow::EventObjectBeforeDealloc(), onDestroy, this);
+
+    ZFObserverGroup(this, window)
+        .observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnResume(), onShow)
+        .observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnPause(), onHide)
+        .observerAdd(ZFUIWindow::EventObjectBeforeDealloc(), onDestroy)
+        ;
 
     window->windowShow();
     if(window->windowOwnerSysWindow()->nativeWindowIsResumed())

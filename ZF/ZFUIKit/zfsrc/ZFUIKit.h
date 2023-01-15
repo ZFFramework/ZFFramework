@@ -7,6 +7,7 @@
 #define _ZFI_ZFUIKit_h_
 
 #include "ZFUIKit/ZFAnimationNativeView.h"
+#include "ZFUIKit/ZFAudio.h"
 #include "ZFUIKit/ZFEnvInfo_ZFUIKit.h"
 #include "ZFUIKit/ZFObjectIO_image.h"
 #include "ZFUIKit/ZFTimeLineCurve_UI.h"

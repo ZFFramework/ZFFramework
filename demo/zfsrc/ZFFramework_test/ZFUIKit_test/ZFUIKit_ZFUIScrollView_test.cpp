@@ -100,7 +100,7 @@ private:
                 ZFLISTENER(onClick) {
                     zfLogTrimT() << "clicked" << zfargs.sender();
                 } ZFLISTENER_END(onClick)
-                btn->observerAdd(ZFUIButton::EventButtonOnClick(), onClick);
+                btn->onClick(onClick);
             }
         }
     }

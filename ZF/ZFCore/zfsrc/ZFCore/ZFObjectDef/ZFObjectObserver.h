@@ -9,6 +9,11 @@
 #include "ZFCallback.h"
 #include "ZFIdMap.h"
 #include "ZFArgs.h"
+#include "ZFListenerDeclare.h"
+
+#if ZF_ENV_LAMBDA
+#include <functional>
+#endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -48,87 +53,83 @@ public:
     {
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
+
+public:
+    template<typename T_Func>
+    ZFListener(ZF_IN T_Func f)
+    {
+        #if ZF_ENV_LAMBDA
+            std::function<void(const ZFArgs &)> fTmp = f;
+            ZFLISTENER_1(wrapper
+                    , std::function<void(const ZFArgs &)>, fTmp
+                    ) {
+                fTmp(zfargs);
+            } ZFLISTENER_END(wrapper)
+        #else
+            FUNC_TYPE fTmp = f;
+            ZFLISTENER_1(wrapper
+                    , FUNC_TYPE, fTmp
+                    ) {
+                fTmp(zfargs);
+            } ZFLISTENER_END(wrapper)
+        #endif
+        this->operator = (wrapper);
+    }
+    template<typename T_Func>
+    ZFListener &operator = (ZF_IN T_Func f)
+    {
+        #if ZF_ENV_LAMBDA
+            std::function<void(const ZFArgs &)> fTmp = f;
+            ZFLISTENER_1(wrapper
+                    , std::function<void(const ZFArgs &)>, fTmp
+                    ) {
+                fTmp(zfargs);
+            } ZFLISTENER_END(wrapper)
+        #else
+            FUNC_TYPE fTmp = f;
+            ZFLISTENER_1(wrapper
+                    , FUNC_TYPE, fTmp
+                    ) {
+                fTmp(zfargs);
+            } ZFLISTENER_END(wrapper)
+        #endif
+        return this->operator = (wrapper);
+    }
+public:
+    /** @brief function type for #ZFListener */
+    typedef void (*FUNC_TYPE)(ZF_IN const ZFArgs &zfargs);
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFListener, ZFCallback)
 
 // ============================================================
-// ZFObserverHolder
-/** @brief see #ZFObject::observerNotify */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverAddParam
-{
-    ZFCORE_PARAM_DECLARE_SELF(ZFObserverAddParam)
-
-    /** @brief see #ZFObject::observerNotify */
-    ZFCORE_PARAM_WITH_INIT(zfidentity, eventId, zfidentityInvalid())
-
-    /** @brief see #ZFObject::observerNotify */
-    ZFCORE_PARAM(ZFListener, observer)
-
-    /** @brief see #ZFObject::observerNotify */
-    ZFCORE_PARAM_WITH_INIT(ZFObject *, owner, zfnull)
-
-    /** @brief see #ZFObject::observerNotify */
-    ZFCORE_PARAM_WITH_INIT(zfbool, autoRemoveAfterActivate, zffalse)
-
-    /** @brief see #ZFObject::observerNotify */
-    ZFCORE_PARAM_WITH_INIT(ZFLevel, observerLevel, ZFLevelAppNormal)
-
-public:
-    /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN ZFObserverAddParam const &ref) const
-    {
-        return (this->eventId() == ref.eventId()
-            && this->observer() == ref.observer()
-            && this->owner() == ref.owner()
-            && this->autoRemoveAfterActivate() == ref.autoRemoveAfterActivate()
-            && this->observerLevel() == ref.observerLevel()
-            );
-    }
-    inline zfbool operator != (ZF_IN ZFObserverAddParam const &ref) const {return !this->operator == (ref);}
-    /** @endcond */
-};
-
-zfclassFwd _ZFP_ZFObserverHolderPrivate;
+// ZFObserver
+zfclassFwd _ZFP_ZFObserverPrivate;
 /**
  * @brief holder object for observer logic, see #ZFObject::observerNotify
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserverHolder
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserver
 {
 public:
     /** @cond ZFPrivateDoc */
-    ZFObserverHolder(void);
-    ZFObserverHolder(ZF_IN ZFObserverHolder const &ref);
-    ~ZFObserverHolder(void);
-    ZFObserverHolder &operator = (ZF_IN ZFObserverHolder const &ref);
-    zfbool operator == (ZF_IN ZFObserverHolder const &ref) const;
-    inline zfbool operator != (ZF_IN ZFObserverHolder const &ref) const {return !this->operator == (ref);}
+    ZFObserver(void);
+    ZFObserver(ZF_IN ZFObserver const &ref);
+    ~ZFObserver(void);
+    ZFObserver &operator = (ZF_IN ZFObserver const &ref);
+    zfbool operator == (ZF_IN ZFObserver const &ref) const;
+    inline zfbool operator != (ZF_IN ZFObserver const &ref) const {return !this->operator == (ref);}
     /** @endcond */
 
 public:
     /** @brief see #ZFObject::observerNotify */
-    zffinal zfidentity observerAdd(ZF_IN zfidentity eventId,
-                                   ZF_IN const ZFListener &observer,
-                                   ZF_IN_OPT ZFObject *owner = zfnull,
-                                   ZF_IN_OPT zfbool autoRemoveAfterActivate = zffalse,
-                                   ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
+    zffinal void observerAdd(ZF_IN zfidentity eventId,
+                             ZF_IN const ZFListener &observer,
+                             ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
     /** @brief see #ZFObject::observerNotify */
-    zffinal zfidentity observerAdd(ZF_IN const ZFObserverAddParam &param);
-    /** @brief see #ZFObject::observerNotify */
-    zffinal inline zfidentity observerAddForOnce(ZF_IN zfidentity eventId,
-                                                 ZF_IN const ZFListener &observer,
-                                                 ZF_IN_OPT ZFObject *owner = zfnull,
-                                                 ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal)
-    {
-        return this->observerAdd(eventId, observer, owner, zftrue, observerLevel);
-    }
-    /** @brief see #ZFObject::observerMoveToFirst */
-    zffinal void observerMoveToFirst(ZF_IN zfidentity taskId);
+    zffinal void observerAddForOnce(ZF_IN zfidentity eventId,
+                                    ZF_IN const ZFListener &observer,
+                                    ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerRemove(ZF_IN zfidentity eventId,
                                 ZF_IN const ZFListener &callback);
-    /** @brief see #ZFObject::observerNotify */
-    zffinal void observerRemoveByTaskId(ZF_IN zfidentity taskId);
-    /** @brief see #ZFObject::observerNotify */
-    zffinal void observerRemoveByOwner(ZF_IN ZFObject *owner);
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerRemoveAll(ZF_IN zfidentity eventId);
     /** @brief see #ZFObject::observerNotify */
@@ -142,13 +143,13 @@ public:
                                        ZF_IN_OPT ZFObject *param0 = zfnull,
                                        ZF_IN_OPT ZFObject *param1 = zfnull) const
     {
-        this->observerNotifyWithCustomSender(this->observerOwner(), eventId, param0, param1);
+        this->observerNotifyWithSender(this->observerOwner(), eventId, param0, param1);
     }
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
-                                                ZF_IN zfidentity eventId,
-                                                ZF_IN_OPT ZFObject *param0 = zfnull,
-                                                ZF_IN_OPT ZFObject *param1 = zfnull) const;
+    zffinal void observerNotifyWithSender(ZF_IN ZFObject *customSender,
+                                          ZF_IN zfidentity eventId,
+                                          ZF_IN_OPT ZFObject *param0 = zfnull,
+                                          ZF_IN_OPT ZFObject *param1 = zfnull) const;
 
 public:
     /**
@@ -201,10 +202,10 @@ public:
 public:
     /** @brief owner object of this observer holder, or null if none */
     zffinal ZFObject *observerOwner(void) const;
-    zffinal void _ZFP_ZFObserverHolder_observerOwner(ZF_IN ZFObject *obj);
+    zffinal void _ZFP_ZFObserver_observerOwner(ZF_IN ZFObject *obj);
 
 private:
-    _ZFP_ZFObserverHolderPrivate *d;
+    _ZFP_ZFObserverPrivate *d;
 };
 
 // ============================================================
@@ -214,7 +215,7 @@ private:
  *
  * use only if necessary, which may cause performance issue
  */
-extern ZFLIB_ZFCore ZFObserverHolder &ZFGlobalObserver(void);
+extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
 
 // ============================================================
 // observer

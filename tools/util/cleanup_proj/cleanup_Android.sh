@@ -13,9 +13,13 @@ rm -rf "$PROJ_ROOT/$PROJ_NAME/.idea" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/build" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/local.properties" >/dev/null 2>&1
 find "$PROJ_ROOT/$PROJ_NAME" -name "*.iml" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
+
 rm -rf "$PROJ_ROOT/$PROJ_NAME/zflib/.externalNativeBuild" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/zflib/build" >/dev/null 2>&1
+rm -rf "$PROJ_ROOT/$PROJ_NAME/zflib/.cxx" >/dev/null 2>&1
 find "$PROJ_ROOT/$PROJ_NAME/zflib/" -name "*.iml" 2>/dev/null | xargs -I{} rm -rf {} >/dev/null 2>&1
+rm -rf "$PROJ_ROOT/$PROJ_NAME/zflib/src/main/assets/zfres" >/dev/null 2>&1
+
 rm -rf "$PROJ_ROOT/$PROJ_NAME/zfapp/.cxx" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/zfapp/.externalNativeBuild" >/dev/null 2>&1
 rm -rf "$PROJ_ROOT/$PROJ_NAME/zfapp/build" >/dev/null 2>&1

@@ -769,7 +769,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ClassDataChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-extern ZFLIB_ZFCore ZFObserverHolder &_ZFP_ZFClassDataChangeObserverRef(void);
+extern ZFLIB_ZFCore ZFObserver &_ZFP_ZFClassDataChangeObserverRef(void);
 /**
  * @brief see #ZFGlobalEvent::EventClassDataChange
  *

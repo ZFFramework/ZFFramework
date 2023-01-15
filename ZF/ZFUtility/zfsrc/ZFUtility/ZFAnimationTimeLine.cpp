@@ -9,7 +9,7 @@ zfclassNotPOD _ZFP_ZFAnimationTimeLinePrivate
 public:
     zfbool isGlobalTimer;
 
-    zfidentity globalTimerTaskId;
+    ZFListener globalTimerTask;
     zfuint globalTimerFrameCount;
     zfuint globalTimerFrameIndex;
 
@@ -18,7 +18,7 @@ public:
 public:
     _ZFP_ZFAnimationTimeLinePrivate(void)
     : isGlobalTimer(zffalse)
-    , globalTimerTaskId(zfidentityInvalid())
+    , globalTimerTask()
     , globalTimerFrameCount(0)
     , globalTimerFrameIndex(0)
     , builtinTimer(zfnull)
@@ -44,7 +44,8 @@ public:
                     ) {
                 _ZFP_ZFAnimationTimeLinePrivate::globalTimerOnActivate(zfargs, owner);
             } ZFLISTENER_END(globalTimerOnActivate)
-            owner->d->globalTimerTaskId = ZFGlobalTimerAttach(globalTimerOnActivate);
+            owner->d->globalTimerTask = globalTimerOnActivate;
+            ZFGlobalTimerAttach(owner->d->globalTimerTask);
         }
         else
         {
@@ -69,8 +70,8 @@ public:
     {
         if(owner->d->isGlobalTimer)
         {
-            ZFGlobalTimerDetachByTaskId(owner->d->globalTimerTaskId);
-            owner->d->globalTimerTaskId = zfidentityInvalid();
+            ZFGlobalTimerDetach(owner->d->globalTimerTask);
+            owner->d->globalTimerTask = zfnull;
         }
         else
         {

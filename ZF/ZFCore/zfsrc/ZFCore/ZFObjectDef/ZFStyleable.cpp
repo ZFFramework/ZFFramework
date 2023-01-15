@@ -437,7 +437,18 @@ void ZFStyleInvalidCheckDisable(ZF_IN zfbool enable)
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleInvalidAssert, ZFLevelZFFrameworkHigh)
 {
-    ZFLISTENER(action) {
+    this->styleOnInvalidListener = ZFCallbackForFunc(styleOnInvalid);
+    ZFGlobalObserver().observerAdd(ZFGlobalEvent::EventZFStyleOnInvalid(), this->styleOnInvalidListener);
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFStyleInvalidAssert)
+{
+    _ZFP_ZFStyleInvalidCheckDisableFlag = zffalse;
+    ZFGlobalObserver().observerRemove(ZFGlobalEvent::EventZFStyleOnInvalid(), this->styleOnInvalidListener);
+}
+private:
+    ZFListener styleOnInvalidListener;
+    static void styleOnInvalid(ZF_IN const ZFArgs &zfargs)
+    {
         if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return ;}
         const zfchar *propertyName = zfargs.param0()->to<v_zfstring *>()->zfv;
         const zfchar *styleKey = zfargs.param1()->to<v_zfstring *>()->zfv;
@@ -456,17 +467,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleInvalidAssert, ZFLevelZFFrameworkHi
                     styleKey,
                     propertyName);
         }
-    } ZFLISTENER_END(action)
-    this->taskId = ZFGlobalObserver().observerAdd(
-        ZFGlobalEvent::EventZFStyleOnInvalid(),
-        action);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFStyleInvalidAssert)
-{
-    _ZFP_ZFStyleInvalidCheckDisableFlag = zffalse;
-    ZFGlobalObserver().observerRemoveByTaskId(this->taskId);
-}
-zfidentity taskId;
+    }
 ZF_GLOBAL_INITIALIZER_END(ZFStyleInvalidAssert)
 
 ZF_NAMESPACE_GLOBAL_END

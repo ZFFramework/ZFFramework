@@ -21,7 +21,8 @@
 		225992AB450843CE0ACBB110B9E2E8D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7356A4CDEE0DA695AF0242663FB72F /* Foundation.framework */; };{ZFTT_C_needUIKit}
 		414DAB3B5425C363571BAC3280F9B493 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A97409EF1CF450DBCC76C57412AF681 /* UIKit.framework */; };
 		8C96A57C5B6340131DA41923C240B8F5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2892976B8339E3FA1FD985A8D1914114 /* QuartzCore.framework */; };
-		76092F5A632BFAD23C0E60DDE4B9F8A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EBCE09082EA0CE9A5370FDAF577BF9 /* CoreGraphics.framework */; };{ZFTT_CE}{ZFTT_C_needUIWebKit}
+		76092F5A632BFAD23C0E60DDE4B9F8A5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EBCE09082EA0CE9A5370FDAF577BF9 /* CoreGraphics.framework */; };
+		923EBA8CE0775832E1FCB5338E43721F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */; };{ZFTT_CE}{ZFTT_C_needUIWebKit}
 		43B9894F1AB11C2B93F78944910067D1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5571A6E22034D37232435DDD2BC0C36F /* WebKit.framework */; };{ZFTT_CE}
 {ZFTT_C_lib_require_0}
 		F0000000000000000000000000010000 /* {ZFTT_R_lib_name_0}.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000000020000 /* {ZFTT_R_lib_name_0}.xcframework */; };{ZFTT_CE}{ZFTT_C_lib_require_1}
@@ -178,7 +179,8 @@
 		FA7356A4CDEE0DA695AF0242663FB72F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };{ZFTT_C_needUIKit}
 		4A97409EF1CF450DBCC76C57412AF681 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2892976B8339E3FA1FD985A8D1914114 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		C0EBCE09082EA0CE9A5370FDAF577BF9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };{ZFTT_CE}{ZFTT_C_needUIWebKit}
+		C0EBCE09082EA0CE9A5370FDAF577BF9 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };{ZFTT_CE}{ZFTT_C_needUIWebKit}
 		5571A6E22034D37232435DDD2BC0C36F /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };{ZFTT_CE}
 {ZFTT_C_lib_require_0}
 		F0000000000000000000000000020000 /* {ZFTT_R_lib_name_0}.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = {ZFTT_R_lib_name_0}.xcframework; path = ../../../../../ZFFramework/_release/iOS/all/lib/{ZFTT_R_lib_name_0}.xcframework; sourceTree = "<group>"; };{ZFTT_CE}{ZFTT_C_lib_require_1}
@@ -322,7 +324,8 @@
 				225992AB450843CE0ACBB110B9E2E8D1 /* Foundation.framework in Frameworks */,{ZFTT_C_needUIKit}
 				414DAB3B5425C363571BAC3280F9B493 /* UIKit.framework in Frameworks */,
 				8C96A57C5B6340131DA41923C240B8F5 /* QuartzCore.framework in Frameworks */,
-				76092F5A632BFAD23C0E60DDE4B9F8A5 /* CoreGraphics.framework in Frameworks */,{ZFTT_CE}{ZFTT_C_needUIWebKit}
+				76092F5A632BFAD23C0E60DDE4B9F8A5 /* CoreGraphics.framework in Frameworks */,
+				923EBA8CE0775832E1FCB5338E43721F /* AVFoundation.framework in Frameworks */,{ZFTT_CE}{ZFTT_C_needUIWebKit}
 				43B9894F1AB11C2B93F78944910067D1 /* WebKit.framework in Frameworks */,{ZFTT_CE}
 {ZFTT_C_lib_require_0}
 				F0000000000000000000000000010000 /* {ZFTT_R_lib_name_0}.xcframework in Frameworks */,{ZFTT_CE}{ZFTT_C_lib_require_1}
@@ -516,7 +519,8 @@
 				FA7356A4CDEE0DA695AF0242663FB72F /* Foundation.framework */,{ZFTT_C_needUIKit}
 				4A97409EF1CF450DBCC76C57412AF681 /* UIKit.framework */,
 				2892976B8339E3FA1FD985A8D1914114 /* QuartzCore.framework */,
-				C0EBCE09082EA0CE9A5370FDAF577BF9 /* CoreGraphics.framework */,{ZFTT_CE}{ZFTT_C_needUIWebKit}
+				C0EBCE09082EA0CE9A5370FDAF577BF9 /* CoreGraphics.framework */,
+				E350DDE202A408F89C01CB24CA0FBB80 /* AVFoundation.framework */,{ZFTT_CE}{ZFTT_C_needUIWebKit}
 				5571A6E22034D37232435DDD2BC0C36F /* WebKit.framework */,{ZFTT_CE}
 {ZFTT_C_lib_require_0}
 				F0000000000000000000000000020000 /* {ZFTT_R_lib_name_0}.xcframework */,{ZFTT_CE}{ZFTT_C_lib_require_1}

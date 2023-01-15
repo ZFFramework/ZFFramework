@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		06202CE3797DCA7F3C4D34D3BD8A80BD /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4740D2A9C56EE4E2E17836F91D1BB6A2 /* AVFoundation.framework */; };
 		0C307A08A34C03086369D2884C7C4B38 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4592796FCEEC6F94084CA356415709F8 /* WebKit.framework */; };
 		46739532ED961BA232ABC1BDBC669E1B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 337993A657D8985C66690A89A87D1680 /* Foundation.framework */; };
 		686D8856423561714460A99F543D4B3A /* zfgensrc_ZFUIWebKit_impl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 22F620278645B172C699389FFADE5226 /* zfgensrc_ZFUIWebKit_impl.mm */; };
@@ -45,6 +46,7 @@
 		22F620278645B172C699389FFADE5226 /* zfgensrc_ZFUIWebKit_impl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = zfgensrc_ZFUIWebKit_impl.mm; sourceTree = "<group>"; };
 		337993A657D8985C66690A89A87D1680 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		4592796FCEEC6F94084CA356415709F8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		4740D2A9C56EE4E2E17836F91D1BB6A2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		631AACD0158D5668557972B206A81B31 /* zfsrc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = zfsrc; path = ../../../zfsrc; sourceTree = "<group>"; };
 		64A6B9415A287BCFEC0D61682F2AD8EC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6B89D6D019D5AE1FC8A831255B8C40A9 /* libZFUIWebKit_impl.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libZFUIWebKit_impl.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06202CE3797DCA7F3C4D34D3BD8A80BD /* AVFoundation.framework in Frameworks */,
 				C59A11C945486AE7843FBADCA1B8BC37 /* CoreGraphics.framework in Frameworks */,
 				46739532ED961BA232ABC1BDBC669E1B /* Foundation.framework in Frameworks */,
 				E83B31A199C4EB7153DF4F1A97D26E63 /* QuartzCore.framework in Frameworks */,
@@ -71,6 +74,7 @@
 		2C9876E639E9CC9CC8743DF1725C0A38 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4740D2A9C56EE4E2E17836F91D1BB6A2 /* AVFoundation.framework */,
 				E4568CFBF9B549582FB311EB35530406 /* CoreGraphics.framework */,
 				337993A657D8985C66690A89A87D1680 /* Foundation.framework */,
 				B7ED1C5E0ACB936651AF80E0C2660B87 /* QuartzCore.framework */,

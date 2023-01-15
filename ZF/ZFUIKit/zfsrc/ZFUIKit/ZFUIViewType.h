@@ -216,20 +216,48 @@ public:
     ZFMETHOD_DECLARE_0(void, alignCenter)
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignLeft)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_1(void, alignLeft,
+                       ZFMP_IN(zffloat, marginLeft))
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignTop)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_1(void, alignTop,
+                       ZFMP_IN(zffloat, marginTop))
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignRight)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_1(void, alignRight,
+                       ZFMP_IN(zffloat, marginRight))
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignBottom)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_1(void, alignBottom,
+                       ZFMP_IN(zffloat, marginBottom))
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignLeftTop)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_2(void, alignLeftTop,
+                       ZFMP_IN(zffloat, marginLeft),
+                       ZFMP_IN(zffloat, marginTop))
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignLeftBottom)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_2(void, alignLeftBottom,
+                       ZFMP_IN(zffloat, marginLeft),
+                       ZFMP_IN(zffloat, marginBottom))
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignRightTop)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_2(void, alignRightTop,
+                       ZFMP_IN(zffloat, marginRight),
+                       ZFMP_IN(zffloat, marginTop))
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignRightBottom)
+    /** @brief util to set #layoutAlign and #layoutMargin */
+    ZFMETHOD_DECLARE_2(void, alignRightBottom,
+                       ZFMP_IN(zffloat, marginRight),
+                       ZFMP_IN(zffloat, marginBottom))
 
     /** @brief util to set #layoutMargin */
     ZFMETHOD_DECLARE_1(void, margin,

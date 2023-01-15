@@ -73,12 +73,12 @@ public:
     ZFCoreArrayPOD<ZFUIView *> focusedViews;
     static void viewBlinkOn(ZF_IN const ZFArgs &zfargs)
     {
-        ZFGlobalObserver().observerNotifyWithCustomSender(
+        ZFGlobalObserver().observerNotifyWithSender(
             zfargs.sender(), ZFGlobalEvent::EventViewBlinkWhenFocusViewBlinkOn());
     }
     static void viewBlinkOff(ZF_IN const ZFArgs &zfargs)
     {
-        ZFGlobalObserver().observerNotifyWithCustomSender(
+        ZFGlobalObserver().observerNotifyWithSender(
             zfargs.sender(), ZFGlobalEvent::EventViewBlinkWhenFocusViewBlinkOff());
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkWhenFocusDataHolder)

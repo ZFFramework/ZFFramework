@@ -41,15 +41,13 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFGlobalTimerAutoDetach)
 ZF_GLOBAL_INITIALIZER_END(ZFGlobalTimerAutoDetach)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_4(zfidentity, ZFGlobalTimerAttach,
+ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttach,
                        ZFMP_IN(const ZFListener &, timerCallback),
-                       ZFMP_IN_OPT(ZFObject *, owner, zfnull),
-                       ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse),
                        ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 {
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkHigh) != ZFFrameworkStateAvailable || !timerCallback)
     {
-        return zfidentityInvalid();
+        return;
     }
     zfCoreMutexLocker();
     ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
@@ -63,7 +61,29 @@ ZFMETHOD_FUNC_DEFINE_4(zfidentity, ZFGlobalTimerAttach,
         d->globalTimer->timerInterval(ZFGlobalTimerInterval());
         d->globalTimer->timerStart();
     }
-    return d->globalTimer->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback, owner, autoRemoveAfterActivate, observerLevel);
+    d->globalTimer->observerAdd(ZFTimer::EventTimerOnActivate(), timerCallback, observerLevel);
+}
+ZFMETHOD_FUNC_DEFINE_2(void, ZFGlobalTimerAttachOnce,
+                       ZFMP_IN(const ZFListener &, timerCallback),
+                       ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
+{
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkHigh) != ZFFrameworkStateAvailable || !timerCallback)
+    {
+        return;
+    }
+    zfCoreMutexLocker();
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
+    if(d->globalTimer == zfnull)
+    {
+        d->globalTimer = zfAlloc(ZFTimer);
+        d->globalTimer->timerInterval(ZFGlobalTimerInterval());
+    }
+    if(!d->globalTimer->timerStarted() && !d->globalTimerManualStep)
+    {
+        d->globalTimer->timerInterval(ZFGlobalTimerInterval());
+        d->globalTimer->timerStart();
+    }
+    d->globalTimer->observerAddForOnce(ZFTimer::EventTimerOnActivate(), timerCallback, observerLevel);
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetach,
                        ZFMP_IN(const ZFListener &, timerCallback))
@@ -75,30 +95,6 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetach,
         return;
     }
     d->globalTimer->observerRemove(ZFTimer::EventTimerOnActivate(), timerCallback);
-    d->checkCleanup();
-}
-ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetachByTaskId,
-                       ZFMP_IN(zfidentity, taskId))
-{
-    zfCoreMutexLocker();
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
-    if(d->globalTimer == zfnull)
-    {
-        return;
-    }
-    d->globalTimer->observerRemoveByTaskId(taskId);
-    d->checkCleanup();
-}
-ZFMETHOD_FUNC_DEFINE_1(void, ZFGlobalTimerDetachByOwner,
-                       ZFMP_IN(ZFObject *, owner))
-{
-    zfCoreMutexLocker();
-    ZF_GLOBAL_INITIALIZER_CLASS(ZFGlobalTimerDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFGlobalTimerDataHolder);
-    if(d->globalTimer == zfnull)
-    {
-        return;
-    }
-    d->globalTimer->observerRemoveByOwner(owner);
     d->checkCleanup();
 }
 ZFMETHOD_FUNC_DEFINE_0(void, ZFGlobalTimerDetachAll)

@@ -453,10 +453,10 @@ ZFMETHOD_DEFINE_1(ZFUIDialog, void, dialogApplyAutoHide,
             ) {
         owner->dialogHide();
     } ZFLISTENER_END(buttonOnClick)
-    button->observerAdd(ZFObserverAddParam()
-            .eventId(ZFUIButton::EventButtonOnClick())
-            .observer(buttonOnClick)
-            .observerLevel(ZFLevelZFFrameworkPostNormal)
+    button->observerAdd(
+            ZFUIButton::EventButtonOnClick(),
+            buttonOnClick,
+            ZFLevelZFFrameworkPostNormal
         );
 }
 

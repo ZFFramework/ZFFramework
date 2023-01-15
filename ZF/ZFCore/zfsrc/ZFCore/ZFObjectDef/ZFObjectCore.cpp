@@ -28,7 +28,7 @@ public:
         stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate = 1 << 4,
     };
     zfuint stateFlags;
-    ZFObserverHolder *observerHolder;
+    ZFObserver *observerHolder;
 
     _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
 
@@ -62,15 +62,15 @@ public:
     }
 
 public:
-    ZFObserverHolder &observerHolderCheck(ZF_IN ZFObject *owner)
+    ZFObserver &observerHolderCheck(ZF_IN ZFObject *owner)
     {
         if(this->observerHolder == zfnull)
         {
             zfCoreMutexLocker();
             if(this->observerHolder == zfnull)
             {
-                this->observerHolder = zfpoolNew(ZFObserverHolder);
-                this->observerHolder->_ZFP_ZFObserverHolder_observerOwner(owner);
+                this->observerHolder = zfpoolNew(ZFObserver);
+                this->observerHolder->_ZFP_ZFObserver_observerOwner(owner);
             }
         }
         return *this->observerHolder;
@@ -334,37 +334,23 @@ void ZFObject::objectTagRemoveAll(void)
     }
 }
 
-zfidentity ZFObject::observerAdd(ZF_IN zfidentity eventId,
-                                 ZF_IN const ZFListener &observer,
-                                 ZF_IN_OPT ZFObject *owner /* = zfnull */,
-                                 ZF_IN_OPT zfbool autoRemoveAfterActivate /* = zffalse */,
-                                 ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */)
+void ZFObject::observerAdd(ZF_IN zfidentity eventId,
+                           ZF_IN const ZFListener &observer,
+                           ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */)
 {
     return d->observerHolderCheck(this).observerAdd(
         eventId,
         observer,
-        owner,
-        autoRemoveAfterActivate,
         observerLevel);
 }
-zfidentity ZFObject::observerAdd(ZF_IN const ZFObserverAddParam &param)
-{
-    return d->observerHolderCheck(this).observerAdd(param);
-}
-zfidentity ZFObject::observerAddForOnce(ZF_IN zfidentity eventId,
-                                        ZF_IN const ZFListener &observer,
-                                        ZF_IN_OPT ZFObject *owner /* = zfnull */,
-                                        ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */)
+void ZFObject::observerAddForOnce(ZF_IN zfidentity eventId,
+                                  ZF_IN const ZFListener &observer,
+                                  ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */)
 {
     return d->observerHolderCheck(this).observerAddForOnce(
         eventId,
         observer,
-        owner,
         observerLevel);
-}
-void ZFObject::observerMoveToFirst(ZF_IN zfidentity taskId)
-{
-    return d->observerHolderCheck(this).observerMoveToFirst(taskId);
 }
 void ZFObject::observerRemove(ZF_IN zfidentity eventId,
                               ZF_IN const ZFListener &callback)
@@ -372,20 +358,6 @@ void ZFObject::observerRemove(ZF_IN zfidentity eventId,
     if(d->observerHolder)
     {
         d->observerHolder->observerRemove(eventId, callback);
-    }
-}
-void ZFObject::observerRemoveByTaskId(ZF_IN zfidentity taskId)
-{
-    if(d->observerHolder)
-    {
-        d->observerHolder->observerRemoveByTaskId(taskId);
-    }
-}
-void ZFObject::observerRemoveByOwner(ZF_IN ZFObject *owner)
-{
-    if(d->observerHolder)
-    {
-        d->observerHolder->observerRemoveByOwner(owner);
     }
 }
 void ZFObject::observerRemoveAll(ZF_IN zfidentity eventId)
@@ -434,22 +406,26 @@ void ZFObject::observerNotify(ZF_IN zfidentity eventId,
     }
     else
     {
-        ZFGlobalObserver().observerNotifyWithCustomSender(this, eventId, param0, param1);
+        ZFGlobalObserver().observerNotifyWithSender(this, eventId, param0, param1);
     }
 }
-void ZFObject::observerNotifyWithCustomSender(ZF_IN ZFObject *customSender,
-                                              ZF_IN zfidentity eventId,
-                                              ZF_IN_OPT ZFObject *param0 /* = zfnull */,
-                                              ZF_IN_OPT ZFObject *param1 /* = zfnull */)
+void ZFObject::observerNotifyWithSender(ZF_IN ZFObject *customSender,
+                                        ZF_IN zfidentity eventId,
+                                        ZF_IN_OPT ZFObject *param0 /* = zfnull */,
+                                        ZF_IN_OPT ZFObject *param1 /* = zfnull */)
 {
     if(d->observerHolder)
     {
-        d->observerHolder->observerNotifyWithCustomSender(customSender, eventId, param0, param1);
+        d->observerHolder->observerNotifyWithSender(customSender, eventId, param0, param1);
     }
     else
     {
-        ZFGlobalObserver().observerNotifyWithCustomSender(customSender, eventId, param0, param1);
+        ZFGlobalObserver().observerNotifyWithSender(customSender, eventId, param0, param1);
     }
+}
+ZFObserver &ZFObject::observerHolder(void)
+{
+    return d->observerHolderCheck(this);
 }
 
 void ZFObject::observerOnAdd(ZF_IN zfidentity eventId)
@@ -769,19 +745,16 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTagGetAllKeyVal
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectTagRemove, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfautoObject, objectTagRemoveAndGet, ZFMP_IN(const zfchar *, key))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, void, objectTagRemoveAll)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_5(ZFObject, zfidentity, observerAdd, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFObject *, owner, zfnull), ZFMP_IN_OPT(zfbool, autoRemoveAfterActivate, zffalse), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfidentity, observerAdd, ZFMP_IN(const ZFObserverAddParam &, param))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, zfidentity, observerAddForOnce, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFObject *, owner, zfnull), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, observerMoveToFirst, ZFMP_IN(zfidentity, taskId))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerAdd, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerAddForOnce, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, observer), ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, observerRemove, ZFMP_IN(zfidentity, eventId), ZFMP_IN(const ZFListener &, callback))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, observerRemoveByTaskId, ZFMP_IN(zfidentity, taskId))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, observerRemoveByOwner, ZFMP_IN(ZFObject *, owner))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, observerRemoveAll, ZFMP_IN(zfidentity, eventId))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, void, observerRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, observerHasAdd)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfbool, observerHasAdd, ZFMP_IN(zfidentity, eventId))
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerNotify, ZFMP_IN(zfidentity, eventId), ZFMP_IN_OPT(ZFObject *, param0, zfnull), ZFMP_IN_OPT(ZFObject *, param1, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, void, observerNotifyWithCustomSender, ZFMP_IN(ZFObject *, customSender), ZFMP_IN(zfidentity, eventId), ZFMP_IN_OPT(ZFObject *, param0, zfnull), ZFMP_IN_OPT(ZFObject *, param1, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, void, observerNotifyWithSender, ZFMP_IN(ZFObject *, customSender), ZFMP_IN(zfidentity, eventId), ZFMP_IN_OPT(ZFObject *, param0, zfnull), ZFMP_IN_OPT(ZFObject *, param1, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, ZFObserver &, observerHolder)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, ZFObjectInstanceState, objectInstanceState)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternal)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectIsInternalPrivate)

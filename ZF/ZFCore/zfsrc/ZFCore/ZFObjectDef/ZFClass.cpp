@@ -1878,9 +1878,9 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFOBSERVER_EVENT_GLOBAL_REGISTER(ClassDataChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFObserverHolder &_ZFP_ZFClassDataChangeObserverRef(void)
+ZFObserver &_ZFP_ZFClassDataChangeObserverRef(void)
 {
-    static ZFObserverHolder d;
+    static ZFObserver d;
     return d;
 }
 void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,

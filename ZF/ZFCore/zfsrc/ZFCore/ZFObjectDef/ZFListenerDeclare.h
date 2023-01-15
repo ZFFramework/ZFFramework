@@ -10,25 +10,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/**
- * @brief util to create #ZFListener "inline"
- *   by using lambda,
- *   require #ZF_ENV_LAMBDA
- *
- * usage:
- * @code
- *   obj->observerAdd(eventId, ZFListenerForLambda({
- *       zfLogT() << zfargs.sender();
- *   }));
- * @endcode
- */
-#if ZF_ENV_LAMBDA
-    #define ZFListenerForLambda(content) \
-        ZFCallbackForFunc(((void (*)(const ZFArgs &))[](const ZFArgs &zfargs) {content}))
-#else
-    #define ZFListenerForLambda(content) ZF_ENV_LAMBDA_NOT_AVAILABLE
-#endif
-
 // ============================================================
 /**
  * @brief see #ZFLISTENER

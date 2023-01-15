@@ -39,10 +39,10 @@ public:
         }
         this->implRegisterFlag = zftrue;
 
-        ZFGlobalObserver().observerAdd(ZFObserverAddParam()
-                .eventId(ZFUIView::EventViewOnEvent())
-                .observer(this->viewOnEventListener)
-                .observerLevel(ZFLevelZFFrameworkEssential)
+        ZFGlobalObserver().observerAdd(
+                ZFUIView::EventViewOnEvent(),
+                this->viewOnEventListener,
+                ZFLevelZFFrameworkEssential
             );
     }
     void implUnregister(void)

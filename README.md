@@ -55,7 +55,7 @@ ZFMAIN_ENTRY() // app starts from here
         ZFUIButtonBasic *button = zfargs.senderT();
         zfLogTrimT() << "button clicked:" << button;
     } ZFLISTENER_END(onClick)
-    button->onClick(onClick, button->objectHolder());
+    button->onClick(onClick);
 }
 ```
 
@@ -108,10 +108,10 @@ ZFMAIN_ENTRY()
         .classBegin("MyBaseView", "ZFUIView")
             .method("void", "testFunc", ZFMP()
                 .mp("zfstring", "testParam0")
-                , ZFListenerForLambda({
+                , [](const ZFArgs &zfargs) {
                     ZFMethodInvokeData *m = zfargs.param0T();
                     zfLogTrimT() << m->invokerMethod << "called, param0:" << m->param0;
-                }))
+                })
         .classEnd();
 
     ZFLuaExecute(

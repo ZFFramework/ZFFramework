@@ -47,7 +47,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         #define zfnullT int
     #endif
     #ifndef zfnull
-        #define zfnull NULL
+        #define zfnull 0
     #endif
 #endif
 
