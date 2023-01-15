@@ -24,7 +24,7 @@ cd "$_OLD_DIR"
 _OLD_DIR=$(pwd)
 mkdir -p "$_TMP_PATH" >/dev/null 2>&1
 cd "$_TMP_PATH"
-cmake "$_PROJ_PATH" -DCMAKE_BUILD_TYPE=${_CONFIG} -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+cmake "$_PROJ_PATH" -DCMAKE_BUILD_TYPE=${_CONFIG}
 make -j4
 _RESULT="$?"
 cd "$_OLD_DIR"
