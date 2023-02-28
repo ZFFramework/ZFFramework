@@ -264,9 +264,7 @@ public:
     /** @brief append string */
     inline _zfstr<T_Char> &append(ZF_IN const _zfstr<T_Char> &s) {this->append(s.cString(), s.length()); return *this;}
     /** @brief append string */
-    inline _zfstr<T_Char> &append(ZF_IN const T_Char *s) {return this->append(s, zfindexMax());}
-    /** @brief append string */
-    _zfstr<T_Char> &append(ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &append(ZF_IN const T_Char *s, ZF_IN_OPT zfindex len = zfindexMax())
     {
         if(s)
         {
@@ -288,9 +286,7 @@ public:
     /** @brief replace all content of the string */
     inline _zfstr<T_Char> &assign(ZF_IN const _zfstr<T_Char> &s) {return this->assign(s.cString(), s.length());}
     /** @brief replace all content of the string */
-    inline _zfstr<T_Char> &assign(ZF_IN const T_Char *s) {return this->assign(s, zfindexMax());}
-    /** @brief replace all content of the string */
-    _zfstr<T_Char> &assign(ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &assign(ZF_IN const T_Char *s, ZF_IN_OPT zfindex len = zfindexMax())
     {
         if(s)
         {
@@ -360,9 +356,7 @@ public:
     /** @brief insert string */
     inline _zfstr<T_Char> &insert(ZF_IN zfindex insertAt, ZF_IN const _zfstr<T_Char> &s) {return this->insert(insertAt, s.cString(), s.length());}
     /** @brief insert string */
-    inline _zfstr<T_Char> &insert(ZF_IN zfindex insertAt, ZF_IN const T_Char *s) {return this->insert(insertAt, s, zfindexMax());}
-    /** @brief insert string */
-    _zfstr<T_Char> &insert(ZF_IN zfindex insertAt, ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &insert(ZF_IN zfindex insertAt, ZF_IN const T_Char *s, ZF_IN_OPT zfindex len = zfindexMax())
     {
         if(insertAt >= this->length())
         {
@@ -389,9 +383,7 @@ public:
     /** @brief replace string in range */
     inline _zfstr<T_Char> &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const _zfstr<T_Char> &s) {return this->replace(replacePos, replaceLen, s.cString(), s.length());}
     /** @brief replace string in range */
-    inline _zfstr<T_Char> &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const T_Char *s) {return this->replace(replacePos, replaceLen, s, zfindexMax());}
-    /** @brief replace string in range */
-    _zfstr<T_Char> &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const T_Char *s, ZF_IN zfindex len)
+    _zfstr<T_Char> &replace(ZF_IN zfindex replacePos, ZF_IN zfindex replaceLen, ZF_IN const T_Char *s, ZF_IN_OPT zfindex len = zfindexMax())
     {
         if(replacePos >= this->length())
         {

@@ -324,13 +324,12 @@ public:
                 return;
             }
             jobject nativeTask = (jobject)task->nativeTask;
-            ZFBuffer bufTmp = task->body;
-            jobject nativeBuf = ZFImpl_sys_Android_ZFAndroidBufferToJava(bufTmp.buffer(), bufTmp.bufferSize());
+            jobject nativeInput = ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZFInputForBuffer(task->body));
             zfCoreMutexUnlock();
 
             JNIUtilCallStaticVoidMethod(JNIGetJNIEnv(), jclsOwner, jmId
                     , nativeTask
-                    , nativeBuf
+                    , nativeInput
                 );
         } ZFLISTENER_END(run)
         zfasync(run);
@@ -492,17 +491,17 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest,
                          JNIPointer zfjniPointerOwnerZFHttpResponse,
                          jint code,
                          jstring errorHint,
-                         jobject body)
+                         jobject nativeBodyInput)
 {
     ZFHttpRequest *request = ZFCastZFObject(ZFHttpRequest *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpRequest));
     ZFHttpResponse *response = ZFCastZFObject(ZFHttpResponse *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpResponse));
     response->success(code == 200);
     response->code(code);
     response->errorHint(ZFImpl_sys_Android_zfstringFromString(errorHint));
-    ZFImpl_sys_Android_Buffer buffer = ZFImpl_sys_Android_ZFAndroidBufferFromJava(body);
-    if(buffer.buffer != zfnull)
+    if(nativeBodyInput != NULL)
     {
-        response->body().bufferCopy(buffer.buffer, buffer.bufferSize);
+        ZFInput bodyInput = ZFImpl_sys_Android_ZFInputFromZFAndroidInput(nativeBodyInput);
+        ZFInputReadAll(response->body(), bodyInput);
     }
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->notifyResponse(request);
 }

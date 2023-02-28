@@ -13,7 +13,7 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFHttpRequest);
 
-        ZFInputReadAll(ZFOutputDefault(), ZFInputForHttp("https://github.com"));
+        ZFInputReadAll(ZFOutputDefault(), ZFInputForHttp("https://bing.com"));
 
         this->testCaseStop();
     }

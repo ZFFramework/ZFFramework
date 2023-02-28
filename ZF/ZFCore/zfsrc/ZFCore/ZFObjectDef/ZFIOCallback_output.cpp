@@ -84,6 +84,74 @@ ZFOutput ZFOutputForString(ZF_IN zfstring &s)
 }
 
 // ============================================================
+// ZFOutputForBuffer
+zfclass _ZFP_I_ZFOutputForBufferOwner : zfextends ZFObject
+{
+    ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForBufferOwner, ZFObject)
+
+    ZFALLOC_CACHE_RELEASE({
+        cache->buf = ZFBuffer();
+    })
+
+public:
+    ZFBuffer buf;
+    zfindex savedLength;
+    zfindex curPos;
+    ZFMETHOD_DECLARE_2(zfindex, onOutput,
+                       ZFMP_IN(const void *, s),
+                       ZFMP_IN(zfindex, count))
+    ZFMETHOD_DECLARE_2(zfbool, ioSeek,
+                       ZFMP_IN(zfindex, byteSize),
+                       ZFMP_IN(ZFSeekPos, pos))
+    ZFMETHOD_DECLARE_0(zfindex, ioTell)
+    ZFMETHOD_DECLARE_0(zfindex, ioSize)
+};
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForBufferOwner, zfindex, onOutput,
+                  ZFMP_IN(const void *, s),
+                  ZFMP_IN(zfindex, count))
+{
+    if(count == zfindexMax())
+    {
+        count = zfslen((const zfchar *)s) * sizeof(zfchar);
+    }
+    this->buf.bufferCapacity(this->curPos + count);
+    zfmemcpy(this->buf.bufferT<zfbyte *>() + this->curPos, s, count);
+    this->curPos += count;
+    if(this->curPos > this->buf.bufferSize())
+    {
+        this->buf.bufferSize(this->curPos);
+    }
+    return count;
+}
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForBufferOwner, zfbool, ioSeek,
+                  ZFMP_IN(zfindex, byteSize),
+                  ZFMP_IN(ZFSeekPos, pos))
+{
+    this->curPos = ZFIOCallbackCalcFSeek(this->savedLength, this->buf.bufferSize(), this->curPos, byteSize, pos);
+    return zftrue;
+}
+ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForBufferOwner, zfindex, ioTell)
+{
+    return ((this->buf.bufferSize() >= this->savedLength) ? (this->buf.bufferSize() - this->savedLength) : zfindexMax());
+}
+ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForBufferOwner, zfindex, ioSize)
+{
+    return this->buf.bufferSize() - this->curPos;
+}
+ZFOutput ZFOutputForBuffer(ZF_IN_OUT ZFBuffer &buf)
+{
+    _ZFP_I_ZFOutputForBufferOwner *owner = zfAlloc(_ZFP_I_ZFOutputForBufferOwner);
+    owner->buf = buf;
+    owner->savedLength = buf.bufferSize();
+    owner->curPos = owner->savedLength;
+    ZFOutput ret = ZFCallbackForMemberMethod(
+        owner, ZFMethodAccess(_ZFP_I_ZFOutputForBufferOwner, onOutput));
+    ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
+    zfRelease(owner);
+    return ret;
+}
+
+// ============================================================
 // ZFOutputForBufferUnsafe
 zfclass _ZFP_I_ZFOutputForBufferUnsafeOwner : zfextends ZFObject
 {
@@ -203,6 +271,7 @@ ZFMETHOD_USER_REGISTER_2({
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFOutput, ZFOutputDummy)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFOutput, ZFOutputForString, ZFMP_IN_OUT(zfstring &, s))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFOutput, ZFOutputForBuffer, ZFMP_IN_OUT(ZFBuffer &, buf))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

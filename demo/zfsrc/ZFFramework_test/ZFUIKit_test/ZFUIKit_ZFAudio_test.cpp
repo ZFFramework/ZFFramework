@@ -19,9 +19,6 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        // global audio does not belongs to any
-        zflineAlloc(ZFAudio, ZFInputForRes("test_audio.mp3"))->start();
-
         ZFCoreArrayPOD<ZFAudio *> audios;
         audios.add(this->audio0());
         audios.add(this->audio1());

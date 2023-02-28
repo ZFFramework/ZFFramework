@@ -18,7 +18,7 @@ protected:
         ZFLISTENER_1(onRecv
                 , ZFTestCase *, testCase
                 ) {
-             ZFHttpRequest *request = zfargs.senderT();
+            ZFHttpRequest *request = zfargs.senderT();
             ZFHttpResponse *response = zfargs.param0T();
 
             testCase->testCaseOutput("send: %s", request->objectInfo().cString());
@@ -27,10 +27,10 @@ protected:
             testCase->testCaseOutput("%s", response->contentInfo().cString());
             testCase->testCaseStop();
         } ZFLISTENER_END(onRecv)
-        zflineAlloc(ZFHttpRequest, "https://github.com", "GET")
+        zflineAlloc(ZFHttpRequest, "https://bing.com", "GET")
             ->request(onRecv);
 
-        zflineAlloc(ZFHttpRequest, "https://github.com", "GET")
+        zflineAlloc(ZFHttpRequest, "https://bing.com", "GET")
             ->request(onRecv)
             ->requestCancel();
     }

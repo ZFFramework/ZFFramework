@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,6 @@ public final class ZFUISysWindow extends Activity {
     private long _zfjniPointerOwnerZFUISysWindow = 0;
     private MainLayout _containerView = null;
     private int _sysWindowOrientation = ZFUIOrientation.e_Top;
-    private int _sysWindowOrientationFlags = ZFUIOrientation.e_Top;
 
     // ============================================================
     public static void native_nativeMainWindowCreate(long zfjniPointerOwnerZFUISysWindow) {
@@ -110,7 +110,6 @@ public final class ZFUISysWindow extends Activity {
     public static void native_sysWindowOrientationFlags(Object nativeWindow,
                                                         int sysWindowOrientationFlags) {
         ZFUISysWindow nativeWindowTmp = (ZFUISysWindow) nativeWindow;
-        nativeWindowTmp._sysWindowOrientationFlags = sysWindowOrientationFlags;
 
         boolean left = ((sysWindowOrientationFlags & ZFUIOrientation.e_Left) != 0);
         boolean top = ((sysWindowOrientationFlags & ZFUIOrientation.e_Top) != 0);
@@ -164,6 +163,12 @@ public final class ZFUISysWindow extends Activity {
     private static native void native_notifyOnPause(long zfjniPointerOwnerZFUISysWindow);
 
     private static native void native_notifyOnRotate(long zfjniPointerOwnerZFUISysWindow);
+
+    private static native boolean native_notifyKeyEvent(long zfjniPointerOwnerZFUISysWindow,
+                                                        int keyId,
+                                                        int keyAction,
+                                                        int keyCode,
+                                                        int keyCodeRaw);
 
     // ============================================================
     private static class MainLayout extends FrameLayout {
@@ -227,6 +232,13 @@ public final class ZFUISysWindow extends Activity {
         if (_zfjniPointerOwnerZFUISysWindow == 0) {
             ZFAndroidLog.shouldNotGoHere();
         }
+
+        // replace main entry
+        if (_isMainWindow && (ZFMainEntry.mainEntryActivity() instanceof ZFMainEntry)) {
+            ZFMainEntry.mainEntryActivity().finish();
+            ZFMainEntry.mainEntryActivity(this);
+        }
+
         _containerView = new MainLayout(this);
         ZFUISysWindow.native_notifyOnCreate(_zfjniPointerOwnerZFUISysWindow, this);
         this.setContentView(_containerView);
@@ -241,8 +253,9 @@ public final class ZFUISysWindow extends Activity {
         _containerView._owner = null;
         _containerView = null;
 
-        if (needDestroyMainEntry && ZFMainEntry.mainEntryActivity() != null && (ZFMainEntry.mainEntryActivity() instanceof ZFMainEntry)) {
-            ZFMainEntry.mainEntryActivity().finish();
+        if (needDestroyMainEntry && ZFMainEntry.mainEntryActivity() == this) {
+            ZFMainEntry.ZFFrameworkCleanup();
+            ZFMainEntry.mainEntryActivity(null);
         }
 
         super.onDestroy();
@@ -256,11 +269,11 @@ public final class ZFUISysWindow extends Activity {
 
     @Override
     protected void onPause() {
+        _keyEventImpl.onKeyCancel();
         ZFUISysWindow.native_notifyOnPause(_zfjniPointerOwnerZFUISysWindow);
         super.onPause();
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -288,4 +301,40 @@ public final class ZFUISysWindow extends Activity {
             ZFUISysWindow.native_notifyOnRotate(_zfjniPointerOwnerZFUISysWindow);
         }
     }
+
+    private ZFUIKeyEventUtil _keyEventImpl = new ZFUIKeyEventUtil(new ZFUIKeyEventUtil.Impl() {
+        @Override
+        public boolean onKey(int keyId, int keyAction, int keyCode, int keyCodeRaw) {
+            if (_zfjniPointerOwnerZFUISysWindow != 0
+                    && ZFUIView.native_notifyUIEvent_key(
+                    _zfjniPointerOwnerZFUISysWindow,
+                    keyId,
+                    keyAction,
+                    keyCode,
+                    keyCodeRaw)
+            ) {
+                return true;
+            }
+            return false;
+        }
+    });
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return _keyEventImpl.onKeyDown(keyCode, event)
+                || super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyMultiple(int keyCode, int repeatCount, KeyEvent event) {
+        return _keyEventImpl.onKeyMultiple(keyCode, repeatCount, event)
+                || super.onKeyMultiple(keyCode, repeatCount, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        return _keyEventImpl.onKeyUp(keyCode, event)
+                || super.onKeyUp(keyCode, event);
+    }
+
 }

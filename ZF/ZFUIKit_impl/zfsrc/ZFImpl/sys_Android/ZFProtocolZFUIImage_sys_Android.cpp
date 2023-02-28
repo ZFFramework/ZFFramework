@@ -36,16 +36,8 @@ public:
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
                 .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
             ).c_str());
-        ZFBuffer buf;
-        ZFInputReadAll(buf, inputCallback);
-        if(buf.buffer() == zfnull)
-        {
-            return zfnull;
-        }
-        jobject byteBuf = ZFImpl_sys_Android_ZFAndroidBufferToJava(buf.buffer(), buf.bufferSize());
-        JNIBlockedDeleteLocalRef(byteBuf);
-
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, byteBuf);
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
+            ZFImpl_sys_Android_ZFInputWrapperFromZFInput(inputCallback));
         if(tmp == NULL)
         {
             return zfnull;
@@ -59,22 +51,14 @@ public:
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageToOutput",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
+                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
                 .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
             ).c_str());
-        jobject jobjBuffer = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, nativeImage));
-        if(jobjBuffer == zfnull)
-        {
-            return zffalse;
-        }
-        ZFImpl_sys_Android_Buffer buffer = ZFImpl_sys_Android_ZFAndroidBufferFromJava(jobjBuffer);
-        if(buffer.buffer == zfnull)
-        {
-            return zffalse;
-        }
-        zfindex written = outputCallback.execute(buffer.buffer, buffer.bufferSize);
-        JNIUtilDeleteLocalRef(jniEnv, jobjBuffer);
-        return (written == buffer.bufferSize);
+        return (zfbool)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId
+             , ZFCastStatic(jobject, nativeImage)
+             , ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(outputCallback)
+             );
     }
 
     virtual void *nativeImageCopy(ZF_IN void *nativeImage)

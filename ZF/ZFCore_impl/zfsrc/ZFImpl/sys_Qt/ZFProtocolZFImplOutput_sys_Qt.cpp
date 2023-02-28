@@ -55,7 +55,7 @@ private:
             }
             else
             {
-                zfindex index = zfstringFindReversely(s, '\n');
+                zfindex index = zfstringFindReversely(s, s.length(), '\n');
                 if(index != zfindexMax())
                 {
                     s[index] = '\0';

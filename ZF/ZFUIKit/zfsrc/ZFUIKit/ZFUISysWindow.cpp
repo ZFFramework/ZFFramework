@@ -56,6 +56,7 @@ ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnResume)
 ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnPause)
 ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnRotate)
 ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowMarginOnUpdate)
+ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnKeyEvent)
 
 zfautoObjectT<ZFUISysWindow *> ZFUISysWindow::nativeWindowEmbed(ZF_IN ZFUISysWindowEmbedImpl *embedImpl)
 {

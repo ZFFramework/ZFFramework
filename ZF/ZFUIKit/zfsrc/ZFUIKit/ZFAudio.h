@@ -23,38 +23,42 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when audio load finished
+     * called when audio load finished, ensured called in ZFThread::mainThread\n
+     * param0 is a #ZFResultType shows the load result,
+     * param1 is a #v_zfstring shows the error hint if load fail
      */
     ZFOBSERVER_EVENT(AudioOnLoad)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when audio started
+     * called when audio started, ensured called in ZFThread::mainThread
      */
     ZFOBSERVER_EVENT(AudioOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when audio stopped
+     * called when audio stopped, ensured called in ZFThread::mainThread\n
+     * param0 is a #ZFResultType shows the play result,
+     * param1 is a #v_zfstring shows the error hint if play fail
      */
     ZFOBSERVER_EVENT(AudioOnStop)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when audio start success and about to play,
-     * or resume from pause
+     * or resume from pause, ensured called in ZFThread::mainThread
      */
     ZFOBSERVER_EVENT(AudioOnResume)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when audio pause
+     * called when audio pause, ensured called in ZFThread::mainThread
      */
     ZFOBSERVER_EVENT(AudioOnPause)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when audio looped
+     * called when audio looped, ensured called in ZFThread::mainThread
      */
     ZFOBSERVER_EVENT(AudioOnLoop)
 
@@ -155,13 +159,22 @@ protected:
         zfsuper::objectInfoOnAppend(ret);
         ret += " ";
         ret += this->stateHint();
+        if(this->started())
+        {
+            ret += " ";
+            zftimetToString(ret, this->position() / 1000);
+            ret += "/";
+            zftimetToString(ret, this->duration() / 1000);
+        }
     }
 
 protected:
     /** @brief see #EventAudioOnLoad */
-    virtual void audioOnLoad(void)
+    virtual void audioOnLoad(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint)
     {
-        this->observerNotify(ZFAudio::EventAudioOnLoad());
+        zfblockedAlloc(ZFResultType, resultHolder);
+        resultHolder->enumValue(result);
+        this->observerNotify(ZFAudio::EventAudioOnLoad(), resultHolder, errorHint);
     }
     /** @brief see #EventAudioOnStart */
     virtual void audioOnStart(void)
@@ -169,9 +182,11 @@ protected:
         this->observerNotify(ZFAudio::EventAudioOnStart());
     }
     /** @brief see #EventAudioOnStop */
-    virtual void audioOnStop(void)
+    virtual void audioOnStop(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint)
     {
-        this->observerNotify(ZFAudio::EventAudioOnStop());
+        zfblockedAlloc(ZFResultType, resultHolder);
+        resultHolder->enumValue(result);
+        this->observerNotify(ZFAudio::EventAudioOnStop(), resultHolder, errorHint);
     }
     /** @brief see #EventAudioOnResume */
     virtual void audioOnResume(void)
@@ -190,8 +205,8 @@ protected:
     }
 
 public:
-    zffinal void _ZFP_ZFAudio_OnLoad(ZF_IN zfbool success);
-    zffinal void _ZFP_ZFAudio_OnStop(ZF_IN zfbool success);
+    zffinal void _ZFP_ZFAudio_OnLoad(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint);
+    zffinal void _ZFP_ZFAudio_OnStop(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint);
     zffinal void _ZFP_ZFAudio_OnResume(void);
     zffinal void _ZFP_ZFAudio_OnPause(void);
 private:

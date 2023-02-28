@@ -72,7 +72,7 @@ public:
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
 
 // ============================================================
-// common input callbacks
+// ZFInputDummy
 /**
  * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
  *
@@ -89,6 +89,8 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
  */
 extern ZFLIB_ZFCore ZFInput ZFInputDummy(void);
 
+// ============================================================
+// ZFInputForInputInRange
 /**
  * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
  *
@@ -130,6 +132,32 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCal
                                                    ZF_IN_OPT zfindex count = zfindexMax(),
                                                    ZF_IN_OPT zfbool autoRestorePos = zftrue);
 
+// ============================================================
+// ZFInputForBuffer
+/**
+ * @brief see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ *
+ * serializable data:
+ * @code
+ *   <node
+ *       buf="xxx" // optional, the buffer contents encoded by zfCoreDataEncode
+ *   >
+ *   </node>
+ * @endcode
+ */
+#define ZFCallbackSerializeCustomType_ZFInputForBuffer "ZFInputForBuffer"
+
+/** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFInputForBuffer_buf "buf"
+
+/**
+ * @brief create a input callback from ZFBuffer
+ *
+ * the source ZFBuffer would be retained until the result ZFInput destroyed
+ */
+extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(ZF_IN const ZFBuffer &buffer,
+                                             ZF_IN_OPT zfbool serializable = zffalse);
+
 /**
  * @brief create a intput callback input from a const void *,
  *   you must ensure the buffer is alive during the callback's life time
@@ -140,19 +168,22 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCal
  *   zfindexMax() by default
  */
 extern ZFLIB_ZFCore ZFInput ZFInputForBufferUnsafe(ZF_IN const void *src,
-                                                   ZF_IN_OPT zfindex count = zfindexMax());
+                                                   ZF_IN_OPT zfindex count = zfindexMax(),
+                                                   ZF_IN_OPT zfbool serializable = zffalse);
 /**
  * @brief see #ZFInputForBufferUnsafe,
  *   copy the contents and auto free it
  */
 extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(ZF_IN const void *src,
-                                             ZF_IN_OPT zfindex count = zfindexMax());
+                                             ZF_IN_OPT zfindex count = zfindexMax(),
+                                             ZF_IN_OPT zfbool serializable = zffalse);
 
 /**
  * @brief same as #ZFInputForBuffer
  */
 extern ZFLIB_ZFCore ZFInput ZFInputForString(ZF_IN const zfchar *src,
-                                             ZF_IN_OPT zfindex count = zfindexMax());
+                                             ZF_IN_OPT zfindex count = zfindexMax(),
+                                             ZF_IN_OPT zfbool serializable = zffalse);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOCallback_input_h_

@@ -5,13 +5,15 @@ import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 
-import com.ZFFramework.Android.NativeUtil.ZFAndroidBuffer;
+import com.ZFFramework.Android.NativeUtil.ZFInputWrapper;
+import com.ZFFramework.Android.NativeUtil.ZFOutputWrapper;
 import com.ZFFramework.Android.ZF_impl.ZFMainEntry;
 
 
 public final class ZFUIImage {
-    public static Object native_nativeImageFromInput(Object buf) {
-        Bitmap bitmap = BitmapFactory.decodeStream(((ZFAndroidBuffer) buf).toInputStream());
+    public static Object native_nativeImageFromInput(Object nativeInput) {
+        ZFInputWrapper input = (ZFInputWrapper) nativeInput;
+        Bitmap bitmap = BitmapFactory.decodeStream(input);
         if (bitmap == null) {
             return null;
         } else {
@@ -19,12 +21,10 @@ public final class ZFUIImage {
         }
     }
 
-    public static Object native_nativeImageToOutput(Object nativeImage) {
+    public static boolean native_nativeImageToOutput(Object nativeImage, Object nativeOutput) {
         BitmapDrawable src = (BitmapDrawable) nativeImage;
-        ZFAndroidBuffer buffer = new ZFAndroidBuffer(1024);
-        src.getBitmap().compress(CompressFormat.PNG, 1, buffer.toOutputStream());
-        buffer.bufferReadyToRead();
-        return buffer;
+        ZFOutputWrapper output = (ZFOutputWrapper) nativeOutput;
+        return src.getBitmap().compress(CompressFormat.PNG, 1, output);
     }
 
     public static Object native_nativeImageCopy(Object nativeImage) {

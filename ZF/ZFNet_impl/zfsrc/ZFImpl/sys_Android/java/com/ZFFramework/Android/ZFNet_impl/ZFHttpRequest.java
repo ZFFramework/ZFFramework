@@ -1,6 +1,7 @@
 package com.ZFFramework.Android.ZFNet_impl;
 
-import com.ZFFramework.Android.NativeUtil.ZFAndroidBuffer;
+import com.ZFFramework.Android.NativeUtil.ZFInputWrapper;
+import com.ZFFramework.Android.NativeUtil.ZFAndroidInput;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,7 +47,7 @@ public final class ZFHttpRequest {
                                                                   long zfjniPointerOwnerZFHttpResponse,
                                                                   int code,
                                                                   String errorHint,
-                                                                  Object body);
+                                                                  Object nativeBodyInput);
 
     // ============================================================
     // for request
@@ -187,11 +188,13 @@ public final class ZFHttpRequest {
         }
     }
 
-    public static void native_request(Object nativeTask, Object nativeBuf) {
+    public static void native_request(Object nativeTask, Object nativeInput) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
+        ZFInputWrapper nativeInputTmp = (ZFInputWrapper) nativeInput;
+
         int code = -1;
         String errorHint = null;
-        ZFAndroidBuffer bodyBuf = null;
+        ZFAndroidInput nativeBodyInput = null;
 
         if (!task.running) {
             return;
@@ -202,7 +205,7 @@ public final class ZFHttpRequest {
                 errorHint = "invalid connection";
                 break;
             }
-            if (nativeBuf != null) {
+            if (nativeInputTmp != null) {
                 task.connection.setDoOutput(true);
             }
 
@@ -219,8 +222,12 @@ public final class ZFHttpRequest {
             if (!task.running) {
                 return;
             }
-            if (nativeBuf != null) {
-                errorHint = native_request_write(task, (ZFAndroidBuffer) nativeBuf);
+            if (nativeInputTmp != null) {
+                errorHint = native_request_write(task, nativeInputTmp);
+                try {
+                    nativeInputTmp.close();
+                } catch (IOException ignored) {
+                }
                 if (errorHint != null) {
                     break;
                 }
@@ -249,58 +256,29 @@ public final class ZFHttpRequest {
                 return;
             }
 
-            bodyBuf = new ZFAndroidBuffer();
-            OutputStream output = bodyBuf.toOutputStream();
-            int ioBufSize = 256;
-            byte[] ioBuf = new byte[ioBufSize];
-            while (task.running) {
-                int read = 0;
-                try {
-                    read = input.read(ioBuf);
-                } catch (IOException e) {
-                    errorHint = "read timeout: " + e.getMessage();
-                    bodyBuf = null;
-                    break;
-                }
-                if (read > 0) {
-                    try {
-                        output.write(ioBuf, 0, read);
-                    } catch (IOException ignored) {
-                    }
-                }
-                if (read < ioBufSize) {
-                    break;
-                }
-            }
+            nativeBodyInput = new ZFAndroidInput(input);
         } while (false);
 
         if (task.running) {
-            if (bodyBuf != null) {
-                bodyBuf.bufferReadyToRead();
-            }
             native_ZFHttpRequest_notifyResponse(
                     task.zfjniPointerOwnerZFHttpRequest,
                     task.zfjniPointerOwnerZFHttpResponse,
                     code,
                     errorHint,
-                    bodyBuf
+                    nativeBodyInput
             );
         }
     }
 
-    private static String native_request_write(ZFHttpRequest task, ZFAndroidBuffer buf) {
-        InputStream input = null;
+    private static String native_request_write(ZFHttpRequest task, ZFInputWrapper input) {
         OutputStream output = null;
         if (task.connection != null) {
-            if (buf != null && buf.bufferSize() > 0) {
-                input = buf.toInputStream();
-                try {
-                    output = task.connection.getOutputStream();
-                } catch (IOException ignored) {
-                }
+            try {
+                output = task.connection.getOutputStream();
+            } catch (IOException ignored) {
             }
         }
-        if (input == null || output == null) {
+        if (output == null) {
             return "write fail";
         }
         final int ioBufSize = 256;

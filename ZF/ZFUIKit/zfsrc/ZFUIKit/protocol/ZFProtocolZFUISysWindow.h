@@ -147,6 +147,13 @@ public:
     {
         sysWindow->_ZFP_ZFUISysWindow_onRotate();
     }
+    /**
+     * @brief implementation must call this to notify key event
+     */
+    zffinal void notifyKeyEvent(ZF_IN ZFUISysWindow *sysWindow, ZF_IN ZFUIKeyEvent *event)
+    {
+        sysWindow->_ZFP_ZFUISysWindow_keyEvent(event);
+    }
 ZFPROTOCOL_INTERFACE_END(ZFUISysWindow)
 
 ZF_NAMESPACE_GLOBAL_END

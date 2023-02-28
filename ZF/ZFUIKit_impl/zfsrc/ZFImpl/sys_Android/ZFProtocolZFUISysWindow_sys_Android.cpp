@@ -253,5 +253,26 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUISysWindow,
 }
 JNI_METHOD_DECLARE_END()
 
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUISysWindow,
+                         jboolean, native_1notifyKeyEvent,
+                         JNIPointer zfjniPointerOwnerZFUISysWindow,
+                         jint keyId,
+                         jint keyAction,
+                         jint keyCode,
+                         jint keyCodeRaw)
+{
+    zfblockedAlloc(ZFUIKeyEvent, event);
+    event->eventResolved(zffalse);
+    event->keyId = keyId;
+    event->keyAction = (ZFUIKeyActionEnum)keyAction;
+    event->keyCode = (ZFUIKeyCodeEnum)keyCode;
+    event->keyCodeRaw = keyCodeRaw;
+    ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyKeyEvent(
+        ZFCastZFObject(ZFUISysWindow *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUISysWindow)),
+        event);
+    return event->eventResolved();
+}
+JNI_METHOD_DECLARE_END()
+
 #endif // #if ZF_ENV_sys_Android
 

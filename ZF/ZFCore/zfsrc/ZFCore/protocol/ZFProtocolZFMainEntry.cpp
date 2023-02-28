@@ -35,7 +35,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntrySetup)
 {
-    ZFGlobalObserver().observerRemove(ZFApp::EventAppEntry(), this->callback);
+    ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->callback);
 }
 private:
     ZFListener callback;

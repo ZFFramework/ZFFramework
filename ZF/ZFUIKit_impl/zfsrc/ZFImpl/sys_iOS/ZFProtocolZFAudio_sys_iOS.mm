@@ -8,8 +8,15 @@
 @interface _ZFP_ZFAudioImpl_sys_iOS_Audio : NSObject<AVAudioPlayerDelegate>
 @property (nonatomic, assign) ZFAudio *owner;
 @property (nonatomic, strong) AVAudioPlayer *audio;
+@property (nonatomic, assign) zfidentity loadTaskId;
 @end
 @implementation _ZFP_ZFAudioImpl_sys_iOS_Audio
+- (instancetype)init
+{
+    self = [super init];
+    self.loadTaskId = zfidentityInvalid();
+    return self;
+}
 - (void)audioAttach
 {
     if(self.audio == nil)
@@ -39,7 +46,16 @@
 {
     if(self.owner != zfnull)
     {
-        ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(self.owner, (zfbool)flag);
+        if(flag)
+        {
+            ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(self.owner, zftrue, zfnull);
+        }
+        else
+        {
+            zfblockedAlloc(v_zfstring, errorHint);
+            errorHint->zfv = "play failed";
+            ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(self.owner, zffalse, errorHint);
+        }
     }
 }
 @end
@@ -58,41 +74,69 @@ public:
     virtual void nativeAudioDestroy(ZF_IN ZFAudio *audio)
     {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge_transfer _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
+        [nativeAudio audioDetach];
         nativeAudio = nil;
     }
 
     virtual void nativeAudioLoad(ZF_IN ZFAudio *audio,
                                  ZF_IN const ZFInput &input)
     {
+        zfself *owner = this;
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 
-        ZFBuffer buf;
-        ZFInputReadAll(buf, input);
-        if(buf.bufferSize() == 0)
-        {
-            this->notifyAudioOnLoad(audio, zffalse);
-            return;
-        }
+        ZFLISTENER_2(onLoad
+                , ZFAudio *, audio
+                , ZFInput, input
+                ) {
+            _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 
-        NSData *data = [NSData dataWithBytesNoCopy:buf.buffer() length:buf.bufferSize() freeWhenDone:YES];
-        buf.bufferGiveUp();
-        NSError *error = nil;
-        nativeAudio.audio = [[AVAudioPlayer alloc] initWithData:data error:&error];
-        if(error != nil)
-        {
-            nativeAudio.audio = nil;
-            this->notifyAudioOnLoad(audio, zffalse);
-            return;
-        }
-        [nativeAudio audioAttach];
-        if(![nativeAudio.audio play])
-        {
-            [nativeAudio audioDetach];
-            this->notifyAudioOnLoad(audio, zffalse);
-            return;
-        }
-        [nativeAudio.audio pause];
-        this->notifyAudioOnLoad(audio, zftrue);
+            ZFBuffer buf;
+            ZFInputReadAll(buf, input);
+            if(buf.bufferSize() == 0)
+            {
+                zfblockedAlloc(v_zfstring, errorHint);
+                errorHint->zfv = "unable to load from input";
+                zfargs.result(errorHint);
+                return;
+            }
+
+            NSData *data = [NSData dataWithBytesNoCopy:buf.buffer() length:buf.bufferSize() freeWhenDone:YES];
+            buf.bufferGiveUp();
+            NSError *error = nil;
+            nativeAudio.audio = [[AVAudioPlayer alloc] initWithData:data error:&error];
+            if(error != nil)
+            {
+                zfblockedAlloc(v_zfstring, errorHint);
+                ZFImpl_sys_iOS_zfstringFromNSString(errorHint->zfv, error.description);
+                nativeAudio.audio = nil;
+                zfargs.result(errorHint);
+                return;
+            }
+            [nativeAudio audioAttach];
+            if(![nativeAudio.audio play])
+            {
+                [nativeAudio audioDetach];
+                zfblockedAlloc(v_zfstring, errorHint);
+                errorHint->zfv = "unable to play audio";
+                zfargs.result(errorHint);
+                return;
+            }
+            [nativeAudio.audio pause];
+            zfargs.result(zfnull);
+        } ZFLISTENER_END(onLoad)
+
+        ZFLISTENER_2(onLoadFinish
+                , zfself *, owner
+                , ZFAudio *, audio
+                ) {
+            _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
+            nativeAudio.loadTaskId = zfidentityInvalid();
+
+            v_zfstring *errorHint = zfargs.param0T();
+            owner->notifyAudioOnLoad(audio, errorHint == zfnull, errorHint);
+        } ZFLISTENER_END(onLoadFinish)
+
+        nativeAudio.loadTaskId = zfasync(onLoad, onLoadFinish);
     }
     virtual void nativeAudioLoad(ZF_IN ZFAudio *audio,
                                  ZF_IN const zfchar *url)
@@ -103,43 +147,55 @@ public:
         nativeAudio.audio = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:ZFImpl_sys_iOS_zfstringToNSString(url)] error:&error];
         if(error != nil)
         {
+            zfblockedAlloc(v_zfstring, errorHint);
+            ZFImpl_sys_iOS_zfstringFromNSString(errorHint->zfv, error.description);
             nativeAudio.audio = nil;
-            this->notifyAudioOnLoad(audio, zffalse);
+            this->notifyAudioOnLoad(audio, zffalse, errorHint);
             return;
         }
         [nativeAudio audioAttach];
         if(![nativeAudio.audio play])
         {
             [nativeAudio audioDetach];
-            this->notifyAudioOnLoad(audio, zffalse);
+            zfblockedAlloc(v_zfstring, errorHint);
+            errorHint->zfv = "unable to play audio";
+            this->notifyAudioOnLoad(audio, zffalse, errorHint);
             return;
         }
         [nativeAudio.audio pause];
-        this->notifyAudioOnLoad(audio, zftrue);
+        this->notifyAudioOnLoad(audio, zftrue, zfnull);
     }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio)
     {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
+        if(nativeAudio.loadTaskId != zfidentityInvalid())
+        {
+            zfasyncCancel(nativeAudio.loadTaskId);
+            nativeAudio.loadTaskId = zfidentityInvalid();
+        }
         [nativeAudio audioDetach];
     }
 
     virtual void nativeAudioStart(ZF_IN ZFAudio *audio)
     {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
+        nativeAudio.audio.currentTime = 0;
         if([nativeAudio.audio play])
         {
             this->notifyAudioOnResume(audio);
         }
         else
         {
-            [nativeAudio audioDetach];
-            this->notifyAudioOnStop(audio, zffalse);
+            zfblockedAlloc(v_zfstring, errorHint);
+            errorHint->zfv = "unable to play audio";
+            this->notifyAudioOnStop(audio, zffalse, errorHint);
         }
     }
     virtual void nativeAudioStop(ZF_IN ZFAudio *audio)
     {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
-        [nativeAudio audioDetach];
+        [nativeAudio.audio pause];
+        nativeAudio.audio.currentTime = 0;
     }
     virtual void nativeAudioResume(ZF_IN ZFAudio *audio)
     {

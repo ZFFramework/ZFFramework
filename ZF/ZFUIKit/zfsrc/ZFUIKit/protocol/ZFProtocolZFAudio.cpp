@@ -4,5 +4,50 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFAudio)
 
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnLoad(ZF_IN ZFAudio *audio,
+                                                            ZF_IN zfbool success,
+                                                            ZF_IN v_zfstring *errorHint)
+{
+    ZFLISTENER_3(action
+            , zfautoObjectT<ZFAudio *>, audio
+            , zfbool, success
+            , zfautoObjectT<v_zfstring *>, errorHint
+            ) {
+        audio->_ZFP_ZFAudio_OnLoad(success ? ZFResultType::e_Success : ZFResultType::e_Fail, errorHint);
+    } ZFLISTENER_END(action)
+    ZFThread::mainThread()->taskQueueAdd(action);
+}
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(ZF_IN ZFAudio *audio,
+                                                            ZF_IN zfbool success,
+                                                            ZF_IN v_zfstring *errorHint)
+{
+    ZFLISTENER_3(action
+            , zfautoObjectT<ZFAudio *>, audio
+            , zfbool, success
+            , zfautoObjectT<v_zfstring *>, errorHint
+            ) {
+        audio->_ZFP_ZFAudio_OnStop(success ? ZFResultType::e_Success : ZFResultType::e_Fail, errorHint);
+    } ZFLISTENER_END(action)
+    ZFThread::mainThread()->taskQueueAdd(action);
+}
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnResume(ZF_IN ZFAudio *audio)
+{
+    ZFLISTENER_1(action
+            , zfautoObjectT<ZFAudio *>, audio
+            ) {
+        audio->_ZFP_ZFAudio_OnResume();
+    } ZFLISTENER_END(action)
+    ZFThread::mainThread()->taskQueueAdd(action);
+}
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnPause(ZF_IN ZFAudio *audio)
+{
+    ZFLISTENER_1(action
+            , zfautoObjectT<ZFAudio *>, audio
+            ) {
+        audio->_ZFP_ZFAudio_OnPause();
+    } ZFLISTENER_END(action)
+    ZFThread::mainThread()->taskQueueAdd(action);
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

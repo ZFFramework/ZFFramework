@@ -15,12 +15,15 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum,
                          jstring rawEnumNamespace,
                          jstring rawEnumValueName)
 {
-    const zfchar *rawEnumNamespaceT = JNIUtilGetStringUTFChars(jniEnv, rawEnumNamespace, zfnull);
+    const zfchar *rawEnumNamespaceT = rawEnumNamespace ? JNIUtilGetStringUTFChars(jniEnv, rawEnumNamespace, zfnull) : zfnull;
     const zfchar *rawEnumValueNameT = JNIUtilGetStringUTFChars(jniEnv, rawEnumValueName, zfnull);
     zfCoreCriticalMessageTrim("[ZFEnum] invalid enum: %s::%s",
         rawEnumNamespaceT,
         rawEnumValueNameT);
-    JNIUtilReleaseStringUTFChars(jniEnv, rawEnumNamespace, rawEnumNamespaceT);
+    if(rawEnumNamespaceT != zfnull)
+    {
+        JNIUtilReleaseStringUTFChars(jniEnv, rawEnumNamespace, rawEnumNamespaceT);
+    }
     JNIUtilReleaseStringUTFChars(jniEnv, rawEnumValueName, rawEnumValueNameT);
 }
 JNI_METHOD_DECLARE_END()
@@ -30,7 +33,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum,
                          jstring rawEnumNamespace,
                          jstring rawEnumValueName)
 {
-    const zfchar *rawEnumNamespaceT = JNIUtilGetStringUTFChars(jniEnv, rawEnumNamespace, zfnull);
+    const zfchar *rawEnumNamespaceT = rawEnumNamespace ? JNIUtilGetStringUTFChars(jniEnv, rawEnumNamespace, zfnull) : zfnull;
     const zfchar *rawEnumValueNameT = JNIUtilGetStringUTFChars(jniEnv, rawEnumValueName, zfnull);
     zfuint ret = ZFEnumInvalid();
     do
@@ -39,7 +42,10 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFEnum,
         if(method == zfnull) {break;}
         ret = method->execute<zfuint>(zfnull);
     } while(zffalse);
-    JNIUtilReleaseStringUTFChars(jniEnv, rawEnumNamespace, rawEnumNamespaceT);
+    if(rawEnumNamespaceT != zfnull)
+    {
+        JNIUtilReleaseStringUTFChars(jniEnv, rawEnumNamespace, rawEnumNamespaceT);
+    }
     JNIUtilReleaseStringUTFChars(jniEnv, rawEnumValueName, rawEnumValueNameT);
     return (jint)ret;
 }

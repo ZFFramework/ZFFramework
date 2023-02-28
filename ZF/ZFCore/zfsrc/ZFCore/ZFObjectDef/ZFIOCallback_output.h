@@ -172,12 +172,13 @@ extern ZFLIB_ZFCore ZFOutput ZFOutputDummy(void);
 /**
  * @brief create a output callback to output to a zfstring
  *
- * params:
- * -  (zfstring &) a zfstring to output
- *
  * @note you must ensure the string to output is alive while the callback is still under use
  */
 extern ZFLIB_ZFCore ZFOutput ZFOutputForString(ZF_IN_OUT zfstring &s);
+/**
+ * @brief create a output callback to output to a ZFBuffer
+ */
+extern ZFLIB_ZFCore ZFOutput ZFOutputForBuffer(ZF_IN_OUT ZFBuffer &buf);
 /**
  * @brief create a output callback to output to a buffer
  *

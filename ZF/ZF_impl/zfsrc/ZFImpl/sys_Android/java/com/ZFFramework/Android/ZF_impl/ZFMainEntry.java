@@ -50,6 +50,7 @@ public final class ZFMainEntry extends Activity {
         _app = new WeakReference<>(loaderActivity.getApplication());
         _appContext = new WeakReference<>(loaderActivity.getApplicationContext());
         Intent intent = new Intent(loaderActivity, ZFMainEntry.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         loaderActivity.startActivity(intent);
         loaderActivity.finish();
     }
@@ -75,8 +76,10 @@ public final class ZFMainEntry extends Activity {
 
     @Override
     protected void onDestroy() {
-        if (_mainEntryCalled) {
+        if (_mainEntryCalled && ZFMainEntry.mainEntryActivity() == this) {
             ZFFrameworkCleanup();
+            _app = null;
+            _appContext = null;
         }
         super.onDestroy();
     }
@@ -210,21 +213,21 @@ public final class ZFMainEntry extends Activity {
     // native
     private static boolean _mainEntryIsStarted = false;
 
-    private static void ZFFrameworkInit() {
+    public static void ZFFrameworkInit() {
         if (!_mainEntryIsStarted) {
             _mainEntryIsStarted = true;
             native_ZFFrameworkInit();
         }
     }
 
-    private static void ZFFrameworkCleanup() {
+    public static void ZFFrameworkCleanup() {
         if (_mainEntryIsStarted) {
             _mainEntryIsStarted = false;
             native_ZFFrameworkCleanup();
         }
     }
 
-    private static int ZFMainExecute(String[] params) {
+    public static int ZFMainExecute(String[] params) {
         return native_ZFMainExecute(params);
     }
 

@@ -52,40 +52,26 @@ public:
 
 public:
     /**
-     * @brief implementation must notify when audio load finished
-     *
-     * must not notify when #nativeAudioLoadCancel called
+     * @brief implementation must notify when audio load success or fail
      */
     zffinal void notifyAudioOnLoad(ZF_IN ZFAudio *audio,
-                                   ZF_IN zfbool success)
-    {
-        audio->_ZFP_ZFAudio_OnLoad(success);
-    }
+                                   ZF_IN zfbool success,
+                                   ZF_IN v_zfstring *errorHint);
     /**
-     * @brief implementation must notify when audio stop
-     *
-     * must not notify when #nativeAudioStop called
+     * @brief implementation must notify when audio play success or fail
      */
     zffinal void notifyAudioOnStop(ZF_IN ZFAudio *audio,
-                                   ZF_IN zfbool success)
-    {
-        audio->_ZFP_ZFAudio_OnStop(success);
-    }
+                                   ZF_IN zfbool success,
+                                   ZF_IN v_zfstring *errorHint);
     /**
      * @brief implementation must notify when audio start success and about to play,
      *   or resume from pause
      */
-    zffinal void notifyAudioOnResume(ZF_IN ZFAudio *audio)
-    {
-        audio->_ZFP_ZFAudio_OnResume();
-    }
+    zffinal void notifyAudioOnResume(ZF_IN ZFAudio *audio);
     /**
      * @brief implementation must notify when audio paused
      */
-    zffinal void notifyAudioOnPause(ZF_IN ZFAudio *audio)
-    {
-        audio->_ZFP_ZFAudio_OnPause();
-    }
+    zffinal void notifyAudioOnPause(ZF_IN ZFAudio *audio);
 ZFPROTOCOL_INTERFACE_END(ZFAudio)
 
 ZF_NAMESPACE_GLOBAL_END

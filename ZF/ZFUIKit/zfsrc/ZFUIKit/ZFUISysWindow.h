@@ -78,6 +78,15 @@ public:
      */
     ZFOBSERVER_EVENT(SysWindowMarginOnUpdate)
 
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * notified when #ZFUIKeyEvent fired to the window,
+     * and none of it's view handled the event by #ZFUIEvent::eventResolved\n
+     * param0 is the #ZFUIKeyEvent
+     */
+    ZFOBSERVER_EVENT(SysWindowOnKeyEvent)
+
 public:
     /**
      * @brief used to embed #ZFUISysWindow to existing UI framework
@@ -90,7 +99,7 @@ public:
      * and manually manage the life cycle of the returned #ZFUISysWindow\n
      * \n
      * the embedImpl would be retained until the created window destroy,
-     * so that you only need to take care of the created winodw,
+     * so that you only need to take care of the created window,
      * to explicitly clear all the contents,
      * simply use `window->nativeWindowEmbedImplDestroy()`\n
      * \n
@@ -323,6 +332,10 @@ public:
     zffinal void _ZFP_ZFUISysWindow_onPause(void);
     zffinal void _ZFP_ZFUISysWindow_onRotate(void);
     zffinal void _ZFP_ZFUISysWindow_sysWindowLayoutUpdate(void);
+    zffinal void _ZFP_ZFUISysWindow_keyEvent(ZF_IN ZFUIKeyEvent *event)
+    {
+        this->observerNotify(ZFUISysWindow::EventSysWindowOnKeyEvent(), event);
+    }
 
 private:
     _ZFP_ZFUISysWindowPrivate *d;
@@ -467,6 +480,13 @@ public:
     zffinal void notifyOnRotate(ZF_IN ZFUISysWindow *sysWindow)
     {
         sysWindow->_ZFP_ZFUISysWindow_onRotate();
+    }
+    /**
+     * @brief implementation must call this to notify key event
+     */
+    zffinal void notifyKeyEvent(ZF_IN ZFUISysWindow *sysWindow, ZF_IN ZFUIKeyEvent *event)
+    {
+        sysWindow->_ZFP_ZFUISysWindow_keyEvent(event);
     }
 };
 

@@ -137,8 +137,6 @@ inline zfstring ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr)
     return ret;
 }
 // note returned object must be deleted by DeleteLocalRef
-extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfstring &s);
-// note returned object must be deleted by DeleteLocalRef
 extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfchar *s);
 
 // ============================================================
@@ -152,32 +150,12 @@ inline zfstring ZFImpl_sys_Android_objectInfo(ZF_IN jobject nativeObject)
     return ret;
 }
 
-// ============================================================
-// ZFAndroidBuffer
-// buffer object used to access raw byte[] data from/to Java side
-// see ZFAndroidBuffer.java for more info
-zfclassPOD ZFLIB_ZF_impl ZFImpl_sys_Android_Buffer
-{
-public:
-    zfbyte *buffer;
-    zfindex bufferSize;
-};
-extern ZFLIB_ZF_impl const ZFImpl_sys_Android_Buffer ZFImpl_sys_Android_BufferZero;
-#define ZFImpl_sys_Android_JNI_ID_ZFAndroidBuffer ZFImpl_sys_Android_JNI_ID(NativeUtil_ZFAndroidBuffer)
-#define ZFImpl_sys_Android_JNI_NAME_ZFAndroidBuffer ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFAndroidBuffer)
-extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassZFAndroidBuffer(void);
-
-extern ZFLIB_ZF_impl void ZFImpl_sys_Android_ZFAndroidBufferFromJava(ZF_OUT ZFImpl_sys_Android_Buffer &ret, ZF_IN jobject jobjBuffer);
-inline ZFImpl_sys_Android_Buffer ZFImpl_sys_Android_ZFAndroidBufferFromJava(ZF_IN jobject jobjBuffer)
-{
-    ZFImpl_sys_Android_Buffer ret = ZFImpl_sys_Android_BufferZero;
-    ZFImpl_sys_Android_ZFAndroidBufferFromJava(ret, jobjBuffer);
-    return ret;
-}
-// note returned value must be released by DeleteLocalRef
-extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_ZFAndroidBufferToJava(ZF_IN void *buffer, ZF_IN zfindex bufferSize);
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Android
 #endif // #ifndef _ZFI_ZFImpl_sys_Android_ZF_impl_h_
+
+#include "ZFImpl_sys_Android_ZFAndroidInput.h"
+#include "ZFImpl_sys_Android_ZFAndroidOutput.h"
+#include "ZFImpl_sys_Android_ZFInputWrapper.h"
+#include "ZFImpl_sys_Android_ZFOutputWrapper.h"
 

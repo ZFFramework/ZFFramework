@@ -7,7 +7,6 @@
 #define _ZFI_ZFThread_zfasync_h_
 
 #include "ZFThread.h"
-#include "ZFTaskIdUtil.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -19,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may store result to callback's #ZFArgs::result,
  * and obtain the result from finishCallback's #ZFArgs::param0
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zftaskid, zfasync,
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfidentity, zfasync,
                         ZFMP_IN(const ZFListener &, callback),
                         ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback()))
 
@@ -27,7 +26,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zftaskid, zfasync,
  * @brief try to cancel the task or finishCallback started by #zfasync
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel,
-                        ZFMP_IN_OUT(zftaskid &, taskid))
+                        ZFMP_IN(zfidentity, taskId))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFThread_zfasync_h_

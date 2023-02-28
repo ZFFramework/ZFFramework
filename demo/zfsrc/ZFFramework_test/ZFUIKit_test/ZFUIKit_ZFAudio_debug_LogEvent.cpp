@@ -26,7 +26,64 @@ private:
     ZFListener onEventListener;
     static void onEvent(ZF_IN const ZFArgs &zfargs)
     {
-        zfLogTrimT() << ZFIdMapNameForId(zfargs.eventId()) << zfargs.sender()->objectInfoOfInstance();
+        zfLogTrimT()
+            << zfargs.sender()
+            << ZFIdMapNameForId(zfargs.eventId())
+            << zfargs.param0()
+            << zfargs.param1()
+            ;
+
+        if(zfargs.eventId() == ZFAudio::EventAudioOnResume())
+        {
+            audioOnResume(zfargs.senderT());
+        }
+        else if(zfargs.eventId() == ZFAudio::EventAudioOnPause())
+        {
+            audioOnPause(zfargs.senderT());
+        }
+    }
+private:
+    static zfautoObjectT<ZFTimer *> &_timer(void)
+    {
+        static zfautoObjectT<ZFTimer *> d;
+        return d;
+    }
+    static ZFCoreArrayPOD<ZFAudio *> &_playing(void)
+    {
+        static ZFCoreArrayPOD<ZFAudio *> d;
+        return d;
+    }
+    static void audioOnResume(ZF_IN ZFAudio *audio)
+    {
+        zfautoObjectT<ZFTimer *> &timer = _timer();
+        ZFCoreArrayPOD<ZFAudio *> &playing = _playing();
+
+        playing.add(audio);
+        if(playing.count() == 1)
+        {
+            ZFLISTENER_1(onTimer
+                    , ZFCoreArrayPOD<ZFAudio *> const &, playing
+                    ) {
+                for(zfindex i = 0; i < playing.count(); ++i)
+                {
+                    ZFAudio *audio = playing[i];
+                    zfLogTrimT() << audio;
+                }
+            } ZFLISTENER_END(onTimer)
+            timer = ZFTimerStart(1000, onTimer);
+        }
+    }
+    static void audioOnPause(ZF_IN ZFAudio *audio)
+    {
+        zfautoObjectT<ZFTimer *> &timer = _timer();
+        ZFCoreArrayPOD<ZFAudio *> &playing = _playing();
+
+        playing.removeElement(audio);
+        if(playing.isEmpty())
+        {
+            timer->timerStop();
+            timer = zfnull;
+        }
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIKit_ZFAudio_debug_LogEvent)
 #endif

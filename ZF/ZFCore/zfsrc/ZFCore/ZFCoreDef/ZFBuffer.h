@@ -78,6 +78,10 @@ public:
      */
     zffinal void bufferCopy(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
     {
+        if(bufferSize == zfindexMax())
+        {
+            bufferSize = zfslen((const zfchar *)buffer) * sizeof(zfchar);
+        }
         this->bufferCapacity(bufferSize);
         if(bufferSize > 0)
         {
@@ -106,6 +110,10 @@ public:
      */
     zffinal void bufferAppend(ZF_IN const void *buffer, ZF_IN zfindex bufferSize)
     {
+        if(bufferSize == zfindexMax())
+        {
+            bufferSize = zfslen((const zfchar *)buffer) * sizeof(zfchar);
+        }
         this->bufferCapacity(this->bufferSize() + bufferSize);
         zfmemcpy((zfbyte *)this->buffer() + this->bufferSize(), buffer, bufferSize);
         *((zfchar *)((zfbyte *)this->buffer() + this->bufferSize() + bufferSize)) = '\0';

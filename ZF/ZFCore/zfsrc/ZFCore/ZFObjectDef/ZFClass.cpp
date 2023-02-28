@@ -523,7 +523,14 @@ ZF_GLOBAL_INITIALIZER_END(ZFClassTagClearLevelHigh)
 // static methods
 const ZFClass *ZFClass::classForName(ZF_IN const zfchar *className)
 {
-    return _ZFP_ZFClassMap.get<const ZFClass *>(ZFNamespaceSkipGlobal(className));
+    if(className == zfnull)
+    {
+        return zfnull;
+    }
+    else
+    {
+        return _ZFP_ZFClassMap.get<const ZFClass *>(ZFNamespaceSkipGlobal(className));
+    }
 }
 const ZFClass *ZFClass::classForName(ZF_IN const zfchar *className,
                                      ZF_IN const zfchar *classNamespace)
