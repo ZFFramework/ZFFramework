@@ -79,13 +79,13 @@ static const ZFXmlOutputFlags &_ZFP_ZFXmlOutputFlagsDetailedInit(void)
 ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputFlags, ZFXmlOutputFlagsDetailed, _ZFP_ZFXmlOutputFlagsDetailedInit())
 
 // ============================================================
-static zfbool _ZFP_ZFXmlOutputElementUseSingleTag(ZF_IN const ZFXmlItem &element,
+static zfbool _ZFP_ZFXmlOutputElementUseSingleTag(ZF_IN const ZFXml &element,
                                                   ZF_IN const ZFXmlOutputFlags &flags,
                                                   ZF_IN const ZFXmlVisitData &data)
 {
     return (flags.xmlElementTrimTagIfNoChildren && !element.childFirst());
 }
-static zfbool _ZFP_ZFXmlOutputElementAttributeNeedNewLine(ZF_IN const ZFXmlItem &element,
+static zfbool _ZFP_ZFXmlOutputElementAttributeNeedNewLine(ZF_IN const ZFXml &element,
                                                           ZF_IN const ZFXmlOutputFlags &flags,
                                                           ZF_IN const ZFXmlVisitData &data)
 {
@@ -93,7 +93,7 @@ static zfbool _ZFP_ZFXmlOutputElementAttributeNeedNewLine(ZF_IN const ZFXmlItem 
     {
         return zffalse;
     }
-    ZFXmlItem xmlAttribute = element.attrFirst();
+    ZFXml xmlAttribute = element.attrFirst();
     if(flags.xmlElementAttributeCountBeforeAddNewLine == zfindexMax())
     {
         return zffalse;
@@ -114,7 +114,7 @@ static zfbool _ZFP_ZFXmlOutputElementAttributeNeedNewLine(ZF_IN const ZFXmlItem 
     }
     return zffalse;
 }
-static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(ZF_IN const ZFXmlItem &xmlChild,
+static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(ZF_IN const ZFXml &xmlChild,
                                                       ZF_IN const ZFXmlOutputFlags &flags,
                                                       ZF_IN const ZFXmlVisitData &data)
 {
@@ -131,14 +131,14 @@ static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(ZF_IN const ZFXmlItem &xml
     {
         return zftrue;
     }
-    for(ZFXmlItem t = xmlChild.siblingNext(); t; t = t.siblingNext())
+    for(ZFXml t = xmlChild.siblingNext(); t; t = t.siblingNext())
     {
         if(t.xmlType() != ZFXmlType::e_XmlText)
         {
             return zftrue;
         }
     }
-    for(ZFXmlItem t = xmlChild.siblingPrev(); t; t = t.siblingPrev())
+    for(ZFXml t = xmlChild.siblingPrev(); t; t = t.siblingPrev())
     {
         if(t.xmlType() != ZFXmlType::e_XmlText)
         {
@@ -148,7 +148,7 @@ static zfbool _ZFP_ZFXmlOutputElementChildNeedNewLine(ZF_IN const ZFXmlItem &xml
 
     return zffalse;
 }
-static zfbool _ZFP_ZFXmlOutputAttributeNeedNewLine(ZF_IN const ZFXmlItem &xmlAttribute,
+static zfbool _ZFP_ZFXmlOutputAttributeNeedNewLine(ZF_IN const ZFXml &xmlAttribute,
                                                    ZF_IN const ZFXmlOutputFlags &flags,
                                                    ZF_IN const ZFXmlVisitData &data)
 {
@@ -562,29 +562,29 @@ public:
         return _s._sInPool;
     }
 };
-zfclassNotPOD _ZFP_ZFXmlItemPrivate
+zfclassNotPOD _ZFP_ZFXmlPrivate
 {
 public:
     zfuint refCount;
     ZFXmlTypeEnum xmlType;
-    _ZFP_ZFXmlItemPrivate *xmlParent;
+    _ZFP_ZFXmlPrivate *xmlParent;
     _ZFP_ZFXmlMemoryPoolString xmlName;
     _ZFP_ZFXmlMemoryPoolString xmlValue;
 
-    _ZFP_ZFXmlItemPrivate *attrFirst;
-    _ZFP_ZFXmlItemPrivate *attrLast;
-    _ZFP_ZFXmlItemPrivate *childFirst;
-    _ZFP_ZFXmlItemPrivate *childLast;
+    _ZFP_ZFXmlPrivate *attrFirst;
+    _ZFP_ZFXmlPrivate *attrLast;
+    _ZFP_ZFXmlPrivate *childFirst;
+    _ZFP_ZFXmlPrivate *childLast;
 
     // prev/next attribute or sibling depending on xmlType
-    _ZFP_ZFXmlItemPrivate *siblingPrev;
-    _ZFP_ZFXmlItemPrivate *siblingNext;
+    _ZFP_ZFXmlPrivate *siblingPrev;
+    _ZFP_ZFXmlPrivate *siblingNext;
 
     zfbool attrNeedSort;
     zfbool xmlTextCDATA;
 
 public:
-    explicit _ZFP_ZFXmlItemPrivate(ZF_IN ZFXmlTypeEnum xmlType)
+    explicit _ZFP_ZFXmlPrivate(ZF_IN ZFXmlTypeEnum xmlType)
     : refCount(1)
     , xmlType(xmlType)
     , xmlParent(zfnull)
@@ -600,7 +600,7 @@ public:
     , xmlTextCDATA(zffalse)
     {
     }
-    ~_ZFP_ZFXmlItemPrivate(void)
+    ~_ZFP_ZFXmlPrivate(void)
     {
         this->attrRemoveAll();
         this->childRemoveAll();
@@ -611,12 +611,12 @@ public:
     {
         if(this->attrFirst)
         {
-            _ZFP_ZFXmlItemPrivate *xmlAttribute = this->attrFirst;
+            _ZFP_ZFXmlPrivate *xmlAttribute = this->attrFirst;
             this->attrFirst = zfnull;
             this->attrLast = zfnull;
             while(xmlAttribute != zfnull)
             {
-                _ZFP_ZFXmlItemPrivate *xmlAttributeTmp = xmlAttribute;
+                _ZFP_ZFXmlPrivate *xmlAttributeTmp = xmlAttribute;
                 xmlAttribute = xmlAttribute->siblingNext;
 
                 xmlAttributeTmp->xmlParent = zfnull;
@@ -635,12 +635,12 @@ public:
     {
         if(this->childFirst)
         {
-            _ZFP_ZFXmlItemPrivate *xmlChild = this->childFirst;
+            _ZFP_ZFXmlPrivate *xmlChild = this->childFirst;
             this->childFirst = zfnull;
             this->childLast = zfnull;
             while(xmlChild != zfnull)
             {
-                _ZFP_ZFXmlItemPrivate *xmlChildTmp = xmlChild;
+                _ZFP_ZFXmlPrivate *xmlChildTmp = xmlChild;
                 xmlChild = xmlChild->siblingNext;
 
                 xmlChildTmp->xmlParent = zfnull;
@@ -657,7 +657,7 @@ public:
     }
 
 public:
-    void attrAttach(ZF_IN _ZFP_ZFXmlItemPrivate *addThis, ZF_IN _ZFP_ZFXmlItemPrivate *beforeThis)
+    void attrAttach(ZF_IN _ZFP_ZFXmlPrivate *addThis, ZF_IN _ZFP_ZFXmlPrivate *beforeThis)
     {
         this->attrNeedSort = zftrue;
         ++(addThis->refCount);
@@ -695,7 +695,7 @@ public:
             addThis->siblingNext = beforeThis;
         }
     }
-    void attrDetach(ZF_IN _ZFP_ZFXmlItemPrivate *removeThis)
+    void attrDetach(ZF_IN _ZFP_ZFXmlPrivate *removeThis)
     {
         this->attrNeedSort = zftrue;
         --(removeThis->refCount);
@@ -724,7 +724,7 @@ public:
             zfdelete(removeThis);
         }
     }
-    void childAttach(ZF_IN _ZFP_ZFXmlItemPrivate *addThis, ZF_IN _ZFP_ZFXmlItemPrivate *beforeThis)
+    void childAttach(ZF_IN _ZFP_ZFXmlPrivate *addThis, ZF_IN _ZFP_ZFXmlPrivate *beforeThis)
     {
         ++(addThis->refCount);
         addThis->xmlParent = this;
@@ -761,7 +761,7 @@ public:
             addThis->siblingNext = beforeThis;
         }
     }
-    void childDetach(ZF_IN _ZFP_ZFXmlItemPrivate *removeThis)
+    void childDetach(ZF_IN _ZFP_ZFXmlPrivate *removeThis)
     {
         --(removeThis->refCount);
         removeThis->xmlParent = zfnull;
@@ -791,7 +791,7 @@ public:
     }
 
 public:
-    static ZFCompareResult _ZFP_attrSortComparer(ZF_IN _ZFP_ZFXmlItemPrivate * const &v0, ZF_IN _ZFP_ZFXmlItemPrivate * const &v1)
+    static ZFCompareResult _ZFP_attrSortComparer(ZF_IN _ZFP_ZFXmlPrivate * const &v0, ZF_IN _ZFP_ZFXmlPrivate * const &v1)
     {
         zfint cmpResult = zfscmp(v0->xmlName.value(), v1->xmlName.value());
         if(cmpResult < 0)
@@ -817,8 +817,8 @@ public:
 
         if(this->attrFirst != zfnull)
         {
-            ZFCoreArrayPOD<_ZFP_ZFXmlItemPrivate *> tmp;
-            _ZFP_ZFXmlItemPrivate *xmlAttribute = this->attrFirst;
+            ZFCoreArrayPOD<_ZFP_ZFXmlPrivate *> tmp;
+            _ZFP_ZFXmlPrivate *xmlAttribute = this->attrFirst;
             while(xmlAttribute != zfnull)
             {
                 tmp.add(xmlAttribute);
@@ -857,7 +857,7 @@ public:
 
         if(this->xmlType == ZFXmlType::e_XmlElement || this->xmlType == ZFXmlType::e_XmlDocument)
         {
-            _ZFP_ZFXmlItemPrivate *xmlChild = this->childFirst;
+            _ZFP_ZFXmlPrivate *xmlChild = this->childFirst;
             while(xmlChild != zfnull)
             {
                 xmlChild->attrSortRecursively();
@@ -867,7 +867,7 @@ public:
     }
 };
 
-static void _ZFP_ZFXmlCopyNode(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
+static void _ZFP_ZFXmlCopyNode(ZF_IN ZFXml &to, ZF_IN const ZFXml &from)
 {
     to.xmlName(from.xmlName());
     to.xmlValue(from.xmlValue());
@@ -881,10 +881,10 @@ static void _ZFP_ZFXmlCopyNode(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
         case ZFXmlType::e_XmlElement:
         case ZFXmlType::e_XmlDeclaration:
         {
-            ZFXmlItem fromAttribute = from.attrFirst();
+            ZFXml fromAttribute = from.attrFirst();
             while(fromAttribute)
             {
-                to.attrAdd(fromAttribute.xmlClone());
+                to.attrAdd(fromAttribute.copy());
                 fromAttribute = fromAttribute.attrNext();
             }
             break;
@@ -893,7 +893,7 @@ static void _ZFP_ZFXmlCopyNode(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
             break;
     }
 }
-static void _ZFP_ZFXmlCopyTree(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
+static void _ZFP_ZFXmlCopyTree(ZF_IN ZFXml &to, ZF_IN const ZFXml &from)
 {
     _ZFP_ZFXmlCopyNode(to, from);
 
@@ -901,20 +901,20 @@ static void _ZFP_ZFXmlCopyTree(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
     {
         case ZFXmlType::e_XmlElement:
         {
-            ZFXmlItem fromChild = from.childFirst();
+            ZFXml fromChild = from.childFirst();
             while(fromChild)
             {
-                to.childAdd(fromChild.xmlCloneTree());
+                to.childAdd(fromChild.copy());
                 fromChild = fromChild.siblingNext();
             }
             break;
         }
         case ZFXmlType::e_XmlDocument:
         {
-            ZFXmlItem fromChild = from.childFirst();
+            ZFXml fromChild = from.childFirst();
             while(fromChild)
             {
-                to.childAdd(fromChild.xmlCloneTree());
+                to.childAdd(fromChild.copy());
                 fromChild = fromChild.siblingNext();
             }
             break;
@@ -932,8 +932,8 @@ static void _ZFP_ZFXmlCopyTree(ZF_IN ZFXmlItem &to, ZF_IN const ZFXmlItem &from)
     zfCoreAssert((item).xmlType() == ZFXmlType::e_XmlAttribute)
 
 // ============================================================
-// ZFXmlItem
-ZFXmlItem::ZFXmlItem(ZF_IN _ZFP_ZFXmlItemPrivate *ref)
+// ZFXml
+ZFXml::ZFXml(ZF_IN _ZFP_ZFXmlPrivate *ref)
 : d(ref)
 {
     if(d)
@@ -942,26 +942,26 @@ ZFXmlItem::ZFXmlItem(ZF_IN _ZFP_ZFXmlItemPrivate *ref)
     }
 }
 
-ZFXmlItem::ZFXmlItem(void)
+ZFXml::ZFXml(void)
+: d(zfnew(_ZFP_ZFXmlPrivate, ZFXmlType::e_XmlElement))
+{
+}
+ZFXml::ZFXml(ZF_IN const zfnullT &dummy)
 : d(zfnull)
 {
 }
-ZFXmlItem::ZFXmlItem(ZF_IN const zfnullT &dummy)
-: d(zfnull)
-{
-}
-ZFXmlItem::ZFXmlItem(ZF_IN ZFXmlTypeEnum xmlType)
+ZFXml::ZFXml(ZF_IN ZFXmlTypeEnum xmlType)
 {
     if(xmlType != ZFXmlType::e_XmlNull)
     {
-        d = zfnew(_ZFP_ZFXmlItemPrivate, xmlType);
+        d = zfnew(_ZFP_ZFXmlPrivate, xmlType);
     }
     else
     {
         d = zfnull;
     }
 }
-ZFXmlItem::ZFXmlItem(ZF_IN const ZFXmlItem &ref)
+ZFXml::ZFXml(ZF_IN const ZFXml &ref)
 : d(ref.d)
 {
     if(d)
@@ -969,7 +969,7 @@ ZFXmlItem::ZFXmlItem(ZF_IN const ZFXmlItem &ref)
         ++(d->refCount);
     }
 }
-ZFXmlItem::~ZFXmlItem(void)
+ZFXml::~ZFXml(void)
 {
     if(d)
     {
@@ -981,9 +981,9 @@ ZFXmlItem::~ZFXmlItem(void)
     }
 }
 
-ZFXmlItem &ZFXmlItem::operator = (ZF_IN const ZFXmlItem &ref)
+ZFXml &ZFXml::operator = (ZF_IN const ZFXml &ref)
 {
-    _ZFP_ZFXmlItemPrivate *dTmp = d;
+    _ZFP_ZFXmlPrivate *dTmp = d;
     d = ref.d;
     if(d)
     {
@@ -999,7 +999,7 @@ ZFXmlItem &ZFXmlItem::operator = (ZF_IN const ZFXmlItem &ref)
     }
     return *this;
 }
-ZFXmlItem &ZFXmlItem::operator = (ZF_IN const zfnullT &dummy)
+ZFXml &ZFXml::operator = (ZF_IN const zfnullT &dummy)
 {
     if(d)
     {
@@ -1012,24 +1012,24 @@ ZFXmlItem &ZFXmlItem::operator = (ZF_IN const zfnullT &dummy)
     }
     return *this;
 }
-zfbool ZFXmlItem::operator == (ZF_IN const ZFXmlItem &ref) const
+zfbool ZFXml::operator == (ZF_IN const ZFXml &ref) const
 {
     return (d == ref.d);
 }
 
 // ============================================================
-void ZFXmlItem::objectInfoT(ZF_IN_OUT zfstring &ret) const
+void ZFXml::objectInfoT(ZF_IN_OUT zfstring &ret) const
 {
-    ZFXmlItemToString(ret, *this, ZFXmlOutputFlagsTrim());
+    ZFXmlToString(ret, *this, ZFXmlOutputFlagsTrim());
 }
 
-zfindex ZFXmlItem::objectRetainCount(void) const
+zfindex ZFXml::objectRetainCount(void) const
 {
     return d ? d->refCount : 0;
 }
 
 // ============================================================
-void ZFXmlItem::_ZFP_ZFXmlItem_xmlType(ZF_IN ZFXmlTypeEnum xmlType)
+void ZFXml::_ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum xmlType)
 {
     if(xmlType != ZFXmlType::e_XmlNull)
     {
@@ -1039,55 +1039,55 @@ void ZFXmlItem::_ZFP_ZFXmlItem_xmlType(ZF_IN ZFXmlTypeEnum xmlType)
         }
         else
         {
-            d = zfnew(_ZFP_ZFXmlItemPrivate, xmlType);
+            d = zfnew(_ZFP_ZFXmlPrivate, xmlType);
         }
     }
 }
-ZFXmlTypeEnum ZFXmlItem::xmlType(void) const
+ZFXmlTypeEnum ZFXml::xmlType(void) const
 {
     return d ? d->xmlType : ZFXmlType::e_XmlNull;
 }
 
-ZFXmlItem ZFXmlItem::xmlParent(void) const
+ZFXml ZFXml::xmlParent(void) const
 {
-    return ZFXmlItem(d ? d->xmlParent : zfnull);
+    return ZFXml(d ? d->xmlParent : zfnull);
 }
 
-ZFXmlItem &ZFXmlItem::xmlName(ZF_IN const zfchar *name)
+ZFXml &ZFXml::xmlName(ZF_IN const zfchar *name)
 {
     zfCoreAssert(this->xmlTypeValid());
     d->xmlName.value(name);
     return *this;
 }
-const zfchar *ZFXmlItem::xmlName(void) const
+const zfchar *ZFXml::xmlName(void) const
 {
     return d ? d->xmlName.value() : zfnull;
 }
 
-ZFXmlItem &ZFXmlItem::xmlValue(ZF_IN const zfchar *value)
+ZFXml &ZFXml::xmlValue(ZF_IN const zfchar *value)
 {
     zfCoreAssert(this->xmlTypeValid());
     d->xmlValue.value(value);
     return *this;
 }
-const zfchar *ZFXmlItem::xmlValue(void) const
+const zfchar *ZFXml::xmlValue(void) const
 {
     return d ? d->xmlValue.value() : zfnull;
 }
 
-void ZFXmlItem::_ZFP_ZFXml_xmlMemoryPool_xmlName(ZF_IN const zfchar *xmlName, ZF_IN void *token)
+void ZFXml::_ZFP_ZFXml_xmlMemoryPool_xmlName(ZF_IN const zfchar *xmlName, ZF_IN void *token)
 {
     zfCoreAssert(this->xmlTypeValid());
     d->xmlName.value(xmlName, token);
 }
-void ZFXmlItem::_ZFP_ZFXml_xmlMemoryPool_xmlValue(ZF_IN const zfchar *xmlValue, ZF_IN void *token)
+void ZFXml::_ZFP_ZFXml_xmlMemoryPool_xmlValue(ZF_IN const zfchar *xmlValue, ZF_IN void *token)
 {
     zfCoreAssert(this->xmlTypeValid());
     d->xmlValue.value(xmlValue, token);
 }
 
 // ============================================================
-void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisitCallbackForOutput() */) const
+void ZFXml::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisitCallbackForOutput() */) const
 {
     if(!callback || this->xmlType() == ZFXmlType::e_XmlNull)
     {
@@ -1112,7 +1112,7 @@ void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisi
                         datas.add(ZFXmlVisitData(data.xmlItem, ZFXmlVisitType::e_ExitChildren, data.depth, data.siblingIndex));
                     }
 
-                    ZFXmlItem xmlChild = data.xmlItem.childLast();
+                    ZFXml xmlChild = data.xmlItem.childLast();
                     if(xmlChild)
                     {
                         zfindex xmlChildDepth = ((data.xmlItem.xmlType() == ZFXmlType::e_XmlDocument)
@@ -1137,7 +1137,7 @@ void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisi
 
                 if(xmlType == ZFXmlType::e_XmlElement || xmlType == ZFXmlType::e_XmlDeclaration)
                 {
-                    ZFXmlItem xmlAttribute = data.xmlItem.attrLast();
+                    ZFXml xmlAttribute = data.xmlItem.attrLast();
                     if(xmlAttribute)
                     {
                         zfindex xmlAttributeDepth = data.depth + 1;
@@ -1174,18 +1174,9 @@ void ZFXmlItem::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisi
 }
 
 // ============================================================
-ZFXmlItem ZFXmlItem::xmlClone(void) const
+ZFXml ZFXml::copy(void) const
 {
-    ZFXmlItem ret(this->xmlType());
-    if(this->xmlType() != ZFXmlType::e_XmlNull)
-    {
-        _ZFP_ZFXmlCopyNode(ret, *this);
-    }
-    return ret;
-}
-ZFXmlItem ZFXmlItem::xmlCloneTree(void) const
-{
-    ZFXmlItem ret(this->xmlType());
+    ZFXml ret(this->xmlType());
     if(this->xmlType() != ZFXmlType::e_XmlNull)
     {
         _ZFP_ZFXmlCopyTree(ret, *this);
@@ -1194,8 +1185,8 @@ ZFXmlItem ZFXmlItem::xmlCloneTree(void) const
 }
 
 // ============================================================
-ZFXmlItem &ZFXmlItem::attrAdd(ZF_IN const ZFXmlItem &addThis,
-                              ZF_IN_OPT const ZFXmlItem *beforeThis /* = zfnull */)
+ZFXml &ZFXml::attrAdd(ZF_IN const ZFXml &addThis,
+                      ZF_IN_OPT const ZFXml *beforeThis /* = zfnull */)
 {
     _ZFP_ZFXmlAssertCanHaveAttribute(*this);
     _ZFP_ZFXmlAssertCanBeAttribute(addThis);
@@ -1211,27 +1202,27 @@ ZFXmlItem &ZFXmlItem::attrAdd(ZF_IN const ZFXmlItem &addThis,
     }
     return *this;
 }
-ZFXmlItem &ZFXmlItem::attr(ZF_IN const zfchar *key,
-                           ZF_IN const zfchar *value,
-                           ZF_IN_OPT const ZFXmlItem *beforeThis /* = zfnull */)
+ZFXml &ZFXml::attr(ZF_IN const zfchar *key,
+                   ZF_IN const zfchar *value,
+                   ZF_IN_OPT const ZFXml *beforeThis /* = zfnull */)
 {
     if(!zfstringIsEmpty(key))
     {
-        ZFXmlItem xmlAttribute(ZFXmlType::e_XmlAttribute);
+        ZFXml xmlAttribute(ZFXmlType::e_XmlAttribute);
         xmlAttribute.xmlName(key);
         xmlAttribute.xmlValue(value);
         this->attrAdd(xmlAttribute, beforeThis);
     }
     return *this;
 }
-ZFXmlItem &ZFXmlItem::attrRemove(ZF_IN const zfchar *name /* = zfnull */)
+ZFXml &ZFXml::attrRemove(ZF_IN const zfchar *name /* = zfnull */)
 {
     if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name))
     {
         return *this;
     }
 
-    for(_ZFP_ZFXmlItemPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
+    for(_ZFP_ZFXmlPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
     {
         if(zfstringIsEqual(xmlAttribute->xmlName.value(), name))
         {
@@ -1241,7 +1232,7 @@ ZFXmlItem &ZFXmlItem::attrRemove(ZF_IN const zfchar *name /* = zfnull */)
     }
     return *this;
 }
-ZFXmlItem &ZFXmlItem::attrRemove(ZF_IN const ZFXmlItem &removeThis)
+ZFXml &ZFXml::attrRemove(ZF_IN const ZFXml &removeThis)
 {
     if(d == zfnull || removeThis.d == zfnull || removeThis.d->xmlParent != d || removeThis.xmlType() != ZFXmlType::e_XmlAttribute)
     {
@@ -1250,7 +1241,7 @@ ZFXmlItem &ZFXmlItem::attrRemove(ZF_IN const ZFXmlItem &removeThis)
     d->attrDetach(removeThis.d);
     return *this;
 }
-ZFXmlItem &ZFXmlItem::attrRemoveAll(void)
+ZFXml &ZFXml::attrRemoveAll(void)
 {
     if(d)
     {
@@ -1259,30 +1250,30 @@ ZFXmlItem &ZFXmlItem::attrRemoveAll(void)
     return *this;
 }
 
-ZFXmlItem ZFXmlItem::attr(ZF_IN const zfchar *name) const
+ZFXml ZFXml::attr(ZF_IN const zfchar *name) const
 {
     if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name))
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
 
-    for(_ZFP_ZFXmlItemPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
+    for(_ZFP_ZFXmlPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
     {
         if(zfstringIsEqual(xmlAttribute->xmlName.value(), name))
         {
-            return ZFXmlItem(xmlAttribute);
+            return ZFXml(xmlAttribute);
         }
     }
-    return ZFXmlItem();
+    return ZFXml();
 }
-const zfchar *ZFXmlItem::attrValue(ZF_IN const zfchar *name) const
+const zfchar *ZFXml::attrValue(ZF_IN const zfchar *name) const
 {
     if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name))
     {
         return zfnull;
     }
 
-    for(_ZFP_ZFXmlItemPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
+    for(_ZFP_ZFXmlPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext)
     {
         if(zfstringIsEqual(xmlAttribute->xmlName.value(), name))
         {
@@ -1291,26 +1282,26 @@ const zfchar *ZFXmlItem::attrValue(ZF_IN const zfchar *name) const
     }
     return zfnull;
 }
-ZFXmlItem ZFXmlItem::attrFirst(void) const
+ZFXml ZFXml::attrFirst(void) const
 {
-    return ZFXmlItem(d ? d->attrFirst : zfnull);
+    return ZFXml(d ? d->attrFirst : zfnull);
 }
-ZFXmlItem ZFXmlItem::attrLast(void) const
+ZFXml ZFXml::attrLast(void) const
 {
-    return ZFXmlItem(d ? d->attrLast : zfnull);
+    return ZFXml(d ? d->attrLast : zfnull);
 }
 
-ZFXmlItem ZFXmlItem::attrNext(void) const
+ZFXml ZFXml::attrNext(void) const
 {
-    return ZFXmlItem((d && d->xmlType == ZFXmlType::e_XmlAttribute) ? d->siblingNext : zfnull);
+    return ZFXml((d && d->xmlType == ZFXmlType::e_XmlAttribute) ? d->siblingNext : zfnull);
 }
-ZFXmlItem ZFXmlItem::attrPrev(void) const
+ZFXml ZFXml::attrPrev(void) const
 {
-    return ZFXmlItem((d && d->xmlType == ZFXmlType::e_XmlAttribute) ? d->siblingPrev : zfnull);
+    return ZFXml((d && d->xmlType == ZFXmlType::e_XmlAttribute) ? d->siblingPrev : zfnull);
 }
 
 // ============================================================
-ZFXmlItem &ZFXmlItem::attrSort(void)
+ZFXml &ZFXml::attrSort(void)
 {
     if(d)
     {
@@ -1318,7 +1309,7 @@ ZFXmlItem &ZFXmlItem::attrSort(void)
     }
     return *this;
 }
-ZFXmlItem &ZFXmlItem::attrSortRecursively(void)
+ZFXml &ZFXml::attrSortRecursively(void)
 {
     if(d)
     {
@@ -1328,8 +1319,8 @@ ZFXmlItem &ZFXmlItem::attrSortRecursively(void)
 }
 
 // ============================================================
-ZFXmlItem &ZFXmlItem::childAdd(ZF_IN const ZFXmlItem &addThis,
-                               ZF_IN_OPT const ZFXmlItem *beforeThis /* = zfnull */)
+ZFXml &ZFXml::childAdd(ZF_IN const ZFXml &addThis,
+                       ZF_IN_OPT const ZFXml *beforeThis /* = zfnull */)
 {
     _ZFP_ZFXmlAssertCanHaveChild(*this);
     switch(addThis.xmlType())
@@ -1368,7 +1359,7 @@ ZFXmlItem &ZFXmlItem::childAdd(ZF_IN const ZFXmlItem &addThis,
     }
     return *this;
 }
-ZFXmlItem &ZFXmlItem::childRemove(ZF_IN const ZFXmlItem &removeThis)
+ZFXml &ZFXml::childRemove(ZF_IN const ZFXml &removeThis)
 {
     if(d == zfnull || removeThis.d == zfnull || removeThis.d->xmlParent != d || removeThis.xmlType() == ZFXmlType::e_XmlAttribute)
     {
@@ -1377,7 +1368,7 @@ ZFXmlItem &ZFXmlItem::childRemove(ZF_IN const ZFXmlItem &removeThis)
     d->childDetach(removeThis.d);
     return *this;
 }
-ZFXmlItem &ZFXmlItem::childRemoveAll(void)
+ZFXml &ZFXml::childRemoveAll(void)
 {
     if(d)
     {
@@ -1386,20 +1377,20 @@ ZFXmlItem &ZFXmlItem::childRemoveAll(void)
     return *this;
 }
 
-ZFXmlItem ZFXmlItem::childFirst(ZF_IN_OPT const zfchar *name /* = zfnull */,
-                                ZF_IN_OPT const ZFXmlItem *afterThis /* = zfnull */) const
+ZFXml ZFXml::childFirst(ZF_IN_OPT const zfchar *name /* = zfnull */,
+                        ZF_IN_OPT const ZFXml *afterThis /* = zfnull */) const
 {
     if(d == zfnull)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
-    _ZFP_ZFXmlItemPrivate *xmlChild = (afterThis != zfnull && afterThis->d && afterThis->d->xmlParent == d && afterThis->xmlType() != ZFXmlType::e_XmlAttribute)
+    _ZFP_ZFXmlPrivate *xmlChild = (afterThis != zfnull && afterThis->d && afterThis->d->xmlParent == d && afterThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? afterThis->d->siblingNext
         : d->childFirst;
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
     else
     {
@@ -1407,23 +1398,23 @@ ZFXmlItem ZFXmlItem::childFirst(ZF_IN_OPT const zfchar *name /* = zfnull */,
         {
             xmlChild = xmlChild->siblingNext;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
-ZFXmlItem ZFXmlItem::childLast(ZF_IN_OPT const zfchar *name /* = zfnull */,
-                               ZF_IN_OPT const ZFXmlItem *beforeThis /* = zfnull */) const
+ZFXml ZFXml::childLast(ZF_IN_OPT const zfchar *name /* = zfnull */,
+                       ZF_IN_OPT const ZFXml *beforeThis /* = zfnull */) const
 {
     if(d == zfnull)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
-    _ZFP_ZFXmlItemPrivate *xmlChild = (beforeThis != zfnull && beforeThis->d && beforeThis->d->xmlParent == d && beforeThis->xmlType() != ZFXmlType::e_XmlAttribute)
+    _ZFP_ZFXmlPrivate *xmlChild = (beforeThis != zfnull && beforeThis->d && beforeThis->d->xmlParent == d && beforeThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? beforeThis->d->siblingPrev
         : d->childLast;
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
     else
     {
@@ -1431,23 +1422,23 @@ ZFXmlItem ZFXmlItem::childLast(ZF_IN_OPT const zfchar *name /* = zfnull */,
         {
             xmlChild = xmlChild->siblingPrev;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
-ZFXmlItem ZFXmlItem::childFirstElement(ZF_IN_OPT const zfchar *name /* = zfnull */,
-                                       ZF_IN_OPT const ZFXmlItem *afterThis /* = zfnull */) const
+ZFXml ZFXml::childFirstElement(ZF_IN_OPT const zfchar *name /* = zfnull */,
+                               ZF_IN_OPT const ZFXml *afterThis /* = zfnull */) const
 {
     if(d == zfnull)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
-    _ZFP_ZFXmlItemPrivate *xmlChild = (afterThis != zfnull && afterThis->d && afterThis->d->xmlParent == d && afterThis->xmlType() != ZFXmlType::e_XmlAttribute)
+    _ZFP_ZFXmlPrivate *xmlChild = (afterThis != zfnull && afterThis->d && afterThis->d->xmlParent == d && afterThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? afterThis->d->siblingNext
         : d->childFirst;
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
     else
     {
@@ -1455,23 +1446,23 @@ ZFXmlItem ZFXmlItem::childFirstElement(ZF_IN_OPT const zfchar *name /* = zfnull 
         {
             xmlChild = xmlChild->siblingNext;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
-ZFXmlItem ZFXmlItem::childLastElement(ZF_IN_OPT const zfchar *name /* = zfnull */,
-                                      ZF_IN_OPT const ZFXmlItem *beforeThis /* = zfnull */) const
+ZFXml ZFXml::childLastElement(ZF_IN_OPT const zfchar *name /* = zfnull */,
+                              ZF_IN_OPT const ZFXml *beforeThis /* = zfnull */) const
 {
     if(d == zfnull)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
-    _ZFP_ZFXmlItemPrivate *xmlChild = (beforeThis != zfnull && beforeThis->d && beforeThis->d->xmlParent == d && beforeThis->xmlType() != ZFXmlType::e_XmlAttribute)
+    _ZFP_ZFXmlPrivate *xmlChild = (beforeThis != zfnull && beforeThis->d && beforeThis->d->xmlParent == d && beforeThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? beforeThis->d->siblingPrev
         : d->childLast;
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
     else
     {
@@ -1479,205 +1470,206 @@ ZFXmlItem ZFXmlItem::childLastElement(ZF_IN_OPT const zfchar *name /* = zfnull *
         {
             xmlChild = xmlChild->siblingPrev;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
 
-ZFXmlItem ZFXmlItem::siblingNext(ZF_IN const zfchar *name /* = zfnull */) const
+ZFXml ZFXml::siblingNext(ZF_IN const zfchar *name /* = zfnull */) const
 {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(d->siblingNext);
+        return ZFXml(d->siblingNext);
     }
     else
     {
-        _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingNext;
+        _ZFP_ZFXmlPrivate *xmlChild = d->siblingNext;
         while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name))
         {
             xmlChild = xmlChild->siblingNext;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
-ZFXmlItem ZFXmlItem::siblingPrev(ZF_IN const zfchar *name /* = zfnull */) const
+ZFXml ZFXml::siblingPrev(ZF_IN const zfchar *name /* = zfnull */) const
 {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(d->siblingPrev);
+        return ZFXml(d->siblingPrev);
     }
     else
     {
-        _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingPrev;
+        _ZFP_ZFXmlPrivate *xmlChild = d->siblingPrev;
         while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name))
         {
             xmlChild = xmlChild->siblingPrev;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
-ZFXmlItem ZFXmlItem::siblingNextElement(ZF_IN const zfchar *name /* = zfnull */) const
+ZFXml ZFXml::siblingNextElement(ZF_IN const zfchar *name /* = zfnull */) const
 {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(d->siblingNext);
+        return ZFXml(d->siblingNext);
     }
     else
     {
-        _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingNext;
+        _ZFP_ZFXmlPrivate *xmlChild = d->siblingNext;
         while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
         {
             xmlChild = xmlChild->siblingNext;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
-ZFXmlItem ZFXmlItem::siblingPrevElement(ZF_IN const zfchar *name /* = zfnull */) const
+ZFXml ZFXml::siblingPrevElement(ZF_IN const zfchar *name /* = zfnull */) const
 {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute)
     {
-        return ZFXmlItem();
+        return ZFXml();
     }
 
     if(zfstringIsEmpty(name))
     {
-        return ZFXmlItem(d->siblingPrev);
+        return ZFXml(d->siblingPrev);
     }
     else
     {
-        _ZFP_ZFXmlItemPrivate *xmlChild = d->siblingPrev;
+        _ZFP_ZFXmlPrivate *xmlChild = d->siblingPrev;
         while(xmlChild != zfnull && !zfstringIsEqual(xmlChild->xmlName.value(), name) && xmlChild->xmlType != ZFXmlType::e_XmlElement)
         {
             xmlChild = xmlChild->siblingPrev;
         }
-        return ZFXmlItem(xmlChild);
+        return ZFXml(xmlChild);
     }
 }
 
 // ============================================================
-void ZFXmlItem::xmlTextCDATA(ZF_IN zfbool xmlTextCDATA)
+void ZFXml::xmlTextCDATA(ZF_IN zfbool xmlTextCDATA)
 {
     zfCoreAssert(this->xmlType() == ZFXmlType::e_XmlText);
     d->xmlTextCDATA = xmlTextCDATA;
 }
-zfbool ZFXmlItem::xmlTextCDATA(void) const
+zfbool ZFXml::xmlTextCDATA(void) const
 {
     return d ? d->xmlTextCDATA : zffalse;
 }
 
 // ============================================================
-ZFXmlItem::operator zfstring (void) const
+ZFXml::operator zfstring (void) const
 {
-    return ZFXmlItemToString(*this);
+    return ZFXmlToString(*this);
 }
 
 // ============================================================
-ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXmlItem, ZFXmlItem, {
+ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXml, ZFXml, {
         v = ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, srcLen);
         return v;
     }, {
-        return ZFXmlItemToString(s, v, ZFXmlOutputFlagsTrim());
+        return ZFXmlToString(s, v, ZFXmlOutputFlagsTrim());
     })
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<v_ZFXmlItem *>()->zfv._ZFP_ZFXmlItem_xmlType(xmlType);
-    }, v_ZFXmlItem
+        invokerObject->to<v_ZFXml *>()->zfv._ZFP_ZFXml_xmlType(xmlType);
+    }, v_ZFXml
     , ZFMP_IN(ZFXmlTypeEnum, xmlType)
     )
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, void, objectInfoT, ZFMP_IN_OUT(zfstring &, ret))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfstring, objectInfo)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlTypeEnum, xmlType)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfbool, xmlTypeValid)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, xmlParent)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem &, xmlName, ZFMP_IN(const zfchar *, name))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, const zfchar *, xmlName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem &, xmlValue, ZFMP_IN(const zfchar *, value))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, const zfchar *, xmlValue)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, void, xmlVisit, ZFMP_IN(const ZFXmlVisitCallback &, callback))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, xmlClone)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, xmlCloneTree)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXmlItem, ZFXmlItem &, attrAdd, ZFMP_IN(const ZFXmlItem &, addThis), ZFMP_IN_OPT(const ZFXmlItem *, beforeThis, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFXmlItem, ZFXmlItem &, attr, ZFMP_IN(const zfchar *, key), ZFMP_IN(const zfchar *, value), ZFMP_IN_OPT(const ZFXmlItem *, beforeThis, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem &, attrRemove, ZFMP_IN(const zfchar *, name))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem &, attrRemove, ZFMP_IN(const ZFXmlItem &, removeThis))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem &, attrRemoveAll)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem, attr, ZFMP_IN(const zfchar *, name))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, const zfchar *, attrValue, ZFMP_IN(const zfchar *, name))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, attrFirst)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, attrLast)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, attrNext)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem, attrPrev)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem &, attrSort)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem &, attrSortRecursively)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXmlItem, ZFXmlItem &, childAdd, ZFMP_IN(const ZFXmlItem &, addThis), ZFMP_IN_OPT(const ZFXmlItem *, beforeThis, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem &, childRemove, ZFMP_IN(const ZFXmlItem &, removeThis))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, ZFXmlItem &, childRemoveAll)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXmlItem, ZFXmlItem, childFirst, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXmlItem *, afterThis, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXmlItem, ZFXmlItem, childLast, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXmlItem *, beforeThis, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXmlItem, ZFXmlItem, childFirstElement, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXmlItem *, afterThis, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXmlItem, ZFXmlItem, childLastElement, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXmlItem *, beforeThis, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem, siblingNext, ZFMP_IN_OPT(const zfchar *, name, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem, siblingPrev, ZFMP_IN_OPT(const zfchar *, name, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem, siblingNextElement, ZFMP_IN_OPT(const zfchar *, name, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, ZFXmlItem, siblingPrevElement, ZFMP_IN_OPT(const zfchar *, name, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXmlItem, void, xmlTextCDATA, ZFMP_IN(zfbool, xmlTextCDATA))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXmlItem, zfbool, xmlTextCDATA)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, objectInfoT, ZFMP_IN_OUT(zfstring &, ret))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfstring, objectInfo)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXmlTypeEnum, xmlType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, xmlTypeValid)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, xmlParent)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, xmlName, ZFMP_IN(const zfchar *, name))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, const zfchar *, xmlName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, xmlValue, ZFMP_IN(const zfchar *, value))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, const zfchar *, xmlValue)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, xmlVisit, ZFMP_IN(const ZFXmlVisitCallback &, callback))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, copy)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml &, attrAdd, ZFMP_IN(const ZFXml &, addThis), ZFMP_IN_OPT(const ZFXml *, beforeThis, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFXml, ZFXml &, attr, ZFMP_IN(const zfchar *, key), ZFMP_IN(const zfchar *, value), ZFMP_IN_OPT(const ZFXml *, beforeThis, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, attrRemove, ZFMP_IN(const zfchar *, name))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, attrRemove, ZFMP_IN(const ZFXml &, removeThis))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml &, attrRemoveAll)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml, attr, ZFMP_IN(const zfchar *, name))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, const zfchar *, attrValue, ZFMP_IN(const zfchar *, name))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, attrFirst)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, attrLast)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, attrNext)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, attrPrev)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml &, attrSort)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml &, attrSortRecursively)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml &, childAdd, ZFMP_IN(const ZFXml &, addThis), ZFMP_IN_OPT(const ZFXml *, beforeThis, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, childRemove, ZFMP_IN(const ZFXml &, removeThis))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml &, childRemoveAll)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml, childFirst, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXml *, afterThis, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml, childLast, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXml *, beforeThis, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml, childFirstElement, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXml *, afterThis, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml, childLastElement, ZFMP_IN_OPT(const zfchar *, name, zfnull), ZFMP_IN_OPT(const ZFXml *, beforeThis, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml, siblingNext, ZFMP_IN_OPT(const zfchar *, name, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml, siblingPrev, ZFMP_IN_OPT(const zfchar *, name, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml, siblingNextElement, ZFMP_IN_OPT(const zfchar *, name, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml, siblingPrevElement, ZFMP_IN_OPT(const zfchar *, name, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, xmlTextCDATA, ZFMP_IN(zfbool, xmlTextCDATA))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, xmlTextCDATA)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(ZFXmlItem, ZFXmlElement,
-                       ZFMP_IN_OPT(const zfchar *, xmlName, zfnull))
-{return ZFXmlItem(ZFXmlType::e_XmlElement).xmlName(xmlName);}
-ZFMETHOD_FUNC_DEFINE_2(ZFXmlItem, ZFXmlAttribute,
-                       ZFMP_IN_OPT(const zfchar *, xmlName, zfnull),
-                       ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
-{return ZFXmlItem(ZFXmlType::e_XmlAttribute).xmlName(xmlName).xmlValue(xmlValue);}
-ZFMETHOD_FUNC_DEFINE_1(ZFXmlItem, ZFXmlText,
-                       ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
-{return ZFXmlItem(ZFXmlType::e_XmlText).xmlValue(xmlValue);}
-ZFMETHOD_FUNC_DEFINE_1(ZFXmlItem, ZFXmlComment,
-                       ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
-{return ZFXmlItem(ZFXmlType::e_XmlComment).xmlValue(xmlValue);}
-ZFMETHOD_FUNC_DEFINE_0(ZFXmlItem, ZFXmlDocument) {return ZFXmlItem(ZFXmlType::e_XmlDocument);}
-ZFMETHOD_FUNC_DEFINE_0(ZFXmlItem, ZFXmlDeclaration) {return ZFXmlItem(ZFXmlType::e_XmlDeclaration);}
-ZFMETHOD_FUNC_DEFINE_1(ZFXmlItem, ZFXmlDocType,
-                       ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
-{return ZFXmlItem(ZFXmlType::e_XmlDocType).xmlValue(xmlValue);}
-ZFMETHOD_FUNC_DEFINE_2(ZFXmlItem, ZFXmlPI,
-                       ZFMP_IN_OPT(const zfchar *, xmlName, zfnull),
-                       ZFMP_IN_OPT(const zfchar *, xmlValue, zfnull))
-{return ZFXmlItem(ZFXmlType::e_XmlPI).xmlName(xmlName).xmlValue(xmlValue);}
+ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlElement,
+                       ZFMP_IN(const zfchar *, xmlName))
+{return ZFXml(ZFXmlType::e_XmlElement).xmlName(xmlName);}
+ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlAttribute,
+                       ZFMP_IN(const zfchar *, xmlName),
+                       ZFMP_IN(const zfchar *, xmlValue))
+{return ZFXml(ZFXmlType::e_XmlAttribute).xmlName(xmlName).xmlValue(xmlValue);}
+ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlText,
+                       ZFMP_IN(const zfchar *, xmlValue))
+{return ZFXml(ZFXmlType::e_XmlText).xmlValue(xmlValue);}
+ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlComment,
+                       ZFMP_IN(const zfchar *, xmlValue))
+{return ZFXml(ZFXmlType::e_XmlComment).xmlValue(xmlValue);}
+ZFMETHOD_FUNC_DEFINE_0(ZFXml, ZFXmlDocument)
+{return ZFXml(ZFXmlType::e_XmlDocument);}
+ZFMETHOD_FUNC_DEFINE_0(ZFXml, ZFXmlDeclaration)
+{return ZFXml(ZFXmlType::e_XmlDeclaration);}
+ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlDocType,
+                       ZFMP_IN(const zfchar *, xmlValue))
+{return ZFXml(ZFXmlType::e_XmlDocType).xmlValue(xmlValue);}
+ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlPI,
+                       ZFMP_IN(const zfchar *, xmlName),
+                       ZFMP_IN(const zfchar *, xmlValue))
+{return ZFXml(ZFXmlType::e_XmlPI).xmlName(xmlName).xmlValue(xmlValue);}
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(ZFXmlItem, ZFXmlItemFromInput,
+ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlFromInput,
                        ZFMP_IN(const ZFInput &, callback))
 {
     return ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(callback);
 }
-ZFMETHOD_FUNC_DEFINE_2(ZFXmlItem, ZFXmlItemFromString,
+ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlFromString,
                        ZFMP_IN(const zfchar *, src),
                        ZFMP_IN_OPT(zfindex, size, zfindexMax()))
 {
     return ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, size);
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFXmlItemToOutput,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFXmlToOutput,
                        ZFMP_IN_OUT(const ZFOutput &, output),
-                       ZFMP_IN(const ZFXmlItem &, xmlItem),
+                       ZFMP_IN(const ZFXml &, xmlItem),
                        ZFMP_IN_OPT(const ZFXmlOutputFlags &, outputFlags, ZFXmlOutputFlagsDefault()))
 {
     if(!output || !xmlItem)
@@ -1688,19 +1680,19 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFXmlItemToOutput,
     return zftrue;
 }
 
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFXmlItemToString,
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFXmlToString,
                        ZFMP_IN_OUT(zfstring &, ret),
-                       ZFMP_IN(const ZFXmlItem &, xmlItem),
+                       ZFMP_IN(const ZFXml &, xmlItem),
                        ZFMP_IN(const ZFXmlOutputFlags &, outputFlags))
 {
-    return ZFXmlItemToOutput(ZFOutputForString(ret), xmlItem, outputFlags);
+    return ZFXmlToOutput(ZFOutputForString(ret), xmlItem, outputFlags);
 }
-ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFXmlItemToString,
-                       ZFMP_IN(const ZFXmlItem &, xmlItem),
+ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFXmlToString,
+                       ZFMP_IN(const ZFXml &, xmlItem),
                        ZFMP_IN(const ZFXmlOutputFlags &, outputFlags))
 {
     zfstring ret;
-    ZFXmlItemToString(ret, xmlItem, outputFlags);
+    ZFXmlToString(ret, xmlItem, outputFlags);
     return ret;
 }
 

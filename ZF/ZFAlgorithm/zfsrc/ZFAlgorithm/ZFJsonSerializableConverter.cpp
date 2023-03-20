@@ -29,9 +29,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 static zfbool _ZFP_ZFSerializableDataFromJson(ZF_OUT ZFSerializableData &serializableData,
-                                              ZF_IN const ZFJsonItem &jsonObject,
+                                              ZF_IN const ZFJson &jsonObject,
                                               ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                              ZF_OUT_OPT ZFJsonItem *outErrorPos = zfnull)
+                                              ZF_OUT_OPT ZFJson *outErrorPos = zfnull)
 {
     if(!jsonObject)
     {
@@ -43,11 +43,11 @@ static zfbool _ZFP_ZFSerializableDataFromJson(ZF_OUT ZFSerializableData &seriali
         return zffalse;
     }
 
-    ZFJsonItem elementJsonArray;
+    ZFJson elementJsonArray;
     for(zfiterator jsonItemIt = jsonObject.attrIter(); jsonObject.attrIterValid(jsonItemIt); jsonObject.attrIterNext(jsonItemIt))
     {
         const zfchar *key = jsonObject.attrIterKey(jsonItemIt);
-        ZFJsonItem jsonItem = jsonObject.attrIterValue(jsonItemIt);
+        ZFJson jsonItem = jsonObject.attrIterValue(jsonItemIt);
         if(*key == _ZFP_ZFJsonSerializeKey_classPrefix)
         {
             serializableData.itemClass(key + 1);
@@ -113,16 +113,16 @@ static zfbool _ZFP_ZFSerializableDataFromJson(ZF_OUT ZFSerializableData &seriali
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataFromJson,
                        ZFMP_OUT(ZFSerializableData &, serializableData),
-                       ZFMP_IN(const ZFJsonItem &, jsonObject),
+                       ZFMP_IN(const ZFJson &, jsonObject),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                       ZFMP_OUT_OPT(ZFJsonItem *, outErrorPos, zfnull))
+                       ZFMP_OUT_OPT(ZFJson *, outErrorPos, zfnull))
 {
     return _ZFP_ZFSerializableDataFromJson(serializableData, jsonObject, outErrorHint, outErrorPos);
 }
 ZFMETHOD_FUNC_DEFINE_3(ZFSerializableData, ZFSerializableDataFromJson,
-                       ZFMP_IN(const ZFJsonItem &, jsonObject),
+                       ZFMP_IN(const ZFJson &, jsonObject),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                       ZFMP_OUT_OPT(ZFJsonItem *, outErrorPos, zfnull))
+                       ZFMP_OUT_OPT(ZFJson *, outErrorPos, zfnull))
 {
     ZFSerializableData ret;
     if(ZFSerializableDataFromJson(ret, jsonObject, outErrorHint, outErrorPos))
@@ -135,7 +135,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFSerializableData, ZFSerializableDataFromJson,
     }
 }
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToJson,
-                       ZFMP_OUT(ZFJsonItem &, jsonObject),
+                       ZFMP_OUT(ZFJson &, jsonObject),
                        ZFMP_IN(const ZFSerializableData &, serializableData),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                        ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
@@ -143,7 +143,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToJson,
     jsonObject = ZFSerializableDataToJson(serializableData, outErrorHint, outErrorPos);
     return jsonObject;
 }
-ZFMETHOD_FUNC_DEFINE_3(ZFJsonItem, ZFSerializableDataToJson,
+ZFMETHOD_FUNC_DEFINE_3(ZFJson, ZFSerializableDataToJson,
                        ZFMP_IN(const ZFSerializableData &, serializableData),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                        ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
@@ -151,10 +151,10 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJsonItem, ZFSerializableDataToJson,
     if(serializableData.itemClass() == zfnull)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, "missing serializable class");
-        return ZFJsonItem();
+        return ZFJson();
     }
 
-    ZFJsonItem ret(ZFJsonType::e_JsonObject);
+    ZFJson ret(ZFJsonType::e_JsonObject);
 
     for(zfiterator it = serializableData.attrIter();
         serializableData.attrIterValid(it);
@@ -164,13 +164,13 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJsonItem, ZFSerializableDataToJson,
             serializableData.attrIterValue(it));
     }
 
-    ZFJsonItem elementJsonArray(ZFJsonType::e_JsonArray);
+    ZFJson elementJsonArray(ZFJsonType::e_JsonArray);
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        ZFJsonItem child = ZFSerializableDataToJson(serializableData.childAt(i), outErrorHint, outErrorPos);
+        ZFJson child = ZFSerializableDataToJson(serializableData.childAt(i), outErrorHint, outErrorPos);
         if(child.jsonType() == ZFJsonType::e_JsonNull)
         {
-            return ZFJsonItem();
+            return ZFJson();
         }
         elementJsonArray.childAdd(child);
     }
@@ -193,7 +193,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFSerializableDataFromJson,
         zfstringAppend(outErrorHint, "invalid input callback");
         return zffalse;
     }
-    ZFJsonItem jsonElement = ZFJsonItemFromInput(input);
+    ZFJson jsonElement = ZFJsonFromInput(input);
     if(jsonElement.jsonType() == ZFJsonType::e_JsonNull)
     {
         zfstringAppend(outErrorHint, "unable to parse json from input");
@@ -227,10 +227,10 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToJson,
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                        ZFMP_IN_OPT(const ZFJsonOutputFlags &, flags, ZFJsonOutputFlagsDefault()))
 {
-    ZFJsonItem jsonObject;
+    ZFJson jsonObject;
     if(ZFSerializableDataToJson(jsonObject, serializableData, outErrorHint))
     {
-        zfbool ret = ZFJsonItemToOutput(outputCallback, jsonObject, flags);
+        zfbool ret = ZFJsonToOutput(outputCallback, jsonObject, flags);
         outputCallback.execute("\n");
         if(!ret)
         {

@@ -27,8 +27,8 @@ public:
 
 public:
     /** @brief see #ZFUIWebJSBridge::webMessageSend */
-    virtual ZFJsonItem webMessageSend(ZF_IN ZFUIWebJSBridge *webJSBridge,
-                                      ZF_IN_OUT ZFJsonItem &messageSend) zfpurevirtual;
+    virtual ZFJson webMessageSend(ZF_IN ZFUIWebJSBridge *webJSBridge,
+                                  ZF_IN_OUT ZFJson &messageSend) zfpurevirtual;
 
     // ============================================================
     // callbacks that implementations must notify
@@ -36,8 +36,8 @@ public:
     /**
      * @brief implementations must notify when message sent from web
      */
-    zffinal ZFJsonItem notifyWebMessageRecv(ZF_IN ZFUIWebJSBridge *webJSBridge,
-                                            ZF_IN_OUT ZFJsonItem &messageRecv)
+    zffinal ZFJson notifyWebMessageRecv(ZF_IN ZFUIWebJSBridge *webJSBridge,
+                                        ZF_IN_OUT ZFJson &messageRecv)
     {
         return webJSBridge->_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(messageRecv);
     }

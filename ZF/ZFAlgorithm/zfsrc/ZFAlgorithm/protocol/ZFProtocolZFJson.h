@@ -32,12 +32,12 @@ public:
     /**
      * @brief parse json
      */
-    virtual ZFJsonItem jsonParse(ZF_IN const zfchar *src,
+    virtual ZFJson jsonParse(ZF_IN const zfchar *src,
                                  ZF_IN_OPT zfindex size = zfindexMax()) zfpurevirtual;
     /**
      * @brief parse json
      */
-    virtual ZFJsonItem jsonParse(ZF_IN const ZFInput &inputCallback) zfpurevirtual;
+    virtual ZFJson jsonParse(ZF_IN const ZFInput &inputCallback) zfpurevirtual;
 
     /**
      * @brief for impl to achieve memory pool logic
@@ -54,17 +54,17 @@ public:
 
 public:
     /** @brief see #jsonMemoryPoolRelease */
-    inline void jsonMemoryPool_jsonValue(ZF_IN ZFJsonItem &jsonItem,
+    inline void jsonMemoryPool_jsonValue(ZF_IN ZFJson &jsonItem,
                                          ZF_IN const zfchar *jsonValue,
                                          ZF_IN void *token)
     {
         jsonItem._ZFP_ZFJson_jsonMemoryPool_jsonValue(jsonValue, token);
     }
     /** @brief see #jsonMemoryPoolRelease */
-    inline void jsonMemoryPool_jsonItem(ZF_IN ZFJsonItem &jsonObject,
+    inline void jsonMemoryPool_jsonItem(ZF_IN ZFJson &jsonObject,
                                         ZF_IN const zfchar *jsonKey,
                                         ZF_IN void *token,
-                                        ZF_IN const ZFJsonItem &jsonItem)
+                                        ZF_IN const ZFJson &jsonItem)
     {
         jsonObject._ZFP_ZFJson_jsonMemoryPool_jsonItem(jsonKey, token, jsonItem);
     }

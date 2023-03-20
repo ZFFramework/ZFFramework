@@ -13,7 +13,7 @@ public:
     zfautoObjectT<ZFHttpResponse *> response;
     ZFListener callback;
     ZFBuffer body;
-    ZFJsonItem *bodyJsonCache;
+    ZFJson *bodyJsonCache;
 public:
     _ZFP_ZFHttpRequestPrivate(void)
     : refCount(2)
@@ -157,10 +157,10 @@ ZFMETHOD_DEFINE_2(ZFHttpRequest, ZFHttpRequest *, body,
     return this;
 }
 ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, body,
-                  ZFMP_IN(const ZFJsonItem &, json))
+                  ZFMP_IN(const ZFJson &, json))
 {
     zfstring text;
-    ZFJsonItemToString(text, json, ZFJsonOutputFlagsTrim());
+    ZFJsonToString(text, json, ZFJsonOutputFlagsTrim());
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, (const void *)text.cString(), text.length());
     return this;
 }
@@ -340,11 +340,11 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, const zfchar *, bodyText)
         return this->body().text();
     }
 }
-ZFMETHOD_DEFINE_0(ZFHttpResponse, ZFJsonItem, bodyJson)
+ZFMETHOD_DEFINE_0(ZFHttpResponse, ZFJson, bodyJson)
 {
     if(d->bodyJsonCache == zfnull)
     {
-        d->bodyJsonCache = zfnew(ZFJsonItem, ZFJsonItemFromString(this->body().text(), this->body().textLength()));
+        d->bodyJsonCache = zfnew(ZFJson, ZFJsonFromString(this->body().text(), this->body().textLength()));
     }
     return *(d->bodyJsonCache);
 }

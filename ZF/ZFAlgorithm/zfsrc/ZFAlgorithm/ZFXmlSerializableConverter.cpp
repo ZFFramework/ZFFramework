@@ -4,9 +4,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 static zfbool _ZFP_ZFSerializableDataFromXml(ZF_OUT ZFSerializableData &serializableData,
-                                             ZF_IN const ZFXmlItem &xmlElement,
+                                             ZF_IN const ZFXml &xmlElement,
                                              ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                             ZF_OUT_OPT ZFXmlItem *outErrorPos = zfnull)
+                                             ZF_OUT_OPT ZFXml *outErrorPos = zfnull)
 {
     if(!xmlElement)
     {
@@ -38,7 +38,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(ZF_OUT ZFSerializableData &serializ
     }
     serializableData.itemClass(xmlElement.xmlName());
 
-    ZFXmlItem attribute = xmlElement.attrFirst();
+    ZFXml attribute = xmlElement.attrFirst();
     while(attribute)
     {
         if(attribute.xmlName() == zfnull)
@@ -55,7 +55,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(ZF_OUT ZFSerializableData &serializ
         attribute = attribute.attrNext();
     }
 
-    ZFXmlItem element = xmlElement.childFirstElement();
+    ZFXml element = xmlElement.childFirstElement();
     while(element)
     {
         ZFSerializableData childData;
@@ -73,16 +73,16 @@ static zfbool _ZFP_ZFSerializableDataFromXml(ZF_OUT ZFSerializableData &serializ
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataFromXml,
                        ZFMP_OUT(ZFSerializableData &, serializableData),
-                       ZFMP_IN(const ZFXmlItem &, xmlElement),
+                       ZFMP_IN(const ZFXml &, xmlElement),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                       ZFMP_OUT_OPT(ZFXmlItem *, outErrorPos, zfnull))
+                       ZFMP_OUT_OPT(ZFXml *, outErrorPos, zfnull))
 {
     return _ZFP_ZFSerializableDataFromXml(serializableData, xmlElement, outErrorHint, outErrorPos);
 }
 ZFMETHOD_FUNC_DEFINE_3(ZFSerializableData, ZFSerializableDataFromXml,
-                       ZFMP_IN(const ZFXmlItem &, xmlElement),
+                       ZFMP_IN(const ZFXml &, xmlElement),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                       ZFMP_OUT_OPT(ZFXmlItem *, outErrorPos, zfnull))
+                       ZFMP_OUT_OPT(ZFXml *, outErrorPos, zfnull))
 {
     ZFSerializableData ret;
     if(ZFSerializableDataFromXml(ret, xmlElement, outErrorHint, outErrorPos))
@@ -95,7 +95,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFSerializableData, ZFSerializableDataFromXml,
     }
 }
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToXml,
-                       ZFMP_OUT(ZFXmlItem &, xmlElement),
+                       ZFMP_OUT(ZFXml &, xmlElement),
                        ZFMP_IN(const ZFSerializableData &, serializableData),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                        ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
@@ -103,7 +103,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToXml,
     xmlElement = ZFSerializableDataToXml(serializableData, outErrorHint, outErrorPos);
     return (xmlElement.xmlType() != ZFXmlType::e_XmlNull);
 }
-ZFMETHOD_FUNC_DEFINE_3(ZFXmlItem, ZFSerializableDataToXml,
+ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml,
                        ZFMP_IN(const ZFSerializableData &, serializableData),
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                        ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
@@ -111,10 +111,10 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXmlItem, ZFSerializableDataToXml,
     if(serializableData.itemClass() == zfnull)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, "missing serializable class");
-        return ZFXmlItem();
+        return ZFXml();
     }
 
-    ZFXmlItem ret(ZFXmlType::e_XmlElement);
+    ZFXml ret(ZFXmlType::e_XmlElement);
     ret.xmlName(serializableData.itemClass());
 
     for(zfiterator it = serializableData.attrIter();
@@ -127,10 +127,10 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXmlItem, ZFSerializableDataToXml,
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i)
     {
-        ZFXmlItem child = ZFSerializableDataToXml(serializableData.childAt(i), outErrorHint, outErrorPos);
+        ZFXml child = ZFSerializableDataToXml(serializableData.childAt(i), outErrorHint, outErrorPos);
         if(child.xmlType() == ZFXmlType::e_XmlNull)
         {
-            return ZFXmlItem();
+            return ZFXml();
         }
         ret.childAdd(child);
     }
@@ -149,7 +149,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFSerializableDataFromXml,
         zfstringAppend(outErrorHint, "invalid input callback");
         return zffalse;
     }
-    ZFXmlItem xmlElement = ZFXmlItemFromInput(input).childFirstElement();
+    ZFXml xmlElement = ZFXmlFromInput(input).childFirstElement();
     if(xmlElement.xmlType() == ZFXmlType::e_XmlNull)
     {
         zfstringAppend(outErrorHint, "unable to parse xml from input");
@@ -183,11 +183,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToXml,
                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                        ZFMP_IN_OPT(const ZFXmlOutputFlags &, flags, ZFXmlOutputFlagsDefault()))
 {
-    ZFXmlItem xmlElement;
+    ZFXml xmlElement;
     if(ZFSerializableDataToXml(xmlElement, serializableData, outErrorHint))
     {
         xmlElement.attrSortRecursively();
-        zfbool ret = ZFXmlItemToOutput(outputCallback, xmlElement, flags);
+        zfbool ret = ZFXmlToOutput(outputCallback, xmlElement, flags);
         outputCallback.execute("\n");
         if(!ret)
         {

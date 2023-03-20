@@ -15,28 +15,28 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataFromJson,
                         ZFMP_OUT(ZFSerializableData &, serializableData),
-                        ZFMP_IN(const ZFJsonItem &, jsonObject),
+                        ZFMP_IN(const ZFJson &, jsonObject),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                        ZFMP_OUT_OPT(ZFJsonItem *, outErrorPos, zfnull))
+                        ZFMP_OUT_OPT(ZFJson *, outErrorPos, zfnull))
 /**
  * @brief see #ZFSerializableDataFromJson
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDataFromJson,
-                        ZFMP_IN(const ZFJsonItem &, jsonObject),
+                        ZFMP_IN(const ZFJson &, jsonObject),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                        ZFMP_OUT_OPT(ZFJsonItem *, outErrorPos, zfnull))
+                        ZFMP_OUT_OPT(ZFJson *, outErrorPos, zfnull))
 /**
  * @brief print serializable to json formated data
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToJson,
-                        ZFMP_OUT(ZFJsonItem &, jsonObject),
+                        ZFMP_OUT(ZFJson &, jsonObject),
                         ZFMP_IN(const ZFSerializableData &, serializableData),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                         ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
 /**
  * @brief see #ZFSerializableDataToJson
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFJsonItem, ZFSerializableDataToJson,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFJson, ZFSerializableDataToJson,
                         ZFMP_IN(const ZFSerializableData &, serializableData),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                         ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))

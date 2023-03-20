@@ -29,14 +29,14 @@ public:
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFJsonImpl_default, ZFJson, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("rapidjson")
 public:
-    virtual ZFJsonItem jsonParse(ZF_IN const zfchar *src,
-                                 ZF_IN_OPT zfindex size = zfindexMax())
+    virtual ZFJson jsonParse(ZF_IN const zfchar *src,
+                             ZF_IN_OPT zfindex size = zfindexMax())
     {
         ZFBuffer buf;
         buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
         return this->jsonParse(buf);
     }
-    virtual ZFJsonItem jsonParse(ZF_IN const ZFInput &inputCallback)
+    virtual ZFJson jsonParse(ZF_IN const ZFInput &inputCallback)
     {
         ZFBuffer buf;
         ZFInputReadAll(buf, inputCallback);
@@ -52,11 +52,11 @@ public:
         }
     }
 private:
-    ZFJsonItem jsonParse(ZF_IN_OUT ZFBuffer &buf)
+    ZFJson jsonParse(ZF_IN_OUT ZFBuffer &buf)
     {
         if(buf.buffer() == zfnull)
         {
-            return ZFJsonItem();
+            return ZFJson();
         }
         _ZFP_ZFJsonImpl_default_MemoryPoolHolder *docHolder = zfnew(_ZFP_ZFJsonImpl_default_MemoryPoolHolder);
         docHolder->buf = buf;
@@ -64,9 +64,9 @@ private:
         if(docHolder->implJsonDoc.HasParseError())
         {
             zfdelete(docHolder);
-            return ZFJsonItem();
+            return ZFJson();
         }
-        ZFJsonItem ret = this->jsonConvert(docHolder->implJsonDoc, docHolder);
+        ZFJson ret = this->jsonConvert(docHolder->implJsonDoc, docHolder);
         if(docHolder->docRefCount == 0)
         {
             zfdelete(docHolder);
@@ -74,19 +74,19 @@ private:
         return ret;
     }
 private:
-    ZFJsonItem jsonConvert(ZF_IN const rapidjson::Value &implJsonItem,
-                           ZF_IN _ZFP_ZFJsonImpl_default_MemoryPoolHolder *docHolder)
+    ZFJson jsonConvert(ZF_IN const rapidjson::Value &implJsonItem,
+                       ZF_IN _ZFP_ZFJsonImpl_default_MemoryPoolHolder *docHolder)
     {
         switch(implJsonItem.GetType())
         {
             case rapidjson::kNullType:
-                return ZFJsonItem();
+                return ZFJson();
             case rapidjson::kFalseType:
             case rapidjson::kTrueType:
             case rapidjson::kStringType:
             case rapidjson::kNumberType:
             {
-                ZFJsonItem jsonValue(ZFJsonType::e_JsonValue);
+                ZFJson jsonValue(ZFJsonType::e_JsonValue);
                 ++(docHolder->docRefCount);
                 const char *implString = implJsonItem.GetString();
                 if(implString[implJsonItem.GetStringLength()] == '\0')
@@ -101,13 +101,13 @@ private:
             }
             case rapidjson::kArrayType:
             {
-                ZFJsonItem jsonArray(ZFJsonType::e_JsonArray);
+                ZFJson jsonArray(ZFJsonType::e_JsonArray);
                 for(rapidjson::Value::ConstValueIterator it = implJsonItem.Begin(); it != implJsonItem.End(); ++it)
                 {
-                    ZFJsonItem jsonChild = this->jsonConvert(*it, docHolder);
+                    ZFJson jsonChild = this->jsonConvert(*it, docHolder);
                     if(!jsonChild)
                     {
-                        return ZFJsonItem();
+                        return ZFJson();
                     }
                     jsonArray.childAdd(jsonChild);
                 }
@@ -115,13 +115,13 @@ private:
             }
             case rapidjson::kObjectType:
             {
-                ZFJsonItem jsonObject(ZFJsonType::e_JsonObject);
+                ZFJson jsonObject(ZFJsonType::e_JsonObject);
                 for(rapidjson::Value::ConstMemberIterator it = implJsonItem.MemberBegin(); it != implJsonItem.MemberEnd(); ++it)
                 {
-                    ZFJsonItem jsonChild = this->jsonConvert(it->value, docHolder);
+                    ZFJson jsonChild = this->jsonConvert(it->value, docHolder);
                     if(!jsonChild)
                     {
-                        return ZFJsonItem();
+                        return ZFJson();
                     }
                     ++(docHolder->docRefCount);
                     this->jsonMemoryPool_jsonItem(jsonObject, it->name.GetString(), docHolder, jsonChild);
@@ -130,7 +130,7 @@ private:
             }
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ZFJsonItem();
+                return ZFJson();
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFJsonImpl_default)

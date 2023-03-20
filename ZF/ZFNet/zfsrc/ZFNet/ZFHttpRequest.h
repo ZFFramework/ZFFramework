@@ -56,7 +56,7 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextends ZFObject
     /** @brief util to access body as plain text */
     ZFMETHOD_DECLARE_0(const zfchar *, bodyText)
     /** @brief util to access body as json, return an invalid json if not able to parse */
-    ZFMETHOD_DECLARE_0(ZFJsonItem, bodyJson)
+    ZFMETHOD_DECLARE_0(ZFJson, bodyJson)
 
     /** @brief print all content info, usually for debug use only */
     ZFMETHOD_DECLARE_0(zfstring, contentInfo)
@@ -83,12 +83,12 @@ private:
  * typical usage:
  * @code
  *   ZFLISTENER(onRecv) {
- *       ZFJsonItem response = zfargs.param0()->to<ZFHttpResponse *>()->bodyJson();
+ *       ZFJson response = zfargs.param0()->to<ZFHttpResponse *>()->bodyJson();
  *       zfLogTrimT() << response;
  *   } ZFLISTENER_END(onRecv)
  *   zflineAlloc(ZFHttpRequest, "http://xxx", "POST")
  *       ->header("Content-Type", "application/json;charset=UTF-8;")
- *       ->request(ZFJsonItem()
+ *       ->request(ZFJson()
  *           .attr("k", "v")
  *           , onRecv)
  *       ;
@@ -173,7 +173,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
     /** @brief append content to body */
     ZFMETHOD_DECLARE_1(ZFHttpRequest *, body,
-                       ZFMP_IN(const ZFJsonItem &, json))
+                       ZFMP_IN(const ZFJson &, json))
     /** @brief append content to body */
     ZFMETHOD_DECLARE_1(ZFHttpRequest *, body,
                        ZFMP_IN(const ZFBuffer &, buf))

@@ -32,45 +32,45 @@ protected:
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFXml parse from string:");
-        ZFXmlItem doc = ZFXmlItemFromString(src);
+        ZFXml doc = ZFXmlFromString(src);
 
         this->testCaseOutput("ZFXml parse from string, result:");
-        zfLogTrimT() << ZFXmlItemToString(doc);
+        zfLogTrimT() << ZFXmlToString(doc);
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFXml add element");
-        ZFXmlItem element(ZFXmlType::e_XmlElement);
+        ZFXml element(ZFXmlType::e_XmlElement);
         element.xmlName("testElement");
         doc.childAdd(element);
         this->testCaseOutput("ZFXml add element, result:");
-        zfLogTrimT() << ZFXmlItemToString(doc);
+        zfLogTrimT() << ZFXmlToString(doc);
 
         this->performanceTest(doc);
 
         this->testCaseStop();
     }
 private:
-    void performanceTest(ZF_IN const ZFXmlItem &xmlItem)
+    void performanceTest(ZF_IN const ZFXml &xmlItem)
     {
         zfindex toDataTimes = 10000;
         ZFCoreStatistic::invokeTimeLogBegin("ZFXmlPerformance_test_toData");
         for(zfindex i = 0; i < toDataTimes; ++i)
         {
             zfstring tmp;
-            ZFXmlItemToOutput(ZFOutputForString(tmp), xmlItem);
+            ZFXmlToOutput(ZFOutputForString(tmp), xmlItem);
         }
         ZFCoreStatistic::invokeTimeLogEnd("ZFXmlPerformance_test_toData");
 
         zfindex fromDataTimes = toDataTimes;
         zfstring xmlString;
-        ZFXmlItemToOutput(ZFOutputForString(xmlString), xmlItem);
+        ZFXmlToOutput(ZFOutputForString(xmlString), xmlItem);
         ZFCoreStatistic::invokeTimeLogBegin("ZFXmlPerformance_test_fromData");
         for(zfindex i = 0; i < fromDataTimes; ++i)
         {
-            ZFXmlItemFromInput(ZFInputForBufferUnsafe(xmlString));
+            ZFXmlFromInput(ZFInputForBufferUnsafe(xmlString));
         }
         ZFCoreStatistic::invokeTimeLogEnd("ZFXmlPerformance_test_fromData");
-        ZFXmlItem xmlItemNew = ZFXmlItemFromInput(ZFInputForBufferUnsafe(xmlString));
+        ZFXml xmlItemNew = ZFXmlFromInput(ZFInputForBufferUnsafe(xmlString));
 
         this->testCaseOutputSeparator();
 
@@ -87,7 +87,7 @@ private:
         #if 0
             this->testCaseOutputSeparator();
             this->testCaseOutput("content: %s", xmlString.cString());
-            this->testCaseOutput("newly: %s", ZFXmlItemToString(xmlItemNew).cString());
+            this->testCaseOutput("newly: %s", ZFXmlToString(xmlItemNew).cString());
         #endif
 
         ZFCoreStatistic::invokeTimeRemove("ZFXmlPerformance_test_toData");

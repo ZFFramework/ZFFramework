@@ -27,14 +27,14 @@ public:
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFXmlImpl_default, ZFXml, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("pugixml")
 public:
-    virtual ZFXmlItem xmlParse(ZF_IN const zfchar *src,
-                               ZF_IN_OPT zfindex size = zfindexMax())
+    virtual ZFXml xmlParse(ZF_IN const zfchar *src,
+                           ZF_IN_OPT zfindex size = zfindexMax())
     {
         ZFBuffer buf;
         buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
         return this->xmlParse(buf);
     }
-    virtual ZFXmlItem xmlParse(ZF_IN const ZFInput &inputCallback)
+    virtual ZFXml xmlParse(ZF_IN const ZFInput &inputCallback)
     {
         ZFBuffer buf;
         ZFInputReadAll(buf, inputCallback);
@@ -50,11 +50,11 @@ public:
         }
     }
 private:
-    ZFXmlItem xmlParse(ZF_IN_OUT ZFBuffer &buf)
+    ZFXml xmlParse(ZF_IN_OUT ZFBuffer &buf)
     {
         if(buf.buffer() == zfnull)
         {
-            return ZFXmlItem();
+            return ZFXml();
         }
         _ZFP_ZFXmlImpl_default_MemoryPoolHolder *docHolder = zfnew(_ZFP_ZFXmlImpl_default_MemoryPoolHolder);
         docHolder->buf = buf;
@@ -62,9 +62,9 @@ private:
         if(implResult.status != pugi::status_ok)
         {
             zfdelete(docHolder);
-            return ZFXmlItem();
+            return ZFXml();
         }
-        ZFXmlItem doc(ZFXmlType::e_XmlDocument);
+        ZFXml doc(ZFXmlType::e_XmlDocument);
         this->translateChildren(docHolder->implXmlDoc, doc, docHolder);
         if(docHolder->docRefCount == 0)
         {
@@ -73,13 +73,13 @@ private:
         return doc;
     }
     void translateAttribute(ZF_IN const pugi::xml_node &implXmlItem,
-                            ZF_OUT ZFXmlItem &zfXmlItem,
+                            ZF_OUT ZFXml &zfXmlItem,
                             ZF_IN _ZFP_ZFXmlImpl_default_MemoryPoolHolder *docHolder)
     {
         pugi::xml_attribute implXmlAttribute = implXmlItem.first_attribute();
         while(implXmlAttribute)
         {
-            ZFXmlItem zfXmlAttribute(ZFXmlType::e_XmlAttribute);
+            ZFXml zfXmlAttribute(ZFXmlType::e_XmlAttribute);
             ++(docHolder->docRefCount);
             this->xmlMemoryPool_xmlName(zfXmlAttribute, implXmlAttribute.name(), docHolder);
             ++(docHolder->docRefCount);
@@ -90,7 +90,7 @@ private:
         }
     }
     void translateChildren(ZF_IN const pugi::xml_node &implXmlItem,
-                           ZF_OUT ZFXmlItem &zfXmlItem,
+                           ZF_OUT ZFXml &zfXmlItem,
                            ZF_IN _ZFP_ZFXmlImpl_default_MemoryPoolHolder *docHolder)
     {
         pugi::xml_node implXmlChild = implXmlItem.first_child();
@@ -103,7 +103,7 @@ private:
                     return ;
                 case pugi::node_element:
                 {
-                    ZFXmlItem zfXmlChild(ZFXmlType::e_XmlElement);
+                    ZFXml zfXmlChild(ZFXmlType::e_XmlElement);
                     this->translateAttribute(implXmlChild, zfXmlChild, docHolder);
                     this->translateChildren(implXmlChild, zfXmlChild, docHolder);
 
@@ -114,7 +114,7 @@ private:
                 }
                 case pugi::node_pcdata:
                 {
-                    ZFXmlItem zfXmlChild(ZFXmlType::e_XmlText);
+                    ZFXml zfXmlChild(ZFXmlType::e_XmlText);
 
                     ++(docHolder->docRefCount);
                     this->xmlMemoryPool_xmlName(zfXmlChild, implXmlChild.name(), docHolder);
@@ -125,7 +125,7 @@ private:
                 }
                 case pugi::node_cdata:
                 {
-                    ZFXmlItem zfXmlChild(ZFXmlType::e_XmlText);
+                    ZFXml zfXmlChild(ZFXmlType::e_XmlText);
                     zfXmlChild.xmlTextCDATA(zftrue);
 
                     ++(docHolder->docRefCount);
@@ -137,7 +137,7 @@ private:
                 }
                 case pugi::node_comment:
                 {
-                    ZFXmlItem zfXmlChild(ZFXmlType::e_XmlComment);
+                    ZFXml zfXmlChild(ZFXmlType::e_XmlComment);
 
                     ++(docHolder->docRefCount);
                     this->xmlMemoryPool_xmlName(zfXmlChild, implXmlChild.name(), docHolder);
@@ -148,7 +148,7 @@ private:
                 }
                 case pugi::node_declaration:
                 {
-                    ZFXmlItem zfXmlChild(ZFXmlType::e_XmlDeclaration);
+                    ZFXml zfXmlChild(ZFXmlType::e_XmlDeclaration);
                     this->translateAttribute(implXmlChild, zfXmlChild, docHolder);
 
                     ++(docHolder->docRefCount);
@@ -160,7 +160,7 @@ private:
                 }
                 case pugi::node_doctype:
                 {
-                    ZFXmlItem zfXmlChild(ZFXmlType::e_XmlDocType);
+                    ZFXml zfXmlChild(ZFXmlType::e_XmlDocType);
 
                     ++(docHolder->docRefCount);
                     this->xmlMemoryPool_xmlName(zfXmlChild, implXmlChild.name(), docHolder);
@@ -171,7 +171,7 @@ private:
                 }
                 case pugi::node_pi:
                 {
-                    ZFXmlItem zfXmlChild(ZFXmlType::e_XmlPI);
+                    ZFXml zfXmlChild(ZFXmlType::e_XmlPI);
 
                     ++(docHolder->docRefCount);
                     this->xmlMemoryPool_xmlName(zfXmlChild, implXmlChild.name(), docHolder);

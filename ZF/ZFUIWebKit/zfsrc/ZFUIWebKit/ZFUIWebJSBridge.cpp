@@ -5,12 +5,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIWebJSBridgeSendData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJsonItem, messageSend)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJsonItem, messageResponse)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, messageSend)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeSendData, ZFJson, messageResponse)
 
 ZFOBJECT_REGISTER(ZFUIWebJSBridgeRecvData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJsonItem, messageRecv)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJsonItem, messageResponse)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, messageRecv)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, messageResponse)
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFUIWebJSBridgePrivate
@@ -56,8 +56,8 @@ ZFMETHOD_DEFINE_0(ZFUIWebJSBridge, ZFUIWebView *, webView)
     return d->webView;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJsonItem, webMessageSend,
-                  ZFMP_IN_OUT(ZFJsonItem &, messageSend))
+ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, webMessageSend,
+                  ZFMP_IN_OUT(ZFJson &, messageSend))
 {
     zfblockedAlloc(ZFUIWebJSBridgeSendData, dataSend);
     dataSend->messageSend = messageSend;
@@ -66,7 +66,7 @@ ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJsonItem, webMessageSend,
     this->webMessageAfterSend(dataSend);
     return dataSend->messageResponse;
 }
-ZFJsonItem ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJsonItem &messageRecv)
+ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &messageRecv)
 {
     zfblockedAlloc(ZFUIWebJSBridgeRecvData, dataRecv);
     dataRecv->messageRecv = messageRecv;

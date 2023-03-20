@@ -21,11 +21,11 @@ public:
     /**
      * @brief message sent to web
      */
-    ZFJsonItem messageSend;
+    ZFJson messageSend;
     /**
      * @brief message response from web
      */
-    ZFJsonItem messageResponse;
+    ZFJson messageResponse;
 };
 
 // ============================================================
@@ -40,11 +40,11 @@ public:
     /**
      * @brief message received from web
      */
-    ZFJsonItem messageRecv;
+    ZFJson messageRecv;
     /**
      * @brief message response to web
      */
-    ZFJsonItem messageResponse;
+    ZFJson messageResponse;
 };
 
 // ============================================================
@@ -110,9 +110,9 @@ public:
      *
      * note: the message to send can be modified by observing #EventWebMessageBeforeSend
      */
-    ZFMETHOD_DECLARE_1(ZFJsonItem, webMessageSend,
-                       ZFMP_IN_OUT(ZFJsonItem &, messageSend))
-    zffinal ZFJsonItem _ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJsonItem &messageRecv);
+    ZFMETHOD_DECLARE_1(ZFJson, webMessageSend,
+                       ZFMP_IN_OUT(ZFJson &, messageSend))
+    zffinal ZFJson _ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &messageRecv);
 
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFUIWebJSBridge::instanceForWebView")
 protected:

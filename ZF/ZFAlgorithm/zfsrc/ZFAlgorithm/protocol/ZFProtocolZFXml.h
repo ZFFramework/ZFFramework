@@ -38,12 +38,12 @@ public:
      * -  value for each xml item
      * -  CDATA for text node
      */
-    virtual ZFXmlItem xmlParse(ZF_IN const zfchar *src,
-                               ZF_IN_OPT zfindex size = zfindexMax()) zfpurevirtual;
+    virtual ZFXml xmlParse(ZF_IN const zfchar *src,
+                           ZF_IN_OPT zfindex size = zfindexMax()) zfpurevirtual;
     /**
      * @brief parse xml document
      */
-    virtual ZFXmlItem xmlParse(ZF_IN const ZFInput &inputCallback) zfpurevirtual;
+    virtual ZFXml xmlParse(ZF_IN const ZFInput &inputCallback) zfpurevirtual;
 
     /**
      * @brief for impl to achieve memory pool logic
@@ -60,14 +60,14 @@ public:
 
 public:
     /** @brief see #xmlMemoryPoolRelease */
-    inline void xmlMemoryPool_xmlName(ZF_IN ZFXmlItem &xmlItem,
+    inline void xmlMemoryPool_xmlName(ZF_IN ZFXml &xmlItem,
                                       ZF_IN const zfchar *xmlName,
                                       ZF_IN void *token)
     {
         xmlItem._ZFP_ZFXml_xmlMemoryPool_xmlName(xmlName, token);
     }
     /** @brief see #xmlMemoryPoolRelease */
-    inline void xmlMemoryPool_xmlValue(ZF_IN ZFXmlItem &xmlItem,
+    inline void xmlMemoryPool_xmlValue(ZF_IN ZFXml &xmlItem,
                                        ZF_IN const zfchar *xmlValue,
                                        ZF_IN void *token)
     {

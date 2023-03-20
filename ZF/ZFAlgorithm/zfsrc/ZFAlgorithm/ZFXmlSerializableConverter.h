@@ -15,28 +15,28 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataFromXml,
                         ZFMP_OUT(ZFSerializableData &, serializableData),
-                        ZFMP_IN(const ZFXmlItem &, xmlElement),
+                        ZFMP_IN(const ZFXml &, xmlElement),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                        ZFMP_OUT_OPT(ZFXmlItem *, outErrorPos, zfnull))
+                        ZFMP_OUT_OPT(ZFXml *, outErrorPos, zfnull))
 /**
  * @brief see #ZFSerializableDataFromXml
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFSerializableData, ZFSerializableDataFromXml,
-                        ZFMP_IN(const ZFXmlItem &, xmlElement),
+                        ZFMP_IN(const ZFXml &, xmlElement),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
-                        ZFMP_OUT_OPT(ZFXmlItem *, outErrorPos, zfnull))
+                        ZFMP_OUT_OPT(ZFXml *, outErrorPos, zfnull))
 /**
  * @brief print serializable to xml formated data
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToXml,
-                        ZFMP_OUT(ZFXmlItem &, xmlElement),
+                        ZFMP_OUT(ZFXml &, xmlElement),
                         ZFMP_IN(const ZFSerializableData &, serializableData),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                         ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
 /**
  * @brief see #ZFSerializableDataToXml
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFXmlItem, ZFSerializableDataToXml,
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFXml, ZFSerializableDataToXml,
                         ZFMP_IN(const ZFSerializableData &, serializableData),
                         ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull),
                         ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
