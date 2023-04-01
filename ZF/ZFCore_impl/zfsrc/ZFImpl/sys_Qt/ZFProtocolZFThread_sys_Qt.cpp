@@ -57,7 +57,6 @@ public:
     , _ZFP_nativeThreadRegisterToken(zfnull)
     , _ZFP_runnable()
     , _ZFP_runnableCleanup()
-    , _ZFP_zfargs()
     {
     }
 
@@ -65,7 +64,6 @@ public:
     void *_ZFP_nativeThreadRegisterToken;
     ZFListener _ZFP_runnable;
     ZFListener _ZFP_runnableCleanup;
-    ZFArgs _ZFP_zfargs;
 
 protected:
     virtual void run()
@@ -74,7 +72,7 @@ protected:
         {
             if(this->_ZFP_runnable)
             {
-                this->_ZFP_runnable.execute(this->_ZFP_zfargs
+                this->_ZFP_runnable.execute(ZFArgs()
                         .userData(this->_ZFP_runnable.userData())
                     );
             }
@@ -83,7 +81,7 @@ protected:
         this->_ZFP_runnable = zfnull;
         if(this->_ZFP_runnableCleanup)
         {
-            this->_ZFP_runnableCleanup.execute(this->_ZFP_zfargs
+            this->_ZFP_runnableCleanup.execute(ZFArgs()
                     .userData(this->_ZFP_runnableCleanup.userData())
                 );
             this->_ZFP_runnableCleanup = zfnull;
@@ -196,8 +194,6 @@ public:
         _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder *threadHolder = new _ZFP_ZFThreadImpl_sys_Qt_NewThreadHolder();
         threadHolder->_ZFP_runnable = runnable;
         threadHolder->_ZFP_runnableCleanup = runnableCleanup;
-        threadHolder->_ZFP_zfargs.param0(param0);
-        threadHolder->_ZFP_zfargs.param1(param1);
         threadHolder->start();
         return threadHolder;
     }
@@ -207,8 +203,6 @@ public:
         threadHolder->_ZFP_runnable = zfnull;
         // run and cleanup during thread
         // threadHolder->_ZFP_runnableCleanup = zfnull;
-        threadHolder->_ZFP_zfargs.param0(zfnull);
-        threadHolder->_ZFP_zfargs.param1(zfnull);
     }
 
 private:
