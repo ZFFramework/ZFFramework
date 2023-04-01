@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   ZFLISTENER(aniImpl) {
  *       zffloat progress = zfargs.param0()->to<v_zffloat *>()->zfv;
  *       yourAniImpl(progress, zfargs.sender());
- *   } ZFLISTENER_END(aniImpl)
+ *   } ZFLISTENER_END()
  *   ZFAni(target, aniImpl)->aniStart();
  * @endcode
  * aniImpl's param0 is #v_zffloat that holds progress

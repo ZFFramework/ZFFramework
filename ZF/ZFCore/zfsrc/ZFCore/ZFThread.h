@@ -307,9 +307,7 @@ protected:
 
 private:
     _ZFP_ZFThreadPrivate *d;
-    static void _ZFP_ZFThread_threadCallback(ZF_IN const ZFArgs &zfargs);
-    static void _ZFP_ZFThread_threadCleanupCallback(ZF_IN const ZFArgs &zfargs);
-    static void _ZFP_ZFThread_mainThreadCallback(ZF_IN const ZFArgs &zfargs);
+    friend zfclassFwd _ZFP_ZFThreadPrivate;
 };
 
 ZF_NAMESPACE_GLOBAL_END

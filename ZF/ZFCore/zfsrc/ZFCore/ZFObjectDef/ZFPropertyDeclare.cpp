@@ -300,7 +300,7 @@ static void _ZFP_ZFPropertyWeakAttach(ZF_IN ZFObject *propertyOwnerObject,
             , const ZFProperty *, property
             ) {
         property->callbackValueReset(property, propertyOwnerObject);
-    } ZFLISTENER_END(propertyOnDealloc)
+    } ZFLISTENER_END()
     zfblockedAlloc(v_ZFListener, holder, propertyOnDealloc);
     propertyOwnerObject->objectTag(zfstringWithFormat("_ZFP_PropWeak_%s", property->propertyName()), holder);
 

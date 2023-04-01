@@ -290,7 +290,7 @@ public:
                 , _ZFP_ZFHttpRequestImpl_sys_Qt_Task *, task
                 ) {
             task->_ZFP_notifyTimeout();
-        } ZFLISTENER_END(onTimeout)
+        } ZFLISTENER_END()
         task->timeoutTimer = ZFTimerOnce(task->ownerRequest->timeout(), onTimeout);
 
         if(task->httpMethod.compare("GET") == 0)

@@ -387,7 +387,7 @@ ZFMETHOD_DEFINE_1(ZFUIAniImageView, void, aniStart,
                 , ZFUIAniImageView *, owner
                 ) {
             _ZFP_ZFUIAniImageViewPrivate::onTimer(zfargs, owner);
-        } ZFLISTENER_END(onTimer)
+        } ZFLISTENER_END()
         d->onTimerListener = onTimer;
     }
     ZFGlobalTimerAttach(d->onTimerListener);

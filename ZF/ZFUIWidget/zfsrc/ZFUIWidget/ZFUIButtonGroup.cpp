@@ -26,7 +26,7 @@ static void _ZFP_ZFUIButtonGroup_setup_common(ZF_IN ZFUIButtonGroup *buttonGroup
             zfindex buttonIndex = buttonGroup->buttonFind(button);
             zfCoreAssert(buttonIndex != zfindexMax());
             buttonGroup->_ZFP_ZFUIButtonGroup_buttonGroupOnEvent(button, buttonIndex, zfargs.eventId());
-        } ZFLISTENER_END(buttonEvent)
+        } ZFLISTENER_END()
         buttonGroup->_ZFP_buttonOnEvent = buttonEvent;
     }
 
@@ -106,7 +106,7 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(ZF_IN ZFUIButtonGroup *buttonGroup,
                 buttonGroup->buttonTabChecked(buttonIndex);
                 buttonGroup->_ZFP_ZFUIButtonGroup_buttonTabOnChange(button, buttonIndexPrev);
             }
-        } ZFLISTENER_END(buttonOnClick)
+        } ZFLISTENER_END()
         buttonGroup->_ZFP_buttonOnClick = buttonOnClick;
     }
     button->observerAdd(

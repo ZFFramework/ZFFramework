@@ -24,7 +24,7 @@ protected:
                 , ZFUIAniImageView *, animatedImageView
                 ) {
             animatedImageView->aniStop();
-        } ZFLISTENER_END(testCaseOnStop)
+        } ZFLISTENER_END()
         this->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
 
         zfautoObjectT<ZFUIImage *> frameSrc = zfRes("test_normal.png");
@@ -51,7 +51,7 @@ private:
             testCase->testCaseOutput(
                 "onFrame: %zi",
                 zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
-        } ZFLISTENER_END(onFrame)
+        } ZFLISTENER_END()
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnFrame(), onFrame);
 
         ZFLISTENER_1(onLoop
@@ -60,7 +60,7 @@ private:
             testCase->testCaseOutput(
                 "onLoop: %zi",
                 zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
-        } ZFLISTENER_END(onLoop)
+        } ZFLISTENER_END()
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnLoop(), onLoop);
 
         ZFLISTENER_1(onStop
@@ -69,7 +69,7 @@ private:
             testCase->testCaseOutput(
                 "onStop: %zi",
                 zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
-        } ZFLISTENER_END(onStop)
+        } ZFLISTENER_END()
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnStop(), onStop);
     }
     void prepareActionButton(ZF_IN ZFUIView *container,
@@ -79,7 +79,7 @@ private:
                 , ZFUIAniImageView *, animatedImageView
                 ) {
             animatedImageView->aniFrameNext();
-        } ZFLISTENER_END(manualOnClick)
+        } ZFLISTENER_END()
         zfblockedAlloc(ZFUIKit_test_Button, manualButton);
         container->childAdd(manualButton)->c_alignLeftBottom();
         manualButton->label()->text("manual");
@@ -89,7 +89,7 @@ private:
                 , ZFUIAniImageView *, animatedImageView
                 ) {
             animatedImageView->aniStart();
-        } ZFLISTENER_END(startOnClick)
+        } ZFLISTENER_END()
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         container->childAdd(startButton)->c_alignBottom();
         startButton->label()->text("start");
@@ -99,7 +99,7 @@ private:
                 , ZFUIAniImageView *, animatedImageView
                 ) {
             animatedImageView->aniStop();
-        } ZFLISTENER_END(stopOnClick)
+        } ZFLISTENER_END()
         zfblockedAlloc(ZFUIKit_test_Button, stopButton);
         container->childAdd(stopButton)->c_alignRightBottom();
         stopButton->label()->text("stop");

@@ -24,7 +24,7 @@ protected:
         ZFLISTENER(observer
                 ) {
             zfLogTrimT() << zfargs.sender() << ZFIdMapNameForId(zfargs.eventId());
-        } ZFLISTENER_END(observer)
+        } ZFLISTENER_END()
         ZFObserverGroup(this, testObserver0)
             .observerAdd(zfself::EventZFObserverGroupTest0(), observer)
             .observerAdd(zfself::EventZFObserverGroupTest1(), observer)

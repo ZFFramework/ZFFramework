@@ -33,7 +33,7 @@ protected:
                 ZFThread::sleep((zftimet)300);
             }
             zfLogTrim("async thread end");
-        } ZFLISTENER_END(asyncFunc)
+        } ZFLISTENER_END()
         thread = zflineAlloc(ZFThread, asyncFunc);
         thread->threadStart();
         for(zfindex i = 0; i < 5; ++i)
@@ -67,7 +67,7 @@ protected:
                 ZFThread::sleep((zftimet)200);
             }
             zfLogTrim("sync thread end");
-        } ZFLISTENER_END(syncFunc)
+        } ZFLISTENER_END()
         thread = zflineAlloc(ZFThread, syncFunc);
         thread->threadStart();
         for(zfindex i = 0; i < 5; ++i)

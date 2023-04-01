@@ -22,7 +22,7 @@ protected:
         ZFLISTENER(onClickReturn) {
             ZFUITextEdit *textEdit = zfargs.sender()->toAny();
             textEdit->viewFocusRequest(zffalse);
-        } ZFLISTENER_END(onClickReturn)
+        } ZFLISTENER_END()
 
         zfblockedAlloc(ZFUITextEdit, view);
         container->childAdd(view)->c_widthFill()->c_margin(40);

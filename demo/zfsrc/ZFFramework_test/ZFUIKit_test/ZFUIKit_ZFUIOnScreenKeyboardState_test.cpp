@@ -16,14 +16,14 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
             ) {
         ZFLISTENER(action) {
             zfLogTrimT() << "[ZFUIOnScreenKeyboardState] state changed:" << zfargs.sender();
-        } ZFLISTENER_END(action)
+        } ZFLISTENER_END()
         ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
         state->observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), action);
         _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData task;
         task.state = state;
         task.callback = action;
         taskList.add(task);
-    } ZFLISTENER_END(sysWindowOnCreate)
+    } ZFLISTENER_END()
     this->sysWindowOnCreateListener = sysWindowOnCreate;
     ZFGlobalObserver().observerAdd(ZFUISysWindow::EventSysWindowOnCreate(), this->sysWindowOnDestroyListener);
 
@@ -40,7 +40,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
                 taskList.remove(i);
             }
         }
-    } ZFLISTENER_END(sysWindowOnDestroy)
+    } ZFLISTENER_END()
     this->sysWindowOnDestroyListener = sysWindowOnDestroy;
     ZFGlobalObserver().observerAdd(ZFUISysWindow::EventSysWindowOnDestroy(), this->sysWindowOnDestroyListener);
 }

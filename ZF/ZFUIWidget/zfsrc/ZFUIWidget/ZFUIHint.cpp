@@ -124,7 +124,7 @@ public:
                         , ZFUIHint *, pimplOwner
                         ) {
                     _ZFP_ZFUIHintPrivate::hintAniShowOnStop(zfargs, pimplOwner);
-                } ZFLISTENER_END(callback)
+                } ZFLISTENER_END()
                 this->hintAniShowOnStopListener = callback;
             }
             this->hintAnimating->observerAddForOnce(
@@ -152,7 +152,7 @@ public:
                     , ZFUIHint *, pimplOwner
                     ) {
                 _ZFP_ZFUIHintPrivate::hintShowDelayTimeout(zfargs, pimplOwner);
-            } ZFLISTENER_END(callback)
+            } ZFLISTENER_END()
             this->hintShowDelayTimeoutListener = callback;
         }
         this->hintShowDelayTimer = ZFTimerOnce(
@@ -175,7 +175,7 @@ public:
                         , ZFUIHint *, pimplOwner
                         ) {
                     _ZFP_ZFUIHintPrivate::hintAniHideOnStop(zfargs, pimplOwner);
-                } ZFLISTENER_END(callback)
+                } ZFLISTENER_END()
                 this->hintAniHideOnStopListener = callback;
             }
             this->hintAnimating->observerAddForOnce(
@@ -408,14 +408,14 @@ void ZFUIHint::objectOnInit(void)
                 tmp->d->hintDoShow();
             }
         }
-    } ZFLISTENER_END(hintWindowChanged)
+    } ZFLISTENER_END()
     d->hintWindow->observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnChange(), hintWindowChanged);
 
     ZFLISTENER_1(hintWindowOnLayoutPrepare
             , ZFUIHint *, hint
             ) {
         hint->hintOnUpdate();
-    } ZFLISTENER_END(hintWindowOnLayoutPrepare)
+    } ZFLISTENER_END()
     d->hintWindow->observerAdd(ZFUIView::EventViewLayoutOnLayoutPrepare(), hintWindowOnLayoutPrepare);
 
     _ZFP_ZFUIHint_allHint.add(this);

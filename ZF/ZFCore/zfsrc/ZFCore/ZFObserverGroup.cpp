@@ -82,14 +82,14 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObserverGroupDataHolder, ZFLevelZFFramew
             , zfself *, dataHolder
             ) {
         dataHolder->detachByOwner(zfargs.sender());
-    } ZFLISTENER_END(ownerOnDealloc)
+    } ZFLISTENER_END()
     this->ownerOnDeallocListener = ownerOnDealloc;
 
     ZFLISTENER_1(targetOnDealloc
             , zfself *, dataHolder
             ) {
         dataHolder->detachByTarget(zfargs.sender());
-    } ZFLISTENER_END(targetOnDealloc)
+    } ZFLISTENER_END()
     this->targetOnDeallocListener = targetOnDealloc;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFObserverGroupDataHolder)
@@ -435,7 +435,7 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(ZF_IN zfi
             , ZFListener, observer
             ) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->detachExact(owner, target, realTarget, eventId, observer);
-    } ZFLISTENER_END(realObserver)
+    } ZFLISTENER_END()
     realTarget.observerAddForOnce(eventId, realObserver, observerLevel);
 
     if(owner != zfnull)

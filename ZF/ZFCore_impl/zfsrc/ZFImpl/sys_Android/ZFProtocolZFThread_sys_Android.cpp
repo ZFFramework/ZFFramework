@@ -16,18 +16,12 @@ zfclassNotPOD _ZFP_ZFThreadImpl_sys_Android_ExecuteData
 public:
     ZFListener runnable;
     ZFListener runnableCleanup;
-    ZFObject *param0;
-    ZFObject *param1;
 
 public:
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData(ZF_IN ZFListener runnable,
-                                              ZF_IN ZFListener runnableCleanup,
-                                              ZF_IN ZFObject *param0,
-                                              ZF_IN ZFObject *param1)
+                                              ZF_IN ZFListener runnableCleanup)
     : runnable(runnable)
     , runnableCleanup(runnableCleanup)
-    , param0(param0)
-    , param1(param1)
     {
     }
 };
@@ -170,16 +164,12 @@ public:
             ZFCastStatic(jlong, miliSecs));
     }
 
-    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable,
-                                      ZF_IN ZFObject *param0,
-                                      ZF_IN ZFObject *param1)
+    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable)
     {
         zfCoreMutexLock();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
             runnable,
-            zfnull,
-            param0,
-            param1);
+            zfnull);
         _ZFP_ZFThreadImpl_sys_Android_updateExecuteId();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType curId = _ZFP_ZFThreadImpl_sys_Android_executeId;
         _ZFP_ZFThreadImpl_sys_Android_executeDataMap[curId] = d;
@@ -211,16 +201,12 @@ public:
     }
 
     virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
-                                     ZF_IN const ZFListener &runnableCleanup,
-                                     ZF_IN ZFObject *param0,
-                                     ZF_IN ZFObject *param1)
+                                     ZF_IN const ZFListener &runnableCleanup)
     {
         zfCoreMutexLock();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
             runnable,
-            runnableCleanup,
-            param0,
-            param1);
+            runnableCleanup);
         _ZFP_ZFThreadImpl_sys_Android_updateExecuteId();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType curId = _ZFP_ZFThreadImpl_sys_Android_executeId;
         _ZFP_ZFThreadImpl_sys_Android_executeDataMap[curId] = d;
@@ -278,8 +264,6 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread,
 {
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
     d->runnable.execute(ZFArgs()
-            .param0(d->param0)
-            .param1(d->param1)
             .userData(d->runnable.userData())
         );
     zfdelete(d);
@@ -292,13 +276,9 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread,
 {
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
     d->runnable.execute(ZFArgs()
-            .param0(d->param0)
-            .param1(d->param1)
             .userData(d->runnable.userData())
         );
     d->runnableCleanup.execute(ZFArgs()
-            .param0(d->param0)
-            .param1(d->param1)
             .userData(d->runnableCleanup.userData())
         );
     zfdelete(d);

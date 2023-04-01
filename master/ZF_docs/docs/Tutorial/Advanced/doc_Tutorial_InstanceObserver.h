@@ -5,7 +5,7 @@
  * @code
  *   ZFLISTENER(objCreated) {
  *       zfLogT() << "MyClass created:" << zfargs.sender();
- *   } ZFLISTENER_END(objCreated)
+ *   } ZFLISTENER_END()
  *   MyClass::ClassData()->instanceObserverAdd(objCreated);
  *
  *   zfblockedAlloc(MyClass); // would cause objCreated being called

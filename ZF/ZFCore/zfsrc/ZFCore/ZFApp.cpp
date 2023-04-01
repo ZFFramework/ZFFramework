@@ -33,7 +33,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, appRestart)
             ZFFrameworkCleanup();
             ZFFrameworkInit();
             ZFMainExecute();
-        } ZFLISTENER_END(action)
+        } ZFLISTENER_END()
         ZFTimerOnce(0, action);
     }
 }

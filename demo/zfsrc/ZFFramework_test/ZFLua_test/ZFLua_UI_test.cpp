@@ -40,9 +40,9 @@ protected:
                     ) {
                 ZFLuaGC();
                 testCase->testCaseStop();
-            } ZFLISTENER_END(testCaseStopDelay)
+            } ZFLISTENER_END()
             ZFThread::post(testCaseStopDelay);
-        } ZFLISTENER_END(windowOnHide)
+        } ZFLISTENER_END()
         result->observerAdd(ZFUIWindow::EventWindowOnHide(), windowOnHide);
     }
 };

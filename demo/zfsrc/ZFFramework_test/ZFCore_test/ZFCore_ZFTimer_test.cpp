@@ -34,10 +34,10 @@ protected:
                         , ZFTestCase *, owner
                         ) {
                     owner->testCaseStop();
-                } ZFLISTENER_END(action)
+                } ZFLISTENER_END()
                 ZFThread::mainThread()->taskQueueAdd(action);
             }
-        } ZFLISTENER_END(timerOnActivate)
+        } ZFLISTENER_END()
         timer->observerAdd(ZFTimer::EventTimerOnActivate(), timerOnActivate);
         timer->timerInterval((zftimet)1000);
         timer->timerStart();
@@ -47,7 +47,7 @@ protected:
                 , zfautoObjectT<ZFTestCase *>, testCase
                 ) {
             testCase->testCaseOutput("timerOnce activated, current thread: %s", ZFThread::currentThread()->objectInfo().cString());
-        } ZFLISTENER_END(timerOnce)
+        } ZFLISTENER_END()
         testCase->testCaseOutput("timerOnce start");
         ZFTimerOnce(500, timerOnce);
         testCase->testCaseOutput("timerOnce stop");

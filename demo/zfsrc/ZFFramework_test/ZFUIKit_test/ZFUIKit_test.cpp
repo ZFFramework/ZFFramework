@@ -24,7 +24,7 @@ void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
             ) {
         testCaseToStop->testCaseStop();
         window->windowHide();
-    } ZFLISTENER_END(onClickCloseButton)
+    } ZFLISTENER_END()
     closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton);
 
     // container
@@ -46,7 +46,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
             , ZFUIWindow *, window
             ) {
         window->windowShow();
-    } ZFLISTENER_END(onClickSetting)
+    } ZFLISTENER_END()
     settingsButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickSetting);
 
     zfblockedAlloc(ZFUIKit_test_Button, closeButton);
@@ -56,7 +56,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
             , ZFUIWindow *, window
             ) {
         window->windowHide();
-    } ZFLISTENER_END(onClickCloseButton)
+    } ZFLISTENER_END()
     closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton);
 
     zfblockedAlloc(ZFUIKit_test_ListView, listView);
@@ -79,7 +79,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
                     .userData(setting->buttonClickListener().userData())
                 );
             setting->settingUpdate();
-        } ZFLISTENER_END(onButtonClick)
+        } ZFLISTENER_END()
         button->observerAdd(ZFUIButton::EventButtonOnClick(), onButtonClick);
 
         ZFLISTENER_2(settingOnChange
@@ -93,7 +93,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
                     .userData(setting->buttonTextGetter().userData())
                 );
             button->label()->text(buttonText->zfv);
-        } ZFLISTENER_END(settingOnChange)
+        } ZFLISTENER_END()
         setting->observerAdd(ZFUIKit_test_SettingData::EventSettingOnChange(), settingOnChange);
 
         zfblockedAlloc(v_zfstring, buttonText);
@@ -130,12 +130,12 @@ void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
             ) {
         v_zfstring *text = zfargs.param0T();
         text->zfv = zfstringWithFormat("%s : %s", property->propertyName(), ZFPropertyGetInfo(property, obj).cString());
-    } ZFLISTENER_END(buttonTextGetter)
+    } ZFLISTENER_END()
     ZFLISTENER_1(buttonClickListener
             , ZFListener, nextCallback
             ) {
         nextCallback.execute();
-    } ZFLISTENER_END(buttonClickListener)
+    } ZFLISTENER_END()
 
     settings->add(zflineAlloc(ZFUIKit_test_SettingData, buttonTextGetter, buttonClickListener));
 }
@@ -162,12 +162,12 @@ void ZFUIKit_test_prepareSettingForLayoutRequest(ZF_IN_OUT ZFArray *settings,
     ZFLISTENER(buttonTextGetter) {
         v_zfstring *text = zfargs.param0T();
         text->zfv = "layoutRequest";
-    } ZFLISTENER_END(buttonTextGetter)
+    } ZFLISTENER_END()
     ZFLISTENER_1(buttonClickListener
             , ZFUIView *, view
             ) {
         view->layoutRequest();
-    } ZFLISTENER_END(buttonClickListener)
+    } ZFLISTENER_END()
 
     settings->add(zflineAlloc(ZFUIKit_test_SettingData, buttonTextGetter, buttonClickListener));
 }
@@ -182,7 +182,7 @@ void ZFUIKit_test_prepareSettingForResetProperty(ZF_IN_OUT ZFArray *settings,
     ZFLISTENER(buttonTextGetter) {
         v_zfstring *text = zfargs.param0T();
         text->zfv = "reset setting";
-    } ZFLISTENER_END(buttonTextGetter)
+    } ZFLISTENER_END()
     setting->buttonTextGetter(buttonTextGetter);
 
     ZFLISTENER_3(buttonClickListener
@@ -206,7 +206,7 @@ void ZFUIKit_test_prepareSettingForResetProperty(ZF_IN_OUT ZFArray *settings,
         {
             settings->get<ZFUIKit_test_SettingData *>(i)->settingUpdate();
         }
-    } ZFLISTENER_END(buttonClickListener)
+    } ZFLISTENER_END()
     setting->buttonClickListener(buttonClickListener);
 }
 

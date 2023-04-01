@@ -20,18 +20,12 @@ zfclassNotPOD _ZFP_ZFThreadImpl_default_ExecuteData
 public:
     ZFListener runnable;
     ZFListener runnableCleanup;
-    ZFObject *param0;
-    ZFObject *param1;
 
 public:
     _ZFP_ZFThreadImpl_default_ExecuteData(ZF_IN ZFListener runnable,
-                                          ZF_IN ZFListener runnableCleanup,
-                                          ZF_IN ZFObject *param0,
-                                          ZF_IN ZFObject *param1)
+                                          ZF_IN ZFListener runnableCleanup)
     : runnable(runnable)
     , runnableCleanup(runnableCleanup)
-    , param0(param0)
-    , param1(param1)
     {
     }
 };
@@ -103,13 +97,9 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_default_DataHolder)
 void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data)
 {
     data->runnable.execute(ZFArgs()
-            .param0(data->param0)
-            .param1(data->param1)
             .userData(data->runnable.userData())
         );
     data->runnableCleanup.execute(ZFArgs()
-            .param0(data->param0)
-            .param1(data->param1)
             .userData(data->runnableCleanup.userData())
         );
     zfdelete(data);
@@ -169,16 +159,14 @@ public:
     {
         return ZFMainThreadTaskImplGetExecute() != zfnull;
     }
-    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable,
-                                      ZF_IN ZFObject *param0,
-                                      ZF_IN ZFObject *param1)
+    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable)
     {
         if(ZFMainThreadTaskImplGetExecute() == zfnull)
         {
             zfCoreCriticalMessageTrim("[ZFThread] executeInMainThread not available");
             return zfnull;
         }
-        return ZFMainThreadTaskImplGetExecute()(runnable, param0, param1);
+        return ZFMainThreadTaskImplGetExecute()(runnable);
     }
     virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken)
     {
@@ -189,15 +177,11 @@ public:
     }
 
     virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
-                                     ZF_IN const ZFListener &runnableCleanup,
-                                     ZF_IN ZFObject *param0,
-                                     ZF_IN ZFObject *param1)
+                                     ZF_IN const ZFListener &runnableCleanup)
     {
         _ZFP_ZFThreadImpl_default_ExecuteData *data = zfnew(_ZFP_ZFThreadImpl_default_ExecuteData
                 , runnable
                 , runnableCleanup
-                , param0
-                , param1
             );
         _ZFP_ZFThreadImpl_default_startNativeThread(data);
         return zfnull;

@@ -204,7 +204,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
                 { \
                     button->d->T_Component##ViewUpdate(); \
                 } \
-            } ZFLISTENER_END(callback) \
+            } ZFLISTENER_END() \
             d->T_Component##T_State##ChangedListener = callback; \
         } \
         this->T_Component##T_State()->toObject()->observerAdd( \

@@ -63,7 +63,7 @@
  *
  *       // or apply style copy (consume more CPU)
  *       obj->styleableCopyFrom(yyy);
- *   } ZFLISTENER_END(myObjCreated)
+ *   } ZFLISTENER_END()
  *   MyStyleableObject::ClassData()->instanceObserverAdd(myObjCreated);
  * @endcode
  */

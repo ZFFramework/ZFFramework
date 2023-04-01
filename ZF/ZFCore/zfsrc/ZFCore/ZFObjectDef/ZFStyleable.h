@@ -488,7 +488,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *
  * notified when #ZFStyleChangeEnd
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFStyleOnChange)
 /**
  * @brief see #ZFObject::observerNotify
  *
@@ -502,7 +502,7 @@ ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnChange)
  * by default, we would assert fail if invalid style occurred,
  * you may close it by #ZFStyleInvalidCheckDisable
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFStyleOnInvalid)
+ZFOBSERVER_EVENT_GLOBAL(ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /** @brief see #ZFGlobalEvent::EventZFStyleOnInvalid */

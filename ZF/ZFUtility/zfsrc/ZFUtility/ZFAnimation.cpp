@@ -196,7 +196,7 @@ void ZFAnimation::aniImplDelay(void)
             , ZFAnimation *, owner
             ) {
         owner->_ZFP_ZFAnimation_aniImplDelayNotifyFinish(aniDelayTaskId);
-    } ZFLISTENER_END(delayOnFinish)
+    } ZFLISTENER_END()
     d->aniDelayTimer = ZFTimerOnce(
         this->aniDelay(),
         delayOnFinish);
@@ -227,7 +227,7 @@ void ZFAnimation::aniImplStart(void)
                 , ZFAnimation *, owner
                 ) {
             owner->_ZFP_ZFAnimation_aniDummyNotifyStop();
-        } ZFLISTENER_END(dummyOnFinish)
+        } ZFLISTENER_END()
         d->aniDummyTimer = ZFTimerOnce(
             this->aniDurationFixed(),
             dummyOnFinish);

@@ -38,7 +38,7 @@ private:
                 text->zfv = zfstringWithFormat(
                     "scale: %f",
                     ZFUISysWindow::mainWindow()->rootView()->UIScale());
-            } ZFLISTENER_END(buttonTextGetter)
+            } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
             ZFLISTENER(buttonClickListener) {
                 ZFUIRootView *rootView = ZFUISysWindow::mainWindow()->rootView();
@@ -50,7 +50,7 @@ private:
                 {
                     rootView->UIScale(1);
                 }
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);
         }
 

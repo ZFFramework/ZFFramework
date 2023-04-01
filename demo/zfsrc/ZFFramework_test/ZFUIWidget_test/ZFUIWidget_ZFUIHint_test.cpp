@@ -23,7 +23,7 @@ protected:
                 ) {
             zfLogT();
             testCase->testCaseStop();
-        } ZFLISTENER_END(hintOnHide)
+        } ZFLISTENER_END()
 #else
         ZFLISTENER_1(hintOnHide
                 , ZFTestCase *, testCase
@@ -40,9 +40,9 @@ protected:
                 , ZFTestCase *, testCase
                 ) {
                 testCase->testCaseStop();
-            } ZFLISTENER_END(lastHintOnHide)
+            } ZFLISTENER_END()
             last.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), lastHintOnHide);
-        } ZFLISTENER_END(hintOnHide)
+        } ZFLISTENER_END()
 #endif
         hint.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), hintOnHide);
     }

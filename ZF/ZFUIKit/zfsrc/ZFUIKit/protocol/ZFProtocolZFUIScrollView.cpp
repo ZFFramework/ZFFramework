@@ -23,7 +23,7 @@ zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTE
         {
             impl->notifyScrollViewScrollAnimation(scrollView, ZFTime::timestamp());
         }
-    } ZFLISTENER_END(scrollTimerEvent)
+    } ZFLISTENER_END()
     scrollTimer->observerAdd(ZFTimer::EventTimerOnActivate(), scrollTimerEvent);
 
     scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer", scrollTimer);
@@ -54,7 +54,7 @@ void ZFUIScrollViewImplHelperProtocol::trackDelayStart(ZF_IN zftimet timeoutMili
                 ) {
             zfargs.sender()->to<ZFTimer *>()->timerStop();
             owner->trackDelayNotifyTimeout();
-        } ZFLISTENER_END(timerActivated)
+        } ZFLISTENER_END()
         owner->_trackDelayDefaultImplTimer->observerAdd(ZFTimer::EventTimerOnActivate(), timerActivated);
     }
     owner->_trackDelayDefaultImplTimer->timerInterval(timeoutMiliSeconds);

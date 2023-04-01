@@ -37,7 +37,7 @@ protected:
                 , ZFAnimation *, ani
                 ) {
             ani->aniStart();
-        } ZFLISTENER_END(startOnClick)
+        } ZFLISTENER_END()
         zfblockedAlloc(ZFUIKit_test_Button, startButton);
         startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);

@@ -214,9 +214,9 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoObjectT<ZFHttpResponse *>, requestSync)
                 ) {
             recv = zfargs.param0();
             waitLock->lockAndBroadcast();
-        } ZFLISTENER_END(onResponse)
+        } ZFLISTENER_END()
         send->request(onResponse);
-    } ZFLISTENER_END(onRequest)
+    } ZFLISTENER_END()
     zfasync(onRequest);
 
     waitLock->lockAndWait();
@@ -273,7 +273,7 @@ void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void)
                 , _ZFP_ZFHttpRequestPrivate *, d
                 ) {
             d->notifyResponse(owner);
-        } ZFLISTENER_END(notifyResponse)
+        } ZFLISTENER_END()
         ZFThread::executeInThread(d->ownerThread, notifyResponse);
     }
     else

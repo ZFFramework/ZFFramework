@@ -30,28 +30,28 @@ protected:
                 , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
                 ) {
             _ZFP_ZFUIOnScreenKeyboardAutoResize_onScreenKeyboardStateChange(zfargs, taskData);
-        } ZFLISTENER_END(onScreenKeyboardStateChangeListener)
+        } ZFLISTENER_END()
         this->onScreenKeyboardStateChangeListener = onScreenKeyboardStateChangeListener;
 
         ZFLISTENER_1(windowOnUpdateLayoutListener
                 , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
                 ) {
             _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnUpdateLayout(zfargs, taskData);
-        } ZFLISTENER_END(windowOnUpdateLayoutListener)
+        } ZFLISTENER_END()
         this->windowOnUpdateLayoutListener = windowOnUpdateLayoutListener;
 
         ZFLISTENER_1(windowOnSysWindowChangeListener
                 , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
                 ) {
             _ZFP_ZFUIOnScreenKeyboardAutoResize_windowOnSysWindowChange(zfargs, taskData);
-        } ZFLISTENER_END(windowOnSysWindowChangeListener)
+        } ZFLISTENER_END()
         this->windowOnSysWindowChangeListener = windowOnSysWindowChangeListener;
 
         ZFLISTENER_1(windowLayoutMarginChangeListener
                 , _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *, taskData
                 ) {
             _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(zfargs, taskData);
-        } ZFLISTENER_END(windowLayoutMarginChangeListener)
+        } ZFLISTENER_END()
         this->windowLayoutMarginChangeListener = windowLayoutMarginChangeListener;
     }
     zfoverride

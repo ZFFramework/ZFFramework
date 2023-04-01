@@ -59,9 +59,7 @@ public:
      *
      * you should queue it to run even if current thread is main thread
      */
-    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable,
-                                      ZF_IN ZFObject *param0,
-                                      ZF_IN ZFObject *param1) zfpurevirtual;
+    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) zfpurevirtual;
     /**
      * @brief used to cleanup nativeToken
      */
@@ -80,9 +78,7 @@ public:
      * NOTE: the created thread may be blocked by semaphore to achieve app level thread pool logic
      */
     virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
-                                     ZF_IN const ZFListener &runnableCleanup,
-                                     ZF_IN ZFObject *param0,
-                                     ZF_IN ZFObject *param1) zfpurevirtual;
+                                     ZF_IN const ZFListener &runnableCleanup) zfpurevirtual;
     /**
      * @brief used to cleanup nativeToken
      */
@@ -136,9 +132,7 @@ public:
 
 // ============================================================
 /** @brief see #ZFMainThreadTaskImplSet */
-typedef void *(*ZFMainThreadTaskImplCallbackExecute)(ZF_IN const ZFListener &runnable,
-                                                     ZF_IN ZFObject *param0,
-                                                     ZF_IN ZFObject *param1);
+typedef void *(*ZFMainThreadTaskImplCallbackExecute)(ZF_IN const ZFListener &runnable);
 /** @brief see #ZFMainThreadTaskImplSet */
 typedef void (*ZFMainThreadTaskImplCallbackCleanup)(ZF_IN void *nativeToken);
 
@@ -158,7 +152,7 @@ typedef void (*ZFMainThreadTaskImplCallbackCleanup)(ZF_IN void *nativeToken);
  * whether the custom impl would be used, depends on the ZFThread protocol impl
  */
 extern ZFLIB_ZFCore void ZFMainThreadTaskImplSet(ZF_IN ZFMainThreadTaskImplCallbackExecute executeImpl,
-                                                 ZF_IN ZFMainThreadTaskImplCallbackCleanup cleanupImpl);
+                                                 ZF_IN_OPT ZFMainThreadTaskImplCallbackCleanup cleanupImpl = zfnull);
 /** @brief see #ZFMainThreadTaskImplSet */
 extern ZFLIB_ZFCore ZFMainThreadTaskImplCallbackExecute ZFMainThreadTaskImplGetExecute(void);
 /** @brief see #ZFMainThreadTaskImplSet */

@@ -82,7 +82,7 @@ private:
             ZFLISTENER(buttonTextGetter) {
                 v_zfstring *text = zfargs.param0T();
                 text->zfv = "change layout";
-            } ZFLISTENER_END(buttonTextGetter)
+            } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
             ZFLISTENER_1(buttonClickListener
                     , zfautoObjectT<ZFArray *>, views
@@ -100,7 +100,7 @@ private:
                 {
                     views->get<ZFUIView *>(i)->layoutParam()->sizeHint(sizeHint);
                 }
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);
         }
 

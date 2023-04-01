@@ -97,32 +97,32 @@ private:
 #if 0 // output logs during scroll event may cause performance issue
         ZFLISTENER(onDragBegin) {
             zfLogTrimT() << "onDragBegin  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
-        } ZFLISTENER_END(onDragBegin)
+        } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnDragBegin(), onDragBegin);
 
         ZFLISTENER(onDrag) {
             zfLogTrimT() << "onDrag       " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
-        } ZFLISTENER_END(onDrag)
+        } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnDrag(), onDrag);
 
         ZFLISTENER(onDragEnd) {
             zfLogTrimT() << "onDragEnd    " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
-        } ZFLISTENER_END(onDragEnd)
+        } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnDragEnd(), onDragEnd);
 
         ZFLISTENER(onScrollBegin) {
             zfLogTrimT() << "onScrollBegin" << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
-        } ZFLISTENER_END(onScrollBegin)
+        } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnScrollBegin(), onScrollBegin);
 
         ZFLISTENER(onScroll) {
             zfLogTrimT() << "onScroll     " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
-        } ZFLISTENER_END(onScroll)
+        } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnScroll(), onScroll);
 
         ZFLISTENER(onScrollEnd) {
             zfLogTrimT() << "onScrollEnd  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
-        } ZFLISTENER_END(onScrollEnd)
+        } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnScrollEnd(), onScrollEnd);
 #endif
     }
@@ -154,7 +154,7 @@ private:
                     ) {
                 v_zfstring *text = zfargs.param0T();
                 text->zfv = zfstringWithFormat("autoScrollSpeedX: %f", listView->autoScrollSpeedX());
-            } ZFLISTENER_END(buttonTextGetter)
+            } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
             ZFLISTENER_1(buttonClickListener
@@ -168,7 +168,7 @@ private:
                 {
                     listView->autoScrollStopX();
                 }
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);
         }
         { // auto scroll y
@@ -180,7 +180,7 @@ private:
                     ) {
                 v_zfstring *text = zfargs.param0T();
                 text->zfv = zfstringWithFormat("autoScrollSpeedY: %f", listView->autoScrollSpeedY());
-            } ZFLISTENER_END(buttonTextGetter)
+            } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
             ZFLISTENER_1(buttonClickListener
@@ -194,7 +194,7 @@ private:
                 {
                     listView->autoScrollStopY();
                 }
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);
         }
 
@@ -219,7 +219,7 @@ private:
                 {
                     listView->scrollListCellToTail(toIndex, toOffset, animated);
                 }
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             zfblockedAlloc(ZFUIKit_test_Button, randomScrollButton);
             window->childAdd(randomScrollButton);
             randomScrollButton->label()->text("random scroll");
@@ -236,7 +236,7 @@ private:
                 v_zfstring *text = zfargs.param0T();
                 text->zfv = zfstringWithFormat("scrollAreaMargin: %s",
                     ZFUIMarginToString(listView->scrollAreaMargin()).cString());
-            } ZFLISTENER_END(buttonTextGetter)
+            } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
             ZFLISTENER_1(buttonClickListener
@@ -250,7 +250,7 @@ private:
                 {
                     listView->scrollAreaMarginAdd(ZFUIMarginMake(20));
                 }
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);
         }
 

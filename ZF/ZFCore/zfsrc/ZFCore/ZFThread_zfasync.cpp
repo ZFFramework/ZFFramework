@@ -78,7 +78,7 @@ public:
                 , zfautoObjectT<_ZFP_I_zfasyncTaskData *>, taskData
                 ) {
             ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_callerThread(zfargs, taskData);
-        } ZFLISTENER_END(callerThread)
+        } ZFLISTENER_END()
         ZFThread::executeInThread(taskData->callerThread, callerThread);
     }
     static void _ZFP_callerThread(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_zfasyncTaskData *taskData)
@@ -182,7 +182,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync,
             , zfautoObjectT<_ZFP_I_zfasyncTaskData *>, taskData
             ) {
         ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_runThread(zfargs, taskData);
-    } ZFLISTENER_END(taskImpl)
+    } ZFLISTENER_END()
     thread->taskQueueAdd(taskImpl);
     return taskData->taskId;
 }

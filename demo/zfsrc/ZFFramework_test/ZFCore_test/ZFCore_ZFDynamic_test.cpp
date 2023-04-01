@@ -23,7 +23,7 @@ protected:
             ret->zfv += "(modified)";
             zfautoRelease(zfRetain(ret)); // take care of this
             d->ret = ret;
-        } ZFLISTENER_END(methodCallback)
+        } ZFLISTENER_END()
         ZFDynamic d = ZFDynamic()
             .classBegin("ZFDynamicTest", "ZFObject")
                 .property(ZFTypeId_zfstring(), "testProp")

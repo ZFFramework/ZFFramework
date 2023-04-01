@@ -19,7 +19,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextSetupDataHolder, ZFLevelZ
         zfargs.sender()->observerRemove(ZFObject::EventObjectBeforeDealloc(),
             ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewFocusNextSetupDataHolder)->nextFocusOnDeallocListener);
         zfargs.sender()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
-    } ZFLISTENER_END(nextFocusOnDealloc)
+    } ZFLISTENER_END()
     this->nextFocusOnDeallocListener = nextFocusOnDealloc;
 }
 public:

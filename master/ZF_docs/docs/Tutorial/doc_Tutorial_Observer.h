@@ -60,7 +60,7 @@
  *           , zfautoObjectT<v_zfstring *>, myUserData
  *           ) {
  *       testListener2(zfargs, myUserData);
- *   } ZFLISTENER_END(listener2)
+ *   } ZFLISTENER_END()
  *   obj->observerAdd(MyObject::EventMyEvent(), listener2);
  *
  *   // finlly we will test to notify the event

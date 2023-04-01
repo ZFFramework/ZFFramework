@@ -120,12 +120,12 @@ private:
         {
             ZFLISTENER(delay) {
                 _taskIdleCleanup();
-            } ZFLISTENER_END(delay);
+            } ZFLISTENER_END();
             timer = ZFTimerOnce(100, delay);
             ZFLISTENER(delayOnStop) {
                 zfCoreMutexLocker();
                 _taskIdleTimer() = zfnull;
-            } ZFLISTENER_END(delayOnStop);
+            } ZFLISTENER_END();
             timer->observerAdd(ZFTimer::EventTimerOnStop(), delayOnStop);
         }
     }

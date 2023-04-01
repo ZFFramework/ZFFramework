@@ -307,7 +307,7 @@ public:
                         ) {
                     pausePage->pageManager()->d->pauseAni = zfnull;
                     pageAniOnStop(pausePage->pageManager(), resumePage, resumeReason, pausePage, pauseReason);
-                } ZFLISTENER_END(aniOnStop)
+                } ZFLISTENER_END()
                 manager->d->pauseAni->observerAddForOnce(
                     ZFAnimation::EventAniOnStopOrInvalid(),
                     aniOnStop);
@@ -326,7 +326,7 @@ public:
                     ) {
                 resumePage->pageManager()->d->resumeAni = zfnull;
                 pageAniOnStop(resumePage->pageManager(), resumePage, resumeReason, pausePage, pauseReason);
-            } ZFLISTENER_END(aniOnStop)
+            } ZFLISTENER_END()
             manager->d->resumeAni->observerAddForOnce(
                 ZFAnimation::EventAniOnStopOrInvalid(),
                 aniOnStop);
@@ -513,7 +513,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow,
         {
             owner->managerResume();
         }
-    } ZFLISTENER_END(onShow)
+    } ZFLISTENER_END()
 
     ZFLISTENER_1(onHide
             , ZFUIPageManager *, owner
@@ -522,13 +522,13 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow,
         {
             owner->managerOnPause();
         }
-    } ZFLISTENER_END(onHide)
+    } ZFLISTENER_END()
 
     ZFLISTENER_1(onDestroy
             , ZFUIPageManager *, owner
             ) {
         owner->managerDestroy();
-    } ZFLISTENER_END(onDestroy)
+    } ZFLISTENER_END()
 
     ZFObserverGroup(this, window)
         .observerAdd(ZFUIWindow::EventWindowOwnerSysWindowOnResume(), onShow)
@@ -681,7 +681,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageCreate,
         _ZFP_ZFUIPageManagerPrivate::pageAniUpdate(
                 resumePage, ZFUIPageResumeReason::e_ByRequest,
                 pausePage, ZFUIPagePauseReason::e_ToBackground);
-    } ZFLISTENER_END(callback)
+    } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
 }
 
@@ -694,7 +694,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResume,
             , ZFUIPage *, page
             ) {
         pm->pageResume(pm->pageIndex(page));
-    } ZFLISTENER_END(callback)
+    } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
 }
 ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResume,
@@ -711,7 +711,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResume,
             pm->d->pageList.move(pageIndex, zfindexMax());
             pm->pageMoveEnd();
         }
-    } ZFLISTENER_END(callback)
+    } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
 }
 ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResumeForGroupId,
@@ -733,7 +733,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResumeForGroupId,
             }
         }
         pm->pageMoveEnd();
-    } ZFLISTENER_END(callback)
+    } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
 }
 
@@ -746,7 +746,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageDestroy,
             , ZFUIPage *, page
             ) {
         pm->pageDestroy(pm->pageIndex(page));
-    } ZFLISTENER_END(callback)
+    } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
 }
 ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageDestroy,
@@ -786,7 +786,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageDestroy,
         _ZFP_ZFUIPageManagerPrivate::pageAniUpdate(
                 resumePage, ZFUIPageResumeReason::e_FromBackground,
                 pausePage, ZFUIPagePauseReason::e_BeforeDestroy);
-    } ZFLISTENER_END(callback)
+    } ZFLISTENER_END()
     d->pageRequestAdd(this, callback);
 }
 

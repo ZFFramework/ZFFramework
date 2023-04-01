@@ -176,30 +176,14 @@ public:
     virtual void currentTimeValue(ZF_OUT ZFTimeValue &tv)
     {
         #if ZF_ENV_sys_Windows
-            #if ZF_ENV_sys_WindowsCE
-                SYSTEMTIME stTmp;
-                GetLocalTime(&stTmp);
-                this->timeInfoToTimeValue(
-                    tv,
-                    ZFTimeInfoMake(
-                        stTmp.wYear,
-                        stTmp.wMonth - 1,
-                        stTmp.wDay - 1,
-                        stTmp.wHour,
-                        stTmp.wMinute,
-                        stTmp.wSecond,
-                        stTmp.wMilliseconds,
-                        0));
-            #else
-                union
-                {
-                    zft_zfuint16 ns100;
-                    FILETIME ft;
-                } now;
-                GetSystemTimeAsFileTime(&now.ft);
-                tv.sec = (time_t)((now.ns100 - 116444736000000000LL) / 10000000LL);
-                tv.usec = (time_t)((now.ns100 / 10LL) % 1000000LL);
-            #endif
+            union
+            {
+                zft_zfuint16 ns100;
+                FILETIME ft;
+            } now;
+            GetSystemTimeAsFileTime(&now.ft);
+            tv.sec = (time_t)((now.ns100 - 116444736000000000LL) / 10000000LL);
+            tv.usec = (time_t)((now.ns100 / 10LL) % 1000000LL);
         #else
             struct timeval tvTmp;
             gettimeofday(&tvTmp, zfnull);

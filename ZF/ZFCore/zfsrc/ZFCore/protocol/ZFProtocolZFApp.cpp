@@ -17,7 +17,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(ZF_IN zftimet delay)
         ZFFrameworkCleanup();
         ZFFrameworkInit();
         ZFMainExecute();
-    } ZFLISTENER_END(action)
+    } ZFLISTENER_END()
     ZFTimerOnce(delay, action);
 }
 

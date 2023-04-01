@@ -122,7 +122,7 @@ public:
  *   // in header files
  *   ZF_NAMESPACE_BEGIN(YourNamespace)
  *   / ** @brief you can add doxygen docs here * /
- *   ZFIDMAP_GLOBAL(ZFLIB_APP, YourSth)
+ *   ZFIDMAP_GLOBAL(YourSth)
  *   ZF_NAMESPACE_END(YourNamespace)
  *
  *   ZFIDMAP_GLOBAL_REGISTER(YourSth)
@@ -132,12 +132,12 @@ public:
  * @endcode
  * unlike #ZFIDMAP, this macro would declare id outside of class scope
  */
-#define ZFIDMAP_GLOBAL(ZFLIB_, YourIdName) \
-    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, Id, YourIdName)
+#define ZFIDMAP_GLOBAL(YourIdName) \
+    ZFIDMAP_GLOBAL_DETAIL(Id, YourIdName)
 /** @brief see #ZFIDMAP_GLOBAL */
-#define ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, prefix, YourIdName) \
+#define ZFIDMAP_GLOBAL_DETAIL(prefix, YourIdName) \
     /** @cond ZFPrivateDoc */ \
-    zfclass ZFLIB_ _ZFP_ZFIdMapHolder_##prefix##_##YourIdName \
+    zfclass _ZFP_ZFIdMapHolder_##prefix##_##YourIdName \
     { \
     public: \
         static _ZFP_ZFIdMapHolder &h(void) \

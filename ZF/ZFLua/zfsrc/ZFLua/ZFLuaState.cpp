@@ -51,7 +51,7 @@ public:
                     , ZFThread *, curThread
                     ) {
                 curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), zfnull);
-            } ZFLISTENER_END(onDetach)
+            } ZFLISTENER_END()
             curThread->observerAddForOnce(ZFThread::EventThreadOnUnregister(), onDetach, ZFLevelZFFrameworkPostNormal);
         }
         return holder;

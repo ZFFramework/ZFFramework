@@ -123,7 +123,7 @@ public:
             }
             [nativeAudio.audio pause];
             zfargs.result(zfnull);
-        } ZFLISTENER_END(onLoad)
+        } ZFLISTENER_END()
 
         ZFLISTENER_2(onLoadFinish
                 , zfself *, owner
@@ -134,7 +134,7 @@ public:
 
             v_zfstring *errorHint = zfargs.param0T();
             owner->notifyAudioOnLoad(audio, errorHint == zfnull, errorHint);
-        } ZFLISTENER_END(onLoadFinish)
+        } ZFLISTENER_END()
 
         nativeAudio.loadTaskId = zfasync(onLoad, onLoadFinish);
     }

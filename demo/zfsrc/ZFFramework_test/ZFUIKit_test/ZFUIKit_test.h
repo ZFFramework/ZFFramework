@@ -174,7 +174,7 @@ protected:
             } \
             holder->property->setterMethod()->execute<void ZFM_COMMA() PropertyType const &>( \
                 holder->obj, propertyValues[holder->index]); \
-        } ZFLISTENER_END(nextCallback) \
+        } ZFLISTENER_END() \
         ZFUIKit_test_prepareSettingForProperty(settings, taskData->obj, taskData->property, nextCallback); \
     } while(zffalse)
 

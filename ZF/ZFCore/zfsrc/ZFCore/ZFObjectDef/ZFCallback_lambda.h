@@ -13,8 +13,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief see #ZFLAMBDA
  */
-#define ZFLAMBDA_END(name) \
-    _ZFP_ZFLAMBDA_END(name)
+#define ZFLAMBDA_END() \
+    _ZFP_ZFLAMBDA_END()
 
 /**
  * @brief create a callback that simulate lambda function,
@@ -35,7 +35,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           , ZFMP_IN_OPT(ParamType1, param1, zfnull)
  *           ) {
  *       capture1 = param1;
- *   } ZFLAMBDA_END(myCallback)
+ *   } ZFLAMBDA_END()
  *
  *   zfLogTrimT() << capture0 << capture1 << capture2;
  *   myCallback.executeExact<ReturnType, ParamType0, ParamType1>(p0, p1);
@@ -332,88 +332,93 @@ public:
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
         , ... \
     ) \
-    zfclassNotPOD _ZFP_Lbd_D_##name \
+    ZFCallback name; \
     { \
-    public: \
-        CaptureExpandOrEmpty0(CaptureType0 capture0;) \
-        CaptureExpandOrEmpty1(CaptureType1 capture1;) \
-        CaptureExpandOrEmpty2(CaptureType2 capture2;) \
-        CaptureExpandOrEmpty3(CaptureType3 capture3;) \
-        CaptureExpandOrEmpty4(CaptureType4 capture4;) \
-        CaptureExpandOrEmpty5(CaptureType5 capture5;) \
-        CaptureExpandOrEmpty6(CaptureType6 capture6;) \
-        CaptureExpandOrEmpty7(CaptureType7 capture7;) \
-    public: \
-        _ZFP_Lbd_D_##name( \
-            CaptureExpandOrEmpty0(ZFM_EMPTY() CaptureType0 capture0) \
-            CaptureExpandOrEmpty1(ZFM_COMMA() CaptureType1 capture1) \
-            CaptureExpandOrEmpty2(ZFM_COMMA() CaptureType2 capture2) \
-            CaptureExpandOrEmpty3(ZFM_COMMA() CaptureType3 capture3) \
-            CaptureExpandOrEmpty4(ZFM_COMMA() CaptureType4 capture4) \
-            CaptureExpandOrEmpty5(ZFM_COMMA() CaptureType5 capture5) \
-            CaptureExpandOrEmpty6(ZFM_COMMA() CaptureType6 capture6) \
-            CaptureExpandOrEmpty7(ZFM_COMMA() CaptureType7 capture7) \
-        ) \
-        CaptureExpandOrEmpty0(          : capture0(capture0)) \
-        CaptureExpandOrEmpty1(ZFM_COMMA() capture1(capture1)) \
-        CaptureExpandOrEmpty2(ZFM_COMMA() capture2(capture2)) \
-        CaptureExpandOrEmpty3(ZFM_COMMA() capture3(capture3)) \
-        CaptureExpandOrEmpty4(ZFM_COMMA() capture4(capture4)) \
-        CaptureExpandOrEmpty5(ZFM_COMMA() capture5(capture5)) \
-        CaptureExpandOrEmpty6(ZFM_COMMA() capture6(capture6)) \
-        CaptureExpandOrEmpty7(ZFM_COMMA() capture7(capture7)) \
+        zfclassNotPOD _ZFP_Lbd_D_##name \
         { \
-        } \
-    public: \
-        static void _ZFP_d(ZF_IN void *impl) \
-        { \
-            delete (_ZFP_Lbd_D_##name *)impl; \
-        } \
-    }; \
-    ZFCallback name = ZFCallback::_ZFP_ZFCallbackCreateLambda( \
-        new _ZFP_Lbd_D_##name( \
-            CaptureExpandOrEmpty0(ZFM_EMPTY() capture0) \
-            CaptureExpandOrEmpty1(ZFM_COMMA() capture1) \
-            CaptureExpandOrEmpty2(ZFM_COMMA() capture2) \
-            CaptureExpandOrEmpty3(ZFM_COMMA() capture3) \
-            CaptureExpandOrEmpty4(ZFM_COMMA() capture4) \
-            CaptureExpandOrEmpty5(ZFM_COMMA() capture5) \
-            CaptureExpandOrEmpty6(ZFM_COMMA() capture6) \
-            CaptureExpandOrEmpty7(ZFM_COMMA() capture7) \
-        ), \
-        _ZFP_Lbd_D_##name::_ZFP_d, \
-        zfnull); \
-    zfclassNotPOD _ZFP_Lbd_P_##name \
-    { \
-    public: \
-        static ReturnType _ZFP_i(_ZFP_Lbd_D_##name *_ZFP_d \
-            ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
-            ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
-            ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
-            ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
-            ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
-            ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
-            ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
-            ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
+        public: \
+            CaptureExpandOrEmpty0(CaptureType0 capture0;) \
+            CaptureExpandOrEmpty1(CaptureType1 capture1;) \
+            CaptureExpandOrEmpty2(CaptureType2 capture2;) \
+            CaptureExpandOrEmpty3(CaptureType3 capture3;) \
+            CaptureExpandOrEmpty4(CaptureType4 capture4;) \
+            CaptureExpandOrEmpty5(CaptureType5 capture5;) \
+            CaptureExpandOrEmpty6(CaptureType6 capture6;) \
+            CaptureExpandOrEmpty7(CaptureType7 capture7;) \
+        public: \
+            _ZFP_Lbd_D_##name( \
+                CaptureExpandOrEmpty0(ZFM_EMPTY() CaptureType0 capture0) \
+                CaptureExpandOrEmpty1(ZFM_COMMA() CaptureType1 capture1) \
+                CaptureExpandOrEmpty2(ZFM_COMMA() CaptureType2 capture2) \
+                CaptureExpandOrEmpty3(ZFM_COMMA() CaptureType3 capture3) \
+                CaptureExpandOrEmpty4(ZFM_COMMA() CaptureType4 capture4) \
+                CaptureExpandOrEmpty5(ZFM_COMMA() CaptureType5 capture5) \
+                CaptureExpandOrEmpty6(ZFM_COMMA() CaptureType6 capture6) \
+                CaptureExpandOrEmpty7(ZFM_COMMA() CaptureType7 capture7) \
             ) \
-        { \
-            CaptureExpandOrEmpty0(_ZFP_ZFLAMBDA_TR<CaptureType0>::T capture0 = _ZFP_d->capture0;) \
-            CaptureExpandOrEmpty1(_ZFP_ZFLAMBDA_TR<CaptureType1>::T capture1 = _ZFP_d->capture1;) \
-            CaptureExpandOrEmpty2(_ZFP_ZFLAMBDA_TR<CaptureType2>::T capture2 = _ZFP_d->capture2;) \
-            CaptureExpandOrEmpty3(_ZFP_ZFLAMBDA_TR<CaptureType3>::T capture3 = _ZFP_d->capture3;) \
-            CaptureExpandOrEmpty4(_ZFP_ZFLAMBDA_TR<CaptureType4>::T capture4 = _ZFP_d->capture4;) \
-            CaptureExpandOrEmpty5(_ZFP_ZFLAMBDA_TR<CaptureType5>::T capture5 = _ZFP_d->capture5;) \
-            CaptureExpandOrEmpty6(_ZFP_ZFLAMBDA_TR<CaptureType6>::T capture6 = _ZFP_d->capture6;) \
-            CaptureExpandOrEmpty7(_ZFP_ZFLAMBDA_TR<CaptureType7>::T capture7 = _ZFP_d->capture7;) \
-            {
-#define _ZFP_ZFLAMBDA_END_EXPAND(...) __VA_ARGS__
-#define _ZFP_ZFLAMBDA_END(...) \
-    _ZFP_ZFLAMBDA_END_EXPAND(_ZFP_ZFLAMBDA_END_(__VA_ARGS__))
-#define _ZFP_ZFLAMBDA_END_(name) \
+            CaptureExpandOrEmpty0(          : capture0(capture0)) \
+            CaptureExpandOrEmpty1(ZFM_COMMA() capture1(capture1)) \
+            CaptureExpandOrEmpty2(ZFM_COMMA() capture2(capture2)) \
+            CaptureExpandOrEmpty3(ZFM_COMMA() capture3(capture3)) \
+            CaptureExpandOrEmpty4(ZFM_COMMA() capture4(capture4)) \
+            CaptureExpandOrEmpty5(ZFM_COMMA() capture5(capture5)) \
+            CaptureExpandOrEmpty6(ZFM_COMMA() capture6(capture6)) \
+            CaptureExpandOrEmpty7(ZFM_COMMA() capture7(capture7)) \
+            { \
             } \
-        } \
-    }; \
-    name._ZFP_ZFCallback_callbackLambdaInvoker((ZFFuncAddrType)_ZFP_Lbd_P_##name::_ZFP_i);
+        public: \
+            static void _ZFP_d(ZF_IN void *impl) \
+            { \
+                delete (_ZFP_Lbd_D_##name *)impl; \
+            } \
+        }; \
+        ZFCallback _ZFP_Lbd_v = ZFCallback::_ZFP_ZFCallbackCreateLambda( \
+            new _ZFP_Lbd_D_##name( \
+                CaptureExpandOrEmpty0(ZFM_EMPTY() capture0) \
+                CaptureExpandOrEmpty1(ZFM_COMMA() capture1) \
+                CaptureExpandOrEmpty2(ZFM_COMMA() capture2) \
+                CaptureExpandOrEmpty3(ZFM_COMMA() capture3) \
+                CaptureExpandOrEmpty4(ZFM_COMMA() capture4) \
+                CaptureExpandOrEmpty5(ZFM_COMMA() capture5) \
+                CaptureExpandOrEmpty6(ZFM_COMMA() capture6) \
+                CaptureExpandOrEmpty7(ZFM_COMMA() capture7) \
+            ), \
+            _ZFP_Lbd_D_##name::_ZFP_d, \
+            zfnull); \
+        name = _ZFP_Lbd_v; \
+        zfclassNotPOD _ZFP_Lbd_P_##name \
+        { \
+        public: \
+            _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) \
+            { \
+                cb._ZFP_ZFCallback_callbackLambdaInvoker((ZFFuncAddrType)_ZFP_Lbd_P_##name::_ZFP_i); \
+            } \
+        public: \
+            static ReturnType _ZFP_i(_ZFP_Lbd_D_##name *_ZFP_d \
+                ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
+                ) \
+            { \
+                CaptureExpandOrEmpty0(_ZFP_ZFLAMBDA_TR<CaptureType0>::T capture0 = _ZFP_d->capture0;) \
+                CaptureExpandOrEmpty1(_ZFP_ZFLAMBDA_TR<CaptureType1>::T capture1 = _ZFP_d->capture1;) \
+                CaptureExpandOrEmpty2(_ZFP_ZFLAMBDA_TR<CaptureType2>::T capture2 = _ZFP_d->capture2;) \
+                CaptureExpandOrEmpty3(_ZFP_ZFLAMBDA_TR<CaptureType3>::T capture3 = _ZFP_d->capture3;) \
+                CaptureExpandOrEmpty4(_ZFP_ZFLAMBDA_TR<CaptureType4>::T capture4 = _ZFP_d->capture4;) \
+                CaptureExpandOrEmpty5(_ZFP_ZFLAMBDA_TR<CaptureType5>::T capture5 = _ZFP_d->capture5;) \
+                CaptureExpandOrEmpty6(_ZFP_ZFLAMBDA_TR<CaptureType6>::T capture6 = _ZFP_d->capture6;) \
+                CaptureExpandOrEmpty7(_ZFP_ZFLAMBDA_TR<CaptureType7>::T capture7 = _ZFP_d->capture7;) \
+                {
+#define _ZFP_ZFLAMBDA_END() \
+                } \
+            } \
+        } _ZPF_Lbd_p(_ZFP_Lbd_v); \
+    }
 
 // ============================================================
 #define _ZFP_ZFLAMBDA_BEGIN_0_EXPAND(...) __VA_ARGS__
@@ -431,25 +436,33 @@ public:
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
         , ... \
     ) \
-    ZFCallback name = ZFCallback::_ZFP_ZFCallbackCreateLambda( \
-        zfnull, \
-        zfnull, \
-        zfnull); \
-    zfclassNotPOD _ZFP_Lbd_P_##name \
+    ZFCallback name; \
     { \
-    public: \
-        static ReturnType _ZFP_i(void * \
-            ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
-            ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
-            ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
-            ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
-            ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
-            ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
-            ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
-            ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-            ) \
+        ZFCallback _ZFP_Lbd_v = ZFCallback::_ZFP_ZFCallbackCreateLambda( \
+            zfnull, \
+            zfnull, \
+            zfnull); \
+        name = _ZFP_Lbd_v; \
+        zfclassNotPOD _ZFP_Lbd_P_##name \
         { \
-            {
+        public: \
+            _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) \
+            { \
+                cb._ZFP_ZFCallback_callbackLambdaInvoker((ZFFuncAddrType)_ZFP_Lbd_P_##name::_ZFP_i); \
+            } \
+        public: \
+            static ReturnType _ZFP_i(void * \
+                ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
+                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
+                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
+                ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
+                ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
+                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
+                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
+                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
+                ) \
+            { \
+                {
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCallback_lambda_h_

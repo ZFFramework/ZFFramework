@@ -120,7 +120,7 @@ public:
                         , ZFUIListView *, pimplOwner
                         ) {
                     _ZFP_ZFUIListViewPrivate::listAdapterOnReload(zfargs, pimplOwner);
-                } ZFLISTENER_END(callback)
+                } ZFLISTENER_END()
                 this->listAdapterOnReloadListener = callback;
             }
             this->listAdapter->toObject()->observerAdd(
@@ -1459,7 +1459,7 @@ void ZFUIListView::objectOnInit(void)
             , _ZFP_ZFUIListViewPrivate *, d
             ) {
         d->cellNeedUpdate = zftrue;
-    } ZFLISTENER_END(layoutOnLayoutRequest)
+    } ZFLISTENER_END()
     this->observerAdd(ZFUIView::EventViewLayoutOnLayoutRequest(), layoutOnLayoutRequest);
 }
 void ZFUIListView::objectOnDealloc(void)

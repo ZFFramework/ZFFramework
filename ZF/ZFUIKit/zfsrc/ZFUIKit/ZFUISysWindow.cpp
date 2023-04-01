@@ -218,7 +218,7 @@ void ZFUISysWindow::objectOnInitFinish(void)
             , ZFUISysWindow *, owner
             ) {
         owner->_ZFP_ZFUISysWindow_sysWindowLayoutUpdate();
-    } ZFLISTENER_END(sysWindowLayoutParamOnChange)
+    } ZFLISTENER_END()
     d->sysWindowLayoutParamOnChangeListener = sysWindowLayoutParamOnChange;
     d->sysWindowLayoutParam->observerAdd(ZFUILayoutParam::EventLayoutParamOnChange(), d->sysWindowLayoutParamOnChangeListener);
 }

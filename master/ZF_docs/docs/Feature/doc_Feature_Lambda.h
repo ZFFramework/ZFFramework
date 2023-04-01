@@ -15,7 +15,7 @@
  *           ) {
  *       refCapture.width = 999;
  *       valueCapture.width = 999;
- *   } ZFLISTENER_END(onClick)
+ *   } ZFLISTENER_END()
  *
  *   zfblockedAlloc(ZFUIButton, btn);
  *   btn->observerAdd(ZFUIButton::EventButtonOnClick(), onClick);

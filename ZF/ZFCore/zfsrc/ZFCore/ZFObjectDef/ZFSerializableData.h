@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * resolve check may consume more CPU but useful during develop
  * to find ill-formed serializable data\n
  * when on, check would be performed and an error output would be printed,
- * further more, assert fail if ZFFramework was built ad DEBUG mode\n
+ * further more, assert fail if ZFFramework was built as DEBUG mode\n
  * when off, no check would be performed,
  * also, no resolve state would be saved,
  * and all resolve related method would return false as resolved state\n

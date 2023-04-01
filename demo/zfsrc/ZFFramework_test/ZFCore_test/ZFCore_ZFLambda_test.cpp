@@ -18,7 +18,7 @@ protected:
                 , void
                 ) {
             capture = "changed";
-        } ZFLAMBDA_END(refCapture)
+        } ZFLAMBDA_END()
         this->testCaseOutput("before invoke: %s", capture.cString());
         refCapture.executeExact<void>();
         this->testCaseOutput("after invoke: %s", capture.cString());
@@ -33,7 +33,7 @@ protected:
                     , void
                     ) {
                 testCase->testCaseOutput("value capture: %s", value.cString());
-            } ZFLAMBDA_END(valueCapture)
+            } ZFLAMBDA_END()
             outter = valueCapture;
         }
         outter.executeExact<void>();
@@ -42,18 +42,18 @@ protected:
         ZFLAMBDA_0(lambdaWithZeroParam
                 , void
                 ) {
-        } ZFLAMBDA_END(lambdaWithZeroParam)
+        } ZFLAMBDA_END()
         lambdaWithZeroParam.executeExact<void>();
 
         ZFLISTENER_1(lambdaListener
                 , zfstring &, capture
                 ) {
             ZFUNUSED(capture);
-        } ZFLISTENER_END(lambdaListener)
+        } ZFLISTENER_END()
         lambdaListener.executeExact<void>();
         ZFLISTENER_0(lambdaListenerWithZeroParam
                 ) {
-        } ZFLISTENER_END(lambdaListenerWithZeroParam)
+        } ZFLISTENER_END()
         lambdaListenerWithZeroParam.executeExact<void>();
 
         this->testCaseStop();

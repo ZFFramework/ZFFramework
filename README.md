@@ -54,7 +54,7 @@ ZFMAIN_ENTRY() // app starts from here
     ZFLISTENER(onClick) {
         ZFUIButtonBasic *button = zfargs.senderT();
         zfLogTrimT() << "button clicked:" << button;
-    } ZFLISTENER_END(onClick)
+    } ZFLISTENER_END()
     button->onClick(onClick);
 }
 ```

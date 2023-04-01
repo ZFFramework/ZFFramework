@@ -114,7 +114,7 @@ protected:
 
             ZFCoreStatistic::invokeTimeRemove("ZFUISerializePerformance_test_toData");
             ZFCoreStatistic::invokeTimeRemove("ZFUISerializePerformance_test_fromData");
-        } ZFLISTENER_END(onStart)
+        } ZFLISTENER_END()
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), onStart);
 
         this->prepareSettingButton(window);
@@ -132,7 +132,7 @@ private:
             ZFLISTENER(buttonTextGetter) {
                 v_zfstring *text = zfargs.param0T();
                 text->zfv = "change test object";
-            } ZFLISTENER_END(buttonTextGetter)
+            } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
             zfself *owner = this;
@@ -140,7 +140,7 @@ private:
                     , zfself *, owner
                     ) {
                 owner->testObjectType = ((owner->testObjectType + 1) % owner->testObjectTypeCount);
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);
         }
 

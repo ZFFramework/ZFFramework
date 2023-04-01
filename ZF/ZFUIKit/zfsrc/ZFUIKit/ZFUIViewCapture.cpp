@@ -11,11 +11,15 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIViewCapture,
         return zfnull;
     }
     zfautoObjectT<ZFUIImage *> ret = ZFUIImage::ClassData()->newInstance();
-    if(!ZFPROTOCOL_ACCESS(ZFUIViewCapture)->viewCapture(view, ret.to<ZFUIImage *>()))
+    ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewCapture) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewCapture);
+    if(impl != zfnull && impl->viewCapture(view, ret.to<ZFUIImage *>()))
+    {
+        return ret;
+    }
+    else
     {
         return zfnull;
     }
-    return ret;
 }
 
 ZF_NAMESPACE_GLOBAL_END

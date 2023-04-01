@@ -40,7 +40,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  *
  * notified when #ZFLogLevelDefault changed
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, LogLevelOnChange)
+ZFOBSERVER_EVENT_GLOBAL(LogLevelOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /** @brief see #ZFLogLevel, #ZFLogLevel::e_Warning by default */

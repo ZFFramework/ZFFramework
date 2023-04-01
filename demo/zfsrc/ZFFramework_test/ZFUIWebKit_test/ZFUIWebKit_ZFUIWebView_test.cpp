@@ -27,7 +27,7 @@ protected:
 
         ZFLISTENER(loadStateOnChange) {
             zfLogTrimT() << "webLoadingOnChange" << zfargs.sender()->to<ZFUIWebView *>()->webLoading();
-        } ZFLISTENER_END(loadStateOnChange)
+        } ZFLISTENER_END()
         testView->observerAdd(ZFUIWebView::EventWebLoadStateOnChange(), loadStateOnChange);
 
         testView->webLoadUrl("http://www.baidu.com");

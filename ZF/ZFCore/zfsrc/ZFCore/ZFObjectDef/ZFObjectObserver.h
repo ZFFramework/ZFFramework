@@ -64,14 +64,14 @@ public:
                     , std::function<void(const ZFArgs &)>, fTmp
                     ) {
                 fTmp(zfargs);
-            } ZFLISTENER_END(wrapper)
+            } ZFLISTENER_END()
         #else
             FUNC_TYPE fTmp = f;
             ZFLISTENER_1(wrapper
                     , FUNC_TYPE, fTmp
                     ) {
                 fTmp(zfargs);
-            } ZFLISTENER_END(wrapper)
+            } ZFLISTENER_END()
         #endif
         this->operator = (wrapper);
     }
@@ -84,14 +84,14 @@ public:
                     , std::function<void(const ZFArgs &)>, fTmp
                     ) {
                 fTmp(zfargs);
-            } ZFLISTENER_END(wrapper)
+            } ZFLISTENER_END()
         #else
             FUNC_TYPE fTmp = f;
             ZFLISTENER_1(wrapper
                     , FUNC_TYPE, fTmp
                     ) {
                 fTmp(zfargs);
-            } ZFLISTENER_END(wrapper)
+            } ZFLISTENER_END()
         #endif
         return this->operator = (wrapper);
     }
@@ -267,7 +267,7 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   // in header files
  *   ZF_NAMESPACE_BEGIN(YourNamespace)
  *   / ** @brief you can add doxygen docs here * /
- *   ZFOBSERVER_EVENT_GLOBAL(ZFLIB_APP, YourEvent)
+ *   ZFOBSERVER_EVENT_GLOBAL(YourEvent)
  *   ZF_NAMESPACE_END(YourNamespace)
  *
  *   ZFOBSERVER_EVENT_GLOBAL_REGISTER(YourNamespace, YourEvent)
@@ -278,8 +278,8 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  * unlike #ZFOBSERVER_EVENT, this macro would declare event outside of class scope,
  * typically you should use #ZFOBSERVER_EVENT_GLOBAL which have "ZFGlobalEvent" as namespace
  */
-#define ZFOBSERVER_EVENT_GLOBAL(ZFLIB_, YourEvent) \
-    ZFIDMAP_GLOBAL_DETAIL(ZFLIB_, Event, YourEvent)
+#define ZFOBSERVER_EVENT_GLOBAL(YourEvent) \
+    ZFIDMAP_GLOBAL_DETAIL(Event, YourEvent)
 
 /** @brief see #ZFOBSERVER_EVENT */
 #define ZFOBSERVER_EVENT_GLOBAL_REGISTER(YourEvent) \

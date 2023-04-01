@@ -31,7 +31,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  *
  * advanced:
- * -  #ZFMAIN_ENTRY was added to #ZFApp::EventAppParamDispatch as ZFLevelZFFrameworkPostNormal infact,
+ * -  #ZFMAIN_ENTRY was added to #ZFApp::EventAppParamDispatch as ZFLevelZFFrameworkPostNormal in fact,
  *   you may add your own impl to run custom code before or after #ZFMAIN_ENTRY,
  *   by specify different observer level,
  *   or ignore the default entry by #ZFArgs::eventFiltered
@@ -55,14 +55,14 @@ ZF_NAMESPACE_BEGIN(ZFApp)
  * notified when #ZFMainExecute, before #ZFMAIN_ENTRY and #ZFApp::EventAppEntry,
  * to let impl to supply custom #ZFApp::appParams dispatch
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, AppParamDispatch)
+ZFOBSERVER_EVENT_GLOBAL(AppParamDispatch)
 
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified when #ZFMainExecute, after #ZFMAIN_ENTRY
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, AppEntry)
+ZFOBSERVER_EVENT_GLOBAL(AppEntry)
 
 /**
  * @brief get the app params

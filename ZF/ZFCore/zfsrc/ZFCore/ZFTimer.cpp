@@ -202,7 +202,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce,
                 );
         }
         ret->timerStop();
-    } ZFLISTENER_END(implThreadCallback)
+    } ZFLISTENER_END()
 
     zfautoObjectT<ZFThread *> currentThread = ZFThread::currentThread();
     ZFLISTENER_2(timerOnActivate
@@ -210,7 +210,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce,
             , ZFListener, implThreadCallback
             ) {
         ZFThread::executeInThread(currentThread, implThreadCallback);
-    } ZFLISTENER_END(timerOnActivate)
+    } ZFLISTENER_END()
     ret->observerAddForOnce(ZFTimer::EventTimerOnActivate(), timerOnActivate);
 
     ret->timerStart();

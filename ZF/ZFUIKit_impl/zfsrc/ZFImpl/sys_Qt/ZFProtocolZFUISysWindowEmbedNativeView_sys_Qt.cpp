@@ -32,7 +32,7 @@ public:
         }
     }
     virtual void nativeViewRemove(ZF_IN ZFUISysWindow *sysWindow,
-                                  ZF_IN void *parent,
+                                  ZF_IN_OUT void *&parent,
                                   ZF_IN void *child)
     {
         QGraphicsWidget *nativeParent = (QGraphicsWidget *)parent;

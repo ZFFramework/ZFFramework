@@ -14,8 +14,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief see #ZFLISTENER
  */
-#define ZFLISTENER_END(name) \
-    ZFLAMBDA_END(name)
+#define ZFLISTENER_END() \
+    ZFLAMBDA_END()
 
 #define _ZFP_ZFLISTENER_EXPAND(...) __VA_ARGS__
 /**
@@ -27,7 +27,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   // void listenerName(ZF_IN const ZFArgs &zfargs);
  *   ZFLISTENER(yourListener) {
  *       // your code
- *   } ZFLISTENER_END(yourListener)
+ *   } ZFLISTENER_END()
  *   obj->observerAdd(eventId, yourListener);
  * @endcode
  *
@@ -44,7 +44,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       // your code
  *       text0 = "text_0";
  *       text1 = "text_1";
- *   } ZFLISTENER_END(yourListener)
+ *   } ZFLISTENER_END()
  *   zfLogTrimT() << text0 << text1;
  *   yourListener.execute();
  *   zfLogTrimT() << text0 << text1;

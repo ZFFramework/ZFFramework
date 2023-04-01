@@ -33,7 +33,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewTranslateX(view->viewTranslateX() - 10);
-        } ZFLISTENER_END(viewTranslateXOnDec)
+        } ZFLISTENER_END()
         viewTranslateXDec->onClick(viewTranslateXOnDec);
 
         zfblockedAlloc(ZFUIKit_test_Button, viewTranslateXInc);
@@ -43,7 +43,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewTranslateX(view->viewTranslateX() + 10);
-        } ZFLISTENER_END(viewTranslateXOnInc)
+        } ZFLISTENER_END()
         viewTranslateXInc->onClick(viewTranslateXOnInc);
 
         // viewTranslateY
@@ -54,7 +54,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewTranslateY(view->viewTranslateY() - 10);
-        } ZFLISTENER_END(viewTranslateYOnDec)
+        } ZFLISTENER_END()
         viewTranslateYDec->onClick(viewTranslateYOnDec);
 
         zfblockedAlloc(ZFUIKit_test_Button, viewTranslateYInc);
@@ -64,7 +64,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewTranslateY(view->viewTranslateY() + 10);
-        } ZFLISTENER_END(viewTranslateYOnInc)
+        } ZFLISTENER_END()
         viewTranslateYInc->onClick(viewTranslateYOnInc);
 
         // viewScaleX
@@ -75,7 +75,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewScaleX(view->viewScaleX() - 0.1f);
-        } ZFLISTENER_END(viewScaleXOnDec)
+        } ZFLISTENER_END()
         viewScaleXDec->onClick(viewScaleXOnDec);
 
         zfblockedAlloc(ZFUIKit_test_Button, viewScaleXInc);
@@ -85,7 +85,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewScaleX(view->viewScaleX() + 0.1f);
-        } ZFLISTENER_END(viewScaleXOnInc)
+        } ZFLISTENER_END()
         viewScaleXInc->onClick(viewScaleXOnInc);
 
         // viewScaleY
@@ -96,7 +96,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewScaleY(view->viewScaleY() - 0.1f);
-        } ZFLISTENER_END(viewScaleYOnDec)
+        } ZFLISTENER_END()
         viewScaleYDec->onClick(viewScaleYOnDec);
 
         zfblockedAlloc(ZFUIKit_test_Button, viewScaleYInc);
@@ -106,7 +106,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewScaleY(view->viewScaleY() + 0.1f);
-        } ZFLISTENER_END(viewScaleYOnInc)
+        } ZFLISTENER_END()
         viewScaleYInc->onClick(viewScaleYOnInc);
 
         // viewRotate
@@ -117,7 +117,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewRotate(view->viewRotate() - 10);
-        } ZFLISTENER_END(viewRotateOnDec)
+        } ZFLISTENER_END()
         viewRotateDec->onClick(viewRotateOnDec);
 
         zfblockedAlloc(ZFUIKit_test_Button, viewRotateInc);
@@ -127,7 +127,7 @@ protected:
                 , ZFUIImageView *, view
                 ) {
             view->viewRotate(view->viewRotate() + 10);
-        } ZFLISTENER_END(viewRotateOnInc)
+        } ZFLISTENER_END()
         viewRotateInc->onClick(viewRotateOnInc);
     }
 };

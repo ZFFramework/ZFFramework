@@ -12,7 +12,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent)
         {
             zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "alloc";
         }
-    } ZFLISTENER_END(aniOnAlloc)
+    } ZFLISTENER_END()
     ZFGlobalObserver().observerAdd(ZFObject::EventObjectAfterAlloc(), aniOnAlloc);
 
     ZFLISTENER(aniOnDealloc) {
@@ -20,22 +20,22 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent)
         {
             zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "dealloc";
         }
-    } ZFLISTENER_END(aniOnDealloc)
+    } ZFLISTENER_END()
     ZFGlobalObserver().observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc);
 
     ZFLISTENER(aniOnInvalid) {
         zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "invalid";
-    } ZFLISTENER_END(aniOnInvalid)
+    } ZFLISTENER_END()
     ZFGlobalObserver().observerAdd(ZFAnimation::EventAniOnInvalid(), aniOnInvalid);
 
     ZFLISTENER(aniOnStart) {
         zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "start";
-    } ZFLISTENER_END(aniOnStart)
+    } ZFLISTENER_END()
     ZFGlobalObserver().observerAdd(ZFAnimation::EventAniOnStart(), aniOnStart);
 
     ZFLISTENER(aniOnStop) {
         zfLogTrimT() << zfLogCurTimeString() << zfargs.sender() << "stop";
-    } ZFLISTENER_END(aniOnStop)
+    } ZFLISTENER_END()
     ZFGlobalObserver().observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUtility_ZFAnimation_debug_LogEvent)

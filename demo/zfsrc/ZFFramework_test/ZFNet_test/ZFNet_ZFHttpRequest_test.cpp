@@ -26,7 +26,7 @@ protected:
             testCase->testCaseOutput("recv: %s", response->objectInfo().cString());
             testCase->testCaseOutput("%s", response->contentInfo().cString());
             testCase->testCaseStop();
-        } ZFLISTENER_END(onRecv)
+        } ZFLISTENER_END()
         zflineAlloc(ZFHttpRequest, "https://bing.com", "GET")
             ->request(onRecv);
 

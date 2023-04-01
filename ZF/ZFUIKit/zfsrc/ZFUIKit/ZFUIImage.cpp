@@ -356,7 +356,7 @@ void ZFUIImage::objectOnInitFinish(void)
         {
             owner->_ZFP_ZFUIImage_imageScaleOnChange();
         }
-    } ZFLISTENER_END(globalImageScaleOnChange)
+    } ZFLISTENER_END()
     d->globalImageScaleOnChangeListener = globalImageScaleOnChange;
     ZFUIGlobalStyle::DefaultStyle()->observerAdd(
         ZFObject::EventObjectPropertyValueOnUpdate(),

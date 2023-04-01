@@ -29,7 +29,7 @@ public:
                     , ZFUIOnScreenKeyboardAutoFitLayout *, pimplOwner
                     ) {
                 _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::onScreenKeyboardStateOnChange(zfargs, pimplOwner);
-            } ZFLISTENER_END(onScreenKeyboardStateOnChange)
+            } ZFLISTENER_END()
             this->onScreenKeyboardStateOnChangeListener = onScreenKeyboardStateOnChange;
         }
 
@@ -69,7 +69,7 @@ public:
                     , ZFUIOnScreenKeyboardAutoFitLayout *, pimplOwner
                     ) {
                 _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate::viewFocusOnChange(zfargs, pimplOwner);
-            } ZFLISTENER_END(viewFocusOnChange)
+            } ZFLISTENER_END()
             this->viewFocusOnChangeListener = viewFocusOnChange;
         }
 
@@ -330,7 +330,7 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
                     #endif
                     owner->scrollChildToVisible(owner->autoFitFocusedView());
                 }
-            } ZFLISTENER_END(scrollFocusedViewToVisibleDelay)
+            } ZFLISTENER_END()
             ZFThread::post(scrollFocusedViewToVisibleDelay);
         }
     }

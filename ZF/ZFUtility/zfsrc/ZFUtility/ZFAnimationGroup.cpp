@@ -187,7 +187,7 @@ private:
                 {
                     childData->childAni()->aniStart();
                 }
-            } ZFLISTENER_END(childOnDelayFinish)
+            } ZFLISTENER_END()
             zfautoObjectT<ZFTimer *> childDelayTimer = ZFTimerOnce(
                 childData->childDelayBeforeStart(),
                 childOnDelayFinish);

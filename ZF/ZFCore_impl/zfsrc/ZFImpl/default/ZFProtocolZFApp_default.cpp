@@ -52,14 +52,14 @@ public:
                 ZFMainExecute(appParamsSaved);
 
                 zfdelete(taskData);
-            } ZFLISTENER_END(mainThreadRunnable)
-            taskData->mainThreadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThread(mainThreadRunnable, zfnull, zfnull);
-        } ZFLISTENER_END(runnable)
+            } ZFLISTENER_END()
+            taskData->mainThreadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThread(mainThreadRunnable);
+        } ZFLISTENER_END()
 
         ZFLISTENER(runnableCleanup) {
-        } ZFLISTENER_END(runnableCleanup)
+        } ZFLISTENER_END()
 
-        taskData->threadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThread(runnable, runnableCleanup, zfnull, zfnull);
+        taskData->threadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThread(runnable, runnableCleanup);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_default)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAppImpl_default)

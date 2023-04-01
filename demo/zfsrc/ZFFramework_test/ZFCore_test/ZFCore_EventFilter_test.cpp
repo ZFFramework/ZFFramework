@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_APP, ZFCore_EventFilter_test)
+ZFOBSERVER_EVENT_GLOBAL(ZFCore_EventFilter_test)
 ZFOBSERVER_EVENT_GLOBAL_REGISTER(ZFCore_EventFilter_test)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
@@ -20,7 +20,7 @@ protected:
 
         ZFLISTENER(normalObserver) {
             zfLogT() << "normal observer";
-        } ZFLISTENER_END(normalObserver)
+        } ZFLISTENER_END()
         ZFGlobalObserver().observerAdd(
             ZFGlobalEvent::EventZFCore_EventFilter_test(),
             normalObserver);
@@ -28,7 +28,7 @@ protected:
         ZFLISTENER(eventFilter) {
             zfLogT() << "event filter";
             zfargs.eventFiltered(zftrue);
-        } ZFLISTENER_END(eventFilter)
+        } ZFLISTENER_END()
         ZFGlobalObserver().observerAdd(
                 ZFGlobalEvent::EventZFCore_EventFilter_test(),
                 eventFilter,

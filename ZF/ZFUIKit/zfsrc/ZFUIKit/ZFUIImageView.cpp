@@ -38,7 +38,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIImage *, image)
                         image->imageScaleFixed(),
                         ZFUIMarginApplyScale(image->imageNinePatch(), image->imageScaleFixed()));
                 }
-            } ZFLISTENER_END(imageNinePatchChanged)
+            } ZFLISTENER_END()
             this->imageUpdateListener = imageNinePatchChanged;
         }
         this->image()->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(), this->imageUpdateListener);

@@ -69,7 +69,7 @@ private:
                     ZFAudio *audio = playing[i];
                     zfLogTrimT() << audio;
                 }
-            } ZFLISTENER_END(onTimer)
+            } ZFLISTENER_END()
             timer = ZFTimerStart(1000, onTimer);
         }
     }

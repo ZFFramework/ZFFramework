@@ -5,12 +5,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFArgs::~ZFArgs(void)
 {
-    zfRelease(this->_ZFP_resultHolder);
+    zfRelease(d.result);
 }
 
 ZFObject *const &ZFArgs::result(void) const
 {
-    return this->_ZFP_resultHolder;
+    return d.result;
 }
 ZFArgs const &ZFArgs::result(ZF_IN ZFObject * const &result) const
 {
@@ -31,10 +31,10 @@ ZFArgs &ZFArgs::result(ZF_IN ZFObject * const &result)
 
 ZFArgs &ZFArgs::resultEnable(ZF_IN zfbool enable)
 {
-    this->_ZFP_result = enable ? &(this->_ZFP_resultHolder) : zfnull;
+    this->_ZFP_result = enable ? &(d.result) : zfnull;
     if(!enable)
     {
-        zfRetainChange(this->_ZFP_resultHolder, zfnull);
+        zfRetainChange(d.result, zfnull);
     }
     return *this;
 }

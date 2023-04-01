@@ -26,7 +26,7 @@ protected:
         ZFLISTENER(buttonOnClick) {
             zfLogTrimT() << "window size:" << ZFUIRectGetSize(ZFUIViewUtil::viewRoot(zfargs.senderT())->viewFrame());
             zfLogTrimT() << "clicked view's position:" << ZFUIViewPositionOnScreen(zfargs.sender()->toAny());
-        } ZFLISTENER_END(buttonOnClick)
+        } ZFLISTENER_END()
         button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick);
     }
 };

@@ -58,7 +58,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForSettingOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFPathForSettingOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -84,7 +84,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFPathForStorageOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -110,7 +110,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForStorageSharedOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFPathForStorageSharedOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**
@@ -140,19 +140,19 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * (as #v_zfstring)\n
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheOnChange)
+ZFOBSERVER_EVENT_GLOBAL(ZFPathForCacheOnChange)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheBeforeClear)
+ZFOBSERVER_EVENT_GLOBAL(ZFPathForCacheBeforeClear)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified to #ZFGlobalObserver only
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFCore, ZFPathForCacheAfterClear)
+ZFOBSERVER_EVENT_GLOBAL(ZFPathForCacheAfterClear)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 /**

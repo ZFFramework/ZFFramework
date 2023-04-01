@@ -25,7 +25,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic
         {
             zfCoreLogTrim("ZFMAIN_ENTRY not set");
         }
-    } ZFLISTENER_END(action)
+    } ZFLISTENER_END()
     this->callback = action;
     ZFGlobalObserver().observerAdd(
             ZFApp::EventAppParamDispatch(),

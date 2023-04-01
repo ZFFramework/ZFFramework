@@ -103,7 +103,7 @@ private:
 
                 ZFUIImageView *imageView = imageViews->getFirst<ZFUIImageView *>();
                 text->zfv = ZFUIContentScaleType::EnumNameForValue(imageView->imageScaleType());
-            } ZFLISTENER_END(buttonTextGetter)
+            } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
             ZFLISTENER_1(buttonClickListener
@@ -115,7 +115,7 @@ private:
                 {
                     imageViews->get<ZFUIImageView *>(i)->imageScaleType(value);
                 }
-            } ZFLISTENER_END(buttonClickListener)
+            } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);
         }
 

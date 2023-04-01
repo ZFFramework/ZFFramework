@@ -232,7 +232,7 @@ ZF_NAMESPACE_GLOBAL_END
             zfstring s;
             ZFImpl_sys_Qt_viewTreePrintT(s, (QGraphicsWidget *)sysWindow->rootView()->nativeView());
             zfLogTrimT() << s;
-        } ZFLISTENER_END(windowOnPause)
+        } ZFLISTENER_END()
         this->windowOnPauseListener = windowOnPause;
         ZFGlobalObserver().observerAdd(
             ZFUISysWindow::EventSysWindowOnPause(), this->windowOnPauseListener);

@@ -33,7 +33,7 @@ protected:
                     , ZFUIPage *, page
                     ) {
                 page->pageDestroy();
-            } ZFLISTENER_END(_titleLeftViewOnClick)
+            } ZFLISTENER_END()
             this->_titleLeftView()->observerAdd(ZFUIButton::EventButtonOnClick(), _titleLeftViewOnClick);
         }
 
@@ -53,7 +53,7 @@ protected:
                 newPage->pageGroupId(page->pageGroupId());
                 page->pageManager()->pageCreate(newPage);
                 page->pageView()->viewId(zfstringWithFormat("%s:%p", page->pageGroupId().cString(), page));
-            } ZFLISTENER_END(_contentViewOnClick)
+            } ZFLISTENER_END()
             this->_contentView()->observerAdd(ZFUIButton::EventButtonOnClick(), _contentViewOnClick);
         }
     }
@@ -167,7 +167,7 @@ protected:
                         pageManager->pageResumeForGroupId(pageGroupId->zfv);
                     }
                 }
-            } ZFLISTENER_END(buttonOnClick)
+            } ZFLISTENER_END()
             button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick);
             zffloat r = zfmRand(255) / 255.0f;
             zffloat g = zfmRand(255) / 255.0f;

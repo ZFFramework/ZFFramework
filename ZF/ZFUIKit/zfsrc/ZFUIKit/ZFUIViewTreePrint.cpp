@@ -20,7 +20,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreePrintAfterDelay,
         {
             ZFUIViewTreePrint(view, outputCallback);
         }
-    } ZFLISTENER_END(action)
+    } ZFLISTENER_END()
     ZFTimerOnce(delay, action);
 }
 
@@ -303,7 +303,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreeNativePrintAfterDelay,
         {
             ZFUIViewTreeNativePrint(view, outputCallback);
         }
-    } ZFLISTENER_END(action)
+    } ZFLISTENER_END()
     ZFTimerOnce(delay, action);
 }
 

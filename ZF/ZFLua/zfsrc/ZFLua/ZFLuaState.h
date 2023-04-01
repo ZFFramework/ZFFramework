@@ -62,7 +62,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * called in the same thread of #ZFLuaStateAttach called,
  * param0 is a #v_ZFPtr to lua state
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFLua, LuaStateOnAttach)
+ZFOBSERVER_EVENT_GLOBAL(LuaStateOnAttach)
 /**
  * @brief see #ZFObject::observerNotify
  *
@@ -70,7 +70,7 @@ ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFLua, LuaStateOnAttach)
  * called in the same thread of #ZFLuaStateDetach called,
  * param0 is a #v_ZFPtr to lua state
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFLua, LuaStateOnDetach)
+ZFOBSERVER_EVENT_GLOBAL(LuaStateOnDetach)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 ZF_NAMESPACE_GLOBAL_END

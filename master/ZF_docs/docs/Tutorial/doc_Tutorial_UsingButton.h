@@ -9,7 +9,7 @@
  *   // declare button click listener
  *   ZFLISTENER(onClickListener) {
  *       zfLogT() << zfargs.sender() << "clicked";
- *   } ZFLISTENER_END(onClickListener)
+ *   } ZFLISTENER_END()
  *
  *   // add as observer
  *   button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickListener);

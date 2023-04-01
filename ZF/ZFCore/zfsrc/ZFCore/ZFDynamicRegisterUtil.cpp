@@ -604,7 +604,7 @@ ZFDynamic &ZFDynamic::on(ZF_IN zfidentity eventId,
                     obj->observerAdd(itEvent->first, itEvent->second[i], ZFLevelZFFrameworkNormal);
                 }
             }
-        } ZFLISTENER_END(instanceOnCreate)
+        } ZFLISTENER_END()
         d->cls->instanceObserverAdd(instanceOnCreate, zfnull, ZFLevelZFFrameworkNormal);
     }
     else

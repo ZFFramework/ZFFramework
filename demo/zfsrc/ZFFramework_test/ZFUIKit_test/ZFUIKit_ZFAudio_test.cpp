@@ -31,7 +31,7 @@ protected:
             {
                 audios[i]->stop();
             }
-        } ZFLISTENER_END(testCaseOnStop)
+        } ZFLISTENER_END()
         this->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
 
         audios[0]->loop(zfindexMax());
@@ -54,7 +54,7 @@ protected:
                     , ZFUITextView *, stateLabel
                     ) {
                 stateLabel->text(audio->stateHint());
-            } ZFLISTENER_END(stateOnUpdate)
+            } ZFLISTENER_END()
             audio->observerAdd(ZFAudio::EventAudioOnLoad(), stateOnUpdate);
             audio->observerAdd(ZFAudio::EventAudioOnStart(), stateOnUpdate);
             audio->observerAdd(ZFAudio::EventAudioOnStop(), stateOnUpdate);
@@ -71,7 +71,7 @@ protected:
                     , ZFAudio *, audio
                     ) {
                 audio->load(ZFInputForRes("test_audio.mp3"));
-            } ZFLISTENER_END(loadOnClick)
+            } ZFLISTENER_END()
             loadBtn->onClick(loadOnClick);
 
             zfblockedAlloc(ZFUIKit_test_Button, startBtn);
@@ -82,7 +82,7 @@ protected:
                     , ZFAudio *, audio
                     ) {
                 audio->start();
-            } ZFLISTENER_END(startOnClick)
+            } ZFLISTENER_END()
             startBtn->onClick(startOnClick);
 
             zfblockedAlloc(ZFUIKit_test_Button, stopBtn);
@@ -93,7 +93,7 @@ protected:
                     , ZFAudio *, audio
                     ) {
                 audio->stop();
-            } ZFLISTENER_END(stopOnClick)
+            } ZFLISTENER_END()
             stopBtn->onClick(stopOnClick);
 
             zfblockedAlloc(ZFUIKit_test_Button, pauseBtn);
@@ -104,7 +104,7 @@ protected:
                     , ZFAudio *, audio
                     ) {
                 audio->pause();
-            } ZFLISTENER_END(pauseOnClick)
+            } ZFLISTENER_END()
             pauseBtn->onClick(pauseOnClick);
 
             zfblockedAlloc(ZFUIKit_test_Button, resumeBtn);
@@ -115,7 +115,7 @@ protected:
                     , ZFAudio *, audio
                     ) {
                 audio->resume();
-            } ZFLISTENER_END(resumeOnClick)
+            } ZFLISTENER_END()
             resumeBtn->onClick(resumeOnClick);
         }
     }

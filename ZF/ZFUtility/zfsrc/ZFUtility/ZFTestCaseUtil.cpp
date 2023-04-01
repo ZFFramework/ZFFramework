@@ -38,7 +38,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTestCaseRunAllHolder, ZFLevelZFFramework
     ZFLISTENER(testCaseOnFinish
             ) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseRunNext();
-    } ZFLISTENER_END(testCaseOnFinish)
+    } ZFLISTENER_END()
     this->testCaseFinishListener = testCaseOnFinish;
 }
 public:

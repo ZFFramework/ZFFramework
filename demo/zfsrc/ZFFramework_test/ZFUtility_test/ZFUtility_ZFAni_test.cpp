@@ -62,13 +62,13 @@ protected:
                 , ZFTestCase *, owner
                 ) {
             owner->testCaseStop();
-        } ZFLISTENER_END(aniOnStop)
+        } ZFLISTENER_END()
         ani->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
 
         ZFLISTENER(aniOnDealloc
                 ) {
             zfLogTrimT() << "[ZFAni_test] aniOnDealloc" << zfargs.sender()->objectHash();
-        } ZFLISTENER_END(aniOnDealloc)
+        } ZFLISTENER_END()
         ani->observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc);
 
         ani->aniStart();

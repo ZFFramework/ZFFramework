@@ -28,7 +28,7 @@ public:
      * @brief remove native view, see #nativeViewAdd
      */
     virtual void nativeViewRemove(ZF_IN ZFUISysWindow *sysWindow,
-                                  ZF_IN void *parent,
+                                  ZF_IN_OUT void *&parent,
                                   ZF_IN void *child) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUISysWindowEmbedNativeView)
 

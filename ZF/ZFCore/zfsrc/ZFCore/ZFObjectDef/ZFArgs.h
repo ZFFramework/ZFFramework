@@ -104,7 +104,7 @@ public:
     inline zfbool eventFiltered(void) const {if(this->_ZFP_eventFiltered) {return *(this->_ZFP_eventFiltered);} else {return zffalse;}}
 
     /** @brief see #eventFiltered */
-    inline ZFArgs &eventFilterEnable(ZF_IN zfbool enable) {this->_ZFP_eventFiltered = enable ? &(this->_ZFP_eventFilteredHolder) : zfnull; return *this;}
+    inline ZFArgs &eventFilterEnable(ZF_IN zfbool enable) {this->_ZFP_eventFiltered = enable ? &(d.eventFiltered) : zfnull; return *this;}
     /** @brief see #eventFiltered */
     inline zfbool eventFilterEnabled(void) const {return this->_ZFP_eventFiltered != zfnull;}
 
@@ -114,9 +114,7 @@ public:
      * @brief main constructor
      */
     ZFArgs(void)
-    : _ZFP_resultHolder(zfnull)
-    , _ZFP_result(zfnull)
-    , _ZFP_eventFilteredHolder(zffalse)
+    : _ZFP_result(zfnull)
     , _ZFP_eventFiltered(zfnull)
     {
         zfmemset(&d, 0, sizeof(_ZFP_D));
@@ -126,6 +124,8 @@ public:
      * @brief construct with another data
      */
     ZFArgs(ZF_IN const ZFArgs &ref)
+    : _ZFP_result(zfnull)
+    , _ZFP_eventFiltered(zfnull)
     {
         this->operator = (ref);
     }
@@ -138,7 +138,6 @@ public:
         zfmemcpy(&d, &ref.d, sizeof(_ZFP_D));
         this->resultEnable(ref.resultEnabled());
         this->result(ref.result());
-        this->_ZFP_eventFilteredHolder = ref._ZFP_eventFilteredHolder;
         this->eventFilterEnable(ref.eventFilterEnabled());
         return *this;
     }
@@ -146,9 +145,7 @@ public:
     {
         return (zftrue
                 && zfmemcmp(&d, &ref.d, sizeof(_ZFP_D)) == 0
-                && this->_ZFP_resultHolder == ref._ZFP_resultHolder
                 && this->resultEnabled() == ref.resultEnabled()
-                && this->_ZFP_eventFilteredHolder == ref._ZFP_eventFilteredHolder
                 && this->eventFilterEnabled() == ref.eventFilterEnabled()
             );
     }
@@ -175,11 +172,11 @@ private:
         ZFObject *param0;
         ZFObject *param1;
         ZFObject *userData;
+        ZFObject *result;
+        zfbool eventFiltered;
     };
     _ZFP_D d;
-    ZFObject *_ZFP_resultHolder;
     ZFObject **_ZFP_result;
-    zfbool _ZFP_eventFilteredHolder;
     zfbool *_ZFP_eventFiltered;
 };
 

@@ -17,7 +17,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIKeyboardStateBuiltinImpl_DataHolder, Z
         {
             ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(event);
         }
-    } ZFLISTENER_END(viewOnEvent)
+    } ZFLISTENER_END()
     this->viewOnEventListener = viewOnEvent;
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKeyboardStateBuiltinImpl_DataHolder)

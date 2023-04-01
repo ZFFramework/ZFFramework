@@ -826,7 +826,7 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
                     ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()),
                     zffalse);
             }
-        } ZFLISTENER_END(action)
+        } ZFLISTENER_END()
         ZFThread::post(action);
     }
 

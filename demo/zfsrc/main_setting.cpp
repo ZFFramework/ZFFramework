@@ -21,7 +21,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         ZFLISTENER(windowOnPause) {
             ZFUISysWindow *sysWindow = zfargs.senderT();
             ZFUIViewTreePrint(sysWindow->rootView());
-        } ZFLISTENER_END(windowOnPause)
+        } ZFLISTENER_END()
         this->windowOnPauseListener = windowOnPause;
         ZFGlobalObserver().observerAdd(
             ZFUISysWindow::EventSysWindowOnPause(), this->windowOnPauseListener);

@@ -14,6 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief protocol for ZFUIView
  */
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIViewCapture)
+ZFPROTOCOL_INTERFACE_OPTIONAL
 public:
     /**
      * @brief see #ZFUIViewCapture

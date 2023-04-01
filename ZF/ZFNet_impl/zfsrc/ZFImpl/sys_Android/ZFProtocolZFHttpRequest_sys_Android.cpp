@@ -331,7 +331,7 @@ public:
                     , nativeTask
                     , nativeInput
                 );
-        } ZFLISTENER_END(run)
+        } ZFLISTENER_END()
         zfasync(run);
     }
 

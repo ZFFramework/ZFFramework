@@ -68,7 +68,7 @@ void ZFStyleable::styleKey(ZF_IN const zfchar *styleKey)
                         , ZFStyleable *, owner
                         ) {
                     _ZFP_ZFStyleKeyHolder::styleOnChange(zfargs, owner);
-                } ZFLISTENER_END(styleOnChange)
+                } ZFLISTENER_END()
                 _ZFP_styleKey->styleOnChangeListener = styleOnChange;
             }
             ZFGlobalObserver().observerAdd(
@@ -186,7 +186,7 @@ void ZFStyleable::styleKeyForProperty(ZF_IN const zfchar *propertyName, ZF_IN co
                         , ZFStyleable *, owner
                         ) {
                     _ZFP_ZFStyleKeyHolder::stylePropertyOnChange(zfargs, owner);
-                } ZFLISTENER_END(stylePropertyOnChange)
+                } ZFLISTENER_END()
                 _ZFP_styleKey->stylePropertyOnChangeListener = stylePropertyOnChange;
             }
             ZFGlobalObserver().observerAdd(

@@ -48,7 +48,7 @@ protected:
                 , ZFMP_IN(const zfstring &, param)
                 ) {
             zfLogT() << param;
-        } ZFLAMBDA_END(localCallback)
+        } ZFLAMBDA_END()
         this->testCaseOutputSeparator();
         this->testCaseOutput("try execute %s", localCallback.objectInfo().cString());
         localCallback.executeExact<void, const zfstring &>("param");

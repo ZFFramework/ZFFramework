@@ -17,7 +17,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * either by access #ZFUISysWindow::mainWindow,
  * or by #ZFUISysWindow::mainWindowRegister
  */
-ZFOBSERVER_EVENT_GLOBAL(ZFLIB_ZFUIKit, SysWindowMainWindowOnAttach)
+ZFOBSERVER_EVENT_GLOBAL(SysWindowMainWindowOnAttach)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================

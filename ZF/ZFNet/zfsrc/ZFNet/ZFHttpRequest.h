@@ -85,7 +85,7 @@ private:
  *   ZFLISTENER(onRecv) {
  *       ZFJson response = zfargs.param0()->to<ZFHttpResponse *>()->bodyJson();
  *       zfLogTrimT() << response;
- *   } ZFLISTENER_END(onRecv)
+ *   } ZFLISTENER_END()
  *   zflineAlloc(ZFHttpRequest, "http://xxx", "POST")
  *       ->header("Content-Type", "application/json;charset=UTF-8;")
  *       ->request(ZFJson()

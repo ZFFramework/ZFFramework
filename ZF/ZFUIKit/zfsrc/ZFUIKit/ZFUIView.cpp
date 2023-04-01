@@ -177,7 +177,7 @@ public:
                     , ZFUIView *, owner
                     ) {
                 owner->layoutRequest();
-            } ZFLISTENER_END(layoutParamOnUpdate)
+            } ZFLISTENER_END()
             owner->d->layoutParamOnUpdate = layoutParamOnUpdate;
         }
 

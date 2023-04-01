@@ -10,8 +10,6 @@
 @property (nonatomic, assign) BOOL cancelFlag;
 @property (nonatomic, assign) ZFListener runnable;
 @property (nonatomic, assign) ZFListener runnableCleanup;
-@property (nonatomic, assign) ZFObject *param0;
-@property (nonatomic, assign) ZFObject *param1;
 // private
 @property (nonatomic, assign) void *_nativeThreadRegisterToken;
 @property (nonatomic, strong) id _selfHolder;
@@ -24,8 +22,6 @@
         if(!self.cancelFlag)
         {
             self.runnable.execute(ZFArgs()
-                    .param0(self.param0)
-                    .param1(self.param1)
                     .userData(self.runnable.userData())
                 );
         }
@@ -34,8 +30,6 @@
     if(self.runnableCleanup)
     {
         self.runnableCleanup.execute(ZFArgs()
-                .param0(self.param0)
-                .param1(self.param1)
                 .userData(self.runnableCleanup.userData())
             );
     }
@@ -135,15 +129,11 @@ public:
         [NSThread sleepForTimeInterval:((double)miliSecs / 1000)];
     }
 
-    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable,
-                                      ZF_IN ZFObject *param0,
-                                      ZF_IN ZFObject *param1)
+    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable)
     {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = [_ZFP_ZFThreadImpl_sys_iOS_ThreadOwner new];
         threadOwner._selfHolder = threadOwner;
         threadOwner.runnable = runnable;
-        threadOwner.param0 = param0;
-        threadOwner.param1 = param1;
 #if 1
         dispatch_async(dispatch_get_main_queue(), ^{
             [threadOwner threadCallback:nil];
@@ -161,16 +151,12 @@ public:
     }
 
     virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
-                                     ZF_IN const ZFListener &runnableCleanup,
-                                     ZF_IN ZFObject *param0,
-                                     ZF_IN ZFObject *param1)
+                                     ZF_IN const ZFListener &runnableCleanup)
     {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = [_ZFP_ZFThreadImpl_sys_iOS_ThreadOwner new];
         threadOwner._selfHolder = threadOwner;
         threadOwner.runnable = runnable;
         threadOwner.runnableCleanup = runnableCleanup;
-        threadOwner.param0 = param0;
-        threadOwner.param1 = param1;
 
         [[[NSThread alloc] initWithBlock:^{
             [threadOwner threadCallback:nil];

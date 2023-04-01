@@ -43,7 +43,7 @@ public:
                     , ZFAnimationTimeLine *, owner
                     ) {
                 _ZFP_ZFAnimationTimeLinePrivate::globalTimerOnActivate(zfargs, owner);
-            } ZFLISTENER_END(globalTimerOnActivate)
+            } ZFLISTENER_END()
             owner->d->globalTimerTask = globalTimerOnActivate;
             ZFGlobalTimerAttach(owner->d->globalTimerTask);
         }
@@ -58,7 +58,7 @@ public:
                         , ZFAnimationTimeLine *, owner
                         ) {
                     _ZFP_ZFAnimationTimeLinePrivate::builtinTimerOnActivate(zfargs, owner);
-                } ZFLISTENER_END(builtinTimerOnActivate)
+                } ZFLISTENER_END()
                 owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
             }
             owner->d->builtinTimer->timerInterval(owner->aniTimeLineInterval());

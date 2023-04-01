@@ -452,7 +452,7 @@ ZFMETHOD_DEFINE_1(ZFUIDialog, void, dialogApplyAutoHide,
             , ZFUIDialog *, owner
             ) {
         owner->dialogHide();
-    } ZFLISTENER_END(buttonOnClick)
+    } ZFLISTENER_END()
     button->observerAdd(
             ZFUIButton::EventButtonOnClick(),
             buttonOnClick,
