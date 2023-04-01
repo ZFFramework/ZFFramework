@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 project(ZFLua)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 

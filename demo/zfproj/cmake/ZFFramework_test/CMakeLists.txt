@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 project(ZFFramework_test)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
@@ -69,6 +70,6 @@ if(APPLE)
     set_target_properties(ZFFramework_test PROPERTIES INSTALL_RPATH "@loader_path")
 elseif(WIN32)
 else()
-    set_target_properties(ZFFramework_test PROPERTIES INSTALL_RPATH "\\\${ORIGIN}")
+    set_target_properties(ZFFramework_test PROPERTIES INSTALL_RPATH "\\\$ORIGIN;$ORIGIN")
 endif()
 
