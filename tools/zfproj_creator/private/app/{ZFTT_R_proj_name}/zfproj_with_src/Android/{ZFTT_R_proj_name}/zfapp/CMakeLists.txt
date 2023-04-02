@@ -148,7 +148,7 @@ ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/../ZFModule/ZF/{ZFTT_R_impl_ext_name_30}){
 ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/../ZFModule/ZF/{ZFTT_R_impl_ext_name_31}){ZFTT_CE}
 
 add_library({ZFTT_R_proj_name} SHARED ${ZF_SRC_FILES})
-strip_file_macro({ZFTT_R_proj_name})
+zfprojStripFILE({ZFTT_R_proj_name})
 set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)

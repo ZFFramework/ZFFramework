@@ -11,7 +11,7 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
 add_library(ZFUtility SHARED ${srcfiles})
-strip_file_macro(ZFUtility)
+zfprojStripFILE(ZFUtility)
 set_target_properties(ZFUtility PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)

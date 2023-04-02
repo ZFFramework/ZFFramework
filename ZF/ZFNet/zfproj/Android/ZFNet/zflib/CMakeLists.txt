@@ -11,7 +11,7 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
 add_library(ZFNet SHARED ${srcfiles})
-strip_file_macro(ZFNet)
+zfprojStripFILE(ZFNet)
 set_target_properties(ZFNet PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)

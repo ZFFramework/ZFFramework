@@ -35,7 +35,7 @@ ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFUIWebKit_impl)
 ZFAddSrc(ZF_SRC_FILES ${ZF_ROOT_PATH}/ZF/ZFNet_impl)
 
 add_library(ZFFramework_test SHARED ${ZF_SRC_FILES})
-strip_file_macro(ZFFramework_test)
+zfprojStripFILE(ZFFramework_test)
 set_target_properties(ZFFramework_test PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)

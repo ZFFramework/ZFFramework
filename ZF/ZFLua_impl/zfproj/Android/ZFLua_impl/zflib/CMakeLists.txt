@@ -11,7 +11,7 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
 add_library(ZFLua_impl SHARED ${srcfiles})
-strip_file_macro(ZFLua_impl)
+zfprojStripFILE(ZFLua_impl)
 set_target_properties(ZFLua_impl PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)

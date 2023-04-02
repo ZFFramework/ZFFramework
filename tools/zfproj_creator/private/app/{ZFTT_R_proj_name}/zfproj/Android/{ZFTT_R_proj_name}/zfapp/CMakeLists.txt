@@ -11,7 +11,7 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
 add_library({ZFTT_R_proj_name} SHARED ${srcfiles})
-strip_file_macro({ZFTT_R_proj_name})
+zfprojStripFILE({ZFTT_R_proj_name})
 set_target_properties({ZFTT_R_proj_name} PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)

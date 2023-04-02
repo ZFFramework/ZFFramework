@@ -11,7 +11,7 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
 add_library(ZFUIWebKit SHARED ${srcfiles})
-strip_file_macro(ZFUIWebKit)
+zfprojStripFILE(ZFUIWebKit)
 set_target_properties(ZFUIWebKit PROPERTIES LINKER_LANGUAGE CXX)
 
 find_library(log-lib log)
