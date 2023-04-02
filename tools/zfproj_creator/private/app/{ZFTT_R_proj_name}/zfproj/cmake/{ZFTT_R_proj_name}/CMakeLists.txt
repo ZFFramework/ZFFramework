@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 3.0.0)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
+include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
+if(COMMAND zfprojConfigGlobal_{ZFTT_R_proj_name})
+    zfprojConfigGlobal_{ZFTT_R_proj_name}()
+endif()
 project({ZFTT_R_proj_name})
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../../../../_tmp/cmake/{ZFTT_R_proj_name}/app")
 
-set(ZF_ROOT_PATH "${PROJECT_SOURCE_DIR}/../../../../../ZFFramework")
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
 execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh")
@@ -16,7 +19,6 @@ file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
-include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 if(COMMAND zfprojConfigBefore_{ZFTT_R_proj_name})
     zfprojConfigBefore_{ZFTT_R_proj_name}({ZFTT_R_proj_name} srcfiles)
 endif()
