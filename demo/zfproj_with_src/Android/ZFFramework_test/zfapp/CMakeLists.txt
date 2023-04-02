@@ -5,13 +5,13 @@ set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
 function(ZFAddSrc ZF_SRC_FILES_ PROJ_PATH_)
-    file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
+    file(GLOB_RECURSE ZF_SRC_FILES_TMP RELATIVE ${PROJECT_SOURCE_DIR}
         ${PROJ_PATH_}/zfsrc/*.c
         ${PROJ_PATH_}/zfsrc/*.cpp
         ${PROJ_PATH_}/zfsrc_ext/*.c
         ${PROJ_PATH_}/zfsrc_ext/*.cpp
         )
-    set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${srcfiles} PARENT_SCOPE)
+    set(${ZF_SRC_FILES_} ${${ZF_SRC_FILES_}} ${ZF_SRC_FILES_TMP} PARENT_SCOPE)
 
     include_directories(${PROJ_PATH_}/zfsrc)
 endfunction(ZFAddSrc)

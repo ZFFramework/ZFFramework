@@ -1,24 +1,24 @@
 cmake_minimum_required(VERSION 3.0.0)
+project(ZFUIWidget)
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 if(COMMAND zfprojConfigGlobal_ZFUIWidget)
     zfprojConfigGlobal_ZFUIWidget()
 endif()
-project(ZFUIWidget)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
 if(COMMAND zfprojConfigBefore_ZFUIWidget)
-    zfprojConfigBefore_ZFUIWidget(ZFUIWidget srcfiles)
+    zfprojConfigBefore_ZFUIWidget(ZFUIWidget ZF_SRC_FILES)
 endif()
-add_library(ZFUIWidget SHARED ${srcfiles})
+add_library(ZFUIWidget SHARED ${ZF_SRC_FILES})
 zfprojStripFILE(ZFUIWidget)
 set_target_properties(ZFUIWidget PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_definitions(ZFUIWidget PUBLIC ZFLIB_ZFUIWidget=ZF_ENV_EXPORT)

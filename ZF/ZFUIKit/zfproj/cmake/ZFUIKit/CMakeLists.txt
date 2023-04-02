@@ -1,24 +1,24 @@
 cmake_minimum_required(VERSION 3.0.0)
+project(ZFUIKit)
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 if(COMMAND zfprojConfigGlobal_ZFUIKit)
     zfprojConfigGlobal_ZFUIKit()
 endif()
-project(ZFUIKit)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
 if(COMMAND zfprojConfigBefore_ZFUIKit)
-    zfprojConfigBefore_ZFUIKit(ZFUIKit srcfiles)
+    zfprojConfigBefore_ZFUIKit(ZFUIKit ZF_SRC_FILES)
 endif()
-add_library(ZFUIKit SHARED ${srcfiles})
+add_library(ZFUIKit SHARED ${ZF_SRC_FILES})
 zfprojStripFILE(ZFUIKit)
 set_target_properties(ZFUIKit PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_definitions(ZFUIKit PUBLIC ZFLIB_ZFUIKit=ZF_ENV_EXPORT)

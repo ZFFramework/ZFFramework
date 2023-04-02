@@ -4,13 +4,13 @@ project(ZFUtility)
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.cpp
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
-add_library(ZFUtility SHARED ${srcfiles})
+add_library(ZFUtility SHARED ${ZF_SRC_FILES})
 zfprojStripFILE(ZFUtility)
 set_target_properties(ZFUtility PROPERTIES LINKER_LANGUAGE CXX)
 

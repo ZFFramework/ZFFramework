@@ -4,13 +4,13 @@ project(ZFCore)
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc/*.cpp
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../../zfsrc_ext/*.cpp
     )
-add_library(ZFCore SHARED ${srcfiles})
+add_library(ZFCore SHARED ${ZF_SRC_FILES})
 zfprojStripFILE(ZFCore)
 set_target_properties(ZFCore PROPERTIES LINKER_LANGUAGE CXX)
 

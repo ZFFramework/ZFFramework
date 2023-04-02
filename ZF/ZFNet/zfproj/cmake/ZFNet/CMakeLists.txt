@@ -1,24 +1,24 @@
 cmake_minimum_required(VERSION 3.0.0)
+project(ZFNet)
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 if(COMMAND zfprojConfigGlobal_ZFNet)
     zfprojConfigGlobal_ZFNet()
 endif()
-project(ZFNet)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
 if(COMMAND zfprojConfigBefore_ZFNet)
-    zfprojConfigBefore_ZFNet(ZFNet srcfiles)
+    zfprojConfigBefore_ZFNet(ZFNet ZF_SRC_FILES)
 endif()
-add_library(ZFNet SHARED ${srcfiles})
+add_library(ZFNet SHARED ${ZF_SRC_FILES})
 zfprojStripFILE(ZFNet)
 set_target_properties(ZFNet PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_definitions(ZFNet PUBLIC ZFLIB_ZFNet=ZF_ENV_EXPORT)

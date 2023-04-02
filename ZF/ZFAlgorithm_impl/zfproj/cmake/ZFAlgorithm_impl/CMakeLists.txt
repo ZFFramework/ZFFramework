@@ -1,24 +1,24 @@
 cmake_minimum_required(VERSION 3.0.0)
+project(ZFAlgorithm_impl)
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 if(COMMAND zfprojConfigGlobal_ZFAlgorithm_impl)
     zfprojConfigGlobal_ZFAlgorithm_impl()
 endif()
-project(ZFAlgorithm_impl)
 message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
 
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
-file(GLOB_RECURSE srcfiles RELATIVE ${PROJECT_SOURCE_DIR}
+file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.cpp
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.c
     ${PROJECT_SOURCE_DIR}/../../../zfsrc_ext/*.cpp
     )
 if(COMMAND zfprojConfigBefore_ZFAlgorithm_impl)
-    zfprojConfigBefore_ZFAlgorithm_impl(ZFAlgorithm_impl srcfiles)
+    zfprojConfigBefore_ZFAlgorithm_impl(ZFAlgorithm_impl ZF_SRC_FILES)
 endif()
-add_library(ZFAlgorithm_impl SHARED ${srcfiles})
+add_library(ZFAlgorithm_impl SHARED ${ZF_SRC_FILES})
 zfprojStripFILE(ZFAlgorithm_impl)
 set_target_properties(ZFAlgorithm_impl PROPERTIES LINKER_LANGUAGE CXX)
 target_compile_definitions(ZFAlgorithm_impl PUBLIC ZFLIB_ZFAlgorithm_impl=ZF_ENV_EXPORT)
