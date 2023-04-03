@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.4.1)
 project({ZFTT_R_proj_name})
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../ZFFramework)
+include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
+
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 include("${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zfprojConfig.cmake")
 if(COMMAND zfprojConfigGlobal_{ZFTT_R_proj_name})
@@ -9,9 +11,6 @@ endif()
 if(COMMAND zfprojConfigGlobal_ZF_impl)
     zfprojConfigGlobal_ZF_impl()
 endif()
-message("Build with type: ${CMAKE_BUILD_TYPE}, path: ${PROJECT_SOURCE_DIR}")
-
-include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 
 if(WIN32)
     execute_process(COMMAND "${ZF_ROOT_PATH}/zfsetup.bat")

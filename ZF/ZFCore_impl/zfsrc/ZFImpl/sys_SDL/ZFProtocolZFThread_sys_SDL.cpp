@@ -37,7 +37,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_MainThreadImpl, ZFLevelZFFr
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_MainThreadImpl)
 
 // ============================================================
-ZFIMPL_SYS_SDL_EVENT_HANDLER(MainThreadTask, {
+ZFIMPL_SYS_SDL_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal, {
     zfCoreMutexLock();
     if(_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty())
     {

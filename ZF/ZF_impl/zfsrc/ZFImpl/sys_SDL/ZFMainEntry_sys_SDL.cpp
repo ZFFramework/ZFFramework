@@ -8,6 +8,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFrameworkStatic)
 {
+    this->builtinWindow = zfnull;
+    this->builtinRenderer = zfnull;
+
     this->beforeListener = ZFCallbackForFunc(zfself::before);
     ZFGlobalObserver().observerAdd(
             ZFApp::EventAppParamDispatch(),
@@ -25,39 +28,64 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup)
 {
     ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->beforeListener);
     ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->afterListener);
+
+    if(this->builtinWindow != zfnull)
+    {
+        SDL_DestroyWindow(this->builtinWindow);
+        this->builtinWindow = zfnull;
+    }
 }
+public:
+    SDL_Window *builtinWindow;
+    SDL_Renderer *builtinRenderer;
 private:
     ZFListener beforeListener;
     ZFListener afterListener;
 private:
     static void before(ZF_IN const ZFArgs &zfargs)
     {
+        ZF_GLOBAL_INITIALIZER_CLASS(ZFMainEntry_sys_SDL_setup) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup);
+        zfCoreAssert(d->builtinWindow == zfnull);
+
         if(ZFImpl_sys_SDL_embed)
         {
             return;
         }
-        if(SDL_Init(SDL_INIT_VIDEO) < 0)
+        if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
             zfCoreCriticalMessage("SDL init failed: %s", SDL_GetError());
             return;
         }
 
-        SDL_Window *window = SDL_CreateWindow(
+        d->builtinWindow = SDL_CreateWindow(
             ""
             , SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
             , 640, 480
             , SDL_WINDOW_SHOWN
             );
-        if(window == zfnull)
+        if(d->builtinWindow == zfnull)
         {
             zfCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
             return;
         }
+        d->builtinRenderer = SDL_CreateRenderer(d->builtinWindow, -1, 0
+                | SDL_RENDERER_ACCELERATED
+            );
+        if(d->builtinRenderer == zfnull)
+        {
+            SDL_DestroyWindow(d->builtinWindow);
+            d->builtinWindow = zfnull;
+            zfCoreCriticalMessage("SDL renderer create failed: %s", SDL_GetError());
+            return;
+        }
 
-        ZFImpl_sys_SDL_embedInit(window);
+        ZFImpl_sys_SDL_embedInit(d->builtinWindow);
     }
     static void after(ZF_IN const ZFArgs &zfargs)
     {
+        ZF_GLOBAL_INITIALIZER_CLASS(ZFMainEntry_sys_SDL_setup) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup);
+        zfCoreAssert(d->builtinWindow != zfnull);
+
         zfbool quitFlag = zffalse;
         SDL_Event event;
         while(!quitFlag)
@@ -75,16 +103,30 @@ private:
             }
         }
         ZFImpl_sys_SDL_embedCleanup();
-        SDL_DestroyWindow(ZFImpl_sys_SDL_rootWindow());
+        if(d->builtinRenderer != zfnull)
+        {
+            SDL_DestroyRenderer(d->builtinRenderer);
+            d->builtinRenderer = zfnull;
+        }
+        if(d->builtinWindow != zfnull)
+        {
+            SDL_DestroyWindow(d->builtinWindow);
+            d->builtinWindow = zfnull;;
+        }
         SDL_Quit();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFMainEntry_sys_SDL_setup)
 
 // ============================================================
-static SDL_Window *_ZFP_ZFImpl_sys_SDL_rootWindow = zfnull;
-SDL_Window *ZFImpl_sys_SDL_rootWindow(void)
+static SDL_Window *_ZFP_ZFImpl_sys_SDL_mainWindow = zfnull;
+static SDL_Renderer *_ZFP_ZFImpl_sys_SDL_mainRenderer = zfnull;
+SDL_Window *ZFImpl_sys_SDL_mainWindow(void)
 {
-    return _ZFP_ZFImpl_sys_SDL_rootWindow;
+    return _ZFP_ZFImpl_sys_SDL_mainWindow;
+}
+SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void)
+{
+    return _ZFP_ZFImpl_sys_SDL_mainRenderer;
 }
 
 static zfstlvector<ZFImpl_sys_SDL_EventHandler> _ZFP_ZFImpl_sys_SDL_eventHandlerList;
@@ -126,13 +168,17 @@ zfbool ZFImpl_sys_SDL_embed = zffalse;
 void ZFImpl_sys_SDL_embedInit(ZF_IN SDL_Window *window)
 {
     zfCoreAssert(window != zfnull);
-    zfCoreAssert(_ZFP_ZFImpl_sys_SDL_rootWindow == zfnull);
-    _ZFP_ZFImpl_sys_SDL_rootWindow = window;
+    SDL_Renderer *renderer = SDL_GetRenderer(window);
+    zfCoreAssert(renderer != zfnull);
+    zfCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow == zfnull);
+    _ZFP_ZFImpl_sys_SDL_mainWindow = window;
+    _ZFP_ZFImpl_sys_SDL_mainRenderer = renderer;
 }
 void ZFImpl_sys_SDL_embedCleanup(void)
 {
-    zfCoreAssert(_ZFP_ZFImpl_sys_SDL_rootWindow != zfnull);
-    _ZFP_ZFImpl_sys_SDL_rootWindow = zfnull;
+    zfCoreAssert(_ZFP_ZFImpl_sys_SDL_mainWindow != zfnull);
+    _ZFP_ZFImpl_sys_SDL_mainWindow = zfnull;
+    _ZFP_ZFImpl_sys_SDL_mainRenderer = zfnull;
 }
 
 zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event)

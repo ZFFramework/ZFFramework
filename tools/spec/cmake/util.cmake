@@ -13,3 +13,22 @@ function(zfprojStripFILE targetName)
     endforeach()
 endfunction(zfprojStripFILE)
 
+function(zfprojLoadAllSymbol targetName)
+    if(WIN32)
+        set_target_properties(${targetName} PROPERTIES
+            LINK_FLAGS "/WHOLEARCHIVE"
+            )
+    elseif(APPLE)
+        set_target_properties(${targetName} PROPERTIES
+            LINK_FLAGS "-Wl,-all_load"
+            )
+    else()
+        set_target_properties(${targetName} PROPERTIES
+            LINK_FLAGS "-Wl,--whole-archive"
+            )
+        set_target_properties(${targetName} PROPERTIES
+            LINK_FLAGS "-Wl,--allow-multiple-definition"
+            )
+    endif()
+endfunction(zfprojLoadAllSymbol)
+

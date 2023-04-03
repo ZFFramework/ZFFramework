@@ -10,9 +10,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief the sdl's root window
+ * @brief the sdl's window
  */
-extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_rootWindow(void);
+extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_mainWindow(void);
+/**
+ * @brief the sdl's renderer
+ */
+extern ZFLIB_ZF_impl SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void);
 
 /**
  * @brief event handler for sdl event loop
@@ -46,7 +50,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_eventHandlerRemove(ZF_IN ZFImpl_sys_SDL
  *   SDL_PushEvent(&e);
  * @endcode
  */
-#define ZFIMPL_SYS_SDL_EVENT_HANDLER(name, handlerAction) \
+#define ZFIMPL_SYS_SDL_EVENT_HANDLER(name, level, handlerAction) \
     ZFIDMAP_GLOBAL_DETAIL(_ZFP_SDLEvent, name) \
     ZFIDMAP_GLOBAL_REGISTER_DETAIL(_ZFP_SDLEvent, name) \
     static zfbool _ZFP_SDLEventH_##name(ZF_IN SDL_Event *sdlEvent) \
@@ -59,7 +63,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_eventHandlerRemove(ZF_IN ZFImpl_sys_SDL
     } \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(SDLEventReg_##name, ZFLevelZFFrameworkStatic) \
     { \
-        ZFImpl_sys_SDL_eventHandlerAdd(_ZFP_SDLEventH_##name, ZFLevelZFFrameworkNormal); \
+        ZFImpl_sys_SDL_eventHandlerAdd(_ZFP_SDLEventH_##name, level); \
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(SDLEventReg_##name) \
     { \
@@ -80,7 +84,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_eventHandlerRemove(ZF_IN ZFImpl_sys_SDL
  * if you want to attach your custom impl:
  * -# set ZFImpl_sys_SDL_embed to true before
  *   #ZFApp::EventAppParamDispatch ZFLevelZFFrameworkNormal
- * -# attach custom SDL_Window by #ZFImpl_sys_SDL_embedInit
+ * -# attach custom SDL_Renderer by #ZFImpl_sys_SDL_embedInit
  * -# in your sdl event loop, resolve event by #ZFImpl_sys_SDL_embedEventHandler
  * -# #ZFImpl_sys_SDL_embedCleanup before app exit
  */
