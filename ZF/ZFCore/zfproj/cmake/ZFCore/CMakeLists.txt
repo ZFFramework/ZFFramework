@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.4.1)
 project(ZFCore)
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
+add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 if(COMMAND zfprojConfigGlobal_ZFCore)

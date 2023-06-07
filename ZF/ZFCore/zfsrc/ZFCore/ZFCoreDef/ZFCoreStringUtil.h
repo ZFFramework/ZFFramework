@@ -194,7 +194,7 @@ zfbool zfsFromFloatT(ZF_OUT zfstring &s,
                      ZF_IN T_Float n)
 {
     zfchar buf[64] = {0};
-    sprintf(buf, "%lf", (double)n);
+    snprintf(buf, sizeof(buf), "%lf", (double)n);
     const zfchar *p = buf;
     while(*p && *p != '.') {++p;}
     if(*p == '\0')
@@ -354,11 +354,11 @@ inline zfbool zfsFromPointerT(ZF_OUT zfstring &s,
     zfchar buf[32] = {0};
     if(p == zfnull)
     {
-        sprintf(buf, "<null>");
+        snprintf(buf, sizeof(buf), "<null>");
     }
     else
     {
-        sprintf(buf, "%p", p);
+        snprintf(buf, sizeof(buf), "%p", p);
     }
     const zfchar *t = buf;
     while(*t)

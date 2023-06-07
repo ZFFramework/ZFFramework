@@ -11,6 +11,9 @@ public:
     virtual void outputCoreLog(ZF_IN const zfchar *s)
     {
         printf("%s", s);
+        #if ZF_ENV_DEBUG
+            fflush(stdout);
+        #endif
     }
     virtual void outputLog(ZF_IN const zfchar *s, ZF_IN_OPT zfindex count = zfindexMax())
     {
@@ -22,6 +25,9 @@ public:
         {
             printf("%s", zfstring(s, count).cString());
         }
+        #if ZF_ENV_DEBUG
+            fflush(stdout);
+        #endif
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFImplOutputImpl_default)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFImplOutputImpl_default)
