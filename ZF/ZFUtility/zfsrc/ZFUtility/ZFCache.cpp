@@ -125,7 +125,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd,
 {
     if(cacheKey == zfnull || cacheValue == zfnull)
     {
-        return ;
+        return;
     }
 
     zfCoreMutexLock();

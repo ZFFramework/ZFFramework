@@ -141,7 +141,7 @@ public class ZFAnimationNativeView {
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
             if(this._animationListener == null) {
-                return ;
+                return;
             }
 
             Matrix matrix = t.getMatrix();
@@ -321,7 +321,7 @@ public class ZFAnimationNativeView {
         List<NativeAnimation> attached = _anis.get(nativeViewTmp);
         if(attached == null) {
             nativeViewTmp.setAnimation(null);
-            return ;
+            return;
         }
         attached.remove(nativeAnimationTmp);
         if(attached.isEmpty()) {

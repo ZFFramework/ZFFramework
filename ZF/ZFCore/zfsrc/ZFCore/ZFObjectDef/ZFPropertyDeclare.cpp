@@ -55,7 +55,7 @@ void _ZFP_ZFPropertyLifeCycleRegister(ZF_IN const zfchar *lifeCycleName,
         if(d[i].propertyOwnerClass == propertyOwnerClass)
         {
             d[i].propertyLifeCycleWrapper = propertyLifeCycleWrapper;
-            return ;
+            return;
         }
         else if(d[i].propertyOwnerClass->classIsTypeOf(propertyOwnerClass))
         {

@@ -138,7 +138,7 @@ public:
         {
             if(obj == zfnull)
             {
-                return ;
+                return;
             }
             _ZFP_PropAliasDetach(obj,
                 zfsConnectLineFree(
@@ -186,7 +186,7 @@ public:
         {
             if(obj == zfnull)
             {
-                return ;
+                return;
             }
             _ZFP_PropAliasAttach(obj,
                 zfsConnectLineFree(

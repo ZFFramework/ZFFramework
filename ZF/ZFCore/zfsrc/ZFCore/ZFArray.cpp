@@ -134,7 +134,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, addFrom,
 {
     if(another == this || another == zfnull)
     {
-        return ;
+        return;
     }
     ZFObject *obj = zfnull;
     for(zfiterator it = another->iter(); another->iterValid(it); another->iterNext(it))
@@ -404,7 +404,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move,
     if(fromIndex >= (zfindex)d->data.size())
     {
         zfCoreCriticalIndexOutOfRange(fromIndex, (zfindex)d->data.size());
-        return ;
+        return;
     }
     if(toIndexOrIndexMax == zfindexMax())
     {
@@ -413,11 +413,11 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move,
     if(toIndexOrIndexMax >= (zfindex)d->data.size())
     {
         zfCoreCriticalIndexOutOfRange(toIndexOrIndexMax, (zfindex)d->data.size());
-        return ;
+        return;
     }
     if(fromIndex == toIndexOrIndexMax)
     {
-        return ;
+        return;
     }
     ZFObject *t = d->data[fromIndex];
     if(fromIndex < toIndexOrIndexMax)

@@ -8,7 +8,7 @@ void _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN_OUT zfstring &ret,
 {
     if(filePath == zfnull)
     {
-        return ;
+        return;
     }
     const zfchar *p = filePath + zfslen(filePath);
     while(p > filePath)

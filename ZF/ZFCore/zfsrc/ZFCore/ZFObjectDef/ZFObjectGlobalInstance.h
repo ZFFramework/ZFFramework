@@ -97,12 +97,12 @@ public:
     { \
         if(ZFFrameworkStateCheck(ZFLevel_) == ZFFrameworkStateNotAvailable) \
         { \
-            return ; \
+            return; \
         } \
         _ZFP_ZFClassSingletonPointerHolder *holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
         if(holder->d == newInstance) \
         { \
-            return ; \
+            return; \
         } \
         zfCoreMutexLocker(); \
         ZFCorePointerBase *&cleanerRef = OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName(); \
@@ -233,7 +233,7 @@ public:
     { \
         if(ZFFrameworkStateCheck(ZFLevel_) == ZFFrameworkStateNotAvailable) \
         { \
-            return ; \
+            return; \
         } \
         zfself::_ZFP_ZFObjectSingleton_##accessMethodName(param0); \
     }

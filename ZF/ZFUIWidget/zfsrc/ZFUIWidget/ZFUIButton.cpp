@@ -64,7 +64,7 @@ public:
     {
         if(this->enableFlag == enable)
         {
-            return ;
+            return;
         }
         this->enableFlag = enable;
 
@@ -199,7 +199,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
         mouseEvent->eventResolved(zftrue);
         _ZFP_ZFUIButton_DEBUG_LOG(" end  %s", ZFObjectInfo(mouseEvent).cString())
@@ -314,7 +314,7 @@ private:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
         _ZFP_ZFUIButton_DEBUG_LOG("process  end  %s", ZFObjectInfo(mouseEvent).cString())
     }
@@ -466,7 +466,7 @@ void ZFUIButton::viewEventOnKeyEvent(ZF_IN ZFUIKeyEvent *keyEvent)
 {
     zfsuper::viewEventOnKeyEvent(keyEvent);
     if(keyEvent->eventResolved()) {
-        return ;
+        return;
     }
 
     switch(keyEvent->keyCode)

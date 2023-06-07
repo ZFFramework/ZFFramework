@@ -6,7 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 void zfCoreArgSplit(ZF_IN_OUT ZFCoreArray<zfstring> &result,
                     ZF_IN const zfchar *cmdLine)
 {
-    if(cmdLine == zfnull) {return ;}
+    if(cmdLine == zfnull) {return;}
 
     const zfchar *p = cmdLine;
     zfbool startFlag = zffalse;

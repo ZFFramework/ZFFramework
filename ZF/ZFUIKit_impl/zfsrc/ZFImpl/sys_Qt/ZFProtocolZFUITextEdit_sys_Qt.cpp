@@ -79,7 +79,7 @@ public:
     {
         if(this->textEditSecured == textEditSecured)
         {
-            return ;
+            return;
         }
         this->textEditSecured = textEditSecured;
         if(this->textEditSecured)
@@ -100,7 +100,7 @@ public:
     {
         if(this->textEditTextSaved.compare(text) == 0)
         {
-            return ;
+            return;
         }
         int cursor = this->cursorPosition();
         if(ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(this->ownerZFUITextEdit, text))
@@ -184,7 +184,7 @@ public slots:
     {
         if(this->textEditEventOverrideFlag > 0)
         {
-            return ;
+            return;
         }
         ++(this->textEditEventOverrideFlag);
         this->_ZFP_text(ZFImpl_sys_Qt_zfstringFromQString(text), zftrue);
@@ -305,7 +305,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
         nativeImplView->setFont(font);
     }

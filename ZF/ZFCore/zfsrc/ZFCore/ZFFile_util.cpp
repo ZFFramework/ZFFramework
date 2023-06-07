@@ -116,7 +116,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative,
 {
     if(ret.isEmpty())
     {
-        return ;
+        return;
     }
 
     zfindex p = 0;
@@ -124,7 +124,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative,
     {
         if(p + 2 >= ret.length())
         {
-            return ;
+            return;
         }
         if(!(ret[p] == ZFFileSeparator() && ret[p + 1] == '.' && ret[p + 2] == '.'))
         {
@@ -141,12 +141,12 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative,
         {
             if(p == 3 && ret[0] == '.' && ret[1] == '.')
             {
-                return ;
+                return;
             }
             if(p + 3 >= ret.length())
             {
                 ret.removeAll();
-                return ;
+                return;
             }
             else
             {
@@ -158,7 +158,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative,
         if(p + 3 >= ret.length())
         {
             ret.remove(pL);
-            return ;
+            return;
         }
         else
         {

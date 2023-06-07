@@ -77,7 +77,7 @@ protected:
     {
         if(!this->aniRunning)
         {
-            return ;
+            return;
         }
 
         if(currentTime >= this->duration())
@@ -117,9 +117,9 @@ public:
 
         transform.translate(width / 2, height / 2);
 
-        if(this->aniTarget->viewRotate() != 0)
+        if(this->aniTarget->viewRotateZ() != 0)
         {
-            transform.rotate(this->aniTarget->viewRotate());
+            transform.rotate(this->aniTarget->viewRotateZ());
         }
         if(ani->aniRotateZFrom() != 0 || ani->aniRotateZTo() != 0)
         {
@@ -197,7 +197,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
         this->aniTarget = this->ownerZFAnimation->aniTarget()->to<ZFUIView *>();
         this->nativeAniTarget = (QGraphicsWidget *)this->aniTarget->nativeView();
@@ -243,9 +243,9 @@ private:
         {
             QTransform t;
             t.translate(this->nativeAniTarget->geometry().width() / 2, this->nativeAniTarget->geometry().height() / 2);
-            if(this->aniTarget->viewRotate() != 0)
+            if(this->aniTarget->viewRotateZ() != 0)
             {
-                t.rotate(this->aniTarget->viewRotate());
+                t.rotate(this->aniTarget->viewRotateZ());
             }
             if(this->aniTarget->viewScaleX() != 1 || this->aniTarget->viewScaleY() != 1)
             {

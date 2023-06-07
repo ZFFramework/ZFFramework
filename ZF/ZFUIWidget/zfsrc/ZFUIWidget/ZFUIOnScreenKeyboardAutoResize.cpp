@@ -78,7 +78,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStart,
 {
     if(window == zfnull)
     {
-        return ;
+        return;
     }
 
     zfCoreMutexLocker();
@@ -88,7 +88,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStart,
     if(taskData != zfnull)
     {
         taskData->startCount += 1;
-        return ;
+        return;
     }
     zfblockedAlloc(_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData, taskDataTmp);
     taskData = taskDataTmp;
@@ -102,7 +102,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStop,
 {
     if(window == zfnull)
     {
-        return ;
+        return;
     }
 
     zfCoreMutexLocker();
@@ -111,12 +111,12 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStop,
         _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));
     if(taskData == zfnull)
     {
-        return ;
+        return;
     }
     if(taskData->startCount > 1)
     {
         taskData->startCount -= 1;
-        return ;
+        return;
     }
     window->objectTagRemove(_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull());
 }
@@ -288,7 +288,7 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(ZF_IN c
     const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
     if(property != ZFPropertyAccess(ZFUILayoutParam, layoutMargin))
     {
-        return ;
+        return;
     }
 
     ZFUILayoutParam *layoutParam = zfargs.senderT();

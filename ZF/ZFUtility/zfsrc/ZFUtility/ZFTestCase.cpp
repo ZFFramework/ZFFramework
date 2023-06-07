@@ -33,7 +33,7 @@ ZFMETHOD_DEFINE_0(ZFTestCase, void, testCaseStart)
 {
     if(this->_testCaseIsRunning)
     {
-        return ;
+        return;
     }
     this->_testCaseIsRunning = zftrue;
     zfRetain(this);
@@ -45,7 +45,7 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseProgress,
 {
     if(!this->_testCaseIsRunning)
     {
-        return ;
+        return;
     }
     this->testCaseOnProgress(progress);
 
@@ -57,7 +57,7 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseStop,
 {
     if(!this->_testCaseIsRunning)
     {
-        return ;
+        return;
     }
     this->_testCaseIsRunning = zffalse;
     this->testCaseOnStop(testCaseResult);

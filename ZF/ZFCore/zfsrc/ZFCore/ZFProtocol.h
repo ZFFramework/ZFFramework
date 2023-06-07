@@ -272,7 +272,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                             #ModuleName, \
                             _d.implName.cString(), \
                             implName); \
-                        return ; \
+                        return; \
                     } \
                     else if(_d.implLevel > implLevel) \
                     { \
@@ -280,7 +280,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                         zfCoreLogTrim("ignore implementation \"%s\" while having \"%s\" for protocol \"%s\"", \
                             implName, _d.implName.cString(), #ModuleName); \
                          */ \
-                        return ; \
+                        return; \
                     } \
                     else \
                     { \

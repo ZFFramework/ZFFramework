@@ -35,7 +35,7 @@ public:
     {
         if(this->implRegisterFlag)
         {
-            return ;
+            return;
         }
         this->implRegisterFlag = zftrue;
 
@@ -49,7 +49,7 @@ public:
     {
         if(!this->implRegisterFlag)
         {
-            return ;
+            return;
         }
         this->implRegisterFlag = zffalse;
 
@@ -118,7 +118,7 @@ void ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(ZF_IN ZFUIKeyEvent *event)
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 

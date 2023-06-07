@@ -468,6 +468,60 @@ protected:
     }
 };
 
+// ============================================================
+/**
+ * @brief transform support info
+ */
+ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUITransform)
+    ZFENUM_VALUE_WITH_INIT(Unavailable, 0) /**< @brief no transform support */
+
+    ZFENUM_VALUE_WITH_INIT(TranslateX, 1) /**< @brief support translate */
+    ZFENUM_VALUE_WITH_INIT(TranslateY, 2) /**< @brief support translate */
+    ZFENUM_VALUE_WITH_INIT(TranslateZ, 4) /**< @brief support translate */
+    ZFENUM_VALUE_WITH_INIT(ScaleX, 8) /**< @brief support scale */
+    ZFENUM_VALUE_WITH_INIT(ScaleY, 16) /**< @brief support scale */
+    ZFENUM_VALUE_WITH_INIT(ScaleZ, 32) /**< @brief support scale */
+    ZFENUM_VALUE_WITH_INIT(RotateX, 64) /**< @brief support rotate */
+    ZFENUM_VALUE_WITH_INIT(RotateY, 128) /**< @brief support rotate */
+    ZFENUM_VALUE_WITH_INIT(RotateZ, 256) /**< @brief support rotate */
+
+    /**
+     * @brief support basic 2D transform
+     */
+    ZFENUM_VALUE_WITH_INIT(Transform2D, 0
+            | e_TranslateX
+            | e_TranslateY
+            | e_ScaleX
+            | e_ScaleY
+            | e_RotateZ
+        )
+    /**
+     * @brief support 3D transform
+     */
+    ZFENUM_VALUE_WITH_INIT(Transform3D, 0
+            | e_TranslateX
+            | e_TranslateY
+            | e_TranslateZ
+            | e_ScaleX
+            | e_ScaleY
+            | e_ScaleZ
+            | e_RotateX
+            | e_RotateY
+            | e_RotateZ
+        )
+ZFENUM_SEPARATOR()
+    ZFENUM_VALUE_REGISTER(Unavailable)
+    ZFENUM_VALUE_REGISTER(TranslateX)
+    ZFENUM_VALUE_REGISTER(TranslateY)
+    ZFENUM_VALUE_REGISTER(TranslateZ)
+    ZFENUM_VALUE_REGISTER(ScaleX)
+    ZFENUM_VALUE_REGISTER(ScaleY)
+    ZFENUM_VALUE_REGISTER(ScaleZ)
+    ZFENUM_VALUE_REGISTER(RotateX)
+    ZFENUM_VALUE_REGISTER(RotateY)
+    ZFENUM_VALUE_REGISTER(RotateZ)
+ZFENUM_END_FLAGS(ZFLIB_ZFUIKit, ZFUITransform, ZFUITransformFlags)
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIViewType_h_
 

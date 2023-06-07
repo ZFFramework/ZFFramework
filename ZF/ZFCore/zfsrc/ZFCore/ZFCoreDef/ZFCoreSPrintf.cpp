@@ -135,7 +135,7 @@ void zfstringAppendV(ZF_OUT zfstring &s,
                      ZF_IN const zfchar *fmt,
                      ZF_IN va_list vaList)
 {
-    if(fmt == zfnull) {return ;}
+    if(fmt == zfnull) {return;}
 
     const zfchar *p = fmt;
     while(*p != '\0')

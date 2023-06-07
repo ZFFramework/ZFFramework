@@ -86,7 +86,7 @@ public class ZFAndroidUI {
     private static void _viewTreePrintRecursion(ViewTreeOutput output, View view, int depth, int index) {
         if(view == null) {
             output.outputLine("| null");
-            return ;
+            return;
         }
         String sIndent = "";
         for(int i = 0; i < depth; ++i) {

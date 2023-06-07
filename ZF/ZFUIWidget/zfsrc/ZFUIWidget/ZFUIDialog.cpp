@@ -254,7 +254,7 @@ protected:
         if(!this->pimplOwner->dialogHideWhenClickBack()
             || keyEvent->keyAction != ZFUIKeyAction::e_KeyUp)
         {
-            return ;
+            return;
         }
 
         switch(keyEvent->keyCode)
@@ -358,7 +358,7 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogShow)
 {
     if(d->windowShowing())
     {
-        return ;
+        return;
     }
     zfRetain(this);
     d->aniStop();
@@ -392,12 +392,12 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogHide)
 {
     if(!d->windowShowing())
     {
-        return ;
+        return;
     }
     d->aniStop();
     if(!d->windowShowing())
     {
-        return ;
+        return;
     }
 
     if(this->dialogWindowAutoResize())
@@ -445,7 +445,7 @@ ZFMETHOD_DEFINE_1(ZFUIDialog, void, dialogApplyAutoHide,
 {
     if(button == zfnull)
     {
-        return ;
+        return;
     }
     ZFUIDialog *owner = this;
     ZFLISTENER_1(buttonOnClick

@@ -91,7 +91,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint,
 {
     if(view == zfnull || !outputCallback)
     {
-        return ;
+        return;
     }
 
     ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zflineAlloc(_ZFP_I_ZFUIViewTreePrintFormat));
@@ -175,7 +175,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint,
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
 
         ZFCoreArrayPOD<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
@@ -216,7 +216,7 @@ void ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass,
                 break;
             }
         }
-        return ;
+        return;
     }
 
     zfindex indexAddTo = zfindexMax();

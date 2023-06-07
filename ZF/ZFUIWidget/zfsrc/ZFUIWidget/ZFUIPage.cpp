@@ -803,7 +803,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, void, pageMoveEnd)
     --d->pageMoveFlag;
     if(d->pageMoveFlag != 0 || d->pageMoveLastResumePage == zfnull || d->pageMoveLastResumePage == d->pageList.getLast())
     {
-        return ;
+        return;
     }
     ZFUIPage *resumePage = d->pageList.getLast();
     ZFUIPage *pausePage = d->pageMoveLastResumePage;

@@ -194,7 +194,7 @@ void ZFUIKit_test_prepareSettingForResetProperty(ZF_IN_OUT ZFArray *settings,
 
         if(obj == zfnull || settings == zfnull || toReset.isEmpty())
         {
-            return ;
+            return;
         }
 
         zfautoObject fromObj = obj->classData()->newInstance();

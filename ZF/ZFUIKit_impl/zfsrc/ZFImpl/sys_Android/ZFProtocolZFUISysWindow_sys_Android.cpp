@@ -74,7 +74,7 @@ public:
     }
 
     virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT void *&nativeParentView)
+                                           ZF_OUT_OPT void *&nativeParentView)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeWindowRootViewOnAdd",

@@ -1,6 +1,7 @@
 #include "ZFMainEntry_sys_SDL.h"
 #include "ZFCore/protocol/ZFProtocolZFMainEntry.h"
 
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
 #if ZF_ENV_sys_SDL
@@ -129,34 +130,111 @@ SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void)
     return _ZFP_ZFImpl_sys_SDL_mainRenderer;
 }
 
-static zfstlvector<ZFImpl_sys_SDL_EventHandler> _ZFP_ZFImpl_sys_SDL_eventHandlerList;
-static zfstlvector<ZFLevel> _ZFP_ZFImpl_sys_SDL_eventHandlerLevelList;
-void ZFImpl_sys_SDL_eventHandlerAdd(ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler,
+// ============================================================
+zfclassPOD _ZFP_ZFImpl_sys_SDL_EventHandlerData
+{
+public:
+    ZFImpl_sys_SDL_EventHandler handler;
+    ZFLevel level;
+};
+typedef zfstlmap<Uint32, zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> > _ZFP_ZFImpl_sys_SDL_EventHandlerMapType;
+typedef zfstlmap<Sint32, zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> > _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType;
+static _ZFP_ZFImpl_sys_SDL_EventHandlerMapType _ZFP_ZFImpl_sys_SDL_EventHandlerMap;
+static _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap;
+
+void ZFImpl_sys_SDL_eventHandlerAdd(ZF_IN Uint32 type,
+                                    ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler,
                                     ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */)
 {
     zfCoreMutexLocker();
     zfCoreAssert(eventHandler != zfnull);
+    zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> *list = zfnull;
+    _ZFP_ZFImpl_sys_SDL_EventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_EventHandlerMap.find(type);
+    if(it == _ZFP_ZFImpl_sys_SDL_EventHandlerMap.end())
+    {
+        list = &(_ZFP_ZFImpl_sys_SDL_EventHandlerMap[type]);
+    }
+    else
+    {
+        list = &(it->second);
+    }
+
     zfstlsize pos = 0;
-    while(pos < _ZFP_ZFImpl_sys_SDL_eventHandlerList.size()
-        && level > _ZFP_ZFImpl_sys_SDL_eventHandlerLevelList[pos]
+    while(pos < list->size()
+        && level > (*list)[pos].level
     ) {
         ++pos;
     }
-    _ZFP_ZFImpl_sys_SDL_eventHandlerList.insert(_ZFP_ZFImpl_sys_SDL_eventHandlerList.begin() + pos, eventHandler);
-    _ZFP_ZFImpl_sys_SDL_eventHandlerLevelList.insert(_ZFP_ZFImpl_sys_SDL_eventHandlerLevelList.begin() + pos, level);
+    _ZFP_ZFImpl_sys_SDL_EventHandlerData data;
+    data.handler = eventHandler;
+    data.level = level;
+    list->insert(list->begin() + pos, data);
 }
-void ZFImpl_sys_SDL_eventHandlerRemove(ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler)
+void ZFImpl_sys_SDL_eventHandlerRemove(ZF_IN Uint32 type,
+                                       ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler)
 {
     zfCoreMutexLocker();
     if(eventHandler != zfnull)
     {
-        for(zfstlsize i = 0; i < _ZFP_ZFImpl_sys_SDL_eventHandlerList.size(); ++i)
+        _ZFP_ZFImpl_sys_SDL_EventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_EventHandlerMap.find(type);
+        if(it != _ZFP_ZFImpl_sys_SDL_EventHandlerMap.end())
         {
-            if(_ZFP_ZFImpl_sys_SDL_eventHandlerList[i] == eventHandler)
+            for(zfstlsize i = 0; i < it->second.size(); ++i)
             {
-                _ZFP_ZFImpl_sys_SDL_eventHandlerList.erase(_ZFP_ZFImpl_sys_SDL_eventHandlerList.begin() + i);
-                _ZFP_ZFImpl_sys_SDL_eventHandlerLevelList.erase(_ZFP_ZFImpl_sys_SDL_eventHandlerLevelList.begin() + i);
-                break;
+                if(it->second[i].handler == eventHandler)
+                {
+                    it->second.erase(it->second.begin() + i);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void ZFImpl_sys_SDL_userEventHandlerAdd(ZF_IN Sint32 userEventCode,
+                                        ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler,
+                                        ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */)
+{
+    zfCoreMutexLocker();
+    zfCoreAssert(eventHandler != zfnull);
+    zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData> *list = zfnull;
+    _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.find(userEventCode);
+    if(it == _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.end())
+    {
+        list = &(_ZFP_ZFImpl_sys_SDL_UserEventHandlerMap[userEventCode]);
+    }
+    else
+    {
+        list = &(it->second);
+    }
+
+    zfstlsize pos = 0;
+    while(pos < list->size()
+        && level > (*list)[pos].level
+    ) {
+        ++pos;
+    }
+    _ZFP_ZFImpl_sys_SDL_EventHandlerData data;
+    data.handler = eventHandler;
+    data.level = level;
+    list->insert(list->begin() + pos, data);
+}
+void ZFImpl_sys_SDL_userEventHandlerRemove(ZF_IN Sint32 userEventCode,
+                                           ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler)
+{
+    zfCoreMutexLocker();
+    if(eventHandler != zfnull)
+    {
+        _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.find(userEventCode);
+        if(it != _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.end())
+        {
+            for(zfstlsize i = 0; i < it->second.size(); ++i)
+            {
+                if(it->second[i].handler == eventHandler)
+                {
+                    it->second.erase(it->second.begin() + i);
+                    break;
+                }
             }
         }
     }
@@ -183,11 +261,33 @@ void ZFImpl_sys_SDL_embedCleanup(void)
 
 zfbool ZFImpl_sys_SDL_embedEventHandler(ZF_IN SDL_Event *event)
 {
-    for(zfstlsize i = 0; i < _ZFP_ZFImpl_sys_SDL_eventHandlerList.size(); ++i)
+    if(event->type == SDL_USEREVENT)
     {
-        if(_ZFP_ZFImpl_sys_SDL_eventHandlerList[i](event))
+        SDL_UserEvent *userEvent = (SDL_UserEvent *)event;
+        _ZFP_ZFImpl_sys_SDL_UserEventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.find(userEvent->code);
+        if(it != _ZFP_ZFImpl_sys_SDL_UserEventHandlerMap.end())
         {
-            return zftrue;
+            for(zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData>::iterator i = it->second.begin(); i != it->second.end(); ++i)
+            {
+                if((*i).handler(event))
+                {
+                    return zftrue;
+                }
+            }
+        }
+    }
+    else
+    {
+        _ZFP_ZFImpl_sys_SDL_EventHandlerMapType::iterator it = _ZFP_ZFImpl_sys_SDL_EventHandlerMap.find(event->type);
+        if(it != _ZFP_ZFImpl_sys_SDL_EventHandlerMap.end())
+        {
+            for(zfstlvector<_ZFP_ZFImpl_sys_SDL_EventHandlerData>::iterator i = it->second.begin(); i != it->second.end(); ++i)
+            {
+                if((*i).handler(event))
+                {
+                    return zftrue;
+                }
+            }
         }
     }
     return zffalse;

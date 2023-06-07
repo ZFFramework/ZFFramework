@@ -79,7 +79,7 @@
 {
     if(self.textOverrideFlag)
     {
-        return ;
+        return;
     }
 
     zfstring text = textField.text.UTF8String;
@@ -94,7 +94,7 @@
 
     if(self.lastText.compare(text) == 0)
     {
-        return ;
+        return;
     }
 
     if(!ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(self.ownerZFUITextEdit, text))
@@ -102,7 +102,7 @@
         self.textOverrideFlag = zftrue;
         textField.text = [NSString stringWithUTF8String:text.cString()];
         self.textOverrideFlag = zffalse;
-        return ;
+        return;
     }
     self.lastText = text;
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextChange(self.ownerZFUITextEdit, self.lastText);
@@ -163,7 +163,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
     }
     virtual void textEditKeyboardReturnType(ZF_IN ZFUITextEdit *textEdit,
@@ -192,7 +192,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
     }
 
@@ -203,7 +203,7 @@ public:
         if(rangeImpl == nil)
         {
             textSelectRange = ZFIndexRangeZero();
-            return ;
+            return;
         }
         NSInteger start = [nativeImplView offsetFromPosition:nativeImplView.beginningOfDocument toPosition:rangeImpl.start];
         NSInteger end = [nativeImplView offsetFromPosition:nativeImplView.beginningOfDocument toPosition:rangeImpl.end];
@@ -245,7 +245,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
     }
     virtual void textAlign(ZF_IN ZFUITextEdit *textEdit,

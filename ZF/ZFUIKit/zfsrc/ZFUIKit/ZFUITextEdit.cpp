@@ -177,7 +177,7 @@ ZFMETHOD_DEFINE_1(ZFUITextEdit, void, textStyleCopyFrom,
 {
     if(src == zfnull)
     {
-        return ;
+        return;
     }
 
     this->text(src->text());
@@ -193,7 +193,7 @@ ZFMETHOD_DEFINE_1(ZFUITextEdit, void, textStyleCopyTo,
 {
     if(dst == zfnull)
     {
-        return ;
+        return;
     }
 
     dst->text(this->text());
@@ -235,7 +235,7 @@ void ZFUITextEdit::objectOnInit(void)
         {
             zfCoreCriticalMessage("textPlaceHolder must not be null");
         }
-        return ;
+        return;
     }
     this->internalImplViewAdd(textPlaceHolderTmp);
     textPlaceHolderTmp->layoutParam()->sizeParam(ZFUISizeParamFillFill());
@@ -330,7 +330,7 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textSelectRangeNotifyChange(void)
 {
     if(d->textSelectRangeChangedByImplFlag)
     {
-        return ;
+        return;
     }
 
     ZFIndexRange tmp = ZFIndexRangeZero();
@@ -388,7 +388,7 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void)
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 ZFMETHOD_DEFINE_1(ZFUITextEdit, zfbool, textShouldChange,
@@ -436,7 +436,7 @@ void ZFUITextEdit::textOnChangeCheck(ZF_IN const zfchar *newText, ZF_IN_OUT zfbo
         if(!regexpResult.matched)
         {
             shouldChange = zffalse;
-            return ;
+            return;
         }
     }
 

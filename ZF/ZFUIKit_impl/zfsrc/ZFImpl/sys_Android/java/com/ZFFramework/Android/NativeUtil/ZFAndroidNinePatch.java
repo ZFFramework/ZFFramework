@@ -25,7 +25,7 @@ public class ZFAndroidNinePatch {
         int srcWidth = (int)(src.getWidth() / imageScale);
         int srcHeight = (int)(src.getHeight() / imageScale);
         if(srcWidth <= 0 || srcHeight <= 0 || dstWidth <= 0 || dstHeight <= 0) {
-            return ;
+            return;
         }
         if(srcLeft + srcRight >= dstWidth) {
             srcLeft = 0;
@@ -39,7 +39,7 @@ public class ZFAndroidNinePatch {
             _srcRectCache.set(0, 0, src.getWidth(), src.getHeight());
             _dstRectCache.set(0, 0, dstWidth, dstHeight);
             dst.drawBitmap(src, _srcRectCache, _dstRectCache, null);
-            return ;
+            return;
         }
 
         int leftDst = (int)(srcLeft * uiScale);

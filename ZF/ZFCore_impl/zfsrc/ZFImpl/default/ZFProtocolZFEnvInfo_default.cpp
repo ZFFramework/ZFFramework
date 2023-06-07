@@ -25,14 +25,14 @@ public:
         #if ZF_ENV_sys_Qt
         {
             ret += QSysInfo::productType().toStdString().c_str();
-            return ;
+            return;
         }
         #endif
 
         #if ZF_ENV_sys_Windows
         {
             ret += "Windows";
-            return ;
+            return;
         }
         #endif
 
@@ -42,7 +42,7 @@ public:
             zfmemset(&buf, 0, sizeof(struct utsname));
             uname(&buf);
             ret += buf.sysname;
-            return ;
+            return;
         }
         #endif
     }
@@ -51,7 +51,7 @@ public:
         #if ZF_ENV_sys_Qt
         {
             ret += QSysInfo::productVersion().toStdString().c_str();
-            return ;
+            return;
         }
         #endif
 
@@ -67,7 +67,7 @@ public:
             zfVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwMinorVersion);
             zfVersionSetInt(tmp, ZFVERSION_MAIN(), osvi.dwBuildNumber);
             ret += tmp;
-            return ;
+            return;
         }
         #endif
 
@@ -77,7 +77,7 @@ public:
             zfmemset(&buf, 0, sizeof(struct utsname));
             uname(&buf);
             ret += buf.version;
-            return ;
+            return;
         }
         #endif
     }
@@ -91,7 +91,7 @@ public:
         #if ZF_ENV_sys_Qt
         {
             ret += "Qt";
-            return ;
+            return;
         }
         #endif
     }
@@ -100,7 +100,7 @@ public:
         #if ZF_ENV_sys_Qt
         {
             ret += QT_VERSION_STR;
-            return ;
+            return;
         }
         #endif
     }

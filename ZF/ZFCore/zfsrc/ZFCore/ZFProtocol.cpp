@@ -255,7 +255,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFProtocolImplInfoPrint,
 {
     if(!callback)
     {
-        return ;
+        return;
     }
 
     ZFCoreArray<ZFProtocolImplInfo> notImplemented = ZFProtocolImplInfoGetAllNotImplemented();

@@ -144,7 +144,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, zfindex, buttonTabChecked)
     {
         if(!this->buttonTabAllowUnchecked() && this->buttonTabChecked() >= this->buttonCount())
         {
-            return ;
+            return;
         }
         if(propertyValueOld != zfindexMax())
         {
@@ -172,7 +172,7 @@ static void _ZFP_ZFUIButtonGroup_setup(ZF_IN ZFUIButtonGroup *buttonGroup,
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 static void _ZFP_ZFUIButtonGroup_cleanup(ZF_IN ZFUIButtonGroup *buttonGroup,
@@ -188,7 +188,7 @@ static void _ZFP_ZFUIButtonGroup_cleanup(ZF_IN ZFUIButtonGroup *buttonGroup,
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 
@@ -196,7 +196,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIButtonGroup, ZFUIButtonGroupTypeEnum, buttonGrou
 {
     if(this->buttonGroupType() == propertyValueOld)
     {
-        return ;
+        return;
     }
     for(zfindex i = 0; i < this->buttonCount(); ++i)
     {
@@ -233,7 +233,7 @@ ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, buttonAdd,
     else if(atIndex >= this->buttonCount())
     {
         zfCoreCriticalIndexOutOfRange(atIndex, this->buttonCount());
-        return ;
+        return;
     }
     this->_ZFP_buttons->add(atIndex, button);
     _ZFP_ZFUIButtonGroup_setup(this, button, atIndex);
@@ -249,12 +249,12 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, void, buttonRemoveAt,
 {
     if(buttonIndex == zfindexMax())
     {
-        return ;
+        return;
     }
     if(buttonIndex >= this->buttonCount())
     {
         zfCoreCriticalIndexOutOfRange(buttonIndex, this->buttonCount());
-        return ;
+        return;
     }
     ZFUIButton *button = this->buttonAt(buttonIndex);
     zfRetain(button);

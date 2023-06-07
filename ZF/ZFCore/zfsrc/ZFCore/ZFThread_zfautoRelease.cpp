@@ -17,7 +17,7 @@ void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj)
             if(threadCur == zfnull)
             {
                 zfCoreCriticalMessageTrim("[zfautoRelease] current thread is null, make sure the thread is started or registered by ZFThread");
-                return ;
+                return;
             }
             threadCur->autoReleasePoolAdd(obj);
         }

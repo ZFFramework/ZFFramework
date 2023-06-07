@@ -59,7 +59,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, zfMd5Calc,
 {
     if(!callback)
     {
-        return ;
+        return;
     }
     _ZFP_ZFMd5_CTX md5Ctx;
     _ZFP_ZFMd5_Init(&md5Ctx);

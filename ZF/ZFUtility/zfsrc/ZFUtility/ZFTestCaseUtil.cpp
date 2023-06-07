@@ -50,7 +50,7 @@ public:
     {
         if(this->running)
         {
-            return ;
+            return;
         }
         this->running = zftrue;
 
@@ -64,7 +64,7 @@ public:
     {
         if(!this->running)
         {
-            return ;
+            return;
         }
         ZFTestCase *toStop = this->testCaseRunning;
         this->testCases.removeAll();
@@ -84,7 +84,7 @@ public:
     {
         if(!this->running)
         {
-            return ;
+            return;
         }
 
         if(this->testCaseRunning != zfnull)
@@ -95,7 +95,7 @@ public:
         if(this->testCases.isEmpty())
         {
             this->testCaseStop();
-            return ;
+            return;
         }
 
         const ZFClass *cls = this->testCases.getLast();
@@ -104,7 +104,7 @@ public:
         if(this->testCaseRunning == zfnull)
         {
             this->testCaseRunNext();
-            return ;
+            return;
         }
         this->testCaseRunning->observerAdd(ZFTestCase::EventTestCaseOnStop(), this->testCaseFinishListener);
     }

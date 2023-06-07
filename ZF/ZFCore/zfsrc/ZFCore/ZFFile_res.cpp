@@ -36,7 +36,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathAdd,
 {
     if(pathInfo.pathType.isEmpty())
     {
-        return ;
+        return;
     }
     _ZFP_ZFResExtPathList.add(pathInfo);
 }
@@ -45,7 +45,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFResExtPathRemove,
 {
     if(pathInfo.pathType.isEmpty())
     {
-        return ;
+        return;
     }
     _ZFP_ZFResExtPathList.removeElement(pathInfo);
 }

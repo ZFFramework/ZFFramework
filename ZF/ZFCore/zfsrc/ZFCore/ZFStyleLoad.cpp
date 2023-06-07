@@ -181,7 +181,7 @@ ZFMETHOD_DEFINE_2(ZFStyleList, void, itemForKey,
             {
                 zfRetainChange(d->valueList[i], value);
             }
-            return ;
+            return;
         }
     }
 

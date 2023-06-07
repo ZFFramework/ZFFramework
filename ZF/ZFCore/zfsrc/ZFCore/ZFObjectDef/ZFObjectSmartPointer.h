@@ -204,7 +204,7 @@ private:
  *   { // code block
  *       ZFObject *obj = ...;
  *       zfblockedRelease(obj); // mark release, must be single line
- *       return ; // safe to return, auto released after exiting code block
+ *       return; // safe to return, auto released after exiting code block
  *   } // obj would be released after here
  * @endcode
  */

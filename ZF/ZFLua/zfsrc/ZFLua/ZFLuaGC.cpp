@@ -74,7 +74,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaGC,
     if(!ZFThread::implMainThreadTaskAvailable())
     {
         ZFLuaGCImmediately(L);
-        return ;
+        return;
     }
 
     zfCoreMutexLocker();

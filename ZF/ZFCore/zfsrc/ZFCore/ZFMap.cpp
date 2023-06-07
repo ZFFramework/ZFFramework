@@ -129,7 +129,7 @@ ZFMETHOD_DEFINE_1(ZFMap, void, addFrom,
 {
     if(another == this || another == zfnull)
     {
-        return ;
+        return;
     }
 
     ZFObject *key = zfnull;
@@ -169,12 +169,12 @@ ZFMETHOD_DEFINE_2(ZFMap, void, set,
 {
     if(pKey == zfnull)
     {
-        return ;
+        return;
     }
     if(pValue == zfnull)
     {
         this->remove(pKey);
-        return ;
+        return;
     }
 
     _ZFP_ZFMapPrivate::MapType::iterator it = d->data.find(pKey);

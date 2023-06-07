@@ -80,7 +80,7 @@
 
     if(self._ZFP_ownerZFUIView == zfnull)
     {
-        return ;
+        return;
     }
 
     for(UITouch *touch in touches)
@@ -103,7 +103,7 @@
 
     if(self._ZFP_ownerZFUIView == zfnull)
     {
-        return ;
+        return;
     }
 
     for(UITouch *touch in touches)
@@ -132,7 +132,7 @@
 
     if(self._ZFP_ownerZFUIView == zfnull)
     {
-        return ;
+        return;
     }
 
     for(UITouch *touch in touches)
@@ -155,7 +155,7 @@
 
     if(self._ZFP_ownerZFUIView == zfnull)
     {
-        return ;
+        return;
     }
 
     for(UITouch *touch in touches)

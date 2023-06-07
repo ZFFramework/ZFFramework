@@ -21,7 +21,7 @@ public:
     }
 
     virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT void *&nativeParentView)
+                                           ZF_OUT_OPT void *&nativeParentView)
     {
         ZFPROTOCOL_ACCESS(ZFUISysWindowEmbedNativeView)->nativeViewAdd(
             sysWindow, this->nativeParent, sysWindow->rootView()->nativeView());

@@ -132,7 +132,7 @@ void ZFSerializableData::copyFrom(ZF_IN const ZFSerializableData &ref)
 {
     if(d == ref.d)
     {
-        return ;
+        return;
     }
 
     d->classNameFull = ref.d->classNameFull;
@@ -283,7 +283,7 @@ void ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key,
 {
     if(key == zfnull)
     {
-        return ;
+        return;
     }
 
     _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
@@ -456,7 +456,7 @@ void ZFSerializableData::attrIterValue(ZF_IN_OUT zfiterator &it,
     if(value == zfnull)
     {
         this->attrIterRemove(it);
-        return ;
+        return;
     }
     d->attributes.iterValue(it, value);
 }
@@ -525,7 +525,7 @@ void ZFSerializableData::childAdd(ZF_IN const ZFSerializableData &element,
     if(atIndex > (zfindex)d->elements.size())
     {
         zfCoreCriticalIndexOutOfRange(atIndex, (zfindex)(d->elements.size() + 1));
-        return ;
+        return;
     }
 
     d->elements.insert(d->elements.begin() + atIndex, element);

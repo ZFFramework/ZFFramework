@@ -150,7 +150,7 @@ void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
                     , ZF_IN_OPT ZFObject *param7 /* = ZFMethodGenericInvokerDefaultParam() */
                     )
 {
-    if(param0 == zfnull || param0 == ZFMethodGenericInvokerDefaultParam()) {return ;}
+    if(param0 == zfnull || param0 == ZFMethodGenericInvokerDefaultParam()) {return;}
     ret += '[';
     do
     {

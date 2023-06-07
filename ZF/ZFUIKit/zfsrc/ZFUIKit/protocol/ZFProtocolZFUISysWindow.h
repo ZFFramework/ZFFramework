@@ -54,7 +54,7 @@ public:
      * it would be used to copy some settings to the window's root view
      */
     virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT void *&nativeParentView) zfpurevirtual;
+                                           ZF_OUT_OPT void *&nativeParentView) zfpurevirtual;
     /**
      * @brief called to remove root view to native window container
      */

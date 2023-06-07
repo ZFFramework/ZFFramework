@@ -380,7 +380,7 @@ ZFMETHOD_FUNC_DEFINE_5(void, ZFUIAlignApply,
     ret = ZFUIRectZero();
     if(!ZFUIAlignIsValid(align))
     {
-        return ;
+        return;
     }
     ret.width = itemSize.width;
     ret.height = itemSize.height;

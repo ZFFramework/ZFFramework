@@ -57,16 +57,16 @@ public:
         zfidentity curId = zfargs.param0()->to<v_zfidentity *>()->zfv;
 
         // delay
-        if(curId != this->threadCallbackTaskId) {return ;}
+        if(curId != this->threadCallbackTaskId) {return;}
         if(this->timer->timerDelay() > 0)
         {
             ZFThread::sleep(this->timer->timerDelay());
         }
 
         // start
-        if(curId != this->threadCallbackTaskId) {return ;}
+        if(curId != this->threadCallbackTaskId) {return;}
         this->timerThreadStarted = zftrue;
-        if(curId != this->threadCallbackTaskId) {return ;}
+        if(curId != this->threadCallbackTaskId) {return;}
 
         this->timerThreadStartNotified = zftrue;
         this->impl->notifyTimerStart(this->timer);

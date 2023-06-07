@@ -82,7 +82,7 @@ void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const c
 {
     if(!p)
     {
-        return ;
+        return;
     }
 
     #if _ZFP_ZFMEM_LOG_VERBOSE

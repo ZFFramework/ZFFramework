@@ -57,6 +57,16 @@ public:
     virtual void nativeViewDestroy(ZF_IN void *nativeView) zfpurevirtual;
 
     /**
+     * @brief whether nativeImplView require a virtualIndex
+     *
+     * when true, first child would start from index 1 if nativeImplView not null,
+     * while index 0 is the nativeImplView added to view tree
+     */
+    virtual zfbool nativeImplViewRequireVirtualIndex(void)
+    {
+        return zftrue;
+    }
+    /**
      * @brief attach a native view to this view, see #ZFUINativeViewWrapper
      *
      * set null to remove the attached native view,

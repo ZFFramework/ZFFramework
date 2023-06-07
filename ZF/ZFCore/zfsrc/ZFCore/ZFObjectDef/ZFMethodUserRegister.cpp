@@ -7,7 +7,7 @@ void ZFMethodUserUnregister(ZF_IN const ZFMethod *method)
 {
     if(method == zfnull)
     {
-        return ;
+        return;
     }
     zfCoreMutexLocker();
     zfCoreAssertWithMessageTrim(method->methodIsUserRegister(),

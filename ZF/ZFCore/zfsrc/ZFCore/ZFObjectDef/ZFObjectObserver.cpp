@@ -302,7 +302,7 @@ void ZFObserver::observerRemoveAll(ZF_IN zfidentity eventId)
     zfstlmap<zfidentity, _ZFP_ZFObserverData *>::iterator it = d->observerMap.find(eventId);
     if(it == d->observerMap.end())
     {
-        return ;
+        return;
     }
     zfstldeque<_ZFP_ZFObserverData *> toDelete;
     while(it->second != zfnull)
@@ -327,7 +327,7 @@ void ZFObserver::observerRemoveAll(void)
 {
     if(d->observerMap.empty())
     {
-        return ;
+        return;
     }
 
     zfCoreMutexLocker();
@@ -392,7 +392,7 @@ void ZFObserver::observerNotifyWithSender(ZF_IN ZFObject *customSender,
 {
     if(eventId == zfidentityInvalid())
     {
-        return ;
+        return;
     }
 
     zfCoreMutexLock();

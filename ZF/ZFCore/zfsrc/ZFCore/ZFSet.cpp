@@ -55,7 +55,7 @@ ZFMETHOD_DEFINE_1(ZFSet, void, addFrom,
 {
     if(another == this || another == zfnull)
     {
-        return ;
+        return;
     }
 
     zfbool changed = zffalse;

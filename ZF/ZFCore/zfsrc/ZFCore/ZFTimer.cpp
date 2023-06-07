@@ -105,7 +105,7 @@ ZFMETHOD_DEFINE_0(ZFTimer, void, timerStart)
 {
     if(d->timerStarted)
     {
-        return ;
+        return;
     }
     d->timerStarted = zftrue;
 

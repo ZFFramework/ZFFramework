@@ -33,7 +33,7 @@ public:
             this->setSingleShot(true);
             this->setInterval(this->ownerZFTimer->timerDelay());
             this->start();
-            return ;
+            return;
         }
         this->delaying = zffalse;
         this->timerDoStart();
@@ -62,7 +62,7 @@ public slots:
         if(this->delaying)
         {
             this->timerDoStart();
-            return ;
+            return;
         }
         if(this->firstTime)
         {

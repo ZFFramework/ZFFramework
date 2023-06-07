@@ -15,6 +15,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Qt, ZFUIViewTransform,
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
+    virtual ZFUITransformFlags viewTransformAvailable(void)
+    {
+        return ZFUITransform::e_Transform2D;
+    }
+
     virtual void viewTransform(ZF_IN ZFUIView *view)
     {
         QGraphicsWidget *nativeView = (QGraphicsWidget *)view->nativeView();
@@ -27,9 +32,9 @@ public:
                     view->viewTranslateY() * view->UIScaleFixed()
                 );
         }
-        if(view->viewRotate() != 0)
+        if(view->viewRotateZ() != 0)
         {
-            t.rotate(view->viewRotate());
+            t.rotate(view->viewRotateZ());
         }
         if(view->viewScaleX() != 1 || view->viewScaleY() != 1)
         {

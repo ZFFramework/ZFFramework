@@ -165,7 +165,7 @@ public:
             _from = _getterMethod->methodGenericInvoke(_aniTarget);
             if(_from == zfnull)
             {
-                return ;
+                return;
             }
             if(_from->classData()->classIsTypeOf(ZFCopyable::ClassData()))
             {
@@ -177,7 +177,7 @@ public:
             _to = _getterMethod->methodGenericInvoke(_aniTarget);
             if(_to == zfnull)
             {
-                return ;
+                return;
             }
             if(_to->classData()->classIsTypeOf(ZFCopyable::ClassData()))
             {

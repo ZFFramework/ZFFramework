@@ -146,7 +146,7 @@ protected:
         { \
             this->testCaseOutput("%s " fmt, ZFCallerInfoMake().callerInfo().cString(), ##__VA_ARGS__); \
             this->testCaseStop(ZFResultType::e_Fail); \
-            return ; \
+            return; \
         } \
     } while(zffalse)
 /** @brief see #ZFTestCaseAssert */
@@ -157,7 +157,7 @@ protected:
         { \
             this->testCaseOutput(fmt, ##__VA_ARGS__); \
             this->testCaseStop(ZFResultType::e_Fail); \
-            return ; \
+            return; \
         } \
     } while(zffalse)
 /** @brief see #ZFTestCaseAssert */
@@ -168,7 +168,7 @@ protected:
         { \
             this->testCaseOutput("%s " fmt, callerInfo.callerInfo().cString(), fmt, ##__VA_ARGS__); \
             this->testCaseStop(ZFResultType::e_Fail); \
-            return ; \
+            return; \
         } \
     } while(zffalse)
 

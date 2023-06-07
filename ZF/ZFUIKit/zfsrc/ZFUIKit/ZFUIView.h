@@ -363,37 +363,61 @@ public:
     // ============================================================
     // transform
     /**
-     * @brief translate for the view
+     * @brief whether transform is supported
      *
-     * when impl not available, setting this value would have no effect
+     * basic 2D transform:
+     * -  #viewTranslateX
+     * -  #viewTranslateY
+     * -  #viewScaleX
+     * -  #viewScaleY
+     * -  #viewRotateZ
+     *
+     * 3D transform:
+     * -  #viewTranslateX
+     * -  #viewTranslateY
+     * -  #viewTranslateZ
+     * -  #viewScaleX
+     * -  #viewScaleY
+     * -  #viewScaleZ
+     * -  #viewRotateX
+     * -  #viewRotateY
+     * -  #viewRotateZ
+     *
+     * when setting transform which is not supported,
+     * it's ensured nothing happen,
+     * but the property value is ensured to be updated
      */
+    ZFMETHOD_DECLARE_STATIC_0(ZFUITransformFlags, viewTransformAvailable)
+
+    /** @brief see #viewTransformAvailable */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewTranslateX, 0)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateX)
-    /** @brief see #viewTranslateX */
+    /** @brief see #viewTransformAvailable */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewTranslateY, 0)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateY)
+    /** @brief see #viewTransformAvailable */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewTranslateZ, 0)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateZ)
 
-    /**
-     * @brief scale for the view
-     *
-     * when impl not available, setting this value would have no effect
-     */
+    /** @brief see #viewTransformAvailable */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewScaleX, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleX)
-    /** @brief see #viewScaleX */
+    /** @brief see #viewTransformAvailable */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewScaleY, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleY)
+    /** @brief see #viewTransformAvailable */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewScaleZ, 1)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleZ)
 
-    /**
-     * @brief rotation for the view
-     *
-     * the rotation is in Z axis,
-     * range in [0, 360),
-     * any value out of range would be fixed to [0, 360)\n
-     * when impl not available, setting this value would have no effect
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewRotate, 0)
-    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotate)
+    /** @brief see #viewTransformAvailable */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewRotateX, 0)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateX)
+    /** @brief see #viewTransformAvailable */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewRotateY, 0)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateY)
+    /** @brief see #viewTransformAvailable */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewRotateZ, 0)
+    ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateZ)
 
     // ============================================================
     // init and dealloc

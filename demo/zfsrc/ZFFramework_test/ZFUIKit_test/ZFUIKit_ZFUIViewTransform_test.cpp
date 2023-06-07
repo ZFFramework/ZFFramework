@@ -109,26 +109,26 @@ protected:
         } ZFLISTENER_END()
         viewScaleYInc->onClick(viewScaleYOnInc);
 
-        // viewRotate
-        zfblockedAlloc(ZFUIKit_test_Button, viewRotateDec);
-        window->childAdd(viewRotateDec)->c_alignBottom()->c_margin(0, 0, margin, 0);
-        viewRotateDec->label()->text("viewRotate -");
-        ZFLISTENER_1(viewRotateOnDec
+        // viewRotateZ
+        zfblockedAlloc(ZFUIKit_test_Button, viewRotateZDec);
+        window->childAdd(viewRotateZDec)->c_alignBottom()->c_margin(0, 0, margin, 0);
+        viewRotateZDec->label()->text("viewRotateZ -");
+        ZFLISTENER_1(viewRotateZOnDec
                 , ZFUIImageView *, view
                 ) {
-            view->viewRotate(view->viewRotate() - 10);
+            view->viewRotateZ(view->viewRotateZ() - 10);
         } ZFLISTENER_END()
-        viewRotateDec->onClick(viewRotateOnDec);
+        viewRotateZDec->onClick(viewRotateZOnDec);
 
-        zfblockedAlloc(ZFUIKit_test_Button, viewRotateInc);
-        window->childAdd(viewRotateInc)->c_alignBottom()->c_margin(margin, 0, 0, 0);
-        viewRotateInc->label()->text("viewRotate +");
-        ZFLISTENER_1(viewRotateOnInc
+        zfblockedAlloc(ZFUIKit_test_Button, viewRotateZInc);
+        window->childAdd(viewRotateZInc)->c_alignBottom()->c_margin(margin, 0, 0, 0);
+        viewRotateZInc->label()->text("viewRotateZ +");
+        ZFLISTENER_1(viewRotateZOnInc
                 , ZFUIImageView *, view
                 ) {
-            view->viewRotate(view->viewRotate() + 10);
+            view->viewRotateZ(view->viewRotateZ() + 10);
         } ZFLISTENER_END()
-        viewRotateInc->onClick(viewRotateOnInc);
+        viewRotateZInc->onClick(viewRotateZOnInc);
     }
 };
 ZFOBJECT_REGISTER(ZFUIKit_ZFUIViewTransform_test)

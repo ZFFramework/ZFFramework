@@ -234,7 +234,7 @@ public:
     }
     zfindex viewLayerPrevCount(ZF_IN _ZFP_ZFUIViewLayerData &layer)
     {
-        zfindex nativeImplFix = (this->nativeImplView ? 1 : 0);
+        zfindex nativeImplFix = (this->nativeImplView && ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplViewRequireVirtualIndex() ? 1 : 0);
         if(&layer == &(this->layerNormal))
         {
             return this->layerInternalImpl.views.count() + nativeImplFix
@@ -391,7 +391,7 @@ public:
     {
         if(layer.views.isEmpty())
         {
-            return ;
+            return;
         }
 
         owner->layoutRequest();
@@ -429,16 +429,16 @@ public:
         if(fromIndex >= this->childCount(layer))
         {
             zfCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
-            return ;
+            return;
         }
         if(toIndexOrIndexMax >= this->childCount(layer))
         {
             zfCoreCriticalIndexOutOfRange(fromIndex, this->childCount(layer));
-            return ;
+            return;
         }
         if(fromIndex == toIndexOrIndexMax)
         {
-            return ;
+            return;
         }
 
         ZFUIView *child = layer.views.get(fromIndex);
@@ -1062,6 +1062,12 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, ZFUIColor, viewBackgroundColor)
     ZFPROTOCOL_ACCESS(ZFUIView)->viewBackgroundColor(this, this->viewBackgroundColor());
 }
 
+ZFMETHOD_DEFINE_0(ZFUIView, ZFUITransformFlags, viewTransformAvailable)
+{
+    ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewTransform) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewTransform);
+    return impl ? impl->viewTransformAvailable() : ZFUITransform::e_Unavailable;
+}
+
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewTranslateX)
 {
     if(propertyValue != propertyValueOld)
@@ -1070,6 +1076,13 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewTranslateX)
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewTranslateY)
+{
+    if(propertyValue != propertyValueOld)
+    {
+        d->viewTransformUpdate(this);
+    }
+}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIView, zffloat, viewTranslateZ)
 {
     if(propertyValue != propertyValueOld)
     {
@@ -1098,7 +1111,48 @@ ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleY)
         d->viewTransformUpdate(this);
     }
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotate)
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewScaleZ)
+{
+    if(propertyValue < 0)
+    {
+        propertyValue = 0;
+    }
+    if(propertyValue != propertyValueOld)
+    {
+        d->viewTransformUpdate(this);
+    }
+}
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateX)
+{
+    while(propertyValue < 0)
+    {
+        propertyValue += 360;
+    }
+    while(propertyValue >= 360)
+    {
+        propertyValue -= 360;
+    }
+    if(propertyValue != propertyValueOld)
+    {
+        d->viewTransformUpdate(this);
+    }
+}
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateY)
+{
+    while(propertyValue < 0)
+    {
+        propertyValue += 360;
+    }
+    while(propertyValue >= 360)
+    {
+        propertyValue -= 360;
+    }
+    if(propertyValue != propertyValueOld)
+    {
+        d->viewTransformUpdate(this);
+    }
+}
+ZFPROPERTY_ON_VERIFY_DEFINE(ZFUIView, zffloat, viewRotateZ)
 {
     while(propertyValue < 0)
     {
@@ -1421,10 +1475,10 @@ ZFMETHOD_DEFINE_0(ZFUIView, void *, nativeView)
 }
 void ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(ZF_IN ZFUIView *view, ZF_IN void *nativeParentView)
 {
-    zfCoreAssert(view != zfnull && nativeParentView != zfnull);
+    zfCoreAssert(view != zfnull);
 
     zfRetain(view);
-    zffloat UIScaleForImpl = ZFPROTOCOL_ACCESS(ZFUIView)->UIScaleForImpl(nativeParentView);
+    zffloat UIScaleForImpl = ZFPROTOCOL_ACCESS(ZFUIView)->UIScaleForImpl(nativeParentView != zfnull ? nativeParentView : view->nativeView());
     if(view->d->UIScaleForImpl != UIScaleForImpl)
     {
         view->d->UIScaleForImpl = UIScaleForImpl;
@@ -1503,7 +1557,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, void, viewRemoveFromParent)
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
     }
 }
@@ -2124,7 +2178,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd,
 {
     if(zfstringIsEmpty(tag))
     {
-        return ;
+        return;
     }
     d->internalViewAutoSerializeTags[tag] = zftrue;
 }
@@ -2133,7 +2187,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagRemove,
 {
     if(zfstringIsEmpty(tag))
     {
-        return ;
+        return;
     }
     d->internalViewAutoSerializeTags.erase(tag);
 }
@@ -2206,7 +2260,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend,
 {
     if(event == zfnull)
     {
-        return ;
+        return;
     }
 
     zfRetain(this);
@@ -2288,7 +2342,7 @@ void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable)
     ZFUIView *ref = ZFCastZFObject(ZFUIView *, anotherStyleable);
     if(ref == zfnull || this->childCount() != 0)
     {
-        return ;
+        return;
     }
     for(zfindex i = 0; i < ref->childCount(); ++i)
     {

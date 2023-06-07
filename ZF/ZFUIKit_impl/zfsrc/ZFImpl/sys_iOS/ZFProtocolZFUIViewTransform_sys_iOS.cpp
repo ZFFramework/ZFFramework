@@ -14,6 +14,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_iOS, ZFUIViewTransform
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
+    virtual ZFUITransformFlags viewTransformAvailable(void)
+    {
+        return ZFUITransform::e_Transform2D;
+    }
+
     virtual void viewTransform(ZF_IN ZFUIView *view)
     {
         // transform won't work when changed immediately after UIView created,
@@ -37,9 +42,9 @@ public:
                         , 0
                     );
             }
-            if(viewTmp->viewRotate() != 0)
+            if(viewTmp->viewRotateZ() != 0)
             {
-                t = CATransform3DRotate(t, ((int)viewTmp->viewRotate()) * M_PI / 180, 0, 0, 1);
+                t = CATransform3DRotate(t, ((int)viewTmp->viewRotateZ()) * M_PI / 180, 0, 0, 1);
             }
             if(viewTmp->viewScaleX() != 1 || viewTmp->viewScaleY() != 1)
             {

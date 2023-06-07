@@ -456,5 +456,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIViewMeasureResult, ZFUISize, sizeHin
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIViewMeasureResult, ZFUISizeParam, sizeParam)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIViewMeasureResult, ZFUISize, measuredSize)
 
+// ============================================================
+ZFENUM_DEFINE_FLAGS(ZFUITransform, ZFUITransformFlags)
+
 ZF_NAMESPACE_GLOBAL_END
 

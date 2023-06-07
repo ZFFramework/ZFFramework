@@ -171,7 +171,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns)
     ZFNamespaceSplit(pos, nsTmp.cString(), nsTmp.length());
     if(pos.count() < 1)
     {
-        return ;
+        return;
     }
     _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
     for(zfindex i = 0; i < pos.count() - 1; ++i)
@@ -230,7 +230,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
             zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
             if(it == t->d.end())
             {
-                return ;
+                return;
             }
             else
             {

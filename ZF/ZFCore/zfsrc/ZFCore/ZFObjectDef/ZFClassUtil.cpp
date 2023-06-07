@@ -115,7 +115,7 @@ void objectPropertyInfo(ZF_IN_OUT zfstring &ret,
 {
     if(obj == zfnull)
     {
-        return ;
+        return;
     }
 
     ZFCoreArrayPOD<const ZFProperty *> allProperty = ZFClassUtil::allProperty(obj->classData());
@@ -172,7 +172,7 @@ void objectInfoT(ZF_IN_OUT zfstring &ret,
     if(obj == zfnull)
     {
         ret += ZFTOKEN_zfnull;
-        return ;
+        return;
     }
 
     ret += ZFTOKEN_ZFObjectInfoLeft;

@@ -112,7 +112,7 @@ void _ZFP_ZFIdMapUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
 {
     if(ZFCoreLibDestroyFlag != zfnull && *ZFCoreLibDestroyFlag)
     {
-        return ;
+        return;
     }
     zfCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
@@ -126,7 +126,7 @@ void _ZFP_ZFIdMapUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
         {
             zfCoreCriticalShouldNotGoHere();
         }
-        return ;
+        return;
     }
     _ZFP_ZFIdMapData *data = it->second;
     if(!data->isDynamicRegister && isDynamicRegister)

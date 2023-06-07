@@ -121,7 +121,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, viewRectToParent,
     if(view == zfnull || parent == zfnull)
     {
         rect = ZFUIRectZero();
-        return ;
+        return;
     }
     rect = view->viewFrame();
     while(view->viewParent() != zfnull && view != parent)

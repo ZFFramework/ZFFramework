@@ -28,12 +28,12 @@ void _ZFP_ZFMethodFuncUnregister(ZF_IN const ZFMethod *method)
     _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end())
     {
-        return ;
+        return;
     }
     _ZFP_ZFMethodFuncNameMapType::iterator itName = itNS->second.find(method->methodName());
     if(itName == itNS->second.end())
     {
-        return ;
+        return;
     }
     zfstlvector<const ZFMethod *> &l = itName->second;
     for(zfstlsize i = 0; i < l.size(); ++i)
@@ -156,12 +156,12 @@ void ZFMethodFuncForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
     _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end())
     {
-        return ;
+        return;
     }
     _ZFP_ZFMethodFuncNameMapType::iterator itName = itNS->second.find(methodName);
     if(itName == itNS->second.end())
     {
-        return ;
+        return;
     }
 
     zfstlvector<const ZFMethod *> &l = itName->second;

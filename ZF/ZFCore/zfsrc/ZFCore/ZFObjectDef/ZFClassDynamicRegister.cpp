@@ -83,7 +83,7 @@ void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls)
 {
     if(cls == zfnull)
     {
-        return ;
+        return;
     }
     if(!cls->classIsDynamicRegister())
     {

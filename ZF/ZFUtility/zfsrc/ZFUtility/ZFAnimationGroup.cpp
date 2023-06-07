@@ -71,7 +71,7 @@ public:
         if(this->childAnis->isEmpty())
         {
             this->pimplOwner->aniImplNotifyStop();
-            return ;
+            return;
         }
         if(this->cachedParallel != this->pimplOwner->aniParallel() || !this->cachedOnStartListener)
         {
@@ -221,7 +221,7 @@ private:
         ZFAnimationGroupChildData *childData = this->checkChild(zfargs.sender());
         if(childData == zfnull)
         {
-            return ;
+            return;
         }
         this->pimplOwner->aniGroupOnChildStart(childData->childAni());
     }
@@ -231,7 +231,7 @@ private:
         ZFAnimationGroupChildData *childData = this->checkChild(zfargs.sender(), zfHint("autoRemove")zftrue);
         if(childData == zfnull)
         {
-            return ;
+            return;
         }
         this->childCleanup(childData);
         this->pimplOwner->aniGroupOnChildStop(childData->childAni());
@@ -247,7 +247,7 @@ private:
         ZFAnimationGroupChildData *childData = this->childBuf->getFirst<ZFAnimationGroupChildData *>();
         if(childData == zfnull || childData->childAni() != zfargs.sender())
         {
-            return ;
+            return;
         }
         this->pimplOwner->aniGroupOnChildStart(childData->childAni());
     }
@@ -257,7 +257,7 @@ private:
         ZFAnimationGroupChildData *childData = this->childBuf->getFirst<ZFAnimationGroupChildData *>();
         if(childData == zfnull || childData->childAni() != zfargs.sender())
         {
-            return ;
+            return;
         }
         this->childBuf->removeFirst();
         this->childCleanup(childData);

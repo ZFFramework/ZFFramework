@@ -31,7 +31,7 @@ protected:
         QGraphicsWidget::paint(painter, option, widget);
         if(_ZFP_owner == zfnull || _ZFP_owner->image() == zfnull || _ZFP_owner->image()->nativeImage() == zfnull)
         {
-            return ;
+            return;
         }
 
         QImage *image = (QImage *)_ZFP_owner->image()->nativeImage();
@@ -40,7 +40,7 @@ protected:
         if(_ZFP_imageNinePatchScaled == ZFUIMarginZero())
         {
             painter->drawImage(bounds, *image);
-            return ;
+            return;
         }
 
         ZFUIImageImplNinePatchDrawData drawDatas[9];

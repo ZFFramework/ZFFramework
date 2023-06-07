@@ -359,7 +359,7 @@ private:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
         zfstringAppend(ret, "%p", &(v.element));
         ret += ')';

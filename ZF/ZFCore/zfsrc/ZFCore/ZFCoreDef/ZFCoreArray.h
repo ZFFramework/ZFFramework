@@ -447,7 +447,7 @@ public:
         if(index > this->count())
         {
             zfCoreCriticalIndexOutOfRange(index, this->count() + 1);
-            return ;
+            return;
         }
         T_Element t = e;
         _capacityRequire(this->count() + 1);
@@ -465,7 +465,7 @@ public:
     {
         if(src == zfnull || count == 0)
         {
-            return ;
+            return;
         }
         if(src < d->buf || src >= d->buf + d->capacity)
         {
@@ -677,7 +677,7 @@ public:
         if(index >= this->count())
         {
             zfCoreCriticalIndexOutOfRange(index, this->count());
-            return ;
+            return;
         }
         _ZFP_ZFCoreArray_objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1, d->PODType);
         _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - 1, d->buf + d->count, d->PODType);
@@ -692,7 +692,7 @@ public:
         if(index >= this->count())
         {
             zfCoreCriticalIndexOutOfRange(index, this->count());
-            return ;
+            return;
         }
         if(count > this->count() - index)
         {
@@ -774,7 +774,7 @@ public:
         if(fromIndex >= this->count())
         {
             zfCoreCriticalIndexOutOfRange(fromIndex, this->count());
-            return ;
+            return;
         }
         if(toIndexOrIndexMax == zfindexMax())
         {
@@ -783,11 +783,11 @@ public:
         if(toIndexOrIndexMax >= this->count())
         {
             zfCoreCriticalIndexOutOfRange(toIndexOrIndexMax, this->count());
-            return ;
+            return;
         }
         if(fromIndex == toIndexOrIndexMax)
         {
-            return ;
+            return;
         }
         T_Element t = d->buf[fromIndex];
         if(fromIndex < toIndexOrIndexMax)

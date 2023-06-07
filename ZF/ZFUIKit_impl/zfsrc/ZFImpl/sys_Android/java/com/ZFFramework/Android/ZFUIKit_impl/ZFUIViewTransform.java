@@ -8,12 +8,12 @@ public class ZFUIViewTransform {
                                             float viewTranslateY,
                                             float viewScaleX,
                                             float viewScaleY,
-                                            float viewRotate) {
+                                            float viewRotateZ) {
         View nativeViewTmp = (View) nativeView;
         nativeViewTmp.setTranslationX(viewTranslateX);
         nativeViewTmp.setTranslationY(viewTranslateY);
         nativeViewTmp.setScaleX(viewScaleX);
         nativeViewTmp.setScaleY(viewScaleY);
-        nativeViewTmp.setRotation(viewRotate);
+        nativeViewTmp.setRotation(viewRotateZ);
     }
 }

@@ -28,7 +28,7 @@ _ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(ZF_IN ZFO
         _ZFP_zfsynchronizeLog(callerInfo,
             "try synchronize a null object");
         zfCoreCriticalError();
-        return ;
+        return;
     }
     _ZFP_zfsynchronizeLog(callerInfo,
         "lock object %s",
@@ -59,7 +59,7 @@ void _ZFP_zfsynchronizeLockWithLog(ZF_IN ZFObject *obj,
         _ZFP_zfsynchronizeLog(callerInfo,
             "try lock a null object");
         zfCoreCriticalError();
-        return ;
+        return;
     }
 
     _ZFP_zfsynchronizeLog(callerInfo,
@@ -80,7 +80,7 @@ void _ZFP_zfsynchronizeUnlockWithLog(ZF_IN ZFObject *obj,
         _ZFP_zfsynchronizeLog(callerInfo,
             "try unlock a null object");
         zfCoreCriticalError();
-        return ;
+        return;
     }
 
     _ZFP_zfsynchronizeLog(callerInfo,

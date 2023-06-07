@@ -236,7 +236,7 @@ public:
         {
             this->contentOffset = aniByPointStopPos;
             this->scrollToFitRange();
-            return ;
+            return;
         }
 
         zffloat progress = (zffloat)(curTime - this->aniByPointStartTime) / (this->aniByPointStopTime - this->aniByPointStartTime);
@@ -247,7 +247,7 @@ public:
         {
             this->contentOffset = aniByPointStopPos;
             this->scrollToFitRange();
-            return ;
+            return;
         }
     }
     zftimet aniByPointDurationForOffset(ZF_IN zffloat offset)
@@ -294,7 +294,7 @@ public:
             this->contentOffset = stopPos;
             this->aniByPointStopPos = stopPos;
             this->scrollToFitRange();
-            return ;
+            return;
         }
 
         this->aniByPointStartPos = this->contentOffset;
@@ -368,7 +368,7 @@ public:
         if(this->aniBySpeedShouldStop())
         {
             this->scrollToFitRange();
-            return ;
+            return;
         }
         this->aniState = _ZFP_ZFUIScrollerDefaultPrivateAniStateBySpeed;
         this->scrollAniNotifyStart();
@@ -430,7 +430,7 @@ public:
                 }
             }
             this->aniBySpeedLastTime = curTime;
-            return ;
+            return;
         }
 
         // no bounce
@@ -769,14 +769,14 @@ void ZFUIScrollerDefault::scrollOnDragEnd(ZF_IN zftimet mouseTime,
     if(!needScrollAni)
     {
         d->scrollToFitRange();
-        return ;
+        return;
     }
 
     if(d->scrollDragCurTime - d->scrollDragPrevTime <= 5
         || mouseTime - d->scrollDragPrevTime >= _ZFP_ZFUIScrollerDefault_scrollAniStartTolerance)
     { // no need animation
         d->scrollToFitRange();
-        return ;
+        return;
     }
 
     d->aniBySpeedCalcSpeed();

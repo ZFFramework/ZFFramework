@@ -161,7 +161,7 @@ public:
         this->_instanceObserverDoAdd(this->instanceObserverCached, data);
         if(!observeAllChildType)
         {
-            return ;
+            return;
         }
 
         for(zfstlmap<const ZFClass *, zfbool>::iterator childIt = this->allChildren.begin(); childIt != this->allChildren.end(); ++childIt)
@@ -559,7 +559,7 @@ void ZFClass::instanceObserverAdd(ZF_IN const ZFListener &observer,
 {
     if(this->classIsInternalPrivate())
     {
-        return ;
+        return;
     }
 
     _ZFP_ZFClassPrivate::InstanceObserverData *data = zfnew(_ZFP_ZFClassPrivate::InstanceObserverData);
@@ -1243,7 +1243,7 @@ void ZFClass::classTag(ZF_IN const zfchar *key,
 {
     if(key == zfnull)
     {
-        return ;
+        return;
     }
     if(tag != zfnull && ZFFrameworkStateCheck(ZFLevelZFFrameworkEssential) != ZFFrameworkStateAvailable)
     {
@@ -1479,7 +1479,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag, ZF_IN c
 {
     if(ZFCoreLibDestroyFlag && *ZFCoreLibDestroyFlag)
     {
-        return ;
+        return;
     }
     zfCoreMutexLocker();
 
@@ -1498,7 +1498,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag, ZF_IN c
     if(!_ZFP_ZFClassMap.iterValid(itClass))
     {
         zfCoreCriticalShouldNotGoHere();
-        return ;
+        return;
     }
 
     _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeDetach, cls, zfnull, zfnull);
@@ -1508,7 +1508,7 @@ void ZFClass::_ZFP_ZFClassUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag, ZF_IN c
     --(d->refCount);
     if(d->refCount != 0)
     {
-        return ;
+        return;
     }
 
     while(!cls->classAliasTo().isEmpty())
@@ -1727,7 +1727,7 @@ void ZFClass::_ZFP_ZFClass_propertyAutoInitRegister(ZF_IN const ZFProperty *prop
 {
     if(property->propertyOwnerClass() == this)
     {
-        return ;
+        return;
     }
 
     d->propertyAutoInitMap[property] = zftrue;
@@ -1753,7 +1753,7 @@ void ZFClass::_ZFP_ZFClass_propertyInitStepRegister(ZF_IN const ZFProperty *prop
 {
     if(property->propertyOwnerClass() == this)
     {
-        return ;
+        return;
     }
 
     d->propertyInitStepMap[property][this] = zftrue;

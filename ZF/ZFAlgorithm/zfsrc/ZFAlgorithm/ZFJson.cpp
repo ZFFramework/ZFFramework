@@ -328,7 +328,7 @@ public:
         if(this->jsonItemMap.empty())
         {
             this->jsonItemMap.push_back(jsonItemData);
-            return ;
+            return;
         }
         zfstlsize l = 0;
         zfstlsize r = this->jsonItemMap.size() - 1;
@@ -778,7 +778,7 @@ void ZFJson::attrIterValue(ZF_IN_OUT zfiterator &it, ZF_IN const ZFJson &jsonIte
     if(!jsonItem)
     {
         this->attrIterRemove(it);
-        return ;
+        return;
     }
     zfCoreAssert(this->jsonType() == ZFJsonType::e_JsonObject);
     zfstlsize *data = it.data<zfstlsize *>();

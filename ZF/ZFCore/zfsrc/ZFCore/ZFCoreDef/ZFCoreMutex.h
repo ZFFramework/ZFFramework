@@ -86,7 +86,7 @@ public:
  * @code
  *   {
  *       zfCoreMutexLocker(); // lock
- *       if(...) return ; // safe to return
+ *       if(...) return; // safe to return
  *   } // unlock after block
  * @endcode
  *

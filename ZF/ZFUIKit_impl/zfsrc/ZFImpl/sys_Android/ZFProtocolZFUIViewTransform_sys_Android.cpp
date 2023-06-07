@@ -34,6 +34,11 @@ public:
         zfsuper::protocolOnDealloc();
     }
 public:
+    virtual ZFUITransformFlags viewTransformAvailable(void)
+    {
+        return ZFUITransform::e_Transform2D;
+    }
+
     virtual void viewTransform(ZF_IN ZFUIView *view)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -52,7 +57,7 @@ public:
             , (jfloat)(view->viewTranslateY() * view->UIScaleFixed())
             , (jfloat)view->viewScaleX()
             , (jfloat)view->viewScaleY()
-            , (jfloat)view->viewRotate()
+            , (jfloat)view->viewRotateZ()
             );
     }
     virtual void viewTransformReset(ZF_IN ZFUIView *view)

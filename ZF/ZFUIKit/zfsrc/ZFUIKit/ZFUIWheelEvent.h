@@ -19,15 +19,15 @@ zffinal zfclass ZFLIB_ZFUIKit ZFUIWheelEvent : zfextends ZFUIEvent
 
 public:
     /**
-     * @brief wheel rotate count in x direction
+     * @brief wheel rotate degree (0~360) in x direction
      *
-     * positive value means wheel from right to left
+     * positive value means wheel from left to right
      */
     zffloat wheelX;
     /**
-     * @brief wheel rotate count in y direction
+     * @brief wheel rotate degree (0~360) in y direction
      *
-     * positive value means wheel from bottom to top
+     * positive value means wheel from top to bottom
      */
     zffloat wheelY;
 

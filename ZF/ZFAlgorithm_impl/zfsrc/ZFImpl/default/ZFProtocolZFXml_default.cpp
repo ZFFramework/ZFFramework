@@ -100,7 +100,7 @@ private:
             {
                 case pugi::node_document:
                     zfCoreCriticalShouldNotGoHere();
-                    return ;
+                    return;
                 case pugi::node_element:
                 {
                     ZFXml zfXmlChild(ZFXmlType::e_XmlElement);
@@ -182,7 +182,7 @@ private:
                 }
                 default:
                     zfCoreCriticalShouldNotGoHere();
-                    return ;
+                    return;
             }
 
             implXmlChild = implXmlChild.next_sibling();

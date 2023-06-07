@@ -37,7 +37,8 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_MainThreadImpl, ZFLevelZFFr
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_MainThreadImpl)
 
 // ============================================================
-ZFIMPL_SYS_SDL_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal, {
+ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal)
+{
     zfCoreMutexLock();
     if(_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty())
     {
@@ -54,14 +55,10 @@ ZFIMPL_SYS_SDL_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal, {
         _ZFP_ZFImpl_sys_SDL_MainThreadRunNext();
     }
     return zftrue;
-})
+}
 static void _ZFP_ZFImpl_sys_SDL_MainThreadRunNext(void)
 {
-    SDL_Event e;
-    SDL_zero(e);
-    e.type = SDL_USEREVENT;
-    e.user.code = ZFIMPL_SYS_SDL_EVENT(MainThreadTask);
-    SDL_PushEvent(&e);
+    ZFIMPL_SYS_SDL_USER_EVENT_POST(MainThreadTask, zfnull, zfnull);
 }
 
 ZF_NAMESPACE_GLOBAL_END

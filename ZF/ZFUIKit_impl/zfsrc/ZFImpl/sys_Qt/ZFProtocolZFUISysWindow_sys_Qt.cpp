@@ -126,7 +126,7 @@ public:
     }
 
     virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT void *&nativeParentView)
+                                           ZF_OUT_OPT void *&nativeParentView)
     {
         QGraphicsWidget *nativeWindow = ZFCastStatic(QGraphicsWidget *, sysWindow->nativeWindow());
 

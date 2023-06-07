@@ -247,12 +247,12 @@ private:
     { \
         if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) \
         { \
-            return ; \
+            return; \
         } \
         _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(ZFM_TOSTRING(YourStyle)); \
         if(holder->d == newInstance) \
         { \
-            return ; \
+            return; \
         } \
         ZFCorePointerBase *&cleanerRef = _ZFP_ZFStyleableDefaultCleaner(); \
         ZFCorePointerBase *cleanerOld = cleanerRef; \

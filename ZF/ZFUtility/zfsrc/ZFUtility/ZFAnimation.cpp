@@ -79,7 +79,7 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStart)
     {
         this->aniOnInvalid();
         this->aniOnStopOrInvalid(zffalse);
-        return ;
+        return;
     }
 
     zfRetain(this);
@@ -112,7 +112,7 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStop)
 {
     if(!(d->aniRunning))
     {
-        return ;
+        return;
     }
     d->aniStoppedByUser = zftrue;
     ++(d->aniId);

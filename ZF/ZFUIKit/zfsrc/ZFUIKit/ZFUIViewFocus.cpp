@@ -13,7 +13,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextSetupDataHolder, ZFLevelZ
         ZFObjectHolder *nextFocusOwner = zfargs.sender()->objectTag<ZFObjectHolder *>(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
         if(nextFocusOwner == zfnull)
         {
-            return ;
+            return;
         }
         nextFocusOwner->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocus);
         zfargs.sender()->observerRemove(ZFObject::EventObjectBeforeDealloc(),
@@ -32,7 +32,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup,
 {
     if(from == zfnull)
     {
-        return ;
+        return;
     }
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewFocusNextSetupDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewFocusNextSetupDataHolder);
@@ -101,7 +101,7 @@ static void _ZFP_ZFUIViewFocusNextFind(ZF_IN_OUT ZFCoreArrayPOD<_ZFP_ZFUIViewFoc
 {
     if(!ZFUIViewFocusNextFilter().filterCheckActive(view))
     {
-        return ;
+        return;
     }
 
     if(view->viewFocusable())

@@ -484,7 +484,7 @@ void ZFUIButtonBasic::layoutOnMeasure(ZF_OUT ZFUISize &ret,
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 
     if(backgroundSize.width > 0)
@@ -607,7 +607,7 @@ void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds)
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 

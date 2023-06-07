@@ -67,7 +67,7 @@
 {
     if(![self _timerOwnerIsTaskIdValid:taskId])
     {
-        return ;
+        return;
     }
     self._timer = [NSTimer timerWithTimeInterval:((zffloat)self.ownerZFTimer->timerInterval() / 1000) target:self selector:@selector(_timerOwnerOnTimerEvent:) userInfo:taskId repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:self._timer forMode:NSRunLoopCommonModes];
@@ -78,7 +78,7 @@
     NSNumber *taskId = (NSNumber *)[timer userInfo];
     if(![self _timerOwnerIsTaskIdValid:taskId])
     {
-        return ;
+        return;
     }
 
     if(!self._timerNotifiedFlag)
@@ -89,7 +89,7 @@
 
     if(![self _timerOwnerIsTaskIdValid:taskId])
     {
-        return ;
+        return;
     }
     self.impl->notifyTimerActivate(self.ownerZFTimer);
 }

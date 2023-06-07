@@ -299,10 +299,10 @@ void ZFOutputFormatBasic::format(ZF_IN_OUT zfstring &ret,
     {
         case ZFOutputFormatStep::e_OnInit:
             state = (void *)zfnew(zfbool, zftrue);
-            return ;
+            return;
         case ZFOutputFormatStep::e_OnDealloc:
             zfdelete((zfbool *)state);
-            return ;
+            return;
         case ZFOutputFormatStep::e_OnOutput:
             break;
         case ZFOutputFormatStep::e_OnOutputEnd:
@@ -313,7 +313,7 @@ void ZFOutputFormatBasic::format(ZF_IN_OUT zfstring &ret,
             return;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
     if(outputCount == 0)
     {

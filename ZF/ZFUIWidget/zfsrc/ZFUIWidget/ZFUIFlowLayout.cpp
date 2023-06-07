@@ -70,7 +70,7 @@ void ZFUIFlowLayout::layoutOnMeasure(ZF_OUT ZFUISize &ret,
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 
@@ -92,7 +92,7 @@ void ZFUIFlowLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 

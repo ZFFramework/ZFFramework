@@ -11,11 +11,11 @@ void zfVersionGet(ZF_OUT zfstring &ret,
     ZFCoreArrayPOD<ZFIndexRange> pos;
     if(*version != '\0' && !zfCoreDataPairSplitString(pos, zfindexMax(), version, zfindexMax(), ".", zfnull, zfnull))
     {
-        return ;
+        return;
     }
     if(pos.count() <= subVersionIndex)
     {
-        return ;
+        return;
     }
     ret.append(version + pos[subVersionIndex].start, pos[subVersionIndex].count);
 }
@@ -33,7 +33,7 @@ void zfVersionSet(ZF_IN_OUT zfstring &version,
     ZFCoreArrayPOD<ZFIndexRange> pos;
     if(!version.isEmpty() && !zfCoreDataPairSplitString(pos, zfindexMax(), version, zfindexMax(), ".", zfnull, zfnull))
     {
-        return ;
+        return;
     }
 
     if(pos.count() <= subVersionIndex)

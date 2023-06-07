@@ -90,7 +90,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIOnScreenKeyboardState,
 {
     if(ZFFrameworkStateCheck() != ZFFrameworkStateAvailable)
     {
-        return ;
+        return;
     }
     ZFPROTOCOL_ACCESS(ZFUIOnScreenKeyboardState)->notifyKeyboardStateOnChange(
         ZFUIOnScreenKeyboardState::instanceForSysWindow());

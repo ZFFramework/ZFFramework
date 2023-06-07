@@ -301,7 +301,7 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hintShow)
 {
     if(this->hintShowing())
     {
-        return ;
+        return;
     }
     d->hintShowing = zftrue;
     zfRetain(this);

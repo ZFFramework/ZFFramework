@@ -169,7 +169,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop)
 {
     if(!this->windowShowing())
     {
-        return ;
+        return;
     }
 
     ZFCoreArrayPOD<ZFUIView *> tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
@@ -201,7 +201,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom)
 {
     if(!this->windowShowing())
     {
-        return ;
+        return;
     }
 
     ZFCoreArrayPOD<ZFUIView *> tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();

@@ -98,7 +98,7 @@ public:
                     break;
                 default:
                     zfCoreCriticalShouldNotGoHere();
-                    return ;
+                    return;
             }
         }
     }
@@ -261,7 +261,7 @@ public:
     {
         if(index < this->listVisibleCellIndexRange.start || index == zfindexMax())
         {
-            return ;
+            return;
         }
 
         zfindex indexOfVisibleCell = index - this->listVisibleCellIndexRange.start;
@@ -285,7 +285,7 @@ public:
     {
         if(index >= this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
         {
-            return ;
+            return;
         }
 
         zfindex indexOfVisibleCell = index - this->listVisibleCellIndexRange.start;
@@ -587,7 +587,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
 
         this->listVisibleCellOffsetNeedUpdate = zffalse;
@@ -888,7 +888,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
 
         this->listVisibleCellOffsetNeedUpdate = zffalse;
@@ -898,7 +898,7 @@ public:
     {
         if(this->cellCount == 0)
         {
-            return ;
+            return;
         }
 
         zffloat cellSize = this->cellSizeList[0];
@@ -934,7 +934,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
     }
     ZFUIRect listVisibleCellFrame(ZF_IN zfindex cellIndex)
@@ -1020,7 +1020,7 @@ public:
                         break;
                     default:
                         zfCoreCriticalShouldNotGoHere();
-                        return ;
+                        return;
                 }
                 if(scrollContentFrame != this->pimplOwner->scrollContentFrame())
                 {
@@ -1040,7 +1040,7 @@ public:
                     this->updateFromFirstCell();
                 }
             }
-            return ;
+            return;
         }
 
         if(this->listAdapter == zfnull)
@@ -1052,7 +1052,7 @@ public:
             this->listReloadRequested = zffalse;
             this->listQuickReloadRequested = zffalse;
             this->pimplOwner->listVisibleCellOnChange();
-            return ;
+            return;
         }
 
         this->cellNeedUpdate = zftrue;
@@ -1224,7 +1224,7 @@ public:
     {
         if(!this->cellNeedUpdate)
         {
-            return ;
+            return;
         }
         this->cellNeedUpdate = zffalse;
 
@@ -1294,7 +1294,7 @@ public:
                 break;
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ;
+                return;
         }
     }
 
@@ -1303,7 +1303,7 @@ public:
     {
         if(this->scrollListCellIndex == zfindexMax())
         {
-            return ;
+            return;
         }
 
         zffloat desiredPos = this->scrollListCellDesiredPosCalc();
@@ -1314,7 +1314,7 @@ public:
                 this->scrollListCellScrollToPos(desiredPos, zffalse);
             }
             this->scrollListCellIndex = zfindexMax();
-            return ;
+            return;
         }
         if(desiredPos != this->scrollListCellDesiredPosSaved)
         {
@@ -1612,14 +1612,14 @@ void ZFUIListView::scrollContentFrameOnChange(void)
     zfsuper::scrollContentFrameOnChange();
     if(d->scrollContentFrameOverrideFlag)
     {
-        return ;
+        return;
     }
 
     d->listCheckReload();
 
     if(d->listAdapter == zfnull)
     {
-        return ;
+        return;
     }
 
     if(!d->listVisibleCell.isEmpty() && !d->listVisibleCellOffsetNeedUpdate)
@@ -1684,7 +1684,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt,
 {
     if(d->listReloadRequested || !ZFIndexRangeContain(d->listVisibleCellIndexRange, index))
     {
-        return ;
+        return;
     }
 
     d->cellNeedUpdate = zftrue;
@@ -1720,7 +1720,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt,
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
     d->updateTailCellAfterIndex(index, cellOldFrame);
 

@@ -39,7 +39,7 @@ void ZFImpl_sys_Android_zfstringFromString(ZF_IN_OUT zfstring &s, ZF_IN jobject 
 {
     if(jstr == NULL)
     {
-        return ;
+        return;
     }
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jstring nativeString = ZFCastStatic(jstring, jstr);

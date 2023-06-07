@@ -52,7 +52,7 @@ public:
             this->pimplOwner->scrollContentFrame(ZFUIRectGetBounds(this->pimplOwner->viewFrame()));
             if(this->autoFitMargin == ZFUIMarginZero() || this->pimplOwner->layoutParam() == zfnull)
             {
-                return ;
+                return;
             }
             this->autoFitMargin = ZFUIMarginZero();
             #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
@@ -96,14 +96,14 @@ public:
     {
         if(this->pimplOwner->layoutParam() == zfnull)
         {
-            return ;
+            return;
         }
 
         ZFUIRect orgRect = ZFUIViewPositionOnScreen(this->pimplOwner);
         if(orgRect.width != this->pimplOwner->viewFrame().width
             || orgRect.height != this->pimplOwner->viewFrame().height)
         {
-            return ;
+            return;
         }
         orgRect.x -= this->autoFitMargin.left;
         orgRect.width += this->autoFitMargin.left + this->autoFitMargin.right;
@@ -178,7 +178,7 @@ public:
             {
                 layout->d->autoFitFocusedView = zfnull;
             }
-            return ;
+            return;
         }
 
         {
@@ -189,7 +189,7 @@ public:
             }
             if(parent == zfnull)
             {
-                return ;
+                return;
             }
         }
 

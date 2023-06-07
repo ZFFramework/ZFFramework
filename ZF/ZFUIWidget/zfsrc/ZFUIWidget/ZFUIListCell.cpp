@@ -36,7 +36,7 @@ void ZFUIListCell::layoutOnMeasure(ZF_OUT ZFUISize &ret,
     if(this->cellView() == zfnull)
     {
         zfsuper::layoutOnMeasure(ret, sizeHint, sizeParam);
-        return ;
+        return;
     }
 
     this->cellView()->layoutMeasure(sizeHint, ZFUISizeParamWrapWrap());

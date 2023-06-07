@@ -33,7 +33,7 @@ void _ZFP_ZFObjectIORegister(ZF_IN const zfchar *registerSig,
         {
             zfCoreCriticalMessageTrim("[ZFObjectIO] \"%s\" already registered",
                 registerSig);
-            return ;
+            return;
         }
     }
 

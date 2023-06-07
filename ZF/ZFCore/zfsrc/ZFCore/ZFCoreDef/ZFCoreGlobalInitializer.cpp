@@ -583,7 +583,7 @@ static void _ZFP_GI_dataRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 static void _ZFP_GI_dataUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
@@ -592,7 +592,7 @@ static void _ZFP_GI_dataUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
 {
     if(*ZFCoreLibDestroyFlag)
     {
-        return ;
+        return;
     }
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
     ZFCoreArrayPOD<_ZFP_GI_Data *> &dataList = holder.dataListForLevel(level);
@@ -604,7 +604,7 @@ static void _ZFP_GI_dataUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
     if(!dataMap.iterValid(it))
     {
         zfCoreCriticalShouldNotGoHere();
-        return ;
+        return;
     }
     _ZFP_GI_Data *data = dataMap.iterValue<_ZFP_GI_Data *>(it);
     data->ZFCoreLibDestroyFlag.removeElement(ZFCoreLibDestroyFlag);
@@ -678,7 +678,7 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data)
         zfCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s accessed before ZFFrameworkInit"
             , data->name.cString());
-        return ;
+        return;
     }
 
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
@@ -751,7 +751,7 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data)
                 ", while it hasn't been initialized or already deallocated"
                 ", typically because of invalid dependency or invalid access"
             , data->name.cString(), dependency->name.cString());
-        return ;
+        return;
     }
 
     // reorder in same level

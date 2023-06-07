@@ -155,13 +155,13 @@ static void _ZFP_ZFTextTemplateApply_replaceData(ZF_IN const ZFTextTemplateParam
 { // {ZFTT_R_myKey}
     if(*p != '_')
     {
-        return ;
+        return;
     }
     ++p;
     zfindex keySize = _ZFP_ZFTextTemplateApply_keyLength(pEnd, p);
     if(keySize == zfindexMax())
     {
-        return ;
+        return;
     }
     zfstring key(p, keySize);
     p += keySize + 1;
@@ -169,7 +169,7 @@ static void _ZFP_ZFTextTemplateApply_replaceData(ZF_IN const ZFTextTemplateParam
     const zfchar *value = param.replaceData(key);
     if(value == zfnull)
     {
-        return ;
+        return;
     }
     zfindex valueLen = zfslen(value);
     if(output)
@@ -196,17 +196,17 @@ static void _ZFP_ZFTextTemplateApply_enableData(ZF_IN const ZFTextTemplateParam 
             --condCount;
             data = p;
         }
-        return ;
+        return;
     }
     if(*p != '_')
     {
-        return ;
+        return;
     }
     ++p;
     zfindex keySize = _ZFP_ZFTextTemplateApply_keyLength(pEnd, p);
     if(keySize == zfindexMax())
     {
-        return ;
+        return;
     }
     zfstring key(p, keySize);
     p += keySize + 1;
@@ -217,7 +217,7 @@ static void _ZFP_ZFTextTemplateApply_enableData(ZF_IN const ZFTextTemplateParam 
     if(value)
     {
         ++condCount;
-        return ;
+        return;
     }
 
     zfindex condCountOffset = 0;
@@ -291,17 +291,17 @@ static void _ZFP_ZFTextTemplateApply_indexData(ZF_IN const ZFTextTemplateParam &
     {
         ++p;
         _ZFP_ZFTextTemplateApply_indexData_reset(param, stateMap, output, pEnd, data, p, size);
-        return ;
+        return;
     }
     if(*p != '_')
     {
-        return ;
+        return;
     }
     ++p;
     zfindex keySize = _ZFP_ZFTextTemplateApply_keyLength(pEnd, p);
     if(keySize == zfindexMax())
     {
-        return ;
+        return;
     }
     zfstring key(p, keySize);
     p += keySize + 1;
@@ -344,7 +344,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(ZF_IN const ZFTextTemplateParam &
                     break;
                 default:
                     zfCoreCriticalShouldNotGoHere();
-                    return ;
+                    return;
             }
         }
 
@@ -375,13 +375,13 @@ static void _ZFP_ZFTextTemplateApply_indexData_reset(ZF_IN const ZFTextTemplateP
 { // {ZFTT_IR_myKey}
     if(*p != '_')
     {
-        return ;
+        return;
     }
     ++p;
     zfindex keySize = _ZFP_ZFTextTemplateApply_keyLength(pEnd, p);
     if(keySize == zfindexMax())
     {
-        return ;
+        return;
     }
     zfstring key(p, keySize);
     p += keySize + 1;

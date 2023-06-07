@@ -369,7 +369,7 @@ public:
     {
         if(fd.nativeFd == zfnull)
         {
-            return ;
+            return;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FindData *, fd.nativeFd);
@@ -397,7 +397,7 @@ private:
         ret = this->zfresPrefix;
         if(zfstringIsEqual(s, "."))
         {
-            return ;
+            return;
         }
         ret += ZFFileSeparator();
         ret += s;

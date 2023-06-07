@@ -181,7 +181,7 @@ void ZFTextTemplateParam::replaceDataAdd(ZF_IN const zfchar *key, ZF_IN const zf
 {
     if(key == zfnull)
     {
-        return ;
+        return;
     }
     zfiterator it = d->replaceDataMap.iterFind(key);
     if(d->replaceDataMap.iterValid(it))
@@ -268,7 +268,7 @@ void ZFTextTemplateParam::enableDataAdd(ZF_IN const zfchar *key, ZF_IN zfbool va
 {
     if(key == zfnull)
     {
-        return ;
+        return;
     }
     zfiterator it = d->enableDataMap.iterFind(key);
     if(d->enableDataMap.iterValid(it))
@@ -356,7 +356,7 @@ void ZFTextTemplateParam::indexDataAdd(ZF_IN const zfchar *key, ZF_IN const ZFTe
 {
     if(key == zfnull)
     {
-        return ;
+        return;
     }
     zfiterator it = d->indexDataMap.iterFind(key);
     if(d->indexDataMap.iterValid(it))
@@ -439,7 +439,7 @@ void ZFTextTemplateParam::copyFrom(ZF_IN const ZFTextTemplateParam &ref)
 {
     if(d == ref.d)
     {
-        return ;
+        return;
     }
 
     d->replaceDataList.removeAll();

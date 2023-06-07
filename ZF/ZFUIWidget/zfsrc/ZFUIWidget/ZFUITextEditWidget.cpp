@@ -106,7 +106,7 @@ void ZFUITextEditWidget::internalViewOnLayout(ZF_IN const ZFUIRect &bounds)
     ZFUIButtonBasic *textEditClearButton = this->textEditClearButton()->to<ZFUIButtonBasic *>();
     if(!textEditClearButton->viewVisible())
     {
-        return ;
+        return;
     }
 
     ZFUIMargin margin = ZFUIMarginZero();

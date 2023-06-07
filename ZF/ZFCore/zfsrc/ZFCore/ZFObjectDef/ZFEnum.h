@@ -202,7 +202,7 @@ public:
         if(!this->enumIsFlags() && !this->enumContainValue(value))
         {
             _ZFP_ZFEnum_value = ZFEnumInvalid();
-            return ;
+            return;
         }
         _ZFP_ZFEnum_value = value;
     }

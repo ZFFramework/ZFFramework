@@ -64,7 +64,7 @@ void ZFUILinearLayout::layoutOnMeasure(ZF_OUT ZFUISize &ret,
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 
@@ -86,7 +86,7 @@ void ZFUILinearLayout::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 

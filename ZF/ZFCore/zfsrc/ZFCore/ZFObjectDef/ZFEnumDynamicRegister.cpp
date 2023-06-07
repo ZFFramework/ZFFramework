@@ -212,13 +212,13 @@ void ZFEnumDynamicUnregister(ZF_IN const ZFClass *enumClass)
 {
     if(enumClass == zfnull)
     {
-        return ;
+        return;
     }
 
     _ZFP_I_ZFEnumDynamicHolder *d = enumClass->classDynamicRegisterUserData()->toAny();
     if(d == zfnull)
     {
-        return ;
+        return;
     }
     for(zfindex i = 0; i < d->userRegMethods.count(); ++i)
     {

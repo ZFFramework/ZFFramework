@@ -277,7 +277,7 @@ void ZFDynamic::exportTag(ZF_IN_OUT const ZFOutput &output,
 {
     if(!output)
     {
-        return ;
+        return;
     }
 
     ZFCoreArrayPOD<const ZFClass *> allClass;

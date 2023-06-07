@@ -90,7 +90,7 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFArgs &zfargs)
 
     if(view->objectIsInternal())
     {
-        return ;
+        return;
     }
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusDataHolder);
@@ -99,7 +99,7 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_focusChange(ZF_IN const ZFArgs &zfargs)
     {
         if(!ZFUIViewBlinkWhenFocusFilter().filterCheckActive(view))
         {
-            return ;
+            return;
         }
         d->focusedViews.add(view);
         view->observerAdd(ZFUIView::EventObjectBeforeDealloc(), d->viewOnDeallocListener);
@@ -121,17 +121,17 @@ static void _ZFP_ZFUIViewBlinkWhenFocus_mouseDown(ZF_IN const ZFArgs &zfargs)
     ZFUIView *view = zfargs.senderT();
     if(view->objectIsInternal())
     {
-        return ;
+        return;
     }
 
     ZFUIMouseEvent *event = zfargs.param0T();
     if(event == zfnull || event->mouseAction != ZFUIMouseAction::e_MouseDown)
     {
-        return ;
+        return;
     }
     if(!ZFUIViewBlinkWhenFocusFilter().filterCheckActive(view))
     {
-        return ;
+        return;
     }
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusDataHolder);
     if(!ZFUIViewBlinkWhenFocusAutoApplyPaused())
@@ -166,7 +166,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFUIViewBlinkWhenFocusAutoApplyStop)
     ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel();
     if(!_ZFP_ZFUIViewBlinkWhenFocus_started)
     {
-        return ;
+        return;
     }
     _ZFP_ZFUIViewBlinkWhenFocus_started = zffalse;
 
@@ -236,7 +236,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime,
 {
     if(ZFUIViewBlinkWhenFocusAutoApplyPaused())
     {
-        return ;
+        return;
     }
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeDataHolder);
 
@@ -244,7 +244,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime,
     zftimet endTime = ZFTime::timestamp() + time;
     if(d->started && endTime <= d->endTime + 100)
     {
-        return ;
+        return;
     }
 
     if(d->delayTimer == zfnull)
@@ -265,7 +265,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeCancel)
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeDataHolder);
     if(!d->started)
     {
-        return ;
+        return;
     }
     d->started = zffalse;
     d->delayTimer->timerStop();

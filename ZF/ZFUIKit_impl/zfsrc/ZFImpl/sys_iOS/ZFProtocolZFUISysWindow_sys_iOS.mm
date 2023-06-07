@@ -32,7 +32,7 @@
 {
     if(self->_sysWindowOrientationFlags == sysWindowOrientationFlags)
     {
-        return ;
+        return;
     }
     self->_sysWindowOrientationFlags = sysWindowOrientationFlags;
 
@@ -283,7 +283,7 @@ public:
     }
 
     virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT void *&nativeParentView)
+                                           ZF_OUT_OPT void *&nativeParentView)
     {
         _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow();
 

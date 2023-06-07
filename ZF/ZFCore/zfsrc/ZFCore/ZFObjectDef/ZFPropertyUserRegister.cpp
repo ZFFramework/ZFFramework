@@ -23,7 +23,7 @@ void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty)
 {
     if(zfproperty == zfnull)
     {
-        return ;
+        return;
     }
     zfCoreMutexLocker();
     zfCoreAssertWithMessageTrim(zfproperty->propertyIsUserRegister(),

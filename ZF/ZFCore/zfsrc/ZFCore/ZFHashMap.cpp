@@ -133,7 +133,7 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, addFrom,
 {
     if(another == this || another == zfnull)
     {
-        return ;
+        return;
     }
 
     ZFObject *key = zfnull;
@@ -174,12 +174,12 @@ ZFMETHOD_DEFINE_2(ZFHashMap, void, set,
 {
     if(pKey == zfnull)
     {
-        return ;
+        return;
     }
     if(pValue == zfnull)
     {
         this->remove(pKey);
-        return ;
+        return;
     }
 
     _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(pKey);

@@ -167,7 +167,7 @@ public:
 
         if(!this->pimplOwner->scrollEnable())
         {
-            return ;
+            return;
         }
 
         this->xScrollEnable = (this->pimplOwner->scrollBounceHorizontalAlways()
@@ -205,7 +205,7 @@ public:
     {
         if(this->state != ZFUIScrollViewState::e_Dragging)
         {
-            return ;
+            return;
         }
 
         zfbool alignToAxis = (this->pimplOwner->scrollAlignToAxis() || this->pimplOwner->scrollAlignToPageHorizontal() || this->pimplOwner->scrollAlignToPageVertical());
@@ -249,7 +249,7 @@ public:
             // this may be an error state, reset by end scroll
             this->scrollerActionAdd(_ZFP_ZFUIScrollViewActionScrollEnd);
             this->scrollerActionRun();
-            return ;
+            return;
         }
 
         if(this->xScrollEnable)
@@ -532,7 +532,7 @@ private:
     {
         if(this->scrollerActionRunning || this->scrollerActions.isEmpty())
         {
-            return ;
+            return;
         }
 
         this->scrollerActionRunning = zftrue;
@@ -562,7 +562,7 @@ private:
                     break;
                 default:
                     zfCoreCriticalShouldNotGoHere();
-                    return ;
+                    return;
             }
         }
         this->scrollerActionRunning = zffalse;
@@ -816,7 +816,7 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
             ZFUIScrollView *scrollView = scrollViewHolder->objectHolded();
             if(scrollView == zfnull)
             {
-                return ;
+                return;
             }
             ZFUIView *focusedChild = scrollView->viewFocusFind();
             if(focusedChild != zfnull)
@@ -851,11 +851,11 @@ void ZFUIScrollView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent)
 {
     zfsuper::viewEventOnWheelEvent(wheelEvent);
     if(wheelEvent->eventResolved()) {
-        return ;
+        return;
     }
     if(!this->scrollEnable())
     {
-        return ;
+        return;
     }
 
     zffloat wheelXSaved = -(this->scrollByPointEndPoint().x - this->scrollContentFrame().x);
@@ -1015,7 +1015,7 @@ ZFMETHOD_DEFINE_3(ZFUIScrollView, void, scrollChildToVisible,
 {
     if(child == zfnull)
     {
-        return ;
+        return;
     }
 
     zffloat offsetX = 0;

@@ -37,7 +37,7 @@ void ZFStyleable::styleableCopyFrom(ZF_IN ZFStyleable *anotherStyleable)
 {
     if(anotherStyleable == zfnull)
     {
-        return ;
+        return;
     }
     if(this->styleKey() == zfnull)
     {
@@ -153,7 +153,7 @@ void ZFStyleable::styleableOnCopyPropertyFrom(ZF_IN ZFStyleable *anotherStyleabl
         case ZFStyleable::PropertyTypeNotStyleable:
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 
@@ -449,7 +449,7 @@ private:
     ZFListener styleOnInvalidListener;
     static void styleOnInvalid(ZF_IN const ZFArgs &zfargs)
     {
-        if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return ;}
+        if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return;}
         const zfchar *propertyName = zfargs.param0()->to<v_zfstring *>()->zfv;
         const zfchar *styleKey = zfargs.param1()->to<v_zfstring *>()->zfv;
         if(zfstringIsEmpty(propertyName))

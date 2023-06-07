@@ -77,7 +77,7 @@ public:
                     _ZFP_SI_ItemData *t = this->datas[i];
                     this->datas.remove(i);
                     zfdelete(t);
-                    return ;
+                    return;
                 }
             }
         }

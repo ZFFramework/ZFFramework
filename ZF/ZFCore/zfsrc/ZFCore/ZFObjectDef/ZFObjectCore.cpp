@@ -252,11 +252,11 @@ void ZFObject::objectTag(ZF_IN const zfchar *key,
         zfCoreCriticalMessageTrim("[ZFObject] you must not set tag while object is deallocating, class: %s, tag: %s",
             this->classData()->classNameFull(),
             key);
-        return ;
+        return;
     }
     if(key == zfnull)
     {
-        return ;
+        return;
     }
 
     _ZFP_ZFObjectTagMapType &m = d->objectTagMap;
@@ -562,7 +562,7 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void)
                 d->zfAllocCacheRelease = zfnull;
                 this->objectOnRelease();
                 this->observerRemoveAll(ZFObject::EventObjectBeforeDealloc());
-                return ;
+                return;
             }
         }
     }
@@ -571,13 +571,13 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void)
     { // check to save cache
         this->observerRemoveAll();
         d->zfAllocCacheRelease(this);
-        return ;
+        return;
     }
 
     this->objectOnRelease();
     if(d->objectRetainCount > 0)
     {
-        return ;
+        return;
     }
 
     d->objectInstanceState = ZFObjectInstanceStateOnDeallocPrepare;
@@ -596,7 +596,7 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void)
     if(d != zfnull)
     {
         zfCoreCriticalMessageTrim("[ZFObject] ZFObject::objectOnDealloc() not called");
-        return ;
+        return;
     }
     this->classData()->_ZFP_ZFClass_objectDesctuct(this);
 }
@@ -606,7 +606,7 @@ void ZFObject::objectOnInit(void)
     if(d != zfnull)
     {
         zfCoreCriticalMessageTrim("[ZFObject] ZFObject::objectOnInit() called twice");
-        return ;
+        return;
     }
 
     // note that (d != zfnull) is also used to check whether ZFObject::objectOnInit() is called
@@ -617,7 +617,7 @@ void ZFObject::objectOnDealloc(void)
     if(d == zfnull)
     {
         zfCoreCriticalMessageTrim("[ZFObject] ZFObject::objectOnDealloc() called twice");
-        return ;
+        return;
     }
 
     if(_ZFP_ZFObject_classDynamic)

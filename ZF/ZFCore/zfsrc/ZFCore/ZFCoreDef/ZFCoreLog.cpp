@@ -53,7 +53,7 @@ void _ZFP_zfCoreLogV(ZF_IN const ZFCallerInfo &callerInfo,
 {
     if(_ZFP_ZFCoreLogOutputCallback == zfnull)
     {
-        return ;
+        return;
     }
 
     zfstring s;

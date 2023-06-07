@@ -239,7 +239,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(ZF_IN ZFUIView *parent,
         zfsFromInt(childIndex).cString());
     if(_layoutFinish[childIndex])
     {
-        return ;
+        return;
     }
     _layouting[childIndex] = zftrue;
 
@@ -283,7 +283,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(ZF_IN ZFUIView *parent,
 {
     if(rule.pos() == ZFUIAutoLayoutPos::e_None)
     {
-        return ;
+        return;
     }
 
     zfbool *&_layouting = xAxis ? _layoutingWidth : _layoutingHeight;
@@ -294,7 +294,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(ZF_IN ZFUIView *parent,
         zfsFromInt(childIndex).cString());
     if(_layoutFinish[childIndex])
     {
-        return ;
+        return;
     }
     _layouting[childIndex] = zftrue;
 
@@ -411,7 +411,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(ZF_IN ZFUIView *parent,
     if(chain.count() <= 1)
     {
         chain.removeAll();
-        return ;
+        return;
     }
     while(!chain.isEmpty()
         && this->isFixedRule(parent->childAt(chain.getLast())->layoutParam<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList[posTail]))

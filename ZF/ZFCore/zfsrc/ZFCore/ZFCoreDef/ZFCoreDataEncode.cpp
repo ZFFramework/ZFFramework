@@ -72,7 +72,7 @@ void zfCoreDataDecode(ZF_OUT zfstring &result,
                       ZF_IN_OPT zfindex srcLen /* = zfindexMax() */,
                       ZF_IN_OPT zfchar escapeToken /* = '%' */)
 {
-    if(src == zfnull) {return ;}
+    if(src == zfnull) {return;}
     const zfchar *srcEnd = (src + ((srcLen == zfindexMax()) ? zfslen(src) : srcLen));
     while(src < srcEnd)
     {

@@ -13,7 +13,7 @@ void ZFPropertyCopyAll(ZF_IN ZFObject *dstObj,
 {
     if(dstObj == zfnull || srcObj == zfnull)
     {
-        return ;
+        return;
     }
 
     ZFCoreArrayPOD<const ZFProperty *> allProperty = ZFClassUtil::allProperty(dstObj->classData(), filter);

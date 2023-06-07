@@ -1091,7 +1091,7 @@ void ZFXml::xmlVisit(ZF_IN const ZFXmlVisitCallback &callback /* = ZFXmlVisitCal
 {
     if(!callback || this->xmlType() == ZFXmlType::e_XmlNull)
     {
-        return ;
+        return;
     }
 
     ZFCoreArray<ZFXmlVisitData> datas;

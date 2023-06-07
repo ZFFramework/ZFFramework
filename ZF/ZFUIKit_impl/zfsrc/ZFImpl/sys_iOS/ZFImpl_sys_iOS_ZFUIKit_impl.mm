@@ -173,7 +173,7 @@ ZF_NAMESPACE_GLOBAL_END
     {
         if(!ZFProtocolIsAvailable("ZFUIView"))
         {
-            return ;
+            return;
         }
         ZFLISTENER(windowOnPause) {
             ZFUISysWindow *sysWindow = zfargs.senderT();

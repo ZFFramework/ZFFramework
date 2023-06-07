@@ -166,7 +166,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::mousePressEvent(event);
-            return ;
+            return;
         }
         this->mouseEventResolve(event, ZFUIMouseAction::e_MouseDown);
     }
@@ -177,7 +177,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::mouseMoveEvent(event);
-            return ;
+            return;
         }
         if(this->_ZFP_mousePressed)
         {
@@ -191,7 +191,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::mouseReleaseEvent(event);
-            return ;
+            return;
         }
         if(ZFUIViewImpl_sys_Qt_isMouseCancel != zfnull && ZFUIViewImpl_sys_Qt_isMouseCancel(event))
         {
@@ -236,7 +236,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::hoverEnterEvent(event);
-            return ;
+            return;
         }
         this->mouseHoverEventResolve(event, ZFUIMouseAction::e_MouseHoverEnter);
     }
@@ -246,7 +246,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::hoverMoveEvent(event);
-            return ;
+            return;
         }
         this->mouseHoverEventResolve(event, ZFUIMouseAction::e_MouseHover);
     }
@@ -256,7 +256,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::hoverLeaveEvent(event);
-            return ;
+            return;
         }
         this->mouseHoverEventResolve(event, ZFUIMouseAction::e_MouseHoverExit);
     }
@@ -283,7 +283,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::keyPressEvent(event);
-            return ;
+            return;
         }
         this->keyEventResolve(event, event->isAutoRepeat() ? ZFUIKeyAction::e_KeyRepeat : ZFUIKeyAction::e_KeyDown);
     }
@@ -293,7 +293,7 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::keyReleaseEvent(event);
-            return ;
+            return;
         }
         this->keyEventResolve(event, event->isAutoRepeat() ? ZFUIKeyAction::e_KeyRepeat : ZFUIKeyAction::e_KeyUp);
     }
@@ -320,26 +320,26 @@ protected:
             || !this->_ZFP_viewUIEnableTree || !this->_ZFP_viewUIEnable)
         {
             QGraphicsWidget::wheelEvent(event);
-            return ;
+            return;
         }
         this->wheelEventResolve(event);
     }
 private:
     void wheelEventResolve(QGraphicsSceneWheelEvent *event)
     {
-        zffloat eventSteps = event->delta() / 8 / 15;
+        zffloat eventSteps = event->delta() / 8;
 
         zfblockedAlloc(ZFUIWheelEvent, wheelEvent);
         wheelEvent->eventResolved(zffalse);
         if(event->orientation() == Qt::Horizontal)
         {
-            wheelEvent->wheelX = -eventSteps;
+            wheelEvent->wheelX = eventSteps;
             wheelEvent->wheelY = 0;
         }
         else
         {
             wheelEvent->wheelX = 0;
-            wheelEvent->wheelY = -eventSteps;
+            wheelEvent->wheelY = eventSteps;
         }
         if(wheelEvent->wheelX != 0 || wheelEvent->wheelY != 0)
         {

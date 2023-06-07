@@ -428,6 +428,8 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onCreate(ZF_IN void *nativeWindow)
     ZFUIView::_ZFP_ZFUIView_nativeViewNotifyAdd(this->rootView(), nativeParentView);
 
     this->observerNotify(ZFUISysWindow::EventSysWindowOnCreate());
+
+    ZFPROTOCOL_ACCESS(ZFUISysWindow)->sysWindowLayoutParamOnChange(this);
 }
 void ZFUISysWindow::_ZFP_ZFUISysWindow_onDestroy(void)
 {
@@ -437,7 +439,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onDestroy(void)
     }
     if(!d->nativeWindowCreated)
     {
-        return ;
+        return;
     }
     d->nativeWindowCreated = zffalse;
 
@@ -483,7 +485,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_onPause(void)
 {
     if(!d->nativeWindowResumed)
     {
-        return ;
+        return;
     }
 
     d->nativeWindowResumed = zffalse;
@@ -529,7 +531,7 @@ void ZFUISysWindow::_ZFP_ZFUISysWindow_sysWindowLayoutUpdate(void)
 ZFOBJECT_REGISTER(ZFUISysWindowEmbedImpl)
 
 void ZFUISysWindowEmbedImpl::nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                                       ZF_OUT void *&nativeParentView)
+                                                       ZF_OUT_OPT void *&nativeParentView)
 {
 }
 void ZFUISysWindowEmbedImpl::nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow)

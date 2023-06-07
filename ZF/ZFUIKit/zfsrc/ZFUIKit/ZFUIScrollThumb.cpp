@@ -22,7 +22,7 @@ void ZFUIScrollThumb::scrollThumbPosFromViewPos(ZF_OUT zffloat &scrollThumbResul
         || scrollContentSize <= 0)
     {
         scrollThumbResultSize = 0;
-        return ;
+        return;
     }
 
     zffloat pos = 0;
@@ -120,7 +120,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIScrollThumbHorizontalClass,
         zfCoreLog("class %s not type of %s",
             cls->classNameFull(),
             ZFUIScrollThumb::ClassData()->classNameFull());
-        return ;
+        return;
     }
 
     if(cls == zfnull)
@@ -142,7 +142,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIScrollThumbVerticalClass,
         zfCoreLog("class %s not type of %s",
             cls->classNameFull(),
             ZFUIScrollThumb::ClassData()->classNameFull());
-        return ;
+        return;
     }
 
     if(cls == zfnull)

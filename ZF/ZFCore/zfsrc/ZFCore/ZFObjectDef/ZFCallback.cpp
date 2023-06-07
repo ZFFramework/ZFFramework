@@ -273,7 +273,7 @@ void ZFCallback::callbackTag(ZF_IN const zfchar *key,
 {
     if(key == zfnull)
     {
-        return ;
+        return;
     }
     zfCoreMutexLocker();
     if(d == zfnull)

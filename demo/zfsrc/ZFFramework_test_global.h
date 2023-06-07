@@ -36,7 +36,7 @@ private:
         { \
             this->testCaseOutput(#ProtocolName " not available, skip test case"); \
             this->testCaseStop(); \
-            return ; \
+            return; \
         } \
     } while(zffalse)
 
@@ -46,7 +46,7 @@ private:
         { \
             this->testCaseOutput("ZFThread::implMainThreadTaskAvailable() not available, skip test case"); \
             this->testCaseStop(); \
-            return ; \
+            return; \
         } \
     } while(zffalse)
 

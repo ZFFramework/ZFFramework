@@ -55,7 +55,7 @@ public:
         if(keyboardShowingNew == keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardShowing
             && keyboardFrameNew == keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFrame)
         {
-            return ;
+            return;
         }
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFramePrev = keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFrame;
         keyboardState->_ZFP_ZFUIOnScreenKeyboardState_keyboardFrame = keyboardFrameNew;

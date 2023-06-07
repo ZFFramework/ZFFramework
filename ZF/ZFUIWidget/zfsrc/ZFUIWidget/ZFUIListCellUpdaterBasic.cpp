@@ -70,7 +70,7 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
                     break;
                 default:
                     zfCoreCriticalShouldNotGoHere();
-                    return ;
+                    return;
             }
         }
     }
@@ -78,7 +78,7 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
     { // last cell
         if(!this->separatorIncludingTail())
         {
-            return ;
+            return;
         }
     }
 
@@ -100,7 +100,7 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
             break;
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
     }
 }
 void ZFUIListCellUpdaterBasic::cellOnRecycle(ZF_IN ZFUIListCell *cell)

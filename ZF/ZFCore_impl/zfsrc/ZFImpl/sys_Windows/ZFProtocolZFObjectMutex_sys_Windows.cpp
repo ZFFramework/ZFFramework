@@ -112,7 +112,7 @@ public:
 
             // current thread doesn't lock, it's a error state
             zfCoreCriticalShouldNotGoHere();
-            return ;
+            return;
         }
     }
     static zfbool implTryLock(ZF_IN void *implObject)
