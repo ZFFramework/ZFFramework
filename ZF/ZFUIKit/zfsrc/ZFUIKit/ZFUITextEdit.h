@@ -235,24 +235,6 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textColor)
 
     /**
-     * @brief text shadow color, #ZFUIColorZero by default, use transparent to disable text shadow
-     *
-     * note that implementation may have no text shadow support
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textShadowColor,
-                                ZFUIColorZero())
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textShadowColor)
-
-    /**
-     * @brief text shadow offset, (1, 1) by default
-     *
-     * note that implementation may have no text shadow support
-     */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, textShadowOffset,
-                                (ZFUISizeMake(1, 1)))
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUISize, textShadowOffset)
-
-    /**
      * @brief text size, #ZFUIGlobalStyle::textSizeNormal by default
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSize,

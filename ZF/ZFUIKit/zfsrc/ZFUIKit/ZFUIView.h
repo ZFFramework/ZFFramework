@@ -455,6 +455,10 @@ public:
      */
     ZFMETHOD_DECLARE_0(void *, nativeImplView)
     /**
+     * @brief whether the #nativeImplView cost one virtualIndex
+     */
+    ZFMETHOD_DECLARE_0(zfbool, nativeImplViewRequireVirtualIndex)
+    /**
      * @brief inner margin between #ZFUIView and the internal #nativeImplView
      *
      * use #nativeImplViewMarginUpdate to update this value,
@@ -484,8 +488,9 @@ protected:
     /**
      * @brief see #nativeImplView
      */
-    zffinal void nativeImplView(ZF_IN void *nativeImplView,
-                                ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback);
+    virtual void nativeImplView(ZF_IN void *nativeImplView,
+                                ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback,
+                                ZF_IN zfbool nativeImplViewRequireVirtualIndex);
     /**
      * @brief see #nativeImplViewMargin,
      *   subclass must call super and "append" to existing margin

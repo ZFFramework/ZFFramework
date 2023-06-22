@@ -420,7 +420,7 @@ protected:
 
 // ============================================================
 /**
- * @brief three layer for ZFUIView
+ * @brief view layer for ZFUIView
  */
 ZFENUM_BEGIN(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
     ZFENUM_VALUE(Normal) /**< @brief added by #ZFUIView::childAdd */

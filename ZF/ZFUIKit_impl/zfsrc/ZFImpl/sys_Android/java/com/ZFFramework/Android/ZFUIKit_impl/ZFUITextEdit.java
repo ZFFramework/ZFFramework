@@ -157,30 +157,6 @@ public final class ZFUITextEdit extends EditText {
         nativeTextEditTmp.setTextColor(textColor);
     }
 
-    public static void native_textShadowColor(Object nativeTextEdit,
-                                              int textShadowColor) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        nativeTextEditTmp._textShadowColor = textShadowColor;
-        nativeTextEditTmp.setShadowLayer(
-                1,
-                nativeTextEditTmp._textShadowOffsetX,
-                nativeTextEditTmp._textShadowOffsetY,
-                nativeTextEditTmp._textShadowColor);
-    }
-
-    public static void native_textShadowOffset(Object nativeTextEdit,
-                                               int textShadowOffsetX,
-                                               int textShadowOffsetY) {
-        ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
-        nativeTextEditTmp._textShadowOffsetX = textShadowOffsetX;
-        nativeTextEditTmp._textShadowOffsetY = textShadowOffsetY;
-        nativeTextEditTmp.setShadowLayer(
-                1,
-                nativeTextEditTmp._textShadowOffsetX,
-                nativeTextEditTmp._textShadowOffsetY,
-                nativeTextEditTmp._textShadowColor);
-    }
-
     public static void native_textSize(Object nativeTextEdit,
                                        int textSize) {
         ZFUITextEdit nativeTextEditTmp = (ZFUITextEdit) nativeTextEdit;
@@ -333,9 +309,6 @@ public final class ZFUITextEdit extends EditText {
     }
 
     private long zfjniPointerOwnerZFUITextEdit = 0;
-    private int _textShadowColor = Color.TRANSPARENT;
-    private int _textShadowOffsetX = 1;
-    private int _textShadowOffsetY = 1;
     private TextWatcher _textWatcher = null;
 
     // ============================================================

@@ -11,8 +11,6 @@ zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTE
                                                            ZF_IN ZFUIScrollView *scrollView,
                                                            ZF_IN zftimet recommendTimerInterval)
 {
-    zfblockedAlloc(ZFTimer, scrollTimer);
-    scrollTimer->timerInterval(recommendTimerInterval);
     ZFObjectHolder *ownerHolder = scrollView->objectHolder();
     ZFLISTENER_2(scrollTimerEvent
             , ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *, impl
@@ -24,19 +22,17 @@ zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTE
             impl->notifyScrollViewScrollAnimation(scrollView, ZFTime::timestamp());
         }
     } ZFLISTENER_END()
-    scrollTimer->observerAdd(ZFTimer::EventTimerOnActivate(), scrollTimerEvent);
-
-    scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer", scrollTimer);
-    scrollTimer->timerStart();
+    scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer", zflineAlloc(v_ZFListener, scrollTimerEvent));
+    ZFGlobalTimerAttach(scrollTimerEvent);
     return ZFTime::timestamp();
 }
 void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl,
                                                        ZF_IN ZFUIScrollView *scrollView)
 {
-    ZFTimer *scrollTimer = scrollView->objectTag<ZFTimer *>("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
+    v_ZFListener *scrollTimer = scrollView->objectTag<v_ZFListener *>("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
     zfRetain(scrollTimer);
     scrollView->objectTagRemove("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
-    scrollTimer->timerStop();
+    ZFGlobalTimerDetach(scrollTimer->zfv);
     zfRelease(scrollTimer);
 }
 

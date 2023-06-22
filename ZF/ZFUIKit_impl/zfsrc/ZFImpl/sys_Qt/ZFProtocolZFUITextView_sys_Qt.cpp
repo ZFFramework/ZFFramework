@@ -40,25 +40,6 @@ public:
         palette.setColor(QPalette::WindowText, ZFImpl_sys_Qt_ZFUIColorToQColor(v));
         this->setPalette(palette);
     }
-    void _ZFP_textShadowUpdate(ZF_IN const ZFUIColor &textShadowColor, ZF_IN const ZFUISize &textShadowOffset)
-    {
-        if(textShadowColor == ZFUIColorZero())
-        {
-            this->setGraphicsEffect(zfnull);
-        }
-        else
-        {
-            QGraphicsDropShadowEffect *effect = qobject_cast<QGraphicsDropShadowEffect *>(this->graphicsEffect());
-            if(effect == zfnull)
-            {
-                effect = new QGraphicsDropShadowEffect(this);
-                this->setGraphicsEffect(effect);
-            }
-            effect->setBlurRadius(0);
-            effect->setColor(ZFImpl_sys_Qt_ZFUIColorToQColor(textShadowColor));
-            effect->setOffset(textShadowOffset.width, textShadowOffset.height);
-        }
-    }
 };
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -67,7 +48,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Qt, ZFUITextView, ZFProtoco
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsProxyWidget:QLabel")
 
 public:
-    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView)
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView,
+                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
         proxy->setWidget(new _ZFP_ZFUITextViewImpl_sys_Qt_TextView());
@@ -135,18 +117,6 @@ public:
     {
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
         nativeImplView->_ZFP_textColor(textColor);
-    }
-    virtual void textShadowColor(ZF_IN ZFUITextView *textView,
-                                 ZF_IN ZFUIColor const &textShadowColor)
-    {
-        _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
-        nativeImplView->_ZFP_textShadowUpdate(textShadowColor, textView->textShadowOffset());
-    }
-    virtual void textShadowOffset(ZF_IN ZFUITextView *textView,
-                                  ZF_IN ZFUISize const &textShadowOffset)
-    {
-        _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
-        nativeImplView->_ZFP_textShadowUpdate(textView->textShadowColor(), textShadowOffset);
     }
     virtual void textSize(ZF_IN ZFUITextView *textView,
                           ZF_IN zffloat textSize)

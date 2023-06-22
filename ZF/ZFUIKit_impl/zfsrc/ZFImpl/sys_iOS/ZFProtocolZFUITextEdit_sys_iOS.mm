@@ -115,7 +115,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_iOS, ZFUITextEdit, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UITextField")
 public:
-    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit)
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit,
+                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = [_ZFP_ZFUITextEditImpl_sys_iOS_TextEdit new];
         nativeImplView.ownerZFUITextEdit = textEdit;
@@ -274,18 +275,6 @@ public:
     {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         nativeImplView.textColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(textColor);
-    }
-    virtual void textShadowColor(ZF_IN ZFUITextEdit *textEdit,
-                                 ZF_IN ZFUIColor const &textShadowColor)
-    {
-        _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        nativeImplView.layer.shadowColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(textShadowColor).CGColor;
-    }
-    virtual void textShadowOffset(ZF_IN ZFUITextEdit *textEdit,
-                                  ZF_IN ZFUISize const &textShadowOffset)
-    {
-        _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
-        nativeImplView.layer.shadowOffset = ZFImpl_sys_iOS_ZFUISizeToCGSize(textShadowOffset);
     }
     virtual void textSize(ZF_IN ZFUITextEdit *textEdit,
                           ZF_IN zffloat textSize)

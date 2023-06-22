@@ -64,30 +64,6 @@ public final class ZFUITextView extends TextView {
         nativeTextViewTmp.setTextColor(textColor);
     }
 
-    public static void native_textShadowColor(Object nativeTextView,
-                                              int textShadowColor) {
-        ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
-        nativeTextViewTmp._textShadowColor = textShadowColor;
-        nativeTextViewTmp.setShadowLayer(
-                1,
-                nativeTextViewTmp._textShadowOffsetX,
-                nativeTextViewTmp._textShadowOffsetY,
-                nativeTextViewTmp._textShadowColor);
-    }
-
-    public static void native_textShadowOffset(Object nativeTextView,
-                                               int textShadowOffsetX,
-                                               int textShadowOffsetY) {
-        ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
-        nativeTextViewTmp._textShadowOffsetX = textShadowOffsetX;
-        nativeTextViewTmp._textShadowOffsetY = textShadowOffsetY;
-        nativeTextViewTmp.setShadowLayer(
-                1,
-                nativeTextViewTmp._textShadowOffsetX,
-                nativeTextViewTmp._textShadowOffsetY,
-                nativeTextViewTmp._textShadowColor);
-    }
-
     public static void native_textSingleLine(Object nativeTextView,
                                              boolean textSingleLine) {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
@@ -153,11 +129,6 @@ public final class ZFUITextView extends TextView {
         ZFUITextView nativeTextViewTmp = (ZFUITextView) nativeTextView;
         nativeTextViewTmp.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSizeCurrent);
     }
-
-    // ============================================================
-    private int _textShadowColor = Color.TRANSPARENT;
-    private int _textShadowOffsetX = 1;
-    private int _textShadowOffsetY = 1;
 
     // ============================================================
     @SuppressWarnings("deprecation")

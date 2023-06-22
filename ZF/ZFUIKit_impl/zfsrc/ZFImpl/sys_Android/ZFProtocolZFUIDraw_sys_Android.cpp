@@ -49,7 +49,8 @@ public:
     }
 
 public:
-    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView)
+    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView,
+                                           ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeDrawableViewCreate",

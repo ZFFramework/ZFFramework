@@ -431,7 +431,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZFUniqueName(name) _ZFP_ZFUniqueName2(name, __LINE__)
 #define _ZFP_ZFUniqueName2(name, line) _ZFP_ZFUniqueName3(name, line)
-#define _ZFP_ZFUniqueName3(name, line) _ZFP_zfunique_##name##_##line
+#define _ZFP_ZFUniqueName3(name, line) _ZFP_uniq_##name##_##line
 
 // ============================================================
 /**

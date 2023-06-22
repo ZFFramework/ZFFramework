@@ -18,6 +18,8 @@ public:
     zfidentity mouseId;
     /** @brief prev mouse down view */
     ZFImpl_sys_SDL_View *viewDown;
+    /** @brief whether viewDown grabbed the mouse event */
+    zfbool mouseGrab;
     /** @brief prev mouse hover view */
     ZFImpl_sys_SDL_View *viewHover;
 
@@ -26,6 +28,7 @@ public:
     ZFImpl_sys_SDL_MouseState(void)
     : mouseId(zfidentityInvalid())
     , viewDown(zfnull)
+    , mouseGrab(zffalse)
     , viewHover(zfnull)
     {
     }

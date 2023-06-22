@@ -71,7 +71,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_Qt, ZFUIImageView, ZFProto
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView)
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView,
+                                        ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         return new _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView(imageView);
     }

@@ -101,17 +101,14 @@ public:
         ZFImpl_sys_SDL_SysWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_SysWindow);
         nativeWindow->ownerZFUISysWindow = this->_mainWindow;
         nativeWindow->builtinWindow = zffalse;
-        nativeWindow->sdlWindow = SDL_CreateWindow(
-            ""
-            , SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
-            , 640, 480
-            , SDL_WINDOW_SHOWN
-            );
+        nativeWindow->sdlWindow = ZFImpl_sys_SDL_CreateWindow();
         zfCoreAssert(nativeWindow->sdlWindow != zfnull);
         nativeWindow->sdlRenderer = SDL_CreateRenderer(nativeWindow->sdlWindow, -1, 0
                 | SDL_RENDERER_ACCELERATED
+                | SDL_RENDERER_TARGETTEXTURE
             );
         zfCoreAssert(nativeWindow->sdlRenderer != zfnull);
+        SDL_SetRenderDrawBlendMode(nativeWindow->sdlRenderer, SDL_BLENDMODE_BLEND);
         this->notifyOnCreate(modalWindow, nativeWindow);
 
         ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfautoObject, modalWindow->objectHolder()), zfnull);

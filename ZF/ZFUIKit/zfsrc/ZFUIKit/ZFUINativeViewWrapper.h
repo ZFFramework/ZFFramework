@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * used to hold a native view in ZFUIKit environment,
  * what you should do is create a #ZFUINativeViewWrapper
- * and store native view by #wrappedNativeView\n
+ * and store native view by #nativeImplView\n
  * the embeded native view would be layouted to fill #ZFUINativeViewWrapper's frame,
  * to change it's layout logic, you should use it as a #ZFUIView\n
  * the #ZFUINativeViewWrapper itself is serializable,
@@ -31,7 +31,7 @@ protected:
     /**
      * @brief init with native view, see #ZFUINativeViewWrapper
      */
-    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(void *, wrappedNativeView))
+    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(void *, nativeImplView))
 
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}
@@ -41,15 +41,22 @@ protected:
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
 
 public:
+    zfoverride
+    virtual void *nativeImplView(void)
+    {
+        return zfsuper::nativeImplView();
+    }
+
     /**
-     * @brief see #ZFUINativeViewWrapper
+     * @brief see #nativeImplView
      */
-    ZFMETHOD_DECLARE_1(void, wrappedNativeView,
-                       ZFMP_IN(void *, wrappedNativeView))
-    /**
-     * @brief see #ZFUINativeViewWrapper
-     */
-    ZFMETHOD_DECLARE_0(void *, wrappedNativeView)
+    zfoverride
+    virtual void nativeImplView(ZF_IN void *nativeImplView,
+                                ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback = zfnull,
+                                ZF_IN zfbool nativeImplViewRequireVirtualIndex = zftrue)
+    {
+        zfsuper::nativeImplView(nativeImplView, nativeImplViewDeleteCallback, nativeImplViewRequireVirtualIndex);
+    }
 
     /**
      * @brief measure the native view

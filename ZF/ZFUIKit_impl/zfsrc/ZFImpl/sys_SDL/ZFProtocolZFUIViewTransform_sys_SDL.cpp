@@ -26,11 +26,7 @@ public:
         nativeView->viewTransform->scaleX = view->viewScaleX();
         nativeView->viewTransform->scaleY = view->viewScaleY();
         nativeView->viewTransform->rotateZ = view->viewRotateZ();
-
-        if(nativeView->sysWindow != zfnull)
-        {
-            nativeView->sysWindow->renderRequest();
-        }
+        nativeView->renderRequest();
     }
     virtual void viewTransformReset(ZF_IN ZFUIView *view)
     {

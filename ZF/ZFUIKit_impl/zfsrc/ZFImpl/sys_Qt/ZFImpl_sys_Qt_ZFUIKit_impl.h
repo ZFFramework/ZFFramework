@@ -170,7 +170,7 @@ inline ZFUIRect ZFImpl_sys_Qt_ZFUIRectFromQRectF(ZF_IN const QRectF &qRect)
     return ret;
 }
 
-inline void ZFImpl_sys_Qt_ZFUIColorToQColor(ZF_IN QColor &ret, ZF_IN const ZFUIColor &color)
+inline void ZFImpl_sys_Qt_ZFUIColorToQColorT(ZF_IN QColor &ret, ZF_IN const ZFUIColor &color)
 {
     ret.setRgbF(
             (qreal)ZFUIColorGetR(color),
@@ -182,7 +182,7 @@ inline void ZFImpl_sys_Qt_ZFUIColorToQColor(ZF_IN QColor &ret, ZF_IN const ZFUIC
 inline QColor ZFImpl_sys_Qt_ZFUIColorToQColor(ZF_IN const ZFUIColor &color)
 {
     QColor ret;
-    ZFImpl_sys_Qt_ZFUIColorToQColor(ret, color);
+    ZFImpl_sys_Qt_ZFUIColorToQColorT(ret, color);
     return ret;
 }
 inline void ZFImpl_sys_Qt_ZFUIColorFromQColorT(ZF_OUT ZFUIColor &ret, ZF_IN const QColor qColor)

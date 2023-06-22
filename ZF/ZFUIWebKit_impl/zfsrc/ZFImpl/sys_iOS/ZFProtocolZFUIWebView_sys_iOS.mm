@@ -90,7 +90,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_iOS, ZFUIWebView, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:WKWebView")
 public:
-    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView)
+    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView,
+                                      ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         _ZFP_ZFUIWebViewImpl_sys_iOS_View *nativeWebView = [_ZFP_ZFUIWebViewImpl_sys_iOS_View new];
         nativeWebView.navigationDelegate = nativeWebView;

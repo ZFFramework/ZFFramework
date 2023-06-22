@@ -19,7 +19,8 @@ public:
     /**
      * @brief create native image view
      */
-    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView) zfpurevirtual;
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView,
+                                        ZF_OUT zfbool &nativeImplViewRequireVirtualIndex) zfpurevirtual;
     /**
      * @brief destroy native image view
      */

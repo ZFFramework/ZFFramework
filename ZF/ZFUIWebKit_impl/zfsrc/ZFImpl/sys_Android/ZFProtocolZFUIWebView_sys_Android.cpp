@@ -32,7 +32,8 @@ public:
     }
 
 public:
-    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView)
+    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView,
+                                      ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeWebViewCreate",

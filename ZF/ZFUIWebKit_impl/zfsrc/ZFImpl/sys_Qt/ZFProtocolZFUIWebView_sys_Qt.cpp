@@ -55,7 +55,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIWebViewImpl_sys_Qt, ZFUIWebView, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:UIWebView")
 public:
-    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView)
+    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView,
+                                      ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         return new _ZFP_ZFUIWebViewImpl_sys_Qt_View(webView, this);
     }

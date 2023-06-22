@@ -529,7 +529,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Qt, ZFUIScrollView, ZFPro
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:
-    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView)
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView,
+                                         ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView *nativeScrollView = new _ZFP_ZFUIScrollViewImpl_sys_Qt_ScrollView();
         nativeScrollView->_ZFP_impl = this;

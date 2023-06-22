@@ -18,7 +18,8 @@ public:
     /**
      * @brief create native web view
      */
-    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView) zfpurevirtual;
+    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView,
+                                      ZF_OUT zfbool &nativeImplViewRequireVirtualIndex) zfpurevirtual;
     /**
      * @brief destroy native web view
      */

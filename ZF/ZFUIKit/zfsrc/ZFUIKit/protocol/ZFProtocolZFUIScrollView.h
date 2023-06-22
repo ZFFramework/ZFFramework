@@ -21,10 +21,12 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(ZF_I
  * @brief protocol for ZFUIScrollView
  */
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIScrollView)
+public:
     /**
      * @brief create native scroll view
      */
-    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView) zfpurevirtual;
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView,
+                                         ZF_OUT zfbool &nativeImplViewRequireVirtualIndex) zfpurevirtual;
     /**
      * @brief destroy native scroll view
      */
@@ -181,7 +183,12 @@ public:
 public:
     /** @brief see #ZFUIScrollViewImplHelper */
     virtual zftimet nativeTime(void) zfpurevirtual;
-    /** @brief see #ZFUIScrollViewImplHelper */
+    /**
+     * @brief see #ZFUIScrollViewImplHelper
+     *
+     * what coordinate system would be used, depends on impl,
+     * but you should keep it same between all of the methods of this protocol impl
+     */
     virtual void mouseEventPos(ZF_OUT ZFUIPoint &ret, ZF_IN void *nativeMouseEvent) zfpurevirtual;
     /** @brief see #ZFUIScrollViewImplHelper */
     virtual void *mouseEventClone(ZF_IN void *nativeMouseEvent,
@@ -220,7 +227,7 @@ public:
     /**
      * @brief see #ZFUIScrollViewImplHelper
      *
-     * return original native mouse event or create new copy if not able to modify,
+     * return original native mouse event or create new copy if not able to modify\n
      * if you created new native mouse event and return, you should destroy old one manually by #mouseEventCleanup
      */
     virtual void *translateFromParentToChild(ZF_IN void *nativeChild,

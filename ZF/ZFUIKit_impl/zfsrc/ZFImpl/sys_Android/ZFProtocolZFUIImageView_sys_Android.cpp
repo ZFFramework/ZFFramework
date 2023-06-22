@@ -36,7 +36,8 @@ public:
     }
 
 public:
-    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView)
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView,
+                                        ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageViewCreate",

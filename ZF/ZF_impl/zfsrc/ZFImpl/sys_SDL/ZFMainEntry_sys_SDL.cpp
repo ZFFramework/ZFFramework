@@ -57,13 +57,9 @@ private:
             zfCoreCriticalMessage("SDL init failed: %s", SDL_GetError());
             return;
         }
+        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-        d->builtinWindow = SDL_CreateWindow(
-            ""
-            , SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
-            , 640, 480
-            , SDL_WINDOW_SHOWN
-            );
+        d->builtinWindow = ZFImpl_sys_SDL_CreateWindow();
         if(d->builtinWindow == zfnull)
         {
             zfCoreCriticalMessage("SDL window create failed: %s", SDL_GetError());
@@ -71,6 +67,7 @@ private:
         }
         d->builtinRenderer = SDL_CreateRenderer(d->builtinWindow, -1, 0
                 | SDL_RENDERER_ACCELERATED
+                | SDL_RENDERER_TARGETTEXTURE
             );
         if(d->builtinRenderer == zfnull)
         {
@@ -79,6 +76,7 @@ private:
             zfCoreCriticalMessage("SDL renderer create failed: %s", SDL_GetError());
             return;
         }
+        SDL_SetRenderDrawBlendMode(d->builtinRenderer, SDL_BLENDMODE_BLEND);
 
         ZFImpl_sys_SDL_embedInit(d->builtinWindow);
     }
@@ -128,6 +126,17 @@ SDL_Window *ZFImpl_sys_SDL_mainWindow(void)
 SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void)
 {
     return _ZFP_ZFImpl_sys_SDL_mainRenderer;
+}
+
+SDL_Window *ZFImpl_sys_SDL_CreateWindow(void)
+{
+    return SDL_CreateWindow(
+        ""
+        , SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
+        , 640, 480
+        , SDL_WINDOW_SHOWN
+            | SDL_WINDOW_RESIZABLE
+        );
 }
 
 // ============================================================

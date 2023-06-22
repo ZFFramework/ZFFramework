@@ -56,25 +56,6 @@ public:
         palette.setColor(QPalette::Text, ZFImpl_sys_Qt_ZFUIColorToQColor(v));
         this->setPalette(palette);
     }
-    void _ZFP_textShadowUpdate(ZF_IN const ZFUIColor &textShadowColor, ZF_IN const ZFUISize &textShadowOffset)
-    {
-        if(textShadowColor == ZFUIColorZero())
-        {
-            this->setGraphicsEffect(zfnull);
-        }
-        else
-        {
-            QGraphicsDropShadowEffect *effect = qobject_cast<QGraphicsDropShadowEffect *>(this->graphicsEffect());
-            if(effect == zfnull)
-            {
-                effect = new QGraphicsDropShadowEffect(this);
-                this->setGraphicsEffect(effect);
-            }
-            effect->setBlurRadius(0);
-            effect->setColor(ZFImpl_sys_Qt_ZFUIColorToQColor(textShadowColor));
-            effect->setOffset(textShadowOffset.width, textShadowOffset.height);
-        }
-    }
     void _ZFP_textEditSecured(ZF_IN zfbool textEditSecured)
     {
         if(this->textEditSecured == textEditSecured)
@@ -201,7 +182,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Qt, ZFUITextEdit, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsProxyWidget:QLineEdit")
 public:
-    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit)
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit,
+                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         QGraphicsProxyWidget *proxy = new QGraphicsProxyWidget();
         proxy->setWidget(new _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit(textEdit));
@@ -320,18 +302,6 @@ public:
     {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
         nativeImplView->_ZFP_textColor(textColor);
-    }
-    virtual void textShadowColor(ZF_IN ZFUITextEdit *textEdit,
-                                 ZF_IN ZFUIColor const &textShadowColor)
-    {
-        _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
-        nativeImplView->_ZFP_textShadowUpdate(textShadowColor, textEdit->textShadowOffset());
-    }
-    virtual void textShadowOffset(ZF_IN ZFUITextEdit *textEdit,
-                                  ZF_IN ZFUISize const &textShadowOffset)
-    {
-        _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
-        nativeImplView->_ZFP_textShadowUpdate(textEdit->textShadowColor(), textShadowOffset);
     }
     virtual void textSize(ZF_IN ZFUITextEdit *textEdit,
                           ZF_IN zffloat textSize)

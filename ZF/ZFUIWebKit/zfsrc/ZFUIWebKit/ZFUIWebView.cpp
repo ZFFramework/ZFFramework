@@ -67,8 +67,12 @@ void ZFUIWebView::objectOnInit(void)
             ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewDestroy(view->to<ZFUIWebView *>(), nativeImplView);
         }
     };
-    this->nativeImplView(ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewCreate(this),
-                            _ZFP_ZFUIWebView_nativeImplViewDestroy::action);
+    zfbool nativeImplViewRequireVirtualIndex = zftrue;
+    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewCreate(this, nativeImplViewRequireVirtualIndex);
+    this->nativeImplView(
+        nativeImplView,
+        _ZFP_ZFUIWebView_nativeImplViewDestroy::action,
+        nativeImplViewRequireVirtualIndex);
 }
 void ZFUIWebView::objectOnDealloc(void)
 {

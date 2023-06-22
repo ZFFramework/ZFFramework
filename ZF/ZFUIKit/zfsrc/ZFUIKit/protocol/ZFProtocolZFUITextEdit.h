@@ -18,7 +18,8 @@ public:
     /**
      * @brief create native text edit view
      */
-    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit) zfpurevirtual;
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit,
+                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex) zfpurevirtual;
     /**
      * @brief destroy native text edit view
      */
@@ -59,12 +60,6 @@ public:
     /** @brief see #ZFUITextEdit */
     virtual void textColor(ZF_IN ZFUITextEdit *textEdit,
                            ZF_IN ZFUIColor const &textColor) zfpurevirtual;
-    /** @brief see #ZFUITextEdit */
-    virtual void textShadowColor(ZF_IN ZFUITextEdit *textEdit,
-                                 ZF_IN ZFUIColor const &textShadowColor) zfpurevirtual;
-    /** @brief see #ZFUITextEdit */
-    virtual void textShadowOffset(ZF_IN ZFUITextEdit *textEdit,
-                                  ZF_IN ZFUISize const &textShadowOffset) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
     virtual void textSize(ZF_IN ZFUITextEdit *textEdit,
                           ZF_IN zffloat textSize) zfpurevirtual;

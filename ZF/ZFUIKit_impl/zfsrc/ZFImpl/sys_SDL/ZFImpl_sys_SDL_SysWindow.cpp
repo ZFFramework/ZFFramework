@@ -64,7 +64,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowRender, ZFLevelZFFrameworkPostNormal)
         {
             SDL_SetRenderDrawColor(d->sysWindow->sdlRenderer, 255, 255, 255, 255);
             SDL_RenderClear(d->sysWindow->sdlRenderer);
-            d->sysWindow->rootView->render(d->sysWindow->sdlRenderer, 0, 0);
+            d->sysWindow->rootView->render(d->sysWindow->sdlRenderer, d->sysWindow->rootView->rect, d->sysWindow->rootView->rect);
             SDL_RenderPresent(d->sysWindow->sdlRenderer);
         }
     }
@@ -157,6 +157,7 @@ void ZFImpl_sys_SDL_SysWindow::renderRequest(void)
 void ZFImpl_sys_SDL_SysWindow::layoutRequest(void)
 {
     d->layoutRequested = zftrue;
+    d->renderRequested = zftrue;
 }
 
 // ============================================================
@@ -168,6 +169,7 @@ void ZFImpl_sys_SDL_SysWindow::viewFocusChange(ZF_IN ZFImpl_sys_SDL_View *view)
     {
         if(this->viewFocused != zfnull)
         {
+            this->viewFocused->renderRequest();
             ZFUIView *owner = this->viewFocused->ownerZFUIView;
             this->viewFocused = zfnull;
             if(owner != zfnull)
@@ -189,6 +191,13 @@ void ZFImpl_sys_SDL_SysWindow::viewFocusChange(ZF_IN ZFImpl_sys_SDL_View *view)
     {
         return;
     }
+
+    if(this->viewFocused != zfnull)
+    {
+        this->viewFocused->renderRequest();
+    }
+    view->renderRequest();
+
     ZFUIView *focusOld = (this->viewFocused != zfnull ? this->viewFocused->ownerZFUIView : zfnull);
     ZFUIView *focusNew = view->ownerZFUIView;
     this->viewFocused = view;
@@ -210,6 +219,8 @@ ZFImpl_sys_SDL_MouseState &ZFImpl_sys_SDL_SysWindow::mouseState(ZF_IN Uint32 whi
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_SysWindow_EventDispatch, ZFLevelZFFrameworkNormal)
 {
+    ZFImpl_sys_SDL_eventHandlerAdd(SDL_WINDOWEVENT, onWindowEvent, ZFLevelZFFrameworkNormal);
+
     ZFImpl_sys_SDL_eventHandlerAdd(SDL_MOUSEMOTION, onMouseEvent, ZFLevelZFFrameworkNormal);
     ZFImpl_sys_SDL_eventHandlerAdd(SDL_MOUSEBUTTONDOWN, onMouseEvent, ZFLevelZFFrameworkNormal);
     ZFImpl_sys_SDL_eventHandlerAdd(SDL_MOUSEBUTTONUP, onMouseEvent, ZFLevelZFFrameworkNormal);
@@ -229,6 +240,32 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_SysWindow_EventDispatch)
     ZFImpl_sys_SDL_eventHandlerRemove(SDL_KEYUP, onKeyEvent);
 }
 private:
+    static zfbool onWindowEvent(ZF_IN SDL_Event *sdlEvent)
+    {
+        switch(sdlEvent->window.event)
+        {
+            case SDL_WINDOWEVENT_RESIZED:
+            case SDL_WINDOWEVENT_SIZE_CHANGED: {
+                ZFCoreArrayPOD<ZFImpl_sys_SDL_SysWindow *> &l = ZFImpl_sys_SDL_SysWindow::allWindow();
+                ZFImpl_sys_SDL_SysWindow *sysWindow = zfnull;
+                for(zfindex i = l.count() - 1; i != zfindexMax(); --i)
+                {
+                    if(SDL_GetWindowID(l[i]->sdlWindow) == sdlEvent->button.windowID)
+                    {
+                        sysWindow = l[i];
+                        if(sysWindow->rootView != zfnull)
+                        {
+                            sysWindow->rootView->layoutRequest();
+                        }
+                        return zftrue;
+                    }
+                }
+                break;
+            }
+        }
+        return zffalse;
+    }
+
     static zfbool onMouseEvent(ZF_IN SDL_Event *sdlEvent)
     {
         ZFCoreArrayPOD<ZFImpl_sys_SDL_SysWindow *> &l = ZFImpl_sys_SDL_SysWindow::allWindow();
@@ -242,7 +279,7 @@ private:
                 {
                     sysWindow->rootView->dispatchMouseEvent(sdlEvent);
                 }
-                return true;
+                return zftrue;
             }
         }
         return zffalse;
@@ -260,7 +297,7 @@ private:
                 {
                     sysWindow->rootView->dispatchWheelEvent(sdlEvent);
                 }
-                return true;
+                return zftrue;
             }
         }
         return zffalse;
@@ -278,7 +315,7 @@ private:
                 {
                     sysWindow->rootView->dispatchKeyEvent(sdlEvent);
                 }
-                return true;
+                return zftrue;
             }
         }
         return zffalse;

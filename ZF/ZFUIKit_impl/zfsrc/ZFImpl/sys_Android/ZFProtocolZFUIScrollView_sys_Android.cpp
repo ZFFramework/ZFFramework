@@ -32,7 +32,8 @@ public:
     }
 
 public:
-    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *view)
+    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *view,
+                                         ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_nativeScrollViewCreate",

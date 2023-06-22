@@ -44,7 +44,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Qt, ZFUIDrawForView, ZFP
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:
-    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView)
+    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView,
+                                           ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         return new _ZFP_ZFUIDrawableViewImpl_sys_Qt(drawableView);
     }

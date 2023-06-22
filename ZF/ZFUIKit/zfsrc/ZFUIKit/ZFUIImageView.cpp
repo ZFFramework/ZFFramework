@@ -115,9 +115,12 @@ void ZFUIImageView::objectOnInit(void)
             ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewDestroy(view->to<ZFUIImageView *>(), nativeImplView);
         }
     };
+    zfbool nativeImplViewRequireVirtualIndex = zftrue;
+    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
-        ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewCreate(this),
-        _ZFP_ZFUIImageView_nativeImplViewDestroy::action);
+        nativeImplView,
+        _ZFP_ZFUIImageView_nativeImplViewDestroy::action,
+        nativeImplViewRequireVirtualIndex);
 }
 void ZFUIImageView::objectOnDealloc(void)
 {

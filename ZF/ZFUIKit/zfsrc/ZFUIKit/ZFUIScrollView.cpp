@@ -697,9 +697,12 @@ void ZFUIScrollView::objectOnInit(void)
             ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewDestroy(view->to<ZFUIScrollView *>(), nativeImplView);
         }
     };
+    zfbool nativeImplViewRequireVirtualIndex = zftrue;
+    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
-        ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewCreate(this),
-        _ZFP_ZFUIScrollView_nativeImplViewDestroy::action);
+        nativeImplView,
+        _ZFP_ZFUIScrollView_nativeImplViewDestroy::action,
+        nativeImplViewRequireVirtualIndex);
 }
 void ZFUIScrollView::objectOnDealloc(void)
 {

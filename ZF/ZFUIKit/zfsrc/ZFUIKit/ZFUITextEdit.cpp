@@ -26,7 +26,6 @@ public:
 public:
     void updateSizeRelatedProperty(void)
     {
-        ZFPROTOCOL_ACCESS(ZFUITextEdit)->textShadowOffset(this->pimplOwner, ZFUISizeApplyScale(this->pimplOwner->textShadowOffset(), this->pimplOwner->UIScaleFixed()));
         ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSize(this->pimplOwner, ZFUISizeApplyScale(this->pimplOwner->textSize(), this->pimplOwner->UIScaleFixed()));
     }
 
@@ -155,14 +154,6 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUIColor, textColor)
 {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textColor(this, this->textColor());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUIColor, textShadowColor)
-{
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textShadowColor(this, this->textShadowColor());
-}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUISize, textShadowOffset)
-{
-    ZFPROTOCOL_ACCESS(ZFUITextEdit)->textShadowOffset(this, ZFUISizeApplyScale(this->textShadowOffset(), this->UIScaleFixed()));
-}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zffloat, textSize)
 {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textSize(this, ZFUISizeApplyScale(this->textSize(), this->UIScaleFixed()));
@@ -184,8 +175,6 @@ ZFMETHOD_DEFINE_1(ZFUITextEdit, void, textStyleCopyFrom,
     this->textAppearance(src->textAppearance());
     this->textAlign(src->textAlign());
     this->textColor(src->textColor());
-    this->textShadowColor(src->textShadowColor());
-    this->textShadowOffset(src->textShadowOffset());
     this->textSize(src->textSize());
 }
 ZFMETHOD_DEFINE_1(ZFUITextEdit, void, textStyleCopyTo,
@@ -200,8 +189,6 @@ ZFMETHOD_DEFINE_1(ZFUITextEdit, void, textStyleCopyTo,
     dst->textAppearance(this->textAppearance());
     dst->textAlign(this->textAlign());
     dst->textColor(this->textColor());
-    dst->textShadowColor(this->textShadowColor());
-    dst->textShadowOffset(this->textShadowOffset());
     dst->textSize(this->textSize());
 }
 
@@ -221,8 +208,12 @@ void ZFUITextEdit::objectOnInit(void)
             ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditDestroy(view->to<ZFUITextEdit *>(), nativeImplView);
         }
     };
-    this->nativeImplView(ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditCreate(this),
-        _ZFP_ZFUITextEdit_nativeImplViewDestroy::action);
+    zfbool nativeImplViewRequireVirtualIndex = zftrue;
+    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditCreate(this, nativeImplViewRequireVirtualIndex);
+    this->nativeImplView(
+        nativeImplView,
+        _ZFP_ZFUITextEdit_nativeImplViewDestroy::action,
+        nativeImplViewRequireVirtualIndex);
 
     ZFUIView *textPlaceHolderTmp = ZFCastZFObject(ZFUIView *, this->textPlaceHolder());
     if(textPlaceHolderTmp == zfnull)

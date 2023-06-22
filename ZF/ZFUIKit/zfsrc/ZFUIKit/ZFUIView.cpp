@@ -50,19 +50,20 @@ public:
     ZFListener layoutParamOnUpdate;
 
     enum {
-        stateFlag_layoutRequested = 1 << 0,
-        stateFlag_layoutRequestedRecursively = 1 << 1,
-        stateFlag_layouting = 1 << 2,
-        stateFlag_viewFrameOverrideFlag = 1 << 3,
-        stateFlag_UIScaleChanged = 1 << 4,
-        stateFlag_viewTransformUpdate = 1 << 5,
-        stateFlag_viewTransformModified = 1 << 6,
-        stateFlag_observerHasAddFlag_viewChildOnChange = 1 << 7,
-        stateFlag_observerHasAddFlag_viewChildOnAdd = 1 << 8,
-        stateFlag_observerHasAddFlag_viewChildOnRemove = 1 << 9,
-        stateFlag_observerHasAddFlag_viewOnAddToParent = 1 << 10,
-        stateFlag_observerHasAddFlag_viewOnRemoveFromParent = 1 << 11,
-        stateFlag_observerHasAddFlag_layoutOnLayoutRequest = 1 << 12,
+        stateFlag_nativeImplViewRequireVirtualIndex = 1 << 0,
+        stateFlag_layoutRequested = 1 << 1,
+        stateFlag_layoutRequestedRecursively = 1 << 2,
+        stateFlag_layouting = 1 << 3,
+        stateFlag_viewFrameOverrideFlag = 1 << 4,
+        stateFlag_UIScaleChanged = 1 << 5,
+        stateFlag_viewTransformUpdate = 1 << 6,
+        stateFlag_viewTransformModified = 1 << 7,
+        stateFlag_observerHasAddFlag_viewChildOnChange = 1 << 8,
+        stateFlag_observerHasAddFlag_viewChildOnAdd = 1 << 9,
+        stateFlag_observerHasAddFlag_viewChildOnRemove = 1 << 10,
+        stateFlag_observerHasAddFlag_viewOnAddToParent = 1 << 11,
+        stateFlag_observerHasAddFlag_viewOnRemoveFromParent = 1 << 12,
+        stateFlag_observerHasAddFlag_layoutOnLayoutRequest = 1 << 13,
     };
     zfuint stateFlag;
 
@@ -136,14 +137,14 @@ public:
         view->layoutOnLayoutPrepare(bounds);
         view->observerNotify(ZFUIView::EventViewLayoutOnLayoutPrepare());
 
-        if(view->d->nativeImplView != zfnull)
+        ZFUIRect nativeImplViewFrame = ZFUIRectZero();
+        view->nativeImplViewOnLayout(nativeImplViewFrame, bounds, view->nativeImplViewMargin());
+        if(view->d->nativeImplViewFrame != nativeImplViewFrame
+            || ZFBitTest(view->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged))
         {
-            ZFUIRect nativeImplViewFrame = ZFUIRectZero();
-            view->nativeImplViewOnLayout(nativeImplViewFrame, bounds, view->nativeImplViewMargin());
-            if(view->d->nativeImplViewFrame != nativeImplViewFrame
-                || ZFBitTest(view->d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_UIScaleChanged))
+            view->d->nativeImplViewFrame = nativeImplViewFrame;
+            if(view->d->nativeImplView != zfnull)
             {
-                view->d->nativeImplViewFrame = nativeImplViewFrame;
                 ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplViewFrame(
                     view,
                     ZFUIRectApplyScale(nativeImplViewFrame, view->UIScaleFixed()));
@@ -234,7 +235,7 @@ public:
     }
     zfindex viewLayerPrevCount(ZF_IN _ZFP_ZFUIViewLayerData &layer)
     {
-        zfindex nativeImplFix = (this->nativeImplView && ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplViewRequireVirtualIndex() ? 1 : 0);
+        zfindex nativeImplFix = (this->nativeImplView && ZFBitTest(this->stateFlag, stateFlag_nativeImplViewRequireVirtualIndex) ? 1 : 0);
         if(&layer == &(this->layerNormal))
         {
             return this->layerInternalImpl.views.count() + nativeImplFix
@@ -1219,7 +1220,7 @@ void ZFUIView::objectOnDealloc(void)
         }
     }
 
-    this->nativeImplView(zfnull, zfnull);
+    this->nativeImplView(zfnull, zfnull, zffalse);
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkNormal) == ZFFrameworkStateAvailable
         && ZFPROTOCOL_ACCESS(ZFUIView)->nativeViewCacheOnSave(d->nativeView)
         && ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewNativeViewCache)->nativeViewCache.count() < 100)
@@ -1379,14 +1380,27 @@ ZFMETHOD_DEFINE_0(ZFUIView, void *, nativeImplView)
 {
     return d->nativeImplView;
 }
+ZFMETHOD_DEFINE_0(ZFUIView, zfbool, nativeImplViewRequireVirtualIndex)
+{
+    return ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_nativeImplViewRequireVirtualIndex);
+}
 void ZFUIView::nativeImplView(ZF_IN void *nativeImplView,
-                              ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback)
+                              ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback,
+                              ZF_IN zfbool nativeImplViewRequireVirtualIndex)
 {
     void *nativeImplViewOld = d->nativeImplView;
     ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallbackOld = d->nativeImplViewDeleteCallback;
     d->nativeImplView = nativeImplView;
     d->nativeImplViewDeleteCallback = nativeImplViewDeleteCallback;
-    ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplView(this, nativeImplViewOld, d->nativeImplView, d->layerInternalImpl.views.count());
+    if(nativeImplViewRequireVirtualIndex)
+    {
+        ZFBitSet(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_nativeImplViewRequireVirtualIndex);
+    }
+    else
+    {
+        ZFBitUnset(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_nativeImplViewRequireVirtualIndex);
+    }
+    ZFPROTOCOL_ACCESS(ZFUIView)->nativeImplView(this, nativeImplViewOld, d->nativeImplView, d->layerInternalImpl.views.count(), nativeImplViewRequireVirtualIndex);
     if(nativeImplViewOld && nativeImplViewDeleteCallbackOld)
     {
         nativeImplViewDeleteCallbackOld(this, nativeImplViewOld);

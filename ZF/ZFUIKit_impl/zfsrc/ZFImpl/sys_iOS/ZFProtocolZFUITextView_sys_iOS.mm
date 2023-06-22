@@ -48,7 +48,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_iOS, ZFUITextView, ZFProtoc
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:UILabel")
 
 public:
-    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView)
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView,
+                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         return (__bridge_retained void *)[_ZFP_ZFUITextViewImpl_sys_iOS_TextView new];
     }
@@ -122,18 +123,6 @@ public:
     {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
         nativeImplView.textColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(textColor);
-    }
-    virtual void textShadowColor(ZF_IN ZFUITextView *textView,
-                                 ZF_IN ZFUIColor const &textShadowColor)
-    {
-        _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
-        nativeImplView.shadowColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(textShadowColor);
-    }
-    virtual void textShadowOffset(ZF_IN ZFUITextView *textView,
-                                  ZF_IN ZFUISize const &textShadowOffset)
-    {
-        _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
-        nativeImplView.shadowOffset = ZFImpl_sys_iOS_ZFUISizeToCGSize(textShadowOffset);
     }
     virtual void textSize(ZF_IN ZFUITextView *textView,
                           ZF_IN zffloat textSize)

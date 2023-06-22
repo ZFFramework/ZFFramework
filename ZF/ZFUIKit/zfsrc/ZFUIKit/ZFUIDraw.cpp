@@ -30,9 +30,12 @@ void ZFUIDrawableView::objectOnInit(void)
             ZFPROTOCOL_ACCESS(ZFUIDrawForView)->nativeDrawableViewDestroy(view->to<ZFUIDrawableView *>(), nativeImplView);
         }
     };
+    zfbool nativeImplViewRequireVirtualIndex = zftrue;
+    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUIDrawForView)->nativeDrawableViewCreate(this, nativeImplViewRequireVirtualIndex);
     this->nativeImplView(
-        ZFPROTOCOL_ACCESS(ZFUIDrawForView)->nativeDrawableViewCreate(this),
-        _ZFP_ZFUIDrawableView_nativeImplViewDestroy::action);
+        nativeImplView,
+        _ZFP_ZFUIDrawableView_nativeImplViewDestroy::action,
+        nativeImplViewRequireVirtualIndex);
 }
 
 ZF_NAMESPACE_BEGIN(ZFUIDraw)

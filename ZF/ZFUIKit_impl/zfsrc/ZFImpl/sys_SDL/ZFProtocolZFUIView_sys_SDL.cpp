@@ -12,8 +12,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_SDL, ZFUIView, ZFProtocolLevel:
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUISysWindow, "ZFImpl_sys_SDL_SysWindow")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    static void renderCallback(ZF_IN SDL_Renderer *renderer, ZF_IN ZFImpl_sys_SDL_View *nativeView,
-                               ZF_IN int viewX, ZF_IN int viewY)
+    static zfbool renderCallback(ZF_IN SDL_Renderer *renderer, ZF_IN ZFImpl_sys_SDL_View *nativeView,
+                                 ZF_IN const SDL_Rect &childRect, ZF_IN const SDL_Rect &parentRect)
     {
         if(nativeView->ownerZFUIView != zfnull)
         {
@@ -23,18 +23,16 @@ public:
                 Uint8 rOld, gOld, bOld, aOld;
                 SDL_GetRenderDrawColor(renderer, &rOld, &gOld, &bOld, &aOld);
                 SDL_SetRenderDrawColor(renderer
-                        , 255 * ZFUIColorGetR(bg), 255 * ZFUIColorGetG(bg), 255 * ZFUIColorGetB(bg)
-                        , 255 * nativeView->ownerZFUIView->viewAlpha()
+                        , 0xFF * ZFUIColorGetR(bg), 0xFF * ZFUIColorGetG(bg), 0xFF * ZFUIColorGetB(bg)
+                        , 0xFF * (nativeView->ownerZFUIView->viewAlpha() * ZFUIColorGetA(bg))
                     );
                 SDL_Rect rect;
-                rect.x = viewX;
-                rect.y = viewY;
-                rect.w = nativeView->rect.w;
-                rect.h = nativeView->rect.h;
+                ZFImpl_sys_SDL_View::renderRectCalc(rect, childRect, parentRect);
                 SDL_RenderFillRect(renderer, &rect);
                 SDL_SetRenderDrawColor(renderer, rOld, gOld, bOld, aOld);
             }
         }
+        return zffalse;
     }
 
 public:
@@ -64,25 +62,41 @@ public:
         zfdelete(nativeViewTmp);
     }
 
-    virtual zfbool nativeImplViewRequireVirtualIndex(void)
-    {
-        return zffalse;
-    }
     virtual void nativeImplView(ZF_IN ZFUIView *view,
                                 ZF_IN void *nativeImplViewOld,
                                 ZF_IN void *nativeImplView,
-                                ZF_IN zfindex virtualIndex)
+                                ZF_IN zfindex virtualIndex,
+                                ZF_IN zfbool nativeImplViewRequireVirtualIndex)
     {
-        // use ZFImpl_sys_SDL_View::renderImpls instead
+        if(!nativeImplViewRequireVirtualIndex)
+        {
+            return;
+        }
+
+        // support, but recommended to use ZFImpl_sys_SDL_View::renderImpls instead
+        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
+        if(nativeImplViewOld != zfnull)
+        {
+            nativeView->children.remove(virtualIndex);
+        }
         if(nativeImplView != zfnull)
         {
-            zfCoreCriticalShouldNotGoHere();
+            ZFImpl_sys_SDL_View *nativeImplViewTmp = (ZFImpl_sys_SDL_View *)nativeImplView;
+            nativeView->children.add(virtualIndex, nativeImplViewTmp);
         }
     }
     virtual void nativeImplViewFrame(ZF_IN ZFUIView *view,
                                      ZF_IN const ZFUIRect &rect)
     {
-        // nothing to do
+        ZFImpl_sys_SDL_View *nativeImplView = (ZFImpl_sys_SDL_View *)view->nativeImplView();
+        if(nativeImplView != zfnull)
+        {
+            nativeImplView->rect.x = rect.x;
+            nativeImplView->rect.y = rect.y;
+            nativeImplView->rect.w = rect.width;
+            nativeImplView->rect.h = rect.height;
+            nativeImplView->renderRequest();
+        }
     }
     virtual zffloat UIScaleForImpl(ZF_IN void *nativeView)
     {
@@ -100,19 +114,13 @@ public:
                              ZF_IN zfbool viewVisible)
     {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)view->nativeView();
-        if(nativeViewTmp->sysWindow != zfnull)
-        {
-            nativeViewTmp->sysWindow->renderRequest();
-        }
+        nativeViewTmp->renderRequest();
     }
     virtual void viewAlpha(ZF_IN ZFUIView *view,
                            ZF_IN zffloat viewAlpha)
     {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)view->nativeView();
-        if(nativeViewTmp->sysWindow != zfnull)
-        {
-            nativeViewTmp->sysWindow->renderRequest();
-        }
+        nativeViewTmp->renderRequest();
     }
     virtual void viewUIEnable(ZF_IN ZFUIView *view,
                               ZF_IN zfbool viewUIEnable)
@@ -128,10 +136,7 @@ public:
                                      ZF_IN const ZFUIColor &viewBackgroundColor)
     {
         ZFImpl_sys_SDL_View *nativeViewTmp = (ZFImpl_sys_SDL_View *)view->nativeView();
-        if(nativeViewTmp->sysWindow != zfnull)
-        {
-            nativeViewTmp->sysWindow->renderRequest();
-        }
+        nativeViewTmp->renderRequest();
     }
 
 public:
@@ -144,11 +149,7 @@ public:
         ZFImpl_sys_SDL_View *nativeParent = (ZFImpl_sys_SDL_View *)parent->nativeView();
         ZFImpl_sys_SDL_View *nativeChild = (ZFImpl_sys_SDL_View *)child->nativeView();
         nativeParent->childAttach(virtualIndex, nativeChild);
-        if(nativeParent->sysWindow != zfnull)
-        {
-            nativeParent->sysWindow->layoutRequest();
-            nativeParent->sysWindow->renderRequest();
-        }
+        nativeParent->layoutRequest();
     }
     virtual void childRemove(ZF_IN ZFUIView *parent,
                              ZF_IN ZFUIView *child,
@@ -158,11 +159,7 @@ public:
     {
         ZFImpl_sys_SDL_View *nativeParent = (ZFImpl_sys_SDL_View *)parent->nativeView();
         nativeParent->childDetach(virtualIndex);
-        if(nativeParent->sysWindow != zfnull)
-        {
-            nativeParent->sysWindow->layoutRequest();
-            nativeParent->sysWindow->renderRequest();
-        }
+        nativeParent->layoutRequest();
     }
     virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent)
     {
@@ -184,10 +181,7 @@ public:
     virtual void layoutRequest(ZF_IN ZFUIView *view)
     {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
-        if(nativeView->sysWindow != zfnull)
-        {
-            nativeView->sysWindow->layoutRequest();
-        }
+        nativeView->layoutRequest();
     }
 
     virtual void measureNativeView(ZF_OUT ZFUISize &ret,

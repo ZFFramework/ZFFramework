@@ -77,7 +77,8 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_iOS, ZFUIImageView, ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView)
+    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView,
+                                        ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         return (__bridge_retained void *)[_ZFP_ZFUIImageViewImpl_sys_iOS_ImageView new];
     }

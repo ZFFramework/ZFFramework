@@ -19,6 +19,11 @@ extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_mainWindow(void);
 extern ZFLIB_ZF_impl SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void);
 
 /**
+ * @brief create window by default setting
+ */
+extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(void);
+
+/**
  * @brief event handler for sdl event loop
  *
  * return true if the event was handled and should not be processed further

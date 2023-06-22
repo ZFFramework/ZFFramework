@@ -390,8 +390,14 @@ public:
     virtual void nativeImplView(ZF_IN ZFUIView *view,
                                 ZF_IN void *nativeImplViewOld,
                                 ZF_IN void *nativeImplView,
-                                ZF_IN zfindex virtualIndex)
+                                ZF_IN zfindex virtualIndex,
+                                ZF_IN zfbool nativeImplViewRequireVirtualIndex)
     {
+        if(!nativeImplViewRequireVirtualIndex)
+        {
+            return;
+        }
+
         _ZFP_ZFUIViewImpl_sys_Qt_View *nativeView = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_Qt_View *, view->nativeView());
         QGraphicsWidget *v = ZFCastStatic(QGraphicsWidget *, nativeImplView);
 

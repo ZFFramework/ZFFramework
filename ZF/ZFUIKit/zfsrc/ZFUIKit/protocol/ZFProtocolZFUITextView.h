@@ -18,7 +18,8 @@ public:
     /**
      * @brief create native text view
      */
-    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView) zfpurevirtual;
+    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView,
+                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex) zfpurevirtual;
     /**
      * @brief destroy native text view
      */
@@ -40,12 +41,6 @@ public:
     /** @brief see #ZFUITextView */
     virtual void textColor(ZF_IN ZFUITextView *textView,
                            ZF_IN ZFUIColor const &textColor) zfpurevirtual;
-    /** @brief see #ZFUITextView */
-    virtual void textShadowColor(ZF_IN ZFUITextView *textView,
-                                 ZF_IN ZFUIColor const &textShadowColor) zfpurevirtual;
-    /** @brief see #ZFUITextView */
-    virtual void textShadowOffset(ZF_IN ZFUITextView *textView,
-                                  ZF_IN ZFUISize const &textShadowOffset) zfpurevirtual;
     /** @brief see #ZFUITextView */
     virtual void textSize(ZF_IN ZFUITextView *textView,
                           ZF_IN zffloat textSize) zfpurevirtual;

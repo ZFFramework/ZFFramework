@@ -7,7 +7,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 static void _ZFP_ZFUITextView_updateSizeRelatedProperty(ZF_IN ZFUITextView *owner)
 {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUITextView) *impl = ZFPROTOCOL_ACCESS(ZFUITextView);
-    impl->textShadowOffset(owner, ZFUISizeApplyScale(owner->textShadowOffset(), owner->UIScaleFixed()));
     impl->textSize(owner, ZFUISizeApplyScale(owner->textSize(), owner->UIScaleFixed()));
     impl->textSizeAutoChangeMinSize(owner, ZFUISizeApplyScale(owner->textSizeAutoChangeMinSize(), owner->UIScaleFixed()));
     impl->textSizeAutoChangeMaxSize(owner, ZFUISizeApplyScale(owner->textSizeAutoChangeMaxSize(), owner->UIScaleFixed()));
@@ -51,14 +50,6 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUIAlignFlags, textAlign)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUIColor, textColor)
 {
     ZFPROTOCOL_ACCESS(ZFUITextView)->textColor(this, this->textColor());
-}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUIColor, textShadowColor)
-{
-    ZFPROTOCOL_ACCESS(ZFUITextView)->textShadowColor(this, this->textShadowColor());
-}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, ZFUISize, textShadowOffset)
-{
-    ZFPROTOCOL_ACCESS(ZFUITextView)->textShadowOffset(this, ZFUISizeApplyScale(this->textShadowOffset(), this->UIScaleFixed()));
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextView, zffloat, textSize)
 {
@@ -115,8 +106,12 @@ void ZFUITextView::objectOnInit(void)
             ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewDestroy(view->to<ZFUITextView *>(), nativeImplView);
         }
     };
-    this->nativeImplView(ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewCreate(this),
-                            _ZFP_ZFUITextView_nativeImplViewDestroy::action);
+    zfbool nativeImplViewRequireVirtualIndex = zftrue;
+    void *nativeImplView = ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewCreate(this, nativeImplViewRequireVirtualIndex);
+    this->nativeImplView(
+        nativeImplView,
+        _ZFP_ZFUITextView_nativeImplViewDestroy::action,
+        nativeImplViewRequireVirtualIndex);
 }
 void ZFUITextView::objectOnDealloc(void)
 {

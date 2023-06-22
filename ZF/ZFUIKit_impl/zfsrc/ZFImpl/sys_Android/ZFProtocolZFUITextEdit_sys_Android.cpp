@@ -32,7 +32,8 @@ public:
     }
 
 public:
-    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit)
+    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit,
+                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTextEditCreate",
@@ -197,34 +198,6 @@ public:
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             ZFImpl_sys_Android_ZFUIColorToColor(textColor));
-    }
-    virtual void textShadowColor(ZF_IN ZFUITextEdit *textEdit,
-                                 ZF_IN ZFUIColor const &textShadowColor)
-    {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textShadowColor",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-            ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textEdit->nativeImplView()),
-            ZFImpl_sys_Android_ZFUIColorToColor(textShadowColor));
-    }
-    virtual void textShadowOffset(ZF_IN ZFUITextEdit *textEdit,
-                                  ZF_IN ZFUISize const &textShadowOffset)
-    {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textShadowOffset",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-            ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textEdit->nativeImplView()),
-            ZFCastStatic(jint, textShadowOffset.width),
-            ZFCastStatic(jint, textShadowOffset.height));
     }
     virtual void textSize(ZF_IN ZFUITextEdit *textEdit,
                           ZF_IN zffloat textSize)
