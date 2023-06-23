@@ -823,7 +823,7 @@ public:
  *
  *   // the aliased class is exactly same of the original,
  *   // so the reflected class name still prints "ZFObject"
- *   zfLogTrimT() << ZFClass::classForName("MyObject")->className();
+ *   zfLogTrim() << ZFClass::classForName("MyObject")->className();
  * @endcode
  * @see ZFMethodAlias
  */

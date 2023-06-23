@@ -15,7 +15,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
             , ZFCoreArray<_ZFP_ZFUIOnScreenKeyboardState_test_ObserverData>, taskList
             ) {
         ZFLISTENER(action) {
-            zfLogTrimT() << "[ZFUIOnScreenKeyboardState] state changed:" << zfargs.sender();
+            zfLogTrim() << "[ZFUIOnScreenKeyboardState] state changed:" << zfargs.sender();
         } ZFLISTENER_END()
         ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
         state->observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), action);

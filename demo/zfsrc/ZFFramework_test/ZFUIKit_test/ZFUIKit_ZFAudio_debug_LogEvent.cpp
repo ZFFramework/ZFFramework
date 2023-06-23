@@ -26,7 +26,7 @@ private:
     ZFListener onEventListener;
     static void onEvent(ZF_IN const ZFArgs &zfargs)
     {
-        zfLogTrimT()
+        zfLogTrim()
             << zfargs.sender()
             << ZFIdMapNameForId(zfargs.eventId())
             << zfargs.param0()
@@ -67,7 +67,7 @@ private:
                 for(zfindex i = 0; i < playing.count(); ++i)
                 {
                     ZFAudio *audio = playing[i];
-                    zfLogTrimT() << audio;
+                    zfLogTrim() << audio;
                 }
             } ZFLISTENER_END()
             timer = ZFTimerStart(1000, onTimer);

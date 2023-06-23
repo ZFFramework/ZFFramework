@@ -21,7 +21,7 @@
  *   MyObject *myObj = ZFCastZFObject(MyObject *, obj);
  *
  *   // also, you may access class's info by ZFClass's method
- *   zfLogT() << "class name:" << cls->className();
+ *   zfLog() << "class name:" << cls->className();
  * @endcode
  *
  * @section DocTag_Tutorial_Reflection_Method Reflect method

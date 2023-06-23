@@ -18,26 +18,26 @@ protected:
     zfoverride
     virtual void objectOnInit(void)
     {
-        zfLogT() << (void *)this;
+        zfLog() << (void *)this;
         zfsuper::objectOnInit();
     }
     zfoverride
     virtual void objectOnDealloc(void)
     {
-        zfLogT() << (void *)this;
+        zfLog() << (void *)this;
         zfsuper::objectOnDealloc();
     }
     zfoverride
     virtual void objectOnRetain(void)
     {
         zfsuper::objectOnRetain();
-        zfLogT() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << this->objectRetainCount();
     }
     zfoverride
     virtual void objectOnRelease(void)
     {
         zfsuper::objectOnRelease();
-        zfLogT() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << this->objectRetainCount();
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object)

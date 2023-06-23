@@ -50,7 +50,7 @@ protected:
             case QEvent::WindowDeactivate:
                 ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnPause(owner);
                 #if ZF_ENV_DEBUG && 0
-                    zfLogTrimT() << ZFImpl_sys_Qt_viewTreePrint(ZFImpl_sys_Qt_rootWindow());
+                    zfLogTrim() << ZFImpl_sys_Qt_viewTreePrint(ZFImpl_sys_Qt_rootWindow());
                 #endif
                 break;
             default:

@@ -257,10 +257,10 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(ZFOutputFormat *, ZFOutputForFormatGetFormat,
-                       ZFMP_IN(const ZFCallback &, callback))
+ZFMETHOD_DEFINE_1(ZFOutputFormat, ZFOutputFormat *, getFormat,
+                  ZFMP_IN(const ZFCallback &, output))
 {
-    _ZFP_I_ZFOutputForFormatOwner *owner = ZFCastZFObject(_ZFP_I_ZFOutputForFormatOwner *, callback.callbackOwnerObject());
+    _ZFP_I_ZFOutputForFormatOwner *owner = ZFCastZFObject(_ZFP_I_ZFOutputForFormatOwner *, output.callbackOwnerObject());
     if(owner == zfnull)
     {
         return zfnull;
@@ -271,10 +271,10 @@ ZFMETHOD_FUNC_DEFINE_1(ZFOutputFormat *, ZFOutputForFormatGetFormat,
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_1(ZFOutput, ZFOutputForFormatGetOutput,
-                       ZFMP_IN(const ZFCallback &, callback))
+ZFMETHOD_DEFINE_1(ZFOutputFormat, ZFOutput, getOutput,
+                  ZFMP_IN(const ZFCallback &, output))
 {
-    _ZFP_I_ZFOutputForFormatOwner *owner = ZFCastZFObject(_ZFP_I_ZFOutputForFormatOwner *, callback.callbackOwnerObject());
+    _ZFP_I_ZFOutputForFormatOwner *owner = ZFCastZFObject(_ZFP_I_ZFOutputForFormatOwner *, output.callbackOwnerObject());
     if(owner == zfnull)
     {
         return zfnull;

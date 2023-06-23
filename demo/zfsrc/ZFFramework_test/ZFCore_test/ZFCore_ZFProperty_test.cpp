@@ -21,19 +21,19 @@ public:
     // custom callback
     ZFPROPERTY_ON_INIT_INLINE(ZFObject *, propertyRetain)
     {
-        zfLogT();
+        zfLog();
     }
     ZFPROPERTY_ON_VERIFY_INLINE(ZFObject *, propertyRetain)
     {
-        zfLogT();
+        zfLog();
     }
     ZFPROPERTY_ON_ATTACH_INLINE(ZFObject *, propertyRetain)
     {
-        zfLogT();
+        zfLog();
     }
     ZFPROPERTY_ON_DETACH_INLINE(ZFObject *, propertyRetain)
     {
-        zfLogT();
+        zfLog();
     }
 
     ZFPROPERTY_ON_INIT_DECLARE(zfstring, propertyAssign)
@@ -43,19 +43,19 @@ public:
 };
 ZFPROPERTY_ON_INIT_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
 {
-    zfLogT();
+    zfLog();
 }
 ZFPROPERTY_ON_VERIFY_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
 {
-    zfLogT();
+    zfLog();
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
 {
-    zfLogT();
+    zfLog();
 }
 ZFPROPERTY_ON_DETACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
 {
-    zfLogT();
+    zfLog();
 }
 
 zfclass _ZFP_ZFCore_ZFProperty_test_TestChild: zfextends _ZFP_ZFCore_ZFProperty_test_TestBase
@@ -84,56 +84,57 @@ protected:
 
             // property list
             const ZFClass *clsTmp = p->classData();
-            zfLogT() << ZFLogAutoEndlOff << "list: ";
+            ZFOutput log = zfLog();
+            ZFOutputFormat::getFormat<ZFLogFormat *>(log)->c_autoSpace(zffalse)->c_autoEndl(zffalse);
+            log << "list: ";
             for(zfindex i = 0; i < clsTmp->propertyCount(); ++i)
             {
                 if(i > 0)
                 {
-                    zfLogTrimT() << ZFLogAutoEndlOff << ", ";
+                    log << ", ";
                 }
-                zfLogTrimT() << ZFLogAutoSpaceOff << ZFLogAutoEndlOff
-                << clsTmp->propertyAt(i)->propertyName();
+                log << clsTmp->propertyAt(i)->propertyName();
             }
-            zfLogTrimT();
+            log = zfnull;
 
             // reflect
             p->propertyAssign("oldValue");
-            zfLogT() << "before:" << p->propertyAssign();
+            zfLog() << "before:" << p->propertyAssign();
             p->classData()->propertySetterForName("propertyAssign")->execute<void, zfstring const &>(p, "newValue");
-            zfLogT() << "after:" << p->propertyAssign();
-            zfLogT() << "access by reflect:" << p->classData()->propertyGetterForName("propertyAssign")->execute<zfstring const &>(p);
+            zfLog() << "after:" << p->propertyAssign();
+            zfLog() << "access by reflect:" << p->classData()->propertyGetterForName("propertyAssign")->execute<zfstring const &>(p);
 
             // retain
-            zfLogTrimT();
-            zfLogTrimT() << "retain";
+            zfLogTrim();
+            zfLogTrim() << "retain";
 
             p->propertyRetain(zflineAlloc(ZFObject));
-            zfLogT() << p->propertyRetain();
+            zfLog() << p->propertyRetain();
 
 #if 0 // this should not compile
             p->propertyRetainReadonly(zflineAlloc(ZFObject));
 #endif
-            zfLogT() << p->propertyRetainReadonly();
+            zfLog() << p->propertyRetainReadonly();
 
             // assign
-            zfLogTrimT();
-            zfLogTrimT() << "assign";
+            zfLogTrim();
+            zfLogTrim() << "assign";
 
             p->propertyAssign(zfstring());
-            zfLogT() << p->propertyAssign();
+            zfLog() << p->propertyAssign();
 
 #if 0 // this should not compile
             p->propertyAssignReadonly(zfstring());
 #endif
-            zfLogT() << p->propertyAssignReadonly();
+            zfLog() << p->propertyAssignReadonly();
 
             // weak
             {
                 zfblockedAlloc(ZFObject, value);
                 p->propertyWeak(value);
-                zfLogT() << p->propertyWeak();
+                zfLog() << p->propertyWeak();
             }
-            zfLogT() << p->propertyWeak();
+            zfLog() << p->propertyWeak();
 
             // copy
             this->testCaseOutputSeparator();
@@ -143,13 +144,13 @@ protected:
             pBase->propertyAssign("string set in another");
             ZFPropertyCopyAll(pChild, pBase);
             this->testCaseOutputSeparator();
-            zfLogTrimT() << "after copy:" << pChild->propertyAssign();
+            zfLogTrim() << "after copy:" << pChild->propertyAssign();
 
             this->testCaseOutputSeparator();
             this->testCaseOutput("copy by ZFPropertyCopyAll");
             pChild->propertyAssign("");
             ZFPropertyCopyAll(pChild, pBase);
-            zfLogTrimT() << "after copy:" << pChild->propertyAssign();
+            zfLogTrim() << "after copy:" << pChild->propertyAssign();
         }
 
         this->testCaseStop();

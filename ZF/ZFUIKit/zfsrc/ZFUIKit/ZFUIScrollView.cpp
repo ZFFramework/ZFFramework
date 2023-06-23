@@ -400,7 +400,7 @@ private:
         if(!this->scrollAniTimerStarted)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollAniTimerStart";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollAniTimerStart";
             #endif
             this->scrollAniTimerStarted = zftrue;
             static const zftimet recommendTimerInterval = zftimet(17); // nearly 60fps
@@ -412,7 +412,7 @@ private:
         if(this->scrollAniTimerStarted)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollAniTimerStop";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollAniTimerStop";
             #endif
             this->scrollAniTimerStarted = zffalse;
             ZFPROTOCOL_ACCESS(ZFUIScrollView)->scrollAnimationStop(this->pimplOwner);
@@ -423,7 +423,7 @@ private:
         if(this->state != ZFUIScrollViewState::e_Dragging)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollOnDragBegin";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollOnDragBegin";
             #endif
             this->notifyScrollAniTimerStop();
             this->notifyScrollOnScrollEnd();
@@ -438,7 +438,7 @@ private:
         if(this->state == ZFUIScrollViewState::e_Dragging)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollOnDrag";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollOnDrag";
             #endif
             this->pimplOwner->scrollOnDrag();
             this->scrollThumbUpdate();
@@ -449,7 +449,7 @@ private:
         if(this->state == ZFUIScrollViewState::e_Dragging)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollOnDragEnd";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollOnDragEnd";
             #endif
             this->state = ZFUIScrollViewState::e_Idle;
             this->pimplOwner->scrollOnDragEnd();
@@ -462,7 +462,7 @@ private:
         if(this->state != ZFUIScrollViewState::e_Scrolling)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollOnScrollBegin";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollOnScrollBegin";
             #endif
             this->notifyScrollOnDragEnd();
 
@@ -476,7 +476,7 @@ private:
         if(this->state == ZFUIScrollViewState::e_Scrolling)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollOnScroll";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollOnScroll";
             #endif
             this->pimplOwner->scrollOnScroll();
             this->scrollThumbUpdate();
@@ -487,7 +487,7 @@ private:
         if(this->state == ZFUIScrollViewState::e_Scrolling)
         {
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollOnScrollEnd";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollOnScrollEnd";
             #endif
             this->notifyScrollOnScroll();
 
@@ -509,7 +509,7 @@ private:
             this->autoScrollStartFlag = zftrue;
 
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollAutoScrollOnStart";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollAutoScrollOnStart";
             #endif
             this->pimplOwner->scrollAutoScrollOnStart();
         }
@@ -521,7 +521,7 @@ private:
             this->autoScrollStartFlag = zffalse;
 
             #if _ZFP_ZFUIScrollView_DEBUG_logEvent
-                zfLogTrimT() << this->pimplOwner->objectInfoOfInstance() << "scrollAutoScrollOnStop";
+                zfLogTrim() << this->pimplOwner->objectInfoOfInstance() << "scrollAutoScrollOnStop";
             #endif
             this->pimplOwner->scrollAutoScrollOnStop();
         }

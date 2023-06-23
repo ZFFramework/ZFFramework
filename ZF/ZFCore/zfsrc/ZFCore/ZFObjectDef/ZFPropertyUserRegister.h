@@ -473,7 +473,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *           , myCallbackValueReset
  *           );
  *       _property = resultProperty;
- *       zfLogTrimT() << resultProperty;
+ *       zfLogTrim() << resultProperty;
  *   }
  *   ZF_GLOBAL_INITIALIZER_DESTROY(MyPropertyRegister)
  *   {

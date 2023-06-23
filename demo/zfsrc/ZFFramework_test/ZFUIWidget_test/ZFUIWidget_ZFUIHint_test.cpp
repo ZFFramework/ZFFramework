@@ -21,7 +21,7 @@ protected:
         ZFLISTENER_1(hintOnHide
                 , ZFTestCase *, testCase
                 ) {
-            zfLogT();
+            zfLog();
             testCase->testCaseStop();
         } ZFLISTENER_END()
 #else

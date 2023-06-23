@@ -369,9 +369,9 @@ static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output)
         << "function zfLogTrim(fmt, ...) end\n"
 
         << "---@return v_ZFOutput\n"
-        << "function zfLogT() end\n"
+        << "function zfLog() end\n"
         << "---@return v_ZFOutput\n"
-        << "function zfLogTrimT() end\n"
+        << "function zfLogTrim() end\n"
 
         << "---@return v_zfstring\n"
         << "function zfl_tableInfo(tbl) end\n"

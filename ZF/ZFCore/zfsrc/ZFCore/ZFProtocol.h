@@ -31,6 +31,31 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(AppHigh)
 ZFENUM_END(ZFLIB_ZFCore, ZFProtocolLevel)
 
+/**
+ * @brief instance state of ZFProtocol
+ *
+ * note, it's ensured that:
+ * @code
+ *   ZFProtocolInstanceStateEnum state0 = ZFProtocolInstanceState::e_OnInitFinish;
+ *   zfbool t0 = ZFBitTest(state0, ZFProtocolInstanceState::e_OnInit); // ensured true
+ *
+ *   ZFProtocolInstanceStateEnum state1 = ZFProtocolInstanceState::e_OnDeallocPrepare;
+ *   zfbool t1 = ZFBitTest(state1, ZFProtocolInstanceState::e_OnDealloc); // ensured true
+ */
+ZFENUM_BEGIN(ZFLIB_ZFCore, ZFProtocolInstanceState)
+    ZFENUM_VALUE(OnInit = 0x01)
+    ZFENUM_VALUE(OnInitFinish = 0x03)
+    ZFENUM_VALUE(Idle = 0)
+    ZFENUM_VALUE(OnDeallocPrepare = 0x30)
+    ZFENUM_VALUE(OnDealloc = 0x10)
+ZFENUM_SEPARATOR()
+    ZFENUM_VALUE_REGISTER(OnInit)
+    ZFENUM_VALUE_REGISTER(OnInitFinish)
+    ZFENUM_VALUE_REGISTER(Idle)
+    ZFENUM_VALUE_REGISTER(OnDeallocPrepare)
+    ZFENUM_VALUE_REGISTER(OnDealloc)
+ZFENUM_END(ZFLIB_ZFCore, ZFProtocolInstanceState)
+
 // ============================================================
 /**
  * @brief base class of all protocol of ZFFramework
@@ -71,32 +96,13 @@ public:
 
 public:
     /**
-     * @brief protocol state
-     *
-     * note, it's ensured that:
-     * @code
-     *   ProtocolInstanceState state0 = ProtocolInstanceStateOnInitFinish;
-     *   zfbool t0 = ZFBitTest(state0, ProtocolInstanceStateOnInit); // ensured true
-     *
-     *   ProtocolInstanceState state1 = ProtocolInstanceStateOnDeallocPrepare;
-     *   zfbool t1 = ZFBitTest(state1, ProtocolInstanceStateOnDealloc); // ensured true
-     * @endcode
-     */
-    typedef enum {
-        ProtocolInstanceStateOnInit = 0x01, /**< @brief protocol is under #protocolOnInit */
-        ProtocolInstanceStateOnInitFinish = 0x03, /**< @brief protocol is under #protocolOnInitFinish */
-        ProtocolInstanceStateIdle = 0, /**< @brief protocol is constructed successfully */
-        ProtocolInstanceStateOnDeallocPrepare = 0x30, /**< @brief protocol is under #protocolOnDeallocPrepare */
-        ProtocolInstanceStateOnDealloc = 0x10, /**< @brief protocol is under #protocolOnDealloc */
-    } ProtocolInstanceState;
-    /**
      * @brief protocol instance's state
      */
-    virtual ZFProtocol::ProtocolInstanceState protocolInstanceState(void)
+    virtual ZFProtocolInstanceStateEnum protocolInstanceState(void)
     {
         return _ZFP_ZFProtocol_protocolInstanceState;
     }
-    ZFProtocol::ProtocolInstanceState _ZFP_ZFProtocol_protocolInstanceState;
+    ZFProtocolInstanceStateEnum _ZFP_ZFProtocol_protocolInstanceState;
 
 public:
     /**
@@ -168,10 +174,11 @@ protected:
 
 public:
     /** @cond ZFPrivateDoc */
-    ZFProtocol(void) : _ZFP_ZFProtocol_protocolInstanceState(ZFProtocol::ProtocolInstanceStateOnInit) {}
+    ZFProtocol(void) : _ZFP_ZFProtocol_protocolInstanceState(ZFProtocolInstanceState::e_OnInit) {}
     virtual ~ZFProtocol(void) {}
     /** @endcond */
 };
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFProtocol, ZFProtocol *)
 
 // ============================================================
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, const ZFProtocol *)
@@ -304,11 +311,11 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 _ZFP_ZFProtocolData &_d = zfself::_ZFP_ZFProtocolDataRef(); \
                 if(_d.implInstance != zfnull) \
                 { \
-                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnDeallocPrepare; \
+                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDeallocPrepare; \
                     _d.implInstance->protocolOnDeallocPrepare(); \
-                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnDealloc; \
+                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDealloc; \
                     _d.implInstance->protocolOnDealloc(); \
-                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnInit; \
+                    _d.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit; \
                 } \
                 zfself::_ZFP_ZFProtocolInstanceCleanupCallback(&_d); \
                 if(implConstructor != zfnull && !zfstringIsEmpty(implName)) \
@@ -341,11 +348,11 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     retVal = ZFCastStatic(zfself *, _d.implConstructor()); \
                     if(retVal != zfnull) \
                     { \
-                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnInit; \
+                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit; \
                         retVal->protocolOnInit(); \
-                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnInitFinish; \
+                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInitFinish; \
                         retVal->protocolOnInitFinish(); \
-                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateIdle; \
+                        retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_Idle; \
                     } \
                 } \
                 return retVal; \
@@ -811,8 +818,9 @@ private:
  * second param desiredImpl can be assigned to check whether the protocol matches what you want,
  * see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT
  */
-extern ZFLIB_ZFCore ZFProtocol *ZFProtocolForName(ZF_IN const zfchar *name,
-                                                  ZF_IN_OPT const zfchar *desiredImpl = zfnull);
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFProtocol *, ZFProtocolForName,
+                        ZFMP_IN(const zfchar *, name),
+                        ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull))
 /**
  * @brief check whether protocol is available
  *
@@ -843,20 +851,37 @@ public:
      * @brief protocol's implementation, or null if currently not implemented
      */
     ZFProtocol *protocolImpl;
+
+public:
+    /** @cond ZFPrivateDoc */
+    zfbool operator == (ZF_IN const ZFProtocolImplInfo &ref) const
+    {
+        return (zftrue
+                && this->protocolName == ref.protocolName
+                && this->protocolOptional == ref.protocolOptional
+                && this->protocolImpl == ref.protocolImpl
+            );
+    }
+    zfbool operator != (ZF_IN const ZFProtocolImplInfo &ref) const
+    {
+        return !this->operator == (ref);
+    }
+    /** @endcond */
 };
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFProtocolImplInfo, ZFProtocolImplInfo)
 
 /**
  * @brief for debug use only, get all protocol's info
  */
-extern ZFLIB_ZFCore ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAll(void);
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll)
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
-extern ZFLIB_ZFCore ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllImplemented(void);
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllImplemented)
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
-extern ZFLIB_ZFCore ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllNotImplemented(void);
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllNotImplemented)
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
@@ -865,8 +890,9 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFProtocolImplInfoPrint,
 /**
  * @brief util method to #ZFProtocolImplInfoGetAll
  */
-extern ZFLIB_ZFCore void ZFProtocolImplInfoPrint(ZF_IN const ZFProtocolImplInfo &data,
-                                                 ZF_IN_OPT const ZFOutput &callback = ZFOutputDefault());
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFProtocolImplInfoPrint,
+                        ZFMP_IN(const ZFProtocolImplInfo &, data),
+                        ZFMP_IN_OPT(const ZFOutput &, callback, ZFOutputDefault()))
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocol_h_

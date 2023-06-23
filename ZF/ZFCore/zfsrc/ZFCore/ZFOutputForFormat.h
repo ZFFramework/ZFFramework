@@ -41,6 +41,30 @@ zfinterface ZFLIB_ZFCore ZFOutputFormat : zfextends ZFInterface
 {
     ZFINTERFACE_DECLARE(ZFOutputFormat, ZFInterface)
 
+public:
+    /**
+     * @brief try access the output format passed to #ZFOutputForFormat,
+     *   return null if not available
+     */
+    template<typename T_ZFOutputFormat>
+    static T_ZFOutputFormat getFormat(ZF_IN const ZFCallback &output)
+    {
+        return ZFCastZFObject(T_ZFOutputFormat, zfself::getFormat(output));
+    }
+
+    /**
+     * @brief try access the output format passed to #ZFOutputForFormat,
+     *   return null if not available
+     */
+    ZFMETHOD_DECLARE_STATIC_1(ZFOutputFormat *, getFormat,
+                              ZFMP_IN(const ZFCallback &, output))
+    /**
+     * @brief try access the output passed to #ZFOutputForFormat,
+     *   return null callback if not available
+     */
+    ZFMETHOD_DECLARE_STATIC_1(ZFOutput, getOutput,
+                              ZFMP_IN(const ZFCallback &, output))
+
 protected:
     /**
      * @brief see #ZFOutputForFormat
@@ -117,21 +141,6 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForFormatT,
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormat,
                         ZFMP_IN(const ZFOutput &, output),
                         ZFMP_IN(ZFOutputFormat *, format))
-
-// ============================================================
-/**
- * @brief try access the output format passed to #ZFOutputForFormat,
- *   return null if not available
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutputFormat *, ZFOutputForFormatGetFormat,
-                        ZFMP_IN(const ZFCallback &, callback))
-
-/**
- * @brief try access the output passed to #ZFOutputForFormat,
- *   return null callback if not available
- */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormatGetOutput,
-                        ZFMP_IN(const ZFCallback &, callback))
 
 // ============================================================
 /**

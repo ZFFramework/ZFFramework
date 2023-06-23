@@ -36,7 +36,7 @@ this piece of code shows how to show a hello world on UI and log output
 ZFMAIN_ENTRY() // app starts from here
 {
     // show a hello world to log output
-    zfLogT() << "hello wolrd";
+    zfLog() << "hello wolrd";
 
     // show a window (full screen by default)
     zfblockedAlloc(ZFUIWindow, window);
@@ -53,7 +53,7 @@ ZFMAIN_ENTRY() // app starts from here
     button->label()->text("click me");
     ZFLISTENER(onClick) {
         ZFUIButtonBasic *button = zfargs.senderT();
-        zfLogTrimT() << "button clicked:" << button;
+        zfLogTrim() << "button clicked:" << button;
     } ZFLISTENER_END()
     button->onClick(onClick);
 }
@@ -110,7 +110,7 @@ ZFMAIN_ENTRY()
                 .mp("zfstring", "testParam0")
                 , [](const ZFArgs &zfargs) {
                     ZFMethodInvokeData *m = zfargs.param0T();
-                    zfLogTrimT() << m->invokerMethod << "called, param0:" << m->param0;
+                    zfLogTrim() << m->invokerMethod << "called, param0:" << m->param0;
                 })
         .classEnd();
 
@@ -151,7 +151,7 @@ chain http file and zip file, and R/W contents in the zip file just like normal 
 ZFMAIN_ENTRY()
 {
     ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
-    ZFInputReadAll(zfLogTrimT(), ZFInputForRes("path/in/zip/file.txt"));
+    ZFInputReadAll(zfLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
     ZFPathInfoTreePrint(ZFPathInfo("res:"));
 }
 ```

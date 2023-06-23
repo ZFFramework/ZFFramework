@@ -3,8 +3,16 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFENUM_DEFINE(ZFProtocolLevel)
+ZFENUM_DEFINE(ZFProtocolInstanceState)
 
 // ============================================================
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFProtocol, ZFProtocol *)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolInstanceStateEnum, protocolInstanceState)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplementationName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevelEnum, protocolImplementationLevel)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplementationPlatformHint)
+
 ZFOUTPUT_TYPE_DEFINE(const ZFProtocol *, {
     if(v)
     {
@@ -47,7 +55,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDeallocPrepare)
         _ZFP_ZFProtocolDataPrivateData *dataHolder = allValue[i];
         if(dataHolder->data.implInstance != zfnull)
         {
-            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnDeallocPrepare;
+            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDeallocPrepare;
             dataHolder->data.implInstance->protocolOnDeallocPrepare();
         }
     }
@@ -67,9 +75,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDealloc)
         _ZFP_ZFProtocolDataPrivateData *dataHolder = allValue[i];
         if(dataHolder->data.implInstance != zfnull)
         {
-            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnDealloc;
+            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnDealloc;
             dataHolder->data.implInstance->protocolOnDealloc();
-            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocol::ProtocolInstanceStateOnInit;
+            dataHolder->data.implInstance->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit;
             dataHolder->data.implCleanupCallback(&(dataHolder->data));
         }
     }
@@ -122,23 +130,23 @@ void _ZFP_ZFProtocolImplAccess(void)
 }
 
 // ============================================================
-ZFProtocol *ZFProtocolForName(ZF_IN const zfchar *name,
-                              ZF_IN_OPT const zfchar *desiredImpl /* = zfnull */)
+ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolForName,
+                       ZFMP_IN(const zfchar *, name),
+                       ZFMP_IN_OPT(const zfchar *, desiredImpl, zfnull))
 {
-    ZFCoreArrayPOD<_ZFP_ZFProtocolDataPrivateData *> allValue;
-    _ZFP_ZFProtocolDataMap.allValueT(allValue);
-    for(zfindex i = 0; i < allValue.count(); ++i)
+    zfCoreMutexLocker();
+    _ZFP_ZFProtocolDataPrivateData *data = _ZFP_ZFProtocolDataMap.get<_ZFP_ZFProtocolDataPrivateData *>(name);
+    if(data != zfnull)
     {
-        _ZFP_ZFProtocolData &implData = allValue[i]->data;
-        if(zfstringIsEqual(implData.protocolName.cString(), name))
+        _ZFP_ZFProtocolData &implData = data->data;
+        if(implData.implInstance == zfnull)
         {
             implData.implTryAccessCallback();
-            if(implData.implInstance != zfnull
-                && (desiredImpl == zfnull || zfstringIsEqual(desiredImpl, implData.implInstance->protocolImplementationPlatformHint())))
-            {
-                return implData.implInstance;
-            }
-            break;
+        }
+        if(implData.implInstance != zfnull
+            && (zfstringIsEmpty(desiredImpl) || zfstringIsEqual(desiredImpl, implData.implInstance->protocolImplementationPlatformHint())))
+        {
+            return implData.implInstance;
         }
     }
     return zfnull;
@@ -151,6 +159,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFProtocolIsAvailable,
 }
 
 // ============================================================
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFProtocolImplInfo, ZFProtocolImplInfo)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFProtocolImplInfo, zfstring, protocolName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFProtocolImplInfo, zfbool, protocolOptional)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFProtocolImplInfo, ZFProtocol *, protocolImpl)
+
 static void _ZFP_ZFProtocolImplInfoCopy(ZF_IN_OUT ZFProtocolImplInfo &data,
                                         ZF_IN _ZFP_ZFProtocolData &implData)
 {
@@ -158,7 +171,7 @@ static void _ZFP_ZFProtocolImplInfoCopy(ZF_IN_OUT ZFProtocolImplInfo &data,
     data.protocolOptional = implData.protocolOptional;
     data.protocolImpl = implData.implTryAccessCallback();
 }
-ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAll(void)
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll)
 {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
@@ -173,7 +186,7 @@ ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAll(void)
 
     return ret;
 }
-ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllImplemented(void)
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllImplemented)
 {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
@@ -192,7 +205,7 @@ ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllImplemented(void)
 
     return ret;
 }
-ZFCoreArray<ZFProtocolImplInfo> ZFProtocolImplInfoGetAllNotImplemented(void)
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllNotImplemented)
 {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
@@ -228,8 +241,9 @@ static ZFCompareResult _ZFP_ZFProtocolImplInfoPrint_sortComparer(ZF_IN const ZFP
         return ZFCompareTheSame;
     }
 }
-void ZFProtocolImplInfoPrint(ZF_IN const ZFProtocolImplInfo &data,
-                             ZF_IN_OPT const ZFOutput &callback /* = ZFOutputDefault() */)
+ZFMETHOD_FUNC_DEFINE_2(void, ZFProtocolImplInfoPrint,
+                       ZFMP_IN(const ZFProtocolImplInfo &, data),
+                       ZFMP_IN_OPT(const ZFOutput &, callback, ZFOutputDefault()))
 {
     callback.execute(data.protocolName.cString());
     if(data.protocolOptional)

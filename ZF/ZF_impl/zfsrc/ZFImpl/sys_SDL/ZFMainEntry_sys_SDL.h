@@ -55,7 +55,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(ZF_IN Sint32 use
  *   ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(YourEvent, ZFLevelAppNormal)
  *   {
  *       // the event
- *       zfLogTrimT() << sdlEvent->user.code;
+ *       zfLogTrim() << sdlEvent->user.code;
  *       return zftrue;
  *   }
  *

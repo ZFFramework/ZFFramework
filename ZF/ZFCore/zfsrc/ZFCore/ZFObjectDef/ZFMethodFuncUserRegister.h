@@ -260,7 +260,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
  *           , ZFMP_IN(ParamType0, param0)
  *           , ZFMP_IN(ParamType1, param1));
  *       _method = resultMethod;
- *       zfLogTrimT() << resultMethod;
+ *       zfLogTrim() << resultMethod;
  *   }
  *   ZF_GLOBAL_INITIALIZER_DESTROY(MyMethodRegister)
  *   {

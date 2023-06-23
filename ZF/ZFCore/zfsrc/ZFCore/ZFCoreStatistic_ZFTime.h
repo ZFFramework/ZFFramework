@@ -23,7 +23,7 @@ ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
  *   // you may call any times
  *
  *   // finally, print result, and remove
- *   zfLogTrimT() << ZFCoreStatistic::invokeTimeGetSummary(key);
+ *   zfLogTrim() << ZFCoreStatistic::invokeTimeGetSummary(key);
  *   ZFCoreStatistic::invokeTimeRemove(key);
  *
  *   // or, you may use the convenient macro to log and output for one time

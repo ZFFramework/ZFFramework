@@ -9,7 +9,7 @@ zfclass _ZFP_ZFUtility_ZFAni_test_Object : zfextends ZFObject
     ZFPROPERTY_ASSIGN(zfint, testProp)
     ZFPROPERTY_ON_ATTACH_INLINE(zfint, testProp)
     {
-        zfLogTrimT() << "[ZFAni_test] testProp:" << this->testProp();
+        zfLogTrim() << "[ZFAni_test] testProp:" << this->testProp();
     }
 
 protected:
@@ -17,24 +17,24 @@ protected:
     virtual void objectOnInit(void)
     {
         zfsuper::objectOnInit();
-        zfLogTrimT() << "[ZFAni_test] objectOnInit" << this->objectHash();
+        zfLogTrim() << "[ZFAni_test] objectOnInit" << this->objectHash();
     }
     zfoverride
     virtual void objectOnDealloc(void)
     {
-        zfLogTrimT() << "[ZFAni_test] objectOnDealloc" << this->objectHash();
+        zfLogTrim() << "[ZFAni_test] objectOnDealloc" << this->objectHash();
         zfsuper::objectOnDealloc();
     }
     zfoverride
     virtual void objectOnRetain(void)
     {
         zfsuper::objectOnRetain();
-        zfLogTrimT() << "[ZFAni_test] objectOnRetain" << this->objectHash() << this->objectRetainCount();
+        zfLogTrim() << "[ZFAni_test] objectOnRetain" << this->objectHash() << this->objectRetainCount();
     }
     zfoverride
     virtual void objectOnRelease(void)
     {
-        zfLogTrimT() << "[ZFAni_test] objectOnRelease" << this->objectHash() << this->objectRetainCount();
+        zfLogTrim() << "[ZFAni_test] objectOnRelease" << this->objectHash() << this->objectRetainCount();
         zfsuper::objectOnRelease();
     }
 };
@@ -67,7 +67,7 @@ protected:
 
         ZFLISTENER(aniOnDealloc
                 ) {
-            zfLogTrimT() << "[ZFAni_test] aniOnDealloc" << zfargs.sender()->objectHash();
+            zfLogTrim() << "[ZFAni_test] aniOnDealloc" << zfargs.sender()->objectHash();
         } ZFLISTENER_END()
         ani->observerAdd(ZFObject::EventObjectBeforeDealloc(), aniOnDealloc);
 

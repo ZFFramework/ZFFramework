@@ -19,14 +19,14 @@ protected:
         zfsuper::testCaseOnStart();
 
         ZFLISTENER(normalObserver) {
-            zfLogT() << "normal observer";
+            zfLog() << "normal observer";
         } ZFLISTENER_END()
         ZFGlobalObserver().observerAdd(
             ZFGlobalEvent::EventZFCore_EventFilter_test(),
             normalObserver);
 
         ZFLISTENER(eventFilter) {
-            zfLogT() << "event filter";
+            zfLog() << "event filter";
             zfargs.eventFiltered(zftrue);
         } ZFLISTENER_END()
         ZFGlobalObserver().observerAdd(

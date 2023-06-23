@@ -865,12 +865,12 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodForNameGetAll(ZF_IN const zfchar
  *   ZFOBJECT_REGISTER(MyClass)
  *   ZFMETHOD_DEFINE_0(MyClass, void, foo)
  *   {
- *       zfLogTrimT() << "foo()";
+ *       zfLogTrim() << "foo()";
  *   }
  *
  *   ZFMethodAlias(ZFMethodAccess(MyClass, foo), "bar");
- *   zfLogTrimT() << MyClass::ClassData()->methodForName("foo");
- *   zfLogTrimT() << MyClass::ClassData()->methodForName("bar");
+ *   zfLogTrim() << MyClass::ClassData()->methodForName("foo");
+ *   zfLogTrim() << MyClass::ClassData()->methodForName("bar");
  *   zfblockedAlloc(MyClass, obj);
  *   obj->invoke("foo");
  *   obj->invoke("bar");

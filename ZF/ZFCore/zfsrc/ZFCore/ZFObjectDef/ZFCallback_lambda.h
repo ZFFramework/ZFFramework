@@ -37,7 +37,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       capture1 = param1;
  *   } ZFLAMBDA_END()
  *
- *   zfLogTrimT() << capture0 << capture1 << capture2;
+ *   zfLogTrim() << capture0 << capture1 << capture2;
  *   myCallback.executeExact<ReturnType, ParamType0, ParamType1>(p0, p1);
  * @endcode
  */

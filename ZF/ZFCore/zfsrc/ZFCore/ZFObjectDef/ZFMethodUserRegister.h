@@ -461,7 +461,7 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv)
  *           , ZFMP_IN(ParamType0, param0)
  *           , ZFMP_IN(ParamType1, param1));
  *       _method = resultMethod;
- *       zfLogTrimT() << resultMethod;
+ *       zfLogTrim() << resultMethod;
  *   }
  *   ZF_GLOBAL_INITIALIZER_DESTROY(MyMethodRegister)
  *   {

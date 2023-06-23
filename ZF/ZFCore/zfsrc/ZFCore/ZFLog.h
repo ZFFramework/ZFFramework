@@ -8,11 +8,12 @@
 
 #include "ZFLogLevel.h"
 #include "ZFMutex.h"
+#include "ZFOutputForFormat.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief mutex used by #zfLogTrimT,
+ * @brief mutex used by #zfLog,
  *   you may use this lock to prevent your log actions from being interrupted
  *
  * note, the mutex would be initialized only after #ZFLevelZFFrameworkEssential
@@ -35,11 +36,11 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
  * typical usage:
  * @code
  *   // output anything with ZFLOG_HEADER_STRING
- *   zfLogT() << anything;
+ *   zfLog() << anything;
  *   zfLog("formated: %s", someText);
  *
  *   // or, trim version without ZFLOG_HEADER_STRING
- *   zfLogTrimT() << anything;
+ *   zfLogTrim() << anything;
  *   zfLogTrim("formated: %s", someText);
  * @endcode
  *
@@ -55,46 +56,40 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
  *
  * these behavior can be changed by:
  * @code
- *   zfLogT()
- *       << ZFLogAutoSpaceOn
- *       << ZFLogAutoSpaceOff
- *       << ZFLogAutoEndlOn
- *       << ZFLogAutoEndlOff
- *       ;
+ *   ZFOutputFormat::getFormat<ZFLogFormat *>()->c_autoSpace(xxx)->c_autoEndl(xxx);
  * @endcode
- * and they would be reset to default state after each zfLogT call
+ * and they would be reset to default state after each zfLog call
  */
-extern ZFLIB_ZFCore ZFOutput zfLogTrimT(void);
+#define zfLog(...) _ZFP_zfLog(ZFLOG_HEADER_STRING, ##__VA_ARGS__)
 
-/** @brief see #zfLogTrimT */
-#define zfLogT() (zfLogTrimT() << ZFLOG_HEADER_STRING)
+/** @brief see #zfLog */
+#define zfLogTrim(...) _ZFP_zfLog(zfnull, ##__VA_ARGS__)
 
-/** @brief see #zfLogTrimT */
-#define zfLogTrim(fmt, ...) (void)(zfLogTrimT() << zfstringWithFormat(fmt, ##__VA_ARGS__))
-
-/** @brief see #zfLogTrimT */
-#define zfLog(fmt, ...) (void)(zfLogTrimT() << ZFLOG_HEADER_STRING << zfstringWithFormat(fmt, ##__VA_ARGS__))
+extern ZFLIB_ZFCore ZFOutput _ZFP_zfLog(ZF_IN const zfchar *header, ZF_IN_OPT const zfchar *fmt = zfnull, ...);
 
 // ============================================================
-/** @cond ZFPrivateDoc */
-zfclassNotPOD _ZFP_ZFLogAutoSpaceOn {};
-zfclassNotPOD _ZFP_ZFLogAutoSpaceOff {};
-zfclassNotPOD _ZFP_ZFLogAutoEndlOn {};
-zfclassNotPOD _ZFP_ZFLogAutoEndlOff {};
-extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoSpaceOn const &v);
-extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoSpaceOff const &v);
-extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoEndlOn const &v);
-extern ZFLIB_ZFCore const ZFOutput &operator << (const ZFOutput &output, _ZFP_ZFLogAutoEndlOff const &v);
-/** @endcond */
+/**
+ * @brief output format for #zfLog
+ */
+zfclass ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputFormat
+{
+    ZFOBJECT_DECLARE(ZFLogFormat, ZFObject)
+    ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
 
-/** @brief see #zfLogTrimT */
-extern ZFLIB_ZFCore const _ZFP_ZFLogAutoSpaceOn ZFLogAutoSpaceOn;
-/** @brief see #zfLogTrimT */
-extern ZFLIB_ZFCore const _ZFP_ZFLogAutoSpaceOff ZFLogAutoSpaceOff;
-/** @brief see #zfLogTrimT */
-extern ZFLIB_ZFCore const _ZFP_ZFLogAutoEndlOn ZFLogAutoEndlOn;
-/** @brief see #zfLogTrimT */
-extern ZFLIB_ZFCore const _ZFP_ZFLogAutoEndlOff ZFLogAutoEndlOff;
+public:
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoSpace, zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoEndl, zftrue)
+
+protected:
+    zfoverride
+    virtual void format(ZF_IN_OUT zfstring &ret,
+                        ZF_IN ZFOutputFormatStepEnum outputStep,
+                        ZF_IN const zfchar *src,
+                        ZF_IN zfindex srcLen,
+                        ZF_IN zfindex writtenLen,
+                        ZF_IN zfindex outputCount,
+                        ZF_IN_OUT_OPT void *&state);
+};
 
 // ============================================================
 // other convenient method

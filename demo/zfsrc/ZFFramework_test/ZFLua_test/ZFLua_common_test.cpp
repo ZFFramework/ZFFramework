@@ -10,58 +10,58 @@ protected:
     zfoverride
     virtual void objectOnInit(void)
     {
-        zfLogT() << (void *)this;
+        zfLog() << (void *)this;
         zfsuper::objectOnInit();
     }
     zfoverride
     virtual void objectOnDealloc(void)
     {
-        zfLogT() << (void *)this;
+        zfLog() << (void *)this;
         zfsuper::objectOnDealloc();
     }
     zfoverride
     virtual void objectOnRetain(void)
     {
         zfsuper::objectOnRetain();
-        zfLogT() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << this->objectRetainCount();
     }
     zfoverride
     virtual void objectOnRelease(void)
     {
         zfsuper::objectOnRelease();
-        zfLogT() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << this->objectRetainCount();
     }
 
 public:
     ZFMETHOD_INLINE_1(zfstring, myMethod, ZFMP_IN(const zfchar *, param0))
     {
-        zfLogT() << param0;
+        zfLog() << param0;
         zfstring ret = param0;
         ret += "(modified)";
         return ret;
     }
     ZFMETHOD_INLINE_STATIC_1(zfstring &, MyMethod, ZFMP_IN(zfstring &, param0))
     {
-        zfLogT() << param0;
+        zfLog() << param0;
         param0 += "(modified)";
         return param0;
     }
 
     ZFMETHOD_INLINE_1(void, myMethodOverload, ZFMP_IN(const zfchar *, param0))
     {
-        zfLogT() << param0;
+        zfLog() << param0;
     }
     ZFMETHOD_INLINE_1(void, myMethodOverload, ZFMP_IN(zfbool, param0))
     {
-        zfLogT() << param0;
+        zfLog() << param0;
     }
     ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload, ZFMP_IN(const zfchar *, param0))
     {
-        zfLogT() << param0;
+        zfLog() << param0;
     }
     ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload, ZFMP_IN(zfbool, param0))
     {
-        zfLogT() << param0;
+        zfLog() << param0;
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_common_test_Object)

@@ -30,7 +30,7 @@ static zfbool _ZFP_ZFFramework_test_luaTest(void)
     extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForModule())));
     extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForStorageShared())));
 
-    zfLogTrimT() << "external res:" << extResList;
+    zfLogTrim() << "external res:" << extResList;
     for(zfindex i = 0; i < extResList.count(); ++i)
     {
         ZFResExtPathAdd(extResList[i]);
@@ -39,8 +39,8 @@ static zfbool _ZFP_ZFFramework_test_luaTest(void)
     ZFInput input = ZFInputForRes("zf.lua");
     if(input)
     {
-        zfLogTrimT() << "redirect to:" << input.callbackId();
-        zfLogTrimT() << "============================================================";
+        zfLogTrim() << "redirect to:" << input.callbackId();
+        zfLogTrim() << "============================================================";
         ZFLuaExecute(input);
         ZFLuaGC();
     }
@@ -63,13 +63,13 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void)
             };
             implDatas.sort(_ZFP_main_ZFProtocolImplInfo_sort::action);
 
-            zfLogTrimT() << "note, these protocol has not been implemented:";
+            zfLogTrim() << "note, these protocol has not been implemented:";
             for(zfindex i = 0; i < implDatas.count(); ++i)
             {
-                ZFOutput output = (zfLogTrimT() << ZFLogAutoSpaceOff << ZFLogAutoEndlOff);
+                ZFOutput output = zfLogTrim();
+                ZFOutputFormat::getFormat<ZFLogFormat *>(output)->c_autoSpace(zffalse);
                 output << "    ";
                 ZFProtocolImplInfoPrint(implDatas[i], output);
-                output << "\n";
             }
         }
     }

@@ -18,7 +18,7 @@ protected:
             this->testCaseOutput("try execute dynamically registered method");
 
             ZFMethodFuncUserRegisterDetail_1(method, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic"
@@ -26,14 +26,14 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_0(method0, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic0"
                 );
 
             ZFMethodFuncUserRegisterDetail_1(method1, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic1"
@@ -41,7 +41,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_2(method2, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic2"
@@ -50,7 +50,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_3(method3, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic3"
@@ -60,7 +60,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_4(method4, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic4"
@@ -71,7 +71,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_5(method5, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic5"
@@ -83,7 +83,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_6(method6, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic6"
@@ -96,7 +96,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_7(method7, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic7"
@@ -110,7 +110,7 @@ protected:
                 );
 
             ZFMethodFuncUserRegisterDetail_8(method8, {
-                    zfLogT();
+                    zfLog();
                     return "returnValue";
                 }, "ZFCore_ZFMethodFuncUserRegister_testNamespace", ZF_CALLER_LINE,
                 zfstring, "funcDynamic8"
@@ -130,7 +130,7 @@ protected:
 
             ZFMethodFuncUserUnregister(ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic"));
 
-            zfLogTrimT() << "after unregister, method:"
+            zfLogTrim() << "after unregister, method:"
                 << ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic");
 
             this->testCaseOutput("all list:");
@@ -180,7 +180,7 @@ ZFOBJECT_REGISTER(ZFCore_ZFMethodFuncUserRegister_test)
 ZF_NAMESPACE_BEGIN(ZFCore_ZFMethodFuncUserRegister_testNamespace)
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic
@@ -188,14 +188,14 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_0({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic0
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic1
@@ -203,7 +203,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_1({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_2({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic2
@@ -212,7 +212,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_2({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_3({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic3
@@ -222,7 +222,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_3({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_4({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic4
@@ -233,7 +233,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_4({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_5({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic5
@@ -245,7 +245,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_5({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_6({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic6
@@ -258,7 +258,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_6({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic7
@@ -272,7 +272,7 @@ ZFMETHOD_FUNC_USER_REGISTER_DETAIL_7({
     )
 
 ZFMETHOD_FUNC_USER_REGISTER_DETAIL_8({
-        zfLogT();
+        zfLog();
         return "returnValue";
     }, ZF_NAMESPACE_CURRENT(), ZF_CALLER_LINE,
     zfstring, funcStatic8

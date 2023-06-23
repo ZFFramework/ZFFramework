@@ -16,7 +16,7 @@ private:
     ZFListener listener;
     static void viewFocusOnChange(ZF_IN const ZFArgs &zfargs)
     {
-        zfLogTrimT() << "[ZFUIViewFocus]"
+        zfLogTrim() << "[ZFUIViewFocus]"
             << zfargs.sender()
             << "changed to" << zfargs.sender()->to<ZFUIView *>()->viewFocused();
     }

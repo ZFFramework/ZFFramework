@@ -43,32 +43,32 @@ private:
     {
 #if 1 // output logs during scroll event may cause performance issue
         ZFLISTENER(onDragBegin) {
-            zfLogTrimT() << "onDragBegin  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
+            zfLogTrim() << "onDragBegin  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         scrollView->observerAdd(ZFUIScrollView::EventScrollOnDragBegin(), onDragBegin);
 
         ZFLISTENER(onDrag) {
-            zfLogTrimT() << "onDrag       " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
+            zfLogTrim() << "onDrag       " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         scrollView->observerAdd(ZFUIScrollView::EventScrollOnDrag(), onDrag);
 
         ZFLISTENER(onDragEnd) {
-            zfLogTrimT() << "onDragEnd    " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
+            zfLogTrim() << "onDragEnd    " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         scrollView->observerAdd(ZFUIScrollView::EventScrollOnDragEnd(), onDragEnd);
 
         ZFLISTENER(onScrollBegin) {
-            zfLogTrimT() << "onScrollBegin" << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
+            zfLogTrim() << "onScrollBegin" << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         scrollView->observerAdd(ZFUIScrollView::EventScrollOnScrollBegin(), onScrollBegin);
 
         ZFLISTENER(onScroll) {
-            zfLogTrimT() << "onScroll     " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
+            zfLogTrim() << "onScroll     " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         scrollView->observerAdd(ZFUIScrollView::EventScrollOnScroll(), onScroll);
 
         ZFLISTENER(onScrollEnd) {
-            zfLogTrimT() << "onScrollEnd  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
+            zfLogTrim() << "onScrollEnd  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         scrollView->observerAdd(ZFUIScrollView::EventScrollOnScrollEnd(), onScrollEnd);
 #endif
@@ -98,7 +98,7 @@ private:
                 btn->viewBackgroundColor(ZFUIColorRandom(0.75f));
 
                 ZFLISTENER(onClick) {
-                    zfLogTrimT() << "clicked" << zfargs.sender();
+                    zfLogTrim() << "clicked" << zfargs.sender();
                 } ZFLISTENER_END()
                 btn->onClick(onClick);
             }

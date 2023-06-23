@@ -7,52 +7,33 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L)
 {
+    ZFOutput o = zfLogTrim();
+    o << zfLogCurTimeString();
+
     zfstring s;
     if(ZFImpl_ZFLua_zfstringAppend(L, s))
     {
-        zfLogTrimT() << zfLogCurTimeString() << s;
-    }
-    return 0;
-}
-
-static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L)
-{
-    zfstring s;
-    if(ZFImpl_ZFLua_zfstringAppend(L, s))
-    {
-        zfLogTrimT() << s;
-    }
-    return 0;
-}
-
-static int _ZFP_ZFImpl_ZFLua_zfLogT(ZF_IN lua_State *L)
-{
-    int count = (int)lua_gettop(L);
-    if(count != 0)
-    {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfLogT] takes no param, got %zi param",
-            (zfindex)count);
+        o << s;
     }
 
-    zfblockedAlloc(v_ZFCallback, ret);
-    ret->zfv = (zfLogTrimT() << zfLogCurTimeString());
+    zfblockedAlloc(v_ZFOutput, ret);
+    ret->zfv = o;
     ZFImpl_ZFLua_luaPush(L, ret);
     return 1;
 }
 
-static int _ZFP_ZFImpl_ZFLua_zfLogTrimT(ZF_IN lua_State *L)
+static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L)
 {
-    int count = (int)lua_gettop(L);
-    if(count != 0)
+    ZFOutput o = zfLogTrim();
+
+    zfstring s;
+    if(ZFImpl_ZFLua_zfstringAppend(L, s))
     {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfLogTrimT] takes no param, got %zi param",
-            (zfindex)count);
+        o << s;
     }
 
-    zfblockedAlloc(v_ZFCallback, ret);
-    ret->zfv = zfLogTrimT();
+    zfblockedAlloc(v_ZFOutput, ret);
+    ret->zfv = o;
     ZFImpl_ZFLua_luaPush(L, ret);
     return 1;
 }
@@ -61,8 +42,6 @@ static int _ZFP_ZFImpl_ZFLua_zfLogTrimT(ZF_IN lua_State *L)
 ZFImpl_ZFLua_implSetupCallback_DEFINE(zfLog, ZFM_EXPAND({
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLog", _ZFP_ZFImpl_ZFLua_zfLog);
         ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLogTrim", _ZFP_ZFImpl_ZFLua_zfLogTrim);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLogT", _ZFP_ZFImpl_ZFLua_zfLogT);
-        ZFImpl_ZFLua_luaCFunctionRegister(L, "zfLogTrimT", _ZFP_ZFImpl_ZFLua_zfLogTrimT);
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
     }))
@@ -73,20 +52,10 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfLog, ZFM_EXPAND({
             "    return _G['zfLog']('[' .. tostring(zfl_l or 'unknown') .. ' (' .. debug.getinfo(2).currentline .. ')] ' .. (f or ''), ...);"
             "end"
         )
-    ZFImpl_ZFLua_implPathInfo_DEFINE(zfLogT,
-            "function ()"
-            "    return _G['zfLogT']():log('[%s (%s)]', zfl_l or 'unknown', zfint(debug.getinfo(2).currentline));"
-            "end"
-        )
 #else
     ZFImpl_ZFLua_implPathInfo_DEFINE(zfLog,
             "function (f, ...)"
             "    return _G['zfLog']('[' .. tostring(zfl_l or 'unknown') .. '] ' .. (f or ''), ...);"
-            "end"
-        )
-    ZFImpl_ZFLua_implPathInfo_DEFINE(zfLogT,
-            "function ()"
-            "    return _G['zfLogT']():log('[%s]', zfl_l or 'unknown');"
             "end"
         )
 #endif

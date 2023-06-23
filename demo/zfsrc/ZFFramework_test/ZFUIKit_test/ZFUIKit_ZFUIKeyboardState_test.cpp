@@ -15,7 +15,7 @@ private:
     ZFListener keyPressedOnChangeListener;
     static void keyPressedOnChange(ZF_IN const ZFArgs &zfargs)
     {
-        zfLogTrimT() << "[ZFUIKeyboardState]" << zfargs.sender();
+        zfLogTrim() << "[ZFUIKeyboardState]" << zfargs.sender();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardState_test)
 

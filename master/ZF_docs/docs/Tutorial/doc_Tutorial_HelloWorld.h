@@ -11,14 +11,14 @@
  *   ZFMAIN_ENTRY()
  *   {
  *       // well, hello world to ZFFramework
- *       zfLogT() << "hello world";
+ *       zfLog() << "hello world";
  *   }
  * @endcode
  *
  * ZFFramework would be started from #ZFMAIN_ENTRY,
  * you may write any C++ compatible code here\n
  * in this example,
- * we just output "hello world" to zfLogT,
+ * we just output "hello world" to zfLog,
  * which would output to a proper console by default
  */
 

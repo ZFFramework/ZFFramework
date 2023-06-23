@@ -62,6 +62,14 @@ public:
     zfautoObject &operator = (ZF_IN T_ZFObject const &obj);
 
 public:
+    zfbool operator == (ZF_IN zfautoObject const &obj) const
+    {
+        return (this->toObject() == obj.toObject());
+    }
+    zfbool operator != (ZF_IN zfautoObject const &obj) const
+    {
+        return (this->toObject() != obj.toObject());
+    }
     template<typename T_ZFObject>
     zfbool operator == (ZF_IN T_ZFObject *obj) const
     {

@@ -123,7 +123,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start)
     }
     else
     {
-        zfLogTrimT() << this << "start called before load success";
+        zfLogTrim() << this << "start called before load success";
     }
 }
 

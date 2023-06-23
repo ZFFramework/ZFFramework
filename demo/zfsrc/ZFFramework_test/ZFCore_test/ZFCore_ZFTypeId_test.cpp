@@ -20,60 +20,60 @@ protected:
 
         // for aliased type, when accessed, a new instance would be created and stored as tag in holder object
         typedef const zfchar * _ZFP_AliasedChar;
-        zfLogTrimT() << "============================================================";
-        zfLogTrimT() << "const zfchar *";
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar * const &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar * const &>::zfvAccess(v);
+        zfLogTrim() << "============================================================";
+        zfLogTrim() << "const zfchar *";
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<_ZFP_AliasedChar * const &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<_ZFP_AliasedChar>::Value<const _ZFP_AliasedChar * const &>::zfvAccess(v);
 
         // for wrapped type, all should be able to access
-        zfLogTrimT() << "============================================================";
-        zfLogTrimT() << "zfstring";
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<zfstring>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<const zfstring &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<zfstring &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<zfstring *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<const zfstring *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<zfstring * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<zfstring * const &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<const zfstring * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfstring>::Value<const zfstring * const &>::zfvAccess(v);
+        zfLogTrim() << "============================================================";
+        zfLogTrim() << "zfstring";
+        zfLogTrim() << ZFTypeId<zfstring>::Value<zfstring>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<const zfstring &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<zfstring &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<zfstring *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<const zfstring *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<zfstring * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<zfstring * const &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<const zfstring * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfstring>::Value<const zfstring * const &>::zfvAccess(v);
 
         // zfautoObject processed as normal raw type
         zfblockedAlloc(v_zfstring, test_String, "zfautoObject");
         v = test_String;
-        zfLogTrimT() << "============================================================";
-        zfLogTrimT() << "zfautoObject";
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<zfautoObject>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<const zfautoObject &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<zfautoObject &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<zfautoObject *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<const zfautoObject *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<zfautoObject * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<zfautoObject * const &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<const zfautoObject * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<zfautoObject>::Value<const zfautoObject * const &>::zfvAccess(v);
+        zfLogTrim() << "============================================================";
+        zfLogTrim() << "zfautoObject";
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject * const &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject * const &>::zfvAccess(v);
 
         // ZFAny processed as aligned type
         zfblockedAlloc(v_zfstring, test_ZFAny, "ZFAny");
         v = test_ZFAny;
-        zfLogTrimT() << "============================================================";
-        zfLogTrimT() << "ZFAny";
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<ZFAny>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<const ZFAny &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<ZFAny &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<ZFAny *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<const ZFAny *>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<ZFAny * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<ZFAny * const &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<const ZFAny * &>::zfvAccess(v);
-        zfLogTrimT() << ZFTypeId<ZFAny>::Value<const ZFAny * const &>::zfvAccess(v);
+        zfLogTrim() << "============================================================";
+        zfLogTrim() << "ZFAny";
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny * const &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny * const &>::zfvAccess(v);
 
         this->testCaseStop();
     }

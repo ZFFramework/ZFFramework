@@ -8,18 +8,18 @@ zfclass _ZFP_ZFCore_ZFCallback_test_Class : zfextends ZFObject
 
     ZFMETHOD_INLINE_0(void, classMember)
     {
-        zfLogT();
+        zfLog();
     }
 
     ZFMETHOD_INLINE_STATIC_0(void, classStaticMember)
     {
-        zfLogT();
+        zfLog();
     }
 };
 
 static void _ZFP_ZFCore_ZFCallback_test_StaticFunction(void)
 {
-    zfLogT();
+    zfLog();
 }
 
 zfclass ZFCore_ZFCallback_test : zfextends ZFFramework_test_TestCase
@@ -47,7 +47,7 @@ protected:
                 , void
                 , ZFMP_IN(const zfstring &, param)
                 ) {
-            zfLogT() << param;
+            zfLog() << param;
         } ZFLAMBDA_END()
         this->testCaseOutputSeparator();
         this->testCaseOutput("try execute %s", localCallback.objectInfo().cString());

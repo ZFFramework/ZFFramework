@@ -112,10 +112,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
  *           end)
  *     @endcode
- *   -  `output:output(text, size)`\n
+ *   -  `output:output(text, size)` and `output:outputDetail(text, size)`\n
  *     write to output callback, typically usage:\n
- *     `zfLogT():output(xxx):output(xxx)`
- *   -  `input:input(buf, size)`\n
+ *     `zfLog():output(xxx):output(xxx)`
+ *   -  `input:input(buf, size)` and `input:inputDetail(buf, size)`\n
  *     read from input callback
  * -  array
  *   -  `ZFCoreArrayCreate([a, b, c, ...])`\n
@@ -156,9 +156,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   -  `zfLog(fmt, ...)`
  *     or zfLogTrim(fmt, ...)\n
  *     use zfstringAppend then output to zfLog
- *   -  `zfLogT()`
- *     or zfLogTrimT()\n
- *     return a output callback to output, see above
  *   -  `zfl_tableInfo(v)`
  *     or `zfl_tableInfoPrint(v)`\n
  *     return string that represents the table
