@@ -9,7 +9,7 @@ cmake --version
     cd "<ZF_WORK_DIR>\_tmp\SDL\build_SDL"
     cmake ../../../_repo/SDL -DCMAKE_INSTALL_PREFIX="<ZF_ROOT_PATH>\_tmp\SDL" -DCMAKE_BUILD_TYPE=Release
     make -j4
-    make install
+    make install <ZF_IGNORE_OUTPUT>
     cd "<ZF_WORK_DIR>"
 
     <ZF_COMMENT> SDL_image
@@ -17,7 +17,7 @@ cmake --version
     cd "<ZF_WORK_DIR>\_tmp\SDL\build_SDL_image"
     cmake ../../../_repo/SDL_image -DCMAKE_INSTALL_PREFIX="<ZF_ROOT_PATH>\_tmp\SDL" -DCMAKE_BUILD_TYPE=Release
     make -j4
-    make install
+    make install <ZF_IGNORE_OUTPUT>
     cd "<ZF_WORK_DIR>"
 
     <ZF_COMMENT> SDL_ttf
@@ -25,7 +25,7 @@ cmake --version
     cd "<ZF_WORK_DIR>\_tmp\SDL\build_SDL_ttf"
     cmake ../../../_repo/SDL_ttf -DCMAKE_INSTALL_PREFIX="<ZF_ROOT_PATH>\_tmp\SDL" -DCMAKE_BUILD_TYPE=Release
     make -j4
-    make install
+    make install <ZF_IGNORE_OUTPUT>
     cd "<ZF_WORK_DIR>"
 
     <ZF_COMMENT> we just need the headers

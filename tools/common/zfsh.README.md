@@ -57,4 +57,5 @@ logic:
 * `<ZF_IF_FAILED_BEGIN>` : if statement
 * `<ZF_IF_FAILED_END>` : if statement
 * `<ZF_ELSE>` : if statement
+* `<ZF_IGNORE_OUTPUT>` : ignore output
 

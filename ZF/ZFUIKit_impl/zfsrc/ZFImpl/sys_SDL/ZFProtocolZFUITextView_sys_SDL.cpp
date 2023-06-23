@@ -410,7 +410,7 @@ private:
         }
 
         zfstring text = owner->text();
-        zfindex p, pOffset = 1;
+        zfindex p;
         switch(owner->textTruncateMode())
         {
             case ZFUITextTruncateMode::e_Head:
@@ -424,18 +424,21 @@ private:
                 p = text.length() / 2;
                 break;
         }
+        zfindex stripMin = 1;
+        zfindex stripMax = zfmMax(p, text.length() - p);
 
         zfstring textNew;
         do {
+            zfindex strip = (stripMin + stripMax) / 2;
             textNew.removeAll();
-            if(pOffset < p)
+            if(strip < p)
             {
-                textNew.append(text.cString(), p - pOffset);
+                textNew.append(text.cString(), p - strip);
             }
             textNew.append("..");
-            if(p + pOffset < text.length())
+            if(p + strip < text.length())
             {
-                textNew.append(text.cString() + p + pOffset, text.length() - p - pOffset);
+                textNew.append(text.cString() + p + strip, text.length() - p - strip);
             }
             if(textSingleLine)
             {
@@ -445,7 +448,15 @@ private:
                 }
                 if(w <= targetRect.w)
                 {
-                    return TTF_RenderUTF8_Blended(sdlFont, textNew, textColor);
+                    if(stripMin == stripMax || strip == stripMin + 1)
+                    {
+                        return TTF_RenderUTF8_Blended(sdlFont, textNew, textColor);
+                    }
+                    stripMax = strip;
+                }
+                else
+                {
+                    stripMin = (stripMin == strip ? strip + 1 : strip);
                 }
             }
             else
@@ -456,15 +467,22 @@ private:
                 }
                 if(w <= targetRect.w && h <= targetRect.h)
                 {
-                    return TTF_RenderUTF8_Blended_Wrapped(sdlFont, textNew, textColor, targetRect.w);
+                    if(stripMin == stripMax || strip == stripMin + 1)
+                    {
+                        return TTF_RenderUTF8_Blended_Wrapped(sdlFont, textNew, textColor, targetRect.w);
+                    }
+                    stripMax = strip;
+                }
+                else
+                {
+                    stripMin = (stripMin == strip ? strip + 1 : strip);
                 }
             }
 
-            if(pOffset >= p && p + pOffset >= text.length())
+            if(strip >= p && p + strip >= text.length())
             {
                 return zfnull;
             }
-            ++pOffset;
         } while(zftrue);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextViewImpl_sys_SDL)
