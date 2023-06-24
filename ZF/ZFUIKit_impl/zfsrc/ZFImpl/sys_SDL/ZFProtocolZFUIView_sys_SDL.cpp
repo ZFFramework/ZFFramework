@@ -77,12 +77,12 @@ public:
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)view->nativeView();
         if(nativeImplViewOld != zfnull)
         {
-            nativeView->children.remove(virtualIndex);
+            nativeView->childDetach(virtualIndex);
         }
         if(nativeImplView != zfnull)
         {
             ZFImpl_sys_SDL_View *nativeImplViewTmp = (ZFImpl_sys_SDL_View *)nativeImplView;
-            nativeView->children.add(virtualIndex, nativeImplViewTmp);
+            nativeView->childAttach(virtualIndex, nativeImplViewTmp);
         }
     }
     virtual void nativeImplViewFrame(ZF_IN ZFUIView *view,

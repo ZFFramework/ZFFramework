@@ -18,7 +18,14 @@ void ZFImpl_sys_SDL_View::sysWindowAttach(ZF_IN ZFImpl_sys_SDL_SysWindow *sysWin
 }
 void ZFImpl_sys_SDL_View::sysWindowDetach(void)
 {
-    this->sysWindow = zfnull;
+    if(this->sysWindow != zfnull)
+    {
+        if(this->sysWindow->viewFocused == this)
+        {
+            this->sysWindow->viewFocusChange(zfnull);
+        }
+        this->sysWindow = zfnull;
+    }
     for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i)
     {
         this->children[i]->sysWindowDetach();
@@ -137,6 +144,14 @@ void ZFImpl_sys_SDL_View::render(ZF_IN SDL_Renderer *renderer, ZF_IN const SDL_R
     {
         return;
     }
+    if(zffalse
+        || childRect.x + childRect.w <= parentRect.x
+        || childRect.x >= parentRect.x + parentRect.w
+        || childRect.y + childRect.h <= parentRect.y
+        || childRect.y >= parentRect.y + parentRect.h
+    ) {
+        return;
+    }
     if(this->viewTransform == zfnull
         && this->aniTransform == zfnull
         && this->renderCacheRequired == 0
@@ -253,18 +268,13 @@ ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseTest(ZF_IN int x, ZF_IN int y,
         return zfnull;
     }
 
-    ZFImpl_sys_SDL_View *child = zfnull;
     for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i)
     {
-        child = this->children[i];
-        if(child->ownerZFUIView == zfnull)
+        ZFImpl_sys_SDL_View *child = this->children[i];
+        child = child->mouseTest(x - child->rect.x, y - child->rect.y, mouseGrab);
+        if(child != zfnull)
         {
-            continue;
-        }
-        ZFImpl_sys_SDL_View *tmp = child->mouseTest(x - child->rect.x, y - child->rect.y, mouseGrab);
-        if(tmp != zfnull)
-        {
-            return tmp;
+            return child;
         }
     }
     if(this->ownerZFUIView->viewUIEnable())
@@ -330,31 +340,25 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
         return;
     }
 
+    Uint8 sdlButton = (Uint8)sdlEvent->button.button;
+    ZFUIMouseButtonEnum mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
+    switch(sdlButton)
+    {
+        case SDL_BUTTON_RIGHT:
+            mouseButton = ZFUIMouseButton::e_MouseButtonRight;
+            break;
+        case SDL_BUTTON_MIDDLE:
+            mouseButton = ZFUIMouseButton::e_MouseButtonCenter;
+            break;
+        case SDL_BUTTON_LEFT:
+        default:
+            mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
+            break;
+    }
+
     switch(sdlEvent->type)
     {
         case SDL_MOUSEMOTION: {
-            Uint8 sdlButton = (Uint8)-1;
-            ZFUIMouseButtonEnum mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
-            if((sdlEvent->motion.state & SDL_BUTTON_LMASK) == SDL_BUTTON_LMASK)
-            {
-                sdlButton = SDL_BUTTON_LEFT;
-                mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
-            }
-            else if((sdlEvent->motion.state & SDL_BUTTON_RMASK) == SDL_BUTTON_RMASK)
-            {
-                sdlButton = SDL_BUTTON_RIGHT;
-                mouseButton = ZFUIMouseButton::e_MouseButtonRight;
-            }
-            else if((sdlEvent->motion.state & SDL_BUTTON_MMASK) == SDL_BUTTON_MMASK)
-            {
-                sdlButton = SDL_BUTTON_MIDDLE;
-                mouseButton = ZFUIMouseButton::e_MouseButtonCenter;
-            }
-            else
-            {
-                sdlButton = SDL_BUTTON_LEFT;
-                mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
-            }
             ZFImpl_sys_SDL_MouseState &mouseState = this->sysWindow->mouseState(sdlEvent->motion.which, sdlButton);
             if(mouseState.viewDown != zfnull)
             { // mouse move
@@ -393,6 +397,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                             zfblockedAlloc(ZFUIMouseEvent, hoverExit);
                             hoverExit->mouseId = mouseState.mouseId;
                             hoverExit->mouseAction = ZFUIMouseAction::e_MouseHoverExit;
+                            hoverExit->mouseButton = mouseButton;
                             hoverExit->mousePoint.x = (zffloat)sdlEvent->motion.x;
                             hoverExit->mousePoint.y = (zffloat)sdlEvent->motion.y;
                             this->posFromGlobal(hoverExit->mousePoint.x, hoverExit->mousePoint.y);
@@ -413,6 +418,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                         zfblockedAlloc(ZFUIMouseEvent, hoverEnter);
                         hoverEnter->mouseId = mouseState.mouseId;
                         hoverEnter->mouseAction = ZFUIMouseAction::e_MouseHoverEnter;
+                        hoverEnter->mouseButton = mouseButton;
                         hoverEnter->mousePoint.x = (zffloat)sdlEvent->motion.x;
                         hoverEnter->mousePoint.y = (zffloat)sdlEvent->motion.y;
                         this->posFromGlobal(hoverEnter->mousePoint.x, hoverEnter->mousePoint.y);
@@ -426,6 +432,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                     zfblockedAlloc(ZFUIMouseEvent, event);
                     event->mouseId = mouseState.mouseId;
                     event->mouseAction = ZFUIMouseAction::e_MouseHover;
+                    event->mouseButton = mouseButton;
                     event->mousePoint.x = (zffloat)sdlEvent->motion.x;
                     event->mousePoint.y = (zffloat)sdlEvent->motion.y;
                     this->posFromGlobal(event->mousePoint.x, event->mousePoint.y);
@@ -439,6 +446,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
             ZFImpl_sys_SDL_View *viewDown = this->mouseTestGlobal(sdlEvent->motion.x, sdlEvent->motion.y, &mouseState.mouseGrab);
             if(mouseState.mouseGrab)
             {
+                mouseState.viewDown = viewDown;
                 zfint x = sdlEvent->button.x;
                 zfint y = sdlEvent->button.y;
                 viewDown->posFromGlobal(x, y);
@@ -465,6 +473,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
             zfblockedAlloc(ZFUIMouseEvent, event);
             event->mouseId = mouseState.mouseId;
             event->mouseAction = ZFUIMouseAction::e_MouseDown;
+            event->mouseButton = mouseButton;
             event->mousePoint.x = (zffloat)sdlEvent->button.x;
             event->mousePoint.y = (zffloat)sdlEvent->button.y;
             viewDown->posFromGlobal(event->mousePoint.x, event->mousePoint.y);
@@ -500,6 +509,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                     zfblockedAlloc(ZFUIMouseEvent, event);
                     event->mouseId = mouseIdPrev;
                     event->mouseAction = mouseAction;
+                    event->mouseButton = mouseButton;
                     event->mousePoint.x = (zffloat)sdlEvent->button.x;
                     event->mousePoint.y = (zffloat)sdlEvent->button.y;
                     viewDownPrev->posFromGlobal(event->mousePoint.x, event->mousePoint.y);

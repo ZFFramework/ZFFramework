@@ -52,9 +52,7 @@ public:
     ZFUIButton *pimplOwner;
     ZFUIButtonStateEnum buttonState;
     zfidentity processingMouseId;
-    ZFCoreArrayPOD<zfidentity> ignoredMouses;
-    ZFCoreArrayPOD<_ZFP_ZFUIButtonMouseData> processingMouses;
-    zfstlmap<zfidentity, ZFUIPoint> prevMousePointMap;
+    ZFUIPoint prevMousePoint;
     zfbool enableFlag;
     zfbool buttonHighlightedFlag;
     zftimet buttonLastClickTimestamp;
@@ -69,26 +67,6 @@ public:
         this->enableFlag = enable;
 
         this->buttonStateUpdate(this->buttonHighlightedFlag);
-
-        if(!this->processingMouses.isEmpty())
-        {
-            for(zfindex i = 0; i < this->processingMouses.count(); ++i)
-            {
-                this->ignoredMouses.add(this->processingMouses[i].mouseId);
-            }
-            ZFCoreArrayPOD<_ZFP_ZFUIButtonMouseData> tmp = this->processingMouses;
-            this->processingMouses = ZFCoreArrayPOD<_ZFP_ZFUIButtonMouseData>();
-
-            for(zfindex i = 0; i < tmp.count(); ++i)
-            {
-                const _ZFP_ZFUIButtonMouseData &mouseData = tmp[i];
-                this->prevMousePointMap.erase(mouseData.mouseId);
-                _ZFP_ZFUIButtonMouseDataToEvent(event, mouseData);
-
-                _ZFP_ZFUIButton_DEBUG_EVENT(buttonMouseOnUp)
-                this->pimplOwner->buttonMouseOnUp(event);
-            }
-        }
     }
 
 public:
@@ -138,60 +116,26 @@ public:
         switch(mouseAction)
         {
             case ZFUIMouseAction::e_MouseDown:
-            {
                 if(!this->enableFlag)
                 {
                     _ZFP_ZFUIButton_DEBUG_LOG("      %s disabled", ZFObjectInfo(mouseEvent).cString())
-                    this->ignoredMouses.add(mouseEvent->mouseId);
                     break;
                 }
-
-                if(this->processingMouseId != zfidentityInvalid())
-                {
-                    _ZFP_ZFUIButton_DEBUG_LOG("      %s ignored", ZFObjectInfo(mouseEvent).cString())
-                    this->ignoredMouses.add(mouseEvent->mouseId);
-                }
-                else
-                {
-                    this->processingMouseId = mouseEvent->mouseId;
-                    this->processingMouses.add(_ZFP_ZFUIButtonMouseDataFromEvent(mouseEvent));
-                    this->processMouse(mouseEvent);
-                }
-            }
+                this->processingMouseId = mouseEvent->mouseId;
+                this->processMouse(mouseEvent);
                 break;
             case ZFUIMouseAction::e_MouseMove:
-            {
-                if(this->ignoredMouses.find(mouseEvent->mouseId) == zfindexMax())
+                if(mouseEvent->mouseId == this->processingMouseId)
                 {
                     this->processMouse(mouseEvent);
                 }
-            }
                 break;
             case ZFUIMouseAction::e_MouseUp:
             case ZFUIMouseAction::e_MouseCancel:
-            {
-                for(zfindex i = 0; i < this->processingMouses.count(); ++i)
-                {
-                    if(this->processingMouses[i].mouseId == mouseEvent->mouseId)
-                    {
-                        this->processingMouses.remove(i);
-                        break;
-                    }
-                }
-                zfindex ignoredIndex = this->ignoredMouses.find(mouseEvent->mouseId);
-                if(ignoredIndex != zfindexMax())
-                {
-                    this->ignoredMouses.remove(ignoredIndex);
-                }
-                else
+                if(mouseEvent->mouseId == this->processingMouseId)
                 {
                     this->processMouse(mouseEvent);
-                    if(this->processingMouseId == mouseEvent->mouseId)
-                    {
-                        this->processingMouseId = zfidentityInvalid();
-                    }
                 }
-            }
                 break;
             case ZFUIMouseAction::e_MouseHoverEnter:
             case ZFUIMouseAction::e_MouseHover:
@@ -213,7 +157,7 @@ private:
         {
             case ZFUIMouseAction::e_MouseDown:
             {
-                this->prevMousePointMap[mouseEvent->mouseId] = mouseEvent->mousePoint;
+                this->prevMousePoint = mouseEvent->mousePoint;
                 this->buttonStateUpdate(zftrue);
                 _ZFP_ZFUIButton_DEBUG_EVENT(buttonMouseOnDown)
                 this->pimplOwner->buttonMouseOnDown(mouseEvent);
@@ -221,16 +165,10 @@ private:
                 break;
             case ZFUIMouseAction::e_MouseMove:
             {
-                zfstlmap<zfidentity, ZFUIPoint>::iterator prevMousePointMapIt = this->prevMousePointMap.find(mouseEvent->mouseId);
-                if(prevMousePointMapIt == this->prevMousePointMap.end())
-                {
-                    break;
-                }
-                ZFUIPoint &prevMousePoint = prevMousePointMapIt->second;
                 ZFUIRect bounds = ZFUIRectGetBounds(this->pimplOwner->viewFrame());
                 zfbool mouseInside = this->buttonClickedInside(bounds, mouseEvent->mousePoint);
-                zfbool mouseInsidePrev = this->buttonClickedInside(bounds, prevMousePoint);
-                prevMousePoint = mouseEvent->mousePoint;
+                zfbool mouseInsidePrev = this->buttonClickedInside(bounds, this->prevMousePoint);
+                this->prevMousePoint = mouseEvent->mousePoint;
 
                 if(mouseInside != mouseInsidePrev)
                 {
@@ -260,13 +198,6 @@ private:
                 break;
             case ZFUIMouseAction::e_MouseUp:
             {
-                zfstlmap<zfidentity, ZFUIPoint>::iterator prevMousePointMapIt = this->prevMousePointMap.find(mouseEvent->mouseId);
-                if(prevMousePointMapIt == this->prevMousePointMap.end())
-                {
-                    break;
-                }
-                this->prevMousePointMap.erase(prevMousePointMapIt);
-
                 zfbool mouseInside = this->buttonClickedInside(
                     ZFUIRectGetBounds(this->pimplOwner->viewFrame()),
                     mouseEvent->mousePoint);
@@ -296,13 +227,6 @@ private:
                 break;
             case ZFUIMouseAction::e_MouseCancel:
             {
-                zfstlmap<zfidentity, ZFUIPoint>::iterator prevMousePointMapIt = this->prevMousePointMap.find(mouseEvent->mouseId);
-                if(prevMousePointMapIt == this->prevMousePointMap.end())
-                {
-                    break;
-                }
-                this->prevMousePointMap.erase(prevMousePointMapIt);
-
                 this->buttonStateUpdate(zffalse);
                 _ZFP_ZFUIButton_DEBUG_EVENT(buttonMouseOnUp)
                 this->pimplOwner->buttonMouseOnUp(mouseEvent);
@@ -345,9 +269,7 @@ public:
     : pimplOwner(zfnull)
     , buttonState(ZFUIButtonState::e_Normal)
     , processingMouseId(zfidentityInvalid())
-    , ignoredMouses()
-    , processingMouses()
-    , prevMousePointMap()
+    , prevMousePoint()
     , enableFlag(zftrue)
     , buttonHighlightedFlag(zffalse)
     , buttonLastClickTimestamp(0)

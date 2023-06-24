@@ -51,7 +51,7 @@ zfindex ZFUIImageImplNinePatchCalc(ZF_OUT ZFUIImageImplNinePatchDrawData *outBuf
     {
         zffloat scale = (zffloat)dstSize.height / (dstMargin.top + dstMargin.bottom);
         dstMargin.top = ZFUISizeApplyScale(dstMargin.top, scale);
-        dstMargin.bottom = ZFUISizeApplyScale(dstMargin.top, scale);
+        dstMargin.bottom = ZFUISizeApplyScale(dstMargin.bottom, scale);
         if(dstMargin.top + dstMargin.bottom > dstSize.height)
         {
             dstMargin.bottom = dstSize.height - dstMargin.top;

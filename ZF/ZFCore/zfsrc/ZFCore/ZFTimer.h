@@ -35,15 +35,16 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when timer started, ensured in the same thread of #EventTimerOnActivate event
+     * called when timer started
+     * @note on what thread this event is fired depends on impl
      */
     ZFOBSERVER_EVENT(TimerOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when timer activated
-     * @note on what thread this event is fired,
-     *   depends on impl
+     * @note on what thread this event is fired depends on impl,
+     *   unless #timerActivateOnMainThread was set
      */
     ZFOBSERVER_EVENT(TimerOnActivate)
     /**
@@ -91,6 +92,11 @@ public:
      */
     ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, timerDelay, 0)
     ZFPROPERTY_ON_VERIFY_DECLARE(zftimet, timerDelay)
+
+    /**
+     * @brief whether timer activate on main thread, true by default
+     */
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, timerActivateOnMainThread, zftrue)
 
 public:
     /**

@@ -72,10 +72,45 @@ public:
         this->impl->notifyTimerStart(this->timer);
 
         // timer
-        while(curId == this->threadCallbackTaskId)
+        if(this->timer->timerActivateOnMainThread())
         {
-            this->impl->notifyTimerActivate(this->timer);
-            ZFThread::sleep(this->timer->timerInterval());
+            zfself *owner = this;
+            ZFLISTENER_2(timerMainThread
+                    , zfautoObjectT<zfself *>, owner
+                    , zfidentity, curId
+                    ) {
+                owner->_ZFP_timerMainThread(curId);
+            } ZFLISTENER_END()
+            while(curId == this->threadCallbackTaskId)
+            {
+                while(curId == this->threadCallbackTaskId)
+                {
+                    ZFThread::sleep(this->timer->timerInterval());
+                    if(this->threadCallbackTaskId == curId)
+                    {
+                        ZFThread::mainThread()->taskQueueAdd(timerMainThread);
+                    }
+                }
+            }
+        }
+        else
+        {
+            while(curId == this->threadCallbackTaskId)
+            {
+                ZFThread::sleep(this->timer->timerInterval());
+                if(this->threadCallbackTaskId == curId)
+                {
+                    this->impl->notifyTimerActivate(this->timer);
+                }
+            }
+        }
+    }
+public:
+    void _ZFP_timerMainThread(ZF_IN zfidentity curId)
+    {
+        if(this->threadCallbackTaskId == curId)
+        {
+             this->impl->notifyTimerActivate(this->timer);
         }
     }
 };

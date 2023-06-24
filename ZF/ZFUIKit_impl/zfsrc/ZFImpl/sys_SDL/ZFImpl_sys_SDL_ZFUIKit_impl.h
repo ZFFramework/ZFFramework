@@ -10,6 +10,14 @@
 #if ZF_ENV_sys_SDL
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+extern ZFLIB_ZFUIKit_impl void ZFImpl_sys_SDL_viewTreePrintT(ZF_OUT zfstring &ret, ZF_IN ZFImpl_sys_SDL_View *view);
+inline zfstring ZFImpl_sys_SDL_viewTreePrint(ZF_IN ZFImpl_sys_SDL_View *view)
+{
+    zfstring ret;
+    ZFImpl_sys_SDL_viewTreePrintT(ret, view);
+    return ret;
+}
+
 // convert utility
 inline void ZFImpl_sys_SDL_ZFUIPointToSDL_PointT(ZF_OUT SDL_Point &ret, ZF_IN const ZFUIPoint &point)
 {

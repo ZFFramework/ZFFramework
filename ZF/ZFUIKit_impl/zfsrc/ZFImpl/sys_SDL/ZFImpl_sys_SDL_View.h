@@ -235,8 +235,12 @@ public:
         this->sysWindow = zfnull;
         this->ownerZFUIView = zfnull;
         this->parent = zfnull;
+        this->rect.x = this->rect.y = this->rect.w = this->rect.h = 0;
         this->renderImpls.removeAll();
         this->children.removeAll();
+        this->renderRequested = zftrue;
+        this->sdlMouseGrabCallback = zfnull;
+        this->sdlMeasureCallback = zfnull;
     }
 
     /** @brief prepare renderCache */

@@ -244,7 +244,7 @@ private:
                 return zffalse;
         }
 
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)owner->ownerZFUIView->nativeImplView();
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)owner;
         nativeScrollView->_ZFP_scrollViewImplHelper.interceptMouse(sdlEvent, mouseAction);
         return zftrue;
     }
@@ -252,13 +252,10 @@ public:
     virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *scrollView,
                                          ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
     {
-        ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)scrollView->nativeView();
-        nativeView->sdlMouseGrabCallback = zfself::sdlMouseGrabCallback;
-
         _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = zfnew(_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView);
         nativeScrollView->_ZFP_scrollViewImplHelper.scrollView = scrollView;
         nativeScrollView->_ZFP_scrollViewImplHelper.implProtocol = nativeScrollView;
-        nativeScrollView->_ZFP_scrollViewImplHelper.implProtocol = nativeScrollView;
+        nativeScrollView->sdlMouseGrabCallback = zfself::sdlMouseGrabCallback;
 
         return nativeScrollView;
     }

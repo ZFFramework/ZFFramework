@@ -24,7 +24,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# change ZFGlobalTimerInterval to a greater value,
  *   and your logci would be "slowed down"
  *
- * you may also use #ZFGlobalTimerManualStep to manually control the timer steps
+ * you may also use #ZFGlobalTimerManualStep to manually control the timer steps\n
+ * note global timer is ensured run in main thread
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttach,
                         ZFMP_IN(const ZFListener &, timerCallback),
