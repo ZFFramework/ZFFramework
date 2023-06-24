@@ -9,6 +9,7 @@
 #include "ZFNet/ZFHttpRequest.h"
 #include "ZFNet/ZFNetDef.h"
 #include "ZFNet/ZFPathType_http.h"
+#include "ZFNet/ZFUdp.h"
 
 #endif // #ifndef _ZFI_ZFNet_h_
 

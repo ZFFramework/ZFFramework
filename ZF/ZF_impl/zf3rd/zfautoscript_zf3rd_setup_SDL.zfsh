@@ -1,6 +1,7 @@
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL" SDL2 "<ZF_WORK_DIR>\_repo\SDL"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_image" SDL2 "<ZF_WORK_DIR>\_repo\SDL_image"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_ttf" SDL2 "<ZF_WORK_DIR>\_repo\SDL_ttf"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_net" main "<ZF_WORK_DIR>\_repo\SDL_net"
 
 cmake --version
 <ZF_IF_SUCCESS_BEGIN>
@@ -24,6 +25,14 @@ cmake --version
     <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_tmp\SDL\build_SDL_ttf"
     cd "<ZF_WORK_DIR>\_tmp\SDL\build_SDL_ttf"
     cmake ../../../_repo/SDL_ttf -DCMAKE_INSTALL_PREFIX="<ZF_ROOT_PATH>\_tmp\SDL" -DCMAKE_BUILD_TYPE=Release
+    make -j4
+    make install <ZF_IGNORE_OUTPUT>
+    cd "<ZF_WORK_DIR>"
+
+    <ZF_COMMENT> SDL_net
+    <ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\mkdir.<ZF_SH_EXT>" "<ZF_WORK_DIR>\_tmp\SDL\build_SDL_net"
+    cd "<ZF_WORK_DIR>\_tmp\SDL\build_SDL_net"
+    cmake ../../../_repo/SDL_net -DCMAKE_INSTALL_PREFIX="<ZF_ROOT_PATH>\_tmp\SDL" -DCMAKE_BUILD_TYPE=Release
     make -j4
     make install <ZF_IGNORE_OUTPUT>
     cd "<ZF_WORK_DIR>"

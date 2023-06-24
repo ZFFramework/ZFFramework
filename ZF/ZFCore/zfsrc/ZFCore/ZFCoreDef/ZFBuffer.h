@@ -114,10 +114,13 @@ public:
         {
             bufferSize = zfslen((const zfchar *)buffer) * sizeof(zfchar);
         }
-        this->bufferCapacity(this->bufferSize() + bufferSize);
-        zfmemcpy((zfbyte *)this->buffer() + this->bufferSize(), buffer, bufferSize);
-        *((zfchar *)((zfbyte *)this->buffer() + this->bufferSize() + bufferSize)) = '\0';
-        d->bufferSize += bufferSize;
+        if(bufferSize > 0)
+        {
+            this->bufferCapacity(this->bufferSize() + bufferSize);
+            zfmemcpy((zfbyte *)this->buffer() + this->bufferSize(), buffer, bufferSize);
+            *((zfchar *)((zfbyte *)this->buffer() + this->bufferSize() + bufferSize)) = '\0';
+            d->bufferSize += bufferSize;
+        }
     }
     /**
      * @brief util method to append string

@@ -502,6 +502,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                     event->mouseAction = mouseAction;
                     event->mousePoint.x = (zffloat)sdlEvent->button.x;
                     event->mousePoint.y = (zffloat)sdlEvent->button.y;
+                    viewDownPrev->posFromGlobal(event->mousePoint.x, event->mousePoint.y);
                     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(viewDownPrev->ownerZFUIView, event);
                 }
             }

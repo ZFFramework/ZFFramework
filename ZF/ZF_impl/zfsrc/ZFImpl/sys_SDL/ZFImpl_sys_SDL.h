@@ -48,9 +48,5 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_GLOBAL_END
 
-#if ZF_ENV_sys_SDL
-#include "../_repo/SDL/SDL.h"
-#endif
-
 #endif // #ifndef _ZFI_ZFImpl_sys_SDL_h_
 

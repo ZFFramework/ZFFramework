@@ -71,7 +71,7 @@ extern ZFLIB_ZFCore ZFOutput _ZFP_zfLog(ZF_IN const zfchar *header, ZF_IN_OPT co
 /**
  * @brief output format for #zfLog
  */
-zfclass ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputFormat
+zfclass ZFLIB_ZFCore ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputFormat
 {
     ZFOBJECT_DECLARE(ZFLogFormat, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFOutputFormat)

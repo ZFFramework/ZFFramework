@@ -14,61 +14,63 @@ protected:
         ZFFramework_test_protocolCheck(ZFFile);
         ZFFramework_test_protocolCheck(ZFRes);
 
+        const zfchar *testPath = "test_ZFFileIO";
+
         zfLogTrim() << "============================================================";
         zfLogTrim() << "res tree:";
-        ZFPathInfoTreePrint(ZFPathInfo(ZFPathType_res(), "test_ZFFileIO"), ZFOutputDefault(), "  ");
+        ZFPathInfoTreePrint(ZFPathInfo(ZFPathType_res(), testPath), ZFOutputDefault(), "  ");
 
         zfLogTrim() << "try read content:";
         ZFInputReadAll(ZFOutputDefault(),
-            ZFInputForRes("test_ZFFileIO/fileExist"));
+            ZFInputForRes(zfstringWithFormat("%s/fileExist", testPath)));
         ZFInputReadAll(ZFOutputDefault(),
-            ZFInputForRes("test_ZFFileIO/dirExist/fileExist2"));
+            ZFInputForRes(zfstringWithFormat("%s/dirExist/fileExist2", testPath)));
 
         zfLogTrim() << "============================================================";
         zfLogTrim() << "copy to cache dir, tree:";
-        ZFResCopy("test_ZFFileIO", zfstringWithFormat("%s/test_ZFFileIO", ZFPathForCache()));
-        ZFPathInfoTreePrint(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO"), ZFOutputDefault(), "  ");
+        ZFResCopy(testPath, zfstringWithFormat("%s/%s", ZFPathForCache(), testPath));
+        ZFPathInfoTreePrint(ZFPathInfo(ZFPathType_cachePath(), testPath), ZFOutputDefault(), "  ");
 
         zfLogTrim() << "try read content:";
         ZFInputReadAll(ZFOutputDefault(),
-            ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/fileExist")));
+            ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/fileExist", testPath))));
         ZFInputReadAll(ZFOutputDefault(),
-            ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist/fileExist2")));
+            ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist/fileExist2", testPath))));
 
         zfLogTrim() << "============================================================";
         zfLogTrim() << "file type check:";
 
         zfLogTrim() << "  res isExist:";
-        zfLogTrim() << "    " << ZFResIsExist("test_ZFFileIO/fileExist");
-        zfLogTrim() << "    " << ZFResIsExist("test_ZFFileIO/dirExist");
-        zfLogTrim() << "    " << ZFResIsExist("test_ZFFileIO/dirExist/fileExist2");
-        zfLogTrim() << "    " << !ZFResIsExist("test_ZFFileIO/fileNotExist");
-        zfLogTrim() << "    " << !ZFResIsExist("test_ZFFileIO/dirNotExist");
-        zfLogTrim() << "    " << !ZFResIsExist("test_ZFFileIO/dirExist/fileNotExist");
+        zfLogTrim() << "    " << ZFResIsExist(zfstringWithFormat("%s/fileExist", testPath));
+        zfLogTrim() << "    " << ZFResIsExist(zfstringWithFormat("%s/dirExist", testPath));
+        zfLogTrim() << "    " << ZFResIsExist(zfstringWithFormat("%s/dirExist/fileExist2", testPath));
+        zfLogTrim() << "    " << !ZFResIsExist(zfstringWithFormat("%s/fileNotExist", testPath));
+        zfLogTrim() << "    " << !ZFResIsExist(zfstringWithFormat("%s/dirNotExist", testPath));
+        zfLogTrim() << "    " << !ZFResIsExist(zfstringWithFormat("%s/dirExist/fileNotExist", testPath));
 
         zfLogTrim() << "  res isDir:";
-        zfLogTrim() << "    " << !ZFResIsDir("test_ZFFileIO/fileExist");
-        zfLogTrim() << "    " << ZFResIsDir("test_ZFFileIO/dirExist");
-        zfLogTrim() << "    " << !ZFResIsDir("test_ZFFileIO/dirExist/fileExist2");
-        zfLogTrim() << "    " << !ZFResIsDir("test_ZFFileIO/fileNotExist");
-        zfLogTrim() << "    " << !ZFResIsDir("test_ZFFileIO/dirNotExist");
-        zfLogTrim() << "    " << !ZFResIsDir("test_ZFFileIO/dirExist/fileNotExist");
+        zfLogTrim() << "    " << !ZFResIsDir(zfstringWithFormat("%s/fileExist", testPath));
+        zfLogTrim() << "    " << ZFResIsDir(zfstringWithFormat("%s/dirExist", testPath));
+        zfLogTrim() << "    " << !ZFResIsDir(zfstringWithFormat("%s/dirExist/fileExist2", testPath));
+        zfLogTrim() << "    " << !ZFResIsDir(zfstringWithFormat("%s/fileNotExist", testPath));
+        zfLogTrim() << "    " << !ZFResIsDir(zfstringWithFormat("%s/dirNotExist", testPath));
+        zfLogTrim() << "    " << !ZFResIsDir(zfstringWithFormat("%s/dirExist/fileNotExist", testPath));
 
         zfLogTrim() << "  file isExist:";
-        zfLogTrim() << "    " << ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/fileExist"));
-        zfLogTrim() << "    " << ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist"));
-        zfLogTrim() << "    " << ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist/fileExist2"));
-        zfLogTrim() << "    " << !ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/fileNotExist"));
-        zfLogTrim() << "    " << !ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirNotExist"));
-        zfLogTrim() << "    " << !ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist/fileNotExist"));
+        zfLogTrim() << "    " << ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/fileExist", testPath)));
+        zfLogTrim() << "    " << ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist", testPath)));
+        zfLogTrim() << "    " << ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist/fileExist2", testPath)));
+        zfLogTrim() << "    " << !ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/fileNotExist", testPath)));
+        zfLogTrim() << "    " << !ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirNotExist", testPath)));
+        zfLogTrim() << "    " << !ZFPathInfoIsExist(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist/fileNotExist", testPath)));
 
         zfLogTrim() << "  file isDir:";
-        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/fileExist"));
-        zfLogTrim() << "    " << ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist"));
-        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist/fileExist2"));
-        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/fileNotExist"));
-        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirNotExist"));
-        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), "test_ZFFileIO/dirExist/fileNotExist"));
+        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/fileExist", testPath)));
+        zfLogTrim() << "    " << ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist", testPath)));
+        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist/fileExist2", testPath)));
+        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/fileNotExist", testPath)));
+        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirNotExist", testPath)));
+        zfLogTrim() << "    " << !ZFPathInfoIsDir(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist/fileNotExist", testPath)));
 
         this->testCaseStop();
     }

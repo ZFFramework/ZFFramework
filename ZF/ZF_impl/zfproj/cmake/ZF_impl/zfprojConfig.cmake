@@ -28,11 +28,16 @@ function(zfprojConfigAfter_ZF_impl projName)
     add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_ttf" SDL_ttf)
     set_target_properties(SDL2_ttf PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
+    set(SDL2NET_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
+    add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_net" SDL_net)
+    set_target_properties(SDL2_net PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
     target_link_libraries(${projName} PUBLIC
         SDL2main
         SDL2-static
         SDL2_image
         SDL2_ttf
+        SDL2_net
         )
 
     zfprojLoadAllSymbol(${projName})

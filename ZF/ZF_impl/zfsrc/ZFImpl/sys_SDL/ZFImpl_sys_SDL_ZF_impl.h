@@ -4,6 +4,10 @@
 #include "../ZFImpl_ZF_impl.h"
 #include "ZFImpl_sys_SDL.h"
 
+#if ZF_ENV_sys_SDL
+#include "../_repo/SDL/SDL.h"
+#endif
+
 #include "ZFCore.h"
 
 #if ZF_ENV_sys_SDL
