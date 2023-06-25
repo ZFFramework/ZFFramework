@@ -83,7 +83,7 @@ public:
             return zffalse;
         }
         zfmemcpy(sdlPacket->data, packet->data.buffer(), packet->data.bufferSize());
-        sdlPacket->len = packet->data.bufferSize();
+        sdlPacket->len = (int)packet->data.bufferSize();
         return 0 != SDLNet_UDP_Send(nativeUdpTmp->nativeUdp, -1, sdlPacket);
     }
     virtual zfautoObjectT<ZFUdpPacket *> recv(ZF_IN ZFUdp *owner)

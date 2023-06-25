@@ -135,6 +135,7 @@ extern ZFLIB_ZFCore const ZFClass *ZFDI_classForName(ZF_IN const zfchar *classNa
  *   (Class0)param0, (Class1)param1, ...
  */
 extern ZFLIB_ZFCore void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
+                                        , zfindex paramCount
                                         , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
                                         , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
                                         , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()

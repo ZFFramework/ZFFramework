@@ -62,46 +62,38 @@ public:
     zfautoObject &operator = (ZF_IN T_ZFObject const &obj);
 
 public:
-    zfbool operator == (ZF_IN zfautoObject const &obj) const
-    {
-        return (this->toObject() == obj.toObject());
-    }
-    zfbool operator != (ZF_IN zfautoObject const &obj) const
-    {
-        return (this->toObject() != obj.toObject());
-    }
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject *obj) const
+    inline zfbool operator == (ZF_IN T_ZFObject *obj) const
     {
         return (this->toObject() == (obj ? obj->toObject() : zfnull));
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject *obj) const
+    inline zfbool operator != (ZF_IN T_ZFObject *obj) const
     {
         return (this->toObject() != (obj ? obj->toObject() : zfnull));
     }
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject const &obj) const
+    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const
     {
         return (this->toObject() == _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject const &obj) const
+    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const
     {
         return (this->toObject() != _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
 
 public:
-    ZFObject *operator -> (void) const
+    inline ZFObject *operator -> (void) const
     {
         return this->toObject();
     }
-    operator bool (void) const
+    inline operator bool (void) const
     {
         return (this->toObject() != zfnull);
     }
     template<typename T_ZFObject>
-    operator T_ZFObject * (void) const
+    inline operator T_ZFObject * (void) const
     {
         return ZFCastZFObject(T_ZFObject *, this->toObject());
     }
@@ -159,6 +151,47 @@ public:
     zfautoObjectT(ZF_IN T_ZFObject *obj);
     template<typename T_ZFObject>
     zfautoObjectT(ZF_IN T_ZFObject const &obj);
+
+public:
+    template<typename T_ZFObject>
+    inline zfbool operator == (ZF_IN T_ZFObject *obj) const
+    {
+        return (this->toObject() == (obj ? obj->toObject() : zfnull));
+    }
+    template<typename T_ZFObject>
+    inline zfbool operator != (ZF_IN T_ZFObject *obj) const
+    {
+        return (this->toObject() != (obj ? obj->toObject() : zfnull));
+    }
+    template<typename T_ZFObject>
+    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const
+    {
+        return (this->toObject() == _ZFP_ZFAnyCast(T_ZFObject, obj));
+    }
+    template<typename T_ZFObject>
+    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const
+    {
+        return (this->toObject() != _ZFP_ZFAnyCast(T_ZFObject, obj));
+    }
+public:
+    inline zfbool operator == (ZF_IN zfautoObject const &obj) const
+    {
+        return (this->toObject() == obj.toObject());
+    }
+    inline zfbool operator != (ZF_IN zfautoObject const &obj) const
+    {
+        return (this->toObject() != obj.toObject());
+    }
+    template<typename T_ZFObject>
+    inline zfbool operator == (ZF_IN zfautoObjectT<T_ZFObject> const &obj) const
+    {
+        return (this->toObject() == obj.toObject());
+    }
+    template<typename T_ZFObject>
+    inline zfbool operator != (ZF_IN zfautoObjectT<T_ZFObject> const &obj) const
+    {
+        return (this->toObject() != obj.toObject());
+    }
 
 public:
     T_ZFObjectBase operator -> (void) const;

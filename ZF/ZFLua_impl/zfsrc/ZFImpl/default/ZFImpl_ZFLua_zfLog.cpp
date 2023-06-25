@@ -15,11 +15,7 @@ static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L)
     {
         o << s;
     }
-
-    zfblockedAlloc(v_ZFOutput, ret);
-    ret->zfv = o;
-    ZFImpl_ZFLua_luaPush(L, ret);
-    return 1;
+    return 0;
 }
 
 static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L)
@@ -31,11 +27,7 @@ static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L)
     {
         o << s;
     }
-
-    zfblockedAlloc(v_ZFOutput, ret);
-    ret->zfv = o;
-    ZFImpl_ZFLua_luaPush(L, ret);
-    return 1;
+    return 0;
 }
 
 // ============================================================

@@ -140,6 +140,7 @@ static void _ZFP_ZFDI_paramInfo(ZF_IN_OUT zfstring &ret,
     }
 }
 void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
+                    , zfindex paramCount
                     , ZF_IN_OPT ZFObject *param0 /* = ZFMethodGenericInvokerDefaultParam() */
                     , ZF_IN_OPT ZFObject *param1 /* = ZFMethodGenericInvokerDefaultParam() */
                     , ZF_IN_OPT ZFObject *param2 /* = ZFMethodGenericInvokerDefaultParam() */
@@ -150,15 +151,23 @@ void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
                     , ZF_IN_OPT ZFObject *param7 /* = ZFMethodGenericInvokerDefaultParam() */
                     )
 {
-    if(param0 == zfnull || param0 == ZFMethodGenericInvokerDefaultParam()) {return;}
+    if(paramCount == 0
+       || (paramCount == zfindexMax() && param0 == zfnull)
+       || param0 == ZFMethodGenericInvokerDefaultParam()
+    ) {
+        return;
+    }
     ret += '[';
     do
     {
         _ZFP_ZFDI_paramInfo(ret, param0);
 
         #define _ZFP_ZFDI_paramInfo_loop(N) \
-            if(param##N == zfnull || param##N == ZFMethodGenericInvokerDefaultParam()) \
-            { \
+            if(zffalse \
+                || (paramCount != zfindexMax() && N >= paramCount) \
+                || (paramCount == zfindexMax() && param##N == zfnull) \
+                || param##N == ZFMethodGenericInvokerDefaultParam() \
+            ) { \
                 break; \
             } \
             else \
@@ -204,6 +213,7 @@ static zfbool _ZFP_ZFDI_invoke(ZF_OUT zfautoObject &ret
             *errorHint += name;
             *errorHint += "(";
             ZFDI_paramInfo(*errorHint
+                    , paramCount
                     , paramList[0]
                     , paramList[1]
                     , paramList[2]
@@ -430,6 +440,7 @@ zfbool ZFDI_invoke(ZF_OUT zfautoObject &ret
         {
             *errorHint += "\n  with params: ";
             ZFDI_paramInfo(*errorHint
+                    , paramCount
                     , paramList[0]
                     , paramList[1]
                     , paramList[2]
@@ -594,6 +605,7 @@ zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
         {
             *errorHint += "\n  with params: ";
             ZFDI_paramInfo(*errorHint
+                    , paramCount
                     , paramList[0]
                     , paramList[1]
                     , paramList[2]

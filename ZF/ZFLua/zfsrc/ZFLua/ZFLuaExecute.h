@@ -113,8 +113,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           end)
  *     @endcode
  *   -  `output:output(text, size)` and `output:outputDetail(text, size)`\n
- *     write to output callback, typically usage:\n
- *     `zfLog():output(xxx):output(xxx)`
+ *     write to output callback
  *   -  `input:input(buf, size)` and `input:inputDetail(buf, size)`\n
  *     read from input callback
  * -  array

@@ -175,11 +175,11 @@ ZFOUTPUT_TYPE(zfstring, {output.execute(zfstringToString(v));})
     public: \
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
         { \
-            return (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
+            return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
         } \
         static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
         { \
-            return ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
+            return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
         } \
         static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
         { \
@@ -191,11 +191,11 @@ ZFOUTPUT_TYPE(zfstring, {output.execute(zfstringToString(v));})
     public: \
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
         { \
-            return (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
+            return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
         } \
         static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
         { \
-            return ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
+            return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
         } \
         static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
         { \
@@ -209,11 +209,11 @@ ZFOUTPUT_TYPE(zfstring, {output.execute(zfstringToString(v));})
     public: \
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
         { \
-            return (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
+            return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
         } \
         static _TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) \
         { \
-            return ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
+            return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
         } \
         static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
         { \

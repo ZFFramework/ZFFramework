@@ -75,6 +75,7 @@ ZFMETHOD_DEFINE_1(ZFUdp, zfbool, open,
         return zffalse;
     }
     zfCoreAssert(d->port != 0);
+    zfRetain(this);
     return zftrue;
 }
 ZFMETHOD_DEFINE_0(ZFUdp, void, close)
@@ -84,6 +85,7 @@ ZFMETHOD_DEFINE_0(ZFUdp, void, close)
         ZFPROTOCOL_ACCESS(ZFUdp)->close(this, d->nativeUdp);
         d->nativeUdp = zfnull;
         d->port = 0;
+        zfRelease(this);
     }
 }
 ZFMETHOD_DEFINE_0(ZFUdp, zfuint, port)

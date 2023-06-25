@@ -17,6 +17,11 @@ protected:
         zfuint serverPort = 0;
         {
             zfblockedAlloc(ZFUdp, server);
+            ZFLISTENER(serverOnDealloc) {
+                zfLogTrim() << "server dealloc";
+            } ZFLISTENER_END()
+            server->observerAdd(ZFObject::EventObjectBeforeDealloc(), serverOnDealloc);
+
             this->testCaseOutput("server start");
             ZFTestCaseAssert(server->open() && server->port() != 0);
             this->testCaseOutput("server start success on port: %u", server->port());
@@ -48,6 +53,11 @@ protected:
 
         {
             zfblockedAlloc(ZFUdp, client);
+            ZFLISTENER(clientOnDealloc) {
+                zfLogTrim() << "client dealloc";
+            } ZFLISTENER_END()
+            client->observerAdd(ZFObject::EventObjectBeforeDealloc(), clientOnDealloc);
+
             this->testCaseOutput("client start");
             ZFTestCaseAssert(client->open() && client->port() != 0);
             this->testCaseOutput("client start success on port: %u", client->port());
