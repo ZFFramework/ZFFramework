@@ -5,9 +5,6 @@ include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
 
 include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
-if(COMMAND zfprojConfigGlobal_ZFLua_impl)
-    zfprojConfigGlobal_ZFLua_impl()
-endif()
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c
