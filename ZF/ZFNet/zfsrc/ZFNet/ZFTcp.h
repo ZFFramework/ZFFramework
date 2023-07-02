@@ -9,6 +9,21 @@
 #include "ZFNetDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+/**
+ * @brief type of the tcp socket
+ */
+ZFENUM_BEGIN(ZFLIB_ZFNet, ZFTcpType)
+    ZFENUM_VALUE(Invalid) /**< @brief invalid */
+    ZFENUM_VALUE(Server) /**< @brief opened as server */
+    ZFENUM_VALUE(Client) /**< @brief opened as client */
+    ZFENUM_VALUE(ServerAccept) /**< @brief opened by server accept */
+ZFENUM_SEPARATOR()
+    ZFENUM_VALUE_REGISTER(Invalid)
+    ZFENUM_VALUE_REGISTER(Server)
+    ZFENUM_VALUE_REGISTER(Client)
+    ZFENUM_VALUE_REGISTER(ServerAccept)
+ZFENUM_END(ZFLIB_ZFNet, ZFTcpType)
+
 zfclassFwd _ZFP_ZFTcpPrivate;
 // ============================================================
 /**
@@ -22,35 +37,38 @@ public:
     /**
      * @brief open a socket with specified host and port
      *
-     * if host is null or empty,
-     * start local server that listen on the port,
-     * use #accept to start accept client connection\n
-     * \n
-     * return a socket connection token that can be used by #send and #recv,
-     * or null if error occurred
-     *
-     * note:
-     * -  the owner tcp object would be retained until #close called
-     * -  this method would block current thread until done,
-     *   call in new thread if necessary
+     * -  if host is null or empty,
+     *   start local server that listen on the port,
+     *   use #accept to start accept client connection,
+     *   and use #send or #recv on the tcp object returned by #accept
+     * -  if host is not null or empty,
+     *   try to connect to remote host,
+     *   use #send or #recv to communicate with remote host
      */
-    ZFMETHOD_DECLARE_2(void *, open,
+    ZFMETHOD_DECLARE_2(zfbool, open,
                        ZFMP_IN(const zfchar *, host),
                        ZFMP_IN(zfuint, port))
     /**
      * @brief close the socket, see #open
      *
-     * note:
-     * -  this method would block current thread until done,
-     *   call in new thread if necessary
+     * close would be called automatically when owner tcp object deallocated
      */
-    ZFMETHOD_DECLARE_1(void, close,
-                       ZFMP_IN(void *, socket))
+    ZFMETHOD_DECLARE_0(void, close)
+
+    /**
+     * @brief type of this tcp object
+     */
+    ZFMETHOD_DECLARE_0(ZFTcpTypeEnum, type)
+
+    /**
+     * @brief true if #open or #accept successfully
+     */
+    ZFMETHOD_DECLARE_0(zfbool, valid)
 
     /**
      * @brief current opened port, or null if not opened
      *
-     * return "localhost" for server
+     * return "localhost" for server (null host with #open)
      */
     ZFMETHOD_DECLARE_0(const zfchar *, host)
     /**
@@ -58,18 +76,28 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfuint, port)
 
+    /**
+     * @brief get remote addr, always fail if current #type is #ZFTcpType::e_Invalid or #ZFTcpType::e_Server
+     */
+    ZFMETHOD_DECLARE_2(zfbool, remoteInfo,
+                       ZFMP_OUT(zfstring &, remoteAddr),
+                       ZFMP_OUT(zfuint &, remotePort))
+
 public:
     /**
      * @brief start accept client connection
      *
-     * return a socket connection token that can be used by #send and #recv,
-     * or null if error occurred or closed
+     * return a new tcp object that can #send and #recv to communicate with client,
+     * or null if error or no client connection
      *
      * note:
-     * -  this method would block current thread until receive client connection or #close called
+     * -  this method may or may not block current thread (depends on impl),
+     *   recommended to put it in thread and loop with sleep
      */
-    ZFMETHOD_DECLARE_0(void *, accept)
+    ZFMETHOD_DECLARE_0(zfautoObjectT<ZFTcp *>, accept)
 
+    // ============================================================
+public:
     /**
      * @brief send packet
      *
@@ -77,8 +105,7 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_3(zfbool, send,
-                       ZFMP_IN(void *, socket),
+    ZFMETHOD_DECLARE_2(zfbool, send,
                        ZFMP_IN(const void *, data),
                        ZFMP_IN(zfindex, size))
     /**
@@ -88,8 +115,7 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_3(zfbool, send,
-                       ZFMP_IN(void *, socket),
+    ZFMETHOD_DECLARE_2(zfbool, send,
                        ZFMP_IN(const zfchar *, data),
                        ZFMP_IN_OPT(zfindex, size, zfindexMax()))
     /**
@@ -99,8 +125,7 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_2(zfbool, send,
-                       ZFMP_IN(void *, socket),
+    ZFMETHOD_DECLARE_1(zfbool, send,
                        ZFMP_IN(const ZFBuffer &, data))
     /**
      * @brief send packet
@@ -109,43 +134,45 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_2(zfbool, send,
-                       ZFMP_IN(void *, socket),
+    ZFMETHOD_DECLARE_1(zfbool, send,
                        ZFMP_IN(const ZFInput &, input))
 
+    // ============================================================
+public:
     /**
-     * @brief recv packet
+     * @brief recv packet until timeout
      *
-     * return length of received bytes
+     * return length of received bytes,
+     * you may call #close to stop recv
      *
-     * note:
-     * -  this method would block current thread until done,
-     *   call in new thread if necessary
-     * -  call #close to stop recv
+     * timeout:
+     * -  `<0` : block current thread until anything received
+     * -  `0` : do not block current thread, return 0 if nothing to receive
+     * -  `>0` : block current thread, until anything received, or reach timeout
+     *
+     * note: received data would be appended to buffer
      */
     ZFMETHOD_DECLARE_3(zfindex, recv,
-                       ZFMP_IN(void *, socket),
                        ZFMP_IN_OUT(ZFBuffer &, data),
-                       ZFMP_IN(zfindex, maxSize))
+                       ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
+                       ZFMP_IN_OPT(zftimet, timeout, -1))
     /**
-     * @brief recv packet
+     * @brief recv packet until timeout
      *
-     * return length of received bytes
+     * return length of received bytes,
+     * you may call #close to stop recv
      *
-     * note:
-     * -  this method would block current thread until done,
-     *   call in new thread if necessary
-     * -  call #close to stop recv
+     * timeout:
+     * -  `<0` : block current thread until anything received
+     * -  `0` : do not block current thread, return 0 if nothing to receive
+     * -  `>0` : block current thread, until anything received, or reach timeout
+     *
+     * note: received data would be appended to output
      */
     ZFMETHOD_DECLARE_3(zfindex, recv,
-                       ZFMP_IN(void *, socket),
                        ZFMP_IN_OUT(const ZFOutput &, output),
-                       ZFMP_IN(zfindex, maxSize))
-
-    /**
-     * @brief native tcp impl
-     */
-    ZFMETHOD_DECLARE_0(void *, nativeTcp)
+                       ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
+                       ZFMP_IN_OPT(zftimet, timeout, -1))
 
 public:
     zfoverride
@@ -156,6 +183,8 @@ protected:
     virtual void objectOnInit(void);
     zfoverride
     virtual void objectOnDealloc(void);
+    zfoverride
+    virtual void objectOnDeallocPrepare(void);
 
 private:
     _ZFP_ZFTcpPrivate *d;

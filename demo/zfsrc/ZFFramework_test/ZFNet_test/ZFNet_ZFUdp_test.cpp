@@ -23,26 +23,23 @@ protected:
             server->observerAdd(ZFObject::EventObjectBeforeDealloc(), serverOnDealloc);
 
             this->testCaseOutput("server start");
-            ZFTestCaseAssert(server->open() && server->port() != 0);
-            this->testCaseOutput("server start success on port: %u", server->port());
+            zfbool serverOpenSuccess = server->open(zfmRand(1025, 65536));
+            ZFTestCaseAssert(serverOpenSuccess);
+            this->testCaseOutput("server start success: %s", server->objectInfo().cString());
             serverPort = server->port();
 
             ZFLISTENER_1(serverRecvThread
                     , zfautoObjectT<ZFUdp *>, server
                     ) {
-                while(server->port() != 0)
+                ZFBuffer buf;
+                ZFUdpAddr recvAddr;
+                while(server->valid())
                 {
-                    zfautoObjectT<ZFUdpPacket *> recv = server->recv();
-                    if(recv != zfnull)
+                    zfindex recvSize = server->recv(recvAddr, buf, 4096);
+                    if(recvSize > 0)
                     {
-                        zfLog() << "server recv:" << recv;
-                        zfblockedAlloc(ZFUdpPacket, send);
-                        send->host = recv->host;
-                        send->port = recv->port;
-                        send->data.bufferAppend("server reply");
-                        server->send(send);
-
-                        server->close();
+                        zfLog() << "server recv:" << buf.text();
+                        server->send(recvAddr, "server reply");
                         break;
                     }
                     ZFThread::sleep(100);
@@ -59,22 +56,24 @@ protected:
             client->observerAdd(ZFObject::EventObjectBeforeDealloc(), clientOnDealloc);
 
             this->testCaseOutput("client start");
-            ZFTestCaseAssert(client->open() && client->port() != 0);
-            this->testCaseOutput("client start success on port: %u", client->port());
+            zfbool clientOpenSuccess = client->open();
+            ZFTestCaseAssert(clientOpenSuccess);
+            this->testCaseOutput("client start success: %s", client->objectInfo().cString());
 
             ZFTestCase *testCase = this;
             ZFLISTENER_2(clientRecvThread
                     , zfautoObjectT<ZFTestCase *>, testCase
                     , zfautoObjectT<ZFUdp *>, client
                     ) {
-                while(client->port() != 0)
+                ZFBuffer buf;
+                ZFUdpAddr hostAddr;
+                while(client->valid())
                 {
-                    zfautoObjectT<ZFUdpPacket *> recv = client->recv();
-                    if(recv != zfnull)
+                    zfindex recvSize = client->recv(hostAddr, buf);
+                    if(recvSize > 0)
                     {
-                        zfLog() << "client recv:" << recv;
+                        zfLog() << "client recv:" << buf.text();
 
-                        client->close();
                         testCase->testCaseStop();
                         break;
                     }
@@ -83,11 +82,7 @@ protected:
             } ZFLISTENER_END()
             zfasync(clientRecvThread);
 
-            zfblockedAlloc(ZFUdpPacket, send);
-            send->host = "localhost";
-            send->port = serverPort;
-            send->data.bufferAppend("client send");
-            client->send(send);
+            client->send("localhost", serverPort, "client send");
         }
     }
 };

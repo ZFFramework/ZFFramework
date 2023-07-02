@@ -17,17 +17,39 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFNet, ZFUdp)
 public:
     /** @brief see #ZFUdp::open */
-    virtual zfbool open(ZF_IN ZFUdp *owner,
-                        ZF_IN_OUT zfuint &port,
-                        ZF_OUT void *&nativeUdp) zfpurevirtual;
+    virtual void *open(ZF_IN ZFUdp *owner,
+                       ZF_IN zfuint port) zfpurevirtual;
     /** @brief see #ZFUdp::close */
     virtual void close(ZF_IN ZFUdp *owner,
-                       ZF_IN void *nativeUdp) zfpurevirtual;
+                       ZF_IN void *nativeSocket) zfpurevirtual;
+
+public:
+    /** @brief see #ZFUdp::hostResolve */
+    virtual void *hostResolve(ZF_IN const zfchar *host,
+                              ZF_IN zfuint port) zfpurevirtual;
+    /** @brief see #ZFUdp::hostRelease */
+    virtual void hostRelease(ZF_IN void *hostAddr) zfpurevirtual;
+
+public:
+    /** @brief see #ZFUdpAddr::remoteInfo */
+    virtual zfbool remoteInfo(ZF_IN void *hostAddr,
+                              ZF_OUT zfstring &remoteAddr,
+                              ZF_OUT zfuint &remotePort) zfpurevirtual;
+
+public:
     /** @brief see #ZFUdp::send */
     virtual zfbool send(ZF_IN ZFUdp *owner,
-                        ZF_IN ZFUdpPacket *packet) zfpurevirtual;
+                        ZF_IN void *nativeSocket,
+                        ZF_IN void *hostAddr,
+                        ZF_IN const void *data,
+                        ZF_IN zfindex size) zfpurevirtual;
     /** @brief see #ZFUdp::recv */
-    virtual zfautoObjectT<ZFUdpPacket *> recv(ZF_IN ZFUdp *owner) zfpurevirtual;
+    virtual zfindex recv(ZF_IN ZFUdp *owner,
+                         ZF_IN void *nativeSocket,
+                         ZF_OUT void *&hostAddr,
+                         ZF_OUT void *data,
+                         ZF_IN zfindex maxSize,
+                         ZF_IN_OPT zftimet timeout) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUdp)
 
 ZF_NAMESPACE_GLOBAL_END

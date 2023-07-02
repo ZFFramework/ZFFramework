@@ -88,10 +88,10 @@ private:
  *   } ZFLISTENER_END()
  *   zflineAlloc(ZFHttpRequest, "http://xxx", "POST")
  *       ->header("Content-Type", "application/json;charset=UTF-8;")
- *       ->request(ZFJson()
+ *       ->body(ZFJson()
  *           .attr("k", "v")
- *           , onRecv)
- *       ;
+ *       )
+ *       ->request(onRecv);
  * @endcode
  */
 zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject

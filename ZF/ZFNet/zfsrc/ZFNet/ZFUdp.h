@@ -9,30 +9,38 @@
 #include "ZFNetDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfclassFwd _ZFP_ZFUdpAddrPrivate;
 /**
  * @brief udp packet
  */
-zfclass ZFLIB_ZFNet ZFUdpPacket : zfextends ZFObject
+zfclassLikePOD ZFLIB_ZFNet ZFUdpAddr
 {
-    ZFOBJECT_DECLARE(ZFUdpPacket, ZFObject)
-    ZFALLOC_CACHE_RELEASE({
-        cache->host.removeAll();
-        cache->port = 0;
-        cache->data.bufferSize(0);
-    })
+public:
+    /** @cond ZFPrivateDoc */
+    ZFUdpAddr(void);
+    ZFUdpAddr(ZF_IN const ZFUdpAddr &ref);
+    ~ZFUdpAddr(void);
+    ZFUdpAddr &operator = (ZF_IN const ZFUdpAddr &ref);
+    /** @endcond */
 
 public:
-    /** @brief host of the packet */
-    zfstring host;
-    /** @brief port of the packet */
-    zfuint port;
-    /** @brief data of the packet */
-    ZFBuffer data;
+    /** @brief whether the addr is valid */
+    zfbool valid(void) const;
+    /** @brief clear the resolved addr */
+    void clear(void);
+
+    /** @brief get remote host and port */
+    zfbool remoteInfo(ZF_OUT zfstring &remoteAddr,
+                      ZF_OUT zfuint &remotePort) const;
 
 public:
-    zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
+    void _ZFP_hostAddr(ZF_IN void *hostAddr);
+    void *_ZFP_hostAddr(void) const;
+private:
+    _ZFP_ZFUdpAddrPrivate *d;
 };
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFNet, ZFUdpAddr, ZFUdpAddr)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFNet, ZFUdpAddr)
 
 zfclassFwd _ZFP_ZFUdpPrivate;
 // ============================================================
@@ -45,11 +53,12 @@ zfclass ZFLIB_ZFNet ZFUdp : zfextends ZFObject
 
 public:
     /**
-     * @brief open a socket with specified port,
-     *   or 0 to open a random port
+     * @brief open a socket ready for #send or #recv
+     *
+     * to #recv, call this method with non zero port to bind to specified port\n
+     * to #send, call this method with zero port\n
      *
      * note:
-     * -  the owner udp object would be retained until #close called
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
@@ -65,10 +74,24 @@ public:
     ZFMETHOD_DECLARE_0(void, close)
 
     /**
-     * @brief current opened port, or 0 if not opened
+     * @brief true if #open successfully
+     */
+    ZFMETHOD_DECLARE_0(zfbool, valid)
+
+    /**
+     * @brief current opened port, or 0 if not opened or opened with 0 port
      */
     ZFMETHOD_DECLARE_0(zfuint, port)
 
+public:
+    /**
+     * @brief resolve host for #send
+     */
+    ZFMETHOD_DECLARE_2(ZFUdpAddr, hostResolve,
+                       ZFMP_IN(const zfchar *, host),
+                       ZFMP_IN(zfuint, port))
+
+    // ============================================================
 public:
     /**
      * @brief send packet
@@ -77,23 +100,129 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_1(zfbool, send,
-                       ZFMP_IN(ZFUdpPacket *, packet))
-
+    ZFMETHOD_DECLARE_3(zfbool, send,
+                       ZFMP_IN(const ZFUdpAddr &, hostAddr),
+                       ZFMP_IN(const void *, data),
+                       ZFMP_IN(zfindex, size))
     /**
-     * @brief recv packet
+     * @brief send packet
      *
      * note:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
-     * -  call #close to stop recv
      */
-    ZFMETHOD_DECLARE_0(zfautoObjectT<ZFUdpPacket *>, recv)
-
+    ZFMETHOD_DECLARE_3(zfbool, send,
+                       ZFMP_IN(const ZFUdpAddr &, hostAddr),
+                       ZFMP_IN(const zfchar *, data),
+                       ZFMP_IN_OPT(zfindex, size, zfindexMax()))
     /**
-     * @brief native udp impl
+     * @brief send packet
+     *
+     * note:
+     * -  this method would block current thread until done,
+     *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_0(void *, nativeUdp)
+    ZFMETHOD_DECLARE_2(zfbool, send,
+                       ZFMP_IN(const ZFUdpAddr &, hostAddr),
+                       ZFMP_IN(const ZFBuffer &, data))
+    /**
+     * @brief send packet
+     *
+     * note:
+     * -  this method would block current thread until done,
+     *   call in new thread if necessary
+     */
+    ZFMETHOD_DECLARE_2(zfbool, send,
+                       ZFMP_IN(const ZFUdpAddr &, hostAddr),
+                       ZFMP_IN(const ZFInput &, input))
+
+    // ============================================================
+public:
+    /**
+     * @brief send packet
+     *
+     * note:
+     * -  this method would block current thread until done,
+     *   call in new thread if necessary
+     */
+    ZFMETHOD_DECLARE_4(zfbool, send,
+                       ZFMP_IN(const zfchar *, host),
+                       ZFMP_IN(zfuint, port),
+                       ZFMP_IN(const void *, data),
+                       ZFMP_IN(zfindex, size))
+    /**
+     * @brief send packet
+     *
+     * note:
+     * -  this method would block current thread until done,
+     *   call in new thread if necessary
+     */
+    ZFMETHOD_DECLARE_4(zfbool, send,
+                       ZFMP_IN(const zfchar *, host),
+                       ZFMP_IN(zfuint, port),
+                       ZFMP_IN(const zfchar *, data),
+                       ZFMP_IN_OPT(zfindex, size, zfindexMax()))
+    /**
+     * @brief send packet
+     *
+     * note:
+     * -  this method would block current thread until done,
+     *   call in new thread if necessary
+     */
+    ZFMETHOD_DECLARE_3(zfbool, send,
+                       ZFMP_IN(const zfchar *, host),
+                       ZFMP_IN(zfuint, port),
+                       ZFMP_IN(const ZFBuffer &, data))
+    /**
+     * @brief send packet
+     *
+     * note:
+     * -  this method would block current thread until done,
+     *   call in new thread if necessary
+     */
+    ZFMETHOD_DECLARE_3(zfbool, send,
+                       ZFMP_IN(const zfchar *, host),
+                       ZFMP_IN(zfuint, port),
+                       ZFMP_IN(const ZFInput &, input))
+
+    // ============================================================
+public:
+    /**
+     * @brief recv packet until timeout
+     *
+     * return length of received bytes,
+     * you may call #close to stop recv
+     *
+     * timeout:
+     * -  `<0` : block current thread until anything received
+     * -  `0` : do not block current thread, return 0 if nothing to receive
+     * -  `>0` : block current thread, until anything received, or reach timeout
+     *
+     * note: received data would be appended to buffer
+     */
+    ZFMETHOD_DECLARE_4(zfindex, recv,
+                       ZFMP_OUT(ZFUdpAddr &, hostAddr),
+                       ZFMP_IN_OUT(ZFBuffer &, data),
+                       ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
+                       ZFMP_IN_OPT(zftimet, timeout, -1))
+    /**
+     * @brief recv packet until timeout
+     *
+     * return length of received bytes,
+     * you may call #close to stop recv
+     *
+     * timeout:
+     * -  `<0` : block current thread until anything received
+     * -  `0` : do not block current thread, return 0 if nothing to receive
+     * -  `>0` : block current thread, until anything received, or reach timeout
+     *
+     * note: received data would be appended to output
+     */
+    ZFMETHOD_DECLARE_4(zfindex, recv,
+                       ZFMP_OUT(ZFUdpAddr &, hostAddr),
+                       ZFMP_IN_OUT(const ZFOutput &, output),
+                       ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
+                       ZFMP_IN_OPT(zftimet, timeout, -1))
 
 public:
     zfoverride
