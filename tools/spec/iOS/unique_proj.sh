@@ -9,10 +9,10 @@ fi
 ZF_ROOT_PATH=$WORK_DIR/../../..
 
 if test "x-$_PY" = "x-" ; then
-    python --version && export _PY=python || export _PY=
+    python --version >/dev/null 2>&1 && export _PY=python || export _PY=
 fi
 if test "x-$_PY" = "x-" ; then
-    python3 --version && export _PY=python3 || export _PY=
+    python3 --version >/dev/null 2>&1 && export _PY=python3 || export _PY=
 fi
 if test "x-$_PY" = "x-" ; then
     echo "[unique_proj] no python available"

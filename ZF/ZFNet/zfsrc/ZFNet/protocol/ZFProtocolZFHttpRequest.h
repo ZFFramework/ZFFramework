@@ -19,6 +19,11 @@ ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFNet, ZFHttpRequest)
     // for request
 public:
     /**
+     * @brief whether https supported
+     */
+    virtual zfbool httpsAvailable(void) zfpurevirtual;
+
+    /**
      * @brief create native task
      */
     virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request,
@@ -35,10 +40,10 @@ public:
                      ZF_IN const zfchar *url) zfpurevirtual;
 
     /**
-     * @brief set http method, GET/POST/...
+     * @brief set http method
      */
     virtual void httpMethod(ZF_IN void *nativeTask,
-                            ZF_IN const zfchar *method) zfpurevirtual;
+                            ZF_IN ZFHttpMethodEnum httpMethod) zfpurevirtual;
 
     /**
      * @brief set http header
@@ -46,6 +51,12 @@ public:
     virtual void header(ZF_IN void *nativeTask,
                         ZF_IN const zfchar *key,
                         ZF_IN const zfchar *value) zfpurevirtual;
+
+    /**
+     * @brief remove http header
+     */
+    virtual void headerRemove(ZF_IN void *nativeTask,
+                              ZF_IN const zfchar *key) zfpurevirtual;
 
     /**
      * @brief get http header

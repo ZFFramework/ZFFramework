@@ -22,6 +22,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_iOS, ZFHttpRequest, ZFProt
     // ============================================================
     // for request
 public:
+    virtual zfbool httpsAvailable(void)
+    {
+        return zftrue;
+    }
+
     virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request,
                                    ZF_IN ZFHttpResponse *response)
     {
@@ -58,10 +63,10 @@ public:
     }
 
     virtual void httpMethod(ZF_IN void *nativeTask,
-                            ZF_IN const zfchar *method)
+                            ZF_IN ZFHttpMethodEnum httpMethod)
     {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        task.httpMethod = ZFImpl_sys_iOS_zfstringToNSString(method);
+        task.httpMethod = ZFImpl_sys_iOS_zfstringToNSString(ZFHttpMethodToString(httpMethod));
         task.request.HTTPMethod = task.httpMethod;
     }
 
@@ -70,7 +75,14 @@ public:
                         ZF_IN const zfchar *value)
     {
         _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
-        [task.request setValue:ZFImpl_sys_iOS_zfstringToNSString(value) forHTTPHeaderField:ZFImpl_sys_iOS_zfstringToNSString(key)];
+        [task.request addValue:ZFImpl_sys_iOS_zfstringToNSString(value) forHTTPHeaderField:ZFImpl_sys_iOS_zfstringToNSString(key)];
+    }
+
+    virtual void headerRemove(ZF_IN void *nativeTask,
+                              ZF_IN const zfchar *key)
+    {
+        _ZFP_ZFHttpRequestImpl_sys_iOS_Task *task = (__bridge _ZFP_ZFHttpRequestImpl_sys_iOS_Task *)nativeTask;
+        [task.request setValue:nil forHTTPHeaderField:ZFImpl_sys_iOS_zfstringToNSString(key)];
     }
 
     virtual zfstring header(ZF_IN void *nativeTask,

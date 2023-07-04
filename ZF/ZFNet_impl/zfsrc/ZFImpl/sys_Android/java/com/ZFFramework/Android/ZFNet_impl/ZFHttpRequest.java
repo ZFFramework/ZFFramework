@@ -1,7 +1,7 @@
 package com.ZFFramework.Android.ZFNet_impl;
 
-import com.ZFFramework.Android.NativeUtil.ZFInputWrapper;
 import com.ZFFramework.Android.NativeUtil.ZFAndroidInput;
+import com.ZFFramework.Android.NativeUtil.ZFInputWrapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,7 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -20,9 +19,32 @@ public final class ZFHttpRequest {
     public long zfjniPointerOwnerZFHttpRequest = 0;
     public long zfjniPointerOwnerZFHttpResponse = 0;
     public HttpURLConnection connection = null;
-    public Map<String, String> sendHeader = new HashMap<>();
+    public Map<String, List<String>> sendHeader = null;
     public List<String> recvHeader = null;
     public boolean running = true;
+
+    private void _sendHeaderUpdate() {
+        if (this.sendHeader != null || this.connection == null) {
+            return;
+        }
+        this.sendHeader = this.connection.getRequestProperties();
+    }
+
+    private String _sendHeaderValue(String key) {
+        this._sendHeaderUpdate();
+        List<String> values = this.sendHeader.get(key);
+        if (values != null) {
+            StringBuilder sb = new StringBuilder();
+            for (String value : values) {
+                if (sb.length() > 0) {
+                    sb.append(",");
+                }
+                sb.append(value);
+            }
+            return sb.toString();
+        }
+        return null;
+    }
 
     private void _recvHeaderUpdate() {
         if (this.recvHeader != null) {
@@ -100,21 +122,29 @@ public final class ZFHttpRequest {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         if (task.connection != null) {
             task.connection.addRequestProperty(key, value);
-            task.sendHeader.put(key, value);
+            task.sendHeader = null;
+        }
+    }
+
+    public static void native_headerRemove(Object nativeTask, String key) {
+        ZFHttpRequest task = (ZFHttpRequest) nativeTask;
+        if (task.connection != null) {
+            if (task.connection.getRequestProperty(key) != null) {
+                task.connection.setRequestProperty(key, "");
+                task.sendHeader = null;
+            }
         }
     }
 
     public static String native_header(Object nativeTask, String key) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
-        if (task.connection != null) {
-            return task.sendHeader.get(key);
-        }
-        return null;
+        return task._sendHeaderValue(key);
     }
 
     public static int native_headerCount(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         if (task.connection != null) {
+            task._sendHeaderUpdate();
             return task.sendHeader.size();
         }
         return 0;
@@ -128,6 +158,7 @@ public final class ZFHttpRequest {
     public static Object native_headerIter(Object nativeTask) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         if (task.connection != null) {
+            task._sendHeaderUpdate();
             NativeIterator it = new NativeIterator();
             it.it = task.sendHeader.keySet().iterator();
             if (it.it.hasNext()) {
@@ -162,9 +193,10 @@ public final class ZFHttpRequest {
     public static String native_headerIterValue(Object nativeTask, Object nativeIt) {
         ZFHttpRequest task = (ZFHttpRequest) nativeTask;
         if (task.connection != null) {
+            task._sendHeaderUpdate();
             NativeIterator it = (NativeIterator) nativeIt;
             if (it != null && it.key != null) {
-                return task.sendHeader.get(it.key);
+                return task._sendHeaderValue(it.key);
             }
         }
         return null;
@@ -176,7 +208,7 @@ public final class ZFHttpRequest {
             NativeIterator it = (NativeIterator) nativeIt;
             if (it != null && it.key != null) {
                 task.connection.setRequestProperty(it.key, value);
-                task.sendHeader.put(it.key, value);
+                task.sendHeader = null;
             }
         }
     }

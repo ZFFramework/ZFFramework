@@ -109,7 +109,7 @@
 				21DF101E4C9022F7905C4C30B053DACC /* Sources */,
 				D355DD772FE5DF7142DA1745FA12CD51 /* Frameworks */,
 				A8223DEE2C048724F11230DAEA092BDD /* CopyFiles */,
-				C10391917254EF17337D4ADB22A0EE23 /* ZFUniqueProj */,
+				D803DDB20E8929C5C8C3CC8AB8C3DF31 /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
@@ -126,7 +126,8 @@
 		E6FB69DDDD02747DB6DAAF6B6B76B977 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1340;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = ZFFramework;
 				TargetAttributes = {
 					3A3640A5E0EA383B758D1CB5A50967CE = {
@@ -175,20 +176,6 @@
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/common/unity_build.sh \"${SRCROOT}/ProjectFiles/zfgensrc_ZFUIKit.mm\" \"${SRCROOT}/../../../zfsrc\"";
 		};
-		C10391917254EF17337D4ADB22A0EE23 /* ZFUniqueProj */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = ZFUniqueProj;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"";
-		};
 		CE7BECFD6BC4659A7A8653D1B71C0EC9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -201,6 +188,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
+		};
+		D803DDB20E8929C5C8C3CC8AB8C3DF31 /* ZFUniqueProj */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = ZFUniqueProj;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -257,7 +259,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -311,7 +313,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;

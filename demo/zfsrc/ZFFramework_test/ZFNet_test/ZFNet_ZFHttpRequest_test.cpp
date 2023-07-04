@@ -14,6 +14,22 @@ protected:
         ZFFramework_test_protocolCheck(ZFHttpRequest);
         ZFFramework_test_asyncTestCheck();
 
+        const zfchar *url = ZFHttpRequest::httpsAvailable()
+            ? "https://bing.com"
+            : "http://bing.com"
+            ;
+        ZFHttpMethodEnum httpMethod = ZFHttpMethod::e_GET;
+
+        this->testCaseOutput("header test");
+        zfblockedAlloc(ZFHttpRequest, headerTest, url, httpMethod);
+        headerTest->header("k1", "v1_1");
+        headerTest->header("k1", "v1_2");
+        headerTest->header("k2", "v2_1");
+        headerTest->header("k2", "v2_2");
+        headerTest->headerRemove("k2");
+        this->testCaseOutput("%s", headerTest->contentInfo().cString());
+        this->testCaseOutputSeparator();
+
         ZFTestCase *testCase = this;
         ZFLISTENER_1(onRecv
                 , ZFTestCase *, testCase
@@ -27,10 +43,10 @@ protected:
             testCase->testCaseOutput("%s", response->contentInfo().cString());
             testCase->testCaseStop();
         } ZFLISTENER_END()
-        zflineAlloc(ZFHttpRequest, "https://bing.com", "GET")
+        zflineAlloc(ZFHttpRequest, url, httpMethod)
             ->request(onRecv);
 
-        zflineAlloc(ZFHttpRequest, "https://bing.com", "GET")
+        zflineAlloc(ZFHttpRequest, url, httpMethod)
             ->request(onRecv)
             ->requestCancel();
     }

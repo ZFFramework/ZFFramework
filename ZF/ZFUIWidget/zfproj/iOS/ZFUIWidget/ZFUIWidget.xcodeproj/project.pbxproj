@@ -109,7 +109,7 @@
 				8D0A9F6DA9665B443B3F7D51FD351C76 /* Sources */,
 				EB3CCD82DA2027459D4D50AB3B6F8A79 /* Frameworks */,
 				81B5A1BA964249B47CAF0597F82646DB /* CopyFiles */,
-				A520E6341EFD9AFACC9D441623EC93E2 /* ZFUniqueProj */,
+				70ABBCF207DCC560335ACBA94E2C53FB /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
@@ -126,7 +126,8 @@
 		83A6D6ED4CFD155A21140BDAC8134BC2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1340;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = ZFFramework;
 				TargetAttributes = {
 					3127F585EA74067096FB0A21518C97C9 = {
@@ -172,8 +173,9 @@
 			shellPath = /bin/sh;
 			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
 		};
-		A520E6341EFD9AFACC9D441623EC93E2 /* ZFUniqueProj */ = {
+		70ABBCF207DCC560335ACBA94E2C53FB /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -184,7 +186,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"";
+			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 		CBBE3623358F93848F0AC5521455BF41 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -292,7 +294,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -369,7 +371,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

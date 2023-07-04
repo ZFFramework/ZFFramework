@@ -109,7 +109,7 @@
 				307D6D7DAA20A2EAA298C38D4FA913D7 /* Sources */,
 				E57AE03DA31272B3C772934ED459EB9E /* Frameworks */,
 				CA2791D3B8B1008439F37D04A653E531 /* CopyFiles */,
-				2E4E08B58A1C38E35B6441A6975D2725 /* ZFUniqueProj */,
+				A06988102698F5093EAE75C17F048683 /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
@@ -126,7 +126,8 @@
 		2B776454E32DAA58FF0B62BA60D071F7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1340;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = ZFFramework;
 				TargetAttributes = {
 					6DD17F423A14185D13B7E913E1B6002C = {
@@ -159,20 +160,6 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2E4E08B58A1C38E35B6441A6975D2725 /* ZFUniqueProj */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = ZFUniqueProj;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"";
-		};
 		54E0D2B51BE483FFE934BA757306AE04 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -201,6 +188,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "ZF_ROOT_PATH=${SRCROOT}/../../../../../../ZFFramework\n\nsh $ZF_ROOT_PATH/tools/spec/iOS/aggregate.sh ${PROJECT_NAME} ${SRCROOT}/../../..\n";
+		};
+		A06988102698F5093EAE75C17F048683 /* ZFUniqueProj */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = ZFUniqueProj;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -286,7 +288,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -369,7 +371,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;

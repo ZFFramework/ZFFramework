@@ -15,7 +15,7 @@ class _ZFP_ZFHttpRequestImpl_sys_Qt_Task : public QObject
 public:
     ZFHttpRequest *ownerRequest;
     ZFHttpResponse *ownerResponse;
-    zfstring httpMethod;
+    ZFHttpMethodEnum httpMethod;
     QNetworkAccessManager manager;
     QNetworkRequest request;
     QList<QByteArray> *rawHeaderList;
@@ -29,7 +29,7 @@ public:
     : QObject()
     , ownerRequest(zfnull)
     , ownerResponse(zfnull)
-    , httpMethod("GET")
+    , httpMethod(ZFHttpMethod::e_GET)
     , manager()
     , request()
     , rawHeaderList(NULL)
@@ -135,6 +135,11 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFHttpRequestImpl_sys_Qt, ZFHttpRequest, ZFProto
     // ============================================================
     // for request
 public:
+    virtual zfbool httpsAvailable(void)
+    {
+        return zftrue;
+    }
+
     virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request,
                                    ZF_IN ZFHttpResponse *response)
     {
@@ -157,10 +162,10 @@ public:
     }
 
     virtual void httpMethod(ZF_IN void *nativeTask,
-                            ZF_IN const zfchar *method)
+                            ZF_IN ZFHttpMethodEnum httpMethod)
     {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
-        task->httpMethod = method;
+        task->httpMethod = httpMethod;
     }
 
     virtual void header(ZF_IN void *nativeTask,
@@ -169,6 +174,18 @@ public:
     {
         _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
         task->request.setRawHeader(key, value);
+        if(task->rawHeaderList != NULL)
+        {
+            delete task->rawHeaderList;
+            task->rawHeaderList = NULL;
+        }
+    }
+
+    virtual void headerRemove(ZF_IN void *nativeTask,
+                              ZF_IN const zfchar *key)
+    {
+        _ZFP_ZFHttpRequestImpl_sys_Qt_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Qt_Task *)nativeTask;
+        task->request.setRawHeader(key, QByteArray());
         if(task->rawHeaderList != NULL)
         {
             delete task->rawHeaderList;
@@ -293,29 +310,28 @@ public:
         } ZFLISTENER_END()
         task->timeoutTimer = ZFTimerOnce(task->ownerRequest->timeout(), onTimeout);
 
-        if(task->httpMethod.compare("GET") == 0)
+        switch(task->httpMethod)
         {
-            task->response = task->manager.get(task->request);
-        }
-        else if(task->httpMethod.compare("POST") == 0)
-        {
-            task->response = task->manager.post(task->request, task->body);
-        }
-        else if(task->httpMethod.compare("HEAD") == 0)
-        {
-            task->response = task->manager.head(task->request);
-        }
-        else if(task->httpMethod.compare("PUT") == 0)
-        {
-            task->response = task->manager.put(task->request, task->body);
-        }
-        else if(task->httpMethod.compare("DELETE") == 0)
-        {
-            task->response = task->manager.deleteResource(task->request);
-        }
-        else
-        {
-            task->response = task->manager.post(task->request, task->body);
+            case ZFHttpMethod::e_GET:
+                task->response = task->manager.get(task->request);
+                break;
+            case ZFHttpMethod::e_HEAD:
+                task->response = task->manager.head(task->request);
+                break;
+            case ZFHttpMethod::e_PUT:
+                task->response = task->manager.put(task->request);
+                break;
+            case ZFHttpMethod::e_DELETE:
+                task->response = task->manager.deleteResource(task->request);
+                break;
+            case ZFHttpMethod::e_CONNECT:
+            case ZFHttpMethod::e_OPTIONS:
+            case ZFHttpMethod::e_TRACE:
+            case ZFHttpMethod::e_PATCH:
+            case ZFHttpMethod::e_POST:
+            default:
+                task->response = task->manager.post(task->request, task->body);
+                break;
         }
     }
 

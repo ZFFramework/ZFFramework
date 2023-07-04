@@ -42,9 +42,9 @@ ZFPathInfoToParent(ZF_ROOT_PATH)
 ZF_ROOT_PATH = ZF_ROOT_PATH:pathData()
 
 local _PY = nil
-if os.execute('python --version') then
+if os.execute('python --version >/dev/null 2>&1') then
     _PY = 'python'
-elseif os.execute('python --version') then
+elseif os.execute('python3 --version >/dev/null 2>&1') then
     _PY = 'python3'
 end
 

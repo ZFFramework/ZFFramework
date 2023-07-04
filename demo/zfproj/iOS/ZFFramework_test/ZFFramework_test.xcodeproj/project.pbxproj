@@ -201,7 +201,7 @@
 				FE49BA0E80CC9A58BCB9A963C16E449E /* Sources */,
 				3C8782C48508D2AB3E45AA571B89A89B /* Frameworks */,
 				83745D09F71B763541FB81C529246249 /* Resources */,
-				3F6CA79DDDC822FBCBD41F196DDEC8EA /* ZFUniqueProj */,
+				A16DE20B96CBE954C8CC5C6A9470BF6B /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
@@ -218,7 +218,8 @@
 		D3865331A38B10F2939BC81F93A779B5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1340;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = ZFFramework;
 				TargetAttributes = {
 					3B2EB083DB3C1AF83A72FED3B2D72C78 = {
@@ -279,8 +280,9 @@
 			shellPath = /bin/sh;
 			shellScript = "sh \"${SRCROOT}/../../../../../ZFFramework/tools/release/release_iOS.sh\" 1\nsh ${SRCROOT}/ZFFramework_test.xcodeproj/zfsetup.sh ${SRCROOT} ${CONFIGURATION_BUILD_DIR} ${CONTENTS_FOLDER_PATH}\n";
 		};
-		3F6CA79DDDC822FBCBD41F196DDEC8EA /* ZFUniqueProj */ = {
+		A16DE20B96CBE954C8CC5C6A9470BF6B /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -291,7 +293,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"";
+			shellScript = "sh ${SRCROOT}/../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -351,7 +353,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -368,7 +370,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = "${SRCROOT}/ProjectFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -440,7 +442,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -457,7 +459,7 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = "${SRCROOT}/ProjectFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

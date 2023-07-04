@@ -25,7 +25,7 @@ public:
 public:
     static zfbool callbackIsExist(ZF_IN const zfchar *pathData)
     {
-        zfblockedAlloc(ZFHttpRequest, send, pathData, "HEAD");
+        zfblockedAlloc(ZFHttpRequest, send, pathData, ZFHttpMethod::e_HEAD);
         zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
         return recv != zfnull && recv->success();
     }
@@ -82,7 +82,7 @@ public:
         {
             return zfnull;
         }
-        zfblockedAlloc(ZFHttpRequest, send, pathData, "GET");
+        zfblockedAlloc(ZFHttpRequest, send, pathData, ZFHttpMethod::e_GET);
         zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
         if(recv == zfnull || !recv->success())
         {

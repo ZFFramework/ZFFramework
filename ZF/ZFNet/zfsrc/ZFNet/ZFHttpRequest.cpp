@@ -4,6 +4,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFENUM_DEFINE(ZFHttpMethod)
+
 zfclassNotPOD _ZFP_ZFHttpRequestPrivate
 {
 public:
@@ -75,7 +77,7 @@ ZFOBSERVER_EVENT_REGISTER(ZFHttpRequest, OnResponse)
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFHttpRequest,
                           ZFMP_IN(const zfchar *, url),
-                          ZFMP_IN_OPT(const zfchar *, method, "GET"))
+                          ZFMP_IN_OPT(ZFHttpMethodEnum, method, ZFHttpMethod::e_GET))
 {
     this->objectOnInit();
     this->url(url);
@@ -86,9 +88,14 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFHttpRequest, zfstring, url)
 {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->url(d->nativeTask, propertyValue);
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFHttpRequest, zfstring, httpMethod)
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFHttpRequest, ZFHttpMethodEnum, httpMethod)
 {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->httpMethod(d->nativeTask, propertyValue);
+}
+
+ZFMETHOD_DEFINE_0(ZFHttpRequest, zfbool, httpsAvailable)
+{
+    return ZFPROTOCOL_ACCESS(ZFHttpRequest)->httpsAvailable();
 }
 
 // ============================================================
@@ -96,13 +103,36 @@ ZFMETHOD_DEFINE_2(ZFHttpRequest, ZFHttpRequest *, header,
                   ZFMP_IN(const zfchar *, key),
                   ZFMP_IN(const zfchar *, value))
 {
-    ZFPROTOCOL_ACCESS(ZFHttpRequest)->header(d->nativeTask, key, value);
+    if(!zfstringIsEmpty(key))
+    {
+        if(value == zfnull)
+        {
+            value = "";
+        }
+        ZFPROTOCOL_ACCESS(ZFHttpRequest)->header(d->nativeTask, key, value);
+    }
+    return this;
+}
+ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, headerRemove,
+                  ZFMP_IN(const zfchar *, key))
+{
+    if(!zfstringIsEmpty(key))
+    {
+        ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerRemove(d->nativeTask, key);
+    }
     return this;
 }
 ZFMETHOD_DEFINE_1(ZFHttpRequest, zfstring, header,
                   ZFMP_IN(const zfchar *, key))
 {
-    return ZFPROTOCOL_ACCESS(ZFHttpRequest)->header(d->nativeTask, key);
+    if(zfstringIsEmpty(key))
+    {
+        return zfnull;
+    }
+    else
+    {
+        return ZFPROTOCOL_ACCESS(ZFHttpRequest)->header(d->nativeTask, key);
+    }
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfindex, headerCount)
@@ -259,6 +289,7 @@ void ZFHttpRequest::objectOnDealloc(void)
 void ZFHttpRequest::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
 {
     zfsuper::objectInfoOnAppend(ret);
+    zfstringAppend(ret, " %s:%s", ZFHttpMethodToString(this->httpMethod()).cString(), this->url().cString());
     zfstringAppend(ret, " header:%zi", this->headerCount());
     zfstringAppend(ret, " body:%zi", this->body().bufferSize());
 }
@@ -294,7 +325,14 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, ZFBuffer &, body)
 ZFMETHOD_DEFINE_1(ZFHttpResponse, zfstring, header,
                   ZFMP_IN(const zfchar *, key))
 {
-    return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeader(d->nativeTask, key);
+    if(zfstringIsEmpty(key))
+    {
+        return zfnull;
+    }
+    else
+    {
+        return ZFPROTOCOL_ACCESS(ZFHttpRequest)->responseHeader(d->nativeTask, key);
+    }
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpResponse, zfindex, headerCount)

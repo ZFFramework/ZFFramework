@@ -9,8 +9,32 @@
 #include "ZFNetDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd _ZFP_ZFHttpRequestPrivate;
+/**
+ * @brief http method type
+ */
+ZFENUM_BEGIN(ZFLIB_ZFNet, ZFHttpMethod)
+    ZFENUM_VALUE(GET) /**< @brief GET */
+    ZFENUM_VALUE(HEAD) /**< @brief HEAD */
+    ZFENUM_VALUE(POST) /**< @brief POST */
+    ZFENUM_VALUE(PUT) /**< @brief PUT */
+    ZFENUM_VALUE(DELETE) /**< @brief DELETE */
+    ZFENUM_VALUE(CONNECT) /**< @brief CONNECT */
+    ZFENUM_VALUE(OPTIONS) /**< @brief OPTIONS */
+    ZFENUM_VALUE(TRACE) /**< @brief TRACE */
+    ZFENUM_VALUE(PATCH) /**< @brief PATCH */
+ZFENUM_SEPARATOR()
+    ZFENUM_VALUE_REGISTER(GET)
+    ZFENUM_VALUE_REGISTER(HEAD)
+    ZFENUM_VALUE_REGISTER(POST)
+    ZFENUM_VALUE_REGISTER(PUT)
+    ZFENUM_VALUE_REGISTER(DELETE)
+    ZFENUM_VALUE_REGISTER(CONNECT)
+    ZFENUM_VALUE_REGISTER(OPTIONS)
+    ZFENUM_VALUE_REGISTER(TRACE)
+    ZFENUM_VALUE_REGISTER(PATCH)
+ZFENUM_END(ZFLIB_ZFNet, ZFHttpMethod)
 
+zfclassFwd _ZFP_ZFHttpRequestPrivate;
 // ============================================================
 /**
  * @brief see #ZFHttpRequest
@@ -119,7 +143,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
      * @brief init and connect
      */
     ZFOBJECT_ON_INIT_DECLARE_2(ZFMP_IN(const zfchar *, url),
-                               ZFMP_IN_OPT(const zfchar *, method, "GET"))
+                               ZFMP_IN_OPT(ZFHttpMethodEnum, method, ZFHttpMethod::e_GET))
 
     /** @brief timeout */
     ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, timeout, 2000)
@@ -129,14 +153,25 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, url)
 
     /** @brief the http method, GET/POST/..., GET by default */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfstring, httpMethod, "GET")
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, httpMethod)
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFHttpMethodEnum, httpMethod, ZFHttpMethod::e_GET)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFHttpMethodEnum, httpMethod)
+
+    /** @brief whether https impl available */
+    ZFMETHOD_DECLARE_STATIC_0(zfbool, httpsAvailable)
 
     // ============================================================
-    /** @brief set http header */
+    /**
+     * @brief set http header
+     *
+     * note, null or empty value is also valid,
+     * use #headerRemove or #headerIterRemove to remove
+     */
     ZFMETHOD_DECLARE_2(ZFHttpRequest *, header,
                        ZFMP_IN(const zfchar *, key),
                        ZFMP_IN(const zfchar *, value))
+    /** @brief remove http header */
+    ZFMETHOD_DECLARE_1(ZFHttpRequest *, headerRemove,
+                       ZFMP_IN(const zfchar *, key))
     /** @brief get http header */
     ZFMETHOD_DECLARE_1(zfstring, header,
                        ZFMP_IN(const zfchar *, key))

@@ -109,7 +109,7 @@
 				1AA779D687E7063BCB8E21E29D89FC7E /* Sources */,
 				28C144B14BFAB75BA04773FB8B261256 /* Frameworks */,
 				2022E7E3DB16427D731CAE257D8372D2 /* CopyFiles */,
-				847E5EAA854B94B5707FA5BA93BF903C /* ZFUniqueProj */,
+				B9D68AE64F469CE4F66A07AD3140B756 /* ZFUniqueProj */,
 			);
 			buildRules = (
 			);
@@ -126,7 +126,8 @@
 		320B800BDB887C08911625BAF51DDF4B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1340;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = ZFFramework;
 				TargetAttributes = {
 					EBE4D06A940DC52BB622060E3ED1FC90 = {
@@ -159,8 +160,9 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		847E5EAA854B94B5707FA5BA93BF903C /* ZFUniqueProj */ = {
+		B9D68AE64F469CE4F66A07AD3140B756 /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -171,7 +173,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"";
+			shellScript = "sh ${SRCROOT}/../../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
 		BCDA4253259A57C3DE47837E8D57F256 /* ZFCompileSource */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -279,7 +281,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -355,7 +357,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;

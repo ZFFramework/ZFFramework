@@ -42,6 +42,11 @@ public:
     // ============================================================
     // for request
 public:
+    virtual zfbool httpsAvailable(void)
+    {
+        return zftrue;
+    }
+
     virtual void *nativeTaskCreate(ZF_IN ZFHttpRequest *request,
                                    ZF_IN ZFHttpResponse *response)
     {
@@ -100,7 +105,7 @@ public:
     }
 
     virtual void httpMethod(ZF_IN void *nativeTask,
-                            ZF_IN const zfchar *method)
+                            ZF_IN ZFHttpMethodEnum httpMethod)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_httpMethod",
@@ -112,7 +117,7 @@ public:
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
                 , (jobject)task->nativeTask
-                , ZFImpl_sys_Android_zfstringToString(method)
+                , ZFImpl_sys_Android_zfstringToString(ZFHttpMethodToString(httpMethod))
             );
     }
 
@@ -133,6 +138,23 @@ public:
                 , (jobject)task->nativeTask
                 , ZFImpl_sys_Android_zfstringToString(key)
                 , ZFImpl_sys_Android_zfstringToString(value)
+            );
+    }
+
+    virtual void headerRemove(ZF_IN void *nativeTask,
+                              ZF_IN const zfchar *key)
+    {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerRemove",
+            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
+                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            ).c_str());
+
+        _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
+        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
+                , (jobject)task->nativeTask
+                , ZFImpl_sys_Android_zfstringToString(key)
             );
     }
 
