@@ -52,6 +52,14 @@ if "%_GIT_VALID%" == "1" (
         git reset --hard
         git fetch --all && git pull
         set _SUCCESS=!errorlevel!
+        if "!errorlevel!" == "0" (
+            if exist ".gitmodules" (
+                git submodule init
+                git submodule update --remote --recursive
+                set _SUCCESS=!errorlevel!
+            )
+        )
+        set _SUCCESS=!errorlevel!
         git checkout "%GIT_BRANCH%"
         git stash pop
         cd /d "%_OLD_DIR%"
@@ -64,8 +72,18 @@ if "%_GIT_VALID%" == "1" (
     rmdir /s/q "%DST_PATH%" >nul 2>&1
     mkdir "%DST_PATH%" >nul 2>&1
     git clone -b "%GIT_BRANCH%" %CLONE_OPTION% "%PROJ_GIT%" "%DST_PATH%"
-
+    set _SUCCESS=!errorlevel!
     if "!errorlevel!" == "0" (
+        cd /d "%DST_PATH%"
+        if exist ".gitmodules" (
+            git submodule init
+            git submodule update --remote --recursive
+            set _SUCCESS=!errorlevel!
+        )
+        cd /d "%_OLD_DIR%"
+    )
+
+    if "!_SUCCESS!" == "0" (
         call "%WORK_DIR%\timestamp_save.bat" "%DST_PATH%\.git" %_TIMEOUT%
     )
 )

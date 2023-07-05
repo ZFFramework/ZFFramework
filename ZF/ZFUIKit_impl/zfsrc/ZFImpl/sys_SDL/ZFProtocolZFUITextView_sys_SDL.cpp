@@ -8,21 +8,25 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUITextViewImpl_sys_SDL_IMG_init, ZFLevelZFFrameworkHigh)
-{
-    TTF_Init();
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUITextViewImpl_sys_SDL_IMG_init)
-{
-    TTF_Quit();
-}
-ZF_GLOBAL_INITIALIZER_END(ZFUITextViewImpl_sys_SDL_IMG_init)
-
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_SDL, ZFUITextView, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ZFImpl_sys_SDL_View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "ZFImpl_sys_SDL_View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
+
+public:
+    zfoverride
+    virtual void protocolOnInit(void)
+    {
+        zfsuper::protocolOnInit();
+        TTF_Init();
+    }
+    zfoverride
+    virtual void protocolOnDealloc(void)
+    {
+        TTF_Quit();
+        zfsuper::protocolOnDealloc();
+    }
 
 public:
     static void sdlMeasureCallback(ZF_OUT ZFUISize &ret,

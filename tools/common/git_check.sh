@@ -48,6 +48,13 @@ if test "$_GIT_VALID" = "1"; then
         git reset --hard
         git fetch --all && git pull
         _SUCCESS="$?"
+        if test "$?" = "0"; then
+            if test -e ".gitmodules"; then
+                git submodule init
+                git submodule update --remote --recursive
+                _SUCCESS="$?"
+            fi
+        fi
         git checkout "$GIT_BRANCH"
         git stash pop
         cd "$_OLD_DIR"
@@ -60,8 +67,18 @@ else
     rm -rf "$DST_PATH" >/dev/null 2>&1
     mkdir -p "$DST_PATH" >/dev/null 2>&1
     git clone -b "$GIT_BRANCH" $CLONE_OPTION "$PROJ_GIT" "$DST_PATH"
+    _SUCCESS="$?"
+    if test "$_SUCCESS" = "0"; then
+        cd "$DST_PATH"
+        if test -e ".gitmodules"; then
+            git submodule init
+            git submodule update --remote --recursive
+            _SUCCESS="$?"
+        fi
+        cd "$_OLD_DIR"
+    fi
 
-    if test "$?" = "0"; then
+    if test "$_SUCCESS" = "0"; then
         sh "$WORK_DIR/timestamp_save.sh" "$DST_PATH/.git" $_TIMEOUT
     fi
 fi

@@ -1,17 +1,21 @@
 #include "ZFThread_zfasync.h"
 
+#include "ZFSTLWrapper/zfstlmap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclass _ZFP_I_zfasyncTaskData : zfextends ZFObject
 {
     ZFOBJECT_DECLARE(_ZFP_I_zfasyncTaskData, ZFObject)
 public:
-    zfidentity taskId;
+    zfautoObjectT<v_zfidentity *> taskId;
     ZFListener callback;
     zfautoObject result;
     ZFListener finishCallback;
     zfautoObjectT<ZFThread *> callerThread;
 };
+
+typedef zfstlmap<zfidentity, zfautoObjectT<_ZFP_I_zfasyncTaskData *> > _ZFP_zfasyncTaskMap;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfasyncDataHolder, ZFLevelZFFrameworkHigh)
 {
@@ -38,13 +42,14 @@ public:
     zfuint maxThread;
     ZFCoreArray<zfautoObjectT<ZFThread *> > threadPool;
     zfindex threadPoolIndex;
-    ZFIdentityGenerator taskIdGenerator;
+    zfidentity taskIdCur;
+    _ZFP_zfasyncTaskMap taskMap;
 public:
     static void _ZFP_runThread(ZF_IN const ZFArgs &zfargs, ZF_IN _ZFP_I_zfasyncTaskData *taskData)
     {
         zfCoreMutexLock();
         ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-        if(!d->taskIdGenerator.idExist(taskData->taskId))
+        if(taskData->taskId->zfv == zfidentityInvalid())
         {
             _ZFP_taskDataCleanup(d, taskData);
             zfCoreMutexUnlock();
@@ -55,12 +60,13 @@ public:
         ZFArgs zfargsTmp;
         zfargsTmp.resultEnable(zftrue);
         taskData->callback.execute(zfargsTmp
+                .param0(taskData->taskId)
                 .userData(taskData->callback.userData())
             );
 
         zfCoreMutexLock();
         taskData->result = zfargsTmp.result();
-        if(!d->taskIdGenerator.idExist(taskData->taskId))
+        if(taskData->taskId->zfv == zfidentityInvalid())
         {
             _ZFP_taskDataCleanup(d, taskData);
             zfCoreMutexUnlock();
@@ -85,7 +91,7 @@ public:
     {
         zfCoreMutexLock();
         ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-        if(!d->taskIdGenerator.idExist(taskData->taskId))
+        if(taskData->taskId->zfv == zfidentityInvalid())
         {
             _ZFP_taskDataCleanup(d, taskData);
             zfCoreMutexUnlock();
@@ -105,8 +111,7 @@ public:
 private:
     static void _ZFP_taskDataCleanup(ZF_IN ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d, ZF_IN _ZFP_I_zfasyncTaskData *taskData)
     {
-        d->taskIdGenerator.idRelease(taskData->taskId);
-        taskData->taskId = zfidentityInvalid();
+        taskData->taskId->zfv = zfidentityInvalid();
         taskData->callback = zfnull;
         taskData->result = zfnull;
         taskData->finishCallback = zfnull;
@@ -168,14 +173,22 @@ ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync,
         }
     }
 
+    do {
+        ++(d->taskIdCur);
+        if(d->taskIdCur == zfidentityInvalid())
+        {
+            d->taskIdCur = 0;
+        }
+    } while(d->taskMap.find(d->taskIdCur) != d->taskMap.end());
     zfblockedAlloc(_ZFP_I_zfasyncTaskData, taskData);
-    taskData->taskId = d->taskIdGenerator.idAcquire();
+    taskData->taskId = zflineAlloc(v_zfidentity, d->taskIdCur);
     taskData->callback = callback;
     taskData->finishCallback = finishCallback;
     if(finishCallback)
     {
         taskData->callerThread = ZFThread::currentThread();
     }
+    d->taskMap[d->taskIdCur] = taskData;
     zfCoreMutexUnlock();
 
     ZFLISTENER_1(taskImpl
@@ -184,15 +197,22 @@ ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync,
         ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_runThread(zfargs, taskData);
     } ZFLISTENER_END()
     thread->taskQueueAdd(taskImpl);
-    return taskData->taskId;
+    return taskData->taskId->zfv;
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void, zfasyncCancel,
                        ZFMP_IN(zfidentity, taskId))
 {
-    zfCoreMutexLock();
-    ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder)->taskIdGenerator.idRelease(taskId);
-    zfCoreMutexUnlock();
+    zfCoreMutexLocker();
+    ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
+    _ZFP_zfasyncTaskMap::iterator it = d->taskMap.find(taskId);
+    if(it == d->taskMap.end())
+    {
+        return;
+    }
+    zfautoObjectT<_ZFP_I_zfasyncTaskData *> taskData = it->second;
+    taskData->taskId->zfv = zfidentityInvalid();
+    d->taskMap.erase(it);
 }
 
 ZF_NAMESPACE_GLOBAL_END

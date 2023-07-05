@@ -29,12 +29,21 @@ function(zfprojConfigAfter_ZF_impl projName)
     add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_net" SDL_net)
     set_target_properties(SDL2_net PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
+    set(SDL2MIXER_FLAC OFF CACHE BOOL "disable sdl mixer feature" FORCE)
+    set(SDL2MIXER_MOD OFF CACHE BOOL "disable sdl mixer feature" FORCE)
+    set(SDL2MIXER_OPUS OFF CACHE BOOL "disable sdl mixer feature" FORCE)
+    set(SDL2MIXER_WAVPACK OFF CACHE BOOL "disable sdl mixer feature" FORCE)
+    set(SDL2MIXER_BUILD_SHARED_LIBS OFF CACHE BOOL "build static" FORCE)
+    add_subdirectory("${ZF_ROOT_PATH}/ZF/ZF_impl/zf3rd/_repo/SDL_mixer" SDL_mixer)
+    set_target_properties(SDL2_mixer PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
     target_link_libraries(${projName} PUBLIC
         SDL2main
         SDL2-static
         SDL2_image
         SDL2_ttf
         SDL2_net
+        SDL2_mixer
         )
 
     zfprojLoadAllSymbol(${projName})

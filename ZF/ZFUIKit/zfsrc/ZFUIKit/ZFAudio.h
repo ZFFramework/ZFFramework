@@ -120,12 +120,17 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfindex, looped)
 
-    /** @brief duration, valid only when loaded */
+    /** @brief duration, valid only when loaded, may be 0 if impl not supported */
     ZFMETHOD_DECLARE_0(zftimet, duration)
 
     /** @brief current position, valid only when started */
     ZFMETHOD_DECLARE_0(zftimet, position)
-    /** @brief change current position */
+    /**
+     * @brief change current position
+     *
+     * note, change position may or may not work,
+     * depends on impl
+     */
     ZFMETHOD_DECLARE_1(void, position,
                        ZFMP_IN(zftimet, position))
 

@@ -7,23 +7,27 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageImpl_sys_SDL_IMG_init, ZFLevelZFFrameworkHigh)
-{
-    IMG_Init(0
-            | IMG_INIT_JPG
-            | IMG_INIT_PNG
-            | IMG_INIT_TIF
-            | IMG_INIT_WEBP
-        );
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageImpl_sys_SDL_IMG_init)
-{
-    IMG_Quit();
-}
-ZF_GLOBAL_INITIALIZER_END(ZFUIImageImpl_sys_SDL_IMG_init)
-
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_SDL, ZFUIImage, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("SDL_image")
+
+public:
+    zfoverride
+    virtual void protocolOnInit(void)
+    {
+        zfsuper::protocolOnInit();
+        IMG_Init(0
+                | IMG_INIT_JPG
+                | IMG_INIT_PNG
+                | IMG_INIT_TIF
+                | IMG_INIT_WEBP
+            );
+    }
+    zfoverride
+    virtual void protocolOnDealloc(void)
+    {
+        IMG_Quit();
+        zfsuper::protocolOnDealloc();
+    }
 
 public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback)
