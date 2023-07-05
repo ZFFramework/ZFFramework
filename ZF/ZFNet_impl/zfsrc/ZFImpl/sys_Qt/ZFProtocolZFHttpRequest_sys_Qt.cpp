@@ -319,7 +319,7 @@ public:
                 task->response = task->manager.head(task->request);
                 break;
             case ZFHttpMethod::e_PUT:
-                task->response = task->manager.put(task->request);
+                task->response = task->manager.put(task->request, task->body);
                 break;
             case ZFHttpMethod::e_DELETE:
                 task->response = task->manager.deleteResource(task->request);

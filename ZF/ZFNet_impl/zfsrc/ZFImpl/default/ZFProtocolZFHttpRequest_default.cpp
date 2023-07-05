@@ -50,6 +50,14 @@ private:
         }
     };
 
+public:
+    zfoverride
+    virtual void protocolOnInit(void)
+    {
+        zfsuper::protocolOnInit();
+        signal(SIGPIPE, SIG_IGN);
+    }
+
     // ============================================================
     // for request
 public:
