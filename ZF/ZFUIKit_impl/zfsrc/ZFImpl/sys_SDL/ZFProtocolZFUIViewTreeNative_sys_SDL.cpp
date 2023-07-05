@@ -16,7 +16,7 @@ public:
                                 ZF_IN_OUT const ZFOutput &outputCallback)
     {
         zfstring s;
-        ZFImpl_sys_SDL_viewTreePrintT(s, (__bridge UIView *)view->nativeView());
+        ZFImpl_sys_SDL_viewTreePrintT(s, (ZFImpl_sys_SDL_View *)view->nativeView());
         outputCallback << s;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTreeNativeImpl_sys_SDL)
