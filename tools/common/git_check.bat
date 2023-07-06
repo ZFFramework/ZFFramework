@@ -54,8 +54,7 @@ if "%_GIT_VALID%" == "1" (
         set _SUCCESS=!errorlevel!
         if "!errorlevel!" == "0" (
             if exist ".gitmodules" (
-                git submodule init
-                git submodule update --remote --recursive
+                git submodule update --init --recursive --depth=1
                 set _SUCCESS=!errorlevel!
             )
         )
@@ -76,8 +75,7 @@ if "%_GIT_VALID%" == "1" (
     if "!errorlevel!" == "0" (
         cd /d "%DST_PATH%"
         if exist ".gitmodules" (
-            git submodule init
-            git submodule update --remote --recursive
+            git submodule update --init --recursive --depth=1
             set _SUCCESS=!errorlevel!
         )
         cd /d "%_OLD_DIR%"

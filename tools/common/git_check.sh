@@ -50,8 +50,7 @@ if test "$_GIT_VALID" = "1"; then
         _SUCCESS="$?"
         if test "$?" = "0"; then
             if test -e ".gitmodules"; then
-                git submodule init
-                git submodule update --remote --recursive
+                git submodule update --init --recursive --depth=1
                 _SUCCESS="$?"
             fi
         fi
@@ -71,8 +70,7 @@ else
     if test "$_SUCCESS" = "0"; then
         cd "$DST_PATH"
         if test -e ".gitmodules"; then
-            git submodule init
-            git submodule update --remote --recursive
+            git submodule update --init --recursive --depth=1
             _SUCCESS="$?"
         fi
         cd "$_OLD_DIR"

@@ -1,7 +1,9 @@
 #include "ZFImpl_default_ZFNet_impl.h"
 #include "ZFNet/protocol/ZFProtocolZFHttpRequest.h"
 
-#if defined(__cplusplus) && (__cplusplus >= 201103L)
+#include "ZFImpl/ZFImpl_env.h"
+
+#if defined(__cplusplus) && (__cplusplus >= 201103L) && !ZF_ENV_sys_Android
 
 #if ZF_ENV_HTTPS
     #define CPPHTTPLIB_OPENSSL_SUPPORT

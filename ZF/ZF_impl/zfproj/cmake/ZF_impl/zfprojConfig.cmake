@@ -48,7 +48,5 @@ function(zfprojConfigAfter_ZF_impl projName)
         SDL2_net
         SDL2_mixer
         )
-
-    zfprojLoadAllSymbol(${projName})
 endfunction(zfprojConfigAfter_ZF_impl)
 
