@@ -1,0 +1,21 @@
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL\include" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_image" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_image"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_image\include" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_ttf" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_ttf"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_ttf\SDL_ttf.h" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_net" main "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_net"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_net\SDL_net.h" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_mixer" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_mixer"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_mixer\include" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
+
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\rm.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL\SDL_config.h.cmake"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\rm.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL\SDL_config.h.in"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\zfsh\rm.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL\SDL_revision.h.cmake"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL" "<ZF_WORK_DIR>\..\..\..\zfsrc\ZFImpl\_repo\SDL"
+

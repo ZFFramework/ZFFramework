@@ -1,8 +1,10 @@
 
 function(zfprojConfigBefore_ZF_impl projName ZF_SRC_FILES)
     if(WIN32)
+        execute_process(COMMAND "${ZF_ROOT_PATH}/tools/common/zfsh.bat" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh" "${ZF_ROOT_PATH}")
         execute_process(COMMAND "${ZF_ROOT_PATH}/tools/common/copy_check.bat" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/font/" "${PROJECT_BINARY_DIR}/zfres/ZF_impl/sys_SDL/font/.")
     else()
+        execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/zfsh.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/zf3rd_setup_SDL.zfsh" "${ZF_ROOT_PATH}")
         execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/common/copy_check.sh" "${ZF_ROOT_PATH}/ZF/ZF_impl/zfproj/cmake/ZF_impl/font/" "${PROJECT_BINARY_DIR}/zfres/ZF_impl/sys_SDL/font/.")
     endif()
 endfunction(zfprojConfigBefore_ZF_impl)

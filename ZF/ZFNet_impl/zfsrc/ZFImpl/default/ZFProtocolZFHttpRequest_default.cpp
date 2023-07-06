@@ -51,12 +51,14 @@ private:
     };
 
 public:
+#if !ZF_ENV_sys_Windows
     zfoverride
     virtual void protocolOnInit(void)
     {
         zfsuper::protocolOnInit();
         signal(SIGPIPE, SIG_IGN);
     }
+#endif
 
     // ============================================================
     // for request
