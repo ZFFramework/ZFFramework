@@ -87,12 +87,27 @@ public:
         zfidentity loadTaskId;
         zfautoObjectT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder *> impl;
         int channel;
+        zftimet position_resumeTime;
+        zftimet position_prev;
+
+    public:
+        void position_udpate(void)
+        {
+            if(this->position_resumeTime != 0)
+            {
+                zftimet curTime = ZFTime::timestamp();
+                this->position_prev += curTime - this->position_resumeTime;
+                this->position_resumeTime = curTime;
+            }
+        }
 
     public:
         NativeAudio(void)
         : loadTaskId(zfidentityInvalid())
         , impl()
         , channel(-1)
+        , position_resumeTime(0)
+        , position_prev(0)
         {
         }
     };
@@ -244,6 +259,8 @@ public:
         else
         {
             this->_implAttach(audio);
+            nativeAudio->position_resumeTime = ZFTime::timestamp();
+            nativeAudio->position_prev = 0;
             this->notifyAudioOnResume(audio);
         }
     }
@@ -258,6 +275,7 @@ public:
         {
             Mix_HaltChannel(channel);
         }
+        nativeAudio->position_udpate();
     }
     virtual void nativeAudioResume(ZF_IN ZFAudio *audio)
     {
@@ -266,12 +284,14 @@ public:
         {
             Mix_Resume(nativeAudio->channel);
         }
+        nativeAudio->position_resumeTime = ZFTime::timestamp();
         this->notifyAudioOnResume(audio);
     }
     virtual void nativeAudioPause(ZF_IN ZFAudio *audio)
     {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         Mix_Pause(nativeAudio->channel);
+        nativeAudio->position_udpate();
         this->notifyAudioOnPause(audio);
     }
 
@@ -286,8 +306,16 @@ public:
     }
     virtual zftimet nativeAudioPosition(ZF_IN ZFAudio *audio)
     {
-        // not supported
-        return 0;
+        NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
+        if(nativeAudio->position_resumeTime == 0)
+        {
+            return nativeAudio->position_prev;
+        }
+        else
+        {
+            zftimet curTime = ZFTime::timestamp();
+            return nativeAudio->position_prev + (curTime - nativeAudio->position_resumeTime);
+        }
     }
     virtual void nativeAudioPosition(ZF_IN ZFAudio *audio,
                                      ZF_IN zftimet position)

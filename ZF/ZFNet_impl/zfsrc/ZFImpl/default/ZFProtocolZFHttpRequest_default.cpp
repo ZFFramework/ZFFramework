@@ -6,6 +6,7 @@
 #if ZF_ENV_HTTPS
     #define CPPHTTPLIB_OPENSSL_SUPPORT
 #endif
+#define CPPHTTPLIB_NO_EXCEPTIONS
 #include "../../../zf3rd/_repo/cpp-httplib/httplib.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
