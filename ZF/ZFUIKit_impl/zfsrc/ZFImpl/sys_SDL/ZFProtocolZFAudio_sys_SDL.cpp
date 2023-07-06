@@ -67,7 +67,6 @@ public:
         Mix_Init(0
             | MIX_INIT_MP3
             | MIX_INIT_OGG
-            | MIX_INIT_MID
             );
 
         Mix_AllocateChannels(64);

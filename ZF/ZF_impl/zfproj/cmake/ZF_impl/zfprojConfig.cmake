@@ -30,6 +30,7 @@ function(zfprojConfigAfter_ZF_impl projName)
     set_target_properties(SDL2_net PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
     set(SDL2MIXER_FLAC OFF CACHE BOOL "disable sdl mixer feature" FORCE)
+    set(SDL2MIXER_MIDI OFF CACHE BOOL "disable sdl mixer feature" FORCE)
     set(SDL2MIXER_MOD OFF CACHE BOOL "disable sdl mixer feature" FORCE)
     set(SDL2MIXER_OPUS OFF CACHE BOOL "disable sdl mixer feature" FORCE)
     set(SDL2MIXER_WAVPACK OFF CACHE BOOL "disable sdl mixer feature" FORCE)
