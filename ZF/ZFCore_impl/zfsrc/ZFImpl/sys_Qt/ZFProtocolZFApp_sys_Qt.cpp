@@ -11,9 +11,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_Qt, ZFApp, ZFProtocolLevel::e_SystemHigh)
 public:
-    virtual void appRestart(ZF_IN zftimet delay)
+    virtual void appRestart(void)
     {
-        QTimer::singleShot((int)delay, _ZFP_appRestart);
+        QTimer::singleShot(100, _ZFP_appRestart);
     }
     static void _ZFP_appRestart(void)
     {

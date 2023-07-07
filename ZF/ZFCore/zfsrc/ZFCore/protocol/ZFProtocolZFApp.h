@@ -20,11 +20,11 @@ public:
     /**
      * @brief see #ZFApp::appExit
      */
-    virtual void appExit(void);
+    virtual void appExit(ZF_IN zfint appExitCode);
     /**
      * @brief see #ZFApp::appRestart
      */
-    virtual void appRestart(ZF_IN zftimet delay);
+    virtual void appRestart(void);
 ZFPROTOCOL_INTERFACE_END(ZFApp_systemInfo)
 
 ZF_NAMESPACE_GLOBAL_END

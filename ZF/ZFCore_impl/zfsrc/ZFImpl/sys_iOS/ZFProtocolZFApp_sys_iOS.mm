@@ -9,9 +9,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_iOS, ZFApp, ZFProtocolLevel::e_SystemNormal)
 public:
-    virtual void appRestart(ZF_IN zftimet delay)
+    virtual void appRestart(void)
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((float)delay / 1000 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((float)100 / 1000 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             ZFCoreArray<zfstring> appParamsSaved;
             appParamsSaved.copyFrom(ZFApp::appParams());
             ZFFrameworkCleanup();

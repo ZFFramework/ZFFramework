@@ -21,15 +21,14 @@ public:
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_default, ZFApp, ZFProtocolLevel::e_Default)
 public:
-    virtual void appRestart(ZF_IN zftimet delay)
+    virtual void appRestart(void)
     {
         _ZFP_ZFThreadImpl_default_TaskData *taskData = zfnew(_ZFP_ZFThreadImpl_default_TaskData);
 
-        ZFLISTENER_2(runnable
+        ZFLISTENER_1(runnable
                 , _ZFP_ZFThreadImpl_default_TaskData *, taskData
-                , zftimet, delay
                 ) {
-            ZFPROTOCOL_ACCESS(ZFThread)->sleep(delay);
+            ZFPROTOCOL_ACCESS(ZFThread)->sleep(100);
             if(taskData->threadToken != zfnull)
             {
                 ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThreadCleanup(taskData->threadToken);

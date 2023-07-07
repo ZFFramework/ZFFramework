@@ -6,19 +6,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFApp)
 
-void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(void)
+void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode)
 {
     ZFFrameworkCleanup();
-    exit(0);
+    exit(appExitCode);
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(ZF_IN zftimet delay)
+void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void)
 {
     ZFLISTENER(action) {
         ZFFrameworkCleanup();
         ZFFrameworkInit();
         ZFMainExecute();
     } ZFLISTENER_END()
-    ZFTimerOnce(delay, action);
+    ZFTimerOnce(100, action);
 }
 
 ZF_NAMESPACE_GLOBAL_END

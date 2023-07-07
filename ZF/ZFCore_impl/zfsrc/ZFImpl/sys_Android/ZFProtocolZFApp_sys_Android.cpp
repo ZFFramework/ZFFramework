@@ -29,14 +29,13 @@ public:
     }
 
 public:
-    virtual void appRestart(ZF_IN zftimet delay)
+    virtual void appRestart(void)
     {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "appRestart",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_long)
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, (jlong)delay);
+        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId);
     }
 
 private:
