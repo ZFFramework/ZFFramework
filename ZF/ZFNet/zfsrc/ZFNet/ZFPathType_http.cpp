@@ -145,7 +145,7 @@ public:
     static zfindex callbackSize(ZF_IN void *token)
     {
         _Token *d = (_Token *)token;
-        return d->buffer.bufferSize() - d->curPos;
+        return d->buffer.bufferSize();
     }
 };
 ZFPATHTYPE_FILEIO_REGISTER(http, ZFPathType_http()

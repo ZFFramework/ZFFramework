@@ -26,11 +26,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  ioTell, similar to FILE's #ZFFileTell, proto type:\n
  *   zfindex ioTell(void);\n
  *   return current's index or zfindexMax() if the callback doesn't support seek
- * -  ioSize, calculate callback's size, proto type:\n
+ * -  ioSize, get callback's size, proto type:\n
  *   zfindex ioSize(void);\n
  *   return size or zfindexMax() if the callback doesn't support
- *   @note for input callbacks, the size shows the current available size, may change after a ioSeek or execute call
- *   @note for ouput callbacks, the size shows the contents outputed to the output callback
+ *   @note for input callbacks, the size shows the total size of the input
+ *   @note for ouput callbacks, the size shows the current size of the output,
+ *     it may or may not be the actual size written to the output,
+ *     usually it has no actual meaning
  */
 #define ZFCallbackTagKeyword_ioOwner "ZFCallbackTagKeyword_ioOwner"
 /**

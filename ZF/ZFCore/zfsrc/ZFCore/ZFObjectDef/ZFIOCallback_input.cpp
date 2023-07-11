@@ -91,7 +91,7 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, ioTell)
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForInputInRangeOwner, zfindex, ioSize)
 {
-    return srcStart + srcCount - curPos;
+    return srcCount;
 }
 ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
                                ZF_IN_OPT zfindex start /* = 0 */,
@@ -355,7 +355,7 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, ioTell)
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForBufferUnsafeOwner, zfindex, ioSize)
 {
-    return pEnd - p;
+    return pEnd - pStart;
 }
 static ZFInput _ZFP_ZFInputForBuffer(ZF_IN zfbool copy,
                                      ZF_IN const void *src,

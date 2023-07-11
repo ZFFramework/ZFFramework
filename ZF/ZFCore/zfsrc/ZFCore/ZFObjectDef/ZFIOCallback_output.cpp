@@ -68,7 +68,7 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForStringOwner, zfindex, ioTell)
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForStringOwner, zfindex, ioSize)
 {
-    return this->pString->length() - this->curPos;
+    return this->pString->length();
 }
 ZFOutput ZFOutputForString(ZF_IN zfstring &s)
 {
@@ -136,7 +136,7 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForBufferOwner, zfindex, ioTell)
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForBufferOwner, zfindex, ioSize)
 {
-    return this->buf.bufferSize() - this->curPos;
+    return this->buf.bufferSize();
 }
 ZFOutput ZFOutputForBuffer(ZF_IN_OUT ZFBuffer &buf)
 {

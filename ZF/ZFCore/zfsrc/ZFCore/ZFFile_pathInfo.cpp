@@ -659,7 +659,7 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForPathInfoOwner, zfindex, ioTell)
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFInputForPathInfoOwner, zfindex, ioSize)
 {
-    return this->impl->callbackSize(this->token) - this->impl->callbackTell(this->token);
+    return this->impl->callbackSize(this->token);
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFInput, ZFInputForPathInfo,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),
@@ -832,7 +832,7 @@ ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForPathInfoOwner, zfindex, ioTell)
 }
 ZFMETHOD_DEFINE_0(_ZFP_I_ZFOutputForPathInfoOwner, zfindex, ioSize)
 {
-    return this->impl->callbackSize(this->token) - this->impl->callbackTell(this->token);
+    return this->impl->callbackSize(this->token);
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForPathInfo,
                        ZFMP_IN(const ZFPathInfo &, pathInfo),

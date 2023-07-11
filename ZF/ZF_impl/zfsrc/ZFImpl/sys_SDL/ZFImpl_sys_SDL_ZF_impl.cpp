@@ -87,9 +87,7 @@ SDL_RWops *ZFImpl_sys_SDL_ZFInputToSDL_RWops(ZF_IN const ZFInput &callback)
 // ============================================================
 static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_size_ZFOutput(struct SDL_RWops *context)
 {
-    ZFOutput const &callback = *(ZFOutput *)context->hidden.unknown.data1;
-    zfindex size = callback.ioSize();
-    return size == zfindexMax() ? (Sint64)-1 : (Sint64)size;
+    return -1;
 }
 
 static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput(struct SDL_RWops *context, Sint64 offset,

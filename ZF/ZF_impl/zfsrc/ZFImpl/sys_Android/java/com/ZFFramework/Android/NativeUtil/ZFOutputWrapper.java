@@ -14,7 +14,7 @@ public class ZFOutputWrapper extends OutputStream {
         if (this.zfjniPointerOwnerZFOutput == 0) {
             return false;
         } else {
-            return native_nativeInputSeek(this.zfjniPointerOwnerZFOutput, size, pos);
+            return native_nativeOutputSeek(this.zfjniPointerOwnerZFOutput, size, pos);
         }
     }
 
@@ -22,7 +22,7 @@ public class ZFOutputWrapper extends OutputStream {
         if (this.zfjniPointerOwnerZFOutput == 0) {
             return -1;
         } else {
-            return native_nativeInputTell(this.zfjniPointerOwnerZFOutput);
+            return native_nativeOutputTell(this.zfjniPointerOwnerZFOutput);
         }
     }
 
@@ -30,7 +30,7 @@ public class ZFOutputWrapper extends OutputStream {
         if (this.zfjniPointerOwnerZFOutput == 0) {
             return -1;
         } else {
-            return native_nativeInputSize(this.zfjniPointerOwnerZFOutput);
+            return native_nativeOutputSize(this.zfjniPointerOwnerZFOutput);
         }
     }
 
@@ -48,11 +48,11 @@ public class ZFOutputWrapper extends OutputStream {
     public static native void native_nativeOutputClose(long zfjniPointerOwnerZFOutput);
 
     // pos: ZFSeekPos
-    public static native boolean native_nativeInputSeek(long zfjniPointerOwnerZFOutput, long size, int pos);
+    public static native boolean native_nativeOutputSeek(long zfjniPointerOwnerZFOutput, long size, int pos);
 
-    public static native long native_nativeInputTell(long zfjniPointerOwnerZFOutput);
+    public static native long native_nativeOutputTell(long zfjniPointerOwnerZFOutput);
 
-    public static native long native_nativeInputSize(long zfjniPointerOwnerZFOutput);
+    public static native long native_nativeOutputSize(long zfjniPointerOwnerZFOutput);
 
     // ============================================================
 
