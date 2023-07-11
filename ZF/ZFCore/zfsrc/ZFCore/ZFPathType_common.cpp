@@ -167,7 +167,10 @@ public:
         {
             maxByteSize = d->bufSize - d->pos;
         }
-        zfmemcpy(buf, d->buf + d->pos, maxByteSize);
+        if(buf != zfnull)
+        {
+            zfmemcpy(buf, d->buf + d->pos, maxByteSize);
+        }
         return maxByteSize;
     }
     static zfindex callbackWrite(ZF_IN void *token,

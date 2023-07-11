@@ -57,6 +57,30 @@ public:
         d->bufferAutoFree = zffalse;
         return ret;
     }
+    /**
+     * @brief swap buffer
+     */
+    zffinal void bufferSwap(ZF_IN_OUT ZFBuffer &buf)
+    {
+        if(d == buf.d)
+        {
+            return;
+        }
+        void *buffer = d->buffer;
+        zfindex bufferCapacity = d->bufferCapacity;
+        zfindex bufferSize = d->bufferSize;
+        zfindex bufferAutoFree = d->bufferAutoFree;
+
+        d->buffer = buf.d->buffer;
+        d->bufferCapacity = buf.d->bufferCapacity;
+        d->bufferSize = buf.d->bufferSize;
+        d->bufferAutoFree = buf.d->bufferAutoFree;
+
+        buf.d->buffer = buffer;
+        buf.d->bufferCapacity = bufferCapacity;
+        buf.d->bufferSize = bufferSize;
+        buf.d->bufferAutoFree = bufferAutoFree;
+    }
 
 public:
     /**
