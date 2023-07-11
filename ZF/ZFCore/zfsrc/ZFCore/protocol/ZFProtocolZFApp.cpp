@@ -14,9 +14,11 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode)
 void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void)
 {
     ZFLISTENER(action) {
+        ZFCoreArray<zfstring> appParamsSaved;
+        appParamsSaved.addFrom(ZFApp::appParams());
         ZFFrameworkCleanup();
         ZFFrameworkInit();
-        ZFMainExecute();
+        ZFMainExecute(appParamsSaved);
     } ZFLISTENER_END()
     ZFTimerOnce(100, action);
 }

@@ -446,10 +446,14 @@ public:
     }
     static void _ZFP_parseResponse(ZF_IN_OUT NativeTask *task, ZF_IN const httplib::Result &result)
     {
-        task->responseHeaders = std::move(result.value().headers);
-        task->ownerResponse->success(zftrue);
-        task->ownerResponse->code((zfint)result.value().status);
-        task->ownerResponse->body().bufferAppend(result.value().body.c_str(), result.value().body.length());
+        zfbool success = result;
+        task->ownerResponse->success(success);
+        if(success)
+        {
+            task->responseHeaders = std::move(result.value().headers);
+            task->ownerResponse->code((zfint)result.value().status);
+            task->ownerResponse->body().bufferAppend(result.value().body.c_str(), result.value().body.length());
+        }
         switch(result.error())
         {
             case httplib::Error::Success:

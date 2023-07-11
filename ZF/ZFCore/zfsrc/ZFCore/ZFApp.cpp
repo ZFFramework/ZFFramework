@@ -31,9 +31,11 @@ ZFMETHOD_FUNC_DEFINE_0(void, appRestart)
     else
     {
         ZFLISTENER(action) {
+            ZFCoreArray<zfstring> appParamsSaved;
+            appParamsSaved.addFrom(ZFApp::appParams());
             ZFFrameworkCleanup();
             ZFFrameworkInit();
-            ZFMainExecute();
+            ZFMainExecute(appParamsSaved);
         } ZFLISTENER_END()
         ZFTimerOnce(100, action);
     }

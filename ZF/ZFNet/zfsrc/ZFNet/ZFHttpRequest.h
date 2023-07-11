@@ -82,6 +82,8 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextends ZFObject
     /** @brief util to access body as json, return an invalid json if not able to parse */
     ZFMETHOD_DECLARE_0(ZFJson, bodyJson)
 
+    /** @brief print all header, usually for debug use only */
+    ZFMETHOD_DECLARE_0(zfstring, headerInfo)
     /** @brief print all content info, usually for debug use only */
     ZFMETHOD_DECLARE_0(zfstring, contentInfo)
 
@@ -233,6 +235,8 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
     /** @brief util to perform sync request */
     ZFMETHOD_DECLARE_0(zfautoObjectT<ZFHttpResponse *>, requestSync)
 
+    /** @brief print all header info, usually for debug use only */
+    ZFMETHOD_DECLARE_0(zfstring, headerInfo)
     /** @brief print all content info, usually for debug use only */
     ZFMETHOD_DECLARE_0(zfstring, contentInfo)
 

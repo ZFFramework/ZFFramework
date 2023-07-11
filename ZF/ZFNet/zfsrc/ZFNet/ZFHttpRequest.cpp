@@ -253,6 +253,16 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoObjectT<ZFHttpResponse *>, requestSync)
     return recv;
 }
 
+ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, headerInfo)
+{
+    zfstring ret;
+    ret.capacity(10 * this->headerCount());
+    for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it))
+    {
+        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it).cString(), this->headerIterValue(it).cString());
+    }
+    return ret;
+}
 ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, contentInfo)
 {
     zfstring ret;
@@ -387,6 +397,16 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, ZFJson, bodyJson)
     return *(d->bodyJsonCache);
 }
 
+ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, headerInfo)
+{
+    zfstring ret;
+    ret.capacity(10 * this->headerCount());
+    for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it))
+    {
+        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it).cString(), this->headerIterValue(it).cString());
+    }
+    return ret;
+}
 ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, contentInfo)
 {
     zfstring ret;
