@@ -54,6 +54,12 @@ public:
      * param0 and param1 is the params passed from #threadStart
      */
     ZFOBSERVER_EVENT(ThreadOnStop)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
+     * called when all of #taskQueueCount finished
+     */
+    ZFOBSERVER_EVENT(ThreadTaskQueueOnFinish)
 
     // ============================================================
     // thread control
@@ -303,6 +309,11 @@ protected:
     virtual inline void threadOnStop(ZF_IN const ZFArgs &zfargs)
     {
         this->observerNotify(ZFThread::EventThreadOnStop(), zfargs.param0(), zfargs.param1());
+    }
+    /** @brief see #EventThreadTaskQueueOnFinish */
+    virtual inline void ThreadTaskQueueOnFinish(void)
+    {
+        this->observerNotify(ZFThread::EventThreadTaskQueueOnFinish());
     }
 
 private:
