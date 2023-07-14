@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFImpl_ZFLua_zfLog_DEBUG_ENABLE ZF_ENV_DEBUG
+#define _ZFP_ZFImpl_ZFLua_zfLog_DEBUG_ENABLE 1
 
 static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L)
 {
