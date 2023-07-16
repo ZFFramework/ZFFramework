@@ -24,6 +24,8 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(ZF_IN lua_State *L,
 // ============================================================
 static int _ZFP_ZFImpl_ZFLua_metatable_add(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -32,6 +34,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_add(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_sub(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -40,6 +44,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_sub(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_mul(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -48,6 +54,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_mul(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_div(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -56,6 +64,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_div(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_mod(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -64,6 +74,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_mod(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_unm(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
         (lua_Number)(-(v1->zfv)),
@@ -71,6 +83,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_unm(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_band(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -79,6 +93,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_band(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_bor(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     const ZFClass *cls = v_zfflags::ClassData();
@@ -96,6 +112,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_bor(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_bxor(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -104,6 +122,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_bxor(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_bnot(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
         (lua_Number)(zfflags)(~((zfflags)v1->zfv)),
@@ -111,6 +131,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_bnot(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_shl(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -119,6 +141,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_shl(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_shr(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v1, 1);
     _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(v2, 2);
     return _ZFP_ZFImpl_ZFLua_metatableStoreResult(L,
@@ -151,6 +175,8 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_concat_action(ZF_IN_OUT zfstring &v, Z
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_concat(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     zfstring v;
     zfstring errorHint;
     if(_ZFP_ZFImpl_ZFLua_metatable_concat_action(v, errorHint, L, 1)
@@ -168,6 +194,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_concat(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_len(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     const zfchar *v = zfnull;
     if(!ZFImpl_ZFLua_toString(v, L, 1, zftrue))
     {
@@ -232,6 +260,8 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(ZF_OUT ZFCompareResult &ret, ZF_OU
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_eq(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
     if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L))
@@ -245,6 +275,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_eq(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_lt(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
     if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L))
@@ -258,6 +290,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_lt(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_le(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     ZFCompareResult result = ZFCompareUncomparable;
     zfstring errorHint;
     if(!_ZFP_ZFImpl_ZFLua_metatable_cmp(result, errorHint, L))
@@ -271,6 +305,8 @@ static int _ZFP_ZFImpl_ZFLua_metatable_le(ZF_IN lua_State *L)
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_tostring(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     zfautoObject obj;
     if(!ZFImpl_ZFLua_toObject(obj, L, 1))
     {

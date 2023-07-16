@@ -536,9 +536,9 @@ public:
                 zfstring code;
                 ZFImpl_ZFLua_implPathInfoSetup(L, code, &(this->pathInfo), zffalse);
                 int error = luaL_loadbuffer(L, code.cString(), code.length(), zfnull);
-                ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag.cString());
+                zfCoreAssert(error == 0);
                 error = lua_pcall(L, 0, (int)luaLocalFuncNameList.count(), 0);
-                ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag.cString());
+                zfCoreAssert(error == 0);
             }
 
             // restore upvalue
@@ -680,6 +680,8 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLua(ZF_OUT zfautoObject &ret,
 // ============================================================
 static int _ZFP_ZFCallbackForLua(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     int count = (int)lua_gettop(L);
     if(count != 1)
     {

@@ -417,16 +417,76 @@ inline zfautoObject &ZFImpl_ZFLua_luaGet(ZF_IN lua_State *L, ZF_IN int luaStackO
 {
     return ELuna::convert2CppType<zfautoObject &>::convertType(L, luaStackOffset);
 }
-/** @brief util for impl */
-inline int ZFImpl_ZFLua_luaError(ZF_IN lua_State *L, ZF_IN const zfchar *fmt, ...)
+/**
+ * @brief util for impl
+ *
+ * note: when calling this method without ZF_ENV_ZFLUA_USE_EXCEPTION defined,
+ * you must ensure any cpp object has been properly cleaned up
+ * (from nearest lua c function registered by #ZFImpl_ZFLua_luaCFunctionRegister, to this method),
+ * otherwise all of the cpp object's destructor would be skipped due to
+ * usage of longjmp instead of exception handler\n
+ * \n
+ * a typical recommended use case:
+ * @code
+ *   static int myLuaCallback(ZF_IN lua_State *L)
+ *   {
+ *       // must placed at top of lua c function registered by ZFImpl_ZFLua_luaCFunctionRegister
+ *       ZFImpl_ZFLua_luaErrorPrepare(L);
+ *
+ *       ... // your code
+ *
+ *       if(error)
+ *       {
+ *           return ZFImpl_ZFLua_luaError(L, xxx);
+ *       }
+ *
+ *       ...
+ *   }
+ *   ZFImpl_ZFLua_luaCFunctionRegister(L, "myLuaCallback", myLuaCallback);
+ * @endcode
+ */
+#define ZFImpl_ZFLua_luaErrorPrepare(L) \
+    _ZFP_ZFImpl_ZFLua_luaErrorPrepare _ZFP_ZFImpl_ZFLua_luaErrorPrepareNotCalled(L)
+zfclassNotPOD ZFLIB_ZFLua_impl _ZFP_ZFImpl_ZFLua_luaErrorPrepare
 {
-    zfstring errHint;
-    va_list vaList;
-    va_start(vaList, fmt);
-    zfstringAppendV(errHint, fmt, vaList);
-    va_end(vaList);
-    return luaL_error(L, "%s", errHint.cString());
-}
+public:
+    _ZFP_ZFImpl_ZFLua_luaErrorPrepare(ZF_IN lua_State *L)
+    : L(L)
+    , errorHint(zfnull)
+    {
+    }
+    ~_ZFP_ZFImpl_ZFLua_luaErrorPrepare(void)
+    {
+        if(this->errorHint != zfnull)
+        {
+            zfchar buf[4096];
+            zfindex size = errorHint->length() >= sizeof(buf) ? sizeof(buf) - 1 : errorHint->length();
+            zfmemcpy(buf, errorHint->cString(), size * sizeof(zfchar));
+            buf[size] = '\0';
+            zfdelete(this->errorHint);
+
+            luaL_error(L, "%s", buf);
+        }
+    }
+public:
+    int luaError(ZF_IN lua_State *L, ZF_IN const zfchar *fmt, ...)
+    {
+        zfCoreAssert(this->errorHint == zfnull);
+        this->errorHint = zfnew(zfstring);
+        va_list vaList;
+        va_start(vaList, fmt);
+        zfstringAppendV(*(this->errorHint), fmt, vaList);
+        va_end(vaList);
+        return 0;
+    }
+private:
+    lua_State *L;
+    zfstring *errorHint;
+};
+
+/** @brief see #ZFImpl_ZFLua_luaErrorPrepare */
+#define ZFImpl_ZFLua_luaError(L, fmt, ...) \
+    _ZFP_ZFImpl_ZFLua_luaErrorPrepareNotCalled.luaError(L, fmt, ##__VA_ARGS__)
 
 zfclassLikePOD ZFLIB_ZFLua_impl _ZFP_ZFLuaStackChecker
 {

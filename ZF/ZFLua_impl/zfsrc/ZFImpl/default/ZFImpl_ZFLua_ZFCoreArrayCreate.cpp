@@ -4,6 +4,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     zfblockedAlloc(v_ZFCoreArray, ret);
     int count = (int)lua_gettop(L);
 

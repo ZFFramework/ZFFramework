@@ -235,7 +235,11 @@ zfbool ZFImpl_ZFLua_execute(ZF_IN lua_State *L,
             LUA_MULTRET,
             0);
     }
-    ZFImpl_ZFLua_execute_errorHandle(L, error, errHint, chunkInfo);
+    if(error != 0)
+    {
+        ZFImpl_ZFLua_execute_errorHandle(L, error, errHint, chunkInfo);
+        return zffalse;
+    }
 
     int luaResultNum = lua_gettop(L) - luaStackNum;
     if(luaResult != zfnull)
@@ -314,19 +318,9 @@ void ZFImpl_ZFLua_execute_errorHandle(ZF_IN lua_State *L,
     {
         *errHint += errHintTmp;
     }
-    ZFLuaErrorOccurredTrim("%s", errHintTmp.cString());
-
-#if !ZF_ENV_ZFLUA_USE_EXCEPTION
-    zfCoreCriticalMessageTrim(
-            "| [ZFLua]\n"
-            "|     native lua error occurred with no exception support\n"
-            "|     (which would cause unrecoverable C++ memory leak or logic error)\n"
-            "|     to enable exception support\n"
-            "|     add ZF_ENV_ZFLUA_USE_EXCEPTION to your compiler"
-        );
-#endif
-
     lua_pop(L, 1);
+
+    ZFLuaErrorOccurredTrim("%s", errHintTmp.cString());
 }
 
 // ============================================================
@@ -775,9 +769,6 @@ zfbool ZFImpl_ZFLua_toLuaValue(ZF_IN lua_State *L,
         return zftrue;
     }
 
-    ZFImpl_ZFLua_luaError(L,
-        "[zfl_value] unknown param type, got %s",
-        obj->objectInfo().cString());
     return zffalse;
 }
 

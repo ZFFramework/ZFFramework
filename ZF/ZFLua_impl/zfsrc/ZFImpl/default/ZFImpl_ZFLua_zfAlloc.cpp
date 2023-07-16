@@ -38,6 +38,8 @@ zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
 // ============================================================
 static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     static const int luaParamOffset = 2;
     int count = (int)lua_gettop(L);
     if(count < luaParamOffset - 1)

@@ -5,6 +5,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 static int _ZFP_ZFImpl_ZFLua_zfl_value(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     int count = (int)lua_gettop(L);
     if(count != 1)
     {

@@ -15,12 +15,39 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(zfl_call, ZFM_EXPAND({
     }))
 
 // ============================================================
-static int _ZFP_ZFImpl_ZFLua_zfl_call_impl(ZF_IN lua_State *L,
-                                           ZF_IN ZFObject *obj,
-                                           ZF_IN const zfchar *name,
-                                           ZF_IN int paramCount,
-                                           ZF_IN int luaParamOffset)
+/*
+ * zfl_call(obj, "classInstanceMethodName"/"NS.methodName"/"NS.ClassName", param0, param1, ...)
+ */
+static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
+    static const int luaParamOffset = 3;
+    int count = (int)lua_gettop(L);
+    if(count < luaParamOffset - 1 || count > ZFMETHOD_MAX_PARAM + luaParamOffset - 1)
+    {
+        return ZFImpl_ZFLua_luaError(L,
+            "[zfl_call] invalid param, expect zfl_call(obj, \"methodName\", param0, param1, ...), got %zi param",
+            (zfindex)count);
+    }
+    int paramCount = count - (luaParamOffset - 1);
+
+    zfautoObject obj;
+    if(!ZFImpl_ZFLua_toObject(obj, L, 1))
+    {
+        return ZFImpl_ZFLua_luaError(L,
+            "[zfl_call] failed to access caller object, expect zfautoObject, got %s, while executing: %s",
+            ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue).cString(),
+            ZFImpl_ZFLua_luaObjectInfo(L, 2).cString());
+    }
+    const zfchar *name = zfnull;
+    if(!ZFImpl_ZFLua_toString(name, L, 2) || zfstringIsEmpty(name))
+    {
+        return ZFImpl_ZFLua_luaError(L,
+            "[zfl_call] unable to access method name, got: %s",
+            ZFImpl_ZFLua_luaObjectInfo(L, 2).cString());
+    }
+
     zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
@@ -99,46 +126,6 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call_impl(ZF_IN lua_State *L,
         ZFObjectInfoT(errorHint, obj);
         return ZFImpl_ZFLua_luaError(L, "%s", errorHint.cString());
     }
-}
-
-// ============================================================
-/*
- * zfl_call(obj, "classInstanceMethodName"/"NS.methodName"/"NS.ClassName", param0, param1, ...)
- */
-static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L)
-{
-    static const int luaParamOffset = 3;
-    int count = (int)lua_gettop(L);
-    if(count < luaParamOffset - 1 || count > ZFMETHOD_MAX_PARAM + luaParamOffset - 1)
-    {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfl_call] invalid param, expect zfl_call(obj, \"methodName\", param0, param1, ...), got %zi param",
-            (zfindex)count);
-    }
-    int paramCount = count - (luaParamOffset - 1);
-
-    zfautoObject obj;
-    if(!ZFImpl_ZFLua_toObject(obj, L, 1))
-    {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfl_call] failed to access caller object, expect zfautoObject, got %s, while executing: %s",
-            ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue).cString(),
-            ZFImpl_ZFLua_luaObjectInfo(L, 2).cString());
-    }
-    const zfchar *name = zfnull;
-    if(!ZFImpl_ZFLua_toString(name, L, 2) || zfstringIsEmpty(name))
-    {
-        return ZFImpl_ZFLua_luaError(L,
-            "[zfl_call] unable to access method name, got: %s",
-            ZFImpl_ZFLua_luaObjectInfo(L, 2).cString());
-    }
-
-    return _ZFP_ZFImpl_ZFLua_zfl_call_impl(
-        L,
-        obj,
-        name,
-        paramCount,
-        luaParamOffset);
 }
 
 ZF_NAMESPACE_GLOBAL_END

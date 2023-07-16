@@ -4,6 +4,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 static int _ZFP_ZFImpl_ZFLua_zfstringAppend(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     zfautoObject obj;
     if(!ZFImpl_ZFLua_toObject(obj, L, 1))
     {
@@ -44,6 +46,8 @@ static int _ZFP_ZFImpl_ZFLua_zfstringAppend(ZF_IN lua_State *L)
 
 static int _ZFP_ZFImpl_ZFLua_zfstringWithFormat(ZF_IN lua_State *L)
 {
+    ZFImpl_ZFLua_luaErrorPrepare(L);
+
     zfblockedAlloc(v_zfstring, ret);
     if(!ZFImpl_ZFLua_zfstringAppend(L, ret->zfv))
     {
