@@ -64,28 +64,31 @@ extern ZFLIB_ZFCore zfindex ZFInputCheckMatch(ZF_IN const zfchar **tokens,
 
 // ============================================================
 /**
- * @brief util method to read all contents of input to output
+ * @brief util method to read contents of input to output
  *
  * return size already written to output even if error occurred
  */
-extern ZFLIB_ZFCore zfindex ZFInputReadAll(ZF_IN_OUT const ZFOutput &output,
-                                           ZF_IN_OUT const ZFInput &input);
+extern ZFLIB_ZFCore zfindex ZFInputRead(ZF_IN_OUT const ZFOutput &output,
+                                        ZF_IN_OUT const ZFInput &input,
+                                        ZF_IN_OPT zfindex size = zfindexMax());
 /**
- * @brief util method to read all contents from input to buffer
+ * @brief util method to read contents from input to buffer
  *
  * buffer is ensured null-terminated,
  * and buffer's size increase the content's size excluding tail '\0'\n
  * return total byte size appended to the buffer
  */
-extern ZFLIB_ZFCore zfindex ZFInputReadAll(ZF_IN_OUT ZFBuffer &ret,
-                                           ZF_IN_OUT const ZFInput &input);
+extern ZFLIB_ZFCore zfindex ZFInputRead(ZF_IN_OUT ZFBuffer &ret,
+                                        ZF_IN_OUT const ZFInput &input,
+                                        ZF_IN_OPT zfindex size = zfindexMax());
 /**
- * @brief util method to read all contents from input to string
+ * @brief util method to read contents from input to string
  *
  * return count of sizeof(zfchar) appended to string
  */
-extern ZFLIB_ZFCore zfindex ZFInputReadAll(ZF_IN_OUT zfstring &ret,
-                                           ZF_IN_OUT const ZFInput &input);
+extern ZFLIB_ZFCore zfindex ZFInputRead(ZF_IN_OUT zfstring &ret,
+                                        ZF_IN_OUT const ZFInput &input,
+                                        ZF_IN_OPT zfindex size = zfindexMax());
 
 // ============================================================
 /**

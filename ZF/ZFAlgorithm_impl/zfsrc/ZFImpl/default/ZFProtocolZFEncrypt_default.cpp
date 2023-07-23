@@ -22,7 +22,7 @@ public:
         else
         {
             ZFBuffer inputBuf;
-            ZFInputReadAll(inputBuf, input);
+            ZFInputRead(inputBuf, input);
             if(inputBuf.buffer() == zfnull)
             {
                 return zffalse;

@@ -183,7 +183,7 @@ ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send,
                   ZFMP_IN(const ZFInput &, input))
 {
     ZFBuffer buf;
-    ZFInputReadAll(buf, input);
+    ZFInputRead(buf, input);
     return this->send(buf.buffer(), buf.bufferSize());
 }
 ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv,

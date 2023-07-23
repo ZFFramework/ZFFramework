@@ -264,16 +264,18 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_USER_REGISTER_2({
+ZFMETHOD_USER_REGISTER_3({
         v_ZFCallback *owner = invokerObject->to<v_ZFCallback *>();
         ZFOutput output = owner->zfv;
-        output.output(src, size);
+        output.output(src, size, result);
         return owner;
-    }, v_ZFCallback, v_ZFCallback *, output, ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, size, zfindexMax()))
-ZFMETHOD_USER_REGISTER_2({
-        ZFOutput output = invokerObject->to<v_ZFCallback *>()->zfv;
-        return output.output(src, size);
-    }, v_ZFCallback, zfindex, outputDetail, ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, size, zfindexMax()))
+    }, v_ZFCallback, v_ZFCallback *, output, ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, size, zfindexMax()), ZFMP_OUT_OPT(zfindex *, result, zfnull))
+ZFMETHOD_USER_REGISTER_3({
+        v_ZFCallback *owner = invokerObject->to<v_ZFCallback *>();
+        ZFOutput output = owner->zfv;
+        output.output(src, size, result);
+        return owner;
+    }, v_ZFCallback, v_ZFCallback *, output, ZFMP_IN(const void *, src), ZFMP_IN_OPT(zfindex, size, zfindexMax()), ZFMP_OUT_OPT(zfindex *, result, zfnull))
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFOutput, ZFOutputDummy)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFOutput, ZFOutputForString, ZFMP_IN_OUT(zfstring &, s))

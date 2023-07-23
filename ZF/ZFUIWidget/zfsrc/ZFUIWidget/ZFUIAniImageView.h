@@ -119,7 +119,7 @@ zfclassFwd _ZFP_ZFUIAniImageViewPrivate;
  *
  * how it works:
  * -# load a large image
- * -# load each frame by #ZFUIImageLoadInFrame from the large image
+ * -# load each frame by #ZFUIImageInFrame from the large image
  * -# animate by switching each frame
  *
  * serializable data:

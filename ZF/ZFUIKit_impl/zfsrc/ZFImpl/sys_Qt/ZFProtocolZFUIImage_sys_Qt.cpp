@@ -17,7 +17,7 @@ public:
     {
         QImage *nativeImage = new QImage();
         ZFBuffer buf;
-        ZFInputReadAll(buf, inputCallback);
+        ZFInputRead(buf, inputCallback);
         if(!nativeImage->loadFromData((const uchar *)buf.buffer(), buf.bufferSize()))
         {
             delete nativeImage;

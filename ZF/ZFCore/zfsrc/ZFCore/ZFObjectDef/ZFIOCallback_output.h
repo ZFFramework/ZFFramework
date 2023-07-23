@@ -47,10 +47,19 @@ public:
         return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
     }
     /** @brief see #ZFOutput */
-    inline zfindex output(ZF_IN const zfchar *src,
-                          ZF_IN_OPT zfindex count = zfindexMax()) const
+    inline const ZFOutput &output(ZF_IN const void *src,
+                                  ZF_IN_OPT zfindex count = zfindexMax(),
+                                  ZF_OUT_OPT zfindex *result = zfnull) const
     {
-        return this->execute(src, count);
+        if(result != zfnull)
+        {
+            *result = this->execute(src, count);
+        }
+        else
+        {
+            this->execute(src, count);
+        }
+        return *this;
     }
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 

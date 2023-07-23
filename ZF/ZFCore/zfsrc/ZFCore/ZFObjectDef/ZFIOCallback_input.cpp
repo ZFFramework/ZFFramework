@@ -429,16 +429,18 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_USER_REGISTER_2({
+ZFMETHOD_USER_REGISTER_3({
         v_ZFCallback *owner = invokerObject->to<v_ZFCallback *>();
         ZFInput input = owner->zfv;
-        input.input(buf, count);
+        input.input(buf, count, result);
         return owner;
-    }, v_ZFCallback, v_ZFCallback *, input, ZFMP_OUT(zfstring &, buf), ZFMP_IN(zfindex, count))
-ZFMETHOD_USER_REGISTER_2({
-        ZFInput input = invokerObject->to<v_ZFCallback *>()->zfv;
-        return input.input(buf, count);
-    }, v_ZFCallback, zfindex, inputDetail, ZFMP_OUT(zfstring &, buf), ZFMP_IN(zfindex, count))
+    }, v_ZFCallback, v_ZFCallback *, input, ZFMP_OUT(zfstring &, buf), ZFMP_IN(zfindex, count), ZFMP_OUT_OPT(zfindex *, result, zfnull))
+ZFMETHOD_USER_REGISTER_3({
+        v_ZFCallback *owner = invokerObject->to<v_ZFCallback *>();
+        ZFInput input = owner->zfv;
+        input.input(buf, count, result);
+        return owner;
+    }, v_ZFCallback, v_ZFCallback *, input, ZFMP_OUT(void *, buf), ZFMP_IN(zfindex, count), ZFMP_OUT_OPT(zfindex *, result, zfnull))
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFInput, ZFInputDummy)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(ZFInput, ZFInputForInputInRange, ZFMP_IN(const ZFInput &, inputCallback), ZFMP_IN_OPT(zfindex, start, 0), ZFMP_IN_OPT(zfindex, count, zfindexMax()), ZFMP_IN_OPT(zfbool, autoRestorePos, zftrue))

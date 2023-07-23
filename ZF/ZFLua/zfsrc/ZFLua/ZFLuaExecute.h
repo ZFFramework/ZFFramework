@@ -112,9 +112,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
  *           end)
  *     @endcode
- *   -  `output:output(text, size)` and `output:outputDetail(text, size)`\n
+ *   -  `output:output(text[, size, result])`\n
  *     write to output callback
- *   -  `input:input(buf, size)` and `input:inputDetail(buf, size)`\n
+ *   -  `input:input(buf [, size, result])`\n
  *     read from input callback
  * -  array
  *   -  `ZFCoreArrayCreate([a, b, c, ...])`\n

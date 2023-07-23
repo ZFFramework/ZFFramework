@@ -21,9 +21,9 @@ protected:
         ZFPathInfoTreePrint(ZFPathInfo(ZFPathType_res(), testPath), ZFOutputDefault(), "  ");
 
         zfLogTrim() << "try read content:";
-        ZFInputReadAll(ZFOutputDefault(),
+        ZFInputRead(ZFOutputDefault(),
             ZFInputForRes(zfstringWithFormat("%s/fileExist", testPath)));
-        ZFInputReadAll(ZFOutputDefault(),
+        ZFInputRead(ZFOutputDefault(),
             ZFInputForRes(zfstringWithFormat("%s/dirExist/fileExist2", testPath)));
 
         zfLogTrim() << "============================================================";
@@ -32,9 +32,9 @@ protected:
         ZFPathInfoTreePrint(ZFPathInfo(ZFPathType_cachePath(), testPath), ZFOutputDefault(), "  ");
 
         zfLogTrim() << "try read content:";
-        ZFInputReadAll(ZFOutputDefault(),
+        ZFInputRead(ZFOutputDefault(),
             ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/fileExist", testPath))));
-        ZFInputReadAll(ZFOutputDefault(),
+        ZFInputRead(ZFOutputDefault(),
             ZFInputForPathInfo(ZFPathInfo(ZFPathType_cachePath(), zfstringWithFormat("%s/dirExist/fileExist2", testPath))));
 
         zfLogTrim() << "============================================================";

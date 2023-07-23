@@ -3,6 +3,14 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+_ZFP_ZFBufferPrivate::~_ZFP_ZFBufferPrivate(void)
+{
+    if(this->bufferAutoFree && this->buffer)
+    {
+        zffree(this->buffer);
+    }
+}
+
 static inline void _ZFP_ZFBufferCapacityOptimize(ZF_IN_OUT zfindex &capacity)
 {
     if(capacity == 0)

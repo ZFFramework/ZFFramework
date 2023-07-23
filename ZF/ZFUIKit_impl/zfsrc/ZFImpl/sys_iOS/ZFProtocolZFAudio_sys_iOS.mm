@@ -91,7 +91,7 @@ public:
             _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 
             ZFBuffer buf;
-            ZFInputReadAll(buf, input);
+            ZFInputRead(buf, input);
             if(buf.bufferSize() == 0)
             {
                 zfblockedAlloc(v_zfstring, errorHint);

@@ -40,7 +40,7 @@ public:
         }
         if(zfmRand(3) == 0)
         {
-            tmp->cellIcon()->image(ZFUIImageLoadFromColor(ZFUIColorRandom(), ZFUISizeMake(40)));
+            tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeMake(40)));
         }
         tmp->viewBackgroundColor(ZFUIColorRandom());
     }

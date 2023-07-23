@@ -50,7 +50,7 @@ ZFMETHOD_DEFINE_4(ZFUIAniImageData, zfbool, aniLoad,
     {
         for(zffloat x = 0, xEnd = imageSizeFixed.width - frameSizePixel.width; x <= xEnd && d->frameImages.count() < frameCount; x += frameSizePixel.width)
         {
-            zfautoObjectT<ZFUIImage *> frameImage = ZFUIImageLoadInFrame(frameSrc, ZFUIRectMake(
+            zfautoObjectT<ZFUIImage *> frameImage = ZFUIImageInFrame(frameSrc, ZFUIRectMake(
                     x,
                     y,
                     frameSizePixel.width,
@@ -682,7 +682,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(ZF_IN const ZFClass *desiredClass,
         }
     }
     zfautoObjectT<ZFUIImage *> frameSrc = ZFUIDraw::endForImage(context);
-    if(frameSrc == zfnull || !ZFUIImageSaveToFile(imgOutput, frameSrc))
+    if(frameSrc == zfnull || !ZFUIImageToOutput(imgOutput, frameSrc))
     {
         return zffalse;
     }

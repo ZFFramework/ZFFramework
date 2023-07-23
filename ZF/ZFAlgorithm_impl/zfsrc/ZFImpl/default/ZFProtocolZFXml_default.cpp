@@ -37,7 +37,7 @@ public:
     virtual ZFXml xmlParse(ZF_IN const ZFInput &inputCallback)
     {
         ZFBuffer buf;
-        ZFInputReadAll(buf, inputCallback);
+        ZFInputRead(buf, inputCallback);
         return this->xmlParse(buf);
     }
     virtual void xmlMemoryPoolRelease(ZF_IN void *token, ZF_IN const zfchar *value)

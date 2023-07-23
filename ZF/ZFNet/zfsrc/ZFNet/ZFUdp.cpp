@@ -250,7 +250,7 @@ ZFMETHOD_DEFINE_2(ZFUdp, zfbool, send,
     if(hostAddr.valid())
     {
         ZFBuffer buf;
-        ZFInputReadAll(buf, input);
+        ZFInputRead(buf, input);
         return this->send(hostAddr, buf.buffer(), buf.bufferSize());
     }
     else

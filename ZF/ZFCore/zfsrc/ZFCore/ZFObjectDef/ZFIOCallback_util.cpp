@@ -232,106 +232,106 @@ zfindex ZFInputCheckMatch(ZF_IN const zfchar **tokens,
 }
 
 // ============================================================
-zfindex ZFInputReadAll(ZF_IN_OUT const ZFOutput &output,
-                       ZF_IN_OUT const ZFInput &input)
+#define _ZFP_ZFInputRead_blockSize 1024
+zfindex ZFInputRead(ZF_IN_OUT const ZFOutput &output,
+                    ZF_IN_OUT const ZFInput &input,
+                    ZF_IN_OPT zfindex size /* = zfindexMax() */)
 {
-    zfindex size = 0;
+    zfindex read = 0;
     if(input && output)
     {
-        #define _ZFP_ZFInputReadAll_blockSize 256
-        zfchar buf[_ZFP_ZFInputReadAll_blockSize];
+        zfchar buf[_ZFP_ZFInputRead_blockSize];
         zfindex readCount = 0;
         zfindex writeCount = 0;
+        zfindex toRead = 0;
         do
         {
-            readCount = input.execute(buf, _ZFP_ZFInputReadAll_blockSize);
+            if(read + _ZFP_ZFInputRead_blockSize <= size)
+            {
+                toRead = _ZFP_ZFInputRead_blockSize;
+            }
+            else
+            {
+                toRead = size - read;
+            }
+            readCount = input.execute(buf, toRead);
             writeCount = output.execute(buf, readCount);
-            size += writeCount;
-            if(readCount < _ZFP_ZFInputReadAll_blockSize || writeCount < readCount)
+            read += writeCount;
+            if(readCount < toRead || writeCount < readCount || read >= size)
             {
                 break;
             }
         } while(zftrue);
-        #undef _ZFP_ZFInputReadAll_blockSize
     }
-    return size;
+    return read;
 }
 
-zfindex ZFInputReadAll(ZF_IN_OUT ZFBuffer &ret,
-                       ZF_IN_OUT const ZFInput &input)
+zfindex ZFInputRead(ZF_IN_OUT ZFBuffer &ret,
+                    ZF_IN_OUT const ZFInput &input,
+                    ZF_IN_OPT zfindex size /* = zfindexMax() */)
 {
-    if(!input)
+    zfindex read = 0;
+    if(input)
     {
-        return 0;
-    }
-
-    zfindex totalSize = input.ioSize();
-    if(totalSize != zfindexMax())
-    {
-        ret.bufferCapacity(ret.bufferSize() + totalSize);
-        zfindex readSize = input.execute(ret.bufferT<zfbyte *>() + ret.bufferSize(), totalSize);
-        ret.bufferSize(ret.bufferSize() + readSize);
-        *(zfchar *)(ret.bufferT<zfbyte *>() + ret.bufferSize()) = '\0';
-        return readSize;
-    }
-    else
-    {
-        #define _ZFP_ZFInputReadAll_blockSize 128
-        totalSize = 0;
+        zfindex readCount = 0;
+        zfindex toRead = 0;
         do
         {
-            ret.bufferCapacity(ret.bufferSize() + totalSize + _ZFP_ZFInputReadAll_blockSize);
-            zfindex readCount = input.execute(ret.bufferT<zfbyte *>() + totalSize, _ZFP_ZFInputReadAll_blockSize);
-            totalSize += readCount;
-            if(readCount < _ZFP_ZFInputReadAll_blockSize)
+            if(read + _ZFP_ZFInputRead_blockSize <= size)
             {
-                ret.bufferSize(ret.bufferSize() + totalSize);
+                toRead = _ZFP_ZFInputRead_blockSize;
+            }
+            else
+            {
+                toRead = size - read;
+            }
+            ret.bufferCapacity(ret.bufferSize() + toRead);
+            readCount = input.execute(ret.bufferT<zfbyte *>() + ret.bufferSize(), toRead);
+            read += readCount;
+            ret.bufferSize(ret.bufferSize() + readCount);
+            if(readCount < toRead)
+            {
                 *(zfchar *)(ret.bufferT<zfbyte *>() + ret.bufferSize()) = '\0';
                 break;
             }
         } while(zftrue);
-        #undef _ZFP_ZFInputReadAll_blockSize
-        return totalSize;
     }
+    return read;
 }
 
-zfindex ZFInputReadAll(ZF_IN_OUT zfstring &ret,
-                       ZF_IN_OUT const ZFInput &input)
+zfindex ZFInputRead(ZF_IN_OUT zfstring &ret,
+                    ZF_IN_OUT const ZFInput &input,
+                    ZF_IN_OPT zfindex size /* = zfindexMax() */)
 {
-    if(!input)
+    zfindex read = 0;
+    if(input)
     {
-        return 0;
-    }
-
-    zfindex totalSize = input.ioSize();
-    if(totalSize != zfindexMax())
-    {
-        ret.capacity(ret.length() + totalSize);
-        zfindex readSize = input.execute(ret.zfunsafe_buffer() + ret.length(), totalSize);
-        ret.zfunsafe_length(ret.length() + readSize / sizeof(zfchar));
-        ret.zfunsafe_buffer()[ret.length()] = '\0';
-        return readSize;
-    }
-    else
-    {
-        #define _ZFP_ZFInputReadAll_blockSize 128
-        totalSize = 0;
+        zfindex readCount = 0;
+        zfindex toRead = 0;
         do
         {
-            ret.capacity(ret.length() + (totalSize + _ZFP_ZFInputReadAll_blockSize) / sizeof(zfchar));
-            zfindex readCount = input.execute(ret.zfunsafe_buffer() + totalSize / sizeof(zfchar), _ZFP_ZFInputReadAll_blockSize);
-            totalSize += readCount;
-            if(readCount < _ZFP_ZFInputReadAll_blockSize)
+            if(read + _ZFP_ZFInputRead_blockSize <= size)
             {
-                ret.zfunsafe_length(ret.length() + totalSize / sizeof(zfchar));
+                toRead = _ZFP_ZFInputRead_blockSize;
+            }
+            else
+            {
+                toRead = size - read;
+            }
+            ret.capacity(ret.length() + (read + toRead) / sizeof(zfchar));
+            readCount = input.execute(ret.zfunsafe_buffer() + ret.length(), toRead);
+            read += readCount;
+            ret.zfunsafe_length(ret.length() + readCount / sizeof(zfchar));
+            if(readCount < toRead)
+            {
                 ret.zfunsafe_buffer()[ret.length()] = '\0';
                 break;
             }
         } while(zftrue);
-        #undef _ZFP_ZFInputReadAll_blockSize
-        return totalSize;
     }
+    return read;
 }
+#undef _ZFP_ZFInputRead_blockSize
 
 // ============================================================
 zfindex ZFInputReadLine(ZF_IN_OUT const ZFOutput &output,
@@ -423,9 +423,9 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadChar, ZFMP_IN_OUT(zfstring &, buf), ZFMP_IN_OUT(const ZFInput &, input))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadAll, ZFMP_IN_OUT(const ZFOutput &, output), ZFMP_IN_OUT(const ZFInput &, input))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadAll, ZFMP_IN_OUT(ZFBuffer &, ret), ZFMP_IN_OUT(const ZFInput &, input))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadAll, ZFMP_IN_OUT(zfstring &, ret), ZFMP_IN_OUT(const ZFInput &, input))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, ZFInputRead, ZFMP_IN_OUT(const ZFOutput &, output), ZFMP_IN_OUT(const ZFInput &, input), ZFMP_IN_OPT(zfindex, size, zfindexMax()))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, ZFInputRead, ZFMP_IN_OUT(ZFBuffer &, ret), ZFMP_IN_OUT(const ZFInput &, input), ZFMP_IN_OPT(zfindex, size, zfindexMax()))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, ZFInputRead, ZFMP_IN_OUT(zfstring &, ret), ZFMP_IN_OUT(const ZFInput &, input), ZFMP_IN_OPT(zfindex, size, zfindexMax()))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadLine, ZFMP_IN_OUT(const ZFOutput &, output), ZFMP_IN_OUT(const ZFInput &, input))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadLine, ZFMP_IN_OUT(ZFBuffer &, output), ZFMP_IN_OUT(const ZFInput &, input))
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, ZFInputReadLine, ZFMP_IN_OUT(zfstring &, output), ZFMP_IN_OUT(const ZFInput &, input))

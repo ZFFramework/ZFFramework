@@ -79,7 +79,7 @@ zfbool ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableData,
         return zffalse;
     }
     ZFBuffer buf;
-    ZFInputReadAll(buf, input);
+    ZFInputRead(buf, input);
     if(buf.buffer() == zfnull)
     {
         ZFSerializableUtil::errorOccurred(outErrorHint, "unable to load data from input");

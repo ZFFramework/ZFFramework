@@ -26,8 +26,8 @@ protected:
         // encode image to binary and load it again to test
         zfautoObject imageHolder = zfRes("test_normal.png");
         zfblockedAlloc(ZFIOBufferByMemory, io);
-        ZFUIImageSaveToFile(io->output(), imageHolder);
-        zfautoObject imageNew = ZFUIImageLoadFromFile(io->input());
+        ZFUIImageToOutput(io->output(), imageHolder);
+        zfautoObject imageNew = ZFUIImageFromInput(io->input());
         view->image(imageNew);
 
         this->prepareSettingButton(window, view);

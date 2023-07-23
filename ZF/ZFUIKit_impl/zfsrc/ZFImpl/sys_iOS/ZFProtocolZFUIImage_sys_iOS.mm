@@ -12,7 +12,7 @@ public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback)
     {
         ZFBuffer dataBuf;
-        ZFInputReadAll(dataBuf, inputCallback);
+        ZFInputRead(dataBuf, inputCallback);
         if(dataBuf.buffer() == zfnull)
         {
             return zfnull;

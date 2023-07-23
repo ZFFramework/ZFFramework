@@ -44,7 +44,7 @@ ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
         const zfchar *fileExt = ZFObjectIOImplCheckFileExt(pathInfo);
         return (fileExt != zfnull && m.find(fileExt) != m.end());
     }), {
-        ret = ZFUIImageLoadFromFile(input);
+        ret = ZFUIImageFromInput(input);
         if(ret == zfnull)
         {
             zfstringAppend(outErrorHint,
@@ -66,7 +66,7 @@ ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
                 ZFUIImage::ClassData()->classNameFull());
             return zffalse;
         }
-        if(!ZFUIImageSaveToFile(output, image))
+        if(!ZFUIImageToOutput(output, image))
         {
             zfstringAppend(outErrorHint,
                 "unable to convert image %s to image file",

@@ -39,7 +39,7 @@ public:
     virtual ZFJson jsonParse(ZF_IN const ZFInput &inputCallback)
     {
         ZFBuffer buf;
-        ZFInputReadAll(buf, inputCallback);
+        ZFInputRead(buf, inputCallback);
         return this->jsonParse(buf);
     }
     virtual void jsonMemoryPoolRelease(ZF_IN void *token, ZF_IN const zfchar *value)

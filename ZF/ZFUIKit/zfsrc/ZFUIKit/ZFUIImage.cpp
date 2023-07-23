@@ -278,7 +278,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &se
     else
     { // imageBin
         zfstring imageBin;
-        if(!ZFUIImageSaveToBase64(ZFOutputForString(imageBin), this))
+        if(!ZFUIImageToBase64(ZFOutputForString(imageBin), this))
         {
             ZFSerializableUtil::errorOccurred(outErrorHint, "save image to base64 failed");
             return zffalse;
@@ -286,7 +286,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &se
         zfstring imageBinRef;
         if(ref != zfnull)
         {
-            ZFUIImageSaveToBase64(ZFOutputForString(imageBinRef), ref);
+            ZFUIImageToBase64(ZFOutputForString(imageBinRef), ref);
         }
         ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFUIImage_imageBin, zfstring, imageBin, imageBinRef, zfstring());

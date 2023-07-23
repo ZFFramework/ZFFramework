@@ -29,7 +29,7 @@ public:
                                   ZF_IN const ZFUISize &newSize,
                                   ZF_IN const ZFUIMargin &ninePatch) zfpurevirtual;
     /**
-     * @brief see #ZFUIImageLoadInFrame
+     * @brief see #ZFUIImageInFrame
      *
      * returned image would be released by nativeImageRelease of ZFUIImage protocol
      * @note size is in pixel unit, you may revert it according imageScale
@@ -38,7 +38,7 @@ public:
                                    ZF_IN void *nativeImage,
                                    ZF_IN const ZFUIRect &frameInImage) zfpurevirtual;
     /**
-     * @brief see #ZFUIImageLoadFromColor, size ensured valid
+     * @brief see #ZFUIImageFromColor, size ensured valid
      *
      * returned image would be released by nativeImageRelease of ZFUIImage protocol
      * @note size is in pixel unit, you may revert it according imageScale

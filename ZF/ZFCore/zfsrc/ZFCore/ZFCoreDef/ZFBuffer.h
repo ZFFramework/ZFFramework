@@ -27,13 +27,7 @@ public:
     , bufferAutoFree(zffalse)
     {
     }
-    ~_ZFP_ZFBufferPrivate(void)
-    {
-        if(this->bufferAutoFree && this->buffer)
-        {
-            zffree(this->buffer);
-        }
-    }
+    ~_ZFP_ZFBufferPrivate(void);
 };
 /**
  * @brief buffer util
