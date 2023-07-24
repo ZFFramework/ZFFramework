@@ -221,7 +221,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
     ZFPInterface_##ModuleName
 
 #define _ZFP_ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_, ModuleName) \
-    zfclassNotPOD ZFLIB_ ZFPROTOCOL_INTERFACE_CLASS(ModuleName) : zfextendsNotPOD ZFProtocol \
+    zfclassNotPOD ZFLIB_ ZFPROTOCOL_INTERFACE_CLASS(ModuleName) : zfextends ZFProtocol \
     { \
         protected: \
             /** @brief class ref to super */ \
@@ -544,7 +544,7 @@ private:
 };
 // ============================================================
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_BEGIN_(ImplementationName, ImplementationClass, ModuleName, implLevel) \
-    zfclassNotPOD ImplementationClass : zfextendsNotPOD ZFPROTOCOL_INTERFACE_CLASS(ModuleName) \
+    zfclassNotPOD ImplementationClass : zfextends ZFPROTOCOL_INTERFACE_CLASS(ModuleName) \
     { \
         protected: \
             /** @brief class ref to super */ \

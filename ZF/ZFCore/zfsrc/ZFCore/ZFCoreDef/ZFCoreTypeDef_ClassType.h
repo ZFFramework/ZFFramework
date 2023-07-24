@@ -49,17 +49,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define zfclassNotPOD class
 
 /**
- * @brief extends for #zfclassLikePOD
+ * @brief extends
  */
-#define zfextendsLikePOD public
-/**
- * @brief extends for #zfclassPOD
- */
-#define zfextendsPOD public
-/**
- * @brief extends for #zfclassNotPOD
- */
-#define zfextendsNotPOD public
+#define zfextends public
 
 /**
  * @brief dummy macro shows that method override parent's method

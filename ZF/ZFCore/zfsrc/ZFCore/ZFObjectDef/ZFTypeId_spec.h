@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @cond ZFPrivateDoc */
 template<>
-zfclassNotPOD ZFTypeId<void> : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<void> : zfextends ZFTypeInfo
 {
 public:
     enum {
@@ -71,7 +71,7 @@ ZFOUTPUT_TYPE(ZFCallerInfo, {output << v.callerInfo();})
 // ZFObject
 /** @cond ZFPrivateDoc */
 template<typename T_Type>
-zfclassNotPOD ZFTypeId<T_Type, 1, 1> : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<T_Type, 1, 1> : zfextends ZFTypeInfo
 {
 public:
     enum {
@@ -212,7 +212,7 @@ ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, zfautoObject)
 
 /** @cond ZFPrivateDoc */
 template<>
-zfclassNotPOD ZFTypeId<zfautoObject> : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<zfautoObject> : zfextends ZFTypeInfo
 {
 public:
     enum {
@@ -290,7 +290,7 @@ public:
 // zfautoObjectT
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObject>
-zfclassNotPOD ZFTypeId<zfautoObjectT<T_ZFObject>, 0, 0> : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<zfautoObjectT<T_ZFObject>, 0, 0> : zfextends ZFTypeInfo
 {
 public:
     enum {
@@ -369,7 +369,7 @@ public:
 // ZFAny
 /** @cond ZFPrivateDoc */
 template<>
-zfclassNotPOD ZFTypeId<ZFAny> : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<ZFAny> : zfextends ZFTypeInfo
 {
 public:
     enum {
@@ -449,7 +449,7 @@ public:
 // pointer type
 /** @cond ZFPrivateDoc */
 template<typename T_Type>
-zfclassNotPOD ZFTypeId<T_Type *, 0, 1> : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId<T_Type *, 0, 1> : zfextends ZFTypeInfo
 {
 public:
     typedef typename zftTraits<T_Type *>::TrType T_Type_;

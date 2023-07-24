@@ -92,7 +92,7 @@ template<typename T_Type
         , int T_isZFObject = zftIsZFObject(typename zftTraits<T_Type>::TrType)
         , int T_isPointer = zftTraits<T_Type>::TrIsPtr
     >
-zfclassNotPOD ZFTypeId : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD ZFTypeId : zfextends ZFTypeInfo
 {
 public:
     /** @cond ZFPrivateDoc */
@@ -403,7 +403,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextendsNotPOD ZFTypeInfo \
+    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo \
     { \
     public: \
         enum { \
@@ -492,7 +492,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextendsNotPOD ZFTypeInfo \
+    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo \
     { \
     public: \
         enum { \
@@ -586,7 +586,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     typedef Type _ZFP_PropTypeW_##TypeName; \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<Type> : zfextendsNotPOD ZFTypeInfo \
+    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo \
     { \
     public: \
         enum { \
@@ -625,7 +625,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     /** @cond ZFPrivateDoc */ \
     typedef Type _ZFP_PropTypeW_##TypeName; \
     template<> \
-    zfclassNotPOD ZFTypeId<Type> : zfextendsNotPOD ZFTypeInfo \
+    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo \
     { \
     public: \
         enum { \

@@ -87,7 +87,7 @@ private:
         return this->classData()->classDynamicRegisterUserData()->to<_ZFP_I_ZFEnumDynamicHolder *>()->d;
     }
 };
-zfclassNotPOD _ZFP_ZFEnumTypeId : zfextendsNotPOD ZFTypeInfo
+zfclassNotPOD _ZFP_ZFEnumTypeId : zfextends ZFTypeInfo
 {
 public:
     const ZFClass *enumClass;

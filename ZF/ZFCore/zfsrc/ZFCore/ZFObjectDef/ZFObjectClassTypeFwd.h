@@ -41,11 +41,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define zfabstract class
 
-/**
- * @brief declare a class inherit from other class
- */
-#define zfextends public
-
 // ============================================================
 /**
  * @brief ZFObject auto retain version of #ZFCORE_PARAM

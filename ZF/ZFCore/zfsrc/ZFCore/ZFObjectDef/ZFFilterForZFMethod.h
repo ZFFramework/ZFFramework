@@ -21,7 +21,7 @@ public:
 /**
  * @brief util class to filter ZFMethod
  */
-zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFMethod : zfextendsLikePOD ZFFilterBasic<const ZFMethod *>
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFMethod : zfextends ZFFilterBasic<const ZFMethod *>
 {
     ZFFILTER_DECLARE(ZFFilterForZFMethod, ZFFilterBasic<const ZFMethod *>)
 

@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName, EnumName##Enum) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<EnumName##Enum> : zfextendsNotPOD ZFTypeInfo \
+    zfclassNotPOD ZFTypeId<EnumName##Enum> : zfextends ZFTypeInfo \
     { \
     public: \
         enum { \
@@ -169,7 +169,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }; \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<EnumFlagsName> : zfextendsNotPOD ZFTypeInfo \
+    zfclassNotPOD ZFTypeId<EnumFlagsName> : zfextends ZFTypeInfo \
     { \
     public: \
         enum { \

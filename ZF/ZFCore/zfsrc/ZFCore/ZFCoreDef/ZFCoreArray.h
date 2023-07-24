@@ -217,7 +217,7 @@ public:
  *   since it really bricks the portability of your code
  */
 template<typename T_Element>
-zffinal zfclassLikePOD ZFCoreArray : zfextendsLikePOD ZFCoreArrayBase
+zffinal zfclassLikePOD ZFCoreArray : zfextends ZFCoreArrayBase
 {
 public:
     /**
@@ -983,7 +983,7 @@ private:
  * @warning you should ensure the content type is POD type
  */
 template<typename T_Element>
-zffinal zfclassLikePOD ZFCoreArrayPOD : zfextendsLikePOD ZFCoreArray<T_Element>
+zffinal zfclassLikePOD ZFCoreArrayPOD : zfextends ZFCoreArray<T_Element>
 {
 public:
     /**
