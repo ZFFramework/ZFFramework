@@ -14,8 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief simple container view that measure according children
  */
-zfclass ZFLIB_ZFUIWidget ZFUIViewLayout : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIWidget ZFUIViewLayout : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIViewLayout, ZFUIView)
 
     // ============================================================
@@ -26,9 +25,11 @@ protected:
      *   return the largest area of them
      */
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
 };
 
 ZF_NAMESPACE_GLOBAL_END

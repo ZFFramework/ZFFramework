@@ -43,8 +43,7 @@ public:
     /**
      * @brief called when owner #ZFUISysWindow is about to destroy
      */
-    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow) {
     }
 
     /**
@@ -53,8 +52,10 @@ public:
      * if nativeParentView was specified,
      * it would be used to copy some settings to the window's root view
      */
-    virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT_OPT void *&nativeParentView) zfpurevirtual;
+    virtual void nativeWindowRootViewOnAdd(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_OUT_OPT void *&nativeParentView
+            ) zfpurevirtual;
     /**
      * @brief called to remove root view to native window container
      */
@@ -67,21 +68,21 @@ public:
     /**
      * @brief see #ZFUISysWindow::modalWindowFinish
      */
-    virtual void modalWindowFinish(ZF_IN ZFUISysWindow *sysWindowOwner,
-                                   ZF_IN ZFUISysWindow *sysWindowToFinish) zfpurevirtual;
+    virtual void modalWindowFinish(
+            ZF_IN ZFUISysWindow *sysWindowOwner
+            , ZF_IN ZFUISysWindow *sysWindowToFinish
+            ) zfpurevirtual;
 
     /**
      * @brief called to update suggested window layout param,
      *   fill with no margin by default
      */
-    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
     }
     /**
      * @brief called when window layout param changed
      */
-    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
     }
 
     /**
@@ -92,8 +93,10 @@ public:
      * @brief see #ZFUISysWindow::sysWindowOrientationFlags,
      *  impl should have #ZFUIOrientation::e_Top as init value
      */
-    virtual void sysWindowOrientationFlags(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_IN const ZFUIOrientationFlags &flags) zfpurevirtual;
+    virtual void sysWindowOrientationFlags(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN const ZFUIOrientationFlags &flags
+            ) zfpurevirtual;
 
     // ============================================================
     // callbacks that implementations must notify
@@ -102,56 +105,56 @@ public:
      * @brief implementation must call this method to measure window's frame,
      *   and layout window using the result frame
      */
-    zffinal ZFUIRect notifyMeasureWindow(ZF_IN ZFUISysWindow *sysWindow,
-                                         ZF_IN const ZFUIRect &rootRefRect,
-                                         ZF_IN const ZFUIMargin &sysWindowMargin)
-    {
+    zffinal ZFUIRect notifyMeasureWindow(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN const ZFUIRect &rootRefRect
+            , ZF_IN const ZFUIMargin &sysWindowMargin
+            ) {
         sysWindow->_ZFP_ZFUISysWindow_sysWindowMargin(sysWindowMargin);
         return sysWindow->_ZFP_ZFUISysWindow_measureWindow(rootRefRect);
     }
     /**
      * @brief implementation must call this to notify after window create
      */
-    zffinal void notifyOnCreate(ZF_IN ZFUISysWindow *sysWindow,
-                                ZF_IN void *nativeWindow)
-    {
+    zffinal void notifyOnCreate(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN void *nativeWindow
+            ) {
         sysWindow->_ZFP_ZFUISysWindow_onCreate(nativeWindow);
     }
     /**
      * @brief implementation must call this to notify before window destroy
      */
-    zffinal void notifyOnDestroy(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    zffinal void notifyOnDestroy(ZF_IN ZFUISysWindow *sysWindow) {
         sysWindow->_ZFP_ZFUISysWindow_onDestroy();
     }
     /**
      * @brief implementation must call this to notify after window resume,
      *   note that rotate a window should not notify this
      */
-    zffinal void notifyOnResume(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    zffinal void notifyOnResume(ZF_IN ZFUISysWindow *sysWindow) {
         sysWindow->_ZFP_ZFUISysWindow_onResume();
     }
     /**
      * @brief implementation must call this to notify before window pause,
      *   note that rotate a window should not notify this
      */
-    zffinal void notifyOnPause(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    zffinal void notifyOnPause(ZF_IN ZFUISysWindow *sysWindow) {
         sysWindow->_ZFP_ZFUISysWindow_onPause();
     }
     /**
      * @brief implementation must call this to notify when window rotate
      */
-    zffinal void notifyOnRotate(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    zffinal void notifyOnRotate(ZF_IN ZFUISysWindow *sysWindow) {
         sysWindow->_ZFP_ZFUISysWindow_onRotate();
     }
     /**
      * @brief implementation must call this to notify key event
      */
-    zffinal void notifyKeyEvent(ZF_IN ZFUISysWindow *sysWindow, ZF_IN ZFUIKeyEvent *event)
-    {
+    zffinal void notifyKeyEvent(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN ZFUIKeyEvent *event
+            ) {
         sysWindow->_ZFP_ZFUISysWindow_keyEvent(event);
     }
 ZFPROTOCOL_INTERFACE_END(ZFUISysWindow)

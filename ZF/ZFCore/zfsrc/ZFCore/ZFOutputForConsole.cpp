@@ -3,8 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeCustomType_ZFOutputForConsole)
-{
+ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeCustomType_ZFOutputForConsole) {
     ret = ZFOutputForConsole();
     serializableData.resolveMark();
     return ret;
@@ -12,21 +11,20 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForConsole, ZFCallbackSerializeC
 
 // ============================================================
 // ZFOutputForConsole
-static zfindex _ZFP_ZFOutputForConsoleFunction(ZF_IN const void *s, ZF_IN zfindex count)
-{
-    if(count == zfindexMax())
-    {
+static zfindex _ZFP_ZFOutputForConsoleFunction(
+        ZF_IN const void *s
+        , ZF_IN zfindex count
+        ) {
+    if(count == zfindexMax()) {
         ZFImplOutput((const zfchar *)s, zfindexMax());
         return zfslen((const zfchar *)s) * sizeof(zfchar);
     }
-    else
-    {
+    else {
         ZFImplOutput((const zfchar *)s, count / sizeof(zfchar));
         return count;
     }
 }
-static ZFOutput _ZFP_ZFOutputForConsole_create(void)
-{
+static ZFOutput _ZFP_ZFOutputForConsole_create(void) {
     ZFOutput ret = ZFCallbackForFunc(_ZFP_ZFOutputForConsoleFunction);
     ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForConsole);
     ret.callbackSerializeCustomData(ZFSerializableData());

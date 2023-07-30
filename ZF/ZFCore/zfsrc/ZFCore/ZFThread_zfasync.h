@@ -29,15 +29,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * the callback may or may not be canceled,
  * but finishCallback would be canceled
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfidentity, zfasync,
-                        ZFMP_IN(const ZFListener &, callback),
-                        ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfidentity, zfasync
+        , ZFMP_IN(const ZFListener &, callback)
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback())
+        )
 
 /**
  * @brief try to cancel the task or finishCallback started by #zfasync
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel,
-                        ZFMP_IN(zfidentity, taskId))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel
+        , ZFMP_IN(zfidentity, taskId)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFThread_zfasync_h_

@@ -106,10 +106,11 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
     ) \
     const ZFMethod *resultMethod = zfnull; \
     { \
-        zfclassNotPOD _ZFP_MtdFUR \
-        { \
+        zfclassNotPOD _ZFP_MtdFUR { \
         public: \
-            static ReturnType invoker(ZF_IN const ZFMethod *invokerMethod, ZF_IN ZFObject *invokerObject \
+            static ReturnType invoker( \
+                    ZF_IN const ZFMethod *invokerMethod \
+                    , ZF_IN ZFObject *invokerObject \
                     ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
                     ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
@@ -118,8 +119,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
                     ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                     ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                     ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-                ) \
-            { \
+                    ) { \
                 methodInvokerAction \
             } \
             _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
@@ -163,10 +163,11 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    zfclassNotPOD _ZFP_MtdFURIvk_##methodName##_##RegSig \
-    { \
+    zfclassNotPOD _ZFP_MtdFURIvk_##methodName##_##RegSig { \
     public: \
-        static ReturnType invoker(ZF_IN const ZFMethod *invokerMethod, ZF_IN ZFObject *invokerObject \
+        static ReturnType invoker( \
+                ZF_IN const ZFMethod *invokerMethod \
+                , ZF_IN ZFObject *invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
@@ -175,8 +176,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-            ) \
-        { \
+                ) { \
             methodInvokerAction \
         } \
         _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
@@ -251,8 +251,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
  * example:
  * @code
  *   // register it, using ZF_GLOBAL_INITIALIZER_INIT is recommended
- *   ZF_GLOBAL_INITIALIZER_INIT(MyMethodRegister)
- *   {
+ *   ZF_GLOBAL_INITIALIZER_INIT(MyMethodRegister) {
  *       ZFMethodFuncUserRegisterDetail_2(resultMethod, {
  *               return (ReturnType)yourInvoker(invokerMethod, invokerObject, param0, param1);
  *           }, "MyMethodNamespace",
@@ -262,8 +261,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
  *       _method = resultMethod;
  *       zfLogTrim() << resultMethod;
  *   }
- *   ZF_GLOBAL_INITIALIZER_DESTROY(MyMethodRegister)
- *   {
+ *   ZF_GLOBAL_INITIALIZER_DESTROY(MyMethodRegister) {
  *       ZFMethodFuncUserUnregister(_method);
  *   }
  *   const ZFMethod *_method;

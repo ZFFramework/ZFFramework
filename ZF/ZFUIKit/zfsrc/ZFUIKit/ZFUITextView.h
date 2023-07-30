@@ -18,8 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * for rich text, you should supply you own native view,
  * or use web view with html strings
  */
-zfclass ZFLIB_ZFUIKit ZFUITextView : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIKit ZFUITextView : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUITextView, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextView)
 
@@ -119,9 +118,10 @@ public:
      * and usually have no need to call\n
      * sizeHint shows max size the text view may have, or 0 if no limit
      */
-    ZFMETHOD_DECLARE_2(void, measureTextView,
-                       ZFMP_OUT(ZFUISize &, ret),
-                       ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeZero()))
+    ZFMETHOD_DECLARE_2(void, measureTextView
+            , ZFMP_OUT(ZFUISize &, ret)
+            , ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeZero())
+            )
 
     /**
      * @brief get current text size
@@ -142,9 +142,11 @@ protected:
      * @brief we would measure according text size
      */
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     zfoverride
     virtual void internalViewOnLayout(ZF_IN const ZFUIRect &bounds);
 };

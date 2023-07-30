@@ -12,12 +12,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /** @brief see #zfstringAppend */
-extern ZFLIB_ZFCore void zfstringAppendV(ZF_OUT zfstring &s, ZF_IN const zfchar *fmt, va_list vaList);
+extern ZFLIB_ZFCore void zfstringAppendV(
+        ZF_OUT zfstring &s
+        , ZF_IN const zfchar *fmt
+        , ZF_IN va_list vaList
+        );
 /** @brief see #zfstringAppend */
-inline void zfstringAppendV(ZF_OUT_OPT zfstring *s, ZF_IN const zfchar *fmt, va_list vaList)
-{
-    if(s)
-    {
+inline void zfstringAppendV(
+        ZF_OUT_OPT zfstring *s
+        , ZF_IN const zfchar *fmt
+        , ZF_IN va_list vaList
+        ) {
+    if(s) {
         zfstringAppendV(*s, fmt, vaList);
     }
 }
@@ -71,22 +77,23 @@ inline void zfstringAppendV(ZF_OUT_OPT zfstring *s, ZF_IN const zfchar *fmt, va_
  *     zfstringAppend(str, "%u %s", n, s);
  *   @endcode
  */
-inline void zfstringAppend(ZF_OUT zfstring &s,
-                           ZF_IN const zfchar *fmt,
-                           ...)
-{
+inline void zfstringAppend(
+        ZF_OUT zfstring &s
+        , ZF_IN const zfchar *fmt
+        , ...
+        ) {
     va_list vaList;
     va_start(vaList, fmt);
     zfstringAppendV(s, fmt, vaList);
     va_end(vaList);
 }
 /** @brief see #zfstringAppend */
-inline void zfstringAppend(ZF_OUT zfstring *s,
-                           ZF_IN const zfchar *fmt,
-                           ...)
-{
-    if(s)
-    {
+inline void zfstringAppend(
+        ZF_OUT zfstring *s
+        , ZF_IN const zfchar *fmt
+        , ...
+        ) {
+    if(s) {
         va_list vaList;
         va_start(vaList, fmt);
         zfstringAppendV(*s, fmt, vaList);
@@ -98,8 +105,7 @@ inline void zfstringAppend(ZF_OUT zfstring *s,
 /**
  * @brief util to create a zfstring from format
  */
-inline zfstring zfstringWithFormat(ZF_IN const zfchar *fmt, ...)
-{
+inline zfstring zfstringWithFormat(ZF_IN const zfchar *fmt, ...) {
     zfstring ret;
     va_list vaList;
     va_start(vaList, fmt);
@@ -110,8 +116,10 @@ inline zfstring zfstringWithFormat(ZF_IN const zfchar *fmt, ...)
 /**
  * @brief util to create a zfstring from format
  */
-inline zfstring zfstringWithFormatV(ZF_IN const zfchar *fmt, ZF_IN va_list vaList)
-{
+inline zfstring zfstringWithFormatV(
+        ZF_IN const zfchar *fmt
+        , ZF_IN va_list vaList
+        ) {
     zfstring ret;
     zfstringAppendV(ret, fmt, vaList);
     return ret;

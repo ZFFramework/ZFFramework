@@ -29,10 +29,10 @@ ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, file)
  * auto open and auto close files, may return a null callback if open file error\n
  * auto setup callback cache id with res file path
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForFile,
-                               ZFMP_IN(const zfchar *, filePath),
-                               ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForFile
+        , ZFMP_IN(const zfchar *, filePath)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        ) {
     ZFInput ret;
     ZFInputForPathInfoT(ret, ZFPathType_file(), filePath, flags);
     return ret;
@@ -49,10 +49,10 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFInput, ZFInputForFile,
  *
  * auto open and auto close files, may return a null callback if open file error
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile,
-                               ZFMP_IN(const zfchar *, filePath),
-                               ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFile
+        , ZFMP_IN(const zfchar *, filePath)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        ) {
     ZFOutput ret;
     ZFOutputForPathInfoT(ret, ZFPathType_file(), filePath, flags);
     return ret;
@@ -69,11 +69,17 @@ ZF_NAMESPACE_BEGIN(ZFFileIOImpl)
  * usage:
  * @code
  *   // supply a wrapper that has these methods
- *   zfclassNotPOD MyHolder
- *   {
+ *   zfclassNotPOD MyHolder {
  *   public:
- *       static void pathConvert(ZF_OUT zfstring &ret, ZF_IN const zfchar *pathData) {...}
- *       static void pathRevert(ZF_IN_OUT zfstring &pathData) {...}
+ *       static void pathConvert(
+ *               ZF_OUT zfstring &ret
+ *               , ZF_IN const zfchar *pathData
+ *               ) {
+ *           ...
+ *       }
+ *       static void pathRevert(ZF_IN_OUT zfstring &pathData) {
+ *           ...
+ *       }
  *   };
  *
  *   // use the file IO callback
@@ -83,154 +89,143 @@ ZF_NAMESPACE_BEGIN(ZFFileIOImpl)
  * @endcode
  */
 template<typename T_Holder>
-zfclassNotPOD FileIO
-{
+zfclassNotPOD FileIO {
 public:
     /** @cond ZFPrivateDoc */
-    static zfbool callbackIsExist(ZF_IN const zfchar *pathData)
-    {
+    static zfbool callbackIsExist(ZF_IN const zfchar *pathData) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
         return ZFFileIsExist(pathDataAbs);
     }
-    static zfbool callbackIsDir(ZF_IN const zfchar *pathData)
-    {
+    static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
         return ZFFileIsDir(pathDataAbs);
     }
-    static zfbool callbackToFileName(ZF_IN const zfchar *pathData,
-                                     ZF_IN_OUT zfstring &fileName)
-    {
+    static zfbool callbackToFileName(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OUT zfstring &fileName
+            ) {
         return ZFPathInfoCallbackToFileNameDefault(pathData, fileName);
     }
-    static zfbool callbackToChild(ZF_IN const zfchar *pathData,
-                                  ZF_IN_OUT zfstring &pathDataChild,
-                                  ZF_IN const zfchar *childName)
-    {
+    static zfbool callbackToChild(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OUT zfstring &pathDataChild
+            , ZF_IN const zfchar *childName
+            ) {
         return ZFPathInfoCallbackToChildDefault(pathData, pathDataChild, childName);
     }
-    static zfbool callbackToParent(ZF_IN const zfchar *pathData,
-                                   ZF_IN_OUT zfstring &pathDataParent)
-    {
+    static zfbool callbackToParent(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OUT zfstring &pathDataParent
+            ) {
         return ZFPathInfoCallbackToParentDefault(pathData, pathDataParent);
     }
-    static zfbool callbackPathCreate(ZF_IN const zfchar *pathData,
-                                     ZF_IN_OPT zfbool autoMakeParent,
-                                     ZF_OUT_OPT zfstring *errPos)
-    {
+    static zfbool callbackPathCreate(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OPT zfbool autoMakeParent
+            , ZF_OUT_OPT zfstring *errPos
+            ) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(!ZFPathCreate(pathDataAbs, autoMakeParent, errPos))
-        {
-            if(errPos != zfnull)
-            {
+        if(!ZFPathCreate(pathDataAbs, autoMakeParent, errPos)) {
+            if(errPos != zfnull) {
                 T_Holder::pathRevert(*errPos);
             }
             return zffalse;
         }
-        else
-        {
+        else {
             return zftrue;
         }
     }
-    static zfbool callbackRemove(ZF_IN const zfchar *pathData,
-                                 ZF_IN_OPT zfbool isRecursive,
-                                 ZF_IN_OPT zfbool isForce,
-                                 ZF_IN_OPT zfstring *errPos)
-    {
+    static zfbool callbackRemove(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OPT zfbool isRecursive
+            , ZF_IN_OPT zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(!ZFFileRemove(pathDataAbs, isRecursive, isForce, errPos))
-        {
-            if(errPos != zfnull)
-            {
+        if(!ZFFileRemove(pathDataAbs, isRecursive, isForce, errPos)) {
+            if(errPos != zfnull) {
                 T_Holder::pathRevert(*errPos);
             }
             return zffalse;
         }
-        else
-        {
+        else {
             return zftrue;
         }
     }
-    static zfbool callbackFindFirst(ZF_IN_OUT ZFFileFindData &fd,
-                                    ZF_IN const zfchar *pathData)
-    {
+    static zfbool callbackFindFirst(
+            ZF_IN_OUT ZFFileFindData &fd
+            , ZF_IN const zfchar *pathData
+            ) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
-        if(ZFFileFindFirst(fd, pathDataAbs))
-        {
+        if(ZFFileFindFirst(fd, pathDataAbs)) {
             return zftrue;
         }
-        else
-        {
+        else {
             return zffalse;
         }
     }
-    static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd)
-    {
-        if(ZFFileFindNext(fd))
-        {
+    static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd) {
+        if(ZFFileFindNext(fd)) {
             return zftrue;
         }
-        else
-        {
+        else {
             return zffalse;
         }
     }
-    static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd)
-    {
+    static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd) {
         ZFFileFindClose(fd);
     }
-    static void *callbackOpen(ZF_IN const zfchar *pathData,
-                              ZF_IN_OPT ZFFileOpenOptionFlags flag,
-                              ZF_IN_OPT zfbool autoCreateParent)
-    {
+    static void *callbackOpen(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OPT ZFFileOpenOptionFlags flag
+            , ZF_IN_OPT zfbool autoCreateParent
+            ) {
         zfstring pathDataAbs;
         T_Holder::pathConvert(pathDataAbs, pathData);
         return ZFFileOpen(pathDataAbs, flag, autoCreateParent);
     }
-    static zfbool callbackClose(ZF_IN void *token)
-    {
+    static zfbool callbackClose(ZF_IN void *token) {
         return ZFFileClose(token);
     }
-    static zfindex callbackTell(ZF_IN void *token)
-    {
+    static zfindex callbackTell(ZF_IN void *token) {
         return ZFFileTell(token);
     }
-    static zfbool callbackSeek(ZF_IN void *token,
-                               ZF_IN zfindex byteSize,
-                               ZF_IN_OPT ZFSeekPos position)
-    {
+    static zfbool callbackSeek(
+            ZF_IN void *token
+            , ZF_IN zfindex byteSize
+            , ZF_IN_OPT ZFSeekPos position
+            ) {
         return ZFFileSeek(token, byteSize, position);
     }
-    static zfindex callbackRead(ZF_IN void *token,
-                                ZF_IN void *buf,
-                                ZF_IN zfindex maxByteSize)
-    {
+    static zfindex callbackRead(
+            ZF_IN void *token
+            , ZF_IN void *buf
+            , ZF_IN zfindex maxByteSize
+            ) {
         return ZFFileRead(token, buf, maxByteSize);
     }
-    static zfindex callbackWrite(ZF_IN void *token,
-                                 ZF_IN const void *src,
-                                 ZF_IN_OPT zfindex maxByteSize)
-    {
+    static zfindex callbackWrite(
+            ZF_IN void *token
+            , ZF_IN const void *src
+            , ZF_IN_OPT zfindex maxByteSize
+            ) {
         return ZFFileWrite(token, src, maxByteSize);
     }
-    static void callbackFlush(ZF_IN void *token)
-    {
+    static void callbackFlush(ZF_IN void *token) {
         ZFFileFlush(token);
     }
-    static zfbool callbackIsEof(ZF_IN void *token)
-    {
+    static zfbool callbackIsEof(ZF_IN void *token) {
         return ZFFileIsEof(token);
     }
-    static zfbool callbackIsError(ZF_IN void *token)
-    {
+    static zfbool callbackIsError(ZF_IN void *token) {
         return ZFFileIsError(token);
     }
-    static zfindex callbackSize(ZF_IN void *token)
-    {
+    static zfindex callbackSize(ZF_IN void *token) {
         return ZFFileSize(token);
     }
     /** @endcond */

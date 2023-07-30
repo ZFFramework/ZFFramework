@@ -3,8 +3,7 @@
 
 namespace AndroidJNIUtil {
 
-JNIUtil::JNIString &_AndroidLogTagDefault(void)
-{
+JNIUtil::JNIString &_AndroidLogTagDefault(void) {
     static JNIUtil::JNIString _s = "JNILog";
     return _s;
 }

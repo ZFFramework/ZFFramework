@@ -6,35 +6,28 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
 
-static ZFCoreMap &_ZFP_ZFCoreStatisticDataMap(void)
-{
+static ZFCoreMap &_ZFP_ZFCoreStatisticDataMap(void) {
     static ZFCoreMap d;
     return d;
 }
 
-void invokeCountLog(ZF_IN const zfchar *key)
-{
+void invokeCountLog(ZF_IN const zfchar *key) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticDataMap();
     zfindex *count = m.get<zfindex *>(key);
-    if(count != zfnull)
-    {
+    if(count != zfnull) {
         ++(*count);
     }
-    else
-    {
+    else {
         m.set(key, ZFCorePointerForObject<zfindex *>(zfnew(zfindex, 1)));
     }
 }
-void invokeCountRemove(ZF_IN const zfchar *key)
-{
+void invokeCountRemove(ZF_IN const zfchar *key) {
     _ZFP_ZFCoreStatisticDataMap().remove(key);
 }
-void invokeCountRemoveAll(void)
-{
+void invokeCountRemoveAll(void) {
     _ZFP_ZFCoreStatisticDataMap().removeAll();
 }
-zfindex invokeCountGet(ZF_IN const zfchar *key)
-{
+zfindex invokeCountGet(ZF_IN const zfchar *key) {
     zfindex *count = _ZFP_ZFCoreStatisticDataMap().get<zfindex *>(key);
     return ((count != zfnull) ? *count : 0);
 }

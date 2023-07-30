@@ -297,14 +297,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFLambdaCapture_EMPTY(...)
 
 template<typename T_Type>
-zfclassNotPOD _ZFP_ZFLAMBDA_TR
-{
+zfclassNotPOD _ZFP_ZFLAMBDA_TR {
 public:
     typedef T_Type & T;
 };
 template<typename T_Type>
-zfclassNotPOD _ZFP_ZFLAMBDA_TR<T_Type const &>
-{
+zfclassNotPOD _ZFP_ZFLAMBDA_TR<T_Type const &> {
 public:
     typedef T_Type const & T;
 };
@@ -334,8 +332,7 @@ public:
     ) \
     ZFCallback name; \
     { \
-        zfclassNotPOD _ZFP_Lbd_D_##name \
-        { \
+        zfclassNotPOD _ZFP_Lbd_D_##name { \
         public: \
             CaptureExpandOrEmpty0(CaptureType0 capture0;) \
             CaptureExpandOrEmpty1(CaptureType1 capture1;) \
@@ -367,8 +364,7 @@ public:
             { \
             } \
         public: \
-            static void _ZFP_d(ZF_IN void *impl) \
-            { \
+            static void _ZFP_d(ZF_IN void *impl) { \
                 delete (_ZFP_Lbd_D_##name *)impl; \
             } \
         }; \
@@ -386,25 +382,22 @@ public:
             _ZFP_Lbd_D_##name::_ZFP_d, \
             zfnull); \
         name = _ZFP_Lbd_v; \
-        zfclassNotPOD _ZFP_Lbd_P_##name \
-        { \
+        zfclassNotPOD _ZFP_Lbd_P_##name { \
         public: \
-            _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) \
-            { \
+            _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) { \
                 cb._ZFP_ZFCallback_callbackLambdaInvoker((ZFFuncAddrType)_ZFP_Lbd_P_##name::_ZFP_i); \
             } \
         public: \
             static ReturnType _ZFP_i(_ZFP_Lbd_D_##name *_ZFP_d \
-                ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
-                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
-                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
-                ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
-                ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
-                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
-                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
-                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-                ) \
-            { \
+                    ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
+                    ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
+                    ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
+                    ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
+                    ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
+                    ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
+                    ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
+                    ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
+                    ) { \
                 CaptureExpandOrEmpty0(_ZFP_ZFLAMBDA_TR<CaptureType0>::T capture0 = _ZFP_d->capture0;) \
                 CaptureExpandOrEmpty1(_ZFP_ZFLAMBDA_TR<CaptureType1>::T capture1 = _ZFP_d->capture1;) \
                 CaptureExpandOrEmpty2(_ZFP_ZFLAMBDA_TR<CaptureType2>::T capture2 = _ZFP_d->capture2;) \
@@ -443,25 +436,22 @@ public:
             zfnull, \
             zfnull); \
         name = _ZFP_Lbd_v; \
-        zfclassNotPOD _ZFP_Lbd_P_##name \
-        { \
+        zfclassNotPOD _ZFP_Lbd_P_##name { \
         public: \
-            _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) \
-            { \
+            _ZFP_Lbd_P_##name(ZF_IN_OUT ZFCallback &cb) { \
                 cb._ZFP_ZFCallback_callbackLambdaInvoker((ZFFuncAddrType)_ZFP_Lbd_P_##name::_ZFP_i); \
             } \
         public: \
             static ReturnType _ZFP_i(void * \
-                ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
-                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
-                ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
-                ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
-                ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
-                ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
-                ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
-                ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-                ) \
-            { \
+                    ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
+                    ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
+                    ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
+                    ParamExpandOrEmpty3(ZFM_COMMA() ParamType3 param3) \
+                    ParamExpandOrEmpty4(ZFM_COMMA() ParamType4 param4) \
+                    ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
+                    ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
+                    ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
+                    ) { \
                 {
 
 ZF_NAMESPACE_GLOBAL_END

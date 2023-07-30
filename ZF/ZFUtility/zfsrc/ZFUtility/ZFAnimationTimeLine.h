@@ -26,8 +26,7 @@ zfclassFwd _ZFP_ZFAnimationTimeLinePrivate;
  *   <ZFAnimationTimeLine />
  * @endcode
  */
-zfclass ZFLIB_ZFUtility ZFAnimationTimeLine : zfextends ZFAnimation
-{
+zfclass ZFLIB_ZFUtility ZFAnimationTimeLine : zfextends ZFAnimation {
     ZFOBJECT_DECLARE(ZFAnimationTimeLine, ZFAnimation)
 
 public:
@@ -94,8 +93,7 @@ protected:
 
 protected:
     zfoverride
-    virtual zfbool serializableOnCheck(void)
-    {
+    virtual zfbool serializableOnCheck(void) {
         return this->classData() != ZFAnimationTimeLine::ClassData();
     }
 

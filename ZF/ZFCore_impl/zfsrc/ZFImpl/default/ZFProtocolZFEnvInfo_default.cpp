@@ -20,8 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_systemInfoImpl_default, ZFEnvInfo_systemInfo, ZFProtocolLevel::e_Default)
 public:
-    virtual void systemName(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void systemName(ZF_IN_OUT zfstring &ret) {
         #if ZF_ENV_sys_Qt
         {
             ret += QSysInfo::productType().toStdString().c_str();
@@ -46,8 +45,7 @@ public:
         }
         #endif
     }
-    virtual void systemVersion(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void systemVersion(ZF_IN_OUT zfstring &ret) {
         #if ZF_ENV_sys_Qt
         {
             ret += QSysInfo::productVersion().toStdString().c_str();
@@ -86,8 +84,7 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFEnvInfo_systemInfoImpl_default)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_frameworkInfoImpl_default, ZFEnvInfo_frameworkInfo, ZFProtocolLevel::e_Default)
 public:
-    virtual void frameworkName(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void frameworkName(ZF_IN_OUT zfstring &ret) {
         #if ZF_ENV_sys_Qt
         {
             ret += "Qt";
@@ -95,8 +92,7 @@ public:
         }
         #endif
     }
-    virtual void frameworkVersion(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void frameworkVersion(ZF_IN_OUT zfstring &ret) {
         #if ZF_ENV_sys_Qt
         {
             ret += QT_VERSION_STR;

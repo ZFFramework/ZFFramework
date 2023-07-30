@@ -27,30 +27,35 @@ zfclassFwd _ZFP_ZFAniBuilderPrivate;
  *       .aniStart(onStopOrOnInvalidCallback);
  * @endcode
  */
-zffinal zfclassLikePOD ZFAniBuilder
-{
+zffinal zfclassLikePOD ZFAniBuilder {
 public:
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &to(ZF_IN const zfchar *name,
-                           ZF_IN const zfchar *from,
-                           ZF_IN const zfchar *to,
-                           ZF_IN_OPT zftimet aniDuration = 0,
-                           ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull) const;
+    const ZFAniBuilder &to(
+            ZF_IN const zfchar *name
+            , ZF_IN const zfchar *from
+            , ZF_IN const zfchar *to
+            , ZF_IN_OPT zftimet aniDuration = 0
+            , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
+            ) const;
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &to(ZF_IN const zfchar *name,
-                           ZF_IN ZFObject *from,
-                           ZF_IN ZFObject *to,
-                           ZF_IN_OPT zftimet aniDuration = 0,
-                           ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull) const;
+    const ZFAniBuilder &to(
+            ZF_IN const zfchar *name
+            , ZF_IN ZFObject *from
+            , ZF_IN ZFObject *to
+            , ZF_IN_OPT zftimet aniDuration = 0
+            , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
+            ) const;
 
     /**
      * @brief see #ZFAniBuilder
      *
      * customAniCallback's param0 is a #v_zffloat holds the ani progress
      */
-    const ZFAniBuilder &customAni(ZF_IN const ZFListener &customAniCallback,
-                                  ZF_IN_OPT zftimet aniDuration = 0,
-                                  ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull) const;
+    const ZFAniBuilder &customAni(
+            ZF_IN const ZFListener &customAniCallback
+            , ZF_IN_OPT zftimet aniDuration = 0
+            , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
+            ) const;
 
 public:
     /** @brief see #ZFAniBuilder */

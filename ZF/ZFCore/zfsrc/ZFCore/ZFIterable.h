@@ -13,8 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief iterable, see #zfiterator
  */
-zfinterface ZFLIB_ZFCore ZFIterable : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFCore ZFIterable : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFIterable, ZFInterface)
 
 public:
@@ -58,8 +57,10 @@ public:
     /**
      * @brief set value at iter, see #zfiterator
      */
-    virtual void iterValue(ZF_IN_OUT zfiterator &it,
-                           ZF_IN ZFObject *value) zfpurevirtual;
+    virtual void iterValue(
+            ZF_IN_OUT zfiterator &it
+            , ZF_IN ZFObject *value
+            ) zfpurevirtual;
     /**
      * @brief remove value at iter, see #zfiterator
      */
@@ -77,16 +78,17 @@ public:
      * @brief add value before iter,
      *   see #zfiterator
      */
-    virtual void iterAdd(ZF_IN ZFObject *value,
-                         ZF_IN_OUT zfiterator &it) zfpurevirtual;
+    virtual void iterAdd(
+            ZF_IN ZFObject *value
+            , ZF_IN_OUT zfiterator &it
+            ) zfpurevirtual;
 };
 
 // ============================================================
 /**
  * @brief iterable that with key value pair, see #zfiterator
  */
-zfinterface ZFLIB_ZFCore ZFIterableKeyValue : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFCore ZFIterableKeyValue : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFIterableKeyValue, ZFIterable)
 
 public:
@@ -102,8 +104,10 @@ public:
      * for most key value container,
      * this is same as set key with value
      */
-    virtual void iterAdd(ZF_IN ZFObject *key,
-                         ZF_IN ZFObject *value) zfpurevirtual;
+    virtual void iterAdd(
+            ZF_IN ZFObject *key
+            , ZF_IN ZFObject *value
+            ) zfpurevirtual;
 };
 
 ZF_NAMESPACE_GLOBAL_END

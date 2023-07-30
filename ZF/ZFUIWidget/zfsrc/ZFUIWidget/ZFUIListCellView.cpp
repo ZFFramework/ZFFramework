@@ -5,8 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIListCellView)
 
-void ZFUIListCellView::objectOnInitFinish(void)
-{
+void ZFUIListCellView::objectOnInitFinish(void) {
     zfsuper::objectOnInitFinish();
 
     zffloat itemMargin = ZFUIGlobalStyle::DefaultStyle()->itemMargin();
@@ -24,33 +23,30 @@ void ZFUIListCellView::objectOnInitFinish(void)
     this->cellAccessoryContainer()->layoutParam()->layoutMargin(ZFUIMarginMake(0, itemMargin, itemMargin, itemMargin));
 }
 
-static void _ZFP_ZFUIListCellView_measureContent(ZF_IN ZFUIListCellView *view,
-                                                 ZF_IN const ZFUISize &sizeHint,
-                                                 ZF_OUT ZFUISize &cellIconSize,
-                                                 ZF_OUT ZFUISize &cellCenterSize,
-                                                 ZF_OUT ZFUISize &cellAccessorySize)
-{
+static void _ZFP_ZFUIListCellView_measureContent(
+        ZF_IN ZFUIListCellView *view
+        , ZF_IN const ZFUISize &sizeHint
+        , ZF_OUT ZFUISize &cellIconSize
+        , ZF_OUT ZFUISize &cellCenterSize
+        , ZF_OUT ZFUISize &cellAccessorySize
+        ) {
     view->cellIconContainer()->layoutMeasure(sizeHint, ZFUISizeParamWrapWrap());
     cellIconSize = view->cellIconContainer()->layoutMeasuredSize();
-    if(cellIconSize.width > 0)
-    {
+    if(cellIconSize.width > 0) {
         cellIconSize = ZFUISizeApplyMarginReversely(cellIconSize, view->cellIconContainer()->layoutParam()->layoutMargin());
     }
 
     view->cellAccessoryContainer()->layoutMeasure(sizeHint, ZFUISizeParamWrapWrap());
     cellAccessorySize = view->cellAccessoryContainer()->layoutMeasuredSize();
-    if(cellAccessorySize.width > 0)
-    {
+    if(cellAccessorySize.width > 0) {
         cellAccessorySize = ZFUISizeApplyMarginReversely(cellAccessorySize, view->cellAccessoryContainer()->layoutParam()->layoutMargin());
     }
 
     ZFUISize cellCenterSizeHint = sizeHint;
-    if(cellCenterSizeHint.width >= 0)
-    {
+    if(cellCenterSizeHint.width >= 0) {
         cellCenterSizeHint.width -= cellIconSize.width + cellAccessorySize.width;
         cellCenterSizeHint.width -= ZFUIMarginGetWidth(view->cellCenterContainer()->layoutParam()->layoutMargin());
-        if(cellCenterSizeHint.width < 0)
-        {
+        if(cellCenterSizeHint.width < 0) {
             cellCenterSizeHint.width = 0;
         }
     }
@@ -58,10 +54,11 @@ static void _ZFP_ZFUIListCellView_measureContent(ZF_IN ZFUIListCellView *view,
     cellCenterSize = view->cellCenterContainer()->layoutMeasuredSize();
     cellCenterSize.width += ZFUIMarginGetWidth(view->cellCenterContainer()->layoutParam()->layoutMargin());
 }
-void ZFUIListCellView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                       ZF_IN const ZFUISize &sizeHint,
-                                       ZF_IN const ZFUISizeParam &sizeParam)
-{
+void ZFUIListCellView::layoutOnMeasure(
+        ZF_OUT ZFUISize &ret
+        , ZF_IN const ZFUISize &sizeHint
+        , ZF_IN const ZFUISizeParam &sizeParam
+        ) {
     ZFUISize cellIconSize = ZFUISizeZero();
     ZFUISize cellCenterSize = ZFUISizeZero();
     ZFUISize cellAccessorySize = ZFUISizeZero();
@@ -69,8 +66,7 @@ void ZFUIListCellView::layoutOnMeasure(ZF_OUT ZFUISize &ret,
     ret.width = cellIconSize.width + cellCenterSize.width + cellAccessorySize.width;
     ret.height = zfmMax(zfmMax(cellIconSize.height, cellCenterSize.height), cellAccessorySize.height);
 }
-void ZFUIListCellView::internalViewOnLayout(ZF_IN const ZFUIRect &bounds)
-{
+void ZFUIListCellView::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     zfsuper::internalViewOnLayout(bounds);
 
     ZFUISize cellIconSize = ZFUISizeZero();
@@ -99,16 +95,14 @@ void ZFUIListCellView::internalViewOnLayout(ZF_IN const ZFUIRect &bounds)
         this->cellAccessoryContainer()->layoutMeasuredSize(),
         this->cellAccessoryContainer()->layoutParam()->layoutMargin()));
 }
-zfbool ZFUIListCellView::internalViewShouldLayout(ZF_IN ZFUIView *internalView)
-{
+zfbool ZFUIListCellView::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
     if(internalView == this->cellIconContainer()
-        || internalView == this->cellCenterContainer()
-        || internalView == this->cellAccessoryContainer())
-    {
+            || internalView == this->cellCenterContainer()
+            || internalView == this->cellAccessoryContainer()
+            ) {
         return zffalse;
     }
-    else
-    {
+    else {
         return zfsuper::internalViewShouldLayout(internalView);
     }
 }

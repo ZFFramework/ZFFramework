@@ -6,19 +6,16 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void)
-{
+ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void) {
     static ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> d;
     return d;
 }
-ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void)
-{
+ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void) {
     static ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> d;
     return d;
 }
 
-zfclassNotPOD _ZFP_GI_Data
-{
+zfclassNotPOD _ZFP_GI_Data {
 public:
     zfuint refCount;
     ZFCoreArrayPOD<zfbool *> ZFCoreLibDestroyFlag;
@@ -41,54 +38,44 @@ public:
     , destructor(zfnull)
     {
     }
-    ~_ZFP_GI_Data(void)
-    {
-        for(zfindex i = 0; i < this->ZFCoreLibDestroyFlag.count(); ++i)
-        {
+    ~_ZFP_GI_Data(void) {
+        for(zfindex i = 0; i < this->ZFCoreLibDestroyFlag.count(); ++i) {
             *(this->ZFCoreLibDestroyFlag[i]) = zftrue;
         }
-        if(this->instance != zfnull)
-        {
+        if(this->instance != zfnull) {
             this->destructor(this->instance);
         }
     }
 };
 
-static void _ZFP_GI_keyForName(ZF_OUT zfstring &key,
-                               ZF_IN const zfchar *name,
-                               ZF_IN ZFLevel level)
-{
+static void _ZFP_GI_keyForName(
+        ZF_OUT zfstring &key
+        , ZF_IN const zfchar *name
+        , ZF_IN ZFLevel level
+        ) {
     zfstringAppend(key, "%d_%s", (zfint)level, name);
 }
 
-static void _ZFP_GI_instanceInit(ZFCoreArrayPOD<_ZFP_GI_Data *> &list)
-{
-    if(!list.isEmpty())
-    {
+static void _ZFP_GI_instanceInit(ZFCoreArrayPOD<_ZFP_GI_Data *> &list) {
+    if(!list.isEmpty()) {
         // array may be changed during init step, copy it first
         ZFCoreArrayPOD<_ZFP_GI_Data *> tmp;
         tmp.copyFrom(list);
-        for(zfindex i = 0; i < tmp.count(); ++i)
-        {
+        for(zfindex i = 0; i < tmp.count(); ++i) {
             _ZFP_GI_Data *data = tmp.get(i);
-            if(data->instance == zfnull)
-            {
+            if(data->instance == zfnull) {
                 data->instance = data->constructor();
             }
         }
     }
 }
-static void _ZFP_GI_instanceDealloc(ZFCoreArrayPOD<_ZFP_GI_Data *> &list)
-{
+static void _ZFP_GI_instanceDealloc(ZFCoreArrayPOD<_ZFP_GI_Data *> &list) {
     zfbool hasDataToClean = zftrue;
-    do
-    {
+    do {
         hasDataToClean = zffalse;
-        for(zfindex i = list.count() - 1; i != zfindexMax(); --i)
-        {
+        for(zfindex i = list.count() - 1; i != zfindexMax(); --i) {
             _ZFP_GI_Data *data = list.get(i);
-            if(data->instance != zfnull)
-            {
+            if(data->instance != zfnull) {
                 hasDataToClean = zftrue;
                 void *tmp = data->instance;
                 data->instance = zfnull;
@@ -98,8 +85,7 @@ static void _ZFP_GI_instanceDealloc(ZFCoreArrayPOD<_ZFP_GI_Data *> &list)
     } while(hasDataToClean);
 }
 
-zfclassNotPOD _ZFP_GI_DataContainer
-{
+zfclassNotPOD _ZFP_GI_DataContainer {
 public:
     ZFFrameworkState state;
 
@@ -162,10 +148,8 @@ public:
     ZFCoreMap dataMapLevelZFFrameworkPostStatic; // _ZFP_GI_Data *
 
 public:
-    ZFCoreArrayPOD<_ZFP_GI_Data *> &dataListForLevel(ZF_IN ZFLevel level)
-    {
-        switch(level)
-        {
+    ZFCoreArrayPOD<_ZFP_GI_Data *> &dataListForLevel(ZF_IN ZFLevel level) {
+        switch(level) {
             case ZFLevelZFFrameworkStatic:
                 return this->dataLevelZFFrameworkStatic;
             case ZFLevelZFFrameworkEssential:
@@ -202,10 +186,8 @@ public:
                 return this->dataLevelAppLow;
         }
     }
-    ZFCoreMap &dataMapForLevel(ZF_IN ZFLevel level)
-    {
-        switch(level)
-        {
+    ZFCoreMap &dataMapForLevel(ZF_IN ZFLevel level) {
+        switch(level) {
             case ZFLevelZFFrameworkStatic:
                 return this->dataMapLevelZFFrameworkStatic;
             case ZFLevelZFFrameworkEssential:
@@ -280,33 +262,27 @@ public:
     {
     }
 };
-static _ZFP_GI_DataContainer &_ZFP_GI_dataContainerInstance_(void)
-{
+static _ZFP_GI_DataContainer &_ZFP_GI_dataContainerInstance_(void) {
     static _ZFP_GI_DataContainer _instance;
     return _instance;
 }
 #define _ZFP_GI_dataContainerInstance (_ZFP_GI_dataContainerInstance_())
 
-zfclassLikePOD _ZFP_ZFFrameworkAutoCleanupHolder
-{
+zfclassLikePOD _ZFP_ZFFrameworkAutoCleanupHolder {
 public:
-    ~_ZFP_ZFFrameworkAutoCleanupHolder(void)
-    {
+    ~_ZFP_ZFFrameworkAutoCleanupHolder(void) {
         ZFFrameworkCleanup();
     }
 };
-void ZFFrameworkInit(void)
-{
+void ZFFrameworkInit(void) {
     static _ZFP_ZFFrameworkAutoCleanupHolder _holder;
     zfbool mutexAvailable = ZFCoreMutexImplAvailable();
-    if(mutexAvailable)
-    {
+    if(mutexAvailable) {
         zfCoreMutexLock();
     }
 
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
-    if(d.state == ZFFrameworkStateNotAvailable)
-    {
+    if(d.state == ZFFrameworkStateNotAvailable) {
         d.state = ZFFrameworkStateInitProcessing;
 
         d.stateZFFrameworkStatic = ZFFrameworkStateInitProcessing;
@@ -371,13 +347,11 @@ void ZFFrameworkInit(void)
         d.state = ZFFrameworkStateAvailable;
 
         ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &m = ZFFrameworkInitFinishCallbacks;
-        for(zfindex i = 0; i < m.count(); ++i)
-        {
+        for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }
     }
-    else
-    {
+    else {
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkStatic);
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkEssential);
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkHigh);
@@ -396,21 +370,17 @@ void ZFFrameworkInit(void)
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostStatic);
     }
 
-    if(mutexAvailable)
-    {
+    if(mutexAvailable) {
         zfCoreMutexUnlock();
     }
 }
-void ZFFrameworkCleanup(void)
-{
+void ZFFrameworkCleanup(void) {
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
-    if(d.state == ZFFrameworkStateAvailable)
-    {
+    if(d.state == ZFFrameworkStateAvailable) {
         d.state = ZFFrameworkStateCleanupProcessing;
 
         ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &m = ZFFrameworkCleanupPrepareCallbacks;
-        for(zfindex i = 0; i < m.count(); ++i)
-        {
+        for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }
 
@@ -476,18 +446,14 @@ void ZFFrameworkCleanup(void)
     }
 }
 
-void ZFFrameworkAssertInit(void)
-{
+void ZFFrameworkAssertInit(void) {
     zfCoreAssertWithMessage(ZFFrameworkStateCheck() == ZFFrameworkStateAvailable, "ZFFramework hasn't been initialized");
 }
-ZFFrameworkState ZFFrameworkStateCheck(void)
-{
+ZFFrameworkState ZFFrameworkStateCheck(void) {
     return _ZFP_GI_dataContainerInstance.state;
 }
-ZFFrameworkState ZFFrameworkStateCheck(ZF_IN ZFLevel level)
-{
-    switch(level)
-    {
+ZFFrameworkState ZFFrameworkStateCheck(ZF_IN ZFLevel level) {
+    switch(level) {
         case ZFLevelZFFrameworkStatic:
             return _ZFP_GI_dataContainerInstance.stateZFFrameworkStatic;
         case ZFLevelZFFrameworkEssential:
@@ -526,14 +492,17 @@ ZFFrameworkState ZFFrameworkStateCheck(ZF_IN ZFLevel level)
 }
 
 // ============================================================
-static void **_ZFP_GI_instanceAccess(ZF_IN const zfchar *name,
-                                     ZF_IN ZFLevel level);
-static void _ZFP_GI_dataRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
-                                 ZF_IN const zfchar *name,
-                                 ZF_IN ZFLevel level,
-                                 ZF_IN _ZFP_GI_Constructor constructor,
-                                 ZF_IN _ZFP_GI_Destructor destructor)
-{
+static void **_ZFP_GI_instanceAccess(
+        ZF_IN const zfchar *name
+        , ZF_IN ZFLevel level
+        );
+static void _ZFP_GI_dataRegister(
+        ZF_IN zfbool *ZFCoreLibDestroyFlag
+        , ZF_IN const zfchar *name
+        , ZF_IN ZFLevel level
+        , ZF_IN _ZFP_GI_Constructor constructor
+        , ZF_IN _ZFP_GI_Destructor destructor
+        ) {
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
     ZFCoreArrayPOD<_ZFP_GI_Data *> &dataList = holder.dataListForLevel(level);
     ZFCoreMap &dataMap = holder.dataMapForLevel(level);
@@ -541,12 +510,10 @@ static void _ZFP_GI_dataRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
     _ZFP_GI_keyForName(key, name, level);
 
     _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(key.cString());
-    if(data != zfnull)
-    {
+    if(data != zfnull) {
         ++(data->refCount);
     }
-    else
-    {
+    else {
         data = zfnew(_ZFP_GI_Data);
         data->name = name;
         data->level = level;
@@ -558,8 +525,7 @@ static void _ZFP_GI_dataRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
     }
     data->ZFCoreLibDestroyFlag.add(ZFCoreLibDestroyFlag);
 
-    switch(ZFFrameworkStateCheck(level))
-    {
+    switch(ZFFrameworkStateCheck(level)) {
         case ZFFrameworkStateNotAvailable:
             // this is the normal routine
             break;
@@ -586,12 +552,12 @@ static void _ZFP_GI_dataRegister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
             return;
     }
 }
-static void _ZFP_GI_dataUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
-                                   ZF_IN const zfchar *name,
-                                   ZF_IN ZFLevel level)
-{
-    if(*ZFCoreLibDestroyFlag)
-    {
+static void _ZFP_GI_dataUnregister(
+        ZF_IN zfbool *ZFCoreLibDestroyFlag
+        , ZF_IN const zfchar *name
+        , ZF_IN ZFLevel level
+        ) {
+    if(*ZFCoreLibDestroyFlag) {
         return;
     }
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
@@ -601,20 +567,16 @@ static void _ZFP_GI_dataUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
     _ZFP_GI_keyForName(key, name, level);
 
     zfiterator it = dataMap.iterFind(key.cString());
-    if(!dataMap.iterValid(it))
-    {
+    if(!dataMap.iterValid(it)) {
         zfCoreCriticalShouldNotGoHere();
         return;
     }
     _ZFP_GI_Data *data = dataMap.iterValue<_ZFP_GI_Data *>(it);
     data->ZFCoreLibDestroyFlag.removeElement(ZFCoreLibDestroyFlag);
     --(data->refCount);
-    if(data->refCount == 0)
-    {
-        for(zfindex i = 0; i < dataList.count(); ++i)
-        {
-            if(dataList[i] == data)
-            {
+    if(data->refCount == 0) {
+        for(zfindex i = 0; i < dataList.count(); ++i) {
+            if(dataList[i] == data) {
                 dataList.remove(i);
                 break;
             }
@@ -624,14 +586,14 @@ static void _ZFP_GI_dataUnregister(ZF_IN zfbool *ZFCoreLibDestroyFlag,
 }
 
 static void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data);
-static void **_ZFP_GI_instanceAccess(ZF_IN const zfchar *name,
-                                     ZF_IN ZFLevel level)
-{
+static void **_ZFP_GI_instanceAccess(
+        ZF_IN const zfchar *name
+        , ZF_IN ZFLevel level
+        ) {
     static void *dummy = zfnull;
     zfCoreMutexLocker();
 
-    if(ZFFrameworkStateCheck(level) == ZFFrameworkStateCleanupProcessing)
-    {
+    if(ZFFrameworkStateCheck(level) == ZFFrameworkStateCleanupProcessing) {
         zfCoreCriticalMessageTrim(
             "try to reenter global initializer during ZFFrameworkCleanup, name: %s, "
             "typically due to invalid global initializer dependency",
@@ -645,14 +607,12 @@ static void **_ZFP_GI_instanceAccess(ZF_IN const zfchar *name,
     _ZFP_GI_keyForName(key, name, level);
 
     _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(key.cString());
-    if(data == zfnull)
-    {
+    if(data == zfnull) {
         zfCoreCriticalShouldNotGoHere();
         return &dummy;
     }
 
-    if(data->instance == zfnull)
-    {
+    if(data->instance == zfnull) {
         data->instance = data->constructor();
         _ZFP_GI_notifyInstanceCreated(data);
     }
@@ -660,21 +620,16 @@ static void **_ZFP_GI_instanceAccess(ZF_IN const zfchar *name,
     return &(data->instance);
 }
 
-static const _ZFP_GI_Data *_ZFP_GI_dependencyCheck(ZFCoreArrayPOD<_ZFP_GI_Data *> &data)
-{
-    for(zfindex i = 0; i < data.count(); ++i)
-    {
-        if(data[i]->instance == zfnull)
-        {
+static const _ZFP_GI_Data *_ZFP_GI_dependencyCheck(ZFCoreArrayPOD<_ZFP_GI_Data *> &data) {
+    for(zfindex i = 0; i < data.count(); ++i) {
+        if(data[i]->instance == zfnull) {
             return data[i];
         }
     }
     return zfnull;
 }
-void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data)
-{
-    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkStatic) == ZFFrameworkStateNotAvailable)
-    {
+void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data) {
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkStatic) == ZFFrameworkStateNotAvailable) {
         zfCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s accessed before ZFFrameworkInit"
             , data->name.cString());
@@ -684,58 +639,43 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data)
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
     // check higher level initialized?
     const _ZFP_GI_Data *dependency = zfnull;
-    do
-    {
-        if(data->level > ZFLevelZFFrameworkStatic)
-        {
+    do {
+        if(data->level > ZFLevelZFFrameworkStatic) {
             if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkStatic)) != zfnull) {break;}
-            if(data->level > ZFLevelZFFrameworkEssential)
-            {
+            if(data->level > ZFLevelZFFrameworkEssential) {
                 if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkEssential)) != zfnull) {break;}
-                if(data->level > ZFLevelZFFrameworkHigh)
-                {
+                if(data->level > ZFLevelZFFrameworkHigh) {
                     if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkHigh)) != zfnull) {break;}
-                    if(data->level > ZFLevelZFFrameworkNormal)
-                    {
+                    if(data->level > ZFLevelZFFrameworkNormal) {
                         if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkNormal)) != zfnull) {break;}
-                        if(data->level > ZFLevelZFFrameworkLow)
-                        {
+                        if(data->level > ZFLevelZFFrameworkLow) {
                             if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkLow)) != zfnull) {break;}
                         }
                     }
                 }
             }
         }
-        if(data->level > ZFLevelAppEssential)
-        {
+        if(data->level > ZFLevelAppEssential) {
             if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelAppEssential)) != zfnull) {break;}
-            if(data->level > ZFLevelAppHigh)
-            {
+            if(data->level > ZFLevelAppHigh) {
                 if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelAppHigh)) != zfnull) {break;}
-                if(data->level > ZFLevelAppNormal)
-                {
+                if(data->level > ZFLevelAppNormal) {
                     if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelAppNormal)) != zfnull) {break;}
-                    if(data->level > ZFLevelAppLow)
-                    {
+                    if(data->level > ZFLevelAppLow) {
                         if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelAppLow)) != zfnull) {break;}
                     }
                 }
             }
         }
-        if(data->level > ZFLevelZFFrameworkPostLow)
-        {
+        if(data->level > ZFLevelZFFrameworkPostLow) {
             if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkPostLow)) != zfnull) {break;}
-            if(data->level > ZFLevelZFFrameworkPostNormal)
-            {
+            if(data->level > ZFLevelZFFrameworkPostNormal) {
                 if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkPostNormal)) != zfnull) {break;}
-                if(data->level > ZFLevelZFFrameworkPostHigh)
-                {
+                if(data->level > ZFLevelZFFrameworkPostHigh) {
                     if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkPostHigh)) != zfnull) {break;}
-                    if(data->level > ZFLevelZFFrameworkPostEssential)
-                    {
+                    if(data->level > ZFLevelZFFrameworkPostEssential) {
                         if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkPostEssential)) != zfnull) {break;}
-                        if(data->level > ZFLevelZFFrameworkPostStatic)
-                        {
+                        if(data->level > ZFLevelZFFrameworkPostStatic) {
                             if((dependency = _ZFP_GI_dependencyCheck(d.dataLevelZFFrameworkPostStatic)) != zfnull) {break;}
                         }
                     }
@@ -743,8 +683,7 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data)
             }
         }
     } while(zffalse);
-    if(dependency != zfnull)
-    {
+    if(dependency != zfnull) {
         // dependency hasn't initialized
         zfCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s depends on or level lower than %s"
@@ -758,33 +697,31 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data)
     ZFCoreArrayPOD<_ZFP_GI_Data *> &dataList = d.dataListForLevel(data->level);
     zfindex prevNull = zfindexMax();
     zfindex self = 0;
-    for(zfindex i = 0; i < dataList.count(); ++i)
-    {
-        if(dataList[i] == data)
-        {
+    for(zfindex i = 0; i < dataList.count(); ++i) {
+        if(dataList[i] == data) {
             self = i;
         }
-        else if(prevNull == zfindexMax() && dataList[i]->instance == zfnull)
-        {
+        else if(prevNull == zfindexMax() && dataList[i]->instance == zfnull) {
             prevNull = i;
         }
     }
-    if(prevNull < self)
-    {
+    if(prevNull < self) {
         dataList.move(self, prevNull);
     }
 }
 
 // ============================================================
-zfclassNotPOD _ZFP_GI_RegPrivate
-{
+zfclassNotPOD _ZFP_GI_RegPrivate {
 public:
     zfbool ZFCoreLibDestroyFlag;
     const zfchar *name;
     ZFLevel level;
     void **instance;
 public:
-    _ZFP_GI_RegPrivate(ZF_IN const zfchar *name, ZF_IN ZFLevel level)
+    _ZFP_GI_RegPrivate(
+            ZF_IN const zfchar *name
+            , ZF_IN ZFLevel level
+            )
     : ZFCoreLibDestroyFlag(zffalse)
     , name(name)
     , level(level)
@@ -792,23 +729,22 @@ public:
     {
     }
 };
-_ZFP_GI_Reg::_ZFP_GI_Reg(ZF_IN const zfchar *name,
-                         ZF_IN ZFLevel level,
-                         ZF_IN _ZFP_GI_Constructor constructor,
-                         ZF_IN _ZFP_GI_Destructor destructor)
+_ZFP_GI_Reg::_ZFP_GI_Reg(
+        ZF_IN const zfchar *name
+        , ZF_IN ZFLevel level
+        , ZF_IN _ZFP_GI_Constructor constructor
+        , ZF_IN _ZFP_GI_Destructor destructor
+        )
 : d(zfnew(_ZFP_GI_RegPrivate, name, level))
 {
     _ZFP_GI_dataRegister(&(d->ZFCoreLibDestroyFlag), name, level, constructor, destructor);
 }
-_ZFP_GI_Reg::~_ZFP_GI_Reg(void)
-{
+_ZFP_GI_Reg::~_ZFP_GI_Reg(void) {
     _ZFP_GI_dataUnregister(&(d->ZFCoreLibDestroyFlag), d->name, d->level);
     zfdelete(d);
 }
-void *_ZFP_GI_Reg::instanceAccess(void)
-{
-    if(d->instance == zfnull || *(d->instance) == zfnull)
-    {
+void *_ZFP_GI_Reg::instanceAccess(void) {
+    if(d->instance == zfnull || *(d->instance) == zfnull) {
         d->instance = _ZFP_GI_instanceAccess(d->name, d->level);
     }
     return *(d->instance);

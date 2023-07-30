@@ -69,8 +69,7 @@ zfclassFwd _ZFP_ZFSerializableDataPrivate;
  * this is a data structure similar to xml,
  * designed to reduce xml dependency
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFSerializableData
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFSerializableData {
 public:
     /** @cond ZFPrivateDoc */
     ZFSerializableData(ZF_IN _ZFP_ZFSerializableDataPrivate *d);
@@ -105,8 +104,7 @@ public:
     /**
      * @brief return a copy of this data
      */
-    inline ZFSerializableData copy(void) const
-    {
+    inline ZFSerializableData copy(void) const {
         ZFSerializableData ret;
         ret.copyFrom(*this);
         return ret;
@@ -127,7 +125,10 @@ public:
     /** @brief see #pathInfo */
     zffinal void pathInfo(ZF_IN const ZFPathInfo *pathInfo);
     /** @brief see #pathInfo */
-    zffinal void pathInfo(ZF_IN const zfchar *pathType, ZF_IN const zfchar *pathData);
+    zffinal void pathInfo(
+            ZF_IN const zfchar *pathType
+            , ZF_IN const zfchar *pathData
+            );
     /**
      * @brief recursively check path info from child to parent
      */
@@ -153,33 +154,27 @@ public:
     // other types
 public:
     /** @brief see #ZFSerializable, same as set value of attribute "prop" */
-    inline void propertyName(ZF_IN const zfchar *name)
-    {
+    inline void propertyName(ZF_IN const zfchar *name) {
         this->attr(ZFSerializableKeyword_prop, name);
     }
     /** @brief see #propertyName */
-    inline const zfchar *propertyName(void) const
-    {
+    inline const zfchar *propertyName(void) const {
         return this->attr(ZFSerializableKeyword_prop);
     }
     /** @brief see #ZFSerializable, same as set value of attribute "value" */
-    inline void propertyValue(ZF_IN const zfchar *value)
-    {
+    inline void propertyValue(ZF_IN const zfchar *value) {
         this->attr(ZFSerializableKeyword_value, value);
     }
     /** @brief see #propertyValue */
-    inline const zfchar *propertyValue(void) const
-    {
+    inline const zfchar *propertyValue(void) const {
         return this->attr(ZFSerializableKeyword_value);
     }
     /** @brief see #ZFSerializable, same as set value of attribute "category" */
-    inline void category(ZF_IN const zfchar *category)
-    {
+    inline void category(ZF_IN const zfchar *category) {
         this->attr(ZFSerializableKeyword_category, category);
     }
     /** @brief see #category */
-    inline const zfchar *category(void) const
-    {
+    inline const zfchar *category(void) const {
         return this->attr(ZFSerializableKeyword_category);
     }
 
@@ -197,21 +192,24 @@ public:
      *
      * typically used by impl to achieve additional features
      */
-    zffinal void serializableDataTag(ZF_IN const zfchar *key,
-                                     ZF_IN ZFObject *tag);
+    zffinal void serializableDataTag(
+            ZF_IN const zfchar *key
+            , ZF_IN ZFObject *tag
+            );
     /**
      * @brief see #serializableDataTag
      */
     zffinal ZFObject *serializableDataTag(ZF_IN const zfchar *key) const;
     /** @brief see #serializableDataTag */
     template<typename T_ZFObject>
-    T_ZFObject serializableDataTag(ZF_IN const zfchar *key) const
-    {
+    T_ZFObject serializableDataTag(ZF_IN const zfchar *key) const {
         return ZFCastZFObjectUnchecked(T_ZFObject, this->serializableDataTag(key));
     }
     /** @brief see #serializableDataTag */
-    zffinal void serializableDataTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey,
-                                                   ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue) const;
+    zffinal void serializableDataTagGetAllKeyValue(
+            ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+            , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+            ) const;
     /**
      * @brief remove tag, same as set tag to null
      */
@@ -239,8 +237,10 @@ public:
      * note that order of attributes is not ensured
      * after you add, remove or modify attributes
      */
-    zffinal void attr(ZF_IN const zfchar *name,
-                      ZF_IN const zfchar *value);
+    zffinal void attr(
+            ZF_IN const zfchar *name
+            , ZF_IN const zfchar *value
+            );
     /** @brief see #attr */
     zffinal const zfchar *attr(ZF_IN const zfchar *name) const;
 
@@ -271,8 +271,10 @@ public:
     zffinal const zfchar *attrIterValue(ZF_IN const zfiterator &it) const;
 
     /** @brief see #zfiterator */
-    zffinal void attrIterValue(ZF_IN_OUT zfiterator &it,
-                               ZF_IN const zfchar *value);
+    zffinal void attrIterValue(
+            ZF_IN_OUT zfiterator &it
+            , ZF_IN const zfchar *value
+            );
     /** @brief see #zfiterator */
     zffinal void attrIterRemove(ZF_IN_OUT zfiterator &it);
 
@@ -297,14 +299,18 @@ public:
      *
      * note this method won't check duplicate data with same name
      */
-    zffinal void childAdd(ZF_IN const ZFSerializableData &element,
-                          ZF_IN zfindex atIndex);
+    zffinal void childAdd(
+            ZF_IN const ZFSerializableData &element
+            , ZF_IN zfindex atIndex
+            );
 
     /**
      * @brief replace existing element at index or assert fail if index out of range
      */
-    zffinal void childReplace(ZF_IN zfindex index,
-                              ZF_IN const ZFSerializableData &element);
+    zffinal void childReplace(
+            ZF_IN zfindex index
+            , ZF_IN const ZFSerializableData &element
+            );
 
     /**
      * @brief find element with name or zfindexMax() if not found
@@ -356,58 +362,51 @@ public:
     zffinal void resolveAttributeUnmark(ZF_IN const zfchar *name) const;
 
     /** @brief see #resolved */
-    zffinal zfbool resolvedPropertyName(void) const
-    {
+    zffinal zfbool resolvedPropertyName(void) const {
         return this->resolvedAttribute(ZFSerializableKeyword_prop);
     }
     /** @brief see #resolved */
-    zffinal void resolvePropertyNameMark(void) const
-    {
+    zffinal void resolvePropertyNameMark(void) const {
         this->resolveAttributeMark(ZFSerializableKeyword_prop);
     }
     /** @brief see #resolved */
-    zffinal void resolvePropertyNameUnmark(void) const
-    {
+    zffinal void resolvePropertyNameUnmark(void) const {
         this->resolveAttributeUnmark(ZFSerializableKeyword_prop);
     }
 
     /** @brief see #resolved */
-    zffinal zfbool resolvedPropertyValue(void) const
-    {
+    zffinal zfbool resolvedPropertyValue(void) const {
         return this->resolvedAttribute(ZFSerializableKeyword_value);
     }
     /** @brief see #resolved */
-    zffinal void resolvePropertyValueMark(void) const
-    {
+    zffinal void resolvePropertyValueMark(void) const {
         this->resolveAttributeMark(ZFSerializableKeyword_value);
     }
     /** @brief see #resolved */
-    zffinal void resolvePropertyValueUnmark(void) const
-    {
+    zffinal void resolvePropertyValueUnmark(void) const {
         this->resolveAttributeUnmark(ZFSerializableKeyword_value);
     }
 
     /** @brief see #resolved */
-    zffinal zfbool resolvedCategory(void) const
-    {
+    zffinal zfbool resolvedCategory(void) const {
         return this->resolvedAttribute(ZFSerializableKeyword_category);
     }
     /** @brief see #resolved */
-    zffinal void resolveCategoryMark(void) const
-    {
+    zffinal void resolveCategoryMark(void) const {
         this->resolveAttributeMark(ZFSerializableKeyword_category);
     }
     /** @brief see #resolved */
-    zffinal void resolveCategoryUnmark(void) const
-    {
+    zffinal void resolveCategoryUnmark(void) const {
         this->resolveAttributeUnmark(ZFSerializableKeyword_category);
     }
 
     /**
      * @brief see #resolved, check whether self and all attribute and child element resolved
      */
-    zffinal zfbool resolvedAll(ZF_OUT_OPT const ZFSerializableData **firstNotResolvedElement = zfnull,
-                               ZF_OUT_OPT zfstring *firstNotResolvedAttribute = zfnull) const;
+    zffinal zfbool resolvedAll(
+            ZF_OUT_OPT const ZFSerializableData **firstNotResolvedElement = zfnull
+            , ZF_OUT_OPT zfstring *firstNotResolvedAttribute = zfnull
+            ) const;
     /**
      * @brief see #resolved, mark self and all attribute and child element
      */
@@ -433,8 +432,7 @@ public:
     /**
      * @brief get a short info
      */
-    zffinal zfstring objectInfo(void) const
-    {
+    zffinal zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;

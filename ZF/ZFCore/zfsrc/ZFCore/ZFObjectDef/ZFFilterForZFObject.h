@@ -15,8 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief object filter compared by #ZFObject::objectCompare
  */
-zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFObject : zfextends ZFFilterBasic<ZFObject *>
-{
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFObject : zfextends ZFFilterBasic<ZFObject *> {
     ZFFILTER_DECLARE(ZFFilterForZFObject, ZFFilterBasic<ZFObject *>)
 
 public:
@@ -47,13 +46,17 @@ public:
 protected:
     /** @cond ZFPrivateDoc */ // ZFTAG_DOXYGEN_BUG: can't auto detect template specialization
     zfoverride
-    virtual void filterOnStore(ZF_IN_OUT ZFObject * &to,
-                               ZF_IN ZFObject * const &from) const;
+    virtual void filterOnStore(
+            ZF_IN_OUT ZFObject * &to
+            , ZF_IN ZFObject * const &from
+            ) const;
     zfoverride
     virtual void filterOnRemove(ZF_IN_OUT ZFObject * &to) const;
     zfoverride
-    virtual zfbool filterOnCheckEqual(ZF_IN ZFObject * const &e1,
-                                      ZF_IN ZFObject * const &e2) const;
+    virtual zfbool filterOnCheckEqual(
+            ZF_IN ZFObject * const &e1
+            , ZF_IN ZFObject * const &e2
+            ) const;
     zfoverride
     virtual zfbool filterOnCheckActive(ZF_IN ZFObject * const &e) const;
     /** @endcond */

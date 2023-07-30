@@ -4,15 +4,13 @@
  * with ZFCallback available,
  * it's easy to use observer mechanism
  * @code
- *   zfclass MyObject : zfextends ZFObject
- *   {
+ *   zfclass MyObject : zfextends ZFObject {
  *       ZFOBJECT_DECLARE(MyObject, ZFObject)
  *
  *       ZFOBSERVER_EVENT(MyEvent)
  *
  *   public:
- *       void test(void)
- *       {
+ *       void test(void) {
  *           zfblockedAlloc(ZFObject, myParam0);
  *           zfblockedAlloc(ZFObject, myParam1);
  *           this->observerNotify(
@@ -21,16 +19,17 @@
  *               myParam1); // param1
  *       }
  *   };
- *   static void testListener1(ZF_IN const ZFArgs &zfargs)
- *   {
+ *   static void testListener1(ZF_IN const ZFArgs &zfargs) {
  *       zfLog()
  *           << zfargs.sender() // should be MyObject
  *           << zfargs.param0() // should be myParam0 passed from observerNotify
  *           << zfargs.param1() // should be myParam1 passed from observerNotify
  *           ;
  *   }
- *   static void testListener2(ZF_IN const ZFArgs &zfargs, ZF_IN v_zfstring *myUserData)
- *   {
+ *   static void testListener2(
+ *           ZF_IN const ZFArgs &zfargs
+ *           , ZF_IN v_zfstring *myUserData
+ *           ) {
  *       zfLog()
  *           << zfargs.sender() // should be MyObject
  *           << zfargs.param0() // should be myParam0 passed from observerNotify

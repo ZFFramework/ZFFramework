@@ -23,8 +23,10 @@ public:
     /**
      * @brief save image to output as binary data
      */
-    virtual zfbool nativeImageToOutput(ZF_IN void *nativeImage,
-                                       ZF_OUT const ZFOutput &outputCallback) zfpurevirtual;
+    virtual zfbool nativeImageToOutput(
+            ZF_IN void *nativeImage
+            , ZF_OUT const ZFOutput &outputCallback
+            ) zfpurevirtual;
 
     /**
      * @brief copy the nativeImage and return the copied one,
@@ -78,8 +80,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchPos)
 /**
  * @brief see #ZFUIImageImplNinePatchCalc
  */
-zfclassPOD ZFLIB_ZFUIKit ZFUIImageImplNinePatchDrawData
-{
+zfclassPOD ZFLIB_ZFUIKit ZFUIImageImplNinePatchDrawData {
 public:
     ZFUIImageImplNinePatchPosEnum position; /**< @brief position of the nine patch piece */
     ZFUIRect src; /**< @brief src rect to draw bitmap from, ensured valid */
@@ -97,10 +98,12 @@ ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFUIKit, ZFUIImageImplNinePatchDrawData)
  * to supply the buf
  * @note all size use raw pixel as size unit
  */
-extern ZFLIB_ZFUIKit zfindex ZFUIImageImplNinePatchCalc(ZF_OUT ZFUIImageImplNinePatchDrawData *outBuf,
-                                                        ZF_IN const ZFUISize &srcSize,
-                                                        ZF_IN const ZFUIMargin &srcNinePatch,
-                                                        ZF_IN const ZFUISize &dstSize);
+extern ZFLIB_ZFUIKit zfindex ZFUIImageImplNinePatchCalc(
+        ZF_OUT ZFUIImageImplNinePatchDrawData *outBuf
+        , ZF_IN const ZFUISize &srcSize
+        , ZF_IN const ZFUIMargin &srcNinePatch
+        , ZF_IN const ZFUISize &dstSize
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFUIImage_h_

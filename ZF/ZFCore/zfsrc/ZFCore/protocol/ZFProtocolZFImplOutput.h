@@ -28,7 +28,10 @@ public:
     /**
      * @brief output callback for ZFLog
      */
-    virtual void outputLog(ZF_IN const zfchar *s, ZF_IN_OPT zfindex count = zfindexMax()) zfpurevirtual;
+    virtual void outputLog(
+            ZF_IN const zfchar *s
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFImplOutput)
 
 ZF_NAMESPACE_GLOBAL_END

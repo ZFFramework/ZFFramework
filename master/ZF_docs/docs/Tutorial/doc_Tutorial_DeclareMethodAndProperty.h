@@ -4,13 +4,11 @@
  * aside from normal method of C++ world,
  * ZFFramework supplys enhanced method and property logic:
  * @code
- *   zfclass MyObject : zfextends ZFObject
- *   {
+ *   zfclass MyObject : zfextends ZFObject {
  *       ZFOBJECT_DECLARE(MyObject)
  *
  *       // declare method
- *       ZFMETHOD_INLINE_0(void, myMethod)
- *       {
+ *       ZFMETHOD_INLINE_0(void, myMethod) {
  *           // method contents here
  *       }
  *

@@ -18,21 +18,27 @@ public:
     /**
      * @brief see #zfstringToUTF8
      */
-    virtual zfbool toUTF8(ZF_OUT zfstring &result,
-                          ZF_IN const void *s,
-                          ZF_IN ZFStringEncodingEnum srcEncoding) zfpurevirtual;
+    virtual zfbool toUTF8(
+            ZF_OUT zfstring &result
+            , ZF_IN const void *s
+            , ZF_IN ZFStringEncodingEnum srcEncoding
+            ) zfpurevirtual;
     /**
      * @brief see #zfstringToUTF16
      */
-    virtual zfbool toUTF16(ZF_OUT zfstringW &result,
-                           ZF_IN const void *s,
-                           ZF_IN ZFStringEncodingEnum srcEncoding) zfpurevirtual;
+    virtual zfbool toUTF16(
+            ZF_OUT zfstringW &result
+            , ZF_IN const void *s
+            , ZF_IN ZFStringEncodingEnum srcEncoding
+            ) zfpurevirtual;
     /**
      * @brief see #zfstringToUTF16BE
      */
-    virtual zfbool toUTF16BE(ZF_OUT zfstringW &result,
-                             ZF_IN const void *s,
-                             ZF_IN ZFStringEncodingEnum srcEncoding) zfpurevirtual;
+    virtual zfbool toUTF16BE(
+            ZF_OUT zfstringW &result
+            , ZF_IN const void *s
+            , ZF_IN ZFStringEncodingEnum srcEncoding
+            ) zfpurevirtual;
 
     /**
      * @brief see #zfstringWordCountOfUTF8

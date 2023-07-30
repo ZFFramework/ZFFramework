@@ -20,8 +20,7 @@ zfclassFwd _ZFP_ZFThreadPrivate;
  *
  * for app level code, it's recommended to use #zfasync since it may contain thread pool logic
  */
-zfclass ZFLIB_ZFCore ZFThread : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFThread : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFThread, ZFObject)
 
 public:
@@ -80,8 +79,9 @@ public:
      *
      * it's safe to unregister in different thread using token
      */
-    ZFMETHOD_DECLARE_STATIC_1(void, nativeThreadUnregister,
-                              ZFMP_IN(void *, token))
+    ZFMETHOD_DECLARE_STATIC_1(void, nativeThreadUnregister
+            , ZFMP_IN(void *, token)
+            )
 
 public:
     /**
@@ -116,8 +116,9 @@ public:
      * @brief make current thread sleep for miliSecs,
      *   note this method may be not accurate
      */
-    ZFMETHOD_DECLARE_STATIC_1(void, sleep,
-                              ZFMP_IN(zftimet, miliSecs))
+    ZFMETHOD_DECLARE_STATIC_1(void, sleep
+            , ZFMP_IN(zftimet, miliSecs)
+            )
 
     /**
      * @brief util to run callback in specified thread,
@@ -127,9 +128,10 @@ public:
      * return the actual thread that added the task,
      * you may use #taskQueueRemove to remove the task
      */
-    ZFMETHOD_DECLARE_STATIC_2(ZFThread *, executeInThread,
-                              ZFMP_IN(ZFThread *, thread),
-                              ZFMP_IN(const ZFListener &, callback))
+    ZFMETHOD_DECLARE_STATIC_2(ZFThread *, executeInThread
+            , ZFMP_IN(ZFThread *, thread)
+            , ZFMP_IN(const ZFListener &, callback)
+            )
 
     /**
      * @brief util to run callback in current thread's #taskQueueAdd,
@@ -138,8 +140,9 @@ public:
      * return the actual thread that added the task,
      * you may use #taskQueueRemove to remove the task
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFThread *, post,
-                              ZFMP_IN(const ZFListener &, callback))
+    ZFMETHOD_DECLARE_STATIC_1(ZFThread *, post
+            , ZFMP_IN(const ZFListener &, callback)
+            )
 
     // ============================================================
     // thread instance method
@@ -173,9 +176,10 @@ public:
     /**
      * @brief start thread, do nothing if already started
      */
-    ZFMETHOD_DECLARE_2(void, threadStart,
-                       ZFMP_IN_OPT(ZFObject *, param0, zfnull),
-                       ZFMP_IN_OPT(ZFObject *, param1, zfnull))
+    ZFMETHOD_DECLARE_2(void, threadStart
+            , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
+            , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
+            )
     /**
      * @brief return true if start is called and hasn't been stopped or end
      */
@@ -214,8 +218,9 @@ public:
      * @return true if wait success or thread isn't running\n
      *         false if wait timeout or error
      */
-    ZFMETHOD_DECLARE_1(zfbool, threadWait,
-                       ZFMP_IN(zftimet, miliSecs))
+    ZFMETHOD_DECLARE_1(zfbool, threadWait
+            , ZFMP_IN(zftimet, miliSecs)
+            )
 
     /**
      * @brief return true if current thread is main thread
@@ -272,11 +277,13 @@ public:
     /** @brief see #taskQueueInit */
     ZFMETHOD_DECLARE_0(zfindex, taskQueueCount)
     /** @brief see #taskQueueInit */
-    ZFMETHOD_DECLARE_1(void, taskQueueAdd,
-                       ZFMP_IN(const ZFListener &, task))
+    ZFMETHOD_DECLARE_1(void, taskQueueAdd
+            , ZFMP_IN(const ZFListener &, task)
+            )
     /** @brief see #taskQueueRemove */
-    ZFMETHOD_DECLARE_1(void, taskQueueRemove,
-                       ZFMP_IN(const ZFListener &, task))
+    ZFMETHOD_DECLARE_1(void, taskQueueRemove
+            , ZFMP_IN(const ZFListener &, task)
+            )
     /** @brief try if any task add by #taskQueueAdd is running */
     ZFMETHOD_DECLARE_0(zfbool, taskQueueRunning)
 
@@ -286,33 +293,29 @@ protected:
      *
      * note: called before #threadRunnable
      */
-    ZFMETHOD_DECLARE_PROTECTED_1(void, threadOnRun,
-                                 ZFMP_IN(const ZFArgs &, zfargs))
+    ZFMETHOD_DECLARE_PROTECTED_1(void, threadOnRun
+            , ZFMP_IN(const ZFArgs &, zfargs)
+            )
 
 protected:
     /** @brief see #EventThreadOnRegister */
-    virtual inline void threadOnRegister(void)
-    {
+    virtual inline void threadOnRegister(void) {
         this->observerNotify(ZFThread::EventThreadOnRegister());
     }
     /** @brief see #EventThreadOnUnregister */
-    virtual inline void threadOnUnregister(void)
-    {
+    virtual inline void threadOnUnregister(void) {
         this->observerNotify(ZFThread::EventThreadOnUnregister());
     }
     /** @brief see #EventThreadOnStart */
-    virtual inline void threadOnStart(ZF_IN const ZFArgs &zfargs)
-    {
+    virtual inline void threadOnStart(ZF_IN const ZFArgs &zfargs) {
         this->observerNotify(ZFThread::EventThreadOnStart(), zfargs.param0(), zfargs.param1());
     }
     /** @brief see #EventThreadOnStop */
-    virtual inline void threadOnStop(ZF_IN const ZFArgs &zfargs)
-    {
+    virtual inline void threadOnStop(ZF_IN const ZFArgs &zfargs) {
         this->observerNotify(ZFThread::EventThreadOnStop(), zfargs.param0(), zfargs.param1());
     }
     /** @brief see #EventThreadTaskQueueOnFinish */
-    virtual inline void ThreadTaskQueueOnFinish(void)
-    {
+    virtual inline void ThreadTaskQueueOnFinish(void) {
         this->observerNotify(ZFThread::EventThreadTaskQueueOnFinish());
     }
 

@@ -74,8 +74,7 @@ zfclassFwd ZFUIPageManager;
  * -  alloc a ZFUIPage, #ZFObject::observerAdd to #EventPageOnCreate,
  *   and perform additional page create steps
  */
-zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIPage, ZFObject)
 
     // ============================================================
@@ -151,14 +150,12 @@ public:
     // page manager
 public:
     /** @brief owner page manager */
-    virtual ZFUIPageManager *pageManager(void)
-    {
+    virtual ZFUIPageManager *pageManager(void) {
         return this->_ZFP_ZFUIPage_pageManager;
     }
     /** @brief owner page manager */
     template<typename T_ZFUIPageManager>
-    T_ZFUIPageManager pageManager(void)
-    {
+    T_ZFUIPageManager pageManager(void) {
         return ZFCastZFObjectUnchecked(T_ZFUIPageManager, this->pageManager());
     }
 
@@ -199,8 +196,7 @@ public:
     // page life cycle
 protected:
     /** @brief see #ZFUIPage */
-    virtual void pageOnCreate(void)
-    {
+    virtual void pageOnCreate(void) {
         this->_ZFP_ZFUIPage_pageCreated = zftrue;
         zfautoObjectT<ZFUIView *> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
         this->_ZFP_ZFUIPage_pageView = pageView;
@@ -208,18 +204,15 @@ protected:
         zfRetain(this->_ZFP_ZFUIPage_pageView);
     }
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnResume(ZF_IN ZFUIPageResumeReasonEnum reason)
-    {
+    virtual inline void pageOnResume(ZF_IN ZFUIPageResumeReasonEnum reason) {
         this->_ZFP_ZFUIPage_pageResumed = zftrue;
     }
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnPause(ZF_IN ZFUIPagePauseReasonEnum reason)
-    {
+    virtual inline void pageOnPause(ZF_IN ZFUIPagePauseReasonEnum reason) {
         this->_ZFP_ZFUIPage_pageResumed = zffalse;
     }
     /** @brief see #ZFUIPage */
-    virtual inline void pageOnDestroy(void)
-    {
+    virtual inline void pageOnDestroy(void) {
         zfRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
         zfRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
         this->_ZFP_ZFUIPage_pageManager = zfnull;
@@ -235,8 +228,9 @@ public:
     ZFPROPERTY_ASSIGN(zfint, pageAniPriority)
 
     /** @brief see #pageAniOnPrepare */
-    ZFMETHOD_DECLARE_1(void, pageAni,
-                       ZFMP_IN(ZFAnimation *, pageAni))
+    ZFMETHOD_DECLARE_1(void, pageAni
+            , ZFMP_IN(ZFAnimation *, pageAni)
+            )
     /** @brief see #pageAniOnPrepare */
     ZFMETHOD_DECLARE_0(ZFAnimation *, pageAni)
 
@@ -252,7 +246,11 @@ protected:
      * for both itself and its sibling page,
      * and store the result animation to #pageAni and siblingPage->pageAni()
      */
-    virtual void pageAniOnPrepare(ZF_IN ZFEnum *resumeOrPauseReason, ZF_IN ZFUIPage *siblingPage) {}
+    virtual void pageAniOnPrepare(
+            ZF_IN ZFEnum *resumeOrPauseReason
+            , ZF_IN ZFUIPage *siblingPage
+            ) {
+    }
 
     // ============================================================
 private:
@@ -273,8 +271,7 @@ protected:
     }
     /** @endcond */
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         zfRetainChange(this->_ZFP_ZFUIPage_pageView, zfnull);
         zfRetainChange(this->_ZFP_ZFUIPage_pageAni, zfnull);
         zfsuper::objectOnDealloc();
@@ -287,8 +284,7 @@ private:
 // ============================================================
 zfclassFwd _ZFP_ZFUIPageManagerPrivate;
 /** @brief see #ZFUIPage */
-zfclass ZFLIB_ZFUIWidget ZFUIPageManager : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIWidget ZFUIPageManager : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIPageManager, ZFObject)
 
     // ============================================================
@@ -378,8 +374,9 @@ public:
      * -# when you want to destroy the manager,
      *   simply call #managerDestroy
      */
-    ZFMETHOD_DECLARE_1(ZFUIWindow *, managerCreateForWindow,
-                       ZFMP_IN_OPT(ZFUISysWindow *, windowOwnerSysWindow, zfnull))
+    ZFMETHOD_DECLARE_1(ZFUIWindow *, managerCreateForWindow
+            , ZFMP_IN_OPT(ZFUISysWindow *, windowOwnerSysWindow, zfnull)
+            )
     /** @brief valid only for #managerCreateForWindow */
     ZFMETHOD_DECLARE_0(ZFUIWindow *, managerOwnerWindow)
 
@@ -422,8 +419,9 @@ public:
      * this method can be embeded but must be paired,
      * last time you call this method to restore enable state would finally restore enable state
      */
-    ZFMETHOD_DECLARE_1(void, managerUIBlocked,
-                       ZFMP_IN(zfbool, value))
+    ZFMETHOD_DECLARE_1(void, managerUIBlocked
+            , ZFMP_IN(zfbool, value)
+            )
     /** @brief see #managerUIBlocked */
     ZFMETHOD_DECLARE_0(zfbool, managerUIBlocked)
     /** @brief see #managerUIBlocked */
@@ -452,14 +450,14 @@ public:
     /**
      * @brief page at index
      */
-    ZFMETHOD_DECLARE_1(ZFUIPage *, pageAt,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(ZFUIPage *, pageAt
+            , ZFMP_IN(zfindex, index)
+            )
     /**
      * @brief page at index
      */
     template<typename T_ZFUIPage>
-    inline T_ZFUIPage pageAt(ZF_IN zfindex index)
-    {
+    inline T_ZFUIPage pageAt(ZF_IN zfindex index) {
         return ZFCastZFObjectUnchecked(T_ZFUIPage, this->pageAt(index));
     }
     /**
@@ -470,21 +468,22 @@ public:
      * @brief return foreground page or null if no page
      */
     template<typename T_ZFUIPage>
-    inline T_ZFUIPage pageForeground(void)
-    {
+    inline T_ZFUIPage pageForeground(void) {
         return ZFCastZFObjectUnchecked(T_ZFUIPage, this->pageForeground());
     }
     /**
      * @brief find page index
      */
-    ZFMETHOD_DECLARE_1(zfindex, pageIndex,
-                       ZFMP_IN(ZFUIPage *, page))
+    ZFMETHOD_DECLARE_1(zfindex, pageIndex
+            , ZFMP_IN(ZFUIPage *, page)
+            )
 
     /**
      * @brief find page by ZFUIPage::pageGroupId
      */
-    ZFMETHOD_DECLARE_1(ZFCoreArrayPOD<ZFUIPage *>, pageListForGroupId,
-                       ZFMP_IN(const zfchar *, pageGroupId))
+    ZFMETHOD_DECLARE_1(ZFCoreArrayPOD<ZFUIPage *>, pageListForGroupId
+            , ZFMP_IN(const zfchar *, pageGroupId)
+            )
 
     // ============================================================
     // page management
@@ -494,31 +493,38 @@ public:
      *   can be called more than once to override sequently,
      *   can not undo
      */
-    ZFMETHOD_DECLARE_3(void, pageAniOverride,
-                       ZFMP_IN(ZFAnimation *, resumeAni),
-                       ZFMP_IN(ZFAnimation *, pauseAni),
-                       ZFMP_IN_OPT(zfbool, pauseAniHigherPriority, zffalse))
+    ZFMETHOD_DECLARE_3(void, pageAniOverride
+            , ZFMP_IN(ZFAnimation *, resumeAni)
+            , ZFMP_IN(ZFAnimation *, pauseAni)
+            , ZFMP_IN_OPT(zfbool, pauseAniHigherPriority, zffalse)
+            )
 
     /** @brief create and resume page */
-    ZFMETHOD_DECLARE_1(void, pageCreate,
-                       ZFMP_IN(ZFUIPage *, page))
+    ZFMETHOD_DECLARE_1(void, pageCreate
+            , ZFMP_IN(ZFUIPage *, page)
+            )
 
     /** @brief resume page */
-    ZFMETHOD_DECLARE_1(void, pageResume,
-                       ZFMP_IN(ZFUIPage *, page))
+    ZFMETHOD_DECLARE_1(void, pageResume
+            , ZFMP_IN(ZFUIPage *, page)
+            )
     /** @brief resume page */
-    ZFMETHOD_DECLARE_1(void, pageResume,
-                       ZFMP_IN(zfindex, pageIndex))
+    ZFMETHOD_DECLARE_1(void, pageResume
+            , ZFMP_IN(zfindex, pageIndex)
+            )
     /** @brief resume multiple page for group id */
-    ZFMETHOD_DECLARE_1(void, pageResumeForGroupId,
-                       ZFMP_IN(const zfchar *, pageGroupId))
+    ZFMETHOD_DECLARE_1(void, pageResumeForGroupId
+            , ZFMP_IN(const zfchar *, pageGroupId)
+            )
 
     /** @brief destroy page */
-    ZFMETHOD_DECLARE_1(void, pageDestroy,
-                       ZFMP_IN(ZFUIPage *, page))
+    ZFMETHOD_DECLARE_1(void, pageDestroy
+            , ZFMP_IN(ZFUIPage *, page)
+            )
     /** @brief destroy page */
-    ZFMETHOD_DECLARE_1(void, pageDestroy,
-                       ZFMP_IN(zfindex, pageIndex))
+    ZFMETHOD_DECLARE_1(void, pageDestroy
+            , ZFMP_IN(zfindex, pageIndex)
+            )
 
     /**
      * @brief advanced page stack management
@@ -542,13 +548,15 @@ public:
      *   used to ensure execute order when mixed with page management
      *   (#pageCreate, #pageDestroy, etc)
      */
-    ZFMETHOD_DECLARE_1(void, pageRequest,
-                       ZFMP_IN(const ZFListener &, callback))
+    ZFMETHOD_DECLARE_1(void, pageRequest
+            , ZFMP_IN(const ZFListener &, callback)
+            )
     /**
      * @brief remove callback for #pageRequest
      */
-    ZFMETHOD_DECLARE_1(void, pageRequestCancel,
-                       ZFMP_IN(const ZFListener &, callback))
+    ZFMETHOD_DECLARE_1(void, pageRequestCancel
+            , ZFMP_IN(const ZFListener &, callback)
+            )
 
 protected:
     zfoverride

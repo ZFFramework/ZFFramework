@@ -2,8 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFCore_ZFObserverGroup_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFObserverGroup_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFObserverGroup_test, ZFFramework_test_TestCase)
 
     ZFOBSERVER_EVENT(ZFObserverGroupTest0)
@@ -11,8 +10,7 @@ zfclass ZFCore_ZFObserverGroup_test : zfextends ZFFramework_test_TestCase
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         zfblockedAlloc(v_zfstring, testObserver0, "testObserver0");

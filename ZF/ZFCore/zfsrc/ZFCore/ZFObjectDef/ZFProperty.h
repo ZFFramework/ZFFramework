@@ -14,14 +14,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 zfclassFwd ZFProperty;
-typedef void (*_ZFP_ZFPropertyCallbackEnsureInit)(ZF_IN const ZFProperty *property, ZF_IN ZFObject *owner);
-typedef void (*_ZFP_ZFPropertyCallbackDealloc)(ZF_IN const ZFProperty *property, ZF_IN ZFObject *owner);
+typedef void (*_ZFP_ZFPropertyCallbackEnsureInit)(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *owner
+        );
+typedef void (*_ZFP_ZFPropertyCallbackDealloc)(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *owner
+        );
 typedef void (*_ZFP_ZFPropertyMethodCleanup)(ZF_IN const ZFMethod *method);
 /**
  * @brief info for a property for ZFObject, see #ZFPROPERTY_RETAIN for more info
  */
-zffinal zfclassNotPOD ZFLIB_ZFCore ZFProperty
-{
+zffinal zfclassNotPOD ZFLIB_ZFCore ZFProperty {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFProperty)
 
 public:
@@ -30,8 +35,7 @@ public:
     /**
      * @brief get info about this property
      */
-    zfstring objectInfo(void) const
-    {
+    zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -41,29 +45,25 @@ public:
     /**
      * @brief internal property id, for debug use only
      */
-    inline const zfchar *propertyInternalId(void) const
-    {
+    inline const zfchar *propertyInternalId(void) const {
         return this->_ZFP_ZFProperty_propertyInternalId;
     }
     /**
      * @brief true if this property is registered by #ZFPropertyUserRegisterRetain
      */
-    inline zfbool propertyIsUserRegister(void) const
-    {
+    inline zfbool propertyIsUserRegister(void) const {
         return this->_ZFP_ZFProperty_propertyIsUserRegister;
     }
     /**
      * @brief true if this property is registered by #ZFPropertyDynamicRegister
      */
-    inline zfbool propertyIsDynamicRegister(void) const
-    {
+    inline zfbool propertyIsDynamicRegister(void) const {
         return this->_ZFP_ZFProperty_propertyIsDynamicRegister;
     }
     /**
      * @brief see #ZFPropertyDynamicRegister
      */
-    inline ZFObject *propertyDynamicRegisterUserData(void) const
-    {
+    inline ZFObject *propertyDynamicRegisterUserData(void) const {
         return this->_ZFP_ZFProperty_propertyDynamicRegisterUserData;
     }
     /**
@@ -81,15 +81,13 @@ public:
     /**
      * @brief get the property's owner class
      */
-    inline const ZFClass *propertyOwnerClass(void) const
-    {
+    inline const ZFClass *propertyOwnerClass(void) const {
         return this->_ZFP_ZFProperty_propertyOwnerClass;
     }
     /**
      * @brief name for the property
      */
-    inline const zfchar *propertyName(void) const
-    {
+    inline const zfchar *propertyName(void) const {
         return this->_ZFP_ZFProperty_name;
     }
 
@@ -100,8 +98,7 @@ public:
      * it may or may not be same for same type,
      * usually for debug use only
      */
-    inline const zfchar *propertyTypeName(void) const
-    {
+    inline const zfchar *propertyTypeName(void) const {
         return this->_ZFP_ZFProperty_typeName;
     }
     /**
@@ -112,22 +109,19 @@ public:
      * see #ZFTypeInfo
      * @note for retain property, this value is always the class name of the #propertyClassOfRetainProperty
      */
-    inline const zfchar *propertyTypeId(void) const
-    {
+    inline const zfchar *propertyTypeId(void) const {
         return this->_ZFP_ZFProperty_typeId;
     }
     /**
      * @brief get the getter method
      */
-    inline const ZFMethod *setterMethod(void) const
-    {
+    inline const ZFMethod *setterMethod(void) const {
         return this->_ZFP_ZFProperty_setterMethod;
     }
     /**
      * @brief get the getter method
      */
-    inline const ZFMethod *getterMethod(void) const
-    {
+    inline const ZFMethod *getterMethod(void) const {
         return this->_ZFP_ZFProperty_getterMethod;
     }
 
@@ -137,8 +131,7 @@ public:
      * note that bool property is also a assign property,
      * it also have a getter method named "propertyName"
      */
-    inline zfbool propertyIsRetainProperty(void) const
-    {
+    inline zfbool propertyIsRetainProperty(void) const {
         return (this->_ZFP_ZFProperty_propertyClassOfRetainProperty != zfnull);
     }
     /**
@@ -146,8 +139,7 @@ public:
      *
      * note it's the declared class, property's value may be subclass of it
      */
-    inline const ZFClass *propertyClassOfRetainProperty(void) const
-    {
+    inline const ZFClass *propertyClassOfRetainProperty(void) const {
         return this->_ZFP_ZFProperty_propertyClassOfRetainProperty;
     }
 
@@ -167,20 +159,21 @@ public:
     ~ZFProperty(void);
     /** @endcond */
     zfbool _ZFP_ZFPropertyNeedInit;
-    void _ZFP_ZFPropertyInit(ZF_IN zfbool propertyIsUserRegister,
-                             ZF_IN zfbool propertyIsDynamicRegister,
-                             ZF_IN ZFObject *propertyDynamicRegisterUserData,
-                             ZF_IN const ZFClass *propertyOwnerClass,
-                             ZF_IN const zfchar *name,
-                             ZF_IN const zfchar *typeName,
-                             ZF_IN const zfchar *typeIdName,
-                             ZF_IN const ZFMethod *setterMethod,
-                             ZF_IN const ZFMethod *getterMethod,
-                             ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup,
-                             ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup,
-                             ZF_IN const ZFClass *propertyClassOfRetainProperty);
-    ZFProperty *_ZFP_ZFProperty_removeConst(void) const
-    {
+    void _ZFP_ZFPropertyInit(
+            ZF_IN zfbool propertyIsUserRegister
+            , ZF_IN zfbool propertyIsDynamicRegister
+            , ZF_IN ZFObject *propertyDynamicRegisterUserData
+            , ZF_IN const ZFClass *propertyOwnerClass
+            , ZF_IN const zfchar *name
+            , ZF_IN const zfchar *typeName
+            , ZF_IN const zfchar *typeIdName
+            , ZF_IN const ZFMethod *setterMethod
+            , ZF_IN const ZFMethod *getterMethod
+            , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
+            , ZF_IN _ZFP_ZFPropertyMethodCleanup getterMethodCleanup
+            , ZF_IN const ZFClass *propertyClassOfRetainProperty
+            );
+    ZFProperty *_ZFP_ZFProperty_removeConst(void) const {
         return const_cast<ZFProperty *>(this);
     }
 public:
@@ -210,13 +203,14 @@ public:
 // ============================================================
 zfclassFwd ZFFilterForZFProperty;
 /** @brief see #ZFPropertyGetAll */
-extern ZFLIB_ZFCore void ZFPropertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret,
-                                           ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull);
+extern ZFLIB_ZFCore void ZFPropertyGetAllT(
+        ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret
+        , ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull
+        );
 /**
  * @brief get all property currently registered, for debug use only
  */
-inline ZFCoreArrayPOD<const ZFProperty *> ZFPropertyGetAll(ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull)
-{
+inline ZFCoreArrayPOD<const ZFProperty *> ZFPropertyGetAll(ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull) {
     ZFCoreArrayPOD<const ZFProperty *> ret;
     ZFPropertyGetAllT(ret, propertyFilter);
     return ret;
@@ -244,8 +238,7 @@ extern ZFLIB_ZFCore ZFProperty *_ZFP_ZFPropertyRegister(ZF_IN zfbool propertyIsU
                                                         );
 extern ZFLIB_ZFCore void _ZFP_ZFPropertyUnregister(ZF_IN const ZFProperty *propertyInfo);
 
-zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFPropertyRegisterHolder
-{
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFPropertyRegisterHolder {
 public:
     _ZFP_ZFPropertyRegisterHolder(ZF_IN zfbool propertyIsUserRegister
                                   , ZF_IN zfbool propertyIsDynamicRegister
@@ -266,29 +259,28 @@ public:
                                   , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
                                   , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
                                   )
-    : propertyInfo(_ZFP_ZFPropertyRegister(propertyIsUserRegister
-                                           , propertyIsDynamicRegister
-                                           , propertyDynamicRegisterUserData
-                                           , propertyOwnerClass
-                                           , name
-                                           , typeName
-                                           , typeIdName
-                                           , setterMethod
-                                           , getterMethod
-                                           , setterMethodCleanup
-                                           , getterMethodCleanup
-                                           , propertyClassOfRetainProperty
-                                           , callbackIsValueAccessed
-                                           , callbackIsInitValue
-                                           , callbackValueReset
-                                           , callbackUserRegisterInitValueSetup
-                                           , callbackEnsureInit
-                                           , callbackDealloc
-                                           ))
-    {
+    : propertyInfo(_ZFP_ZFPropertyRegister(
+        propertyIsUserRegister
+        , propertyIsDynamicRegister
+        , propertyDynamicRegisterUserData
+        , propertyOwnerClass
+        , name
+        , typeName
+        , typeIdName
+        , setterMethod
+        , getterMethod
+        , setterMethodCleanup
+        , getterMethodCleanup
+        , propertyClassOfRetainProperty
+        , callbackIsValueAccessed
+        , callbackIsInitValue
+        , callbackValueReset
+        , callbackUserRegisterInitValueSetup
+        , callbackEnsureInit
+        , callbackDealloc
+        )) {
     }
-    ~_ZFP_ZFPropertyRegisterHolder(void)
-    {
+    ~_ZFP_ZFPropertyRegisterHolder(void) {
         _ZFP_ZFPropertyUnregister(this->propertyInfo);
     }
 public:

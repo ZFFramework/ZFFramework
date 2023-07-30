@@ -3,68 +3,58 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void ZFFilterForZFProperty::objectInfoT(ZF_IN_OUT zfstring &ret) const
-{
+void ZFFilterForZFProperty::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += '(';
     zfindex flagsCount = 0;
-    if(this->ignorePublicSetter())
-    {
+    if(this->ignorePublicSetter()) {
         ++flagsCount;
         ret += "ignorePublicSetter, ";
     }
-    if(this->ignoreProtectedSetter())
-    {
+    if(this->ignoreProtectedSetter()) {
         ++flagsCount;
         ret += "ignoreProtectedSetter, ";
     }
-    if(this->ignorePrivateSetter())
-    {
+    if(this->ignorePrivateSetter()) {
         ++flagsCount;
         ret += "ignorePrivateSetter, ";
     }
-    if(this->ignorePublicGetter())
-    {
+    if(this->ignorePublicGetter()) {
         ++flagsCount;
         ret += "ignorePublicGetter, ";
     }
-    if(this->ignoreProtectedGetter())
-    {
+    if(this->ignoreProtectedGetter()) {
         ++flagsCount;
         ret += "ignoreProtectedGetter, ";
     }
-    if(this->ignorePrivateGetter())
-    {
+    if(this->ignorePrivateGetter()) {
         ++flagsCount;
         ret += "ignorePrivateGetter, ";
     }
 
-    if(flagsCount == 0)
-    {
+    if(flagsCount == 0) {
         ret.remove(ret.length() - 1);
     }
-    else
-    {
+    else {
         ret.remove(ret.length() - 2);
         ret += ')';
     }
     zfsuper::objectInfoT(ret);
 }
 
-zfbool ZFFilterForZFProperty::filterOnCheckActive(ZF_IN const ZFProperty * const &e) const
-{
+zfbool ZFFilterForZFProperty::filterOnCheckActive(ZF_IN const ZFProperty * const &e) const {
     if(!zfsuper::filterOnCheckActive(e)
-       || !this->classFilter.filterCheckActive(e->propertyOwnerClass()))
-    {
+            || !this->classFilter.filterCheckActive(e->propertyOwnerClass())
+            ) {
         return zffalse;
     }
 
     if((e->setterMethod()->methodIsPrivate() && this->ignorePrivateSetter())
-       || (e->setterMethod()->methodIsProtected() && this->ignoreProtectedSetter())
-       || (e->setterMethod()->methodIsPublic() && this->ignorePublicSetter())
-       || (e->getterMethod()->methodIsPrivate() && this->ignorePrivateGetter())
-       || (e->getterMethod()->methodIsProtected() && this->ignoreProtectedGetter())
-       || (e->getterMethod()->methodIsPublic() && this->ignorePublicGetter()))
-    {
+            || (e->setterMethod()->methodIsProtected() && this->ignoreProtectedSetter())
+            || (e->setterMethod()->methodIsPublic() && this->ignorePublicSetter())
+            || (e->getterMethod()->methodIsPrivate() && this->ignorePrivateGetter())
+            || (e->getterMethod()->methodIsProtected() && this->ignoreProtectedGetter())
+            || (e->getterMethod()->methodIsPublic() && this->ignorePublicGetter())
+            ) {
         return zffalse;
     }
 

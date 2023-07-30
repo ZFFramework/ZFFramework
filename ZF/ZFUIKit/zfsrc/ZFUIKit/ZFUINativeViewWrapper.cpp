@@ -5,27 +5,25 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUINativeViewWrapper)
 
-ZFOBJECT_ON_INIT_DEFINE_1(ZFUINativeViewWrapper,
-                          ZFMP_IN(void *, nativeImplView))
-{
+ZFOBJECT_ON_INIT_DEFINE_1(ZFUINativeViewWrapper
+        , ZFMP_IN(void *, nativeImplView)
+        ) {
     this->objectOnInit();
     zfself::nativeImplView(nativeImplView, zfnull, zftrue);
 }
 
-void ZFUINativeViewWrapper::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-{
+void ZFUINativeViewWrapper::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
-    if(this->nativeImplView() != zfnull)
-    {
+    if(this->nativeImplView() != zfnull) {
         ret += " ";
         zfsFromPointerT(ret, this->nativeImplView());
     }
 }
 
-ZFMETHOD_DEFINE_2(ZFUINativeViewWrapper, void, measureNativeView,
-                  ZFMP_OUT(ZFUISize &, ret),
-                  ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeInvalid()))
-{
+ZFMETHOD_DEFINE_2(ZFUINativeViewWrapper, void, measureNativeView
+        , ZFMP_OUT(ZFUISize &, ret)
+        , ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeInvalid())
+        ) {
     const ZFUIMargin &nativeImplViewMargin = this->nativeImplViewMargin();
     ZFPROTOCOL_ACCESS(ZFUIView)->measureNativeView(
         ret,
@@ -40,10 +38,11 @@ ZFMETHOD_DEFINE_2(ZFUINativeViewWrapper, void, measureNativeView,
     ZFUISizeApplyMarginReversely(ret, ret, nativeImplViewMargin);
 }
 
-void ZFUINativeViewWrapper::layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                            ZF_IN const ZFUISize &sizeHint,
-                                            ZF_IN const ZFUISizeParam &sizeParam)
-{
+void ZFUINativeViewWrapper::layoutOnMeasure(
+        ZF_OUT ZFUISize &ret
+        , ZF_IN const ZFUISize &sizeHint
+        , ZF_IN const ZFUISizeParam &sizeParam
+        ) {
     this->measureNativeView(ret, sizeHint);
 }
 

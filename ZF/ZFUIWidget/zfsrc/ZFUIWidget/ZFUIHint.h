@@ -21,8 +21,7 @@ zfclassFwd _ZFP_ZFUIHintPrivate;
  *
  * @note can only be created or show or hide in main thread
  */
-zfclass ZFLIB_ZFUIWidget ZFUIHint : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIWidget ZFUIHint : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIHint, ZFObject)
 
 public:
@@ -59,8 +58,9 @@ public:
     /**
      * @brief get hint list in specified #ZFUISysWindow
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFCoreArrayPOD<ZFUIHint *>, hintList,
-                              ZFMP_IN_OPT(ZFUISysWindow *, inSysWindow, zfnull))
+    ZFMETHOD_DECLARE_STATIC_1(ZFCoreArrayPOD<ZFUIHint *>, hintList
+            , ZFMP_IN_OPT(ZFUISysWindow *, inSysWindow, zfnull)
+            )
 
 public:
     /**
@@ -144,33 +144,27 @@ public:
 
 protected:
     /** @brief see #ZFUIHint::EventHintOnInit */
-    virtual inline void hintOnInit(void)
-    {
+    virtual inline void hintOnInit(void) {
         this->observerNotify(ZFUIHint::EventHintOnInit());
     }
     /** @brief see #ZFUIHint::EventHintOnUpdate */
-    virtual inline void hintOnUpdate(void)
-    {
+    virtual inline void hintOnUpdate(void) {
         this->observerNotify(ZFUIHint::EventHintOnUpdate());
     }
     /** @brief see #ZFUIHint::EventHintOnShow */
-    virtual inline void hintOnShow(void)
-    {
+    virtual inline void hintOnShow(void) {
         this->observerNotify(ZFUIHint::EventHintOnShow());
     }
     /** @brief see #ZFUIHint::EventHintOnHide */
-    virtual inline void hintOnHide(void)
-    {
+    virtual inline void hintOnHide(void) {
         this->observerNotify(ZFUIHint::EventHintOnHide());
     }
 
 protected:
     zfoverride
-    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoOnAppend(ret);
-        if(this->hintContent() != zfnull)
-        {
+        if(this->hintContent() != zfnull) {
             ret += ", content: ";
             this->hintContent()->objectInfoT(ret);
         }

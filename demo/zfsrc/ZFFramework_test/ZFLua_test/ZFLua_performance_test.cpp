@@ -6,8 +6,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static int _ZFP_ZFLua_performance_test_alloc(lua_State *L)
-{
+static int _ZFP_ZFLua_performance_test_alloc(lua_State *L) {
     zfblockedAlloc(ZFObject, t);
     ZFUNUSED(t);
     return 0;
@@ -15,8 +14,7 @@ static int _ZFP_ZFLua_performance_test_alloc(lua_State *L)
 
 // ============================================================
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_APP, void, _ZFP_ZFLua_performance_test_f0)
-ZFMETHOD_FUNC_DEFINE_0(void, _ZFP_ZFLua_performance_test_f0)
-{
+ZFMETHOD_FUNC_DEFINE_0(void, _ZFP_ZFLua_performance_test_f0) {
 }
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_APP, void, _ZFP_ZFLua_performance_test_f4
         , ZFMP_IN(const zfchar *, p0)
@@ -29,16 +27,13 @@ ZFMETHOD_FUNC_DEFINE_4(void, _ZFP_ZFLua_performance_test_f4
         , ZFMP_IN(const zfchar *, p1)
         , ZFMP_IN(const zfchar *, p2)
         , ZFMP_IN(const zfchar *, p3)
-        )
-{
+        ) {
 }
 
-static int _ZFP_ZFLua_performance_test_C_f0(lua_State *L)
-{
+static int _ZFP_ZFLua_performance_test_C_f0(lua_State *L) {
     return 0;
 }
-static int _ZFP_ZFLua_performance_test_C_f4(lua_State *L)
-{
+static int _ZFP_ZFLua_performance_test_C_f4(lua_State *L) {
     (void)lua_tostring(L, 1);
     (void)lua_tostring(L, 2);
     (void)lua_tostring(L, 3);
@@ -47,13 +42,11 @@ static int _ZFP_ZFLua_performance_test_C_f4(lua_State *L)
 }
 
 // ============================================================
-static int _ZFP_ZFLua_performance_test_begin(lua_State *L)
-{
+static int _ZFP_ZFLua_performance_test_begin(lua_State *L) {
     ZFCoreStatistic::invokeTimeLogBegin("ZFLua_performance_test");
     return 0;
 }
-static int _ZFP_ZFLua_performance_test_end(lua_State *L)
-{
+static int _ZFP_ZFLua_performance_test_end(lua_State *L) {
     ZFCoreStatistic::invokeTimeLogEnd("ZFLua_performance_test");
     zfLogTrim() << "[ZFLua_performance_test]" << lua_tostring(L, 1)
         << ZFTimeValueToStringFriendly(ZFCoreStatistic::invokeTimeGetTotalTime("ZFLua_performance_test"));
@@ -62,14 +55,12 @@ static int _ZFP_ZFLua_performance_test_end(lua_State *L)
 }
 
 // ============================================================
-zfclass ZFLua_performance_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFLua_performance_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_performance_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
 

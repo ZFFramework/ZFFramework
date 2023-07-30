@@ -20,16 +20,14 @@ typedef enum {
 } ZFImpl_sys_SDL_FontType;
 
 /** @brief sdl font cache for #ZFImpl_sys_SDL_fontAlloc */
-zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_SDL_FontData
-{
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_SDL_FontData {
 public:
     ZFImpl_sys_SDL_FontType fontType; /**< @brief the font type, may differ from desired */
     zfuint ptsize; /**< @brief desired ptsize */
     TTF_Font *font; /**< @brief the font */
 public:
     /** @cond ZFPrivateDoc */
-    ~ZFImpl_sys_SDL_FontData(void)
-    {
+    ~ZFImpl_sys_SDL_FontData(void) {
         TTF_CloseFont(this->font);
     }
     /** @endcond */
@@ -42,50 +40,48 @@ public:
  * otherwise, you must call #ZFImpl_sys_SDL_fontRelease to release the font when done,
  * or use #ZFImpl_sys_SDL_fontAccess for short
  */
-extern ZFLIB_ZF_impl ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(ZF_IN ZFImpl_sys_SDL_FontType fontType, ZF_IN zfuint ptsize);
+extern ZFLIB_ZF_impl ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
+        ZF_IN ZFImpl_sys_SDL_FontType fontType
+        , ZF_IN zfuint ptsize
+        );
 /** @brief see #ZFImpl_sys_SDL_fontAlloc */
 extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData);
 
 #define ZFImpl_sys_SDL_fontAccess(varName, fontType, ptsize) \
     _ZFP_ZFImpl_sys_SDL_fontAccess varName(fontType, ptsize)
-zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_fontAccess
-{
+zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_fontAccess {
 public:
-    _ZFP_ZFImpl_sys_SDL_fontAccess(ZF_IN ZFImpl_sys_SDL_FontType fontType, ZF_IN zfuint ptsize)
+    _ZFP_ZFImpl_sys_SDL_fontAccess(
+            ZF_IN ZFImpl_sys_SDL_FontType fontType
+            , ZF_IN zfuint ptsize
+            )
     : fontData(ZFImpl_sys_SDL_fontAlloc(fontType, ptsize))
     {
     }
-    ~_ZFP_ZFImpl_sys_SDL_fontAccess(void)
-    {
+    ~_ZFP_ZFImpl_sys_SDL_fontAccess(void) {
         ZFImpl_sys_SDL_fontRelease(this->fontData);
     }
 public:
     ZFImpl_sys_SDL_FontData *fontData;
 public:
-    operator bool (void) const
-    {
+    operator bool (void) const {
         return this->fontData != zfnull;
     }
-    operator TTF_Font * (void) const
-    {
+    operator TTF_Font * (void) const {
         return this->fontData != zfnull ? this->fontData->font : zfnull;
     }
-    TTF_Font *operator -> (void) const
-    {
+    TTF_Font *operator -> (void) const {
         return this->fontData->font;
     }
-    _ZFP_ZFImpl_sys_SDL_fontAccess &operator = (ZF_IN zfnullT dummy)
-    {
+    _ZFP_ZFImpl_sys_SDL_fontAccess &operator = (ZF_IN zfnullT dummy) {
         ZFImpl_sys_SDL_fontRelease(this->fontData);
         this->fontData = zfnull;
         return *this;
     }
-    zfbool operator == (ZF_IN zfnullT dummy) const
-    {
+    zfbool operator == (ZF_IN zfnullT dummy) const {
         return this->fontData == zfnull;
     }
-    zfbool operator != (ZF_IN zfnullT dummy) const
-    {
+    zfbool operator != (ZF_IN zfnullT dummy) const {
         return this->fontData != zfnull;
     }
 };

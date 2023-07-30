@@ -3,14 +3,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFCore_ZFMethodUserRegister_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFMethodUserRegister_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFMethodUserRegister_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         {
@@ -132,14 +130,12 @@ protected:
             zfLogTrim() << "after unregister, method:" << zfself::ClassData()->methodForName("funcDynamic");
 
             this->testCaseOutput("all list:");
-            for(zfindex i = 0; i <= 8; ++i)
-            {
+            for(zfindex i = 0; i <= 8; ++i) {
                 this->testCaseOutput("  %s",
                     zfself::ClassData()->methodForName(zfstringWithFormat("funcDynamic%zi", i))->objectInfo().cString());
             }
 
-            for(zfindex i = 0; i <= 8; ++i)
-            {
+            for(zfindex i = 0; i <= 8; ++i) {
                 ZFMethodUserUnregister(zfself::ClassData()->methodForName(zfstringWithFormat("funcDynamic%zi", i)));
             }
         }
@@ -152,8 +148,7 @@ protected:
             this->testCaseOutput("execute result: %s", ret.cString());
 
             this->testCaseOutput("all list:");
-            for(zfindex i = 0; i <= ZFMETHOD_MAX_PARAM; ++i)
-            {
+            for(zfindex i = 0; i <= ZFMETHOD_MAX_PARAM; ++i) {
                 this->testCaseOutput("  %s",
                     zfself::ClassData()->methodForName(zfstringWithFormat("funcStatic%zi", i))->objectInfo().cString());
             }

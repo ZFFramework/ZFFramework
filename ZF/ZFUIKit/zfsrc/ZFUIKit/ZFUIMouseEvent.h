@@ -47,8 +47,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIMouseButton)
 /**
  * @brief mouse event for ui elements
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIMouseEvent : zfextends ZFUIEvent
-{
+zffinal zfclass ZFLIB_ZFUIKit ZFUIMouseEvent : zfextends ZFUIEvent {
     ZFOBJECT_DECLARE(ZFUIMouseEvent, ZFUIEvent)
 
 public:

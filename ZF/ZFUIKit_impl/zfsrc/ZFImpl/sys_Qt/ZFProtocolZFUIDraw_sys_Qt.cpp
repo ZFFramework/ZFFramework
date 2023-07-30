@@ -7,8 +7,7 @@
 #include <QGraphicsWidget>
 #include <QPainter>
 
-class _ZFP_ZFUIDrawableViewImpl_sys_Qt : public QGraphicsWidget
-{
+class _ZFP_ZFUIDrawableViewImpl_sys_Qt : public QGraphicsWidget {
     Q_OBJECT
 
 public:
@@ -24,11 +23,9 @@ public:
     }
 
 public:
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr)
-    {
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) {
         QGraphicsWidget::paint(painter, option, widget);
-        if(this->_ZFP_owner != zfnull)
-        {
+        if(this->_ZFP_owner != zfnull) {
             _ZFP_painter = painter;
             ZFPROTOCOL_ACCESS(ZFUIDrawForView)->notifyOnDraw(this->_ZFP_owner);
             _ZFP_painter = NULL;
@@ -44,33 +41,32 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Qt, ZFUIDrawForView, ZFP
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:QGraphicsWidget")
 
 public:
-    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView,
-                                           ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeDrawableViewCreate(
+            ZF_IN ZFUIDrawableView *drawableView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         return new _ZFP_ZFUIDrawableViewImpl_sys_Qt(drawableView);
     }
-    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView,
-                                           ZF_IN void *nativeDrawableView)
-    {
+    virtual void nativeDrawableViewDestroy(
+            ZF_IN ZFUIDrawableView *drawableView
+            , ZF_IN void *nativeDrawableView
+            ) {
         delete ZFCastStatic(_ZFP_ZFUIDrawableViewImpl_sys_Qt *, nativeDrawableView);
     }
 
-    virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView)
-    {
+    virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {
         _ZFP_ZFUIDrawableViewImpl_sys_Qt *nativeDrawableView = (_ZFP_ZFUIDrawableViewImpl_sys_Qt *)drawableView->nativeImplView();
         nativeDrawableView->update();
     }
 
 public:
-    virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token)
-    {
+    virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token) {
         ZFUIDrawableView *drawableView = token.target;
         _ZFP_ZFUIDrawableViewImpl_sys_Qt *nativeDrawableView = (_ZFP_ZFUIDrawableViewImpl_sys_Qt *)drawableView->nativeImplView();
         token.impl = (void *)nativeDrawableView->_ZFP_painter;
         return zftrue;
     }
-    virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token)
-    {
+    virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token) {
         // nothing to do
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_Qt)
@@ -85,9 +81,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_Qt, ZFUIDrawForImage, Z
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual zfbool beginForImage(ZF_IN_OUT ZFUIDrawToken &token,
-                                 ZF_IN const ZFUISize &imageSizePixel)
-    {
+    virtual zfbool beginForImage(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN const ZFUISize &imageSizePixel
+            ) {
         QImage *image = new QImage(imageSizePixel.width, imageSizePixel.height, QImage::Format_ARGB32);
         QPainter *painter = new QPainter(image);
         token.impl = (void *)painter;
@@ -99,8 +96,7 @@ public:
         painter->setCompositionMode(oldMode);
         return zftrue;
     }
-    virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token)
-    {
+    virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token) {
         QPainter *painter = (QPainter *)token.impl;
         QImage *image = (QImage *)painter->device();
         delete painter;
@@ -119,16 +115,19 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Qt, ZFUIDraw, ZFProtocolLevel::
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void antialiasing(ZF_IN ZFUIDrawToken &token, ZF_IN zfbool antialiasing)
-    {
+    virtual void antialiasing(
+            ZF_IN ZFUIDrawToken &token
+            , ZF_IN zfbool antialiasing
+            ) {
         QPainter *painter = (QPainter *)token.impl;
         painter->setRenderHint(QPainter::Antialiasing, antialiasing);
     }
 
 public:
-    virtual void drawClear(ZF_IN_OUT ZFUIDrawToken &token,
-                           ZF_IN const ZFUIRect &targetFramePixel)
-    {
+    virtual void drawClear(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) {
         QPainter *painter = (QPainter *)token.impl;
         painter->setPen(QColor(0, 0, 0, 0));
         painter->setBrush(QColor(0, 0, 0, 0));
@@ -137,10 +136,11 @@ public:
         painter->drawRect(targetFramePixel.x, targetFramePixel.y ,targetFramePixel.width, targetFramePixel.height);
         painter->setCompositionMode(oldMode);
     }
-    virtual void drawColor(ZF_IN_OUT ZFUIDrawToken &token,
-                           ZF_IN const ZFUIColor &color,
-                           ZF_IN const ZFUIRect &targetFramePixel)
-    {
+    virtual void drawColor(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN const ZFUIColor &color
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) {
         QPainter *painter = (QPainter *)token.impl;
         QColor nativeColor = ZFImpl_sys_Qt_ZFUIColorToQColor(color);
         painter->setPen(nativeColor);
@@ -150,11 +150,12 @@ public:
         painter->drawRect(targetFramePixel.x, targetFramePixel.y ,targetFramePixel.width, targetFramePixel.height);
         painter->setCompositionMode(oldMode);
     }
-    virtual void drawImage(ZF_IN_OUT ZFUIDrawToken &token,
-                           ZF_IN ZFUIImage *image,
-                           ZF_IN const ZFUIRect &imageFramePixel,
-                           ZF_IN const ZFUIRect &targetFramePixel)
-    {
+    virtual void drawImage(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN ZFUIImage *image
+            , ZF_IN const ZFUIRect &imageFramePixel
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) {
         QPainter *painter = (QPainter *)token.impl;
         QPainter::CompositionMode oldMode = painter->compositionMode();
         painter->setCompositionMode(QPainter::CompositionMode_SourceOver);

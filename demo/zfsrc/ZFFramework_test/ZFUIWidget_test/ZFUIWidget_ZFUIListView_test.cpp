@@ -2,71 +2,64 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIListView_test_ListAdapter : zfextends ZFObject, zfimplements ZFUIListAdapter
-{
+zfclass ZFUIWidget_ZFUIListView_test_ListAdapter : zfextends ZFObject, zfimplements ZFUIListAdapter {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test_ListAdapter, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFUIListAdapter)
 
 public:
-    virtual zfindex cellCount(void)
-    {
+    virtual zfindex cellCount(void) {
         return 2000;
     }
-    virtual zffloat cellSizeAt(ZF_IN zfindex index,
-                               ZF_IN ZFUIListCell *cell)
-    {
+    virtual zffloat cellSizeAt(
+            ZF_IN zfindex index
+            , ZF_IN ZFUIListCell *cell
+            ) {
         #if 1
             return this->cellSizeHint() + zfmRand(100);
         #else
             return zfsuperI(ZFUIListAdapter)::cellSizeAt(index, cell);
         #endif
     }
-    virtual zfautoObject cellAt(ZF_IN zfindex index)
-    {
+    virtual zfautoObject cellAt(ZF_IN zfindex index) {
         zfblockedAlloc(ZFUIListCell, ret);
         ret->cellView(zflineAlloc(ZFUIListCellViewBasic));
         return ret;
     }
-    virtual inline void cellOnUpdate(ZF_IN zfindex atIndex,
-                                     ZF_IN ZFUIListCell *cell)
-    {
+    virtual inline void cellOnUpdate(
+            ZF_IN zfindex atIndex
+            , ZF_IN ZFUIListCell *cell
+            ) {
         zfsuperI(ZFUIListAdapter)::cellOnUpdate(atIndex, cell);
 
         ZFUIListCellViewBasic *tmp = cell->cellView()->toAny();
         tmp->cellLabelMain()->text(zfstringWithFormat("main %zi", atIndex));
-        if(zfmRand(3) == 0)
-        {
+        if(zfmRand(3) == 0) {
             tmp->cellLabelSub()->text(zfstringWithFormat("sub %zi", atIndex));
         }
-        if(zfmRand(3) == 0)
-        {
+        if(zfmRand(3) == 0) {
             tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeMake(40)));
         }
         tmp->viewBackgroundColor(ZFUIColorRandom());
     }
 
     #if 1 // whether use cache
-        virtual inline zfautoObject cellCacheOnAccess(ZF_IN zfindex index)
-        {
+        virtual inline zfautoObject cellCacheOnAccess(ZF_IN zfindex index) {
             return this->cellCacheDefaultAccess(zfnull);
         }
-        virtual inline void cellCacheOnRecycle(ZF_IN ZFUIListCell *cell)
-        {
+        virtual inline void cellCacheOnRecycle(ZF_IN ZFUIListCell *cell) {
             this->cellCacheDefaultRecycle(zfnull, cell);
         }
     #endif
 };
 
-zfclass ZFUIWidget_ZFUIListView_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUIListView_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test, ZFFramework_test_TestCase)
 
     ZFPROPERTY_RETAIN_WITH_INIT(ZFUIListAdapter *, listAdapter, zflineAlloc(ZFUIWidget_ZFUIListView_test_ListAdapter))
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
@@ -92,8 +85,7 @@ protected:
     }
 
 private:
-    void setupScrollListener(ZF_IN ZFUIListView *listView)
-    {
+    void setupScrollListener(ZF_IN ZFUIListView *listView) {
 #if 0 // output logs during scroll event may cause performance issue
         ZFLISTENER(onDragBegin) {
             zfLogTrim() << "onDragBegin  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
@@ -126,9 +118,10 @@ private:
         listView->observerAdd(ZFUIListView::EventScrollOnScrollEnd(), onScrollEnd);
 #endif
     }
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIListView *listView)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUIListView *listView
+            ) {
         zfblockedAlloc(ZFArray, settings);
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollAlignToAxis));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceHorizontal));
@@ -160,12 +153,10 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , ZFUIListView *, listView
                     ) {
-                if(listView->autoScrollSpeedX() == 0)
-                {
+                if(listView->autoScrollSpeedX() == 0) {
                     listView->autoScrollStartX(_ZFP_ZFUIWidget_ZFUIListView_test_autoScrollSpeed * ((zfmRand(2) == 0) ? 1 : -1));
                 }
-                else
-                {
+                else {
                     listView->autoScrollStopX();
                 }
             } ZFLISTENER_END()
@@ -186,12 +177,10 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , ZFUIListView *, listView
                     ) {
-                if(listView->autoScrollSpeedY() == 0)
-                {
+                if(listView->autoScrollSpeedY() == 0) {
                     listView->autoScrollStartY(_ZFP_ZFUIWidget_ZFUIListView_test_autoScrollSpeed * ((zfmRand(2) == 0) ? 1 : -1));
                 }
-                else
-                {
+                else {
                     listView->autoScrollStopY();
                 }
             } ZFLISTENER_END()
@@ -211,12 +200,10 @@ private:
                 ZFUIHintShow(zfstringWithFormat("%s\nindex: %zi\noffset: %f\nanimated: %b",
                             toHead ? "scrollListCellToHead" : "scrollListCellToTail",
                             toIndex, toOffset, animated));
-                if(toHead)
-                {
+                if(toHead) {
                     listView->scrollListCellToHead(toIndex, toOffset, animated);
                 }
-                else
-                {
+                else {
                     listView->scrollListCellToTail(toIndex, toOffset, animated);
                 }
             } ZFLISTENER_END()
@@ -242,12 +229,10 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , ZFUIListView *, listView
                     ) {
-                if(listView->scrollAreaMargin().left >= 40)
-                {
+                if(listView->scrollAreaMargin().left >= 40) {
                     listView->scrollAreaMarginRemove(listView->scrollAreaMargin());
                 }
-                else
-                {
+                else {
                     listView->scrollAreaMarginAdd(ZFUIMarginMake(20));
                 }
             } ZFLISTENER_END()

@@ -6,8 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFAndroidInput
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder, ZFLevelZFFrameworkStatic) {
     jobject tmp = zfnull;
     JNIEnv *jniEnv = JNIGetJNIEnv();
 
@@ -15,8 +14,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidInput_jclsHold
     this->jclsZFAndroidInput = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
     JNIUtilDeleteLocalRef(jniEnv, tmp);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFAndroidInput);
 }
@@ -24,14 +22,12 @@ public:
     jclass jclsZFAndroidInput;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder)
 
-jclass ZFImpl_sys_Android_jclassZFAndroidInput(void)
-{
+jclass ZFImpl_sys_Android_jclassZFAndroidInput(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder)->jclsZFAndroidInput;
 }
 
 #define _ZFP_ZFAndroidInputBufSize 64
-zfclass _ZFP_I_ZFAndroidInput : zfextends ZFObject
-{
+zfclass _ZFP_I_ZFAndroidInput : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidInput, ZFObject)
     ZFALLOC_CACHE_RELEASE({
             cache->removeAll();
@@ -43,50 +39,44 @@ public:
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->nativeInputWrapper = NULL;
         this->nativeBuf = NULL;
     }
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         this->removeAll();
         zfsuper::objectOnDealloc();
     }
 
 public:
-    void removeAll(void)
-    {
-        if(this->nativeInputWrapper != NULL)
-        {
+    void removeAll(void) {
+        if(this->nativeInputWrapper != NULL) {
             JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), this->nativeInputWrapper);
             this->nativeInputWrapper = zfnull;
         }
-        if(this->nativeBuf != NULL)
-        {
+        if(this->nativeBuf != NULL) {
             JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), this->nativeBuf);
             this->nativeBuf = NULL;
         }
     }
 
-    ZFMETHOD_DECLARE_2(zfindex, onInput,
-                       ZFMP_OUT(void *, buf),
-                       ZFMP_IN(zfindex, count));
+    ZFMETHOD_DECLARE_2(zfindex, onInput
+            , ZFMP_OUT(void *, buf)
+            , ZFMP_IN(zfindex, count)
+            );
 };
 ZFOBJECT_REGISTER(_ZFP_I_ZFAndroidInput)
 
-ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput,
-                  ZFMP_OUT(void *, buf),
-                  ZFMP_IN(zfindex, count))
-{
-    if(buf == zfnull)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
+        , ZFMP_OUT(void *, buf)
+        , ZFMP_IN(zfindex, count)
+        ) {
+    if(buf == zfnull) {
         return zfindexMax(); // not supported
     }
-    if(count == zfindexMax())
-    {
+    if(count == zfindexMax()) {
         return 0;
     }
 
@@ -101,16 +91,14 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput,
 
     jbyte *writeBuf = (jbyte *)buf;
     jint toRead = (jint)count;
-    while(toRead > 0)
-    {
+    while(toRead > 0) {
         jint blockSize = (toRead > _ZFP_ZFAndroidInputBufSize ? _ZFP_ZFAndroidInputBufSize : toRead);
         jint nativeRead = JNIUtilCallStaticIntMethod(jniEnv, jclsZFAndroidInput, jmId
             , this->nativeInputWrapper
             , this->nativeBuf
             , blockSize
             );
-        if(nativeRead == -1)
-        {
+        if(nativeRead == -1) {
             break;
         }
         JNIUtilGetByteArrayRegion(jniEnv, this->nativeBuf, 0, nativeRead, writeBuf);
@@ -123,10 +111,8 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput,
     return count - toRead;
 }
 
-ZFInput ZFImpl_sys_Android_ZFInputFromZFAndroidInput(ZF_IN jobject nativeInputWrapper)
-{
-    if(nativeInputWrapper == NULL)
-    {
+ZFInput ZFImpl_sys_Android_ZFInputFromZFAndroidInput(ZF_IN jobject nativeInputWrapper) {
+    if(nativeInputWrapper == NULL) {
         return zfnull;
     }
     JNIEnv *jniEnv = JNIGetJNIEnv();

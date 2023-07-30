@@ -53,14 +53,18 @@ extern ZFLIB_ZFCore void zfCoreLogOutputCallback(ZF_IN ZFCoreLogOutputCallbackTy
 extern ZFLIB_ZFCore ZFCoreLogOutputCallbackType zfCoreLogOutputCallback(void);
 
 // ============================================================
-extern ZFLIB_ZFCore void _ZFP_zfCoreLog(ZF_IN const ZFCallerInfo &callerInfo,
-                                        ZF_IN zfbool isAutoEndl,
-                                        ZF_IN const zfchar *format,
-                                        ...);
-extern ZFLIB_ZFCore void _ZFP_zfCoreLogV(ZF_IN const ZFCallerInfo &callerInfo,
-                                         ZF_IN zfbool isAutoEndl,
-                                         ZF_IN const zfchar *format,
-                                         ZF_IN va_list vaList);
+extern ZFLIB_ZFCore void _ZFP_zfCoreLog(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN zfbool isAutoEndl
+        , ZF_IN const zfchar *format
+        , ...
+        );
+extern ZFLIB_ZFCore void _ZFP_zfCoreLogV(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN zfbool isAutoEndl
+        , ZF_IN const zfchar *format
+        , ZF_IN va_list vaList
+        );
 /**
  * @brief log utility used internally
  *

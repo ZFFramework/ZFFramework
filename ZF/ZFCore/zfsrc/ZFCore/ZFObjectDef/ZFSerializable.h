@@ -84,8 +84,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * here's a typical serializable data in xml format that shows the types:
  * @code
  *   // assume we have a object hold a ZFArray as retain property:
- *   zfclass TestClass : zfextends ZFSerializable
- *   {
+ *   zfclass TestClass : zfextends ZFSerializable {
  *       ZFOBJECT_DECLARE(TestClass, ZFSerializable)
  *       ZFPROPERTY_RETAIN(ZFArray *, testProperty)
  *       ...
@@ -149,8 +148,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * you may supply your custom constructor,
  * see #ZFSerializableKeyword_serializableNewInstance
  */
-zfinterface ZFLIB_ZFCore ZFSerializable : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFCore ZFSerializable : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFSerializable, ZFInterface)
 
     // ============================================================
@@ -176,17 +174,21 @@ public:
      *   or #ZFMethodDynamicRegister series\n
      *   typically, this is useful for script language with #ZFDynamic
      */
-    zffinal zfbool serializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                     ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                     ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    zffinal zfbool serializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     /**
      * @brief serialize to data, see #ZFSerializable
      *
      * note that for performance, this method won't check whether serializable before execute
      */
-    zffinal zfbool serializeToData(ZF_OUT ZFSerializableData &serializableData,
-                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                   ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull);
+    zffinal zfbool serializeToData(
+            ZF_OUT ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull
+            );
 
     /**
      * @brief serialize from string,
@@ -216,8 +218,7 @@ public:
     /**
      * @brief get all serializable property, usually for debug only, see #serializableOnCheckPropertyType
      */
-    inline ZFCoreArrayPOD<const ZFProperty *> serializableGetAllSerializableProperty(void)
-    {
+    inline ZFCoreArrayPOD<const ZFProperty *> serializableGetAllSerializableProperty(void) {
         ZFCoreArrayPOD<const ZFProperty *> ret;
         this->serializableGetAllSerializablePropertyT(ret);
         return ret;
@@ -227,8 +228,7 @@ public:
     /**
      * @brief get all serializable embeded property, usually for debug only, see #serializableOnCheckPropertyType
      */
-    inline ZFCoreArrayPOD<const ZFProperty *> serializableGetAllSerializableEmbededProperty(void)
-    {
+    inline ZFCoreArrayPOD<const ZFProperty *> serializableGetAllSerializableEmbededProperty(void) {
         ZFCoreArrayPOD<const ZFProperty *> ret;
         this->serializableGetAllSerializableEmbededPropertyT(ret);
         return ret;
@@ -275,8 +275,7 @@ protected:
     /**
      * @brief see #serializable
      */
-    virtual zfbool serializableOnCheck(void)
-    {
+    virtual zfbool serializableOnCheck(void) {
         return zftrue;
     }
 
@@ -291,10 +290,11 @@ protected:
      * you should mark data as resolved and return whether resolve success\n
      * if not, subclass should leave the data unresoved and return true
      */
-    virtual inline zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                          ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull)
-    {
+    virtual inline zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            ) {
         return zftrue;
     }
     /**
@@ -302,10 +302,11 @@ protected:
      *   return whether the task is success,
      *   see #ZFSerializable
      */
-    virtual inline zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                        ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                        ZF_OUT_OPT zfstring *outErrorHint = zfnull)
-    {
+    virtual inline zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            ) {
         return zftrue;
     }
     /**
@@ -315,14 +316,11 @@ protected:
      * if subclass override this method, you should check whether it's resolved by parent,
      * and then mark data as resolved and return whether resolve success
      * @code
-     *   zfbool YourType::serializableOnSerializePropertyFromData(...)
-     *   {
-     *       if(!SuperSerializable::serializableOnSerializePropertyFromData(...))
-     *       {
+     *   zfbool YourType::serializableOnSerializePropertyFromData(...) {
+     *       if(!SuperSerializable::serializableOnSerializePropertyFromData(...)) {
      *           return zffalse;
      *       }
-     *       if(propertyData.resolved())
-     *       {
+     *       if(propertyData.resolved()) {
      *           return zftrue;
      *       }
      *
@@ -334,10 +332,12 @@ protected:
      *   }
      * @endcode
      */
-    virtual zfbool serializableOnSerializePropertyFromData(ZF_IN const ZFSerializableData &propertyData,
-                                                           ZF_IN const ZFProperty *property,
-                                                           ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                           ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializePropertyFromData(
+            ZF_IN const ZFSerializableData &propertyData
+            , ZF_IN const ZFProperty *property
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     /**
      * @brief see #serializableOnCheckPropertyType, usually you have no need to override this method,
      *   see #ZFSerializable
@@ -345,18 +345,22 @@ protected:
      * set serializable class to null to show the property is in init value state
      * and have no need to be serialized
      */
-    virtual zfbool serializableOnSerializePropertyToData(ZF_OUT ZFSerializableData &ownerData,
-                                                         ZF_IN const ZFProperty *property,
-                                                         ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                         ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializePropertyToData(
+            ZF_OUT ZFSerializableData &ownerData
+            , ZF_IN const ZFProperty *property
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
     /**
      * @brief see #serializableOnCheckPropertyType, usually you have no need to override this method,
      *   see #ZFSerializable
      */
-    virtual zfbool serializableOnSerializeEmbededPropertyFromData(ZF_IN const ZFSerializableData &propertyData,
-                                                                  ZF_IN const ZFProperty *property,
-                                                                  ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                                  ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeEmbededPropertyFromData(
+            ZF_IN const ZFSerializableData &propertyData
+            , ZF_IN const ZFProperty *property
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     /**
      * @brief see #serializableOnCheckPropertyType, usually you have no need to override this method,
      *   see #ZFSerializable
@@ -364,20 +368,20 @@ protected:
      * set serializable class to null to show the property is in init value state
      * and have no need to be serialized
      */
-    virtual zfbool serializableOnSerializeEmbededPropertyToData(ZF_OUT ZFSerializableData &ownerData,
-                                                                ZF_IN const ZFProperty *property,
-                                                                ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                                ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeEmbededPropertyToData(
+            ZF_OUT ZFSerializableData &ownerData
+            , ZF_IN const ZFProperty *property
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 protected:
     /** @brief see #serializeFromString */
-    virtual zfbool serializableOnSerializeFromString(ZF_IN const zfchar *src)
-    {
+    virtual zfbool serializableOnSerializeFromString(ZF_IN const zfchar *src) {
         return zffalse;
     }
     /** @brief see #serializeFromString */
-    virtual zfbool serializableOnSerializeToString(ZF_IN_OUT zfstring &ret)
-    {
+    virtual zfbool serializableOnSerializeToString(ZF_IN_OUT zfstring &ret) {
         return zffalse;
     }
 
@@ -387,8 +391,7 @@ public:
      */
     virtual void serializableInfoT(ZF_IN_OUT zfstring &ret);
     /** @brief see #serializableInfoT */
-    virtual inline zfstring serializableInfo(void)
-    {
+    virtual inline zfstring serializableInfo(void) {
         zfstring ret;
         this->serializableInfoT(ret);
         return ret;
@@ -412,38 +415,52 @@ extern ZFLIB_ZFCore zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj);
  *   which describe a null object,
  *   the result would be null
  */
-extern ZFLIB_ZFCore zfautoObject ZFObjectFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                  ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                  ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfautoObject ZFObjectFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        );
 /** @brief see #ZFObjectFromData */
-extern ZFLIB_ZFCore zfbool ZFObjectFromData(ZF_OUT zfautoObject &result,
-                                            ZF_IN const ZFSerializableData &serializableData,
-                                            ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                            ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfbool ZFObjectFromData(
+        ZF_OUT zfautoObject &result
+        , ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        );
 /** @brief see #ZFObjectFromData */
-extern ZFLIB_ZFCore zfbool ZFObjectToData(ZF_OUT ZFSerializableData &serializableData,
-                                          ZF_IN ZFObject *obj,
-                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                          ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull);
+extern ZFLIB_ZFCore zfbool ZFObjectToData(
+        ZF_OUT ZFSerializableData &serializableData
+        , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull
+        );
 /** @brief see #ZFObjectFromData */
-extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(ZF_IN ZFObject *obj,
-                                                      ZF_OUT_OPT zfbool *outSuccess = zfnull,
-                                                      ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                      ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull);
+extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(
+        ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfbool *outSuccess = zfnull
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull
+        );
 
 // ============================================================
 /**
  * @brief convenient method to #ZFSerializable::serializeFromString
  */
-extern ZFLIB_ZFCore zfbool ZFSerializeFromString(ZF_OUT zfautoObject &result,
-                                                 ZF_IN const ZFClass *cls,
-                                                 ZF_IN const zfchar *src);
+extern ZFLIB_ZFCore zfbool ZFSerializeFromString(
+        ZF_OUT zfautoObject &result
+        , ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        );
 /** @brief see #ZFSerializeFromString */
-extern ZFLIB_ZFCore zfautoObject ZFSerializeFromString(ZF_IN const ZFClass *cls,
-                                                       ZF_IN const zfchar *src);
+extern ZFLIB_ZFCore zfautoObject ZFSerializeFromString(
+        ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *src
+        );
 /** @brief see #ZFSerializeFromString */
-extern ZFLIB_ZFCore zfbool ZFSerializeToString(ZF_IN_OUT zfstring &ret,
-                                               ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfbool ZFSerializeToString(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFObject *obj
+        );
 /** @brief see #ZFSerializeFromString */
 extern ZFLIB_ZFCore zfstring ZFSerializeToString(ZF_IN ZFObject *obj);
 

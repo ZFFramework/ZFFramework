@@ -17,8 +17,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_Android, ZFUIImageView, ZF
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -28,17 +27,17 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView,
-                                        ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeImageViewCreate(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageViewCreate",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -48,9 +47,10 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ZFCastStatic(void *, ret);
     }
-    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView,
-                                        ZF_IN void *nativeImageView)
-    {
+    virtual void nativeImageViewDestroy(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN void *nativeImageView
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageViewDestroy",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -61,9 +61,10 @@ public:
         JNIUtilDeleteGlobalRef(jniEnv, nativeImageViewTmp);
     }
 
-    virtual void image(ZF_IN ZFUIImageView *imageView,
-                       ZF_IN ZFUIImage *image)
-    {
+    virtual void image(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN ZFUIImage *image
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_image",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -74,10 +75,11 @@ public:
             ZFCastStatic(jobject, imageView->nativeImplView()),
             ZFCastStatic(jobject, (image == zfnull) ? zfnull : image->nativeImage()));
     }
-    virtual void imageNinePatchChanged(ZF_IN ZFUIImageView *imageView,
-                                       ZF_IN zffloat imageScale,
-                                       ZF_IN const ZFUIMargin &imageNinePatch)
-    {
+    virtual void imageNinePatchChanged(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN zffloat imageScale
+            , ZF_IN const ZFUIMargin &imageNinePatch
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageNinePatchChanged",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()

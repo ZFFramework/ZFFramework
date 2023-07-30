@@ -28,19 +28,23 @@ public:
     virtual void luaStateDetach(ZF_IN void *L) zfpurevirtual;
 
     /** @brief called when class or method changed, ensured called in proper thread with proper mutex */
-    virtual void classDataChange(ZF_IN void *L,
-                                 ZF_IN const ZFClassDataChangeData &data) zfpurevirtual;
+    virtual void classDataChange(
+            ZF_IN void *L
+            , ZF_IN const ZFClassDataChangeData &data
+            ) zfpurevirtual;
 
     /**
      * @brief see #ZFLuaExecute, ensured called in proper thread with proper mutex,
      *   impl must supply all methods mentioned in #ZFLuaExecute
      */
-    virtual zfbool luaExecute(ZF_IN void *L,
-                              ZF_IN const ZFPathInfo *pathInfoOrNull,
-                              ZF_IN const ZFInput &input,
-                              ZF_OUT_OPT zfautoObject *luaResult = zfnull,
-                              ZF_IN_OPT const ZFCoreArray<zfautoObject> *luaParams = zfnull,
-                              ZF_OUT_OPT zfstring *errorHint = zfnull) zfpurevirtual;
+    virtual zfbool luaExecute(
+            ZF_IN void *L
+            , ZF_IN const ZFPathInfo *pathInfoOrNull
+            , ZF_IN const ZFInput &input
+            , ZF_OUT_OPT zfautoObject *luaResult = zfnull
+            , ZF_IN_OPT const ZFCoreArray<zfautoObject> *luaParams = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) zfpurevirtual;
 
     /** @brief see #ZFLuaGC, ensured called in proper thread with proper mutex */
     virtual void luaGC(ZF_IN void *L) zfpurevirtual;

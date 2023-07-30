@@ -19,8 +19,10 @@ public:
     /**
      * @brief see #ZFUIViewCapture
      */
-    virtual zfbool viewCapture(ZF_IN ZFUIView *view,
-                               ZF_IN_OUT ZFUIImage *image) zfpurevirtual;
+    virtual zfbool viewCapture(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OUT ZFUIImage *image
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUIViewCapture)
 
 ZF_NAMESPACE_GLOBAL_END

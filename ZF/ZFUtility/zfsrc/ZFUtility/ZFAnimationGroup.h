@@ -19,8 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   </ZFAnimationGroupChildData>
  * @endcode
  */
-zfclass ZFLIB_ZFUtility ZFAnimationGroupChildData : zfextends ZFObject, zfimplements ZFSerializable
-{
+zfclass ZFLIB_ZFUtility ZFAnimationGroupChildData : zfextends ZFObject, zfimplements ZFSerializable {
     ZFOBJECT_DECLARE(ZFAnimationGroupChildData, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable)
 
@@ -67,8 +66,7 @@ zfclassFwd _ZFP_ZFAnimationGroupPrivate;
  *   </ZFAnimationGroup>
  * @endcode
  */
-zfclass ZFLIB_ZFUtility ZFAnimationGroup : zfextends ZFAnimation
-{
+zfclass ZFLIB_ZFUtility ZFAnimationGroup : zfextends ZFAnimation {
     ZFOBJECT_DECLARE(ZFAnimationGroup, ZFAnimation)
 
 public:
@@ -91,13 +89,17 @@ public:
     // serialize
 protected:
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
     // ============================================================
     // object
@@ -121,13 +123,15 @@ public:
     /**
      * @brief add child animation
      */
-    ZFMETHOD_DECLARE_1(void, childAniAdd,
-                       ZFMP_IN(ZFAnimation *, ani))
+    ZFMETHOD_DECLARE_1(void, childAniAdd
+            , ZFMP_IN(ZFAnimation *, ani)
+            )
     /**
      * @brief add child animation
      */
-    ZFMETHOD_DECLARE_1(void, childAniDataAdd,
-                       ZFMP_IN(ZFAnimationGroupChildData *, childData))
+    ZFMETHOD_DECLARE_1(void, childAniDataAdd
+            , ZFMP_IN(ZFAnimationGroupChildData *, childData)
+            )
     /**
      * @brief child animation count
      */
@@ -135,18 +139,21 @@ public:
     /**
      * @brief get child animation
      */
-    ZFMETHOD_DECLARE_1(ZFAnimation *, childAniAt,
-                       ZFMP_IN(zfindex , index))
+    ZFMETHOD_DECLARE_1(ZFAnimation *, childAniAt
+            , ZFMP_IN(zfindex , index)
+            )
     /**
      * @brief get child animation data
      */
-    ZFMETHOD_DECLARE_1(ZFAnimationGroupChildData *, childAniDataAt,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(ZFAnimationGroupChildData *, childAniDataAt
+            , ZFMP_IN(zfindex, index)
+            )
     /**
      * @brief remove child animation
      */
-    ZFMETHOD_DECLARE_1(void, childAniRemove,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(void, childAniRemove
+            , ZFMP_IN(zfindex, index)
+            )
     /**
      * @brief remove all child animation
      */
@@ -172,13 +179,11 @@ protected:
 
 protected:
     /** @brief see #EventAniGroupOnChildStart */
-    virtual inline void aniGroupOnChildStart(ZF_IN ZFAnimation *childAni)
-    {
+    virtual inline void aniGroupOnChildStart(ZF_IN ZFAnimation *childAni) {
         this->observerNotify(ZFAnimationGroup::EventAniGroupOnChildStart(), childAni);
     }
     /** @brief see #EventAniGroupOnChildStop */
-    virtual inline void aniGroupOnChildStop(ZF_IN ZFAnimation *childAni)
-    {
+    virtual inline void aniGroupOnChildStop(ZF_IN ZFAnimation *childAni) {
         this->observerNotify(ZFAnimationGroup::EventAniGroupOnChildStop(), childAni);
     }
 

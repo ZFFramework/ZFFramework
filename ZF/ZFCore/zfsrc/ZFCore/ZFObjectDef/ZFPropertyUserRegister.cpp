@@ -3,15 +3,15 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMethod *method)
-{
+void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMethod *method) {
     ZFMethodUserUnregister(method);
 }
 
-zfautoObject _ZFP_I_PropURDIVH::create(ZF_IN void *v,
-                                       ZF_IN DeleteCallback deleteCallback,
-                                       ZF_IN_OPT ZFObject *retainValue /* = zfnull */)
-{
+zfautoObject _ZFP_I_PropURDIVH::create(
+        ZF_IN void *v
+        , ZF_IN DeleteCallback deleteCallback
+        , ZF_IN_OPT ZFObject *retainValue /* = zfnull */
+        ) {
     zfblockedAlloc(_ZFP_I_PropURDIVH, holder);
     holder->v = v;
     holder->deleteCallback = deleteCallback;
@@ -19,10 +19,8 @@ zfautoObject _ZFP_I_PropURDIVH::create(ZF_IN void *v,
     return holder;
 }
 
-void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty)
-{
-    if(zfproperty == zfnull)
-    {
+void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty) {
+    if(zfproperty == zfnull) {
         return;
     }
     zfCoreMutexLocker();
@@ -34,10 +32,11 @@ void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty)
     _ZFP_ZFPropertyUnregister(zfproperty);
 }
 
-void ZFPropertyUserRegisterNotifyUpdate(ZF_IN ZFObject *ownerObject,
-                                        ZF_IN const ZFProperty *property,
-                                        ZF_IN const void *propertyValueOld)
-{
+void ZFPropertyUserRegisterNotifyUpdate(
+        ZF_IN ZFObject *ownerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN const void *propertyValueOld
+        ) {
     ownerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, propertyValueOld);
 }
 

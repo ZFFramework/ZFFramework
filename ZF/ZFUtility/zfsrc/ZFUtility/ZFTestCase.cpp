@@ -9,18 +9,15 @@ ZFOBSERVER_EVENT_REGISTER(ZFTestCase, TestCaseOnStart)
 ZFOBSERVER_EVENT_REGISTER(ZFTestCase, TestCaseOnProgress)
 ZFOBSERVER_EVENT_REGISTER(ZFTestCase, TestCaseOnStop)
 
-void ZFTestCase::objectOnDeallocPrepare(void)
-{
+void ZFTestCase::objectOnDeallocPrepare(void) {
     zfCoreAssert(!this->testCaseIsRunning());
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZFMETHOD_DEFINE_0(ZFTestCase, zfbool, testCaseIsRunning)
-{
+ZFMETHOD_DEFINE_0(ZFTestCase, zfbool, testCaseIsRunning) {
     return this->_testCaseIsRunning;
 }
-void ZFTestCase::testCaseOutput(ZF_IN const zfchar *info, ...)
-{
+void ZFTestCase::testCaseOutput(ZF_IN const zfchar *info, ...) {
     va_list vaList;
     va_start(vaList, info);
     zfstring data = zfstringWithFormatV(info, vaList);
@@ -28,11 +25,11 @@ void ZFTestCase::testCaseOutput(ZF_IN const zfchar *info, ...)
 
     this->testCaseOnOutput(data.cString());
 }
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTestCase, void, testCaseOutput, ZFMP_IN(const zfchar *, info))
-ZFMETHOD_DEFINE_0(ZFTestCase, void, testCaseStart)
-{
-    if(this->_testCaseIsRunning)
-    {
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTestCase, void, testCaseOutput
+        , ZFMP_IN(const zfchar *, info)
+        )
+ZFMETHOD_DEFINE_0(ZFTestCase, void, testCaseStart) {
+    if(this->_testCaseIsRunning) {
         return;
     }
     this->_testCaseIsRunning = zftrue;
@@ -40,11 +37,10 @@ ZFMETHOD_DEFINE_0(ZFTestCase, void, testCaseStart)
     this->testCaseOnStart();
 }
 
-ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseProgress,
-                  ZFMP_IN_OPT(ZFObject *, progress, zfnull))
-{
-    if(!this->_testCaseIsRunning)
-    {
+ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseProgress
+        , ZFMP_IN_OPT(ZFObject *, progress, zfnull)
+        ) {
+    if(!this->_testCaseIsRunning) {
         return;
     }
     this->testCaseOnProgress(progress);
@@ -52,11 +48,10 @@ ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseProgress,
     zfRelease(progress);
 }
 
-ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseStop,
-                  ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success))
-{
-    if(!this->_testCaseIsRunning)
-    {
+ZFMETHOD_DEFINE_1(ZFTestCase, void, testCaseStop
+        , ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success)
+        ) {
+    if(!this->_testCaseIsRunning) {
         return;
     }
     this->_testCaseIsRunning = zffalse;

@@ -5,8 +5,7 @@
  * ZFFramework has ZFInterface for interface types\n
  * to declare a ZFInterface:
  * @code
- *   zfinterface MyInterface : zfextends ZFInterface
- *   {
+ *   zfinterface MyInterface : zfextends ZFInterface {
  *       ZFINTERFACE_DECLARE(MyInterface, ZFInterface)
  *   };
  *

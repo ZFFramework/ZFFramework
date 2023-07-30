@@ -5,8 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfabstract ZFFramework_test_TestCase : zfextends ZFTestCase
-{
+zfabstract ZFFramework_test_TestCase : zfextends ZFTestCase {
     ZFOBJECT_DECLARE_ABSTRACT(ZFFramework_test_TestCase, ZFTestCase)
 
 protected:
@@ -32,8 +31,7 @@ private:
 
 #define ZFFramework_test_protocolCheck(ProtocolName) \
     do { \
-        if(!ZFProtocolIsAvailable(ZFM_TOSTRING_DIRECT(ProtocolName))) \
-        { \
+        if(!ZFProtocolIsAvailable(ZFM_TOSTRING_DIRECT(ProtocolName))) { \
             this->testCaseOutput(#ProtocolName " not available, skip test case"); \
             this->testCaseStop(); \
             return; \
@@ -42,8 +40,7 @@ private:
 
 #define ZFFramework_test_asyncTestCheck() \
     do { \
-        if(!ZFThread::implMainThreadTaskAvailable()) \
-        { \
+        if(!ZFThread::implMainThreadTaskAvailable()) { \
             this->testCaseOutput("ZFThread::implMainThreadTaskAvailable() not available, skip test case"); \
             this->testCaseStop(); \
             return; \

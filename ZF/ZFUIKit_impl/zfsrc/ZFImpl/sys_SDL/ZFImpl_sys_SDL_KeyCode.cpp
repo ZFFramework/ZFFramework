@@ -4,10 +4,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFUIKeyCodeEnum ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw)
-{
-    switch(raw)
-    {
+ZFUIKeyCodeEnum ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw(ZF_IN SDL_KeyCode raw) {
+    switch(raw) {
         case SDLK_UNKNOWN:
             return ZFUIKeyCode::e_kUnknown;
 

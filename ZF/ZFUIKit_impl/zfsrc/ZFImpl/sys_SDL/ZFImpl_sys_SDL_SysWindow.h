@@ -11,8 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief mouse state for impl
  */
-zfclassNotPOD ZFImpl_sys_SDL_MouseState
-{
+zfclassNotPOD ZFImpl_sys_SDL_MouseState {
 public:
     /** @brief current mouse id */
     zfidentity mouseId;
@@ -39,8 +38,7 @@ zfclassFwd _ZFP_ZFImpl_sys_SDL_SysWindowPrivate;
 /**
  * @brief native view impl for SDL
  */
-zffinal zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_SysWindow
-{
+zffinal zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_SysWindow {
 public:
     /** @brief access all window instance */
     static ZFCoreArrayPOD<ZFImpl_sys_SDL_SysWindow *> &allWindow(void);
@@ -94,7 +92,10 @@ public:
      * which: SDL_MouseButtonEvent.which or SDL_MouseMotionEvent.which
      * button: SDL_MouseButtonEvent.button or -1 for SDL_MouseMotionEvent
      */
-    ZFImpl_sys_SDL_MouseState &mouseState(ZF_IN Uint32 which, ZF_IN Uint8 button);
+    ZFImpl_sys_SDL_MouseState &mouseState(
+            ZF_IN Uint32 which
+            , ZF_IN Uint8 button
+            );
 
 public:
     /** @cond ZFPrivateDoc */

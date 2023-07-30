@@ -39,16 +39,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * to add your own type,
  * please refer to #ZFOBJECTIO_DEFINE
  */
-extern ZFLIB_ZFCore zfautoObject ZFObjectIOLoad(ZF_IN const ZFInput &input,
-                                                ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+extern ZFLIB_ZFCore zfautoObject ZFObjectIOLoad(
+        ZF_IN const ZFInput &input
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        );
 /** @brief see #ZFObjectIOLoad */
-extern ZFLIB_ZFCore zfbool ZFObjectIOLoadT(ZF_OUT zfautoObject &ret,
-                                           ZF_IN const ZFInput &input,
-                                           ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFObjectIOLoadT(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN const ZFInput &input
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        );
 /** @brief see #ZFObjectIOLoad */
-extern ZFLIB_ZFCore zfbool ZFObjectIOSave(ZF_IN_OUT const ZFOutput &output,
-                                          ZF_IN ZFObject *obj,
-                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFObjectIOSave(
+        ZF_IN_OUT const ZFOutput &output
+        , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        );
 
 // ============================================================
 /**
@@ -58,8 +64,10 @@ extern ZFLIB_ZFCore const zfchar *ZFObjectIOImplCheckFileExt(ZF_IN const ZFPathI
 /**
  * @brief util for impl to check whether the path data is a file path with desiredFileExt
  */
-extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(ZF_IN const ZFPathInfo &pathInfo,
-                                               ZF_IN const zfchar *desiredFileExt);
+extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
+        ZF_IN const ZFPathInfo &pathInfo
+        , ZF_IN const zfchar *desiredFileExt
+        );
 
 /**
  * @brief see #ZFObjectIOLoad
@@ -74,57 +82,66 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(ZF_IN const ZFPathInfo &pathInfo,
  *       }, {
  *           // callback to load object from input
  *           // proto type:
- *           //   zfbool fromInput(ZF_OUT zfautoObject &ret,
- *           //                    ZF_IN_OUT const ZFInput &input,
- *           //                    ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+ *           //   zfbool fromInput(
+ *           //           ZF_OUT zfautoObject &ret
+ *           //           , ZF_IN_OUT const ZFInput &input
+ *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+ *           //           );
  *       }, {
  *           // callback to save object to output
  *           // proto type:
- *           //   zfbool toOutput(ZF_IN_OUT const ZFOutput &output,
- *           //                   ZF_IN ZFObject *obj,
- *           //                   ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+ *           //   zfbool toOutput(
+ *           //           ZF_IN_OUT const ZFOutput &output
+ *           //           , ZF_IN ZFObject *obj
+ *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+ *           //           );
  *       })
  * @endcode
  */
 #define ZFOBJECTIO_DEFINE(registerSig, checkerAction, fromInputAction, toOutputAction) \
-    ZF_STATIC_REGISTER_INIT(ObjIOReg_##registerSig) \
-    { \
+    ZF_STATIC_REGISTER_INIT(ObjIOReg_##registerSig) { \
         _ZFP_ZFObjectIORegister(ZFM_TOSTRING_DIRECT(registerSig), \
             zfself::_ZFP_checker, zfself::_ZFP_fromInput, zfself::_ZFP_toOutput); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(ObjIOReg_##registerSig) \
-    { \
+    ZF_STATIC_REGISTER_DESTROY(ObjIOReg_##registerSig) { \
         _ZFP_ZFObjectIOUnregister(ZFM_TOSTRING_DIRECT(registerSig)); \
     } \
-    static zfbool _ZFP_checker(ZF_IN const ZFPathInfo &pathInfo) \
-    { \
+    static zfbool _ZFP_checker(ZF_IN const ZFPathInfo &pathInfo) { \
         checkerAction \
     } \
-    static zfbool _ZFP_fromInput(ZF_OUT zfautoObject &ret, \
-                                 ZF_IN_OUT const ZFInput &input, \
-                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull) \
-    { \
+    static zfbool _ZFP_fromInput( \
+            ZF_OUT zfautoObject &ret \
+            , ZF_IN_OUT const ZFInput &input \
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+            ) { \
         fromInputAction \
     } \
-    static zfbool _ZFP_toOutput(ZF_IN_OUT const ZFOutput &output, \
-                                ZF_IN ZFObject *obj, \
-                                ZF_OUT_OPT zfstring *outErrorHint = zfnull) \
-    { \
+    static zfbool _ZFP_toOutput( \
+            ZF_IN_OUT const ZFOutput &output \
+            , ZF_IN ZFObject *obj \
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+            ) { \
         toOutputAction \
     } \
     ZF_STATIC_REGISTER_END(ObjIOReg_##registerSig)
 
 typedef zfbool (*_ZFP_ZFObjectIOCallback_checker)(ZF_IN const ZFPathInfo &pathInfo);
-typedef zfbool (*_ZFP_ZFObjectIOCallback_fromInput)(ZF_OUT zfautoObject &ret,
-                                                    ZF_IN_OUT const ZFInput &input,
-                                                    ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */);
-typedef zfbool (*_ZFP_ZFObjectIOCallback_toOutput)(ZF_IN_OUT const ZFOutput &output,
-                                                   ZF_IN ZFObject *obj,
-                                                   ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */);
-extern ZFLIB_ZFCore void _ZFP_ZFObjectIORegister(ZF_IN const zfchar *registerSig,
-                                                 ZF_IN _ZFP_ZFObjectIOCallback_checker checker,
-                                                 ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput,
-                                                 ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput);
+typedef zfbool (*_ZFP_ZFObjectIOCallback_fromInput)(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN_OUT const ZFInput &input
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        );
+typedef zfbool (*_ZFP_ZFObjectIOCallback_toOutput)(
+        ZF_IN_OUT const ZFOutput &output
+        , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        );
+extern ZFLIB_ZFCore void _ZFP_ZFObjectIORegister(
+        ZF_IN const zfchar *registerSig
+        , ZF_IN _ZFP_ZFObjectIOCallback_checker checker
+        , ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput
+        , ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput
+        );
 extern ZFLIB_ZFCore void _ZFP_ZFObjectIOUnregister(ZF_IN const zfchar *registerSig);
 
 ZF_NAMESPACE_GLOBAL_END

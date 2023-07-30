@@ -30,34 +30,29 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFListener, ZFCallback)
 public:
     /** @brief see #ZFListener */
-    inline void execute(void) const
-    {
+    inline void execute(void) const {
         ZFArgs zfargs;
         zfargs.userData(this->userData());
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */
-    inline void execute(ZF_IN const ZFArgs &zfargs) const
-    {
+    inline void execute(ZF_IN const ZFArgs &zfargs) const {
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */
-    inline void operator () (void) const
-    {
+    inline void operator () (void) const {
         ZFArgs zfargs;
         zfargs.userData(this->userData());
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */
-    inline void operator () (ZF_IN const ZFArgs &zfargs) const
-    {
+    inline void operator () (ZF_IN const ZFArgs &zfargs) const {
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
 
 public:
     template<typename T_Func>
-    ZFListener(ZF_IN T_Func f)
-    {
+    ZFListener(ZF_IN T_Func f) {
         #if ZF_ENV_LAMBDA
             std::function<void(const ZFArgs &)> fTmp = f;
             ZFLISTENER_1(wrapper
@@ -76,8 +71,7 @@ public:
         this->operator = (wrapper);
     }
     template<typename T_Func>
-    ZFListener &operator = (ZF_IN T_Func f)
-    {
+    ZFListener &operator = (ZF_IN T_Func f) {
         #if ZF_ENV_LAMBDA
             std::function<void(const ZFArgs &)> fTmp = f;
             ZFLISTENER_1(wrapper
@@ -106,8 +100,7 @@ zfclassFwd _ZFP_ZFObserverPrivate;
 /**
  * @brief holder object for observer logic, see #ZFObject::observerNotify
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserver
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFObserver {
 public:
     /** @cond ZFPrivateDoc */
     ZFObserver(void);
@@ -120,16 +113,22 @@ public:
 
 public:
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerAdd(ZF_IN zfidentity eventId,
-                             ZF_IN const ZFListener &observer,
-                             ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
+    zffinal void observerAdd(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            );
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerAddForOnce(ZF_IN zfidentity eventId,
-                                    ZF_IN const ZFListener &observer,
-                                    ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
+    zffinal void observerAddForOnce(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            );
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerRemove(ZF_IN zfidentity eventId,
-                                ZF_IN const ZFListener &callback);
+    zffinal void observerRemove(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &callback
+            );
     /** @brief see #ZFObject::observerNotify */
     zffinal void observerRemoveAll(ZF_IN zfidentity eventId);
     /** @brief see #ZFObject::observerNotify */
@@ -139,17 +138,20 @@ public:
     /** @brief see #ZFObject::observerNotify */
     zffinal zfbool observerHasAdd(ZF_IN zfidentity eventId) const;
     /** @brief see #ZFObject::observerNotify */
-    zffinal inline void observerNotify(ZF_IN zfidentity eventId,
-                                       ZF_IN_OPT ZFObject *param0 = zfnull,
-                                       ZF_IN_OPT ZFObject *param1 = zfnull) const
-    {
+    zffinal inline void observerNotify(
+            ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const {
         this->observerNotifyWithSender(this->observerOwner(), eventId, param0, param1);
     }
     /** @brief see #ZFObject::observerNotify */
-    zffinal void observerNotifyWithSender(ZF_IN ZFObject *customSender,
-                                          ZF_IN zfidentity eventId,
-                                          ZF_IN_OPT ZFObject *param0 = zfnull,
-                                          ZF_IN_OPT ZFObject *param1 = zfnull) const;
+    zffinal void observerNotifyWithSender(
+            ZF_IN ZFObject *customSender
+            , ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) const;
 
 public:
     /**
@@ -170,21 +172,24 @@ public:
      *   observer.observerHasAddStateAttach(EventXXX, &myFlag, Flag_MyEvent0);
      *   observer.observerHasAddStateAttach(EventXXX, &myFlag, Flag_MyEvent1);
      *
-     *   if(ZFBitTest(myFlag, Flag_MyEvent0))
-     *   {
+     *   if(ZFBitTest(myFlag, Flag_MyEvent0)) {
      *       observer.observerNotify(...);
      *   }
      * @endcode
      */
-    zffinal void observerHasAddStateAttach(ZF_IN zfidentity eventId,
-                                           ZF_IN_OUT zfuint *flag,
-                                           ZF_IN_OUT zfuint flagBit);
+    zffinal void observerHasAddStateAttach(
+            ZF_IN zfidentity eventId
+            , ZF_IN_OUT zfuint *flag
+            , ZF_IN_OUT zfuint flagBit
+            );
     /**
      * @brief see #observerHasAddStateAttach
      */
-    zffinal void observerHasAddStateDetach(ZF_IN zfidentity eventId,
-                                           ZF_IN_OUT zfuint *flag,
-                                           ZF_IN_OUT zfuint flagBit);
+    zffinal void observerHasAddStateDetach(
+            ZF_IN zfidentity eventId
+            , ZF_IN_OUT zfuint *flag
+            , ZF_IN_OUT zfuint flagBit
+            );
 
 public:
     /** @brief see #objectInfo */
@@ -192,8 +197,7 @@ public:
     /**
      * @brief return a short string describe the object
      */
-    zfstring objectInfo(void) const
-    {
+    zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -224,8 +228,7 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *
  * usage:
  * @code
- *   zfclass YourClass ...
- *   {
+ *   zfclass YourClass ... {
  *       ZFOBSERVER_EVENT(YourEvent)
  *   };
  *

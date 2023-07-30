@@ -52,14 +52,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZFCORE_PARAM_RETAIN_WITH_INIT(T_ParamType, paramName, initValue) \
     public: \
-        T_ParamType const &paramName(void) const \
-        { \
+        T_ParamType const &paramName(void) const { \
             return this->paramName##_PropV.value; \
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD paramName##_ZFCoreParam \
-        { \
+        zfclassLikePOD paramName##_ZFCoreParam { \
         public: \
             paramName##_ZFCoreParam(void) \
             : value(zfnull) \
@@ -68,16 +66,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 this->value = zfRetain(*(t = zfnew(T_ParamType, initValue))); \
                 zfdelete(t); \
             } \
-            paramName##_ZFCoreParam(ZF_IN const paramName##_ZFCoreParam &ref) \
-            { \
+            paramName##_ZFCoreParam(ZF_IN const paramName##_ZFCoreParam &ref) { \
                 this->value = zfRetain(ref.value); \
             } \
-            ~paramName##_ZFCoreParam(void) \
-            { \
+            ~paramName##_ZFCoreParam(void) { \
                 zfRelease(this->value); \
             } \
-            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref) \
-            { \
+            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref) { \
                 zfCoreMutexLock(); \
                 zfunsafe_zfRetain(ref.value); \
                 zfunsafe_zfRelease(this->value); \
@@ -92,8 +87,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
-        zfself &paramName(ZF_IN T_ParamType const &value) \
-        { \
+        zfself &paramName(ZF_IN T_ParamType const &value) { \
             zfCoreMutexLock(); \
             zfunsafe_zfRetain(value); \
             zfunsafe_zfRelease(this->paramName##_PropV.value); \
@@ -108,8 +102,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         T_ParamType const &paramName(void) const; \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD paramName##_ZFCoreParam \
-        { \
+        zfclassLikePOD paramName##_ZFCoreParam { \
         public: \
             paramName##_ZFCoreParam(void); \
             paramName##_ZFCoreParam(ZF_IN const paramName##_ZFCoreParam &ref); \
@@ -124,27 +117,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         /** @brief see @ref paramName */ \
         zfself &paramName(ZF_IN T_ParamType const &value);
 #define _ZFP_ZFCORE_PARAM_RETAIN_DEFINE(T_Owner, T_ParamType, paramName, initValue) \
-    T_ParamType const &T_Owner::paramName(void) const \
-    { \
+    T_ParamType const &T_Owner::paramName(void) const { \
         return this->paramName##_PropV.value; \
     } \
     /** @cond ZFPrivateDoc */ \
-    T_Owner::paramName##_ZFCoreParam::paramName##_ZFCoreParam(void) \
-    { \
+    T_Owner::paramName##_ZFCoreParam::paramName##_ZFCoreParam(void) { \
         T_ParamType *t = zfnull; \
         this->value = zfRetain(*(t = zfnew(T_ParamType, initValue))); \
         zfdelete(t); \
     } \
-    T_Owner::paramName##_ZFCoreParam::paramName##_ZFCoreParam(ZF_IN const T_Owner::paramName##_ZFCoreParam &ref) \
-    { \
+    T_Owner::paramName##_ZFCoreParam::paramName##_ZFCoreParam(ZF_IN const T_Owner::paramName##_ZFCoreParam &ref) { \
         this->value = zfRetain(ref.value); \
     } \
-    T_Owner::paramName##_ZFCoreParam::~paramName##_ZFCoreParam(void) \
-    { \
+    T_Owner::paramName##_ZFCoreParam::~paramName##_ZFCoreParam(void) { \
         zfRelease(this->value); \
     } \
-    T_Owner::paramName##_ZFCoreParam &T_Owner::paramName##_ZFCoreParam::operator = (ZF_IN const T_Owner::paramName##_ZFCoreParam &ref) \
-    { \
+    T_Owner::paramName##_ZFCoreParam &T_Owner::paramName##_ZFCoreParam::operator = (ZF_IN const T_Owner::paramName##_ZFCoreParam &ref) { \
         zfCoreMutexLock(); \
         zfunsafe_zfRetain(ref.value); \
         zfunsafe_zfRelease(this->value); \
@@ -153,8 +141,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return *this; \
     } \
     /** @endcond */ \
-    T_Owner::zfself &T_Owner::paramName(ZF_IN T_ParamType const &value) \
-    { \
+    T_Owner::zfself &T_Owner::paramName(ZF_IN T_ParamType const &value) { \
         zfCoreMutexLock(); \
         zfunsafe_zfRetain(value); \
         zfunsafe_zfRelease(this->paramName##_PropV.value); \
@@ -193,8 +180,7 @@ typedef enum {
     ZFClassDataChangeTypeClassAliasDetach, /**< @brief #ZFClass::classAliasTo detach */
 } ZFClassDataChangeType;
 /** @brief data holder for #ZFGlobalEvent::EventClassDataChange */
-zfclassPOD ZFLIB_ZFCore ZFClassDataChangeData
-{
+zfclassPOD ZFLIB_ZFCore ZFClassDataChangeData {
 public:
     ZFClassDataChangeType changeType; /**< @brief change type */
     const ZFClass *changedClass; /**< @brief changed class */
@@ -208,11 +194,13 @@ public:
      */
     const zfchar *name;
 };
-extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(ZF_IN ZFClassDataChangeType changeType,
-                                                      ZF_IN const ZFClass *changedClass,
-                                                      ZF_IN const ZFProperty *changedProperty,
-                                                      ZF_IN const ZFMethod *changedMethod,
-                                                      ZF_IN_OPT const zfchar *name = zfnull);
+extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(
+        ZF_IN ZFClassDataChangeType changeType
+        , ZF_IN const ZFClass *changedClass
+        , ZF_IN const ZFProperty *changedProperty
+        , ZF_IN const ZFMethod *changedMethod
+        , ZF_IN_OPT const zfchar *name = zfnull
+        );
 
 extern ZFLIB_ZFCore zfindex _ZFP_ZFSigForName(ZF_IN const zfchar *name);
 extern ZFLIB_ZFCore const zfchar *_ZFP_ZFSigNameAddr(ZF_IN const zfchar *name);

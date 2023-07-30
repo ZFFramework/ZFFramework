@@ -3,149 +3,141 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass _ZFP_ZFCore_ZFMethod_test_TestBase : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_ZFMethod_test_TestBase : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFMethod_test_TestBase, ZFObject)
 public:
     zfstring s;
 
 public:
-    ZFMETHOD_INLINE_0(void, methodNormal)
-    {
+    ZFMETHOD_INLINE_0(void, methodNormal) {
         zfLog();
     }
     ZFMETHOD_DECLARE_0(void, methodDefinedInCppFile)
-    ZFMETHOD_INLINE_0(void, methodOverrided)
-    {
+    ZFMETHOD_INLINE_0(void, methodOverrided) {
         zfLog();
     }
     ZFMETHOD_INLINE_DETAIL_0(protected, ZFMethodTypeVirtual, ZF_CALLER_LINE,
-                             void, methodProtected)
-    {
+            void, methodProtected
+            ) {
         zfLog();
     }
     ZFMETHOD_INLINE_DETAIL_0(private, ZFMethodTypeVirtual, ZF_CALLER_LINE,
-                             void, methodPrivate)
-    {
+            void, methodPrivate
+            ) {
         zfLog();
     }
     ZFMETHOD_INLINE_DETAIL_0(public, ZFMethodTypeStatic, ZF_CALLER_LINE,
-                             void, methodStatic)
-    {
+            void, methodStatic
+            ) {
         zfLog();
     }
-    ZFMETHOD_INLINE_1(void, methodOverloaded,
-                      ZFMP_IN(zfint, param0))
-    {
+    ZFMETHOD_INLINE_1(void, methodOverloaded
+            , ZFMP_IN(zfint, param0)
+            ) {
         zfLog() << param0;
     }
-    ZFMETHOD_INLINE_1(void, methodOverloaded,
-                      ZFMP_IN(zffloat, param0))
-    {
+    ZFMETHOD_INLINE_1(void, methodOverloaded
+            , ZFMP_IN(zffloat, param0)
+            ) {
         zfLog() << param0;
     }
-    ZFMETHOD_INLINE_1(void, methodForDefaultParam,
-                      ZFMP_IN_OPT(const zfstring &, param0, "DefaultParam"))
-    {
+    ZFMETHOD_INLINE_1(void, methodForDefaultParam
+            , ZFMP_IN_OPT(const zfstring &, param0, "DefaultParam")
+            ) {
         zfLog() << param0;
     }
-    ZFMETHOD_INLINE_0(zfstring &, methodReturnReference)
-    {
+    ZFMETHOD_INLINE_0(zfstring &, methodReturnReference) {
         zfLog();
         return this->s;
     }
-    ZFMETHOD_INLINE_1(void, methodParamIsReference,
-                      ZFMP_IN(zfstring &, param0))
-    {
+    ZFMETHOD_INLINE_1(void, methodParamIsReference
+            , ZFMP_IN(zfstring &, param0)
+            ) {
         zfLog();
         param0 = "newString";
     }
-    ZFMETHOD_INLINE_2(void, methodFor2Param,
-                      ZFMP_IN(const zfchar *, param0),
-                      ZFMP_IN(const zfchar *, param1))
-    {
+    ZFMETHOD_INLINE_2(void, methodFor2Param
+            , ZFMP_IN(const zfchar *, param0)
+            , ZFMP_IN(const zfchar *, param1)
+            ) {
         zfLog() << param0 << param1;
     }
-    ZFMETHOD_INLINE_3(void, methodFor3Param,
-                      ZFMP_IN(const zfchar *, param0),
-                      ZFMP_IN(const zfchar *, param1),
-                      ZFMP_IN(const zfchar *, param2))
-    {
+    ZFMETHOD_INLINE_3(void, methodFor3Param
+            , ZFMP_IN(const zfchar *, param0)
+            , ZFMP_IN(const zfchar *, param1)
+            , ZFMP_IN(const zfchar *, param2)
+            ) {
         zfLog() << param0 << param1 << param2;
     }
-    ZFMETHOD_INLINE_4(void, methodFor4Param,
-                      ZFMP_IN(const zfchar *, param0),
-                      ZFMP_IN(const zfchar *, param1),
-                      ZFMP_IN(const zfchar *, param2),
-                      ZFMP_IN(const zfchar *, param3))
-    {
+    ZFMETHOD_INLINE_4(void, methodFor4Param
+            , ZFMP_IN(const zfchar *, param0)
+            , ZFMP_IN(const zfchar *, param1)
+            , ZFMP_IN(const zfchar *, param2)
+            , ZFMP_IN(const zfchar *, param3)
+            ) {
         zfLog() << param0 << param1 << param2 << param3;
     }
-    ZFMETHOD_INLINE_5(void, methodFor5Param,
-                      ZFMP_IN(const zfchar *, param0),
-                      ZFMP_IN(const zfchar *, param1),
-                      ZFMP_IN(const zfchar *, param2),
-                      ZFMP_IN(const zfchar *, param3),
-                      ZFMP_IN(const zfchar *, param4))
-    {
+    ZFMETHOD_INLINE_5(void, methodFor5Param
+            , ZFMP_IN(const zfchar *, param0)
+            , ZFMP_IN(const zfchar *, param1)
+            , ZFMP_IN(const zfchar *, param2)
+            , ZFMP_IN(const zfchar *, param3)
+            , ZFMP_IN(const zfchar *, param4)
+            ) {
         zfLog() << param0 << param1 << param2 << param3 << param4;
     }
-    ZFMETHOD_INLINE_6(void, methodFor6Param,
-                      ZFMP_IN(const zfchar *, param0),
-                      ZFMP_IN(const zfchar *, param1),
-                      ZFMP_IN(const zfchar *, param2),
-                      ZFMP_IN(const zfchar *, param3),
-                      ZFMP_IN(const zfchar *, param4),
-                      ZFMP_IN(const zfchar *, param5))
-    {
+    ZFMETHOD_INLINE_6(void, methodFor6Param
+            , ZFMP_IN(const zfchar *, param0)
+            , ZFMP_IN(const zfchar *, param1)
+            , ZFMP_IN(const zfchar *, param2)
+            , ZFMP_IN(const zfchar *, param3)
+            , ZFMP_IN(const zfchar *, param4)
+            , ZFMP_IN(const zfchar *, param5)
+            ) {
         zfLog() << param0 << param1 << param2 << param3 << param4 << param5;
     }
-    ZFMETHOD_INLINE_7(void, methodFor7Param,
-                      ZFMP_IN(const zfchar *, param0),
-                      ZFMP_IN(const zfchar *, param1),
-                      ZFMP_IN(const zfchar *, param2),
-                      ZFMP_IN(const zfchar *, param3),
-                      ZFMP_IN(const zfchar *, param4),
-                      ZFMP_IN(const zfchar *, param5),
-                      ZFMP_IN(const zfchar *, param6))
-    {
+    ZFMETHOD_INLINE_7(void, methodFor7Param
+            , ZFMP_IN(const zfchar *, param0)
+            , ZFMP_IN(const zfchar *, param1)
+            , ZFMP_IN(const zfchar *, param2)
+            , ZFMP_IN(const zfchar *, param3)
+            , ZFMP_IN(const zfchar *, param4)
+            , ZFMP_IN(const zfchar *, param5)
+            , ZFMP_IN(const zfchar *, param6)
+            ) {
         zfLog() << param0 << param1 << param2 << param3 << param4 << param5 << param6;
     }
-    ZFMETHOD_INLINE_8(void, methodFor8Param,
-                      ZFMP_IN(const zfchar *, param0),
-                      ZFMP_IN(const zfchar *, param1),
-                      ZFMP_IN(const zfchar *, param2),
-                      ZFMP_IN(const zfchar *, param3),
-                      ZFMP_IN(const zfchar *, param4),
-                      ZFMP_IN(const zfchar *, param5),
-                      ZFMP_IN(const zfchar *, param6),
-                      ZFMP_IN(const zfchar *, param7))
-    {
+    ZFMETHOD_INLINE_8(void, methodFor8Param
+            , ZFMP_IN(const zfchar *, param0)
+            , ZFMP_IN(const zfchar *, param1)
+            , ZFMP_IN(const zfchar *, param2)
+            , ZFMP_IN(const zfchar *, param3)
+            , ZFMP_IN(const zfchar *, param4)
+            , ZFMP_IN(const zfchar *, param5)
+            , ZFMP_IN(const zfchar *, param6)
+            , ZFMP_IN(const zfchar *, param7)
+            ) {
         zfLog() << param0 << param1 << param2 << param3 << param4 << param5 << param6 << param7;
     }
 };
 #if 0 // if opened, all method should be registered statically
     ZFOBJECT_REGISTER(_ZFP_ZFCore_ZFMethod_test_TestBase)
 #endif
-ZFMETHOD_DEFINE_0(_ZFP_ZFCore_ZFMethod_test_TestBase, void, methodDefinedInCppFile)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFCore_ZFMethod_test_TestBase, void, methodDefinedInCppFile) {
     zfLog();
 }
 
 // ============================================================
-zfclass _ZFP_ZFCore_ZFMethod_test_TestChild : zfextends _ZFP_ZFCore_ZFMethod_test_TestBase
-{
+zfclass _ZFP_ZFCore_ZFMethod_test_TestChild : zfextends _ZFP_ZFCore_ZFMethod_test_TestBase {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFMethod_test_TestChild, _ZFP_ZFCore_ZFMethod_test_TestBase)
 
 public:
-    ZFMETHOD_INLINE_0(void, methodOverrided)
-    {
+    ZFMETHOD_INLINE_0(void, methodOverrided) {
         zfsuper::methodOverrided();
         zfLog();
     }
 
-    ZFMETHOD_INLINE_0(void, methodInChild)
-    {
+    ZFMETHOD_INLINE_0(void, methodInChild) {
         zfLog();
     }
 };
@@ -154,14 +146,12 @@ public:
 #endif
 
 // ============================================================
-zfclass ZFCore_ZFMethod_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFMethod_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFMethod_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         const ZFClass *clsBase = _ZFP_ZFCore_ZFMethod_test_TestBase::ClassData();
@@ -198,10 +188,14 @@ protected:
         this->testCaseOutput("methodStatic: %s",
                 ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodStatic)->objectInfo().cString());
         this->testCaseOutput("methodOverloaded(zfint): %s",
-                ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded, ZFMP_IN(zfint, param0))
+                ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
+                    , ZFMP_IN(zfint, param0)
+                    )
                 ->objectInfo().cString());
         this->testCaseOutput("methodOverloaded(zffloat): %s",
-                ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded, ZFMP_IN(zffloat, param0))
+                ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
+                    , ZFMP_IN(zffloat, param0)
+                    )
                 ->objectInfo().cString());
 
         this->testCaseOutput("unlike reflected by ZFClass, ZFMethodAccess would comiple error if method not defined");
@@ -289,8 +283,7 @@ private:
     _ZFP_ZFCore_ZFMethod_test_TestBase *pBasePointToChild;
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
 
         this->pBase = zfnull;
@@ -298,22 +291,19 @@ protected:
         this->pBasePointToChild = zfnull;
     }
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         this->destroyInstance();
         zfsuper::objectOnDealloc();
     }
 private:
-    void prepareInstance(void)
-    {
+    void prepareInstance(void) {
         this->destroyInstance();
 
         this->pBase = zfAlloc(_ZFP_ZFCore_ZFMethod_test_TestBase);
         this->pChild = zfAlloc(_ZFP_ZFCore_ZFMethod_test_TestChild);
         this->pBasePointToChild = this->pChild;
     }
-    void destroyInstance(void)
-    {
+    void destroyInstance(void) {
         zfRelease(this->pBase);
         zfRelease(this->pChild);
 
@@ -321,10 +311,8 @@ private:
         this->pChild = zfnull;
         this->pBasePointToChild = zfnull;
     }
-    void printMethodInfo(const ZFClass *cls, const zfchar *indent = "  ")
-    {
-        for(zfindex i = 0; i < cls->methodCount(); ++i)
-        {
+    void printMethodInfo(const ZFClass *cls, const zfchar *indent = "  ") {
+        for(zfindex i = 0; i < cls->methodCount(); ++i) {
             this->testCaseOutput("%s%s", indent, cls->methodAt(i)->objectInfo().cString());
         }
     }

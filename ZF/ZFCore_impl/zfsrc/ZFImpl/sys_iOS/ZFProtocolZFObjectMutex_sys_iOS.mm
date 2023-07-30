@@ -5,28 +5,22 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_iOS
-{
+zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_iOS {
 public:
-    static void *implInit(void)
-    {
+    static void *implInit(void) {
         return (__bridge_retained void *)[NSRecursiveLock new];
     }
-    static void implDealloc(ZF_IN void *implObject)
-    {
+    static void implDealloc(ZF_IN void *implObject) {
         NSRecursiveLock *t = (__bridge_transfer NSRecursiveLock *)implObject;
         t = nil;
     }
-    static void implLock(ZF_IN void *implObject)
-    {
+    static void implLock(ZF_IN void *implObject) {
         [(__bridge NSRecursiveLock *)implObject lock];
     }
-    static void implUnlock(ZF_IN void *implObject)
-    {
+    static void implUnlock(ZF_IN void *implObject) {
         [(__bridge NSRecursiveLock *)implObject unlock];
     }
-    static zfbool implTryLock(ZF_IN void *implObject)
-    {
+    static zfbool implTryLock(ZF_IN void *implObject) {
         return (zfbool)[(__bridge NSRecursiveLock *)implObject tryLock];
     }
 };

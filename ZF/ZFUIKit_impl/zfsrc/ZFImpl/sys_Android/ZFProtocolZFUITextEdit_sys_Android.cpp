@@ -13,8 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextEditImpl_sys_Android, ZFUITextEdit, ZFPr
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -24,17 +23,17 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void *nativeTextEditCreate(ZF_IN ZFUITextEdit *textEdit,
-                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeTextEditCreate(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTextEditCreate",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -46,9 +45,10 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ZFCastStatic(void *, ret);
     }
-    virtual void nativeTextEditDestroy(ZF_IN ZFUITextEdit *textEdit,
-                                       ZF_IN void *nativeTextEdit)
-    {
+    virtual void nativeTextEditDestroy(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN void *nativeTextEdit
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTextEditDestroy",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -62,9 +62,10 @@ public:
     // ============================================================
     // properties
 public:
-    virtual void textEditEnable(ZF_IN ZFUITextEdit *textEdit,
-                                ZF_IN zfbool textEditEnable)
-    {
+    virtual void textEditEnable(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN zfbool textEditEnable
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textEditEnable",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -75,9 +76,10 @@ public:
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             (jboolean)textEditEnable);
     }
-    virtual void textEditSecure(ZF_IN ZFUITextEdit *textEdit,
-                                ZF_IN zfbool textEditSecured)
-    {
+    virtual void textEditSecure(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN zfbool textEditSecured
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textEditSecure",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -88,9 +90,10 @@ public:
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             (jboolean)textEditSecured);
     }
-    virtual void textEditKeyboardType(ZF_IN ZFUITextEdit *textEdit,
-                                      ZF_IN ZFUITextEditKeyboardTypeEnum textEditKeyboardType)
-    {
+    virtual void textEditKeyboardType(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN ZFUITextEditKeyboardTypeEnum textEditKeyboardType
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textEditKeyboardType",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -101,9 +104,10 @@ public:
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             (jint)textEditKeyboardType);
     }
-    virtual void textEditKeyboardReturnType(ZF_IN ZFUITextEdit *textEdit,
-                                            ZF_IN ZFUITextEditKeyboardReturnTypeEnum textEditKeyboardReturnType)
-    {
+    virtual void textEditKeyboardReturnType(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN ZFUITextEditKeyboardReturnTypeEnum textEditKeyboardReturnType
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textEditKeyboardReturnType",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -115,8 +119,10 @@ public:
             (jint)textEditKeyboardReturnType);
     }
 
-    virtual void textSelectRange(ZF_IN ZFUITextEdit *textEdit, ZF_OUT ZFIndexRange &textSelectRange)
-    {
+    virtual void textSelectRange(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_OUT ZFIndexRange &textSelectRange
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId_start = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textSelectRange_start",
             JNIGetMethodSig(JNIType::S_int, JNIParamTypeContainer()
@@ -131,8 +137,10 @@ public:
         textSelectRange.count = JNIUtilCallStaticIntMethod(jniEnv, this->jclsOwner, jmId_count,
             ZFCastStatic(jobject, textEdit->nativeImplView()));
     }
-    virtual void textSelectRange(ZF_IN ZFUITextEdit *textEdit, ZF_IN const ZFIndexRange &textSelectRange)
-    {
+    virtual void textSelectRange(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN const ZFIndexRange &textSelectRange
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textSelectRange",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -147,9 +155,10 @@ public:
     }
 
 public:
-    virtual void text(ZF_IN ZFUITextEdit *textEdit,
-                      ZF_IN const zfchar *text)
-    {
+    virtual void text(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN const zfchar *text
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_text",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -160,9 +169,10 @@ public:
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             ZFCastStatic(jobject, ZFImpl_sys_Android_zfstringToString(text)));
     }
-    virtual void textAppearance(ZF_IN ZFUITextEdit *textEdit,
-                                ZF_IN ZFUITextAppearanceEnum const &textAppearance)
-    {
+    virtual void textAppearance(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textAppearance",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -173,9 +183,10 @@ public:
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             ZFCastStatic(jint, textAppearance));
     }
-    virtual void textAlign(ZF_IN ZFUITextEdit *textEdit,
-                           ZF_IN ZFUIAlignFlags const &textAlign)
-    {
+    virtual void textAlign(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN ZFUIAlignFlags const &textAlign
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textAlign",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -186,9 +197,10 @@ public:
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             ZFCastStatic(jint, textAlign));
     }
-    virtual void textColor(ZF_IN ZFUITextEdit *textEdit,
-                           ZF_IN ZFUIColor const &textColor)
-    {
+    virtual void textColor(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN ZFUIColor const &textColor
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textColor",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -199,9 +211,10 @@ public:
             ZFCastStatic(jobject, textEdit->nativeImplView()),
             ZFImpl_sys_Android_ZFUIColorToColor(textColor));
     }
-    virtual void textSize(ZF_IN ZFUITextEdit *textEdit,
-                          ZF_IN zffloat textSize)
-    {
+    virtual void textSize(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN zffloat textSize
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textSize",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -216,10 +229,11 @@ public:
     // ============================================================
     // layout
 public:
-    virtual ZFUISize measureNativeTextEdit(ZF_IN ZFUITextEdit *textEdit,
-                                           ZF_IN const ZFUISize &sizeHint,
-                                           ZF_IN zffloat textSize)
-    {
+    virtual ZFUISize measureNativeTextEdit(
+            ZF_IN ZFUITextEdit *textEdit
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN zffloat textSize
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_measureNativeTextEdit",
             JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()
@@ -243,8 +257,7 @@ public:
     // ============================================================
     // edit
 public:
-    virtual void textEditBegin(ZF_IN ZFUITextEdit *textEdit)
-    {
+    virtual void textEditBegin(ZF_IN ZFUITextEdit *textEdit) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textEditBegin",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -253,8 +266,7 @@ public:
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, textEdit->nativeImplView()));
     }
-    virtual void textEditEnd(ZF_IN ZFUITextEdit *textEdit)
-    {
+    virtual void textEditEnd(ZF_IN ZFUITextEdit *textEdit) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textEditEnd",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -271,54 +283,54 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextEditImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit,
-                         jboolean, native_1notifyCheckTextShouldChange,
-                         JNIPointer zfjniPointerOwnerZFUITextEdit,
-                         jobject jobjNewString)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit
+        , jboolean, native_1notifyCheckTextShouldChange
+        , JNIPointer zfjniPointerOwnerZFUITextEdit
+        , jobject jobjNewString
+        ) {
     return (jboolean)ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyCheckTextShouldChange(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)),
         ZFImpl_sys_Android_zfstringFromString(ZFCastStatic(jstring, jobjNewString)));
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit,
-                         void, native_1notifyTextChange,
-                         JNIPointer zfjniPointerOwnerZFUITextEdit,
-                         jobject jobjNewString)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit
+        , void, native_1notifyTextChange
+        , JNIPointer zfjniPointerOwnerZFUITextEdit
+        , jobject jobjNewString
+        ) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextChange(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)),
         ZFImpl_sys_Android_zfstringFromString(ZFCastStatic(jstring, jobjNewString)));
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit,
-                         void, native_1notifyTextSelectRangeChange,
-                         JNIPointer zfjniPointerOwnerZFUITextEdit)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit
+        , void, native_1notifyTextSelectRangeChange
+        , JNIPointer zfjniPointerOwnerZFUITextEdit
+        ) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextSelectRangeChange(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)));
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit,
-                         void, native_1notifyTextReturnClicked,
-                         JNIPointer zfjniPointerOwnerZFUITextEdit)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit
+        , void, native_1notifyTextReturnClicked
+        , JNIPointer zfjniPointerOwnerZFUITextEdit
+        ) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextReturnClicked(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)));
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit,
-                         void, native_1notifyTextEditBegin,
-                         JNIPointer zfjniPointerOwnerZFUITextEdit)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit
+        , void, native_1notifyTextEditBegin
+        , JNIPointer zfjniPointerOwnerZFUITextEdit
+        ) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextEditBegin(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)));
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit,
-                         void, native_1notifyTextEditEnd,
-                         JNIPointer zfjniPointerOwnerZFUITextEdit)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUITextEdit
+        , void, native_1notifyTextEditEnd
+        , JNIPointer zfjniPointerOwnerZFUITextEdit
+        ) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->notifyTextEditEnd(
         ZFCastZFObject(ZFUITextEdit *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUITextEdit)));
 }

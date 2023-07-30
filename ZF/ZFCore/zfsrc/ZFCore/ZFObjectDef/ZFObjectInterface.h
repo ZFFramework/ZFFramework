@@ -24,8 +24,7 @@ zfclassFwd ZFClass;
 #define zfimplements public
 
 // ============================================================
-zfclassNotPOD ZFLIB_ZFCore _ZFP_ObjI_Base
-{
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ObjI_Base {
 protected:
     virtual ~_ZFP_ObjI_Base(void) {}
 
@@ -46,21 +45,17 @@ public:
         /** @brief typedef for self */ \
         typedef InterfaceName zfself; \
     private: \
-        static void _ZFP_Obj_initImplCk(ZF_IN ZFClass *cls) \
-        { \
-            if(cls->_ZFP_ZFClass_implListNeedInit) \
-            { \
+        static void _ZFP_Obj_initImplCk(ZF_IN ZFClass *cls) { \
+            if(cls->_ZFP_ZFClass_implListNeedInit) { \
                 cls->_ZFP_ZFClass_implListNeedInit = zffalse; \
-                if(zfself::_ZFP_Obj_initImpl != zfsuper::_ZFP_Obj_initImpl) \
-                { \
+                if(zfself::_ZFP_Obj_initImpl != zfsuper::_ZFP_Obj_initImpl) { \
                     zfself::_ZFP_Obj_initImpl(cls); \
                 } \
             } \
         } \
     public: \
         /** @brief get class info */ \
-        static const ZFClass *ClassData(void) \
-        { \
+        static const ZFClass *ClassData(void) { \
             static _ZFP_ZFClassRegisterHolder _holder( \
                     ZF_NAMESPACE_CURRENT(), \
                     ZFM_TOSTRING_DIRECT(InterfaceName), \
@@ -75,20 +70,17 @@ public:
             return _holder.cls; \
         } \
     protected: \
-        virtual void _ZFP_ObjI_ICk(void) \
-        { \
+        virtual void _ZFP_ObjI_ICk(void) { \
             /* used to ensure inherit from ZFInterface */ \
             _ZFP_ObjI_Base::_ZFP_ObjI_ICk(); \
         } \
     public: \
         /** @cond ZFPrivateDoc */ \
         template<typename T_ZFObject> \
-        inline T_ZFObject to(void) \
-        { \
+        inline T_ZFObject to(void) { \
             return ZFCastZFObjectUnchecked(T_ZFObject, this); \
         } \
-        inline ZFAny toAny(void) \
-        { \
+        inline ZFAny toAny(void) { \
             return ZFAny(this); \
         } \
         /** @endcond */ \
@@ -117,33 +109,27 @@ public:
     public:
 
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface, int isInterface>
-zfclassNotPOD _ZFP_ZFInterfaceCastWrapper
-{
+zfclassNotPOD _ZFP_ZFInterfaceCastWrapper {
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
-zfclassNotPOD _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 0>
-{
+zfclassNotPOD _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 0> {
 public:
-    static ZFInterface *_ZFP_cast(ZF_IN ZFObject * const &obj)
-    {
+    static ZFInterface *_ZFP_cast(ZF_IN ZFObject * const &obj) {
         return (T_ToZFInterface *)static_cast<T_FromZFObjectOrZFInterface *>(obj);
     }
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
-zfclassNotPOD _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 1>
-{
+zfclassNotPOD _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInterface, 1> {
 public:
     template<typename T_ZFObject>
-    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject * const &obj)
-    {
+    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject * const &obj) {
         return ZFCastZFObjectUnchecked(T_ToZFInterface *, obj->toObject());
     }
 };
 #define _ZFP_ZFIMPLEMENTS_DECLARE_EXPAND_PARAM(Interface) \
     , Interface::ClassData(), &zfself::_ZFP_ZFInterfaceCastCallback_##Interface
 #define _ZFP_ZFIMPLEMENTS_DECLARE_EXPAND_CAST_CALLBACK(Interface) \
-    static ZFInterface *_ZFP_ZFInterfaceCastCallback_##Interface(ZF_IN ZFObject * const &obj) \
-    { \
+    static ZFInterface *_ZFP_ZFInterfaceCastCallback_##Interface(ZF_IN ZFObject * const &obj) { \
         return _ZFP_ZFInterfaceCastWrapper<zfself, Interface, (zftTypeIsTypeOf<zfself, ZFObject>::TypeIsTypeOf ? 0 : 1)>::_ZFP_cast(obj); \
     }
 #define _ZFP_ZFIMPLEMENTS_DECLARE_EXPAND_INTERFACE_ON_INIT(Interface) \
@@ -152,10 +138,8 @@ public:
     Interface::_ZFP_ObjI_onDealloc();
 #define _ZFP_ZFIMPLEMENTS_DECLARE(ImplementedInterfaces, ...) \
     public: \
-        static void _ZFP_Obj_initImpl(ZFClass *cls) \
-        { \
-            if(cls->_ZFP_ZFClass_interfaceNeedRegister()) \
-            { \
+        static void _ZFP_Obj_initImpl(ZFClass *cls) { \
+            if(cls->_ZFP_ZFClass_interfaceNeedRegister()) { \
                 cls->_ZFP_ZFClass_interfaceRegister(0 \
                     ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENTS_DECLARE_EXPAND_PARAM, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
                     , (const ZFClass *)zfnull \
@@ -171,13 +155,11 @@ public:
 #define ZFIMPLEMENTS_DECLARE(ImplementedInterfaces, ...) \
         _ZFP_ZFIMPLEMENTS_DECLARE(ImplementedInterfaces, ##__VA_ARGS__) \
     public: \
-        virtual inline void _ZFP_ObjI_onInitIvk(void) \
-        { \
+        virtual inline void _ZFP_ObjI_onInitIvk(void) { \
             zfsuper::_ZFP_ObjI_onInitIvk(); \
             ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENTS_DECLARE_EXPAND_INTERFACE_ON_INIT, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
         } \
-        virtual inline void _ZFP_ObjI_onDeallocIvk(void) \
-        { \
+        virtual inline void _ZFP_ObjI_onDeallocIvk(void) { \
             ZFM_FIX_PARAM(_ZFP_ZFIMPLEMENTS_DECLARE_EXPAND_INTERFACE_ON_DEALLOC, ZFM_EMPTY, ImplementedInterfaces, ##__VA_ARGS__) \
             zfsuper::_ZFP_ObjI_onDeallocIvk(); \
         } \
@@ -189,8 +171,7 @@ public:
  * usage:
  * @code
  *   // declare an interface
- *   zfinterface YourInterface : zfextends ZFInterface
- *   {
+ *   zfinterface YourInterface : zfextends ZFInterface {
  *       ZFINTERFACE_DECLARE(YourInterface, ParentInterface1, ParentInterface2, ...)
  *   };
  *
@@ -235,21 +216,17 @@ public:
  * @endcode
  * equivalent code for ZFInterface:
  * @code
- *   zfinterface IParent0 : zfextends ZFInterface
- *   {
+ *   zfinterface IParent0 : zfextends ZFInterface {
  *       ZFINTERFACE_DECLARE(IParent0, ZFInterface)
  *   };
- *   zfinterface IParent1 : zfextends ZFInterface
- *   {
+ *   zfinterface IParent1 : zfextends ZFInterface {
  *       ZFINTERFACE_DECLARE(IParent1, ZFInterface)
  *   };
- *   zfinterface IChild : zfextends ZFInterface // note: here is always ZFInterface
- *   {
+ *   zfinterface IChild : zfextends ZFInterface { // note: here is always ZFInterface
  *       // interface that extends from other interfaces
  *       ZFINTERFACE_DECLARE(IChild, IParent0, IParent1)
  *   };
- *   zfclass ObjParent : zfextends ZFObject, zfimplements IParent0
- *   {
+ *   zfclass ObjParent : zfextends ZFObject, zfimplements IParent0 {
  *       ZFOBJECT_DECLARE(ObjParent, ZFObject)
  *       ZFIMPLEMENTS_DECLARE(IParent0)
  *   };
@@ -261,8 +238,7 @@ public:
  *   };
  * @endcode
  */
-zfinterface ZFLIB_ZFCore ZFInterface
-{
+zfinterface ZFLIB_ZFCore ZFInterface {
     _ZFP_ZFINTERFACE_DECLARE(ZFInterface, _ZFP_ObjI_Base)
 
 protected:

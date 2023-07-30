@@ -4,8 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFObserverGroupHolderPrivate
-{
+zfclassNotPOD _ZFP_ZFObserverGroupHolderPrivate {
 public:
     zfuint refCount;
     ZFObjectHolder *owner; // auto retain within life cycle
@@ -13,12 +12,10 @@ public:
     ZFObserver *targetObserver; // auto retain within life cycle
 
 public:
-    void removeAll(void)
-    {
+    void removeAll(void) {
         zfRetainChange(this->owner, zfnull);
         zfRetainChange(this->target, zfnull);
-        if(this->targetObserver != zfnull)
-        {
+        if(this->targetObserver != zfnull) {
             zfdelete(this->targetObserver);
             this->targetObserver = zfnull;
         }
@@ -32,15 +29,13 @@ public:
     , targetObserver(zfnull)
     {
     }
-    ~_ZFP_ZFObserverGroupHolderPrivate(void)
-    {
+    ~_ZFP_ZFObserverGroupHolderPrivate(void) {
         this->removeAll();
     }
 };
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFObserverGroupTaskData
-{
+zfclassNotPOD _ZFP_ZFObserverGroupTaskData {
 public:
     ZFObject *owner;
     ZFObject *target;
@@ -55,12 +50,14 @@ public:
     _ZFP_ZFObserverGroupTaskData *targetMapNext;
 
 public:
-    _ZFP_ZFObserverGroupTaskData(ZF_IN ZFObject *owner,
-                                 ZF_IN ZFObject *target,
-                                 ZF_IN ZFObserver realTarget,
-                                 ZF_IN ZFListener realObserver,
-                                 ZF_IN zfidentity eventId,
-                                 ZF_IN ZFListener observer)
+    _ZFP_ZFObserverGroupTaskData(
+            ZF_IN ZFObject *owner
+            , ZF_IN ZFObject *target
+            , ZF_IN ZFObserver realTarget
+            , ZF_IN ZFListener realObserver
+            , ZF_IN zfidentity eventId
+            , ZF_IN ZFListener observer
+            )
     : owner(owner)
     , target(target)
     , realTarget(realTarget)
@@ -74,8 +71,7 @@ public:
     {
     }
 };
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObserverGroupDataHolder, ZFLevelZFFrameworkEssential)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObserverGroupDataHolder, ZFLevelZFFrameworkEssential) {
     zfself *dataHolder = this;
 
     ZFLISTENER_1(ownerOnDealloc
@@ -92,10 +88,8 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObserverGroupDataHolder, ZFLevelZFFramew
     } ZFLISTENER_END()
     this->targetOnDeallocListener = targetOnDealloc;
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFObserverGroupDataHolder)
-{
-    while(!this->ownerMap.empty())
-    {
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFObserverGroupDataHolder) {
+    while(!this->ownerMap.empty()) {
         this->detachByOwner(this->ownerMap.begin()->first);
     }
 }
@@ -109,13 +103,14 @@ private:
     ZFListener targetOnDeallocListener;
 
 public:
-    void attach(ZF_IN ZFObject *owner,
-                ZF_IN ZFObject *target,
-                ZF_IN const ZFObserver &realTarget,
-                ZF_IN const ZFListener &realObserver,
-                ZF_IN zfidentity eventId,
-                ZF_IN const ZFListener &observer)
-    {
+    void attach(
+            ZF_IN ZFObject *owner
+            , ZF_IN ZFObject *target
+            , ZF_IN const ZFObserver &realTarget
+            , ZF_IN const ZFListener &realObserver
+            , ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            ) {
         _ZFP_ZFObserverGroupTaskData *task = zfnew(_ZFP_ZFObserverGroupTaskData
                 , owner
                 , target
@@ -127,57 +122,46 @@ public:
 
         // if(owner != zfnull)
         {
-            _ZFP_ZFObserverGroupTaskData **head = zfnull;
-            {
+            _ZFP_ZFObserverGroupTaskData **head = zfnull; {
                 _TaskMap::iterator it = this->ownerMap.find(owner);
-                if(it == this->ownerMap.end())
-                {
+                if(it == this->ownerMap.end()) {
                     head = &(this->ownerMap[owner]);
                     *head = zfnull;
                     owner->observerAdd(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
                 }
-                else
-                {
+                else {
                     head = &(it->second);
                 }
             }
             task->ownerMapNext = *head;
-            if(*head != zfnull)
-            {
+            if(*head != zfnull) {
                 (*head)->ownerMapPrev = task;
             }
             *head = task;
         }
 
-        if(target != zfnull)
-        {
-            _ZFP_ZFObserverGroupTaskData **head = zfnull;
-            {
+        if(target != zfnull) {
+            _ZFP_ZFObserverGroupTaskData **head = zfnull; {
                 _TaskMap::iterator it = this->targetMap.find(target);
-                if(it == this->targetMap.end())
-                {
+                if(it == this->targetMap.end()) {
                     head = &(this->targetMap[target]);
                     *head = zfnull;
                     target->observerAdd(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
                 }
-                else
-                {
+                else {
                     head = &(it->second);
                 }
             }
             task->targetMapNext = *head;
-            if(*head != zfnull)
-            {
+            if(*head != zfnull) {
                 (*head)->targetMapPrev = task;
             }
             *head = task;
         }
     }
-    void detachByOwner(ZF_IN ZFObject *owner)
-    {
+    void detachByOwner(ZF_IN ZFObject *owner) {
         _TaskMap::iterator it = this->ownerMap.find(owner);
-        if(it == this->ownerMap.end())
-        {
+        if(it == this->ownerMap.end()) {
             return;
         }
         _ZFP_ZFObserverGroupTaskData *head = it->second;
@@ -185,44 +169,35 @@ public:
         owner->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
 
         _ZFP_ZFObserverGroupTaskData *p = head;
-        while(p != zfnull)
-        {
-            if(p->target != zfnull && p->targetMapPrev == zfnull)
-            {
-                if(p->targetMapNext != zfnull)
-                {
+        while(p != zfnull) {
+            if(p->target != zfnull && p->targetMapPrev == zfnull) {
+                if(p->targetMapNext != zfnull) {
                     this->targetMap.find(p->target)->second = p->targetMapNext;
                 }
-                else
-                {
+                else {
                     this->targetMap.erase(p->target);
                     p->target->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
                 }
             }
 
-            if(p->targetMapPrev != zfnull)
-            {
+            if(p->targetMapPrev != zfnull) {
                 p->targetMapPrev->targetMapNext = p->targetMapNext;
             }
-            if(p->targetMapNext != zfnull)
-            {
+            if(p->targetMapNext != zfnull) {
                 p->targetMapNext->targetMapPrev = p->targetMapPrev;
             }
 
             p = p->ownerMapNext;
         }
-        while(head != zfnull)
-        {
+        while(head != zfnull) {
             p = head;
             head = head->ownerMapNext;
             this->cleanup(p);
         }
     }
-    void detachByTarget(ZF_IN ZFObject *target)
-    {
+    void detachByTarget(ZF_IN ZFObject *target) {
         _TaskMap::iterator it = this->targetMap.find(target);
-        if(it == this->targetMap.end())
-        {
+        if(it == this->targetMap.end()) {
             return;
         }
         _ZFP_ZFObserverGroupTaskData *head = it->second;
@@ -230,53 +205,44 @@ public:
         target->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
 
         _ZFP_ZFObserverGroupTaskData *p = head;
-        while(p != zfnull)
-        {
-            if(p->owner != zfnull && p->ownerMapPrev == zfnull)
-            {
-                if(p->ownerMapNext != zfnull)
-                {
+        while(p != zfnull) {
+            if(p->owner != zfnull && p->ownerMapPrev == zfnull) {
+                if(p->ownerMapNext != zfnull) {
                     this->ownerMap.find(p->owner)->second = p->ownerMapNext;
                 }
-                else
-                {
+                else {
                     this->ownerMap.erase(p->owner);
                     p->owner->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
                 }
             }
 
-            if(p->ownerMapPrev != zfnull)
-            {
+            if(p->ownerMapPrev != zfnull) {
                 p->ownerMapPrev->ownerMapNext = p->ownerMapNext;
             }
-            if(p->ownerMapNext != zfnull)
-            {
+            if(p->ownerMapNext != zfnull) {
                 p->ownerMapNext->ownerMapPrev = p->ownerMapPrev;
             }
 
             p = p->targetMapNext;
         }
-        while(head != zfnull)
-        {
+        while(head != zfnull) {
             p = head;
             head = head->targetMapNext;
             this->cleanup(p);
         }
     }
-    void detachExact(ZF_IN ZFObject *owner,
-                     ZF_IN ZFObject *target,
-                     ZF_IN const ZFObserver &realTarget,
-                     ZF_IN zfidentity eventId,
-                     ZF_IN const ZFListener &observer)
-    {
-        if(owner != zfnull)
-        {
+    void detachExact(
+            ZF_IN ZFObject *owner
+            , ZF_IN ZFObject *target
+            , ZF_IN const ZFObserver &realTarget
+            , ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            ) {
+        if(owner != zfnull) {
             _TaskMap::iterator it = this->ownerMap.find(owner);
-            if(it != this->ownerMap.end())
-            {
+            if(it != this->ownerMap.end()) {
                 _ZFP_ZFObserverGroupTaskData *head = it->second;
-                while(head != zfnull)
-                {
+                while(head != zfnull) {
                     if(head->realTarget == realTarget
                         && head->eventId == eventId
                         && head->observer == observer
@@ -288,14 +254,11 @@ public:
                 }
             }
         }
-        else if(target != zfnull)
-        {
+        else if(target != zfnull) {
             _TaskMap::iterator it = this->targetMap.find(target);
-            if(it != this->targetMap.end())
-            {
+            if(it != this->targetMap.end()) {
                 _ZFP_ZFObserverGroupTaskData *head = it->second;
-                while(head != zfnull)
-                {
+                while(head != zfnull) {
                     if(head->realTarget == realTarget
                         && head->eventId == eventId
                         && head->observer == observer
@@ -307,13 +270,10 @@ public:
                 }
             }
         }
-        else
-        {
-            for(_TaskMap::iterator it = this->ownerMap.begin(); it != this->ownerMap.end(); ++it)
-            {
+        else {
+            for(_TaskMap::iterator it = this->ownerMap.begin(); it != this->ownerMap.end(); ++it) {
                 _ZFP_ZFObserverGroupTaskData *head = it->second;
-                while(head != zfnull)
-                {
+                while(head != zfnull) {
                     if(head->realTarget == realTarget
                         && head->eventId == eventId
                         && head->observer == observer
@@ -327,102 +287,87 @@ public:
         }
     }
 private:
-    void detach(ZF_IN _ZFP_ZFObserverGroupTaskData *task)
-    {
-        if(task->owner != zfnull)
-        {
+    void detach(ZF_IN _ZFP_ZFObserverGroupTaskData *task) {
+        if(task->owner != zfnull) {
             _TaskMap::iterator it = this->ownerMap.find(task->owner);
             zfCoreAssert(it != this->ownerMap.end());
-            if(it->second == task)
-            {
-                if(task->ownerMapNext == zfnull)
-                {
+            if(it->second == task) {
+                if(task->ownerMapNext == zfnull) {
                     this->ownerMap.erase(it);
                     task->owner->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->ownerOnDeallocListener);
                 }
-                else
-                {
+                else {
                     it->second = task->ownerMapNext;
                 }
             }
 
-            if(task->ownerMapPrev != zfnull)
-            {
+            if(task->ownerMapPrev != zfnull) {
                 task->ownerMapPrev->ownerMapNext = task->ownerMapNext;
             }
-            if(task->ownerMapNext != zfnull)
-            {
+            if(task->ownerMapNext != zfnull) {
                 task->ownerMapNext->ownerMapPrev = task->ownerMapPrev;
             }
         }
 
-        if(task->target != zfnull)
-        {
+        if(task->target != zfnull) {
             _TaskMap::iterator it = this->targetMap.find(task->target);
             zfCoreAssert(it != this->targetMap.end());
-            if(it->second == task)
-            {
-                if(task->targetMapNext == zfnull)
-                {
+            if(it->second == task) {
+                if(task->targetMapNext == zfnull) {
                     this->targetMap.erase(it);
                     task->target->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->targetOnDeallocListener);
                 }
-                else
-                {
+                else {
                     it->second = task->targetMapNext;
                 }
             }
 
-            if(task->targetMapPrev != zfnull)
-            {
+            if(task->targetMapPrev != zfnull) {
                 task->targetMapPrev->targetMapNext = task->targetMapNext;
             }
-            if(task->targetMapNext != zfnull)
-            {
+            if(task->targetMapNext != zfnull) {
                 task->targetMapNext->targetMapPrev = task->targetMapPrev;
             }
         }
 
         this->cleanup(task);
     }
-    void cleanup(ZF_IN _ZFP_ZFObserverGroupTaskData *task)
-    {
+    void cleanup(ZF_IN _ZFP_ZFObserverGroupTaskData *task) {
         task->realTarget.observerRemove(task->eventId, task->realObserver);
         zfdelete(task);
     }
 ZF_GLOBAL_INITIALIZER_END(ZFObserverGroupDataHolder)
 
 // ============================================================
-const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAdd(ZF_IN zfidentity eventId,
-                                                                ZF_IN const ZFListener &observer,
-                                                                ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */) const
-{
+const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAdd(
+        ZF_IN zfidentity eventId
+        , ZF_IN const ZFListener &observer
+        , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
+        ) const {
     zfCoreMutexLocker();
     ZFObject *owner = d->owner != zfnull ? d->owner->objectHolded().toObject() : zfnull;
     ZFObject *target = d->target != zfnull ? d->target->objectHolded().toObject() : zfnull;
-    if(target == zfnull && d->targetObserver == zfnull)
-    {
+    if(target == zfnull && d->targetObserver == zfnull) {
         return *this;
     }
 
     ZFObserver &realTarget = (target != zfnull ? target->observerHolder() : *(d->targetObserver));
     realTarget.observerAdd(eventId, observer, observerLevel);
 
-    if(owner != zfnull)
-    {
+    if(owner != zfnull) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->attach(owner, target, realTarget, observer, eventId, observer);
     }
     return *this;
 }
-const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(ZF_IN zfidentity eventId,
-                                                                       ZF_IN const ZFListener &observer,
-                                                                       ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */) const
-{
+const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(
+        ZF_IN zfidentity eventId
+        , ZF_IN const ZFListener &observer
+        , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
+        ) const {
     zfCoreMutexLocker();
     ZFObject *owner = d->owner != zfnull ? d->owner->objectHolded().toObject() : zfnull;
     ZFObject *target = d->target != zfnull ? d->target->objectHolded().toObject() : zfnull;
-    if(target == zfnull && d->targetObserver == zfnull)
-    {
+    if(target == zfnull && d->targetObserver == zfnull) {
         return *this;
     }
 
@@ -438,8 +383,7 @@ const ZFObserverGroupHolder &ZFObserverGroupHolder::observerAddForOnce(ZF_IN zfi
     } ZFLISTENER_END()
     realTarget.observerAddForOnce(eventId, realObserver, observerLevel);
 
-    if(owner != zfnull)
-    {
+    if(owner != zfnull) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->attach(owner, target, realTarget, realObserver, eventId, observer);
     }
     return *this;
@@ -449,64 +393,58 @@ ZFObserverGroupHolder::ZFObserverGroupHolder(void)
 : d(zfnew(_ZFP_ZFObserverGroupHolderPrivate))
 {
 }
-ZFObserverGroupHolder::ZFObserverGroupHolder(ZF_IN const ZFObserverGroupHolder &ref)
-{
+ZFObserverGroupHolder::ZFObserverGroupHolder(ZF_IN const ZFObserverGroupHolder &ref) {
     d = ref.d;
     ++(d->refCount);
 }
-ZFObserverGroupHolder::~ZFObserverGroupHolder(void)
-{
+ZFObserverGroupHolder::~ZFObserverGroupHolder(void) {
     --(d->refCount);
-    if(d->refCount == 0)
-    {
+    if(d->refCount == 0) {
         zfdelete(d);
     }
 }
 
-ZFObserverGroupHolder &ZFObserverGroupHolder::operator = (ZF_IN const ZFObserverGroupHolder &ref)
-{
+ZFObserverGroupHolder &ZFObserverGroupHolder::operator = (ZF_IN const ZFObserverGroupHolder &ref) {
     _ZFP_ZFObserverGroupHolderPrivate *dTmp = d;
     ++(ref.d->refCount);
     d = ref.d;
     --(dTmp->refCount);
-    if(dTmp->refCount == 0)
-    {
+    if(dTmp->refCount == 0) {
         zfdelete(dTmp);
     }
     return *this;
 }
 
-void ZFObserverGroupHolder::_ZFP_update(ZF_IN ZFObject *owner, ZF_IN const ZFObserver &target)
-{
+void ZFObserverGroupHolder::_ZFP_update(
+        ZF_IN ZFObject *owner
+        , ZF_IN const ZFObserver &target
+        ) {
     zfCoreAssert(owner != zfnull);
 
     zfRetainChange(d->owner, owner->objectHolder());
     zfRetainChange(d->target, zfnull);
-    if(d->targetObserver != zfnull)
-    {
+    if(d->targetObserver != zfnull) {
         *(d->targetObserver) = target;
     }
-    else
-    {
+    else {
         d->targetObserver = zfnew(ZFObserver, target);
     }
 }
-void ZFObserverGroupHolder::_ZFP_update(ZF_IN ZFObject *owner, ZF_IN ZFObject *target)
-{
+void ZFObserverGroupHolder::_ZFP_update(
+        ZF_IN ZFObject *owner
+        , ZF_IN ZFObject *target
+        ) {
     zfCoreAssert(owner != zfnull);
 
-    if(target != zfnull)
-    {
+    if(target != zfnull) {
         zfRetainChange(d->owner, owner->objectHolder());
         zfRetainChange(d->target, target->objectHolder());
-        if(d->targetObserver != zfnull)
-        {
+        if(d->targetObserver != zfnull) {
             zfdelete(d->targetObserver);
             d->targetObserver = zfnull;
         }
     }
-    else
-    {
+    else {
         d->removeAll();
     }
 }
@@ -514,26 +452,26 @@ void ZFObserverGroupHolder::_ZFP_update(ZF_IN ZFObject *owner, ZF_IN ZFObject *t
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserverGroupHolder, ZFObserverGroupHolder)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup,
-                       ZFMP_IN(ZFObject *, owner),
-                       ZFMP_IN(const ZFObserver &, target))
-{
+ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(const ZFObserver &, target)
+        ) {
     ZFObserverGroupHolder ret;
     ret._ZFP_update(owner, target);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup,
-                       ZFMP_IN(ZFObject *, owner),
-                       ZFMP_IN(ZFObject *, target))
-{
+ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup
+        , ZFMP_IN(ZFObject *, owner)
+        , ZFMP_IN(ZFObject *, target)
+        ) {
     ZFObserverGroupHolder ret;
     ret._ZFP_update(owner, target);
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void, ZFObserverGroupRemove,
-                       ZFMP_IN(ZFObject *, owner))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, ZFObserverGroupRemove
+        , ZFMP_IN(ZFObject *, owner)
+        ) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObserverGroupDataHolder)->detachByOwner(owner);
 }
 

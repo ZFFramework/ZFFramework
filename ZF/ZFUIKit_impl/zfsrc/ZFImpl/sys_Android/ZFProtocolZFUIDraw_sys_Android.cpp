@@ -16,8 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIDrawNativeToken ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIDraw$NativeToken)
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFUIDrawImpl_sys_Android_Token
-{
+zfclassNotPOD _ZFP_ZFUIDrawImpl_sys_Android_Token {
 public:
     jobject canvas;
     jobject image; // for beginForImage only
@@ -30,8 +29,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForViewImpl_sys_Android, ZFUIDrawForView
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -41,17 +39,17 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView,
-                                           ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeDrawableViewCreate(
+            ZF_IN ZFUIDrawableView *drawableView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeDrawableViewCreate",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -63,9 +61,10 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ZFCastStatic(void *, ret);
     }
-    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView,
-                                           ZF_IN void *nativeDrawableView)
-    {
+    virtual void nativeDrawableViewDestroy(
+            ZF_IN ZFUIDrawableView *drawableView
+            , ZF_IN void *nativeDrawableView
+            ) {
         // for performance, we won't have JNI call to destroy, simply delete the global ref
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -73,8 +72,7 @@ public:
         JNIUtilDeleteGlobalRef(jniEnv, nativeDrawableViewTmp);
     }
 
-    virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView)
-    {
+    virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawRequest",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -86,8 +84,7 @@ public:
     }
 
 public:
-    virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token)
-    {
+    virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_beginForView",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -96,8 +93,7 @@ public:
         jobject canvas = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, token.target.to<ZFUIDrawableView *>()->nativeImplView())
             );
-        if(canvas == NULL)
-        {
+        if(canvas == NULL) {
             return zffalse;
         }
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = zfpoolNew(_ZFP_ZFUIDrawImpl_sys_Android_Token);
@@ -106,8 +102,7 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, canvas);
         return zftrue;
     }
-    virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token)
-    {
+    virtual void endForView(ZF_IN_OUT ZFUIDrawToken &token) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
         JNIUtilDeleteGlobalRef(jniEnv, nativeToken->canvas);
@@ -120,10 +115,10 @@ ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIDrawableView,
-                         void, native_1notifyOnDraw,
-                         JNIPointer zfjniPointerOwnerZFUIDrawableView)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIDrawableView
+        , void, native_1notifyOnDraw
+        , JNIPointer zfjniPointerOwnerZFUIDrawableView
+        ) {
     ZFPROTOCOL_ACCESS(ZFUIDrawForView)->notifyOnDraw(
         ZFCastZFObject(ZFUIDrawableView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIDrawableView)));
 }
@@ -140,8 +135,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawForImageImpl_sys_Android, ZFUIDrawForIma
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -155,8 +149,7 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsNativeToken);
@@ -164,9 +157,10 @@ public:
     }
 
 public:
-    virtual zfbool beginForImage(ZF_IN_OUT ZFUIDrawToken &token,
-                                 ZF_IN const ZFUISize &imageSizePixel)
-    {
+    virtual zfbool beginForImage(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN const ZFUISize &imageSizePixel
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_beginForImage",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_ZFUIDrawNativeToken), JNIParamTypeContainer()
@@ -196,8 +190,7 @@ public:
         token.impl = nativeToken;
         return zftrue;
     }
-    virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token)
-    {
+    virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
         void *ret = (void *)nativeToken->image;
@@ -224,8 +217,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIDrawImpl_sys_Android, ZFUIDraw, ZFProtocolLe
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -235,16 +227,17 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void antialiasing(ZF_IN ZFUIDrawToken &token, ZF_IN zfbool antialiasing)
-    {
+    virtual void antialiasing(
+            ZF_IN ZFUIDrawToken &token
+            , ZF_IN zfbool antialiasing
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_antialiasing",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -259,9 +252,10 @@ public:
     }
 
 public:
-    virtual void drawClear(ZF_IN_OUT ZFUIDrawToken &token,
-                           ZF_IN const ZFUIRect &targetFramePixel)
-    {
+    virtual void drawClear(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawClear",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -280,10 +274,11 @@ public:
             , (jint)targetFramePixel.height
             );
     }
-    virtual void drawColor(ZF_IN_OUT ZFUIDrawToken &token,
-                           ZF_IN const ZFUIColor &color,
-                           ZF_IN const ZFUIRect &targetFramePixel)
-    {
+    virtual void drawColor(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN const ZFUIColor &color
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawColor",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -304,11 +299,12 @@ public:
             , (jint)targetFramePixel.height
             );
     }
-    virtual void drawImage(ZF_IN_OUT ZFUIDrawToken &token,
-                           ZF_IN ZFUIImage *image,
-                           ZF_IN const ZFUIRect &imageFramePixel,
-                           ZF_IN const ZFUIRect &targetFramePixel)
-    {
+    virtual void drawImage(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN ZFUIImage *image
+            , ZF_IN const ZFUIRect &imageFramePixel
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawImage",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()

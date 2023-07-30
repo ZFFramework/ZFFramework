@@ -12,8 +12,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_Android, ZFUIImage, ZFProtocol
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:BitmapDrawable")
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFUIImage).c_str());
@@ -21,16 +20,14 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback)
-    {
+    virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageFromInput",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -38,17 +35,17 @@ public:
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             ZFImpl_sys_Android_ZFInputWrapperFromZFInput(inputCallback));
-        if(tmp == NULL)
-        {
+        if(tmp == NULL) {
             return zfnull;
         }
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
     }
-    virtual zfbool nativeImageToOutput(ZF_IN void *nativeImage,
-                                       ZF_OUT const ZFOutput &outputCallback)
-    {
+    virtual zfbool nativeImageToOutput(
+            ZF_IN void *nativeImage
+            , ZF_OUT const ZFOutput &outputCallback
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageToOutput",
             JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
@@ -61,8 +58,7 @@ public:
              );
     }
 
-    virtual void *nativeImageCopy(ZF_IN void *nativeImage)
-    {
+    virtual void *nativeImageCopy(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageCopy",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -74,19 +70,16 @@ public:
         return ret;
     }
 
-    virtual void *nativeImageRetain(ZF_IN void *nativeImage)
-    {
+    virtual void *nativeImageRetain(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         return JNIUtilNewGlobalRef(jniEnv, ZFCastStatic(jobject, nativeImage));
     }
-    virtual void nativeImageRelease(ZF_IN void *nativeImage)
-    {
+    virtual void nativeImageRelease(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, ZFCastStatic(jobject, nativeImage));
     }
 
-    virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage)
-    {
+    virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageSize",
             JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()

@@ -30,8 +30,7 @@ zfclassFwd ZFSerializableData;
 /**
  * @brief base protocol for #ZFTypeId
  */
-zfclassNotPOD ZFLIB_ZFCore ZFTypeInfo
-{
+zfclassNotPOD ZFLIB_ZFCore ZFTypeInfo {
 public:
     virtual ~ZFTypeInfo(void) {}
 
@@ -56,8 +55,10 @@ public:
 };
 
 // ============================================================
-extern ZFLIB_ZFCore void _ZFP_ZFTypeInfoRegister(ZF_IN const zfchar *typeId,
-                                                 ZF_IN ZFTypeInfo *typeIdData);
+extern ZFLIB_ZFCore void _ZFP_ZFTypeInfoRegister(
+        ZF_IN const zfchar *typeId
+        , ZF_IN ZFTypeInfo *typeIdData
+        );
 extern ZFLIB_ZFCore ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfchar *typeId);
 /**
  * @brief access type id data
@@ -68,8 +69,7 @@ extern ZFLIB_ZFCore void ZFTypeInfoGetAllT(ZF_IN_OUT ZFCoreArray<const ZFTypeInf
 /**
  * @brief access type id data
  */
-inline ZFCoreArrayPOD<const ZFTypeInfo *> ZFTypeInfoGetAll(void)
-{
+inline ZFCoreArrayPOD<const ZFTypeInfo *> ZFTypeInfoGetAll(void) {
     ZFCoreArrayPOD<const ZFTypeInfo *> ret;
     ZFTypeInfoGetAllT(ret);
     return ret;
@@ -77,8 +77,7 @@ inline ZFCoreArrayPOD<const ZFTypeInfo *> ZFTypeInfoGetAll(void)
 
 // ============================================================
 template<typename T_Dummy>
-zfclassNotPOD _ZFP_ZFTypeIdRegChecker
-{
+zfclassNotPOD _ZFP_ZFTypeIdRegChecker {
 };
 /**
  * @brief type data traits for #ZFTYPEID_DECLARE
@@ -92,8 +91,7 @@ template<typename T_Type
         , int T_isZFObject = zftIsZFObject(typename zftTraits<T_Type>::TrType)
         , int T_isPointer = zftTraits<T_Type>::TrIsPtr
     >
-zfclassNotPOD ZFTypeId : zfextends ZFTypeInfo
-{
+zfclassNotPOD ZFTypeId : zfextends ZFTypeInfo {
 public:
     /** @cond ZFPrivateDoc */
     typedef typename _ZFP_ZFTypeIdRegChecker<T_Type>::AllTypeMustBeRegisteredBy_ZFTYPEID_XXX _TypeChecker;
@@ -130,7 +128,10 @@ public:
      *
      * the stored value can be further accessed by #ZFTypeId::Value
      */
-    static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN T_Type const &v);
+    static zfbool ValueStore(
+            ZF_OUT zfautoObject &obj
+            , ZF_IN T_Type const &v
+            );
 
     /**
      * @brief try access as raw value
@@ -144,8 +145,7 @@ public:
      * then there would be a wrapper class named "v_YourType",
      * with only one plain member variable named "zfv":
      * @code
-     *   zfclass v_YourType : zfextends ZFTypeIdWrapper
-     *   {
+     *   zfclass v_YourType : zfextends ZFTypeIdWrapper {
      *       ZFOBJECT_DECLARE(v_YourType, ZFTypeIdWrapper)
      *       ZFALLOC_CACHE_RELEASE({
      *           cache->wrappedValueReset();
@@ -170,8 +170,7 @@ public:
      *   thus, the reflection performance of aliased type may be much worse than original type
      */
     template<typename T_Access = T_Type>
-    zfclassNotPOD Value
-    {
+    zfclassNotPOD Value {
     public:
         /** @brief try access as raw value, see #ZFTypeId::Value */
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj);
@@ -197,8 +196,7 @@ public:
 
 // ============================================================
 #define _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
-    ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) \
-    { \
+    ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) { \
         typedef Type _ZFP_PropTypeW2_##TypeName; \
         _ZFP_ZFTypeInfoRegister(ZFTypeId_##TypeName(), \
             zfnew(ZFTypeId<_ZFP_PropTypeW2_##TypeName>)); \
@@ -206,8 +204,7 @@ public:
                 return ZFTypeId_##TypeName(); \
             }, ZF_NAMESPACE_GLOBAL_NAME, const zfchar *, ZFM_TOSTRING(ZFTypeId_##TypeName)); \
     } \
-    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) \
-    { \
+    ZF_STATIC_REGISTER_DESTROY(PropTIReg_##TypeName) { \
         ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(ZFTypeId_##TypeName))); \
         zfdelete(_ZFP_ZFTypeInfoUnregister(ZFTypeId_##TypeName())); \
     } \
@@ -215,15 +212,16 @@ public:
 
 // ============================================================
 zfclassFwd ZFProgressable;
-typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
-                                              ZF_IN ZFProgressable *from,
-                                              ZF_IN ZFProgressable *to,
-                                              ZF_IN zffloat progress);
+typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
+        ZF_IN_OUT ZFProgressable *ret
+        , ZF_IN ZFProgressable *from
+        , ZF_IN ZFProgressable *to
+        , ZF_IN zffloat progress
+        );
 #define _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     typedef Type _ZFP_PropTypeW_##TypeName; \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##TypeName : zfextends ZFTypeIdWrapper \
-    { \
+    zfclass ZFLIB_ v_##TypeName : zfextends ZFTypeIdWrapper { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->wrappedValueReset(); \
@@ -235,8 +233,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         v_##TypeName(void) : zfv() {} \
     protected: \
         /** @brief init with value */ \
-        virtual void objectOnInit(ZF_IN _ZFP_PropTypeW_##TypeName const &value) \
-        { \
+        virtual void objectOnInit(ZF_IN _ZFP_PropTypeW_##TypeName const &value) { \
             this->objectOnInit(); \
             this->zfv = value; \
         } \
@@ -260,8 +257,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         virtual void wrappedValueCopy(ZF_IN void *v) {*(_ZFP_PropTypeW_##TypeName *)v = this->zfv;} \
     public: \
         zfoverride \
-        virtual void wrappedValueReset(void) \
-        {this->zfv = zftValue<_ZFP_PropTypeW_##TypeName>().zfv;} \
+        virtual void wrappedValueReset(void) { \
+            this->zfv = zftValue<_ZFP_PropTypeW_##TypeName>().zfv; \
+        } \
         zfoverride \
         virtual zfbool wrappedValueIsInit(void); \
     public: \
@@ -282,16 +280,15 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     public: \
         static _ZFP_ZFTypeIdProgressUpdate _ZFP_ZFTypeId_progressUpdate; \
         zfoverride \
-        virtual zfbool progressUpdate(ZF_IN ZFProgressable *from, \
-                                      ZF_IN ZFProgressable *to, \
-                                      ZF_IN zffloat progress) \
-        { \
-            if(zfself::_ZFP_ZFTypeId_progressUpdate) \
-            { \
+        virtual zfbool progressUpdate( \
+                ZF_IN ZFProgressable *from \
+                , ZF_IN ZFProgressable *to \
+                , ZF_IN zffloat progress \
+                ) { \
+            if(zfself::_ZFP_ZFTypeId_progressUpdate) { \
                 return zfself::_ZFP_ZFTypeId_progressUpdate(this, from, to, progress); \
             } \
-            else \
-            { \
+            else { \
                 return zffalse; \
             } \
         } \
@@ -300,20 +297,16 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
     ZFOBJECT_REGISTER(v_##TypeName) \
     _ZFP_ZFTypeIdProgressUpdate v_##TypeName::_ZFP_ZFTypeId_progressUpdate = zfnull; \
-    void v_##TypeName::objectInfoT(ZF_IN_OUT zfstring &ret) \
-    { \
+    void v_##TypeName::objectInfoT(ZF_IN_OUT zfstring &ret) { \
         ZFCoreInfoGetter<Type>::InfoGetter(ret, this->zfv); \
     } \
-    void v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) \
-    { \
+    void v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) { \
         zfself *refTmp = ZFCastZFObject(zfself *, ref); \
-        if(refTmp != zfnull) \
-        { \
+        if(refTmp != zfnull) { \
             this->zfv = refTmp->zfv; \
         } \
     } \
-    const zfchar *v_##TypeName::wrappedValueTypeId(void) \
-    { \
+    const zfchar *v_##TypeName::wrappedValueTypeId(void) { \
         return ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId(); \
     } \
     ZFMETHOD_USER_REGISTER_DETAIL_0({ \
@@ -331,70 +324,82 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
         )
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type, preferStringConverter) \
-    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) \
-    {return preferStringConverter;} \
-    zfbool v_##TypeName::wrappedValueFromData(ZF_IN const ZFSerializableData &serializableData, \
-                                              ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                              ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */) \
-    {return TypeName##FromData(this->zfv, serializableData, outErrorHint, outErrorPos);} \
-    zfbool v_##TypeName::wrappedValueToData(ZF_OUT ZFSerializableData &serializableData, \
-                                            ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */) \
-    {return TypeName##ToData(serializableData, this->zfv, outErrorHint);} \
-    zfbool v_##TypeName::wrappedValueFromString(ZF_IN const zfchar *src, \
-                                                ZF_IN_OPT zfindex srcLen /* = zfindexMax() */) \
-    {return TypeName##FromString(this->zfv, src, srcLen);} \
-    zfbool v_##TypeName::wrappedValueToString(ZF_IN_OUT zfstring &s) \
-    {return TypeName##ToString(s, this->zfv);}
+    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) { \
+        return preferStringConverter; \
+    } \
+    zfbool v_##TypeName::wrappedValueFromData( \
+            ZF_IN const ZFSerializableData &serializableData \
+            , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
+            ) { \
+        return TypeName##FromData(this->zfv, serializableData, outErrorHint, outErrorPos); \
+    } \
+    zfbool v_##TypeName::wrappedValueToData( \
+            ZF_OUT ZFSerializableData &serializableData \
+            , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
+            ) { \
+        return TypeName##ToData(serializableData, this->zfv, outErrorHint); \
+    } \
+    zfbool v_##TypeName::wrappedValueFromString( \
+            ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
+            ) { \
+        return TypeName##FromString(this->zfv, src, srcLen); \
+    } \
+    zfbool v_##TypeName::wrappedValueToString(ZF_IN_OUT zfstring &s) { \
+        return TypeName##ToString(s, this->zfv); \
+    }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_NOT_SERIALIZABLE(TypeName, Type) \
-    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) \
-    {return zffalse;} \
-    zfbool v_##TypeName::wrappedValueFromData(ZF_IN const ZFSerializableData &serializableData, \
-                                              ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
-                                              ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */) \
-    { \
+    zfbool v_##TypeName::wrappedValuePreferStringConverter(void) { \
+        return zffalse; \
+    } \
+    zfbool v_##TypeName::wrappedValueFromData( \
+            ZF_IN const ZFSerializableData &serializableData \
+            , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
+            ) { \
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, \
             "registered type %s is not serializable", ZFM_TOSTRING_DIRECT(TypeName)); \
         return zffalse; \
     } \
-    zfbool v_##TypeName::wrappedValueToData(ZF_OUT ZFSerializableData &serializableData, \
-                                            ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */) \
-    { \
+    zfbool v_##TypeName::wrappedValueToData( \
+            ZF_OUT ZFSerializableData &serializableData \
+            , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
+            ) { \
         ZFSerializableUtil::errorOccurred(outErrorHint, \
             "registered type %s is not serializable", ZFM_TOSTRING_DIRECT(TypeName)); \
         return zffalse; \
     } \
-    zfbool v_##TypeName::wrappedValueFromString(ZF_IN const zfchar *src, \
-                                                ZF_IN_OPT zfindex srcLen /* = zfindexMax() */) \
-    {return zffalse;} \
-    zfbool v_##TypeName::wrappedValueToString(ZF_IN_OUT zfstring &s) \
-    {return zffalse;}
+    zfbool v_##TypeName::wrappedValueFromString( \
+            ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
+            ) { \
+        return zffalse; \
+    } \
+    zfbool v_##TypeName::wrappedValueToString(ZF_IN_OUT zfstring &s) { \
+        return zffalse; \
+    }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type) \
-    ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) \
-    { \
+    ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
         ZFTypeIdWrapper *t = ZFCastZFObject(ZFTypeIdWrapper *, anotherObj); \
-        if(t == zfnull || !zfstringIsEqual(this->wrappedValueTypeId(), t->wrappedValueTypeId())) \
-        { \
+        if(t == zfnull || !zfstringIsEqual(this->wrappedValueTypeId(), t->wrappedValueTypeId())) { \
             return ZFCompareUncomparable; \
         } \
-        else \
-        { \
+        else { \
             return ZFComparerDefault(this->zfv, *(_ZFP_PropTypeW_##TypeName *)t->wrappedValue()); \
         } \
     } \
-    zfbool v_##TypeName::wrappedValueIsInit(void) \
-    { \
+    zfbool v_##TypeName::wrappedValueIsInit(void) { \
         return (ZFComparerDefault(this->zfv, zftValue<_ZFP_PropTypeW_##TypeName>().zfv) == ZFCompareTheSame); \
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) \
-    { \
+    ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
         return ZFCompareUncomparable; \
     } \
-    zfbool v_##TypeName::wrappedValueIsInit(void) \
-    { \
+    zfbool v_##TypeName::wrappedValueIsInit(void) { \
         return zffalse; \
     }
 
@@ -403,34 +408,31 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo \
-    { \
+    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = 1, \
         }; \
-        static inline const zfchar *TypeId(void) \
-        { \
+        static inline const zfchar *TypeId(void) { \
             return ZFTypeId_##TypeName(); \
         } \
         zfoverride \
-        virtual zfbool typeIdSerializable(void) const \
-        { \
+        virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const \
-        { \
+        virtual const zfchar *typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \
-        virtual const ZFClass *typeIdClass(void) const \
-        { \
+        virtual const ZFClass *typeIdClass(void) const { \
             return v_##TypeName::ClassData(); \
         } \
-        static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN _ZFP_PropTypeW_##TypeName const &v) \
-        { \
+        static zfbool ValueStore( \
+                ZF_OUT zfautoObject &obj \
+                , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+                ) { \
             zfCoreMutexLock(); \
             v_##TypeName *t = zfunsafe_zfAlloc(v_##TypeName); \
             t->zfv = v; \
@@ -448,35 +450,27 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
                 ? 1 : 0) \
             , typename T_Fix = void \
             > \
-        zfclassNotPOD Value \
-        { \
+        zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
                 return ZFCastZFObject(v_##TypeName *, obj)->zfv; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
             } \
         }; \
         template<typename T_Access> \
-        zfclassNotPOD Value<T_Access, 1> \
-        { \
+        zfclassNotPOD Value<T_Access, 1> { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
                 return &(ZFCastZFObject(v_##TypeName *, obj)->zfv); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
             } \
         }; \
     }; \
@@ -492,34 +486,31 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo \
-    { \
+    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = 0, \
         }; \
-        static inline const zfchar *TypeId(void) \
-        { \
+        static inline const zfchar *TypeId(void) { \
             return ZFTypeId_##TypeName(); \
         } \
         zfoverride \
-        virtual zfbool typeIdSerializable(void) const \
-        { \
+        virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const \
-        { \
+        virtual const zfchar *typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \
-        virtual const ZFClass *typeIdClass(void) const \
-        { \
+        virtual const ZFClass *typeIdClass(void) const { \
             return v_##TypeName::ClassData(); \
         } \
-        static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN _ZFP_PropTypeW_##TypeName const &v) \
-        { \
+        static zfbool ValueStore( \
+                ZF_OUT zfautoObject &obj \
+                , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+                ) { \
             zfCoreMutexLock(); \
             v_##TypeName *t = zfunsafe_zfAlloc(v_##TypeName); \
             t->zfv = v; \
@@ -537,35 +528,27 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
                 ? 1 : 0) \
             , typename T_Fix = void \
             > \
-        zfclassNotPOD Value \
-        { \
+        zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
                 return ZFCastZFObject(v_##TypeName *, obj)->zfv; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
             } \
         }; \
         template<typename T_Access> \
-        zfclassNotPOD Value<T_Access, 1> \
-        { \
+        zfclassNotPOD Value<T_Access, 1> { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
                 return &(ZFCastZFObject(v_##TypeName *, obj)->zfv); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
             } \
         }; \
     }; \
@@ -586,35 +569,31 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     typedef Type _ZFP_PropTypeW_##TypeName; \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo \
-    { \
+    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
             TypeIdSerializable = 0, \
         }; \
-        static inline const zfchar *TypeId(void) \
-        { \
+        static inline const zfchar *TypeId(void) { \
             return ZFTypeId_none(); \
         } \
-        static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN _ZFP_PropTypeW_##TypeName const &v) \
-        { \
+        static zfbool ValueStore( \
+                ZF_OUT zfautoObject &obj \
+                , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+                ) { \
             return zffalse; \
         } \
         template<typename T_Access = Type> \
-        zfclassNotPOD Value \
-        { \
+        zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
                 return zffalse; \
             } \
-            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
                 return typename zftTraits<T_Access>::TrNoRef(); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
             } \
         }; \
     }; \
@@ -625,43 +604,39 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
     /** @cond ZFPrivateDoc */ \
     typedef Type _ZFP_PropTypeW_##TypeName; \
     template<> \
-    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo \
-    { \
+    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = ZFTypeId<AliasToType>::TypeIdRegistered, \
             TypeIdSerializable = ZFTypeId<AliasToType>::TypeIdSerializable, \
         }; \
-        static inline const zfchar *TypeId(void) \
-        { \
+        static inline const zfchar *TypeId(void) { \
             return ZFTypeId<AliasToType>::TypeId(); \
         } \
         zfoverride \
-        virtual zfbool typeIdSerializable(void) const \
-        { \
+        virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
         } \
         zfoverride \
-        virtual const zfchar *typeId(void) const \
-        { \
+        virtual const zfchar *typeId(void) const { \
             return TypeId(); \
         } \
         zfoverride \
-        virtual const ZFClass *typeIdClass(void) const \
-        { \
+        virtual const ZFClass *typeIdClass(void) const { \
             ZFTypeId<AliasToType> t; \
             return t.typeIdClass(); \
         } \
-        static zfbool ValueStore(ZF_OUT zfautoObject &obj, ZF_IN _ZFP_PropTypeW_##TypeName const &v) \
-        { \
+        static zfbool ValueStore( \
+                ZF_OUT zfautoObject &obj \
+                , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
+                ) { \
             return ZFTypeId<AliasToType>::ValueStore(obj, (AliasToType)v); \
         } \
         TypeIdValueConversion(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     }; \
     /** @endcond */ \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##TypeName : zfextends v_##AliasToTypeName \
-    { \
+    zfclass ZFLIB_ v_##TypeName : zfextends v_##AliasToTypeName { \
         ZFOBJECT_DECLARE(v_##TypeName, v_##AliasToTypeName) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->wrappedValueReset(); \
@@ -680,15 +655,12 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
                 ? 1 : 0) \
             , typename T_Fix = void \
             > \
-        zfclassNotPOD Value \
-        { \
+        zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
                 return (obj != zfnull && ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj)); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
                 _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
                 *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
@@ -698,20 +670,19 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
                     ); \
                 return *v; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
                 _ZFP_PropAliasDetach(obj \
                     , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
-            static void _ZFP_PropAliasOnDetach(ZF_IN ZFObject *obj, \
-                                               ZF_IN void *v) \
-            { \
+            static void _ZFP_PropAliasOnDetach( \
+                    ZF_IN ZFObject *obj \
+                    , ZF_IN void *v \
+                    ) { \
                 zfautoObject objTmp = obj; \
                 _ZFP_PropTypeW_##TypeName *vTmp = (_ZFP_PropTypeW_##TypeName *)v; \
-                if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) \
-                { \
+                if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) { \
                     AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(objTmp); \
                     aliasValue = (AliasToType)*vTmp; \
                     ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessFinish(objTmp); \
@@ -720,17 +691,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
             } \
         }; \
         template<typename T_Access> \
-        zfclassNotPOD Value<T_Access, 1> \
-        { \
+        zfclassNotPOD Value<T_Access, 1> { \
         private: \
              typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
                 return (obj != zfnull && ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj)); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
                 _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
                 *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
@@ -742,21 +710,20 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
                     ); \
                 return *p; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-            { \
+            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
                 _ZFP_PropAliasDetach(obj \
                     , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
-            static void _ZFP_PropAliasOnDetach(ZF_IN ZFObject *obj, \
-                                               ZF_IN void *v) \
-            { \
+            static void _ZFP_PropAliasOnDetach( \
+                    ZF_IN ZFObject *obj \
+                    , ZF_IN void *v \
+                    ) { \
                 zfautoObject objTmp = obj; \
                 _TrNoRef *p = (_TrNoRef *)v; \
                 _ZFP_PropTypeW_##TypeName *vTmp = (_ZFP_PropTypeW_##TypeName *)*p; \
-                if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) \
-                { \
+                if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) { \
                     AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(objTmp); \
                     aliasValue = (AliasToType)*vTmp; \
                     ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessFinish(objTmp); \
@@ -768,14 +735,20 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(ZF_IN_OUT ZFProgressable *ret,
 
 // ============================================================
 // special alias implicit convert
-typedef void (*_ZFP_PropAliasDetachCallback)(ZF_IN ZFObject *obj,
-                                             ZF_IN void *v);
-extern ZFLIB_ZFCore void _ZFP_PropAliasAttach(ZF_IN ZFObject *obj,
-                                              ZF_IN void *v,
-                                              ZF_IN const zfchar *typeName,
-                                              ZF_IN _ZFP_PropAliasDetachCallback detachCallback);
-extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(ZF_IN ZFObject *obj,
-                                              ZF_IN const zfchar *typeName);
+typedef void (*_ZFP_PropAliasDetachCallback)(
+        ZF_IN ZFObject *obj
+        , ZF_IN void *v
+        );
+extern ZFLIB_ZFCore void _ZFP_PropAliasAttach(
+        ZF_IN ZFObject *obj
+        , ZF_IN void *v
+        , ZF_IN const zfchar *typeName
+        , ZF_IN _ZFP_PropAliasDetachCallback detachCallback
+        );
+extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(
+        ZF_IN ZFObject *obj
+        , ZF_IN const zfchar *typeName
+        );
 
 extern ZFLIB_ZFCore void _ZFP_ZFTypeIdWrapperMarkConst(ZF_IN_OUT_OPT ZFObject *zfv);
 template<typename T_Type, int isConst = (zffalse
@@ -786,19 +759,15 @@ template<typename T_Type, int isConst = (zffalse
         || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_CPR
         || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_CPR
     ) ? 1 : 0>
-zfclassNotPOD _ZFP_ZFTypeIdWrapperMarkConstCheck
-{
+zfclassNotPOD _ZFP_ZFTypeIdWrapperMarkConstCheck {
 public:
-    static inline void a(ZF_IN_OUT_OPT ZFObject *zfv)
-    {
+    static inline void a(ZF_IN_OUT_OPT ZFObject *zfv) {
     }
 };
 template<typename T_Type>
-zfclassNotPOD _ZFP_ZFTypeIdWrapperMarkConstCheck<T_Type, 1>
-{
+zfclassNotPOD _ZFP_ZFTypeIdWrapperMarkConstCheck<T_Type, 1> {
 public:
-    static inline void a(ZF_IN_OUT_OPT ZFObject *zfv)
-    {
+    static inline void a(ZF_IN_OUT_OPT ZFObject *zfv) {
         _ZFP_ZFTypeIdWrapperMarkConst(zfv);
     }
 };

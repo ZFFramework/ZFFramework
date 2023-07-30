@@ -14,8 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief web view
  */
-zfclass ZFLIB_ZFUIWebKit ZFUIWebView : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIWebKit ZFUIWebView : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIWebView, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIWebView)
 
@@ -33,8 +32,7 @@ public:
 public:
     // ============================================================
     // properties
-    ZFPROPERTY_ON_INIT_INLINE(zfbool, viewFocusable)
-    {
+    ZFPROPERTY_ON_INIT_INLINE(zfbool, viewFocusable) {
         propertyValue = zftrue;
     }
 
@@ -42,14 +40,16 @@ public:
     /**
      * @brief load from url
      */
-    ZFMETHOD_DECLARE_1(void, webLoadUrl,
-                       ZFMP_IN(const zfchar *, url))
+    ZFMETHOD_DECLARE_1(void, webLoadUrl
+            , ZFMP_IN(const zfchar *, url)
+            )
     /**
      * @brief load from html string
      */
-    ZFMETHOD_DECLARE_2(void, webLoadHtml,
-                       ZFMP_IN(const zfchar *, html),
-                       ZFMP_IN_OPT(const zfchar *, baseUrl, zfnull))
+    ZFMETHOD_DECLARE_2(void, webLoadHtml
+            , ZFMP_IN(const zfchar *, html)
+            , ZFMP_IN_OPT(const zfchar *, baseUrl, zfnull)
+            )
     /**
      * @brief reload current web data
      */
@@ -84,8 +84,7 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, webGoForwardAvailable)
 
 public:
-    zffinal void _ZFP_ZFUIWebView_notifyWebLoadStateChanged(void)
-    {
+    zffinal void _ZFP_ZFUIWebView_notifyWebLoadStateChanged(void) {
         this->webLoadStateOnChange();
     }
 
@@ -99,8 +98,7 @@ protected:
 
 protected:
     /** @brief see #EventWebLoadStateOnChange */
-    virtual inline void webLoadStateOnChange(void)
-    {
+    virtual inline void webLoadStateOnChange(void) {
         this->observerNotify(ZFUIWebView::EventWebLoadStateOnChange());
     }
 };

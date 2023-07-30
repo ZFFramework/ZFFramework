@@ -2,28 +2,24 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFAlgorithm_ZFCompress_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFAlgorithm_ZFCompress_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFAlgorithm_ZFCompress_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFCompress);
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("compress buffer");
-        {
+        this->testCaseOutput("compress buffer"); {
             zfblockedAlloc(ZFIOBufferByMemory, io);
             ZFCompress(io->output(), ZFInputForBufferUnsafe("uncompressed text"));
             ZFDecompress(ZFOutputDefault(), io->input());
         }
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("compress tree");
-        {
+        this->testCaseOutput("compress tree"); {
             ZFPathInfo pathInfoSrc(ZFPathType_res(), ".");
             ZFPathInfo pathInfoDst(ZFPathType_cachePath(), "ZFCompress_test");
 

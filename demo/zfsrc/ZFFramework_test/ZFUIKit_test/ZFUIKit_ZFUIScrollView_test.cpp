@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUIScrollView_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIKit_ZFUIScrollView_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIScrollView_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUIScrollView);
@@ -39,8 +37,7 @@ protected:
     }
 
 private:
-    void setupScrollListener(ZF_IN ZFUIScrollView *scrollView)
-    {
+    void setupScrollListener(ZF_IN ZFUIScrollView *scrollView) {
 #if 1 // output logs during scroll event may cause performance issue
         ZFLISTENER(onDragBegin) {
             zfLogTrim() << "onDragBegin  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIScrollView *>()->scrollContentFrame();
@@ -73,12 +70,13 @@ private:
         scrollView->observerAdd(ZFUIScrollView::EventScrollOnScrollEnd(), onScrollEnd);
 #endif
     }
-    void setupScrollContent(ZF_IN ZFUIScrollView *scrollView,
-                            ZF_IN const ZFUISize &itemSize,
-                            ZF_IN const ZFUISize &itemSpace,
-                            ZF_IN const ZFUISize &itemCount,
-                            ZF_IN_OPT const ZFUIMargin &contentMargin = ZFUIMarginZero())
-    {
+    void setupScrollContent(
+            ZF_IN ZFUIScrollView *scrollView
+            , ZF_IN const ZFUISize &itemSize
+            , ZF_IN const ZFUISize &itemSpace
+            , ZF_IN const ZFUISize &itemCount
+            , ZF_IN_OPT const ZFUIMargin &contentMargin = ZFUIMarginZero()
+            ) {
         scrollView->scrollContentFrame(ZFUIRectMake(
             0,
             0,
@@ -86,13 +84,13 @@ private:
             ZFUIMarginGetHeight(contentMargin) + itemSize.height + (itemSize.height + itemSpace.height) * itemCount.height));
 
         for(zffloat y = contentMargin.top;
-            y <= scrollView->scrollContentFrame().height - itemSize.height - contentMargin.bottom;
-            y += itemSize.height + itemSpace.height)
-        {
+                y <= scrollView->scrollContentFrame().height - itemSize.height - contentMargin.bottom;
+                y += itemSize.height + itemSpace.height
+                ) {
             for(zffloat x = contentMargin.left;
-                x <= scrollView->scrollContentFrame().height - itemSize.width - contentMargin.right;
-                x += itemSize.width + itemSpace.width)
-            {
+                    x <= scrollView->scrollContentFrame().height - itemSize.width - contentMargin.right;
+                    x += itemSize.width + itemSpace.width
+                    ) {
                 zfblockedAlloc(ZFUIButton, btn);
                 scrollView->childAdd(btn)->c_sizeFill(itemSize)->c_margin(x, y, 0, 0);
                 btn->viewBackgroundColor(ZFUIColorRandom(0.75f));
@@ -104,9 +102,10 @@ private:
             }
         }
     }
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIScrollView *scrollView)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUIScrollView *scrollView
+            ) {
         zfblockedAlloc(ZFArray, settings);
         ZFUIKit_test_prepareSettingForBoolProperty(settings, scrollView, ZFPropertyAccess(ZFUIScrollView, scrollAlignToAxis));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, scrollView, ZFPropertyAccess(ZFUIScrollView, scrollBounceHorizontal));
@@ -132,12 +131,10 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , ZFUIScrollView *, scrollView
                     ) {
-                if(scrollView->autoScrollSpeedX() == 0)
-                {
+                if(scrollView->autoScrollSpeedX() == 0) {
                     scrollView->autoScrollStartX(_ZFP_ZFUIKit_ZFUIScrollView_test_autoScrollSpeed * ((zfmRand(2) == 0) ? 1 : -1));
                 }
-                else
-                {
+                else {
                     scrollView->autoScrollStopX();
                 }
             } ZFLISTENER_END()
@@ -158,12 +155,10 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , ZFUIScrollView *, scrollView
                     ) {
-                if(scrollView->autoScrollSpeedY() == 0)
-                {
+                if(scrollView->autoScrollSpeedY() == 0) {
                     scrollView->autoScrollStartY(_ZFP_ZFUIKit_ZFUIScrollView_test_autoScrollSpeed * ((zfmRand(2) == 0) ? 1 : -1));
                 }
-                else
-                {
+                else {
                     scrollView->autoScrollStopY();
                 }
             } ZFLISTENER_END()
@@ -205,12 +200,10 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , ZFUIScrollView *, scrollView
                     ) {
-                if(scrollView->scrollAreaMargin().left >= 40)
-                {
+                if(scrollView->scrollAreaMargin().left >= 40) {
                     scrollView->scrollAreaMarginRemove(scrollView->scrollAreaMargin());
                 }
-                else
-                {
+                else {
                     scrollView->scrollAreaMarginAdd(ZFUIMarginMake(20));
                 }
             } ZFLISTENER_END()

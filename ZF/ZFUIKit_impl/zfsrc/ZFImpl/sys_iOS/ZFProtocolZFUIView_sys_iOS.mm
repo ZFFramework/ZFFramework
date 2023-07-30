@@ -17,8 +17,7 @@
 @implementation _ZFP_ZFUIViewImpl_sys_iOS_View
 // ============================================================
 // init and dealloc
-- (id)init
-{
+- (id)init {
     self = [super init];
 
     self._ZFP_mouseRecords = [NSMutableArray array];
@@ -35,34 +34,28 @@
 
     return self;
 }
-- (void)dealloc
-{
+- (void)dealloc {
     zfCoreAssert(self._ZFP_nativeImplView == nil);
 }
 
 // ============================================================
 // ui and tree enable
-- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
-{
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     UIView *tmp = [super hitTest:point withEvent:event];
-    if(!self._ZFP_uiEnable && tmp == self)
-    {
+    if(!self._ZFP_uiEnable && tmp == self) {
         return nil;
     }
-    else
-    {
+    else {
         return tmp;
     }
 }
 
 // ============================================================
 // frame and layout
-- (CGSize)sizeThatFits:(CGSize)size
-{
+- (CGSize)sizeThatFits:(CGSize)size {
     return self.frame.size;
 }
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     if(self._ZFP_ownerZFUIView != zfnull
         && self._ZFP_ownerZFUIView->layoutRequested()
         && (self._ZFP_ownerZFUIView->viewParent() == zfnull || !self._ZFP_ownerZFUIView->viewParent()->layoutRequested())
@@ -73,18 +66,15 @@
 
 // ============================================================
 // touches
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     // should not called otherwise touch would be passed to parent for a empty UIView
     // [super touchesBegan:touches withEvent:event];
 
-    if(self._ZFP_ownerZFUIView == zfnull)
-    {
+    if(self._ZFP_ownerZFUIView == zfnull) {
         return;
     }
 
-    for(UITouch *touch in touches)
-    {
+    for(UITouch *touch in touches) {
         [self._ZFP_mouseRecords addObject:touch];
 
         zfblockedAlloc(ZFUIMouseEvent, ev);
@@ -96,26 +86,21 @@
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     // should not called otherwise touch would be passed to parent for a empty UIView
     // [super touchesMoved:touches withEvent:event];
 
-    if(self._ZFP_ownerZFUIView == zfnull)
-    {
+    if(self._ZFP_ownerZFUIView == zfnull) {
         return;
     }
 
-    for(UITouch *touch in touches)
-    {
-        if([self._ZFP_mouseRecords indexOfObject:touch] == NSNotFound)
-        {
+    for(UITouch *touch in touches) {
+        if([self._ZFP_mouseRecords indexOfObject:touch] == NSNotFound) {
             [self._ZFP_mouseRecords addObject:touch];
         }
     }
 
-    for(UITouch *touch in self._ZFP_mouseRecords)
-    {
+    for(UITouch *touch in self._ZFP_mouseRecords) {
         zfblockedAlloc(ZFUIMouseEvent, ev);
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
@@ -125,18 +110,15 @@
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     // should not called otherwise touch would be passed to parent for a empty UIView
     // [super touchesEnded:touches withEvent:event];
 
-    if(self._ZFP_ownerZFUIView == zfnull)
-    {
+    if(self._ZFP_ownerZFUIView == zfnull) {
         return;
     }
 
-    for(UITouch *touch in touches)
-    {
+    for(UITouch *touch in touches) {
         [self._ZFP_mouseRecords removeObject:touch];
 
         zfblockedAlloc(ZFUIMouseEvent, ev);
@@ -148,18 +130,15 @@
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(self._ZFP_ownerZFUIView, ev);
     }
 }
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
     // should not called otherwise touch would be passed to parent for a empty UIView
     // [super touchesCancelled:touches withEvent:event];
 
-    if(self._ZFP_ownerZFUIView == zfnull)
-    {
+    if(self._ZFP_ownerZFUIView == zfnull) {
         return;
     }
 
-    for(UITouch *touch in touches)
-    {
+    for(UITouch *touch in touches) {
         [self._ZFP_mouseRecords removeObject:touch];
 
         zfblockedAlloc(ZFUIMouseEvent, ev);
@@ -174,88 +153,69 @@
 
 // ============================================================
 // ZFUIViewFocus
-- (BOOL)canBecomeFirstResponder
-{
-    if(self._ZFP_nativeImplView != nil)
-    {
+- (BOOL)canBecomeFirstResponder {
+    if(self._ZFP_nativeImplView != nil) {
         return [self._ZFP_nativeImplView canBecomeFirstResponder];
     }
-    else
-    {
+    else {
         return self._ZFP_ZFUIViewFocus_viewFocusable;
     }
 }
-- (BOOL)becomeFirstResponder
-{
-    if(self._ZFP_nativeImplView != nil)
-    {
+- (BOOL)becomeFirstResponder {
+    if(self._ZFP_nativeImplView != nil) {
         return [self._ZFP_nativeImplView becomeFirstResponder];
     }
-    else
-    {
+    else {
         return [super becomeFirstResponder];
     }
 }
-- (BOOL)resignFirstResponder
-{
-    if(self._ZFP_nativeImplView != nil)
-    {
+- (BOOL)resignFirstResponder {
+    if(self._ZFP_nativeImplView != nil) {
         return [self._ZFP_nativeImplView resignFirstResponder];
     }
-    else
-    {
+    else {
         return [super resignFirstResponder];
     }
 }
 @end
 
-static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativeImplView)
-{
+static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativeImplView) {
     _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = nil;
-    if([nativeImplView isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]])
-    {
+    if([nativeImplView isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]]) {
         nativeView = (_ZFP_ZFUIViewImpl_sys_iOS_View *)nativeImplView;
     }
-    else if([nativeImplView.superview isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]])
-    {
+    else if([nativeImplView.superview isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]]) {
         nativeView = (_ZFP_ZFUIViewImpl_sys_iOS_View *)nativeImplView.superview;
     }
-    else if([nativeImplView.superview.superview isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]])
-    {
+    else if([nativeImplView.superview.superview isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]]) {
         nativeView = (_ZFP_ZFUIViewImpl_sys_iOS_View *)nativeImplView.superview.superview;
     }
 
-    if(nativeView._ZFP_ownerZFUIView != zfnull)
-    {
+    if(nativeView._ZFP_ownerZFUIView != zfnull) {
         ZFProtocolZFUIViewFocus_notifyViewFocusChanged(nativeView._ZFP_ownerZFUIView);
     }
 }
 
 @implementation UIResponder (_ZFP_ZFUIViewImpl_sys_iOS_MethodSwizzling)
-- (BOOL)_ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_becomeFirstResponder
-{
+- (BOOL)_ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_becomeFirstResponder {
     BOOL old = self.isFirstResponder;
     BOOL ret = [self _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_becomeFirstResponder];
-    if(!old && self.isFirstResponder && [self isKindOfClass:[UIView class]])
-    {
+    if(!old && self.isFirstResponder && [self isKindOfClass:[UIView class]]) {
         _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged((UIView *)self);
     }
     return ret;
 }
-- (BOOL)_ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_resignFirstResponder
-{
+- (BOOL)_ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_resignFirstResponder {
     BOOL old = self.isFirstResponder;
     BOOL ret = [self _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_resignFirstResponder];
-    if(old && !self.isFirstResponder && [self isKindOfClass:[UIView class]])
-    {
+    if(old && !self.isFirstResponder && [self isKindOfClass:[UIView class]]) {
         _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged((UIView *)self);
     }
     return ret;
 }
 @end
 
-static void _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzlePrepare(void)
-{
+static void _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzlePrepare(void) {
     {
         Method methodOrg =  class_getInstanceMethod([UIResponder class], @selector(becomeFirstResponder));
         Method methodNew = class_getInstanceMethod([UIResponder class], @selector(_ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_becomeFirstResponder));
@@ -273,14 +233,12 @@ static __weak id _ZFP_ZFUIViewImpl_sys_iOS_firstResponderRef = nil;
 + (id)_ZFP_ZFUIViewImpl_sys_iOS_firstResponder;
 @end
 @implementation UIResponder(_ZFP_ZFUIViewImpl_sys_iOS_FirstResponder)
-+ (id)_ZFP_ZFUIViewImpl_sys_iOS_firstResponder
-{
++ (id)_ZFP_ZFUIViewImpl_sys_iOS_firstResponder {
      _ZFP_ZFUIViewImpl_sys_iOS_firstResponderRef = nil;
      [[UIApplication sharedApplication] sendAction:@selector(_ZFP_ZFUIViewImpl_sys_iOS_firstResponderFind:) to:nil from:nil forEvent:nil];
      return _ZFP_ZFUIViewImpl_sys_iOS_firstResponderRef;
 }
--(void)_ZFP_ZFUIViewImpl_sys_iOS_firstResponderFind:(id)sender
-{
+-(void)_ZFP_ZFUIViewImpl_sys_iOS_firstResponderFind:(id)sender {
     _ZFP_ZFUIViewImpl_sys_iOS_firstResponderRef = self;
 }
 @end
@@ -291,32 +249,27 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewImpl_sys_iOS, ZFUIView, ZFProtocolLevel:
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         static zfbool _needMethodSwizzling = zftrue;
-        if(_needMethodSwizzling)
-        {
+        if(_needMethodSwizzling) {
             _needMethodSwizzling = zffalse;
             _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzlePrepare();
         }
     }
     zfoverride
-    virtual void protocolOnInitFinish(void)
-    {
+    virtual void protocolOnInitFinish(void) {
         zfsuper::protocolOnInitFinish();
         ZFUIKeyboardStateBuiltinImplRegister();
     }
     zfoverride
-    virtual void protocolOnDeallocPrepare(void)
-    {
+    virtual void protocolOnDeallocPrepare(void) {
         ZFUIKeyboardStateBuiltinImplUnregister();
         zfsuper::protocolOnDeallocPrepare();
     }
 
 public:
-    virtual zfbool nativeViewCacheOnSave(ZF_IN void *nativeView)
-    {
+    virtual zfbool nativeViewCacheOnSave(ZF_IN void *nativeView) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeViewTmp = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)nativeView;
 
         nativeViewTmp.hidden = NO;
@@ -331,59 +284,55 @@ public:
         nativeViewTmp._ZFP_ownerZFUIView = zfnull;
         return zftrue;
     }
-    virtual void nativeViewCacheOnRestore(ZF_IN ZFUIView *view,
-                                          ZF_IN void *nativeView)
-    {
+    virtual void nativeViewCacheOnRestore(
+            ZF_IN ZFUIView *view
+            , ZF_IN void *nativeView
+            ) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeViewTmp = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)nativeView;
         nativeViewTmp._ZFP_ownerZFUIView = view;
     }
-    virtual void *nativeViewCreate(ZF_IN ZFUIView *view)
-    {
+    virtual void *nativeViewCreate(ZF_IN ZFUIView *view) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = [_ZFP_ZFUIViewImpl_sys_iOS_View new];
         nativeView._ZFP_ownerZFUIView = view;
         return (__bridge_retained void *)nativeView;
     }
-    virtual void nativeViewDestroy(ZF_IN void *nativeView)
-    {
+    virtual void nativeViewDestroy(ZF_IN void *nativeView) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeViewTmp = (__bridge_transfer _ZFP_ZFUIViewImpl_sys_iOS_View *)nativeView;
         nativeViewTmp._ZFP_ownerZFUIView = zfnull;
         nativeViewTmp = nil;
     }
 
-    virtual void nativeImplView(ZF_IN ZFUIView *view,
-                                ZF_IN void *nativeImplViewOld,
-                                ZF_IN void *nativeImplView,
-                                ZF_IN zfindex virtualIndex,
-                                ZF_IN zfbool nativeImplViewRequireVirtualIndex)
-    {
-        if(!nativeImplViewRequireVirtualIndex)
-        {
+    virtual void nativeImplView(
+            ZF_IN ZFUIView *view
+            , ZF_IN void *nativeImplViewOld
+            , ZF_IN void *nativeImplView
+            , ZF_IN zfindex virtualIndex
+            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
+            ) {
+        if(!nativeImplViewRequireVirtualIndex) {
             return;
         }
 
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
-        if(nativeView._ZFP_nativeImplView != nil)
-        {
+        if(nativeView._ZFP_nativeImplView != nil) {
             [nativeView._ZFP_nativeImplView removeFromSuperview];
         }
         nativeView._ZFP_nativeImplView = (__bridge UIView *)nativeImplView;
-        if(nativeView._ZFP_nativeImplView != nil)
-        {
+        if(nativeView._ZFP_nativeImplView != nil) {
             [nativeView insertSubview:nativeView._ZFP_nativeImplView atIndex:virtualIndex];
         }
     }
-    virtual void nativeImplViewFrame(ZF_IN ZFUIView *view,
-                                     ZF_IN const ZFUIRect &rect)
-    {
+    virtual void nativeImplViewFrame(
+            ZF_IN ZFUIView *view
+            , ZF_IN const ZFUIRect &rect
+            ) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         nativeView._ZFP_nativeImplView.frame = ZFImpl_sys_iOS_ZFUIRectToCGRect(rect);
     }
-    virtual zffloat UIScaleForImpl(ZF_IN void *nativeView)
-    {
+    virtual zffloat UIScaleForImpl(ZF_IN void *nativeView) {
         return 1;
     }
-    virtual zffloat UIScaleForPixel(ZF_IN void *nativeView)
-    {
+    virtual zffloat UIScaleForPixel(ZF_IN void *nativeView) {
         UIScreen *ownerScreen = ((__bridge UIView *)nativeView).window.screen;
         return (zffloat)((ownerScreen == nil) ? [UIScreen mainScreen].scale : ownerScreen.scale);
     }
@@ -391,63 +340,67 @@ public:
     // ============================================================
     // properties
 public:
-    virtual void viewVisible(ZF_IN ZFUIView *view,
-                             ZF_IN zfbool viewVisible)
-    {
+    virtual void viewVisible(
+            ZF_IN ZFUIView *view
+            , ZF_IN zfbool viewVisible
+            ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).hidden = !viewVisible;
     }
-    virtual void viewAlpha(ZF_IN ZFUIView *view,
-                           ZF_IN zffloat viewAlpha)
-    {
+    virtual void viewAlpha(
+            ZF_IN ZFUIView *view
+            , ZF_IN zffloat viewAlpha
+            ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).alpha = viewAlpha;
     }
-    virtual void viewUIEnable(ZF_IN ZFUIView *view,
-                              ZF_IN zfbool viewUIEnable)
-    {
+    virtual void viewUIEnable(
+            ZF_IN ZFUIView *view
+            , ZF_IN zfbool viewUIEnable
+            ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView())._ZFP_uiEnable = viewUIEnable;
     }
-    virtual void viewUIEnableTree(ZF_IN ZFUIView *view,
-                                  ZF_IN zfbool viewUIEnableTree)
-    {
+    virtual void viewUIEnableTree(
+            ZF_IN ZFUIView *view
+            , ZF_IN zfbool viewUIEnableTree
+            ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).userInteractionEnabled = viewUIEnableTree;
     }
-    virtual void viewBackgroundColor(ZF_IN ZFUIView *view,
-                                     ZF_IN const ZFUIColor &viewBackgroundColor)
-    {
+    virtual void viewBackgroundColor(
+            ZF_IN ZFUIView *view
+            , ZF_IN const ZFUIColor &viewBackgroundColor
+            ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).backgroundColor = ZFImpl_sys_iOS_ZFUIColorToUIColor(viewBackgroundColor);
     }
 
 public:
-    virtual void childAdd(ZF_IN ZFUIView *parent,
-                          ZF_IN ZFUIView *child,
-                          ZF_IN zfindex virtualIndex,
-                          ZF_IN ZFUIViewChildLayerEnum childLayer,
-                          ZF_IN zfindex childLayerIndex)
-    {
+    virtual void childAdd(
+            ZF_IN ZFUIView *parent
+            , ZF_IN ZFUIView *child
+            , ZF_IN zfindex virtualIndex
+            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN zfindex childLayerIndex
+            ) {
         [(__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)parent->nativeView()
             insertSubview:(__bridge UIView *)child->nativeView()
             atIndex:virtualIndex];
     }
-    virtual void childRemove(ZF_IN ZFUIView *parent,
-                             ZF_IN ZFUIView *child,
-                             ZF_IN zfindex virtualIndex,
-                             ZF_IN ZFUIViewChildLayerEnum childLayer,
-                             ZF_IN zfindex childLayerIndex)
-    {
+    virtual void childRemove(
+            ZF_IN ZFUIView *parent
+            , ZF_IN ZFUIView *child
+            , ZF_IN zfindex virtualIndex
+            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN zfindex childLayerIndex
+            ) {
         [(__bridge UIView *)child->nativeView() removeFromSuperview];
     }
-    virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent)
-    {
+    virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)parent->nativeView();
         NSArray *children = nativeView.subviews;
         if(children.count > 0
-            && !(nativeView._ZFP_nativeImplView != nil && children.count == 1))
-        {
-            for(NSUInteger i = children.count - 1; i != (NSUInteger)-1; --i)
-            {
+                && !(nativeView._ZFP_nativeImplView != nil && children.count == 1)
+                ) {
+            for(NSUInteger i = children.count - 1; i != (NSUInteger)-1; --i) {
                 UIView *child = [children objectAtIndex:i];
-                if(child != nativeView._ZFP_nativeImplView)
-                {
+                if(child != nativeView._ZFP_nativeImplView) {
                     [child removeFromSuperview];
                 }
             }
@@ -455,23 +408,24 @@ public:
     }
 
 public:
-    virtual void viewFrame(ZF_IN ZFUIView *view,
-                           ZF_IN const ZFUIRect &rect)
-    {
+    virtual void viewFrame(
+            ZF_IN ZFUIView *view
+            , ZF_IN const ZFUIRect &rect
+            ) {
         ((__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView()).frame =
             ZFImpl_sys_iOS_ZFUIRectToCGRect(rect);
     }
 
-    virtual void layoutRequest(ZF_IN ZFUIView *view)
-    {
+    virtual void layoutRequest(ZF_IN ZFUIView *view) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         [nativeView setNeedsLayout];
     }
 
-    virtual void measureNativeView(ZF_OUT ZFUISize &ret,
-                                   ZF_IN void *nativeView,
-                                   ZF_IN const ZFUISize &sizeHint)
-    {
+    virtual void measureNativeView(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN void *nativeView
+            , ZF_IN const ZFUISize &sizeHint
+            ) {
         ret = ZFUISizeMake(zfmMax(sizeHint.width, (zffloat)0), zfmMax(sizeHint.height, (zffloat)0));
         ZFImpl_sys_iOS_ZFUISizeFromCGSizeT(ret,
             [(__bridge UIView *)nativeView sizeThatFits:ZFImpl_sys_iOS_ZFUISizeToCGSize(ret)]);
@@ -487,56 +441,49 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewFocusImpl_sys_iOS, ZFUIViewFocus, ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void viewFocusable(ZF_IN ZFUIView *view,
-                               ZF_IN zfbool viewFocusable)
-    {
+    virtual void viewFocusable(
+            ZF_IN ZFUIView *view
+            , ZF_IN zfbool viewFocusable
+            ) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         nativeView._ZFP_ZFUIViewFocus_viewFocusable = viewFocusable;
-        if(!viewFocusable)
-        {
+        if(!viewFocusable) {
             [nativeView resignFirstResponder];
         }
     }
-    virtual zfbool viewFocused(ZF_IN ZFUIView *view)
-    {
+    virtual zfbool viewFocused(ZF_IN ZFUIView *view) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         return (nativeView.isFirstResponder
             || (nativeView._ZFP_nativeImplView != nil && nativeView._ZFP_nativeImplView.isFirstResponder));
     }
-    virtual ZFUIView *viewFocusFind(ZF_IN ZFUIView *view)
-    {
+    virtual ZFUIView *viewFocusFind(ZF_IN ZFUIView *view) {
         _ZFP_ZFUIViewImpl_sys_iOS_View *nativeView = (__bridge _ZFP_ZFUIViewImpl_sys_iOS_View *)view->nativeView();
         id focused = [UIResponder _ZFP_ZFUIViewImpl_sys_iOS_firstResponder];
-        if(focused == nil || ![focused isKindOfClass:[UIView class]])
-        {
+        if(focused == nil || ![focused isKindOfClass:[UIView class]]) {
             return zfnull;
         }
         ZFUIView *ret = zfnull;
         UIView *t = (UIView *)focused;
-        while(t != nil)
-        {
-            if(ret == zfnull && [t isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]])
-            {
+        while(t != nil) {
+            if(ret == zfnull && [t isKindOfClass:[_ZFP_ZFUIViewImpl_sys_iOS_View class]]) {
                 ret = ((_ZFP_ZFUIViewImpl_sys_iOS_View *)t)._ZFP_ownerZFUIView;
             }
-            if(t == nativeView)
-            {
+            if(t == nativeView) {
                 return ret;
             }
             t = t.superview;
         }
         return zfnull;
     }
-    virtual void viewFocusRequest(ZF_IN ZFUIView *view,
-                                  ZF_IN zfbool viewFocus)
-    {
+    virtual void viewFocusRequest(
+            ZF_IN ZFUIView *view
+            , ZF_IN zfbool viewFocus
+            ) {
         UIView *nativeView = (__bridge UIView *)view->nativeView();
-        if(viewFocus)
-        {
+        if(viewFocus) {
             [nativeView becomeFirstResponder];
         }
-        else
-        {
+        else {
             [nativeView resignFirstResponder];
         }
     }

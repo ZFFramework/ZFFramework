@@ -70,8 +70,7 @@ zfclassFwd _ZFP_ZFUIWindowPrivate;
  * you may change its owner ZFUISysWindow by #windowOwnerSysWindow,
  * but only before #windowShow is called
  */
-zfclass ZFLIB_ZFUIKit ZFUIWindow : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIKit ZFUIWindow : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIWindow, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIWindow)
 
@@ -122,15 +121,17 @@ public:
     /**
      * @brief util method to get window of a view, or null if not in a window
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUIWindow *, windowForView,
-                              ZFMP_IN(ZFUIView *, forView))
+    ZFMETHOD_DECLARE_STATIC_1(ZFUIWindow *, windowForView
+            , ZFMP_IN(ZFUIView *, forView)
+            )
 
     /**
      * @brief util method to get owner sys window for the view,
      *   return null if not in view tree or failed to get
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUISysWindow *, sysWindowForView,
-                              ZFMP_IN(ZFUIView *, view))
+    ZFMETHOD_DECLARE_STATIC_1(ZFUISysWindow *, sysWindowForView
+            , ZFMP_IN(ZFUIView *, view)
+            )
 
 protected:
     /**
@@ -166,8 +167,9 @@ public:
      * usually you should have only one #ZFUISysWindow in your app
      * so you have no need to care about this method
      */
-    ZFMETHOD_DECLARE_1(void, windowOwnerSysWindow,
-                       ZFMP_IN(ZFUISysWindow *, windowOwnerSysWindow))
+    ZFMETHOD_DECLARE_1(void, windowOwnerSysWindow
+            , ZFMP_IN(ZFUISysWindow *, windowOwnerSysWindow)
+            )
     /**
      * @brief get the owner #ZFUISysWindow, even if not showing
      *
@@ -177,8 +179,7 @@ public:
     ZFMETHOD_DECLARE_0(ZFUISysWindow *, windowOwnerSysWindow)
 protected:
     /** @brief see #EventWindowOwnerSysWindowOnChange */
-    virtual inline void windowOwnerSysWindowOnChange(ZF_IN ZFUISysWindow *oldSysWindow)
-    {
+    virtual inline void windowOwnerSysWindowOnChange(ZF_IN ZFUISysWindow *oldSysWindow) {
         this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnChange(), oldSysWindow);
     }
 
@@ -217,29 +218,24 @@ public:
 
 protected:
     /** @brief see #EventWindowOnShow */
-    virtual inline void windowOnShow(void)
-    {
+    virtual inline void windowOnShow(void) {
         this->observerNotify(ZFUIWindow::EventWindowOnShow());
     }
     /** @brief see #EventWindowOnHide */
-    virtual inline void windowOnHide(void)
-    {
+    virtual inline void windowOnHide(void) {
         this->observerNotify(ZFUIWindow::EventWindowOnHide());
     }
 
     /** @brief see #EventWindowOwnerSysWindowOnResume */
-    virtual inline void windowOwnerSysWindowOnResume(void)
-    {
+    virtual inline void windowOwnerSysWindowOnResume(void) {
         this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnResume());
     }
     /** @brief see #EventWindowOwnerSysWindowOnPause */
-    virtual inline void windowOwnerSysWindowOnPause(void)
-    {
+    virtual inline void windowOwnerSysWindowOnPause(void) {
         this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnPause());
     }
     /** @brief see #EventWindowOwnerSysWindowOnRotate */
-    virtual inline void windowOwnerSysWindowOnRotate(void)
-    {
+    virtual inline void windowOwnerSysWindowOnRotate(void) {
         this->observerNotify(ZFUIWindow::EventWindowOwnerSysWindowOnRotate());
     }
 

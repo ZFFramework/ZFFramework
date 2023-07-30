@@ -4,8 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static void _ZFP_ZFLuaLSPGenFile_prefix(ZF_IN const ZFOutput &output)
-{
+static void _ZFP_ZFLuaLSPGenFile_prefix(ZF_IN const ZFOutput &output) {
     output <<
         "local _class = {}\n"
         "function _ZFP_ZFLuaLSP_Class(base)\n"
@@ -71,23 +70,19 @@ static void _ZFP_ZFLuaLSPGenFile_prefix(ZF_IN const ZFOutput &output)
         ;
 }
 
-static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const ZFClass *cls)
-{
+static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const ZFClass *cls) {
     zfstring ret;
     ret += cls->classNameFull();
     zfstringReplace(ret, ".", "_");
     return ret;
 }
-static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const zfchar *typeId)
-{
+static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const zfchar *typeId) {
     const ZFClass *cls = ZFClass::classForName(typeId);
-    if(cls != zfnull)
-    {
+    if(cls != zfnull) {
         return _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls);
     }
     const ZFTypeInfo *typeInfo = ZFTypeInfoForName(typeId);
-    if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull)
-    {
+    if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull) {
         zfstring ret;
         ret += "_";
         ret += typeId;
@@ -97,37 +92,35 @@ static zfstring _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZF_IN const zfchar *typeId)
     return _ZFP_ZFLuaLSPGenFile_typeIdToSig(typeInfo->typeIdClass());
 }
 
-static void _ZFP_ZFLuaLSPGenFile_param_ZFListener(ZF_IN const ZFOutput &output,
-                                                  ZF_IN const zfchar *paramTypeId,
-                                                  ZF_IN const zfchar *paramName)
-{
+static void _ZFP_ZFLuaLSPGenFile_param_ZFListener(
+        ZF_IN const ZFOutput &output
+        , ZF_IN const zfchar *paramTypeId
+        , ZF_IN const zfchar *paramName
+        ) {
     zfstring sig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(paramTypeId);
-    if(zfstringIsEqual(paramTypeId, ZFTypeId_ZFListener()))
-    {
+    if(zfstringIsEqual(paramTypeId, ZFTypeId_ZFListener())) {
         // ---@param P0 v_ZFListener|fun(zfargs:v_ZFArgs)
         output << "---@param " << paramName << " " << sig
             << "|fun(zfargs:" << _ZFP_ZFLuaLSPGenFile_typeIdToSig(ZFTypeId_ZFArgs()) << ")"
             << "\n";
     }
-    else
-    {
+    else {
         // ---@param P0 P0
         output << "---@param " << paramName << " " << sig << "\n";
     }
 }
 
-static void _ZFP_ZFLuaLSPGenFile_NS(ZF_IN const ZFOutput &output,
-                                    ZF_IN_OUT zfstlmap<zfstring, zfbool> &NSMap,
-                                    ZF_IN const zfchar *NS)
-{
-    if(NSMap.find(NS) != NSMap.end())
-    {
+static void _ZFP_ZFLuaLSPGenFile_NS(
+        ZF_IN const ZFOutput &output
+        , ZF_IN_OUT zfstlmap<zfstring, zfbool> &NSMap
+        , ZF_IN const zfchar *NS
+        ) {
+    if(NSMap.find(NS) != NSMap.end()) {
         return;
     }
     ZFCoreArrayPOD<ZFIndexRange> pos;
     ZFNamespaceSplit(pos, NS);
-    for(zfindex i = 0; i < pos.count() - 1; ++i)
-    {
+    for(zfindex i = 0; i < pos.count() - 1; ++i) {
         _ZFP_ZFLuaLSPGenFile_NS(output, NSMap, zfstring(NS, 0, pos[i].start + pos[i].count));
     }
     /* NS
@@ -136,43 +129,37 @@ static void _ZFP_ZFLuaLSPGenFile_NS(ZF_IN const ZFOutput &output,
     output << NS << " = {}\n";
     NSMap[NS] = zftrue;
 }
-static void _ZFP_ZFLuaLSPGenFile_allNS(ZF_IN const ZFOutput &output)
-{
+static void _ZFP_ZFLuaLSPGenFile_allNS(ZF_IN const ZFOutput &output) {
     ZFCoreArrayPOD<const zfchar *> allNS = ZFNamespaceGetAll();
     zfstlmap<zfstring, zfbool> NSMap;
-    for(zfindex i = 0; i < allNS.count(); ++i)
-    {
+    for(zfindex i = 0; i < allNS.count(); ++i) {
         _ZFP_ZFLuaLSPGenFile_NS(output, NSMap, allNS[i]);
     }
 }
 
-static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
-                                       ZF_IN_OUT zfstlmap<const ZFClass *, zfbool> &clsMap,
-                                       ZF_IN const ZFClass *cls)
-{
-    if(clsMap.find(cls) == clsMap.end())
-    {
+static void _ZFP_ZFLuaLSPGenFile_class(
+        ZF_IN const ZFOutput &output
+        , ZF_IN_OUT zfstlmap<const ZFClass *, zfbool> &clsMap
+        , ZF_IN const ZFClass *cls
+        ) {
+    if(clsMap.find(cls) == clsMap.end()) {
         return;
     }
     clsMap.erase(cls);
-    if(cls != zfnull)
-    {
+    if(cls != zfnull) {
         _ZFP_ZFLuaLSPGenFile_class(output, clsMap, cls->classParent());
     }
 
     zfstring classSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls);
     zfstring classNameFull;
-    if(zfsncmp(cls->className(), ZFTypeIdWrapperPrefixName, ZFTypeIdWrapperPrefixNameLen) == 0)
-    {
-        if(cls->classNamespace() != zfnull)
-        {
+    if(zfsncmp(cls->className(), ZFTypeIdWrapperPrefixName, ZFTypeIdWrapperPrefixNameLen) == 0) {
+        if(cls->classNamespace() != zfnull) {
             classNameFull += cls->classNamespace();
             classNameFull += ".";
         }
         classNameFull += cls->className() + ZFTypeIdWrapperPrefixNameLen;
     }
-    else
-    {
+    else {
         classNameFull += cls->classNameFull();
     }
 
@@ -184,8 +171,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
         function NS.v_Cls() end
      */
     zfstring classParentSig;
-    if(cls->classParent() != zfnull)
-    {
+    if(cls->classParent() != zfnull) {
         classParentSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls->classParent());
     }
     output <<
@@ -202,20 +188,17 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
         function NS.v_Cls(P0) end
      */
     ZFCoreArrayPOD<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
-    for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod)
-    {
+    for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod) {
         const ZFMethod *m = ctorMethods[iMethod];
         if(m->methodParamCount() == 0
-            || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
-        ) {
+                || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
+                ) {
             continue;
         }
         zfstring paramList;
-        for(zfindex i = 0; i < m->methodParamCount(); ++i)
-        {
+        for(zfindex i = 0; i < m->methodParamCount(); ++i) {
             _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
-            if(!paramList.isEmpty())
-            {
+            if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
             paramList += m->methodParamNameAt(i);
@@ -227,13 +210,12 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
     }
 
     ZFCoreArrayPOD<const ZFMethod *> allMethod = cls->methodGetAll();
-    for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod)
-    {
+    for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
         if(!m->methodIsPublic() || m->methodIsInternal()
-            || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
-            || zfstringIsEqual(m->methodName(), "objectOnInit")
-        ) {
+                || (m->methodOwnerClass() != cls && !m->methodOwnerClass()->classIsInterface())
+                || zfstringIsEqual(m->methodName(), "objectOnInit")
+                ) {
             continue;
         }
         /* member methods
@@ -244,36 +226,29 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
             end
          */
         zfstring paramList;
-        for(zfindex i = 0; i < m->methodParamCount(); ++i)
-        {
+        for(zfindex i = 0; i < m->methodParamCount(); ++i) {
             _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
-            if(!paramList.isEmpty())
-            {
+            if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
             paramList += m->methodParamNameAt(i);
         }
-        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void()))
-        {
+        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void())) {
             zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodReturnTypeId());
             output << "---@return " << retSig << "\n";
         }
-        else
-        {
-            if(m->methodType() != ZFMethodTypeStatic)
-            {
+        else {
+            if(m->methodType() != ZFMethodTypeStatic) {
                 zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodOwnerClass());
                 output << "---@return " << retSig << "\n";
             }
         }
         zfstring funcPrefix;
-        if(m->methodType() == ZFMethodTypeStatic)
-        {
+        if(m->methodType() == ZFMethodTypeStatic) {
             funcPrefix += classNameFull;
             funcPrefix += ".";
         }
-        else
-        {
+        else {
             funcPrefix += classSig;
             funcPrefix += ":";
         }
@@ -282,33 +257,26 @@ static void _ZFP_ZFLuaLSPGenFile_class(ZF_IN const ZFOutput &output,
             ;
     }
 }
-static void _ZFP_ZFLuaLSPGenFile_allClass(ZF_IN const ZFOutput &output)
-{
+static void _ZFP_ZFLuaLSPGenFile_allClass(ZF_IN const ZFOutput &output) {
     ZFCoreArrayPOD<const ZFClass *> allClass = ZFClassGetAll();
     zfstlmap<const ZFClass *, zfbool> clsMap;
-    for(zfindex i = 0; i < allClass.count(); ++i)
-    {
+    for(zfindex i = 0; i < allClass.count(); ++i) {
         const ZFClass *cls = allClass[i];
-        if(cls->classIsInternal())
-        {
+        if(cls->classIsInternal()) {
             continue;
         }
         clsMap[cls] = zftrue;
     }
-    while(!clsMap.empty())
-    {
+    while(!clsMap.empty()) {
         _ZFP_ZFLuaLSPGenFile_class(output, clsMap, clsMap.begin()->first);
     }
 }
 
-static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output)
-{
+static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output) {
     ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
-    for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod)
-    {
+    for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
-        if(m->methodIsInternal())
-        {
+        if(m->methodIsInternal()) {
             continue;
         }
         /* global methods
@@ -317,23 +285,19 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output)
             function NS.Func(P0) end
          */
         zfstring paramList;
-        for(zfindex i = 0; i < m->methodParamCount(); ++i)
-        {
+        for(zfindex i = 0; i < m->methodParamCount(); ++i) {
             _ZFP_ZFLuaLSPGenFile_param_ZFListener(output, m->methodParamTypeIdAt(i), m->methodParamNameAt(i));
-            if(!paramList.isEmpty())
-            {
+            if(!paramList.isEmpty()) {
                 paramList += ", ";
             }
             paramList += m->methodParamNameAt(i);
         }
-        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void()))
-        {
+        if(!zfstringIsEqual(m->methodReturnTypeId(), ZFTypeId_void())) {
             zfstring retSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(m->methodReturnTypeId());
             output << "---@return " << retSig << "\n";
         }
         zfstring funcPrefix;
-        if(m->methodNamespace() != zfnull)
-        {
+        if(m->methodNamespace() != zfnull) {
             funcPrefix += m->methodNamespace();
             funcPrefix += ".";
         }
@@ -343,8 +307,7 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output)
     }
 }
 
-static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output)
-{
+static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output) {
     output
         << "---@return v_ZFCoreArray\n"
         << "function ZFCoreArrayCreate(...) end\n"
@@ -379,9 +342,9 @@ static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output)
         ;
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGenFile,
-                       ZFMP_IN(const ZFOutput &, output))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGenFile
+        , ZFMP_IN(const ZFOutput &, output)
+        ) {
     _ZFP_ZFLuaLSPGenFile_prefix(output);
     _ZFP_ZFLuaLSPGenFile_allNS(output);
     _ZFP_ZFLuaLSPGenFile_allClass(output);

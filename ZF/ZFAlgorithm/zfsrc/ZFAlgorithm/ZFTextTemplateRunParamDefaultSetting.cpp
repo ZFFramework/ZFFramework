@@ -6,14 +6,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFTextTemplateRunParamDefault_DECLARE(typeName) \
     static ZFRegExp *_ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule = zfnull; \
-    static ZFFilterCallbackResult _ZFP_ZFTextTemplateRunParamDefault_##typeName##Filter(ZF_IN const zfchar *const &value) \
-    { \
-        if(_ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule != zfnull) \
-        { \
+    static ZFFilterCallbackResult _ZFP_ZFTextTemplateRunParamDefault_##typeName##Filter(ZF_IN const zfchar *const &value) { \
+        if(_ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule != zfnull) { \
             ZFRegExpResult regExpResult; \
             _ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule->regExpMatch(regExpResult, value); \
-            if(regExpResult.matched) \
-            { \
+            if(regExpResult.matched) { \
                 return ZFFilterCallbackResultNotActive; \
             } \
         } \
@@ -25,8 +22,7 @@ _ZFP_ZFTextTemplateRunParamDefault_DECLARE(dirContent)
 _ZFP_ZFTextTemplateRunParamDefault_DECLARE(fileName)
 _ZFP_ZFTextTemplateRunParamDefault_DECLARE(fileContent)
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTextTemplateRunParamDefaultSetting, ZFLevelZFFrameworkHigh)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTextTemplateRunParamDefaultSetting, ZFLevelZFFrameworkHigh) {
     #if 0
     _ZFP_ZFTextTemplateRunParamDefault_dirNameFilterRule = zfAlloc(ZFRegExp);
     ZFTextTemplateRunParamDefault().dirNameFilter.customFilterCallbackAdd(_ZFP_ZFTextTemplateRunParamDefault_dirNameFilter);
@@ -80,8 +76,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTextTemplateRunParamDefaultSetting, ZFLe
             "|(\\.dylib(\\..*)*$)"
         );
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFTextTemplateRunParamDefaultSetting)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFTextTemplateRunParamDefaultSetting) {
     ZFTextTemplateRunParamDefault().dirNameFilter.customFilterCallbackRemove(_ZFP_ZFTextTemplateRunParamDefault_dirNameFilter);
     zfRelease(_ZFP_ZFTextTemplateRunParamDefault_dirNameFilterRule);
     _ZFP_ZFTextTemplateRunParamDefault_dirNameFilterRule = zfnull;

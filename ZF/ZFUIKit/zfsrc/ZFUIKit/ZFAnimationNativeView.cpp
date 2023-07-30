@@ -6,8 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFENUM_DEFINE(ZFAnimationNativeViewCurve)
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFAnimationNativeViewPrivate
-{
+zfclassNotPOD _ZFP_ZFAnimationNativeViewPrivate {
 public:
     void *nativeAni;
     zfbool aniTargetAutoDisableFlag;
@@ -23,29 +22,25 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAnimationNativeView)
 
-void ZFAnimationNativeView::objectOnInit(void)
-{
+void ZFAnimationNativeView::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFAnimationNativeViewPrivate);
     d->nativeAni = ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->nativeAniCreate(this);
 }
-void ZFAnimationNativeView::objectOnDealloc(void)
-{
+void ZFAnimationNativeView::objectOnDealloc(void) {
     ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->nativeAniDestroy(this, d->nativeAni);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
 
-void ZFAnimationNativeView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-{
+void ZFAnimationNativeView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     ret += "-";
     zfsFromPointerT(ret, this->nativeAnimation());
     ZFClassUtil::objectPropertyInfo(ret, this);
 }
-zfidentity ZFAnimationNativeView::objectHash(void)
-{
+zfidentity ZFAnimationNativeView::objectHash(void) {
     // no need to hash everything, for performance
     return zfidentityHash(zfsuper::objectHash()
             , this->aniCurve()
@@ -61,10 +56,8 @@ zfidentity ZFAnimationNativeView::objectHash(void)
             , this->aniRotateZTo()
         );
 }
-ZFCompareResult ZFAnimationNativeView::objectCompare(ZF_IN ZFObject *anotherObj)
-{
-    if(zfsuper::ZFObject::objectCompare(anotherObj) != ZFCompareTheSame)
-    {
+ZFCompareResult ZFAnimationNativeView::objectCompare(ZF_IN ZFObject *anotherObj) {
+    if(zfsuper::ZFObject::objectCompare(anotherObj) != ZFCompareTheSame) {
         return ZFCompareUncomparable;
     }
     zfself *another = ZFCastZFObject(zfself *, anotherObj);
@@ -92,68 +85,55 @@ ZFCompareResult ZFAnimationNativeView::objectCompare(ZF_IN ZFObject *anotherObj)
         && this->aniRotateYTo() == another->aniRotateYTo()
         && this->aniRotateZFrom() == another->aniRotateZFrom()
         && this->aniRotateZTo() == another->aniRotateZTo()
-        )
-    {
+        ) {
         return ZFCompareTheSame;
     }
     return ZFCompareUncomparable;
 }
 
-ZFMETHOD_DEFINE_0(ZFAnimationNativeView, void *, nativeAnimation)
-{
+ZFMETHOD_DEFINE_0(ZFAnimationNativeView, void *, nativeAnimation) {
     return d->nativeAni;
 }
 
 // ============================================================
 // start stop
-zfbool ZFAnimationNativeView::aniImplCheckValid(void)
-{
+zfbool ZFAnimationNativeView::aniImplCheckValid(void) {
     return (zfsuper::aniImplCheckValid()
         && this->aniTarget() != zfnull && this->aniTarget()->classData()->classIsTypeOf(ZFUIView::ClassData())
     );
 }
 
-void ZFAnimationNativeView::aniOnStart(void)
-{
+void ZFAnimationNativeView::aniOnStart(void) {
     zfsuper::aniOnStart();
     ZFUIView *aniTarget = ZFAny(this->aniTarget());
-    if(aniTarget == zfnull || !this->aniTargetAutoDisable())
-    {
+    if(aniTarget == zfnull || !this->aniTargetAutoDisable()) {
         d->aniTargetAutoDisableFlag = zffalse;
     }
-    else
-    {
+    else {
         d->aniTargetAutoDisableFlag = zftrue;
         aniTarget->viewUIEnableTree(zffalse);
     }
 }
-void ZFAnimationNativeView::aniOnStop(void)
-{
+void ZFAnimationNativeView::aniOnStop(void) {
     ZFUIView *aniTarget = ZFAny(this->aniTarget());
-    if(aniTarget != zfnull && d->aniTargetAutoDisableFlag)
-    {
+    if(aniTarget != zfnull && d->aniTargetAutoDisableFlag) {
         aniTarget->viewUIEnableTree(zftrue);
     }
     zfsuper::aniOnStop();
 }
 
-void ZFAnimationNativeView::aniImplStart(void)
-{
+void ZFAnimationNativeView::aniImplStart(void) {
     zfsuper::aniImplStart();
     ZFUIView *aniTarget = ZFAny(this->aniTarget());
     ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->nativeAniStart(this,
         aniTarget != zfnull ? aniTarget->UIScaleFixed() : 1.0f);
-    {
-        ZFUIView *parent = aniTarget;
-        while(parent->viewParent() != zfnull)
-        {
-            parent = parent->viewParent();
-        }
-        parent->layoutIfNeed();
+    ZFUIView *parent = aniTarget;
+    while(parent->viewParent() != zfnull) {
+        parent = parent->viewParent();
     }
+    parent->layoutIfNeed();
 }
-void ZFAnimationNativeView::aniImplStop(void)
-{
+void ZFAnimationNativeView::aniImplStop(void) {
     ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->nativeAniStop(this);
     zfsuper::aniImplStop();
 }

@@ -13,19 +13,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 zfclassFwd _ZFP_ZFIOBufferByMemory;
 /** @brief #ZFIOBuffer using memory */
-zfclass ZFLIB_ZFCore ZFIOBufferByMemory : zfextends ZFIOBuffer
-{
+zfclass ZFLIB_ZFCore ZFIOBufferByMemory : zfextends ZFIOBuffer {
     ZFOBJECT_DECLARE(ZFIOBufferByMemory, ZFIOBuffer)
 
 public:
     zfoverride
-    virtual ZFInput implInput(void)
-    {
+    virtual ZFInput implInput(void) {
         return this->_ZFP_input;
     }
     zfoverride
-    virtual ZFOutput implOutput(void)
-    {
+    virtual ZFOutput implOutput(void) {
         return this->_ZFP_output;
     }
     zfoverride

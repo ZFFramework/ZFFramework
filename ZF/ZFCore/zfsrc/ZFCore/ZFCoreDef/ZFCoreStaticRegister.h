@@ -17,12 +17,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * usage:
  * @code
  *   // in cpp files only
- *   ZF_STATIC_REGISTER_INIT(YourName)
- *   {
+ *   ZF_STATIC_REGISTER_INIT(YourName) {
  *       // your register code
  *   }
- *   ZF_STATIC_REGISTER_DESTROY(YourName) // destroy step is optional
- *   {
+ *   ZF_STATIC_REGISTER_DESTROY(YourName) { // destroy step is optional
  *       // your unregister code
  *   }
  *   ZF_STATIC_REGISTER_END(YourName)
@@ -45,8 +43,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZF_STATIC_REGISTER_INIT(Name) \
     /** @cond ZFPrivateDoc */ \
-    zfclassNotPOD _ZFP_SR_##Name \
-    { \
+    zfclassNotPOD _ZFP_SR_##Name { \
     protected: \
         typedef _ZFP_SR_##Name zfself; \
     public: \

@@ -16,8 +16,7 @@ zfclassNotPOD _ZFP_ZFAutoReleasePoolPrivate;
  * automatically release all object in pool upon pool's drain or delete
  * @see zfRelease
  */
-zfclass ZFLIB_ZFCore ZFAutoReleasePool : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFAutoReleasePool : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFAutoReleasePool, ZFObject)
 
     /**

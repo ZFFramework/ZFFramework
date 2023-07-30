@@ -23,9 +23,11 @@ extern ZFLIB_ZFLua ZFCoreArray<ZFOutput> &_ZFP_ZFLuaErrorCallbacks(void);
  * by default, #ZFOutputDefault would be added during #ZFLevelZFFrameworkNormal
  */
 #define ZFLuaErrorCallbacks _ZFP_ZFLuaErrorCallbacks()
-extern ZFLIB_ZFLua void _ZFP_ZFLuaErrorOccurred(ZF_IN const ZFCallerInfo &callerInfo,
-                                                ZF_IN const zfchar *fmt,
-                                                ...);
+extern ZFLIB_ZFLua void _ZFP_ZFLuaErrorOccurred(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN const zfchar *fmt
+        , ...
+        );
 /**
  * @brief util method to notify #ZFLuaErrorCallbacks
  */

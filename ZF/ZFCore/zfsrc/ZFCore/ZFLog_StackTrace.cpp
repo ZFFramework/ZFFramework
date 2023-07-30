@@ -3,23 +3,20 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_DEFINE_0(zfbool, zfLogStackTraceAvailable)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfbool, zfLogStackTraceAvailable) {
     return (ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull);
 }
 
-ZFMETHOD_FUNC_DEFINE_4(void, zfLogStackTrace,
-                       ZFMP_OUT(zfstring &, ret),
-                       ZFMP_IN_OPT(const zfchar *, prefix, zfnull),
-                       ZFMP_IN_OPT(zfindex, ignoreLevel, 0),
-                       ZFMP_IN_OPT(zfindex, maxLevel, 20))
-{
-    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull)
-    {
+ZFMETHOD_FUNC_DEFINE_4(void, zfLogStackTrace
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN_OPT(const zfchar *, prefix, zfnull)
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        , ZFMP_IN_OPT(zfindex, maxLevel, 20)
+        ) {
+    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull) {
         ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace)->stackTrace(ret, prefix, ignoreLevel + 2, maxLevel);
     }
-    else
-    {
+    else {
         const zfchar *fixedPrefix = ((prefix == zfnull) ? "" : prefix);
 
         ret += fixedPrefix;
@@ -35,18 +32,16 @@ ZFMETHOD_FUNC_DEFINE_4(void, zfLogStackTrace,
         ret += '\n';
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(zfstring, zfLogStackTrace,
-                       ZFMP_IN_OPT(const zfchar *, prefix, zfnull),
-                       ZFMP_IN_OPT(zfindex, ignoreLevel, 0),
-                       ZFMP_IN_OPT(zfindex, maxLevel, 20))
-{
+ZFMETHOD_FUNC_DEFINE_3(zfstring, zfLogStackTrace
+        , ZFMP_IN_OPT(const zfchar *, prefix, zfnull)
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        , ZFMP_IN_OPT(zfindex, maxLevel, 20)
+        ) {
     zfstring ret;
-    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull)
-    {
+    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull) {
         ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace)->stackTrace(ret, prefix, ignoreLevel + 2, maxLevel);
     }
-    else
-    {
+    else {
         const zfchar *fixedPrefix = ((prefix == zfnull) ? "" : prefix);
 
         ret += fixedPrefix;
@@ -64,29 +59,25 @@ ZFMETHOD_FUNC_DEFINE_3(zfstring, zfLogStackTrace,
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_2(void, zfLogCallerInfo,
-                       ZFMP_OUT(zfstring &, ret),
-                       ZFMP_IN_OPT(zfindex, ignoreLevel, 0))
-{
-    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull)
-    {
+ZFMETHOD_FUNC_DEFINE_2(void, zfLogCallerInfo
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        ) {
+    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull) {
         ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace)->callerInfo(ret, ignoreLevel + 2);
     }
-    else
-    {
+    else {
         ret += "<zfLogCallerInfo is currently unsupported>";
     }
 }
-ZFMETHOD_FUNC_DEFINE_1(zfstring, zfLogCallerInfo,
-                       ZFMP_IN_OPT(zfindex, ignoreLevel, 0))
-{
+ZFMETHOD_FUNC_DEFINE_1(zfstring, zfLogCallerInfo
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        ) {
     zfstring ret;
-    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull)
-    {
+    if(ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace) != zfnull) {
         ZFPROTOCOL_TRY_ACCESS(ZFLogStackTrace)->callerInfo(ret, ignoreLevel + 2);
     }
-    else
-    {
+    else {
         ret += "<zfLogCallerInfo is currently unsupported>";
     }
     return ret;

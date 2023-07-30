@@ -8,83 +8,72 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void ZFImpl_sys_SDL_View::sysWindowAttach(ZF_IN ZFImpl_sys_SDL_SysWindow *sysWindow)
-{
+void ZFImpl_sys_SDL_View::sysWindowAttach(ZF_IN ZFImpl_sys_SDL_SysWindow *sysWindow) {
     this->sysWindow = sysWindow;
-    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i)
-    {
+    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i) {
         this->children[i]->sysWindowAttach(sysWindow);
     }
 }
-void ZFImpl_sys_SDL_View::sysWindowDetach(void)
-{
-    if(this->sysWindow != zfnull)
-    {
-        if(this->sysWindow->viewFocused == this)
-        {
+void ZFImpl_sys_SDL_View::sysWindowDetach(void) {
+    if(this->sysWindow != zfnull) {
+        if(this->sysWindow->viewFocused == this) {
             this->sysWindow->viewFocusChange(zfnull);
         }
         this->sysWindow = zfnull;
     }
-    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i)
-    {
+    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i) {
         this->children[i]->sysWindowDetach();
     }
 }
 
-void ZFImpl_sys_SDL_View::childAttach(ZF_IN zfindex index, ZF_IN ZFImpl_sys_SDL_View *child)
-{
+void ZFImpl_sys_SDL_View::childAttach(
+        ZF_IN zfindex index
+        , ZF_IN ZFImpl_sys_SDL_View *child
+        ) {
     this->children.add(index, child);
     child->parent = this;
-    if(this->sysWindow != zfnull)
-    {
+    if(this->sysWindow != zfnull) {
         child->sysWindowAttach(sysWindow);
     }
 }
-void ZFImpl_sys_SDL_View::childDetach(ZF_IN zfindex index)
-{
+void ZFImpl_sys_SDL_View::childDetach(ZF_IN zfindex index) {
     ZFImpl_sys_SDL_View *child = this->children[index];
     child->parent = zfnull;
     this->children.remove(index);
-    if(this->sysWindow != zfnull)
-    {
+    if(this->sysWindow != zfnull) {
         child->sysWindowDetach();
     }
 }
 
-void ZFImpl_sys_SDL_View::renderRequest(void)
-{
-    if(!this->renderRequested)
-    {
+void ZFImpl_sys_SDL_View::renderRequest(void) {
+    if(!this->renderRequested) {
         this->renderRequested = zftrue;
         this->renderCacheValid = zffalse;
-        if(this->parent != zfnull)
-        {
+        if(this->parent != zfnull) {
             this->parent->renderRequest();
         }
-        else if(this->sysWindow != zfnull)
-        {
+        else if(this->sysWindow != zfnull) {
             this->sysWindow->renderRequest();
         }
     }
 }
-void ZFImpl_sys_SDL_View::layoutRequest(void)
-{
-    if(this->sysWindow != zfnull)
-    {
+void ZFImpl_sys_SDL_View::layoutRequest(void) {
+    if(this->sysWindow != zfnull) {
         this->sysWindow->layoutRequest();
     }
     this->renderRequest();
 }
 
 // ============================================================
-void ZFImpl_sys_SDL_View::renderCachePrepare(ZF_IN SDL_Renderer *renderer, ZF_IN int w, ZF_IN int h)
-{
+void ZFImpl_sys_SDL_View::renderCachePrepare(
+        ZF_IN SDL_Renderer *renderer
+        , ZF_IN int w
+        , ZF_IN int h
+        ) {
     const int align = 32;
     int desiredWidth = (((w - 1) / align) + 1) * align;
     int desiredHeight = (((h - 1) / align) + 1) * align;
-    if(this->renderCache != zfnull)
-    {
+    if(this->renderCache != zfnull) {
         int w, h;
         if(SDL_QueryTexture(this->renderCache, zfnull, zfnull, &w, &h) != 0
             || w != desiredWidth || h != desiredHeight
@@ -92,8 +81,7 @@ void ZFImpl_sys_SDL_View::renderCachePrepare(ZF_IN SDL_Renderer *renderer, ZF_IN
             this->renderCacheRemove();
         }
     }
-    if(this->renderCache == zfnull)
-    {
+    if(this->renderCache == zfnull) {
         SDL_RendererInfo rendererInfo;
         SDL_GetRendererInfo(renderer, &rendererInfo);
         this->renderCache = SDL_CreateTexture(
@@ -109,23 +97,21 @@ void ZFImpl_sys_SDL_View::renderCachePrepare(ZF_IN SDL_Renderer *renderer, ZF_IN
 }
 
 // ============================================================
-static void _ZFP_ZFImpl_sys_SDL_View_render(ZF_IN ZFImpl_sys_SDL_View *view,
-                                            ZF_IN SDL_Renderer *renderer,
-                                            ZF_IN const SDL_Rect &childRect,
-                                            ZF_IN const SDL_Rect &parentRect)
-{
+static void _ZFP_ZFImpl_sys_SDL_View_render(
+        ZF_IN ZFImpl_sys_SDL_View *view
+        , ZF_IN SDL_Renderer *renderer
+        , ZF_IN const SDL_Rect &childRect
+        , ZF_IN const SDL_Rect &parentRect
+        ) {
     zfbool done = zffalse;
-    for(zfindex i = 0; i < view->renderImpls.count(); ++i)
-    {
+    for(zfindex i = 0; i < view->renderImpls.count(); ++i) {
         done |= view->renderImpls[i](renderer, view, childRect, parentRect);
     }
 
-    if(!done)
-    {
+    if(!done) {
         SDL_Rect parentRectNew;
         ZFImpl_sys_SDL_View::renderRectCalc(parentRectNew, childRect, parentRect);
-        for(zfindex i = 0; i < view->children.count(); ++i)
-        {
+        for(zfindex i = 0; i < view->children.count(); ++i) {
             ZFImpl_sys_SDL_View *child = view->children[i];
             SDL_Rect childRectNew;
             childRectNew.x = childRect.x + child->rect.x;
@@ -137,11 +123,13 @@ static void _ZFP_ZFImpl_sys_SDL_View_render(ZF_IN ZFImpl_sys_SDL_View *view,
     }
 }
 
-void ZFImpl_sys_SDL_View::render(ZF_IN SDL_Renderer *renderer, ZF_IN const SDL_Rect &childRect, ZF_IN const SDL_Rect &parentRect)
-{
+void ZFImpl_sys_SDL_View::render(
+        ZF_IN SDL_Renderer *renderer
+        , ZF_IN const SDL_Rect &childRect
+        , ZF_IN const SDL_Rect &parentRect
+        ) {
     this->renderRequested = zffalse;
-    if(this->ownerZFUIView != zfnull && !this->ownerZFUIView->viewVisible())
-    {
+    if(this->ownerZFUIView != zfnull && !this->ownerZFUIView->viewVisible()) {
         return;
     }
     if(zffalse
@@ -162,16 +150,13 @@ void ZFImpl_sys_SDL_View::render(ZF_IN SDL_Renderer *renderer, ZF_IN const SDL_R
     }
 
     this->renderCachePrepare(renderer, zfmMin(parentRect.w, this->rect.w), zfmMin(parentRect.h, this->rect.h));
-    if(this->renderCache == zfnull)
-    {
+    if(this->renderCache == zfnull) {
         _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect);
         return;
     }
-    if(!this->renderCacheValid)
-    {
+    if(!this->renderCacheValid) {
         ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetChanged, renderer, this->renderCache);
-        if(!renderTargetChanged)
-        {
+        if(!renderTargetChanged) {
             _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect);
             return;
         }
@@ -204,42 +189,34 @@ void ZFImpl_sys_SDL_View::render(ZF_IN SDL_Renderer *renderer, ZF_IN const SDL_R
     double angle = 0;
     zffloat scaleX = 1;
     zffloat scaleY = 1;
-    if(this->viewTransform != zfnull)
-    {
+    if(this->viewTransform != zfnull) {
         angle += this->viewTransform->rotateZ;
         dst.x += this->viewTransform->translateX;
         dst.y += this->viewTransform->translateY;
-        if(this->viewTransform->scaleX != 1)
-        {
+        if(this->viewTransform->scaleX != 1) {
             scaleX *= this->viewTransform->scaleX;
         }
-        if(this->viewTransform->scaleY != 1)
-        {
+        if(this->viewTransform->scaleY != 1) {
             scaleY *= this->viewTransform->scaleY;
         }
     }
-    if(this->aniTransform != zfnull)
-    {
+    if(this->aniTransform != zfnull) {
         angle += this->aniTransform->rotateZ;
         dst.x += this->aniTransform->translateX;
         dst.y += this->aniTransform->translateY;
-        if(this->aniTransform->scaleX != 1)
-        {
+        if(this->aniTransform->scaleX != 1) {
             scaleX *= this->aniTransform->scaleX;
         }
-        if(this->aniTransform->scaleY != 1)
-        {
+        if(this->aniTransform->scaleY != 1) {
             scaleY *= this->aniTransform->scaleY;
         }
     }
-    if(scaleX != 1)
-    {
+    if(scaleX != 1) {
         zffloat offset = src.w * (scaleX - 1);
         dst.x -= offset / 2;
         dst.w += offset;
     }
-    if(scaleY != 1)
-    {
+    if(scaleY != 1) {
         zffloat offset = src.h * (scaleY - 1);
         dst.y -= offset / 2;
         dst.h += offset;
@@ -248,14 +225,14 @@ void ZFImpl_sys_SDL_View::render(ZF_IN SDL_Renderer *renderer, ZF_IN const SDL_R
 }
 
 // ============================================================
-ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseTest(ZF_IN int x, ZF_IN int y,
-                                                    ZF_OUT_OPT zfbool *mouseGrab /* = zfnull */)
-{
-    if(mouseGrab != zfnull)
-    {
+ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseTest(
+        ZF_IN int x
+        , ZF_IN int y
+        , ZF_OUT_OPT zfbool *mouseGrab /* = zfnull */
+        ) {
+    if(mouseGrab != zfnull) {
         *mouseGrab = zffalse;
-        if(this->sdlMouseGrabCallback != zfnull && this->sdlMouseGrabCallback(this, zfnull, x, y))
-        {
+        if(this->sdlMouseGrabCallback != zfnull && this->sdlMouseGrabCallback(this, zfnull, x, y)) {
             *mouseGrab = zftrue;
             return this;
         }
@@ -268,26 +245,24 @@ ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseTest(ZF_IN int x, ZF_IN int y,
         return zfnull;
     }
 
-    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i)
-    {
+    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i) {
         ZFImpl_sys_SDL_View *child = this->children[i];
         child = child->mouseTest(x - child->rect.x, y - child->rect.y, mouseGrab);
-        if(child != zfnull)
-        {
+        if(child != zfnull) {
             return child;
         }
     }
-    if(this->ownerZFUIView->viewUIEnable())
-    {
+    if(this->ownerZFUIView->viewUIEnable()) {
         return this;
     }
-    else
-    {
+    else {
         return zfnull;
     }
 }
-ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseHoverTest(ZF_IN int x, ZF_IN int y)
-{
+ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseHoverTest(
+        ZF_IN int x
+        , ZF_IN int y
+        ) {
     if(this->ownerZFUIView == zfnull
         || !this->ownerZFUIView->viewUIEnableTree()
         || x < 0 || x >= this->rect.w
@@ -297,53 +272,46 @@ ZFImpl_sys_SDL_View *ZFImpl_sys_SDL_View::mouseHoverTest(ZF_IN int x, ZF_IN int 
     }
 
     ZFImpl_sys_SDL_View *child = zfnull;
-    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i)
-    {
+    for(zfindex i = this->children.count() - 1; i != zfindexMax(); --i) {
         child = this->children[i];
-        if(child->ownerZFUIView == zfnull)
-        {
+        if(child->ownerZFUIView == zfnull) {
             continue;
         }
         ZFImpl_sys_SDL_View *tmp = child->mouseHoverTest(x - child->rect.x, y - child->rect.y);
-        if(tmp != zfnull)
-        {
+        if(tmp != zfnull) {
             return tmp;
         }
     }
-    if(this->ownerZFUIView->viewUIEnable() && this->ownerZFUIView->viewMouseHoverEventEnable())
-    {
+    if(this->ownerZFUIView->viewUIEnable() && this->ownerZFUIView->viewMouseHoverEventEnable()) {
         return this;
     }
-    else
-    {
+    else {
         return zfnull;
     }
 }
 
 // ============================================================
-void ZFImpl_sys_SDL_View::posOnWindow(ZF_OUT int &x, ZF_OUT int &y)
-{
+void ZFImpl_sys_SDL_View::posOnWindow(
+        ZF_OUT int &x
+        , ZF_OUT int &y
+        ) {
     x = 0;
     y = 0;
     ZFImpl_sys_SDL_View *p = this;
-    while(p != zfnull)
-    {
+    while(p != zfnull) {
         x += p->rect.x;
         y += p->rect.y;
         p = p->parent;
     }
 }
-void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
-{
-    if(this->sysWindow == zfnull)
-    {
+void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
+    if(this->sysWindow == zfnull) {
         return;
     }
 
     Uint8 sdlButton = (Uint8)sdlEvent->button.button;
     ZFUIMouseButtonEnum mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
-    switch(sdlButton)
-    {
+    switch(sdlButton) {
         case SDL_BUTTON_RIGHT:
             mouseButton = ZFUIMouseButton::e_MouseButtonRight;
             break;
@@ -356,25 +324,20 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
             break;
     }
 
-    switch(sdlEvent->type)
-    {
+    switch(sdlEvent->type) {
         case SDL_MOUSEMOTION: {
             ZFImpl_sys_SDL_MouseState &mouseState = this->sysWindow->mouseState(sdlEvent->motion.which, sdlButton);
-            if(mouseState.viewDown != zfnull)
-            { // mouse move
-                if(mouseState.mouseId == zfidentityInvalid())
-                {
+            if(mouseState.viewDown != zfnull) { // mouse move
+                if(mouseState.mouseId == zfidentityInvalid()) {
                     mouseState.mouseId = this->sysWindow->mouseIdGen.idAcquire();
                 }
-                if(mouseState.mouseGrab)
-                {
+                if(mouseState.mouseGrab) {
                     zfint x = sdlEvent->motion.x;
                     zfint y = sdlEvent->motion.y;
                     mouseState.viewDown->posFromGlobal(x, y);
                     mouseState.viewDown->sdlMouseGrabCallback(mouseState.viewDown, sdlEvent, x, y);
                 }
-                else
-                {
+                else {
                     zfblockedAlloc(ZFUIMouseEvent, event);
                     event->mouseId = mouseState.mouseId;
                     event->mouseAction = ZFUIMouseAction::e_MouseMove;
@@ -385,15 +348,11 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(mouseState.viewDown->ownerZFUIView, event);
                 }
             }
-            else
-            { // mouse hover
+            else { // mouse hover
                 ZFImpl_sys_SDL_View *viewHover = this->mouseHoverTestGlobal(sdlEvent->motion.x, sdlEvent->motion.y);
-                if(mouseState.viewHover != viewHover)
-                {
-                    if(mouseState.viewHover != zfnull)
-                    {
-                        if(mouseState.viewHover->ownerZFUIView != zfnull && mouseState.mouseId != zfidentityInvalid())
-                        {
+                if(mouseState.viewHover != viewHover) {
+                    if(mouseState.viewHover != zfnull) {
+                        if(mouseState.viewHover->ownerZFUIView != zfnull && mouseState.mouseId != zfidentityInvalid()) {
                             zfblockedAlloc(ZFUIMouseEvent, hoverExit);
                             hoverExit->mouseId = mouseState.mouseId;
                             hoverExit->mouseAction = ZFUIMouseAction::e_MouseHoverExit;
@@ -405,13 +364,11 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                         }
                         mouseState.viewHover = zfnull;
                     }
-                    if(mouseState.mouseId != zfidentityInvalid())
-                    {
+                    if(mouseState.mouseId != zfidentityInvalid()) {
                         this->sysWindow->mouseIdGen.idRelease(mouseState.mouseId);
                         mouseState.mouseId = zfidentityInvalid();
                     }
-                    if(viewHover != zfnull && viewHover->ownerZFUIView != zfnull)
-                    {
+                    if(viewHover != zfnull && viewHover->ownerZFUIView != zfnull) {
                         mouseState.viewHover = viewHover;
 
                         mouseState.mouseId = this->sysWindow->mouseIdGen.idAcquire();
@@ -426,8 +383,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                     }
                 }
 
-                if(mouseState.viewHover != zfnull && mouseState.viewHover->ownerZFUIView != zfnull)
-                {
+                if(mouseState.viewHover != zfnull && mouseState.viewHover->ownerZFUIView != zfnull) {
                     zfCoreAssert(mouseState.mouseId != zfidentityInvalid());
                     zfblockedAlloc(ZFUIMouseEvent, event);
                     event->mouseId = mouseState.mouseId;
@@ -444,8 +400,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
         case SDL_MOUSEBUTTONDOWN: {
             ZFImpl_sys_SDL_MouseState &mouseState = this->sysWindow->mouseState(sdlEvent->motion.which, sdlEvent->button.button);
             ZFImpl_sys_SDL_View *viewDown = this->mouseTestGlobal(sdlEvent->motion.x, sdlEvent->motion.y, &mouseState.mouseGrab);
-            if(mouseState.mouseGrab)
-            {
+            if(mouseState.mouseGrab) {
                 mouseState.viewDown = viewDown;
                 zfint x = sdlEvent->button.x;
                 zfint y = sdlEvent->button.y;
@@ -453,18 +408,15 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
                 viewDown->sdlMouseGrabCallback(viewDown, sdlEvent, x, y);
                 return;
             }
-            if(viewDown != zfnull && mouseState.viewDown == viewDown)
-            {
+            if(viewDown != zfnull && mouseState.viewDown == viewDown) {
                 return;
             }
 
-            if(mouseState.mouseId != zfidentityInvalid())
-            {
+            if(mouseState.mouseId != zfidentityInvalid()) {
                 this->sysWindow->mouseIdGen.idRelease(mouseState.mouseId);
                 mouseState.mouseId = zfidentityInvalid();
             }
-            if(viewDown == zfnull || viewDown->ownerZFUIView == zfnull)
-            {
+            if(viewDown == zfnull || viewDown->ownerZFUIView == zfnull) {
                 return;
             }
 
@@ -484,28 +436,24 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
             ZFImpl_sys_SDL_MouseState &mouseState = this->sysWindow->mouseState(sdlEvent->motion.which, sdlEvent->button.button);
             zfidentity mouseIdPrev = mouseState.mouseId;
             ZFImpl_sys_SDL_View *viewDownPrev = mouseState.viewDown;
-            if(mouseState.mouseId != zfidentityInvalid())
-            {
+            if(mouseState.mouseId != zfidentityInvalid()) {
                 this->sysWindow->mouseIdGen.idRelease(mouseState.mouseId);
                 mouseState.mouseId = zfidentityInvalid();
             }
             mouseState.viewDown = zfnull;
 
-            if(mouseIdPrev != zfidentityInvalid() && viewDownPrev != zfnull)
-            {
+            if(mouseIdPrev != zfidentityInvalid() && viewDownPrev != zfnull) {
                 ZFUIMouseActionEnum mouseAction = (sdlEvent->button.x > ZFImpl_sys_SDL_View::MouseCancel && sdlEvent->button.y > ZFImpl_sys_SDL_View::MouseCancel)
                     ? ZFUIMouseAction::e_MouseUp
                     : ZFUIMouseAction::e_MouseCancel;
-                if(mouseState.mouseGrab)
-                {
+                if(mouseState.mouseGrab) {
                     mouseState.mouseGrab = zffalse;
                     zfint x = sdlEvent->button.x;
                     zfint y = sdlEvent->button.y;
                     viewDownPrev->posFromGlobal(x, y);
                     viewDownPrev->sdlMouseGrabCallback(viewDownPrev, sdlEvent, x, y);
                 }
-                else
-                {
+                else {
                     zfblockedAlloc(ZFUIMouseEvent, event);
                     event->mouseId = mouseIdPrev;
                     event->mouseAction = mouseAction;
@@ -523,72 +471,55 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent)
             break;
     }
 }
-void ZFImpl_sys_SDL_View::dispatchWheelEvent(ZF_IN SDL_Event *sdlEvent)
-{
+void ZFImpl_sys_SDL_View::dispatchWheelEvent(ZF_IN SDL_Event *sdlEvent) {
     zfCoreAssert(sdlEvent->type == SDL_MOUSEWHEEL);
-    ZFUIView *target = zfnull;
-    {
+    ZFUIView *target = zfnull; {
         ZFImpl_sys_SDL_View *sdlView = this->mouseTestGlobal(sdlEvent->wheel.mouseX, sdlEvent->wheel.mouseY);
-        while(sdlView != zfnull && sdlView->ownerZFUIView == zfnull)
-        {
+        while(sdlView != zfnull && sdlView->ownerZFUIView == zfnull) {
             sdlView = sdlView->parent;
         }
-        if(sdlView != zfnull)
-        {
+        if(sdlView != zfnull) {
             target = sdlView->ownerZFUIView;
         }
     }
-    if(target == zfnull && this->sysWindow != zfnull)
-    {
-        if(this->sysWindow->viewFocused != zfnull)
-        {
+    if(target == zfnull && this->sysWindow != zfnull) {
+        if(this->sysWindow->viewFocused != zfnull) {
             target = this->sysWindow->viewFocused->ownerZFUIView;
         }
-        else
-        {
+        else {
             target = this->ownerZFUIView;
         }
     }
-    if(target != zfnull)
-    {
+    if(target != zfnull) {
         zfblockedAlloc(ZFUIWheelEvent, event);
         event->wheelX = (zffloat)sdlEvent->wheel.x;
         event->wheelY = (zffloat)sdlEvent->wheel.y;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(target, event);
     }
 }
-void ZFImpl_sys_SDL_View::dispatchKeyEvent(ZF_IN SDL_Event *sdlEvent)
-{
+void ZFImpl_sys_SDL_View::dispatchKeyEvent(ZF_IN SDL_Event *sdlEvent) {
     ZFUIView *target = zfnull;
-    if(this->sysWindow != zfnull)
-    {
-        if(this->sysWindow->viewFocused != zfnull)
-        {
+    if(this->sysWindow != zfnull) {
+        if(this->sysWindow->viewFocused != zfnull) {
             target = this->sysWindow->viewFocused->ownerZFUIView;
         }
-        else
-        {
+        else {
             target = this->ownerZFUIView;
         }
     }
-    if(target != zfnull)
-    {
+    if(target != zfnull) {
         zfblockedAlloc(ZFUIKeyEvent, event);
         event->keyId = zfidentityHash(sdlEvent->key.windowID, sdlEvent->key.keysym.sym, sdlEvent->key.keysym.scancode);
-        if(sdlEvent->key.repeat)
-        {
+        if(sdlEvent->key.repeat) {
             event->keyAction = ZFUIKeyAction::e_KeyRepeat;
         }
-        else if(sdlEvent->type == SDL_KEYDOWN)
-        {
+        else if(sdlEvent->type == SDL_KEYDOWN) {
             event->keyAction = ZFUIKeyAction::e_KeyDown;
         }
-        else if(sdlEvent->type == SDL_KEYUP)
-        {
+        else if(sdlEvent->type == SDL_KEYUP) {
             event->keyAction = ZFUIKeyAction::e_KeyUp;
         }
-        else
-        {
+        else {
             zfCoreCriticalShouldNotGoHere();
         }
         event->keyCode = ZFImpl_sys_SDL_ZFUIKeyCodeFromRaw((SDL_KeyCode)sdlEvent->key.keysym.sym);

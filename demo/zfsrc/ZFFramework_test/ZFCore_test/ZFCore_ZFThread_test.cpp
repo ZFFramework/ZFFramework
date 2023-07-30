@@ -3,14 +3,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFCore_ZFThread_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFThread_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFThread_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFThread);
         ZFFramework_test_asyncTestCheck();
@@ -23,10 +21,8 @@ protected:
         zfLogTrim("execute main and thread without lock (async):");
         ZFLISTENER(asyncFunc) {
             zfLogTrim("async thread begin");
-            for(zfindex i = 0; i < 5; ++i)
-            {
-                for(zfindex j = 0; j < 10; ++j)
-                {
+            for(zfindex i = 0; i < 5; ++i) {
+                for(zfindex j = 0; j < 10; ++j) {
                     zfLogTrim("  async thread: %zi %zi", i, j);
                     ZFThread::sleep((zftimet)20);
                 }
@@ -36,10 +32,8 @@ protected:
         } ZFLISTENER_END()
         thread = zflineAlloc(ZFThread, asyncFunc);
         thread->threadStart();
-        for(zfindex i = 0; i < 5; ++i)
-        {
-            for(zfindex j = 0; j < 10; ++j)
-            {
+        for(zfindex i = 0; i < 5; ++i) {
+            for(zfindex j = 0; j < 10; ++j) {
                 zfLogTrim("  main: %zi %zi", i, j);
                 ZFThread::sleep((zftimet)20);
             }
@@ -55,11 +49,9 @@ protected:
         zfLogTrim("execute main and thread with lock (sync):");
         ZFLISTENER(syncFunc) {
             zfLogTrim("sync thread begin");
-            for(zfindex i = 0; i < 5; ++i)
-            {
+            for(zfindex i = 0; i < 5; ++i) {
                 zfCoreMutexLock();
-                for(zfindex j = 0; j < 10; ++j)
-                {
+                for(zfindex j = 0; j < 10; ++j) {
                     zfLogTrim("  sync thread: %zi %zi", i, j);
                     ZFThread::sleep((zftimet)20);
                 }
@@ -70,11 +62,9 @@ protected:
         } ZFLISTENER_END()
         thread = zflineAlloc(ZFThread, syncFunc);
         thread->threadStart();
-        for(zfindex i = 0; i < 5; ++i)
-        {
+        for(zfindex i = 0; i < 5; ++i) {
             zfCoreMutexLock();
-            for(zfindex j = 0; j < 10; ++j)
-            {
+            for(zfindex j = 0; j < 10; ++j) {
                 zfLogTrim("  main:   %zi %zi", i, j);
                 ZFThread::sleep((zftimet)20);
             }

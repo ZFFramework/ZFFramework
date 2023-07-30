@@ -88,8 +88,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFT_INT_STRONG(T, D) _ZFP_ZFT_INT_STRONG(T, D)
 #define _ZFP_ZFT_INT_STRONG(T, D) \
     /** @cond ZFPrivateDoc */ \
-    class _zft_##D \
-    { \
+    class _zft_##D { \
     protected: \
         typedef _zft_##D D; \
     public: \

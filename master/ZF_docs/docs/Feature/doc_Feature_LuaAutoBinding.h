@@ -11,9 +11,12 @@
  * example:
  * @code
  *   // in C++
- *   ZFMETHOD_FUNC_DECLARE_1(ZFLIB_APP, zfstring, myFunc, ZFMP_IN(const zfchar *, param))
- *   ZFMETHOD_FUNC_DEFINE_1(zfstring, myFunc, ZFMP_IN(const zfchar *, param))
- *   {
+ *   ZFMETHOD_FUNC_DECLARE_1(ZFLIB_APP, zfstring, myFunc
+ *           , ZFMP_IN(const zfchar *, param)
+ *           )
+ *   ZFMETHOD_FUNC_DEFINE_1(zfstring, myFunc
+ *           , ZFMP_IN(const zfchar *, param)
+ *           ) {
  *       return param;
  *   }
  *
@@ -24,8 +27,7 @@
  * example:
  * @code
  *   // in C++
- *   zfclass MyClass : zfextends ZFObject
- *   {
+ *   zfclass MyClass : zfextends ZFObject {
  *       ZFOBJECT_DECLARE(MyClass, ZFObject)
  *       ZFPROPERTY_ASSIGN(ZFUISize, myProp)
  *   };
@@ -38,8 +40,7 @@
  * param and return supports any type that are registered by #ZFTYPEID_DECLARE
  * @code
  *   // header file
- *   class YourType
- *   {
+ *   class YourType {
  *   public:
  *       int yourProp;
  *   };

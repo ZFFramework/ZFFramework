@@ -3,8 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if 1
-ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent)
-{
+ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent) {
     ZFLISTENER(testCaseOnOutput) {
         zfLogTrim()
             << zfLogCurTimeString()
@@ -41,8 +40,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent)
     this->testCaseOnStopListener = testCaseOnStop;
     ZFGlobalObserver().observerAdd(ZFTestCase::EventTestCaseOnStop(), this->testCaseOnStopListener);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUtility_ZFTestCase_debug_LogEvent)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUtility_ZFTestCase_debug_LogEvent) {
     ZFGlobalObserver().observerRemove(ZFTestCase::EventTestCaseOnOutput(), this->testCaseOnOutputListener);
     ZFGlobalObserver().observerRemove(ZFTestCase::EventTestCaseOnStart(), this->testCaseOnStartListener);
     ZFGlobalObserver().observerRemove(ZFTestCase::EventTestCaseOnProgress(), this->testCaseOnProgressListener);

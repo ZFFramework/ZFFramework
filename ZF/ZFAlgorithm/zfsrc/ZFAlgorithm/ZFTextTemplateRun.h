@@ -29,8 +29,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * \n
  * by default, all setting would be copied from #ZFTextTemplateRunParamDefault
  */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateRunParam
-{
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateRunParam {
 public:
     ZFFilterForString dirNameFilter; /**< @brief see #ZFTextTemplateRunParam */
     ZFFilterForString dirContentFilter; /**< @brief see #ZFTextTemplateRunParam */
@@ -41,8 +40,7 @@ public:
     /**
      * @brief copy from another param
      */
-    void copyFrom(ZF_IN const ZFTextTemplateRunParam &ref)
-    {
+    void copyFrom(ZF_IN const ZFTextTemplateRunParam &ref) {
         this->dirNameFilter.copyFrom(ref.dirNameFilter);
         this->dirContentFilter.copyFrom(ref.dirContentFilter);
         this->fileNameFilter.copyFrom(ref.fileNameFilter);
@@ -52,24 +50,20 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     ZFTextTemplateRunParam(void) {}
-    ZFTextTemplateRunParam(ZF_IN const ZFTextTemplateRunParam &ref)
-    {
+    ZFTextTemplateRunParam(ZF_IN const ZFTextTemplateRunParam &ref) {
         this->copyFrom(ref);
     }
-    ZFTextTemplateRunParam &operator = (ZF_IN const ZFTextTemplateRunParam &ref)
-    {
+    ZFTextTemplateRunParam &operator = (ZF_IN const ZFTextTemplateRunParam &ref) {
         this->copyFrom(ref);
         return *this;
     }
-    zfbool operator == (ZF_IN const ZFTextTemplateRunParam &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFTextTemplateRunParam &ref) const {
         return (this->dirNameFilter == ref.dirNameFilter
             && this->dirContentFilter == ref.dirContentFilter
             && this->fileNameFilter == ref.fileNameFilter
             && this->fileContentFilter == ref.fileContentFilter);
     }
-    zfbool operator != (ZF_IN const ZFTextTemplateRunParam &ref) const
-    {
+    zfbool operator != (ZF_IN const ZFTextTemplateRunParam &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -90,11 +84,12 @@ extern ZFLIB_ZFAlgorithm ZFTextTemplateRunParam &_ZFP_ZFTextTemplateRunParamDefa
 /**
  * @brief util method to apply #ZFTextTemplateApply to a given path recursively
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFTextTemplateRun,
-                        ZFMP_IN(const zfchar *, path),
-                        ZFMP_IN(const ZFTextTemplateParam &, textTemplateParam),
-                        ZFMP_IN_OPT(const ZFTextTemplateRunParam &, runParam, ZFTextTemplateRunParamDefault()),
-                        ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFTextTemplateRun
+        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const ZFTextTemplateParam &, textTemplateParam)
+        , ZFMP_IN_OPT(const ZFTextTemplateRunParam &, runParam, ZFTextTemplateRunParamDefault())
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTextTemplateRun_h_

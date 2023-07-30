@@ -24,22 +24,18 @@
 @property (nonatomic, assign) zfidentity aniId;
 @end
 @implementation _ZFP_ZFAnimationNativeViewImpl_sys_iOS_AniDelegate
-- (void)animationDidStart:(CAAnimation *)anim
-{
+- (void)animationDidStart:(CAAnimation *)anim {
     [self.owner _nativeAniOnStart:self.aniId];
 }
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
-{
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     [self.owner _nativeAniOnStop:self.aniId finished:flag];
 }
 @end
 
 @implementation _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
-    if(self)
-    {
+    if(self) {
         self.nativeAniScale = 1;
 
         self._nativeAniKey = [NSString stringWithFormat:@"_ZFP_%08X", (zfuint)[self hash]];
@@ -49,17 +45,14 @@
     }
     return self;
 }
-- (void)dealloc
-{
+- (void)dealloc {
     self._nativeAniDelegate = nil;
     self._nativeAniKey = nil;
 }
-- (void)nativeAniStart
-{
+- (void)nativeAniStart {
     UIView *aniTarget = (__bridge UIView *)ZFCastZFObjectUnchecked(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
     CAMediaTimingFunction *nativeCurve = nil;
-    switch(self.ownerAni->aniCurve())
-    {
+    switch(self.ownerAni->aniCurve()) {
         case ZFAnimationNativeViewCurve::e_Linear:
             nativeCurve = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
             break;
@@ -97,37 +90,29 @@
             refHeight * self.ownerAni->aniTranslateYTo() + self.ownerAni->aniTranslatePixelYTo() * self.nativeAniScale,
             refZ * self.ownerAni->aniTranslateZTo() + self.ownerAni->aniTranslatePixelZTo() * self.nativeAniScale);
 
-        if(self.ownerAni->aniRotateXFrom() != 0)
-        {
+        if(self.ownerAni->aniRotateXFrom() != 0) {
             transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->aniRotateXFrom() * M_PI / 180, 1, 0, 0);
         }
-        if(self.ownerAni->aniRotateYFrom() != 0)
-        {
+        if(self.ownerAni->aniRotateYFrom() != 0) {
             transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->aniRotateYFrom() * M_PI / 180, 0, 1, 0);
         }
-        if(self.ownerAni->aniRotateZFrom() != 0)
-        {
+        if(self.ownerAni->aniRotateZFrom() != 0) {
             transformFrom = CATransform3DRotate(transformFrom, self.ownerAni->aniRotateZFrom() * M_PI / 180, 0, 0, 1);
         }
-        if(self.ownerAni->aniRotateXTo() != 0)
-        {
+        if(self.ownerAni->aniRotateXTo() != 0) {
             transformTo = CATransform3DRotate(transformTo, self.ownerAni->aniRotateXTo() * M_PI / 180, 1, 0, 0);
         }
-        if(self.ownerAni->aniRotateYTo() != 0)
-        {
+        if(self.ownerAni->aniRotateYTo() != 0) {
             transformTo = CATransform3DRotate(transformTo, self.ownerAni->aniRotateYTo() * M_PI / 180, 0, 1, 0);
         }
-        if(self.ownerAni->aniRotateZTo() != 0)
-        {
+        if(self.ownerAni->aniRotateZTo() != 0) {
             transformTo = CATransform3DRotate(transformTo, self.ownerAni->aniRotateZTo() * M_PI / 180, 0, 0, 1);
         }
 
-        if(self.ownerAni->aniScaleXFrom() != 1 || self.ownerAni->aniScaleYFrom() != 1)
-        {
+        if(self.ownerAni->aniScaleXFrom() != 1 || self.ownerAni->aniScaleYFrom() != 1) {
             transformFrom = CATransform3DScale(transformFrom, self.ownerAni->aniScaleXFrom(), self.ownerAni->aniScaleYFrom(), 1);
         }
-        if(self.ownerAni->aniScaleXTo() != 1 || self.ownerAni->aniScaleYTo() != 1)
-        {
+        if(self.ownerAni->aniScaleXTo() != 1 || self.ownerAni->aniScaleYTo() != 1) {
             transformTo = CATransform3DScale(transformTo, self.ownerAni->aniScaleXTo(), self.ownerAni->aniScaleYTo(), 1);
         }
 
@@ -138,16 +123,14 @@
         nativeTransformAni.additive = YES;
     }
 
-    if(self.ownerAni->aniAlphaFrom() != 1 || self.ownerAni->aniAlphaTo() != 1)
-    {
+    if(self.ownerAni->aniAlphaFrom() != 1 || self.ownerAni->aniAlphaTo() != 1) {
         CABasicAnimation *nativeAlphaAni = [CABasicAnimation animationWithKeyPath:@"opacity"];
         [nativeAnimations addObject:nativeAlphaAni];
         nativeAlphaAni.fromValue = [NSNumber numberWithFloat:self.ownerAni->aniAlphaFrom()];
         nativeAlphaAni.toValue = [NSNumber numberWithFloat:self.ownerAni->aniAlphaTo()];
     }
 
-    for(NSUInteger i = 0; i < [nativeAnimations count]; ++i)
-    {
+    for(NSUInteger i = 0; i < [nativeAnimations count]; ++i) {
         CABasicAnimation *ani = (CABasicAnimation *)[nativeAnimations objectAtIndex:i];
         ani.duration = nativeDuration;
         ani.timingFunction = nativeCurve;
@@ -162,8 +145,7 @@
     self.delegate = self._nativeAniDelegate;
     [aniTarget.layer addAnimation:self forKey:self._nativeAniKey];
 }
-- (void)nativeAniStop
-{
+- (void)nativeAniStop {
     UIView *aniTarget = (__bridge UIView *)ZFCastZFObjectUnchecked(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
     [aniTarget.layer removeAnimationForKey:self._nativeAniKey];
     self._nativeAniDelegate.owner = nil;
@@ -171,13 +153,10 @@
     self.delegate = nil;
 }
 
-- (void)_nativeAniOnStart:(zfidentity)aniId
-{
+- (void)_nativeAniOnStart:(zfidentity)aniId {
 }
-- (void)_nativeAniOnStop:(zfidentity)aniId finished:(BOOL)finished
-{
-    if(aniId == self.ownerAni->aniId())
-    {
+- (void)_nativeAniOnStop:(zfidentity)aniId finished:(BOOL)finished {
+    if(aniId == self.ownerAni->aniId()) {
         self.delegate = nil;
         UIView *aniTarget = (__bridge UIView *)ZFCastZFObjectUnchecked(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
         [aniTarget.layer removeAnimationForKey:self._nativeAniKey];
@@ -194,28 +173,28 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAnimationNativeViewImpl_sys_iOS, ZFAnimationNa
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void *nativeAniCreate(ZF_IN ZFAnimationNativeView *ani)
-    {
+    virtual void *nativeAniCreate(ZF_IN ZFAnimationNativeView *ani) {
         _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *nativeAni = [_ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani new];
         nativeAni.ownerAni = ani;
         return (__bridge_retained void *)nativeAni;
     }
-    virtual void nativeAniDestroy(ZF_IN ZFAnimationNativeView *ani,
-                                  ZF_IN void *nativeAni)
-    {
+    virtual void nativeAniDestroy(
+            ZF_IN ZFAnimationNativeView *ani
+            , ZF_IN void *nativeAni
+            ) {
         NSObject *tmp = (__bridge_transfer NSObject *)nativeAni;
         tmp = nil;
     }
 
-    virtual void nativeAniStart(ZF_IN ZFAnimationNativeView *ani,
-                                ZF_IN zffloat nativeAniScale)
-    {
+    virtual void nativeAniStart(
+            ZF_IN ZFAnimationNativeView *ani
+            , ZF_IN zffloat nativeAniScale
+            ) {
         _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *)ani->nativeAnimation();
         nativeAni.nativeAniScale = nativeAniScale;
         [nativeAni nativeAniStart];
     }
-    virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani)
-    {
+    virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani) {
         _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *nativeAni = (__bridge _ZFP_ZFAnimationNativeViewImpl_sys_iOS_Ani *)ani->nativeAnimation();
         [nativeAni nativeAniStop];
     }

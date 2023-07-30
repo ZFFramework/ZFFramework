@@ -107,10 +107,11 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     ) \
     const ZFMethod *resultMethod = zfnull; \
     { \
-        zfclassNotPOD _ZFP_MtdUR \
-        { \
+        zfclassNotPOD _ZFP_MtdUR { \
         public: \
-            static ReturnType invoker(ZF_IN const ZFMethod *invokerMethod, ZF_IN ZFObject *invokerObject \
+            static ReturnType invoker( \
+                    ZF_IN const ZFMethod *invokerMethod \
+                    , ZF_IN ZFObject *invokerObject \
                     ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
                     ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
@@ -119,8 +120,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
                     ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                     ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                     ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-                ) \
-            { \
+                    ) { \
                 methodInvokerAction \
             } \
             _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
@@ -167,10 +167,11 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    zfclassNotPOD _ZFP_MtdURIvk_##ownerClassSig##_##methodName##_##RegSig \
-    { \
+    zfclassNotPOD _ZFP_MtdURIvk_##ownerClassSig##_##methodName##_##RegSig { \
     public: \
-        static ReturnType invoker(ZF_IN const ZFMethod *invokerMethod, ZF_IN ZFObject *invokerObject \
+        static ReturnType invoker( \
+                ZF_IN const ZFMethod *invokerMethod \
+                , ZF_IN ZFObject *invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
@@ -179,8 +180,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-            ) \
-        { \
+                ) { \
             methodInvokerAction \
         } \
         _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
@@ -251,23 +251,19 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         )
 
 template<typename T_Wrapper>
-inline T_Wrapper &_ZFP_MtdUR_zfv(T_Wrapper &zfv)
-{
+inline T_Wrapper &_ZFP_MtdUR_zfv(T_Wrapper &zfv) {
     return zfv;
 };
 template<typename T_Wrapper>
-inline T_Wrapper const &_ZFP_MtdUR_zfv(T_Wrapper const &zfv)
-{
+inline T_Wrapper const &_ZFP_MtdUR_zfv(T_Wrapper const &zfv) {
     return zfv;
 };
 template<typename T_Wrapper>
-inline T_Wrapper &_ZFP_MtdUR_zfv(T_Wrapper *zfv)
-{
+inline T_Wrapper &_ZFP_MtdUR_zfv(T_Wrapper *zfv) {
     return *zfv;
 };
 template<typename T_Wrapper>
-inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv)
-{
+inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv) {
     return *zfv;
 };
 #define _ZFP_ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC(...) \
@@ -451,8 +447,7 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv)
  * example:
  * @code
  *   // register it, using ZF_GLOBAL_INITIALIZER_INIT is recommended
- *   ZF_GLOBAL_INITIALIZER_INIT(MyMethodRegister)
- *   {
+ *   ZF_GLOBAL_INITIALIZER_INIT(MyMethodRegister) {
  *       ZFMethodUserRegisterDetail_2(resultMethod, {
  *               return (ReturnType)yourInvoker(invokerMethod, invokerObject, param0, param1);
  *           }, MyClassToAttachTheMethod::ClassData(),
@@ -463,8 +458,7 @@ inline T_Wrapper const &_ZFP_MtdUR_zfv(const T_Wrapper *zfv)
  *       _method = resultMethod;
  *       zfLogTrim() << resultMethod;
  *   }
- *   ZF_GLOBAL_INITIALIZER_DESTROY(MyMethodRegister)
- *   {
+ *   ZF_GLOBAL_INITIALIZER_DESTROY(MyMethodRegister) {
  *       ZFMethodUserUnregister(_method);
  *   }
  *   const ZFMethod *_method;

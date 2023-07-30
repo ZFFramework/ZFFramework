@@ -2,8 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUIImageView_imageScaleType_test_Container : zfextends ZFUIView
-{
+zfclass ZFUIKit_ZFUIImageView_imageScaleType_test_Container : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIImageView_imageScaleType_test_Container, ZFUIView)
 
     ZFPROPERTY_RETAIN_WITH_INIT(ZFUIImageView *, imageViewSmall, zflineAlloc(ZFUIImageView))
@@ -11,8 +10,7 @@ zfclass ZFUIKit_ZFUIImageView_imageScaleType_test_Container : zfextends ZFUIView
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->viewBackgroundColor(ZFUIColorYellow());
 
@@ -28,11 +26,9 @@ protected:
         this->imageViewLarge()->viewBackgroundColor(ZFUIColorBlue());
     }
     zfoverride
-    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds)
-    {
+    virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
         zfsuper::layoutOnLayout(bounds);
-        if(bounds.height >= bounds.width)
-        {
+        if(bounds.height >= bounds.width) {
             this->imageViewSmall()->viewFrame(ZFUIRectApplyMargin(
                 ZFUIRectMake(0, 0, bounds.width, bounds.height / 2),
                 ZFUIMarginMake(5)));
@@ -40,22 +36,19 @@ protected:
                 ZFUIRectMake(0, bounds.height / 2, bounds.width, bounds.height / 2),
                 ZFUIMarginMake(5)));
         }
-        else
-        {
+        else {
             this->imageViewSmall()->viewFrame(ZFUIRectMake(0, 0, bounds.width, bounds.height / 2));
             this->imageViewLarge()->viewFrame(ZFUIRectMake(bounds.width / 2, 0, bounds.width, bounds.height / 2));
         }
     }
 };
 
-zfclass ZFUIKit_ZFUIImageView_imageScaleType_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIKit_ZFUIImageView_imageScaleType_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIImageView_imageScaleType_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUIImage);
@@ -76,20 +69,19 @@ protected:
     }
 
 private:
-    static void _nextValue(ZF_IN_OUT ZFUIContentScaleTypeEnum &value)
-    {
+    static void _nextValue(ZF_IN_OUT ZFUIContentScaleTypeEnum &value) {
         zfindex index = ZFUIContentScaleType::EnumIndexForValue(value);
         zfCoreAssert(index != zfindexMax());
         ++index;
-        if(index >= ZFUIContentScaleType::EnumCount())
-        {
+        if(index >= ZFUIContentScaleType::EnumCount()) {
             index = 0;
         }
         value = (ZFUIContentScaleTypeEnum)ZFUIContentScaleType::EnumValueAt(index);
     }
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFArray *imageViews)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFArray *imageViews
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         { // imageScaleType
@@ -111,8 +103,7 @@ private:
                     ) {
                 ZFUIContentScaleTypeEnum value = imageViews->getFirst<ZFUIImageView *>()->imageScaleType();
                 _nextValue(value);
-                for(zfindex i = 0; i < imageViews->count(); ++i)
-                {
+                for(zfindex i = 0; i < imageViews->count(); ++i) {
                     imageViews->get<ZFUIImageView *>(i)->imageScaleType(value);
                 }
             } ZFLISTENER_END()

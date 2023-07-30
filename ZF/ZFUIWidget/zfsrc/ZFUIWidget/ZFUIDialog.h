@@ -31,8 +31,7 @@ extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultLayoutParamCreatorDefault(
 /**
  * @brief util method to call #ZFUIDialogDefaultLayoutParamCreator
  */
-inline zfautoObject ZFUIDialogDefaultLayoutParam(void)
-{
+inline zfautoObject ZFUIDialogDefaultLayoutParam(void) {
     return ((ZFUIDialogDefaultLayoutParamCreator != zfnull) ? ZFUIDialogDefaultLayoutParamCreator() : ZFUIDialogDefaultLayoutParamCreatorDefault());
 }
 
@@ -53,8 +52,7 @@ extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultAniShowCreatorDefault(void
 /**
  * @brief util method to call #ZFUIDialogDefaultAniShowCreator
  */
-inline zfautoObject ZFUIDialogDefaultAniShow(void)
-{
+inline zfautoObject ZFUIDialogDefaultAniShow(void) {
     return ((ZFUIDialogDefaultAniShowCreator != zfnull) ? ZFUIDialogDefaultAniShowCreator() : ZFUIDialogDefaultAniShowCreatorDefault());
 }
 
@@ -75,8 +73,7 @@ extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultAniHideCreatorDefault(void
 /**
  * @brief util method to call #ZFUIDialogDefaultAniHideCreator
  */
-inline zfautoObject ZFUIDialogDefaultAniHide(void)
-{
+inline zfautoObject ZFUIDialogDefaultAniHide(void) {
     return ((ZFUIDialogDefaultAniHideCreator != zfnull) ? ZFUIDialogDefaultAniHideCreator() : ZFUIDialogDefaultAniHideCreatorDefault());
 }
 
@@ -90,8 +87,7 @@ zfclassFwd _ZFP_I_ZFUIDialogPrivate;
  * during #ZFFrameworkCleanup's #ZFLevelZFFrameworkLow step
  * for safe resource cleanup
  */
-zfclass ZFLIB_ZFUIWidget ZFUIDialog : zfextends ZFStyleableObject
-{
+zfclass ZFLIB_ZFUIWidget ZFUIDialog : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUIDialog, ZFStyleableObject)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIDialog)
 
@@ -249,8 +245,9 @@ public:
      * @brief util method to attach click listener to specified button,
      *   which would simply hide the dialog
      */
-    ZFMETHOD_DECLARE_1(void, dialogApplyAutoHide,
-                       ZFMP_IN(ZFUIButton *, button))
+    ZFMETHOD_DECLARE_1(void, dialogApplyAutoHide
+            , ZFMP_IN(ZFUIButton *, button)
+            )
 
 public:
     /**
@@ -277,23 +274,19 @@ protected:
 
 protected:
     /** @brief see #EventDialogBeforeShow */
-    virtual inline void dialogBeforeShow(void)
-    {
+    virtual inline void dialogBeforeShow(void) {
         this->observerNotify(ZFUIDialog::EventDialogBeforeShow());
     }
     /** @brief see #EventDialogAfterShow */
-    virtual inline void dialogAfterShow(void)
-    {
+    virtual inline void dialogAfterShow(void) {
         this->observerNotify(ZFUIDialog::EventDialogAfterShow());
     }
     /** @brief see #EventDialogBeforeHide */
-    virtual inline void dialogBeforeHide(void)
-    {
+    virtual inline void dialogBeforeHide(void) {
         this->observerNotify(ZFUIDialog::EventDialogBeforeHide());
     }
     /** @brief see #EventDialogAfterHide */
-    virtual inline void dialogAfterHide(void)
-    {
+    virtual inline void dialogAfterHide(void) {
         this->observerNotify(ZFUIDialog::EventDialogAfterHide());
     }
     /**

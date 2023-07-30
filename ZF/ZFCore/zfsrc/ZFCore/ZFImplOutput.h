@@ -31,8 +31,10 @@ extern ZFLIB_ZFCore void ZFImplOutputCoreLog(ZF_IN const zfchar *src);
 /**
  * @brief callback to extend the native log output
  */
-typedef void (*ZFImplOutputCallback)(ZF_IN const zfchar *src,
-                                     ZF_IN_OPT zfindex srcLen /* = zfindexMax() */);
+typedef void (*ZFImplOutputCallback)(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        );
 /**
  * @brief callback to extend the native log output
  */
@@ -42,8 +44,10 @@ extern ZFLIB_ZFCore ZFCoreArrayPOD<ZFImplOutputCallback> &_ZFP_ZFImplOutputCallb
 /**
  * @brief used to output log to native env
  */
-extern ZFLIB_ZFCore void ZFImplOutput(ZF_IN const zfchar *src,
-                                      ZF_IN_OPT zfindex srcLen = zfindexMax());
+extern ZFLIB_ZFCore void ZFImplOutput(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFImplOutput_h_

@@ -27,8 +27,10 @@ zfclassFwd ZFPropertyDynamicRegisterParam;
  * @note dynamic registered contents would be removed automatically
  *   during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkHigh
  */
-extern ZFLIB_ZFCore const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegisterParam &param,
-                                                                ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore const ZFProperty *ZFPropertyDynamicRegister(
+        ZF_IN const ZFPropertyDynamicRegisterParam &param
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 /**
  * @brief see #ZFPropertyDynamicRegister
  */
@@ -45,8 +47,7 @@ typedef zfautoObject (*ZFPropertyDynamicRegisterInitValueCallback)(ZF_IN const Z
 // ============================================================
 zfclassFwd _ZFP_ZFPropertyDynamicRegisterParamPrivate;
 /** @brief param for #ZFPropertyDynamicRegister */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFPropertyDynamicRegisterParam
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFPropertyDynamicRegisterParam {
 public:
     /** @brief see #ZFPropertyDynamicRegister */
     ZFPropertyDynamicRegisterParam &propertyDynamicRegisterUserData(ZF_IN ZFObject *propertyDynamicRegisterUserData);

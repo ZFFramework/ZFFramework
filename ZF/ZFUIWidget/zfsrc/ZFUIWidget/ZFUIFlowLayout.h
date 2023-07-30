@@ -19,8 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * would be relative to sibling child,
  * instead of the container view
  */
-zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextends ZFUILayoutParam
-{
+zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextends ZFUILayoutParam {
     ZFOBJECT_DECLARE(ZFUIFlowLayoutParam, ZFUILayoutParam)
 
     /**
@@ -46,8 +45,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextends ZFUILayoutParam
      */
     ZFPROPERTY_ASSIGN(zfbool, reserveSpace)
 
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIAlignFlags, layoutAlign)
-    {
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIAlignFlags, layoutAlign) {
         propertyValue = ZFUIAlign::e_Center;
     }
 };
@@ -67,8 +65,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextends ZFUILayoutParam
  *   and try to prevent deep child view tree,
  *   especially complex children
  */
-zfclass ZFLIB_ZFUIWidget ZFUIFlowLayout : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIWidget ZFUIFlowLayout : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIFlowLayout, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIFlowLayout)
 
@@ -123,21 +120,24 @@ public:
     // override ZFUIView
 public:
     /** @brief util method for #childAddWithParam */
-    inline ZFUIFlowLayoutParam *childAdd(ZF_IN ZFUIView *view, ZF_IN_OPT zfindex atIndex = zfindexMax())
-    {
+    inline ZFUIFlowLayoutParam *childAdd(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
         return this->childAddWithParam(view, zfnull, atIndex)->toAny();
     }
 protected:
     zfoverride
-    virtual const ZFClass *layoutParamClass(void)
-    {
+    virtual const ZFClass *layoutParamClass(void) {
         return ZFUIFlowLayoutParam::ClassData();
     }
 
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     /**
      * @brief override ZFUIView to layout scroll view's internal view and content view
      *

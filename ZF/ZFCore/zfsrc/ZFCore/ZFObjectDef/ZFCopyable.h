@@ -12,8 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief interface shows a ZFObject is copyable
  */
-zfinterface ZFLIB_ZFCore ZFCopyable : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFCore ZFCopyable : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFCopyable, ZFInterface)
 
 public:
@@ -37,8 +36,7 @@ protected:
      * by default this method would do nothing for performance,
      * you may use #ZFPropertyCopyAll to copy all properties for most case
      */
-    virtual inline void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj)
-    {
+    virtual inline void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
     }
 };
 

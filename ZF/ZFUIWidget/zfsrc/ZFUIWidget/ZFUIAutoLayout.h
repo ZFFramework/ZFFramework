@@ -30,8 +30,7 @@ ZFENUM_SEPARATOR()
 ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIAutoLayoutPos)
 
 /** @brief see #ZFUIAutoLayout */
-zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule
-{
+zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule {
     ZFCORE_PARAM_DECLARE_SELF(ZFUIAutoLayoutRule)
 
 public:
@@ -42,32 +41,25 @@ private:
     zfautoObjectT<ZFObjectHolder *> target_PropV;
 public:
     /** @brief see #ZFUIAutoLayout */
-    inline ZFUIView *target(void) const
-    {
+    inline ZFUIView *target(void) const {
         return this->target_PropV ? ZFCastZFObject(ZFUIView *, this->target_PropV->objectHolded()) : zfnull;
     }
     /** @brief see @ref target */
-    inline ZFUIAutoLayoutRule &target(ZF_IN ZFUIView * const &value)
-    {
-        if(value != zfnull)
-        {
+    inline ZFUIAutoLayoutRule &target(ZF_IN ZFUIView * const &value) {
+        if(value != zfnull) {
             this->target_PropV = value->objectHolder();
         }
-        else
-        {
+        else {
             this->target_PropV = zfnull;
         }
         return *this;
     }
-    ZFUIView *_ZFP_targetForLayout(ZF_IN ZFUIView *parent) const
-    {
+    ZFUIView *_ZFP_targetForLayout(ZF_IN ZFUIView *parent) const {
         ZFUIView *target = this->target();
-        if(target == zfnull || target == parent || target->viewParent() != parent)
-        {
+        if(target == zfnull || target == parent || target->viewParent() != parent) {
             return parent;
         }
-        else
-        {
+        else {
             return target;
         }
     }
@@ -81,8 +73,7 @@ public:
 
 public:
     /** @brief remove all contents */
-    void removeAll(void)
-    {
+    void removeAll(void) {
         this->pos(ZFUIAutoLayoutPos::e_None);
         this->target(zfnull);
         this->targetPos(ZFUIAutoLayoutPos::e_None);
@@ -92,8 +83,7 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN const ZFUIAutoLayoutRule &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFUIAutoLayoutRule &ref) const {
         return (zftrue
                 && this->pos() == ref.pos()
                 && this->target() == ref.target()
@@ -102,8 +92,7 @@ public:
                 && this->offset() == ref.offset()
             );
     }
-    inline zfbool operator != (ZF_IN const ZFUIAutoLayoutRule &ref) const
-    {
+    inline zfbool operator != (ZF_IN const ZFUIAutoLayoutRule &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -117,8 +106,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIAutoLayoutRule, ZFUIAutoLayou
 // ZFUIAutoLayoutParam
 zfclassFwd ZFUIAutoLayout;
 /** @brief see #ZFUIAutoLayout */
-zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam
-{
+zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam {
     ZFOBJECT_DECLARE(ZFUIAutoLayoutParam, ZFUILayoutParam)
 
     /** @brief see #ZFUIAutoLayout */
@@ -139,9 +127,13 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam
     // rule state
 public:
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(const ZFUIAutoLayoutRule &, rule, ZFMP_IN(ZFUIAutoLayoutPosEnum, pos))
+    ZFMETHOD_DECLARE_1(const ZFUIAutoLayoutRule &, rule
+            , ZFMP_IN(ZFUIAutoLayoutPosEnum, pos)
+            )
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, ruleRemove, ZFMP_IN(ZFUIAutoLayoutPosEnum, pos))
+    ZFMETHOD_DECLARE_1(void, ruleRemove
+            , ZFMP_IN(ZFUIAutoLayoutPosEnum, pos)
+            )
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_0(void, ruleRemoveAll)
 
@@ -162,17 +154,29 @@ public:
     ZFMETHOD_DECLARE_0(void, bottom)
 
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, toWidth, ZFMP_IN(ZFUIView *, target))
+    ZFMETHOD_DECLARE_1(void, toWidth
+            , ZFMP_IN(ZFUIView *, target)
+            )
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, toHeight, ZFMP_IN(ZFUIView *, target))
+    ZFMETHOD_DECLARE_1(void, toHeight
+            , ZFMP_IN(ZFUIView *, target)
+            )
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, toLeft, ZFMP_IN(ZFUIView *, target))
+    ZFMETHOD_DECLARE_1(void, toLeft
+            , ZFMP_IN(ZFUIView *, target)
+            )
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, toTop, ZFMP_IN(ZFUIView *, target))
+    ZFMETHOD_DECLARE_1(void, toTop
+            , ZFMP_IN(ZFUIView *, target)
+            )
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, toRight, ZFMP_IN(ZFUIView *, target))
+    ZFMETHOD_DECLARE_1(void, toRight
+            , ZFMP_IN(ZFUIView *, target)
+            )
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, toBottom, ZFMP_IN(ZFUIView *, target))
+    ZFMETHOD_DECLARE_1(void, toBottom
+            , ZFMP_IN(ZFUIView *, target)
+            )
 
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_0(void, toParentWidth)
@@ -188,14 +192,20 @@ public:
     ZFMETHOD_DECLARE_0(void, toParentBottom)
 
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, to, ZFMP_IN(ZFUIView *, target))
+    ZFMETHOD_DECLARE_1(void, to
+            , ZFMP_IN(ZFUIView *, target)
+            )
     /** @brief see #ZFUIAutoLayout */
     ZFMETHOD_DECLARE_0(void, toParent)
 
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, weight, ZFMP_IN(zffloat, weight))
+    ZFMETHOD_DECLARE_1(void, weight
+            , ZFMP_IN(zffloat, weight)
+            )
     /** @brief see #ZFUIAutoLayout */
-    ZFMETHOD_DECLARE_1(void, offset, ZFMP_IN(zffloat, offset))
+    ZFMETHOD_DECLARE_1(void, offset
+            , ZFMP_IN(zffloat, offset)
+            )
 
 public:
     zfoverride
@@ -205,17 +215,20 @@ protected:
     zfoverride
     virtual ZFSerializablePropertyType serializableOnCheckPropertyType(ZF_IN const ZFProperty *property);
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 public:
-    zfclassLikePOD _ZFP_Data
-    {
+    zfclassLikePOD _ZFP_Data {
     public:
         ZFUIAutoLayout *ownerParent;
         zfautoObjectT<ZFObjectHolder *> ownerChild;
@@ -341,8 +354,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * -  offset(offset) :
  *   specify the #ZFUIAutoLayoutRule::offset
  */
-zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIAutoLayout, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIAutoLayout)
 
@@ -350,36 +362,45 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextends ZFUIView
     // override ZFUIView
 public:
     /** @brief util method for #childAddWithParam */
-    inline ZFUIAutoLayoutParam *childAdd(ZF_IN ZFUIView *view, ZF_IN_OPT zfindex atIndex = zfindexMax())
-    {
+    inline ZFUIAutoLayoutParam *childAdd(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
         return this->childAddWithParam(view, zfnull, atIndex)->toAny();
     }
 protected:
     zfoverride
-    virtual void viewChildOnAdd(ZF_IN ZFUIView *child,
-                                ZF_IN ZFUIViewChildLayerEnum layer);
+    virtual void viewChildOnAdd(
+            ZF_IN ZFUIView *child
+            , ZF_IN ZFUIViewChildLayerEnum layer
+            );
     zfoverride
-    virtual void viewChildOnRemove(ZF_IN ZFUIView *child,
-                                   ZF_IN ZFUIViewChildLayerEnum layer);
+    virtual void viewChildOnRemove(
+            ZF_IN ZFUIView *child
+            , ZF_IN ZFUIViewChildLayerEnum layer
+            );
 
     zfoverride
-    virtual const ZFClass *layoutParamClass(void)
-    {
+    virtual const ZFClass *layoutParamClass(void) {
         return ZFUIAutoLayoutParam::ClassData();
     }
 
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 
 protected:
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
 
 protected:
     zfoverride
@@ -391,8 +412,18 @@ private:
     _ZFP_ZFUIAutoLayoutPrivate *d;
 };
 
-extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetUpdate(ZF_IN_OUT ZFUIAutoLayoutRule &rule, ZF_IN ZFUIAutoLayout *parent, ZF_IN ZFUIView *child, ZF_IN const zfchar *targetId);
-extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(ZF_OUT zfstring &targetId, ZF_IN const ZFUIAutoLayoutRule &rule, ZF_IN ZFUIAutoLayout *parent, ZF_IN ZFUIView *child);
+extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
+        ZF_IN_OUT ZFUIAutoLayoutRule &rule
+        , ZF_IN ZFUIAutoLayout *parent
+        , ZF_IN ZFUIView *child
+        , ZF_IN const zfchar *targetId
+        );
+extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
+        ZF_OUT zfstring &targetId
+        , ZF_IN const ZFUIAutoLayoutRule &rule
+        , ZF_IN ZFUIAutoLayout *parent
+        , ZF_IN ZFUIView *child
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIAutoLayout_h_

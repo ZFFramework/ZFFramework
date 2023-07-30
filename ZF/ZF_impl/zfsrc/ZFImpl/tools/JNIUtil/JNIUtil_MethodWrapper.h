@@ -34,8 +34,7 @@ namespace JNIUtil {
 #if JNIUtilWrap_Enable
 #undef JNI_METHOD_DECLARE_BEGIN
 #define JNI_METHOD_DECLARE_BEGIN(OwnerClassId, ReturnType, MethodName, ...) \
-    _JNI_METHOD_DECLARE_BEGIN(OwnerClassId, ReturnType, MethodName, ##__VA_ARGS__) \
-    { \
+    _JNI_METHOD_DECLARE_BEGIN(OwnerClassId, ReturnType, MethodName, ##__VA_ARGS__) { \
         JNIUtilWrap_CallbackCalled(_JNIUtilMacro_toString(OwnerClassId), _JNIUtilMacro_toString(MethodName))
 #undef JNI_METHOD_DECLARE_END
 #define JNI_METHOD_DECLARE_END() \
@@ -46,8 +45,7 @@ namespace JNIUtil {
 
 /** @cond ZFPrivateDoc */
 namespace JNIUtilMethodWrapperPrivate {
-    class _JNI_EXPORT JNIAutoDeleteHolder
-    {
+    class _JNI_EXPORT JNIAutoDeleteHolder {
     public:
         JNIAutoDeleteHolder(JNIEnv *jniEnv,
                             jobject obj,
@@ -63,17 +61,13 @@ namespace JNIUtilMethodWrapperPrivate {
         , callerLine(callerLine)
         {
         }
-        ~JNIAutoDeleteHolder(void)
-        {
-            if(this->jniEnvSaved && this->objSaved)
-            {
-                if(this->globalRefSaved)
-                {
+        ~JNIAutoDeleteHolder(void) {
+            if(this->jniEnvSaved && this->objSaved) {
+                if(this->globalRefSaved) {
                     JNIUtilWrap_Released(this->objSaved, this->callerFile, this->callerFunction, this->callerLine, "DeleteGlobalRef");
                     this->jniEnvSaved->DeleteGlobalRef(this->objSaved);
                 }
-                else
-                {
+                else {
                     JNIUtilWrap_Released(this->objSaved, this->callerFile, this->callerFunction, this->callerLine, "DeleteLocalRef");
                     this->jniEnvSaved->DeleteLocalRef(this->objSaved);
                 }
@@ -1296,13 +1290,11 @@ namespace JNIUtilMethodWrapperPrivate {
 
 // ============================================================
 // other
-namespace JNIUtil
-{
+namespace JNIUtil {
 /**
  * @brief util object to hold jobject and delete automatically by DeleteGlobalRef
  */
-class _JNI_EXPORT JNIObjectHolder
-{
+class _JNI_EXPORT JNIObjectHolder {
 public:
     /** @cond ZFPrivateDoc */
     JNIObjectHolder(void)
@@ -1317,34 +1309,27 @@ public:
     : _obj(ref.get() == NULL ? NULL : JNIUtilNewGlobalRef(JNIGetJNIEnv(), ref.get()))
     {
     }
-    ~JNIObjectHolder(void)
-    {
-        if(_obj != NULL)
-        {
+    ~JNIObjectHolder(void) {
+        if(_obj != NULL) {
             JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), _obj);
         }
     }
-    operator jobject (void) const
-    {
+    operator jobject (void) const {
         return _obj;
     }
-    JNIObjectHolder &operator = (const JNIObjectHolder &ref)
-    {
+    JNIObjectHolder &operator = (const JNIObjectHolder &ref) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = ((ref.get() == NULL) ? NULL : JNIUtilNewGlobalRef(jniEnv, ref.get()));
-        if(_obj != NULL)
-        {
+        if(_obj != NULL) {
             JNIUtilDeleteGlobalRef(jniEnv, _obj);
         }
         _obj = tmp;
         return *this;
     }
-    JNIObjectHolder &operator = (jobject const &obj)
-    {
+    JNIObjectHolder &operator = (jobject const &obj) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = ((obj == NULL) ? NULL : JNIUtilNewGlobalRef(jniEnv, obj));
-        if(_obj != NULL)
-        {
+        if(_obj != NULL) {
             JNIUtilDeleteGlobalRef(jniEnv, _obj);
         }
         _obj = tmp;
@@ -1355,8 +1340,7 @@ public:
     /**
      * @brief get the jobject
      */
-    jobject get(void) const
-    {
+    jobject get(void) const {
         return _obj;
     }
 private:

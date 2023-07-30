@@ -7,20 +7,20 @@ ZFENUM_DEFINE(ZFOutputFormatStep)
 // ============================================================
 ZFOBJECT_REGISTER(ZFOutputFormat)
 
-void ZFOutputFormat::format(ZF_IN_OUT zfstring &ret,
-                            ZF_IN ZFOutputFormatStepEnum outputStep,
-                            ZF_IN const zfchar *src,
-                            ZF_IN zfindex srcLen,
-                            ZF_IN zfindex outputCount,
-                            ZF_IN zfindex writtenLen,
-                            ZF_IN_OUT_OPT void *&state)
-{
+void ZFOutputFormat::format(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFOutputFormatStepEnum outputStep
+        , ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfindex outputCount
+        , ZF_IN zfindex writtenLen
+        , ZF_IN_OUT_OPT void *&state
+        ) {
     // nothing to do
 }
 
 // ============================================================
-zfclass _ZFP_I_ZFOutputForFormatOwner : zfextends ZFObject
-{
+zfclass _ZFP_I_ZFOutputForFormatOwner : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFOutputForFormatOwner, ZFObject)
 
 public:
@@ -33,14 +33,12 @@ public:
 
 public:
     ZFALLOC_CACHE_RELEASE({
-        if(cache->format != zfnull)
-        {
+        if(cache->format != zfnull) {
             cache->outputEnd();
         }
 
         cache->output = zfnull;
-        if(cache->format != zfnull)
-        {
+        if(cache->format != zfnull) {
             zfRelease(cache->format);
             cache->format = zfnull;
         }
@@ -63,10 +61,8 @@ protected:
 
 protected:
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
-        if(this->format != zfnull)
-        {
+    virtual void objectOnDealloc(void) {
+        if(this->format != zfnull) {
             this->outputEnd();
             zfRelease(this->format);
             this->format = zfnull;
@@ -75,25 +71,20 @@ protected:
     }
 
 public:
-    void outputBegin(void)
-    {
+    void outputBegin(void) {
         zfstring buf;
         this->format->_ZFP_format(
             buf, ZFOutputFormatStep::e_OnInit, "", 0, this->outputCount, this->writtenLen, this->state);
-        if(!buf.isEmpty())
-        {
+        if(!buf.isEmpty()) {
             this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
         }
     }
-    void outputEnd(void)
-    {
+    void outputEnd(void) {
         zfstring buf;
         this->format->_ZFP_format(
             buf, ZFOutputFormatStep::e_OnOutputEnd, "", 0, this->outputCount, this->writtenLen, this->state);
-        if(!buf.isEmpty())
-        {
-            if(this->output)
-            {
+        if(!buf.isEmpty()) {
+            if(this->output) {
                 this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
             }
             buf.removeAll();
@@ -101,33 +92,29 @@ public:
 
         this->format->_ZFP_format(
             buf, ZFOutputFormatStep::e_OnDealloc, "", 0, this->outputCount, this->writtenLen, this->state);
-        if(!buf.isEmpty())
-        {
-            if(this->output)
-            {
+        if(!buf.isEmpty()) {
+            if(this->output) {
                 this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
             }
         }
     }
-    ZFMETHOD_DECLARE_2(zfindex, onOutput,
-                       ZFMP_IN(const void *, s),
-                       ZFMP_IN(zfindex, count))
+    ZFMETHOD_DECLARE_2(zfindex, onOutput
+            , ZFMP_IN(const void *, s)
+            , ZFMP_IN(zfindex, count)
+            )
 };
-ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForFormatOwner, zfindex, onOutput,
-                  ZFMP_IN(const void *, s),
-                  ZFMP_IN(zfindex, count))
-{
-    if(!this->output)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForFormatOwner, zfindex, onOutput
+        , ZFMP_IN(const void *, s)
+        , ZFMP_IN(zfindex, count)
+        ) {
+    if(!this->output) {
         return 0;
     }
 
-    if(count == zfindexMax())
-    {
+    if(count == zfindexMax()) {
         count = zfslen((const zfchar *)s);
     }
-    else
-    {
+    else {
         count /= sizeof(zfchar);
     }
 
@@ -141,35 +128,30 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForFormatOwner, zfindex, onOutput,
         this->writtenLen,
         this->state);
     ++(this->outputCount);
-    if(buf.isEmpty())
-    {
+    if(buf.isEmpty()) {
         return count * sizeof(zfchar);
     }
 
     zfindex written = this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
     this->writtenLen += written;
-    if(written == buf.length() * sizeof(zfchar))
-    {
+    if(written == buf.length() * sizeof(zfchar)) {
         return count * sizeof(zfchar);
     }
-    else
-    {
+    else {
         return 0;
     }
 }
 
 
-ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT,
-                       ZFMP_OUT(ZFCallback &, ret),
-                       ZFMP_IN(const ZFOutput &, output),
-                       ZFMP_IN(ZFOutputFormat *, format))
-{
-    if(!output)
-    {
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT
+        , ZFMP_OUT(ZFCallback &, ret)
+        , ZFMP_IN(const ZFOutput &, output)
+        , ZFMP_IN(ZFOutputFormat *, format)
+        ) {
+    if(!output) {
         return zffalse;
     }
-    if(format == zfnull)
-    {
+    if(format == zfnull) {
         ret = output;
         return zffalse;
     }
@@ -182,14 +164,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT,
     ret.callbackTag(ZFCallbackTagKeyword_ioOwner, output.callbackTag(ZFCallbackTagKeyword_ioOwner));
     zfRelease(outputOwner);
 
-    if(!ret.callbackSerializeCustomDisabled())
-    {
+    if(!ret.callbackSerializeCustomDisabled()) {
         ZFSerializableData outputData;
         ZFSerializableData formatData;
         if(format->classData()->classIsTypeOf(ZFSerializable::ClassData())
-            && ZFCallbackToData(outputData, output)
-            && ZFObjectToData(formatData, format->toObject()))
-        {
+                && ZFCallbackToData(outputData, output)
+                && ZFObjectToData(formatData, format->toObject())
+                ) {
             ZFSerializableData serializableData;
             outputData.category(ZFSerializableKeyword_ZFOutputForFormat_output);
             serializableData.childAdd(outputData);
@@ -204,35 +185,31 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT,
     return zftrue;
 }
 
-ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForFormat,
-                       ZFMP_IN(const ZFOutput &, output),
-                       ZFMP_IN(ZFOutputFormat *, format))
-{
+ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForFormat
+        , ZFMP_IN(const ZFOutput &, output)
+        , ZFMP_IN(ZFOutputFormat *, format)
+        ) {
     ZFOutput ret;
     ZFOutputForFormatT(ret, output, format);
     return ret;
 }
 
-ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCustomType_ZFOutputForFormat)
-{
+ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCustomType_ZFOutputForFormat) {
     ZFOutput output;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
         require, ZFSerializableKeyword_ZFOutputForFormat_output, ZFCallback, output);
 
     const ZFSerializableData *formatData = ZFSerializableUtil::requireElementByCategory(
         serializableData, ZFSerializableKeyword_ZFOutputForFormat_format, outErrorHint, outErrorPos);
-    if(formatData == zfnull)
-    {
+    if(formatData == zfnull) {
         return zffalse;
     }
     zfautoObject formatHolder;
-    if(!ZFObjectFromData(formatHolder, *formatData, outErrorHint, outErrorPos))
-    {
+    if(!ZFObjectFromData(formatHolder, *formatData, outErrorHint, outErrorPos)) {
         return zffalse;
     }
     ZFOutputFormat *format = formatHolder;
-    if(format == zfnull)
-    {
+    if(format == zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, *formatData,
             "format object %s not type of %s",
             ZFObjectInfo(formatHolder.toObject()).cString(),
@@ -242,8 +219,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
 
     ZFOutput retTmp;
     retTmp.callbackSerializeCustomDisable(zftrue);
-    if(!ZFOutputForFormatT(retTmp, output, format))
-    {
+    if(!ZFOutputForFormatT(retTmp, output, format)) {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, *formatData,
             "unable to create from output %s and format %s",
             output.objectInfo().cString(),
@@ -257,46 +233,42 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFOutputFormat, ZFOutputFormat *, getFormat,
-                  ZFMP_IN(const ZFCallback &, output))
-{
+ZFMETHOD_DEFINE_1(ZFOutputFormat, ZFOutputFormat *, getFormat
+        , ZFMP_IN(const ZFCallback &, output)
+        ) {
     _ZFP_I_ZFOutputForFormatOwner *owner = ZFCastZFObject(_ZFP_I_ZFOutputForFormatOwner *, output.callbackOwnerObject());
-    if(owner == zfnull)
-    {
+    if(owner == zfnull) {
         return zfnull;
     }
-    else
-    {
+    else {
         return owner->format;
     }
 }
 
-ZFMETHOD_DEFINE_1(ZFOutputFormat, ZFOutput, getOutput,
-                  ZFMP_IN(const ZFCallback &, output))
-{
+ZFMETHOD_DEFINE_1(ZFOutputFormat, ZFOutput, getOutput
+        , ZFMP_IN(const ZFCallback &, output)
+        ) {
     _ZFP_I_ZFOutputForFormatOwner *owner = ZFCastZFObject(_ZFP_I_ZFOutputForFormatOwner *, output.callbackOwnerObject());
-    if(owner == zfnull)
-    {
+    if(owner == zfnull) {
         return zfnull;
     }
-    else
-    {
+    else {
         return owner->output;
     }
 }
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFOutputFormatBasic)
-void ZFOutputFormatBasic::format(ZF_IN_OUT zfstring &ret,
-                                 ZF_IN ZFOutputFormatStepEnum outputStep,
-                                 ZF_IN const zfchar *src,
-                                 ZF_IN zfindex srcLen,
-                                 ZF_IN zfindex outputCount,
-                                 ZF_IN zfindex writtenLen,
-                                 ZF_IN_OUT_OPT void *&state)
-{
-    switch(outputStep)
-    {
+void ZFOutputFormatBasic::format(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFOutputFormatStepEnum outputStep
+        , ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfindex outputCount
+        , ZF_IN zfindex writtenLen
+        , ZF_IN_OUT_OPT void *&state
+        ) {
+    switch(outputStep) {
         case ZFOutputFormatStep::e_OnInit:
             state = (void *)zfnew(zfbool, zftrue);
             return;
@@ -306,8 +278,7 @@ void ZFOutputFormatBasic::format(ZF_IN_OUT zfstring &ret,
         case ZFOutputFormatStep::e_OnOutput:
             break;
         case ZFOutputFormatStep::e_OnOutputEnd:
-            if(outputCount > 0)
-            {
+            if(outputCount > 0) {
                 ret += this->outputPostfix();
             }
             return;
@@ -315,25 +286,20 @@ void ZFOutputFormatBasic::format(ZF_IN_OUT zfstring &ret,
             zfCoreCriticalShouldNotGoHere();
             return;
     }
-    if(outputCount == 0)
-    {
+    if(outputCount == 0) {
         ret += this->outputPrefix();
     }
     zfbool &needLinePrefix = *(zfbool *)state;
-    if(needLinePrefix)
-    {
+    if(needLinePrefix) {
         needLinePrefix = zffalse;
         ret += this->linePrefix();
     }
 
     const zfchar *srcEnd = src + srcLen;
     const zfchar *p = src;
-    while(src < srcEnd)
-    {
-        if(*src == '\n')
-        {
-            if(needLinePrefix)
-            {
+    while(src < srcEnd) {
+        if(*src == '\n') {
+            if(needLinePrefix) {
                 ret += this->linePrefix();
             }
             ret.append(p, src - p);
@@ -346,8 +312,7 @@ void ZFOutputFormatBasic::format(ZF_IN_OUT zfstring &ret,
         }
         zfcharMoveNext(src);
     }
-    if(p < src)
-    {
+    if(p < src) {
         needLinePrefix = zffalse;
         ret.append(p, src - p);
     }

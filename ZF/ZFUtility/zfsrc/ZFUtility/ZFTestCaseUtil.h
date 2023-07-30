@@ -16,13 +16,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * we would create an instance of the test case and running it\n
  * return the test case if success and not stopped immediately
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObjectT<ZFTestCase *>, ZFTestCaseRun,
-                        ZFMP_IN(const ZFClass *, cls))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObjectT<ZFTestCase *>, ZFTestCaseRun
+        , ZFMP_IN(const ZFClass *, cls)
+        )
 /**
  * @brief see #ZFTestCaseRun
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObjectT<ZFTestCase *>, ZFTestCaseRun,
-                        ZFMP_IN(const zfchar *, classNameFull))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoObjectT<ZFTestCase *>, ZFTestCaseRun
+        , ZFMP_IN(const zfchar *, classNameFull)
+        )
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
@@ -46,16 +48,18 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * first param can be assigned to specify a callback
  * to check whether a test case can be started
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFTestCaseRunAllStart,
-                        ZFMP_IN_OPT(const ZFCoreArray<const ZFClass *> *, toStart, zfnull))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFTestCaseRunAllStart
+        , ZFMP_IN_OPT(const ZFCoreArray<const ZFClass *> *, toStart, zfnull)
+        )
 /**
  * @brief stop #ZFTestCaseRunAllStart
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUtility, void, ZFTestCaseRunAllStop)
 
 /** @brief see #ZFTestCaseGetAll */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFTestCaseGetAllT,
-                        ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFTestCaseGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret)
+        )
 /**
  * @brief get all test case currently registered
  */

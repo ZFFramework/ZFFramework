@@ -25,8 +25,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief compare result of two ZFObjects
  * @see ZFObject::compare
  */
-typedef enum
-{
+typedef enum {
     ZFCompareUncomparable = -2, /**< can't be compared */
     ZFCompareSmaller = -1, /**< left < right */
     ZFCompareTheSame = 0, /**< left == right */
@@ -45,8 +44,7 @@ typedef enum
 /**
  * @brief seek position similar to SEEK_SET of FILE operation
  */
-typedef enum
-{
+typedef enum {
     ZFSeekPosBegin,
     ZFSeekPosCur,
     ZFSeekPosCurReversely,
@@ -65,8 +63,7 @@ typedef enum
 /**
  * @brief POD data to hold index range
  */
-zfclassPOD ZFLIB_ZFCore ZFIndexRange
-{
+zfclassPOD ZFLIB_ZFCore ZFIndexRange {
 public:
     zfindex start; /**< @brief start */
     zfindex count; /**< @brief count */
@@ -84,37 +81,42 @@ extern ZFLIB_ZFCore const ZFIndexRange _ZFP_ZFIndexRangeMax;
 /**
  * @brief make a ZFIndexRange
  */
-inline ZFIndexRange ZFIndexRangeMake(ZF_IN zfindex start,
-                                     ZF_IN zfindex count)
-{
+inline ZFIndexRange ZFIndexRangeMake(
+        ZF_IN zfindex start
+        , ZF_IN zfindex count
+        ) {
     ZFIndexRange ret = {start, count};
     return ret;
 }
 /**
  * @brief compare
  */
-inline ZFCompareResult ZFIndexRangeIsEqual(ZF_IN const ZFIndexRange &e0,
-                                           ZF_IN const ZFIndexRange &e1)
-{
+inline ZFCompareResult ZFIndexRangeIsEqual(
+        ZF_IN const ZFIndexRange &e0
+        , ZF_IN const ZFIndexRange &e1
+        ) {
     return ((e0.start == e1.start && e0.count == e1.count) ? ZFCompareTheSame : ZFCompareUncomparable);
 }
 /**
  * @brief true if contain index in range
  */
-inline zfbool ZFIndexRangeContain(ZF_IN const ZFIndexRange &range,
-                                  ZF_IN zfindex index)
-{
+inline zfbool ZFIndexRangeContain(
+        ZF_IN const ZFIndexRange &range
+        , ZF_IN zfindex index
+        ) {
     return (range.count > 0 && index >= range.start && index < range.start + range.count);
 }
 /** @cond ZFPrivateDoc */
-inline zfbool operator == (ZF_IN const ZFIndexRange &v0,
-                           ZF_IN const ZFIndexRange &v1)
-{
+inline zfbool operator == (
+        ZF_IN const ZFIndexRange &v0
+        , ZF_IN const ZFIndexRange &v1
+        ) {
     return (v0.start == v1.start && v0.count == v1.count);
 }
-inline zfbool operator != (ZF_IN const ZFIndexRange &v0,
-                           ZF_IN const ZFIndexRange &v1)
-{
+inline zfbool operator != (
+        ZF_IN const ZFIndexRange &v0
+        , ZF_IN const ZFIndexRange &v1
+        ) {
     return (v0.start != v1.start || v0.count != v1.count);
 }
 /** @endcond */
@@ -130,8 +132,10 @@ inline zfbool operator != (ZF_IN const ZFIndexRange &v0,
  * @endcode
  * for custom types you may declare your own comparar:
  * @code
- *   ZFCompareResult YourCompareFunction(ZF_IN YourType const &e0, ZF_IN YourType const &e1)
- *   {
+ *   ZFCompareResult YourCompareFunction(
+ *           ZF_IN YourType const &e0
+ *           , ZF_IN YourType const &e1
+ *           ) {
  *       // do your compare
  *   }
  * @endcode
@@ -141,13 +145,15 @@ inline zfbool operator != (ZF_IN const ZFIndexRange &v0,
  * @endcode
  */
 template<typename T_Comparable, typename T_Comparable2 = T_Comparable>
-zfclassNotPOD ZFComparer
-{
+zfclassNotPOD ZFComparer {
 public:
     /**
      * @brief see #ZFComparer
      */
-    typedef ZFCompareResult (*Comparer)(ZF_IN T_Comparable const &e0, ZF_IN T_Comparable2 const &e1);
+    typedef ZFCompareResult (*Comparer)(
+            ZF_IN T_Comparable const &e0
+            , ZF_IN T_Comparable2 const &e1
+            );
 };
 
 // ============================================================
@@ -162,23 +168,26 @@ public:
  * use #ZFOUTPUT_TYPE to declare for your own type
  */
 template<typename T_Element, typename T_ReservedFix = void>
-zfclassNotPOD ZFCoreInfoGetter
-{
+zfclassNotPOD ZFCoreInfoGetter {
 public:
     /** @brief see #ZFCoreInfoGetter */
-    static void InfoGetter(ZF_IN_OUT zfstring &ret, ZF_IN T_Element const &v)
-    {
+    static void InfoGetter(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN T_Element const &v
+            ) {
         ret += ZFTOKEN_ZFCoreInfoGetterNotAvailable;
     }
 };
 
 /** @brief type for #ZFCoreInfoGetter */
 template<typename T_Element>
-zfclassNotPOD ZFCoreInfoGetterType
-{
+zfclassNotPOD ZFCoreInfoGetterType {
 public:
     /** @brief type for #ZFCoreInfoGetter */
-    typedef void (*InfoGetter)(ZF_IN_OUT zfstring &ret, ZF_IN T_Element const &v);
+    typedef void (*InfoGetter)(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN T_Element const &v
+            );
 };
 
 // ============================================================

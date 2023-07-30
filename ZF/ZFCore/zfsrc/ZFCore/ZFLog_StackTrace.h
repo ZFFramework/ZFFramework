@@ -19,28 +19,32 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfbool, zfLogStackTraceAvailable)
  *
  * output may be different depending on the OS and implementation
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, zfLogStackTrace,
-                        ZFMP_OUT(zfstring &, ret),
-                        ZFMP_IN_OPT(const zfchar *, prefix, zfnull),
-                        ZFMP_IN_OPT(zfindex, ignoreLevel, 0),
-                        ZFMP_IN_OPT(zfindex, maxLevel, 20))
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, void, zfLogStackTrace
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN_OPT(const zfchar *, prefix, zfnull)
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        , ZFMP_IN_OPT(zfindex, maxLevel, 20)
+        )
 /** @brief see #zfLogStackTrace */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfstring, zfLogStackTrace,
-                        ZFMP_IN_OPT(const zfchar *, prefix, zfnull),
-                        ZFMP_IN_OPT(zfindex, ignoreLevel, 0),
-                        ZFMP_IN_OPT(zfindex, maxLevel, 20))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfstring, zfLogStackTrace
+        , ZFMP_IN_OPT(const zfchar *, prefix, zfnull)
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        , ZFMP_IN_OPT(zfindex, maxLevel, 20)
+        )
 
 /**
  * @brief get the caller's info
  *
  * see #zfLogStackTrace for how to make it available
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, zfLogCallerInfo,
-                        ZFMP_OUT(zfstring &, ret),
-                        ZFMP_IN_OPT(zfindex, ignoreLevel, 0))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, zfLogCallerInfo
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        )
 /** @brief see zfLogCallerInfo */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, zfLogCallerInfo,
-                        ZFMP_IN_OPT(zfindex, ignoreLevel, 0))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfstring, zfLogCallerInfo
+        , ZFMP_IN_OPT(zfindex, ignoreLevel, 0)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLog_StackTrace_h_

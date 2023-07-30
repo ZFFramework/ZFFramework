@@ -10,8 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
-zfclass ZFLIB_ZFUIWidget ZFUIListAdapterBasicParam : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIWidget ZFUIListAdapterBasicParam : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIListAdapterBasicParam, ZFObject)
 
 public:
@@ -56,8 +55,7 @@ public:
  *   end);
  * @endcode
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListAdapterBasic : zfextends ZFStyleableObject, zfimplements ZFUIListAdapter
-{
+zfclass ZFLIB_ZFUIWidget ZFUIListAdapterBasic : zfextends ZFStyleableObject, zfimplements ZFUIListAdapter {
     ZFOBJECT_DECLARE(ZFUIListAdapterBasic, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFUIListAdapter)
 
@@ -95,51 +93,45 @@ public:
 
 public:
     zfoverride
-    virtual zfindex cellCount(void)
-    {
+    virtual zfindex cellCount(void) {
         zfblockedAlloc(v_zfindex, ret);
         this->observerNotify(zfself::EventListCellCount(), ret);
         return ret->zfv;
     }
     zfoverride
-    virtual zfautoObject cellAt(ZF_IN zfindex index)
-    {
+    virtual zfautoObject cellAt(ZF_IN zfindex index) {
         zfblockedAlloc(ZFUIListAdapterBasicParam, param);
         param->cellIndex(index);
         this->observerNotify(zfself::EventListCellAt(), param);
         return param->cell();
     }
     zfoverride
-    virtual zffloat cellSizeAt(ZF_IN zfindex index,
-                               ZF_IN ZFUIListCell *cell)
-    {
-        if(this->observerHasAdd(zfself::EventListCellSizeAt()))
-        {
+    virtual zffloat cellSizeAt(
+            ZF_IN zfindex index
+            , ZF_IN ZFUIListCell *cell
+            ) {
+        if(this->observerHasAdd(zfself::EventListCellSizeAt())) {
             zfblockedAlloc(ZFUIListAdapterBasicParam, param);
             param->cellIndex(index);
             param->cell(cell);
             this->observerNotify(zfself::EventListCellSizeAt(), param);
             return param->cellSize();
         }
-        else
-        {
+        else {
             return zfsuperI(ZFUIListAdapter)::cellSizeAt(index, cell);
         }
     }
 
 protected:
     zfoverride
-    virtual zfautoObject cellCacheOnAccess(ZF_IN zfindex index)
-    {
-        if(this->observerHasAdd(zfself::EventListCellCacheOnAccess()))
-        {
+    virtual zfautoObject cellCacheOnAccess(ZF_IN zfindex index) {
+        if(this->observerHasAdd(zfself::EventListCellCacheOnAccess())) {
             zfblockedAlloc(ZFUIListAdapterBasicParam, param);
             param->cellIndex(index);
             this->observerNotify(zfself::EventListCellCacheOnAccess(), param);
             return param->cell();
         }
-        else
-        {
+        else {
             return zfsuperI(ZFUIListAdapter)::cellCacheOnAccess(index);
         }
     }

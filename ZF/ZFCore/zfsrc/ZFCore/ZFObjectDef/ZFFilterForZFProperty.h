@@ -11,8 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFProperty;
 // ============================================================
-zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFPropertySetting
-{
+zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFPropertySetting {
 public:
     zfbool ignorePublicSetter;
     zfbool ignoreProtectedSetter;
@@ -24,8 +23,7 @@ public:
 /**
  * @brief util class to filter ZFProperty
  */
-zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFProperty : zfextends ZFFilterBasic<const ZFProperty *>
-{
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFProperty : zfextends ZFFilterBasic<const ZFProperty *> {
     ZFFILTER_DECLARE(ZFFilterForZFProperty, ZFFilterBasic<const ZFProperty *>)
 
 public:
@@ -57,15 +55,13 @@ public:
     }
 
     /** @cond ZFPrivateDoc */
-    virtual ZFFilterForZFProperty &operator = (ZF_IN const ZFFilterForZFProperty &ref)
-    {
+    virtual ZFFilterForZFProperty &operator = (ZF_IN const ZFFilterForZFProperty &ref) {
         zfsuper::operator = (ref);
         this->classFilter = ref.classFilter;
         this->d = ref.d;
         return *this;
     }
-    virtual void copyFrom(ZF_IN ZFFilterBase<const ZFProperty *, const ZFProperty *> const &ref)
-    {
+    virtual void copyFrom(ZF_IN ZFFilterBase<const ZFProperty *, const ZFProperty *> const &ref) {
         zfsuper::copyFrom(ref);
         this->classFilter.copyFrom(((ZFFilterForZFProperty const &)ref).classFilter);
         _ZFP_ZFFilterForZFPropertySetting *setting = zfnew(_ZFP_ZFFilterForZFPropertySetting);
@@ -84,90 +80,78 @@ public:
     /**
      * @brief ignore public setter, false by default
      */
-    virtual void ignorePublicSetter(ZF_IN zfbool value)
-    {
+    virtual void ignorePublicSetter(ZF_IN zfbool value) {
         d->ignorePublicSetter = value;
     }
     /**
      * @brief see #ignorePublicSetter
      */
-    virtual zfbool ignorePublicSetter(void) const
-    {
+    virtual zfbool ignorePublicSetter(void) const {
         return d->ignorePublicSetter;
     }
 
     /**
      * @brief ignore protected setter, false by default
      */
-    virtual void ignoreProtectedSetter(ZF_IN zfbool value)
-    {
+    virtual void ignoreProtectedSetter(ZF_IN zfbool value) {
         d->ignoreProtectedSetter = value;
     }
     /**
      * @brief see #ignoreProtectedSetter
      */
-    virtual zfbool ignoreProtectedSetter(void) const
-    {
+    virtual zfbool ignoreProtectedSetter(void) const {
         return d->ignoreProtectedSetter;
     }
 
     /**
      * @brief ignore private setter, false by default
      */
-    virtual void ignorePrivateSetter(ZF_IN zfbool value)
-    {
+    virtual void ignorePrivateSetter(ZF_IN zfbool value) {
         d->ignorePrivateSetter = value;
     }
     /**
      * @brief see #ignorePrivateSetter
      */
-    virtual zfbool ignorePrivateSetter(void) const
-    {
+    virtual zfbool ignorePrivateSetter(void) const {
         return d->ignorePrivateSetter;
     }
 
     /**
      * @brief ignore public getter, false by default
      */
-    virtual void ignorePublicGetter(ZF_IN zfbool value)
-    {
+    virtual void ignorePublicGetter(ZF_IN zfbool value) {
         d->ignorePublicGetter = value;
     }
     /**
      * @brief see #ignorePublicGetter
      */
-    virtual zfbool ignorePublicGetter(void) const
-    {
+    virtual zfbool ignorePublicGetter(void) const {
         return d->ignorePublicGetter;
     }
 
     /**
      * @brief ignore protected getter, false by default
      */
-    virtual void ignoreProtectedGetter(ZF_IN zfbool value)
-    {
+    virtual void ignoreProtectedGetter(ZF_IN zfbool value) {
         d->ignoreProtectedGetter = value;
     }
     /**
      * @brief see #ignoreProtectedGetter
      */
-    virtual zfbool ignoreProtectedGetter(void) const
-    {
+    virtual zfbool ignoreProtectedGetter(void) const {
         return d->ignoreProtectedGetter;
     }
 
     /**
      * @brief ignore private getter, false by default
      */
-    virtual void ignorePrivateGetter(ZF_IN zfbool value)
-    {
+    virtual void ignorePrivateGetter(ZF_IN zfbool value) {
         d->ignorePrivateGetter = value;
     }
     /**
      * @brief see #ignorePrivateGetter
      */
-    virtual zfbool ignorePrivateGetter(void) const
-    {
+    virtual zfbool ignorePrivateGetter(void) const {
         return d->ignorePrivateGetter;
     }
 
@@ -178,8 +162,7 @@ public:
 protected:
     /** @cond ZFPrivateDoc */ // ZFTAG_DOXYGEN_BUG: can't auto detect template specialization
     zfoverride
-    virtual zfbool filterOnCheckValid(ZF_IN const ZFProperty * const &e) const
-    {
+    virtual zfbool filterOnCheckValid(ZF_IN const ZFProperty * const &e) const {
         return (e != zfnull);
     }
     zfoverride

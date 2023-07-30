@@ -51,11 +51,9 @@ typedef enum {
 #define ZFTOKEN_ZFObjectInstanceStateOnDealloc "ZFObjectInstanceStateOnDealloc"
 
 // ============================================================
-zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFObjectDummyParent
-{
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFObjectDummyParent {
 public:
-    static const ZFClass *ClassData(void)
-    {
+    static const ZFClass *ClassData(void) {
         return zfnull;
     }
     static void _ZFP_Obj_initImpl(ZFClass *cls) {}
@@ -105,8 +103,7 @@ zfclassFwd ZFObjectHolder;
  *   you must add ZFOBJECT_DECLARE or ZFOBJECT_DECLARE_ABSTRACT to your subclass,
  *   and use zfextends:
  *   @code
- *     zfclass YourClassChild : zfextends YourClassBase
- *     {
+ *     zfclass YourClassChild : zfextends YourClassBase {
  *         ZFOBJECT_DECLARE(YourClassChild, YourClassBase)
  *         // or ZFOBJECT_DECLARE_ABSTRACT if YourClassChild is abstract class
  *     };
@@ -118,16 +115,14 @@ zfclassFwd ZFObjectHolder;
  *   however, you must make sure it's name is unique,
  *   we doesn't support class names with namespace
  *   @code
- *     zfclass YourOutterClass : zfextends ZFObject
- *     {
+ *     zfclass YourOutterClass : zfextends ZFObject {
  *         ZFOBJECT_DECLARE(YourOutterClass, ZFObject)
  *
  *         // inner class is allowed,
  *         // but you must ensure it's class name is unique,
  *         // since no namespace qualifier is supported,
  *         // its full class name is "YourInnerClass" instead of "YourOutterClass::YourInnerClass"
- *         zfclass YourInnerClass : zfextends ZFObject
- *         {
+ *         zfclass YourInnerClass : zfextends ZFObject {
  *             ZFOBJECT_DECLARE(YourInnerClass, ZFObject)
  *         };
  *     };
@@ -142,13 +137,11 @@ zfclassFwd ZFObjectHolder;
  * -  while override member method of ZFObject type,
  *   you should use zfsuper to call super's method:
  *   @code
- *     zfclass YourClass : zfextends Parent
- *     {
+ *     zfclass YourClass : zfextends Parent {
  *         ZFOBJECT_DECLARE(YourClass, Parent)
  *     public:
  *         zfoverride
- *         virtual void funcInParent(void)
- *         {
+ *         virtual void funcInParent(void) {
  *             // override and call super's method by zfsuper
  *             zfsuper::funcInParent();
  *         }
@@ -157,32 +150,27 @@ zfclassFwd ZFObjectHolder;
  *   if overrided method is declared in super interface,
  *   you should use zfsuperI:
  *   @code
- *     zfclass Parent : zfextends ZFObject, zfimplements ParentInterface0
- *     {
+ *     zfclass Parent : zfextends ZFObject, zfimplements ParentInterface0 {
  *         ZFOBJECT_DECLARE(Parent, ZFObject)
  *         ZFIMPLEMENTS_DECLARE(ParentInterface0)
  *     public:
  *         zfoverride
- *         virtual void funcInParentInterface0(void)
- *         {
+ *         virtual void funcInParentInterface0(void) {
  *             // would call ParentInterface0::funcInParentInterface0
  *             zfsuperI(ParentInterface0)::funcInParentInterface0();
  *         }
  *     };
- *     zfclass YourClass : zfextends Parent, zfimplements ParentInterface1
- *     {
+ *     zfclass YourClass : zfextends Parent, zfimplements ParentInterface1 {
  *         ZFOBJECT_DECLARE(YourClass, Parent)
  *         ZFIMPLEMENTS_DECLARE(ParentInterface1)
  *     public:
  *         zfoverride
- *         virtual void funcInParentInterface0(void)
- *         {
+ *         virtual void funcInParentInterface0(void) {
  *             // would call Parent::funcInParentInterface0
  *             zfsuperI(ParentInterface0)::funcInParentInterface0();
  *         }
  *         zfoverride
- *         virtual void funcInParentInterface1(void)
- *         {
+ *         virtual void funcInParentInterface1(void) {
  *             // would call ParentInterface1::funcInParentInterface1
  *             zfsuperI(ParentInterface1)::funcInParentInterface1();
  *         }
@@ -223,8 +211,7 @@ zfclassFwd ZFObjectHolder;
  *   but can be modified by adding precompile flags
  *   (usually have no need, and modify at your own risk)
  */
-zfclass ZFLIB_ZFCore ZFObject
-{
+zfclass ZFLIB_ZFCore ZFObject {
     _ZFP_ZFOBJECT_DECLARE(ZFObject, _ZFP_ZFObjectDummyParent)
     _ZFP_ZFOBJECT_DECLARE_OBJECT(ZFObject, _ZFP_ZFObjectDummyParent)
 
@@ -244,8 +231,7 @@ protected:
     , d(zfnull)
     {
     }
-    virtual ~ZFObject(void)
-    {
+    virtual ~ZFObject(void) {
     }
     /** @endcond */
 
@@ -312,8 +298,7 @@ public:
      *   ClassName(0x123456)
      * @see objectInfo
      */
-    virtual inline zfstring objectInfoOfInstance(void)
-    {
+    virtual inline zfstring objectInfoOfInstance(void) {
         zfstring ret;
         this->objectInfoOfInstanceT(ret);
         return ret;
@@ -322,8 +307,7 @@ public:
     /** @brief see #objectInfo */
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
     /** @brief return object info */
-    virtual inline zfstring objectInfo(void)
-    {
+    virtual inline zfstring objectInfo(void) {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -333,15 +317,13 @@ protected:
     /**
      * @brief called by #objectInfoT to append object info as a chain
      */
-    virtual inline void objectInfoOnAppendTokenLeft(ZF_IN_OUT zfstring &ret)
-    {
+    virtual inline void objectInfoOnAppendTokenLeft(ZF_IN_OUT zfstring &ret) {
         ret += ZFTOKEN_ZFObjectInfoLeft;
     }
     /**
      * @brief called by #objectInfoT to append object info as a chain
      */
-    virtual inline void objectInfoOnAppendTokenRight(ZF_IN_OUT zfstring &ret)
-    {
+    virtual inline void objectInfoOnAppendTokenRight(ZF_IN_OUT zfstring &ret) {
         ret += ZFTOKEN_ZFObjectInfoRight;
     }
     /**
@@ -373,8 +355,7 @@ public:
      */
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
     /** @brief util to #objectCompare */
-    virtual zfbool equalTo(ZF_IN ZFObject *anotherObj)
-    {
+    virtual zfbool equalTo(ZF_IN ZFObject *anotherObj) {
         return this->objectCompare(anotherObj) == ZFCompareTheSame;
     }
 
@@ -424,8 +405,10 @@ public:
      *
      * replace if existing, remove if tag is null
      */
-    zffinal void objectTag(ZF_IN const zfchar *key,
-                           ZF_IN ZFObject *tag);
+    zffinal void objectTag(
+            ZF_IN const zfchar *key
+            , ZF_IN ZFObject *tag
+            );
     /**
      * @brief see #objectTag
      */
@@ -434,20 +417,20 @@ public:
      * @brief see #objectTag
      */
     template<typename T_ZFObject>
-    T_ZFObject objectTag(ZF_IN const zfchar *key)
-    {
+    T_ZFObject objectTag(ZF_IN const zfchar *key) {
         return ZFCastZFObjectUnchecked(T_ZFObject, this->objectTag(key));
     }
     /**
      * @brief get all key value
      */
-    zffinal void objectTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey,
-                                         ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue);
+    zffinal void objectTagGetAllKeyValue(
+            ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+            , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+            );
     /**
      * @brief remove tag, same as set tag to null
      */
-    zffinal inline void objectTagRemove(ZF_IN const zfchar *key)
-    {
+    zffinal inline void objectTagRemove(ZF_IN const zfchar *key) {
         this->objectTag(key, zfnull);
     }
     /**
@@ -469,20 +452,26 @@ public:
     /**
      * @brief see #observerNotify
      */
-    zffinal void observerAdd(ZF_IN zfidentity eventId,
-                             ZF_IN const ZFListener &observer,
-                             ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
+    zffinal void observerAdd(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            );
     /**
      * @brief see #observerNotify
      */
-    zffinal void observerAddForOnce(ZF_IN zfidentity eventId,
-                                    ZF_IN const ZFListener &observer,
-                                    ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal);
+    zffinal void observerAddForOnce(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &observer
+            , ZF_IN_OPT ZFLevel observerLevel = ZFLevelAppNormal
+            );
     /**
      * @brief see #observerNotify
      */
-    zffinal void observerRemove(ZF_IN zfidentity eventId,
-                                ZF_IN const ZFListener &callback);
+    zffinal void observerRemove(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &callback
+            );
     /**
      * @brief see #observerNotify
      *
@@ -517,8 +506,7 @@ public:
      * use #ZFGlobalObserver for global observer\n
      * for instance observer:
      * @code
-     *   zfclass YourClass
-     *   {
+     *   zfclass YourClass {
      *       // declare your event here,
      *       // which would generate a method:
      *       //   static const zfchar *EventYourEvent(void)
@@ -534,16 +522,20 @@ public:
      * to pass extra params to the callback,
      * see #ZFLISTENER for more info
      */
-    zffinal void observerNotify(ZF_IN zfidentity eventId,
-                                ZF_IN_OPT ZFObject *param0 = zfnull,
-                                ZF_IN_OPT ZFObject *param1 = zfnull);
+    zffinal void observerNotify(
+            ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            );
     /**
      * @brief see #observerNotify
      */
-    zffinal void observerNotifyWithSender(ZF_IN ZFObject *customSender,
-                                          ZF_IN zfidentity eventId,
-                                          ZF_IN_OPT ZFObject *param0 = zfnull,
-                                          ZF_IN_OPT ZFObject *param1 = zfnull);
+    zffinal void observerNotifyWithSender(
+            ZF_IN ZFObject *customSender
+            , ZF_IN zfidentity eventId
+            , ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            );
 
     /**
      * @brief access the internal observer holder
@@ -568,8 +560,7 @@ protected:
      *
      * ensured called before any other registered observer
      */
-    virtual inline void observerOnEvent(ZF_IN const ZFArgs &zfargs)
-    {
+    virtual inline void observerOnEvent(ZF_IN const ZFArgs &zfargs) {
     }
 
 public:
@@ -577,8 +568,7 @@ public:
     void _ZFP_ZFObjectUnlock(void);
     zfbool _ZFP_ZFObjectTryLock(void);
 
-    inline void _ZFP_ZFObject_objectOnInit(void)
-    {
+    inline void _ZFP_ZFObject_objectOnInit(void) {
         this->objectOnInit();
     }
     ZFObject *_ZFP_ZFObjectCheckOnInit(void);
@@ -591,25 +581,21 @@ protected:
      * subclass must call superclass's objectOnInit before any other code if override\n
      * you may also declare objectOnInit with params like this:
      * @code
-     *   zfclass Parent : ...
-     *   {
+     *   zfclass Parent : ... {
      *       ...
      *   protected:
      *       virtual void objectOnInit(void) {...};
      *   };
-     *   zfclass Child : Parent
-     *   {
+     *   zfclass Child : Parent {
      *   protected:
      *       // override all parent's objectOnInit is also required,
      *       // because of function hiding of C++
      *       zfoverride
-     *       virtual void objectOnInit(void)
-     *       {
+     *       virtual void objectOnInit(void) {
      *           zfsuper::objectOnInit();
      *       }
      *       // custom init entry
-     *       virtual void objectOnInit(Params...)
-     *       {
+     *       virtual void objectOnInit(Params...) {
      *           this->objectOnInit();
      *           // your extra init steps
      *           ...
@@ -630,20 +616,17 @@ protected:
      *   you should use #ZFOBJECT_PRIVATE_ALLOC,
      *   typically usage:
      *   @code
-     *     zfclass MyObject : zfextends ZFObject
-     *     {
+     *     zfclass MyObject : zfextends ZFObject {
      *         ZFOBJECT_DECLARE(MyObject, ZFObject)
      *         ZFOBJECT_PRIVATE_ALLOC("should be created by MyObject::instanceForXxx only")
      *
      *     public:
-     *         static zfautoObject instanceForXxx(xxx)
-     *         {
+     *         static zfautoObject instanceForXxx(xxx) {
      *             // can only be allocated by reflection
      *             return zfself::ClassData()->newInstance();
      *         }
      *     };
-     *     static void func(void)
-     *     {
+     *     static void func(void) {
      *         // MyObject *obj = zfAlloc(MyObject); // would compile error
      *         zfautoObject obj = MyObject::instanceForXxx(xxx); // OK
      *     }
@@ -655,16 +638,14 @@ protected:
      *
      * usually used to initialize independent resources other than self's internal resources
      */
-    virtual inline void objectOnInitFinish(void)
-    {
+    virtual inline void objectOnInitFinish(void) {
     }
     /**
      * @brief called before #objectOnDealloc, safe to call virtual functions here
      *
      * usually used to cleanup resources attached to this object other than self's internal resources
      */
-    virtual inline void objectOnDeallocPrepare(void)
-    {
+    virtual inline void objectOnDeallocPrepare(void) {
         this->objectTagRemoveAll();
         this->observerRemoveAll();
     }
@@ -714,15 +695,20 @@ public:
 public:
     zffinal void _ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *property);
     zffinal void _ZFP_ZFObject_objectPropertyValueDetach(ZF_IN const ZFProperty *property);
-    zffinal inline void _ZFP_ZFObject_objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_IN const void *oldValue)
-    {
+    zffinal inline void _ZFP_ZFObject_objectPropertyValueOnUpdate(
+            ZF_IN const ZFProperty *property
+            , ZF_IN const void *oldValue
+            ) {
         this->objectPropertyValueOnUpdate(property, oldValue);
     }
 protected:
     /**
      * @brief see #EventObjectPropertyValueOnUpdate
      */
-    virtual void objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_IN const void *oldValue);
+    virtual void objectPropertyValueOnUpdate(
+            ZF_IN const ZFProperty *property
+            , ZF_IN const void *oldValue
+            );
 
     // ============================================================
 public:

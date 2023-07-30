@@ -18,8 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_sys_iOS, ZFRes, ZFProtocolLevel::e_SystemNormal)
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         NSString *resRootDirTmp = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:@"zfres"];
         this->_resRootPath = resRootDirTmp.UTF8String;
@@ -28,8 +27,7 @@ public:
 
 public:
     zfoverride
-    virtual const zfstring &resRootPath(void)
-    {
+    virtual const zfstring &resRootPath(void) {
         return this->_resRootPath;
     }
 private:

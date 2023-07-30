@@ -15,26 +15,30 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief load image from base64 data
  * @note this method has no cache logic
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromBase64,
-                        ZFMP_IN(const ZFInput &, inputCallback))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromBase64
+        , ZFMP_IN(const ZFInput &, inputCallback)
+        )
 /**
  * @brief save image to base64 data
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToBase64,
-                        ZFMP_OUT(const ZFOutput &, outputCallback),
-                        ZFMP_IN(ZFUIImage *, image))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToBase64
+        , ZFMP_OUT(const ZFOutput &, outputCallback)
+        , ZFMP_IN(ZFUIImage *, image)
+        )
 /**
  * @brief load image from file
  * @note this method has no cache logic
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromInput,
-                        ZFMP_IN(const ZFInput &, inputCallback))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromInput
+        , ZFMP_IN(const ZFInput &, inputCallback)
+        )
 /**
  * @brief save image to file
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToOutput,
-                        ZFMP_OUT(const ZFOutput &, outputCallback),
-                        ZFMP_IN(ZFUIImage *, image))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToOutput
+        , ZFMP_OUT(const ZFOutput &, outputCallback)
+        , ZFMP_IN(ZFUIImage *, image)
+        )
 
 /**
  * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
@@ -56,9 +60,10 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToOutput,
  * return null if source image or newSize invalid\n
  * this method would create a new image even if size not changed
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageScale,
-                        ZFMP_IN(ZFUIImage *, image),
-                        ZFMP_IN(const ZFUISize &, newSize))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageScale
+        , ZFMP_IN(ZFUIImage *, image)
+        , ZFMP_IN(const ZFUISize &, newSize)
+        )
 
 // ============================================================
 // ZFUIImageInFrame
@@ -87,18 +92,20 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageScal
  * @note frame is ensured in pixel for this method,
  *   see #ZFUIImage::imageScale for more info
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageInFrame,
-                        ZFMP_IN(ZFUIImage *, image),
-                        ZFMP_IN(const ZFUIRect &, framePixel))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageInFrame
+        , ZFMP_IN(ZFUIImage *, image)
+        , ZFMP_IN(const ZFUIRect &, framePixel)
+        )
 
 // ============================================================
 // ZFUIImageFromNativeImage
 /**
  * @brief create image from native image
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromNativeImage,
-                        ZFMP_IN(void *, nativeImage),
-                        ZFMP_IN_OPT(zfbool, retainNativeImage, zftrue))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromNativeImage
+        , ZFMP_IN(void *, nativeImage)
+        , ZFMP_IN_OPT(zfbool, retainNativeImage, zftrue)
+        )
 
 // ============================================================
 // color
@@ -127,9 +134,10 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFrom
  * invalid size is automatically convert to 1 pixel
  * @note this method has no cache logic
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromColor,
-                        ZFMP_IN(const ZFUIColor &, color),
-                        ZFMP_IN_OPT(const ZFUISize &, sizePixel, ZFUISizeZero()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromColor
+        , ZFMP_IN(const ZFUIColor &, color)
+        , ZFMP_IN_OPT(const ZFUISize &, sizePixel, ZFUISizeZero())
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIImageIO_h_

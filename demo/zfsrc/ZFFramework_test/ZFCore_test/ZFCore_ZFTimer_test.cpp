@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFCore_ZFTimer_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFTimer_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFTimer_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFTimer);
         ZFFramework_test_asyncTestCheck();
@@ -26,8 +24,7 @@ protected:
                 ) {
             ZFTimer *timer = zfargs.senderT();
             zfLogTrim("timer event, current thread: %s", ZFThread::currentThread()->objectInfo().cString());
-            if(timer->timerActivatedCount() >= 3)
-            {
+            if(timer->timerActivatedCount() >= 3) {
                 timer->timerStop();
 
                 ZFLISTENER_1(action

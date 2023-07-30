@@ -30,29 +30,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, void *, ZFLuaState)
 
 /** @brief change builtin lua state for current thread, see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateChange,
-                        ZFMP_IN(void *, L))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateChange
+        , ZFMP_IN(void *, L)
+        )
 
 /** @brief get lua state list for current thread, see #ZFLuaState */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, ZFCoreArrayPOD<void *>, ZFLuaStateList)
 
 /** @brief get lua state list for all thread, use with caution, see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFLua, void, ZFLuaStateListForAllThread,
-                        ZFMP_OUT(ZFCoreArray<void *>, luaStateList),
-                        ZFMP_OUT(ZFCoreArray<ZFThread *>, threadList))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFLua, void, ZFLuaStateListForAllThread
+        , ZFMP_OUT(ZFCoreArray<void *>, luaStateList)
+        , ZFMP_OUT(ZFCoreArray<ZFThread *>, threadList)
+        )
 
 /** @brief create new lua state, see #ZFLuaState */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, void *, ZFLuaStateOpen)
 /** @brief close lua state, see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateClose,
-                        ZFMP_IN(void *, L))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateClose
+        , ZFMP_IN(void *, L)
+        )
 
 /** @brief attach existing lua state to current thread, see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateAttach,
-                        ZFMP_IN(void *, L))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateAttach
+        , ZFMP_IN(void *, L)
+        )
 /** @brief detach lua state from current thread, see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateDetach,
-                        ZFMP_IN(void *, L))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateDetach
+        , ZFMP_IN(void *, L)
+        )
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 /**

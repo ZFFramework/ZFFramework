@@ -14,8 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * higher priority ensured to have smaller value
  */
-typedef enum
-{
+typedef enum {
     ZFLevelZFFrameworkStatic        = 0, /**< @brief ZFFramework static, for non-ZFObject-related meta data or global instance */
     ZFLevelZFFrameworkEssential     = 1, /**< @brief ZFFramework essential, for ZFObject-related meta data, or essential global instance */
     ZFLevelZFFrameworkHigh          = 2, /**< @brief ZFFramework high, for global instance */

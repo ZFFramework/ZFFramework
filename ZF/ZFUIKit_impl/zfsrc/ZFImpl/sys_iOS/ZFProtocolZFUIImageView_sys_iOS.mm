@@ -10,8 +10,7 @@
 @implementation _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView
 // ============================================================
 // init and dealloc
-- (id)init
-{
+- (id)init {
     self = [super init];
     self.autoresizesSubviews = NO;
     self.contentMode = UIViewContentModeScaleToFill;
@@ -19,19 +18,15 @@
 }
 // ============================================================
 // nine patch logic
-- (void)updateImageWithNinePatch
-{
-    if(self.ownerZFUIImage == zfnull)
-    {
+- (void)updateImageWithNinePatch {
+    if(self.ownerZFUIImage == zfnull) {
         self.image = nil;
     }
-    else if(self.ownerZFUIImage->imageNinePatch() == ZFUIMarginZero())
-    {
+    else if(self.ownerZFUIImage->imageNinePatch() == ZFUIMarginZero()) {
         UIImage *nativeImage = (__bridge UIImage *)self.ownerZFUIImage->nativeImage();
         self.image = [UIImage imageWithCGImage:nativeImage.CGImage scale:nativeImage.scale orientation:UIImageOrientationUp];
     }
-    else
-    {
+    else {
         UIImage *nativeImage = (__bridge UIImage *)self.ownerZFUIImage->nativeImage();
         UIImage *tmpImage = [UIImage imageWithCGImage:nativeImage.CGImage scale:nativeImage.scale orientation:UIImageOrientationUp];
         UIEdgeInsets ninePatch = UIEdgeInsetsMake(
@@ -39,26 +34,20 @@
             self.ownerZFUIImage->imageNinePatch().left,
             self.ownerZFUIImage->imageNinePatch().bottom,
             self.ownerZFUIImage->imageNinePatch().right);
-        if(ninePatch.left + ninePatch.right >= tmpImage.size.width)
-        {
-            if(ninePatch.left + ninePatch.right == tmpImage.size.width)
-            {
+        if(ninePatch.left + ninePatch.right >= tmpImage.size.width) {
+            if(ninePatch.left + ninePatch.right == tmpImage.size.width) {
                 --(ninePatch.right);
             }
-            else
-            {
+            else {
                 ninePatch.left = 0;
                 ninePatch.right = 0;
             }
         }
-        if(ninePatch.top + ninePatch.bottom >= tmpImage.size.height)
-        {
-            if(ninePatch.top + ninePatch.bottom == tmpImage.size.height)
-            {
+        if(ninePatch.top + ninePatch.bottom >= tmpImage.size.height) {
+            if(ninePatch.top + ninePatch.bottom == tmpImage.size.height) {
                 --(ninePatch.bottom);
             }
-            else
-            {
+            else {
                 ninePatch.left = 0;
                 ninePatch.right = 0;
             }
@@ -77,29 +66,33 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_iOS, ZFUIImageView, ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView,
-                                        ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeImageViewCreate(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         return (__bridge_retained void *)[_ZFP_ZFUIImageViewImpl_sys_iOS_ImageView new];
     }
-    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView,
-                                        ZF_IN void *nativeImageView)
-    {
+    virtual void nativeImageViewDestroy(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN void *nativeImageView
+            ) {
         UIView *tmp = (__bridge_transfer UIView *)nativeImageView;
         tmp = nil;
     }
 
-    virtual void image(ZF_IN ZFUIImageView *imageView,
-                       ZF_IN ZFUIImage *image)
-    {
+    virtual void image(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN ZFUIImage *image
+            ) {
         _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *nativeImplView = (__bridge _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *)imageView->nativeImplView();
         nativeImplView.ownerZFUIImage = image;
         [nativeImplView updateImageWithNinePatch];
     }
-    virtual void imageNinePatchChanged(ZF_IN ZFUIImageView *imageView,
-                                       ZF_IN zffloat imageScale,
-                                       ZF_IN const ZFUIMargin &imageNinePatch)
-    {
+    virtual void imageNinePatchChanged(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN zffloat imageScale
+            , ZF_IN const ZFUIMargin &imageNinePatch
+            ) {
         _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *nativeImplView = (__bridge _ZFP_ZFUIImageViewImpl_sys_iOS_ImageView *)imageView->nativeImplView();
         [nativeImplView updateImageWithNinePatch];
     }

@@ -2,34 +2,28 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFCallback_test_Class : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_ZFCallback_test_Class : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFCallback_test_Class, ZFObject)
 
-    ZFMETHOD_INLINE_0(void, classMember)
-    {
+    ZFMETHOD_INLINE_0(void, classMember) {
         zfLog();
     }
 
-    ZFMETHOD_INLINE_STATIC_0(void, classStaticMember)
-    {
+    ZFMETHOD_INLINE_STATIC_0(void, classStaticMember) {
         zfLog();
     }
 };
 
-static void _ZFP_ZFCore_ZFCallback_test_StaticFunction(void)
-{
+static void _ZFP_ZFCore_ZFCallback_test_StaticFunction(void) {
     zfLog();
 }
 
-zfclass ZFCore_ZFCallback_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFCallback_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFCallback_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         this->testCaseOutput("try execute %s", this->callbackClassMember.objectInfo().cString());
@@ -64,8 +58,7 @@ private:
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->ownerClass = zfAlloc(_ZFP_ZFCore_ZFCallback_test_Class);
 
@@ -79,8 +72,7 @@ protected:
         this->callbackFunction = ZFCallbackForFunc(_ZFP_ZFCore_ZFCallback_test_StaticFunction);
     }
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         zfRelease(this->ownerClass);
         this->ownerClass = zfnull;
         zfsuper::objectOnDealloc();

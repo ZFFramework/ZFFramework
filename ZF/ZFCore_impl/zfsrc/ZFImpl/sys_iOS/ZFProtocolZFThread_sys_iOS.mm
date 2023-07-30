@@ -16,19 +16,16 @@
 - (void)threadCallback:(id)dummy;
 @end
 @implementation _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner
-- (void)threadCallback:(id)dummy
-{
+- (void)threadCallback:(id)dummy {
     @autoreleasepool {
-        if(!self.cancelFlag)
-        {
+        if(!self.cancelFlag) {
             self.runnable.execute(ZFArgs()
                     .userData(self.runnable.userData())
                 );
         }
     }
 
-    if(self.runnableCleanup)
-    {
+    if(self.runnableCleanup) {
         self.runnableCleanup.execute(ZFArgs()
                 .userData(self.runnableCleanup.userData())
             );
@@ -44,18 +41,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 typedef void * _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType;
 typedef zfstlmap<_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType;
 
-static _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType _ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId(void)
-{
+static _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType _ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId(void) {
     return (__bridge void *)[NSThread currentThread];
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_iOS_DataHolder, ZFLevelZFFrameworkEssential)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_iOS_DataHolder, ZFLevelZFFrameworkEssential) {
     mainThread = zfAlloc(ZFThreadMainThread);
     threadMap[_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId()] = mainThread;
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_iOS_DataHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_iOS_DataHolder) {
     zfRelease(mainThread);
     mainThread = zfnull;
 }
@@ -71,17 +65,14 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_iOS, ZFThread, ZFProtocolLevel:
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:NSThread")
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         zfsuper::protocolOnDealloc();
     }
-    virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread)
-    {
+    virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId();
@@ -90,47 +81,39 @@ public:
         _ZFP_ZFThreadImpl_sys_iOS_threadMap[*token] = ownerZFThread;
         return ZFCastStatic(void *, token);
     }
-    virtual void nativeThreadUnregister(ZF_IN void *token)
-    {
+    virtual void nativeThreadUnregister(ZF_IN void *token) {
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_threadMap.erase(_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId());
         zfdelete(ZFCastStatic(_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *, token));
     }
-    virtual ZFThread *threadForToken(ZF_IN void *token)
-    {
+    virtual ZFThread *threadForToken(ZF_IN void *token) {
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_sys_iOS_threadMap.find(
             *ZFCastStatic(_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *, token));
-        if(it != _ZFP_ZFThreadImpl_sys_iOS_threadMap.end())
-        {
+        if(it != _ZFP_ZFThreadImpl_sys_iOS_threadMap.end()) {
             return it->second;
         }
         return zfnull;
     }
-    virtual ZFThread *mainThread(void)
-    {
+    virtual ZFThread *mainThread(void) {
         zfCoreMutexLocker();
         return _ZFP_ZFThreadImpl_sys_iOS_mainThreadInstance;
     }
-    virtual ZFThread *currentThread(void)
-    {
+    virtual ZFThread *currentThread(void) {
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_iOS_ThreadMapType::const_iterator it =
             _ZFP_ZFThreadImpl_sys_iOS_threadMap.find(_ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId());
-        if(it == _ZFP_ZFThreadImpl_sys_iOS_threadMap.end())
-        {
+        if(it == _ZFP_ZFThreadImpl_sys_iOS_threadMap.end()) {
             return zfnull;
         }
         return it->second;
     }
 
-    virtual void sleep(ZF_IN zftimet miliSecs)
-    {
+    virtual void sleep(ZF_IN zftimet miliSecs) {
         [NSThread sleepForTimeInterval:((double)miliSecs / 1000)];
     }
 
-    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable)
-    {
+    virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = [_ZFP_ZFThreadImpl_sys_iOS_ThreadOwner new];
         threadOwner._selfHolder = threadOwner;
         threadOwner.runnable = runnable;
@@ -143,16 +126,16 @@ public:
 #endif
         return (__bridge_retained void *)threadOwner;
     }
-    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken)
-    {
+    virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = (__bridge_transfer _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *)nativeToken;
         threadOwner.cancelFlag = YES;
         threadOwner = nil;
     }
 
-    virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
-                                     ZF_IN const ZFListener &runnableCleanup)
-    {
+    virtual void *executeInNewThread(
+            ZF_IN const ZFListener &runnable
+            , ZF_IN const ZFListener &runnableCleanup
+            ) {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = [_ZFP_ZFThreadImpl_sys_iOS_ThreadOwner new];
         threadOwner._selfHolder = threadOwner;
         threadOwner.runnable = runnable;
@@ -164,8 +147,7 @@ public:
 
         return (__bridge_retained void *)threadOwner;
     }
-    virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken)
-    {
+    virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken) {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = (__bridge_transfer _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *)nativeToken;
         threadOwner.cancelFlag = YES;
         threadOwner = nil;

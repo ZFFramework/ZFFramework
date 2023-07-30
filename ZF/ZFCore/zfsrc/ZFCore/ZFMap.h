@@ -14,8 +14,7 @@ zfclassFwd _ZFP_ZFMapPrivate;
 /**
  * @brief container of ZFObject, see #ZFKeyValueContainer
  */
-zfclass ZFLIB_ZFCore ZFMap: zfextends ZFKeyValueContainer
-{
+zfclass ZFLIB_ZFCore ZFMap: zfextends ZFKeyValueContainer {
     ZFOBJECT_DECLARE(ZFMap, ZFKeyValueContainer)
 
 public:
@@ -32,28 +31,32 @@ public:
     /**
      * @brief return true if contain pKey
      */
-    ZFMETHOD_DECLARE_1(zfbool, isContain,
-                       ZFMP_IN(ZFObject *, pKey))
+    ZFMETHOD_DECLARE_1(zfbool, isContain
+            , ZFMP_IN(ZFObject *, pKey)
+            )
 
     /**
      * @brief get element by key or null if no such key
      */
-    ZFMETHOD_DECLARE_1(ZFObject *, get,
-                       ZFMP_IN(ZFObject *, pKey))
+    ZFMETHOD_DECLARE_1(ZFObject *, get
+            , ZFMP_IN(ZFObject *, pKey)
+            )
 
     /**
      * @brief get a copy of all key
      */
-    ZFMETHOD_DECLARE_1(void, allKeyT,
-                       ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret))
+    ZFMETHOD_DECLARE_1(void, allKeyT
+            , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
+            )
     /** @brief see #allKey */
     ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFObject *>, allKey)
 
     /**
      * @brief get a copy of all value
      */
-    ZFMETHOD_DECLARE_1(void, allValueT,
-                       ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret))
+    ZFMETHOD_DECLARE_1(void, allValueT
+            , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
+            )
     /** @brief see #allValue */
     ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFObject *>, allValue)
 
@@ -63,25 +66,21 @@ public:
      *   no type safe check and type must be valid
      */
     template<typename T_ZFObject>
-    T_ZFObject get(ZF_IN ZFObject *pKey)
-    {
+    T_ZFObject get(ZF_IN ZFObject *pKey) {
         return ZFCastZFObjectUnchecked(T_ZFObject, this->get(pKey));
     }
 
     /** @brief see #allKey */
     template<typename T_ZFObject>
-    void allKeyT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret)
-    {
+    void allKeyT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
         ret.capacity(ret.count() + this->count());
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
-        {
+        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
             ret.add(this->iterKey(it)->to<T_ZFObject *>());
         }
     }
     /** @brief see #allKey */
     template<typename T_ZFObject>
-    ZFCoreArrayPOD<T_ZFObject> allKey(void)
-    {
+    ZFCoreArrayPOD<T_ZFObject> allKey(void) {
         ZFCoreArrayPOD<T_ZFObject> ret;
         this->allKeyT(ret);
         return ret;
@@ -89,18 +88,15 @@ public:
 
     /** @brief see #allValue */
     template<typename T_ZFObject>
-    void allValueT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret)
-    {
+    void allValueT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
         ret.capacity(ret.count() + this->count());
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
-        {
+        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
             ret.add(this->iterValue(it)->to<T_ZFObject *>());
         }
     }
     /** @brief see #allValue */
     template<typename T_ZFObject>
-    ZFCoreArrayPOD<T_ZFObject> allValue(void)
-    {
+    ZFCoreArrayPOD<T_ZFObject> allValue(void) {
         ZFCoreArrayPOD<T_ZFObject> ret;
         this->allValueT(ret);
         return ret;
@@ -110,8 +106,9 @@ public:
     /**
      * @brief add data from another container
      */
-    ZFMETHOD_DECLARE_1(void, addFrom,
-                       ZFMP_IN(ZFKeyValueContainer *, another))
+    ZFMETHOD_DECLARE_1(void, addFrom
+            , ZFMP_IN(ZFKeyValueContainer *, another)
+            )
 
     /**
      * @brief set a key value pair
@@ -121,23 +118,26 @@ public:
      * null key is not allowed,
      * use null value to remove the pair
      */
-    ZFMETHOD_DECLARE_2(void, set,
-                       ZFMP_IN(ZFObject *, pKey),
-                       ZFMP_IN(ZFObject *, pValue))
+    ZFMETHOD_DECLARE_2(void, set
+            , ZFMP_IN(ZFObject *, pKey)
+            , ZFMP_IN(ZFObject *, pValue)
+            )
 
     /**
      * @brief remove value associated with pKey
      */
-    ZFMETHOD_DECLARE_1(void, remove,
-                       ZFMP_IN(ZFObject *, pKey))
+    ZFMETHOD_DECLARE_1(void, remove
+            , ZFMP_IN(ZFObject *, pKey)
+            )
     /**
      * @brief remove and return removed value or null if not exist
      *
      * use this method for performance, instead of "get then remove",
      * since the latter one have two search step
      */
-    ZFMETHOD_DECLARE_1(zfautoObject, removeAndGet,
-                       ZFMP_IN(ZFObject *, pKey))
+    ZFMETHOD_DECLARE_1(zfautoObject, removeAndGet
+            , ZFMP_IN(ZFObject *, pKey)
+            )
     /**
      * @brief remove all content
      */
@@ -148,8 +148,7 @@ public:
      * @brief util method to get and cast to desired type
      */
     template<typename T_ZFObject>
-    T_ZFObject removeAndGet(ZF_IN ZFObject *pKey)
-    {
+    T_ZFObject removeAndGet(ZF_IN ZFObject *pKey) {
         return ZFCastZFObjectUnchecked(T_ZFObject, this->removeAndGet(pKey));
     }
 
@@ -160,38 +159,46 @@ public:
     ZFMETHOD_DECLARE_0(zfiterator, iter)
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(zfiterator, iterFind,
-                       ZFMP_IN(ZFObject *, key))
+    ZFMETHOD_DECLARE_1(zfiterator, iterFind
+            , ZFMP_IN(ZFObject *, key)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(zfbool, iterValid,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfbool, iterValid
+            , ZFMP_IN(const zfiterator &, it)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(void, iterNext,
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_1(void, iterNext
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFObject *, iterKey,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(ZFObject *, iterKey
+            , ZFMP_IN(const zfiterator &, it)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFObject *, iterValue,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(ZFObject *, iterValue
+            , ZFMP_IN(const zfiterator &, it)
+            )
 
 public:
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_2(void, iterValue,
-                       ZFMP_IN_OUT(zfiterator &, it),
-                       ZFMP_IN(ZFObject *, value))
+    ZFMETHOD_DECLARE_2(void, iterValue
+            , ZFMP_IN_OUT(zfiterator &, it)
+            , ZFMP_IN(ZFObject *, value)
+            )
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(void, iterRemove,
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_1(void, iterRemove
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_2(void, iterAdd,
-                       ZFMP_IN(ZFObject *, key),
-                       ZFMP_IN(ZFObject *, value))
+    ZFMETHOD_DECLARE_2(void, iterAdd
+            , ZFMP_IN(ZFObject *, key)
+            , ZFMP_IN(ZFObject *, value)
+            )
 
 protected:
     /**

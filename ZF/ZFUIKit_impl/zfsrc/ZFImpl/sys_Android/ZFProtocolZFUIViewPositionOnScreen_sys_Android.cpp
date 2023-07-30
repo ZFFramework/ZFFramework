@@ -17,8 +17,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewPositionOnScreenImpl_sys_Android, ZFUIVi
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -28,16 +27,16 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 public:
-    virtual void viewPositionOnScreen(ZF_IN ZFUIView *view,
-                                      ZF_OUT ZFUIRect &rect)
-    {
+    virtual void viewPositionOnScreen(
+            ZF_IN ZFUIView *view
+            , ZF_OUT ZFUIRect &rect
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewPositionOnScreen",
             JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()

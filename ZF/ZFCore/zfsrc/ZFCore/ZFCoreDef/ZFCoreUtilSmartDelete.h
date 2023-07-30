@@ -13,21 +13,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // zflineFree
 template<typename T_POD>
-zfclassLikePOD _ZFP_zflineFreeContainer
-{
+zfclassLikePOD _ZFP_zflineFreeContainer {
 public:
     _ZFP_zflineFreeContainer(ZF_IN const _ZFP_zflineFreeContainer &ref) : p(ref.p) {}
     _ZFP_zflineFreeContainer(ZF_IN T_POD *p) : p(p) {}
-    ~_ZFP_zflineFreeContainer(void)
-    {
+    ~_ZFP_zflineFreeContainer(void) {
         zffree(p);
     }
 public:
     T_POD *p;
 };
 template<typename T_POD>
-_ZFP_zflineFreeContainer<T_POD> _ZFP_zflineFreeWrapper(ZF_IN T_POD *p)
-{
+_ZFP_zflineFreeContainer<T_POD> _ZFP_zflineFreeWrapper(ZF_IN T_POD *p) {
     return _ZFP_zflineFreeContainer<T_POD>(p);
 }
 /**
@@ -42,12 +39,10 @@ _ZFP_zflineFreeContainer<T_POD> _ZFP_zflineFreeWrapper(ZF_IN T_POD *p)
 
 // ============================================================
 // zfblockedFree
-zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedFreeContainer
-{
+zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedFreeContainer {
 public:
     _ZFP_zfblockedFreeContainer(ZF_IN void *p) : p(p) {}
-    ~_ZFP_zfblockedFreeContainer(void)
-    {
+    ~_ZFP_zfblockedFreeContainer(void) {
         zffree(this->p);
     }
 private:
@@ -71,21 +66,18 @@ private:
 // ============================================================
 // zflineDelete
 template<typename T_Object>
-zfclassLikePOD _ZFP_zflineDeleteContainer
-{
+zfclassLikePOD _ZFP_zflineDeleteContainer {
 public:
     _ZFP_zflineDeleteContainer(ZF_IN const _ZFP_zflineDeleteContainer &ref) : p(ref.p) {}
     _ZFP_zflineDeleteContainer(ZF_IN T_Object *p) : p(p) {}
-    ~_ZFP_zflineDeleteContainer(void)
-    {
+    ~_ZFP_zflineDeleteContainer(void) {
         zfdelete(p);
     }
 public:
     T_Object *p;
 };
 template<typename T_Object>
-_ZFP_zflineDeleteContainer<T_Object> _ZFP_zflineDeleteWrapper(ZF_IN T_Object *p)
-{
+_ZFP_zflineDeleteContainer<T_Object> _ZFP_zflineDeleteWrapper(ZF_IN T_Object *p) {
     return _ZFP_zflineDeleteContainer<T_Object>(p);
 }
 /**
@@ -97,18 +89,14 @@ _ZFP_zflineDeleteContainer<T_Object> _ZFP_zflineDeleteWrapper(ZF_IN T_Object *p)
 // zfblockedDelete
 typedef void (*_ZFP_zfblockedDeleteCallback)(ZF_IN void *p);
 template<typename T_Object>
-void _ZFP_zfblockedDeleteOnDelete(ZF_IN void *p)
-{
+void _ZFP_zfblockedDeleteOnDelete(ZF_IN void *p) {
     zfdelete(ZFCastStatic(T_Object *, p));
 }
-zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedDeleteContainer
-{
+zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedDeleteContainer {
 public:
     _ZFP_zfblockedDeleteContainer(void) : p(zfnull), deleteCallback(zfnull) {}
-    ~_ZFP_zfblockedDeleteContainer(void)
-    {
-        if(this->p != zfnull)
-        {
+    ~_ZFP_zfblockedDeleteContainer(void) {
+        if(this->p != zfnull) {
             this->deleteCallback(this->p);
         }
     }
@@ -117,9 +105,10 @@ public:
     _ZFP_zfblockedDeleteCallback deleteCallback;
 };
 template<typename T_Object>
-void _ZFP_zfblockedDeleteSetup(ZF_IN _ZFP_zfblockedDeleteContainer *container,
-                               ZF_IN T_Object * const &p)
-{
+void _ZFP_zfblockedDeleteSetup(
+        ZF_IN _ZFP_zfblockedDeleteContainer *container
+        , ZF_IN T_Object * const &p
+        ) {
     container->p = ZFCastStatic(void *, p);
     container->deleteCallback = _ZFP_zfblockedDeleteOnDelete<T_Object>;
 }

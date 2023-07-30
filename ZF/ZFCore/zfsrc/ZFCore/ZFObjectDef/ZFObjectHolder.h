@@ -22,8 +22,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * use only if necessary\n
  * typically, you should use #ZFObject::objectHolder for most case
  */
-zffinal zfclass ZFLIB_ZFCore ZFObjectHolder : zfextends ZFObject
-{
+zffinal zfclass ZFLIB_ZFCore ZFObjectHolder : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFObjectHolder, ZFObject)
 
     ZFALLOC_CACHE_RELEASE({
@@ -34,16 +33,14 @@ public:
     /**
      * @brief set the holded object
      */
-    inline void objectHolded(ZF_IN ZFObject *obj)
-    {
+    inline void objectHolded(ZF_IN ZFObject *obj) {
         this->_ZFP_objectHolded = obj;
     }
     /**
      * @brief set the holded object
      */
     template<typename T_ZFObject>
-    inline void objectHolded(ZF_IN T_ZFObject obj)
-    {
+    inline void objectHolded(ZF_IN T_ZFObject obj) {
         this->_ZFP_objectHolded = obj;
     }
 
@@ -51,29 +48,25 @@ public:
     /**
      * @brief get the holded object
      */
-    inline ZFAny objectHolded(void)
-    {
+    inline ZFAny objectHolded(void) {
         return ZFAny(this->_ZFP_objectHolded);
     }
 
 protected:
     /** @brief see #ZFObject::objectOnInit */
-    virtual void objectOnInit(ZF_IN ZFObject *obj)
-    {
+    virtual void objectOnInit(ZF_IN ZFObject *obj) {
         this->objectOnInit();
         this->_ZFP_objectHolded = obj;
     }
     /** @brief see #ZFObject::objectOnInit */
     template<typename T_ZFObject>
-    void objectOnInit(ZF_IN T_ZFObject const &obj)
-    {
+    void objectOnInit(ZF_IN T_ZFObject const &obj) {
         this->objectOnInit();
         this->_ZFP_objectHolded = obj;
     }
 
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
 
@@ -88,13 +81,11 @@ public:
 
 public:
     zfoverride
-    virtual zfbool objectIsInternal(void)
-    {
+    virtual zfbool objectIsInternal(void) {
         return zftrue;
     }
     zfoverride
-    virtual zfbool objectIsInternalPrivate(void)
-    {
+    virtual zfbool objectIsInternalPrivate(void) {
         return zftrue;
     }
 

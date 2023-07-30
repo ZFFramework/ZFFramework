@@ -11,8 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFLIB_ZFCore _ZFP_I_PropURDIVH : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore _ZFP_I_PropURDIVH : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropURDIVH, ZFObject)
 public:
     typedef void (*DeleteCallback)(ZF_IN void *v);
@@ -20,15 +19,15 @@ public:
     DeleteCallback deleteCallback;
     zfautoObject retainValueHolder;
 public:
-    static zfautoObject create(ZF_IN void *v,
-                               ZF_IN DeleteCallback deleteCallback,
-                               ZF_IN_OPT ZFObject *retainValue = zfnull);
+    static zfautoObject create(
+            ZF_IN void *v
+            , ZF_IN DeleteCallback deleteCallback
+            , ZF_IN_OPT ZFObject *retainValue = zfnull
+            );
 protected:
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
-        if(this->v)
-        {
+    virtual void objectOnDealloc(void) {
+        if(this->v) {
             this->deleteCallback(this->v);
         }
         zfsuper::objectOnDealloc();
@@ -36,26 +35,29 @@ protected:
 };
 
 /** @brief see #ZFPropertyUserRegisterRetain */
-extern ZFLIB_ZFCore void ZFPropertyUserRegisterNotifyUpdate(ZF_IN ZFObject *ownerObject,
-                                                            ZF_IN const ZFProperty *property,
-                                                            ZF_IN const void *propertyValueOld);
+extern ZFLIB_ZFCore void ZFPropertyUserRegisterNotifyUpdate(
+        ZF_IN ZFObject *ownerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN const void *propertyValueOld
+        );
 
 // ============================================================
 /** @brief default impl for #ZFPropertyUserRegisterRetain */
 template<typename T_Type>
-zfclassNotPOD ZFPropertyUserRegisterDefaultImplRetain
-{
+zfclassNotPOD ZFPropertyUserRegisterDefaultImplRetain {
 private:
-    static void _deleteCallback(ZF_IN void *p)
-    {
+    static void _deleteCallback(ZF_IN void *p) {
         T_Type *t = (T_Type *)p;
         zfRelease(*t);
         zfdelete(t);
     }
 public:
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
-    static void setterInvoker(ZF_IN const ZFMethod *method, ZF_IN ZFObject *ownerObj, ZF_IN T_Type const &v)
-    {
+    static void setterInvoker(
+            ZF_IN const ZFMethod *method
+            , ZF_IN ZFObject *ownerObj
+            , ZF_IN T_Type const &v
+            ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIRetain_";
         key += method->methodName();
@@ -63,8 +65,7 @@ public:
             key.cString() + zfslen("_ZFP_PropURDIRetain_"));
 
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
-        if(holder == zfnull)
-        {
+        if(holder == zfnull) {
             holder = _ZFP_valueHolderAccess(property, ownerObj);
         }
         zfautoObject oldValue = holder->retainValueHolder;
@@ -79,72 +80,75 @@ public:
         ZFPropertyUserRegisterNotifyUpdate(ownerObj, property, &oldValue);
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
-    static T_Type const &getterInvoker(ZF_IN const ZFMethod *method, ZF_IN ZFObject *ownerObj)
-    {
+    static T_Type const &getterInvoker(
+            ZF_IN const ZFMethod *method
+            , ZF_IN ZFObject *ownerObj
+            ) {
         _ZFP_I_PropURDIVH *holder = _ZFP_valueHolderAccess(
             method->methodOwnerClass()->propertyForName(method->methodName()),
             ownerObj);
         return *(T_Type *)holder->v;
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
-    static zfbool callbackIsValueAccessed(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj)
-    {
+    static zfbool callbackIsValueAccessed(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         return (ownerObj->objectTag(
                 zfsConnectLineFree("_ZFP_PropURDIRetain_", property->propertyName())
             ) != zfnull);
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
-    static zfbool callbackIsInitValue(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj, ZF_OUT_OPT zfautoObject *outInitValue)
-    {
+    static zfbool callbackIsInitValue(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            , ZF_OUT_OPT zfautoObject *outInitValue
+            ) {
         zfCoreMutexLocker();
-        if(!callbackIsValueAccessed(property, ownerObj))
-        {
+        if(!callbackIsValueAccessed(property, ownerObj)) {
             return zftrue;
         }
         zfautoObject tmp;
-        if(property->callbackUserRegisterInitValueSetup)
-        {
+        if(property->callbackUserRegisterInitValueSetup) {
             property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
         }
-        if(outInitValue != zfnull)
-        {
+        if(outInitValue != zfnull) {
             *outInitValue = tmp;
         }
         T_Type cur = getterInvoker(property->getterMethod(), ownerObj);
         T_Type initValueTmp = tmp.to<T_Type>();
-        if(cur == initValueTmp)
-        {
+        if(cur == initValueTmp) {
             return zftrue;
         }
-        else if(cur == zfnull || initValueTmp == zfnull)
-        {
+        else if(cur == zfnull || initValueTmp == zfnull) {
             return zffalse;
         }
-        else
-        {
+        else {
             return (cur->toObject()->objectCompare(initValueTmp->toObject()) == ZFCompareTheSame);
         }
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
-    static void callbackValueReset(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj)
-    {
+    static void callbackValueReset(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         ownerObj->objectTagRemove(key);
     }
 private:
-    static _ZFP_I_PropURDIVH *_ZFP_valueHolderAccess(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj)
-    {
+    static _ZFP_I_PropURDIVH *_ZFP_valueHolderAccess(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
-        if(holder == zfnull)
-        {
+        if(holder == zfnull) {
             zfautoObject tmp;
-            if(property->callbackUserRegisterInitValueSetup)
-            {
+            if(property->callbackUserRegisterInitValueSetup) {
                 property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
             }
 
@@ -164,18 +168,19 @@ private:
 // ============================================================
 /** @brief default impl for #ZFPropertyUserRegisterAssign */
 template<typename T_Type>
-zfclassNotPOD ZFPropertyUserRegisterDefaultImplAssign
-{
+zfclassNotPOD ZFPropertyUserRegisterDefaultImplAssign {
 private:
-    static void _deleteCallback(ZF_IN void *p)
-    {
+    static void _deleteCallback(ZF_IN void *p) {
         T_Type *t = (T_Type *)p;
         zfdelete(t);
     }
 public:
     /** @brief default impl for #ZFPropertyUserRegisterAssign */
-    static void setterInvoker(ZF_IN const ZFMethod *method, ZF_IN ZFObject *ownerObj, ZF_IN T_Type const &v)
-    {
+    static void setterInvoker(
+            ZF_IN const ZFMethod *method
+            , ZF_IN ZFObject *ownerObj
+            , ZF_IN T_Type const &v
+            ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += method->methodName();
@@ -183,8 +188,7 @@ public:
             key.cString() + zfslen("_ZFP_PropURDIRetain_"));
 
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
-        if(holder == zfnull)
-        {
+        if(holder == zfnull) {
             holder = _ZFP_valueHolderAccess(property, ownerObj);
         }
         T_Type oldValue = *(T_Type *)holder->v;
@@ -198,59 +202,65 @@ public:
         ZFPropertyUserRegisterNotifyUpdate(ownerObj, property, &oldValue);
     }
     /** @brief default impl for #ZFPropertyUserRegisterAssign */
-    static T_Type const &getterInvoker(ZF_IN const ZFMethod *method, ZF_IN ZFObject *ownerObj)
-    {
+    static T_Type const &getterInvoker(
+            ZF_IN const ZFMethod *method
+            , ZF_IN ZFObject *ownerObj
+            ) {
         _ZFP_I_PropURDIVH *holder = _ZFP_valueHolderAccess(
             method->methodOwnerClass()->propertyForName(method->methodName()),
             ownerObj);
         return *(T_Type *)holder->v;
     }
     /** @brief default impl for #ZFPropertyUserRegisterAssign */
-    static zfbool callbackIsValueAccessed(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj)
-    {
+    static zfbool callbackIsValueAccessed(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         return (ownerObj->objectTag(
                 zfsConnectLineFree("_ZFP_PropURDIAssign_", property->propertyName())
             ) != zfnull);
     }
     /** @brief default impl for #ZFPropertyUserRegisterAssign */
-    static zfbool callbackIsInitValue(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj, ZF_OUT_OPT zfautoObject *outInitValue)
-    {
+    static zfbool callbackIsInitValue(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            , ZF_OUT_OPT zfautoObject *outInitValue
+            ) {
         zfCoreMutexLocker();
-        if(!callbackIsValueAccessed(property, ownerObj))
-        {
+        if(!callbackIsValueAccessed(property, ownerObj)) {
             return zftrue;
         }
         T_Type tmp = T_Type();
-        if(property->callbackUserRegisterInitValueSetup)
-        {
+        if(property->callbackUserRegisterInitValueSetup) {
             property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
         }
-        if(outInitValue != zfnull)
-        {
+        if(outInitValue != zfnull) {
             ZFTypeId<T_Type>::ValueStore(*outInitValue, tmp);
         }
         return (getterInvoker(property->getterMethod(), ownerObj) == tmp);
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
-    static void callbackValueReset(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj)
-    {
+    static void callbackValueReset(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         ownerObj->objectTagRemove(key);
     }
 private:
-    static _ZFP_I_PropURDIVH *_ZFP_valueHolderAccess(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj)
-    {
+    static _ZFP_I_PropURDIVH *_ZFP_valueHolderAccess(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
-        if(holder == zfnull)
-        {
+        if(holder == zfnull) {
             T_Type tmp = T_Type();
-            if(property->callbackUserRegisterInitValueSetup)
-            {
+            if(property->callbackUserRegisterInitValueSetup) {
                 property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
             }
 
@@ -268,11 +278,12 @@ private:
 
 // ============================================================
 #define _ZFP_ZFPropertyUserRegister_PropInit_Retain(registerSig, Type, InitValueOrEmpty) \
-    zfclassNotPOD _ZFP_PropURInit_##registerSig \
-    { \
+    zfclassNotPOD _ZFP_PropURInit_##registerSig { \
     public: \
-        static void propertyInit(ZF_IN const ZFProperty *property, ZF_IN_OUT void *p) \
-        { \
+        static void propertyInit( \
+                ZF_IN const ZFProperty *property \
+                , ZF_IN_OUT void *p \
+                ) { \
             typedef Type T_Type; \
             T_Type *valueTmp = zfnull; \
             zfunsafe_zfRetain(*(valueTmp = zfpoolNew(T_Type, InitValueOrEmpty))); \
@@ -281,11 +292,12 @@ private:
         } \
     };
 #define _ZFP_ZFPropertyUserRegister_PropInit_Assign(registerSig, Type, InitValueOrEmpty) \
-    zfclassNotPOD _ZFP_PropURInit_##registerSig \
-    { \
+    zfclassNotPOD _ZFP_PropURInit_##registerSig { \
     public: \
-        static void propertyInit(ZF_IN const ZFProperty *property, ZF_IN_OUT void *p) \
-        { \
+        static void propertyInit( \
+                ZF_IN const ZFProperty *property \
+                , ZF_IN_OUT void *p \
+                ) { \
             typedef Type T_Type; \
             T_Type *valueTmp = zfpoolNew(T_Type, InitValueOrEmpty); \
             *(T_Type *)p = *valueTmp; \
@@ -412,11 +424,9 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
         , Func_ZFPropertyCallbackIsInitValue \
         , Func_ZFPropertyCallbackValueReset \
     ) \
-    zfclassNotPOD _ZFP_PropURMH_##ownerClassSig##_##propertyNameSig \
-    { \
+    zfclassNotPOD _ZFP_PropURMH_##ownerClassSig##_##propertyNameSig { \
     public: \
-        static const ZFMethod *S(void) \
-        { \
+        static const ZFMethod *S(void) { \
             ZFMethodUserRegisterDetail_1(setterMethod, { \
                     Func_ZFPropertySetterInvoker(invokerMethod, invokerObject, value); \
                 }, ownerClassSig::ClassData(), SetterAccessType, ZFMethodTypeVirtual, \
@@ -424,8 +434,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
                 ZFMP_IN(Type const &, value)); \
             return setterMethod; \
         } \
-        static const ZFMethod *G(void) \
-        { \
+        static const ZFMethod *G(void) { \
             ZFMethodUserRegisterDetail_0(getterMethod, { \
                     return Func_ZFPropertyGetterInvoker(invokerMethod, invokerObject); \
                 }, ownerClassSig::ClassData(), GetterAccessType, ZFMethodTypeVirtual, \
@@ -454,15 +463,41 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  * example:
  * @code
  *   // declare each callback for ZFProperty
- *   static void myCallbackSetterInvoker(ZF_IN const ZFProperty *, ZF_IN ZFObject *ownerObj, ZF_IN MyPropType const &v) {...}
- *   static MyPropType const &myCallbackGetterInvoker(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj) {...}
- *   static zfbool myCallbackIsValueAccessed(ZF_IN const ZFProperty *, ZF_IN ZFObject *ownerObj) {...}
- *   static zfbool myCallbackIsInitValue(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj, ZF_OUT_OPT zfautoObject *outInitValue) {...}
- *   static void myCallbackValueReset(ZF_IN const ZFProperty *property, ZF_IN ZFObject *ownerObj) {...}
+ *   static void myCallbackSetterInvoker(
+ *           ZF_IN const ZFProperty *
+ *           , ZF_IN ZFObject *ownerObj
+ *           , ZF_IN MyPropType const &v
+ *           ) {
+ *       ...
+ *   }
+ *   static MyPropType const &myCallbackGetterInvoker(
+ *           ZF_IN const ZFProperty *property
+ *           , ZF_IN ZFObject *ownerObj
+ *           ) {
+ *       ...
+ *   }
+ *   static zfbool myCallbackIsValueAccessed(
+ *           ZF_IN const ZFProperty *
+ *           , ZF_IN ZFObject *ownerObj
+ *           ) {
+ *       ...
+ *   }
+ *   static zfbool myCallbackIsInitValue(
+ *           ZF_IN const ZFProperty *property
+ *           , ZF_IN ZFObject *ownerObj
+ *           , ZF_OUT_OPT zfautoObject *outInitValue
+ *           ) {
+ *       ...
+ *   }
+ *   static void myCallbackValueReset(
+ *           ZF_IN const ZFProperty *property
+ *           , ZF_IN ZFObject *ownerObj
+ *           ) {
+ *       ...
+ *   }
  *
  *   // register it, using ZF_GLOBAL_INITIALIZER_INIT is recommended
- *   ZF_GLOBAL_INITIALIZER_INIT(MyPropertyRegister)
- *   {
+ *   ZF_GLOBAL_INITIALIZER_INIT(MyPropertyRegister) {
  *       ZFPropertyUserRegisterRetainDetail(resultProperty, MyClassToAttachTheProperty::ClassData(),
  *           Type, "propertyName", ZFPropertyNoInitValue,
  *           public, public
@@ -475,8 +510,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *       _property = resultProperty;
  *       zfLogTrim() << resultProperty;
  *   }
- *   ZF_GLOBAL_INITIALIZER_DESTROY(MyPropertyRegister)
- *   {
+ *   ZF_GLOBAL_INITIALIZER_DESTROY(MyPropertyRegister) {
  *       ZFPropertyUserUnregister(_property);
  *   }
  *   const ZFProperty *_property;

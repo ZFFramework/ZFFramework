@@ -13,8 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFTimerImpl_sys_Android, ZFTimer, ZFProtocolLeve
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFTimer).c_str());
@@ -22,15 +21,13 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
-    virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer)
-    {
+    virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTimerCreate",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -40,16 +37,16 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
     }
-    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer,
-                                    ZF_IN void *nativeTimer)
-    {
+    virtual void nativeTimerDestroy(
+            ZF_IN ZFTimer *timer
+            , ZF_IN void *nativeTimer
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject nativeTimerTmp = ZFCastStatic(jobject, nativeTimer);
         JNIUtilDeleteGlobalRef(jniEnv, nativeTimerTmp);
     }
 
-    virtual void timerStart(ZF_IN ZFTimer *timer)
-    {
+    virtual void timerStart(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_timerStart",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -64,8 +61,7 @@ public:
             (jlong)timer->timerDelay(),
             (jlong)timer->timerInterval());
     }
-    virtual void timerStop(ZF_IN ZFTimer *timer)
-    {
+    virtual void timerStop(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_timerStop",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -81,26 +77,26 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFTimerImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer,
-                         void, native_1notifyTimerStart,
-                         JNIPointer zfjniPointerToken)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer
+        , void, native_1notifyTimerStart
+        , JNIPointer zfjniPointerToken
+        ) {
     ZFTimer *timer = ZFCastZFObject(ZFTimer *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerToken));
     ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerStart(timer);
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer,
-                         void, native_1notifyTimerActivate,
-                         JNIPointer zfjniPointerToken)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer
+        , void, native_1notifyTimerActivate
+        , JNIPointer zfjniPointerToken
+        ) {
     ZFTimer *timer = ZFCastZFObject(ZFTimer *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerToken));
     ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerActivate(timer);
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer,
-                         void, native_1notifyTimerStop,
-                         JNIPointer zfjniPointerToken)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFTimer
+        , void, native_1notifyTimerStop
+        , JNIPointer zfjniPointerToken
+        ) {
     ZFTimer *timer = ZFCastZFObject(ZFTimer *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerToken));
     ZFPROTOCOL_ACCESS(ZFTimer)->notifyTimerStop(timer);
 }

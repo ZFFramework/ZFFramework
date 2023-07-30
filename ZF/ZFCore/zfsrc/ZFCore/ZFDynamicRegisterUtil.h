@@ -53,8 +53,7 @@ zfclassFwd _ZFP_ZFDynamicPrivate;
  * to make it more convenient for script language,
  * you may also use #regTag to make the registration looks like singleton registration
  */
-zfclassLikePOD ZFLIB_ZFCore ZFDynamic
-{
+zfclassLikePOD ZFLIB_ZFCore ZFDynamic {
 public:
     /** @brief main constructor */
     ZFDynamic(void);
@@ -86,9 +85,11 @@ public:
      * which has no semantic completion,
      * so that you can use keyword completion by using the tag file
      */
-    static void exportTag(ZF_IN_OUT const ZFOutput &output,
-                          ZF_IN_OPT zfbool exportScope = zffalse,
-                          ZF_IN_OPT zfbool exportInternal = zffalse);
+    static void exportTag(
+            ZF_IN_OUT const ZFOutput &output
+            , ZF_IN_OPT zfbool exportScope = zffalse
+            , ZF_IN_OPT zfbool exportInternal = zffalse
+            );
 
 public:
     /**
@@ -120,13 +121,17 @@ public:
 
 public:
     /** @brief see #ZFDynamic */
-    ZFDynamic &classBegin(ZF_IN const zfchar *classNameFull,
-                          ZF_IN_OPT const ZFClass *classParent = ZFObject::ClassData(),
-                          ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull);
+    ZFDynamic &classBegin(
+            ZF_IN const zfchar *classNameFull
+            , ZF_IN_OPT const ZFClass *classParent = ZFObject::ClassData()
+            , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
+            );
     /** @brief see #ZFDynamic */
-    ZFDynamic &classBegin(ZF_IN const zfchar *classNameFull,
-                          ZF_IN const zfchar *parentClassNameFull,
-                          ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull);
+    ZFDynamic &classBegin(
+            ZF_IN const zfchar *classNameFull
+            , ZF_IN const zfchar *parentClassNameFull
+            , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
+            );
     /** @brief see #ZFDynamic */
     ZFDynamic &classBegin(ZF_IN const ZFClass *cls);
     /** @brief see #ZFDynamic */
@@ -136,16 +141,16 @@ public:
     ZFDynamic &classCanAllocPublic(ZF_IN zfbool value);
 
     /** @brief see #ZFDynamic */
-    ZFDynamic &on(ZF_IN zfidentity eventId,
-                  ZF_IN const ZFListener &callback);
+    ZFDynamic &on(
+            ZF_IN zfidentity eventId
+            , ZF_IN const ZFListener &callback
+            );
     /** @brief see #ZFDynamic */
-    ZFDynamic &onInit(ZF_IN const ZFListener &callback)
-    {
+    ZFDynamic &onInit(ZF_IN const ZFListener &callback) {
         return this->on(ZFObject::EventObjectAfterAlloc(), callback);
     }
     /** @brief see #ZFDynamic */
-    ZFDynamic &onDealloc(ZF_IN const ZFListener &callback)
-    {
+    ZFDynamic &onDealloc(ZF_IN const ZFListener &callback) {
         return this->on(ZFObject::EventObjectBeforeDealloc(), callback);
     }
 
@@ -161,8 +166,10 @@ public:
     /** @brief see #ZFDynamic */
     ZFDynamic &enumBeginFlags(ZF_IN const zfchar *enumClassName);
     /** @brief see #ZFDynamic */
-    ZFDynamic &enumValue(ZF_IN const zfchar *enumName,
-                         ZF_IN_OPT zfuint enumValue = ZFEnumInvalid());
+    ZFDynamic &enumValue(
+            ZF_IN const zfchar *enumName
+            , ZF_IN_OPT zfuint enumValue = ZFEnumInvalid()
+            );
     /** @brief see #ZFDynamic */
     ZFDynamic &enumEnd(ZF_IN_OPT zfuint enumDefault = ZFEnumInvalid());
 
@@ -195,10 +202,12 @@ public:
      *           , methodImpl);
      * @endcode
      */
-    ZFDynamic &method(ZF_IN const zfchar *methodReturnTypeId,
-                      ZF_IN const zfchar *methodName,
-                      ZF_IN const ZFMP &methodParam,
-                      ZF_IN const ZFListener &methodImpl);
+    ZFDynamic &method(
+            ZF_IN const zfchar *methodReturnTypeId
+            , ZF_IN const zfchar *methodName
+            , ZF_IN const ZFMP &methodParam
+            , ZF_IN const ZFListener &methodImpl
+            );
 
     /** @brief see #ZFDynamic */
     ZFDynamic &method(ZF_IN const ZFMethodDynamicRegisterParam &param);
@@ -210,37 +219,51 @@ public:
      * initValueCallback can be specified to setup property's init value,
      * param0 is #ZFDynamicPropertyData
      */
-    ZFDynamic &property(ZF_IN const zfchar *propertyTypeId,
-                        ZF_IN const zfchar *propertyName,
-                        ZF_IN_OPT ZFObject *propertyInitValue = zfnull,
-                        ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic,
-                        ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic);
+    ZFDynamic &property(
+            ZF_IN const zfchar *propertyTypeId
+            , ZF_IN const zfchar *propertyName
+            , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
+            , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic
+            , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic
+            );
     /** @brief see #ZFDynamic */
-    ZFDynamic &property(ZF_IN const ZFClass *propertyClassOfRetainProperty,
-                        ZF_IN const zfchar *propertyName,
-                        ZF_IN_OPT ZFObject *propertyInitValue = zfnull,
-                        ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic,
-                        ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic);
+    ZFDynamic &property(
+            ZF_IN const ZFClass *propertyClassOfRetainProperty
+            , ZF_IN const zfchar *propertyName
+            , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
+            , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic
+            , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic
+            );
     /** @brief see #ZFDynamic */
     ZFDynamic &property(ZF_IN const ZFPropertyDynamicRegisterParam &param);
 
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
-    ZFDynamic &propertyOnInit(ZF_IN const zfchar *propertyName,
-                              ZF_IN const ZFListener &callback);
+    ZFDynamic &propertyOnInit(
+            ZF_IN const zfchar *propertyName
+            , ZF_IN const ZFListener &callback
+            );
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
-    ZFDynamic &propertyOnVerify(ZF_IN const zfchar *propertyName,
-                                ZF_IN const ZFListener &callback);
+    ZFDynamic &propertyOnVerify(
+            ZF_IN const zfchar *propertyName
+            , ZF_IN const ZFListener &callback
+            );
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
-    ZFDynamic &propertyOnAttach(ZF_IN const zfchar *propertyName,
-                                ZF_IN const ZFListener &callback);
+    ZFDynamic &propertyOnAttach(
+            ZF_IN const zfchar *propertyName
+            , ZF_IN const ZFListener &callback
+            );
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
-    ZFDynamic &propertyOnDetach(ZF_IN const zfchar *propertyName,
-                                ZF_IN const ZFListener &callback);
+    ZFDynamic &propertyOnDetach(
+            ZF_IN const zfchar *propertyName
+            , ZF_IN const ZFListener &callback
+            );
 
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
-    ZFDynamic &propertyLifeCycle(ZF_IN const zfchar *propertyName,
-                                 ZF_IN ZFPropertyLifeCycle lifeCycle,
-                                 ZF_IN const ZFListener &callback);
+    ZFDynamic &propertyLifeCycle(
+            ZF_IN const zfchar *propertyName
+            , ZF_IN ZFPropertyLifeCycle lifeCycle
+            , ZF_IN const ZFListener &callback
+            );
 
 public:
     /**
@@ -266,8 +289,7 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFDynamicRemoveAll)
 
 // ============================================================
 /** @brief data to hold params for #ZFPropertyDynamicRegisterInitValueCallback */
-zfclass ZFLIB_ZFCore ZFDynamicPropertyData : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFDynamicPropertyData : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFDynamicPropertyData, ZFObject)
 
 public:
@@ -284,13 +306,11 @@ protected:
     /** @endcond */
 public:
     zfoverride
-    virtual zfbool objectIsInternal(void)
-    {
+    virtual zfbool objectIsInternal(void) {
         return zftrue;
     }
     zfoverride
-    virtual zfbool objectIsInternalPrivate(void)
-    {
+    virtual zfbool objectIsInternalPrivate(void) {
         return zftrue;
     }
 };
@@ -298,13 +318,14 @@ public:
 // ============================================================
 zfclassFwd _ZFP_ZFMPPrivate;
 /** @brief util for #ZFDynamic::method */
-zfclassLikePOD ZFLIB_ZFCore ZFMP
-{
+zfclassLikePOD ZFLIB_ZFCore ZFMP {
 public:
     /** @brief util for #ZFDynamic::method */
-    ZFMP &mp(ZF_IN const zfchar *methodParamTypeId,
-             ZF_IN_OPT const zfchar *methodParamName = zfnull,
-             ZF_IN_OPT ZFObject *methodParamDefaultValue = ZFMethodGenericInvokerDefaultParam());
+    ZFMP &mp(
+            ZF_IN const zfchar *methodParamTypeId
+            , ZF_IN_OPT const zfchar *methodParamName = zfnull
+            , ZF_IN_OPT ZFObject *methodParamDefaultValue = ZFMethodGenericInvokerDefaultParam()
+            );
 
 public:
     /** @brief util for #ZFDynamic::method */

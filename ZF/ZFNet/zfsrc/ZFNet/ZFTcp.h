@@ -29,8 +29,7 @@ zfclassFwd _ZFP_ZFTcpPrivate;
 /**
  * @brief tcp request util
  */
-zfclass ZFLIB_ZFNet ZFTcp : zfextends ZFObject
-{
+zfclass ZFLIB_ZFNet ZFTcp : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFTcp, ZFObject)
 
 public:
@@ -45,9 +44,10 @@ public:
      *   try to connect to remote host,
      *   use #send or #recv to communicate with remote host
      */
-    ZFMETHOD_DECLARE_2(zfbool, open,
-                       ZFMP_IN(const zfchar *, host),
-                       ZFMP_IN(zfuint, port))
+    ZFMETHOD_DECLARE_2(zfbool, open
+            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(zfuint, port)
+            )
     /**
      * @brief close the socket, see #open
      *
@@ -79,9 +79,10 @@ public:
     /**
      * @brief get remote addr, always fail if current #type is #ZFTcpType::e_Invalid or #ZFTcpType::e_Server
      */
-    ZFMETHOD_DECLARE_2(zfbool, remoteInfo,
-                       ZFMP_OUT(zfstring &, remoteAddr),
-                       ZFMP_OUT(zfuint &, remotePort))
+    ZFMETHOD_DECLARE_2(zfbool, remoteInfo
+            , ZFMP_OUT(zfstring &, remoteAddr)
+            , ZFMP_OUT(zfuint &, remotePort)
+            )
 
 public:
     /**
@@ -105,9 +106,10 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_2(zfbool, send,
-                       ZFMP_IN(const void *, data),
-                       ZFMP_IN(zfindex, size))
+    ZFMETHOD_DECLARE_2(zfbool, send
+            , ZFMP_IN(const void *, data)
+            , ZFMP_IN(zfindex, size)
+            )
     /**
      * @brief send packet
      *
@@ -115,9 +117,10 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_2(zfbool, send,
-                       ZFMP_IN(const zfchar *, data),
-                       ZFMP_IN_OPT(zfindex, size, zfindexMax()))
+    ZFMETHOD_DECLARE_2(zfbool, send
+            , ZFMP_IN(const zfchar *, data)
+            , ZFMP_IN_OPT(zfindex, size, zfindexMax())
+            )
     /**
      * @brief send packet
      *
@@ -125,8 +128,9 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_1(zfbool, send,
-                       ZFMP_IN(const ZFBuffer &, data))
+    ZFMETHOD_DECLARE_1(zfbool, send
+            , ZFMP_IN(const ZFBuffer &, data)
+            )
     /**
      * @brief send packet
      *
@@ -134,8 +138,9 @@ public:
      * -  this method would block current thread until done,
      *   call in new thread if necessary
      */
-    ZFMETHOD_DECLARE_1(zfbool, send,
-                       ZFMP_IN(const ZFInput &, input))
+    ZFMETHOD_DECLARE_1(zfbool, send
+            , ZFMP_IN(const ZFInput &, input)
+            )
 
     // ============================================================
 public:
@@ -152,10 +157,11 @@ public:
      *
      * note: received data would be appended to buffer
      */
-    ZFMETHOD_DECLARE_3(zfindex, recv,
-                       ZFMP_IN_OUT(ZFBuffer &, data),
-                       ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
-                       ZFMP_IN_OPT(zftimet, timeout, -1))
+    ZFMETHOD_DECLARE_3(zfindex, recv
+            , ZFMP_IN_OUT(ZFBuffer &, data)
+            , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
+            , ZFMP_IN_OPT(zftimet, timeout, -1)
+            )
     /**
      * @brief recv packet until timeout
      *
@@ -169,10 +175,11 @@ public:
      *
      * note: received data would be appended to output
      */
-    ZFMETHOD_DECLARE_3(zfindex, recv,
-                       ZFMP_IN_OUT(const ZFOutput &, output),
-                       ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
-                       ZFMP_IN_OPT(zftimet, timeout, -1))
+    ZFMETHOD_DECLARE_3(zfindex, recv
+            , ZFMP_IN_OUT(const ZFOutput &, output)
+            , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
+            , ZFMP_IN_OPT(zftimet, timeout, -1)
+            )
 
 public:
     zfoverride

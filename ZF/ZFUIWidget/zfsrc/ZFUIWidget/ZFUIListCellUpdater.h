@@ -13,8 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief update param used by #ZFUIListCellUpdater::cellOnUpdate
  */
-zfclassPOD ZFLIB_ZFUIWidget ZFUIListCellUpdaterParam
-{
+zfclassPOD ZFLIB_ZFUIWidget ZFUIListCellUpdaterParam {
 public:
     ZFUIListCell *cell; /**< @brief the cell */
     zfindex cellIndex; /**< @brief cell's index */
@@ -32,8 +31,7 @@ zfclassFwd _ZFP_ZFUIListViewPrivate;
 /**
  * @brief abstract list cell updater to update #ZFUIListCell
  */
-zfinterface ZFLIB_ZFUIWidget ZFUIListCellUpdater : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFUIWidget ZFUIListCellUpdater : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIListCellUpdater, ZFInterface)
 
 public:
@@ -58,26 +56,26 @@ protected:
     /**
      * @brief called to update cell style
      */
-    virtual inline void cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam &updateParam)
-    {
+    virtual inline void cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam &updateParam) {
     }
     /**
      * @brief called to recycle cell
      */
-    virtual inline void cellOnRecycle(ZF_IN ZFUIListCell *cell)
-    {
+    virtual inline void cellOnRecycle(ZF_IN ZFUIListCell *cell) {
     }
 
 public:
     /**
      * @brief util method for impl to achieve cache logic
      */
-    ZFMETHOD_DECLARE_1(zfautoObject, itemCacheAccess,
-                       ZFMP_IN(const zfchar *, key))
+    ZFMETHOD_DECLARE_1(zfautoObject, itemCacheAccess
+            , ZFMP_IN(const zfchar *, key)
+            )
     /** @brief see #itemCacheAccess */
-    ZFMETHOD_DECLARE_2(void, itemCacheRecycle,
-                       ZFMP_IN(const zfchar *, key),
-                       ZFMP_IN(ZFObject *, cache))
+    ZFMETHOD_DECLARE_2(void, itemCacheRecycle
+            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(ZFObject *, cache)
+            )
 
 private:
     friend zfclassFwd _ZFP_ZFUIListViewPrivate;

@@ -15,8 +15,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * result would be appended to result instead of clear and set
  */
-extern ZFLIB_ZFCore void zfCoreArgSplit(ZF_IN_OUT ZFCoreArray<zfstring> &result,
-                                        ZF_IN const zfchar *cmdLine);
+extern ZFLIB_ZFCore void zfCoreArgSplit(
+        ZF_IN_OUT ZFCoreArray<zfstring> &result
+        , ZF_IN const zfchar *cmdLine
+        );
 /**
  * @brief split cmd line to separate item
  */
@@ -26,8 +28,10 @@ extern ZFLIB_ZFCore ZFCoreArray<zfstring> zfCoreArgSplit(ZF_IN const zfchar *cmd
  *
  * result is appended to result instead of clear and set
  */
-extern ZFLIB_ZFCore void zfCoreArgMerge(ZF_OUT zfstring &result,
-                                        ZF_IN const ZFCoreArray<zfstring> &argList);
+extern ZFLIB_ZFCore void zfCoreArgMerge(
+        ZF_OUT zfstring &result
+        , ZF_IN const ZFCoreArray<zfstring> &argList
+        );
 /**
  * @brief see #zfCoreArgMerge
  */

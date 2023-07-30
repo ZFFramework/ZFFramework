@@ -4,10 +4,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFAudio)
 
-void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnLoad(ZF_IN ZFAudio *audio,
-                                                            ZF_IN zfbool success,
-                                                            ZF_IN v_zfstring *errorHint)
-{
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnLoad(
+        ZF_IN ZFAudio *audio
+        , ZF_IN zfbool success
+        , ZF_IN v_zfstring *errorHint
+        ) {
     ZFLISTENER_3(action
             , zfautoObjectT<ZFAudio *>, audio
             , zfbool, success
@@ -17,10 +18,11 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnLoad(ZF_IN ZFAudio *audio
     } ZFLISTENER_END()
     ZFThread::mainThread()->taskQueueAdd(action);
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(ZF_IN ZFAudio *audio,
-                                                            ZF_IN zfbool success,
-                                                            ZF_IN v_zfstring *errorHint)
-{
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(
+        ZF_IN ZFAudio *audio
+        , ZF_IN zfbool success
+        , ZF_IN v_zfstring *errorHint
+        ) {
     ZFLISTENER_3(action
             , zfautoObjectT<ZFAudio *>, audio
             , zfbool, success
@@ -30,8 +32,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(ZF_IN ZFAudio *audio
     } ZFLISTENER_END()
     ZFThread::mainThread()->taskQueueAdd(action);
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnResume(ZF_IN ZFAudio *audio)
-{
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnResume(ZF_IN ZFAudio *audio) {
     ZFLISTENER_1(action
             , zfautoObjectT<ZFAudio *>, audio
             ) {
@@ -39,8 +40,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnResume(ZF_IN ZFAudio *aud
     } ZFLISTENER_END()
     ZFThread::mainThread()->taskQueueAdd(action);
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnPause(ZF_IN ZFAudio *audio)
-{
+void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnPause(ZF_IN ZFAudio *audio) {
     ZFLISTENER_1(action
             , zfautoObjectT<ZFAudio *>, audio
             ) {

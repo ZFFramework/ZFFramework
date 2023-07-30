@@ -18,8 +18,10 @@ public:
     /**
      * @brief see #ZFUIViewPositionOnScreen
      */
-    virtual void viewPositionOnScreen(ZF_IN ZFUIView *view,
-                                      ZF_OUT ZFUIRect &rect) zfpurevirtual;
+    virtual void viewPositionOnScreen(
+            ZF_IN ZFUIView *view
+            , ZF_OUT ZFUIRect &rect
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUIViewPositionOnScreen)
 
 ZF_NAMESPACE_GLOBAL_END

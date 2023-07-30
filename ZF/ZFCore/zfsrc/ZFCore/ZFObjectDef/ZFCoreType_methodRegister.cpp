@@ -17,28 +17,84 @@ ZFEXPORT_VAR_READONLY_DEFINE(const zfchar *, ZF_ENV_ZFVERSION, ZF_ENV_ZFVERSION(
 
 // ============================================================
 // zfCoreArgSplit
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, zfCoreArgSplit, ZFMP_IN_OUT(ZFCoreArray<zfstring> &, result), ZFMP_IN(const zfchar *, cmdLine))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<zfstring>, zfCoreArgSplit, ZFMP_IN(const zfchar *, cmdLine))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, zfCoreArgMerge, ZFMP_OUT(zfstring &, result), ZFMP_IN(const ZFCoreArray<zfstring> &, argList))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, zfCoreArgMerge, ZFMP_IN(const ZFCoreArray<zfstring> &, argList))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, zfCoreArgSplit
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, result)
+        , ZFMP_IN(const zfchar *, cmdLine)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<zfstring>, zfCoreArgSplit
+        , ZFMP_IN(const zfchar *, cmdLine)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, zfCoreArgMerge
+        , ZFMP_OUT(zfstring &, result)
+        , ZFMP_IN(const ZFCoreArray<zfstring> &, argList)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, zfCoreArgMerge
+        , ZFMP_IN(const ZFCoreArray<zfstring> &, argList)
+        )
 
 // ============================================================
 // zfCoreDataEncode
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, zfCoreDataEncodeCharMapDefault)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(void, zfCoreDataEncode, ZFMP_OUT(zfstring &, result), ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()), ZFMP_IN_OPT(const zfchar *, charMap, zfCoreDataEncodeCharMapDefault()), ZFMP_IN_OPT(zfchar, escapeToken, '%'))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfCoreDataDecode, ZFMP_OUT(zfstring &, result), ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()), ZFMP_IN_OPT(zfchar, escapeToken, '%'))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(void, zfCoreDataEncode
+        , ZFMP_OUT(zfstring &, result)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(const zfchar *, charMap, zfCoreDataEncodeCharMapDefault())
+        , ZFMP_IN_OPT(zfchar, escapeToken, '%')
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfCoreDataDecode
+        , ZFMP_OUT(zfstring &, result)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(zfchar, escapeToken, '%')
+        )
 
 // ============================================================
 // zfCoreDataPairSplit
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitString, ZFMP_IN_OUT(ZFCoreArray<ZFIndexRange> &, outData), ZFMP_IN(zfindex, desiredCountOrIndexMax), ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()), ZFMP_IN_OPT(const zfchar *, separatorTokens, ","), ZFMP_IN_OPT(const zfchar *, leftTokens, "("), ZFMP_IN_OPT(const zfchar *, rightTokens, ")"), ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitInt, ZFMP_IN_OUT(ZFCoreArrayPOD<zfint> &, outData), ZFMP_IN(zfindex, desiredCountOrIndexMax), ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()), ZFMP_IN_OPT(const zfchar *, separatorTokens, ","), ZFMP_IN_OPT(const zfchar *, leftTokens, "("), ZFMP_IN_OPT(const zfchar *, rightTokens, ")"), ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitFloat, ZFMP_IN_OUT(ZFCoreArrayPOD<zffloat> &, outData), ZFMP_IN(zfindex, desiredCountOrIndexMax), ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()), ZFMP_IN_OPT(const zfchar *, separatorTokens, ","), ZFMP_IN_OPT(const zfchar *, leftTokens, "("), ZFMP_IN_OPT(const zfchar *, rightTokens, ")"), ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitString
+        , ZFMP_IN_OUT(ZFCoreArray<ZFIndexRange> &, outData)
+        , ZFMP_IN(zfindex, desiredCountOrIndexMax)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(const zfchar *, separatorTokens, ",")
+        , ZFMP_IN_OPT(const zfchar *, leftTokens, "(")
+        , ZFMP_IN_OPT(const zfchar *, rightTokens, ")")
+        , ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitInt
+        , ZFMP_IN_OUT(ZFCoreArrayPOD<zfint> &, outData)
+        , ZFMP_IN(zfindex, desiredCountOrIndexMax)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(const zfchar *, separatorTokens, ",")
+        , ZFMP_IN_OPT(const zfchar *, leftTokens, "(")
+        , ZFMP_IN_OPT(const zfchar *, rightTokens, ")")
+        , ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitFloat
+        , ZFMP_IN_OUT(ZFCoreArrayPOD<zffloat> &, outData)
+        , ZFMP_IN(zfindex, desiredCountOrIndexMax)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(const zfchar *, separatorTokens, ",")
+        , ZFMP_IN_OPT(const zfchar *, leftTokens, "(")
+        , ZFMP_IN_OPT(const zfchar *, rightTokens, ")")
+        , ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse)
+        )
 
 // ============================================================
 // ZFIdentityGenerator
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, zfidentityCalcString, ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, zfidentityCalcBuf, ZFMP_IN(const void *, src), ZFMP_IN(zfindex, srcLen))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, zfidentityCalcPointer, ZFMP_IN(const void *, p))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, zfidentityCalcString
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfidentity, zfidentityCalcBuf
+        , ZFMP_IN(const void *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, zfidentityCalcPointer
+        , ZFMP_IN(const void *, p)
+        )
 
 // ============================================================
 // ZFLevel
@@ -62,75 +118,248 @@ ZFEXPORT_ENUM_DEFINE(ZFLevel
 // ============================================================
 // ZFCoreStatistic
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountLog, ZFMP_IN(const zfchar *, key))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountRemove, ZFMP_IN(const zfchar *, key))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountLog
+        , ZFMP_IN(const zfchar *, key)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountRemove
+        , ZFMP_IN(const zfchar *, key)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, invokeCountRemoveAll)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, invokeCountGet, ZFMP_IN(const zfchar *, key))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, invokeCountGet
+        , ZFMP_IN(const zfchar *, key)
+        )
 ZF_NAMESPACE_END(ZFCoreStatistic)
 
 // ============================================================
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, zfstringIsEqual, ZFMP_IN(const zfchar *, s1), ZFMP_IN(const zfchar *, s2))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, zfstringIsEqual
+        , ZFMP_IN(const zfchar *, s1)
+        , ZFMP_IN(const zfchar *, s2)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_2({
         v_zfstring *t1 = ZFCastZFObject(v_zfstring *, s1);
         v_zfstring *t2 = ZFCastZFObject(v_zfstring *, s2);
         return ((t1 == zfnull || t1->zfv.isEmpty()) && t2 == zfnull || t2->zfv.isEmpty()) || ZFObjectCompare(t1, t2) == ZFCompareTheSame;
-    }, zfbool, zfstringIsEqual, ZFMP_IN(ZFObject *, s1), ZFMP_IN(ZFObject *, s2))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfbool, zfstringIsEmpty, ZFMP_IN(const zfchar *, s1))
+    }, zfbool, zfstringIsEqual
+    , ZFMP_IN(ZFObject *, s1)
+    , ZFMP_IN(ZFObject *, s2)
+    )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfbool, zfstringIsEmpty
+        , ZFMP_IN(const zfchar *, s1)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_1({
         v_zfstring *t = ZFCastZFObject(v_zfstring *, s1);
         return t == zfnull || t->zfv.isEmpty();
-    }, zfbool, zfstringIsEmpty, ZFMP_IN(ZFObject *, s1))
+    }, zfbool, zfstringIsEmpty
+    , ZFMP_IN(ZFObject *, s1)
+    )
 
 // ============================================================
 // zfstringFind
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFind, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFind, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFind, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFind, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindCaseInsensitive, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitive, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitive, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindCaseInsensitive, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindCaseInsensitiveReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitiveReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitiveReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindCaseInsensitiveReversely, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindFirstOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindFirstOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindFirstNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindFirstNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindLastOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindLastOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindLastNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfindex, srcLen), ZFMP_IN(zfchar, find))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, find), ZFMP_IN_OPT(zfindex, findLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindLastNotOf, ZFMP_IN(const zfchar *, src), ZFMP_IN(zfchar, find))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindCaseInsensitive
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitive
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitive
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindCaseInsensitive
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindCaseInsensitiveReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitiveReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindCaseInsensitiveReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindCaseInsensitiveReversely
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindFirstOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindFirstOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindFirstNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindFirstNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindFirstNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindLastOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindLastOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringFindLastNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfindex, srcLen)
+        , ZFMP_IN(zfchar, find)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfindex, zfstringFindLastNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, find)
+        , ZFMP_IN_OPT(zfindex, findLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfindex, zfstringFindLastNotOf
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(zfchar, find)
+        )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplace, ZFMP_IN_OUT(zfstring &, s), ZFMP_IN(const zfchar *, replaceFrom), ZFMP_IN(const zfchar *, replaceTo), ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplaceReversely, ZFMP_IN_OUT(zfstring &, s), ZFMP_IN(const zfchar *, replaceFrom), ZFMP_IN(const zfchar *, replaceTo), ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplace
+        , ZFMP_IN_OUT(zfstring &, s)
+        , ZFMP_IN(const zfchar *, replaceFrom)
+        , ZFMP_IN(const zfchar *, replaceTo)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplaceReversely
+        , ZFMP_IN_OUT(zfstring &, s)
+        , ZFMP_IN(const zfchar *, replaceFrom)
+        , ZFMP_IN(const zfchar *, replaceTo)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArray<zfstring>, zfstringSplit, ZFMP_IN(const zfchar *, src), ZFMP_IN(const zfchar *, separator), ZFMP_IN_OPT(zfbool, keepEmpty, zffalse))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArray<zfstring>, zfstringSplit
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, separator)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        )
 
 // ============================================================
 // namespace
 ZFEXPORT_VAR_READONLY_DEFINE(const zfchar *, ZFNamespaceSeparator, ZFNamespaceSeparator())
 ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFNamespaceSeparatorLen, ZFNamespaceSeparatorLen())
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(const zfchar *, ZFNamespaceSkipGlobal, ZFMP_IN(const zfchar *, ns))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFNamespaceSplit, ZFMP_IN_OUT(ZFCoreArray<ZFIndexRange> &, ret), ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFNamespaceGetAllT, ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, ret))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(const zfchar *, ZFNamespaceSkipGlobal
+        , ZFMP_IN(const zfchar *, ns)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFNamespaceSplit
+        , ZFMP_IN_OUT(ZFCoreArray<ZFIndexRange> &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFNamespaceGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, ret)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArrayPOD<const zfchar *>, ZFNamespaceGetAll)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFNamespaceGetAllT, ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, ret), ZFMP_IN(const zfchar *, parent), ZFMP_IN_OPT(zfbool, recursive, zffalse))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const zfchar *>, ZFNamespaceGetAll, ZFMP_IN(const zfchar *, parent), ZFMP_IN_OPT(zfbool, recursive, zffalse))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFNamespaceGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, ret)
+        , ZFMP_IN(const zfchar *, parent)
+        , ZFMP_IN_OPT(zfbool, recursive, zffalse)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const zfchar *>, ZFNamespaceGetAll
+        , ZFMP_IN(const zfchar *, parent)
+        , ZFMP_IN_OPT(zfbool, recursive, zffalse)
+        )
 
 // ============================================================
 // core type
@@ -155,38 +384,117 @@ ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfiterator, zfiteratorInvalid, zfiteratorI
 
 ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeZero, ZFIndexRangeZero())
 ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeMax, ZFIndexRangeMax())
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFIndexRange, ZFIndexRangeMake, ZFMP_IN(zfindex, start), ZFMP_IN(zfindex, count))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, ZFIndexRangeIsEqual, ZFMP_IN(const ZFIndexRange &, e0), ZFMP_IN(const ZFIndexRange &, e1))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFIndexRangeContain, ZFMP_IN(const ZFIndexRange &, range), ZFMP_IN(zfindex, index))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFIndexRange, ZFIndexRangeMake
+        , ZFMP_IN(zfindex, start)
+        , ZFMP_IN(zfindex, count)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, ZFIndexRangeIsEqual
+        , ZFMP_IN(const ZFIndexRange &, e0)
+        , ZFMP_IN(const ZFIndexRange &, e1)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFIndexRangeContain
+        , ZFMP_IN(const ZFIndexRange &, range)
+        , ZFMP_IN(zfindex, index)
+        )
 
 // ============================================================
 // ZFCoreUtilMath
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMax, ZFMP_IN(zfint const &, n0), ZFMP_IN(zfint const &, n1))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zffloat, zfmMax, ZFMP_IN(zffloat const &, n0), ZFMP_IN(zffloat const &, n1))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMin, ZFMP_IN(zfint const &, n0), ZFMP_IN(zfint const &, n1))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zffloat, zfmMin, ZFMP_IN(zffloat const &, n0), ZFMP_IN(zffloat const &, n1))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmAbs, ZFMP_IN(zfint const &, n0))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmAbs, ZFMP_IN(zffloat const &, n0))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyRange, ZFMP_IN(zfint const &, n), ZFMP_IN(zfint const &, nMin), ZFMP_IN(zfint const &, nMax))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zffloat, zfmApplyRange, ZFMP_IN(zffloat const &, n), ZFMP_IN(zffloat const &, nMin), ZFMP_IN(zffloat const &, nMax))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyProgress, ZFMP_IN(zfint const &, start), ZFMP_IN(zfint const &, end), ZFMP_IN(zffloat const &, progress))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zffloat, zfmApplyProgress, ZFMP_IN(zffloat const &, start), ZFMP_IN(zffloat const &, end), ZFMP_IN(zffloat const &, progress))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRoundUp, ZFMP_IN(zffloat const &, v))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRoundDown, ZFMP_IN(zffloat const &, v))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRound, ZFMP_IN(zffloat const &, v))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMax
+        , ZFMP_IN(zfint const &, n0)
+        , ZFMP_IN(zfint const &, n1)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zffloat, zfmMax
+        , ZFMP_IN(zffloat const &, n0)
+        , ZFMP_IN(zffloat const &, n1)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmMin
+        , ZFMP_IN(zfint const &, n0)
+        , ZFMP_IN(zfint const &, n1)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zffloat, zfmMin
+        , ZFMP_IN(zffloat const &, n0)
+        , ZFMP_IN(zffloat const &, n1)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmAbs
+        , ZFMP_IN(zfint const &, n0)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmAbs
+        , ZFMP_IN(zffloat const &, n0)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyRange
+        , ZFMP_IN(zfint const &, n)
+        , ZFMP_IN(zfint const &, nMin)
+        , ZFMP_IN(zfint const &, nMax)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zffloat, zfmApplyRange
+        , ZFMP_IN(zffloat const &, n)
+        , ZFMP_IN(zffloat const &, nMin)
+        , ZFMP_IN(zffloat const &, nMax)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfint, zfmApplyProgress
+        , ZFMP_IN(zfint const &, start)
+        , ZFMP_IN(zfint const &, end)
+        , ZFMP_IN(zffloat const &, progress)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zffloat, zfmApplyProgress
+        , ZFMP_IN(zffloat const &, start)
+        , ZFMP_IN(zffloat const &, end)
+        , ZFMP_IN(zffloat const &, progress)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRoundUp
+        , ZFMP_IN(zffloat const &, v)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRoundDown
+        , ZFMP_IN(zffloat const &, v)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zffloat, zfmRound
+        , ZFMP_IN(zffloat const &, v)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(zfuint, zfmRand)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmRand, ZFMP_IN(zfint, range))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmRand, ZFMP_IN(zfint, start), ZFMP_IN(zfint, end))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfint, zfmRand
+        , ZFMP_IN(zfint, range)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfint, zfmRand
+        , ZFMP_IN(zfint, start)
+        , ZFMP_IN(zfint, end)
+        )
 
 // ============================================================
 // zfVersion
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfVersionGet, ZFMP_OUT(zfstring &, ret), ZFMP_IN(const zfchar *, version), ZFMP_IN(zfindex, subVersionIndex))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfVersionGet, ZFMP_IN(const zfchar *, version), ZFMP_IN(zfindex, subVersionIndex))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfVersionGetInt, ZFMP_OUT(zfuint &, ret), ZFMP_IN(const zfchar *, version), ZFMP_IN(zfindex, subVersionIndex))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfVersionGetInt, ZFMP_IN(const zfchar *, version), ZFMP_IN(zfindex, subVersionIndex))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfVersionSet, ZFMP_IN_OUT(zfstring &, version), ZFMP_IN(zfindex, subVersionIndex), ZFMP_IN(const zfchar *, subVersion), ZFMP_IN_OPT(const zfchar *, emptySubVersion, "0"))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfVersionSetInt, ZFMP_IN_OUT(zfstring &, version), ZFMP_IN(zfindex, subVersionIndex), ZFMP_IN(zfuint, subVersion), ZFMP_IN_OPT(const zfchar *, emptySubVersion, "0"))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, zfVersionCompare, ZFMP_IN(const zfchar *, version0), ZFMP_IN(const zfchar *, version1))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfVersionGet
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, version)
+        , ZFMP_IN(zfindex, subVersionIndex)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfVersionGet
+        , ZFMP_IN(const zfchar *, version)
+        , ZFMP_IN(zfindex, subVersionIndex)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfVersionGetInt
+        , ZFMP_OUT(zfuint &, ret)
+        , ZFMP_IN(const zfchar *, version)
+        , ZFMP_IN(zfindex, subVersionIndex)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfuint, zfVersionGetInt
+        , ZFMP_IN(const zfchar *, version)
+        , ZFMP_IN(zfindex, subVersionIndex)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfVersionSet
+        , ZFMP_IN_OUT(zfstring &, version)
+        , ZFMP_IN(zfindex, subVersionIndex)
+        , ZFMP_IN(const zfchar *, subVersion)
+        , ZFMP_IN_OPT(const zfchar *, emptySubVersion, "0")
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfVersionSetInt
+        , ZFMP_IN_OUT(zfstring &, version)
+        , ZFMP_IN(zfindex, subVersionIndex)
+        , ZFMP_IN(zfuint, subVersion)
+        , ZFMP_IN_OPT(const zfchar *, emptySubVersion, "0")
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCompareResult, zfVersionCompare
+        , ZFMP_IN(const zfchar *, version0)
+        , ZFMP_IN(const zfchar *, version1)
+        )
 ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFVERSION_MAIN, ZFVERSION_MAIN())
 ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFVERSION_SUB, ZFVERSION_SUB())
 ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFVERSION_MINOR, ZFVERSION_MINOR())

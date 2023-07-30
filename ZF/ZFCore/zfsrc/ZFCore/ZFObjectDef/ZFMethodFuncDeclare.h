@@ -20,47 +20,54 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodFuncUnregister(ZF_IN const ZFMethod *metho
  * use #ZFClass::methodForName to find class static member method,
  * or use #ZFMethodForName for short
  */
-extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
-                                                        ZF_IN const zfchar *methodName);
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(
+        ZF_IN const zfchar *methodNamespace
+        , ZF_IN const zfchar *methodName
+        );
 /**
  * @brief see #ZFMethodFuncForName
  */
-extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(ZF_IN const zfchar *methodNamespace,
-                                                        ZF_IN const zfchar *methodName
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId0
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-                                                        , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
-                                                        );
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(
+        ZF_IN const zfchar *methodNamespace
+        , ZF_IN const zfchar *methodName
+        , ZF_IN_OPT const zfchar *methodParamTypeId0
+        , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
+        , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
+        , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
+        , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
+        , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
+        , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
+        , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+        );
 /**
  * @brief see #ZFMethodFuncForName
  */
-extern ZFLIB_ZFCore void ZFMethodFuncForNameGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
-                                                    ZF_IN const zfchar *methodNamespace,
-                                                    ZF_IN const zfchar *methodName);
+extern ZFLIB_ZFCore void ZFMethodFuncForNameGetAllT(
+        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
+        , ZF_IN const zfchar *methodNamespace
+        , ZF_IN const zfchar *methodName
+        );
 /**
  * @brief see #ZFMethodFuncForName
  */
-inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncForNameGetAll(ZF_IN const zfchar *methodNamespace,
-                                                                  ZF_IN const zfchar *methodName)
-{
+inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncForNameGetAll(
+        ZF_IN const zfchar *methodNamespace
+        , ZF_IN const zfchar *methodName
+        ) {
     ZFCoreArrayPOD<const ZFMethod *> ret;
     ZFMethodFuncForNameGetAllT(ret, methodNamespace, methodName);
     return ret;
 }
 
 /** @brief see #ZFMethodFuncGetAll */
-extern ZFLIB_ZFCore void ZFMethodFuncGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret,
-                                             ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull);
+extern ZFLIB_ZFCore void ZFMethodFuncGetAllT(
+        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
+        , ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull
+        );
 /**
  * @brief get all function type method currently registered, for debug use only
  */
-inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull)
-{
+inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull) {
     ZFCoreArrayPOD<const ZFMethod *> ret;
     ZFMethodFuncGetAllT(ret, filter);
     return ret;
@@ -339,8 +346,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFil
             ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
             ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
         ); \
-    zfclassNotPOD _ZFP_MtdFH_##MethodName##_##RegSig \
-    { \
+    zfclassNotPOD _ZFP_MtdFH_##MethodName##_##RegSig { \
     public: \
         _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
                 ReturnType \
@@ -364,8 +370,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFil
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-            ) \
-        { \
+                ) { \
             return (MethodName)( \
                     ParamExpandOrEmpty0(            param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() param1) \
@@ -387,8 +392,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFil
             ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
             ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
             ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-        )) \
-    { \
+            )) { \
         static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                 , zffalse \
                 , zfnull \
@@ -453,8 +457,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFil
             ); \
         return _methodHolder.method; \
     } \
-    ZF_STATIC_REGISTER_INIT(MtdFR_##MethodName##_##RegSig) \
-    { \
+    ZF_STATIC_REGISTER_INIT(MtdFR_##MethodName##_##RegSig) { \
         (_ZFP_MtdFA_##MethodName((void (*)( \
                ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
@@ -489,8 +492,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFil
  *   ZFMETHOD_FUNC_DECLARE_0(ZFLIB_APP, void, myFunc)
  *
  *   // in source file
- *   ZFMETHOD_FUNC_DEFINE_0(void, myFunc)
- *   {
+ *   ZFMETHOD_FUNC_DEFINE_0(void, myFunc) {
  *       // func body
  *   }
  * @endcode

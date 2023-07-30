@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFAnimationNativeView_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIKit_ZFAnimationNativeView_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFAnimationNativeView_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFAnimationNativeView);
@@ -43,9 +41,10 @@ protected:
     ZFPROPERTY_RETAIN_READONLY(ZFAnimationNativeView *, ani, zflineAlloc(ZFAnimationNativeView))
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFAnimationNativeView *ani)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFAnimationNativeView *ani
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         ZFUIKit_test_prepareSettingForResetProperty(settings, ani, ZFCoreArrayPODCreate(const ZFProperty *

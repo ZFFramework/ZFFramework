@@ -16,34 +16,33 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_SDL, ZFUITextView, ZFProtoc
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         TTF_Init();
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         TTF_Quit();
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    static void sdlMeasureCallback(ZF_OUT ZFUISize &ret,
-                                   ZF_IN ZFImpl_sys_SDL_View *owner,
-                                   ZF_IN const ZFUISize &sizeHint)
-    {
+    static void sdlMeasureCallback(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN ZFImpl_sys_SDL_View *owner
+            , ZF_IN const ZFUISize &sizeHint
+            ) {
         ZFUITextView *textView = ZFCastZFObject(ZFUITextView *, owner->ownerZFUIView);
-        if(textView != zfnull)
-        {
+        if(textView != zfnull) {
             ret = ZFPROTOCOL_ACCESS(ZFUITextView)->measureNativeTextView(textView, sizeHint, textView->textSize() * textView->UIScaleFixed());
         }
     }
 
 public:
-    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView,
-                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeTextViewCreate(
+            ZF_IN ZFUITextView *textView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderImpls.add(zfself::renderCallback);
         nativeView->sdlMeasureCallback = zfself::sdlMeasureCallback;
@@ -53,66 +52,76 @@ public:
         nativeImplViewRequireVirtualIndex = zffalse;
         return zfnull;
     }
-    virtual void nativeTextViewDestroy(ZF_IN ZFUITextView *textView,
-                                       ZF_IN void *nativeTextView)
-    {
+    virtual void nativeTextViewDestroy(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN void *nativeTextView
+            ) {
         // nothing to do
     }
 
 // ============================================================
 // properties
 public:
-    virtual void text(ZF_IN ZFUITextView *textView,
-                      ZF_IN const zfchar *text)
-    {
+    virtual void text(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN const zfchar *text
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textAppearance(ZF_IN ZFUITextView *textView,
-                                ZF_IN ZFUITextAppearanceEnum const &textAppearance)
-    {
+    virtual void textAppearance(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textAlign(ZF_IN ZFUITextView *textView,
-                           ZF_IN ZFUIAlignFlags const &textAlign)
-    {
+    virtual void textAlign(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUIAlignFlags const &textAlign
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textColor(ZF_IN ZFUITextView *textView,
-                           ZF_IN ZFUIColor const &textColor)
-    {
+    virtual void textColor(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUIColor const &textColor
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textSize(ZF_IN ZFUITextView *textView,
-                          ZF_IN zffloat textSize)
-    {
+    virtual void textSize(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zffloat textSize
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textSizeAutoChangeMinSize(ZF_IN ZFUITextView *textView,
-                                           ZF_IN zffloat textSizeAutoChangeMinSize)
-    {
+    virtual void textSizeAutoChangeMinSize(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zffloat textSizeAutoChangeMinSize
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textSizeAutoChangeMaxSize(ZF_IN ZFUITextView *textView,
-                                           ZF_IN zffloat textSizeAutoChangeMaxSize)
-    {
+    virtual void textSizeAutoChangeMaxSize(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zffloat textSizeAutoChangeMaxSize
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textSingleLine(ZF_IN ZFUITextView *textView,
-                                ZF_IN zfbool textSingleLine)
-    {
+    virtual void textSingleLine(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zfbool textSingleLine
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void textTruncateMode(ZF_IN ZFUITextView *textView,
-                                  ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode)
-    {
+    virtual void textTruncateMode(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
     }
@@ -120,56 +129,54 @@ public:
     // ============================================================
     // layout
 public:
-    virtual ZFUISize measureNativeTextView(ZF_IN ZFUITextView *textView,
-                                           ZF_IN const ZFUISize &sizeHint,
-                                           ZF_IN zffloat textSize)
-    {
+    virtual ZFUISize measureNativeTextView(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN zffloat textSize
+            ) {
         int w, h;
-        if(zfself::measureNativeTextView(w, h, textView, textView->text(), textView->text().length(), sizeHint.width, textSize))
-        {
+        if(zfself::measureNativeTextView(w, h, textView, textView->text(), textView->text().length(), sizeHint.width, textSize)) {
             return ZFUISizeMake((zffloat)w, (zffloat)h);
         }
-        else
-        {
+        else {
             return ZFUISizeZero();
         }
     }
 
-    virtual zffloat textSizeCurrent(ZF_IN ZFUITextView *textView)
-    {
+    virtual zffloat textSizeCurrent(ZF_IN ZFUITextView *textView) {
         v_zffloat *textSizeCurrent = textView->objectTag<v_zffloat *>("_ZFP_ZFImpl_sys_SDL_textSize");
         return textSizeCurrent != zfnull ? textSizeCurrent->zfv : textView->textSize();
     }
 
-    virtual void layoutNativeTextView(ZF_IN ZFUITextView *textView,
-                                      ZF_IN const ZFUISize &viewSize)
-    {
+    virtual void layoutNativeTextView(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN const ZFUISize &viewSize
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         zffloat textSizeCurrent = this->calcTextSizeAutoChange(textView, viewSize);
         textView->objectTag("_ZFP_ZFImpl_sys_SDL_textSize", zflineAlloc(v_zffloat, textSizeCurrent));
     }
 
 private:
-    static zfbool measureNativeTextView(ZF_OUT int &w, ZF_OUT int &h,
-                                        ZF_IN ZFUITextView *textView,
-                                        ZF_IN const zfchar *text,
-                                        ZF_IN zfindex textLen,
-                                        ZF_IN int widthHint,
-                                        ZF_IN zffloat textSize)
-    {
+    static zfbool measureNativeTextView(
+            ZF_OUT int &w
+            , ZF_OUT int &h
+            , ZF_IN ZFUITextView *textView
+            , ZF_IN const zfchar *text
+            , ZF_IN zfindex textLen
+            , ZF_IN int widthHint
+            , ZF_IN zffloat textSize
+            ) {
         ZFImpl_sys_SDL_fontAccess(sdlFont, ZFImpl_sys_SDL_FontType_normal, (zfint)textSize);
-        if(sdlFont == zfnull)
-        {
+        if(sdlFont == zfnull) {
             return zffalse;
         }
 
         int lineSkip = TTF_FontLineSkip(sdlFont);
-        if(TTF_SizeUTF8(sdlFont, text, &w, &h) != 0)
-        {
+        if(TTF_SizeUTF8(sdlFont, text, &w, &h) != 0) {
             return zffalse;
         }
-        if(widthHint <= 0 || w <= widthHint || textView->textSingleLine())
-        {
+        if(widthHint <= 0 || w <= widthHint || textView->textSingleLine()) {
             h = zfmMax(h, lineSkip);
             return zftrue;
         }
@@ -177,12 +184,10 @@ private:
         zfindex iText = 0;
         w = 0;
         int line = 0;
-        while(iText < textLen)
-        {
+        while(iText < textLen) {
             ++line;
             int extent, count;
-            if(TTF_MeasureUTF8(sdlFont, text + iText, widthHint, &extent, &count) != 0)
-            {
+            if(TTF_MeasureUTF8(sdlFont, text + iText, widthHint, &extent, &count) != 0) {
                 return zffalse;
             }
             w = zfmMax(w, extent);
@@ -193,18 +198,19 @@ private:
     }
 
 private:
-    static zfbool renderCallback(ZF_IN SDL_Renderer *renderer, ZF_IN ZFImpl_sys_SDL_View *nativeView,
-                                 ZF_IN const SDL_Rect &childRect, ZF_IN const SDL_Rect &parentRect)
-    {
+    static zfbool renderCallback(
+            ZF_IN SDL_Renderer *renderer
+            , ZF_IN ZFImpl_sys_SDL_View *nativeView
+            , ZF_IN const SDL_Rect &childRect
+            , ZF_IN const SDL_Rect &parentRect
+            ) {
         ZFUITextView *owner = ZFCastZFObject(ZFUITextView *, nativeView->ownerZFUIView);
-        if(owner == zfnull || owner->text().isEmpty())
-        {
+        if(owner == zfnull || owner->text().isEmpty()) {
             return zffalse;
         }
 
         ZFImpl_sys_SDL_FontType sdlFontType = ZFImpl_sys_SDL_FontType_normal;
-        switch(owner->textAppearance())
-        {
+        switch(owner->textAppearance()) {
             case ZFUITextAppearance::e_Bold:
                 sdlFontType = ZFImpl_sys_SDL_FontType_bold;
                 break;
@@ -220,22 +226,18 @@ private:
                 break;
         }
         ZFImpl_sys_SDL_fontAccess(sdlFont, sdlFontType, owner->textSizeCurrent());
-        if(sdlFont == zfnull)
-        {
+        if(sdlFont == zfnull) {
             return zffalse;
         }
 
         int sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
-        if(ZFBitTest(owner->textAlign(), ZFUIAlign::e_Left))
-        {
+        if(ZFBitTest(owner->textAlign(), ZFUIAlign::e_Left)) {
             sdlFontAlign = TTF_WRAPPED_ALIGN_LEFT;
         }
-        else if(ZFBitTest(owner->textAlign(), ZFUIAlign::e_Right))
-        {
+        else if(ZFBitTest(owner->textAlign(), ZFUIAlign::e_Right)) {
             sdlFontAlign = TTF_WRAPPED_ALIGN_RIGHT;
         }
-        else
-        {
+        else {
             sdlFontAlign = TTF_WRAPPED_ALIGN_CENTER;
         }
         TTF_SetFontWrappedAlign(sdlFont, sdlFontAlign);
@@ -248,32 +250,27 @@ private:
         zffloat textSizeCurrent;
         {
             v_zffloat *tmp = owner->objectTag<v_zffloat *>("_ZFP_ZFImpl_sys_SDL_textSize");
-            if(tmp == zfnull)
-            {
+            if(tmp == zfnull) {
                 textSizeCurrent = ZFPROTOCOL_ACCESS(ZFUITextView)->calcTextSizeAutoChange(owner, ZFUIRectGetSize(targetRectTmp));
                 owner->objectTag("_ZFP_ZFImpl_sys_SDL_textSize", zflineAlloc(v_zffloat, textSizeCurrent));
             }
-            else
-            {
+            else {
                 textSizeCurrent = tmp->zfv;
             }
         }
 
         SDL_Surface *sdlSurface = zfnull;
-        if(owner->textSingleLine() || owner->textTruncateMode() != ZFUITextTruncateMode::e_Disable)
-        {
+        if(owner->textSingleLine() || owner->textTruncateMode() != ZFUITextTruncateMode::e_Disable) {
             sdlSurface = renderWrapped(owner, targetRect, sdlFont, textSizeCurrent);
         }
-        else
-        {
+        else {
             sdlSurface = TTF_RenderUTF8_Blended_Wrapped(
                 sdlFont,
                 owner->text(),
                 ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor()),
                 (Uint32)targetRect.w);
         }
-        if(sdlSurface == zfnull)
-        {
+        if(sdlSurface == zfnull) {
             return zffalse;
         }
         ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface);
@@ -282,40 +279,33 @@ private:
         SDL_Rect targetRectFixed;
         ZFUIAlignFlags textAlign = owner->textAlign();
 
-        if(ZFBitTest(textAlign, ZFUIAlign::e_Left))
-        {
+        if(ZFBitTest(textAlign, ZFUIAlign::e_Left)) {
             srcRect.x = 0;
             targetRectFixed.x = targetRect.x;
             srcRect.w = targetRectFixed.w = (sdlSurface->w <= targetRect.w ? sdlSurface->w : targetRect.w);
         }
-        else if(ZFBitTest(textAlign, ZFUIAlign::e_Right))
-        {
-            if(sdlSurface->w <= targetRect.w)
-            {
+        else if(ZFBitTest(textAlign, ZFUIAlign::e_Right)) {
+            if(sdlSurface->w <= targetRect.w) {
                 srcRect.x = 0;
                 srcRect.w = sdlSurface->w;
                 targetRectFixed.x = targetRect.x + targetRect.w - sdlSurface->w;
                 targetRectFixed.w = sdlSurface->w;
             }
-            else
-            {
+            else {
                 srcRect.x = sdlSurface->w - targetRect.w;
                 srcRect.w = targetRect.w;
                 targetRectFixed.x = targetRect.x;
                 targetRectFixed.w = targetRect.w;
             }
         }
-        else
-        {
-            if(sdlSurface->w <= targetRect.w)
-            {
+        else {
+            if(sdlSurface->w <= targetRect.w) {
                 srcRect.x = 0;
                 srcRect.w = sdlSurface->w;
                 targetRectFixed.x = targetRect.x + (targetRect.w - sdlSurface->w) / 2;
                 targetRectFixed.w = sdlSurface->w;
             }
-            else
-            {
+            else {
                 srcRect.x = (sdlSurface->w - targetRect.w) / 2;
                 srcRect.w = targetRect.w;
                 targetRectFixed.x = targetRect.x;
@@ -323,40 +313,33 @@ private:
             }
         }
 
-        if(ZFBitTest(textAlign, ZFUIAlign::e_Top))
-        {
+        if(ZFBitTest(textAlign, ZFUIAlign::e_Top)) {
             srcRect.y = 0;
             targetRectFixed.y = targetRect.y;
             srcRect.h = targetRectFixed.h = (sdlSurface->h <= targetRect.h ? sdlSurface->h : targetRect.h);
         }
-        else if(ZFBitTest(textAlign, ZFUIAlign::e_Bottom))
-        {
-            if(sdlSurface->h <= targetRect.h)
-            {
+        else if(ZFBitTest(textAlign, ZFUIAlign::e_Bottom)) {
+            if(sdlSurface->h <= targetRect.h) {
                 srcRect.y = 0;
                 srcRect.h = sdlSurface->h;
                 targetRectFixed.y = targetRect.y + targetRect.h - sdlSurface->h;
                 targetRectFixed.h = sdlSurface->h;
             }
-            else
-            {
+            else {
                 srcRect.y = sdlSurface->h - targetRect.h;
                 srcRect.h = targetRect.h;
                 targetRectFixed.y = targetRect.y;
                 targetRectFixed.h = targetRect.h;
             }
         }
-        else
-        {
-            if(sdlSurface->h <= targetRect.h)
-            {
+        else {
+            if(sdlSurface->h <= targetRect.h) {
                 srcRect.y = 0;
                 srcRect.h = sdlSurface->h;
                 targetRectFixed.y = targetRect.y + (targetRect.h - sdlSurface->h) / 2;
                 targetRectFixed.h = sdlSurface->h;
             }
-            else
-            {
+            else {
                 srcRect.y = (sdlSurface->h - targetRect.h) / 2;
                 srcRect.h = targetRect.h;
                 targetRectFixed.y = targetRect.y;
@@ -369,54 +352,45 @@ private:
         SDL_RenderCopy(renderer, sdlTexture, &srcRect, &targetRectFixed);
         return zffalse;
     }
-    static SDL_Surface *renderWrapped(ZF_IN ZFUITextView *owner,
-                                      ZF_IN const SDL_Rect &targetRect,
-                                      ZF_IN TTF_Font *sdlFont,
-                                      ZF_IN zffloat textSizeCurrent)
-    {
+    static SDL_Surface *renderWrapped(
+            ZF_IN ZFUITextView *owner
+            , ZF_IN const SDL_Rect &targetRect
+            , ZF_IN TTF_Font *sdlFont
+            , ZF_IN zffloat textSizeCurrent
+            ) {
         zfbool textSingleLine = owner->textSingleLine();
         ZFUITextTruncateModeEnum textTruncateMode = owner->textTruncateMode();
         SDL_Color textColor = ZFImpl_sys_SDL_ZFUIColorToSDL_Color(owner->textColor());
-        if(textTruncateMode == ZFUITextTruncateMode::e_Disable)
-        {
-            if(textSingleLine)
-            {
+        if(textTruncateMode == ZFUITextTruncateMode::e_Disable) {
+            if(textSingleLine) {
                 return TTF_RenderUTF8_Blended(sdlFont, owner->text(), textColor);
             }
-            else
-            {
+            else {
                 return TTF_RenderUTF8_Blended_Wrapped(sdlFont, owner->text(), textColor, targetRect.w);
             }
         }
 
         int w, h;
-        if(textSingleLine)
-        {
-            if(TTF_SizeUTF8(sdlFont, owner->text(), &w, &h) != 0)
-            {
+        if(textSingleLine) {
+            if(TTF_SizeUTF8(sdlFont, owner->text(), &w, &h) != 0) {
                 return zfnull;
             }
-            if(w <= targetRect.w)
-            {
+            if(w <= targetRect.w) {
                 return TTF_RenderUTF8_Blended(sdlFont, owner->text(), textColor);
             }
         }
-        else
-        {
-            if(!zfself::measureNativeTextView(w, h, owner, owner->text(), owner->text().length(), targetRect.w, textSizeCurrent))
-            {
+        else {
+            if(!zfself::measureNativeTextView(w, h, owner, owner->text(), owner->text().length(), targetRect.w, textSizeCurrent)) {
                 return zfnull;
             }
-            if(w <= targetRect.w && h <= targetRect.h)
-            {
+            if(w <= targetRect.w && h <= targetRect.h) {
                 return TTF_RenderUTF8_Blended_Wrapped(sdlFont, owner->text(), textColor, (Uint32)targetRect.w);
             }
         }
 
         zfstring text = owner->text();
         zfindex p;
-        switch(owner->textTruncateMode())
-        {
+        switch(owner->textTruncateMode()) {
             case ZFUITextTruncateMode::e_Head:
                 p = 0;
                 break;
@@ -435,56 +409,43 @@ private:
         do {
             zfindex strip = (stripMin + stripMax) / 2;
             textNew.removeAll();
-            if(strip < p)
-            {
+            if(strip < p) {
                 textNew.append(text.cString(), p - strip);
             }
             textNew.append("..");
-            if(p + strip < text.length())
-            {
+            if(p + strip < text.length()) {
                 textNew.append(text.cString() + p + strip, text.length() - p - strip);
             }
-            if(textSingleLine)
-            {
-                if(TTF_SizeUTF8(sdlFont, textNew, &w, &h) != 0)
-                {
+            if(textSingleLine) {
+                if(TTF_SizeUTF8(sdlFont, textNew, &w, &h) != 0) {
                     return zfnull;
                 }
-                if(w <= targetRect.w)
-                {
-                    if(stripMin == stripMax || strip == stripMin + 1)
-                    {
+                if(w <= targetRect.w) {
+                    if(stripMin == stripMax || strip == stripMin + 1) {
                         return TTF_RenderUTF8_Blended(sdlFont, textNew, textColor);
                     }
                     stripMax = strip;
                 }
-                else
-                {
+                else {
                     stripMin = (stripMin == strip ? strip + 1 : strip);
                 }
             }
-            else
-            {
-                if(!zfself::measureNativeTextView(w, h, owner, textNew, textNew.length(), targetRect.w, textSizeCurrent))
-                {
+            else {
+                if(!zfself::measureNativeTextView(w, h, owner, textNew, textNew.length(), targetRect.w, textSizeCurrent)) {
                     return zfnull;
                 }
-                if(w <= targetRect.w && h <= targetRect.h)
-                {
-                    if(stripMin == stripMax || strip == stripMin + 1)
-                    {
+                if(w <= targetRect.w && h <= targetRect.h) {
+                    if(stripMin == stripMax || strip == stripMin + 1) {
                         return TTF_RenderUTF8_Blended_Wrapped(sdlFont, textNew, textColor, targetRect.w);
                     }
                     stripMax = strip;
                 }
-                else
-                {
+                else {
                     stripMin = (stripMin == strip ? strip + 1 : strip);
                 }
             }
 
-            if(strip >= p && p + strip >= text.length())
-            {
+            if(strip >= p && p + strip >= text.length()) {
                 return zfnull;
             }
         } while(zftrue);

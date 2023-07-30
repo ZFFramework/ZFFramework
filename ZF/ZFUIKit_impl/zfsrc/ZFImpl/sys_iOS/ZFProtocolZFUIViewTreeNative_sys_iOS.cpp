@@ -12,9 +12,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTreeNativeImpl_sys_iOS, ZFUIViewTreeNati
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void viewTreeNative(ZF_IN ZFUIView *view,
-                                ZF_IN_OUT const ZFOutput &outputCallback)
-    {
+    virtual void viewTreeNative(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OUT const ZFOutput &outputCallback
+            ) {
         zfstring s;
         ZFImpl_sys_iOS_viewTreePrintT(s, (__bridge UIView *)view->nativeView());
         outputCallback << s;

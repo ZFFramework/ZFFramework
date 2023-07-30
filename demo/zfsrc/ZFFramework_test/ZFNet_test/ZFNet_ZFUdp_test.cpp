@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFNet_ZFUdp_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFNet_ZFUdp_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFNet_ZFUdp_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUdp);
         ZFFramework_test_asyncTestCheck();
@@ -33,11 +31,9 @@ protected:
                     ) {
                 ZFBuffer buf;
                 ZFUdpAddr recvAddr;
-                while(server->valid())
-                {
+                while(server->valid()) {
                     zfindex recvSize = server->recv(recvAddr, buf, 4096);
-                    if(recvSize > 0)
-                    {
+                    if(recvSize > 0) {
                         zfLog() << "server recv:" << buf.text();
                         server->send(recvAddr, "server reply");
                         break;
@@ -67,11 +63,9 @@ protected:
                     ) {
                 ZFBuffer buf;
                 ZFUdpAddr hostAddr;
-                while(client->valid())
-                {
+                while(client->valid()) {
                     zfindex recvSize = client->recv(hostAddr, buf);
-                    if(recvSize > 0)
-                    {
+                    if(recvSize > 0) {
                         zfLog() << "client recv:" << buf.text();
 
                         testCase->testCaseStop();

@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_scale_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIKit_scale_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_scale_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
@@ -26,8 +24,7 @@ protected:
     }
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window)
-    {
+    void prepareSettingButton(ZF_IN ZFUIWindow *window) {
         zfblockedAlloc(ZFArray, settings);
 
         { // UIScale
@@ -42,12 +39,10 @@ private:
             setting->buttonTextGetter(buttonTextGetter);
             ZFLISTENER(buttonClickListener) {
                 ZFUIRootView *rootView = ZFUISysWindow::mainWindow()->rootView();
-                if(rootView->UIScale() == 1)
-                {
+                if(rootView->UIScale() == 1) {
                     rootView->UIScale(2);
                 }
-                else
-                {
+                else {
                     rootView->UIScale(1);
                 }
             } ZFLISTENER_END()

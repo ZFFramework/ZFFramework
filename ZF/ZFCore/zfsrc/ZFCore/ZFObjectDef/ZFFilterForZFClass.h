@@ -38,8 +38,7 @@ typedef enum {
 #define ZFTOKEN_ZFFilterForZFClassTypeExcludeParentOf "ExcludeParentOf"
 
 // ============================================================
-zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFClassData
-{
+zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFClassData {
 public:
     const ZFClass *filterClass;
     ZFFilterForZFClassType filterType;
@@ -47,8 +46,7 @@ public:
 /**
  * @brief util class to filter ZFClass
  */
-zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFClass
-{
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFClass {
 public:
     /**
      * @brief see #ZFFilterBase::CustomFilterCallback
@@ -82,13 +80,17 @@ public:
     /**
      * @brief add a filter
      */
-    virtual ZFFilterForZFClass &filterAdd(ZF_IN const ZFClass * const &e,
-                                          ZF_IN_OPT ZFFilterForZFClassType filterType = ZFFilterForZFClassTypeExclude);
+    virtual ZFFilterForZFClass &filterAdd(
+            ZF_IN const ZFClass * const &e
+            , ZF_IN_OPT ZFFilterForZFClassType filterType = ZFFilterForZFClassTypeExclude
+            );
     /**
      * @brief remove a filter (remove first only, if duplicated filter added)
      */
-    virtual ZFFilterForZFClass &filterRemove(ZF_IN const ZFClass * const &e,
-                                             ZF_IN_OPT ZFFilterForZFClassType filterType = ZFFilterForZFClassTypeExclude);
+    virtual ZFFilterForZFClass &filterRemove(
+            ZF_IN const ZFClass * const &e
+            , ZF_IN_OPT ZFFilterForZFClassType filterType = ZFFilterForZFClassTypeExclude
+            );
     /**
      * @brief remove filter
      */
@@ -142,8 +144,7 @@ public:
     /** @brief see #objectInfo */
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    virtual inline zfstring objectInfo(void) const
-    {
+    virtual inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;

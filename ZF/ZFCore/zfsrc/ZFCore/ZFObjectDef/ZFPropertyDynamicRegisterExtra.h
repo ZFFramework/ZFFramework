@@ -31,19 +31,22 @@ typedef enum {
  * callback's param0 is #ZFPropertyInvokeData,
  * sender is the invokerObject
  */
-extern ZFLIB_ZFCore zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProperty *property,
-                                                              ZF_IN const ZFClass *ownerClassOrNull,
-                                                              ZF_IN ZFPropertyLifeCycle lifeCycle,
-                                                              ZF_IN const ZFListener &callback,
-                                                              ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFPropertyDynamicRegisterLifeCycle(
+        ZF_IN const ZFProperty *property
+        , ZF_IN const ZFClass *ownerClassOrNull
+        , ZF_IN ZFPropertyLifeCycle lifeCycle
+        , ZF_IN const ZFListener &callback
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 /** @brief see #ZFPropertyDynamicRegisterLifeCycle */
-extern ZFLIB_ZFCore zfbool ZFPropertyDynamicUnregisterLifeCycle(ZF_IN const ZFProperty *property,
-                                                                ZF_IN const ZFClass *ownerClassOrNull,
-                                                                ZF_IN ZFPropertyLifeCycle lifeCycle);
+extern ZFLIB_ZFCore zfbool ZFPropertyDynamicUnregisterLifeCycle(
+        ZF_IN const ZFProperty *property
+        , ZF_IN const ZFClass *ownerClassOrNull
+        , ZF_IN ZFPropertyLifeCycle lifeCycle
+        );
 
 /** @brief data to hold params for property, see #ZFPropertyDynamicRegisterLifeCycle */
-zfclass ZFLIB_ZFCore ZFPropertyInvokeData : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFPropertyInvokeData : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFPropertyInvokeData, ZFObject)
 
 public:

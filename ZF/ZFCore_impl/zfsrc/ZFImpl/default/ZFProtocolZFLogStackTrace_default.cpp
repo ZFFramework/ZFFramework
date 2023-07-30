@@ -22,11 +22,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLogStackTraceImpl_default, ZFLogStackTrace, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("edd_stacktrace")
 public:
-    virtual void stackTrace(ZF_IN_OUT zfstring &ret,
-                            ZF_IN_OPT const zfchar *prefix = zfnull,
-                            ZF_IN_OPT zfindex ignoreLevel = 0,
-                            ZF_IN_OPT zfindex maxLevel = 20)
-    {
+    virtual void stackTrace(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT const zfchar *prefix = zfnull
+            , ZF_IN_OPT zfindex ignoreLevel = 0
+            , ZF_IN_OPT zfindex maxLevel = 20
+            ) {
         const zfchar *fixedPrefix = ((prefix == zfnull) ? "" : prefix);
 
         ret += fixedPrefix;
@@ -37,8 +38,7 @@ public:
         dbg::stack::const_iterator it = s.begin();
         ++it;
         for(zfindex i = 0; i < ignoreLevel && it != s.end(); ++i, ++it);
-        for(zfindex i = 0; i < maxLevel && it != s.end(); ++i, ++it)
-        {
+        for(zfindex i = 0; i < maxLevel && it != s.end(); ++i, ++it) {
             ret += fixedPrefix;
             ret += "| ";
 #if 0
@@ -52,15 +52,15 @@ public:
         ret += fixedPrefix;
         ret += "========================  stack end  =======================";
     }
-    virtual void callerInfo(ZF_IN_OUT zfstring &ret,
-                            ZF_IN_OPT zfindex ignoreLevel = 0)
-    {
+    virtual void callerInfo(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT zfindex ignoreLevel = 0
+            ) {
         dbg::stack s;
         dbg::stack::const_iterator it = s.begin();
         ++it;
         for(zfindex i = 0; i < ignoreLevel && it != s.end(); ++i, ++it);
-        if(it != s.end())
-        {
+        if(it != s.end()) {
             ret = "[";
 #if 0
             ZF_CALLER_FILE_TO_NAME_REF(ret, it->module.cString());
@@ -71,46 +71,38 @@ public:
         }
     }
 private:
-    zfstring trimFunc(ZF_IN const zfchar *s)
-    {
+    zfstring trimFunc(ZF_IN const zfchar *s) {
         zfstring ret;
         ret.capacity(zfslen(s));
         const zfchar *last = (s - 1);
         zfbool namespaceMatched = zffalse;
-        while(*s)
-        {
-            if(*s == ':' && *(s+1) == ':')
-            {
-                if(namespaceMatched)
-                {
+        while(*s) {
+            if(*s == ':' && *(s+1) == ':') {
+                if(namespaceMatched) {
                     s += 2;
                 }
-                else
-                {
+                else {
                     namespaceMatched = zftrue;
                     last = s + 1;
                     s += 2;
                 }
             }
             else if(!(
-                (*s >= 'a' && *s <= 'z')
-                || (*s >= 'A' && *s <= 'Z')
-                || (*s >= '0' && *s <= '9')
-                || *s == '_'
-                ))
-            {
+                        (*s >= 'a' && *s <= 'z')
+                        || (*s >= 'A' && *s <= 'Z')
+                        || (*s >= '0' && *s <= '9')
+                        || *s == '_'
+                        )) {
                 namespaceMatched = zffalse;
                 ret.append(last + 1, s - last);
                 last = s;
                 ++s;
             }
-            else
-            {
+            else {
                 ++s;
             }
         }
-        if(last != s - 1)
-        {
+        if(last != s - 1) {
             ret.append(last + 1, s - last - 1);
         }
         return ret;

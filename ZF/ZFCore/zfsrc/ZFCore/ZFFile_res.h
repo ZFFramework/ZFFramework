@@ -27,11 +27,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * such as #ZFResCopy, #ZFResOpen, #ZFResRead\n
  * typically, additional resource path should be modified during startup only
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResExtPathAdd,
-                        ZFMP_IN(const ZFPathInfo &, pathInfo))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResExtPathAdd
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        )
 /** @brief see #ZFResExtPathAdd */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResExtPathRemove,
-                        ZFMP_IN(const ZFPathInfo &, pathInfo))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResExtPathRemove
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        )
 /** @brief see #ZFResExtPathAdd */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFPathInfo>, ZFResExtPathList)
 /**
@@ -43,33 +45,37 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFPathInfo>, ZFResExtPathList)
  * the final file path should be "return value + '/' + resPath"
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, const ZFPathInfo *, ZFResExtPathCheck,
-                        ZFMP_IN(const zfchar *, resPath))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, const ZFPathInfo *, ZFResExtPathCheck
+        , ZFMP_IN(const zfchar *, resPath)
+        )
 
 // ============================================================
 /**
  * @brief return true if res file specified by path is exist
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsExist,
-                        ZFMP_IN(const zfchar *, resPath))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsExist
+        , ZFMP_IN(const zfchar *, resPath)
+        )
 /**
  * @brief return true if res file specified by path is a directory
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsDir,
-                        ZFMP_IN(const zfchar *, resPath))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsDir
+        , ZFMP_IN(const zfchar *, resPath)
+        )
 
 /**
  * @brief res version of #ZFFileCopy
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFResCopy,
-                        ZFMP_IN(const zfchar *, resPath),
-                        ZFMP_IN(const zfchar *, dstPath),
-                        ZFMP_IN_OPT(zfbool, isRecursive, zftrue),
-                        ZFMP_IN_OPT(zfbool, isForce, zftrue),
-                        ZFMP_IN_OPT(zfstring *, errPos, zfnull))
+ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFResCopy
+        , ZFMP_IN(const zfchar *, resPath)
+        , ZFMP_IN(const zfchar *, dstPath)
+        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
+        )
 
 /**
  * @see see #ZFResOpen, #ZFFileFindFirst
@@ -77,19 +83,22 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFResCopy,
  * use empty string to find resource's root directory
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFResFindFirst,
-                        ZFMP_IN_OUT(ZFFileFindData &, fd),
-                        ZFMP_IN(const zfchar *, resPath))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFResFindFirst
+        , ZFMP_IN_OUT(ZFFileFindData &, fd)
+        , ZFMP_IN(const zfchar *, resPath)
+        )
 /**
  * @see see #ZFResOpen, #ZFFileFindNext
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResFindNext,
-                        ZFMP_IN_OUT(ZFFileFindData &, fd))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResFindNext
+        , ZFMP_IN_OUT(ZFFileFindData &, fd)
+        )
 /**
  * @see see #ZFResOpen, #ZFFileFindClose
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResFindClose,
-                        ZFMP_IN_OUT(ZFFileFindData &, fd))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResFindClose
+        , ZFMP_IN_OUT(ZFFileFindData &, fd)
+        )
 
 /**
  * @brief open a resource file for read only, see #ZFFileOpen
@@ -110,51 +119,59 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFResFindClose,
  * it's your responsibility to make sure not to misuse it
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void *, ZFResOpen,
-                        ZFMP_IN(const zfchar *, resPath))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void *, ZFResOpen
+        , ZFMP_IN(const zfchar *, resPath)
+        )
 /**
  * @brief see #ZFResOpen #ZFFileClose
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResClose,
-                        ZFMP_IN(void *, token))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResClose
+        , ZFMP_IN(void *, token)
+        )
 
 /**
  * @brief see #ZFResOpen #ZFFileTell
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResTell,
-                        ZFMP_IN(void *, token))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResTell
+        , ZFMP_IN(void *, token)
+        )
 /**
  * @brief see #ZFResOpen #ZFFileSeek
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFResSeek,
-                        ZFMP_IN(void *, token),
-                        ZFMP_IN(zfindex, byteSize),
-                        ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFResSeek
+        , ZFMP_IN(void *, token)
+        , ZFMP_IN(zfindex, byteSize)
+        , ZFMP_IN_OPT(ZFSeekPos, position, ZFSeekPosBegin)
+        )
 
 /**
  * @brief see #ZFResOpen #ZFFileRead
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFResRead,
-                        ZFMP_IN(void *, token),
-                        ZFMP_IN(void *, buf),
-                        ZFMP_IN(zfindex, maxByteSize))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfindex, ZFResRead
+        , ZFMP_IN(void *, token)
+        , ZFMP_IN(void *, buf)
+        , ZFMP_IN(zfindex, maxByteSize)
+        )
 
 /**
  * @brief see #ZFResOpen #ZFFileIsEof
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsEof,
-                        ZFMP_IN(void *, token))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsEof
+        , ZFMP_IN(void *, token)
+        )
 /**
  * @brief see #ZFResOpen #ZFFileIsEof
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsError,
-                        ZFMP_IN(void *, token))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFResIsError
+        , ZFMP_IN(void *, token)
+        )
 
 /**
  * @brief see #ZFResOpen, #ZFFileSize
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResSize,
-                        ZFMP_IN(void *, token))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfindex, ZFResSize
+        , ZFMP_IN(void *, token)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFFile_res_h_

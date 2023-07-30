@@ -16,8 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief util wrapper class to hold a type
  */
 template<typename T_Type>
-zfclassLikePOD zftValue
-{
+zfclassLikePOD zftValue {
 public:
     /** @brief the wrapped value */
     T_Type zfv;
@@ -74,8 +73,7 @@ typedef enum {
  *   no rvalue reference support
  */
 template<typename T_Type>
-zfclassNotPOD zftTraits
-{
+zfclassNotPOD zftTraits {
 public:
     enum {
         TrIsPtr = 0, /** @brief true if the type is pointer type */
@@ -125,8 +123,7 @@ public:
  *   const void * const &
  */
 template<typename T_Type>
-zfclassNotPOD zftTraits<T_Type &>
-{
+zfclassNotPOD zftTraits<T_Type &> {
 public:
     enum {
         TrIsPtr = 0,
@@ -142,8 +139,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_R;}
 };
 template<typename T_Type>
-zfclassNotPOD zftTraits<T_Type const &>
-{
+zfclassNotPOD zftTraits<T_Type const &> {
 public:
     enum {
         TrIsPtr = 0,
@@ -159,8 +155,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CR;}
 };
 template<typename T_Type>
-zfclassNotPOD zftTraits<T_Type *>
-{
+zfclassNotPOD zftTraits<T_Type *> {
 public:
     enum {
         TrIsPtr = 1,
@@ -176,8 +171,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_P;}
 };
 template<typename T_Type>
-zfclassNotPOD zftTraits<T_Type *&>
-{
+zfclassNotPOD zftTraits<T_Type *&> {
 public:
     enum {
         TrIsPtr = 1,
@@ -193,8 +187,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PR;}
 };
 template<typename T_Type>
-zfclassNotPOD zftTraits<T_Type * const &>
-{
+zfclassNotPOD zftTraits<T_Type * const &> {
 public:
     enum {
         TrIsPtr = 1,
@@ -210,8 +203,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PCR;}
 };
 template<typename T_Type>
-zfclassNotPOD zftTraits<const T_Type *>
-{
+zfclassNotPOD zftTraits<const T_Type *> {
 public:
     enum {
         TrIsPtr = 1,
@@ -227,8 +219,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CP;}
 };
 template<typename T_Type>
-zfclassNotPOD zftTraits<const T_Type *&>
-{
+zfclassNotPOD zftTraits<const T_Type *&> {
 public:
     enum {
         TrIsPtr = 1,
@@ -244,8 +235,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CPR;}
 };
 template<typename T_Type>
-zfclassNotPOD zftTraits<const T_Type * const &>
-{
+zfclassNotPOD zftTraits<const T_Type * const &> {
 public:
     enum {
         TrIsPtr = 1,
@@ -262,8 +252,7 @@ public:
 };
 
 template<>
-zfclassNotPOD zftTraits<void>
-{
+zfclassNotPOD zftTraits<void> {
 public:
     enum {
         TrIsPtr = 0,
@@ -279,8 +268,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_N;}
 };
 template<>
-zfclassNotPOD zftTraits<void *>
-{
+zfclassNotPOD zftTraits<void *> {
 public:
     enum {
         TrIsPtr = 1,
@@ -296,8 +284,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_P;}
 };
 template<>
-zfclassNotPOD zftTraits<const void *>
-{
+zfclassNotPOD zftTraits<const void *> {
 public:
     enum {
         TrIsPtr = 1,
@@ -313,8 +300,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CP;}
 };
 template<>
-zfclassNotPOD zftTraits<void *&>
-{
+zfclassNotPOD zftTraits<void *&> {
 public:
     enum {
         TrIsPtr = 1,
@@ -330,8 +316,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PR;}
 };
 template<>
-zfclassNotPOD zftTraits<void * const &>
-{
+zfclassNotPOD zftTraits<void * const &> {
 public:
     enum {
         TrIsPtr = 1,
@@ -347,8 +332,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_PCR;}
 };
 template<>
-zfclassNotPOD zftTraits<const void *&>
-{
+zfclassNotPOD zftTraits<const void *&> {
 public:
     enum {
         TrIsPtr = 1,
@@ -364,8 +348,7 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_CPR;}
 };
 template<>
-zfclassNotPOD zftTraits<const void * const &>
-{
+zfclassNotPOD zftTraits<const void * const &> {
 public:
     enum {
         TrIsPtr = 1,
@@ -385,13 +368,11 @@ public:
 // ============================================================
 /** @brief std::enable_if wrapper */
 template<int cond = 0, typename T_Fix = void>
-zfclassNotPOD zftEnableIf
-{
+zfclassNotPOD zftEnableIf {
 };
 /** @brief std::enable_if wrapper */
 template<>
-zfclassNotPOD zftEnableIf<1>
-{
+zfclassNotPOD zftEnableIf<1> {
 public:
     /** @brief std::enable_if wrapper */
     typedef void EnableIf;
@@ -400,8 +381,7 @@ public:
 // ============================================================
 /** @brief std::is_same wrapper */
 template<typename T0, typename T1>
-zfclassNotPOD zftTypeIsSame
-{
+zfclassNotPOD zftTypeIsSame {
 public:
     enum {
         /** @brief std::is_same wrapper */
@@ -410,8 +390,7 @@ public:
 };
 /** @brief std::is_same wrapper */
 template<typename T>
-zfclassNotPOD zftTypeIsSame<T, T>
-{
+zfclassNotPOD zftTypeIsSame<T, T> {
 public:
     enum {
         /** @brief std::is_same wrapper */
@@ -422,8 +401,7 @@ public:
 // ============================================================
 /** @brief std::is_class wrapper */
 template<typename T>
-zfclassNotPOD zftTypeIsClass
-{
+zfclassNotPOD zftTypeIsClass {
 private:
     template<typename U>
     static char _test(int U::*);
@@ -440,14 +418,12 @@ public:
 /** @brief std::is_base_of wrapper */
 template<typename TChild, typename TBase,
     bool _IsClass = (zftTypeIsClass<TChild>::TypeIsClass && zftTypeIsClass<TBase>::TypeIsClass)>
-zfclassNotPOD zftTypeIsTypeOf
-{
+zfclassNotPOD zftTypeIsTypeOf {
 private:
     template<typename T_Dummy>
     static char _test(TChild const &, T_Dummy);
     static int _test(TBase const &, int);
-    zfclassNotPOD _Conv
-    {
+    zfclassNotPOD _Conv {
     public:
         operator TChild const & (void);
         operator TBase const & (void) const;
@@ -460,8 +436,7 @@ public:
 };
 /** @brief std::is_base_of wrapper */
 template<typename TChild, typename TBase>
-zfclassNotPOD zftTypeIsTypeOf<TChild, TBase, false>
-{
+zfclassNotPOD zftTypeIsTypeOf<TChild, TBase, false> {
 public:
     enum {
         /** @brief std::is_base_of wrapper */
@@ -470,8 +445,7 @@ public:
 };
 /** @brief std::is_base_of wrapper */
 template<typename T>
-zfclassNotPOD zftTypeIsTypeOf<T, T, true>
-{
+zfclassNotPOD zftTypeIsTypeOf<T, T, true> {
 public:
     enum {
         /** @brief std::is_base_of wrapper */

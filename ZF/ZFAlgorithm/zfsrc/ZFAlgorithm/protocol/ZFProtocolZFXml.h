@@ -18,15 +18,19 @@ public:
     /**
      * @brief see #ZFXmlEscapeCharEncode
      */
-    virtual void xmlEscapeCharEncode(ZF_OUT const ZFOutput &dst,
-                                     ZF_IN const zfchar *src,
-                                     ZF_IN_OPT zfindex count = zfindexMax());
+    virtual void xmlEscapeCharEncode(
+            ZF_OUT const ZFOutput &dst
+            , ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            );
     /**
      * @brief see #ZFXmlEscapeCharEncode
      */
-    virtual void xmlEscapeCharDecode(ZF_OUT const ZFOutput &dst,
-                                     ZF_IN const zfchar *src,
-                                     ZF_IN_OPT zfindex count = zfindexMax());
+    virtual void xmlEscapeCharDecode(
+            ZF_OUT const ZFOutput &dst
+            , ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            );
 
 public:
     /**
@@ -38,8 +42,10 @@ public:
      * -  value for each xml item
      * -  CDATA for text node
      */
-    virtual ZFXml xmlParse(ZF_IN const zfchar *src,
-                           ZF_IN_OPT zfindex size = zfindexMax()) zfpurevirtual;
+    virtual ZFXml xmlParse(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex size = zfindexMax()
+            ) zfpurevirtual;
     /**
      * @brief parse xml document
      */
@@ -53,24 +59,28 @@ public:
      * -  use #xmlMemoryPool_xmlName/#xmlMemoryPool_xmlValue to store data
      * -  implement this method to release reference
      */
-    virtual void xmlMemoryPoolRelease(ZF_IN void *token, ZF_IN const zfchar *value)
-    {
+    virtual void xmlMemoryPoolRelease(
+            ZF_IN void *token
+            , ZF_IN const zfchar *value
+            ) {
         // no pool logic by default
     }
 
 public:
     /** @brief see #xmlMemoryPoolRelease */
-    inline void xmlMemoryPool_xmlName(ZF_IN ZFXml &xmlItem,
-                                      ZF_IN const zfchar *xmlName,
-                                      ZF_IN void *token)
-    {
+    inline void xmlMemoryPool_xmlName(
+            ZF_IN ZFXml &xmlItem
+            , ZF_IN const zfchar *xmlName
+            , ZF_IN void *token
+            ) {
         xmlItem._ZFP_ZFXml_xmlMemoryPool_xmlName(xmlName, token);
     }
     /** @brief see #xmlMemoryPoolRelease */
-    inline void xmlMemoryPool_xmlValue(ZF_IN ZFXml &xmlItem,
-                                       ZF_IN const zfchar *xmlValue,
-                                       ZF_IN void *token)
-    {
+    inline void xmlMemoryPool_xmlValue(
+            ZF_IN ZFXml &xmlItem
+            , ZF_IN const zfchar *xmlValue
+            , ZF_IN void *token
+            ) {
         xmlItem._ZFP_ZFXml_xmlMemoryPool_xmlValue(xmlValue, token);
     }
 ZFPROTOCOL_INTERFACE_END(ZFXml)

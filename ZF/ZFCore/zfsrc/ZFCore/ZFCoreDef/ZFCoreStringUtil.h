@@ -29,29 +29,26 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 template<typename T_Int>
-zfbool zfsFromIntT(ZF_OUT zfstring &s,
-                   ZF_IN T_Int n,
-                   ZF_IN_OPT zfindex radix = 10,
-                   ZF_IN_OPT zfbool useUpperCase = zftrue)
-{
+zfbool zfsFromIntT(
+        ZF_OUT zfstring &s
+        , ZF_IN T_Int n
+        , ZF_IN_OPT zfindex radix = 10
+        , ZF_IN_OPT zfbool useUpperCase = zftrue
+        ) {
     if(radix < 2 || radix > 36) {return zffalse;}
 
-    if(n <= (T_Int)0)
-    {
+    if(n <= (T_Int)0) {
         // tricks to solve the unsigned type warnings
-        if(n != (T_Int)0)
-        {
+        if(n != (T_Int)0) {
             s += '-';
             n = (T_Int)0 - n;
         }
-        else
-        {
+        else {
             s += '0';
             return zftrue;
         }
     }
-    else if(n == (T_Int)-1)
-    {
+    else if(n == (T_Int)-1) {
         s += '-';
         s += '1';
         return zftrue;
@@ -63,8 +60,7 @@ zfbool zfsFromIntT(ZF_OUT zfstring &s,
     const zfchar *token = useUpperCase
         ? "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         : "0123456789abcdefghijklmnopqrstuvwxyz";
-    while(e /= radix)
-    {
+    while(e /= radix) {
         s += token[n / e];
         n %= e;
     }
@@ -74,10 +70,11 @@ zfbool zfsFromIntT(ZF_OUT zfstring &s,
  * @brief see #zfsFromIntT
  */
 template<typename T_Int>
-zfstring zfsFromInt(ZF_IN T_Int n,
-                    ZF_IN_OPT zfindex radix = 10,
-                    ZF_IN_OPT zfbool useUpperCase = zftrue)
-{
+zfstring zfsFromInt(
+        ZF_IN T_Int n
+        , ZF_IN_OPT zfindex radix = 10
+        , ZF_IN_OPT zfbool useUpperCase = zftrue
+        ) {
     zfstring s;
     zfsFromIntT(s, n, radix, useUpperCase);
     return s;
@@ -93,17 +90,16 @@ zfstring zfsFromInt(ZF_IN T_Int n,
  * (for example, specify a short int type while numbers in src is too long)
  */
 template<typename T_Int>
-zfbool zfsToIntT(ZF_OUT T_Int &ret,
-                 ZF_IN const zfchar *src,
-                 ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                 ZF_IN_OPT zfindex radix = 10,
-                 ZF_IN_OPT zfbool allowNegative = zftrue,
-                 ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
-    if(src == zfnull || srcLen == 0 || radix < 2 || radix > 36)
-    {
-        if(outErrorPos != zfnull)
-        {
+zfbool zfsToIntT(
+        ZF_OUT T_Int &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT zfindex radix = 10
+        , ZF_IN_OPT zfbool allowNegative = zftrue
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
+    if(src == zfnull || srcLen == 0 || radix < 2 || radix > 36) {
+        if(outErrorPos != zfnull) {
             *outErrorPos = src;
         }
         return zffalse;
@@ -113,12 +109,9 @@ zfbool zfsToIntT(ZF_OUT T_Int &ret,
     const zfchar *p = src;
     const zfchar *pEnd = ((srcLen == zfindexMax()) ? (p - 1) : (p + srcLen));
     zfbool negative = zffalse;
-    if(*p == '-')
-    {
-        if(!allowNegative)
-        {
-            if(outErrorPos != zfnull)
-            {
+    if(*p == '-') {
+        if(!allowNegative) {
+            if(outErrorPos != zfnull) {
                 *outErrorPos = p;
             }
             return zffalse;
@@ -126,8 +119,7 @@ zfbool zfsToIntT(ZF_OUT T_Int &ret,
         negative = zftrue;
         ++p;
     }
-    while(*p != '\0' && p != pEnd)
-    {
+    while(*p != '\0' && p != pEnd) {
         zfuint tmp = 0;
         if(*p >= '0' && *p <= '9') {tmp = *p - '0';}
         else if(*p >= 'a' && *p <= 'z') {tmp = 10 + *p - 'a';}
@@ -137,19 +129,15 @@ zfbool zfsToIntT(ZF_OUT T_Int &ret,
         ret = (T_Int)((ret * (zfuint)radix) + tmp);
         ++p;
     }
-    if(negative)
-    {
+    if(negative) {
         ret = (T_Int)0 - ret;
     }
 
-    if(*p == '\0' || p == pEnd)
-    {
+    if(*p == '\0' || p == pEnd) {
         return zftrue;
     }
-    else
-    {
-        if(outErrorPos != zfnull)
-        {
+    else {
+        if(outErrorPos != zfnull) {
             *outErrorPos = p;
         }
         return zffalse;
@@ -159,12 +147,13 @@ zfbool zfsToIntT(ZF_OUT T_Int &ret,
  * @brief see #zfsToIntT
  */
 template<typename T_Int>
-T_Int zfsToInt(ZF_IN const zfchar *src,
-               ZF_IN_OPT zfindex srcLen = zfindexMax(),
-               ZF_IN_OPT zfindex radix = 10,
-               ZF_IN_OPT zfbool allowNegative = zftrue,
-               ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
+T_Int zfsToInt(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT zfindex radix = 10
+        , ZF_IN_OPT zfbool allowNegative = zftrue
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
     T_Int ret = 0;
     zfsToIntT(ret, src, srcLen, radix, allowNegative, outErrorPos);
     return ret;
@@ -172,12 +161,13 @@ T_Int zfsToInt(ZF_IN const zfchar *src,
 /**
  * @brief see #zfsToIntT
  */
-inline zfint zfsToInt(ZF_IN const zfchar *src,
-                      ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                      ZF_IN_OPT zfindex radix = 10,
-                      ZF_IN_OPT zfbool allowNegative = zftrue,
-                      ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
+inline zfint zfsToInt(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT zfindex radix = 10
+        , ZF_IN_OPT zfbool allowNegative = zftrue
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
     return zfsToInt<zfint>(src, srcLen, radix, allowNegative, outErrorPos);
 }
 
@@ -190,33 +180,29 @@ inline zfint zfsToInt(ZF_IN const zfchar *src,
  * for typical usage, see #zfsFromIntT
  */
 template<typename T_Float>
-zfbool zfsFromFloatT(ZF_OUT zfstring &s,
-                     ZF_IN T_Float n)
-{
+zfbool zfsFromFloatT(
+        ZF_OUT zfstring &s
+        , ZF_IN T_Float n
+        ) {
     zfchar buf[64] = {0};
     snprintf(buf, sizeof(buf), "%lf", (double)n);
     const zfchar *p = buf;
     while(*p && *p != '.') {++p;}
-    if(*p == '\0')
-    {
+    if(*p == '\0') {
         s += buf;
         return zftrue;
     }
     const zfchar *pEnd = p + zfslen(p) - 1;
-    if(*pEnd == '0')
-    {
+    if(*pEnd == '0') {
         do {--pEnd;} while(*pEnd == '0');
-        if(pEnd == p)
-        {
+        if(pEnd == p) {
             s.append(buf, p - buf);
         }
-        else
-        {
+        else {
             s.append(buf, pEnd + 1 - buf);
         }
     }
-    else
-    {
+    else {
         s += buf;
     }
     return zftrue;
@@ -225,8 +211,7 @@ zfbool zfsFromFloatT(ZF_OUT zfstring &s,
  * @brief see #zfsFromFloatT
  */
 template<typename T_Float>
-zfstring zfsFromFloat(ZF_IN T_Float n)
-{
+zfstring zfsFromFloat(ZF_IN T_Float n) {
     zfstring s;
     zfsFromFloatT(s, n);
     return s;
@@ -242,15 +227,14 @@ zfstring zfsFromFloat(ZF_IN T_Float n)
  * @note if src is null, pErrPos would be null
  */
 template<typename T_Float>
-zfbool zfsToFloatT(ZF_OUT T_Float &ret,
-                   ZF_IN const zfchar *src,
-                   ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                   ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
-    if(src == zfnull || srcLen == 0)
-    {
-        if(outErrorPos != zfnull)
-        {
+zfbool zfsToFloatT(
+        ZF_OUT T_Float &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
+    if(src == zfnull || srcLen == 0) {
+        if(outErrorPos != zfnull) {
             *outErrorPos = src;
         }
         return zffalse;
@@ -260,62 +244,51 @@ zfbool zfsToFloatT(ZF_OUT T_Float &ret,
     const zfchar *p = src;
     const zfchar *pEnd = ((srcLen == zfindexMax()) ? (p - 1) : (p + srcLen));
     zfbool negative = zffalse;
-    if(*p == '-')
-    {
+    if(*p == '-') {
         negative = zftrue;
         ++p;
     }
 
-    while(*p != '\0' && *p != '.' && p != pEnd)
-    {
+    while(*p != '\0' && *p != '.' && p != pEnd) {
         if(*p < '0' || *p > '9') {break;}
         ret = ret * 10 + (*p - '0');
         ++p;
     }
-    if(*p != '\0' && *p != '.' && p != pEnd)
-    {
-        if(outErrorPos != zfnull)
-        {
+    if(*p != '\0' && *p != '.' && p != pEnd) {
+        if(outErrorPos != zfnull) {
             *outErrorPos = p;
         }
         return zffalse;
     }
 
-    if(*p == '.')
-    {
+    if(*p == '.') {
         ++p;
 
         unsigned long e = 10;
         while(*p != '\0' && p != pEnd
-            && *p >= '0' && *p <= '9')
-        {
+                && *p >= '0' && *p <= '9'
+                ) {
             ret += (T_Float)(*p - '0') / e;
             e *= 10;
             ++p;
         }
-        if(*p != '\0' && p != pEnd)
-        {
-            if(outErrorPos != zfnull)
-            {
+        if(*p != '\0' && p != pEnd) {
+            if(outErrorPos != zfnull) {
                 *outErrorPos = p;
             }
             return zffalse;
         }
     }
 
-    if(negative)
-    {
+    if(negative) {
         ret = 0 - ret;
     }
 
-    if(*p == '\0' || p == pEnd)
-    {
+    if(*p == '\0' || p == pEnd) {
         return zftrue;
     }
-    else
-    {
-        if(outErrorPos != zfnull)
-        {
+    else {
+        if(outErrorPos != zfnull) {
             *outErrorPos = p;
         }
         return zffalse;
@@ -325,10 +298,11 @@ zfbool zfsToFloatT(ZF_OUT T_Float &ret,
  * @brief see #zfsToFloatT
  */
 template<typename T_Float>
-T_Float zfsToFloat(ZF_IN const zfchar *src,
-                   ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                   ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
+T_Float zfsToFloat(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
     T_Float ret = 0;
     zfsToFloatT(ret, src, srcLen, outErrorPos);
     return ret;
@@ -336,10 +310,11 @@ T_Float zfsToFloat(ZF_IN const zfchar *src,
 /**
  * @brief see #zfsToFloatT
  */
-inline zffloat zfsToFloat(ZF_IN const zfchar *src,
-                          ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                          ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
+inline zffloat zfsToFloat(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
     return zfsToFloat<zffloat>(src, srcLen, outErrorPos);
 }
 
@@ -348,21 +323,19 @@ inline zffloat zfsToFloat(ZF_IN const zfchar *src,
 /**
  * @brief convert pointer value to string
  */
-inline zfbool zfsFromPointerT(ZF_OUT zfstring &s,
-                              ZF_IN const void *p)
-{
+inline zfbool zfsFromPointerT(
+        ZF_OUT zfstring &s
+        , ZF_IN const void *p
+        ) {
     zfchar buf[32] = {0};
-    if(p == zfnull)
-    {
+    if(p == zfnull) {
         snprintf(buf, sizeof(buf), "<null>");
     }
-    else
-    {
+    else {
         snprintf(buf, sizeof(buf), "%p", p);
     }
     const zfchar *t = buf;
-    while(*t)
-    {
+    while(*t) {
         s += *t++;
     }
     return zftrue;
@@ -370,8 +343,7 @@ inline zfbool zfsFromPointerT(ZF_OUT zfstring &s,
 /**
  * @brief see #zfsFromPointerT
  */
-inline zfstring zfsFromPointer(ZF_IN const void *p)
-{
+inline zfstring zfsFromPointer(ZF_IN const void *p) {
     zfstring s;
     zfsFromPointerT(s, p);
     return s;
@@ -382,11 +354,9 @@ inline zfstring zfsFromPointer(ZF_IN const void *p)
  * @brief util method to copy the contents of src,
  *   return null if src null, or empty string if src is empty string
  */
-inline zfchar *zfsCopy(ZF_IN const zfchar *src)
-{
+inline zfchar *zfsCopy(ZF_IN const zfchar *src) {
     zfchar *ret = zfnull;
-    if(src)
-    {
+    if(src) {
         zfindex size = sizeof(zfchar) * (zfslen(src) + 1);
         ret = (zfchar *)zfmalloc(size);
         zfmemcpy(ret, src, size);
@@ -397,14 +367,13 @@ inline zfchar *zfsCopy(ZF_IN const zfchar *src)
  * @brief util method to copy the contents of src,
  *   return null if src null, or empty string if src is empty string
  */
-inline zfchar *zfsCopy(ZF_IN const zfchar *src,
-                       ZF_IN zfindex size)
-{
+inline zfchar *zfsCopy(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex size
+        ) {
     zfchar *ret = zfnull;
-    if(src)
-    {
-        if(size == zfindexMax())
-        {
+    if(src) {
+        if(size == zfindexMax()) {
             size = zfslen(src);
         }
         ret = (zfchar *)zfmalloc(sizeof(zfchar) * (size + 1));
@@ -418,11 +387,11 @@ inline zfchar *zfsCopy(ZF_IN const zfchar *src,
  *   free and set dst to null if src is null,
  *   otherwise, realloc and copy contents to dst
  */
-inline zfchar *zfsChange(ZF_IN_OUT zfchar *&dst,
-                         ZF_IN const zfchar *src)
-{
-    if(!src)
-    {
+inline zfchar *zfsChange(
+        ZF_IN_OUT zfchar *&dst
+        , ZF_IN const zfchar *src
+        ) {
+    if(!src) {
         zffree(dst);
         dst = zfnull;
         return dst;
@@ -438,19 +407,18 @@ inline zfchar *zfsChange(ZF_IN_OUT zfchar *&dst,
  *   free and set dst to null if src is null,
  *   otherwise, realloc and copy contents to dst
  */
-inline zfchar *zfsChange(ZF_IN_OUT zfchar *&dst,
-                         ZF_IN const zfchar *src,
-                         ZF_IN zfindex size)
-{
-    if(!src)
-    {
+inline zfchar *zfsChange(
+        ZF_IN_OUT zfchar *&dst
+        , ZF_IN const zfchar *src
+        , ZF_IN zfindex size
+        ) {
+    if(!src) {
         zffree(dst);
         dst = zfnull;
         return dst;
     }
 
-    if(size == zfindexMax())
-    {
+    if(size == zfindexMax()) {
         size = zfslen(src);
     }
     dst = (zfchar *)zfrealloc(dst, sizeof(zfchar) * (size + 1));
@@ -461,11 +429,11 @@ inline zfchar *zfsChange(ZF_IN_OUT zfchar *&dst,
 /**
  * @brief util method to append string to existing string buffer, realloc if need
  */
-inline zfchar *zfsAppend(ZF_IN_OUT zfchar *&old,
-                         ZF_IN const zfchar *append)
-{
-    if(!old)
-    {
+inline zfchar *zfsAppend(
+        ZF_IN_OUT zfchar *&old
+        , ZF_IN const zfchar *append
+        ) {
+    if(!old) {
         old = zfsCopy(append);
         return old;
     }
@@ -479,19 +447,18 @@ inline zfchar *zfsAppend(ZF_IN_OUT zfchar *&old,
 /**
  * @brief util method to append string to existing string buffer, realloc if need
  */
-inline zfchar *zfsAppend(ZF_IN_OUT zfchar *&old,
-                         ZF_IN const zfchar *append,
-                         ZF_IN zfindex size)
-{
-    if(!old)
-    {
+inline zfchar *zfsAppend(
+        ZF_IN_OUT zfchar *&old
+        , ZF_IN const zfchar *append
+        , ZF_IN zfindex size
+        ) {
+    if(!old) {
         old = zfsCopy(append, size);
         return old;
     }
 
     zfindex oldSize = zfslen(old);
-    if(size == zfindexMax())
-    {
+    if(size == zfindexMax()) {
         size = zfslen(append);
     }
     old = (zfchar *)zfrealloc(old, sizeof(zfchar) * (oldSize + size + 1));
@@ -501,18 +468,14 @@ inline zfchar *zfsAppend(ZF_IN_OUT zfchar *&old,
 }
 
 #define _ZFP_zfsConnectEndPtr ((void *)-1)
-inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src,
-                               ...)
-{
+inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src, ...) {
     zfindex len = 0;
     va_list vaList;
     const zfchar *tmp = src;
 
     va_start(vaList, src);
-    do
-    {
-        if(tmp != zfnull)
-        {
+    do {
+        if(tmp != zfnull) {
             len += zfslen(tmp);
         }
         tmp = va_arg(vaList, const zfchar *);
@@ -524,10 +487,8 @@ inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src,
     len = 0;
     zfindex tmpLen = 0;
     va_start(vaList, src);
-    do
-    {
-        if(tmp != zfnull)
-        {
+    do {
+        if(tmp != zfnull) {
             tmpLen = zfslen(tmp);
             zfmemcpy(ret + len, tmp, sizeof(zfchar) * tmpLen);
             len += tmpLen;
@@ -552,196 +513,311 @@ inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src,
  * @brief util to compare two c strings,
  *   while null is regarded as equal to empty string
  */
-inline zfbool zfstringIsEqual(ZF_IN const zfchar *s1, ZF_IN const zfchar *s2)
-{
-    if(s1 == s2)
-    {
+inline zfbool zfstringIsEqual(
+        ZF_IN const zfchar *s1
+        , ZF_IN const zfchar *s2
+        ) {
+    if(s1 == s2) {
         return zftrue;
     }
-    else if(!s1)
-    {
+    else if(!s1) {
         return (*s2 == '\0');
     }
-    else if(!s2)
-    {
+    else if(!s2) {
         return (*s1 == '\0');
     }
-    else
-    {
+    else {
         return (zfscmp(s1, s2) == 0);
     }
 }
 /**
  * @brief util to check whether string is empty (null or empty string)
  */
-inline zfbool zfstringIsEmpty(ZF_IN const zfchar *s1)
-{
+inline zfbool zfstringIsEmpty(ZF_IN const zfchar *s1) {
     return (s1 == zfnull || *s1 == '\0');
 }
 
 // ============================================================
 // zfstringFind
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFind(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFind(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFind(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFind(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFind(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFind(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFind(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFind(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFind(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFind(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFind(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringFindReversely
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFindReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFindReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindReversely(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFindReversely(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFindReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFindReversely(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFindReversely(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindReversely(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringFindCaseInsensitive
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFindCaseInsensitive(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindCaseInsensitive(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFindCaseInsensitive(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindCaseInsensitive(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindCaseInsensitive(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFindCaseInsensitive(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFindCaseInsensitive(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFindCaseInsensitive(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFindCaseInsensitive(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindCaseInsensitive(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindCaseInsensitive(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringFindCaseInsensitiveReversely
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindCaseInsensitiveReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindCaseInsensitiveReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindCaseInsensitiveReversely(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFindCaseInsensitiveReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFindCaseInsensitiveReversely(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFindCaseInsensitiveReversely(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindCaseInsensitiveReversely(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindCaseInsensitiveReversely(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringFindFirstOf
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFindFirstOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindFirstOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFindFirstOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindFirstOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindFirstOf(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFindFirstOf(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFindFirstOf(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFindFirstOf(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFindFirstOf(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindFirstOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindFirstOf(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringFindFirstNotOf
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFindFirstNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindFirstNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFindFirstNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindFirstNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindFirstNotOf(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFindFirstNotOf(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFindFirstNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFindFirstNotOf(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFindFirstNotOf(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindFirstNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindFirstNotOf(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringFindLastOf
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFindLastOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindLastOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFindLastOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindLastOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindLastOf(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFindLastOf(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFindLastOf(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFindLastOf(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFindLastOf(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindLastOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindLastOf(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringFindLastNotOf
 /** @brief find string */
-extern ZFLIB_ZFCore zfindex zfstringFindLastNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringFindLastNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        );
 /** @brief find string */
-inline zfindex zfstringFindLastNotOf(ZF_IN const zfchar *src, ZF_IN zfindex srcLen, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindLastNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindLastNotOf(src, srcLen, &find, 1);
 }
 /** @brief find string */
-inline zfindex zfstringFindLastNotOf(ZF_IN const zfchar *src, ZF_IN const zfchar *find, ZF_IN_OPT zfindex findLen = zfindexMax())
-{
+inline zfindex zfstringFindLastNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *find
+        , ZF_IN_OPT zfindex findLen = zfindexMax()
+        ) {
     return zfstringFindLastNotOf(src, src ? zfslen(src) : 0, find, findLen);
 }
 /** @brief find string */
-inline zfindex zfstringFindLastNotOf(ZF_IN const zfchar *src, ZF_IN zfchar find)
-{
+inline zfindex zfstringFindLastNotOf(
+        ZF_IN const zfchar *src
+        , ZF_IN zfchar find
+        ) {
     return zfstringFindLastNotOf(src, src ? zfslen(src) : 0, &find, 1);
 }
 // ============================================================
 // zfstringReplace
 /** @brief replace string, return replaced count */
-extern ZFLIB_ZFCore zfindex zfstringReplace(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringReplace(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN const zfchar *replaceFrom
+        , ZF_IN const zfchar *replaceTo
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        );
 /** @brief replace string, return replaced count */
-extern ZFLIB_ZFCore zfindex zfstringReplaceReversely(ZF_IN_OUT zfstring &s, ZF_IN const zfchar *replaceFrom, ZF_IN const zfchar *replaceTo, ZF_IN_OPT zfindex maxCount = zfindexMax());
+extern ZFLIB_ZFCore zfindex zfstringReplaceReversely(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN const zfchar *replaceFrom
+        , ZF_IN const zfchar *replaceTo
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        );
 
 // ============================================================
 // zfstringSplit
 /** @brief split string */
-extern ZFLIB_ZFCore ZFCoreArray<zfstring> zfstringSplit(ZF_IN const zfchar *src, ZF_IN const zfchar *separator, ZF_IN_OPT zfbool keepEmpty = zffalse);
+extern ZFLIB_ZFCore ZFCoreArray<zfstring> zfstringSplit(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *separator
+        , ZF_IN_OPT zfbool keepEmpty = zffalse
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 

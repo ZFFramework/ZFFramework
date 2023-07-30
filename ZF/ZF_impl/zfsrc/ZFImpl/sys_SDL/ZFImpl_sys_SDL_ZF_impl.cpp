@@ -7,30 +7,25 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_size_ZFInput(struct SDL_RWops *context)
-{
+static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_size_ZFInput(struct SDL_RWops *context) {
     ZFInput const &callback = *(ZFInput *)context->hidden.unknown.data1;
     zfindex size = callback.ioSize();
     return size == zfindexMax() ? (Sint64)-1 : (Sint64)size;
 }
 
 static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFInput(struct SDL_RWops *context, Sint64 offset,
-                                                     int whence)
-{
+                                                     int whence) {
     ZFInput const &callback = *(ZFInput *)context->hidden.unknown.data1;
     ZFSeekPos seekPos = ZFSeekPosBegin;
-    switch(whence)
-    {
+    switch(whence) {
         case RW_SEEK_SET:
             seekPos = ZFSeekPosBegin;
             break;
         case RW_SEEK_CUR:
-            if(offset >= 0)
-            {
+            if(offset >= 0) {
                 seekPos = ZFSeekPosCur;
             }
-            else
-            {
+            else {
                 seekPos = ZFSeekPosCurReversely;
             }
             break;
@@ -40,8 +35,7 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFInput(struct SDL_RWops *context, 
         default:
             return -1;
     }
-    if(!callback.ioSeek(zfmAbs(offset), seekPos))
-    {
+    if(!callback.ioSeek(zfmAbs(offset), seekPos)) {
         return -1;
     }
     zfindex cur = callback.ioTell();
@@ -49,29 +43,24 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFInput(struct SDL_RWops *context, 
 }
 
 static size_t _ZFP_ZFImpl_sys_SDL_RWops_read_ZFInput(struct SDL_RWops *context, void *ptr,
-                                                     size_t size, size_t maxnum)
-{
+                                                     size_t size, size_t maxnum) {
     ZFInput const &callback = *(ZFInput *)context->hidden.unknown.data1;
     return (size_t)callback.execute(ptr, size * maxnum);
 }
 
 static size_t _ZFP_ZFImpl_sys_SDL_RWops_write_ZFInput(struct SDL_RWops *context, const void *ptr,
-                                                      size_t size, size_t num)
-{
+                                                      size_t size, size_t num) {
     return 0;
 }
 
-static int _ZFP_ZFImpl_sys_SDL_RWops_close_ZFInput(struct SDL_RWops *context)
-{
+static int _ZFP_ZFImpl_sys_SDL_RWops_close_ZFInput(struct SDL_RWops *context) {
     zfdelete((ZFInput *)context->hidden.unknown.data1);
     SDL_FreeRW(context);
     return 0;
 }
 
-SDL_RWops *ZFImpl_sys_SDL_ZFInputToSDL_RWops(ZF_IN const ZFInput &callback)
-{
-    if(!callback)
-    {
+SDL_RWops *ZFImpl_sys_SDL_ZFInputToSDL_RWops(ZF_IN const ZFInput &callback) {
+    if(!callback) {
         return zfnull;
     }
     SDL_RWops *ret = SDL_AllocRW();
@@ -85,28 +74,23 @@ SDL_RWops *ZFImpl_sys_SDL_ZFInputToSDL_RWops(ZF_IN const ZFInput &callback)
 }
 
 // ============================================================
-static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_size_ZFOutput(struct SDL_RWops *context)
-{
+static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_size_ZFOutput(struct SDL_RWops *context) {
     return -1;
 }
 
 static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput(struct SDL_RWops *context, Sint64 offset,
-                                                      int whence)
-{
+                                                      int whence) {
     ZFOutput const &callback = *(ZFOutput *)context->hidden.unknown.data1;
     ZFSeekPos seekPos = ZFSeekPosBegin;
-    switch(whence)
-    {
+    switch(whence) {
         case RW_SEEK_SET:
             seekPos = ZFSeekPosBegin;
             break;
         case RW_SEEK_CUR:
-            if(offset >= 0)
-            {
+            if(offset >= 0) {
                 seekPos = ZFSeekPosCur;
             }
-            else
-            {
+            else {
                 seekPos = ZFSeekPosCurReversely;
             }
             break;
@@ -116,8 +100,7 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput(struct SDL_RWops *context,
         default:
             return -1;
     }
-    if(!callback.ioSeek(zfmAbs(offset), seekPos))
-    {
+    if(!callback.ioSeek(zfmAbs(offset), seekPos)) {
         return -1;
     }
     zfindex cur = callback.ioTell();
@@ -125,29 +108,24 @@ static Sint64 _ZFP_ZFImpl_sys_SDL_RWops_seek_ZFOutput(struct SDL_RWops *context,
 }
 
 static size_t _ZFP_ZFImpl_sys_SDL_RWops_read_ZFOutput(struct SDL_RWops *context, void *ptr,
-                                                      size_t size, size_t maxnum)
-{
+                                                      size_t size, size_t maxnum) {
     return 0;
 }
 
 static size_t _ZFP_ZFImpl_sys_SDL_RWops_write_ZFOutput(struct SDL_RWops *context, const void *ptr,
-                                                       size_t size, size_t num)
-{
+                                                       size_t size, size_t num) {
     ZFOutput const &callback = *(ZFOutput *)context->hidden.unknown.data1;
     return (size_t)callback.execute(ptr, size * num);
 }
 
-static int _ZFP_ZFImpl_sys_SDL_RWops_close_ZFOutput(struct SDL_RWops *context)
-{
+static int _ZFP_ZFImpl_sys_SDL_RWops_close_ZFOutput(struct SDL_RWops *context) {
     zfdelete((ZFOutput *)context->hidden.unknown.data1);
     SDL_FreeRW(context);
     return 0;
 }
 
-SDL_RWops *ZFImpl_sys_SDL_ZFOutputToSDL_RWops(ZF_IN const ZFOutput &callback)
-{
-    if(!callback)
-    {
+SDL_RWops *ZFImpl_sys_SDL_ZFOutputToSDL_RWops(ZF_IN const ZFOutput &callback) {
+    if(!callback) {
         return zfnull;
     }
     SDL_RWops *ret = SDL_AllocRW();
@@ -161,15 +139,18 @@ SDL_RWops *ZFImpl_sys_SDL_ZFOutputToSDL_RWops(ZF_IN const ZFOutput &callback)
 }
 
 // ============================================================
-zfbool ZFImpl_sys_SDL_SurfaceToOutput(ZF_IN const ZFOutput &callback, ZF_IN SDL_Surface *sdlSurface)
-{
+zfbool ZFImpl_sys_SDL_SurfaceToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Surface *sdlSurface
+        ) {
     return 0 == IMG_SavePNG_RW(sdlSurface, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(callback), 1);
 }
-zfbool ZFImpl_sys_SDL_TextureToOutput(ZF_IN const ZFOutput &callback, ZF_IN SDL_Texture *sdlTexture)
-{
+zfbool ZFImpl_sys_SDL_TextureToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Texture *sdlTexture
+        ) {
     int width, height;
-    if(SDL_QueryTexture(sdlTexture, zfnull, zfnull, &width, &height) != 0)
-    {
+    if(SDL_QueryTexture(sdlTexture, zfnull, zfnull, &width, &height) != 0) {
         return zffalse;
     }
     SDL_Surface *sdlSurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);

@@ -2,17 +2,14 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFPropertyDynamic_test_Object : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_ZFPropertyDynamic_test_Object : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFPropertyDynamic_test_Object, ZFObject)
 
 public:
-    zfint myProp(void) const
-    {
+    zfint myProp(void) const {
         return _ZFP_myProp.zfv;
     }
-    void myProp(ZF_IN zfint v)
-    {
+    void myProp(ZF_IN zfint v) {
         _ZFP_myProp.zfv = v;
     }
 private:
@@ -20,14 +17,12 @@ private:
 };
 
 // ============================================================
-zfclass ZFCore_ZFPropertyDynamic_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFPropertyDynamic_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFPropertyDynamic_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         const ZFClass *cls = _ZFP_ZFCore_ZFPropertyDynamic_test_Object::ClassData();
@@ -66,44 +61,43 @@ protected:
         this->testCaseStop();
     }
 private:
-    static const zfchar *_valueKey(void)
-    {
+    static const zfchar *_valueKey(void) {
         return "ZFCore_ZFPropertyDynamic_test_myProp";
     }
-    static zfbool _setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
-    {
+    static zfbool _setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
         obj->myProp(paramList[0]->to<v_zfint *>()->zfv);
         obj->objectTag(_valueKey(), paramList[0]->to<ZFCopyable *>()->copy());
         return zftrue;
     }
-    static zfbool _getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
-    {
+    static zfbool _getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
         zfautoObject tag = zflineAlloc(v_zfint, obj->myProp());
         obj->objectTag(_valueKey(), tag);
         ret = tag;
         return zftrue;
     }
-    static zfbool _callbackIsValueAccessed(ZF_IN const ZFProperty *property,
-                                           ZF_IN ZFObject *ownerObj)
-    {
+    static zfbool _callbackIsValueAccessed(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         return !_callbackIsInitValue(property, ownerObj);
     }
-    static zfbool _callbackIsInitValue(ZF_IN const ZFProperty *property,
-                                       ZF_IN ZFObject *ownerObj,
-                                       ZF_OUT_OPT zfautoObject *outInitValue = zfnull)
-    {
+    static zfbool _callbackIsInitValue(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            , ZF_OUT_OPT zfautoObject *outInitValue = zfnull
+            ) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj->toAny();
-        if(outInitValue != zfnull)
-        {
+        if(outInitValue != zfnull) {
             *outInitValue = zflineAlloc(v_zfint);
         }
         return (obj->myProp() == 0);
     }
-    static void _callbackValueReset(ZF_IN const ZFProperty *property,
-                                    ZF_IN ZFObject *ownerObj)
-    {
+    static void _callbackValueReset(
+            ZF_IN const ZFProperty *property
+            , ZF_IN ZFObject *ownerObj
+            ) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj->toAny();
         obj->objectTagRemove(_valueKey());
         obj->myProp(0);

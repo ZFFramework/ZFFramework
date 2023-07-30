@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFAlgorithm_ZFCrc32_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFAlgorithm_ZFCrc32_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFAlgorithm_ZFCrc32_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         const zfchar *testString = "123abc";
@@ -22,8 +20,7 @@ protected:
 
         zfstring tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32.txt");
         void *fp = ZFFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
-        if(fp != zfnull)
-        {
+        if(fp != zfnull) {
             ZFFileWrite(fp, testString);
             ZFFileClose(fp);
             fp = zfnull;
@@ -36,12 +33,9 @@ protected:
         tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32_big.txt");
         fp = ZFFileOpen(tmpFilePath, ZFFileOpenOption::e_Write);
         zfindex fileSize = 0;
-        if(fp != zfnull)
-        {
-            for(zfindex i = 0; i < 1000; i++)
-            {
-                for(zfindex j = 0; j < 1000; j++)
-                {
+        if(fp != zfnull) {
+            for(zfindex i = 0; i < 1000; i++) {
+                for(zfindex j = 0; j < 1000; j++) {
                     ZFFileWrite(fp, testString);
                 }
             }

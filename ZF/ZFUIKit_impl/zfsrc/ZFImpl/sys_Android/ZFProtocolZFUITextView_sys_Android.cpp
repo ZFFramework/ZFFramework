@@ -13,8 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUITextViewImpl_sys_Android, ZFUITextView, ZFPr
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -24,17 +23,17 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void *nativeTextViewCreate(ZF_IN ZFUITextView *textView,
-                                       ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeTextViewCreate(
+            ZF_IN ZFUITextView *textView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTextViewCreate",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -44,9 +43,10 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ZFCastStatic(void *, ret);
     }
-    virtual void nativeTextViewDestroy(ZF_IN ZFUITextView *textView,
-                                       ZF_IN void *nativeTextView)
-    {
+    virtual void nativeTextViewDestroy(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN void *nativeTextView
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTextViewDestroy",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -60,9 +60,10 @@ public:
     // ============================================================
     // properties
 public:
-    virtual void text(ZF_IN ZFUITextView *textView,
-                      ZF_IN const zfchar *text)
-    {
+    virtual void text(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN const zfchar *text
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_text",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -73,9 +74,10 @@ public:
             ZFCastStatic(jobject, textView->nativeImplView()),
             ZFCastStatic(jobject, ZFImpl_sys_Android_zfstringToString(text)));
     }
-    virtual void textAppearance(ZF_IN ZFUITextView *textView,
-                                ZF_IN ZFUITextAppearanceEnum const &textAppearance)
-    {
+    virtual void textAppearance(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUITextAppearanceEnum const &textAppearance
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textAppearance",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -86,9 +88,10 @@ public:
             ZFCastStatic(jobject, textView->nativeImplView()),
             ZFCastStatic(jint, textAppearance));
     }
-    virtual void textAlign(ZF_IN ZFUITextView *textView,
-                           ZF_IN ZFUIAlignFlags const &textAlign)
-    {
+    virtual void textAlign(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUIAlignFlags const &textAlign
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textAlign",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -99,9 +102,10 @@ public:
             ZFCastStatic(jobject, textView->nativeImplView()),
             ZFCastStatic(jint, textAlign));
     }
-    virtual void textColor(ZF_IN ZFUITextView *textView,
-                           ZF_IN ZFUIColor const &textColor)
-    {
+    virtual void textColor(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUIColor const &textColor
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textColor",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -112,24 +116,28 @@ public:
             ZFCastStatic(jobject, textView->nativeImplView()),
             ZFImpl_sys_Android_ZFUIColorToColor(textColor));
     }
-    virtual void textSize(ZF_IN ZFUITextView *textView,
-                          ZF_IN zffloat textSize)
-    {
+    virtual void textSize(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zffloat textSize
+            ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSizeAutoChangeMinSize(ZF_IN ZFUITextView *textView,
-                                           ZF_IN zffloat textSizeAutoChangeMinSize)
-    {
+    virtual void textSizeAutoChangeMinSize(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zffloat textSizeAutoChangeMinSize
+            ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSizeAutoChangeMaxSize(ZF_IN ZFUITextView *textView,
-                                           ZF_IN zffloat textSizeAutoChangeMaxSize)
-    {
+    virtual void textSizeAutoChangeMaxSize(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zffloat textSizeAutoChangeMaxSize
+            ) {
         // changed during layoutNativeTextView
     }
-    virtual void textSingleLine(ZF_IN ZFUITextView *textView,
-                                ZF_IN zfbool textSingleLine)
-    {
+    virtual void textSingleLine(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN zfbool textSingleLine
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textSingleLine",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -140,9 +148,10 @@ public:
             ZFCastStatic(jobject, textView->nativeImplView()),
             ZFCastStatic(jboolean, textSingleLine));
     }
-    virtual void textTruncateMode(ZF_IN ZFUITextView *textView,
-                                  ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode)
-    {
+    virtual void textTruncateMode(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textTruncateMode",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -157,10 +166,11 @@ public:
     // ============================================================
     // layout
 public:
-    virtual ZFUISize measureNativeTextView(ZF_IN ZFUITextView *textView,
-                                           ZF_IN const ZFUISize &sizeHint,
-                                           ZF_IN zffloat textSize)
-    {
+    virtual ZFUISize measureNativeTextView(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN zffloat textSize
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_measureNativeTextView",
             JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()
@@ -181,8 +191,7 @@ public:
         return ret;
     }
 
-    virtual zffloat textSizeCurrent(ZF_IN ZFUITextView *textView)
-    {
+    virtual zffloat textSizeCurrent(ZF_IN ZFUITextView *textView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textSizeCurrent",
             JNIGetMethodSig(JNIType::S_int, JNIParamTypeContainer()
@@ -193,9 +202,10 @@ public:
         return ZFCastStatic(zffloat, ret);
     }
 
-    virtual void layoutNativeTextView(ZF_IN ZFUITextView *textView,
-                                      ZF_IN const ZFUISize &viewSize)
-    {
+    virtual void layoutNativeTextView(
+            ZF_IN ZFUITextView *textView
+            , ZF_IN const ZFUISize &viewSize
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_textSizeAutoChangeCurrentValue",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()

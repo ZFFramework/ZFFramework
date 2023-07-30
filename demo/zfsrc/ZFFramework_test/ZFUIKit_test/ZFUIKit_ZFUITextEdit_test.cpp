@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUITextEdit_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIKit_ZFUITextEdit_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUITextEdit_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUITextEdit);
@@ -40,9 +38,10 @@ protected:
     }
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUITextEdit *view)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUITextEdit *view
+            ) {
         zfblockedAlloc(ZFArray, settings);
         ZFUIKit_test_prepareSettingForBoolProperty(settings, view, ZFPropertyAccess(ZFUITextEdit, textEditEnable));
 

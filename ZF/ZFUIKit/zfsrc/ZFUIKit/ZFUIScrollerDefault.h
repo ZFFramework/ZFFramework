@@ -13,8 +13,7 @@ zfclassFwd _ZFP_ZFUIScrollerDefaultPrivate;
 /**
  * @brief default scroller of #ZFUIScroller
  */
-zfclass ZFLIB_ZFUIKit ZFUIScrollerDefault : zfextends ZFObject, zfimplements ZFUIScroller
-{
+zfclass ZFLIB_ZFUIKit ZFUIScrollerDefault : zfextends ZFObject, zfimplements ZFUIScroller {
     ZFOBJECT_DECLARE(ZFUIScrollerDefault, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFUIScroller)
 
@@ -28,12 +27,17 @@ public:
     zfoverride
     virtual void scrollOwnerSizeChanged(ZF_IN zffloat ownerSize);
     zfoverride
-    virtual void scrollBounceChanged(ZF_IN zfbool scrollBounce,
-                                     ZF_IN zfbool scrollBounceAlways);
+    virtual void scrollBounceChanged(
+            ZF_IN zfbool scrollBounce
+            , ZF_IN zfbool scrollBounceAlways
+            );
     zfoverride
     virtual void scrollAlignToPageChanged(ZF_IN zfbool scrollAlignToPage);
     zfoverride
-    virtual void scrollContentChanged(ZF_IN zffloat contentOffset, ZF_IN zffloat contentSize);
+    virtual void scrollContentChanged(
+            ZF_IN zffloat contentOffset
+            , ZF_IN zffloat contentSize
+            );
 
 public:
     zfoverride
@@ -67,14 +71,20 @@ public:
 
 public:
     zfoverride
-    virtual void scrollOnDragBegin(ZF_IN zffloat mousePos,
-                                   ZF_IN zftimet mouseTime);
+    virtual void scrollOnDragBegin(
+            ZF_IN zffloat mousePos
+            , ZF_IN zftimet mouseTime
+            );
     zfoverride
-    virtual void scrollOnDrag(ZF_IN zffloat mousePos,
-                              ZF_IN zftimet mouseTime);
+    virtual void scrollOnDrag(
+            ZF_IN zffloat mousePos
+            , ZF_IN zftimet mouseTime
+            );
     zfoverride
-    virtual void scrollOnDragEnd(ZF_IN zftimet mouseTime,
-                                 ZF_IN zfbool needScrollAni);
+    virtual void scrollOnDragEnd(
+            ZF_IN zftimet mouseTime
+            , ZF_IN zfbool needScrollAni
+            );
 
 public:
     zfoverride

@@ -3,8 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFAudioPrivate
-{
+zfclassNotPOD _ZFP_ZFAudioPrivate {
 public:
     typedef enum {
         LoadFlag = 1 << 1,
@@ -40,45 +39,37 @@ ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnResume)
 ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnPause)
 ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnLoop)
 
-ZFMETHOD_DEFINE_0(ZFAudio, zfbool, implAvailable)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, zfbool, implAvailable) {
     return ZFPROTOCOL_IS_AVAILABLE(ZFAudio);
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, void *, nativeAudio)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, void *, nativeAudio) {
     return d->nativeAudio;
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, zfbool, loading)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, zfbool, loading) {
     return ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
 }
-ZFMETHOD_DEFINE_0(ZFAudio, zfbool, loaded)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, zfbool, loaded) {
     return ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
 }
-ZFMETHOD_DEFINE_0(ZFAudio, zfbool, started)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, zfbool, started) {
     return ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag);
 }
-ZFMETHOD_DEFINE_0(ZFAudio, zfbool, playing)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, zfbool, playing) {
     return ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
 }
-ZFMETHOD_DEFINE_0(ZFAudio, zfbool, paused)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, zfbool, paused) {
     return ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag);
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, zfindex, looped)
-{
+ZFMETHOD_DEFINE_0(ZFAudio, zfindex, looped) {
     return (zfindex)d->looped;
 }
 
-ZFMETHOD_DEFINE_1(ZFAudio, void, load,
-                  ZFMP_IN(const ZFInput &, input))
-{
+ZFMETHOD_DEFINE_1(ZFAudio, void, load
+        , ZFMP_IN(const ZFInput &, input)
+        ) {
     zfRetain(this); // release when OnLoad
     this->stop();
 
@@ -87,9 +78,9 @@ ZFMETHOD_DEFINE_1(ZFAudio, void, load,
     ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioLoad(this, input);
 }
 
-ZFMETHOD_DEFINE_1(ZFAudio, void, load,
-                  ZFMP_IN(const zfchar *, url))
-{
+ZFMETHOD_DEFINE_1(ZFAudio, void, load
+        , ZFMP_IN(const zfchar *, url)
+        ) {
     zfRetain(this); // release when OnLoad
     this->stop();
 
@@ -98,22 +89,18 @@ ZFMETHOD_DEFINE_1(ZFAudio, void, load,
     ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioLoad(this, url);
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, void, start)
-{
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag))
-    {
+ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         return;
     }
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag))
-    {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         zfRetain(this); // release when OnStop
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
         d->looped = 0;
         this->audioOnStart();
     }
-    else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded))
-    {
+    else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded)) {
         zfRetain(this); // release when OnStop
 
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::StartFlag);
@@ -121,33 +108,27 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start)
         this->audioOnStart();
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
     }
-    else
-    {
+    else {
         zfLogTrim() << this << "start called before load success";
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, void, stop)
-{
-    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag) && !ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag))
-    {
+ZFMETHOD_DEFINE_0(ZFAudio, void, stop) {
+    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag) && !ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         return;
     }
     d->positionToUpdate = -1;
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag))
-    {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::StartFlag);
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::PauseFlag);
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioLoadCancel(this);
         this->_ZFP_ZFAudio_OnLoad(ZFResultType::e_Cancel, zfnull);
     }
-    else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag))
-    {
+    else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStop(this);
         this->_ZFP_ZFAudio_OnStop(ZFResultType::e_Cancel, zfnull);
     }
-    else
-    {
+    else {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::StartFlag);
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::PauseFlag);
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
@@ -155,148 +136,122 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, stop)
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, void, resume)
-{
-    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag) && !ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag))
-    {
+ZFMETHOD_DEFINE_0(ZFAudio, void, resume) {
+    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag) && !ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag)) {
         return;
     }
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag))
-    {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag)) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::PauseFlag);
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioResume(this);
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, void, pause)
-{
-    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag))
-    {
+ZFMETHOD_DEFINE_0(ZFAudio, void, pause) {
+    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         return;
     }
-    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag))
-    {
+    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag)) {
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::PauseFlag);
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioPause(this);
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, zftimet, duration)
-{
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded))
-    {
+ZFMETHOD_DEFINE_0(ZFAudio, zftimet, duration) {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded)) {
         return ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioDuration(this);
     }
-    else
-    {
+    else {
         return 0;
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, zftimet, position)
-{
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded))
-    {
+ZFMETHOD_DEFINE_0(ZFAudio, zftimet, position) {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded)) {
         return ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioPosition(this);
     }
-    else
-    {
+    else {
         return 0;
     }
 }
-ZFMETHOD_DEFINE_1(ZFAudio, void, position,
-                  ZFMP_IN(zftimet, position))
-{
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag))
-    {
+ZFMETHOD_DEFINE_1(ZFAudio, void, position
+        , ZFMP_IN(zftimet, position)
+        ) {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioPosition(this, position);
     }
-    else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag))
-    {
+    else if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
         d->positionToUpdate = position;
     }
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAudio, zffloat, volume)
-{
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded))
-    {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFAudio, zffloat, volume) {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded)) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioVolume(this, propertyValue);
     }
 }
 
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio,
-                          ZFMP_IN(const ZFInput &, input))
-{
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
+        , ZFMP_IN(const ZFInput &, input)
+        ) {
     this->objectOnInit();
     this->load(input);
 }
 
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio,
-                          ZFMP_IN(const zfchar *, url))
-{
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
+        , ZFMP_IN(const zfchar *, url)
+        ) {
     this->objectOnInit();
     this->load(url);
 }
 
-ZFMETHOD_DEFINE_0(ZFAudio, const zfchar *, stateHint)
-{
-    if(this->loading())
-    {
+ZFMETHOD_DEFINE_0(ZFAudio, const zfchar *, stateHint) {
+    if(this->loading()) {
         return "loading";
     }
-    else if(this->playing())
-    {
+    else if(this->playing()) {
         return "playing";
     }
-    else if(this->paused())
-    {
+    else if(this->paused()) {
         return "paused";
     }
-    else if(this->started())
-    {
+    else if(this->started()) {
         return "waiting";
     }
-    else if(this->loaded())
-    {
+    else if(this->loaded()) {
         return "loaded";
     }
-    else
-    {
+    else {
         return "idle";
     }
 }
 
 // ============================================================
-void ZFAudio::objectOnInit(void)
-{
+void ZFAudio::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFAudioPrivate);
     d->nativeAudio = ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioCreate(this);
 }
-void ZFAudio::objectOnDealloc(void)
-{
+void ZFAudio::objectOnDealloc(void) {
     ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioDestroy(this);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
 
-void ZFAudio::_ZFP_ZFAudio_OnLoad(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint)
-{
+void ZFAudio::_ZFP_ZFAudio_OnLoad(
+        ZF_IN ZFResultTypeEnum result
+        , ZF_IN v_zfstring *errorHint
+        ) {
     zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::LoadFlag));
     ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::LoadFlag);
-    if(result == ZFResultType::e_Success)
-    {
+    if(result == ZFResultType::e_Success) {
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplLoaded);
 
-        if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag))
-        {
+        if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag)) {
             ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
             ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioVolume(this, this->volume());
         }
-        if(d->positionToUpdate != -1)
-        {
+        if(d->positionToUpdate != -1) {
             ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioPosition(this, d->positionToUpdate);
             d->positionToUpdate = -1;
         }
@@ -305,22 +260,20 @@ void ZFAudio::_ZFP_ZFAudio_OnLoad(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstrin
     this->audioOnLoad(result, errorHint);
     zfRelease(this); // retained when load
 }
-void ZFAudio::_ZFP_ZFAudio_OnStop(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint)
-{
+void ZFAudio::_ZFP_ZFAudio_OnStop(
+        ZF_IN ZFResultTypeEnum result
+        , ZF_IN v_zfstring *errorHint
+        ) {
     zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
-    if(result != ZFResultType::e_Cancel)
-    {
+    if(result != ZFResultType::e_Cancel) {
         ++d->looped;
     }
-    if(result != ZFResultType::e_Cancel && (this->loop() == zfindexMax() || d->looped <= this->loop()))
-    {
+    if(result != ZFResultType::e_Cancel && (this->loop() == zfindexMax() || d->looped <= this->loop())) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
         this->audioOnLoop();
     }
-    else
-    {
-        if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying))
-        {
+    else {
+        if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
             this->_ZFP_ZFAudio_OnPause();
         }
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::StartFlag);
@@ -331,25 +284,20 @@ void ZFAudio::_ZFP_ZFAudio_OnStop(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstrin
         zfRelease(this); // retained when start
     }
 }
-void ZFAudio::_ZFP_ZFAudio_OnResume(void)
-{
+void ZFAudio::_ZFP_ZFAudio_OnResume(void) {
     zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
-    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying))
-    {
+    if(!ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
         ZFBitSet(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnResume();
     }
 
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag))
-    {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::PauseFlag)) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioPause(this);
     }
 }
-void ZFAudio::_ZFP_ZFAudio_OnPause(void)
-{
+void ZFAudio::_ZFP_ZFAudio_OnPause(void) {
     zfCoreAssert(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplLoaded) && ZFBitTest(d->state, _ZFP_ZFAudioPrivate::StartFlag));
-    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying))
-    {
+    if(ZFBitTest(d->state, _ZFP_ZFAudioPrivate::ImplPlaying)) {
         ZFBitUnset(d->state, _ZFP_ZFAudioPrivate::ImplPlaying);
         this->audioOnPause();
     }

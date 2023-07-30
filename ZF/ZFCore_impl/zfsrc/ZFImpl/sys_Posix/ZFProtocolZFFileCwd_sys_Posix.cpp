@@ -10,20 +10,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileCwdImpl_sys_Posix, ZFFileCwd, ZFProtocolLevel::e_SystemLow)
 public:
-    virtual const zfchar *pathForCwd(void)
-    {
+    virtual const zfchar *pathForCwd(void) {
         static zfchar _pathForCwd[PATH_MAX];
-        if(getcwd(_pathForCwd, PATH_MAX) != zfnull)
-        {
+        if(getcwd(_pathForCwd, PATH_MAX) != zfnull) {
             return _pathForCwd;
         }
-        else
-        {
+        else {
             return zfnull;
         }
     }
-    virtual zfbool pathForCwdChange(ZF_IN const zfchar *pathForCwd)
-    {
+    virtual zfbool pathForCwdChange(ZF_IN const zfchar *pathForCwd) {
         return (chdir(pathForCwd) == 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_Posix)

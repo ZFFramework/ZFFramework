@@ -69,55 +69,51 @@ static const zfchar _ZFP_ZFSerializableEscapeCharMap[256] = {
 };
 
 // ============================================================
-zfbool ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableData,
-                                  ZF_IN const ZFInput &input,
-                                  ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
-    if(!input)
-    {
+zfbool ZFSerializableDataFromZfsd(
+        ZF_OUT ZFSerializableData &serializableData
+        , ZF_IN const ZFInput &input
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
+    if(!input) {
         ZFSerializableUtil::errorOccurred(outErrorHint, "invalid input callback");
         return zffalse;
     }
     ZFBuffer buf;
     ZFInputRead(buf, input);
-    if(buf.buffer() == zfnull)
-    {
+    if(buf.buffer() == zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint, "unable to load data from input");
         return zffalse;
     }
     zfbool ret = ZFSerializableDataFromZfsd(serializableData, buf.text(), buf.textLength(), outErrorHint);
-    if(ret)
-    {
+    if(ret) {
         serializableData.pathInfo(input.pathInfo());
     }
     return ret;
 }
-ZFSerializableData ZFSerializableDataFromZfsd(ZF_IN const ZFInput &input,
-                                              ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+ZFSerializableData ZFSerializableDataFromZfsd(
+        ZF_IN const ZFInput &input
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     ZFSerializableData ret;
-    if(ZFSerializableDataFromZfsd(ret, input, outErrorHint))
-    {
+    if(ZFSerializableDataFromZfsd(ret, input, outErrorHint)) {
         return ret;
     }
-    else
-    {
+    else {
         return ZFSerializableData();
     }
 }
-zfbool ZFSerializableDataToZfsd(ZF_IN_OUT const ZFOutput &output,
-                                ZF_IN const ZFSerializableData &serializableData,
-                                ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                ZF_IN_OPT zfbool prettyPrint /* = zftrue */)
-{
-    if(!output)
-    {
+zfbool ZFSerializableDataToZfsd(
+        ZF_IN_OUT const ZFOutput &output
+        , ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        ) {
+    if(!output) {
         ZFSerializableUtil::errorOccurred(outErrorHint, "invalid output callback");
         return zffalse;
     }
     zfstring tmp;
-    if(!ZFSerializableDataToZfsd(tmp, serializableData, outErrorHint, prettyPrint))
-    {
+    if(!ZFSerializableDataToZfsd(tmp, serializableData, outErrorHint, prettyPrint)) {
         return zffalse;
     }
     tmp += "\n";
@@ -126,145 +122,128 @@ zfbool ZFSerializableDataToZfsd(ZF_IN_OUT const ZFOutput &output,
 }
 
 // ============================================================
-static zfbool _ZFP_ZFSD_AttrValueDecode(ZF_IN_OUT zfstring &ret,
-                                        ZF_IN_OUT const zfchar *&encodedData,
-                                        ZF_IN const zfchar *srcEnd)
-{
-    if(*encodedData != _ZFP_ZFSD_AttrValuePair)
-    {
+static zfbool _ZFP_ZFSD_AttrValueDecode(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN_OUT const zfchar *&encodedData
+        , ZF_IN const zfchar *srcEnd
+        ) {
+    if(*encodedData != _ZFP_ZFSD_AttrValuePair) {
         return zffalse;
     }
     ++encodedData;
     const zfchar *pLeft = encodedData;
-    while(encodedData < srcEnd && *encodedData != _ZFP_ZFSD_AttrValuePair)
-    {
-        if(*encodedData == _ZFP_ZFSD_AttrValuePairEscape && encodedData + 1 < srcEnd)
-        {
+    while(encodedData < srcEnd && *encodedData != _ZFP_ZFSD_AttrValuePair) {
+        if(*encodedData == _ZFP_ZFSD_AttrValuePairEscape && encodedData + 1 < srcEnd) {
             ++encodedData;
-            if(*encodedData == _ZFP_ZFSD_AttrValuePair)
-            {
+            if(*encodedData == _ZFP_ZFSD_AttrValuePair) {
                 ret.append(pLeft, encodedData - 1 - pLeft);
                 ret += _ZFP_ZFSD_AttrValuePair;
                 ++encodedData;
                 pLeft = encodedData;
             }
-            else if(*encodedData == _ZFP_ZFSD_AttrValuePairEscape)
-            {
+            else if(*encodedData == _ZFP_ZFSD_AttrValuePairEscape) {
                 ret.append(pLeft, encodedData - 1 - pLeft);
                 ret += _ZFP_ZFSD_AttrValuePairEscape;
                 ++encodedData;
                 pLeft = encodedData;
             }
-            else if(*encodedData == 'r')
-            {
+            else if(*encodedData == 'r') {
                 ret.append(pLeft, encodedData - 1 - pLeft);
                 ret += '\r';
                 ++encodedData;
                 pLeft = encodedData;
             }
-            else if(*encodedData == 'n')
-            {
+            else if(*encodedData == 'n') {
                 ret.append(pLeft, encodedData - 1 - pLeft);
                 ret += '\n';
                 ++encodedData;
                 pLeft = encodedData;
             }
-            else if(*encodedData == 't')
-            {
+            else if(*encodedData == 't') {
                 ret.append(pLeft, encodedData - 1 - pLeft);
                 ret += '\t';
                 ++encodedData;
                 pLeft = encodedData;
             }
         }
-        else
-        {
+        else {
             zfcharMoveNext(encodedData);
         }
     }
     ret.append(pLeft, encodedData - pLeft);
 
-    if(*encodedData == _ZFP_ZFSD_AttrValuePair)
-    {
+    if(*encodedData == _ZFP_ZFSD_AttrValuePair) {
         ++encodedData;
         return zftrue;
     }
-    else
-    {
+    else {
         return zffalse;
     }
 }
-static void _ZFP_ZFSD_AttrValueEncode(ZF_IN_OUT zfstring &ret,
-                                      ZF_IN const zfchar *value)
-{
+static void _ZFP_ZFSD_AttrValueEncode(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *value
+        ) {
     ret += _ZFP_ZFSD_AttrValuePair;
     const zfchar *pL = value;
-    while(*value != '\0')
-    {
-        if(*value == _ZFP_ZFSD_AttrValuePair)
-        {
+    while(*value != '\0') {
+        if(*value == _ZFP_ZFSD_AttrValuePair) {
             ret.append(pL, value - pL);
             ++value;
             pL = value;
             ret += _ZFP_ZFSD_AttrValuePairEscape;
             ret += _ZFP_ZFSD_AttrValuePair;
         }
-        else if(*value == _ZFP_ZFSD_AttrValuePairEscape)
-        {
+        else if(*value == _ZFP_ZFSD_AttrValuePairEscape) {
             ret.append(pL, value - pL);
             ++value;
             pL = value;
             ret += _ZFP_ZFSD_AttrValuePairEscape;
             ret += _ZFP_ZFSD_AttrValuePairEscape;
         }
-        else if(*value == '\r')
-        {
+        else if(*value == '\r') {
             ret.append(pL, value - pL);
             ++value;
             pL = value;
             ret += _ZFP_ZFSD_AttrValuePairEscape;
             ret += 'r';
         }
-        else if(*value == '\n')
-        {
+        else if(*value == '\n') {
             ret.append(pL, value - pL);
             ++value;
             pL = value;
             ret += _ZFP_ZFSD_AttrValuePairEscape;
             ret += 'n';
         }
-        else if(*value == '\t')
-        {
+        else if(*value == '\t') {
             ret.append(pL, value - pL);
             ++value;
             pL = value;
             ret += _ZFP_ZFSD_AttrValuePairEscape;
             ret += 't';
         }
-        else
-        {
+        else {
             zfcharMoveNext(value);
         }
     }
     ret.append(pL, value - pL);
     ret += _ZFP_ZFSD_AttrValuePair;
 }
-zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableData,
-                                       ZF_IN_OUT const zfchar *&encodedData,
-                                       ZF_IN zfindex encodedDataLen,
-                                       ZF_OUT zfstring *outErrorHint,
-                                       ZF_IN_OPT zfbool validateTail = zffalse)
-{
-    if(encodedData == zfnull)
-    {
+zfbool _ZFP_ZFSerializableDataFromZfsd(
+        ZF_OUT ZFSerializableData &serializableData
+        , ZF_IN_OUT const zfchar *&encodedData
+        , ZF_IN zfindex encodedDataLen
+        , ZF_OUT zfstring *outErrorHint
+        , ZF_IN_OPT zfbool validateTail = zffalse
+        ) {
+    if(encodedData == zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint,
             "invalid param");
         return zffalse;
     }
     const zfchar *srcEnd = (encodedData + ((encodedDataLen == zfindexMax()) ? zfslen(encodedData) : encodedDataLen));
     zfbool ret = zffalse;
-    do
-    {
+    do {
         const zfchar *pLeft = zfnull;
         const zfchar *pRight = zfnull;
         zfstring decodedTmp;
@@ -278,35 +257,29 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableDa
         zfcharSkipSpaceAndEndl(encodedData, srcEnd);
         pLeft = encodedData;
         while(encodedData < srcEnd
-            && !_ZFP_ZFSD_IsSpace(*encodedData)
-            && *encodedData != _ZFP_ZFSD_ChildBegin
-            && *encodedData != _ZFP_ZFSD_ObjEnd
-            )
-        {
+                && !_ZFP_ZFSD_IsSpace(*encodedData)
+                && *encodedData != _ZFP_ZFSD_ChildBegin
+                && *encodedData != _ZFP_ZFSD_ObjEnd
+                ) {
             zfcharMoveNext(encodedData);
         }
         pRight = encodedData;
         zfcharSkipSpaceAndEndl(encodedData, srcEnd);
         if(encodedData >= srcEnd) {break;}
 
-        if(pRight == pLeft + 1 && *pLeft == _ZFP_ZFSD_NullClass)
-        {
+        if(pRight == pLeft + 1 && *pLeft == _ZFP_ZFSD_NullClass) {
             serializableData.itemClass(zfnull);
         }
-        else
-        {
+        else {
             zfCoreDataDecode(decodedTmp, pLeft, pRight - pLeft);
             serializableData.itemClass(decodedTmp.cString());
             decodedTmp.removeAll();
         }
 
         // attributes
-        if(*encodedData != _ZFP_ZFSD_ChildBegin && *encodedData != _ZFP_ZFSD_ObjEnd)
-        {
-            while(encodedData < srcEnd)
-            {
-                if(*encodedData == _ZFP_ZFSD_ChildBegin || *encodedData == _ZFP_ZFSD_ObjEnd)
-                {
+        if(*encodedData != _ZFP_ZFSD_ChildBegin && *encodedData != _ZFP_ZFSD_ObjEnd) {
+            while(encodedData < srcEnd) {
+                if(*encodedData == _ZFP_ZFSD_ChildBegin || *encodedData == _ZFP_ZFSD_ObjEnd) {
                     ret = zftrue;
                     break;
                 }
@@ -314,16 +287,14 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableDa
                 // name
                 pLeft = encodedData;
                 while(encodedData < srcEnd
-                    && !_ZFP_ZFSD_IsSpace(*encodedData)
-                    && *encodedData != _ZFP_ZFSD_AttrAssign
-                    )
-                {
+                        && !_ZFP_ZFSD_IsSpace(*encodedData)
+                        && *encodedData != _ZFP_ZFSD_AttrAssign
+                        ) {
                     zfcharMoveNext(encodedData);
                 }
                 if(encodedData >= srcEnd) {break;}
                 pRight = encodedData;
-                if(*encodedData != _ZFP_ZFSD_AttrAssign)
-                {
+                if(*encodedData != _ZFP_ZFSD_AttrAssign) {
                     zfcharSkipSpaceAndEndl(encodedData, srcEnd);
                 }
                 if(*encodedData != _ZFP_ZFSD_AttrAssign) {break;}
@@ -337,8 +308,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableDa
                 if(!_ZFP_ZFSD_AttrValueDecode(decodedTmp, encodedData, srcEnd)) {break;}
 
                 // save
-                if(!attributeName.isEmpty() && !decodedTmp.isEmpty())
-                {
+                if(!attributeName.isEmpty() && !decodedTmp.isEmpty()) {
                     serializableData.attr(attributeName.cString(), decodedTmp.cString());
                 }
                 decodedTmp.removeAll();
@@ -350,14 +320,11 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableDa
         } // if(*encodedData == _ZFP_ZFSD_AttrBegin)
 
         // elements
-        if(*encodedData == _ZFP_ZFSD_ChildBegin)
-        {
+        if(*encodedData == _ZFP_ZFSD_ChildBegin) {
             ++encodedData;
-            while(encodedData < srcEnd)
-            {
+            while(encodedData < srcEnd) {
                 zfcharSkipSpaceAndEndl(encodedData, srcEnd);
-                if(*encodedData == _ZFP_ZFSD_ChildEnd)
-                {
+                if(*encodedData == _ZFP_ZFSD_ChildEnd) {
                     ++encodedData;
                     zfcharSkipSpaceAndEndl(encodedData, srcEnd);
                     ret = zftrue;
@@ -365,8 +332,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableDa
                 }
 
                 ZFSerializableData element;
-                if(!_ZFP_ZFSerializableDataFromZfsd(element, encodedData, srcEnd - encodedData, outErrorHint))
-                {
+                if(!_ZFP_ZFSerializableDataFromZfsd(element, encodedData, srcEnd - encodedData, outErrorHint)) {
                     return zffalse;
                 }
                 serializableData.childAdd(element);
@@ -378,16 +344,14 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableDa
         // tail
         if(encodedData >= srcEnd || *encodedData != _ZFP_ZFSD_ObjEnd) {break;}
         ++encodedData;
-        if(validateTail)
-        {
+        if(validateTail) {
             zfcharSkipSpaceAndEndl(encodedData, srcEnd);
             if(encodedData < srcEnd) {break;}
         }
 
         ret = zftrue;
     } while(zffalse);
-    if(!ret)
-    {
+    if(!ret) {
         ZFSerializableUtil::errorOccurred(outErrorHint,
             "wrong serializable string format at position: \"%s\"",
             zfstring(encodedData, srcEnd - encodedData).cString());
@@ -396,61 +360,60 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableDa
 }
 
 // ============================================================
-zfbool ZFSerializableDataFromZfsd(ZF_OUT ZFSerializableData &serializableData,
-                                  ZF_IN const zfchar *encodedData,
-                                  ZF_IN_OPT zfindex encodedDataLen /* = zfindexMax() */,
-                                  ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfbool ZFSerializableDataFromZfsd(
+        ZF_OUT ZFSerializableData &serializableData
+        , ZF_IN const zfchar *encodedData
+        , ZF_IN_OPT zfindex encodedDataLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     return _ZFP_ZFSerializableDataFromZfsd(serializableData, encodedData, encodedDataLen, outErrorHint, zfHint("validateTail")zftrue);
 }
-ZFSerializableData ZFSerializableDataFromZfsd(ZF_IN const zfchar *encodedData,
-                                              ZF_IN zfindex encodedDataLen,
-                                              ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+ZFSerializableData ZFSerializableDataFromZfsd(
+        ZF_IN const zfchar *encodedData
+        , ZF_IN zfindex encodedDataLen
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     ZFSerializableData ret;
-    if(ZFSerializableDataFromZfsd(ret, encodedData, encodedDataLen, outErrorHint))
-    {
+    if(ZFSerializableDataFromZfsd(ret, encodedData, encodedDataLen, outErrorHint)) {
         return ret;
     }
-    else
-    {
+    else {
         return ZFSerializableData();
     }
 }
 
-static zfbool _ZFP_ZFSerializableDataToZfsdPretty(ZF_OUT zfstring &result,
-                                                  ZF_IN const ZFSerializableData &serializableData,
-                                                  ZF_OUT zfstring *outErrorHint,
-                                                  ZF_IN zfindex indentLevel);
-zfbool ZFSerializableDataToZfsd(ZF_OUT zfstring &result,
-                                ZF_IN const ZFSerializableData &serializableData,
-                                ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                ZF_IN_OPT zfbool prettyPrint /* = zftrue */)
-{
-    if(prettyPrint)
-    {
+static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
+        ZF_OUT zfstring &result
+        , ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT zfstring *outErrorHint
+        , ZF_IN zfindex indentLevel
+        );
+zfbool ZFSerializableDataToZfsd(
+        ZF_OUT zfstring &result
+        , ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        ) {
+    if(prettyPrint) {
         return _ZFP_ZFSerializableDataToZfsdPretty(result, serializableData, outErrorHint, 0);
     }
 
     result += _ZFP_ZFSD_ObjBegin;
 
     // serializable class
-    if(serializableData.itemClass() == zfnull)
-    {
+    if(serializableData.itemClass() == zfnull) {
         result += _ZFP_ZFSD_NullClass;
     }
-    else
-    {
+    else {
         zfCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
     }
 
     // attributes
-    if(serializableData.attrCount() > 0)
-    {
+    if(serializableData.attrCount() > 0) {
         for(zfiterator it = serializableData.attrIter();
-            serializableData.attrIterValid(it);
-            serializableData.attrIterNext(it))
-        {
+                serializableData.attrIterValid(it);
+                serializableData.attrIterNext(it)
+                ) {
             result += _ZFP_ZFSD_Space;
             zfCoreDataEncode(result, serializableData.attrIterKey(it), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
             result += _ZFP_ZFSD_AttrAssign;
@@ -459,13 +422,10 @@ zfbool ZFSerializableDataToZfsd(ZF_OUT zfstring &result,
     }
 
     // elements
-    if(serializableData.childCount() > 0)
-    {
+    if(serializableData.childCount() > 0) {
         result += _ZFP_ZFSD_ChildBegin;
-        for(zfindex i = 0; i < serializableData.childCount(); ++i)
-        {
-            if(!ZFSerializableDataToZfsd(result, serializableData.childAt(i), outErrorHint, prettyPrint))
-            {
+        for(zfindex i = 0; i < serializableData.childCount(); ++i) {
+            if(!ZFSerializableDataToZfsd(result, serializableData.childAt(i), outErrorHint, prettyPrint)) {
                 return zffalse;
             }
         }
@@ -475,53 +435,51 @@ zfbool ZFSerializableDataToZfsd(ZF_OUT zfstring &result,
     result += _ZFP_ZFSD_ObjEnd;
     return zftrue;
 }
-zfstring ZFSerializableDataToZfsd(ZF_IN const ZFSerializableData &serializableData,
-                                  ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                  ZF_IN_OPT zfbool prettyPrint /* = zftrue */)
-{
+zfstring ZFSerializableDataToZfsd(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        ) {
     zfstring tmp;
     ZFSerializableDataToZfsd(tmp, serializableData, outErrorHint);
     return tmp;
 }
 
 // ============================================================
-static void _ZFP_ZFSerializableDataToZfsdPrettyIndent(ZF_OUT zfstring &result,
-                                                      ZF_IN zfindex indentLevel)
-{
-    for(zfindex i = 0; i < indentLevel; ++i)
-    {
+static void _ZFP_ZFSerializableDataToZfsdPrettyIndent(
+        ZF_OUT zfstring &result
+        , ZF_IN zfindex indentLevel
+        ) {
+    for(zfindex i = 0; i < indentLevel; ++i) {
         result += "    ";
     }
 }
-static zfbool _ZFP_ZFSerializableDataToZfsdPretty(ZF_OUT zfstring &result,
-                                                  ZF_IN const ZFSerializableData &serializableData,
-                                                  ZF_OUT zfstring *outErrorHint,
-                                                  ZF_IN zfindex indentLevel)
-{
+static zfbool _ZFP_ZFSerializableDataToZfsdPretty(
+        ZF_OUT zfstring &result
+        , ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT zfstring *outErrorHint
+        , ZF_IN zfindex indentLevel
+        ) {
     _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel);
     result += _ZFP_ZFSD_ObjBegin;
 
     // serializable class
-    if(serializableData.itemClass() == zfnull)
-    {
+    if(serializableData.itemClass() == zfnull) {
         result += _ZFP_ZFSD_NullClass;
     }
-    else
-    {
+    else {
         zfCoreDataEncode(result, serializableData.itemClass(), zfindexMax(), _ZFP_ZFSerializableEscapeCharMap);
     }
 
     zfbool needBreak = (serializableData.attrCount() > 3);
 
     // attributes
-    if(serializableData.attrCount() > 0)
-    {
+    if(serializableData.attrCount() > 0) {
         for(zfiterator it = serializableData.attrIter();
-            serializableData.attrIterValid(it);
-            serializableData.attrIterNext(it))
-        {
-            if(needBreak)
-            {
+                serializableData.attrIterValid(it);
+                serializableData.attrIterNext(it)
+                ) {
+            if(needBreak) {
                 result += '\n';
                 _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel + 1);
             }
@@ -533,23 +491,18 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(ZF_OUT zfstring &result,
     }
 
     // elements
-    if(serializableData.childCount() > 0)
-    {
-        if(needBreak)
-        {
+    if(serializableData.childCount() > 0) {
+        if(needBreak) {
             result += '\n';
             _ZFP_ZFSerializableDataToZfsdPrettyIndent(result, indentLevel + 1);
         }
-        else
-        {
+        else {
             result += ' ';
         }
         result += _ZFP_ZFSD_ChildBegin;
         result += '\n';
-        for(zfindex i = 0; i < serializableData.childCount(); ++i)
-        {
-            if(!_ZFP_ZFSerializableDataToZfsdPretty(result, serializableData.childAt(i), outErrorHint, indentLevel + 1))
-            {
+        for(zfindex i = 0; i < serializableData.childCount(); ++i) {
+            if(!_ZFP_ZFSerializableDataToZfsdPretty(result, serializableData.childAt(i), outErrorHint, indentLevel + 1)) {
                 return zffalse;
             }
             result += '\n';
@@ -558,48 +511,46 @@ static zfbool _ZFP_ZFSerializableDataToZfsdPretty(ZF_OUT zfstring &result,
         result += _ZFP_ZFSD_ChildEnd;
     }
 
-    if(needBreak)
-    {
+    if(needBreak) {
         result += ' ';
     }
     result += _ZFP_ZFSD_ObjEnd;
     return zftrue;
 }
 
-zfbool ZFObjectFromZfsd(ZF_OUT zfautoObject &ret,
-                        ZF_IN const ZFInput &input,
-                        ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfbool ZFObjectFromZfsd(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN const ZFInput &input
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     ZFSerializableData data;
-    if(ZFSerializableDataFromZfsd(data, input, outErrorHint))
-    {
+    if(ZFSerializableDataFromZfsd(data, input, outErrorHint)) {
         return ZFObjectFromData(ret, data, outErrorHint);
     }
-    else
-    {
+    else {
         return zffalse;
     }
 }
-zfautoObject ZFObjectFromZfsd(ZF_IN const ZFInput &input,
-                              ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfautoObject ZFObjectFromZfsd(
+        ZF_IN const ZFInput &input
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     zfautoObject ret;
     ZFObjectFromZfsd(ret, input, outErrorHint);
     return ret;
 }
 
-zfbool ZFObjectToZfsd(ZF_IN_OUT const ZFOutput &output,
-                      ZF_IN ZFObject *obj,
-                      ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                      ZF_IN_OPT zfbool prettyPrint /* = zftrue */)
-{
+zfbool ZFObjectToZfsd(
+        ZF_IN_OUT const ZFOutput &output
+        , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
+        ) {
     ZFSerializableData serializableData;
-    if(!ZFObjectToData(serializableData, obj, outErrorHint))
-    {
+    if(!ZFObjectToData(serializableData, obj, outErrorHint)) {
         return zffalse;
     }
-    else
-    {
+    else {
         return ZFSerializableDataToZfsd(output, serializableData, outErrorHint, prettyPrint);
     }
 }
@@ -610,18 +561,57 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataFromZfsd, ZFMP_OUT(ZFSerializableData &, serializableData), ZFMP_IN(const ZFInput &, input), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFSerializableData, ZFSerializableDataFromZfsd, ZFMP_IN(const ZFInput &, input), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZfsd, ZFMP_IN_OUT(const ZFOutput &, output), ZFMP_IN(const ZFSerializableData &, serializableData), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataFromZfsd
+        , ZFMP_OUT(ZFSerializableData &, serializableData)
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFSerializableData, ZFSerializableDataFromZfsd
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZfsd
+        , ZFMP_IN_OUT(const ZFOutput &, output)
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFSerializableDataFromZfsd, ZFMP_OUT(ZFSerializableData &, serializableData), ZFMP_IN(const zfchar *, encodedData), ZFMP_IN_OPT(zfindex, encodedDataLen, zfindexMax()), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFSerializableData, ZFSerializableDataFromZfsd, ZFMP_IN(const zfchar *, encodedData), ZFMP_IN_OPT(zfindex, encodedDataLen, zfindexMax()), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZfsd, ZFMP_OUT(zfstring &, result), ZFMP_IN(const ZFSerializableData &, serializableData), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFSerializableDataToZfsd, ZFMP_IN(const ZFSerializableData &, serializableData), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFSerializableDataFromZfsd
+        , ZFMP_OUT(ZFSerializableData &, serializableData)
+        , ZFMP_IN(const zfchar *, encodedData)
+        , ZFMP_IN_OPT(zfindex, encodedDataLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFSerializableData, ZFSerializableDataFromZfsd
+        , ZFMP_IN(const zfchar *, encodedData)
+        , ZFMP_IN_OPT(zfindex, encodedDataLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializableDataToZfsd
+        , ZFMP_OUT(zfstring &, result)
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFSerializableDataToZfsd
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectFromZfsd, ZFMP_OUT(zfautoObject &, ret), ZFMP_IN(const ZFInput &, input), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfautoObject, ZFObjectFromZfsd, ZFMP_IN(const ZFInput &, input), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectToZfsd, ZFMP_IN_OUT(const ZFOutput &, output), ZFMP_IN(ZFObject *, obj), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull), ZFMP_IN_OPT(zfbool, prettyPrint, zftrue))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFObjectFromZfsd
+        , ZFMP_OUT(zfautoObject &, ret)
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfautoObject, ZFObjectFromZfsd
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectToZfsd
+        , ZFMP_IN_OUT(const ZFOutput &, output)
+        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_IN_OPT(zfbool, prettyPrint, zftrue)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

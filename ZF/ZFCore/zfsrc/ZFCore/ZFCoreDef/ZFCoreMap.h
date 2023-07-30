@@ -23,8 +23,7 @@ zfclassFwd _ZFP_ZFCoreMapPrivate;
  * use #ZFCorePointerBase as value,
  * which use retain logic and can hold many types
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFCoreMap
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFCoreMap {
 public:
     /**
      * @brief construct an empty map
@@ -52,8 +51,7 @@ public:
     /** @brief see #objectInfo */
     zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    zffinal zfstring objectInfo(void) const
-    {
+    zffinal zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -61,13 +59,16 @@ public:
 
 public:
     /** @brief see #objectInfoOfContent */
-    zffinal void objectInfoOfContentT(ZF_IN_OUT zfstring &ret,
-                                      ZF_IN_OPT zfindex maxCount = zfindexMax(),
-                                      ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()) const;
+    zffinal void objectInfoOfContentT(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT zfindex maxCount = zfindexMax()
+            , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
+            ) const;
     /** @brief return contents info */
-    zffinal zfstring objectInfoOfContent(ZF_IN_OPT zfindex maxCount = zfindexMax(),
-                                         ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()) const
-    {
+    zffinal zfstring objectInfoOfContent(
+            ZF_IN_OPT zfindex maxCount = zfindexMax()
+            , ZF_IN_OPT const ZFTokenForKeyValueContainer &token = ZFTokenForKeyValueContainerDefault()
+            ) const {
         zfstring ret;
         this->objectInfoOfContentT(ret, maxCount, token);
         return ret;
@@ -118,8 +119,10 @@ public:
      * null key is considered same as empty string\n
      * assert fail if value is null (use an empty smart pointer to store null value)
      */
-    zffinal void set(ZF_IN const zfchar *key,
-                     ZF_IN const ZFCorePointerBase &value);
+    zffinal void set(
+            ZF_IN const zfchar *key
+            , ZF_IN const ZFCorePointerBase &value
+            );
     /**
      * @brief get value or null if not exist
      */
@@ -128,11 +131,9 @@ public:
      * @brief get value or null if not exist
      */
     template<typename T_Element>
-    T_Element get(ZF_IN const zfchar *key) const
-    {
+    T_Element get(ZF_IN const zfchar *key) const {
         ZFCorePointerBase *t = this->get(key);
-        if(t != zfnull)
-        {
+        if(t != zfnull) {
             return t->pointerValueT<T_Element>();
         }
         return zfnull;
@@ -143,8 +144,7 @@ public:
     /**
      * @brief return a copy of all keys
      */
-    inline ZFCoreArrayPOD<const zfchar *> allKey(void) const
-    {
+    inline ZFCoreArrayPOD<const zfchar *> allKey(void) const {
         ZFCoreArrayPOD<const zfchar *> ret;
         this->allKeyT(ret);
         return ret;
@@ -155,8 +155,7 @@ public:
     /**
      * @brief return a copy of all values
      */
-    inline ZFCoreArrayPOD<ZFCorePointerBase *> allValue(void) const
-    {
+    inline ZFCoreArrayPOD<ZFCorePointerBase *> allValue(void) const {
         ZFCoreArrayPOD<ZFCorePointerBase *> ret;
         this->allValueT(ret);
         return ret;
@@ -164,11 +163,9 @@ public:
 
     /** @brief see #allValue */
     template<typename T_Element>
-    void allValueT(ZF_IN_OUT ZFCoreArray<T_Element> &ret) const
-    {
+    void allValueT(ZF_IN_OUT ZFCoreArray<T_Element> &ret) const {
         ret.capacity(ret.count() + this->count());
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
-        {
+        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
             ret.add(this->iterValue<T_Element>(it));
         }
     }
@@ -204,22 +201,24 @@ public:
     zffinal ZFCorePointerBase *iterValue(ZF_IN const zfiterator &it) const;
 
     /** @brief see #zfiterator */
-    zffinal void iterValue(ZF_IN_OUT zfiterator &it,
-                           ZF_IN const ZFCorePointerBase &newValue);
+    zffinal void iterValue(
+            ZF_IN_OUT zfiterator &it
+            , ZF_IN const ZFCorePointerBase &newValue
+            );
     /** @brief see #zfiterator */
     zffinal void iterRemove(ZF_IN_OUT zfiterator &it);
 
     /** @brief see #zfiterator */
-    zffinal void iterAdd(ZF_IN const zfchar *key,
-                         ZF_IN const ZFCorePointerBase &value);
+    zffinal void iterAdd(
+            ZF_IN const zfchar *key
+            , ZF_IN const ZFCorePointerBase &value
+            );
 
     /** @brief see #zfiterator */
     template<typename T_Element>
-    T_Element iterValue(ZF_IN const zfiterator &it) const
-    {
+    T_Element iterValue(ZF_IN const zfiterator &it) const {
         ZFCorePointerBase *t = this->iterValue(it);
-        if(t != zfnull)
-        {
+        if(t != zfnull) {
             return t->pointerValueT<T_Element>();
         }
         return zfnull;

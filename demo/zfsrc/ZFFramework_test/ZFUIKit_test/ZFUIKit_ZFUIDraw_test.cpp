@@ -2,14 +2,14 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUIDraw_test_DrawableView : zfextends ZFUIDrawableView
-{
+zfclass ZFUIKit_ZFUIDraw_test_DrawableView : zfextends ZFUIDrawableView {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIDraw_test_DrawableView, ZFUIDrawableView)
 
 public:
-    static void testDraw(ZF_IN void *context,
-                         ZF_IN const ZFUISize &ownerSizePixel)
-    {
+    static void testDraw(
+            ZF_IN void *context
+            , ZF_IN const ZFUISize &ownerSizePixel
+            ) {
         ZFUIDraw::antialiasing(context, zftrue);
         ZFUIDraw::drawColor(context,
             ZFUIColorBlue(),
@@ -22,8 +22,7 @@ public:
 
 protected:
     zfoverride
-    virtual void onDraw(void)
-    {
+    virtual void onDraw(void) {
         zfsuper::onDraw();
         void *context = ZFUIDraw::beginForView(this);
         ZFUIKit_ZFUIDraw_test_DrawableView::testDraw(
@@ -33,14 +32,12 @@ protected:
     }
 };
 
-zfclass ZFUIKit_ZFUIDraw_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIKit_ZFUIDraw_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIDraw_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUIDraw);
@@ -71,9 +68,10 @@ protected:
     }
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFArray *views)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFArray *views
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         { // imageScaleType
@@ -88,16 +86,13 @@ private:
                     , zfautoObjectT<ZFArray *>, views
                     ) {
                 ZFUISize sizeHint = views->get<ZFUIView *>(0)->layoutParam()->sizeHint();
-                if(sizeHint.height == 100)
-                {
+                if(sizeHint.height == 100) {
                     sizeHint.height = 150;
                 }
-                else
-                {
+                else {
                     sizeHint.height = 100;
                 }
-                for(zfindex i = 0; i < views->count(); ++i)
-                {
+                for(zfindex i = 0; i < views->count(); ++i) {
                     views->get<ZFUIView *>(i)->layoutParam()->sizeHint(sizeHint);
                 }
             } ZFLISTENER_END()

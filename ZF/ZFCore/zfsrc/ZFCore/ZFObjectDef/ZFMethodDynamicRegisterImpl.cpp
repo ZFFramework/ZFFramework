@@ -7,30 +7,25 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
 zfstlmap<const ZFMethod *, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFMethodDynamicRegisterDataHolder)
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodDynamicRegisterAutoRemove)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodDynamicRegisterAutoRemove) {
     zfstlmap<const ZFMethod *, zfbool> t;
     t.swap(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m);
-    for(zfstlmap<const ZFMethod *, zfbool>::iterator it = t.begin(); it != t.end(); ++it)
-    {
+    for(zfstlmap<const ZFMethod *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
         _ZFP_ZFMethodUnregister(it->first);
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFMethodDynamicRegisterAutoRemove)
 
 // ============================================================
-static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
-{
+static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     zfblockedAlloc(ZFMethodInvokeData, d);
     d->invokerMethod = invokerMethod;
     d->invokerObject = invokerObject;
@@ -50,12 +45,10 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
             .userData(methodImpl.userData())
         );
     ret = d->ret;
-    if(errorHint != zfnull)
-    {
+    if(errorHint != zfnull) {
         *errorHint += d->errorHint;
     }
-    if(d->invokeSuccess)
-    {
+    if(d->invokeSuccess) {
         paramList[0] = d->param0;
         paramList[1] = d->param1;
         paramList[2] = d->param2;
@@ -69,11 +62,11 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
 }
 
 // ============================================================
-const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam &param,
-                                        ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
-{
-    if(param.methodOwnerClass() != zfnull && param.methodNamespace() != zfnull)
-    {
+const ZFMethod *ZFMethodDynamicRegister(
+        ZF_IN const ZFMethodDynamicRegisterParam &param
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(param.methodOwnerClass() != zfnull && param.methodNamespace() != zfnull) {
         zfstringAppend(errorHint,
             "methodOwnerClass(%s) and methodNamespace(%s) can not both set",
             param.methodOwnerClass()->objectInfo().cString(),
@@ -81,50 +74,40 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
         return zfnull;
     }
     zfbool methodImplValid = param.methodImpl();
-    if(param.methodGenericInvoker() == zfnull && !methodImplValid)
-    {
+    if(param.methodGenericInvoker() == zfnull && !methodImplValid) {
         zfstringAppend(errorHint, "methodGenericInvoker / methodImpl not set");
         return zfnull;
     }
-    if(param.methodGenericInvoker() != zfnull && methodImplValid)
-    {
+    if(param.methodGenericInvoker() != zfnull && methodImplValid) {
         zfstringAppend(errorHint,
             "methodGenericInvoker(%p) and methodImpl(%s) can not both set",
             param.methodGenericInvoker(),
             param.methodImpl().objectInfo().cString());
         return zfnull;
     }
-    if(methodImplValid && param.methodDynamicRegisterUserData() != zfnull)
-    {
+    if(methodImplValid && param.methodDynamicRegisterUserData() != zfnull) {
         zfstringAppend(errorHint,
             "when methodImpl specified, methodDynamicRegisterUserData must not set");
         return zfnull;
     }
     ZFMethodType methodType = param.methodType();
     ZFMethodPrivilegeType methodPrivilegeType = param.methodPrivilegeType();
-    if(param.methodOwnerClass() == zfnull)
-    {
+    if(param.methodOwnerClass() == zfnull) {
         methodType = ZFMethodTypeStatic;
         methodPrivilegeType = ZFMethodPrivilegeTypePublic;
     }
-    if(param.methodName() == zfnull)
-    {
+    if(param.methodName() == zfnull) {
         zfstringAppend(errorHint, "methodName not set");
         return zfnull;
     }
-    if(param.methodReturnTypeId() == zfnull)
-    {
+    if(param.methodReturnTypeId() == zfnull) {
         zfstringAppend(errorHint, "methodReturnTypeId not set");
         return zfnull;
     }
-    for(zfindex i = 0; i < param.methodParamCount(); ++i)
-    {
-        if(param.methodParamDefaultValueCallbackAt(i) != zfnull)
-        {
-            for( ; i < param.methodParamCount(); ++i)
-            {
-                if(param.methodParamDefaultValueCallbackAt(i) == zfnull)
-                {
+    for(zfindex i = 0; i < param.methodParamCount(); ++i) {
+        if(param.methodParamDefaultValueCallbackAt(i) != zfnull) {
+            for( ; i < param.methodParamCount(); ++i) {
+                if(param.methodParamDefaultValueCallbackAt(i) == zfnull) {
                     zfstringAppend(errorHint,
                         "param %zi has no default value but previous param has",
                         i);
@@ -134,8 +117,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
         }
     }
     const ZFMethod *existMethod = zfnull;
-    if(param.methodOwnerClass() != zfnull)
-    {
+    if(param.methodOwnerClass() != zfnull) {
         existMethod = param.methodOwnerClass()->methodForNameIgnoreParent(
                 param.methodName()
                 , param.methodParamTypeIdAt(0)
@@ -148,8 +130,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
                 , param.methodParamTypeIdAt(7)
             );
     }
-    else
-    {
+    else {
         existMethod = ZFMethodFuncForName(
                 param.methodNamespace()
                 , param.methodName()
@@ -163,8 +144,7 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
                 , param.methodParamTypeIdAt(7)
             );
     }
-    if(existMethod != zfnull)
-    {
+    if(existMethod != zfnull) {
         zfstringAppend(errorHint,
             "method with same sig already exists: %s",
             existMethod->objectInfo().cString());
@@ -197,17 +177,14 @@ const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam
             , (const zfchar *)zfnull
         );
     method->_ZFP_ZFMethod_paramDefaultValueList.capacity(param.methodParamCount());
-    for(zfindex i = 0; i < param.methodParamCount(); ++i)
-    {
+    for(zfindex i = 0; i < param.methodParamCount(); ++i) {
         method->_ZFP_ZFMethod_paramDefaultValueList.add(param.methodParamDefaultValueAt(i));
     }
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m[method] = zftrue;
     return method;
 }
-void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method)
-{
-    if(method != zfnull)
-    {
+void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method) {
+    if(method != zfnull) {
         zfCoreAssert(method->methodIsDynamicRegister());
         zfCoreMutexLocker();
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m.erase(method);

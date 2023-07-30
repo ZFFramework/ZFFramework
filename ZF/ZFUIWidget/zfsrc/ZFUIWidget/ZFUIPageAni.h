@@ -14,30 +14,33 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * prepare alpha animation, typically used for tab change
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfbool, ZFUIPageAniPrepareForAlpha,
-                        ZFMP_IN(ZFUIPage *, page),
-                        ZFMP_IN(ZFEnum *, resumeOrPauseReason),
-                        ZFMP_IN(ZFUIPage *, siblingPage))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfbool, ZFUIPageAniPrepareForAlpha
+        , ZFMP_IN(ZFUIPage *, page)
+        , ZFMP_IN(ZFEnum *, resumeOrPauseReason)
+        , ZFMP_IN(ZFUIPage *, siblingPage)
+        )
 
 /**
  * @brief see #ZFUIPage::pageAniOnPrepare
  *
  * prepare slide animation, typically used for new child page
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfbool, ZFUIPageAniPrepareForSlide,
-                        ZFMP_IN(ZFUIPage *, page),
-                        ZFMP_IN(ZFEnum *, resumeOrPauseReason),
-                        ZFMP_IN(ZFUIPage *, siblingPage))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfbool, ZFUIPageAniPrepareForSlide
+        , ZFMP_IN(ZFUIPage *, page)
+        , ZFMP_IN(ZFEnum *, resumeOrPauseReason)
+        , ZFMP_IN(ZFUIPage *, siblingPage)
+        )
 
 /**
  * @brief see #ZFUIPage::pageAniOnPrepare
  *
  * prepare popup animation, typically used for temporary page or login page
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfbool, ZFUIPageAniPrepareForPopup,
-                        ZFMP_IN(ZFUIPage *, page),
-                        ZFMP_IN(ZFEnum *, resumeOrPauseReason),
-                        ZFMP_IN(ZFUIPage *, siblingPage))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIWidget, zfbool, ZFUIPageAniPrepareForPopup
+        , ZFMP_IN(ZFUIPage *, page)
+        , ZFMP_IN(ZFEnum *, resumeOrPauseReason)
+        , ZFMP_IN(ZFUIPage *, siblingPage)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIPageAni_h_

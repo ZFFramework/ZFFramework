@@ -37,8 +37,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUISizeType)
 /**
  * @brief 2D size
  */
-zfclassPOD ZFLIB_ZFUIKit ZFUISizeParam
-{
+zfclassPOD ZFLIB_ZFUIKit ZFUISizeParam {
 public:
     ZFUISizeTypeEnum width;   /**< @brief width */
     ZFUISizeTypeEnum height;  /**< @brief height */
@@ -63,19 +62,19 @@ ZFCORE_POD_COMPARER_DECLARE(ZFUISizeParam)
 /**
  * @brief make a ZFUISizeParam
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake,
-                               ZFMP_IN(ZFUISizeTypeEnum const &, width),
-                               ZFMP_IN(ZFUISizeTypeEnum const &, height))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake
+        , ZFMP_IN(ZFUISizeTypeEnum const &, width)
+        , ZFMP_IN(ZFUISizeTypeEnum const &, height)
+        ) {
     ZFUISizeParam ret = {width, height};
     return ret;
 }
 /**
  * @brief make a ZFUISizeParam
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake,
-                               ZFMP_IN(ZFUISizeTypeEnum const &, v))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamMake
+        , ZFMP_IN(ZFUISizeTypeEnum const &, v)
+        ) {
     ZFUISizeParam ret = {v, v};
     return ret;
 }
@@ -121,8 +120,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamFillFil
  *   and must be serializable
  * @note by default, a layout param would be compared by comparing all property
  */
-zfclass ZFLIB_ZFUIKit ZFUILayoutParam : zfextends ZFStyleableObject
-{
+zfclass ZFLIB_ZFUIKit ZFUILayoutParam : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUILayoutParam, ZFStyleableObject)
 
 public:
@@ -168,115 +166,136 @@ public:
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_0(void, sizeFill)
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, sizeFill,
-                       ZFMP_IN(zffloat, size))
+    ZFMETHOD_DECLARE_1(void, sizeFill
+            , ZFMP_IN(zffloat, size)
+            )
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, sizeFill,
-                       ZFMP_IN(const ZFUISize &, size))
+    ZFMETHOD_DECLARE_1(void, sizeFill
+            , ZFMP_IN(const ZFUISize &, size)
+            )
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_2(void, sizeFill,
-                       ZFMP_IN(zffloat, width),
-                       ZFMP_IN(zffloat, height))
+    ZFMETHOD_DECLARE_2(void, sizeFill
+            , ZFMP_IN(zffloat, width)
+            , ZFMP_IN(zffloat, height)
+            )
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_0(void, sizeWrap)
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, sizeWrap,
-                       ZFMP_IN(zffloat, size))
+    ZFMETHOD_DECLARE_1(void, sizeWrap
+            , ZFMP_IN(zffloat, size)
+            )
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, sizeWrap,
-                       ZFMP_IN(const ZFUISize &, size))
+    ZFMETHOD_DECLARE_1(void, sizeWrap
+            , ZFMP_IN(const ZFUISize &, size)
+            )
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_2(void, sizeWrap,
-                       ZFMP_IN(zffloat, width),
-                       ZFMP_IN(zffloat, height))
+    ZFMETHOD_DECLARE_2(void, sizeWrap
+            , ZFMP_IN(zffloat, width)
+            , ZFMP_IN(zffloat, height)
+            )
 
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_0(void, widthFill)
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, widthFill,
-                       ZFMP_IN(zffloat, width))
+    ZFMETHOD_DECLARE_1(void, widthFill
+            , ZFMP_IN(zffloat, width)
+            )
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_0(void, widthWrap)
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, widthWrap,
-                       ZFMP_IN(zffloat, width))
+    ZFMETHOD_DECLARE_1(void, widthWrap
+            , ZFMP_IN(zffloat, width)
+            )
 
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_0(void, heightFill)
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, heightFill,
-                       ZFMP_IN(zffloat, height))
+    ZFMETHOD_DECLARE_1(void, heightFill
+            , ZFMP_IN(zffloat, height)
+            )
     /** @brief util to set #sizeParam and #sizeHint */
     ZFMETHOD_DECLARE_0(void, heightWrap)
     /** @brief util to set #sizeParam and #sizeHint */
-    ZFMETHOD_DECLARE_1(void, heightWrap,
-                       ZFMP_IN(zffloat, height))
+    ZFMETHOD_DECLARE_1(void, heightWrap
+            , ZFMP_IN(zffloat, height)
+            )
 
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignCenter)
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignLeft)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_1(void, alignLeft,
-                       ZFMP_IN(zffloat, marginLeft))
+    ZFMETHOD_DECLARE_1(void, alignLeft
+            , ZFMP_IN(zffloat, marginLeft)
+            )
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignTop)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_1(void, alignTop,
-                       ZFMP_IN(zffloat, marginTop))
+    ZFMETHOD_DECLARE_1(void, alignTop
+            , ZFMP_IN(zffloat, marginTop)
+            )
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignRight)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_1(void, alignRight,
-                       ZFMP_IN(zffloat, marginRight))
+    ZFMETHOD_DECLARE_1(void, alignRight
+            , ZFMP_IN(zffloat, marginRight)
+            )
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignBottom)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_1(void, alignBottom,
-                       ZFMP_IN(zffloat, marginBottom))
+    ZFMETHOD_DECLARE_1(void, alignBottom
+            , ZFMP_IN(zffloat, marginBottom)
+            )
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignLeftTop)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_2(void, alignLeftTop,
-                       ZFMP_IN(zffloat, marginLeft),
-                       ZFMP_IN(zffloat, marginTop))
+    ZFMETHOD_DECLARE_2(void, alignLeftTop
+            , ZFMP_IN(zffloat, marginLeft)
+            , ZFMP_IN(zffloat, marginTop)
+            )
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignLeftBottom)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_2(void, alignLeftBottom,
-                       ZFMP_IN(zffloat, marginLeft),
-                       ZFMP_IN(zffloat, marginBottom))
+    ZFMETHOD_DECLARE_2(void, alignLeftBottom
+            , ZFMP_IN(zffloat, marginLeft)
+            , ZFMP_IN(zffloat, marginBottom)
+            )
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignRightTop)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_2(void, alignRightTop,
-                       ZFMP_IN(zffloat, marginRight),
-                       ZFMP_IN(zffloat, marginTop))
+    ZFMETHOD_DECLARE_2(void, alignRightTop
+            , ZFMP_IN(zffloat, marginRight)
+            , ZFMP_IN(zffloat, marginTop)
+            )
     /** @brief util to set #layoutAlign */
     ZFMETHOD_DECLARE_0(void, alignRightBottom)
     /** @brief util to set #layoutAlign and #layoutMargin */
-    ZFMETHOD_DECLARE_2(void, alignRightBottom,
-                       ZFMP_IN(zffloat, marginRight),
-                       ZFMP_IN(zffloat, marginBottom))
+    ZFMETHOD_DECLARE_2(void, alignRightBottom
+            , ZFMP_IN(zffloat, marginRight)
+            , ZFMP_IN(zffloat, marginBottom)
+            )
 
     /** @brief util to set #layoutMargin */
-    ZFMETHOD_DECLARE_1(void, margin,
-                       ZFMP_IN(zffloat, margin))
+    ZFMETHOD_DECLARE_1(void, margin
+            , ZFMP_IN(zffloat, margin)
+            )
     /** @brief util to set #layoutMargin */
-    ZFMETHOD_DECLARE_4(void, margin,
-                       ZFMP_IN(zffloat, left),
-                       ZFMP_IN(zffloat, top),
-                       ZFMP_IN(zffloat, right),
-                       ZFMP_IN(zffloat, bottom))
+    ZFMETHOD_DECLARE_4(void, margin
+            , ZFMP_IN(zffloat, left)
+            , ZFMP_IN(zffloat, top)
+            , ZFMP_IN(zffloat, right)
+            , ZFMP_IN(zffloat, bottom)
+            )
 
 public:
     // ============================================================
     /** @brief see #layoutParamApply */
-    ZFMETHOD_DECLARE_STATIC_4(void, layoutParamApply,
-                              ZFMP_OUT(ZFUIRect &, ret),
-                              ZFMP_IN(const ZFUIRect &, rect),
-                              ZFMP_IN(ZFUIView *, child),
-                              ZFMP_IN(ZFUILayoutParam *, lp))
+    ZFMETHOD_DECLARE_STATIC_4(void, layoutParamApply
+            , ZFMP_OUT(ZFUIRect &, ret)
+            , ZFMP_IN(const ZFUIRect &, rect)
+            , ZFMP_IN(ZFUIView *, child)
+            , ZFMP_IN(ZFUILayoutParam *, lp)
+            )
     /**
      * @brief calculate single child's frame using logic of #ZFUILayoutParam
      *
@@ -284,136 +303,148 @@ public:
      * it's declared for convenient for subclass to layout child
      * using parent's layout logic
      */
-    ZFMETHOD_DECLARE_STATIC_3(ZFUIRect, layoutParamApply,
-                              ZFMP_IN(const ZFUIRect &, rect),
-                              ZFMP_IN(ZFUIView *, child),
-                              ZFMP_IN(ZFUILayoutParam *, lp))
+    ZFMETHOD_DECLARE_STATIC_3(ZFUIRect, layoutParamApply
+            , ZFMP_IN(const ZFUIRect &, rect)
+            , ZFMP_IN(ZFUIView *, child)
+            , ZFMP_IN(ZFUILayoutParam *, lp)
+            )
 
     /**
      * @brief util method to apply sizeHint according sizeParam
      */
-    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply,
-                              ZFMP_OUT(zffloat &, ret),
-                              ZFMP_IN(zffloat, size),
-                              ZFMP_IN(zffloat, sizeHint),
-                              ZFMP_IN(ZFUISizeTypeEnum, sizeParam))
+    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply
+            , ZFMP_OUT(zffloat &, ret)
+            , ZFMP_IN(zffloat, size)
+            , ZFMP_IN(zffloat, sizeHint)
+            , ZFMP_IN(ZFUISizeTypeEnum, sizeParam)
+            )
     /** @brief see #sizeHintApply */
-    ZFMETHOD_DECLARE_STATIC_3(zffloat, sizeHintApply,
-                              ZFMP_IN(zffloat, size),
-                              ZFMP_IN(zffloat, sizeHint),
-                              ZFMP_IN(ZFUISizeTypeEnum, sizeParam))
+    ZFMETHOD_DECLARE_STATIC_3(zffloat, sizeHintApply
+            , ZFMP_IN(zffloat, size)
+            , ZFMP_IN(zffloat, sizeHint)
+            , ZFMP_IN(ZFUISizeTypeEnum, sizeParam)
+            )
 
     /**
      * @brief util method to apply sizeHint according sizeParam
      */
-    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply,
-                              ZFMP_OUT(ZFUISize &, ret),
-                              ZFMP_IN(const ZFUISize &, size),
-                              ZFMP_IN(const ZFUISize &, sizeHint),
-                              ZFMP_IN(const ZFUISizeParam &, sizeParam))
+    ZFMETHOD_DECLARE_STATIC_4(void, sizeHintApply
+            , ZFMP_OUT(ZFUISize &, ret)
+            , ZFMP_IN(const ZFUISize &, size)
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISizeParam &, sizeParam)
+            )
     /** @brief see #sizeHintApply */
-    ZFMETHOD_DECLARE_STATIC_3(ZFUISize, sizeHintApply,
-                              ZFMP_IN(const ZFUISize &, size),
-                              ZFMP_IN(const ZFUISize &, sizeHint),
-                              ZFMP_IN(const ZFUISizeParam &, sizeParam))
+    ZFMETHOD_DECLARE_STATIC_3(ZFUISize, sizeHintApply
+            , ZFMP_IN(const ZFUISize &, size)
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISizeParam &, sizeParam)
+            )
 
     /**
      * @brief merge two size hint
      */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMerge,
-                              ZFMP_OUT(zffloat &, ret),
-                              ZFMP_IN(zffloat, sizeHint0),
-                              ZFMP_IN(zffloat, sizeHint1))
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMerge
+            , ZFMP_OUT(zffloat &, ret)
+            , ZFMP_IN(zffloat, sizeHint0)
+            , ZFMP_IN(zffloat, sizeHint1)
+            )
     /** @brief see #sizeHintMerge */
-    ZFMETHOD_DECLARE_STATIC_2(zffloat, sizeHintMerge,
-                              ZFMP_IN(zffloat, sizeHint0),
-                              ZFMP_IN(zffloat, sizeHint1))
+    ZFMETHOD_DECLARE_STATIC_2(zffloat, sizeHintMerge
+            , ZFMP_IN(zffloat, sizeHint0)
+            , ZFMP_IN(zffloat, sizeHint1)
+            )
 
     /**
      * @brief merge two size hint
      */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMerge,
-                              ZFMP_OUT(ZFUISize &, ret),
-                              ZFMP_IN(const ZFUISize &, sizeHint0),
-                              ZFMP_IN(const ZFUISize &, sizeHint1))
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintMerge
+            , ZFMP_OUT(ZFUISize &, ret)
+            , ZFMP_IN(const ZFUISize &, sizeHint0)
+            , ZFMP_IN(const ZFUISize &, sizeHint1)
+            )
     /** @brief see #sizeHintMerge */
-    ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintMerge,
-                              ZFMP_IN(const ZFUISize &, sizeHint0),
-                              ZFMP_IN(const ZFUISize &, sizeHint1))
+    ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintMerge
+            , ZFMP_IN(const ZFUISize &, sizeHint0)
+            , ZFMP_IN(const ZFUISize &, sizeHint1)
+            )
 
     /**
      * @brief safely increase or decrease size hint, do nothing if old one is no limit
      */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset,
-                              ZFMP_OUT(zffloat &, ret),
-                              ZFMP_IN(zffloat, sizeHint),
-                              ZFMP_IN(zffloat, offset))
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset
+            , ZFMP_OUT(zffloat &, ret)
+            , ZFMP_IN(zffloat, sizeHint)
+            , ZFMP_IN(zffloat, offset)
+            )
     /** @brief see #sizeHintOffset */
-    ZFMETHOD_DECLARE_STATIC_2(zffloat, sizeHintOffset,
-                              ZFMP_IN(zffloat, sizeHint),
-                              ZFMP_IN(zffloat, offset))
+    ZFMETHOD_DECLARE_STATIC_2(zffloat, sizeHintOffset
+            , ZFMP_IN(zffloat, sizeHint)
+            , ZFMP_IN(zffloat, offset)
+            )
 
     /**
      * @brief safely increase or decrease size hint, do nothing if old one is no limit
      */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset,
-                              ZFMP_OUT(ZFUISize &, ret),
-                              ZFMP_IN(const ZFUISize &, sizeHint),
-                              ZFMP_IN(const ZFUISize &, offset))
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset
+            , ZFMP_OUT(ZFUISize &, ret)
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISize &, offset)
+            )
     /** @brief see #sizeHintOffset */
-    ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintOffset,
-                              ZFMP_IN(const ZFUISize &, sizeHint),
-                              ZFMP_IN(const ZFUISize &, offset))
+    ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintOffset
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISize &, offset)
+            )
 
     /**
      * @brief safely increase or decrease size hint, do nothing if old one is no limit
      */
-    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset,
-                              ZFMP_OUT(ZFUISize &, ret),
-                              ZFMP_IN(const ZFUISize &, sizeHint),
-                              ZFMP_IN(zffloat, offset))
+    ZFMETHOD_DECLARE_STATIC_3(void, sizeHintOffset
+            , ZFMP_OUT(ZFUISize &, ret)
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(zffloat, offset)
+            )
     /** @brief see #sizeHintOffset */
-    ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintOffset,
-                              ZFMP_IN(const ZFUISize &, sizeHint),
-                              ZFMP_IN(zffloat, offset))
+    ZFMETHOD_DECLARE_STATIC_2(ZFUISize, sizeHintOffset
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(zffloat, offset)
+            )
 
 public:
     zfoverride
-    virtual zfidentity objectHash(void)
-    {
+    virtual zfidentity objectHash(void) {
         return zfidentityCalcString(this->classData()->classNameFull());
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj)
-    {
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
         if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
-            && ZFClassUtil::allPropertyIsEqual(this, anotherObj))
-        {
+                && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
+                ) {
             return ZFCompareTheSame;
         }
         return ZFCompareUncomparable;
     }
     zfoverride
-    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoOnAppend(ret);
         ZFClassUtil::objectPropertyInfo(ret, this);
     }
 
 protected:
     zfoverride
-    virtual void objectPropertyValueOnUpdate(ZF_IN const ZFProperty *property, ZF_IN const void *oldValue)
-    {
+    virtual void objectPropertyValueOnUpdate(
+            ZF_IN const ZFProperty *property
+            , ZF_IN const void *oldValue
+            ) {
         zfsuper::objectPropertyValueOnUpdate(property, oldValue);
-        if(oldValue != zfnull)
-        {
+        if(oldValue != zfnull) {
             this->layoutParamOnChange();
         }
     }
 protected:
     /** @brief see #EventLayoutParamOnChange */
-    virtual inline void layoutParamOnChange(void)
-    {
+    virtual inline void layoutParamOnChange(void) {
         this->observerNotify(ZFUILayoutParam::EventLayoutParamOnChange());
     }
 };
@@ -441,8 +472,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
  *   you may modify the #ZFUIViewMeasureResult::measuredSize
  *   to override the measured result
  */
-zfclass ZFLIB_ZFUIKit ZFUIViewMeasureResult : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIKit ZFUIViewMeasureResult : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIViewMeasureResult, ZFObject)
 
 public:
@@ -461,8 +491,7 @@ public:
 
 protected:
     zfoverride
-    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual inline void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoOnAppend(ret);
         ZFClassUtil::objectPropertyInfo(ret, this);
     }

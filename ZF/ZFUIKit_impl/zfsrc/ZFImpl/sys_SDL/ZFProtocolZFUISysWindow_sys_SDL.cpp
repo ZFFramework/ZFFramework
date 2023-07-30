@@ -6,12 +6,10 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowResume, ZFLevelZFFrameworkPostNormal)
-{
+ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowResume, ZFLevelZFFrameworkPostNormal) {
     zfautoObject *sysWindowHolder = (zfautoObject *)sdlEvent->user.data1;
     ZFUISysWindow *sysWindow = sysWindowHolder->to<ZFObjectHolder *>()->objectHolded();
-    if(!sysWindow->nativeWindowIsResumed())
-    {
+    if(!sysWindow->nativeWindowIsResumed()) {
         ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnResume(sysWindow);
     }
     zfdelete(sysWindowHolder);
@@ -25,22 +23,18 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_SDL, ZFUISysWindow, ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         this->_mainWindow = zfnull;
     }
     zfoverride
-    virtual void protocolOnDeallocPrepare(void)
-    {
+    virtual void protocolOnDeallocPrepare(void) {
         this->mainWindowOnCleanup();
         zfsuper::protocolOnDeallocPrepare();
     }
 public:
-    virtual ZFUISysWindow *mainWindow(void)
-    {
-        if(this->_mainWindow == zfnull)
-        {
+    virtual ZFUISysWindow *mainWindow(void) {
+        if(this->_mainWindow == zfnull) {
             this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
             ZFImpl_sys_SDL_SysWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_SysWindow);
             nativeWindow->ownerZFUISysWindow = this->_mainWindow;
@@ -53,13 +47,10 @@ public:
         }
         return this->_mainWindow;
     }
-    virtual void mainWindowOnCleanup(void)
-    {
-        if(this->_mainWindow != zfnull)
-        {
+    virtual void mainWindowOnCleanup(void) {
+        if(this->_mainWindow != zfnull) {
             ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)this->_mainWindow->nativeWindow();
-            if(this->_mainWindow->nativeWindowIsResumed())
-            {
+            if(this->_mainWindow->nativeWindowIsResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
             this->notifyOnDestroy(this->_mainWindow);
@@ -68,35 +59,32 @@ public:
             zfdelete(nativeWindow);
         }
     }
-    virtual void mainWindowOnDestroy(void)
-    {
+    virtual void mainWindowOnDestroy(void) {
         this->_mainWindow = zfnull;
     }
 
     // ============================================================
 public:
-    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow) {
     }
 
-    virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT_OPT void *&nativeParentView)
-    {
+    virtual void nativeWindowRootViewOnAdd(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_OUT_OPT void *&nativeParentView
+            ) {
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
         nativeWindow->rootView = (ZFImpl_sys_SDL_View *)sysWindow->rootView()->nativeView();
         nativeWindow->rootView->sysWindowAttach(nativeWindow);
         nativeWindow->renderStart();
     }
-    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
         nativeWindow->rootView->sysWindowDetach();
         nativeWindow->renderStop();
         nativeWindow->rootView = zfnull;
     }
 
-    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner)
-    {
+    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
         zfautoObject modalWindow = ZFUISysWindow::ClassData()->newInstance();
         ZFImpl_sys_SDL_SysWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_SysWindow);
         nativeWindow->ownerZFUISysWindow = this->_mainWindow;
@@ -114,23 +102,21 @@ public:
         ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfautoObject, modalWindow->objectHolder()), zfnull);
         return modalWindow;
     }
-    virtual void modalWindowFinish(ZF_IN ZFUISysWindow *sysWindowOwner,
-                                   ZF_IN ZFUISysWindow *sysWindowToFinish)
-    {
+    virtual void modalWindowFinish(
+            ZF_IN ZFUISysWindow *sysWindowOwner
+            , ZF_IN ZFUISysWindow *sysWindowToFinish
+            ) {
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindowToFinish->nativeWindow();
-        if(sysWindowToFinish->nativeWindowIsResumed())
-        {
+        if(sysWindowToFinish->nativeWindowIsResumed()) {
             this->notifyOnPause(sysWindowToFinish);
         }
         this->notifyOnDestroy(sysWindowToFinish);
         zfdelete(nativeWindow);
     }
 
-    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
     }
-    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
         SDL_Rect sdlRect;
         SDL_GetDisplayUsableBounds(0, &sdlRect);
@@ -145,13 +131,13 @@ public:
         SDL_SetWindowSize(nativeWindow->sdlWindow, (int)rect.width, (int)rect.height);
     }
 
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         return ZFUIOrientation::e_Top;
     }
-    virtual void sysWindowOrientationFlags(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_IN const ZFUIOrientationFlags &flags)
-    {
+    virtual void sysWindowOrientationFlags(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN const ZFUIOrientationFlags &flags
+            ) {
     }
 
 private:

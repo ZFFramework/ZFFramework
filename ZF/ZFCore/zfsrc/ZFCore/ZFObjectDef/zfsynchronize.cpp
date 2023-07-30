@@ -5,10 +5,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
-static void _ZFP_zfsynchronizeLog(ZF_IN const ZFCallerInfo &callerInfo,
-                                  ZF_IN const zfchar *fmt,
-                                  ...)
-{
+static void _ZFP_zfsynchronizeLog(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN const zfchar *fmt
+        , ...
+        ) {
     va_list vaList;
     va_start(vaList, fmt);
     zfstring text;
@@ -17,13 +18,14 @@ static void _ZFP_zfsynchronizeLog(ZF_IN const ZFCallerInfo &callerInfo,
     printf("%s %s\n", callerInfo.callerInfo().cString(), text.cString());
 }
 
-_ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(ZF_IN ZFObject *obj,
-                                                                       ZF_IN const ZFCallerInfo &callerInfo)
+_ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFCallerInfo &callerInfo
+        )
 : m_obj(obj)
 , callerInfo(callerInfo)
 {
-    if(obj == zfnull)
-    {
+    if(obj == zfnull) {
         zfCoreCriticalErrorPrepare();
         _ZFP_zfsynchronizeLog(callerInfo,
             "try synchronize a null object");
@@ -38,8 +40,7 @@ _ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(ZF_IN ZFO
         "lock object %s success",
         m_obj->objectInfoOfInstance().cString());
 }
-_ZFP_zfsynchronizeContainerWithLog::~_ZFP_zfsynchronizeContainerWithLog(void)
-{
+_ZFP_zfsynchronizeContainerWithLog::~_ZFP_zfsynchronizeContainerWithLog(void) {
     _ZFP_zfsynchronizeLog(callerInfo,
         "unlock object %s",
         m_obj->objectInfoOfInstance().cString());
@@ -50,11 +51,11 @@ _ZFP_zfsynchronizeContainerWithLog::~_ZFP_zfsynchronizeContainerWithLog(void)
 }
 
 // ============================================================
-void _ZFP_zfsynchronizeLockWithLog(ZF_IN ZFObject *obj,
-                                   ZF_IN const ZFCallerInfo &callerInfo)
-{
-    if(obj == zfnull)
-    {
+void _ZFP_zfsynchronizeLockWithLog(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFCallerInfo &callerInfo
+        ) {
+    if(obj == zfnull) {
         zfCoreCriticalErrorPrepare();
         _ZFP_zfsynchronizeLog(callerInfo,
             "try lock a null object");
@@ -71,11 +72,11 @@ void _ZFP_zfsynchronizeLockWithLog(ZF_IN ZFObject *obj,
         callerInfo.callerInfo().cString(),
         obj->objectInfoOfInstance().cString());
 }
-void _ZFP_zfsynchronizeUnlockWithLog(ZF_IN ZFObject *obj,
-                                     ZF_IN const ZFCallerInfo &callerInfo)
-{
-    if(obj == zfnull)
-    {
+void _ZFP_zfsynchronizeUnlockWithLog(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFCallerInfo &callerInfo
+        ) {
+    if(obj == zfnull) {
         zfCoreCriticalErrorPrepare();
         _ZFP_zfsynchronizeLog(callerInfo,
             "try unlock a null object");
@@ -99,8 +100,12 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeLock, ZFMP_IN(ZFObject *, obj))
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeUnlock, ZFMP_IN(ZFObject *, obj))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeLock
+        , ZFMP_IN(ZFObject *, obj)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeUnlock
+        , ZFMP_IN(ZFObject *, obj)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

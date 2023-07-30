@@ -59,8 +59,7 @@
  * some extra registration code:
  * @code
  *   // header file
- *   class YourType
- *   {
+ *   class YourType {
  *   public:
  *       int yourProp;
  *   };

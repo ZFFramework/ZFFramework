@@ -4,8 +4,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFIOBufferByCacheFile
-{
+zfclassNotPOD _ZFP_ZFIOBufferByCacheFile {
 public:
     zfuint refCount;
     void *token;
@@ -29,10 +28,8 @@ public:
         this->token = ZFFileOpen(this->tmpFilePath.cString(),
             ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write);
     }
-    ~_ZFP_ZFIOBufferByCacheFile(void)
-    {
-        if(this->token != zfnull)
-        {
+    ~_ZFP_ZFIOBufferByCacheFile(void) {
+        if(this->token != zfnull) {
             ZFFileClose(this->token);
             this->token = zfnull;
         }
@@ -40,60 +37,58 @@ public:
     }
 };
 
-zfclass _ZFP_ZFIOBufferByCacheFile_input : zfextends ZFObject
-{
+zfclass _ZFP_ZFIOBufferByCacheFile_input : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByCacheFile_input, ZFObject)
 public:
     _ZFP_ZFIOBufferByCacheFile *d;
 protected:
     zfoverride
-    virtual void objectOnDealloc()
-    {
+    virtual void objectOnDealloc() {
         --(d->refCount);
-        if(d->refCount == 0)
-        {
+        if(d->refCount == 0) {
             zfdelete(d);
         }
         zfsuper::objectOnDealloc();
     }
 
 public:
-    ZFMETHOD_DECLARE_2(zfindex, onInput,
-                       ZFMP_IN(void *, buf),
-                       ZFMP_IN(zfindex, count))
+    ZFMETHOD_DECLARE_2(zfindex, onInput
+            , ZFMP_IN(void *, buf)
+            , ZFMP_IN(zfindex, count)
+            )
 
-    ZFMETHOD_DECLARE_2(zfbool, ioSeek,
-                       ZFMP_IN(zfindex, byteSize),
-                       ZFMP_IN(ZFSeekPos, pos))
+    ZFMETHOD_DECLARE_2(zfbool, ioSeek
+            , ZFMP_IN(zfindex, byteSize)
+            , ZFMP_IN(ZFSeekPos, pos)
+            )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
 };
 
-zfclass _ZFP_ZFIOBufferByCacheFile_output : zfextends ZFObject
-{
+zfclass _ZFP_ZFIOBufferByCacheFile_output : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByCacheFile_output, ZFObject)
 public:
     _ZFP_ZFIOBufferByCacheFile *d;
 protected:
     zfoverride
-    virtual void objectOnDealloc()
-    {
+    virtual void objectOnDealloc() {
         --(d->refCount);
-        if(d->refCount == 0)
-        {
+        if(d->refCount == 0) {
             zfdelete(d);
         }
         zfsuper::objectOnDealloc();
     }
 
 public:
-    ZFMETHOD_DECLARE_2(zfindex, onOutput,
-                       ZFMP_IN(const void *, buf),
-                       ZFMP_IN(zfindex, count))
+    ZFMETHOD_DECLARE_2(zfindex, onOutput
+            , ZFMP_IN(const void *, buf)
+            , ZFMP_IN(zfindex, count)
+            )
 
-    ZFMETHOD_DECLARE_2(zfbool, ioSeek,
-                       ZFMP_IN(zfindex, byteSize),
-                       ZFMP_IN(ZFSeekPos, pos))
+    ZFMETHOD_DECLARE_2(zfbool, ioSeek
+            , ZFMP_IN(zfindex, byteSize)
+            , ZFMP_IN(ZFSeekPos, pos)
+            )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
 };
@@ -101,8 +96,7 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFIOBufferByCacheFile)
 
-void ZFIOBufferByCacheFile::objectOnInit(void)
-{
+void ZFIOBufferByCacheFile::objectOnInit(void) {
     zfsuper::objectOnInit();
     _ZFP_ZFIOBufferByCacheFile *d = zfpoolNew(_ZFP_ZFIOBufferByCacheFile);
 
@@ -118,100 +112,86 @@ void ZFIOBufferByCacheFile::objectOnInit(void)
     this->_ZFP_output = ZFCallbackForMemberMethod(oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByCacheFile_output, onOutput));
     this->_ZFP_output.ioOwner(oOwner);
 }
-void ZFIOBufferByCacheFile::objectOnDealloc(void)
-{
+void ZFIOBufferByCacheFile::objectOnDealloc(void) {
     --(d->refCount);
-    if(d->refCount == 0)
-    {
+    if(d->refCount == 0) {
         zfdelete(d);
     }
     zfsuper::objectOnDealloc();
 }
 
-void ZFIOBufferByCacheFile::implRemoveAll(void)
-{
+void ZFIOBufferByCacheFile::implRemoveAll(void) {
     d->inputIndex = 0;
     d->outputIndex = 0;
     d->fileSize = 0;
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_input, zfindex, onInput,
-                  ZFMP_IN(void *, buf),
-                  ZFMP_IN(zfindex, count))
-{
-    if(d->token == zfnull)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_input, zfindex, onInput
+        , ZFMP_IN(void *, buf)
+        , ZFMP_IN(zfindex, count)
+        ) {
+    if(d->token == zfnull) {
         return 0;
     }
-    if(buf == zfnull)
-    {
+    if(buf == zfnull) {
         return d->fileSize - d->inputIndex;
     }
-    else
-    {
+    else {
         ZFFileSeek(d->token, d->inputIndex);
         zfindex read = ZFFileRead(d->token, buf, zfmMin(count, d->fileSize - d->inputIndex));
         d->inputIndex += read;
         return read;
     }
 }
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_input, zfbool, ioSeek,
-                  ZFMP_IN(zfindex, byteSize),
-                  ZFMP_IN(ZFSeekPos, pos))
-{
-    if(d->token == zfnull)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_input, zfbool, ioSeek
+        , ZFMP_IN(zfindex, byteSize)
+        , ZFMP_IN(ZFSeekPos, pos)
+        ) {
+    if(d->token == zfnull) {
         return zffalse;
     }
     d->inputIndex = ZFIOCallbackCalcFSeek(0, d->fileSize, d->inputIndex, byteSize, pos);
     return zftrue;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_input, zfindex, ioTell)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_input, zfindex, ioTell) {
     return d->inputIndex;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_input, zfindex, ioSize)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_input, zfindex, ioSize) {
     return d->fileSize;
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_output, zfindex, onOutput,
-                  ZFMP_IN(const void *, buf),
-                  ZFMP_IN(zfindex, count))
-{
-    if(d->token == zfnull)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_output, zfindex, onOutput
+        , ZFMP_IN(const void *, buf)
+        , ZFMP_IN(zfindex, count)
+        ) {
+    if(d->token == zfnull) {
         return 0;
     }
     ZFFileSeek(d->token, d->outputIndex);
     zfindex written = ZFFileWrite(d->token, buf, count);
     d->outputIndex += written;
-    if(d->outputIndex > d->fileSize)
-    {
+    if(d->outputIndex > d->fileSize) {
         d->fileSize = d->outputIndex;
     }
     return written;
 }
 
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_output, zfbool, ioSeek,
-                  ZFMP_IN(zfindex, byteSize),
-                  ZFMP_IN(ZFSeekPos, pos))
-{
-    if(d->token == zfnull)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByCacheFile_output, zfbool, ioSeek
+        , ZFMP_IN(zfindex, byteSize)
+        , ZFMP_IN(ZFSeekPos, pos)
+        ) {
+    if(d->token == zfnull) {
         return zffalse;
     }
     d->outputIndex = ZFIOCallbackCalcFSeek(0, d->fileSize, d->outputIndex, byteSize, pos);
     return zftrue;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_output, zfindex, ioTell)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_output, zfindex, ioTell) {
     return d->outputIndex;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_output, zfindex, ioSize)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByCacheFile_output, zfindex, ioSize) {
     return d->fileSize;
 }
 

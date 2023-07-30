@@ -37,8 +37,7 @@ ZFENUM_END(ZFLIB_ZFCore, ZFOutputFormatStep)
 
 // ============================================================
 /** @brief see #ZFOutputForFormat */
-zfinterface ZFLIB_ZFCore ZFOutputFormat : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFCore ZFOutputFormat : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFOutputFormat, ZFInterface)
 
 public:
@@ -47,8 +46,7 @@ public:
      *   return null if not available
      */
     template<typename T_ZFOutputFormat>
-    static T_ZFOutputFormat getFormat(ZF_IN const ZFCallback &output)
-    {
+    static T_ZFOutputFormat getFormat(ZF_IN const ZFCallback &output) {
         return ZFCastZFObject(T_ZFOutputFormat, zfself::getFormat(output));
     }
 
@@ -56,14 +54,16 @@ public:
      * @brief try access the output format passed to #ZFOutputForFormat,
      *   return null if not available
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFOutputFormat *, getFormat,
-                              ZFMP_IN(const ZFCallback &, output))
+    ZFMETHOD_DECLARE_STATIC_1(ZFOutputFormat *, getFormat
+            , ZFMP_IN(const ZFCallback &, output)
+            )
     /**
      * @brief try access the output passed to #ZFOutputForFormat,
      *   return null callback if not available
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFOutput, getOutput,
-                              ZFMP_IN(const ZFCallback &, output))
+    ZFMETHOD_DECLARE_STATIC_1(ZFOutput, getOutput
+            , ZFMP_IN(const ZFCallback &, output)
+            )
 
 protected:
     /**
@@ -75,22 +75,25 @@ protected:
      * -  outputCount is the number of times that the output callback was called
      * -  writtenLen is the number of chars that actually written to original output
      */
-    virtual void format(ZF_IN_OUT zfstring &ret,
-                        ZF_IN ZFOutputFormatStepEnum outputStep,
-                        ZF_IN const zfchar *src,
-                        ZF_IN zfindex srcLen,
-                        ZF_IN zfindex outputCount,
-                        ZF_IN zfindex writtenLen,
-                        ZF_IN_OUT_OPT void *&state) zfpurevirtual;
+    virtual void format(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN ZFOutputFormatStepEnum outputStep
+            , ZF_IN const zfchar *src
+            , ZF_IN zfindex srcLen
+            , ZF_IN zfindex outputCount
+            , ZF_IN zfindex writtenLen
+            , ZF_IN_OUT_OPT void *&state
+            ) zfpurevirtual;
 public:
-    inline void _ZFP_format(ZF_IN_OUT zfstring &ret,
-                            ZF_IN ZFOutputFormatStepEnum outputStep,
-                            ZF_IN const zfchar *src,
-                            ZF_IN zfindex srcLen,
-                            ZF_IN zfindex outputCount,
-                            ZF_IN zfindex writtenLen,
-                            ZF_IN_OUT_OPT void *&state)
-    {
+    inline void _ZFP_format(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN ZFOutputFormatStepEnum outputStep
+            , ZF_IN const zfchar *src
+            , ZF_IN zfindex srcLen
+            , ZF_IN zfindex outputCount
+            , ZF_IN zfindex writtenLen
+            , ZF_IN_OUT_OPT void *&state
+            ) {
         this->format(ret, outputStep, src, srcLen, outputCount, writtenLen, state);
     }
 };
@@ -115,10 +118,11 @@ public:
 
 // ============================================================
 /** @brief see #ZFOutputForFormat */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForFormatT,
-                        ZFMP_OUT(ZFCallback &, ret),
-                        ZFMP_IN(const ZFOutput &, output),
-                        ZFMP_IN(ZFOutputFormat *, format))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForFormatT
+        , ZFMP_OUT(ZFCallback &, ret)
+        , ZFMP_IN(const ZFOutput &, output)
+        , ZFMP_IN(ZFOutputFormat *, format)
+        )
 
 /**
  * @brief create an output callback with specified format rule
@@ -138,16 +142,16 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFOutputForFormatT,
  * -  if output success, the original output size would be returned,
  *   instead of the formated size
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormat,
-                        ZFMP_IN(const ZFOutput &, output),
-                        ZFMP_IN(ZFOutputFormat *, format))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormat
+        , ZFMP_IN(const ZFOutput &, output)
+        , ZFMP_IN(ZFOutputFormat *, format)
+        )
 
 // ============================================================
 /**
  * @brief basic output format
  */
-zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextends ZFStyleableObject, zfimplements ZFOutputFormat
-{
+zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextends ZFStyleableObject, zfimplements ZFOutputFormat {
     ZFOBJECT_DECLARE(ZFOutputFormatBasic, ZFStyleableObject)
     ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
 
@@ -163,13 +167,15 @@ public:
 
 protected:
     zfoverride
-    virtual void format(ZF_IN_OUT zfstring &ret,
-                        ZF_IN ZFOutputFormatStepEnum outputStep,
-                        ZF_IN const zfchar *src,
-                        ZF_IN zfindex srcLen,
-                        ZF_IN zfindex outputCount,
-                        ZF_IN zfindex writtenLen,
-                        ZF_IN_OUT_OPT void *&state);
+    virtual void format(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN ZFOutputFormatStepEnum outputStep
+            , ZF_IN const zfchar *src
+            , ZF_IN zfindex srcLen
+            , ZF_IN zfindex outputCount
+            , ZF_IN zfindex writtenLen
+            , ZF_IN_OUT_OPT void *&state
+            );
 };
 
 ZF_NAMESPACE_GLOBAL_END

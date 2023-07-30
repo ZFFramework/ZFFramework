@@ -12,52 +12,44 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_sys_Qt, ZFImplOutput, ZFProtoco
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt:qDebug")
 public:
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         QMutexLocker _logMutexLocker(&_logMutex);
-        if(this->savedString.length() > 0)
-        {
+        if(this->savedString.length() > 0) {
             qDebug() << this->savedString.cString();
         }
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void outputCoreLog(ZF_IN const zfchar *s)
-    {
+    virtual void outputCoreLog(ZF_IN const zfchar *s) {
         zfstring tmp = s;
         this->checkOutput(tmp);
     }
-    virtual void outputLog(ZF_IN const zfchar *s, ZF_IN_OPT zfindex count = zfindexMax())
-    {
+    virtual void outputLog(
+            ZF_IN const zfchar *s
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) {
         QMutexLocker _logMutexLocker(&_logMutex);
-        if(count == zfindexMax())
-        {
+        if(count == zfindexMax()) {
             this->savedString += s;
         }
-        else
-        {
+        else {
             this->savedString += zfstring(s, count);
         }
         this->checkOutput(this->savedString);
     }
 private:
     zfstring savedString;
-    void checkOutput(ZF_IN_OUT zfstring &s)
-    {
-        if(s.length() > 0)
-        {
-            if(s[s.length() - 1] == '\n')
-            {
+    void checkOutput(ZF_IN_OUT zfstring &s) {
+        if(s.length() > 0) {
+            if(s[s.length() - 1] == '\n') {
                 s.remove(s.length() - 1);
                 qDebug() << s.cString();
                 s.removeAll();
             }
-            else
-            {
+            else {
                 zfindex index = zfstringFindReversely(s, s.length(), '\n');
-                if(index != zfindexMax())
-                {
+                if(index != zfindexMax()) {
                     s[index] = '\0';
                     qDebug() << s.cString();
                     s.remove(0, index + 1);

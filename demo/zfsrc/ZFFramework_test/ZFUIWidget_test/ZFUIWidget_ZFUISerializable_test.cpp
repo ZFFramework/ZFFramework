@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUISerializable_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUISerializable_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUISerializable_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
 
@@ -49,8 +47,7 @@ protected:
     }
 
 private:
-    zfautoObject prepareTestObject(void)
-    {
+    zfautoObject prepareTestObject(void) {
         zfblockedAlloc(ZFUIAutoLayout, parent);
         parent->viewAlpha(0.5f);
 

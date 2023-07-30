@@ -28,10 +28,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_default, ZFPath, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ModuleLocalPath")
 public:
-    virtual const zfchar *pathForModule(void)
-    {
-        if(this->_pathForModule.isEmpty())
-        {
+    virtual const zfchar *pathForModule(void) {
+        if(this->_pathForModule.isEmpty()) {
             (void)this->pathForModuleFile();
             zfindex pos = zfstringFindReversely(this->_pathForModuleFile, ZFFileSeparator());
             zfCoreAssert(pos != zfindexMax());
@@ -39,16 +37,13 @@ public:
         }
         return this->_pathForModule;
     }
-    virtual const zfchar *pathForModuleFile(void)
-    {
-        if(this->_pathForModuleFile.isEmpty())
-        {
+    virtual const zfchar *pathForModuleFile(void) {
+        if(this->_pathForModuleFile.isEmpty()) {
             #if _ZFP_ZFPathImpl_default_whereami
                 zfstring tmp;
                 {
                     int len = wai_getExecutablePath(NULL, 0, NULL);
-                    if(len > 0)
-                    {
+                    if(len > 0) {
                         char *buf = (char *)zfmalloc(len + 1);
                         wai_getExecutablePath(buf, len, NULL);
                         buf[len] = '\0';
@@ -64,12 +59,10 @@ public:
                 #else // #if ZF_ENV_sys_Windows
                     zfchar tmp[1024] = {0};
                     zfint len = (zfint)readlink("/proc/self/exe", tmp, 1024);
-                    if(len > 0)
-                    {
+                    if(len > 0) {
                         tmp[len] = '\0';
                     }
-                    else
-                    {
+                    else {
                         zfscpy(tmp, zfstringWithFormat("./unknown").cString());
                     }
                 #endif // #if ZF_ENV_sys_Windows #else
@@ -80,67 +73,54 @@ public:
         return this->_pathForModuleFile;
     }
 
-    virtual const zfchar *pathForSetting(void)
-    {
-        if(this->_pathForSetting.isEmpty())
-        {
+    virtual const zfchar *pathForSetting(void) {
+        if(this->_pathForSetting.isEmpty()) {
             this->_pathForSetting = this->pathForModule();
             this->_pathForSetting += ZFFileSeparator();
             this->_pathForSetting += "zfsetting";
         }
         return this->_pathForSetting;
     }
-    virtual void pathForSetting(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForSetting(ZF_IN const zfchar *path = zfnull) {
         this->_pathForSetting = path;
     }
 
-    virtual const zfchar *pathForStorage(void)
-    {
-        if(this->_pathForStorage.isEmpty())
-        {
+    virtual const zfchar *pathForStorage(void) {
+        if(this->_pathForStorage.isEmpty()) {
             this->_pathForStorage = this->pathForModule();
             this->_pathForStorage += ZFFileSeparator();
             this->_pathForStorage += "zfstorage";
         }
         return this->_pathForStorage;
     }
-    virtual void pathForStorage(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForStorage(ZF_IN const zfchar *path = zfnull) {
         this->_pathForStorage = path;
     }
 
-    virtual const zfchar *pathForStorageShared(void)
-    {
-        if(this->_pathForStorageShared.isEmpty())
-        {
+    virtual const zfchar *pathForStorageShared(void) {
+        if(this->_pathForStorageShared.isEmpty()) {
             this->_pathForStorageShared = this->pathForModule();
             this->_pathForStorageShared += ZFFileSeparator();
             this->_pathForStorageShared += "zfstorageshared";
         }
         return this->_pathForStorageShared;
     }
-    virtual void pathForStorageShared(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForStorageShared(ZF_IN const zfchar *path = zfnull) {
         this->_pathForStorageShared = path;
     }
 
-    virtual const zfchar *pathForCache(void)
-    {
-        if(this->_pathForCache.isEmpty())
-        {
+    virtual const zfchar *pathForCache(void) {
+        if(this->_pathForCache.isEmpty()) {
             this->_pathForCache = this->pathForModule();
             this->_pathForCache += ZFFileSeparator();
             this->_pathForCache += "zfcache";
         }
         return this->_pathForCache;
     }
-    virtual void pathForCache(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForCache(ZF_IN const zfchar *path = zfnull) {
         this->_pathForCache = path;
     }
-    virtual void pathForCacheClear(void)
-    {
+    virtual void pathForCacheClear(void) {
         ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
     }
 

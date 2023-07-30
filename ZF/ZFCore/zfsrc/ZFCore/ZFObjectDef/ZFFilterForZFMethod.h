@@ -11,8 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd ZFMethod;
 // ============================================================
-zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFMethodSetting
-{
+zfclassPOD ZFLIB_ZFCore _ZFP_ZFFilterForZFMethodSetting {
 public:
     zfbool ignorePublic;
     zfbool ignoreProtected;
@@ -21,8 +20,7 @@ public:
 /**
  * @brief util class to filter ZFMethod
  */
-zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFMethod : zfextends ZFFilterBasic<const ZFMethod *>
-{
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFMethod : zfextends ZFFilterBasic<const ZFMethod *> {
     ZFFILTER_DECLARE(ZFFilterForZFMethod, ZFFilterBasic<const ZFMethod *>)
 
 public:
@@ -50,15 +48,13 @@ public:
     {
     }
     /** @cond ZFPrivateDoc */
-    virtual ZFFilterForZFMethod &operator = (ZF_IN const ZFFilterForZFMethod &ref)
-    {
+    virtual ZFFilterForZFMethod &operator = (ZF_IN const ZFFilterForZFMethod &ref) {
         zfsuper::operator = (ref);
         this->classFilter = ref.classFilter;
         this->d = ref.d;
         return *this;
     }
-    virtual void copyFrom(ZF_IN ZFFilterBase<const ZFMethod *, const ZFMethod *> const &ref)
-    {
+    virtual void copyFrom(ZF_IN ZFFilterBase<const ZFMethod *, const ZFMethod *> const &ref) {
         zfsuper::copyFrom(ref);
         this->classFilter.copyFrom(((ZFFilterForZFMethod const &)ref).classFilter);
         _ZFP_ZFFilterForZFMethodSetting *setting = zfnew(_ZFP_ZFFilterForZFMethodSetting);
@@ -77,45 +73,39 @@ public:
     /**
      * @brief ignore public method, false by default
      */
-    virtual void ignorePublic(ZF_IN zfbool value)
-    {
+    virtual void ignorePublic(ZF_IN zfbool value) {
         d->ignorePublic = value;
     }
     /**
      * @brief see #ignorePublic
      */
-    virtual zfbool ignorePublic(void) const
-    {
+    virtual zfbool ignorePublic(void) const {
         return d->ignorePublic;
     }
 
     /**
      * @brief ignore protected method, false by default
      */
-    virtual void ignoreProtected(ZF_IN zfbool value)
-    {
+    virtual void ignoreProtected(ZF_IN zfbool value) {
         d->ignoreProtected = value;
     }
     /**
      * @brief see #ignoreProtected
      */
-    virtual zfbool ignoreProtected(void) const
-    {
+    virtual zfbool ignoreProtected(void) const {
         return d->ignoreProtected;
     }
 
     /**
      * @brief ignore private method, false by default
      */
-    virtual void ignorePrivate(ZF_IN zfbool value)
-    {
+    virtual void ignorePrivate(ZF_IN zfbool value) {
         d->ignorePrivate = value;
     }
     /**
      * @brief see #ignorePrivate
      */
-    virtual zfbool ignorePrivate(void) const
-    {
+    virtual zfbool ignorePrivate(void) const {
         return d->ignorePrivate;
     }
 
@@ -126,8 +116,7 @@ public:
 protected:
     /** @cond ZFPrivateDoc */ // ZFTAG_DOXYGEN_BUG: can't auto detect template specialization
     zfoverride
-    virtual zfbool filterOnCheckValid(ZF_IN const ZFMethod * const &e) const
-    {
+    virtual zfbool filterOnCheckValid(ZF_IN const ZFMethod * const &e) const {
         return (e != zfnull);
     }
     zfoverride

@@ -18,22 +18,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // string conversion spec
 /** @cond ZFPrivateDoc */
-inline zfbool zfstringToString(ZF_IN_OUT zfstring &s,
-                               ZF_IN const zfchar *v)
-{
+inline zfbool zfstringToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN const zfchar *v
+        ) {
     s += v;
     return zftrue;
 }
-inline zfstring zfstringToString(ZF_IN const zfchar *v)
-{
+inline zfstring zfstringToString(ZF_IN const zfchar *v) {
     return zfstring(v);
 }
-inline zfbool zfstringFromString(ZF_OUT const zfchar *&v,
-                                 ZF_IN const zfchar *src,
-                                 ZF_IN_OPT zfindex srcLen = zfindexMax())
-{
-    if(srcLen != zfindexMax() && src[srcLen] != '\0')
-    {
+inline zfbool zfstringFromString(
+        ZF_OUT const zfchar *&v
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        ) {
+    if(srcLen != zfindexMax() && src[srcLen] != '\0') {
         return zffalse;
     }
     v = src;
@@ -47,16 +47,20 @@ inline zfbool zfstringFromString(ZF_OUT const zfchar *&v,
  * returned (const zfchar *) propertyValue is the pointer to serializableData's value,
  * you should ensure it's alive while using the propertyValue
  */
-extern ZFLIB_ZFCore zfbool zfstringFromData(ZF_OUT const zfchar * &propertyValue,
-                                            ZF_IN const ZFSerializableData &serializableData,
-                                            ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                            ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfbool zfstringFromData(
+        ZF_OUT const zfchar * &propertyValue
+        , ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        );
 /**
  * @brief see #zfstringToData, designed for performance
  */
-extern ZFLIB_ZFCore zfbool zfstringToData(ZF_OUT ZFSerializableData &serializableData,
-                                          ZF_IN const zfchar * const &propertyValue,
-                                          ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */);
+extern ZFLIB_ZFCore zfbool zfstringToData(
+        ZF_OUT ZFSerializableData &serializableData
+        , ZF_IN const zfchar * const &propertyValue
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        );
 
 /**
  * @brief convert flags to string using flagList and nameList
@@ -74,25 +78,28 @@ extern ZFLIB_ZFCore zfbool zfstringToData(ZF_OUT ZFSerializableData &serializabl
  * -  notConverted if all value recognized, notConverted would be set to 0,
  *   otherwise, the not converted value would be set
  */
-extern ZFLIB_ZFCore zfbool zfflagsToString(ZF_IN_OUT zfstring &ret,
-                                           ZF_IN const zfflags *flagList,
-                                           ZF_IN const zfchar **nameList,
-                                           ZF_IN zfindex listCount,
-                                           ZF_IN zfflags const &value,
-                                           ZF_IN_OPT zfbool includeNotConverted = zftrue,
-                                           ZF_IN_OPT zfbool exclusiveMode = zffalse,
-                                           ZF_OUT_OPT zfflags *notConverted = zfnull,
-                                           ZF_IN_OPT zfchar separatorToken = '|');
+extern ZFLIB_ZFCore zfbool zfflagsToString(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfflags *flagList
+        , ZF_IN const zfchar **nameList
+        , ZF_IN zfindex listCount
+        , ZF_IN zfflags const &value
+        , ZF_IN_OPT zfbool includeNotConverted = zftrue
+        , ZF_IN_OPT zfbool exclusiveMode = zffalse
+        , ZF_OUT_OPT zfflags *notConverted = zfnull
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        );
 /** @brief see #zfflagsToString */
-inline zfstring zfflagsToString(ZF_IN const zfflags *flagList,
-                                ZF_IN const zfchar **nameList,
-                                ZF_IN zfindex listCount,
-                                ZF_IN zfflags const &value,
-                                ZF_IN_OPT zfbool includeNotConverted = zftrue,
-                                ZF_IN_OPT zfbool exclusiveMode = zffalse,
-                                ZF_OUT_OPT zfflags *notConverted = zfnull,
-                                ZF_IN_OPT zfchar separatorToken = '|')
-{
+inline zfstring zfflagsToString(
+        ZF_IN const zfflags *flagList
+        , ZF_IN const zfchar **nameList
+        , ZF_IN zfindex listCount
+        , ZF_IN zfflags const &value
+        , ZF_IN_OPT zfbool includeNotConverted = zftrue
+        , ZF_IN_OPT zfbool exclusiveMode = zffalse
+        , ZF_OUT_OPT zfflags *notConverted = zfnull
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        ) {
     zfstring ret;
     zfflagsToString(ret, flagList, nameList, listCount, value, includeNotConverted, exclusiveMode, notConverted, separatorToken);
     return ret;
@@ -105,14 +112,16 @@ inline zfstring zfflagsToString(ZF_IN const zfflags *flagList,
  * -  pErrPos pointer to first char where error occurred,
  *   a non converted format is not regarded as error
  */
-extern ZFLIB_ZFCore zfbool zfflagsFromString(ZF_OUT zfflags &ret,
-                                             ZF_IN const zfflags *flagList,
-                                             ZF_IN const zfchar **nameList,
-                                             ZF_IN zfindex listCount,
-                                             ZF_IN const zfchar *src,
-                                             ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                             ZF_IN_OPT zfchar separatorToken = '|',
-                                             ZF_OUT_OPT const zfchar **outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfbool zfflagsFromString(
+        ZF_OUT zfflags &ret
+        , ZF_IN const zfflags *flagList
+        , ZF_IN const zfchar **nameList
+        , ZF_IN zfindex listCount
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        );
 
 // ============================================================
 // common types
@@ -170,71 +179,55 @@ ZFOUTPUT_TYPE(zfstring, {output.execute(zfstringToString(v));})
             ? 1 : 0) \
         , typename T_Fix = void \
         > \
-    zfclassNotPOD Value \
-    { \
+    zfclassNotPOD Value { \
     public: \
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
             return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
         } \
-        static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
             return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
         } \
-        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
         } \
     }; \
     template<typename T_Access> \
-    zfclassNotPOD Value<T_Access const &, 0> \
-    { \
+    zfclassNotPOD Value<T_Access const &, 0> { \
     public: \
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
             return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
         } \
-        static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
             return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
         } \
-        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
         } \
     }; \
     template<typename T_Access> \
-    zfclassNotPOD Value<T_Access &, 0> \
-    { \
+    zfclassNotPOD Value<T_Access &, 0> { \
     private: \
          typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
     public: \
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
             return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
         } \
-        static _TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static _TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
             return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
         } \
-        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
         } \
     }; \
     template<typename T_Access> \
-    zfclassNotPOD Value<T_Access, 1> \
-    { \
+    zfclassNotPOD Value<T_Access, 1> { \
     private: \
          typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
     public: \
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
             return zffalse; \
         } \
-        static _TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static _TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
             return zfnull; \
         } \
-        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) \
-        { \
+        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
         } \
     };
 ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_EXPAND_cString)

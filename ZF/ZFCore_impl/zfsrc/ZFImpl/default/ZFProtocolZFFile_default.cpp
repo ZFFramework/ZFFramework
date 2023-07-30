@@ -19,8 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileImpl_default, ZFFile, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("nativeAPI")
 public:
-    virtual zfbool fileIsExist(ZF_IN const zfchar *path)
-    {
+    virtual zfbool fileIsExist(ZF_IN const zfchar *path) {
         if(path == zfnull) {return zffalse;}
         #if ZF_ENV_sys_Windows
             return (GetFileAttributesW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString()) != 0xFFFFFFFF);
@@ -28,8 +27,7 @@ public:
             return (access(path, F_OK) != -1);
         #endif // #if ZF_ENV_sys_Windows #else
     }
-    virtual zfbool fileIsDir(ZF_IN const zfchar *path)
-    {
+    virtual zfbool fileIsDir(ZF_IN const zfchar *path) {
         #if ZF_ENV_sys_Windows
             return ((GetFileAttributesW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString())
                 & FILE_ATTRIBUTE_DIRECTORY) != 0);
@@ -42,128 +40,115 @@ public:
         #endif // #if ZF_ENV_sys_Windows #else
     }
 
-    virtual zfbool filePathCreate(ZF_IN const zfchar *path,
-                                  ZF_IN_OPT zfbool autoMakeParent = zffalse,
-                                  ZF_IN_OPT zfstring *errPos = zfnull)
-    {
-        if(autoMakeParent)
-        {
+    virtual zfbool filePathCreate(
+            ZF_IN const zfchar *path
+            , ZF_IN_OPT zfbool autoMakeParent = zffalse
+            , ZF_IN_OPT zfstring *errPos = zfnull
+            ) {
+        if(autoMakeParent) {
             return this->makePath(path, errPos);
         }
-        else
-        {
+        else {
             return this->makeDir(path, errPos);
         }
     }
 private:
-    zfbool cp_or_mv(ZF_IN zfbool isCopy,
-                    ZF_IN const zfchar *srcPath,
-                    ZF_IN const zfchar *dstPath,
-                    ZF_IN_OPT zfbool isRecursive,
-                    ZF_IN_OPT zfbool isForce,
-                    ZF_IN_OPT zfstring *errPos)
-    {
-        if(srcPath == zfnull || dstPath == zfnull)
-        {
+    zfbool cp_or_mv(
+            ZF_IN zfbool isCopy
+            , ZF_IN const zfchar *srcPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN_OPT zfbool isRecursive
+            , ZF_IN_OPT zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
+        if(srcPath == zfnull || dstPath == zfnull) {
             zfself::SetErrPos(errPos, zfnull);
             return zffalse;
         }
-        if(!this->fileIsExist(srcPath))
-        {
+        if(!this->fileIsExist(srcPath)) {
             zfself::SetErrPos(errPos, srcPath);
             return zffalse;
         }
         zfbool srcIsDir = this->fileIsDir(srcPath);
-        if(srcIsDir && !isRecursive)
-        {
+        if(srcIsDir && !isRecursive) {
             zfself::SetErrPos(errPos, srcPath);
             return zffalse;
         }
         zfbool dstExist = this->fileIsExist(dstPath);
         zfbool dstIsDir = this->fileIsDir(dstPath);
-        if(dstExist && srcIsDir != dstIsDir)
-        {
+        if(dstExist && srcIsDir != dstIsDir) {
             zfself::SetErrPos(errPos, dstPath);
             return zffalse;
         }
 
-        if(!this->makePath(dstPath, errPos, !srcIsDir))
-        {
+        if(!this->makePath(dstPath, errPos, !srcIsDir)) {
             return zffalse;
         }
-        if(srcIsDir)
-        {
+        if(srcIsDir) {
             return this->copyOrMoveDir(isCopy, srcPath, dstPath, isForce, errPos);
         }
-        else
-        {
-            if(isCopy)
-            {
+        else {
+            if(isCopy) {
                 return this->copyFile(srcPath, dstPath, isForce, errPos);
             }
-            else
-            {
+            else {
                 return this->moveFile(srcPath, dstPath, isForce, errPos);
             }
         }
     }
 public:
-    virtual zfbool fileCopy(ZF_IN const zfchar *srcPath,
-                            ZF_IN const zfchar *dstPath,
-                            ZF_IN_OPT zfbool isRecursive = zftrue,
-                            ZF_IN_OPT zfbool isForce = zftrue,
-                            ZF_IN_OPT zfstring *errPos = zfnull)
-    {
+    virtual zfbool fileCopy(
+            ZF_IN const zfchar *srcPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN_OPT zfbool isRecursive = zftrue
+            , ZF_IN_OPT zfbool isForce = zftrue
+            , ZF_IN_OPT zfstring *errPos = zfnull
+            ) {
         zfstring dstPathParent;
-        if(ZFPathParentOf(dstPathParent, dstPath))
-        {
+        if(ZFPathParentOf(dstPathParent, dstPath)) {
             ZFPathCreate(dstPathParent);
         }
         return this->cp_or_mv(zftrue, srcPath, dstPath, isRecursive, isForce, errPos);
     }
-    virtual zfbool fileMove(ZF_IN const zfchar *srcPath,
-                            ZF_IN const zfchar *dstPath,
-                            ZF_IN_OPT zfbool isRecursive = zftrue,
-                            ZF_IN_OPT zfbool isForce = zftrue,
-                            ZF_IN_OPT zfstring *errPos = zfnull)
-    {
+    virtual zfbool fileMove(
+            ZF_IN const zfchar *srcPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN_OPT zfbool isRecursive = zftrue
+            , ZF_IN_OPT zfbool isForce = zftrue
+            , ZF_IN_OPT zfstring *errPos = zfnull
+            ) {
         return this->cp_or_mv(zffalse, srcPath, dstPath, isRecursive, isForce, errPos);
     }
-    virtual zfbool fileRemove(ZF_IN const zfchar *path,
-                              ZF_IN_OPT zfbool isRecursive = zftrue,
-                              ZF_IN_OPT zfbool isForce = zftrue,
-                              ZF_IN_OPT zfstring *errPos = zfnull)
-    {
+    virtual zfbool fileRemove(
+            ZF_IN const zfchar *path
+            , ZF_IN_OPT zfbool isRecursive = zftrue
+            , ZF_IN_OPT zfbool isForce = zftrue
+            , ZF_IN_OPT zfstring *errPos = zfnull
+            ) {
         if(!this->fileIsExist(path)) {return zftrue;}
-        if(this->fileIsDir(path))
-        {
-            if(!isRecursive)
-            {
+        if(this->fileIsDir(path)) {
+            if(!isRecursive) {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
             return this->removeDir(path, isForce, errPos);
         }
-        else
-        {
+        else {
             return this->removeFile(path, isForce, errPos);
         }
     }
 
-    zfclassNotPOD _ZFP_ZFFileNativeFd
-    {
+    zfclassNotPOD _ZFP_ZFFileNativeFd {
     public:
         zfstring parentPath;
     #if ZF_ENV_sys_Windows
-        _ZFP_ZFFileNativeFd(void)
-        {
+        _ZFP_ZFFileNativeFd(void) {
             zfmemset(&this->fd, 0, sizeof(WIN32_FIND_DATAW));
             this->hFind = zfnull;
         }
         WIN32_FIND_DATAW fd;
         HANDLE hFind;
-        void setup(ZFFileFindData::Impl &zfd)
-        {
+        void setup(ZFFileFindData::Impl &zfd) {
             zfd.fileName.removeAll();
             zfstringToUTF8(zfd.fileName, fd.cFileName, ZFStringEncoding::e_UTF16);
 
@@ -174,8 +159,7 @@ public:
             zfd.fileIsDir = ZFFileIsDir(filePath);
         }
     #else // #if ZF_ENV_sys_Windows
-        _ZFP_ZFFileNativeFd(void)
-        {
+        _ZFP_ZFFileNativeFd(void) {
             this->pDir = zfnull;
             this->pDirent = zfnull;
             zfmemset(&this->fStat, 0, sizeof(struct stat));
@@ -183,8 +167,7 @@ public:
         DIR *pDir;
         struct dirent *pDirent;
         struct stat fStat;
-        void setup(ZFFileFindData::Impl &zfd)
-        {
+        void setup(ZFFileFindData::Impl &zfd) {
             zfd.fileName = pDirent->d_name;
 
             zfstring filePath = this->parentPath;
@@ -196,17 +179,17 @@ public:
     #endif // #if ZF_ENV_sys_Windows #else
     };
 
-    virtual zfbool fileFindFirst(ZF_IN_OUT ZFFileFindData::Impl &fd,
-                                 ZF_IN const zfchar *path)
-    {
+    virtual zfbool fileFindFirst(
+            ZF_IN_OUT ZFFileFindData::Impl &fd
+            , ZF_IN const zfchar *path
+            ) {
         if(path == zfnull) {return zffalse;}
         _ZFP_ZFFileNativeFd *nativeFd = zfnew(_ZFP_ZFFileNativeFd);
         nativeFd->parentPath = path;
         fd.nativeFd = nativeFd;
 
         zfbool success = zffalse;
-        do
-        {
+        do {
         #if ZF_ENV_sys_Windows
             zfstring tmp;
             tmp += path;
@@ -229,27 +212,23 @@ public:
             success = zftrue;
         #endif // #if ZF_ENV_sys_Windows #else
         } while(zffalse);
-        if(success)
-        {
+        if(success) {
             while(zfstringIsEqual(fd.fileName.cString(), ".")
-                || zfstringIsEqual(fd.fileName.cString(), ".."))
-            {
-                if(!this->fileFindNext(fd))
-                {
+                    || zfstringIsEqual(fd.fileName.cString(), "..")
+                    ) {
+                if(!this->fileFindNext(fd)) {
                     this->fileFindClose(fd);
                     return zffalse;
                 }
             }
             return zftrue;
         }
-        else
-        {
+        else {
             this->fileFindClose(fd);
             return zffalse;
         }
     }
-    virtual zfbool fileFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd)
-    {
+    virtual zfbool fileFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
         #if ZF_ENV_sys_Windows
             if(!FindNextFileW(nativeFd->hFind, &(nativeFd->fd))) {return zffalse;}
@@ -260,24 +239,21 @@ public:
             nativeFd->setup(fd);
         #endif // #if ZF_ENV_sys_Windows #else
         if(zfstringIsEqual(fd.fileName.cString(), ".")
-            || zfstringIsEqual(fd.fileName.cString(), ".."))
-        {
+                || zfstringIsEqual(fd.fileName.cString(), "..")
+                ) {
             return this->fileFindNext(fd);
         }
         return zftrue;
     }
-    virtual void fileFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd)
-    {
+    virtual void fileFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) {
         _ZFP_ZFFileNativeFd *nativeFd = (_ZFP_ZFFileNativeFd *)fd.nativeFd;
 
         #if ZF_ENV_sys_Windows
-            if(nativeFd->hFind != zfnull)
-            {
+            if(nativeFd->hFind != zfnull) {
                 FindClose(nativeFd->hFind);
             }
         #else // #if ZF_ENV_sys_Windows
-            if(nativeFd->pDir != zfnull)
-            {
+            if(nativeFd->pDir != zfnull) {
                 closedir(nativeFd->pDir);
             }
         #endif // #if ZF_ENV_sys_Windows #else
@@ -287,61 +263,55 @@ public:
     }
 
 private:
-    static void SetErrPos(ZF_IN zfstring *errPos, ZF_IN const zfchar *s)
-    {
-        if(errPos != zfnull)
-        {
+    static void SetErrPos(
+            ZF_IN zfstring *errPos
+            , ZF_IN const zfchar *s
+            ) {
+        if(errPos != zfnull) {
             *errPos = ((s != zfnull) ? s : "<null>");
         }
     }
-    zfbool makeDir(ZF_IN const zfchar *path,
-                   ZF_IN_OPT zfstring *errPos)
-    {
-        if(this->fileIsExist(path))
-        {
-            if(!this->fileIsDir(path))
-            {
+    zfbool makeDir(
+            ZF_IN const zfchar *path
+            , ZF_IN_OPT zfstring *errPos
+            ) {
+        if(this->fileIsExist(path)) {
+            if(!this->fileIsDir(path)) {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
             return zftrue;
         }
         #if ZF_ENV_sys_Windows
-            if(!CreateDirectoryW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString(), zfnull))
-            {
+            if(!CreateDirectoryW(zfstringToUTF16(path, ZFStringEncoding::e_UTF8).cString(), zfnull)) {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
         #else // #if ZF_ENV_sys_Windows
-            if(mkdir(path, 0777) != 0)
-            {
+            if(mkdir(path, 0777) != 0) {
                 zfself::SetErrPos(errPos, path);
                 return zffalse;
             }
         #endif // #if ZF_ENV_sys_Windows #else
         return zftrue;
     }
-    zfbool makePath(ZF_IN const zfchar *path,
-                    ZF_IN_OPT zfstring *errPos,
-                    ZF_IN_OPT zfbool excludeLastLevel = zffalse)
-    {
+    zfbool makePath(
+            ZF_IN const zfchar *path
+            , ZF_IN_OPT zfstring *errPos
+            , ZF_IN_OPT zfbool excludeLastLevel = zffalse
+            ) {
         zfstring pathTmp = path;
         zfindex indexL = zfstringFindReversely(pathTmp, pathTmp.length(), ZFFileSeparatorString());
-        if(indexL == zfindexMax())
-        {
-            if(!excludeLastLevel)
-            {
+        if(indexL == zfindexMax()) {
+            if(!excludeLastLevel) {
                 return this->makeDir(pathTmp, errPos);
             }
             return zftrue;
         }
         ZFCoreArray<zfstring> dirToMake;
-        if(!excludeLastLevel)
-        {
-            if(this->fileIsExist(pathTmp))
-            {
-                if(!this->fileIsDir(pathTmp))
-                {
+        if(!excludeLastLevel) {
+            if(this->fileIsExist(pathTmp)) {
+                if(!this->fileIsDir(pathTmp)) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
@@ -350,44 +320,37 @@ private:
             dirToMake.add(pathTmp);
         }
         pathTmp.remove(indexL);
-        do
-        {
-            if(this->fileIsExist(pathTmp))
-            {
-                if(!this->fileIsDir(pathTmp))
-                {
+        do {
+            if(this->fileIsExist(pathTmp)) {
+                if(!this->fileIsDir(pathTmp)) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
                 break;
             }
             dirToMake.add(pathTmp);
-            if(indexL == zfindexMax())
-            {
+            if(indexL == zfindexMax()) {
                 break;
             }
             indexL = zfstringFindReversely(pathTmp, pathTmp.length(), ZFFileSeparatorString());
-            if(indexL != zfindexMax())
-            {
+            if(indexL != zfindexMax()) {
                 pathTmp.remove(indexL);
             }
         } while(zftrue);
-        for(zfindex i = dirToMake.count() - 1; i != zfindexMax(); --i)
-        {
-            if(!this->makeDir(dirToMake[i], errPos))
-            {
+        for(zfindex i = dirToMake.count() - 1; i != zfindexMax(); --i) {
+            if(!this->makeDir(dirToMake[i], errPos)) {
                 return zffalse;
             }
         }
         return zftrue;
     }
-    zfbool copyFile(ZF_IN const zfchar *srcPath,
-                    ZF_IN const zfchar *dstPath,
-                    ZF_IN zfbool isForce,
-                    ZF_IN_OPT zfstring *errPos)
-    {
-        if(isForce)
-        {
+    zfbool copyFile(
+            ZF_IN const zfchar *srcPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
+        if(isForce) {
             this->removeFile(dstPath, isForce, zfnull);
         }
         #if ZF_ENV_sys_Windows
@@ -395,28 +358,24 @@ private:
                     zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString(),
                     zfstringToUTF16(dstPath, ZFStringEncoding::e_UTF8).cString(),
                     !isForce
-                ) != TRUE)
-            {
+                ) != TRUE) {
                 zfself::SetErrPos(errPos, dstPath);
                 return zffalse;
             }
             return zftrue;
         #else // #if ZF_ENV_sys_Windows
-            if(this->fileIsExist(dstPath) && !isForce)
-            {
+            if(this->fileIsExist(dstPath) && !isForce) {
                 zfself::SetErrPos(errPos, dstPath);
                 return zffalse;
             }
 
             FILE *fpSrc = fopen(srcPath, "rb");
-            if(fpSrc == zfnull)
-            {
+            if(fpSrc == zfnull) {
                 zfself::SetErrPos(errPos, srcPath);
                 return zffalse;
             }
             FILE *fpDst = fopen(dstPath, "wb");
-            if(fpDst == zfnull)
-            {
+            if(fpDst == zfnull) {
                 fclose(fpSrc);
                 zfself::SetErrPos(errPos, dstPath);
                 return zffalse;
@@ -425,8 +384,7 @@ private:
             size_t readSize = 0;
             #define _copyFile_bufSize 4096
             zfbyte readBuf[_copyFile_bufSize];
-            while((readSize = fread(readBuf, 1, _copyFile_bufSize, fpSrc)) > 0)
-            {
+            while((readSize = fread(readBuf, 1, _copyFile_bufSize, fpSrc)) > 0) {
                 fwrite(readBuf, 1, readSize, fpDst);
             }
             fclose(fpSrc);
@@ -435,62 +393,57 @@ private:
             return zftrue;
         #endif // #if ZF_ENV_sys_Windows #else
     }
-    zfbool moveFile(ZF_IN const zfchar *srcPath,
-                    ZF_IN const zfchar *dstPath,
-                    ZF_IN zfbool isForce,
-                    ZF_IN_OPT zfstring *errPos)
-    {
-        if(isForce)
-        {
+    zfbool moveFile(
+            ZF_IN const zfchar *srcPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
+        if(isForce) {
             this->removeFile(dstPath, isForce, zfnull);
         }
         #if ZF_ENV_sys_Windows
             if(MoveFileW(
                     zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString(),
                     zfstringToUTF16(dstPath, ZFStringEncoding::e_UTF8).cString()
-                ) != TRUE)
-            {
+                ) != TRUE) {
                 zfself::SetErrPos(errPos, dstPath);
                 return zffalse;
             }
             return zftrue;
         #else // #if ZF_ENV_sys_Windows
-            if(rename(srcPath, dstPath) != 0)
-            {
+            if(rename(srcPath, dstPath) != 0) {
                 zfself::SetErrPos(errPos, dstPath);
                 return zffalse;
             }
             return zftrue;
         #endif // #if ZF_ENV_sys_Windows #else
     }
-    zfbool copyOrMoveDir(ZF_IN zfbool isCopy,
-                         ZF_IN const zfchar *srcPath,
-                         ZF_IN const zfchar *dstPath,
-                         ZF_IN zfbool isForce,
-                         ZF_IN_OPT zfstring *errPos)
-    {
+    zfbool copyOrMoveDir(
+            ZF_IN zfbool isCopy
+            , ZF_IN const zfchar *srcPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
         ZFCoreArray<zfstring> stacksDirSrc;
         ZFCoreArray<zfstring> stacksDirDst;
         stacksDirSrc.add(srcPath);
         stacksDirDst.add(dstPath);
 
-        while(stacksDirSrc.count() > 0)
-        {
+        while(stacksDirSrc.count() > 0) {
             zfstring srcDir = stacksDirSrc.getLast();
             zfstring dstDir = stacksDirDst.getLast();
             stacksDirSrc.removeLast();
             stacksDirDst.removeLast();
 
-            if(!this->makePath(dstDir, errPos))
-            {
+            if(!this->makePath(dstDir, errPos)) {
                 return zffalse;
             }
 
             ZFFileFindData::Impl fd;
-            if(this->fileFindFirst(fd, srcDir))
-            {
-                do
-                {
+            if(this->fileFindFirst(fd, srcDir)) {
+                do {
                     zfstring srcTmp;
                     srcTmp += srcDir;
                     srcTmp += ZFFileSeparator();
@@ -500,25 +453,19 @@ private:
                     dstTmp += dstDir;
                     dstTmp += ZFFileSeparator();
                     dstTmp += fd.fileName;
-                    if(this->fileIsDir(srcTmp))
-                    {
+                    if(this->fileIsDir(srcTmp)) {
                         stacksDirSrc.add(srcTmp);
                         stacksDirDst.add(dstTmp);
                     }
-                    else
-                    {
-                        if(isCopy)
-                        {
-                            if(!this->copyFile(srcTmp, dstTmp, isForce, errPos))
-                            {
+                    else {
+                        if(isCopy) {
+                            if(!this->copyFile(srcTmp, dstTmp, isForce, errPos)) {
                                 this->fileFindClose(fd);
                                 return zffalse;
                             }
                         }
-                        else
-                        {
-                            if(!this->moveFile(srcTmp, dstTmp, isForce, errPos))
-                            {
+                        else {
+                            if(!this->moveFile(srcTmp, dstTmp, isForce, errPos)) {
                                 this->fileFindClose(fd);
                                 return zffalse;
                             }
@@ -529,63 +476,57 @@ private:
             } // if(this->fileFindFirst(fd, srcDir))
         } // while(!stacksDirSrc.empty())
 
-        if(!isCopy)
-        {
-            if(!this->removeDir(srcPath, zffalse, errPos))
-            {
+        if(!isCopy) {
+            if(!this->removeDir(srcPath, zffalse, errPos)) {
                 return zffalse;
             }
         }
 
         return zftrue;
     }
-    zfbool removeFile(ZF_IN const zfchar *srcPath,
-                      ZF_IN zfbool isForce,
-                      ZF_IN_OPT zfstring *errPos)
-    {
+    zfbool removeFile(
+            ZF_IN const zfchar *srcPath
+            , ZF_IN zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
         #if ZF_ENV_sys_Windows
-            if(isForce)
-            {
+            if(isForce) {
                 SetFileAttributesW(
                     zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString(),
                     FILE_ATTRIBUTE_NORMAL);
             }
-            if(DeleteFileW(zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString()) != TRUE)
-            {
+            if(DeleteFileW(zfstringToUTF16(srcPath, ZFStringEncoding::e_UTF8).cString()) != TRUE) {
                 zfself::SetErrPos(errPos, srcPath);
                 return zffalse;
             }
             return zftrue;
         #else // #if ZF_ENV_sys_Windows
-            if(isForce)
-            {
+            if(isForce) {
                 chmod(srcPath, 0777);
             }
-            if(remove(srcPath) != 0)
-            {
+            if(remove(srcPath) != 0) {
                 zfself::SetErrPos(errPos, srcPath);
                 return zffalse;
             }
             return zftrue;
         #endif // #if ZF_ENV_sys_Windows #else
     }
-    zfbool removeDir(ZF_IN const zfchar *srcPath,
-                     ZF_IN zfbool isForce,
-                     ZF_IN_OPT zfstring *errPos)
-    {
+    zfbool removeDir(
+            ZF_IN const zfchar *srcPath
+            , ZF_IN zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
         ZFCoreArray<zfstring> dirsToCheck;
         dirsToCheck.add(srcPath);
         ZFCoreArray<zfstring> emptyDirsToDel;
 
         // delete all child files
-        while(dirsToCheck.count() > 0)
-        {
+        while(dirsToCheck.count() > 0) {
             zfstring dirPath = dirsToCheck.getLast();
             dirsToCheck.removeLast();
             emptyDirsToDel.add(dirPath);
 
-            if(isForce)
-            {
+            if(isForce) {
                 #if ZF_ENV_sys_Windows
                     SetFileAttributesW(
                         zfstringToUTF16(dirPath.cString(), ZFStringEncoding::e_UTF8).cString(),
@@ -596,22 +537,17 @@ private:
             }
 
             ZFFileFindData::Impl fd;
-            if(this->fileFindFirst(fd, dirPath))
-            {
-                do
-                {
+            if(this->fileFindFirst(fd, dirPath)) {
+                do {
                     zfstring filePath;
                     filePath += dirPath;
                     filePath += ZFFileSeparator();
                     filePath += fd.fileName;
-                    if(this->fileIsDir(filePath))
-                    {
+                    if(this->fileIsDir(filePath)) {
                         dirsToCheck.add(filePath);
                     }
-                    else
-                    {
-                        if(!this->removeFile(filePath, isForce, errPos))
-                        {
+                    else {
+                        if(!this->removeFile(filePath, isForce, errPos)) {
                             return zffalse;
                         }
                     }
@@ -621,20 +557,17 @@ private:
         } // while(!dirsToCheck.empty())
 
         // delete all empty dir
-        while(emptyDirsToDel.count() > 0)
-        {
+        while(emptyDirsToDel.count() > 0) {
             zfstring pathTmp = emptyDirsToDel.getLast();
             emptyDirsToDel.removeLast();
 
             #if ZF_ENV_sys_Windows
-                if(RemoveDirectoryW(zfstringToUTF16(pathTmp.cString(), ZFStringEncoding::e_UTF8).cString()) == 0)
-                {
+                if(RemoveDirectoryW(zfstringToUTF16(pathTmp.cString(), ZFStringEncoding::e_UTF8).cString()) == 0) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
             #else // #if ZF_ENV_sys_Windows
-                if(rmdir(pathTmp.cString()) != 0)
-                {
+                if(rmdir(pathTmp.cString()) != 0) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }
@@ -645,49 +578,39 @@ private:
     }
 
 public:
-    virtual void *fileOpen(ZF_IN const zfchar *filePath,
-                           ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read)
-    {
+    virtual void *fileOpen(
+            ZF_IN const zfchar *filePath
+            , ZF_IN_OPT ZFFileOpenOptionFlags flag = ZFFileOpenOption::e_Read
+            ) {
         const zfchar *sFlag = zfnull;
-        if(ZFBitTest(flag, ZFFileOpenOption::e_Append))
-        {
-            if(ZFBitTest(flag, ZFFileOpenOption::e_Read))
-            {
+        if(ZFBitTest(flag, ZFFileOpenOption::e_Append)) {
+            if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
                 sFlag = "a+b";
             }
-            else
-            {
+            else {
                 sFlag = "ab";
             }
         }
-        else if(ZFBitTest(flag, ZFFileOpenOption::e_Create))
-        {
-            if(ZFBitTest(flag, ZFFileOpenOption::e_Read))
-            {
+        else if(ZFBitTest(flag, ZFFileOpenOption::e_Create)) {
+            if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
                 sFlag = "w+b";
             }
-            else
-            {
+            else {
                 sFlag = "wb";
             }
         }
-        else if(ZFBitTest(flag, ZFFileOpenOption::e_Write))
-        {
-            if(ZFBitTest(flag, ZFFileOpenOption::e_Read))
-            {
+        else if(ZFBitTest(flag, ZFFileOpenOption::e_Write)) {
+            if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
                 sFlag = "r+b";
             }
-            else
-            {
+            else {
                 sFlag = "wb";
             }
         }
-        else if(ZFBitTest(flag, ZFFileOpenOption::e_Read))
-        {
+        else if(ZFBitTest(flag, ZFFileOpenOption::e_Read)) {
             sFlag = "rb";
         }
-        else
-        {
+        else {
             zfCoreCriticalShouldNotGoHere();
             return zfnull;
         }
@@ -707,40 +630,34 @@ public:
 
         return ret;
     }
-    virtual zfbool fileClose(ZF_IN void *token)
-    {
-        if(token == zfnull)
-        {
+    virtual zfbool fileClose(ZF_IN void *token) {
+        if(token == zfnull) {
             return zftrue;
         }
         return (fclose((FILE *)token) == 0);
     }
 
-    virtual zfindex fileTell(ZF_IN void *token)
-    {
-        if(token == zfnull)
-        {
+    virtual zfindex fileTell(ZF_IN void *token) {
+        if(token == zfnull) {
             return zfindexMax();
         }
         long result = ftell((FILE *)token);
-        if(result == -1)
-        {
+        if(result == -1) {
             return zfindexMax();
         }
         return (zfindex)result;
     }
-    virtual zfbool fileSeek(ZF_IN void *token,
-                            ZF_IN zfindex byteSize,
-                            ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin)
-    {
-        if(token == zfnull)
-        {
+    virtual zfbool fileSeek(
+            ZF_IN void *token
+            , ZF_IN zfindex byteSize
+            , ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin
+            ) {
+        if(token == zfnull) {
             return zffalse;
         }
         int tmpPos = 0;
         long seekSize = (long)byteSize;
-        switch(position)
-        {
+        switch(position) {
             case ZFSeekPosBegin:
                 tmpPos = SEEK_SET;
                 break;
@@ -761,46 +678,40 @@ public:
         return (fseek((FILE *)token, seekSize, tmpPos) == 0);
     }
 
-    virtual zfindex fileRead(ZF_IN void *token,
-                             ZF_IN void *buf,
-                             ZF_IN zfindex maxByteSize)
-    {
-        if(token == zfnull)
-        {
+    virtual zfindex fileRead(
+            ZF_IN void *token
+            , ZF_IN void *buf
+            , ZF_IN zfindex maxByteSize
+            ) {
+        if(token == zfnull) {
             return 0;
         }
-        else
-        {
+        else {
             return (zfindex)fread(buf, 1, (size_t)maxByteSize, (FILE *)token);
         }
     }
 
-    virtual zfindex fileWrite(ZF_IN void *token,
-                              ZF_IN const void *src,
-                              ZF_IN zfindex maxByteSize)
-    {
-        if(token == zfnull)
-        {
+    virtual zfindex fileWrite(
+            ZF_IN void *token
+            , ZF_IN const void *src
+            , ZF_IN zfindex maxByteSize
+            ) {
+        if(token == zfnull) {
             return 0;
         }
-        else
-        {
+        else {
             return (zfindex)fwrite(src, 1, (size_t)maxByteSize, (FILE *)token);
         }
     }
-    virtual void fileFlush(ZF_IN void *token)
-    {
-        if(token != zfnull)
-        {
+    virtual void fileFlush(ZF_IN void *token) {
+        if(token != zfnull) {
             fflush((FILE *)token);
         }
     }
-    virtual zfbool fileIsEof(ZF_IN void *token)
-    {
+    virtual zfbool fileIsEof(ZF_IN void *token) {
         return (feof((FILE *)token) != 0);
     }
-    virtual zfbool fileIsError(ZF_IN void *token)
-    {
+    virtual zfbool fileIsError(ZF_IN void *token) {
         return (ferror((FILE *)token) != 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileImpl_default)

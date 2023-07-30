@@ -20,8 +20,7 @@ zfclassFwd _ZFP_ZFTimerPrivate;
  *   zfRelease(timer); // safe to release after start, timer would be auto released after stop
  * @endcode
  */
-zfclass ZFLIB_ZFCore ZFTimer : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFTimer : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFTimer, ZFObject)
     ZFALLOC_CACHE_RELEASE({
             cache->timerStop();
@@ -62,8 +61,10 @@ protected:
      * you may change them after timer created,
      * but you must not if timer is started
      */
-    ZFOBJECT_ON_INIT_DECLARE_2(ZFMP_IN(zftimet, timerInterval),
-                               ZFMP_IN_OPT(zftimet, timerDelay, zftimetZero()))
+    ZFOBJECT_ON_INIT_DECLARE_2(
+            ZFMP_IN(zftimet, timerInterval)
+            , ZFMP_IN_OPT(zftimet, timerDelay, zftimetZero())
+            )
     zfoverride
     virtual void objectOnInit(void);
     zfoverride
@@ -125,18 +126,15 @@ public:
     zffinal void _ZFP_ZFTimer_timerOnStop(void);
 protected:
     /** @brief see #EventTimerOnStart */
-    virtual inline void timerOnStart(void)
-    {
+    virtual inline void timerOnStart(void) {
         this->observerNotify(ZFTimer::EventTimerOnStart());
     }
     /** @brief see #EventTimerOnActivate */
-    virtual inline void timerOnActivate(void)
-    {
+    virtual inline void timerOnActivate(void) {
         this->observerNotify(ZFTimer::EventTimerOnActivate());
     }
     /** @brief see #EventTimerOnStop */
-    virtual inline void timerOnStop(void)
-    {
+    virtual inline void timerOnStop(void) {
         this->observerNotify(ZFTimer::EventTimerOnStop());
     }
 
@@ -148,18 +146,20 @@ private:
 /**
  * @brief util to start timer
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerStart,
-                        ZFMP_IN(zftimet, timerInterval),
-                        ZFMP_IN(const ZFListener &, timerCallback))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerStart
+        , ZFMP_IN(zftimet, timerInterval)
+        , ZFMP_IN(const ZFListener &, timerCallback)
+        )
 
 /**
  * @brief util to start timer to run only once
  *
  * we would try to run the timerCallback in the same thread that call this method
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerOnce,
-                        ZFMP_IN(zftimet, delay),
-                        ZFMP_IN(const ZFListener &, timerCallback))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObjectT<ZFTimer *>, ZFTimerOnce
+        , ZFMP_IN(zftimet, delay)
+        , ZFMP_IN(const ZFListener &, timerCallback)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTimer_h_

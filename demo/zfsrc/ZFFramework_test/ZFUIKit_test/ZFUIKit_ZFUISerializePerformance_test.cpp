@@ -2,8 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFUISerializePerformance_test_TestObject : zfextends ZFObject, zfimplements ZFSerializable
-{
+zfclass _ZFP_ZFUISerializePerformance_test_TestObject : zfextends ZFObject, zfimplements ZFSerializable {
     ZFOBJECT_DECLARE(_ZFP_ZFUISerializePerformance_test_TestObject, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable)
 
@@ -27,10 +26,8 @@ zfclass _ZFP_ZFUISerializePerformance_test_TestObject : zfextends ZFObject, zfim
     ZFPROPERTY_ASSIGN(zfstring, v15)
 
 public:
-    void modifyProperty(void)
-    {
-        for(zfindex i = 0; i < 16; ++i)
-        {
+    void modifyProperty(void) {
+        for(zfindex i = 0; i < 16; ++i) {
             zfstring v = zfstringWithFormat("v%zi", i);
             zfself::ClassData()->propertyForName(v)
                 ->setterMethod()->execute<void, zfstring const &>(this, v);
@@ -40,14 +37,12 @@ public:
     }
 };
 
-zfclass ZFUIKit_ZFUISerializePerformance_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIKit_ZFUISerializePerformance_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUISerializePerformance_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUITextView);
@@ -84,16 +79,14 @@ protected:
 
             zfindex toDataTimes = 1000;
             ZFCoreStatistic::invokeTimeLogBegin("ZFUISerializePerformance_test_toData");
-            for(zfindex i = 0; i < toDataTimes; ++i)
-            {
+            for(zfindex i = 0; i < toDataTimes; ++i) {
                 ZFObjectToData(testObject);
             }
             ZFCoreStatistic::invokeTimeLogEnd("ZFUISerializePerformance_test_toData");
 
             zfindex fromDataTimes = toDataTimes;
             ZFCoreStatistic::invokeTimeLogBegin("ZFUISerializePerformance_test_fromData");
-            for(zfindex i = 0; i < fromDataTimes; ++i)
-            {
+            for(zfindex i = 0; i < fromDataTimes; ++i) {
                 ZFObjectFromData(data);
             }
             ZFCoreStatistic::invokeTimeLogEnd("ZFUISerializePerformance_test_fromData");
@@ -121,8 +114,7 @@ protected:
     }
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window)
-    {
+    void prepareSettingButton(ZF_IN ZFUIWindow *window) {
         zfblockedAlloc(ZFArray, settings);
 
         { // auto scroll x
@@ -149,8 +141,7 @@ private:
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->testObjectType = 0;
         this->testObjectTypeCount = 3;
@@ -159,25 +150,20 @@ protected:
 public:
     zfindex testObjectType;
     zfindex testObjectTypeCount;
-    zfautoObject prepareTestObject(void)
-    {
-        switch(this->testObjectType)
-        {
-            case 0:
-            {
+    zfautoObject prepareTestObject(void) {
+        switch(this->testObjectType) {
+            case 0: {
                 zfblockedAlloc(ZFUIKit_test_Button, v);
                 v->background()->viewBackgroundColor(ZFUIColorRandom());
                 return v;
             }
-            case 1:
-            {
+            case 1: {
                 zfblockedAlloc(ZFUIImageView, v);
                 v->image(ZFUIImageFromColor(ZFUIColorRed()));
                 return v;
             }
             case 2:
-            default:
-            {
+            default: {
                 zfblockedAlloc(_ZFP_ZFUISerializePerformance_test_TestObject, v);
                 v->modifyProperty();
                 return v;

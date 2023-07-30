@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUILinearLayout_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUILinearLayout_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUILinearLayout_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
@@ -28,10 +26,8 @@ protected:
     }
 
 private:
-    void prepareChildren(ZF_IN ZFUILinearLayout *layout)
-    {
-        for(zfindex i = 0; i < 3; ++i)
-        {
+    void prepareChildren(ZF_IN ZFUILinearLayout *layout) {
+        for(zfindex i = 0; i < 3; ++i) {
             zfblockedAlloc(ZFUITextView, child);
             layout->childAdd(child);
             child->text(zfstringWithFormat("text %zi", i));
@@ -45,8 +41,7 @@ private:
         zfblockedAlloc(ZFUILinearLayout, l);
         layout->childAdd(l);
         l->layoutOrientation(ZFUIOrientation::e_Bottom);
-        for(zfindex i = 0; i < 3; ++i)
-        {
+        for(zfindex i = 0; i < 3; ++i) {
             zfblockedAlloc(ZFUITextView, child);
             l->childAdd(child);
             child->text(zfstringWithFormat("text %zi", 3 + i));
@@ -54,9 +49,10 @@ private:
             child->viewBackgroundColor(ZFUIColorRandom());
         }
     }
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUILinearLayout *layout)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUILinearLayout *layout
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);

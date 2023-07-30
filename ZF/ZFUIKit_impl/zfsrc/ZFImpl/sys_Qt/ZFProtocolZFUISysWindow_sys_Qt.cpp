@@ -9,20 +9,20 @@
 #include <QGuiApplication>
 #include <QScreen>
 
-static void _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(ZF_IN ZFUISysWindow *sysWindow, ZF_IN QGraphicsWidget *nativeWindow)
-{
+static void _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(
+        ZF_IN ZFUISysWindow *sysWindow
+        , ZF_IN QGraphicsWidget *nativeWindow
+        ) {
     QRect screenRect = QGuiApplication::screens().at(0)->geometry();
     ZFUIRect frame = ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyMeasureWindow(
             sysWindow,
             ZFUIRectMake(0, 0, screenRect.width(), screenRect.height()),
             ZFUIMarginZero()
         );
-    if(nativeWindow->scene() != NULL)
-    {
+    if(nativeWindow->scene() != NULL) {
         QList<QGraphicsView *> views = nativeWindow->scene()->views();
         QRect frameTmp = ZFImpl_sys_Qt_ZFUIRectToQRect(frame);
-        for(QList<QGraphicsView *>::iterator it = views.begin(); it != views.end(); ++it)
-        {
+        for(QList<QGraphicsView *>::iterator it = views.begin(); it != views.end(); ++it) {
             (*it)->setFixedSize(frameTmp.width(), frameTmp.height());
             (*it)->setGeometry(frameTmp);
         }
@@ -30,20 +30,16 @@ static void _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(ZF_IN ZFUISysWindow
     QRectF bounds(0, 0, frame.width, frame.height);
     ZFImpl_sys_Qt_BaseView::ForceGeometry(nativeWindow, bounds);
 }
-class _ZFP_ZFUISysWindowImpl_sys_Qt_EventWrapper : public QObject
-{
+class _ZFP_ZFUISysWindowImpl_sys_Qt_EventWrapper : public QObject {
     Q_OBJECT
 
 protected:
-    virtual bool eventFilter(QObject *obj, QEvent *event)
-    {
+    virtual bool eventFilter(QObject *obj, QEvent *event) {
         ZFUISysWindow *owner = ZFImpl_sys_Qt_QObjectZFObjectTag<ZFObjectHolder *>(obj, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow")->objectHolded();
-        if(owner == zfnull)
-        {
+        if(owner == zfnull) {
             return false;
         }
-        switch(event->type())
-        {
+        switch(event->type()) {
             case QEvent::WindowActivate:
                 ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnResume(owner);
                 break;
@@ -70,22 +66,18 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowImpl_sys_Qt, ZFUISysWindow, ZFProto
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         this->_mainWindow = zfnull;
     }
     zfoverride
-    virtual void protocolOnDeallocPrepare(void)
-    {
+    virtual void protocolOnDeallocPrepare(void) {
         this->mainWindowOnCleanup();
         zfsuper::protocolOnDeallocPrepare();
     }
 public:
-    virtual ZFUISysWindow *mainWindow(void)
-    {
-        if(this->_mainWindow == zfnull)
-        {
+    virtual ZFUISysWindow *mainWindow(void) {
+        if(this->_mainWindow == zfnull) {
             this->_mainWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
             QGraphicsWidget *nativeWindow = ZFImpl_sys_Qt_rootWindow();
             ZFImpl_sys_Qt_QObjectZFObjectTag(nativeWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", this->_mainWindow->objectHolder());
@@ -98,12 +90,9 @@ public:
         }
         return this->_mainWindow;
     }
-    virtual void mainWindowOnCleanup(void)
-    {
-        if(this->_mainWindow != zfnull)
-        {
-            if(this->_mainWindow->nativeWindowIsResumed())
-            {
+    virtual void mainWindowOnCleanup(void) {
+        if(this->_mainWindow != zfnull) {
+            if(this->_mainWindow->nativeWindowIsResumed()) {
                 this->notifyOnPause(this->_mainWindow);
             }
             zfblockedRelease(this->_mainWindow);
@@ -114,20 +103,19 @@ public:
             this->notifyOnDestroy(this->_mainWindow);
         }
     }
-    virtual void mainWindowOnDestroy(void)
-    {
+    virtual void mainWindowOnDestroy(void) {
         this->_mainWindow = zfnull;
     }
 
     // ============================================================
 public:
-    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow) {
     }
 
-    virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT_OPT void *&nativeParentView)
-    {
+    virtual void nativeWindowRootViewOnAdd(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_OUT_OPT void *&nativeParentView
+            ) {
         QGraphicsWidget *nativeWindow = ZFCastStatic(QGraphicsWidget *, sysWindow->nativeWindow());
 
         QGraphicsWidget *nativeRootView = ZFCastStatic(QGraphicsWidget *, sysWindow->rootView()->nativeView());
@@ -137,16 +125,14 @@ public:
         l->childAdd(nativeRootView);
         nativeParentView = (void *)nativeWindow;
     }
-    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
         QGraphicsWidget *nativeWindow = ZFCastStatic(QGraphicsWidget *, sysWindow->nativeWindow());
         QGraphicsWidget *nativeRootView = ZFCastStatic(QGraphicsWidget *, sysWindow->rootView()->nativeView());
         ZFImpl_sys_Qt_BaseLayout *l = (ZFImpl_sys_Qt_BaseLayout *)(nativeWindow->layout());
         l->childRemove(nativeRootView);
     }
 
-    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner)
-    {
+    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
         zfautoObject modalWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
         ZFImpl_sys_Qt_Window *nativeModalWindow = new ZFImpl_sys_Qt_Window();
         ZFImpl_sys_Qt_QObjectZFObjectTag(nativeModalWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", modalWindow->objectHolder());
@@ -158,9 +144,10 @@ public:
 
         return modalWindow;
     }
-    virtual void modalWindowFinish(ZF_IN ZFUISysWindow *sysWindowOwner,
-                                   ZF_IN ZFUISysWindow *sysWindowToFinish)
-    {
+    virtual void modalWindowFinish(
+            ZF_IN ZFUISysWindow *sysWindowOwner
+            , ZF_IN ZFUISysWindow *sysWindowToFinish
+            ) {
         QGraphicsWidget *nativeModalWindow = ZFCastStatic(QGraphicsWidget *, sysWindowOwner->nativeWindow());
         nativeModalWindow->hide();
         nativeModalWindow->removeEventFilter(&_eventWrapper);
@@ -169,25 +156,23 @@ public:
         delete nativeModalWindow;
     }
 
-    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
         // centered by default
         sysWindow->sysWindowLayoutParam()->layoutAlign(ZFUIAlign::e_Center);
         sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeMake(480, 640));
     }
-    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
         _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(sysWindow, (QGraphicsWidget *)sysWindow->nativeWindow());
     }
 
-    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
         // Qt don't support rotate
         return ZFUIOrientation::e_Top;
     }
-    virtual void sysWindowOrientationFlags(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_IN const ZFUIOrientationFlags &flags)
-    {
+    virtual void sysWindowOrientationFlags(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN const ZFUIOrientationFlags &flags
+            ) {
         // Qt don't support rotate
     }
 

@@ -12,8 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_Android, ZFApp, ZFProtocolLevel::e_SystemNormal)
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFApp).c_str());
@@ -21,16 +20,14 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void appRestart(void)
-    {
+    virtual void appRestart(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "appRestart",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -45,9 +42,9 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAppImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFApp,
-                         void, native_1appRestart)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFApp
+        , void, native_1appRestart
+        ) {
     ZFCoreArray<zfstring> appParamsSaved;
     appParamsSaved.copyFrom(ZFApp::appParams());
     ZFFrameworkCleanup();

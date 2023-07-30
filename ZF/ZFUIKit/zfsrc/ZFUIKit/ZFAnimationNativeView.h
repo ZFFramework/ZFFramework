@@ -33,8 +33,7 @@ zfclassFwd _ZFP_ZFAnimationNativeViewPrivate;
  * but may work incorrectly with local transform
  * (such as #ZFUIView::viewRotateZ)
  */
-zfclass ZFLIB_ZFUIKit ZFAnimationNativeView : zfextends ZFAnimation
-{
+zfclass ZFLIB_ZFUIKit ZFAnimationNativeView : zfextends ZFAnimation {
     ZFOBJECT_DECLARE(ZFAnimationNativeView, ZFAnimation)
 
 protected:
@@ -249,8 +248,7 @@ protected:
     zfoverride
     virtual void aniImplStop(void);
 public:
-    zffinal void _ZFP_ZFAnimationNativeView_notifyStop(void)
-    {
+    zffinal void _ZFP_ZFAnimationNativeView_notifyStop(void) {
         this->aniImplNotifyStop();
     }
 

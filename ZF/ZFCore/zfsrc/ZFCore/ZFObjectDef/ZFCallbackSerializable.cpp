@@ -10,25 +10,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         { // custom serialize logic
             const zfchar *customType = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFCallback_callbackType);
-            if(customType != zfnull)
-            {
+            if(customType != zfnull) {
                 const ZFSerializableData *customData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFCallback_callbackData);
-                if(customData == zfnull)
-                {
+                if(customData == zfnull) {
                     ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                         "missing %s", ZFSerializableKeyword_ZFCallback_callbackData);
                     return zffalse;
                 }
 
                 _ZFP_ZFCallbackSerializeCustomCallback serializeCallback = _ZFP_ZFCallbackSerializeCustomTypeForName(customType);
-                if(serializeCallback == zfnull)
-                {
+                if(serializeCallback == zfnull) {
                     ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                         "no such callback custom serialize type: %s", customType);
                     return zffalse;
                 }
-                if(!serializeCallback(v, *customData, outErrorHint, outErrorPos))
-                {
+                if(!serializeCallback(v, *customData, outErrorHint, outErrorPos)) {
                     return zffalse;
                 }
                 v.callbackSerializeCustomType(customType);
@@ -41,14 +37,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             }
         }
 
-        if(zfstringIsEqual(serializableData.itemClass(), ZFSerializableKeyword_null))
-        {
+        if(zfstringIsEqual(serializableData.itemClass(), ZFSerializableKeyword_null)) {
             v = ZFCallback();
             serializableData.resolveMark();
             return zftrue;
         }
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCallback(), outErrorHint, outErrorPos) == zfnull)
-        {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCallback(), outErrorHint, outErrorPos) == zfnull) {
             return zffalse;
         }
 
@@ -56,16 +50,13 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFCallback_method, ZFMethod, method);
 
-        if(method->methodOwnerClass() == zfnull)
-        {
+        if(method->methodOwnerClass() == zfnull) {
             v = ZFCallbackForMethod(method);
         }
-        else if(method->methodType() == ZFMethodTypeStatic)
-        {
+        else if(method->methodType() == ZFMethodTypeStatic) {
             v = ZFCallbackForMethod(method);
         }
-        else
-        {
+        else {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                 "member method callback is not supported");
             return zffalse;
@@ -74,16 +65,13 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         serializableData.resolveMark();
         return zftrue;
     }, {
-        if(v.callbackSerializeCustomType() != zfnull)
-        {
-            if(v.callbackSerializeCustomDisabled())
-            {
+        if(v.callbackSerializeCustomType() != zfnull) {
+            if(v.callbackSerializeCustomDisabled()) {
                 ZFSerializableUtil::errorOccurred(outErrorHint, "callback was marked as not serializable");
                 return zffalse;
             }
 
-            if(v.callbackSerializeCustomData() == zfnull)
-            {
+            if(v.callbackSerializeCustomData() == zfnull) {
                 ZFSerializableUtil::errorOccurred(outErrorHint, "missing callback serialize custom data");
                 return zffalse;
             }
@@ -98,25 +86,21 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             return zftrue;
         }
 
-        switch(v.callbackType())
-        {
+        switch(v.callbackType()) {
             case ZFCallbackTypeDummy:
                 serializableData.itemClass(ZFSerializableKeyword_null);
                 break;
-            case ZFCallbackTypeMethod:
-            {
+            case ZFCallbackTypeMethod: {
                 serializableData.itemClass(ZFTypeId_ZFCallback());
                 ZFSerializableData methodData;
-                if(!ZFMethodToData(methodData, v.callbackMethod(), outErrorHint))
-                {
+                if(!ZFMethodToData(methodData, v.callbackMethod(), outErrorHint)) {
                     return zffalse;
                 }
                 methodData.category(ZFSerializableKeyword_ZFCallback_method);
                 serializableData.childAdd(methodData);
             }
                 break;
-            case ZFCallbackTypeMemberMethod:
-            {
+            case ZFCallbackTypeMemberMethod: {
                 ZFSerializableUtil::errorOccurred(outErrorHint,
                     "member method callback is not supported");
                 return zffalse;
@@ -148,34 +132,30 @@ ZFTYPEID_ALIAS_DEFINE(ZFCallback, ZFCallback, ZFInput, ZFInput)
 
 // ============================================================
 // custom serialize logic
-static zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &_ZFP_ZFCallbackSerializeCustomCallbackMap(void)
-{
+static zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &_ZFP_ZFCallbackSerializeCustomCallbackMap(void) {
     static zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> d;
     return d;
 }
-void _ZFP_ZFCallbackSerializeCustomTypeRegister(ZF_IN const zfchar *customType,
-                                                ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback)
-{
+void _ZFP_ZFCallbackSerializeCustomTypeRegister(
+        ZF_IN const zfchar *customType
+        , ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback
+        ) {
     zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
     zfCoreAssert(!zfstringIsEmpty(customType) && serializeCallback != zfnull);
     zfCoreAssertWithMessage(m.find(customType) == m.end(), "custom callback serialize type \"%s\" already registered", customType);
 
     m[customType] = serializeCallback;
 }
-void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfchar *customType)
-{
+void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfchar *customType) {
     _ZFP_ZFCallbackSerializeCustomCallbackMap().erase(customType);
 }
-_ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfchar *customType)
-{
+_ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfchar *customType) {
     zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
     zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback>::iterator it = m.find(customType);
-    if(it != m.end())
-    {
+    if(it != m.end()) {
         return it->second;
     }
-    else
-    {
+    else {
         return zfnull;
     }
 }

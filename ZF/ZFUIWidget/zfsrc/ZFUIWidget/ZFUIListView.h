@@ -41,8 +41,7 @@ zfclassFwd _ZFP_ZFUIListViewPrivate;
  *   </ZFUIListView>
  * @endcode
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListView : zfextends ZFUIScrollView
-{
+zfclass ZFLIB_ZFUIWidget ZFUIListView : zfextends ZFUIScrollView {
     ZFOBJECT_DECLARE(ZFUIListView, ZFUIScrollView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIListView)
 
@@ -95,8 +94,9 @@ public:
      * by default, list adapter won't be retained by this list view to prevent recursive retain,
      * you may use this method to retain it automatically
      */
-    ZFMETHOD_DECLARE_1(void, listAdapterAutoRetain,
-                       ZFMP_IN(ZFUIListAdapter *, listAdapter))
+    ZFMETHOD_DECLARE_1(void, listAdapterAutoRetain
+            , ZFMP_IN(ZFUIListAdapter *, listAdapter)
+            )
 
     /**
      * @brief whether the #listAdapter is serializable, false by default
@@ -152,18 +152,21 @@ protected:
      * @brief all child views would be ignored from serializable
      */
     zfoverride
-    virtual zfbool serializableOnCheckNeedSerializeChildren(void)
-    {
+    virtual zfbool serializableOnCheckNeedSerializeChildren(void) {
         return zffalse;
     }
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 protected:
     zfoverride
@@ -172,11 +175,15 @@ protected:
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 
     zfoverride
-    virtual void viewChildOnAdd(ZF_IN ZFUIView *child,
-                                ZF_IN ZFUIViewChildLayerEnum layer);
+    virtual void viewChildOnAdd(
+            ZF_IN ZFUIView *child
+            , ZF_IN ZFUIViewChildLayerEnum layer
+            );
     zfoverride
-    virtual void viewChildOnRemove(ZF_IN ZFUIView *child,
-                                   ZF_IN ZFUIViewChildLayerEnum layer);
+    virtual void viewChildOnRemove(
+            ZF_IN ZFUIView *child
+            , ZF_IN ZFUIViewChildLayerEnum layer
+            );
 
     zfoverride
     virtual void scrollAreaOnChange(void);
@@ -211,8 +218,9 @@ public:
      *
      * this method would have higher performance if you want to update specified cell only
      */
-    ZFMETHOD_DECLARE_1(void, listReloadCellAt,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(void, listReloadCellAt
+            , ZFMP_IN(zfindex, index)
+            )
 
 public:
     /**
@@ -240,29 +248,29 @@ public:
      *   you should prevent doing other load logic during scroll events,
      *   otherwise, dead loop may occurred
      */
-    ZFMETHOD_DECLARE_3(void, scrollListCellToHead,
-                       ZFMP_IN(zfindex, cellIndex),
-                       ZFMP_IN_OPT(zffloat, offset, 0),
-                       ZFMP_IN_OPT(zfbool, animated, zftrue))
+    ZFMETHOD_DECLARE_3(void, scrollListCellToHead
+            , ZFMP_IN(zfindex, cellIndex)
+            , ZFMP_IN_OPT(zffloat, offset, 0)
+            , ZFMP_IN_OPT(zfbool, animated, zftrue)
+            )
     /**
      * @brief scroll cell to bottom, see #scrollListCellToHead
      */
-    ZFMETHOD_DECLARE_3(void, scrollListCellToTail,
-                       ZFMP_IN(zfindex, cellIndex),
-                       ZFMP_IN_OPT(zffloat, offset, 0),
-                       ZFMP_IN_OPT(zfbool, animated, zftrue))
+    ZFMETHOD_DECLARE_3(void, scrollListCellToTail
+            , ZFMP_IN(zfindex, cellIndex)
+            , ZFMP_IN_OPT(zffloat, offset, 0)
+            , ZFMP_IN_OPT(zfbool, animated, zftrue)
+            )
 
     // ============================================================
     // events
 protected:
     /** @brief see #EventListCellOnAttach */
-    virtual inline void cellOnAttach(ZF_IN ZFUIListCell *cell)
-    {
+    virtual inline void cellOnAttach(ZF_IN ZFUIListCell *cell) {
         this->observerNotify(ZFUIListView::EventListCellOnAttach(), cell);
     }
     /** @brief see #EventListCellOnDetach */
-    virtual inline void cellOnDetach(ZF_IN ZFUIListCell *cell)
-    {
+    virtual inline void cellOnDetach(ZF_IN ZFUIListCell *cell) {
         this->observerNotify(ZFUIListView::EventListCellOnDetach(), cell);
     }
     /** @brief see #EventListVisibleCellOnChange */

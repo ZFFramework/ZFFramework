@@ -5,68 +5,61 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #ZFNull */
-zfclass ZFNullObject : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable
-{
+zfclass ZFNullObject : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable {
     ZFOBJECT_DECLARE(ZFNullObject, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)
 
 public:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         ret += "ZFNull";
     }
     zfoverride
-    virtual zfidentity objectHash(void)
-    {
+    virtual zfidentity objectHash(void) {
         return zfidentityInvalid();
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj)
-    {
-        if(this == anotherObj || (anotherObj != zfnull && anotherObj->classData() == ZFNullObject::ClassData()))
-        {
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
+        if(this == anotherObj || (anotherObj != zfnull && anotherObj->classData() == ZFNullObject::ClassData())) {
             return ZFCompareTheSame;
         }
         return ZFCompareUncomparable;
     }
     zfoverride
-    virtual void objectTag(ZF_IN const zfchar *key, ZF_IN ZFObject *tag)
-    {
+    virtual void objectTag(
+        ZF_IN const zfchar *key
+        , ZF_IN ZFObject *tag
+        ) {
         zfCoreCriticalMessageTrim("setting tag to ZFNull is not allowed, key: %s", key);
     }
 
 private:
-    ZFMETHOD_INLINE_DETAIL_0(private, ZFMethodTypeStatic, ZF_CALLER_LINE,
-                             zfautoObject, ZFSerializableKeyword_serializableNewInstanceId)
-    {
+    ZFMETHOD_INLINE_DETAIL_0(private, ZFMethodTypeStatic, ZF_CALLER_LINE
+            , zfautoObject, ZFSerializableKeyword_serializableNewInstanceId
+            ) {
         return ZFNull();
     }
 
 public:
     zfoverride
-    virtual zfautoObject copy(void)
-    {
+    virtual zfautoObject copy(void) {
         return ZFNull();
     }
 };
 
 ZFOBJECT_REGISTER(ZFNullObject)
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfnullObjHolder, ZFLevelZFFrameworkEssential)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfnullObjHolder, ZFLevelZFFrameworkEssential) {
     this->nullObject = zfAlloc(ZFNullObject);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(zfnullObjHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(zfnullObjHolder) {
     zfRelease(this->nullObject);
     this->nullObject = zfnull;
 }
 public:
     ZFObject *nullObject;
 ZF_GLOBAL_INITIALIZER_END(zfnullObjHolder)
-ZFObject *_ZFP_ZFNull(void)
-{
+ZFObject *_ZFP_ZFNull(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(zfnullObjHolder)->nullObject;
 }
 

@@ -22,8 +22,7 @@ zfclassFwd _ZFP_ZFIdentityGeneratorPrivate;
  *   you must achieve thread-safe manually,
  *   such as #zfCoreMutexLock
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFIdentityGenerator
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFIdentityGenerator {
 public:
     /** @cond ZFPrivateDoc */
     ZFIdentityGenerator(void);
@@ -64,17 +63,22 @@ private:
 /**
  * @brief calculate identity from string
  */
-extern ZFLIB_ZFCore zfidentity zfidentityCalcString(ZF_IN const zfchar *src, ZF_IN_OPT zfindex srcLen = zfindexMax());
+extern ZFLIB_ZFCore zfidentity zfidentityCalcString(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        );
 /**
  * @brief calculate identity from raw buffer
  */
-extern ZFLIB_ZFCore zfidentity zfidentityCalcBuf(ZF_IN const void *src, ZF_IN zfindex srcLen);
+extern ZFLIB_ZFCore zfidentity zfidentityCalcBuf(
+        ZF_IN const void *src
+        , ZF_IN zfindex srcLen
+        );
 /**
  * @brief calculate identity from POD object
  */
 template<typename T_POD>
-zfidentity zfidentityCalcPOD(ZF_IN T_POD const &value)
-{
+zfidentity zfidentityCalcPOD(ZF_IN T_POD const &value) {
     return zfidentityCalcBuf(&value, sizeof(T_POD));
 }
 

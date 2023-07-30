@@ -12,19 +12,18 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageIOImpl_sys_SDL, ZFUIImageIO, ZFProtocol
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *imageApplyScale(ZF_IN zffloat imageScale,
-                                  ZF_IN void *nativeImage,
-                                  ZF_IN const ZFUISize &newSize,
-                                  ZF_IN const ZFUIMargin &ninePatch)
-    {
+    virtual void *imageApplyScale(
+            ZF_IN zffloat imageScale
+            , ZF_IN void *nativeImage
+            , ZF_IN const ZFUISize &newSize
+            , ZF_IN const ZFUIMargin &ninePatch
+            ) {
         SDL_Surface *nativeImageOld = (SDL_Surface *)nativeImage;
         SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)newSize.width, (int)newSize.height, 0, nativeImageOld->format->format);
-        if(nativeImageNew == zfnull)
-        {
+        if(nativeImageNew == zfnull) {
             return zfnull;
         }
-        if(ninePatch == ZFUIMarginZero())
-        {
+        if(ninePatch == ZFUIMarginZero()) {
             SDL_BlitSurface(nativeImageOld, zfnull, nativeImageNew, zfnull);
             return nativeImageNew;
         }
@@ -39,8 +38,7 @@ public:
 
         SDL_Rect srcRect;
         SDL_Rect dstRect;
-        for(zfindex i = 0; i < drawDatasCount; ++i)
-        {
+        for(zfindex i = 0; i < drawDatasCount; ++i) {
             const ZFUIImageImplNinePatchDrawData &drawData = drawDatas[i];
             srcRect.x = (int)drawData.src.x;
             srcRect.y = (int)drawData.src.y;
@@ -54,14 +52,14 @@ public:
         }
         return nativeImageNew;
     }
-    virtual void *imageLoadInFrame(ZF_IN zffloat imageScale,
-                                   ZF_IN void *nativeImage,
-                                   ZF_IN const ZFUIRect &frameInImage)
-    {
+    virtual void *imageLoadInFrame(
+            ZF_IN zffloat imageScale
+            , ZF_IN void *nativeImage
+            , ZF_IN const ZFUIRect &frameInImage
+            ) {
         SDL_Surface *nativeImageOld = (SDL_Surface *)nativeImage;
         SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)frameInImage.width, (int)frameInImage.height, 0, nativeImageOld->format->format);
-        if(nativeImageNew != zfnull)
-        {
+        if(nativeImageNew != zfnull) {
             SDL_Rect srcRect;
             srcRect.x = (int)frameInImage.x;
             srcRect.y = (int)frameInImage.y;
@@ -71,13 +69,13 @@ public:
         }
         return nativeImageNew;
     }
-    virtual void *imageLoadFromColor(ZF_IN zffloat imageScale,
-                                     ZF_IN const ZFUIColor &color,
-                                     ZF_IN const ZFUISize &size)
-    {
+    virtual void *imageLoadFromColor(
+            ZF_IN zffloat imageScale
+            , ZF_IN const ZFUIColor &color
+            , ZF_IN const ZFUISize &size
+            ) {
         SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, (int)size.width, (int)size.height, 0, SDL_PIXELFORMAT_ARGB8888);
-        if(nativeImageNew != zfnull)
-        {
+        if(nativeImageNew != zfnull) {
             SDL_FillRect(nativeImageNew, zfnull, SDL_MapRGBA(nativeImageNew->format
                 , (Uint8)(ZFUIColorGetR(color) * 0xFF)
                 , (Uint8)(ZFUIColorGetG(color) * 0xFF)

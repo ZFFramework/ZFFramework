@@ -10,8 +10,7 @@
 
 // ============================================================
 // view
-zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_Qt_View : public ZFImpl_sys_Qt_BaseView
-{
+zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_Qt_View : public ZFImpl_sys_Qt_BaseView {
     Q_OBJECT
 };
 

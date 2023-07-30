@@ -42,8 +42,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note a container would have special serializing step with ref or style logic,
  *   see #serializableOnSerializeToData for more info
  */
-zfabstract ZFLIB_ZFCore ZFContainer : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable, zfimplements ZFIterable
-{
+zfabstract ZFLIB_ZFCore ZFContainer : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable, zfimplements ZFIterable {
     ZFOBJECT_DECLARE_ABSTRACT(ZFContainer, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable, ZFIterable)
 
@@ -81,29 +80,28 @@ public:
     /**
      * @brief return a short string describe the content
      */
-    ZFMETHOD_DECLARE_3(void, objectInfoOfContentT,
-                       ZFMP_IN_OUT(zfstring &, ret),
-                       ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
-                       ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault()))
+    ZFMETHOD_DECLARE_3(void, objectInfoOfContentT
+            , ZFMP_IN_OUT(zfstring &, ret)
+            , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+            , ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault())
+            )
     /** @brief see #objectInfoOfContentT */
-    ZFMETHOD_DECLARE_2(zfstring, objectInfoOfContent,
-                       ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
-                       ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault()))
+    ZFMETHOD_DECLARE_2(zfstring, objectInfoOfContent
+            , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+            , ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault())
+            )
 
 protected:
     /** @brief see #EventContentOnChange */
-    virtual inline void contentOnChange(void)
-    {
+    virtual inline void contentOnChange(void) {
         this->observerNotify(ZFContainer::EventContentOnChange());
     }
     /** @brief see #EventContentOnAdd */
-    virtual inline void contentOnAdd(ZF_IN ZFObject *element)
-    {
+    virtual inline void contentOnAdd(ZF_IN ZFObject *element) {
         this->observerNotify(ZFContainer::EventContentOnAdd(), element);
     }
     /** @brief see #EventContentOnRemove */
-    virtual inline void contentOnRemove(ZF_IN ZFObject *element)
-    {
+    virtual inline void contentOnRemove(ZF_IN ZFObject *element) {
         this->observerNotify(ZFContainer::EventContentOnRemove(), element);
     }
 
@@ -111,9 +109,11 @@ protected:
     zfoverride
     virtual zfbool serializableOnCheck(void);
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     /**
      * @brief see #ZFSerializable::serializableOnSerializeToData
      *
@@ -126,16 +126,20 @@ protected:
      * if you have different ref logic
      */
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 protected:
     /**
      * @brief see #serializableOnSerializeToData
      */
-    virtual zfbool serializableOnSerializeToDataWithRef(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                        ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                        ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToDataWithRef(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 protected:
     zfoverride
@@ -147,8 +151,7 @@ protected:
     virtual void objectOnDeallocPrepare(void);
 
     zfoverride
-    virtual inline void objectInfoT(ZF_IN_OUT zfstring &ret)
-    {
+    virtual inline void objectInfoT(ZF_IN_OUT zfstring &ret) {
         this->objectInfoOfContentT(ret, 10);
     }
 

@@ -10,17 +10,17 @@ ZFObjectMutexImplCallbackUnlock _ZFP_ZFObjectMutexImplUnlock = zfnull;
 ZFObjectMutexImplCallbackTryLock _ZFP_ZFObjectMutexImplTryLock = zfnull;
 
 // ============================================================
-void ZFObjectMutexImplSet(ZF_IN_OPT ZFObjectMutexImplCallbackInit implInit /* = zfnull */,
-                          ZF_IN_OPT ZFObjectMutexImplCallbackDealloc implDealloc /* = zfnull */,
-                          ZF_IN_OPT ZFObjectMutexImplCallbackLock implLock /* = zfnull */,
-                          ZF_IN_OPT ZFObjectMutexImplCallbackUnlock implUnlock /* = zfnull */,
-                          ZF_IN_OPT ZFObjectMutexImplCallbackTryLock implTryLock /* = zfnull */)
-{
-    if(implInit == zfnull && _ZFP_ZFObjectMutexImplInit != zfnull)
-    {
+void ZFObjectMutexImplSet(
+        ZF_IN_OPT ZFObjectMutexImplCallbackInit implInit /* = zfnull */
+        , ZF_IN_OPT ZFObjectMutexImplCallbackDealloc implDealloc /* = zfnull */
+        , ZF_IN_OPT ZFObjectMutexImplCallbackLock implLock /* = zfnull */
+        , ZF_IN_OPT ZFObjectMutexImplCallbackUnlock implUnlock /* = zfnull */
+        , ZF_IN_OPT ZFObjectMutexImplCallbackTryLock implTryLock /* = zfnull */
+        ) {
+    if(implInit == zfnull && _ZFP_ZFObjectMutexImplInit != zfnull) {
         _ZFP_ZFObjectMutexImplDealloc(ZFCoreMutexImplGetObject());
         ZFCoreMutexImplSet(zfnull, zfnull, zfnull);
-     }
+    }
 
     _ZFP_ZFObjectMutexImplInit = implInit;
     _ZFP_ZFObjectMutexImplDealloc = implDealloc;
@@ -29,10 +29,8 @@ void ZFObjectMutexImplSet(ZF_IN_OPT ZFObjectMutexImplCallbackInit implInit /* = 
     _ZFP_ZFObjectMutexImplTryLock = implTryLock;
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(_ZFP_ZFObjectMutexImplSetup, ZFLevelZFFrameworkLow)
-{
-    if(_ZFP_ZFObjectMutexImplInit != zfnull)
-    {
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(_ZFP_ZFObjectMutexImplSetup, ZFLevelZFFrameworkLow) {
+    if(_ZFP_ZFObjectMutexImplInit != zfnull) {
         void *implObject = _ZFP_ZFObjectMutexImplInit();
         ZFCoreMutexImplSet(implObject, _ZFP_ZFObjectMutexImplLock, _ZFP_ZFObjectMutexImplUnlock);
     }

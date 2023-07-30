@@ -15,22 +15,37 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // util
-#define _ZFP_ZFCoreType_IODef_outputObjectPointer() \
-    {if(v) {output << v->objectInfo();} else {output.execute(ZFTOKEN_zfnull);}}
+#define _ZFP_ZFCoreType_IODef_outputObjectPointer() { \
+        if(v) { \
+            output << v->objectInfo(); \
+        } \
+        else { \
+            output.execute(ZFTOKEN_zfnull); \
+        } \
+    }
 
 // ============================================================
 // common output for core types
-ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Public, typename T_Internal),
-                       ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>),
-                       {output << v.objectInfo();})
+ZFOUTPUT_TYPE_TEMPLATE(
+        ZFM_EXPAND(typename T_Public, typename T_Internal)
+        , ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>)
+        , {
+            output << v.objectInfo();
+        })
 
-ZFOUTPUT_TYPE_TEMPLATE(typename T_Element,
-                       ZFCoreArray<T_Element>,
-                       {output << v.objectInfo();})
+ZFOUTPUT_TYPE_TEMPLATE(
+        typename T_Element
+        , ZFCoreArray<T_Element>
+        , {
+            output << v.objectInfo();
+        })
 
-ZFOUTPUT_TYPE_TEMPLATE(typename T_Element,
-                       ZFCoreQueuePOD<T_Element>,
-                       {output << v.objectInfo();})
+ZFOUTPUT_TYPE_TEMPLATE(
+        typename T_Element
+        , ZFCoreQueuePOD<T_Element>
+        , {
+            output << v.objectInfo();
+        })
 
 ZFOUTPUT_TYPE(ZFCoreMap, {output << v.objectInfo();})
 

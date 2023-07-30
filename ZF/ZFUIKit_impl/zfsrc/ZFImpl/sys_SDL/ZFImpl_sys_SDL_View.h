@@ -12,8 +12,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief extra transform for view or animation transform */
-zfclassNotPOD ZFImpl_sys_SDL_Transform
-{
+zfclassNotPOD ZFImpl_sys_SDL_Transform {
 public:
     zffloat translateX; /**< @brief see #ZFImpl_sys_SDL_Transform */
     zffloat translateY; /**< @brief see #ZFImpl_sys_SDL_Transform */
@@ -45,8 +44,7 @@ zfclassFwd ZFImpl_sys_SDL_SysWindow;
 /**
  * @brief native view impl for SDL
  */
-zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_View
-{
+zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_View {
 public:
     /**
      * @brief callback for impl to render contents
@@ -55,8 +53,12 @@ public:
      * return true if the impl has done all necessary render task,
      * no child should be rendered any more
      */
-    typedef zfbool (*RenderCallback)(ZF_IN SDL_Renderer *renderer, ZF_IN ZFImpl_sys_SDL_View *nativeView,
-                                     ZF_IN const SDL_Rect &childRect, ZF_IN const SDL_Rect &parentRect);
+    typedef zfbool (*RenderCallback)(
+            ZF_IN SDL_Renderer *renderer
+            , ZF_IN ZFImpl_sys_SDL_View *nativeView
+            , ZF_IN const SDL_Rect &childRect
+            , ZF_IN const SDL_Rect &parentRect
+            );
 
     enum {
         /** @brief mouse event with this x/y value, would be treated as mouse cancel event */
@@ -108,18 +110,22 @@ public:
      *   all later events would be sent to that view's sdlMouseGrabCallback directly,
      *   until next mouse down event
      */
-    zfbool (*sdlMouseGrabCallback)(ZF_IN ZFImpl_sys_SDL_View *owner,
-                                   ZF_IN SDL_Event *sdlEvent,
-                                   ZF_IN zfint x, ZF_IN zfint y);
+    zfbool (*sdlMouseGrabCallback)(
+            ZF_IN ZFImpl_sys_SDL_View *owner
+            , ZF_IN SDL_Event *sdlEvent
+            , ZF_IN zfint x
+            , ZF_IN zfint y
+            );
     /** @brief extra callback for impl to achieve custom measure logic */
-    void (*sdlMeasureCallback)(ZF_OUT ZFUISize &ret,
-                               ZF_IN ZFImpl_sys_SDL_View *owner,
-                               ZF_IN const ZFUISize &sizeHint);
+    void (*sdlMeasureCallback)(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN ZFImpl_sys_SDL_View *owner
+            , ZF_IN const ZFUISize &sizeHint
+            );
 
 public:
     /** @brief for impl to check class type */
-    virtual const void *implType(void)
-    {
+    virtual const void *implType(void) {
         return ZFUIView::ClassData();
     }
 
@@ -130,7 +136,10 @@ public:
     void sysWindowDetach(void);
 
     /** @brief child attached */
-    void childAttach(ZF_IN zfindex index, ZF_IN ZFImpl_sys_SDL_View *child);
+    void childAttach(
+            ZF_IN zfindex index
+            , ZF_IN ZFImpl_sys_SDL_View *child
+            );
     /** @brief child detached */
     void childDetach(ZF_IN zfindex index);
 
@@ -146,10 +155,11 @@ public:
      *
      * childRect and parentRect relative to root renderer
      */
-    static void renderRectCalc(ZF_OUT SDL_Rect &ret,
-                               ZF_IN const SDL_Rect &childRect,
-                               ZF_IN const SDL_Rect &parentRect)
-    {
+    static void renderRectCalc(
+            ZF_OUT SDL_Rect &ret
+            , ZF_IN const SDL_Rect &childRect
+            , ZF_IN const SDL_Rect &parentRect
+            ) {
         ret.x = childRect.x >= parentRect.x
             ? childRect.x
             : parentRect.x;
@@ -169,7 +179,11 @@ public:
      *
      * childRect and parentRect relative to root renderer
      */
-    void render(ZF_IN SDL_Renderer *renderer, ZF_IN const SDL_Rect &childRect, ZF_IN const SDL_Rect &parentRect);
+    void render(
+            ZF_IN SDL_Renderer *renderer
+            , ZF_IN const SDL_Rect &childRect
+            , ZF_IN const SDL_Rect &parentRect
+            );
 
     /**
      * @brief find child under mouse event, xy indicates offset relative to this view
@@ -178,31 +192,46 @@ public:
      * whether the sdl view want to grab the mouse,
      * and the grab test result would be stored to mouseGrab
      */
-    ZFImpl_sys_SDL_View *mouseTest(ZF_IN int x, ZF_IN int y,
-                                   ZF_OUT_OPT zfbool *mouseGrab = zfnull);
+    ZFImpl_sys_SDL_View *mouseTest(
+            ZF_IN int x
+            , ZF_IN int y
+            , ZF_OUT_OPT zfbool *mouseGrab = zfnull
+            );
     /** @brief find child under mouse event, xy indicates offset relative to window */
-    ZFImpl_sys_SDL_View *mouseTestGlobal(ZF_IN int xGlobal, ZF_IN int yGlobal,
-                                         ZF_OUT_OPT zfbool *mouseGrab = zfnull)
-    {
+    ZFImpl_sys_SDL_View *mouseTestGlobal(
+            ZF_IN int xGlobal
+            , ZF_IN int yGlobal
+            , ZF_OUT_OPT zfbool *mouseGrab = zfnull
+            ) {
         this->posFromGlobal(xGlobal, yGlobal);
         return this->mouseTest(xGlobal, yGlobal, mouseGrab);
     }
 
     /** @brief find child under mouse event, xy indicates offset relative to this view */
-    ZFImpl_sys_SDL_View *mouseHoverTest(ZF_IN int x, ZF_IN int y);
+    ZFImpl_sys_SDL_View *mouseHoverTest(
+            ZF_IN int x
+            , ZF_IN int y
+            );
     /** @brief find child under mouse event, xy indicates offset relative to window */
-    ZFImpl_sys_SDL_View *mouseHoverTestGlobal(ZF_IN int xGlobal, ZF_IN int yGlobal)
-    {
+    ZFImpl_sys_SDL_View *mouseHoverTestGlobal(
+            ZF_IN int xGlobal
+            , ZF_IN int yGlobal
+            ) {
         this->posFromGlobal(xGlobal, yGlobal);
         return this->mouseHoverTest(xGlobal, yGlobal);
     }
 
     /** @brief get pos of this view's origin relative to window */
-    void posOnWindow(ZF_OUT int &x, ZF_OUT int &y);
+    void posOnWindow(
+            ZF_OUT int &x
+            , ZF_OUT int &y
+            );
     /** @brief convert pos from local to window */
     template<typename T_int>
-    void posToGlobal(ZF_IN_OUT T_int &x, ZF_IN_OUT T_int &y)
-    {
+    void posToGlobal(
+            ZF_IN_OUT T_int &x
+            , ZF_IN_OUT T_int &y
+            ) {
         int relX, relY;
         this->posOnWindow(relX, relY);
         x += (T_int)relX;
@@ -210,8 +239,10 @@ public:
     }
     /** @brief convert pos from window to local */
     template<typename T_int>
-    void posFromGlobal(ZF_IN_OUT T_int &x, ZF_IN_OUT T_int &y)
-    {
+    void posFromGlobal(
+            ZF_IN_OUT T_int &x
+            , ZF_IN_OUT T_int &y
+            ) {
         int relX, relY;
         this->posOnWindow(relX, relY);
         x -= (T_int)relX;
@@ -226,8 +257,7 @@ public:
 
 public:
     /** @brief reset to prepare for cache */
-    void resetForCache(void)
-    {
+    void resetForCache(void) {
         this->renderCacheRequired = 0;
         this->renderCacheRemove();
         this->viewTransformRemove();
@@ -244,13 +274,15 @@ public:
     }
 
     /** @brief prepare renderCache */
-    void renderCachePrepare(ZF_IN SDL_Renderer *renderer, ZF_IN int w, ZF_IN int h);
+    void renderCachePrepare(
+            ZF_IN SDL_Renderer *renderer
+            , ZF_IN int w
+            , ZF_IN int h
+            );
 
     /** @brief remove renderCache */
-    void renderCacheRemove(void)
-    {
-        if(this->renderCache != zfnull)
-        {
+    void renderCacheRemove(void) {
+        if(this->renderCache != zfnull) {
             SDL_DestroyTexture(this->renderCache);
             this->renderCache = zfnull;
             this->renderCacheValid = zffalse;
@@ -258,38 +290,30 @@ public:
     }
 
     /** @brief prepare viewTransform */
-    void viewTransformPrepare(void)
-    {
-        if(this->viewTransform == zfnull)
-        {
+    void viewTransformPrepare(void) {
+        if(this->viewTransform == zfnull) {
             this->viewTransform = zfpoolNew(ZFImpl_sys_SDL_Transform);
         }
     }
 
     /** @brief remove viewTransform */
-    void viewTransformRemove(void)
-    {
-        if(this->viewTransform != zfnull)
-        {
+    void viewTransformRemove(void) {
+        if(this->viewTransform != zfnull) {
             zfpoolDelete(this->viewTransform);
             this->viewTransform = zfnull;
         }
     }
 
     /** @brief prepare aniTransform */
-    void aniTransformPrepare(void)
-    {
-        if(this->aniTransform == zfnull)
-        {
+    void aniTransformPrepare(void) {
+        if(this->aniTransform == zfnull) {
             this->aniTransform = zfpoolNew(ZFImpl_sys_SDL_Transform);
         }
     }
 
     /** @brief remove aniTransform */
-    void aniTransformRemove(void)
-    {
-        if(this->aniTransform != zfnull)
-        {
+    void aniTransformRemove(void) {
+        if(this->aniTransform != zfnull) {
             zfpoolDelete(this->aniTransform);
             this->aniTransform = zfnull;
         }
@@ -314,8 +338,7 @@ public:
     , sdlMeasureCallback(zfnull)
     {
     }
-    virtual ~ZFImpl_sys_SDL_View(void)
-    {
+    virtual ~ZFImpl_sys_SDL_View(void) {
         // reset to cleanup
         this->resetForCache();
     }

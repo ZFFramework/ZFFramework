@@ -6,8 +6,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummaryDataHolder, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummaryDataHolder, ZFLevelZFFrameworkStatic) {
 }
 public:
     zfstlmap<zfstring, ZFEnvSummaryCallback> envSummaryCallbackMap;
@@ -16,30 +15,28 @@ ZF_GLOBAL_INITIALIZER_END(ZFEnvSummaryDataHolder)
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFEnvInfo)
 
-void envSummaryCallbackRegister(ZF_IN const zfchar *name, ZF_IN ZFEnvSummaryCallback callback)
-{
+void envSummaryCallbackRegister(
+        ZF_IN const zfchar *name
+        , ZF_IN ZFEnvSummaryCallback callback
+        ) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap[name] = callback;
 }
-void envSummaryCallbackUnregister(ZF_IN const zfchar *name)
-{
+void envSummaryCallbackUnregister(ZF_IN const zfchar *name) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap.erase(name);
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void, envSummary,
-                       ZFMP_IN_OUT(zfstring &, ret))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, envSummary
+        , ZFMP_IN_OUT(zfstring &, ret)
+        ) {
     zfstring tmp;
 
     zfbool first = zftrue;
     zfstlmap<zfstring, ZFEnvSummaryCallback> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap;
-    for(zfstlmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it)
-    {
-        if(first)
-        {
+    for(zfstlmap<zfstring, ZFEnvSummaryCallback>::iterator it = m.begin(); it != m.end(); ++it) {
+        if(first) {
             first = zffalse;
         }
-        else
-        {
+        else {
             ret += ", ";
         }
         ret += it->first;
@@ -47,72 +44,63 @@ ZFMETHOD_FUNC_DEFINE_1(void, envSummary,
         it->second(ret);
     }
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, envSummary)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfstring, envSummary) {
     zfstring ret;
     ZFEnvInfo::envSummary(ret);
     return ret;
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(void, systemName,
-                       ZFMP_IN_OUT(zfstring &, ret))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, systemName
+        , ZFMP_IN_OUT(zfstring &, ret)
+        ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_systemInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_systemInfo);
-    if(impl != zfnull)
-    {
+    if(impl != zfnull) {
         impl->systemName(ret);
     }
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, systemName)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfstring, systemName) {
     zfstring ret;
     ZFEnvInfo::systemName(ret);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_1(void, systemVersion,
-                       ZFMP_IN_OUT(zfstring &, ret))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, systemVersion
+        , ZFMP_IN_OUT(zfstring &, ret)
+        ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_systemInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_systemInfo);
-    if(impl != zfnull)
-    {
+    if(impl != zfnull) {
         impl->systemVersion(ret);
     }
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, systemVersion)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfstring, systemVersion) {
     zfstring ret;
     ZFEnvInfo::systemVersion(ret);
     return ret;
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(void, frameworkName,
-                       ZFMP_IN_OUT(zfstring &, ret))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, frameworkName
+        , ZFMP_IN_OUT(zfstring &, ret)
+        ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_frameworkInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_frameworkInfo);
-    if(impl != zfnull)
-    {
+    if(impl != zfnull) {
         impl->frameworkName(ret);
     }
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, frameworkName)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfstring, frameworkName) {
     zfstring ret;
     ZFEnvInfo::frameworkName(ret);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_1(void, frameworkVersion,
-                       ZFMP_IN_OUT(zfstring &, ret))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, frameworkVersion
+        , ZFMP_IN_OUT(zfstring &, ret)
+        ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFEnvInfo_frameworkInfo) *impl = ZFPROTOCOL_TRY_ACCESS(ZFEnvInfo_frameworkInfo);
-    if(impl != zfnull)
-    {
+    if(impl != zfnull) {
         impl->frameworkVersion(ret);
     }
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, frameworkVersion)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfstring, frameworkVersion) {
     zfstring ret;
     ZFEnvInfo::frameworkVersion(ret);
     return ret;
@@ -121,15 +109,13 @@ ZFMETHOD_FUNC_DEFINE_0(zfstring, frameworkVersion)
 ZF_NAMESPACE_END_WITH_REGISTER(ZFEnvInfo, ZF_NAMESPACE_GLOBAL)
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummary_common, ZFLevelZFFrameworkNormal)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFEnvSummary_common, ZFLevelZFFrameworkNormal) {
     ZFEnvInfo::envSummaryCallbackRegister("systemName", ZFEnvInfo::systemName);
     ZFEnvInfo::envSummaryCallbackRegister("systemVersion", ZFEnvInfo::systemVersion);
     ZFEnvInfo::envSummaryCallbackRegister("frameworkName", ZFEnvInfo::frameworkName);
     ZFEnvInfo::envSummaryCallbackRegister("frameworkVersion", ZFEnvInfo::frameworkVersion);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFEnvSummary_common)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFEnvSummary_common) {
     ZFEnvInfo::envSummaryCallbackUnregister("systemName");
     ZFEnvInfo::envSummaryCallbackUnregister("systemVersion");
     ZFEnvInfo::envSummaryCallbackUnregister("frameworkName");

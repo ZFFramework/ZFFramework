@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFNet_ZFHttpRequest_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFNet_ZFHttpRequest_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFNet_ZFHttpRequest_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFHttpRequest);
         ZFFramework_test_asyncTestCheck();

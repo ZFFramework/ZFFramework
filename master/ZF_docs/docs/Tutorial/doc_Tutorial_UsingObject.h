@@ -81,8 +81,7 @@
  * it's recommended to use #zfautoObject for API design
  * when your function needs to return an allocated object
  * @code
- *   zfautoObject myFunc(void)
- *   {
+ *   zfautoObject myFunc(void) {
  *       zfblockedAlloc(MyObject, obj);
  *       return obj;
  *   }

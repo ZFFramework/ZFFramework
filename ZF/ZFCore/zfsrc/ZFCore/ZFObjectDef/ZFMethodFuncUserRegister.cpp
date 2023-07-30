@@ -3,10 +3,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method)
-{
-    if(method == zfnull)
-    {
+void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method) {
+    if(method == zfnull) {
         return;
     }
     zfCoreMutexLocker();

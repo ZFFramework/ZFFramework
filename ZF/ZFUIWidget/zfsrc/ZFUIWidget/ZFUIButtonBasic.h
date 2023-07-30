@@ -30,8 +30,7 @@ zfclassFwd _ZFP_ZFUIButtonBasicPrivate;
  * -  icon's #ZFUIImageView::image
  * -  background's #ZFUIImageView::image
  */
-zfclass ZFLIB_ZFUIWidget ZFUIButtonBasic : zfextends ZFUIButton
-{
+zfclass ZFLIB_ZFUIWidget ZFUIButtonBasic : zfextends ZFUIButton {
     ZFOBJECT_DECLARE(ZFUIButtonBasic, ZFUIButton)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButtonBasic)
 
@@ -177,18 +176,21 @@ public:
     /**
      * @brief util method to get button label's style
      */
-    ZFMETHOD_DECLARE_1(ZFUITextView *, label,
-                       ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal))
+    ZFMETHOD_DECLARE_1(ZFUITextView *, label
+            , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+            )
     /**
      * @brief util method to get button icon's style
      */
-    ZFMETHOD_DECLARE_1(ZFUIImageView *, icon,
-                       ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal))
+    ZFMETHOD_DECLARE_1(ZFUIImageView *, icon
+            , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+            )
     /**
      * @brief util method to get button icon's style
      */
-    ZFMETHOD_DECLARE_1(ZFUIImageView *, background,
-                       ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal))
+    ZFMETHOD_DECLARE_1(ZFUIImageView *, background
+            , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
+            )
 
 protected:
     zfoverride
@@ -200,9 +202,11 @@ protected:
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
 
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     zfoverride
     virtual void internalViewOnLayout(ZF_IN const ZFUIRect &bounds);
     zfoverride

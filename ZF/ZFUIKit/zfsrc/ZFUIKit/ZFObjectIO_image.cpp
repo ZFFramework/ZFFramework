@@ -6,32 +6,26 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 typedef zfstlmap<zfstring, zfbool> _ZFP_ZFObjectIO_image_imageExtMapType;
-static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(void)
-{
+static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(void) {
     static _ZFP_ZFObjectIO_image_imageExtMapType m;
     return m;
 }
 
-void ZFObjectIO_image_imageExtAdd(ZF_IN const zfchar *imageExt)
-{
+void ZFObjectIO_image_imageExtAdd(ZF_IN const zfchar *imageExt) {
     zfCoreAssert(!zfstringIsEmpty(imageExt));
     _ZFP_ZFObjectIO_image_imageExtMap()[imageExt] = zftrue;
 }
-void ZFObjectIO_image_imageExtRemove(ZF_IN const zfchar *imageExt)
-{
+void ZFObjectIO_image_imageExtRemove(ZF_IN const zfchar *imageExt) {
     _ZFP_ZFObjectIO_image_imageExtMap().erase(imageExt);
 }
-void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret)
-{
+void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret) {
     _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
-    for(_ZFP_ZFObjectIO_image_imageExtMapType::iterator it = m.begin(); it != m.end(); ++it)
-    {
+    for(_ZFP_ZFObjectIO_image_imageExtMapType::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->first);
     }
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObjectIO_image_imageExtDefault, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObjectIO_image_imageExtDefault, ZFLevelZFFrameworkStatic) {
     ZFObjectIO_image_imageExtAdd("png");
     ZFObjectIO_image_imageExtAdd("jpg");
     ZFObjectIO_image_imageExtAdd("jpeg");
@@ -45,29 +39,25 @@ ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
         return (fileExt != zfnull && m.find(fileExt) != m.end());
     }), {
         ret = ZFUIImageFromInput(input);
-        if(ret == zfnull)
-        {
+        if(ret == zfnull) {
             zfstringAppend(outErrorHint,
                 "unable to load image from %s",
                 ZFPathInfoToString(*input.pathInfo()).cString());
             return zffalse;
         }
-        else
-        {
+        else {
             return zftrue;
         }
     }, {
         ZFUIImage *image = ZFCastZFObject(ZFUIImage *, obj);
-        if(image == zfnull)
-        {
+        if(image == zfnull) {
             zfstringAppend(outErrorHint,
                 "object %s is not type of %s",
                 ZFObjectInfoOfInstance(obj).cString(),
                 ZFUIImage::ClassData()->classNameFull());
             return zffalse;
         }
-        if(!ZFUIImageToOutput(output, image))
-        {
+        if(!ZFUIImageToOutput(output, image)) {
             zfstringAppend(outErrorHint,
                 "unable to convert image %s to image file",
                 ZFObjectInfo(image).cString());

@@ -2,8 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_I_ZFInputForImplOwner : zfextends ZFObject
-{
+zfclass _ZFP_I_ZFInputForImplOwner : zfextends ZFObject {
 public:
     ZFOBJECT_DECLARE(_ZFP_I_ZFInputForImplOwner, ZFObject)
 
@@ -24,16 +23,14 @@ private:
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->_bufCache = zfunsafe_zfAlloc(v_zfstring);
         this->_countCache = zfunsafe_zfAlloc(v_zfindex);
         this->_resultCache = zfunsafe_zfAlloc(v_zfindex);
     }
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         zfunsafe_zfRelease(this->_bufCache);
         zfunsafe_zfRelease(this->_countCache);
         zfunsafe_zfRelease(this->_resultCache);
@@ -41,22 +38,20 @@ protected:
     }
 
 protected:
-    ZFMETHOD_DECLARE_2(zfindex, onInput,
-                       ZFMP_IN(void *, buf),
-                       ZFMP_IN(zfindex, count))
+    ZFMETHOD_DECLARE_2(zfindex, onInput
+            , ZFMP_IN(void *, buf)
+            , ZFMP_IN(zfindex, count)
+            )
 };
-ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForImplOwner, zfindex, onInput,
-                  ZFMP_IN(void *, buf),
-                  ZFMP_IN(zfindex, count))
-{
-    if(this->impl)
-    {
-        if(buf == zfnull || count == zfindexMax())
-        {
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForImplOwner, zfindex, onInput
+            , ZFMP_IN(void *, buf)
+            , ZFMP_IN(zfindex, count)
+            ) {
+    if(this->impl) {
+        if(buf == zfnull || count == zfindexMax()) {
             this->_countCache->zfv = zfindexMax();
         }
-        else
-        {
+        else {
             this->_countCache->zfv = count;
         }
         this->_bufCache->zfv.removeAll();
@@ -72,17 +67,15 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForImplOwner, zfindex, onInput,
         zfmemcpy(buf, this->_bufCache->zfv.cString(), this->_resultCache->zfv);
         return this->_resultCache->zfv;
     }
-    else
-    {
+    else {
         return 0;
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForImpl,
-                       ZFMP_IN(const ZFListener &, impl))
-{
-    if(!impl)
-    {
+ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForImpl
+            , ZFMP_IN(const ZFListener &, impl)
+            ) {
+    if(!impl) {
         return zfnull;
     }
     zfblockedAlloc(_ZFP_I_ZFInputForImplOwner, owner);

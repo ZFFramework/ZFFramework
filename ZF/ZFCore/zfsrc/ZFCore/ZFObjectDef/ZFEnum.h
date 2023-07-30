@@ -32,8 +32,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   />
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFEnum : zfextends ZFTypeIdWrapper
-{
+zfabstract ZFLIB_ZFCore ZFEnum : zfextends ZFTypeIdWrapper {
     ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFEnum, ZFTypeIdWrapper)
 
 protected:
@@ -43,18 +42,21 @@ protected:
 
 protected:
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 protected:
     zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj)
-    {
+    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
         this->enumValue(ZFCastZFObjectUnchecked(zfself *, anotherObj)->enumValue());
     }
@@ -86,13 +88,11 @@ public:
 public:
     /* use ZFObject version instead of ZFTypeIdWrapper version */
     zfoverride
-    virtual zfbool objectIsInternal(void)
-    {
+    virtual zfbool objectIsInternal(void) {
         return ZFObject::objectIsInternal();
     }
     zfoverride
-    virtual zfbool objectIsInternalPrivate(void)
-    {
+    virtual zfbool objectIsInternalPrivate(void) {
         return ZFObject::objectIsInternalPrivate();
     }
 
@@ -110,15 +110,21 @@ public:
     virtual zfbool wrappedValueIsInit(void);
 public:
     zfoverride
-    virtual zfbool wrappedValueFromData(ZF_IN const ZFSerializableData &serializableData,
-                                        ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                        ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool wrappedValueFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool wrappedValueToData(ZF_OUT ZFSerializableData &serializableData,
-                                      ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool wrappedValueToData(
+            ZF_OUT ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
     zfoverride
-    virtual zfbool wrappedValueFromString(ZF_IN const zfchar *src,
-                                          ZF_IN_OPT zfindex srcLen = zfindexMax());
+    virtual zfbool wrappedValueFromString(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            );
     zfoverride
     virtual zfbool wrappedValueToString(ZF_IN_OUT zfstring &s);
 
@@ -167,8 +173,7 @@ public:
     /**
      * @brief get the enum value, or #ZFEnumInvalid if invalid
      */
-    virtual zfuint enumValue(void)
-    {
+    virtual zfuint enumValue(void) {
         return _ZFP_ZFEnum_value;
     }
     /**
@@ -176,8 +181,7 @@ public:
      *   you must ensure it's not #ZFEnumInvalid
      */
     template<typename T_EnumType>
-    inline T_EnumType enumValue(void)
-    {
+    inline T_EnumType enumValue(void) {
         return ZFCastStatic(T_EnumType, _ZFP_ZFEnum_value);
     }
     /**
@@ -186,8 +190,7 @@ public:
      * return invalid if holds flags value,
      * use #zfflagsToString instead
      */
-    virtual const zfchar *enumName(void)
-    {
+    virtual const zfchar *enumName(void) {
         return this->enumNameForValue(_ZFP_ZFEnum_value);
     }
 
@@ -197,10 +200,8 @@ public:
      *
      * must be the enum's value or ZFEnumInvalid
      */
-    virtual void enumValue(ZF_IN zfuint value)
-    {
-        if(!this->enumIsFlags() && !this->enumContainValue(value))
-        {
+    virtual void enumValue(ZF_IN zfuint value) {
+        if(!this->enumIsFlags() && !this->enumContainValue(value)) {
             _ZFP_ZFEnum_value = ZFEnumInvalid();
             return;
         }
@@ -208,19 +209,16 @@ public:
     }
 
 public:
-    void _ZFP_enumValue(ZF_IN zfuint value)
-    {
+    void _ZFP_enumValue(ZF_IN zfuint value) {
         this->enumValue(value);
     }
 public:
     zfuint _ZFP_ZFEnum_value;
 public:
     zfoverride
-    virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref)
-    {
+    virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) {
         zfself *refTmp = ZFCastZFObject(zfself *, ref);
-        if(refTmp != zfnull)
-        {
+        if(refTmp != zfnull) {
             this->_ZFP_ZFEnum_value = refTmp->_ZFP_ZFEnum_value;
         }
     }
@@ -231,21 +229,24 @@ public:
 /**
  * @brief zfflags conversion using ZFEnum as source, see #zfflagsToString
  */
-extern ZFLIB_ZFCore zfbool zfflagsToString(ZF_IN_OUT zfstring &ret,
-                                           ZF_IN const ZFClass *enumClass,
-                                           ZF_IN zfflags const &value,
-                                           ZF_IN_OPT zfbool includeNotConverted = zftrue,
-                                           ZF_IN_OPT zfbool exclusiveMode = zffalse,
-                                           ZF_OUT_OPT zfflags *notConverted = zfnull,
-                                           ZF_IN_OPT zfchar separatorToken = '|');
+extern ZFLIB_ZFCore zfbool zfflagsToString(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const ZFClass *enumClass
+        , ZF_IN zfflags const &value
+        , ZF_IN_OPT zfbool includeNotConverted = zftrue
+        , ZF_IN_OPT zfbool exclusiveMode = zffalse
+        , ZF_OUT_OPT zfflags *notConverted = zfnull
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        );
 /** @brief see #zfflagsToString */
-inline zfstring zfflagsToString(ZF_IN const ZFClass *enumClass,
-                                ZF_IN zfflags const &value,
-                                ZF_IN_OPT zfbool includeNotConverted = zftrue,
-                                ZF_IN_OPT zfbool exclusiveMode = zffalse,
-                                ZF_OUT_OPT zfflags *notConverted = zfnull,
-                                ZF_IN_OPT zfchar separatorToken = '|')
-{
+inline zfstring zfflagsToString(
+        ZF_IN const ZFClass *enumClass
+        , ZF_IN zfflags const &value
+        , ZF_IN_OPT zfbool includeNotConverted = zftrue
+        , ZF_IN_OPT zfbool exclusiveMode = zffalse
+        , ZF_OUT_OPT zfflags *notConverted = zfnull
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        ) {
     zfstring ret;
     zfflagsToString(ret, enumClass, value, includeNotConverted, exclusiveMode, notConverted, separatorToken);
     return ret;
@@ -253,12 +254,14 @@ inline zfstring zfflagsToString(ZF_IN const ZFClass *enumClass,
 /**
  * @brief zfflags conversion using ZFEnum as source, see #zfflagsFromString
  */
-extern ZFLIB_ZFCore zfbool zfflagsFromString(ZF_OUT zfflags &ret,
-                                             ZF_IN const ZFClass *enumClass,
-                                             ZF_IN const zfchar *src,
-                                             ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                             ZF_IN_OPT zfchar separatorToken = '|',
-                                             ZF_OUT_OPT const zfchar **outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfbool zfflagsFromString(
+        ZF_OUT zfflags &ret
+        , ZF_IN const ZFClass *enumClass
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFEnum_h_

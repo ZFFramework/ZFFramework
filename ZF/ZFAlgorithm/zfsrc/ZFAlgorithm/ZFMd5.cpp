@@ -14,70 +14,60 @@ static void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex siz
 static void _ZFP_ZFMd5_Final(zfbyte *result, _ZFP_ZFMd5_CTX *ctx);
 
 #define _ZFP_ZFMd5_blockSize 512
-void zfMd5Calc(ZF_IN_OUT zfstring &ret,
-               ZF_IN const void *src,
-               ZF_IN zfindex len,
-               ZF_IN_OPT zfbool upperCase /* = zftrue */)
-{
+void zfMd5Calc(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const void *src
+        , ZF_IN zfindex len
+        , ZF_IN_OPT zfbool upperCase /* = zftrue */
+        ) {
     _ZFP_ZFMd5_CTX md5Ctx;
     _ZFP_ZFMd5_Init(&md5Ctx);
 
     const zfbyte *srcTmp = (const zfbyte *)src;
     const zfbyte *srcEndTmp = srcTmp + len;
-    while(srcEndTmp - srcTmp >= _ZFP_ZFMd5_blockSize)
-    {
+    while(srcEndTmp - srcTmp >= _ZFP_ZFMd5_blockSize) {
         _ZFP_ZFMd5_Update(&md5Ctx, srcTmp, _ZFP_ZFMd5_blockSize);
         srcTmp += _ZFP_ZFMd5_blockSize;
     }
-    if(srcTmp < srcEndTmp)
-    {
+    if(srcTmp < srcEndTmp) {
         _ZFP_ZFMd5_Update(&md5Ctx, srcTmp, srcEndTmp - srcTmp);
     }
 
     zfbyte result[16] = {0};
     _ZFP_ZFMd5_Final((zfbyte *)result, &md5Ctx);
 
-    if(upperCase)
-    {
-        for(zfindex i = 0; i < 16; ++i)
-        {
+    if(upperCase) {
+        for(zfindex i = 0; i < 16; ++i) {
             zfstringAppend(ret, "%02X", result[i]);
         }
     }
-    else
-    {
-        for(zfindex i = 0; i < 16; ++i)
-        {
+    else {
+        for(zfindex i = 0; i < 16; ++i) {
             zfstringAppend(ret, "%02x", result[i]);
         }
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(void, zfMd5Calc,
-                       ZFMP_IN_OUT(zfstring &, ret),
-                       ZFMP_IN(const ZFInput &, callback),
-                       ZFMP_IN_OPT(zfbool, upperCase, zftrue))
-{
-    if(!callback)
-    {
+ZFMETHOD_FUNC_DEFINE_3(void, zfMd5Calc
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const ZFInput &, callback)
+        , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
+        ) {
+    if(!callback) {
         return;
     }
     _ZFP_ZFMd5_CTX md5Ctx;
     _ZFP_ZFMd5_Init(&md5Ctx);
 
     zfbyte buf[_ZFP_ZFMd5_blockSize] = {0};
-    do
-    {
+    do {
         zfindex read = callback.execute(buf, _ZFP_ZFMd5_blockSize);
-        if(read > 0)
-        {
+        if(read > 0) {
             _ZFP_ZFMd5_Update(&md5Ctx, buf, read);
-            if(read < _ZFP_ZFMd5_blockSize)
-            {
+            if(read < _ZFP_ZFMd5_blockSize) {
                 break;
             }
         }
-        else
-        {
+        else {
             break;
         }
     } while(zftrue);
@@ -85,25 +75,21 @@ ZFMETHOD_FUNC_DEFINE_3(void, zfMd5Calc,
     zfbyte result[16] = {0};
     _ZFP_ZFMd5_Final((zfbyte *)result, &md5Ctx);
 
-    if(upperCase)
-    {
-        for(zfindex i = 0; i < 16; ++i)
-        {
+    if(upperCase) {
+        for(zfindex i = 0; i < 16; ++i) {
             zfstringAppend(ret, "%02X", result[i]);
         }
     }
-    else
-    {
-        for(zfindex i = 0; i < 16; ++i)
-        {
+    else {
+        for(zfindex i = 0; i < 16; ++i) {
             zfstringAppend(ret, "%02x", result[i]);
         }
     }
 }
-ZFMETHOD_FUNC_DEFINE_2(zfstring, zfMd5Calc,
-                       ZFMP_IN(const ZFInput &, callback),
-                       ZFMP_IN_OPT(zfbool, upperCase, zftrue))
-{
+ZFMETHOD_FUNC_DEFINE_2(zfstring, zfMd5Calc
+        , ZFMP_IN(const ZFInput &, callback)
+        , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
+        ) {
     zfstring ret;
     zfMd5Calc(ret, callback, upperCase);
     return ret;
@@ -158,8 +144,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfstring, zfMd5Calc,
  * This processes one or more 64-byte data blocks, but does NOT update
  * the bit counters.  There are no alignment requirements.
  */
-static const void *body(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size)
-{
+static const void *body(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size) {
     const zfbyte *ptr;
     zft_zfuint32 a, b, c, d;
     zft_zfuint32 saved_a, saved_b, saved_c, saved_d;
@@ -265,8 +250,7 @@ static const void *body(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size)
     return ptr;
 }
 
-void _ZFP_ZFMd5_Init(_ZFP_ZFMd5_CTX *ctx)
-{
+void _ZFP_ZFMd5_Init(_ZFP_ZFMd5_CTX *ctx) {
     ctx->a = 0x67452301;
     ctx->b = 0xefcdab89;
     ctx->c = 0x98badcfe;
@@ -276,8 +260,7 @@ void _ZFP_ZFMd5_Init(_ZFP_ZFMd5_CTX *ctx)
     ctx->hi = 0;
 }
 
-void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size)
-{
+void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size) {
     zft_zfuint32 saved_lo;
     zfindex used, available;
 
@@ -310,8 +293,7 @@ void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size)
     memcpy(ctx->buffer, data, size);
 }
 
-void _ZFP_ZFMd5_Final(zfbyte *result, _ZFP_ZFMd5_CTX *ctx)
-{
+void _ZFP_ZFMd5_Final(zfbyte *result, _ZFP_ZFMd5_CTX *ctx) {
     zfindex used, available;
 
     used = ctx->lo & 0x3f;

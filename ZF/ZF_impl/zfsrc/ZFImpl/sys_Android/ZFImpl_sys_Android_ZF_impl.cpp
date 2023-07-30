@@ -6,8 +6,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_jclsHolder, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_jclsHolder, ZFLevelZFFrameworkStatic) {
     jobject tmp = zfnull;
     JNIEnv *jniEnv = JNIGetJNIEnv();
 
@@ -19,8 +18,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_jclsHolder, ZFLevelZFFr
     this->jclsString = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
     JNIUtilDeleteLocalRef(jniEnv, tmp);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_jclsHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_jclsHolder) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     JNIUtilDeleteGlobalRef(jniEnv, this->jclsObject);
     JNIUtilDeleteGlobalRef(jniEnv, this->jclsString);
@@ -30,38 +28,34 @@ public:
     jclass jclsString;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_jclsHolder)
 
-jclass ZFImpl_sys_Android_jclassObject(void)
-{
+jclass ZFImpl_sys_Android_jclassObject(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclsObject;
 }
 
-void ZFImpl_sys_Android_zfstringFromString(ZF_IN_OUT zfstring &s, ZF_IN jobject jstr)
-{
-    if(jstr == NULL)
-    {
+void ZFImpl_sys_Android_zfstringFromString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN jobject jstr
+        ) {
+    if(jstr == NULL) {
         return;
     }
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jstring nativeString = ZFCastStatic(jstring, jstr);
     const zfchar *utf8 = JNIUtilGetStringUTFChars(jniEnv, nativeString, zfnull);
-    if(utf8 != zfnull)
-    {
+    if(utf8 != zfnull) {
         s += utf8;
     }
     JNIUtilReleaseStringUTFChars(jniEnv, nativeString, utf8);
 }
-jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfchar *s)
-{
+jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfchar *s) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    if(s == zfnull)
-    {
+    if(s == zfnull) {
         s = "";
     }
     return JNIUtilNewStringUTF(jniEnv, s);
 }
 
-zfstring ZFImpl_sys_Android_stackTrace(void)
-{
+zfstring ZFImpl_sys_Android_stackTrace(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog).c_str());
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "stackTrace",
@@ -70,15 +64,13 @@ zfstring ZFImpl_sys_Android_stackTrace(void)
     jstring jobjString = ZFCastStatic(jstring, JNIUtilCallStaticObjectMethod(jniEnv, jcls, jmId));
     const char *utf = JNIUtilGetStringUTFChars(jniEnv, jobjString, zfnull);
     zfstring ret;
-    if(utf != zfnull)
-    {
+    if(utf != zfnull) {
         ret = utf;
     }
     JNIUtilReleaseStringUTFChars(jniEnv, jobjString, utf);
     return ret;
 }
-void ZFImpl_sys_Android_stackTracePrint(void)
-{
+void ZFImpl_sys_Android_stackTracePrint(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog).c_str());
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "stackTracePrint",
@@ -87,8 +79,10 @@ void ZFImpl_sys_Android_stackTracePrint(void)
     JNIUtilCallStaticVoidMethod(jniEnv, jcls, jmId);
 }
 
-void ZFImpl_sys_Android_objectInfoT(ZF_OUT zfstring &ret, ZF_IN jobject nativeObject)
-{
+void ZFImpl_sys_Android_objectInfoT(
+        ZF_OUT zfstring &ret
+        , ZF_IN jobject nativeObject
+        ) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog).c_str());
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "objectInfo",
@@ -103,10 +97,10 @@ void ZFImpl_sys_Android_objectInfoT(ZF_OUT zfstring &ret, ZF_IN jobject nativeOb
 
 ZF_NAMESPACE_GLOBAL_END
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidLog,
-                         jstring, native_1objectInfo,
-                         JNIPointer zfjnipointerZFObject)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidLog
+        , jstring, native_1objectInfo
+        , JNIPointer zfjnipointerZFObject
+        ) {
     ZFObject *obj = ZFCastZFObject(ZFObject *, JNIConvertZFObjectFromJNIType(jniEnv, zfjnipointerZFObject));
     return jniEnv->NewStringUTF(ZFObjectInfo(obj).cString());
 }

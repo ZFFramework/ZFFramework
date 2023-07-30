@@ -33,8 +33,7 @@ public:
     /**
      * @brief implementations must notify when keyboard's state changed
      */
-    zffinal void notifyKeyPressedChange(void)
-    {
+    zffinal void notifyKeyPressedChange(void) {
         ZFUIKeyboardState::instance()->observerNotify(ZFUIKeyboardState::EventKeyPressedOnChange());
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIKeyboardState)

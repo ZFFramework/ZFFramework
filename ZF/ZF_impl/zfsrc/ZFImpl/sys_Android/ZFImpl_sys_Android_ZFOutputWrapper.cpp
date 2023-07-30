@@ -6,8 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFOutputWrapper
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder, ZFLevelZFFrameworkStatic) {
     jobject tmp = zfnull;
     JNIEnv *jniEnv = JNIGetJNIEnv();
 
@@ -15,8 +14,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFOutputWrapper_jclsHol
     this->jclsZFOutputWrapper = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
     JNIUtilDeleteLocalRef(jniEnv, tmp);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFOutputWrapper);
 }
@@ -24,14 +22,11 @@ public:
     jclass jclsZFOutputWrapper;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder)
 
-jclass ZFImpl_sys_Android_jclassZFOutputWrapper(void)
-{
+jclass ZFImpl_sys_Android_jclassZFOutputWrapper(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder)->jclsZFOutputWrapper;
 }
-jobject ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(ZF_IN const ZFOutput &output)
-{
-    if(!output)
-    {
+jobject ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(ZF_IN const ZFOutput &output) {
+    if(!output) {
         return NULL;
     }
 
@@ -50,25 +45,22 @@ jobject ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(ZF_IN const ZFOutput &out
 
 ZF_NAMESPACE_GLOBAL_END
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper,
-                         jlong, native_1nativeOutputWrite,
-                         JNIPointer zfjniPointerOwnerZFOutput,
-                         jbyteArray buf,
-                         jlong offset,
-                         jlong size)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
+        , jlong, native_1nativeOutputWrite
+        , JNIPointer zfjniPointerOwnerZFOutput
+        , jbyteArray buf
+        , jlong offset
+        , jlong size
+        ) {
     v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
     ZFOutput output = outputHolder->zfv;
 
-    if(buf == NULL)
-    {
+    if(buf == NULL) {
         zfindex ret = output.execute(zfnull, zfindexMax());
-        if(ret == zfindexMax())
-        {
+        if(ret == zfindexMax()) {
             return -1;
         }
-        else
-        {
+        else {
             return (jlong)ret;
         }
     }
@@ -80,58 +72,54 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper,
 }
 JNI_METHOD_DECLARE_END()
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper,
-                         void, native_1nativeOutputClose,
-                         JNIPointer zfjniPointerOwnerZFOutput)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
+        , void, native_1nativeOutputClose
+        , JNIPointer zfjniPointerOwnerZFOutput
+        ) {
     v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
     zfRelease(outputHolder);
 }
 JNI_METHOD_DECLARE_END()
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper,
-                         jboolean, native_1nativeOutputSeek,
-                         JNIPointer zfjniPointerOwnerZFOutput,
-                         jlong size,
-                         jint pos)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
+        , jboolean, native_1nativeOutputSeek
+        , JNIPointer zfjniPointerOwnerZFOutput
+        , jlong size
+        , jint pos
+        ) {
     v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
     ZFOutput output = outputHolder->zfv;
     return (jboolean)output.ioSeek((zfindex)size, (ZFSeekPos)pos);
 }
 JNI_METHOD_DECLARE_END()
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper,
-                         jlong, native_1nativeOutputTell,
-                         JNIPointer zfjniPointerOwnerZFOutput)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
+        , jlong, native_1nativeOutputTell
+        , JNIPointer zfjniPointerOwnerZFOutput
+        ) {
     v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
     ZFOutput output = outputHolder->zfv;
     zfindex pos = output.ioTell();
-    if(pos == zfindexMax())
-    {
+    if(pos == zfindexMax()) {
         return (jlong)-1;
     }
-    else
-    {
+    else {
         return (jlong)pos;
     }
 }
 JNI_METHOD_DECLARE_END()
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper,
-                         jlong, native_1nativeOutputSize,
-                         JNIPointer zfjniPointerOwnerZFOutput)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
+        , jlong, native_1nativeOutputSize
+        , JNIPointer zfjniPointerOwnerZFOutput
+        ) {
     v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
     ZFOutput output = outputHolder->zfv;
     zfindex size = output.ioSize();
-    if(size == zfindexMax())
-    {
+    if(size == zfindexMax()) {
         return (jlong)-1;
     }
-    else
-    {
+    else {
         return (jlong)size;
     }
 }

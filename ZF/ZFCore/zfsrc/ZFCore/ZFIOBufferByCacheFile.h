@@ -13,19 +13,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 zfclassFwd _ZFP_ZFIOBufferByCacheFile;
 /** @brief #ZFIOBuffer using cache file */
-zfclass ZFLIB_ZFCore ZFIOBufferByCacheFile : zfextends ZFIOBuffer
-{
+zfclass ZFLIB_ZFCore ZFIOBufferByCacheFile : zfextends ZFIOBuffer {
     ZFOBJECT_DECLARE(ZFIOBufferByCacheFile, ZFIOBuffer)
 
 protected:
     zfoverride
-    virtual ZFInput implInput(void)
-    {
+    virtual ZFInput implInput(void) {
         return this->_ZFP_input;
     }
     zfoverride
-    virtual ZFOutput implOutput(void)
-    {
+    virtual ZFOutput implOutput(void) {
         return this->_ZFP_output;
     }
     zfoverride

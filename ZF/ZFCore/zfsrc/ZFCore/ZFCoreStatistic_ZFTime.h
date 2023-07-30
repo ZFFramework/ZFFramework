@@ -47,26 +47,26 @@ extern ZFLIB_ZFCore ZFTimeValue invokeTimeGetAverageTime(ZF_IN const zfchar *key
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
 extern ZFLIB_ZFCore ZFTimeValue invokeTimeGetTotalTime(ZF_IN const zfchar *key);
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-extern ZFLIB_ZFCore void invokeTimeGetSummary(ZF_OUT zfstring &ret, ZF_IN const zfchar *key);
+extern ZFLIB_ZFCore void invokeTimeGetSummary(
+        ZF_OUT zfstring &ret
+        , ZF_IN const zfchar *key
+        );
 /** @brief see #ZFCoreStatistic::invokeTimeLogBegin */
-inline zfstring invokeTimeGetSummary(ZF_IN const zfchar *key)
-{
+inline zfstring invokeTimeGetSummary(ZF_IN const zfchar *key) {
     zfstring ret;
     ZFCoreStatistic::invokeTimeGetSummary(ret, key);
     return ret;
 }
 
 // ============================================================
-zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLogger
-{
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLogger {
 public:
     _ZFP_ZFCoreStatisticInvokeTimeLogger(ZF_IN const zfchar *key)
     : key(key)
     {
         ZFCoreStatistic::invokeTimeLogBegin(key);
     }
-    ~_ZFP_ZFCoreStatisticInvokeTimeLogger(void)
-    {
+    ~_ZFP_ZFCoreStatisticInvokeTimeLogger(void) {
         ZFCoreStatistic::invokeTimeLogEnd(key);
     }
 private:
@@ -77,18 +77,18 @@ private:
     ZFCoreStatistic::_ZFP_ZFCoreStatisticInvokeTimeLogger ZFUniqueName(ZFCoreStatisticInvokeTimeLogger_v)(key)
 
 // ============================================================
-zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime
-{
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime {
 public:
-    _ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime(ZF_IN const zfchar *key,
-                                                ZF_IN const ZFOutput &output = ZFOutputDefault())
+    _ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime(
+            ZF_IN const zfchar *key
+            , ZF_IN const ZFOutput &output = ZFOutputDefault()
+            )
     : key(key)
     , output(output)
     {
         ZFCoreStatistic::invokeTimeLogBegin(key);
     }
-    ~_ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime(void)
-    {
+    ~_ZFP_ZFCoreStatisticInvokeTimeLoggerOneTime(void) {
         ZFCoreStatistic::invokeTimeLogEnd(key);
         output << ZFCoreStatistic::invokeTimeGetSummary(key) << "\n";
         ZFCoreStatistic::invokeTimeRemove(key);

@@ -14,8 +14,7 @@ zfclassFwd ZFUIListView;
 /**
  * @brief abstract list adpater to supply cells for list view
  */
-zfinterface ZFLIB_ZFUIWidget ZFUIListAdapter : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFUIWidget ZFUIListAdapter : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIListAdapter, ZFInterface)
 
     // ============================================================
@@ -93,8 +92,9 @@ public:
     /**
      * @brief see #EventListAdapterOnReload
      */
-    ZFMETHOD_DECLARE_1(void, listAdapterNotifyReload,
-                       ZFMP_IN_OPT(zfindex, atIndexOrMax, zfindexMax()))
+    ZFMETHOD_DECLARE_1(void, listAdapterNotifyReload
+            , ZFMP_IN_OPT(zfindex, atIndexOrMax, zfindexMax())
+            )
     /**
      * @brief cell count
      */
@@ -115,9 +115,10 @@ public:
      * otherwise, the cell's size is fixed\n
      * return #cellSizeHint according to #cellSizeFill by default
      */
-    ZFMETHOD_DECLARE_2(zffloat, cellSizeAt,
-                       ZFMP_IN(zfindex, index),
-                       ZFMP_IN(ZFUIListCell *, cell))
+    ZFMETHOD_DECLARE_2(zffloat, cellSizeAt
+            , ZFMP_IN(zfindex, index)
+            , ZFMP_IN(ZFUIListCell *, cell)
+            )
 
     // ============================================================
     // list update callback
@@ -125,17 +126,17 @@ protected:
     /**
      * @brief see #EventListAdapterOnReload
      */
-    virtual inline void listAdapterOnReload(ZF_IN_OPT zfindex atIndexOrMax = zfindexMax())
-    {
+    virtual inline void listAdapterOnReload(ZF_IN_OPT zfindex atIndexOrMax = zfindexMax()) {
         this->toObject()->observerNotify(zfself::EventListAdapterOnReload(),
             (atIndexOrMax == zfindexMax()) ? zfnull : zflineAlloc(v_zfindex, atIndexOrMax));
     }
     /**
      * @brief see #EventListCellOnUpdate
      */
-    virtual inline void cellOnUpdate(ZF_IN zfindex atIndex,
-                                     ZF_IN ZFUIListCell *cell)
-    {
+    virtual inline void cellOnUpdate(
+            ZF_IN zfindex atIndex
+            , ZF_IN ZFUIListCell *cell
+            ) {
         this->toObject()->observerNotify(zfself::EventListCellOnUpdate(), cell, zflineAlloc(v_zfindex, atIndex));
     }
 
@@ -148,12 +149,10 @@ protected:
      *
      * see #cellCacheOnRecycle for more info
      */
-    virtual inline zfautoObject cellCacheOnAccess(ZF_IN zfindex index)
-    {
+    virtual inline zfautoObject cellCacheOnAccess(ZF_IN zfindex index) {
         return zfnull;
     }
-    zffinal inline void _ZFP_ZFUIListAdapter_cellCacheOnRecycle(ZF_IN ZFUIListCell *cell)
-    {
+    zffinal inline void _ZFP_ZFUIListAdapter_cellCacheOnRecycle(ZF_IN ZFUIListCell *cell) {
         this->cellCacheOnRecycle(cell);
         this->toObject()->observerNotify(zfself::EventListCellCacheOnRecycle(), cell);
     }
@@ -167,18 +166,19 @@ protected:
      * by default, we have #cellCacheDefaultAccess and #cellCacheDefaultRecycle
      * that would suit for most case
      */
-    virtual inline void cellCacheOnRecycle(ZF_IN ZFUIListCell *cell)
-    {
+    virtual inline void cellCacheOnRecycle(ZF_IN ZFUIListCell *cell) {
     }
 
 public:
     /** @brief see #cellCacheOnRecycle */
-    ZFMETHOD_DECLARE_1(zfautoObjectT<ZFUIListCell *>, cellCacheDefaultAccess,
-                       ZFMP_IN(const zfchar *, key))
+    ZFMETHOD_DECLARE_1(zfautoObjectT<ZFUIListCell *>, cellCacheDefaultAccess
+            , ZFMP_IN(const zfchar *, key)
+            )
     /** @brief see #cellCacheOnRecycle */
-    ZFMETHOD_DECLARE_2(void, cellCacheDefaultRecycle,
-                       ZFMP_IN(const zfchar *, key),
-                       ZFMP_IN(ZFUIListCell *, cell))
+    ZFMETHOD_DECLARE_2(void, cellCacheDefaultRecycle
+            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(ZFUIListCell *, cell)
+            )
 
 private:
     friend zfclassFwd _ZFP_ZFUIListViewPrivate;

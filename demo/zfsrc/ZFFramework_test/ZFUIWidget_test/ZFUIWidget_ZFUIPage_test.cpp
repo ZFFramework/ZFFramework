@@ -2,8 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIPage_test_Page : zfextends ZFUIPage
-{
+zfclass ZFUIWidget_ZFUIPage_test_Page : zfextends ZFUIPage {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test_Page, ZFUIPage)
 
     ZFPROPERTY_RETAIN_WITH_INIT(ZFUILinearLayout *, _titleView, zflineAlloc(ZFUILinearLayout))
@@ -13,8 +12,7 @@ zfclass ZFUIWidget_ZFUIPage_test_Page : zfextends ZFUIPage
 
 protected:
     zfoverride
-    virtual void pageOnCreate(void)
-    {
+    virtual void pageOnCreate(void) {
         this->pageViewClass(ZFUILinearLayout::ClassData());
         zfsuper::pageOnCreate();
         this->pageView()->to<ZFUILinearLayout *>()->layoutOrientation(ZFUIOrientation::e_Top);
@@ -57,45 +55,42 @@ protected:
             this->_contentView()->observerAdd(ZFUIButton::EventButtonOnClick(), _contentViewOnClick);
         }
     }
-    static ZFCompareResult pageFindFirstByPageGroupId(ZF_IN ZFUIPage * const &e0,
-                                                      ZF_IN const zfchar * const &e1)
-    {
-        if(zfstringIsEqual(e0->pageGroupId().cString(), e1))
-        {
+    static ZFCompareResult pageFindFirstByPageGroupId(
+            ZF_IN ZFUIPage * const &e0
+            , ZF_IN const zfchar * const &e1
+            ) {
+        if(zfstringIsEqual(e0->pageGroupId().cString(), e1)) {
             return ZFCompareTheSame;
         }
         return ZFCompareUncomparable;
     }
     zfoverride
-    virtual void pageOnResume(ZF_IN ZFUIPageResumeReasonEnum reason)
-    {
+    virtual void pageOnResume(ZF_IN ZFUIPageResumeReasonEnum reason) {
         zfsuper::pageOnResume(reason);
         zfindex index = this->pageManager()->pageList().find(this->pageGroupId().cString(), zfself::pageFindFirstByPageGroupId);
-        if(index != zfindexMax() && this->pageManager()->pageAt(index) != this)
-        {
+        if(index != zfindexMax() && this->pageManager()->pageAt(index) != this) {
             this->_titleLeftView()->viewVisible(zftrue);
         }
-        else
-        {
+        else {
             this->_titleLeftView()->viewVisible(zffalse);
         }
     }
     zfoverride
-    virtual void pageAniOnPrepare(ZF_IN ZFEnum *resumeOrPauseReason, ZF_IN ZFUIPage *siblingPage)
-    {
+    virtual void pageAniOnPrepare(
+            ZF_IN ZFEnum *resumeOrPauseReason
+            , ZF_IN ZFUIPage *siblingPage
+            ) {
         ZFUIPageAniPrepareForSlide(this, resumeOrPauseReason, siblingPage);
     }
 };
-zfclass ZFUIWidget_ZFUIPage_test_PageManager : zfextends ZFUIPageManager
-{
+zfclass ZFUIWidget_ZFUIPage_test_PageManager : zfextends ZFUIPageManager {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test_PageManager, ZFUIPageManager)
 
     ZFPROPERTY_RETAIN_WITH_INIT(ZFUILinearLayout *, _buttonLayout, zflineAlloc(ZFUILinearLayout))
 
 protected:
     zfoverride
-    virtual void managerOnCreate(void)
-    {
+    virtual void managerOnCreate(void) {
         this->managerContainerClass(ZFUILinearLayout::ClassData());
         zfsuper::managerOnCreate();
 
@@ -105,8 +100,7 @@ protected:
         this->managerContainer()->childAdd(this->_buttonLayout())->c_widthFill();
         this->_buttonLayout()->layoutOrientation(ZFUIOrientation::e_Left);
 
-        for(zfindex i = 0; i < 4; ++i)
-        {
+        for(zfindex i = 0; i < 4; ++i) {
             zfblockedAlloc(v_zfstring, pageGroupId, zfstringWithFormat("pageGroup %zi", i));
 
             zfblockedAlloc(ZFUIButtonBasic, button);
@@ -118,30 +112,23 @@ protected:
                     , ZFUIWidget_ZFUIPage_test_PageManager *, pageManager
                     , zfautoObjectT<v_zfstring *>, pageGroupId
                     ) {
-                if(!zfargs.sender()->to<ZFUIButton *>()->checked())
-                { // click checked tab
+                if(!zfargs.sender()->to<ZFUIButton *>()->checked()) { // click checked tab
                     zfargs.sender()->to<ZFUIButton *>()->checked(zftrue);
 
                     ZFCoreArrayPOD<ZFUIPage *> pageToDestroy;
-                    for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i)
-                    {
-                        if(pageManager->pageAt(i)->pageGroupId().compare(pageGroupId->zfv) == 0)
-                        {
+                    for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i) {
+                        if(pageManager->pageAt(i)->pageGroupId().compare(pageGroupId->zfv) == 0) {
                             pageToDestroy.add(pageManager->pageAt(i));
                         }
                     }
-                    if(pageToDestroy.count() > 1)
-                    {
-                        for(zfindex i = pageToDestroy.count() - 2; i != zfindexMax(); --i)
-                        {
+                    if(pageToDestroy.count() > 1) {
+                        for(zfindex i = pageToDestroy.count() - 2; i != zfindexMax(); --i) {
                             pageToDestroy[i]->pageDestroy();
                         }
                     }
                 }
-                else
-                {
-                    for(zfindex i = 0; i < pageManager->_buttonLayout()->childCount(); ++i)
-                    {
+                else {
+                    for(zfindex i = 0; i < pageManager->_buttonLayout()->childCount(); ++i) {
                         ZFUIButton *button = pageManager->_buttonLayout()->childAt(i)->toAny();
                         button->checked(zffalse);
                     }
@@ -155,15 +142,13 @@ protected:
                     pauseAni->aniAlphaTo(0);
                     pageManager->pageAniOverride(resumeAni, pauseAni);
 
-                    if(pageManager->pageListForGroupId(pageGroupId->zfv).isEmpty())
-                    {
+                    if(pageManager->pageListForGroupId(pageGroupId->zfv).isEmpty()) {
                         zfblockedAlloc(ZFUIWidget_ZFUIPage_test_Page, page);
                         page->pageGroupId(pageGroupId->zfv);
                         pageManager->pageCreate(page);
                         page->pageView()->viewId(zfstringWithFormat("%s:%p", page->pageGroupId().cString(), page));
                     }
-                    else
-                    {
+                    else {
                         pageManager->pageResumeForGroupId(pageGroupId->zfv);
                     }
                 }
@@ -179,8 +164,7 @@ protected:
     }
 };
 
-zfclass ZFUIWidget_ZFUIPage_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUIPage_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test, ZFFramework_test_TestCase)
 
 private:
@@ -188,8 +172,7 @@ private:
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFAnimationNativeView);
@@ -207,10 +190,8 @@ protected:
         this->prepareSettingButton(window, this->_pageManager);
     }
     zfoverride
-    virtual void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult)
-    {
-        if(this->_pageManager != zfnull)
-        {
+    virtual void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult) {
+        if(this->_pageManager != zfnull) {
             this->_pageManager->managerPause();
             this->_pageManager->managerDestroy();
             zfRelease(this->_pageManager);
@@ -220,9 +201,10 @@ protected:
     }
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIPageManager *pageManager)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUIPageManager *pageManager
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);

@@ -12,9 +12,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTreeNativeImpl_sys_Android, ZFUIViewTree
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void viewTreeNative(ZF_IN ZFUIView *view,
-                                ZF_IN_OUT const ZFOutput &outputCallback)
-    {
+    virtual void viewTreeNative(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OUT const ZFOutput &outputCallback
+            ) {
         zfstring s;
         ZFImpl_sys_Android_viewTreePrintT(s, (jobject)view->nativeView());
         outputCallback << s;

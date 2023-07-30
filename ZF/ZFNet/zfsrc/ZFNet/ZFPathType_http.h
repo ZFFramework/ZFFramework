@@ -21,9 +21,9 @@ ZFPATHTYPE_DECLARE(ZFLIB_ZFNet, http)
 /**
  * @brief util to create a http file input callback
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFNet, ZFInput, ZFInputForHttp,
-                               ZFMP_IN(const zfchar *, url))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFNet, ZFInput, ZFInputForHttp
+        , ZFMP_IN(const zfchar *, url)
+        ) {
     ZFInput ret;
     ZFInputForPathInfoT(ret, ZFPathType_http(), url, ZFFileOpenOption::e_Read);
     return ret;

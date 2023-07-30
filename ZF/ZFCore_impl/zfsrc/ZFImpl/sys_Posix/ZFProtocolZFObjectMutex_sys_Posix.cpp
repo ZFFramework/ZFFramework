@@ -9,11 +9,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_Posix
-{
+zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_Posix {
 public:
-    static void *implInit(void)
-    {
+    static void *implInit(void) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)zfmalloc(sizeof(pthread_mutex_t));
         pthread_mutexattr_t Attr;
         pthread_mutexattr_init(&Attr);
@@ -21,23 +19,19 @@ public:
         pthread_mutex_init(mutex, &Attr);
         return mutex;
     }
-    static void implDealloc(ZF_IN void *implObject)
-    {
+    static void implDealloc(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;
         pthread_mutex_destroy(mutex);
     }
-    static void implLock(ZF_IN void *implObject)
-    {
+    static void implLock(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;
         pthread_mutex_lock(mutex);
     }
-    static void implUnlock(ZF_IN void *implObject)
-    {
+    static void implUnlock(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;
         pthread_mutex_unlock(mutex);
     }
-    static zfbool implTryLock(ZF_IN void *implObject)
-    {
+    static zfbool implTryLock(ZF_IN void *implObject) {
         pthread_mutex_t *mutex = (pthread_mutex_t *)implObject;
         return (pthread_mutex_trylock(mutex) == 0);
     }

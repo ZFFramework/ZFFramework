@@ -14,8 +14,7 @@ zfclassFwd ZFMap;
 /**
  * @brief container of ZFObject, see #ZFContainer
  */
-zfclass ZFLIB_ZFCore ZFSet : zfextends ZFContainer
-{
+zfclass ZFLIB_ZFCore ZFSet : zfextends ZFContainer {
     ZFOBJECT_DECLARE(ZFSet, ZFContainer)
 
 public:
@@ -33,26 +32,30 @@ public:
      * @brief return true if contains the object,
      *   compared by #ZFObject::objectCompare
      */
-    ZFMETHOD_DECLARE_1(zfbool, isContain,
-                       ZFMP_IN(ZFObject *, obj))
+    ZFMETHOD_DECLARE_1(zfbool, isContain
+            , ZFMP_IN(ZFObject *, obj)
+            )
 
 public:
     /**
      * @brief insert object to last, assert failure if obj = zfnull, see #add
      */
-    ZFMETHOD_DECLARE_1(void, add,
-                       ZFMP_IN(ZFObject *, obj))
+    ZFMETHOD_DECLARE_1(void, add
+            , ZFMP_IN(ZFObject *, obj)
+            )
     /**
      * @brief add objects from another container
      */
-    ZFMETHOD_DECLARE_1(void, addFrom,
-                       ZFMP_IN(ZFContainer *, another))
+    ZFMETHOD_DECLARE_1(void, addFrom
+            , ZFMP_IN(ZFContainer *, another)
+            )
 
     /**
      * @brief remove object, do nothing if not exist
      */
-    ZFMETHOD_DECLARE_1(void, removeElement,
-                       ZFMP_IN(ZFObject *, obj))
+    ZFMETHOD_DECLARE_1(void, removeElement
+            , ZFMP_IN(ZFObject *, obj)
+            )
     /**
      * @brief remove all object
      */
@@ -65,37 +68,45 @@ public:
     ZFMETHOD_DECLARE_0(zfiterator, iter)
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(zfiterator, iterFind,
-                       ZFMP_IN(ZFObject *, key))
+    ZFMETHOD_DECLARE_1(zfiterator, iterFind
+            , ZFMP_IN(ZFObject *, key)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(zfbool, iterValid,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfbool, iterValid
+            , ZFMP_IN(const zfiterator &, it)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(void, iterNext,
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_1(void, iterNext
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFObject *, iterValue,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(ZFObject *, iterValue
+            , ZFMP_IN(const zfiterator &, it)
+            )
 
 public:
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_2(void, iterValue,
-                       ZFMP_IN_OUT(zfiterator &, it),
-                       ZFMP_IN(ZFObject *, value))
+    ZFMETHOD_DECLARE_2(void, iterValue
+            , ZFMP_IN_OUT(zfiterator &, it)
+            , ZFMP_IN(ZFObject *, value)
+            )
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(void, iterRemove,
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_1(void, iterRemove
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(void, iterAdd,
-                       ZFMP_IN(ZFObject *, value))
+    ZFMETHOD_DECLARE_1(void, iterAdd
+            , ZFMP_IN(ZFObject *, value)
+            )
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_2(void, iterAdd,
-                       ZFMP_IN(ZFObject *, value),
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_2(void, iterAdd
+            , ZFMP_IN(ZFObject *, value)
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
 
 protected:
     /** @brief see #ZFObject::objectOnInit */

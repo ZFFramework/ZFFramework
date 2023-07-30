@@ -16,13 +16,10 @@
 
     #define JNIUtilWrap_Enable 1
 
-    inline const char *_JNIUtilWrap_file(const char *filePath)
-    {
+    inline const char *_JNIUtilWrap_file(const char *filePath) {
         const char *ret = filePath;
-        while(*filePath)
-        {
-            if(*filePath == '/' || *filePath == '\\')
-            {
+        while(*filePath) {
+            if(*filePath == '/' || *filePath == '\\') {
                 ret = filePath + 1;
             }
             ++filePath;
@@ -30,9 +27,11 @@
         return ret;
     }
     template<typename T_Obj>
-    T_Obj _JNIUtilWrap_LogAction(T_Obj obj, const char *callerFile, const char *callerFunction, int callerLine,
-                                 const char *actionName, const char *type)
-    {
+    T_Obj _JNIUtilWrap_LogAction(
+            T_Obj obj
+            , const char *callerFile, const char *callerFunction, int callerLine
+            , const char *actionName, const char *type
+            ) {
         JNIUtilWrap_Log("[%s %s (%d)] %s %s %p",
             _JNIUtilWrap_file(callerFile), callerFunction, callerLine,
             type, actionName, (const void *)obj);
@@ -50,16 +49,14 @@
     #ifndef JNIUtilWrap_FuncCalled
         #if 1
             #include <time.h>
-            class _JNIUtilWrap_FuncCalledTimeLog
-            {
+            class _JNIUtilWrap_FuncCalledTimeLog {
             public:
                 _JNIUtilWrap_FuncCalledTimeLog(const char *callerFunction)
                 : _callerFunction(callerFunction)
                 , _startTime(clock())
                 {
                 }
-                ~_JNIUtilWrap_FuncCalledTimeLog(void)
-                {
+                ~_JNIUtilWrap_FuncCalledTimeLog(void) {
                     JNIUtilWrap_Log("[%s] %lf",
                         _callerFunction,
                         (double)((double)(clock() - _startTime) / CLOCKS_PER_SEC));
@@ -129,9 +126,11 @@ extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassString(void);
 #endif
 
 // ============================================================
-extern ZFLIB_ZF_impl void ZFImpl_sys_Android_zfstringFromString(ZF_IN_OUT zfstring &s, ZF_IN jobject jstr);
-inline zfstring ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr)
-{
+extern ZFLIB_ZF_impl void ZFImpl_sys_Android_zfstringFromString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN jobject jstr
+        );
+inline zfstring ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr) {
     zfstring ret;
     ZFImpl_sys_Android_zfstringFromString(ret, jstr);
     return ret;
@@ -142,9 +141,11 @@ extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfc
 // ============================================================
 extern ZFLIB_ZF_impl zfstring ZFImpl_sys_Android_stackTrace(void);
 extern ZFLIB_ZF_impl void ZFImpl_sys_Android_stackTracePrint(void);
-extern ZFLIB_ZF_impl void ZFImpl_sys_Android_objectInfoT(ZF_OUT zfstring &ret, ZF_IN jobject nativeObject);
-inline zfstring ZFImpl_sys_Android_objectInfo(ZF_IN jobject nativeObject)
-{
+extern ZFLIB_ZF_impl void ZFImpl_sys_Android_objectInfoT(
+        ZF_OUT zfstring &ret
+        , ZF_IN jobject nativeObject
+        );
+inline zfstring ZFImpl_sys_Android_objectInfo(ZF_IN jobject nativeObject) {
     zfstring ret;
     ZFImpl_sys_Android_objectInfoT(ret, nativeObject);
     return ret;

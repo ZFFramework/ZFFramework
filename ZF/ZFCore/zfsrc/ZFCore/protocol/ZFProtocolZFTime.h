@@ -22,7 +22,10 @@ public:
     /**
      * @brief see #ZFTime::leapYearBetween
      */
-    virtual zfint leapYearBetween(ZF_IN zfint year1, ZF_IN zfint year2) zfpurevirtual;
+    virtual zfint leapYearBetween(
+            ZF_IN zfint year1
+            , ZF_IN zfint year2
+            ) zfpurevirtual;
     /**
      * @brief see #ZFTime::timestamp
      */
@@ -34,11 +37,17 @@ public:
     /**
      * @brief see #ZFTime::timeInfoFromTimeValue
      */
-    virtual zfbool timeInfoFromTimeValue(ZF_OUT ZFTimeInfo &ti, ZF_IN const ZFTimeValue &tv) zfpurevirtual;
+    virtual zfbool timeInfoFromTimeValue(
+            ZF_OUT ZFTimeInfo &ti
+            , ZF_IN const ZFTimeValue &tv
+            ) zfpurevirtual;
     /**
      * @brief see #ZFTime::timeInfoToTimeValue
      */
-    virtual zfbool timeInfoToTimeValue(ZF_OUT ZFTimeValue &tv, ZF_IN const ZFTimeInfo &ti) zfpurevirtual;
+    virtual zfbool timeInfoToTimeValue(
+            ZF_OUT ZFTimeValue &tv
+            , ZF_IN const ZFTimeInfo &ti
+            ) zfpurevirtual;
     /**
      * @brief see #ZFTime::timeZoneLocal
      */
@@ -46,11 +55,17 @@ public:
     /**
      * @brief see #ZFTime::timeInfoDayOfWeek
      */
-    virtual zfuint timeInfoDayOfWeek(ZF_IN const ZFTimeValue &tv, ZF_IN const ZFTimeInfo &ti) zfpurevirtual;
+    virtual zfuint timeInfoDayOfWeek(
+            ZF_IN const ZFTimeValue &tv
+            , ZF_IN const ZFTimeInfo &ti
+            ) zfpurevirtual;
     /**
      * @brief see #ZFTime::timeInfoDayOfYear
      */
-    virtual zfuint timeInfoDayOfYear(ZF_IN const ZFTimeValue &tv, ZF_IN const ZFTimeInfo &ti) zfpurevirtual;
+    virtual zfuint timeInfoDayOfYear(
+            ZF_IN const ZFTimeValue &tv
+            , ZF_IN const ZFTimeInfo &ti
+            ) zfpurevirtual;
     /**
      * @brief true if time info is valid
      */
@@ -58,14 +73,16 @@ public:
     /**
      * @brief true if time info is valid
      */
-    virtual zfbool timeInfoIsValid(ZF_IN zfint year,
-                                   ZF_IN zfuint month,
-                                   ZF_IN zfuint day,
-                                   ZF_IN zfuint hour,
-                                   ZF_IN zfuint minute,
-                                   ZF_IN zfuint second,
-                                   ZF_IN zfuint miliSecond,
-                                   ZF_IN zfuint microSecond) zfpurevirtual;
+    virtual zfbool timeInfoIsValid(
+            ZF_IN zfint year
+            , ZF_IN zfuint month
+            , ZF_IN zfuint day
+            , ZF_IN zfuint hour
+            , ZF_IN zfuint minute
+            , ZF_IN zfuint second
+            , ZF_IN zfuint miliSecond
+            , ZF_IN zfuint microSecond
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFTime)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -15,8 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief #ZFUIHint's content with simple text and background
  */
-zfclass ZFLIB_ZFUIWidget ZFUIHintContentBasic : zfextends ZFUIButtonBasic
-{
+zfclass ZFLIB_ZFUIWidget ZFUIHintContentBasic : zfextends ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIHintContentBasic, ZFUIButtonBasic)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIHintContentBasic)
 
@@ -34,16 +33,17 @@ public:
  * -  #ZFUIHintContentBasic as the #ZFUIHint::hintContent
  * -  have an alpha change animation as the hint's show and hide animation
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoObjectT<ZFUIHint *>, ZFUIHintMake,
-                        ZFMP_IN(const zfchar *, text),
-                        ZFMP_IN_OPT(ZFUIImage *, icon, zfnull))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoObjectT<ZFUIHint *>, ZFUIHintMake
+        , ZFMP_IN(const zfchar *, text)
+        , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
+        )
 /**
  * @brief #ZFUIHintMake and show the hint
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIWidget, zfautoObjectT<ZFUIHint *>, ZFUIHintShow,
-                               ZFMP_IN(const zfchar *, text),
-                               ZFMP_IN_OPT(ZFUIImage *, icon, zfnull))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIWidget, zfautoObjectT<ZFUIHint *>, ZFUIHintShow
+        , ZFMP_IN(const zfchar *, text)
+        , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
+        ) {
     zfautoObjectT<ZFUIHint *> hint = ZFUIHintMake(text, icon);
     hint.to<ZFUIHint *>()->hintShow();
     return hint;

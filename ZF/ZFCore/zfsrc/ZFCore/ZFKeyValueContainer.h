@@ -26,10 +26,8 @@ zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
  *
  * to go through all the contents, you should:
  * @code
- *   for(zfiterator it = container->iter(); container->iterValid(it); container->iterNext(it))
- *   {
- *       if(condition)
- *       {
+ *   for(zfiterator it = container->iter(); container->iterValid(it); container->iterNext(it)) {
+ *       if(condition) {
  *           // safe to remove since keys and values is a copy of the contents
  *           // however, you must not access the removed elements after remove
  *           container->iterRemove(it);
@@ -56,8 +54,7 @@ zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
  *   </ContainerClass>
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFKeyValueContainer: zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable, zfimplements ZFIterable, zfimplements ZFIterableKeyValue
-{
+zfabstract ZFLIB_ZFCore ZFKeyValueContainer: zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable, zfimplements ZFIterable, zfimplements ZFIterableKeyValue {
     ZFOBJECT_DECLARE_ABSTRACT(ZFKeyValueContainer, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable, ZFIterable, ZFIterableKeyValue)
 
@@ -95,39 +92,50 @@ public:
 
     /** @cond ZFPrivateDoc */
     virtual void iterAdd(ZF_IN ZFObject *value) {zfCoreCriticalNotSupported();}
-    virtual void iterAdd(ZF_IN ZFObject *value,
-                         ZF_IN_OUT zfiterator &it) {zfCoreCriticalNotSupported();}
-    virtual void iterAdd(ZF_IN ZFObject *key,
-                         ZF_IN ZFObject *value) zfpurevirtual;
+    virtual void iterAdd(
+            ZF_IN ZFObject *value
+            , ZF_IN_OUT zfiterator &it
+            ) {
+        zfCoreCriticalNotSupported();
+    }
+    virtual void iterAdd(
+            ZF_IN ZFObject *key
+            , ZF_IN ZFObject *value
+            ) zfpurevirtual;
     /** @endcond */
 
 public:
     /**
      * @brief return a short string describe the content
      */
-    ZFMETHOD_DECLARE_3(void, objectInfoOfContentT,
-                       ZFMP_IN_OUT(zfstring &, ret),
-                       ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
-                       ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault()))
+    ZFMETHOD_DECLARE_3(void, objectInfoOfContentT
+            , ZFMP_IN_OUT(zfstring &, ret)
+            , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+            , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+            )
     /** @brief see #objectInfoOfContentT */
-    ZFMETHOD_DECLARE_2(zfstring, objectInfoOfContent,
-                       ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
-                       ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault()))
+    ZFMETHOD_DECLARE_2(zfstring, objectInfoOfContent
+            , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+            , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+            )
 
 protected:
     /** @brief see #EventContentOnChange */
-    virtual inline void contentOnChange(void)
-    {
+    virtual inline void contentOnChange(void) {
         this->observerNotify(ZFKeyValueContainer::EventContentOnChange());
     }
     /** @brief see #EventContentOnAdd */
-    virtual inline void contentOnAdd(ZF_IN ZFObject *key, ZF_IN ZFObject *value)
-    {
+    virtual inline void contentOnAdd(
+            ZF_IN ZFObject *key
+            , ZF_IN ZFObject *value
+            ) {
         this->observerNotify(ZFKeyValueContainer::EventContentOnAdd(), key, value);
     }
     /** @brief see #EventContentOnRemove */
-    virtual inline void contentOnRemove(ZF_IN ZFObject *key, ZF_IN ZFObject *value)
-    {
+    virtual inline void contentOnRemove(
+            ZF_IN ZFObject *key
+            , ZF_IN ZFObject *value
+            ) {
         this->observerNotify(ZFKeyValueContainer::EventContentOnRemove(), key, value);
     }
 
@@ -135,9 +143,11 @@ protected:
     zfoverride
     virtual zfbool serializableOnCheck(void);
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     /**
      * @brief see #ZFSerializable::serializableOnSerializeToData
      *
@@ -150,16 +160,20 @@ protected:
      * if you have different ref logic
      */
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 protected:
     /**
      * @brief see #ZFKeyValueContainer::serializableOnSerializeToData
      */
-    virtual zfbool serializableOnSerializeToDataWithRef(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                        ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                        ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToDataWithRef(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 protected:
     zfoverride
@@ -170,8 +184,7 @@ protected:
     virtual void objectOnDeallocPrepare(void);
 
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
         this->objectInfoOfContentT(ret, 5);
     }
 

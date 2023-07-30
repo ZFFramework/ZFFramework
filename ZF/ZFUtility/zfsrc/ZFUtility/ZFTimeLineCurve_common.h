@@ -13,15 +13,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief linear time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUtility ZFTimeLineCurveLinear : zfextends ZFTimeLineCurve
-{
+zfclass ZFLIB_ZFUtility ZFTimeLineCurveLinear : zfextends ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveLinear, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 
 protected:
     zfoverride
-    virtual zffloat progressOnUpdate(ZF_IN zffloat time)
-    {
+    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
         return time;
     }
 };

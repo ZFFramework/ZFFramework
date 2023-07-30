@@ -20,29 +20,30 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 template<typename T_Comparable0, typename T_Comparable1,
          typename TypeFix0 = void, typename TypeFix1 = void,
          typename T_ReservedFix0 = void, typename T_ReservedFix1 = void>
-zfclassNotPOD ZFComparerDefaultHolder
-{
+zfclassNotPOD ZFComparerDefaultHolder {
 public:
     /**
      * @brief default comparer, compare by value
      *
      * element must support operator = and operator < and operator >
      */
-    static ZFCompareResult comparer(ZF_IN T_Comparable0 const &v0, ZF_IN T_Comparable1 const &v1)
-    {
-        if(v0 == v1)
-        {
+    static ZFCompareResult comparer(
+            ZF_IN T_Comparable0 const &v0
+            , ZF_IN T_Comparable1 const &v1
+            ) {
+        if(v0 == v1) {
             return ZFCompareTheSame;
         }
-        else
-        {
+        else {
             return ZFCompareUncomparable;
         }
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
-inline ZFCompareResult _ZFP_ZFComparerDefault(ZF_IN T_Comparable0 const &v0, ZF_IN T_Comparable1 const &v1)
-{
+inline ZFCompareResult _ZFP_ZFComparerDefault(
+        ZF_IN T_Comparable0 const &v0
+        , ZF_IN T_Comparable1 const &v1
+        ) {
     return ZFComparerDefaultHolder<T_Comparable0, T_Comparable1>::comparer(v0, v1);
 }
 /**
@@ -74,8 +75,10 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(ZF_IN T_Comparable0 const &v0, ZF_
         > \
     { \
     public: \
-        static ZFCompareResult comparer(ZF_IN T0 const &v0, ZF_IN T1 const &v1) \
-        { \
+        static ZFCompareResult comparer( \
+                ZF_IN T0 const &v0 \
+                , ZF_IN T1 const &v1 \
+                ) { \
             compareAction \
         } \
     }; \
@@ -99,11 +102,12 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(ZF_IN T_Comparable0 const &v0, ZF_
 #define ZFCOMPARER_DEFAULT_DECLARE_EXPLICIT(T_Comparable0, T_Comparable1, compareAction) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFComparerDefaultHolder<T_Comparable0, T_Comparable1> \
-    { \
+    zfclassNotPOD ZFComparerDefaultHolder<T_Comparable0, T_Comparable1> { \
     public: \
-        static ZFCompareResult comparer(ZF_IN T_Comparable0 const &v0, ZF_IN T_Comparable1 const &v1) \
-        { \
+        static ZFCompareResult comparer( \
+                ZF_IN T_Comparable0 const &v0 \
+                , ZF_IN T_Comparable1 const &v1 \
+                ) { \
             compareAction \
         } \
     }; \
@@ -111,22 +115,20 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(ZF_IN T_Comparable0 const &v0, ZF_
 
 // ============================================================
 template<typename T0, typename T1>
-inline ZFCompareResult _ZFP_ZFComparerNumeric(ZF_IN T0 const &v0, ZF_IN T1 const &v1)
-{
-    if(v0 == v1)
-    {
+inline ZFCompareResult _ZFP_ZFComparerNumeric(
+        ZF_IN T0 const &v0
+        , ZF_IN T1 const &v1
+        ) {
+    if(v0 == v1) {
         return ZFCompareTheSame;
     }
-    else if(v0 < v1)
-    {
+    else if(v0 < v1) {
         return ZFCompareSmaller;
     }
-    else if(v0 > v1)
-    {
+    else if(v0 > v1) {
         return ZFCompareGreater;
     }
-    else
-    {
+    else {
         return ZFCompareUncomparable;
     }
 }
@@ -137,8 +139,10 @@ inline ZFCompareResult _ZFP_ZFComparerNumeric(ZF_IN T0 const &v0, ZF_IN T1 const
 
 // ============================================================
 template<typename T_Comparable0, typename T_Comparable1>
-inline ZFCompareResult _ZFP_ZFComparerCheckEqual(ZF_IN T_Comparable0 const &v0, ZF_IN T_Comparable1 const &v1)
-{
+inline ZFCompareResult _ZFP_ZFComparerCheckEqual(
+        ZF_IN T_Comparable0 const &v0
+        , ZF_IN T_Comparable1 const &v1
+        ) {
     return ((v0 == v1) ? ZFCompareTheSame : ZFCompareUncomparable);
 }
 /**
@@ -149,8 +153,10 @@ inline ZFCompareResult _ZFP_ZFComparerCheckEqual(ZF_IN T_Comparable0 const &v0, 
 #define ZFComparerCheckEqual _ZFP_ZFComparerCheckEqual
 
 template<typename T_Comparable>
-inline ZFCompareResult _ZFP_ZFComparerForPOD(ZF_IN T_Comparable const &v0, ZF_IN T_Comparable const &v1)
-{
+inline ZFCompareResult _ZFP_ZFComparerForPOD(
+        ZF_IN T_Comparable const &v0
+        , ZF_IN T_Comparable const &v1
+        ) {
     return ((zfmemcmp(&v0, &v1, sizeof(T_Comparable)) == 0) ? ZFCompareTheSame : ZFCompareUncomparable);
 }
 /**
@@ -159,8 +165,10 @@ inline ZFCompareResult _ZFP_ZFComparerForPOD(ZF_IN T_Comparable const &v0, ZF_IN
 #define ZFComparerForPOD _ZFP_ZFComparerForPOD
 
 template<typename T_Comparable>
-inline ZFCompareResult _ZFP_ZFComparerDummy(ZF_IN T_Comparable const &v0, ZF_IN T_Comparable const &v1)
-{
+inline ZFCompareResult _ZFP_ZFComparerDummy(
+        ZF_IN T_Comparable const &v0
+        , ZF_IN T_Comparable const &v1
+        ) {
     return ZFCompareUncomparable;
 }
 /**
@@ -173,31 +181,25 @@ ZFCOMPARER_DEFAULT_DECLARE(const zfchar *, const zfchar *, {
         const zfchar *v0Tmp = ((v0 == zfnull) ? "" : v0);
         const zfchar *v1Tmp = ((v1 == zfnull) ? "" : v1);
         zfint result = zfscmp(v0Tmp, v1Tmp);
-        if(result < 0)
-        {
+        if(result < 0) {
             return ZFCompareSmaller;
         }
-        else if(result > 0)
-        {
+        else if(result > 0) {
             return ZFCompareGreater;
         }
-        else
-        {
+        else {
             return ZFCompareTheSame;
         }
     })
 ZFCOMPARER_DEFAULT_DECLARE(zfstring, zfstring, {
         zfint result = v0.compare(v1);
-        if(result < 0)
-        {
+        if(result < 0) {
             return ZFCompareSmaller;
         }
-        else if(result > 0)
-        {
+        else if(result > 0) {
             return ZFCompareGreater;
         }
-        else
-        {
+        else {
             return ZFCompareTheSame;
         }
     })
@@ -228,8 +230,10 @@ ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfidentity, zfidentity, ZFComparerNumeric)
  * @brief util method to compare two POD type
  */
 template<typename T_Element>
-inline zfbool zfcmpPODTheSame(ZF_IN T_Element const &v0, ZF_IN T_Element const &v1)
-{
+inline zfbool zfcmpPODTheSame(
+        ZF_IN T_Element const &v0
+        , ZF_IN T_Element const &v1
+        ) {
     return (zfmemcmp(&v0, &v1, sizeof(T_Element)) == 0);
 }
 
@@ -238,18 +242,24 @@ inline zfbool zfcmpPODTheSame(ZF_IN T_Element const &v0, ZF_IN T_Element const &
  */
 #define ZFCORE_POD_COMPARER_DECLARE(Type) \
     /** @brief compare by value */ \
-    inline zfbool Type##IsEqual(ZF_IN Type const &v0, ZF_IN Type const &v1) \
-    { \
+    inline zfbool Type##IsEqual( \
+            ZF_IN Type const &v0 \
+            , ZF_IN Type const &v1 \
+            ) { \
         return zfcmpPODTheSame(v0, v1); \
     } \
     /** @brief compare by value */ \
-    inline zfbool operator == (ZF_IN Type const &v0, ZF_IN Type const &v1) \
-    { \
+    inline zfbool operator == ( \
+            ZF_IN Type const &v0 \
+            , ZF_IN Type const &v1 \
+            ) { \
         return zfcmpPODTheSame(v0, v1); \
     } \
     /** @brief compare by value */ \
-    inline zfbool operator != (ZF_IN Type const &v0, ZF_IN Type const &v1) \
-    { \
+    inline zfbool operator != ( \
+            ZF_IN Type const &v0 \
+            , ZF_IN Type const &v1 \
+            ) { \
         return !zfcmpPODTheSame(v0, v1); \
     }
 

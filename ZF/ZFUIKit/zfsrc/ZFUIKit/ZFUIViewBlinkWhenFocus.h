@@ -35,8 +35,9 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfautoObject, ZFUIViewBlinkWhenFocusMaskImag
  * -  #ZFUIViewBlinkWhenFocusAutoApplyStop would be called automatically during #ZFFrameworkCleanup
  *   as level #ZFLevelZFFrameworkLow
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyStart,
-                        ZFMP_IN_OPT(ZFUIImage *, img, zfnull))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyStart
+        , ZFMP_IN_OPT(ZFUIImage *, img, zfnull)
+        )
 /**
  * @brief see #ZFUIViewBlinkWhenFocusAutoApplyStart
  */
@@ -111,8 +112,9 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  *
  * the task would be scheduled and run in future even if time is 0
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime,
-                        ZFMP_IN_OPT(zftimet, time, zftimetZero()))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime
+        , ZFMP_IN_OPT(zftimet, time, zftimetZero())
+        )
 /**
  * @brief cancel #ZFUIViewBlinkWhenFocusAutoApplyPauseForTime
  *

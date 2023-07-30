@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFOutputForConsole_ZFOutputDefaultExt, ZFLevelZFFrameworkEssential)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFOutputForConsole_ZFOutputDefaultExt, ZFLevelZFFrameworkEssential) {
     ZFExportVarEnsureInit_ZFOutputForConsole();
     saved = ZFOutputDefault();
     ZFOutputDefault(ZFOutputForConsole());
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFOutputForConsole_ZFOutputDefaultExt)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFOutputForConsole_ZFOutputDefaultExt) {
     ZFOutputDefault(saved);
 }
 ZFOutput saved;

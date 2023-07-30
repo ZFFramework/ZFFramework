@@ -2,8 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFProperty_test_TestBase : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_ZFProperty_test_TestBase : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFProperty_test_TestBase, ZFObject)
 
 public:
@@ -19,20 +18,16 @@ public:
     ZFPROPERTY_ASSIGN(ZFObject *, propertyWeak)
 
     // custom callback
-    ZFPROPERTY_ON_INIT_INLINE(ZFObject *, propertyRetain)
-    {
+    ZFPROPERTY_ON_INIT_INLINE(ZFObject *, propertyRetain) {
         zfLog();
     }
-    ZFPROPERTY_ON_VERIFY_INLINE(ZFObject *, propertyRetain)
-    {
+    ZFPROPERTY_ON_VERIFY_INLINE(ZFObject *, propertyRetain) {
         zfLog();
     }
-    ZFPROPERTY_ON_ATTACH_INLINE(ZFObject *, propertyRetain)
-    {
+    ZFPROPERTY_ON_ATTACH_INLINE(ZFObject *, propertyRetain) {
         zfLog();
     }
-    ZFPROPERTY_ON_DETACH_INLINE(ZFObject *, propertyRetain)
-    {
+    ZFPROPERTY_ON_DETACH_INLINE(ZFObject *, propertyRetain) {
         zfLog();
     }
 
@@ -41,25 +36,20 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, propertyAssign)
     ZFPROPERTY_ON_DETACH_DECLARE(zfstring, propertyAssign)
 };
-ZFPROPERTY_ON_INIT_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
-{
+ZFPROPERTY_ON_INIT_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
     zfLog();
 }
-ZFPROPERTY_ON_VERIFY_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
-{
+ZFPROPERTY_ON_VERIFY_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
     zfLog();
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
-{
+ZFPROPERTY_ON_ATTACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
     zfLog();
 }
-ZFPROPERTY_ON_DETACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign)
-{
+ZFPROPERTY_ON_DETACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, propertyAssign) {
     zfLog();
 }
 
-zfclass _ZFP_ZFCore_ZFProperty_test_TestChild: zfextends _ZFP_ZFCore_ZFProperty_test_TestBase
-{
+zfclass _ZFP_ZFCore_ZFProperty_test_TestChild: zfextends _ZFP_ZFCore_ZFProperty_test_TestBase {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFProperty_test_TestChild, _ZFP_ZFCore_ZFProperty_test_TestBase)
 
 public:
@@ -67,19 +57,16 @@ public:
 };
 
 // ============================================================
-zfclass ZFCore_ZFProperty_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFProperty_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFProperty_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFProperty");
-        {
+        this->testCaseOutput("ZFProperty"); {
             zfblockedAlloc(_ZFP_ZFCore_ZFProperty_test_TestChild, p);
 
             // property list
@@ -87,10 +74,8 @@ protected:
             ZFOutput log = zfLog();
             ZFOutputFormat::getFormat<ZFLogFormat *>(log)->c_autoSpace(zffalse)->c_autoEndl(zffalse);
             log << "list: ";
-            for(zfindex i = 0; i < clsTmp->propertyCount(); ++i)
-            {
-                if(i > 0)
-                {
+            for(zfindex i = 0; i < clsTmp->propertyCount(); ++i) {
+                if(i > 0) {
                     log << ", ";
                 }
                 log << clsTmp->propertyAt(i)->propertyName();

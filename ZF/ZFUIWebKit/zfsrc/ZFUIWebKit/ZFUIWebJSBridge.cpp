@@ -13,8 +13,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, message
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFUIWebJSBridgeRecvData, ZFJson, messageResponse)
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFUIWebJSBridgePrivate
-{
+zfclassNotPOD _ZFP_ZFUIWebJSBridgePrivate {
 public:
     void *nativeWebJSBridge;
     ZFUIWebView *webView;
@@ -37,12 +36,11 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIWebJSBridge, WebMessageBeforeRecv)
 ZFOBSERVER_EVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterRecv)
 
 #define _ZFP_ZFUIWebJSBridge_tagKey "_ZFP_ZFUIWebJSBridge_tagKey"
-ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFUIWebJSBridge *, instanceForWebView,
-                  ZFMP_IN(ZFUIWebView *, webView))
-{
+ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFUIWebJSBridge *, instanceForWebView
+        , ZFMP_IN(ZFUIWebView *, webView)
+        ) {
     ZFUIWebJSBridge *ret = webView->objectTag<ZFUIWebJSBridge *>(_ZFP_ZFUIWebJSBridge_tagKey);
-    if(ret == zfnull)
-    {
+    if(ret == zfnull) {
         zfautoObject tmp = ZFUIWebJSBridge::ClassData()->newInstance();
         ret = tmp;
         ret->d->webView = webView;
@@ -51,14 +49,13 @@ ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFUIWebJSBridge *, instanceForWebView,
     return ret;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIWebJSBridge, ZFUIWebView *, webView)
-{
+ZFMETHOD_DEFINE_0(ZFUIWebJSBridge, ZFUIWebView *, webView) {
     return d->webView;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, webMessageSend,
-                  ZFMP_IN_OUT(ZFJson &, messageSend))
-{
+ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, webMessageSend
+        , ZFMP_IN_OUT(ZFJson &, messageSend)
+        ) {
     zfblockedAlloc(ZFUIWebJSBridgeSendData, dataSend);
     dataSend->messageSend = messageSend;
     this->webMessageBeforeSend(dataSend);
@@ -66,8 +63,7 @@ ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, webMessageSend,
     this->webMessageAfterSend(dataSend);
     return dataSend->messageResponse;
 }
-ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &messageRecv)
-{
+ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &messageRecv) {
     zfblockedAlloc(ZFUIWebJSBridgeRecvData, dataRecv);
     dataRecv->messageRecv = messageRecv;
     this->webMessageBeforeRecv(dataRecv);
@@ -75,15 +71,13 @@ ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJs
     return dataRecv->messageResponse;
 }
 
-void ZFUIWebJSBridge::objectOnInit(void)
-{
+void ZFUIWebJSBridge::objectOnInit(void) {
     zfsuper::objectOnInit();
 
     d = zfpoolNew(_ZFP_ZFUIWebJSBridgePrivate);
     d->nativeWebJSBridge = ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->nativeWebJSBridgeCreate(this);
 }
-void ZFUIWebJSBridge::objectOnDealloc(void)
-{
+void ZFUIWebJSBridge::objectOnDealloc(void) {
     ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->nativeWebJSBridgeDestroy(this, d->nativeWebJSBridge);
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();

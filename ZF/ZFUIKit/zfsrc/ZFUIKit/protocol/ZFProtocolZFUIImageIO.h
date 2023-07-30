@@ -24,28 +24,34 @@ public:
      * returned image would be released by nativeImageRelease of ZFUIImage protocol
      * @note size is in pixel unit, you may revert it according imageScale
      */
-    virtual void *imageApplyScale(ZF_IN zffloat imageScale,
-                                  ZF_IN void *nativeImage,
-                                  ZF_IN const ZFUISize &newSize,
-                                  ZF_IN const ZFUIMargin &ninePatch) zfpurevirtual;
+    virtual void *imageApplyScale(
+            ZF_IN zffloat imageScale
+            , ZF_IN void *nativeImage
+            , ZF_IN const ZFUISize &newSize
+            , ZF_IN const ZFUIMargin &ninePatch
+            ) zfpurevirtual;
     /**
      * @brief see #ZFUIImageInFrame
      *
      * returned image would be released by nativeImageRelease of ZFUIImage protocol
      * @note size is in pixel unit, you may revert it according imageScale
      */
-    virtual void *imageLoadInFrame(ZF_IN zffloat imageScale,
-                                   ZF_IN void *nativeImage,
-                                   ZF_IN const ZFUIRect &frameInImage) zfpurevirtual;
+    virtual void *imageLoadInFrame(
+            ZF_IN zffloat imageScale
+            , ZF_IN void *nativeImage
+            , ZF_IN const ZFUIRect &frameInImage
+            ) zfpurevirtual;
     /**
      * @brief see #ZFUIImageFromColor, size ensured valid
      *
      * returned image would be released by nativeImageRelease of ZFUIImage protocol
      * @note size is in pixel unit, you may revert it according imageScale
      */
-    virtual void *imageLoadFromColor(ZF_IN zffloat imageScale,
-                                     ZF_IN const ZFUIColor &color,
-                                     ZF_IN const ZFUISize &size) zfpurevirtual;
+    virtual void *imageLoadFromColor(
+            ZF_IN zffloat imageScale
+            , ZF_IN const ZFUIColor &color
+            , ZF_IN const ZFUISize &size
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUIImageIO)
 
 ZF_NAMESPACE_GLOBAL_END

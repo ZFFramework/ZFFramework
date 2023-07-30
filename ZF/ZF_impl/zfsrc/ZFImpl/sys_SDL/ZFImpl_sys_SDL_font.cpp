@@ -6,30 +6,28 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfindex ZFImpl_sys_SDL_fontCacheSize = 10;
 ZFImpl_sys_SDL_FontLoader ZFImpl_sys_SDL_fontLoader = zfnull;
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_fontDataHolder, ZFLevelZFFrameworkNormal)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_fontDataHolder, ZFLevelZFFrameworkNormal) {
     ZFImpl_sys_SDL_fontCacheSize = 10;
     ZFImpl_sys_SDL_fontLoader = zfnull;
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_fontDataHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_fontDataHolder) {
     this->fontCacheRemoveAll();
 }
 public:
     ZFCoreArrayPOD<ZFImpl_sys_SDL_FontData *> fontCache; // latest cache at tail
 public:
-    void fontCacheRemoveAll(void)
-    {
-        while(!fontCache.isEmpty())
-        {
+    void fontCacheRemoveAll(void) {
+        while(!fontCache.isEmpty()) {
             zfdelete(fontCache.removeLastAndGet());
         }
     }
-    ZFImpl_sys_SDL_FontData *fontLoad(ZF_IN ZFImpl_sys_SDL_FontType fontType, ZF_IN zfuint ptsize, ZF_IN const ZFInput &input)
-    {
+    ZFImpl_sys_SDL_FontData *fontLoad(
+            ZF_IN ZFImpl_sys_SDL_FontType fontType
+            , ZF_IN zfuint ptsize
+            , ZF_IN const ZFInput &input
+            ) {
         TTF_Font *font = TTF_OpenFontRW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(input), 1, ptsize);
-        if(font == zfnull)
-        {
+        if(font == zfnull) {
             return zfnull;
         }
         ZFImpl_sys_SDL_FontData *fontData = zfnew(ZFImpl_sys_SDL_FontData);
@@ -40,40 +38,34 @@ public:
     }
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_fontDataHolder)
 
-ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(ZF_IN ZFImpl_sys_SDL_FontType fontType, ZF_IN zfuint ptsize)
-{
+ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(
+        ZF_IN ZFImpl_sys_SDL_FontType fontType
+        , ZF_IN zfuint ptsize
+        ) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_sys_SDL_fontDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_SDL_fontDataHolder);
-    for(zfindex i = d->fontCache.count() - 1; i != zfindexMax(); --i)
-    {
+    for(zfindex i = d->fontCache.count() - 1; i != zfindexMax(); --i) {
         ZFImpl_sys_SDL_FontData *fontData = d->fontCache[i];
-        if(fontData->fontType == fontType && fontData->ptsize == ptsize)
-        {
+        if(fontData->fontType == fontType && fontData->ptsize == ptsize) {
             d->fontCache.remove(i);
             return fontData;
         }
     }
 
-    if(ZFImpl_sys_SDL_fontLoader != zfnull)
-    {
-        for(zfint fontTypeTmp = fontType; fontTypeTmp >= ZFImpl_sys_SDL_FontType_normal && fontTypeTmp <= ZFImpl_sys_SDL_FontType_bold_italic; --fontTypeTmp)
-        {
+    if(ZFImpl_sys_SDL_fontLoader != zfnull) {
+        for(zfint fontTypeTmp = fontType; fontTypeTmp >= ZFImpl_sys_SDL_FontType_normal && fontTypeTmp <= ZFImpl_sys_SDL_FontType_bold_italic; --fontTypeTmp) {
             ZFInput input = ZFImpl_sys_SDL_fontLoader((ZFImpl_sys_SDL_FontType)fontTypeTmp);
-            if(input)
-            {
+            if(input) {
                 ZFImpl_sys_SDL_FontData *fontData = d->fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsize, input);
-                if(fontData != zfnull)
-                {
+                if(fontData != zfnull) {
                     return fontData;
                 }
             }
         }
     }
 
-    for(zfint fontTypeTmp = fontType; fontTypeTmp >= ZFImpl_sys_SDL_FontType_normal && fontTypeTmp <= ZFImpl_sys_SDL_FontType_bold_italic; --fontTypeTmp)
-    {
+    for(zfint fontTypeTmp = fontType; fontTypeTmp >= ZFImpl_sys_SDL_FontType_normal && fontTypeTmp <= ZFImpl_sys_SDL_FontType_bold_italic; --fontTypeTmp) {
         ZFInput input;
-        switch(fontTypeTmp)
-        {
+        switch(fontTypeTmp) {
             case ZFImpl_sys_SDL_FontType_bold:
                 input = ZFInputForRes("ZF_impl/sys_SDL/font/IBMPlexMono-Bold.ttf");
                 break;
@@ -88,11 +80,9 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(ZF_IN ZFImpl_sys_SDL_FontType 
                 input = ZFInputForRes("ZF_impl/sys_SDL/font/IBMPlexMono-Regular.ttf");
                 break;
         }
-        if(input)
-        {
+        if(input) {
             ZFImpl_sys_SDL_FontData *fontData = d->fontLoad((ZFImpl_sys_SDL_FontType)fontTypeTmp, ptsize, input);
-            if(fontData != zfnull)
-            {
+            if(fontData != zfnull) {
                 return fontData;
             }
         }
@@ -101,10 +91,8 @@ ZFImpl_sys_SDL_FontData *ZFImpl_sys_SDL_fontAlloc(ZF_IN ZFImpl_sys_SDL_FontType 
     return zfnull;
 }
 
-void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData)
-{
-    if(fontData == zfnull || fontData->font == zfnull)
-    {
+void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData) {
+    if(fontData == zfnull || fontData->font == zfnull) {
         return;
     }
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_sys_SDL_fontDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_SDL_fontDataHolder);
@@ -116,8 +104,7 @@ void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData)
     // TTF_SetFontKerning(fontData->font, 1);
     // TTF_SetFontOutline(fontData->font, 0);
     TTF_SetFontSize(fontData->font, fontData->ptsize);
-    switch(fontData->fontType)
-    {
+    switch(fontData->fontType) {
         case ZFImpl_sys_SDL_FontType_bold:
             TTF_SetFontStyle(fontData->font, TTF_STYLE_BOLD);
             break;
@@ -134,8 +121,7 @@ void ZFImpl_sys_SDL_fontRelease(ZF_IN ZFImpl_sys_SDL_FontData *fontData)
     }
     TTF_SetFontWrappedAlign(fontData->font, TTF_WRAPPED_ALIGN_LEFT);
 
-    while(d->fontCache.count() > ZFImpl_sys_SDL_fontCacheSize)
-    {
+    while(d->fontCache.count() > ZFImpl_sys_SDL_fontCacheSize) {
         zfdelete(d->fontCache.removeFirstAndGet());
     }
 }

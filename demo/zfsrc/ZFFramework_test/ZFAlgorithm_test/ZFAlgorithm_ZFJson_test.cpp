@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFAlgorithm_ZFJson_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFAlgorithm_ZFJson_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFAlgorithm_ZFJson_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFJson);
 
@@ -57,12 +55,10 @@ protected:
         this->testCaseStop();
     }
 private:
-    void performanceTest(ZF_IN const ZFJson &jsonItem)
-    {
+    void performanceTest(ZF_IN const ZFJson &jsonItem) {
         zfindex toDataTimes = 10000;
         ZFCoreStatistic::invokeTimeLogBegin("ZFJsonPerformance_test_toData");
-        for(zfindex i = 0; i < toDataTimes; ++i)
-        {
+        for(zfindex i = 0; i < toDataTimes; ++i) {
             zfstring tmp;
             ZFJsonToOutput(ZFOutputForString(tmp), jsonItem);
         }
@@ -72,8 +68,7 @@ private:
         zfstring jsonString;
         ZFJsonToOutput(ZFOutputForString(jsonString), jsonItem);
         ZFCoreStatistic::invokeTimeLogBegin("ZFJsonPerformance_test_fromData");
-        for(zfindex i = 0; i < fromDataTimes; ++i)
-        {
+        for(zfindex i = 0; i < fromDataTimes; ++i) {
             ZFJsonFromInput(ZFInputForBufferUnsafe(jsonString));
         }
         ZFCoreStatistic::invokeTimeLogEnd("ZFJsonPerformance_test_fromData");

@@ -2,8 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFSerializable_test_TestClass : zfextends ZFObject, zfimplements ZFSerializable
-{
+zfclass _ZFP_ZFCore_ZFSerializable_test_TestClass : zfextends ZFObject, zfimplements ZFSerializable {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFSerializable_test_TestClass, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable)
 
@@ -12,22 +11,19 @@ public:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoOnAppend(ret);
         ZFClassUtil::objectPropertyInfo(ret, this);
     }
 };
 
-zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassChild : zfextends _ZFP_ZFCore_ZFSerializable_test_TestClass
-{
+zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassChild : zfextends _ZFP_ZFCore_ZFSerializable_test_TestClass {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFSerializable_test_TestClassChild, _ZFP_ZFCore_ZFSerializable_test_TestClass)
 
     ZFPROPERTY_ASSIGN(zfstring, stringInChild)
 };
 
-zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassContainer : zfextends ZFObject, zfimplements ZFSerializable
-{
+zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassContainer : zfextends ZFObject, zfimplements ZFSerializable {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFSerializable_test_TestClassContainer, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable)
 
@@ -36,22 +32,19 @@ public:
 
 protected:
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         ret += this->classData()->classNameFull();
         ZFClassUtil::objectPropertyInfo(ret, this);
     }
 };
 
 // ============================================================
-zfclass ZFCore_ZFSerializable_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFSerializable_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFSerializable_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         this->testCaseOutputSeparator();
@@ -69,13 +62,11 @@ protected:
         this->testCaseStop();
     }
 protected:
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->memberPrepare();
     }
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         this->memberDestroy();
         zfsuper::objectOnDealloc();
     }
@@ -83,8 +74,7 @@ private:
     _ZFP_ZFCore_ZFSerializable_test_TestClass *obj;
     _ZFP_ZFCore_ZFSerializable_test_TestClassChild *objChild;
     _ZFP_ZFCore_ZFSerializable_test_TestClassContainer *objContainer;
-    void memberPrepare(void)
-    {
+    void memberPrepare(void) {
         this->obj = zfAlloc(_ZFP_ZFCore_ZFSerializable_test_TestClass);
         this->obj->stringInParent("base's string, with unicode chars: \"啊哦\"");
 
@@ -99,8 +89,7 @@ private:
         this->objContainer->serializableMember(objTmp);
         zfRelease(objTmp);
     }
-    void memberDestroy(void)
-    {
+    void memberDestroy(void) {
         zfRelease(this->obj);
         this->obj = zfnull;
         zfRelease(this->objChild);
@@ -108,8 +97,7 @@ private:
         zfRelease(this->objContainer);
         this->objContainer = zfnull;
     }
-    void test(ZFSerializable *serializableObj)
-    {
+    void test(ZFSerializable *serializableObj) {
         zfstring encodedData;
 
         this->testCaseOutput("object:\n%s\n", serializableObj->toObject()->objectInfo().cString());

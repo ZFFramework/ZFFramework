@@ -26,8 +26,7 @@ typedef void (*ZFValueHolderType)(ZF_IN void *holdedData);
 /**
  * @brief used to hold a non ZFObject type for performance
  */
-zffinal zfclass ZFLIB_ZFCore ZFValueHolder : zfextends ZFObject
-{
+zffinal zfclass ZFLIB_ZFCore ZFValueHolder : zfextends ZFObject {
     // ============================================================
 public:
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFValueHolder, ZFObject)
@@ -39,18 +38,15 @@ protected:
         cache->_cleanup();
     })
 private:
-    void _cleanup(void)
-    {
-        if(this->holdedData && this->holderType)
-        {
+    void _cleanup(void) {
+        if(this->holdedData && this->holderType) {
             void *holdedData = this->holdedData;
             ZFValueHolderType holderType = this->holderType;
             this->holdedData = zfnull;
             this->holderType = zfnull;
             holderType(holdedData);
         }
-        else
-        {
+        else {
             this->holdedData = zfnull;
             this->holderType = zfnull;
         }
@@ -60,21 +56,20 @@ protected:
     /**
      * @brief init with object
      */
-    virtual void objectOnInit(ZF_IN void *holdedData,
-                              ZF_IN ZFValueHolderType holderType)
-    {
+    virtual void objectOnInit(
+        ZF_IN void *holdedData
+        , ZF_IN ZFValueHolderType holderType
+        ) {
         this->objectOnInit();
         this->holdedData = holdedData;
         this->holderType = holderType;
     }
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
     zfoverride
-    virtual void objectOnDeallocPrepare(void)
-    {
+    virtual void objectOnDeallocPrepare(void) {
         this->_cleanup();
         zfsuper::objectOnDeallocPrepare();
     }
@@ -95,14 +90,12 @@ public:
 public:
     /** @brief util method to cast #holdedData */
     template<typename T_RawType>
-    inline T_RawType holdedDataPointer(void)
-    {
+    inline T_RawType holdedDataPointer(void) {
         return ZFCastStatic(T_RawType, this->holdedData);
     }
     /** @brief util method to cast #holdedData */
     template<typename T_RawType>
-    inline T_RawType holdedDataRef(void)
-    {
+    inline T_RawType holdedDataRef(void) {
         typedef typename zftTraits<T_RawType>::TrPtr T_RawTypePointer;
         return *ZFCastStatic(T_RawTypePointer, this->holdedData);
     }
@@ -116,24 +109,19 @@ public:
     zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
 };
-zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFValueHolderType
-{
+zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFValueHolderType {
 public:
-    static void TypePointerRef(ZF_IN void *holdedData)
-    {
+    static void TypePointerRef(ZF_IN void *holdedData) {
     }
-    static void TypePOD(ZF_IN void *holdedData)
-    {
+    static void TypePOD(ZF_IN void *holdedData) {
         zffree(holdedData);
     }
     template<typename T_Object>
-    static void TypeObject(ZF_IN void *holdedData)
-    {
+    static void TypeObject(ZF_IN void *holdedData) {
         zfdelete(ZFCastStatic(T_Object, holdedData));
     }
     template<typename T_Object>
-    static void TypePoolObject(ZF_IN void *holdedData)
-    {
+    static void TypePoolObject(ZF_IN void *holdedData) {
         zfCoreMutexLock();
         zfpoolDelete(ZFCastStatic(T_Object, holdedData));
         zfCoreMutexUnlock();

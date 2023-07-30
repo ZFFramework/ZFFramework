@@ -12,8 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief base class of all ui event
  */
-zfclass ZFLIB_ZFUIKit ZFUIEvent : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIKit ZFUIEvent : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIEvent, ZFObject)
 
     ZFALLOC_CACHE_RELEASE({
@@ -24,8 +23,9 @@ public:
     /**
      * @brief whether the event has been resolved
      */
-    ZFMETHOD_DECLARE_1(void, eventResolved,
-                       ZFMP_IN(zfbool const &, value))
+    ZFMETHOD_DECLARE_1(void, eventResolved
+            , ZFMP_IN(zfbool const &, value)
+            )
     /**
      * @brief see #eventResolved
      */
@@ -35,14 +35,12 @@ protected:
     /**
      * @brief see #ZFUIView::UIScaleOnChange, usually internal use only
      */
-    virtual void eventOnApplyScale(ZF_IN zffloat scale)
-    {
+    virtual void eventOnApplyScale(ZF_IN zffloat scale) {
     }
     /**
      * @brief see #eventOnApplyScale
      */
-    virtual void eventOnApplyScaleReversely(ZF_IN zffloat scale)
-    {
+    virtual void eventOnApplyScaleReversely(ZF_IN zffloat scale) {
     }
 
 protected:

@@ -13,21 +13,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief on screen keyboard state helper
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIOnScreenKeyboardState : zfextends ZFObject
-{
+zffinal zfclass ZFLIB_ZFUIKit ZFUIOnScreenKeyboardState : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIOnScreenKeyboardState, ZFObject)
 
 public:
     /**
      * @brief access keyboard state for sys window
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUIOnScreenKeyboardState *, instanceForSysWindow,
-                              ZFMP_IN_OPT(ZFUISysWindow *, sysWindow, zfnull))
+    ZFMETHOD_DECLARE_STATIC_1(ZFUIOnScreenKeyboardState *, instanceForSysWindow
+            , ZFMP_IN_OPT(ZFUISysWindow *, sysWindow, zfnull)
+            )
     /**
      * @brief access keyboard state for view
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUIOnScreenKeyboardState *, instanceForView,
-                              ZFMP_IN_OPT(ZFUIView *, view, zfnull))
+    ZFMETHOD_DECLARE_STATIC_1(ZFUIOnScreenKeyboardState *, instanceForView
+            , ZFMP_IN_OPT(ZFUIView *, view, zfnull)
+            )
 
 public:
     /**
@@ -63,8 +64,9 @@ public:
      *
      * output is the available client frame that won't be covered by the keyboard
      */
-    ZFMETHOD_DECLARE_1(void, keyboardFixClientFrameT,
-                       ZFMP_OUT(ZFUIRect &, clientFrame))
+    ZFMETHOD_DECLARE_1(void, keyboardFixClientFrameT
+            , ZFMP_OUT(ZFUIRect &, clientFrame)
+            )
     /**
      * @brief see #keyboardFixClientFrame
      */

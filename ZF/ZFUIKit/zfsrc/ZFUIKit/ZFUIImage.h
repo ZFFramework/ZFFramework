@@ -12,13 +12,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd ZFUIImage;
 
 // ============================================================
-typedef zfbool (*_ZFP_ZFUIImageSerializeFromCallback)(ZF_IN_OUT ZFUIImage *image,
-                                                      ZF_IN const ZFSerializableData &imageData,
-                                                      ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                                      ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */);
+typedef zfbool (*_ZFP_ZFUIImageSerializeFromCallback)(
+        ZF_IN_OUT ZFUIImage *image
+        , ZF_IN const ZFSerializableData &imageData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        );
 
-extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeRegister(ZF_IN const zfchar *name,
-                                                              ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback);
+extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeRegister(
+        ZF_IN const zfchar *name
+        , ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback
+        );
 extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfchar *name);
 /**
  * @brief register a serializable logic for ZFUIImage
@@ -31,14 +35,15 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfch
  * example
  * @code
  *   // in cpp file
- *   ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, yourTypeName)
- *   {
+ *   ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(registerSig, yourTypeName) {
  *       // serialize callback from data
  *       // proto type:
- *       //   zfbool action(ZF_IN_OUT ZFUIImage *ret,
- *       //                 ZF_IN const ZFSerializableData &serializableData,
- *       //                 ZF_OUT_OPT zfstring *outErrorHint,
- *       //                 ZF_OUT_OPT ZFSerializableData *outErrorPos);
+ *       //   zfbool action(
+ *       //           ZF_IN_OUT ZFUIImage *ret
+ *       //           , ZF_IN const ZFSerializableData &serializableData
+ *       //           , ZF_OUT_OPT zfstring *outErrorHint
+ *       //           , ZF_OUT_OPT ZFSerializableData *outErrorPos
+ *       //           );
  *       return zftrue;
  *   }
  * @endcode
@@ -48,12 +53,10 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfch
                                                                     ZF_IN const ZFSerializableData &serializableData, \
                                                                     ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */, \
                                                                     ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */); \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageSerializeReg_##registerSig, ZFLevelZFFrameworkHigh) \
-    { \
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageSerializeReg_##registerSig, ZFLevelZFFrameworkHigh) { \
         _ZFP_ZFUIImageSerializeTypeRegister(typeName, _ZFP_ZFUIImageSerializeFromCallback_##registerSig); \
     } \
-    ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageSerializeReg_##registerSig) \
-    { \
+    ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageSerializeReg_##registerSig) { \
         _ZFP_ZFUIImageSerializeTypeUnregister(typeName); \
     } \
     ZF_GLOBAL_INITIALIZER_END(ZFUIImageSerializeReg_##registerSig) \
@@ -67,8 +70,7 @@ extern ZFLIB_ZFUIKit void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<co
 /**
  * @brief usually for debug use only
  */
-inline ZFCoreArrayPOD<const zfchar *> ZFUIImageSerializeTypeGetAll(void)
-{
+inline ZFCoreArrayPOD<const zfchar *> ZFUIImageSerializeTypeGetAll(void) {
     ZFCoreArrayPOD<const zfchar *> ret;
     ZFUIImageSerializeTypeGetAllT(ret);
     return ret;
@@ -99,8 +101,7 @@ zfclassFwd _ZFP_ZFUIImagePrivate;
  *   </ZFUIImage>
  * @endcode
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextends ZFStyleableObject
-{
+zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUIImage, ZFStyleableObject)
 
     /**
@@ -112,13 +113,17 @@ zffinal zfclass ZFLIB_ZFUIKit ZFUIImage : zfextends ZFStyleableObject
 
 protected:
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 protected:
     zfoverride
@@ -196,8 +201,7 @@ public:
     zffinal void _ZFP_ZFUIImage_imageScaleOnChange(void);
 protected:
     /** @brief see #EventImageScaleOnChange */
-    virtual void imageScaleOnChange(void)
-    {
+    virtual void imageScaleOnChange(void) {
         this->observerNotify(ZFUIImage::EventImageScaleOnChange());
     }
 
@@ -209,8 +213,10 @@ public:
      *
      * the image would be retained, actual retain logic is depending on the implementation
      */
-    virtual void nativeImage(ZF_IN void *nativeImage,
-                             ZF_IN_OPT zfbool retainNativeImage = zftrue);
+    virtual void nativeImage(
+            ZF_IN void *nativeImage
+            , ZF_IN_OPT zfbool retainNativeImage = zftrue
+            );
 
     /**
      * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE

@@ -30,7 +30,10 @@ zfclassFwd ZFUIView;
 /**
  * @brief see #ZFUIView::nativeImplView
  */
-typedef void (*ZFUIViewNativeImplViewDeleteCallback)(ZF_IN ZFUIView *view, ZF_IN void *nativeImplView);
+typedef void (*ZFUIViewNativeImplViewDeleteCallback)(
+        ZF_IN ZFUIView *view
+        , ZF_IN void *nativeImplView
+        );
 
 // ============================================================
 // ZFUIView
@@ -87,8 +90,7 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * we also allow add ZFUIView to native view,
  * for how to, refer to #ZFUISysWindow::nativeWindowEmbed
  */
-zfclass ZFLIB_ZFUIKit ZFUIView : zfextends ZFStyleableObject
-{
+zfclass ZFLIB_ZFUIKit ZFUIView : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUIView, ZFStyleableObject)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIView)
 
@@ -207,13 +209,17 @@ public:
     virtual ZFUILayoutParam *serializableRefLayoutParam(void);
 protected:
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
     /**
      * @brief whether we should serialize all children
      *
@@ -221,8 +227,7 @@ protected:
      * for some adapter view it may be not necessary,
      * you may override this method to disable the auto serialization of child views
      */
-    virtual inline zfbool serializableOnCheckNeedSerializeChildren(void)
-    {
+    virtual inline zfbool serializableOnCheckNeedSerializeChildren(void) {
         return zftrue;
     }
 
@@ -298,8 +303,9 @@ public:
      */
     ZFMETHOD_DECLARE_0(ZFUIRect const &, viewFrame)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewFrame,
-                       ZFMP_IN(ZFUIRect const &, viewFrame))
+    ZFMETHOD_DECLARE_1(void, viewFrame
+            , ZFMP_IN(ZFUIRect const &, viewFrame)
+            )
 
     /** @brief previous #viewFrame */
     ZFMETHOD_DECLARE_0(const ZFUIRect &, viewFramePrev)
@@ -310,27 +316,39 @@ public:
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_0(zffloat const &, viewX)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewX, ZFMP_IN(zffloat const &, propertyValue))
+    ZFMETHOD_DECLARE_1(void, viewX
+            , ZFMP_IN(zffloat const &, propertyValue)
+            )
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_0(zffloat const &, viewY)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewY, ZFMP_IN(zffloat const &, propertyValue))
+    ZFMETHOD_DECLARE_1(void, viewY
+            , ZFMP_IN(zffloat const &, propertyValue)
+            )
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_0(zffloat const &, viewWidth)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewWidth, ZFMP_IN(zffloat const &, propertyValue))
+    ZFMETHOD_DECLARE_1(void, viewWidth
+            , ZFMP_IN(zffloat const &, propertyValue)
+            )
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_0(zffloat const &, viewHeight)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewHeight, ZFMP_IN(zffloat const &, propertyValue))
+    ZFMETHOD_DECLARE_1(void, viewHeight
+            , ZFMP_IN(zffloat const &, propertyValue)
+            )
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_0(zffloat const &, viewCenterX)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewCenterX, ZFMP_IN(zffloat const &, propertyValue))
+    ZFMETHOD_DECLARE_1(void, viewCenterX
+            , ZFMP_IN(zffloat const &, propertyValue)
+            )
     /** @brief see #viewFrame */
     ZFMETHOD_DECLARE_0(zffloat const &, viewCenterY)
     /** @brief see #viewFrame */
-    ZFMETHOD_DECLARE_1(void, viewCenterY, ZFMP_IN(zffloat const &, propertyValue))
+    ZFMETHOD_DECLARE_1(void, viewCenterY
+            , ZFMP_IN(zffloat const &, propertyValue)
+            )
 
     /**
      * @brief prefered size, #ZFUISizeInvalid by default
@@ -488,30 +506,31 @@ protected:
     /**
      * @brief see #nativeImplView
      */
-    virtual void nativeImplView(ZF_IN void *nativeImplView,
-                                ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback,
-                                ZF_IN zfbool nativeImplViewRequireVirtualIndex);
+    virtual void nativeImplView(
+            ZF_IN void *nativeImplView
+            , ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback
+            , ZF_IN zfbool nativeImplViewRequireVirtualIndex
+            );
     /**
      * @brief see #nativeImplViewMargin,
      *   subclass must call super and "append" to existing margin
      */
-    virtual inline void nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin)
-    {
+    virtual inline void nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin) {
     }
     /**
      * @brief see #EventNativeImplViewMarginOnUpdate
      */
-    virtual inline void nativeImplViewMarginOnUpdate(void)
-    {
+    virtual inline void nativeImplViewMarginOnUpdate(void) {
         this->observerNotify(ZFUIView::EventNativeImplViewMarginOnUpdate());
     }
     /**
      * @brief called to layout #nativeImplView
      */
-    virtual void nativeImplViewOnLayout(ZF_OUT ZFUIRect &ret,
-                                        ZF_IN const ZFUIRect &bounds,
-                                        ZF_IN const ZFUIMargin &nativeImplViewMargin)
-    {
+    virtual void nativeImplViewOnLayout(
+            ZF_OUT ZFUIRect &ret
+            , ZF_IN const ZFUIRect &bounds
+            , ZF_IN const ZFUIMargin &nativeImplViewMargin
+            ) {
         ZFUIRectApplyMargin(ret, bounds, nativeImplViewMargin);
     }
 
@@ -526,17 +545,21 @@ protected:
      * -  #implChildOnRemove : called to remove from impl
      * -  #implChildOnRemoveAllForDealloc : called to remove from impl during parent dealloc
      */
-    virtual void implChildOnAdd(ZF_IN ZFUIView *child,
-                                ZF_IN zfindex virtualIndex,
-                                ZF_IN ZFUIViewChildLayerEnum childLayer,
-                                ZF_IN zfindex childLayerIndex);
+    virtual void implChildOnAdd(
+            ZF_IN ZFUIView *child
+            , ZF_IN zfindex virtualIndex
+            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN zfindex childLayerIndex
+            );
     /**
      * @brief see #implChildOnAdd, #implChildOnRemoveAllForDealloc
      */
-    virtual void implChildOnRemove(ZF_IN ZFUIView *child,
-                                   ZF_IN zfindex virtualIndex,
-                                   ZF_IN ZFUIViewChildLayerEnum childLayer,
-                                   ZF_IN zfindex childLayerIndex);
+    virtual void implChildOnRemove(
+            ZF_IN ZFUIView *child
+            , ZF_IN zfindex virtualIndex
+            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            , ZF_IN zfindex childLayerIndex
+            );
     /**
      * @brief called to remove all children during parent dealloc for performance
      *
@@ -561,7 +584,10 @@ public:
      * for how to access native implementation, please refer to #nativeImplView
      */
     ZFMETHOD_DECLARE_0(void *, nativeView)
-    static void _ZFP_ZFUIView_nativeViewNotifyAdd(ZF_IN ZFUIView *view, ZF_IN void *nativeParentView);
+    static void _ZFP_ZFUIView_nativeViewNotifyAdd(
+            ZF_IN ZFUIView *view
+            , ZF_IN void *nativeParentView
+            );
     static void _ZFP_ZFUIView_nativeViewNotifyRemove(ZF_IN ZFUIView *view);
 
     // ============================================================
@@ -577,10 +603,10 @@ public:
      *
      * only focused view can receive key events
      */
-    ZFMETHOD_DECLARE_1(void, viewFocusRequest,
-                       ZFMP_IN(zfbool, viewFocus))
-    zffinal void _ZFP_ZFUIView_viewFocusOnChange(void)
-    {
+    ZFMETHOD_DECLARE_1(void, viewFocusRequest
+            , ZFMP_IN(zfbool, viewFocus)
+            )
+    zffinal void _ZFP_ZFUIView_viewFocusOnChange(void) {
         this->viewFocusOnChange();
     }
     /**
@@ -589,17 +615,18 @@ public:
     ZFMETHOD_DECLARE_0(ZFUIView *, viewFocusFind)
 protected:
     /** @brief see #EventViewFocusOnChange */
-    virtual inline void viewFocusOnChange(void)
-    {
+    virtual inline void viewFocusOnChange(void) {
         this->observerNotify(ZFUIView::EventViewFocusOnChange());
     }
 
     // ============================================================
     // parent
 public:
-    zffinal void _ZFP_ZFUIView_parentChanged(ZF_IN ZFUIView *parentView,
-                                             ZF_IN ZFUILayoutParam *layoutParam,
-                                             ZF_IN ZFUIViewChildLayerEnum viewLayer);
+    zffinal void _ZFP_ZFUIView_parentChanged(
+            ZF_IN ZFUIView *parentView
+            , ZF_IN ZFUILayoutParam *layoutParam
+            , ZF_IN ZFUIViewChildLayerEnum viewLayer
+            );
     /**
      * @brief parent view or null if none
      */
@@ -702,8 +729,7 @@ protected:
     /**
      * @brief see #layoutParamCreate
      */
-    virtual inline void layoutParamOnUpdate(ZF_IN ZFUILayoutParam *layoutParam)
-    {
+    virtual inline void layoutParamOnUpdate(ZF_IN ZFUILayoutParam *layoutParam) {
     }
 
 public:
@@ -715,8 +741,9 @@ public:
      * while adding to another container view with different layout param type,
      * a new layout param would be created and applied style from the existing one
      */
-    ZFMETHOD_DECLARE_1(void, layoutParam,
-                       ZFMP_IN(ZFUILayoutParam *, layoutParam))
+    ZFMETHOD_DECLARE_1(void, layoutParam
+            , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+            )
     /**
      * @brief get self's layout param, valid only while the view has parent
      *
@@ -728,8 +755,7 @@ public:
      * @brief see #layoutParam
      */
     template<typename T_LayoutParam>
-    T_LayoutParam layoutParam(void)
-    {
+    T_LayoutParam layoutParam(void) {
         return ZFCastZFObjectUnchecked(T_LayoutParam, this->layoutParam());
     }
 
@@ -753,9 +779,10 @@ public:
      * note that internal views won't be measured
      * @see layoutMeasuredSize
      */
-    ZFMETHOD_DECLARE_2(const ZFUISize &, layoutMeasure,
-                       ZFMP_IN(const ZFUISize &, sizeHint),
-                       ZFMP_IN(const ZFUISizeParam &, sizeParam))
+    ZFMETHOD_DECLARE_2(const ZFUISize &, layoutMeasure
+            , ZFMP_IN(const ZFUISize &, sizeHint)
+            , ZFMP_IN(const ZFUISizeParam &, sizeParam)
+            )
     /**
      * @brief get measured size, invalid if not measured
      */
@@ -806,20 +833,21 @@ protected:
      *   you should manually take care of #nativeImplViewMargin
      *   during measure and layout steps
      */
-    virtual inline void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                        ZF_IN const ZFUISize &sizeHint,
-                                        ZF_IN const ZFUISizeParam &sizeParam)
-    {
+    virtual inline void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            ) {
     }
     /** @brief see #EventViewLayoutOnMeasureFinish */
-    virtual inline void layoutOnMeasureFinish(ZF_IN_OUT ZFUISize &measuredSize,
-                                              ZF_IN const ZFUISize &sizeHint,
-                                              ZF_IN const ZFUISizeParam &sizeParam)
-    {
+    virtual inline void layoutOnMeasureFinish(
+            ZF_IN_OUT ZFUISize &measuredSize
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            ) {
     }
     /** @brief see #EventViewLayoutOnLayoutPrepare */
-    virtual inline void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
-    {
+    virtual inline void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
     }
     /**
      * @brief called by #viewFrame to layout the view and children
@@ -831,12 +859,10 @@ protected:
      */
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
     /** @brief see #EventViewLayoutOnLayoutFinish */
-    virtual inline void layoutOnLayoutFinish(ZF_IN const ZFUIRect &bounds)
-    {
+    virtual inline void layoutOnLayoutFinish(ZF_IN const ZFUIRect &bounds) {
     }
     /** @brief see #layoutChildOffset */
-    virtual inline void layoutChildOffsetOnUpdate(ZF_IN_OUT ZFUIPoint &ret)
-    {
+    virtual inline void layoutChildOffsetOnUpdate(ZF_IN_OUT ZFUIPoint &ret) {
     }
 
     // ============================================================
@@ -845,10 +871,11 @@ public:
     /**
      * @brief find view by viewId, return the view or null if not found
      */
-    ZFMETHOD_DECLARE_3(ZFUIView *, childFindById,
-                       ZFMP_IN(const zfchar *, viewId),
-                       ZFMP_IN_OPT(zfbool, findRecursively, zftrue),
-                       ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse))
+    ZFMETHOD_DECLARE_3(ZFUIView *, childFindById
+            , ZFMP_IN(const zfchar *, viewId)
+            , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
+            , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
+            )
 
 public:
     /**
@@ -859,25 +886,30 @@ public:
      * otherwise, a new layout param would be created
      * and source layout param would be copied to the newly created layout param
      */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, childAddWithParam,
-                       ZFMP_IN(ZFUIView *, view),
-                       ZFMP_IN(ZFUILayoutParam *, layoutParam),
-                       ZFMP_IN_OPT(zfindex, atIndex, zfindexMax()))
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, childAddWithParam
+            , ZFMP_IN(ZFUIView *, view)
+            , ZFMP_IN(ZFUILayoutParam *, layoutParam)
+            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+            )
     /** @brief util method for #childAddWithParam */
-    inline ZFUILayoutParam *childAdd(ZF_IN ZFUIView *view, ZF_IN_OPT zfindex atIndex = zfindexMax())
-    {
+    inline ZFUILayoutParam *childAdd(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            ) {
         return this->childAddWithParam(view, zfnull, atIndex)->toAny();
     }
     /**
      * @brief remove view or do nothing if view isn't added to this view
      */
-    ZFMETHOD_DECLARE_1(void, childRemove,
-                       ZFMP_IN(ZFUIView *, view))
+    ZFMETHOD_DECLARE_1(void, childRemove
+            , ZFMP_IN(ZFUIView *, view)
+            )
     /**
      * @brief remove view at index or assert fail if index out of range
      */
-    ZFMETHOD_DECLARE_1(void, childRemoveAt,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(void, childRemoveAt
+            , ZFMP_IN(zfindex, index)
+            )
     /**
      * @brief remove all child view
      */
@@ -889,22 +921,25 @@ public:
      * assert fail if fromIndex out of range, or toIndexOrIndexMax isn't zfindexMax() and out of range\n
      * moving a view would cause #layoutRequest being called
      */
-    ZFMETHOD_DECLARE_2(void, childMove,
-                       ZFMP_IN(zfindex, fromIndex),
-                       ZFMP_IN(zfindex, toIndexOrIndexMax))
+    ZFMETHOD_DECLARE_2(void, childMove
+            , ZFMP_IN(zfindex, fromIndex)
+            , ZFMP_IN(zfindex, toIndexOrIndexMax)
+            )
     /**
      * @brief see #childMove
      */
-    ZFMETHOD_DECLARE_2(void, childMove,
-                       ZFMP_IN(ZFUIView *, child),
-                       ZFMP_IN(zfindex, toIndexOrIndexMax))
+    ZFMETHOD_DECLARE_2(void, childMove
+            , ZFMP_IN(ZFUIView *, child)
+            , ZFMP_IN(zfindex, toIndexOrIndexMax)
+            )
     /**
      * @brief replace child at index, assert fail if index out of range
      *   or view to replace already has parent
      */
-    ZFMETHOD_DECLARE_2(void, childReplaceAt,
-                       ZFMP_IN(zfindex, atIndex),
-                       ZFMP_IN(ZFUIView *, toReplace))
+    ZFMETHOD_DECLARE_2(void, childReplaceAt
+            , ZFMP_IN(zfindex, atIndex)
+            , ZFMP_IN(ZFUIView *, toReplace)
+            )
     /**
      * @brief get child view count
      */
@@ -912,13 +947,15 @@ public:
     /**
      * @brief get child view at index or assert fail if out of range
      */
-    ZFMETHOD_DECLARE_1(ZFUIView *, childAt,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(ZFUIView *, childAt
+            , ZFMP_IN(zfindex, index)
+            )
     /**
      * @brief return index of view or zfindexMax() if not child of this view
      */
-    ZFMETHOD_DECLARE_1(zfindex, childFind,
-                       ZFMP_IN(ZFUIView *, view))
+    ZFMETHOD_DECLARE_1(zfindex, childFind
+            , ZFMP_IN(ZFUIView *, view)
+            )
     /**
      * @brief get the child view array
      */
@@ -944,11 +981,15 @@ protected:
     /** @brief see #EventViewChildOnChange */
     virtual void viewChildOnChange(void);
     /** @brief see #EventViewChildOnAdd */
-    virtual void viewChildOnAdd(ZF_IN ZFUIView *child,
-                                ZF_IN ZFUIViewChildLayerEnum childLayer);
+    virtual void viewChildOnAdd(
+            ZF_IN ZFUIView *child
+            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            );
     /** @brief see #EventViewChildOnRemove */
-    virtual void viewChildOnRemove(ZF_IN ZFUIView *child,
-                                   ZF_IN ZFUIViewChildLayerEnum childLayer);
+    virtual void viewChildOnRemove(
+            ZF_IN ZFUIView *child
+            , ZF_IN ZFUIViewChildLayerEnum childLayer
+            );
     /** @brief see #EventViewOnAddToParent */
     virtual void viewOnAddToParent(ZF_IN ZFUIView *parent);
     /** @brief see #EventViewOnRemoveFromParent */
@@ -958,13 +999,15 @@ protected:
     // internal views
 public:
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalImplViewAdd,
-                       ZFMP_IN(ZFUIView *, view),
-                       ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
-                       ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalImplViewAdd
+            , ZFMP_IN(ZFUIView *, view)
+            , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
+            , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+            )
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_1(void, internalImplViewRemove,
-                       ZFMP_IN(ZFUIView *, view))
+    ZFMETHOD_DECLARE_1(void, internalImplViewRemove
+            , ZFMP_IN(ZFUIView *, view)
+            )
     /** @brief see #internalBgViewAdd */
     ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIView *>, internalImplViewArray)
 
@@ -986,13 +1029,15 @@ public:
      * \n
      * internal views has no measure steps, its size always depends on parent's size
      */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalBgViewAdd,
-                       ZFMP_IN(ZFUIView *, view),
-                       ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
-                       ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalBgViewAdd
+            , ZFMP_IN(ZFUIView *, view)
+            , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
+            , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+            )
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_1(void, internalBgViewRemove,
-                       ZFMP_IN(ZFUIView *, view))
+    ZFMETHOD_DECLARE_1(void, internalBgViewRemove
+            , ZFMP_IN(ZFUIView *, view)
+            )
     /**
      * @brief usually for debug use only, try to avoid use this in your app for other purpose
      */
@@ -1000,13 +1045,15 @@ public:
 
 public:
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalFgViewAdd,
-                       ZFMP_IN(ZFUIView *, view),
-                       ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull),
-                       ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue))
+    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalFgViewAdd
+            , ZFMP_IN(ZFUIView *, view)
+            , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
+            , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
+            )
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_1(void, internalFgViewRemove,
-                       ZFMP_IN(ZFUIView *, view))
+    ZFMETHOD_DECLARE_1(void, internalFgViewRemove
+            , ZFMP_IN(ZFUIView *, view)
+            )
     /** @brief see #internalBgViewAdd */
     ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIView *>, internalFgViewArray)
 
@@ -1024,16 +1071,19 @@ public:
      * while serializing, if an internal view with same id already exists,
      * we would copy style from serialize data to the existing one instead
      */
-    ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagAdd,
-                       ZFMP_IN(const zfchar *, tag))
+    ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagAdd
+            , ZFMP_IN(const zfchar *, tag)
+            )
     /** @brief see #internalViewAutoSerializeTagAdd */
-    ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagRemove,
-                       ZFMP_IN(const zfchar *, tag))
+    ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagRemove
+            , ZFMP_IN(const zfchar *, tag)
+            )
     /** @brief see #internalViewAutoSerializeTagAdd */
     ZFMETHOD_DECLARE_0(void, internalViewAutoSerializeTagRemoveAll)
     /** @brief see #internalViewAutoSerializeTagAdd */
-    ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagGetAllT,
-                       ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret))
+    ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagGetAllT
+            , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
+            )
     /** @brief see #internalViewAutoSerializeTagAdd */
     ZFMETHOD_DECLARE_0(ZFCoreArray<zfstring>, internalViewAutoSerializeTagGetAll)
 
@@ -1042,8 +1092,7 @@ protected:
      * @brief called to check whether the internal view should be layouted using default layout logic,
      *   return true by default
      */
-    virtual inline zfbool internalViewShouldLayout(ZF_IN ZFUIView *internalView)
-    {
+    virtual inline zfbool internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
         return zftrue;
     }
     /** @brief see #internalBgViewAdd */
@@ -1055,8 +1104,9 @@ public:
     /**
      * @brief directly send a event, use with caution
      */
-    ZFMETHOD_DECLARE_1(void, viewEventSend,
-                       ZFMP_IN(ZFUIEvent *, event))
+    ZFMETHOD_DECLARE_1(void, viewEventSend
+            , ZFMP_IN(ZFUIEvent *, event)
+            )
 protected:
     /**
      * @brief notified when a ZFUIEvent occurred

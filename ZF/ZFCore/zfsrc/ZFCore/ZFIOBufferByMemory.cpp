@@ -3,8 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFIOBufferByMemory
-{
+zfclassNotPOD _ZFP_ZFIOBufferByMemory {
 public:
     zfuint refCount;
     zfstring ioBuf;
@@ -20,60 +19,58 @@ public:
     }
 };
 
-zfclass _ZFP_ZFIOBufferByMemory_input : zfextends ZFObject
-{
+zfclass _ZFP_ZFIOBufferByMemory_input : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByMemory_input, ZFObject)
 public:
     _ZFP_ZFIOBufferByMemory *d;
 protected:
     zfoverride
-    virtual void objectOnDealloc()
-    {
+    virtual void objectOnDealloc() {
         --(d->refCount);
-        if(d->refCount == 0)
-        {
+        if(d->refCount == 0) {
             zfdelete(d);
         }
         zfsuper::objectOnDealloc();
     }
 
 public:
-    ZFMETHOD_DECLARE_2(zfindex, onInput,
-                       ZFMP_IN(void *, buf),
-                       ZFMP_IN(zfindex, count))
+    ZFMETHOD_DECLARE_2(zfindex, onInput
+            , ZFMP_IN(void *, buf)
+            , ZFMP_IN(zfindex, count)
+            )
 
-    ZFMETHOD_DECLARE_2(zfbool, ioSeek,
-                       ZFMP_IN(zfindex, byteSize),
-                       ZFMP_IN(ZFSeekPos, pos))
+    ZFMETHOD_DECLARE_2(zfbool, ioSeek
+            , ZFMP_IN(zfindex, byteSize)
+            , ZFMP_IN(ZFSeekPos, pos)
+            )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
 };
 
-zfclass _ZFP_ZFIOBufferByMemory_output : zfextends ZFObject
-{
+zfclass _ZFP_ZFIOBufferByMemory_output : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByMemory_output, ZFObject)
 public:
     _ZFP_ZFIOBufferByMemory *d;
 protected:
     zfoverride
-    virtual void objectOnDealloc()
-    {
+    virtual void objectOnDealloc() {
         --(d->refCount);
-        if(d->refCount == 0)
-        {
+        if(d->refCount == 0) {
             zfdelete(d);
         }
         zfsuper::objectOnDealloc();
     }
 
 public:
-    ZFMETHOD_DECLARE_2(zfindex, onOutput,
-                       ZFMP_IN(const void *, buf),
-                       ZFMP_IN(zfindex, count))
+    ZFMETHOD_DECLARE_2(zfindex, onOutput
+            , ZFMP_IN(const void *, buf)
+            , ZFMP_IN(zfindex, count)
+            )
 
-    ZFMETHOD_DECLARE_2(zfbool, ioSeek,
-                       ZFMP_IN(zfindex, byteSize),
-                       ZFMP_IN(ZFSeekPos, pos))
+    ZFMETHOD_DECLARE_2(zfbool, ioSeek
+            , ZFMP_IN(zfindex, byteSize)
+            , ZFMP_IN(ZFSeekPos, pos)
+            )
     ZFMETHOD_DECLARE_0(zfindex, ioTell)
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
 };
@@ -81,8 +78,7 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFIOBufferByMemory)
 
-void ZFIOBufferByMemory::objectOnInit(void)
-{
+void ZFIOBufferByMemory::objectOnInit(void) {
     zfsuper::objectOnInit();
     _ZFP_ZFIOBufferByMemory *d = zfpoolNew(_ZFP_ZFIOBufferByMemory);
 
@@ -98,63 +94,55 @@ void ZFIOBufferByMemory::objectOnInit(void)
     this->_ZFP_output = ZFCallbackForMemberMethod(oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByMemory_output, onOutput));
     this->_ZFP_output.ioOwner(oOwner);
 }
-void ZFIOBufferByMemory::objectOnDealloc(void)
-{
+void ZFIOBufferByMemory::objectOnDealloc(void) {
     --(d->refCount);
-    if(d->refCount == 0)
-    {
+    if(d->refCount == 0) {
         zfdelete(d);
     }
     zfsuper::objectOnDealloc();
 }
 
-void ZFIOBufferByMemory::implRemoveAll(void)
-{
+void ZFIOBufferByMemory::implRemoveAll(void) {
     d->ioBuf.removeAll();
     d->inputIndex = 0;
     d->outputIndex = 0;
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_input, zfindex, onInput,
-                  ZFMP_IN(void *, buf),
-                  ZFMP_IN(zfindex, count))
-{
-    if(buf == zfnull)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_input, zfindex, onInput
+            , ZFMP_IN(void *, buf)
+            , ZFMP_IN(zfindex, count)
+            ) {
+    if(buf == zfnull) {
         return d->ioBuf.length() - d->inputIndex;
     }
-    else
-    {
+    else {
         count = zfmMin(count, d->ioBuf.length() - d->inputIndex);
         zfmemcpy(buf, d->ioBuf.cString() + d->inputIndex, count);
         d->inputIndex += count;
         return count;
     }
 }
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_input, zfbool, ioSeek,
-                  ZFMP_IN(zfindex, byteSize),
-                  ZFMP_IN(ZFSeekPos, pos))
-{
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_input, zfbool, ioSeek
+            , ZFMP_IN(zfindex, byteSize)
+            , ZFMP_IN(ZFSeekPos, pos)
+            ) {
     d->inputIndex = ZFIOCallbackCalcFSeek(0, d->ioBuf.length(), d->inputIndex, byteSize, pos);
     return zftrue;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_input, zfindex, ioTell)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_input, zfindex, ioTell) {
     return d->inputIndex;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_input, zfindex, ioSize)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_input, zfindex, ioSize) {
     return d->ioBuf.length();
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_output, zfindex, onOutput,
-                  ZFMP_IN(const void *, buf),
-                  ZFMP_IN(zfindex, count))
-{
-    if(count == zfindexMax())
-    {
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_output, zfindex, onOutput
+            , ZFMP_IN(const void *, buf)
+            , ZFMP_IN(zfindex, count)
+            ) {
+    if(count == zfindexMax()) {
         count = zfslen((const zfchar *)buf) * sizeof(zfchar);
     }
     d->ioBuf.replace(d->outputIndex, zfmMin(count, d->ioBuf.length() - d->outputIndex), (const zfchar *)buf, count);
@@ -162,19 +150,17 @@ ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_output, zfindex, onOutput,
     return count;
 }
 
-ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_output, zfbool, ioSeek,
-                  ZFMP_IN(zfindex, byteSize),
-                  ZFMP_IN(ZFSeekPos, pos))
-{
+ZFMETHOD_DEFINE_2(_ZFP_ZFIOBufferByMemory_output, zfbool, ioSeek
+            , ZFMP_IN(zfindex, byteSize)
+            , ZFMP_IN(ZFSeekPos, pos)
+            ) {
     d->outputIndex = ZFIOCallbackCalcFSeek(0, d->ioBuf.length(), d->outputIndex, byteSize, pos);
     return zftrue;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_output, zfindex, ioTell)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_output, zfindex, ioTell) {
     return d->outputIndex;
 }
-ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_output, zfindex, ioSize)
-{
+ZFMETHOD_DEFINE_0(_ZFP_ZFIOBufferByMemory_output, zfindex, ioSize) {
     return d->ioBuf.length();
 }
 

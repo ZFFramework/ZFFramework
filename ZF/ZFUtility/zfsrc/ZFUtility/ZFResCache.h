@@ -16,8 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * of level #ZFLevelZFFrameworkPostNormal to prevent dependency broken,
  * by setting #ZFCache::cacheMaxSize to zero
  */
-zfclass ZFLIB_ZFUtility ZFResCache : zfextends ZFCache
-{
+zfclass ZFLIB_ZFUtility ZFResCache : zfextends ZFCache {
     ZFOBJECT_DECLARE(ZFResCache, ZFCache)
     ZFOBJECT_SINGLETON_DECLARE(ZFResCache, instance)
 
@@ -34,9 +33,10 @@ zfclass ZFLIB_ZFUtility ZFResCache : zfextends ZFCache
  * when pathInfo is specified, the resFilePath can be relative path to pathInfo,
  * at this case, the pathInfo must be well formed
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObject, zfRes,
-                        ZFMP_IN(const zfchar *, resFilePath),
-                        ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObject, zfRes
+        , ZFMP_IN(const zfchar *, resFilePath)
+        , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFResCache_h_

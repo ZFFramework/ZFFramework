@@ -15,8 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief basic text edit widget
  */
-zfclass ZFLIB_ZFUIWidget ZFUITextEditWidget : zfextends ZFUITextEdit
-{
+zfclass ZFLIB_ZFUIWidget ZFUITextEditWidget : zfextends ZFUITextEdit {
     ZFOBJECT_DECLARE(ZFUITextEditWidget, ZFUITextEdit)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextEditWidget)
 

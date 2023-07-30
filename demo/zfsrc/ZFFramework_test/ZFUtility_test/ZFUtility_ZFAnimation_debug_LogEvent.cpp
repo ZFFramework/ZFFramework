@@ -3,21 +3,18 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if 0
-ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent)
-{
+ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent) {
     this->taskOwner = zfAlloc(ZFObject);
 
     ZFLISTENER(aniOnAlloc) {
-        if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData()))
-        {
+        if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData())) {
             zfLogTrim() << zfLogCurTimeString() << zfargs.sender() << "alloc";
         }
     } ZFLISTENER_END()
     ZFGlobalObserver().observerAdd(ZFObject::EventObjectAfterAlloc(), aniOnAlloc);
 
     ZFLISTENER(aniOnDealloc) {
-        if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData()))
-        {
+        if(zfargs.sender()->classData()->classIsTypeOf(ZFAnimation::ClassData())) {
             zfLogTrim() << zfLogCurTimeString() << zfargs.sender() << "dealloc";
         }
     } ZFLISTENER_END()
@@ -38,8 +35,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFAnimation_debug_LogEvent)
     } ZFLISTENER_END()
     ZFGlobalObserver().observerAdd(ZFAnimation::EventAniOnStop(), aniOnStop);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUtility_ZFAnimation_debug_LogEvent)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUtility_ZFAnimation_debug_LogEvent) {
     ZFGlobalObserver().observerRemoveByOwner(this->taskOwner);
     zfRelease(this->taskOwner);
 }

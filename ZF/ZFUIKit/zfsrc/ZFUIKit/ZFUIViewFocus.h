@@ -13,12 +13,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief manually set the next focus target for the from view, set null to remove
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewFocusNextSetup,
-                        ZFMP_IN(ZFUIView *, from),
-                        ZFMP_IN(ZFUIView *, nextFocus))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewFocusNextSetup
+        , ZFMP_IN(ZFUIView *, from)
+        , ZFMP_IN(ZFUIView *, nextFocus)
+        )
 
 #define _ZFP_ZFUIViewFocusNextSetupChainEndPtr ((ZFUIView *)-1)
-extern ZFLIB_ZFUIKit void _ZFP_ZFUIViewFocusNextSetupChain(ZF_IN ZFUIView *view0, ZF_IN ZFUIView *view1, ...);
+extern ZFLIB_ZFUIKit void _ZFP_ZFUIViewFocusNextSetupChain(
+        ZF_IN ZFUIView *view0
+        , ZF_IN ZFUIView *view1
+        , ...
+        );
 /**
  * @brief util method to chain all view's next focus target by #ZFUIViewFocusNextSetup
  */
@@ -34,8 +39,7 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, ZFFilterForZFObject, ZFUIViewFocusNextFilter
 /**
  * @brief param for #ZFUIViewFocusNextFind and #ZFUIViewFocusNextMove
  */
-zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam
-{
+zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam {
     ZFCORE_PARAM_DECLARE_SELF(ZFUIViewFocusNextParam)
 
     /**
@@ -57,8 +61,7 @@ zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam
 
 public:
     /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN const ZFUIViewFocusNextParam &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFUIViewFocusNextParam &ref) const {
         return (zftrue
                 && this->focusDirection() == ref.focusDirection()
                 && this->focusLoopMode() == ref.focusLoopMode()
@@ -66,8 +69,7 @@ public:
                 && this->focusInternalViews() == ref.focusInternalViews()
             );
     }
-    zfbool operator != (ZF_IN const ZFUIViewFocusNextParam &ref) const
-    {
+    zfbool operator != (ZF_IN const ZFUIViewFocusNextParam &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -80,16 +82,18 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIViewFocusNextParam, ZFUIViewFocu
  *
  * return first focusable view if found
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIView *, ZFUIViewFocusNextFind,
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIView *, ZFUIViewFocusNextFind
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam())
+        )
 
 /**
  * @brief move focus to next if available or do nothing otherwise, see #ZFUIViewFocusNextFind
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIView *, ZFUIViewFocusNextMove,
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIView *, ZFUIViewFocusNextMove
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam())
+        )
 
 // ============================================================
 /**
@@ -98,11 +102,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIView *, ZFUIViewFocusNextMove,
  * return true if the event has been resolved,
  * next focused view can be checked by the optional nextFocus param
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfbool, ZFUIViewFocusResolveKeyEvent,
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN(ZFUIKeyEvent *, keyEvent),
-                        ZFMP_OUT_OPT(zfautoObject *, nextFocus, zfnull),
-                        ZFMP_IN_OPT(ZFUIView *, endParent, zfnull))
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfbool, ZFUIViewFocusResolveKeyEvent
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN(ZFUIKeyEvent *, keyEvent)
+        , ZFMP_OUT_OPT(zfautoObject *, nextFocus, zfnull)
+        , ZFMP_IN_OPT(ZFUIView *, endParent, zfnull)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIViewFocus_h_

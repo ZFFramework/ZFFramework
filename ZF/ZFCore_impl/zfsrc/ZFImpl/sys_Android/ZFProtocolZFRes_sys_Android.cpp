@@ -24,8 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFImpl_sys_Android_JNI_ID_ZFRes ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFRes)
 #define ZFImpl_sys_Android_JNI_NAME_ZFRes ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFRes)
 
-zfclassLikePOD _ZFP_ZFProtocolZFRes_sys_Android_FileToken
-{
+zfclassLikePOD _ZFP_ZFProtocolZFRes_sys_Android_FileToken {
 public:
     JNIObjectHolder assetManagerHolder;
     AAssetManager *assetManager;
@@ -43,8 +42,7 @@ public:
     }
 };
 
-zfclassNotPOD _ZFP_ZFProtocolZFRes_sys_Android_FindData
-{
+zfclassNotPOD _ZFP_ZFProtocolZFRes_sys_Android_FindData {
 public:
     zfstring parentPath;
     jobjectArray files; // jstring[]
@@ -56,8 +54,7 @@ public:
     , curFileIndex(0)
     {
     }
-    virtual ~_ZFP_ZFProtocolZFRes_sys_Android_FindData(void)
-    {
+    virtual ~_ZFP_ZFProtocolZFRes_sys_Android_FindData(void) {
     }
 };
 
@@ -71,8 +68,7 @@ private:
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
 
         this->zfresPrefix = "zfres";
@@ -86,15 +82,13 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 public:
-    virtual zfbool resIsExist(ZF_IN const zfchar *resPath)
-    {
+    virtual zfbool resIsExist(ZF_IN const zfchar *resPath) {
         zfstring resPathFixed;
         this->resPathFormat(resPathFixed, resPath);
 
@@ -107,8 +101,7 @@ public:
         JNIBlockedDeleteLocalRef(param);
         return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId, param);
     }
-    virtual zfbool resIsDir(ZF_IN const zfchar *resPath)
-    {
+    virtual zfbool resIsDir(ZF_IN const zfchar *resPath) {
         zfstring resPathFixed;
         this->resPathFormat(resPathFixed, resPath);
 
@@ -122,12 +115,13 @@ public:
         return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId, param);
     }
 
-    virtual zfbool resCopy(ZF_IN const zfchar *resPath,
-                           ZF_IN const zfchar *dstPath,
-                           ZF_IN_OPT zfbool isRecursive = zftrue,
-                           ZF_IN_OPT zfbool isForce = zftrue,
-                           ZF_IN_OPT zfstring *errPos = zfnull)
-    {
+    virtual zfbool resCopy(
+            ZF_IN const zfchar *resPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN_OPT zfbool isRecursive = zftrue
+            , ZF_IN_OPT zfbool isForce = zftrue
+            , ZF_IN_OPT zfstring *errPos = zfnull
+            ) {
         zfstring resPathFixed;
         this->resPathFormat(resPathFixed, resPath);
 
@@ -144,14 +138,11 @@ public:
             JNILineDeleteLocalRefWithEnv(ZFImpl_sys_Android_zfstringToString(dstPath), jniEnv),
             isRecursive,
             isForce);
-        if(errPosJ == NULL)
-        {
+        if(errPosJ == NULL) {
             return zftrue;
         }
-        else
-        {
-            if(errPos != zfnull)
-            {
+        else {
+            if(errPos != zfnull) {
                 ZFImpl_sys_Android_zfstringFromString(*errPos, errPosJ);
             }
             return zffalse;
@@ -160,8 +151,7 @@ public:
 
     // ============================================================
     // res RW
-    virtual void *resOpen(ZF_IN const zfchar *resPath)
-    {
+    virtual void *resOpen(ZF_IN const zfchar *resPath) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = zfnew(_ZFP_ZFProtocolZFRes_sys_Android_FileToken);
         d->assetManagerHolder = ZFImpl_sys_Android_assetManager();
@@ -174,24 +164,20 @@ public:
         d->token = AAssetManager_open(d->assetManager,
             absPath.cString(),
             AASSET_MODE_RANDOM);
-        if(d->token == zfnull)
-        {
+        if(d->token == zfnull) {
             absPath += this->zfresPostfix;
             d->token = AAssetManager_open(d->assetManager,
                 absPath.cString(),
                 AASSET_MODE_RANDOM);
-            if(d->token == zfnull)
-            {
+            if(d->token == zfnull) {
                 zfdelete(d);
                 d = zfnull;
             }
         }
         return d;
     }
-    virtual zfbool resClose(ZF_IN void *token)
-    {
-        if(token == zfnull)
-        {
+    virtual zfbool resClose(ZF_IN void *token) {
+        if(token == zfnull) {
             return zffalse;
         }
 
@@ -200,28 +186,25 @@ public:
         zfdelete(d);
         return zftrue;
     }
-    virtual zfindex resTell(ZF_IN void *token)
-    {
-        if(token == zfnull)
-        {
+    virtual zfindex resTell(ZF_IN void *token) {
+        if(token == zfnull) {
             return zfindexMax();
         }
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         return (AAsset_getLength(d->token) - AAsset_getRemainingLength(d->token));
     }
-    virtual zfbool resSeek(ZF_IN void *token,
-                           ZF_IN zfindex byteSize,
-                           ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin)
-    {
-        if(token == zfnull)
-        {
+    virtual zfbool resSeek(
+            ZF_IN void *token
+            , ZF_IN zfindex byteSize
+            , ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin
+            ) {
+        if(token == zfnull) {
             return zffalse;
         }
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         zfint seekPos = SEEK_SET;
         long seekSize = (long)byteSize;
-        switch(position)
-        {
+        switch(position) {
             case ZFSeekPosBegin:
                 seekPos = SEEK_SET;
                 break;
@@ -241,44 +224,37 @@ public:
         }
         return (AAsset_seek(d->token, seekSize, seekPos) != -1);
     }
-    virtual zfindex resRead(ZF_IN void *token,
-                            ZF_IN void *buf,
-                            ZF_IN zfindex maxByteSize)
-    {
-        if(token == zfnull || maxByteSize == 0)
-        {
+    virtual zfindex resRead(
+            ZF_IN void *token
+            , ZF_IN void *buf
+            , ZF_IN zfindex maxByteSize
+            ) {
+        if(token == zfnull || maxByteSize == 0) {
             return 0;
         }
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
-        if(d->isEof || d->isError)
-        {
+        if(d->isEof || d->isError) {
             return 0;
         }
         zfint ret = AAsset_read(d->token, buf, maxByteSize);
-        if(ret < 0)
-        {
+        if(ret < 0) {
             d->isError = zftrue;
             ret = 0;
         }
-        else if(ret == 0 || ret < maxByteSize)
-        {
+        else if(ret == 0 || ret < maxByteSize) {
             d->isEof = zftrue;
         }
         return ret;
     }
-    virtual zfbool resIsEof(ZF_IN void *token)
-    {
-        if(token == zfnull)
-        {
+    virtual zfbool resIsEof(ZF_IN void *token) {
+        if(token == zfnull) {
             return zffalse;
         }
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
         return d->isEof;
     }
-    virtual zfbool resIsError(ZF_IN void *token)
-    {
-        if(token == zfnull)
-        {
+    virtual zfbool resIsError(ZF_IN void *token) {
+        if(token == zfnull) {
             return zffalse;
         }
         _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
@@ -287,9 +263,10 @@ public:
 
     // ============================================================
     // res find
-    virtual zfbool resFindFirst(ZF_IN_OUT ZFFileFindData::Impl &fd,
-                                ZF_IN const zfchar *resPath)
-    {
+    virtual zfbool resFindFirst(
+            ZF_IN_OUT ZFFileFindData::Impl &fd
+            , ZF_IN const zfchar *resPath
+            ) {
         zfstring absPath;
         this->resPathFormat(absPath, resPath);
 
@@ -307,27 +284,22 @@ public:
         jobjectArray files = (jobjectArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, param);
         JNIBlockedDeleteLocalRef(files);
         zfbool success = zffalse;
-        if(files != zfnull)
-        {
+        if(files != zfnull) {
             d->files = (jobjectArray)JNIUtilNewGlobalRef(jniEnv, files);
             success = this->resFindNext(fd);
         }
-        if(!success)
-        {
+        if(!success) {
             this->resFindClose(fd);
         }
         return success;
     }
-    virtual zfbool resFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd)
-    {
-        if(fd.nativeFd == zfnull)
-        {
+    virtual zfbool resFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) {
+        if(fd.nativeFd == zfnull) {
             return zffalse;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FindData *, fd.nativeFd);
-        if(d->curFileIndex >= JNIUtilGetArrayLength(jniEnv, d->files))
-        {
+        if(d->curFileIndex >= JNIUtilGetArrayLength(jniEnv, d->files)) {
             return zffalse;
         }
         jstring jsPath = (jstring)JNIUtilGetObjectArrayElement(jniEnv, d->files, d->curFileIndex);
@@ -338,8 +310,7 @@ public:
 
         zfstring absPath = this->zfresPrefix;
         absPath += ZFFileSeparator();
-        if(!d->parentPath.isEmpty())
-        {
+        if(!d->parentPath.isEmpty()) {
             absPath += d->parentPath;
             absPath += ZFFileSeparator();
         }
@@ -349,32 +320,26 @@ public:
             AAssetManager_fromJava(jniEnv, ZFImpl_sys_Android_assetManager()),
             absPath.cString(),
             AASSET_MODE_STREAMING);
-        if(asset == zfnull)
-        {
+        if(asset == zfnull) {
             fd.fileIsDir = zftrue;
         }
-        else
-        {
+        else {
             AAsset_close(asset);
             fd.fileIsDir = zffalse;
-            if(zfstringFindReversely(fd.fileName, this->zfresPostfix) == fd.fileName.length() - this->zfresPostfixLen)
-            {
+            if(zfstringFindReversely(fd.fileName, this->zfresPostfix) == fd.fileName.length() - this->zfresPostfixLen) {
                 fd.fileName.remove(fd.fileName.length() - this->zfresPostfixLen);
             }
         }
 
         return zftrue;
     }
-    virtual void resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd)
-    {
-        if(fd.nativeFd == zfnull)
-        {
+    virtual void resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) {
+        if(fd.nativeFd == zfnull) {
             return;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FindData *, fd.nativeFd);
-        if(d->files != zfnull)
-        {
+        if(d->files != zfnull) {
             JNIUtilDeleteGlobalRef(jniEnv, d->files);
             d->files = zfnull;
         }
@@ -392,11 +357,12 @@ private:
      * -  "path/." => "path"
      * -  "abc/./xyz" => "abc/xyz"
      */
-    void resPathFormat(ZF_OUT zfstring &ret, ZF_IN const zfchar *s)
-    {
+    void resPathFormat(
+            ZF_OUT zfstring &ret
+            , ZF_IN const zfchar *s
+            ) {
         ret = this->zfresPrefix;
-        if(zfstringIsEqual(s, "."))
-        {
+        if(zfstringIsEqual(s, ".")) {
             return;
         }
         ret += ZFFileSeparator();
@@ -404,26 +370,22 @@ private:
         zfindex tmp;
 
         // remove "/./"
-        while((tmp = zfstringFind(ret, "/./")) != zfindexMax())
-        {
+        while((tmp = zfstringFind(ret, "/./")) != zfindexMax()) {
             ret.remove(tmp, 2);
         }
 
         // remove tail "/."
-        while(ret.length() >= 2 && zfsncmp(ret.cString(), "/.", 2) == 0)
-        {
+        while(ret.length() >= 2 && zfsncmp(ret.cString(), "/.", 2) == 0) {
             ret.remove(ret.length() - 2);
         }
 
         // remove head "./"
-        while(zfsncmp(ret.cString(), "./", 2) == 0)
-        {
+        while(zfsncmp(ret.cString(), "./", 2) == 0) {
             ret.remove(0, 2);
         }
 
         // remove tail "/"
-        while(ret.length() > 0 && ret[ret.length() - 1] == '/')
-        {
+        while(ret.length() > 0 && ret[ret.length() - 1] == '/') {
             ret.remove(ret.length() - 1);
         }
     }

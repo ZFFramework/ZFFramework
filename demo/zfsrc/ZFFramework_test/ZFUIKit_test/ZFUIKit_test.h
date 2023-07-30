@@ -7,53 +7,44 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_test_Window : zfextends ZFUIWindow
-{
+zfclass ZFUIKit_test_Window : zfextends ZFUIWindow {
     ZFOBJECT_DECLARE(ZFUIKit_test_Window, ZFUIWindow)
 
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, viewBackgroundColor)
-    {
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, viewBackgroundColor) {
         propertyValue = ZFUIColorWhite();
     }
 };
 
-zfclass ZFUIKit_test_Button : zfextends ZFUIButtonBasic
-{
+zfclass ZFUIKit_test_Button : zfextends ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIKit_test_Button, ZFUIButtonBasic)
 
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundNormal)
-    {
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundNormal) {
         propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorGreen());
     }
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundHighlighted)
-    {
+    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundHighlighted) {
         propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorBlue());
     }
 };
 
-zfclass ZFUIKit_test_ListView : zfextends ZFUIScrollView
-{
+zfclass ZFUIKit_test_ListView : zfextends ZFUIScrollView {
     ZFOBJECT_DECLARE(ZFUIKit_test_ListView, ZFUIScrollView)
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->scrollBounceVerticalAlways(zftrue);
     }
 
     zfoverride
-    virtual void layoutParamOnUpdate(ZF_IN ZFUILayoutParam *layoutParam)
-    {
+    virtual void layoutParamOnUpdate(ZF_IN ZFUILayoutParam *layoutParam) {
         zfsuper::layoutParamOnUpdate(layoutParam);
 
         layoutParam->sizeParam(ZFUISizeParamFillWrap());
         layoutParam->layoutAlign(ZFUIAlign::e_Top);
     }
     zfoverride
-    virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
-    {
+    virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
         zfsuper::layoutOnLayoutPrepare(bounds);
 
         zffloat contentHeight = 0;
@@ -61,8 +52,7 @@ protected:
         ZFUISize childMeasureSizeHint = ZFUISizeMake(this->scrollArea().width, -1);
         ZFUISizeParam childMeasureSizeParam = ZFUISizeParamFillWrap();
 
-        for(zfindex i = 0; i < this->childCount(); ++i)
-        {
+        for(zfindex i = 0; i < this->childCount(); ++i) {
             contentHeight += space;
 
             ZFUIView *child = this->childAt(i);
@@ -79,12 +69,13 @@ protected:
     }
 };
 
-extern void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
-                                           ZF_OUT ZFUIView *&container,
-                                           ZF_IN ZFTestCase *testCaseToStop);
+extern void ZFUIKit_test_prepareTestWindow(
+        ZF_OUT ZFUIWindow *&window
+        , ZF_OUT ZFUIView *&container
+        , ZF_IN ZFTestCase *testCaseToStop
+        );
 
-zfclass ZFUIKit_test_SettingData : zfextends ZFObject
-{
+zfclass ZFUIKit_test_SettingData : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIKit_test_SettingData, ZFObject)
 
 public:
@@ -98,40 +89,44 @@ public:
     ZFPROPERTY_ASSIGN(ZFListener, buttonClickListener)
 
 public:
-    zffinal void settingUpdate(void)
-    {
+    zffinal void settingUpdate(void) {
         this->observerNotify(zfself::EventSettingOnChange());
     }
 
 protected:
-    virtual void objectOnInit(ZF_IN const ZFListener &buttonTextGetter,
-                              ZF_IN const ZFListener &buttonClickListener)
-    {
+    virtual void objectOnInit(
+            ZF_IN const ZFListener &buttonTextGetter
+            , ZF_IN const ZFListener &buttonClickListener
+            ) {
         this->objectOnInit();
         this->buttonTextGetter(buttonTextGetter);
         this->buttonClickListener(buttonClickListener);
     }
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
     }
 };
 extern zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings);
-extern void ZFUIKit_test_prepareSettingButtonWithTestWindow(ZF_IN ZFUIWindow *window,
-                                                            ZF_IN ZFArray *settings);
-extern void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
-                                                   ZF_IN ZFObject *obj,
-                                                   ZF_IN const ZFProperty *property,
-                                                   ZF_IN const ZFListener &nextCallback);
+extern void ZFUIKit_test_prepareSettingButtonWithTestWindow(
+        ZF_IN ZFUIWindow *window
+        , ZF_IN ZFArray *settings
+        );
+extern void ZFUIKit_test_prepareSettingForProperty(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFObject *obj
+        , ZF_IN const ZFProperty *property
+        , ZF_IN const ZFListener &nextCallback
+        );
 
 // ============================================================
-extern void ZFUIKit_test_prepareSettingForBoolProperty(ZF_IN_OUT ZFArray *settings,
-                                                       ZF_IN ZFObject *obj,
-                                                       ZF_IN const ZFProperty *property);
+extern void ZFUIKit_test_prepareSettingForBoolProperty(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFObject *obj
+        , ZF_IN const ZFProperty *property
+        );
 
-zfclass _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder : zfextends ZFObject
-{
+zfclass _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder, ZFObject)
 public:
     ZFObject *obj;
@@ -147,10 +142,8 @@ public:
     {
     }
 protected:
-    virtual void objectOnDeallocPrepare(void)
-    {
-        if(this->propertyValues)
-        {
+    virtual void objectOnDeallocPrepare(void) {
+        if(this->propertyValues) {
             this->propertyValues->refDelete();
         }
         zfsuper::objectOnDeallocPrepare();
@@ -168,8 +161,7 @@ protected:
             _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *holder = taskData; \
             ZFCoreArray<PropertyType> const &propertyValues = *(const ZFCoreArray<PropertyType> *)holder->propertyValues; \
             ++(holder->index); \
-            if(holder->index >= propertyValues.count()) \
-            { \
+            if(holder->index >= propertyValues.count()) { \
                 holder->index = 0; \
             } \
             holder->property->setterMethod()->execute<void ZFM_COMMA() PropertyType const &>( \
@@ -178,12 +170,16 @@ protected:
         ZFUIKit_test_prepareSettingForProperty(settings, taskData->obj, taskData->property, nextCallback); \
     } while(zffalse)
 
-extern void ZFUIKit_test_prepareSettingForLayoutRequest(ZF_IN_OUT ZFArray *settings,
-                                                        ZF_IN ZFUIView *view);
+extern void ZFUIKit_test_prepareSettingForLayoutRequest(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFUIView *view
+        );
 
-extern void ZFUIKit_test_prepareSettingForResetProperty(ZF_IN_OUT ZFArray *settings,
-                                                        ZF_IN ZFObject *obj,
-                                                        ZF_IN const ZFCoreArrayPOD<const ZFProperty *> &propertyList);
+extern void ZFUIKit_test_prepareSettingForResetProperty(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFObject *obj
+        , ZF_IN const ZFCoreArrayPOD<const ZFProperty *> &propertyList
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 

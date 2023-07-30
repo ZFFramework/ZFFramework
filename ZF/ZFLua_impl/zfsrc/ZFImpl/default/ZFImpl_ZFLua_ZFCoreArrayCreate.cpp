@@ -2,26 +2,23 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L)
-{
+static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
     zfblockedAlloc(v_ZFCoreArray, ret);
     int count = (int)lua_gettop(L);
 
-    for(int i = 0; i < count; ++i)
-    {
+    for(int i = 0; i < count; ++i) {
         zfautoObject p;
         if(ZFImpl_ZFLua_toObject(p, L, i + 1)
-            || ZFImpl_ZFLua_toCallback(p, L, i + 1))
-        {
+                || ZFImpl_ZFLua_toCallback(p, L, i + 1)
+                ) {
             ret->zfv.add(p);
             continue;
         }
 
         zfblockedAlloc(v_zfstring, pTmp);
-        if(ZFImpl_ZFLua_toString(pTmp->zfv, L, i + 1, zftrue))
-        {
+        if(ZFImpl_ZFLua_toString(pTmp->zfv, L, i + 1, zftrue)) {
             ret->zfv.add(pTmp);
             continue;
         }

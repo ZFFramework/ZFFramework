@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIAutoLayout_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUIAutoLayout_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIAutoLayout_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
@@ -23,8 +21,7 @@ protected:
         layout->viewBackgroundColor(ZFUIColorRed());
 
         ZFCoreArray<zfautoObject> v;
-        for(zfindex i = 0; i < 5; ++i)
-        {
+        for(zfindex i = 0; i < 5; ++i) {
             zfblockedAlloc(ZFUITextView, t);
             v.add(t);
             t->text(zfstringWithFormat("text %zi", i));
@@ -42,9 +39,10 @@ protected:
     }
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIAutoLayout *layout)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUIAutoLayout *layout
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);

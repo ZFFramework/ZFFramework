@@ -13,8 +13,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbool, zfbool, {
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
         v = zffalse;
-        switch(matched)
-        {
+        switch(matched) {
             case 0:
                 v = zftrue;
                 return zftrue;
@@ -41,8 +40,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbyte, zfbyte, {
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfchar, zfchar, {
-        if(src == zfnull || srcLen == 0)
-        {
+        if(src == zfnull || srcLen == 0) {
             return zffalse;
         }
         v = *src;
@@ -68,22 +66,58 @@ ZFOBJECT_ON_INIT_USER_REGISTER_3({
     , ZFMP_IN(zfindex, pos)
     , ZFMP_IN_OPT(zfindex, len, zfindexMax())
     )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, append, ZFMP_IN(const zfstring &, s))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, append, ZFMP_IN(const zfchar *, s), ZFMP_IN_OPT(zfindex, len, zfindexMax()))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, assign, ZFMP_IN(const zfstring &, s))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, assign, ZFMP_IN(const zfchar *, s), ZFMP_IN_OPT(zfindex, len, zfindexMax()))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, insert, ZFMP_IN(zfindex, insertAt), ZFMP_IN(const zfstring &, s))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_zfstring, void, insert, ZFMP_IN(zfindex, insertAt), ZFMP_IN(const zfchar *, s), ZFMP_IN_OPT(zfindex, len, zfindexMax()))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_zfstring, void, replace, ZFMP_IN(zfindex, replacePos), ZFMP_IN(zfindex, replaceLen), ZFMP_IN(const zfstring &, s))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_zfstring, void, replace, ZFMP_IN(zfindex, replacePos), ZFMP_IN(zfindex, replaceLen), ZFMP_IN(const zfchar *, s), ZFMP_IN_OPT(zfindex, len, zfindexMax()))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, append
+        , ZFMP_IN(const zfstring &, s)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, append
+        , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, assign
+        , ZFMP_IN(const zfstring &, s)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, assign
+        , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, insert
+        , ZFMP_IN(zfindex, insertAt)
+        , ZFMP_IN(const zfstring &, s)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_zfstring, void, insert
+        , ZFMP_IN(zfindex, insertAt)
+        , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_zfstring, void, replace
+        , ZFMP_IN(zfindex, replacePos)
+        , ZFMP_IN(zfindex, replaceLen)
+        , ZFMP_IN(const zfstring &, s)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_zfstring, void, replace
+        , ZFMP_IN(zfindex, replacePos)
+        , ZFMP_IN(zfindex, replaceLen)
+        , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfindex, length)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfbool, isEmpty)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, capacity, ZFMP_IN(zfindex, capacity))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, capacity
+        , ZFMP_IN(zfindex, capacity)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfindex, capacity)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, remove, ZFMP_IN_OPT(zfindex, pos, 0), ZFMP_IN_OPT(zfindex, len, zfindexMax()))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, remove
+        , ZFMP_IN_OPT(zfindex, pos, 0)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, void, removeAll)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, zfint, compare, ZFMP_IN(const zfstring &, s))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, zfint, compare, ZFMP_IN(const zfchar *, s), ZFMP_IN_OPT(zfindex, len, zfindexMax()))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, zfint, compare
+        , ZFMP_IN(const zfstring &, s)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, zfint, compare
+        , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        )
 
 ZFTYPEID_ALIAS_DEFINE(zfstring, zfstring, cString, const zfchar *)
 
@@ -94,33 +128,27 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPtrConst, const void *)
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
         if(src == zfnull) {return zffalse;}
-        if(zfsncmp(src, ZFTOKEN_ZFCompareTheSame, srcLen) == 0)
-        {
+        if(zfsncmp(src, ZFTOKEN_ZFCompareTheSame, srcLen) == 0) {
             v = ZFCompareTheSame;
             return zftrue;
         }
-        else if(zfsncmp(src, ZFTOKEN_ZFCompareSmaller, srcLen) == 0)
-        {
+        else if(zfsncmp(src, ZFTOKEN_ZFCompareSmaller, srcLen) == 0) {
             v = ZFCompareSmaller;
             return zftrue;
         }
-        else if(zfsncmp(src, ZFTOKEN_ZFCompareGreater, srcLen) == 0)
-        {
+        else if(zfsncmp(src, ZFTOKEN_ZFCompareGreater, srcLen) == 0) {
             v = ZFCompareGreater;
             return zftrue;
         }
-        else if(zfsncmp(src, ZFTOKEN_ZFCompareUncomparable, srcLen) == 0)
-        {
+        else if(zfsncmp(src, ZFTOKEN_ZFCompareUncomparable, srcLen) == 0) {
             v = ZFCompareUncomparable;
             return zftrue;
         }
-        else
-        {
+        else {
             return zffalse;
         }
     }, {
-        switch(v)
-        {
+        switch(v) {
             case ZFCompareUncomparable:
                 s += ZFTOKEN_ZFCompareUncomparable;
                 return zftrue;
@@ -150,8 +178,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
         v = ZFSeekPosBegin;
-        switch(matched)
-        {
+        switch(matched) {
             case 0:
                 v = ZFSeekPosBegin;
                 return zftrue;
@@ -171,8 +198,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
                 return zffalse;
         }
     }, {
-        switch(v)
-        {
+        switch(v) {
             case ZFSeekPosBegin:
                 s += ZFTOKEN_ZFSeekPosBegin;
                 return zftrue;
@@ -195,8 +221,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFIndexRange, ZFIndexRange, {
         v = ZFIndexRangeZero();
         ZFCoreArrayPOD<zfindex> pair;
-        if(!zfCoreDataPairSplitInt(pair, 2, src, srcLen))
-        {
+        if(!zfCoreDataPairSplitInt(pair, 2, src, srcLen)) {
             return zffalse;
         }
         v.start = pair[0];
@@ -233,8 +258,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFLevel, ZFLevel, {
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
         v = ZFLevelAppLow;
-        switch(matched)
-        {
+        switch(matched) {
             case 0:
                 v = ZFLevelZFFrameworkStatic;
                 return zftrue;
@@ -288,8 +312,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFLevel, ZFLevel, {
                 return zffalse;
         }
     }, {
-        switch(v)
-        {
+        switch(v) {
             case ZFLevelZFFrameworkStatic:
                 s += ZFTOKEN_ZFLevelZFFrameworkStatic;
                 return zftrue;
@@ -351,8 +374,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
         v = ZFFrameworkStateNotAvailable;
-        switch(matched)
-        {
+        switch(matched) {
             case 0:
                 v = ZFFrameworkStateNotAvailable;
                 return zftrue;
@@ -372,8 +394,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
                 return zffalse;
         }
     }, {
-        switch(v)
-        {
+        switch(v) {
             case ZFFrameworkStateNotAvailable:
                 s += ZFTOKEN_ZFFrameworkStateNotAvailable;
                 return zftrue;
@@ -401,16 +422,41 @@ ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(zfiterator, zfiterator)
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFBuffer, ZFBuffer)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void, bufferFree)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void *, bufferGiveUp)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFBuffer, void, zfunsafe_bufferChange, ZFMP_IN(void *, buffer), ZFMP_IN(zfindex, bufferCapacity), ZFMP_IN(zfindex, bufferSize), ZFMP_IN(zfbool, bufferAutoFree))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy, ZFMP_IN(const void *, buffer), ZFMP_IN(zfindex, bufferSize))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferCopy, ZFMP_IN(const zfstring &, s))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy, ZFMP_IN(const zfchar *, s), ZFMP_IN_OPT(zfindex, length, zfindexMax()))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferAppend, ZFMP_IN(const zfstring &, s))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferAppend, ZFMP_IN(const void *, buffer), ZFMP_IN(zfindex, bufferSize))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferAppend, ZFMP_IN(const zfchar *, s), ZFMP_IN_OPT(zfindex, length, zfindexMax()))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferCapacity, ZFMP_IN(zfindex, capacity))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFBuffer, void, zfunsafe_bufferChange
+        , ZFMP_IN(void *, buffer)
+        , ZFMP_IN(zfindex, bufferCapacity)
+        , ZFMP_IN(zfindex, bufferSize)
+        , ZFMP_IN(zfbool, bufferAutoFree)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy
+        , ZFMP_IN(const void *, buffer)
+        , ZFMP_IN(zfindex, bufferSize)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferCopy
+        , ZFMP_IN(const zfstring &, s)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferCopy
+        , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferAppend
+        , ZFMP_IN(const zfstring &, s)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferAppend
+        , ZFMP_IN(const void *, buffer)
+        , ZFMP_IN(zfindex, bufferSize)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFBuffer, void, bufferAppend
+        , ZFMP_IN(const zfchar *, s)
+        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferCapacity
+        , ZFMP_IN(zfindex, capacity)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, bufferCapacity)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferSize, ZFMP_IN(zfindex, bufferSize))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferSize
+        , ZFMP_IN(zfindex, bufferSize)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfindex, bufferSize)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void *, buffer)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, const zfchar *, text)
@@ -420,9 +466,15 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfbool, bufferAutoFree)
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFIdentityGenerator, ZFIdentityGenerator)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFIdentityGenerator, zfidentity, idAcquire)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFIdentityGenerator, zfbool, idRelease, ZFMP_IN(zfidentity, identity))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFIdentityGenerator, zfbool, idExist, ZFMP_IN(zfidentity, identity))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFIdentityGenerator, void, idExistGetAll, ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, ret))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFIdentityGenerator, zfbool, idRelease
+        , ZFMP_IN(zfidentity, identity)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFIdentityGenerator, zfbool, idExist
+        , ZFMP_IN(zfidentity, identity)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFIdentityGenerator, void, idExistGetAll
+        , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, ret)
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterType, ZFFilterType, {
@@ -432,8 +484,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterType, ZFFilterType, {
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
         v = ZFFilterTypeInclude;
-        switch(matched)
-        {
+        switch(matched) {
             case 0:
                 v = ZFFilterTypeInclude;
                 return zftrue;
@@ -444,8 +495,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterType, ZFFilterType, {
                 return zffalse;
         }
     }, {
-        switch(v)
-        {
+        switch(v) {
             case ZFFilterTypeInclude:
                 s += ZFTOKEN_ZFFilterTypeInclude;
                 return zftrue;
@@ -467,8 +517,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResu
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
         v = ZFFilterCallbackResultNotSpecified;
-        switch(matched)
-        {
+        switch(matched) {
             case 0:
                 v = ZFFilterCallbackResultNotSpecified;
                 return zftrue;
@@ -482,8 +531,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResu
                 return zffalse;
         }
     }, {
-        switch(v)
-        {
+        switch(v) {
             case ZFFilterCallbackResultNotSpecified:
                 s += ZFTOKEN_ZFFilterCallbackResultNotSpecified;
                 return zftrue;
@@ -501,51 +549,115 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResu
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForNumber, ZFFilterForNumber)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, void, copyFrom, ZFMP_IN(ZFFilterForNumber const &, ref))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForNumber, void, filterAdd, ZFMP_IN(zfint const &, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForNumber, void, filterRemove, ZFMP_IN(zfint const &, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, void, filterRemoveAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, void, copyFrom
+        , ZFMP_IN(ZFFilterForNumber const &, ref)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForNumber, void, filterAdd
+        , ZFMP_IN(zfint const &, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForNumber, void, filterRemove
+        , ZFMP_IN(zfint const &, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, void, filterRemoveAt
+        , ZFMP_IN(zfindex, index)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForNumber, void, filterRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForNumber, zfindex, filterCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, zfint, filterElementAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, ZFFilterType, filterTypeAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, zfbool, filterCheckActive, ZFMP_IN(zfint const &, e))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, zfint, filterElementAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, ZFFilterType, filterTypeAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForNumber, zfbool, filterCheckActive
+        , ZFMP_IN(zfint const &, e)
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForIndex, ZFFilterForIndex)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, void, copyFrom, ZFMP_IN(ZFFilterForIndex const &, ref))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIndex, void, filterAdd, ZFMP_IN(zfindex const &, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIndex, void, filterRemove, ZFMP_IN(zfindex const &, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, void, filterRemoveAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, void, copyFrom
+        , ZFMP_IN(ZFFilterForIndex const &, ref)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIndex, void, filterAdd
+        , ZFMP_IN(zfindex const &, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIndex, void, filterRemove
+        , ZFMP_IN(zfindex const &, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, void, filterRemoveAt
+        , ZFMP_IN(zfindex, index)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForIndex, void, filterRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForIndex, zfindex, filterCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, zfindex, filterElementAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, ZFFilterType, filterTypeAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, zfbool, filterCheckActive, ZFMP_IN(zfindex const &, e))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, zfindex, filterElementAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, ZFFilterType, filterTypeAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIndex, zfbool, filterCheckActive
+        , ZFMP_IN(zfindex const &, e)
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForIdentity, ZFFilterForIdentity)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, void, copyFrom, ZFMP_IN(ZFFilterForIdentity const &, ref))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIdentity, void, filterAdd, ZFMP_IN(zfidentity const &, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIdentity, void, filterRemove, ZFMP_IN(zfidentity const &, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, void, filterRemoveAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, void, copyFrom
+        , ZFMP_IN(ZFFilterForIdentity const &, ref)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIdentity, void, filterAdd
+        , ZFMP_IN(zfidentity const &, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForIdentity, void, filterRemove
+        , ZFMP_IN(zfidentity const &, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, void, filterRemoveAt
+        , ZFMP_IN(zfindex, index)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForIdentity, void, filterRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForIdentity, zfindex, filterCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, zfidentity, filterElementAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, ZFFilterType, filterTypeAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, zfbool, filterCheckActive, ZFMP_IN(zfidentity const &, e))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, zfidentity, filterElementAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, ZFFilterType, filterTypeAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForIdentity, zfbool, filterCheckActive
+        , ZFMP_IN(zfidentity const &, e)
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForString, ZFFilterForString)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, void, copyFrom, ZFMP_IN(ZFFilterForString const &, ref))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForString, void, filterAdd, ZFMP_IN(const zfchar *, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForString, void, filterRemove, ZFMP_IN(const zfchar *, e), ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, void, filterRemoveAt, ZFMP_IN(zfindex, index))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, void, copyFrom
+        , ZFMP_IN(ZFFilterForString const &, ref)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForString, void, filterAdd
+        , ZFMP_IN(const zfchar *, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFilterForString, void, filterRemove
+        , ZFMP_IN(const zfchar *, e)
+        , ZFMP_IN_OPT(ZFFilterType, filterType, ZFFilterTypeExclude)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, void, filterRemoveAt
+        , ZFMP_IN(zfindex, index)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForString, void, filterRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForString, zfindex, filterCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, const zfchar *, filterElementAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, ZFFilterType, filterTypeAt, ZFMP_IN(zfindex, index))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, zfbool, filterCheckActive, ZFMP_IN(const zfchar *, e))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, const zfchar *, filterElementAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, ZFFilterType, filterTypeAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForString, zfbool, filterCheckActive
+        , ZFMP_IN(const zfchar *, e)
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPathInfo, ZFPathInfo, {

@@ -7,18 +7,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_REGISTER(ZFUIScrollView)
 
 // ============================================================
-zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl,
-                                                           ZF_IN ZFUIScrollView *scrollView,
-                                                           ZF_IN zftimet recommendTimerInterval)
-{
+zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(
+        ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl
+        , ZF_IN ZFUIScrollView *scrollView
+        , ZF_IN zftimet recommendTimerInterval
+        ) {
     ZFObjectHolder *ownerHolder = scrollView->objectHolder();
     ZFLISTENER_2(scrollTimerEvent
             , ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *, impl
             , zfautoObjectT<ZFObjectHolder *>, ownerHolder
             ) {
         ZFUIScrollView *scrollView = ownerHolder->objectHolded();
-        if(scrollView != zfnull)
-        {
+        if(scrollView != zfnull) {
             impl->notifyScrollViewScrollAnimation(scrollView, ZFTime::timestamp());
         }
     } ZFLISTENER_END()
@@ -26,9 +26,10 @@ zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(ZF_IN ZFPROTOCOL_INTE
     ZFGlobalTimerAttach(scrollTimerEvent);
     return ZFTime::timestamp();
 }
-void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl,
-                                                       ZF_IN ZFUIScrollView *scrollView)
-{
+void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(
+        ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl
+        , ZF_IN ZFUIScrollView *scrollView
+        ) {
     v_ZFListener *scrollTimer = scrollView->objectTag<v_ZFListener *>("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
     zfRetain(scrollTimer);
     scrollView->objectTagRemove("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
@@ -38,11 +39,11 @@ void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(ZF_IN ZFPROTOCOL_INTERFAC
 
 // ============================================================
 // default impl for track delay
-void ZFUIScrollViewImplHelperProtocol::trackDelayStart(ZF_IN zftimet timeoutMiliSeconds,
-                                                       ZF_IN ZFUIScrollViewImplHelper *owner)
-{
-    if(owner->_trackDelayDefaultImplTimer == zfnull)
-    {
+void ZFUIScrollViewImplHelperProtocol::trackDelayStart(
+        ZF_IN zftimet timeoutMiliSeconds
+        , ZF_IN ZFUIScrollViewImplHelper *owner
+        ) {
+    if(owner->_trackDelayDefaultImplTimer == zfnull) {
         owner->_trackDelayDefaultImplTimer = zfAlloc(ZFTimer);
         owner->_trackDelayDefaultImplTimer->timerInterval(timeoutMiliSeconds);
         ZFLISTENER_1(timerActivated
@@ -56,10 +57,8 @@ void ZFUIScrollViewImplHelperProtocol::trackDelayStart(ZF_IN zftimet timeoutMili
     owner->_trackDelayDefaultImplTimer->timerInterval(timeoutMiliSeconds);
     owner->_trackDelayDefaultImplTimer->timerStart();
 }
-void ZFUIScrollViewImplHelperProtocol::trackDelayStop(ZF_IN ZFUIScrollViewImplHelper *owner)
-{
-    if(owner->_trackDelayDefaultImplTimer != zfnull)
-    {
+void ZFUIScrollViewImplHelperProtocol::trackDelayStop(ZF_IN ZFUIScrollViewImplHelper *owner) {
+    if(owner->_trackDelayDefaultImplTimer != zfnull) {
         owner->_trackDelayDefaultImplTimer->timerStop();
     }
 }
@@ -70,8 +69,7 @@ typedef enum {
     _ZFP_ZFUIScrollViewImplHelperDragStateDragging,
     _ZFP_ZFUIScrollViewImplHelperDragStateIgnored,
 } _ZFP_ZFUIScrollViewImplHelperDragState;
-zfclassNotPOD _ZFP_ZFUIScrollViewImplHelperPrivate
-{
+zfclassNotPOD _ZFP_ZFUIScrollViewImplHelperPrivate {
 public:
     ZFUIScrollViewImplHelper *pimplOwner;
     _ZFP_ZFUIScrollViewImplHelperDragState dragState;
@@ -94,83 +92,67 @@ public:
     }
 
 public:
-    zfbool scrollable(void)
-    {
+    zfbool scrollable(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().width > v->viewFrame().width || v->scrollContentFrame().height > v->viewFrame().height));
     }
-    zfbool scrollableX(void)
-    {
+    zfbool scrollableX(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().width > v->viewFrame().width));
     }
-    zfbool scrollableY(void)
-    {
+    zfbool scrollableY(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().height > v->viewFrame().height));
     }
-    zfbool scrollableLeft(void)
-    {
+    zfbool scrollableLeft(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().x < 0));
     }
-    zfbool scrollableTop(void)
-    {
+    zfbool scrollableTop(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollContentFrame().y < 0));
     }
-    zfbool scrollableRight(void)
-    {
+    zfbool scrollableRight(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (ZFUIRectGetRight(v->scrollContentFrame()) > v->viewFrame().width));
     }
-    zfbool scrollableBottom(void)
-    {
+    zfbool scrollableBottom(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (ZFUIRectGetBottom(v->scrollContentFrame()) > v->viewFrame().height));
     }
 
-    zfbool scrollableOrBounceable(void)
-    {
+    zfbool scrollableOrBounceable(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || v->scrollBounceVerticalAlways() || v->scrollContentFrame().width > v->viewFrame().width || v->scrollContentFrame().height > v->viewFrame().height));
     }
-    zfbool scrollableOrBounceableX(void)
-    {
+    zfbool scrollableOrBounceableX(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || v->scrollContentFrame().width > v->viewFrame().width));
     }
-    zfbool scrollableOrBounceableY(void)
-    {
+    zfbool scrollableOrBounceableY(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || v->scrollContentFrame().height > v->viewFrame().height));
     }
-    zfbool scrollableOrBounceableLeft(void)
-    {
+    zfbool scrollableOrBounceableLeft(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || (v->scrollBounceHorizontal() && v->scrollContentFrame().width > v->viewFrame().width) || v->scrollContentFrame().x < 0));
     }
-    zfbool scrollableOrBounceableTop(void)
-    {
+    zfbool scrollableOrBounceableTop(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || (v->scrollBounceVertical() && v->scrollContentFrame().height > v->viewFrame().height) || v->scrollContentFrame().y < 0));
     }
-    zfbool scrollableOrBounceableRight(void)
-    {
+    zfbool scrollableOrBounceableRight(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceHorizontalAlways() || (v->scrollBounceHorizontal() && v->scrollContentFrame().width > v->viewFrame().width) || ZFUIRectGetRight(v->scrollContentFrame()) > v->viewFrame().width));
     }
-    zfbool scrollableOrBounceableBottom(void)
-    {
+    zfbool scrollableOrBounceableBottom(void) {
         ZFUIScrollView *v = pimplOwner->scrollView;
         return (v->viewUIEnable() && v->viewUIEnableTree() && v->scrollEnable() && (v->scrollBounceVerticalAlways() || (v->scrollBounceVertical() && v->scrollContentFrame().height > v->viewFrame().height) || ZFUIRectGetBottom(v->scrollContentFrame()) > v->viewFrame().height));
     }
 
 public:
-    void mouseDownResend(void)
-    {
-        if(this->mouseDownSaved && this->processingChild)
-        {
+    void mouseDownResend(void) {
+        if(this->mouseDownSaved && this->processingChild) {
             ZFUIPoint mouseDownPos = this->mouseEventPos(this->mouseDownSaved);
             this->mouseDownSaved = this->pimplOwner->implProtocol->translateFromParentToChild(
                 this->processingChild,
@@ -185,10 +167,8 @@ public:
         }
         this->mouseDownCleanup();
     }
-    void mouseDownCleanup(void)
-    {
-        if(this->mouseDownSaved)
-        {
+    void mouseDownCleanup(void) {
+        if(this->mouseDownSaved) {
             this->pimplOwner->implProtocol->mouseEventCleanup(this->mouseDownSaved);
             this->mouseDownSaved = zfnull;
         }
@@ -199,12 +179,13 @@ public:
     }
 
 public:
-    void mouseEventPos(ZF_OUT ZFUIPoint &mousePos, ZF_IN void *nativeMouseEvent)
-    {
+    void mouseEventPos(
+            ZF_OUT ZFUIPoint &mousePos
+            , ZF_IN void *nativeMouseEvent
+            ) {
         this->pimplOwner->implProtocol->mouseEventPos(mousePos, nativeMouseEvent);
     }
-    ZFUIPoint mouseEventPos(ZF_IN void *nativeMouseEvent)
-    {
+    ZFUIPoint mouseEventPos(ZF_IN void *nativeMouseEvent) {
         ZFUIPoint mousePos = ZFUIPointZero();
         this->mouseEventPos(mousePos, nativeMouseEvent);
         return mousePos;
@@ -232,10 +213,8 @@ ZFUIScrollViewImplHelper::ZFUIScrollViewImplHelper(void)
     d = zfpoolNew(_ZFP_ZFUIScrollViewImplHelperPrivate);
     d->pimplOwner = this;
 }
-ZFUIScrollViewImplHelper::~ZFUIScrollViewImplHelper(void)
-{
-    if(_trackDelayDefaultImplTimer != zfnull)
-    {
+ZFUIScrollViewImplHelper::~ZFUIScrollViewImplHelper(void) {
+    if(_trackDelayDefaultImplTimer != zfnull) {
         _trackDelayDefaultImplTimer->timerStop();
         zfRelease(_trackDelayDefaultImplTimer);
         _trackDelayDefaultImplTimer = zfnull;
@@ -243,61 +222,55 @@ ZFUIScrollViewImplHelper::~ZFUIScrollViewImplHelper(void)
     zfpoolDelete(d);
 }
 
-void ZFUIScrollViewImplHelper::interceptMouse(ZF_IN void *nativeMouseEvent,
-                                              ZF_IN ZFUIMouseActionEnum mouseAction)
-{
+void ZFUIScrollViewImplHelper::interceptMouse(
+        ZF_IN void *nativeMouseEvent
+        , ZF_IN ZFUIMouseActionEnum mouseAction
+        ) {
     zfblockedRelease(zfRetain(this->scrollView));
 
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << d->pimplOwner->scrollView << "intercept" << mouseAction
         << d->mouseEventPos(nativeMouseEvent);
     #endif
-    switch(mouseAction)
-    {
+    switch(mouseAction) {
         case ZFUIMouseAction::e_MouseDown:
             d->mouseDownFlag = zftrue;
             d->trackMouseDown(nativeMouseEvent);
             break;
         case ZFUIMouseAction::e_MouseMove:
-            if(!d->mouseDownFlag)
-            {
+            if(!d->mouseDownFlag) {
                 #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
                 zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << d->pimplOwner->scrollView << "forward" << mouseAction
                     << d->mouseEventPos(nativeMouseEvent);
                 #endif
                 d->pimplOwner->implProtocol->mouseEventForward(d->pimplOwner->scrollView->nativeImplView(), nativeMouseEvent);
             }
-            else
-            {
+            else {
                 d->trackMouseMove(nativeMouseEvent);
             }
             break;
         case ZFUIMouseAction::e_MouseUp:
-            if(!d->mouseDownFlag)
-            {
+            if(!d->mouseDownFlag) {
                 #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
                 zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << d->pimplOwner->scrollView << "forward" << mouseAction
                     << d->mouseEventPos(nativeMouseEvent);
                 #endif
                 d->pimplOwner->implProtocol->mouseEventForward(d->pimplOwner->scrollView->nativeImplView(), nativeMouseEvent);
             }
-            else
-            {
+            else {
                 d->mouseDownFlag = zffalse;
                 d->trackMouseUp(nativeMouseEvent);
             }
             break;
         case ZFUIMouseAction::e_MouseCancel:
-            if(!d->mouseDownFlag)
-            {
+            if(!d->mouseDownFlag) {
                 #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
                 zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << d->pimplOwner->scrollView << "forward" << mouseAction
                     << d->mouseEventPos(nativeMouseEvent);
                 #endif
                 d->pimplOwner->implProtocol->mouseEventForward(d->pimplOwner->scrollView->nativeImplView(), nativeMouseEvent);
             }
-            else
-            {
+            else {
                 d->mouseDownFlag = zffalse;
                 d->trackMouseCancel(nativeMouseEvent);
             }
@@ -311,8 +284,7 @@ void ZFUIScrollViewImplHelper::interceptMouse(ZF_IN void *nativeMouseEvent,
             break;
     }
 }
-void ZFUIScrollViewImplHelper::trackDelayNotifyTimeout(void)
-{
+void ZFUIScrollViewImplHelper::trackDelayNotifyTimeout(void) {
     // mouse without drag and timeout,
     // restore mouse down event and ignore all following events
     d->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateIgnored;
@@ -324,8 +296,7 @@ void ZFUIScrollViewImplHelper::trackDelayNotifyTimeout(void)
 
 // ============================================================
 // track logic
-void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseDown(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseDown(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "track" << ZFUIMouseAction::e_MouseDown
         << this->mouseEventPos(nativeMouseEvent);
@@ -336,8 +307,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseDown(ZF_IN void *nativeMous
 
     this->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateTracking;
     this->trackingChild = this->pimplOwner->implProtocol->findTouchedChildScrollView(x, y);
-    if(this->trackingChild != zfnull && this->trackingChild->d->scrollableOrBounceable())
-    {
+    if(this->trackingChild != zfnull && this->trackingChild->d->scrollableOrBounceable()) {
         this->trackingChild->d->trackingParent = this->pimplOwner;
 
         void *tmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
@@ -354,15 +324,13 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseDown(ZF_IN void *nativeMous
         return;
     }
 
-    if(this->trackingChild != zfnull)
-    {
+    if(this->trackingChild != zfnull) {
         this->pimplOwner->implProtocol->findTouchedChildScrollViewCleanup(this->trackingChild);
         this->trackingChild = zfnull;
     }
     this->resolveMouseDown(nativeMouseEvent);
 }
-void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseMove(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseMove(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "track" << ZFUIMouseAction::e_MouseMove
         << this->mouseEventPos(nativeMouseEvent);
@@ -370,8 +338,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseMove(ZF_IN void *nativeMous
     ZFUIPoint mousePos = this->mouseEventPos(nativeMouseEvent);
     zffloat &x = mousePos.x;
     zffloat &y = mousePos.y;
-    if(this->trackingChild != zfnull)
-    {
+    if(this->trackingChild != zfnull) {
         void *tmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
         tmp = this->pimplOwner->implProtocol->translateFromParentToChild(
             this->trackingChild->scrollView->nativeImplView(),
@@ -386,8 +353,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseMove(ZF_IN void *nativeMous
         return;
     }
 
-    if(this->trackingParent == zfnull || this->dragState != _ZFP_ZFUIScrollViewImplHelperDragStateTracking)
-    {
+    if(this->trackingParent == zfnull || this->dragState != _ZFP_ZFUIScrollViewImplHelperDragStateTracking) {
         this->resolveMouseMove(nativeMouseEvent);
         return;
     }
@@ -395,95 +361,72 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseMove(ZF_IN void *nativeMous
     ZFUIPoint mouseDownPos = this->mouseEventPos(this->mouseDownSaved);
     zffloat xOffset = x - mouseDownPos.x;
     zffloat yOffset = y - mouseDownPos.y;
-    if(zfmAbs(xOffset) <= this->pimplOwner->nativeScrollTolerance && zfmAbs(yOffset) <= this->pimplOwner->nativeScrollTolerance)
-    {
+    if(zfmAbs(xOffset) <= this->pimplOwner->nativeScrollTolerance && zfmAbs(yOffset) <= this->pimplOwner->nativeScrollTolerance) {
         return;
     }
     zfbool stopTracking = zffalse;
-    if(zfmAbs(yOffset) >= zfmAbs(xOffset))
-    { // drag vertical
-        if(yOffset > 0)
-        {
-            if(this->scrollableTop())
-            {
+    if(zfmAbs(yOffset) >= zfmAbs(xOffset)) { // drag vertical
+        if(yOffset > 0) {
+            if(this->scrollableTop()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableTop())
-            {
+            else if(this->trackingParent->d->scrollableTop()) {
                 stopTracking = zftrue;
             }
-            else if(this->scrollableOrBounceableTop())
-            {
+            else if(this->scrollableOrBounceableTop()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableOrBounceableTop())
-            {
+            else if(this->trackingParent->d->scrollableOrBounceableTop()) {
                 stopTracking = zftrue;
             }
         }
-        else if(yOffset < 0)
-        {
-            if(this->scrollableBottom())
-            {
+        else if(yOffset < 0) {
+            if(this->scrollableBottom()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableBottom())
-            {
+            else if(this->trackingParent->d->scrollableBottom()) {
                 stopTracking = zftrue;
             }
-            else if(this->scrollableOrBounceableBottom())
-            {
+            else if(this->scrollableOrBounceableBottom()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableOrBounceableBottom())
-            {
+            else if(this->trackingParent->d->scrollableOrBounceableBottom()) {
                 stopTracking = zftrue;
             }
         }
     }
     else { // drag horizontal
-        if(xOffset > 0)
-        {
-            if(this->scrollableLeft())
-            {
+        if(xOffset > 0) {
+            if(this->scrollableLeft()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableLeft())
-            {
+            else if(this->trackingParent->d->scrollableLeft()) {
                 stopTracking = zftrue;
             }
-            else if(this->scrollableOrBounceableLeft())
-            {
+            else if(this->scrollableOrBounceableLeft()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableOrBounceableLeft())
-            {
+            else if(this->trackingParent->d->scrollableOrBounceableLeft()) {
                 stopTracking = zftrue;
             }
         }
-        else if(xOffset < 0)
-        {
-            if(this->scrollableRight())
-            {
+        else if(xOffset < 0) {
+            if(this->scrollableRight()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableRight())
-            {
+            else if(this->trackingParent->d->scrollableRight()) {
                 stopTracking = zftrue;
             }
-            else if(this->scrollableOrBounceableRight())
-            {
+            else if(this->scrollableOrBounceableRight()) {
                 this->trackingParent = zfnull;
             }
-            else if(this->trackingParent->d->scrollableOrBounceableRight())
-            {
+            else if(this->trackingParent->d->scrollableOrBounceableRight()) {
                 stopTracking = zftrue;
             }
         }
     }
 
-    if(stopTracking)
-    { // stop child's drag and restore parent's touch down
+    if(stopTracking) { // stop child's drag and restore parent's touch down
         void *mouseDownTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent, zftrue, ZFUIMouseAction::e_MouseDown);
 
         void *evTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent, zftrue, ZFUIMouseAction::e_MouseCancel);
@@ -495,8 +438,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseMove(ZF_IN void *nativeMous
             this->pimplOwner->scrollView->nativeImplView(),
             mouseDownTmp,
             x, y);
-        if(this->trackingParent->d->trackingChild != zfnull)
-        {
+        if(this->trackingParent->d->trackingChild != zfnull) {
             this->pimplOwner->implProtocol->findTouchedChildScrollViewCleanup(this->trackingParent->d->trackingChild);
             this->trackingParent->d->trackingChild = zfnull;
         }
@@ -504,13 +446,11 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseMove(ZF_IN void *nativeMous
         this->trackingParent->d->resolveMouseDown(mouseDownTmp);
         this->pimplOwner->implProtocol->mouseEventCleanup(mouseDownTmp);
     }
-    else
-    {
+    else {
         this->resolveMouseMove(nativeMouseEvent);
     }
 }
-void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseUp(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseUp(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "track" << ZFUIMouseAction::e_MouseUp
         << this->mouseEventPos(nativeMouseEvent);
@@ -518,8 +458,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseUp(ZF_IN void *nativeMouseE
     ZFUIPoint mousePos = this->mouseEventPos(nativeMouseEvent);
     zffloat &x = mousePos.x;
     zffloat &y = mousePos.y;
-    if(this->trackingChild != zfnull)
-    {
+    if(this->trackingChild != zfnull) {
         ZFUIScrollViewImplHelper *tmp = this->trackingChild;
         this->trackingChild->d->trackingParent = zfnull;
         this->pimplOwner->implProtocol->findTouchedChildScrollViewCleanup(this->trackingChild);
@@ -533,8 +472,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseUp(ZF_IN void *nativeMouseE
     }
     this->resolveMouseUp(nativeMouseEvent);
 }
-void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseCancel(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseCancel(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "track" << ZFUIMouseAction::e_MouseCancel
         << this->mouseEventPos(nativeMouseEvent);
@@ -542,8 +480,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseCancel(ZF_IN void *nativeMo
     ZFUIPoint mousePos = this->mouseEventPos(nativeMouseEvent);
     zffloat &x = mousePos.x;
     zffloat &y = mousePos.y;
-    if(this->trackingChild != zfnull)
-    {
+    if(this->trackingChild != zfnull) {
         ZFUIScrollViewImplHelper *tmp = this->trackingChild;
         this->trackingChild->d->trackingParent = zfnull;
         this->pimplOwner->implProtocol->findTouchedChildScrollViewCleanup(this->trackingChild);
@@ -560,8 +497,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::trackMouseCancel(ZF_IN void *nativeMo
 
 // ============================================================
 // mouse resolve
-void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseDown(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseDown(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "resolve" << ZFUIMouseAction::e_MouseDown
         << this->mouseEventPos(nativeMouseEvent);
@@ -571,13 +507,11 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseDown(ZF_IN void *nativeMo
     zffloat &y = mousePos.y;
     this->mouseDownCleanup();
 
-    if(!this->scrollableOrBounceable())
-    {
+    if(!this->scrollableOrBounceable()) {
         this->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateIgnored;
         this->processingChild = this->pimplOwner->implProtocol->findTouchedChild(x, y);
 
-        if(this->processingChild != zfnull)
-        {
+        if(this->processingChild != zfnull) {
             void *evTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
             evTmp = this->pimplOwner->implProtocol->translateFromParentToChild(this->processingChild, evTmp, x, y);
             #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
@@ -592,10 +526,8 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseDown(ZF_IN void *nativeMo
 
     this->mouseDownSaved = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
 
-    if(this->pimplOwner->scrollView->scrollViewState() != ZFUIScrollViewState::e_Idle)
-    {
-        if(this->processingChild != zfnull)
-        {
+    if(this->pimplOwner->scrollView->scrollViewState() != ZFUIScrollViewState::e_Idle) {
+        if(this->processingChild != zfnull) {
             this->pimplOwner->implProtocol->findTouchedChildCleanup(this->processingChild);
             this->processingChild = zfnull;
         }
@@ -605,16 +537,14 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseDown(ZF_IN void *nativeMo
     }
 
     this->processingChild = this->pimplOwner->implProtocol->findTouchedChild(x, y);
-    if(this->processingChild != zfnull)
-    {
+    if(this->processingChild != zfnull) {
         #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
         zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "track timer start";
         #endif
         this->pimplOwner->implProtocol->trackDelayStart((zftimet)200, this->pimplOwner);
     }
 }
-void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "resolve" << ZFUIMouseAction::e_MouseMove
         << this->mouseEventPos(nativeMouseEvent);
@@ -622,15 +552,12 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMo
     ZFUIPoint mousePos = this->mouseEventPos(nativeMouseEvent);
     zffloat &x = mousePos.x;
     zffloat &y = mousePos.y;
-    if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateDragging)
-    {
+    if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateDragging) {
         ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(this->pimplOwner->scrollView, ZFUIPointMake(x, y), this->pimplOwner->implProtocol->nativeTime());
         return;
     }
-    else if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateIgnored)
-    {
-        if(this->processingChild != zfnull)
-        {
+    else if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateIgnored) {
+        if(this->processingChild != zfnull) {
             void *evTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
             evTmp = this->pimplOwner->implProtocol->translateFromParentToChild(this->processingChild, evTmp, x, y);
             #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
@@ -653,46 +580,34 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMo
     }
 
     zfbool childIntercepted = zffalse;
-    if(this->processingChild != zfnull)
-    {
-        if(yOffsetAbs >= xOffsetAbs * 1.5f)
-        { // drag vertical
-            if(yOffset > 0)
-            {
-                if(!this->scrollableOrBounceableTop())
-                {
+    if(this->processingChild != zfnull) {
+        if(yOffsetAbs >= xOffsetAbs * 1.5f) { // drag vertical
+            if(yOffset > 0) {
+                if(!this->scrollableOrBounceableTop()) {
                     childIntercepted = true;
                 }
             }
-            else
-            {
-                if(!this->scrollableOrBounceableBottom())
-                {
+            else {
+                if(!this->scrollableOrBounceableBottom()) {
                     childIntercepted = true;
                 }
             }
         }
-        else if(xOffsetAbs >= yOffsetAbs * 1.5f)
-        { // drag horizontal
-            if(xOffset > 0)
-            {
-                if(!this->scrollableOrBounceableLeft())
-                {
+        else if(xOffsetAbs >= yOffsetAbs * 1.5f) { // drag horizontal
+            if(xOffset > 0) {
+                if(!this->scrollableOrBounceableLeft()) {
                     childIntercepted = true;
                 }
             }
-            else
-            {
-                if(!this->scrollableOrBounceableRight())
-                {
+            else {
+                if(!this->scrollableOrBounceableRight()) {
                     childIntercepted = true;
                 }
             }
         }
     }
 
-    if(childIntercepted)
-    {
+    if(childIntercepted) {
         this->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateIgnored;
         this->mouseDownResend();
         void *evTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
@@ -704,8 +619,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMo
         this->pimplOwner->implProtocol->mouseEventForward(this->processingChild, evTmp);
         this->pimplOwner->implProtocol->mouseEventCleanup(evTmp);
     }
-    else
-    {
+    else {
         this->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateDragging;
 
         ZFUIPoint mouseDownPos = this->mouseEventPos(this->mouseDownSaved);
@@ -714,8 +628,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseMove(ZF_IN void *nativeMo
         ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(this->pimplOwner->scrollView, ZFUIPointMake(x, y), this->pimplOwner->implProtocol->nativeTime());
     }
 }
-void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseUp(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseUp(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "resolve" << ZFUIMouseAction::e_MouseUp
         << this->mouseEventPos(nativeMouseEvent);
@@ -724,15 +637,12 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseUp(ZF_IN void *nativeMous
     zffloat &x = mousePos.x;
     zffloat &y = mousePos.y;
 
-    if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateDragging)
-    {
+    if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateDragging) {
         ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragEnd(this->pimplOwner->scrollView, this->pimplOwner->implProtocol->nativeTime(), zftrue);
         return;
     }
-    else if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateIgnored)
-    {
-        if(this->processingChild != zfnull)
-        {
+    else if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateIgnored) {
+        if(this->processingChild != zfnull) {
             void *evTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
             evTmp = this->pimplOwner->implProtocol->translateFromParentToChild(this->processingChild, evTmp, x, y);
             #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
@@ -747,8 +657,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseUp(ZF_IN void *nativeMous
 
     // mouse down then up quickly
     this->dragState = _ZFP_ZFUIScrollViewImplHelperDragStateTracking;
-    if(this->processingChild != zfnull)
-    {
+    if(this->processingChild != zfnull) {
         this->mouseDownResend();
         void *evTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
         evTmp = this->pimplOwner->implProtocol->translateFromParentToChild(this->processingChild, evTmp, x, y);
@@ -763,8 +672,7 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseUp(ZF_IN void *nativeMous
         this->mouseDownCleanup();
     }
 }
-void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseCancel(ZF_IN void *nativeMouseEvent)
-{
+void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseCancel(ZF_IN void *nativeMouseEvent) {
     #if _ZFP_ZFProtocolZFUIScrollView_DEBUG
     zfLogTrim() << zfLogCurTimeString() << "[ScrollImpl]" << ZF_CALLER_LINE << this->pimplOwner->scrollView << "resolve" << ZFUIMouseAction::e_MouseCancel
         << this->mouseEventPos(nativeMouseEvent);
@@ -773,15 +681,12 @@ void _ZFP_ZFUIScrollViewImplHelperPrivate::resolveMouseCancel(ZF_IN void *native
     zffloat &x = mousePos.x;
     zffloat &y = mousePos.y;
 
-    if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateDragging)
-    {
+    if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateDragging) {
         ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragEnd(this->pimplOwner->scrollView, this->pimplOwner->implProtocol->nativeTime(), zffalse);
         return;
     }
-    else if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateIgnored)
-    {
-        if(this->processingChild != zfnull)
-        {
+    else if(this->dragState == _ZFP_ZFUIScrollViewImplHelperDragStateIgnored) {
+        if(this->processingChild != zfnull) {
             void *evTmp = this->pimplOwner->implProtocol->mouseEventClone(nativeMouseEvent);
             evTmp = this->pimplOwner->implProtocol->translateFromParentToChild(this->processingChild, evTmp, x, y);
             #if _ZFP_ZFProtocolZFUIScrollView_DEBUG

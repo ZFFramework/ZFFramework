@@ -27,15 +27,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may also use #ZFGlobalTimerManualStep to manually control the timer steps\n
  * note global timer is ensured run in main thread
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttach,
-                        ZFMP_IN(const ZFListener &, timerCallback),
-                        ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttachOnce,
-                        ZFMP_IN(const ZFListener &, timerCallback),
-                        ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttach
+        , ZFMP_IN(const ZFListener &, timerCallback)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttachOnce
+        , ZFMP_IN(const ZFListener &, timerCallback)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
 /** @brief see #ZFGlobalTimerAttach */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerDetach,
-                        ZFMP_IN(const ZFListener &, timerCallback))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerDetach
+        , ZFMP_IN(const ZFListener &, timerCallback)
+        )
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFGlobalTimerDetachAll)
 
@@ -43,13 +46,15 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFGlobalTimerDetachAll)
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zftimet const &, ZFGlobalTimerIntervalDefault)
 /** @brief see #ZFGlobalTimerAttach */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerIntervalDefault,
-                        ZFMP_IN(zftimet const &, timerIntervalDefault))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerIntervalDefault
+        , ZFMP_IN(zftimet const &, timerIntervalDefault)
+        )
 /** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zftimet const &, ZFGlobalTimerInterval)
 /** @brief see #ZFGlobalTimerAttach */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerInterval,
-                        ZFMP_IN(zftimet const &, timerInterval))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFGlobalTimerInterval
+        , ZFMP_IN(zftimet const &, timerInterval)
+        )
 
 // ============================================================
 /**

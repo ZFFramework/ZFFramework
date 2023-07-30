@@ -11,8 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief data to hold params for #ZFMethodGenericInvoker */
-zfclass ZFLIB_ZFCore ZFMethodInvokeData : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFMethodInvokeData : zfextends ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFMethodInvokeData, ZFObject)
 
 public:
@@ -58,13 +57,11 @@ protected:
     /** @endcond */
 public:
     zfoverride
-    virtual zfbool objectIsInternal(void)
-    {
+    virtual zfbool objectIsInternal(void) {
         return zftrue;
     }
     zfoverride
-    virtual zfbool objectIsInternalPrivate(void)
-    {
+    virtual zfbool objectIsInternalPrivate(void) {
         return zftrue;
     }
 };

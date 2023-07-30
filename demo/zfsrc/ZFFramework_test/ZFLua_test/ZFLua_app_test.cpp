@@ -3,14 +3,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFLua_app_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFLua_app_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_app_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
         ZFFramework_test_protocolCheck(ZFUIView);
@@ -25,9 +23,9 @@ protected:
     }
 
 private:
-    ZFMETHOD_INLINE_1(void, managerOnDestroy,
-                      ZFMP_IN(const ZFArgs &, zfargs))
-    {
+    ZFMETHOD_INLINE_1(void, managerOnDestroy
+            , ZFMP_IN(const ZFArgs &, zfargs)
+            ) {
         this->testCaseStop(ZFResultType::e_Success);
         ZFLuaGC();
     }

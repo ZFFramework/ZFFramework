@@ -11,12 +11,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_Qt, ZFApp, ZFProtocolLevel::e_SystemHigh)
 public:
-    virtual void appRestart(void)
-    {
+    virtual void appRestart(void) {
         QTimer::singleShot(100, _ZFP_appRestart);
     }
-    static void _ZFP_appRestart(void)
-    {
+    static void _ZFP_appRestart(void) {
         ZFCoreArray<zfstring> appParamsSaved;
         appParamsSaved.copyFrom(ZFApp::appParams());
         ZFFrameworkCleanup();

@@ -57,19 +57,27 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaStateDetach(ZF_IN lua_State *L);
 /**
  * @brief called when class data changed, for each lua state of each thread
  */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_classDataChange(ZF_IN lua_State *L,
-                                                          ZF_IN const ZFClassDataChangeData &data);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_classDataChange(
+        ZF_IN lua_State *L
+        , ZF_IN const ZFClassDataChangeData &data
+        );
 
 // ============================================================
 typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupCallback)(ZF_IN_OUT lua_State *L);
-typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange)(ZF_IN_OUT lua_State *L,
-                                                           ZF_IN const ZFClassDataChangeData &data);
-extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback,
-                                                                         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback,
-                                                                         ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange);
-extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback,
-                                                                           ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback,
-                                                                           ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange);
+typedef void (*_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange)(
+        ZF_IN_OUT lua_State *L
+        , ZF_IN const ZFClassDataChangeData &data
+        );
+extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(
+        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange
+        );
+extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
+        ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupAttachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupCallback setupDetachCallback
+        , ZF_IN _ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange setupClassDataChange
+        );
 
 /**
  * @brief for impl to add attach and detach actions
@@ -84,44 +92,48 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(ZF_IN
  *           //   void implSetupDetach(ZF_IN_OUT lua_State *L);
  *       }, {
  *           // your own class data change action, callback proto type:
- *           //   void implSetupClassDataChange(ZF_IN_OUT lua_State *L,
- *           //                                 ZF_IN const ZFClassDataChangeData &data);
+ *           //   void implSetupClassDataChange(
+ *           //           ZF_IN_OUT lua_State *L
+ *           //           , ZF_IN const ZFClassDataChangeData &data
+ *           //           );
  *       })
  * @endcode
  */
 #define ZFImpl_ZFLua_implSetupCallback_DEFINE(SetupSig, setupAttachAction, setupDetachAction, setupClassDataChange) \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implSetupAction_##SetupSig, ZFLevelZFFrameworkLow) \
-    { \
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implSetupAction_##SetupSig, ZFLevelZFFrameworkLow) { \
         _ZFP_ZFImpl_ZFLua_implSetupCallbackRegister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataChange); \
     } \
-    ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implSetupAction_##SetupSig) \
-    { \
+    ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implSetupAction_##SetupSig) { \
         _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(zfself::implSetupAttach, zfself::implSetupDetach, zfself::implSetupClassDataChange); \
     } \
     public: \
-        static void implSetupAttach(ZF_IN_OUT lua_State *L) \
-        { \
+        static void implSetupAttach(ZF_IN_OUT lua_State *L) { \
             setupAttachAction \
         } \
-        static void implSetupDetach(ZF_IN_OUT lua_State *L) \
-        { \
+        static void implSetupDetach(ZF_IN_OUT lua_State *L) { \
             setupDetachAction \
         } \
-        static void implSetupClassDataChange(ZF_IN_OUT lua_State *L, \
-                                             ZF_IN const ZFClassDataChangeData &data) \
-        { \
+        static void implSetupClassDataChange( \
+                ZF_IN_OUT lua_State *L \
+                , ZF_IN const ZFClassDataChangeData &data \
+                ) { \
             setupClassDataChange \
         } \
     ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implSetupAction_##SetupSig)
 
 // ============================================================
 /** @brief see #ZFImpl_ZFLua_luaStateOpen */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupScope(ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList,
-                                                         ZF_IN ZFCoreArray<const zfchar *> const &scopeNameList);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupScope(
+        ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList
+        , ZF_IN ZFCoreArray<const zfchar *> const &scopeNameList
+        );
 /**
  * @brief setup metatable for zfautoObject in lua env
  */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupMetatable(ZF_IN_OUT lua_State *L, ZF_IN_OPT int metatableIndex = -1);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupMetatable(
+        ZF_IN_OUT lua_State *L
+        , ZF_IN_OPT int metatableIndex = -1
+        );
 
 // ============================================================
 /** @brief class prefix for #ZFTypeIdWrapper impl */
@@ -137,35 +149,42 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupMetatable(ZF_IN_OUT lua_State
  * when more than one value returned,
  * the luaResult would holds a #v_ZFCoreArray
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_execute(ZF_IN lua_State *L,
-                                                    ZF_IN const zfchar *buf,
-                                                    ZF_IN_OPT zfindex bufLen = zfindexMax(),
-                                                    ZF_OUT_OPT zfautoObject *luaResult = zfnull,
-                                                    ZF_IN_OPT const ZFCoreArray<zfautoObject> *luaParams = zfnull,
-                                                    ZF_OUT_OPT zfstring *errHint = zfnull,
-                                                    ZF_IN_OPT const zfchar *chunkInfo = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_execute(
+        ZF_IN lua_State *L
+        , ZF_IN const zfchar *buf
+        , ZF_IN_OPT zfindex bufLen = zfindexMax()
+        , ZF_OUT_OPT zfautoObject *luaResult = zfnull
+        , ZF_IN_OPT const ZFCoreArray<zfautoObject> *luaParams = zfnull
+        , ZF_OUT_OPT zfstring *errHint = zfnull
+        , ZF_IN_OPT const zfchar *chunkInfo = zfnull
+        );
 /**
  * @brief error handler for #ZFImpl_ZFLua_execute, lua_pcall, etc
  */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_execute_errorHandle(ZF_IN lua_State *L,
-                                                              ZF_IN int error,
-                                                              ZF_OUT_OPT zfstring *errHint = zfnull,
-                                                              ZF_IN_OPT const zfchar *chunkInfo = zfnull);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_execute_errorHandle(
+        ZF_IN lua_State *L
+        , ZF_IN int error
+        , ZF_OUT_OPT zfstring *errHint = zfnull
+        , ZF_IN_OPT const zfchar *chunkInfo = zfnull
+        );
 
 // ============================================================
 // utils
 /** @brief see #ZFImpl_ZFLua_luaObjectInfo */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaObjectInfoT(ZF_OUT zfstring &ret,
-                                                         ZF_IN lua_State *L,
-                                                         ZF_IN int luaStackOffset,
-                                                         ZF_IN_OPT zfbool printLuaType = zffalse);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_luaObjectInfoT(
+        ZF_OUT zfstring &ret
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_IN_OPT zfbool printLuaType = zffalse
+        );
 /**
  * @brief get raw lua object info
  */
-inline zfstring ZFImpl_ZFLua_luaObjectInfo(ZF_IN lua_State *L,
-                                           ZF_IN int luaStackOffset,
-                                           ZF_IN_OPT zfbool printLuaType = zffalse)
-{
+inline zfstring ZFImpl_ZFLua_luaObjectInfo(
+        ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_IN_OPT zfbool printLuaType = zffalse
+        ) {
     zfstring ret;
     ZFImpl_ZFLua_luaObjectInfoT(ret, L, luaStackOffset, printLuaType);
     return ret;
@@ -174,9 +193,11 @@ inline zfstring ZFImpl_ZFLua_luaObjectInfo(ZF_IN lua_State *L,
 /**
  * @brief get params from lua
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toObject(ZF_OUT zfautoObject &param,
-                                                     ZF_IN lua_State *L,
-                                                     ZF_IN int luaStackOffset);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toObject(
+        ZF_OUT zfautoObject &param
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        );
 
 /**
  * @brief get params from lua
@@ -189,10 +210,12 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toObject(ZF_OUT zfautoObject &param,
  *   and would be converted to #ZFTypeIdWrapper during function call
  * -  #ZFImpl_ZFLuaValue
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param,
-                                                      ZF_IN lua_State *L,
-                                                      ZF_IN int luaStackOffset,
-                                                      ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toGeneric(
+        ZF_OUT zfautoObject &param
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 
 /**
  * @brief get params from lua
@@ -201,10 +224,12 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toGeneric(ZF_OUT zfautoObject &param
  * -  #v_ZFCallback
  * -  lua function, converted by ZFCallbackForLua (available in lua code only)
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
-                                                       ZF_IN lua_State *L,
-                                                       ZF_IN int luaStackOffset,
-                                                       ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 
 /**
  * @brief get params from lua
@@ -213,35 +238,45 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toCallback(ZF_OUT zfautoObject &ret,
  * -  normal lua string
  * -  #v_zfstring
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(ZF_IN_OUT zfstring &s,
-                                                     ZF_IN lua_State *L,
-                                                     ZF_IN int luaStackOffset,
-                                                     ZF_IN_OPT zfbool allowEmpty = zffalse,
-                                                     ZF_OUT_OPT const ZFClass **holderCls = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        );
 /** @brief see #ZFImpl_ZFLua_toString */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(ZF_IN_OUT zfstring &s,
-                                                     ZF_IN ZFObject *obj,
-                                                     ZF_IN_OPT zfbool allowEmpty = zffalse,
-                                                     ZF_OUT_OPT const ZFClass **holderCls = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        );
 
 /** @brief see #ZFImpl_ZFLua_toString */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(ZF_IN_OUT const zfchar *&s,
-                                                     ZF_IN lua_State *L,
-                                                     ZF_IN int luaStackOffset,
-                                                     ZF_IN_OPT zfbool allowEmpty = zffalse,
-                                                     ZF_OUT_OPT const ZFClass **holderCls = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
+        ZF_IN_OUT const zfchar *&s
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        );
 /** @brief see #ZFImpl_ZFLua_toString */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(ZF_IN_OUT const zfchar *&s,
-                                                     ZF_IN ZFObject *obj,
-                                                     ZF_IN_OPT zfbool allowEmpty = zffalse,
-                                                     ZF_OUT_OPT const ZFClass **holderCls = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toString(
+        ZF_IN_OUT const zfchar *&s
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        );
 
 /** @brief see #ZFImpl_ZFLua_toNumber */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(ZF_OUT zfautoObject &ret,
-                                                      ZF_IN lua_State *L,
-                                                      ZF_IN int luaStackOffset,
-                                                      ZF_IN_OPT zfbool allowEmpty = zffalse,
-                                                      ZF_OUT_OPT const ZFClass **holderCls = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        );
 /**
  * @brief get params from lua
  *
@@ -262,21 +297,24 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(ZF_OUT zfautoObject &ret,
  *
  * return proper #v_zflongdouble if success, or empty if fail
  */
-inline zfautoObject ZFImpl_ZFLua_toNumber(ZF_IN lua_State *L,
-                                          ZF_IN int luaStackOffset,
-                                          ZF_IN_OPT zfbool allowEmpty = zffalse,
-                                          ZF_OUT_OPT const ZFClass **holderCls = zfnull)
-{
+inline zfautoObject ZFImpl_ZFLua_toNumber(
+        ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        ) {
     zfautoObject ret;
     ZFImpl_ZFLua_toNumberT(ret, L, luaStackOffset, allowEmpty, holderCls);
     return ret;
 }
 
 /** @brief see #ZFImpl_ZFLua_toNumber */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(ZF_OUT zfautoObject &ret,
-                                                      ZF_IN ZFObject *obj,
-                                                      ZF_IN_OPT zfbool allowEmpty = zffalse,
-                                                      ZF_OUT_OPT const ZFClass **holderCls = zfnull);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        , ZF_OUT_OPT const ZFClass **holderCls = zfnull
+        );
 
 /**
  * @brief convert native type to lua type
@@ -290,30 +328,35 @@ extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toNumberT(ZF_OUT zfautoObject &ret,
  * otherwise, push nothing and return false\n
  * if allowEmpty, push 0 number if obj is null
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toLuaValue(ZF_IN lua_State *L,
-                                                       ZF_IN ZFObject *obj,
-                                                       ZF_IN_OPT zfbool allowEmpty = zffalse);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_toLuaValue(
+        ZF_IN lua_State *L
+        , ZF_IN ZFObject *obj
+        , ZF_IN_OPT zfbool allowEmpty = zffalse
+        );
 
 /**
  * @brief append with va_arg, see #ZFLuaExecute
  */
-extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_zfstringAppend(ZF_IN lua_State *L,
-                                                           ZF_IN_OUT zfstring &s,
-                                                           ZF_IN_OPT int luaParamOffset = 1);
+extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_zfstringAppend(
+        ZF_IN lua_State *L
+        , ZF_IN_OUT zfstring &s
+        , ZF_IN_OPT int luaParamOffset = 1
+        );
 
 /**
  * @brief return info of current stack
  */
-extern ZFLIB_ZFLua_impl zfstring ZFImpl_ZFLua_luaStackInfo(ZF_IN lua_State *L,
-                                                           ZF_IN_OPT int luaStackOffset = 1);
+extern ZFLIB_ZFLua_impl zfstring ZFImpl_ZFLua_luaStackInfo(
+        ZF_IN lua_State *L
+        , ZF_IN_OPT int luaStackOffset = 1
+        );
 
 // ============================================================
 /**
  * @brief raw lua value created by #ZFImpl_ZFLua_toGeneric,
  *   and can be converted by #ZFImpl_ZFLua_toLuaValue
  */
-zfclass ZFLIB_ZFLua_impl ZFImpl_ZFLuaValue : zfextends ZFObject
-{
+zfclass ZFLIB_ZFLua_impl ZFImpl_ZFLuaValue : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFImpl_ZFLuaValue, ZFObject)
 
 public:
@@ -327,17 +370,14 @@ public:
     virtual zfbool objectIsInternalPrivate(void) {return zftrue;}
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->L = zfnull;
         this->luaValue = -1;
     }
     zfoverride
-    virtual void objectOnDeallocPrepare(void)
-    {
-        if(L != zfnull)
-        {
+    virtual void objectOnDeallocPrepare(void) {
+        if(L != zfnull) {
             luaL_unref(L, LUA_REGISTRYINDEX, luaValue);
             L = zfnull;
         }
@@ -345,11 +385,9 @@ protected:
         zfsuper::objectOnDeallocPrepare();
     }
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoOnAppend(ret);
-        if(L != zfnull && luaValue != -1)
-        {
+        if(L != zfnull && luaValue != -1) {
             lua_rawgeti(L, LUA_REGISTRYINDEX, luaValue);
             ret += " luaValue=";
             ZFImpl_ZFLua_luaObjectInfoT(ret, L, -1, zftrue);
@@ -361,60 +399,73 @@ protected:
 // ============================================================
 // wrapper for impl
 /** @brief util for impl */
-inline lua_State *ZFImpl_ZFLua_luaOpen(void)
-{
+inline lua_State *ZFImpl_ZFLua_luaOpen(void) {
     return ELuna::openLua();
 }
 /** @brief util for impl */
-inline void ZFImpl_ZFLua_luaClose(ZF_IN lua_State *L)
-{
+inline void ZFImpl_ZFLua_luaClose(ZF_IN lua_State *L) {
     ELuna::closeLua(L);
 }
 
 /** @brief util for impl */
 template<typename T>
-inline void ZFImpl_ZFLua_luaClassRegister(ZF_IN lua_State *L, ZF_IN const zfchar *name)
-{
+inline void ZFImpl_ZFLua_luaClassRegister(
+        ZF_IN lua_State *L
+        , ZF_IN const zfchar *name
+        ) {
     ELuna::registerClass<T>(L, name, ELuna::constructor<zfautoObject>);
 }
 /** @brief util for impl */
 template<typename F>
-inline void ZFImpl_ZFLua_luaFunctionRegister(ZF_IN lua_State *L, ZF_IN const zfchar *name, ZF_IN F f)
-{
+inline void ZFImpl_ZFLua_luaFunctionRegister(
+        ZF_IN lua_State *L
+        , ZF_IN const zfchar *name
+        , ZF_IN F f
+        ) {
     ELuna::registerFunction(L, name, f);
 }
 /** @brief util for impl */
-inline void ZFImpl_ZFLua_luaCFunctionRegister(ZF_IN lua_State *L, ZF_IN const zfchar *name, ZF_IN int (*f)(lua_State *))
-{
+inline void ZFImpl_ZFLua_luaCFunctionRegister(
+        ZF_IN lua_State *L
+        , ZF_IN const zfchar *name
+        , ZF_IN int (*f)(lua_State *)
+        ) {
     lua_register(L, name, f);
 }
 
 /** @brief util for impl */
-inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN zfautoObject &v)
-{
+inline void ZFImpl_ZFLua_luaPush(
+        ZF_IN lua_State *L
+        , ZF_IN zfautoObject &v
+        ) {
     v_zfbool *t = v;
-    if(t != zfnull)
-    {
+    if(t != zfnull) {
         lua_pushboolean(L, t->zfv);
         return;
     }
     ELuna::convert2LuaType<zfautoObject>::convertType(L, v);
 }
 /** @brief util for impl */
-inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN const zfautoObject &v)
-{
+inline void ZFImpl_ZFLua_luaPush(
+        ZF_IN lua_State *L
+        , ZF_IN const zfautoObject &v
+        ) {
     zfautoObject t = v;
     ZFImpl_ZFLua_luaPush(L, t);
 }
 /** @brief util for impl */
-inline void ZFImpl_ZFLua_luaPush(ZF_IN lua_State *L, ZF_IN ZFObject *v)
-{
+inline void ZFImpl_ZFLua_luaPush(
+        ZF_IN lua_State *L
+        , ZF_IN ZFObject *v
+        ) {
     zfautoObject t = v;
     ZFImpl_ZFLua_luaPush(L, t);
 }
 /** @brief util for impl */
-inline zfautoObject &ZFImpl_ZFLua_luaGet(ZF_IN lua_State *L, ZF_IN int luaStackOffset)
-{
+inline zfautoObject &ZFImpl_ZFLua_luaGet(
+        ZF_IN lua_State *L
+        , ZF_IN int luaStackOffset
+        ) {
     return ELuna::convert2CppType<zfautoObject &>::convertType(L, luaStackOffset);
 }
 /**
@@ -428,15 +479,13 @@ inline zfautoObject &ZFImpl_ZFLua_luaGet(ZF_IN lua_State *L, ZF_IN int luaStackO
  * \n
  * a typical recommended use case:
  * @code
- *   static int myLuaCallback(ZF_IN lua_State *L)
- *   {
+ *   static int myLuaCallback(ZF_IN lua_State *L) {
  *       // must placed at top of lua c function registered by ZFImpl_ZFLua_luaCFunctionRegister
  *       ZFImpl_ZFLua_luaErrorPrepare(L);
  *
  *       ... // your code
  *
- *       if(error)
- *       {
+ *       if(error) {
  *           return ZFImpl_ZFLua_luaError(L, xxx);
  *       }
  *
@@ -447,18 +496,15 @@ inline zfautoObject &ZFImpl_ZFLua_luaGet(ZF_IN lua_State *L, ZF_IN int luaStackO
  */
 #define ZFImpl_ZFLua_luaErrorPrepare(L) \
     _ZFP_ZFImpl_ZFLua_luaErrorPrepare _ZFP_ZFImpl_ZFLua_luaErrorPrepareNotCalled(L)
-zfclassNotPOD ZFLIB_ZFLua_impl _ZFP_ZFImpl_ZFLua_luaErrorPrepare
-{
+zfclassNotPOD ZFLIB_ZFLua_impl _ZFP_ZFImpl_ZFLua_luaErrorPrepare {
 public:
     _ZFP_ZFImpl_ZFLua_luaErrorPrepare(ZF_IN lua_State *L)
     : L(L)
     , errorHint(zfnull)
     {
     }
-    ~_ZFP_ZFImpl_ZFLua_luaErrorPrepare(void)
-    {
-        if(this->errorHint != zfnull)
-        {
+    ~_ZFP_ZFImpl_ZFLua_luaErrorPrepare(void) {
+        if(this->errorHint != zfnull) {
             zfchar buf[4096];
             zfindex size = errorHint->length() >= sizeof(buf) ? sizeof(buf) - 1 : errorHint->length();
             zfmemcpy(buf, errorHint->cString(), size * sizeof(zfchar));
@@ -469,8 +515,11 @@ public:
         }
     }
 public:
-    int luaError(ZF_IN lua_State *L, ZF_IN const zfchar *fmt, ...)
-    {
+    int luaError(
+            ZF_IN lua_State *L
+            , ZF_IN const zfchar *fmt
+            , ...
+            ) {
         zfCoreAssert(this->errorHint == zfnull);
         this->errorHint = zfnew(zfstring);
         va_list vaList;
@@ -488,19 +537,20 @@ private:
 #define ZFImpl_ZFLua_luaError(L, fmt, ...) \
     _ZFP_ZFImpl_ZFLua_luaErrorPrepareNotCalled.luaError(L, fmt, ##__VA_ARGS__)
 
-zfclassLikePOD ZFLIB_ZFLua_impl _ZFP_ZFLuaStackChecker
-{
+zfclassLikePOD ZFLIB_ZFLua_impl _ZFP_ZFLuaStackChecker {
 public:
     lua_State *L;
     int stackChange;
     int stackSaved;
 public:
-    _ZFP_ZFLuaStackChecker(ZF_IN lua_State *L, ZF_IN_OPT int stackChange = 0)
+    _ZFP_ZFLuaStackChecker(
+            ZF_IN lua_State *L
+            , ZF_IN_OPT int stackChange = 0
+            )
     : L(L), stackChange(stackChange), stackSaved(lua_gettop(L))
     {
     }
-    ~_ZFP_ZFLuaStackChecker(void)
-    {
+    ~_ZFP_ZFLuaStackChecker(void) {
         int cur = lua_gettop(L);
         zfCoreAssertWithMessageTrim(
             cur == stackSaved + stackChange,

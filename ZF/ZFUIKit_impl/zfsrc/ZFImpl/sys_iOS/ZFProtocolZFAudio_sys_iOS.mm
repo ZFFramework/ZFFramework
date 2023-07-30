@@ -11,25 +11,20 @@
 @property (nonatomic, assign) zfidentity loadTaskId;
 @end
 @implementation _ZFP_ZFAudioImpl_sys_iOS_Audio
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     self.loadTaskId = zfidentityInvalid();
     return self;
 }
-- (void)audioAttach
-{
-    if(self.audio == nil)
-    {
+- (void)audioAttach {
+    if(self.audio == nil) {
         return;
     }
 
     self.audio.delegate = self;
 }
-- (void)audioDetach
-{
-    if(self.audio == nil)
-    {
+- (void)audioDetach {
+    if(self.audio == nil) {
         return;
     }
     self.audio.delegate = nil;
@@ -42,16 +37,12 @@
 }
 
 // protocol
-- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-{
-    if(self.owner != zfnull)
-    {
-        if(flag)
-        {
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
+    if(self.owner != zfnull) {
+        if(flag) {
             ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(self.owner, zftrue, zfnull);
         }
-        else
-        {
+        else {
             zfblockedAlloc(v_zfstring, errorHint);
             errorHint->zfv = "play failed";
             ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(self.owner, zffalse, errorHint);
@@ -65,22 +56,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_iOS, ZFAudio, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:AVAudioPlayer")
 public:
-    virtual void *nativeAudioCreate(ZF_IN ZFAudio *audio)
-    {
+    virtual void *nativeAudioCreate(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = [_ZFP_ZFAudioImpl_sys_iOS_Audio new];
         nativeAudio.owner = audio;
         return (__bridge_retained void *)nativeAudio;
     }
-    virtual void nativeAudioDestroy(ZF_IN ZFAudio *audio)
-    {
+    virtual void nativeAudioDestroy(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge_transfer _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         [nativeAudio audioDetach];
         nativeAudio = nil;
     }
 
-    virtual void nativeAudioLoad(ZF_IN ZFAudio *audio,
-                                 ZF_IN const ZFInput &input)
-    {
+    virtual void nativeAudioLoad(
+            ZF_IN ZFAudio *audio
+            , ZF_IN const ZFInput &input
+            ) {
         zfself *owner = this;
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 
@@ -92,8 +82,7 @@ public:
 
             ZFBuffer buf;
             ZFInputRead(buf, input);
-            if(buf.bufferSize() == 0)
-            {
+            if(buf.bufferSize() == 0) {
                 zfblockedAlloc(v_zfstring, errorHint);
                 errorHint->zfv = "unable to load from input";
                 zfargs.result(errorHint);
@@ -104,8 +93,7 @@ public:
             buf.bufferGiveUp();
             NSError *error = nil;
             nativeAudio.audio = [[AVAudioPlayer alloc] initWithData:data error:&error];
-            if(error != nil)
-            {
+            if(error != nil) {
                 zfblockedAlloc(v_zfstring, errorHint);
                 ZFImpl_sys_iOS_zfstringFromNSString(errorHint->zfv, error.description);
                 nativeAudio.audio = nil;
@@ -113,8 +101,7 @@ public:
                 return;
             }
             [nativeAudio audioAttach];
-            if(![nativeAudio.audio play])
-            {
+            if(![nativeAudio.audio play]) {
                 [nativeAudio audioDetach];
                 zfblockedAlloc(v_zfstring, errorHint);
                 errorHint->zfv = "unable to play audio";
@@ -138,15 +125,15 @@ public:
 
         nativeAudio.loadTaskId = zfasync(onLoad, onLoadFinish);
     }
-    virtual void nativeAudioLoad(ZF_IN ZFAudio *audio,
-                                 ZF_IN const zfchar *url)
-    {
+    virtual void nativeAudioLoad(
+            ZF_IN ZFAudio *audio
+            , ZF_IN const zfchar *url
+            ) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 
         NSError *error = nil;
         nativeAudio.audio = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:ZFImpl_sys_iOS_zfstringToNSString(url)] error:&error];
-        if(error != nil)
-        {
+        if(error != nil) {
             zfblockedAlloc(v_zfstring, errorHint);
             ZFImpl_sys_iOS_zfstringFromNSString(errorHint->zfv, error.description);
             nativeAudio.audio = nil;
@@ -154,8 +141,7 @@ public:
             return;
         }
         [nativeAudio audioAttach];
-        if(![nativeAudio.audio play])
-        {
+        if(![nativeAudio.audio play]) {
             [nativeAudio audioDetach];
             zfblockedAlloc(v_zfstring, errorHint);
             errorHint->zfv = "unable to play audio";
@@ -165,71 +151,63 @@ public:
         [nativeAudio.audio pause];
         this->notifyAudioOnLoad(audio, zftrue, zfnull);
     }
-    virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio)
-    {
+    virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
-        if(nativeAudio.loadTaskId != zfidentityInvalid())
-        {
+        if(nativeAudio.loadTaskId != zfidentityInvalid()) {
             zfasyncCancel(nativeAudio.loadTaskId);
             nativeAudio.loadTaskId = zfidentityInvalid();
         }
         [nativeAudio audioDetach];
     }
 
-    virtual void nativeAudioStart(ZF_IN ZFAudio *audio)
-    {
+    virtual void nativeAudioStart(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         nativeAudio.audio.currentTime = 0;
-        if([nativeAudio.audio play])
-        {
+        if([nativeAudio.audio play]) {
             this->notifyAudioOnResume(audio);
         }
-        else
-        {
+        else {
             zfblockedAlloc(v_zfstring, errorHint);
             errorHint->zfv = "unable to play audio";
             this->notifyAudioOnStop(audio, zffalse, errorHint);
         }
     }
-    virtual void nativeAudioStop(ZF_IN ZFAudio *audio)
-    {
+    virtual void nativeAudioStop(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         [nativeAudio.audio pause];
         nativeAudio.audio.currentTime = 0;
     }
-    virtual void nativeAudioResume(ZF_IN ZFAudio *audio)
-    {
+    virtual void nativeAudioResume(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         [nativeAudio.audio play];
         this->notifyAudioOnResume(audio);
     }
-    virtual void nativeAudioPause(ZF_IN ZFAudio *audio)
-    {
+    virtual void nativeAudioPause(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         [nativeAudio.audio pause];
         this->notifyAudioOnPause(audio);
     }
 
-    virtual zftimet nativeAudioDuration(ZF_IN ZFAudio *audio)
-    {
+    virtual zftimet nativeAudioDuration(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         return (zftimet)(nativeAudio.audio.duration * 1000);
     }
-    virtual zftimet nativeAudioPosition(ZF_IN ZFAudio *audio)
-    {
+    virtual zftimet nativeAudioPosition(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         return (zftimet)(nativeAudio.audio.currentTime * 1000);
     }
-    virtual void nativeAudioPosition(ZF_IN ZFAudio *audio,
-                                     ZF_IN zftimet position)
-    {
+    virtual void nativeAudioPosition(
+            ZF_IN ZFAudio *audio
+            , ZF_IN zftimet position
+            ) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         nativeAudio.audio.currentTime = position;
     }
 
-    virtual void nativeAudioVolume(ZF_IN ZFAudio *audio,
-                                   ZF_IN zffloat volume)
-    {
+    virtual void nativeAudioVolume(
+            ZF_IN ZFAudio *audio
+            , ZF_IN zffloat volume
+            ) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
         nativeAudio.audio.volume = volume;
     }

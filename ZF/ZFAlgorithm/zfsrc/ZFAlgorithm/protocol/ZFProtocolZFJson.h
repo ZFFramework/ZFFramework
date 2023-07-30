@@ -18,22 +18,28 @@ public:
     /**
      * @brief see #ZFJsonEscapeCharEncode
      */
-    virtual void jsonEscapeCharEncode(ZF_OUT const ZFOutput &dst,
-                                      ZF_IN const zfchar *src,
-                                      ZF_IN_OPT zfindex count = zfindexMax());
+    virtual void jsonEscapeCharEncode(
+            ZF_OUT const ZFOutput &dst
+            , ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            );
     /**
      * @brief see #ZFJsonEscapeCharEncode
      */
-    virtual void jsonEscapeCharDecode(ZF_OUT const ZFOutput &dst,
-                                      ZF_IN const zfchar *src,
-                                      ZF_IN_OPT zfindex count = zfindexMax());
+    virtual void jsonEscapeCharDecode(
+            ZF_OUT const ZFOutput &dst
+            , ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            );
 
 public:
     /**
      * @brief parse json
      */
-    virtual ZFJson jsonParse(ZF_IN const zfchar *src,
-                                 ZF_IN_OPT zfindex size = zfindexMax()) zfpurevirtual;
+    virtual ZFJson jsonParse(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex size = zfindexMax()
+            ) zfpurevirtual;
     /**
      * @brief parse json
      */
@@ -47,25 +53,29 @@ public:
      * -  use #jsonMemoryPool_jsonValue/#jsonMemoryPool_jsonItem to store data
      * -  implement this method to release reference
      */
-    virtual void jsonMemoryPoolRelease(ZF_IN void *token, ZF_IN const zfchar *value)
-    {
+    virtual void jsonMemoryPoolRelease(
+            ZF_IN void *token
+            , ZF_IN const zfchar *value
+            ) {
         // no pool logic by default
     }
 
 public:
     /** @brief see #jsonMemoryPoolRelease */
-    inline void jsonMemoryPool_jsonValue(ZF_IN ZFJson &jsonItem,
-                                         ZF_IN const zfchar *jsonValue,
-                                         ZF_IN void *token)
-    {
+    inline void jsonMemoryPool_jsonValue(
+            ZF_IN ZFJson &jsonItem
+            , ZF_IN const zfchar *jsonValue
+            , ZF_IN void *token
+            ) {
         jsonItem._ZFP_ZFJson_jsonMemoryPool_jsonValue(jsonValue, token);
     }
     /** @brief see #jsonMemoryPoolRelease */
-    inline void jsonMemoryPool_jsonItem(ZF_IN ZFJson &jsonObject,
-                                        ZF_IN const zfchar *jsonKey,
-                                        ZF_IN void *token,
-                                        ZF_IN const ZFJson &jsonItem)
-    {
+    inline void jsonMemoryPool_jsonItem(
+            ZF_IN ZFJson &jsonObject
+            , ZF_IN const zfchar *jsonKey
+            , ZF_IN void *token
+            , ZF_IN const ZFJson &jsonItem
+            ) {
         jsonObject._ZFP_ZFJson_jsonMemoryPool_jsonItem(jsonKey, token, jsonItem);
     }
 ZFPROTOCOL_INTERFACE_END(ZFJson)

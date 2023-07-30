@@ -31,8 +31,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * with all the things above, app can achieve IO operations without knowing
  * the underlying file types
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFPathInfo
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFPathInfo {
 public:
     zfstring pathType; /**< @brief path type, normal file or res file, etc */
     zfstring pathData; /**< @brief path value, such as local relative path or http url, etc */
@@ -63,8 +62,7 @@ public:
  * @brief see #ZFPathInfo
  */
 #define ZFPATHTYPE_DECLARE(ZFLIB_, pathType) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_0(ZFLIB_, const zfchar *, ZFPathType_##pathType) \
-    { \
+    ZFMETHOD_FUNC_INLINE_DECLARE_0(ZFLIB_, const zfchar *, ZFPathType_##pathType) { \
         return ZFM_TOSTRING_DIRECT(pathType); \
     }
 

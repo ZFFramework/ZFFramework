@@ -5,8 +5,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFUIListCellViewBasicPrivate
-{
+zfclassNotPOD _ZFP_ZFUIListCellViewBasicPrivate {
 public:
     ZFUIViewLayout *cellIconContainer;
     ZFUILinearLayout *cellCenterContainer;
@@ -19,74 +18,59 @@ public:
 ZFOBJECT_REGISTER(ZFUIListCellViewBasic)
 ZFSTYLE_DEFAULT_DEFINE(ZFUIListCellViewBasic)
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon)
-{
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon) {
     zfblockedAlloc(ZFUIImageView, cellIcon);
     propertyValue = cellIcon;
     cellIcon->viewSizeMax(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeIcon()));
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon)
-{
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon) {
     this->cellIconContainer()->childAdd(this->cellIcon())->c_alignCenter();
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon)
-{
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon) {
     this->cellIcon()->viewRemoveFromParent();
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain)
-{
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain) {
     zfblockedAlloc(ZFUITextView, cellLabelMain);
     propertyValue = cellLabelMain;
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain)
-{
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain) {
     this->cellLabelMainContainer()->childAdd(this->cellLabelMain())->c_alignLeft();
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain)
-{
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain) {
     this->cellLabelMain()->viewRemoveFromParent();
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub)
-{
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub) {
     zfblockedAlloc(ZFUITextView, cellLabelSub);
     propertyValue = cellLabelSub;
     cellLabelSub->textColor(ZFUIGlobalStyle::DefaultStyle()->textColorSecondary());
     cellLabelSub->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub)
-{
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub) {
     this->cellLabelSubContainer()->childAdd(this->cellLabelSub())->c_alignLeft();
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub)
-{
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub) {
     this->cellLabelSub()->viewRemoveFromParent();
 }
 
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellIconContainer)
-{
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellIconContainer) {
     return d->cellIconContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellCenterContainer)
-{
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellCenterContainer) {
     return d->cellCenterContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellLabelMainContainer)
-{
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellLabelMainContainer) {
     return d->cellLabelMainContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellLabelSubContainer)
-{
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellLabelSubContainer) {
     return d->cellLabelSubContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellAccessoryContainer)
-{
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellAccessoryContainer) {
     return d->cellAccessoryContainer;
 }
 
-void ZFUIListCellViewBasic::objectOnInit(void)
-{
+void ZFUIListCellViewBasic::objectOnInit(void) {
     zfsuper::objectOnInit();
 
     d = zfpoolNew(_ZFP_ZFUIListCellViewBasicPrivate);
@@ -106,8 +90,7 @@ void ZFUIListCellViewBasic::objectOnInit(void)
 
     d->cellAccessoryContainer = zfAlloc(ZFUIViewLayout);
 }
-void ZFUIListCellViewBasic::objectOnDealloc(void)
-{
+void ZFUIListCellViewBasic::objectOnDealloc(void) {
     zfRelease(d->cellIconContainer);
     zfRelease(d->cellCenterContainer);
     zfRelease(d->cellLabelMainContainer);

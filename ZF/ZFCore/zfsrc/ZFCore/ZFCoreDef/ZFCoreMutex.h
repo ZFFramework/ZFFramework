@@ -21,10 +21,11 @@ extern ZFLIB_ZFCore ZFCoreMutexImplCallbackUnlock _ZFP_ZFCoreMutexImplUnlock;
 /**
  * @brief #zfCoreMutexLock's implementation, change with caution
  */
-inline void ZFCoreMutexImplSet(ZF_IN void *implObject,
-                               ZF_IN ZFCoreMutexImplCallbackLock implLock,
-                               ZF_IN ZFCoreMutexImplCallbackUnlock implUnlock)
-{
+inline void ZFCoreMutexImplSet(
+        ZF_IN void *implObject
+        , ZF_IN ZFCoreMutexImplCallbackLock implLock
+        , ZF_IN ZFCoreMutexImplCallbackUnlock implUnlock
+        ) {
     _ZFP_ZFCoreMutexImplObject = implObject;
     _ZFP_ZFCoreMutexImplLock = implLock;
     _ZFP_ZFCoreMutexImplUnlock = implUnlock;
@@ -48,16 +49,14 @@ inline zfbool ZFCoreMutexImplAvailable(void) {return (_ZFP_ZFCoreMutexImplObject
  */
 #define zfCoreMutexLock() \
     do { \
-        if(_ZFP_ZFCoreMutexImplObject) \
-        { \
+        if(_ZFP_ZFCoreMutexImplObject) { \
             _ZFP_ZFCoreMutexImplLock(_ZFP_ZFCoreMutexImplObject); \
         } \
     } while(zffalse)
 /** @brief see #zfCoreMutexLock */
 #define zfCoreMutexUnlock() \
     do { \
-        if(_ZFP_ZFCoreMutexImplObject) \
-        { \
+        if(_ZFP_ZFCoreMutexImplObject) { \
             _ZFP_ZFCoreMutexImplUnlock(_ZFP_ZFCoreMutexImplObject); \
         } \
     } while(zffalse)
@@ -65,16 +64,13 @@ inline zfbool ZFCoreMutexImplAvailable(void) {return (_ZFP_ZFCoreMutexImplObject
 /**
  * @brief see #zfCoreMutexLocker
  */
-zfclassLikePOD ZFLIB_ZFCore zfCoreMutexLockerHolder
-{
+zfclassLikePOD ZFLIB_ZFCore zfCoreMutexLockerHolder {
 public:
     /** @cond ZFPrivateDoc */
-    zfCoreMutexLockerHolder(void)
-    {
+    zfCoreMutexLockerHolder(void) {
         zfCoreMutexLock();
     }
-    ~zfCoreMutexLockerHolder(void)
-    {
+    ~zfCoreMutexLockerHolder(void) {
         zfCoreMutexUnlock();
     }
     /** @endcond */

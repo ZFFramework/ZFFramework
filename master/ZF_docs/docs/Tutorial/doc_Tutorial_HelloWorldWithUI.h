@@ -7,8 +7,7 @@
  *   // you may need to setup your project's include path first
  *   #include "ZFUIKit.h"
  *
- *   ZFMAIN_ENTRY()
- *   {
+ *   ZFMAIN_ENTRY() {
  *       // typically we will start UI by creating a ZFUIWindow
  *       zfblockedAlloc(ZFUIWindow, window);
  *       // show the window

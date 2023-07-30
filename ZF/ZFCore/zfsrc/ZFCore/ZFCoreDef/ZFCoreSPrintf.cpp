@@ -7,8 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_zfstringAppendPrecisionNone (zfindexMax() - 1)
 #define _ZFP_zfstringAppendFlag_alignLeft 1
 #define _ZFP_zfstringAppendFlag_leadingZero 2
-zfclassLikePOD ZFLIB_ZFCore _ZFP_zfstringAppendFlag
-{
+zfclassLikePOD ZFLIB_ZFCore _ZFP_zfstringAppendFlag {
 public:
     zfflags flags;
     zfindex width; // zfindexMax() to scan from vaList
@@ -28,8 +27,7 @@ public:
     }
 
 public:
-    zfbool hasFlag(void)
-    {
+    zfbool hasFlag(void) {
         return (zffalse
                 || flags != 0
                 || width != 0
@@ -40,28 +38,23 @@ public:
 };
 #define _ZFP_zfstringAppend_action(ret_, flags_, p_, vaList_) \
     do { \
-        switch(*p_) \
-        { \
+        switch(*p_) { \
             case 'b': \
                 ret_ += ((va_arg(vaList_, zft_zfint) != 0) ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse); \
                 break; \
             case 'z': \
-                if(*(p_+1) == 'i') \
-                { \
+                if(*(p_+1) == 'i') { \
                     ++p_; \
                     zfsFromIntT(ret_, va_arg(vaList_, zft_zfindex), 10); \
                 } \
-                else \
-                { \
+                else { \
                     flags_.success = zffalse; \
                 } \
                 break; \
             case 'd': \
-            case 'i': \
-            { \
+            case 'i': { \
                 zfint v = va_arg(vaList_, zft_zfint); \
-                if(v < 0 && flags_.hasFlag()) \
-                { \
+                if(v < 0 && flags_.hasFlag()) { \
                     flags_.positiveToken = '-'; \
                     v = -v; \
                 } \
@@ -80,11 +73,9 @@ public:
             case 'X': \
                 zfsFromIntT(ret_, va_arg(vaList_, zft_zfuint), 16); \
                 break; \
-            case 'f': \
-            { \
+            case 'f': { \
                 zffloat v = (zffloat)va_arg(vaList_, zft_zfdouble); \
-                if(v < 0 && flags_.hasFlag()) \
-                { \
+                if(v < 0 && flags_.hasFlag()) { \
                     flags_.positiveToken = '-'; \
                     v = -v; \
                 } \
@@ -99,27 +90,21 @@ public:
                 ret_ += (zfchar)va_arg(vaList_, zft_zfint); \
                 break; \
             case 's': \
-            case 'S': \
-            { \
+            case 'S': { \
                 const zfchar *v = va_arg(vaList_, const zfchar *); \
-                if(v != zfnull) \
-                { \
-                    if(flags_.precision != _ZFP_zfstringAppendPrecisionNone) \
-                    { \
+                if(v != zfnull) { \
+                    if(flags_.precision != _ZFP_zfstringAppendPrecisionNone) { \
                         zfindex len = zfslen(v); \
-                        if(flags_.precision < len) \
-                        { \
+                        if(flags_.precision < len) { \
                             len = flags_.precision; \
                         } \
                         ret_.append(v, len); \
                     } \
-                    else \
-                    { \
+                    else { \
                         ret_.append(v); \
                     } \
                 } \
-                else \
-                { \
+                else { \
                     ret_ += ZFTOKEN_zfnull; \
                 } \
             } \
@@ -131,24 +116,22 @@ public:
         ++p_; \
     } while(zffalse)
 
-void zfstringAppendV(ZF_OUT zfstring &s,
-                     ZF_IN const zfchar *fmt,
-                     ZF_IN va_list vaList)
-{
+void zfstringAppendV(
+        ZF_OUT zfstring &s
+        , ZF_IN const zfchar *fmt
+        , ZF_IN va_list vaList
+        ) {
     if(fmt == zfnull) {return;}
 
     const zfchar *p = fmt;
-    while(*p != '\0')
-    {
-        if(*p != '%')
-        {
+    while(*p != '\0') {
+        if(*p != '%') {
             zfcharAppendAndMoveNext(s, p);
             continue;
         }
 
         ++p;
-        if(*p == '%')
-        {
+        if(*p == '%') {
             s += '%';
             ++p;
             continue;
@@ -156,27 +139,21 @@ void zfstringAppendV(ZF_OUT zfstring &s,
 
         const zfchar *savedPos = p;
         _ZFP_zfstringAppendFlag flags;
-        do
-        {
-            while(*p == '-' || *p == '0' || *p == '+' || *p == ' ')
-            {
-                if(*p == '-')
-                {
+        do {
+            while(*p == '-' || *p == '0' || *p == '+' || *p == ' ') {
+                if(*p == '-') {
                     if(ZFBitTest(flags.flags, _ZFP_zfstringAppendFlag_alignLeft)) {flags.success = zffalse; break;}
                     else {ZFBitSet(flags.flags, _ZFP_zfstringAppendFlag_alignLeft);}
                 }
-                else if(*p == '0')
-                {
+                else if(*p == '0') {
                     if(ZFBitTest(flags.flags, _ZFP_zfstringAppendFlag_leadingZero)) {flags.success = zffalse; break;}
                     else {ZFBitSet(flags.flags, _ZFP_zfstringAppendFlag_leadingZero);}
                 }
-                else if(*p == '+')
-                {
+                else if(*p == '+') {
                     if(flags.positiveToken != '\0') {flags.success = zffalse; break;}
                     else {flags.positiveToken = '+';}
                 }
-                else if(*p == ' ')
-                {
+                else if(*p == ' ') {
                     if(flags.positiveToken != '\0') {flags.success = zffalse; break;}
                     else {flags.positiveToken = ' ';}
                 }
@@ -184,115 +161,90 @@ void zfstringAppendV(ZF_OUT zfstring &s,
             }
             if(!flags.success) {break;}
 
-            while(*p >= '0' && *p <= '9')
-            {
+            while(*p >= '0' && *p <= '9') {
                 flags.width = flags.width * 10 + (*p - '0');
                 ++p;
             }
-            if(*p == '.')
-            {
+            if(*p == '.') {
                 ++p;
                 flags.precision = 0;
-                while(*p >= '0' && *p <= '9')
-                {
+                while(*p >= '0' && *p <= '9') {
                     flags.precision = flags.precision * 10 + (*p - '0');
                     ++p;
                 }
             }
         } while(zffalse);
-        if(!flags.success)
-        {
+        if(!flags.success) {
             s += '%';
             p = savedPos;
             continue;
         }
-        if(!flags.hasFlag())
-        {
+        if(!flags.hasFlag()) {
             _ZFP_zfstringAppend_action(s, flags, p, vaList);
             continue;
         }
         zfstring tmp;
         _ZFP_zfstringAppend_action(tmp, flags, p, vaList);
 
-        if(flags.precision != _ZFP_zfstringAppendPrecisionNone)
-        {
+        if(flags.precision != _ZFP_zfstringAppendPrecisionNone) {
             zfindex pos = zfstringFind(tmp, '.');
-            if(pos != zfindexMax())
-            {
+            if(pos != zfindexMax()) {
                 zfindex decimalLen = tmp.length() - pos - 1;
-                if(decimalLen > flags.precision)
-                {
+                if(decimalLen > flags.precision) {
                     zfindex newLen = pos + flags.precision + 1;
-                    if(tmp[newLen] >= '5')
-                    {
+                    if(tmp[newLen] >= '5') {
                         tmp[newLen - 1] = tmp[newLen - 1] + 1;
                     }
                     tmp.remove(newLen);
                 }
-                else if(decimalLen < flags.precision)
-                {
-                    for(zfindex i = decimalLen; i < flags.precision; ++i)
-                    {
+                else if(decimalLen < flags.precision) {
+                    for(zfindex i = decimalLen; i < flags.precision; ++i) {
                         tmp += '0';
                     }
                 }
             }
         }
 
-        if(flags.positiveToken != '\0')
-        {
+        if(flags.positiveToken != '\0') {
             ++flags.width;
         }
 
-        if(ZFBitTest(flags.flags, _ZFP_zfstringAppendFlag_alignLeft))
-        {
+        if(ZFBitTest(flags.flags, _ZFP_zfstringAppendFlag_alignLeft)) {
             zfindex writtenLen = 0;
-            if(flags.positiveToken != '\0')
-            {
+            if(flags.positiveToken != '\0') {
                 s += flags.positiveToken;
                 ++writtenLen;
             }
             s += tmp;
             writtenLen += tmp.length();
-            for(zfindex i = writtenLen; i < flags.width; ++i)
-            {
+            for(zfindex i = writtenLen; i < flags.width; ++i) {
                 s += ' ';
             }
         }
-        else
-        {
+        else {
             zfindex leftTokenLen = ((flags.positiveToken == '\0') ? 0 : 1);
-            if(flags.width > tmp.length() + leftTokenLen)
-            {
+            if(flags.width > tmp.length() + leftTokenLen) {
                 zfindex spaceLen = flags.width - tmp.length() - leftTokenLen;
-                if(ZFBitTest(flags.flags, _ZFP_zfstringAppendFlag_leadingZero))
-                {
-                    if(flags.positiveToken != '\0')
-                    {
+                if(ZFBitTest(flags.flags, _ZFP_zfstringAppendFlag_leadingZero)) {
+                    if(flags.positiveToken != '\0') {
                         s += flags.positiveToken;
                     }
-                    for(zfindex i = 0; i < spaceLen; ++i)
-                    {
+                    for(zfindex i = 0; i < spaceLen; ++i) {
                         s += '0';
                     }
                 }
-                else
-                {
-                    for(zfindex i = 0; i < spaceLen; ++i)
-                    {
+                else {
+                    for(zfindex i = 0; i < spaceLen; ++i) {
                         s += ' ';
                     }
-                    if(flags.positiveToken != '\0')
-                    {
+                    if(flags.positiveToken != '\0') {
                         s += flags.positiveToken;
                     }
                 }
                 s += tmp;
             }
-            else
-            {
-                if(flags.positiveToken != '\0')
-                {
+            else {
+                if(flags.positiveToken != '\0') {
                     s += flags.positiveToken;
                 }
                 s += tmp;

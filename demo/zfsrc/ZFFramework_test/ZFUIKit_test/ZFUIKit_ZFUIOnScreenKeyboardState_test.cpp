@@ -2,15 +2,13 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData
-{
+zfclassNotPOD _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData {
 public:
     ZFUIOnScreenKeyboardState *state;
     ZFListener callback;
 };
 
-ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
-{
+ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test) {
     ZFLISTENER_1(sysWindowOnCreate
             , ZFCoreArray<_ZFP_ZFUIOnScreenKeyboardState_test_ObserverData>, taskList
             ) {
@@ -31,11 +29,9 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
             , ZFCoreArray<_ZFP_ZFUIOnScreenKeyboardState_test_ObserverData>, taskList
             ) {
         ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
-        for(zfindex i = taskList.count() - 1; i != zfindexMax(); --i)
-        {
+        for(zfindex i = taskList.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData const &task = taskList[i];
-            if(task.state == state)
-            {
+            if(task.state == state) {
                 state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), task.callback);
                 taskList.remove(i);
             }
@@ -44,13 +40,11 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test)
     this->sysWindowOnDestroyListener = sysWindowOnDestroy;
     ZFGlobalObserver().observerAdd(ZFUISysWindow::EventSysWindowOnDestroy(), this->sysWindowOnDestroyListener);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardState_test)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardState_test) {
     ZFGlobalObserver().observerRemove(ZFUISysWindow::EventSysWindowOnCreate(), this->sysWindowOnCreateListener);
     ZFGlobalObserver().observerRemove(ZFUISysWindow::EventSysWindowOnDestroy(), this->sysWindowOnDestroyListener);
 
-    for(zfindex i = 0; i < taskList.count(); ++i)
-    {
+    for(zfindex i = 0; i < taskList.count(); ++i) {
         _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData const &task = taskList[i];
         task.state->observerRemove(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), task.callback);
         taskList.remove(i);

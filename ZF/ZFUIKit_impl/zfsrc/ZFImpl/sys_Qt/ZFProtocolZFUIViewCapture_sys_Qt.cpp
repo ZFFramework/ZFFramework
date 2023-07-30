@@ -20,9 +20,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewCaptureImpl_sys_Qt, ZFUIViewCapture, ZFP
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIImage, "Qt:QImage")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual zfbool viewCapture(ZF_IN ZFUIView *view,
-                               ZF_IN_OUT ZFUIImage *image)
-    {
+    virtual zfbool viewCapture(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OUT ZFUIImage *image
+            ) {
         QGraphicsWidget *nativeView = ZFCastStatic(QGraphicsWidget *, view->nativeView());
 
         QImage nativeImage(nativeView->geometry().width(), nativeView->geometry().height(), QImage::Format_ARGB32);

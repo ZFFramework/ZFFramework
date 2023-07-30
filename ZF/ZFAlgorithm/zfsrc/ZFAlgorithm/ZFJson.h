@@ -60,8 +60,7 @@ ZFENUM_END(ZFLIB_ZFAlgorithm, ZFJsonType)
 /**
  * @brief token for output json
  */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFJsonOutputToken
-{
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFJsonOutputToken {
 public:
     zfstring jsonNewLineToken; /**< @brief "\n" by default */
     zfstring jsonIndentToken; /**< @brief "  " by default */
@@ -101,8 +100,7 @@ public:
     {
     }
     zfbool operator == (ZF_IN ZFJsonOutputToken const &ref) const;
-    zfbool operator != (ZF_IN ZFJsonOutputToken const &ref) const
-    {
+    zfbool operator != (ZF_IN ZFJsonOutputToken const &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -110,8 +108,7 @@ public:
 /**
  * @brief flags to output json items
  */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFJsonOutputFlags
-{
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFJsonOutputFlags {
 public:
     /**
      * @brief token to output json data
@@ -159,8 +156,7 @@ public:
     {
     }
     zfbool operator == (ZF_IN ZFJsonOutputFlags const &ref) const;
-    zfbool operator != (ZF_IN ZFJsonOutputFlags const &ref) const
-    {
+    zfbool operator != (ZF_IN ZFJsonOutputFlags const &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -181,8 +177,7 @@ zfclassFwd _ZFP_ZFJsonPrivate;
 /**
  * @brief JSON item
  */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFJson
-{
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFJson {
     // ============================================================
 public:
     /** @cond ZFPrivateDoc */
@@ -205,8 +200,7 @@ public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    inline zfstring objectInfo(void) const
-    {
+    inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -228,8 +222,7 @@ public:
     /**
      * @brief true if #jsonType is not #ZFJsonType::e_JsonNull
      */
-    inline zfbool jsonTypeValid(void) const
-    {
+    inline zfbool jsonTypeValid(void) const {
         return (this->jsonType() != ZFJsonType::e_JsonNull);
     }
 
@@ -241,8 +234,15 @@ public:
     ZFJson copy(void) const;
 
 public:
-    zffinal void _ZFP_ZFJson_jsonMemoryPool_jsonValue(ZF_IN const zfchar *value, ZF_IN void *token);
-    zffinal void _ZFP_ZFJson_jsonMemoryPool_jsonItem(ZF_IN const zfchar *key, ZF_IN void *token, ZF_IN const ZFJson &jsonItem);
+    zffinal void _ZFP_ZFJson_jsonMemoryPool_jsonValue(
+            ZF_IN const zfchar *value
+            , ZF_IN void *token
+            );
+    zffinal void _ZFP_ZFJson_jsonMemoryPool_jsonItem(
+            ZF_IN const zfchar *key
+            , ZF_IN void *token
+            , ZF_IN const ZFJson &jsonItem
+            );
 
     // ============================================================
     // for value type
@@ -262,13 +262,17 @@ public:
     /**
      * @brief set json item for key, valid only for #ZFJsonType::e_JsonObject
      */
-    ZFJson &attr(ZF_IN const zfchar *key,
-                 ZF_IN const zfchar *value);
+    ZFJson &attr(
+            ZF_IN const zfchar *key
+            , ZF_IN const zfchar *value
+            );
     /**
      * @brief set json item for key, valid only for #ZFJsonType::e_JsonObject
      */
-    ZFJson &attr(ZF_IN const zfchar *key,
-                 ZF_IN const ZFJson &jsonItem);
+    ZFJson &attr(
+            ZF_IN const zfchar *key
+            , ZF_IN const ZFJson &jsonItem
+            );
     /**
      * @brief get json item for key, valid only for #ZFJsonType::e_JsonObject
      */
@@ -307,7 +311,10 @@ public:
     ZFJson attrIterValue(ZF_IN const zfiterator &it) const;
 
     /** @brief see #zfiterator */
-    void attrIterValue(ZF_IN_OUT zfiterator &it, ZF_IN const ZFJson &jsonItem);
+    void attrIterValue(
+            ZF_IN_OUT zfiterator &it
+            , ZF_IN const ZFJson &jsonItem
+            );
     /** @brief see #zfiterator */
     void attrIterRemove(ZF_IN_OUT zfiterator &it);
 
@@ -326,13 +333,17 @@ public:
     /**
      * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_JsonArray
      */
-    ZFJson &childAdd(ZF_IN const zfchar *jsonValue,
-                     ZF_IN_OPT zfindex atIndex = zfindexMax());
+    ZFJson &childAdd(
+            ZF_IN const zfchar *jsonValue
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            );
     /**
      * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_JsonArray
      */
-    ZFJson &childAdd(ZF_IN const ZFJson &jsonObject,
-                     ZF_IN_OPT zfindex atIndex = zfindexMax());
+    ZFJson &childAdd(
+            ZF_IN const ZFJson &jsonObject
+            , ZF_IN_OPT zfindex atIndex = zfindexMax()
+            );
     /**
      * @brief remove json child at index, valid only for #ZFJsonType::e_JsonArray
      */
@@ -376,13 +387,16 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonArray)
 /**
  * @brief parse json, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromInput, ZFMP_IN(const ZFInput &, input))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromInput
+        , ZFMP_IN(const ZFInput &, input)
+        )
 /**
  * @brief parse json, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromString,
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, length, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromString
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
+        )
 
 /**
  * @brief convert json to output
@@ -390,24 +404,27 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromString,
  * @note result string is not ensured to be a valid json string
  *   if source is not valid
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFJsonToOutput,
-                        ZFMP_IN_OUT(const ZFOutput &, output),
-                        ZFMP_IN(const ZFJson &, jsonItem),
-                        ZFMP_IN_OPT(const ZFJsonOutputFlags &, outputFlags, ZFJsonOutputFlagsDefault()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFJsonToOutput
+        , ZFMP_IN_OUT(const ZFOutput &, output)
+        , ZFMP_IN(const ZFJson &, jsonItem)
+        , ZFMP_IN_OPT(const ZFJsonOutputFlags &, outputFlags, ZFJsonOutputFlagsDefault())
+        )
 /**
  * @brief convert json to string
  *
  * @note result string is not ensured to be a valid json string
  *   if source is not valid
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFJsonToString,
-                        ZFMP_IN_OUT(zfstring &, ret),
-                        ZFMP_IN(const ZFJson &, jsonItem),
-                        ZFMP_IN(const ZFJsonOutputFlags &, outputFlags))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFJsonToString
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const ZFJson &, jsonItem)
+        , ZFMP_IN(const ZFJsonOutputFlags &, outputFlags)
+        )
 /** @brief see #ZFJsonToString */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFJsonToString,
-                        ZFMP_IN(const ZFJson &, jsonItem),
-                        ZFMP_IN(const ZFJsonOutputFlags &, outputFlags))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFJsonToString
+        , ZFMP_IN(const ZFJson &, jsonItem)
+        , ZFMP_IN(const ZFJsonOutputFlags &, outputFlags)
+        )
 
 // ============================================================
 // escape chars
@@ -426,32 +443,36 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFJsonToString,
  *
  * result would be appended to dst
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharEncode,
-                        ZFMP_OUT(zfstring &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharEncode
+        , ZFMP_OUT(zfstring &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 /**
  * @brief see #ZFJsonEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharEncode,
-                        ZFMP_OUT(const ZFOutput &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharEncode
+        , ZFMP_OUT(const ZFOutput &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 
 /**
  * @brief see #ZFJsonEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharDecode,
-                        ZFMP_OUT(zfstring &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharDecode
+        , ZFMP_OUT(zfstring &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 /**
  * @brief see #ZFJsonEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharDecode,
-                        ZFMP_OUT(const ZFOutput &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharDecode
+        , ZFMP_OUT(const ZFOutput &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFJson_h_

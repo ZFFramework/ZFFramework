@@ -14,8 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract scroll thumb for #ZFUIScrollView
  */
-zfinterface ZFLIB_ZFUIKit ZFUIScrollThumb : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFUIKit ZFUIScrollThumb : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIScrollThumb, ZFInterface)
 
 public:
@@ -32,40 +31,42 @@ public:
      *
      * 0 result size means no need to show the scroll thumb
      */
-    static void scrollThumbPosFromViewPos(ZF_OUT zffloat &scrollThumbResultPos,
-                                          ZF_OUT zffloat &scrollThumbResultSize,
-                                          ZF_IN zffloat scrollThumbRange,
-                                          ZF_IN zffloat scrollViewSize,
-                                          ZF_IN zffloat scrollContentOffset,
-                                          ZF_IN zffloat scrollContentSize,
-                                          ZF_IN zffloat scrollThumbMinSize,
-                                          ZF_IN_OPT zffloat headMargin = 0,
-                                          ZF_IN_OPT zffloat tailMargin = 0);
+    static void scrollThumbPosFromViewPos(
+            ZF_OUT zffloat &scrollThumbResultPos
+            , ZF_OUT zffloat &scrollThumbResultSize
+            , ZF_IN zffloat scrollThumbRange
+            , ZF_IN zffloat scrollViewSize
+            , ZF_IN zffloat scrollContentOffset
+            , ZF_IN zffloat scrollContentSize
+            , ZF_IN zffloat scrollThumbMinSize
+            , ZF_IN_OPT zffloat headMargin = 0
+            , ZF_IN_OPT zffloat tailMargin = 0
+            );
     /**
      * @brief util method to calculate view's position according to scroll thumb's position
      */
-    static void scrollThumbPosToViewPos(ZF_OUT zffloat &scrollContentOffset,
-                                        ZF_IN zffloat scrollViewSize,
-                                        ZF_IN zffloat scrollContentSize,
-                                        ZF_IN zffloat scrollThumbPos,
-                                        ZF_IN zffloat scrollThumbSize,
-                                        ZF_IN zffloat scrollThumbRange,
-                                        ZF_IN_OPT zffloat headMargin = 0,
-                                        ZF_IN_OPT zffloat tailMargin = 0);
+    static void scrollThumbPosToViewPos(
+            ZF_OUT zffloat &scrollContentOffset
+            , ZF_IN zffloat scrollViewSize
+            , ZF_IN zffloat scrollContentSize
+            , ZF_IN zffloat scrollThumbPos
+            , ZF_IN zffloat scrollThumbSize
+            , ZF_IN zffloat scrollThumbRange
+            , ZF_IN_OPT zffloat headMargin = 0
+            , ZF_IN_OPT zffloat tailMargin = 0
+            );
 
 public:
     /**
      * @brief owner scroll view
      */
-    zffinal inline ZFUIScrollView *scrollView(void)
-    {
+    zffinal inline ZFUIScrollView *scrollView(void) {
         return this->_scrollView;
     }
     /**
      * @brief this thumb is horizontal or not
      */
-    zffinal inline zfbool scrollThumbHorizontal(void)
-    {
+    zffinal inline zfbool scrollThumbHorizontal(void) {
         return this->_horizontal;
     }
 
@@ -98,8 +99,9 @@ private:
  *
  * set to null to use default
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollThumbHorizontalClass,
-                        ZFMP_IN(const ZFClass *, cls))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollThumbHorizontalClass
+        , ZFMP_IN(const ZFClass *, cls)
+        )
 /**
  * @brief get the class of default scroll thumb
  */
@@ -109,8 +111,9 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUIKit, const ZFClass *, ZFUIScrollThumbHorizonta
  *
  * set to null to use default
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollThumbVerticalClass,
-                        ZFMP_IN(const ZFClass *, cls))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollThumbVerticalClass
+        , ZFMP_IN(const ZFClass *, cls)
+        )
 /**
  * @brief get the class of default scroll thumb
  */

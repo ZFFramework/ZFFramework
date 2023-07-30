@@ -19,8 +19,10 @@ public:
     /**
      * @brief return view tree hint of native view
      */
-    virtual void viewTreeNative(ZF_IN ZFUIView *view,
-                                ZF_IN_OUT const ZFOutput &outputCallback) zfpurevirtual;
+    virtual void viewTreeNative(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OUT const ZFOutput &outputCallback
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUIViewTreeNative)
 
 ZF_NAMESPACE_GLOBAL_END

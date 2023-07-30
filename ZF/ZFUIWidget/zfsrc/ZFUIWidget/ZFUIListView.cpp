@@ -6,8 +6,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIListView)
 
 // ============================================================
 // _ZFP_ZFUIListViewPrivate
-zfclassNotPOD _ZFP_ZFUIListViewPrivate
-{
+zfclassNotPOD _ZFP_ZFUIListViewPrivate {
 public:
     ZFUIListView *pimplOwner;
     zfbool childAddOverrideFlag;
@@ -68,24 +67,21 @@ public:
     }
 
 public:
-    static void listAdapterOnReload(ZF_IN const ZFArgs &zfargs, ZF_IN ZFUIListView *listView)
-    {
+    static void listAdapterOnReload(
+            ZF_IN const ZFArgs &zfargs
+            , ZF_IN ZFUIListView *listView
+            ) {
         v_zfindex *atIndex = zfargs.param0T();
-        if(atIndex == zfnull || atIndex->zfv == zfindexMax())
-        {
+        if(atIndex == zfnull || atIndex->zfv == zfindexMax()) {
             listView->listReload();
         }
-        else
-        {
+        else {
             listView->listReloadCellAt(atIndex->zfv);
         }
     }
-    void listBounceUpdate(void)
-    {
-        if(this->pimplOwner->listBounce())
-        {
-            switch(this->pimplOwner->listOrientation())
-            {
+    void listBounceUpdate(void) {
+        if(this->pimplOwner->listBounce()) {
+            switch(this->pimplOwner->listOrientation()) {
                 case ZFUIOrientation::e_Left:
                 case ZFUIOrientation::e_Right:
                     this->pimplOwner->scrollBounceVerticalAlways(zffalse);
@@ -102,20 +98,15 @@ public:
             }
         }
     }
-    void listAdaptertingUpdate(void)
-    {
-        if(this->listAdapter != zfnull)
-        {
+    void listAdaptertingUpdate(void) {
+        if(this->listAdapter != zfnull) {
             this->listAdapter->_ZFP_ZFUIListAdapter_listOrientation = this->pimplOwner->listOrientation();
             this->listAdapter->_ZFP_ZFUIListAdapter_listContainerSize = ZFUIRectGetSize(this->pimplOwner->scrollArea());
         }
     }
-    void listAdapterAfterAttach(void)
-    {
-        if(this->listAdapter != zfnull)
-        {
-            if(!this->listAdapterOnReloadListener)
-            {
+    void listAdapterAfterAttach(void) {
+        if(this->listAdapter != zfnull) {
+            if(!this->listAdapterOnReloadListener) {
                 ZFLISTENER_1(callback
                         , ZFUIListView *, pimplOwner
                         ) {
@@ -129,10 +120,8 @@ public:
             this->listAdaptertingUpdate();
         }
     }
-    void listAdapterBeforeDetach(void)
-    {
-        if(this->listAdapter)
-        {
+    void listAdapterBeforeDetach(void) {
+        if(this->listAdapter) {
             this->listAdapter->toObject()->observerRemove(
                 ZFUIListAdapter::EventListAdapterOnReload(),
                 this->listAdapterOnReloadListener);
@@ -140,23 +129,22 @@ public:
     }
 
 public:
-    void childAdd(ZF_IN ZFUIView *child, ZF_IN_OPT zfindex index = zfindexMax())
-    {
+    void childAdd(
+            ZF_IN ZFUIView *child
+            , ZF_IN_OPT zfindex index = zfindexMax()
+            ) {
         this->childAddOverrideFlag = zftrue;
         this->pimplOwner->childAdd(child, index);
         this->childAddOverrideFlag = zffalse;
     }
-    void childRemoveAt(ZF_IN zfindex index)
-    {
+    void childRemoveAt(ZF_IN zfindex index) {
         this->childAddOverrideFlag = zftrue;
         this->pimplOwner->childRemoveAt(index);
         this->childAddOverrideFlag = zffalse;
     }
-    zfautoObjectT<ZFUIListCell *> cellLoadAt(ZF_IN zfindex index)
-    {
+    zfautoObjectT<ZFUIListCell *> cellLoadAt(ZF_IN zfindex index) {
         zfautoObjectT<ZFUIListCell *> ret = this->listAdapter->cellCacheOnAccess(index);
-        if(ret != zfnull)
-        {
+        if(ret != zfnull) {
             zfCoreAssertWithMessage(ZFCastZFObject(ZFUIListCell *, ret.toObject()) != zfnull, "list cell %s not type of %s",
                 ret.toObject()->classData()->classNameFull(),
                 ZFUIListCell::ClassData()->classNameFull());
@@ -170,10 +158,11 @@ public:
             ZFUIListCell::ClassData()->classNameFull());
         return ret;
     }
-    void cellOnUpdate(ZF_IN zfindex index, ZF_IN ZFUIListCell *cell)
-    {
-        if(!this->pimplOwner->cellUpdater()->isEmpty())
-        {
+    void cellOnUpdate(
+            ZF_IN zfindex index
+            , ZF_IN ZFUIListCell *cell
+            ) {
+        if(!this->pimplOwner->cellUpdater()->isEmpty()) {
             ZFUIListCellUpdaterParam updateParam;
             updateParam.cell = cell;
             updateParam.cellIndex = index;
@@ -181,12 +170,10 @@ public:
             updateParam.listOrientation = this->listAdapter->listOrientation();
             updateParam.listContainerSize = this->listAdapter->listContainerSize();
             updateParam.cellSizeHint = this->listAdapter->cellSizeHint();
-            for(zfindex i = 0; i < this->pimplOwner->cellUpdater()->count(); ++i)
-            {
+            for(zfindex i = 0; i < this->pimplOwner->cellUpdater()->count(); ++i) {
                 ZFObject *cellUpdater = this->pimplOwner->cellUpdater()->get(i);
                 cellUpdater->to<ZFUIListCellUpdater *>()->cellOnUpdate(updateParam);
-                if(cellUpdater->observerHasAdd(ZFUIListCellUpdater::EventCellOnUpdate()))
-                {
+                if(cellUpdater->observerHasAdd(ZFUIListCellUpdater::EventCellOnUpdate())) {
                     zfblockedAlloc(v_ZFUIListCellUpdaterParam, param0, updateParam);
                     cellUpdater->observerNotify(ZFUIListCellUpdater::EventCellOnUpdate(), param0);
                 }
@@ -194,12 +181,9 @@ public:
         }
         this->listAdapter->cellOnUpdate(index, cell);
     }
-    void cellOnRecycle(ZF_IN ZFUIListCell *cell)
-    {
-        if(!this->pimplOwner->cellUpdater()->isEmpty())
-        {
-            for(zfindex i = 0; i < this->pimplOwner->cellUpdater()->count(); ++i)
-            {
+    void cellOnRecycle(ZF_IN ZFUIListCell *cell) {
+        if(!this->pimplOwner->cellUpdater()->isEmpty()) {
+            for(zfindex i = 0; i < this->pimplOwner->cellUpdater()->count(); ++i) {
                 ZFObject *cellUpdater = this->pimplOwner->cellUpdater()->get(i);
                 cellUpdater->to<ZFUIListCellUpdater *>()->cellOnRecycle(cell);
                 cellUpdater->observerNotify(ZFUIListCellUpdater::EventCellOnRecycle(), cell);
@@ -207,13 +191,13 @@ public:
         }
         this->listAdapter->cellCacheOnRecycle(cell);
     }
-    zffloat cellSizeAt(ZF_IN zfindex index, ZF_IN ZFUIListCell *cell)
-    {
+    zffloat cellSizeAt(
+            ZF_IN zfindex index
+            , ZF_IN ZFUIListCell *cell
+            ) {
         zffloat ret = this->listAdapter->cellSizeAt(index, cell);
-        if(ret < 0)
-        {
-            switch(this->pimplOwner->listOrientation())
-            {
+        if(ret < 0) {
+            switch(this->pimplOwner->listOrientation()) {
                 case ZFUIOrientation::e_Left:
                 case ZFUIOrientation::e_Right:
                     ret = cell->layoutMeasure(
@@ -235,20 +219,16 @@ public:
         }
         return ret;
     }
-    void removeAll(void)
-    {
+    void removeAll(void) {
         this->cellCount = 0;
         this->cellSizeList.removeAll();
         this->listVisibleCellIndexRange = ZFIndexRangeZero();
         this->listVisibleCellOffset = 0;
-        if(!this->listVisibleCell.isEmpty())
-        {
-            for(zfindex i = this->listVisibleCell.count() - 1; i != zfindexMax(); --i)
-            {
+        if(!this->listVisibleCell.isEmpty()) {
+            for(zfindex i = this->listVisibleCell.count() - 1; i != zfindexMax(); --i) {
                 ZFUIListCell *cell = this->listVisibleCell[i];
                 this->childRemoveAt(i);
-                if(this->listAdapter != zfnull)
-                {
+                if(this->listAdapter != zfnull) {
                     this->cellOnRecycle(cell);
                 }
                 this->pimplOwner->cellOnDetach(cell);
@@ -257,16 +237,13 @@ public:
             this->listVisibleCell.removeAll();
         }
     }
-    void cellRemoveBefore(ZF_IN zfindex index)
-    {
-        if(index < this->listVisibleCellIndexRange.start || index == zfindexMax())
-        {
+    void cellRemoveBefore(ZF_IN zfindex index) {
+        if(index < this->listVisibleCellIndexRange.start || index == zfindexMax()) {
             return;
         }
 
         zfindex indexOfVisibleCell = index - this->listVisibleCellIndexRange.start;
-        for(zfindex i = indexOfVisibleCell; i != zfindexMax(); --i)
-        {
+        for(zfindex i = indexOfVisibleCell; i != zfindexMax(); --i) {
             this->childRemoveAt(i);
             ZFUIListCell *cell = this->listVisibleCell[i];
             this->cellOnRecycle(cell);
@@ -276,21 +253,17 @@ public:
         this->listVisibleCell.remove(0, indexOfVisibleCell + 1);
         this->listVisibleCellIndexRange.start = index + 1;
         this->listVisibleCellIndexRange.count = this->listVisibleCell.count();
-        if(this->listVisibleCellIndexRange.count == 0)
-        {
+        if(this->listVisibleCellIndexRange.count == 0) {
             this->listVisibleCellIndexRange.start = 0;
         }
     }
-    void cellRemoveAfter(ZF_IN zfindex index)
-    {
-        if(index >= this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-        {
+    void cellRemoveAfter(ZF_IN zfindex index) {
+        if(index >= this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
             return;
         }
 
         zfindex indexOfVisibleCell = index - this->listVisibleCellIndexRange.start;
-        for(zfindex i = this->listVisibleCellIndexRange.count - 1; i != zfindexMax() && i >= indexOfVisibleCell; --i)
-        {
+        for(zfindex i = this->listVisibleCellIndexRange.count - 1; i != zfindexMax() && i >= indexOfVisibleCell; --i) {
             this->childRemoveAt(i);
             ZFUIListCell *cell = this->listVisibleCell[i];
             this->cellOnRecycle(cell);
@@ -299,14 +272,14 @@ public:
         }
         this->listVisibleCell.remove(indexOfVisibleCell, zfindexMax());
         this->listVisibleCellIndexRange.count = this->listVisibleCell.count();
-        if(this->listVisibleCellIndexRange.count == 0)
-        {
+        if(this->listVisibleCellIndexRange.count == 0) {
             this->listVisibleCellIndexRange.start = 0;
         }
     }
-    void updateHeadCellBeforeIndex(ZF_IN zfindex index,
-                                   ZF_IN const ZFUIRect &cellFrame)
-    {
+    void updateHeadCellBeforeIndex(
+            ZF_IN zfindex index
+            , ZF_IN const ZFUIRect &cellFrame
+            ) {
         this->scrollContentFrameOverrideFlag = zftrue;
 
         ZFUIMargin scrollMargin = ZFUIMarginInc(
@@ -315,10 +288,8 @@ public:
         const ZFUIRect &scrollContentFrame = this->pimplOwner->scrollContentFrame();
         const ZFUIRect &viewFrame = this->pimplOwner->viewFrame();
 
-        switch(this->pimplOwner->listOrientation())
-        {
-            case ZFUIOrientation::e_Left:
-            {
+        switch(this->pimplOwner->listOrientation()) {
+            case ZFUIOrientation::e_Left: {
                 zffloat offset = cellFrame.x + cellFrame.width;
                 zffloat offsetEnd = zfmMax(
                     -scrollContentFrame.x - scrollMargin.left,
@@ -327,10 +298,8 @@ public:
                     offsetEnd + viewFrame.width,
                     scrollContentFrame.width);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
-                {
-                    if(offset < offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index) {
+                    if(offset < offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveBefore(index);
                         break;
@@ -338,26 +307,21 @@ public:
                     offset -= this->cellSizeList[index];
                 }
                 // skip
-                for( ; index != zfindexMax() && offset - this->cellSizeList[index] > offsetBegin; --index)
-                {
+                for( ; index != zfindexMax() && offset - this->cellSizeList[index] > offsetBegin; --index) {
                     offset -= this->cellSizeList[index];
                 }
                 // load
-                if(index != zfindexMax())
-                {
+                if(index != zfindexMax()) {
                     zffloat sizeDelta = 0;
-                    for( ; index != zfindexMax() && offset >= offsetEnd; --index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index != zfindexMax() && offset >= offsetEnd; --index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset -= this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -370,26 +334,22 @@ public:
                         offset -= cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         ZFUIRect contentFrame = scrollContentFrame;
                         contentFrame.x -= sizeDelta;
                         contentFrame.width += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
-                    if(index == zfindexMax())
-                    {
+                    if(index == zfindexMax()) {
                         this->listVisibleCellOffset = 0;
                     }
-                    else
-                    {
+                    else {
                         this->listVisibleCellOffset = offset + sizeDelta;
                     }
                 }
             }
                 break;
-            case ZFUIOrientation::e_Top:
-            {
+            case ZFUIOrientation::e_Top: {
                 zffloat offset = cellFrame.y + cellFrame.height;
                 zffloat offsetEnd = zfmMax(
                     -scrollContentFrame.y - scrollMargin.top,
@@ -398,10 +358,8 @@ public:
                     offsetEnd + viewFrame.height,
                     scrollContentFrame.height);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
-                {
-                    if(offset < offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index) {
+                    if(offset < offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveBefore(index);
                         break;
@@ -409,26 +367,21 @@ public:
                     offset -= this->cellSizeList[index];
                 }
                 // skip
-                for( ; index != zfindexMax() && offset - this->cellSizeList[index] > offsetBegin; --index)
-                {
+                for( ; index != zfindexMax() && offset - this->cellSizeList[index] > offsetBegin; --index) {
                     offset -= this->cellSizeList[index];
                 }
                 // load
-                if(index != zfindexMax())
-                {
+                if(index != zfindexMax()) {
                     zffloat sizeDelta = 0;
-                    for( ; index != zfindexMax() && offset >= offsetEnd; --index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index != zfindexMax() && offset >= offsetEnd; --index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset -= this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -441,26 +394,22 @@ public:
                         offset -= cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         ZFUIRect contentFrame = scrollContentFrame;
                         contentFrame.y -= sizeDelta;
                         contentFrame.height += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
                     }
-                    if(index == zfindexMax())
-                    {
+                    if(index == zfindexMax()) {
                         this->listVisibleCellOffset = 0;
                     }
-                    else
-                    {
+                    else {
                         this->listVisibleCellOffset = offset + sizeDelta;
                     }
                 }
             }
                 break;
-            case ZFUIOrientation::e_Right:
-            {
+            case ZFUIOrientation::e_Right: {
                 zffloat offset = cellFrame.x;
                 zffloat offsetEnd = zfmMin(
                     -scrollContentFrame.x + viewFrame.width - scrollMargin.left,
@@ -469,10 +418,8 @@ public:
                     offsetEnd - viewFrame.width,
                     (zffloat)0);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
-                {
-                    if(offset > offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index) {
+                    if(offset > offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveBefore(index);
                         break;
@@ -480,26 +427,21 @@ public:
                     offset += this->cellSizeList[index];
                 }
                 // skip
-                for( ; index != zfindexMax() && offset + this->cellSizeList[index] < offsetBegin; --index)
-                {
+                for( ; index != zfindexMax() && offset + this->cellSizeList[index] < offsetBegin; --index) {
                     offset += this->cellSizeList[index];
                 }
                 // load
-                if(index != zfindexMax())
-                {
+                if(index != zfindexMax()) {
                     zffloat sizeDelta = 0;
-                    for( ; index != zfindexMax() && offset <= offsetEnd; --index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index != zfindexMax() && offset <= offsetEnd; --index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset += this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -512,8 +454,7 @@ public:
                         offset += cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         ZFUIRect contentFrame = scrollContentFrame;
                         contentFrame.width += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
@@ -522,8 +463,7 @@ public:
                 }
             }
                 break;
-            case ZFUIOrientation::e_Bottom:
-            {
+            case ZFUIOrientation::e_Bottom: {
                 zffloat offset = cellFrame.y;
                 zffloat offsetEnd = zfmMin(
                     -scrollContentFrame.y + viewFrame.height - scrollMargin.top,
@@ -532,10 +472,8 @@ public:
                     offsetEnd - viewFrame.height,
                     (zffloat)0);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index)
-                {
-                    if(offset > offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; --index) {
+                    if(offset > offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveBefore(index);
                         break;
@@ -543,26 +481,21 @@ public:
                     offset += this->cellSizeList[index];
                 }
                 // skip
-                for( ; index != zfindexMax() && offset + this->cellSizeList[index] < offsetBegin; --index)
-                {
+                for( ; index != zfindexMax() && offset + this->cellSizeList[index] < offsetBegin; --index) {
                     offset += this->cellSizeList[index];
                 }
                 // load
-                if(index != zfindexMax())
-                {
+                if(index != zfindexMax()) {
                     zffloat sizeDelta = 0;
-                    for( ; index != zfindexMax() && offset <= offsetEnd; --index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index != zfindexMax() && offset <= offsetEnd; --index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset += this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -575,8 +508,7 @@ public:
                         offset += cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         ZFUIRect contentFrame = scrollContentFrame;
                         contentFrame.height += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
@@ -593,9 +525,10 @@ public:
         this->listVisibleCellOffsetNeedUpdate = zffalse;
         this->scrollContentFrameOverrideFlag = zffalse;
     }
-    void updateTailCellAfterIndex(ZF_IN zfindex index,
-                                  ZF_IN const ZFUIRect &cellFrame)
-    {
+    void updateTailCellAfterIndex(
+            ZF_IN zfindex index
+            , ZF_IN const ZFUIRect &cellFrame
+            ) {
         this->scrollContentFrameOverrideFlag = zftrue;
 
         ZFUIMargin scrollMargin = ZFUIMarginInc(
@@ -604,10 +537,8 @@ public:
         const ZFUIRect &scrollContentFrame = this->pimplOwner->scrollContentFrame();
         const ZFUIRect &viewFrame = this->pimplOwner->viewFrame();
 
-        switch(this->pimplOwner->listOrientation())
-        {
-            case ZFUIOrientation::e_Left:
-            {
+        switch(this->pimplOwner->listOrientation()) {
+            case ZFUIOrientation::e_Left: {
                 zffloat offset = cellFrame.x;
                 zffloat offsetEnd = zfmMin(
                     -scrollContentFrame.x + viewFrame.width - scrollMargin.left,
@@ -616,10 +547,8 @@ public:
                     offsetEnd - viewFrame.width,
                     (zffloat)0);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
-                {
-                    if(offset > offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index) {
+                    if(offset > offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveAfter(index);
                         break;
@@ -627,26 +556,21 @@ public:
                     offset += this->cellSizeList[index];
                 }
                 // skip
-                for( ; index < this->cellCount && offset + this->cellSizeList[index] < offsetBegin; ++index)
-                {
+                for( ; index < this->cellCount && offset + this->cellSizeList[index] < offsetBegin; ++index) {
                     offset += this->cellSizeList[index];
                 }
                 // load
-                if(index < this->cellCount)
-                {
+                if(index < this->cellCount) {
                     zffloat sizeDelta = 0;
-                    for( ; index < this->cellCount && offset <= offsetEnd; ++index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index < this->cellCount && offset <= offsetEnd; ++index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset += this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -655,23 +579,19 @@ public:
                         this->childAdd(cellNew);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
-                        if(this->listVisibleCellIndexRange.count == 1)
-                        {
+                        if(this->listVisibleCellIndexRange.count == 1) {
                             this->listVisibleCellIndexRange.start = index;
-                            if(index == 0)
-                            {
+                            if(index == 0) {
                                 this->listVisibleCellOffset = 0;
                             }
-                            else
-                            {
+                            else {
                                 this->listVisibleCellOffset = offset;
                             }
                         }
                         offset += cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
                         contentFrame.width += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
@@ -679,8 +599,7 @@ public:
                 }
             }
                 break;
-            case ZFUIOrientation::e_Top:
-            {
+            case ZFUIOrientation::e_Top: {
                 zffloat offset = cellFrame.y;
                 zffloat offsetEnd = zfmMin(
                     -scrollContentFrame.y + viewFrame.height - scrollMargin.top,
@@ -689,10 +608,8 @@ public:
                     offsetEnd - viewFrame.height,
                     (zffloat)0);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
-                {
-                    if(offset > offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index) {
+                    if(offset > offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveAfter(index);
                         break;
@@ -700,26 +617,21 @@ public:
                     offset += this->cellSizeList[index];
                 }
                 // skip
-                for( ; index < this->cellCount && offset + this->cellSizeList[index] < offsetBegin; ++index)
-                {
+                for( ; index < this->cellCount && offset + this->cellSizeList[index] < offsetBegin; ++index) {
                     offset += this->cellSizeList[index];
                 }
                 // load
-                if(index < this->cellCount)
-                {
+                if(index < this->cellCount) {
                     zffloat sizeDelta = 0;
-                    for( ; index < this->cellCount && offset <= offsetEnd; ++index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index < this->cellCount && offset <= offsetEnd; ++index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset += this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -728,23 +640,19 @@ public:
                         this->childAdd(cellNew);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
-                        if(this->listVisibleCellIndexRange.count == 1)
-                        {
+                        if(this->listVisibleCellIndexRange.count == 1) {
                             this->listVisibleCellIndexRange.start = index;
-                            if(index == 0)
-                            {
+                            if(index == 0) {
                                 this->listVisibleCellOffset = 0;
                             }
-                            else
-                            {
+                            else {
                                 this->listVisibleCellOffset = offset;
                             }
                         }
                         offset += cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
                         contentFrame.height += sizeDelta;
                         this->pimplOwner->scrollContentFrameUpdate(contentFrame);
@@ -752,8 +660,7 @@ public:
                 }
             }
                 break;
-            case ZFUIOrientation::e_Right:
-            {
+            case ZFUIOrientation::e_Right: {
                 zffloat offset = cellFrame.x + cellFrame.width;
                 zffloat offsetEnd = zfmMax(
                     -scrollContentFrame.x - scrollMargin.left,
@@ -762,10 +669,8 @@ public:
                     offsetEnd + viewFrame.width,
                     scrollContentFrame.width);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
-                {
-                    if(offset < offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index) {
+                    if(offset < offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveAfter(index);
                         break;
@@ -773,26 +678,21 @@ public:
                     offset -= this->cellSizeList[index];
                 }
                 // skip
-                for( ; index < this->cellCount && offset - this->cellSizeList[index] > offsetBegin; ++index)
-                {
+                for( ; index < this->cellCount && offset - this->cellSizeList[index] > offsetBegin; ++index) {
                     offset -= this->cellSizeList[index];
                 }
                 // load
-                if(index < this->cellCount)
-                {
+                if(index < this->cellCount) {
                     zffloat sizeDelta = 0;
-                    for( ; index < this->cellCount && offset >= offsetEnd; ++index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index < this->cellCount && offset >= offsetEnd; ++index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset -= this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -801,15 +701,13 @@ public:
                         this->childAdd(cellNew);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
-                        if(this->listVisibleCellIndexRange.count == 1)
-                        {
+                        if(this->listVisibleCellIndexRange.count == 1) {
                             this->listVisibleCellOffset = offset;
                         }
                         offset -= cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         this->listVisibleCellOffset += sizeDelta;
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
                         contentFrame.x -= sizeDelta;
@@ -819,8 +717,7 @@ public:
                 }
             }
                 break;
-            case ZFUIOrientation::e_Bottom:
-            {
+            case ZFUIOrientation::e_Bottom: {
                 zffloat offset = cellFrame.y + cellFrame.height;
                 zffloat offsetEnd = zfmMax(
                     -scrollContentFrame.y - scrollMargin.top,
@@ -829,10 +726,8 @@ public:
                     offsetEnd + viewFrame.height,
                     scrollContentFrame.height);
                 // remove cells exceeds visible range
-                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index)
-                {
-                    if(offset < offsetEnd)
-                    {
+                for( ; index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count; ++index) {
+                    if(offset < offsetEnd) {
                         this->cellNeedUpdate = zftrue;
                         this->cellRemoveAfter(index);
                         break;
@@ -840,26 +735,21 @@ public:
                     offset -= this->cellSizeList[index];
                 }
                 // skip
-                for( ; index < this->cellCount && offset - this->cellSizeList[index] > offsetBegin; ++index)
-                {
+                for( ; index < this->cellCount && offset - this->cellSizeList[index] > offsetBegin; ++index) {
                     offset -= this->cellSizeList[index];
                 }
                 // load
-                if(index < this->cellCount)
-                {
+                if(index < this->cellCount) {
                     zffloat sizeDelta = 0;
-                    for( ; index < this->cellCount && offset >= offsetEnd; ++index)
-                    {
-                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count)
-                        {
+                    for( ; index < this->cellCount && offset >= offsetEnd; ++index) {
+                        if(index >= this->listVisibleCellIndexRange.start && index < this->listVisibleCellIndexRange.start + this->listVisibleCellIndexRange.count) {
                             offset -= this->cellSizeList[index];
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
                         ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
-                        if(cellSizeNew != this->cellSizeList[index])
-                        {
+                        if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
@@ -868,15 +758,13 @@ public:
                         this->childAdd(cellNew);
                         this->pimplOwner->cellOnAttach(cellNew);
                         this->cellOnUpdate(index, cellNew);
-                        if(this->listVisibleCellIndexRange.count == 1)
-                        {
+                        if(this->listVisibleCellIndexRange.count == 1) {
                             this->listVisibleCellOffset = offset;
                         }
                         offset -= cellSizeNew;
                     }
                     // update content
-                    if(sizeDelta != 0)
-                    {
+                    if(sizeDelta != 0) {
                         this->listVisibleCellOffset += sizeDelta;
                         ZFUIRect contentFrame = this->pimplOwner->scrollContentFrame();
                         contentFrame.y -= sizeDelta;
@@ -894,16 +782,13 @@ public:
         this->listVisibleCellOffsetNeedUpdate = zffalse;
         this->scrollContentFrameOverrideFlag = zffalse;
     }
-    void updateFromFirstCell(void)
-    {
-        if(this->cellCount == 0)
-        {
+    void updateFromFirstCell(void) {
+        if(this->cellCount == 0) {
             return;
         }
 
         zffloat cellSize = this->cellSizeList[0];
-        switch(this->pimplOwner->listOrientation())
-        {
+        switch(this->pimplOwner->listOrientation()) {
             case ZFUIOrientation::e_Left:
                 this->updateTailCellAfterIndex(0, ZFUIRectMake(
                     0,
@@ -937,18 +822,14 @@ public:
                 return;
         }
     }
-    ZFUIRect listVisibleCellFrame(ZF_IN zfindex cellIndex)
-    {
+    ZFUIRect listVisibleCellFrame(ZF_IN zfindex cellIndex) {
         ZFUIRect ret = ZFUIRectZero();
-        switch(this->pimplOwner->listOrientation())
-        {
+        switch(this->pimplOwner->listOrientation()) {
             case ZFUIOrientation::e_Left:
                 ret.x = this->listVisibleCellOffset;
                 ret.height = this->pimplOwner->scrollArea().height;
-                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
-                {
-                    if(i == cellIndex)
-                    {
+                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i) {
+                    if(i == cellIndex) {
                         ret.width = this->cellSizeList[i];
                         break;
                     }
@@ -958,10 +839,8 @@ public:
             case ZFUIOrientation::e_Top:
                 ret.y = this->listVisibleCellOffset;
                 ret.width = this->pimplOwner->scrollArea().width;
-                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
-                {
-                    if(i == cellIndex)
-                    {
+                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i) {
+                    if(i == cellIndex) {
                         ret.height = this->cellSizeList[i];
                         break;
                     }
@@ -971,11 +850,9 @@ public:
             case ZFUIOrientation::e_Right:
                 ret.x = this->listVisibleCellOffset;
                 ret.height = this->pimplOwner->scrollArea().height;
-                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
-                {
+                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i) {
                     ret.x -= this->cellSizeList[i];
-                    if(i == cellIndex)
-                    {
+                    if(i == cellIndex) {
                         ret.width = this->cellSizeList[i];
                         break;
                     }
@@ -984,11 +861,9 @@ public:
             case ZFUIOrientation::e_Bottom:
                 ret.y = this->listVisibleCellOffset;
                 ret.width = this->pimplOwner->scrollArea().width;
-                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i)
-                {
+                for(zfindex i = this->listVisibleCellIndexRange.start; ; ++i) {
                     ret.y -= this->cellSizeList[i];
-                    if(i == cellIndex)
-                    {
+                    if(i == cellIndex) {
                         ret.height = this->cellSizeList[i];
                         break;
                     }
@@ -1000,16 +875,12 @@ public:
         }
         return ret;
     }
-    void listCheckReload(void)
-    {
-        if(!this->listReloadRequested)
-        {
-            if(this->listQuickReloadRequested)
-            {
+    void listCheckReload(void) {
+        if(!this->listReloadRequested) {
+            if(this->listQuickReloadRequested) {
                 this->listQuickReloadRequested = zffalse;
                 ZFUIRect scrollContentFrame = this->pimplOwner->scrollContentFrame();
-                switch(this->pimplOwner->listOrientation())
-                {
+                switch(this->pimplOwner->listOrientation()) {
                     case ZFUIOrientation::e_Left:
                     case ZFUIOrientation::e_Right:
                         scrollContentFrame.height = this->pimplOwner->scrollArea().height;
@@ -1022,29 +893,25 @@ public:
                         zfCoreCriticalShouldNotGoHere();
                         return;
                 }
-                if(scrollContentFrame != this->pimplOwner->scrollContentFrame())
-                {
+                if(scrollContentFrame != this->pimplOwner->scrollContentFrame()) {
                     this->scrollContentFrameOverrideFlag = zftrue;
                     this->pimplOwner->scrollContentFrameUpdate(scrollContentFrame);
                     this->scrollContentFrameOverrideFlag = zffalse;
                 }
-                if(!this->listVisibleCell.isEmpty())
-                {
+                if(!this->listVisibleCell.isEmpty()) {
                     zfindex cellIndex = this->listVisibleCellIndexRange.start;
                     this->updateTailCellAfterIndex(
                         cellIndex,
                         this->listVisibleCellFrame(cellIndex));
                 }
-                else
-                {
+                else {
                     this->updateFromFirstCell();
                 }
             }
             return;
         }
 
-        if(this->listAdapter == zfnull)
-        {
+        if(this->listAdapter == zfnull) {
             this->removeAll();
             this->scrollContentFrameOverrideFlag = zftrue;
             this->pimplOwner->scrollContentFrame(ZFUIRectZero());
@@ -1058,17 +925,13 @@ public:
         this->cellNeedUpdate = zftrue;
 
         this->cellCount = this->listAdapter->cellCount();
-        if(this->cellSizeList.count() > this->cellCount)
-        {
+        if(this->cellSizeList.count() > this->cellCount) {
             this->cellSizeList.remove(this->cellCount, zfindexMax());
         }
-        else
-        {
+        else {
             zffloat cellSizeHint = this->listAdapter->cellSizeHint();
-            if(this->listAdapter->cellSizeFill())
-            {
-                switch(this->listAdapter->listOrientation())
-                {
+            if(this->listAdapter->cellSizeFill()) {
+                switch(this->listAdapter->listOrientation()) {
                     case ZFUIOrientation::e_Left:
                     case ZFUIOrientation::e_Right:
                         cellSizeHint = this->listAdapter->listContainerSize().width;
@@ -1082,44 +945,35 @@ public:
                         break;
                 }
             }
-            else if(cellSizeHint < 0)
-            {
+            else if(cellSizeHint < 0) {
                 cellSizeHint = ZFUIGlobalStyle::DefaultStyle()->itemSizeListCell();
             }
             this->cellSizeList.capacity(this->cellCount);
-            for(zfindex i = this->cellSizeList.count(); i < this->cellCount; ++i)
-            {
+            for(zfindex i = this->cellSizeList.count(); i < this->cellCount; ++i) {
                 this->cellSizeList.add(cellSizeHint);
             }
         }
-        zffloat totalSize = 0;
-        {
+        zffloat totalSize = 0; {
             const zffloat *buf = this->cellSizeList.arrayBuf();
-            for(zfindex i = 0, iEnd = this->cellSizeList.count(); i < iEnd; ++i)
-            {
+            for(zfindex i = 0, iEnd = this->cellSizeList.count(); i < iEnd; ++i) {
                 totalSize += *buf;
                 ++buf;
             }
         }
         this->scrollContentFrameOverrideFlag = zftrue;
-        switch(this->pimplOwner->listOrientation())
-        {
+        switch(this->pimplOwner->listOrientation()) {
             case ZFUIOrientation::e_Left:
-            case ZFUIOrientation::e_Right:
-            {
+            case ZFUIOrientation::e_Right: {
                 ZFUIRect scrollContentFrameNew = ZFUIRectMake(
                     this->pimplOwner->scrollContentFrame().x,
                     0,
                     zfmMax(totalSize, this->pimplOwner->scrollArea().width),
                     this->pimplOwner->scrollArea().height);
-                if(this->listReloadByChangeListOrientation)
-                {
-                    if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Left)
-                    {
+                if(this->listReloadByChangeListOrientation) {
+                    if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Left) {
                         scrollContentFrameNew.x = 0;
                     }
-                    else
-                    {
+                    else {
                         scrollContentFrameNew.x = this->pimplOwner->scrollArea().width - scrollContentFrameNew.width;
                     }
                 }
@@ -1127,21 +981,17 @@ public:
             }
                 break;
             case ZFUIOrientation::e_Top:
-            case ZFUIOrientation::e_Bottom:
-            {
+            case ZFUIOrientation::e_Bottom: {
                 ZFUIRect scrollContentFrameNew = ZFUIRectMake(
                     0,
                     this->pimplOwner->scrollContentFrame().y,
                     this->pimplOwner->scrollArea().width,
                     zfmMax(totalSize, this->pimplOwner->scrollArea().height));
-                if(this->listReloadByChangeListOrientation)
-                {
-                    if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Top)
-                    {
+                if(this->listReloadByChangeListOrientation) {
+                    if(this->pimplOwner->listOrientation() == ZFUIOrientation::e_Top) {
                         scrollContentFrameNew.y = 0;
                     }
-                    else
-                    {
+                    else {
                         scrollContentFrameNew.y = this->pimplOwner->scrollArea().height - scrollContentFrameNew.height;
                     }
                 }
@@ -1155,14 +1005,12 @@ public:
         this->scrollContentFrameOverrideFlag = zffalse;
 
         zfindex cellIndex = zfindexMax();
-        if(!this->listVisibleCell.isEmpty())
-        {
+        if(!this->listVisibleCell.isEmpty()) {
             cellIndex = this->listVisibleCellIndexRange.start;
         }
 
         this->listVisibleCellIndexRange = ZFIndexRangeZero();
-        for(zfindex i = this->listVisibleCell.count() - 1; i != zfindexMax(); --i)
-        {
+        for(zfindex i = this->listVisibleCell.count() - 1; i != zfindexMax(); --i) {
             ZFUIListCell *cell = this->listVisibleCell[i];
             this->childRemoveAt(i);
             this->cellOnRecycle(cell);
@@ -1171,23 +1019,19 @@ public:
         }
         this->listVisibleCell.removeAll();
 
-        if(cellIndex != zfindexMax() && !this->listVisibleCellOffsetNeedUpdate)
-        {
+        if(cellIndex != zfindexMax() && !this->listVisibleCellOffsetNeedUpdate) {
             ZFUIRect cellFrame = this->listVisibleCellFrame(cellIndex);
             this->updateHeadCellBeforeIndex(cellIndex, cellFrame);
-            if(!this->listVisibleCell.isEmpty())
-            {
+            if(!this->listVisibleCell.isEmpty()) {
                 cellIndex = this->listVisibleCellIndexRange.start;
                 cellFrame = this->listVisibleCellFrame(cellIndex);
                 this->updateTailCellAfterIndex(cellIndex, cellFrame);
             }
-            else
-            {
+            else {
                 this->updateFromFirstCell();
             }
         }
-        else
-        {
+        else {
             this->updateFromFirstCell();
         }
 
@@ -1198,45 +1042,39 @@ public:
 
         // fix content range
         ZFUIRect scrollContentFrame = this->pimplOwner->scrollContentFrame();
-        if(scrollContentFrame.x > 0)
-        {
+        if(scrollContentFrame.x > 0) {
             scrollContentFrame.x = 0;
         }
-        if(scrollContentFrame.y > 0)
-        {
+        if(scrollContentFrame.y > 0) {
             scrollContentFrame.y = 0;
         }
         if(scrollContentFrame.width > this->pimplOwner->scrollArea().width
-            && scrollContentFrame.x + scrollContentFrame.width < this->pimplOwner->scrollArea().width)
-        {
+                && scrollContentFrame.x + scrollContentFrame.width < this->pimplOwner->scrollArea().width
+                ) {
             scrollContentFrame.x = this->pimplOwner->scrollArea().width - scrollContentFrame.width;
         }
         if(scrollContentFrame.height > this->pimplOwner->scrollArea().height
-            && scrollContentFrame.y + scrollContentFrame.height < this->pimplOwner->scrollArea().height)
-        {
+                && scrollContentFrame.y + scrollContentFrame.height < this->pimplOwner->scrollArea().height
+                ) {
             scrollContentFrame.y = this->pimplOwner->scrollArea().height - scrollContentFrame.height;
         }
         this->pimplOwner->scrollContentFrameUpdate(scrollContentFrame);
 
         this->pimplOwner->scrollToFitRange();
     }
-    void updateCellLayout(void)
-    {
-        if(!this->cellNeedUpdate)
-        {
+    void updateCellLayout(void) {
+        if(!this->cellNeedUpdate) {
             return;
         }
         this->cellNeedUpdate = zffalse;
 
         zffloat offset = 0;
         zffloat fillSize = 0;
-        switch(this->pimplOwner->listOrientation())
-        {
+        switch(this->pimplOwner->listOrientation()) {
             case ZFUIOrientation::e_Left:
                 offset = this->listVisibleCellOffset;
                 fillSize = this->pimplOwner->scrollArea().height;
-                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
-                {
+                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i) {
                     zffloat cellWidth = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
                     this->listVisibleCell[i]->viewFrame(ZFUIRectMake(
                             offset,
@@ -1250,8 +1088,7 @@ public:
             case ZFUIOrientation::e_Top:
                 offset = this->listVisibleCellOffset;
                 fillSize = this->pimplOwner->scrollArea().width;
-                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
-                {
+                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i) {
                     zffloat cellHeight = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
                     this->listVisibleCell[i]->viewFrame(ZFUIRectMake(
                             0,
@@ -1265,8 +1102,7 @@ public:
             case ZFUIOrientation::e_Right:
                 offset = this->listVisibleCellOffset;
                 fillSize = this->pimplOwner->scrollArea().height;
-                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
-                {
+                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i) {
                     zffloat cellWidth = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
                     offset -= cellWidth;
                     this->listVisibleCell[i]->viewFrame(ZFUIRectMake(
@@ -1280,8 +1116,7 @@ public:
             case ZFUIOrientation::e_Bottom:
                 offset = this->listVisibleCellOffset;
                 fillSize = this->pimplOwner->scrollArea().width;
-                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i)
-                {
+                for(zfindex i = 0; i < this->listVisibleCell.count(); ++i) {
                     zffloat cellHeight = this->cellSizeList[this->listVisibleCellIndexRange.start + i];
                     offset -= cellHeight;
                     this->listVisibleCell[i]->viewFrame(ZFUIRectMake(
@@ -1299,66 +1134,54 @@ public:
     }
 
 public:
-    void scrollListCellCheckUpdate(void)
-    {
-        if(this->scrollListCellIndex == zfindexMax())
-        {
+    void scrollListCellCheckUpdate(void) {
+        if(this->scrollListCellIndex == zfindexMax()) {
             return;
         }
 
         zffloat desiredPos = this->scrollListCellDesiredPosCalc();
-        if(!this->scrollListCellAnimated)
-        {
-            while(this->scrollListCellIndex != zfindexMax() && desiredPos != this->scrollListCellDesiredPosSaved)
-            {
+        if(!this->scrollListCellAnimated) {
+            while(this->scrollListCellIndex != zfindexMax() && desiredPos != this->scrollListCellDesiredPosSaved) {
                 this->scrollListCellScrollToPos(desiredPos, zffalse);
             }
             this->scrollListCellIndex = zfindexMax();
             return;
         }
-        if(desiredPos != this->scrollListCellDesiredPosSaved)
-        {
+        if(desiredPos != this->scrollListCellDesiredPosSaved) {
             this->scrollListCellScrollToPos(desiredPos, zftrue);
         }
-        else
-        {
+        else {
             this->scrollListCellIndex = zfindexMax();
         }
     }
 private:
-    zffloat scrollListCellDesiredPosCalc(void)
-    {
+    zffloat scrollListCellDesiredPosCalc(void) {
         zffloat offset = 0;
-        for(const zffloat *p = this->cellSizeList.arrayBuf(), *pEnd = p + this->scrollListCellIndex; p != pEnd; ++p)
-        {
+        for(const zffloat *p = this->cellSizeList.arrayBuf(), *pEnd = p + this->scrollListCellIndex; p != pEnd; ++p) {
             offset += *p;
         }
-        if(this->scrollListCellToHead)
-        {
+        if(this->scrollListCellToHead) {
             return this->scrollListCellOffset - offset;
         }
-        else
-        {
-            if(ZFUIOrientationIsHorizontal(this->pimplOwner->listOrientation()))
-            {
+        else {
+            if(ZFUIOrientationIsHorizontal(this->pimplOwner->listOrientation())) {
                 return this->pimplOwner->scrollArea().width - (offset + this->cellSizeList[this->scrollListCellIndex] + this->scrollListCellOffset);
             }
-            else
-            {
+            else {
                 return this->pimplOwner->scrollArea().height - (offset + this->cellSizeList[this->scrollListCellIndex] + this->scrollListCellOffset);
             }
         }
     }
-    void scrollListCellScrollToPos(ZF_IN zffloat pos,
-                                   ZF_IN zfbool animated)
-    {
+    void scrollListCellScrollToPos(
+            ZF_IN zffloat pos
+            , ZF_IN zfbool animated
+            ) {
         this->scrollListCellDesiredPosSaved = pos;
         this->pimplOwner->scrollOverride(zftrue);
         const ZFUIRect &scrollContentFrame = this->pimplOwner->scrollContentFrame();
         zffloat posX = 0;
         zffloat posY = 0;
-        switch(this->pimplOwner->listOrientation())
-        {
+        switch(this->pimplOwner->listOrientation()) {
             case ZFUIOrientation::e_Left:
                 posX = pos;
                 posY = scrollContentFrame.y;
@@ -1379,12 +1202,10 @@ private:
                 zfCoreCriticalShouldNotGoHere();
                 break;
         }
-        if(animated)
-        {
+        if(animated) {
             this->pimplOwner->scrollByPoint(posX, posY);
         }
-        else
-        {
+        else {
             this->pimplOwner->scrollContentFrame(ZFUIRectMake(posX, posY, scrollContentFrame.width, scrollContentFrame.height));
         }
         this->pimplOwner->scrollOverride(zffalse);
@@ -1400,47 +1221,39 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIListView, ListCellOnDetach)
 ZFOBSERVER_EVENT_REGISTER(ZFUIListView, ListVisibleCellOnChange)
 
 #define _ZFP_ZFUIListView_listAdapterHolderTag "_ZFP_ZFUIListView_listAdapterHolderTag"
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIListAdapter *, listAdapter)
-{
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIListAdapter *, listAdapter) {
     d->listAdapter = this->listAdapter();
     d->listAdapterAfterAttach();
 
-    if(this->listAdapter() != propertyValueOld)
-    {
+    if(this->listAdapter() != propertyValueOld) {
         this->listReload();
     }
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListView, ZFUIListAdapter *, listAdapter)
-{
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListView, ZFUIListAdapter *, listAdapter) {
     d->listAdapterBeforeDetach();
     d->listAdapter = zfnull;
     this->objectTagRemove(_ZFP_ZFUIListView_listAdapterHolderTag);
 }
-ZFMETHOD_DEFINE_1(ZFUIListView, void, listAdapterAutoRetain,
-                  ZFMP_IN(ZFUIListAdapter *, listAdapter))
-{
+ZFMETHOD_DEFINE_1(ZFUIListView, void, listAdapterAutoRetain
+        , ZFMP_IN(ZFUIListAdapter *, listAdapter)
+        ) {
     zfRetain(listAdapter);
     this->listAdapter(listAdapter);
     this->toObject()->objectTag(_ZFP_ZFUIListView_listAdapterHolderTag, this->listAdapter()->toObject());
     zfRelease(listAdapter);
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIOrientationEnum, listOrientation)
-{
-    if(this->listOrientation() != propertyValueOld)
-    {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIOrientationEnum, listOrientation) {
+    if(this->listOrientation() != propertyValueOld) {
         d->listBounceUpdate();
         d->listReloadByChangeListOrientation = zftrue;
         this->listReload();
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfbool, listBounce)
-{
-    if(this->listBounce() != propertyValueOld)
-    {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfbool, listBounce) {
+    if(this->listBounce() != propertyValueOld) {
         d->listBounceUpdate();
-        if(!this->listBounce())
-        {
+        if(!this->listBounce()) {
             this->scrollBounceVerticalAlways(zffalse);
             this->scrollBounceHorizontalAlways(zffalse);
         }
@@ -1448,8 +1261,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfbool, listBounce)
 }
 
 // ============================================================
-void ZFUIListView::objectOnInit(void)
-{
+void ZFUIListView::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUIListViewPrivate);
     d->pimplOwner = this;
@@ -1462,59 +1274,53 @@ void ZFUIListView::objectOnInit(void)
     } ZFLISTENER_END()
     this->observerAdd(ZFUIView::EventViewLayoutOnLayoutRequest(), layoutOnLayoutRequest);
 }
-void ZFUIListView::objectOnDealloc(void)
-{
+void ZFUIListView::objectOnDealloc(void) {
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }
-void ZFUIListView::objectOnDeallocPrepare(void)
-{
+void ZFUIListView::objectOnDeallocPrepare(void) {
     d->childAddOverrideFlag = zftrue;
     this->listAdapter(zfnull);
     zfsuper::objectOnDeallocPrepare();
     d->childAddOverrideFlag = zffalse;
 }
 
-ZFSerializablePropertyType ZFUIListView::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property)
-{
+ZFSerializablePropertyType ZFUIListView::serializableOnCheckPropertyType(ZF_IN const ZFProperty *property) {
     if(property == ZFPropertyAccess(ZFUIScrollView, scrollContentFrame)
-        || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceVertical)
-        || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceHorizontal)
-        || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceVerticalAlways)
-        || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceHorizontalAlways)
-        )
-    {
+            || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceVertical)
+            || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceHorizontal)
+            || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceVerticalAlways)
+            || property == ZFPropertyAccess(ZFUIScrollView, scrollBounceHorizontalAlways)
+            ) {
         return ZFSerializablePropertyTypeNotSerializable;
     }
-    else
-    {
+    else {
         return zfsuperI(ZFSerializable)::serializableOnCheckPropertyType(property);
     }
 }
 
-zfbool ZFUIListView::serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                     ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                                     ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+zfbool ZFUIListView::serializableOnSerializeFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
     this->listAdapter(zfnull);
 
-    for(zfindex i = 0; i < serializableData.childCount(); ++i)
-    {
+    for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListView_listAdapter)) {continue;}
 
         zfautoObject element;
-        if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))
-        {
+        if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(element != zfnull
-            && !element.toObject()->classData()->classIsTypeOf(ZFUIListAdapter::ClassData()))
-        {
+                && !element.toObject()->classData()->classIsTypeOf(ZFUIListAdapter::ClassData())
+                ) {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
                 "%s not type of %s",
                 element.toObject()->objectInfoOfInstance().cString(), ZFUIListAdapter::ClassData()->classNameFull());
@@ -1526,31 +1332,30 @@ zfbool ZFUIListView::serializableOnSerializeFromData(ZF_IN const ZFSerializableD
     }
     return zftrue;
 }
-zfbool ZFUIListView::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                   ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                   ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfbool ZFUIListView::serializableOnSerializeToData(
+        ZF_IN_OUT ZFSerializableData &serializableData
+        , ZF_IN ZFSerializable *referencedOwnerOrNull
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
     zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
 
-    if(!this->listAdapterSerializable() || this->listAdapter() == zfnull)
-    {
+    if(!this->listAdapterSerializable() || this->listAdapter() == zfnull) {
         return zftrue;
     }
 
     ZFSerializableData categoryData;
     if(!ZFObjectToData(categoryData, this->listAdapter()->toObject(), outErrorHint,
-        ref ? ZFCastZFObject(ZFSerializable *, ref->listAdapter()) : zfnull))
-    {
+                ref ? ZFCastZFObject(ZFSerializable *, ref->listAdapter()) : zfnull
+                )) {
         return zffalse;
     }
 
     if(!(
-        ref != zfnull && ref->listAdapter() != zfnull
-        && this->listAdapter()->classData()->classIsTypeOf(ref->listAdapter()->classData())
-        && categoryData.childCount() == 0 && categoryData.attrCount() == 0
-        ))
-    {
+                ref != zfnull && ref->listAdapter() != zfnull
+                && this->listAdapter()->classData()->classIsTypeOf(ref->listAdapter()->classData())
+                && categoryData.childCount() == 0 && categoryData.attrCount() == 0
+                )) {
         categoryData.category(ZFSerializableKeyword_ZFUIListView_listAdapter);
         serializableData.childAdd(categoryData);
     }
@@ -1558,8 +1363,7 @@ zfbool ZFUIListView::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData 
     return zftrue;
 }
 
-void ZFUIListView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
-{
+void ZFUIListView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
     if(!d->listQuickReloadRequested && (
         this->viewFrame().width != this->viewFramePrev().width
         || this->viewFrame().height != this->viewFramePrev().height
@@ -1567,96 +1371,82 @@ void ZFUIListView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds)
         d->listQuickReloadRequested = zftrue;
         d->cellNeedUpdate = zftrue;
     }
-    if(d->listReloadRequested || d->listQuickReloadRequested)
-    {
+    if(d->listReloadRequested || d->listQuickReloadRequested) {
         d->listAdaptertingUpdate();
     }
     zfsuper::layoutOnLayoutPrepare(bounds);
     d->listCheckReload();
 }
-void ZFUIListView::layoutOnLayout(ZF_IN const ZFUIRect &bounds)
-{
+void ZFUIListView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
     d->updateCellLayout();
 }
 
-void ZFUIListView::viewChildOnAdd(ZF_IN ZFUIView *child,
-                                  ZF_IN ZFUIViewChildLayerEnum layer)
-{
-    if(layer == ZFUIViewChildLayer::e_Normal)
-    {
+void ZFUIListView::viewChildOnAdd(
+        ZF_IN ZFUIView *child
+        , ZF_IN ZFUIViewChildLayerEnum layer
+        ) {
+    if(layer == ZFUIViewChildLayer::e_Normal) {
         zfCoreAssertWithMessage(d->childAddOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not add child to a list view");
     }
     zfsuper::viewChildOnAdd(child, layer);
 }
-void ZFUIListView::viewChildOnRemove(ZF_IN ZFUIView *child,
-                                     ZF_IN ZFUIViewChildLayerEnum layer)
-{
-    if(layer == ZFUIViewChildLayer::e_Normal)
-    {
+void ZFUIListView::viewChildOnRemove(
+        ZF_IN ZFUIView *child
+        , ZF_IN ZFUIViewChildLayerEnum layer
+        ) {
+    if(layer == ZFUIViewChildLayer::e_Normal) {
         zfCoreAssertWithMessage(d->childAddOverrideFlag || layer != ZFUIViewChildLayer::e_Normal, "you must not remove child from a list view");
     }
     zfsuper::viewChildOnRemove(child, layer);
 }
 
-void ZFUIListView::scrollAreaOnChange(void)
-{
+void ZFUIListView::scrollAreaOnChange(void) {
     zfsuper::scrollAreaOnChange();
-    if(!d->listQuickReloadRequested)
-    {
+    if(!d->listQuickReloadRequested) {
         d->listQuickReloadRequested = zftrue;
     }
     d->listAdaptertingUpdate();
 }
-void ZFUIListView::scrollContentFrameOnChange(void)
-{
+void ZFUIListView::scrollContentFrameOnChange(void) {
     zfsuper::scrollContentFrameOnChange();
-    if(d->scrollContentFrameOverrideFlag)
-    {
+    if(d->scrollContentFrameOverrideFlag) {
         return;
     }
 
     d->listCheckReload();
 
-    if(d->listAdapter == zfnull)
-    {
+    if(d->listAdapter == zfnull) {
         return;
     }
 
-    if(!d->listVisibleCell.isEmpty() && !d->listVisibleCellOffsetNeedUpdate)
-    {
+    if(!d->listVisibleCell.isEmpty() && !d->listVisibleCellOffsetNeedUpdate) {
         zfindex cellIndex = d->listVisibleCellIndexRange.start + d->listVisibleCellIndexRange.count - 1;
         ZFUIRect cellFrame = d->listVisibleCellFrame(cellIndex);
         d->updateHeadCellBeforeIndex(cellIndex, cellFrame);
-        if(!d->listVisibleCell.isEmpty())
-        {
+        if(!d->listVisibleCell.isEmpty()) {
             cellIndex = d->listVisibleCellIndexRange.start;
             cellFrame = d->listVisibleCellFrame(cellIndex);
             d->updateTailCellAfterIndex(cellIndex, cellFrame);
         }
-        else
-        {
+        else {
             d->updateFromFirstCell();
         }
     }
-    else
-    {
+    else {
         d->updateFromFirstCell();
     }
 
-    if(d->cellNeedUpdate)
-    {
+    if(d->cellNeedUpdate) {
         this->listVisibleCellOnChange();
     }
 }
-void ZFUIListView::scrollOnScrolledByUser(void)
-{
+void ZFUIListView::scrollOnScrolledByUser(void) {
     zfsuper::scrollOnScrolledByUser();
 
     // cancel scrollListCellToHead/Tail task
     d->scrollListCellIndex = zfindexMax();
 }
-void ZFUIListView::scrollOnScrollEnd(void)
-{
+void ZFUIListView::scrollOnScrollEnd(void) {
     zfsuper::scrollOnScrollEnd();
 
     // cancel scrollListCellToHead/Tail task
@@ -1664,10 +1454,8 @@ void ZFUIListView::scrollOnScrollEnd(void)
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_0(ZFUIListView, void, listReload)
-{
-    if(!d->listReloadRequested)
-    {
+ZFMETHOD_DEFINE_0(ZFUIListView, void, listReload) {
+    if(!d->listReloadRequested) {
         d->listReloadRequested = zftrue;
         d->listQuickReloadRequested = zftrue;
         d->cellNeedUpdate = zftrue;
@@ -1675,15 +1463,13 @@ ZFMETHOD_DEFINE_0(ZFUIListView, void, listReload)
         this->layoutRequest();
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIListView, zfbool, listReloadRequested)
-{
+ZFMETHOD_DEFINE_0(ZFUIListView, zfbool, listReloadRequested) {
     return d->listReloadRequested;
 }
-ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt,
-                  ZFMP_IN(zfindex, index))
-{
-    if(d->listReloadRequested || !ZFIndexRangeContain(d->listVisibleCellIndexRange, index))
-    {
+ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt
+        , ZFMP_IN(zfindex, index)
+        ) {
+    if(d->listReloadRequested || !ZFIndexRangeContain(d->listVisibleCellIndexRange, index)) {
         return;
     }
 
@@ -1708,8 +1494,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt,
     d->cellSizeList[index] = cellNewSize;
 
     // update all cells after the reloaded one
-    switch(this->listOrientation())
-    {
+    switch(this->listOrientation()) {
         case ZFUIOrientation::e_Left:
         case ZFUIOrientation::e_Right:
             cellOldFrame.width = cellNewSize;
@@ -1730,26 +1515,22 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt,
     zfRelease(cellOld);
 }
 
-ZFMETHOD_DEFINE_0(ZFUIListView, ZFCoreArrayPOD<ZFUIListCell *>, listVisibleCell)
-{
+ZFMETHOD_DEFINE_0(ZFUIListView, ZFCoreArrayPOD<ZFUIListCell *>, listVisibleCell) {
     return d->listVisibleCell;
 }
-ZFMETHOD_DEFINE_0(ZFUIListView, const ZFIndexRange &, listVisibleCellIndexRange)
-{
+ZFMETHOD_DEFINE_0(ZFUIListView, const ZFIndexRange &, listVisibleCellIndexRange) {
     return d->listVisibleCellIndexRange;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollListCellToHead,
-                  ZFMP_IN(zfindex, cellIndex),
-                  ZFMP_IN_OPT(zffloat, offset, 0),
-                  ZFMP_IN_OPT(zfbool, animated, zftrue))
-{
-    if(cellIndex >= d->cellCount)
-    {
+ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollListCellToHead
+        , ZFMP_IN(zfindex, cellIndex)
+        , ZFMP_IN_OPT(zffloat, offset, 0)
+        , ZFMP_IN_OPT(zfbool, animated, zftrue)
+        ) {
+    if(cellIndex >= d->cellCount) {
         d->scrollListCellIndex = zfindexMax();
     }
-    else
-    {
+    else {
         d->scrollListCellIndex = cellIndex;
     }
     d->scrollListCellOffset = offset;
@@ -1758,17 +1539,15 @@ ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollListCellToHead,
     d->scrollListCellDesiredPosSaved = 30000;
     d->scrollListCellCheckUpdate();
 }
-ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollListCellToTail,
-                  ZFMP_IN(zfindex, cellIndex),
-                  ZFMP_IN_OPT(zffloat, offset, 0),
-                  ZFMP_IN_OPT(zfbool, animated, zftrue))
-{
-    if(cellIndex >= d->cellCount)
-    {
+ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollListCellToTail
+        , ZFMP_IN(zfindex, cellIndex)
+        , ZFMP_IN_OPT(zffloat, offset, 0)
+        , ZFMP_IN_OPT(zfbool, animated, zftrue)
+        ) {
+    if(cellIndex >= d->cellCount) {
         d->scrollListCellIndex = zfindexMax();
     }
-    else
-    {
+    else {
         d->scrollListCellIndex = cellIndex;
     }
     d->scrollListCellOffset = offset;
@@ -1778,12 +1557,10 @@ ZFMETHOD_DEFINE_3(ZFUIListView, void, scrollListCellToTail,
     d->scrollListCellCheckUpdate();
 }
 
-void ZFUIListView::listVisibleCellOnChange(void)
-{
+void ZFUIListView::listVisibleCellOnChange(void) {
     this->observerNotify(ZFUIListView::EventListVisibleCellOnChange());
 
-    if(!this->scrollOverride())
-    {
+    if(!this->scrollOverride()) {
         d->scrollListCellCheckUpdate();
     }
 }

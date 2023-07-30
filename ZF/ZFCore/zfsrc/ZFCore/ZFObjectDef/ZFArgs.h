@@ -18,8 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note this object only hold the necessary datas as pointer,
  *   without auto retain or release logic
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFArgs
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFArgs {
 public:
     /**
      * @brief event id, may be #zfidentityInvalid
@@ -133,16 +132,14 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     zffinal ~ZFArgs(void);
-    ZFArgs &operator = (ZF_IN const ZFArgs &ref)
-    {
+    ZFArgs &operator = (ZF_IN const ZFArgs &ref) {
         zfmemcpy(&d, &ref.d, sizeof(_ZFP_D));
         this->resultEnable(ref.resultEnabled());
         this->result(ref.result());
         this->eventFilterEnable(ref.eventFilterEnabled());
         return *this;
     }
-    zfbool operator == (ZF_IN const ZFArgs &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFArgs &ref) const {
         return (zftrue
                 && zfmemcmp(&d, &ref.d, sizeof(_ZFP_D)) == 0
                 && this->resultEnabled() == ref.resultEnabled()
@@ -156,16 +153,14 @@ public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief get a short info of this object */
-    zfstring objectInfo(void) const
-    {
+    zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
     }
 
 private:
-    zfclassPOD _ZFP_D
-    {
+    zfclassPOD _ZFP_D {
     public:
         zfidentity eventId;
         ZFObject *sender;

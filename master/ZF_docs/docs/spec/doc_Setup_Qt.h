@@ -30,8 +30,7 @@
  * -# manually add loader routine to your project:
  *   @code
  *     #include "ZFImpl/sys_Qt/ZFMainEntry_sys_Qt.h"
- *     int main(int argc, char **argv)
- *     {
+ *     int main(int argc, char **argv) {
  *         ZFImpl_sys_Qt_requireLib(ZF_lib_name_you_require)
  *         return ZFMainEntry_sys_Qt(argc, argv);
  *     }

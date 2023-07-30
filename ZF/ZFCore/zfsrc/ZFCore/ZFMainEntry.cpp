@@ -7,36 +7,32 @@ ZF_NAMESPACE_BEGIN(ZFApp)
 ZFOBSERVER_EVENT_GLOBAL_REGISTER(AppParamDispatch)
 ZFOBSERVER_EVENT_GLOBAL_REGISTER(AppEntry)
 
-ZFMETHOD_FUNC_DEFINE_0(const ZFCoreArray<zfstring> &, appParams)
-{
+ZFMETHOD_FUNC_DEFINE_0(const ZFCoreArray<zfstring> &, appParams) {
     return _ZFP_ZFApp_appParams();
 }
 
-ZFMETHOD_FUNC_DEFINE_1(void, appExitCode, ZFMP_IN(zfint, exitCode))
-{
+ZFMETHOD_FUNC_DEFINE_1(void, appExitCode
+        , ZFMP_IN(zfint, exitCode)
+        ) {
     _ZFP_ZFApp_appExitCode() = exitCode;
 }
-ZFMETHOD_FUNC_DEFINE_0(zfint, appExitCode)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfint, appExitCode) {
     return _ZFP_ZFApp_appExitCode();
 }
 
 ZF_NAMESPACE_END(ZFApp)
 
 // ============================================================
-_ZFP_ZFMainFuncType &_ZFP_ZFMainFunc(void)
-{
+_ZFP_ZFMainFuncType &_ZFP_ZFMainFunc(void) {
     static _ZFP_ZFMainFuncType _func = zfnull;
     return _func;
 }
 
-ZFCoreArray<zfstring> &_ZFP_ZFApp_appParams(void)
-{
+ZFCoreArray<zfstring> &_ZFP_ZFApp_appParams(void) {
     static ZFCoreArray<zfstring> d;
     return d;
 }
-zfint &_ZFP_ZFApp_appExitCode(void)
-{
+zfint &_ZFP_ZFApp_appExitCode(void) {
     static zfint d = 0;
     return d;
 }

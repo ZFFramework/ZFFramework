@@ -8,38 +8,32 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
-        if(zfstringIsEqual(serializableData.itemClass(), ZFSerializableKeyword_null))
-        {
+        if(zfstringIsEqual(serializableData.itemClass(), ZFSerializableKeyword_null)) {
             v = zfnull;
             serializableData.resolveMark();
             return zftrue;
         }
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFProperty(), outErrorHint, outErrorPos) == zfnull)
-        {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFProperty(), outErrorHint, outErrorPos) == zfnull) {
             return zffalse;
         }
 
         const zfchar *tmpValue = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFProperty_owner, outErrorHint, outErrorPos);
-        if(tmpValue == zfnull)
-        {
+        if(tmpValue == zfnull) {
             return zffalse;
         }
         const ZFClass *ownerClass = ZFClass::classForName(tmpValue);
-        if(ownerClass == zfnull)
-        {
+        if(ownerClass == zfnull) {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                 "no such class \"%s\"", tmpValue);
             return zffalse;
         }
 
         tmpValue = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFProperty_property, outErrorHint, outErrorPos);
-        if(tmpValue == zfnull)
-        {
+        if(tmpValue == zfnull) {
             return zffalse;
         }
         v = ownerClass->propertyForName(tmpValue);
-        if(v == zfnull)
-        {
+        if(v == zfnull) {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                 "no such property \"%s\" in class \"%s\"", tmpValue, ownerClass->classNameFull());
             return zffalse;
@@ -48,8 +42,7 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
         serializableData.resolveMark();
         return zftrue;
     }, {
-        if(v == zfnull)
-        {
+        if(v == zfnull) {
             serializableData.itemClass(ZFSerializableKeyword_null);
             return zftrue;
         }
@@ -64,15 +57,13 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
         ZFCoreArrayPOD<ZFIndexRange> pos;
         if(!zfCoreDataPairSplitString(pos, 3, src, srcLen, ":", zfnull, zfnull, zftrue)) {return zffalse;}
         const ZFClass *cls = ZFClass::classForName(zfstring(src + pos[0].start, pos[0].count));
-        if(cls == zfnull)
-        {
+        if(cls == zfnull) {
             return zffalse;
         }
         v = cls->propertyForName(zfstring(src + pos[2].start, pos[2].count));
         return (v != zfnull);
     }, {
-        if(v)
-        {
+        if(v) {
             s += v->propertyOwnerClass()->classNameFull();
             s += "::";
             s += v->propertyName();

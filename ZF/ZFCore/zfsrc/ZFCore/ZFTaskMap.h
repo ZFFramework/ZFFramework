@@ -14,21 +14,23 @@ zfclassFwd _ZFP_ZFTaskMapPrivate;
 /**
  * @brief task map util
  */
-zfclass ZFLIB_ZFCore ZFTaskMap : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFTaskMap : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFTaskMap, ZFObject)
 
     /** @brief see #ZFTaskMap */
-    ZFMETHOD_DECLARE_1(zfidentity, attach,
-                       ZFMP_IN(ZFObject *, taskData))
+    ZFMETHOD_DECLARE_1(zfidentity, attach
+            , ZFMP_IN(ZFObject *, taskData)
+            )
     /** @brief see #ZFTaskMap */
-    ZFMETHOD_DECLARE_1(zfautoObject, detach,
-                       ZFMP_IN(zfidentity, taskId))
+    ZFMETHOD_DECLARE_1(zfautoObject, detach
+            , ZFMP_IN(zfidentity, taskId)
+            )
     /** @brief see #ZFTaskMap */
     ZFMETHOD_DECLARE_0(zfautoObjectT<ZFArray *>, detachAll)
     /** @brief see #ZFTaskMap */
-    ZFMETHOD_DECLARE_1(zfautoObject, exist,
-                       ZFMP_IN(zfidentity, taskId))
+    ZFMETHOD_DECLARE_1(zfautoObject, exist
+            , ZFMP_IN(zfidentity, taskId)
+            )
 
 protected:
     zfoverride

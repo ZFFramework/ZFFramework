@@ -34,17 +34,14 @@ extern ZFLIB_ZF_impl SDL_RWops *ZFImpl_sys_SDL_ZFOutputToSDL_RWops(ZF_IN const Z
  */
 #define ZFImpl_sys_SDL_zfblockedDestroySurface(sdlSurface) \
     _ZFP_ZFImpl_sys_SDL_zfblockedDestroySurface ZFUniqueName(sdl_surface)(sdlSurface)
-zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfblockedDestroySurface
-{
+zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfblockedDestroySurface {
 public:
     _ZFP_ZFImpl_sys_SDL_zfblockedDestroySurface(ZF_IN SDL_Surface *sdlSurface)
     : d(sdlSurface)
     {
     }
-    ~_ZFP_ZFImpl_sys_SDL_zfblockedDestroySurface(void)
-    {
-        if(d)
-        {
+    ~_ZFP_ZFImpl_sys_SDL_zfblockedDestroySurface(void) {
+        if(d) {
             SDL_FreeSurface(d);
         }
     }
@@ -57,17 +54,14 @@ private:
  */
 #define ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture) \
     _ZFP_ZFImpl_sys_SDL_zfblockedDestroyTexture ZFUniqueName(sdl_texture)(sdlTexture)
-zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfblockedDestroyTexture
-{
+zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfblockedDestroyTexture {
 public:
     _ZFP_ZFImpl_sys_SDL_zfblockedDestroyTexture(ZF_IN SDL_Texture *sdlTexture)
     : d(sdlTexture)
     {
     }
-    ~_ZFP_ZFImpl_sys_SDL_zfblockedDestroyTexture(void)
-    {
-        if(d)
-        {
+    ~_ZFP_ZFImpl_sys_SDL_zfblockedDestroyTexture(void) {
+        if(d) {
             SDL_DestroyTexture(d);
         }
     }
@@ -80,24 +74,23 @@ private:
  */
 #define ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetChanged, sdlRenderer, sdlTexture) \
     _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget renderTargetChanged(sdlRenderer, sdlTexture)
-zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget
-{
+zfclassNotPOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget {
 public:
-    _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget(ZF_IN SDL_Renderer *sdlRenderer, ZF_IN SDL_Texture *sdlTexture)
+    _ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget(
+            ZF_IN SDL_Renderer *sdlRenderer
+            , ZF_IN SDL_Texture *sdlTexture
+            )
     : _sdlRenderer(sdlRenderer)
     , _sdlTextureSaved(SDL_GetRenderTarget(sdlRenderer))
     {
         _success = (SDL_SetRenderTarget(sdlRenderer, sdlTexture) == 0);
     }
-    ~_ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget(void)
-    {
-        if(_success)
-        {
+    ~_ZFP_ZFImpl_sys_SDL_zfblockedRenderTarget(void) {
+        if(_success) {
             SDL_SetRenderTarget(_sdlRenderer, _sdlTextureSaved);
         }
     }
-    operator zfbool (void) const
-    {
+    operator zfbool (void) const {
         return _success;
     }
 private:
@@ -111,12 +104,18 @@ private:
  * @brief util to write sdl surface to output,
  *   usually for debug use only
  */
-extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_SurfaceToOutput(ZF_IN const ZFOutput &callback, ZF_IN SDL_Surface *sdlSurface);
+extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_SurfaceToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Surface *sdlSurface
+        );
 /**
  * @brief util to write sdl texture to output,
  *   usually for debug use only
  */
-extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_TextureToOutput(ZF_IN const ZFOutput &callback, ZF_IN SDL_Texture *sdlTexture);
+extern ZFLIB_ZF_impl zfbool ZFImpl_sys_SDL_TextureToOutput(
+        ZF_IN const ZFOutput &callback
+        , ZF_IN SDL_Texture *sdlTexture
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL

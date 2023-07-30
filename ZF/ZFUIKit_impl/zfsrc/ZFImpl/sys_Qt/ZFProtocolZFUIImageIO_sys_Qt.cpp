@@ -15,14 +15,14 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageIOImpl_sys_Qt, ZFUIImageIO, ZFProtocolL
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *imageApplyScale(ZF_IN zffloat imageScale,
-                                  ZF_IN void *nativeImage,
-                                  ZF_IN const ZFUISize &newSize,
-                                  ZF_IN const ZFUIMargin &ninePatch)
-    {
+    virtual void *imageApplyScale(
+            ZF_IN zffloat imageScale
+            , ZF_IN void *nativeImage
+            , ZF_IN const ZFUISize &newSize
+            , ZF_IN const ZFUIMargin &ninePatch
+            ) {
         QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
-        if(ninePatch == ZFUIMarginZero())
-        {
+        if(ninePatch == ZFUIMarginZero()) {
             QImage *ret = new QImage();
             *ret = nativeImageTmp->scaled(
                 newSize.width, newSize.height,
@@ -32,29 +32,32 @@ public:
         }
         return this->_scaleImage(nativeImageTmp, imageScale, newSize, ninePatch);
     }
-    virtual void *imageLoadInFrame(ZF_IN zffloat imageScale,
-                                   ZF_IN void *nativeImage,
-                                   ZF_IN const ZFUIRect &frameInImage)
-    {
+    virtual void *imageLoadInFrame(
+            ZF_IN zffloat imageScale
+            , ZF_IN void *nativeImage
+            , ZF_IN const ZFUIRect &frameInImage
+            ) {
         QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
         QImage retTmp = nativeImageTmp->copy(frameInImage.x, frameInImage.y, frameInImage.width, frameInImage.height);
         return new QImage(retTmp);
     }
-    virtual void *imageLoadFromColor(ZF_IN zffloat imageScale,
-                                     ZF_IN const ZFUIColor &color,
-                                     ZF_IN const ZFUISize &size)
-    {
+    virtual void *imageLoadFromColor(
+            ZF_IN zffloat imageScale
+            , ZF_IN const ZFUIColor &color
+            , ZF_IN const ZFUISize &size
+            ) {
         QImage *ret = new QImage(size.width, size.height, QImage::Format_ARGB32);
         ret->fill(ZFImpl_sys_Qt_ZFUIColorToQColor(color));
         return ret;
     }
 
 private:
-    QImage *_scaleImage(ZF_IN QImage *image,
-                        ZF_IN zffloat imageScale,
-                        ZF_IN const ZFUISize &scaleToSize,
-                        ZF_IN const ZFUIMargin &scaleUseNinePatch)
-    {
+    QImage *_scaleImage(
+            ZF_IN QImage *image
+            , ZF_IN zffloat imageScale
+            , ZF_IN const ZFUISize &scaleToSize
+            , ZF_IN const ZFUIMargin &scaleUseNinePatch
+            ) {
         ZFUIImageImplNinePatchDrawData drawDatas[9];
         zfmemset(drawDatas, 0, sizeof(drawDatas));
         zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
@@ -66,8 +69,7 @@ private:
         QImage *ret = new QImage(scaleToSize.width, scaleToSize.height, QImage::Format_ARGB32);
         QPainter painter(ret);
 
-        for(zfindex i = 0; i < drawDatasCount; ++i)
-        {
+        for(zfindex i = 0; i < drawDatasCount; ++i) {
             const ZFUIImageImplNinePatchDrawData &drawData = drawDatas[i];
             painter.drawImage(ZFImpl_sys_Qt_ZFUIRectToQRect(drawData.dst), *image, ZFImpl_sys_Qt_ZFUIRectToQRect(drawData.src));
         }

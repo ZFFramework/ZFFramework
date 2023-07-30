@@ -3,21 +3,18 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIViewCapture,
-                       ZFMP_IN(ZFUIView *, view))
-{
-    if(view == zfnull)
-    {
+ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIViewCapture
+        , ZFMP_IN(ZFUIView *, view)
+        ) {
+    if(view == zfnull) {
         return zfnull;
     }
     zfautoObjectT<ZFUIImage *> ret = ZFUIImage::ClassData()->newInstance();
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewCapture) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewCapture);
-    if(impl != zfnull && impl->viewCapture(view, ret.to<ZFUIImage *>()))
-    {
+    if(impl != zfnull && impl->viewCapture(view, ret.to<ZFUIImage *>())) {
         return ret;
     }
-    else
-    {
+    else {
         return zfnull;
     }
 }

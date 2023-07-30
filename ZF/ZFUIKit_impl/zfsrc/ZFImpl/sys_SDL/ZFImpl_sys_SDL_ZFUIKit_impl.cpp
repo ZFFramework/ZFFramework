@@ -4,21 +4,17 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static void _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, ZFImpl_sys_SDL_View *view, zfindex depth, zfindex siblingIndex)
-{
+static void _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, ZFImpl_sys_SDL_View *view, zfindex depth, zfindex siblingIndex) {
     zfstringAppend(s, "|%2d ", siblingIndex);
-    for(zfindex i = 0; i < depth; ++i)
-    {
+    for(zfindex i = 0; i < depth; ++i) {
         s += "| ";
     }
 
     {
-        if(view->ownerZFUIView != zfnull)
-        {
+        if(view->ownerZFUIView != zfnull) {
             s += view->ownerZFUIView->classData()->className();
         }
-        else
-        {
+        else {
             zfstringAppend(s, "%p", view->implType());
         }
 
@@ -32,16 +28,16 @@ static void _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, Z
 
     s += "\n";
 
-    for(zfindex i = 0; i < view->children.count(); ++i)
-    {
+    for(zfindex i = 0; i < view->children.count(); ++i) {
         _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(s, view->children[i], depth + 1, i);
     }
 }
-void ZFImpl_sys_SDL_viewTreePrintT(ZF_OUT zfstring &ret, ZF_IN ZFImpl_sys_SDL_View *view)
-{
+void ZFImpl_sys_SDL_viewTreePrintT(
+        ZF_OUT zfstring &ret
+        , ZF_IN ZFImpl_sys_SDL_View *view
+        ) {
     ret += "==================== SDL view tree begin ====================\n";
-    if(view != zfnull)
-    {
+    if(view != zfnull) {
         _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ret, view, 0, 0);
     }
     ret += "==================== SDL view tree  end  ====================\n";
@@ -51,10 +47,8 @@ ZF_NAMESPACE_GLOBAL_END
 
 #if 0
     #include "ZFUIKit/ZFUISysWindow.h"
-    ZF_GLOBAL_INITIALIZER_INIT(ZFImpl_sys_SDL_autoPrintViewTree)
-    {
-        if(!ZFProtocolIsAvailable("ZFUIView"))
-        {
+    ZF_GLOBAL_INITIALIZER_INIT(ZFImpl_sys_SDL_autoPrintViewTree) {
+        if(!ZFProtocolIsAvailable("ZFUIView")) {
             return;
         }
         ZFLISTENER(windowOnPause) {
@@ -67,8 +61,7 @@ ZF_NAMESPACE_GLOBAL_END
         ZFGlobalObserver().observerAdd(
             ZFUISysWindow::EventSysWindowOnPause(), this->windowOnPauseListener);
     }
-    ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_autoPrintViewTree)
-    {
+    ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_autoPrintViewTree) {
         ZFGlobalObserver().observerRemove(
             ZFUISysWindow::EventSysWindowOnPause(), this->windowOnPauseListener);
     }

@@ -4,8 +4,7 @@
  * to make an object serializable is easy:
  * @code
  *   // extends from any ZFObject type, and implements from ZFSerializable
- *   zfclass MyObject : zfextends MyParent, zfimplements ZFSerializable
- *   {
+ *   zfclass MyObject : zfextends MyParent, zfimplements ZFSerializable {
  *       ZFOBJECT_DECLARE(MyObject, MyParent)
  *       ZFIMPLEMENTS_DECLARE(ZFSerializable)
  *
@@ -35,26 +34,27 @@
  * if any of contents of your object can't be serialized automatically,
  * you may override some methods to supply your own serialize logic:
  * @code
- *   zfclass MyObject : zfextends ZFObject, zfimplements ZFSerializable
- *   {
+ *   zfclass MyObject : zfextends ZFObject, zfimplements ZFSerializable {
  *       ZFOBJECT_DECLARE(MyObject, ZFObject)
  *       ZFIMPLEMENTS_DECLARE(ZFSerializable)
  *
  *   protected:
- *       virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
- *                                                      ZF_OUT_OPT zfstring *outErrorHint = zfnull,
- *                                                      ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull)
- *       {
+ *       virtual zfbool serializableOnSerializeFromData(
+ *               ZF_IN const ZFSerializableData &serializableData
+ *               , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+ *               , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+ *               ) {
  *           if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
  *
  *           // serialize your type from serializableData
  *           // recommended to use ZFSerializableUtilSerializeAttributeFromData series
  *           return zftrue;
  *       }
- *       virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
- *                                                    ZF_IN ZFSerializable *referencedOwnerOrNull,
- *                                                    ZF_OUT_OPT zfstring *outErrorHint = zfnull)
- *       {
+ *       virtual zfbool serializableOnSerializeToData(
+ *               ZF_IN_OUT ZFSerializableData &serializableData
+ *               , ZF_IN ZFSerializable *referencedOwnerOrNull
+ *               , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+ *               ) {
  *           if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
  *
  *           // serialize your type to serializableData

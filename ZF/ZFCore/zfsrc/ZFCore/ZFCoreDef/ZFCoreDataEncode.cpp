@@ -37,27 +37,24 @@ const zfchar _ZFP_zfCoreDataEncodeCharMapDefault[256] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
 
-void zfCoreDataEncode(ZF_OUT zfstring &result,
-                      ZF_IN const zfchar *src,
-                      ZF_IN_OPT zfindex srcLen /* = zfindexMax() */,
-                      ZF_IN_OPT const zfchar *charMap /* = zfCoreDataEncodeCharMapDefault() */,
-                      ZF_IN_OPT zfchar escapeToken /* = '%' */)
-{
+void zfCoreDataEncode(
+        ZF_OUT zfstring &result
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_IN_OPT const zfchar *charMap /* = zfCoreDataEncodeCharMapDefault() */
+        , ZF_IN_OPT zfchar escapeToken /* = '%' */
+        ) {
     if(src == zfnull) {return;}
     const zfchar *srcEnd = (src + ((srcLen == zfindexMax()) ? zfslen(src) : srcLen));
-    while(src < srcEnd)
-    {
-        if(*src == escapeToken)
-        {
+    while(src < srcEnd) {
+        if(*src == escapeToken) {
             result += escapeToken;
             result += escapeToken;
         }
-        else if(charMap[(zfbyte)(*src)])
-        {
+        else if(charMap[(zfbyte)(*src)]) {
             result += *src;
         }
-        else
-        {
+        else {
             result += escapeToken;
             zfbyte t = ((*src >> 4) & 0x0F);
             result += ((t <= 9) ? ('0' + t) : ('A' + (t - 10)));
@@ -67,39 +64,35 @@ void zfCoreDataEncode(ZF_OUT zfstring &result,
         ++src;
     }
 }
-void zfCoreDataDecode(ZF_OUT zfstring &result,
-                      ZF_IN const zfchar *src,
-                      ZF_IN_OPT zfindex srcLen /* = zfindexMax() */,
-                      ZF_IN_OPT zfchar escapeToken /* = '%' */)
-{
+void zfCoreDataDecode(
+        ZF_OUT zfstring &result
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_IN_OPT zfchar escapeToken /* = '%' */
+        ) {
     if(src == zfnull) {return;}
     const zfchar *srcEnd = (src + ((srcLen == zfindexMax()) ? zfslen(src) : srcLen));
-    while(src < srcEnd)
-    {
-        if(*src == escapeToken)
-        {
-            if(src[1] == escapeToken)
-            {
+    while(src < srcEnd) {
+        if(*src == escapeToken) {
+            if(src[1] == escapeToken) {
                 result += escapeToken;
                 src += 2;
             }
             else if(((src[1] >= '0' && src[1] <= '9') || (src[1] >= 'A' && src[1] <= 'F'))
-                && ((src[1] >= '0' && src[1] <= '9') || (src[1] >= 'A' && src[1] <= 'F')))
-            {
+                    && ((src[1] >= '0' && src[1] <= '9') || (src[1] >= 'A' && src[1] <= 'F'))
+                    ) {
                 result += (zfchar)(
                         ((((src[1] <= '9') ? (src[1] - '0') : (src[1] - 'A' + 10)) << 4) & 0xF0)
                         | (((src[2] <= '9') ? (src[2] - '0') : (src[2] - 'A' + 10))& 0x0F)
                     );
                 src += 3;
             }
-            else
-            {
+            else {
                 result += escapeToken;
                 ++src;
             }
         }
-        else
-        {
+        else {
             result += *src;
             ++src;
         }

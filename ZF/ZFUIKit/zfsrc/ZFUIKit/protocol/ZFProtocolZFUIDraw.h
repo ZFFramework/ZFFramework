@@ -11,8 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief token for impl */
-zfclassNotPOD ZFLIB_ZFUIKit ZFUIDrawToken
-{
+zfclassNotPOD ZFLIB_ZFUIKit ZFUIDrawToken {
 public:
     /** @brief type */
     typedef enum {
@@ -28,9 +27,11 @@ public:
 
 public:
     /** @brief main constructor */
-    explicit ZFUIDrawToken(ZF_IN ZFUIDrawToken::Type type,
-                           ZF_IN ZFObject *target,
-                           ZF_IN const ZFUISize &targetSizePixel)
+    explicit ZFUIDrawToken(
+            ZF_IN ZFUIDrawToken::Type type
+            , ZF_IN ZFObject *target
+            , ZF_IN const ZFUISize &targetSizePixel
+            )
     : type(type)
     , target(target)
     , targetSizePixel(targetSizePixel)
@@ -49,13 +50,17 @@ public:
     /**
      * @brief create native drawable view
      */
-    virtual void *nativeDrawableViewCreate(ZF_IN ZFUIDrawableView *drawableView,
-                                           ZF_OUT zfbool &nativeImplViewRequireVirtualIndex) zfpurevirtual;
+    virtual void *nativeDrawableViewCreate(
+            ZF_IN ZFUIDrawableView *drawableView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) zfpurevirtual;
     /**
      * @brief destroy native text view
      */
-    virtual void nativeDrawableViewDestroy(ZF_IN ZFUIDrawableView *drawableView,
-                                           ZF_IN void *nativeDrawableView) zfpurevirtual;
+    virtual void nativeDrawableViewDestroy(
+            ZF_IN ZFUIDrawableView *drawableView
+            , ZF_IN void *nativeDrawableView
+            ) zfpurevirtual;
 
     /** @brief see #ZFUIDrawableView::drawRequest */
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) zfpurevirtual;
@@ -70,8 +75,7 @@ public:
     /**
      * @brief implementations must notify when need to draw the view
      */
-    zffinal void notifyOnDraw(ZF_IN ZFUIDrawableView *drawableView)
-    {
+    zffinal void notifyOnDraw(ZF_IN ZFUIDrawableView *drawableView) {
         drawableView->_ZFP_ZFUIDrawableView_onDraw();
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIDrawForView)
@@ -83,8 +87,10 @@ ZFPROTOCOL_INTERFACE_END(ZFUIDrawForView)
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIDrawForImage)
 public:
     /** @brief see #ZFUIDraw::beginForImage */
-    virtual zfbool beginForImage(ZF_IN_OUT ZFUIDrawToken &token,
-                                 ZF_IN const ZFUISize &imageSizePixel) zfpurevirtual;
+    virtual zfbool beginForImage(
+            ZF_IN_OUT ZFUIDrawToken &token
+            , ZF_IN const ZFUISize &imageSizePixel
+            ) zfpurevirtual;
     /** @brief see #ZFUIDraw::beginForImage */
     virtual void *endForImage(ZF_IN_OUT ZFUIDrawToken &token) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUIDrawForImage)
@@ -96,21 +102,31 @@ ZFPROTOCOL_INTERFACE_END(ZFUIDrawForImage)
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFUIKit, ZFUIDraw)
 public:
     /** @brief see #ZFUIDraw::antialiasing */
-    virtual void antialiasing(ZF_IN ZFUIDrawToken &token, ZF_IN zfbool antialiasing) {}
+    virtual void antialiasing(
+            ZF_IN ZFUIDrawToken &token
+            , ZF_IN zfbool antialiasing
+            ) {
+    }
 
 public:
     /** @brief see #ZFUIDraw::beginForView */
-    virtual void drawClear(ZF_IN ZFUIDrawToken &token,
-                           ZF_IN const ZFUIRect &targetFramePixel) zfpurevirtual;
+    virtual void drawClear(
+            ZF_IN ZFUIDrawToken &token
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) zfpurevirtual;
     /** @brief see #ZFUIDraw::beginForView */
-    virtual void drawColor(ZF_IN ZFUIDrawToken &token,
-                           ZF_IN const ZFUIColor &color,
-                           ZF_IN const ZFUIRect &targetFramePixel) zfpurevirtual;
+    virtual void drawColor(
+            ZF_IN ZFUIDrawToken &token
+            , ZF_IN const ZFUIColor &color
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) zfpurevirtual;
     /** @brief see #ZFUIDraw::beginForView */
-    virtual void drawImage(ZF_IN ZFUIDrawToken &token,
-                           ZF_IN ZFUIImage *image,
-                           ZF_IN const ZFUIRect &imageFramePixel,
-                           ZF_IN const ZFUIRect &targetFramePixel) zfpurevirtual;
+    virtual void drawImage(
+            ZF_IN ZFUIDrawToken &token
+            , ZF_IN ZFUIImage *image
+            , ZF_IN const ZFUIRect &imageFramePixel
+            , ZF_IN const ZFUIRect &targetFramePixel
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUIDraw)
 
 ZF_NAMESPACE_GLOBAL_END

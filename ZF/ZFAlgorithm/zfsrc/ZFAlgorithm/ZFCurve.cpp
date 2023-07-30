@@ -3,9 +3,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFCurve &ZFCurve::controlPoint(ZF_IN zffloat p0x, ZF_IN zffloat p0y,
-                               ZF_IN zffloat p1x, ZF_IN zffloat p1y)
-{
+ZFCurve &ZFCurve::controlPoint(
+        ZF_IN zffloat p0x
+        , ZF_IN zffloat p0y
+        , ZF_IN zffloat p1x
+        , ZF_IN zffloat p1y
+        ) {
     this->p0x = p0x;
     this->p0y = p0y;
     this->p1x = p1x;
@@ -21,44 +24,36 @@ ZFCurve &ZFCurve::controlPoint(ZF_IN zffloat p0x, ZF_IN zffloat p0y,
     return *this;
 }
 
-zffloat ZFCurve::y_by_t(ZF_IN zffloat t) const
-{
+zffloat ZFCurve::y_by_t(ZF_IN zffloat t) const {
     return ((ay * t + by) * t + cy) * t;
 }
 
-zffloat ZFCurve::y_by_x(ZF_IN zffloat x) const
-{
+zffloat ZFCurve::y_by_x(ZF_IN zffloat x) const {
     return this->y_by_t(this->t_by_x(x));
 }
 
-zffloat ZFCurve::x_by_t(ZF_IN zffloat t) const
-{
+zffloat ZFCurve::x_by_t(ZF_IN zffloat t) const {
     return ((ax * t + bx) * t + cx) * t;
 }
 
-zffloat ZFCurve::x_by_y(ZF_IN zffloat y) const
-{
+zffloat ZFCurve::x_by_y(ZF_IN zffloat y) const {
     return this->x_by_t(this->t_by_y(y));
 }
 
-zffloat ZFCurve::t_by_x(ZF_IN zffloat x) const
-{
+zffloat ZFCurve::t_by_x(ZF_IN zffloat x) const {
     zffloat t0;
     zffloat t1;
     zffloat t2 = x;
     zffloat x2;
     zffloat d2;
 
-    for(zfindex i = 0; i < 8; ++i)
-    {
+    for(zfindex i = 0; i < 8; ++i) {
         x2 = this->x_by_t(t2) - x;
-        if(zfmAbs(x2) < zffloatEpsilon)
-        {
+        if(zfmAbs(x2) < zffloatEpsilon) {
             return t2;
         }
         d2 = ((3.0f * ax * t2 + 2.0f * bx) * t2 + cx);
-        if(zfmAbs(d2) < 1e-6)
-        {
+        if(zfmAbs(d2) < 1e-6) {
             break;
         }
         t2 = t2 - x2 / d2;
@@ -68,28 +63,22 @@ zffloat ZFCurve::t_by_x(ZF_IN zffloat x) const
     t1 = 1.0f;
     t2 = x;
 
-    if(t2 < t0)
-    {
+    if(t2 < t0) {
         return t0;
     }
-    if(t2 > t1)
-    {
+    if(t2 > t1) {
         return t1;
     }
 
-    while(t0 < t1)
-    {
+    while(t0 < t1) {
         x2 = this->x_by_t(t2);
-        if(zfmAbs(x2 - x) < zffloatEpsilon)
-        {
+        if(zfmAbs(x2 - x) < zffloatEpsilon) {
             return t2;
         }
-        if(x > x2)
-        {
+        if(x > x2) {
             t0 = t2;
         }
-        else
-        {
+        else {
             t1 = t2;
         }
         t2 = (t1 - t0) * 0.5f + t0;
@@ -98,24 +87,20 @@ zffloat ZFCurve::t_by_x(ZF_IN zffloat x) const
     return t2;
 }
 
-zffloat ZFCurve::t_by_y(ZF_IN zffloat y) const
-{
+zffloat ZFCurve::t_by_y(ZF_IN zffloat y) const {
     zffloat t0;
     zffloat t1;
     zffloat t2 = y;
     zffloat y2;
     zffloat d2;
 
-    for(zfindex i = 0; i < 8; ++i)
-    {
+    for(zfindex i = 0; i < 8; ++i) {
         y2 = this->y_by_t(t2) - y;
-        if(zfmAbs(y2) < zffloatEpsilon)
-        {
+        if(zfmAbs(y2) < zffloatEpsilon) {
             return t2;
         }
         d2 = ((3.0f * ay * t2 + 2.0f * by) * t2 + cy);
-        if(zfmAbs(d2) < 1e-6)
-        {
+        if(zfmAbs(d2) < 1e-6) {
             break;
         }
         t2 = t2 - y2 / d2;
@@ -125,28 +110,22 @@ zffloat ZFCurve::t_by_y(ZF_IN zffloat y) const
     t1 = 1.0f;
     t2 = y;
 
-    if(t2 < t0)
-    {
+    if(t2 < t0) {
         return t0;
     }
-    if(t2 > t1)
-    {
+    if(t2 > t1) {
         return t1;
     }
 
-    while(t0 < t1)
-    {
+    while(t0 < t1) {
         y2 = this->y_by_t(t2);
-        if(zfmAbs(y2 - y) < zffloatEpsilon)
-        {
+        if(zfmAbs(y2 - y) < zffloatEpsilon) {
             return t2;
         }
-        if(y > y2)
-        {
+        if(y > y2) {
             t0 = t2;
         }
-        else
-        {
+        else {
             t1 = t2;
         }
         t2 = (t1 - t0) * 0.5f + t0;
@@ -167,8 +146,7 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveBounceInOut, ZFCurve(0.2f, -0.5f, 0
 
 // ============================================================
 ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCurve(), outErrorHint, outErrorPos) == zfnull)
-        {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCurve(), outErrorHint, outErrorPos) == zfnull) {
             return zffalse;
         }
 
@@ -208,8 +186,7 @@ ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
         return zftrue;
     }, {
         ZFCoreArrayPOD<zffloat> tmp;
-        if(!zfCoreDataPairSplitFloat(tmp, 4, src, srcLen))
-        {
+        if(!zfCoreDataPairSplitFloat(tmp, 4, src, srcLen)) {
             return zffalse;
         }
         v.controlPoint(tmp[0], tmp[1], tmp[2], tmp[3]);
@@ -226,13 +203,30 @@ ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
         s += ")";
         return zftrue;
     })
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFCurve, void, controlPoint, ZFMP_IN(zffloat, p0x), ZFMP_IN(zffloat, p0y), ZFMP_IN(zffloat, p1x), ZFMP_IN(zffloat, p1y))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, y_by_t, ZFMP_IN(zffloat, t))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, y_by_x, ZFMP_IN(zffloat, x))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, x_by_t, ZFMP_IN(zffloat, t))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, x_by_y, ZFMP_IN(zffloat, y))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, t_by_x, ZFMP_IN(zffloat, x))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, t_by_y, ZFMP_IN(zffloat, y))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFCurve, void, controlPoint
+        , ZFMP_IN(zffloat, p0x)
+        , ZFMP_IN(zffloat, p0y)
+        , ZFMP_IN(zffloat, p1x)
+        , ZFMP_IN(zffloat, p1y)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, y_by_t
+        , ZFMP_IN(zffloat, t)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, y_by_x
+        , ZFMP_IN(zffloat, x)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, x_by_t
+        , ZFMP_IN(zffloat, t)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, x_by_y
+        , ZFMP_IN(zffloat, y)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, t_by_x
+        , ZFMP_IN(zffloat, x)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, t_by_y
+        , ZFMP_IN(zffloat, y)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFCurve, zffloat, p0x)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFCurve, zffloat, p0y)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFCurve, zffloat, p1x)

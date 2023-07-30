@@ -18,8 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * it's achieved by a wrapper view, which is this #ZFUIListCell\n
  * typically, the extra features are implemented by utility methods described in #ZFUIListCellUpdater
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIListCell, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIListCell)
 
@@ -42,9 +41,11 @@ zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextends ZFUIView
 
 protected:
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
 };
 
 ZF_NAMESPACE_GLOBAL_END

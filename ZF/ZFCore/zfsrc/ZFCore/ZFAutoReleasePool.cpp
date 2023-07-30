@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassPOD _ZFP_ZFAutoReleasePoolData
-{
+zfclassPOD _ZFP_ZFAutoReleasePoolData {
 public:
     ZFObject *obj;
 };
 
-zfclassNotPOD _ZFP_ZFAutoReleasePoolPrivate
-{
+zfclassNotPOD _ZFP_ZFAutoReleasePoolPrivate {
 public:
     zfindex maxSize;
     ZFCoreArrayPOD<_ZFP_ZFAutoReleasePoolData> array;
@@ -23,49 +21,41 @@ public:
 
 ZFOBJECT_REGISTER(ZFAutoReleasePool)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFAutoReleasePool, instance, ZFLevelZFFrameworkHigh)
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAutoReleasePoolCleanup, ZFLevelZFFrameworkNormal)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAutoReleasePoolCleanup, ZFLevelZFFrameworkNormal) {
     ZFAutoReleasePool::instance()->poolDrain();
 }
 ZF_GLOBAL_INITIALIZER_END(ZFAutoReleasePoolCleanup)
 
-ZFOBJECT_ON_INIT_DEFINE_1(ZFAutoReleasePool,
-                          ZFMP_IN(zfindex, maxSize))
-{
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAutoReleasePool
+        , ZFMP_IN(zfindex, maxSize)
+        ) {
     this->objectOnInit();
     d->maxSize = maxSize;
 }
-void ZFAutoReleasePool::objectOnInit(void)
-{
+void ZFAutoReleasePool::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFAutoReleasePoolPrivate);
 }
-void ZFAutoReleasePool::objectOnDealloc(void)
-{
+void ZFAutoReleasePool::objectOnDealloc(void) {
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
-void ZFAutoReleasePool::objectOnDeallocPrepare(void)
-{
+void ZFAutoReleasePool::objectOnDeallocPrepare(void) {
     this->poolDrain();
     zfsuper::objectOnDeallocPrepare();
 }
-void ZFAutoReleasePool::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-{
+void ZFAutoReleasePool::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     ret += ", count: ";
     zfsFromIntT(ret, d->array.count());
 }
-void ZFAutoReleasePool::poolAdd(ZF_IN ZFObject *obj)
-{
+void ZFAutoReleasePool::poolAdd(ZF_IN ZFObject *obj) {
     zfCoreMutexLocker();
     zfCoreAssertWithMessage(obj != this, "add autorelease pool to itself isn't allowed");
 
-    if(obj != zfnull)
-    {
-        if(d->array.count() >= d->maxSize)
-        {
+    if(obj != zfnull) {
+        if(d->array.count() >= d->maxSize) {
             zfCoreLogTrim("warning, auto release pool full, trying to release old object");
             _ZFP_ZFAutoReleasePoolData data = d->array.get(0);
             d->array.remove(0);
@@ -76,15 +66,12 @@ void ZFAutoReleasePool::poolAdd(ZF_IN ZFObject *obj)
         d->array.add(data);
     }
 }
-void ZFAutoReleasePool::poolDrain()
-{
-    if(!d->array.isEmpty())
-    {
+void ZFAutoReleasePool::poolDrain() {
+    if(!d->array.isEmpty()) {
         _ZFP_ZFAutoReleasePoolData *tmp = zfnull;
         zfindex count = 0;
         zfCoreMutexLock();
-        if(!d->array.isEmpty())
-        {
+        if(!d->array.isEmpty()) {
             count = d->array.count();
             tmp = (_ZFP_ZFAutoReleasePoolData *)zfmalloc(sizeof(_ZFP_ZFAutoReleasePoolData) * count);
             zfmemcpy(tmp, d->array.arrayBuf(), sizeof(_ZFP_ZFAutoReleasePoolData) * count);
@@ -92,10 +79,8 @@ void ZFAutoReleasePool::poolDrain()
         }
         zfCoreMutexUnlock();
 
-        if(tmp != zfnull)
-        {
-            for(zfindex i = 0; i < count; ++i)
-            {
+        if(tmp != zfnull) {
+            for(zfindex i = 0; i < count; ++i) {
                 zfRelease(tmp[i].obj);
             }
             zffree(tmp);

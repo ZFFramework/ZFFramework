@@ -2,40 +2,34 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFLua_ZFCallbackForLua_test_Object : zfextends ZFObject
-{
+zfclass _ZFP_ZFLua_ZFCallbackForLua_test_Object : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFLua_ZFCallbackForLua_test_Object, ZFObject)
 
     ZFOBSERVER_EVENT(Test)
 
 public:
-    ZFMETHOD_INLINE_0(void, notifyTest)
-    {
+    ZFMETHOD_INLINE_0(void, notifyTest) {
         this->observerNotify(zfself::EventTest(), zflineAlloc(v_zfint, 1111), zflineAlloc(v_zfint, 2222));
     }
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfLog() << (void *)this;
         zfsuper::objectOnInit();
     }
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         zfLog() << (void *)this;
         zfsuper::objectOnDealloc();
     }
     zfoverride
-    virtual void objectOnRetain(void)
-    {
+    virtual void objectOnRetain(void) {
         zfsuper::objectOnRetain();
         zfLog() << (void *)this << this->objectRetainCount();
     }
     zfoverride
-    virtual void objectOnRelease(void)
-    {
+    virtual void objectOnRelease(void) {
         zfsuper::objectOnRelease();
         zfLog() << (void *)this << this->objectRetainCount();
     }
@@ -43,14 +37,12 @@ protected:
 ZFOBJECT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object)
 ZFOBSERVER_EVENT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object, Test)
 
-zfclass ZFLua_ZFCallbackForLua_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFLua_ZFCallbackForLua_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_ZFCallbackForLua_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
 

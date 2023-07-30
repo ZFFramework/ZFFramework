@@ -13,8 +13,7 @@ zfclassFwd _ZFP_ZFSemaphorePrivate;
 /**
  * @brief semaphore utility
  */
-zfclass ZFLIB_ZFCore ZFSemaphore : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFSemaphore : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFSemaphore, ZFObject)
 
 protected:
@@ -60,8 +59,9 @@ public:
      * @brief wait until signal or timeout
      * @note must wrapped by #semaphoreLock/#semaphoreUnlock
      */
-    ZFMETHOD_DECLARE_1(zfbool, semaphoreWait,
-                       ZFMP_IN(zftimet, miliSecs))
+    ZFMETHOD_DECLARE_1(zfbool, semaphoreWait
+            , ZFMP_IN(zftimet, miliSecs)
+            )
 
 public:
     /** @brief util to #semaphoreLock/#semaphoreSignal/#semaphoreUnlock */
@@ -71,8 +71,9 @@ public:
     /** @brief util to #semaphoreLock/#semaphoreWait/#semaphoreUnlock */
     ZFMETHOD_DECLARE_0(void, lockAndWait)
     /** @brief util to #semaphoreLock/#semaphoreWait/#semaphoreUnlock */
-    ZFMETHOD_DECLARE_1(zfbool, lockAndWait,
-                       ZFMP_IN(zftimet, miliSecs))
+    ZFMETHOD_DECLARE_1(zfbool, lockAndWait
+            , ZFMP_IN(zftimet, miliSecs)
+            )
 
 private:
     _ZFP_ZFSemaphorePrivate *d;

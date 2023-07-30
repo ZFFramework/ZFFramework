@@ -46,8 +46,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // impl
 template<int N>
-zfclassNotPOD _ZFP_zfpoolSizeAlign
-{
+zfclassNotPOD _ZFP_zfpoolSizeAlign {
 public:
     enum {
         _A = sizeof(const void *) * 2,
@@ -55,31 +54,25 @@ public:
     };
 };
 template<int N>
-union ZFLIB_ZFCore _ZFP_zfpoolObjectBlock
-{
+union ZFLIB_ZFCore _ZFP_zfpoolObjectBlock {
 public:
     zfbyte buf[N];
     _ZFP_zfpoolObjectBlock<N> *next;
 };
 template<int N>
-zfclassNotPOD _ZFP_zfpoolObject
-{
+zfclassNotPOD _ZFP_zfpoolObject {
 public:
-    void *poolMalloc(void)
-    {
-        if(_available)
-        {
+    void *poolMalloc(void) {
+        if(_available) {
             _ZFP_zfpoolObjectBlock<N> *t = _available;
             _available = _available->next;
             return t;
         }
-        else
-        {
+        else {
             return zfmalloc(sizeof(_ZFP_zfpoolObjectBlock<N>));
         }
     }
-    void poolFree(ZF_IN void *obj)
-    {
+    void poolFree(ZF_IN void *obj) {
         _ZFP_zfpoolObjectBlock<N> *t = (_ZFP_zfpoolObjectBlock<N> *)obj;
         t->next = _available;
         _available = t;
@@ -89,17 +82,14 @@ public:
     : _available(zfnull)
     {
     }
-    ~_ZFP_zfpoolObject(void)
-    {
-        while(_available)
-        {
+    ~_ZFP_zfpoolObject(void) {
+        while(_available) {
             _ZFP_zfpoolObjectBlock<N> *t = _available;
             _available = _available->next;
             zffree(t);
         }
     }
-    static _ZFP_zfpoolObject<N> &instance(void)
-    {
+    static _ZFP_zfpoolObject<N> &instance(void) {
         static _ZFP_zfpoolObject<N> d;
         return d;
     }
@@ -108,24 +98,19 @@ private:
 };
 
 template<typename T_Type>
-zfclassNotPOD _ZFP_zfpoolObjectHolder
-{
+zfclassNotPOD _ZFP_zfpoolObjectHolder {
 public:
-    static void *poolMalloc(void)
-    {
+    static void *poolMalloc(void) {
         return _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign<sizeof(T_Type)>::V>::instance().poolMalloc();
     }
-    static void poolDelete(ZF_IN T_Type *obj)
-    {
+    static void poolDelete(ZF_IN T_Type *obj) {
         obj->~T_Type();
         _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign<sizeof(T_Type)>::V>::instance().poolFree(obj);
     }
 };
 template<typename T_Type>
-inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj)
-{
-    if(obj)
-    {
+inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
+    if(obj) {
         _ZFP_zfpoolObjectHolder<T_Type>::poolDelete(obj);
     }
 }

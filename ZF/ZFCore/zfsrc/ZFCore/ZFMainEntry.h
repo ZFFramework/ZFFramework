@@ -16,8 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * typical usage:
  * @code
  *   // in your main.cpp
- *   ZFMAIN_ENTRY()
- *   {
+ *   ZFMAIN_ENTRY() {
  *       // params hold the params from certain app routine,
  *       // it's not ensured each implementation would have same params format
  *       ZFCoreArray<zfstring> const &params = ZFApp::appParams();
@@ -38,8 +37,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZFMAIN_ENTRY() \
     static void _ZFMain(void); \
-    ZF_STATIC_REGISTER_INIT(ZFMainEntryRegister) \
-    { \
+    ZF_STATIC_REGISTER_INIT(ZFMainEntryRegister) { \
         zfCoreAssertWithMessageTrim(_ZFP_ZFMainFunc() == zfnull, "ZFMAIN_ENTRY already registered"); \
         _ZFP_ZFMainFunc() = _ZFMain; \
     } \
@@ -72,7 +70,9 @@ ZFOBSERVER_EVENT_GLOBAL(AppEntry)
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const ZFCoreArray<zfstring> &, appParams)
 
 /** @brief exit code for app, 0 by default */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, appExitCode, ZFMP_IN(zfint, exitCode))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, appExitCode
+        , ZFMP_IN(zfint, exitCode)
+        )
 /** @brief exit code for app, 0 by default */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfint, appExitCode)
 

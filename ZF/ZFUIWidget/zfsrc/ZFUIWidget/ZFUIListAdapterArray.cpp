@@ -4,34 +4,31 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIListAdapterArray)
 
-zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                             ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                                             ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
     this->cellRemoveAll();
 
-    for(zfindex i = 0; i < serializableData.childCount(); ++i)
-    {
+    for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListAdapterArray_cell)) {continue;}
 
         zfautoObject element;
-        if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos))
-        {
+        if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
-        if(element == zfnull)
-        {
+        if(element == zfnull) {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
                 "null cell");
             return zffalse;
         }
-        if(!element.toObject()->classData()->classIsTypeOf(ZFUIListCell::ClassData()))
-        {
+        if(!element.toObject()->classData()->classIsTypeOf(ZFUIListCell::ClassData())) {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
                 "%s not type of %s",
                 element.toObject()->objectInfoOfInstance().cString(), ZFUIListCell::ClassData()->classNameFull());
@@ -43,45 +40,37 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(ZF_IN const ZFSeria
     }
     return zftrue;
 }
-zfbool ZFUIListAdapterArray::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                           ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                           ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfbool ZFUIListAdapterArray::serializableOnSerializeToData(
+        ZF_IN_OUT ZFSerializableData &serializableData
+        , ZF_IN ZFSerializable *referencedOwnerOrNull
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
     zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
 
-    if(ref == zfnull || ref->cellCount() == 0)
-    {
-        for(zfindex i = 0, count = this->cellCount(); i < count; ++i)
-        {
+    if(ref == zfnull || ref->cellCount() == 0) {
+        for(zfindex i = 0, count = this->cellCount(); i < count; ++i) {
             ZFSerializableData cellData;
-            if(!ZFObjectToData(cellData, this->cellAt(i), outErrorHint))
-            {
+            if(!ZFObjectToData(cellData, this->cellAt(i), outErrorHint)) {
                 return zffalse;
             }
             cellData.category(ZFSerializableKeyword_ZFUIListAdapterArray_cell);
             serializableData.childAdd(cellData);
         }
     }
-    else
-    {
+    else {
         zfbool cellAllSame = zftrue;
-        if(this->cellCount() != ref->cellCount())
-        {
+        if(this->cellCount() != ref->cellCount()) {
             cellAllSame = zffalse;
         }
-        else
-        {
-            for(zfindex i = 0; i < this->cellCount(); ++i)
-            {
-                if(!ZFObjectCompare(this->cellAt(i).toObject(), ref->cellAt(i).toObject()))
-                {
+        else {
+            for(zfindex i = 0; i < this->cellCount(); ++i) {
+                if(!ZFObjectCompare(this->cellAt(i).toObject(), ref->cellAt(i).toObject())) {
                     cellAllSame = zffalse;
                 }
             }
         }
-        if(!cellAllSame)
-        {
+        if(!cellAllSame) {
             ZFSerializableUtil::errorOccurred(outErrorHint,
                 "cell list mismatch, this: %s, ref: %s",
                 this->objectInfoOfInstance().cString(), ref->objectInfoOfInstance().cString());

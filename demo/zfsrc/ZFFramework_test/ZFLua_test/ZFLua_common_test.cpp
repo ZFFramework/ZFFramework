@@ -2,78 +2,77 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFLua_common_test_Object : zfextends ZFObject
-{
+zfclass _ZFP_ZFLua_common_test_Object : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFLua_common_test_Object, ZFObject)
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfLog() << (void *)this;
         zfsuper::objectOnInit();
     }
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         zfLog() << (void *)this;
         zfsuper::objectOnDealloc();
     }
     zfoverride
-    virtual void objectOnRetain(void)
-    {
+    virtual void objectOnRetain(void) {
         zfsuper::objectOnRetain();
         zfLog() << (void *)this << this->objectRetainCount();
     }
     zfoverride
-    virtual void objectOnRelease(void)
-    {
+    virtual void objectOnRelease(void) {
         zfsuper::objectOnRelease();
         zfLog() << (void *)this << this->objectRetainCount();
     }
 
 public:
-    ZFMETHOD_INLINE_1(zfstring, myMethod, ZFMP_IN(const zfchar *, param0))
-    {
+    ZFMETHOD_INLINE_1(zfstring, myMethod
+            , ZFMP_IN(const zfchar *, param0)
+            ) {
         zfLog() << param0;
         zfstring ret = param0;
         ret += "(modified)";
         return ret;
     }
-    ZFMETHOD_INLINE_STATIC_1(zfstring &, MyMethod, ZFMP_IN(zfstring &, param0))
-    {
+    ZFMETHOD_INLINE_STATIC_1(zfstring &, MyMethod
+            , ZFMP_IN(zfstring &, param0)
+            ) {
         zfLog() << param0;
         param0 += "(modified)";
         return param0;
     }
 
-    ZFMETHOD_INLINE_1(void, myMethodOverload, ZFMP_IN(const zfchar *, param0))
-    {
+    ZFMETHOD_INLINE_1(void, myMethodOverload
+            , ZFMP_IN(const zfchar *, param0)
+            ) {
         zfLog() << param0;
     }
-    ZFMETHOD_INLINE_1(void, myMethodOverload, ZFMP_IN(zfbool, param0))
-    {
+    ZFMETHOD_INLINE_1(void, myMethodOverload
+            , ZFMP_IN(zfbool, param0)
+            ) {
         zfLog() << param0;
     }
-    ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload, ZFMP_IN(const zfchar *, param0))
-    {
+    ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload
+            , ZFMP_IN(const zfchar *, param0)
+            ) {
         zfLog() << param0;
     }
-    ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload, ZFMP_IN(zfbool, param0))
-    {
+    ZFMETHOD_INLINE_STATIC_1(void, MyMethodOverload
+            , ZFMP_IN(zfbool, param0)
+            ) {
         zfLog() << param0;
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_common_test_Object)
 
-zfclass ZFLua_common_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFLua_common_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_common_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
 

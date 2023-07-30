@@ -18,8 +18,7 @@
 // #define _ZFP_ZFMEM_LOG_LARGE_OBJECT 1
 
 #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
-    inline void _ZFP_ZFMEM_LOG_LARGE_OBJECT_action(zfindex size)
-    {
+    inline void _ZFP_ZFMEM_LOG_LARGE_OBJECT_action(zfindex size) {
     }
 #endif
 
@@ -84,8 +83,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * usage:
  * @code
- *   class YourClass
- *   {
+ *   class YourClass {
  *       ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(YourClass)
  *   };
  * @endcode
@@ -125,13 +123,11 @@ extern ZFLIB_ZFCore void *_ZFP_zfreallocZero(void *oldPtr, zfindex newSize, zfin
 
 #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
     template<typename T>
-    T *_ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfnew(T *p)
-    {
+    T *_ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfnew(T *p) {
         _ZFP_ZFMEM_LOG_LARGE_OBJECT_action(sizeof(T));
         return p;
     }
-    inline void *_ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(void *p, zfindex size)
-    {
+    inline void *_ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(void *p, zfindex size) {
         _ZFP_ZFMEM_LOG_LARGE_OBJECT_action(size);
         return p;
     }
@@ -163,27 +159,21 @@ inline zfint zfmemcmp(const void *p1, const void *p2, zfindex size) {return (zfi
  * it's all right if dst and src share same memory
  */
 template<typename T_Element>
-T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
-{
-    if(dst && src && count != 0 && count != zfindexMax())
-    {
-        if(dst > src && src + count > dst)
-        {
+T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count) {
+    if(dst && src && count != 0 && count != zfindexMax()) {
+        if(dst > src && src + count > dst) {
             const T_Element *srcEnd = src;
             src += count;
             dst += count;
-            while(src > srcEnd)
-            {
+            while(src > srcEnd) {
                 --dst;
                 --src;
                 *dst = *src;
             }
         }
-        else
-        {
+        else {
             const T_Element *srcEnd = src + count;
-            while(src < srcEnd)
-            {
+            while(src < srcEnd) {
                 *dst = *src;
                 ++dst;
                 ++src;
@@ -225,8 +215,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
     extern ZFLIB_ZFCore void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const char *func, int line);
     extern ZFLIB_ZFCore void _ZFP_ZFMEM_printStatus(int threshold = 10);
     template<typename T>
-    T *_ZFP_ZFMEM_new_action(T *p, const char *action, const char *file, const char *func, int line)
-    {
+    T *_ZFP_ZFMEM_new_action(T *p, const char *action, const char *file, const char *func, int line) {
         #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
             _ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc((void *)p, sizeof(T));
         #endif
@@ -234,8 +223,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
         return p;
     }
     template<typename T>
-    T _ZFP_ZFMEM_delete_action(T p, const char *action, const char *file, const char *func, int line)
-    {
+    T _ZFP_ZFMEM_delete_action(T p, const char *action, const char *file, const char *func, int line) {
         _ZFP_ZFMEM_logDelete((void *)p, action, file, func, line);
         return p;
     }
@@ -252,23 +240,19 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
     #undef zfdeletePlacement
     #define zfdeletePlacement(instance) _ZFP_zfdeletePlacement(_ZFP_ZFMEM_delete((instance), "zfdeletePlacement"))
 
-    inline void *_ZFP_ZFMEM_zfmalloc(zfindex size, zfbool mallocZero, const char *file, const char *func, int line)
-    {
+    inline void *_ZFP_ZFMEM_zfmalloc(zfindex size, zfbool mallocZero, const char *file, const char *func, int line) {
         void *ret = malloc((size_t)size);
-        if(mallocZero && ret)
-        {
+        if(mallocZero && ret) {
             zfmemset(ret, 0, size);
         }
 
         #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
             _ZFP_ZFMEM_LOG_LARGE_OBJECT_action_zfmalloc(ret, size);
         #endif
-        if(mallocZero)
-        {
+        if(mallocZero) {
             _ZFP_ZFMEM_logNew(ret, "zfmallocZero     ", file, func, line);
         }
-        else
-        {
+        else {
             _ZFP_ZFMEM_logNew(ret, "zfmalloc         ", file, func, line);
         }
         return ret;
@@ -278,8 +262,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
     #undef zfmallocZero
     #define zfmallocZero(size) _ZFP_ZFMEM_zfmalloc((size), zftrue, __FILE__, __FUNCTION__, __LINE__)
 
-    inline void *_ZFP_ZFMEM_zfrealloc(void *oldPtr, zfindex newSize, const char *file, const char *func, int line)
-    {
+    inline void *_ZFP_ZFMEM_zfrealloc(void *oldPtr, zfindex newSize, const char *file, const char *func, int line) {
         _ZFP_ZFMEM_logDelete(oldPtr, "zfreallocD       ", file, func, line);
         void *ret = realloc(oldPtr, (size_t)newSize);
         #if _ZFP_ZFMEM_LOG_LARGE_OBJECT
@@ -290,8 +273,7 @@ T_Element *zfmemmoveObject(T_Element *dst, const T_Element *src, zfindex count)
     }
     #undef zfrealloc
     #define zfrealloc(oldPtr, newSize) _ZFP_ZFMEM_zfrealloc((oldPtr), (newSize), __FILE__, __FUNCTION__, __LINE__)
-    inline void *_ZFP_ZFMEM_zfreallocZero(void *oldPtr, zfindex newSize, zfindex oldSize, const char *file, const char *func, int line)
-    {
+    inline void *_ZFP_ZFMEM_zfreallocZero(void *oldPtr, zfindex newSize, zfindex oldSize, const char *file, const char *func, int line) {
         _ZFP_ZFMEM_logDelete(oldPtr, "zfreallocZeroD   ", file, func, line);
         void *ret = _ZFP_zfreallocZero(oldPtr, newSize, oldSize);
         #if _ZFP_ZFMEM_LOG_LARGE_OBJECT

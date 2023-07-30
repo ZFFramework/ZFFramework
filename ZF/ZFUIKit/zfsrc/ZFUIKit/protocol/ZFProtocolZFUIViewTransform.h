@@ -27,42 +27,32 @@ public:
      *   ensured called only when transform is not identity,
      *   before view's deallocation
      */
-    virtual void viewTransformReset(ZF_IN ZFUIView *view)
-    {
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateX), view))
-        {
+    virtual void viewTransformReset(ZF_IN ZFUIView *view) {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateX), view)) {
             view->viewTranslateX(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateY), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateY), view)) {
             view->viewTranslateY(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateZ), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewTranslateZ), view)) {
             view->viewTranslateZ(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleX), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleX), view)) {
             view->viewScaleX(1);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleY), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleY), view)) {
             view->viewScaleY(1);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleZ), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewScaleZ), view)) {
             view->viewScaleZ(1);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateX), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateX), view)) {
             view->viewRotateX(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateY), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateY), view)) {
             view->viewRotateY(0);
         }
-        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateZ), view))
-        {
+        if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIView, viewRotateZ), view)) {
             view->viewRotateZ(0);
         }
         this->viewTransform(view);

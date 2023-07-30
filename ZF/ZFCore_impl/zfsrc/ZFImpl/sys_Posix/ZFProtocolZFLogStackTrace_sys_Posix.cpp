@@ -15,14 +15,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFLogStackTraceImpl_sys_Posix, ZFLogStackTrace, ZFProtocolLevel::e_SystemLow)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Posix:backtrace")
 public:
-    virtual void stackTrace(ZF_IN_OUT zfstring &ret,
-                            ZF_IN_OPT const zfchar *prefix = zfnull,
-                            ZF_IN_OPT zfindex ignoreLevel = 0,
-                            ZF_IN_OPT zfindex maxLevel = 20)
-    {
+    virtual void stackTrace(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT const zfchar *prefix = zfnull
+            , ZF_IN_OPT zfindex ignoreLevel = 0
+            , ZF_IN_OPT zfindex maxLevel = 20
+            ) {
         const zfchar *fixedPrefix = ((prefix == zfnull) ? "" : prefix);
-        if(maxLevel > 200)
-        {
+        if(maxLevel > 200) {
             maxLevel = 200;
         }
 
@@ -33,8 +33,7 @@ public:
         ret += fixedPrefix;
         ret += "======================== stack begin =======================";
         ret += '\n';
-        for(zfindex i = ignoreLevel; i < size; ++i)
-        {
+        for(zfindex i = ignoreLevel; i < size; ++i) {
             ret += fixedPrefix;
             ret += strings[i];
             ret += '\n';
@@ -45,9 +44,10 @@ public:
         zffree(strings);
         zffree(array);
     }
-    virtual void callerInfo(ZF_IN_OUT zfstring &ret,
-                            ZF_IN_OPT zfindex ignoreLevel = 0)
-    {
+    virtual void callerInfo(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT zfindex ignoreLevel = 0
+            ) {
         static const zfindex dummyLevel = 0;
         void **array = (void **)zfmalloc(sizeof(void *) * (dummyLevel + ignoreLevel + 1));
         zfindex size = backtrace(array, 3);

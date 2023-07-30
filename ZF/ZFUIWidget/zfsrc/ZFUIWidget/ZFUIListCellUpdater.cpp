@@ -10,30 +10,27 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIListCellUpdater, CellOnRecycle)
 #define _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key) \
     zfchar *cacheKey = zfsConnect("_ZFP_ZFUIListCellUpdater_cacheKey", key); \
     zfblockedFree(cacheKey)
-ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfautoObject, itemCacheAccess,
-                  ZFMP_IN(const zfchar *, key))
-{
+ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfautoObject, itemCacheAccess
+        , ZFMP_IN(const zfchar *, key)
+        ) {
     _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag<ZFArray *>(cacheKey);
-    if(cacheList != zfnull && !cacheList->isEmpty())
-    {
+    if(cacheList != zfnull && !cacheList->isEmpty()) {
         zfautoObject ret = cacheList->getLast();
         cacheList->removeLast();
         return ret;
     }
-    else
-    {
+    else {
         return zfnull;
     }
 }
-ZFMETHOD_DEFINE_2(ZFUIListCellUpdater, void, itemCacheRecycle,
-                  ZFMP_IN(const zfchar *, key),
-                  ZFMP_IN(ZFObject *, cache))
-{
+ZFMETHOD_DEFINE_2(ZFUIListCellUpdater, void, itemCacheRecycle
+        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(ZFObject *, cache)
+        ) {
     _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag<ZFArray *>(cacheKey);
-    if(cacheList == zfnull)
-    {
+    if(cacheList == zfnull) {
         cacheList = zfAlloc(ZFArray);
         this->toObject()->objectTag(cacheKey, cacheList);
         zfRelease(cacheList);

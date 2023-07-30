@@ -2,19 +2,16 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT(ZFUIKeyboardState_test)
-{
+ZF_GLOBAL_INITIALIZER_INIT(ZFUIKeyboardState_test) {
     this->keyPressedOnChangeListener = ZFCallbackForFunc(zfself::keyPressedOnChange);
     ZFGlobalObserver().observerAdd(ZFUIKeyboardState::EventKeyPressedOnChange(), this->keyPressedOnChangeListener);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKeyboardState_test)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKeyboardState_test) {
     ZFGlobalObserver().observerRemove(ZFUIKeyboardState::EventKeyPressedOnChange(), this->keyPressedOnChangeListener);
 }
 private:
     ZFListener keyPressedOnChangeListener;
-    static void keyPressedOnChange(ZF_IN const ZFArgs &zfargs)
-    {
+    static void keyPressedOnChange(ZF_IN const ZFArgs &zfargs) {
         zfLogTrim() << "[ZFUIKeyboardState]" << zfargs.sender();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIKeyboardState_test)

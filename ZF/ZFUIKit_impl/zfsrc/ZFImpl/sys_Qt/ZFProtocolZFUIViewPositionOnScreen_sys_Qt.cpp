@@ -14,9 +14,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewPositionOnScreenImpl_sys_Qt, ZFUIViewPos
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void viewPositionOnScreen(ZF_IN ZFUIView *view,
-                                      ZF_OUT ZFUIRect &rect)
-    {
+    virtual void viewPositionOnScreen(
+            ZF_IN ZFUIView *view
+            , ZF_OUT ZFUIRect &rect
+            ) {
         QGraphicsWidget *nativeView = ZFCastStatic(QGraphicsWidget *, view->nativeView());
 
         QPointF nativePos = nativeView->mapToScene(QPointF(0, 0));

@@ -50,8 +50,7 @@ public:
     /**
      * @brief whether #executeInMainThread available
      */
-    virtual zfbool executeInMainThreadAvailable(void)
-    {
+    virtual zfbool executeInMainThreadAvailable(void) {
         return zftrue;
     }
     /**
@@ -77,8 +76,10 @@ public:
      *
      * NOTE: the created thread may be blocked by semaphore to achieve app level thread pool logic
      */
-    virtual void *executeInNewThread(ZF_IN const ZFListener &runnable,
-                                     ZF_IN const ZFListener &runnableCleanup) zfpurevirtual;
+    virtual void *executeInNewThread(
+            ZF_IN const ZFListener &runnable
+            , ZF_IN const ZFListener &runnableCleanup
+            ) zfpurevirtual;
     /**
      * @brief used to cleanup nativeToken
      */
@@ -87,45 +88,40 @@ ZFPROTOCOL_INTERFACE_END(ZFThread)
 
 // ============================================================
 /** @brief see #ZFThread */
-zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextends ZFThread
-{
+zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextends ZFThread {
     ZFOBJECT_DECLARE(ZFThreadMainThread, ZFThread)
 
 public:
     zfoverride
-    virtual void threadStart(ZF_IN_OPT ZFObject *param0 = zfnull, ZF_IN_OPT ZFObject *param1 = zfnull)
-    {
+    virtual void threadStart(
+            ZF_IN_OPT ZFObject *param0 = zfnull
+            , ZF_IN_OPT ZFObject *param1 = zfnull
+            ) {
         zfCoreLogTrim("you must not start main thread");
     }
     zfoverride
-    virtual zfbool threadStarted(void)
-    {
+    virtual zfbool threadStarted(void) {
         return zftrue;
     }
     zfoverride
-    virtual zfbool threadRunning(void)
-    {
+    virtual zfbool threadRunning(void) {
         return zftrue;
     }
     zfoverride
-    virtual void threadStop(void)
-    {
+    virtual void threadStop(void) {
         zfCoreLogTrim("you must not stop main thread");
     }
     zfoverride
-    virtual void threadWait(void)
-    {
+    virtual void threadWait(void) {
         zfCoreLogTrim("you must not wait main thread");
     }
     zfoverride
-    virtual zfbool threadWait(ZF_IN zftimet miliSecs)
-    {
+    virtual zfbool threadWait(ZF_IN zftimet miliSecs) {
         zfCoreLogTrim("you must not wait main thread");
         return zffalse;
     }
     zfoverride
-    virtual zfbool isMainThread(void)
-    {
+    virtual zfbool isMainThread(void) {
         return zftrue;
     }
 };
@@ -151,8 +147,10 @@ typedef void (*ZFMainThreadTaskImplCallbackCleanup)(ZF_IN void *nativeToken);
  *
  * whether the custom impl would be used, depends on the ZFThread protocol impl
  */
-extern ZFLIB_ZFCore void ZFMainThreadTaskImplSet(ZF_IN ZFMainThreadTaskImplCallbackExecute executeImpl,
-                                                 ZF_IN_OPT ZFMainThreadTaskImplCallbackCleanup cleanupImpl = zfnull);
+extern ZFLIB_ZFCore void ZFMainThreadTaskImplSet(
+        ZF_IN ZFMainThreadTaskImplCallbackExecute executeImpl
+        , ZF_IN_OPT ZFMainThreadTaskImplCallbackCleanup cleanupImpl = zfnull
+        );
 /** @brief see #ZFMainThreadTaskImplSet */
 extern ZFLIB_ZFCore ZFMainThreadTaskImplCallbackExecute ZFMainThreadTaskImplGetExecute(void);
 /** @brief see #ZFMainThreadTaskImplSet */

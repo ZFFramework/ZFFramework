@@ -69,49 +69,50 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // no log version
-zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfsynchronizeContainer
-{
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfsynchronizeContainer {
 public:
     _ZFP_zfsynchronizeContainer(ZF_IN ZFObject *obj)
     : m_obj(obj)
     {
         m_obj->_ZFP_ZFObjectLock();
     }
-    ~_ZFP_zfsynchronizeContainer(void)
-    {
+    ~_ZFP_zfsynchronizeContainer(void) {
         m_obj->_ZFP_ZFObjectUnlock();
     }
 private:
     ZFObject *m_obj;
 };
 
-inline void _ZFP_zfsynchronizeLock(ZF_IN ZFObject *obj)
-{
+inline void _ZFP_zfsynchronizeLock(ZF_IN ZFObject *obj) {
     obj->_ZFP_ZFObjectLock();
 }
-inline void _ZFP_zfsynchronizeUnlock(ZF_IN ZFObject *obj)
-{
+inline void _ZFP_zfsynchronizeUnlock(ZF_IN ZFObject *obj) {
     obj->_ZFP_ZFObjectUnlock();
 }
 
 // ============================================================
 // log version
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
-zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfsynchronizeContainerWithLog
-{
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfsynchronizeContainerWithLog {
 public:
-    _ZFP_zfsynchronizeContainerWithLog(ZF_IN ZFObject *obj,
-                                       ZF_IN const ZFCallerInfo &callerInfo);
+    _ZFP_zfsynchronizeContainerWithLog(
+            ZF_IN ZFObject *obj
+            , ZF_IN const ZFCallerInfo &callerInfo
+            );
     ~_ZFP_zfsynchronizeContainerWithLog(void);
 private:
     ZFObject *m_obj;
     ZFCallerInfo callerInfo;
 };
 
-extern ZFLIB_ZFCore void _ZFP_zfsynchronizeLockWithLog(ZF_IN ZFObject *obj,
-                                                       ZF_IN const ZFCallerInfo &callerInfo);
-extern ZFLIB_ZFCore void _ZFP_zfsynchronizeUnlockWithLog(ZF_IN ZFObject *obj,
-                                                         ZF_IN const ZFCallerInfo &callerInfo);
+extern ZFLIB_ZFCore void _ZFP_zfsynchronizeLockWithLog(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFCallerInfo &callerInfo
+        );
+extern ZFLIB_ZFCore void _ZFP_zfsynchronizeUnlockWithLog(
+        ZF_IN ZFObject *obj
+        , ZF_IN const ZFCallerInfo &callerInfo
+        );
 #endif // #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
 
 ZF_NAMESPACE_GLOBAL_END

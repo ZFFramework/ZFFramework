@@ -13,15 +13,31 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFTypeIdWrapper, zfbool, wrappedValueIsConst)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, void, markConst, ZFMP_IN(ZFObject *, obj))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, ZFTypeIdWrapper *, wrappedValueAssign, ZFMP_IN(ZFTypeIdWrapper *, ref))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, void, markConst
+        , ZFMP_IN(ZFObject *, obj)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, ZFTypeIdWrapper *, wrappedValueAssign
+        , ZFMP_IN(ZFTypeIdWrapper *, ref)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, const zfchar *, wrappedValueTypeId)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, void, wrappedValueReset)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFTypeIdWrapper, zfbool, wrappedValueIsInit)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFTypeIdWrapper, zfbool, wrappedValueFromData, ZFMP_IN(const ZFSerializableData &, serializableData), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull), ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, wrappedValueToData, ZFMP_OUT(ZFSerializableData &, serializableData), ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, wrappedValueFromString, ZFMP_IN(const zfchar *, src), ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()))
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, zfbool, wrappedValueToString, ZFMP_IN_OUT(zfstring &, s))
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFTypeIdWrapper, zfbool, wrappedValueFromData
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, wrappedValueToData
+        , ZFMP_OUT(ZFSerializableData &, serializableData)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFTypeIdWrapper, zfbool, wrappedValueFromString
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, zfbool, wrappedValueToString
+        , ZFMP_IN_OUT(zfstring &, s)
+        )
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueFromString(src);
@@ -29,8 +45,7 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
     , ZFMP_IN(const zfchar *, src)
     )
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        if(src != zfnull)
-        {
+        if(src != zfnull) {
             if(src->classData()->classIsTypeOf(invokerObject->classData())
                 || (
                     invokerObject->classData()->classIsTypeOf(src->classData())
@@ -39,16 +54,13 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
             ) {
                 invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueAssign(src);
             }
-            else
-            {
+            else {
                 zfbool success = zffalse;
                 zfstring s;
-                if(src->wrappedValueToString(s))
-                {
+                if(src->wrappedValueToString(s)) {
                     success = invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueFromString(s);
                 }
-                if(!success)
-                {
+                if(!success) {
                     zfblockedAlloc(v_zfstring, errorHint);
                     zfstringAppend(errorHint->zfv, "unable to construct %s from (%s)%s",
                         invokerObject->classData()->className(),

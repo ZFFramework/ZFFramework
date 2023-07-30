@@ -33,8 +33,7 @@ this piece of code shows how to show a hello world on UI and log output
 
 ```cpp
 #include "ZFUIWidget.h" // for common UI module
-ZFMAIN_ENTRY() // app starts from here
-{
+ZFMAIN_ENTRY() { // app starts from here
     // show a hello world to log output
     zfLog() << "hello wolrd";
 
@@ -102,8 +101,7 @@ both lua and cpp can dynamic register class and method
 
 ```cpp
 #include "ZFLua.h"
-ZFMAIN_ENTRY()
-{
+ZFMAIN_ENTRY() {
     ZFDynamic()
         .classBegin("MyBaseView", "ZFUIView")
             .method("void", "testFunc", ZFMP()
@@ -148,8 +146,7 @@ chain http file and zip file, and R/W contents in the zip file just like normal 
 
 ```cpp
 #include "ZFCore.h"
-ZFMAIN_ENTRY()
-{
+ZFMAIN_ENTRY() {
     ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
     ZFInputRead(zfLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
     ZFPathInfoTreePrint(ZFPathInfo("res:"));

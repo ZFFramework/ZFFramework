@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFAlgorithm_ZFXml_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFAlgorithm_ZFXml_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFAlgorithm_ZFXml_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFXml);
 
@@ -50,12 +48,10 @@ protected:
         this->testCaseStop();
     }
 private:
-    void performanceTest(ZF_IN const ZFXml &xmlItem)
-    {
+    void performanceTest(ZF_IN const ZFXml &xmlItem) {
         zfindex toDataTimes = 10000;
         ZFCoreStatistic::invokeTimeLogBegin("ZFXmlPerformance_test_toData");
-        for(zfindex i = 0; i < toDataTimes; ++i)
-        {
+        for(zfindex i = 0; i < toDataTimes; ++i) {
             zfstring tmp;
             ZFXmlToOutput(ZFOutputForString(tmp), xmlItem);
         }
@@ -65,8 +61,7 @@ private:
         zfstring xmlString;
         ZFXmlToOutput(ZFOutputForString(xmlString), xmlItem);
         ZFCoreStatistic::invokeTimeLogBegin("ZFXmlPerformance_test_fromData");
-        for(zfindex i = 0; i < fromDataTimes; ++i)
-        {
+        for(zfindex i = 0; i < fromDataTimes; ++i) {
             ZFXmlFromInput(ZFInputForBufferUnsafe(xmlString));
         }
         ZFCoreStatistic::invokeTimeLogEnd("ZFXmlPerformance_test_fromData");

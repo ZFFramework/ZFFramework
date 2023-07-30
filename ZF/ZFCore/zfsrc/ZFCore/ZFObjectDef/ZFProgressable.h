@@ -14,15 +14,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief object that can be updated according to progress
  */
-zfinterface ZFLIB_ZFCore ZFProgressable : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFCore ZFProgressable : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFProgressable, ZFInterface)
 
 public:
     /** @brief see #ZFProgressable */
-    virtual zfbool progressUpdate(ZF_IN ZFProgressable *from,
-                                  ZF_IN ZFProgressable *to,
-                                  ZF_IN zffloat progress) zfpurevirtual;
+    virtual zfbool progressUpdate(
+            ZF_IN ZFProgressable *from
+            , ZF_IN ZFProgressable *to
+            , ZF_IN zffloat progress
+            ) zfpurevirtual;
 };
 
 ZF_NAMESPACE_GLOBAL_END

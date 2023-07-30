@@ -12,8 +12,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageImpl_sys_SDL, ZFUIImage, ZFProtocolLeve
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         IMG_Init(0
                 | IMG_INIT_JPG
@@ -23,29 +22,26 @@ public:
             );
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         IMG_Quit();
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback)
-    {
+    virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
         return IMG_Load_RW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(inputCallback), 1);
     }
-    virtual zfbool nativeImageToOutput(ZF_IN void *nativeImage,
-                                       ZF_OUT const ZFOutput &outputCallback)
-    {
+    virtual zfbool nativeImageToOutput(
+            ZF_IN void *nativeImage
+            , ZF_OUT const ZFOutput &outputCallback
+            ) {
         return 0 == IMG_SavePNG_RW((SDL_Surface *)nativeImage, ZFImpl_sys_SDL_ZFOutputToSDL_RWops(outputCallback), 1);
     }
 
-    virtual void *nativeImageCopy(ZF_IN void *nativeImage)
-    {
+    virtual void *nativeImageCopy(ZF_IN void *nativeImage) {
         SDL_Surface *nativeImageOld = (SDL_Surface *)nativeImage;
         SDL_Surface *nativeImageNew = SDL_CreateRGBSurfaceWithFormat(0, nativeImageOld->w, nativeImageOld->h, 0, nativeImageOld->format->format);
-        if(nativeImageNew == zfnull)
-        {
+        if(nativeImageNew == zfnull) {
             return zfnull;
         }
 
@@ -64,18 +60,15 @@ public:
         return nativeImageNew;
     }
 
-    virtual void *nativeImageRetain(ZF_IN void *nativeImage)
-    {
+    virtual void *nativeImageRetain(ZF_IN void *nativeImage) {
         ++((SDL_Surface *)nativeImage)->refcount;
         return nativeImage;
     }
-    virtual void nativeImageRelease(ZF_IN void *nativeImage)
-    {
+    virtual void nativeImageRelease(ZF_IN void *nativeImage) {
         SDL_FreeSurface((SDL_Surface *)nativeImage);
     }
 
-    virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage)
-    {
+    virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage) {
         SDL_Surface *nativeImageTmp = (SDL_Surface *)nativeImage;
         return ZFUISizeMake((zffloat)nativeImageTmp->w, (zffloat)nativeImageTmp->h);
     }

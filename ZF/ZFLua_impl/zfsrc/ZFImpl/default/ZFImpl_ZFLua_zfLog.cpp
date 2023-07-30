@@ -5,26 +5,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFImpl_ZFLua_zfLog_DEBUG_ENABLE 1
 
-static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L)
-{
+static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L) {
     ZFOutput o = zfLogTrim();
     o << zfLogCurTimeString();
 
     zfstring s;
-    if(ZFImpl_ZFLua_zfstringAppend(L, s))
-    {
+    if(ZFImpl_ZFLua_zfstringAppend(L, s)) {
         o << s;
     }
     return 0;
 }
 
-static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L)
-{
+static int _ZFP_ZFImpl_ZFLua_zfLogTrim(ZF_IN lua_State *L) {
     ZFOutput o = zfLogTrim();
 
     zfstring s;
-    if(ZFImpl_ZFLua_zfstringAppend(L, s))
-    {
+    if(ZFImpl_ZFLua_zfstringAppend(L, s)) {
         o << s;
     }
     return 0;

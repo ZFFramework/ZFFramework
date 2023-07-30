@@ -7,25 +7,23 @@ ZF_NAMESPACE_BEGIN(ZFSerializableUtil)
 #define _ZFP_ZFSerializableUtil_DEBUG 0
 
 #if _ZFP_ZFSerializableUtil_DEBUG
-static void _ZFP_ZFSerializableUtilDebugAction(void)
-{
+static void _ZFP_ZFSerializableUtilDebugAction(void) {
     zfCoreCriticalMessageTrim("[ZFSerializableUtil] errorOccurred");
 }
 #endif
 
-void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
-                   ZF_OUT_OPT ZFSerializableData *outErrorPos,
-                   ZF_IN const ZFSerializableData &errorPos,
-                   ZF_IN const zfchar *fmt,
-                   ...)
-{
-    if(outErrorPos != zfnull)
-    {
+void errorOccurred(
+        ZF_OUT_OPT zfstring *outErrorHint
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos
+        , ZF_IN const ZFSerializableData &errorPos
+        , ZF_IN const zfchar *fmt
+        , ...
+        ) {
+    if(outErrorPos != zfnull) {
         *outErrorPos = errorPos;
     }
 
-    if(outErrorHint != zfnull)
-    {
+    if(outErrorHint != zfnull) {
         va_list vaList;
         va_start(vaList, fmt);
         zfstringAppendV(*outErrorHint, fmt, vaList);
@@ -38,12 +36,12 @@ void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
 #endif
 }
 
-void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
-                   ZF_IN const zfchar *fmt,
-                   ...)
-{
-    if(outErrorHint != zfnull)
-    {
+void errorOccurred(
+        ZF_OUT_OPT zfstring *outErrorHint
+        , ZF_IN const zfchar *fmt
+        , ...
+        ) {
+    if(outErrorHint != zfnull) {
         va_list vaList;
         va_start(vaList, fmt);
         zfstringAppendV(*outErrorHint, fmt, vaList);
@@ -55,19 +53,18 @@ void errorOccurred(ZF_OUT_OPT zfstring *outErrorHint,
 #endif
 }
 
-void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
-                        ZF_OUT_OPT ZFSerializableData *outErrorPos,
-                        ZF_IN const ZFSerializableData &errorPos,
-                        ZF_IN const zfchar *serializingName,
-                        ZF_IN const zfchar *errorValue)
-{
-    if(outErrorPos != zfnull)
-    {
+void errorOccurredWhile(
+        ZF_OUT_OPT zfstring *outErrorHint
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos
+        , ZF_IN const ZFSerializableData &errorPos
+        , ZF_IN const zfchar *serializingName
+        , ZF_IN const zfchar *errorValue
+        ) {
+    if(outErrorPos != zfnull) {
         *outErrorPos = errorPos;
     }
 
-    if(outErrorHint != zfnull)
-    {
+    if(outErrorHint != zfnull) {
         zfstringAppend(*outErrorHint, "failed to serialize \"%s\" with value \"%s\"",
             serializingName, errorValue);
         zfstringAppend(*outErrorHint, ", at:\n    %s", errorPos.objectInfo().cString());
@@ -77,12 +74,12 @@ void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
     _ZFP_ZFSerializableUtilDebugAction();
 #endif
 }
-void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
-                        ZF_IN const zfchar *serializingName,
-                        ZF_IN const zfchar *errorValue)
-{
-    if(outErrorHint != zfnull)
-    {
+void errorOccurredWhile(
+        ZF_OUT_OPT zfstring *outErrorHint
+        , ZF_IN const zfchar *serializingName
+        , ZF_IN const zfchar *errorValue
+        ) {
+    if(outErrorHint != zfnull) {
         zfstringAppend(*outErrorHint, "failed to serialize \"%s\" with value \"%s\"",
             serializingName, errorValue);
     }
@@ -92,41 +89,36 @@ void errorOccurredWhile(ZF_OUT_OPT zfstring *outErrorHint,
 #endif
 }
 
-const zfchar *checkItemClass(ZF_IN const ZFSerializableData &serializableData,
-                             ZF_IN const zfchar *desiredClass)
-{
+const zfchar *checkItemClass(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredClass
+        ) {
     const zfchar *serializableClass = serializableData.itemClass();
-    if(zfstringIsEqual(desiredClass, ZFTypeId_none()))
-    {
+    if(zfstringIsEqual(desiredClass, ZFTypeId_none())) {
         return serializableClass;
     }
-    else
-    {
-        if(zfstringIsEqual(serializableClass, desiredClass))
-        {
+    else {
+        if(zfstringIsEqual(serializableClass, desiredClass)) {
             return serializableClass;
         }
-        else
-        {
+        else {
             return zfnull;
         }
     }
 }
-const zfchar *requireItemClass(ZF_IN const ZFSerializableData &serializableData,
-                               ZF_IN const zfchar *desiredClass,
-                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                               ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+const zfchar *requireItemClass(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredClass
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     const zfchar *ret = checkItemClass(serializableData, desiredClass);
-    if(ret == zfnull)
-    {
-        if(desiredClass == zfnull || *desiredClass == '\0')
-        {
+    if(ret == zfnull) {
+        if(desiredClass == zfnull || *desiredClass == '\0') {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                 "missing serializable class");
         }
-        else
-        {
+        else {
             ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                 "serializable class must be \"%s\"", desiredClass);
         }
@@ -134,50 +126,50 @@ const zfchar *requireItemClass(ZF_IN const ZFSerializableData &serializableData,
     return ret;
 }
 
-const zfchar *checkAttribute(ZF_IN const ZFSerializableData &serializableData,
-                             ZF_IN const zfchar *desiredAttribute)
-{
+const zfchar *checkAttribute(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredAttribute
+        ) {
     zfiterator it = serializableData.attrIterFind(desiredAttribute);
-    if(!serializableData.attrIterValid(it))
-    {
+    if(!serializableData.attrIterValid(it)) {
         return zfnull;
     }
     serializableData.attrIterResolveMark(it);
     return serializableData.attrIterValue(it);
 }
-const zfchar *requireAttribute(ZF_IN const ZFSerializableData &serializableData,
-                               ZF_IN const zfchar *desiredAttribute,
-                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                               ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+const zfchar *requireAttribute(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredAttribute
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     const zfchar *ret = checkAttribute(serializableData, desiredAttribute);
-    if(ret == zfnull)
-    {
+    if(ret == zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
             "missing attribute \"%s\"", desiredAttribute);
     }
     return ret;
 }
 
-const ZFSerializableData *checkElementByName(ZF_IN const ZFSerializableData &serializableData,
-                                             ZF_IN const zfchar *desiredElementName)
-{
+const ZFSerializableData *checkElementByName(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredElementName
+        ) {
     zfindex index = serializableData.childForName(desiredElementName);
-    if(index == zfindexMax())
-    {
+    if(index == zfindexMax()) {
         return zfnull;
     }
     serializableData.childAt(index).resolvePropertyNameMark();
     return &(serializableData.childAt(index));
 }
-const ZFSerializableData *requireElementByName(ZF_IN const ZFSerializableData &serializableData,
-                                               ZF_IN const zfchar *desiredElementName,
-                                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                               ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+const ZFSerializableData *requireElementByName(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredElementName
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     const ZFSerializableData *ret = checkElementByName(serializableData, desiredElementName);
-    if(ret == zfnull)
-    {
+    if(ret == zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
             "missing element with name \"%s\"",
             desiredElementName);
@@ -185,25 +177,25 @@ const ZFSerializableData *requireElementByName(ZF_IN const ZFSerializableData &s
     return ret;
 }
 
-const ZFSerializableData *checkElementByCategory(ZF_IN const ZFSerializableData &serializableData,
-                                                 ZF_IN const zfchar *desiredElementCategory)
-{
+const ZFSerializableData *checkElementByCategory(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredElementCategory
+        ) {
     zfindex index = serializableData.childForCategory(desiredElementCategory);
-    if(index == zfindexMax())
-    {
+    if(index == zfindexMax()) {
         return zfnull;
     }
     serializableData.childAt(index).resolveCategoryMark();
     return &(serializableData.childAt(index));
 }
-const ZFSerializableData *requireElementByCategory(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_IN const zfchar *desiredElementCategory,
-                                                   ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+const ZFSerializableData *requireElementByCategory(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const zfchar *desiredElementCategory
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     const ZFSerializableData *ret = checkElementByCategory(serializableData, desiredElementCategory);
-    if(ret == zfnull)
-    {
+    if(ret == zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
             "missing element with category \"%s\"",
             desiredElementCategory);
@@ -211,36 +203,31 @@ const ZFSerializableData *requireElementByCategory(ZF_IN const ZFSerializableDat
     return ret;
 }
 
-static zfbool _ZFP_ZFSerializableUtilPrintResolveStatus(ZF_IN const ZFSerializableData &serializableData,
-                                                        ZF_IN const ZFOutput &outputCallback,
-                                                        ZF_IN zfindex level)
-{
-    if(!serializableData.resolvedAll())
-    {
-        for(zfindex i = 0; i < level; ++i)
-        {
+static zfbool _ZFP_ZFSerializableUtilPrintResolveStatus(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN const ZFOutput &outputCallback
+        , ZF_IN zfindex level
+        ) {
+    if(!serializableData.resolvedAll()) {
+        for(zfindex i = 0; i < level; ++i) {
             outputCallback << "    ";
         }
         outputCallback << serializableData.itemClass();
-        if(!serializableData.resolved())
-        {
+        if(!serializableData.resolved()) {
             outputCallback << "(unresolved)";
         }
 
         zfbool hasUnresolvedAttribute = zffalse;
         for(zfiterator it = serializableData.attrIter();
-            serializableData.attrIterValid(it);
-            serializableData.attrIterNext(it))
-        {
-            if(!serializableData.attrIterResolved(it))
-            {
-                if(!hasUnresolvedAttribute)
-                {
+                serializableData.attrIterValid(it);
+                serializableData.attrIterNext(it)
+                ) {
+            if(!serializableData.attrIterResolved(it)) {
+                if(!hasUnresolvedAttribute) {
                     hasUnresolvedAttribute = zftrue;
                     outputCallback << " < ";
                 }
-                else
-                {
+                else {
                     outputCallback << "; ";
                 }
                 outputCallback
@@ -249,32 +236,29 @@ static zfbool _ZFP_ZFSerializableUtilPrintResolveStatus(ZF_IN const ZFSerializab
                     << serializableData.attrIterValue(it);
             }
         }
-        if(hasUnresolvedAttribute)
-        {
+        if(hasUnresolvedAttribute) {
             outputCallback << " >";
         }
 
         outputCallback << "\n";
 
-        for(zfindex i = 0; i < serializableData.childCount(); ++i)
-        {
+        for(zfindex i = 0; i < serializableData.childCount(); ++i) {
             _ZFP_ZFSerializableUtilPrintResolveStatus(serializableData.childAt(i), outputCallback, level + 1);
         }
         return zftrue;
     }
     return zffalse;
 }
-zfbool printResolveStatus(ZF_IN const ZFSerializableData &serializableData,
-                          ZF_IN_OPT const ZFOutput &outputCallback /* = ZFOutputDefault() */)
-{
-    if(!ZFSerializableDataResolveCheckEnable)
-    {
+zfbool printResolveStatus(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_IN_OPT const ZFOutput &outputCallback /* = ZFOutputDefault() */
+        ) {
+    if(!ZFSerializableDataResolveCheckEnable) {
         return zffalse;
     }
     zfstring tmp = "[ZFSerializable] not all resolved:\n";
     zfbool ret = _ZFP_ZFSerializableUtilPrintResolveStatus(serializableData, ZFOutputForString(tmp), 1);
-    if(ret)
-    {
+    if(ret) {
         outputCallback.execute(tmp.cString());
     }
     return ret;

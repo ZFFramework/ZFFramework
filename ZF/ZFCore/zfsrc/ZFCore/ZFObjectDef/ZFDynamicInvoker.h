@@ -14,8 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief wrapper for unknown types for #ZFDI_invoke
  */
-zfabstract ZFLIB_ZFCore ZFDI_WrapperBase : zfextends ZFObject
-{
+zfabstract ZFLIB_ZFCore ZFDI_WrapperBase : zfextends ZFObject {
     ZFOBJECT_DECLARE_ABSTRACT(ZFDI_WrapperBase, ZFObject)
     ZFALLOC_CACHE_RELEASE_ABSTRACT({
         cache->zfv(zfnull);
@@ -35,20 +34,16 @@ public:
 
 public:
     zfoverride
-    virtual zfidentity objectHash(void)
-    {
+    virtual zfidentity objectHash(void) {
         return zfidentityCalcString(this->zfv());
     }
     zfoverride
-    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj)
-    {
+    virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
         zfself *ref = ZFCastZFObject(zfself *, anotherObj);
-        if(ref != zfnull)
-        {
+        if(ref != zfnull) {
             return ZFComparerDefault(this->zfv(), ref->zfv());
         }
-        else
-        {
+        else {
             return ZFCompareUncomparable;
         }
     }
@@ -63,19 +58,16 @@ protected:
     virtual void objectOnInit(ZF_IN const zfchar *zfv) {this->objectOnInit(); this->zfv(zfv);}
 protected:
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
         ret += this->zfv();
     }
 };
 /** @brief see #ZFDI_WrapperBase */
-zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextends ZFDI_WrapperBase
-{
+zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextends ZFDI_WrapperBase {
     ZFOBJECT_DECLARE(ZFDI_Wrapper, ZFDI_WrapperBase)
 public:
     zfoverride
-    virtual void zfv(ZF_IN const zfchar *zfv)
-    {
+    virtual void zfv(ZF_IN const zfchar *zfv) {
         this->_ZFP_zfv = zfv;
     }
     zfoverride
@@ -84,19 +76,15 @@ private:
     zfstring _ZFP_zfv;
 };
 /** @brief see #ZFDI_WrapperBase */
-zfclass ZFLIB_ZFCore ZFDI_WrapperRaw : zfextends ZFDI_WrapperBase
-{
+zfclass ZFLIB_ZFCore ZFDI_WrapperRaw : zfextends ZFDI_WrapperBase {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFDI_WrapperRaw, ZFDI_WrapperBase)
 public:
     zfoverride
-    virtual void zfv(ZF_IN const zfchar *zfv)
-    {
-        if(zfv)
-        {
+    virtual void zfv(ZF_IN const zfchar *zfv) {
+        if(zfv) {
             this->_ZFP_zfv = zfv;
         }
-        else
-        {
+        else {
             this->_ZFP_zfv = "";
         }
     }
@@ -126,8 +114,10 @@ extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
  * we will append #ZFTypeIdWrapperPrefixName to find again, e.g.
  * "ClassName" to "v_ClassName" or "NS.ClassName" to "NS.v_ClassName"
  */
-extern ZFLIB_ZFCore const ZFClass *ZFDI_classForName(ZF_IN const zfchar *className,
-                                                     ZF_IN_OPT const zfchar *NS = zfnull);
+extern ZFLIB_ZFCore const ZFClass *ZFDI_classForName(
+        ZF_IN const zfchar *className
+        , ZF_IN_OPT const zfchar *NS = zfnull
+        );
 /**
  * @brief util to print param info
  *
@@ -207,17 +197,21 @@ extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfautoObject &ret
 /**
  * @brief util to convert object from string
  */
-extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(ZF_OUT zfautoObject &ret,
-                                                 ZF_IN const ZFClass *cls,
-                                                 ZF_IN const zfchar *s,
-                                                 ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN const ZFClass *cls
+        , ZF_IN const zfchar *s
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 /**
  * @brief util to convert object from string
  */
-extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(ZF_OUT zfautoObject &ret,
-                                                 ZF_IN const zfchar *typeId,
-                                                 ZF_IN const zfchar *s,
-                                                 ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN const zfchar *typeId
+        , ZF_IN const zfchar *s
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 
 // ============================================================
 /* ZFMETHOD_MAX_PARAM */

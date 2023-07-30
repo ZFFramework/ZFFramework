@@ -26,12 +26,10 @@ ZFCOREPOINTER_DECLARE(ZFCorePointerForZFObject, {
     })
 
 // ============================================================
-zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zflineRelease
-{
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zflineRelease {
 public:
     template<typename T_ZFObject>
-    T_ZFObject set(T_ZFObject obj)
-    {
+    T_ZFObject set(T_ZFObject obj) {
         this->obj = ZFCastZFObjectUnchecked(ZFObject *, obj);
         return obj;
     }
@@ -40,19 +38,16 @@ public:
     : obj(zfnull)
     {
     }
-    ~_ZFP_zflineRelease(void)
-    {
+    ~_ZFP_zflineRelease(void) {
         zfRelease(obj);
     }
 public:
     ZFObject *obj;
 };
-zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfunsafe_zflineRelease
-{
+zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfunsafe_zflineRelease {
 public:
     template<typename T_ZFObject>
-    T_ZFObject set(T_ZFObject obj)
-    {
+    T_ZFObject set(T_ZFObject obj) {
         this->obj = ZFCastZFObjectUnchecked(ZFObject *, obj);
         return obj;
     }
@@ -61,8 +56,7 @@ public:
     : obj(zfnull)
     {
     }
-    ~_ZFP_zfunsafe_zflineRelease(void)
-    {
+    ~_ZFP_zfunsafe_zflineRelease(void) {
         zfunsafe_zfRelease(obj);
     }
 public:
@@ -73,8 +67,7 @@ public:
  *
  * usage:
  * @code
- *   ZFObject *allocObject(void)
- *   {
+ *   ZFObject *allocObject(void) {
  *       return zfAlloc(ZFObject);
  *   }
  *
@@ -109,30 +102,26 @@ public:
 
 // ============================================================
 template<typename T_ZFObject>
-zffinal zfclassLikePOD _ZFP_zfblockedAllocContainer
-{
+zffinal zfclassLikePOD _ZFP_zfblockedAllocContainer {
 public:
     _ZFP_zfblockedAllocContainer(ZF_IN T_ZFObject *obj)
     : obj(obj)
     {
     }
-    ~_ZFP_zfblockedAllocContainer(void)
-    {
+    ~_ZFP_zfblockedAllocContainer(void) {
         zfRelease(this->obj);
     }
 public:
     T_ZFObject *obj;
 };
 template<typename T_ZFObject>
-zffinal zfclassLikePOD _ZFP_zfunsafe_zfblockedAllocContainer
-{
+zffinal zfclassLikePOD _ZFP_zfunsafe_zfblockedAllocContainer {
 public:
     _ZFP_zfunsafe_zfblockedAllocContainer(ZF_IN T_ZFObject *obj)
     : obj(obj)
     {
     }
-    ~_ZFP_zfunsafe_zfblockedAllocContainer(void)
-    {
+    ~_ZFP_zfunsafe_zfblockedAllocContainer(void) {
         zfRelease(this->obj);
     }
 public:
@@ -167,31 +156,27 @@ public:
     T_ZFObject *name = (ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name).obj)
 
 // ============================================================
-zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedReleaseContainer
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedReleaseContainer {
 public:
     template<typename T_ZFObject>
     _ZFP_zfblockedReleaseContainer(ZF_IN T_ZFObject obj)
     : obj(ZFCastZFObjectUnchecked(ZFObject *, obj))
     {
     }
-    ~_ZFP_zfblockedReleaseContainer(void)
-    {
+    ~_ZFP_zfblockedReleaseContainer(void) {
         zfRelease(this->obj);
     }
 private:
     ZFObject *obj;
 };
-zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfunsafe_zfblockedReleaseContainer
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfunsafe_zfblockedReleaseContainer {
 public:
     template<typename T_ZFObject>
     _ZFP_zfunsafe_zfblockedReleaseContainer(ZF_IN T_ZFObject obj)
     : obj(ZFCastZFObjectUnchecked(ZFObject *, obj))
     {
     }
-    ~_ZFP_zfunsafe_zfblockedReleaseContainer(void)
-    {
+    ~_ZFP_zfunsafe_zfblockedReleaseContainer(void) {
         zfRelease(this->obj);
     }
 private:

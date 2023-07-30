@@ -23,8 +23,10 @@ public:
     /**
      * @brief destroy native animation
      */
-    virtual void nativeAniDestroy(ZF_IN ZFAnimationNativeView *ani,
-                                  ZF_IN void *nativeAni) zfpurevirtual;
+    virtual void nativeAniDestroy(
+            ZF_IN ZFAnimationNativeView *ani
+            , ZF_IN void *nativeAni
+            ) zfpurevirtual;
 
     /**
      * @brief start native animation
@@ -45,8 +47,10 @@ public:
      * @note more than one ani may added to same view,
      *   you must also implement this logic
      */
-    virtual void nativeAniStart(ZF_IN ZFAnimationNativeView *ani,
-                                ZF_IN zffloat nativeAniScale) zfpurevirtual;
+    virtual void nativeAniStart(
+            ZF_IN ZFAnimationNativeView *ani
+            , ZF_IN zffloat nativeAniScale
+            ) zfpurevirtual;
     /**
      * @brief stop native animation
      *
@@ -60,8 +64,7 @@ public:
     /**
      * @brief implementation must call this to notify animation stopped
      */
-    zffinal void notifyAniStop(ZF_IN ZFAnimationNativeView *ani)
-    {
+    zffinal void notifyAniStop(ZF_IN ZFAnimationNativeView *ani) {
         ani->_ZFP_ZFAnimationNativeView_notifyStop();
     }
 ZFPROTOCOL_INTERFACE_END(ZFAnimationNativeView)

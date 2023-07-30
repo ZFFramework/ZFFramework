@@ -3,8 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #if 1
-ZF_GLOBAL_INITIALIZER_INIT(ZFUIKit_ZFAudio_debug_LogEvent)
-{
+ZF_GLOBAL_INITIALIZER_INIT(ZFUIKit_ZFAudio_debug_LogEvent) {
     this->onEventListener = ZFCallbackForFunc(zfself::onEvent);
     ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnLoad(), this->onEventListener);
     ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnStart(), this->onEventListener);
@@ -13,8 +12,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIKit_ZFAudio_debug_LogEvent)
     ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnPause(), this->onEventListener);
     ZFGlobalObserver().observerAdd(ZFAudio::EventAudioOnLoop(), this->onEventListener);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKit_ZFAudio_debug_LogEvent)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKit_ZFAudio_debug_LogEvent) {
     ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnLoad(), this->onEventListener);
     ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnStart(), this->onEventListener);
     ZFGlobalObserver().observerRemove(ZFAudio::EventAudioOnStop(), this->onEventListener);
@@ -24,8 +22,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKit_ZFAudio_debug_LogEvent)
 }
 private:
     ZFListener onEventListener;
-    static void onEvent(ZF_IN const ZFArgs &zfargs)
-    {
+    static void onEvent(ZF_IN const ZFArgs &zfargs) {
         zfLogTrim()
             << zfargs.sender()
             << ZFIdMapNameForId(zfargs.eventId())
@@ -33,39 +30,32 @@ private:
             << zfargs.param1()
             ;
 
-        if(zfargs.eventId() == ZFAudio::EventAudioOnResume())
-        {
+        if(zfargs.eventId() == ZFAudio::EventAudioOnResume()) {
             audioOnResume(zfargs.senderT());
         }
-        else if(zfargs.eventId() == ZFAudio::EventAudioOnPause())
-        {
+        else if(zfargs.eventId() == ZFAudio::EventAudioOnPause()) {
             audioOnPause(zfargs.senderT());
         }
     }
 private:
-    static zfautoObjectT<ZFTimer *> &_timer(void)
-    {
+    static zfautoObjectT<ZFTimer *> &_timer(void) {
         static zfautoObjectT<ZFTimer *> d;
         return d;
     }
-    static ZFCoreArrayPOD<ZFAudio *> &_playing(void)
-    {
+    static ZFCoreArrayPOD<ZFAudio *> &_playing(void) {
         static ZFCoreArrayPOD<ZFAudio *> d;
         return d;
     }
-    static void audioOnResume(ZF_IN ZFAudio *audio)
-    {
+    static void audioOnResume(ZF_IN ZFAudio *audio) {
         zfautoObjectT<ZFTimer *> &timer = _timer();
         ZFCoreArrayPOD<ZFAudio *> &playing = _playing();
 
         playing.add(audio);
-        if(playing.count() == 1)
-        {
+        if(playing.count() == 1) {
             ZFLISTENER_1(onTimer
                     , ZFCoreArrayPOD<ZFAudio *> const &, playing
                     ) {
-                for(zfindex i = 0; i < playing.count(); ++i)
-                {
+                for(zfindex i = 0; i < playing.count(); ++i) {
                     ZFAudio *audio = playing[i];
                     zfLogTrim() << audio;
                 }
@@ -73,14 +63,12 @@ private:
             timer = ZFTimerStart(1000, onTimer);
         }
     }
-    static void audioOnPause(ZF_IN ZFAudio *audio)
-    {
+    static void audioOnPause(ZF_IN ZFAudio *audio) {
         zfautoObjectT<ZFTimer *> &timer = _timer();
         ZFCoreArrayPOD<ZFAudio *> &playing = _playing();
 
         playing.removeElement(audio);
-        if(playing.isEmpty())
-        {
+        if(playing.isEmpty()) {
             timer->timerStop();
             timer = zfnull;
         }

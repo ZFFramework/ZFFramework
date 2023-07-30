@@ -22,12 +22,10 @@ extern ZFLIB_ZFCore void invokeCountRemoveAll(void);
  *
  * for debug performance use only, used to log a method's invoke count, usage:
  * @code
- *   void yourFuncToTest(void)
- *   {
+ *   void yourFuncToTest(void) {
  *       ZFCoreStatistic::invokeCountLog(yourKeyOrNull);
  *   }
- *   void YourTestFunc(void)
- *   {
+ *   void YourTestFunc(void) {
  *       // this is yourFuncToTest's invoke times
  *       zfindex yourFuncCalledTime = ZFCoreStatistic::invokeCountGet(yourKeyOrNull);
  *       // if you want to reset it:

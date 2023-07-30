@@ -42,11 +42,13 @@ extern ZFLIB_ZFCore ZFObjectMutexImplCallbackTryLock _ZFP_ZFObjectMutexImplTryLo
  * \n
  * note, changing this impl would also change #ZFCoreMutexImplSet
  */
-extern ZFLIB_ZFCore void ZFObjectMutexImplSet(ZF_IN_OPT ZFObjectMutexImplCallbackInit implInit = zfnull,
-                                              ZF_IN_OPT ZFObjectMutexImplCallbackDealloc implDealloc = zfnull,
-                                              ZF_IN_OPT ZFObjectMutexImplCallbackLock implLock = zfnull,
-                                              ZF_IN_OPT ZFObjectMutexImplCallbackUnlock implUnlock = zfnull,
-                                              ZF_IN_OPT ZFObjectMutexImplCallbackTryLock implTryLock = zfnull);
+extern ZFLIB_ZFCore void ZFObjectMutexImplSet(
+        ZF_IN_OPT ZFObjectMutexImplCallbackInit implInit = zfnull
+        , ZF_IN_OPT ZFObjectMutexImplCallbackDealloc implDealloc = zfnull
+        , ZF_IN_OPT ZFObjectMutexImplCallbackLock implLock = zfnull
+        , ZF_IN_OPT ZFObjectMutexImplCallbackUnlock implUnlock = zfnull
+        , ZF_IN_OPT ZFObjectMutexImplCallbackTryLock implTryLock = zfnull
+        );
 
 /** @brief see #ZFObjectMutexImplSet */
 inline ZFObjectMutexImplCallbackInit ZFObjectMutexImplGetInit(void) {return _ZFP_ZFObjectMutexImplInit;}

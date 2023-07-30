@@ -14,9 +14,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTreeNativeImpl_sys_Qt, ZFUIViewTreeNativ
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void viewTreeNative(ZF_IN ZFUIView *view,
-                                ZF_IN_OUT const ZFOutput &outputCallback)
-    {
+    virtual void viewTreeNative(
+            ZF_IN ZFUIView *view
+            , ZF_IN_OUT const ZFOutput &outputCallback
+            ) {
         zfstring s;
         ZFImpl_sys_Qt_viewTreePrintT(s, (QGraphicsWidget *)view->nativeView());
         outputCallback << s;

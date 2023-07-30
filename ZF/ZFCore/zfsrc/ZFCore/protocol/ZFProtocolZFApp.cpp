@@ -6,13 +6,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFApp)
 
-void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode)
-{
+void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appExit(ZF_IN zfint appExitCode) {
     ZFFrameworkCleanup();
     exit(appExitCode);
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void)
-{
+void ZFPROTOCOL_INTERFACE_CLASS(ZFApp)::appRestart(void) {
     ZFLISTENER(action) {
         ZFCoreArray<zfstring> appParamsSaved;
         appParamsSaved.addFrom(ZFApp::appParams());

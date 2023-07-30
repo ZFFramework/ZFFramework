@@ -26,8 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  implement all necessary methods
  * -  invoke scroll animation at proper time, by #scrollAniStartCallback and #scrollAniStopCallback
  */
-zfinterface ZFLIB_ZFUIKit ZFUIScroller : zfextends ZFInterface
-{
+zfinterface ZFLIB_ZFUIKit ZFUIScroller : zfextends ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIScroller, ZFInterface)
 
 public:
@@ -49,8 +48,10 @@ public:
     /**
      * @brief whether use bounce
      */
-    virtual void scrollBounceChanged(ZF_IN zfbool scrollBounce,
-                                     ZF_IN zfbool scrollBounceAlways) zfpurevirtual;
+    virtual void scrollBounceChanged(
+            ZF_IN zfbool scrollBounce
+            , ZF_IN zfbool scrollBounceAlways
+            ) zfpurevirtual;
 
     /**
      * @brief whether align to page
@@ -61,7 +62,10 @@ public:
      * @brief used to update scroll content,
      *   you should keep or update previous scroll animation if necessary
      */
-    virtual void scrollContentChanged(ZF_IN zffloat contentOffset, ZF_IN zffloat contentSize) zfpurevirtual;
+    virtual void scrollContentChanged(
+            ZF_IN zffloat contentOffset
+            , ZF_IN zffloat contentSize
+            ) zfpurevirtual;
 
 public:
     /**
@@ -71,8 +75,7 @@ public:
     /**
      * @brief util method to stop scroll animation
      */
-    virtual void scrollStop(void)
-    {
+    virtual void scrollStop(void) {
         this->scrollWithoutAnimation(this->scrollContentOffset());
     }
     /**
@@ -135,15 +138,19 @@ public:
      *
      * note drag events is not ensured paired
      */
-    virtual void scrollOnDragBegin(ZF_IN zffloat mousePos,
-                                   ZF_IN zftimet mouseTime) zfpurevirtual;
+    virtual void scrollOnDragBegin(
+            ZF_IN zffloat mousePos
+            , ZF_IN zftimet mouseTime
+            ) zfpurevirtual;
     /**
      * @brief drag
      *
      * note drag events is not ensured paired
      */
-    virtual void scrollOnDrag(ZF_IN zffloat mousePos,
-                              ZF_IN zftimet mouseTime) zfpurevirtual;
+    virtual void scrollOnDrag(
+            ZF_IN zffloat mousePos
+            , ZF_IN zftimet mouseTime
+            ) zfpurevirtual;
     /**
      * @brief drag end
      *
@@ -151,8 +158,10 @@ public:
      * \n
      * if scroll animation is needed, use #scrollAniStartCallback to start
      */
-    virtual void scrollOnDragEnd(ZF_IN zftimet mouseTime,
-                                 ZF_IN zfbool needScrollAni) zfpurevirtual;
+    virtual void scrollOnDragEnd(
+            ZF_IN zftimet mouseTime
+            , ZF_IN zfbool needScrollAni
+            ) zfpurevirtual;
 
 public:
     /**
@@ -167,8 +176,9 @@ public:
  *
  * use null to use default scroller
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollerClass,
-                        ZFMP_IN(const ZFClass *, cls))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIScrollerClass
+        , ZFMP_IN(const ZFClass *, cls)
+        )
 /**
  * @brief get the class of default scroller
  */

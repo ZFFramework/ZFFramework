@@ -11,18 +11,26 @@
 #include "ZFCoreLog.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessage(ZF_IN const ZFCallerInfo &callerInfo,
-                                                       ZF_IN const zfchar *fmt,
-                                                       ...);
-extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessageV(ZF_IN const ZFCallerInfo &callerInfo,
-                                                        ZF_IN const zfchar *fmt,
-                                                        ZF_IN va_list vaList);
-extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(ZF_IN const ZFCallerInfo &callerInfo,
-                                             ZF_IN const zfchar *fmt,
-                                             ...);
-extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(ZF_IN const ZFCallerInfo &callerInfo,
-                                              ZF_IN const zfchar *fmt,
-                                              ZF_IN va_list vaList);
+extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessage(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN const zfchar *fmt
+        , ...
+        );
+extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessageV(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN const zfchar *fmt
+        , ZF_IN va_list vaList
+        );
+extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN const zfchar *fmt
+        , ...
+        );
+extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(
+        ZF_IN const ZFCallerInfo &callerInfo
+        , ZF_IN const zfchar *fmt
+        , ZF_IN va_list vaList
+        );
 
 // ============================================================
 /**
@@ -85,10 +93,8 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(ZF_IN const ZFCallerInfo &callerIn
  * @brief #zfCoreAssert with custom message
  */
 #define zfCoreAssertWithMessage(exp, fmt, ...) \
-    do \
-    { \
-        if(!(exp)) \
-        { \
+    do { \
+        if(!(exp)) { \
             zfCoreCriticalMessage(fmt, ##__VA_ARGS__); \
         } \
     } while(zffalse)
@@ -97,10 +103,8 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(ZF_IN const ZFCallerInfo &callerIn
  * @brief see #zfCoreAssertWithMessage
  */
 #define zfCoreAssertWithMessageTrim(exp, fmt, ...) \
-    do \
-    { \
-        if(!(exp)) \
-        { \
+    do { \
+        if(!(exp)) { \
             zfCoreCriticalMessageTrim(fmt, ##__VA_ARGS__); \
         } \
     } while(zffalse)
@@ -109,10 +113,8 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(ZF_IN const ZFCallerInfo &callerIn
  * @brief see #zfCoreAssertWithMessage
  */
 #define zfCoreAssertWithMessageDetail(exp, callerInfo, fmt, ...) \
-    do \
-    { \
-        if(!(exp)) \
-        { \
+    do { \
+        if(!(exp)) { \
             zfCoreCriticalMessageDetail(callerInfo, fmt, ##__VA_ARGS__); \
         } \
     } while(zffalse)

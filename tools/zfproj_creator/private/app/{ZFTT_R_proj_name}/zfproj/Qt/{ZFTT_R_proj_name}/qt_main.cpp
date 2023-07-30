@@ -1,7 +1,6 @@
 #include "ZFImpl/sys_Qt/ZFMainEntry_sys_Qt.h"
 
-int main(int argc, char **argv)
-{{ZFTT_C_lib_require_0}
+int main(int argc, char **argv) {{ZFTT_C_lib_require_0}
     ZFImpl_sys_Qt_requireLib({ZFTT_R_lib_name_0}){ZFTT_CE}{ZFTT_C_lib_require_1}
     ZFImpl_sys_Qt_requireLib({ZFTT_R_lib_name_1}){ZFTT_CE}{ZFTT_C_lib_require_2}
     ZFImpl_sys_Qt_requireLib({ZFTT_R_lib_name_2}){ZFTT_CE}{ZFTT_C_lib_require_3}

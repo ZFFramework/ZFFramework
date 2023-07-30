@@ -39,11 +39,13 @@ public:
     /**
      * @brief see #ZFResCopy
      */
-    virtual zfbool resCopy(ZF_IN const zfchar *resPath,
-                           ZF_IN const zfchar *dstPath,
-                           ZF_IN_OPT zfbool isRecursive = zftrue,
-                           ZF_IN_OPT zfbool isForce = zftrue,
-                           ZF_IN_OPT zfstring *errPos = zfnull);
+    virtual zfbool resCopy(
+            ZF_IN const zfchar *resPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN_OPT zfbool isRecursive = zftrue
+            , ZF_IN_OPT zfbool isForce = zftrue
+            , ZF_IN_OPT zfstring *errPos = zfnull
+            );
     /**
      * @brief see #ZFResOpen
      */
@@ -60,16 +62,20 @@ public:
     /**
      * @brief see #ZFResSeek
      */
-    virtual zfbool resSeek(ZF_IN void *token,
-                           ZF_IN zfindex byteSize,
-                           ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin);
+    virtual zfbool resSeek(
+            ZF_IN void *token
+            , ZF_IN zfindex byteSize
+            , ZF_IN_OPT ZFSeekPos position = ZFSeekPosBegin
+            );
 
     /**
      * @brief see #ZFResRead
      */
-    virtual zfindex resRead(ZF_IN void *token,
-                            ZF_IN void *buf,
-                            ZF_IN zfindex maxByteSize);
+    virtual zfindex resRead(
+            ZF_IN void *token
+            , ZF_IN void *buf
+            , ZF_IN zfindex maxByteSize
+            );
 
     /**
      * @brief see #ZFResIsEof
@@ -83,8 +89,10 @@ public:
     /**
      * @brief see #ZFResFindFirst, #ZFFileFindFirst
      */
-    virtual zfbool resFindFirst(ZF_IN_OUT ZFFileFindData::Impl &fd,
-                                ZF_IN const zfchar *resPath);
+    virtual zfbool resFindFirst(
+            ZF_IN_OUT ZFFileFindData::Impl &fd
+            , ZF_IN const zfchar *resPath
+            );
     /**
      * @brief see #ZFResFindNext, #ZFFileFindNext
      */

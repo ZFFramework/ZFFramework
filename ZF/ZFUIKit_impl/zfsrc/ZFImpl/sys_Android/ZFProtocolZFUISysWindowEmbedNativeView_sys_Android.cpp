@@ -16,8 +16,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowEmbedNativeViewImpl_sys_Android, ZF
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -27,18 +26,18 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void nativeViewAdd(ZF_IN ZFUISysWindow *sysWindow,
-                               ZF_IN_OUT void *&parent,
-                               ZF_IN void *child)
-    {
+    virtual void nativeViewAdd(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN_OUT void *&parent
+            , ZF_IN void *child
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeViewAdd",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -51,10 +50,11 @@ public:
             ZFCastStatic(jobject, child)
             );
     }
-    virtual void nativeViewRemove(ZF_IN ZFUISysWindow *sysWindow,
-                                  ZF_IN_OUT void *&parent,
-                                  ZF_IN void *child)
-    {
+    virtual void nativeViewRemove(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN_OUT void *&parent
+            , ZF_IN void *child
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeViewRemove",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()

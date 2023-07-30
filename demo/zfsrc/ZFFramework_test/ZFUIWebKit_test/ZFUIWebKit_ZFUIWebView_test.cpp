@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWebKit_ZFUIWebView_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWebKit_ZFUIWebView_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWebKit_ZFUIWebView_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUIWebView);
@@ -34,9 +32,10 @@ protected:
     }
 
 private:
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIWebView *testView)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUIWebView *testView
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);

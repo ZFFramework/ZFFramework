@@ -26,9 +26,11 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32ValueInvalid)
  * you may separate big buffer to small ones,
  * and calculate separately
  */
-extern ZFLIB_ZFAlgorithm zfflags zfCrc32Calc(ZF_IN const void *src,
-                                             ZF_IN zfindex len,
-                                             ZF_IN_OPT zfflags prevResult = ZFCrc32ValueZero());
+extern ZFLIB_ZFAlgorithm zfflags zfCrc32Calc(
+        ZF_IN const void *src
+        , ZF_IN zfindex len
+        , ZF_IN_OPT zfflags prevResult = ZFCrc32ValueZero()
+        );
 /**
  * @brief calculate CRC32, return #ZFCrc32ValueInvalid if failed
  *
@@ -36,16 +38,18 @@ extern ZFLIB_ZFAlgorithm zfflags zfCrc32Calc(ZF_IN const void *src,
  * you may separate big buffer to small ones,
  * and calculate separately
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfflags, zfCrc32Calc,
-                        ZFMP_IN(const ZFInput &, callback),
-                        ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfflags, zfCrc32Calc
+        , ZFMP_IN(const ZFInput &, callback)
+        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero())
+        )
 /**
  * @brief see #zfCrc32Calc
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfflags, zfCrc32Calc,
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, len, zfindexMax()),
-                        ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfflags, zfCrc32Calc
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero())
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCrc32_h_

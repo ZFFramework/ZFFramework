@@ -6,10 +6,11 @@ ZFOBJECT_REGISTER(ZFUIKit_test_Window)
 ZFOBJECT_REGISTER(ZFUIKit_test_Button)
 ZFOBJECT_REGISTER(ZFUIKit_test_ListView)
 
-void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
-                                    ZF_OUT ZFUIView *&container,
-                                    ZF_IN ZFTestCase *testCaseToStop)
-{
+void ZFUIKit_test_prepareTestWindow(
+        ZF_OUT ZFUIWindow *&window
+        , ZF_OUT ZFUIView *&container
+        , ZF_IN ZFTestCase *testCaseToStop
+        ) {
     window = zfAlloc(ZFUIKit_test_Window);
     zfblockedRelease(window);
     window->windowShow();
@@ -33,8 +34,7 @@ void ZFUIKit_test_prepareTestWindow(ZF_OUT ZFUIWindow *&window,
     window->childAdd(container)->c_sizeFill()->c_margin(0, 50, 0, 0);
 }
 
-zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
-{
+zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
     zfblockedAlloc(ZFUIKit_test_Button, settingsButton);
     settingsButton->label()->text("settings");
     settingsButton->objectTag("settingsHolder", settings);
@@ -61,8 +61,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
 
     zfblockedAlloc(ZFUIKit_test_ListView, listView);
     window->childAdd(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
-    for(zfindex i = 0; i < settings->count(); ++i)
-    {
+    for(zfindex i = 0; i < settings->count(); ++i) {
         ZFUIKit_test_SettingData *setting = settings->get<ZFUIKit_test_SettingData *>(i);
         zfCoreAssert(setting->buttonTextGetter());
         zfCoreAssert(setting->buttonClickListener());
@@ -108,19 +107,21 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings)
     return settingsButton;
 }
 
-void ZFUIKit_test_prepareSettingButtonWithTestWindow(ZF_IN ZFUIWindow *window,
-                                                     ZF_IN ZFArray *settings)
-{
+void ZFUIKit_test_prepareSettingButtonWithTestWindow(
+        ZF_IN ZFUIWindow *window
+        , ZF_IN ZFArray *settings
+        ) {
     zfautoObject buttonHolder = ZFUIKit_test_prepareSettingButton(settings);
     ZFUIButton *button = buttonHolder;
     window->childAdd(button)->c_alignTop();
 }
 
-void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
-                                            ZF_IN ZFObject *obj,
-                                            ZF_IN const ZFProperty *property,
-                                            ZF_IN const ZFListener &nextCallback)
-{
+void ZFUIKit_test_prepareSettingForProperty(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFObject *obj
+        , ZF_IN const ZFProperty *property
+        , ZF_IN const ZFListener &nextCallback
+        ) {
     zfCoreAssert(settings != zfnull);
     zfCoreAssert(nextCallback);
 
@@ -140,10 +141,11 @@ void ZFUIKit_test_prepareSettingForProperty(ZF_IN_OUT ZFArray *settings,
     settings->add(zflineAlloc(ZFUIKit_test_SettingData, buttonTextGetter, buttonClickListener));
 }
 
-void ZFUIKit_test_prepareSettingForBoolProperty(ZF_IN_OUT ZFArray *settings,
-                                                ZF_IN ZFObject *obj,
-                                                ZF_IN const ZFProperty *property)
-{
+void ZFUIKit_test_prepareSettingForBoolProperty(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFObject *obj
+        , ZF_IN const ZFProperty *property
+        ) {
     zfCoreAssert(settings != zfnull);
     zfCoreAssert(obj != zfnull && property != zfnull);
     zfCoreAssert(obj->classData()->classIsTypeOf(property->propertyOwnerClass()));
@@ -153,9 +155,10 @@ void ZFUIKit_test_prepareSettingForBoolProperty(ZF_IN_OUT ZFArray *settings,
     ZFUIKit_test_prepareSettingForNormalProperty(settings, obj, zfbool, property, ZFCoreArrayPODCreate(zfbool, value, !value));
 }
 
-void ZFUIKit_test_prepareSettingForLayoutRequest(ZF_IN_OUT ZFArray *settings,
-                                                 ZF_IN ZFUIView *view)
-{
+void ZFUIKit_test_prepareSettingForLayoutRequest(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFUIView *view
+        ) {
     zfCoreAssert(settings != zfnull);
     zfCoreAssert(view != zfnull);
 
@@ -172,10 +175,11 @@ void ZFUIKit_test_prepareSettingForLayoutRequest(ZF_IN_OUT ZFArray *settings,
     settings->add(zflineAlloc(ZFUIKit_test_SettingData, buttonTextGetter, buttonClickListener));
 }
 
-void ZFUIKit_test_prepareSettingForResetProperty(ZF_IN_OUT ZFArray *settings,
-                                                 ZF_IN ZFObject *obj,
-                                                 ZF_IN const ZFCoreArrayPOD<const ZFProperty *> &propertyList)
-{
+void ZFUIKit_test_prepareSettingForResetProperty(
+        ZF_IN_OUT ZFArray *settings
+        , ZF_IN ZFObject *obj
+        , ZF_IN const ZFCoreArrayPOD<const ZFProperty *> &propertyList
+        ) {
     zfblockedAlloc(ZFUIKit_test_SettingData, setting);
     settings->add(setting);
 
@@ -192,18 +196,15 @@ void ZFUIKit_test_prepareSettingForResetProperty(ZF_IN_OUT ZFArray *settings,
             ) {
         const ZFCoreArrayPOD<const ZFProperty *> &toReset = propertyList;
 
-        if(obj == zfnull || settings == zfnull || toReset.isEmpty())
-        {
+        if(obj == zfnull || settings == zfnull || toReset.isEmpty()) {
             return;
         }
 
         zfautoObject fromObj = obj->classData()->newInstance();
-        for(zfindex i = 0; i < toReset.count(); ++i)
-        {
+        for(zfindex i = 0; i < toReset.count(); ++i) {
             ZFPropertyCopy(toReset[i], obj, fromObj);
         }
-        for(zfindex i = 0; i < settings->count(); ++i)
-        {
+        for(zfindex i = 0; i < settings->count(); ++i) {
             settings->get<ZFUIKit_test_SettingData *>(i)->settingUpdate();
         }
     } ZFLISTENER_END()

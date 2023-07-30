@@ -6,8 +6,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFThreadImpl_default_TaskData
-{
+zfclassNotPOD _ZFP_ZFThreadImpl_default_TaskData {
 public:
     void *threadToken;
     void *mainThreadToken;
@@ -21,16 +20,14 @@ public:
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_default, ZFApp, ZFProtocolLevel::e_Default)
 public:
-    virtual void appRestart(void)
-    {
+    virtual void appRestart(void) {
         _ZFP_ZFThreadImpl_default_TaskData *taskData = zfnew(_ZFP_ZFThreadImpl_default_TaskData);
 
         ZFLISTENER_1(runnable
                 , _ZFP_ZFThreadImpl_default_TaskData *, taskData
                 ) {
             ZFPROTOCOL_ACCESS(ZFThread)->sleep(100);
-            if(taskData->threadToken != zfnull)
-            {
+            if(taskData->threadToken != zfnull) {
                 ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThreadCleanup(taskData->threadToken);
                 taskData->threadToken = zfnull;
             }
@@ -38,8 +35,7 @@ public:
             ZFLISTENER_1(mainThreadRunnable
                     , _ZFP_ZFThreadImpl_default_TaskData *, taskData
                     ) {
-                if(taskData->mainThreadToken != zfnull)
-                {
+                if(taskData->mainThreadToken != zfnull) {
                     ZFPROTOCOL_ACCESS(ZFThread)->executeInMainThreadCleanup(taskData->mainThreadToken);
                     taskData->mainThreadToken = zfnull;
                 }

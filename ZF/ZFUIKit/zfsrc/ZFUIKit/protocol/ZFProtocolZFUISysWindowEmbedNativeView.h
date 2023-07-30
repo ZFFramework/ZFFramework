@@ -21,15 +21,19 @@ public:
      * the attached child must fill parent,
      * and change frame according to parent's size automatically
      */
-    virtual void nativeViewAdd(ZF_IN ZFUISysWindow *sysWindow,
-                               ZF_IN_OUT void *&parent,
-                               ZF_IN void *child) zfpurevirtual;
+    virtual void nativeViewAdd(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN_OUT void *&parent
+            , ZF_IN void *child
+            ) zfpurevirtual;
     /**
      * @brief remove native view, see #nativeViewAdd
      */
-    virtual void nativeViewRemove(ZF_IN ZFUISysWindow *sysWindow,
-                                  ZF_IN_OUT void *&parent,
-                                  ZF_IN void *child) zfpurevirtual;
+    virtual void nativeViewRemove(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN_OUT void *&parent
+            , ZF_IN void *child
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFUISysWindowEmbedNativeView)
 
 ZF_NAMESPACE_GLOBAL_END

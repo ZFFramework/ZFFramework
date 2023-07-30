@@ -14,21 +14,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief register impl for #ZFObjectMutexImplSet
  */
 #define ZFOBJECT_MUTEX_IMPL_DEFINE(registerSig, protocolLevel, setupAction) \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(_ZFP_OMI_##registerSig, ZFLevelZFFrameworkStatic) \
-    { \
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(_ZFP_OMI_##registerSig, ZFLevelZFFrameworkStatic) { \
         _protocolLevel = protocolLevel; \
-        if(_ZFP_ZFObjectMutexImplRegistered == zfnull || _protocolLevel > *_ZFP_ZFObjectMutexImplRegistered) \
-        { \
+        if(_ZFP_ZFObjectMutexImplRegistered == zfnull || _protocolLevel > *_ZFP_ZFObjectMutexImplRegistered) { \
             _ZFP_ZFObjectMutexImplRegistered = &_protocolLevel; \
             { \
                 setupAction \
             } \
         } \
     } \
-    ZF_GLOBAL_INITIALIZER_DESTROY(_ZFP_OMI_##registerSig) \
-    { \
-        if(&_protocolLevel == _ZFP_ZFObjectMutexImplRegistered) \
-        { \
+    ZF_GLOBAL_INITIALIZER_DESTROY(_ZFP_OMI_##registerSig) { \
+        if(&_protocolLevel == _ZFP_ZFObjectMutexImplRegistered) { \
             _ZFP_ZFObjectMutexImplRegistered = zfnull; \
             ZFObjectMutexImplSet(); \
         } \

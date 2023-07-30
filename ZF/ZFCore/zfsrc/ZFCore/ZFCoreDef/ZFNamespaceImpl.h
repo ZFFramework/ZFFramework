@@ -27,29 +27,29 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
     _ZFP_ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace)
 #define _ZFP_ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
-    const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) \
-    { \
+    const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) { \
         static _ZFP_ZFNamespaceHolder d(ParentNameSpace::_ZFP_ZF_NAMESPACE_NOT_REGISTERED(), #NameSpace); \
         return d.ns.cString(); \
     } \
-    ZF_STATIC_REGISTER_INIT(_ZFP_NSReg) \
-    { \
+    ZF_STATIC_REGISTER_INIT(_ZFP_NSReg) { \
         _ZFP_ZF_NAMESPACE_NOT_REGISTERED(); \
     } \
     ZF_STATIC_REGISTER_END(_ZFP_NSReg)
-extern ZFLIB_ZFCore zfstring _ZFP_ZFNamespaceRegister(ZF_IN const char *parent,
-                                                      ZF_IN const char *child);
+extern ZFLIB_ZFCore zfstring _ZFP_ZFNamespaceRegister(
+        ZF_IN const char *parent
+        , ZF_IN const char *child
+        );
 extern ZFLIB_ZFCore void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns);
-class _ZFP_ZFNamespaceHolder
-{
+class _ZFP_ZFNamespaceHolder {
 public:
-    _ZFP_ZFNamespaceHolder(const char *parent,
-                           const char *child)
+    _ZFP_ZFNamespaceHolder(
+            ZF_IN const char *parent
+            , ZF_IN const char *child
+            )
     : ns(_ZFP_ZFNamespaceRegister(parent, child))
     {
     }
-    ~_ZFP_ZFNamespaceHolder(void)
-    {
+    ~_ZFP_ZFNamespaceHolder(void) {
         _ZFP_ZFNamespaceUnregister(this->ns.cString());
     }
 public:
@@ -87,9 +87,11 @@ extern ZFLIB_ZFCore const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns);
  * if success, ret ensured to have at least one element even if the namespace is empty,
  * at this case, the only one element would be #ZFIndexRangeZero
  */
-extern ZFLIB_ZFCore zfbool ZFNamespaceSplit(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret,
-                                            ZF_IN const zfchar *src,
-                                            ZF_IN_OPT zfindex srcLen = zfindexMax());
+extern ZFLIB_ZFCore zfbool ZFNamespaceSplit(
+        ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        );
 
 // ============================================================
 /**
@@ -97,21 +99,23 @@ extern ZFLIB_ZFCore zfbool ZFNamespaceSplit(ZF_IN_OUT ZFCoreArray<ZFIndexRange> 
  */
 extern ZFLIB_ZFCore void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret);
 /** @brief see #ZFNamespaceGetAllT */
-inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(void)
-{
+inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(void) {
     ZFCoreArrayPOD<const zfchar *> ret;
     ZFNamespaceGetAllT(ret);
     return ret;
 }
 
 /** @brief see #ZFNamespaceGetAllT */
-extern ZFLIB_ZFCore void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret,
-                                            ZF_IN const zfchar *parent,
-                                            ZF_IN_OPT zfbool recursive = zffalse);
+extern ZFLIB_ZFCore void ZFNamespaceGetAllT(
+        ZF_IN_OUT ZFCoreArray<const zfchar *> &ret
+        , ZF_IN const zfchar *parent
+        , ZF_IN_OPT zfbool recursive = zffalse
+        );
 /** @brief see #ZFNamespaceGetAllT */
-inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(ZF_IN const zfchar *parent,
-                                                        ZF_IN_OPT zfbool recursive = zffalse)
-{
+inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(
+        ZF_IN const zfchar *parent
+        , ZF_IN_OPT zfbool recursive = zffalse
+        ) {
     ZFCoreArrayPOD<const zfchar *> ret;
     ZFNamespaceGetAllT(ret, parent, recursive);
     return ret;

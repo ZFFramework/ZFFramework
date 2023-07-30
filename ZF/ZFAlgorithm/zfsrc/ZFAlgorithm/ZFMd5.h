@@ -12,29 +12,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief calculate MD5, return empty string if failed
  */
-extern ZFLIB_ZFAlgorithm void zfMd5Calc(ZF_IN_OUT zfstring &ret,
-                                        ZF_IN const void *src,
-                                        ZF_IN zfindex len,
-                                        ZF_IN_OPT zfbool upperCase = zftrue);
+extern ZFLIB_ZFAlgorithm void zfMd5Calc(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const void *src
+        , ZF_IN zfindex len
+        , ZF_IN_OPT zfbool upperCase = zftrue
+        );
 /** @brief see #zfMd5Calc */
-inline zfstring zfMd5Calc(ZF_IN const void *src,
-                          ZF_IN zfindex len,
-                          ZF_IN_OPT zfbool upperCase = zftrue)
-{
+inline zfstring zfMd5Calc(
+        ZF_IN const void *src
+        , ZF_IN zfindex len
+        , ZF_IN_OPT zfbool upperCase = zftrue
+        ) {
     zfstring ret;
     zfMd5Calc(ret, src, len, upperCase);
     return ret;
 }
 
 /** @brief see #zfMd5Calc */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, zfMd5Calc,
-                        ZFMP_IN_OUT(zfstring &, ret),
-                        ZFMP_IN(const ZFInput &, callback),
-                        ZFMP_IN_OPT(zfbool, upperCase, zftrue))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, zfMd5Calc
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const ZFInput &, callback)
+        , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
+        )
 /** @brief see #zfMd5Calc */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, zfMd5Calc,
-                        ZFMP_IN(const ZFInput &, callback),
-                        ZFMP_IN_OPT(zfbool, upperCase, zftrue))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, zfMd5Calc
+        , ZFMP_IN(const ZFInput &, callback)
+        , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFMd5_h_

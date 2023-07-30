@@ -19,8 +19,7 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfautoObject, ZFUIViewBlinkImageDefault)
 /**
  * @brief param for #ZFUIViewBlink
  */
-zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewBlinkParam
-{
+zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewBlinkParam {
     ZFCORE_PARAM_DECLARE_SELF(ZFUIViewBlinkParam)
 
 public:
@@ -34,16 +33,14 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN const ZFUIViewBlinkParam &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFUIViewBlinkParam &ref) const {
         return (zftrue
                 && this->blinkImage() == ref.blinkImage()
                 && this->blinkDuration() == ref.blinkDuration()
                 && this->blinkCount() == ref.blinkCount()
             );
     }
-    zfbool operator != (ZF_IN const ZFUIViewBlinkParam &ref) const
-    {
+    zfbool operator != (ZF_IN const ZFUIViewBlinkParam &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -52,18 +49,19 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIViewBlinkParam, ZFUIViewBlinkPar
 /**
  * @brief blink view so that it's easy to be noticed
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewBlink,
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFUIViewBlinkParam &, blinkParam, ZFUIViewBlinkParam()));
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewBlink
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(const ZFUIViewBlinkParam &, blinkParam, ZFUIViewBlinkParam())
+        );
 /**
  * @brief blink view so that it's easy to be noticed
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIViewBlink,
-                               ZFMP_IN(ZFUIView *, view),
-                               ZFMP_IN(ZFUIImage *, blinkImage),
-                               ZFMP_IN_OPT(zftimet, blinkDuration, zftimetZero()),
-                               ZFMP_IN_OPT(zfindex, blinkCount, 1))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIViewBlink
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN(ZFUIImage *, blinkImage)
+        , ZFMP_IN_OPT(zftimet, blinkDuration, zftimetZero())
+        , ZFMP_IN_OPT(zfindex, blinkCount, 1)
+        ) {
     ZFUIViewBlink(view, ZFUIViewBlinkParam()
             .blinkImage(blinkImage)
             .blinkDuration(blinkDuration)

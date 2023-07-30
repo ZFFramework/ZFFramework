@@ -10,11 +10,9 @@
 @end
 static _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS *_ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance = nil;
 @implementation _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
-    if(self)
-    {
+    if(self) {
         self.keyboardShowing = zffalse;
         self.keyboardFrame = ZFUIRectZero();
 
@@ -22,24 +20,20 @@ static _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS *_ZFP_ZFUIOnScreenKeyboardStat
     }
     return self;
 }
-- (void)dealloc
-{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-- (void)_keyboardOnChange:(NSNotification *)aNotification
-{
+- (void)_keyboardOnChange:(NSNotification *)aNotification {
     CGRect rect = [[aNotification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     ZFUIRect keyboardFrameNew = ZFImpl_sys_iOS_ZFUIRectFromCGRect(rect);
 
     self.keyboardShowing = (keyboardFrameNew.height > 0
         && keyboardFrameNew.y < [UIApplication sharedApplication].keyWindow.frame.size.height);
-    if(keyboardFrameNew != self.keyboardFrame)
-    {
+    if(keyboardFrameNew != self.keyboardFrame) {
         self.keyboardFrame = keyboardFrameNew;
 
         ZFPROTOCOL_INTERFACE_CLASS(ZFUIOnScreenKeyboardState) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIOnScreenKeyboardState);
-        if(impl != zfnull && ZFUISysWindow::mainWindowAttached())
-        {
+        if(impl != zfnull && ZFUISysWindow::mainWindowAttached()) {
             impl->notifyKeyboardStateOnChange(ZFUIOnScreenKeyboardState::instanceForSysWindow());
         }
     }
@@ -47,24 +41,20 @@ static _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS *_ZFP_ZFUIOnScreenKeyboardStat
 @end
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardStateImpl_sys_iOS_DataHolder, ZFLevelZFFrameworkEssential)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardStateImpl_sys_iOS_DataHolder, ZFLevelZFFrameworkEssential) {
     _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance = [_ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS new];
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardStateImpl_sys_iOS_DataHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardStateImpl_sys_iOS_DataHolder) {
     _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance = nil;
 }
 ZF_GLOBAL_INITIALIZER_END(ZFUIOnScreenKeyboardStateImpl_sys_iOS_DataHolder)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIOnScreenKeyboardStateImpl_sys_iOS, ZFUIOnScreenKeyboardState, ZFProtocolLevel::e_SystemNormal)
 public:
-    virtual zfbool keyboardShowing(ZF_IN ZFUIOnScreenKeyboardState *keyboardState)
-    {
+    virtual zfbool keyboardShowing(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
         return _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance.keyboardShowing;
     }
-    virtual ZFUIRect keyboardFrame(ZF_IN ZFUIOnScreenKeyboardState *keyboardState)
-    {
+    virtual ZFUIRect keyboardFrame(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
         return _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance.keyboardFrame;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIOnScreenKeyboardStateImpl_sys_iOS)

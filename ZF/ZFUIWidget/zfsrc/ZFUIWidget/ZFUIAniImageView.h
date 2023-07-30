@@ -11,8 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassFwd _ZFP_ZFUIAniImageDataPrivate;
 /** @brief see #ZFUIAniImageView */
-zffinal zfclass ZFLIB_ZFUIWidget ZFUIAniImageData : zfextends ZFStyleableObject
-{
+zffinal zfclass ZFLIB_ZFUIWidget ZFUIAniImageData : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUIAniImageData, ZFStyleableObject)
 
 public:
@@ -39,18 +38,20 @@ public:
      * -# #ZFObjectIOSave according to pathInfo,
      *   which would write "yourFileName.png" and "yourFileName.xml"
      */
-    ZFMETHOD_DECLARE_STATIC_3(zfbool, Create,
-                              ZFMP_IN(const ZFPathInfo &, pathInfo),
-                              ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages),
-                              ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>()))
+    ZFMETHOD_DECLARE_STATIC_3(zfbool, Create
+            , ZFMP_IN(const ZFPathInfo &, pathInfo)
+            , ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages)
+            , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            )
 
 public:
     /** @brief see #ZFUIAniImageView */
-    ZFMETHOD_DECLARE_4(zfbool, aniLoad,
-                       ZFMP_IN(ZFUIImage *, frameSrc),
-                       ZFMP_IN(const ZFUISize &, frameSizePixel),
-                       ZFMP_IN_OPT(zfindex, frameCount, zfindexMax()),
-                       ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>()))
+    ZFMETHOD_DECLARE_4(zfbool, aniLoad
+            , ZFMP_IN(ZFUIImage *, frameSrc)
+            , ZFMP_IN(const ZFUISize &, frameSizePixel)
+            , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
+            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            )
 
     /** @brief see #ZFUIAniImageView */
     ZFMETHOD_DECLARE_0(zfautoObjectT<ZFUIImage *> const &, frameSrc)
@@ -70,10 +71,12 @@ protected:
     /**
      * @brief construct by #aniLoad
      */
-    ZFOBJECT_ON_INIT_DECLARE_4(ZFMP_IN(ZFUIImage *, frameSrc),
-                               ZFMP_IN(const ZFUISize &, frameSizePixel),
-                               ZFMP_IN_OPT(zfindex, frameCount, zfindexMax()),
-                               ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>()))
+    ZFOBJECT_ON_INIT_DECLARE_4(
+            ZFMP_IN(ZFUIImage *, frameSrc)
+            , ZFMP_IN(const ZFUISize &, frameSizePixel)
+            , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
+            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            )
     zfoverride
     virtual void objectOnInit(void);
     zfoverride
@@ -87,13 +90,17 @@ protected:
     virtual void styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable);
 
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 private:
     _ZFP_ZFUIAniImageDataPrivate *d;
@@ -138,8 +145,7 @@ zfclassFwd _ZFP_ZFUIAniImageViewPrivate;
  *   </ZFUIAniImageView>
  * @endcode
  */
-zfclass ZFLIB_ZFUIWidget ZFUIAniImageView : zfextends ZFUIImageView
-{
+zfclass ZFLIB_ZFUIWidget ZFUIAniImageView : zfextends ZFUIImageView {
     ZFOBJECT_DECLARE(ZFUIAniImageView, ZFUIImageView)
 
 public:
@@ -176,10 +182,11 @@ public:
     /**
      * @brief see #ZFUIAniImageData::Create
      */
-    ZFMETHOD_DECLARE_STATIC_3(zfbool, Create,
-                              ZFMP_IN(const ZFPathInfo &, pathInfo),
-                              ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages),
-                              ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>()))
+    ZFMETHOD_DECLARE_STATIC_3(zfbool, Create
+            , ZFMP_IN(const ZFPathInfo &, pathInfo)
+            , ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages)
+            , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            )
 
     // ============================================================
     // frame control
@@ -187,11 +194,12 @@ public:
     /**
      * @brief util to load #aniData
      */
-    ZFMETHOD_DECLARE_4(zfbool, aniLoad,
-                       ZFMP_IN(ZFUIImage *, frameSrc),
-                       ZFMP_IN(const ZFUISize &, frameSizePixel),
-                       ZFMP_IN_OPT(zfindex, frameCount, zfindexMax()),
-                       ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>()))
+    ZFMETHOD_DECLARE_4(zfbool, aniLoad
+            , ZFMP_IN(ZFUIImage *, frameSrc)
+            , ZFMP_IN(const ZFUISize &, frameSizePixel)
+            , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
+            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            )
 
     /**
      * @brief the animation data, see #ZFUIAniImageView
@@ -214,8 +222,9 @@ public:
      * if you want to start from first frame,
      * call #aniFrame before calling this method
      */
-    ZFMETHOD_DECLARE_1(void, aniStart,
-                       ZFMP_IN_OPT(zfindex, aniCount, 1))
+    ZFMETHOD_DECLARE_1(void, aniStart
+            , ZFMP_IN_OPT(zfindex, aniCount, 1)
+            )
     /**
      * @brief stop animate the image
      *
@@ -237,8 +246,9 @@ public:
      * calling this method would notify #EventAniOnFrame,
      * but no other event would be notified
      */
-    ZFMETHOD_DECLARE_1(void, aniFrame,
-                       ZFMP_IN(zfindex const &, aniFrame))
+    ZFMETHOD_DECLARE_1(void, aniFrame
+            , ZFMP_IN(zfindex const &, aniFrame)
+            )
 
     /** @brief util to manually move #aniFrame to next */
     ZFMETHOD_DECLARE_0(void, aniFrameNext)
@@ -266,10 +276,12 @@ protected:
     /**
      * @brief construct by #aniLoad
      */
-    ZFOBJECT_ON_INIT_DECLARE_4(ZFMP_IN(ZFUIImage *, frameSrc),
-                               ZFMP_IN(const ZFUISize &, frameSizePixel),
-                               ZFMP_IN_OPT(zfindex, frameCount, zfindexMax()),
-                               ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>()))
+    ZFOBJECT_ON_INIT_DECLARE_4(
+            ZFMP_IN(ZFUIImage *, frameSrc)
+            , ZFMP_IN(const ZFUISize &, frameSizePixel)
+            , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
+            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            )
 
     zfoverride
     virtual void objectOnInit(void);
@@ -283,9 +295,11 @@ protected:
     virtual ZFSerializablePropertyType serializableOnCheckPropertyType(ZF_IN const ZFProperty *property);
 
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
 
 private:
     _ZFP_ZFUIAniImageViewPrivate *d;

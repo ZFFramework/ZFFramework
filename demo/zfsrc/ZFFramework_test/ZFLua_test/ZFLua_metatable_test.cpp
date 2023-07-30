@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFLua_metatable_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFLua_metatable_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_metatable_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
 

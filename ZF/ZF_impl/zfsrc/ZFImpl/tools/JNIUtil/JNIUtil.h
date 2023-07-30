@@ -44,8 +44,7 @@ namespace JNIUtil {
 /**
  * @brief workaround to prevent export stl containers
  */
-class _JNI_EXPORT JNIString
-{
+class _JNI_EXPORT JNIString {
 public:
     JNIString(void);
     JNIString(JNIString const &ref);
@@ -66,8 +65,7 @@ class JNIType;
 /**
  * @brief wrapper for JNIGetMethodSig
  */
-class _JNI_EXPORT JNIParamTypeContainer
-{
+class _JNI_EXPORT JNIParamTypeContainer {
 public:
     JNIParamTypeContainer(void);
     ~JNIParamTypeContainer(void);
@@ -112,8 +110,7 @@ extern _JNI_EXPORT JNIEnv *JNIGetJNIEnv(void);
  */
 extern _JNI_EXPORT void JNIConvertClassNameToClassSig(JNIString &ret, const char *className);
 /** @brief see #JNIConvertClassNameToClassSig */
-inline JNIString JNIConvertClassNameToClassSig(const char *className)
-{
+inline JNIString JNIConvertClassNameToClassSig(const char *className) {
     JNIString ret;
     JNIConvertClassNameToClassSig(ret, className);
     return ret;
@@ -127,8 +124,7 @@ inline JNIString JNIConvertClassNameToClassSig(const char *className)
  */
 extern _JNI_EXPORT void JNIConvertClassNameFromClassSig(JNIString &ret, const char *classSig);
 /** @brief see #JNIConvertClassNameFromClassSig */
-inline JNIString JNIConvertClassNameFromClassSig(const char *className)
-{
+inline JNIString JNIConvertClassNameFromClassSig(const char *className) {
     JNIString ret;
     JNIConvertClassNameFromClassSig(ret, className);
     return ret;
@@ -143,8 +139,7 @@ inline JNIString JNIConvertClassNameFromClassSig(const char *className)
  */
 extern _JNI_EXPORT void JNIConvertClassNameForFindClass(JNIString &ret, const char *className);
 /** @brief see #JNIConvertClassNameForFindClass */
-inline JNIString JNIConvertClassNameForFindClass(const char *className)
-{
+inline JNIString JNIConvertClassNameForFindClass(const char *className) {
     JNIString ret;
     JNIConvertClassNameForFindClass(ret, className);
     return ret;
@@ -161,11 +156,9 @@ class _JNITypePrivate;
 /**
  * @brief JNI type utility
  */
-class _JNI_EXPORT JNIType
-{
+class _JNI_EXPORT JNIType {
 public:
-    typedef enum
-    {
+    typedef enum {
         T_boolean, /**< jboolean */
         T_byte, /**< jbyte */
         T_char, /**< jchar */
@@ -244,15 +237,13 @@ public:
     /**
      * @brief util method to create object type
      */
-    static inline JNIType S_object(const char *className)
-    {
+    static inline JNIType S_object(const char *className) {
         return JNIType(JNIType::T_object, className);
     }
     /**
      * @brief util method to create array type
      */
-    static inline JNIType S_array(const JNIType &type)
-    {
+    static inline JNIType S_array(const JNIType &type) {
         return JNIType(JNIType::T_array, type.getId());
     }
 
@@ -289,11 +280,11 @@ extern _JNI_EXPORT JNIString JNIGetMethodSig(const JNIType &returnType,
  *
  * usage:
  * @code
- *   JNI_METHOD_DECLARE_BEGIN(OwnerClassId,
- *                            ReturnType, MethodName,
- *                            Param0, param0,
- *                            Param1, param1)
- *   {
+ *   JNI_METHOD_DECLARE_BEGIN(OwnerClassId
+ *           , ReturnType, MethodName
+ *           , Param0 param0
+ *           , Param1 param1
+ *           ) {
  *       // (JNIEnv *)jniEnv and (jclass)jniCls are predefined
  *   }
  *   JNI_METHOD_DECLARE_END()
@@ -396,8 +387,7 @@ void *_JNIConvertPointerFromJNITypeAction(JNIEnv *jniEnv, jbyteArray d);
 // local/global ref cleaner
 /** @cond ZFPrivateDoc */
 namespace JNIUtilPrivate {
-    class _JNI_EXPORT JNIAutoDeleteHolder
-    {
+    class _JNI_EXPORT JNIAutoDeleteHolder {
     public:
         JNIAutoDeleteHolder(JNIEnv *jniEnv,
                             jobject obj,
@@ -407,17 +397,13 @@ namespace JNIUtilPrivate {
         , globalRefSaved(globalRef)
         {
         }
-        ~JNIAutoDeleteHolder(void)
-        {
-            if(this->jniEnvSaved && this->objSaved)
-            {
-                if(this->globalRefSaved)
-                {
+        ~JNIAutoDeleteHolder(void) {
+            if(this->jniEnvSaved && this->objSaved) {
+                if(this->globalRefSaved) {
 
                     this->jniEnvSaved->DeleteGlobalRef(this->objSaved);
                 }
-                else
-                {
+                else {
                     this->jniEnvSaved->DeleteLocalRef(this->objSaved);
                 }
             }

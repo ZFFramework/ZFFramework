@@ -4,57 +4,48 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFCompress)
 
-zfclassNotPOD _ZFP_ZFProtocolZFCompress_FindData
-{
+zfclassNotPOD _ZFP_ZFProtocolZFCompress_FindData {
 public:
     void *decompressToken;
     zfstring relPath; // ensured no '/' at head or tail
     zfindex lastIndex; // last found index
 };
 
-static zfbool _ZFP_ZFProtocolZFCompress_FindNext(ZF_IN_OUT ZFFileFindData &fd,
-                                                 ZF_IN _ZFP_ZFProtocolZFCompress_FindData *d)
-{
+static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
+        ZF_IN_OUT ZFFileFindData &fd
+        , ZF_IN _ZFP_ZFProtocolZFCompress_FindData *d
+        ) {
     zfindex count = ZFDecompressContentCount(d->decompressToken);
     zfstring tmp;
-    for(zfindex i = d->lastIndex + 1; i < count; ++i)
-    {
+    for(zfindex i = d->lastIndex + 1; i < count; ++i) {
         tmp.removeAll();
-        if(!ZFDecompressContentPathT(d->decompressToken, tmp, i) || tmp.isEmpty())
-        {
+        if(!ZFDecompressContentPathT(d->decompressToken, tmp, i) || tmp.isEmpty()) {
             return zffalse;
         }
         const zfchar *path = tmp;
         zfindex pathLen = tmp.length();
-        while(path[0] == ZFFileSeparator())
-        {
+        while(path[0] == ZFFileSeparator()) {
             ++path;
             --pathLen;
         }
-        while(pathLen > 0 && path[pathLen - 1] == ZFFileSeparator())
-        {
+        while(pathLen > 0 && path[pathLen - 1] == ZFFileSeparator()) {
             --pathLen;
         }
-        if(pathLen == 0)
-        {
+        if(pathLen == 0) {
             continue;
         }
-        if(!d->relPath.isEmpty())
-        {
-            if(pathLen == d->relPath.length() || zfsncmp(d->relPath.cString(), path, d->relPath.length()) != 0)
-            {
+        if(!d->relPath.isEmpty()) {
+            if(pathLen == d->relPath.length() || zfsncmp(d->relPath.cString(), path, d->relPath.length()) != 0) {
                 continue;
             }
             path += d->relPath.length() + 1;
             pathLen -= d->relPath.length() + 1;
-            if(pathLen == 0)
-            {
+            if(pathLen == 0) {
                 continue;
             }
         }
         zfindex pos = zfstringFind(path, pathLen, ZFFileSeparatorString(), 1);
-        if(pos != zfindexMax() && pos != pathLen - 1)
-        {
+        if(pos != zfindexMax() && pos != pathLen - 1) {
             continue;
         }
 
@@ -67,36 +58,32 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(ZF_IN_OUT ZFFileFindData &fd,
     return zffalse;
 }
 
-zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindFirst(ZF_IN_OUT ZFFileFindData &fd,
-                                                                          ZF_IN void *decompressToken,
-                                                                          ZF_IN const zfchar *filePathInZip)
-{
+zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindFirst(
+        ZF_IN_OUT ZFFileFindData &fd
+        , ZF_IN void *decompressToken
+        , ZF_IN const zfchar *filePathInZip
+        ) {
     _ZFP_ZFProtocolZFCompress_FindData *d = zfnew(_ZFP_ZFProtocolZFCompress_FindData);
     d->decompressToken = decompressToken;
     d->lastIndex = zfindexMax();
     ZFPathFormat(d->relPath, filePathInZip);
-    while(!d->relPath.isEmpty() && d->relPath[0] == ZFFileSeparator())
-    {
+    while(!d->relPath.isEmpty() && d->relPath[0] == ZFFileSeparator()) {
         d->relPath.remove(0, 1);
     }
     zfbool ret = _ZFP_ZFProtocolZFCompress_FindNext(fd, d);
-    if(ret)
-    {
+    if(ret) {
         fd.implAttach("ZFDecompressContentFindFirst", d);
     }
-    else
-    {
+    else {
         zfdelete(d);
     }
     return ret;
 }
-zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindNext(ZF_IN_OUT ZFFileFindData &fd)
-{
+zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindNext(ZF_IN_OUT ZFFileFindData &fd) {
     _ZFP_ZFProtocolZFCompress_FindData *d = (_ZFP_ZFProtocolZFCompress_FindData *)fd.implUserData();
     return _ZFP_ZFProtocolZFCompress_FindNext(fd, d);
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindClose(ZF_IN_OUT ZFFileFindData &fd)
-{
+void ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindClose(ZF_IN_OUT ZFFileFindData &fd) {
     fd.implDetach();
 }
 

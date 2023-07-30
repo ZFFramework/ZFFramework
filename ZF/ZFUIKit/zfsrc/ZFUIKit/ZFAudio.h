@@ -13,8 +13,7 @@ zfclassFwd _ZFP_ZFAudioPrivate;
 /**
  * @brief audio player
  */
-zfclass ZFLIB_ZFUIKit ZFAudio : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIKit ZFAudio : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFAudio, ZFObject)
 
 public:
@@ -88,12 +87,14 @@ public:
 
 public:
     /** @brief load from input */
-    ZFMETHOD_DECLARE_1(void, load,
-                       ZFMP_IN(const ZFInput &, input))
+    ZFMETHOD_DECLARE_1(void, load
+            , ZFMP_IN(const ZFInput &, input)
+            )
 
     /** @brief load from url */
-    ZFMETHOD_DECLARE_1(void, load,
-                       ZFMP_IN(const zfchar *, url))
+    ZFMETHOD_DECLARE_1(void, load
+            , ZFMP_IN(const zfchar *, url)
+            )
 
     /**
      * @brief start to play
@@ -131,8 +132,9 @@ public:
      * note, change position may or may not work,
      * depends on impl
      */
-    ZFMETHOD_DECLARE_1(void, position,
-                       ZFMP_IN(zftimet, position))
+    ZFMETHOD_DECLARE_1(void, position
+            , ZFMP_IN(zftimet, position)
+            )
 
     /** @brief current volume */
     ZFPROPERTY_ASSIGN(zffloat, volume)
@@ -159,13 +161,11 @@ protected:
     virtual void objectOnDealloc(void);
 
     zfoverride
-    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-    {
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfsuper::objectInfoOnAppend(ret);
         ret += " ";
         ret += this->stateHint();
-        if(this->started())
-        {
+        if(this->started()) {
             ret += " ";
             zftimetToString(ret, this->position() / 1000);
             ret += "/";
@@ -175,43 +175,49 @@ protected:
 
 protected:
     /** @brief see #EventAudioOnLoad */
-    virtual void audioOnLoad(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint)
-    {
+    virtual void audioOnLoad(
+            ZF_IN ZFResultTypeEnum result
+            , ZF_IN v_zfstring *errorHint
+            ) {
         zfblockedAlloc(ZFResultType, resultHolder);
         resultHolder->enumValue(result);
         this->observerNotify(ZFAudio::EventAudioOnLoad(), resultHolder, errorHint);
     }
     /** @brief see #EventAudioOnStart */
-    virtual void audioOnStart(void)
-    {
+    virtual void audioOnStart(void) {
         this->observerNotify(ZFAudio::EventAudioOnStart());
     }
     /** @brief see #EventAudioOnStop */
-    virtual void audioOnStop(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint)
-    {
+    virtual void audioOnStop(
+            ZF_IN ZFResultTypeEnum result
+            , ZF_IN v_zfstring *errorHint
+            ) {
         zfblockedAlloc(ZFResultType, resultHolder);
         resultHolder->enumValue(result);
         this->observerNotify(ZFAudio::EventAudioOnStop(), resultHolder, errorHint);
     }
     /** @brief see #EventAudioOnResume */
-    virtual void audioOnResume(void)
-    {
+    virtual void audioOnResume(void) {
         this->observerNotify(ZFAudio::EventAudioOnResume());
     }
     /** @brief see #EventAudioOnPause */
-    virtual void audioOnPause(void)
-    {
+    virtual void audioOnPause(void) {
         this->observerNotify(ZFAudio::EventAudioOnPause());
     }
     /** @brief see #EventAudioOnLoop */
-    virtual void audioOnLoop(void)
-    {
+    virtual void audioOnLoop(void) {
         this->observerNotify(ZFAudio::EventAudioOnLoop());
     }
 
 public:
-    zffinal void _ZFP_ZFAudio_OnLoad(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint);
-    zffinal void _ZFP_ZFAudio_OnStop(ZF_IN ZFResultTypeEnum result, ZF_IN v_zfstring *errorHint);
+    zffinal void _ZFP_ZFAudio_OnLoad(
+            ZF_IN ZFResultTypeEnum result
+            , ZF_IN v_zfstring *errorHint
+            );
+    zffinal void _ZFP_ZFAudio_OnStop(
+            ZF_IN ZFResultTypeEnum result
+            , ZF_IN v_zfstring *errorHint
+            );
     zffinal void _ZFP_ZFAudio_OnResume(void);
     zffinal void _ZFP_ZFAudio_OnPause(void);
 private:

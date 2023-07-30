@@ -14,8 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief util class to hold string tokens
  */
-zfclassLikePOD ZFLIB_ZFCore ZFTokenForContainer
-{
+zfclassLikePOD ZFLIB_ZFCore ZFTokenForContainer {
 public:
     zfstring tokenLeft; /**< @brief "[" by default */
     zfstring tokenRight; /**< @brief "]" by default */
@@ -51,8 +50,7 @@ public:
     , tokenEtc(tokenEtc)
     {
     }
-    zfbool operator == (ZF_IN const ZFTokenForContainer &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFTokenForContainer &ref) const {
         return (this->tokenLeft.compare(ref.tokenLeft) == 0
                 && this->tokenRight.compare(ref.tokenRight) == 0
                 && this->tokenSeparator.compare(ref.tokenSeparator) == 0
@@ -112,8 +110,7 @@ extern ZFLIB_ZFCore ZFTokenForContainer _ZFP_ZFTokenForContainerDefault;
 /**
  * @brief util class to hold string tokens
  */
-zfclassLikePOD ZFLIB_ZFCore ZFTokenForKeyValueContainer
-{
+zfclassLikePOD ZFLIB_ZFCore ZFTokenForKeyValueContainer {
 public:
     zfstring tokenLeft; /**< @brief "{" by default */
     zfstring tokenRight; /**< @brief "}" by default */
@@ -169,8 +166,7 @@ public:
     , tokenEtc(tokenEtc)
     {
     }
-    zfbool operator == (ZF_IN const ZFTokenForKeyValueContainer &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFTokenForKeyValueContainer &ref) const {
         return (this->tokenLeft.compare(ref.tokenLeft) == 0
                 && this->tokenRight.compare(ref.tokenRight) == 0
                 && this->tokenSeparator.compare(ref.tokenSeparator) == 0

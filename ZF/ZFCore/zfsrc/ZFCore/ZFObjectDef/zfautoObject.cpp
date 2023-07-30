@@ -4,107 +4,84 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfautoObject::zfautoObject(ZF_IN zfautoObject const &ref)
-{
+zfautoObject::zfautoObject(ZF_IN zfautoObject const &ref) {
     zfCoreMutexLock();
     d = ref.d;
-    if(d)
-    {
+    if(d) {
         ++(d->refCount);
     }
     zfCoreMutexUnlock();
 }
-zfautoObject::~zfautoObject(void)
-{
-    if(d)
-    {
+zfautoObject::~zfautoObject(void) {
+    if(d) {
         zfCoreMutexLock();
-        if(d->refCount == 1)
-        {
+        if(d->refCount == 1) {
             zfunsafe_zfRelease(d->obj);
             zfpoolDelete(d);
         }
-        else
-        {
+        else {
             --(d->refCount);
         }
         zfCoreMutexUnlock();
     }
 }
 
-zfautoObject &zfautoObject::operator = (ZF_IN zfautoObject const &ref)
-{
+zfautoObject &zfautoObject::operator = (ZF_IN zfautoObject const &ref) {
     zfCoreMutexLock();
     this->zfunsafe_assign(ref);
     zfCoreMutexUnlock();
     return *this;
 }
 
-void zfautoObject::zfunsafe_assign(ZF_IN ZFObject *obj)
-{
+void zfautoObject::zfunsafe_assign(ZF_IN ZFObject *obj) {
     zfunsafe_zfRetain(obj);
-    if(d)
-    {
-        if(d->refCount == 1)
-        {
+    if(d) {
+        if(d->refCount == 1) {
             ZFObject *objTmp = d->obj;
             d->obj = obj;
             zfunsafe_zfRelease(objTmp);
         }
-        else
-        {
+        else {
             --(d->refCount);
-            if(obj)
-            {
+            if(obj) {
                 d = zfpoolNew(_ZFP_zfautoObjectPrivate, obj);
             }
-            else
-            {
+            else {
                 d = zfnull;
             }
         }
     }
-    else if(obj)
-    {
+    else if(obj) {
         d = zfpoolNew(_ZFP_zfautoObjectPrivate, obj);
     }
 }
-void zfautoObject::zfunsafe_assign(ZF_IN zfautoObject const &ref)
-{
-    if(d)
-    {
+void zfautoObject::zfunsafe_assign(ZF_IN zfautoObject const &ref) {
+    if(d) {
         _ZFP_zfautoObjectPrivate *dTmp = d;
         d = ref.d;
-        if(d)
-        {
+        if(d) {
             ++(d->refCount);
         }
-        if(dTmp)
-        {
-            if(dTmp->refCount == 1)
-            {
+        if(dTmp) {
+            if(dTmp->refCount == 1) {
                 zfunsafe_zfRelease(dTmp->obj);
                 zfpoolDelete(dTmp);
             }
-            else
-            {
+            else {
                 --(dTmp->refCount);
             }
         }
     }
-    else
-    {
+    else {
         d = ref.d;
-        if(d)
-        {
+        if(d) {
             ++(d->refCount);
         }
     }
 }
 
 // ============================================================
-void _ZFP_zfautoObjectTError(void)
-{
+void _ZFP_zfautoObjectTError(void) {
     zfCoreCriticalMessageTrim("[zfautoObjectT] cast from incompatible type");
 }
 

@@ -34,8 +34,7 @@ extern ZFLIB_ZFCore zfindex zfcharGetSize(const zfchar *p);
  * and this macro would move the pointer to next logical char
  */
 template<typename T_CharString>
-inline void zfcharMoveNext(T_CharString &p)
-{
+inline void zfcharMoveNext(T_CharString &p) {
     p += zfcharGetSize(p);
 }
 
@@ -45,10 +44,8 @@ inline void zfcharMoveNext(T_CharString &p)
  *   see #zfcharMoveNext
  */
 template<typename T_Str, typename T_CharString>
-void zfcharAppendAndMoveNext(T_Str &s, T_CharString &p)
-{
-    switch(zfcharGetSize(p))
-    {
+void zfcharAppendAndMoveNext(T_Str &s, T_CharString &p) {
+    switch(zfcharGetSize(p)) {
         case 2:
             s.append(p, 2);
             p += 2;
@@ -144,25 +141,21 @@ void zfcharAppendAndMoveNext(T_Str &s, T_CharString &p)
 // ============================================================
 // zfchar types
 /** @brief strlen wrapper as zfchar type */
-inline zfindex zfslen(const zfchar *s)
-{
+inline zfindex zfslen(const zfchar *s) {
     return (zfindex)strlen(s);
 }
 /** @brief strcpy wrapper as zfchar type */
-inline zfchar *zfscpy(zfchar *dst, const zfchar *src)
-{
+inline zfchar *zfscpy(zfchar *dst, const zfchar *src) {
     return strcpy(dst, src);
 }
 /** @brief strcmp wrapper as zfchar type */
-inline zfint zfscmp(const zfchar *s1, const zfchar *s2)
-{
+inline zfint zfscmp(const zfchar *s1, const zfchar *s2) {
     return (zfint)strcmp(s1, s2);
 }
 /** @brief stricmp wrapper as zfchar type, no locale supported */
 extern ZFLIB_ZFCore zfint zfsicmp(const zfchar *s1, const zfchar *s2);
 /** @brief strncmp wrapper as zfchar type */
-inline zfint zfsncmp(const zfchar *s1, const zfchar *s2, zfindex count)
-{
+inline zfint zfsncmp(const zfchar *s1, const zfchar *s2, zfindex count) {
     return ((count == zfindexMax()) ? strcmp(s1, s2) : strncmp(s1, s2, (size_t)count));
 }
 /** @brief strnicmp wrapper as zfchar type, no locale supported */

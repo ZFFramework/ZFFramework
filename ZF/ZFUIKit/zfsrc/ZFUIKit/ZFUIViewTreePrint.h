@@ -13,23 +13,27 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief debug use only, to output human readable view tree info
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewTreePrint,
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewTreePrint
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
+        )
 
 /**
  * @brief delay to #ZFUIViewTreePrint using #ZFTimerOnce
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIViewTreePrintAfterDelay,
-                        ZFMP_IN(zftimet, delay),
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIViewTreePrintAfterDelay
+        , ZFMP_IN(zftimet, delay)
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
+        )
 
 /**
  * @brief info getter for #ZFUIViewTreePrint, see #ZFUIViewTreePrintInfoGetterForClass
  */
-typedef void (*ZFUIViewTreePrintInfoGetter)(ZF_IN ZFUIView *view,
-                                            ZF_IN_OUT const ZFOutput &outputCallback);
+typedef void (*ZFUIViewTreePrintInfoGetter)(
+        ZF_IN ZFUIView *view
+        , ZF_IN_OUT const ZFOutput &outputCallback
+        );
 /**
  * @brief register a custom info getter for output info of a view type using #ZFUIViewTreePrint
  *
@@ -42,8 +46,10 @@ typedef void (*ZFUIViewTreePrintInfoGetter)(ZF_IN ZFUIView *view,
  * child class's one would have higher priority,
  * without parent's one being called
  */
-extern ZFLIB_ZFUIKit void ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass,
-                                                              ZF_IN ZFUIViewTreePrintInfoGetter viewInfoGetter);
+extern ZFLIB_ZFUIKit void ZFUIViewTreePrintInfoGetterForClass(
+        ZF_IN const ZFClass *viewClass
+        , ZF_IN ZFUIViewTreePrintInfoGetter viewInfoGetter
+        );
 /**
  * @brief see #ZFUIViewTreePrintInfoGetterForClass
  */
@@ -54,17 +60,19 @@ extern ZFLIB_ZFUIKit ZFUIViewTreePrintInfoGetter ZFUIViewTreePrintInfoGetterForC
  * @brief similar to #ZFUIViewTreePrint,
  *   but print native view's view tree
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewTreeNativePrint,
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewTreeNativePrint
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
+        )
 
 /**
  * @brief delay to #ZFUIViewTreeNativePrint using #ZFTimerOnce
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIViewTreeNativePrintAfterDelay,
-                        ZFMP_IN(zftimet, delay),
-                        ZFMP_IN(ZFUIView *, view),
-                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIViewTreeNativePrintAfterDelay
+        , ZFMP_IN(zftimet, delay)
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFUIViewTreePrint_h_

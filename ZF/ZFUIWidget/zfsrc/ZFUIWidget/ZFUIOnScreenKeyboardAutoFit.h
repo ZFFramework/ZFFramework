@@ -17,8 +17,7 @@ zfclassFwd _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate;
  * @brief a scroll container that automatically fits content's position
  *   according #ZFUIOnScreenKeyboardState
  */
-zfclass ZFLIB_ZFUIWidget ZFUIOnScreenKeyboardAutoFitLayout : zfextends ZFUIScrollView
-{
+zfclass ZFLIB_ZFUIWidget ZFUIOnScreenKeyboardAutoFitLayout : zfextends ZFUIScrollView {
     ZFOBJECT_DECLARE(ZFUIOnScreenKeyboardAutoFitLayout, ZFUIScrollView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIOnScreenKeyboardAutoFitLayout)
 
@@ -62,21 +61,21 @@ protected:
 
 protected:
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     zfoverride
     virtual void layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds);
 
 protected:
     // disable scroll thumb
     zfoverride
-    virtual void scrollThumbHorizontalOnInit(void)
-    {
+    virtual void scrollThumbHorizontalOnInit(void) {
     }
     zfoverride
-    virtual void scrollThumbVerticalOnInit(void)
-    {
+    virtual void scrollThumbVerticalOnInit(void) {
     }
 
 private:

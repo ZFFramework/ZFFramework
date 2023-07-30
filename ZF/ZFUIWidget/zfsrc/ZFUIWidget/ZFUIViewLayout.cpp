@@ -2,28 +2,24 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void ZFUIViewLayout::layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                     ZF_IN const ZFUISize &sizeHint,
-                                     ZF_IN const ZFUISizeParam &sizeParam)
-{
+void ZFUIViewLayout::layoutOnMeasure(
+        ZF_OUT ZFUISize &ret
+        , ZF_IN const ZFUISize &sizeHint
+        , ZF_IN const ZFUISizeParam &sizeParam
+        ) {
     ZFUILayoutParam::sizeHintApply(ret, this->viewSizeMin(), sizeHint, sizeParam);
-    for(zfindex i = 0; i < this->childCount(); ++i)
-    {
+    for(zfindex i = 0; i < this->childCount(); ++i) {
         ZFUIView *child = this->childAt(i);
         ZFUISize sizeHintTmp = sizeHint;
-        if(sizeHintTmp.width >= 0)
-        {
+        if(sizeHintTmp.width >= 0) {
             sizeHintTmp.width -= ZFUIMarginGetWidth(child->layoutParam()->layoutMargin());
-            if(sizeHintTmp.width < 0)
-            {
+            if(sizeHintTmp.width < 0) {
                 sizeHintTmp.width = 0;
             }
         }
-        if(sizeHintTmp.height >= 0)
-        {
+        if(sizeHintTmp.height >= 0) {
             sizeHintTmp.height -= ZFUIMarginGetHeight(child->layoutParam()->layoutMargin());
-            if(sizeHintTmp.height < 0)
-            {
+            if(sizeHintTmp.height < 0) {
                 sizeHintTmp.height = 0;
             }
         }

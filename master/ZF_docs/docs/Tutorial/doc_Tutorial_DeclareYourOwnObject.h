@@ -4,8 +4,7 @@
  * to use ZFFramework's object,
  * you must follow some rules:
  * @code
- *   zfclass MyObject : zfextends ParentObject
- *   {
+ *   zfclass MyObject : zfextends ParentObject {
  *       ZFOBJECT_DECLARE(MyObject, ParentObject)
  *   };
  *

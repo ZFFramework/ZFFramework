@@ -28,9 +28,9 @@ ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, res)
  *
  * auto open and auto close files, may return a null callback if open file error
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForRes,
-                               ZFMP_IN(const zfchar *, resFilePath))
-{
+ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForRes
+        , ZFMP_IN(const zfchar *, resFilePath)
+        ) {
     ZFInput ret;
     ZFInputForPathInfoT(ret, ZFPathType_res(), resFilePath, ZFFileOpenOption::e_Read);
     return ret;

@@ -23,8 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * however the native view itself can not be serialized,
  * it should be initialized by app manually
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUINativeViewWrapper : zfextends ZFUIView
-{
+zffinal zfclass ZFLIB_ZFUIKit ZFUINativeViewWrapper : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUINativeViewWrapper, ZFUIView)
 
 protected:
@@ -42,8 +41,7 @@ protected:
 
 public:
     zfoverride
-    virtual void *nativeImplView(void)
-    {
+    virtual void *nativeImplView(void) {
         return zfsuper::nativeImplView();
     }
 
@@ -51,25 +49,29 @@ public:
      * @brief see #nativeImplView
      */
     zfoverride
-    virtual void nativeImplView(ZF_IN void *nativeImplView,
-                                ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback = zfnull,
-                                ZF_IN zfbool nativeImplViewRequireVirtualIndex = zftrue)
-    {
+    virtual void nativeImplView(
+            ZF_IN void *nativeImplView
+            , ZF_IN ZFUIViewNativeImplViewDeleteCallback nativeImplViewDeleteCallback = zfnull
+            , ZF_IN zfbool nativeImplViewRequireVirtualIndex = zftrue
+            ) {
         zfsuper::nativeImplView(nativeImplView, nativeImplViewDeleteCallback, nativeImplViewRequireVirtualIndex);
     }
 
     /**
      * @brief measure the native view
      */
-    ZFMETHOD_DECLARE_2(void, measureNativeView,
-                       ZFMP_OUT(ZFUISize &, ret),
-                       ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeInvalid()))
+    ZFMETHOD_DECLARE_2(void, measureNativeView
+            , ZFMP_OUT(ZFUISize &, ret)
+            , ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeInvalid())
+            )
 
 protected:
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+        ZF_OUT ZFUISize &ret
+        , ZF_IN const ZFUISize &sizeHint
+        , ZF_IN const ZFUISizeParam &sizeParam
+        );
 };
 
 ZF_NAMESPACE_GLOBAL_END

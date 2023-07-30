@@ -26,35 +26,30 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallerInfo, ZFCallerInfo, {
         const zfchar *pEnd = src + ((srcLen == zfindexMax()) ? zfslen(src) : srcLen);
 
         zfcharSkipSpace(p, pEnd);
-        if(p >= pEnd)
-        {
+        if(p >= pEnd) {
             v.callerInfo();
             return zftrue;
         }
-        if(*p != '[')
-        {
+        if(*p != '[') {
             return zffalse;
         }
         ++p;
 
-        if(*p != ' ')
-        {
+        if(*p != ' ') {
             pos[0].start = p - src;
             while(*p != ' ' && p < pEnd) {++p;}
             pos[0].count = p - src - pos[0].start;
         }
         ++p;
 
-        if(*p != ' ')
-        {
+        if(*p != ' ') {
             pos[1].start = p - src;
             while(*p != ' ' && p < pEnd) {++p;}
             pos[1].count = p - src - pos[1].start;
         }
         ++p;
 
-        if(*p != '(')
-        {
+        if(*p != '(') {
             return zffalse;
         }
         ++p;
@@ -62,8 +57,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallerInfo, ZFCallerInfo, {
         while(*p != ')' && p < pEnd) {++p;}
         pos[2].count = p - src - pos[2].start;
 
-        if(p + 2 > pEnd || *p != ')' || *(p + 1) != ']')
-        {
+        if(p + 2 > pEnd || *p != ')' || *(p + 1) != ']') {
             return zffalse;
         }
 
@@ -81,7 +75,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallerInfo, ZFCallerInfo, {
         v.callerInfoT(s);
         return zftrue;
     })
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallerInfo, void, callerInfoT, ZFMP_IN_OUT(zfstring &, ret))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallerInfo, void, callerInfoT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallerInfo, zfstring, callerInfo)
 
 ZF_NAMESPACE_GLOBAL_END

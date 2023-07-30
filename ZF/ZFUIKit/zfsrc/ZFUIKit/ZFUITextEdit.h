@@ -88,8 +88,7 @@ zfclassFwd _ZFP_ZFUITextEditPrivate;
  * @note this view supply quite simple text edit logic,
  *   designed to be lightweighted and able to be embeded to other complex views
  */
-zfclass ZFLIB_ZFUIKit ZFUITextEdit : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIKit ZFUITextEdit : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUITextEdit, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextEdit)
 
@@ -245,13 +244,15 @@ public:
     /**
      * @brief see #ZFUITextEdit
      */
-    ZFMETHOD_DECLARE_1(void, textStyleCopyFrom,
-                       ZFMP_IN(ZFUITextView *, src))
+    ZFMETHOD_DECLARE_1(void, textStyleCopyFrom
+            , ZFMP_IN(ZFUITextView *, src)
+            )
     /**
      * @brief see #ZFUITextEdit
      */
-    ZFMETHOD_DECLARE_1(void, textStyleCopyTo,
-                       ZFMP_IN(ZFUITextView *, dst))
+    ZFMETHOD_DECLARE_1(void, textStyleCopyTo
+            , ZFMP_IN(ZFUITextView *, dst)
+            )
 
 protected:
     zfoverride
@@ -273,9 +274,10 @@ public:
      * and usually have no need to call\n
      * sizeHint shows max size the text view may have, or -1 if no limit
      */
-    ZFMETHOD_DECLARE_2(void, measureTextEdit,
-                       ZFMP_OUT(ZFUISize &, ret),
-                       ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeZero()))
+    ZFMETHOD_DECLARE_2(void, measureTextEdit
+            , ZFMP_OUT(ZFUISize &, ret)
+            , ZFMP_IN_OPT(const ZFUISize &, sizeHint, ZFUISizeZero())
+            )
 
 public:
     zffinal void _ZFP_ZFUITextEdit_textNotifyBeginEdit(void);
@@ -289,8 +291,9 @@ public:
      * by default, this method would check according to #ZFUITextEdit::textEditFilter,
      * and null or empty string would always treated as allowed for safe
      */
-    ZFMETHOD_DECLARE_1(zfbool, textShouldChange,
-                       ZFMP_IN(const zfchar *, newText))
+    ZFMETHOD_DECLARE_1(zfbool, textShouldChange
+            , ZFMP_IN(const zfchar *, newText)
+            )
     /**
      * @brief manually start edit
      */
@@ -310,7 +313,10 @@ protected:
     /** @brief see #EventTextOnEditEnd */
     virtual void textOnEditEnd(void);
     /** @brief see #EventTextOnChangeCheck */
-    virtual void textOnChangeCheck(ZF_IN const zfchar *newText, ZF_IN_OUT zfbool &shouldChange);
+    virtual void textOnChangeCheck(
+            ZF_IN const zfchar *newText
+            , ZF_IN_OUT zfbool &shouldChange
+            );
     /** @brief see #EventTextOnChange */
     virtual void textOnChange(ZF_IN const zfchar *oldText);
     /** @brief see #EventTextOnReturnClick */
@@ -333,9 +339,11 @@ protected:
      * @brief text edit view would measure according text size
      */
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     /**
      * @brief text edit view would resolve all key event by default,
      *   except tab and shift

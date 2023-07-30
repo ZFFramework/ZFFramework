@@ -14,8 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract list content view
  */
-zfabstract ZFLIB_ZFUIWidget ZFUIListCellView : zfextends ZFUIView
-{
+zfabstract ZFLIB_ZFUIWidget ZFUIListCellView : zfextends ZFUIView {
     ZFOBJECT_DECLARE_ABSTRACT(ZFUIListCellView, ZFUIView)
 
 public:
@@ -38,9 +37,11 @@ protected:
 
 protected:
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     zfoverride
     virtual void internalViewOnLayout(ZF_IN const ZFUIRect &bounds);
     zfoverride

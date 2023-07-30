@@ -12,12 +12,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 typedef void *(*_ZFP_SI_Constructor)(void);
 typedef void (*_ZFP_SI_Destructor)(ZF_IN void *p);
-zfclassLikePOD ZFLIB_ZFCore _ZFP_SI_Holder
-{
+zfclassLikePOD ZFLIB_ZFCore _ZFP_SI_Holder {
 public:
-    _ZFP_SI_Holder(ZF_IN const zfchar *name,
-                   ZF_IN _ZFP_SI_Constructor constructor,
-                   ZF_IN _ZFP_SI_Destructor destructor);
+    _ZFP_SI_Holder(
+            ZF_IN const zfchar *name
+            , ZF_IN _ZFP_SI_Constructor constructor
+            , ZF_IN _ZFP_SI_Destructor destructor
+            );
     ~_ZFP_SI_Holder(void);
 public:
     void *instance;
@@ -38,8 +39,7 @@ public:
  *       // add your own init phase here
  *       // note: never access ZFFramework member here
  *   }
- *   ZF_STATIC_INITIALIZER_DESTROY(YourInitName)
- *   {
+ *   ZF_STATIC_INITIALIZER_DESTROY(YourInitName) {
  *       // add your own cleanup phase here
  *       // note: never access ZFFramework member here
  *   }
@@ -58,21 +58,17 @@ public:
  * @note see #ZF_STATIC_REGISTER_INIT for recommended usage
  */
 #define ZF_STATIC_INITIALIZER_INIT(Name) \
-    zfclassNotPOD _ZFP_SI_##Name \
-    { \
+    zfclassNotPOD _ZFP_SI_##Name { \
     protected: \
         typedef _ZFP_SI_##Name zfself; \
     public: \
-        static void *_ZFP_SI_ctor_##Name(void) \
-        { \
+        static void *_ZFP_SI_ctor_##Name(void) { \
             return (void *)zfnew(_ZFP_SI_##Name); \
         } \
-        static void _ZFP_SI_dtor_##Name(ZF_IN void *p) \
-        { \
+        static void _ZFP_SI_dtor_##Name(ZF_IN void *p) { \
             zfdelete(ZFCastStatic(_ZFP_SI_##Name *, p)); \
         } \
-        static _ZFP_SI_##Name *_ZFP_SI_instanceAccess(void) \
-        { \
+        static _ZFP_SI_##Name *_ZFP_SI_instanceAccess(void) { \
             static _ZFP_SI_Holder d(ZFM_TOSTRING_DIRECT(Name), \
                 _ZFP_SI_##Name::_ZFP_SI_ctor_##Name, \
                 _ZFP_SI_##Name::_ZFP_SI_dtor_##Name); \
@@ -90,8 +86,7 @@ public:
  */
 #define ZF_STATIC_INITIALIZER_END(Name) \
     }; \
-    ZF_STATIC_REGISTER_INIT(SI_##Name) \
-    { \
+    ZF_STATIC_REGISTER_INIT(SI_##Name) { \
         _ZFP_SI_##Name::_ZFP_SI_instanceAccess(); \
     } \
     ZF_STATIC_REGISTER_END(SI_##Name)

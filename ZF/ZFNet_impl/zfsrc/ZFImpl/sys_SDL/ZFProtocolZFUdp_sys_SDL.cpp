@@ -9,35 +9,38 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUdpImpl_sys_SDL, ZFUdp, ZFProtocolLevel::e_SystemHigh)
 public:
-    virtual void *open(ZF_IN ZFUdp *owner,
-                       ZF_IN zfuint port)
-    {
+    virtual void *open(
+            ZF_IN ZFUdp *owner
+            , ZF_IN zfuint port
+            ) {
         return SDLNet_UDP_Open((Uint16)port);
     }
-    virtual void close(ZF_IN ZFUdp *owner,
-                       ZF_IN void *nativeSocket)
-    {
+    virtual void close(
+            ZF_IN ZFUdp *owner
+            , ZF_IN void *nativeSocket
+            ) {
         SDLNet_UDP_Close((UDPsocket)nativeSocket);
     }
 
 public:
-    virtual void *hostResolve(ZF_IN const zfchar *host,
-                              ZF_IN zfuint port)
-    {
+    virtual void *hostResolve(
+            ZF_IN const zfchar *host
+            , ZF_IN zfuint port
+            ) {
         IPaddress *hostAddr = zfnew(IPaddress);
         SDLNet_ResolveHost(hostAddr, host, (Uint16)port);
         return hostAddr;
     }
-    virtual void hostRelease(ZF_IN void *hostAddr)
-    {
+    virtual void hostRelease(ZF_IN void *hostAddr) {
         zfdelete((IPaddress *)hostAddr);
     }
 
 public:
-    virtual zfbool remoteInfo(ZF_IN void *hostAddr,
-                              ZF_OUT zfstring &remoteAddr,
-                              ZF_OUT zfuint &remotePort)
-    {
+    virtual zfbool remoteInfo(
+            ZF_IN void *hostAddr
+            , ZF_OUT zfstring &remoteAddr
+            , ZF_OUT zfuint &remotePort
+            ) {
         IPaddress *nativeIp = (IPaddress *)hostAddr;
         const zfbyte *pHost = (const zfbyte *)&(nativeIp->host);
         zfstringAppend(remoteAddr, "%d.%d.%d.%d"
@@ -47,8 +50,7 @@ public:
             , (zfint)*(pHost + 3)
             );
         Uint16 nativePort = nativeIp->port;
-        if(SDL_BYTEORDER != SDL_BIG_ENDIAN)
-        {
+        if(SDL_BYTEORDER != SDL_BIG_ENDIAN) {
             nativePort = SDL_Swap16(nativePort);
         }
         remotePort = (zfuint)nativePort;
@@ -56,12 +58,13 @@ public:
     }
 
 public:
-    virtual zfbool send(ZF_IN ZFUdp *owner,
-                        ZF_IN void *nativeSocket,
-                        ZF_IN void *hostAddr,
-                        ZF_IN const void *data,
-                        ZF_IN zfindex size)
-    {
+    virtual zfbool send(
+            ZF_IN ZFUdp *owner
+            , ZF_IN void *nativeSocket
+            , ZF_IN void *hostAddr
+            , ZF_IN const void *data
+            , ZF_IN zfindex size
+            ) {
         UDPsocket nativeSocketTmp = (UDPsocket)nativeSocket;
         UDPpacket *sdlPacket = SDLNet_AllocPacket((int)size);
         zfmemcpy(&(sdlPacket->address), hostAddr, sizeof(IPaddress));
@@ -71,22 +74,21 @@ public:
         SDLNet_FreePacket(sdlPacket);
         return ret;
     }
-    virtual zfindex recv(ZF_IN ZFUdp *owner,
-                         ZF_IN void *nativeSocket,
-                         ZF_OUT void *&hostAddr,
-                         ZF_OUT void *data,
-                         ZF_IN zfindex maxSize,
-                         ZF_IN_OPT zftimet timeout)
-    {
+    virtual zfindex recv(
+            ZF_IN ZFUdp *owner
+            , ZF_IN void *nativeSocket
+            , ZF_OUT void *&hostAddr
+            , ZF_OUT void *data
+            , ZF_IN zfindex maxSize
+            , ZF_IN_OPT zftimet timeout
+            ) {
         UDPsocket nativeSocketTmp = (UDPsocket)nativeSocket;
-        if(timeout >= 0)
-        {
+        if(timeout >= 0) {
             SDLNet_SocketSet ss = SDLNet_AllocSocketSet(1);
             SDLNet_UDP_AddSocket(ss, nativeSocketTmp);
             int canRead = SDLNet_CheckSockets(ss, (Uint32)timeout);
             SDLNet_FreeSocketSet(ss);
-            if(canRead == 0)
-            {
+            if(canRead == 0) {
                 return 0;
             }
         }

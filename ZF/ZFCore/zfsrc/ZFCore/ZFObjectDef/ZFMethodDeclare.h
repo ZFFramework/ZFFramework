@@ -240,11 +240,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    zfclassNotPOD _ZFP_MtdReg_##MethodName##_##RegSig \
-    { \
+    zfclassNotPOD _ZFP_MtdReg_##MethodName##_##RegSig { \
     public: \
-        _ZFP_MtdReg_##MethodName##_##RegSig(void) \
-        { \
+        _ZFP_MtdReg_##MethodName##_##RegSig(void) { \
             (void)zfself::_ZFP_Mtd_##MethodName((void (*)( \
                    ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                    ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \
@@ -286,8 +284,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
                 , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
             ) \
-        zfclassNotPOD _ZFP_MtdH_##MethodName##_##RegSig \
-        { \
+        zfclassNotPOD _ZFP_MtdH_##MethodName##_##RegSig { \
         public: \
             _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
                     ReturnType \
@@ -313,8 +310,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-            ) \
-        { \
+                ) { \
             return ZFCastZFObjectUnchecked(zfself *, invokerObject)->MethodName( \
                     ParamExpandOrEmpty0(            param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() param1) \
@@ -336,8 +332,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-            )) /* tricks to support overload method */ \
-        { \
+                )) /* tricks to support overload method */ { \
             static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                     , zffalse \
                     , zfnull \
@@ -469,8 +464,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5 param5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
-            ) \
-        { \
+                ) { \
             return ZFCastZFObjectUnchecked(zfself *, invokerObject)->MethodName( \
                     ParamExpandOrEmpty0(            param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() param1) \
@@ -491,8 +485,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-            )) \
-        { \
+                )) { \
             return ZFCastReinterpret(ZFFuncAddrType, &zfself::_ZFP_MtdI_##MethodName##_##RegSig); \
         } \
         static inline ZFMethodPrivilegeType _ZFP_MtdS_P_##MethodName(void (*)( \
@@ -504,8 +497,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-            )) \
-        { \
+                )) { \
             return _ZFP_ZFMethod_initClassMemberType_privilege(PublicOrProtectedOrPrivate); \
         } \
         static inline ZFMethodType _ZFP_MtdS_T_##MethodName(void (*)( \
@@ -517,8 +509,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-            )) \
-        { \
+                )) { \
             return ZFMethodType_; \
         } \
     public: \
@@ -584,8 +575,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         , ParamExpandOrEmpty6, ParamType6, param6, DefaultExpandOrEmpty6, DefaultValueFix6 \
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
-    zfclassNotPOD _ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig \
-    { \
+    zfclassNotPOD _ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig { \
     public: \
         _ZFP_ZFMETHOD_GENERIC_INVOKER_DECLARE( \
                 ReturnType \
@@ -608,8 +598,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ParamExpandOrEmpty5(ZFM_COMMA() ParamType5) \
             ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
             ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
-        )) \
-    { \
+            )) { \
         static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                 , zffalse \
                 , zfnull \
@@ -674,8 +663,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ); \
         return _methodHolder.method; \
     } \
-    ZF_STATIC_REGISTER_INIT(MtdD_##OwnerClass##_##MethodName##_##RegSig) \
-    { \
+    ZF_STATIC_REGISTER_INIT(MtdD_##OwnerClass##_##MethodName##_##RegSig) { \
         (void)OwnerClass::_ZFP_Mtd_##MethodName((void (*)( \
                ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \
                ParamExpandOrEmpty1(ZFM_COMMA() ParamType1) \

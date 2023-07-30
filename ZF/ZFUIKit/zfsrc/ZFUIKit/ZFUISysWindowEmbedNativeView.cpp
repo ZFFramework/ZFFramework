@@ -6,8 +6,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFLIB_ZFUIKit _ZFP_ZFUISysWindowEmbedNativeViewImpl : zfextends ZFObject, zfimplements ZFUISysWindowEmbedImpl
-{
+zfclass ZFLIB_ZFUIKit _ZFP_ZFUISysWindowEmbedNativeViewImpl : zfextends ZFObject, zfimplements ZFUISysWindowEmbedImpl {
     ZFOBJECT_DECLARE(_ZFP_ZFUISysWindowEmbedNativeViewImpl, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFUISysWindowEmbedImpl)
 
@@ -16,38 +15,37 @@ public:
 
     // ============================================================
 public:
-    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void nativeWindowOnCleanup(ZF_IN ZFUISysWindow *sysWindow) {
     }
 
-    virtual void nativeWindowRootViewOnAdd(ZF_IN ZFUISysWindow *sysWindow,
-                                           ZF_OUT_OPT void *&nativeParentView)
-    {
+    virtual void nativeWindowRootViewOnAdd(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_OUT_OPT void *&nativeParentView
+            ) {
         ZFPROTOCOL_ACCESS(ZFUISysWindowEmbedNativeView)->nativeViewAdd(
             sysWindow, this->nativeParent, sysWindow->rootView()->nativeView());
         nativeParentView = this->nativeParent;
     }
-    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow)
-    {
+    virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
         ZFPROTOCOL_ACCESS(ZFUISysWindowEmbedNativeView)->nativeViewRemove(
             sysWindow, this->nativeParent, sysWindow->rootView()->nativeView());
     }
 
-    virtual zfautoObjectT<ZFUISysWindow *> modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner)
-    {
+    virtual zfautoObjectT<ZFUISysWindow *> modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
         return ZFUISysWindow::nativeWindowEmbedNativeView(this->nativeParent);
     }
-    virtual void modalWindowFinish(ZF_IN ZFUISysWindow *sysWindowOwner,
-                                   ZF_IN ZFUISysWindow *sysWindowToFinish)
-    {
+    virtual void modalWindowFinish(
+            ZF_IN ZFUISysWindow *sysWindowOwner
+            , ZF_IN ZFUISysWindow *sysWindowToFinish
+            ) {
         sysWindowToFinish->nativeWindowEmbedImplDestroy();
     }
 };
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmbedNativeView,
-                  ZFMP_IN(void *, nativeParent))
-{
+ZFMETHOD_DEFINE_1(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmbedNativeView
+        , ZFMP_IN(void *, nativeParent)
+        ) {
     zfblockedAlloc(_ZFP_ZFUISysWindowEmbedNativeViewImpl, embedImpl);
     embedImpl->nativeParent = nativeParent;
     zfautoObjectT<ZFUISysWindow *> ret = ZFUISysWindow::nativeWindowEmbed(embedImpl);
@@ -57,20 +55,15 @@ ZFMETHOD_DEFINE_1(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmb
     return ret;
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUISysWindowEmbedNativeViewAutoRemove, ZFLevelZFFrameworkNormal)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUISysWindowEmbedNativeViewAutoRemove, ZFLevelZFFrameworkNormal) {
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove)
-{
-    while(!m.empty())
-    {
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove) {
+    while(!m.empty()) {
         zfstlmap<zfstring, zfbool> tmp;
         tmp.swap(m);
-        for(zfstlmap<zfstring, zfbool>::iterator it = tmp.begin(); it != tmp.end(); ++it)
-        {
+        for(zfstlmap<zfstring, zfbool>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
             const ZFMethod *method = ZFMethodFuncForName(zfnull, it->first);
-            if(method != zfnull && method->methodIsUserRegister())
-            {
+            if(method != zfnull && method->methodIsUserRegister()) {
                 ZFMethodFuncUserUnregister(method);
             }
         }
@@ -78,19 +71,17 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove)
 }
 zfstlmap<zfstring, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFUISysWindowEmbedNativeViewAutoRemove)
-ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmbedNativeView,
-                  ZFMP_IN(void *, nativeParent),
-                  ZFMP_IN(const zfchar *, sysWindowName))
-{
-    if(!zfstringIsEmpty(sysWindowName) && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull)
-    {
+ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmbedNativeView
+        , ZFMP_IN(void *, nativeParent)
+        , ZFMP_IN(const zfchar *, sysWindowName)
+        ) {
+    if(!zfstringIsEmpty(sysWindowName) && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull) {
         zfCoreLog("window \"%s\" already registered", sysWindowName);
         return zfnull;
     }
 
     zfautoObjectT<ZFUISysWindow *> sysWindow = ZFUISysWindow::nativeWindowEmbedNativeView(nativeParent);
-    if(sysWindow == zfnull || zfstringIsEmpty(sysWindowName))
-    {
+    if(sysWindow == zfnull || zfstringIsEmpty(sysWindowName)) {
         return sysWindow;
     }
 
@@ -110,12 +101,11 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoObjectT<ZFUISysWindow *>, nativeWindowEmb
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUISysWindowEmbedNativeViewAutoRemove)->m[sysWindowName] = zftrue;
     return sysWindow;
 }
-ZFMETHOD_DEFINE_1(ZFUISysWindow, void, nativeWindowEmbedNativeViewCleanup,
-                  ZFMP_IN(const zfchar *, sysWindowName))
-{
+ZFMETHOD_DEFINE_1(ZFUISysWindow, void, nativeWindowEmbedNativeViewCleanup
+        , ZFMP_IN(const zfchar *, sysWindowName)
+        ) {
     const ZFMethod *method = ZFMethodFuncForName(zfnull, sysWindowName);
-    if(method != zfnull && method->methodIsUserRegister())
-    {
+    if(method != zfnull && method->methodIsUserRegister()) {
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUISysWindowEmbedNativeViewAutoRemove)->m.erase(sysWindowName);
         ZFMethodFuncUserUnregister(method);
     }

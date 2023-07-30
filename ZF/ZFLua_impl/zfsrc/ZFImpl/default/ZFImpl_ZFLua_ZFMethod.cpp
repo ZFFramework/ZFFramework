@@ -5,20 +5,18 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(ZF_IN const ZFCoreArrayPOD<lua_State *> &luaStateList,
-                                                         ZF_IN const ZFCoreArrayPOD<const ZFMethod *> &methodList)
-{
+static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
+        ZF_IN const ZFCoreArrayPOD<lua_State *> &luaStateList
+        , ZF_IN const ZFCoreArrayPOD<const ZFMethod *> &methodList
+        ) {
     zfstring code;
-    if(methodList.count() >= 100)
-    {
+    if(methodList.count() >= 100) {
         code.capacity(10000);
     }
-    else if(methodList.count() >= 10)
-    {
+    else if(methodList.count() >= 10) {
         code.capacity(1000);
     }
-    for(zfindex i = 0; i < methodList.count(); ++i)
-    {
+    for(zfindex i = 0; i < methodList.count(); ++i) {
         const ZFMethod *method = methodList[i];
         if(!method->methodIsFunctionType()
             || method->methodNamespace() != zfnull
@@ -29,19 +27,15 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(ZF_IN const ZFCoreArray
         zfstringAppend(code,
                 "function %s(...) return zfl_call(zfnull, '%s', ...) end\n"
             , method->methodName(), method->methodName());
-        if(i != 0 && (i % 100) == 0)
-        {
-            for(zfindex iL = 0; iL < luaStateList.count(); ++iL)
-            {
+        if(i != 0 && (i % 100) == 0) {
+            for(zfindex iL = 0; iL < luaStateList.count(); ++iL) {
                 ZFImpl_ZFLua_execute(luaStateList[iL], code);
             }
             code.removeAll();
         }
     }
-    if(!code.isEmpty())
-    {
-        for(zfindex iL = 0; iL < luaStateList.count(); ++iL)
-        {
+    if(!code.isEmpty()) {
+        for(zfindex iL = 0; iL < luaStateList.count(); ++iL) {
             ZFImpl_ZFLua_execute(luaStateList[iL], code);
         }
     }
@@ -53,34 +47,27 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
 
         ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
         zfstlmap<zfstring, zfbool> methodNamespaceList;
-        if(!allMethod.isEmpty())
-        {
+        if(!allMethod.isEmpty()) {
             _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
                 luaStateList,
                 allMethod);
-            for(zfindex i = 0; i < allMethod.count(); ++i)
-            {
+            for(zfindex i = 0; i < allMethod.count(); ++i) {
                 const ZFMethod *method = allMethod[i];
-                if(method->methodNamespace() != zfnull)
-                {
+                if(method->methodNamespace() != zfnull) {
                     zfindex dotPos = zfstringFind(method->methodNamespace(), zfindexMax(), ZFNamespaceSeparator());
-                    if(dotPos == zfindexMax())
-                    {
+                    if(dotPos == zfindexMax()) {
                         methodNamespaceList[method->methodNamespace()] = zftrue;
                     }
-                    else
-                    {
+                    else {
                         methodNamespaceList[zfstring(method->methodNamespace(), dotPos).cString()] = zftrue;
                     }
                 }
             }
 
-            if(!methodNamespaceList.empty())
-            {
+            if(!methodNamespaceList.empty()) {
                 scopeNameList.capacity(scopeNameList.capacity() + (zfindex)methodNamespaceList.size());
                 zfindex i = 0;
-                for(zfstlmap<zfstring, zfbool>::iterator it = methodNamespaceList.begin(); it != methodNamespaceList.end(); ++it)
-                {
+                for(zfstlmap<zfstring, zfbool>::iterator it = methodNamespaceList.begin(); it != methodNamespaceList.end(); ++it) {
                     scopeNameList.add(it->first);
                     ++i;
                 }
@@ -90,10 +77,8 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
         ZFImpl_ZFLua_implSetupScope(luaStateList, scopeNameList);
     }), ZFM_EXPAND({
     }), ZFM_EXPAND({
-        if(data.changedMethod != zfnull && data.changeType == ZFClassDataChangeTypeAttach)
-        {
-            if(data.changedMethod->methodIsFunctionType())
-            {
+        if(data.changedMethod != zfnull && data.changeType == ZFClassDataChangeTypeAttach) {
+            if(data.changedMethod->methodIsFunctionType()) {
                 ZFCoreArrayPOD<lua_State *> stateList;
                 stateList.add(L);
                 ZFImpl_ZFLua_implSetupScope(

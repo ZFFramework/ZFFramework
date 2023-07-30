@@ -5,23 +5,20 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkWhenFocus_AutoPause_DataHolder, ZFLevelZFFrameworkLow)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkWhenFocus_AutoPause_DataHolder, ZFLevelZFFrameworkLow) {
     this->doActionListener = ZFCallbackForFunc(zfself::doAction);
     ZFGlobalObserver().observerAdd(ZFUIWindow::EventWindowOnShow(), this->doActionListener);
     ZFGlobalObserver().observerAdd(ZFUIWindow::EventWindowOnHide(), this->doActionListener);
     ZFGlobalObserver().observerAdd(ZFUISysWindow::EventSysWindowOnResume(), this->doActionListener);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewBlinkWhenFocus_AutoPause_DataHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewBlinkWhenFocus_AutoPause_DataHolder) {
     ZFGlobalObserver().observerRemove(ZFUIWindow::EventWindowOnShow(), this->doActionListener);
     ZFGlobalObserver().observerRemove(ZFUIWindow::EventWindowOnHide(), this->doActionListener);
     ZFGlobalObserver().observerRemove(ZFUISysWindow::EventSysWindowOnResume(), this->doActionListener);
 }
 public:
     ZFListener doActionListener;
-    static void doAction(ZF_IN const ZFArgs &zfargs)
-    {
+    static void doAction(ZF_IN const ZFArgs &zfargs) {
         ZFUIViewBlinkWhenFocusAutoApplyPauseForTime();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkWhenFocus_AutoPause_DataHolder)

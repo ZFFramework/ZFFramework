@@ -97,8 +97,7 @@ zfclassFwd _ZFP_ZFXmlPrivate;
 /**
  * @brief xml item that holds the xml DOM
  */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXml
-{
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXml {
     // ============================================================
 public:
     /** @cond ZFPrivateDoc */
@@ -121,8 +120,7 @@ public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    inline zfstring objectInfo(void) const
-    {
+    inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -144,8 +142,7 @@ public:
     /**
      * @brief true if #xmlType is #ZFXmlType::e_XmlNull
      */
-    inline zfbool xmlTypeValid(void) const
-    {
+    inline zfbool xmlTypeValid(void) const {
         return (this->xmlType() != ZFXmlType::e_XmlNull);
     }
 
@@ -193,8 +190,14 @@ public:
      */
     const zfchar *xmlValue(void) const;
 
-    zffinal void _ZFP_ZFXml_xmlMemoryPool_xmlName(ZF_IN const zfchar *xmlName, ZF_IN void *token);
-    zffinal void _ZFP_ZFXml_xmlMemoryPool_xmlValue(ZF_IN const zfchar *xmlValue, ZF_IN void *token);
+    zffinal void _ZFP_ZFXml_xmlMemoryPool_xmlName(
+            ZF_IN const zfchar *xmlName
+            , ZF_IN void *token
+            );
+    zffinal void _ZFP_ZFXml_xmlMemoryPool_xmlValue(
+            ZF_IN const zfchar *xmlValue
+            , ZF_IN void *token
+            );
 
     // ============================================================
 public:
@@ -223,14 +226,18 @@ public:
     /**
      * @brief add attribute before beforeThis or add to tail if beforeThis is null
      */
-    ZFXml &attrAdd(ZF_IN const ZFXml &addThis,
-                   ZF_IN_OPT const ZFXml *beforeThis = zfnull);
+    ZFXml &attrAdd(
+            ZF_IN const ZFXml &addThis
+            , ZF_IN_OPT const ZFXml *beforeThis = zfnull
+            );
     /**
      * @brief util method to add attribute, do nothing if key or value is null
      */
-    ZFXml &attr(ZF_IN const zfchar *key,
-                ZF_IN const zfchar *value,
-                ZF_IN_OPT const ZFXml *beforeThis = zfnull);
+    ZFXml &attr(
+            ZF_IN const zfchar *key
+            , ZF_IN const zfchar *value
+            , ZF_IN_OPT const ZFXml *beforeThis = zfnull
+            );
     /**
      * @brief remove attribute with name
      */
@@ -287,8 +294,10 @@ public:
     /**
      * @brief add child before beforeThis or add to tail if beforeThis is null
      */
-    ZFXml &childAdd(ZF_IN const ZFXml &addThis,
-                    ZF_IN_OPT const ZFXml *beforeThis = zfnull);
+    ZFXml &childAdd(
+            ZF_IN const ZFXml &addThis
+            , ZF_IN_OPT const ZFXml *beforeThis = zfnull
+            );
     /**
      * @brief remove child or do nothing if not in this node
      */
@@ -301,23 +310,31 @@ public:
     /**
      * @brief get first child with name after afterThis or null if none
      */
-    ZFXml childFirst(ZF_IN_OPT const zfchar *name = zfnull,
-                     ZF_IN_OPT const ZFXml *afterThis = zfnull) const;
+    ZFXml childFirst(
+            ZF_IN_OPT const zfchar *name = zfnull
+            , ZF_IN_OPT const ZFXml *afterThis = zfnull
+            ) const;
     /**
      * @brief get last child with name before beforeThis or null if none
      */
-    ZFXml childLast(ZF_IN_OPT const zfchar *name = zfnull,
-                    ZF_IN_OPT const ZFXml *beforeThis = zfnull) const;
+    ZFXml childLast(
+            ZF_IN_OPT const zfchar *name = zfnull
+            , ZF_IN_OPT const ZFXml *beforeThis = zfnull
+            ) const;
     /**
      * @brief util function to #childFirst, to get first child element
      */
-    ZFXml childFirstElement(ZF_IN_OPT const zfchar *name = zfnull,
-                            ZF_IN_OPT const ZFXml *afterThis = zfnull) const;
+    ZFXml childFirstElement(
+            ZF_IN_OPT const zfchar *name = zfnull
+            , ZF_IN_OPT const ZFXml *afterThis = zfnull
+            ) const;
     /**
      * @brief util function to #childLast, to get last child element
      */
-    ZFXml childLastElement(ZF_IN_OPT const zfchar *name = zfnull,
-                           ZF_IN_OPT const ZFXml *beforeThis = zfnull) const;
+    ZFXml childLastElement(
+            ZF_IN_OPT const zfchar *name = zfnull
+            , ZF_IN_OPT const ZFXml *beforeThis = zfnull
+            ) const;
 
     /**
      * @brief get next sibling with name or null if none
@@ -367,29 +384,35 @@ ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFXml, ZFXml)
 ZFOUTPUT_TYPE(ZFXml, {output << v.objectInfo();})
 
 /** @brief util to create #ZFXml */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlElement,
-                        ZFMP_IN(const zfchar *, xmlName))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlElement
+        , ZFMP_IN(const zfchar *, xmlName)
+        )
 /** @brief util to create #ZFXml */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlAttribute,
-                        ZFMP_IN(const zfchar *, xmlName),
-                        ZFMP_IN(const zfchar *, xmlValue))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlAttribute
+        , ZFMP_IN(const zfchar *, xmlName)
+        , ZFMP_IN(const zfchar *, xmlValue)
+        )
 /** @brief util to create #ZFXml */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlText,
-                        ZFMP_IN(const zfchar *, xmlValue))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlText
+        , ZFMP_IN(const zfchar *, xmlValue)
+        )
 /** @brief util to create #ZFXml */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlComment,
-                        ZFMP_IN(const zfchar *, xmlValue))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlComment
+        , ZFMP_IN(const zfchar *, xmlValue)
+        )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocument)
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDeclaration)
 /** @brief util to create #ZFXml */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocType,
-                        ZFMP_IN(const zfchar *, xmlValue))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocType
+        , ZFMP_IN(const zfchar *, xmlValue)
+        )
 /** @brief util to create #ZFXml */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlPI,
-                        ZFMP_IN(const zfchar *, xmlName),
-                        ZFMP_IN(const zfchar *, xmlValue))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlPI
+        , ZFMP_IN(const zfchar *, xmlName)
+        , ZFMP_IN(const zfchar *, xmlValue)
+        )
 
 // ============================================================
 // ZFXmlVisitData
@@ -429,8 +452,7 @@ ZFENUM_END(ZFLIB_ZFAlgorithm, ZFXmlVisitType)
 /**
  * @brief visit data when visiting a xml item, used in #ZFXmlVisitCallback
  */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlVisitData
-{
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlVisitData {
 public:
     /**
      * @brief the xml item to visit
@@ -453,18 +475,19 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     ZFXmlVisitData(void) {}
-    ZFXmlVisitData(ZF_IN ZFXml const &xmlItem,
-                   ZF_IN ZFXmlVisitTypeEnum xmlVisitType,
-                   ZF_IN zfindex depth,
-                   ZF_IN zfindex siblingIndex)
+    ZFXmlVisitData(
+            ZF_IN ZFXml const &xmlItem
+            , ZF_IN ZFXmlVisitTypeEnum xmlVisitType
+            , ZF_IN zfindex depth
+            , ZF_IN zfindex siblingIndex
+            )
     : xmlItem(xmlItem)
     , xmlVisitType(xmlVisitType)
     , depth(depth)
     , siblingIndex(siblingIndex)
     {
     }
-    zfbool operator == (ZF_IN ZFXmlVisitData const &ref) const
-    {
+    zfbool operator == (ZF_IN ZFXmlVisitData const &ref) const {
         return (this->xmlItem == ref.xmlItem
                 && this->xmlVisitType == ref.xmlVisitType
                 && this->depth == ref.depth
@@ -480,8 +503,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlVisitData, ZFXmlVisitData)
 /**
  * @brief token used to output a xml document
  */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputToken
-{
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputToken {
 public:
     zfstring xmlNewLineToken; /**< @brief "\n" by default */
     zfstring xmlIndentToken; /**< @brief "    " by default */
@@ -537,8 +559,7 @@ public:
     {
     }
     zfbool operator == (ZF_IN ZFXmlOutputToken const &ref) const;
-    zfbool operator != (ZF_IN ZFXmlOutputToken const &ref) const
-    {
+    zfbool operator != (ZF_IN ZFXmlOutputToken const &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -547,8 +568,7 @@ public:
 /**
  * @brief output flags for output a xml
  */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputFlags
-{
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFXmlOutputFlags {
 public:
     /**
      * @brief xml token to use to output a xml document
@@ -600,8 +620,7 @@ public:
     {
     }
     zfbool operator == (ZF_IN ZFXmlOutputFlags const &ref) const;
-    zfbool operator != (ZF_IN ZFXmlOutputFlags const &ref) const
-    {
+    zfbool operator != (ZF_IN ZFXmlOutputFlags const &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -624,22 +643,25 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputFlags, ZFXmlOutputFl
 /**
  * @brief create a ZFXmlVisitCallback to output xml DOM tree
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXmlVisitCallback, ZFXmlVisitCallbackForOutput,
-                        ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault()),
-                        ZFMP_IN_OPT(const ZFXmlOutputFlags &, flags, ZFXmlOutputFlagsDefault()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXmlVisitCallback, ZFXmlVisitCallbackForOutput
+        , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
+        , ZFMP_IN_OPT(const ZFXmlOutputFlags &, flags, ZFXmlOutputFlagsDefault())
+        )
 
 // ============================================================
 /**
  * @brief parse xml document, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromInput,
-                        ZFMP_IN(const ZFInput &, callback))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromInput
+        , ZFMP_IN(const ZFInput &, callback)
+        )
 /**
  * @brief parse xml document, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromString,
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, size, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromString
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, size, zfindexMax())
+        )
 
 // ============================================================
 /**
@@ -648,24 +670,27 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromString,
  * @note result string is not ensured to be a valid xml string
  *   if source is not valid
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFXmlToOutput,
-                        ZFMP_IN_OUT(const ZFOutput &, output),
-                        ZFMP_IN(const ZFXml &, xmlItem),
-                        ZFMP_IN_OPT(const ZFXmlOutputFlags &, outputFlags, ZFXmlOutputFlagsDefault()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFXmlToOutput
+        , ZFMP_IN_OUT(const ZFOutput &, output)
+        , ZFMP_IN(const ZFXml &, xmlItem)
+        , ZFMP_IN_OPT(const ZFXmlOutputFlags &, outputFlags, ZFXmlOutputFlagsDefault())
+        )
 /**
  * @brief convert xml to string
  *
  * @note result string is not ensured to be a valid xml string
  *   if source is not valid
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFXmlToString,
-                        ZFMP_IN_OUT(zfstring &, ret),
-                        ZFMP_IN(const ZFXml &, xmlItem),
-                        ZFMP_IN(const ZFXmlOutputFlags &, outputFlags))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFXmlToString
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const ZFXml &, xmlItem)
+        , ZFMP_IN(const ZFXmlOutputFlags &, outputFlags)
+        )
 /** @brief see #ZFXmlToString */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFXmlToString,
-                        ZFMP_IN(const ZFXml &, xmlItem),
-                        ZFMP_IN(const ZFXmlOutputFlags &, outputFlags))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFXmlToString
+        , ZFMP_IN(const ZFXml &, xmlItem)
+        , ZFMP_IN(const ZFXmlOutputFlags &, outputFlags)
+        )
 
 // ============================================================
 // escape chars
@@ -683,32 +708,36 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFXmlToString,
  *   &#x0; ~ &#xFFFF;   heximal encoded char
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharEncode,
-                        ZFMP_OUT(zfstring &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharEncode
+        , ZFMP_OUT(zfstring &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 /**
  * @brief see #ZFXmlEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharEncode,
-                        ZFMP_OUT(const ZFOutput &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharEncode
+        , ZFMP_OUT(const ZFOutput &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 
 /**
  * @brief see #ZFXmlEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharDecode,
-                        ZFMP_OUT(zfstring &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharDecode
+        , ZFMP_OUT(zfstring &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 /**
  * @brief see #ZFXmlEscapeCharEncode
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharDecode,
-                        ZFMP_OUT(const ZFOutput &, dst),
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFXmlEscapeCharDecode
+        , ZFMP_OUT(const ZFOutput &, dst)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFXml_h_

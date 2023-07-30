@@ -14,29 +14,23 @@ zfclassFwd ZFInterface;
 
 ZFM_CLASS_HAS_MEMBER_DECLARE(ZFAny, toObject, ZFObject *(T::*F)(void) const)
 template<typename T_Type, int has_toObject>
-zfclassNotPOD _ZFP_ZFAnyCastT
-{
+zfclassNotPOD _ZFP_ZFAnyCastT {
 public:
-    static ZFObject *c(ZF_IN T_Type obj)
-    {
+    static ZFObject *c(ZF_IN T_Type obj) {
         return (ZFObject *)obj;
     }
 };
 template<>
-zfclassNotPOD _ZFP_ZFAnyCastT<zfnullT, 0>
-{
+zfclassNotPOD _ZFP_ZFAnyCastT<zfnullT, 0> {
 public:
-    static ZFObject *c(ZF_IN zfnullT const &obj)
-    {
+    static ZFObject *c(ZF_IN zfnullT const &obj) {
         return (ZFObject *)zfnull;
     }
 };
 template<typename T_Type>
-zfclassNotPOD _ZFP_ZFAnyCastT<T_Type, 1>
-{
+zfclassNotPOD _ZFP_ZFAnyCastT<T_Type, 1> {
 public:
-    static ZFObject *c(ZF_IN T_Type obj)
-    {
+    static ZFObject *c(ZF_IN T_Type obj) {
         return obj.toObject();
     }
 };
@@ -60,8 +54,7 @@ public:
  *   ZFObject *orig = any.toObject();
  * @endcode
  */
-zfclassLikePOD ZFLIB_ZFCore ZFAny
-{
+zfclassLikePOD ZFLIB_ZFCore ZFAny {
     /** @cond ZFPrivateDoc */
 public:
     ZFAny(void)
@@ -81,52 +74,43 @@ public:
 
 public:
     template<typename T_ZFObject>
-    ZFAny &operator = (ZF_IN T_ZFObject *obj)
-    {
+    ZFAny &operator = (ZF_IN T_ZFObject *obj) {
         this->_obj = (obj ? obj->toObject() : zfnull);
         return *this;
     }
     template<typename T_ZFObject>
-    ZFAny &operator = (ZF_IN T_ZFObject const &obj)
-    {
+    ZFAny &operator = (ZF_IN T_ZFObject const &obj) {
         this->_obj = _ZFP_ZFAnyCast(T_ZFObject, obj);
         return *this;
     }
 
 public:
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject *obj) const
-    {
+    zfbool operator == (ZF_IN T_ZFObject *obj) const {
         return (this->_obj == obj);
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject *obj) const
-    {
+    zfbool operator != (ZF_IN T_ZFObject *obj) const {
         return (this->_obj != obj);
     }
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject const &obj) const
-    {
+    zfbool operator == (ZF_IN T_ZFObject const &obj) const {
         return (this->_obj == _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject const &obj) const
-    {
+    zfbool operator != (ZF_IN T_ZFObject const &obj) const {
         return (this->_obj != _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
 
 public:
-    ZFObject *operator -> (void) const
-    {
+    ZFObject *operator -> (void) const {
         return this->toObject();
     }
-    operator bool (void) const
-    {
+    operator bool (void) const {
         return (this->_obj != zfnull);
     }
     template<typename T_ZFObject>
-    inline operator T_ZFObject * (void) const
-    {
+    inline operator T_ZFObject * (void) const {
         return ZFCastZFObject(T_ZFObject *, this->_obj);
     }
     /** @endcond */
@@ -135,16 +119,14 @@ public:
     /**
      * @brief get the holded object
      */
-    inline ZFObject *toObject(void) const
-    {
+    inline ZFObject *toObject(void) const {
         return this->_obj;
     }
     /**
      * @brief cast by #ZFCastZFObjectUnchecked
      */
     template<typename T_ZFObject>
-    inline T_ZFObject to(void) const
-    {
+    inline T_ZFObject to(void) const {
         return ZFCastZFObjectUnchecked(T_ZFObject, this->_obj);
     }
 
@@ -153,39 +135,31 @@ private:
 };
 
 template<typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, ZFAny, T_ToType, _ZFP_ObjCastTypeUnknown>
-{
+zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, ZFAny, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
-    static inline T_To c(ZFAny const &obj)
-    {
+    static inline T_To c(ZFAny const &obj) {
         return ZFCastZFObject(T_To, obj.toObject());
     }
 };
 template<typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, ZFAny, T_From, _ZFP_ObjCastTypeUnknown, T_FromType>
-{
+zfclassNotPOD _ZFP_ObjCastHolder<0, ZFAny, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
-    static inline ZFAny c(T_From obj)
-    {
+    static inline ZFAny c(T_From obj) {
         return ZFCastZFObject(ZFObject *, obj);
     }
 };
 
 template<typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, ZFAny, T_ToType, _ZFP_ObjCastTypeUnknown>
-{
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, ZFAny, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
-    static inline T_To c(ZFAny const &obj)
-    {
+    static inline T_To c(ZFAny const &obj) {
         return ZFCastZFObjectUnchecked(T_To, obj.toObject());
     }
 };
 template<typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, ZFAny, T_From, _ZFP_ObjCastTypeUnknown, T_FromType>
-{
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, ZFAny, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
-    static inline ZFAny c(T_From obj)
-    {
+    static inline ZFAny c(T_From obj) {
         return ZFCastZFObjectUnchecked(ZFObject *, obj);
     }
 };

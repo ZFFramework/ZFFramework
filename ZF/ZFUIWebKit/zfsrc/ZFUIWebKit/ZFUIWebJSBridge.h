@@ -13,8 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief store necessary data for #ZFUIWebJSBridge::webMessageBeforeSend
  */
-zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeSendData : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeSendData : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIWebJSBridgeSendData, ZFObject)
 
 public:
@@ -32,8 +31,7 @@ public:
 /**
  * @brief store necessary data for #ZFUIWebJSBridge::webMessageBeforeRecv
  */
-zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeRecvData : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridgeRecvData : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIWebJSBridgeRecvData, ZFObject)
 
 public:
@@ -52,8 +50,7 @@ zfclassFwd _ZFP_ZFUIWebJSBridgePrivate;
 /**
  * @brief web JS bridge
  */
-zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridge : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUIWebKit ZFUIWebJSBridge : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIWebJSBridge, ZFObject)
 
 public:
@@ -95,8 +92,9 @@ public:
      * return old one if exist or create new one if not exist\n
      * the bridge object would be stored as an object tag to it's owner webView
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUIWebJSBridge *, instanceForWebView,
-                              ZFMP_IN(ZFUIWebView *, webView))
+    ZFMETHOD_DECLARE_STATIC_1(ZFUIWebJSBridge *, instanceForWebView
+            , ZFMP_IN(ZFUIWebView *, webView)
+            )
 
 public:
     /**
@@ -110,8 +108,9 @@ public:
      *
      * note: the message to send can be modified by observing #EventWebMessageBeforeSend
      */
-    ZFMETHOD_DECLARE_1(ZFJson, webMessageSend,
-                       ZFMP_IN_OUT(ZFJson &, messageSend))
+    ZFMETHOD_DECLARE_1(ZFJson, webMessageSend
+            , ZFMP_IN_OUT(ZFJson &, messageSend)
+            )
     zffinal ZFJson _ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &messageRecv);
 
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFUIWebJSBridge::instanceForWebView")
@@ -123,23 +122,19 @@ protected:
 
 protected:
     /** @brief see #EventWebMessageBeforeSend */
-    virtual inline void webMessageBeforeSend(ZF_IN ZFUIWebJSBridgeSendData *dataSend)
-    {
+    virtual inline void webMessageBeforeSend(ZF_IN ZFUIWebJSBridgeSendData *dataSend) {
         this->observerNotify(ZFUIWebJSBridge::EventWebMessageBeforeSend(), dataSend);
     }
     /** @brief see #EventWebMessageAfterSend */
-    virtual inline void webMessageAfterSend(ZF_IN ZFUIWebJSBridgeSendData *dataSend)
-    {
+    virtual inline void webMessageAfterSend(ZF_IN ZFUIWebJSBridgeSendData *dataSend) {
         this->observerNotify(ZFUIWebJSBridge::EventWebMessageAfterSend(), dataSend);
     }
     /** @brief see #EventWebMessageBeforeRecv */
-    virtual inline void webMessageBeforeRecv(ZF_IN ZFUIWebJSBridgeRecvData *dataRecv)
-    {
+    virtual inline void webMessageBeforeRecv(ZF_IN ZFUIWebJSBridgeRecvData *dataRecv) {
         this->observerNotify(ZFUIWebJSBridge::EventWebMessageBeforeRecv(), dataRecv);
     }
     /** @brief see #EventWebMessageAfterRecv */
-    virtual inline void webMessageAfterRecv(ZF_IN ZFUIWebJSBridgeRecvData *dataRecv)
-    {
+    virtual inline void webMessageAfterRecv(ZF_IN ZFUIWebJSBridgeRecvData *dataRecv) {
         this->observerNotify(ZFUIWebJSBridge::EventWebMessageAfterRecv(), dataRecv);
     }
 

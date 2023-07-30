@@ -10,17 +10,13 @@
 
 // ============================================================
 // layout
-zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_Qt_Layout : public ZFImpl_sys_Qt_BaseLayout
-{
+zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_Qt_Layout : public ZFImpl_sys_Qt_BaseLayout {
 public:
-    ~ZFImpl_sys_Qt_Layout(void)
-    {
-        if(!this->children.isEmpty())
-        {
+    ~ZFImpl_sys_Qt_Layout(void) {
+        if(!this->children.isEmpty()) {
             zfstring errHint;
             errHint += "[ZFUIView] these views has not been removed when parent dealloc:";
-            for(zfindex i = 0; i < this->children.count(); ++i)
-            {
+            for(zfindex i = 0; i < this->children.count(); ++i) {
                 QGraphicsWidget *v = this->children.get(i);
                 errHint += " ";
                 ZFImpl_sys_Qt_viewInfoT(errHint, v);

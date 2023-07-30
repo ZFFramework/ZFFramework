@@ -14,8 +14,9 @@ ZF_NAMESPACE_BEGIN(ZFApp)
 /**
  * @brief exit the app
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, appExit,
-                        ZFMP_IN_OPT(zfint, appExitCode, ZFApp::appExitCode()))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, appExit
+        , ZFMP_IN_OPT(zfint, appExitCode, ZFApp::appExitCode())
+        )
 
 /**
  * @brief restart the app

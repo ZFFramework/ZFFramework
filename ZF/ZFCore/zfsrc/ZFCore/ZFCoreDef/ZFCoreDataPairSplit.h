@@ -26,47 +26,48 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * if leftToken has been set, then rightToken must also be set with same order\n
  * if rightToken not set, src can only be stopped by reach end
  */
-extern ZFLIB_ZFCore zfbool zfCoreDataPairSplitString(ZF_IN_OUT ZFCoreArray<ZFIndexRange> &outData,
-                                                     ZF_IN zfindex desiredCountOrIndexMax,
-                                                     ZF_IN const zfchar *src,
-                                                     ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                                     ZF_IN_OPT const zfchar *separatorTokens = ",",
-                                                     ZF_IN_OPT const zfchar *leftTokens = "(",
-                                                     ZF_IN_OPT const zfchar *rightTokens = ")",
-                                                     ZF_IN_OPT zfbool allowEmptyItem = zffalse,
-                                                     ZF_OUT_OPT const zfchar **outErrorPos = zfnull);
+extern ZFLIB_ZFCore zfbool zfCoreDataPairSplitString(
+        ZF_IN_OUT ZFCoreArray<ZFIndexRange> &outData
+        , ZF_IN zfindex desiredCountOrIndexMax
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT const zfchar *separatorTokens = ","
+        , ZF_IN_OPT const zfchar *leftTokens = "("
+        , ZF_IN_OPT const zfchar *rightTokens = ")"
+        , ZF_IN_OPT zfbool allowEmptyItem = zffalse
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        );
 
 /**
  * @brief split data to int array format, see #zfCoreDataPairSplitString
  */
 template<typename T_int>
-zfbool zfCoreDataPairSplitInt(ZF_IN_OUT ZFCoreArray<T_int> &outData,
-                              ZF_IN zfindex desiredCountOrIndexMax,
-                              ZF_IN const zfchar *src,
-                              ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                              ZF_IN_OPT const zfchar *separatorTokens = ",",
-                              ZF_IN_OPT const zfchar *leftTokens = "(",
-                              ZF_IN_OPT const zfchar *rightTokens = ")",
-                              ZF_IN_OPT zfbool allowEmptyItem = zffalse,
-                              ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
+zfbool zfCoreDataPairSplitInt(
+        ZF_IN_OUT ZFCoreArray<T_int> &outData
+        , ZF_IN zfindex desiredCountOrIndexMax
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT const zfchar *separatorTokens = ","
+        , ZF_IN_OPT const zfchar *leftTokens = "("
+        , ZF_IN_OPT const zfchar *rightTokens = ")"
+        , ZF_IN_OPT zfbool allowEmptyItem = zffalse
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
     ZFCoreArrayPOD<ZFIndexRange> splited;
     if(!zfCoreDataPairSplitString(
-        splited,
-        desiredCountOrIndexMax,
-        src, srcLen,
-        separatorTokens, leftTokens, rightTokens,
-        allowEmptyItem,
-        outErrorPos))
-    {
+                splited,
+                desiredCountOrIndexMax,
+                src, srcLen,
+                separatorTokens, leftTokens, rightTokens,
+                allowEmptyItem,
+                outErrorPos)
+                ) {
         return zffalse;
     }
-    for(zfindex i = 0; i < splited.count(); ++i)
-    {
+    for(zfindex i = 0; i < splited.count(); ++i) {
         T_int tmp;
         tmp = 0;
-        if(!zfsToIntT(tmp, src + splited[i].start, splited[i].count, 10, zftrue, outErrorPos))
-        {
+        if(!zfsToIntT(tmp, src + splited[i].start, splited[i].count, 10, zftrue, outErrorPos)) {
             return zffalse;
         }
         outData.add(tmp);
@@ -78,32 +79,31 @@ zfbool zfCoreDataPairSplitInt(ZF_IN_OUT ZFCoreArray<T_int> &outData,
  * @brief split data to float array format, see #zfCoreDataPairSplitString
  */
 template<typename T_float>
-zfbool zfCoreDataPairSplitFloat(ZF_IN_OUT ZFCoreArray<T_float> &outData,
-                                ZF_IN zfindex desiredCountOrIndexMax,
-                                ZF_IN const zfchar *src,
-                                ZF_IN_OPT zfindex srcLen = zfindexMax(),
-                                ZF_IN_OPT const zfchar *separatorTokens = ",",
-                                ZF_IN_OPT const zfchar *leftTokens = "(",
-                                ZF_IN_OPT const zfchar *rightTokens = ")",
-                                ZF_IN_OPT zfbool allowEmptyItem = zffalse,
-                                ZF_OUT_OPT const zfchar **outErrorPos = zfnull)
-{
+zfbool zfCoreDataPairSplitFloat(
+        ZF_IN_OUT ZFCoreArray<T_float> &outData
+        , ZF_IN zfindex desiredCountOrIndexMax
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT const zfchar *separatorTokens = ","
+        , ZF_IN_OPT const zfchar *leftTokens = "("
+        , ZF_IN_OPT const zfchar *rightTokens = ")"
+        , ZF_IN_OPT zfbool allowEmptyItem = zffalse
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
     ZFCoreArrayPOD<ZFIndexRange> splited;
     if(!zfCoreDataPairSplitString(
-        splited,
-        desiredCountOrIndexMax,
-        src, srcLen,
-        separatorTokens, leftTokens, rightTokens,
-        allowEmptyItem,
-        outErrorPos))
-    {
+                splited,
+                desiredCountOrIndexMax,
+                src, srcLen,
+                separatorTokens, leftTokens, rightTokens,
+                allowEmptyItem,
+                outErrorPos)
+                ) {
         return zffalse;
     }
-    for(zfindex i = 0; i < splited.count(); ++i)
-    {
+    for(zfindex i = 0; i < splited.count(); ++i) {
         T_float tmp = 0;
-        if(!zfsToFloatT(tmp, src + splited[i].start, splited[i].count, outErrorPos))
-        {
+        if(!zfsToFloatT(tmp, src + splited[i].start, splited[i].count, outErrorPos)) {
             return zffalse;
         }
         outData.add(tmp);

@@ -16,8 +16,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * proto type:
  * @code
- *   zfindex input(ZF_OUT void *buf,
- *                 ZF_IN zfindex count);
+ *   zfindex input(
+ *           ZF_OUT void *buf
+ *           , ZF_IN zfindex count
+ *           );
  * @endcode
  *
  * params:
@@ -35,44 +37,43 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
 public:
     /** @brief see #ZFInput */
-    inline zfindex execute(ZF_OUT void *buf,
-                           ZF_IN zfindex count) const
-    {
+    inline zfindex execute(
+            ZF_OUT void *buf
+            , ZF_IN zfindex count
+            ) const {
         return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
     }
     /** @brief see #ZFInput */
-    inline zfindex operator () (ZF_OUT void *buf,
-                                ZF_IN zfindex count) const
-    {
+    inline zfindex operator () (
+            ZF_OUT void *buf
+            , ZF_IN zfindex count
+            ) const {
         return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
     }
     /** @brief see #ZFInput */
-    const ZFInput &input(ZF_OUT void *buf,
-                         ZF_IN zfindex count,
-                         ZF_OUT_OPT zfindex *result = zfnull) const
-    {
-        if(result != zfnull)
-        {
+    const ZFInput &input(
+            ZF_OUT void *buf
+            , ZF_IN zfindex count
+            , ZF_OUT_OPT zfindex *result = zfnull
+            ) const {
+        if(result != zfnull) {
             *result = this->execute(buf, count);
         }
-        else
-        {
+        else {
             this->execute(buf, count);
         }
         return *this;
     }
     /** @brief see #ZFInput */
-    const ZFInput &input(ZF_OUT zfstring &buf,
-                         ZF_IN zfindex count,
-                         ZF_OUT_OPT zfindex *result = zfnull) const
-    {
-        if(count == zfindexMax())
-        {
+    const ZFInput &input(
+            ZF_OUT zfstring &buf
+            , ZF_IN zfindex count
+            , ZF_OUT_OPT zfindex *result = zfnull
+            ) const {
+        if(count == zfindexMax()) {
             count = this->execute(zfnull, zfindexMax());
-            if(count == zfindexMax())
-            {
-                if(result != zfnull)
-                {
+            if(count == zfindexMax()) {
+                if(result != zfnull) {
                     *result = zfindexMax();
                 }
                 return *this;
@@ -80,19 +81,16 @@ public:
         }
         void *bufTmp = zfmalloc(count);
         zfindex read = this->execute(bufTmp, count);
-        if(read > count)
-        {
+        if(read > count) {
             zffree(bufTmp);
-            if(result != zfnull)
-            {
+            if(result != zfnull) {
                 *result = zfindexMax();
             }
             return *this;
         }
         buf.append((const zfchar *)bufTmp, read);
         zffree(bufTmp);
-        if(result != zfnull)
-        {
+        if(result != zfnull) {
             *result = read;
         }
         return *this;
@@ -155,10 +153,12 @@ extern ZFLIB_ZFCore ZFInput ZFInputDummy(void);
  * seeking the result input callback would ensure in range [start, start + count]\n
  * src must support seek, otherwise a null callback would be returned
  */
-extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCallback,
-                                                   ZF_IN_OPT zfindex start = 0,
-                                                   ZF_IN_OPT zfindex count = zfindexMax(),
-                                                   ZF_IN_OPT zfbool autoRestorePos = zftrue);
+extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(
+        ZF_IN const ZFInput &inputCallback
+        , ZF_IN_OPT zfindex start = 0
+        , ZF_IN_OPT zfindex count = zfindexMax()
+        , ZF_IN_OPT zfbool autoRestorePos = zftrue
+        );
 
 // ============================================================
 // ZFInputForBuffer
@@ -183,8 +183,10 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(ZF_IN const ZFInput &inputCal
  *
  * the source ZFBuffer would be retained until the result ZFInput destroyed
  */
-extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(ZF_IN const ZFBuffer &buffer,
-                                             ZF_IN_OPT zfbool serializable = zffalse);
+extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(
+        ZF_IN const ZFBuffer &buffer
+        , ZF_IN_OPT zfbool serializable = zffalse
+        );
 
 /**
  * @brief create a intput callback input from a const void *,
@@ -195,23 +197,29 @@ extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(ZF_IN const ZFBuffer &buffer,
  * -  (zfindex) src's count or zfindexMax() to calculate automatically (treated as const zfchar *),
  *   zfindexMax() by default
  */
-extern ZFLIB_ZFCore ZFInput ZFInputForBufferUnsafe(ZF_IN const void *src,
-                                                   ZF_IN_OPT zfindex count = zfindexMax(),
-                                                   ZF_IN_OPT zfbool serializable = zffalse);
+extern ZFLIB_ZFCore ZFInput ZFInputForBufferUnsafe(
+        ZF_IN const void *src
+        , ZF_IN_OPT zfindex count = zfindexMax()
+        , ZF_IN_OPT zfbool serializable = zffalse
+        );
 /**
  * @brief see #ZFInputForBufferUnsafe,
  *   copy the contents and auto free it
  */
-extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(ZF_IN const void *src,
-                                             ZF_IN_OPT zfindex count = zfindexMax(),
-                                             ZF_IN_OPT zfbool serializable = zffalse);
+extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(
+        ZF_IN const void *src
+        , ZF_IN_OPT zfindex count = zfindexMax()
+        , ZF_IN_OPT zfbool serializable = zffalse
+        );
 
 /**
  * @brief same as #ZFInputForBuffer
  */
-extern ZFLIB_ZFCore ZFInput ZFInputForString(ZF_IN const zfchar *src,
-                                             ZF_IN_OPT zfindex count = zfindexMax(),
-                                             ZF_IN_OPT zfbool serializable = zffalse);
+extern ZFLIB_ZFCore ZFInput ZFInputForString(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex count = zfindexMax()
+        , ZF_IN_OPT zfbool serializable = zffalse
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFIOCallback_input_h_

@@ -11,12 +11,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 static UIApplication *_ZFP_ZFImpl_sys_iOS_application = nil;
 static UIWindow *_ZFP_ZFImpl_sys_iOS_rootWindow = nil;
 
-UIApplication *ZFImpl_sys_iOS_application(void)
-{
+UIApplication *ZFImpl_sys_iOS_application(void) {
     return _ZFP_ZFImpl_sys_iOS_application;
 }
-UIWindow *ZFImpl_sys_iOS_rootWindow(void)
-{
+UIWindow *ZFImpl_sys_iOS_rootWindow(void) {
     return _ZFP_ZFImpl_sys_iOS_rootWindow;
 }
 
@@ -28,13 +26,11 @@ ZF_NAMESPACE_GLOBAL_END
 @property (nonatomic, assign) BOOL _ZFP_appResumeFlag;
 @end
 @implementation _ZFP_ZFImpl_sys_iOS_AppEventHolder
-- (void)appOnCreate:(NSNotification *)notification
-{
+- (void)appOnCreate:(NSNotification *)notification {
     _ZFP_ZFImpl_sys_iOS_application = [UIApplication sharedApplication];
     _ZFP_ZFImpl_sys_iOS_rootWindow = _ZFP_ZFImpl_sys_iOS_application.keyWindow;
 
-    if(_ZFP_ZFImpl_sys_iOS_rootWindow.backgroundColor == nil)
-    {
+    if(_ZFP_ZFImpl_sys_iOS_rootWindow.backgroundColor == nil) {
         _ZFP_ZFImpl_sys_iOS_rootWindow.backgroundColor = [UIColor whiteColor];
     }
 
@@ -58,31 +54,25 @@ ZF_NAMESPACE_GLOBAL_END
     });
 #endif
 }
-- (void)appOnDestroy
-{
+- (void)appOnDestroy {
     ZFFrameworkCleanup();
 
     _ZFP_ZFImpl_sys_iOS_application = nil;
     _ZFP_ZFImpl_sys_iOS_rootWindow = nil;
 }
-- (void)appOnPause
-{
-    if(self._ZFP_appResumeFlag)
-    {
+- (void)appOnPause {
+    if(self._ZFP_appResumeFlag) {
         self._ZFP_appResumeFlag = NO;
         [_ZFP_ZFImpl_sys_iOS_rootWindow.rootViewController viewWillDisappear:NO];
     }
 }
-- (void)appOnResume
-{
-    if(!self._ZFP_appResumeFlag)
-    {
+- (void)appOnResume {
+    if(!self._ZFP_appResumeFlag) {
         self._ZFP_appResumeFlag = YES;
         [_ZFP_ZFImpl_sys_iOS_rootWindow.rootViewController viewWillAppear:NO];
     }
 }
-- (void)appOnReceiveMemoryWarning
-{
+- (void)appOnReceiveMemoryWarning {
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventAppOnMemoryLow());
 }
 @end
@@ -90,8 +80,7 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 _ZFP_ZFImpl_sys_iOS_AppEventHolder *_ZFP_ZFMainEntry_sys_iOS_appEventHolder = nil;
-ZF_STATIC_REGISTER_INIT(_ZFP_ZFImpl_sys_iOS_AppEventHolder)
-{
+ZF_STATIC_REGISTER_INIT(_ZFP_ZFImpl_sys_iOS_AppEventHolder) {
     _ZFP_ZFMainEntry_sys_iOS_appEventHolder = [_ZFP_ZFImpl_sys_iOS_AppEventHolder new];
 
     [[NSNotificationCenter defaultCenter] addObserver:_ZFP_ZFMainEntry_sys_iOS_appEventHolder selector:@selector(appOnCreate:) name:UIApplicationDidFinishLaunchingNotification object:nil];
@@ -100,8 +89,7 @@ ZF_STATIC_REGISTER_INIT(_ZFP_ZFImpl_sys_iOS_AppEventHolder)
     [[NSNotificationCenter defaultCenter] addObserver:_ZFP_ZFMainEntry_sys_iOS_appEventHolder selector:@selector(appOnResume) name:UIApplicationWillEnterForegroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:_ZFP_ZFMainEntry_sys_iOS_appEventHolder selector:@selector(appOnReceiveMemoryWarning) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 }
-ZF_STATIC_REGISTER_DESTROY(_ZFP_ZFImpl_sys_iOS_AppEventHolder)
-{
+ZF_STATIC_REGISTER_DESTROY(_ZFP_ZFImpl_sys_iOS_AppEventHolder) {
     [[NSNotificationCenter defaultCenter] removeObserver:_ZFP_ZFMainEntry_sys_iOS_appEventHolder];
     _ZFP_ZFMainEntry_sys_iOS_appEventHolder = nil;
 }

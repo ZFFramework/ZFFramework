@@ -64,16 +64,14 @@ zfclassFwd _ZFP_ZFFileFindDataPrivate;
  * @brief data used by ZFFile when finding files
  * @see ZFFileFindFirst, ZFFileFindNext, ZFFileFindClose
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFFileFindData
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFFileFindData {
 public:
     /** @cond ZFPrivateDoc */
     ZFFileFindData(void);
     ZFFileFindData(ZF_IN ZFFileFindData const &ref);
     ZFFileFindData &operator = (ZF_IN ZFFileFindData const &ref);
     zfbool operator == (ZF_IN ZFFileFindData const &ref) const;
-    zfbool operator != (ZF_IN ZFFileFindData const &ref) const
-    {
+    zfbool operator != (ZF_IN ZFFileFindData const &ref) const {
         return !this->operator == (ref);
     }
     /** @endcond */
@@ -83,15 +81,13 @@ public:
     /**
      * @brief return file name of file
      */
-    const zfchar *fileName(void) const
-    {
+    const zfchar *fileName(void) const {
         return this->impl().fileName;
     }
     /**
      * @brief return true if is a directory
      */
-    zfbool fileIsDir(void) const
-    {
+    zfbool fileIsDir(void) const {
         return this->impl().fileIsDir;
     }
 
@@ -99,8 +95,7 @@ public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    inline zfstring objectInfo(void) const
-    {
+    inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -108,8 +103,7 @@ public:
 
 public:
     /** @brief for impl to achieve custom find logic */
-    zffinal zfclassNotPOD Impl
-    {
+    zffinal zfclassNotPOD Impl {
     public:
         zfstring fileName; /**< @brief file path */
         zfbool fileIsDir; /**< @brief whether directory */
@@ -132,15 +126,20 @@ public:
     /** @brief user data passed from #implAttach */
     void *implUserData(void) const;
     /** @brief begin first find */
-    void implAttach(ZF_IN const zfchar *implName,
-                    ZF_IN_OPT void *implUserData = zfnull);
+    void implAttach(
+            ZF_IN const zfchar *implName
+            , ZF_IN_OPT void *implUserData = zfnull
+            );
     /** @brief close find */
     void implDetach(void);
     /** @brief check whether impl matches, assert fail if not match, return the #implUserData */
     void *implCheck(ZF_IN const zfchar *implName) const;
 
     /** @brief util for impl to store extra data */
-    void implTag(ZF_IN const zfchar *key, ZF_IN ZFObject *value) const;
+    void implTag(
+            ZF_IN const zfchar *key
+            , ZF_IN ZFObject *value
+            ) const;
     /** @brief util for impl to store extra data */
     ZFObject *implTag(ZF_IN const zfchar *key) const;
 private:

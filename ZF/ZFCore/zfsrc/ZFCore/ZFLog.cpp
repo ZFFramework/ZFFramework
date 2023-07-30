@@ -9,40 +9,36 @@ static ZFLogFormat *_ZFP_ZFLogFormatHolder = zfnull;
 // ============================================================
 ZFOBJECT_REGISTER(ZFLogFormat)
 
-void ZFLogFormat::format(ZF_IN_OUT zfstring &ret,
-                         ZF_IN ZFOutputFormatStepEnum outputStep,
-                         ZF_IN const zfchar *src,
-                         ZF_IN zfindex srcLen,
-                         ZF_IN zfindex writtenLen,
-                         ZF_IN zfindex outputCount,
-                         ZF_IN_OUT_OPT void *&state)
-{
-    switch(outputStep)
-    {
+void ZFLogFormat::format(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN ZFOutputFormatStepEnum outputStep
+        , ZF_IN const zfchar *src
+        , ZF_IN zfindex srcLen
+        , ZF_IN zfindex writtenLen
+        , ZF_IN zfindex outputCount
+        , ZF_IN_OUT_OPT void *&state
+        ) {
+    switch(outputStep) {
         case ZFOutputFormatStep::e_OnInit:
-            if(_ZFP_ZFLogMutex != zfnull)
-            {
+            if(_ZFP_ZFLogMutex != zfnull) {
                 _ZFP_ZFLogMutex->mutexLock();
             }
             break;
         case ZFOutputFormatStep::e_OnDealloc:
             this->autoSpace(zftrue);
             this->autoEndl(zftrue);
-            if(_ZFP_ZFLogMutex != zfnull)
-            {
+            if(_ZFP_ZFLogMutex != zfnull) {
                 _ZFP_ZFLogMutex->mutexUnlock();
             }
             break;
         case ZFOutputFormatStep::e_OnOutput:
-            if(this->autoSpace() && outputCount > 0)
-            {
+            if(this->autoSpace() && outputCount > 0) {
                 ret += " ";
             }
             ret.append(src, srcLen);
             break;
         case ZFOutputFormatStep::e_OnOutputEnd:
-            if(this->autoEndl())
-            {
+            if(this->autoEndl()) {
                 ret += "\n";
             }
             break;
@@ -53,13 +49,11 @@ void ZFLogFormat::format(ZF_IN_OUT zfstring &ret,
 }
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLogDataHolder, ZFLevelZFFrameworkEssential)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLogDataHolder, ZFLevelZFFrameworkEssential) {
     _ZFP_ZFLogMutex = zfAlloc(ZFMutex);
     _ZFP_ZFLogFormatHolder = zfAlloc(ZFLogFormat);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogDataHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogDataHolder) {
     zfRelease(_ZFP_ZFLogFormatHolder);
     _ZFP_ZFLogFormatHolder = zfnull;
     zfRelease(_ZFP_ZFLogMutex);
@@ -67,13 +61,11 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogDataHolder)
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLogDataHolder)
 
-ZFMETHOD_FUNC_DEFINE_0(ZFMutex *, ZFLogMutex)
-{
+ZFMETHOD_FUNC_DEFINE_0(ZFMutex *, ZFLogMutex) {
     return _ZFP_ZFLogMutex;
 }
 
-zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo)
-{
+zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo) {
     zfstring ret;
     ZFTimeInfo ti = ZFTime::currentTimeInfo();
     zfstringAppend(ret,
@@ -87,27 +79,29 @@ zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo)
 }
 
 // ============================================================
-static zfindex _ZFP_zfLogOnOutput(ZF_IN const void *src, ZF_IN zfindex size)
-{
-    if(size == zfindexMax())
-    {
+static zfindex _ZFP_zfLogOnOutput(
+        ZF_IN const void *src
+        , ZF_IN zfindex size
+        ) {
+    if(size == zfindexMax()) {
         size = zfslen((const zfchar *)src) * sizeof(zfchar);
     }
     ZFOutputDefault().execute(src, size);
     return size;
 }
-ZFOutput _ZFP_zfLog(ZF_IN const zfchar *header, ZF_IN_OPT const zfchar *fmt /* = zfnull */, ...)
-{
+ZFOutput _ZFP_zfLog(
+        ZF_IN const zfchar *header
+        , ZF_IN_OPT const zfchar *fmt /* = zfnull */
+        , ...
+        ) {
     ZFOutput ret;
     ret.callbackSerializeCustomDisable(zftrue);
     ZFOutputForFormatT(ret, ZFCallbackForFunc(_ZFP_zfLogOnOutput), _ZFP_ZFLogFormatHolder);
 
-    if(header != zfnull)
-    {
+    if(header != zfnull) {
         ret << header;
     }
-    if(fmt != zfnull)
-    {
+    if(fmt != zfnull) {
         va_list vaList;
         va_start(vaList, fmt);
         zfstring s;
@@ -122,8 +116,7 @@ ZFOutput _ZFP_zfLog(ZF_IN const zfchar *header, ZF_IN_OPT const zfchar *fmt /* =
 
 // ============================================================
 // other convenient method
-zfstring _ZFP_zfLogCurTimeString(void)
-{
+zfstring _ZFP_zfLogCurTimeString(void) {
     zfstring s;
     ZFTimeInfo ti = ZFTime::currentTimeInfo();
     zfstringAppend(s,
@@ -134,8 +127,7 @@ zfstring _ZFP_zfLogCurTimeString(void)
         ti.miliSecond);
     return s;
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, zfLogCurTimeString)
-{
+ZFMETHOD_FUNC_DEFINE_0(zfstring, zfLogCurTimeString) {
     return _ZFP_zfLogCurTimeString();
 }
 

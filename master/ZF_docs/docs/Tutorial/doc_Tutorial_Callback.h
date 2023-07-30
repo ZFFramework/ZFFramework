@@ -5,17 +5,16 @@
  * so we introduced ZFCallback to supply more powerful
  * abstract callback logic:
  * @code
- *   zfclass MyObject : zfextends ZFObject
- *   {
+ *   zfclass MyObject : zfextends ZFObject {
  *       ZFOBJECT_DECLARE(MyObject, ZFObject)
  *
- *       ZFMETHOD_INLINE_1(zfstring, myMemberMethod, ZFMP_IN(zfindex, param0))
- *       {
+ *       ZFMETHOD_INLINE_1(zfstring, myMemberMethod
+ *               , ZFMP_IN(zfindex, param0)
+ *               ) {
  *           return zfstringWithFormat("called myMemberMethod, param: %zi", param0);
  *       }
  *   };
- *   static zfstring myStaticFunc(ZF_IN zfindex param0)
- *   {
+ *   static zfstring myStaticFunc(ZF_IN zfindex param0) {
  *       return zfstringWithFormat("called myStaticFunc, param: %zi", param0);
  *   }
  * @endcode

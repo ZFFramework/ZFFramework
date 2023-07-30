@@ -10,22 +10,22 @@ ZFPATHTYPE_DEFINE(text)
 
 // ============================================================
 #define _ZFP_ZFPathType_common_DEFINE(registerSig, pathType, pathPrefixFunc) \
-    zfclassNotPOD _ZFP_ZFPathType_##registerSig \
-    { \
+    zfclassNotPOD _ZFP_ZFPathType_##registerSig { \
     public: \
-        static void pathConvert(ZF_OUT zfstring &ret, ZF_IN const zfchar *pathData) \
-        { \
+        static void pathConvert( \
+                ZF_OUT zfstring &ret \
+                , ZF_IN const zfchar *pathData \
+                ) { \
             ret += pathPrefixFunc(); \
             ret += ZFFileSeparator(); \
             ret += pathData; \
         } \
-        static void pathRevert(ZF_IN_OUT zfstring &pathData) \
-        { \
+        static void pathRevert(ZF_IN_OUT zfstring &pathData) { \
             const zfchar *prefix = pathPrefixFunc(); \
             zfindex prefixLen = zfslen(prefix); \
             if(zfsncmp(pathData.cString(), prefix, prefixLen) == 0 \
-                && *(pathData.cString() + prefixLen) == ZFFileSeparator()) \
-            { \
+                    && *(pathData.cString() + prefixLen) == ZFFileSeparator() \
+                    ) { \
                 pathData.remove(0, prefixLen + 1); \
             } \
         } \
@@ -60,78 +60,77 @@ _ZFP_ZFPathType_common_DEFINE(cachePath, ZFPathType_cachePath(), ZFPathForCache)
 
 // ============================================================
 // text
-zfclassNotPOD _ZFP_ZFPathType_text
-{
+zfclassNotPOD _ZFP_ZFPathType_text {
 public:
-    zfclassNotPOD _Token
-    {
+    zfclassNotPOD _Token {
     public:
         zfbyte *buf;
         zfindex bufSize;
         zfindex pos;
     public:
         _Token(void) : buf(zfnull), bufSize(0), pos(0) {}
-        ~_Token(void)
-        {
+        ~_Token(void) {
             zffree(this->buf);
         }
     };
 public:
-    static zfbool callbackIsExist(ZF_IN const zfchar *pathData)
-    {
+    static zfbool callbackIsExist(ZF_IN const zfchar *pathData) {
         return zffalse;
     }
-    static zfbool callbackIsDir(ZF_IN const zfchar *pathData)
-    {
+    static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {
         return zffalse;
     }
-    static zfbool callbackToFileName(ZF_IN const zfchar *pathData,
-                                     ZF_IN_OUT zfstring &fileName)
-    {
+    static zfbool callbackToFileName(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OUT zfstring &fileName
+            ) {
         return zffalse;
     }
-    static zfbool callbackToChild(ZF_IN const zfchar *pathData,
-                                  ZF_IN_OUT zfstring &pathDataChild,
-                                  ZF_IN const zfchar *childName)
-    {
+    static zfbool callbackToChild(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OUT zfstring &pathDataChild
+            , ZF_IN const zfchar *childName
+            ) {
         return zffalse;
     }
-    static zfbool callbackToParent(ZF_IN const zfchar *pathData,
-                                   ZF_IN_OUT zfstring &pathDataParent)
-    {
+    static zfbool callbackToParent(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OUT zfstring &pathDataParent
+            ) {
         return zffalse;
     }
-    static zfbool callbackPathCreate(ZF_IN const zfchar *pathData,
-                                     ZF_IN_OPT zfbool autoMakeParent,
-                                     ZF_OUT_OPT zfstring *errPos)
-    {
+    static zfbool callbackPathCreate(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OPT zfbool autoMakeParent
+            , ZF_OUT_OPT zfstring *errPos
+            ) {
         return zffalse;
     }
-    static zfbool callbackRemove(ZF_IN const zfchar *pathData,
-                                 ZF_IN_OPT zfbool isRecursive,
-                                 ZF_IN_OPT zfbool isForce,
-                                 ZF_IN_OPT zfstring *errPos)
-    {
+    static zfbool callbackRemove(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OPT zfbool isRecursive
+            , ZF_IN_OPT zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
         return zffalse;
     }
-    static zfbool callbackFindFirst(ZF_IN_OUT ZFFileFindData &fd,
-                                    ZF_IN const zfchar *pathData)
-    {
+    static zfbool callbackFindFirst(
+            ZF_IN_OUT ZFFileFindData &fd
+            , ZF_IN const zfchar *pathData
+            ) {
         return zffalse;
     }
-    static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd)
-    {
+    static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd) {
         return zffalse;
     }
-    static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd)
-    {
+    static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd) {
     }
-    static void *callbackOpen(ZF_IN const zfchar *pathData,
-                              ZF_IN_OPT ZFFileOpenOptionFlags flag,
-                              ZF_IN_OPT zfbool autoCreateParent)
-    {
-        if(flag != ZFFileOpenOption::e_Read)
-        {
+    static void *callbackOpen(
+            ZF_IN const zfchar *pathData
+            , ZF_IN_OPT ZFFileOpenOptionFlags flag
+            , ZF_IN_OPT zfbool autoCreateParent
+            ) {
+        if(flag != ZFFileOpenOption::e_Read) {
             return zfnull;
         }
         _Token *d = zfnew(_Token);
@@ -140,59 +139,54 @@ public:
         zfmemcpy(d->buf, pathData, d->bufSize);
         return d;
     }
-    static zfbool callbackClose(ZF_IN void *token)
-    {
+    static zfbool callbackClose(ZF_IN void *token) {
         zfdelete((_Token *)token);
         return zftrue;
     }
-    static zfindex callbackTell(ZF_IN void *token)
-    {
+    static zfindex callbackTell(ZF_IN void *token) {
         _Token *d = (_Token *)token;
         return d->pos;
     }
-    static zfbool callbackSeek(ZF_IN void *token,
-                               ZF_IN zfindex byteSize,
-                               ZF_IN_OPT ZFSeekPos position)
-    {
+    static zfbool callbackSeek(
+            ZF_IN void *token
+            , ZF_IN zfindex byteSize
+            , ZF_IN_OPT ZFSeekPos position
+            ) {
         _Token *d = (_Token *)token;
         d->pos = ZFIOCallbackCalcFSeek(0, d->bufSize, d->pos, byteSize, position);
         return zftrue;
     }
-    static zfindex callbackRead(ZF_IN void *token,
-                                ZF_IN void *buf,
-                                ZF_IN zfindex maxByteSize)
-    {
+    static zfindex callbackRead(
+            ZF_IN void *token
+            , ZF_IN void *buf
+            , ZF_IN zfindex maxByteSize
+            ) {
         _Token *d = (_Token *)token;
-        if(maxByteSize > d->bufSize - d->pos)
-        {
+        if(maxByteSize > d->bufSize - d->pos) {
             maxByteSize = d->bufSize - d->pos;
         }
-        if(buf != zfnull)
-        {
+        if(buf != zfnull) {
             zfmemcpy(buf, d->buf + d->pos, maxByteSize);
         }
         return maxByteSize;
     }
-    static zfindex callbackWrite(ZF_IN void *token,
-                                 ZF_IN const void *src,
-                                 ZF_IN_OPT zfindex maxByteSize)
-    {
+    static zfindex callbackWrite(
+            ZF_IN void *token
+            , ZF_IN const void *src
+            , ZF_IN_OPT zfindex maxByteSize
+            ) {
         return 0;
     }
-    static void callbackFlush(ZF_IN void *token)
-    {
+    static void callbackFlush(ZF_IN void *token) {
     }
-    static zfbool callbackIsEof(ZF_IN void *token)
-    {
+    static zfbool callbackIsEof(ZF_IN void *token) {
         _Token *d = (_Token *)token;
         return (d->pos >= d->bufSize);
     }
-    static zfbool callbackIsError(ZF_IN void *token)
-    {
+    static zfbool callbackIsError(ZF_IN void *token) {
         return zffalse;
     }
-    static zfindex callbackSize(ZF_IN void *token)
-    {
+    static zfindex callbackSize(ZF_IN void *token) {
         _Token *d = (_Token *)token;
         return d->bufSize;
     }

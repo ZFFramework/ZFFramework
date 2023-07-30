@@ -8,8 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFImpl_sys_Android_ZFImplOutput_output(fmt, ...) \
     AndroidLogDetail(AndroidLogLevelA, AndroidLogTagDefault(), fmt, ##__VA_ARGS__)
 
-zfclass _ZFP_I_ZFImplOutputImpl_sys_Android_SyncObject : zfextends ZFObject
-{
+zfclass _ZFP_I_ZFImplOutputImpl_sys_Android_SyncObject : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFImplOutputImpl_sys_Android_SyncObject, ZFObject)
 };
 
@@ -17,16 +16,13 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_sys_Android, ZFImplOutput, ZFPr
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Logcat")
 public:
     zfoverride
-    virtual void protocolOnInitFinish(void)
-    {
+    virtual void protocolOnInitFinish(void) {
         zfsuper::protocolOnInitFinish();
         this->syncObj = zfAlloc(_ZFP_I_ZFImplOutputImpl_sys_Android_SyncObject);
     }
     zfoverride
-    virtual void protocolOnDeallocPrepare(void)
-    {
-        if(this->savedString.length() > 0)
-        {
+    virtual void protocolOnDeallocPrepare(void) {
+        if(this->savedString.length() > 0) {
             _ZFP_ZFImpl_sys_Android_ZFImplOutput_output("%s", this->savedString.cString());
         }
         zfRelease(this->syncObj);
@@ -34,20 +30,19 @@ public:
     }
 
 public:
-    virtual void outputCoreLog(ZF_IN const zfchar *s)
-    {
+    virtual void outputCoreLog(ZF_IN const zfchar *s) {
         zfstring tmp = s;
         this->checkOutput(tmp);
     }
-    virtual void outputLog(ZF_IN const zfchar *s, ZF_IN_OPT zfindex count = zfindexMax())
-    {
+    virtual void outputLog(
+            ZF_IN const zfchar *s
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) {
         zfsynchronize(this->syncObj);
-        if(count == zfindexMax())
-        {
+        if(count == zfindexMax()) {
             this->savedString += s;
         }
-        else
-        {
+        else {
             this->savedString += zfstring(s, count);
         }
         this->checkOutput(this->savedString);
@@ -55,26 +50,22 @@ public:
 private:
     ZFObject *syncObj;
     zfstring savedString;
-    void checkOutput(ZF_IN_OUT zfstring &s)
-    {
-        if(s.isEmpty())
-        {
+    void checkOutput(ZF_IN_OUT zfstring &s) {
+        if(s.isEmpty()) {
             return;
         }
 
         zfindex pL = 0;
         do {
             zfindex p = zfstringFind(s.cString() + pL, s.length() - pL, '\n');
-            if(p == zfindexMax())
-            {
+            if(p == zfindexMax()) {
                 break;
             }
             s[pL + p] = '\0';
             _ZFP_ZFImpl_sys_Android_ZFImplOutput_output("%s", s.cString() + pL);
             pL = pL + p + 1;
         } while(zftrue);
-        if(pL != 0)
-        {
+        if(pL != 0) {
             s.remove(0, pL);
         }
     }

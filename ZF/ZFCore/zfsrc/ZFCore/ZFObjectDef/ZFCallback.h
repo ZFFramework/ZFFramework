@@ -18,8 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief callback type of ZFCallback
  */
-typedef enum
-{
+typedef enum {
     ZFCallbackTypeDummy, /**< @brief dummy that must not be executed */
     ZFCallbackTypeMethod, /**< @brief class static member method described by #ZFMethod */
     ZFCallbackTypeMemberMethod, /**< @brief class memeber method that need a object instance to execute, described by #ZFMethod */
@@ -46,10 +45,8 @@ extern ZFLIB_ZFCore void _ZFP_ZFCallback_executeNullCallback(void);
 #define _ZFP_ZFCALLBACK_INVOKER(N) \
     /** @brief see #ZFCallback, you must assign the exact return type and param types for safe */ \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
-    T_ReturnType executeExact(ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_EMPTY, ZFM_COMMA)) const \
-    { \
-        switch(this->callbackType()) \
-        { \
+    T_ReturnType executeExact(ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_EMPTY, ZFM_COMMA)) const { \
+        switch(this->callbackType()) { \
             case ZFCallbackTypeMethod: \
             case ZFCallbackTypeMemberMethod: \
                 return this->callbackMethod()->execute<T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TYPE, ZFM_COMMA, ZFM_COMMA)>( \
@@ -105,8 +102,7 @@ zfclassFwd _ZFP_ZFCallbackPrivate;
  * @note you may also declare a child class of ZFCallback,
  *   by ZFCALLBACK_DECLARE_XXX, see #ZFCALLBACK_DECLARE_BEGIN
  */
-zfclassLikePOD ZFLIB_ZFCore ZFCallback
-{
+zfclassLikePOD ZFLIB_ZFCore ZFCallback {
 public:
     /** @cond ZFPrivateDoc */
     ZFCallback(void);
@@ -121,12 +117,16 @@ public:
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return (d != zfnull);}
     operator bool (void) const {return this->callbackValid();}
     static ZFCallback _ZFP_ZFCallbackCreateMethod(ZF_IN const ZFMethod *callbackMethod);
-    static ZFCallback _ZFP_ZFCallbackCreateMemberMethod(ZF_IN ZFObject *callbackOwnerObject,
-                                                        ZF_IN const ZFMethod *callbackMethod);
+    static ZFCallback _ZFP_ZFCallbackCreateMemberMethod(
+            ZF_IN ZFObject *callbackOwnerObject
+            , ZF_IN const ZFMethod *callbackMethod
+            );
     static ZFCallback _ZFP_ZFCallbackCreateRawFunction(ZF_IN ZFFuncAddrType callbackRawFunction);
-    static ZFCallback _ZFP_ZFCallbackCreateLambda(ZF_IN void *callbackLambdaImpl,
-                                                  ZF_IN _ZFP_ZFCallbackLambdaDeleteCallback callbackLambdaImplDestroy,
-                                                  ZF_IN ZFFuncAddrType callbackLambdaInvoker);
+    static ZFCallback _ZFP_ZFCallbackCreateLambda(
+            ZF_IN void *callbackLambdaImpl
+            , ZF_IN _ZFP_ZFCallbackLambdaDeleteCallback callbackLambdaImplDestroy
+            , ZF_IN ZFFuncAddrType callbackLambdaInvoker
+            );
     /** @endcond */
 
     _ZFP_ZFCALLBACK_INVOKER(0)
@@ -149,8 +149,7 @@ public:
     /** @brief see #objectInfo */
     zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    zffinal inline zfstring objectInfo(void) const
-    {
+    zffinal inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -169,8 +168,7 @@ public:
     /**
      * @brief compare callback by instance only (same callback contents not necessarily to be same instance)
      */
-    zffinal ZFCompareResult objectCompareByInstance(ZF_IN const ZFCallback &ref) const
-    {
+    zffinal ZFCompareResult objectCompareByInstance(ZF_IN const ZFCallback &ref) const {
         return ((d == ref.d) ? ZFCompareTheSame : ZFCompareUncomparable);
     }
 
@@ -207,24 +205,26 @@ public:
      * you can also retain the owner by #callbackOwnerObjectRetain\n
      * you can also save state for the callback as the auto released data
      */
-    zffinal void callbackTag(ZF_IN const zfchar *key,
-                             ZF_IN ZFObject *tag);
+    zffinal void callbackTag(
+            ZF_IN const zfchar *key
+            , ZF_IN ZFObject *tag
+            );
     /** @brief see #callbackTag */
     zffinal ZFObject *callbackTag(ZF_IN const zfchar *key) const;
     /** @brief see #callbackTag */
     template<typename T_ZFObject>
-    T_ZFObject callbackTag(ZF_IN const zfchar *key) const
-    {
+    T_ZFObject callbackTag(ZF_IN const zfchar *key) const {
         return ZFCastZFObjectUnchecked(T_ZFObject, this->callbackTag(key));
     }
     /** @brief see #callbackTag */
-    zffinal void callbackTagGetAllKeyValue(ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey,
-                                           ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue) const;
+    zffinal void callbackTagGetAllKeyValue(
+            ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+            , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+            ) const;
     /**
      * @brief remove tag, same as set tag to null
      */
-    inline void callbackTagRemove(ZF_IN const zfchar *key)
-    {
+    inline void callbackTagRemove(ZF_IN const zfchar *key) {
         this->callbackTag(key, zfnull);
     }
     /**
@@ -244,8 +244,7 @@ public:
     /**
      * @brief return true if callback is valid
      */
-    zffinal inline zfbool callbackValid(void) const
-    {
+    zffinal inline zfbool callbackValid(void) const {
         return (this->callbackType() != ZFCallbackTypeDummy);
     }
 
@@ -315,8 +314,7 @@ public:
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal void callbackSerializeCustomData(ZF_IN const ZFSerializableData &customData)
-    {
+    zffinal void callbackSerializeCustomData(ZF_IN const ZFSerializableData &customData) {
         this->callbackSerializeCustomData(&customData);
     }
     /**
@@ -327,15 +325,13 @@ public:
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal void callbackSerializeCustomDisable(ZF_IN zfbool disable)
-    {
+    zffinal void callbackSerializeCustomDisable(ZF_IN zfbool disable) {
         this->callbackSerializeCustomType(disable ? ZFCallbackSerializeCustomTypeDisable : zfnull);
     }
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal zfbool callbackSerializeCustomDisabled(void) const
-    {
+    zffinal zfbool callbackSerializeCustomDisabled(void) const {
         return zfstringIsEqual(this->callbackSerializeCustomType(), ZFCallbackSerializeCustomTypeDisable);
     }
 
@@ -349,7 +345,10 @@ public:
     /** @brief see #pathInfo */
     zffinal void pathInfo(ZF_IN const ZFPathInfo *pathInfo);
     /** @brief see #pathInfo */
-    zffinal void pathInfo(ZF_IN const zfchar *pathType, ZF_IN const zfchar *pathData);
+    zffinal void pathInfo(
+            ZF_IN const zfchar *pathType
+            , ZF_IN const zfchar *pathData
+            );
 
 public:
     /**
@@ -399,8 +398,7 @@ private:
 // ============================================================
 // child callback declare
 #define _ZFP_ZFCALLBACK_DECLARE_BEGIN(ZFLIB_, CallbackTypeName, ParentType) \
-    zfclassLikePOD ZFLIB_ CallbackTypeName : zfextends ParentType \
-    { \
+    zfclassLikePOD ZFLIB_ CallbackTypeName : zfextends ParentType { \
         _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(CallbackTypeName, ParentType) \
     public:
 #define _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
@@ -420,13 +418,11 @@ private:
         : ParentType(ref) \
         { \
         } \
-        CallbackTypeName &operator = (ZF_IN const ZFCallback &ref) \
-        { \
+        CallbackTypeName &operator = (ZF_IN const ZFCallback &ref) { \
             ParentType::operator = (ref); \
             return *this; \
         } \
-        CallbackTypeName &operator = (ZF_IN const zfnullT &dummy) \
-        { \
+        CallbackTypeName &operator = (ZF_IN const zfnullT &dummy) { \
             ParentType::operator = (dummy); \
             return *this; \
         } \

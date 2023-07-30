@@ -3,40 +3,32 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void ZFRegExpResult::objectInfoT(ZF_IN_OUT zfstring &ret) const
-{
+void ZFRegExpResult::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
-    if(this->matched)
-    {
+    if(this->matched) {
         ret += "matched";
-        if(this->matchedRange != ZFIndexRangeZero())
-        {
+        if(this->matchedRange != ZFIndexRangeZero()) {
             ret += " in ";
             ZFIndexRangeToString(ret, this->matchedRange);
         }
-        if(!this->namedGroups.isEmpty())
-        {
+        if(!this->namedGroups.isEmpty()) {
             ret += ", named groups: ";
-            for(zfindex i = 0; i < this->namedGroups.count(); ++i)
-            {
-                if(i != 0)
-                {
+            for(zfindex i = 0; i < this->namedGroups.count(); ++i) {
+                if(i != 0) {
                     ret += ", ";
                 }
                 ZFIndexRangeToString(ret, this->namedGroups[i]);
             }
         }
     }
-    else
-    {
+    else {
         ret += "no match";
     }
     ret += ZFTOKEN_ZFObjectInfoRight;
 }
 
 ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFRegExpResult(), outErrorHint, outErrorPos) == zfnull)
-        {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFRegExpResult(), outErrorHint, outErrorPos) == zfnull) {
             return zffalse;
         }
 
@@ -53,12 +45,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
         v.namedGroups.removeAll();
         element = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFRegExpResult_namedGroups);
         if(element != zfnull && !ZFCoreArrayFromData(
-            v.namedGroups,
-            ZFIndexRangeFromData,
-            serializableData,
-            outErrorHint,
-            outErrorPos))
-        {
+                    v.namedGroups,
+                    ZFIndexRangeFromData,
+                    serializableData,
+                    outErrorHint,
+                    outErrorPos
+                    )) {
             return zffalse;
         }
         return zftrue;
@@ -71,11 +63,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
         ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
             ZFSerializableKeyword_ZFRegExpResult_matchedRange, ZFIndexRange, v.matchedRange, ZFIndexRangeZero());
 
-        if(!v.namedGroups.isEmpty())
-        {
+        if(!v.namedGroups.isEmpty()) {
             ZFSerializableData element;
-            if(!ZFCoreArrayToData(element, ZFIndexRangeToData, v.namedGroups, outErrorHint))
-            {
+            if(!ZFCoreArrayToData(element, ZFIndexRangeToData, v.namedGroups, outErrorHint)) {
                 return zffalse;
             }
             element.category(ZFSerializableKeyword_ZFRegExpResult_namedGroups);
@@ -94,8 +84,7 @@ ZFENUM_DEFINE_FLAGS(ZFRegExpOption, ZFRegExpOptionFlags)
 
 // ============================================================
 // _ZFP_ZFRegExpPrivate
-zfclassNotPOD _ZFP_ZFRegExpPrivate
-{
+zfclassNotPOD _ZFP_ZFRegExpPrivate {
 public:
     void *nativeRegExp;
     zfstring pattern;
@@ -114,10 +103,11 @@ public:
 // ZFRegExp
 ZFOBJECT_REGISTER(ZFRegExp)
 
-zfbool ZFRegExp::serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                 ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                                 ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+zfbool ZFRegExp::serializableOnSerializeFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
     const zfchar *pattern = zfnull;
@@ -132,10 +122,11 @@ zfbool ZFRegExp::serializableOnSerializeFromData(ZF_IN const ZFSerializableData 
 
     return zftrue;
 }
-zfbool ZFRegExp::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                               ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                               ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfbool ZFRegExp::serializableOnSerializeToData(
+        ZF_IN_OUT ZFSerializableData &serializableData
+        , ZF_IN ZFSerializable *referencedOwnerOrNull
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
     zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
 
@@ -148,132 +139,123 @@ zfbool ZFRegExp::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &ser
     return zftrue;
 }
 
-ZFOBJECT_ON_INIT_DEFINE_2(ZFRegExp,
-                          ZFMP_IN(const zfchar *, pattern),
-                          ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault()))
-{
+ZFOBJECT_ON_INIT_DEFINE_2(ZFRegExp
+        , ZFMP_IN(const zfchar *, pattern)
+        , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
+        ) {
     this->objectOnInit();
     zfself::regExpCompile(pattern, flag);
 }
-void ZFRegExp::objectOnInit(void)
-{
+void ZFRegExp::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFRegExpPrivate);
     d->nativeRegExp = ZFPROTOCOL_ACCESS(ZFRegExp)->nativeRegExpCreate(this);
 }
-void ZFRegExp::objectOnDealloc(void)
-{
+void ZFRegExp::objectOnDealloc(void) {
     ZFPROTOCOL_ACCESS(ZFRegExp)->nativeRegExpDestroy(this, d->nativeRegExp);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
 }
 
-void ZFRegExp::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-{
+void ZFRegExp::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     ZFClassUtil::objectPropertyInfo(ret, this);
 }
 
-zfidentity ZFRegExp::objectHash(void)
-{
+zfidentity ZFRegExp::objectHash(void) {
     ZFRegExpOptionFlags flag = this->regExpFlag();
     return zfidentityHash(zfidentityCalcString(this->regExpPattern()),
                          zfidentityCalcPOD(flag));
 }
-ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj)
-{
+ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
     zfself *another = ZFCastZFObject(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(zfstringIsEqual(this->regExpPattern(), another->regExpPattern())
-        && this->regExpFlag() == another->regExpFlag())
-    {
+            && this->regExpFlag() == another->regExpFlag()
+            ) {
         return ZFCompareTheSame;
     }
     return ZFCompareUncomparable;
 }
 
-ZFMETHOD_DEFINE_0(ZFRegExp, void *, nativeRegExp)
-{
+ZFMETHOD_DEFINE_0(ZFRegExp, void *, nativeRegExp) {
     return d->nativeRegExp;
 }
 
-ZFMETHOD_DEFINE_0(ZFRegExp, const zfchar *, regExpPattern)
-{
+ZFMETHOD_DEFINE_0(ZFRegExp, const zfchar *, regExpPattern) {
     return (d->pattern.isEmpty() ? zfnull : d->pattern.cString());
 }
-ZFMETHOD_DEFINE_0(ZFRegExp, ZFRegExpOptionFlags, regExpFlag)
-{
+ZFMETHOD_DEFINE_0(ZFRegExp, ZFRegExpOptionFlags, regExpFlag) {
     return d->flag;
 }
-ZFMETHOD_DEFINE_1(ZFRegExp, zfindex, regExpNamedGroupIndexForName, ZFMP_IN(const zfchar *, name))
-{
-    if(name == zfnull)
-    {
+ZFMETHOD_DEFINE_1(ZFRegExp, zfindex, regExpNamedGroupIndexForName
+        , ZFMP_IN(const zfchar *, name)
+        ) {
+    if(name == zfnull) {
         return zfindexMax();
     }
     return ZFPROTOCOL_ACCESS(ZFRegExp)->regExpNamedGroupIndexForName(this, name);
 }
 
-ZFMETHOD_DEFINE_2(ZFRegExp, void, regExpCompile,
-                  ZFMP_IN(const zfchar *, pattern),
-                  ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault()))
-{
-    if(pattern == zfnull)
-    {
+ZFMETHOD_DEFINE_2(ZFRegExp, void, regExpCompile
+        , ZFMP_IN(const zfchar *, pattern)
+        , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
+        ) {
+    if(pattern == zfnull) {
         pattern = "";
     }
     d->pattern = pattern;
     d->flag = flag;
     ZFPROTOCOL_ACCESS(ZFRegExp)->regExpCompile(this, pattern, flag);
 }
-ZFMETHOD_DEFINE_3(ZFRegExp, void, regExpMatch,
-                  ZFMP_OUT(ZFRegExpResult &, result),
-                  ZFMP_IN(const zfchar *, src),
-                  ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()))
-{
+ZFMETHOD_DEFINE_3(ZFRegExp, void, regExpMatch
+        , ZFMP_OUT(ZFRegExpResult &, result)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
+        ) {
     result.namedGroups.removeAll();
     ZFPROTOCOL_ACCESS(ZFRegExp)->regExpMatch(this, result, src, srcLength);
 }
-ZFMETHOD_DEFINE_3(ZFRegExp, void, regExpMatchExact,
-                  ZFMP_OUT(ZFRegExpResult &, result),
-                  ZFMP_IN(const zfchar *, src),
-                  ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()))
-{
+ZFMETHOD_DEFINE_3(ZFRegExp, void, regExpMatchExact
+        , ZFMP_OUT(ZFRegExpResult &, result)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
+        ) {
     result.namedGroups.removeAll();
     ZFPROTOCOL_ACCESS(ZFRegExp)->regExpMatchExact(this, result, src, srcLength);
 }
-ZFMETHOD_DEFINE_6(ZFRegExp, void, regExpReplace,
-                  ZFMP_OUT(zfstring &, ret),
-                  ZFMP_OUT(ZFRegExpResult &, result),
-                  ZFMP_IN(const zfchar *, replacePattern),
-                  ZFMP_IN(const zfchar *, src),
-                  ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()),
-                  ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
-{
+ZFMETHOD_DEFINE_6(ZFRegExp, void, regExpReplace
+        , ZFMP_OUT(zfstring &, ret)
+        , ZFMP_OUT(ZFRegExpResult &, result)
+        , ZFMP_IN(const zfchar *, replacePattern)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
+        , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
+        ) {
     result.namedGroups.removeAll();
     ZFPROTOCOL_ACCESS(ZFRegExp)->regExpReplace(this, ret, result, replacePattern, src, srcLength, maxReplaceCount);
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind,
-                       ZFMP_IN(const zfchar *, src),
-                       ZFMP_IN(const zfchar *, pattern))
-{
+ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, pattern)
+        ) {
     zfblockedAlloc(ZFRegExp, regexp);
     ZFRegExpResult result;
     regexp->regExpCompile(pattern);
     regexp->regExpMatch(result, src);
     return result.matchedRange;
 }
-ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace,
-                       ZFMP_IN(const zfchar *, src),
-                       ZFMP_IN(const zfchar *, patternFrom),
-                       ZFMP_IN(const zfchar *, patternTo),
-                       ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
-{
+ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, patternFrom)
+        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
+        ) {
     zfblockedAlloc(ZFRegExp, regexp);
     regexp->regExpCompile(patternFrom);
     zfstring ret;
@@ -281,39 +263,33 @@ ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace,
     regexp->regExpReplace(ret, result, patternTo, src, zfindexMax(), maxReplaceCount);
     return ret;
 }
-ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit,
-                       ZFMP_IN(const zfchar *, src),
-                       ZFMP_IN(const zfchar *, separatorPattern),
-                       ZFMP_IN_OPT(zfbool, keepEmpty, zffalse))
-{
+ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, separatorPattern)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        ) {
     ZFCoreArray<zfstring> ret;
-    if(src != zfnull && separatorPattern != zfnull && *separatorPattern)
-    {
+    if(src != zfnull && separatorPattern != zfnull && *separatorPattern) {
         zfblockedAlloc(ZFRegExp, regexp);
         regexp->regExpCompile(separatorPattern);
         ZFRegExpResult result;
         do {
             regexp->regExpMatch(result, src);
-            if(!result.matched || result.matchedRange == ZFIndexRangeZero())
-            {
-                if(*src || keepEmpty)
-                {
+            if(!result.matched || result.matchedRange == ZFIndexRangeZero()) {
+                if(*src || keepEmpty) {
                     ret.add(src);
                 }
                 break;
             }
 
-            if(result.matchedRange.start > 0 || keepEmpty)
-            {
+            if(result.matchedRange.start > 0 || keepEmpty) {
                 ret.add(zfstring(src, result.matchedRange.start));
             }
             src += result.matchedRange.start + result.matchedRange.count;
         } while(zftrue);
     }
-    else if(src != zfnull)
-    {
-        if(*src || keepEmpty)
-        {
+    else if(src != zfnull) {
+        if(*src || keepEmpty) {
             ret.add(src);
         }
     }

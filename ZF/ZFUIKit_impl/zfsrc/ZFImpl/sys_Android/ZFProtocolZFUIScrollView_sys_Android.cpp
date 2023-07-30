@@ -13,8 +13,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIScrollViewImpl_sys_Android, ZFUIScrollView, 
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -24,17 +23,17 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFUIScrollView);
         zfsuper::protocolOnDealloc();
     }
 
 public:
-    virtual void *nativeScrollViewCreate(ZF_IN ZFUIScrollView *view,
-                                         ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeScrollViewCreate(
+            ZF_IN ZFUIScrollView *view
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_nativeScrollViewCreate",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
@@ -46,9 +45,10 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
     }
-    virtual void nativeScrollViewDestroy(ZF_IN ZFUIScrollView *view,
-                                         ZF_IN void *nativeView)
-    {
+    virtual void nativeScrollViewDestroy(
+            ZF_IN ZFUIScrollView *view
+            , ZF_IN void *nativeView
+            ) {
         // for performance, we won't have JNI call to destroy, simply delete the global ref
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -57,9 +57,10 @@ public:
     }
 
 public:
-    virtual void scrollEnable(ZF_IN ZFUIScrollView *scrollView,
-                              ZF_IN zfbool scrollEnable)
-    {
+    virtual void scrollEnable(
+            ZF_IN ZFUIScrollView *scrollView
+            , ZF_IN zfbool scrollEnable
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollEnable",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -70,12 +71,13 @@ public:
             ZFCastStatic(jobject, scrollView->nativeImplView()),
             (jboolean)scrollEnable);
     }
-    virtual void scrollBounce(ZF_IN ZFUIScrollView *scrollView,
-                              ZF_IN zfbool scrollBounceHorizontal,
-                              ZF_IN zfbool scrollBounceVertical,
-                              ZF_IN zfbool scrollBounceHorizontalAlways,
-                              ZF_IN zfbool scrollBounceVerticalAlways)
-{
+    virtual void scrollBounce(
+            ZF_IN ZFUIScrollView *scrollView
+            , ZF_IN zfbool scrollBounceHorizontal
+            , ZF_IN zfbool scrollBounceVertical
+            , ZF_IN zfbool scrollBounceHorizontalAlways
+            , ZF_IN zfbool scrollBounceVerticalAlways
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollBounce",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -92,9 +94,10 @@ public:
             (jboolean)scrollBounceHorizontalAlways,
             (jboolean)scrollBounceVerticalAlways);
     }
-    virtual void scrollContentFrame(ZF_IN ZFUIScrollView *scrollView,
-                                    ZF_IN const ZFUIRect &frame)
-    {
+    virtual void scrollContentFrame(
+            ZF_IN ZFUIScrollView *scrollView
+            , ZF_IN const ZFUIRect &frame
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollContentFrame",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -111,9 +114,10 @@ public:
             (jint)frame.width,
             (jint)frame.height);
     }
-    virtual zftimet scrollAnimationStart(ZF_IN ZFUIScrollView *scrollView,
-                                         ZF_IN zftimet recommendTimerInterval)
-    {
+    virtual zftimet scrollAnimationStart(
+            ZF_IN ZFUIScrollView *scrollView
+            , ZF_IN zftimet recommendTimerInterval
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollAnimationStart",
             JNIGetMethodSig(JNIType::S_long, JNIParamTypeContainer()
@@ -124,8 +128,7 @@ public:
             ZFCastStatic(jobject, scrollView->nativeImplView()),
             (jint)(zfuint)recommendTimerInterval);
     }
-    virtual void scrollAnimationStop(ZF_IN ZFUIScrollView *scrollView)
-    {
+    virtual void scrollAnimationStop(ZF_IN ZFUIScrollView *scrollView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollAnimationStop",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -136,10 +139,11 @@ public:
     }
 
 public:
-    virtual void scrollChildAdd(ZF_IN ZFUIScrollView *parent,
-                                ZF_IN ZFUIView *child,
-                                ZF_IN zfindex atIndex)
-    {
+    virtual void scrollChildAdd(
+            ZF_IN ZFUIScrollView *parent
+            , ZF_IN ZFUIView *child
+            , ZF_IN zfindex atIndex
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollChildAdd",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -152,10 +156,11 @@ public:
             ZFCastStatic(jobject, child->nativeView()),
             (jint)atIndex);
     }
-    virtual void scrollChildRemove(ZF_IN ZFUIScrollView *parent,
-                                   ZF_IN ZFUIView *child,
-                                   ZF_IN zfindex atIndex)
-    {
+    virtual void scrollChildRemove(
+            ZF_IN ZFUIScrollView *parent
+            , ZF_IN ZFUIView *child
+            , ZF_IN zfindex atIndex
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollChildRemove",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -166,8 +171,7 @@ public:
             ZFCastStatic(jobject, parent->nativeImplView()),
             (jint)atIndex);
     }
-    virtual void scrollChildRemoveAllForDealloc(ZF_IN ZFUIScrollView *parent)
-    {
+    virtual void scrollChildRemoveAllForDealloc(ZF_IN ZFUIScrollView *parent) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollChildRemoveAllForDealloc",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -186,47 +190,47 @@ ZF_NAMESPACE_GLOBAL_END
 
 // ============================================================
 // native methods for ZFUIScrollView
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView,
-                         void, native_1notifyScrollViewDragBegin,
-                         JNIPointer zfjniPointerOwnerZFUIScrollView,
-                         jint mousePosX,
-                         jint mousePosY,
-                         jlong mouseTime)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView
+        , void, native_1notifyScrollViewDragBegin
+        , JNIPointer zfjniPointerOwnerZFUIScrollView
+        , jint mousePosX
+        , jint mousePosY
+        , jlong mouseTime
+        ) {
     ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragBegin(
         ZFCastZFObject(ZFUIScrollView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIScrollView)),
         ZFUIPointMake(mousePosX, mousePosY), (zftimet)mouseTime);
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView,
-                         void, native_1notifyScrollViewDrag,
-                         JNIPointer zfjniPointerOwnerZFUIScrollView,
-                         jint mousePosX,
-                         jint mousePosY,
-                         jlong mouseTime)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView
+        , void, native_1notifyScrollViewDrag
+        , JNIPointer zfjniPointerOwnerZFUIScrollView
+        , jint mousePosX
+        , jint mousePosY
+        , jlong mouseTime
+        ) {
     ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDrag(
         ZFCastZFObject(ZFUIScrollView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIScrollView)),
         ZFUIPointMake(mousePosX, mousePosY), (zftimet)mouseTime);
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView,
-                         void, native_1notifyScrollViewDragEnd,
-                         JNIPointer zfjniPointerOwnerZFUIScrollView,
-                         jlong mouseTime,
-                         jboolean needScrollAni)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView
+        , void, native_1notifyScrollViewDragEnd
+        , JNIPointer zfjniPointerOwnerZFUIScrollView
+        , jlong mouseTime
+        , jboolean needScrollAni
+        ) {
     ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewDragEnd(
         ZFCastZFObject(ZFUIScrollView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIScrollView)),
         (zftimet)mouseTime,
         (zfbool)needScrollAni);
 }
 JNI_METHOD_DECLARE_END()
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView,
-                         void, native_1notifyScrollViewScrollAnimation,
-                         JNIPointer zfjniPointerOwnerZFUIScrollView,
-                         jlong relativeTimeInMiliseconds)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIScrollView
+        , void, native_1notifyScrollViewScrollAnimation
+        , JNIPointer zfjniPointerOwnerZFUIScrollView
+        , jlong relativeTimeInMiliseconds
+        ) {
     ZFPROTOCOL_ACCESS(ZFUIScrollView)->notifyScrollViewScrollAnimation(
         ZFCastZFObject(ZFUIScrollView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIScrollView)),
         (zftimet)relativeTimeInMiliseconds);

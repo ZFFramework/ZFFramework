@@ -5,8 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassLikePOD _ZFP_SI_ItemData
-{
+zfclassLikePOD _ZFP_SI_ItemData {
 public:
     zfuint refCount;
     zfstring name;
@@ -20,39 +19,33 @@ public:
     , destructor(zfnull)
     {
     }
-    ~_ZFP_SI_ItemData(void)
-    {
-        if(this->instance != zfnull)
-        {
+    ~_ZFP_SI_ItemData(void) {
+        if(this->instance != zfnull) {
             this->destructor(this->instance);
         }
     }
 };
 
-zfclassLikePOD _ZFP_SI_Data
-{
+zfclassLikePOD _ZFP_SI_Data {
 public:
     ZFCoreArrayPOD<_ZFP_SI_ItemData *> datas;
 public:
-    ~_ZFP_SI_Data(void)
-    {
+    ~_ZFP_SI_Data(void) {
         ZFCoreArrayPOD<_ZFP_SI_ItemData *> tmp = datas;
         datas = ZFCoreArrayPOD<_ZFP_SI_ItemData *>();
-        for(zfindex i = 0; i < tmp.count(); ++i)
-        {
+        for(zfindex i = 0; i < tmp.count(); ++i) {
             zfdelete(tmp[i]);
         }
     }
 public:
-    void *instanceAccess(ZF_IN const zfchar *name,
-                         ZF_IN _ZFP_SI_Constructor constructor,
-                         ZF_IN _ZFP_SI_Destructor destructor)
-    {
+    void *instanceAccess(
+            ZF_IN const zfchar *name
+            , ZF_IN _ZFP_SI_Constructor constructor
+            , ZF_IN _ZFP_SI_Destructor destructor
+            ) {
         zfCoreMutexLocker();
-        for(zfindex i = 0; i < this->datas.count(); ++i)
-        {
-            if(this->datas[i]->name.compare(name) == 0)
-            {
+        for(zfindex i = 0; i < this->datas.count(); ++i) {
+            if(this->datas[i]->name.compare(name) == 0) {
                 ++(this->datas[i]->refCount);
                 return this->datas[i]->instance;
             }
@@ -64,16 +57,12 @@ public:
         this->datas.add(item);
         return item->instance;
     }
-    void instanceCleanup(ZF_IN void *instance)
-    {
+    void instanceCleanup(ZF_IN void *instance) {
         zfCoreMutexLocker();
-        for(zfindex i = 0; i < this->datas.count(); ++i)
-        {
-            if(this->datas[i]->instance == instance)
-            {
+        for(zfindex i = 0; i < this->datas.count(); ++i) {
+            if(this->datas[i]->instance == instance) {
                 --(this->datas[i]->refCount);
-                if(this->datas[i]->refCount == 0)
-                {
+                if(this->datas[i]->refCount == 0) {
                     _ZFP_SI_ItemData *t = this->datas[i];
                     this->datas.remove(i);
                     zfdelete(t);
@@ -84,20 +73,20 @@ public:
     }
 };
 
-static _ZFP_SI_Data &_ZFP_SI_data(void)
-{
+static _ZFP_SI_Data &_ZFP_SI_data(void) {
     static _ZFP_SI_Data d;
     return d;
 }
 
-_ZFP_SI_Holder::_ZFP_SI_Holder(ZF_IN const zfchar *name,
-                               ZF_IN _ZFP_SI_Constructor constructor,
-                               ZF_IN _ZFP_SI_Destructor destructor)
+_ZFP_SI_Holder::_ZFP_SI_Holder(
+        ZF_IN const zfchar *name
+        , ZF_IN _ZFP_SI_Constructor constructor
+        , ZF_IN _ZFP_SI_Destructor destructor
+        )
 : instance(_ZFP_SI_data().instanceAccess(name, constructor, destructor))
 {
 }
-_ZFP_SI_Holder::~_ZFP_SI_Holder(void)
-{
+_ZFP_SI_Holder::~_ZFP_SI_Holder(void) {
     _ZFP_SI_data().instanceCleanup(this->instance);
 }
 

@@ -400,8 +400,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  * this is usually used to declare a tmp variable, such as:
  * @code
- *   class MyClass
- *   {
+ *   class MyClass {
  *   public:
  *       zfbool flag;
  *       MyClass() : flag(zftrue) {}
@@ -411,8 +410,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       ZFUniqueName(cls).flag = zffalse)
  *
  *   // to use the blocked code
- *   MyClassBlock
- *   {
+ *   MyClassBlock {
  *       // code block
  *       // there'll be a instance of MyClass named _ZFP_zUniqueName_cls_123
  *   } // and the MyClass's instance will be deconstructed after the brace
@@ -468,8 +466,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFM_CLASS_HAS_MEMBER_DECLARE(NameSpace, memberName, memberSig) \
     /** @cond ZFPrivateDoc */ \
     template<typename T_Owner> \
-    zfclassNotPOD _ZFP_ClsHM_##NameSpace##_##memberName \
-    { \
+    zfclassNotPOD _ZFP_ClsHM_##NameSpace##_##memberName { \
     private: \
         template <typename T, memberSig> struct _Fix {}; \
         template<typename T> static char _has(_Fix<T, &T::memberName> *); \
@@ -498,8 +495,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * usage:
  * @code
- *   zfclassLikePOD YourType
- *   {
+ *   zfclassLikePOD YourType {
  *   protected:
  *       // declare self is required
  *       ZFCORE_PARAM_DECLARE_SELF(YourType)
@@ -524,14 +520,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZFCORE_PARAM_WITH_INIT(T_ParamType, paramName, initValue) \
     public: \
-        inline T_ParamType const &paramName(void) const \
-        { \
+        inline T_ParamType const &paramName(void) const { \
             return this->paramName##_PropV.value; \
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD paramName##_ZFCoreParam \
-        { \
+        zfclassLikePOD paramName##_ZFCoreParam { \
         public: \
             paramName##_ZFCoreParam(void) \
             : value(initValue) \
@@ -541,8 +535,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             : value(ref.value) \
             { \
             } \
-            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref) \
-            { \
+            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref) { \
                 this->value = ref.value; \
                 return *this; \
             } \
@@ -553,8 +546,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
-        inline zfself &paramName(ZF_IN T_ParamType const &value) \
-        { \
+        inline zfself &paramName(ZF_IN T_ParamType const &value) { \
             this->paramName##_PropV.value = value; \
             return *this; \
         }

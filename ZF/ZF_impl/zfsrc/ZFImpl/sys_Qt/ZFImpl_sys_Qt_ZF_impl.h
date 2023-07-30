@@ -14,14 +14,30 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-extern ZFLIB_ZF_impl void ZFImpl_sys_Qt_QObjectTag(ZF_IN_OUT QObject *obj, ZF_IN const zfchar *name, ZF_IN QVariant const &tag);
-extern ZFLIB_ZF_impl QVariant ZFImpl_sys_Qt_QObjectTag(ZF_IN_OUT QObject *obj, ZF_IN const zfchar *name);
+extern ZFLIB_ZF_impl void ZFImpl_sys_Qt_QObjectTag(
+        ZF_IN_OUT QObject *obj
+        , ZF_IN const zfchar *name
+        , ZF_IN QVariant const &tag
+        );
+extern ZFLIB_ZF_impl QVariant ZFImpl_sys_Qt_QObjectTag(
+        ZF_IN_OUT QObject *obj
+        , ZF_IN const zfchar *name
+        );
 
-extern ZFLIB_ZF_impl void ZFImpl_sys_Qt_QObjectZFObjectTag(ZF_IN_OUT QObject *obj, ZF_IN const zfchar *name, ZF_IN ZFObject *tag);
-extern ZFLIB_ZF_impl ZFObject *ZFImpl_sys_Qt_QObjectZFObjectTag(ZF_IN_OUT QObject *obj, ZF_IN const zfchar *name);
+extern ZFLIB_ZF_impl void ZFImpl_sys_Qt_QObjectZFObjectTag(
+        ZF_IN_OUT QObject *obj
+        , ZF_IN const zfchar *name
+        , ZF_IN ZFObject *tag
+        );
+extern ZFLIB_ZF_impl ZFObject *ZFImpl_sys_Qt_QObjectZFObjectTag(
+        ZF_IN_OUT QObject *obj
+        , ZF_IN const zfchar *name
+        );
 template<typename T_ZFObject>
-T_ZFObject ZFImpl_sys_Qt_QObjectZFObjectTag(ZF_IN_OUT QObject *obj, ZF_IN const zfchar *name)
-{
+T_ZFObject ZFImpl_sys_Qt_QObjectZFObjectTag(
+        ZF_IN_OUT QObject *obj
+        , ZF_IN const zfchar *name
+        ) {
     return ZFCastZFObjectUnchecked(T_ZFObject, ZFImpl_sys_Qt_QObjectZFObjectTag(obj, name));
 }
 
@@ -29,12 +45,14 @@ T_ZFObject ZFImpl_sys_Qt_QObjectZFObjectTag(ZF_IN_OUT QObject *obj, ZF_IN const 
 /**
  * @brief convert QString to zfstring, appended to result, do nothing if error
  */
-extern ZFLIB_ZF_impl void ZFImpl_sys_Qt_zfstringFromQString(ZF_IN_OUT zfstring &result, ZF_IN QString const &nativeString);
+extern ZFLIB_ZF_impl void ZFImpl_sys_Qt_zfstringFromQString(
+        ZF_IN_OUT zfstring &result
+        , ZF_IN QString const &nativeString
+        );
 /**
  * @brief convert QString to zfstring, appended to result, do nothing if error
  */
-inline zfstring ZFImpl_sys_Qt_zfstringFromQString(ZF_IN QString const &nativeString)
-{
+inline zfstring ZFImpl_sys_Qt_zfstringFromQString(ZF_IN QString const &nativeString) {
     zfstring ret;
     ZFImpl_sys_Qt_zfstringFromQString(ret, nativeString);
     return ret;

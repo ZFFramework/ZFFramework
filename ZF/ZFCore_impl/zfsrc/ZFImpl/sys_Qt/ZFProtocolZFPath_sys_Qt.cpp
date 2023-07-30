@@ -11,38 +11,29 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Qt, ZFPath, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt::applicationDirPath")
 public:
-    virtual const zfchar *pathForModule(void)
-    {
-        if(this->_pathForModule.isEmpty())
-        {
+    virtual const zfchar *pathForModule(void) {
+        if(this->_pathForModule.isEmpty()) {
             this->_pathForModule = QCoreApplication::applicationDirPath().toStdString().c_str();
-            if(this->_pathForModule.isEmpty())
-            {
+            if(this->_pathForModule.isEmpty()) {
                 this->_pathForModule = "./";
             }
         }
         return this->_pathForModule;
     }
-    virtual const zfchar *pathForModuleFile(void)
-    {
-        if(this->_pathForModuleFile.isEmpty())
-        {
+    virtual const zfchar *pathForModuleFile(void) {
+        if(this->_pathForModuleFile.isEmpty()) {
             this->_pathForModuleFile = QCoreApplication::applicationFilePath().toStdString().c_str();
-            if(this->_pathForModuleFile.isEmpty())
-            {
+            if(this->_pathForModuleFile.isEmpty()) {
                 this->_pathForModuleFile = "./unknown";
             }
         }
         return this->_pathForModuleFile;
     }
 
-    virtual const zfchar *pathForSetting(void)
-    {
-        if(this->_pathForSetting.isEmpty())
-        {
+    virtual const zfchar *pathForSetting(void) {
+        if(this->_pathForSetting.isEmpty()) {
             ZFPathFormat(this->_pathForSetting, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation).toStdString().c_str());
-            if(this->_pathForSetting.isEmpty())
-            {
+            if(this->_pathForSetting.isEmpty()) {
                 this->_pathForSetting = this->pathForModule();
             }
             this->_pathForSetting += ZFFileSeparator();
@@ -50,18 +41,14 @@ public:
         }
         return this->_pathForSetting;
     }
-    virtual void pathForSetting(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForSetting(ZF_IN const zfchar *path = zfnull) {
         this->_pathForSetting = path;
     }
 
-    virtual const zfchar *pathForStorage(void)
-    {
-        if(this->_pathForStorage.isEmpty())
-        {
+    virtual const zfchar *pathForStorage(void) {
+        if(this->_pathForStorage.isEmpty()) {
             ZFPathFormat(this->_pathForStorage, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdString().c_str());
-            if(this->_pathForStorage.isEmpty())
-            {
+            if(this->_pathForStorage.isEmpty()) {
                 this->_pathForStorage = this->pathForModule();
             }
             this->_pathForStorage += ZFFileSeparator();
@@ -69,18 +56,14 @@ public:
         }
         return this->_pathForStorage;
     }
-    virtual void pathForStorage(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForStorage(ZF_IN const zfchar *path = zfnull) {
         this->_pathForStorage = path;
     }
 
-    virtual const zfchar *pathForStorageShared(void)
-    {
-        if(this->_pathForStorageShared.isEmpty())
-        {
+    virtual const zfchar *pathForStorageShared(void) {
+        if(this->_pathForStorageShared.isEmpty()) {
             ZFPathFormat(this->_pathForStorageShared, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString().c_str());
-            if(this->_pathForStorageShared.isEmpty())
-            {
+            if(this->_pathForStorageShared.isEmpty()) {
                 this->_pathForStorageShared = this->pathForModule();
                 this->_pathForStorageShared += ZFFileSeparator();
                 this->_pathForStorageShared += "zfstorage";
@@ -88,18 +71,14 @@ public:
         }
         return this->_pathForStorageShared;
     }
-    virtual void pathForStorageShared(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForStorageShared(ZF_IN const zfchar *path = zfnull) {
         this->_pathForStorageShared = path;
     }
 
-    virtual const zfchar *pathForCache(void)
-    {
-        if(this->_pathForCache.isEmpty())
-        {
+    virtual const zfchar *pathForCache(void) {
+        if(this->_pathForCache.isEmpty()) {
             ZFPathFormat(this->_pathForCache, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString().c_str());
-            if(this->_pathForCache.isEmpty())
-            {
+            if(this->_pathForCache.isEmpty()) {
                 this->_pathForCache = this->pathForModule();
             }
             this->_pathForCache += ZFFileSeparator();
@@ -107,12 +86,10 @@ public:
         }
         return this->_pathForCache;
     }
-    virtual void pathForCache(ZF_IN const zfchar *path = zfnull)
-    {
+    virtual void pathForCache(ZF_IN const zfchar *path = zfnull) {
         this->_pathForCache = path;
     }
-    virtual void pathForCacheClear(void)
-    {
+    virtual void pathForCacheClear(void) {
         ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
     }
 

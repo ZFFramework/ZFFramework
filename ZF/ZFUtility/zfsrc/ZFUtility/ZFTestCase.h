@@ -22,8 +22,7 @@ zfclassFwd _ZFP_ZFTestCasePrivate;
  * @note automatically test case run depends on #ZFClass's class map,
  *   see #ZFOBJECT_REGISTER for more info
  */
-zfabstract ZFLIB_ZFUtility ZFTestCase : zfextends ZFObject
-{
+zfabstract ZFLIB_ZFUtility ZFTestCase : zfextends ZFObject {
     ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFTestCase, ZFObject)
 
 public:
@@ -59,26 +58,21 @@ protected:
 
 protected:
     /** @brief see #EventTestCaseOnOutput */
-    virtual inline void testCaseOnOutput(ZF_IN const zfchar *info)
-    {
-        if(this->observerHasAdd(ZFTestCase::EventTestCaseOnOutput()))
-        {
+    virtual inline void testCaseOnOutput(ZF_IN const zfchar *info) {
+        if(this->observerHasAdd(ZFTestCase::EventTestCaseOnOutput())) {
             this->observerNotify(ZFTestCase::EventTestCaseOnOutput(), zflineAlloc(v_zfstring, info));
         }
     }
     /** @brief see #EventTestCaseOnStart */
-    virtual inline void testCaseOnStart(void)
-    {
+    virtual inline void testCaseOnStart(void) {
         this->observerNotify(ZFTestCase::EventTestCaseOnStart());
     }
     /** @brief see #EventTestCaseOnProgress */
-    virtual inline void testCaseOnProgress(ZF_IN ZFObject *progress)
-    {
+    virtual inline void testCaseOnProgress(ZF_IN ZFObject *progress) {
         this->observerNotify(ZFTestCase::EventTestCaseOnProgress(), progress);
     }
     /** @brief see #EventTestCaseOnStop */
-    virtual inline void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult)
-    {
+    virtual inline void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult) {
         zfblockedAlloc(ZFResultType, testCaseResultTmp, testCaseResult);
         this->observerNotify(ZFTestCase::EventTestCaseOnStop(), testCaseResultTmp);
         zfRelease(this);
@@ -107,16 +101,18 @@ public:
      * @brief called to notify progress,
      *   do nothing if not running
      */
-    ZFMETHOD_DECLARE_1(void, testCaseProgress,
-                       ZFMP_IN_OPT(ZFObject *, progress, zfnull))
+    ZFMETHOD_DECLARE_1(void, testCaseProgress
+            , ZFMP_IN_OPT(ZFObject *, progress, zfnull)
+            )
     /**
      * @brief must be called to stop test,
      *   do nothing if not running
      *
      * @warning you must not access this object after calling this method
      */
-    ZFMETHOD_DECLARE_1(void, testCaseStop,
-                       ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success))
+    ZFMETHOD_DECLARE_1(void, testCaseStop
+            , ZFMP_IN_OPT(ZFResultTypeEnum, testCaseResult, ZFResultType::e_Success)
+            )
 
 private:
     zfbool _testCaseIsRunning;
@@ -140,10 +136,8 @@ protected:
 
 /** @brief see #ZFTestCaseAssert */
 #define ZFTestCaseAssertWithMessage(cond, fmt, ...) \
-    do \
-    { \
-        if(!(cond)) \
-        { \
+    do { \
+        if(!(cond)) { \
             this->testCaseOutput("%s " fmt, ZFCallerInfoMake().callerInfo().cString(), ##__VA_ARGS__); \
             this->testCaseStop(ZFResultType::e_Fail); \
             return; \
@@ -151,10 +145,8 @@ protected:
     } while(zffalse)
 /** @brief see #ZFTestCaseAssert */
 #define ZFTestCaseAssertWithMessageTrim(cond, fmt, ...) \
-    do \
-    { \
-        if(!(cond)) \
-        { \
+    do { \
+        if(!(cond)) { \
             this->testCaseOutput(fmt, ##__VA_ARGS__); \
             this->testCaseStop(ZFResultType::e_Fail); \
             return; \
@@ -162,10 +154,8 @@ protected:
     } while(zffalse)
 /** @brief see #ZFTestCaseAssert */
 #define ZFTestCaseAssertWithMessageDetail(cond, callerInfo, fmt, ...) \
-    do \
-    { \
-        if(!(cond)) \
-        { \
+    do { \
+        if(!(cond)) { \
             this->testCaseOutput("%s " fmt, callerInfo.callerInfo().cString(), fmt, ##__VA_ARGS__); \
             this->testCaseStop(ZFResultType::e_Fail); \
             return; \

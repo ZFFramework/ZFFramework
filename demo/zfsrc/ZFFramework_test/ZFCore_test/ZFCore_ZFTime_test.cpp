@@ -2,28 +2,24 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static zfindex _ZFP_ZFCore_ZFTime_test_leapYearNumByEnum(zfint year1, zfint year2)
-{
+static zfindex _ZFP_ZFCore_ZFTime_test_leapYearNumByEnum(zfint year1, zfint year2) {
     zfint t1 = year1;
     zfint t2 = year2;
-    if(year1 > year2)
-    {
+    if(year1 > year2) {
         t1 = year2;
         t2 = year1;
     }
     zfuint ret = 0;
-    for( ; t1 <= t2; ++t1)
-    {
+    for( ; t1 <= t2; ++t1) {
         if((t1 % 100 != 0 && t1 % 4 == 0)
-           || t1 % 400 == 0)
-        {
+                || t1 % 400 == 0
+                ) {
             ++ret;
         }
     }
     return ret;
 }
-static zfstring _ZFP_ZFCore_ZFTime_test_printZFTimeValue(const ZFTimeValue &tv)
-{
+static zfstring _ZFP_ZFCore_ZFTime_test_printZFTimeValue(const ZFTimeValue &tv) {
     zfstring s;
     zfstringAppend(s, "\t%s\t%s",
         zfsFromInt(tv.sec).cString(),
@@ -31,8 +27,7 @@ static zfstring _ZFP_ZFCore_ZFTime_test_printZFTimeValue(const ZFTimeValue &tv)
     return s;
 }
 
-static zfstring _ZFP_ZFCore_ZFTime_test_printZFTime(ZFTime *t)
-{
+static zfstring _ZFP_ZFCore_ZFTime_test_printZFTime(ZFTime *t) {
     zfstring ret;
     zfstringAppend(ret, "  %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(t->timeValue()).cString());
     zfstringAppend(ret, "  %6d-%02d-%02d %02d:%02d:%02d.%03d %03d, dayOfWeek: %d, dayOfYear: %d",
@@ -49,14 +44,12 @@ static zfstring _ZFP_ZFCore_ZFTime_test_printZFTime(ZFTime *t)
     return ret;
 }
 
-zfclass ZFCore_ZFTime_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFTime_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFTime_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFTime);
 
@@ -65,14 +58,12 @@ protected:
 
         srand((zfuint)ZFTime::currentTimeValue().sec);
         this->testCaseOutput("calc leap year between two years, if nothing wrong, none would be printed:");
-        for(zfint i = 0; i < 200; ++i)
-        {
+        for(zfint i = 0; i < 200; ++i) {
             zfint y1 = rand() % 30000;
             zfint y2 = rand() % 30000;
             zfint n1 = (zfint)_ZFP_ZFCore_ZFTime_test_leapYearNumByEnum(y1, y2);
             zfint n2 = (zfint)ZFTime::leapYearBetween(y1, y2);
-            if(n1 != n2 && n1 != -n2)
-            {
+            if(n1 != n2 && n1 != -n2) {
                 this->testCaseOutput("calc LeapYear num error at loop: %d (y1: %6d, y2: %6d) n1: %6d, n2: %6d",
                     i,
                     y1,

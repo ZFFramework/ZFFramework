@@ -3,14 +3,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFLua_UI_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFLua_UI_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_UI_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFLua);
         ZFFramework_test_protocolCheck(ZFUIView);

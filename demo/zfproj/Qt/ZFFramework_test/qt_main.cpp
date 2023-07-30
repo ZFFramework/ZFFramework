@@ -1,7 +1,6 @@
 #include "ZFImpl/sys_Qt/ZFMainEntry_sys_Qt.h"
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     ZFImpl_sys_Qt_requireLib(ZFCore)
     ZFImpl_sys_Qt_requireLib(ZFAlgorithm)
     ZFImpl_sys_Qt_requireLib(ZFUtility)

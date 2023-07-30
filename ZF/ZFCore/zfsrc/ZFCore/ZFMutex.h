@@ -12,8 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief mutex utility
  */
-zfclass ZFLIB_ZFCore ZFMutex : zfextends ZFObject
-{
+zfclass ZFLIB_ZFCore ZFMutex : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFMutex, ZFObject)
 
 public:
@@ -25,8 +24,7 @@ public:
      * and mutexLock and mutexUnlock must be paired
      * @see mutexTryLock, mutexUnlock
      */
-    virtual inline void mutexLock(void)
-    {
+    virtual inline void mutexLock(void) {
         this->_ZFP_ZFObjectLock();
     }
     /**
@@ -35,16 +33,14 @@ public:
      *   otherwise, there's no need to unlock
      * @see mutexLock, mutexUnlock
      */
-    virtual inline zfbool mutexTryLock(void)
-    {
+    virtual inline zfbool mutexTryLock(void) {
         return this->_ZFP_ZFObjectTryLock();
     }
     /**
      * @brief release the lock, must be paired with mutexLock or mutexTryLock,
      *   and must be called in the same thread where mutexLock or mutexTryLock called
      */
-    virtual inline void mutexUnlock(void)
-    {
+    virtual inline void mutexUnlock(void) {
         this->_ZFP_ZFObjectUnlock();
     }
 };

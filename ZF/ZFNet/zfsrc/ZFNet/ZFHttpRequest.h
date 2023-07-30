@@ -39,8 +39,7 @@ zfclassFwd _ZFP_ZFHttpRequestPrivate;
 /**
  * @brief see #ZFHttpRequest
  */
-zfclass ZFLIB_ZFNet ZFHttpResponse : zfextends ZFObject
-{
+zfclass ZFLIB_ZFNet ZFHttpResponse : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFHttpResponse, ZFObject)
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFHttpRequest")
 
@@ -55,8 +54,9 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextends ZFObject
 
     // ============================================================
     /** @brief get the response header */
-    ZFMETHOD_DECLARE_1(zfstring, header,
-                       ZFMP_IN(const zfchar *, key))
+    ZFMETHOD_DECLARE_1(zfstring, header
+            , ZFMP_IN(const zfchar *, key)
+            )
 
     /** @brief response header count */
     ZFMETHOD_DECLARE_0(zfindex, headerCount)
@@ -64,17 +64,21 @@ zfclass ZFLIB_ZFNet ZFHttpResponse : zfextends ZFObject
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_0(zfiterator, headerIter)
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfbool, headerIterValid,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfbool, headerIterValid
+            , ZFMP_IN(const zfiterator &, it)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(void, headerIterNext,
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_1(void, headerIterNext
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfstring, headerIterKey,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfstring, headerIterKey
+            , ZFMP_IN(const zfiterator &, it)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfstring, headerIterValue,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfstring, headerIterValue
+            , ZFMP_IN(const zfiterator &, it)
+            )
 
     // ============================================================
     /** @brief util to access body as plain text */
@@ -120,8 +124,7 @@ private:
  *       ->request(onRecv);
  * @endcode
  */
-zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
-{
+zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFHttpRequest, ZFStyleableObject)
 
     /**
@@ -144,8 +147,10 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
     /**
      * @brief init and connect
      */
-    ZFOBJECT_ON_INIT_DECLARE_2(ZFMP_IN(const zfchar *, url),
-                               ZFMP_IN_OPT(ZFHttpMethodEnum, method, ZFHttpMethod::e_GET))
+    ZFOBJECT_ON_INIT_DECLARE_2(
+            ZFMP_IN(const zfchar *, url)
+            , ZFMP_IN_OPT(ZFHttpMethodEnum, method, ZFHttpMethod::e_GET)
+            )
 
     /** @brief timeout */
     ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, timeout, 2000)
@@ -168,15 +173,18 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
      * note, null or empty value is also valid,
      * use #headerRemove or #headerIterRemove to remove
      */
-    ZFMETHOD_DECLARE_2(ZFHttpRequest *, header,
-                       ZFMP_IN(const zfchar *, key),
-                       ZFMP_IN(const zfchar *, value))
+    ZFMETHOD_DECLARE_2(ZFHttpRequest *, header
+            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfchar *, value)
+            )
     /** @brief remove http header */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, headerRemove,
-                       ZFMP_IN(const zfchar *, key))
+    ZFMETHOD_DECLARE_1(ZFHttpRequest *, headerRemove
+            , ZFMP_IN(const zfchar *, key)
+            )
     /** @brief get http header */
-    ZFMETHOD_DECLARE_1(zfstring, header,
-                       ZFMP_IN(const zfchar *, key))
+    ZFMETHOD_DECLARE_1(zfstring, header
+            , ZFMP_IN(const zfchar *, key)
+            )
 
     /** @brief response header count */
     ZFMETHOD_DECLARE_0(zfindex, headerCount)
@@ -184,36 +192,45 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
     /** @brief iterator for #header */
     ZFMETHOD_DECLARE_0(zfiterator, headerIter)
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfbool, headerIterValid,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfbool, headerIterValid
+            , ZFMP_IN(const zfiterator &, it)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(void, headerIterNext,
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_1(void, headerIterNext
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfstring, headerIterKey,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfstring, headerIterKey
+            , ZFMP_IN(const zfiterator &, it)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(zfstring, headerIterValue,
-                       ZFMP_IN(const zfiterator &, it))
+    ZFMETHOD_DECLARE_1(zfstring, headerIterValue
+            , ZFMP_IN(const zfiterator &, it)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_2(void, headerIterValue,
-                       ZFMP_IN_OUT(zfiterator &, it),
-                       ZFMP_IN(const zfchar *, value))
+    ZFMETHOD_DECLARE_2(void, headerIterValue
+            , ZFMP_IN_OUT(zfiterator &, it)
+            , ZFMP_IN(const zfchar *, value)
+            )
     /** @brief iterator for #header */
-    ZFMETHOD_DECLARE_1(void, headerIterRemove,
-                       ZFMP_IN_OUT(zfiterator &, it))
+    ZFMETHOD_DECLARE_1(void, headerIterRemove
+            , ZFMP_IN_OUT(zfiterator &, it)
+            )
 
     // ============================================================
     /** @brief append content to body */
-    ZFMETHOD_DECLARE_2(ZFHttpRequest *, body,
-                       ZFMP_IN(const zfchar *, text),
-                       ZFMP_IN_OPT(zfindex, count, zfindexMax()))
+    ZFMETHOD_DECLARE_2(ZFHttpRequest *, body
+            , ZFMP_IN(const zfchar *, text)
+            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+            )
     /** @brief append content to body */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, body,
-                       ZFMP_IN(const ZFJson &, json))
+    ZFMETHOD_DECLARE_1(ZFHttpRequest *, body
+            , ZFMP_IN(const ZFJson &, json)
+            )
     /** @brief append content to body */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, body,
-                       ZFMP_IN(const ZFBuffer &, buf))
+    ZFMETHOD_DECLARE_1(ZFHttpRequest *, body
+            , ZFMP_IN(const ZFBuffer &, buf)
+            )
 
     /** @brief return current body contents, note this may cause additional memorpy copy */
     ZFMETHOD_DECLARE_0(ZFBuffer, body)
@@ -226,8 +243,9 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject
      * sender is the owner #ZFHttpRequest,
      * param0 is the #ZFHttpResponse
      */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, request,
-                       ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback()))
+    ZFMETHOD_DECLARE_1(ZFHttpRequest *, request
+            , ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback())
+            )
 
     /** @brief cancel the request */
     ZFMETHOD_DECLARE_0(void, requestCancel)

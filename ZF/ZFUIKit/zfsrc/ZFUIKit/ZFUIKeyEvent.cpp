@@ -4,14 +4,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIKeyEvent)
 
-void ZFUIKeyEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-{
+void ZFUIKeyEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     ret += ZFUIKeyAction::EnumNameForValue(this->keyAction);
     ret += " ";
     ret += ZFUIKeyCode::EnumNameForValue(this->keyCode);
 
-    if(this->eventResolved())
-    {
+    if(this->eventResolved()) {
         ret += " (resolved)";
     }
 }

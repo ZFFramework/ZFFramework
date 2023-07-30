@@ -14,8 +14,7 @@ minimal steps to use in iOS with cocoapods to embed to existing projects:
       pod 'ZFFramework'
   2. add cpp files, with this as main entry
       #include "ZFUIKit.h" // ZF module header
-      ZFMAIN_ENTRY()
-      {
+      ZFMAIN_ENTRY() {
           // you cpp code
       }
 

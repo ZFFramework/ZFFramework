@@ -7,32 +7,26 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
 }
 zfstlmap<const ZFProperty *, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFPropertyDynamicRegisterDataHolder)
 
 // ============================================================
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFPropertyDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFPropertyDynamicRegisterAutoRemove)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFPropertyDynamicRegisterAutoRemove) {
     zfstlmap<const ZFProperty *, zfbool> t;
     t.swap(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m);
-    for(zfstlmap<const ZFProperty *, zfbool>::iterator it = t.begin(); it != t.end(); ++it)
-    {
+    for(zfstlmap<const ZFProperty *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
         _ZFP_ZFPropertyUnregister(it->first);
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFPropertyDynamicRegisterAutoRemove)
 
 // ============================================================
-static zfbool _ZFP_ZFPropertyLifeCycleIsReadonly(ZF_IN ZFPropertyLifeCycle lifeCycle)
-{
-    switch(lifeCycle)
-    {
+static zfbool _ZFP_ZFPropertyLifeCycleIsReadonly(ZF_IN ZFPropertyLifeCycle lifeCycle) {
+    switch(lifeCycle) {
         case ZFPropertyLifeCycleOnInit:
         case ZFPropertyLifeCycleOnVerify:
             return zffalse;
@@ -40,11 +34,11 @@ static zfbool _ZFP_ZFPropertyLifeCycleIsReadonly(ZF_IN ZFPropertyLifeCycle lifeC
             return zftrue;
     }
 }
-static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(ZF_IN ZFPropertyLifeCycle lifeCycle,
-                                                                            ZF_IN const ZFProperty *property)
-{
-    switch(lifeCycle)
-    {
+static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
+        ZF_IN ZFPropertyLifeCycle lifeCycle
+        , ZF_IN const ZFProperty *property
+        ) {
+    switch(lifeCycle) {
         case ZFPropertyLifeCycleOnInit:
             return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
         case ZFPropertyLifeCycleOnVerify:
@@ -59,21 +53,18 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(ZF_I
     }
 }
 
-zfclass _ZFP_I_PropDynRetainHolder : zfextends ZFObject
-{
+zfclass _ZFP_I_PropDynRetainHolder : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRetainHolder, ZFObject)
 public:
     zfautoObject zfv;
 
 public:
     zfoverride
-    ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj)
-    {
+    ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
         return ZFObjectCompare(this->zfv.toObject(), anotherObj);
     }
 };
-zfclass _ZFP_I_PropDynRegData : zfextends ZFObject
-{
+zfclass _ZFP_I_PropDynRegData : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegData, ZFObject)
 
 public:
@@ -86,32 +77,26 @@ public:
      */
     zfstring tagKey_propertyValue;
 public:
-    void objectAttach(ZF_IN ZFObject *obj)
-    {
-        if(this->_objAttached.find(obj) == this->_objAttached.end())
-        {
+    void objectAttach(ZF_IN ZFObject *obj) {
+        if(this->_objAttached.find(obj) == this->_objAttached.end()) {
             obj->observerAdd(ZFObject::EventObjectBeforeDealloc(), this->_objOnDeallocListener);
         }
         this->_objAttached[obj] = zftrue;
     }
-    void objectDetach(ZF_IN ZFObject *obj)
-    {
+    void objectDetach(ZF_IN ZFObject *obj) {
         zfstlmap<ZFObject *, zfbool>::iterator it = this->_objAttached.find(obj);
         zfCoreAssert(it != this->_objAttached.end());
         this->_objAttached.erase(it);
         this->objectDetachAction(obj);
     }
-    void objectDetachAll(void)
-    {
+    void objectDetachAll(void) {
         zfstlmap<ZFObject *, zfbool> t;
         t.swap(this->_objAttached);
-        for(zfstlmap<ZFObject *, zfbool>::iterator it = t.begin(); it != t.end(); ++it)
-        {
+        for(zfstlmap<ZFObject *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
             this->objectDetachAction(it->first);
         }
     }
-    void objectDetachAction(ZF_IN ZFObject *obj)
-    {
+    void objectDetachAction(ZF_IN ZFObject *obj) {
         obj->observerRemove(ZFObject::EventObjectBeforeDealloc(), this->_objOnDeallocListener);
         zfautoObject propertyValue = obj->objectTagRemoveAndGet(this->tagKey_propertyValue);
         this->propLifeCycle(ZFPropertyLifeCycleOnDetach, obj, this->propertySaved, propertyValue, propertyValue);
@@ -122,19 +107,17 @@ public:
      * * store ZFTypeIdWrapper for assign property
      * * store _ZFP_I_PropDynRetainHolder for retain property
      */
-    zfbool initValue(ZF_OUT zfautoObject &ret,
-                     ZF_IN const ZFProperty *property,
-                     ZF_OUT_OPT zfstring *errorHint = zfnull)
-    {
-        if(property->propertyIsRetainProperty())
-        {
+    zfbool initValue(
+            ZF_OUT zfautoObject &ret
+            , ZF_IN const ZFProperty *property
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
+        if(property->propertyIsRetainProperty()) {
             zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
-            if(this->initValueCallback != zfnull)
-            {
+            if(this->initValueCallback != zfnull) {
                 holder->zfv = this->initValueCallback(property);
             }
-            if(holder->zfv != zfnull && !holder->zfv.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty()))
-            {
+            if(holder->zfv != zfnull && !holder->zfv.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty())) {
                 zfstringAppend(errorHint,
                     "invalid init value %s, desired: %s",
                     ZFObjectInfo(holder->zfv.toObject()).cString(),
@@ -143,23 +126,17 @@ public:
             }
             ret = holder;
         }
-        else
-        {
-            if(this->initValueCallback != zfnull)
-            {
+        else {
+            if(this->initValueCallback != zfnull) {
                 ret = this->initValueCallback(property);
             }
-            if(ret == zfnull)
-            {
+            if(ret == zfnull) {
                 const ZFClass *propClass = this->typeInfo->typeIdClass();
-                if(propClass != zfnull)
-                {
-                    if(propClass->classIsTypeOf(ZFTypeIdWrapper::ClassData()))
-                    {
+                if(propClass != zfnull) {
+                    if(propClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
                         ret = propClass->newInstance();
                     }
-                    else
-                    {
+                    else {
                         zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
                         ret = holder;
                     }
@@ -167,8 +144,7 @@ public:
                 }
             }
             ZFTypeIdWrapper *wrapper = ret;
-            if(wrapper == zfnull)
-            {
+            if(wrapper == zfnull) {
                 zfstringAppend(errorHint,
                     "invalid init value %s, desired: %s",
                     ZFObjectInfo(ret.toObject()).cString(),
@@ -178,12 +154,13 @@ public:
         }
         return zftrue;
     }
-    void propLifeCycle(ZF_IN ZFPropertyLifeCycle lifeCycle,
-                       ZF_IN ZFObject *propertyOwnerObject,
-                       ZF_IN const ZFProperty *property,
-                       ZF_IN_OUT ZFObject *propertyValueHolder,
-                       ZF_IN ZFObject *propertyValueOldHolder)
-    {
+    void propLifeCycle(
+            ZF_IN ZFPropertyLifeCycle lifeCycle
+            , ZF_IN ZFObject *propertyOwnerObject
+            , ZF_IN const ZFProperty *property
+            , ZF_IN_OUT ZFObject *propertyValueHolder
+            , ZF_IN ZFObject *propertyValueOldHolder
+            ) {
         zfCoreAssert(propertyValueOldHolder != zfnull);
 
         zfbool isReadonly = _ZFP_ZFPropertyLifeCycleIsReadonly(lifeCycle);
@@ -192,51 +169,39 @@ public:
         const void *propertyValueOld = zfnull;
         _ZFP_I_PropDynRetainHolder *holder = ZFCastZFObject(_ZFP_I_PropDynRetainHolder *, propertyValueHolder);
         _ZFP_I_PropDynRetainHolder *holderOld = ZFCastZFObject(_ZFP_I_PropDynRetainHolder *, propertyValueOldHolder);
-        if(holder != zfnull)
-        {
-            if(isReadonly)
-            {
+        if(holder != zfnull) {
+            if(isReadonly) {
                 valueHolder = holder->zfv.toObject();
                 propertyValue = &valueHolder;
             }
-            else
-            {
+            else {
                 propertyValue = &(holder->zfv);
             }
             propertyValueOld = &(holderOld->zfv);
         }
-        else
-        {
-            if(isReadonly)
-            {
+        else {
+            if(isReadonly) {
                 valueHolder = this->typeInfo->typeIdClass()->newInstance();
                 valueHolder.to<ZFTypeIdWrapper *>()->wrappedValue(propertyValueHolder->to<ZFTypeIdWrapper *>()->wrappedValue());
                 propertyValue = valueHolder.to<ZFTypeIdWrapper *>()->wrappedValue();
             }
-            else
-            {
+            else {
                 propertyValue = propertyValueHolder->to<ZFTypeIdWrapper *>()->wrappedValue();
             }
             propertyValueOld = propertyValueOldHolder->to<ZFTypeIdWrapper *>()->wrappedValue();
         }
 
         ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycle, property);
-        if(lifeCycle == ZFPropertyLifeCycleOnDetach)
-        {
-            for(const _ZFP_PropLifeCycleData *p = d.arrayBuf() + d.count() - 1, *pEnd = d.arrayBuf() - 1; p != pEnd; --p)
-            {
-                if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
-                {
+        if(lifeCycle == ZFPropertyLifeCycleOnDetach) {
+            for(const _ZFP_PropLifeCycleData *p = d.arrayBuf() + d.count() - 1, *pEnd = d.arrayBuf() - 1; p != pEnd; --p) {
+                if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass)) {
                     p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
                 }
             }
         }
-        else
-        {
-            for(const _ZFP_PropLifeCycleData *p = d.arrayBuf(), *pEnd = d.arrayBuf() + d.count(); p != pEnd; ++p)
-            {
-                if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
-                {
+        else {
+            for(const _ZFP_PropLifeCycleData *p = d.arrayBuf(), *pEnd = d.arrayBuf() + d.count(); p != pEnd; ++p) {
+                if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass)) {
                     p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
                 }
             }
@@ -245,21 +210,19 @@ public:
 private:
     zfstlmap<ZFObject *, zfbool> _objAttached;
     ZFListener _objOnDeallocListener;
-    ZFMETHOD_INLINE_1(void, _objOnDealloc,
-                      ZFMP_IN(const ZFArgs &, zfargs))
-    {
+    ZFMETHOD_INLINE_1(void, _objOnDealloc
+            , ZFMP_IN(const ZFArgs &, zfargs)
+            ) {
         this->objectDetach(zfargs.sender());
     }
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->_objOnDeallocListener = ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, _objOnDealloc));
     }
 };
-zfclass _ZFP_I_PropDynRegValueStore : zfextends ZFObject
-{
+zfclass _ZFP_I_PropDynRegValueStore : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegValueStore, ZFObject)
 
 public:
@@ -267,22 +230,18 @@ public:
 };
 
 // ============================================================
-static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
-{
+static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     const ZFProperty *property = invokerMethod->methodOwnerProperty();
     _ZFP_I_PropDynRegData *d = ZFCastZFObject(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     zfautoObject valueOld = invokerObject->objectTag(d->tagKey_propertyValue);
     zfbool firstTime = (valueOld == zfnull);
 
     zfautoObject value;
-    if(firstTime)
-    {
-        if(!d->initValue(value, property, errorHint))
-        {
+    if(firstTime) {
+        if(!d->initValue(value, property, errorHint)) {
             return zffalse;
         }
-        if(!d->initValue(valueOld, property, errorHint))
-        {
+        if(!d->initValue(valueOld, property, errorHint)) {
             return zffalse;
         }
         d->objectAttach(invokerObject);
@@ -293,39 +252,33 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
 
     zfautoObject &valueNew = paramList[0];
     do {
-        if(property->propertyIsRetainProperty())
-        {
-            if(valueNew != zfnull && !valueNew.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty()))
-            {
+        if(property->propertyIsRetainProperty()) {
+            if(valueNew != zfnull && !valueNew.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty())) {
                 break;
             }
             zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
             holder->zfv = valueNew;
             value = holder;
         }
-        else
-        {
+        else {
             const ZFClass *propClass = d->typeInfo->typeIdClass();
-            if(propClass != zfnull && !propClass->classIsTypeOf(ZFTypeIdWrapper::ClassData()))
-            {
+            if(propClass != zfnull && !propClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
                 zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
                 holder->zfv = valueNew;
                 value = holder;
             }
-            else
-            {
+            else {
                 ZFTypeIdWrapper *wrapper = ZFCastZFObject(ZFTypeIdWrapper *, valueNew);
                 if(wrapper == zfnull
-                    || !zfstringIsEqual(wrapper->wrappedValueTypeId(), property->propertyTypeId()))
-                {
+                        || !zfstringIsEqual(wrapper->wrappedValueTypeId(), property->propertyTypeId())
+                        ) {
                     break;
                 }
                 value = valueNew;
             }
         }
     } while(zffalse);
-    if(value == zfnull)
-    {
+    if(value == zfnull) {
         zfstringAppend(errorHint, "invalid value: (%s)%s, desired: %s",
             valueNew != zfnull ? valueNew->classData()->className() : ZFTOKEN_zfnull,
             ZFObjectInfo(valueNew).cString(),
@@ -335,27 +288,23 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
         return zffalse;
     }
 
-    if(firstTime)
-    {
+    if(firstTime) {
         invokerObject->objectTag(d->tagKey_propertyValue, value);
         d->propLifeCycle(ZFPropertyLifeCycleOnVerify, invokerObject, property, value, valueOld);
         d->propLifeCycle(ZFPropertyLifeCycleOnAttach, invokerObject, property, value, valueOld);
         invokerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, zfnull);
     }
-    else
-    {
+    else {
         d->propLifeCycle(ZFPropertyLifeCycleOnDetach, invokerObject, property, valueOld, valueOld);
         invokerObject->objectTag(d->tagKey_propertyValue, value);
         d->propLifeCycle(ZFPropertyLifeCycleOnVerify, invokerObject, property, value, valueOld);
         d->propLifeCycle(ZFPropertyLifeCycleOnAttach, invokerObject, property, value, valueOld);
 
         _ZFP_I_PropDynRetainHolder *holder = valueOld;
-        if(holder != zfnull)
-        {
+        if(holder != zfnull) {
             invokerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, &(holder->zfv));
         }
-        else
-        {
+        else {
             invokerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property,
                     ZFCastZFObject(ZFTypeIdWrapper *, valueOld)->wrappedValue()
                 );
@@ -363,8 +312,7 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
     }
     return zftrue;
 }
-static zfbool _ZFP_PropDynReg_getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
-{
+static zfbool _ZFP_PropDynReg_getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     // ZFTAG_LIMITATION: property's getter would return value reference,
     //   we would store the value to owner object's tag,
     //   see #ZFMethodDynamicRegister for the reason for this behavior
@@ -372,11 +320,9 @@ static zfbool _ZFP_PropDynReg_getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
     _ZFP_I_PropDynRegData *d = ZFCastZFObject(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     ZFObject *wrapper = invokerObject->objectTag(d->tagKey_propertyValue);
     zfbool firstTime = (wrapper == zfnull);
-    if(firstTime)
-    {
+    if(firstTime) {
         zfautoObject initValue;
-        if(!d->initValue(initValue, property, errorHint))
-        {
+        if(!d->initValue(initValue, property, errorHint)) {
             return zffalse;
         }
         wrapper = initValue;
@@ -385,72 +331,60 @@ static zfbool _ZFP_PropDynReg_getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS)
         d->propLifeCycle(ZFPropertyLifeCycleOnInit, invokerObject, property, wrapper, wrapper);
     }
     _ZFP_I_PropDynRetainHolder *wrapperTmp = ZFCastZFObject(_ZFP_I_PropDynRetainHolder *, wrapper);
-    if(wrapperTmp != zfnull)
-    {
+    if(wrapperTmp != zfnull) {
         ret = wrapperTmp->zfv;
     }
-    else
-    {
+    else {
         ret = wrapper;
     }
-    if(firstTime)
-    {
+    if(firstTime) {
         d->propLifeCycle(ZFPropertyLifeCycleOnAttach, invokerObject, property, wrapper, wrapper);
         invokerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, zfnull);
     }
     return zftrue;
 }
 
-static zfbool _ZFP_PropDynReg_callbackIsValueAccessed(ZF_IN const ZFProperty *property,
-                                                      ZF_IN ZFObject *ownerObj)
-{
+static zfbool _ZFP_PropDynReg_callbackIsValueAccessed(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *ownerObj
+        ) {
     _ZFP_I_PropDynRegData *d = ZFCastZFObject(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     return (ownerObj->objectTag(d->tagKey_propertyValue) != zfnull);
 }
-static zfbool _ZFP_PropDynReg_callbackIsInitValue(ZF_IN const ZFProperty *property,
-                                                  ZF_IN ZFObject *ownerObj,
-                                                  ZF_OUT_OPT zfautoObject *outInitValue /* = zfnull */)
-{
+static zfbool _ZFP_PropDynReg_callbackIsInitValue(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *ownerObj
+        , ZF_OUT_OPT zfautoObject *outInitValue /* = zfnull */
+        ) {
     _ZFP_I_PropDynRegData *d = ZFCastZFObject(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     zfbool ret = zffalse;
     ZFObject *tag = ownerObj->objectTag(d->tagKey_propertyValue);
-    if(tag == zfnull)
-    {
+    if(tag == zfnull) {
         ret = zftrue;
-        if(outInitValue != zfnull)
-        {
+        if(outInitValue != zfnull) {
             zfautoObject initValue;
-            if(d->initValue(initValue, property))
-            {
+            if(d->initValue(initValue, property)) {
                 _ZFP_I_PropDynRetainHolder *wrapperTmp = initValue;
-                if(wrapperTmp != zfnull)
-                {
+                if(wrapperTmp != zfnull) {
                     *outInitValue = wrapperTmp->zfv;
                 }
-                else
-                {
+                else {
                     *outInitValue = initValue;
                 }
             }
         }
     }
-    else
-    {
+    else {
         zfautoObject initValue;
-        if(d->initValue(initValue, property))
-        {
+        if(d->initValue(initValue, property)) {
             _ZFP_I_PropDynRetainHolder *wrapperTmp = initValue;
-            if(wrapperTmp != zfnull)
-            {
-                if(outInitValue != zfnull)
-                {
+            if(wrapperTmp != zfnull) {
+                if(outInitValue != zfnull) {
                     *outInitValue = wrapperTmp->zfv;
                 }
             }
-            else
-            {
-                if(outInitValue != zfnull)
-                {
+            else {
+                if(outInitValue != zfnull) {
                     *outInitValue = initValue;
                 }
             }
@@ -459,52 +393,48 @@ static zfbool _ZFP_PropDynReg_callbackIsInitValue(ZF_IN const ZFProperty *proper
     }
     return ret;
 }
-static void _ZFP_PropDynReg_callbackValueReset(ZF_IN const ZFProperty *property,
-                                               ZF_IN ZFObject *ownerObj)
-{
+static void _ZFP_PropDynReg_callbackValueReset(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *ownerObj
+        ) {
     _ZFP_I_PropDynRegData *d = ZFCastZFObject(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     ownerObj->objectTagRemove(d->tagKey_propertyValue);
 }
 
 // ============================================================
-static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFPropertyDynamicRegisterParam &param,
-                                                            ZF_OUT_OPT zfstring *errorHint = zfnull);
-static void _ZFP_ZFPropertyMethodCleanup_DynamicReg(ZF_IN const ZFMethod *method)
-{
+static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(
+        ZF_IN const ZFPropertyDynamicRegisterParam &param
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
+static void _ZFP_ZFPropertyMethodCleanup_DynamicReg(ZF_IN const ZFMethod *method) {
     ZFMethodDynamicUnregister(method);
 }
-const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegisterParam &param,
-                                            ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
-{
-    if(param.propertyOwnerClass() == zfnull)
-    {
+const ZFProperty *ZFPropertyDynamicRegister(
+        ZF_IN const ZFPropertyDynamicRegisterParam &param
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(param.propertyOwnerClass() == zfnull) {
         zfstringAppend(errorHint, "propertyOwnerClass not set");
         return zfnull;
     }
-    if(param.propertyTypeId() == zfnull)
-    {
+    if(param.propertyTypeId() == zfnull) {
         zfstringAppend(errorHint, "propertyTypeId not set");
         return zfnull;
     }
-    if(param.propertyName() == zfnull)
-    {
+    if(param.propertyName() == zfnull) {
         zfstringAppend(errorHint, "propertyName not set");
         return zfnull;
     }
-    if(param.propertyClassOfRetainProperty() == zfnull)
-    {
-        if(ZFClass::classForName(param.propertyTypeId()) != zfnull)
-        {
+    if(param.propertyClassOfRetainProperty() == zfnull) {
+        if(ZFClass::classForName(param.propertyTypeId()) != zfnull) {
             zfstringAppend(errorHint,
                 "propertyTypeId %s is ZFObject type but propertyClassOfRetainProperty not set, weak property not supported",
                 param.propertyTypeId());
             return zfnull;
         }
     }
-    else
-    {
-        if(!zfstringIsEqual(param.propertyTypeId(), param.propertyClassOfRetainProperty()->classNameFull()))
-        {
+    else {
+        if(!zfstringIsEqual(param.propertyTypeId(), param.propertyClassOfRetainProperty()->classNameFull())) {
             zfstringAppend(errorHint,
                 "propertyTypeId must be same as propertyClassOfRetainProperty for retain property");
             return zfnull;
@@ -512,11 +442,9 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
     }
 
     const ZFTypeInfo *d = zfnull;
-    if(param.propertyClassOfRetainProperty() == zfnull)
-    {
+    if(param.propertyClassOfRetainProperty() == zfnull) {
         d = ZFTypeInfoForName(param.propertyTypeId());
-        if(d == zfnull)
-        {
+        if(d == zfnull) {
             zfstringAppend(errorHint,
                 "propertyTypeId %s not registered",
                 param.propertyTypeId());
@@ -525,8 +453,7 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
     }
 
     const ZFProperty *existProperty = param.propertyOwnerClass()->propertyForName(param.propertyName());
-    if(existProperty != zfnull)
-    {
+    if(existProperty != zfnull) {
         zfstringAppend(errorHint,
             "property with same name already exists: %s",
             existProperty->objectInfo().cString());
@@ -541,10 +468,9 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
     const ZFProperty *property = zfnull;
 
     if(param.propertyCustomImplSetterMethod() != zfnull
-        || param.propertyCustomImplGetterMethod() != zfnull)
-    {
-        if(!_ZFP_ZFPropertyDynamicRegisterCustomImplCheck(param, errorHint))
-        {
+            || param.propertyCustomImplGetterMethod() != zfnull
+            ) {
+        if(!_ZFP_ZFPropertyDynamicRegisterCustomImplCheck(param, errorHint)) {
             return zfnull;
         }
         property = _ZFP_ZFPropertyRegister(zffalse
@@ -567,8 +493,7 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
             , zfnull
             );
     }
-    else
-    {
+    else {
         zfstring errorHintTmp;
         const ZFMethod *setterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
                 .methodDynamicRegisterUserData(userDataWrapper)
@@ -583,8 +508,7 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
                     param.propertyTypeId(),
                     zfstringWithFormat("%s const &", param.propertyTypeName()))
             , &errorHintTmp);
-        if(setterMethod == zfnull)
-        {
+        if(setterMethod == zfnull) {
             zfstringAppend(errorHint,
                 "failed to register setter method, reason: %s",
                 errorHintTmp.cString());
@@ -600,8 +524,7 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
                 .methodReturnTypeId(param.propertyTypeId())
                 .methodReturnTypeName(zfstringWithFormat("%s const &", param.propertyTypeName()))
             , &errorHintTmp);
-        if(getterMethod == zfnull)
-        {
+        if(getterMethod == zfnull) {
             zfstringAppend(errorHint,
                 "failed to register getter method, reason: %s",
                 errorHintTmp.cString());
@@ -635,10 +558,8 @@ const ZFProperty *ZFPropertyDynamicRegister(ZF_IN const ZFPropertyDynamicRegiste
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFPropertyDynamicRegisterDataHolder)->m[property] = zftrue;
     return property;
 }
-void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property)
-{
-    if(property != zfnull)
-    {
+void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property) {
+    if(property != zfnull) {
         zfCoreAssert(property->propertyIsDynamicRegister());
         zfCoreMutexLocker();
         zfblockedRelease(property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
@@ -649,22 +570,20 @@ void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property)
     }
 }
 
-static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFPropertyDynamicRegisterParam &param,
-                                                            ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
-{
-    if(param.propertyCustomImplSetterMethod() == zfnull)
-    {
+static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(
+        ZF_IN const ZFPropertyDynamicRegisterParam &param
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(param.propertyCustomImplSetterMethod() == zfnull) {
         zfstringAppend(errorHint, "propertyCustomImplSetterMethod not set");
         return zffalse;
     }
-    if(param.propertyCustomImplGetterMethod() == zfnull)
-    {
+    if(param.propertyCustomImplGetterMethod() == zfnull) {
         zfstringAppend(errorHint, "propertyCustomImplGetterMethod not set");
         return zffalse;
     }
 
-    if(zfsncmp(param.propertyCustomImplSetterMethod()->methodName(), param.propertyName(), zfslen(param.propertyName())) != 0)
-    {
+    if(zfsncmp(param.propertyCustomImplSetterMethod()->methodName(), param.propertyName(), zfslen(param.propertyName())) != 0) {
         zfstringAppend(errorHint,
             "setter method name \"%s\" does not match property name \"%s\"",
             param.propertyCustomImplSetterMethod()->methodName(),
@@ -672,10 +591,9 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
         return zffalse;
     }
     if(param.propertyCustomImplSetterMethod()->methodParamCount() != 1
-        || !zfstringIsEqual(param.propertyCustomImplSetterMethod()->methodReturnTypeId(), ZFTypeId_void())
-        || !zfstringIsEqual(param.propertyCustomImplSetterMethod()->methodParamTypeIdAt(0), param.propertyTypeId())
-        )
-    {
+            || !zfstringIsEqual(param.propertyCustomImplSetterMethod()->methodReturnTypeId(), ZFTypeId_void())
+            || !zfstringIsEqual(param.propertyCustomImplSetterMethod()->methodParamTypeIdAt(0), param.propertyTypeId())
+            ) {
         zfstringAppend(errorHint,
             "setter method signature mismatch: %s, desired: void setter(%s const &)",
             param.propertyCustomImplSetterMethod()->objectInfo().cString(),
@@ -683,8 +601,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
         return zffalse;
     }
 
-    if(!zfstringIsEqual(param.propertyCustomImplGetterMethod()->methodName(), param.propertyName()))
-    {
+    if(!zfstringIsEqual(param.propertyCustomImplGetterMethod()->methodName(), param.propertyName())) {
         zfstringAppend(errorHint,
             "getter method name \"%s\" does not match property name \"%s\"",
             param.propertyCustomImplGetterMethod()->methodName(),
@@ -692,9 +609,8 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
         return zffalse;
     }
     if(param.propertyCustomImplGetterMethod()->methodParamCount() != 0
-        || !zfstringIsEqual(param.propertyCustomImplGetterMethod()->methodReturnTypeId(), param.propertyTypeId())
-        )
-    {
+            || !zfstringIsEqual(param.propertyCustomImplGetterMethod()->methodReturnTypeId(), param.propertyTypeId())
+            ) {
         zfstringAppend(errorHint,
             "getter method signature mismatch: %s, desired: %s const &getter(void)",
             param.propertyCustomImplGetterMethod()->objectInfo().cString(),
@@ -702,20 +618,17 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
         return zffalse;
     }
 
-    if(param.propertyCustomImplCallbackIsValueAccessed() == zfnull)
-    {
+    if(param.propertyCustomImplCallbackIsValueAccessed() == zfnull) {
         zfstringAppend(errorHint, "propertyCustomImplCallbackIsValueAccessed not set");
         return zffalse;
     }
 
-    if(param.propertyCustomImplCallbackIsInitValue() == zfnull)
-    {
+    if(param.propertyCustomImplCallbackIsInitValue() == zfnull) {
         zfstringAppend(errorHint, "propertyCustomImplCallbackIsInitValue not set");
         return zffalse;
     }
 
-    if(param.propertyCustomImplCallbackValueReset() == zfnull)
-    {
+    if(param.propertyCustomImplCallbackValueReset() == zfnull) {
         zfstringAppend(errorHint, "propertyCustomImplCallbackValueReset not set");
         return zffalse;
     }
@@ -724,23 +637,22 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(ZF_IN const ZFProper
 }
 
 // ============================================================
-zfclass _ZFP_I_PropDynRegLifeCycleData : zfextends ZFObject
-{
+zfclass _ZFP_I_PropDynRegLifeCycleData : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegLifeCycleData, ZFObject)
 public:
     ZFPropertyLifeCycle lifeCycle;
     ZFListener callback;
 };
 
-static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *propertyOwnerObject,
-                                                           ZF_IN const ZFProperty *property,
-                                                           ZF_IN void *propertyValue,
-                                                           ZF_IN const void *propertyValueOld,
-                                                           ZF_IN ZFObject *propertyLifeCycleUserData)
-{
+static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
+        ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN void *propertyValue
+        , ZF_IN const void *propertyValueOld
+        , ZF_IN ZFObject *propertyLifeCycleUserData
+        ) {
     _ZFP_I_PropDynRegLifeCycleData *implUserData = ZFCastZFObject(_ZFP_I_PropDynRegLifeCycleData *, propertyLifeCycleUserData);
-    if(implUserData == zfnull || !implUserData->callback)
-    {
+    if(implUserData == zfnull || !implUserData->callback) {
         return;
     }
 
@@ -748,8 +660,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
     invokeData->invokerObject = propertyOwnerObject;
     invokeData->invokerProperty = property;
 
-    if(property->propertyIsRetainProperty())
-    {
+    if(property->propertyIsRetainProperty()) {
         invokeData->propertyValue = ((zfautoObject *)propertyValue)->toObject();
         invokeData->propertyValueOld = *(zfautoObject *)propertyValueOld;
 
@@ -758,13 +669,11 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
                 .param0(invokeData)
                 .userData(implUserData->callback.userData())
             );
-        if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
-        {
+        if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
             *(zfautoObject *)propertyValue = invokeData->propertyValue.toObject();
         }
     }
-    else
-    {
+    else {
         const ZFTypeInfo *typeInfo = ZFTypeInfoForName(property->propertyTypeId());
         if(typeInfo == zfnull
             || typeInfo->typeIdClass() == zfnull
@@ -776,8 +685,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
         invokeData->propertyValueOld = typeInfo->typeIdClass()->newInstance();
         ZFTypeIdWrapper *propertyValueHolder = invokeData->propertyValue;
         ZFTypeIdWrapper *propertyValueOldHolder = invokeData->propertyValueOld;
-        if(propertyValueHolder == zfnull || propertyValueOldHolder == zfnull)
-        {
+        if(propertyValueHolder == zfnull || propertyValueOldHolder == zfnull) {
             return;
         }
         propertyValueHolder->wrappedValue(propertyValue);
@@ -788,45 +696,37 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(ZF_IN ZFObject *prope
                 .param0(invokeData)
                 .userData(implUserData->callback.userData())
             );
-        if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle))
-        {
+        if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
             propertyValueHolder->wrappedValueCopy(propertyValue);
         }
     }
 }
 
-zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProperty *property,
-                                          ZF_IN const ZFClass *ownerClassOrNull,
-                                          ZF_IN ZFPropertyLifeCycle lifeCycle,
-                                          ZF_IN const ZFListener &callback,
-                                          ZF_OUT_OPT zfstring *errorHint /* = zfnull */)
-{
-    if(property == zfnull)
-    {
-        if(errorHint != zfnull)
-        {
+zfbool ZFPropertyDynamicRegisterLifeCycle(
+        ZF_IN const ZFProperty *property
+        , ZF_IN const ZFClass *ownerClassOrNull
+        , ZF_IN ZFPropertyLifeCycle lifeCycle
+        , ZF_IN const ZFListener &callback
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(property == zfnull) {
+        if(errorHint != zfnull) {
             zfstringAppend(errorHint, "null property");
         }
         return zffalse;
     }
-    if(property == zfnull || !callback)
-    {
-        if(errorHint != zfnull)
-        {
+    if(property == zfnull || !callback) {
+        if(errorHint != zfnull) {
             zfstringAppend(errorHint, "invalid callback");
         }
         return zffalse;
     }
-    if(ownerClassOrNull == zfnull)
-    {
+    if(ownerClassOrNull == zfnull) {
         ownerClassOrNull = property->propertyOwnerClass();
     }
-    else
-    {
-        if(!ownerClassOrNull->classIsTypeOf(property->propertyOwnerClass()))
-        {
-            if(errorHint != zfnull)
-            {
+    else {
+        if(!ownerClassOrNull->classIsTypeOf(property->propertyOwnerClass())) {
+            if(errorHint != zfnull) {
                 zfstringAppend(errorHint, "ownerClassOrNull must be type of %s, got: %s",
                     property->propertyOwnerClass()->className(),
                     ownerClassOrNull->className());
@@ -835,12 +735,9 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProperty *property,
         }
     }
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycle, property);
-    for(zfindex i = d.count() - 1; i != zfindexMax(); --i)
-    {
-        if(d[i].propertyOwnerClass == ownerClassOrNull)
-        {
-            if(errorHint != zfnull)
-            {
+    for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {
+        if(d[i].propertyOwnerClass == ownerClassOrNull) {
+            if(errorHint != zfnull) {
                 zfstringAppend(errorHint, "property already has a custom life cycle handler: %s",
                     property->objectInfo().cString());
             }
@@ -858,24 +755,21 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(ZF_IN const ZFProperty *property,
     d.add(data);
     return zftrue;
 }
-zfbool ZFPropertyDynamicUnregisterLifeCycle(ZF_IN const ZFProperty *property,
-                                            ZF_IN const ZFClass *ownerClassOrNull,
-                                            ZF_IN ZFPropertyLifeCycle lifeCycle)
-{
-    if(property == zfnull)
-    {
+zfbool ZFPropertyDynamicUnregisterLifeCycle(
+        ZF_IN const ZFProperty *property
+        , ZF_IN const ZFClass *ownerClassOrNull
+        , ZF_IN ZFPropertyLifeCycle lifeCycle
+        ) {
+    if(property == zfnull) {
         return zffalse;
     }
-    if(ownerClassOrNull == zfnull)
-    {
+    if(ownerClassOrNull == zfnull) {
         ownerClassOrNull = property->propertyOwnerClass();
     }
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycle, property);
-    for(zfindex i = 0; i < d.count(); ++i)
-    {
+    for(zfindex i = 0; i < d.count(); ++i) {
         _ZFP_I_PropDynRegLifeCycleData *implUserData = d[i].propertyLifeCycleUserData;
-        if(d[i].propertyOwnerClass == ownerClassOrNull && implUserData != zfnull)
-        {
+        if(d[i].propertyOwnerClass == ownerClassOrNull && implUserData != zfnull) {
             d.remove(i);
             return zftrue;
         }

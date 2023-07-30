@@ -21,14 +21,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // dummy object
 #if _ZFP_ZFCore_CodeSize_test_Dummy_ENABLE
 #define _ZFP_ZFCore_CodeSize_test_Dummy_EXPAND(N) \
-    zfclassNotPOD _ZFP_ZFCore_CodeSize_test_Dummy_Obj##N \
-    { \
+    zfclassNotPOD _ZFP_ZFCore_CodeSize_test_Dummy_Obj##N { \
     public: \
-        _ZFP_ZFCore_CodeSize_test_Dummy_Obj##N(void) \
-        { \
+        _ZFP_ZFCore_CodeSize_test_Dummy_Obj##N(void) { \
         } \
-        ~_ZFP_ZFCore_CodeSize_test_Dummy_Obj##N(void) \
-        { \
+        ~_ZFP_ZFCore_CodeSize_test_Dummy_Obj##N(void) { \
         } \
     }; \
     static _ZFP_ZFCore_CodeSize_test_Dummy_Obj##N _ZFP_ZFCore_CodeSize_test_Dummy_obj##N;
@@ -138,8 +135,7 @@ _ZFP_ZFCore_CodeSize_test_Dummy_EXPAND(99)
 // static register
 #if _ZFP_ZFCore_CodeSize_test_StaticRegister_ENABLE
 #define _ZFP_ZFCore_CodeSize_test_StaticRegister_EXPAND(N) \
-    ZF_STATIC_REGISTER_INIT(_ZFP_ZFCore_CodeSize_test_StaticRegister_##N) \
-    { \
+    ZF_STATIC_REGISTER_INIT(_ZFP_ZFCore_CodeSize_test_StaticRegister_##N) { \
     } \
     ZF_STATIC_REGISTER_END(_ZFP_ZFCore_CodeSize_test_StaticRegister_##N)
 _ZFP_ZFCore_CodeSize_test_StaticRegister_EXPAND(0)
@@ -248,8 +244,7 @@ _ZFP_ZFCore_CodeSize_test_StaticRegister_EXPAND(99)
 // static initializer
 #if _ZFP_ZFCore_CodeSize_test_StaticInit_ENABLE
 #define _ZFP_ZFCore_CodeSize_test_StaticInit_EXPAND(N) \
-    ZF_STATIC_INITIALIZER_INIT(_ZFP_ZFCore_CodeSize_test_StaticInit_##N) \
-    { \
+    ZF_STATIC_INITIALIZER_INIT(_ZFP_ZFCore_CodeSize_test_StaticInit_##N) { \
     } \
     ZF_STATIC_INITIALIZER_END(_ZFP_ZFCore_CodeSize_test_StaticInit_##N)
 _ZFP_ZFCore_CodeSize_test_StaticInit_EXPAND(0)
@@ -358,8 +353,7 @@ _ZFP_ZFCore_CodeSize_test_StaticInit_EXPAND(99)
 // global initializer
 #if _ZFP_ZFCore_CodeSize_test_GlobalInit_ENABLE
 #define _ZFP_ZFCore_CodeSize_test_GlobalInit_EXPAND(N) \
-    ZF_GLOBAL_INITIALIZER_INIT(_ZFP_ZFCore_CodeSize_test_GlobalInit_##N) \
-    { \
+    ZF_GLOBAL_INITIALIZER_INIT(_ZFP_ZFCore_CodeSize_test_GlobalInit_##N) { \
     } \
     ZF_GLOBAL_INITIALIZER_END(_ZFP_ZFCore_CodeSize_test_GlobalInit_##N)
 _ZFP_ZFCore_CodeSize_test_GlobalInit_EXPAND(0)
@@ -468,8 +462,7 @@ _ZFP_ZFCore_CodeSize_test_GlobalInit_EXPAND(99)
 // object
 #if _ZFP_ZFCore_CodeSize_test_Object_ENABLE
 #define _ZFP_ZFCore_CodeSize_test_Object_EXPAND(N) \
-    zfclass _ZFP_ZFCore_CodeSize_test_Object_Obj##N : zfextends ZFObject \
-    { \
+    zfclass _ZFP_ZFCore_CodeSize_test_Object_Obj##N : zfextends ZFObject { \
         ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_Object_Obj##N, ZFObject) \
     }; \
     ZFOBJECT_REGISTER(_ZFP_ZFCore_CodeSize_test_Object_Obj##N)
@@ -578,8 +571,7 @@ _ZFP_ZFCore_CodeSize_test_Object_EXPAND(99)
 // ============================================================
 // method
 #if _ZFP_ZFCore_CodeSize_test_Method_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_Method : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_CodeSize_test_Method : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_Method, ZFObject)
 
     ZFMETHOD_INLINE_0(void, f0) {}
@@ -794,8 +786,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, _ZFP_ZFCore_CodeSize_test_f99) {}
 // ============================================================
 // method user register
 #if _ZFP_ZFCore_CodeSize_test_MethodUserRegister_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_MethodUserRegister : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_CodeSize_test_MethodUserRegister : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, ZFObject)
 };
 ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f0)
@@ -1008,8 +999,7 @@ ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUser
 // ============================================================
 // property
 #if _ZFP_ZFCore_CodeSize_test_Property_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_Property : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_CodeSize_test_Property : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_Property, ZFObject)
 
     ZFPROPERTY_ASSIGN(zfstring, v0)
@@ -1119,8 +1109,7 @@ ZFOBJECT_REGISTER(_ZFP_ZFCore_CodeSize_test_Property)
 // ============================================================
 // property user register
 #if _ZFP_ZFCore_CodeSize_test_PropertyUserRegister_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_PropertyUserRegister : zfextends ZFObject
-{
+zfclass _ZFP_ZFCore_CodeSize_test_PropertyUserRegister : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_PropertyUserRegister, ZFObject)
 };
 ZFPROPERTY_USER_REGISTER_ASSIGN(_ZFP_ZFCore_CodeSize_test_PropertyUserRegister, zfstring, v0, ZFPropertyNoInitValue, public, public)

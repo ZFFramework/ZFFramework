@@ -12,8 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 static zfstllist<ZFListener> _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue;
 
 static void _ZFP_ZFImpl_sys_SDL_MainThreadRunNext(void);
-static void *_ZFP_ZFImpl_sys_SDL_MainThreadExecute(ZF_IN const ZFListener &runnable)
-{
+static void *_ZFP_ZFImpl_sys_SDL_MainThreadExecute(ZF_IN const ZFListener &runnable) {
     zfCoreMutexLock();
     _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.push_back(runnable);
     zfstllist<ZFListener>::iterator it = _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.end();
@@ -22,26 +21,22 @@ static void *_ZFP_ZFImpl_sys_SDL_MainThreadExecute(ZF_IN const ZFListener &runna
     _ZFP_ZFImpl_sys_SDL_MainThreadRunNext();
     return new zfstllist<ZFListener>::iterator(it);
 }
-static void _ZFP_ZFImpl_sys_SDL_MainThreadCleanup(ZF_IN void *nativeToken)
-{
+static void _ZFP_ZFImpl_sys_SDL_MainThreadCleanup(ZF_IN void *nativeToken) {
     zfCoreMutexLocker();
     zfstllist<ZFListener>::iterator *it = (zfstllist<ZFListener>::iterator *)nativeToken;
     _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.erase(*it);
     delete it;
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_MainThreadImpl, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_MainThreadImpl, ZFLevelZFFrameworkStatic) {
     ZFMainThreadTaskImplSet(_ZFP_ZFImpl_sys_SDL_MainThreadExecute, _ZFP_ZFImpl_sys_SDL_MainThreadCleanup);
 }
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_SDL_MainThreadImpl)
 
 // ============================================================
-ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal)
-{
+ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal) {
     zfCoreMutexLock();
-    if(_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty())
-    {
+    if(_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty()) {
         zfCoreMutexUnlock();
         return zftrue;
     }
@@ -50,14 +45,12 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal)
     runnable.execute(ZFArgs()
             .userData(runnable.userData())
         );
-    if(!_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty())
-    {
+    if(!_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty()) {
         _ZFP_ZFImpl_sys_SDL_MainThreadRunNext();
     }
     return zftrue;
 }
-static void _ZFP_ZFImpl_sys_SDL_MainThreadRunNext(void)
-{
+static void _ZFP_ZFImpl_sys_SDL_MainThreadRunNext(void) {
     ZFIMPL_SYS_SDL_USER_EVENT_POST(MainThreadTask, zfnull, zfnull);
 }
 

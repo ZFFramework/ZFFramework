@@ -45,13 +45,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  (not recommended) you may use #zfimportCacheRemove/zfimportCacheRemoveAll
  *   to remove the cache
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObject, zfimport,
-                        ZFMP_IN(const zfchar *, path),
-                        ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObject, zfimport
+        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
+        )
 
 /** @brief remove the cache created by #zfimport */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfautoObject, zfimportCacheRemove,
-                        ZFMP_IN(const zfchar *, callbackId))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfautoObject, zfimportCacheRemove
+        , ZFMP_IN(const zfchar *, callbackId)
+        )
 
 /** @brief remove all cache created by #zfimport */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, zfimportCacheRemoveAll)

@@ -15,23 +15,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         })
 #define _ZFP_ZFTYPEID_DEFINE_int_disallow_negative(TypeName, Type) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER(TypeName, Type, { \
-            if(src != zfnull && zfsncmp(src, "-1", 2) == 0) \
-            { \
+            if(src != zfnull && zfsncmp(src, "-1", 2) == 0) { \
                 v = (Type)-1; \
                 return zftrue; \
             } \
-            else \
-            { \
+            else { \
                 return zfsToIntT(v, src, srcLen, 10, zffalse); \
             } \
         }, { \
-            if(v == ((Type)-1)) \
-            { \
+            if(v == ((Type)-1)) { \
                 s += "-1"; \
                 return zftrue; \
             } \
-            else \
-            { \
+            else { \
                 return zfsFromIntT(s, v); \
             } \
         })
@@ -55,8 +51,7 @@ ZFTYPEID_PROGRESS_DEFINE(zftimet, zftimet, {
 
 // ============================================================
 ZFTYPEID_DEFINE(zfidentity, zfidentity, {
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_zfidentity(), outErrorHint, outErrorPos) == zfnull)
-        {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_zfidentity(), outErrorHint, outErrorPos) == zfnull) {
             return zffalse;
         }
         v = zfidentityInvalid();
@@ -67,8 +62,7 @@ ZFTYPEID_DEFINE(zfidentity, zfidentity, {
     }, {
         serializableData.itemClass(ZFTypeId_zfidentity());
         zfstring s;
-        if(!zfidentityToString(s, v))
-        {
+        if(!zfidentityToString(s, v)) {
             ZFSerializableUtil::errorOccurred(outErrorHint,
                 "unable to convert value to string");
             return zffalse;
@@ -77,29 +71,25 @@ ZFTYPEID_DEFINE(zfidentity, zfidentity, {
         return zftrue;
     }, {
         if(src == zfnull
-            || srcLen == 0
-            || zfsncmp(src, ZFTOKEN_zfidentityInvalid, srcLen) == 0)
-        {
+                || srcLen == 0
+                || zfsncmp(src, ZFTOKEN_zfidentityInvalid, srcLen) == 0
+                ) {
             v = zfidentityInvalid();
             return zftrue;
         }
         v = ZFIdMapIdForName(srcLen == zfindexMax() || src[srcLen] == '\0' ? src : zfstring(src, srcLen).cString());
         return (v != zfidentityInvalid());
     }, {
-        if(v == zfidentityInvalid())
-        {
+        if(v == zfidentityInvalid()) {
             s += ZFTOKEN_zfidentityInvalid;
             return zftrue;
         }
-        else
-        {
+        else {
             const zfchar *name = ZFIdMapNameForId(v);
-            if(name == zfnull)
-            {
+            if(name == zfnull) {
                 return zffalse;
             }
-            else
-            {
+            else {
                 s += name;
                 return zftrue;
             }

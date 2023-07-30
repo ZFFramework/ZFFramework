@@ -4,12 +4,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-const ZFProperty *ZFPropertyForName(ZF_IN const zfchar *classNameOrFullName,
-                                    ZF_IN const zfchar *propertyName)
-{
+const ZFProperty *ZFPropertyForName(
+        ZF_IN const zfchar *classNameOrFullName
+        , ZF_IN const zfchar *propertyName
+        ) {
     const ZFClass *cls = ZFClass::classForName(classNameOrFullName);
-    if(cls != zfnull)
-    {
+    if(cls != zfnull) {
         return cls->propertyForName(propertyName);
     }
     return zfnull;
@@ -17,53 +17,46 @@ const ZFProperty *ZFPropertyForName(ZF_IN const zfchar *classNameOrFullName,
 
 // ============================================================
 // parent or interface before child
-static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(ZF_IN const zfchar *lifeCycleName,
-                                                                            ZF_IN const ZFProperty *property)
-{
-    if(zffalse)
-    {
+static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
+        ZF_IN const zfchar *lifeCycleName
+        , ZF_IN const ZFProperty *property
+        ) {
+    if(zffalse) {
     }
-    else if(zfstringIsEqual(lifeCycleName, "OnInit"))
-    {
+    else if(zfstringIsEqual(lifeCycleName, "OnInit")) {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
     }
-    else if(zfstringIsEqual(lifeCycleName, "OnVerify"))
-    {
+    else if(zfstringIsEqual(lifeCycleName, "OnVerify")) {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnVerify;
     }
-    else if(zfstringIsEqual(lifeCycleName, "OnAttach"))
-    {
+    else if(zfstringIsEqual(lifeCycleName, "OnAttach")) {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnAttach;
     }
-    else if(zfstringIsEqual(lifeCycleName, "OnDetach"))
-    {
+    else if(zfstringIsEqual(lifeCycleName, "OnDetach")) {
         return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnDetach;
     }
 
     zfCoreCriticalShouldNotGoHere();
     return property->_ZFP_ZFProperty_removeConst()->_ZFP_ZFPropertyLifeCycle_OnInit;
 }
-void _ZFP_ZFPropertyLifeCycleRegister(ZF_IN const zfchar *lifeCycleName,
-                                      ZF_IN const ZFProperty *property,
-                                      ZF_IN const ZFClass *propertyOwnerClass,
-                                      ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper)
-{
+void _ZFP_ZFPropertyLifeCycleRegister(
+        ZF_IN const zfchar *lifeCycleName
+        , ZF_IN const ZFProperty *property
+        , ZF_IN const ZFClass *propertyOwnerClass
+        , ZF_IN _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper
+        ) {
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycleName, property);
     zfindex index = d.count();
-    for(zfindex i = 0; i < d.count(); ++i)
-    {
-        if(d[i].propertyOwnerClass == propertyOwnerClass)
-        {
+    for(zfindex i = 0; i < d.count(); ++i) {
+        if(d[i].propertyOwnerClass == propertyOwnerClass) {
             d[i].propertyLifeCycleWrapper = propertyLifeCycleWrapper;
             return;
         }
-        else if(d[i].propertyOwnerClass->classIsTypeOf(propertyOwnerClass))
-        {
+        else if(d[i].propertyOwnerClass->classIsTypeOf(propertyOwnerClass)) {
             index = i;
             break;
         }
-        else if(propertyOwnerClass->classIsTypeOf(d[i].propertyOwnerClass))
-        {
+        else if(propertyOwnerClass->classIsTypeOf(d[i].propertyOwnerClass)) {
             index = i + 1;
         }
     }
@@ -72,64 +65,66 @@ void _ZFP_ZFPropertyLifeCycleRegister(ZF_IN const zfchar *lifeCycleName,
     data.propertyLifeCycleWrapper = propertyLifeCycleWrapper;
     d.add(index, data);
 }
-void _ZFP_ZFPropertyLifeCycleUnregister(ZF_IN const zfchar *lifeCycleName,
-                                        ZF_IN const ZFProperty *property,
-                                        ZF_IN const ZFClass *propertyOwnerClass)
-{
+void _ZFP_ZFPropertyLifeCycleUnregister(
+        ZF_IN const zfchar *lifeCycleName
+        , ZF_IN const ZFProperty *property
+        , ZF_IN const ZFClass *propertyOwnerClass
+        ) {
     ZFCoreArray<_ZFP_PropLifeCycleData> &d = _ZFP_ZFPropertyLifeCycleDataRef(lifeCycleName, property);
-    for(zfindex i = 0; i < d.count(); ++i)
-    {
-        if(d[i].propertyOwnerClass == propertyOwnerClass)
-        {
+    for(zfindex i = 0; i < d.count(); ++i) {
+        if(d[i].propertyOwnerClass == propertyOwnerClass) {
             d.remove(i);
             break;
         }
     }
 }
 
-static void _ZFP_ZFPropertyLifeCycleCallAction(ZF_IN ZFCoreArray<_ZFP_PropLifeCycleData> const &d,
-                                               ZF_IN ZFObject *propertyOwnerObject,
-                                               ZF_IN const ZFProperty *property,
-                                               ZF_IN void *propertyValue,
-                                               ZF_IN const void *propertyValueOld,
-                                               ZF_IN_OPT zfbool subclassFirst = zffalse)
-{
-    if(subclassFirst)
-    {
-        for(const _ZFP_PropLifeCycleData *p = d.arrayBuf() + d.count() - 1, *pEnd = d.arrayBuf() - 1; p != pEnd; --p)
-        {
-            if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
-            {
+static void _ZFP_ZFPropertyLifeCycleCallAction(
+        ZF_IN ZFCoreArray<_ZFP_PropLifeCycleData> const &d
+        , ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN void *propertyValue
+        , ZF_IN const void *propertyValueOld
+        , ZF_IN_OPT zfbool subclassFirst = zffalse
+        ) {
+    if(subclassFirst) {
+        for(const _ZFP_PropLifeCycleData *p = d.arrayBuf() + d.count() - 1, *pEnd = d.arrayBuf() - 1; p != pEnd; --p) {
+            if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass)) {
                 p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
             }
         }
     }
-    else
-    {
-        for(const _ZFP_PropLifeCycleData *p = d.arrayBuf(), *pEnd = d.arrayBuf() + d.count(); p != pEnd; ++p)
-        {
-            if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass))
-            {
+    else {
+        for(const _ZFP_PropLifeCycleData *p = d.arrayBuf(), *pEnd = d.arrayBuf() + d.count(); p != pEnd; ++p) {
+            if(propertyOwnerObject->classData()->classIsTypeOf(p->propertyOwnerClass)) {
                 p->propertyLifeCycleWrapper(propertyOwnerObject, property, propertyValue, propertyValueOld, p->propertyLifeCycleUserData);
             }
         }
     }
 }
 
-static void _ZFP_ZFPropertyWeakAttach(ZF_IN ZFObject *propertyOwnerObject,
-                                      ZF_IN const ZFProperty *property,
-                                      ZF_IN ZFObject *valueNew);
-static void _ZFP_ZFPropertyWeakDetach(ZF_IN ZFObject *propertyOwnerObject,
-                                      ZF_IN const ZFProperty *property,
-                                      ZF_IN ZFObject *valueOld);
+static void _ZFP_ZFPropertyWeakAttach(
+        ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *valueNew
+        );
+static void _ZFP_ZFPropertyWeakDetach(
+        ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *valueOld
+        );
 
-void _ZFP_ZFPropertyLifeCycleCall_init_retain(ZF_IN const ZFProperty *property,
-                                              ZF_IN ZFObject *propertyOwnerObject,
-                                              ZF_IN ZFObject *value,
-                                              ZF_IN zfbool notifyOwnerAttach,
-                                              ZF_IN void (*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value),
-                                              ZF_IN void *rawValueStoreToken)
-{
+void _ZFP_ZFPropertyLifeCycleCall_init_retain(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN ZFObject *value
+        , ZF_IN zfbool notifyOwnerAttach
+        , ZF_IN void (*rawValueStoreCallback)(
+            ZF_IN void *rawValueStoreToken
+            , ZF_IN ZFObject *value
+            )
+        , ZF_IN void *rawValueStoreToken
+        ) {
     zfautoObject valueHolder = value;
     _ZFP_ZFPropertyLifeCycleCallAction(
         property->_ZFP_ZFPropertyLifeCycle_OnInit,
@@ -139,8 +134,7 @@ void _ZFP_ZFPropertyLifeCycleCall_init_retain(ZF_IN const ZFProperty *property,
         &valueHolder);
     rawValueStoreCallback(rawValueStoreToken, valueHolder);
 
-    if(notifyOwnerAttach)
-    {
+    if(notifyOwnerAttach) {
         _ZFP_ZFPropertyLifeCycleCallAction(
             property->_ZFP_ZFPropertyLifeCycle_OnAttach,
             propertyOwnerObject,
@@ -152,12 +146,13 @@ void _ZFP_ZFPropertyLifeCycleCall_init_retain(ZF_IN const ZFProperty *property,
         propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, zfnull);
     }
 }
-void _ZFP_ZFPropertyLifeCycleCall_init_assign(ZF_IN const ZFProperty *property,
-                                              ZF_IN ZFObject *propertyOwnerObject,
-                                              ZF_IN void *value,
-                                              ZF_IN zfbool notifyOwnerAttach,
-                                              ZF_IN ZFObject *weakProp)
-{
+void _ZFP_ZFPropertyLifeCycleCall_init_assign(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN void *value
+        , ZF_IN zfbool notifyOwnerAttach
+        , ZF_IN ZFObject *weakProp
+        ) {
     _ZFP_ZFPropertyLifeCycleCallAction(
         property->_ZFP_ZFPropertyLifeCycle_OnInit,
         propertyOwnerObject,
@@ -165,8 +160,7 @@ void _ZFP_ZFPropertyLifeCycleCall_init_assign(ZF_IN const ZFProperty *property,
         value,
         value);
 
-    if(notifyOwnerAttach)
-    {
+    if(notifyOwnerAttach) {
         if(weakProp) {_ZFP_ZFPropertyWeakAttach(propertyOwnerObject, property, weakProp);}
         _ZFP_ZFPropertyLifeCycleCallAction(
             property->_ZFP_ZFPropertyLifeCycle_OnAttach,
@@ -179,11 +173,12 @@ void _ZFP_ZFPropertyLifeCycleCall_init_assign(ZF_IN const ZFProperty *property,
         propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, zfnull);
     }
 }
-void _ZFP_ZFPropertyLifeCycleCall_dealloc_retain(ZF_IN const ZFProperty *property,
-                                                 ZF_IN ZFObject *propertyOwnerObject,
-                                                 ZF_IN ZFObject *value,
-                                                 ZF_IN zfbool notifyOwnerDetach)
-{
+void _ZFP_ZFPropertyLifeCycleCall_dealloc_retain(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN ZFObject *value
+        , ZF_IN zfbool notifyOwnerDetach
+        ) {
     zfautoObject valueHolder = value;
     _ZFP_ZFPropertyLifeCycleCallAction(
         property->_ZFP_ZFPropertyLifeCycle_OnDetach,
@@ -194,12 +189,13 @@ void _ZFP_ZFPropertyLifeCycleCall_dealloc_retain(ZF_IN const ZFProperty *propert
         zftrue);
     if(notifyOwnerDetach) {propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueDetach(property);}
 }
-void _ZFP_ZFPropertyLifeCycleCall_dealloc_assign(ZF_IN const ZFProperty *property,
-                                                 ZF_IN ZFObject *propertyOwnerObject,
-                                                 ZF_IN void *value,
-                                                 ZF_IN zfbool notifyOwnerDetach,
-                                                 ZF_IN ZFObject *weakProp)
-{
+void _ZFP_ZFPropertyLifeCycleCall_dealloc_assign(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN void *value
+        , ZF_IN zfbool notifyOwnerDetach
+        , ZF_IN ZFObject *weakProp
+        ) {
     if(weakProp) {_ZFP_ZFPropertyWeakDetach(propertyOwnerObject, property, weakProp);}
     _ZFP_ZFPropertyLifeCycleCallAction(
         property->_ZFP_ZFPropertyLifeCycle_OnDetach,
@@ -210,18 +206,20 @@ void _ZFP_ZFPropertyLifeCycleCall_dealloc_assign(ZF_IN const ZFProperty *propert
         zftrue);
     if(notifyOwnerDetach) {propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueDetach(property);}
 }
-void _ZFP_ZFPropertyLifeCycleCall_setter_retain(ZF_IN const ZFProperty *property,
-                                                ZF_IN ZFObject *propertyOwnerObject,
-                                                ZF_IN zfbool accessed,
-                                                ZF_IN ZFObject *propertyValueOld,
-                                                ZF_IN ZFObject *propertyValueNew,
-                                                ZF_IN void (*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN ZFObject *value),
-                                                ZF_IN void *rawValueStoreToken)
-{
+void _ZFP_ZFPropertyLifeCycleCall_setter_retain(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN zfbool accessed
+        , ZF_IN ZFObject *propertyValueOld
+        , ZF_IN ZFObject *propertyValueNew
+        , ZF_IN void (*rawValueStoreCallback)(
+            ZF_IN void *rawValueStoreToken
+            , ZF_IN ZFObject *value)
+        , ZF_IN void *rawValueStoreToken
+        ) {
     zfautoObject valueOld = propertyValueOld;
     zfautoObject valueNew = propertyValueNew;
-    if(accessed)
-    {
+    if(accessed) {
         _ZFP_ZFPropertyLifeCycleCallAction(
             property->_ZFP_ZFPropertyLifeCycle_OnDetach,
             propertyOwnerObject,
@@ -250,18 +248,20 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_retain(ZF_IN const ZFProperty *property
 
     propertyOwnerObject->_ZFP_ZFObject_objectPropertyValueOnUpdate(property, &propertyValueOld);
 }
-void _ZFP_ZFPropertyLifeCycleCall_setter_assign(ZF_IN const ZFProperty *property,
-                                                ZF_IN ZFObject *propertyOwnerObject,
-                                                ZF_IN zfbool accessed,
-                                                ZF_IN void *propertyValueOld,
-                                                ZF_IN const void *propertyValueNew,
-                                                ZF_IN void *(*rawValueStoreCallback)(ZF_IN void *rawValueStoreToken, ZF_IN const void *value),
-                                                ZF_IN void *rawValueStoreToken,
-                                                ZF_IN ZFObject *weakPropOld,
-                                                ZF_IN ZFObject *weakPropNew)
-{
-    if(accessed)
-    {
+void _ZFP_ZFPropertyLifeCycleCall_setter_assign(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN zfbool accessed
+        , ZF_IN void *propertyValueOld
+        , ZF_IN const void *propertyValueNew
+        , ZF_IN void *(*rawValueStoreCallback)(
+            ZF_IN void *rawValueStoreToken
+            , ZF_IN const void *value)
+        , ZF_IN void *rawValueStoreToken
+        , ZF_IN ZFObject *weakPropOld
+        , ZF_IN ZFObject *weakPropNew
+        ) {
+    if(accessed) {
         if(weakPropOld) {_ZFP_ZFPropertyWeakDetach(propertyOwnerObject, property, weakPropOld);}
         _ZFP_ZFPropertyLifeCycleCallAction(
             property->_ZFP_ZFPropertyLifeCycle_OnDetach,
@@ -291,10 +291,11 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_assign(ZF_IN const ZFProperty *property
 }
 
 // ============================================================
-static void _ZFP_ZFPropertyWeakAttach(ZF_IN ZFObject *propertyOwnerObject,
-                                      ZF_IN const ZFProperty *property,
-                                      ZF_IN ZFObject *valueNew)
-{
+static void _ZFP_ZFPropertyWeakAttach(
+        ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *valueNew
+        ) {
     ZFLISTENER_2(propertyOnDealloc
             , ZFObject *, propertyOwnerObject
             , const ZFProperty *, property
@@ -308,10 +309,11 @@ static void _ZFP_ZFPropertyWeakAttach(ZF_IN ZFObject *propertyOwnerObject,
         ZFObject::EventObjectBeforeDealloc(),
         propertyOnDealloc);
 }
-static void _ZFP_ZFPropertyWeakDetach(ZF_IN ZFObject *propertyOwnerObject,
-                                      ZF_IN const ZFProperty *property,
-                                      ZF_IN ZFObject *valueOld)
-{
+static void _ZFP_ZFPropertyWeakDetach(
+        ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *valueOld
+        ) {
     v_ZFListener *holder = propertyOwnerObject->objectTag<v_ZFListener *>(zfstringWithFormat("_ZFP_PropWeak_%s", property->propertyName()));
     valueOld->observerRemove(
         ZFObject::EventObjectBeforeDealloc(),
@@ -324,7 +326,10 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFProperty *, ZFPropertyForName, ZFMP_IN(const zfchar *, classNameOrFullName), ZFMP_IN(const zfchar *, propertyName))
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFProperty *, ZFPropertyForName
+        , ZFMP_IN(const zfchar *, classNameOrFullName)
+        , ZFMP_IN(const zfchar *, propertyName)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

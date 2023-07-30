@@ -19,8 +19,7 @@ zfclassFwd _ZFP_ZFAnimationPrivate;
 /**
  * @brief base class of all animation
  */
-zfclass ZFLIB_ZFUtility ZFAnimation : zfextends ZFStyleableObject
-{
+zfclass ZFLIB_ZFUtility ZFAnimation : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFAnimation, ZFStyleableObject)
 
 public:
@@ -91,8 +90,9 @@ public:
      * this is not necessary to be set during animation's running
      * (although most animation subclass need a target)
      */
-    ZFMETHOD_DECLARE_1(void, aniTarget,
-                       ZFMP_IN(ZFObject *, aniTarget))
+    ZFMETHOD_DECLARE_1(void, aniTarget
+            , ZFMP_IN(ZFObject *, aniTarget)
+            )
     /**
      * @brief animation's target
      */
@@ -151,8 +151,7 @@ protected:
      * by default, this method would only check animation's duration,
      * for common case, you should check whether the target is valid
      */
-    virtual zfbool aniImplCheckValid(void)
-    {
+    virtual zfbool aniImplCheckValid(void) {
         return (this->aniDurationFixed() > 0);
     }
 
@@ -190,28 +189,23 @@ protected:
      */
     virtual void aniImplStop(void);
     /** @brief see #EventAniOnInvalid */
-    virtual inline void aniOnInvalid(void)
-    {
+    virtual inline void aniOnInvalid(void) {
         this->observerNotify(ZFAnimation::EventAniOnInvalid());
     }
     /** @brief see #EventAniOnDelayFinish */
-    virtual inline void aniOnDelayFinish(void)
-    {
+    virtual inline void aniOnDelayFinish(void) {
         this->observerNotify(ZFAnimation::EventAniOnDelayFinish());
     }
     /** @brief see #EventAniOnStart */
-    virtual inline void aniOnStart(void)
-    {
+    virtual inline void aniOnStart(void) {
         this->observerNotify(ZFAnimation::EventAniOnStart());
     }
     /** @brief see #EventAniOnStop */
-    virtual inline void aniOnStop(void)
-    {
+    virtual inline void aniOnStop(void) {
         this->observerNotify(ZFAnimation::EventAniOnStop());
     }
     /** @brief see #EventAniOnStopOrInvalid */
-    virtual inline void aniOnStopOrInvalid(ZF_IN zfbool aniValid)
-    {
+    virtual inline void aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
         this->observerNotify(ZFAnimation::EventAniOnStopOrInvalid(), zflineAlloc(v_zfbool, aniValid));
     }
     /**

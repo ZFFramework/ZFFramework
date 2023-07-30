@@ -11,8 +11,7 @@
 #include <QGraphicsWidget>
 #include <QLibrary>
 
-zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_BaseView : public QGraphicsWidget
-{
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_BaseView : public QGraphicsWidget {
     Q_OBJECT
 
 public:
@@ -29,8 +28,7 @@ public:
     ZFImpl_sys_Qt_BaseView(void);
 };
 
-zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_BaseLayout : public QGraphicsLayout
-{
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_BaseLayout : public QGraphicsLayout {
 protected:
     ZFCoreArrayPOD<QGraphicsWidget *> children;
 protected:
@@ -41,8 +39,10 @@ public:
 public:
     virtual zfindex childCount(void) const;
     virtual QGraphicsWidget *childAt(ZF_IN zfindex index) const;
-    virtual void childAdd(ZF_IN QGraphicsWidget *item,
-                          ZF_IN_OPT zfindex index = zfindexMax());
+    virtual void childAdd(
+            ZF_IN QGraphicsWidget *item
+            , ZF_IN_OPT zfindex index = zfindexMax()
+            );
     virtual void childRemove(ZF_IN QGraphicsWidget *item);
     virtual void childRemoveAt(ZF_IN zfindex index);
     virtual void childRemoveAll(void);
@@ -64,15 +64,13 @@ private:
 };
 
 // ============================================================
-zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_Window : public ZFImpl_sys_Qt_BaseView
-{
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_Window : public ZFImpl_sys_Qt_BaseView {
     Q_OBJECT
 
 public:
     ZFImpl_sys_Qt_Window(void);
 };
-zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_WindowLayout : public ZFImpl_sys_Qt_BaseLayout
-{
+zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_WindowLayout : public ZFImpl_sys_Qt_BaseLayout {
 protected:
     virtual void onLayout(const QRectF &rect);
 };
@@ -87,8 +85,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -# call ZFMainEntry_sys_Qt and return
  *
  * @code
- *   int main(int argc, char **argv)
- *   {
+ *   int main(int argc, char **argv) {
  *       // load your lib
  *       ZFImpl_sys_Qt_requireLib(YourLibName)
  *
@@ -99,8 +96,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * \n
  * if you want to attach to your existing UI:
  * @code
- *   int main(int argc, char **argv)
- *   {
+ *   int main(int argc, char **argv) {
  *       // your own app and window
  *       QApplication app(argc, argv);
  *       QGraphicsView container;
@@ -119,8 +115,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       //   and is type of ZFImpl_sys_Qt_BaseLayout
  *       // -  the root view would be layouted properly (typically to match full size of the window)
  *       int ret = ZFMainEntry_sys_Qt_attach(&window, argc, argv);
- *       if(ret != 0)
- *       {
+ *       if(ret != 0) {
  *           return ret;
  *       }
  *       // app exe
@@ -139,9 +134,11 @@ extern ZFLIB_ZF_impl int ZFMainEntry_sys_Qt(int argc, char **argv);
 
 extern ZFLIB_ZF_impl QGraphicsWidget *ZFImpl_sys_Qt_rootWindow(void);
 
-extern ZFLIB_ZF_impl int ZFMainEntry_sys_Qt_attach(ZF_IN QGraphicsWidget *rootWindow,
-                                                   ZF_IN_OPT int argc = 0,
-                                                   ZF_IN_OPT char **argv = NULL);
+extern ZFLIB_ZF_impl int ZFMainEntry_sys_Qt_attach(
+        ZF_IN QGraphicsWidget *rootWindow
+        , ZF_IN_OPT int argc = 0
+        , ZF_IN_OPT char **argv = NULL
+        );
 extern ZFLIB_ZF_impl void ZFMainEntry_sys_Qt_detach(void);
 
 ZF_NAMESPACE_GLOBAL_END

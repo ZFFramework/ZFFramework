@@ -14,23 +14,25 @@ zfclassFwd _ZFP_ZFStyleListPrivate;
 /**
  * @brief see #ZFStyleLoad
  */
-zfclass ZFLIB_ZFCore ZFStyleList : zfextends ZFStyleableObject
-{
+zfclass ZFLIB_ZFCore ZFStyleList : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFStyleList, ZFStyleableObject)
 
 public:
     /** @brief style count */
     ZFMETHOD_DECLARE_0(zfindex, itemCount)
     /** @brief style key */
-    ZFMETHOD_DECLARE_1(const zfchar *, itemKeyAt,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(const zfchar *, itemKeyAt
+            , ZFMP_IN(zfindex, index)
+            )
     /** @brief style value */
-    ZFMETHOD_DECLARE_1(ZFStyleable *, itemValueAt,
-                       ZFMP_IN(zfindex, index))
+    ZFMETHOD_DECLARE_1(ZFStyleable *, itemValueAt
+            , ZFMP_IN(zfindex, index)
+            )
     /** @brief style value */
-    ZFMETHOD_DECLARE_2(void, itemForKey,
-                       ZFMP_IN(const zfchar *, key),
-                       ZFMP_IN(ZFStyleable *, value))
+    ZFMETHOD_DECLARE_2(void, itemForKey
+            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(ZFStyleable *, value)
+            )
 
 protected:
     zfoverride
@@ -40,13 +42,17 @@ protected:
 
 protected:
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 private:
     _ZFP_ZFStyleListPrivate *d;
@@ -82,10 +88,11 @@ private:
  * all of its contents would be appended to current style,
  * instead of setting #ZFStyleList itself as a style value
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
-                        ZFMP_IN(const ZFPathInfo &, pathInfo),
-                        ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull),
-                        ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+        , ZFMP_IN(const ZFPathInfo &, pathInfo)
+        , ZFMP_IN_OPT(const ZFFilterForString *, fileNameFilter, zfnull)
+        , ZFMP_IN_OPT(const ZFFilterForString *, dirNameFilter, zfnull)
+        )
 
 /**
  * @brief load multiple style from serializableData
@@ -100,14 +107,16 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
  *
  * the #ZFStyleList is a dummy holder to make the serializable data itself serializable
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
-                        ZFMP_IN(const ZFSerializableData &, serializableData))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        )
 
 /**
  * @brief see #ZFStyleLoad
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad,
-                        ZFMP_IN(ZFStyleList *, styleList))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFStyleLoad
+        , ZFMP_IN(ZFStyleList *, styleList)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFStyleLoad_h_

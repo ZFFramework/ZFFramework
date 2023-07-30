@@ -36,15 +36,17 @@ ZFPATHTYPE_DECLARE(ZFLIB_ZFAlgorithm, ZFCompress)
  *   see #ZFPathType_ZFCompress for more info
  * -  (const zfchar *)relPath: the relative file path inside the compress file
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForCompressFile,
-                        ZFMP_IN(const zfchar *, compressFilePathInfo),
-                        ZFMP_IN(const zfchar *, relPath),
-                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForCompressFile
+        , ZFMP_IN(const zfchar *, compressFilePathInfo)
+        , ZFMP_IN(const zfchar *, relPath)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        )
 /** @brief see #ZFInputForCompressFile */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForCompressFile,
-                        ZFMP_IN(const ZFPathInfo &, compressFilePathInfo),
-                        ZFMP_IN(const zfchar *, relPath),
-                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForCompressFile
+        , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
+        , ZFMP_IN(const zfchar *, relPath)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read)
+        )
 
 // ============================================================
 // ZFOutputForCompressFile
@@ -57,15 +59,17 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFInput, ZFInputForCompressFile,
  *   see #ZFPathType_ZFCompress for more info
  * -  (const zfchar *)relPath: the relative file path inside the compress file
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForCompressFile,
-                        ZFMP_IN(const zfchar *, compressFilePathInfo),
-                        ZFMP_IN(const zfchar *, relPath),
-                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForCompressFile
+        , ZFMP_IN(const zfchar *, compressFilePathInfo)
+        , ZFMP_IN(const zfchar *, relPath)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        )
 /** @brief see #ZFOutputForCompressFile */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForCompressFile,
-                        ZFMP_IN(const ZFPathInfo &, compressFilePathInfo),
-                        ZFMP_IN(const zfchar *, relPath),
-                        ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFOutput, ZFOutputForCompressFile
+        , ZFMP_IN(const ZFPathInfo &, compressFilePathInfo)
+        , ZFMP_IN(const zfchar *, relPath)
+        , ZFMP_IN_OPT(ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFPathType_file_h_

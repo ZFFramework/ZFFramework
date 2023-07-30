@@ -75,14 +75,17 @@ ZFENUM_END(ZFLIB_ZFCore, ZFStringEncoding)
  *
  * result would be appended to tail without clear
  */
-extern ZFLIB_ZFCore zfbool zfstringToUTF8(ZF_OUT zfstring &result,
-                                          ZF_IN const void *s,
-                                          ZF_IN ZFStringEncodingEnum srcEncoding);
+extern ZFLIB_ZFCore zfbool zfstringToUTF8(
+        ZF_OUT zfstring &result
+        , ZF_IN const void *s
+        , ZF_IN ZFStringEncodingEnum srcEncoding
+        );
 /** @brief see #zfstringToUTF8 */
-inline zfstring zfstringToUTF8(ZF_IN const void *s,
-                               ZF_IN ZFStringEncodingEnum srcEncoding,
-                               ZF_OUT_OPT zfbool *success = zfnull)
-{
+inline zfstring zfstringToUTF8(
+        ZF_IN const void *s
+        , ZF_IN ZFStringEncodingEnum srcEncoding
+        , ZF_OUT_OPT zfbool *success = zfnull
+        ) {
     zfstring ret;
     zfbool t = zfstringToUTF8(ret, s, srcEncoding);
     if(success != zfnull) {*success = t;}
@@ -90,28 +93,34 @@ inline zfstring zfstringToUTF8(ZF_IN const void *s,
 }
 
 /** @brief see #zfstringToUTF8 */
-extern ZFLIB_ZFCore zfbool zfstringToUTF16(ZF_OUT zfstringW &result,
-                                           ZF_IN const void *s,
-                                           ZF_IN ZFStringEncodingEnum srcEncoding);
+extern ZFLIB_ZFCore zfbool zfstringToUTF16(
+        ZF_OUT zfstringW &result
+        , ZF_IN const void *s
+        , ZF_IN ZFStringEncodingEnum srcEncoding
+        );
 /** @brief see #zfstringToUTF8 */
-inline zfstringW zfstringToUTF16(ZF_IN const void *s,
-                                 ZF_IN ZFStringEncodingEnum srcEncoding,
-                                 ZF_OUT_OPT zfbool *success = zfnull)
-{
+inline zfstringW zfstringToUTF16(
+        ZF_IN const void *s
+        , ZF_IN ZFStringEncodingEnum srcEncoding
+        , ZF_OUT_OPT zfbool *success = zfnull
+        ) {
     zfstringW ret;
     zfbool t = zfstringToUTF16(ret, s, srcEncoding);
     if(success != zfnull) {*success = t;}
     return ret;
 }
 /** @brief see #zfstringToUTF8 */
-extern ZFLIB_ZFCore zfbool zfstringToUTF16BE(ZF_OUT zfstringW &result,
-                                             ZF_IN const void *s,
-                                             ZF_IN ZFStringEncodingEnum srcEncoding);
+extern ZFLIB_ZFCore zfbool zfstringToUTF16BE(
+        ZF_OUT zfstringW &result
+        , ZF_IN const void *s
+        , ZF_IN ZFStringEncodingEnum srcEncoding
+        );
 /** @brief see #zfstringToUTF8 */
-inline zfstringW zfstringToUTF16BE(ZF_IN const void *s,
-                                   ZF_IN ZFStringEncodingEnum srcEncoding,
-                                   ZF_OUT_OPT zfbool *success = zfnull)
-{
+inline zfstringW zfstringToUTF16BE(
+        ZF_IN const void *s
+        , ZF_IN ZFStringEncodingEnum srcEncoding
+        , ZF_OUT_OPT zfbool *success = zfnull
+        ) {
     zfstringW ret;
     zfbool t = zfstringToUTF16BE(ret, s, srcEncoding);
     if(success != zfnull) {*success = t;}

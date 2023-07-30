@@ -25,8 +25,7 @@ ZFENUM_END(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexFlag)
 
 // ============================================================
 /** @brief see #ZFTextTemplateApply */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateIndexData
-{
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateIndexData {
 public:
     /**
      * @brief start index, 0 by default
@@ -69,8 +68,7 @@ public:
 
 public:
     /** @brief copy from another */
-    void copyFrom(ZF_IN const ZFTextTemplateIndexData &ref)
-    {
+    void copyFrom(ZF_IN const ZFTextTemplateIndexData &ref) {
         this->indexStart = ref.indexStart;
         this->indexOffset = ref.indexOffset;
         this->indexRadix = ref.indexRadix;
@@ -79,8 +77,7 @@ public:
         this->indexFlag = ref.indexFlag;
     }
     /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN const ZFTextTemplateIndexData &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFTextTemplateIndexData &ref) const {
         return (zftrue
                 && this->indexStart == ref.indexStart
                 && this->indexOffset == ref.indexOffset
@@ -97,8 +94,7 @@ public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    inline zfstring objectInfo(void) const
-    {
+    inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -140,12 +136,14 @@ ZFOUTPUT_TYPE(ZFTextTemplateIndexData, {output << v.objectInfo();})
 // ============================================================
 zfclassFwd _ZFP_ZFTextTemplateParamPrivate;
 /** @brief see #ZFTextTemplateApply */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateParam
-{
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateParam {
 public:
     // ============================================================
     /** @brief see #ZFTextTemplateApply */
-    void replaceDataAdd(ZF_IN const zfchar *key, ZF_IN const zfchar *value);
+    void replaceDataAdd(
+            ZF_IN const zfchar *key
+            , ZF_IN const zfchar *value
+            );
     /** @brief see #ZFTextTemplateApply */
     const zfchar *replaceData(ZF_IN const zfchar *key) const;
     /** @brief see #ZFTextTemplateApply */
@@ -168,7 +166,10 @@ public:
     zfbool enableDataDefault(void) const;
 
     /** @brief see #ZFTextTemplateApply */
-    void enableDataAdd(ZF_IN const zfchar *key, ZF_IN zfbool value);
+    void enableDataAdd(
+            ZF_IN const zfchar *key
+            , ZF_IN zfbool value
+            );
     /** @brief see #ZFTextTemplateApply */
     const zfbool *enableData(ZF_IN const zfchar *key) const;
     /** @brief see #ZFTextTemplateApply */
@@ -193,7 +194,10 @@ public:
     const ZFTextTemplateIndexData &indexDataDefault(void) const;
 
     /** @brief see #ZFTextTemplateApply */
-    void indexDataAdd(ZF_IN const zfchar *key, ZF_IN const ZFTextTemplateIndexData &value);
+    void indexDataAdd(
+            ZF_IN const zfchar *key
+            , ZF_IN const ZFTextTemplateIndexData &value
+            );
     /** @brief see #ZFTextTemplateApply */
     const ZFTextTemplateIndexData *indexData(ZF_IN const zfchar *key) const;
     /** @brief see #ZFTextTemplateApply */
@@ -226,8 +230,7 @@ public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    inline zfstring objectInfo(void) const
-    {
+    inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;

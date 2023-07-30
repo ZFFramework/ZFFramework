@@ -17,8 +17,7 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewFocusImpl_sys_Android, ZFUIViewFocus, ZF
 
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         JNIEnv *jniEnv = JNIGetJNIEnv();
         jobject tmp = zfnull;
@@ -28,16 +27,16 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, tmp);
     }
     zfoverride
-    virtual void protocolOnDealloc(void)
-    {
+    virtual void protocolOnDealloc(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
         zfsuper::protocolOnDealloc();
     }
 public:
-    virtual void viewFocusable(ZF_IN ZFUIView *view,
-                               ZF_IN zfbool viewFocusable)
-    {
+    virtual void viewFocusable(
+            ZF_IN ZFUIView *view
+            , ZF_IN zfbool viewFocusable
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewFocusable",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -48,8 +47,7 @@ public:
             ZFCastStatic(jobject, view->nativeView()),
             viewFocusable);
     }
-    virtual zfbool viewFocused(ZF_IN ZFUIView *view)
-    {
+    virtual zfbool viewFocused(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewFocused",
             JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
@@ -57,8 +55,7 @@ public:
             ).c_str());
         return JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, view->nativeView()));
     }
-    virtual ZFUIView *viewFocusFind(ZF_IN ZFUIView *view)
-    {
+    virtual ZFUIView *viewFocusFind(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewFocusFind",
             JNIGetMethodSig(JNIType::S_long, JNIParamTypeContainer()
@@ -67,9 +64,10 @@ public:
         JNIPointer zfjniPointerFocusedChild = JNIUtilCallStaticLongMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, view->nativeView()));
         return ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerFocusedChild));
     }
-    virtual void viewFocusRequest(ZF_IN ZFUIView *view,
-                                  ZF_IN zfbool viewFocus)
-    {
+    virtual void viewFocusRequest(
+            ZF_IN ZFUIView *view
+            , ZF_IN zfbool viewFocus
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewFocusRequest",
             JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
@@ -88,13 +86,12 @@ ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewFocusImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 
-JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIViewFocus,
-                         void, native_1notifyViewFocusChanged,
-                         JNIPointer zfjniPointerOwnerZFUIView)
-{
+JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIViewFocus
+        , void, native_1notifyViewFocusChanged
+        , JNIPointer zfjniPointerOwnerZFUIView
+        ) {
     ZFUIView *view = ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView));
-    if(!ZFBitTest(view->objectInstanceState(), ZFObjectInstanceStateOnDealloc))
-    {
+    if(!ZFBitTest(view->objectInstanceState(), ZFObjectInstanceStateOnDealloc)) {
         ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusChanged(view);
     }
 }

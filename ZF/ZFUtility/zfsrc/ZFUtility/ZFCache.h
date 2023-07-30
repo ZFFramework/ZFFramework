@@ -14,8 +14,7 @@ zfclassFwd _ZFP_ZFCachePrivate;
 /**
  * @brief util object to hold #ZFObject as cache
  */
-zfclass ZFLIB_ZFUtility ZFCache : zfextends ZFObject
-{
+zfclass ZFLIB_ZFUtility ZFCache : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFCache, ZFObject)
 
 public:
@@ -61,20 +60,23 @@ public:
      * when cache exceeds #cacheMaxSize,
      * the oldest cache would be removed
      */
-    ZFMETHOD_DECLARE_2(void, cacheAdd,
-                       ZFMP_IN(const zfchar *, cacheKey),
-                       ZFMP_IN(ZFObject *, cacheValue))
+    ZFMETHOD_DECLARE_2(void, cacheAdd
+            , ZFMP_IN(const zfchar *, cacheKey)
+            , ZFMP_IN(ZFObject *, cacheValue)
+            )
     /**
      * @brief access cache, or return null if not exist
      */
-    ZFMETHOD_DECLARE_1(zfautoObject, cacheGet,
-                       ZFMP_IN(const zfchar *, cacheKey))
+    ZFMETHOD_DECLARE_1(zfautoObject, cacheGet
+            , ZFMP_IN(const zfchar *, cacheKey)
+            )
 
     /**
      * @brief remove all cache with cacheKey
      */
-    ZFMETHOD_DECLARE_1(void, cacheRemove,
-                       ZFMP_IN(const zfchar *, cacheKey))
+    ZFMETHOD_DECLARE_1(void, cacheRemove
+            , ZFMP_IN(const zfchar *, cacheKey)
+            )
     /**
      * @brief remove all cache
      */
@@ -91,8 +93,9 @@ public:
      * @brief util method to trim the cache
      *   so that the cached data won't exceeds specified size
      */
-    ZFMETHOD_DECLARE_1(void, cacheTrimBySize,
-                       ZFMP_IN(zfindex , size))
+    ZFMETHOD_DECLARE_1(void, cacheTrimBySize
+            , ZFMP_IN(zfindex , size)
+            )
 
 public:
     /**
@@ -102,18 +105,17 @@ public:
     /**
      * @brief see #cacheGetAll
      */
-    ZFMETHOD_DECLARE_1(void, cacheGetAllT,
-                       ZFMP_IN_OUT(ZFCoreArray<zfautoObject> &, ret))
+    ZFMETHOD_DECLARE_1(void, cacheGetAllT
+            , ZFMP_IN_OUT(ZFCoreArray<zfautoObject> &, ret)
+            )
 
 protected:
     /** @brief see #EventCacheOnAdd */
-    virtual void cacheOnAdd(ZF_IN ZFObject *cache)
-    {
+    virtual void cacheOnAdd(ZF_IN ZFObject *cache) {
         this->observerNotify(zfself::EventCacheOnAdd(), cache);
     }
     /** @brief see #EventCacheOnRemove */
-    virtual void cacheOnRemove(ZF_IN ZFObject *cache)
-    {
+    virtual void cacheOnRemove(ZF_IN ZFObject *cache) {
         this->observerNotify(zfself::EventCacheOnRemove(), cache);
     }
 

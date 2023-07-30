@@ -18,25 +18,33 @@ public:
     /**
      * @brief create native web view
      */
-    virtual void *nativeWebViewCreate(ZF_IN ZFUIWebView *webView,
-                                      ZF_OUT zfbool &nativeImplViewRequireVirtualIndex) zfpurevirtual;
+    virtual void *nativeWebViewCreate(
+            ZF_IN ZFUIWebView *webView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) zfpurevirtual;
     /**
      * @brief destroy native web view
      */
-    virtual void nativeWebViewDestroy(ZF_IN ZFUIWebView *webView,
-                                      ZF_IN void *nativeWebView) zfpurevirtual;
+    virtual void nativeWebViewDestroy(
+            ZF_IN ZFUIWebView *webView
+            , ZF_IN void *nativeWebView
+            ) zfpurevirtual;
 
     /**
      * @brief see #ZFUIWebView::webLoadUrl
      */
-    virtual void webLoadUrl(ZF_IN ZFUIWebView *webView,
-                            ZF_IN const zfchar *url) zfpurevirtual;
+    virtual void webLoadUrl(
+            ZF_IN ZFUIWebView *webView
+            , ZF_IN const zfchar *url
+            ) zfpurevirtual;
     /**
      * @brief see #ZFUIWebView::webLoadHtml
      */
-    virtual void webLoadHtml(ZF_IN ZFUIWebView *webView,
-                             ZF_IN const zfchar *html,
-                             ZF_IN_OPT const zfchar *baseUrl = zfnull) zfpurevirtual;
+    virtual void webLoadHtml(
+            ZF_IN ZFUIWebView *webView
+            , ZF_IN const zfchar *html
+            , ZF_IN_OPT const zfchar *baseUrl = zfnull
+            ) zfpurevirtual;
     /**
      * @brief see #ZFUIWebView::webReload
      */
@@ -75,8 +83,7 @@ public:
      * @brief implementations must notify when web load start or stop
      *   (both success or fail)
      */
-    zffinal void notifyWebLoadStateChanged(ZF_IN ZFUIWebView *webView)
-    {
+    zffinal void notifyWebLoadStateChanged(ZF_IN ZFUIWebView *webView) {
         webView->_ZFP_ZFUIWebView_notifyWebLoadStateChanged();
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIWebView)

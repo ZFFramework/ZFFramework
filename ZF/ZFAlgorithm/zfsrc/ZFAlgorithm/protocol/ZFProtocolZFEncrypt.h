@@ -20,15 +20,19 @@ public:
      *
      * result must contain printable chars only, encoded with base64 is recommended
      */
-    virtual zfbool encrypt(ZF_IN_OUT const ZFOutput &output,
-                           ZF_IN const ZFInput &input,
-                           ZF_IN const zfchar *key) zfpurevirtual;
+    virtual zfbool encrypt(
+            ZF_IN_OUT const ZFOutput &output
+            , ZF_IN const ZFInput &input
+            , ZF_IN const zfchar *key
+            ) zfpurevirtual;
     /**
      * @brief see #ZFDecrypt
      */
-    virtual zfbool decrypt(ZF_IN_OUT const ZFOutput &output,
-                           ZF_IN const ZFInput &input,
-                           ZF_IN const zfchar *key) zfpurevirtual;
+    virtual zfbool decrypt(
+            ZF_IN_OUT const ZFOutput &output
+            , ZF_IN const ZFInput &input
+            , ZF_IN const zfchar *key
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFEncrypt)
 
 ZF_NAMESPACE_GLOBAL_END

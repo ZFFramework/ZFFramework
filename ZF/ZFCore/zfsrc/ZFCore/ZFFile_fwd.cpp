@@ -17,8 +17,7 @@ ZFENUM_DEFINE_FLAGS(ZFFileOpenOption, ZFFileOpenOptionFlags)
 
 // ============================================================
 // ZFFileFindData
-zfclassNotPOD _ZFP_ZFFileFindDataPrivate
-{
+zfclassNotPOD _ZFP_ZFFileFindDataPrivate {
 public:
     typedef zfstlmap<zfstring, zfautoObject> ImplTagMapType;
 
@@ -37,13 +36,11 @@ public:
     , implTagMap(zfnull)
     {
     }
-    ~_ZFP_ZFFileFindDataPrivate(void)
-    {
+    ~_ZFP_ZFFileFindDataPrivate(void) {
         zfCoreAssertWithMessage(this->implName.isEmpty(),
             "have you forgot to close find? module: %s",
             this->implName.cString());
-        if(this->implTagMap != zfnull)
-        {
+        if(this->implTagMap != zfnull) {
             zfdelete(this->implTagMap);
         }
     }
@@ -58,56 +55,47 @@ ZFFileFindData::ZFFileFindData(ZF_IN ZFFileFindData const &ref)
 {
     ++(d->refCount);
 }
-ZFFileFindData &ZFFileFindData::operator = (ZF_IN ZFFileFindData const &ref)
-{
+ZFFileFindData &ZFFileFindData::operator = (ZF_IN ZFFileFindData const &ref) {
     ++(ref.d->refCount);
     --(d->refCount);
-    if(d->refCount == 0)
-    {
+    if(d->refCount == 0) {
         zfdelete(d);
     }
     d = ref.d;
     return *this;
 }
-zfbool ZFFileFindData::operator == (ZF_IN ZFFileFindData const &ref) const
-{
+zfbool ZFFileFindData::operator == (ZF_IN ZFFileFindData const &ref) const {
     return (d->impl.nativeFd == ref.d->impl.nativeFd);
 }
-ZFFileFindData::~ZFFileFindData(void)
-{
+ZFFileFindData::~ZFFileFindData(void) {
     --(d->refCount);
-    if(d->refCount == 0)
-    {
+    if(d->refCount == 0) {
         zfdelete(d);
     }
 }
 
-void ZFFileFindData::objectInfoT(ZF_IN_OUT zfstring &ret) const
-{
+void ZFFileFindData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
-    if(this->fileIsDir())
-    {
+    if(this->fileIsDir()) {
         ret += "(dir)";
     }
     ret += this->fileName();
     ret += ZFTOKEN_ZFObjectInfoRight;
 }
 
-ZFFileFindData::Impl &ZFFileFindData::impl(void) const
-{
+ZFFileFindData::Impl &ZFFileFindData::impl(void) const {
     return d->impl;
 }
-const zfchar *ZFFileFindData::implName(void) const
-{
+const zfchar *ZFFileFindData::implName(void) const {
     return (d->implName.isEmpty() ? zfnull : d->implName.cString());
 }
-void *ZFFileFindData::implUserData(void) const
-{
+void *ZFFileFindData::implUserData(void) const {
     return d->implUserData;
 }
-void ZFFileFindData::implAttach(ZF_IN const zfchar *implName,
-                                ZF_IN_OPT void *implUserData /* = zfnull */)
-{
+void ZFFileFindData::implAttach(
+        ZF_IN const zfchar *implName
+        , ZF_IN_OPT void *implUserData /* = zfnull */
+        ) {
     zfCoreAssertWithMessage(d->implName.isEmpty(),
         "have you forgot to close find? current module: %s",
         d->implName.cString());
@@ -115,13 +103,11 @@ void ZFFileFindData::implAttach(ZF_IN const zfchar *implName,
     d->implName = implName;
     d->implUserData = implUserData;
 }
-void ZFFileFindData::implDetach(void)
-{
+void ZFFileFindData::implDetach(void) {
     d->implName.removeAll();
     d->implUserData = zfnull;
 }
-void *ZFFileFindData::implCheck(ZF_IN const zfchar *implName) const
-{
+void *ZFFileFindData::implCheck(ZF_IN const zfchar *implName) const {
     zfCoreAssertWithMessage(!d->implName.isEmpty(), "find not started");
     zfCoreAssertWithMessage(zfstringIsEqual(d->implName.cString(), implName),
         "have you forgot to close find? desired, %s, got: %s",
@@ -129,43 +115,35 @@ void *ZFFileFindData::implCheck(ZF_IN const zfchar *implName) const
     return d->implUserData;
 }
 
-void ZFFileFindData::implTag(ZF_IN const zfchar *key, ZF_IN ZFObject *value) const
-{
-    if(zfstringIsEmpty(key))
-    {
+void ZFFileFindData::implTag(
+        ZF_IN const zfchar *key
+        , ZF_IN ZFObject *value
+        ) const {
+    if(zfstringIsEmpty(key)) {
         return;
     }
-    if(value == zfnull)
-    {
-        if(d->implTagMap != zfnull)
-        {
+    if(value == zfnull) {
+        if(d->implTagMap != zfnull) {
             d->implTagMap->erase(key);
         }
     }
-    else
-    {
-        if(d->implTagMap == zfnull)
-        {
+    else {
+        if(d->implTagMap == zfnull) {
             d->implTagMap = zfnew(_ZFP_ZFFileFindDataPrivate::ImplTagMapType);
         }
         (*(d->implTagMap))[key] = value;
     }
 }
-ZFObject *ZFFileFindData::implTag(ZF_IN const zfchar *key) const
-{
-    if(zfstringIsEmpty(key) || d->implTagMap)
-    {
+ZFObject *ZFFileFindData::implTag(ZF_IN const zfchar *key) const {
+    if(zfstringIsEmpty(key) || d->implTagMap) {
         return zfnull;
     }
-    else
-    {
+    else {
         _ZFP_ZFFileFindDataPrivate::ImplTagMapType::iterator it = d->implTagMap->find(key);
-        if(it != d->implTagMap->end())
-        {
+        if(it != d->implTagMap->end()) {
             return it->second;
         }
-        else
-        {
+        else {
             return zfnull;
         }
     }
@@ -178,11 +156,21 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, zfbool, fileIsDir)
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfchar *, implName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, void *, implUserData)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implAttach, ZFMP_IN(const zfchar *, implName), ZFMP_IN_OPT(void *, implUserData, zfnull))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implAttach
+        , ZFMP_IN(const zfchar *, implName)
+        , ZFMP_IN_OPT(void *, implUserData, zfnull)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, void, implDetach)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, void *, implCheck, ZFMP_IN(const zfchar *, implName))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implTag, ZFMP_IN(const zfchar *, key), ZFMP_IN(ZFObject *, value))
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, ZFObject *, implTag, ZFMP_IN(const zfchar *, key))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, void *, implCheck
+        , ZFMP_IN(const zfchar *, implName)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implTag
+        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(ZFObject *, value)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, ZFObject *, implTag
+        , ZFMP_IN(const zfchar *, key)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 

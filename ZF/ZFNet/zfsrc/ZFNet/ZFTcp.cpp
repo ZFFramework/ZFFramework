@@ -6,8 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFENUM_DEFINE(ZFTcpType)
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFTcpPrivate
-{
+zfclassNotPOD _ZFP_ZFTcpPrivate {
 public:
     void *nativeSocket;
     zfstring host;
@@ -23,55 +22,47 @@ public:
     }
 };
 
-void ZFTcp::objectInfoT(ZF_IN_OUT zfstring &ret)
-{
+void ZFTcp::objectInfoT(ZF_IN_OUT zfstring &ret) {
     ret += "tcp:";
     zfstringAppend(ret, "%s:%u", this->host(), this->port());
 }
 
-void ZFTcp::objectOnInit(void)
-{
+void ZFTcp::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFTcpPrivate);
 }
-void ZFTcp::objectOnDealloc(void)
-{
+void ZFTcp::objectOnDealloc(void) {
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }
-void ZFTcp::objectOnDeallocPrepare(void)
-{
+void ZFTcp::objectOnDeallocPrepare(void) {
     this->close();
     zfsuper::objectOnDeallocPrepare();
 }
 
-ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open,
-                  ZFMP_IN(const zfchar *, host),
-                  ZFMP_IN(zfuint, port))
-{
-    if(d->type == ZFTcpType::e_ServerAccept)
-    {
+ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open
+            , ZFMP_IN(const zfchar *, host)
+            , ZFMP_IN(zfuint, port)
+            ) {
+    if(d->type == ZFTcpType::e_ServerAccept) {
         zfLog("calling open() on tcp returned by accept()");
         return zffalse;
     }
 
     this->close();
-    if(zfstringIsEmpty(host))
-    {
+    if(zfstringIsEmpty(host)) {
         host = zfnull;
         d->host = "localhost";
         d->type = ZFTcpType::e_Server;
     }
-    else
-    {
+    else {
         d->host = host;
         d->type = ZFTcpType::e_Client;
     }
     d->port = port;
     d->nativeSocket = zfnull;
     d->nativeSocket = ZFPROTOCOL_ACCESS(ZFTcp)->open(this, host, port);
-    if(d->nativeSocket == zfnull)
-    {
+    if(d->nativeSocket == zfnull) {
         d->host.removeAll();
         d->port = 0;
         d->nativeSocket = zfnull;
@@ -80,10 +71,8 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, open,
     }
     return zftrue;
 }
-ZFMETHOD_DEFINE_0(ZFTcp, void, close)
-{
-    if(d->type != ZFTcpType::e_Invalid)
-    {
+ZFMETHOD_DEFINE_0(ZFTcp, void, close) {
+    if(d->type != ZFTcpType::e_Invalid) {
         ZFPROTOCOL_ACCESS(ZFTcp)->close(this, d->nativeSocket);
         d->nativeSocket = zfnull;
         d->host.removeAll();
@@ -92,30 +81,25 @@ ZFMETHOD_DEFINE_0(ZFTcp, void, close)
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFTcp, ZFTcpTypeEnum, type)
-{
+ZFMETHOD_DEFINE_0(ZFTcp, ZFTcpTypeEnum, type) {
     return d->type;
 }
 
-ZFMETHOD_DEFINE_0(ZFTcp, zfbool, valid)
-{
+ZFMETHOD_DEFINE_0(ZFTcp, zfbool, valid) {
     return d->type != ZFTcpType::e_Invalid;
 }
-ZFMETHOD_DEFINE_0(ZFTcp, const zfchar *, host)
-{
+ZFMETHOD_DEFINE_0(ZFTcp, const zfchar *, host) {
     return d->host.isEmpty() ? zfnull : d->host.cString();
 }
-ZFMETHOD_DEFINE_0(ZFTcp, zfuint, port)
-{
+ZFMETHOD_DEFINE_0(ZFTcp, zfuint, port) {
     return d->port;
 }
 
-ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo,
-                  ZFMP_OUT(zfstring &, remoteAddr),
-                  ZFMP_OUT(zfuint &, remotePort))
-{
-    switch(d->type)
-    {
+ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo
+            , ZFMP_OUT(zfstring &, remoteAddr)
+            , ZFMP_OUT(zfuint &, remotePort)
+            ) {
+    switch(d->type) {
         case ZFTcpType::e_Invalid:
         case ZFTcpType::e_Server:
             return zffalse;
@@ -124,10 +108,8 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo,
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFTcp, zfautoObjectT<ZFTcp *>, accept)
-{
-    switch(d->type)
-    {
+ZFMETHOD_DEFINE_0(ZFTcp, zfautoObjectT<ZFTcp *>, accept) {
+    switch(d->type) {
         case ZFTcpType::e_Invalid:
             zfLog("calling accept() before open() successfully");
             return zfnull;
@@ -139,8 +121,7 @@ ZFMETHOD_DEFINE_0(ZFTcp, zfautoObjectT<ZFTcp *>, accept)
     }
 
     void *acceptSocket = ZFPROTOCOL_ACCESS(ZFTcp)->accept(this, d->nativeSocket);
-    if(acceptSocket == zfnull)
-    {
+    if(acceptSocket == zfnull) {
         return zfnull;
     }
     zfblockedAlloc(ZFTcp, ret);
@@ -151,12 +132,11 @@ ZFMETHOD_DEFINE_0(ZFTcp, zfautoObjectT<ZFTcp *>, accept)
     return ret;
 }
 
-ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send,
-                  ZFMP_IN(const void *, data),
-                  ZFMP_IN(zfindex, size))
-{
-    switch(d->type)
-    {
+ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
+            , ZFMP_IN(const void *, data)
+            , ZFMP_IN(zfindex, size)
+            ) {
+    switch(d->type) {
         case ZFTcpType::e_Invalid:
             zfLog("calling send() on invalid socket");
             return zffalse;
@@ -168,31 +148,30 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send,
     }
     return ZFPROTOCOL_ACCESS(ZFTcp)->send(this, d->nativeSocket, data, size);
 }
-ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send,
-                  ZFMP_IN(const zfchar *, data),
-                  ZFMP_IN_OPT(zfindex, size, zfindexMax()))
-{
+ZFMETHOD_DEFINE_2(ZFTcp, zfbool, send
+            , ZFMP_IN(const zfchar *, data)
+            , ZFMP_IN_OPT(zfindex, size, zfindexMax())
+            ) {
     return this->send((const void *)data, (size == zfindexMax() ? zfslen(data) : size) * sizeof(zfchar));
 }
-ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send,
-                  ZFMP_IN(const ZFBuffer &, data))
-{
+ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
+            , ZFMP_IN(const ZFBuffer &, data)
+            ) {
     return this->send(data.buffer(), data.bufferSize());
 }
-ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send,
-                  ZFMP_IN(const ZFInput &, input))
-{
+ZFMETHOD_DEFINE_1(ZFTcp, zfbool, send
+            , ZFMP_IN(const ZFInput &, input)
+            ) {
     ZFBuffer buf;
     ZFInputRead(buf, input);
     return this->send(buf.buffer(), buf.bufferSize());
 }
-ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv,
-                  ZFMP_IN_OUT(ZFBuffer &, data),
-                  ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
-                  ZFMP_IN_OPT(zftimet, timeout, -1))
-{
-    switch(d->type)
-    {
+ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
+            , ZFMP_IN_OUT(ZFBuffer &, data)
+            , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
+            , ZFMP_IN_OPT(zftimet, timeout, -1)
+            ) {
+    switch(d->type) {
         case ZFTcpType::e_Invalid:
             zfLog("calling recv() before open() successfully");
             return 0;
@@ -202,8 +181,7 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv,
         default:
             break;
     }
-    if(maxSize == zfindexMax())
-    {
+    if(maxSize == zfindexMax()) {
         maxSize = 4096;
     }
     data.bufferCapacity(data.bufferSize() + maxSize);
@@ -212,13 +190,12 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv,
     data.bufferT<zfchar *>()[data.bufferSize() / sizeof(zfchar)] = '\0';
     return recvSize;
 }
-ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv,
-                  ZFMP_IN_OUT(const ZFOutput &, output),
-                  ZFMP_IN_OPT(zfindex, maxSize, zfindexMax()),
-                  ZFMP_IN_OPT(zftimet, timeout, -1))
-{
-    switch(d->type)
-    {
+ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv
+            , ZFMP_IN_OUT(const ZFOutput &, output)
+            , ZFMP_IN_OPT(zfindex, maxSize, zfindexMax())
+            , ZFMP_IN_OPT(zftimet, timeout, -1)
+            ) {
+    switch(d->type) {
         case ZFTcpType::e_Invalid:
             zfLog("calling recv() before open() successfully");
             return 0;
@@ -228,21 +205,18 @@ ZFMETHOD_DEFINE_3(ZFTcp, zfindex, recv,
         default:
             break;
     }
-    if(maxSize == zfindexMax())
-    {
+    if(maxSize == zfindexMax()) {
         maxSize = 4096;
     }
 
     zfbyte buf[1024];
     zfindex sizeRead = 0;
-    do
-    {
+    do {
         zfindex sizeToRead = zfmMin((zfindex)sizeof(buf), maxSize - sizeRead);
         zfindex size = ZFPROTOCOL_ACCESS(ZFTcp)->recv(this, d->nativeSocket, buf, sizeToRead, timeout);
         size = output.execute(buf, size);
         sizeRead += size;
-        if(size < sizeToRead || sizeRead >= maxSize)
-        {
+        if(size < sizeToRead || sizeRead >= maxSize) {
             break;
         }
     } while(zftrue);

@@ -9,14 +9,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileCwdImpl_sys_iOS, ZFFileCwd, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:SandboxPath")
 public:
-    virtual const zfchar *pathForCwd(void)
-    {
+    virtual const zfchar *pathForCwd(void) {
         static zfstring _pathForCwd;
         ZFImpl_sys_iOS_zfstringFromNSString(_pathForCwd, [NSFileManager defaultManager].currentDirectoryPath);
         return _pathForCwd;
     }
-    virtual zfbool pathForCwdChange(ZF_IN const zfchar *pathForCwd)
-    {
+    virtual zfbool pathForCwdChange(ZF_IN const zfchar *pathForCwd) {
         return ([[NSFileManager defaultManager] changeCurrentDirectoryPath:ZFImpl_sys_iOS_zfstringToNSString(pathForCwd)] == YES);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_iOS)

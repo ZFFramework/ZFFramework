@@ -46,8 +46,10 @@ zfclassFwd ZFListener;
  *     (at this case, you should ensure the method's caller won't store
  *     the return value for a long time)
  */
-extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(ZF_IN const ZFMethodDynamicRegisterParam &param,
-                                                            ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
+        ZF_IN const ZFMethodDynamicRegisterParam &param
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 /**
  * @brief see #ZFMethodDynamicRegister
  */
@@ -71,8 +73,7 @@ zfclassFwd _ZFP_ZFMethodDynamicRegisterParamPrivate;
  * -  methodReturnTypeId, #ZFTypeId_void by default
  * -  methodReturnTypeName, empty by default
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFMethodDynamicRegisterParam
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFMethodDynamicRegisterParam {
 public:
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodDynamicRegisterParam &methodDynamicRegisterUserData(ZF_IN ZFObject *methodDynamicRegisterUserData);
@@ -129,15 +130,19 @@ public:
     const zfchar *methodReturnTypeName(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodParamAdd(ZF_IN const zfchar *methodParamTypeId,
-                                                 ZF_IN_OPT const zfchar *methodParamTypeName = zfnull,
-                                                 ZF_IN_OPT const zfchar *methodParamName = zfnull,
-                                                 ZF_IN_OPT ZFMethodParamDefaultValueCallback methodParamDefaultValueCallback = zfnull);
+    ZFMethodDynamicRegisterParam &methodParamAdd(
+            ZF_IN const zfchar *methodParamTypeId
+            , ZF_IN_OPT const zfchar *methodParamTypeName = zfnull
+            , ZF_IN_OPT const zfchar *methodParamName = zfnull
+            , ZF_IN_OPT ZFMethodParamDefaultValueCallback methodParamDefaultValueCallback = zfnull
+            );
     /** @brief see #ZFMethodDynamicRegister */
-    ZFMethodDynamicRegisterParam &methodParamAddWithDefault(ZF_IN const zfchar *methodParamTypeId,
-                                                            ZF_IN_OPT const zfchar *methodParamTypeName = zfnull,
-                                                            ZF_IN_OPT const zfchar *methodParamName = zfnull,
-                                                            ZF_IN_OPT ZFObject *methodParamDefaultValue = zfnull);
+    ZFMethodDynamicRegisterParam &methodParamAddWithDefault(
+            ZF_IN const zfchar *methodParamTypeId
+            , ZF_IN_OPT const zfchar *methodParamTypeName = zfnull
+            , ZF_IN_OPT const zfchar *methodParamName = zfnull
+            , ZF_IN_OPT ZFObject *methodParamDefaultValue = zfnull
+            );
     /** @brief see #ZFMethodDynamicRegister */
     zfindex methodParamCount(void) const;
     /** @brief see #ZFMethodDynamicRegister */

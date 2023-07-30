@@ -16,8 +16,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * proto type:
  * @code
- *   zfindex output(ZF_IN const void *src,
- *                  ZF_IN_OPT zfindex count = zfindexMax());
+ *   zfindex output(
+ *           ZF_IN const void *src
+ *           , ZF_IN_OPT zfindex count = zfindexMax()
+ *           );
  * @endcode
  *
  * params:
@@ -35,28 +37,29 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 public:
     /** @brief see #ZFOutput */
-    inline zfindex execute(ZF_IN const void *src,
-                           ZF_IN_OPT zfindex count = zfindexMax()) const
-    {
+    inline zfindex execute(
+            ZF_IN const void *src
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) const {
         return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
     }
     /** @brief see #ZFOutput */
-    inline zfindex operator () (ZF_IN const void *src,
-                                ZF_IN_OPT zfindex count = zfindexMax()) const
-    {
+    inline zfindex operator () (
+            ZF_IN const void *src
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            ) const {
         return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
     }
     /** @brief see #ZFOutput */
-    inline const ZFOutput &output(ZF_IN const void *src,
-                                  ZF_IN_OPT zfindex count = zfindexMax(),
-                                  ZF_OUT_OPT zfindex *result = zfnull) const
-    {
-        if(result != zfnull)
-        {
+    inline const ZFOutput &output(
+            ZF_IN const void *src
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            , ZF_OUT_OPT zfindex *result = zfnull
+            ) const {
+        if(result != zfnull) {
             *result = this->execute(src, count);
         }
-        else
-        {
+        else {
             this->execute(src, count);
         }
         return *this;
@@ -67,11 +70,12 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 // custom type output
 #define _ZFP_ZFOUTPUT_EXPAND(T_Type) \
     template<> \
-    zfclassNotPOD ZFCoreInfoGetter<T_Type> \
-    { \
+    zfclassNotPOD ZFCoreInfoGetter<T_Type> { \
     public: \
-        static void InfoGetter(ZF_IN_OUT zfstring &ret, ZF_IN T_Type const &v) \
-        { \
+        static void InfoGetter( \
+                ZF_IN_OUT zfstring &ret \
+                , ZF_IN T_Type const &v \
+                ) { \
             ZFOutputForString(ret) << v; \
         } \
     };
@@ -80,7 +84,10 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
  *
  * proto type:
  * @code
- *   const ZFOutput &operator << (ZF_IN_OUT const ZFOutput &output, ZF_IN YourType const &v);
+ *   const ZFOutput &operator << (
+ *           ZF_IN_OUT const ZFOutput &output
+ *           , ZF_IN YourType const &v
+ *           );
  * @endcode
  * usage:
  * @code
@@ -94,8 +101,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
  */
 #define ZFOUTPUT_TYPE(T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
-    inline const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) \
-    { \
+    inline const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) { \
         if(output) \
         outputAction \
         return output; \
@@ -107,25 +113,29 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
  *
  * usage:
  * @code
- *   ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T0, typename T1),
- *                          ZFM_EXPAND(YourType<T0, T1>),
- *                          {output.execute(v.toString())})
+ *   ZFOUTPUT_TYPE_TEMPLATE(
+ *           ZFM_EXPAND(typename T0, typename T1)
+ *           , ZFM_EXPAND(YourType<T0, T1>)
+ *           , {
+ *               output.execute(v.toString())
+ *           }
+ *           )
  * @endcode
  */
 #define ZFOUTPUT_TYPE_TEMPLATE(templateList, T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
     template<templateList> \
-    inline const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) \
-    { \
+    inline const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) { \
         outputAction \
         return output; \
     } \
     template<templateList> \
-    zfclassNotPOD ZFCoreInfoGetter<T_Type> \
-    { \
+    zfclassNotPOD ZFCoreInfoGetter<T_Type> { \
     public: \
-        static void InfoGetter(ZF_IN_OUT zfstring &ret, ZF_IN T_Type const &v) \
-        { \
+        static void InfoGetter( \
+                ZF_IN_OUT zfstring &ret \
+                , ZF_IN T_Type const &v \
+                ) { \
             ZFOutputForString(ret) << v; \
         } \
     }; \
@@ -153,8 +163,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 /** @brief see #ZFOUTPUT_TYPE_DECLARE */
 #define ZFOUTPUT_TYPE_DEFINE(T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
-    const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) \
-    { \
+    const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) { \
         outputAction \
         return output; \
     } \
@@ -197,9 +206,11 @@ extern ZFLIB_ZFCore ZFOutput ZFOutputForBuffer(ZF_IN_OUT ZFBuffer &buf);
  *   if autoAppendNullToken, maxCount should contain the extra '\0' size
  * -  (zfbool) whether auto append '\0' to tail each time write
  */
-extern ZFLIB_ZFCore ZFOutput ZFOutputForBufferUnsafe(ZF_IN void *buf,
-                                                     ZF_IN_OPT zfindex maxCount = zfindexMax(),
-                                                     ZF_IN_OPT zfbool autoAppendNullToken = zftrue);
+extern ZFLIB_ZFCore ZFOutput ZFOutputForBufferUnsafe(
+        ZF_IN void *buf
+        , ZF_IN_OPT zfindex maxCount = zfindexMax()
+        , ZF_IN_OPT zfbool autoAppendNullToken = zftrue
+        );
 
 // ============================================================
 // basic output
@@ -211,46 +222,36 @@ ZFOUTPUT_TYPE(void *, {output << (const void *)v;})
 
 /** @cond ZFPrivateDoc */
 template<typename T_Type, int T_ZFObject = 0>
-zfclassNotPOD _ZFP_ZFOutputOutputWrapper
-{
+zfclassNotPOD _ZFP_ZFOutputOutputWrapper {
 public:
-    static void outputAction(ZF_IN_OUT const ZFOutput &output, T_Type const &v)
-    {
+    static void outputAction(ZF_IN_OUT const ZFOutput &output, T_Type const &v) {
         output << (*v);
     }
 };
 template<typename T_Type>
-zfclassNotPOD _ZFP_ZFOutputOutputWrapper<T_Type, 1>
-{
+zfclassNotPOD _ZFP_ZFOutputOutputWrapper<T_Type, 1> {
 public:
-    static void outputAction(ZF_IN_OUT const ZFOutput &output, T_Type const &v)
-    {
+    static void outputAction(ZF_IN_OUT const ZFOutput &output, T_Type const &v) {
         output.execute(v->toObject()->objectInfo());
     }
 };
 
 template<typename T_Type>
-const ZFOutput &operator << (const ZFOutput &output, const T_Type * const &v)
-{
-    if(v == zfnull)
-    {
+const ZFOutput &operator << (const ZFOutput &output, const T_Type * const &v) {
+    if(v == zfnull) {
         output.execute(ZFTOKEN_zfnull);
     }
-    else
-    {
+    else {
         output << (*v);
     }
     return output;
 }
 template<typename T_Type>
-const ZFOutput &operator << (const ZFOutput &output, T_Type * const &v)
-{
-    if(v == zfnull)
-    {
+const ZFOutput &operator << (const ZFOutput &output, T_Type * const &v) {
+    if(v == zfnull) {
         output.execute(ZFTOKEN_zfnull);
     }
-    else
-    {
+    else {
         _ZFP_ZFOutputOutputWrapper<T_Type *,
                 zftIsZFObject(typename zftTraits<T_Type>::TrType)
             >::outputAction(output, v);

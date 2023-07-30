@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIHint_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUIHint_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIHint_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_protocolCheck(ZFUISysWindow);
@@ -28,8 +26,7 @@ protected:
         ZFLISTENER_1(hintOnHide
                 , ZFTestCase *, testCase
                 ) {
-            for(zfindex i = 0; i < 3; ++i)
-            {
+            for(zfindex i = 0; i < 3; ++i) {
                 ZFUIHintShow(zfstringWithFormat("this is a stacked hint %zi", i));
             }
             zfautoObject last = ZFUIHintShow("this is a very"

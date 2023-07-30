@@ -22,13 +22,17 @@ public:
     /**
      * @brief destroy native web JS bridge
      */
-    virtual void nativeWebJSBridgeDestroy(ZF_IN ZFUIWebJSBridge *webJSBridge,
-                                          ZF_IN void *nativeWebJSBridge) zfpurevirtual;
+    virtual void nativeWebJSBridgeDestroy(
+            ZF_IN ZFUIWebJSBridge *webJSBridge
+            , ZF_IN void *nativeWebJSBridge
+            ) zfpurevirtual;
 
 public:
     /** @brief see #ZFUIWebJSBridge::webMessageSend */
-    virtual ZFJson webMessageSend(ZF_IN ZFUIWebJSBridge *webJSBridge,
-                                  ZF_IN_OUT ZFJson &messageSend) zfpurevirtual;
+    virtual ZFJson webMessageSend(
+            ZF_IN ZFUIWebJSBridge *webJSBridge
+            , ZF_IN_OUT ZFJson &messageSend
+            ) zfpurevirtual;
 
     // ============================================================
     // callbacks that implementations must notify
@@ -36,9 +40,10 @@ public:
     /**
      * @brief implementations must notify when message sent from web
      */
-    zffinal ZFJson notifyWebMessageRecv(ZF_IN ZFUIWebJSBridge *webJSBridge,
-                                        ZF_IN_OUT ZFJson &messageRecv)
-    {
+    zffinal ZFJson notifyWebMessageRecv(
+            ZF_IN ZFUIWebJSBridge *webJSBridge
+            , ZF_IN_OUT ZFJson &messageRecv
+            ) {
         return webJSBridge->_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(messageRecv);
     }
 ZFPROTOCOL_INTERFACE_END(ZFUIWebJSBridge)

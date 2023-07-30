@@ -8,8 +8,7 @@
 #include <QGraphicsWidget>
 #include <QTransform>
 
-class _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani : public QAbstractAnimation
-{
+class _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani : public QAbstractAnimation {
     Q_OBJECT
 
 public:
@@ -45,66 +44,53 @@ public:
     {
         this->connect(this, SIGNAL(finished()), this, SLOT(nativeAniOnStop()));
     }
-    ~_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani(void)
-    {
+    ~_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani(void) {
         this->disconnect(this, SIGNAL(finished()), this, SLOT(nativeAniOnStop()));
     }
 
 public slots:
-    void nativeAniOnStop(void)
-    {
-        if(this->ownerZFAnimation->aniRunning())
-        {
+    void nativeAniOnStop(void) {
+        if(this->ownerZFAnimation->aniRunning()) {
             ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->notifyAniStop(this->ownerZFAnimation);
         }
     }
 
 public:
-    virtual int duration(void) const
-    {
+    virtual int duration(void) const {
         return this->ownerZFAnimation->aniDurationFixed();
     }
 protected:
-    virtual void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState)
-    {
+    virtual void updateState(QAbstractAnimation::State newState, QAbstractAnimation::State oldState) {
         QAbstractAnimation::updateState(newState, oldState);
     }
-    virtual void updateDirection(QAbstractAnimation::Direction direction)
-    {
+    virtual void updateDirection(QAbstractAnimation::Direction direction) {
         QAbstractAnimation::updateDirection(direction);
     }
-    virtual void updateCurrentTime(int currentTime)
-    {
-        if(!this->aniRunning)
-        {
+    virtual void updateCurrentTime(int currentTime) {
+        if(!this->aniRunning) {
             return;
         }
 
-        if(currentTime >= this->duration())
-        {
+        if(currentTime >= this->duration()) {
             this->aniProgress = 1;
             this->aniOnProgress();
             this->nativeAniCleanup();
             this->aniRunning = zffalse;
             this->stop();
         }
-        else
-        {
+        else {
             this->aniProgress = this->aniCurveFunc((zffloat)currentTime / this->duration());
             this->aniOnProgress();
         }
     }
 
 public:
-    void aniOnProgress(void)
-    {
+    void aniOnProgress(void) {
         ZFAnimationNativeView *ani = this->ownerZFAnimation;
         zffloat progress = this->aniProgress;
 
-        if(this->alphaEffect != NULL)
-        {
-            if(ani->aniAlphaFrom() != 1 || ani->aniAlphaTo() != 1)
-            {
+        if(this->alphaEffect != NULL) {
+            if(ani->aniAlphaFrom() != 1 || ani->aniAlphaTo() != 1) {
                 this->alphaEffect->setOpacity((qreal)(
                         zfmApplyProgress(ani->aniAlphaFrom() * this->alphaOrig, ani->aniAlphaTo() * this->alphaOrig, progress)
                     ));
@@ -117,22 +103,19 @@ public:
 
         transform.translate(width / 2, height / 2);
 
-        if(this->aniTarget->viewRotateZ() != 0)
-        {
+        if(this->aniTarget->viewRotateZ() != 0) {
             transform.rotate(this->aniTarget->viewRotateZ());
         }
-        if(ani->aniRotateZFrom() != 0 || ani->aniRotateZTo() != 0)
-        {
+        if(ani->aniRotateZFrom() != 0 || ani->aniRotateZTo() != 0) {
             transform.rotate(zfmApplyProgress(ani->aniRotateZFrom(), ani->aniRotateZTo(), progress));
         }
 
-        if(this->aniTarget->viewScaleX() != 1 || this->aniTarget->viewScaleY() != 1)
-        {
+        if(this->aniTarget->viewScaleX() != 1 || this->aniTarget->viewScaleY() != 1) {
             transform.scale(this->aniTarget->viewScaleX(), this->aniTarget->viewScaleY());
         }
         if(ani->aniScaleXFrom() != 1 || ani->aniScaleXTo() != 1
-            || ani->aniScaleYFrom() != 1 || ani->aniScaleYTo() != 1)
-        {
+                || ani->aniScaleYFrom() != 1 || ani->aniScaleYTo() != 1
+                ) {
             transform.scale(
                 zfmApplyProgress(ani->aniScaleXFrom(), ani->aniScaleXTo(), progress),
                 zfmApplyProgress(ani->aniScaleYFrom(), ani->aniScaleYTo(), progress)
@@ -140,16 +123,16 @@ public:
         }
 
         if(ani->aniTranslateXFrom() != 0 || ani->aniTranslateXTo() != 0
-            || ani->aniTranslateYFrom() != 0 || ani->aniTranslateYTo() != 0)
-        {
+                || ani->aniTranslateYFrom() != 0 || ani->aniTranslateYTo() != 0
+                ) {
             transform.translate(
                 zfmApplyProgress(ani->aniTranslateXFrom(), ani->aniTranslateXTo(), progress) * width * this->nativeAniScale,
                 zfmApplyProgress(ani->aniTranslateYFrom(), ani->aniTranslateYTo(), progress) * height * this->nativeAniScale
                 );
         }
         if(ani->aniTranslatePixelXFrom() != 0 || ani->aniTranslatePixelXTo() != 0
-            || ani->aniTranslatePixelYFrom() != 0 || ani->aniTranslatePixelYTo() != 0)
-        {
+                || ani->aniTranslatePixelYFrom() != 0 || ani->aniTranslatePixelYTo() != 0
+                ) {
             transform.translate(
                 zfmApplyProgress(ani->aniTranslatePixelXFrom(), ani->aniTranslatePixelXTo(), progress) * this->nativeAniScale,
                 zfmApplyProgress(ani->aniTranslatePixelYFrom(), ani->aniTranslatePixelYTo(), progress) * this->nativeAniScale
@@ -162,27 +145,21 @@ public:
     }
 
 public:
-    static zffloat _aniCurveFuncLinear(ZF_IN zffloat progress)
-    {
+    static zffloat _aniCurveFuncLinear(ZF_IN zffloat progress) {
         return progress;
     }
-    static zffloat _aniCurveFuncEaseIn(ZF_IN zffloat progress)
-    {
+    static zffloat _aniCurveFuncEaseIn(ZF_IN zffloat progress) {
         return ZFCurveEaseIn().y_by_x(progress);
     }
-    static zffloat _aniCurveFuncEaseOut(ZF_IN zffloat progress)
-    {
+    static zffloat _aniCurveFuncEaseOut(ZF_IN zffloat progress) {
         return ZFCurveEaseOut().y_by_x(progress);
     }
-    static zffloat _aniCurveFuncEaseInOut(ZF_IN zffloat progress)
-    {
+    static zffloat _aniCurveFuncEaseInOut(ZF_IN zffloat progress) {
         return ZFCurveEaseInOut().y_by_x(progress);
     }
-    void nativeAniStart(void)
-    {
+    void nativeAniStart(void) {
         this->aniProgress = 0;
-        switch(this->ownerZFAnimation->aniCurve())
-        {
+        switch(this->ownerZFAnimation->aniCurve()) {
             case ZFAnimationNativeViewCurve::e_Linear:
                 this->aniCurveFunc = _aniCurveFuncLinear;
                 break;
@@ -203,12 +180,10 @@ public:
         this->nativeAniTarget = (QGraphicsWidget *)this->aniTarget->nativeView();
         this->alphaOrig = 1;
         this->alphaEffect = qobject_cast<QGraphicsOpacityEffect *>(this->nativeAniTarget->graphicsEffect());
-        if(this->alphaEffect != NULL)
-        {
+        if(this->alphaEffect != NULL) {
             this->alphaOrig = this->alphaEffect->opacity();
         }
-        else if(this->ownerZFAnimation->aniAlphaFrom() != 1 || this->ownerZFAnimation->aniAlphaTo() != 1)
-        {
+        else if(this->ownerZFAnimation->aniAlphaFrom() != 1 || this->ownerZFAnimation->aniAlphaTo() != 1) {
             this->alphaEffect = new QGraphicsOpacityEffect(this->nativeAniTarget);
             this->nativeAniTarget->setGraphicsEffect(this->alphaEffect);
         }
@@ -216,24 +191,19 @@ public:
         this->aniRunning = zftrue;
         this->start();
     }
-    void nativeAniStop(void)
-    {
+    void nativeAniStop(void) {
         this->nativeAniCleanup();
         this->aniRunning = zffalse;
         this->stop();
     }
 private:
-    void nativeAniCleanup(void)
-    {
-        if(this->alphaOrig == 1)
-        {
+    void nativeAniCleanup(void) {
+        if(this->alphaOrig == 1) {
             this->nativeAniTarget->setGraphicsEffect(NULL);
         }
-        else
-        {
+        else {
             QGraphicsOpacityEffect *effect = qobject_cast<QGraphicsOpacityEffect *>(this->nativeAniTarget->graphicsEffect());
-            if(effect == zfnull)
-            {
+            if(effect == zfnull) {
                 effect = new QGraphicsOpacityEffect(this->nativeAniTarget);
                 this->nativeAniTarget->setGraphicsEffect(effect);
             }
@@ -243,12 +213,10 @@ private:
         {
             QTransform t;
             t.translate(this->nativeAniTarget->geometry().width() / 2, this->nativeAniTarget->geometry().height() / 2);
-            if(this->aniTarget->viewRotateZ() != 0)
-            {
+            if(this->aniTarget->viewRotateZ() != 0) {
                 t.rotate(this->aniTarget->viewRotateZ());
             }
-            if(this->aniTarget->viewScaleX() != 1 || this->aniTarget->viewScaleY() != 1)
-            {
+            if(this->aniTarget->viewScaleX() != 1 || this->aniTarget->viewScaleY() != 1) {
                 t.scale(this->aniTarget->viewScaleX(), this->aniTarget->viewScaleY());
             }
             t.translate(-this->nativeAniTarget->geometry().width() / 2, -this->nativeAniTarget->geometry().height() / 2);
@@ -269,26 +237,26 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAnimationNativeViewImpl_sys_Qt, ZFAnimationNat
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Qt:QGraphicsWidget")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void *nativeAniCreate(ZF_IN ZFAnimationNativeView *ani)
-    {
+    virtual void *nativeAniCreate(ZF_IN ZFAnimationNativeView *ani) {
         return new _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani(ani);
     }
-    virtual void nativeAniDestroy(ZF_IN ZFAnimationNativeView *ani,
-                                  ZF_IN void *nativeAni)
-    {
+    virtual void nativeAniDestroy(
+            ZF_IN ZFAnimationNativeView *ani
+            , ZF_IN void *nativeAni
+            ) {
         _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *nativeAniTmp = ZFCastStatic(_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *, nativeAni);
         nativeAniTmp->deleteLater();
     }
 
-    virtual void nativeAniStart(ZF_IN ZFAnimationNativeView *ani,
-                                ZF_IN zffloat nativeAniScale)
-    {
+    virtual void nativeAniStart(
+            ZF_IN ZFAnimationNativeView *ani
+            , ZF_IN zffloat nativeAniScale
+            ) {
         _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *nativeAni = ZFCastStatic(_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *, ani->nativeAnimation());
         nativeAni->nativeAniScale = nativeAniScale;
         nativeAni->nativeAniStart();
     }
-    virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani)
-    {
+    virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani) {
         _ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *nativeAni = ZFCastStatic(_ZFP_ZFAnimationNativeViewImpl_sys_Qt_Ani *, ani->nativeAnimation());
         nativeAni->nativeAniStop();
     }

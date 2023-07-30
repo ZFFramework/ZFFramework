@@ -37,8 +37,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   end)
  * @endcode
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForImpl,
-                        ZFMP_IN(const ZFListener &, impl))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, ZFInput, ZFInputForImpl
+        , ZFMP_IN(const ZFListener &, impl)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFInputForImpl_h_

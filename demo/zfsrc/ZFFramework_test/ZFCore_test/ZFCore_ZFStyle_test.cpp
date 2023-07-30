@@ -2,32 +2,27 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextends ZFStyleableObject
-{
+zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextends ZFStyleableObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFStyle_test_Object, ZFStyleableObject)
 
     ZFPROPERTY_ASSIGN(zfint, myProperty)
-    ZFPROPERTY_ON_ATTACH_INLINE(zfint, myProperty)
-    {
+    ZFPROPERTY_ON_ATTACH_INLINE(zfint, myProperty) {
         zfLog() << propertyValue;
     }
 };
 
-zfclass ZFCore_ZFStyle_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFCore_ZFStyle_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFStyle_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("prepare style");
 
-        const zfchar *styleKey = _ZFP_ZFCore_ZFStyle_test_Object::ClassData()->classNameFull();
-        {
+        const zfchar *styleKey = _ZFP_ZFCore_ZFStyle_test_Object::ClassData()->classNameFull(); {
             zfblockedAlloc(_ZFP_ZFCore_ZFStyle_test_Object, styleValue);
             styleValue->myProperty(123);
             ZFStyleSet(styleKey, styleValue);

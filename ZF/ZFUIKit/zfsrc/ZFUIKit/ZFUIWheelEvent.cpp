@@ -4,16 +4,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIWheelEvent)
 
-void ZFUIWheelEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret)
-{
+void ZFUIWheelEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     ret += "wheel (";
     zfsFromFloatT(ret, this->wheelX);
     ret += ", ";
     zfsFromFloatT(ret, this->wheelY);
     ret += ")";
 
-    if(this->eventResolved())
-    {
+    if(this->eventResolved()) {
         ret += " (resolved)";
     }
 }

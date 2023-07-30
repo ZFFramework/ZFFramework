@@ -17,8 +17,7 @@ zfclassFwd ZFUIWindow;
  * internally used to manage view's,
  * usually you should not use this class
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIRootView : zfextends ZFUIView
-{
+zffinal zfclass ZFLIB_ZFUIKit ZFUIRootView : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIRootView, ZFUIView)
     ZFOBJECT_PRIVATE_ALLOC("can only be created by owner ZFUISysWindow")
 
@@ -26,8 +25,7 @@ public:
     /**
      * @brief owner #ZFUISysWindow
      */
-    zffinal ZFUISysWindow *rootViewOwnerSysWindow(void)
-    {
+    zffinal ZFUISysWindow *rootViewOwnerSysWindow(void) {
         return this->_ZFP_ZFUIRootView_rootViewOwnerSysWindow;
     }
 
@@ -47,9 +45,11 @@ protected:
      * @brief for a root view, this method would always return sizeHint
      */
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
     zfoverride
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 

@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIAniImageView_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUIAniImageView_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIAniImageView_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
@@ -41,8 +39,7 @@ protected:
     }
 
 private:
-    void prepareActionLog(ZF_IN ZFUIAniImageView *animatedImageView)
-    {
+    void prepareActionLog(ZF_IN ZFUIAniImageView *animatedImageView) {
         ZFTestCase *testCase = this;
 
         ZFLISTENER_1(onFrame
@@ -72,9 +69,10 @@ private:
         } ZFLISTENER_END()
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnStop(), onStop);
     }
-    void prepareActionButton(ZF_IN ZFUIView *container,
-                             ZF_IN ZFUIAniImageView *animatedImageView)
-    {
+    void prepareActionButton(
+            ZF_IN ZFUIView *container
+            , ZF_IN ZFUIAniImageView *animatedImageView
+            ) {
         ZFLISTENER_1(manualOnClick
                 , ZFUIAniImageView *, animatedImageView
                 ) {
@@ -105,9 +103,10 @@ private:
         stopButton->label()->text("stop");
         stopButton->observerAdd(ZFUIButton::EventButtonOnClick(), stopOnClick);
     }
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIAniImageView *animatedImageView)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUIAniImageView *animatedImageView
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);

@@ -2,14 +2,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIFlowLayout_test : zfextends ZFFramework_test_TestCase
-{
+zfclass ZFUIWidget_ZFUIFlowLayout_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIFlowLayout_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
-    virtual void testCaseOnStart(void)
-    {
+    virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
@@ -28,8 +26,7 @@ protected:
     }
 
 private:
-    void prepareAddRemoveButton(ZFUIView *container, ZFUIView *layout)
-    {
+    void prepareAddRemoveButton(ZFUIView *container, ZFUIView *layout) {
         zfblockedAlloc(ZFUIKit_test_Button, addButton);
         container->childAdd(addButton);
         ZFLISTENER_1(addButtonOnClick
@@ -43,8 +40,7 @@ private:
             zfstring text;
             text.capacity(textLength);
             zfchar c = '0' + ((layout->childCount() - 1) % 10);
-            for(zfindex i = 0; i < textLength; ++i)
-            {
+            for(zfindex i = 0; i < textLength; ++i) {
                 text += c;
             }
             view->text(text);
@@ -57,17 +53,17 @@ private:
         ZFLISTENER_1(removeButtonOnClick
                 , ZFUIView *, layout
                 ) {
-            if(layout->childCount() > 0)
-            {
+            if(layout->childCount() > 0) {
                 layout->childRemoveAt(layout->childCount() - 1);
             }
         } ZFLISTENER_END()
         removeButton->observerAdd(ZFUIButton::EventButtonOnClick(), removeButtonOnClick);
         removeButton->label()->text("remove");
     }
-    void prepareSettingButton(ZF_IN ZFUIWindow *window,
-                              ZF_IN ZFUIFlowLayout *layout)
-    {
+    void prepareSettingButton(
+            ZF_IN ZFUIWindow *window
+            , ZF_IN ZFUIFlowLayout *layout
+            ) {
         zfblockedAlloc(ZFArray, settings);
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);

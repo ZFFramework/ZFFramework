@@ -15,8 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may supply a subclass to achive custom time line,
  * but must make sure it is serializable and copyable
  */
-zfabstract ZFLIB_ZFUtility ZFTimeLineCurve : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable
-{
+zfabstract ZFLIB_ZFUtility ZFTimeLineCurve : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable {
     ZFOBJECT_DECLARE_ABSTRACT(ZFTimeLineCurve, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)
 
@@ -29,8 +28,9 @@ public:
      * e.g. a linear time line would have same result as the time,
      * while a bounce time line may exceeds range [0, 1] as result
      */
-    ZFMETHOD_DECLARE_1(zffloat, progressUpdate,
-                       ZFMP_IN(zffloat, time))
+    ZFMETHOD_DECLARE_1(zffloat, progressUpdate
+            , ZFMP_IN(zffloat, time)
+            )
 
 protected:
     /**

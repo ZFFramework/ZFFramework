@@ -3,32 +3,26 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-void ZFFilterForZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const
-{
+void ZFFilterForZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += '(';
     zfindex flagsCount = 0;
-    if(this->ignorePublic())
-    {
+    if(this->ignorePublic()) {
         ++flagsCount;
         ret += "ignorePublic, ";
     }
-    if(this->ignoreProtected())
-    {
+    if(this->ignoreProtected()) {
         ++flagsCount;
         ret += "ignoreProtected, ";
     }
-    if(this->ignorePrivate())
-    {
+    if(this->ignorePrivate()) {
         ++flagsCount;
         ret += "ignorePrivate, ";
     }
 
-    if(flagsCount == 0)
-    {
+    if(flagsCount == 0) {
         ret.remove(ret.length() - 1);
     }
-    else
-    {
+    else {
         ret.remove(ret.length() - 2);
         ret += ')';
     }
@@ -36,18 +30,17 @@ void ZFFilterForZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const
     zfsuper::objectInfoT(ret);
 }
 
-zfbool ZFFilterForZFMethod::filterOnCheckActive(ZF_IN const ZFMethod * const &e) const
-{
+zfbool ZFFilterForZFMethod::filterOnCheckActive(ZF_IN const ZFMethod * const &e) const {
     if(!zfsuper::filterOnCheckActive(e)
-       || !this->classFilter.filterCheckActive(e->methodOwnerClass()))
-    {
+            || !this->classFilter.filterCheckActive(e->methodOwnerClass())
+            ) {
         return zffalse;
     }
 
     if((e->methodIsPrivate() && this->ignorePrivate())
-       || (e->methodIsProtected() && this->ignoreProtected())
-       || (e->methodIsPublic() && this->ignorePublic()))
-    {
+            || (e->methodIsProtected() && this->ignoreProtected())
+            || (e->methodIsPublic() && this->ignorePublic())
+            ) {
         return zffalse;
     }
 

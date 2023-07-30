@@ -31,20 +31,28 @@ extern ZFLIB_ZF_impl SDL_Window *ZFImpl_sys_SDL_CreateWindow(void);
 typedef zfbool (*ZFImpl_sys_SDL_EventHandler)(ZF_IN SDL_Event *event);
 
 /** @brief add event handler, see #ZFImpl_sys_SDL_EventHandler */
-extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_eventHandlerAdd(ZF_IN Uint32 type,
-                                                         ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler,
-                                                         ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_eventHandlerAdd(
+        ZF_IN Uint32 type
+        , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
+        , ZF_IN_OPT ZFLevel level = ZFLevelAppNormal
+        );
 /** @brief remove event handler, see #ZFImpl_sys_SDL_EventHandler */
-extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_eventHandlerRemove(ZF_IN Uint32 type,
-                                                            ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler);
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_eventHandlerRemove(
+        ZF_IN Uint32 type
+        , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
+        );
 
 /** @brief add user event handler, see #ZFIMPL_SYS_SDL_USER_EVENT_HANDLER */
-extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerAdd(ZF_IN Sint32 userEventCode,
-                                                             ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler,
-                                                             ZF_IN_OPT ZFLevel level = ZFLevelAppNormal);
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerAdd(
+        ZF_IN Sint32 userEventCode
+        , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
+        , ZF_IN_OPT ZFLevel level = ZFLevelAppNormal
+        );
 /** @brief remove user event handler, see #ZFIMPL_SYS_SDL_USER_EVENT_HANDLER */
-extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(ZF_IN Sint32 userEventCode,
-                                                                ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler);
+extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(
+        ZF_IN Sint32 userEventCode
+        , ZF_IN ZFImpl_sys_SDL_EventHandler eventHandler
+        );
 
 /**
  * @brief util to declare a user event and event handler
@@ -52,8 +60,7 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(ZF_IN Sint32 use
  * @code
  *   // declare event handler, proto type:
  *   //   zfbool eventHandler(SDL_Event *sdlEvent);
- *   ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(YourEvent, ZFLevelAppNormal)
- *   {
+ *   ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(YourEvent, ZFLevelAppNormal) {
  *       // the event
  *       zfLogTrim() << sdlEvent->user.code;
  *       return zftrue;
@@ -73,12 +80,10 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_SDL_userEventHandlerRemove(ZF_IN Sint32 use
     ZFIDMAP_GLOBAL_DETAIL(_ZFP_SDLEvent, name) \
     ZFIDMAP_GLOBAL_REGISTER_DETAIL(_ZFP_SDLEvent, name) \
     static zfbool _ZFP_SDLEventH_##name(ZF_IN SDL_Event *sdlEvent); \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(SDLEventReg_##name, ZFLevelZFFrameworkStatic) \
-    { \
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(SDLEventReg_##name, ZFLevelZFFrameworkStatic) { \
         ZFImpl_sys_SDL_userEventHandlerAdd(((Sint32)_ZFP_SDLEvent##name()), _ZFP_SDLEventH_##name, level); \
     } \
-    ZF_GLOBAL_INITIALIZER_DESTROY(SDLEventReg_##name) \
-    { \
+    ZF_GLOBAL_INITIALIZER_DESTROY(SDLEventReg_##name) { \
         ZFImpl_sys_SDL_userEventHandlerRemove(((Sint32)_ZFP_SDLEvent##name()), _ZFP_SDLEventH_##name); \
     } \
     ZF_GLOBAL_INITIALIZER_END(SDLEventReg_##name) \

@@ -13,8 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief hardware keyboard state helper
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIKeyboardState : zfextends ZFObject
-{
+zffinal zfclass ZFLIB_ZFUIKit ZFUIKeyboardState : zfextends ZFObject {
     ZFOBJECT_DECLARE(ZFUIKeyboardState, ZFObject)
 
     ZFOBJECT_SINGLETON_DECLARE(ZFUIKeyboardState, instance)
@@ -31,13 +30,15 @@ public:
     /**
      * @brief true is key is pressed
      */
-    ZFMETHOD_DECLARE_1(zfbool, keyPressed,
-                       ZFMP_IN(ZFUIKeyCodeEnum, keyCode))
+    ZFMETHOD_DECLARE_1(zfbool, keyPressed
+            , ZFMP_IN(ZFUIKeyCodeEnum, keyCode)
+            )
     /**
      * @brief true is key is pressed
      */
-    ZFMETHOD_DECLARE_1(zfbool, keyPressedRaw,
-                       ZFMP_IN(zfflags, keyCodeRaw))
+    ZFMETHOD_DECLARE_1(zfbool, keyPressedRaw
+            , ZFMP_IN(zfflags, keyCodeRaw)
+            )
 
 protected:
     zfoverride

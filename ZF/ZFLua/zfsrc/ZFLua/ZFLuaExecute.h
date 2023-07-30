@@ -165,15 +165,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  for dynamically loaded library, all types would also be registered normally,
  *   however, won't be automatically unregistered when unloaded
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfautoObject, ZFLuaExecute,
-                        ZFMP_IN(const ZFInput &, input),
-                        ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull),
-                        ZFMP_IN_OPT(void *, L, zfnull))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfautoObject, ZFLuaExecute
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull)
+        , ZFMP_IN_OPT(void *, L, zfnull)
+        )
 /** @brief see #ZFLuaExecute */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfautoObject, ZFLuaExecute,
-                        ZFMP_IN(const zfchar *, buf),
-                        ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull),
-                        ZFMP_IN_OPT(void *, L, zfnull))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfautoObject, ZFLuaExecute
+        , ZFMP_IN(const zfchar *, buf)
+        , ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull)
+        , ZFMP_IN_OPT(void *, L, zfnull)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLuaExecute_h_

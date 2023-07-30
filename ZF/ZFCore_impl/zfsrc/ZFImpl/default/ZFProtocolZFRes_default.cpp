@@ -10,8 +10,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFResImpl_default, ZFRes, ZFProtocolLevel::e_Default)
 public:
     zfoverride
-    virtual void protocolOnInit(void)
-    {
+    virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         this->_resRootPath = ZFPathForModule();
         this->_resRootPath += ZFFileSeparator();
@@ -27,8 +26,7 @@ public:
 
 public:
     zfoverride
-    virtual const zfstring &resRootPath(void)
-    {
+    virtual const zfstring &resRootPath(void) {
         return this->_resRootPath;
     }
 private:

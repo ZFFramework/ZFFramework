@@ -22,8 +22,10 @@ public:
     /**
      * @brief destroy native timer
      */
-    virtual void nativeTimerDestroy(ZF_IN ZFTimer *timer,
-                                    ZF_IN void *nativeTimer) zfpurevirtual;
+    virtual void nativeTimerDestroy(
+            ZF_IN ZFTimer *timer
+            , ZF_IN void *nativeTimer
+            ) zfpurevirtual;
     /**
      * @brief start timer
      */
@@ -39,22 +41,19 @@ public:
      * @brief must be called in timer thread when timer thread started
      *   (can be called only once for one timer, before first time fire the timer)
      */
-    zffinal void notifyTimerStart(ZF_IN ZFTimer *timer)
-    {
+    zffinal void notifyTimerStart(ZF_IN ZFTimer *timer) {
         timer->_ZFP_ZFTimer_timerOnStart();
     }
     /**
      * @brief must be called to notify timer event
      */
-    zffinal void notifyTimerActivate(ZF_IN ZFTimer *timer)
-    {
+    zffinal void notifyTimerActivate(ZF_IN ZFTimer *timer) {
         timer->_ZFP_ZFTimer_timerOnActivate();
     }
     /**
      * @brief must be called when timer thread is about to stop
      */
-    zffinal void notifyTimerStop(ZF_IN ZFTimer *timer)
-    {
+    zffinal void notifyTimerStop(ZF_IN ZFTimer *timer) {
         timer->_ZFP_ZFTimer_timerOnStop();
     }
 ZFPROTOCOL_INTERFACE_END(ZFTimer)

@@ -17,35 +17,47 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFNet, ZFTcp)
 public:
     /** @brief see #ZFTcp::open */
-    virtual void *open(ZF_IN ZFTcp *owner,
-                       ZF_IN const zfchar *host,
-                       ZF_IN zfuint port) zfpurevirtual;
+    virtual void *open(
+            ZF_IN ZFTcp *owner
+            , ZF_IN const zfchar *host
+            , ZF_IN zfuint port
+            ) zfpurevirtual;
     /** @brief see #ZFTcp::close */
-    virtual void close(ZF_IN ZFTcp *owner,
-                       ZF_IN void *nativeSocket) zfpurevirtual;
+    virtual void close(
+            ZF_IN ZFTcp *owner
+            , ZF_IN void *nativeSocket
+            ) zfpurevirtual;
 
 public:
     /** @brief see #ZFTcp::accept */
-    virtual zfbool remoteInfo(ZF_IN ZFTcp *owner,
-                              ZF_IN void *nativeSocket,
-                              ZF_OUT zfstring &remoteAddr,
-                              ZF_OUT zfuint &remotePort) zfpurevirtual;
+    virtual zfbool remoteInfo(
+            ZF_IN ZFTcp *owner
+            , ZF_IN void *nativeSocket
+            , ZF_OUT zfstring &remoteAddr
+            , ZF_OUT zfuint &remotePort
+            ) zfpurevirtual;
     /** @brief see #ZFTcp::accept */
-    virtual void *accept(ZF_IN ZFTcp *owner,
-                         ZF_IN void *nativeSocket) zfpurevirtual;
+    virtual void *accept(
+            ZF_IN ZFTcp *owner
+            , ZF_IN void *nativeSocket
+            ) zfpurevirtual;
 
 public:
     /** @brief see #ZFTcp::send */
-    virtual zfbool send(ZF_IN ZFTcp *owner,
-                        ZF_IN void *nativeSocket,
-                        ZF_IN const void *data,
-                        ZF_IN zfindex size) zfpurevirtual;
+    virtual zfbool send(
+            ZF_IN ZFTcp *owner
+            , ZF_IN void *nativeSocket
+            , ZF_IN const void *data
+            , ZF_IN zfindex size
+            ) zfpurevirtual;
     /** @brief see #ZFTcp::recv */
-    virtual zfindex recv(ZF_IN ZFTcp *owner,
-                         ZF_IN void *nativeSocket,
-                         ZF_OUT void *data,
-                         ZF_IN zfindex maxSize,
-                         ZF_IN_OPT zftimet timeout) zfpurevirtual;
+    virtual zfindex recv(
+            ZF_IN ZFTcp *owner
+            , ZF_IN void *nativeSocket
+            , ZF_OUT void *data
+            , ZF_IN zfindex maxSize
+            , ZF_IN_OPT zftimet timeout
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFTcp)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -9,8 +9,10 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-extern ZFLIB_ZFCore void _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN_OUT zfstring &ret,
-                                                     ZF_IN const zfchar *filePath);
+extern ZFLIB_ZFCore void _ZFP_ZF_CALLER_FILE_TO_NAME(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *filePath
+        );
 extern ZFLIB_ZFCore zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *filePath);
 
 /**
@@ -58,8 +60,7 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZF_CALLER_FILE_TO_NAME(ZF_IN const zfchar *fil
 /**
  * @brief util class to hold caller info
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore ZFCallerInfo
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFCallerInfo {
 public:
     /**
      * @brief main constructor
@@ -68,9 +69,11 @@ public:
     /**
      * @brief main constructor
      */
-    ZFCallerInfo(ZF_IN const zfchar *callerFile,
-                 ZF_IN const zfchar *callerFunc,
-                 ZF_IN zfuint callerLine);
+    ZFCallerInfo(
+            ZF_IN const zfchar *callerFile
+            , ZF_IN const zfchar *callerFunc
+            , ZF_IN zfuint callerLine
+            );
     /** @cond ZFPrivateDoc */
     ZFCallerInfo(ZF_IN const ZFCallerInfo &ref);
     ~ZFCallerInfo(void);
@@ -91,27 +94,26 @@ public:
     /**
      * @brief set the caller info
      */
-    void callerInfo(ZF_IN const zfchar *callerFile,
-                    ZF_IN const zfchar *callerFunc,
-                    ZF_IN zfuint callerLine);
+    void callerInfo(
+            ZF_IN const zfchar *callerFile
+            , ZF_IN const zfchar *callerFunc
+            , ZF_IN zfuint callerLine
+            );
     /** @brief return caller info looks like "[File function (line)]" */
     zfbool callerInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return caller info looks like "[File function (line)]" */
-    inline zfstring callerInfo(void) const
-    {
+    inline zfstring callerInfo(void) const {
         zfstring ret;
         this->callerInfoT(ret);
         return ret;
     }
 public:
     /** @brief see #objectInfo */
-    inline void objectInfoT(ZF_IN_OUT zfstring &ret) const
-    {
+    inline void objectInfoT(ZF_IN_OUT zfstring &ret) const {
         this->callerInfoT(ret);
     }
     /** @brief return object info */
-    inline zfstring objectInfo(void) const
-    {
+    inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -124,10 +126,11 @@ private:
     const zfchar *_callerFunc;
     zfuint _callerLine;
 public:
-    ZFCallerInfo &_ZFP_callerInfo(ZF_IN const zfchar *callerFile,
-                                  ZF_IN const zfchar *callerFunc,
-                                  ZF_IN zfuint callerLine)
-    {
+    ZFCallerInfo &_ZFP_callerInfo(
+            ZF_IN const zfchar *callerFile
+            , ZF_IN const zfchar *callerFunc
+            , ZF_IN zfuint callerLine
+            ) {
         this->_callerFile = callerFile;
         this->_callerFunc = callerFunc;
         this->_callerLine = callerLine;

@@ -8,20 +8,18 @@ ZFOBSERVER_EVENT_REGISTER(ZFKeyValueContainer, ContentOnChange)
 ZFOBSERVER_EVENT_REGISTER(ZFKeyValueContainer, ContentOnAdd)
 ZFOBSERVER_EVENT_REGISTER(ZFKeyValueContainer, ContentOnRemove)
 
-ZFMETHOD_DEFINE_3(ZFKeyValueContainer, void, objectInfoOfContentT,
-                  ZFMP_IN_OUT(zfstring &, ret),
-                  ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
-                  ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault()))
-{
+ZFMETHOD_DEFINE_3(ZFKeyValueContainer, void, objectInfoOfContentT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+        ) {
     zfindex count = 0;
     ret += token.tokenLeft;
-    for(zfiterator it = this->iter(); this->iterValid(it) && count < maxCount; ++count, this->iterNext(it))
-    {
+    for(zfiterator it = this->iter(); this->iterValid(it) && count < maxCount; ++count, this->iterNext(it)) {
         ZFObject *key = this->iterKey(it);
         ZFObject *value = this->iterValue(it);
 
-        if(count > 0)
-        {
+        if(count > 0) {
             ret += token.tokenSeparator;
         }
 
@@ -39,91 +37,79 @@ ZFMETHOD_DEFINE_3(ZFKeyValueContainer, void, objectInfoOfContentT,
         }
         ret += token.tokenPairRight;
     }
-    if(count < this->count())
-    {
-        if(count > 0)
-        {
+    if(count < this->count()) {
+        if(count > 0) {
             ret += token.tokenSeparator;
         }
         ret += token.tokenEtc;
     }
     ret += token.tokenRight;
 }
-ZFMETHOD_DEFINE_2(ZFKeyValueContainer, zfstring, objectInfoOfContent,
-                  ZFMP_IN_OPT(zfindex, maxCount, zfindexMax()),
-                  ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault()))
-{
+ZFMETHOD_DEFINE_2(ZFKeyValueContainer, zfstring, objectInfoOfContent
+        , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
+        , ZFMP_IN_OPT(const ZFTokenForKeyValueContainer &, token, ZFTokenForKeyValueContainerDefault())
+        ) {
     zfstring ret;
     this->objectInfoOfContentT(ret, maxCount, token);
     return ret;
 }
 
-zfbool ZFKeyValueContainer::serializableOnCheck(void)
-{
+zfbool ZFKeyValueContainer::serializableOnCheck(void) {
     if(!zfsuperI(ZFSerializable)::serializableOnCheck()) {return zffalse;}
 
-    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
-    {
+    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
         if(!ZFObjectIsSerializable(this->iterKey(it))
-            || !ZFObjectIsSerializable(this->iterValue(it)))
-        {
+                || !ZFObjectIsSerializable(this->iterValue(it))
+                ) {
             return zffalse;
         }
     }
 
     return zftrue;
 }
-zfbool ZFKeyValueContainer::serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                            ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */,
-                                                            ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
-{
+zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
     this->removeAll();
 
     zfautoObject key;
     zfautoObject value;
-    for(zfindex i = 0; i < serializableData.childCount(); ++i)
-    {
+    for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
-        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_key))
-        {
-            if(key != zfnull)
-            {
+        if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_key)) {
+            if(key != zfnull) {
                 ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                     "missing value for key %s (%s)",
                     key.toObject()->objectInfoOfInstance().cString(),
                     key.toObject()->objectInfo().cString());
                 return zffalse;
             }
-            if(!ZFObjectFromData(key, categoryData, outErrorHint, outErrorPos))
-            {
+            if(!ZFObjectFromData(key, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
-            if(key == zfnull)
-            {
+            if(key == zfnull) {
                 ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, "null key");
                 return zffalse;
             }
         }
-        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_value))
-        {
-            if(key == zfnull)
-            {
+        else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFKeyValueContainer_value)) {
+            if(key == zfnull) {
                 ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
                     "missing key");
                 return zffalse;
             }
-            if(!ZFObjectFromData(value, categoryData, outErrorHint, outErrorPos))
-            {
+            if(!ZFObjectFromData(value, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
-            if(value == zfnull)
-            {
+            if(value == zfnull) {
                 ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, "null value");
                 return zffalse;
             }
@@ -132,8 +118,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(ZF_IN const ZFSerial
             value = zfnull;
         }
     }
-    if(key != zfnull)
-    {
+    if(key != zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
             "missing value for key %s (%s)",
             key.toObject()->objectInfoOfInstance().cString(),
@@ -143,29 +128,26 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(ZF_IN const ZFSerial
 
     return zftrue;
 }
-zfbool ZFKeyValueContainer::serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                          ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                          ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfbool ZFKeyValueContainer::serializableOnSerializeToData(
+        ZF_IN_OUT ZFSerializableData &serializableData
+        , ZF_IN ZFSerializable *referencedOwnerOrNull
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
     zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
 
-    if(ref == zfnull)
-    {
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
-        {
+    if(ref == zfnull) {
+        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
             ZFObject *key = this->iterKey(it);
             ZFObject *value = this->iterValue(it);
 
             ZFSerializableData keyData;
-            if(!ZFObjectToData(keyData, key, outErrorHint))
-            {
+            if(!ZFObjectToData(keyData, key, outErrorHint)) {
                 return zffalse;
             }
 
             ZFSerializableData valueData;
-            if(!ZFObjectToData(valueData, value, outErrorHint))
-            {
+            if(!ZFObjectToData(valueData, value, outErrorHint)) {
                 return zffalse;
             }
 
@@ -175,40 +157,35 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToData(ZF_IN_OUT ZFSerializab
             serializableData.childAdd(valueData);
         }
     }
-    else
-    {
+    else {
         return this->serializableOnSerializeToDataWithRef(serializableData, ref, outErrorHint);
     }
 
     return zftrue;
 }
-zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                                 ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */)
-{
+zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
+        ZF_IN_OUT ZFSerializableData &serializableData
+        , ZF_IN ZFSerializable *referencedOwnerOrNull
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
     ZFKeyValueContainer *ref = ZFCastZFObject(ZFKeyValueContainer *, referencedOwnerOrNull);
-    if(ref == zfnull)
-    {
+    if(ref == zfnull) {
         ZFSerializableUtil::errorOccurred(outErrorHint,
             "%s not type of %s",
             referencedOwnerOrNull->toObject()->objectInfoOfInstance().cString(), ZFKeyValueContainer::ClassData()->classNameFull());
         return zffalse;
     }
 
-    if(ref->count() == 0)
-    {
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
-        {
+    if(ref->count() == 0) {
+        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
             ZFObject *key = this->iterKey(it);
             ZFObject *value = this->iterValue(it);
             ZFSerializableData keyData;
-            if(!ZFObjectToData(keyData, key, outErrorHint))
-            {
+            if(!ZFObjectToData(keyData, key, outErrorHint)) {
                 return zffalse;
             }
             ZFSerializableData valueData;
-            if(!ZFObjectToData(valueData, value, outErrorHint))
-            {
+            if(!ZFObjectToData(valueData, value, outErrorHint)) {
                 return zffalse;
             }
 
@@ -223,32 +200,26 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(ZF_IN_OUT ZFSer
     ZFKeyValueContainer *tmp = this->classData()->newInstance();
     zfblockedRelease(tmp);
     tmp->addFrom(ref);
-    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it))
-    {
+    for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
         ZFObject *key = this->iterKey(it);
         ZFObject *value = this->iterValue(it);
         zfiterator itTmp = tmp->iterFind(key);
-        if(ref->iterValid(itTmp))
-        {
-            if(ZFObjectCompare(value, tmp->iterValue(itTmp)) == ZFCompareTheSame)
-            {
+        if(ref->iterValid(itTmp)) {
+            if(ZFObjectCompare(value, tmp->iterValue(itTmp)) == ZFCompareTheSame) {
                 tmp->iterRemove(itTmp);
                 continue;
             }
-            else
-            {
+            else {
                 tmp->iterRemove(itTmp);
             }
         }
 
         ZFSerializableData keyData;
-        if(!ZFObjectToData(keyData, key, outErrorHint))
-        {
+        if(!ZFObjectToData(keyData, key, outErrorHint)) {
             return zffalse;
         }
         ZFSerializableData valueData;
-        if(!ZFObjectToData(valueData, value, outErrorHint))
-        {
+        if(!ZFObjectToData(valueData, value, outErrorHint)) {
             return zffalse;
         }
 
@@ -258,8 +229,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(ZF_IN_OUT ZFSer
         serializableData.childAdd(valueData);
     }
 
-    if(tmp->count() > 0)
-    {
+    if(tmp->count() > 0) {
         ZFSerializableUtil::errorOccurred(outErrorHint,
             "missing elements from referenced container: %s", tmp->objectInfoOfContent().cString());
         return zffalse;
@@ -268,59 +238,49 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(ZF_IN_OUT ZFSer
     return zftrue;
 }
 
-void ZFKeyValueContainer::copyableOnCopyFrom(ZF_IN ZFObject *anotherObj)
-{
+void ZFKeyValueContainer::copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
     zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
     zfself *another = ZFCastZFObject(zfself *, anotherObj);
-    if(another != zfnull && this != another)
-    {
+    if(another != zfnull && this != another) {
         this->removeAll();
         this->addFrom(another);
     }
 }
 
-void ZFKeyValueContainer::objectOnDeallocPrepare(void)
-{
+void ZFKeyValueContainer::objectOnDeallocPrepare(void) {
     this->removeAll();
     zfsuper::objectOnDeallocPrepare();
 }
 
-zfidentity ZFKeyValueContainer::objectHash(void)
-{
+zfidentity ZFKeyValueContainer::objectHash(void) {
     zfiterator it = this->iter();
-    if(this->iterValid(it))
-    {
+    if(this->iterValid(it)) {
         return (zfidentity)(~((zft_zfidentity)this->count()
             | ((ZFObjectHash(this->iterKey(it)) << 16) & 0x00FF0000)
             | ((ZFObjectHash(this->iterValue(it)) << 24) & 0xFF000000)));
     }
-    else
-    {
+    else {
         return zfidentityZero();
     }
 }
-ZFCompareResult ZFKeyValueContainer::objectCompare(ZF_IN ZFObject *anotherObj)
-{
+ZFCompareResult ZFKeyValueContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
     zfself *another = ZFCastZFObject(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(this->count() != another->count()
-        || this->objectHash() != another->objectHash())
-    {
+            || this->objectHash() != another->objectHash()
+            ) {
         return ZFCompareUncomparable;
     }
 
-    for(zfiterator it0 = this->iter(); this->iterValid(it0); this->iterNext(it0))
-    {
+    for(zfiterator it0 = this->iter(); this->iterValid(it0); this->iterNext(it0)) {
         ZFObject *key0 = this->iterKey(it0);
         zfiterator it1 = another->iterFind(key0);
-        if(!another->iterValid(it1))
-        {
+        if(!another->iterValid(it1)) {
             return ZFCompareUncomparable;
         }
-        if(ZFObjectCompare(this->iterValue(it0), another->iterValue(it1)) != ZFCompareTheSame)
-        {
+        if(ZFObjectCompare(this->iterValue(it0), another->iterValue(it1)) != ZFCompareTheSame) {
             return ZFCompareUncomparable;
         }
         another->iterNext(it1);

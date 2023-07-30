@@ -6,30 +6,24 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_Qt
-{
+zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_Qt {
 public:
-    static void *implInit(void)
-    {
+    static void *implInit(void) {
         return zfnew(QMutex, QMutex::Recursive);
     }
-    static void implDealloc(ZF_IN void *implObject)
-    {
+    static void implDealloc(ZF_IN void *implObject) {
         QMutex *mutex = (QMutex *)implObject;
         zfdelete(mutex);
     }
-    static void implLock(ZF_IN void *implObject)
-    {
+    static void implLock(ZF_IN void *implObject) {
         QMutex *mutex = (QMutex *)implObject;
         mutex->lock();
     }
-    static void implUnlock(ZF_IN void *implObject)
-    {
+    static void implUnlock(ZF_IN void *implObject) {
         QMutex *mutex = (QMutex *)implObject;
         mutex->unlock();
     }
-    static zfbool implTryLock(ZF_IN void *implObject)
-    {
+    static zfbool implTryLock(ZF_IN void *implObject) {
         QMutex *mutex = (QMutex *)implObject;
         return mutex->tryLock();
     }

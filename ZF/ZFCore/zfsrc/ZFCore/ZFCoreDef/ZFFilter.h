@@ -61,8 +61,7 @@ typedef enum {
 // ============================================================
 /** @brief filter data for #ZFFilterBase */
 template<typename T_Element>
-zfclassLikePOD _ZFP_ZFFilterData
-{
+zfclassLikePOD _ZFP_ZFFilterData {
 public:
     /** @brief filter data for #ZFFilterBase */
     T_Element element;
@@ -74,8 +73,7 @@ public:
  * @brief base class of filter
  */
 template<typename T_Public, typename T_Internal = T_Public>
-zfclassLikePOD ZFFilterBase
-{
+zfclassLikePOD ZFFilterBase {
 protected:
     /** @brief typedef for self */
     typedef ZFFilterBase<T_Public, T_Internal> zfself;
@@ -102,8 +100,7 @@ public:
     : _filters(ref._filters)
     , _customFilters(zfnull)
     {
-        if(ref._customFilters != zfnull)
-        {
+        if(ref._customFilters != zfnull) {
             this->_customFilters = zfnew(
                 _CustomFilterCallbacksType,
                 *ref._customFilters);
@@ -112,18 +109,14 @@ public:
     /**
      * @brief retain only
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &operator = (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref)
-    {
-        if(this != &ref)
-        {
+    virtual ZFFilterBase<T_Public, T_Internal> &operator = (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) {
+        if(this != &ref) {
             this->_filters = ref._filters;
-            if(this->_customFilters != zfnull)
-            {
+            if(this->_customFilters != zfnull) {
                 zfdelete(this->_customFilters);
                 this->_customFilters = zfnull;
             }
-            if(ref._customFilters != zfnull)
-            {
+            if(ref._customFilters != zfnull) {
                 this->_customFilters = zfnew(
                     _CustomFilterCallbacksType,
                     *ref._customFilters);
@@ -132,34 +125,27 @@ public:
         return *this;
     }
     /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) const {
         return this->_filters == ref._filters;
     }
     inline zfbool operator != (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) const {return !this->operator == (ref);}
     /** @endcond */
-    virtual ~ZFFilterBase(void)
-    {
+    virtual ~ZFFilterBase(void) {
     }
 public:
     /**
      * @brief copy from another filter
      */
-    virtual void copyFrom(ZF_IN ZFFilterBase<T_Public, T_Internal> const &ref)
-    {
+    virtual void copyFrom(ZF_IN ZFFilterBase<T_Public, T_Internal> const &ref) {
         this->_filters.copyFrom(ref._filters);
-        if(ref._customFilters != zfnull)
-        {
-            if(this->_customFilters == zfnull)
-            {
+        if(ref._customFilters != zfnull) {
+            if(this->_customFilters == zfnull) {
                 this->_customFilters = zfnew(_CustomFilterCallbacksType);
             }
             this->_customFilters->copyFrom(*ref._customFilters);
         }
-        else
-        {
-            if(this->_customFilters != zfnull)
-            {
+        else {
+            if(this->_customFilters != zfnull) {
                 zfdelete(this->_customFilters);
             }
         }
@@ -171,11 +157,11 @@ public:
      *
      * note this method won't check duplicated data for performance
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &filterAdd(ZF_IN T_Public const &e,
-                                                          ZF_IN_OPT ZFFilterType filterType = ZFFilterTypeExclude)
-    {
-        if(this->filterOnCheckValid(e))
-        {
+    virtual ZFFilterBase<T_Public, T_Internal> &filterAdd(
+            ZF_IN T_Public const &e
+            , ZF_IN_OPT ZFFilterType filterType = ZFFilterTypeExclude
+            ) {
+        if(this->filterOnCheckValid(e)) {
             _ZFP_ZFFilterData<T_Internal> filterData;
             this->filterOnStore(filterData.element, e);
             filterData.filterType = filterType;
@@ -186,16 +172,15 @@ public:
     /**
      * @brief remove a element
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &filterRemove(ZF_IN T_Public const &e,
-                                                             ZF_IN_OPT ZFFilterType filterType = ZFFilterTypeExclude)
-    {
-        if(this->filterOnCheckValid(e))
-        {
-            for(zfindex i = 0; i < this->_filters.count(); ++i)
-            {
+    virtual ZFFilterBase<T_Public, T_Internal> &filterRemove(
+            ZF_IN T_Public const &e
+            , ZF_IN_OPT ZFFilterType filterType = ZFFilterTypeExclude
+            ) {
+        if(this->filterOnCheckValid(e)) {
+            for(zfindex i = 0; i < this->_filters.count(); ++i) {
                 if(this->filterOnCheckEqual(this->_filters.get(i).element, e)
-                    && this->_filters.get(i).filterType == filterType)
-                {
+                        && this->_filters.get(i).filterType == filterType
+                        ) {
                     this->filterOnRemove(this->_filters.get(i).element);
                     this->_filters.remove(i);
                     break;
@@ -207,8 +192,7 @@ public:
     /**
      * @brief remove a element
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &filterRemoveAt(ZF_IN zfindex index)
-    {
+    virtual ZFFilterBase<T_Public, T_Internal> &filterRemoveAt(ZF_IN zfindex index) {
         this->filterOnRemove(this->_filters.get(index).element);
         this->_filters.remove(index);
         return *this;
@@ -216,10 +200,8 @@ public:
     /**
      * @brief remove all contents of this filter
      */
-    virtual void filterRemoveAll(void)
-    {
-        for(zfindex i = 0; i < this->_filters.count(); ++i)
-        {
+    virtual void filterRemoveAll(void) {
+        for(zfindex i = 0; i < this->_filters.count(); ++i) {
             this->filterOnRemove(this->_filters.get(i).element);
         }
         this->_filters.removeAll();
@@ -229,15 +211,13 @@ public:
     /**
      * @brief get count of element
      */
-    virtual zfindex filterCount(void) const
-    {
+    virtual zfindex filterCount(void) const {
         return this->_filters.count();
     }
     /**
      * @brief get element at index
      */
-    virtual T_Public filterElementAt(ZF_IN zfindex index) const
-    {
+    virtual T_Public filterElementAt(ZF_IN zfindex index) const {
         T_Public t;
         this->filterOnAccess(t, this->_filters.get(index).element);
         return t;
@@ -245,24 +225,20 @@ public:
     /**
      * @brief get filter data at index
      */
-    virtual T_Internal const &filterInternalAt(ZF_IN zfindex index) const
-    {
+    virtual T_Internal const &filterInternalAt(ZF_IN zfindex index) const {
         return this->_filters.get(index).element;
     }
     /**
      * @brief get filter type for filter data at index
      */
-    virtual ZFFilterType filterTypeAt(ZF_IN zfindex index) const
-    {
+    virtual ZFFilterType filterTypeAt(ZF_IN zfindex index) const {
         return this->_filters.get(index).filterType;
     }
     /**
      * @brief add a custom filter callback
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &customFilterCallbackAdd(ZF_IN typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallback)
-    {
-        if(this->_customFilters == zfnull)
-        {
+    virtual ZFFilterBase<T_Public, T_Internal> &customFilterCallbackAdd(ZF_IN typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallback) {
+        if(this->_customFilters == zfnull) {
             this->_customFilters = zfnew(_CustomFilterCallbacksType);
         }
         this->_customFilters->add(customFilterCallback);
@@ -271,14 +247,10 @@ public:
     /**
      * @brief remove custom filter callback
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &customFilterCallbackRemove(ZF_IN typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallback)
-    {
-        if(this->_customFilters != zfnull)
-        {
-            for(zfindex i = 0; i < this->_customFilters->count(); ++i)
-            {
-                if(this->_customFilters->get(i) == customFilterCallback)
-                {
+    virtual ZFFilterBase<T_Public, T_Internal> &customFilterCallbackRemove(ZF_IN typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallback) {
+        if(this->_customFilters != zfnull) {
+            for(zfindex i = 0; i < this->_customFilters->count(); ++i) {
+                if(this->_customFilters->get(i) == customFilterCallback) {
                     this->_customFilters->remove(i);
                     break;
                 }
@@ -289,10 +261,8 @@ public:
     /**
      * @brief remove custom filter callback
      */
-    virtual ZFFilterBase<T_Public, T_Internal> &customFilterCallbackRemove(ZF_IN zfindex index)
-    {
-        if(this->_customFilters != zfnull)
-        {
+    virtual ZFFilterBase<T_Public, T_Internal> &customFilterCallbackRemove(ZF_IN zfindex index) {
+        if(this->_customFilters != zfnull) {
             this->_customFilters->remove(index);
         }
         return *this;
@@ -300,10 +270,8 @@ public:
     /**
      * @brief get custom filter callback count
      */
-    virtual zfindex customFilterCallbackCount(void) const
-    {
-        if(this->_customFilters != zfnull)
-        {
+    virtual zfindex customFilterCallbackCount(void) const {
+        if(this->_customFilters != zfnull) {
             return this->_customFilters->count();
         }
         return 0;
@@ -311,25 +279,19 @@ public:
     /**
      * @brief get custom filter callback
      */
-    virtual typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallbackAt(ZF_IN zfindex index) const
-    {
+    virtual typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback customFilterCallbackAt(ZF_IN zfindex index) const {
         return this->_customFilters->get(index);
     }
     /**
      * @brief return true if e is not filtered by this filter, see #ZFFilterType
      */
-    virtual zfbool filterCheckActive(ZF_IN T_Public const &e) const
-    {
-        if(!this->filterOnCheckValid(e))
-        {
+    virtual zfbool filterCheckActive(ZF_IN T_Public const &e) const {
+        if(!this->filterOnCheckValid(e)) {
             return zffalse;
         }
-        if(this->_customFilters != zfnull)
-        {
-            for(zfindex i = 0; i < this->_customFilters->count(); ++i)
-            {
-                switch(this->_customFilters->get(i)(e))
-                {
+        if(this->_customFilters != zfnull) {
+            for(zfindex i = 0; i < this->_customFilters->count(); ++i) {
+                switch(this->_customFilters->get(i)(e)) {
                     case ZFFilterCallbackResultNotSpecified:
                         break;
                     case ZFFilterCallbackResultActive:
@@ -346,11 +308,12 @@ public:
     }
 
 private:
-    static void _ZFP_ZFFilterBase_contentInfoGetter(ZF_IN_OUT zfstring &ret, ZF_IN const _ZFP_ZFFilterData<T_Internal> &v)
-    {
+    static void _ZFP_ZFFilterBase_contentInfoGetter(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN const _ZFP_ZFFilterData<T_Internal> &v
+            ) {
         ret += '(';
-        switch(v.filterType)
-        {
+        switch(v.filterType) {
             case ZFFilterTypeInclude:
                 ret += "include ";
                 break;
@@ -366,16 +329,14 @@ private:
     }
 public:
     /** @brief see #objectInfo */
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const
-    {
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const {
         this->_filters.objectInfoOfContentT(ret,
             5, // max count
             ZFTokenForContainerDefault(),
             _ZFP_ZFFilterBase_contentInfoGetter);
     }
     /** @brief return object info */
-    virtual inline zfstring objectInfo(void) const
-    {
+    virtual inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -387,15 +348,16 @@ protected:
      *
      * if false, won't be added to content by #filterAdd or compared by #filterOnCheckEqual
      */
-    virtual zfbool filterOnCheckValid(ZF_IN T_Public const &e) const
-    {
+    virtual zfbool filterOnCheckValid(ZF_IN T_Public const &e) const {
         return zftrue;
     }
     /**
      * @brief store public type to internal storage type
      */
-    virtual void filterOnStore(ZF_IN_OUT T_Internal &to,
-                               ZF_IN T_Public const &from) const zfpurevirtual;
+    virtual void filterOnStore(
+            ZF_IN_OUT T_Internal &to
+            , ZF_IN T_Public const &from
+            ) const zfpurevirtual;
     /**
      * @brief called before value removed from filter
      */
@@ -403,37 +365,36 @@ protected:
     /**
      * @brief access public type from internal storage type
      */
-    virtual void filterOnAccess(ZF_IN_OUT T_Public &to,
-                                ZF_IN T_Internal const &from) const zfpurevirtual;
+    virtual void filterOnAccess(
+            ZF_IN_OUT T_Public &to
+            , ZF_IN T_Internal const &from
+            ) const zfpurevirtual;
     /**
      * @brief true if e1 is regarded as equal to e2
      *
      * subclass may override this to supply custom comparation
      */
-    virtual zfbool filterOnCheckEqual(ZF_IN T_Internal const &e1,
-                                      ZF_IN T_Public const &e2) const zfpurevirtual;
+    virtual zfbool filterOnCheckEqual(
+            ZF_IN T_Internal const &e1
+            , ZF_IN T_Public const &e2
+            ) const zfpurevirtual;
     /**
      * @brief called by #filterCheckActive to check whether the element is filtered out
      */
-    virtual zfbool filterOnCheckActive(ZF_IN T_Public const &e) const
-    {
+    virtual zfbool filterOnCheckActive(ZF_IN T_Public const &e) const {
         zfbool hasIncludeMode = zffalse;
         zfbool included = zffalse;
-        for(zfindex i = 0; i < this->_filters.count(); ++i)
-        {
+        for(zfindex i = 0; i < this->_filters.count(); ++i) {
             const _ZFP_ZFFilterData<T_Internal> &filter = this->_filters.get(i);
-            switch(filter.filterType)
-            {
+            switch(filter.filterType) {
                 case ZFFilterTypeInclude:
                     hasIncludeMode = zftrue;
-                    if(this->filterOnCheckEqual(filter.element, e))
-                    {
+                    if(this->filterOnCheckEqual(filter.element, e)) {
                         included = zftrue;
                     }
                     break;
                 case ZFFilterTypeExclude:
-                    if(this->filterOnCheckEqual(filter.element, e))
-                    {
+                    if(this->filterOnCheckEqual(filter.element, e)) {
                         return zffalse;
                     }
                     break;
@@ -461,8 +422,7 @@ private:
  * -  support operator == to compare whether public type is equal to internal storage type
  */
 template<typename T_Public, typename T_Internal = T_Public>
-zfclassLikePOD ZFFilterBasic : zfextends ZFFilterBase<T_Public, T_Internal>
-{
+zfclassLikePOD ZFFilterBasic : zfextends ZFFilterBase<T_Public, T_Internal> {
     ZFFILTER_DECLARE(
         ZFM_EXPAND(ZFFilterBasic<T_Public, T_Internal>),
         ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>))
@@ -483,8 +443,7 @@ public:
     {
     }
     /** @cond ZFPrivateDoc */
-    virtual ZFFilterBasic<T_Public, T_Internal> &operator = (ZF_IN const ZFFilterBasic<T_Public, T_Internal> &ref)
-    {
+    virtual ZFFilterBasic<T_Public, T_Internal> &operator = (ZF_IN const ZFFilterBasic<T_Public, T_Internal> &ref) {
         zfsuper::operator = (ref);
         return *this;
     }
@@ -494,21 +453,24 @@ public:
 protected:
     /** @cond ZFPrivateDoc */
     zfoverride
-    virtual void filterOnStore(ZF_IN_OUT T_Internal &to,
-                               ZF_IN T_Public const &from) const
-    {
+    virtual void filterOnStore(
+            ZF_IN_OUT T_Internal &to
+            , ZF_IN T_Public const &from
+            ) const {
         to = from;
     }
     zfoverride
-    virtual void filterOnAccess(ZF_IN_OUT T_Public &to,
-                                ZF_IN T_Internal const &from) const
-    {
+    virtual void filterOnAccess(
+            ZF_IN_OUT T_Public &to
+            , ZF_IN T_Internal const &from
+            ) const {
         to = from;
     }
     zfoverride
-    virtual zfbool filterOnCheckEqual(ZF_IN T_Internal const &e1,
-                                      ZF_IN T_Public const &e2) const
-    {
+    virtual zfbool filterOnCheckEqual(
+            ZF_IN T_Internal const &e1
+            , ZF_IN T_Public const &e2
+            ) const {
         return (e1 == e2);
     }
     /** @endcond */
@@ -534,8 +496,7 @@ typedef ZFFilterBasic<zfidentity> ZFFilterForIdentity;
  * @brief base class of string filter
  */
 template<typename T_Public, typename T_Internal>
-zfclassLikePOD ZFFilterForStringBase : zfextends ZFFilterBase<T_Public, T_Internal>
-{
+zfclassLikePOD ZFFilterForStringBase : zfextends ZFFilterBase<T_Public, T_Internal> {
     ZFFILTER_DECLARE(
         ZFM_EXPAND(ZFFilterForStringBase<T_Public, T_Internal>),
         ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>))
@@ -556,8 +517,7 @@ public:
     {
     }
     /** @cond ZFPrivateDoc */
-    virtual ZFFilterForStringBase<T_Public, T_Internal> &operator = (ZF_IN const ZFFilterForStringBase<T_Public, T_Internal> &ref)
-    {
+    virtual ZFFilterForStringBase<T_Public, T_Internal> &operator = (ZF_IN const ZFFilterForStringBase<T_Public, T_Internal> &ref) {
         zfsuper::operator = (ref);
         return *this;
     }
@@ -566,26 +526,28 @@ public:
 
 protected:
     zfoverride
-    virtual zfbool filterOnCheckValid(ZF_IN T_Public const &e) const
-    {
+    virtual zfbool filterOnCheckValid(ZF_IN T_Public const &e) const {
         return (e != zfnull);
     }
     zfoverride
-    virtual void filterOnStore(ZF_IN_OUT T_Internal &to,
-                               ZF_IN T_Public const &from) const
-    {
+    virtual void filterOnStore(
+            ZF_IN_OUT T_Internal &to
+            , ZF_IN T_Public const &from
+            ) const {
         to = from;
     }
     zfoverride
-    virtual void filterOnAccess(ZF_IN_OUT T_Public &to,
-                                ZF_IN T_Internal const &from) const
-    {
+    virtual void filterOnAccess(
+            ZF_IN_OUT T_Public &to
+            , ZF_IN T_Internal const &from
+            ) const {
         to = from.cString();
     }
     zfoverride
-    virtual zfbool filterOnCheckEqual(ZF_IN T_Internal const &e1,
-                                      ZF_IN T_Public const &e2) const
-    {
+    virtual zfbool filterOnCheckEqual(
+            ZF_IN T_Internal const &e1
+            , ZF_IN T_Public const &e2
+            ) const {
         return (e1.compare(e2) == 0);
     }
 };

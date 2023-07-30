@@ -15,8 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief native image view
  */
-zfclass ZFLIB_ZFUIKit ZFUIImageView : zfextends ZFUIView
-{
+zfclass ZFLIB_ZFUIKit ZFUIImageView : zfextends ZFUIView {
     ZFOBJECT_DECLARE(ZFUIImageView, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIImageView)
 
@@ -50,8 +49,9 @@ public:
     /**
      * @brief measure image view according to current image
      */
-    ZFMETHOD_DECLARE_1(void, measureImageView,
-                       ZFMP_OUT(ZFUISize &, ret))
+    ZFMETHOD_DECLARE_1(void, measureImageView
+            , ZFMP_OUT(ZFUISize &, ret)
+            )
 
 protected:
     /**
@@ -70,16 +70,20 @@ protected:
     zfoverride
     virtual void nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin);
     zfoverride
-    virtual void nativeImplViewOnLayout(ZF_OUT ZFUIRect &ret,
-                                        ZF_IN const ZFUIRect &bounds,
-                                        ZF_IN const ZFUIMargin &nativeImplViewMargin);
+    virtual void nativeImplViewOnLayout(
+            ZF_OUT ZFUIRect &ret
+            , ZF_IN const ZFUIRect &bounds
+            , ZF_IN const ZFUIMargin &nativeImplViewMargin
+            );
     /**
      * @brief image view would measure according image size
      */
     zfoverride
-    virtual void layoutOnMeasure(ZF_OUT ZFUISize &ret,
-                                 ZF_IN const ZFUISize &sizeHint,
-                                 ZF_IN const ZFUISizeParam &sizeParam);
+    virtual void layoutOnMeasure(
+            ZF_OUT ZFUISize &ret
+            , ZF_IN const ZFUISize &sizeHint
+            , ZF_IN const ZFUISizeParam &sizeParam
+            );
 private:
     ZFListener imageUpdateListener;
 };

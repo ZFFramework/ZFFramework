@@ -20,9 +20,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * typically, you may use iterators like this:
  * @code
  *   for(zfiterator it = someIterable.iter();
- *       someIterable.iterValid(it);
- *       someIterable.iterNext(it))
- *   {
+ *           someIterable.iterValid(it);
+ *           someIterable.iterNext(it)
+ *           ) {
  *       const SomeType &value = someIterable.iterValue(it);
  *   }
  * @endcode
@@ -31,9 +31,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * and should supply key-value version of iterator access:
  * @code
  *   for(zfiterator it = keyValueIterable.iterFind(key);
- *       keyValueIterable.iterValid(it);
- *       keyValueIterable.iterNext(it))
- *   {
+ *           keyValueIterable.iterValid(it);
+ *           keyValueIterable.iterNext(it)
+ *           ) {
  *       // access key and value
  *       KeyType key = keyValueIterable.iterKey(it);
  *       ValueType value = keyValueIterable.iterValue(it);
@@ -46,8 +46,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * then you may use #data to access the stored void *pointer
  * to achieve your implementation
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore zfiterator
-{
+zffinal zfclassLikePOD ZFLIB_ZFCore zfiterator {
 public:
     /**
      * @brief delete callback for implementation
@@ -62,18 +61,18 @@ public:
     /**
      * @brief create a dummy iterator
      */
-    zfiterator(void)
-    {
+    zfiterator(void) {
         zfmemset(&d, 0, sizeof(zfiterator::_Data));
     }
     /**
      * @brief implementations of iterables must use this to create an iterator,
      *   see #zfiterator
      */
-    zfiterator(ZF_IN void *data,
-               ZF_IN zfiterator::DeleteCallback deleteCallback,
-               ZF_IN zfiterator::CopyCallback copyCallback)
-    {
+    zfiterator(
+            ZF_IN void *data
+            , ZF_IN zfiterator::DeleteCallback deleteCallback
+            , ZF_IN zfiterator::CopyCallback copyCallback
+            ) {
         d.data = data;
         d.deleteCallback = deleteCallback;
         d.copyCallback = copyCallback;
@@ -82,25 +81,21 @@ public:
      * @brief implementations may use this method to access data passed from constructor,
      *   see #zfiterator
      */
-    inline void *data(void) const
-    {
+    inline void *data(void) const {
         return d.data;
     }
     /**
      * @brief see #data
      */
     template<typename T_Data>
-    inline T_Data data(void) const
-    {
+    inline T_Data data(void) const {
         return (T_Data)(d.data);
     }
     /**
      * @brief for implementation to change the internal data
      */
-    inline void iterImplDataChange(ZF_IN void *newData)
-    {
-        if(d.data && d.deleteCallback)
-        {
+    inline void iterImplDataChange(ZF_IN void *newData) {
+        if(d.data && d.deleteCallback) {
             d.deleteCallback(d.data);
         }
         d.data = newData;
@@ -108,63 +103,48 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    zfiterator(ZF_IN const zfiterator &ref)
-    {
-        if(ref.d.data)
-        {
-            if(ref.d.copyCallback)
-            {
+    zfiterator(ZF_IN const zfiterator &ref) {
+        if(ref.d.data) {
+            if(ref.d.copyCallback) {
                 d.data = ref.d.copyCallback(ref.d.data);
             }
-            else
-            {
+            else {
                 d.data = ref.d.data;
             }
             d.deleteCallback = ref.d.deleteCallback;
             d.copyCallback = ref.d.copyCallback;
         }
-        else
-        {
+        else {
             zfmemset(&d, 0, sizeof(zfiterator::_Data));
         }
     }
-    ~zfiterator(void)
-    {
-        if(d.data && d.deleteCallback)
-        {
+    ~zfiterator(void) {
+        if(d.data && d.deleteCallback) {
             d.deleteCallback(d.data);
         }
     }
-    zfiterator &operator = (ZF_IN const zfiterator &ref)
-    {
-        if(this != &ref)
-        {
-            if(d.data && d.deleteCallback)
-            {
+    zfiterator &operator = (ZF_IN const zfiterator &ref) {
+        if(this != &ref) {
+            if(d.data && d.deleteCallback) {
                 d.deleteCallback(d.data);
             }
-            if(ref.d.data)
-            {
-                if(ref.d.copyCallback)
-                {
+            if(ref.d.data) {
+                if(ref.d.copyCallback) {
                     d.data = ref.d.copyCallback(ref.d.data);
                 }
-                else
-                {
+                else {
                     d.data = ref.d.data;
                 }
                 d.deleteCallback = ref.d.deleteCallback;
                 d.copyCallback = ref.d.copyCallback;
             }
-            else
-            {
+            else {
                 zfmemset(&d, 0, sizeof(zfiterator::_Data));
             }
         }
         return *this;
     }
-    zfbool operator == (ZF_IN const zfiterator &ref) const
-    {
+    zfbool operator == (ZF_IN const zfiterator &ref) const {
         return (d.data == ref.d.data
             && d.deleteCallback == ref.d.deleteCallback
             && d.copyCallback == ref.d.copyCallback
@@ -173,8 +153,7 @@ public:
     inline zfbool operator != (ZF_IN const zfiterator &ref) const {return !this->operator == (ref);}
     /** @endcond */
 private:
-    zfclassPOD _Data
-    {
+    zfclassPOD _Data {
     public:
         void *data;
         zfiterator::DeleteCallback deleteCallback;

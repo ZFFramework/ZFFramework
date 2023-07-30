@@ -6,8 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFAndroidOutput
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder, ZFLevelZFFrameworkStatic) {
     jobject tmp = zfnull;
     JNIEnv *jniEnv = JNIGetJNIEnv();
 
@@ -15,8 +14,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidOutput_jclsHol
     this->jclsZFAndroidOutput = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
     JNIUtilDeleteLocalRef(jniEnv, tmp);
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFAndroidOutput);
 }
@@ -24,14 +22,12 @@ public:
     jclass jclsZFAndroidOutput;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder)
 
-jclass ZFImpl_sys_Android_jclassZFAndroidOutput(void)
-{
+jclass ZFImpl_sys_Android_jclassZFAndroidOutput(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder)->jclsZFAndroidOutput;
 }
 
 #define _ZFP_ZFAndroidOutputBufSize 64
-zfclass _ZFP_I_ZFAndroidOutput : zfextends ZFObject
-{
+zfclass _ZFP_I_ZFAndroidOutput : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidOutput, ZFObject)
     ZFALLOC_CACHE_RELEASE({
             cache->removeAll();
@@ -43,50 +39,44 @@ public:
 
 protected:
     zfoverride
-    virtual void objectOnInit(void)
-    {
+    virtual void objectOnInit(void) {
         zfsuper::objectOnInit();
         this->nativeOutputWrapper = NULL;
         this->nativeBuf = NULL;
     }
     zfoverride
-    virtual void objectOnDealloc(void)
-    {
+    virtual void objectOnDealloc(void) {
         this->removeAll();
         zfsuper::objectOnDealloc();
     }
 
 public:
-    void removeAll(void)
-    {
-        if(this->nativeOutputWrapper != NULL)
-        {
+    void removeAll(void) {
+        if(this->nativeOutputWrapper != NULL) {
             JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), this->nativeOutputWrapper);
             this->nativeOutputWrapper = zfnull;
         }
-        if(this->nativeBuf != NULL)
-        {
+        if(this->nativeBuf != NULL) {
             JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), this->nativeBuf);
             this->nativeBuf = NULL;
         }
     }
 
-    ZFMETHOD_DECLARE_2(zfindex, onOutput,
-                       ZFMP_OUT(const void *, buf),
-                       ZFMP_IN_OPT(zfindex, count, zfindexMax()));
+    ZFMETHOD_DECLARE_2(zfindex, onOutput
+            , ZFMP_OUT(const void *, buf)
+            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+            );
 };
 ZFOBJECT_REGISTER(_ZFP_I_ZFAndroidOutput)
 
-ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput,
-                  ZFMP_OUT(const void *, buf),
-                  ZFMP_IN_OPT(zfindex, count, zfindexMax()))
-{
-    if(buf == zfnull)
-    {
+ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput
+        , ZFMP_OUT(const void *, buf)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        ) {
+    if(buf == zfnull) {
         return 0;
     }
-    if(count == zfindexMax())
-    {
+    if(count == zfindexMax()) {
         count = zfslen((const zfchar *)buf);
     }
 
@@ -101,8 +91,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput,
 
     const jbyte *src = (const jbyte *)buf;
     jint toWrite = (jint)count;
-    while(toWrite > 0)
-    {
+    while(toWrite > 0) {
         jint blockSize = toWrite > _ZFP_ZFAndroidOutputBufSize ? _ZFP_ZFAndroidOutputBufSize : toWrite;
         JNIUtilSetByteArrayRegion(jniEnv, this->nativeBuf, 0, blockSize, src);
         jint nativeWritten = JNIUtilCallStaticIntMethod(jniEnv, jclsZFAndroidOutput, jmId
@@ -110,8 +99,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput,
             , this->nativeBuf
             , blockSize
             );
-        if(nativeWritten != blockSize)
-        {
+        if(nativeWritten != blockSize) {
             break;
         }
         toWrite -= blockSize;
@@ -120,10 +108,8 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput,
     return count - toWrite;
 }
 
-ZFOutput ZFImpl_sys_Android_ZFOutputFromZFAndroidOutput(ZF_IN jobject nativeOutputWrapper)
-{
-    if(nativeOutputWrapper == NULL)
-    {
+ZFOutput ZFImpl_sys_Android_ZFOutputFromZFAndroidOutput(ZF_IN jobject nativeOutputWrapper) {
+    if(nativeOutputWrapper == NULL) {
         return zfnull;
     }
     JNIEnv *jniEnv = JNIGetJNIEnv();

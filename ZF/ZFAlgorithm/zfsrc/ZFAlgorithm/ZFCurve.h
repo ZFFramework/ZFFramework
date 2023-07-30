@@ -12,29 +12,37 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief curve
  */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFCurve
-{
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFCurve {
 public:
     /** @brief construct a linear curve */
-    ZFCurve(void)
-    {
+    ZFCurve(void) {
         this->controlPoint(0, 0, 1, 1);
     }
     /** @brief construct from another curve */
     ZFCurve(ZF_IN const ZFCurve &ref)
-    : p0x(ref.p0x), p0y(ref.p0y), p1x(ref.p1x), p1y(ref.p1y)
-    , ax(ref.ax), bx(ref.bx), cx(ref.cx), ay(ref.ay), by(ref.by), cy(ref.cy)
+    : p0x(ref.p0x)
+    , p0y(ref.p0y)
+    , p1x(ref.p1x)
+    , p1y(ref.p1y)
+    , ax(ref.ax)
+    , bx(ref.bx)
+    , cx(ref.cx)
+    , ay(ref.ay)
+    , by(ref.by)
+    , cy(ref.cy)
     {
     }
     /** @brief construct with control point */
-    ZFCurve(ZF_IN zffloat p0x, ZF_IN zffloat p0y,
-            ZF_IN zffloat p1x, ZF_IN zffloat p1y)
-    {
+    ZFCurve(
+            ZF_IN zffloat p0x
+            , ZF_IN zffloat p0y
+            , ZF_IN zffloat p1x
+            , ZF_IN zffloat p1y
+            ) {
         this->controlPoint(p0x, p0y, p1x, p1y);
     }
     /** @cond ZFPrivateDoc */
-    ZFCurve &operator = (ZF_IN const ZFCurve &ref)
-    {
+    ZFCurve &operator = (ZF_IN const ZFCurve &ref) {
         this->p0x = ref.p0x;
         this->p0y = ref.p0y;
         this->p1x = ref.p1x;
@@ -47,8 +55,7 @@ public:
         this->cy = ref.cy;
         return *this;
     }
-    zfbool operator == (ZF_IN const ZFCurve &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFCurve &ref) const {
         return (this->p0x == ref.p0x
             && this->p0y == ref.p0y
             && this->p1x == ref.p1x
@@ -60,8 +67,12 @@ public:
 
 public:
     /** @brief change control point */
-    ZFCurve &controlPoint(ZF_IN zffloat p0x, ZF_IN zffloat p0y,
-                          ZF_IN zffloat p1x, ZF_IN zffloat p1y);
+    ZFCurve &controlPoint(
+            ZF_IN zffloat p0x
+            , ZF_IN zffloat p0y
+            , ZF_IN zffloat p1x
+            , ZF_IN zffloat p1y
+            );
 
 public:
     /**

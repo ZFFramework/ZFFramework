@@ -4,91 +4,73 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFJson)
 
-void ZFPROTOCOL_INTERFACE_CLASS(ZFJson)::jsonEscapeCharEncode(ZF_OUT const ZFOutput &dst,
-                                                              ZF_IN const zfchar *src,
-                                                              ZF_IN_OPT zfindex count /* = zfindexMax() */)
-{
-    for(const zfchar *srcEnd = src + ((count == zfindexMax()) ? zfslen(src) : count); src != srcEnd; ++src)
-    {
-        if(*src == '\"')
-        {
+void ZFPROTOCOL_INTERFACE_CLASS(ZFJson)::jsonEscapeCharEncode(
+        ZF_OUT const ZFOutput &dst
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex count /* = zfindexMax() */
+        ) {
+    for(const zfchar *srcEnd = src + ((count == zfindexMax()) ? zfslen(src) : count); src != srcEnd; ++src) {
+        if(*src == '\"') {
             dst << "\\\"";
         }
-        else if(*src == '\\')
-        {
+        else if(*src == '\\') {
             dst << "\\\\";
         }
-        else if(*src == '\n')
-        {
+        else if(*src == '\n') {
             dst << "\\n";
         }
-        else if(*src == '\r')
-        {
+        else if(*src == '\r') {
             dst << "\\r";
         }
-        else if(*src == '\t')
-        {
+        else if(*src == '\t') {
             dst << "\\t";
         }
-        else if(*src == '\f')
-        {
+        else if(*src == '\f') {
             dst << "\\f";
         }
-        else if(*src == '\b')
-        {
+        else if(*src == '\b') {
             dst << "\\b";
         }
-        else
-        {
+        else {
             dst << *src;
         }
     }
 }
-void ZFPROTOCOL_INTERFACE_CLASS(ZFJson)::jsonEscapeCharDecode(ZF_OUT const ZFOutput &dst,
-                                                              ZF_IN const zfchar *src,
-                                                              ZF_IN_OPT zfindex count /* = zfindexMax() */)
-{
-    for(const zfchar *srcEnd = src + ((count == zfindexMax()) ? zfslen(src) : count); src != srcEnd; ++src)
-    {
-        if(*src == '\\' && src + 1 != srcEnd)
-        {
+void ZFPROTOCOL_INTERFACE_CLASS(ZFJson)::jsonEscapeCharDecode(
+        ZF_OUT const ZFOutput &dst
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex count /* = zfindexMax() */
+        ) {
+    for(const zfchar *srcEnd = src + ((count == zfindexMax()) ? zfslen(src) : count); src != srcEnd; ++src) {
+        if(*src == '\\' && src + 1 != srcEnd) {
             ++src;
-            if(*src == '\"')
-            {
+            if(*src == '\"') {
                 dst << '\"';
             }
-            else if(*src == '\\')
-            {
+            else if(*src == '\\') {
                 dst << '\\';
             }
-            else if(*src == 'n')
-            {
+            else if(*src == 'n') {
                 dst << '\n';
             }
-            else if(*src == 'r')
-            {
+            else if(*src == 'r') {
                 dst << '\r';
             }
-            else if(*src == 't')
-            {
+            else if(*src == 't') {
                 dst << '\t';
             }
-            else if(*src == 'f')
-            {
+            else if(*src == 'f') {
                 dst << '\f';
             }
-            else if(*src == 'b')
-            {
+            else if(*src == 'b') {
                 dst << '\b';
             }
-            else
-            {
+            else {
                 dst << '\\';
                 dst << *src;
             }
         }
-        else
-        {
+        else {
             dst << *src;
         }
     }

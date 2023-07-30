@@ -22,8 +22,9 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCwd)
  *
  * return false if failed
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathForCwdChange,
-                        ZFMP_IN(const zfchar *, path))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathForCwdChange
+        , ZFMP_IN(const zfchar *, path)
+        )
 /**
  * @brief util method to access #ZFPathForCwd,
  *   return #ZFPathForModule if not available
@@ -71,8 +72,9 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForSetting)
 /**
  * @brief change the data path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForSetting,
-                        ZFMP_IN(const zfchar *, path))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForSetting
+        , ZFMP_IN(const zfchar *, path)
+        )
 
 // ============================================================
 // storage
@@ -97,8 +99,9 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForStorage)
 /**
  * @brief change the storage path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorage,
-                        ZFMP_IN(const zfchar *, path))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorage
+        , ZFMP_IN(const zfchar *, path)
+        )
 
 // ============================================================
 // storage shared
@@ -127,8 +130,9 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForStorageShared)
 /**
  * @brief change the storage path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorageShared,
-                        ZFMP_IN(const zfchar *, path))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorageShared
+        , ZFMP_IN(const zfchar *, path)
+        )
 
 // ============================================================
 // cache
@@ -167,8 +171,9 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCache)
 /**
  * @brief change the cache path, null to use defalut path
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForCache,
-                        ZFMP_IN(const zfchar *, path))
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForCache
+        , ZFMP_IN(const zfchar *, path)
+        )
 /**
  * @brief clear all caches under #ZFPathForCache
  *

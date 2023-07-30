@@ -12,18 +12,17 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewPositionOnScreenImpl_sys_iOS, ZFUIViewPo
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "iOS:UIView")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    virtual void viewPositionOnScreen(ZF_IN ZFUIView *view,
-                                      ZF_OUT ZFUIRect &rect)
-    {
+    virtual void viewPositionOnScreen(
+            ZF_IN ZFUIView *view
+            , ZF_OUT ZFUIRect &rect
+            ) {
         UIView *nativeView = (__bridge UIView *)view->nativeView();
 
         CGRect nativeRect = CGRectZero;
-        if(nativeView.window == nil)
-        {
+        if(nativeView.window == nil) {
             nativeRect = nativeView.frame;
         }
-        else
-        {
+        else {
             nativeRect = [nativeView convertRect:nativeView.bounds toView:nil];
         }
         ZFImpl_sys_iOS_ZFUIRectFromCGRectT(rect, nativeRect);

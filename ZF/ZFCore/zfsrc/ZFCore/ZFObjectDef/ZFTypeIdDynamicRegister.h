@@ -15,9 +15,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @note dynamic registered contents would be removed automatically
  *   during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkHigh
  */
-extern ZFLIB_ZFCore zfbool ZFTypeIdDynamicRegister(ZF_IN const zfchar *typeIdName,
-                                                   ZF_IN const ZFCorePointerForObject<ZFTypeInfo *> &typeIdData,
-                                                   ZF_OUT_OPT zfstring *errorHint = zfnull);
+extern ZFLIB_ZFCore zfbool ZFTypeIdDynamicRegister(
+        ZF_IN const zfchar *typeIdName
+        , ZF_IN const ZFCorePointerForObject<ZFTypeInfo *> &typeIdData
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 /**
  * @brief see #ZFTypeIdDynamicRegister
  */

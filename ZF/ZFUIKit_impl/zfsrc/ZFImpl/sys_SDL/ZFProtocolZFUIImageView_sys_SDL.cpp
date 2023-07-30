@@ -14,9 +14,10 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageViewImpl_sys_SDL, ZFUIImageView, ZFProt
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void *nativeImageViewCreate(ZF_IN ZFUIImageView *imageView,
-                                        ZF_OUT zfbool &nativeImplViewRequireVirtualIndex)
-    {
+    virtual void *nativeImageViewCreate(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_OUT zfbool &nativeImplViewRequireVirtualIndex
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
         nativeView->renderImpls.add(zfself::renderCallback);
         ++nativeView->renderCacheRequired;
@@ -24,38 +25,42 @@ public:
         // no actual impl view, use renderImpls
         return zfnull;
     }
-    virtual void nativeImageViewDestroy(ZF_IN ZFUIImageView *imageView,
-                                        ZF_IN void *nativeImageView)
-    {
+    virtual void nativeImageViewDestroy(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN void *nativeImageView
+            ) {
         // nothing to do
     }
 
-    virtual void image(ZF_IN ZFUIImageView *imageView,
-                       ZF_IN ZFUIImage *image)
-    {
+    virtual void image(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN ZFUIImage *image
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
         nativeView->renderRequest();
     }
-    virtual void imageNinePatchChanged(ZF_IN ZFUIImageView *imageView,
-                                       ZF_IN zffloat imageScale,
-                                       ZF_IN const ZFUIMargin &imageNinePatch)
-    {
+    virtual void imageNinePatchChanged(
+            ZF_IN ZFUIImageView *imageView
+            , ZF_IN zffloat imageScale
+            , ZF_IN const ZFUIMargin &imageNinePatch
+            ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)imageView->nativeView();
         nativeView->renderRequest();
     }
 
 private:
-    static zfbool renderCallback(ZF_IN SDL_Renderer *renderer, ZF_IN ZFImpl_sys_SDL_View *nativeView,
-                                 ZF_IN const SDL_Rect &childRect, ZF_IN const SDL_Rect &parentRect)
-    {
+    static zfbool renderCallback(
+            ZF_IN SDL_Renderer *renderer
+            , ZF_IN ZFImpl_sys_SDL_View *nativeView
+            , ZF_IN const SDL_Rect &childRect
+            , ZF_IN const SDL_Rect &parentRect
+            ) {
         ZFUIImageView *owner = ZFCastZFObject(ZFUIImageView *, nativeView->ownerZFUIView);
-        if(owner == zfnull || owner->image() == zfnull)
-        {
+        if(owner == zfnull || owner->image() == zfnull) {
             return zffalse;
         }
         SDL_Surface *nativeImage = (SDL_Surface *)owner->image()->nativeImage();
-        if(nativeImage == zfnull)
-        {
+        if(nativeImage == zfnull) {
             return zffalse;
         }
 
@@ -65,12 +70,10 @@ private:
 
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, nativeImage);
         ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
-        if(owner->image()->imageNinePatch() == ZFUIMarginZero())
-        {
+        if(owner->image()->imageNinePatch() == ZFUIMarginZero()) {
             SDL_RenderCopy(renderer, sdlTexture, zfnull, &targetRect);
         }
-        else
-        {
+        else {
             ZFUIImageImplNinePatchDrawData drawDatas[9];
             zfmemset(drawDatas, 0, sizeof(drawDatas));
             zfindex drawDatasCount = ZFUIImageImplNinePatchCalc(
@@ -81,8 +84,7 @@ private:
 
             SDL_Rect srcRect;
             SDL_Rect dstRect;
-            for(zfindex i = 0; i < drawDatasCount; ++i)
-            {
+            for(zfindex i = 0; i < drawDatasCount; ++i) {
                 const ZFUIImageImplNinePatchDrawData &drawData = drawDatas[i];
                 srcRect.x = (int)drawData.src.x;
                 srcRect.y = (int)drawData.src.y;

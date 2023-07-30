@@ -4,8 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams /* = ZFCoreArray<zfstring>() */)
-{
+zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams /* = ZFCoreArray<zfstring>() */) {
     _ZFP_ZFApp_appParams().removeAll();
     _ZFP_ZFApp_appParams().addFrom(appParams);
     ZFGlobalObserver().observerNotify(ZFApp::EventAppParamDispatch());
@@ -13,16 +12,13 @@ zfint ZFMainExecute(ZF_IN const ZFCoreArray<zfstring> &appParams /* = ZFCoreArra
     return _ZFP_ZFApp_appExitCode();
 }
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic)
-{
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic) {
     ZFLISTENER(action) {
         _ZFP_ZFMainFuncType const &func = _ZFP_ZFMainFunc();
-        if(func != zfnull)
-        {
+        if(func != zfnull) {
             func();
         }
-        else
-        {
+        else {
             zfCoreLogTrim("ZFMAIN_ENTRY not set");
         }
     } ZFLISTENER_END()
@@ -33,8 +29,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntrySetup, ZFLevelZFFrameworkStatic
             ZFLevelZFFrameworkPostNormal
         );
 }
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntrySetup)
-{
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntrySetup) {
     ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->callback);
 }
 private:

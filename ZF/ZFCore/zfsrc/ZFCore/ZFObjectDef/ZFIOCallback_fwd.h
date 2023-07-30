@@ -20,8 +20,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * whose key is #ZFCallbackTagKeyword_ioOwner and value is a ZFObject
  * that optionally implements those method (as #ZFMethod):
  * -  ioSeek, similar to FILE's #ZFFileSeek, proto type:\n
- *   zfbool ioSeek(ZF_IN zfindex byteSize,
- *                 ZF_IN ZFSeekPos pos);\n
+ *   zfbool ioSeek(
+ *           ZF_IN zfindex byteSize
+ *           , ZF_IN ZFSeekPos pos
+ *           );\n
  *   return false if the callback doesn't support seek or error occurred
  * -  ioTell, similar to FILE's #ZFFileTell, proto type:\n
  *   zfindex ioTell(void);\n
@@ -45,11 +47,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * return an index start from 0 (offset is included), ensured range in [offset, length]
  */
-extern ZFLIB_ZFCore zfindex ZFIOCallbackCalcFSeek(ZF_IN zfindex offset,
-                                                  ZF_IN zfindex length,
-                                                  ZF_IN zfindex curPos,
-                                                  ZF_IN zfindex seekByteSize,
-                                                  ZF_IN ZFSeekPos seekPos);
+extern ZFLIB_ZFCore zfindex ZFIOCallbackCalcFSeek(
+        ZF_IN zfindex offset
+        , ZF_IN zfindex length
+        , ZF_IN zfindex curPos
+        , ZF_IN zfindex seekByteSize
+        , ZF_IN ZFSeekPos seekPos
+        );
 
 // ============================================================
 /**
@@ -62,8 +66,10 @@ public:
      *
      * return false if the callback doesn't support seek
      */
-    virtual zfbool ioSeek(ZF_IN zfindex byteSize,
-                          ZF_IN_OPT ZFSeekPos pos = ZFSeekPosBegin) const;
+    virtual zfbool ioSeek(
+            ZF_IN zfindex byteSize
+            , ZF_IN_OPT ZFSeekPos pos = ZFSeekPosBegin
+            ) const;
     /**
      * @brief similar to FILE's #ZFFileTell, return current's index or zfindexMax() if the callback doesn't support seek
      */
@@ -76,15 +82,13 @@ public:
     /**
      * @brief util to set #ZFCallbackTagKeyword_ioOwner
      */
-    virtual void ioOwner(ZF_IN ZFObject *ioOwner)
-    {
+    virtual void ioOwner(ZF_IN ZFObject *ioOwner) {
         this->callbackTag(ZFCallbackTagKeyword_ioOwner, ioOwner);
     }
     /**
      * @brief util to get #ZFCallbackTagKeyword_ioOwner
      */
-    virtual ZFObject *ioOwner(void) const
-    {
+    virtual ZFObject *ioOwner(void) const {
         return this->callbackTag(ZFCallbackTagKeyword_ioOwner);
     }
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)

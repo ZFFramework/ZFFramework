@@ -9,23 +9,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFFileCwdImpl_sys_Windows, ZFFileCwd, ZFProtocolLevel::e_SystemLow)
 public:
-    virtual const zfchar *pathForCwd(void)
-    {
+    virtual const zfchar *pathForCwd(void) {
         static zfstring _pathForCwd;
         wchar_t *buf = _wgetcwd(NULL, 0);
-        if(buf)
-        {
+        if(buf) {
             zfstringToUTF8(_pathForCwd, buf, ZFStringEncoding::e_UTF16);
             free(buf);
             return _pathForCwd;
         }
-        else
-        {
+        else {
             return zfnull;
         }
     }
-    virtual zfbool pathForCwdChange(ZF_IN const zfchar *pathForCwd)
-    {
+    virtual zfbool pathForCwdChange(ZF_IN const zfchar *pathForCwd) {
         return (_wchdir(zfstringToUTF16(pathForCwd, ZFStringEncoding::e_UTF8).cString()) == 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_Windows)

@@ -57,8 +57,7 @@ ZFENUM_END_FLAGS(ZFLIB_ZFAlgorithm, ZFRegExpOption, ZFRegExpOptionFlags)
 /**
  * @brief match result info for ZFRegExp
  */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFRegExpResult
-{
+zfclassLikePOD ZFLIB_ZFAlgorithm ZFRegExpResult {
 public:
     /**
      * @brief true if matched
@@ -81,8 +80,7 @@ public:
     /** @brief see #objectInfo */
     void objectInfoT(ZF_IN_OUT zfstring &ret) const;
     /** @brief return object info */
-    inline zfstring objectInfo(void) const
-    {
+    inline zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
         return ret;
@@ -90,8 +88,7 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN const ZFRegExpResult &ref) const
-    {
+    zfbool operator == (ZF_IN const ZFRegExpResult &ref) const {
         return (this->matched == ref.matched
                 && this->matchedRange == ref.matchedRange
                 && this->namedGroups.objectCompare(ref.namedGroups) == ZFCompareTheSame);
@@ -142,25 +139,27 @@ zfclassFwd _ZFP_ZFRegExpPrivate;
  *   />
  * @endcode
  */
-zfclass ZFLIB_ZFAlgorithm ZFRegExp : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable
-{
+zfclass ZFLIB_ZFAlgorithm ZFRegExp : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable {
     ZFOBJECT_DECLARE(ZFRegExp, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)
 
 protected:
     zfoverride
-    virtual zfbool serializableOnSerializeFromData(ZF_IN const ZFSerializableData &serializableData,
-                                                   ZF_OUT_OPT zfstring *outErrorHint = zfnull,
-                                                   ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull);
+    virtual zfbool serializableOnSerializeFromData(
+            ZF_IN const ZFSerializableData &serializableData
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+            );
     zfoverride
-    virtual zfbool serializableOnSerializeToData(ZF_IN_OUT ZFSerializableData &serializableData,
-                                                 ZF_IN ZFSerializable *referencedOwnerOrNull,
-                                                 ZF_OUT_OPT zfstring *outErrorHint = zfnull);
+    virtual zfbool serializableOnSerializeToData(
+            ZF_IN_OUT ZFSerializableData &serializableData
+            , ZF_IN ZFSerializable *referencedOwnerOrNull
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+            );
 
 protected:
     zfoverride
-    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj)
-    {
+    virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
         ZFRegExp *another = ZFCastZFObjectUnchecked(zfself *, anotherObj);
         this->regExpCompile(another->regExpPattern(), another->regExpFlag());
@@ -170,8 +169,10 @@ protected:
     /**
      * @brief init with pattern, see #regExpCompile
      */
-    ZFOBJECT_ON_INIT_DECLARE_2(ZFMP_IN(const zfchar *, pattern),
-                               ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault()))
+    ZFOBJECT_ON_INIT_DECLARE_2(
+            ZFMP_IN(const zfchar *, pattern)
+            , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
+            )
 
     zfoverride
     virtual void objectOnInit(void);
@@ -209,61 +210,70 @@ public:
     /**
      * @brief get named group's number which can be used as "$n" while #regExpReplace, or zfindexMax() if no such group
      */
-    ZFMETHOD_DECLARE_1(zfindex, regExpNamedGroupIndexForName, ZFMP_IN(const zfchar *, name))
+    ZFMETHOD_DECLARE_1(zfindex, regExpNamedGroupIndexForName
+            , ZFMP_IN(const zfchar *, name)
+            )
 
 public:
     /**
      * @brief regExpCompile the pattern
      */
-    ZFMETHOD_DECLARE_2(void, regExpCompile,
-                       ZFMP_IN(const zfchar *, pattern),
-                       ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault()))
+    ZFMETHOD_DECLARE_2(void, regExpCompile
+            , ZFMP_IN(const zfchar *, pattern)
+            , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
+            )
 
     /**
      * @brief test the src with this compiled pattern, see #regExpMatchExact
      */
-    ZFMETHOD_DECLARE_3(void, regExpMatch,
-                       ZFMP_OUT(ZFRegExpResult &, result),
-                       ZFMP_IN(const zfchar *, src),
-                       ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()))
+    ZFMETHOD_DECLARE_3(void, regExpMatch
+            , ZFMP_OUT(ZFRegExpResult &, result)
+            , ZFMP_IN(const zfchar *, src)
+            , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
+            )
     /**
      * @brief test the src which must match the pattern exactly, see #regExpMatch
      */
-    ZFMETHOD_DECLARE_3(void, regExpMatchExact,
-                       ZFMP_OUT(ZFRegExpResult &, result),
-                       ZFMP_IN(const zfchar *, src),
-                       ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()))
+    ZFMETHOD_DECLARE_3(void, regExpMatchExact
+            , ZFMP_OUT(ZFRegExpResult &, result)
+            , ZFMP_IN(const zfchar *, src)
+            , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
+            )
 
     /**
      * @brief replace src with this pattern and replacePattern
      */
-    ZFMETHOD_DECLARE_6(void, regExpReplace,
-                       ZFMP_OUT(zfstring &, ret),
-                       ZFMP_OUT(ZFRegExpResult &, result),
-                       ZFMP_IN(const zfchar *, replacePattern),
-                       ZFMP_IN(const zfchar *, src),
-                       ZFMP_IN_OPT(zfindex, srcLength, zfindexMax()),
-                       ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
+    ZFMETHOD_DECLARE_6(void, regExpReplace
+            , ZFMP_OUT(zfstring &, ret)
+            , ZFMP_OUT(ZFRegExpResult &, result)
+            , ZFMP_IN(const zfchar *, replacePattern)
+            , ZFMP_IN(const zfchar *, src)
+            , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
+            , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
+            )
 
 private:
     _ZFP_ZFRegExpPrivate *d;
 };
 
 /** @brief util to find by regexp */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFIndexRange, ZFRegExpFind,
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN(const zfchar *, pattern))
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFIndexRange, ZFRegExpFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, pattern)
+        )
 /** @brief util to replace by regexp */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfstring, ZFRegExpReplace,
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN(const zfchar *, patternFrom),
-                        ZFMP_IN(const zfchar *, patternTo),
-                        ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax()))
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfstring, ZFRegExpReplace
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, patternFrom)
+        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
+        )
 /** @brief util to split by regexp */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFCoreArray<zfstring>, ZFRegExpSplit,
-                        ZFMP_IN(const zfchar *, src),
-                        ZFMP_IN(const zfchar *, separatorPattern),
-                        ZFMP_IN_OPT(zfbool, keepEmpty, zffalse))
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFCoreArray<zfstring>, ZFRegExpSplit
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, separatorPattern)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFRegExp_h_

@@ -14,27 +14,27 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowEmbedNativeViewImpl_sys_Qt, ZFUISys
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 
 public:
-    virtual void nativeViewAdd(ZF_IN ZFUISysWindow *sysWindow,
-                               ZF_IN_OUT void *&parent,
-                               ZF_IN void *child)
-    {
+    virtual void nativeViewAdd(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN_OUT void *&parent
+            , ZF_IN void *child
+            ) {
         QGraphicsWidget *nativeParent = (QGraphicsWidget *)parent;
         QGraphicsWidget *nativeChild = (QGraphicsWidget *)child;
-        if(nativeParent->layout() != NULL)
-        {
+        if(nativeParent->layout() != NULL) {
             ((ZFImpl_sys_Qt_BaseLayout *)nativeParent->layout())->childAdd(nativeChild);
         }
-        else
-        {
+        else {
             ZFImpl_sys_Qt_BaseLayout *layout = new ZFImpl_sys_Qt_BaseLayout();
             nativeParent->setLayout(layout);
             layout->childAdd(nativeChild);
         }
     }
-    virtual void nativeViewRemove(ZF_IN ZFUISysWindow *sysWindow,
-                                  ZF_IN_OUT void *&parent,
-                                  ZF_IN void *child)
-    {
+    virtual void nativeViewRemove(
+            ZF_IN ZFUISysWindow *sysWindow
+            , ZF_IN_OUT void *&parent
+            , ZF_IN void *child
+            ) {
         QGraphicsWidget *nativeParent = (QGraphicsWidget *)parent;
         QGraphicsWidget *nativeChild = (QGraphicsWidget *)child;
         ((ZFImpl_sys_Qt_BaseLayout *)nativeParent->layout())->childRemove(nativeChild);

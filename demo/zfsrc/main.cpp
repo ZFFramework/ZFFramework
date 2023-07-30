@@ -15,30 +15,25 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void);
 static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void);
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView);
 
-ZFMAIN_ENTRY()
-{
-    if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck())
-    {
+ZFMAIN_ENTRY() {
+    if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck()) {
         zfautoObject containerView = _ZFP_ZFFramework_test_containerViewPrepare();
         _ZFP_ZFFramework_test_prepareTestCase(containerView);
     }
 }
 
-static zfbool _ZFP_ZFFramework_test_luaTest(void)
-{
+static zfbool _ZFP_ZFFramework_test_luaTest(void) {
     ZFCoreArray<ZFPathInfo> extResList;
     extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForModule())));
     extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForStorageShared())));
 
     zfLogTrim() << "external res:" << extResList;
-    for(zfindex i = 0; i < extResList.count(); ++i)
-    {
+    for(zfindex i = 0; i < extResList.count(); ++i) {
         ZFResExtPathAdd(extResList[i]);
     }
 
     ZFInput input = ZFInputForRes("zf.lua");
-    if(input)
-    {
+    if(input) {
         zfLogTrim() << "redirect to:" << input.callbackId();
         zfLogTrim() << "============================================================";
         ZFLuaExecute(input);
@@ -47,25 +42,23 @@ static zfbool _ZFP_ZFFramework_test_luaTest(void)
     return input;
 }
 
-static zfbool _ZFP_ZFFramework_test_protocolCheck(void)
-{
+static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
     {
         ZFCoreArray<ZFProtocolImplInfo> implDatas = ZFProtocolImplInfoGetAllNotImplemented();
-        if(!implDatas.isEmpty())
-        {
-            zfclassNotPOD _ZFP_main_ZFProtocolImplInfo_sort
-            {
+        if(!implDatas.isEmpty()) {
+            zfclassNotPOD _ZFP_main_ZFProtocolImplInfo_sort {
             public:
-                static ZFCompareResult action(ZF_IN ZFProtocolImplInfo const &v0, ZF_IN ZFProtocolImplInfo const &v1)
-                {
+                static ZFCompareResult action(
+                        ZF_IN ZFProtocolImplInfo const &v0
+                        , ZF_IN ZFProtocolImplInfo const &v1
+                        ) {
                     return ZFComparerDefault(v0.protocolName, v1.protocolName);
                 }
             };
             implDatas.sort(_ZFP_main_ZFProtocolImplInfo_sort::action);
 
             zfLogTrim() << "note, these protocol has not been implemented:";
-            for(zfindex i = 0; i < implDatas.count(); ++i)
-            {
+            for(zfindex i = 0; i < implDatas.count(); ++i) {
                 ZFOutput output = zfLogTrim();
                 ZFOutputFormat::getFormat<ZFLogFormat *>(output)->c_autoSpace(zffalse);
                 output << "    ";
@@ -81,8 +74,7 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void)
     }
     return zftrue;
 }
-static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void)
-{
+static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void) {
     zfblockedAlloc(ZFUIWindow, window);
     window->windowShow();
 
@@ -93,44 +85,43 @@ static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void)
     return containerView;
 }
 
-static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *containerView,
-                                                           ZF_IN const zfchar *subModuleName,
-                                                           ZF_IN ZFCoreArrayPOD<const ZFClass *> const &testCases);
-static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *containerView,
-                                                               ZF_IN const zfchar *subModuleName,
-                                                               ZF_IN const ZFClass *testCase);
-static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
-{
+static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
+        ZF_IN ZFUIView *containerView
+        , ZF_IN const zfchar *subModuleName
+        , ZF_IN ZFCoreArrayPOD<const ZFClass *> const &testCases
+        );
+static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
+        ZF_IN ZFUIView *containerView
+        , ZF_IN const zfchar *subModuleName
+        , ZF_IN const ZFClass *testCase
+        );
+static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView) {
     ZFCoreArrayPOD<const ZFClass *> allTestCase = ZFTestCaseGetAll();
-    zfclassNotPOD _ZFP_main_class_sort
-    {
+    zfclassNotPOD _ZFP_main_class_sort {
     public:
-        static ZFCompareResult action(ZF_IN const ZFClass * const &cls0, ZF_IN const ZFClass * const &cls1)
-        {
+        static ZFCompareResult action(
+                ZF_IN const ZFClass * const &cls0
+                , ZF_IN const ZFClass * const &cls1
+                ) {
             return ZFComparerDefault(cls0->classNameFull(), cls1->classNameFull());
         }
     };
     allTestCase.sort(_ZFP_main_class_sort::action);
 
-    while(!allTestCase.isEmpty())
-    {
+    while(!allTestCase.isEmpty()) {
         ZFCoreArrayPOD<const ZFClass *> subModule;
         zfstring subModuleName = allTestCase[0]->classNameFull();
         {
             zfindex t = zfstringFind(subModuleName, '_');
-            if(t == zfindexMax())
-            {
+            if(t == zfindexMax()) {
                 subModuleName.removeAll();
             }
-            else
-            {
+            else {
                 subModuleName = zfstring(subModuleName.cString(), t);
             }
         }
-        for(zfindex i = 0; i < allTestCase.count(); ++i)
-        {
-            if(zfsncmp(allTestCase[i]->classNameFull(), subModuleName.cString(), subModuleName.length()) == 0)
-            {
+        for(zfindex i = 0; i < allTestCase.count(); ++i) {
+            if(zfsncmp(allTestCase[i]->classNameFull(), subModuleName.cString(), subModuleName.length()) == 0) {
                 subModule.add(allTestCase[i]);
                 allTestCase.remove(i);
                 --i;
@@ -139,17 +130,17 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
         _ZFP_ZFFramework_test_prepareTestCaseSubModule(containerView, subModuleName, subModule);
     }
 }
-zfclass _ZFP_ZFFramework_test_TestCaseSubModuleData : zfextends ZFObject
-{
+zfclass _ZFP_ZFFramework_test_TestCaseSubModuleData : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFFramework_test_TestCaseSubModuleData, ZFObject)
 
     zfstring subModuleName;
     ZFCoreArrayPOD<const ZFClass *> testCases;
 };
-static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *containerView,
-                                                           ZF_IN const zfchar *subModuleName,
-                                                           ZF_IN ZFCoreArrayPOD<const ZFClass *> const &testCases)
-{
+static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
+        ZF_IN ZFUIView *containerView
+        , ZF_IN const zfchar *subModuleName
+        , ZF_IN ZFCoreArrayPOD<const ZFClass *> const &testCases
+        ) {
     zfblockedAlloc(ZFUIKit_test_Button, button);
     containerView->childAdd(button);
 
@@ -185,8 +176,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
             separator->viewBackgroundColor(ZFUIColorGray());
         }
 
-        for(zfindex i = 0; i < subModuleData->testCases.count(); ++i)
-        {
+        for(zfindex i = 0; i < subModuleData->testCases.count(); ++i) {
             _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(containerView, subModuleData->subModuleName, subModuleData->testCases[i]);
         }
         ZFUIViewFocusNextMove(subModuleWindow);
@@ -194,10 +184,11 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(ZF_IN ZFUIView *conta
     button->observerAdd(ZFUIButton::EventButtonOnClick(), onClickButton);
     button->label()->text(subModuleName);
 }
-static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *containerView,
-                                                               ZF_IN const zfchar *subModuleName,
-                                                               ZF_IN const ZFClass *testCase)
-{
+static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
+        ZF_IN ZFUIView *containerView
+        , ZF_IN const zfchar *subModuleName
+        , ZF_IN const ZFClass *testCase
+        ) {
     zfblockedAlloc(ZFUIKit_test_Button, button);
     containerView->childAdd(button);
 
@@ -207,8 +198,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *c
             ) {
         containerView->viewUIEnableTree(zffalse);
         zfautoObjectT<ZFTestCase *> running = ZFTestCaseRun(testCase);
-        if(running != zfnull)
-        {
+        if(running != zfnull) {
             ZFLISTENER_1(testCaseOnStop
                     , ZFUIView *, containerView
                     ) {
@@ -216,8 +206,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(ZF_IN ZFUIView *c
             } ZFLISTENER_END()
             running->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
         }
-        else
-        {
+        else {
             containerView->viewUIEnableTree(zftrue);
         }
     } ZFLISTENER_END()

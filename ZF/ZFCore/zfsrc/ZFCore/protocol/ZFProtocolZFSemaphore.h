@@ -22,8 +22,10 @@ public:
     /**
      * @brief create native semaphore
      */
-    virtual void nativeSemaphoreDestroy(ZF_IN ZFSemaphore *semaphore,
-                                        ZF_IN void *nativeSemaphore) zfpurevirtual;
+    virtual void nativeSemaphoreDestroy(
+            ZF_IN ZFSemaphore *semaphore
+            , ZF_IN void *nativeSemaphore
+            ) zfpurevirtual;
 
     /**
      * @brief called before signal / broadcast / wait
@@ -49,8 +51,10 @@ public:
     /**
      * @brief see #ZFSemaphore::semaphoreWait
      */
-    virtual zfbool semaphoreWait(ZF_IN ZFSemaphore *semaphore,
-                                 ZF_IN zftimet miliSecsTimeout) zfpurevirtual;
+    virtual zfbool semaphoreWait(
+            ZF_IN ZFSemaphore *semaphore
+            , ZF_IN zftimet miliSecsTimeout
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFSemaphore)
 
 ZF_NAMESPACE_GLOBAL_END

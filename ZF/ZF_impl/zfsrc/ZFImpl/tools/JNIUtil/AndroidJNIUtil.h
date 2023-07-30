@@ -37,12 +37,10 @@ extern _JNI_EXPORT JNIUtil::JNIString &_AndroidLogTagDefault(void);
 /**
  * @brief default log tag, could be changed at runtime
  */
-inline const char *AndroidLogTagDefault(void)
-{
+inline const char *AndroidLogTagDefault(void) {
     return _AndroidLogTagDefault().c_str();
 }
-inline void AndroidLogTagDefault(const char *s)
-{
+inline void AndroidLogTagDefault(const char *s) {
     _AndroidLogTagDefault() = (s ? s : "");
 }
 

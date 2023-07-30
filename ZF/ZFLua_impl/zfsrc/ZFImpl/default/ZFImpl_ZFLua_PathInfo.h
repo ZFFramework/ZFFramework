@@ -48,10 +48,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       )
  * @endcode
  */
-extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implPathInfoSetup(ZF_IN lua_State *L,
-                                                            ZF_OUT zfstring &ret,
-                                                            ZF_IN const ZFPathInfo *pathInfo,
-                                                            ZF_IN_OPT zfbool localMode = zftrue);
+extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implPathInfoSetup(
+        ZF_IN lua_State *L
+        , ZF_OUT zfstring &ret
+        , ZF_IN const ZFPathInfo *pathInfo
+        , ZF_IN_OPT zfbool localMode = zftrue
+        );
 
 /** @brief check whether luaFuncName registered */
 extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_implPathInfoExist(ZF_IN const zfchar *luaFuncName);
@@ -61,18 +63,18 @@ extern ZFLIB_ZFLua_impl const ZFCoreArrayPOD<const zfchar *> &ZFImpl_ZFLua_implP
 
 /** @see #ZFImpl_ZFLua_implPathInfoSetup */
 #define ZFImpl_ZFLua_implPathInfo_DEFINE(luaFunc, luaFuncBody) \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implPathInfo_##luaFunc, ZFLevelZFFrameworkNormal) \
-    { \
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_implPathInfo_##luaFunc, ZFLevelZFFrameworkNormal) { \
         _ZFP_ZFImpl_ZFLua_implPathInfoRegister(ZFM_TOSTRING(luaFunc), (luaFuncBody)); \
     } \
-    ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implPathInfo_##luaFunc) \
-    { \
+    ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implPathInfo_##luaFunc) { \
         _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZFM_TOSTRING(luaFunc)); \
     } \
     ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implPathInfo_##luaFunc)
 
-extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(ZF_IN const zfchar *luaFuncName,
-                                                                    ZF_IN const zfchar *luaFuncBody);
+extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoRegister(
+        ZF_IN const zfchar *luaFuncName
+        , ZF_IN const zfchar *luaFuncBody
+        );
 extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implPathInfoUnregister(ZF_IN const zfchar *luaFuncName);
 
 ZF_NAMESPACE_GLOBAL_END

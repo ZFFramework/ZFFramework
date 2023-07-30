@@ -24,11 +24,15 @@ zfclassFwd ZFSerializableData;
  *   propertyInfo->callbackIsValueAccessed(propertyInfo, ownerObj);
  * @endcode
  */
-typedef zfbool (*ZFPropertyCallbackIsValueAccessed)(ZF_IN const ZFProperty *property,
-                                                    ZF_IN ZFObject *ownerObj);
+typedef zfbool (*ZFPropertyCallbackIsValueAccessed)(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *ownerObj
+        );
 /** @brief change default impl for #ZFPropertyCallbackIsValueAccessed, use with caution */
-extern ZFLIB_ZFCore void ZFPropertyCallbackIsValueAccessedChange(ZF_IN const ZFProperty *property,
-                                                                 ZF_IN ZFPropertyCallbackIsValueAccessed callback);
+extern ZFLIB_ZFCore void ZFPropertyCallbackIsValueAccessedChange(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFPropertyCallbackIsValueAccessed callback
+        );
 
 // ============================================================
 /**
@@ -41,38 +45,49 @@ extern ZFLIB_ZFCore void ZFPropertyCallbackIsValueAccessedChange(ZF_IN const ZFP
  * @endcode
  * @note the outInitValue can be set to access the init value (only when the checker returned false)
  */
-typedef zfbool (*ZFPropertyCallbackIsInitValue)(ZF_IN const ZFProperty *property,
-                                                ZF_IN ZFObject *ownerObj,
-                                                ZF_OUT_OPT zfautoObject *outInitValue /* = zfnull */);
+typedef zfbool (*ZFPropertyCallbackIsInitValue)(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *ownerObj
+        , ZF_OUT_OPT zfautoObject *outInitValue /* = zfnull */
+        );
 /** @brief change default impl for #ZFPropertyCallbackIsInitValue, use with caution */
-extern ZFLIB_ZFCore void ZFPropertyCallbackIsInitValueChange(ZF_IN const ZFProperty *property,
-                                                             ZF_IN ZFPropertyCallbackIsInitValue callback);
+extern ZFLIB_ZFCore void ZFPropertyCallbackIsInitValueChange(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFPropertyCallbackIsInitValue callback
+        );
 
 // ============================================================
 /**
  * @brief used to reset the property to its init state
  */
-typedef void (*ZFPropertyCallbackValueReset)(ZF_IN const ZFProperty *property,
-                                             ZF_IN ZFObject *ownerObj);
+typedef void (*ZFPropertyCallbackValueReset)(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFObject *ownerObj
+        );
 /** @brief change default impl for #ZFPropertyCallbackValueReset, use with caution */
-extern ZFLIB_ZFCore void ZFPropertyCallbackValueResetChange(ZF_IN const ZFProperty *property,
-                                                            ZF_IN ZFPropertyCallbackValueReset callback);
+extern ZFLIB_ZFCore void ZFPropertyCallbackValueResetChange(
+        ZF_IN const ZFProperty *property
+        , ZF_IN ZFPropertyCallbackValueReset callback
+        );
 
 // ============================================================
 /**
  * @brief for user registered property only, used to setup a property's init value
  */
-typedef void (*ZFPropertyCallbackUserRegisterInitValueSetup)(ZF_IN const ZFProperty *property,
-                                                             ZF_IN_OUT void *v);
+typedef void (*ZFPropertyCallbackUserRegisterInitValueSetup)(
+        ZF_IN const ZFProperty *property
+        , ZF_IN_OUT void *v
+        );
 
 // ============================================================
-typedef void (*_ZFP_PropLifeCycleWrapper)(ZF_IN ZFObject *propertyOwnerObject,
-                                          ZF_IN const ZFProperty *property,
-                                          ZF_IN void *propertyValue,
-                                          ZF_IN const void *propertyValueOld,
-                                          ZF_IN ZFObject *propertyLifeCycleUserData);
-zfclassNotPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData
-{
+typedef void (*_ZFP_PropLifeCycleWrapper)(
+        ZF_IN ZFObject *propertyOwnerObject
+        , ZF_IN const ZFProperty *property
+        , ZF_IN void *propertyValue
+        , ZF_IN const void *propertyValueOld
+        , ZF_IN ZFObject *propertyLifeCycleUserData
+        );
+zfclassNotPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData {
 public:
     const ZFClass *propertyOwnerClass;
     _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper;

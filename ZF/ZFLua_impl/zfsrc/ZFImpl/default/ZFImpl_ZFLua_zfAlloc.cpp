@@ -2,15 +2,15 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
-                            ZF_IN lua_State *L,
-                            ZF_IN const ZFClass *cls,
-                            ZF_IN int paramCount,
-                            ZF_IN int luaParamOffset,
-                            ZF_IN_OPT zfstring *errorHint /* = zfnull */)
-{
-    if(paramCount == 0)
-    {
+zfbool ZFImpl_ZFLua_zfAlloc(
+        ZF_OUT zfautoObject &ret
+        , ZF_IN lua_State *L
+        , ZF_IN const ZFClass *cls
+        , ZF_IN int paramCount
+        , ZF_IN int luaParamOffset
+        , ZF_IN_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(paramCount == 0) {
         ret = cls->newInstance();
         return zftrue;
     }
@@ -25,10 +25,8 @@ zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
     };
-    for(int i = 0; i < paramCount; ++i)
-    {
-        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, errorHint))
-        {
+    for(int i = 0; i < paramCount; ++i) {
+        if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, errorHint)) {
             return zffalse;
         }
     }
@@ -36,28 +34,24 @@ zfbool ZFImpl_ZFLua_zfAlloc(ZF_OUT zfautoObject &ret,
 }
 
 // ============================================================
-static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
-{
+static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
     static const int luaParamOffset = 2;
     int count = (int)lua_gettop(L);
-    if(count < luaParamOffset - 1)
-    {
+    if(count < luaParamOffset - 1) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfAlloc] takes at least one param");
     }
     int paramCount = (count - (luaParamOffset - 1));
 
     const zfchar *clsName = zfnull;
-    if(!ZFImpl_ZFLua_toString(clsName, L, 1) || zfstringIsEmpty(clsName))
-    {
+    if(!ZFImpl_ZFLua_toString(clsName, L, 1) || zfstringIsEmpty(clsName)) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfAlloc] unable to access class name");
     }
     const ZFClass *cls = ZFDI_classForName(clsName, zfnull);
-    if(cls == zfnull)
-    {
+    if(cls == zfnull) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfAlloc] unable to find class: %s", clsName);
     }
@@ -72,14 +66,11 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
     };
-    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug))
-    {
+    if(ZFLogLevelIsActive(ZFLogLevel::e_Debug)) {
         zfstring errorHint;
-        for(int i = 0; i < paramCount; ++i)
-        {
+        for(int i = 0; i < paramCount; ++i) {
             errorHint.removeAll();
-            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, &errorHint))
-            {
+            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, &errorHint)) {
                 return ZFImpl_ZFLua_luaError(L,
                     "[zfAlloc] invalid param: %s, error: %s",
                     ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString(),
@@ -87,12 +78,9 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L)
             }
         }
     }
-    else
-    {
-        for(int i = 0; i < paramCount; ++i)
-        {
-            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i))
-            {
+    else {
+        for(int i = 0; i < paramCount; ++i) {
+            if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i)) {
                 return ZFImpl_ZFLua_luaError(L,
                     "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString());
             }

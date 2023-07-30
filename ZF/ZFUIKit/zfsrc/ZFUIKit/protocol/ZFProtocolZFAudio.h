@@ -21,11 +21,15 @@ public:
     virtual void nativeAudioDestroy(ZF_IN ZFAudio *audio) zfpurevirtual;
 
     /** @brief load native audio from input */
-    virtual void nativeAudioLoad(ZF_IN ZFAudio *audio,
-                                 ZF_IN const ZFInput &input) zfpurevirtual;
+    virtual void nativeAudioLoad(
+            ZF_IN ZFAudio *audio
+            , ZF_IN const ZFInput &input
+            ) zfpurevirtual;
     /** @brief load native audio from input */
-    virtual void nativeAudioLoad(ZF_IN ZFAudio *audio,
-                                 ZF_IN const zfchar *url) zfpurevirtual;
+    virtual void nativeAudioLoad(
+            ZF_IN ZFAudio *audio
+            , ZF_IN const zfchar *url
+            ) zfpurevirtual;
     /** @brief cancel load native audio */
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) zfpurevirtual;
 
@@ -43,26 +47,34 @@ public:
     /** @brief get native audio position */
     virtual zftimet nativeAudioPosition(ZF_IN ZFAudio *audio) zfpurevirtual;
     /** @brief set native audio position */
-    virtual void nativeAudioPosition(ZF_IN ZFAudio *audio,
-                                     ZF_IN zftimet position) zfpurevirtual;
+    virtual void nativeAudioPosition(
+            ZF_IN ZFAudio *audio
+            , ZF_IN zftimet position
+            ) zfpurevirtual;
 
     /** @brief set native audio volume */
-    virtual void nativeAudioVolume(ZF_IN ZFAudio *audio,
-                                   ZF_IN zffloat volume) zfpurevirtual;
+    virtual void nativeAudioVolume(
+            ZF_IN ZFAudio *audio
+            , ZF_IN zffloat volume
+            ) zfpurevirtual;
 
 public:
     /**
      * @brief implementation must notify when audio load success or fail
      */
-    zffinal void notifyAudioOnLoad(ZF_IN ZFAudio *audio,
-                                   ZF_IN zfbool success,
-                                   ZF_IN v_zfstring *errorHint);
+    zffinal void notifyAudioOnLoad(
+            ZF_IN ZFAudio *audio
+            , ZF_IN zfbool success
+            , ZF_IN v_zfstring *errorHint
+            );
     /**
      * @brief implementation must notify when audio play success or fail
      */
-    zffinal void notifyAudioOnStop(ZF_IN ZFAudio *audio,
-                                   ZF_IN zfbool success,
-                                   ZF_IN v_zfstring *errorHint);
+    zffinal void notifyAudioOnStop(
+            ZF_IN ZFAudio *audio
+            , ZF_IN zfbool success
+            , ZF_IN v_zfstring *errorHint
+            );
     /**
      * @brief implementation must notify when audio start success and about to play,
      *   or resume from pause

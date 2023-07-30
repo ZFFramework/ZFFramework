@@ -78,13 +78,14 @@ extern ZFLIB_ZFCore ZFFrameworkState ZFFrameworkStateCheck(ZF_IN ZFLevel level);
 typedef void *(*_ZFP_GI_Constructor)(void);
 typedef void (*_ZFP_GI_Destructor)(ZF_IN void *p);
 zfclassFwd _ZFP_GI_RegPrivate;
-zfclassNotPOD ZFLIB_ZFCore _ZFP_GI_Reg
-{
+zfclassNotPOD ZFLIB_ZFCore _ZFP_GI_Reg {
 public:
-    _ZFP_GI_Reg(ZF_IN const zfchar *name,
-                ZF_IN ZFLevel level,
-                ZF_IN _ZFP_GI_Constructor constructor,
-                ZF_IN _ZFP_GI_Destructor destructor);
+    _ZFP_GI_Reg(
+            ZF_IN const zfchar *name
+            , ZF_IN ZFLevel level
+            , ZF_IN _ZFP_GI_Constructor constructor
+            , ZF_IN _ZFP_GI_Destructor destructor
+            );
     ~_ZFP_GI_Reg(void);
 public:
     void *instanceAccess(void);
@@ -100,13 +101,11 @@ private:
             _ZFP_GI_ctor_##Name, \
             _ZFP_GI_dtor_##Name \
         ); \
-    zfclassNotPOD _ZFP_GI_##Name \
-    { \
+    zfclassNotPOD _ZFP_GI_##Name { \
     protected: \
         typedef _ZFP_GI_##Name zfself; \
     public: \
-        static _ZFP_GI_##Name *_ZFP_GI_instance(void) \
-        { \
+        static _ZFP_GI_##Name *_ZFP_GI_instance(void) { \
             return ZFCastStatic(_ZFP_GI_##Name *, _ZFP_GI_reg_##Name.instanceAccess()); \
         } \
         _ZFP_GI_##Name(void)
@@ -121,8 +120,7 @@ private:
  *   {
  *       // code that will be executed when app start
  *   }
- *   ZF_GLOBAL_INITIALIZER_DESTROY(SomeName)
- *   {
+ *   ZF_GLOBAL_INITIALIZER_DESTROY(SomeName) {
  *       // code that will be executed when app stop
  *   }
  *   private:
@@ -158,12 +156,10 @@ private:
 
 #define _ZFP_ZF_GLOBAL_INITIALIZER_END(Name) \
     }; \
-    static void *_ZFP_GI_ctor_##Name(void) \
-    { \
+    static void *_ZFP_GI_ctor_##Name(void) { \
         return (void *)zfnew(_ZFP_GI_##Name); \
     } \
-    static void _ZFP_GI_dtor_##Name(ZF_IN void *p) \
-    { \
+    static void _ZFP_GI_dtor_##Name(ZF_IN void *p) { \
         zfdelete((_ZFP_GI_##Name *)p); \
     }
 /**

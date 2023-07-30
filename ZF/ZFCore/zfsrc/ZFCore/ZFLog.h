@@ -65,14 +65,17 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
 /** @brief see #zfLog */
 #define zfLogTrim(...) _ZFP_zfLog(zfnull, ##__VA_ARGS__)
 
-extern ZFLIB_ZFCore ZFOutput _ZFP_zfLog(ZF_IN const zfchar *header, ZF_IN_OPT const zfchar *fmt = zfnull, ...);
+extern ZFLIB_ZFCore ZFOutput _ZFP_zfLog(
+        ZF_IN const zfchar *header
+        , ZF_IN_OPT const zfchar *fmt = zfnull
+        , ...
+        );
 
 // ============================================================
 /**
  * @brief output format for #zfLog
  */
-zfclass ZFLIB_ZFCore ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputFormat
-{
+zfclass ZFLIB_ZFCore ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputFormat {
     ZFOBJECT_DECLARE(ZFLogFormat, ZFObject)
     ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
 
@@ -82,13 +85,15 @@ public:
 
 protected:
     zfoverride
-    virtual void format(ZF_IN_OUT zfstring &ret,
-                        ZF_IN ZFOutputFormatStepEnum outputStep,
-                        ZF_IN const zfchar *src,
-                        ZF_IN zfindex srcLen,
-                        ZF_IN zfindex writtenLen,
-                        ZF_IN zfindex outputCount,
-                        ZF_IN_OUT_OPT void *&state);
+    virtual void format(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN ZFOutputFormatStepEnum outputStep
+            , ZF_IN const zfchar *src
+            , ZF_IN zfindex srcLen
+            , ZF_IN zfindex writtenLen
+            , ZF_IN zfindex outputCount
+            , ZF_IN_OUT_OPT void *&state
+            );
 };
 
 // ============================================================
