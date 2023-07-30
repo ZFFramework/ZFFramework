@@ -55,9 +55,10 @@ protected:
 };
 ZFOBJECT_REGISTER(ZFCore_ZFPropertyUserRegister_test)
 
-ZFPROPERTY_USER_REGISTER_RETAIN(_ZFP_ZFCore_ZFPropertyUserRegister_test_Object,
-    v_zfstring *, valueStatic, ZFPropertyNoInitValue,
-    public, public)
+ZFPROPERTY_USER_REGISTER_RETAIN(_ZFP_ZFCore_ZFPropertyUserRegister_test_Object
+        , v_zfstring *, valueStatic, ZFPropertyNoInitValue
+        , public, public
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -120,20 +120,17 @@ public:
     /**
      * @brief true if the button is enabled, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, enable,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, enable, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, enable)
     /**
      * @brief true if the button is checkable button, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, checkable,
-                                zffalse)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, checkable, zffalse)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, checkable)
     /**
      * @brief true if the button is checked, valid only if #checkable, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, checked,
-                                zffalse)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, checked, zffalse)
     ZFPROPERTY_ON_VERIFY_DECLARE(zfbool, checked)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, checked)
     /**
@@ -143,15 +140,13 @@ public:
      * so that button is easier to be clicked,
      * and a positive value would reduce the button area
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIMargin, buttonClickTolerance,
-                                ZFUIMarginMake(- ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIMargin, buttonClickTolerance, ZFUIMarginMake(- ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
     /**
      * @brief if two click event's interval smaller than this value,
      *   the second one would be ignored,
      *   100 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, buttonClickInterval,
-                                100)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, buttonClickInterval, 100)
 
 protected:
     zfoverride

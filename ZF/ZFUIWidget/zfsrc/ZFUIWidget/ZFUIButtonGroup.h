@@ -89,8 +89,7 @@ public:
     /**
      * @brief button group's type, see #ZFUIButtonGroupType::e_Normal for more info
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIButtonGroupTypeEnum, buttonGroupType,
-                                ZFUIButtonGroupType::EnumDefault())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIButtonGroupTypeEnum, buttonGroupType, ZFUIButtonGroupType::EnumDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIButtonGroupTypeEnum, buttonGroupType)
 
 public:

@@ -40,8 +40,7 @@ public:
      *
      * note, for some implementations and font settings, italic or bold may or may not be supported
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextAppearanceEnum, textAppearance,
-                                ZFUIGlobalStyle::DefaultStyle()->textAppearance())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextAppearanceEnum, textAppearance, ZFUIGlobalStyle::DefaultStyle()->textAppearance())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearanceEnum, textAppearance)
 
     /**
@@ -49,22 +48,19 @@ public:
      *
      * @note only LeftInner, Center, RightInner would be supported for sure
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, textAlign,
-                                ZFUIGlobalStyle::DefaultStyle()->textAlign())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, textAlign, ZFUIGlobalStyle::DefaultStyle()->textAlign())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, textAlign)
 
     /**
      * @brief text color, #ZFUIGlobalStyle::textColorDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColor,
-                                ZFUIGlobalStyle::DefaultStyle()->textColorDefault())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColor, ZFUIGlobalStyle::DefaultStyle()->textColorDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textColor)
 
     /**
      * @brief text size, #ZFUIGlobalStyle::textSizeNormal by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSize,
-                                ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSize, ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSize)
 
     /**
@@ -72,30 +68,26 @@ public:
      *   when the view isn't big enough to hold current text,
      *   #ZFUIGlobalStyle::textSizeTiny by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeAutoChangeMinSize,
-                                ZFUIGlobalStyle::DefaultStyle()->textSizeTiny())
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeAutoChangeMinSize, ZFUIGlobalStyle::DefaultStyle()->textSizeTiny())
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSizeAutoChangeMinSize)
     /**
      * @brief if not 0 and larger than #textSizeAutoChangeMinSize,
      *   auto increase text size when the view is bigger than current text need,
      *   0 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeAutoChangeMaxSize,
-                                0)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeAutoChangeMaxSize, 0)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSizeAutoChangeMaxSize)
 
     /**
      * @brief single line or not, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, textSingleLine,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, textSingleLine, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, textSingleLine)
 
     /**
      * @brief text truncate mode, #ZFUITextTruncateMode::e_Disable by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextTruncateModeEnum, textTruncateMode,
-                                ZFUIGlobalStyle::DefaultStyle()->textTruncateMode())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextTruncateModeEnum, textTruncateMode, ZFUIGlobalStyle::DefaultStyle()->textTruncateMode())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextTruncateModeEnum, textTruncateMode)
 
 protected:

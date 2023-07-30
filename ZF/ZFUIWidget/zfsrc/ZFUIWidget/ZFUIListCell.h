@@ -35,8 +35,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextends ZFUIView {
      *   to achieve additional features,
      *   fill parent and align center by default
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUILayoutParam *, cellViewLayoutParam,
-                               ZFPropertyNoInitValue)
+    ZFPROPERTY_RETAIN_READONLY(ZFUILayoutParam *, cellViewLayoutParam, ZFPropertyNoInitValue)
     ZFPROPERTY_ON_INIT_DECLARE(ZFUILayoutParam *, cellViewLayoutParam)
 
 protected:

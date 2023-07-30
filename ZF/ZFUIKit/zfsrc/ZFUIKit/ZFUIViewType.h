@@ -142,23 +142,19 @@ public:
     /**
      * @brief see #ZFUILayoutParam, default is #ZFUISizeInvalid, which means no size limit
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, sizeHint,
-                                ZFUISizeInvalid())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, sizeHint, ZFUISizeInvalid())
     /**
      * @brief see #ZFUILayoutParam, default is #ZFUISizeParamWrapWrap
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISizeParam, sizeParam,
-                                ZFUISizeParamWrapWrap())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISizeParam, sizeParam, ZFUISizeParamWrapWrap())
     /**
      * @brief see #ZFUILayoutParam, default is (ZFUIAlign::e_Left | ZFUIAlign::e_Top)
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, layoutAlign,
-                                ZFUIAlign::e_Left | ZFUIAlign::e_Top)
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, layoutAlign, ZFUIAlign::e_Left | ZFUIAlign::e_Top)
     /**
      * @brief see #ZFUILayoutParam, default is (0, 0, 0, 0)
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIMargin, layoutMargin,
-                                ZFUIMarginZero())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIMargin, layoutMargin, ZFUIMarginZero())
 
 public:
     // ============================================================

@@ -62,36 +62,31 @@ public:
     // ============================================================
     // label
     /** @brief label style in normal state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelNormal,
-                               zflineAlloc(ZFUITextView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelNormal, zflineAlloc(ZFUITextView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, labelNormal)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextView *, labelNormal)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUITextView *, labelNormal)
 
     /** @brief label style in highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelHighlighted,
-                               zflineAlloc(ZFUITextView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelHighlighted, zflineAlloc(ZFUITextView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, labelHighlighted)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextView *, labelHighlighted)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUITextView *, labelHighlighted)
 
     /** @brief label style in checked state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelChecked,
-                               zflineAlloc(ZFUITextView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelChecked, zflineAlloc(ZFUITextView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, labelChecked)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextView *, labelChecked)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUITextView *, labelChecked)
 
     /** @brief label style in checked highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelCheckedHighlighted,
-                               zflineAlloc(ZFUITextView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelCheckedHighlighted, zflineAlloc(ZFUITextView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, labelCheckedHighlighted)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextView *, labelCheckedHighlighted)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUITextView *, labelCheckedHighlighted)
 
     /** @brief label style in disabled state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelDisabled,
-                               zflineAlloc(ZFUITextView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, labelDisabled, zflineAlloc(ZFUITextView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, labelDisabled)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextView *, labelDisabled)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUITextView *, labelDisabled)
@@ -99,36 +94,31 @@ public:
     // ============================================================
     // icon
     /** @brief icon style in normal state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconNormal,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconNormal, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconNormal)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, iconNormal)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, iconNormal)
 
     /** @brief icon style in highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconHighlighted,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconHighlighted, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconHighlighted)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, iconHighlighted)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, iconHighlighted)
 
     /** @brief icon style in checked state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconChecked,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconChecked, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconChecked)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, iconChecked)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, iconChecked)
 
     /** @brief icon style in checked highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconCheckedHighlighted,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconCheckedHighlighted, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconCheckedHighlighted)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, iconCheckedHighlighted)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, iconCheckedHighlighted)
 
     /** @brief icon style in disabled state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconDisabled,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, iconDisabled, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconDisabled)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, iconDisabled)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, iconDisabled)
@@ -136,36 +126,31 @@ public:
     // ============================================================
     // background
     /** @brief background style in normal state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundNormal,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundNormal, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, backgroundNormal)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, backgroundNormal)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, backgroundNormal)
 
     /** @brief background style in highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundHighlighted,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundHighlighted, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, backgroundHighlighted)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, backgroundHighlighted)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, backgroundHighlighted)
 
     /** @brief background style in checked state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundChecked,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundChecked, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, backgroundChecked)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, backgroundChecked)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, backgroundChecked)
 
     /** @brief background style in checked highlighted state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundCheckedHighlighted,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundCheckedHighlighted, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, backgroundCheckedHighlighted)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, backgroundCheckedHighlighted)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, backgroundCheckedHighlighted)
 
     /** @brief background style in disabled state */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundDisabled,
-                               zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, backgroundDisabled, zflineAlloc(ZFUIImageView))
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, backgroundDisabled)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, backgroundDisabled)
     ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, backgroundDisabled)

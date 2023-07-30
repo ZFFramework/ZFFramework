@@ -247,8 +247,7 @@ public:
     /**
      * @brief visible or not, zftrue by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewVisible,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewVisible, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewVisible)
 
     /**
@@ -262,16 +261,14 @@ public:
      * @brief whether the view should receive user interaction
      *   (doesn't affect children, see #viewUIEnableTree)
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewUIEnable,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewUIEnable, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewUIEnable)
 
     /**
      * @brief whether the view as well as all its children should receive user interaction,
      *   see #viewUIEnable
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewUIEnableTree,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewUIEnableTree, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewUIEnableTree)
 
     /**
@@ -288,8 +285,7 @@ public:
     /**
      * @brief whether try to obtain focus when clicked down, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewFocusObtainWhenClick,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewFocusObtainWhenClick, zftrue)
 
     /**
      * @brief the view's frame
@@ -367,15 +363,13 @@ public:
     /**
      * @brief max size, negative value means not set, #ZFUISizeInvalid by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, viewSizeMax,
-                                ZFUISizeInvalid())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, viewSizeMax, ZFUISizeInvalid())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUISize, viewSizeMax)
 
     /**
      * @brief background color, #ZFUIColorZero by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, viewBackgroundColor,
-                                ZFUIColorZero())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, viewBackgroundColor, ZFUIColorZero())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, viewBackgroundColor)
 
     // ============================================================

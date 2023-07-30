@@ -25,21 +25,18 @@ public:
     /**
      * @brief whether enable auto fit, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoFitEnable,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoFitEnable, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, autoFitEnable)
     /**
      * @brief whether auto move focused view to visible position, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoFitFocusedViewToVisible,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoFitFocusedViewToVisible, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, autoFitFocusedViewToVisible)
 
     /**
      * @brief whether allow manually scroll when auto fit enabled, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoFitScrollEnable,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoFitScrollEnable, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, autoFitScrollEnable)
 
 public:

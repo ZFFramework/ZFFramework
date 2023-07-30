@@ -150,8 +150,7 @@ public:
     /**
      * @brief window's level
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIWindowLevelEnum, windowLevel,
-                                ZFUIWindowLevel::EnumDefault())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIWindowLevelEnum, windowLevel, ZFUIWindowLevel::EnumDefault())
     ZFPROPERTY_ON_VERIFY_DECLARE(ZFUIWindowLevelEnum, windowLevel)
 
     /**

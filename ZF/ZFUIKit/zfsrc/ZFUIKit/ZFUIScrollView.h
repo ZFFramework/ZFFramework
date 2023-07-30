@@ -118,40 +118,34 @@ public:
     /**
      * @brief whether the scroll view is scrollable, zftrue by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollEnable,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollEnable, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, scrollEnable)
 
     /**
      * @brief if content is larger than scroll view, make it scrollable even if reaches edge, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceHorizontal,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceHorizontal, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, scrollBounceHorizontal)
     /**
      * @brief if content is larger than scroll view, make it scrollable even if reaches edge, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceVertical,
-                                zftrue)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceVertical, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, scrollBounceVertical)
     /**
      * @brief scrollable even if content is not larger than scrollview, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceHorizontalAlways,
-                                zffalse)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceHorizontalAlways, zffalse)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, scrollBounceHorizontalAlways)
     /**
      * @brief scrollable even if content is not larger than scrollview, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceVerticalAlways,
-                                zffalse)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollBounceVerticalAlways, zffalse)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, scrollBounceVerticalAlways)
 
     /**
      * @brief whether limit scroll horizontal or vertical only, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollAlignToAxis,
-                                zffalse)
+    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, scrollAlignToAxis, zffalse)
     /**
      * @brief whether align to page when scroll, false by default
      *

@@ -212,8 +212,7 @@ public:
      *
      * note, for some implementations and font settings, italic or bold may or may not be supported
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextAppearanceEnum, textAppearance,
-                                ZFUIGlobalStyle::DefaultStyle()->textAppearance())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextAppearanceEnum, textAppearance, ZFUIGlobalStyle::DefaultStyle()->textAppearance())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearanceEnum, textAppearance)
 
     /**
@@ -222,22 +221,19 @@ public:
      * note, for some implementations, some align type may or may not be supported\n
      * usually only Left, Center, Right would be supported
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, textAlign,
-                                ZFUIGlobalStyle::DefaultStyle()->textAlign())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, textAlign, ZFUIGlobalStyle::DefaultStyle()->textAlign())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, textAlign)
 
     /**
      * @brief text color, #ZFUIGlobalStyle::textColorDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColor,
-                                ZFUIGlobalStyle::DefaultStyle()->textColorDefault())
+    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColor, ZFUIGlobalStyle::DefaultStyle()->textColorDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textColor)
 
     /**
      * @brief text size, #ZFUIGlobalStyle::textSizeNormal by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSize,
-                                ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
+    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSize, ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSize)
 
 public:

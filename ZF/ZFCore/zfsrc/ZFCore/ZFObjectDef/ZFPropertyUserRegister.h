@@ -517,9 +517,9 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *   ZF_GLOBAL_INITIALIZER_END(MyPropertyRegister)
  *
  *   // or, you may use this macro for short, at cpp files only
- *   ZFPROPERTY_USER_REGISTER_RETAIN_DETAIL(MyClassToAttachTheProperty, MyClassToAttachTheProperty::ClassData(),
- *       Type, "propertyName", ZFPropertyNoInitValue,
- *       public, public,
+ *   ZFPROPERTY_USER_REGISTER_RETAIN_DETAIL(MyClassToAttachTheProperty, MyClassToAttachTheProperty::ClassData()
+ *       , Type, "propertyName", ZFPropertyNoInitValue
+ *       , public, public
  *       , myCallbackSetterInvoker
  *       , myCallbackGetterInvoker
  *       , myCallbackIsValueAccessed
@@ -529,14 +529,14 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *
  *   // or, if you simply want to register a raw value,
  *   // you may use ZFPropertyUserRegisterDefaultImplRetain or ZFPropertyUserRegisterDefaultImplAssign as default impl
- *   ZFPROPERTY_USER_REGISTER_RETAIN_DETAIL(MyClassToAttachTheProperty, MyClassToAttachTheProperty::ClassData(),
- *       Type, "propertyName", ZFPropertyNoInitValue,
- *       public, public
- *       ZFPropertyUserRegisterDefaultImplRetain<Type>::setterInvoker,
- *       ZFPropertyUserRegisterDefaultImplRetain<Type>::getterInvoker,
- *       ZFPropertyUserRegisterDefaultImplRetain<Type>::callbackIsValueAccessed,
- *       ZFPropertyUserRegisterDefaultImplRetain<Type>::callbackIsInitValue,
- *       ZFPropertyUserRegisterDefaultImplRetain<Type>::callbackValueReset
+ *   ZFPROPERTY_USER_REGISTER_RETAIN_DETAIL(MyClassToAttachTheProperty, MyClassToAttachTheProperty::ClassData()
+ *       , Type, "propertyName", ZFPropertyNoInitValue
+ *       , public, public
+ *       , ZFPropertyUserRegisterDefaultImplRetain<Type>::setterInvoker
+ *       , ZFPropertyUserRegisterDefaultImplRetain<Type>::getterInvoker
+ *       , ZFPropertyUserRegisterDefaultImplRetain<Type>::callbackIsValueAccessed
+ *       , ZFPropertyUserRegisterDefaultImplRetain<Type>::callbackIsInitValue
+ *       , ZFPropertyUserRegisterDefaultImplRetain<Type>::callbackValueReset
  *       )
  * @endcode
  *

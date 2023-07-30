@@ -150,28 +150,24 @@ public:
     /**
      * @brief dialog's layout param, created by #ZFUIDialogDefaultLayoutParamCreator by default
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUILayoutParam *, dialogLayoutParam,
-                               ZFUIDialogDefaultLayoutParamCreator().to<ZFUILayoutParam *>())
+    ZFPROPERTY_RETAIN_READONLY(ZFUILayoutParam *, dialogLayoutParam, ZFUIDialogDefaultLayoutParamCreator().to<ZFUILayoutParam *>())
 
     /**
      * @brief dialog's show animation, #ZFUIDialogDefaultAniShowCreator by default
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFAnimation *, dialogAniShow,
-                                ZFUIDialogDefaultAniShowCreator().to<ZFAnimation *>())
+    ZFPROPERTY_RETAIN_WITH_INIT(ZFAnimation *, dialogAniShow, ZFUIDialogDefaultAniShowCreator().to<ZFAnimation *>())
 
     /**
      * @brief dialog's hide animation, #ZFUIDialogDefaultAniHideCreator by default
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFAnimation *, dialogAniHide,
-                                ZFUIDialogDefaultAniHideCreator().to<ZFAnimation *>())
+    ZFPROPERTY_RETAIN_WITH_INIT(ZFAnimation *, dialogAniHide, ZFUIDialogDefaultAniHideCreator().to<ZFAnimation *>())
 
     /**
      * @brief dialog's background image
      *
      * note that the #ZFUIImage::imageNinePatch would be used as dialog content's margin
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIImage *, dialogBackgroundImage,
-                                zfRes("ZFUIWidget/ZFUIDialog_background.xml"))
+    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIImage *, dialogBackgroundImage, zfRes("ZFUIWidget/ZFUIDialog_background.xml"))
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImage *, dialogBackgroundImage)
 
     /**
