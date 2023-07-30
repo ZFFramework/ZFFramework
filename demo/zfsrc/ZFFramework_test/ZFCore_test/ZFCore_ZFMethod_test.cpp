@@ -60,14 +60,14 @@ public:
             , ZFMP_IN(const zfchar *, param0)
             , ZFMP_IN(const zfchar *, param1)
             ) {
-        zfLog() << param0 << param1;
+        zfLog() << param0 << " " << param1;
     }
     ZFMETHOD_INLINE_3(void, methodFor3Param
             , ZFMP_IN(const zfchar *, param0)
             , ZFMP_IN(const zfchar *, param1)
             , ZFMP_IN(const zfchar *, param2)
             ) {
-        zfLog() << param0 << param1 << param2;
+        zfLog() << param0 << " " << param1 << " " << param2;
     }
     ZFMETHOD_INLINE_4(void, methodFor4Param
             , ZFMP_IN(const zfchar *, param0)
@@ -75,7 +75,7 @@ public:
             , ZFMP_IN(const zfchar *, param2)
             , ZFMP_IN(const zfchar *, param3)
             ) {
-        zfLog() << param0 << param1 << param2 << param3;
+        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3;
     }
     ZFMETHOD_INLINE_5(void, methodFor5Param
             , ZFMP_IN(const zfchar *, param0)
@@ -84,7 +84,7 @@ public:
             , ZFMP_IN(const zfchar *, param3)
             , ZFMP_IN(const zfchar *, param4)
             ) {
-        zfLog() << param0 << param1 << param2 << param3 << param4;
+        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4;
     }
     ZFMETHOD_INLINE_6(void, methodFor6Param
             , ZFMP_IN(const zfchar *, param0)
@@ -94,7 +94,7 @@ public:
             , ZFMP_IN(const zfchar *, param4)
             , ZFMP_IN(const zfchar *, param5)
             ) {
-        zfLog() << param0 << param1 << param2 << param3 << param4 << param5;
+        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5;
     }
     ZFMETHOD_INLINE_7(void, methodFor7Param
             , ZFMP_IN(const zfchar *, param0)
@@ -105,7 +105,7 @@ public:
             , ZFMP_IN(const zfchar *, param5)
             , ZFMP_IN(const zfchar *, param6)
             ) {
-        zfLog() << param0 << param1 << param2 << param3 << param4 << param5 << param6;
+        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5 << " " << param6;
     }
     ZFMETHOD_INLINE_8(void, methodFor8Param
             , ZFMP_IN(const zfchar *, param0)
@@ -117,7 +117,7 @@ public:
             , ZFMP_IN(const zfchar *, param6)
             , ZFMP_IN(const zfchar *, param7)
             ) {
-        zfLog() << param0 << param1 << param2 << param3 << param4 << param5 << param6 << param7;
+        zfLog() << param0 << " " << param1 << " " << param2 << " " << param3 << " " << param4 << " " << param5 << " " << param6 << " " << param7;
     }
 };
 #if 0 // if opened, all method should be registered statically

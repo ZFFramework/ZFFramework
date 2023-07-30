@@ -39,7 +39,7 @@ protected:
                     {
                         buf.bufferSize(0);
                         conn->recv(buf, 4096);
-                        zfLog() << "server recv:" << buf.text();
+                        zfLog() << "server recv: " << buf.text();
 
                         conn->send("server reply");
                         break;
@@ -72,7 +72,7 @@ protected:
                 {
                     buf.bufferSize(0);
                     client->recv(buf);
-                    zfLog() << "client recv:" << buf.text();
+                    zfLog() << "client recv: " << buf.text();
 
                     testCase->testCaseStop();
                     break;

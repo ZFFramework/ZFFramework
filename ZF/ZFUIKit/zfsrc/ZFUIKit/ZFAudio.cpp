@@ -109,7 +109,7 @@ ZFMETHOD_DEFINE_0(ZFAudio, void, start) {
         ZFPROTOCOL_ACCESS(ZFAudio)->nativeAudioStart(this);
     }
     else {
-        zfLogTrim() << this << "start called before load success";
+        zfLogTrim() << this << " start called before load success";
     }
 }
 

@@ -52,7 +52,7 @@ ZFMAIN_ENTRY() { // app starts from here
     button->label()->text("click me");
     ZFLISTENER(onClick) {
         ZFUIButtonBasic *button = zfargs.senderT();
-        zfLogTrim() << "button clicked:" << button;
+        zfLogTrim() << "button clicked: " << button;
     } ZFLISTENER_END()
     button->onClick(onClick);
 }
@@ -108,7 +108,7 @@ ZFMAIN_ENTRY() {
                 .mp("zfstring", "testParam0")
                 , [](const ZFArgs &zfargs) {
                     ZFMethodInvokeData *m = zfargs.param0T();
-                    zfLogTrim() << m->invokerMethod << "called, param0:" << m->param0;
+                    zfLogTrim() << m->invokerMethod << " called, param0: " << m->param0;
                 })
         .classEnd();
 

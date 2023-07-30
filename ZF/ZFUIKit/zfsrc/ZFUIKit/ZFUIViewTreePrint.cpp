@@ -56,9 +56,6 @@ protected:
             , ZF_IN ZFOutputFormatStepEnum outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
-            , ZF_IN zfindex outputCount
-            , ZF_IN zfindex writtenLen
-            , ZF_IN_OUT_OPT void *&state
             ) {
         const zfchar *srcEnd = src + srcLen;
         while(src < srcEnd) {

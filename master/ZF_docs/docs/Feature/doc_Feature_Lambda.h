@@ -20,9 +20,9 @@
  *   zfblockedAlloc(ZFUIButton, btn);
  *   btn->observerAdd(ZFUIButton::EventButtonOnClick(), onClick);
  *
- *   zfLogTrim() << "before invoke:" << refCapture << valueCapture;
+ *   zfLogTrim() << "before invoke: " << refCapture << valueCapture;
  *   btn->simulateClick();
- *   zfLogTrim() << "after invoke:" << refCapture << valueCapture;
+ *   zfLogTrim() << "after invoke: " << refCapture << valueCapture;
  *
  *   // output:
  *   //   before invoke: (0, 0, 0, 0) (0, 0, 0, 0)

@@ -72,7 +72,7 @@ protected:
             // property list
             const ZFClass *clsTmp = p->classData();
             ZFOutput log = zfLog();
-            ZFOutputFormat::getFormat<ZFLogFormat *>(log)->c_autoSpace(zffalse)->c_autoEndl(zffalse);
+            ZFOutputFormat::getFormat<ZFLogFormat *>(log)->autoEndl(zffalse);
             log << "list: ";
             for(zfindex i = 0; i < clsTmp->propertyCount(); ++i) {
                 if(i > 0) {
@@ -84,10 +84,10 @@ protected:
 
             // reflect
             p->propertyAssign("oldValue");
-            zfLog() << "before:" << p->propertyAssign();
+            zfLog() << "before: " << p->propertyAssign();
             p->classData()->propertySetterForName("propertyAssign")->execute<void, zfstring const &>(p, "newValue");
-            zfLog() << "after:" << p->propertyAssign();
-            zfLog() << "access by reflect:" << p->classData()->propertyGetterForName("propertyAssign")->execute<zfstring const &>(p);
+            zfLog() << "after: " << p->propertyAssign();
+            zfLog() << "access by reflect: " << p->classData()->propertyGetterForName("propertyAssign")->execute<zfstring const &>(p);
 
             // retain
             zfLogTrim();
@@ -129,13 +129,13 @@ protected:
             pBase->propertyAssign("string set in another");
             ZFPropertyCopyAll(pChild, pBase);
             this->testCaseOutputSeparator();
-            zfLogTrim() << "after copy:" << pChild->propertyAssign();
+            zfLogTrim() << "after copy: " << pChild->propertyAssign();
 
             this->testCaseOutputSeparator();
             this->testCaseOutput("copy by ZFPropertyCopyAll");
             pChild->propertyAssign("");
             ZFPropertyCopyAll(pChild, pBase);
-            zfLogTrim() << "after copy:" << pChild->propertyAssign();
+            zfLogTrim() << "after copy: " << pChild->propertyAssign();
         }
 
         this->testCaseStop();

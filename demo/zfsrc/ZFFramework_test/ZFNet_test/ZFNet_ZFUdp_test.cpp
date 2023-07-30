@@ -34,7 +34,7 @@ protected:
                 while(server->valid()) {
                     zfindex recvSize = server->recv(recvAddr, buf, 4096);
                     if(recvSize > 0) {
-                        zfLog() << "server recv:" << buf.text();
+                        zfLog() << "server recv: " << buf.text();
                         server->send(recvAddr, "server reply");
                         break;
                     }
@@ -66,7 +66,7 @@ protected:
                 while(client->valid()) {
                     zfindex recvSize = client->recv(hostAddr, buf);
                     if(recvSize > 0) {
-                        zfLog() << "client recv:" << buf.text();
+                        zfLog() << "client recv: " << buf.text();
 
                         testCase->testCaseStop();
                         break;

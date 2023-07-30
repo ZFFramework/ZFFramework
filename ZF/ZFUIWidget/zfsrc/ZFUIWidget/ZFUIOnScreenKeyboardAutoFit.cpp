@@ -50,7 +50,7 @@ public:
             }
             this->autoFitMargin = ZFUIMarginZero();
             #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
-                zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin reset to" << this->autoFitMargin;
+                zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin reset to " << this->autoFitMargin;
             #endif
             this->pimplOwner->layoutParam()->layoutMargin(this->autoFitMargin);
         }
@@ -75,7 +75,7 @@ public:
                 ZFUIView::EventViewFocusOnChange(),
                 this->viewFocusOnChangeListener);
             #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
-                zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] focused view changed to" << (void *)zfnull;
+                zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] focused view changed to " << (void *)zfnull;
             #endif
             this->autoFitFocusedView = zfnull;
         }
@@ -100,7 +100,7 @@ public:
 
         this->autoFitMarginCalc(this->autoFitMargin, orgRect, ZFUIOnScreenKeyboardState::instanceForView(this->pimplOwner));
         #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
-            zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin changed to" << this->autoFitMargin;
+            zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin changed to " << this->autoFitMargin;
         #endif
         this->pimplOwner->layoutParam()->layoutMargin(this->autoFitMargin);
     }
@@ -146,7 +146,7 @@ public:
             layout->scrollEnable(layout->d->scrollEnableFlag && layout->autoFitScrollEnable());
             layout->d->autoFitMargin = ZFUIMarginZero();
             #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
-                zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin reset to" << layout->d->autoFitMargin;
+                zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] margin reset to " << layout->d->autoFitMargin;
             #endif
             layout->layoutParam()->layoutMargin(layout->d->autoFitMargin);
             layout->scrollContentFrame(ZFUIRectGetBounds(layout->viewFrame()));
@@ -175,7 +175,7 @@ public:
         }
 
         #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
-            zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] focused view changed to" << view;
+            zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] focused view changed to " << view;
         #endif
         layout->d->autoFitFocusedView = view;
         layout->d->autoFitFocusedViewNeedUpdate = zftrue;
@@ -290,7 +290,7 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
                     ) {
                 if(owner->autoFitFocusedView() != zfnull) {
                     #if _ZFP_ZFUIOnScreenKeyboardAutoFitLayout_DEBUG
-                        zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] scrollFocusedViewToVisible" << owner->autoFitFocusedView();
+                        zfLogTrim() << "[ZFUIOnScreenKeyboardAutoFitLayout] scrollFocusedViewToVisible " << owner->autoFitFocusedView();
                     #endif
                     owner->scrollChildToVisible(owner->autoFitFocusedView());
                 }

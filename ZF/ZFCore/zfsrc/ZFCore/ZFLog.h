@@ -56,7 +56,7 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
  *
  * these behavior can be changed by:
  * @code
- *   ZFOutputFormat::getFormat<ZFLogFormat *>()->c_autoSpace(xxx)->c_autoEndl(xxx);
+ *   ZFOutputFormat::getFormat<ZFLogFormat *>()->autoEndl(xxx);
  * @endcode
  * and they would be reset to default state after each zfLog call
  */
@@ -80,7 +80,6 @@ zfclass ZFLIB_ZFCore ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputForm
     ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
 
 public:
-    ZFPROPERTY_ASSIGN(zfbool, autoSpace, zftrue)
     ZFPROPERTY_ASSIGN(zfbool, autoEndl, zftrue)
 
 protected:
@@ -90,11 +89,19 @@ protected:
             , ZF_IN ZFOutputFormatStepEnum outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
-            , ZF_IN zfindex writtenLen
-            , ZF_IN zfindex outputCount
-            , ZF_IN_OUT_OPT void *&state
             );
 };
+
+/**
+ * @brief change default log format
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFLogFormatDefault
+        , ZFMP_IN(ZFLogFormat *, fmt)
+        )
+/**
+ * @brief get default log format
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFLogFormat *, ZFLogFormatDefault)
 
 // ============================================================
 // other convenient method

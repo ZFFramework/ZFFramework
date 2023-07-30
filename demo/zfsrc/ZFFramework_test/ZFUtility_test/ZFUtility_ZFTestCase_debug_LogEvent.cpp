@@ -7,7 +7,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent) {
     ZFLISTENER(testCaseOnOutput) {
         zfLogTrim()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
+            << zfstringWithFormat(" [%s] ", zfargs.sender()->classData()->classNameFull())
             << zfargs.param0()->to<v_zfstring *>()->zfv;
     } ZFLISTENER_END()
     this->testCaseOnOutputListener = testCaseOnOutput;
@@ -16,7 +16,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent) {
     ZFLISTENER(testCaseOnStart) {
         zfLogTrim()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
+            << zfstringWithFormat(" [%s] ", zfargs.sender()->classData()->classNameFull())
             << "========================== start ===========================";
     } ZFLISTENER_END()
     this->testCaseOnStartListener = testCaseOnStart;
@@ -25,7 +25,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent) {
     ZFLISTENER(testCaseOnProgress) {
         zfLogTrim()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
+            << zfstringWithFormat(" [%s] ", zfargs.sender()->classData()->classNameFull())
             << "progress updated";
     } ZFLISTENER_END()
     this->testCaseOnProgressListener = testCaseOnProgress;
@@ -34,7 +34,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUtility_ZFTestCase_debug_LogEvent) {
     ZFLISTENER(testCaseOnStop) {
         zfLogTrim()
             << zfLogCurTimeString()
-            << zfstringWithFormat("[%s]", zfargs.sender()->classData()->classNameFull())
+            << zfstringWithFormat(" [%s] ", zfargs.sender()->classData()->classNameFull())
             << "-------------------------- stop ----------------------------";
     } ZFLISTENER_END()
     this->testCaseOnStopListener = testCaseOnStop;

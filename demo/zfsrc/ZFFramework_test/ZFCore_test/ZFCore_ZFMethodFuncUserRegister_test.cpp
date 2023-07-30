@@ -128,7 +128,7 @@ protected:
 
             ZFMethodFuncUserUnregister(ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic"));
 
-            zfLogTrim() << "after unregister, method:"
+            zfLogTrim() << "after unregister, method: "
                 << ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic");
 
             this->testCaseOutput("all list:");

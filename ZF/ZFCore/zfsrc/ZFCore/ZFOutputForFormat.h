@@ -72,17 +72,12 @@ protected:
      * during output, it's ensured:
      * -  src is valid
      * -  srcLen is the src's length
-     * -  outputCount is the number of times that the output callback was called
-     * -  writtenLen is the number of chars that actually written to original output
      */
     virtual void format(
             ZF_IN_OUT zfstring &ret
             , ZF_IN ZFOutputFormatStepEnum outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
-            , ZF_IN zfindex outputCount
-            , ZF_IN zfindex writtenLen
-            , ZF_IN_OUT_OPT void *&state
             ) zfpurevirtual;
 public:
     inline void _ZFP_format(
@@ -90,11 +85,8 @@ public:
             , ZF_IN ZFOutputFormatStepEnum outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
-            , ZF_IN zfindex outputCount
-            , ZF_IN zfindex writtenLen
-            , ZF_IN_OUT_OPT void *&state
             ) {
-        this->format(ret, outputStep, src, srcLen, outputCount, writtenLen, state);
+        this->format(ret, outputStep, src, srcLen);
     }
 };
 
@@ -172,10 +164,18 @@ protected:
             , ZF_IN ZFOutputFormatStepEnum outputStep
             , ZF_IN const zfchar *src
             , ZF_IN zfindex srcLen
-            , ZF_IN zfindex outputCount
-            , ZF_IN zfindex writtenLen
-            , ZF_IN_OUT_OPT void *&state
             );
+    zfoverride
+    virtual void objectOnInit(void)
+    {
+        zfsuper::objectOnInit();
+        _ZFP_outputCount = 0;
+        _ZFP_needLinePrefix = zftrue;
+    }
+
+private:
+    zfindex _ZFP_outputCount;
+    zfbool _ZFP_needLinePrefix;
 };
 
 ZF_NAMESPACE_GLOBAL_END

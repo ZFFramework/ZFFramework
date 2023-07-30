@@ -88,32 +88,32 @@ private:
     void setupScrollListener(ZF_IN ZFUIListView *listView) {
 #if 0 // output logs during scroll event may cause performance issue
         ZFLISTENER(onDragBegin) {
-            zfLogTrim() << "onDragBegin  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrim() << "onDragBegin   " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnDragBegin(), onDragBegin);
 
         ZFLISTENER(onDrag) {
-            zfLogTrim() << "onDrag       " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrim() << "onDrag        " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnDrag(), onDrag);
 
         ZFLISTENER(onDragEnd) {
-            zfLogTrim() << "onDragEnd    " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrim() << "onDragEnd     " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnDragEnd(), onDragEnd);
 
         ZFLISTENER(onScrollBegin) {
-            zfLogTrim() << "onScrollBegin" << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrim() << "onScrollBegin " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnScrollBegin(), onScrollBegin);
 
         ZFLISTENER(onScroll) {
-            zfLogTrim() << "onScroll     " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrim() << "onScroll      " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnScroll(), onScroll);
 
         ZFLISTENER(onScrollEnd) {
-            zfLogTrim() << "onScrollEnd  " << zfargs.sender()->objectInfoOfInstance() << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
+            zfLogTrim() << "onScrollEnd   " << zfargs.sender()->objectInfoOfInstance() << " " << zfargs.sender()->to<ZFUIListView *>()->scrollContentFrame();
         } ZFLISTENER_END()
         listView->observerAdd(ZFUIListView::EventScrollOnScrollEnd(), onScrollEnd);
 #endif

@@ -97,8 +97,8 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFIndexRange, textSelectRange) {
 }
 
 ZFPROPERTY_ON_VERIFY_DEFINE(ZFUITextEdit, zfstring, text) {
-    if(!propertyValue.isEmpty() && !this->textShouldChange(propertyValue)) {
-        propertyValue.removeAll();
+    if(!this->textShouldChange(propertyValue)) {
+        propertyValue = propertyValueOld;
     }
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfstring, text) {
@@ -132,33 +132,6 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zffloat, textSize) {
     if(this->textSize() != propertyValueOld) {
         this->layoutRequest();
     }
-}
-
-ZFMETHOD_DEFINE_1(ZFUITextEdit, void, textStyleCopyFrom
-        , ZFMP_IN(ZFUITextView *, src)
-        ) {
-    if(src == zfnull) {
-        return;
-    }
-
-    this->text(src->text());
-    this->textAppearance(src->textAppearance());
-    this->textAlign(src->textAlign());
-    this->textColor(src->textColor());
-    this->textSize(src->textSize());
-}
-ZFMETHOD_DEFINE_1(ZFUITextEdit, void, textStyleCopyTo
-        , ZFMP_IN(ZFUITextView *, dst)
-        ) {
-    if(dst == zfnull) {
-        return;
-    }
-
-    dst->text(this->text());
-    dst->textAppearance(this->textAppearance());
-    dst->textAlign(this->textAlign());
-    dst->textColor(this->textColor());
-    dst->textSize(this->textSize());
 }
 
 void ZFUITextEdit::objectOnInit(void) {

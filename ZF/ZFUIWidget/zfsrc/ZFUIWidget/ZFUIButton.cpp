@@ -6,9 +6,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFUIButton_DEBUG 0
 #if _ZFP_ZFUIButton_DEBUG
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...) \
-        zfLogTrim() << "[ZFUIButton]" << zfstringWithFormat(fmt, ##__VA_ARGS__) << ZFLOG_HEADER_STRING;
+        zfLogTrim() << "[ZFUIButton] " << zfstringWithFormat(fmt, ##__VA_ARGS__) << " " << ZFLOG_HEADER_STRING;
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName) \
-        zfLogTrim() << "[ZFUIButton]" << ZFM_TOSTRING(actionName) << ZFLOG_HEADER_STRING;
+        zfLogTrim() << "[ZFUIButton] " << ZFM_TOSTRING(actionName) << " " << ZFLOG_HEADER_STRING;
 #else
     #define _ZFP_ZFUIButton_DEBUG_LOG(fmt, ...)
     #define _ZFP_ZFUIButton_DEBUG_EVENT(actionName)

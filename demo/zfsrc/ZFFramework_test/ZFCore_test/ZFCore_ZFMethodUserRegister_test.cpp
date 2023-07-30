@@ -127,7 +127,7 @@ protected:
 
             ZFMethodUserUnregister(zfself::ClassData()->methodForName("funcDynamic"));
 
-            zfLogTrim() << "after unregister, method:" << zfself::ClassData()->methodForName("funcDynamic");
+            zfLogTrim() << "after unregister, method: " << zfself::ClassData()->methodForName("funcDynamic");
 
             this->testCaseOutput("all list:");
             for(zfindex i = 0; i <= 8; ++i) {

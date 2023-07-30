@@ -81,15 +81,12 @@ zfclassFwd _ZFP_ZFUITextEditPrivate;
  * @note this view is used for simple text editing only,
  *   for simple text display, use #ZFUITextView,
  *   for rich text edit, you should supply your own implementation
- * @note this view is quite similar to #ZFUITextView,
- *   however, they have no relationship for some implementation's limitation,
- *   also, style and property copy logic not available between #ZFUITextView and #ZFUITextEdit,
- *   you should use #textStyleCopyFrom/#textStyleCopyTo instead
  * @note this view supply quite simple text edit logic,
  *   designed to be lightweighted and able to be embeded to other complex views
  */
-zfclass ZFLIB_ZFUIKit ZFUITextEdit : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIKit ZFUITextEdit : zfextends ZFUIView, zfimplements ZFUIText {
     ZFOBJECT_DECLARE(ZFUITextEdit, ZFUIView)
+    ZFIMPLEMENTS_DECLARE(ZFUIText)
     ZFSTYLE_DEFAULT_DECLARE(ZFUITextEdit)
 
 public:
@@ -200,55 +197,12 @@ public:
     ZFPROPERTY_ASSIGN(zfbool, textEditConfirmWhenLostFocus, zftrue)
 
 public:
-    /**
-     * @brief text, may be null if not set
-     */
-    ZFPROPERTY_ASSIGN(zfstring, text)
     ZFPROPERTY_ON_VERIFY_DECLARE(zfstring, text)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, text)
-
-    /**
-     * @brief text appearance, #ZFUIGlobalStyle::textAppearance by default
-     *
-     * note, for some implementations and font settings, italic or bold may or may not be supported
-     */
-    ZFPROPERTY_ASSIGN(ZFUITextAppearanceEnum, textAppearance, ZFUIGlobalStyle::DefaultStyle()->textAppearance())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearanceEnum, textAppearance)
-
-    /**
-     * @brief text alignment, #ZFUIGlobalStyle::textAlign by default
-     *
-     * note, for some implementations, some align type may or may not be supported\n
-     * usually only Left, Center, Right would be supported
-     */
-    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, textAlign, ZFUIGlobalStyle::DefaultStyle()->textAlign())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, textAlign)
-
-    /**
-     * @brief text color, #ZFUIGlobalStyle::textColorDefault by default
-     */
-    ZFPROPERTY_ASSIGN(ZFUIColor, textColor, ZFUIGlobalStyle::DefaultStyle()->textColorDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textColor)
-
-    /**
-     * @brief text size, #ZFUIGlobalStyle::textSizeNormal by default
-     */
-    ZFPROPERTY_ASSIGN(zffloat, textSize, ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSize)
-
-public:
-    /**
-     * @brief see #ZFUITextEdit
-     */
-    ZFMETHOD_DECLARE_1(void, textStyleCopyFrom
-            , ZFMP_IN(ZFUITextView *, src)
-            )
-    /**
-     * @brief see #ZFUITextEdit
-     */
-    ZFMETHOD_DECLARE_1(void, textStyleCopyTo
-            , ZFMP_IN(ZFUITextView *, dst)
-            )
 
 protected:
     zfoverride

@@ -27,14 +27,14 @@ static zfbool _ZFP_ZFFramework_test_luaTest(void) {
     extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForModule())));
     extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForStorageShared())));
 
-    zfLogTrim() << "external res:" << extResList;
+    zfLogTrim() << "external res: " << extResList;
     for(zfindex i = 0; i < extResList.count(); ++i) {
         ZFResExtPathAdd(extResList[i]);
     }
 
     ZFInput input = ZFInputForRes("zf.lua");
     if(input) {
-        zfLogTrim() << "redirect to:" << input.callbackId();
+        zfLogTrim() << "redirect to: " << input.callbackId();
         zfLogTrim() << "============================================================";
         ZFLuaExecute(input);
         ZFLuaGC();
@@ -60,7 +60,6 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
             zfLogTrim() << "note, these protocol has not been implemented:";
             for(zfindex i = 0; i < implDatas.count(); ++i) {
                 ZFOutput output = zfLogTrim();
-                ZFOutputFormat::getFormat<ZFLogFormat *>(output)->c_autoSpace(zffalse);
                 output << "    ";
                 ZFProtocolImplInfoPrint(implDatas[i], output);
             }

@@ -26,12 +26,12 @@ protected:
     zfoverride
     virtual void objectOnRetain(void) {
         zfsuper::objectOnRetain();
-        zfLog() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << " " << this->objectRetainCount();
     }
     zfoverride
     virtual void objectOnRelease(void) {
         zfsuper::objectOnRelease();
-        zfLog() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << " " << this->objectRetainCount();
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object)

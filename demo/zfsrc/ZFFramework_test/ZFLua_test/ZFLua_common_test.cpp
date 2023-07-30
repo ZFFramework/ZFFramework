@@ -19,12 +19,12 @@ protected:
     zfoverride
     virtual void objectOnRetain(void) {
         zfsuper::objectOnRetain();
-        zfLog() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << " " << this->objectRetainCount();
     }
     zfoverride
     virtual void objectOnRelease(void) {
         zfsuper::objectOnRelease();
-        zfLog() << (void *)this << this->objectRetainCount();
+        zfLog() << (void *)this << " " << this->objectRetainCount();
     }
 
 public:

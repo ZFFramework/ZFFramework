@@ -12,9 +12,6 @@ void ZFOutputFormat::format(
         , ZF_IN ZFOutputFormatStepEnum outputStep
         , ZF_IN const zfchar *src
         , ZF_IN zfindex srcLen
-        , ZF_IN zfindex outputCount
-        , ZF_IN zfindex writtenLen
-        , ZF_IN_OUT_OPT void *&state
         ) {
     // nothing to do
 }
@@ -27,9 +24,6 @@ public:
     ZFOutput output;
     ZFOutputFormat *format;
     ZFOutputFormatStepEnum outputStep;
-    zfindex outputCount;
-    zfindex writtenLen;
-    void *state;
 
 public:
     ZFALLOC_CACHE_RELEASE({
@@ -43,9 +37,6 @@ public:
             cache->format = zfnull;
         }
         cache->outputStep = ZFOutputFormatStep::e_OnInit;
-        cache->outputCount = 0;
-        cache->writtenLen = 0;
-        cache->state = zfnull;
     })
 
 protected:
@@ -53,9 +44,6 @@ protected:
     : output()
     , format(zfnull)
     , outputStep(ZFOutputFormatStep::e_OnInit)
-    , outputCount(0)
-    , writtenLen(0)
-    , state(zfnull)
     {
     }
 
@@ -73,28 +61,25 @@ protected:
 public:
     void outputBegin(void) {
         zfstring buf;
-        this->format->_ZFP_format(
-            buf, ZFOutputFormatStep::e_OnInit, "", 0, this->outputCount, this->writtenLen, this->state);
+        this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnInit, "", 0);
         if(!buf.isEmpty()) {
-            this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
+            this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
         }
     }
     void outputEnd(void) {
         zfstring buf;
-        this->format->_ZFP_format(
-            buf, ZFOutputFormatStep::e_OnOutputEnd, "", 0, this->outputCount, this->writtenLen, this->state);
+        this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnOutputEnd, "", 0);
         if(!buf.isEmpty()) {
             if(this->output) {
-                this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
+                this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
             }
             buf.removeAll();
         }
 
-        this->format->_ZFP_format(
-            buf, ZFOutputFormatStep::e_OnDealloc, "", 0, this->outputCount, this->writtenLen, this->state);
+        this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnDealloc, "", 0);
         if(!buf.isEmpty()) {
             if(this->output) {
-                this->writtenLen += this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
+                this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
             }
         }
     }
@@ -119,21 +104,12 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForFormatOwner, zfindex, onOutput
     }
 
     zfstring buf;
-    this->format->_ZFP_format(
-        buf,
-        ZFOutputFormatStep::e_OnOutput,
-        (const zfchar *)s,
-        count,
-        this->outputCount,
-        this->writtenLen,
-        this->state);
-    ++(this->outputCount);
+    this->format->_ZFP_format(buf, ZFOutputFormatStep::e_OnOutput, (const zfchar *)s, count);
     if(buf.isEmpty()) {
         return count * sizeof(zfchar);
     }
 
     zfindex written = this->output.execute(buf.cString(), buf.length() * sizeof(zfchar));
-    this->writtenLen += written;
     if(written == buf.length() * sizeof(zfchar)) {
         return count * sizeof(zfchar);
     }
@@ -264,21 +240,17 @@ void ZFOutputFormatBasic::format(
         , ZF_IN ZFOutputFormatStepEnum outputStep
         , ZF_IN const zfchar *src
         , ZF_IN zfindex srcLen
-        , ZF_IN zfindex outputCount
-        , ZF_IN zfindex writtenLen
-        , ZF_IN_OUT_OPT void *&state
         ) {
     switch(outputStep) {
         case ZFOutputFormatStep::e_OnInit:
-            state = (void *)zfnew(zfbool, zftrue);
+            _ZFP_needLinePrefix = zftrue;
             return;
         case ZFOutputFormatStep::e_OnDealloc:
-            zfdelete((zfbool *)state);
             return;
         case ZFOutputFormatStep::e_OnOutput:
             break;
         case ZFOutputFormatStep::e_OnOutputEnd:
-            if(outputCount > 0) {
+            if(_ZFP_outputCount > 0) {
                 ret += this->outputPostfix();
             }
             return;
@@ -286,12 +258,12 @@ void ZFOutputFormatBasic::format(
             zfCoreCriticalShouldNotGoHere();
             return;
     }
-    if(outputCount == 0) {
+    if(_ZFP_outputCount == 0) {
         ret += this->outputPrefix();
     }
-    zfbool &needLinePrefix = *(zfbool *)state;
-    if(needLinePrefix) {
-        needLinePrefix = zffalse;
+    ++_ZFP_outputCount;
+    if(_ZFP_needLinePrefix) {
+        _ZFP_needLinePrefix = zffalse;
         ret += this->linePrefix();
     }
 
@@ -299,13 +271,13 @@ void ZFOutputFormatBasic::format(
     const zfchar *p = src;
     while(src < srcEnd) {
         if(*src == '\n') {
-            if(needLinePrefix) {
+            if(_ZFP_needLinePrefix) {
                 ret += this->linePrefix();
             }
             ret.append(p, src - p);
             ret += this->linePostfix();
             ret += '\n';
-            needLinePrefix = zftrue;
+            _ZFP_needLinePrefix = zftrue;
             zfcharMoveNext(src);
             p = src;
             continue;
@@ -313,7 +285,7 @@ void ZFOutputFormatBasic::format(
         zfcharMoveNext(src);
     }
     if(p < src) {
-        needLinePrefix = zffalse;
+        _ZFP_needLinePrefix = zffalse;
         ret.append(p, src - p);
     }
 }

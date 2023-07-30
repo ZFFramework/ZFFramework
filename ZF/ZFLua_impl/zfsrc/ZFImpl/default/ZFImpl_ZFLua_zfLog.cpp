@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 static int _ZFP_ZFImpl_ZFLua_zfLog(ZF_IN lua_State *L) {
     ZFOutput o = zfLogTrim();
-    o << zfLogCurTimeString();
+    o << zfLogCurTimeString() << " ";
 
     zfstring s;
     if(ZFImpl_ZFLua_zfstringAppend(L, s)) {

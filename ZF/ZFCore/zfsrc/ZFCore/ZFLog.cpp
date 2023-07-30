@@ -14,9 +14,6 @@ void ZFLogFormat::format(
         , ZF_IN ZFOutputFormatStepEnum outputStep
         , ZF_IN const zfchar *src
         , ZF_IN zfindex srcLen
-        , ZF_IN zfindex writtenLen
-        , ZF_IN zfindex outputCount
-        , ZF_IN_OUT_OPT void *&state
         ) {
     switch(outputStep) {
         case ZFOutputFormatStep::e_OnInit:
@@ -25,16 +22,12 @@ void ZFLogFormat::format(
             }
             break;
         case ZFOutputFormatStep::e_OnDealloc:
-            this->autoSpace(zftrue);
             this->autoEndl(zftrue);
             if(_ZFP_ZFLogMutex != zfnull) {
                 _ZFP_ZFLogMutex->mutexUnlock();
             }
             break;
         case ZFOutputFormatStep::e_OnOutput:
-            if(this->autoSpace() && outputCount > 0) {
-                ret += " ";
-            }
             ret.append(src, srcLen);
             break;
         case ZFOutputFormatStep::e_OnOutputEnd:
@@ -63,6 +56,18 @@ ZF_GLOBAL_INITIALIZER_END(ZFLogDataHolder)
 
 ZFMETHOD_FUNC_DEFINE_0(ZFMutex *, ZFLogMutex) {
     return _ZFP_ZFLogMutex;
+}
+
+ZFMETHOD_FUNC_DEFINE_1(void, ZFLogFormatDefault
+        , ZFMP_IN(ZFLogFormat *, fmt)
+        ) {
+    if(fmt != zfnull)
+    {
+        zfRetainChange(_ZFP_ZFLogFormatHolder, fmt);
+    }
+}
+ZFMETHOD_FUNC_DEFINE_0(ZFLogFormat *, ZFLogFormatDefault) {
+    return _ZFP_ZFLogFormatHolder;
 }
 
 zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo) {
