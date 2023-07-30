@@ -229,11 +229,12 @@ zfindex zfstringReplace(
     zfindex replaceFromLen = zfslen(replaceFrom);
     zfindex replaceToLen = zfslen(replaceTo);
     zfindex pos = 0;
+    zfindex posStart = pos;
     while(maxCount == zfindexMax() || replacedCount < maxCount) {
-        pos = zfstringFind(s.cString() + pos, s.length() - pos, replaceFrom, replaceFromLen);
+        pos = zfstringFind(s.cString() + posStart, s.length() - posStart, replaceFrom, replaceFromLen);
         if(pos == zfindexMax()) {break;}
-        s.replace(pos, replaceFromLen, replaceTo);
-        pos += replaceToLen;
+        s.replace(posStart + pos, replaceFromLen, replaceTo);
+        posStart = posStart + pos + replaceToLen;
         ++replacedCount;
     }
     return replacedCount;
@@ -247,10 +248,12 @@ zfindex zfstringReplaceReversely(
     zfindex replacedCount = 0;
     zfindex replaceFromLen = zfslen(replaceFrom);
     zfindex pos = s.length();
+    zfindex posStart = pos;
     while(maxCount == zfindexMax() || replacedCount < maxCount) {
-        pos = zfstringFindReversely(s.cString(), pos, replaceFrom, replaceFromLen);
+        pos = zfstringFindReversely(s.cString(), posStart, replaceFrom, replaceFromLen);
         if(pos == zfindexMax()) {break;}
         s.replace(pos, replaceFromLen, replaceTo);
+        posStart = pos;
         ++replacedCount;
     }
     return replacedCount;
