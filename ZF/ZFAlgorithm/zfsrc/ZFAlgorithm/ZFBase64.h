@@ -67,6 +67,19 @@ ZFMETHOD_FUNC_DECLARE_6(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Encode
         , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
         )
 
+/**
+ * @brief encode base64, return byte size written even if error occurred
+ */
+ZFMETHOD_FUNC_DECLARE_7(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Encode
+        , ZFMP_IN_OUT(zfstring &, buf)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        )
+
 // ============================================================
 // decode
 /**
@@ -99,6 +112,18 @@ extern ZFLIB_ZFAlgorithm zfbool ZFBase64Decode(
 ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Decode
         , ZFMP_IN_OUT(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFInput &, inputCallback)
+        , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        )
+
+/**
+ * @brief encode base64, return byte size written even if error occurred
+ */
+ZFMETHOD_FUNC_DECLARE_6(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Decode
+        , ZFMP_IN_OUT(zfstring &, buf)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
         , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
         , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())

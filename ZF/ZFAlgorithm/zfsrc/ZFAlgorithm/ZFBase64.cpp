@@ -101,6 +101,17 @@ ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Encode
     }
     return zftrue;
 }
+ZFMETHOD_FUNC_DEFINE_7(zfbool, ZFBase64Encode
+        , ZFMP_IN_OUT(zfstring &, buf)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        , ZFMP_IN_OPT(zfindex, lineBreakPos, ZFBase64LineBreakPosNone())
+        ) {
+    return ZFBase64Encode(ZFOutputForString(buf), ZFInputForBufferUnsafe(src, srcLen), outResultSize, table, pad, lineBreakPos);
+}
 
 // ============================================================
 // decode
@@ -207,6 +218,16 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFBase64Decode
         *outResultSize = writtenCount;
     }
     return success;
+}
+ZFMETHOD_FUNC_DEFINE_6(zfbool, ZFBase64Decode
+        , ZFMP_IN_OUT(zfstring &, buf)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfindex *, outResultSize, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, table, ZFBase64TableDefault())
+        , ZFMP_IN_OPT(zfchar, pad, ZFBase64PadDefault())
+        ) {
+    return ZFBase64Decode(ZFOutputForString(buf), ZFInputForBufferUnsafe(src, srcLen), outResultSize, table, pad);
 }
 
 // ============================================================

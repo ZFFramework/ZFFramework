@@ -10,45 +10,45 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief init value for continous calculation, see #zfCrc32Calc
+ * @brief init value for continous calculation, see #ZFCrc32
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32ValueZero)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32Zero)
 
 /**
  * @brief invalid value for CRC32
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32ValueInvalid)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32Invalid)
 
 /**
- * @brief calculate CRC32, return #ZFCrc32ValueInvalid if failed
+ * @brief calculate CRC32, return #ZFCrc32Invalid if failed
  *
  * prevResult is used for continous calculation for performance,
  * you may separate big buffer to small ones,
  * and calculate separately
  */
-extern ZFLIB_ZFAlgorithm zfflags zfCrc32Calc(
+extern ZFLIB_ZFAlgorithm zfflags ZFCrc32(
         ZF_IN const void *src
-        , ZF_IN zfindex len
-        , ZF_IN_OPT zfflags prevResult = ZFCrc32ValueZero()
+        , ZF_IN zfindex srcLen
+        , ZF_IN_OPT zfflags prevResult = ZFCrc32Zero()
         );
 /**
- * @brief calculate CRC32, return #ZFCrc32ValueInvalid if failed
+ * @brief calculate CRC32, return #ZFCrc32Invalid if failed
  *
  * prevResult is used for continous calculation for performance,
  * you may separate big buffer to small ones,
  * and calculate separately
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfflags, zfCrc32Calc
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32
         , ZFMP_IN(const ZFInput &, callback)
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero())
+        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
         )
 /**
- * @brief see #zfCrc32Calc
+ * @brief see #ZFCrc32
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfflags, zfCrc32Calc
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero())
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
         )
 
 ZF_NAMESPACE_GLOBAL_END

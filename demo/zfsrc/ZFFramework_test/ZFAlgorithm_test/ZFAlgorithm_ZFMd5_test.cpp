@@ -14,7 +14,7 @@ protected:
         zfstring testValue = "A906449D5769FA7361D7ECC6AA3F6D28"; // testString's MD5 to verify
         zfstring value;
 
-        value = zfMd5Calc((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
+        value = ZFMd5((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
         this->testCaseOutput("MD5 of array \"%s\": %s", testString, value.cString());
         ZFTestCaseAssert(value == testValue);
 
@@ -27,7 +27,7 @@ protected:
         }
         this->testCaseOutput("write it to file %s, file's MD5: %s",
                 tmpFilePath.cString(),
-                zfMd5Calc(ZFInputForFile(tmpFilePath)).cString());
+                ZFMd5(ZFInputForFile(tmpFilePath)).cString());
 
         this->testCaseOutputSeparator();
         tmpFilePath = this->testCaseUseTmpFile("ZFMd5_Md5_big.txt");
@@ -44,7 +44,7 @@ protected:
             fp = zfnull;
         }
         ZFTimeValue tv1 = ZFTime::currentTimeValue();
-        zfstring MD5BigFile = zfMd5Calc(ZFInputForFile(tmpFilePath.cString()));
+        zfstring MD5BigFile = ZFMd5(ZFInputForFile(tmpFilePath.cString()));
         ZFTimeValue tv2 = ZFTimeValueDec(ZFTime::currentTimeValue(), tv1);
         this->testCaseOutput("write it 1000*1000 times to file %s, file's size: %zi, MD5: %s, time: %s.%03s %03s",
             tmpFilePath.cString(),

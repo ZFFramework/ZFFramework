@@ -2,8 +2,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_VAR_READONLY_DEFINE(zfflags, ZFCrc32ValueZero, ((zfflags)0x0))
-ZFEXPORT_VAR_READONLY_DEFINE(zfflags, ZFCrc32ValueInvalid, ((zfflags)0xFFFFFFFF))
+ZFEXPORT_VAR_READONLY_DEFINE(zfflags, ZFCrc32Zero, ((zfflags)0x0))
+ZFEXPORT_VAR_READONLY_DEFINE(zfflags, ZFCrc32Invalid, ((zfflags)0xFFFFFFFF))
 
 // ============================================================
 // ZFCrc32 initializer
@@ -31,31 +31,31 @@ static zft_zfuint32 *_ZFP_ZFCrc32TableRef(void) {
 
 // ============================================================
 // ZFCrc32
-zfflags zfCrc32Calc(
+zfflags ZFCrc32(
         ZF_IN const void *src
-        , ZF_IN zfindex len
-        , ZF_IN_OPT zfflags prevResult /* = ZFCrc32ValueZero() */
+        , ZF_IN zfindex srcLen
+        , ZF_IN_OPT zfflags prevResult /* = ZFCrc32Zero() */
         ) {
-    if(src == zfnull) {return ZFCrc32ValueInvalid();}
+    if(src == zfnull) {return ZFCrc32Invalid();}
     const zfbyte *p = (const zfbyte *)src;
     zft_zfuint32 ret = prevResult;
-    ret ^= ZFCrc32ValueInvalid();
-    for(const zfbyte *pEnd = p + len; p != pEnd; ++p) {
+    ret ^= ZFCrc32Invalid();
+    for(const zfbyte *pEnd = p + srcLen; p != pEnd; ++p) {
         ret = _ZFP_ZFCrc32Table[(ret ^ (*p)) & 0xFF] ^ (ret >> 8);
     }
-    ret ^= ZFCrc32ValueInvalid();
+    ret ^= ZFCrc32Invalid();
     return zfflags(ret);
 }
-ZFMETHOD_FUNC_DEFINE_2(zfflags, zfCrc32Calc
+ZFMETHOD_FUNC_DEFINE_2(zfflags, ZFCrc32
         , ZFMP_IN(const ZFInput &, callback)
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero())
+        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
         ) {
-    if(!callback) {return ZFCrc32ValueInvalid();}
+    if(!callback) {return ZFCrc32Invalid();}
 
     zfbyte buf[1024] = {0};
     zfindex readCount = 0;
     zft_zfuint32 ret = prevResult;
-    ret ^= ZFCrc32ValueInvalid();
+    ret ^= ZFCrc32Invalid();
     while((readCount = callback.execute(buf, 1024)) > 0) {
         const zfbyte *p = buf;
         const zfbyte *pEnd = buf + readCount;
@@ -63,15 +63,15 @@ ZFMETHOD_FUNC_DEFINE_2(zfflags, zfCrc32Calc
             ret = _ZFP_ZFCrc32Table[(ret ^ (*p)) & 0xFF] ^ (ret >> 8);
         }
     }
-    ret ^= ZFCrc32ValueInvalid();
+    ret ^= ZFCrc32Invalid();
     return zfflags(ret);
 }
-ZFMETHOD_FUNC_DEFINE_3(zfflags, zfCrc32Calc
+ZFMETHOD_FUNC_DEFINE_3(zfflags, ZFCrc32
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, len, zfindexMax())
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32ValueZero())
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
         ) {
-    return zfCrc32Calc((const void *)src, ((len == zfindexMax()) ? zfslen(src) : len), prevResult);
+    return ZFCrc32((const void *)src, ((srcLen == zfindexMax()) ? zfslen(src) : srcLen), prevResult);
 }
 
 ZF_NAMESPACE_GLOBAL_END

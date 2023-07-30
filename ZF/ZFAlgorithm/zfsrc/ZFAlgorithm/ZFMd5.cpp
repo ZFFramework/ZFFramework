@@ -14,17 +14,17 @@ static void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex siz
 static void _ZFP_ZFMd5_Final(zfbyte *result, _ZFP_ZFMd5_CTX *ctx);
 
 #define _ZFP_ZFMd5_blockSize 512
-void zfMd5Calc(
+void ZFMd5(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const void *src
-        , ZF_IN zfindex len
+        , ZF_IN zfindex srcLen
         , ZF_IN_OPT zfbool upperCase /* = zftrue */
         ) {
     _ZFP_ZFMd5_CTX md5Ctx;
     _ZFP_ZFMd5_Init(&md5Ctx);
 
     const zfbyte *srcTmp = (const zfbyte *)src;
-    const zfbyte *srcEndTmp = srcTmp + len;
+    const zfbyte *srcEndTmp = srcTmp + srcLen;
     while(srcEndTmp - srcTmp >= _ZFP_ZFMd5_blockSize) {
         _ZFP_ZFMd5_Update(&md5Ctx, srcTmp, _ZFP_ZFMd5_blockSize);
         srcTmp += _ZFP_ZFMd5_blockSize;
@@ -47,7 +47,7 @@ void zfMd5Calc(
         }
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(void, zfMd5Calc
+ZFMETHOD_FUNC_DEFINE_3(void, ZFMd5
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const ZFInput &, callback)
         , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
@@ -86,15 +86,32 @@ ZFMETHOD_FUNC_DEFINE_3(void, zfMd5Calc
         }
     }
 }
-ZFMETHOD_FUNC_DEFINE_2(zfstring, zfMd5Calc
+ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFMd5
         , ZFMP_IN(const ZFInput &, callback)
         , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
         ) {
     zfstring ret;
-    zfMd5Calc(ret, callback, upperCase);
+    ZFMd5(ret, callback, upperCase);
     return ret;
 }
 
+ZFMETHOD_FUNC_DEFINE_4(void, ZFMd5
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
+        ) {
+    return ZFMd5(ret, (const void *)src, srcLen, upperCase);
+}
+ZFMETHOD_FUNC_DEFINE_3(zfstring, ZFMd5
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
+        ) {
+    return ZFMd5((const void *)src, srcLen, upperCase);
+}
+
+// ============================================================
 /*
  * The basic MD5 functions.
  *
