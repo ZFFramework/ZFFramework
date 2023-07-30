@@ -35,7 +35,7 @@ zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule {
 
 public:
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM_WITH_INIT(ZFUIAutoLayoutPosEnum, pos, ZFUIAutoLayoutPos::e_None)
+    ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, pos, ZFUIAutoLayoutPos::e_None)
 
 private:
     zfautoObjectT<ZFObjectHolder *> target_PropV;
@@ -65,9 +65,9 @@ public:
     }
 
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM_WITH_INIT(ZFUIAutoLayoutPosEnum, targetPos, ZFUIAutoLayoutPos::e_None)
+    ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, targetPos, ZFUIAutoLayoutPos::e_None)
     /** @brief see #ZFUIAutoLayout */
-    ZFCORE_PARAM_WITH_INIT(zffloat, weight, 0)
+    ZFCORE_PARAM(zffloat, weight, 0)
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM(zffloat, offset)
 
@@ -110,9 +110,9 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam {
     ZFOBJECT_DECLARE(ZFUIAutoLayoutParam, ZFUILayoutParam)
 
     /** @brief see #ZFUIAutoLayout */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, biasX, 0.5f)
+    ZFPROPERTY_ASSIGN(zffloat, biasX, 0.5f)
     /** @brief see #ZFUIAutoLayout */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, biasY, 0.5f)
+    ZFPROPERTY_ASSIGN(zffloat, biasY, 0.5f)
 
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutAlign)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutMargin)

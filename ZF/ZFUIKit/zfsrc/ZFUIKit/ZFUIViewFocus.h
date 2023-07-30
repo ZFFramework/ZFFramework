@@ -45,11 +45,11 @@ zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam {
     /**
      * @brief direction to find, #ZFUIOrientation::e_Right | #ZFUIOrientation::e_Bottom by default
      */
-    ZFCORE_PARAM_WITH_INIT(ZFUIOrientationFlags, focusDirection, (ZFUIOrientation::e_Right | ZFUIOrientation::e_Bottom))
+    ZFCORE_PARAM(ZFUIOrientationFlags, focusDirection, (ZFUIOrientation::e_Right | ZFUIOrientation::e_Bottom))
     /**
      * @brief whether find in loop mode, false by default
      */
-    ZFCORE_PARAM_WITH_INIT(zfbool, focusLoopMode, zffalse)
+    ZFCORE_PARAM(zfbool, focusLoopMode, zffalse)
     /**
      * @brief only find within this view, null to end with #ZFUIWindow, null by default
      */
@@ -57,7 +57,7 @@ zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam {
     /**
      * @brief whether to find internal views, true by default
      */
-    ZFCORE_PARAM_WITH_INIT(zfbool, focusInternalViews, zftrue)
+    ZFCORE_PARAM(zfbool, focusInternalViews, zftrue)
 
 public:
     /** @cond ZFPrivateDoc */

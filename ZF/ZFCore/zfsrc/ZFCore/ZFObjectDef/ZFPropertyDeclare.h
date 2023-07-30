@@ -29,6 +29,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
 // ============================================================
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPropertyNoInitValue
+#define _ZFP_PropInitV(...) __VA_ARGS__
 
 // ============================================================
 /**
@@ -95,15 +96,9 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *     ZFPROPERTY_RETAIN(Type, Name)
  *   @endcode
  */
-#define ZFPROPERTY_RETAIN(Type, Name) \
+#define ZFPROPERTY_RETAIN(Type, Name, ...) \
     ZFPROPERTY_RETAIN_DETAIL( \
-        Type, Name, ZFPropertyNoInitValue, \
-        public, public)
-
-/** @brief see #ZFPROPERTY_RETAIN */
-#define ZFPROPERTY_RETAIN_WITH_INIT(Type, Name, InitValueOrEmpty) \
-    ZFPROPERTY_RETAIN_DETAIL( \
-        Type, Name, InitValueOrEmpty, \
+        Type, Name, _ZFP_PropInitV(__VA_ARGS__), \
         public, public)
 
 /** @brief see #ZFPROPERTY_RETAIN */
@@ -125,15 +120,9 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
 
 // ============================================================
 /** @brief see #ZFPROPERTY_RETAIN */
-#define ZFPROPERTY_ASSIGN(Type, Name) \
+#define ZFPROPERTY_ASSIGN(Type, Name, ...) \
     ZFPROPERTY_ASSIGN_DETAIL( \
-        Type, Name, ZFPropertyNoInitValue, \
-        public, public)
-
-/** @brief see #ZFPROPERTY_RETAIN */
-#define ZFPROPERTY_ASSIGN_WITH_INIT(Type, Name, InitValueOrEmpty) \
-    ZFPROPERTY_ASSIGN_DETAIL( \
-        Type, Name, InitValueOrEmpty, \
+        Type, Name, _ZFP_PropInitV(__VA_ARGS__), \
         public, public)
 
 /** @brief see #ZFPROPERTY_RETAIN */

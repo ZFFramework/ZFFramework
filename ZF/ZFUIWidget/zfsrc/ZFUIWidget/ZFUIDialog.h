@@ -133,19 +133,19 @@ public:
      * @brief whether this dialog update layout according to #ZFUISysWindow::sysWindowMargin,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, sysWindowMarginShouldApply, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, sysWindowMarginShouldApply, zftrue)
 
     /**
      * @brief dialog's background color, #ZFUIGlobalStyle::colorMask by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, dialogWindowColor, ZFUIGlobalStyle::DefaultStyle()->colorMask())
+    ZFPROPERTY_ASSIGN(ZFUIColor, dialogWindowColor, ZFUIGlobalStyle::DefaultStyle()->colorMask())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, dialogWindowColor)
     /**
      * @brief whether auto dim window background by an alpha change animation, true by default
      *
      * valid only if #dialogWindowColor is not transparent
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, dialogWindowAutoDim, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, dialogWindowAutoDim, zftrue)
 
     /**
      * @brief dialog's layout param, created by #ZFUIDialogDefaultLayoutParamCreator by default
@@ -155,19 +155,19 @@ public:
     /**
      * @brief dialog's show animation, #ZFUIDialogDefaultAniShowCreator by default
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFAnimation *, dialogAniShow, ZFUIDialogDefaultAniShowCreator().to<ZFAnimation *>())
+    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniShow, ZFUIDialogDefaultAniShowCreator().to<ZFAnimation *>())
 
     /**
      * @brief dialog's hide animation, #ZFUIDialogDefaultAniHideCreator by default
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFAnimation *, dialogAniHide, ZFUIDialogDefaultAniHideCreator().to<ZFAnimation *>())
+    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniHide, ZFUIDialogDefaultAniHideCreator().to<ZFAnimation *>())
 
     /**
      * @brief dialog's background image
      *
      * note that the #ZFUIImage::imageNinePatch would be used as dialog content's margin
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIImage *, dialogBackgroundImage, zfRes("ZFUIWidget/ZFUIDialog_background.xml"))
+    ZFPROPERTY_RETAIN(ZFUIImage *, dialogBackgroundImage, zfRes("ZFUIWidget/ZFUIDialog_background.xml"))
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImage *, dialogBackgroundImage)
 
     /**
@@ -175,7 +175,7 @@ public:
      *
      * focus would be done by #dialogFocusOnUpdate
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, dialogFocusAutomatically, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, dialogFocusAutomatically, zftrue)
 
     /**
      * @brief whether hide when touched outside of the dialog, false by default
@@ -202,7 +202,7 @@ public:
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, dialogWindowAutoResize, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, dialogWindowAutoResize, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, dialogWindowAutoResize)
 
     /**
@@ -211,7 +211,7 @@ public:
      *
      * auto fit settings can be changed by #dialogWindowAutoFitLayout
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, dialogWindowAutoFit, zffalse)
+    ZFPROPERTY_ASSIGN(zfbool, dialogWindowAutoFit, zffalse)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, dialogWindowAutoFit)
     /** @brief see #dialogWindowAutoFit */
     ZFMETHOD_DECLARE_0(ZFUIOnScreenKeyboardAutoFitLayout *, dialogWindowAutoFitLayout)

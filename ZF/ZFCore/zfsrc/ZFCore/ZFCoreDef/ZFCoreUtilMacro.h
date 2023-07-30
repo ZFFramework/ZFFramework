@@ -513,12 +513,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   YourParamType paramValue = v.paramName();
  * @endcode
  */
-#define ZFCORE_PARAM(T_ParamType, paramName) \
-    ZFCORE_PARAM_WITH_INIT(T_ParamType, paramName, ZFM_EMPTY())
-/**
- * @brief see #ZFCORE_PARAM
- */
-#define ZFCORE_PARAM_WITH_INIT(T_ParamType, paramName, initValue) \
+#define ZFCORE_PARAM(T_ParamType, paramName, ...) \
+    _ZFP_ZFCORE_PARAM(T_ParamType, paramName, _ZFP_ZFCORE_PARAM_INIT(__VA_ARGS__))
+#define _ZFP_ZFCORE_PARAM_INIT(...) __VA_ARGS__
+#define _ZFP_ZFCORE_PARAM(T_ParamType, paramName, initValue) \
     public: \
         inline T_ParamType const &paramName(void) const { \
             return this->paramName##_PropV.value; \

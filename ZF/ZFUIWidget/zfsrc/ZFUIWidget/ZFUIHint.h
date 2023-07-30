@@ -110,7 +110,7 @@ public:
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,
      *   true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, hintWindowAutoResize, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, hintWindowAutoResize, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, hintWindowAutoResize)
 
 public:

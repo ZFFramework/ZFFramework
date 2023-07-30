@@ -28,176 +28,176 @@ public:
      * if you want to support higher screen resolution,
      * supply larger pixel image and increase this scale value
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, imageScale, 2.0f)
+    ZFPROPERTY_ASSIGN(zffloat, imageScale, 2.0f)
 
     // ============================================================
     // common size hints
     /**
      * @brief space between inner items
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSpace, 8)
+    ZFPROPERTY_ASSIGN(zffloat, itemSpace, 8)
     /**
      * @brief space to outer containers
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemMargin, 8)
+    ZFPROPERTY_ASSIGN(zffloat, itemMargin, 8)
 
     // ============================================================
     // item size hints
     /**
      * @brief text item size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeText, 21)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeText, 21)
     /**
      * @brief small control item size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeControl, 32)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeControl, 32)
     /**
      * @brief button size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeButton, 44)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeButton, 44)
     /**
      * @brief button size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeButtonWidth, 68)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeButtonWidth, 68)
     /**
      * @brief icon size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeIcon, 40)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeIcon, 40)
     /**
      * @brief icon size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeIconSmall, 32)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeIconSmall, 32)
     /**
      * @brief list cell size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeListCell, 48)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeListCell, 48)
     /**
      * @brief dialog item size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeDialog, 80)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeDialog, 80)
     /**
      * @brief dialog item size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, itemSizeDialogWidth, 200)
+    ZFPROPERTY_ASSIGN(zffloat, itemSizeDialogWidth, 200)
 
     // ============================================================
     // text size hints
     /**
      * @brief extra tiny text size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeExtraTiny, 8)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeExtraTiny, 8)
     /**
      * @brief tiny text size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeTiny, 10)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeTiny, 10)
     /**
      * @brief small text size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeSmall, 12)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeSmall, 12)
     /**
      * @brief normal text size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeNormal, 14)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeNormal, 14)
     /**
      * @brief big text size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeBig, 16)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeBig, 16)
     /**
      * @brief large text size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeLarge, 18)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeLarge, 18)
     /**
      * @brief extra large text size hint
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSizeExtraLarge, 20)
+    ZFPROPERTY_ASSIGN(zffloat, textSizeExtraLarge, 20)
 
     // ============================================================
     // text settings
     /**
      * @brief default text appearance
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextAppearanceEnum, textAppearance, ZFUITextAppearance::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextAppearanceEnum, textAppearance, ZFUITextAppearance::EnumDefault())
     /**
      * @brief default text align
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, textAlign, ZFUIAlign::e_Left)
+    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, textAlign, ZFUIAlign::e_Left)
     /**
      * @brief default text truncate mode
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextTruncateModeEnum, textTruncateMode, ZFUITextTruncateMode::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextTruncateModeEnum, textTruncateMode, ZFUITextTruncateMode::EnumDefault())
 
     // ============================================================
     // generanl colors
     /**
      * @brief default background color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorBgDefault, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorBgDefault, ZFUIColorGrayLight())
     /**
      * @brief item background color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorBgItem, ZFUIColorWhite())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorBgItem, ZFUIColorWhite())
     /**
      * @brief separator color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorSeparator, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorSeparator, ZFUIColorGrayLight())
     /**
      * @brief shadow color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorShadow, ZFUIColorWithA(ZFUIColorBlack(), 0.5f))
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorShadow, ZFUIColorWithA(ZFUIColorBlack(), 0.5f))
     /**
      * @brief mask color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorMask, ZFUIColorWithA(ZFUIColorBlack(), 0.5f))
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorMask, ZFUIColorWithA(ZFUIColorBlack(), 0.5f))
     /**
      * @brief tint color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, colorTint, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, colorTint, ZFUIColorGrayLight())
 
     // ============================================================
     // text colors
     /**
      * @brief default text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorDefault, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorDefault, ZFUIColorBlack())
     /**
      * @brief secondary default text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorSecondary, ZFUIColorGray())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorSecondary, ZFUIColorGray())
     /**
      * @brief hint text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorHint, ZFUIColorGrayLight())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorHint, ZFUIColorGrayLight())
     /**
      * @brief link text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorLink, ZFUIColorBlue())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorLink, ZFUIColorBlue())
     /**
      * @brief visited link text color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColorLinkVisited, ZFUIColorMagenta())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColorLinkVisited, ZFUIColorMagenta())
 
     // ============================================================
     // control
     /**
      * @brief normal control color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorNormal, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorNormal, ZFUIColorBlack())
     /**
      * @brief highlighted control color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorHighlighted, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorHighlighted, ZFUIColorBlack())
     /**
      * @brief checked control color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorChecked, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorChecked, ZFUIColorBlack())
     /**
      * @brief checked highlighted control color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorCheckedHighlighted, ZFUIColorBlack())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorCheckedHighlighted, ZFUIColorBlack())
     /**
      * @brief disabled control color
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, controlColorDisabled, ZFUIColorGray())
+    ZFPROPERTY_ASSIGN(ZFUIColor, controlColorDisabled, ZFUIColorGray())
 };
 
 ZF_NAMESPACE_GLOBAL_END

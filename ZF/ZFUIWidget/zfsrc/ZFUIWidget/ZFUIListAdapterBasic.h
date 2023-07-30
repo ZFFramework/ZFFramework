@@ -19,7 +19,7 @@ public:
     /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
     ZFPROPERTY_ASSIGN(zfindex, cellIndex)
     /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, cellSize, -1)
+    ZFPROPERTY_ASSIGN(zffloat, cellSize, -1)
 };
 
 // ============================================================

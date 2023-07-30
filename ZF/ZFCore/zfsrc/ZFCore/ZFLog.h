@@ -80,8 +80,8 @@ zfclass ZFLIB_ZFCore ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputForm
     ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
 
 public:
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoSpace, zftrue)
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, autoEndl, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, autoSpace, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, autoEndl, zftrue)
 
 protected:
     zfoverride

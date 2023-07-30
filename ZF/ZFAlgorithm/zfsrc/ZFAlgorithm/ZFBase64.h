@@ -139,11 +139,11 @@ zfclass ZFLIB_ZFAlgorithm ZFBase64 : zfextends ZFObject, zfimplements ZFSerializ
 
 public:
     /** @brief see #ZFBase64TableDefault */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfstring, base64Table, ZFBase64TableDefault())
+    ZFPROPERTY_ASSIGN(zfstring, base64Table, ZFBase64TableDefault())
     /** @brief see #ZFBase64PadDefault */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfchar, base64Pad, ZFBase64PadDefault())
+    ZFPROPERTY_ASSIGN(zfchar, base64Pad, ZFBase64PadDefault())
     /** @brief see #ZFBase64LineBreakPosNone */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfindex, base64LineBreakPos, ZFBase64LineBreakPosNone())
+    ZFPROPERTY_ASSIGN(zfindex, base64LineBreakPos, ZFBase64LineBreakPosNone())
 
 public:
     /** @brief see #ZFBase64EncodeCalcSize */

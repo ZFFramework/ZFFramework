@@ -64,145 +64,145 @@ public:
     /**
      * @brief whether automatically disable #ZFAnimation::aniTarget while animating, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, aniTargetAutoDisable, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, aniTargetAutoDisable, zftrue)
 
     /**
      * @brief animation's curve, #ZFAnimationNativeViewCurve::e_Linear by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFAnimationNativeViewCurveEnum, aniCurve, ZFAnimationNativeViewCurve::e_Linear)
+    ZFPROPERTY_ASSIGN(ZFAnimationNativeViewCurveEnum, aniCurve, ZFAnimationNativeViewCurve::e_Linear)
 
     /**
      * @brief alpha from, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniAlphaFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniAlphaFrom, 1.0f)
     /**
      * @brief alpha to, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniAlphaTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniAlphaTo, 1.0f)
 
     /**
      * @brief scale x from, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniScaleXFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniScaleXFrom, 1.0f)
     /**
      * @brief scale x to, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniScaleXTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniScaleXTo, 1.0f)
     /**
      * @brief scale y from, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniScaleYFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniScaleYFrom, 1.0f)
     /**
      * @brief scale y to, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniScaleYTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniScaleYTo, 1.0f)
     /**
      * @brief scale y from, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniScaleZFrom, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniScaleZFrom, 1.0f)
     /**
      * @brief scale y to, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniScaleZTo, 1.0f)
+    ZFPROPERTY_ASSIGN(zffloat, aniScaleZTo, 1.0f)
 
     /**
      * @brief translate x from, 0 by default
      *
      * this value is relative to target view's size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslateXFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslateXFrom, 0)
     /**
      * @brief translate x to, 0 by default
      *
      * this value is relative to target view's size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslateXTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslateXTo, 0)
     /**
      * @brief translate y from, 0 by default
      *
      * this value is relative to target view's size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslateYFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslateYFrom, 0)
     /**
      * @brief translate y to, 0 by default
      *
      * this value is relative to target view's size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslateYTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslateYTo, 0)
     /**
      * @brief translate y from, 0 by default
      *
      * this value is relative to target view's size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslateZFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslateZFrom, 0)
     /**
      * @brief translate y to, 0 by default
      *
      * this value is relative to target view's size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslateZTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslateZTo, 0)
 
     /**
      * @brief translate x from, 0 by default
      *
      * this value is absolute pixel size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslatePixelXFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelXFrom, 0)
     /**
      * @brief translate x to, 0 by default
      *
      * this value is absolute pixel size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslatePixelXTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelXTo, 0)
     /**
      * @brief translate y from, 0 by default
      *
      * this value is absolute pixel size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslatePixelYFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelYFrom, 0)
     /**
      * @brief translate y to, 0 by default
      *
      * this value is absolute pixel size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslatePixelYTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelYTo, 0)
     /**
      * @brief translate y from, 0 by default
      *
      * this value is absolute pixel size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslatePixelZFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelZFrom, 0)
     /**
      * @brief translate y to, 0 by default
      *
      * this value is absolute pixel size
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniTranslatePixelZTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniTranslatePixelZTo, 0)
 
     /**
      * @brief rotate x from, 0 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniRotateXFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniRotateXFrom, 0)
     /**
      * @brief rotate x to, 0 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniRotateXTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniRotateXTo, 0)
     /**
      * @brief rotate y from, 0 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniRotateYFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniRotateYFrom, 0)
     /**
      * @brief rotate y to, 0 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniRotateYTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniRotateYTo, 0)
     /**
      * @brief rotate z from, 0 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniRotateZFrom, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniRotateZFrom, 0)
     /**
      * @brief rotate z to, 0 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, aniRotateZTo, 0)
+    ZFPROPERTY_ASSIGN(zffloat, aniRotateZTo, 0)
 
     // ============================================================
     // start stop

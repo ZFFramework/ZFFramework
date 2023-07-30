@@ -29,7 +29,7 @@
  *   zfclass SomeStyle : zfextends Parent {
  *       ZFOBJECT_DECLARE(SomeStyle, Parent)
  *
- *       ZFPROPERTY_RETAIN_WITH_INIT(SomeType, someName, OtherStyle::DefaultStyle()->sth())
+ *       ZFPROPERTY_RETAIN(SomeType, someName, OtherStyle::DefaultStyle()->sth())
  *   };
  * @endcode
  *

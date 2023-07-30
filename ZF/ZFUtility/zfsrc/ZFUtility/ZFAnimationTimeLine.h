@@ -71,7 +71,7 @@ public:
      * the animation would looks slower\n
      * this is useful to achieve accurate time line control
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, aniTimeLineInterval, 0)
+    ZFPROPERTY_ASSIGN(zftimet, aniTimeLineInterval, 0)
 
     // ============================================================
     // start stop

@@ -29,7 +29,7 @@ public:
     /** @brief duration to blink, 0 to use #ZFAnimationDurationDefault, 0 by default */
     ZFCORE_PARAM(zftimet, blinkDuration)
     /** @brief blink count, 1 by default */
-    ZFCORE_PARAM_WITH_INIT(zfindex, blinkCount, 1)
+    ZFCORE_PARAM(zfindex, blinkCount, 1)
 
 public:
     /** @cond ZFPrivateDoc */

@@ -41,7 +41,7 @@ public:
     /**
      * @brief whether automatically show or hide clear button, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, textEditClearButtonAutoEnable, zffalse)
+    ZFPROPERTY_ASSIGN(zfbool, textEditClearButtonAutoEnable, zffalse)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, textEditClearButtonAutoEnable)
 
 protected:

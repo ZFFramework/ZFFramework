@@ -55,7 +55,7 @@ public:
 zfclass ZFUIWidget_ZFUIListView_test : zfextends ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test, ZFFramework_test_TestCase)
 
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIListAdapter *, listAdapter, zflineAlloc(ZFUIWidget_ZFUIListView_test_ListAdapter))
+    ZFPROPERTY_RETAIN(ZFUIListAdapter *, listAdapter, zflineAlloc(ZFUIWidget_ZFUIListView_test_ListAdapter))
 
 protected:
     zfoverride

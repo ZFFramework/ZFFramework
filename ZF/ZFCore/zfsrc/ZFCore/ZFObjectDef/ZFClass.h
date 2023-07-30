@@ -33,13 +33,13 @@ zffinal zfclassLikePOD ZFLIB_ZFCore ZFClassInstanceObserverAddParam {
     ZFCORE_PARAM(ZFListener, observer)
 
     /** @brief see #ZFClass::instanceObserverAdd */
-    ZFCORE_PARAM_WITH_INIT(ZFObject *, owner, zfnull)
+    ZFCORE_PARAM(ZFObject *, owner, zfnull)
 
     /** @brief see #ZFClass::instanceObserverAdd */
-    ZFCORE_PARAM_WITH_INIT(ZFLevel, observerLevel, ZFLevelAppNormal)
+    ZFCORE_PARAM(ZFLevel, observerLevel, ZFLevelAppNormal)
 
     /** @brief see #ZFClass::instanceObserverAdd */
-    ZFCORE_PARAM_WITH_INIT(zfbool, observeAllChildType, zftrue)
+    ZFCORE_PARAM(zfbool, observeAllChildType, zftrue)
 
 public:
     /** @cond ZFPrivateDoc */

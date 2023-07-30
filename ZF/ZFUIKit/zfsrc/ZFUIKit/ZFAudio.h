@@ -144,7 +144,7 @@ public:
      * @brief loop count of audio, 0 means play once,
      *   and zfindexMax means loop infinite until stop called
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfindex, loop, 0)
+    ZFPROPERTY_ASSIGN(zfindex, loop, 0)
 
     /** @brief return a state hint for debug */
     ZFMETHOD_DECLARE_0(const zfchar *, stateHint)

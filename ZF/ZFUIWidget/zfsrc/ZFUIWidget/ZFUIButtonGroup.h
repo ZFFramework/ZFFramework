@@ -89,7 +89,7 @@ public:
     /**
      * @brief button group's type, see #ZFUIButtonGroupType::e_Normal for more info
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIButtonGroupTypeEnum, buttonGroupType, ZFUIButtonGroupType::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUIButtonGroupTypeEnum, buttonGroupType, ZFUIButtonGroupType::EnumDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIButtonGroupTypeEnum, buttonGroupType)
 
 public:
@@ -236,13 +236,13 @@ public:
     /**
      * @brief for #ZFUIButtonGroupType::e_Tab type only, whether allow uncheck all button, false by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, buttonTabAllowUnchecked, zffalse)
+    ZFPROPERTY_ASSIGN(zfbool, buttonTabAllowUnchecked, zffalse)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, buttonTabAllowUnchecked)
 
     /**
      * @brief for #ZFUIButtonGroupType::e_Tab type only, the checked tab index, zfindexMax() by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfindex, buttonTabChecked, zfindexMax())
+    ZFPROPERTY_ASSIGN(zfindex, buttonTabChecked, zfindexMax())
     ZFPROPERTY_ON_VERIFY_DECLARE(zfindex, buttonTabChecked)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, buttonTabChecked)
 

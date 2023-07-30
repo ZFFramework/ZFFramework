@@ -35,7 +35,7 @@ public:
     /**
      * @brief image scale type, fill by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIContentScaleTypeEnum, imageScaleType, ZFUIContentScaleType::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUIContentScaleTypeEnum, imageScaleType, ZFUIContentScaleType::EnumDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIContentScaleTypeEnum, imageScaleType)
 
     /**

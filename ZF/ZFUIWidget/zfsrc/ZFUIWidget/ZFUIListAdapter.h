@@ -74,7 +74,7 @@ public:
      * setting #cellSizeFill would override this property,
      * and use #listContainerSize to layout each cell
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, cellSizeHint, ZFUIGlobalStyle::DefaultStyle()->itemSizeListCell())
+    ZFPROPERTY_ASSIGN(zffloat, cellSizeHint, ZFUIGlobalStyle::DefaultStyle()->itemSizeListCell())
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, cellSizeHint)
 
     /**
@@ -83,7 +83,7 @@ public:
      *
      * this property is useful when combined with #ZFUIScrollView::scrollAlignToPageHorizontal series
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, cellSizeFill, zffalse)
+    ZFPROPERTY_ASSIGN(zfbool, cellSizeFill, zffalse)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, cellSizeFill)
 
     // ============================================================

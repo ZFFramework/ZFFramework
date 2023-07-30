@@ -5,10 +5,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFUIWidget_ZFUIPage_test_Page : zfextends ZFUIPage {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test_Page, ZFUIPage)
 
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUILinearLayout *, _titleView, zflineAlloc(ZFUILinearLayout))
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIButtonBasic *, _titleLeftView, zflineAlloc(ZFUIButtonBasic))
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUITextView *, _titleCenterView, zflineAlloc(ZFUITextView))
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIButtonBasic *, _contentView, zflineAlloc(ZFUIButtonBasic))
+    ZFPROPERTY_RETAIN(ZFUILinearLayout *, _titleView, zflineAlloc(ZFUILinearLayout))
+    ZFPROPERTY_RETAIN(ZFUIButtonBasic *, _titleLeftView, zflineAlloc(ZFUIButtonBasic))
+    ZFPROPERTY_RETAIN(ZFUITextView *, _titleCenterView, zflineAlloc(ZFUITextView))
+    ZFPROPERTY_RETAIN(ZFUIButtonBasic *, _contentView, zflineAlloc(ZFUIButtonBasic))
 
 protected:
     zfoverride
@@ -86,7 +86,7 @@ protected:
 zfclass ZFUIWidget_ZFUIPage_test_PageManager : zfextends ZFUIPageManager {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test_PageManager, ZFUIPageManager)
 
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUILinearLayout *, _buttonLayout, zflineAlloc(ZFUILinearLayout))
+    ZFPROPERTY_RETAIN(ZFUILinearLayout *, _buttonLayout, zflineAlloc(ZFUILinearLayout))
 
 protected:
     zfoverride

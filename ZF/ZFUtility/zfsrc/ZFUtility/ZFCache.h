@@ -39,19 +39,19 @@ public:
     /**
      * @brief max cache size, 10 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfindex, cacheMaxSize, 10)
+    ZFPROPERTY_ASSIGN(zfindex, cacheMaxSize, 10)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfindex, cacheMaxSize)
 
     /**
      * @brief whether invoke #cacheTrim when receive #ZFGlobalEvent::EventAppOnMemoryLow, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, cacheTrimWhenReceiveMemoryWarning, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, cacheTrimWhenReceiveMemoryWarning, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, cacheTrimWhenReceiveMemoryWarning)
 
     /**
      * @brief leave how many cache alive while #cacheTrim, 0.2 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, cacheTrimThreshold, 0.2f)
+    ZFPROPERTY_ASSIGN(zffloat, cacheTrimThreshold, 0.2f)
 
 public:
     /**

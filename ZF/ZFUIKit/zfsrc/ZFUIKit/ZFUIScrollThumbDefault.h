@@ -27,31 +27,31 @@ public:
     /**
      * @brief horizontal scroll thumb image, null to hide it
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIImage *, scrollThumbImageHorizontal, zfRes("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
+    ZFPROPERTY_RETAIN(ZFUIImage *, scrollThumbImageHorizontal, zfRes("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImage *, scrollThumbImageHorizontal)
     /**
      * @brief vertical scroll thumb image, null to hide it
      */
-    ZFPROPERTY_RETAIN_WITH_INIT(ZFUIImage *, scrollThumbImageVertical, zfRes("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
+    ZFPROPERTY_RETAIN(ZFUIImage *, scrollThumbImageVertical, zfRes("ZFUIKit/ZFUIScrollThumbDefault_thumb.xml"))
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImage *, scrollThumbImageVertical)
 
     /**
      * @brief delay to auto hide, #ZFAnimationDurationDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, scrollThumbAutoHideDelayHorizontal, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDelayHorizontal, ZFAnimationDurationDefault())
     /**
      * @brief delay to auto hide, #ZFAnimationDurationDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, scrollThumbAutoHideDelayVertical, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDelayVertical, ZFAnimationDurationDefault())
 
     /**
      * @brief time to auto hide, #ZFAnimationDurationDefault by default, 0 means never hide
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, scrollThumbAutoHideDurationHorizontal, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDurationHorizontal, ZFAnimationDurationDefault())
     /**
      * @brief time to auto hide, #ZFAnimationDurationDefault by default, 0 means never hide
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, scrollThumbAutoHideDurationVertical, ZFAnimationDurationDefault())
+    ZFPROPERTY_ASSIGN(zftimet, scrollThumbAutoHideDurationVertical, ZFAnimationDurationDefault())
 
 protected:
     zfoverride

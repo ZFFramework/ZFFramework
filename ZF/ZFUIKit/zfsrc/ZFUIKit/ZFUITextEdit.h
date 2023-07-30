@@ -148,7 +148,7 @@ public:
     /**
      * @brief whether the text is editable, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, textEditEnable, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, textEditEnable, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, textEditEnable)
     /**
      * @brief whether the text is secured, false by default
@@ -158,17 +158,17 @@ public:
     /**
      * @brief keyboard hint, see #ZFUITextEditKeyboardType, #ZFUITextEditKeyboardType::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextEditKeyboardTypeEnum, textEditKeyboardType, ZFUITextEditKeyboardType::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardTypeEnum, textEditKeyboardType, ZFUITextEditKeyboardType::EnumDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardTypeEnum, textEditKeyboardType)
     /**
      * @brief keyboard hint, see #ZFUITextEditKeyboardReturnType, #ZFUITextEditKeyboardReturnType::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextEditKeyboardReturnTypeEnum, textEditKeyboardReturnType, ZFUITextEditKeyboardReturnType::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnTypeEnum, textEditKeyboardReturnType, ZFUITextEditKeyboardReturnType::EnumDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextEditKeyboardReturnTypeEnum, textEditKeyboardReturnType)
     /**
      * @brief action to perform when click return, see #ZFUITextEditKeyboardReturnAction, #ZFUITextEditKeyboardReturnAction::EnumDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextEditKeyboardReturnActionEnum, textEditKeyboardReturnAction, ZFUITextEditKeyboardReturnAction::EnumDefault())
+    ZFPROPERTY_ASSIGN(ZFUITextEditKeyboardReturnActionEnum, textEditKeyboardReturnAction, ZFUITextEditKeyboardReturnAction::EnumDefault())
     /**
      * @brief text place holder
      */
@@ -190,14 +190,14 @@ public:
     /**
      * @brief text edit's cursor position
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFIndexRange, textSelectRange, ZFIndexRangeZero())
+    ZFPROPERTY_ASSIGN(ZFIndexRange, textSelectRange, ZFIndexRangeZero())
     ZFPROPERTY_ON_VERIFY_DECLARE(ZFIndexRange, textSelectRange)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFIndexRange, textSelectRange)
 
     /**
      * @brief whether #textEditNotifyConfirm when lost focus, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, textEditConfirmWhenLostFocus, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, textEditConfirmWhenLostFocus, zftrue)
 
 public:
     /**
@@ -212,7 +212,7 @@ public:
      *
      * note, for some implementations and font settings, italic or bold may or may not be supported
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUITextAppearanceEnum, textAppearance, ZFUIGlobalStyle::DefaultStyle()->textAppearance())
+    ZFPROPERTY_ASSIGN(ZFUITextAppearanceEnum, textAppearance, ZFUIGlobalStyle::DefaultStyle()->textAppearance())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextAppearanceEnum, textAppearance)
 
     /**
@@ -221,19 +221,19 @@ public:
      * note, for some implementations, some align type may or may not be supported\n
      * usually only Left, Center, Right would be supported
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, textAlign, ZFUIGlobalStyle::DefaultStyle()->textAlign())
+    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, textAlign, ZFUIGlobalStyle::DefaultStyle()->textAlign())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, textAlign)
 
     /**
      * @brief text color, #ZFUIGlobalStyle::textColorDefault by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, textColor, ZFUIGlobalStyle::DefaultStyle()->textColorDefault())
+    ZFPROPERTY_ASSIGN(ZFUIColor, textColor, ZFUIGlobalStyle::DefaultStyle()->textColorDefault())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, textColor)
 
     /**
      * @brief text size, #ZFUIGlobalStyle::textSizeNormal by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, textSize, ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
+    ZFPROPERTY_ASSIGN(zffloat, textSize, ZFUIGlobalStyle::DefaultStyle()->textSizeNormal())
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, textSize)
 
 public:

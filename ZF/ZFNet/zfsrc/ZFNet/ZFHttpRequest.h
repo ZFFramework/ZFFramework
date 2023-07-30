@@ -153,14 +153,14 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject {
             )
 
     /** @brief timeout */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zftimet, timeout, 2000)
+    ZFPROPERTY_ASSIGN(zftimet, timeout, 2000)
 
     /** @brief the request url */
     ZFPROPERTY_ASSIGN(zfstring, url)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, url)
 
     /** @brief the http method, GET/POST/..., GET by default */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFHttpMethodEnum, httpMethod, ZFHttpMethod::e_GET)
+    ZFPROPERTY_ASSIGN(ZFHttpMethodEnum, httpMethod, ZFHttpMethod::e_GET)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFHttpMethodEnum, httpMethod)
 
     /** @brief whether https impl available */

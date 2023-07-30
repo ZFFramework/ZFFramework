@@ -40,24 +40,24 @@ public:
     /**
      * @brief button icon's orientation (relative to label), #ZFUIOrientation::e_Left by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIOrientationEnum, iconPosition, ZFUIOrientation::e_Left)
+    ZFPROPERTY_ASSIGN(ZFUIOrientationEnum, iconPosition, ZFUIOrientation::e_Left)
     /**
      * @brief button content(icon, label)'s layout align, #ZFUIAlign::e_Center by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIAlignFlags, contentAlign, ZFUIAlign::e_Center)
+    ZFPROPERTY_ASSIGN(ZFUIAlignFlags, contentAlign, ZFUIAlign::e_Center)
     /**
      * @brief button content(icon, label)'s layout margin, #ZFUIGlobalStyle::itemMargin by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIMargin, contentMargin, ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
+    ZFPROPERTY_ASSIGN(ZFUIMargin, contentMargin, ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()))
     /**
      * @brief button icon and label's space, #ZFUIGlobalStyle::itemSpace by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, contentSpace, ZFUIGlobalStyle::DefaultStyle()->itemSpace())
+    ZFPROPERTY_ASSIGN(zffloat, contentSpace, ZFUIGlobalStyle::DefaultStyle()->itemSpace())
 
     /**
      * @brief button background's layout margin, #ZFUIMarginZero by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIMargin, backgroundMargin, ZFUIMarginZero())
+    ZFPROPERTY_ASSIGN(ZFUIMargin, backgroundMargin, ZFUIMarginZero())
 
     // ============================================================
     // label

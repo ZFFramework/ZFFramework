@@ -247,13 +247,13 @@ public:
     /**
      * @brief visible or not, zftrue by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewVisible, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, viewVisible, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewVisible)
 
     /**
      * @brief view's alpha, 1 by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewAlpha, 1)
+    ZFPROPERTY_ASSIGN(zffloat, viewAlpha, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewAlpha)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewAlpha)
 
@@ -261,14 +261,14 @@ public:
      * @brief whether the view should receive user interaction
      *   (doesn't affect children, see #viewUIEnableTree)
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewUIEnable, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, viewUIEnable, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewUIEnable)
 
     /**
      * @brief whether the view as well as all its children should receive user interaction,
      *   see #viewUIEnable
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewUIEnableTree, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, viewUIEnableTree, zftrue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, viewUIEnableTree)
 
     /**
@@ -285,7 +285,7 @@ public:
     /**
      * @brief whether try to obtain focus when clicked down, true by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zfbool, viewFocusObtainWhenClick, zftrue)
+    ZFPROPERTY_ASSIGN(zfbool, viewFocusObtainWhenClick, zftrue)
 
     /**
      * @brief the view's frame
@@ -353,7 +353,7 @@ public:
      * the prefered size would be used to measure the view,
      * if prefered size not set, size hint would be used
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, viewSizePrefer, ZFUISizeInvalid())
+    ZFPROPERTY_ASSIGN(ZFUISize, viewSizePrefer, ZFUISizeInvalid())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUISize, viewSizePrefer)
     /**
      * @brief min size, #ZFUISizeZero by default
@@ -363,13 +363,13 @@ public:
     /**
      * @brief max size, negative value means not set, #ZFUISizeInvalid by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUISize, viewSizeMax, ZFUISizeInvalid())
+    ZFPROPERTY_ASSIGN(ZFUISize, viewSizeMax, ZFUISizeInvalid())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUISize, viewSizeMax)
 
     /**
      * @brief background color, #ZFUIColorZero by default
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(ZFUIColor, viewBackgroundColor, ZFUIColorZero())
+    ZFPROPERTY_ASSIGN(ZFUIColor, viewBackgroundColor, ZFUIColorZero())
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIColor, viewBackgroundColor)
 
     // ============================================================
@@ -402,33 +402,33 @@ public:
     ZFMETHOD_DECLARE_STATIC_0(ZFUITransformFlags, viewTransformAvailable)
 
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewTranslateX, 0)
+    ZFPROPERTY_ASSIGN(zffloat, viewTranslateX, 0)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateX)
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewTranslateY, 0)
+    ZFPROPERTY_ASSIGN(zffloat, viewTranslateY, 0)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateY)
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewTranslateZ, 0)
+    ZFPROPERTY_ASSIGN(zffloat, viewTranslateZ, 0)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, viewTranslateZ)
 
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewScaleX, 1)
+    ZFPROPERTY_ASSIGN(zffloat, viewScaleX, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleX)
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewScaleY, 1)
+    ZFPROPERTY_ASSIGN(zffloat, viewScaleY, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleY)
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewScaleZ, 1)
+    ZFPROPERTY_ASSIGN(zffloat, viewScaleZ, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewScaleZ)
 
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewRotateX, 0)
+    ZFPROPERTY_ASSIGN(zffloat, viewRotateX, 0)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateX)
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewRotateY, 0)
+    ZFPROPERTY_ASSIGN(zffloat, viewRotateY, 0)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateY)
     /** @brief see #viewTransformAvailable */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, viewRotateZ, 0)
+    ZFPROPERTY_ASSIGN(zffloat, viewRotateZ, 0)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, viewRotateZ)
 
     // ============================================================
@@ -685,7 +685,7 @@ public:
      * for temporarily scale, typically for animation,
      * use #viewScaleX instead
      */
-    ZFPROPERTY_ASSIGN_WITH_INIT(zffloat, UIScale, 1)
+    ZFPROPERTY_ASSIGN(zffloat, UIScale, 1)
     ZFPROPERTY_ON_VERIFY_DECLARE(zffloat, UIScale)
     ZFPROPERTY_ON_ATTACH_DECLARE(zffloat, UIScale)
     /** @brief see #UIScale */
