@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 3.4.1)
 project({ZFTT_R_proj_name})
+
+if(WIN32)
+    execute_process(COMMAND "${PROJECT_SOURCE_DIR}/../../../../zfsetup.bat")
+else()
+    execute_process(COMMAND sh "${PROJECT_SOURCE_DIR}/../../../../zfsetup.sh")
+endif()
+
 set(ZF_ROOT_PATH ${PROJECT_SOURCE_DIR}/../../../../../ZFFramework)
 include("${ZF_ROOT_PATH}/tools/spec/cmake/util.cmake")
 add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
-
-if(WIN32)
-    execute_process(COMMAND "${ZF_ROOT_PATH}/zfsetup.bat")
-else()
-    execute_process(COMMAND sh "${ZF_ROOT_PATH}/zfsetup.sh")
-endif()
 
 function(ZFAddSrc ZF_LIB_NAMES_ LIB_NAME_ ZF_SRC_FILES_ PROJ_PATH_)
     set(${ZF_LIB_NAMES_} ${${ZF_LIB_NAMES_}} ${LIB_NAME_} PARENT_SCOPE)

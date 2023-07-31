@@ -182,7 +182,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00336750C69DDAD7A3FF89B02C926361 /* Build configuration list for PBXNativeTarget "ZFFramework_test" */;
 			buildPhases = (
-				FAB4BC8AD986CABA0ED445F089EBBF1C /* ZFSetup */,
+				FB453A6DFD175E82F635ACD3B929E13C /* ZFSetup */,
 				FE49BA0E80CC9A58BCB9A963C16E449E /* Sources */,
 				3C8782C48508D2AB3E45AA571B89A89B /* Frameworks */,
 				83745D09F71B763541FB81C529246249 /* Resources */,
@@ -264,7 +264,7 @@
 			shellPath = /bin/sh;
 			shellScript = "sh ${SRCROOT}/../../../../../ZFFramework/tools/spec/iOS/unique_proj.sh \"${SRCROOT}/${PROJECT_NAME}.xcodeproj\"\n";
 		};
-		FAB4BC8AD986CABA0ED445F089EBBF1C /* ZFSetup */ = {
+		FB453A6DFD175E82F635ACD3B929E13C /* ZFSetup */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -293,7 +293,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh \"${SRCROOT}/../../../../zfsetup.sh\"\nsh ${SRCROOT}/ZFFramework_test.xcodeproj/zfsetup.sh ${SRCROOT} ${CONFIGURATION_BUILD_DIR} ${CONTENTS_FOLDER_PATH}\n";
+			shellScript = "sh ${SRCROOT}/ZFFramework_test.xcodeproj/zfsetup.sh ${SRCROOT} ${CONFIGURATION_BUILD_DIR} ${CONTENTS_FOLDER_PATH}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

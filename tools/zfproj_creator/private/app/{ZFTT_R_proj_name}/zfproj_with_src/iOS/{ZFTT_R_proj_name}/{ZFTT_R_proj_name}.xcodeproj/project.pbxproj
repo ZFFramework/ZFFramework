@@ -742,7 +742,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "sh \"${SRCROOT}/../../../../zfsetup.sh\"\nsh ${SRCROOT}/{ZFTT_R_proj_name}.xcodeproj/zfsetup.sh ${SRCROOT} ${CONFIGURATION_BUILD_DIR} ${CONTENTS_FOLDER_PATH}\n";
+			shellScript = "sh ${SRCROOT}/{ZFTT_R_proj_name}.xcodeproj/zfsetup.sh ${SRCROOT} ${CONFIGURATION_BUILD_DIR} ${CONTENTS_FOLDER_PATH}\n";
 		};
 		F1A7BD0D7F867D29645FC16849EEA65E /* ZFUniqueProj */ = {
 			isa = PBXShellScriptBuildPhase;

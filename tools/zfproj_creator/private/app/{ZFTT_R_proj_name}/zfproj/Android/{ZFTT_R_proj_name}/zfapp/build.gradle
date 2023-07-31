@@ -202,6 +202,10 @@ task ZFSetup {
         if(Os.isFamily(Os.FAMILY_WINDOWS)) {
             exec {
                 executable 'cmd.exe'
+                args '/c', this.projectDir.getAbsolutePath() + '/../../../../../zfsetup.bat'
+            }
+            exec {
+                executable 'cmd.exe'
                 args '/c', ZF_ROOT_PATH + '/tools/release/release_Android.bat', 1
             }
             exec {
@@ -210,6 +214,10 @@ task ZFSetup {
             }
         }
         else {
+            exec {
+                executable 'sh'
+                args this.projectDir.getAbsolutePath() + '/../../../../../zfsetup.sh'
+            }
             exec {
                 executable 'sh'
                 args ZF_ROOT_PATH + '/tools/release/release_Android.sh', 1

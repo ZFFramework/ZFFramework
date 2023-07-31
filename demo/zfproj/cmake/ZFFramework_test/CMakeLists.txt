@@ -8,7 +8,7 @@ include("${PROJECT_SOURCE_DIR}/zfprojConfig.cmake" OPTIONAL)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../../../../_tmp/cmake/ZFFramework_test/app")
 
-execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh")
+execute_process(COMMAND sh "${ZF_ROOT_PATH}/tools/release/release_cmake.sh" 1)
 
 file(GLOB_RECURSE ZF_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR}
     ${PROJECT_SOURCE_DIR}/../../../zfsrc/*.c

@@ -8,6 +8,8 @@ if test "x-$iOS_SRCROOT" = "x-" || test "x-$iOS_CONFIGURATION_BUILD_DIR" = "x-" 
     exit 1
 fi
 
+sh "${iOS_SRCROOT}/../../../../zfsetup.sh"
+
 ZF_ROOT_PATH=${iOS_SRCROOT}/../../../../../ZFFramework
 
 COMPILE_DST_PATH=${iOS_SRCROOT}/ProjectFiles
