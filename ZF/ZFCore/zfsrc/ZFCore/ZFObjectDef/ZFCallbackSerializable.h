@@ -44,7 +44,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallback, ZFCallback)
-ZFOUTPUT_TYPE(ZFCallback, {output.execute(v.objectInfo());})
+ZFOUTPUT_TYPE(ZFCallback, {v.objectInfoT(s);})
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFCallback_method "method"

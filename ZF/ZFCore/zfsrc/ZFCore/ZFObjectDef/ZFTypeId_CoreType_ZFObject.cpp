@@ -715,9 +715,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFSerializableData, void, resolveAtt
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFSerializableData, void, resolveAttributeUnmarkAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFSerializableData, zfbool, isEmpty)
 
-ZFOUTPUT_TYPE_DEFINE(ZFSerializableData, {
-        output.execute(v.objectInfo());
-    })
+ZFOUTPUT_TYPE_DEFINE(ZFSerializableData, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 

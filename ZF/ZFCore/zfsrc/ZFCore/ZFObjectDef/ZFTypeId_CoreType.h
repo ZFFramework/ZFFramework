@@ -134,7 +134,7 @@ extern ZFLIB_ZFCore zfbool zfflagsFromString(
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbool, zfbool)
-ZFOUTPUT_TYPE(zfbool, {output.execute(v ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse);})
+ZFOUTPUT_TYPE(zfbool, {s += (v ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -145,7 +145,7 @@ ZFOUTPUT_TYPE(zfbool, {output.execute(v ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbyte, zfbyte)
-ZFOUTPUT_TYPE(zfbyte, {output.execute(zfbyteToString(v));})
+ZFOUTPUT_TYPE(zfbyte, {zfbyteToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -156,7 +156,7 @@ ZFOUTPUT_TYPE(zfbyte, {output.execute(zfbyteToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfchar, zfchar)
-ZFOUTPUT_TYPE(zfchar, {output.execute(zfcharToString(v));})
+ZFOUTPUT_TYPE(zfchar, {s += v;})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -167,7 +167,7 @@ ZFOUTPUT_TYPE(zfchar, {output.execute(zfcharToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
-ZFOUTPUT_TYPE(zfstring, {output.execute(zfstringToString(v));})
+ZFOUTPUT_TYPE(zfstring, {s += v;})
 
 #define _ZFP_ZFTYPEID_ALIAS_EXPAND_cString(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     template<typename T_Access = _ZFP_PropTypeW_##TypeName \
@@ -245,7 +245,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPtrConst, const void *)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfint, zfint)
-ZFOUTPUT_TYPE(zfint, {output.execute(zfintToString(v));})
+ZFOUTPUT_TYPE(zfint, {zfintToString(s, v);})
 /**
  * @brief see #ZFTYPEID_DECLARE
  *
@@ -257,7 +257,7 @@ ZFOUTPUT_TYPE(zfint, {output.execute(zfintToString(v));})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfuint, zfuint)
-ZFOUTPUT_TYPE(zfuint, {output.execute(zfuintToString(v));})
+ZFOUTPUT_TYPE(zfuint, {zfuintToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -270,7 +270,7 @@ ZFOUTPUT_TYPE(zfuint, {output.execute(zfuintToString(v));})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfindex, zfindex)
-ZFOUTPUT_TYPE(zfindex, {output.execute(zfindexToString(v));})
+ZFOUTPUT_TYPE(zfindex, {zfindexToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -281,7 +281,7 @@ ZFOUTPUT_TYPE(zfindex, {output.execute(zfindexToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zffloat, zffloat)
-ZFOUTPUT_TYPE(zffloat, {output.execute(zffloatToString(v));})
+ZFOUTPUT_TYPE(zffloat, {zffloatToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -292,7 +292,7 @@ ZFOUTPUT_TYPE(zffloat, {output.execute(zffloatToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfdouble, zfdouble)
-ZFOUTPUT_TYPE(zfdouble, {output.execute(zfdoubleToString(v));})
+ZFOUTPUT_TYPE(zfdouble, {zfdoubleToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -303,7 +303,7 @@ ZFOUTPUT_TYPE(zfdouble, {output.execute(zfdoubleToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zflongdouble, zflongdouble)
-ZFOUTPUT_TYPE(zflongdouble, {output.execute(zflongdoubleToString(v));})
+ZFOUTPUT_TYPE(zflongdouble, {zflongdoubleToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -314,7 +314,7 @@ ZFOUTPUT_TYPE(zflongdouble, {output.execute(zflongdoubleToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zftimet, zftimet)
-ZFOUTPUT_TYPE(zftimet, {output.execute(zftimetToString(v));})
+ZFOUTPUT_TYPE(zftimet, {zftimetToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -327,7 +327,7 @@ ZFOUTPUT_TYPE(zftimet, {output.execute(zftimetToString(v));})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfflags, zfflags)
-ZFOUTPUT_TYPE(zfflags, {output.execute(zfflagsToString(v));})
+ZFOUTPUT_TYPE(zfflags, {zfflagsToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -340,7 +340,7 @@ ZFOUTPUT_TYPE(zfflags, {output.execute(zfflagsToString(v));})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfidentity, zfidentity)
-ZFOUTPUT_TYPE(zfidentity, {output.execute(zfidentityToString(v));})
+ZFOUTPUT_TYPE(zfidentity, {zfidentityToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -351,7 +351,7 @@ ZFOUTPUT_TYPE(zfidentity, {output.execute(zfidentityToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCompareResult, ZFCompareResult)
-ZFOUTPUT_TYPE(ZFCompareResult, {output.execute(ZFCompareResultToString(v));})
+ZFOUTPUT_TYPE(ZFCompareResult, {ZFCompareResultToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -362,7 +362,7 @@ ZFOUTPUT_TYPE(ZFCompareResult, {output.execute(ZFCompareResultToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSeekPos, ZFSeekPos)
-ZFOUTPUT_TYPE(ZFSeekPos, {output.execute(ZFSeekPosToString(v));})
+ZFOUTPUT_TYPE(ZFSeekPos, {ZFSeekPosToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -375,7 +375,7 @@ ZFOUTPUT_TYPE(ZFSeekPos, {output.execute(ZFSeekPosToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFIndexRange, ZFIndexRange)
-ZFOUTPUT_TYPE(ZFIndexRange, {output.execute(ZFIndexRangeToString(v));})
+ZFOUTPUT_TYPE(ZFIndexRange, {ZFIndexRangeToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -386,7 +386,7 @@ ZFOUTPUT_TYPE(ZFIndexRange, {output.execute(ZFIndexRangeToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFLevel, ZFLevel)
-ZFOUTPUT_TYPE(ZFLevel, {output.execute(ZFLevelToString(v));})
+ZFOUTPUT_TYPE(ZFLevel, {ZFLevelToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -397,7 +397,7 @@ ZFOUTPUT_TYPE(ZFLevel, {output.execute(ZFLevelToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFrameworkState, ZFFrameworkState)
-ZFOUTPUT_TYPE(ZFFrameworkState, {output.execute(ZFFrameworkStateToString(v));})
+ZFOUTPUT_TYPE(ZFFrameworkState, {ZFFrameworkStateToString(s, v);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFuncAddrType, ZFFuncAddrType)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfiterator, zfiterator)
@@ -413,7 +413,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenera
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
-ZFOUTPUT_TYPE(ZFFilterType, {output.execute(ZFFilterTypeToString(v));})
+ZFOUTPUT_TYPE(ZFFilterType, {ZFFilterTypeToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -424,7 +424,7 @@ ZFOUTPUT_TYPE(ZFFilterType, {output.execute(ZFFilterTypeToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterCallbackResult, ZFFilterCallbackResult)
-ZFOUTPUT_TYPE(ZFFilterCallbackResult, {output.execute(ZFFilterCallbackResultToString(v));})
+ZFOUTPUT_TYPE(ZFFilterCallbackResult, {ZFFilterCallbackResultToString(s, v);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForNumber, ZFFilterForNumber)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForIndex, ZFFilterForIndex)
@@ -440,7 +440,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForString, ZFFilterForString)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfo)
-ZFOUTPUT_TYPE(ZFPathInfo, {output.execute(ZFPathInfoToString(v));})
+ZFOUTPUT_TYPE(ZFPathInfo, {ZFPathInfoToString(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFPathInfo_separator ":"
 
@@ -460,7 +460,7 @@ ZFOUTPUT_TYPE(ZFPathInfo, {output.execute(ZFPathInfoToString(v));})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTokenForContainer, ZFTokenForContainer)
-ZFOUTPUT_TYPE(ZFTokenForContainer, {output.execute(ZFTokenForContainerToString(v));})
+ZFOUTPUT_TYPE(ZFTokenForContainer, {ZFTokenForContainerToString(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTokenForContainer_tokenLeft "tokenLeft"
 /** @brief keyword for serialize */
@@ -495,7 +495,7 @@ ZFOUTPUT_TYPE(ZFTokenForContainer, {output.execute(ZFTokenForContainerToString(v
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainer)
-ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {output.execute(ZFTokenForKeyValueContainerToString(v));})
+ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToString(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenLeft "tokenLeft"
 /** @brief keyword for serialize */
@@ -535,7 +535,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassDataChangeData, ZFClassDataCha
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClassType, ZFFilterForZFClassType)
-ZFOUTPUT_TYPE(ZFFilterForZFClassType, {output.execute(ZFFilterForZFClassTypeToString(v));})
+ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -546,7 +546,7 @@ ZFOUTPUT_TYPE(ZFFilterForZFClassType, {output.execute(ZFFilterForZFClassTypeToSt
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodPrivilegeType, ZFMethodPrivilegeType)
-ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {output.execute(ZFMethodPrivilegeTypeToString(v));})
+ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {ZFMethodPrivilegeTypeToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -557,7 +557,7 @@ ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {output.execute(ZFMethodPrivilegeTypeToStri
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodType, ZFMethodType)
-ZFOUTPUT_TYPE(ZFMethodType, {output.execute(ZFMethodTypeToString(v));})
+ZFOUTPUT_TYPE(ZFMethodType, {ZFMethodTypeToString(s, v);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodParamDefaultValueCallback, ZFMethodParamDefaultValueCallback)
 
@@ -585,7 +585,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFComparer_ZFObject, ZFComparer<ZFObj
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFObjectInstanceState, ZFObjectInstanceState)
-ZFOUTPUT_TYPE(ZFObjectInstanceState, {output.execute(ZFObjectInstanceStateToString(v));})
+ZFOUTPUT_TYPE(ZFObjectInstanceState, {ZFObjectInstanceStateToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -596,7 +596,7 @@ ZFOUTPUT_TYPE(ZFObjectInstanceState, {output.execute(ZFObjectInstanceStateToStri
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallbackType, ZFCallbackType)
-ZFOUTPUT_TYPE(ZFCallbackType, {output.execute(ZFCallbackTypeToString(v));})
+ZFOUTPUT_TYPE(ZFCallbackType, {ZFCallbackTypeToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE

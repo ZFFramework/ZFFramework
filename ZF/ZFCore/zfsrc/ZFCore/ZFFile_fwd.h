@@ -146,7 +146,7 @@ private:
     _ZFP_ZFFileFindDataPrivate *d;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFileFindData, ZFFileFindData)
-ZFOUTPUT_TYPE(ZFFileFindData, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFFileFindData, {v.objectInfoT(s);})
 
 // ============================================================
 /** @brief keyword for serialize */

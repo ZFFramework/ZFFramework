@@ -17,10 +17,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // util
 #define _ZFP_ZFCoreType_IODef_outputObjectPointer() { \
         if(v) { \
-            output << v->objectInfo(); \
+            v->objectInfoT(s); \
         } \
         else { \
-            output.execute(ZFTOKEN_zfnull); \
+            s += ZFTOKEN_zfnull; \
         } \
     }
 
@@ -30,30 +30,30 @@ ZFOUTPUT_TYPE_TEMPLATE(
         ZFM_EXPAND(typename T_Public, typename T_Internal)
         , ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>)
         , {
-            output << v.objectInfo();
+            v.objectInfoT(s);
         })
 
 ZFOUTPUT_TYPE_TEMPLATE(
         typename T_Element
         , ZFCoreArray<T_Element>
         , {
-            output << v.objectInfo();
+            v.objectInfoT(s);
         })
 
 ZFOUTPUT_TYPE_TEMPLATE(
         typename T_Element
         , ZFCoreQueuePOD<T_Element>
         , {
-            output << v.objectInfo();
+            v.objectInfoT(s);
         })
 
-ZFOUTPUT_TYPE(ZFCoreMap, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFCoreMap, {v.objectInfoT(s);})
 
-ZFOUTPUT_TYPE(ZFCorePointerBase, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFCorePointerBase, {v.objectInfoT(s);})
 
 // ============================================================
 // common output for ZFObject types
-ZFOUTPUT_TYPE(ZFFilterForZFClass, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFFilterForZFClass, {v.objectInfoT(s);})
 
 ZFOUTPUT_TYPE(ZFObject *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
 
@@ -63,11 +63,18 @@ ZFOUTPUT_TYPE(const ZFMethod *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
 
 ZFOUTPUT_TYPE(const ZFProperty *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
 
-ZFOUTPUT_TYPE(ZFObserver, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFObserver, {v.objectInfoT(s);})
 
-ZFOUTPUT_TYPE(ZFArgs, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFArgs, {v.objectInfoT(s);})
 
-ZFOUTPUT_TYPE(ZFAny, {output << v.toObject();})
+ZFOUTPUT_TYPE(ZFAny, {
+    if(v.toObject()) {
+        v.toObject()->objectInfoT(s);
+    }
+    else {
+        s += ZFTOKEN_zfnull;
+    }
+})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCoreType_IODef_h_

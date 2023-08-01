@@ -131,7 +131,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexData, ZFTextTemplateIndex
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag "indexFlag"
 
-ZFOUTPUT_TYPE(ZFTextTemplateIndexData, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFTextTemplateIndexData, {v.objectInfoT(s);})
 
 // ============================================================
 zfclassFwd _ZFP_ZFTextTemplateParamPrivate;
@@ -290,7 +290,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFTextTemplateParam, ZFTextTemplateParam)
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateParam_indexDataDefault "indexDataDefault"
 
-ZFOUTPUT_TYPE(ZFTextTemplateParam, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFTextTemplateParam, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTextTemplateType_h_

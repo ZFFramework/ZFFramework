@@ -32,7 +32,7 @@ public:
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValue)
 
-ZFOUTPUT_TYPE(ZFTimeValue, {output << ZFTimeValueToString(v);})
+ZFOUTPUT_TYPE(ZFTimeValue, {ZFTimeValueToString(s, v);})
 
 ZFCORE_POD_COMPARER_DECLARE(ZFTimeValue)
 
@@ -317,7 +317,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFTimeInfoToString
     ZFTimeInfoToString(s, v);
     return s;
 }
-ZFOUTPUT_TYPE(ZFTimeInfo, {output << ZFTimeInfoToString(v);})
+ZFOUTPUT_TYPE(ZFTimeInfo, {ZFTimeInfoToString(s, v);})
 
 // ============================================================
 // ZFTime

@@ -381,7 +381,7 @@ private:
     ZFXml(ZF_IN _ZFP_ZFXmlPrivate *ref);
 };
 ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFXml, ZFXml)
-ZFOUTPUT_TYPE(ZFXml, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFXml, {v.objectInfoT(s);})
 
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlElement

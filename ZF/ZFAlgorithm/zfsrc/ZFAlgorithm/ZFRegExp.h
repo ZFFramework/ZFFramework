@@ -119,7 +119,7 @@ public:
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFRegExpResult, ZFRegExpResult)
-ZFOUTPUT_TYPE(ZFRegExpResult, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFRegExpResult, {v.objectInfoT(s);})
 
 // ============================================================
 /** @brief keyword for serialize */

@@ -76,35 +76,56 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
                 ZF_IN_OUT zfstring &ret \
                 , ZF_IN T_Type const &v \
                 ) { \
-            ZFOutputForString(ret) << v; \
+            zftToString(ret, v); \
         } \
     };
+/** @brief see #ZFOUTPUT_TYPE */
+template<typename T>
+void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T const &v
+        );
+/** @cond ZFPrivateDoc */
+template<typename T>
+inline const ZFOutput &operator << (const ZFOutput &output, T const &v) {
+    zfstring s;
+    zftToString(s, v);
+    output.output(s.cString(), s.length() * sizeof(zfchar));
+    return output;
+}
+/** @endcond */
 /**
- * @brief declare your custom type to output to #ZFOutput
+ * @brief declare your custom type conversion to string,
+ *   convenient for debug
  *
  * proto type:
  * @code
- *   const ZFOutput &operator << (
- *           ZF_IN_OUT const ZFOutput &output
+ *   void zftToString(
+ *           ZF_IN_OUT zfstring &s
  *           , ZF_IN YourType const &v
  *           );
  * @endcode
  * usage:
  * @code
- *   ZFOUTPUT_TYPE(YourType, {output.execute(v.toString());})
+ *   ZFOUTPUT_TYPE(YourType, {s += YourConverter(v);})
  * @endcode
  *
  * once declared, you may output your type to #ZFOutput by:
  * @code
  *   output << yourObject;
  * @endcode
+ * or, use the declared method:
+ * @code
+ *   zftToString(s, v);
+ * @endcode
  */
 #define ZFOUTPUT_TYPE(T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
-    inline const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) { \
-        if(output) \
+    inline void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , T_Type const &v \
+            ) { \
         outputAction \
-        return output; \
     } \
     _ZFP_ZFOUTPUT_EXPAND(T_Type) \
     /** @endcond */
@@ -117,7 +138,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
  *           ZFM_EXPAND(typename T0, typename T1)
  *           , ZFM_EXPAND(YourType<T0, T1>)
  *           , {
- *               output.execute(v.toString())
+ *               s += YourConverter(v);
  *           }
  *           )
  * @endcode
@@ -125,9 +146,11 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
 #define ZFOUTPUT_TYPE_TEMPLATE(templateList, T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
     template<templateList> \
-    inline const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) { \
+    inline void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN T_Type const &v \
+            ) { \
         outputAction \
-        return output; \
     } \
     template<templateList> \
     zfclassNotPOD ZFCoreInfoGetter<T_Type> { \
@@ -136,7 +159,7 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
                 ZF_IN_OUT zfstring &ret \
                 , ZF_IN T_Type const &v \
                 ) { \
-            ZFOutputForString(ret) << v; \
+            zftToString(ret, v); \
         } \
     }; \
     /** @endcond */
@@ -157,15 +180,20 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
  */
 #define ZFOUTPUT_TYPE_DECLARE(ZFLIB_, T_Type) \
     /** @cond ZFPrivateDoc */ \
-    extern ZFLIB_ const ZFOutput &operator << (const ZFOutput &output, T_Type const &v); \
+    extern ZFLIB_ void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN T_Type const &v \
+            ); \
     _ZFP_ZFOUTPUT_EXPAND(T_Type) \
     /** @endcond */
 /** @brief see #ZFOUTPUT_TYPE_DECLARE */
 #define ZFOUTPUT_TYPE_DEFINE(T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
-    const ZFOutput &operator << (const ZFOutput &output, T_Type const &v) { \
+    void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN T_Type const &v \
+            ) { \
         outputAction \
-        return output; \
     } \
     /** @endcond */
 
@@ -214,49 +242,61 @@ extern ZFLIB_ZFCore ZFOutput ZFOutputForBufferUnsafe(
 
 // ============================================================
 // basic output
-ZFOUTPUT_TYPE(const zfchar *, {output.execute(v ? v : ZFTOKEN_zfnull);})
-ZFOUTPUT_TYPE(zfchar *, {output << (const zfchar *)v;})
+ZFOUTPUT_TYPE(const zfchar *, {s += (v ? v : ZFTOKEN_zfnull);})
+ZFOUTPUT_TYPE(zfchar *, {s += (const zfchar *)v;})
 
-ZFOUTPUT_TYPE(const void *, {output.execute(v ? zfsFromPointer(v).cString() : ZFTOKEN_zfnull);})
-ZFOUTPUT_TYPE(void *, {output << (const void *)v;})
+ZFOUTPUT_TYPE(const void *, {
+    if(v) {
+        zfsFromPointerT(s, v);
+    }
+    else {
+        s += ZFTOKEN_zfnull;
+    }
+})
+ZFOUTPUT_TYPE(void *, {
+    if(v) {
+        zfsFromPointerT(s, v);
+    }
+    else {
+        s += ZFTOKEN_zfnull;
+    }
+})
 
 /** @cond ZFPrivateDoc */
 template<typename T_Type, int T_ZFObject = 0>
-zfclassNotPOD _ZFP_ZFOutputOutputWrapper {
+zfclassNotPOD _ZFP_zftToStringWrapper {
 public:
-    static void outputAction(ZF_IN_OUT const ZFOutput &output, T_Type const &v) {
-        output << (*v);
+    static void outputAction(ZF_IN_OUT zfstring &s, ZF_IN T_Type const &v) {
+        zftToString(s, *v);
     }
 };
 template<typename T_Type>
-zfclassNotPOD _ZFP_ZFOutputOutputWrapper<T_Type, 1> {
+zfclassNotPOD _ZFP_zftToStringWrapper<T_Type, 1> {
 public:
-    static void outputAction(ZF_IN_OUT const ZFOutput &output, T_Type const &v) {
-        output.execute(v->toObject()->objectInfo());
+    static void outputAction(ZF_IN_OUT zfstring &s, ZF_IN T_Type const &v) {
+        v->toObject()->objectInfoT(s);
     }
 };
 
 template<typename T_Type>
-const ZFOutput &operator << (const ZFOutput &output, const T_Type * const &v) {
+inline void zftToString(ZF_IN_OUT zfstring &s, ZF_IN const T_Type * const &v) {
     if(v == zfnull) {
-        output.execute(ZFTOKEN_zfnull);
+        s += ZFTOKEN_zfnull;
     }
     else {
-        output << (*v);
+        zftToString(s, *v);
     }
-    return output;
 }
 template<typename T_Type>
-const ZFOutput &operator << (const ZFOutput &output, T_Type * const &v) {
+inline void zftToString(ZF_IN_OUT zfstring &s, ZF_IN T_Type * const &v) {
     if(v == zfnull) {
-        output.execute(ZFTOKEN_zfnull);
+        s += ZFTOKEN_zfnull;
     }
     else {
-        _ZFP_ZFOutputOutputWrapper<T_Type *,
+        _ZFP_zftToStringWrapper<T_Type *,
                 zftIsZFObject(typename zftTraits<T_Type>::TrType)
-            >::outputAction(output, v);
+            >::outputAction(s, v);
     }
-    return output;
 }
 /** @endcond */
 

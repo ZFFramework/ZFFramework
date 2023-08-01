@@ -7,7 +7,7 @@ ZFPROTOCOL_INTERFACE_REGISTER(ZFUIImage)
 ZFENUM_DEFINE(ZFUIImageImplNinePatchPos)
 
 ZFOUTPUT_TYPE_DEFINE(ZFUIImageImplNinePatchDrawData, {
-    output << zfstringWithFormat("(%s)<%s, %s>",
+    zfstringAppend(s, "(%s)<%s, %s>",
         ZFUIImageImplNinePatchPos::EnumNameForValue(v.position),
         ZFUIRectToString(v.src).cString(),
         ZFUIRectToString(v.dst).cString()

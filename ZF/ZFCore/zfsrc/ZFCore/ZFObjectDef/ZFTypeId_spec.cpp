@@ -10,12 +10,13 @@ _ZFP_ZFTYPEID_ID_DATA_REGISTER(void, void)
 // ============================================================
 // zfautoObject
 ZFOUTPUT_TYPE_DEFINE(zfautoObject, {
-        output.execute(
-            (v == zfnull)
-            ? ZFTOKEN_zfnull
-            : v.toObject()->objectInfo()
-        );
-    })
+    if(v == zfnull) {
+        s += ZFTOKEN_zfnull;
+    }
+    else {
+        v.toObject()->objectInfoT(s);
+    }
+})
 
 // ============================================================
 // ZFCallerInfo

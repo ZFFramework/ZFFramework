@@ -170,8 +170,8 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFProtocol, ZFProtocol *)
 
 // ============================================================
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, const ZFProtocol *)
-ZFOUTPUT_TYPE(ZFProtocol *, {output << (const ZFProtocol *)v;})
-ZFOUTPUT_TYPE(ZFProtocol, {output << (const ZFProtocol *)&v;})
+ZFOUTPUT_TYPE(ZFProtocol *, {zftToString(s, (const ZFProtocol *)v);})
+ZFOUTPUT_TYPE(ZFProtocol, {zftToString(s, (const ZFProtocol *)&v);})
 
 // ============================================================
 zfclassFwd _ZFP_ZFProtocolData;
@@ -552,9 +552,9 @@ private:
 
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass) \
     }; \
-    ZFOUTPUT_TYPE(ImplementationClass, {output << (const ZFProtocol *)&v;}) \
-    ZFOUTPUT_TYPE(const ImplementationClass *, {output << (const ZFProtocol *)v;}) \
-    ZFOUTPUT_TYPE(ImplementationClass *, {output << (const ZFProtocol *)v;})
+    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (const ZFProtocol *)&v);}) \
+    ZFOUTPUT_TYPE(const ImplementationClass *, {zftToString(s, (const ZFProtocol *)v);}) \
+    ZFOUTPUT_TYPE(ImplementationClass *, {zftToString(s, (const ZFProtocol *)v);})
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ImplementationClass) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass)
 

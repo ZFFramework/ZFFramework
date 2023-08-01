@@ -376,7 +376,7 @@ private:
     ZFJson(ZF_IN _ZFP_ZFJsonPrivate *ref);
 };
 ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFJson, ZFJson)
-ZFOUTPUT_TYPE(ZFJson, {output << v.objectInfo();})
+ZFOUTPUT_TYPE(ZFJson, {v.objectInfoT(s);})
 
 /** @brief util to create #ZFJson */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonObject)

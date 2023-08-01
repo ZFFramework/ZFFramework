@@ -403,7 +403,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             return zftrue; \
         } \
     } \
-    ZFOUTPUT_TYPE_DEFINE(EnumName##Enum, {output << EnumName::EnumNameForValue(v);})
+    ZFOUTPUT_TYPE_DEFINE(EnumName##Enum, {s += EnumName::EnumNameForValue(v);})
 
 // ============================================================
 #define _ZFP_ZFENUM_FLAGS_DECLARE(ZFLIB_, EnumName, EnumFlagsName, defaultValue) \
@@ -457,7 +457,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
     _ZFP_ZFENUM_FLAGS_PROP_TYPE_DECLARE(ZFLIB_, EnumName, EnumFlagsName)
 
 #define _ZFP_ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName) \
-    ZFOUTPUT_TYPE_DEFINE(EnumFlagsName, {output << v.objectInfo();}) \
+    ZFOUTPUT_TYPE_DEFINE(EnumFlagsName, {v.objectInfoT(s);}) \
     void EnumFlagsName::objectInfoT(ZF_IN_OUT zfstring &ret) const { \
         zfflagsToString(ret, EnumName::ClassData(), (zfflags)this->enumValue()); \
     } \

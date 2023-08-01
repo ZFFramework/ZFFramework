@@ -77,7 +77,7 @@ public:
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIPoint, ZFUIPoint)
 
-ZFOUTPUT_TYPE(ZFUIPoint, {output << ZFUIPointToString(v);})
+ZFOUTPUT_TYPE(ZFUIPoint, {ZFUIPointToString(s, v);})
 
 ZFCORE_POD_COMPARER_DECLARE(ZFUIPoint)
 
@@ -165,7 +165,7 @@ public:
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIMargin, ZFUIMargin)
 
-ZFOUTPUT_TYPE(ZFUIMargin, {output << ZFUIMarginToString(v);})
+ZFOUTPUT_TYPE(ZFUIMargin, {ZFUIMarginToString(s, v);})
 
 ZFCORE_POD_COMPARER_DECLARE(ZFUIMargin)
 
@@ -414,7 +414,7 @@ public:
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUISize, ZFUISize)
 
-ZFOUTPUT_TYPE(ZFUISize, {output << ZFUISizeToString(v);})
+ZFOUTPUT_TYPE(ZFUISize, {ZFUISizeToString(s, v);})
 
 ZFCORE_POD_COMPARER_DECLARE(ZFUISize)
 
@@ -629,7 +629,7 @@ public:
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIRect, ZFUIRect)
 
-ZFOUTPUT_TYPE(ZFUIRect, {output << ZFUIRectToString(v);})
+ZFOUTPUT_TYPE(ZFUIRect, {ZFUIRectToString(s, v);})
 
 ZFCORE_POD_COMPARER_DECLARE(ZFUIRect)
 
@@ -1126,7 +1126,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColorZero)
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUIColor, ZFUIColor)
 
-ZFOUTPUT_TYPE(ZFUIColor, {output << ZFUIColorToString(v);})
+ZFOUTPUT_TYPE(ZFUIColor, {ZFUIColorToString(s, v);})
 
 /**
  * @brief true if two color is equal

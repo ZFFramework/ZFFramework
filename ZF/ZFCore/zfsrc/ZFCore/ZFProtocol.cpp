@@ -15,10 +15,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocol
 
 ZFOUTPUT_TYPE_DEFINE(const ZFProtocol *, {
     if(v) {
-        output << v->objectInfo();
+        v->objectInfoT(s);
     }
     else {
-        output << (const void *)zfnull;
+        s += ZFTOKEN_zfnull;
     }
 })
 

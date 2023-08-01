@@ -56,7 +56,7 @@ public:
 
 // ============================================================
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallerInfo, ZFCallerInfo)
-ZFOUTPUT_TYPE(ZFCallerInfo, {output << v.callerInfo();})
+ZFOUTPUT_TYPE(ZFCallerInfo, {v.callerInfoT(s);})
 
 // ============================================================
 // ZFObject
