@@ -73,13 +73,13 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(input, ZFUIImageSerializeType_input) {
         return zffalse;
     }
     if(!input) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "invalid callback");
         return zffalse;
     }
     void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(input);
     if(nativeImage == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "load image failed");
         return zffalse;
     }

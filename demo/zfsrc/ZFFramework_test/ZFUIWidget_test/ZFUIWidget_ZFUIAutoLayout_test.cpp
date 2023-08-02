@@ -24,7 +24,7 @@ protected:
         for(zfindex i = 0; i < 5; ++i) {
             zfblockedAlloc(ZFUITextView, t);
             v.add(t);
-            t->text(zfstringWithFormat("text %zi", i));
+            t->text(zfstr("text %zi", i));
             t->viewBackgroundColor(ZFUIColorRandom());
         }
 

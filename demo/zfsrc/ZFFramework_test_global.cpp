@@ -9,7 +9,7 @@ ZFOBJECT_REGISTER(ZFFramework_test_TestCase)
 
 void ZFFramework_test_TestCase::objectOnInit(void) {
     zfsuper::objectOnInit();
-    this->_testCaseTmpPath = zfstringWithFormat("%s%cZFFramework_test%c%s",
+    this->_testCaseTmpPath = zfstr("%s%cZFFramework_test%c%s",
         ZFPathForCache(),
         ZFFileSeparator(),
         ZFFileSeparator(),
@@ -40,7 +40,7 @@ zfstring ZFFramework_test_TestCase::testCaseUseTmpFile(ZF_IN const zfchar *fileN
     zfstring ret = this->testCaseTmpPath();
     ret += ZFFileSeparator();
     ret += fileName;
-    this->testCaseAddFileToRemove(ret.cString());
+    this->testCaseAddFileToRemove(ret);
     return ret;
 }
 void ZFFramework_test_TestCase::testCaseAddFileToRemove(ZF_IN const zfchar *filePath) {

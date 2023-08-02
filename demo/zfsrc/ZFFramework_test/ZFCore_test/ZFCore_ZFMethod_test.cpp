@@ -183,20 +183,22 @@ protected:
         // ============================================================
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFMethod directly access");
-        this->testCaseOutput("methodNormal: %s",
-                ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodNormal)->objectInfo().cString());
-        this->testCaseOutput("methodStatic: %s",
-                ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodStatic)->objectInfo().cString());
-        this->testCaseOutput("methodOverloaded(zfint): %s",
-                ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
-                    , ZFMP_IN(zfint, param0)
-                    )
-                ->objectInfo().cString());
-        this->testCaseOutput("methodOverloaded(zffloat): %s",
-                ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
-                    , ZFMP_IN(zffloat, param0)
-                    )
-                ->objectInfo().cString());
+        this->testCaseOutput(zfstr("methodNormal: %s"
+                    , ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodNormal)
+                    ));
+        this->testCaseOutput(zfstr("methodStatic: %s"
+                    , ZFMethodAccess(_ZFP_ZFCore_ZFMethod_test_TestBase, methodStatic)
+                    ));
+        this->testCaseOutput(zfstr("methodOverloaded(zfint): %s"
+                    , ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
+                        , ZFMP_IN(zfint, param0)
+                        )
+                        ));
+        this->testCaseOutput(zfstr("methodOverloaded(zffloat): %s"
+                    , ZFMethodAccessDetail_1(_ZFP_ZFCore_ZFMethod_test_TestBase, methodOverloaded
+                        , ZFMP_IN(zffloat, param0)
+                        )
+                        ));
 
         this->testCaseOutput("unlike reflected by ZFClass, ZFMethodAccess would comiple error if method not defined");
 #if 0 // this should not able to be compiled
@@ -217,12 +219,15 @@ protected:
         clsBase->methodForNameIgnoreParent("methodNormal")->execute<void>(this->pChild);
         clsBase->methodForNameIgnoreParent("methodNormal")->execute<void>(this->pBasePointToChild);
 
-        this->testCaseOutput("should be null since it's in base only: %p",
-                clsChild->methodForNameIgnoreParent("methodNormal"));
-        this->testCaseOutput("should not be null since we search hierarchically: %p",
-                clsChild->methodForName("methodNormal"));
-        this->testCaseOutput("should not be null since it's in child only: %p",
-                clsChild->methodForNameIgnoreParent("methodInChild"));
+        this->testCaseOutput(zfstr("should be null since it's in base only: %p"
+                    , clsChild->methodForNameIgnoreParent("methodNormal")
+                    ));
+        this->testCaseOutput(zfstr("should not be null since we search hierarchically: %p"
+                    , clsChild->methodForName("methodNormal")
+                    ));
+        this->testCaseOutput(zfstr("should not be null since it's in child only: %p"
+                    , clsChild->methodForNameIgnoreParent("methodInChild")
+                    ));
 
         clsChild->methodForName("methodNormal")->execute<void>(this->pBase);
         clsChild->methodForName("methodNormal")->execute<void>(this->pChild);
@@ -247,9 +252,9 @@ protected:
         this->testCaseOutputSeparator();
         this->testCaseOutput("return reference:");
         this->pBase->s = "oldString";
-        this->testCaseOutput("before: %s", this->pBase->s.cString());
+        this->testCaseOutput(zfstr("before: %s", this->pBase->s));
         clsBase->methodForNameIgnoreParent("methodReturnReference")->execute<zfstring &>(this->pBase) = "newString";
-        this->testCaseOutput("after: %s", this->pBase->s.cString());
+        this->testCaseOutput(zfstr("after: %s", this->pBase->s));
 
         this->testCaseOutputSeparator();
 
@@ -257,9 +262,9 @@ protected:
         zfstring &paramReference = _paramReference;
         this->testCaseOutput("param is reference:");
         paramReference = "oldString";
-        this->testCaseOutput("before: %s", paramReference.cString());
+        this->testCaseOutput(zfstr("before: %s", paramReference));
         clsBase->methodForNameIgnoreParent("methodParamIsReference")->execute<void, zfstring &>(this->pBase, paramReference);
-        this->testCaseOutput("after: %s", paramReference.cString());
+        this->testCaseOutput(zfstr("after: %s", paramReference));
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("note that you must specify both ReturnType and ParamType, ");
@@ -269,9 +274,9 @@ protected:
         // this code may or may not crash
         paramReference = "oldString";
         this->testCaseOutput("these code may have wrong result or crash:");
-        this->testCaseOutput("before: %s", paramReference.cString()));
+        this->testCaseOutput(zfstr("before: %s", paramReference));
         clsBase->methodForNameIgnoreParent("methodParamIsReference")->execute<void>(this->pBase, paramReference);
-        this->testCaseOutput("after: %s", paramReference.cString()));
+        this->testCaseOutput(zfstr("after: %s", paramReference));
 #endif
 
         this->testCaseStop();
@@ -313,7 +318,7 @@ private:
     }
     void printMethodInfo(const ZFClass *cls, const zfchar *indent = "  ") {
         for(zfindex i = 0; i < cls->methodCount(); ++i) {
-            this->testCaseOutput("%s%s", indent, cls->methodAt(i)->objectInfo().cString());
+            this->testCaseOutput(zfstr("%s%s", indent, cls->methodAt(i)));
         }
     }
 };

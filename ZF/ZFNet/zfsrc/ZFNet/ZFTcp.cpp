@@ -89,7 +89,7 @@ ZFMETHOD_DEFINE_0(ZFTcp, zfbool, valid) {
     return d->type != ZFTcpType::e_Invalid;
 }
 ZFMETHOD_DEFINE_0(ZFTcp, const zfchar *, host) {
-    return d->host.isEmpty() ? zfnull : d->host.cString();
+    return d->host.isEmpty() ? zfnull : d->host;
 }
 ZFMETHOD_DEFINE_0(ZFTcp, zfuint, port) {
     return d->port;

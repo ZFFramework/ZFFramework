@@ -14,40 +14,23 @@ ZF_NAMESPACE_BEGIN(ZFSerializableUtil)
 /**
  * @brief util method to set error
  */
-extern ZFLIB_ZFCore void errorOccurred(
+#define ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, errorPos, fmt, ...) \
+        ZFSerializableUtil::_ZFP_errorOccurredAt(outErrorHint, outErrorPos, errorPos, zfstr(fmt, ##__VA_ARGS__))
+/**
+ * @brief util method to set error
+ */
+#define ZFSerializableUtilErrorOccurred(outErrorHint, fmt, ...) \
+        ZFSerializableUtil::_ZFP_errorOccurred(outErrorHint, zfstr(fmt, ##__VA_ARGS__))
+
+extern ZFLIB_ZFCore void _ZFP_errorOccurredAt(
         ZF_OUT_OPT zfstring *outErrorHint
         , ZF_OUT_OPT ZFSerializableData *outErrorPos
         , ZF_IN const ZFSerializableData &errorPos
-        , ZF_IN const zfchar *fmt
-        , ...
+        , ZF_IN const zfchar *text
         );
-
-/**
- * @brief util method to set error
- */
-extern ZFLIB_ZFCore void errorOccurred(
+extern ZFLIB_ZFCore void _ZFP_errorOccurred(
         ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_IN const zfchar *fmt
-        , ...
-        );
-
-/**
- * @brief util method to set error
- */
-extern ZFLIB_ZFCore void errorOccurredWhile(
-        ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos
-        , ZF_IN const ZFSerializableData &errorPos
-        , ZF_IN const zfchar *serializingName
-        , ZF_IN const zfchar *errorValue
-        );
-/**
- * @brief util method to set error
- */
-extern ZFLIB_ZFCore void errorOccurredWhile(
-        ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_IN const zfchar *serializingName
-        , ZF_IN const zfchar *errorValue
+        , ZF_IN const zfchar *text
         );
 
 /**
@@ -214,7 +197,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
             _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
         if(valueString != zfnull) { \
             if(!TypeName##FromString(value, valueString)) { \
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, \
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
                     "failed to convert from \"%s\"", valueString); \
                 return zffalse; \
             } \
@@ -229,7 +212,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
                 ) { \
             zfstring valueString; \
             if(!TypeName##ToString(valueString, thisValue)) { \
-                ZFSerializableUtil::errorOccurred(outErrorHint, \
+                ZFSerializableUtilErrorOccurred(outErrorHint, \
                     "failed to convert %s to string", key); \
                 return zffalse; \
             } \
@@ -243,7 +226,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
         if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) { \
             zfstring valueString; \
             if(!TypeName##ToString(valueString, thisValue)) { \
-                ZFSerializableUtil::errorOccurred(outErrorHint, \
+                ZFSerializableUtilErrorOccurred(outErrorHint, \
                     "failed to convert %s to string", key); \
                 return zffalse; \
             } \

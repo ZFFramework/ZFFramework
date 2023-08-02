@@ -290,7 +290,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
     }
     lua_pop(L, 1);
 
-    ZFLuaErrorOccurredTrim("%s", errHintTmp.cString());
+    ZFLuaErrorOccurredTrim("%s", errHintTmp);
 }
 
 // ============================================================
@@ -437,7 +437,7 @@ zfbool ZFImpl_ZFLua_toGeneric(
         return zftrue;
     }
     else {
-        zfstringAppend(errorHint, "unknown param type: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+        zfstringAppend(errorHint, "unknown param type: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue));
         return zffalse;
     }
 }
@@ -457,7 +457,7 @@ zfbool ZFImpl_ZFLua_toCallback(
             if(errorHint != zfnull) {
                 zfstringAppend(errorHint,
                     "[ZFCallbackForLua] invalid param: %s",
-                    ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue));
             }
             return zffalse;
         }
@@ -779,17 +779,17 @@ zfbool ZFImpl_ZFLua_zfstringAppend(
     const zfchar *pFmt = fmt;
     const zfchar *pFmtL = fmt;
     const zfchar *pToken = zfnull;
-    for(int i = luaParamOffset + 1; i <= count; ++i) {
+    for(int i = luaParamOffset + 1; /* i <= count */; ++i) {
         do {
             while(*pFmt != '\0' && *pFmt != '%') {++pFmt;}
-            if(*pFmt == '\0' || *(pFmt + 1) == '\0') {
-                return zffalse;
-            }
-            if(*(pFmt + 1) == '%') {
+            if(*pFmt == '%' && *(pFmt + 1) == '%') {
                 pFmt += 2;
                 continue;
             }
         } while(zffalse);
+        if(*pFmt == '\0' || *(pFmt + 1) == '\0') {
+            break;
+        }
         s.append(pFmtL, pFmt - pFmtL);
 
         pToken = pFmt + 1;
@@ -806,46 +806,59 @@ zfbool ZFImpl_ZFLua_zfstringAppend(
         switch(*pToken) {
             case 'b':
                 pFmtL = pToken + 1;
-                fmtTmp.assign(pFmt, pFmtL - pFmt);
-                zfstringAppend(s, fmtTmp, _ZFP_ZFImpl_ZFLua_zfstringAppend_bool(L, i));
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
+                    zfstringAppend(s, fmtTmp, _ZFP_ZFImpl_ZFLua_zfstringAppend_bool(L, i));
+                }
                 break;
             case 'z':
                 if(*(pToken + 1) != 'i') {
                     return zffalse;
                 }
                 pFmtL = pToken + 2;
-                fmtTmp.assign(pFmt, pFmtL - pFmt);
-                zfstringAppend(s, fmtTmp, (zfindex)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
+                    zfstringAppend(s, fmtTmp, (zfindex)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                }
                 break;
             case 'd':
             case 'i':
                 pFmtL = pToken + 1;
-                fmtTmp.assign(pFmt, pFmtL - pFmt);
-                zfstringAppend(s, fmtTmp, (zfint)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
+                    zfstringAppend(s, fmtTmp, (zfint)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                }
                 break;
             case 'u':
             case 'o':
             case 'x':
             case 'X':
                 pFmtL = pToken + 1;
-                fmtTmp.assign(pFmt, pFmtL - pFmt);
-                zfstringAppend(s, fmtTmp, (zfuint)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
+                    zfstringAppend(s, fmtTmp, (zfuint)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                }
                 break;
             case 'f':
                 pFmtL = pToken + 1;
-                fmtTmp.assign(pFmt, pFmtL - pFmt);
-                zfstringAppend(s, fmtTmp, (zffloat)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
+                    zfstringAppend(s, fmtTmp, (zffloat)_ZFP_ZFImpl_ZFLua_zfstringAppend_number(L, i));
+                }
                 break;
             case 'p':
                 pFmtL = pToken + 1;
-                fmtTmp.assign(pFmt, pFmtL - pFmt);
-                fmtTmp[fmtTmp.length() - 1] = 's';
-                zfstringAppend(s, fmtTmp, _ZFP_ZFImpl_ZFLua_zfstringAppend_pointer(L, i).cString());
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
+                    fmtTmp[fmtTmp.length() - 1] = 's';
+                    zfstringAppend(s, fmtTmp, _ZFP_ZFImpl_ZFLua_zfstringAppend_pointer(L, i));
+                }
                 break;
             case 'c':
             case 'C':
                 pFmtL = pToken + 1;
-                fmtTmp.assign(pFmt, pFmtL - pFmt); {
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
                     zfstring tmp = _ZFP_ZFImpl_ZFLua_zfstringAppend_string(L, i, zffalse);
                     zfstringAppend(s, fmtTmp, (zfchar)(tmp.isEmpty() ? '?' : tmp[0]));
                 }
@@ -853,8 +866,10 @@ zfbool ZFImpl_ZFLua_zfstringAppend(
             case 's':
             case 'S':
                 pFmtL = pToken + 1;
-                fmtTmp.assign(pFmt, pFmtL - pFmt);
-                zfstringAppend(s, fmtTmp, _ZFP_ZFImpl_ZFLua_zfstringAppend_string(L, i, zftrue).cString());
+                if(i <= count) {
+                    fmtTmp.assign(pFmt, pFmtL - pFmt);
+                    zfstringAppend(s, fmtTmp, _ZFP_ZFImpl_ZFLua_zfstringAppend_string(L, i, zftrue));
+                }
                 break;
             default:
                 return zffalse;

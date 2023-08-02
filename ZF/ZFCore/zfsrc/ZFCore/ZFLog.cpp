@@ -80,6 +80,7 @@ zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo) {
         ti.second,
         ti.miliSecond);
     callerInfo.callerInfoT(ret);
+    ret += " ";
     return ret;
 }
 
@@ -96,8 +97,7 @@ static zfindex _ZFP_zfLogOnOutput(
 }
 ZFOutput _ZFP_zfLog(
         ZF_IN const zfchar *header
-        , ZF_IN_OPT const zfchar *fmt /* = zfnull */
-        , ...
+        , ZF_IN_OPT const zfchar *text /* = zfnull */
         ) {
     ZFOutput ret;
     ret.callbackSerializeCustomDisable(zftrue);
@@ -106,14 +106,8 @@ ZFOutput _ZFP_zfLog(
     if(header != zfnull) {
         ret << header;
     }
-    if(fmt != zfnull) {
-        va_list vaList;
-        va_start(vaList, fmt);
-        zfstring s;
-        zfstringAppendV(s, fmt, vaList);
-        va_end(vaList);
-
-        ret << s;
+    if(text != zfnull) {
+        ret << text;
     }
 
     return ret;

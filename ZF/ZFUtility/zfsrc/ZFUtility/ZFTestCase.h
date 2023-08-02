@@ -88,7 +88,7 @@ public:
      * @brief output something for the test case,
      *   used to debug
      */
-    zffinal void testCaseOutput(ZF_IN const zfchar *info, ...);
+    zffinal void testCaseOutput(ZF_IN const zfchar *info);
     /**
      * @brief manually start a test case
      *
@@ -138,7 +138,7 @@ protected:
 #define ZFTestCaseAssertWithMessage(cond, fmt, ...) \
     do { \
         if(!(cond)) { \
-            this->testCaseOutput("%s " fmt, ZFCallerInfoMake().callerInfo().cString(), ##__VA_ARGS__); \
+            this->testCaseOutput(zfstr("%s " fmt, ZFCallerInfoMake(), ##__VA_ARGS__)); \
             this->testCaseStop(ZFResultType::e_Fail); \
             return; \
         } \
@@ -147,7 +147,7 @@ protected:
 #define ZFTestCaseAssertWithMessageTrim(cond, fmt, ...) \
     do { \
         if(!(cond)) { \
-            this->testCaseOutput(fmt, ##__VA_ARGS__); \
+            this->testCaseOutput(zfstr(fmt, ##__VA_ARGS__)); \
             this->testCaseStop(ZFResultType::e_Fail); \
             return; \
         } \
@@ -156,7 +156,7 @@ protected:
 #define ZFTestCaseAssertWithMessageDetail(cond, callerInfo, fmt, ...) \
     do { \
         if(!(cond)) { \
-            this->testCaseOutput("%s " fmt, callerInfo.callerInfo().cString(), fmt, ##__VA_ARGS__); \
+            this->testCaseOutput(zfstr("%s " fmt, callerInfo, fmt, ##__VA_ARGS__)); \
             this->testCaseStop(ZFResultType::e_Fail); \
             return; \
         } \

@@ -26,7 +26,7 @@ jclass ZFImpl_sys_Android_jclassZFAndroidOutput(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder)->jclsZFAndroidOutput;
 }
 
-#define _ZFP_ZFAndroidOutputBufSize 64
+#define _ZFP_ZFAndroidOutputBufSize 1024
 zfclass _ZFP_I_ZFAndroidOutput : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidOutput, ZFObject)
     ZFALLOC_CACHE_RELEASE({

@@ -134,7 +134,6 @@ extern ZFLIB_ZFCore zfbool zfflagsFromString(
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbool, zfbool)
-ZFOUTPUT_TYPE(zfbool, {s += (v ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -145,7 +144,6 @@ ZFOUTPUT_TYPE(zfbool, {s += (v ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfbyte, zfbyte)
-ZFOUTPUT_TYPE(zfbyte, {zfbyteToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -156,7 +154,6 @@ ZFOUTPUT_TYPE(zfbyte, {zfbyteToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfchar, zfchar)
-ZFOUTPUT_TYPE(zfchar, {s += v;})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -167,7 +164,6 @@ ZFOUTPUT_TYPE(zfchar, {s += v;})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
-ZFOUTPUT_TYPE(zfstring, {s += v;})
 
 #define _ZFP_ZFTYPEID_ALIAS_EXPAND_cString(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
     template<typename T_Access = _ZFP_PropTypeW_##TypeName \
@@ -234,6 +230,7 @@ ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const z
 #undef _ZFP_ZFTYPEID_ALIAS_EXPAND_cString
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPtr, void *)
+
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPtrConst, const void *)
 
 /**
@@ -245,7 +242,6 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPtrConst, const void *)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfint, zfint)
-ZFOUTPUT_TYPE(zfint, {zfintToString(s, v);})
 /**
  * @brief see #ZFTYPEID_DECLARE
  *
@@ -257,7 +253,6 @@ ZFOUTPUT_TYPE(zfint, {zfintToString(s, v);})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfuint, zfuint)
-ZFOUTPUT_TYPE(zfuint, {zfuintToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -270,7 +265,6 @@ ZFOUTPUT_TYPE(zfuint, {zfuintToString(s, v);})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfindex, zfindex)
-ZFOUTPUT_TYPE(zfindex, {zfindexToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -281,7 +275,6 @@ ZFOUTPUT_TYPE(zfindex, {zfindexToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zffloat, zffloat)
-ZFOUTPUT_TYPE(zffloat, {zffloatToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -292,7 +285,6 @@ ZFOUTPUT_TYPE(zffloat, {zffloatToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfdouble, zfdouble)
-ZFOUTPUT_TYPE(zfdouble, {zfdoubleToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -303,7 +295,6 @@ ZFOUTPUT_TYPE(zfdouble, {zfdoubleToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zflongdouble, zflongdouble)
-ZFOUTPUT_TYPE(zflongdouble, {zflongdoubleToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -314,7 +305,6 @@ ZFOUTPUT_TYPE(zflongdouble, {zflongdoubleToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zftimet, zftimet)
-ZFOUTPUT_TYPE(zftimet, {zftimetToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -327,7 +317,6 @@ ZFOUTPUT_TYPE(zftimet, {zftimetToString(s, v);})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfflags, zfflags)
-ZFOUTPUT_TYPE(zfflags, {zfflagsToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -340,7 +329,6 @@ ZFOUTPUT_TYPE(zfflags, {zfflagsToString(s, v);})
  *   we'll use "-1" to store max unsigned value
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfidentity, zfidentity)
-ZFOUTPUT_TYPE(zfidentity, {zfidentityToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -351,7 +339,6 @@ ZFOUTPUT_TYPE(zfidentity, {zfidentityToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCompareResult, ZFCompareResult)
-ZFOUTPUT_TYPE(ZFCompareResult, {ZFCompareResultToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -362,7 +349,6 @@ ZFOUTPUT_TYPE(ZFCompareResult, {ZFCompareResultToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSeekPos, ZFSeekPos)
-ZFOUTPUT_TYPE(ZFSeekPos, {ZFSeekPosToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -375,7 +361,6 @@ ZFOUTPUT_TYPE(ZFSeekPos, {ZFSeekPosToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFIndexRange, ZFIndexRange)
-ZFOUTPUT_TYPE(ZFIndexRange, {ZFIndexRangeToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -386,7 +371,6 @@ ZFOUTPUT_TYPE(ZFIndexRange, {ZFIndexRangeToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFLevel, ZFLevel)
-ZFOUTPUT_TYPE(ZFLevel, {ZFLevelToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -397,7 +381,6 @@ ZFOUTPUT_TYPE(ZFLevel, {ZFLevelToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFrameworkState, ZFFrameworkState)
-ZFOUTPUT_TYPE(ZFFrameworkState, {ZFFrameworkStateToString(s, v);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFuncAddrType, ZFFuncAddrType)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfiterator, zfiterator)
@@ -413,7 +396,6 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenera
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterType, ZFFilterType)
-ZFOUTPUT_TYPE(ZFFilterType, {ZFFilterTypeToString(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -424,7 +406,6 @@ ZFOUTPUT_TYPE(ZFFilterType, {ZFFilterTypeToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterCallbackResult, ZFFilterCallbackResult)
-ZFOUTPUT_TYPE(ZFFilterCallbackResult, {ZFFilterCallbackResultToString(s, v);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForNumber, ZFFilterForNumber)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForIndex, ZFFilterForIndex)

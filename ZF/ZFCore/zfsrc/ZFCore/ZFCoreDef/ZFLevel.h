@@ -64,6 +64,55 @@ typedef enum {
 /** @brief string tokens */
 #define ZFTOKEN_ZFLevelZFFrameworkPostStatic "LevelZFFrameworkPostStatic"
 
+ZFOUTPUT_TYPE(ZFLevel, {
+    switch(v) {
+        case ZFLevelZFFrameworkStatic:
+            s += ZFTOKEN_ZFLevelZFFrameworkStatic;
+            break;
+        case ZFLevelZFFrameworkEssential:
+            s += ZFTOKEN_ZFLevelZFFrameworkEssential;
+            break;
+        case ZFLevelZFFrameworkHigh:
+            s += ZFTOKEN_ZFLevelZFFrameworkHigh;
+            break;
+        case ZFLevelZFFrameworkNormal:
+            s += ZFTOKEN_ZFLevelZFFrameworkNormal;
+            break;
+        case ZFLevelZFFrameworkLow:
+            s += ZFTOKEN_ZFLevelZFFrameworkLow;
+            break;
+        case ZFLevelAppEssential:
+            s += ZFTOKEN_ZFLevelAppEssential;
+            break;
+        case ZFLevelAppHigh:
+            s += ZFTOKEN_ZFLevelAppHigh;
+            break;
+        case ZFLevelAppNormal:
+            s += ZFTOKEN_ZFLevelAppNormal;
+            break;
+        case ZFLevelAppLow:
+            s += ZFTOKEN_ZFLevelAppLow;
+            break;
+        case ZFLevelZFFrameworkPostLow:
+            s += ZFTOKEN_ZFLevelZFFrameworkPostLow;
+            break;
+        case ZFLevelZFFrameworkPostNormal:
+            s += ZFTOKEN_ZFLevelZFFrameworkPostNormal;
+            break;
+        case ZFLevelZFFrameworkPostHigh:
+            s += ZFTOKEN_ZFLevelZFFrameworkPostHigh;
+            break;
+        case ZFLevelZFFrameworkPostEssential:
+            s += ZFTOKEN_ZFLevelZFFrameworkPostEssential;
+            break;
+        case ZFLevelZFFrameworkPostStatic:
+            s += ZFTOKEN_ZFLevelZFFrameworkPostStatic;
+            break;
+        default:
+            break;
+    }
+})
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFLevel_h_
 

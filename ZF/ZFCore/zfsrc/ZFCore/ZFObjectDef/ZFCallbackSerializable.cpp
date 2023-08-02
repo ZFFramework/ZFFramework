@@ -13,14 +13,14 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             if(customType != zfnull) {
                 const ZFSerializableData *customData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFCallback_callbackData);
                 if(customData == zfnull) {
-                    ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                         "missing %s", ZFSerializableKeyword_ZFCallback_callbackData);
                     return zffalse;
                 }
 
                 _ZFP_ZFCallbackSerializeCustomCallback serializeCallback = _ZFP_ZFCallbackSerializeCustomTypeForName(customType);
                 if(serializeCallback == zfnull) {
-                    ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                         "no such callback custom serialize type: %s", customType);
                     return zffalse;
                 }
@@ -57,7 +57,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             v = ZFCallbackForMethod(method);
         }
         else {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "member method callback is not supported");
             return zffalse;
         }
@@ -67,12 +67,12 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
     }, {
         if(v.callbackSerializeCustomType() != zfnull) {
             if(v.callbackSerializeCustomDisabled()) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, "callback was marked as not serializable");
+                ZFSerializableUtilErrorOccurred(outErrorHint, "callback was marked as not serializable");
                 return zffalse;
             }
 
             if(v.callbackSerializeCustomData() == zfnull) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, "missing callback serialize custom data");
+                ZFSerializableUtilErrorOccurred(outErrorHint, "missing callback serialize custom data");
                 return zffalse;
             }
             serializableData.itemClass(ZFTypeId_ZFCallback());
@@ -101,19 +101,19 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             }
                 break;
             case ZFCallbackTypeMemberMethod: {
-                ZFSerializableUtil::errorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(outErrorHint,
                     "member method callback is not supported");
                 return zffalse;
             }
                 break;
             case ZFCallbackTypeRawFunction:
                 serializableData.itemClass(ZFTypeId_ZFCallback());
-                ZFSerializableUtil::errorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(outErrorHint,
                     "raw function is not supported");
                 return zffalse;
             case ZFCallbackTypeLambda:
                 serializableData.itemClass(ZFTypeId_ZFCallback());
-                ZFSerializableUtil::errorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(outErrorHint,
                     "lambda function is not supported");
                 return zffalse;
             default:

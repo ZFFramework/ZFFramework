@@ -338,8 +338,8 @@ zfbool ZFDI_invoke(
             if(!method->methodIsPublic()) {
                 if(errorHintTmp != zfnull) {
                     zfstringAppend(_errorHintTmp, "can not invoke %s method: %s",
-                        ZFMethodPrivilegeTypeToString(method->methodPrivilegeType()).cString(),
-                        method->objectInfo().cString());
+                        method->methodPrivilegeType(),
+                        method);
                 }
                 break;
             }
@@ -347,8 +347,8 @@ zfbool ZFDI_invoke(
                 if(errorHintTmp != zfnull) {
                     zfstringAppend(_errorHintTmp, "expect %s param, got %zi",
                         ((method->methodParamCountMin() == method->methodParamCount())
-                            ? zfindexToString(method->methodParamCount()).cString()
-                            : zfstringWithFormat("%zi~%zi", method->methodParamCountMin(), method->methodParamCount()).cString()),
+                            ? zfindexToString(method->methodParamCount())
+                            : zfstr("%zi~%zi", method->methodParamCountMin(), method->methodParamCount())),
                         paramCount);
                 }
                 continue;
@@ -484,8 +484,8 @@ zfbool ZFDI_alloc(
                 if(errorHintTmp != zfnull) {
                     zfstringAppend(_errorHintTmp, "expect %s param, got %zi",
                         ((method->methodParamCountMin() == method->methodParamCount())
-                            ? zfindexToString(method->methodParamCount()).cString()
-                            : zfstringWithFormat("%zi~%zi", method->methodParamCountMin(), method->methodParamCount()).cString()),
+                            ? zfindexToString(method->methodParamCount())
+                            : zfstr("%zi~%zi", method->methodParamCountMin(), method->methodParamCount())),
                         paramCount);
                 }
                 continue;

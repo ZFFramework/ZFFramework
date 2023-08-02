@@ -77,7 +77,7 @@ public:
         _ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_sys_iOS_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_sys_iOS_getNativeThreadId();
         zfbool exist = (_ZFP_ZFThreadImpl_sys_iOS_threadMap.find(*token) != _ZFP_ZFThreadImpl_sys_iOS_threadMap.end());
-        zfCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread->objectInfo().cString());
+        zfCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_sys_iOS_threadMap[*token] = ownerZFThread;
         return ZFCastStatic(void *, token);
     }

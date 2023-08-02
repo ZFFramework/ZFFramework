@@ -269,18 +269,18 @@ zfbool ZFAnimationGroup::serializableOnSerializeFromData(
                 return zffalse;
             }
             if(element == zfnull) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "null child");
                 return zffalse;
             }
             if(!element.toObject()->classData()->classIsTypeOf(ZFAnimationGroupChildData::ClassData())) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
-                    "object %s not type of %s", element.toObject()->objectInfoOfInstance().cString(), ZFAnimationGroupChildData::ClassData());
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
+                    "object %s not type of %s", element.toObject()->objectInfoOfInstance(), ZFAnimationGroupChildData::ClassData());
                 return zffalse;
             }
             ZFAnimationGroupChildData *childData = ZFCastZFObjectUnchecked(ZFAnimationGroupChildData *, element.toObject());
             if(childData->childAni() == zfnull) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "null child animation");
                 return zffalse;
             }
@@ -323,9 +323,9 @@ zfbool ZFAnimationGroup::serializableOnSerializeToData(
             }
         }
         if(mismatch) {
-            ZFSerializableUtil::errorOccurred(outErrorHint,
+            ZFSerializableUtilErrorOccurred(outErrorHint,
                 "animation group contents mismatch, this: %s, ref: %s",
-                d->childAnis->objectInfoOfContent().cString(), ref->d->childAnis->objectInfoOfContent().cString());
+                d->childAnis->objectInfoOfContent(), ref->d->childAnis->objectInfoOfContent());
             return zffalse;
         }
     }

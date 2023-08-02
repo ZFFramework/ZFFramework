@@ -533,21 +533,21 @@ public:
             return zffalse;
         }
         if(internalView == zfnull) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                 "null view");
             return zffalse;
         }
         if(!internalView->classData()->classIsTypeOf(ZFUIView::ClassData())) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                 "%s not type of %s",
-                internalView->objectInfoOfInstance().cString(), ZFUIView::ClassData()->classNameFull());
+                internalView->objectInfoOfInstance(), ZFUIView::ClassData()->classNameFull());
             return zffalse;
         }
         ZFUIView *internalViewTmp = internalView;
         if(internalViewTmp->viewId().isEmpty()) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                 "auto serialized internal view %s has no viewId",
-                internalViewTmp->objectInfoOfInstance().cString());
+                internalViewTmp->objectInfoOfInstance());
             return zffalse;
         }
         ZFUIView *exist = zfnull;
@@ -577,7 +577,7 @@ public:
             }
         }
         if(exist == zfnull) {
-            owner->internalViewAutoSerializeTagAdd(internalViewTmp->viewId().cString());
+            owner->internalViewAutoSerializeTagAdd(internalViewTmp->viewId());
             switch(childLayer) {
                 case ZFUIViewChildLayer::e_Normal:
                     zfCoreCriticalShouldNotGoHere();
@@ -665,7 +665,7 @@ public:
                 }
                 zfbool exist = zffalse;
                 for(zfindex iRef = viewsRef->count() - 1; iRef != zfindexMax(); --iRef) {
-                    if(viewsRef->get(iRef)->to<ZFUIView *>()->viewId().compare(tmp->viewId().cString()) == 0) {
+                    if(viewsRef->get(iRef)->to<ZFUIView *>()->viewId().compare(tmp->viewId()) == 0) {
                         exist = zftrue;
                         break;
                     }
@@ -775,14 +775,14 @@ zfbool ZFUIView::serializableOnSerializeFromData(
                 return zffalse;
             }
             if(element == zfnull) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "null view");
                 return zffalse;
             }
             if(!element.toObject()->classData()->classIsTypeOf(ZFUIView::ClassData())) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "%s not type of %s",
-                    element.toObject()->objectInfoOfInstance().cString(), ZFUIView::ClassData()->classNameFull());
+                    element.toObject()->objectInfoOfInstance(), ZFUIView::ClassData()->classNameFull());
                 return zffalse;
             }
             ZFUIView *child = element.to<ZFUIView *>();
@@ -796,14 +796,14 @@ zfbool ZFUIView::serializableOnSerializeFromData(
                 return zffalse;
             }
             if(layoutParam == zfnull) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "null layoutParam");
                 return zffalse;
             }
             if(!layoutParam.toObject()->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "%s not type of %s",
-                    layoutParam.toObject()->objectInfoOfInstance().cString(), ZFUILayoutParam::ClassData()->classNameFull());
+                    layoutParam.toObject()->objectInfoOfInstance(), ZFUILayoutParam::ClassData()->classNameFull());
                 return zffalse;
             }
 
@@ -896,9 +896,9 @@ zfbool ZFUIView::serializableOnSerializeToData(
         }
         else {
             if(!d->childArrayIsTheSame(this, ref, ZFUIViewChildLayer::e_Normal)) {
-                ZFSerializableUtil::errorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(outErrorHint,
                     "child mismatch, this: %s, ref: %s",
-                    this->objectInfoOfInstance().cString(), ref->objectInfoOfInstance().cString());
+                    this->objectInfoOfInstance(), ref->objectInfoOfInstance());
                 return zffalse;
             }
         }
@@ -1189,7 +1189,7 @@ void ZFUIView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
 
     if(!this->viewId().isEmpty()) {
-        zfstringAppend(ret, " [%s]", this->viewId().cString());
+        zfstringAppend(ret, " [%s]", this->viewId());
     }
 
     ret += " ";
@@ -1711,23 +1711,23 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById
 
     if(!findRecursively) {
         for(zfindex i = 0; i < d->layerNormal.views.count(); ++i) {
-            if(zfstringIsEqual(d->layerNormal.views[i]->viewId().cString(), viewId)) {
+            if(zfstringIsEqual(d->layerNormal.views[i]->viewId(), viewId)) {
                 return d->layerNormal.views[i];
             }
         }
         if(includeInternalViews) {
             for(zfindex i = 0; i < d->layerInternalImpl.views.count(); ++i) {
-                if(zfstringIsEqual(d->layerInternalImpl.views[i]->viewId().cString(), viewId)) {
+                if(zfstringIsEqual(d->layerInternalImpl.views[i]->viewId(), viewId)) {
                     return d->layerInternalImpl.views[i];
                 }
             }
             for(zfindex i = 0; i < d->layerInternalBg.views.count(); ++i) {
-                if(zfstringIsEqual(d->layerInternalBg.views[i]->viewId().cString(), viewId)) {
+                if(zfstringIsEqual(d->layerInternalBg.views[i]->viewId(), viewId)) {
                     return d->layerInternalBg.views[i];
                 }
             }
             for(zfindex i = 0; i < d->layerInternalFg.views.count(); ++i) {
-                if(zfstringIsEqual(d->layerInternalFg.views[i]->viewId().cString(), viewId)) {
+                if(zfstringIsEqual(d->layerInternalFg.views[i]->viewId(), viewId)) {
                     return d->layerInternalFg.views[i];
                 }
             }
@@ -1739,7 +1739,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById
     toFind.add(this);
     while(!toFind.isEmpty()) {
         ZFUIView *view = toFind.take();
-        if(zfstringIsEqual(view->viewId().cString(), viewId)) {
+        if(zfstringIsEqual(view->viewId(), viewId)) {
             return view;
         }
         toFind.addFrom(view->childArray());

@@ -12,7 +12,7 @@ protected:
         zfsuper::testCaseOnStart();
 
         this->testCaseOutput("current env info:");
-        this->testCaseOutput(ZFEnvInfo::envSummary().cString());
+        this->testCaseOutput(ZFEnvInfo::envSummary());
         this->testCaseStop();
     }
 };

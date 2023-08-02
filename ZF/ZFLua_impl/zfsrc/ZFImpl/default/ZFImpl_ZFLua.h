@@ -517,15 +517,11 @@ public:
 public:
     int luaError(
             ZF_IN lua_State *L
-            , ZF_IN const zfchar *fmt
-            , ...
+            , ZF_IN const zfchar *text
             ) {
         zfCoreAssert(this->errorHint == zfnull);
         this->errorHint = zfnew(zfstring);
-        va_list vaList;
-        va_start(vaList, fmt);
-        zfstringAppendV(*(this->errorHint), fmt, vaList);
-        va_end(vaList);
+        *(this->errorHint) += text;
         return 0;
     }
 private:
@@ -535,7 +531,7 @@ private:
 
 /** @brief see #ZFImpl_ZFLua_luaErrorPrepare */
 #define ZFImpl_ZFLua_luaError(L, fmt, ...) \
-    _ZFP_ZFImpl_ZFLua_luaErrorPrepareNotCalled.luaError(L, fmt, ##__VA_ARGS__)
+    _ZFP_ZFImpl_ZFLua_luaErrorPrepareNotCalled.luaError(L, zfstr(fmt, ##__VA_ARGS__))
 
 zfclassLikePOD ZFLIB_ZFLua_impl _ZFP_ZFLuaStackChecker {
 public:

@@ -81,7 +81,7 @@ public:
         if(!lua_isfunction(this->ownerL, -1)) {
             zfCoreCriticalMessageTrim(
                 "[ZFCallbackForLua] invalid function: %s",
-                ZFImpl_ZFLua_luaObjectInfo(this->ownerL, -1, zftrue).cString());
+                ZFImpl_ZFLua_luaObjectInfo(this->ownerL, -1, zftrue));
             return;
         }
 
@@ -344,7 +344,7 @@ public:
             return "[ZFCallbackForLua]";
         }
         else {
-            return zfstringWithFormat("[ZFCallbackForLua:%s]", ZFPathInfoToString(this->pathInfo).cString());
+            return zfstr("[ZFCallbackForLua:%s]", ZFPathInfoToString(this->pathInfo));
         }
     }
 
@@ -424,8 +424,8 @@ public:
             lua_pop(L, 1);
             zfstringAppend(errorHint,
                 "%s unable to dump function: %s",
-                this->logTag().cString(),
-                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+                this->logTag(),
+                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue));
             return zffalse;
         }
 
@@ -439,10 +439,10 @@ public:
             if(!_fromUpvalue(v, L, name, upvalueIndex)) {
                 zfstringAppend(errorHint,
                     "%s unable to store upvalue \"%s\" at index %d: %s",
-                    this->logTag().cString(),
+                    this->logTag(),
                     name,
                     (zfint)upvalueIndex,
-                    ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue).cString());
+                    ZFImpl_ZFLua_luaObjectInfo(L, -1, zftrue));
                 lua_pop(L, 1);
                 return zffalse;
             }
@@ -471,7 +471,7 @@ public:
             if(loadError != LUA_OK) {
                 zfCoreCriticalMessageTrim(
                     "%s unable to load function",
-                    logTag.cString());
+                    logTag);
                 return;
             }
             int luaFuncIndex = lua_gettop(L);
@@ -497,8 +497,8 @@ public:
                 const ValueHolder &v = this->upvalues[i];
                 if(!_ZFP_ZFCallbackForLua_toUpvalue(v, L, luaFuncIndex, luaLocalFuncNameList, luaLocalFuncIndex)) {
                     zfCoreCriticalMessageTrim("%s unable to restore upvalue: %s",
-                        logTag.cString(),
-                        valueHolderInfo(v).cString());
+                        logTag,
+                        valueHolderInfo(v));
                     return;
                 }
             }
@@ -510,14 +510,14 @@ public:
             ZFCorePointerForObject<_ZFP_ZFCallbackForLua_SyncMode *> funcCache(zfnew(_ZFP_ZFCallbackForLua_SyncMode));
             if(!funcCache->setup(L, -2, zfnull)) {
                 zfCoreCriticalMessageTrim("%s unable to store function cache",
-                    logTag.cString());
+                    logTag);
                 return;
             }
         }
 
         // finally call, stack: [func, zfargs]
         int error = lua_pcall(L, 1, 0, 0);
-        ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag.cString());
+        ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag);
     }
 };
 
@@ -597,7 +597,7 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLua(
         if(errorHint != zfnull) {
             zfstringAppend(errorHint,
                 "[ZFCallbackForLua] invalid param: %s",
-                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue).cString());
+                ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue));
         }
         return zffalse;
     }
@@ -633,13 +633,13 @@ static int _ZFP_ZFCallbackForLua(ZF_IN lua_State *L) {
     if(!lua_isfunction(L, 1)) {
         return ZFImpl_ZFLua_luaError(L,
             "[ZFCallbackForLua] takes function(zfargs) as param, got: %s",
-            ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue).cString());
+            ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue));
     }
 
     zfstring errorHint;
     zfautoObject ret;
     if(!ZFImpl_ZFLua_ZFCallbackForLua(ret, L, 1, &errorHint)) {
-        return ZFImpl_ZFLua_luaError(L, "%s", errorHint.cString());
+        return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
     }
     else {
         ZFImpl_ZFLua_luaPush(L, ret);

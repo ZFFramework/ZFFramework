@@ -359,7 +359,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
             ) { \
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, \
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
             "registered type %s is not serializable", ZFM_TOSTRING_DIRECT(TypeName)); \
         return zffalse; \
     } \
@@ -367,7 +367,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
-        ZFSerializableUtil::errorOccurred(outErrorHint, \
+        ZFSerializableUtilErrorOccurred(outErrorHint, \
             "registered type %s is not serializable", ZFM_TOSTRING_DIRECT(TypeName)); \
         return zffalse; \
     } \

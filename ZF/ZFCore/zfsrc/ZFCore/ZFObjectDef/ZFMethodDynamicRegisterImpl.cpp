@@ -69,7 +69,7 @@ const ZFMethod *ZFMethodDynamicRegister(
     if(param.methodOwnerClass() != zfnull && param.methodNamespace() != zfnull) {
         zfstringAppend(errorHint,
             "methodOwnerClass(%s) and methodNamespace(%s) can not both set",
-            param.methodOwnerClass()->objectInfo().cString(),
+            param.methodOwnerClass(),
             param.methodNamespace());
         return zfnull;
     }
@@ -82,7 +82,7 @@ const ZFMethod *ZFMethodDynamicRegister(
         zfstringAppend(errorHint,
             "methodGenericInvoker(%p) and methodImpl(%s) can not both set",
             param.methodGenericInvoker(),
-            param.methodImpl().objectInfo().cString());
+            param.methodImpl());
         return zfnull;
     }
     if(methodImplValid && param.methodDynamicRegisterUserData() != zfnull) {
@@ -147,7 +147,7 @@ const ZFMethod *ZFMethodDynamicRegister(
     if(existMethod != zfnull) {
         zfstringAppend(errorHint,
             "method with same sig already exists: %s",
-            existMethod->objectInfo().cString());
+            existMethod);
         return zfnull;
     }
 

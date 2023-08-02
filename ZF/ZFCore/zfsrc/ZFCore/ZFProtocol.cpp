@@ -13,15 +13,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocol
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevelEnum, protocolImplementationLevel)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplementationPlatformHint)
 
-ZFOUTPUT_TYPE_DEFINE(const ZFProtocol *, {
-    if(v) {
-        v->objectInfoT(s);
-    }
-    else {
-        s += ZFTOKEN_zfnull;
-    }
-})
-
 // ============================================================
 zfclassLikePOD _ZFP_ZFProtocolDataPrivateData {
 public:

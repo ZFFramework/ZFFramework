@@ -28,7 +28,7 @@ zfclass _ZFP_ZFUISerializePerformance_test_TestObject : zfextends ZFObject, zfim
 public:
     void modifyProperty(void) {
         for(zfindex i = 0; i < 16; ++i) {
-            zfstring v = zfstringWithFormat("v%zi", i);
+            zfstring v = zfstr("v%zi", i);
             zfself::ClassData()->propertyForName(v)
                 ->setterMethod()->execute<void, zfstring const &>(this, v);
         }
@@ -95,12 +95,12 @@ protected:
             ZFTimeValue toDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFUISerializePerformance_test_toData");
             zfstringAppend(result, "serialize %zi object to data cost %s seconds",
                 toDataTimes,
-                ZFTimeValueToStringFriendly(toDataUsedTime).cString());
+                ZFTimeValueToStringFriendly(toDataUsedTime));
             result += "\n";
             ZFTimeValue fromDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFUISerializePerformance_test_fromData");
             zfstringAppend(result, "serialize %zi object from data cost %s seconds",
                 fromDataTimes,
-                ZFTimeValueToStringFriendly(fromDataUsedTime).cString());
+                ZFTimeValueToStringFriendly(fromDataUsedTime));
             result += "\ndata:\n";
             ZFSerializableDataToXml(ZFOutputForString(result), data);
             outputView->text(result);

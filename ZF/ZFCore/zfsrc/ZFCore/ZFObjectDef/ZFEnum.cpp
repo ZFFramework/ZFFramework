@@ -28,7 +28,7 @@ zfbool ZFEnum::serializableOnSerializeFromData(
                 enumValue = this->enumValueForName(valueString);
             }
             if(enumValue == ZFEnumInvalid()) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                     "invalid value %s for enum %s", valueString, this->classData()->classNameFull());
                 return zffalse;
             }
@@ -54,9 +54,9 @@ zfbool ZFEnum::serializableOnSerializeToData(
         if(this->enumIsFlags()) {
             zfstring s;
             if(!zfflagsToString(s, this->classData(), (zfflags)this->enumValue())) {
-                ZFSerializableUtil::errorOccurred(outErrorHint,
+                ZFSerializableUtilErrorOccurred(outErrorHint,
                     "unable convert enum value to string: %s",
-                    this->objectInfo().cString());
+                    this);
                 return zffalse;
             }
             serializableData.propertyValue(s);

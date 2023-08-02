@@ -156,6 +156,8 @@ public:
     ZFPROPERTY_ASSIGN(zfstring, linePostfix)
     /** @brief contents write after entire output */
     ZFPROPERTY_ASSIGN(zfstring, outputPostfix)
+    /** @brief contents write after entire output */
+    ZFPROPERTY_ASSIGN(zfbool, removeEndl)
 
 protected:
     zfoverride

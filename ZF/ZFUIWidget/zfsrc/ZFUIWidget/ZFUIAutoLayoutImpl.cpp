@@ -159,8 +159,8 @@ void ZFUIAutoLayout::viewChildOnAdd(
         zfCoreAssertWithMessageTrim(
             layoutParam->_ZFP_AL_d.ownerParent == zfnull,
             "[ZFUIAutoLayout] layout param %s already attached to %s",
-            child->layoutParam()->objectInfo().cString(),
-            layoutParam->_ZFP_AL_d.ownerParent->objectInfo().cString());
+            child->layoutParam(),
+            layoutParam->_ZFP_AL_d.ownerParent);
         layoutParam->_ZFP_AL_d.ownerParent = this;
         layoutParam->_ZFP_AL_d.ownerChild = child->objectHolder();
     }
@@ -238,8 +238,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
     zfbool *&_layoutFinish = (xAxis ? _layoutFinishX : _layoutFinishY);
     zfCoreAssertWithMessageTrim(!_layouting[childIndex],
         "[ZFUIAutoLayout] recursive rule detected, first on: %s, at index: %s",
-        parent->childAt(childIndex)->objectInfoOfInstance().cString(),
-        zfsFromInt(childIndex).cString());
+        parent->childAt(childIndex)->objectInfoOfInstance(),
+        childIndex);
     if(_layoutFinish[childIndex]) {
         return;
     }
@@ -290,8 +290,8 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(
     zfbool *&_layoutFinish = xAxis ? _layoutFinishWidth : _layoutFinishHeight;
     zfCoreAssertWithMessageTrim(!_layouting[childIndex],
         "[ZFUIAutoLayout] recursive rule detected, first on: %s, at index: %s",
-        parent->childAt(childIndex)->objectInfoOfInstance().cString(),
-        zfsFromInt(childIndex).cString());
+        parent->childAt(childIndex)->objectInfoOfInstance(),
+        childIndex);
     if(_layoutFinish[childIndex]) {
         return;
     }

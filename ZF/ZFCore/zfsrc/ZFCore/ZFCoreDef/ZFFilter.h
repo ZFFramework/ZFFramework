@@ -7,7 +7,7 @@
 #define _ZFI_ZFFilter_h_
 
 #include "ZFCoreArray.h"
-#include "ZFCoreSPrintf.h"
+#include "ZFCoreStringConvert.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -24,6 +24,19 @@ typedef enum {
 /** @brief string tokens */
 #define ZFTOKEN_ZFFilterTypeExclude "Exclude"
 
+ZFOUTPUT_TYPE(ZFFilterType, {
+    switch(v) {
+        case ZFFilterTypeInclude:
+            s += ZFTOKEN_ZFFilterTypeInclude;
+            break;
+        case ZFFilterTypeExclude:
+            s += ZFTOKEN_ZFFilterTypeExclude;
+            break;
+        default:
+            break;
+    }
+})
+
 /**
  * @brief filter result for custom filter callback
  */
@@ -38,6 +51,22 @@ typedef enum {
 #define ZFTOKEN_ZFFilterCallbackResultActive "Active"
 /** @brief string tokens */
 #define ZFTOKEN_ZFFilterCallbackResultNotActive "NotActive"
+
+ZFOUTPUT_TYPE(ZFFilterCallbackResult, {
+    switch(v) {
+        case ZFFilterCallbackResultNotSpecified:
+            s += ZFTOKEN_ZFFilterCallbackResultNotSpecified;
+            break;
+        case ZFFilterCallbackResultActive:
+            s += ZFTOKEN_ZFFilterCallbackResultActive;
+            break;
+        case ZFFilterCallbackResultNotActive:
+            s += ZFTOKEN_ZFFilterCallbackResultNotActive;
+            break;
+        default:
+            break;
+    }
+})
 
 /**
  * @brief declare a filter class
@@ -324,7 +353,7 @@ private:
                 zfCoreCriticalShouldNotGoHere();
                 return;
         }
-        zfstringAppend(ret, "%p", &(v.element));
+        zfsFromPointerT(ret, &(v.element));
         ret += ')';
     }
 public:

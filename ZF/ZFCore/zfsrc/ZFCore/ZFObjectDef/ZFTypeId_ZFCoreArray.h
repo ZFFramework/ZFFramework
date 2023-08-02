@@ -164,7 +164,7 @@ public:
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
             ) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "not available for plain array type");
         return zffalse;
     }
@@ -173,7 +173,7 @@ public:
             ZF_OUT ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             ) {
-        ZFSerializableUtil::errorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(outErrorHint,
             "not available for plain array type");
         return zffalse;
     }

@@ -20,7 +20,7 @@ void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj) {
         else {
             ZFAutoReleasePool::instance()->poolAdd(obj);
             zfCoreLogTrim("[zfautoRelease] zfautoRelease called while no auto drain logic support, object %s would not be released normally",
-                obj->objectInfoOfInstance().cString());
+                obj->objectInfoOfInstance());
         }
     }
 }

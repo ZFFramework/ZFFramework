@@ -261,7 +261,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             return zftrue; \
         } \
         if(!TypeName##FromString(v, valueString)) { \
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, \
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
                 "invalid value: \"%s\"", valueString); \
             return zffalse; \
         } \
@@ -271,7 +271,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         serializableData.itemClass(ZFTypeId_##TypeName()); \
         zfstring s; \
         if(!TypeName##ToString(s, v)) { \
-            ZFSerializableUtil::errorOccurred(outErrorHint, \
+            ZFSerializableUtilErrorOccurred(outErrorHint, \
                 "unable to convert value to string"); \
             return zffalse; \
         } \
@@ -583,7 +583,7 @@ protected:
             this->wrappedValueReset();
         }
         else if(!this->wrappedValueFromString(valueString)) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "failed to convert from \"%s\"", valueString);
             return zffalse;
         }

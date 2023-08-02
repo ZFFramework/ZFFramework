@@ -15,7 +15,7 @@ public:
             ) {
         zfindex inputSize = input.ioSize();
         if(inputSize != zfindexMax()) {
-            zfstring sizeCheck = zfstringWithFormat("%s+", zfsFromInt(inputSize, 16).cString());
+            zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputSize, 16));
             output.execute(sizeCheck.cString(), sizeCheck.length() * sizeof(zfchar));
             return ZFBase64Encode(output, input, zfnull, this->tableForKey(key));
         }
@@ -25,7 +25,7 @@ public:
             if(inputBuf.buffer() == zfnull) {
                 return zffalse;
             }
-            zfstring sizeCheck = zfstringWithFormat("%s+", zfsFromInt(inputBuf.bufferSize(), 16).cString());
+            zfstring sizeCheck = zfstr("%s+", zfsFromInt(inputBuf.bufferSize(), 16));
             output.execute(sizeCheck.cString(), sizeCheck.length() * sizeof(zfchar));
             return ZFBase64Encode(output, ZFInputForBufferUnsafe(inputBuf.buffer(), inputBuf.bufferSize()), zfnull, this->tableForKey(key));
         }
@@ -58,7 +58,7 @@ public:
 private:
     zfstring tableForKey(ZF_IN const zfchar *key) {
         zfstring table = ZFBase64TableDefault();
-        zfstring keyTmp = zfstringWithFormat("%s%zi", key, zfslen(key));
+        zfstring keyTmp = zfstr("%s%zi", key, zfslen(key));
         keyTmp = ZFMd5(keyTmp.cString(), keyTmp.length());
         const zfbyte *p = (const zfbyte *)keyTmp.cString();
         const zfbyte *pEnd = p + keyTmp.length();

@@ -12,23 +12,18 @@ static void _ZFP_ZFSerializableUtilDebugAction(void) {
 }
 #endif
 
-void errorOccurred(
+void _ZFP_errorOccurredAt(
         ZF_OUT_OPT zfstring *outErrorHint
         , ZF_OUT_OPT ZFSerializableData *outErrorPos
         , ZF_IN const ZFSerializableData &errorPos
-        , ZF_IN const zfchar *fmt
-        , ...
+        , ZF_IN const zfchar *text
         ) {
     if(outErrorPos != zfnull) {
         *outErrorPos = errorPos;
     }
 
     if(outErrorHint != zfnull) {
-        va_list vaList;
-        va_start(vaList, fmt);
-        zfstringAppendV(*outErrorHint, fmt, vaList);
-        va_end(vaList);
-        zfstringAppend(*outErrorHint, ", at:\n    %s", errorPos.objectInfo().cString());
+        zfstringAppend(*outErrorHint, "%s, at:\n    %s", text, errorPos);
     }
 
 #if _ZFP_ZFSerializableUtil_DEBUG
@@ -36,52 +31,12 @@ void errorOccurred(
 #endif
 }
 
-void errorOccurred(
+void _ZFP_errorOccurred(
         ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_IN const zfchar *fmt
-        , ...
+        , ZF_IN const zfchar *text
         ) {
     if(outErrorHint != zfnull) {
-        va_list vaList;
-        va_start(vaList, fmt);
-        zfstringAppendV(*outErrorHint, fmt, vaList);
-        va_end(vaList);
-    }
-
-#if _ZFP_ZFSerializableUtil_DEBUG
-    _ZFP_ZFSerializableUtilDebugAction();
-#endif
-}
-
-void errorOccurredWhile(
-        ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos
-        , ZF_IN const ZFSerializableData &errorPos
-        , ZF_IN const zfchar *serializingName
-        , ZF_IN const zfchar *errorValue
-        ) {
-    if(outErrorPos != zfnull) {
-        *outErrorPos = errorPos;
-    }
-
-    if(outErrorHint != zfnull) {
-        zfstringAppend(*outErrorHint, "failed to serialize \"%s\" with value \"%s\"",
-            serializingName, errorValue);
-        zfstringAppend(*outErrorHint, ", at:\n    %s", errorPos.objectInfo().cString());
-    }
-
-#if _ZFP_ZFSerializableUtil_DEBUG
-    _ZFP_ZFSerializableUtilDebugAction();
-#endif
-}
-void errorOccurredWhile(
-        ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_IN const zfchar *serializingName
-        , ZF_IN const zfchar *errorValue
-        ) {
-    if(outErrorHint != zfnull) {
-        zfstringAppend(*outErrorHint, "failed to serialize \"%s\" with value \"%s\"",
-            serializingName, errorValue);
+        *outErrorHint += text;
     }
 
 #if _ZFP_ZFSerializableUtil_DEBUG
@@ -115,11 +70,11 @@ const zfchar *requireItemClass(
     const zfchar *ret = checkItemClass(serializableData, desiredClass);
     if(ret == zfnull) {
         if(desiredClass == zfnull || *desiredClass == '\0') {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "missing serializable class");
         }
         else {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "serializable class must be \"%s\"", desiredClass);
         }
     }
@@ -145,7 +100,7 @@ const zfchar *requireAttribute(
         ) {
     const zfchar *ret = checkAttribute(serializableData, desiredAttribute);
     if(ret == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "missing attribute \"%s\"", desiredAttribute);
     }
     return ret;
@@ -170,7 +125,7 @@ const ZFSerializableData *requireElementByName(
         ) {
     const ZFSerializableData *ret = checkElementByName(serializableData, desiredElementName);
     if(ret == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "missing element with name \"%s\"",
             desiredElementName);
     }
@@ -196,7 +151,7 @@ const ZFSerializableData *requireElementByCategory(
         ) {
     const ZFSerializableData *ret = checkElementByCategory(serializableData, desiredElementCategory);
     if(ret == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "missing element with category \"%s\"",
             desiredElementCategory);
     }

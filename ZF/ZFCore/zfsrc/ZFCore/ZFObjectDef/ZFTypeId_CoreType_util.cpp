@@ -151,7 +151,7 @@ zfbool zfstringToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(v == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(outErrorHint,
             "null string");
         return zffalse;
     }

@@ -63,7 +63,7 @@ public:
                         tmp[len] = '\0';
                     }
                     else {
-                        zfscpy(tmp, zfstringWithFormat("./unknown").cString());
+                        zfscpy(tmp, "./unknown");
                     }
                 #endif // #if ZF_ENV_sys_Windows #else
             #endif

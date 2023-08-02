@@ -191,6 +191,123 @@ public:
 };
 
 // ============================================================
+// custom type output
+#define _ZFP_ZFOUTPUT_EXPAND(T_Type) \
+    template<> \
+    zfclassNotPOD ZFCoreInfoGetter<T_Type> { \
+    public: \
+        static void InfoGetter( \
+                ZF_IN_OUT zfstring &ret \
+                , ZF_IN T_Type const &v \
+                ) { \
+            zftToString(ret, v); \
+        } \
+    };
+
+/**
+ * @brief declare your custom type conversion to string,
+ *   convenient for debug
+ *
+ * proto type:
+ * @code
+ *   void zftToString(
+ *           ZF_IN_OUT zfstring &s
+ *           , ZF_IN YourType const &v
+ *           );
+ * @endcode
+ * usage:
+ * @code
+ *   ZFOUTPUT_TYPE(YourType, {s += YourConverter(v);})
+ * @endcode
+ *
+ * once declared, you may output your type to #ZFOutput by:
+ * @code
+ *   output << yourObject;
+ * @endcode
+ * or, use the declared method:
+ * @code
+ *   zftToString(s, v);
+ * @endcode
+ */
+#define ZFOUTPUT_TYPE(T_Type, outputAction) \
+    /** @cond ZFPrivateDoc */ \
+    inline void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , T_Type const &v \
+            ) { \
+        outputAction \
+    } \
+    _ZFP_ZFOUTPUT_EXPAND(T_Type) \
+    /** @endcond */
+/**
+ * @brief see #ZFOUTPUT_TYPE
+ *
+ * usage:
+ * @code
+ *   ZFOUTPUT_TYPE_TEMPLATE(
+ *           ZFM_EXPAND(typename T0, typename T1)
+ *           , ZFM_EXPAND(YourType<T0, T1>)
+ *           , {
+ *               s += YourConverter(v);
+ *           }
+ *           )
+ * @endcode
+ */
+#define ZFOUTPUT_TYPE_TEMPLATE(templateList, T_Type, outputAction) \
+    /** @cond ZFPrivateDoc */ \
+    template<templateList> \
+    inline void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN T_Type const &v \
+            ) { \
+        outputAction \
+    } \
+    template<templateList> \
+    zfclassNotPOD ZFCoreInfoGetter<T_Type> { \
+    public: \
+        static void InfoGetter( \
+                ZF_IN_OUT zfstring &ret \
+                , ZF_IN T_Type const &v \
+                ) { \
+            zftToString(ret, v); \
+        } \
+    }; \
+    /** @endcond */
+
+/**
+ * @brief see #ZFOUTPUT_TYPE
+ *
+ * usage:
+ * @code
+ *   // in header file
+ *   ZFOUTPUT_TYPE_DECLARE(ZFLIB_APP, YourType)
+ *   // in source file
+ *   ZFOUTPUT_TYPE_DEFINE(YourType, {doYourStuff();})
+ *
+ *   // or, the inline version
+ *   ZFOUTPUT_TYPE(YourType, {doYourStuff();})
+ * @endcode
+ */
+#define ZFOUTPUT_TYPE_DECLARE(ZFLIB_, T_Type) \
+    /** @cond ZFPrivateDoc */ \
+    extern ZFLIB_ void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN T_Type const &v \
+            ); \
+    _ZFP_ZFOUTPUT_EXPAND(T_Type) \
+    /** @endcond */
+/** @brief see #ZFOUTPUT_TYPE_DECLARE */
+#define ZFOUTPUT_TYPE_DEFINE(T_Type, outputAction) \
+    /** @cond ZFPrivateDoc */ \
+    void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN T_Type const &v \
+            ) { \
+        outputAction \
+    } \
+    /** @endcond */
+
+// ============================================================
 /**
  * @brief dummy function address type
  */

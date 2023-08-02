@@ -60,15 +60,14 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
  * @endcode
  * and they would be reset to default state after each zfLog call
  */
-#define zfLog(...) _ZFP_zfLog(ZFLOG_HEADER_STRING, ##__VA_ARGS__)
+#define zfLog(...) _ZFP_zfLog(ZFLOG_HEADER_STRING, zfstr(__VA_ARGS__))
 
 /** @brief see #zfLog */
-#define zfLogTrim(...) _ZFP_zfLog(zfnull, ##__VA_ARGS__)
+#define zfLogTrim(...) _ZFP_zfLog(zfnull, zfstr(__VA_ARGS__))
 
 extern ZFLIB_ZFCore ZFOutput _ZFP_zfLog(
         ZF_IN const zfchar *header
-        , ZF_IN_OPT const zfchar *fmt = zfnull
-        , ...
+        , ZF_IN_OPT const zfchar *text = zfnull
         );
 
 // ============================================================

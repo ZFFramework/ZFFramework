@@ -42,7 +42,7 @@ public:
             ret += fixedPrefix;
             ret += "| ";
 #if 0
-            ZF_CALLER_FILE_TO_NAME_REF(ret, it->module.cString());
+            ZF_CALLER_FILE_TO_NAME_REF(ret, it->module);
             ret += "::";
 #endif
             ret += this->trimFunc(it->function.c_str());
@@ -63,7 +63,7 @@ public:
         if(it != s.end()) {
             ret = "[";
 #if 0
-            ZF_CALLER_FILE_TO_NAME_REF(ret, it->module.cString());
+            ZF_CALLER_FILE_TO_NAME_REF(ret, it->module);
             ret += "::";
 #endif
             ret += this->trimFunc(it->function.c_str());

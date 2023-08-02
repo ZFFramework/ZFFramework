@@ -419,7 +419,7 @@ ZFMETHOD_DEFINE_1(ZFThread, void, taskQueueAdd
             d->taskQueueSema->lockAndBroadcast();
         }
         else {
-            zfCoreLogTrim("taskQueueAdd() called without taskQueueInit(), thread: %s", this->objectInfo().cString());
+            zfCoreLogTrim("taskQueueAdd() called without taskQueueInit(), thread: %s", this);
             ZFThread::mainThread()->taskQueueAdd(task);
         }
     }

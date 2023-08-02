@@ -3,6 +3,27 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
+zfindex zfsCheckMatch(
+        ZF_IN const zfchar **tokens
+        , ZF_IN zfindex tokenCount
+        , ZF_IN const zfchar *toCompare
+        , ZF_IN_OPT zfindex toCompareLength /* = zfindexMax() */
+        ) {
+    if(toCompare == zfnull) {
+        return zfindexMax();
+    }
+
+    zfindex tmpLen = 0;
+    for(zfindex i = 0; i < tokenCount; ++i) {
+        tmpLen = zfslen(tokens[i]);
+        if(tmpLen <= toCompareLength && zfsncmp(tokens[i], toCompare, tmpLen) == 0) {
+            return i;
+        }
+    }
+    return zfindexMax();
+}
+
+// ============================================================
 zfindex zfstringFind(
         ZF_IN const zfchar *src
         , ZF_IN zfindex srcLen
@@ -231,7 +252,7 @@ zfindex zfstringReplace(
     zfindex pos = 0;
     zfindex posStart = pos;
     while(maxCount == zfindexMax() || replacedCount < maxCount) {
-        pos = zfstringFind(s.cString() + posStart, s.length() - posStart, replaceFrom, replaceFromLen);
+        pos = zfstringFind(s + posStart, s.length() - posStart, replaceFrom, replaceFromLen);
         if(pos == zfindexMax()) {break;}
         s.replace(posStart + pos, replaceFromLen, replaceTo);
         posStart = posStart + pos + replaceToLen;
@@ -250,7 +271,7 @@ zfindex zfstringReplaceReversely(
     zfindex pos = s.length();
     zfindex posStart = pos;
     while(maxCount == zfindexMax() || replacedCount < maxCount) {
-        pos = zfstringFindReversely(s.cString(), posStart, replaceFrom, replaceFromLen);
+        pos = zfstringFindReversely(s, posStart, replaceFrom, replaceFromLen);
         if(pos == zfindexMax()) {break;}
         s.replace(pos, replaceFromLen, replaceTo);
         posStart = pos;

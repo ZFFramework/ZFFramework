@@ -17,13 +17,8 @@ void ZFTestCase::objectOnDeallocPrepare(void) {
 ZFMETHOD_DEFINE_0(ZFTestCase, zfbool, testCaseIsRunning) {
     return this->_testCaseIsRunning;
 }
-void ZFTestCase::testCaseOutput(ZF_IN const zfchar *info, ...) {
-    va_list vaList;
-    va_start(vaList, info);
-    zfstring data = zfstringWithFormatV(info, vaList);
-    va_end(vaList);
-
-    this->testCaseOnOutput(data.cString());
+void ZFTestCase::testCaseOutput(ZF_IN const zfchar *info) {
+    this->testCaseOnOutput(info);
 }
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTestCase, void, testCaseOutput
         , ZFMP_IN(const zfchar *, info)

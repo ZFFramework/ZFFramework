@@ -341,7 +341,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             ZFMethodUserRegisterDetail_0(resultMethod, { \
                     return (EnumName##Enum)EnumName::EnumValueForName(invokerMethod->methodName() + 2); \
                 }, EnumName::ClassData(), public, ZFMethodTypeStatic, \
-                EnumName##Enum, zfstringWithFormat("e_%s", EnumName::EnumNameAt(i))); \
+                EnumName##Enum, zfstr("e_%s", EnumName::EnumNameAt(i))); \
             _m.add(resultMethod); \
         } \
         _ZFP_ZFEnumMethodReg(_m, EnumName::_ZFP_ZFEnumDataRef()); \

@@ -102,7 +102,7 @@ public:
         _ZFP_ZFThreadImpl_default_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_default_NativeThreadIdType);
         *token = _ZFP_ZFThreadImpl_default_getNativeThreadId();
         zfCoreAssertWithMessage(_ZFP_ZFThreadImpl_default_threadMap.find(*token) == _ZFP_ZFThreadImpl_default_threadMap.end(),
-            "thread already registered: %s", ownerZFThread->objectInfo().cString());
+            "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_default_threadMap[*token] = ownerZFThread;
         return ZFCastStatic(void *, token);
     }

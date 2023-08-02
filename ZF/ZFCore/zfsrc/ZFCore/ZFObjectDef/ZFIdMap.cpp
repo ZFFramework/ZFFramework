@@ -119,8 +119,8 @@ void _ZFP_ZFIdMapUnregister(
     if(!data->isDynamicRegister && isDynamicRegister) {
         zfCoreCriticalMessageTrim(
             "[ZFIdMapDynamicUnregister] unregister %s(%s) which is not dynamic registered",
-            zfsFromInt(data->idValue).cString(),
-            data->idName.cString());
+            data->idValue,
+            data->idName);
     }
     data->ZFCoreLibDestroyFlag.removeElement(ZFCoreLibDestroyFlag);
     --(data->refCount);

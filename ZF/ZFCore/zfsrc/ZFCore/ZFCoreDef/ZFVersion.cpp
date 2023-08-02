@@ -1,6 +1,6 @@
 #include "ZFVersion.h"
 #include "ZFCoreDataPairSplit.h"
-#include "ZFCoreStringUtil.h"
+#include "ZFCoreStringConvert.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -23,7 +23,7 @@ void zfVersionGetInt(
         , ZF_IN const zfchar *version
         , ZF_IN zfindex subVersionIndex
         ) {
-    ret = zfsToInt(zfVersionGet(version, subVersionIndex).cString());
+    ret = zfsToInt(zfVersionGet(version, subVersionIndex));
 }
 void zfVersionSet(
         ZF_IN_OUT zfstring &version
@@ -88,9 +88,9 @@ ZFCompareResult zfVersionCompare(
     zfindex count = zfmMin(pos0.count(), pos1.count());
     for(zfindex i = 0; i < count; ++i) {
         ZFCompareResult cmp = subVersionComparer(
-            zfstring(version0 + pos0[i].start, pos0[i].count).cString()
+            zfstring(version0 + pos0[i].start, pos0[i].count)
             ,
-            zfstring(version1 + pos1[i].start, pos1[i].count).cString()
+            zfstring(version1 + pos1[i].start, pos1[i].count)
             );
         switch(cmp) {
             case ZFCompareUncomparable:

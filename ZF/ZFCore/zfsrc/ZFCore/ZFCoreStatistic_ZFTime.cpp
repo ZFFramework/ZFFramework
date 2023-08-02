@@ -95,14 +95,14 @@ void invokeTimeGetSummary(
         ZFTimeValue invokeAverageTime = ((invokeCount == 0) ? ZFTimeValueZero() : invokeTotalTime / invokeCount);
         zfstringAppend(ret, "[%s] invoke count: %s, total: %s, average: %s",
             (key == zfnull) ? ZFTOKEN_zfnull : key,
-            zfsFromInt(invokeCount).cString(),
-            ZFTimeValueToStringFriendly(invokeTotalTime).cString(),
-            ZFTimeValueToStringFriendly(invokeAverageTime).cString());
+            invokeCount,
+            ZFTimeValueToStringFriendly(invokeTotalTime),
+            ZFTimeValueToStringFriendly(invokeAverageTime));
     }
     else {
         zfstringAppend(ret, "[%s] invoke time: %s",
             (key == zfnull) ? ZFTOKEN_zfnull : key,
-            ZFTimeValueToStringFriendly(invokeTotalTime).cString());
+            ZFTimeValueToStringFriendly(invokeTotalTime));
     }
 }
 

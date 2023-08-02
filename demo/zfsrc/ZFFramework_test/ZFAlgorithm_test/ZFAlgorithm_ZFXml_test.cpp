@@ -70,19 +70,21 @@ private:
         this->testCaseOutputSeparator();
 
         ZFTimeValue toDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFXmlPerformance_test_toData");
-        this->testCaseOutput("serialize to data %zi times cost %s seconds",
-            toDataTimes,
-            ZFTimeValueToStringFriendly(toDataUsedTime).cString());
+        this->testCaseOutput(zfstr("serialize to data %zi times cost %s seconds"
+                    , toDataTimes
+                    , ZFTimeValueToStringFriendly(toDataUsedTime)
+                    ));
 
         ZFTimeValue fromDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFXmlPerformance_test_fromData");
-        this->testCaseOutput("serialize from data %zi times cost %s seconds",
-            fromDataTimes,
-            ZFTimeValueToStringFriendly(fromDataUsedTime).cString());
+        this->testCaseOutput(zfstr("serialize from data %zi times cost %s seconds"
+                    , fromDataTimes
+                    , ZFTimeValueToStringFriendly(fromDataUsedTime)
+                    ));
 
         #if 0
             this->testCaseOutputSeparator();
-            this->testCaseOutput("content: %s", xmlString.cString());
-            this->testCaseOutput("newly: %s", ZFXmlToString(xmlItemNew).cString());
+            this->testCaseOutput(zfstr("content: %s", xmlString));
+            this->testCaseOutput(zfstr("newly: %s", xmlItemNew));
         #endif
 
         ZFCoreStatistic::invokeTimeRemove("ZFXmlPerformance_test_toData");

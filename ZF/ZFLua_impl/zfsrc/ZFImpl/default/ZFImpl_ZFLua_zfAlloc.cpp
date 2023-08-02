@@ -73,8 +73,8 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
             if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, &errorHint)) {
                 return ZFImpl_ZFLua_luaError(L,
                     "[zfAlloc] invalid param: %s, error: %s",
-                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString(),
-                    errorHint.cString());
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i),
+                    errorHint);
             }
         }
     }
@@ -82,7 +82,7 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
         for(int i = 0; i < paramCount; ++i) {
             if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i)) {
                 return ZFImpl_ZFLua_luaError(L,
-                    "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i).cString());
+                    "[zfAlloc] invalid param: %s", ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i));
             }
         }
     }

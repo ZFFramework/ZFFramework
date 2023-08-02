@@ -32,9 +32,9 @@ public:
         zfsuperI(ZFUIListAdapter)::cellOnUpdate(atIndex, cell);
 
         ZFUIListCellViewBasic *tmp = cell->cellView()->toAny();
-        tmp->cellLabelMain()->text(zfstringWithFormat("main %zi", atIndex));
+        tmp->cellLabelMain()->text(zfstr("main %zi", atIndex));
         if(zfmRand(3) == 0) {
-            tmp->cellLabelSub()->text(zfstringWithFormat("sub %zi", atIndex));
+            tmp->cellLabelSub()->text(zfstr("sub %zi", atIndex));
         }
         if(zfmRand(3) == 0) {
             tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeMake(40)));
@@ -146,7 +146,7 @@ private:
                     , ZFUIListView *, listView
                     ) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstringWithFormat("autoScrollSpeedX: %f", listView->autoScrollSpeedX());
+                text->zfv = zfstr("autoScrollSpeedX: %f", listView->autoScrollSpeedX());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
@@ -170,7 +170,7 @@ private:
                     , ZFUIListView *, listView
                     ) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstringWithFormat("autoScrollSpeedY: %f", listView->autoScrollSpeedY());
+                text->zfv = zfstr("autoScrollSpeedY: %f", listView->autoScrollSpeedY());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
@@ -197,7 +197,7 @@ private:
                     ? zfmRand((zfint)listView->viewFrame().width)
                     : zfmRand((zfint)listView->viewFrame().height));
                 zfbool animated = (zfmRand(5) != 0);
-                ZFUIHintShow(zfstringWithFormat("%s\nindex: %zi\noffset: %f\nanimated: %b",
+                ZFUIHintShow(zfstr("%s\nindex: %zi\noffset: %f\nanimated: %b",
                             toHead ? "scrollListCellToHead" : "scrollListCellToTail",
                             toIndex, toOffset, animated));
                 if(toHead) {
@@ -221,8 +221,7 @@ private:
                     , ZFUIListView *, listView
                     ) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstringWithFormat("scrollAreaMargin: %s",
-                    ZFUIMarginToString(listView->scrollAreaMargin()).cString());
+                text->zfv = zfstr("scrollAreaMargin: %s", listView->scrollAreaMargin());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 

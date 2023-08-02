@@ -236,7 +236,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, headerInfo) {
     zfstring ret;
     ret.capacity(10 * this->headerCount());
     for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
-        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it).cString(), this->headerIterValue(it).cString());
+        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     return ret;
 }
@@ -244,7 +244,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfstring, contentInfo) {
     zfstring ret;
     ret.capacity(this->body().textLength() + 10 * this->headerCount());
     for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
-        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it).cString(), this->headerIterValue(it).cString());
+        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     if(this->headerCount() > 0) {
         ret += "\n";
@@ -269,7 +269,7 @@ void ZFHttpRequest::objectOnDealloc(void) {
 
 void ZFHttpRequest::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
-    zfstringAppend(ret, " %s:%s", ZFHttpMethodToString(this->httpMethod()).cString(), this->url().cString());
+    zfstringAppend(ret, " %s:%s", ZFHttpMethodToString(this->httpMethod()), this->url());
     zfstringAppend(ret, " header:%zi", this->headerCount());
     zfstringAppend(ret, " body:%zi", this->body().bufferSize());
 }
@@ -358,7 +358,7 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, headerInfo) {
     zfstring ret;
     ret.capacity(10 * this->headerCount());
     for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
-        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it).cString(), this->headerIterValue(it).cString());
+        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     return ret;
 }
@@ -366,7 +366,7 @@ ZFMETHOD_DEFINE_0(ZFHttpResponse, zfstring, contentInfo) {
     zfstring ret;
     ret.capacity(this->body().textLength() + 10 * this->headerCount());
     for(zfiterator it = this->headerIter(); this->headerIterValid(it); this->headerIterNext(it)) {
-        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it).cString(), this->headerIterValue(it).cString());
+        zfstringAppend(ret, "%s: %s\n", this->headerIterKey(it), this->headerIterValue(it));
     }
     if(this->headerCount() > 0) {
         ret += "\n";
@@ -394,7 +394,7 @@ void ZFHttpResponse::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
         zfstringAppend(ret, " code:%d", this->code());
     }
     if(!this->errorHint().isEmpty()) {
-        zfstringAppend(ret, " error:%s", this->errorHint().cString());
+        zfstringAppend(ret, " error:%s", this->errorHint());
     }
     zfstringAppend(ret, " header:%zi", this->headerCount());
     zfstringAppend(ret, " body:%zi", this->body().bufferSize());

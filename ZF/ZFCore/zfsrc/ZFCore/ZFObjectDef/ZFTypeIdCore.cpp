@@ -65,7 +65,7 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
                     zfstringAppend(errorHint->zfv, "unable to construct %s from (%s)%s",
                         invokerObject->classData()->className(),
                         src->classData()->className(),
-                        src->objectInfo().cString());
+                        src);
                     invokerObject->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed, errorHint);
                 }
             }

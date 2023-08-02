@@ -8,7 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 static void _ZFP_ZFLog_ZFCoreLogExt(ZF_IN const ZFCallerInfo &callerInfo) {
     if(zfLogStackTraceAvailable()) {
-        zfCoreLogTrim(zfLogStackTrace(zfnull, 2).cString());
+        zfCoreLogTrim(zfLogStackTrace(zfnull, 2));
     }
 }
 

@@ -11,9 +11,9 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutput("stack trace:\n%s", zfLogStackTrace().cString());
+        this->testCaseOutput(zfstr("stack trace:\n%s", zfLogStackTrace()));
 
-        this->testCaseOutput("caller info: %s", zfLogCallerInfo().cString());
+        this->testCaseOutput(zfstr("caller info: %s", zfLogCallerInfo()));
 
         this->testCaseStop();
     }

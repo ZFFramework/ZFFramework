@@ -100,26 +100,26 @@ private:
     void test(ZFSerializable *serializableObj) {
         zfstring encodedData;
 
-        this->testCaseOutput("object:\n%s\n", serializableObj->toObject()->objectInfo().cString());
+        this->testCaseOutput(zfstr("object:\n%s\n", serializableObj));
 
         {
             ZFSerializableData serializableData;
             ZFObjectToData(serializableData, serializableObj->toObject());
             ZFSerializableDataToZfsd(encodedData, serializableData);
-            this->testCaseOutput("encodedData:\n%s\n", encodedData.cString());
+            this->testCaseOutput(zfstr("encodedData:\n%s\n", encodedData));
         }
 
         {
             ZFSerializableData serializableData;
             serializableObj->serializeToData(serializableData);
-            this->testCaseOutput("serializableData:\n%s\n", serializableData.objectInfo().cString());
+            this->testCaseOutput(zfstr("serializableData:\n%s\n", serializableData));
         }
 
         {
             ZFSerializableData serializableData;
             ZFSerializableDataFromZfsd(serializableData, encodedData);
             zfautoObject newSerializableObj = ZFObjectFromData(serializableData);
-            this->testCaseOutput("re-serialize from encodedData, result:\n%s\n", newSerializableObj.toObject()->objectInfo().cString());
+            this->testCaseOutput(zfstr("re-serialize from encodedData, result:\n%s\n", newSerializableObj));
         }
     }
 };

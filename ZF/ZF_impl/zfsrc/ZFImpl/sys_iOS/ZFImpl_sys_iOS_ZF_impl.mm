@@ -89,7 +89,7 @@ zfstring ZFImpl_sys_iOS_objectInfo(
     if(ignorePropertyNames != zfnull) {
         NSMutableArray *ignorePropertyNamesNativeTmp = [NSMutableArray new];
         for(zfindex i = 0; i < ignorePropertyNames->count(); ++i) {
-            [ignorePropertyNamesNativeTmp addObject:ZFImpl_sys_iOS_zfstringToNSString(ignorePropertyNames->get(i).cString())];
+            [ignorePropertyNamesNativeTmp addObject:ZFImpl_sys_iOS_zfstringToNSString(ignorePropertyNames->get(i))];
         }
         ignorePropertyNamesNative = ignorePropertyNamesNativeTmp;
     }

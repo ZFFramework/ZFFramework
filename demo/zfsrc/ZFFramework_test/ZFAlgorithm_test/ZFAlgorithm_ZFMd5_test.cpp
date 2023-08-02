@@ -15,7 +15,7 @@ protected:
         zfstring value;
 
         value = ZFMd5((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
-        this->testCaseOutput("MD5 of array \"%s\": %s", testString, value.cString());
+        this->testCaseOutput(zfstr("MD5 of array \"%s\": %s", testString, value));
         ZFTestCaseAssert(value == testValue);
 
         zfstring tmpFilePath = this->testCaseUseTmpFile("ZFMd5_Md5.txt");
@@ -25,9 +25,10 @@ protected:
             ZFFileClose(fp);
             fp = zfnull;
         }
-        this->testCaseOutput("write it to file %s, file's MD5: %s",
-                tmpFilePath.cString(),
-                ZFMd5(ZFInputForFile(tmpFilePath)).cString());
+        this->testCaseOutput(zfstr("write it to file %s, file's MD5: %s"
+                    , tmpFilePath
+                    , ZFMd5(ZFInputForFile(tmpFilePath))
+                    ));
 
         this->testCaseOutputSeparator();
         tmpFilePath = this->testCaseUseTmpFile("ZFMd5_Md5_big.txt");
@@ -44,15 +45,16 @@ protected:
             fp = zfnull;
         }
         ZFTimeValue tv1 = ZFTime::currentTimeValue();
-        zfstring MD5BigFile = ZFMd5(ZFInputForFile(tmpFilePath.cString()));
+        zfstring MD5BigFile = ZFMd5(ZFInputForFile(tmpFilePath));
         ZFTimeValue tv2 = ZFTimeValueDec(ZFTime::currentTimeValue(), tv1);
-        this->testCaseOutput("write it 1000*1000 times to file %s, file's size: %zi, MD5: %s, time: %s.%03s %03s",
-            tmpFilePath.cString(),
-            fileSize,
-            MD5BigFile.cString(),
-            zfsFromInt(tv2.sec).cString(),
-            zfsFromInt(tv2.usec / 1000).cString(),
-            zfsFromInt(tv2.usec % 1000).cString());
+        this->testCaseOutput(zfstr("write it 1000*1000 times to file %s, file's size: %zi, MD5: %s, time: %s.%03s %03s"
+                    , tmpFilePath
+                    , fileSize
+                    , MD5BigFile
+                    , tv2.sec
+                    , tv2.usec / 1000
+                    , tv2.usec % 1000
+                    ));
 
         this->testCaseStop();
     }

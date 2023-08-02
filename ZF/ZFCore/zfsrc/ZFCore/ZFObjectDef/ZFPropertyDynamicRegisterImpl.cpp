@@ -120,7 +120,7 @@ public:
             if(holder->zfv != zfnull && !holder->zfv.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty())) {
                 zfstringAppend(errorHint,
                     "invalid init value %s, desired: %s",
-                    ZFObjectInfo(holder->zfv.toObject()).cString(),
+                    holder->zfv,
                     property->propertyClassOfRetainProperty()->classNameFull());
                 return zffalse;
             }
@@ -147,7 +147,7 @@ public:
             if(wrapper == zfnull) {
                 zfstringAppend(errorHint,
                     "invalid init value %s, desired: %s",
-                    ZFObjectInfo(ret.toObject()).cString(),
+                    ret,
                     property->propertyTypeId());
                 return zffalse;
             }
@@ -281,7 +281,7 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     if(value == zfnull) {
         zfstringAppend(errorHint, "invalid value: (%s)%s, desired: %s",
             valueNew != zfnull ? valueNew->classData()->className() : ZFTOKEN_zfnull,
-            ZFObjectInfo(valueNew).cString(),
+            valueNew,
             property->propertyIsRetainProperty()
                 ? property->propertyClassOfRetainProperty()->classNameFull()
                 : property->propertyTypeId());
@@ -456,7 +456,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
     if(existProperty != zfnull) {
         zfstringAppend(errorHint,
             "property with same name already exists: %s",
-            existProperty->objectInfo().cString());
+            existProperty);
         return zfnull;
     }
 
@@ -506,12 +506,12 @@ const ZFProperty *ZFPropertyDynamicRegister(
                 .methodReturnTypeName("void")
                 .methodParamAdd(
                     param.propertyTypeId(),
-                    zfstringWithFormat("%s const &", param.propertyTypeName()))
+                    zfstr("%s const &", param.propertyTypeName()))
             , &errorHintTmp);
         if(setterMethod == zfnull) {
             zfstringAppend(errorHint,
                 "failed to register setter method, reason: %s",
-                errorHintTmp.cString());
+                errorHintTmp);
             return zfnull;
         }
         const ZFMethod *getterMethod = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
@@ -522,12 +522,12 @@ const ZFProperty *ZFPropertyDynamicRegister(
                 .methodPrivilegeType(param.propertyGetterType())
                 .methodName(param.propertyName())
                 .methodReturnTypeId(param.propertyTypeId())
-                .methodReturnTypeName(zfstringWithFormat("%s const &", param.propertyTypeName()))
+                .methodReturnTypeName(zfstr("%s const &", param.propertyTypeName()))
             , &errorHintTmp);
         if(getterMethod == zfnull) {
             zfstringAppend(errorHint,
                 "failed to register getter method, reason: %s",
-                errorHintTmp.cString());
+                errorHintTmp);
             ZFMethodDynamicUnregister(setterMethod);
             return zfnull;
         }
@@ -596,7 +596,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(
             ) {
         zfstringAppend(errorHint,
             "setter method signature mismatch: %s, desired: void setter(%s const &)",
-            param.propertyCustomImplSetterMethod()->objectInfo().cString(),
+            param.propertyCustomImplSetterMethod(),
             param.propertyTypeId());
         return zffalse;
     }
@@ -613,7 +613,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(
             ) {
         zfstringAppend(errorHint,
             "getter method signature mismatch: %s, desired: %s const &getter(void)",
-            param.propertyCustomImplGetterMethod()->objectInfo().cString(),
+            param.propertyCustomImplGetterMethod(),
             param.propertyTypeId());
         return zffalse;
     }
@@ -739,7 +739,7 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(
         if(d[i].propertyOwnerClass == ownerClassOrNull) {
             if(errorHint != zfnull) {
                 zfstringAppend(errorHint, "property already has a custom life cycle handler: %s",
-                    property->objectInfo().cString());
+                    property);
             }
             return zffalse;
         }

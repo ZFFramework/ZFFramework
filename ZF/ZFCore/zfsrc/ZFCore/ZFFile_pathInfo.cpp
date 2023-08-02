@@ -670,8 +670,8 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeC
     ret.callbackSerializeCustomDisable(zftrue);
     ZFInputForPathInfoT(ret, pathInfo.pathType, pathInfo.pathData, flags);
     if(!ret) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
-            "failed to open file: %s", ZFPathInfoToString(pathInfo).cString());
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            "failed to open file: %s", pathInfo);
         return zffalse;
     }
     serializableData.resolveMark();
@@ -833,8 +833,8 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerialize
     ret.callbackSerializeCustomDisable(zftrue);
     ZFOutputForPathInfoT(ret, pathInfo.pathType, pathInfo.pathData, flags);
     if(!ret) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
-            "failed to open file: %s", ZFPathInfoToString(pathInfo).cString());
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+            "failed to open file: %s", pathInfo);
         return zffalse;
     }
     serializableData.resolveMark();
@@ -891,7 +891,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalT
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeCustomType_ZFInputForLocal) {
     const ZFPathInfo *pathInfo = serializableData.pathInfoCheck();
     if(pathInfo == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "serializableData does not contain path info");
         return zffalse;
     }
@@ -908,17 +908,17 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeCust
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;
     if(!ZFPathInfoForLocalT(pathDataAbs, *pathInfo, localPath)) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "failed to get file path: %s, localPath: %s",
-            ZFPathInfoToString(*pathInfo).cString(),
+            pathInfo,
             localPath);
         return zffalse;
     }
     ZFInputForPathInfoT(ret, pathInfo->pathType, pathDataAbs, flags);
     if(!ret) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "failed to open file: %s",
-            ZFPathInfoToString(ZFPathInfo(pathInfo->pathType, pathDataAbs)).cString());
+            ZFPathInfo(pathInfo->pathType, pathDataAbs));
         return zffalse;
     }
     serializableData.resolveMark();
@@ -975,7 +975,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalT
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeCustomType_ZFOutputForLocal) {
     const ZFPathInfo *pathInfo = serializableData.pathInfoCheck();
     if(pathInfo == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "serializableData does not contain path info");
         return zffalse;
     }
@@ -992,17 +992,17 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeCus
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;
     if(!ZFPathInfoForLocalT(pathDataAbs, *pathInfo, localPath)) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "failed to get file path: %s, localPath: %s",
-            ZFPathInfoToString(*pathInfo).cString(),
+            pathInfo,
             localPath);
         return zffalse;
     }
     ZFOutputForPathInfoT(ret, pathInfo->pathType, pathDataAbs, flags);
     if(!ret) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "failed to open file: %s",
-            ZFPathInfoToString(ZFPathInfo(pathInfo->pathType, pathDataAbs)).cString());
+            ZFPathInfo(pathInfo->pathType, pathDataAbs));
         return zffalse;
     }
     serializableData.resolveMark();

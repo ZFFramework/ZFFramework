@@ -46,34 +46,6 @@ public:
     ZFUIViewChildLayerEnum layer;
 };
 
-zfclass _ZFP_I_ZFUIViewTreePrintFormat : zfextends ZFObject, zfimplements ZFOutputFormat {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFUIViewTreePrintFormat, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
-
-protected:
-    virtual void format(
-            ZF_IN_OUT zfstring &ret
-            , ZF_IN ZFOutputFormatStepEnum outputStep
-            , ZF_IN const zfchar *src
-            , ZF_IN zfindex srcLen
-            ) {
-        const zfchar *srcEnd = src + srcLen;
-        while(src < srcEnd) {
-            if(*src == '\r') {
-                ret += "\\r";
-                ++src;
-            }
-            else if(*src == '\n') {
-                ret += "\\n";
-                ++src;
-            }
-            else {
-                zfcharAppendAndMoveNext(ret, src);
-            }
-        }
-    }
-};
-
 ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
@@ -82,7 +54,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         return;
     }
 
-    ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zflineAlloc(_ZFP_I_ZFUIViewTreePrintFormat));
+    ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zflineAlloc(ZFOutputFormatBasic)->c_removeEndl(zftrue));
 
     ZFCoreArrayPOD<_ZFP_ZFUIViewTreePrintPrintData> printDatas;
     _ZFP_ZFUIViewTreePrintPrintData rootPrintData;
@@ -136,7 +108,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         }
 
         outputCallback.execute("|");
-        outputCallback.execute(zfstringWithFormat("%2zi", printData.siblingIndex).cString());
+        outputCallback.execute(zfstr("%2zi", printData.siblingIndex));
         for(zfindex i = printData.depth - 1; i != zfindexMax(); --i) {
             outputCallback.execute(" |");
         }
@@ -163,7 +135,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         zfbool exist = zffalse;
         for(zfindex i = datas.count() - 1; i != zfindexMax(); --i) {
             if(printData.view->classData()->classIsTypeOf(datas[i].viewClass)) {
-                datas[i].viewInfoGetter(printData.view, outputCallbackNoEndl);
+                datas[i].viewInfoGetter(outputCallbackNoEndl, printData.view);
                 exist = zftrue;
                 break;
             }
@@ -171,7 +143,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         if(!exist) {
             zfstring tmp;
             printData.view->objectInfoT(tmp);
-            outputCallbackNoEndl.execute(tmp.cString(), tmp.length());
+            outputCallbackNoEndl.execute(tmp, tmp.length());
         }
         outputCallback.execute("\n");
     } while(!printDatas.isEmpty());

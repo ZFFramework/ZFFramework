@@ -57,11 +57,11 @@ ZFOUTPUT_TYPE(ZFFilterForZFClass, {v.objectInfoT(s);})
 
 ZFOUTPUT_TYPE(ZFObject *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
 
-ZFOUTPUT_TYPE(const ZFClass *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
+ZFOUTPUT_TYPE(ZFClass, {v.objectInfoT(s);})
 
-ZFOUTPUT_TYPE(const ZFMethod *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
+ZFOUTPUT_TYPE(ZFMethod, {v.objectInfoT(s);})
 
-ZFOUTPUT_TYPE(const ZFProperty *, _ZFP_ZFCoreType_IODef_outputObjectPointer())
+ZFOUTPUT_TYPE(ZFProperty, {v.objectInfoT(s);})
 
 ZFOUTPUT_TYPE(ZFObserver, {v.objectInfoT(s);})
 

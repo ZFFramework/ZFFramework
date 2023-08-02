@@ -398,13 +398,13 @@ private:
         if(zfstringIsEmpty(propertyName)) {
             zfCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\"",
-                    zfargs.sender()->objectInfoOfInstance().cString(),
+                    zfargs.sender()->objectInfoOfInstance(),
                     styleKey);
         }
         else {
             zfCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\" for property \"%s\"",
-                    zfargs.sender()->objectInfoOfInstance().cString(),
+                    zfargs.sender()->objectInfoOfInstance(),
                     styleKey,
                     propertyName);
         }

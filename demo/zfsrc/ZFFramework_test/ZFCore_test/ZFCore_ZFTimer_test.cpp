@@ -14,7 +14,7 @@ protected:
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFTimer");
-        this->testCaseOutput("current thread: %s", ZFThread::currentThread()->objectInfo().cString());
+        this->testCaseOutput(zfstr("current thread: %s", ZFThread::currentThread()->objectInfo()));
 
         zfblockedAlloc(ZFTimer, timer);
 
@@ -23,7 +23,7 @@ protected:
                 , ZFTestCase *, owner
                 ) {
             ZFTimer *timer = zfargs.senderT();
-            zfLogTrim("timer event, current thread: %s", ZFThread::currentThread()->objectInfo().cString());
+            zfLogTrim("timer event, current thread: %s", ZFThread::currentThread());
             if(timer->timerActivatedCount() >= 3) {
                 timer->timerStop();
 
@@ -43,7 +43,7 @@ protected:
         ZFLISTENER_1(timerOnce
                 , zfautoObjectT<ZFTestCase *>, testCase
                 ) {
-            testCase->testCaseOutput("timerOnce activated, current thread: %s", ZFThread::currentThread()->objectInfo().cString());
+            testCase->testCaseOutput(zfstr("timerOnce activated, current thread: %s", ZFThread::currentThread()->objectInfo()));
         } ZFLISTENER_END()
         testCase->testCaseOutput("timerOnce start");
         ZFTimerOnce(500, timerOnce);

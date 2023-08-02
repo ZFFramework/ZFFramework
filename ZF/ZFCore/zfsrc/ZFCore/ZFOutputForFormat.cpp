@@ -186,9 +186,9 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
     }
     ZFOutputFormat *format = formatHolder;
     if(format == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, *formatData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, *formatData,
             "format object %s not type of %s",
-            ZFObjectInfo(formatHolder.toObject()).cString(),
+            formatHolder,
             ZFOutputFormat::ClassData()->classNameFull());
         return zffalse;
     }
@@ -196,10 +196,10 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
     ZFOutput retTmp;
     retTmp.callbackSerializeCustomDisable(zftrue);
     if(!ZFOutputForFormatT(retTmp, output, format)) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, *formatData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, *formatData,
             "unable to create from output %s and format %s",
-            output.objectInfo().cString(),
-            ZFObjectInfo(formatHolder.toObject()).cString());
+            output,
+            formatHolder);
         return zffalse;
     }
     ret = retTmp;
@@ -251,6 +251,7 @@ void ZFOutputFormatBasic::format(
             break;
         case ZFOutputFormatStep::e_OnOutputEnd:
             if(_ZFP_outputCount > 0) {
+                ret += this->linePostfix();
                 ret += this->outputPostfix();
             }
             return;
@@ -269,8 +270,18 @@ void ZFOutputFormatBasic::format(
 
     const zfchar *srcEnd = src + srcLen;
     const zfchar *p = src;
+    zfbool removeEndl = this->removeEndl();
     while(src < srcEnd) {
-        if(*src == '\n') {
+        if(removeEndl && (*src == '\n' || *src == '\r')) {
+            if(*src == '\r') {
+                ret += "\\r";
+            }
+            else if(*src == '\n') {
+                ret += "\\n";
+            }
+            ++src;
+        }
+        else if(*src == '\n') {
             if(_ZFP_needLinePrefix) {
                 ret += this->linePrefix();
             }

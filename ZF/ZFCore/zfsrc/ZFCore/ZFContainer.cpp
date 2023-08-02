@@ -71,7 +71,7 @@ zfbool ZFContainer::serializableOnSerializeFromData(
                 return zffalse;
             }
             if(element == zfnull) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "null element");
                 return zffalse;
             }
@@ -113,9 +113,9 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         ) {
     ZFContainer *ref = ZFCastZFObject(ZFContainer *, referencedOwnerOrNull);
     if(ref == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(outErrorHint,
             "%s not type of %s",
-            referencedOwnerOrNull->toObject()->objectInfoOfInstance().cString(), ZFContainer::ClassData()->classNameFull());
+            referencedOwnerOrNull->toObject()->objectInfoOfInstance(), ZFContainer::ClassData()->classNameFull());
         return zffalse;
     }
 
@@ -152,8 +152,8 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
     }
 
     if(tmp->count() > 0) {
-        ZFSerializableUtil::errorOccurred(outErrorHint,
-            "missing elements from referenced container: %s", tmp->objectInfoOfContent().cString());
+        ZFSerializableUtilErrorOccurred(outErrorHint,
+            "missing elements from referenced container: %s", tmp->objectInfoOfContent());
         return zffalse;
     }
 

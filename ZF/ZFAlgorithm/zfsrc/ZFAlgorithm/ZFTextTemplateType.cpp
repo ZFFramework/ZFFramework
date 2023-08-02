@@ -468,7 +468,7 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
                 ret += ", ";
             }
             const _ZFP_ZFTextTemplateReplaceData *replaceData = d->replaceDataList[i];
-            zfstringAppend(ret, "<%s, %s>", replaceData->key.cString(), replaceData->value.cString());
+            zfstringAppend(ret, "<%s, %s>", replaceData->key, replaceData->value);
         }
         ret += "]";
     }
@@ -483,7 +483,7 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
                 ret += ", ";
             }
             const _ZFP_ZFTextTemplateEnableData *enableData = d->enableDataList[i];
-            zfstringAppend(ret, "<%s, %b>", enableData->key.cString(), enableData->value);
+            zfstringAppend(ret, "<%s, %b>", enableData->key, enableData->value);
         }
         ret += "]";
     }
@@ -543,7 +543,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 const ZFSerializableData &item = element->childAt(i);
                 const zfchar *key = item.propertyName();
                 if(key == zfnull) {
-                    ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, item, "missing item name");
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, item, "missing item name");
                     return zffalse;
                 }
                 item.resolvePropertyNameMark();
@@ -563,7 +563,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 const ZFSerializableData &item = element->childAt(i);
                 const zfchar *key = item.propertyName();
                 if(key == zfnull) {
-                    ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, item, "missing item name");
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, item, "missing item name");
                     return zffalse;
                 }
                 item.resolvePropertyNameMark();
@@ -588,7 +588,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 const ZFSerializableData &item = element->childAt(i);
                 const zfchar *key = item.propertyName();
                 if(key == zfnull) {
-                    ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, item, "missing item name");
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, item, "missing item name");
                     return zffalse;
                 }
                 item.resolvePropertyNameMark();

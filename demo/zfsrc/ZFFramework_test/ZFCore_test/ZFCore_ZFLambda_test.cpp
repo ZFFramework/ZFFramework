@@ -17,9 +17,9 @@ protected:
                 ) {
             capture = "changed";
         } ZFLAMBDA_END()
-        this->testCaseOutput("before invoke: %s", capture.cString());
+        this->testCaseOutput(zfstr("before invoke: %s", capture));
         refCapture.executeExact<void>();
-        this->testCaseOutput("after invoke: %s", capture.cString());
+        this->testCaseOutput(zfstr("after invoke: %s", capture));
 
         ZFCallback outter;
         {
@@ -30,7 +30,7 @@ protected:
                     , ZFTestCase *, testCase
                     , void
                     ) {
-                testCase->testCaseOutput("value capture: %s", value.cString());
+                testCase->testCaseOutput(zfstr("value capture: %s", value));
             } ZFLAMBDA_END()
             outter = valueCapture;
         }

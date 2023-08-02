@@ -9,10 +9,8 @@
 #define _ZFI_ZFCoreLog_h_
 
 #include "ZFCallerInfo.h"
-#include <assert.h>
-ZF_NAMESPACE_GLOBAL_BEGIN
+#include "zfstr.h"
 
-// ============================================================
 /**
  * @brief same as assert defined for future use
  *
@@ -20,11 +18,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @see zfCoreAssert
  */
 #if ZF_ENV_DEBUG
+    #include <assert.h>
     #define zfassert(b) assert(b)
 #else
     #define zfassert(b) ((void)0)
 #endif
 
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+// ============================================================
 /**
  * @brief assert at compile time
  */
@@ -55,15 +57,7 @@ extern ZFLIB_ZFCore ZFCoreLogOutputCallbackType zfCoreLogOutputCallback(void);
 // ============================================================
 extern ZFLIB_ZFCore void _ZFP_zfCoreLog(
         ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN zfbool isAutoEndl
-        , ZF_IN const zfchar *format
-        , ...
-        );
-extern ZFLIB_ZFCore void _ZFP_zfCoreLogV(
-        ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN zfbool isAutoEndl
-        , ZF_IN const zfchar *format
-        , ZF_IN va_list vaList
+        , ZF_IN const zfchar *text
         );
 /**
  * @brief log utility used internally
@@ -78,44 +72,17 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreLogV(
  * @warning this method is not thread safe
  * @see zfCoreLogOutputCallback, zfCoreCriticalError
  */
-#define zfCoreLog(format, ...) _ZFP_zfCoreLog(ZFCallerInfoMake(), zftrue, format, ##__VA_ARGS__)
-/** @brief see #zfCoreLog */
-#define zfCoreLogV(format, vaList) _ZFP_zfCoreLogV(ZFCallerInfoMake(), zftrue, format, vaList)
-
-/**
- * @brief same as #zfCoreLog except that no '\\n' is added to tail, see #zfCoreLog
- */
-#define zfCoreLogNoEndl(format, ...) _ZFP_zfCoreLog(ZFCallerInfoMake(), zffalse, format, ##__VA_ARGS__)
-/** @brief see #zfCoreLogNoEndl */
-#define zfCoreLogNoEndlV(format, vaList) _ZFP_zfCoreLogV(ZFCallerInfoMake(), zffalse, format, vaList)
+#define zfCoreLog(format, ...) _ZFP_zfCoreLog(ZFCallerInfoMake(), zfstr(format, ##__VA_ARGS__))
 
 /**
  * @brief log without header info, see #zfCoreLog
  */
-#define zfCoreLogTrim(format, ...) _ZFP_zfCoreLog(ZFCallerInfoEmpty(), zftrue, format, ##__VA_ARGS__)
-/** @brief see #zfCoreLogTrim */
-#define zfCoreLogTrimV(format, vaList) _ZFP_zfCoreLogV(ZFCallerInfoEmpty(), zftrue, format, vaList)
-
-/**
- * @brief log without header info or '\\n' to tail, see #zfCoreLog
- */
-#define zfCoreLogTrimNoEndl(format, ...) _ZFP_zfCoreLog(ZFCallerInfoEmpty(), zffalse, format, ##__VA_ARGS__)
-/** @brief see #zfCoreLogTrimNoEndl */
-#define zfCoreLogTrimNoEndlV(format, vaList) _ZFP_zfCoreLogV(ZFCallerInfoEmpty(), zffalse, format, vaList)
+#define zfCoreLogTrim(format, ...) _ZFP_zfCoreLog(ZFCallerInfoEmpty(), zfstr(format, ##__VA_ARGS__))
 
 /**
  * @brief log with custom header info, see #zfCoreLog
  */
-#define zfCoreLogDetail(callerInfo, format, ...) _ZFP_zfCoreLog(callerInfo, zftrue, format, ##__VA_ARGS__)
-/** @brief see #zfCoreLogDetail */
-#define zfCoreLogDetailV(callerInfo, format, vaList) _ZFP_zfCoreLogV(callerInfo, zftrue, format, vaList)
-
-/**
- * @brief log with custom header info, see #zfCoreLog
- */
-#define zfCoreLogDetailNoEndl(callerInfo, format, ...) _ZFP_zfCoreLog(callerInfo, zffalse, format, ##__VA_ARGS__)
-/** @brief see #zfCoreLogDetailNoEndl */
-#define zfCoreLogDetailNoEndlV(callerInfo, format, vaList) _ZFP_zfCoreLogV(callerInfo, zffalse, format, vaList)
+#define zfCoreLogDetail(callerInfo, format, ...) _ZFP_zfCoreLog(callerInfo, zfstr(format, ##__VA_ARGS__))
 
 // ============================================================
 /**

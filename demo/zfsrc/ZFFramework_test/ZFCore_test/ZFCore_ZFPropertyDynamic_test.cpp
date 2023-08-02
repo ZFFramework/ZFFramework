@@ -49,11 +49,11 @@ protected:
                 .propertyCustomImpl(setterMethod, getterMethod, _callbackIsValueAccessed, _callbackIsInitValue, _callbackValueReset)
             );
 
-        this->testCaseOutput("property: %s", property->objectInfo().cString());
+        this->testCaseOutput(zfstr("property: %s", property));
 
         zfblockedAlloc(_ZFP_ZFCore_ZFPropertyDynamic_test_Object, obj);
         obj->myProp(123);
-        this->testCaseOutput("obj: %s", ZFClassUtil::objectInfo(obj).cString());
+        this->testCaseOutput(zfstr("obj: %s", obj));
 
         ZFPropertyDynamicUnregister(property);
         ZFMethodDynamicUnregister(setterMethod);

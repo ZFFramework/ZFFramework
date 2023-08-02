@@ -209,9 +209,9 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
             return zffalse;
         }
         if(ZFCastZFObject(ZFStyleable *, value) == zfnull) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, elementData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, elementData,
                 "%s not type of %s",
-                ZFObjectInfo(value.toObject()).cString(),
+                value,
                 ZFStyleable::ClassData()->className());
             return zffalse;
         }
@@ -228,7 +228,7 @@ zfbool ZFStyleList::serializableOnSerializeToData(
         return zffalse;
     }
     if(referencedOwnerOrNull != zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, "reference not supported");
+        ZFSerializableUtilErrorOccurred(outErrorHint, "reference not supported");
         return zffalse;
     }
     for(zfindex i = 0; i < d->keyList.count(); ++i) {

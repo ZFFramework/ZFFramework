@@ -25,7 +25,7 @@ protected:
             this->testCaseOutput("server start");
             zfbool serverOpenSuccess = server->open(zfnull, zfmRand(1025, 65536));
             ZFTestCaseAssert(serverOpenSuccess);
-            this->testCaseOutput("server start success: %s", server->objectInfo().cString());
+            this->testCaseOutput(zfstr("server start success: %s", server));
             serverPort = server->port();
 
             ZFLISTENER_1(serverRecvThread
@@ -60,7 +60,7 @@ protected:
             this->testCaseOutput("client start");
             zfbool clientOpenSuccess = client->open("localhost", serverPort);
             ZFTestCaseAssert(clientOpenSuccess);
-            this->testCaseOutput("client start success: %s", client->objectInfo().cString());
+            this->testCaseOutput(zfstr("client start success: %s", client));
 
             ZFTestCase *testCase = this;
             ZFLISTENER_2(clientRecvThread

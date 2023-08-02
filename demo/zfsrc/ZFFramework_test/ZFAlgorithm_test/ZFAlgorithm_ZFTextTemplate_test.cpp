@@ -50,10 +50,10 @@ protected:
         ZFTextTemplateApply(param, ZFOutputForString(buf), src);
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("src:\n%s", src);
+        this->testCaseOutput(zfstr("src:\n%s", src));
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("applied:\n%s", buf.cString());
+        this->testCaseOutput(zfstr("applied:\n%s", buf));
 
         this->testCaseStop();
     }

@@ -23,10 +23,10 @@ protected:
             this->testCaseOutputSeparator();
             this->testCaseOutput("find:");
             regexp->regExpMatch(result, stringFrom);
-            this->testCaseOutput("  pattern    : %s", patternFrom);
-            this->testCaseOutput("  string     : %s", stringFrom);
-            this->testCaseOutput("  result     : %s", result.objectInfo().cString());
-            this->testCaseOutput("  named group: %zi", regexp->regExpNamedGroupIndexForName("n0"));
+            this->testCaseOutput(zfstr("  pattern    : %s", patternFrom));
+            this->testCaseOutput(zfstr("  string     : %s", stringFrom));
+            this->testCaseOutput(zfstr("  result     : %s", result));
+            this->testCaseOutput(zfstr("  named group: %zi", regexp->regExpNamedGroupIndexForName("n0")));
         }
 
         {
@@ -35,12 +35,12 @@ protected:
             this->testCaseOutputSeparator();
             this->testCaseOutput("replace:");
             regexp->regExpReplace(stringTo, result, patternTo, stringFrom);
-            this->testCaseOutput("  pattern from: %s", patternFrom);
-            this->testCaseOutput("  pattern to  : %s", patternTo);
-            this->testCaseOutput("  string  from: %s", stringFrom);
-            this->testCaseOutput("  string  to  : %s", stringTo.cString());
-            this->testCaseOutput("  match result: %s", result.objectInfo().cString());
-            this->testCaseOutput("  named group: %zi", regexp->regExpNamedGroupIndexForName("n0"));
+            this->testCaseOutput(zfstr("  pattern from: %s", patternFrom));
+            this->testCaseOutput(zfstr("  pattern to  : %s", patternTo));
+            this->testCaseOutput(zfstr("  string  from: %s", stringFrom));
+            this->testCaseOutput(zfstr("  string  to  : %s", stringTo));
+            this->testCaseOutput(zfstr("  match result: %s", result));
+            this->testCaseOutput(zfstr("  named group: %zi", regexp->regExpNamedGroupIndexForName("n0")));
         }
         this->testCaseStop();
     }

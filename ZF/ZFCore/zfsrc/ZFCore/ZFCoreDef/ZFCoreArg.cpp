@@ -98,7 +98,7 @@ void zfCoreArgMerge(
             result += '\"';
         }
 
-        const zfchar *p = s.cString();
+        const zfchar *p = s;
         while(*p != '\0') {
             if(*p == '\\') {
                 result += "\\\\";

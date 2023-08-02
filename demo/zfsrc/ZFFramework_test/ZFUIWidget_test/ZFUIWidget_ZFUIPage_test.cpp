@@ -36,12 +36,12 @@ protected:
         }
 
         this->_titleView()->childAdd(this->_titleCenterView())->c_layoutWeight(3);
-        this->_titleCenterView()->text(zfstringWithFormat("page %p", this));
+        this->_titleCenterView()->text(zfstr("page %p", this));
         this->_titleCenterView()->textAlign(ZFUIAlign::e_Center);
 
         this->pageView()->childAdd(this->_contentView())->c_sizeFill();
         this->_contentView()->viewBackgroundColor(ZFUIColorRandom());
-        this->_contentView()->label()->text(zfstringWithFormat("belong to %s", this->pageGroupId().cString()));
+        this->_contentView()->label()->text(zfstr("belong to %s", this->pageGroupId()));
         {
             ZFUIPage *page = this;
             ZFLISTENER_1(_contentViewOnClick
@@ -50,7 +50,7 @@ protected:
                 zfblockedAlloc(ZFUIWidget_ZFUIPage_test_Page, newPage);
                 newPage->pageGroupId(page->pageGroupId());
                 page->pageManager()->pageCreate(newPage);
-                page->pageView()->viewId(zfstringWithFormat("%s:%p", page->pageGroupId().cString(), page));
+                page->pageView()->viewId(zfstr("%s:%p", page->pageGroupId(), page));
             } ZFLISTENER_END()
             this->_contentView()->observerAdd(ZFUIButton::EventButtonOnClick(), _contentViewOnClick);
         }
@@ -59,7 +59,7 @@ protected:
             ZF_IN ZFUIPage * const &e0
             , ZF_IN const zfchar * const &e1
             ) {
-        if(zfstringIsEqual(e0->pageGroupId().cString(), e1)) {
+        if(zfstringIsEqual(e0->pageGroupId(), e1)) {
             return ZFCompareTheSame;
         }
         return ZFCompareUncomparable;
@@ -101,11 +101,11 @@ protected:
         this->_buttonLayout()->layoutOrientation(ZFUIOrientation::e_Left);
 
         for(zfindex i = 0; i < 4; ++i) {
-            zfblockedAlloc(v_zfstring, pageGroupId, zfstringWithFormat("pageGroup %zi", i));
+            zfblockedAlloc(v_zfstring, pageGroupId, zfstr("pageGroup %zi", i));
 
             zfblockedAlloc(ZFUIButtonBasic, button);
             this->_buttonLayout()->childAdd(button)->c_layoutWeight(1);
-            button->label()->text(zfstringWithFormat("tab %zi", i));
+            button->label()->text(zfstr("tab %zi", i));
             button->checkable(zftrue);
             ZFUIWidget_ZFUIPage_test_PageManager *pageManager = this;
             ZFLISTENER_2(buttonOnClick
@@ -146,7 +146,7 @@ protected:
                         zfblockedAlloc(ZFUIWidget_ZFUIPage_test_Page, page);
                         page->pageGroupId(pageGroupId->zfv);
                         pageManager->pageCreate(page);
-                        page->pageView()->viewId(zfstringWithFormat("%s:%p", page->pageGroupId().cString(), page));
+                        page->pageView()->viewId(zfstr("%s:%p", page->pageGroupId(), page));
                     }
                     else {
                         pageManager->pageResumeForGroupId(pageGroupId->zfv);

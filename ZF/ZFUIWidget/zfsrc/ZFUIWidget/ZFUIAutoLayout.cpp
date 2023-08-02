@@ -80,16 +80,16 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
             require, ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPos, pos);
         if(pos == ZFUIAutoLayoutPos::e_None) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, element,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
                 "\"%s\" does not support \"%s\"",
                 ZFSerializableKeyword_ZFUIAutoLayoutParam_pos,
-                ZFUIAutoLayoutPosToString(pos).cString());
+                pos);
             return zffalse;
         }
         if(_ZFP_AL_d.ruleList[pos].pos() != ZFUIAutoLayoutPos::e_None) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, element,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
                 "\"%s\" rule already has been set",
-                ZFUIAutoLayoutPosToString(pos).cString());
+                pos);
             return zffalse;
         }
 
@@ -108,7 +108,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
             if(*valueTmp != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token
                     || !ZFUIAutoLayoutPosFromString(targetPos, value, valueTmp - value)
                     ) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, element,
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
                     "invalid target value: %s",
                     value);
                 return zffalse;
@@ -201,11 +201,11 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[i];
             if(!rule._ZFP_AL_targetId.isEmpty()) {
                 if(!_ZFP_ZFUIAutoLayout_targetUpdate(rule, this, child, rule._ZFP_AL_targetId)) {
-                    ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                         "%s invalid target \"%s\" for %s",
-                        this->objectInfo().cString(),
-                        rule._ZFP_AL_targetId.cString(),
-                        child->objectInfo().cString());
+                        this,
+                        rule._ZFP_AL_targetId,
+                        child);
                     return zffalse;
                 }
                 rule._ZFP_AL_targetId.removeAll();

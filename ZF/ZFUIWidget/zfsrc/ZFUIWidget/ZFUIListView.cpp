@@ -1321,9 +1321,9 @@ zfbool ZFUIListView::serializableOnSerializeFromData(
         if(element != zfnull
                 && !element.toObject()->classData()->classIsTypeOf(ZFUIListAdapter::ClassData())
                 ) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, categoryData,
+            ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                 "%s not type of %s",
-                element.toObject()->objectInfoOfInstance().cString(), ZFUIListAdapter::ClassData()->classNameFull());
+                element.toObject()->objectInfoOfInstance(), ZFUIListAdapter::ClassData()->classNameFull());
             return zffalse;
         }
 

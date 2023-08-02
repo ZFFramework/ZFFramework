@@ -26,15 +26,15 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        this->testCaseOutput("try execute %s", this->callbackClassMember.objectInfo().cString());
+        this->testCaseOutput(zfstr("try execute %s", this->callbackClassMember.objectInfo()));
         this->callbackClassMember.executeExact<void>();
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("try execute %s", this->callbackClassStaticMember.objectInfo().cString());
+        this->testCaseOutput(zfstr("try execute %s", this->callbackClassStaticMember.objectInfo()));
         this->callbackClassStaticMember.executeExact<void>();
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("try execute %s", this->callbackFunction.objectInfo().cString());
+        this->testCaseOutput(zfstr("try execute %s", this->callbackFunction.objectInfo()));
         this->callbackFunction.executeExact<void>();
 
         ZFLAMBDA(localCallback
@@ -44,7 +44,7 @@ protected:
             zfLog() << param;
         } ZFLAMBDA_END()
         this->testCaseOutputSeparator();
-        this->testCaseOutput("try execute %s", localCallback.objectInfo().cString());
+        this->testCaseOutput(zfstr("try execute %s", localCallback.objectInfo()));
         localCallback.executeExact<void, const zfstring &>("param");
 
         this->testCaseStop();

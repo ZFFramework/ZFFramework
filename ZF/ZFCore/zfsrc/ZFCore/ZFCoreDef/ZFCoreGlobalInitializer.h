@@ -61,6 +61,25 @@ typedef enum {
 /** @brief string tokens */
 #define ZFTOKEN_ZFFrameworkStateCleanupProcessing "StateCleanupProcessing"
 
+ZFOUTPUT_TYPE(ZFFrameworkState, {
+    switch(v) {
+        case ZFFrameworkStateNotAvailable:
+            s += ZFTOKEN_ZFFrameworkStateNotAvailable;
+            break;
+        case ZFFrameworkStateInitProcessing:
+            s += ZFTOKEN_ZFFrameworkStateInitProcessing;
+            break;
+        case ZFFrameworkStateAvailable:
+            s += ZFTOKEN_ZFFrameworkStateAvailable;
+            break;
+        case ZFFrameworkStateCleanupProcessing:
+            s += ZFTOKEN_ZFFrameworkStateCleanupProcessing;
+            break;
+        default:
+            break;
+    }
+})
+
 /**
  * @brief assert fail and output log if ZFFramework not initialized
  */

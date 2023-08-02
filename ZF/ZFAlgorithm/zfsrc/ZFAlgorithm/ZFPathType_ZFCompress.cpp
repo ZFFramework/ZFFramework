@@ -201,7 +201,7 @@ public:
             return zftrue;
         }
         zfbool exist = (ZFDecompressContentIndex(taskData->taskToken, relPath) != zfindexMax())
-            || (ZFDecompressContentIndex(taskData->taskToken, zfstringWithFormat("%s%c", relPath, ZFFileSeparator())) != zfindexMax());
+            || (ZFDecompressContentIndex(taskData->taskToken, zfstr("%s%c", relPath, ZFFileSeparator())) != zfindexMax());
         _taskIdle(taskData);
         return exist;
     }
@@ -218,7 +218,7 @@ public:
             return zftrue;
         }
         zfbool isDir = ZFDecompressContentIsDir(taskData->taskToken, ZFDecompressContentIndex(taskData->taskToken,
-                relPath[zfslen(relPath) - 1] == ZFFileSeparator() ? relPath : zfstringWithFormat("%s%c", relPath, ZFFileSeparator()).cString()
+                relPath[zfslen(relPath) - 1] == ZFFileSeparator() ? relPath : zfstr("%s%c", relPath, ZFFileSeparator()).cString()
             ));
         _taskIdle(taskData);
         return isDir;

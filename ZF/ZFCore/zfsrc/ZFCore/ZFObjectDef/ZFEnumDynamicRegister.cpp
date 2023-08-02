@@ -102,7 +102,7 @@ static ZFEnum *_ZFP_ZFEnumDynamic_e(
         , ZF_IN ZFObject *invokerObject
         ) {
     const zfchar *enumName = invokerMethod->methodName() + zfslen("e_");
-    zfstring tagKey = zfstringWithFormat("_ZFP_EnumDyn_%s", enumName);
+    zfstring tagKey = zfstr("_ZFP_EnumDyn_%s", enumName);
     ZFEnum *ret = invokerMethod->methodOwnerClass()->classTag<ZFEnum *>(tagKey);
     if(ret != zfnull) {
         return ret;
@@ -138,8 +138,8 @@ const ZFClass *ZFEnumDynamicRegister(
         if(enumValues.find(enumDefault) == zfindexMax()) {
             zfstringAppend(errorHint,
                 "default enum value %s doesn't exists in enum value list: %s",
-                zfuintToString(enumDefault).cString(),
-                enumValues.objectInfoOfContent().cString());
+                enumDefault,
+                enumValues.objectInfoOfContent());
             return zfnull;
         }
     }
@@ -177,7 +177,7 @@ const ZFClass *ZFEnumDynamicRegister(
         ZFMethodUserRegisterDetail_0(resultMethod, {
                 return _ZFP_ZFEnumDynamic_e(invokerMethod, invokerObject);
             }, enumClass, public, ZFMethodTypeStatic,
-            ZFEnum *, zfstringWithFormat("e_%s", d->d->enumNameAt(i)));
+            ZFEnum *, zfstr("e_%s", d->d->enumNameAt(i)));
         d->userRegMethods.add(resultMethod);
     }
 

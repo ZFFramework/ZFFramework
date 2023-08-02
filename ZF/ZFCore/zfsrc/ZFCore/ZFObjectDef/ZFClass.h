@@ -795,15 +795,15 @@ public:
  */
 #define zfCoreCriticalClassNotTypeOf(cls, desired) \
     zfCoreCriticalMessage("class %s not type of %s", \
-        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(cls).cString(), \
-        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(desired).cString())
+        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(cls), \
+        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(desired))
 /**
  * @brief see #zfCoreCriticalClassNotTypeOf
  */
 #define zfCoreCriticalClassNotTypeOfDetail(callerInfo, cls, desired) \
     zfCoreCriticalMessageDetail(callerInfo, "class %s not type of %s", \
-        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(cls).cString(), \
-        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(desired).cString())
+        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(cls), \
+        _ZFP_ZFCoreCriticalClassNotTypeOf::classInfo(desired))
 
 // ============================================================
 /**

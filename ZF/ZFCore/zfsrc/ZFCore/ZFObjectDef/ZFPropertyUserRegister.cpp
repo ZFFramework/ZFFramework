@@ -26,7 +26,7 @@ void ZFPropertyUserUnregister(ZF_IN const ZFProperty *zfproperty) {
     zfCoreMutexLocker();
     zfCoreAssertWithMessageTrim(zfproperty->propertyIsUserRegister(),
             "[ZFPropertyUserUnregister] property %s is not user registered",
-            zfproperty->objectInfo().cString()
+            zfproperty
         );
 
     _ZFP_ZFPropertyUnregister(zfproperty);

@@ -15,7 +15,7 @@ protected:
         zfflags value = ZFCrc32Zero();
 
         value = ZFCrc32((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
-        this->testCaseOutput("CRC32 of array \"%s\": %x", testString, (zfuint)value);
+        this->testCaseOutput(zfstr("CRC32 of array \"%s\": %x", testString, value));
         ZFTestCaseAssert(value == testValue);
 
         zfstring tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32.txt");
@@ -25,9 +25,10 @@ protected:
             ZFFileClose(fp);
             fp = zfnull;
         }
-        this->testCaseOutput("write it to file %s, file's CRC32: %x",
-                tmpFilePath.cString(),
-                (zfuint)ZFCrc32(ZFInputForFile(tmpFilePath)));
+        this->testCaseOutput(zfstr("write it to file %s, file's CRC32: %x"
+                    , tmpFilePath
+                    , ZFCrc32(ZFInputForFile(tmpFilePath))
+                    ));
 
         this->testCaseOutputSeparator();
         tmpFilePath = this->testCaseUseTmpFile("ZFCrc32_Crc32_big.txt");
@@ -44,15 +45,16 @@ protected:
             fp = zfnull;
         }
         ZFTimeValue tv1 = ZFTime::currentTimeValue();
-        zfflags CRC32BigFile = ZFCrc32(ZFInputForFile(tmpFilePath.cString()));
+        zfflags CRC32BigFile = ZFCrc32(ZFInputForFile(tmpFilePath));
         ZFTimeValue tv2 = ZFTimeValueDec(ZFTime::currentTimeValue(), tv1);
-        this->testCaseOutput("write it 1000*1000 times to file %s, file's size: %zi, CRC32: %X, time: %s.%03s %03s",
-            tmpFilePath.cString(),
-            fileSize,
-            (zfuint)CRC32BigFile,
-            zfsFromInt(tv2.sec).cString(),
-            zfsFromInt(tv2.usec / 1000).cString(),
-            zfsFromInt(tv2.usec % 1000).cString());
+        this->testCaseOutput(zfstr("write it 1000*1000 times to file %s, file's size: %zi, CRC32: %X, time: %s.%03s %03s"
+                    , tmpFilePath
+                    , fileSize
+                    , CRC32BigFile
+                    , tv2.sec
+                    , tv2.usec / 1000
+                    , tv2.usec % 1000
+                    ));
 
         this->testCaseStop();
     }

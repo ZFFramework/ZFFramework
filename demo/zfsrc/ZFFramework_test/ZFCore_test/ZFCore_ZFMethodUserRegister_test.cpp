@@ -123,7 +123,7 @@ protected:
                 );
 
             zfstring ret = zfself::ClassData()->methodForName("funcDynamic")->execute<zfstring, zfstring const &>(this, "paramValue");
-            this->testCaseOutput("execute result: %s", ret.cString());
+            this->testCaseOutput(zfstr("execute result: %s", ret));
 
             ZFMethodUserUnregister(zfself::ClassData()->methodForName("funcDynamic"));
 
@@ -131,12 +131,13 @@ protected:
 
             this->testCaseOutput("all list:");
             for(zfindex i = 0; i <= 8; ++i) {
-                this->testCaseOutput("  %s",
-                    zfself::ClassData()->methodForName(zfstringWithFormat("funcDynamic%zi", i))->objectInfo().cString());
+                this->testCaseOutput(zfstr("  %s"
+                            , zfself::ClassData()->methodForName(zfstr("funcDynamic%zi", i))
+                            ));
             }
 
             for(zfindex i = 0; i <= 8; ++i) {
-                ZFMethodUserUnregister(zfself::ClassData()->methodForName(zfstringWithFormat("funcDynamic%zi", i)));
+                ZFMethodUserUnregister(zfself::ClassData()->methodForName(zfstr("funcDynamic%zi", i)));
             }
         }
 
@@ -145,12 +146,13 @@ protected:
             this->testCaseOutput("try execute statically registered method");
 
             zfstring ret = zfself::ClassData()->methodForName("funcStatic")->execute<zfstring, zfstring const &>(this, "paramValue");
-            this->testCaseOutput("execute result: %s", ret.cString());
+            this->testCaseOutput(zfstr("execute result: %s", ret));
 
             this->testCaseOutput("all list:");
             for(zfindex i = 0; i <= ZFMETHOD_MAX_PARAM; ++i) {
-                this->testCaseOutput("  %s",
-                    zfself::ClassData()->methodForName(zfstringWithFormat("funcStatic%zi", i))->objectInfo().cString());
+                this->testCaseOutput(zfstr("  %s"
+                            , zfself::ClassData()->methodForName(zfstr("funcStatic%zi", i))
+                            ));
             }
         }
 

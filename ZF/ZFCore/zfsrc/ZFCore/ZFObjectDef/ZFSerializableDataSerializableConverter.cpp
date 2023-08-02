@@ -75,13 +75,13 @@ zfbool ZFSerializableDataFromZfsd(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!input) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, "invalid input callback");
+        ZFSerializableUtilErrorOccurred(outErrorHint, "invalid input callback");
         return zffalse;
     }
     ZFBuffer buf;
     ZFInputRead(buf, input);
     if(buf.buffer() == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, "unable to load data from input");
+        ZFSerializableUtilErrorOccurred(outErrorHint, "unable to load data from input");
         return zffalse;
     }
     zfbool ret = ZFSerializableDataFromZfsd(serializableData, buf.text(), buf.textLength(), outErrorHint);
@@ -109,7 +109,7 @@ zfbool ZFSerializableDataToZfsd(
         , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
         ) {
     if(!output) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, "invalid output callback");
+        ZFSerializableUtilErrorOccurred(outErrorHint, "invalid output callback");
         return zffalse;
     }
     zfstring tmp;
@@ -237,7 +237,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
         , ZF_IN_OPT zfbool validateTail = zffalse
         ) {
     if(encodedData == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(outErrorHint,
             "invalid param");
         return zffalse;
     }
@@ -352,9 +352,9 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
         ret = zftrue;
     } while(zffalse);
     if(!ret) {
-        ZFSerializableUtil::errorOccurred(outErrorHint,
+        ZFSerializableUtilErrorOccurred(outErrorHint,
             "wrong serializable string format at position: \"%s\"",
-            zfstring(encodedData, srcEnd - encodedData).cString());
+            zfstring(encodedData, srcEnd - encodedData));
     }
     return ret;
 }

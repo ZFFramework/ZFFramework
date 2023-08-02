@@ -341,7 +341,7 @@ void ZFUIButtonBasic::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
 
     if(this->labelView() != zfnull && !this->labelView()->text().isEmpty()) {
-        zfstringAppend(ret, " \"%s\"", this->labelView()->text().cString());
+        zfstringAppend(ret, " \"%s\"", this->labelView()->text());
     }
 }
 

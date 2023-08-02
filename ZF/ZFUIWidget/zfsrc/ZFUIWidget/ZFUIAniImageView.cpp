@@ -174,9 +174,9 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
         require, ZFSerializableKeyword_ZFUIAniImageView_frameSrc, ZFObject, frameSrcImage);
     if(frameSrcImage == zfnull || !frameSrcImage->classData()->classIsTypeOf(ZFUIImage::ClassData())) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos,
             *ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIAniImageView_frameSrc),
-            "invalid frameSrc: %s", ZFObjectInfo(frameSrcImage).cString());
+            "invalid frameSrc: %s", frameSrcImage);
         return zffalse;
     }
 
@@ -191,7 +191,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
     ZFCoreArrayPOD<zftimet> frameDurations;
     const zfchar *frameDurationsString = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIAniImageView_frameDurations);
     if(frameDurationsString != zfnull && !ZFCoreArrayFromString(frameDurations, zftimetFromString, frameDurationsString)) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "invalid %s: %s",
             ZFSerializableKeyword_ZFUIAniImageView_frameDurations,
             frameDurationsString);

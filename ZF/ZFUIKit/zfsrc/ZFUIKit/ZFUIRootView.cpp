@@ -17,12 +17,12 @@ ZFMETHOD_DEFINE_0(ZFUIRootView, const ZFCoreArrayPOD<ZFUIWindow *> &, windowList
 void ZFUIRootView::viewOnAddToParent(ZF_IN ZFUIView *parent) {
     zfCoreCriticalMessage(
         "you must not add ZFUIRootView to another parent, parent: %s",
-        ZFObjectInfo(parent).cString());
+        parent);
 }
 void ZFUIRootView::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
     zfCoreCriticalMessage(
         "you must not add ZFUIRootView to another parent, parent: %s",
-        ZFObjectInfo(parent).cString());
+        parent);
 }
 
 void ZFUIRootView::layoutOnMeasure(

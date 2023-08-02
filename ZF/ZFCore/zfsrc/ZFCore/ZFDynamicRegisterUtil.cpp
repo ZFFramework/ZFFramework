@@ -71,18 +71,15 @@ public:
         this->scopeBeginCheck();
     }
 public:
-    void error(ZF_IN const zfchar *errorHint, ...) {
+    void error(ZF_IN const zfchar *errorHint) {
         this->errorOccurred = zftrue;
         if(!ZFDynamic::errorCallbacks().isEmpty()) {
             zfstring s;
-            va_list vaList;
-            va_start(vaList, errorHint);
-            zfstringAppendV(s, errorHint, vaList);
-            va_end(vaList);
+            s += errorHint;
             s += "\n";
 
             for(zfindex i = 0; i < ZFDynamic::errorCallbacks().count(); ++i) {
-                ZFDynamic::errorCallbacks()[i].execute(s.cString());
+                ZFDynamic::errorCallbacks()[i].execute(s.cString(), s.length() * sizeof(zfchar));
             }
         }
     }
@@ -379,9 +376,10 @@ ZFDynamic &ZFDynamic::classBegin(
         const ZFClass *dynClass = ZFClassDynamicRegister(
             classNameFull, classParent, classDynamicRegisterUserData, &errorHint);
         if(dynClass == zfnull) {
-            d->error("unable to register class: %s, reason: %s",
-                classNameFull,
-                errorHint.cString());
+            d->error(zfstr("unable to register class: %s, reason: %s"
+                        , classNameFull
+                        , errorHint
+                        ));
         }
         else {
             d->allClass.add(dynClass);
@@ -403,7 +401,7 @@ ZFDynamic &ZFDynamic::classBegin(
     else {
         const ZFClass *classParent = ZFClass::classForName(parentClassNameFull);
         if(classParent == zfnull) {
-            d->error("no such classParent: %s", parentClassNameFull);
+            d->error(zfstr("no such classParent: %s", parentClassNameFull));
             return *this;
         }
         else {
@@ -596,7 +594,7 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
         d->enumIsFlags,
         &errorHint);
     if(enumClass == zfnull) {
-        d->error("unable to register enum, reason: %s", errorHint.cString());
+        d->error(zfstr("unable to register enum, reason: %s", errorHint));
         return *this;
     }
     d->allEnum.add(enumClass);
@@ -639,7 +637,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
     idName += eventName;
     zfidentity idValue = ZFIdMapIdForName(idName);
     if(idValue != zfidentityInvalid()) {
-        d->error("%s already exists", idName.cString());
+        d->error(zfstr("%s already exists", idName));
         return *this;
     }
     idValue = ZFIdMapDynamicRegister(idName);
@@ -652,7 +650,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
             .methodDynamicRegisterUserData(t)
             .methodOwnerClass(d->cls)
             .methodNamespace(d->methodNamespace)
-            .methodName(zfstringWithFormat("Event%s", eventName))
+            .methodName(zfstr("Event%s", eventName))
             .methodReturnTypeId(ZFTypeId_zfidentity())
         );
     zfCoreAssert(method != zfnull);
@@ -696,7 +694,7 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     zfstring errorHint;
     const ZFMethod *dynMethod = ZFMethodDynamicRegister(param, &errorHint);
     if(dynMethod == zfnull) {
-        d->error("unable to register method, reason: %s", errorHint.cString());
+        d->error(zfstr("unable to register method, reason: %s", errorHint));
     }
     else {
         d->allMethod.add(dynMethod);
@@ -739,9 +737,10 @@ ZFDynamic &ZFDynamic::property(
     if(propertyInitValue != zfnull) {
         ZFTypeIdWrapper *propertyInitValueWrapper = ZFCastZFObject(ZFTypeIdWrapper *, propertyInitValue);
         if(propertyInitValueWrapper == zfnull) {
-            d->error("assign property's type must be %s: %s",
-                ZFTypeIdWrapper::ClassData()->classNameFull(),
-                propertyInitValue->objectInfo().cString());
+            d->error(zfstr("assign property's type must be %s: %s"
+                        , ZFTypeIdWrapper::ClassData()->classNameFull()
+                        , propertyInitValue
+                        ));
             return *this;
         }
         param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
@@ -770,18 +769,20 @@ ZFDynamic &ZFDynamic::property(
     param.propertyGetterType(getterPrivilegeType);
     if(propertyInitValue != zfnull) {
         if(!propertyInitValue->classData()->classIsTypeOf(propertyClassOfRetainProperty)) {
-            d->error("init value %s is not type of %s",
-                propertyInitValue->objectInfo().cString(),
-                propertyClassOfRetainProperty->classNameFull());
+            d->error(zfstr("init value %s is not type of %s"
+                        , propertyInitValue
+                        , propertyClassOfRetainProperty->classNameFull()
+                        ));
             return *this;
         }
         if(ZFCastZFObject(ZFCopyable *, propertyInitValue) == zfnull
                 && ZFCastZFObject(ZFStyleable *, propertyInitValue) == zfnull
                 ) {
-            d->error("init value %s is not type of %s or %s",
-                propertyInitValue->objectInfo().cString(),
-                ZFCopyable::ClassData()->classNameFull(),
-                ZFStyleable::ClassData()->classNameFull());
+            d->error(zfstr("init value %s is not type of %s or %s"
+                        , propertyInitValue
+                        , ZFCopyable::ClassData()->classNameFull()
+                        , ZFStyleable::ClassData()->classNameFull()
+                        ));
             return *this;
         }
         param.propertyInitValueCallback(_ZFP_ZFDynamicPropertyInit);
@@ -802,7 +803,7 @@ ZFDynamic &ZFDynamic::property(ZF_IN const ZFPropertyDynamicRegisterParam &param
     zfstring errorHint;
     const ZFProperty *dynProperty = ZFPropertyDynamicRegister(param, &errorHint);
     if(dynProperty == zfnull) {
-        d->error("unable to register property, reason: %s", errorHint.cString());
+        d->error(zfstr("unable to register property, reason: %s", errorHint));
     }
     else {
         d->allProperty.add(dynProperty);
@@ -854,12 +855,12 @@ ZFDynamic &ZFDynamic::propertyLifeCycle(
     item.ownerClassOrNull = d->cls;
     item.lifeCycle = lifeCycle;
     if(item.property == zfnull) {
-        d->error("no property %s for class %s", propertyName, d->cls->className());
+        d->error(zfstr("no property %s for class %s", propertyName, d->cls->className()));
         return *this;
     }
     zfstring errorHint;
     if(!ZFPropertyDynamicRegisterLifeCycle(item.property, d->cls, lifeCycle, callback)) {
-        d->error("%s", errorHint.cString());
+        d->error(zfstr("%s", errorHint));
         return *this;
     }
     d->allPropertyLifeCycle.add(item);

@@ -553,7 +553,7 @@ void ZFObject::objectOnDealloc(void) {
 }
 void ZFObject::objectOnRetain(void) {
     zfCoreAssertWithMessageTrim(d->objectRetainCount > 0,
-        "[ZFObject] retain an object while deallocating: %s", this->objectInfoOfInstance().cString());
+        "[ZFObject] retain an object while deallocating: %s", this->objectInfoOfInstance());
     ++(d->objectRetainCount);
 }
 void ZFObject::objectOnRelease(void) {

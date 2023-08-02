@@ -66,7 +66,8 @@ protected:
         zfsuper::testCaseOnStart();
 
         this->testCaseOutputSeparator();
-        this->testCaseOutput("ZFProperty"); {
+        this->testCaseOutput("ZFProperty");
+        {
             zfblockedAlloc(_ZFP_ZFCore_ZFProperty_test_TestChild, p);
 
             // property list

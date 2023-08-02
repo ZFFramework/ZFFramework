@@ -208,7 +208,7 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(
             d->methodParamName[d->methodParamCount] = methodParamName;
         }
         else {
-            d->methodParamName[d->methodParamCount] = zfstringWithFormat("p%zi", d->methodParamCount);
+            d->methodParamName[d->methodParamCount] = zfstr("p%zi", d->methodParamCount);
         }
         d->methodParamDefaultValueCallback[d->methodParamCount] = methodParamDefaultValueCallback;
         ++(d->methodParamCount);

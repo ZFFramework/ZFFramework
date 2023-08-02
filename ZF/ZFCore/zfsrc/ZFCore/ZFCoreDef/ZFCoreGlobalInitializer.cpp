@@ -3,6 +3,7 @@
 #include "ZFCorePointer.h"
 #include "ZFCoreArray.h"
 #include "ZFCoreMap.h"
+#include "ZFCoreStringConvert.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -53,7 +54,9 @@ static void _ZFP_GI_keyForName(
         , ZF_IN const zfchar *name
         , ZF_IN ZFLevel level
         ) {
-    zfstringAppend(key, "%d_%s", (zfint)level, name);
+    zfsFromIntT(key, (zfint)level);
+    key += "_";
+    key += name;
 }
 
 static void _ZFP_GI_instanceInit(ZFCoreArrayPOD<_ZFP_GI_Data *> &list) {
@@ -509,7 +512,7 @@ static void _ZFP_GI_dataRegister(
     zfstring key;
     _ZFP_GI_keyForName(key, name, level);
 
-    _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(key.cString());
+    _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(key);
     if(data != zfnull) {
         ++(data->refCount);
     }
@@ -521,7 +524,7 @@ static void _ZFP_GI_dataRegister(
         data->destructor = destructor;
 
         dataList.add(data);
-        dataMap.set(key.cString(), ZFCorePointerForObject<_ZFP_GI_Data *>(data));
+        dataMap.set(key, ZFCorePointerForObject<_ZFP_GI_Data *>(data));
     }
     data->ZFCoreLibDestroyFlag.add(ZFCoreLibDestroyFlag);
 
@@ -566,7 +569,7 @@ static void _ZFP_GI_dataUnregister(
     zfstring key;
     _ZFP_GI_keyForName(key, name, level);
 
-    zfiterator it = dataMap.iterFind(key.cString());
+    zfiterator it = dataMap.iterFind(key);
     if(!dataMap.iterValid(it)) {
         zfCoreCriticalShouldNotGoHere();
         return;
@@ -606,7 +609,7 @@ static void **_ZFP_GI_instanceAccess(
     zfstring key;
     _ZFP_GI_keyForName(key, name, level);
 
-    _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(key.cString());
+    _ZFP_GI_Data *data = dataMap.get<_ZFP_GI_Data *>(key);
     if(data == zfnull) {
         zfCoreCriticalShouldNotGoHere();
         return &dummy;
@@ -632,7 +635,7 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data) {
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkStatic) == ZFFrameworkStateNotAvailable) {
         zfCoreCriticalMessageTrim(
                 "ZFGlobalInitializer %s accessed before ZFFrameworkInit"
-            , data->name.cString());
+            , data->name);
         return;
     }
 
@@ -689,7 +692,7 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data) {
                 "ZFGlobalInitializer %s depends on or level lower than %s"
                 ", while it hasn't been initialized or already deallocated"
                 ", typically because of invalid dependency or invalid access"
-            , data->name.cString(), dependency->name.cString());
+            , data->name, dependency->name);
         return;
     }
 

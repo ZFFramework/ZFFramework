@@ -137,7 +137,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeValueToStringFriendly
         zfstringAppend(s, "%03u%03u", ti.miliSecond, ti.microSecond);
     }
     else {
-        zfstringAppend(s, "%s.%06s", zfsFromInt(v.sec).cString(), zfsFromInt(v.usec).cString());
+        zfstringAppend(s, "%s.%06s", v.sec, v.usec);
     }
     return zftrue;
 }

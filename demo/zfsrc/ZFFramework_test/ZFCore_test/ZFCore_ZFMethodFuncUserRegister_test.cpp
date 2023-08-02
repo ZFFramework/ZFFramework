@@ -124,7 +124,7 @@ protected:
 
             zfstring ret = ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic")
                 ->execute<zfstring, zfstring const &>(this, "paramValue");
-            this->testCaseOutput("execute result: %s", ret.cString());
+            this->testCaseOutput(zfstr("execute result: %s", ret));
 
             ZFMethodFuncUserUnregister(ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcDynamic"));
 
@@ -133,17 +133,17 @@ protected:
 
             this->testCaseOutput("all list:");
             for(zfindex i = 0; i <= 8; ++i) {
-                this->testCaseOutput("  %s",
-                    ZFMethodForName(
-                            "ZFCore_ZFMethodFuncUserRegister_testNamespace",
-                            zfstringWithFormat("funcDynamic%zi", i)
-                        )->objectInfo().cString()
-                    );
+                this->testCaseOutput(zfstr("  %s",
+                            ZFMethodForName(
+                                "ZFCore_ZFMethodFuncUserRegister_testNamespace",
+                                zfstr("funcDynamic%zi", i)
+                                )->objectInfo()
+                                ));
             }
 
             for(zfindex i = 0; i <= 8; ++i) {
                 ZFMethodFuncUserUnregister(ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace",
-                        zfstringWithFormat("funcDynamic%zi", i))
+                        zfstr("funcDynamic%zi", i))
                     );
             }
         }
@@ -154,16 +154,16 @@ protected:
 
             zfstring ret = ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace", "funcStatic")
                 ->execute<zfstring, zfstring const &>(this, "paramValue");
-            this->testCaseOutput("execute result: %s", ret.cString());
+            this->testCaseOutput(zfstr("execute result: %s", ret));
 
             this->testCaseOutput("all list:");
             for(zfindex i = 0; i <= ZFMETHOD_MAX_PARAM; ++i) {
-                this->testCaseOutput("  %s",
-                    ZFMethodForName(
-                            "ZFCore_ZFMethodFuncUserRegister_testNamespace",
-                            zfstringWithFormat("funcStatic%zi", i)
-                        )->objectInfo().cString()
-                    );
+                this->testCaseOutput(zfstr("  %s",
+                            ZFMethodForName(
+                                "ZFCore_ZFMethodFuncUserRegister_testNamespace",
+                                zfstr("funcStatic%zi", i)
+                                )->objectInfo()
+                                ));
             }
         }
 

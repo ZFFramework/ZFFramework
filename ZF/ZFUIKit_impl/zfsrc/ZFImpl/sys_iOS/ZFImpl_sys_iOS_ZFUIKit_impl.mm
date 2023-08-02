@@ -73,7 +73,7 @@ static void _ZFP_ZFImpl_sys_iOS_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, U
 #if 1 // scroll content
     if([view isKindOfClass:[UIScrollView class]]) {
         UIScrollView *scrollView = (UIScrollView *)view;
-        zfstring info = zfstringWithFormat("(%d, %d, %d, %d)"
+        zfstring info = zfstr("(%d, %d, %d, %d)"
             , (zfint)zfmRound(scrollView.contentOffset.x)
             , (zfint)zfmRound(scrollView.contentOffset.y)
             , (zfint)zfmRound(scrollView.contentSize.width)

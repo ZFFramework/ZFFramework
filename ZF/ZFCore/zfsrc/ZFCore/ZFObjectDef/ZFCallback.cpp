@@ -117,7 +117,7 @@ ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMethod(ZF_IN const ZFMethod *callbac
     zfCoreAssertWithMessageTrim(callbackMethod != zfnull, "[ZFCallback] method is null");
     zfCoreAssertWithMessageTrim(callbackMethod->methodType() == ZFMethodTypeStatic,
         "[ZFCallback] method \"%s\" is not class static member type",
-        callbackMethod->objectInfo().cString());
+        callbackMethod);
     callback.d->callbackType = ZFCallbackTypeMethod;
     callback.d->callbackMethod = callbackMethod;
     return callback;
@@ -130,15 +130,15 @@ ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMemberMethod(
     callback.d = zfnew(_ZFP_ZFCallbackPrivate);
     zfCoreAssertWithMessageTrim(callbackOwnerObject != zfnull && callbackMethod != zfnull,
         "[ZFCallback] invalid callback, ownerObj: %s, method: %s",
-        zfsFromPointer(callbackOwnerObject).cString(),
-        zfsFromPointer(callbackMethod).cString());
+        callbackOwnerObject,
+        callbackMethod);
     zfCoreAssertWithMessageTrim(callbackMethod->methodType() != ZFMethodTypeStatic,
         "[ZFCallback] method \"%s\" is not class member type",
-        callbackMethod->objectInfo().cString());
+        callbackMethod);
     zfCoreAssertWithMessageTrim(callbackOwnerObject->classData()->classIsTypeOf(callbackMethod->methodOwnerClass()),
         "[ZFCallback] object %s has no such method \"%s\"",
-        callbackOwnerObject->objectInfoOfInstance().cString(),
-        callbackMethod->objectInfo().cString());
+        callbackOwnerObject->objectInfoOfInstance(),
+        callbackMethod);
     callback.d->callbackType = ZFCallbackTypeMemberMethod;
     callback.d->callbackOwnerObject = callbackOwnerObject;
     callback.d->callbackMethod = callbackMethod;

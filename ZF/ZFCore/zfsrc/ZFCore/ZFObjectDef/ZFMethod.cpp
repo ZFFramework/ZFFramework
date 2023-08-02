@@ -521,14 +521,14 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
                     "[ZFMethodUserRegister] registering a method that already registered, class: %s, methodName: %s, methodInternalId: %s",
                     methodOwnerClass->classNameFull(),
                     methodName,
-                    methodInternalId.cString());
+                    methodInternalId);
             }
             else {
                 zfCoreCriticalMessageTrim(
                     "[ZFMethodFuncUserRegister] registering a method that already registered, namespace: %s, methodName: %s, methodInternalId: %s",
                     methodNamespace,
                     methodName,
-                    methodInternalId.cString());
+                    methodInternalId);
             }
         }
         else if(method->methodIsDynamicRegister()) {
@@ -537,14 +537,14 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
                     "[ZFMethodDynamicRegister] registering a method that already registered, class: %s, methodName: %s, methodInternalId: %s",
                     methodOwnerClass->classNameFull(),
                     methodName,
-                    methodInternalId.cString());
+                    methodInternalId);
             }
             else {
                 zfCoreCriticalMessageTrim(
                     "[ZFMethodDynamicRegister] registering a method that already registered, namespace: %s, methodName: %s, methodInternalId: %s",
                     methodNamespace,
                     methodName,
-                    methodInternalId.cString());
+                    methodInternalId);
             }
         }
 
@@ -561,8 +561,8 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
         }
         zfCoreAssertWithMessageTrim(!isRedefine,
             "[ZFMethod] redefine of method: %s, existing: %s",
-            methodInternalId.cString(),
-            method->objectInfo().cString());
+            methodInternalId,
+            method);
 
         ++method->_ZFP_ZFMethod_refCount;
     }

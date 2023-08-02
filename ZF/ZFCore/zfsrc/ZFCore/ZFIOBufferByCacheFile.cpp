@@ -24,7 +24,7 @@ public:
         zfstringAppend(this->tmpFilePath, "%s%cZFIOBufferByCacheFile_%s",
             ZFPathForCache(),
             ZFFileSeparator(),
-            zfsFromInt(zfidentityCalcPointer(this)).cString());
+            zfidentityCalcPointer(this));
         this->token = ZFFileOpen(this->tmpFilePath.cString(),
             ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write);
     }

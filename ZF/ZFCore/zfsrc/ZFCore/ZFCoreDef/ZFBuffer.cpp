@@ -1,5 +1,5 @@
 #include "ZFBuffer.h"
-#include "ZFCoreSPrintf.h"
+#include "ZFCoreStringConvert.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -76,7 +76,14 @@ void ZFBuffer::bufferFree(void) {
 }
 
 void ZFBuffer::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    zfstringAppend(ret, "<ZFBuffer %p(%zi/%zi)>", this->buffer(), this->bufferSize(), this->bufferCapacity());
+    // "<ZFBuffer %p(%zi/%zi)>"
+    ret += "<ZFBuffer ";
+    zfsFromPointerT(ret, this->buffer());
+    ret += "(";
+    zfsFromIntT(ret, this->bufferSize());
+    ret += "/";
+    zfsFromIntT(ret, this->bufferCapacity());
+    ret += ")>";
 }
 
 ZF_NAMESPACE_GLOBAL_END

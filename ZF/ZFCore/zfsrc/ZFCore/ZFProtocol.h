@@ -135,7 +135,7 @@ public:
         zfstringAppend(ret, "<[%s] %s%s>",
             this->protocolName(),
             this->protocolImplementationName(),
-            (!zfstringIsEmpty(this->protocolImplementationPlatformHint()) ? zfstringWithFormat(" (%s)", this->protocolImplementationPlatformHint()).cString() : "")
+            (!zfstringIsEmpty(this->protocolImplementationPlatformHint()) ? zfstr(" (%s)", this->protocolImplementationPlatformHint()).cString() : "")
             );
     }
     /**
@@ -167,11 +167,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFProtocol, ZFProtocol *)
-
-// ============================================================
-ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, const ZFProtocol *)
-ZFOUTPUT_TYPE(ZFProtocol *, {zftToString(s, (const ZFProtocol *)v);})
-ZFOUTPUT_TYPE(ZFProtocol, {zftToString(s, (const ZFProtocol *)&v);})
+ZFOUTPUT_TYPE(ZFProtocol, {v.objectInfoT(s);})
 
 // ============================================================
 zfclassFwd _ZFP_ZFProtocolData;
@@ -257,21 +253,21 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     if(_d.implLevel == implLevel) { \
                         zfCoreCriticalMessageTrim("only one implementation is allowed for protocol \"%s\", while we have: \"%s\", \"%s\"", \
                             #ModuleName, \
-                            _d.implName.cString(), \
+                            _d.implName, \
                             implName); \
                         return; \
                     } \
                     else if(_d.implLevel > implLevel) { \
                         /* \
                         zfCoreLogTrim("ignore implementation \"%s\" while having \"%s\" for protocol \"%s\"", \
-                            implName, _d.implName.cString(), #ModuleName); \
+                            implName, _d.implName, #ModuleName); \
                          */ \
                         return; \
                     } \
                     else { \
                         /* \
                         zfCoreLogTrim("reset implementation for protocol \"%s\", old: \"%s\", new: \"%s\"", \
-                            #ModuleName, _d.implName.cString(), implName); \
+                            #ModuleName, _d.implName, implName); \
                          */ \
                     } \
                 } \
@@ -344,18 +340,20 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     ZFProtocol *mismatchImpl = zfnull; \
                     if(!_d.implInstance->_ZFP_ZFProtocol_checkImplDependency(desiredImplPlatformHint, mismatchProtocolName, mismatchImpl)) { \
                         zfCoreCriticalErrorPrepare(); \
-                        zfCoreLogTrimNoEndl("(%s)%s depends on (%s)\"%s\"", \
+                        zfstring err; \
+                        zfstringAppend(err, "(%s)%s depends on (%s)\"%s\"", \
                             _d.implInstance->protocolName(), \
                             _d.implInstance->protocolImplementationName(), \
                             mismatchProtocolName, \
                             desiredImplPlatformHint); \
                         if(mismatchImpl == zfnull) { \
-                            zfCoreLogTrim(" but it's not implemented"); \
+                            zfstringAppend(err, " but it's not implemented"); \
                         } \
                         else { \
-                            zfCoreLogTrim(" but it's implementation \"%s\" mismatch", \
+                            zfstringAppend(err, " but it's implementation \"%s\" mismatch", \
                                 mismatchImpl->protocolImplementationPlatformHint()); \
                         } \
+                        zfCoreLogTrim(err); \
                         zfCoreCriticalError(); \
                         zfdelete(_d.implInstance); \
                         _d.implInstance = zfnull; \
@@ -552,9 +550,7 @@ private:
 
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass) \
     }; \
-    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (const ZFProtocol *)&v);}) \
-    ZFOUTPUT_TYPE(const ImplementationClass *, {zftToString(s, (const ZFProtocol *)v);}) \
-    ZFOUTPUT_TYPE(ImplementationClass *, {zftToString(s, (const ZFProtocol *)v);})
+    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (const ZFProtocol *)&v);})
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ImplementationClass) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass)
 

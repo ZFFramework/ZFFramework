@@ -115,7 +115,7 @@ public:
         _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *token = new _ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType();
         *token = _ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId();
         zfbool exist = (_ZFP_ZFThreadImpl_sys_Qt_threadMap.find(*token) != _ZFP_ZFThreadImpl_sys_Qt_threadMap.end());
-        zfCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread->objectInfo().cString());
+        zfCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_sys_Qt_threadMap[*token] = ownerZFThread;
         return ZFCastStatic(void *, token);
     }

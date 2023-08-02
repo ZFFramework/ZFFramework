@@ -22,7 +22,6 @@
 #include "ZFCoreDef/ZFCoreMutex.h"
 #include "ZFCoreDef/ZFCorePointer.h"
 #include "ZFCoreDef/ZFCoreQueue.h"
-#include "ZFCoreDef/ZFCoreSPrintf.h"
 #include "ZFCoreDef/ZFCoreStaticInitializer.h"
 #include "ZFCoreDef/ZFCoreStaticRegister.h"
 #include "ZFCoreDef/ZFCoreStatistic.h"
@@ -42,6 +41,7 @@
 #include "ZFCoreDef/ZFNamespaceImpl.h"
 #include "ZFCoreDef/ZFToken.h"
 #include "ZFCoreDef/ZFVersion.h"
+#include "ZFCoreDef/zfstr.h"
 
 #endif // #ifndef _ZFI_ZFCoreDef_h_
 

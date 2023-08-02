@@ -1150,8 +1150,8 @@ ZFXml &ZFXml::childAdd(
         case ZFXmlType::e_XmlAttribute:
         case ZFXmlType::e_XmlDocument:
             zfCoreCriticalMessage("%s can not be added to %s"
-                    , ZFXmlTypeToString(addThis.xmlType()).cString()
-                    , ZFXmlTypeToString(this->xmlType()).cString()
+                    , addThis.xmlType()
+                    , this->xmlType()
                 );
             break;
         case ZFXmlType::e_XmlDeclaration:
@@ -1159,8 +1159,8 @@ ZFXml &ZFXml::childAdd(
         case ZFXmlType::e_XmlPI:
             if(this->xmlType() != ZFXmlType::e_XmlDocument) {
                 zfCoreCriticalMessage("%s can not be added to %s"
-                        , ZFXmlTypeToString(addThis.xmlType()).cString()
-                        , ZFXmlTypeToString(this->xmlType()).cString()
+                        , addThis.xmlType()
+                        , this->xmlType()
                     );
             }
             break;

@@ -135,7 +135,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     note that, all params passed from #ZFLuaExecute are all #zfautoObject type
  * -  util
  *   -  `zfstringAppend(s, fmt, ...)`
- *     or `zfstringWithFormat(fmt, ...)`\n
+ *     or `zfstr(fmt, ...)`\n
  *     fmt can be #v_zfstring, or native lua string\n
  *     following va_args support:
  *     -  #ZFObject, would be converted by #ZFObject::objectInfo

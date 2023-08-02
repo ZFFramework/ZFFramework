@@ -286,7 +286,7 @@ static void _ZFP_ZFTextTemplateApply_indexData(
 
     zfstring value;
     {
-        zfstring indexDataStateKey = zfstringWithFormat("indexData:%s", key.cString());
+        zfstring indexDataStateKey = zfstr("indexData:%s", key);
         _ZFP_ZFTextTemplateIndexDataState *indexDataState = stateMap.get<_ZFP_ZFTextTemplateIndexDataState *>(indexDataStateKey);
         if(indexDataState == zfnull) {
             indexDataState = zfnew(_ZFP_ZFTextTemplateIndexDataState);
@@ -321,11 +321,11 @@ static void _ZFP_ZFTextTemplateApply_indexData(
             }
         }
 
-        zfstringAppend(value, fmt.cString(), zfsFromInt(
+        zfstringAppend(value, fmt, zfsFromInt(
                 indexDataState->indexCur,
                 indexDataState->indexData->indexRadix,
                 indexDataState->indexData->indexUpperCase
-            ).cString());
+            ));
 
         zfCoreAssertWithMessage(indexDataState->indexData->indexOffset, "indexOffset must not be 0");
         indexDataState->indexCur += indexDataState->indexData->indexOffset;
@@ -358,7 +358,7 @@ static void _ZFP_ZFTextTemplateApply_indexData_reset(
     p += keySize + 1;
     data = p;
 
-    zfstring indexDataStateKey = zfstringWithFormat("indexData:%s", key.cString());
+    zfstring indexDataStateKey = zfstr("indexData:%s", key);
     stateMap.remove(indexDataStateKey);
 }
 

@@ -23,8 +23,8 @@ ZFPATHTYPE_DEFINE(text)
         static void pathRevert(ZF_IN_OUT zfstring &pathData) { \
             const zfchar *prefix = pathPrefixFunc(); \
             zfindex prefixLen = zfslen(prefix); \
-            if(zfsncmp(pathData.cString(), prefix, prefixLen) == 0 \
-                    && *(pathData.cString() + prefixLen) == ZFFileSeparator() \
+            if(zfsncmp(pathData, prefix, prefixLen) == 0 \
+                    && *(pathData + prefixLen) == ZFFileSeparator() \
                     ) { \
                 pathData.remove(0, prefixLen + 1); \
             } \

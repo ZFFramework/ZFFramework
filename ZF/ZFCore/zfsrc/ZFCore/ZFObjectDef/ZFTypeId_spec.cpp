@@ -28,7 +28,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallerInfo, ZFCallerInfo, {
 
         zfcharSkipSpace(p, pEnd);
         if(p >= pEnd) {
-            v.callerInfo();
+            v = ZFCallerInfo();
             return zftrue;
         }
         if(*p != '[') {

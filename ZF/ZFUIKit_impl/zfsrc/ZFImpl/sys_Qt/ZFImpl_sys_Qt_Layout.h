@@ -21,7 +21,7 @@ public:
                 errHint += " ";
                 ZFImpl_sys_Qt_viewInfoT(errHint, v);
             }
-            zfCoreCriticalMessageTrim("%s", errHint.cString());
+            zfCoreCriticalMessageTrim("%s", errHint);
         }
     }
 };

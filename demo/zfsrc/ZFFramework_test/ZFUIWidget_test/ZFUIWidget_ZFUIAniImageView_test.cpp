@@ -45,27 +45,27 @@ private:
         ZFLISTENER_1(onFrame
                 , ZFTestCase *, testCase
                 ) {
-            testCase->testCaseOutput(
-                "onFrame: %zi",
-                zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
+            testCase->testCaseOutput(zfstr("onFrame: %zi"
+                        , zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame()
+                        ));
         } ZFLISTENER_END()
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnFrame(), onFrame);
 
         ZFLISTENER_1(onLoop
                 , ZFTestCase *, testCase
                 ) {
-            testCase->testCaseOutput(
-                "onLoop: %zi",
-                zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
+            testCase->testCaseOutput(zfstr("onLoop: %zi"
+                        , zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame()
+                        ));
         } ZFLISTENER_END()
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnLoop(), onLoop);
 
         ZFLISTENER_1(onStop
                 , ZFTestCase *, testCase
                 ) {
-            testCase->testCaseOutput(
-                "onStop: %zi",
-                zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame());
+            testCase->testCaseOutput(zfstr("onStop: %zi"
+                        , zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame()
+                        ));
         } ZFLISTENER_END()
         animatedImageView->observerAdd(ZFUIAniImageView::EventAniOnStop(), onStop);
     }

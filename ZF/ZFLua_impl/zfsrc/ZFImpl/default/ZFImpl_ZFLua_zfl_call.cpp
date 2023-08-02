@@ -34,14 +34,14 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     if(!ZFImpl_ZFLua_toObject(obj, L, 1)) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfl_call] failed to access caller object, expect zfautoObject, got %s, while executing: %s",
-            ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue).cString(),
-            ZFImpl_ZFLua_luaObjectInfo(L, 2).cString());
+            ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue),
+            ZFImpl_ZFLua_luaObjectInfo(L, 2));
     }
     const zfchar *name = zfnull;
     if(!ZFImpl_ZFLua_toString(name, L, 2) || zfstringIsEmpty(name)) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfl_call] unable to access method name, got: %s",
-            ZFImpl_ZFLua_luaObjectInfo(L, 2).cString());
+            ZFImpl_ZFLua_luaObjectInfo(L, 2));
     }
 
     zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
@@ -63,8 +63,8 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
                 return ZFImpl_ZFLua_luaError(L,
                     "[zfl_call] failed to get param%d, got %s, error: %s, while executing: %s",
                     i,
-                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue).cString(),
-                    errorHint.cString(),
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue),
+                    errorHint,
                     name);
             }
         }
@@ -75,7 +75,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
                 return ZFImpl_ZFLua_luaError(L,
                     "[zfl_call] failed to get param%d, got %s, while executing: %s",
                     i,
-                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue).cString(),
+                    ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue),
                     name);
             }
         }
@@ -90,7 +90,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         }
         return ZFImpl_ZFLua_luaError(L,
             "[zfl_call] %s",
-            errorHint.cString());
+            errorHint);
     }
     else {
         if(ZFDI_invoke(ret, zfnull, obj, name, (zfindex)paramCount, paramList)) {
@@ -108,7 +108,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         }
         errorHint += "), obj: ";
         ZFObjectInfoT(errorHint, obj);
-        return ZFImpl_ZFLua_luaError(L, "%s", errorHint.cString());
+        return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
     }
 }
 

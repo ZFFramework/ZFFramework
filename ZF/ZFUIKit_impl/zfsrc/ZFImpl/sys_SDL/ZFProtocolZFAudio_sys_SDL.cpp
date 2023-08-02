@@ -175,7 +175,7 @@ public:
                 zfautoObject inputHolder = ZFInvoke("ZFInputForHttp", zflineAlloc(v_zfstring, url));
                 v_ZFInput *inputTmp = inputHolder;
                 if(inputTmp == zfnull || !inputTmp->zfv) {
-                    implHolder->errorHint(zflineAlloc(v_zfstring, zfstringWithFormat("unable to load from url: %s", url.cString())));
+                    implHolder->errorHint(zflineAlloc(v_zfstring, zfstr("unable to load from url: %s", url)));
                 }
                 else {
                     input = inputTmp->zfv;

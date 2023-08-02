@@ -10,14 +10,14 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
             , ZF_OUT_OPT ZFXml *outErrorPos = zfnull
             ) {
     if(!xmlElement) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, "null xml element");
+        ZFSerializableUtilErrorOccurred(outErrorHint, "null xml element");
         if(outErrorPos != zfnull) {
             *outErrorPos = xmlElement;
         }
         return zffalse;
     }
     if(xmlElement.xmlType() != ZFXmlType::e_XmlElement) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, "param not type of xml element");
+        ZFSerializableUtilErrorOccurred(outErrorHint, "param not type of xml element");
         if(outErrorPos != zfnull) {
             *outErrorPos = xmlElement;
         }
@@ -25,7 +25,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
     }
 
     if(xmlElement.xmlName() == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, "missing xml node name");
+        ZFSerializableUtilErrorOccurred(outErrorHint, "missing xml node name");
         if(outErrorPos != zfnull) {
             *outErrorPos = xmlElement;
         }
@@ -36,7 +36,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
     ZFXml attribute = xmlElement.attrFirst();
     while(attribute) {
         if(attribute.xmlName() == zfnull) {
-            ZFSerializableUtil::errorOccurred(outErrorHint, "missing xml attribute name");
+            ZFSerializableUtilErrorOccurred(outErrorHint, "missing xml attribute name");
             if(outErrorPos != zfnull) {
                 *outErrorPos = attribute;
             }
@@ -97,7 +97,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
         , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
         ) {
     if(serializableData.itemClass() == zfnull) {
-        ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData, "missing serializable class");
+        ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "missing serializable class");
         return ZFXml();
     }
 

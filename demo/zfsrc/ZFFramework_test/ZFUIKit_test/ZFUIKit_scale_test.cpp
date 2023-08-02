@@ -32,7 +32,7 @@ private:
             settings->add(setting);
             ZFLISTENER(buttonTextGetter) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstringWithFormat(
+                text->zfv = zfstr(
                     "scale: %f",
                     ZFUISysWindow::mainWindow()->rootView()->UIScale());
             } ZFLISTENER_END()

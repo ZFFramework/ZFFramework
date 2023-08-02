@@ -61,7 +61,7 @@ zfbool ZFObjectIOLoadT(
         ) {
     if(input.pathInfo() == zfnull) {
         zfstringAppend(outErrorHint, "callback %s does not have path info",
-            input.objectInfo().cString());
+            input);
         return zffalse;
     }
 
@@ -86,7 +86,7 @@ zfbool ZFObjectIOLoadT(
     }
     zfCoreMutexUnlock();
     zfstringAppend(outErrorHint, "no impl for can resolve %s", 
-        ZFPathInfoToString(*input.pathInfo()).cString());
+        input.pathInfo());
     return zffalse;
 }
 zfautoObject ZFObjectIOLoad(
@@ -104,7 +104,7 @@ zfbool ZFObjectIOSave(
         ) {
     if(output.pathInfo() == zfnull) {
         zfstringAppend(outErrorHint, "callback %s does not have path info",
-            output.objectInfo().cString());
+            output);
         return zffalse;
     }
 
@@ -129,7 +129,7 @@ zfbool ZFObjectIOSave(
     }
     zfCoreMutexUnlock();
     zfstringAppend(outErrorHint, "no impl for can resolve %s", 
-        ZFPathInfoToString(*output.pathInfo()).cString());
+        output.pathInfo());
     return zffalse;
 }
 

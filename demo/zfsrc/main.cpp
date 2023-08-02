@@ -24,8 +24,8 @@ ZFMAIN_ENTRY() {
 
 static zfbool _ZFP_ZFFramework_test_luaTest(void) {
     ZFCoreArray<ZFPathInfo> extResList;
-    extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForModule())));
-    extResList.add(ZFPathInfo(ZFPathType_file(), zfstringWithFormat("%s/zfres", ZFPathForStorageShared())));
+    extResList.add(ZFPathInfo(ZFPathType_file(), zfstr("%s/zfres", ZFPathForModule())));
+    extResList.add(ZFPathInfo(ZFPathType_file(), zfstr("%s/zfres", ZFPathForStorageShared())));
 
     zfLogTrim() << "external res: " << extResList;
     for(zfindex i = 0; i < extResList.count(); ++i) {

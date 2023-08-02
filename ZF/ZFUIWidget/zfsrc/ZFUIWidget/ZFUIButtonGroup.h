@@ -306,8 +306,8 @@ protected:
         for(zfindex i = 0; i < buttons->count(); ++i) {
             ZFUIButton *button = ZFCastZFObject(ZFUIButton *, buttons->get(i));
             if(button == zfnull) {
-                ZFSerializableUtil::errorOccurred(outErrorHint, outErrorPos, serializableData,
-                    "item %s not type of %s", buttons->get(i)->objectInfo().cString(), ZFUIButton::ClassData()->className());
+                ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
+                    "item %s not type of %s", buttons->get(i), ZFUIButton::ClassData()->className());
                 return zffalse;
             }
             this->buttonAdd(button);

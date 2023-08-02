@@ -92,7 +92,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
     if(!ZFFileMove(path, pathNew)) {
         zfstringAppend(outErrorHint,
             "failed to move from \"%s\" to \"%s\"",
-            path.cString(), pathNew.cString());
+            path, pathNew);
         return zffalse;
     }
 
@@ -161,7 +161,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(
     {
         void *token = ZFFileOpen(path, ZFFileOpenOption::e_Read);
         if(token == zfnull) {
-            zfstringAppend(outErrorHint, "failed to open file %s", path.cString());
+            zfstringAppend(outErrorHint, "failed to open file %s", path);
             return zffalse;
         }
         ZFFileCloseHolder(token);
@@ -178,7 +178,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(
         }
 
         if(ZFFileRead(token, buf, fileSize) != fileSize) {
-            zfstringAppend(outErrorHint, "failed to read file %s", path.cString());
+            zfstringAppend(outErrorHint, "failed to read file %s", path);
             zffree(buf);
             return zffalse;
         }
@@ -187,7 +187,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(
     zfblockedFree(buf);
 
     if(ZFTextTemplateApply(textTemplateParam, ZFOutputForFile(path), buf, bufEnd - buf) == zfindexMax()) {
-        zfstringAppend(outErrorHint, "failed to update template for %s", path.cString());
+        zfstringAppend(outErrorHint, "failed to update template for %s", path);
         return zffalse;
     }
     return zftrue;

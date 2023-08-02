@@ -31,8 +31,8 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIViewTreePrintAfterDelay
  * @brief info getter for #ZFUIViewTreePrint, see #ZFUIViewTreePrintInfoGetterForClass
  */
 typedef void (*ZFUIViewTreePrintInfoGetter)(
-        ZF_IN ZFUIView *view
-        , ZF_IN_OUT const ZFOutput &outputCallback
+        ZF_IN_OUT const ZFOutput &outputCallback
+        , ZF_IN ZFUIView *view
         );
 /**
  * @brief register a custom info getter for output info of a view type using #ZFUIViewTreePrint

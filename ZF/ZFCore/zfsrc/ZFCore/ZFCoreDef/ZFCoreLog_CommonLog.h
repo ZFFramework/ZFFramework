@@ -13,23 +13,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessage(
         ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN const zfchar *fmt
-        , ...
-        );
-extern ZFLIB_ZFCore void _ZFP_zfCoreLogCriticalMessageV(
-        ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN const zfchar *fmt
-        , ZF_IN va_list vaList
+        , ZF_IN const zfchar *text
         );
 extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
         ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN const zfchar *fmt
-        , ...
-        );
-extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(
-        ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN const zfchar *fmt
-        , ZF_IN va_list vaList
+        , ZF_IN const zfchar *text
         );
 
 // ============================================================
@@ -38,19 +26,13 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(
  *
  * log only, see also #zfCoreCriticalMessage
  */
-#define zfCoreLogCriticalMessage(fmt, ...) _ZFP_zfCoreLogCriticalMessage(ZFCallerInfoMake(), fmt, ##__VA_ARGS__)
-/** @brief see #zfCoreLogCriticalMessage */
-#define zfCoreLogCriticalMessageV(fmt, vaList) _ZFP_zfCoreLogCriticalMessageV(ZFCallerInfoMake(), fmt, vaList)
+#define zfCoreLogCriticalMessage(fmt, ...) _ZFP_zfCoreLogCriticalMessage(ZFCallerInfoMake(), zfstr(fmt, ##__VA_ARGS__))
 
 /** @brief see #zfCoreLogCriticalMessage */
-#define zfCoreLogCriticalMessageTrim(fmt, ...) _ZFP_zfCoreLogCriticalMessage(ZFCallerInfoEmpty(), fmt, ##__VA_ARGS__)
-/** @brief see #zfCoreLogCriticalMessage */
-#define zfCoreLogCriticalMessageTrimV(fmt, vaList) _ZFP_zfCoreLogCriticalMessageV(ZFCallerInfoEmpty(), fmt, vaList)
+#define zfCoreLogCriticalMessageTrim(fmt, ...) _ZFP_zfCoreLogCriticalMessage(ZFCallerInfoEmpty(), zfstr(fmt, ##__VA_ARGS__))
 
 /** @brief see #zfCoreLogCriticalMessage */
-#define zfCoreLogCriticalMessageDetail(callerInfo, fmt, ...) _ZFP_zfCoreLogCriticalMessage(callerInfo, fmt, ##__VA_ARGS__)
-/** @brief see #zfCoreLogCriticalMessage */
-#define zfCoreLogCriticalMessageDetailV(callerInfo, fmt, vaList) _ZFP_zfCoreLogCriticalMessageV(callerInfo, fmt, vaList)
+#define zfCoreLogCriticalMessageDetail(callerInfo, fmt, ...) _ZFP_zfCoreLogCriticalMessage(callerInfo, zfstr(fmt, ##__VA_ARGS__))
 
 // ============================================================
 /**
@@ -74,19 +56,13 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCriticalV(
 /**
  * @brief print a critical error message and abort
  */
-#define zfCoreCriticalMessage(fmt, ...) _ZFP_zfCoreCritical(ZFCallerInfoMake(), fmt, ##__VA_ARGS__)
-/** @brief see #zfCoreCriticalMessage */
-#define zfCoreCriticalMessageV(fmt, vaList) _ZFP_zfCoreCriticalV(ZFCallerInfoMake(), fmt, vaList)
+#define zfCoreCriticalMessage(fmt, ...) _ZFP_zfCoreCritical(ZFCallerInfoMake(), zfstr(fmt, ##__VA_ARGS__))
 
 /** @brief see #zfCoreCriticalMessage */
-#define zfCoreCriticalMessageTrim(fmt, ...) _ZFP_zfCoreCritical(ZFCallerInfoEmpty(), fmt, ##__VA_ARGS__)
-/** @brief see #zfCoreCriticalMessage */
-#define zfCoreCriticalMessageTrimV(fmt, vaList) _ZFP_zfCoreCriticalV(ZFCallerInfoEmpty(), fmt, vaList)
+#define zfCoreCriticalMessageTrim(fmt, ...) _ZFP_zfCoreCritical(ZFCallerInfoEmpty(), zfstr(fmt, ##__VA_ARGS__))
 
 /** @brief see #zfCoreCriticalMessage */
-#define zfCoreCriticalMessageDetail(callerInfo, fmt, ...) _ZFP_zfCoreCritical(callerInfo, fmt, ##__VA_ARGS__)
-/** @brief see #zfCoreCriticalMessage */
-#define zfCoreCriticalMessageDetailV(callerInfo, fmt, vaList) _ZFP_zfCoreCriticalV(callerInfo, fmt, vaList)
+#define zfCoreCriticalMessageDetail(callerInfo, fmt, ...) _ZFP_zfCoreCritical(callerInfo, zfstr(fmt, ##__VA_ARGS__))
 
 // ============================================================
 /**

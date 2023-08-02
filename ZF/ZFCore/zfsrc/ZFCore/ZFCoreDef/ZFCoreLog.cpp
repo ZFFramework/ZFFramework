@@ -1,5 +1,4 @@
 #include "ZFCoreLog.h"
-#include "ZFCoreSPrintf.h"
 #include "ZFCoreStaticInitializer.h"
 #include "ZFCoreArray.h"
 
@@ -33,20 +32,7 @@ ZFCoreLogOutputCallbackType zfCoreLogOutputCallback(void) {
 
 void _ZFP_zfCoreLog(
         ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN zfbool isAutoEndl
-        , ZF_IN const zfchar *format
-        , ...
-        ) {
-    va_list vaList;
-    va_start(vaList, format);
-    _ZFP_zfCoreLogV(callerInfo, isAutoEndl, format, vaList);
-    va_end(vaList);
-}
-void _ZFP_zfCoreLogV(
-        ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN zfbool isAutoEndl
-        , ZF_IN const zfchar *format
-        , ZF_IN va_list vaList
+        , ZF_IN const zfchar *text
         ) {
     if(_ZFP_ZFCoreLogOutputCallback == zfnull) {
         return;
@@ -57,12 +43,10 @@ void _ZFP_zfCoreLogV(
     if(callerInfo.callerInfoT(s)) {
         s += ' ';
     }
-    zfstringAppendV(s, format, vaList);
-    if(isAutoEndl) {
-        zfstringAppend(s, "\n");
-    }
+    s += text;
+    s += "\n";
 
-    _ZFP_ZFCoreLogOutputCallback(s.cString());
+    _ZFP_ZFCoreLogOutputCallback(s);
 }
 
 void zfCoreCriticalErrorCallbackPrepareAdd(ZF_IN ZFCoreCriticalErrorCallback callback) {

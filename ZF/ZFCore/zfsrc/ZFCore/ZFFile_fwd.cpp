@@ -39,7 +39,7 @@ public:
     ~_ZFP_ZFFileFindDataPrivate(void) {
         zfCoreAssertWithMessage(this->implName.isEmpty(),
             "have you forgot to close find? module: %s",
-            this->implName.cString());
+            this->implName);
         if(this->implTagMap != zfnull) {
             zfdelete(this->implTagMap);
         }
@@ -98,7 +98,7 @@ void ZFFileFindData::implAttach(
         ) {
     zfCoreAssertWithMessage(d->implName.isEmpty(),
         "have you forgot to close find? current module: %s",
-        d->implName.cString());
+        d->implName);
     zfCoreAssert(!zfstringIsEmpty(implName));
     d->implName = implName;
     d->implUserData = implUserData;
@@ -111,7 +111,7 @@ void *ZFFileFindData::implCheck(ZF_IN const zfchar *implName) const {
     zfCoreAssertWithMessage(!d->implName.isEmpty(), "find not started");
     zfCoreAssertWithMessage(zfstringIsEqual(d->implName.cString(), implName),
         "have you forgot to close find? desired, %s, got: %s",
-        implName, d->implName.cString());
+        implName, d->implName);
     return d->implUserData;
 }
 

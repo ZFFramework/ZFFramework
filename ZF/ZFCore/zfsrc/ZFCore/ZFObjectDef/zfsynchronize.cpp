@@ -5,18 +5,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
-static void _ZFP_zfsynchronizeLog(
-        ZF_IN const ZFCallerInfo &callerInfo
-        , ZF_IN const zfchar *fmt
-        , ...
-        ) {
-    va_list vaList;
-    va_start(vaList, fmt);
-    zfstring text;
-    zfstringAppendV(text, fmt, vaList);
-    va_end(vaList);
-    printf("%s %s\n", callerInfo.callerInfo().cString(), text.cString());
-}
+#define _ZFP_zfsynchronizeLog(callerInfo, fmt, ...) \
+    printf("%s", zfstr("%s %s\n", callerInfo, zfstr(fmt, ##__VA_ARGS__)).cString())
 
 _ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(
         ZF_IN ZFObject *obj
@@ -34,20 +24,20 @@ _ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(
     }
     _ZFP_zfsynchronizeLog(callerInfo,
         "lock object %s",
-        m_obj->objectInfoOfInstance().cString());
+        m_obj->objectInfoOfInstance());
     m_obj->_ZFP_ZFObjectLock();
     _ZFP_zfsynchronizeLog(callerInfo,
         "lock object %s success",
-        m_obj->objectInfoOfInstance().cString());
+        m_obj->objectInfoOfInstance());
 }
 _ZFP_zfsynchronizeContainerWithLog::~_ZFP_zfsynchronizeContainerWithLog(void) {
     _ZFP_zfsynchronizeLog(callerInfo,
         "unlock object %s",
-        m_obj->objectInfoOfInstance().cString());
+        m_obj->objectInfoOfInstance());
     m_obj->_ZFP_ZFObjectUnlock();
     _ZFP_zfsynchronizeLog(callerInfo,
         "unlock object %s success",
-        m_obj->objectInfoOfInstance().cString());
+        m_obj->objectInfoOfInstance());
 }
 
 // ============================================================
@@ -65,12 +55,12 @@ void _ZFP_zfsynchronizeLockWithLog(
 
     _ZFP_zfsynchronizeLog(callerInfo,
         "lock object %s",
-        obj->objectInfoOfInstance().cString());
+        obj->objectInfoOfInstance());
     obj->_ZFP_ZFObjectLock();
     _ZFP_zfsynchronizeLog(callerInfo,
         "lock object %s success",
-        callerInfo.callerInfo().cString(),
-        obj->objectInfoOfInstance().cString());
+        callerInfo,
+        obj->objectInfoOfInstance());
 }
 void _ZFP_zfsynchronizeUnlockWithLog(
         ZF_IN ZFObject *obj
@@ -86,11 +76,11 @@ void _ZFP_zfsynchronizeUnlockWithLog(
 
     _ZFP_zfsynchronizeLog(callerInfo,
         "unlock object %s",
-        obj->objectInfoOfInstance().cString());
+        obj->objectInfoOfInstance());
     obj->_ZFP_ZFObjectUnlock();
     _ZFP_zfsynchronizeLog(callerInfo,
         "unlock object %s success",
-        obj->objectInfoOfInstance().cString());
+        obj->objectInfoOfInstance());
 }
 #endif // #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
 

@@ -14,8 +14,8 @@ public:
             ) const {
         ZFCompareResult cmp = ZFObjectCompare(obj1, obj2);
         zfCoreAssertWithMessageTrim(cmp != ZFCompareUncomparable, "[ZFMap] key must comparable: %s, %s",
-            ZFObjectInfo(obj1).cString(),
-            ZFObjectInfo(obj2).cString());
+            obj1,
+            obj2);
         return (cmp == ZFCompareSmaller);
     }
 };

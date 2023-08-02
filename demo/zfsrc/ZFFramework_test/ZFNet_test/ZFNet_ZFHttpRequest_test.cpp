@@ -25,7 +25,7 @@ protected:
         headerTest->header("k2", "v2_1");
         headerTest->header("k2", "v2_2");
         headerTest->headerRemove("k2");
-        this->testCaseOutput("%s", headerTest->contentInfo().cString());
+        this->testCaseOutput(zfstr("%s", headerTest->contentInfo()));
         this->testCaseOutputSeparator();
 
         ZFTestCase *testCase = this;
@@ -35,10 +35,10 @@ protected:
             ZFHttpRequest *request = zfargs.senderT();
             ZFHttpResponse *response = zfargs.param0T();
 
-            testCase->testCaseOutput("send: %s", request->objectInfo().cString());
-            testCase->testCaseOutput("%s", request->contentInfo().cString());
-            testCase->testCaseOutput("recv: %s", response->objectInfo().cString());
-            testCase->testCaseOutput("%s", response->contentInfo().cString());
+            testCase->testCaseOutput(zfstr("send: %s", request->objectInfo()));
+            testCase->testCaseOutput(zfstr("%s", request->contentInfo()));
+            testCase->testCaseOutput(zfstr("recv: %s", response->objectInfo()));
+            testCase->testCaseOutput(zfstr("%s", response->contentInfo()));
             testCase->testCaseStop();
         } ZFLISTENER_END()
         zflineAlloc(ZFHttpRequest, url, httpMethod)

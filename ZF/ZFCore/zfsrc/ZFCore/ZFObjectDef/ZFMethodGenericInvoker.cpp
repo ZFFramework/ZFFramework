@@ -39,7 +39,7 @@ zfbool _ZFP_MtdGIParamCheck(
                 paramIndex,
                 paramType,
                 param != zfnull ? param->classData()->className() : ZFTOKEN_zfnull,
-                ZFObjectInfo(param).cString()
+                param
             );
         return zffalse;
     }
@@ -83,19 +83,19 @@ void _ZFP_ZFMethodGenericInvokeError(
     if(pos >= 0) {
         zfCoreCriticalMessageTrim(
             "[ZFMethodDynamicRegister] method %s unable to convert param %d",
-            method->objectInfo().cString(),
+            method,
             pos);
     }
     else if(pos == -1) {
         zfCoreCriticalMessageTrim(
             "[ZFMethodDynamicRegister] method %s unable to perform generic invoker, reason: %s",
-            method->objectInfo().cString(),
+            method,
             errorHint);
     }
     else {
         zfCoreCriticalMessageTrim(
             "[ZFMethodDynamicRegister] method %s unable to convert return value",
-            method->objectInfo().cString());
+            method);
     }
 }
 

@@ -42,7 +42,7 @@ ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
         if(ret == zfnull) {
             zfstringAppend(outErrorHint,
                 "unable to load image from %s",
-                ZFPathInfoToString(*input.pathInfo()).cString());
+                input.pathInfo());
             return zffalse;
         }
         else {
@@ -53,14 +53,14 @@ ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
         if(image == zfnull) {
             zfstringAppend(outErrorHint,
                 "object %s is not type of %s",
-                ZFObjectInfoOfInstance(obj).cString(),
+                ZFObjectInfoOfInstance(obj),
                 ZFUIImage::ClassData()->classNameFull());
             return zffalse;
         }
         if(!ZFUIImageToOutput(output, image)) {
             zfstringAppend(outErrorHint,
                 "unable to convert image %s to image file",
-                ZFObjectInfo(image).cString());
+                image);
             return zffalse;
         }
         return zftrue;

@@ -184,14 +184,14 @@ void ZFUITextEdit::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
 
     if(!this->textPlaceHolder()->text().isEmpty()) {
-        zfstringAppend(ret, " (%s)", this->textPlaceHolder()->text().cString());
+        zfstringAppend(ret, " (%s)", this->textPlaceHolder()->text());
     }
 
     if(this->textEditSecured()) {
         ret += " EditSecured";
     }
     else if(!this->text().isEmpty()) {
-        zfstringAppend(ret, " \"%s\"", this->text().cString());
+        zfstringAppend(ret, " \"%s\"", this->text());
     }
 
     if(!this->textEditEnable()) {

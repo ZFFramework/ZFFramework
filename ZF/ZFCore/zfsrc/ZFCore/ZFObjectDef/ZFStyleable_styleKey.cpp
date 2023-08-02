@@ -36,8 +36,8 @@ void _ZFP_ZFStyleKeyHolder::styleOnChange(
         zfCoreAssertWithMessageTrim(style->classData()->classIsTypeOf(owner->classData())
             || owner->classData()->classIsTypeOf(style->classData()),
             "[ZFStyle] applying style from incorrect type, to object: %s, from style: %s",
-            owner->toObject()->objectInfoOfInstance().cString(),
-            style->objectInfoOfInstance().cString());
+            owner->toObject()->objectInfoOfInstance(),
+            style->objectInfoOfInstance());
 
         owner->styleableCopyFrom(style);
     }

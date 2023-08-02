@@ -26,7 +26,7 @@ jclass ZFImpl_sys_Android_jclassZFAndroidInput(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder)->jclsZFAndroidInput;
 }
 
-#define _ZFP_ZFAndroidInputBufSize 64
+#define _ZFP_ZFAndroidInputBufSize 1024
 zfclass _ZFP_I_ZFAndroidInput : zfextends ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidInput, ZFObject)
     ZFALLOC_CACHE_RELEASE({

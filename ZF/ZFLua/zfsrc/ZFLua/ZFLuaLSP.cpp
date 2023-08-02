@@ -309,8 +309,21 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output) {
 
 static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output) {
     output
+        << "zfnull = nil\n"
+        << "zftrue = true\n"
+        << "zffalse = false\n"
+
         << "---@return v_ZFCoreArray\n"
         << "function ZFCoreArrayCreate(...) end\n"
+
+        << "---@param v_zfstring v_zfstring\n"
+        << "---@param v_zfstring v_zfstring\n"
+        << "---@return v_zfstring\n"
+        << "function zfstringAppend(ret, fmt, ...) end\n"
+        << "---@param v_zfstring v_zfstring\n"
+        << "---@param v_zfstring v_zfstring\n"
+        << "---@return v_zfstring\n"
+        << "function zfstr(fmt, ...) end\n"
 
         << "---@param v_zfstring v_zfstring\n"
         << "---@param v_zfstring v_zfstring\n"
@@ -318,7 +331,7 @@ static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output) {
         << "---@param v_zfstring v_zfstring\n"
         << "---@param v_zfstring v_zfstring\n"
         << "---@return v_zfstring\n"
-        << "function zfstringWithFormat(fmt, ...) end\n"
+        << "function zfstr(fmt, ...) end\n"
 
         << "---@return v_ZFPtr\n"
         << "function zfl_L(...) end\n"
@@ -327,14 +340,11 @@ static void _ZFP_ZFLuaLSPGenFile_spec(ZF_IN const ZFOutput &output) {
         << "function ZFLocalPathInfo() end\n"
 
         << "---@param v_zfstring\n"
+        << "---@return v_ZFOutput\n"
         << "function zfLog(fmt, ...) end\n"
         << "---@param v_zfstring\n"
+        << "---@return v_ZFOutput\n"
         << "function zfLogTrim(fmt, ...) end\n"
-
-        << "---@return v_ZFOutput\n"
-        << "function zfLog() end\n"
-        << "---@return v_ZFOutput\n"
-        << "function zfLogTrim() end\n"
 
         << "---@return v_zfstring\n"
         << "function zfl_tableInfo(tbl) end\n"

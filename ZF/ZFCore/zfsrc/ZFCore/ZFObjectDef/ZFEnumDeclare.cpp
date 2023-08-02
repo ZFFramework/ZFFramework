@@ -54,7 +54,7 @@ void _ZFP_ZFEnumData::add(
     if(it != d->valueMap.end()) {
         zfCoreAssertWithMessageTrim(isEnableDuplicateValue,
             "[ZFEnum] duplicate value %s (new: %s, old: %s) when define %s",
-            zfsFromInt(value).cString(),
+            value,
             name,
             it->second[0],
             this->ownerClass->classNameFull());

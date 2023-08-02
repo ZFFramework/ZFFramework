@@ -21,15 +21,13 @@ static zfindex _ZFP_ZFCore_ZFTime_test_leapYearNumByEnum(zfint year1, zfint year
 }
 static zfstring _ZFP_ZFCore_ZFTime_test_printZFTimeValue(const ZFTimeValue &tv) {
     zfstring s;
-    zfstringAppend(s, "\t%s\t%s",
-        zfsFromInt(tv.sec).cString(),
-        zfsFromInt(tv.usec).cString());
+    zfstringAppend(s, "\t%s\t%s", tv.sec, tv.usec);
     return s;
 }
 
 static zfstring _ZFP_ZFCore_ZFTime_test_printZFTime(ZFTime *t) {
     zfstring ret;
-    zfstringAppend(ret, "  %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(t->timeValue()).cString());
+    zfstringAppend(ret, "  %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(t->timeValue()));
     zfstringAppend(ret, "  %6d-%02d-%02d %02d:%02d:%02d.%03d %03d, dayOfWeek: %d, dayOfYear: %d",
         t->timeInfoYear(),
         t->timeInfoMonth() + 1,
@@ -64,12 +62,13 @@ protected:
             zfint n1 = (zfint)_ZFP_ZFCore_ZFTime_test_leapYearNumByEnum(y1, y2);
             zfint n2 = (zfint)ZFTime::leapYearBetween(y1, y2);
             if(n1 != n2 && n1 != -n2) {
-                this->testCaseOutput("calc LeapYear num error at loop: %d (y1: %6d, y2: %6d) n1: %6d, n2: %6d",
-                    i,
-                    y1,
-                    y2,
-                    n1,
-                    n2);
+                this->testCaseOutput(zfstr("calc LeapYear num error at loop: %d (y1: %6d, y2: %6d) n1: %6d, n2: %6d"
+                            , i
+                            , y1
+                            , y2
+                            , n1
+                            , n2
+                            ));
             }
         }
         this->testCaseOutputSeparator();
@@ -142,101 +141,112 @@ protected:
 
         this->testCaseOutput("\naccess none");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess Year");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoYear();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess Month");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoMonth();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess Day");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoDay();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess Hour");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoHour();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess Minute");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoMinute();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess Second");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoSecond();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess MiliSecond");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoMiliSecond();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess MicroSecond");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoMicroSecond();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess DayOfWeek");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoDayOfWeek();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseOutput("\naccess DayOfYear");
         tCur1->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue()).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur1->timeValue())));
         (void)tCur2->timeInfoDayOfYear();
         tCur2->timeValue(ZFTime::currentTimeValue());
-        this->testCaseOutput("current timeValue: %s, used: %s",
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue()).cString(),
-            _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue())).cString());
+        this->testCaseOutput(zfstr("current timeValue: %s, used: %s"
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(tCur2->timeValue())
+                    , _ZFP_ZFCore_ZFTime_test_printZFTimeValue(ZFTimeValueDec(tCur2->timeValue(), tCur1->timeValue()))
+                    ));
 
         this->testCaseStop();
     }
