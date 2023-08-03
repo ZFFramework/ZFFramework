@@ -1241,10 +1241,9 @@ inline zfstring zfstr(
         , ZF_IN P0 const &p0
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            );
+    zfstring p[1];
+    zftToString(p[0], p0);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1257,11 +1256,10 @@ inline zfstring zfstr(
         , ZF_IN P1 const &p1
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            );
+    zfstring p[2];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1276,12 +1274,11 @@ inline zfstring zfstr(
         , ZF_IN P2 const &p2
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            );
+    zfstring p[3];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1298,13 +1295,12 @@ inline zfstring zfstr(
         , ZF_IN P3 const &p3
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            );
+    zfstring p[4];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1323,14 +1319,13 @@ inline zfstring zfstr(
         , ZF_IN P4 const &p4
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            );
+    zfstring p[5];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1351,15 +1346,14 @@ inline zfstring zfstr(
         , ZF_IN P5 const &p5
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            );
+    zfstring p[6];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1382,16 +1376,15 @@ inline zfstring zfstr(
         , ZF_IN P6 const &p6
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            );
+    zfstring p[7];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1416,17 +1409,16 @@ inline zfstring zfstr(
         , ZF_IN P7 const &p7
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            );
+    zfstring p[8];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1453,18 +1445,17 @@ inline zfstring zfstr(
         , ZF_IN P8 const &p8
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            );
+    zfstring p[9];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1493,19 +1484,18 @@ inline zfstring zfstr(
         , ZF_IN P9 const &p9
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            , p9
-            );
+    zfstring p[10];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    zftToString(p[9], p9);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1536,20 +1526,19 @@ inline zfstring zfstr(
         , ZF_IN P10 const &p10
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            , p9
-            , p10
-            );
+    zfstring p[11];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    zftToString(p[9], p9);
+    zftToString(p[10], p10);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1582,21 +1571,20 @@ inline zfstring zfstr(
         , ZF_IN P11 const &p11
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            , p9
-            , p10
-            , p11
-            );
+    zfstring p[12];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    zftToString(p[9], p9);
+    zftToString(p[10], p10);
+    zftToString(p[11], p11);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1631,22 +1619,21 @@ inline zfstring zfstr(
         , ZF_IN P12 const &p12
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            , p9
-            , p10
-            , p11
-            , p12
-            );
+    zfstring p[13];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    zftToString(p[9], p9);
+    zftToString(p[10], p10);
+    zftToString(p[11], p11);
+    zftToString(p[12], p12);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1683,23 +1670,22 @@ inline zfstring zfstr(
         , ZF_IN P13 const &p13
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            , p9
-            , p10
-            , p11
-            , p12
-            , p13
-            );
+    zfstring p[14];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    zftToString(p[9], p9);
+    zftToString(p[10], p10);
+    zftToString(p[11], p11);
+    zftToString(p[12], p12);
+    zftToString(p[13], p13);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1738,24 +1724,23 @@ inline zfstring zfstr(
         , ZF_IN P14 const &p14
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            , p9
-            , p10
-            , p11
-            , p12
-            , p13
-            , p14
-            );
+    zfstring p[15];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    zftToString(p[9], p9);
+    zftToString(p[10], p10);
+    zftToString(p[11], p11);
+    zftToString(p[12], p12);
+    zftToString(p[13], p13);
+    zftToString(p[14], p14);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 template<
@@ -1796,25 +1781,24 @@ inline zfstring zfstr(
         , ZF_IN P15 const &p15
         ) {
     zfstring s;
-    zfstringAppend(s
-            , fmt
-            , p0
-            , p1
-            , p2
-            , p3
-            , p4
-            , p5
-            , p6
-            , p7
-            , p8
-            , p9
-            , p10
-            , p11
-            , p12
-            , p13
-            , p14
-            , p15
-            );
+    zfstring p[16];
+    zftToString(p[0], p0);
+    zftToString(p[1], p1);
+    zftToString(p[2], p2);
+    zftToString(p[3], p3);
+    zftToString(p[4], p4);
+    zftToString(p[5], p5);
+    zftToString(p[6], p6);
+    zftToString(p[7], p7);
+    zftToString(p[8], p8);
+    zftToString(p[9], p9);
+    zftToString(p[10], p10);
+    zftToString(p[11], p11);
+    zftToString(p[12], p12);
+    zftToString(p[13], p13);
+    zftToString(p[14], p14);
+    zftToString(p[15], p15);
+    _ZFP_zfstringAppend(s, fmt, p, sizeof(p) / sizeof(p[0]));
     return s;
 }
 
