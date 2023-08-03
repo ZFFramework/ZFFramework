@@ -728,22 +728,6 @@ private:
     friend void _ZFP_zfRetainAction(ZF_IN ZFObject *obj);
     friend void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj);
 };
-ZFOUTPUT_TYPE(ZFObject *, {
-    if(v) {
-        v->objectInfoT(s);
-    }
-    else {
-        s += ZFTOKEN_zfnull;
-    }
-})
-ZFOUTPUT_TYPE(ZFAny, {
-    if(v.toObject()) {
-        v.toObject()->objectInfoT(s);
-    }
-    else {
-        s += ZFTOKEN_zfnull;
-    }
-})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectCore_h_

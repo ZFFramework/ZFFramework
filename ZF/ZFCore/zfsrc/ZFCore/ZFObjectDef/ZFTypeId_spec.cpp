@@ -18,5 +18,16 @@ ZFOUTPUT_TYPE_DEFINE(zfautoObject, {
     }
 })
 
+// ============================================================
+// ZFAny
+ZFOUTPUT_TYPE_DEFINE(ZFAny, {
+    if(v == zfnull) {
+        s += ZFTOKEN_zfnull;
+    }
+    else {
+        v.toObject()->objectInfoT(s);
+    }
+})
+
 ZF_NAMESPACE_GLOBAL_END
 

@@ -883,6 +883,7 @@ private:
         }
     }
 };
+ZFOUTPUT_TYPE_TEMPLATE(typename T_Element, ZFCoreArray<T_Element>, {v.objectInfoT(s);})
 
 // ============================================================
 /**
@@ -932,6 +933,7 @@ public:
         return *this;
     }
 };
+ZFOUTPUT_TYPE_TEMPLATE(typename T_Element, ZFCoreArrayPOD<T_Element>, {v.objectInfoT(s);})
 
 template<typename T_Element>
 zfclassLikePOD _ZFP_ZFCoreArrayCreate {

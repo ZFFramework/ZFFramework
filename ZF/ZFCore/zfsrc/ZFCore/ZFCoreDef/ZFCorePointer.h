@@ -6,6 +6,8 @@
 #define _ZFI_ZFCorePointer_h_
 
 #include "ZFCoreTypeDef.h"
+#include "ZFCoreUtilMacro.h"
+#include "zfstr.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -310,6 +312,7 @@ public:
 private:
     _ZFP_ZFCorePointerPrivate<T_Pointer> *d;
 };
+ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerType), ZFM_EXPAND(ZFCorePointer<T_Pointer, T_ZFCorePointerType>), {v.objectInfoT(s);})
 
 // ============================================================
 /**
@@ -371,7 +374,8 @@ private:
             return *(this->pointerValue()); \
         } \
         /** @endcond */ \
-    };
+    }; \
+    ZFOUTPUT_TYPE_TEMPLATE(typename T_Pointer, T_ZFCorePointer<T_Pointer>, {v.objectInfoT(s);})
 
 ZFCOREPOINTER_DECLARE(ZFCorePointerForPointerRef, {}, {})
 ZFCOREPOINTER_DECLARE(ZFCorePointerForPOD, {}, {zffree(p);})

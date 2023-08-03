@@ -506,6 +506,7 @@ protected:
     }
     /** @endcond */
 };
+ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Public, typename T_Internal), ZFM_EXPAND(ZFFilterBasic<T_Public, T_Internal>), {v.objectInfoT(s);})
 
 /**
  * @brief number filter with zfint as filter type
@@ -582,6 +583,7 @@ protected:
         return (e1.compare(e2) == 0);
     }
 };
+ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Public, typename T_Internal), ZFM_EXPAND(ZFFilterForStringBase<T_Public, T_Internal>), {v.objectInfoT(s);})
 
 /**
  * @brief string filter with const zfchar * as public type and zfstring as internal storage type

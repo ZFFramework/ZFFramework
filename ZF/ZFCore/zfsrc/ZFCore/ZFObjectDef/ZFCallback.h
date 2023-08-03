@@ -402,7 +402,8 @@ private:
         _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(CallbackTypeName, ParentType) \
     public:
 #define _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \
-    };
+    }; \
+    ZFOUTPUT_TYPE(CallbackTypeName, {v.objectInfoT(s);})
 #define _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(CallbackTypeName, ParentType) \
     public: \
         /** @cond ZFPrivateDoc */ \

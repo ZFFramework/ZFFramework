@@ -319,6 +319,8 @@ public:
 
 // ============================================================
 // ZFAny
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFAny)
+
 /** @cond ZFPrivateDoc */
 template<>
 zfclassNotPOD ZFTypeId<ZFAny> : zfextends ZFTypeInfo {

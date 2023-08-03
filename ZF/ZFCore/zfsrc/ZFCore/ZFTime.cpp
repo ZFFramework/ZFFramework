@@ -246,6 +246,8 @@ ZFTYPEID_PROGRESS_DEFINE(ZFTimeValue, ZFTimeValue, {
 // ============================================================
 // ZFTimeInfo
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFTimeInfo, ZFTimeInfo)
+ZFOUTPUT_TYPE_DEFINE(ZFTimeInfo, {ZFTimeInfoToString(s, v);})
+
 ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeInfo, ZFTimeInfoZero, ZFTimeInfoMake(0, 0, 0, 0, 0, 0, 0, 0))
 
 ZFMETHOD_FUNC_INLINE_DEFINE_8(ZFTimeInfo, ZFTimeInfoMake

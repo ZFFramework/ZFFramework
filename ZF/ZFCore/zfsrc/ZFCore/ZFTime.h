@@ -278,6 +278,7 @@ public:
 };
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfo)
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFTimeInfo)
 
 /**
  * @brief a zero time info (0000-00-00 00:00:00.000 000)
@@ -317,7 +318,6 @@ ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFTimeInfoToString
     ZFTimeInfoToString(s, v);
     return s;
 }
-ZFOUTPUT_TYPE(ZFTimeInfo, {ZFTimeInfoToString(s, v);})
 
 // ============================================================
 // ZFTime
