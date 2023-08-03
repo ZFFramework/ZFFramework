@@ -9,7 +9,7 @@ ZFOBJECT_REGISTER(ZFFramework_test_TestCase)
 
 void ZFFramework_test_TestCase::objectOnInit(void) {
     zfsuper::objectOnInit();
-    this->_testCaseTmpPath = zfstr("%s%cZFFramework_test%c%s",
+    this->_testCaseTmpPath = zfstr("%s%sZFFramework_test%s%s",
         ZFPathForCache(),
         ZFFileSeparator(),
         ZFFileSeparator(),

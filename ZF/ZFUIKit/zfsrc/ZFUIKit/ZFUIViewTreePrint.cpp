@@ -108,7 +108,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         }
 
         outputCallback.execute("|");
-        outputCallback.execute(zfstr("%2zi", printData.siblingIndex));
+        outputCallback.execute(zfstr("%2s", printData.siblingIndex));
         for(zfindex i = printData.depth - 1; i != zfindexMax(); --i) {
             outputCallback.execute(" |");
         }

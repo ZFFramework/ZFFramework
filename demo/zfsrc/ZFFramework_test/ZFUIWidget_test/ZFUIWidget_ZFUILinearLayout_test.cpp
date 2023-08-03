@@ -30,7 +30,7 @@ private:
         for(zfindex i = 0; i < 3; ++i) {
             zfblockedAlloc(ZFUITextView, child);
             layout->childAdd(child);
-            child->text(zfstr("text %zi", i));
+            child->text(zfstr("text %s", i));
             child->textAlign(ZFUIAlign::e_Center);
             child->viewBackgroundColor(ZFUIColorRandom());
         }
@@ -44,7 +44,7 @@ private:
         for(zfindex i = 0; i < 3; ++i) {
             zfblockedAlloc(ZFUITextView, child);
             l->childAdd(child);
-            child->text(zfstr("text %zi", 3 + i));
+            child->text(zfstr("text %s", 3 + i));
             child->textAlign(ZFUIAlign::e_Center);
             child->viewBackgroundColor(ZFUIColorRandom());
         }

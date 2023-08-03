@@ -270,8 +270,8 @@ void ZFHttpRequest::objectOnDealloc(void) {
 void ZFHttpRequest::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     zfstringAppend(ret, " %s:%s", ZFHttpMethodToString(this->httpMethod()), this->url());
-    zfstringAppend(ret, " header:%zi", this->headerCount());
-    zfstringAppend(ret, " body:%zi", this->body().bufferSize());
+    zfstringAppend(ret, " header:%s", this->headerCount());
+    zfstringAppend(ret, " body:%s", this->body().bufferSize());
 }
 
 void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void) {
@@ -391,13 +391,13 @@ void ZFHttpResponse::objectOnDealloc(void) {
 void ZFHttpResponse::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     if(this->code() != 0) {
-        zfstringAppend(ret, " code:%d", this->code());
+        zfstringAppend(ret, " code:%s", this->code());
     }
     if(!this->errorHint().isEmpty()) {
         zfstringAppend(ret, " error:%s", this->errorHint());
     }
-    zfstringAppend(ret, " header:%zi", this->headerCount());
-    zfstringAppend(ret, " body:%zi", this->body().bufferSize());
+    zfstringAppend(ret, " header:%s", this->headerCount());
+    zfstringAppend(ret, " body:%s", this->body().bufferSize());
 }
 
 ZF_NAMESPACE_GLOBAL_END

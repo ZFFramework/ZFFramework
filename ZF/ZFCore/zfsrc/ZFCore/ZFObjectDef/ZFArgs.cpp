@@ -36,7 +36,7 @@ zfbool ZFArgs::resultEnabled(void) const {
 
 void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
-    zfstringAppend(ret, "ZFArgs(%p)", this);
+    zfstringAppend(ret, "ZFArgs(%s)", (const void *)this);
     const zfchar *eventName = ZFIdMapNameForId(this->eventId());
     if(eventName != zfnull) {
         ret += ", event: ";

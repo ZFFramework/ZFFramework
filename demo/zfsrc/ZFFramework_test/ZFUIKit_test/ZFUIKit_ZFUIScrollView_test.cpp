@@ -124,7 +124,7 @@ private:
                     , ZFUIScrollView *, scrollView
                     ) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstr("autoScrollSpeedX: %f", scrollView->autoScrollSpeedX());
+                text->zfv = zfstr("autoScrollSpeedX: %s", scrollView->autoScrollSpeedX());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
@@ -148,7 +148,7 @@ private:
                     , ZFUIScrollView *, scrollView
                     ) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstr("autoScrollSpeedY: %f", scrollView->autoScrollSpeedY());
+                text->zfv = zfstr("autoScrollSpeedY: %s", scrollView->autoScrollSpeedY());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 

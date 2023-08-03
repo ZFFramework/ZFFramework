@@ -25,7 +25,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     int count = (int)lua_gettop(L);
     if(count < luaParamOffset - 1 || count > ZFMETHOD_MAX_PARAM + luaParamOffset - 1) {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfl_call] invalid param, expect zfl_call(obj, \"methodName\", param0, param1, ...), got %zi param",
+            "[zfl_call] invalid param, expect zfl_call(obj, \"methodName\", param0, param1, ...), got %s param",
             (zfindex)count);
     }
     int paramCount = count - (luaParamOffset - 1);
@@ -61,7 +61,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
             errorHint.removeAll();
             if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i, &errorHint)) {
                 return ZFImpl_ZFLua_luaError(L,
-                    "[zfl_call] failed to get param%d, got %s, error: %s, while executing: %s",
+                    "[zfl_call] failed to get param%s, got %s, error: %s, while executing: %s",
                     i,
                     ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue),
                     errorHint,
@@ -73,7 +73,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         for(int i = 0; i < paramCount; ++i) {
             if(!ZFImpl_ZFLua_toGeneric(paramList[i], L, luaParamOffset + i)) {
                 return ZFImpl_ZFLua_luaError(L,
-                    "[zfl_call] failed to get param%d, got %s, while executing: %s",
+                    "[zfl_call] failed to get param%s, got %s, while executing: %s",
                     i,
                     ZFImpl_ZFLua_luaObjectInfo(L, luaParamOffset + i, zftrue),
                     name);

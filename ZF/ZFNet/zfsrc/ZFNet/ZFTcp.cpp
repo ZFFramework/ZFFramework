@@ -24,7 +24,7 @@ public:
 
 void ZFTcp::objectInfoT(ZF_IN_OUT zfstring &ret) {
     ret += "tcp:";
-    zfstringAppend(ret, "%s:%u", this->host(), this->port());
+    zfstringAppend(ret, "%s:%s", this->host(), this->port());
 }
 
 void ZFTcp::objectOnInit(void) {

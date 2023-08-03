@@ -23,7 +23,7 @@ protected:
             zfLogTrim("async thread begin");
             for(zfindex i = 0; i < 5; ++i) {
                 for(zfindex j = 0; j < 10; ++j) {
-                    zfLogTrim("  async thread: %zi %zi", i, j);
+                    zfLogTrim("  async thread: %s %s", i, j);
                     ZFThread::sleep((zftimet)20);
                 }
                 ZFThread::sleep((zftimet)300);
@@ -34,7 +34,7 @@ protected:
         thread->threadStart();
         for(zfindex i = 0; i < 5; ++i) {
             for(zfindex j = 0; j < 10; ++j) {
-                zfLogTrim("  main: %zi %zi", i, j);
+                zfLogTrim("  main: %s %s", i, j);
                 ZFThread::sleep((zftimet)20);
             }
             ZFThread::sleep((zftimet)190);
@@ -52,7 +52,7 @@ protected:
             for(zfindex i = 0; i < 5; ++i) {
                 zfCoreMutexLock();
                 for(zfindex j = 0; j < 10; ++j) {
-                    zfLogTrim("  sync thread: %zi %zi", i, j);
+                    zfLogTrim("  sync thread: %s %s", i, j);
                     ZFThread::sleep((zftimet)20);
                 }
                 zfCoreMutexUnlock();
@@ -65,7 +65,7 @@ protected:
         for(zfindex i = 0; i < 5; ++i) {
             zfCoreMutexLock();
             for(zfindex j = 0; j < 10; ++j) {
-                zfLogTrim("  main:   %zi %zi", i, j);
+                zfLogTrim("  main:   %s %s", i, j);
                 ZFThread::sleep((zftimet)20);
             }
             zfCoreMutexUnlock();

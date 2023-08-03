@@ -11,11 +11,11 @@
  *       ZFMETHOD_INLINE_1(zfstring, myMemberMethod
  *               , ZFMP_IN(zfindex, param0)
  *               ) {
- *           return zfstr("called myMemberMethod, param: %zi", param0);
+ *           return zfstr("called myMemberMethod, param: %s", param0);
  *       }
  *   };
  *   static zfstring myStaticFunc(ZF_IN zfindex param0) {
- *       return zfstr("called myStaticFunc, param: %zi", param0);
+ *       return zfstr("called myStaticFunc, param: %s", param0);
  *   }
  * @endcode
  * @code

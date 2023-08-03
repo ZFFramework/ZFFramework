@@ -1195,7 +1195,7 @@ void ZFUIView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     ret += " ";
     ZFUIRectToString(ret, this->viewFrame());
     if(this->UIScale() != 1) {
-        zfstringAppend(ret, "(UIScale:%f)", this->UIScale());
+        zfstringAppend(ret, "(UIScale:%s)", this->UIScale());
     }
 
     if(!this->viewVisible()) {

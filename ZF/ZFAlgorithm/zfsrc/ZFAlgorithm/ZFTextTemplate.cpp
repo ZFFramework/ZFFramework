@@ -307,13 +307,13 @@ static void _ZFP_ZFTextTemplateApply_indexData(
         else {
             switch(indexDataState->indexData->indexFlag) {
                 case ZFTextTemplateIndexFlag::e_LeadingZero:
-                    zfstringAppend(fmt, "%%0%zis", indexDataState->indexData->indexWidth);
+                    zfstringAppend(fmt, "%%0%ss", indexDataState->indexData->indexWidth);
                     break;
                 case ZFTextTemplateIndexFlag::e_LeadingSpace:
-                    zfstringAppend(fmt, "%%%zis", indexDataState->indexData->indexWidth);
+                    zfstringAppend(fmt, "%%%ss", indexDataState->indexData->indexWidth);
                     break;
                 case ZFTextTemplateIndexFlag::e_TailSpace:
-                    zfstringAppend(fmt, "%%-%zis", indexDataState->indexData->indexWidth);
+                    zfstringAppend(fmt, "%%-%ss", indexDataState->indexData->indexWidth);
                     break;
                 default:
                     zfCoreCriticalShouldNotGoHere();

@@ -28,7 +28,7 @@ static zfstring _ZFP_ZFCore_ZFTime_test_printZFTimeValue(const ZFTimeValue &tv) 
 static zfstring _ZFP_ZFCore_ZFTime_test_printZFTime(ZFTime *t) {
     zfstring ret;
     zfstringAppend(ret, "  %s", _ZFP_ZFCore_ZFTime_test_printZFTimeValue(t->timeValue()));
-    zfstringAppend(ret, "  %6d-%02d-%02d %02d:%02d:%02d.%03d %03d, dayOfWeek: %d, dayOfYear: %d",
+    zfstringAppend(ret, "  %6s-%02s-%02s %02s:%02s:%02s.%03s %03s, dayOfWeek: %s, dayOfYear: %s",
         t->timeInfoYear(),
         t->timeInfoMonth() + 1,
         t->timeInfoDay() + 1,
@@ -62,7 +62,7 @@ protected:
             zfint n1 = (zfint)_ZFP_ZFCore_ZFTime_test_leapYearNumByEnum(y1, y2);
             zfint n2 = (zfint)ZFTime::leapYearBetween(y1, y2);
             if(n1 != n2 && n1 != -n2) {
-                this->testCaseOutput(zfstr("calc LeapYear num error at loop: %d (y1: %6d, y2: %6d) n1: %6d, n2: %6d"
+                this->testCaseOutput(zfstr("calc LeapYear num error at loop: %s (y1: %6s, y2: %6s) n1: %6s, n2: %6s"
                             , i
                             , y1
                             , y2

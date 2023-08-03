@@ -228,7 +228,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFIndexRange, ZFIndexRange, {
         v.count = pair[1];
         return zftrue;
     }, {
-        zfstringAppend(s, "(%zi, %zi)", v.start, v.count);
+        zfstringAppend(s, "(%s, %s)", v.start, v.count);
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFIndexRange, zfindex, start)

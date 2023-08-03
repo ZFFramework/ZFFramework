@@ -20,14 +20,14 @@ void _ZFP_ZFImpl_sys_Qt_viewInfoT(
     s += view->metaObject()->className();
 
     // instance
-    zfstringAppend(s, " %p", (const void *)view);
+    zfstringAppend(s, " %s", (const void *)view);
 
     // basic widget info
     if(qobject_cast<QWidget *>(view) != NULL) {
         QWidget *tmp = qobject_cast<QWidget *>(view);
 
         const QRect &frame = tmp->geometry();
-        zfstringAppend(s, " (%d, %d, %d, %d)"
+        zfstringAppend(s, " (%s, %s, %s, %s)"
                 , (zfint)zfmRound(frame.x())
                 , (zfint)zfmRound(frame.y())
                 , (zfint)zfmRound(frame.width())
@@ -35,7 +35,7 @@ void _ZFP_ZFImpl_sys_Qt_viewInfoT(
                 );
 
         if(tmp->focusPolicy() != Qt::NoFocus) {
-            zfstringAppend(s, " (focusable:%d)", (int)tmp->focusPolicy());
+            zfstringAppend(s, " (focusable:%s)", (int)tmp->focusPolicy());
         }
         if(!tmp->isVisible()) {
             s += " (hidden)";
@@ -48,7 +48,7 @@ void _ZFP_ZFImpl_sys_Qt_viewInfoT(
         QGraphicsLayoutItem *tmp = qobject_cast<QGraphicsLayoutItem *>(view);
 
         QRectF frame = tmp->geometry();
-        zfstringAppend(s, " (%d, %d, %d, %d)"
+        zfstringAppend(s, " (%s, %s, %s, %s)"
                 , (zfint)zfmRound(frame.x())
                 , (zfint)zfmRound(frame.y())
                 , (zfint)zfmRound(frame.width())
@@ -57,7 +57,7 @@ void _ZFP_ZFImpl_sys_Qt_viewInfoT(
 
         QGraphicsWidget *tmpWidget = qobject_cast<QGraphicsWidget *>(view);
         if(tmpWidget != NULL && tmpWidget->focusPolicy() != Qt::NoFocus) {
-            zfstringAppend(s, " (focusable:%d)", (int)tmpWidget->focusPolicy());
+            zfstringAppend(s, " (focusable:%s)", (int)tmpWidget->focusPolicy());
         }
 
         if(tmp->graphicsItem() != NULL) {
@@ -101,7 +101,7 @@ void ZFImpl_sys_Qt_viewInfoT(
 }
 
 static void _ZFP_ZFImpl_sys_Qt_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, QObject *view, zfindex depth, zfindex siblingIndex) {
-    zfstringAppend(s, "|%2d ", siblingIndex);
+    zfstringAppend(s, "|%2s ", siblingIndex);
     for(zfindex i = 0; i < depth; ++i) {
         s += "| ";
     }

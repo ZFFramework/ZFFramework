@@ -132,12 +132,12 @@ protected:
             this->testCaseOutput("all list:");
             for(zfindex i = 0; i <= 8; ++i) {
                 this->testCaseOutput(zfstr("  %s"
-                            , zfself::ClassData()->methodForName(zfstr("funcDynamic%zi", i))
+                            , zfself::ClassData()->methodForName(zfstr("funcDynamic%s", i))
                             ));
             }
 
             for(zfindex i = 0; i <= 8; ++i) {
-                ZFMethodUserUnregister(zfself::ClassData()->methodForName(zfstr("funcDynamic%zi", i)));
+                ZFMethodUserUnregister(zfself::ClassData()->methodForName(zfstr("funcDynamic%s", i)));
             }
         }
 
@@ -151,7 +151,7 @@ protected:
             this->testCaseOutput("all list:");
             for(zfindex i = 0; i <= ZFMETHOD_MAX_PARAM; ++i) {
                 this->testCaseOutput(zfstr("  %s"
-                            , zfself::ClassData()->methodForName(zfstr("funcStatic%zi", i))
+                            , zfself::ClassData()->methodForName(zfstr("funcStatic%s", i))
                             ));
             }
         }

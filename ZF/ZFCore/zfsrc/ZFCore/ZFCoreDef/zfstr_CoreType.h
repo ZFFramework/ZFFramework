@@ -118,14 +118,6 @@ ZFOUTPUT_TYPE(ZFIndexRange, {
 // ============================================================
 ZFOUTPUT_TYPE(long, {zfsFromIntT(s, v);})
 ZFOUTPUT_TYPE(long long, {zfsFromIntT(s, v);})
-ZFOUTPUT_TYPE(unsigned long long, {
-    if(v == (unsigned long long)-1) {
-        s += "-1";
-    }
-    else {
-        zfsFromIntT(s, v);
-    }
-})
 ZFOUTPUT_TYPE(double, {zfsFromFloatT(s, v);})
 ZFOUTPUT_TYPE(long double, {zfsFromFloatT(s, v);})
 

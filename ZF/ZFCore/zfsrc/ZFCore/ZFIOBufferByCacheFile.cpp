@@ -21,7 +21,7 @@ public:
     , inputIndex(0)
     , fileSize(0)
     {
-        zfstringAppend(this->tmpFilePath, "%s%cZFIOBufferByCacheFile_%s",
+        zfstringAppend(this->tmpFilePath, "%s%sZFIOBufferByCacheFile_%s",
             ZFPathForCache(),
             ZFFileSeparator(),
             zfidentityCalcPointer(this));

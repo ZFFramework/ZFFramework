@@ -91,7 +91,7 @@ public slots:
             this->ownerResponse->code((zfint)nativeResponse->error());
         }
         if(nativeResponse->error() != QNetworkReply::NoError) {
-            this->ownerResponse->errorHint(zfstr("recv error, code: %d", (zfint)nativeResponse->error()));
+            this->ownerResponse->errorHint(zfstr("recv error, code: %s", (zfint)nativeResponse->error()));
         }
         { // response body
             ZFBuffer &body = this->ownerResponse->body();

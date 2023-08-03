@@ -26,7 +26,7 @@ protected:
             this->testCaseOutput(zfstr("  pattern    : %s", patternFrom));
             this->testCaseOutput(zfstr("  string     : %s", stringFrom));
             this->testCaseOutput(zfstr("  result     : %s", result));
-            this->testCaseOutput(zfstr("  named group: %zi", regexp->regExpNamedGroupIndexForName("n0")));
+            this->testCaseOutput(zfstr("  named group: %s", regexp->regExpNamedGroupIndexForName("n0")));
         }
 
         {
@@ -40,7 +40,7 @@ protected:
             this->testCaseOutput(zfstr("  string  from: %s", stringFrom));
             this->testCaseOutput(zfstr("  string  to  : %s", stringTo));
             this->testCaseOutput(zfstr("  match result: %s", result));
-            this->testCaseOutput(zfstr("  named group: %zi", regexp->regExpNamedGroupIndexForName("n0")));
+            this->testCaseOutput(zfstr("  named group: %s", regexp->regExpNamedGroupIndexForName("n0")));
         }
         this->testCaseStop();
     }

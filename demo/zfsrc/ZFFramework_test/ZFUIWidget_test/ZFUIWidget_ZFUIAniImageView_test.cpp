@@ -45,7 +45,7 @@ private:
         ZFLISTENER_1(onFrame
                 , ZFTestCase *, testCase
                 ) {
-            testCase->testCaseOutput(zfstr("onFrame: %zi"
+            testCase->testCaseOutput(zfstr("onFrame: %s"
                         , zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame()
                         ));
         } ZFLISTENER_END()
@@ -54,7 +54,7 @@ private:
         ZFLISTENER_1(onLoop
                 , ZFTestCase *, testCase
                 ) {
-            testCase->testCaseOutput(zfstr("onLoop: %zi"
+            testCase->testCaseOutput(zfstr("onLoop: %s"
                         , zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame()
                         ));
         } ZFLISTENER_END()
@@ -63,7 +63,7 @@ private:
         ZFLISTENER_1(onStop
                 , ZFTestCase *, testCase
                 ) {
-            testCase->testCaseOutput(zfstr("onStop: %zi"
+            testCase->testCaseOutput(zfstr("onStop: %s"
                         , zfargs.sender()->to<ZFUIAniImageView *>()->aniFrame()
                         ));
         } ZFLISTENER_END()

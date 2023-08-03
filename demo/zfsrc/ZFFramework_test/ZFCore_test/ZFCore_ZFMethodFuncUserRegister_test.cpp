@@ -136,14 +136,14 @@ protected:
                 this->testCaseOutput(zfstr("  %s",
                             ZFMethodForName(
                                 "ZFCore_ZFMethodFuncUserRegister_testNamespace",
-                                zfstr("funcDynamic%zi", i)
+                                zfstr("funcDynamic%s", i)
                                 )->objectInfo()
                                 ));
             }
 
             for(zfindex i = 0; i <= 8; ++i) {
                 ZFMethodFuncUserUnregister(ZFMethodForName("ZFCore_ZFMethodFuncUserRegister_testNamespace",
-                        zfstr("funcDynamic%zi", i))
+                        zfstr("funcDynamic%s", i))
                     );
             }
         }
@@ -161,7 +161,7 @@ protected:
                 this->testCaseOutput(zfstr("  %s",
                             ZFMethodForName(
                                 "ZFCore_ZFMethodFuncUserRegister_testNamespace",
-                                zfstr("funcStatic%zi", i)
+                                zfstr("funcStatic%s", i)
                                 )->objectInfo()
                                 ));
             }

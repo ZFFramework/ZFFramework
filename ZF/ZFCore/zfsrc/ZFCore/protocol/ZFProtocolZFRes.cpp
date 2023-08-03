@@ -16,7 +16,7 @@ zfbool _ZFP_ZFImpl_ZFRes_resPathFix(
 
 // ============================================================
 const zfstring &ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resRootPath(void) {
-    static zfstring d = zfstr(".%cres%c", ZFFileSeparator(), ZFFileSeparator());
+    static zfstring d = zfstr(".%sres%s", ZFFileSeparator(), ZFFileSeparator());
     return d;
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resIsExist(ZF_IN const zfchar *resPath) {

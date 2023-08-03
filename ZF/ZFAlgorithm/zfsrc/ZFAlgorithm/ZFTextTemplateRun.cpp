@@ -173,7 +173,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyFile(
 
         buf = (zfchar *)zfmalloc(fileSize);
         if(buf == zfnull) {
-            zfstringAppend(outErrorHint, "failed to malloc buffer for size %zi", fileSize);
+            zfstringAppend(outErrorHint, "failed to malloc buffer for size %s", fileSize);
             return zffalse;
         }
 

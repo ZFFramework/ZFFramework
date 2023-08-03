@@ -58,7 +58,7 @@ public:
 private:
     zfstring tableForKey(ZF_IN const zfchar *key) {
         zfstring table = ZFBase64TableDefault();
-        zfstring keyTmp = zfstr("%s%zi", key, zfslen(key));
+        zfstring keyTmp = zfstr("%s%s", key, zfslen(key));
         keyTmp = ZFMd5(keyTmp.cString(), keyTmp.length());
         const zfbyte *p = (const zfbyte *)keyTmp.cString();
         const zfbyte *pEnd = p + keyTmp.length();

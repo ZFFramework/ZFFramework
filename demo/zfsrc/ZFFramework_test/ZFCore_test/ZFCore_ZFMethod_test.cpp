@@ -219,13 +219,13 @@ protected:
         clsBase->methodForNameIgnoreParent("methodNormal")->execute<void>(this->pChild);
         clsBase->methodForNameIgnoreParent("methodNormal")->execute<void>(this->pBasePointToChild);
 
-        this->testCaseOutput(zfstr("should be null since it's in base only: %p"
+        this->testCaseOutput(zfstr("should be null since it's in base only: %s"
                     , clsChild->methodForNameIgnoreParent("methodNormal")
                     ));
-        this->testCaseOutput(zfstr("should not be null since we search hierarchically: %p"
+        this->testCaseOutput(zfstr("should not be null since we search hierarchically: %s"
                     , clsChild->methodForName("methodNormal")
                     ));
-        this->testCaseOutput(zfstr("should not be null since it's in child only: %p"
+        this->testCaseOutput(zfstr("should not be null since it's in child only: %s"
                     , clsChild->methodForNameIgnoreParent("methodInChild")
                     ));
 

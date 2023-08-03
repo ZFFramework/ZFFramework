@@ -76,7 +76,7 @@ void ZFBuffer::bufferFree(void) {
 }
 
 void ZFBuffer::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    // "<ZFBuffer %p(%zi/%zi)>"
+    // "<ZFBuffer %s(%s/%s)>"
     ret += "<ZFBuffer ";
     zfsFromPointerT(ret, this->buffer());
     ret += "(";

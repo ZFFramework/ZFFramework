@@ -80,7 +80,7 @@ const ZFMethod *ZFMethodDynamicRegister(
     }
     if(param.methodGenericInvoker() != zfnull && methodImplValid) {
         zfstringAppend(errorHint,
-            "methodGenericInvoker(%p) and methodImpl(%s) can not both set",
+            "methodGenericInvoker(%s) and methodImpl(%s) can not both set",
             param.methodGenericInvoker(),
             param.methodImpl());
         return zfnull;
@@ -109,7 +109,7 @@ const ZFMethod *ZFMethodDynamicRegister(
             for( ; i < param.methodParamCount(); ++i) {
                 if(param.methodParamDefaultValueCallbackAt(i) == zfnull) {
                     zfstringAppend(errorHint,
-                        "param %zi has no default value but previous param has",
+                        "param %s has no default value but previous param has",
                         i);
                 }
             }

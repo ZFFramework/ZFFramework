@@ -43,7 +43,7 @@ public:
             ) {
         IPaddress *nativeIp = (IPaddress *)hostAddr;
         const zfbyte *pHost = (const zfbyte *)&(nativeIp->host);
-        zfstringAppend(remoteAddr, "%d.%d.%d.%d"
+        zfstringAppend(remoteAddr, "%s.%s.%s.%s"
             , (zfint)*pHost
             , (zfint)*(pHost + 1)
             , (zfint)*(pHost + 2)

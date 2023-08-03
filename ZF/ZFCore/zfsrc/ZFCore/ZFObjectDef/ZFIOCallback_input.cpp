@@ -133,7 +133,7 @@ ZFInput ZFInputForInputInRange(
     zfRelease(owner);
 
     if(inputCallback.callbackId() != zfnull) {
-        ret.callbackId(zfstr("ZFInputForInputInRange[%zi, %zi]:%@", start, count, inputCallback.callbackId()));
+        ret.callbackId(zfstr("ZFInputForInputInRange[%s, %s]:%s", start, count, inputCallback.callbackId()));
     }
 
     if(!inputCallback.callbackSerializeCustomDisabled()) {

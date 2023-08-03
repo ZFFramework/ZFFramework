@@ -8,16 +8,16 @@ ZFENUM_DEFINE(ZFTextTemplateIndexFlag)
 void ZFTextTemplateIndexData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
 
-    zfstringAppend(ret, "%%%zi[%zi%s]",
+    zfstringAppend(ret, "%%%s[%s%s]",
         this->indexWidth,
         this->indexRadix,
         this->indexUpperCase ? "x" : "X");
 
     if(this->indexOffset >= 0) {
-        zfstringAppend(ret, "[%zi, %d)", this->indexStart, this->indexOffset);
+        zfstringAppend(ret, "[%s, %s)", this->indexStart, this->indexOffset);
     }
     else {
-        zfstringAppend(ret, "(%d, %zi]", this->indexOffset, this->indexStart);
+        zfstringAppend(ret, "(%s, %s]", this->indexOffset, this->indexStart);
     }
 
     ret += " ";
@@ -483,7 +483,7 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
                 ret += ", ";
             }
             const _ZFP_ZFTextTemplateEnableData *enableData = d->enableDataList[i];
-            zfstringAppend(ret, "<%s, %b>", enableData->key, enableData->value);
+            zfstringAppend(ret, "<%s, %s>", enableData->key, enableData->value);
         }
         ret += "]";
     }

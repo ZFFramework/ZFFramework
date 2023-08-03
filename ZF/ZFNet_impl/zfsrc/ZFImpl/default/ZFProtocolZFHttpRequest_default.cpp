@@ -482,7 +482,7 @@ public:
                 task->ownerResponse->errorHint("connection timeout");
                 break;
             default:
-                task->ownerResponse->errorHint(zfstr("unknown error: %d", (zfint)result.error()));
+                task->ownerResponse->errorHint(zfstr("unknown error: %s", (zfint)result.error()));
                 break;
         }
     }

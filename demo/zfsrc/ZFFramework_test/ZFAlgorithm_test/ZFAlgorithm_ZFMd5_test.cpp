@@ -47,7 +47,7 @@ protected:
         ZFTimeValue tv1 = ZFTime::currentTimeValue();
         zfstring MD5BigFile = ZFMd5(ZFInputForFile(tmpFilePath));
         ZFTimeValue tv2 = ZFTimeValueDec(ZFTime::currentTimeValue(), tv1);
-        this->testCaseOutput(zfstr("write it 1000*1000 times to file %s, file's size: %zi, MD5: %s, time: %s.%03s %03s"
+        this->testCaseOutput(zfstr("write it 1000*1000 times to file %s, file's size: %s, MD5: %s, time: %s.%03s %03s"
                     , tmpFilePath
                     , fileSize
                     , MD5BigFile

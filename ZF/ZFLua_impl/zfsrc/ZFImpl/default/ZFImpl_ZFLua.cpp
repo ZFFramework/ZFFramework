@@ -735,7 +735,7 @@ static zfstring _ZFP_ZFImpl_ZFLua_zfstringAppend_pointer(
     zfstring ret;
     zfautoObject t;
     if(ZFImpl_ZFLua_toObject(t, L, i)) {
-        zfstringAppend(ret, "%p", t.toObject());
+        zfstringAppend(ret, "%s", (const void *)t.toObject());
     }
     else {
         ZFImpl_ZFLua_luaObjectInfoT(ret, L, i);
@@ -890,7 +890,7 @@ zfstring ZFImpl_ZFLua_luaStackInfo(
     int count = lua_gettop(L);
     ret += "========== lua stack begin ==========\n";
     for(int i = count; i >= luaStackOffset; --i) {
-        zfstringAppend(ret, "\t%d: ", i);
+        zfstringAppend(ret, "\t%s: ", i);
         ZFImpl_ZFLua_luaObjectInfoT(ret, L, i, zftrue);
         ret += '\n';
     }

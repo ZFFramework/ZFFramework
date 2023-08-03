@@ -117,24 +117,24 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeValueToStringFriendly
     ZFTimeInfo ti;
     if(ZFTime::timeInfoFromTimeValue(ti, v)) {
         if(ti.year != 0) {
-            zfstringAppend(s, "%02d-", ti.year);
+            zfstringAppend(s, "%02s-", ti.year);
         }
         if(!s.isEmpty() || ti.month != 0 || ti.day != 0) {
-            zfstringAppend(s, "%02u-%02u ", ti.month + 1, ti.day + 1);
+            zfstringAppend(s, "%02s-%02s ", ti.month + 1, ti.day + 1);
         }
 
         if(!s.isEmpty() || ti.hour != 0 || ti.minute != 0) {
-            zfstringAppend(s, "%02u:%02u:", ti.hour, ti.minute);
+            zfstringAppend(s, "%02s:%02s:", ti.hour, ti.minute);
         }
 
         if(!s.isEmpty()) {
-            zfstringAppend(s, "%02u.", ti.second);
+            zfstringAppend(s, "%02s.", ti.second);
         }
         else {
-            zfstringAppend(s, "%u.", ti.second);
+            zfstringAppend(s, "%s.", ti.second);
         }
 
-        zfstringAppend(s, "%03u%03u", ti.miliSecond, ti.microSecond);
+        zfstringAppend(s, "%03s%03s", ti.miliSecond, ti.microSecond);
     }
     else {
         zfstringAppend(s, "%s.%06s", v.sec, v.usec);
@@ -263,7 +263,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeInfoToString
         , ZFMP_IN_OUT(zfstring &, s)
         , ZFMP_IN(ZFTimeInfo const &, v)
         ) {
-    zfstringAppend(s, "%d-%02u-%02u %02u:%02u:%02u.%03u %03u",
+    zfstringAppend(s, "%s-%02s-%02s %02s:%02s:%02s.%03s %03s",
         v.year, v.month + 1, v.day + 1,
         v.hour, v.minute, v.second,
         v.miliSecond, v.microSecond);
@@ -477,7 +477,7 @@ void ZFTime::objectOnDealloc(void) {
 }
 
 void ZFTime::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
-    zfstringAppend(ret, "%04d-%02d-%02d %02d:%02d:%02d.%03d %03d",
+    zfstringAppend(ret, "%04s-%02s-%02s %02s:%02s:%02s.%03s %03s",
         this->timeInfoYear(),
         this->timeInfoMonth() + 1,
         this->timeInfoDay() + 1,

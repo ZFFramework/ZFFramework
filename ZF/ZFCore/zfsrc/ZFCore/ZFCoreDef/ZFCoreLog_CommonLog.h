@@ -106,7 +106,7 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
  */
 #define zfCoreCriticalIndexOutOfRangeDetail(callerInfo, index, range) \
     zfCoreCriticalMessageDetail(callerInfo, \
-        "index %zi out of range [0, %zi)", \
+        "index %s out of range [0, %s)", \
         (zfindex)(index), \
         (zfindex)(range))
 

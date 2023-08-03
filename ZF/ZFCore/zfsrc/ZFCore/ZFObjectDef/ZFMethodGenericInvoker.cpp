@@ -35,7 +35,7 @@ zfbool _ZFP_MtdGIParamCheck(
             || (param == ZFMethodGenericInvokerDefaultParam() && paramIndex < invokerMethod->methodParamDefaultBeginIndex())
             ) {
         zfstringAppend(errorHint,
-                "unable to access param%zi as type (%s): (%s)%s",
+                "unable to access param%s as type (%s): (%s)%s",
                 paramIndex,
                 paramType,
                 param != zfnull ? param->classData()->className() : ZFTOKEN_zfnull,
@@ -82,7 +82,7 @@ void _ZFP_ZFMethodGenericInvokeError(
         ) {
     if(pos >= 0) {
         zfCoreCriticalMessageTrim(
-            "[ZFMethodDynamicRegister] method %s unable to convert param %d",
+            "[ZFMethodDynamicRegister] method %s unable to convert param %s",
             method,
             pos);
     }

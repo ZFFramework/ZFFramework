@@ -114,7 +114,7 @@ ZFOUTPUT_TYPE_DEFINE(ZFUdpAddr, {
         zfstring remoteAddr;
         zfuint remotePort;
         if(v.remoteInfo(remoteAddr, remotePort)) {
-            zfstringAppend(s, "udp:%s:%u", remoteAddr, remotePort);
+            zfstringAppend(s, "udp:%s:%s", remoteAddr, remotePort);
         }
         else {
             s += "udp:null";
@@ -130,7 +130,7 @@ public:
 
 void ZFUdp::objectInfoT(ZF_IN_OUT zfstring &ret) {
     ret += "udp:";
-    zfstringAppend(ret, "%u", this->port());
+    zfstringAppend(ret, "%s", this->port());
 }
 
 void ZFUdp::objectOnInit(void) {

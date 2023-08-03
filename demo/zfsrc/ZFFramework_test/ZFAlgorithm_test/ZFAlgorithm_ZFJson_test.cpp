@@ -77,13 +77,13 @@ private:
         this->testCaseOutputSeparator();
 
         ZFTimeValue toDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFJsonPerformance_test_toData");
-        this->testCaseOutput(zfstr("serialize to data %zi times cost %s seconds"
+        this->testCaseOutput(zfstr("serialize to data %s times cost %s seconds"
                     , toDataTimes
                     , ZFTimeValueToStringFriendly(toDataUsedTime)
                     ));
 
         ZFTimeValue fromDataUsedTime = ZFCoreStatistic::invokeTimeGetTotalTime("ZFJsonPerformance_test_fromData");
-        this->testCaseOutput(zfstr("serialize from data %zi times cost %s seconds"
+        this->testCaseOutput(zfstr("serialize from data %s times cost %s seconds"
                     , fromDataTimes
                     , ZFTimeValueToStringFriendly(fromDataUsedTime)
                     ));

@@ -10,7 +10,7 @@ void _ZFP_zfCoreLogCriticalMessage(
     {
         _ZFP_I_log("============================================================");
         zfstring tmp;
-        zfstringAppend(tmp, "| [%s %s(%u)] %s", callerInfo.callerFile(), callerInfo.callerFunc(), callerInfo.callerLine(), text);
+        zfstringAppend(tmp, "| [%s %s(%s)] %s", callerInfo.callerFile(), callerInfo.callerFunc(), callerInfo.callerLine(), text);
         _ZFP_I_log("%s", tmp.cString());
         _ZFP_I_log("============================================================");
     }

@@ -345,10 +345,10 @@ zfbool ZFDI_invoke(
             }
             if(paramCount < method->methodParamCountMin() || paramCount > method->methodParamCount()) {
                 if(errorHintTmp != zfnull) {
-                    zfstringAppend(_errorHintTmp, "expect %s param, got %zi",
+                    zfstringAppend(_errorHintTmp, "expect %s param, got %s",
                         ((method->methodParamCountMin() == method->methodParamCount())
                             ? zfindexToString(method->methodParamCount())
-                            : zfstr("%zi~%zi", method->methodParamCountMin(), method->methodParamCount())),
+                            : zfstr("%s~%s", method->methodParamCountMin(), method->methodParamCount())),
                         paramCount);
                 }
                 continue;
@@ -482,10 +482,10 @@ zfbool ZFDI_alloc(
             }
             if(paramCount < method->methodParamCountMin() || paramCount > method->methodParamCount()) {
                 if(errorHintTmp != zfnull) {
-                    zfstringAppend(_errorHintTmp, "expect %s param, got %zi",
+                    zfstringAppend(_errorHintTmp, "expect %s param, got %s",
                         ((method->methodParamCountMin() == method->methodParamCount())
                             ? zfindexToString(method->methodParamCount())
-                            : zfstr("%zi~%zi", method->methodParamCountMin(), method->methodParamCount())),
+                            : zfstr("%s~%s", method->methodParamCountMin(), method->methodParamCount())),
                         paramCount);
                 }
                 continue;

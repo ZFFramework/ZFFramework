@@ -32,7 +32,7 @@
             , const char *callerFile, const char *callerFunction, int callerLine
             , const char *actionName, const char *type
             ) {
-        JNIUtilWrap_Log("[%s %s (%d)] %s %s %p",
+        JNIUtilWrap_Log("[%s %s (%s)] %s %s %s",
             _JNIUtilWrap_file(callerFile), callerFunction, callerLine,
             type, actionName, (const void *)obj);
         return obj;
@@ -57,7 +57,7 @@
                 {
                 }
                 ~_JNIUtilWrap_FuncCalledTimeLog(void) {
-                    JNIUtilWrap_Log("[%s] %lf",
+                    JNIUtilWrap_Log("[%s] %s",
                         _callerFunction,
                         (double)((double)(clock() - _startTime) / CLOCKS_PER_SEC));
                 }
@@ -75,7 +75,7 @@
     #endif
     #ifndef JNIUtilWrap_CallbackCalled
         #define JNIUtilWrap_CallbackCalled(className, actionName) \
-            JNIUtilWrap_Log("[%s %s (%d)] Callback %s %s", _JNIUtilWrap_file(__FILE__), __FUNCTION__, __LINE__, className, actionName);
+            JNIUtilWrap_Log("[%s %s (%s)] Callback %s %s", _JNIUtilWrap_file(__FILE__), __FUNCTION__, __LINE__, className, actionName);
     #endif
 #endif // #if _ZFP_ZFImpl_sys_Android_JNI_DEBUG
 

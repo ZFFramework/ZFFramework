@@ -438,7 +438,7 @@ public:
             ValueHolder v;
             if(!_fromUpvalue(v, L, name, upvalueIndex)) {
                 zfstringAppend(errorHint,
-                    "%s unable to store upvalue \"%s\" at index %d: %s",
+                    "%s unable to store upvalue \"%s\" at index %s: %s",
                     this->logTag(),
                     name,
                     (zfint)upvalueIndex,
@@ -627,7 +627,7 @@ static int _ZFP_ZFCallbackForLua(ZF_IN lua_State *L) {
     int count = (int)lua_gettop(L);
     if(count != 1) {
         return ZFImpl_ZFLua_luaError(L,
-            "[ZFCallbackForLua] expect one param, got %zi param",
+            "[ZFCallbackForLua] expect one param, got %s param",
             (zfindex)count);
     }
     if(!lua_isfunction(L, 1)) {

@@ -74,7 +74,7 @@ zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo) {
     zfstring ret;
     ZFTimeInfo ti = ZFTime::currentTimeInfo();
     zfstringAppend(ret,
-        "%02d:%02d:%02d.%03d ",
+        "%02s:%02s:%02s.%03s ",
         ti.hour,
         ti.minute,
         ti.second,
@@ -119,7 +119,7 @@ zfstring _ZFP_zfLogCurTimeString(void) {
     zfstring s;
     ZFTimeInfo ti = ZFTime::currentTimeInfo();
     zfstringAppend(s,
-        "%02d:%02d:%02d.%03d",
+        "%02s:%02s:%02s.%03s",
         ti.hour,
         ti.minute,
         ti.second,

@@ -550,7 +550,7 @@ public:
         int cur = lua_gettop(L);
         zfCoreAssertWithMessageTrim(
             cur == stackSaved + stackChange,
-            "[ZFLua] stack messed up: %d => %d",
+            "[ZFLua] stack messed up: %s => %s",
             stackSaved, cur);
     }
 };

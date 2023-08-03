@@ -40,7 +40,7 @@ private:
         for(zfindex i = 0; i < 4; ++i) {
             zfblockedAlloc(ZFUIButtonRatio, child);
             layout->buttonAdd(child);
-            child->label()->text(zfstr("btn %zi", i));
+            child->label()->text(zfstr("btn %s", i));
         }
     }
     void prepareSettingButton(

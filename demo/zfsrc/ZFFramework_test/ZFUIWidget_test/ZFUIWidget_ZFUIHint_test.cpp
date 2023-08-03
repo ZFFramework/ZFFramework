@@ -27,7 +27,7 @@ protected:
                 , ZFTestCase *, testCase
                 ) {
             for(zfindex i = 0; i < 3; ++i) {
-                ZFUIHintShow(zfstr("this is a stacked hint %zi", i));
+                ZFUIHintShow(zfstr("this is a stacked hint %s", i));
             }
             zfautoObject last = ZFUIHintShow("this is a very"
                 " long long long long long long long long long long"

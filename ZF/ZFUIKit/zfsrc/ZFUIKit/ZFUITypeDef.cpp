@@ -57,7 +57,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIPoint, ZFUIPoint, {
         v.y = buf[1];
         return zftrue;
     }, {
-        zfstringAppend(s, "(%f, %f)", v.x, v.y);
+        zfstringAppend(s, "(%s, %s)", v.x, v.y);
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIPoint, zffloat, x)
@@ -137,7 +137,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIMargin, ZFUIMargin, {
         v.bottom = buf[3];
         return zftrue;
     }, {
-        zfstringAppend(s, "(%f, %f, %f, %f)", v.left, v.top, v.right, v.bottom);
+        zfstringAppend(s, "(%s, %s, %s, %s)", v.left, v.top, v.right, v.bottom);
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIMargin, zffloat, left)
@@ -250,7 +250,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISize, ZFUISize, {
         v.height = buf[1];
         return zftrue;
     }, {
-        zfstringAppend(s, "(%f, %f)", v.width, v.height);
+        zfstringAppend(s, "(%s, %s)", v.width, v.height);
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUISize, zffloat, width)
@@ -372,7 +372,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIRect, ZFUIRect, {
         v.height = buf[3];
         return zftrue;
     }, {
-        zfstringAppend(s, "(%f, %f, %f, %f)", v.x, v.y, v.width, v.height);
+        zfstringAppend(s, "(%s, %s, %s, %s)", v.x, v.y, v.width, v.height);
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIRect, zffloat, x)

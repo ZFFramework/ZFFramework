@@ -57,7 +57,7 @@ public:
             }
             for(zfindex iRetry = 0; iRetry <= ChunkRetry; ++iRetry) {
                 zfblockedAlloc(ZFHttpRequest, send, url, ZFHttpMethod::e_GET);
-                send->header("Range", zfstr("bytes=%zi-%zi", chunkPos, chunkEnd - 1));
+                send->header("Range", zfstr("bytes=%s-%s", chunkPos, chunkEnd - 1));
                 zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
                 if(recv != zfnull && recv->success() && recv->body().bufferSize() == chunkEnd - chunkPos) {
                     zfCoreMutexLocker();

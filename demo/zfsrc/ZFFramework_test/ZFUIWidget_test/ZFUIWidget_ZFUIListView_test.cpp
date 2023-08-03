@@ -32,9 +32,9 @@ public:
         zfsuperI(ZFUIListAdapter)::cellOnUpdate(atIndex, cell);
 
         ZFUIListCellViewBasic *tmp = cell->cellView()->toAny();
-        tmp->cellLabelMain()->text(zfstr("main %zi", atIndex));
+        tmp->cellLabelMain()->text(zfstr("main %s", atIndex));
         if(zfmRand(3) == 0) {
-            tmp->cellLabelSub()->text(zfstr("sub %zi", atIndex));
+            tmp->cellLabelSub()->text(zfstr("sub %s", atIndex));
         }
         if(zfmRand(3) == 0) {
             tmp->cellIcon()->image(ZFUIImageFromColor(ZFUIColorRandom(), ZFUISizeMake(40)));
@@ -146,7 +146,7 @@ private:
                     , ZFUIListView *, listView
                     ) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstr("autoScrollSpeedX: %f", listView->autoScrollSpeedX());
+                text->zfv = zfstr("autoScrollSpeedX: %s", listView->autoScrollSpeedX());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
@@ -170,7 +170,7 @@ private:
                     , ZFUIListView *, listView
                     ) {
                 v_zfstring *text = zfargs.param0T();
-                text->zfv = zfstr("autoScrollSpeedY: %f", listView->autoScrollSpeedY());
+                text->zfv = zfstr("autoScrollSpeedY: %s", listView->autoScrollSpeedY());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
 
@@ -197,7 +197,7 @@ private:
                     ? zfmRand((zfint)listView->viewFrame().width)
                     : zfmRand((zfint)listView->viewFrame().height));
                 zfbool animated = (zfmRand(5) != 0);
-                ZFUIHintShow(zfstr("%s\nindex: %zi\noffset: %f\nanimated: %b",
+                ZFUIHintShow(zfstr("%s\nindex: %s\noffset: %s\nanimated: %s",
                             toHead ? "scrollListCellToHead" : "scrollListCellToTail",
                             toIndex, toOffset, animated));
                 if(toHead) {

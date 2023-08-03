@@ -5,7 +5,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 static void _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, ZFImpl_sys_SDL_View *view, zfindex depth, zfindex siblingIndex) {
-    zfstringAppend(s, "|%2d ", siblingIndex);
+    zfstringAppend(s, "|%2s ", siblingIndex);
     for(zfindex i = 0; i < depth; ++i) {
         s += "| ";
     }
@@ -15,10 +15,10 @@ static void _ZFP_ZFImpl_sys_SDL_viewTreePrint_recursive(ZF_IN_OUT zfstring &s, Z
             s += view->ownerZFUIView->classData()->className();
         }
         else {
-            zfstringAppend(s, "%p", view->implType());
+            zfstringAppend(s, "%s", view->implType());
         }
 
-        zfstringAppend(s, " (%d, %d, %d, %d)"
+        zfstringAppend(s, " (%s, %s, %s, %s)"
                 , (zfint)view->rect.x
                 , (zfint)view->rect.y
                 , (zfint)view->rect.w

@@ -9,7 +9,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_value(ZF_IN lua_State *L) {
     int count = (int)lua_gettop(L);
     if(count != 1) {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfl_value] takes only one param, got %zi",
+            "[zfl_value] takes only one param, got %s",
             (zfindex)count);
     }
 
