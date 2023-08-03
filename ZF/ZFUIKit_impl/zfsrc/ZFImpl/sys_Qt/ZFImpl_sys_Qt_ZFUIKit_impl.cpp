@@ -20,7 +20,7 @@ void _ZFP_ZFImpl_sys_Qt_viewInfoT(
     s += view->metaObject()->className();
 
     // instance
-    zfstringAppend(s, " %p", view);
+    zfstringAppend(s, " %p", (const void *)view);
 
     // basic widget info
     if(qobject_cast<QWidget *>(view) != NULL) {
