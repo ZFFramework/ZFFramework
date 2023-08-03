@@ -799,6 +799,16 @@ public:
     ZFProtocol *protocolImpl;
 
 public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
+public:
     /** @cond ZFPrivateDoc */
     zfbool operator == (ZF_IN const ZFProtocolImplInfo &ref) const {
         return (zftrue
@@ -813,6 +823,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFProtocolImplInfo, ZFProtocolImplInfo)
+ZFOUTPUT_TYPE(ZFProtocolImplInfo, {v.objectInfoT(s);})
 
 /**
  * @brief for debug use only, get all protocol's info

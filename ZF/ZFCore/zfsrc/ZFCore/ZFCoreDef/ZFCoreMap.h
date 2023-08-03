@@ -227,6 +227,7 @@ public:
 private:
     _ZFP_ZFCoreMapPrivate *d;
 };
+ZFOUTPUT_TYPE(ZFCoreMap, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 

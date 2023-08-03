@@ -116,6 +116,478 @@ ZFOUTPUT_TYPE(ZFIndexRange, {
 })
 
 // ============================================================
+// generic for function addr
+/** @cond ZFPrivateDoc */
+template<typename T_Ret>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(void)
+        ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+, typename T_P10
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            , T_P10
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+, typename T_P10
+, typename T_P11
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            , T_P10
+            , T_P11
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+, typename T_P10
+, typename T_P11
+, typename T_P12
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            , T_P10
+            , T_P11
+            , T_P12
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+, typename T_P10
+, typename T_P11
+, typename T_P12
+, typename T_P13
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            , T_P10
+            , T_P11
+            , T_P12
+            , T_P13
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+, typename T_P10
+, typename T_P11
+, typename T_P12
+, typename T_P13
+, typename T_P14
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            , T_P10
+            , T_P11
+            , T_P12
+            , T_P13
+            , T_P14
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+, typename T_P10
+, typename T_P11
+, typename T_P12
+, typename T_P13
+, typename T_P14
+, typename T_P15
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            , T_P10
+            , T_P11
+            , T_P12
+            , T_P13
+            , T_P14
+            , T_P15
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+template<typename T_Ret
+, typename T_P0
+, typename T_P1
+, typename T_P2
+, typename T_P3
+, typename T_P4
+, typename T_P5
+, typename T_P6
+, typename T_P7
+, typename T_P8
+, typename T_P9
+, typename T_P10
+, typename T_P11
+, typename T_P12
+, typename T_P13
+, typename T_P14
+, typename T_P15
+, typename T_P16
+>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Ret (* const &v)(
+            T_P0
+            , T_P1
+            , T_P2
+            , T_P3
+            , T_P4
+            , T_P5
+            , T_P6
+            , T_P7
+            , T_P8
+            , T_P9
+            , T_P10
+            , T_P11
+            , T_P12
+            , T_P13
+            , T_P14
+            , T_P15
+            , T_P16
+            )
+            ) {
+    zfsFromPointerT(s, (const void *)v);
+}
+/** @endcond */
+
+// ============================================================
+// special number types
 ZFOUTPUT_TYPE(long, {zfsFromIntT(s, v);})
 ZFOUTPUT_TYPE(long long, {zfsFromIntT(s, v);})
 ZFOUTPUT_TYPE(double, {zfsFromFloatT(s, v);})

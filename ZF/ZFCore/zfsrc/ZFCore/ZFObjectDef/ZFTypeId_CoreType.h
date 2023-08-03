@@ -385,6 +385,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFrameworkState, ZFFrameworkState)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFuncAddrType, ZFFuncAddrType)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfiterator, zfiterator)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFBuffer, ZFBuffer)
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallerInfo, ZFCallerInfo)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFIdentityGenerator, ZFIdentityGenerator)
 
 /**
@@ -543,11 +544,23 @@ ZFOUTPUT_TYPE(ZFMethodType, {ZFMethodTypeToString(s, v);})
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodParamDefaultValueCallback, ZFMethodParamDefaultValueCallback)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFArgs, ZFArgs)
+ZFOUTPUT_TYPE(ZFArgs, {v.objectInfoT(s);})
+
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserver, ZFObserver)
+ZFOUTPUT_TYPE(ZFObserver, {v.objectInfoT(s);})
+
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClass, ZFFilterForZFClass)
+ZFOUTPUT_TYPE(ZFFilterForZFClass, {v.objectInfoT(s);})
+
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFMethod, ZFFilterForZFMethod)
+ZFOUTPUT_TYPE(ZFFilterForZFMethod, {v.objectInfoT(s);})
+
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFProperty, ZFFilterForZFProperty)
+ZFOUTPUT_TYPE(ZFFilterForZFProperty, {v.objectInfoT(s);})
+
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForZFObject, ZFFilterForZFObject)
+ZFOUTPUT_TYPE(ZFFilterForZFObject, {v.objectInfoT(s);})
+
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodGenericInvoker, ZFMethodGenericInvoker)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodDynamicRegisterParam, ZFMethodDynamicRegisterParam)

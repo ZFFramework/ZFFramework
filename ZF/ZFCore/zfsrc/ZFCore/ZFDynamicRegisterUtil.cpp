@@ -871,6 +871,43 @@ ZFCoreArray<ZFOutput> &ZFDynamic::errorCallbacks(void) {
     static ZFCoreArray<ZFOutput> d;
     return d;
 }
+
+void ZFDynamic::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "<ZFDynamic";
+
+    if(!d->regTag.isEmpty()) {
+        ret += " regTag:";
+        ret += d->regTag;
+    }
+
+    if(!d->allClass.isEmpty()) {
+        ret += " allClass:";
+        d->allClass.objectInfoT(ret);
+    }
+
+    if(!d->allEnum.isEmpty()) {
+        ret += " allEnum:";
+        d->allEnum.objectInfoT(ret);
+    }
+
+    if(!d->allMethod.isEmpty()) {
+        ret += " allMethod:";
+        d->allMethod.objectInfoT(ret);
+    }
+
+    if(!d->allProperty.isEmpty()) {
+        ret += " allProperty:";
+        d->allProperty.objectInfoT(ret);
+    }
+
+    if(!d->allEvent.isEmpty()) {
+        ret += " allEvent:";
+        d->allEvent.objectInfoT(ret);
+    }
+
+    ret += ">";
+}
+
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDynamicErrorCallbacks, ZFLevelZFFrameworkNormal) {
     ZFDynamic::errorCallbacks().add(ZFOutputDefault());
 }
@@ -1081,6 +1118,32 @@ ZFMP &ZFMP::operator = (ZF_IN const ZFMP &ref) {
         zfdelete(dTmp);
     }
     return *this;
+}
+
+void ZFMP::methodParamListInfoT(ZF_IN_OUT zfstring &ret) const {
+    for(zfindex i = 0; i < d->methodParamCount; ++i) {
+        if(i > 0) {
+            ret += ", ";
+        }
+        ret += d->methodParamTypeId[i];
+        ret += " ";
+        if(d->methodParamName[i].isEmpty()) {
+            zfstringAppend(ret, "p%s", i);
+        }
+        else {
+            ret += d->methodParamName[i];
+        }
+        if(d->methodParamDefaultValue[i] != ZFMethodGenericInvokerDefaultParam()) {
+            ret += " = ";
+            ZFObjectInfoT(ret, d->methodParamDefaultValue[i]);
+        }
+    }
+}
+
+void ZFMP::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "ZFMP(";
+    this->methodParamListInfoT(ret);
+    ret += ")";
 }
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFMP, ZFMP &, mp

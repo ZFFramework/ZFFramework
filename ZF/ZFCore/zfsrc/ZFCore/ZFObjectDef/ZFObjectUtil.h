@@ -119,21 +119,6 @@ public:
 };
 /** @endcond */
 
-/** @cond ZFPrivateDoc */
-template<typename T_ZFObject>
-zfclassNotPOD ZFCoreInfoGetter<T_ZFObject
-        , typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-    > {
-public:
-    static void InfoGetter(
-            ZF_IN_OUT zfstring &ret
-            , ZF_IN T_ZFObject const &v
-            ) {
-        ZFObjectInfoT(ret, ZFObjectToObject(v));
-    }
-};
-/** @endcond */
-
 // ============================================================
 ZFCOMPARER_DEFAULT_DECLARE(zfautoObject, zfautoObject, {
         return ZFObjectCompare(v0.toObject(), v1.toObject());

@@ -28,6 +28,16 @@ public:
             ) const;
 
 public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
+public:
     /** @cond ZFPrivateDoc */
     ZFObserverGroupHolder(void);
     ZFObserverGroupHolder(ZF_IN const ZFObserverGroupHolder &ref);
@@ -52,6 +62,7 @@ public:
 };
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFObserverGroupHolder, ZFObserverGroupHolder)
+ZFOUTPUT_TYPE(ZFObserverGroupHolder, {v.objectInfoT(s);})
 
 /**
  * @brief util to add multiple observer

@@ -136,6 +136,25 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFProtocolImplInfo, zfstring, 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFProtocolImplInfo, zfbool, protocolOptional)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFProtocolImplInfo, ZFProtocol *, protocolImpl)
 
+void ZFProtocolImplInfo::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+    ret += this->protocolName;
+    if(this->protocolOptional) {
+        ret += " (optional)";
+    }
+    if(this->protocolImpl != zfnull) {
+        zfstringAppend(ret, " %s(%s)"
+                , this->protocolImpl->protocolImplementationName()
+                , this->protocolImpl->protocolImplementationLevel()
+                );
+        if(!zfstringIsEmpty(this->protocolImpl->protocolImplementationPlatformHint())) {
+            ret += " ";
+            ret += this->protocolImpl->protocolImplementationPlatformHint();
+        }
+    }
+    ret += ZFTOKEN_ZFObjectInfoRight;
+}
+
 static void _ZFP_ZFProtocolImplInfoCopy(
         ZF_IN_OUT ZFProtocolImplInfo &data
         , ZF_IN _ZFP_ZFProtocolData &implData

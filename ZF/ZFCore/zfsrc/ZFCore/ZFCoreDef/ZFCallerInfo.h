@@ -137,6 +137,7 @@ public:
         return *this;
     }
 };
+ZFOUTPUT_TYPE(ZFCallerInfo, v.objectInfoT(s);)
 
 /**
  * @brief util macro to make #ZFCallerInfo

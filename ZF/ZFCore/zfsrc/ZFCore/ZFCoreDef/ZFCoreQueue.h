@@ -59,12 +59,8 @@ public:
             ZF_IN_OUT zfstring &ret
             , ZF_IN_OPT zfindex maxCount = zfindexMax()
             , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            , ZF_IN_OPT typename ZFCoreInfoGetterType<T_POD>::InfoGetter infoGetter = zfnull
+            , ZF_IN_OPT typename ZFCoreInfoGetter<T_POD>::InfoGetter infoGetter = zfnull
             ) const {
-        if(infoGetter == zfnull) {
-            infoGetter = ZFCoreInfoGetter<T_POD>::InfoGetter;
-        }
-
         zfindex count = 0;
         ret += token.tokenLeft;
         for(T_POD *p = _pHead; p != _pTail && count < maxCount; ++count, _loopNext(p)) {
@@ -72,7 +68,12 @@ public:
                 ret += token.tokenSeparator;
             }
             ret += token.tokenValueLeft;
-            infoGetter(ret, *p);
+            if(infoGetter != zfnull) {
+                infoGetter(ret, *p);
+            }
+            else {
+                zftToString(ret, *p);
+            }
             ret += token.tokenValueRight;
         }
         if(count < this->count()) {
@@ -89,7 +90,7 @@ public:
     zffinal zfstring objectInfoOfContent(
             ZF_IN_OPT zfindex maxCount = zfindexMax()
             , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            , ZF_IN_OPT typename ZFCoreInfoGetterType<T_POD>::InfoGetter infoGetter = zfnull
+            , ZF_IN_OPT typename ZFCoreInfoGetter<T_POD>::InfoGetter infoGetter = zfnull
             ) const {
         zfstring ret;
         this->objectInfoOfContentT(ret, maxCount, token, infoGetter);
@@ -315,6 +316,7 @@ private:
         _pTail = pTailNew;
     }
 };
+ZFOUTPUT_TYPE_TEMPLATE(typename T_POD, ZFCoreQueuePOD<T_POD>, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 

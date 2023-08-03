@@ -210,7 +210,7 @@ public:
         }
         else {
             zfstring info;
-            ZFCoreInfoGetter<T_ReturnTypeTmp>::InfoGetter(info, retTmp);
+            zftToString(info, retTmp);
             _ZFP_MtdGIRetError(errorHint,
                 ZFTypeId<T_ReturnTypeTmp>::TypeId(),
                 info);

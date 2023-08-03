@@ -90,67 +90,20 @@ public:
 template<>
 zfclassNotPOD zffloatEpsilonT<zffloat> {
 public:
-    /** @brief template version of #zffloatEpsilon */
     static inline zffloat v(void) {return zffloatEpsilon;}
 };
 template<>
 zfclassNotPOD zffloatEpsilonT<zfdouble> {
 public:
-    /** @brief template version of #zffloatEpsilon */
     static inline zfdouble v(void) {return zfdoubleEpsilon;}
 };
 template<>
 zfclassNotPOD zffloatEpsilonT<zflongdouble> {
 public:
-    /** @brief template version of #zffloatEpsilon */
     static inline zflongdouble v(void) {return zflongdoubleEpsilon;}
 };
 /** @endcond */
 
-/**
- * @brief compare two float value,
- *   return true if they are considered the same
- */
-template<typename T_zffloat>
-inline zfbool zffloatIsEqual(
-        ZF_IN T_zffloat const &v1
-        , ZF_IN T_zffloat const &v2
-        ) {
-    return (zfmAbs(v1 - v2) < zffloatEpsilonT<T_zffloat>::v());
-}
-/**
- * @brief compare two float value,
- *   return true if they are considered not the same
- */
-template<typename T_zffloat>
-inline zfbool zffloatNotEqual(
-        ZF_IN T_zffloat const &v1
-        , ZF_IN T_zffloat const &v2
-        ) {
-    return (zfmAbs(v1 - v2) >= zffloatEpsilonT<T_zffloat>::v());
-}
-/**
- * @brief return true if v1 > v2
- */
-template<typename T_zffloat>
-inline zfbool zffloatIsGreater(
-        ZF_IN T_zffloat const &v1
-        , ZF_IN T_zffloat const &v2
-        ) {
-    return (v1 - v2 > zffloatEpsilonT<T_zffloat>::v());
-}
-/**
- * @brief return true if v1 < v2
- */
-template<typename T_zffloat>
-inline zfbool zffloatIsSmaller(
-        ZF_IN T_zffloat const &v1
-        , ZF_IN T_zffloat const &v2
-        ) {
-    return (v2 - v1 > zffloatEpsilonT<T_zffloat>::v());
-}
-
-// ============================================================
 // round float
 /** @brief util method to round up/down or round a float value */
 template<typename T_zffloat>

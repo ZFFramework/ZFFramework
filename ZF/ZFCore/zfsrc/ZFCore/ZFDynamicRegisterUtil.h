@@ -274,10 +274,21 @@ public:
      */
     static ZFCoreArray<ZFOutput> &errorCallbacks(void);
 
+public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
 private:
     _ZFP_ZFDynamicPrivate *d;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFDynamic, ZFDynamic)
+ZFOUTPUT_TYPE(ZFDynamic, {v.objectInfoT(s);})
 
 // ============================================================
 /**
@@ -337,6 +348,27 @@ public:
     /** @brief util for #ZFDynamic::method */
     ZFObject *methodParamDefaultValueAt(ZF_IN zfindex index) const;
 
+
+public:
+    /** @brief see #methodParamListInfo */
+    zffinal void methodParamListInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return method param info, like: `P0 p0, P1 p1=def1` */
+    zffinal zfstring methodParamListInfo(void) const {
+        zfstring ret;
+        this->methodParamListInfoT(ret);
+        return ret;
+    }
+
+public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
 public:
     /** @cond ZFPrivateDoc */
     ZFMP(void);
@@ -351,6 +383,7 @@ private:
     _ZFP_ZFMPPrivate *d;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMP, ZFMP)
+ZFOUTPUT_TYPE(ZFMP, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFDynamicRegisterUtil_h_

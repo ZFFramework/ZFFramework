@@ -47,5 +47,16 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, ZFUIOrientati
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, ZFUISize, listContainerSize)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFUIListCellUpdaterParam, zffloat, cellSizeHint)
 
+ZFOUTPUT_TYPE_DEFINE(ZFUIListCellUpdaterParam, {
+    zfstringAppend(s, "<ZFUIListCellUpdaterParam cell:%s cellIndex:%s cellCount:%s listOrientation:%s listContainerSize:%s cellSizeHint:%s>"
+            , v.cell
+            , v.cellIndex
+            , v.cellCount
+            , v.listOrientation
+            , v.listContainerSize
+            , v.cellSizeHint
+            );
+})
+
 ZF_NAMESPACE_GLOBAL_END
 

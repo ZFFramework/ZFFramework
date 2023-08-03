@@ -82,6 +82,16 @@ public:
     }
 
 public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
+public:
     /** @cond ZFPrivateDoc */
     zfbool operator == (ZF_IN const ZFUIAutoLayoutRule &ref) const {
         return (zftrue
@@ -101,6 +111,7 @@ public:
     zfstring _ZFP_AL_targetId;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
+ZFOUTPUT_TYPE(ZFUIAutoLayoutRule, {v.objectInfoT(s);})
 
 // ============================================================
 // ZFUIAutoLayoutParam

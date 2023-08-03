@@ -87,6 +87,16 @@ public:
     zfautoObjectT<ZFAnimation *> toAnimation(void) const;
 
 public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
+public:
     /** @brief construct with ani target */
     ZFAniBuilder(ZF_IN_OPT ZFObject *aniTarget = zfnull);
     /** @cond ZFPrivateDoc */
@@ -102,6 +112,7 @@ private:
 };
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUtility, ZFAniBuilder, ZFAniBuilder)
+ZFOUTPUT_TYPE(ZFAniBuilder, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFAniBuilder_h_

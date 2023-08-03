@@ -55,9 +55,20 @@ public:
      */
     void idExistGetAll(ZF_IN_OUT ZFCoreArray<zfidentity> &ret) const;
 
+public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
 private:
     _ZFP_ZFIdentityGeneratorPrivate *d;
 };
+ZFOUTPUT_TYPE(ZFIdentityGenerator, {v.objectInfoT(s);})
 
 // ============================================================
 /**

@@ -35,13 +35,23 @@ public:
             ) const;
 
 public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
+public:
     void _ZFP_hostAddr(ZF_IN void *hostAddr);
     void *_ZFP_hostAddr(void) const;
 private:
     _ZFP_ZFUdpAddrPrivate *d;
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFNet, ZFUdpAddr, ZFUdpAddr)
-ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFNet, ZFUdpAddr)
+ZFOUTPUT_TYPE(ZFUdpAddr, {v.objectInfoT(s);})
 
 zfclassFwd _ZFP_ZFUdpPrivate;
 // ============================================================

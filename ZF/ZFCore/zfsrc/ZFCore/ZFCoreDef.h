@@ -42,6 +42,7 @@
 #include "ZFCoreDef/ZFToken.h"
 #include "ZFCoreDef/ZFVersion.h"
 #include "ZFCoreDef/zfstr.h"
+#include "ZFCoreDef/zfstr_CoreType.h"
 
 #endif // #ifndef _ZFI_ZFCoreDef_h_
 

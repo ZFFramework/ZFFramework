@@ -226,5 +226,15 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, 
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, zfautoObjectT<ZFAnimation *>, toAnimation)
 
+void ZFAniBuilder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "ZFAniBuilder:";
+    if(d->aniGroup != zfnull) {
+        d->aniGroup->objectInfoT(ret);
+    }
+    else {
+        ret += ZFTOKEN_zfnull;
+    }
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

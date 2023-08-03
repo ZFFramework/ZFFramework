@@ -6,6 +6,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // misc
 ZFENUM_DEFINE(ZFUIAutoLayoutPos)
 ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(ZFUIAutoLayoutRule, ZFUIAutoLayoutRule)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, ZFUIAutoLayoutPosEnum, pos)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFUIAutoLayoutRule, ZFUIView *, target)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFUIAutoLayoutRule, ZFUIAutoLayoutRule &, target
+        , ZFMP_IN(ZFUIView * const &, value))
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, ZFUIAutoLayoutPosEnum, targetPos)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, zffloat, weight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIAutoLayoutRule, zffloat, offset)
+
+void ZFUIAutoLayoutRule::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfstringAppend(ret, "<ZFUIAutoLayoutRule pos:%s target:%s targetPos:%s weight:%s offset:%s>"
+            , this->pos()
+            , this->target()
+            , this->targetPos()
+            , this->weight()
+            , this->offset()
+            );
+}
 
 // ============================================================
 // ZFUIAutoLayoutParam

@@ -49,6 +49,14 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewBlinkParam, ZFUIImage
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewBlinkParam, zftimet, blinkDuration)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewBlinkParam, zfindex, blinkCount)
 
+void ZFUIViewBlinkParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfstringAppend(ret, "<ZFUIViewBlinkParam blinkImage:%s blinkDuration:%s blinkCount:%s>"
+            , this->blinkImage()
+            , this->blinkDuration()
+            , this->blinkCount()
+            );
+}
+
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewBlink
         , ZFMP_IN(ZFUIView *, view)

@@ -307,6 +307,7 @@ private:
 private:
     void _bufferCapacityDoChange(ZF_IN zfindex bufferCapacity);
 };
+ZFOUTPUT_TYPE(ZFBuffer, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 

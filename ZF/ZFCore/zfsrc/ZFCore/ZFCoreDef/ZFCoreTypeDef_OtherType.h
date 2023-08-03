@@ -158,51 +158,43 @@ public:
 
 // ============================================================
 /**
- * @brief string if the content info not available
+ * @brief string if the content info not available, see #zftToString
  */
-#define ZFTOKEN_ZFCoreInfoGetterNotAvailable "N/A"
+#define ZFTOKEN_zftToStringNotAvailable "NA"
 
 /**
- * @brief generic info getter
- *
- * use #ZFOUTPUT_TYPE to declare for your own type
+ * @brief proto type for obtain object info, see #zftToString
  */
-template<typename T_Element, typename T_ReservedFix = void>
+template<typename T_Type>
 zfclassNotPOD ZFCoreInfoGetter {
 public:
-    /** @brief see #ZFCoreInfoGetter */
-    static void InfoGetter(
-            ZF_IN_OUT zfstring &ret
-            , ZF_IN T_Element const &v
-            ) {
-        ret += ZFTOKEN_ZFCoreInfoGetterNotAvailable;
-    }
-};
-
-/** @brief type for #ZFCoreInfoGetter */
-template<typename T_Element>
-zfclassNotPOD ZFCoreInfoGetterType {
-public:
-    /** @brief type for #ZFCoreInfoGetter */
     typedef void (*InfoGetter)(
             ZF_IN_OUT zfstring &ret
-            , ZF_IN T_Element const &v
+            , ZF_IN T_Type const &v
             );
 };
 
 // ============================================================
-// custom type output
-#define _ZFP_ZFOUTPUT_EXPAND(T_Type) \
-    template<> \
-    zfclassNotPOD ZFCoreInfoGetter<T_Type> { \
-    public: \
-        static void InfoGetter( \
-                ZF_IN_OUT zfstring &ret \
-                , ZF_IN T_Type const &v \
-                ) { \
-            zftToString(ret, v); \
-        } \
-    };
+/**
+ * @brief util function to obtain object info
+ *
+ * for your custom type, you must use #ZFOUTPUT_TYPE to specialize your type
+ * before accessing this method,
+ * or supply your own specialization manually with this proto type:
+ * @code
+ *   void zftToString(
+ *           ZF_IN_OUT zfstring &s
+ *           , ZF_IN YourType const &v
+ *           );
+ * @endcode
+ */
+template<typename T_Type>
+inline void zftToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_IN T_Type const &v
+        ) {
+    s += ZFTOKEN_zftToStringNotAvailable;
+}
 
 /**
  * @brief declare your custom type conversion to string,
@@ -237,43 +229,7 @@ public:
             ) { \
         outputAction \
     } \
-    _ZFP_ZFOUTPUT_EXPAND(T_Type) \
     /** @endcond */
-/**
- * @brief see #ZFOUTPUT_TYPE
- *
- * usage:
- * @code
- *   ZFOUTPUT_TYPE_TEMPLATE(
- *           ZFM_EXPAND(typename T0, typename T1)
- *           , ZFM_EXPAND(YourType<T0, T1>)
- *           , {
- *               s += YourConverter(v);
- *           }
- *           )
- * @endcode
- */
-#define ZFOUTPUT_TYPE_TEMPLATE(templateList, T_Type, outputAction) \
-    /** @cond ZFPrivateDoc */ \
-    template<templateList> \
-    inline void zftToString( \
-            ZF_IN_OUT zfstring &s \
-            , ZF_IN T_Type const &v \
-            ) { \
-        outputAction \
-    } \
-    template<templateList> \
-    zfclassNotPOD ZFCoreInfoGetter<T_Type> { \
-    public: \
-        static void InfoGetter( \
-                ZF_IN_OUT zfstring &ret \
-                , ZF_IN T_Type const &v \
-                ) { \
-            zftToString(ret, v); \
-        } \
-    }; \
-    /** @endcond */
-
 /**
  * @brief see #ZFOUTPUT_TYPE
  *
@@ -294,12 +250,22 @@ public:
             ZF_IN_OUT zfstring &s \
             , ZF_IN T_Type const &v \
             ); \
-    _ZFP_ZFOUTPUT_EXPAND(T_Type) \
     /** @endcond */
 /** @brief see #ZFOUTPUT_TYPE_DECLARE */
 #define ZFOUTPUT_TYPE_DEFINE(T_Type, outputAction) \
     /** @cond ZFPrivateDoc */ \
     void zftToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_IN T_Type const &v \
+            ) { \
+        outputAction \
+    } \
+    /** @endcond */
+/** @brief see #ZFOUTPUT_TYPE */
+#define ZFOUTPUT_TYPE_TEMPLATE(T_typenameList, T_Type, outputAction) \
+    /** @cond ZFPrivateDoc */ \
+    template<T_typenameList> \
+    inline void zftToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN T_Type const &v \
             ) { \

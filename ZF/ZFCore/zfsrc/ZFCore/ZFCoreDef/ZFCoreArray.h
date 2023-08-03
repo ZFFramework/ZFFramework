@@ -169,12 +169,22 @@ public:
      */
     virtual void *refImpl(void) const zfpurevirtual;
 
+    /** @brief see #objectInfo */
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const zfpurevirtual;
+    /** @brief return object info */
+    inline zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
     /** @cond ZFPrivateDoc */
     virtual ZFCoreArrayBase &operator = (ZF_IN const ZFCoreArrayBase &ref) zfpurevirtual;
     virtual zfbool operator == (ZF_IN const ZFCoreArrayBase &ref) const zfpurevirtual;
     virtual zfbool operator != (ZF_IN const ZFCoreArrayBase &ref) const zfpurevirtual;
     /** @endcond */
 };
+ZFOUTPUT_TYPE(ZFCoreArrayBase, {v.objectInfoT(s);})
 
 // ============================================================
 /**
@@ -300,15 +310,9 @@ public:
     }
 
 public:
-    /** @brief see #objectInfo */
-    void objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const {
         this->objectInfoOfContentT(ret, 10);
-    }
-    /** @brief return object info */
-    inline zfstring objectInfo(void) const {
-        zfstring ret;
-        this->objectInfoT(ret);
-        return ret;
     }
 
 public:
@@ -317,12 +321,8 @@ public:
             ZF_IN_OUT zfstring &ret
             , ZF_IN_OPT zfindex maxCount = zfindexMax()
             , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            , ZF_IN_OPT typename ZFCoreInfoGetterType<T_Element>::InfoGetter infoGetter = zfnull
+            , ZF_IN_OPT typename ZFCoreInfoGetter<T_Element>::InfoGetter infoGetter = zfnull
             ) const {
-        if(infoGetter == zfnull) {
-            infoGetter = ZFCoreInfoGetter<T_Element>::InfoGetter;
-        }
-
         zfindex count = 0;
         ret += token.tokenLeft;
         for(; count < this->count() && count < maxCount; ++count) {
@@ -330,7 +330,12 @@ public:
                 ret += token.tokenSeparator;
             }
             ret += token.tokenValueLeft;
-            infoGetter(ret, this->get(count));
+            if(infoGetter != zfnull) {
+                infoGetter(ret, this->get(count));
+            }
+            else {
+                zftToString(ret, this->get(count));
+            }
             ret += token.tokenValueRight;
         }
         if(count < this->count()) {
@@ -345,7 +350,7 @@ public:
     zfstring objectInfoOfContent(
             ZF_IN_OPT zfindex maxCount = zfindexMax()
             , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            , ZF_IN_OPT typename ZFCoreInfoGetterType<T_Element>::InfoGetter infoGetter = zfnull
+            , ZF_IN_OPT typename ZFCoreInfoGetter<T_Element>::InfoGetter infoGetter = zfnull
             ) const {
         zfstring ret;
         this->objectInfoOfContentT(ret, maxCount, token, infoGetter);

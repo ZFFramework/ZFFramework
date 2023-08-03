@@ -298,7 +298,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     ZFOBJECT_REGISTER(v_##TypeName) \
     _ZFP_ZFTypeIdProgressUpdate v_##TypeName::_ZFP_ZFTypeId_progressUpdate = zfnull; \
     void v_##TypeName::objectInfoT(ZF_IN_OUT zfstring &ret) { \
-        ZFCoreInfoGetter<Type>::InfoGetter(ret, this->zfv); \
+        zftToString(ret, this->zfv); \
     } \
     void v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) { \
         zfself *refTmp = ZFCastZFObject(zfself *, ref); \

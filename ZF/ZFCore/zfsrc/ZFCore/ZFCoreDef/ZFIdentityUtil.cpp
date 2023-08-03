@@ -71,6 +71,10 @@ void ZFIdentityGenerator::idExistGetAll(ZF_IN_OUT ZFCoreArray<zfidentity> &ret) 
     }
 }
 
+void ZFIdentityGenerator::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfstringAppend(ret, "<ZFIdentityGenerator %s (%s)>", (const void *)this, (zfindex)d->used.size());
+}
+
 // ============================================================
 zfidentity zfidentityCalcString(
         ZF_IN const zfchar *src

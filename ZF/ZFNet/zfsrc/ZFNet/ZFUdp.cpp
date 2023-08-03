@@ -110,16 +110,16 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFUdpAddr, zfbool, remoteInfo
         , ZFMP_OUT(zfuint &, remotePort)
         )
 
-ZFOUTPUT_TYPE_DEFINE(ZFUdpAddr, {
-        zfstring remoteAddr;
-        zfuint remotePort;
-        if(v.remoteInfo(remoteAddr, remotePort)) {
-            zfstringAppend(s, "udp:%s:%s", remoteAddr, remotePort);
-        }
-        else {
-            s += "udp:null";
-        }
-    })
+void ZFUdpAddr::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfstring remoteAddr;
+    zfuint remotePort;
+    if(this->remoteInfo(remoteAddr, remotePort)) {
+        zfstringAppend(ret, "udp:%s:%s", remoteAddr, remotePort);
+    }
+    else {
+        ret += "udp:null";
+    }
+}
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFUdpPrivate {

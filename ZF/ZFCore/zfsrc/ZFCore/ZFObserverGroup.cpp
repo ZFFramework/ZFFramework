@@ -449,6 +449,17 @@ void ZFObserverGroupHolder::_ZFP_update(
     }
 }
 
+void ZFObserverGroupHolder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "<ZFObserverGroupHolder:";
+    if(d->target != zfnull) {
+        d->targetObserver->objectInfoT(ret);
+    }
+    else if(d->target != zfnull && d->target->objectHolded() != zfnull) {
+        d->target->objectHolded()->objectInfoT(ret);
+    }
+    ret += ">";
+}
+
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserverGroupHolder, ZFObserverGroupHolder)
 
 // ============================================================

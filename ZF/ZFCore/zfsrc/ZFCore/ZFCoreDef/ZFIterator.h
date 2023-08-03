@@ -102,6 +102,16 @@ public:
     }
 
 public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
+public:
     /** @cond ZFPrivateDoc */
     zfiterator(ZF_IN const zfiterator &ref) {
         if(ref.d.data) {
@@ -161,6 +171,7 @@ private:
     };
     _Data d;
 };
+ZFOUTPUT_TYPE(zfiterator, {v.objectInfoT(s);})
 
 extern ZFLIB_ZFCore const zfiterator _ZFP_zfiteratorInvalid;
 /**

@@ -70,7 +70,7 @@ public:
     /** @brief see #objectInfoOfContent */
     virtual void objectInfoOfContentT(ZF_IN_OUT zfstring &ret) const zfpurevirtual;
     /**
-     * @brief get content info or #ZFTOKEN_ZFCoreInfoGetterNotAvailable if not available
+     * @brief get content info or #ZFTOKEN_zftToStringNotAvailable if not available
      */
     virtual inline zfstring objectInfoOfContent(void) const {
         zfstring ret;
@@ -128,6 +128,7 @@ public:
      */
     virtual zfindex objectRetainCount(void) const zfpurevirtual;
 };
+ZFOUTPUT_TYPE(ZFCorePointerBase, {v.objectInfoT(s);})
 
 // ============================================================
 template<typename T_Pointer>
@@ -270,13 +271,13 @@ public:
     /** @brief see #objectInfoOfContent */
     virtual void objectInfoOfContentT(
             ZF_IN_OUT zfstring &ret
-            , ZF_IN typename ZFCoreInfoGetterType<T_Pointer>::InfoGetter infoGetter
+            , ZF_IN typename ZFCoreInfoGetter<T_Pointer>::InfoGetter infoGetter
             ) const {
         if(infoGetter != zfnull) {
             infoGetter(ret, d->pointerValue);
         }
         else {
-            ZFCoreInfoGetter<T_Pointer>::InfoGetter(ret, d->pointerValue);
+            zftToString(ret, d->pointerValue);
         }
     }
 

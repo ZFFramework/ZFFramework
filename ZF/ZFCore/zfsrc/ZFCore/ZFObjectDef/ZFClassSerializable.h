@@ -25,6 +25,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassInstanceObserverAddParam, ZFCl
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClass, const ZFClass *)
+ZFOUTPUT_TYPE(ZFClass, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFClassSerializable_h_

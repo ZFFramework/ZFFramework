@@ -8,6 +8,7 @@
 
 #include "ZFCoreArray.h"
 #include "ZFCoreStringConvert.h"
+#include "ZFCoreUtilMacro.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -154,10 +155,10 @@ public:
         return *this;
     }
     /** @cond ZFPrivateDoc */
-    zfbool operator == (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) const {
+    virtual inline zfbool operator == (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) const {
         return this->_filters == ref._filters;
     }
-    inline zfbool operator != (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) const {return !this->operator == (ref);}
+    virtual inline zfbool operator != (ZF_IN const ZFFilterBase<T_Public, T_Internal> &ref) const {return !this->operator == (ref);}
     /** @endcond */
     virtual ~ZFFilterBase(void) {
     }
@@ -441,6 +442,7 @@ private:
     _FiltersType _filters;
     _CustomFilterCallbacksType *_customFilters;
 };
+ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Public, typename T_Internal), ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>), {v.objectInfoT(s);})
 
 // ============================================================
 /**

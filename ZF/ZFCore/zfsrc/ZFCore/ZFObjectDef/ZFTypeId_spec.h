@@ -55,10 +55,6 @@ public:
 /** @endcond */
 
 // ============================================================
-ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallerInfo, ZFCallerInfo)
-ZFOUTPUT_TYPE(ZFCallerInfo, {v.callerInfoT(s);})
-
-// ============================================================
 // ZFObject
 /** @cond ZFPrivateDoc */
 template<typename T_Type>

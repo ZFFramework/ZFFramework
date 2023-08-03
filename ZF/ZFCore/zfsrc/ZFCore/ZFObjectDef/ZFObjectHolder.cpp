@@ -9,7 +9,12 @@ ZFOBJECT_REGISTER(ZFObjectHolder)
 void ZFObjectHolder::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     ret += " ";
-    zfsFromPointerT(ret, this->_ZFP_objectHolded.toObject());
+    if(this->_ZFP_objectHolded != zfnull) {
+        this->_ZFP_objectHolded->objectInfoT(ret);
+    }
+    else {
+        ret += ZFTOKEN_zfnull;
+    }
 }
 
 zfidentity ZFObjectHolder::objectHash(void) {

@@ -206,21 +206,9 @@ ZFCOMPARER_DEFAULT_DECLARE(zfstring, zfstring, {
 ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfindex, zfindex, ZFComparerNumeric)
 ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfint, zfint, ZFComparerNumeric)
 ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfuint, zfuint, ZFComparerNumeric)
-ZFCOMPARER_DEFAULT_DECLARE(zffloat, zffloat, {
-        if(zffloatIsSmaller(v0, v1)) {return ZFCompareSmaller;}
-        else if(zffloatIsGreater(v0, v1)) {return ZFCompareGreater;}
-        else {return ZFCompareTheSame;}
-    })
-ZFCOMPARER_DEFAULT_DECLARE(zfdouble, zfdouble, {
-        if(zffloatIsSmaller(v0, v1)) {return ZFCompareSmaller;}
-        else if(zffloatIsGreater(v0, v1)) {return ZFCompareGreater;}
-        else {return ZFCompareTheSame;}
-    })
-ZFCOMPARER_DEFAULT_DECLARE(zflongdouble, zflongdouble, {
-        if(zffloatIsSmaller(v0, v1)) {return ZFCompareSmaller;}
-        else if(zffloatIsGreater(v0, v1)) {return ZFCompareGreater;}
-        else {return ZFCompareTheSame;}
-    })
+ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zffloat, zffloat, ZFComparerNumeric)
+ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfdouble, zfdouble, ZFComparerNumeric)
+ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zflongdouble, zflongdouble, ZFComparerNumeric)
 ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zftimet, zftimet, ZFComparerNumeric)
 ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfflags, zfflags, ZFComparerNumeric)
 ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfidentity, zfidentity, ZFComparerNumeric)

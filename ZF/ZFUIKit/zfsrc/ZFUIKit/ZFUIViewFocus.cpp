@@ -300,6 +300,15 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, zfboo
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, ZFUIView *, focusEndParent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, zfbool, focusInternalViews)
 
+void ZFUIViewFocusNextParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfstringAppend(ret, "<ZFUIViewFocusNextParam focusDirection:%s focusLoopMode:%s focusEndParent:%s focusInternalViews:%s>"
+            , this->focusDirection()
+            , this->focusLoopMode()
+            , this->focusEndParent()
+            , this->focusInternalViews()
+            );
+}
+
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
         , ZFMP_IN(ZFUIView *, view)
