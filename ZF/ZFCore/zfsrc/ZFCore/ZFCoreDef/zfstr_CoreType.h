@@ -116,12 +116,12 @@ ZFOUTPUT_TYPE(ZFIndexRange, {
 })
 
 // ============================================================
-// generic for function addr
+// generic for function types
 /** @cond ZFPrivateDoc */
 template<typename T_Ret>
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(void)
+        , ZF_IN T_Ret (v)(void)
         ) {
     zfsFromPointerT(s, (const void *)v);
 }
@@ -130,7 +130,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             )
             ) {
@@ -142,7 +142,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             )
@@ -156,7 +156,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -172,7 +172,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -190,7 +190,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -210,7 +210,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -232,7 +232,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -256,7 +256,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -282,7 +282,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -310,7 +310,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -340,7 +340,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -372,7 +372,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -406,7 +406,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -442,7 +442,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -480,7 +480,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -520,7 +520,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
@@ -562,7 +562,7 @@ template<typename T_Ret
 >
 inline void zftToString(
         ZF_IN_OUT zfstring &s
-        , ZF_IN T_Ret (* const &v)(
+        , ZF_IN T_Ret (v)(
             T_P0
             , T_P1
             , T_P2
