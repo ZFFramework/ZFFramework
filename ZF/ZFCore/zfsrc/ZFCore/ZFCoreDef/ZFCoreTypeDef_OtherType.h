@@ -174,7 +174,17 @@ public:
             );
 };
 
-// ============================================================
+template<typename T_Type, typename T_Fix = void>
+zfclassNotPOD _ZFP_zftToStringFallback {
+public:
+    static inline void a(
+            ZF_IN_OUT zfstring &s
+            , ZF_IN T_Type const &v
+            ) {
+        s += ZFTOKEN_zftToStringNotAvailable;
+    }
+};
+
 /**
  * @brief util function to obtain object info
  *
@@ -193,7 +203,7 @@ inline void zftToString(
         ZF_IN_OUT zfstring &s
         , ZF_IN T_Type const &v
         ) {
-    s += ZFTOKEN_zftToStringNotAvailable;
+    _ZFP_zftToStringFallback<T_Type>::a(s, v);
 }
 
 /**

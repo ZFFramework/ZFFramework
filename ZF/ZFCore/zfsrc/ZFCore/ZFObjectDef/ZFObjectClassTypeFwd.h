@@ -203,43 +203,18 @@ extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(
 extern ZFLIB_ZFCore zfindex _ZFP_ZFSigForName(ZF_IN const zfchar *name);
 extern ZFLIB_ZFCore const zfchar *_ZFP_ZFSigNameAddr(ZF_IN const zfchar *name);
 
-/** @cond ZFPrivateDoc */
-template<typename T_Type, int T_ZFObject = 0>
-zfclassNotPOD _ZFP_zftToStringWrapper {
+template<typename T_Type>
+zfclassNotPOD _ZFP_zftToStringFallback<T_Type
+, typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrType)>::EnableIf
+> {
 public:
-    static void outputAction(ZF_IN_OUT zfstring &s, ZF_IN T_Type const &v) {
-        zftToString(s, *v);
+    static inline void a(
+            ZF_IN_OUT zfstring &s
+            , ZF_IN T_Type const &v
+            ) {
+        const_cast<T_Type &>(v).toObject()->objectInfoT(s);
     }
 };
-template<typename T_Type>
-zfclassNotPOD _ZFP_zftToStringWrapper<T_Type, 1> {
-public:
-    static void outputAction(ZF_IN_OUT zfstring &s, ZF_IN T_Type const &v) {
-        v->toObject()->objectInfoT(s);
-    }
-};
-
-template<typename T_Type>
-inline void zftToString(ZF_IN_OUT zfstring &s, ZF_IN const T_Type * const &v) {
-    if(v == zfnull) {
-        s += ZFTOKEN_zfnull;
-    }
-    else {
-        zftToString(s, *v);
-    }
-}
-template<typename T_Type>
-inline void zftToString(ZF_IN_OUT zfstring &s, ZF_IN T_Type * const &v) {
-    if(v == zfnull) {
-        s += ZFTOKEN_zfnull;
-    }
-    else {
-        _ZFP_zftToStringWrapper<T_Type *,
-                zftIsZFObject(typename zftTraits<T_Type>::TrType)
-            >::outputAction(s, v);
-    }
-}
-/** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 
