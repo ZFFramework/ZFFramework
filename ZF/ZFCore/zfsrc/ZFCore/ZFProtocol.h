@@ -550,7 +550,7 @@ private:
 
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass) \
     }; \
-    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (const ZFProtocol *)&v);})
+    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (ZFProtocol const &)v);})
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ImplementationClass) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass)
 

@@ -205,7 +205,7 @@ extern ZFLIB_ZFCore const zfchar *_ZFP_ZFSigNameAddr(ZF_IN const zfchar *name);
 
 template<typename T_Type>
 zfclassNotPOD _ZFP_zftToStringFallback<T_Type
-, typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrType)>::EnableIf
+, typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrNoRef)>::EnableIf
 > {
 public:
     static inline void a(

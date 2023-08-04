@@ -117,26 +117,26 @@ ZFOUTPUT_TYPE(ZFIndexRange, {
 
 // ============================================================
 // pointers fallback to reference
-/** @cond ZFPrivateDoc */
 template<typename T_Type>
-inline void zftToString(ZF_IN_OUT zfstring &s, ZF_IN const T_Type * const &v) {
-    if(v == zfnull) {
-        s += ZFTOKEN_zfnull;
-    }
-    else {
+zfclassNotPOD _ZFP_zftToStringFallback<T_Type *> {
+public:
+    static inline void a(
+            ZF_IN_OUT zfstring &s
+            , ZF_IN T_Type * const &v
+            ) {
         zftToString(s, *v);
     }
-}
+};
 template<typename T_Type>
-inline void zftToString(ZF_IN_OUT zfstring &s, ZF_IN T_Type * const &v) {
-    if(v == zfnull) {
-        s += ZFTOKEN_zfnull;
-    }
-    else {
+zfclassNotPOD _ZFP_zftToStringFallback<const T_Type *> {
+public:
+    static inline void a(
+            ZF_IN_OUT zfstring &s
+            , ZF_IN const T_Type * const &v
+            ) {
         zftToString(s, *v);
     }
-}
-/** @endcond */
+};
 
 // ============================================================
 // function addr fallback to raw pointer
