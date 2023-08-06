@@ -28,11 +28,55 @@ void ZFUIAutoLayoutRule::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 // ZFUIAutoLayoutParam
 ZFOBJECT_REGISTER(ZFUIAutoLayoutParam)
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIAlignFlags, layoutAlign) {
-    zfCoreLog("[ZFUIAutoLayout] layoutAlign not supported");
+static void _ZFP_ZFUIAutoLayoutAlignApply(
+        ZF_IN ZFUIAutoLayoutParam *lp
+        , ZF_IN const ZFUIAlignFlags &layoutAlign
+        , ZF_IN const ZFUIMargin &layoutMargin
+        ) {
+    if(ZFBitTest(layoutAlign, ZFUIAlign::e_Left)) {
+        lp->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.left);
+    }
+    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_Right)) {
+        lp->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.right);
+    }
+    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_LeftEdge)) {
+        lp->c_right()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.right);
+    }
+    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_RightEdge)) {
+        lp->c_left()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.left);
+    }
+    else {
+        lp
+            ->c_left()->c_toParentLeft()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.left)
+            ->c_right()->c_toParentRight()->c_weight(0)->c_biasX(0.5f)->c_offset(layoutMargin.right)
+            ;
+    }
+
+    if(ZFBitTest(layoutAlign, ZFUIAlign::e_Top)) {
+        lp->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.top);
+    }
+    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_Bottom)) {
+        lp->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.bottom);
+    }
+    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_TopEdge)) {
+        lp->c_bottom()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.bottom);
+    }
+    else if(ZFBitTest(layoutAlign, ZFUIAlign::e_BottomEdge)) {
+        lp->c_top()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.top);
+    }
+    else {
+        lp
+            ->c_top()->c_toParentTop()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.top)
+            ->c_bottom()->c_toParentBottom()->c_weight(0)->c_biasY(0.5f)->c_offset(layoutMargin.bottom)
+            ;
+    }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIAlignFlags, layoutMargin) {
-    zfCoreLog("[ZFUIAutoLayout] layoutMargin not supported");
+
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIAlignFlags, layoutAlign) {
+    _ZFP_ZFUIAutoLayoutAlignApply(this, propertyValue, this->layoutMargin());
+}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIAutoLayoutParam, ZFUIMargin, layoutMargin) {
+    _ZFP_ZFUIAutoLayoutAlignApply(this, this->layoutAlign(), propertyValue);
 }
 
 ZFMETHOD_DEFINE_0(ZFUIAutoLayoutParam, ZFUIAutoLayout *, ownerParent) {

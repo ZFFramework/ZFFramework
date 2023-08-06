@@ -11,22 +11,17 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMainEntry_sys_SDL_setup, ZFLevelZFFramew
     this->builtinWindow = zfnull;
     this->builtinRenderer = zfnull;
 
-    this->beforeListener = ZFCallbackForFunc(zfself::before);
-    ZFGlobalObserver().observerAdd(
-            ZFApp::EventAppParamDispatch(),
-            this->beforeListener,
-            ZFLevelZFFrameworkNormal
-        );
     this->afterListener = ZFCallbackForFunc(zfself::after);
     ZFGlobalObserver().observerAdd(
-            ZFApp::EventAppParamDispatch(),
+            ZFApp::EventAppEntry(),
             this->afterListener,
-            ZFLevelZFFrameworkPostHigh
+            ZFLevelZFFrameworkPostEssential
         );
+
+    zfself::before(this);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMainEntry_sys_SDL_setup) {
-    ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->beforeListener);
-    ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->afterListener);
+    ZFGlobalObserver().observerRemove(ZFApp::EventAppEntry(), this->afterListener);
 
     if(this->builtinWindow != zfnull) {
         SDL_DestroyWindow(this->builtinWindow);
@@ -40,8 +35,7 @@ private:
     ZFListener beforeListener;
     ZFListener afterListener;
 private:
-    static void before(ZF_IN const ZFArgs &zfargs) {
-        ZF_GLOBAL_INITIALIZER_CLASS(ZFMainEntry_sys_SDL_setup) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMainEntry_sys_SDL_setup);
+    static void before(ZF_IN zfself *d) {
         zfCoreAssert(d->builtinWindow == zfnull);
 
         if(ZFImpl_sys_SDL_embed) {
@@ -112,13 +106,32 @@ SDL_Renderer *ZFImpl_sys_SDL_mainRenderer(void) {
 }
 
 SDL_Window *ZFImpl_sys_SDL_CreateWindow(void) {
-    return SDL_CreateWindow(
+    SDL_Window *sdlWindow = SDL_CreateWindow(
         ""
         , SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED
         , 640, 480
         , SDL_WINDOW_SHOWN
             | SDL_WINDOW_RESIZABLE
         );
+#if ZF_ENV_DEBUG
+    if(sdlWindow != zfnull) {
+        int windowDisplay = SDL_GetWindowDisplayIndex(sdlWindow);
+
+        int windowW, windowH;
+        SDL_GetWindowSize(sdlWindow, &windowW, &windowH);
+        SDL_Rect client;
+        SDL_GetDisplayUsableBounds(windowDisplay, &client);
+        SDL_Rect screen;
+        SDL_GetDisplayBounds(windowDisplay, &screen);
+        zfCoreLogTrim("SDL window created, display: %s, window: (%s, %s), client: (%s, %s, %s, %s), screen: (%s, %s, %s, %s)"
+                , windowDisplay
+                , windowW, windowH
+                , client.x, client.y, client.w, client.h
+                , screen.x, screen.y, screen.w, screen.h
+                );
+    }
+#endif
+    return sdlWindow;
 }
 
 // ============================================================

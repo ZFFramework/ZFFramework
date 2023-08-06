@@ -10,6 +10,24 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
+/**
+ * @brief see #ZFObject::observerNotify
+ *
+ * notified during #zfimport\n
+ * param0 is a #v_ZFInput holds the item being load
+ */
+ZFOBSERVER_EVENT_GLOBAL(ImportBegin)
+/**
+ * @brief see #ZFObject::observerNotify
+ *
+ * notified during #zfimport\n
+ * param0 is a #v_ZFInput holds the item being load,
+ * param1 is a #ZFObject holds the load result
+ */
+ZFOBSERVER_EVENT_GLOBAL(ImportEnd)
+ZF_NAMESPACE_END(ZFGlobalEvent)
+
 /**
  * @brief util to import resource or class
  *

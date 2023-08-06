@@ -126,7 +126,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam {
     ZFPROPERTY_ASSIGN(zffloat, biasY, 0.5f)
 
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutAlign)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIAlignFlags, layoutMargin)
+    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, layoutMargin)
 
     /** @brief the owner parent view this param attached to */
     ZFMETHOD_DECLARE_0(ZFUIAutoLayout *, ownerParent)

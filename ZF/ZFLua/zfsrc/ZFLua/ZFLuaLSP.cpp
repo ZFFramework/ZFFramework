@@ -356,10 +356,10 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaLSPGenFile
         , ZFMP_IN(const ZFOutput &, output)
         ) {
     _ZFP_ZFLuaLSPGenFile_prefix(output);
+    _ZFP_ZFLuaLSPGenFile_spec(output);
     _ZFP_ZFLuaLSPGenFile_allNS(output);
     _ZFP_ZFLuaLSPGenFile_allClass(output);
     _ZFP_ZFLuaLSPGenFile_allMethod(output);
-    _ZFP_ZFLuaLSPGenFile_spec(output);
 }
 
 ZF_NAMESPACE_GLOBAL_END

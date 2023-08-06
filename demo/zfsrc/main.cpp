@@ -213,3 +213,33 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
     button->label()->text(zfstring(testCase->classNameFull() + zfslen(subModuleName) + 1));
 }
 
+// ============================================================
+ZF_GLOBAL_INITIALIZER_INIT(LuaRunner) {
+    ZFLISTENER(action) {
+        if(!ZFApp::appParams().isEmpty() && ZFRegExpFind(ZFApp::appParams()[0], ".*\\.lua$") != ZFIndexRangeZero()) {
+            zfargs.eventFiltered(zftrue);
+            const ZFCoreArray<zfstring> &appParams = ZFApp::appParams();
+
+            ZFPathInfo pathInfo;
+            if(!ZFPathInfoFromString(pathInfo, appParams[0])) {
+                pathInfo.pathType = ZFPathType_file();
+                pathInfo.pathData = appParams[0];
+            }
+
+            ZFCoreArray<zfautoObject> luaParams;
+            for(zfindex i = 1; i < appParams.count(); ++i) {
+                luaParams.add(zflineAlloc(v_zfstring, appParams[i]));
+            }
+            ZFLuaExecute(ZFInputForPathInfo(pathInfo), &luaParams);
+        }
+    } ZFLISTENER_END()
+    this->callback = action;
+    ZFGlobalObserver().observerAdd(ZFApp::EventAppParamDispatch(), this->callback);
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(LuaRunner) {
+    ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->callback);
+}
+private:
+    ZFListener callback;
+ZF_GLOBAL_INITIALIZER_END(LuaRunner)
+

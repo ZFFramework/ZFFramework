@@ -7,6 +7,11 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
+ZFOBSERVER_EVENT_GLOBAL_REGISTER(ImportBegin)
+ZFOBSERVER_EVENT_GLOBAL_REGISTER(ImportEnd)
+ZF_NAMESPACE_END(ZFGlobalEvent)
+
 typedef zfstlmap<zfstring, zfautoObject> _ZFP_zfimportCacheMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfimportDataHolder, ZFLevelZFFrameworkNormal) {
 }
@@ -29,7 +34,11 @@ static zfautoObject _ZFP_zfimportFile(ZF_IN const ZFInput &input) {
         }
     }
 
+    zfblockedAlloc(v_ZFInput, inputHolder);
+    inputHolder->zfv = input;
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventImportBegin(), inputHolder);
     zfautoObject ret = ZFObjectIOLoad(input);
+    ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventImportEnd(), inputHolder, ret);
     if(ret == zfnull) {
         return zfnull;
     }
