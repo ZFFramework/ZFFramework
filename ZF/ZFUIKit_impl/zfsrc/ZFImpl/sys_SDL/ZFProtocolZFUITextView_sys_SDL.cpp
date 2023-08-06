@@ -203,6 +203,7 @@ private:
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
             , ZF_IN const SDL_Rect &childRect
             , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN zffloat treeAlpha
             ) {
         ZFUITextView *owner = ZFCastZFObject(ZFUITextView *, nativeView->ownerZFUIView);
         if(owner == zfnull || owner->text().isEmpty()) {
@@ -349,6 +350,9 @@ private:
 
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, sdlSurface);
         ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
+        if(treeAlpha != 1) {
+            SDL_SetTextureAlphaMod(sdlTexture, treeAlpha * 255);
+        }
         SDL_RenderCopy(renderer, sdlTexture, &srcRect, &targetRectFixed);
         return zffalse;
     }

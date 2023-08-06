@@ -30,6 +30,17 @@ public:
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
 
 public:
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
+        if(this->childAni() == zfnull) {
+            ret += ZFTOKEN_zfnull;
+        }
+        else {
+            this->childAni()->objectInfoT(ret);
+        }
+    }
+
+public:
     /**
      * @brief child animation
      */
@@ -186,6 +197,10 @@ protected:
     virtual inline void aniGroupOnChildStop(ZF_IN ZFAnimation *childAni) {
         this->observerNotify(ZFAnimationGroup::EventAniGroupOnChildStop(), childAni);
     }
+
+protected:
+    zfoverride
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
 
 private:
     _ZFP_ZFAnimationGroupPrivate *d;

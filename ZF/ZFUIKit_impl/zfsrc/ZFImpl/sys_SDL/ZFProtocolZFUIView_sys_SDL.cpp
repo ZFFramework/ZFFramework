@@ -17,6 +17,7 @@ public:
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
             , ZF_IN const SDL_Rect &childRect
             , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN zffloat treeAlpha
             ) {
         if(nativeView->ownerZFUIView != zfnull) {
             ZFUIColor bg = nativeView->ownerZFUIView->viewBackgroundColor();
@@ -25,7 +26,7 @@ public:
                 SDL_GetRenderDrawColor(renderer, &rOld, &gOld, &bOld, &aOld);
                 SDL_SetRenderDrawColor(renderer
                         , 0xFF * ZFUIColorGetR(bg), 0xFF * ZFUIColorGetG(bg), 0xFF * ZFUIColorGetB(bg)
-                        , 0xFF * (nativeView->ownerZFUIView->viewAlpha() * ZFUIColorGetA(bg))
+                        , 0xFF * (ZFUIColorGetA(bg) * treeAlpha)
                     );
                 SDL_Rect rect;
                 ZFImpl_sys_SDL_View::renderRectCalc(rect, childRect, parentRect);

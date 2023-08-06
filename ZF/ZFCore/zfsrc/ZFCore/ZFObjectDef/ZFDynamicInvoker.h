@@ -51,16 +51,15 @@ public:
     virtual inline zfbool objectIsInternal(void) {return zftrue;}
     zfoverride
     virtual inline zfbool objectIsInternalPrivate(void) {return zftrue;}
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
+        ret += this->zfv();
+    }
 protected:
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}
     /** @brief init with value */
     virtual void objectOnInit(ZF_IN const zfchar *zfv) {this->objectOnInit(); this->zfv(zfv);}
-protected:
-    zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
-        ret += this->zfv();
-    }
 };
 /** @brief see #ZFDI_WrapperBase */
 zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextends ZFDI_WrapperBase {

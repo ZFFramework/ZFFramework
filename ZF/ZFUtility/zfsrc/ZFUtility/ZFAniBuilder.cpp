@@ -32,8 +32,9 @@ public:
             this->aniStep = zfAlloc(ZFAnimationGroup);
         }
     }
-    void aniStepCommit(void) {
+    void aniStepCommit(ZF_IN_OPT const ZFListener &cb = ZFListener()) {
         if(this->aniStep != zfnull) {
+            this->aniStep->observerAddForOnce(ZFAnimation::EventAniOnStopOrInvalid(), cb);
             this->aniGroup->childAniAdd(this->aniStep);
             zfRetainChange(this->aniStep, zfnull);
         }
@@ -41,7 +42,7 @@ public:
 };
 
 // ============================================================
-const ZFAniBuilder &ZFAniBuilder::to(
+const ZFAniBuilder &ZFAniBuilder::ani(
         ZF_IN const zfchar *name
         , ZF_IN ZFObject *from
         , ZF_IN ZFObject *to
@@ -57,7 +58,7 @@ const ZFAniBuilder &ZFAniBuilder::to(
     }
     return *this;
 }
-const ZFAniBuilder &ZFAniBuilder::to(
+const ZFAniBuilder &ZFAniBuilder::ani(
         ZF_IN const zfchar *name
         , ZF_IN const zfchar *from
         , ZF_IN const zfchar *to
@@ -98,25 +99,16 @@ const ZFAniBuilder &ZFAniBuilder::wait(ZF_IN zftimet waitTime) const {
     d->aniStepCommit();
     return *this;
 }
-const ZFAniBuilder &ZFAniBuilder::step(void) const {
-    d->aniStepCommit();
+const ZFAniBuilder &ZFAniBuilder::step(ZF_IN_OPT const ZFListener &cb /* = ZFListener() */) const {
+    d->aniStepCommit(cb);
     return *this;
 }
 
-const ZFAniBuilder &ZFAniBuilder::aniOnInvalid(ZF_IN const ZFListener &cb) const {
-    d->aniGroup->observerAdd(ZFAnimation::EventAniOnInvalid(), cb);
-    return *this;
-}
-const ZFAniBuilder &ZFAniBuilder::aniOnStart(ZF_IN const ZFListener &cb) const {
-    d->aniGroup->observerAdd(ZFAnimation::EventAniOnStart(), cb);
-    return *this;
-}
-const ZFAniBuilder &ZFAniBuilder::aniOnStop(ZF_IN const ZFListener &cb) const {
-    d->aniGroup->observerAdd(ZFAnimation::EventAniOnStop(), cb);
-    return *this;
-}
-const ZFAniBuilder &ZFAniBuilder::aniOnStopOrInvalid(ZF_IN const ZFListener &cb) const {
-    d->aniGroup->observerAdd(ZFAnimation::EventAniOnStopOrInvalid(), cb);
+const ZFAniBuilder &ZFAniBuilder::aniOnEvent(
+        ZF_IN zfidentity aniEvent
+        , ZF_IN const ZFListener &cb
+        ) const {
+    d->aniGroup->observerAdd(aniEvent, cb);
     return *this;
 }
 
@@ -127,6 +119,7 @@ const ZFAniBuilder &ZFAniBuilder::aniStart(void) const {
 }
 const ZFAniBuilder &ZFAniBuilder::aniStart(ZF_IN const ZFListener &onStopOrOnInvalidCallback) const {
     this->aniOnStopOrInvalid(onStopOrOnInvalidCallback);
+    this->aniStart();
     return *this;
 }
 
@@ -177,14 +170,14 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
     , ZFMP_IN(ZFObject *, aniTarget)
     )
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFAniBuilder, const ZFAniBuilder &, to
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFAniBuilder, const ZFAniBuilder &, ani
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(const zfchar *, from)
         , ZFMP_IN(const zfchar *, to)
         , ZFMP_IN_OPT(zftimet, aniDuration, 0)
         , ZFMP_IN_OPT(ZFTimeLineCurve *, aniCurve, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFAniBuilder, const ZFAniBuilder &, to
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFAniBuilder, const ZFAniBuilder &, ani
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
@@ -200,7 +193,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFAniBuilder, const ZFAniBuilder &, 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, wait
         , ZFMP_IN(zftimet, waitTime)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, const ZFAniBuilder &, step)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, step
+        , ZFMP_IN_OPT(const ZFListener &, cb, ZFListener())
+        )
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, aniOnInvalid
         , ZFMP_IN(const ZFListener &, cb)
@@ -212,6 +207,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, 
         , ZFMP_IN(const ZFListener &, cb)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, aniOnStopOrInvalid
+        , ZFMP_IN(const ZFListener &, cb)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFAniBuilder, const ZFAniBuilder &, aniOnEvent
+        , ZFMP_IN(zfidentity, aniEvent)
         , ZFMP_IN(const ZFListener &, cb)
         )
 

@@ -221,6 +221,13 @@ protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void);
 
+protected:
+    zfoverride
+    virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+        zfsuper::objectInfoOnAppend(ret);
+        ZFClassUtil::objectPropertyInfo(ret, this);
+    }
+
 private:
     _ZFP_ZFAnimationPrivate *d;
 };

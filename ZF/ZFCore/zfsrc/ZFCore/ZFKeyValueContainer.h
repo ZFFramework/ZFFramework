@@ -183,12 +183,12 @@ protected:
     zfoverride
     virtual void objectOnDeallocPrepare(void);
 
+public:
     zfoverride
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret) {
         this->objectInfoOfContentT(ret, 5);
     }
 
-public:
     zfoverride
     virtual zfidentity objectHash(void);
     zfoverride

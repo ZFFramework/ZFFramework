@@ -145,7 +145,7 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj);
 
-protected:
+public:
     /** @brief see #ZFObject::objectOnDeallocPrepare, remove all contents before dealloc */
     zfoverride
     virtual void objectOnDeallocPrepare(void);
@@ -155,7 +155,6 @@ protected:
         this->objectInfoOfContentT(ret, 10);
     }
 
-public:
     zfoverride
     virtual zfidentity objectHash(void);
     zfoverride

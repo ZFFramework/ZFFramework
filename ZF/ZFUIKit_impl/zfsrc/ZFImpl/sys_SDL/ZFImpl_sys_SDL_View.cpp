@@ -102,10 +102,11 @@ static void _ZFP_ZFImpl_sys_SDL_View_render(
         , ZF_IN SDL_Renderer *renderer
         , ZF_IN const SDL_Rect &childRect
         , ZF_IN const SDL_Rect &parentRect
+        , ZF_IN zffloat treeAlpha
         ) {
     zfbool done = zffalse;
     for(zfindex i = 0; i < view->renderImpls.count(); ++i) {
-        done |= view->renderImpls[i](renderer, view, childRect, parentRect);
+        done |= view->renderImpls[i](renderer, view, childRect, parentRect, treeAlpha);
     }
 
     if(!done) {
@@ -118,7 +119,7 @@ static void _ZFP_ZFImpl_sys_SDL_View_render(
             childRectNew.y = childRect.y + child->rect.y;
             childRectNew.w = child->rect.w;
             childRectNew.h = child->rect.h;
-            child->render(renderer, childRectNew, parentRectNew);
+            child->render(renderer, childRectNew, parentRectNew, child->ownerZFUIView != zfnull ? treeAlpha * child->ownerZFUIView->viewAlpha() : 1);
         }
     }
 }
@@ -127,6 +128,7 @@ void ZFImpl_sys_SDL_View::render(
         ZF_IN SDL_Renderer *renderer
         , ZF_IN const SDL_Rect &childRect
         , ZF_IN const SDL_Rect &parentRect
+        , ZF_IN zffloat treeAlpha
         ) {
     this->renderRequested = zffalse;
     if(this->ownerZFUIView != zfnull && !this->ownerZFUIView->viewVisible()) {
@@ -145,19 +147,19 @@ void ZFImpl_sys_SDL_View::render(
         && this->renderCacheRequired == 0
     ) {
         this->renderCacheRemove();
-        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect);
+        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
         return;
     }
 
     this->renderCachePrepare(renderer, zfmMin(parentRect.w, this->rect.w), zfmMin(parentRect.h, this->rect.h));
     if(this->renderCache == zfnull) {
-        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect);
+        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
         return;
     }
     if(!this->renderCacheValid) {
         ZFImpl_sys_SDL_zfblockedRenderTarget(renderTargetChanged, renderer, this->renderCache);
         if(!renderTargetChanged) {
-            _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect);
+            _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, childRect, parentRect, treeAlpha);
             return;
         }
 
@@ -172,7 +174,7 @@ void ZFImpl_sys_SDL_View::render(
         cacheRect.y = 0;
         cacheRect.w = childRect.w;
         cacheRect.h = childRect.h;
-        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, cacheRect, cacheRect);
+        _ZFP_ZFImpl_sys_SDL_View_render(this, renderer, cacheRect, cacheRect, treeAlpha);
     }
 
     // support 2D transform only

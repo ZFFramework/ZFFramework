@@ -103,10 +103,10 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}
 
+public:
     zfoverride
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 
-public:
     zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
         zfself *t = ZFCastZFObject(zfself *, anotherObj);

@@ -54,6 +54,7 @@ private:
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
             , ZF_IN const SDL_Rect &childRect
             , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN zffloat treeAlpha
             ) {
         ZFUIImageView *owner = ZFCastZFObject(ZFUIImageView *, nativeView->ownerZFUIView);
         if(owner == zfnull || owner->image() == zfnull) {
@@ -70,6 +71,9 @@ private:
 
         SDL_Texture *sdlTexture = SDL_CreateTextureFromSurface(renderer, nativeImage);
         ZFImpl_sys_SDL_zfblockedDestroyTexture(sdlTexture);
+        if(treeAlpha != 1) {
+            SDL_SetTextureAlphaMod(sdlTexture, treeAlpha * 255);
+        }
         if(owner->image()->imageNinePatch() == ZFUIMarginZero()) {
             SDL_RenderCopy(renderer, sdlTexture, zfnull, &targetRect);
         }

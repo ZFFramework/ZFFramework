@@ -16,21 +16,27 @@ zfclassFwd _ZFP_ZFAniBuilderPrivate;
  * usage:
  * @code
  *   ZFAniBuilder(target)
- *       .to("prop0", "from0", "to0", duration, curve)
- *       .wait(waitTime)
- *       .to("groupedProp1", "from1", "to1")
- *       .to("groupedProp2", "from1", "to1")
- *       .step()
- *       .customAni(customAniCallback)
- *       .aniOnStart(callback)
+ *       .ani("prop0", "from0", "to0", duration, curve) // ani run in group 1
+ *
+ *       .wait(waitTime)                                // wait before next ani group
+ *
+ *       .ani("prop1", "from1", "to1")                  // ani run in group 2
+ *       .ani("prop2", "from2", "to2")                  // ani run in group 2
+ *       .step(callback)                                // commit group 2
+ *
+ *       .customAni(customAniCallback)                  // custom ani, run in group 3
+ *
+ *       .aniOnStart(callback)                          // attach observers
  *       .aniOnStop(callback)
  *       .aniStart(onStopOrOnInvalidCallback);
  * @endcode
+ *
+ * see also #ZFAni
  */
 zffinal zfclassLikePOD ZFAniBuilder {
 public:
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &to(
+    const ZFAniBuilder &ani(
             ZF_IN const zfchar *name
             , ZF_IN const zfchar *from
             , ZF_IN const zfchar *to
@@ -38,7 +44,7 @@ public:
             , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
             ) const;
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &to(
+    const ZFAniBuilder &ani(
             ZF_IN const zfchar *name
             , ZF_IN ZFObject *from
             , ZF_IN ZFObject *to
@@ -61,17 +67,30 @@ public:
     /** @brief see #ZFAniBuilder */
     const ZFAniBuilder &wait(ZF_IN zftimet waitTime) const;
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &step(void) const;
+    const ZFAniBuilder &step(ZF_IN_OPT const ZFListener &cb = ZFListener()) const;
 
 public:
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnInvalid(ZF_IN const ZFListener &cb) const;
+    inline const ZFAniBuilder &aniOnInvalid(ZF_IN const ZFListener &cb) const {
+        return this->aniOnEvent(ZFAnimation::EventAniOnInvalid(), cb);
+    }
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnStart(ZF_IN const ZFListener &cb) const;
+    inline const ZFAniBuilder &aniOnStart(ZF_IN const ZFListener &cb) const {
+        return this->aniOnEvent(ZFAnimation::EventAniOnStart(), cb);
+    }
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnStop(ZF_IN const ZFListener &cb) const;
+    inline const ZFAniBuilder &aniOnStop(ZF_IN const ZFListener &cb) const {
+        return this->aniOnEvent(ZFAnimation::EventAniOnStop(), cb);
+    }
     /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &aniOnStopOrInvalid(ZF_IN const ZFListener &cb) const;
+    inline const ZFAniBuilder &aniOnStopOrInvalid(ZF_IN const ZFListener &cb) const {
+        return this->aniOnEvent(ZFAnimation::EventAniOnStopOrInvalid(), cb);
+    }
+    /** @brief see #ZFAniBuilder */
+    const ZFAniBuilder &aniOnEvent(
+            ZF_IN zfidentity aniEvent
+            , ZF_IN const ZFListener &cb
+            ) const;
 
 public:
     /** @brief get the impl animation */

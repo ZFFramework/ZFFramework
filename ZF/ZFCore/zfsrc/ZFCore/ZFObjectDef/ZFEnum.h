@@ -74,10 +74,10 @@ protected:
     zfoverride
     virtual void objectOnInit(void) {zfsuper::objectOnInit();}
 
+public:
     zfoverride
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 
-public:
     /**
      * @brief compare result of two enum values as int,
      *   or return ZFCompareUncomparable if any of them are ZFEnumInvalid

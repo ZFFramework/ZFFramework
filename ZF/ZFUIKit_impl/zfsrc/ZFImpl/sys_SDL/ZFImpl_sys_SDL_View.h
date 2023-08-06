@@ -58,6 +58,7 @@ public:
             , ZF_IN ZFImpl_sys_SDL_View *nativeView
             , ZF_IN const SDL_Rect &childRect
             , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN zffloat treeAlpha
             );
 
     enum {
@@ -183,6 +184,7 @@ public:
             ZF_IN SDL_Renderer *renderer
             , ZF_IN const SDL_Rect &childRect
             , ZF_IN const SDL_Rect &parentRect
+            , ZF_IN zffloat treeAlpha
             );
 
     /**

@@ -440,5 +440,10 @@ void ZFAnimationGroup::aniImplStop(void) {
     zfsuper::aniImplStop();
 }
 
+void ZFAnimationGroup::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
+    zfsuper::objectInfoOnAppend(ret);
+    d->childAnis->objectInfoT(ret);
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
