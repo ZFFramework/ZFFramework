@@ -179,6 +179,32 @@ zfbool ZFPropertyDynamicRegisterParam::operator == (ZF_IN ZFPropertyDynamicRegis
     return (d == ref.d);
 }
 
+void ZFPropertyDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "<ZFPropertyDynamicRegisterParam ";
+
+    if(this->propertyClassOfRetainProperty() != zfnull) {
+        ret += this->propertyClassOfRetainProperty()->classNameFull();
+        ret += " ";
+    }
+    else if(!zfstringIsEmpty(this->propertyTypeName())) {
+        ret += this->propertyTypeName();
+        ret += " ";
+    }
+    else if(!zfstringIsEmpty(this->propertyTypeId())) {
+        ret += this->propertyTypeId();
+        ret += " ";
+    }
+
+    if(this->propertyOwnerClass() != zfnull) {
+        ret += this->propertyOwnerClass()->classNameFull();
+        ret += "::";
+    }
+
+    ret += this->propertyName();
+
+    ret += ">";
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
 #if _ZFP_ZFOBJECT_METHOD_REG

@@ -506,7 +506,13 @@ ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToString(
 /**
  * @brief see #ZFTYPEID_DECLARE
  */
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClassDataChangeType, ZFClassDataChangeType)
+ZFOUTPUT_TYPE(ZFClassDataChangeType, {ZFClassDataChangeTypeToString(s, v);})
+/**
+ * @brief see #ZFTYPEID_DECLARE
+ */
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFClassDataChangeData, ZFClassDataChangeData)
+ZFOUTPUT_TYPE(ZFClassDataChangeData, {v.objectInfoT(s);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -564,9 +570,11 @@ ZFOUTPUT_TYPE(ZFFilterForZFObject, {v.objectInfoT(s);})
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodGenericInvoker, ZFMethodGenericInvoker)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodDynamicRegisterParam, ZFMethodDynamicRegisterParam)
+ZFOUTPUT_TYPE(ZFMethodDynamicRegisterParam, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPropertyDynamicRegisterInitValueCallback, ZFPropertyDynamicRegisterInitValueCallback)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterParam)
+ZFOUTPUT_TYPE(ZFPropertyDynamicRegisterParam, {v.objectInfoT(s);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFComparer_ZFObject, ZFComparer<ZFObject *>::Comparer)
 

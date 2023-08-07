@@ -472,6 +472,17 @@ public:
      * @brief sibling index
      */
     zfindex siblingIndex;
+
+public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
 public:
     /** @cond ZFPrivateDoc */
     ZFXmlVisitData(void) {}
@@ -498,6 +509,7 @@ public:
     /** @endcond */
 };
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlVisitData, ZFXmlVisitData)
+ZFOUTPUT_TYPE(ZFXmlVisitData, {v.objectInfoT(s);})
 
 // ============================================================
 /**
@@ -564,6 +576,7 @@ public:
     }
     /** @endcond */
 };
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFXmlOutputToken, ZFXmlOutputToken)
 
 /**
  * @brief output flags for output a xml

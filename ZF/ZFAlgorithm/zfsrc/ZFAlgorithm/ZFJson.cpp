@@ -26,6 +26,21 @@ zfbool ZFJsonOutputToken::operator == (ZF_IN ZFJsonOutputToken const &ref) const
             && this->jsonArrayTagRight == ref.jsonArrayTagRight
         );
 }
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFJsonOutputToken, ZFJsonOutputToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonNewLineToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonIndentToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonValueSeparatorToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonSeparatorToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonSeparatorInSameLineToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonKeyTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonKeyTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonValueTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonValueTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonObjectTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonObjectTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonArrayTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputToken, zfstring, jsonArrayTagRight)
+
 zfbool ZFJsonOutputFlags::operator == (ZF_IN ZFJsonOutputFlags const &ref) const {
     return (zftrue
             && this->jsonToken == ref.jsonToken
@@ -38,6 +53,13 @@ zfbool ZFJsonOutputFlags::operator == (ZF_IN ZFJsonOutputFlags const &ref) const
         );
 }
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFJsonOutputFlags, ZFJsonOutputFlags)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputFlags, ZFJsonOutputToken, jsonToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputFlags, zfstring, jsonGlobalLineBeginToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputFlags, zfbool, jsonObjectAddNewLineForContent)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputFlags, zfbool, jsonObjectTagInSameLineIfNoContent)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputFlags, zfbool, jsonArrayAddNewLineForContent)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputFlags, zfbool, jsonArrayContentTagInSameLine)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFJsonOutputFlags, zfbool, jsonArrayTagInSameLineIfNoContent)
 
 // ============================================================
 ZFEXPORT_VAR_READONLY_DEFINE(ZFJsonOutputFlags, ZFJsonOutputFlagsDefault, ZFJsonOutputFlags())

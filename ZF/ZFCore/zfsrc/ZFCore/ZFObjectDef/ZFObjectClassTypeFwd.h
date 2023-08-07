@@ -177,6 +177,15 @@ typedef enum {
     ZFClassDataChangeTypeClassAliasAttach, /**< @brief #ZFClass::classAliasTo attach */
     ZFClassDataChangeTypeClassAliasDetach, /**< @brief #ZFClass::classAliasTo detach */
 } ZFClassDataChangeType;
+/** @brief string tokens */
+#define ZFTOKEN_ZFClassDataChangeTypeAttach "Attach"
+/** @brief string tokens */
+#define ZFTOKEN_ZFClassDataChangeTypeDetach "Detach"
+/** @brief string tokens */
+#define ZFTOKEN_ZFClassDataChangeTypeClassAliasAttach "ClassAliasAttach"
+/** @brief string tokens */
+#define ZFTOKEN_ZFClassDataChangeTypeClassAliasDetach "ClassAliasDetach"
+
 /** @brief data holder for #ZFGlobalEvent::EventClassDataChange */
 zfclassPOD ZFLIB_ZFCore ZFClassDataChangeData {
 public:
@@ -191,6 +200,16 @@ public:
      * it's the aliased class name
      */
     const zfchar *name;
+
+public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
 };
 extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(
         ZF_IN ZFClassDataChangeType changeType

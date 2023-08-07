@@ -157,6 +157,16 @@ public:
     ZFObject *methodParamDefaultValueAt(ZF_IN zfindex index) const;
 
 public:
+    /** @brief see #objectInfo */
+    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
+    /** @brief return object info */
+    zffinal zfstring objectInfo(void) const {
+        zfstring ret;
+        this->objectInfoT(ret);
+        return ret;
+    }
+
+public:
     /** @cond ZFPrivateDoc */
     ZFMethodDynamicRegisterParam(void);
     ZFMethodDynamicRegisterParam(ZF_IN ZFMethodDynamicRegisterParam const &ref);

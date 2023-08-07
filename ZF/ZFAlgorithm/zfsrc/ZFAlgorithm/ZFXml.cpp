@@ -7,7 +7,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFENUM_DEFINE(ZFXmlType)
 ZFENUM_DEFINE(ZFXmlVisitType)
 
+void ZFXmlVisitData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfstringAppend(ret, "<ZFXmlVisitData xmlItem:%s(%s) xmlVisitType:%s depth:%s siblingIndex:%s>"
+            , this->xmlItem.xmlType()
+            , (const void *)&this->xmlItem
+            , this->xmlVisitType
+            , this->depth
+            , this->siblingIndex
+            );
+}
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFXmlVisitData, ZFXmlVisitData)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlVisitData, ZFXml, xmlItem)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlVisitData, ZFXmlVisitTypeEnum, xmlVisitType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlVisitData, zfindex, depth)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlVisitData, zfindex, siblingIndex)
+
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFXmlVisitCallback, ZFXmlVisitCallback)
 ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlVisitCallback, ZFXmlVisitCallbackDefault, ZFXmlVisitCallbackForOutput())
 
@@ -39,6 +53,31 @@ zfbool ZFXmlOutputToken::operator == (ZF_IN ZFXmlOutputToken const &ref) const {
             && this->xmlCommentTagRight == ref.xmlCommentTagRight
         );
 }
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFXmlOutputToken, ZFXmlOutputToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlNewLineToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlIndentToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlDeclarationTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlDeclarationTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlDocTypeTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlDocTypeTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlPITagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlPITagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementBeginTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementBeginTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementEndTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementEndTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementSingleTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlElementSingleTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeEqualTag)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeQuoteTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeQuoteTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeSingleQuoteTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlAttributeSingleQuoteTagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlTextCDATATagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlTextCDATATagRight)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlCommentTagLeft)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputToken, zfstring, xmlCommentTagRight)
+
 zfbool ZFXmlOutputFlags::operator == (ZF_IN ZFXmlOutputFlags const &ref) const {
     return (zftrue
             && this->xmlToken == ref.xmlToken
@@ -51,6 +90,13 @@ zfbool ZFXmlOutputFlags::operator == (ZF_IN ZFXmlOutputFlags const &ref) const {
         );
 }
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFXmlOutputFlags, ZFXmlOutputFlags)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputFlags, ZFXmlOutputToken, xmlToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputFlags, zfstring, xmlGlobalLineBeginToken)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputFlags, zfindex, xmlElementAttributeCountBeforeAddNewLine)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputFlags, zfbool, xmlElementAddNewLineAtHeadIfNotSingleLine)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputFlags, zfbool, xmlElementTrimTagIfNoChildren)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputFlags, zfbool, xmlElementEndTagAtSameLineIfNoChildElement)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFXmlOutputFlags, zfbool, xmlAttributeUseSingleQuote)
 
 // ============================================================
 ZFEXPORT_VAR_READONLY_DEFINE(ZFXmlOutputFlags, ZFXmlOutputFlagsDefault, ZFXmlOutputFlags())

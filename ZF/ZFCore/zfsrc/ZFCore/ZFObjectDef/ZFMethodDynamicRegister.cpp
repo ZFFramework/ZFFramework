@@ -288,6 +288,80 @@ zfbool ZFMethodDynamicRegisterParam::operator == (ZF_IN ZFMethodDynamicRegisterP
     return (d == ref.d);
 }
 
+void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "<ZFMethodDynamicRegisterParam ";
+
+    if(this->methodPrivilegeType() != ZFMethodPrivilegeTypePublic) {
+        ZFMethodPrivilegeTypeToString(ret, this->methodPrivilegeType());
+        ret += ":";
+    }
+
+    switch(this->methodType()) {
+        case ZFMethodTypeStatic:
+            ret += "static ";
+            break;
+        case ZFMethodTypeVirtual:
+            ret += "virtual ";
+            break;
+        default:
+            break;
+    }
+
+    if(!zfstringIsEmpty(this->methodReturnTypeName())) {
+        ret += this->methodReturnTypeName();
+        ret += " ";
+    }
+    else if(!zfstringIsEmpty(this->methodReturnTypeId())) {
+        ret += this->methodReturnTypeId();
+        ret += " ";
+    }
+
+    if(this->methodOwnerClass() != zfnull) {
+        ret += this->methodOwnerClass()->classNameFull();
+        ret += "::";
+    }
+    else if(!zfstringIsEmpty(ZFNamespaceSkipGlobal(this->methodNamespace()))) {
+        ret += ZFNamespaceSkipGlobal(this->methodNamespace());
+        ret += "::";
+    }
+
+    ret += this->methodName();
+    ret += "(";
+    if(this->methodParamCount() == 0) {
+        ret += "void";
+    }
+    else {
+        for(zfindex i = 0; i < this->methodParamCount(); ++i) {
+            if(i > 0) {
+                ret += ", ";
+            }
+            if(!zfstringIsEmpty(this->methodParamTypeNameAt(i))) {
+                ret += this->methodParamTypeNameAt(i);
+                ret += " ";
+            }
+            else if(!zfstringIsEmpty(this->methodParamTypeIdAt(i))) {
+                ret += this->methodParamTypeIdAt(i);
+                ret += " ";
+            }
+
+            ret += this->methodParamNameAt(i);
+
+            if(this->methodParamDefaultValueAt(i) != zfnull) {
+                ret += " = ";
+                this->methodParamDefaultValueAt(i)->objectInfoT(ret);
+            }
+            else if(this->methodParamDefaultValueCallbackAt(i) != zfnull) {
+                ret += " = func(";
+                zfsFromPointerT(ret, (const void *)this->methodParamDefaultValueCallbackAt(i));
+                ret += ")";
+            }
+        }
+    }
+    ret += ")";
+
+    ret += ">";
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
 #if _ZFP_ZFOBJECT_METHOD_REG

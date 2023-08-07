@@ -105,6 +105,7 @@ public:
     }
     /** @endcond */
 };
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFJsonOutputToken, ZFJsonOutputToken)
 /**
  * @brief flags to output json items
  */

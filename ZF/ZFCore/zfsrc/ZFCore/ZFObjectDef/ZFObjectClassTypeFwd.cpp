@@ -4,6 +4,17 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+void ZFClassDataChangeData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    zfstringAppend(ret, "<ZFClassDataChangeData changeType:%s changedClass:%s changedProperty:%s changedMethod:%s name:%s>"
+            , this->changeType
+            , this->changedClass
+            , this->changedProperty
+            , this->changedMethod
+            , this->name
+            );
+}
+
+// ============================================================
 // used to reduce memory usage for static names (class/method/property's name/internalId/...)
 typedef zfstlhashmap<zfstring, zfindex, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFSigMapType;
 static _ZFP_ZFSigMapType &_ZFP_ZFSigMap(void) {

@@ -5,7 +5,65 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
+ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClassDataChangeType, ZFClassDataChangeType, {
+        const zfchar *tokens[] = ZFM_EXPAND({
+            ZFTOKEN_ZFClassDataChangeTypeAttach,
+            ZFTOKEN_ZFClassDataChangeTypeDetach,
+            ZFTOKEN_ZFClassDataChangeTypeClassAliasAttach,
+            ZFTOKEN_ZFClassDataChangeTypeClassAliasDetach,
+            "",
+        });
+        zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
+        v = ZFClassDataChangeTypeAttach;
+        switch(matched) {
+            case 0:
+                v = ZFClassDataChangeTypeAttach;
+                return zftrue;
+            case 1:
+                v = ZFClassDataChangeTypeDetach;
+                return zftrue;
+            case 2:
+                v = ZFClassDataChangeTypeClassAliasAttach;
+                return zftrue;
+            case 3:
+                v = ZFClassDataChangeTypeClassAliasDetach;
+                return zftrue;
+            default:
+                return zffalse;
+        }
+    }, {
+        switch(v) {
+            case ZFClassDataChangeTypeAttach:
+                s += ZFTOKEN_ZFClassDataChangeTypeAttach;
+                return zftrue;
+            case ZFClassDataChangeTypeDetach:
+                s += ZFTOKEN_ZFClassDataChangeTypeDetach;
+                return zftrue;
+            case ZFClassDataChangeTypeClassAliasAttach:
+                s += ZFTOKEN_ZFClassDataChangeTypeClassAliasAttach;
+                return zftrue;
+            case ZFClassDataChangeTypeClassAliasDetach:
+                s += ZFTOKEN_ZFClassDataChangeTypeClassAliasDetach;
+                return zftrue;
+            default:
+                zfCoreCriticalShouldNotGoHere();
+                return zffalse;
+        }
+    })
+ZFEXPORT_ENUM_DEFINE(ZFClassDataChangeType
+        , ZFClassDataChangeTypeAttach
+        , ZFClassDataChangeTypeDetach
+        , ZFClassDataChangeTypeClassAliasAttach
+        , ZFClassDataChangeTypeClassAliasDetach
+        )
+
+// ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(ZFClassDataChangeData, ZFClassDataChangeData)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFClassDataChangeData, ZFClassDataChangeType, changeType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFClassDataChangeData, const ZFClass *, changedClass)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFClassDataChangeData, const ZFProperty *, changedProperty)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFClassDataChangeData, const ZFMethod *, changedMethod)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR_READONLY(v_ZFClassDataChangeData, const zfchar *, name)
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterForZFClassType, ZFFilterForZFClassType, {
@@ -70,6 +128,14 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterForZFClassType, ZFFilterForZFClassTy
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFFilterForZFClassType
+        , ZFFilterForZFClassTypeInclude
+        , ZFFilterForZFClassTypeExclude
+        , ZFFilterForZFClassTypeIncludeChildOf
+        , ZFFilterForZFClassTypeIncludeParentOf
+        , ZFFilterForZFClassTypeExcludeChildOf
+        , ZFFilterForZFClassTypeExcludeParentOf
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodPrivilegeType, ZFMethodPrivilegeType, {

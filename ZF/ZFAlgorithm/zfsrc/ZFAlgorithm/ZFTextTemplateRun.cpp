@@ -3,6 +3,10 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFTextTemplateRunParam, ZFTextTemplateRunParam)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, dirNameFilter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, dirContentFilter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, fileNameFilter)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFTextTemplateRunParam, ZFFilterForString, fileContentFilter)
 
 ZFTextTemplateRunParam &_ZFP_ZFTextTemplateRunParamDefault(void) {
     static ZFTextTemplateRunParam d;
