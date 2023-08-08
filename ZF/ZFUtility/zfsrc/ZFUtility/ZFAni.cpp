@@ -108,14 +108,14 @@ public:
             if(!typeClass->classIsTypeOf(ZFSerializable::ClassData())) {
                 return zffalse;
             }
+            _from = typeClass->newInstance();
             if(!zfstringIsEmpty(from)) {
-                _from = typeClass->newInstance();
                 if(!_from.to<ZFSerializable *>()->serializeFromString(from)) {
                     return zffalse;
                 }
             }
+            _to = typeClass->newInstance();
             if(!zfstringIsEmpty(to)) {
-                _to = typeClass->newInstance();
                 if(!_to.to<ZFSerializable *>()->serializeFromString(to)) {
                     return zffalse;
                 }
@@ -126,14 +126,14 @@ public:
             if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull || typeInfo->typeIdClass()->classIsAbstract()) {
                 return zffalse;
             }
+            _from = typeInfo->typeIdClass()->newInstance();
             if(!zfstringIsEmpty(from)) {
-                _from = typeInfo->typeIdClass()->newInstance();
                 if(!_from.to<ZFTypeIdWrapper *>()->wrappedValueFromString(from)) {
                     return zffalse;
                 }
             }
+            _to = typeInfo->typeIdClass()->newInstance();
             if(!zfstringIsEmpty(to)) {
-                _to = typeInfo->typeIdClass()->newInstance();
                 if(!_to.to<ZFTypeIdWrapper *>()->wrappedValueFromString(to)) {
                     return zffalse;
                 }

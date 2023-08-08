@@ -97,25 +97,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, zfidentityCalcPointer
         )
 
 // ============================================================
-// ZFLevel
-ZFEXPORT_ENUM_DEFINE(ZFLevel
-    , ZFLevelZFFrameworkStatic
-    , ZFLevelZFFrameworkEssential
-    , ZFLevelZFFrameworkHigh
-    , ZFLevelZFFrameworkNormal
-    , ZFLevelZFFrameworkLow
-    , ZFLevelAppEssential
-    , ZFLevelAppHigh
-    , ZFLevelAppNormal
-    , ZFLevelAppLow
-    , ZFLevelZFFrameworkPostLow
-    , ZFLevelZFFrameworkPostNormal
-    , ZFLevelZFFrameworkPostHigh
-    , ZFLevelZFFrameworkPostEssential
-    , ZFLevelZFFrameworkPostStatic
-    )
-
-// ============================================================
 // ZFCoreStatistic
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountLog
@@ -375,10 +356,6 @@ ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetZero, zftimetZero())
 ZFEXPORT_VAR_READONLY_DEFINE(zfflags, zfflagsZero, zfflagsZero())
 ZFEXPORT_VAR_READONLY_DEFINE(zfidentity, zfidentityZero, zfidentityZero())
 ZFEXPORT_VAR_READONLY_DEFINE(zfidentity, zfidentityInvalid, zfidentityInvalid())
-ZFEXPORT_ENUM_DEFINE(ZFCompareResult, ZFCompareUncomparable, ZFCompareSmaller, ZFCompareTheSame, ZFCompareGreater)
-ZFEXPORT_ENUM_DEFINE(ZFSeekPos, ZFSeekPosBegin, ZFSeekPosCur, ZFSeekPosCurReversely, ZFSeekPosEnd)
-ZFEXPORT_ENUM_DEFINE(ZFFilterType, ZFFilterTypeInclude, ZFFilterTypeExclude)
-ZFEXPORT_ENUM_DEFINE(ZFFilterCallbackResult, ZFFilterCallbackResultNotSpecified, ZFFilterCallbackResultActive, ZFFilterCallbackResultNotActive)
 
 ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfiterator, zfiteratorInvalid, zfiteratorInvalid())
 

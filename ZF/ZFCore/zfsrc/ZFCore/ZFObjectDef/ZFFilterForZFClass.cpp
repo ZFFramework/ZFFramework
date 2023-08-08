@@ -3,15 +3,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_ENUM_DEFINE(ZFFilterForZFClassType
-    , ZFFilterForZFClassTypeInclude
-    , ZFFilterForZFClassTypeExclude
-    , ZFFilterForZFClassTypeIncludeChildOf
-    , ZFFilterForZFClassTypeIncludeParentOf
-    , ZFFilterForZFClassTypeExcludeChildOf
-    , ZFFilterForZFClassTypeExcludeParentOf
-    )
-
 // ============================================================
 ZFFilterForZFClass::ZFFilterForZFClass(void)
 : _ZFP_ZFFilterForZFClass_filters()

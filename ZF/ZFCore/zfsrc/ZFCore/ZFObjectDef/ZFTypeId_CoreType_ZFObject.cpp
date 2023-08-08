@@ -179,6 +179,11 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodPrivilegeType, ZFMethodPrivilegeType
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFMethodPrivilegeType
+        , ZFMethodPrivilegeTypePublic
+        , ZFMethodPrivilegeTypeProtected
+        , ZFMethodPrivilegeTypePrivate
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodType, ZFMethodType, {
@@ -222,6 +227,11 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodType, ZFMethodType, {
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFMethodType
+        , ZFMethodTypeNormal
+        , ZFMethodTypeStatic
+        , ZFMethodTypeVirtual
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFMethodParamDefaultValueCallback, ZFMethodParamDefaultValueCallback)
@@ -566,6 +576,13 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFObjectInstanceState, ZFObjectInstanceState
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFObjectInstanceState
+        , ZFObjectInstanceStateOnInit
+        , ZFObjectInstanceStateOnInitFinish
+        , ZFObjectInstanceStateIdle
+        , ZFObjectInstanceStateOnDeallocPrepare
+        , ZFObjectInstanceStateOnDealloc
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallbackType, ZFCallbackType, {

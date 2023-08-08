@@ -894,9 +894,6 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_ENUM_DEFINE(ZFMethodPrivilegeType, ZFMethodPrivilegeTypePublic, ZFMethodPrivilegeTypeProtected, ZFMethodPrivilegeTypePrivate)
-ZFEXPORT_ENUM_DEFINE(ZFMethodType, ZFMethodTypeNormal, ZFMethodTypeStatic, ZFMethodTypeVirtual)
-
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFMethodGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
         , ZFMP_IN_OPT(const ZFFilterForZFMethod *, methodFilter, zfnull)

@@ -42,7 +42,6 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, Z
  *     but target must have proper setter and getter method
  *     similar to #ZFProperty
  * -  from and to value can be:
- *   -  zfnull to use current state
  *   -  proper #ZFObject value for retain property,
  *     and the property value should be #ZFProgressable
  *   -  proper #ZFTypeIdWrapper for assign property,

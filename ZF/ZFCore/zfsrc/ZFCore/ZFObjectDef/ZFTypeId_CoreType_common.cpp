@@ -37,6 +37,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbyte, zfbyte, {
     }, {
         return zfsFromIntT(s, v, 16);
     })
+ZFTYPEID_PROGRESS_DEFINE_BY_VALUE(zfbyte, zfbyte)
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfchar, zfchar, {
@@ -49,6 +50,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfchar, zfchar, {
         s += v;
         return zftrue;
     })
+ZFTYPEID_PROGRESS_DEFINE_BY_VALUE(zfchar, zfchar)
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfstring, zfstring, {
@@ -58,6 +60,32 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfstring, zfstring, {
         s += v;
         return zftrue;
     })
+ZFTYPEID_PROGRESS_DEFINE(zfstring, zfstring, {
+    zfindex pos = 0;
+    while(from[pos] && from[pos] == to[pos]) {
+        ++pos;
+    }
+    if(pos == from.length() && pos == to.length()) {
+        ret = from;
+        return zftrue;
+    }
+    if(progress < 0) {
+        ret = from;
+    }
+    else if(progress > 1) {
+        ret = to;
+    }
+    else {
+        zfindex p = (zfindex)((from.length() - pos + to.length() - pos) * progress);
+        if(p < from.length() - pos) {
+            ret.assign(from, from.length() - p);
+        }
+        else {
+            ret.assign(to, pos + p - (from.length() - pos));
+        }
+    }
+})
+
 ZFOBJECT_ON_INIT_USER_REGISTER_3({
         zfstring &zfv = invokerObject->to<v_zfstring *>()->zfv;
         zfv.assign(src + pos, len);
@@ -166,6 +194,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFCompareResult
+        , ZFCompareUncomparable
+        , ZFCompareSmaller
+        , ZFCompareTheSame
+        , ZFCompareGreater
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
@@ -216,6 +250,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFSeekPos
+        , ZFSeekPosBegin
+        , ZFSeekPosCur
+        , ZFSeekPosCurReversely
+        , ZFSeekPosEnd
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFIndexRange, ZFIndexRange, {
@@ -231,6 +271,34 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFIndexRange, ZFIndexRange, {
         zfstringAppend(s, "(%s, %s)", v.start, v.count);
         return zftrue;
     })
+ZFTYPEID_PROGRESS_DEFINE(ZFIndexRange, ZFIndexRange, {
+    if(from.start == zfindexMax() || to.start == zfindexMax()) {
+        ret.start = zfindexMax();
+        ret.count = zfindexMax();
+    }
+    else {
+        ret.start = (zfindex)(from.start + (zfindex)((to.start - from.start) * progress));
+
+        if(from.count == zfindexMax() && to.count == zfindexMax()) {
+            ret.count = zfindexMax();
+        }
+        else {
+            zfindex end = zfindexMax();
+            if(from.count != zfindexMax()) {
+                end = zfmMin(end, from.start + from.count);
+            }
+            if(to.count != zfindexMax()) {
+                end = zfmMin(end, to.start + to.count);
+            }
+            zfindex fromCount = (from.count != zfindexMax() ? from.count : end - from.start);
+            zfindex toCount = (to.count != zfindexMax() ? to.count : end - to.start);
+            ret.count = (zfindex)(fromCount + (zfindex)((toCount - fromCount) * progress));
+            if(ret.start + ret.count > end) {
+                ret.count = end - ret.start;
+            }
+        }
+    }
+})
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFIndexRange, zfindex, start)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFIndexRange, zfindex, count)
 
@@ -362,6 +430,22 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFLevel, ZFLevel, {
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFLevel
+    , ZFLevelZFFrameworkStatic
+    , ZFLevelZFFrameworkEssential
+    , ZFLevelZFFrameworkHigh
+    , ZFLevelZFFrameworkNormal
+    , ZFLevelZFFrameworkLow
+    , ZFLevelAppEssential
+    , ZFLevelAppHigh
+    , ZFLevelAppNormal
+    , ZFLevelAppLow
+    , ZFLevelZFFrameworkPostLow
+    , ZFLevelZFFrameworkPostNormal
+    , ZFLevelZFFrameworkPostHigh
+    , ZFLevelZFFrameworkPostEssential
+    , ZFLevelZFFrameworkPostStatic
+    )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
@@ -570,6 +654,10 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterType, ZFFilterType, {
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFFilterType
+        , ZFFilterTypeInclude
+        , ZFFilterTypeExclude
+        )
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResult, {
@@ -609,6 +697,11 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResu
                 return zffalse;
         }
     })
+ZFEXPORT_ENUM_DEFINE(ZFFilterCallbackResult
+        , ZFFilterCallbackResultNotSpecified
+        , ZFFilterCallbackResultActive
+        , ZFFilterCallbackResultNotActive
+        )
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForNumber, ZFFilterForNumber)

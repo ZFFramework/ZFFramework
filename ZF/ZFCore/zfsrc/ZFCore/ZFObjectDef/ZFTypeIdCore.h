@@ -633,7 +633,7 @@ protected:
  * \n
  * to use this, register your type by this macro, with this proto type:
  * @code
- *   void update(
+ *   zfbool update(
  *           ZF_OUT Type &ret
  *           , ZF_IN Type const &from
  *           , ZF_IN Type const &to
