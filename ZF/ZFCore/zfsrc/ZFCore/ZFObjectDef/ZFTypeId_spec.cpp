@@ -3,6 +3,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_none)
+
 // ============================================================
 // void
 _ZFP_ZFTYPEID_ID_DATA_REGISTER(void, void)

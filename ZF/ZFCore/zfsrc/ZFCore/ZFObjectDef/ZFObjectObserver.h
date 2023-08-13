@@ -51,47 +51,54 @@ public:
     }
 
 public:
+    /** @brief function type for #ZFListener */
+    typedef void (*FUNC_TYPE)(ZF_IN const ZFArgs &zfargs);
+
+    /** @cond ZFPrivateDoc */
+public:
+    ZFListener(ZF_IN FUNC_TYPE f) {
+        FUNC_TYPE fTmp = f;
+        ZFLISTENER_1(wrapper
+                , FUNC_TYPE, fTmp
+                ) {
+            fTmp(zfargs);
+        } ZFLISTENER_END()
+        this->operator = (wrapper);
+    }
+    ZFListener &operator = (ZF_IN FUNC_TYPE f) {
+        FUNC_TYPE fTmp = f;
+        ZFLISTENER_1(wrapper
+                , FUNC_TYPE, fTmp
+                ) {
+            fTmp(zfargs);
+        } ZFLISTENER_END()
+        return this->operator = (wrapper);
+    }
+
+public:
+    #if ZF_ENV_LAMBDA
     template<typename T_Func>
     ZFListener(ZF_IN T_Func f) {
-        #if ZF_ENV_LAMBDA
-            std::function<void(const ZFArgs &)> fTmp = f;
-            ZFLISTENER_1(wrapper
-                    , std::function<void(const ZFArgs &)>, fTmp
-                    ) {
-                fTmp(zfargs);
-            } ZFLISTENER_END()
-        #else
-            FUNC_TYPE fTmp = f;
-            ZFLISTENER_1(wrapper
-                    , FUNC_TYPE, fTmp
-                    ) {
-                fTmp(zfargs);
-            } ZFLISTENER_END()
-        #endif
+        std::function<void(const ZFArgs &)> fTmp = f;
+        ZFLISTENER_1(wrapper
+                , std::function<void(const ZFArgs &)>, fTmp
+                ) {
+            fTmp(zfargs);
+        } ZFLISTENER_END()
         this->operator = (wrapper);
     }
     template<typename T_Func>
     ZFListener &operator = (ZF_IN T_Func f) {
-        #if ZF_ENV_LAMBDA
-            std::function<void(const ZFArgs &)> fTmp = f;
-            ZFLISTENER_1(wrapper
-                    , std::function<void(const ZFArgs &)>, fTmp
-                    ) {
-                fTmp(zfargs);
-            } ZFLISTENER_END()
-        #else
-            FUNC_TYPE fTmp = f;
-            ZFLISTENER_1(wrapper
-                    , FUNC_TYPE, fTmp
-                    ) {
-                fTmp(zfargs);
-            } ZFLISTENER_END()
-        #endif
+        std::function<void(const ZFArgs &)> fTmp = f;
+        ZFLISTENER_1(wrapper
+                , std::function<void(const ZFArgs &)>, fTmp
+                ) {
+            fTmp(zfargs);
+        } ZFLISTENER_END()
         return this->operator = (wrapper);
     }
-public:
-    /** @brief function type for #ZFListener */
-    typedef void (*FUNC_TYPE)(ZF_IN const ZFArgs &zfargs);
+    #endif
+    /** @endcond */
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFListener, ZFCallback)
 
 // ============================================================

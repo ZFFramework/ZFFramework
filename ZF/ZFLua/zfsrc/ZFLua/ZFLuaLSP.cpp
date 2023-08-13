@@ -125,8 +125,12 @@ static void _ZFP_ZFLuaLSPGenFile_NS(
     }
     /* NS
         NS0.NS1 = {}
+        ---@class NS0.NS1
+        NS0.NS1 = _ZFP_ZFLuaLSP_Class()
      */
     output << NS << " = {}\n";
+    output << "---@class " << NS << "\n";
+    output << NS << " = _ZFP_ZFLuaLSP_Class()\n";
     NSMap[NS] = zftrue;
 }
 static void _ZFP_ZFLuaLSPGenFile_allNS(ZF_IN const ZFOutput &output) {
@@ -209,6 +213,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
             ;
     }
 
+    zfstlmap<const zfchar *, ZFCoreArrayPOD<const ZFMethod *>, zfcharConst_zfstlComparer> methodMap;
     ZFCoreArrayPOD<const ZFMethod *> allMethod = cls->methodGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
@@ -217,6 +222,20 @@ static void _ZFP_ZFLuaLSPGenFile_class(
                 || zfstringIsEqual(m->methodName(), "objectOnInit")
                 ) {
             continue;
+        }
+        zfstlmap<const zfchar *, ZFCoreArrayPOD<const ZFMethod *>, zfcharConst_zfstlComparer>::iterator itMethod = methodMap.find(m->methodName());
+        if(itMethod != methodMap.end()) {
+            zfbool exist = zffalse;
+            for(zfindex i = i < itMethod->second.count() - 1; i != zfindexMax(); --i) {
+                const ZFMethod *methodExist = itMethod->second[i];
+                if(m->methodParamTypeIdIsMatch(methodExist)) {
+                    exist = zftrue;
+                    break;
+                }
+            }
+            if(exist) {
+                continue;
+            }
         }
         /* member methods
             ---@param P0 P0
@@ -255,6 +274,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         output
             << "function " << funcPrefix << m->methodName() << "(" << paramList << ") end\n"
             ;
+        methodMap[m->methodName()].add(m);
     }
 }
 static void _ZFP_ZFLuaLSPGenFile_allClass(ZF_IN const ZFOutput &output) {

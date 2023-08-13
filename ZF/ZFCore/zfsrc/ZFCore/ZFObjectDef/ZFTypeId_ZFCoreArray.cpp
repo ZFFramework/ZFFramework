@@ -3,6 +3,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_ZFCoreArray)
+
 void v_ZFCoreArray::objectInfoT(ZF_IN_OUT zfstring &ret) {
     this->zfv.objectInfoT(ret);
 }

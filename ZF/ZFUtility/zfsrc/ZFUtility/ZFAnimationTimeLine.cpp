@@ -30,7 +30,7 @@ public:
 
 public:
     static void doStart(ZF_IN ZFAnimationTimeLine *owner) {
-        if(owner->aniTimeLineInterval() <= 0) {
+        if(owner->aniInterval() == 0) {
             owner->d->isGlobalTimer = zftrue;
             owner->d->globalTimerFrameCount = (zfuint)zfmRound(owner->aniDurationFixed() / ZFGlobalTimerIntervalDefault());
             owner->d->globalTimerFrameIndex = 0;
@@ -55,7 +55,7 @@ public:
                 } ZFLISTENER_END()
                 owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
             }
-            owner->d->builtinTimer->timerInterval(owner->aniTimeLineInterval());
+            owner->d->builtinTimer->timerInterval(owner->aniInterval() > 0 ? owner->aniInterval() : ZFGlobalTimerIntervalDefault());
             owner->d->builtinTimer->timerStart();
         }
         _update(owner, 0);
@@ -130,7 +130,7 @@ void ZFAnimationTimeLine::objectOnDealloc(void) {
 
 zfidentity ZFAnimationTimeLine::objectHash(void) {
     return zfidentityHash(zfsuper::objectHash()
-        , this->aniTimeLineInterval()
+        , this->aniInterval()
         , (this->aniCurve() ? this->aniCurve()->objectHash() : zfidentityZero())
         );
 }

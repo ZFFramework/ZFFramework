@@ -301,7 +301,7 @@ zfbool ZFMethod::methodParamTypeIdIsMatch(ZF_IN const ZFMethod *method) const {
             ) {
         return zffalse;
     }
-    return this->methodParamTypeIdIsMatch(
+    return this->methodParamCount() == 0 || this->methodParamTypeIdIsMatch(
             method->_ZFP_ZFMethod_paramTypeIdList[0]
             , method->_ZFP_ZFMethod_paramTypeIdList[1]
             , method->_ZFP_ZFMethod_paramTypeIdList[2]

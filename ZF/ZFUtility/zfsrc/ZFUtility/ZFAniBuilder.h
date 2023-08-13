@@ -70,6 +70,12 @@ public:
     const ZFAniBuilder &step(ZF_IN_OPT const ZFListener &cb = ZFListener()) const;
 
 public:
+    /** @brief see #ZFAnimationTimeLine::aniInterval */
+    const ZFAniBuilder &aniInterval(ZF_IN const zftimet &v) const;
+    /** @brief see #ZFAnimationTimeLine::aniInterval */
+    zftimet const &aniInterval(void) const;
+
+public:
     /** @brief see #ZFAniBuilder */
     inline const ZFAniBuilder &aniOnInvalid(ZF_IN const ZFListener &cb) const {
         return this->aniOnEvent(ZFAnimation::EventAniOnInvalid(), cb);
