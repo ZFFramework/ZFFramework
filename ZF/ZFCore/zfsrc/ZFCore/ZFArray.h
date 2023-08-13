@@ -96,7 +96,7 @@ public:
     /**
      * @brief insert object at index, assert failure if obj = zfnull
      *   or index out of range [0, count]
-     * @note null object is not allowed
+     * @note null object is not allowed, use #ZFNull if necessary
      */
     ZFMETHOD_DECLARE_2(void, add
             , ZFMP_IN(zfindex, indexAddTo)

@@ -41,8 +41,8 @@ zfbool ZFPathInfoCallbackToChildDefault(
         }
     }
     else {
-        if(!zfstringIsEmpty(pathData)) {
-            pathDataChild += pathData;
+        pathDataChild += pathData;
+        if(!zfstringIsEmpty(pathData) && !zfstringIsEmpty(childName)) {
             pathDataChild += ZFFileSeparator();
         }
         pathDataChild += childName;

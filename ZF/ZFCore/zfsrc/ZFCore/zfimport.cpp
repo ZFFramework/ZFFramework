@@ -21,34 +21,32 @@ public:
     _ZFP_zfimportCacheMapType cacheMap;
 ZF_GLOBAL_INITIALIZER_END(zfimportDataHolder)
 
-static zfautoObject _ZFP_zfimportFile(ZF_IN const ZFInput &input) {
+static zfbool _ZFP_zfimportFile(ZF_OUT zfautoObject &ret, ZF_IN const ZFInput &input) {
     if(!input) {
-        return zfnull;
+        return zffalse;
     }
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
     if(input.callbackId() != zfnull) {
         zfCoreMutexLocker();
         _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(input.callbackId());
         if(it != cacheMap.end()) {
-            return it->second;
+            ret = it->second;
+            return zftrue;
         }
     }
 
     zfblockedAlloc(v_ZFInput, inputHolder);
     inputHolder->zfv = input;
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventImportBegin(), inputHolder);
-    zfautoObject ret = ZFObjectIOLoad(input);
+    zfbool success = ZFObjectIOLoadT(ret, input);
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventImportEnd(), inputHolder, ret);
-    if(ret == zfnull) {
-        return zfnull;
-    }
 
-    if(input.callbackId() != zfnull) {
+    if(success && input.callbackId() != zfnull) {
         zfCoreMutexLocker();
         cacheMap[input.callbackId()] = ret;
     }
 
-    return ret;
+    return success;
 }
 static void _ZFP_zfimportDir(
         ZF_IN_OUT ZFMap *ret
@@ -69,11 +67,11 @@ static void _ZFP_zfimportDir(
                 _ZFP_zfimportDir(ret, impl, pathInfoRoot, relPath);
             }
             else {
-                zfautoObject obj = _ZFP_zfimportFile(ZFInputForLocal(relPath, pathInfoRoot));
-                if(obj != zfnull) {
+                zfautoObject obj;
+                if(_ZFP_zfimportFile(obj, ZFInputForLocal(relPath, pathInfoRoot))) {
                     zfblockedAlloc(v_zfstring, key);
                     key->zfv = relPath;
-                    ret->set(key, obj);
+                    ret->set(key, obj != zfnull ? obj.toObject() : ZFNull());
                 }
             }
         } while(impl.callbackFindNext(fd));
@@ -101,7 +99,13 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport
             return ret;
         }
         else {
-            return _ZFP_zfimportFile(ZFInputForRes(pathFormated));
+            zfautoObject ret;
+            if(_ZFP_zfimportFile(ret, ZFInputForRes(pathFormated))) {
+                return ret;
+            }
+            else {
+                return zfnull;
+            }
         }
     }
     else {
@@ -110,16 +114,30 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport
             return zfnull;
         }
         zfstring pathData;
-        if(!impl->callbackToChild(pathInfo->pathData, pathData, pathFormated)) {
-            return zfnull;
+        if(!impl->callbackIsDir(pathInfo->pathData)) {
+            impl->callbackToParent(pathInfo->pathData, pathData);
+            if(!impl->callbackToChild(pathData, pathData, pathFormated)) {
+                return zfnull;
+            }
+        }
+        else {
+            if(!impl->callbackToChild(pathInfo->pathData, pathData, pathFormated)) {
+                return zfnull;
+            }
         }
         if(impl->callbackIsDir(pathData)) {
             zfblockedAlloc(ZFMap, ret);
-            _ZFP_zfimportDir(ret, *impl, *pathInfo, pathFormated);
+            _ZFP_zfimportDir(ret, *impl, ZFPathInfo(pathInfo->pathType, pathData), "");
             return ret;
         }
         else {
-            return _ZFP_zfimportFile(ZFInputForLocal(pathFormated, pathInfo));
+            zfautoObject ret;
+            if(_ZFP_zfimportFile(ret, ZFInputForLocal(pathFormated, pathInfo))) {
+                return ret;
+            }
+            else {
+                return zfnull;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ ZFMETHOD_DEFINE_3(ZFContainer, void, objectInfoOfContentT
             ret += token.tokenSeparator;
         }
         ret += token.tokenValueLeft;
-        this->iterValue(it)->objectInfoT(ret);
+        ZFObjectInfoT(ret, this->iterValue(it));
         ret += token.tokenValueRight;
     }
     if(count < this->count()) {
