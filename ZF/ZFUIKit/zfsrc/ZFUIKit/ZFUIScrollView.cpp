@@ -26,7 +26,7 @@ typedef enum {
 
 // ============================================================
 // _ZFP_ZFUIScrollViewPrivate
-zfclass _ZFP_ZFUIScrollViewPrivate : zfextends ZFObject {
+zfclass _ZFP_ZFUIScrollViewPrivate : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_ZFUIScrollViewPrivate, ZFObject)
 
 public:

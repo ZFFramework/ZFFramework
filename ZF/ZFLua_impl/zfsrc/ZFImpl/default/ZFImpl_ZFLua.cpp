@@ -253,7 +253,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
         , ZF_OUT_OPT zfstring *errHint /* = zfnull */
         , ZF_IN_OPT const zfchar *chunkInfo /* = zfnull */
         ) {
-    if(error == 0) {
+    if(error == 0 || errHint == zfnull) {
         return;
     }
     // [string "?"]:123: xxx
@@ -274,23 +274,17 @@ void ZFImpl_ZFLua_execute_errorHandle(
         while(*nativeError == ' ') {++nativeError;}
     }
 
-    zfstring errHintTmp;
-    errHintTmp += nativeError;
+    *errHint += nativeError;
     if(!zfstringIsEmpty(chunkInfo)) {
-        errHintTmp += ", at: [";
-        errHintTmp += chunkInfo;
-        errHintTmp += "]";
+        *errHint += ", at: [";
+        *errHint += chunkInfo;
+        *errHint += "]";
     }
     if(errorLine != zfindexMax()) {
-        errHintTmp += ", line: ";
-        zfindexToString(errHintTmp, errorLine);
-    }
-    if(errHint != zfnull) {
-        *errHint += errHintTmp;
+        *errHint += ", line: ";
+        zfindexToString(*errHint, errorLine);
     }
     lua_pop(L, 1);
-
-    ZFLuaErrorOccurredTrim("%s", errHintTmp);
 }
 
 // ============================================================

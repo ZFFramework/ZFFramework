@@ -356,7 +356,7 @@ extern ZFLIB_ZFLua_impl zfstring ZFImpl_ZFLua_luaStackInfo(
  * @brief raw lua value created by #ZFImpl_ZFLua_toGeneric,
  *   and can be converted by #ZFImpl_ZFLua_toLuaValue
  */
-zfclass ZFLIB_ZFLua_impl ZFImpl_ZFLuaValue : zfextends ZFObject {
+zfclass ZFLIB_ZFLua_impl ZFImpl_ZFLuaValue : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFImpl_ZFLuaValue, ZFObject)
 
 public:

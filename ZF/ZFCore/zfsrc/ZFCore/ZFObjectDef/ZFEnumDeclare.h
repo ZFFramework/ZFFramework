@@ -181,7 +181,7 @@ public:
 
 // ============================================================
 #define _ZFP_ZFENUM_BEGIN(ZFLIB_, EnumName) \
-    zfclass ZFLIB_ EnumName : zfextends ZFEnum { \
+    zfclass ZFLIB_ EnumName : zfextend ZFEnum { \
         ZFOBJECT_DECLARE(EnumName, ZFEnum) \
     public: \
         /** @brief see @ref EnumName */ \

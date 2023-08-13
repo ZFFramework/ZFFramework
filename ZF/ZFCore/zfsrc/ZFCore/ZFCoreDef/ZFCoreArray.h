@@ -205,7 +205,7 @@ ZFOUTPUT_TYPE(ZFCoreArrayBase, {v.objectInfoT(s);})
  *   since it really bricks the portability of your code
  */
 template<typename T_Element>
-zffinal zfclassLikePOD ZFCoreArray : zfextends ZFCoreArrayBase {
+zffinal zfclassLikePOD ZFCoreArray : zfextend ZFCoreArrayBase {
 public:
     /**
      * @brief main constructor
@@ -893,7 +893,7 @@ ZFOUTPUT_TYPE_TEMPLATE(typename T_Element, ZFCoreArray<T_Element>, {v.objectInfo
  * @warning you should ensure the content type is POD type
  */
 template<typename T_Element>
-zffinal zfclassLikePOD ZFCoreArrayPOD : zfextends ZFCoreArray<T_Element> {
+zffinal zfclassLikePOD ZFCoreArrayPOD : zfextend ZFCoreArray<T_Element> {
 public:
     /**
      * @brief see #ZFCoreArray

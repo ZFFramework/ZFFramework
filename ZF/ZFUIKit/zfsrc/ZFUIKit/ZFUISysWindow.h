@@ -31,7 +31,7 @@ zfclassFwd _ZFP_ZFUISysWindowPrivate;
  * use #nativeWindowEmbed to attach to native impl,
  * never create #ZFUISysWindow's instance manually
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUISysWindow : zfextends ZFObject {
+zffinal zfclass ZFLIB_ZFUIKit ZFUISysWindow : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUISysWindow, ZFObject)
 
     // ============================================================
@@ -346,7 +346,7 @@ private:
 /**
  * @brief impl for #ZFUISysWindow::nativeWindowEmbed
  */
-zfinterface ZFLIB_ZFUIKit ZFUISysWindowEmbedImpl : zfextends ZFInterface {
+zfinterface ZFLIB_ZFUIKit ZFUISysWindowEmbedImpl : zfextend ZFInterface {
     ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(ZFUISysWindowEmbedImpl, ZFInterface)
 
 public:

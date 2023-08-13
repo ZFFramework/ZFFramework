@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFNet_ZFInputForHttp_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFNet_ZFInputForHttp_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFNet_ZFInputForHttp_test, ZFFramework_test_TestCase)
 
 protected:

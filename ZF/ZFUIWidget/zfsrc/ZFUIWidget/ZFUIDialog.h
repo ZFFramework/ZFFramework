@@ -87,7 +87,7 @@ zfclassFwd _ZFP_I_ZFUIDialogPrivate;
  * during #ZFFrameworkCleanup's #ZFLevelZFFrameworkLow step
  * for safe resource cleanup
  */
-zfclass ZFLIB_ZFUIWidget ZFUIDialog : zfextends ZFStyleableObject {
+zfclass ZFLIB_ZFUIWidget ZFUIDialog : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUIDialog, ZFStyleableObject)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIDialog)
 

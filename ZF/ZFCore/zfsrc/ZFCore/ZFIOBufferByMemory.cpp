@@ -19,7 +19,7 @@ public:
     }
 };
 
-zfclass _ZFP_ZFIOBufferByMemory_input : zfextends ZFObject {
+zfclass _ZFP_ZFIOBufferByMemory_input : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByMemory_input, ZFObject)
 public:
     _ZFP_ZFIOBufferByMemory *d;
@@ -47,7 +47,7 @@ public:
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
 };
 
-zfclass _ZFP_ZFIOBufferByMemory_output : zfextends ZFObject {
+zfclass _ZFP_ZFIOBufferByMemory_output : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByMemory_output, ZFObject)
 public:
     _ZFP_ZFIOBufferByMemory *d;

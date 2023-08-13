@@ -133,9 +133,9 @@ ZFMETHOD_FUNC_DECLARE_6(ZFLIB_ZFAlgorithm, zfbool, ZFBase64Decode
 /**
  * @brief util class to process base64
  */
-zfclass ZFLIB_ZFAlgorithm ZFBase64 : zfextends ZFObject, zfimplements ZFSerializable {
+zfclass ZFLIB_ZFAlgorithm ZFBase64 : zfextend ZFObject, zfimplement ZFSerializable {
     ZFOBJECT_DECLARE(ZFBase64, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable)
 
 public:
     /** @brief see #ZFBase64TableDefault */

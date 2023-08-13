@@ -30,7 +30,7 @@ zfclassFwd _ZFP_ZFUIButtonBasicPrivate;
  * -  icon's #ZFUIImageView::image
  * -  background's #ZFUIImageView::image
  */
-zfclass ZFLIB_ZFUIWidget ZFUIButtonBasic : zfextends ZFUIButton {
+zfclass ZFLIB_ZFUIWidget ZFUIButtonBasic : zfextend ZFUIButton {
     ZFOBJECT_DECLARE(ZFUIButtonBasic, ZFUIButton)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButtonBasic)
 

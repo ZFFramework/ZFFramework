@@ -137,6 +137,9 @@ public:
     /** @brief see #ZFDynamic */
     ZFDynamic &classEnd(void);
 
+    /** @brief see #ZFImplementDynamicRegister */
+    ZFDynamic &classImplement(ZF_IN const ZFClass *clsToImplement);
+
     /** @brief see #ZFClass::classCanAllocPublic */
     ZFDynamic &classCanAllocPublic(ZF_IN zfbool value);
 
@@ -213,12 +216,7 @@ public:
     ZFDynamic &method(ZF_IN const ZFMethodDynamicRegisterParam &param);
 
 public:
-    /**
-     * @brief see #ZFDynamic
-     *
-     * initValueCallback can be specified to setup property's init value,
-     * param0 is #ZFDynamicPropertyData
-     */
+    /** @brief see #ZFDynamic */
     ZFDynamic &property(
             ZF_IN const zfchar *propertyTypeId
             , ZF_IN const zfchar *propertyName
@@ -297,34 +295,6 @@ ZFOUTPUT_TYPE(ZFDynamic, {v.objectInfoT(s);})
  * ensured called during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkNormal
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFDynamicRemoveAll)
-
-// ============================================================
-/** @brief data to hold params for #ZFPropertyDynamicRegisterInitValueCallback */
-zfclass ZFLIB_ZFCore ZFDynamicPropertyData : zfextends ZFObject {
-    ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFDynamicPropertyData, ZFObject)
-
-public:
-    zfautoObject ret; /**< @brief data to hold params for #ZFPropertyDynamicRegisterInitValueCallback */
-    const ZFProperty *property; /**< @brief data to hold params for #ZFPropertyDynamicRegisterInitValueCallback */
-protected:
-    /** @cond ZFPrivateDoc */
-    ZFDynamicPropertyData(void)
-    : ZFObject()
-    , ret()
-    , property(zfnull)
-    {
-    }
-    /** @endcond */
-public:
-    zfoverride
-    virtual zfbool objectIsInternal(void) {
-        return zftrue;
-    }
-    zfoverride
-    virtual zfbool objectIsInternalPrivate(void) {
-        return zftrue;
-    }
-};
 
 // ============================================================
 zfclassFwd _ZFP_ZFMPPrivate;

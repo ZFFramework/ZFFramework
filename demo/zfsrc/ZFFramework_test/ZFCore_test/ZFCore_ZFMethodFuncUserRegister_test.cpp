@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFCore_ZFMethodFuncUserRegister_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFMethodFuncUserRegister_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFMethodFuncUserRegister_test, ZFFramework_test_TestCase)
 
 protected:

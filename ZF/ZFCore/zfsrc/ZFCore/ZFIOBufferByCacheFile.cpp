@@ -37,7 +37,7 @@ public:
     }
 };
 
-zfclass _ZFP_ZFIOBufferByCacheFile_input : zfextends ZFObject {
+zfclass _ZFP_ZFIOBufferByCacheFile_input : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByCacheFile_input, ZFObject)
 public:
     _ZFP_ZFIOBufferByCacheFile *d;
@@ -65,7 +65,7 @@ public:
     ZFMETHOD_DECLARE_0(zfindex, ioSize)
 };
 
-zfclass _ZFP_ZFIOBufferByCacheFile_output : zfextends ZFObject {
+zfclass _ZFP_ZFIOBufferByCacheFile_output : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFIOBufferByCacheFile_output, ZFObject)
 public:
     _ZFP_ZFIOBufferByCacheFile *d;

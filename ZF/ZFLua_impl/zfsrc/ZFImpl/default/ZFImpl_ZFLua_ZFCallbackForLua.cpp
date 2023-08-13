@@ -522,7 +522,7 @@ public:
 };
 
 // ============================================================
-zfclass _ZFP_I_ZFCallbackForLuaCallback : zfextends ZFObject {
+zfclass _ZFP_I_ZFCallbackForLuaCallback : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFCallbackForLuaCallback, ZFObject)
     ZFALLOC_CACHE_RELEASE({
         cache->_cleanup();

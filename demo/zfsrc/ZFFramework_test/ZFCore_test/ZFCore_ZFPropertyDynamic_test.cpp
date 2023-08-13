@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFPropertyDynamic_test_Object : zfextends ZFObject {
+zfclass _ZFP_ZFCore_ZFPropertyDynamic_test_Object : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFPropertyDynamic_test_Object, ZFObject)
 
 public:
@@ -17,7 +17,7 @@ private:
 };
 
 // ============================================================
-zfclass ZFCore_ZFPropertyDynamic_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFPropertyDynamic_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFPropertyDynamic_test, ZFFramework_test_TestCase)
 
 protected:

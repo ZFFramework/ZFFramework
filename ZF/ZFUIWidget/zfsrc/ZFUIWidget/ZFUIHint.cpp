@@ -33,7 +33,7 @@ static ZFArray *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUISysWindow *inSysWindow)
 }
 
 // ============================================================
-zfclass _ZFP_ZFUIHintWindow : zfextends ZFUIWindow {
+zfclass _ZFP_ZFUIHintWindow : zfextend ZFUIWindow {
     ZFOBJECT_DECLARE(_ZFP_ZFUIHintWindow, ZFUIWindow)
 
     ZFPROPERTY_ON_INIT_INLINE(zfbool, viewFocusable) {

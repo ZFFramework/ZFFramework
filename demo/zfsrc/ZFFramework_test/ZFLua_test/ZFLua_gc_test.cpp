@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFLua_gc_test_Object : zfextends ZFObject {
+zfclass _ZFP_ZFLua_gc_test_Object : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFLua_gc_test_Object, ZFObject)
 
 protected:
@@ -29,7 +29,7 @@ protected:
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_gc_test_Object)
 
-zfclass ZFLua_gc_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFLua_gc_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_gc_test, ZFFramework_test_TestCase)
 
 protected:

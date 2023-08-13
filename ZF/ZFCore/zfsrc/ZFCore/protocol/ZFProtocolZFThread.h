@@ -88,7 +88,7 @@ ZFPROTOCOL_INTERFACE_END(ZFThread)
 
 // ============================================================
 /** @brief see #ZFThread */
-zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextends ZFThread {
+zfclass ZFLIB_ZFCore ZFThreadMainThread : zfextend ZFThread {
     ZFOBJECT_DECLARE(ZFThreadMainThread, ZFThread)
 
 public:

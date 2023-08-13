@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief key event for ui elements
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIKeyEvent : zfextends ZFUIEvent {
+zffinal zfclass ZFLIB_ZFUIKit ZFUIKeyEvent : zfextend ZFUIEvent {
     ZFOBJECT_DECLARE(ZFUIKeyEvent, ZFUIEvent)
 
 public:

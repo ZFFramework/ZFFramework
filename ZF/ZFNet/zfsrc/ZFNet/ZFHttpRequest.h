@@ -39,7 +39,7 @@ zfclassFwd _ZFP_ZFHttpRequestPrivate;
 /**
  * @brief see #ZFHttpRequest
  */
-zfclass ZFLIB_ZFNet ZFHttpResponse : zfextends ZFObject {
+zfclass ZFLIB_ZFNet ZFHttpResponse : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFHttpResponse, ZFObject)
     ZFOBJECT_PRIVATE_ALLOC("can only be created by ZFHttpRequest")
 
@@ -124,7 +124,7 @@ private:
  *       ->request(onRecv);
  * @endcode
  */
-zfclass ZFLIB_ZFNet ZFHttpRequest : zfextends ZFStyleableObject {
+zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFHttpRequest, ZFStyleableObject)
 
     /**

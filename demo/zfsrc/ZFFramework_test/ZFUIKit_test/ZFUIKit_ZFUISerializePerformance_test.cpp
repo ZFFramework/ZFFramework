@@ -2,9 +2,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFUISerializePerformance_test_TestObject : zfextends ZFObject, zfimplements ZFSerializable {
+zfclass _ZFP_ZFUISerializePerformance_test_TestObject : zfextend ZFObject, zfimplement ZFSerializable {
     ZFOBJECT_DECLARE(_ZFP_ZFUISerializePerformance_test_TestObject, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable)
 
     ZFPROPERTY_RETAIN(_ZFP_ZFUISerializePerformance_test_TestObject *, vObj)
 
@@ -37,7 +37,7 @@ public:
     }
 };
 
-zfclass ZFUIKit_ZFUISerializePerformance_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIKit_ZFUISerializePerformance_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUISerializePerformance_test, ZFFramework_test_TestCase)
 
 protected:

@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief base UI text interface
  */
-zfinterface ZFLIB_ZFUIKit ZFUIText : zfextends ZFInterface {
+zfinterface ZFLIB_ZFUIKit ZFUIText : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIText, ZFInterface)
 
 public:

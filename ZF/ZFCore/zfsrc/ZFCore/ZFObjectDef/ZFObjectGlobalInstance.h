@@ -234,7 +234,7 @@ public:
  * usage:
  * @code
  *   // in *.h file
- *   zfclass YourObject : zfextends ZFObject {
+ *   zfclass YourObject : zfextend ZFObject {
  *       / **
  *        * comment here (optional)
  *        * /

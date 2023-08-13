@@ -28,7 +28,7 @@ ZFCompareResult ZFAnimationGroupChildData::objectCompare(ZF_IN ZFObject *another
 
 // ============================================================
 // _ZFP_ZFAnimationGroupPrivate
-zfclass _ZFP_ZFAnimationGroupPrivate : zfextends ZFObject {
+zfclass _ZFP_ZFAnimationGroupPrivate : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFAnimationGroupPrivate, ZFObject)
 
 public:

@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief object that can be updated according to progress
  */
-zfinterface ZFLIB_ZFCore ZFProgressable : zfextends ZFInterface {
+zfinterface ZFLIB_ZFCore ZFProgressable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFProgressable, ZFInterface)
 
 public:

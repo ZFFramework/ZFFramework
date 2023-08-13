@@ -349,9 +349,9 @@ zfclassFwd _ZFP_ZFTimePrivate;
  *   />
  * @endcode
  */
-zfclass ZFLIB_ZFCore ZFTime : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable {
+zfclass ZFLIB_ZFCore ZFTime : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
     ZFOBJECT_DECLARE(ZFTime, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
 
 protected:
     zfoverride

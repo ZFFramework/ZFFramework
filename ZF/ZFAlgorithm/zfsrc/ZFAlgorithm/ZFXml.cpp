@@ -191,7 +191,7 @@ static zfbool _ZFP_ZFXmlOutputAttributeNeedNewLine(
             && data.siblingIndex > 0
             && (data.siblingIndex % flags.xmlElementAttributeCountBeforeAddNewLine) == 0));
 }
-zfclass _ZFP_I_ZFXmlOutputOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFXmlOutputOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFXmlOutputOwner, ZFObject)
 
 public:

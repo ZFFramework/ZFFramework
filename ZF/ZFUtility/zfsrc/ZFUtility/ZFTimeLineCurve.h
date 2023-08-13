@@ -15,9 +15,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may supply a subclass to achive custom time line,
  * but must make sure it is serializable and copyable
  */
-zfabstract ZFLIB_ZFUtility ZFTimeLineCurve : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable {
+zfabstract ZFLIB_ZFUtility ZFTimeLineCurve : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
     ZFOBJECT_DECLARE_ABSTRACT(ZFTimeLineCurve, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
 
 public:
     /**

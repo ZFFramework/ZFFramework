@@ -453,7 +453,7 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Public, typename T_Internal), ZFM_E
  * -  support operator == to compare whether public type is equal to internal storage type
  */
 template<typename T_Public, typename T_Internal = T_Public>
-zfclassLikePOD ZFFilterBasic : zfextends ZFFilterBase<T_Public, T_Internal> {
+zfclassLikePOD ZFFilterBasic : zfextend ZFFilterBase<T_Public, T_Internal> {
     ZFFILTER_DECLARE(
         ZFM_EXPAND(ZFFilterBasic<T_Public, T_Internal>),
         ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>))
@@ -528,7 +528,7 @@ typedef ZFFilterBasic<zfidentity> ZFFilterForIdentity;
  * @brief base class of string filter
  */
 template<typename T_Public, typename T_Internal>
-zfclassLikePOD ZFFilterForStringBase : zfextends ZFFilterBase<T_Public, T_Internal> {
+zfclassLikePOD ZFFilterForStringBase : zfextend ZFFilterBase<T_Public, T_Internal> {
     ZFFILTER_DECLARE(
         ZFM_EXPAND(ZFFilterForStringBase<T_Public, T_Internal>),
         ZFM_EXPAND(ZFFilterBase<T_Public, T_Internal>))

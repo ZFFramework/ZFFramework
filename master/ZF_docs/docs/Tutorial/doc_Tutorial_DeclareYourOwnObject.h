@@ -4,7 +4,7 @@
  * to use ZFFramework's object,
  * you must follow some rules:
  * @code
- *   zfclass MyObject : zfextends ParentObject {
+ *   zfclass MyObject : zfextend ParentObject {
  *       ZFOBJECT_DECLARE(MyObject, ParentObject)
  *   };
  *
@@ -13,7 +13,7 @@
  * @endcode
  *
  * -  use zfclass to show it's an ZFObject type
- * -  use zfextends to extends from a ZFObject
+ * -  use zfextend to extend from a ZFObject
  *   or any other ZFObject type
  * -  use ZFOBJECT_DECLARE for necessary macro expansion
  * -  use ZFOBJECT_REGISTER to register your object,

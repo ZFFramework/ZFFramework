@@ -74,9 +74,9 @@ extern ZFLIB_ZFCore ZFOutput _ZFP_zfLog(
 /**
  * @brief output format for #zfLog
  */
-zfclass ZFLIB_ZFCore ZFLogFormat : zfextends ZFObject, zfimplements ZFOutputFormat {
+zfclass ZFLIB_ZFCore ZFLogFormat : zfextend ZFObject, zfimplement ZFOutputFormat {
     ZFOBJECT_DECLARE(ZFLogFormat, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
+    ZFIMPLEMENT_DECLARE(ZFOutputFormat)
 
 public:
     ZFPROPERTY_ASSIGN(zfbool, autoEndl, zftrue)

@@ -15,9 +15,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief basic button group which layout buttons as #ZFUILinearLayout
  */
-zfclass ZFLIB_ZFUIWidget ZFUIButtonGroupBasic : zfextends ZFUILinearLayout, zfimplements ZFUIButtonGroup {
+zfclass ZFLIB_ZFUIWidget ZFUIButtonGroupBasic : zfextend ZFUILinearLayout, zfimplement ZFUIButtonGroup {
     ZFOBJECT_DECLARE(ZFUIButtonGroupBasic, ZFUILinearLayout)
-    ZFIMPLEMENTS_DECLARE(ZFUIButtonGroup)
+    ZFIMPLEMENT_DECLARE(ZFUIButtonGroup)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButtonGroupBasic)
 
 protected:

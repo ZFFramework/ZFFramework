@@ -4,7 +4,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFTimerImpl_default_Timer : zfextends ZFObject {
+zfclass _ZFP_ZFTimerImpl_default_Timer : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_ZFTimerImpl_default_Timer, ZFObject)
 
 public:

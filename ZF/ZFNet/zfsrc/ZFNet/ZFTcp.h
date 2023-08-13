@@ -29,7 +29,7 @@ zfclassFwd _ZFP_ZFTcpPrivate;
 /**
  * @brief tcp request util
  */
-zfclass ZFLIB_ZFNet ZFTcp : zfextends ZFObject {
+zfclass ZFLIB_ZFNet ZFTcp : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFTcp, ZFObject)
 
 public:

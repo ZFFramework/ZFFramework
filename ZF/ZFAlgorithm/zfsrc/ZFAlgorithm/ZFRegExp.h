@@ -139,9 +139,9 @@ zfclassFwd _ZFP_ZFRegExpPrivate;
  *   />
  * @endcode
  */
-zfclass ZFLIB_ZFAlgorithm ZFRegExp : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable {
+zfclass ZFLIB_ZFAlgorithm ZFRegExp : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
     ZFOBJECT_DECLARE(ZFRegExp, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
 
 protected:
     zfoverride

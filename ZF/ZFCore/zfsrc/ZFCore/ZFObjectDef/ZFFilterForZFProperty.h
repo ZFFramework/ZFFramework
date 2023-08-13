@@ -23,7 +23,7 @@ public:
 /**
  * @brief util class to filter ZFProperty
  */
-zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFProperty : zfextends ZFFilterBasic<const ZFProperty *> {
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFProperty : zfextend ZFFilterBasic<const ZFProperty *> {
     ZFFILTER_DECLARE(ZFFilterForZFProperty, ZFFilterBasic<const ZFProperty *>)
 
 public:

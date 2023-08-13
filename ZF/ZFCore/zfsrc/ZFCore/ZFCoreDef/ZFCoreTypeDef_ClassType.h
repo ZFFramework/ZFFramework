@@ -48,9 +48,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define zfclassNotPOD class
 
 /**
- * @brief extends
+ * @brief dummy macro shows class inherit from another
  */
-#define zfextends public
+#define zfextend public
 
 /**
  * @brief dummy macro shows that method override parent's method

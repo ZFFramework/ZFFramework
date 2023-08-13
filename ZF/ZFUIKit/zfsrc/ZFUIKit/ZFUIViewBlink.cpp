@@ -22,7 +22,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 #define _ZFP_ZFUIViewBlink_tag_delayTaskId "_ZFP_ZFUIViewBlink_tag_delayTaskId"
 #define _ZFP_ZFUIViewBlink_tag_blinkCountLeft "_ZFP_ZFUIViewBlink_tag_blinkCountLeft"
 
-zfclass _ZFP_ZFUIViewBlinkView : zfextends ZFUIImageView {
+zfclass _ZFP_ZFUIViewBlinkView : zfextend ZFUIImageView {
     ZFOBJECT_DECLARE(_ZFP_ZFUIViewBlinkView, ZFUIImageView)
 };
 

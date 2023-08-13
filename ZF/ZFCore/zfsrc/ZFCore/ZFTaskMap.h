@@ -14,7 +14,7 @@ zfclassFwd _ZFP_ZFTaskMapPrivate;
 /**
  * @brief task map util
  */
-zfclass ZFLIB_ZFCore ZFTaskMap : zfextends ZFObject {
+zfclass ZFLIB_ZFCore ZFTaskMap : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFTaskMap, ZFObject)
 
     /** @brief see #ZFTaskMap */

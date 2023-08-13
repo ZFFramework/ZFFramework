@@ -8,7 +8,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFAudioImpl_sys_SDL_ImplHolder : zfextends ZFObject {
+zfclass _ZFP_ZFAudioImpl_sys_SDL_ImplHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFAudioImpl_sys_SDL_ImplHolder, ZFObject)
 
 public:

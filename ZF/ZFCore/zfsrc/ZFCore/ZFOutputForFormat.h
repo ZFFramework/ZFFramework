@@ -37,7 +37,7 @@ ZFENUM_END(ZFLIB_ZFCore, ZFOutputFormatStep)
 
 // ============================================================
 /** @brief see #ZFOutputForFormat */
-zfinterface ZFLIB_ZFCore ZFOutputFormat : zfextends ZFInterface {
+zfinterface ZFLIB_ZFCore ZFOutputFormat : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFOutputFormat, ZFInterface)
 
 public:
@@ -143,9 +143,9 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFOutput, ZFOutputForFormat
 /**
  * @brief basic output format
  */
-zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextends ZFStyleableObject, zfimplements ZFOutputFormat {
+zfclass ZFLIB_ZFCore ZFOutputFormatBasic : zfextend ZFStyleableObject, zfimplement ZFOutputFormat {
     ZFOBJECT_DECLARE(ZFOutputFormatBasic, ZFStyleableObject)
-    ZFIMPLEMENTS_DECLARE(ZFOutputFormat)
+    ZFIMPLEMENT_DECLARE(ZFOutputFormat)
 
 public:
     /** @brief contents write before entire output */

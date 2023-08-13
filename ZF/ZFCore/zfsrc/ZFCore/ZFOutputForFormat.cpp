@@ -17,7 +17,7 @@ void ZFOutputFormat::format(
 }
 
 // ============================================================
-zfclass _ZFP_I_ZFOutputForFormatOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFOutputForFormatOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFOutputForFormatOwner, ZFObject)
 
 public:

@@ -120,7 +120,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParamFillFil
  *   and must be serializable
  * @note by default, a layout param would be compared by comparing all property
  */
-zfclass ZFLIB_ZFUIKit ZFUILayoutParam : zfextends ZFStyleableObject {
+zfclass ZFLIB_ZFUIKit ZFUILayoutParam : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUILayoutParam, ZFStyleableObject)
 
 public:
@@ -468,7 +468,7 @@ ZFENUM_END(ZFLIB_ZFUIKit, ZFUIViewChildLayer)
  *   you may modify the #ZFUIViewMeasureResult::measuredSize
  *   to override the measured result
  */
-zfclass ZFLIB_ZFUIKit ZFUIViewMeasureResult : zfextends ZFObject {
+zfclass ZFLIB_ZFUIKit ZFUIViewMeasureResult : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIViewMeasureResult, ZFObject)
 
 public:

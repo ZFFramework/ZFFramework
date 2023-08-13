@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief wrapper for unknown types for #ZFDI_invoke
  */
-zfabstract ZFLIB_ZFCore ZFDI_WrapperBase : zfextends ZFObject {
+zfabstract ZFLIB_ZFCore ZFDI_WrapperBase : zfextend ZFObject {
     ZFOBJECT_DECLARE_ABSTRACT(ZFDI_WrapperBase, ZFObject)
     ZFALLOC_CACHE_RELEASE_ABSTRACT({
         cache->zfv(zfnull);
@@ -62,7 +62,7 @@ protected:
     virtual void objectOnInit(ZF_IN const zfchar *zfv) {this->objectOnInit(); this->zfv(zfv);}
 };
 /** @brief see #ZFDI_WrapperBase */
-zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextends ZFDI_WrapperBase {
+zfclass ZFLIB_ZFCore ZFDI_Wrapper : zfextend ZFDI_WrapperBase {
     ZFOBJECT_DECLARE(ZFDI_Wrapper, ZFDI_WrapperBase)
 public:
     zfoverride
@@ -75,7 +75,7 @@ private:
     zfstring _ZFP_zfv;
 };
 /** @brief see #ZFDI_WrapperBase */
-zfclass ZFLIB_ZFCore ZFDI_WrapperRaw : zfextends ZFDI_WrapperBase {
+zfclass ZFLIB_ZFCore ZFDI_WrapperRaw : zfextend ZFDI_WrapperBase {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFDI_WrapperRaw, ZFDI_WrapperBase)
 public:
     zfoverride

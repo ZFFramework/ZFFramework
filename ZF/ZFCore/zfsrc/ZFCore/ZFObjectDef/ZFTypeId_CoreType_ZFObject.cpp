@@ -478,7 +478,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, ZFMeth
         )
 
 // ============================================================
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPropertyDynamicRegisterInitValueCallback, ZFPropertyDynamicRegisterInitValueCallback)
+ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPropertyCallbackDynamicRegisterInitValueGetter, ZFPropertyCallbackDynamicRegisterInitValueGetter)
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterParam)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void, propertyDynamicRegisterUserData
         , ZFMP_IN(ZFObject *, propertyDynamicRegisterUserData)
@@ -505,9 +505,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, const ZFClass *, propertyClassOfRetainProperty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void, propertyInitValueCallback
-        , ZFMP_IN(ZFPropertyDynamicRegisterInitValueCallback, propertyInitValueCallback)
+        , ZFMP_IN(ZFPropertyCallbackDynamicRegisterInitValueGetter, propertyInitValueCallback)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFPropertyDynamicRegisterInitValueCallback, propertyInitValueCallback)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFPropertyCallbackDynamicRegisterInitValueGetter, propertyInitValueCallback)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void, propertySetterType
         , ZFMP_IN(ZFMethodPrivilegeType, propertySetterType)
         )

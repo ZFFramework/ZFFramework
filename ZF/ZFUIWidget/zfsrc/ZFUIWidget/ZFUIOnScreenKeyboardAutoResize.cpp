@@ -28,7 +28,7 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(
         , ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData
         );
 
-zfclass _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData : zfextends ZFObject {
+zfclass _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData, ZFObject)
 
 protected:

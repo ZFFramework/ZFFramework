@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUITextEdit_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIKit_ZFUITextEdit_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUITextEdit_test, ZFFramework_test_TestCase)
 
 protected:

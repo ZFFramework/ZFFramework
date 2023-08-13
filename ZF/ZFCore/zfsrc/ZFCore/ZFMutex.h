@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief mutex utility
  */
-zfclass ZFLIB_ZFCore ZFMutex : zfextends ZFObject {
+zfclass ZFLIB_ZFCore ZFMutex : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFMutex, ZFObject)
 
 public:

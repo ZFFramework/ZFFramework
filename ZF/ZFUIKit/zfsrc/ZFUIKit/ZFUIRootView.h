@@ -17,7 +17,7 @@ zfclassFwd ZFUIWindow;
  * internally used to manage view's,
  * usually you should not use this class
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIRootView : zfextends ZFUIView {
+zffinal zfclass ZFLIB_ZFUIKit ZFUIRootView : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIRootView, ZFUIView)
     ZFOBJECT_PRIVATE_ALLOC("can only be created by owner ZFUISysWindow")
 

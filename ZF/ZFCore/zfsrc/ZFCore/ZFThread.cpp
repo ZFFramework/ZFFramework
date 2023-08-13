@@ -83,7 +83,7 @@ public:
 
 // ============================================================
 // user registered thread
-zfclass _ZFP_I_ZFThreadNativeRegisterThread : zfextends ZFThread {
+zfclass _ZFP_I_ZFThreadNativeRegisterThread : zfextend ZFThread {
     ZFOBJECT_DECLARE(_ZFP_I_ZFThreadNativeRegisterThread, ZFThread)
 
 public:

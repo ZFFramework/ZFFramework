@@ -70,7 +70,7 @@ zfclassFwd _ZFP_ZFUIWindowPrivate;
  * you may change its owner ZFUISysWindow by #windowOwnerSysWindow,
  * but only before #windowShow is called
  */
-zfclass ZFLIB_ZFUIKit ZFUIWindow : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIKit ZFUIWindow : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIWindow, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIWindow)
 

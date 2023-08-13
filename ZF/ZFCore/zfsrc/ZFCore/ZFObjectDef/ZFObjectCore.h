@@ -101,28 +101,28 @@ zfclassFwd ZFObjectHolder;
  *     much like the auto_ptr in C++ world
  * -  when inherit from ZFObject,
  *   you must add ZFOBJECT_DECLARE or ZFOBJECT_DECLARE_ABSTRACT to your subclass,
- *   and use zfextends:
+ *   and use zfextend:
  *   @code
- *     zfclass YourClassChild : zfextends YourClassBase {
+ *     zfclass YourClassChild : zfextend YourClassBase {
  *         ZFOBJECT_DECLARE(YourClassChild, YourClassBase)
  *         // or ZFOBJECT_DECLARE_ABSTRACT if YourClassChild is abstract class
  *     };
  *   @endcode
  *   and, no multiple inheritance is allowed while using ZFObject\n
  *   additionally, you should add #ZFOBJECT_REGISTER if you want the ZFClass map function
- *   @see ZFOBJECT_DECLARE, zfextends
+ *   @see ZFOBJECT_DECLARE, zfextend
  * -  embeded class can be declared,
  *   however, you must make sure it's name is unique,
  *   we doesn't support class names with namespace
  *   @code
- *     zfclass YourOutterClass : zfextends ZFObject {
+ *     zfclass YourOutterClass : zfextend ZFObject {
  *         ZFOBJECT_DECLARE(YourOutterClass, ZFObject)
  *
  *         // inner class is allowed,
  *         // but you must ensure it's class name is unique,
  *         // since no namespace qualifier is supported,
  *         // its full class name is "YourInnerClass" instead of "YourOutterClass::YourInnerClass"
- *         zfclass YourInnerClass : zfextends ZFObject {
+ *         zfclass YourInnerClass : zfextend ZFObject {
  *             ZFOBJECT_DECLARE(YourInnerClass, ZFObject)
  *         };
  *     };
@@ -137,7 +137,7 @@ zfclassFwd ZFObjectHolder;
  * -  while override member method of ZFObject type,
  *   you should use zfsuper to call super's method:
  *   @code
- *     zfclass YourClass : zfextends Parent {
+ *     zfclass YourClass : zfextend Parent {
  *         ZFOBJECT_DECLARE(YourClass, Parent)
  *     public:
  *         zfoverride
@@ -150,9 +150,9 @@ zfclassFwd ZFObjectHolder;
  *   if overrided method is declared in super interface,
  *   you should use zfsuperI:
  *   @code
- *     zfclass Parent : zfextends ZFObject, zfimplements ParentInterface0 {
+ *     zfclass Parent : zfextend ZFObject, zfimplement ParentInterface0 {
  *         ZFOBJECT_DECLARE(Parent, ZFObject)
- *         ZFIMPLEMENTS_DECLARE(ParentInterface0)
+ *         ZFIMPLEMENT_DECLARE(ParentInterface0)
  *     public:
  *         zfoverride
  *         virtual void funcInParentInterface0(void) {
@@ -160,9 +160,9 @@ zfclassFwd ZFObjectHolder;
  *             zfsuperI(ParentInterface0)::funcInParentInterface0();
  *         }
  *     };
- *     zfclass YourClass : zfextends Parent, zfimplements ParentInterface1 {
+ *     zfclass YourClass : zfextend Parent, zfimplement ParentInterface1 {
  *         ZFOBJECT_DECLARE(YourClass, Parent)
- *         ZFIMPLEMENTS_DECLARE(ParentInterface1)
+ *         ZFIMPLEMENT_DECLARE(ParentInterface1)
  *     public:
  *         zfoverride
  *         virtual void funcInParentInterface0(void) {
@@ -616,7 +616,7 @@ protected:
      *   you should use #ZFOBJECT_PRIVATE_ALLOC,
      *   typically usage:
      *   @code
-     *     zfclass MyObject : zfextends ZFObject {
+     *     zfclass MyObject : zfextend ZFObject {
      *         ZFOBJECT_DECLARE(MyObject, ZFObject)
      *         ZFOBJECT_PRIVATE_ALLOC("should be created by MyObject::instanceForXxx only")
      *

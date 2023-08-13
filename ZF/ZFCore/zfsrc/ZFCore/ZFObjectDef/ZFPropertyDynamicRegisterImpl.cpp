@@ -53,7 +53,7 @@ static ZFCoreArray<_ZFP_PropLifeCycleData> &_ZFP_ZFPropertyLifeCycleDataRef(
     }
 }
 
-zfclass _ZFP_I_PropDynRetainHolder : zfextends ZFObject {
+zfclass _ZFP_I_PropDynRetainHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRetainHolder, ZFObject)
 public:
     zfautoObject zfv;
@@ -64,13 +64,13 @@ public:
         return ZFObjectCompare(this->zfv.toObject(), anotherObj);
     }
 };
-zfclass _ZFP_I_PropDynRegData : zfextends ZFObject {
+zfclass _ZFP_I_PropDynRegData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegData, ZFObject)
 
 public:
     const ZFProperty *propertySaved;
     const ZFTypeInfo *typeInfo; // null for retain property
-    ZFPropertyDynamicRegisterInitValueCallback initValueCallback;
+    ZFPropertyCallbackDynamicRegisterInitValueGetter initValueCallback;
     /*
      * for assign property, store ZFTypeIdWrapper, ensured not null if accessed
      * for retain property, store _ZFP_I_PropDynRetainHolder, ensured not null if accessed
@@ -222,7 +222,7 @@ protected:
         this->_objOnDeallocListener = ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, _objOnDealloc));
     }
 };
-zfclass _ZFP_I_PropDynRegValueStore : zfextends ZFObject {
+zfclass _ZFP_I_PropDynRegValueStore : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegValueStore, ZFObject)
 
 public:
@@ -489,6 +489,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
             , param.propertyCustomImplCallbackIsInitValue()
             , param.propertyCustomImplCallbackValueReset()
             , zfnull
+            , param.propertyInitValueCallback()
             , zfnull
             , zfnull
             );
@@ -548,6 +549,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
             , _ZFP_PropDynReg_callbackIsInitValue
             , _ZFP_PropDynReg_callbackValueReset
             , zfnull
+            , param.propertyInitValueCallback()
             , zfnull
             , zfnull
             );
@@ -637,7 +639,7 @@ static zfbool _ZFP_ZFPropertyDynamicRegisterCustomImplCheck(
 }
 
 // ============================================================
-zfclass _ZFP_I_PropDynRegLifeCycleData : zfextends ZFObject {
+zfclass _ZFP_I_PropDynRegLifeCycleData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropDynRegLifeCycleData, ZFObject)
 public:
     ZFPropertyLifeCycle lifeCycle;

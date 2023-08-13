@@ -152,6 +152,8 @@ public:
     ZFPropertyCallbackValueReset callbackValueReset;
     /** @brief see #ZFPropertyUserRegisterAssign */
     ZFPropertyCallbackUserRegisterInitValueSetup callbackUserRegisterInitValueSetup;
+    /** @brief see #ZFPropertyDynamicRegister */
+    ZFPropertyCallbackDynamicRegisterInitValueGetter callbackDynamicRegisterInitValueGetter;
 
 public:
     /** @cond ZFPrivateDoc */
@@ -233,6 +235,7 @@ extern ZFLIB_ZFCore ZFProperty *_ZFP_ZFPropertyRegister(ZF_IN zfbool propertyIsU
                                                         , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
                                                         , ZF_IN ZFPropertyCallbackValueReset callbackValueReset
                                                         , ZF_IN ZFPropertyCallbackUserRegisterInitValueSetup callbackUserRegisterInitValueSetup
+                                                        , ZF_IN ZFPropertyCallbackDynamicRegisterInitValueGetter callbackDynamicRegisterInitValueGetter
                                                         , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
                                                         , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
                                                         );
@@ -256,6 +259,7 @@ public:
                                   , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
                                   , ZF_IN ZFPropertyCallbackValueReset callbackValueReset
                                   , ZF_IN ZFPropertyCallbackUserRegisterInitValueSetup callbackUserRegisterInitValueSetup
+                                  , ZF_IN ZFPropertyCallbackDynamicRegisterInitValueGetter callbackDynamicRegisterInitValueGetter
                                   , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
                                   , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
                                   )
@@ -276,6 +280,7 @@ public:
         , callbackIsInitValue
         , callbackValueReset
         , callbackUserRegisterInitValueSetup
+        , callbackDynamicRegisterInitValueGetter
         , callbackEnsureInit
         , callbackDealloc
         )) {

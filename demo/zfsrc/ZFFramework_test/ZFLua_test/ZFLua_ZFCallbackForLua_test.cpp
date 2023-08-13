@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFLua_ZFCallbackForLua_test_Object : zfextends ZFObject {
+zfclass _ZFP_ZFLua_ZFCallbackForLua_test_Object : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFLua_ZFCallbackForLua_test_Object, ZFObject)
 
     ZFOBSERVER_EVENT(Test)
@@ -37,7 +37,7 @@ protected:
 ZFOBJECT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object)
 ZFOBSERVER_EVENT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object, Test)
 
-zfclass ZFLua_ZFCallbackForLua_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFLua_ZFCallbackForLua_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_ZFCallbackForLua_test, ZFFramework_test_TestCase)
 
 protected:

@@ -38,7 +38,7 @@ zfclassFwd _ZFP_ZFUIButtonPrivate;
  * see #ZFObject::observerNotify for more info\n
  * #ZFUIButton is an abstract button, use its subclass to create
  */
-zfclass ZFLIB_ZFUIWidget ZFUIButton : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIWidget ZFUIButton : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIButton, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButton)
 

@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFLua_UI_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFLua_UI_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_UI_test, ZFFramework_test_TestCase)
 
 protected:

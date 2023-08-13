@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /* ZFMETHOD_MAX_PARAM */
 
 // ============================================================
-zfclass _ZFP_I_ZFMethodGenericInvokerDefaultParamType : zfextends ZFObject {
+zfclass _ZFP_I_ZFMethodGenericInvokerDefaultParamType : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFMethodGenericInvokerDefaultParamType, ZFObject)
 };
 ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef = zfnull;

@@ -429,9 +429,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   />
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextends ZFStyleableObject, zfimplements ZFProgressable {
+zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyleableObject, zfimplement ZFProgressable {
     ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFTypeIdWrapper, ZFStyleableObject)
-    ZFIMPLEMENTS_DECLARE(ZFProgressable)
+    ZFIMPLEMENT_DECLARE(ZFProgressable)
     ZFALLOC_CACHE_RELEASE_ABSTRACT({
         cache->wrappedValueIsConst = zffalse;
         cache->wrappedValueReset();

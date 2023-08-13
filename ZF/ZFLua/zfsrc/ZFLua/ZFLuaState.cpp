@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // state for thread
-zfclass _ZFP_I_ZFLuaStateHolder : zfextends ZFObject {
+zfclass _ZFP_I_ZFLuaStateHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFLuaStateHolder, ZFObject)
     ZFALLOC_CACHE_RELEASE({
         cache->_cleanup();

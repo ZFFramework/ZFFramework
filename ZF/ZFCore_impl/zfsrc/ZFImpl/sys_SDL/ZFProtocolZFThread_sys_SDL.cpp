@@ -7,7 +7,7 @@
 #if ZF_ENV_sys_SDL
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-// for sdl, we just extends the main thread executor for the default thread impl
+// for sdl, we just extend the main thread executor for the default thread impl
 
 static zfstllist<ZFListener> _ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue;
 

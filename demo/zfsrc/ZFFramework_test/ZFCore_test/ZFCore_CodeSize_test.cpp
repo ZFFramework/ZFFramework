@@ -462,7 +462,7 @@ _ZFP_ZFCore_CodeSize_test_GlobalInit_EXPAND(99)
 // object
 #if _ZFP_ZFCore_CodeSize_test_Object_ENABLE
 #define _ZFP_ZFCore_CodeSize_test_Object_EXPAND(N) \
-    zfclass _ZFP_ZFCore_CodeSize_test_Object_Obj##N : zfextends ZFObject { \
+    zfclass _ZFP_ZFCore_CodeSize_test_Object_Obj##N : zfextend ZFObject { \
         ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_Object_Obj##N, ZFObject) \
     }; \
     ZFOBJECT_REGISTER(_ZFP_ZFCore_CodeSize_test_Object_Obj##N)
@@ -571,7 +571,7 @@ _ZFP_ZFCore_CodeSize_test_Object_EXPAND(99)
 // ============================================================
 // method
 #if _ZFP_ZFCore_CodeSize_test_Method_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_Method : zfextends ZFObject {
+zfclass _ZFP_ZFCore_CodeSize_test_Method : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_Method, ZFObject)
 
     ZFMETHOD_INLINE_0(void, f0) {}
@@ -786,7 +786,7 @@ ZFMETHOD_FUNC_DEFINE_0(void, _ZFP_ZFCore_CodeSize_test_f99) {}
 // ============================================================
 // method user register
 #if _ZFP_ZFCore_CodeSize_test_MethodUserRegister_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_MethodUserRegister : zfextends ZFObject {
+zfclass _ZFP_ZFCore_CodeSize_test_MethodUserRegister : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_MethodUserRegister, ZFObject)
 };
 ZFMETHOD_USER_REGISTER_0({}, _ZFP_ZFCore_CodeSize_test_MethodUserRegister, void, f0)
@@ -999,7 +999,7 @@ ZFMETHOD_FUNC_USER_REGISTER_0({}, void, _ZFP_ZFCore_CodeSize_test_MethodFuncUser
 // ============================================================
 // property
 #if _ZFP_ZFCore_CodeSize_test_Property_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_Property : zfextends ZFObject {
+zfclass _ZFP_ZFCore_CodeSize_test_Property : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_Property, ZFObject)
 
     ZFPROPERTY_ASSIGN(zfstring, v0)
@@ -1109,7 +1109,7 @@ ZFOBJECT_REGISTER(_ZFP_ZFCore_CodeSize_test_Property)
 // ============================================================
 // property user register
 #if _ZFP_ZFCore_CodeSize_test_PropertyUserRegister_ENABLE
-zfclass _ZFP_ZFCore_CodeSize_test_PropertyUserRegister : zfextends ZFObject {
+zfclass _ZFP_ZFCore_CodeSize_test_PropertyUserRegister : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_CodeSize_test_PropertyUserRegister, ZFObject)
 };
 ZFPROPERTY_USER_REGISTER_ASSIGN(_ZFP_ZFCore_CodeSize_test_PropertyUserRegister, zfstring, v0, ZFPropertyNoInitValue, public, public)

@@ -19,7 +19,7 @@ zfclassFwd _ZFP_ZFAnimationPrivate;
 /**
  * @brief base class of all animation
  */
-zfclass ZFLIB_ZFUtility ZFAnimation : zfextends ZFStyleableObject {
+zfclass ZFLIB_ZFUtility ZFAnimation : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFAnimation, ZFStyleableObject)
 
 public:

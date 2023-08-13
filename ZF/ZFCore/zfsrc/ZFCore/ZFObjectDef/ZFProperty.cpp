@@ -36,6 +36,7 @@ ZFProperty::ZFProperty(void)
 , callbackIsInitValue(zfnull)
 , callbackValueReset(zfnull)
 , callbackUserRegisterInitValueSetup(zfnull)
+, callbackDynamicRegisterInitValueGetter(zfnull)
 , _ZFP_ZFPropertyNeedInit(zftrue)
 , _ZFP_ZFProperty_refCount(1)
 , _ZFP_ZFProperty_propertyInternalId(zfnull)
@@ -190,6 +191,7 @@ ZFProperty *_ZFP_ZFPropertyRegister(
         , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
         , ZF_IN ZFPropertyCallbackValueReset callbackValueReset
         , ZF_IN ZFPropertyCallbackUserRegisterInitValueSetup callbackUserRegisterInitValueSetup
+        , ZF_IN ZFPropertyCallbackDynamicRegisterInitValueGetter callbackDynamicRegisterInitValueGetter
         , ZF_IN _ZFP_ZFPropertyCallbackEnsureInit callbackEnsureInit
         , ZF_IN _ZFP_ZFPropertyCallbackDealloc callbackDealloc
         ) {
@@ -244,6 +246,7 @@ ZFProperty *_ZFP_ZFPropertyRegister(
         propertyInfo->callbackIsInitValue = callbackIsInitValue;
         propertyInfo->callbackValueReset = callbackValueReset;
         propertyInfo->callbackUserRegisterInitValueSetup = callbackUserRegisterInitValueSetup;
+        propertyInfo->callbackDynamicRegisterInitValueGetter = callbackDynamicRegisterInitValueGetter;
         propertyInfo->_ZFP_ZFProperty_callbackEnsureInit = callbackEnsureInit;
         propertyInfo->_ZFP_ZFProperty_callbackDealloc = callbackDealloc;
 

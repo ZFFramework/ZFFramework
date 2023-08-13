@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFUtility_ZFAni_test_Object : zfextends ZFObject {
+zfclass _ZFP_ZFUtility_ZFAni_test_Object : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFUtility_ZFAni_test_Object, ZFObject)
 
     ZFPROPERTY_ASSIGN(zfint, testProp)
@@ -33,7 +33,7 @@ protected:
     }
 };
 
-zfclass ZFUtility_ZFAni_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUtility_ZFAni_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUtility_ZFAni_test, ZFFramework_test_TestCase)
 
 protected:

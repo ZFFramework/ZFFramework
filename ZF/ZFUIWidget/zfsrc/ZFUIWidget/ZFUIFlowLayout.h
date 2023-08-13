@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * would be relative to sibling child,
  * instead of the container view
  */
-zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextends ZFUILayoutParam {
+zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextend ZFUILayoutParam {
     ZFOBJECT_DECLARE(ZFUIFlowLayoutParam, ZFUILayoutParam)
 
     /**
@@ -65,7 +65,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIFlowLayoutParam : zfextends ZFUILayoutParam {
  *   and try to prevent deep child view tree,
  *   especially complex children
  */
-zfclass ZFLIB_ZFUIWidget ZFUIFlowLayout : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIWidget ZFUIFlowLayout : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIFlowLayout, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIFlowLayout)
 

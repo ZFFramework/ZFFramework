@@ -5,13 +5,13 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass _ZFP_ZFCore_ZFPropertyUserRegister_test_Object : zfextends ZFObject, zfimplements ZFSerializable {
+zfclass _ZFP_ZFCore_ZFPropertyUserRegister_test_Object : zfextend ZFObject, zfimplement ZFSerializable {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFPropertyUserRegister_test_Object, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable)
 public:
     ZFPROPERTY_ASSIGN(zfindex, valueNormal)
 };
-zfclass ZFCore_ZFPropertyUserRegister_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFPropertyUserRegister_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFPropertyUserRegister_test, ZFFramework_test_TestCase)
 
 protected:

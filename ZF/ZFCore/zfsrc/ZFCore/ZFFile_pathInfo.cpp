@@ -517,7 +517,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFPathInfo, ZFPathInfoForLocal
 
 // ============================================================
 // ZFInputForPathInfo
-zfclass _ZFP_I_ZFInputForPathInfoOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFInputForPathInfoOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFInputForPathInfoOwner, ZFObject)
 
     ZFALLOC_CACHE_RELEASE({
@@ -680,7 +680,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeC
 
 // ============================================================
 // ZFOutputForPathInfo
-zfclass _ZFP_I_ZFOutputForPathInfoOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFOutputForPathInfoOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFOutputForPathInfoOwner, ZFObject)
 
     ZFALLOC_CACHE_RELEASE({

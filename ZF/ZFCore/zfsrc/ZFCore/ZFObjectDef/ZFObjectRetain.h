@@ -150,7 +150,7 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject obj) {
  *
  * usage:
  * @code
- *   zfclass YourObject : zfextends SomeParent {
+ *   zfclass YourObject : zfextend SomeParent {
  *       ZFOBJECT_DECLARE(YourObject, SomeParent)
  *       ZFALLOC_CACHE_RELEASE({
  *           cache->yourCacheCleanupAction();

@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIPage_test_Page : zfextends ZFUIPage {
+zfclass ZFUIWidget_ZFUIPage_test_Page : zfextend ZFUIPage {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test_Page, ZFUIPage)
 
     ZFPROPERTY_RETAIN(ZFUILinearLayout *, _titleView, zflineAlloc(ZFUILinearLayout))
@@ -83,7 +83,7 @@ protected:
         ZFUIPageAniPrepareForSlide(this, resumeOrPauseReason, siblingPage);
     }
 };
-zfclass ZFUIWidget_ZFUIPage_test_PageManager : zfextends ZFUIPageManager {
+zfclass ZFUIWidget_ZFUIPage_test_PageManager : zfextend ZFUIPageManager {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test_PageManager, ZFUIPageManager)
 
     ZFPROPERTY_RETAIN(ZFUILinearLayout *, _buttonLayout, zflineAlloc(ZFUILinearLayout))
@@ -164,7 +164,7 @@ protected:
     }
 };
 
-zfclass ZFUIWidget_ZFUIPage_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIWidget_ZFUIPage_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIPage_test, ZFFramework_test_TestCase)
 
 private:

@@ -117,7 +117,7 @@ ZFOUTPUT_TYPE(ZFUIAutoLayoutRule, {v.objectInfoT(s);})
 // ZFUIAutoLayoutParam
 zfclassFwd ZFUIAutoLayout;
 /** @brief see #ZFUIAutoLayout */
-zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextends ZFUILayoutParam {
+zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextend ZFUILayoutParam {
     ZFOBJECT_DECLARE(ZFUIAutoLayoutParam, ZFUILayoutParam)
 
     /** @brief see #ZFUIAutoLayout */
@@ -365,7 +365,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  * -  offset(offset) :
  *   specify the #ZFUIAutoLayoutRule::offset
  */
-zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIAutoLayout, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIAutoLayout)
 

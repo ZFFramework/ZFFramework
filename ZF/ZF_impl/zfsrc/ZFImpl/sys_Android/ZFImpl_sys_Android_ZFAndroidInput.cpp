@@ -27,7 +27,7 @@ jclass ZFImpl_sys_Android_jclassZFAndroidInput(void) {
 }
 
 #define _ZFP_ZFAndroidInputBufSize 1024
-zfclass _ZFP_I_ZFAndroidInput : zfextends ZFObject {
+zfclass _ZFP_I_ZFAndroidInput : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAndroidInput, ZFObject)
     ZFALLOC_CACHE_RELEASE({
             cache->removeAll();

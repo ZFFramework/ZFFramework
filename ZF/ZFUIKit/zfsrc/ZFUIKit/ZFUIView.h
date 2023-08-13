@@ -90,7 +90,7 @@ zfclassFwd _ZFP_ZFUIViewPrivate;
  * we also allow add ZFUIView to native view,
  * for how to, refer to #ZFUISysWindow::nativeWindowEmbed
  */
-zfclass ZFLIB_ZFUIKit ZFUIView : zfextends ZFStyleableObject {
+zfclass ZFLIB_ZFUIKit ZFUIView : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUIView, ZFStyleableObject)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIView)
 

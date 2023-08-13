@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief interface shows a ZFObject is copyable
  */
-zfinterface ZFLIB_ZFCore ZFCopyable : zfextends ZFInterface {
+zfinterface ZFLIB_ZFCore ZFCopyable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFCopyable, ZFInterface)
 
 public:

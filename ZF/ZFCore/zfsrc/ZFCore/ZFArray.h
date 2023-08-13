@@ -14,7 +14,7 @@ zfclassFwd _ZFP_ZFArrayPrivate;
 /**
  * @brief container of ZFObject, see #ZFContainer
  */
-zfclass ZFLIB_ZFCore ZFArray : zfextends ZFContainer {
+zfclass ZFLIB_ZFCore ZFArray : zfextend ZFContainer {
     ZFOBJECT_DECLARE(ZFArray, ZFContainer)
 
 public:

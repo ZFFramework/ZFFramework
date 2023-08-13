@@ -13,6 +13,11 @@ static zfstlmap<zfstring, ZFDynamic> &_ZFP_ZFDynamicRegTagMap(void) {
 }
 
 // ============================================================
+zfclassPOD _ZFP_ZFDynamicImplement {
+public:
+    const ZFClass *cls;
+    const ZFClass *clsToImplement;
+};
 zfclassPOD _ZFP_ZFDynamicPropLifeCycle {
 public:
     const ZFProperty *property;
@@ -40,6 +45,7 @@ public:
 
     // state
     ZFCoreArrayPOD<const ZFClass *> allClass;
+    ZFCoreArrayPOD<_ZFP_ZFDynamicImplement> allImplement;
     ZFCoreArrayPOD<const ZFClass *> allEnum;
     ZFCoreArrayPOD<const ZFMethod *> allMethod;
     ZFCoreArrayPOD<const ZFProperty *> allProperty;
@@ -59,6 +65,7 @@ public:
     , enumValues()
     , enumNames()
     , allClass()
+    , allImplement()
     , allEnum()
     , allMethod()
     , allProperty()
@@ -141,6 +148,14 @@ public:
             this->allEnum = ZFCoreArrayPOD<const ZFClass *>();
             for(zfindex i = allEnum.count() - 1; i != zfindexMax(); --i) {
                 ZFEnumDynamicUnregister(allEnum[i]);
+            }
+        }
+
+        if(!this->allImplement.isEmpty()) {
+            ZFCoreArrayPOD<_ZFP_ZFDynamicImplement> allImplement = this->allImplement;
+            this->allImplement = ZFCoreArrayPOD<_ZFP_ZFDynamicImplement>();
+            for(zfindex i = allImplement.count() - 1; i != zfindexMax(); --i) {
+                ZFImplementDynamicUnregister(allImplement[i].cls, allImplement[i].clsToImplement);
             }
         }
 
@@ -424,6 +439,15 @@ ZFDynamic &ZFDynamic::classEnd(void) {
         d->error("no paired classBegin");
     }
     d->cls = zfnull;
+    return *this;
+}
+
+ZFDynamic &ZFDynamic::classImplement(ZF_IN const ZFClass *clsToImplement) {
+    if(d->errorOccurred) {return *this;}
+    if(d->cls == zfnull) {
+        d->error("no paired classBegin");
+    }
+    ZFImplementDynamicRegister(d->cls, clsToImplement);
     return *this;
 }
 
@@ -962,6 +986,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, classBegin
         , ZFMP_IN(const ZFClass *, cls)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, classImplement
+        , ZFMP_IN(const ZFClass *, clsToImplement)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, classEnd)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, classCanAllocPublic
         , ZFMP_IN(zfbool, value)
@@ -1039,13 +1066,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnDe
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFCoreArray<ZFOutput> &, errorCallbacks)
-
-
-// ============================================================
-ZFOBJECT_REGISTER(ZFDynamicPropertyData)
-
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFDynamicPropertyData, zfautoObject, ret)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFDynamicPropertyData, const ZFProperty *, property)
 
 // ============================================================
 zfclassNotPOD _ZFP_ZFMPPrivate {

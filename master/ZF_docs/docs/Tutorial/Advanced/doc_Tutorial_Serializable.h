@@ -3,10 +3,10 @@
  *
  * to make an object serializable is easy:
  * @code
- *   // extends from any ZFObject type, and implements from ZFSerializable
- *   zfclass MyObject : zfextends MyParent, zfimplements ZFSerializable {
+ *   // extend from any ZFObject type, and implement from ZFSerializable
+ *   zfclass MyObject : zfextend MyParent, zfimplement ZFSerializable {
  *       ZFOBJECT_DECLARE(MyObject, MyParent)
- *       ZFIMPLEMENTS_DECLARE(ZFSerializable)
+ *       ZFIMPLEMENT_DECLARE(ZFSerializable)
  *
  *       // normal property value would be serialized automatically
  *       ZFPROPERTY_ASSIGN(zfindex, myProperty)
@@ -34,9 +34,9 @@
  * if any of contents of your object can't be serialized automatically,
  * you may override some methods to supply your own serialize logic:
  * @code
- *   zfclass MyObject : zfextends ZFObject, zfimplements ZFSerializable {
+ *   zfclass MyObject : zfextend ZFObject, zfimplement ZFSerializable {
  *       ZFOBJECT_DECLARE(MyObject, ZFObject)
- *       ZFIMPLEMENTS_DECLARE(ZFSerializable)
+ *       ZFIMPLEMENT_DECLARE(ZFSerializable)
  *
  *   protected:
  *       virtual zfbool serializableOnSerializeFromData(

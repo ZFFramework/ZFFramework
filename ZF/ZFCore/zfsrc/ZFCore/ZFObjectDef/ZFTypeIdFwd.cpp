@@ -56,7 +56,7 @@ void ZFTypeInfoGetAllT(ZF_IN_OUT ZFCoreArray<const ZFTypeInfo *> &ret) {
 
 // ============================================================
 // special alias implicit convert
-zfclass _ZFP_I_PropAliasHolder : zfextends ZFObject {
+zfclass _ZFP_I_PropAliasHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropAliasHolder, ZFObject)
 public:
     ZFObject *obj;

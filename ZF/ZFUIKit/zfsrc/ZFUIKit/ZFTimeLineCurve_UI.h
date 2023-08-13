@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief ease in time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUIKit ZFTimeLineCurveEaseIn : zfextends ZFTimeLineCurve {
+zfclass ZFLIB_ZFUIKit ZFTimeLineCurveEaseIn : zfextend ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveEaseIn, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 
@@ -28,7 +28,7 @@ protected:
 /**
  * @brief ease in time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUIKit ZFTimeLineCurveEaseOut : zfextends ZFTimeLineCurve {
+zfclass ZFLIB_ZFUIKit ZFTimeLineCurveEaseOut : zfextend ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveEaseOut, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 
@@ -43,7 +43,7 @@ protected:
 /**
  * @brief ease in time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUIKit ZFTimeLineCurveEaseInOut : zfextends ZFTimeLineCurve {
+zfclass ZFLIB_ZFUIKit ZFTimeLineCurveEaseInOut : zfextend ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveEaseInOut, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 
@@ -58,7 +58,7 @@ protected:
 /**
  * @brief ease in time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUIKit ZFTimeLineCurveBounceIn : zfextends ZFTimeLineCurve {
+zfclass ZFLIB_ZFUIKit ZFTimeLineCurveBounceIn : zfextend ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveBounceIn, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 
@@ -73,7 +73,7 @@ protected:
 /**
  * @brief ease in time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUIKit ZFTimeLineCurveBounceOut : zfextends ZFTimeLineCurve {
+zfclass ZFLIB_ZFUIKit ZFTimeLineCurveBounceOut : zfextend ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveBounceOut, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 
@@ -88,7 +88,7 @@ protected:
 /**
  * @brief ease in time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUIKit ZFTimeLineCurveBounceInOut : zfextends ZFTimeLineCurve {
+zfclass ZFLIB_ZFUIKit ZFTimeLineCurveBounceInOut : zfextend ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveBounceInOut, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 

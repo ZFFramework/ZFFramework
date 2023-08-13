@@ -46,7 +46,7 @@ extern ZFLIB_ZFCore zfbool ZFPropertyDynamicUnregisterLifeCycle(
         );
 
 /** @brief data to hold params for property, see #ZFPropertyDynamicRegisterLifeCycle */
-zfclass ZFLIB_ZFCore ZFPropertyInvokeData : zfextends ZFObject {
+zfclass ZFLIB_ZFCore ZFPropertyInvokeData : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFPropertyInvokeData, ZFObject)
 
 public:

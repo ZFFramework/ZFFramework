@@ -7,7 +7,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_test_Window : zfextends ZFUIWindow {
+zfclass ZFUIKit_test_Window : zfextend ZFUIWindow {
     ZFOBJECT_DECLARE(ZFUIKit_test_Window, ZFUIWindow)
 
     ZFPROPERTY_ON_INIT_INLINE(ZFUIColor, viewBackgroundColor) {
@@ -15,7 +15,7 @@ zfclass ZFUIKit_test_Window : zfextends ZFUIWindow {
     }
 };
 
-zfclass ZFUIKit_test_Button : zfextends ZFUIButtonBasic {
+zfclass ZFUIKit_test_Button : zfextend ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIKit_test_Button, ZFUIButtonBasic)
 
     ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundNormal) {
@@ -26,7 +26,7 @@ zfclass ZFUIKit_test_Button : zfextends ZFUIButtonBasic {
     }
 };
 
-zfclass ZFUIKit_test_ListView : zfextends ZFUIScrollView {
+zfclass ZFUIKit_test_ListView : zfextend ZFUIScrollView {
     ZFOBJECT_DECLARE(ZFUIKit_test_ListView, ZFUIScrollView)
 
 protected:
@@ -75,7 +75,7 @@ extern void ZFUIKit_test_prepareTestWindow(
         , ZF_IN ZFTestCase *testCaseToStop
         );
 
-zfclass ZFUIKit_test_SettingData : zfextends ZFObject {
+zfclass ZFUIKit_test_SettingData : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIKit_test_SettingData, ZFObject)
 
 public:
@@ -126,7 +126,7 @@ extern void ZFUIKit_test_prepareSettingForBoolProperty(
         , ZF_IN const ZFProperty *property
         );
 
-zfclass _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder : zfextends ZFObject {
+zfclass _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder, ZFObject)
 public:
     ZFObject *obj;

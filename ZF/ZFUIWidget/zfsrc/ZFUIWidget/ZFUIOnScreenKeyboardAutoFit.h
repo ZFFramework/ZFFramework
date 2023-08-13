@@ -17,7 +17,7 @@ zfclassFwd _ZFP_ZFUIOnScreenKeyboardAutoFitLayoutPrivate;
  * @brief a scroll container that automatically fits content's position
  *   according #ZFUIOnScreenKeyboardState
  */
-zfclass ZFLIB_ZFUIWidget ZFUIOnScreenKeyboardAutoFitLayout : zfextends ZFUIScrollView {
+zfclass ZFLIB_ZFUIWidget ZFUIOnScreenKeyboardAutoFitLayout : zfextend ZFUIScrollView {
     ZFOBJECT_DECLARE(ZFUIOnScreenKeyboardAutoFitLayout, ZFUIScrollView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIOnScreenKeyboardAutoFitLayout)
 

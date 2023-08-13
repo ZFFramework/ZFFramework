@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIAniImageView_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIWidget_ZFUIAniImageView_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIAniImageView_test, ZFFramework_test_TestCase)
 
 protected:

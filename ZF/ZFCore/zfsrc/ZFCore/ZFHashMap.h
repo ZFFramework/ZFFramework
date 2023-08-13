@@ -14,7 +14,7 @@ zfclassFwd _ZFP_ZFHashMapPrivate;
 /**
  * @brief container of ZFObject, see #ZFKeyValueContainer
  */
-zfclass ZFLIB_ZFCore ZFHashMap: zfextends ZFKeyValueContainer {
+zfclass ZFLIB_ZFCore ZFHashMap: zfextend ZFKeyValueContainer {
     ZFOBJECT_DECLARE(ZFHashMap, ZFKeyValueContainer)
 
 public:

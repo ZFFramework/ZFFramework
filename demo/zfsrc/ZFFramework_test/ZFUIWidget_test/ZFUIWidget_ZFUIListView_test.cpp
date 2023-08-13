@@ -2,9 +2,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUIListView_test_ListAdapter : zfextends ZFObject, zfimplements ZFUIListAdapter {
+zfclass ZFUIWidget_ZFUIListView_test_ListAdapter : zfextend ZFObject, zfimplement ZFUIListAdapter {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test_ListAdapter, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFUIListAdapter)
+    ZFIMPLEMENT_DECLARE(ZFUIListAdapter)
 
 public:
     virtual zfindex cellCount(void) {
@@ -52,7 +52,7 @@ public:
     #endif
 };
 
-zfclass ZFUIWidget_ZFUIListView_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIWidget_ZFUIListView_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test, ZFFramework_test_TestCase)
 
     ZFPROPERTY_RETAIN(ZFUIListAdapter *, listAdapter, zflineAlloc(ZFUIWidget_ZFUIListView_test_ListAdapter))

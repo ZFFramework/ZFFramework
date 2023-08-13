@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFSTYLE_DEFAULT_DEFINE(ZFUIScrollThumbDefault)
 
 // ============================================================
-zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAni : zfextends ZFAnimationTimeLine {
+zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAni : zfextend ZFAnimationTimeLine {
     ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAni, ZFAnimationTimeLine)
 
 private:
@@ -34,7 +34,7 @@ protected:
         }
     }
 };
-zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView : zfextends ZFAnimationNativeView {
+zfclass _ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView : zfextend ZFAnimationNativeView {
     ZFOBJECT_DECLARE(_ZFP_ZFUIScrollThumbDefault_HideThumbAniTypeNativeView, ZFAnimationNativeView)
 
 protected:

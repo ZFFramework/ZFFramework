@@ -12,7 +12,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief global style for ui elements
  */
-zfclass ZFLIB_ZFUIKit ZFUIGlobalStyle : zfextends ZFStyleableObject {
+zfclass ZFLIB_ZFUIKit ZFUIGlobalStyle : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFUIGlobalStyle, ZFStyleableObject)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIGlobalStyle)
 

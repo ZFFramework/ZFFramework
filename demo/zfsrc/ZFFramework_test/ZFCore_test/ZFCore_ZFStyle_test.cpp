@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextends ZFStyleableObject {
+zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFStyle_test_Object, ZFStyleableObject)
 
     ZFPROPERTY_ASSIGN(zfint, myProperty)
@@ -11,7 +11,7 @@ zfclass _ZFP_ZFCore_ZFStyle_test_Object : zfextends ZFStyleableObject {
     }
 };
 
-zfclass ZFCore_ZFStyle_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFStyle_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFStyle_test, ZFFramework_test_TestCase)
 
 protected:

@@ -15,7 +15,7 @@ zfclassFwd _ZFP_ZFUIListCellViewBasicPrivate;
 /**
  * @brief basic list cell view with icon and label
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListCellViewBasic : zfextends ZFUIListCellView {
+zfclass ZFLIB_ZFUIWidget ZFUIListCellViewBasic : zfextend ZFUIListCellView {
     ZFOBJECT_DECLARE(ZFUIListCellViewBasic, ZFUIListCellView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIListCellViewBasic)
 

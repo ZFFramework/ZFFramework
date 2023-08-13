@@ -14,7 +14,7 @@ zfclassFwd ZFUIListView;
 /**
  * @brief abstract list adpater to supply cells for list view
  */
-zfinterface ZFLIB_ZFUIWidget ZFUIListAdapter : zfextends ZFInterface {
+zfinterface ZFLIB_ZFUIWidget ZFUIListAdapter : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIListAdapter, ZFInterface)
 
     // ============================================================

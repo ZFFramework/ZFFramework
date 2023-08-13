@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFCore_ZFObserverGroup_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFObserverGroup_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFObserverGroup_test, ZFFramework_test_TestCase)
 
     ZFOBSERVER_EVENT(ZFObserverGroupTest0)

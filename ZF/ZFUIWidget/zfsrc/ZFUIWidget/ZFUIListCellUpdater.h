@@ -32,7 +32,7 @@ zfclassFwd _ZFP_ZFUIListViewPrivate;
 /**
  * @brief abstract list cell updater to update #ZFUIListCell
  */
-zfinterface ZFLIB_ZFUIWidget ZFUIListCellUpdater : zfextends ZFInterface {
+zfinterface ZFLIB_ZFUIWidget ZFUIListCellUpdater : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIListCellUpdater, ZFInterface)
 
 public:

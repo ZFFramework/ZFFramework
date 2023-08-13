@@ -398,7 +398,7 @@ private:
 // ============================================================
 // child callback declare
 #define _ZFP_ZFCALLBACK_DECLARE_BEGIN(ZFLIB_, CallbackTypeName, ParentType) \
-    zfclassLikePOD ZFLIB_ CallbackTypeName : zfextends ParentType { \
+    zfclassLikePOD ZFLIB_ CallbackTypeName : zfextend ParentType { \
         _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(CallbackTypeName, ParentType) \
     public:
 #define _ZFP_ZFCALLBACK_DECLARE_END(ZFLIB_, CallbackTypeName, ParentType) \

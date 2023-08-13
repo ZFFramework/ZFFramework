@@ -19,7 +19,7 @@ ZFStyleable *ZFStyleable::defaultStyle(void) {
 }
 
 // ============================================================
-zfclass _ZFP_I_ZFStyleable_PropertyTypeHolder : zfextends ZFObject {
+zfclass _ZFP_I_ZFStyleable_PropertyTypeHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFStyleable_PropertyTypeHolder, ZFObject)
 
 public:
@@ -191,7 +191,7 @@ _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN con
 }
 
 // ============================================================
-zfclass _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData : zfextends ZFObject {
+zfclass _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData, ZFObject)
 
 public:

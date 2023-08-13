@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFEXPORT_VAR_DEFINE(zftimet, ZFAnimationDurationDefault, 250)
 
 // ============================================================
-zfclass _ZFP_I_ZFAnimationAniList : zfextends ZFObject {
+zfclass _ZFP_I_ZFAnimationAniList : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFAnimationAniList, ZFObject)
 public:
     ZFCoreArrayPOD<ZFAnimation *> aniList;

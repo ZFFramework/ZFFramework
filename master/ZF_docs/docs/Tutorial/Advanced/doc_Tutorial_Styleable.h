@@ -5,7 +5,7 @@
  * to declare a styleable, it's recommended to declare like this:
  * @code
  *   // in header files:
- *   zfclass YourStyleableObject : zfextends ParentStyleableObject {
+ *   zfclass YourStyleableObject : zfextend ParentStyleableObject {
  *       ZFOBJECT_DECLARE(YourStyleableObject, ParentStyleableObject)
  *       ZFSTYLE_DEFAULT_DECLARE(YourStyleableObject)
  *   };
@@ -26,7 +26,7 @@
  *
  * then, it's convenient to chain different styleable object to achieve simple style logic:
  * @code
- *   zfclass SomeStyle : zfextends Parent {
+ *   zfclass SomeStyle : zfextend Parent {
  *       ZFOBJECT_DECLARE(SomeStyle, Parent)
  *
  *       ZFPROPERTY_RETAIN(SomeType, someName, OtherStyle::DefaultStyle()->sth())

@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFAlgorithm_ZFCrc32_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFAlgorithm_ZFCrc32_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFAlgorithm_ZFCrc32_test, ZFFramework_test_TestCase)
 
 protected:

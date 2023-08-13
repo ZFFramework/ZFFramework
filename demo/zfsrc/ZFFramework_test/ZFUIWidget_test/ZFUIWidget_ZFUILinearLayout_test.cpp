@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWidget_ZFUILinearLayout_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIWidget_ZFUILinearLayout_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUILinearLayout_test, ZFFramework_test_TestCase)
 
 protected:

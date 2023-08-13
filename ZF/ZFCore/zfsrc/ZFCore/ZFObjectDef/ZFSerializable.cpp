@@ -14,7 +14,7 @@ public:
     const ZFProperty *property;
     ZFSerializablePropertyType propertyType;
 };
-zfclass _ZFP_I_ZFSerializablePropertyTypeHolder : zfextends ZFObject {
+zfclass _ZFP_I_ZFSerializablePropertyTypeHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFSerializablePropertyTypeHolder, ZFObject)
 public:
     ZFCoreArrayPOD<_ZFP_ZFSerializable_PropertyTypeData *> serializableProperty;

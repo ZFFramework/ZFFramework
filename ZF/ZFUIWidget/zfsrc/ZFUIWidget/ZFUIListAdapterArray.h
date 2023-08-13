@@ -24,9 +24,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   </ZFUIListAdapterArray>
  * @endcode
  */
-zfclass ZFLIB_ZFUIWidget ZFUIListAdapterArray : zfextends ZFStyleableObject, zfimplements ZFUIListAdapter {
+zfclass ZFLIB_ZFUIWidget ZFUIListAdapterArray : zfextend ZFStyleableObject, zfimplement ZFUIListAdapter {
     ZFOBJECT_DECLARE(ZFUIListAdapterArray, ZFStyleableObject)
-    ZFIMPLEMENTS_DECLARE(ZFUIListAdapter)
+    ZFIMPLEMENT_DECLARE(ZFUIListAdapter)
 
 protected:
     zfoverride

@@ -66,7 +66,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, Z
 // ============================================================
 // utils for impl
 /** @brief util for custom ani */
-zfclass ZFLIB_ZFUtility ZFAniForCustomAni : zfextends ZFAnimationTimeLine {
+zfclass ZFLIB_ZFUtility ZFAniForCustomAni : zfextend ZFAnimationTimeLine {
     ZFOBJECT_DECLARE(ZFAniForCustomAni, ZFAnimationTimeLine)
 public:
     /**
@@ -104,7 +104,7 @@ private:
 
 zfclassFwd _ZFP_ZFAniForGenericPrivate;
 /** @brief util for #ZFAni */
-zfclass ZFLIB_ZFUtility ZFAniForObject : zfextends ZFAnimationTimeLine {
+zfclass ZFLIB_ZFUtility ZFAniForObject : zfextend ZFAnimationTimeLine {
     ZFOBJECT_DECLARE(ZFAniForObject, ZFAnimationTimeLine)
 public:
     /** @brief name of property to animate, see #ZFAni */
@@ -135,7 +135,7 @@ private:
 };
 
 /** @brief util for #ZFAni */
-zfclass ZFLIB_ZFUtility ZFAniForGeneric : zfextends ZFAnimationTimeLine {
+zfclass ZFLIB_ZFUtility ZFAniForGeneric : zfextend ZFAnimationTimeLine {
     ZFOBJECT_DECLARE(ZFAniForGeneric, ZFAnimationTimeLine)
 public:
     /** @brief name of property to animate, see #ZFAni */

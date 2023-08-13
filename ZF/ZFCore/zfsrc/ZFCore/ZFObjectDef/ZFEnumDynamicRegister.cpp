@@ -10,13 +10,13 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass _ZFP_I_ZFEnumDynamicHolder : zfextends ZFObject {
+zfclass _ZFP_I_ZFEnumDynamicHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFEnumDynamicHolder, ZFObject)
 public:
     _ZFP_ZFEnumData *d;
     ZFCoreArrayPOD<const ZFMethod *> userRegMethods;
 };
-zfclass _ZFP_I_ZFEnumDynamic : zfextends ZFEnum {
+zfclass _ZFP_I_ZFEnumDynamic : zfextend ZFEnum {
     ZFOBJECT_DECLARE(_ZFP_I_ZFEnumDynamic, ZFEnum)
 
 public:
@@ -73,7 +73,7 @@ private:
         return this->classData()->classDynamicRegisterUserData()->to<_ZFP_I_ZFEnumDynamicHolder *>()->d;
     }
 };
-zfclassNotPOD _ZFP_ZFEnumTypeId : zfextends ZFTypeInfo {
+zfclassNotPOD _ZFP_ZFEnumTypeId : zfextend ZFTypeInfo {
 public:
     const ZFClass *enumClass;
 

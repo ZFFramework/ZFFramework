@@ -20,7 +20,7 @@ zfclassFwd _ZFP_ZFThreadPrivate;
  *
  * for app level code, it's recommended to use #zfasync since it may contain thread pool logic
  */
-zfclass ZFLIB_ZFCore ZFThread : zfextends ZFObject {
+zfclass ZFLIB_ZFCore ZFThread : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFThread, ZFObject)
 
 public:

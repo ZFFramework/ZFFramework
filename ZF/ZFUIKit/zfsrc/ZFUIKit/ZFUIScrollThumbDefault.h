@@ -16,9 +16,9 @@ zfclassFwd _ZFP_ZFUIScrollThumbDefaultPrivate;
 /**
  * @brief default scroll thumb for #ZFUIScroller
  */
-zfclass ZFLIB_ZFUIKit ZFUIScrollThumbDefault : zfextends ZFStyleableObject, zfimplements ZFUIScrollThumb {
+zfclass ZFLIB_ZFUIKit ZFUIScrollThumbDefault : zfextend ZFStyleableObject, zfimplement ZFUIScrollThumb {
     ZFOBJECT_DECLARE(ZFUIScrollThumbDefault, ZFStyleableObject)
-    ZFIMPLEMENTS_DECLARE(ZFUIScrollThumb)
+    ZFIMPLEMENT_DECLARE(ZFUIScrollThumb)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIScrollThumbDefault)
 
 public:

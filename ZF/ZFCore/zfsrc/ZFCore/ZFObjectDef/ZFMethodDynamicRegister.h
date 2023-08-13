@@ -42,7 +42,7 @@ zfclassFwd ZFListener;
  *   -  store return value to owner object as #ZFObject::objectTag
  *     (at this case, you should take care of circular reference,
  *     and value's life cycle)
- *   -  #zfRetain and #zfautoRelease to extends the return value's life time
+ *   -  #zfRetain and #zfautoRelease to extend the return value's life time
  *     (at this case, you should ensure the method's caller won't store
  *     the return value for a long time)
  */

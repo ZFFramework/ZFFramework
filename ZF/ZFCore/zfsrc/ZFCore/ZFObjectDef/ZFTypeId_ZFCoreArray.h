@@ -78,7 +78,7 @@ public:
 #define ZFTypeId_ZFCoreArray() "ZFCoreArray"
 
 /** @brief type wrapper for #ZFTypeId::Value */
-zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextends ZFTypeIdWrapper {
+zfclass ZFLIB_ZFCore v_ZFCoreArray : zfextend ZFTypeIdWrapper {
     ZFOBJECT_DECLARE(v_ZFCoreArray, ZFTypeIdWrapper)
     ZFALLOC_CACHE_RELEASE({
         cache->wrappedValueReset();
@@ -193,7 +193,7 @@ public:
 /** @cond ZFPrivateDoc */
 
 template<typename T_Type>
-zfclassNotPOD ZFTypeId<ZFCoreArray<T_Type>, 0, 0> : zfextends ZFTypeInfo {
+zfclassNotPOD ZFTypeId<ZFCoreArray<T_Type>, 0, 0> : zfextend ZFTypeInfo {
 public:
     enum {
         TypeIdRegistered = ZFTypeId<T_Type>::TypeIdRegistered,
@@ -274,7 +274,7 @@ private:
 };
 
 template<typename T_Type>
-zfclassNotPOD ZFTypeId<ZFCoreArrayPOD<T_Type>, 0, 0> : zfextends ZFTypeInfo {
+zfclassNotPOD ZFTypeId<ZFCoreArrayPOD<T_Type>, 0, 0> : zfextend ZFTypeInfo {
 public:
     enum {
         TypeIdRegistered = ZFTypeId<T_Type>::TypeIdRegistered,

@@ -20,7 +20,7 @@ ZFOutput ZFOutputDummy(void) {
 
 // ============================================================
 // ZFOutputForString
-zfclass _ZFP_I_ZFOutputForStringOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFOutputForStringOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForStringOwner, ZFObject)
 
     ZFALLOC_CACHE_RELEASE({
@@ -82,7 +82,7 @@ ZFOutput ZFOutputForString(ZF_IN zfstring &s) {
 
 // ============================================================
 // ZFOutputForBuffer
-zfclass _ZFP_I_ZFOutputForBufferOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFOutputForBufferOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForBufferOwner, ZFObject)
 
     ZFALLOC_CACHE_RELEASE({
@@ -146,7 +146,7 @@ ZFOutput ZFOutputForBuffer(ZF_IN_OUT ZFBuffer &buf) {
 
 // ============================================================
 // ZFOutputForBufferUnsafe
-zfclass _ZFP_I_ZFOutputForBufferUnsafeOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFOutputForBufferUnsafeOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForBufferUnsafeOwner, ZFObject)
 
     ZFALLOC_CACHE_RELEASE({

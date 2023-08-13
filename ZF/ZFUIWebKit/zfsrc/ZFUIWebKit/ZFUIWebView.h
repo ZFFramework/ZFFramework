@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief web view
  */
-zfclass ZFLIB_ZFUIWebKit ZFUIWebView : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIWebKit ZFUIWebView : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIWebView, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIWebView)
 

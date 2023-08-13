@@ -26,7 +26,7 @@ typedef void (*ZFValueHolderType)(ZF_IN void *holdedData);
 /**
  * @brief used to hold a non ZFObject type for performance
  */
-zffinal zfclass ZFLIB_ZFCore ZFValueHolder : zfextends ZFObject {
+zffinal zfclass ZFLIB_ZFCore ZFValueHolder : zfextend ZFObject {
     // ============================================================
 public:
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFValueHolder, ZFObject)

@@ -4,7 +4,7 @@
  * with ZFCallback available,
  * it's easy to use observer mechanism
  * @code
- *   zfclass MyObject : zfextends ZFObject {
+ *   zfclass MyObject : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(MyObject, ZFObject)
  *
  *       ZFOBSERVER_EVENT(MyEvent)

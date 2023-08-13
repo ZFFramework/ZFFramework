@@ -178,7 +178,7 @@ public:
  * to declare your own type, see #ZFCOREPOINTER_DECLARE
  */
 template<typename T_Pointer, typename T_ZFCorePointerType>
-zffinal zfclassLikePOD ZFCorePointer : zfextends ZFCorePointerBase {
+zffinal zfclassLikePOD ZFCorePointer : zfextend ZFCorePointerBase {
 public:
     /**
      * @brief set the pointer value
@@ -342,7 +342,7 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
     }; \
     /** @brief see #ZFCorePointer */ \
     template<typename T_Type> \
-    zfclassLikePOD T_ZFCorePointer : zfextends ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> > { \
+    zfclassLikePOD T_ZFCorePointer : zfextend ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> > { \
     public: \
         /** @cond ZFPrivateDoc */ \
         T_ZFCorePointer(void) \

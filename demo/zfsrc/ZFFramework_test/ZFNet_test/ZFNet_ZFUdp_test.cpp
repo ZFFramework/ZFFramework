@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFNet_ZFUdp_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFNet_ZFUdp_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFNet_ZFUdp_test, ZFFramework_test_TestCase)
 
 protected:

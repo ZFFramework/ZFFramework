@@ -33,7 +33,7 @@ zfclassFwd _ZFP_ZFAnimationNativeViewPrivate;
  * but may work incorrectly with local transform
  * (such as #ZFUIView::viewRotateZ)
  */
-zfclass ZFLIB_ZFUIKit ZFAnimationNativeView : zfextends ZFAnimation {
+zfclass ZFLIB_ZFUIKit ZFAnimationNativeView : zfextend ZFAnimation {
     ZFOBJECT_DECLARE(ZFAnimationNativeView, ZFAnimation)
 
 protected:

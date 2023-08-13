@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFProperty_test_TestBase : zfextends ZFObject {
+zfclass _ZFP_ZFCore_ZFProperty_test_TestBase : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFProperty_test_TestBase, ZFObject)
 
 public:
@@ -49,7 +49,7 @@ ZFPROPERTY_ON_DETACH_DEFINE(_ZFP_ZFCore_ZFProperty_test_TestBase, zfstring, prop
     zfLog();
 }
 
-zfclass _ZFP_ZFCore_ZFProperty_test_TestChild: zfextends _ZFP_ZFCore_ZFProperty_test_TestBase {
+zfclass _ZFP_ZFCore_ZFProperty_test_TestChild: zfextend _ZFP_ZFCore_ZFProperty_test_TestBase {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFProperty_test_TestChild, _ZFP_ZFCore_ZFProperty_test_TestBase)
 
 public:
@@ -57,7 +57,7 @@ public:
 };
 
 // ============================================================
-zfclass ZFCore_ZFProperty_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFProperty_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFProperty_test, ZFFramework_test_TestCase)
 
 protected:

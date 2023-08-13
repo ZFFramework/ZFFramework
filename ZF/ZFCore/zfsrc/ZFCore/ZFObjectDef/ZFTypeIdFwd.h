@@ -91,7 +91,7 @@ template<typename T_Type
         , int T_isZFObject = zftIsZFObject(typename zftTraits<T_Type>::TrType)
         , int T_isPointer = zftTraits<T_Type>::TrIsPtr
     >
-zfclassNotPOD ZFTypeId : zfextends ZFTypeInfo {
+zfclassNotPOD ZFTypeId : zfextend ZFTypeInfo {
 public:
     /** @cond ZFPrivateDoc */
     typedef typename _ZFP_ZFTypeIdRegChecker<T_Type>::AllTypeMustBeRegisteredBy_ZFTYPEID_XXX _TypeChecker;
@@ -145,7 +145,7 @@ public:
      * then there would be a wrapper class named "v_YourType",
      * with only one plain member variable named "zfv":
      * @code
-     *   zfclass v_YourType : zfextends ZFTypeIdWrapper {
+     *   zfclass v_YourType : zfextend ZFTypeIdWrapper {
      *       ZFOBJECT_DECLARE(v_YourType, ZFTypeIdWrapper)
      *       ZFALLOC_CACHE_RELEASE({
      *           cache->wrappedValueReset();
@@ -221,7 +221,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
 #define _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     typedef Type _ZFP_PropTypeW_##TypeName; \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##TypeName : zfextends ZFTypeIdWrapper { \
+    zfclass ZFLIB_ v_##TypeName : zfextend ZFTypeIdWrapper { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##TypeName, ZFTypeIdWrapper) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->wrappedValueReset(); \
@@ -408,7 +408,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
@@ -486,7 +486,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     _ZFP_ZFTYPEID_WRAPPER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextends ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<_ZFP_PropTypeW_##TypeName> : zfextend ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
@@ -569,7 +569,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     typedef Type _ZFP_PropTypeW_##TypeName; \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<Type> : zfextend ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
@@ -604,7 +604,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     /** @cond ZFPrivateDoc */ \
     typedef Type _ZFP_PropTypeW_##TypeName; \
     template<> \
-    zfclassNotPOD ZFTypeId<Type> : zfextends ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<Type> : zfextend ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = ZFTypeId<AliasToType>::TypeIdRegistered, \
@@ -636,7 +636,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     }; \
     /** @endcond */ \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##TypeName : zfextends v_##AliasToTypeName { \
+    zfclass ZFLIB_ v_##TypeName : zfextend v_##AliasToTypeName { \
         ZFOBJECT_DECLARE(v_##TypeName, v_##AliasToTypeName) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->wrappedValueReset(); \

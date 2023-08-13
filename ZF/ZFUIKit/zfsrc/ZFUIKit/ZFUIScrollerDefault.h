@@ -13,9 +13,9 @@ zfclassFwd _ZFP_ZFUIScrollerDefaultPrivate;
 /**
  * @brief default scroller of #ZFUIScroller
  */
-zfclass ZFLIB_ZFUIKit ZFUIScrollerDefault : zfextends ZFObject, zfimplements ZFUIScroller {
+zfclass ZFLIB_ZFUIKit ZFUIScrollerDefault : zfextend ZFObject, zfimplement ZFUIScroller {
     ZFOBJECT_DECLARE(ZFUIScrollerDefault, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFUIScroller)
+    ZFIMPLEMENT_DECLARE(ZFUIScroller)
 
 protected:
     zfoverride

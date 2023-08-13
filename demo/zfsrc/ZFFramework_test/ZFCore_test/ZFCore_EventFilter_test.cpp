@@ -8,7 +8,7 @@ ZFOBSERVER_EVENT_GLOBAL(ZFCore_EventFilter_test)
 ZFOBSERVER_EVENT_GLOBAL_REGISTER(ZFCore_EventFilter_test)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-zfclass ZFCore_EventFilter_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_EventFilter_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_EventFilter_test, ZFFramework_test_TestCase)
 
 protected:

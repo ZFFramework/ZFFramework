@@ -22,13 +22,13 @@ zfclassFwd _ZFP_ZFStyleKeyHolder;
  * while serializable process data from and to #ZFSerializableData,
  * a styleable process data from and to other styleable object\n
  * \n
- * to use styleable, simply implements from #ZFStyleable,
+ * to use styleable, simply implement from #ZFStyleable,
  * if all of your properties are declared as #ZFProperty,
  * then every thing's done,
  * and style can be copied by #ZFStyleable::styleableCopyFrom\n
  * for a list of copy method, please refer to #ZFStyleable::styleableOnCheckPropertyType
  */
-zfinterface ZFLIB_ZFCore ZFStyleable : zfextends ZFInterface {
+zfinterface ZFLIB_ZFCore ZFStyleable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(ZFStyleable, ZFInterface)
 
 public:
@@ -161,13 +161,13 @@ protected:
 /**
  * @brief common styleable object
  *
- * implements #ZFStyleable, #ZFSerializable, #ZFCopyable\n
+ * implement #ZFStyleable, #ZFSerializable, #ZFCopyable\n
  * every style, serialize and copy logic has been done by reflect,
  * if all of your properties are declared as #ZFProperty
  */
-zfclass ZFLIB_ZFCore ZFStyleableObject : zfextends ZFObject, zfimplements ZFStyleable, zfimplements ZFSerializable, zfimplements ZFCopyable {
+zfclass ZFLIB_ZFCore ZFStyleableObject : zfextend ZFObject, zfimplement ZFStyleable, zfimplement ZFSerializable, zfimplement ZFCopyable {
     ZFOBJECT_DECLARE(ZFStyleableObject, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFStyleable, ZFSerializable, ZFCopyable)
+    ZFIMPLEMENT_DECLARE(ZFStyleable, ZFSerializable, ZFCopyable)
 
 protected:
     zfoverride
@@ -220,7 +220,7 @@ private:
         static void _ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance); \
     public:
 #define _ZFP_ZFSTYLE_DEFAULT_DEFINE(YourStyle) \
-    zfclass YourStyle::_ZFP_ZFStyleableDefault_##YourStyle : zfextends YourStyle { \
+    zfclass YourStyle::_ZFP_ZFStyleableDefault_##YourStyle : zfextend YourStyle { \
         ZFOBJECT_DECLARE(_ZFP_ZFStyleableDefault_##YourStyle, YourStyle) \
     public: \
         zfoverride \
@@ -289,7 +289,7 @@ private:
  * usage:
  * @code
  *   // in h file
- *   zfclass YourStyleableObject : zfextends ParentStyleable {
+ *   zfclass YourStyleableObject : zfextend ParentStyleable {
  *       ZFOBJECT_DECLARE(YourStyleableObject, ParentStyleable)
  *       ZFSTYLE_DEFAULT_DECLARE(YourStyleableObject)
  *   };

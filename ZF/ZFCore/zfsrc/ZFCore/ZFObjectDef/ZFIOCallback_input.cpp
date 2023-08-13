@@ -20,7 +20,7 @@ ZFInput ZFInputDummy(void) {
 
 // ============================================================
 // ZFInputForInputInRange
-zfclass _ZFP_I_ZFInputForInputInRangeOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFInputForInputInRangeOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFInputForInputInRangeOwner, ZFObject)
 public:
     ZFInput src;
@@ -213,7 +213,7 @@ static void _ZFP_ZFInputForBuffer_serialize(
 
 // ============================================================
 // ZFInputForBuffer
-zfclass _ZFP_I_ZFInputForBufferOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFInputForBufferOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFInputForBufferOwner, ZFObject)
     ZFALLOC_CACHE_RELEASE({
         cache->buffer = ZFBuffer();
@@ -282,7 +282,7 @@ ZFInput ZFInputForBuffer(
 
 // ============================================================
 // ZFInputForBufferUnsafe
-zfclass _ZFP_I_ZFInputForBufferUnsafeOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFInputForBufferUnsafeOwner : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFInputForBufferUnsafeOwner, ZFObject)
 
 public:

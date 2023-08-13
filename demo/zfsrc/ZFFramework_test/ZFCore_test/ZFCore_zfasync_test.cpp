@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFCore_zfasync_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_zfasync_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_zfasync_test, ZFFramework_test_TestCase)
 
 protected:

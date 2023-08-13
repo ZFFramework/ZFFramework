@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUIDraw_test_DrawableView : zfextends ZFUIDrawableView {
+zfclass ZFUIKit_ZFUIDraw_test_DrawableView : zfextend ZFUIDrawableView {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIDraw_test_DrawableView, ZFUIDrawableView)
 
 public:
@@ -32,7 +32,7 @@ protected:
     }
 };
 
-zfclass ZFUIKit_ZFUIDraw_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIKit_ZFUIDraw_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIDraw_test, ZFFramework_test_TestCase)
 
 protected:

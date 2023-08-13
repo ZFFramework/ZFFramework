@@ -21,7 +21,7 @@ template<typename T_Return
     , typename T_Param7 = void
     , typename T_Dummy = void
     >
-zfclassLikePOD ZFCallbackT : zfextends ZFCallback {};
+zfclassLikePOD ZFCallbackT : zfextend ZFCallback {};
 
 /** @cond ZFPrivateDoc */
 template<typename T_Return
@@ -36,7 +36,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -66,7 +66,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -103,7 +103,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -147,7 +147,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -198,7 +198,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -256,7 +256,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -321,7 +321,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , void
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -393,7 +393,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , T_Param6
     , void
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:
@@ -472,7 +472,7 @@ zfclassLikePOD ZFCallbackT<T_Return
     , T_Param6
     , T_Param7
     , void
-    > : zfextends ZFCallback {
+    > : zfextend ZFCallback {
     _ZFP_ZFCALLBACK_DECLARE_CONSTRUCTORS(ZFCallbackT, ZFCallback)
 
 public:

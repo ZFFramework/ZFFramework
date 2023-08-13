@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief object filter compared by #ZFObject::objectCompare
  */
-zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFObject : zfextends ZFFilterBasic<ZFObject *> {
+zfclassLikePOD ZFLIB_ZFCore ZFFilterForZFObject : zfextend ZFFilterBasic<ZFObject *> {
     ZFFILTER_DECLARE(ZFFilterForZFObject, ZFFilterBasic<ZFObject *>)
 
 public:

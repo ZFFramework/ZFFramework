@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_I_ZFOutputForImplOwner : zfextends ZFObject {
+zfclass _ZFP_I_ZFOutputForImplOwner : zfextend ZFObject {
 public:
     ZFOBJECT_DECLARE(_ZFP_I_ZFOutputForImplOwner, ZFObject)
 

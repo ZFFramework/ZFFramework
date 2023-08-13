@@ -13,7 +13,7 @@ public:
     zfstring propertyTypeName;
     zfstring propertyName;
     const ZFClass *propertyClassOfRetainProperty;
-    ZFPropertyDynamicRegisterInitValueCallback propertyInitValueCallback;
+    ZFPropertyCallbackDynamicRegisterInitValueGetter propertyInitValueCallback;
     ZFMethodPrivilegeType propertySetterType;
     ZFMethodPrivilegeType propertyGetterType;
 
@@ -94,11 +94,11 @@ const ZFClass *ZFPropertyDynamicRegisterParam::propertyClassOfRetainProperty(voi
     return d->propertyClassOfRetainProperty;
 }
 
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyInitValueCallback(ZF_IN ZFPropertyDynamicRegisterInitValueCallback propertyInitValueCallback) {
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyInitValueCallback(ZF_IN ZFPropertyCallbackDynamicRegisterInitValueGetter propertyInitValueCallback) {
     d->propertyInitValueCallback = propertyInitValueCallback;
     return *this;
 }
-ZFPropertyDynamicRegisterInitValueCallback ZFPropertyDynamicRegisterParam::propertyInitValueCallback(void) const {
+ZFPropertyCallbackDynamicRegisterInitValueGetter ZFPropertyDynamicRegisterParam::propertyInitValueCallback(void) const {
     return d->propertyInitValueCallback;
 }
 

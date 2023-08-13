@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief on screen keyboard state helper
  */
-zffinal zfclass ZFLIB_ZFUIKit ZFUIOnScreenKeyboardState : zfextends ZFObject {
+zffinal zfclass ZFLIB_ZFUIKit ZFUIOnScreenKeyboardState : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIOnScreenKeyboardState, ZFObject)
 
 public:

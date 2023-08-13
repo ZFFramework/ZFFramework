@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract scroll thumb for #ZFUIScrollView
  */
-zfinterface ZFLIB_ZFUIKit ZFUIScrollThumb : zfextends ZFInterface {
+zfinterface ZFLIB_ZFUIKit ZFUIScrollThumb : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIScrollThumb, ZFInterface)
 
 public:

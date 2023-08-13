@@ -5,7 +5,7 @@
  * ZFFramework has ZFInterface for interface types\n
  * to declare a ZFInterface:
  * @code
- *   zfinterface MyInterface : zfextends ZFInterface {
+ *   zfinterface MyInterface : zfextend ZFInterface {
  *       ZFINTERFACE_DECLARE(MyInterface, ZFInterface)
  *   };
  *
@@ -15,7 +15,7 @@
  * -  use zfinterface to show it's an ZFInterface type
  * -  due to some limitatation,
  *   all interface type must be inherited from ZFInterface
- *   by "zfextends ZFInterface"
+ *   by "zfextend ZFInterface"
  * -  use ZFINTERFACE_DECLARE for necessary macro expansion
  * -  similar to ZFObject,
  *   use ZFOBJECT_REGISTER to register your interface
@@ -24,16 +24,16 @@
  * \n
  * once declared, an interface can be implemented by other object
  * @code
- *   zfclass MyObject : zfextends ParentObject
- *                    , zfimplements MyInterface,
- *                    , zfimplements AnotherInterface
+ *   zfclass MyObject : zfextend ParentObject
+ *                    , zfimplement MyInterface,
+ *                    , zfimplement AnotherInterface
  *   {
  *       ZFOBJECT_DECLARE(MyObject, ParentObject)
- *       ZFIMPLEMENTS_DECLARE(MyInterface, AnotherInterface)
+ *       ZFIMPLEMENT_DECLARE(MyInterface, AnotherInterface)
  *   };
  * @endcode
- * -  use zfimplements to implement an interface
- * -  use ZFIMPLEMENTS_DECLARE for necessary macro expansion,
+ * -  use zfimplement to implement an interface
+ * -  use ZFIMPLEMENT_DECLARE for necessary macro expansion,
  *   an object can implement more than one interfaces
  */
 

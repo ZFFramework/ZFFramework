@@ -78,6 +78,12 @@ typedef void (*ZFPropertyCallbackUserRegisterInitValueSetup)(
         ZF_IN const ZFProperty *property
         , ZF_IN_OUT void *v
         );
+/**
+ * @brief callback to setup init value for #ZFPropertyDynamicRegister
+ *
+ * returned object must be valid to #ZFTypeInfo::typeIdClass
+ */
+typedef zfautoObject (*ZFPropertyCallbackDynamicRegisterInitValueGetter)(ZF_IN const ZFProperty *property);
 
 // ============================================================
 typedef void (*_ZFP_PropLifeCycleWrapper)(

@@ -21,7 +21,7 @@ zfclassFwd _ZFP_ZFUIHintPrivate;
  *
  * @note can only be created or show or hide in main thread
  */
-zfclass ZFLIB_ZFUIWidget ZFUIHint : zfextends ZFObject {
+zfclass ZFLIB_ZFUIWidget ZFUIHint : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIHint, ZFObject)
 
 public:

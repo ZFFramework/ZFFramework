@@ -74,7 +74,7 @@ zfclassFwd ZFUIPageManager;
  * -  alloc a ZFUIPage, #ZFObject::observerAdd to #EventPageOnCreate,
  *   and perform additional page create steps
  */
-zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextends ZFObject {
+zfclass ZFLIB_ZFUIWidget ZFUIPage : zfextend ZFObject {
     ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ZFUIPage, ZFObject)
 
     // ============================================================
@@ -284,7 +284,7 @@ private:
 // ============================================================
 zfclassFwd _ZFP_ZFUIPageManagerPrivate;
 /** @brief see #ZFUIPage */
-zfclass ZFLIB_ZFUIWidget ZFUIPageManager : zfextends ZFObject {
+zfclass ZFLIB_ZFUIWidget ZFUIPageManager : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIPageManager, ZFObject)
 
     // ============================================================

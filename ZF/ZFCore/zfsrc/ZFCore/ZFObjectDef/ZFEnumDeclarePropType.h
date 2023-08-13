@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumName, EnumName##Enum) \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<EnumName##Enum> : zfextends ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<EnumName##Enum> : zfextend ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \
@@ -139,7 +139,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFENUM_FLAGS_PROP_TYPE_DECLARE(ZFLIB_, EnumName, EnumFlagsName) \
     ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, EnumFlagsName, EnumFlagsName) \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##EnumFlagsName : zfextends EnumName { \
+    zfclass ZFLIB_ v_##EnumFlagsName : zfextend EnumName { \
         ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(v_##EnumFlagsName, EnumName) \
         ZFALLOC_CACHE_RELEASE({ \
             cache->wrappedValueReset(); \
@@ -157,7 +157,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }; \
     /** @cond ZFPrivateDoc */ \
     template<> \
-    zfclassNotPOD ZFTypeId<EnumFlagsName> : zfextends ZFTypeInfo { \
+    zfclassNotPOD ZFTypeId<EnumFlagsName> : zfextend ZFTypeInfo { \
     public: \
         enum { \
             TypeIdRegistered = 1, \

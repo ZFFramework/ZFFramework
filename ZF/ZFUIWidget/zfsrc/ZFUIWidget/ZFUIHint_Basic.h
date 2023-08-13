@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief #ZFUIHint's content with simple text and background
  */
-zfclass ZFLIB_ZFUIWidget ZFUIHintContentBasic : zfextends ZFUIButtonBasic {
+zfclass ZFLIB_ZFUIWidget ZFUIHintContentBasic : zfextend ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIHintContentBasic, ZFUIButtonBasic)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIHintContentBasic)
 

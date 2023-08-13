@@ -37,14 +37,6 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyDynamicRegister(
 extern ZFLIB_ZFCore void ZFPropertyDynamicUnregister(ZF_IN const ZFProperty *property);
 
 // ============================================================
-/**
- * @brief callback to setup init value for #ZFPropertyDynamicRegister
- *
- * returned object must be valid to #ZFTypeInfo::typeIdClass
- */
-typedef zfautoObject (*ZFPropertyDynamicRegisterInitValueCallback)(ZF_IN const ZFProperty *property);
-
-// ============================================================
 zfclassFwd _ZFP_ZFPropertyDynamicRegisterParamPrivate;
 /** @brief param for #ZFPropertyDynamicRegister */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFPropertyDynamicRegisterParam {
@@ -80,9 +72,9 @@ public:
     const ZFClass *propertyClassOfRetainProperty(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyInitValueCallback(ZF_IN ZFPropertyDynamicRegisterInitValueCallback propertyInitValueCallback);
+    ZFPropertyDynamicRegisterParam &propertyInitValueCallback(ZF_IN ZFPropertyCallbackDynamicRegisterInitValueGetter propertyInitValueCallback);
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterInitValueCallback propertyInitValueCallback(void) const;
+    ZFPropertyCallbackDynamicRegisterInitValueGetter propertyInitValueCallback(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
     ZFPropertyDynamicRegisterParam &propertySetterType(ZF_IN ZFMethodPrivilegeType propertySetterType);

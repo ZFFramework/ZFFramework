@@ -6,9 +6,9 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFLIB_ZFUIKit _ZFP_ZFUISysWindowEmbedNativeViewImpl : zfextends ZFObject, zfimplements ZFUISysWindowEmbedImpl {
+zfclass ZFLIB_ZFUIKit _ZFP_ZFUISysWindowEmbedNativeViewImpl : zfextend ZFObject, zfimplement ZFUISysWindowEmbedImpl {
     ZFOBJECT_DECLARE(_ZFP_ZFUISysWindowEmbedNativeViewImpl, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFUISysWindowEmbedImpl)
+    ZFIMPLEMENT_DECLARE(ZFUISysWindowEmbedImpl)
 
 public:
     void *nativeParent;

@@ -84,7 +84,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * here's a typical serializable data in xml format that shows the types:
  * @code
  *   // assume we have a object hold a ZFArray as retain property:
- *   zfclass TestClass : zfextends ZFSerializable {
+ *   zfclass TestClass : zfextend ZFSerializable {
  *       ZFOBJECT_DECLARE(TestClass, ZFSerializable)
  *       ZFPROPERTY_RETAIN(ZFArray *, testProperty)
  *       ...
@@ -148,7 +148,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * you may supply your custom constructor,
  * see #ZFSerializableKeyword_serializableNewInstance
  */
-zfinterface ZFLIB_ZFCore ZFSerializable : zfextends ZFInterface {
+zfinterface ZFLIB_ZFCore ZFSerializable : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFSerializable, ZFInterface)
 
     // ============================================================

@@ -13,7 +13,7 @@ zfclassFwd _ZFP_ZFAudioPrivate;
 /**
  * @brief audio player
  */
-zfclass ZFLIB_ZFUIKit ZFAudio : zfextends ZFObject {
+zfclass ZFLIB_ZFUIKit ZFAudio : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFAudio, ZFObject)
 
 public:

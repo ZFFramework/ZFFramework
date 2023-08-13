@@ -27,7 +27,7 @@
  * example:
  * @code
  *   // in C++
- *   zfclass MyClass : zfextends ZFObject {
+ *   zfclass MyClass : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(MyClass, ZFObject)
  *       ZFPROPERTY_ASSIGN(ZFUISize, myProp)
  *   };

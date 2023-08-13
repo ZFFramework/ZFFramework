@@ -82,7 +82,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIDialogAutoHide)
  *       ^ dialogView
  *         subclass impl views
  */
-zfclass _ZFP_I_ZFUIDialogPrivate : zfextends ZFUIWindow {
+zfclass _ZFP_I_ZFUIDialogPrivate : zfextend ZFUIWindow {
     ZFOBJECT_DECLARE(_ZFP_I_ZFUIDialogPrivate, ZFUIWindow)
 
 public:
@@ -234,7 +234,7 @@ protected:
 };
 ZFOBJECT_REGISTER(_ZFP_I_ZFUIDialogPrivate)
 
-zfclass _ZFP_ZFUIDialogContentHolder : zfextends ZFUIView {
+zfclass _ZFP_ZFUIDialogContentHolder : zfextend ZFUIView {
     ZFOBJECT_DECLARE(_ZFP_ZFUIDialogContentHolder, ZFUIView)
 
 public:
@@ -251,7 +251,7 @@ protected:
     }
 };
 
-zfclass _ZFP_I_ZFUIDialog_DialogClickMask : zfextends ZFUIButton {
+zfclass _ZFP_I_ZFUIDialog_DialogClickMask : zfextend ZFUIButton {
     ZFOBJECT_DECLARE(_ZFP_I_ZFUIDialog_DialogClickMask, ZFUIButton)
 };
 

@@ -40,7 +40,7 @@ ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
  * @brief abstract button group management
  *
  * you have two basic ways to use a button group to manage button views:
- * -  implements from #ZFUIButtonGroup,
+ * -  implement from #ZFUIButtonGroup,
  *   override #ZFUIButtonGroup::buttonOnAdd and #ZFUIButtonGroup::buttonOnRemove
  *   to manage button views
  * -  use #ZFUIButtonGroupArray to manage buttons,
@@ -60,7 +60,7 @@ ZFENUM_END(ZFLIB_ZFUIWidget, ZFUIButtonGroupType)
  *   </SomeButtonGroup>
  * @endcode
  */
-zfinterface ZFLIB_ZFUIWidget ZFUIButtonGroup : zfextends ZFInterface {
+zfinterface ZFLIB_ZFUIWidget ZFUIButtonGroup : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIButtonGroup, ZFInterface)
 
 public:
@@ -341,9 +341,9 @@ public:
 /**
  * @brief simply button group that only holds buttons
  */
-zfclass ZFLIB_ZFUIWidget ZFUIButtonGroupArray : zfextends ZFStyleableObject, zfimplements ZFUIButtonGroup {
+zfclass ZFLIB_ZFUIWidget ZFUIButtonGroupArray : zfextend ZFStyleableObject, zfimplement ZFUIButtonGroup {
     ZFOBJECT_DECLARE(ZFUIButtonGroupArray, ZFStyleableObject)
-    ZFIMPLEMENTS_DECLARE(ZFUIButtonGroup)
+    ZFIMPLEMENT_DECLARE(ZFUIButtonGroup)
 
 protected:
     zfoverride

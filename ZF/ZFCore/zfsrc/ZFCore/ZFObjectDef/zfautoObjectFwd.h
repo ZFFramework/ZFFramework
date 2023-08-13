@@ -128,7 +128,7 @@ private:
  * @brief type restrict version of #zfautoObject
  */
 template<typename T_ZFObjectBase>
-zffinal zfclassLikePOD zfautoObjectT : zfextends zfautoObject {
+zffinal zfclassLikePOD zfautoObjectT : zfextend zfautoObject {
     /** @cond ZFPrivateDoc */
 public:
     zfautoObjectT(void) : zfautoObject() {}

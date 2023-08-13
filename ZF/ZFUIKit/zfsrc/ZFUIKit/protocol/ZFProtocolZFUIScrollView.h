@@ -155,7 +155,7 @@ public:
     // callbacks that implementations must notify
 public:
     /**
-     * @brief see #scrollContentFrame for how to implements scroll logic
+     * @brief see #scrollContentFrame for how to implement scroll logic
      */
     zffinal void notifyScrollViewDragBegin(
             ZF_IN ZFUIScrollView *scrollView
@@ -165,7 +165,7 @@ public:
         scrollView->_ZFP_ZFUIScrollView_notifyDragBegin(ZFUIPointApplyScaleReversely(mousePos, scrollView->UIScaleFixed()), mouseTime);
     }
     /**
-     * @brief see #scrollContentFrame for how to implements scroll logic
+     * @brief see #scrollContentFrame for how to implement scroll logic
      */
     zffinal void notifyScrollViewDrag(
             ZF_IN ZFUIScrollView *scrollView
@@ -175,7 +175,7 @@ public:
         scrollView->_ZFP_ZFUIScrollView_notifyDrag(ZFUIPointApplyScaleReversely(mousePos, scrollView->UIScaleFixed()), mouseTime);
     }
     /**
-     * @brief see #scrollContentFrame for how to implements scroll logic
+     * @brief see #scrollContentFrame for how to implement scroll logic
      */
     zffinal void notifyScrollViewDragEnd(
             ZF_IN ZFUIScrollView *scrollView
@@ -185,7 +185,7 @@ public:
         scrollView->_ZFP_ZFUIScrollView_notifyDragEnd(mouseTime, needScrollAni);
     }
     /**
-     * @brief see #scrollAnimationStart for how to implements scroll animation logic
+     * @brief see #scrollAnimationStart for how to implement scroll animation logic
      */
     zffinal void notifyScrollViewScrollAnimation(
             ZF_IN ZFUIScrollView *scrollView
@@ -290,7 +290,7 @@ zfclassFwd _ZFP_ZFUIScrollViewImplHelperPrivate;
  * -  simulate mouse event and event forwarding
  *
  * to use it:
- * -  implements all methods in ZFUIScrollViewImplHelperProtocol
+ * -  implement all methods in ZFUIScrollViewImplHelperProtocol
  * -  have all ZFUIScrollViewImplHelper's member been setup properly
  * -  intercept all mouse events by #ZFUIScrollViewImplHelper::interceptMouse
  */

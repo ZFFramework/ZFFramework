@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief check box button, see #ZFUIButtonBasic
  */
-zfclass ZFLIB_ZFUIWidget ZFUIButtonRatio : zfextends ZFUIButtonBasic {
+zfclass ZFLIB_ZFUIWidget ZFUIButtonRatio : zfextend ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIButtonRatio, ZFUIButtonBasic)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIButtonRatio)
 

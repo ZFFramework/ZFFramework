@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * of level #ZFLevelZFFrameworkPostNormal to prevent dependency broken,
  * by setting #ZFCache::cacheMaxSize to zero
  */
-zfclass ZFLIB_ZFUtility ZFResCache : zfextends ZFCache {
+zfclass ZFLIB_ZFUtility ZFResCache : zfextend ZFCache {
     ZFOBJECT_DECLARE(ZFResCache, ZFCache)
     ZFOBJECT_SINGLETON_DECLARE(ZFResCache, instance)
 

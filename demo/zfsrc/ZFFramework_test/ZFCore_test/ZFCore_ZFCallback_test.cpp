@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFCallback_test_Class : zfextends ZFObject {
+zfclass _ZFP_ZFCore_ZFCallback_test_Class : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFCallback_test_Class, ZFObject)
 
     ZFMETHOD_INLINE_0(void, classMember) {
@@ -18,7 +18,7 @@ static void _ZFP_ZFCore_ZFCallback_test_StaticFunction(void) {
     zfLog();
 }
 
-zfclass ZFCore_ZFCallback_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFCallback_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFCallback_test, ZFFramework_test_TestCase)
 
 protected:

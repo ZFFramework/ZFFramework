@@ -14,7 +14,7 @@
  *       zfint myValue;
  *   };
  *   ZFTYPEID_DECLARE(ZFLIB_APP, MyCppType, MyCppType)
- *   zfclass MyClass : zfextends ZFStyleableObject {
+ *   zfclass MyClass : zfextend ZFStyleableObject {
  *       ZFOBJECT_DECLARE(MyClass, ZFStyleableObject)
  *       ZFPROPERTY_ASSIGN(zfstring, myProp0)
  *       ZFPROPERTY_ASSIGN(MyCppType, myProp1)

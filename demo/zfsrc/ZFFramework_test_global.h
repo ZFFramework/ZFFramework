@@ -5,7 +5,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfabstract ZFFramework_test_TestCase : zfextends ZFTestCase {
+zfabstract ZFFramework_test_TestCase : zfextend ZFTestCase {
     ZFOBJECT_DECLARE_ABSTRACT(ZFFramework_test_TestCase, ZFTestCase)
 
 protected:

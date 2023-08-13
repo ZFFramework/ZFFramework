@@ -102,7 +102,7 @@ ZFMETHOD_FUNC_DEFINE_8(zfstring, ZFCore_ZFMethodFunc_test_func8
 }
 
 // ============================================================
-zfclass ZFCore_ZFMethodFunc_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFMethodFunc_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFMethodFunc_test, ZFFramework_test_TestCase)
 
 protected:

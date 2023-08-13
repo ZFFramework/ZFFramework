@@ -73,7 +73,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *     public/protected/private\n
  *   for example:
  *   @code
- *     zfclass OwnerClass : zfextends Base {
+ *     zfclass OwnerClass : zfextend Base {
  *         ZFOBJECT_DECLARE(OwnerClass, Base)
  *
  *         ZFPROPERTY_ASSIGN_DETAIL(
@@ -346,6 +346,7 @@ public:
                     , zfself::_ZFP_propCbIsInit_##Name \
                     , zfself::_ZFP_propCbReset_##Name \
                     , zfnull \
+                    , zfnull \
                     , zfself::_ZFP_propCbEnsureInit_##Name \
                     , zfself::_ZFP_propCbDel_##Name \
                 ); \
@@ -372,6 +373,7 @@ public:
                     , zfself::_ZFP_propCbAccessed_##Name \
                     , zfself::_ZFP_propCbIsInit_##Name \
                     , zfself::_ZFP_propCbReset_##Name \
+                    , zfnull \
                     , zfnull \
                     , zfself::_ZFP_propCbEnsureInit_##Name \
                     , zfself::_ZFP_propCbDel_##Name \

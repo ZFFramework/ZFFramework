@@ -208,7 +208,7 @@ zfbool ZFEnum::wrappedValueToString(ZF_IN_OUT zfstring &s) {
 
 // ============================================================
 // zfflags conversion
-zfclass _ZFP_I_ZFEnum_stringConverterDataHolder : zfextends ZFObject {
+zfclass _ZFP_I_ZFEnum_stringConverterDataHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFEnum_stringConverterDataHolder, ZFObject)
 
 public:

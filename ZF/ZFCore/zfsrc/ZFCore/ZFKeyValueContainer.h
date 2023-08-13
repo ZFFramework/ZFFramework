@@ -54,9 +54,9 @@ zfclassFwd _ZFP_ZFKeyValueContainerPrivate;
  *   </ContainerClass>
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFKeyValueContainer: zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable, zfimplements ZFIterable, zfimplements ZFIterableKeyValue {
+zfabstract ZFLIB_ZFCore ZFKeyValueContainer: zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable, zfimplement ZFIterable, zfimplement ZFIterableKeyValue {
     ZFOBJECT_DECLARE_ABSTRACT(ZFKeyValueContainer, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable, ZFIterable, ZFIterableKeyValue)
+    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable, ZFIterable, ZFIterableKeyValue)
 
 public:
     // ============================================================

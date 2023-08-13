@@ -5,9 +5,9 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #ZFNull */
-zfclass ZFNullObject : zfextends ZFObject, zfimplements ZFSerializable, zfimplements ZFCopyable {
+zfclass ZFNullObject : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
     ZFOBJECT_DECLARE(ZFNullObject, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable, ZFCopyable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
 
 public:
     zfoverride

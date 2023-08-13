@@ -140,7 +140,7 @@ typedef zfautoObject (*ZFMethodParamDefaultValueCallback)(
  * \n
  * to use ZFMethod, you must first declare it in your class:
  * @code
- *   zfclass YourClass : zfextends ZFObject {
+ *   zfclass YourClass : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(YourClass, ZFObject)
  *      / **
  *        * you can add doxygen docs here
@@ -153,7 +153,7 @@ typedef zfautoObject (*ZFMethodParamDefaultValueCallback)(
  * or you may want to declare in header and define in cpp file:
  * @code
  *   // YourClass.h
- *   zfclass YourClass : zfextends ZFObject {
+ *   zfclass YourClass : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(YourClass, ZFObject)
  *       ZFMETHOD_DECLARE_0(void, yourMethod) // declare only
  *   };
@@ -826,7 +826,7 @@ inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodForNameGetAll(
  * @brief create new #ZFMethod and alias to existing method
  *
  * @code
- *   zfclass MyClass : zfextends ZFObject {
+ *   zfclass MyClass : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(MyClass, ZFObject)
  *       ZFMETHOD_DECLARE_0(void, foo)
  *   };

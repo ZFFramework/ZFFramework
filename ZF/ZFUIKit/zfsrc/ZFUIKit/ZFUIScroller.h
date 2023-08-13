@@ -26,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  implement all necessary methods
  * -  invoke scroll animation at proper time, by #scrollAniStartCallback and #scrollAniStopCallback
  */
-zfinterface ZFLIB_ZFUIKit ZFUIScroller : zfextends ZFInterface {
+zfinterface ZFLIB_ZFUIKit ZFUIScroller : zfextend ZFInterface {
     ZFINTERFACE_DECLARE(ZFUIScroller, ZFInterface)
 
 public:

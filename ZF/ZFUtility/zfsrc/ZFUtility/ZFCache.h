@@ -14,7 +14,7 @@ zfclassFwd _ZFP_ZFCachePrivate;
 /**
  * @brief util object to hold #ZFObject as cache
  */
-zfclass ZFLIB_ZFUtility ZFCache : zfextends ZFObject {
+zfclass ZFLIB_ZFUtility ZFCache : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFCache, ZFObject)
 
 public:

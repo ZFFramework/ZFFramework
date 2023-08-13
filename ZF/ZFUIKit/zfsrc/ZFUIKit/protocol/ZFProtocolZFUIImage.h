@@ -42,7 +42,7 @@ public:
     /**
      * @brief release the image
      *
-     * you should implements retain count logic internally
+     * you should implement retain count logic internally
      */
     virtual void nativeImageRelease(ZF_IN void *nativeImage) zfpurevirtual;
 

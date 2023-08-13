@@ -5,7 +5,7 @@
 #if ZF_ENV_sys_SDL
 
 // ============================================================
-zfclassNotPOD _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView : zfextends ZFImpl_sys_SDL_View, zfextends ZFUIScrollViewImplHelperProtocol {
+zfclassNotPOD _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView : zfextend ZFImpl_sys_SDL_View, zfextend ZFUIScrollViewImplHelperProtocol {
 public:
     ZFUIScrollViewImplHelper _ZFP_scrollViewImplHelper;
 

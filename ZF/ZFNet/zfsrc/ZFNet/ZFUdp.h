@@ -58,7 +58,7 @@ zfclassFwd _ZFP_ZFUdpPrivate;
 /**
  * @brief udp request util
  */
-zfclass ZFLIB_ZFNet ZFUdp : zfextends ZFObject {
+zfclass ZFLIB_ZFNet ZFUdp : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUdp, ZFObject)
 
 public:

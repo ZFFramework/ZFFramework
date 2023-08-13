@@ -19,7 +19,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * would be relative to sibling child,
  * instead of the container view
  */
-zfclass ZFLIB_ZFUIWidget ZFUILinearLayoutParam : zfextends ZFUILayoutParam {
+zfclass ZFLIB_ZFUIWidget ZFUILinearLayoutParam : zfextend ZFUILayoutParam {
     ZFOBJECT_DECLARE(ZFUILinearLayoutParam, ZFUILayoutParam)
 
     /**
@@ -53,7 +53,7 @@ zfclass ZFLIB_ZFUIWidget ZFUILinearLayoutParam : zfextends ZFUILayoutParam {
 /**
  * @brief linear container view that layout children in linear by specified orientation
  */
-zfclass ZFLIB_ZFUIWidget ZFUILinearLayout : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIWidget ZFUILinearLayout : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUILinearLayout, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUILinearLayout)
 

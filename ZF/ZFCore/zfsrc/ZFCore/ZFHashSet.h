@@ -14,7 +14,7 @@ zfclassFwd ZFHashMap;
 /**
  * @brief container of ZFObject, see #ZFContainer
  */
-zfclass ZFLIB_ZFCore ZFHashSet : zfextends ZFContainer {
+zfclass ZFLIB_ZFCore ZFHashSet : zfextend ZFContainer {
     ZFOBJECT_DECLARE(ZFHashSet, ZFContainer)
 
 public:

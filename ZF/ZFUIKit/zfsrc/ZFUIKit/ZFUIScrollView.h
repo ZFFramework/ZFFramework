@@ -31,7 +31,7 @@ zfclassFwd _ZFP_ZFUIScrollViewPrivate;
  * note that background view of scroll view and all other views behind scroll view
  * are ensured won't receive mouse event
  */
-zfclass ZFLIB_ZFUIKit ZFUIScrollView : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIKit ZFUIScrollView : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIScrollView, ZFUIView)
     ZFSTYLE_DEFAULT_DECLARE(ZFUIScrollView)
 

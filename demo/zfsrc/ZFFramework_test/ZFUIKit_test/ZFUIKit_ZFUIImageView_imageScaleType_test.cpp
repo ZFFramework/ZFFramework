@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUIImageView_imageScaleType_test_Container : zfextends ZFUIView {
+zfclass ZFUIKit_ZFUIImageView_imageScaleType_test_Container : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIImageView_imageScaleType_test_Container, ZFUIView)
 
     ZFPROPERTY_RETAIN(ZFUIImageView *, imageViewSmall, zflineAlloc(ZFUIImageView))
@@ -43,7 +43,7 @@ protected:
     }
 };
 
-zfclass ZFUIKit_ZFUIImageView_imageScaleType_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIKit_ZFUIImageView_imageScaleType_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIImageView_imageScaleType_test, ZFFramework_test_TestCase)
 
 protected:

@@ -2,9 +2,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass _ZFP_ZFCore_ZFSerializable_test_TestClass : zfextends ZFObject, zfimplements ZFSerializable {
+zfclass _ZFP_ZFCore_ZFSerializable_test_TestClass : zfextend ZFObject, zfimplement ZFSerializable {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFSerializable_test_TestClass, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable)
 
 public:
     ZFPROPERTY_ASSIGN(zfstring, stringInParent)
@@ -17,15 +17,15 @@ protected:
     }
 };
 
-zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassChild : zfextends _ZFP_ZFCore_ZFSerializable_test_TestClass {
+zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassChild : zfextend _ZFP_ZFCore_ZFSerializable_test_TestClass {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFSerializable_test_TestClassChild, _ZFP_ZFCore_ZFSerializable_test_TestClass)
 
     ZFPROPERTY_ASSIGN(zfstring, stringInChild)
 };
 
-zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassContainer : zfextends ZFObject, zfimplements ZFSerializable {
+zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassContainer : zfextend ZFObject, zfimplement ZFSerializable {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFSerializable_test_TestClassContainer, ZFObject)
-    ZFIMPLEMENTS_DECLARE(ZFSerializable)
+    ZFIMPLEMENT_DECLARE(ZFSerializable)
 
 public:
     ZFPROPERTY_RETAIN(ZFObject *, serializableMember)
@@ -39,7 +39,7 @@ protected:
 };
 
 // ============================================================
-zfclass ZFCore_ZFSerializable_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFSerializable_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFSerializable_test, ZFFramework_test_TestCase)
 
 protected:

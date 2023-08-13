@@ -55,7 +55,7 @@ static int _ZFP_ZFLua_performance_test_end(lua_State *L) {
 }
 
 // ============================================================
-zfclass ZFLua_performance_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFLua_performance_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_performance_test, ZFFramework_test_TestCase)
 
 protected:

@@ -13,7 +13,7 @@ zfclassFwd _ZFP_ZFSemaphorePrivate;
 /**
  * @brief semaphore utility
  */
-zfclass ZFLIB_ZFCore ZFSemaphore : zfextends ZFObject {
+zfclass ZFLIB_ZFCore ZFSemaphore : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFSemaphore, ZFObject)
 
 protected:

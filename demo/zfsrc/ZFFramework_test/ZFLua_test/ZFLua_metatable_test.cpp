@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFLua_metatable_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFLua_metatable_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_metatable_test, ZFFramework_test_TestCase)
 
 protected:

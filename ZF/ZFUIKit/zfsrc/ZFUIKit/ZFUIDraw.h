@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief abstract view that can draw user content
  */
-zfclass ZFLIB_ZFUIKit ZFUIDrawableView : zfextends ZFUIView {
+zfclass ZFLIB_ZFUIKit ZFUIDrawableView : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIDrawableView, ZFUIView)
 
 public:

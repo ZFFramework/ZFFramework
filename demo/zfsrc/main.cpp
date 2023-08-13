@@ -129,7 +129,7 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
         _ZFP_ZFFramework_test_prepareTestCaseSubModule(containerView, subModuleName, subModule);
     }
 }
-zfclass _ZFP_ZFFramework_test_TestCaseSubModuleData : zfextends ZFObject {
+zfclass _ZFP_ZFFramework_test_TestCaseSubModuleData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFFramework_test_TestCaseSubModuleData, ZFObject)
 
     zfstring subModuleName;

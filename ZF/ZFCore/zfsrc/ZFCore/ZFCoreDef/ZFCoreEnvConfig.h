@@ -103,8 +103,8 @@ PREDEFINED            += ZF_DOXYGEN_FLAG
 PREDEFINED            += ZF_NAMESPACE_GLOBAL_BEGIN:=
 PREDEFINED            += ZF_NAMESPACE_GLOBAL_END:=
 PREDEFINED            += ZF_NAMESPACE_GLOBAL_USE:=
-PREDEFINED            += _ZFP_ZFIMPLEMENTS_DECLARE(...):=
-PREDEFINED            += ZFIMPLEMENTS_DECLARE(...):=
+PREDEFINED            += _ZFP_ZFIMPLEMENT_DECLARE(...):=
+PREDEFINED            += ZFIMPLEMENT_DECLARE(...):=
 PREDEFINED            += ZF_ENV_EXPORT:=
 PREDEFINED            += ZF_ENV_IMPORT:=
 /* ============================================================ */

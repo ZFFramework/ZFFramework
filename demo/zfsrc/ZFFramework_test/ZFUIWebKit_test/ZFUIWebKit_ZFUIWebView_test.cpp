@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIWebKit_ZFUIWebView_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIWebKit_ZFUIWebView_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWebKit_ZFUIWebView_test, ZFFramework_test_TestCase)
 
 protected:

@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-template<typename T_zfsuper, typename T_superInterface, int superImplementsInterface>
+template<typename T_zfsuper, typename T_superInterface, int superImplementInterface>
 zfclassNotPOD _ZFP_zfsuperI {
 public:
     typedef T_superInterface SuperType;
@@ -169,7 +169,7 @@ public:
  * usage:
  * @code
  *   // in something.h:
- *   zfclass YourClass : zfextends BaseClass {
+ *   zfclass YourClass : zfextend BaseClass {
  *       ZFOBJECT_DECLARE(YourClass, BaseClass)
  *   };
  *
@@ -213,7 +213,7 @@ public:
  *
  * usage:
  * @code
- *   zfclass MyClass : zfextends ZFObject {
+ *   zfclass MyClass : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(MyClass, ZFObject)
  *       ZFOBJECT_PRIVATE_ALLOC("hint about why it's private")
  *   };

@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass _ZFP_ZFCore_ZFMethod_test_TestBase : zfextends ZFObject {
+zfclass _ZFP_ZFCore_ZFMethod_test_TestBase : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFMethod_test_TestBase, ZFObject)
 public:
     zfstring s;
@@ -128,7 +128,7 @@ ZFMETHOD_DEFINE_0(_ZFP_ZFCore_ZFMethod_test_TestBase, void, methodDefinedInCppFi
 }
 
 // ============================================================
-zfclass _ZFP_ZFCore_ZFMethod_test_TestChild : zfextends _ZFP_ZFCore_ZFMethod_test_TestBase {
+zfclass _ZFP_ZFCore_ZFMethod_test_TestChild : zfextend _ZFP_ZFCore_ZFMethod_test_TestBase {
     ZFOBJECT_DECLARE(_ZFP_ZFCore_ZFMethod_test_TestChild, _ZFP_ZFCore_ZFMethod_test_TestBase)
 
 public:
@@ -146,7 +146,7 @@ public:
 #endif
 
 // ============================================================
-zfclass ZFCore_ZFMethod_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFMethod_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFMethod_test, ZFFramework_test_TestCase)
 
 protected:

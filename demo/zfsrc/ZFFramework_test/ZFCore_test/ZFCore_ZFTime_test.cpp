@@ -42,7 +42,7 @@ static zfstring _ZFP_ZFCore_ZFTime_test_printZFTime(ZFTime *t) {
     return ret;
 }
 
-zfclass ZFCore_ZFTime_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFCore_ZFTime_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFTime_test, ZFFramework_test_TestCase)
 
 protected:

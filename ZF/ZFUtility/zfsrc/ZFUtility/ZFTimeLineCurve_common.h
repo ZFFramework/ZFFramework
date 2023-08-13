@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief linear time line, see #ZFTimeLineCurve
  */
-zfclass ZFLIB_ZFUtility ZFTimeLineCurveLinear : zfextends ZFTimeLineCurve {
+zfclass ZFLIB_ZFUtility ZFTimeLineCurveLinear : zfextend ZFTimeLineCurve {
     ZFOBJECT_DECLARE(ZFTimeLineCurveLinear, ZFTimeLineCurve)
     ZFOBJECT_SINGLETON_DECLARE(zfself, instance)
 

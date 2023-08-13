@@ -32,7 +32,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   />
  * @endcode
  */
-zfabstract ZFLIB_ZFCore ZFEnum : zfextends ZFTypeIdWrapper {
+zfabstract ZFLIB_ZFCore ZFEnum : zfextend ZFTypeIdWrapper {
     ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFEnum, ZFTypeIdWrapper)
 
 protected:

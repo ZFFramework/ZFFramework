@@ -2,7 +2,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFUIKit_ZFUIScrollView_test : zfextends ZFFramework_test_TestCase {
+zfclass ZFUIKit_ZFUIScrollView_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIScrollView_test, ZFFramework_test_TestCase)
 
 protected:

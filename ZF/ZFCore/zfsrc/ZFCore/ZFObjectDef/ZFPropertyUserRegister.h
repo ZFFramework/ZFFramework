@@ -11,7 +11,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclass ZFLIB_ZFCore _ZFP_I_PropURDIVH : zfextends ZFObject {
+zfclass ZFLIB_ZFCore _ZFP_I_PropURDIVH : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_PropURDIVH, ZFObject)
 public:
     typedef void (*DeleteCallback)(ZF_IN void *v);
@@ -335,6 +335,7 @@ private:
         , _ZFP_PropURInit_##registerSig::propertyInit \
         , zfnull \
         , zfnull \
+        , zfnull \
     );
 #define _ZFP_ZFPropertyUserRegister_ParamExpand_Assign( \
         registerSig, \
@@ -365,6 +366,7 @@ private:
         , Func_ZFPropertyCallbackIsInitValue \
         , Func_ZFPropertyCallbackValueReset \
         , _ZFP_PropURInit_##registerSig::propertyInit \
+        , zfnull \
         , zfnull \
         , zfnull \
     )

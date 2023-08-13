@@ -5,7 +5,7 @@
  * so we introduced ZFCallback to supply more powerful
  * abstract callback logic:
  * @code
- *   zfclass MyObject : zfextends ZFObject {
+ *   zfclass MyObject : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(MyObject, ZFObject)
  *
  *       ZFMETHOD_INLINE_1(zfstring, myMemberMethod
