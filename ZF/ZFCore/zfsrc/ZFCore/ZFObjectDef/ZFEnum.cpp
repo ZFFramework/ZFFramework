@@ -81,7 +81,7 @@ void ZFEnum::objectOnInit(ZF_IN ZFEnum *another) {
 }
 
 void ZFEnum::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    if(this->classData()->classNamespace() != zfnull) {
+    if(!zfstringIsEmpty(this->classData()->classNamespace())) {
         ret += this->classData()->classNamespace();
         ret += ZFNamespaceSeparator();
     }

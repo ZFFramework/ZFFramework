@@ -604,7 +604,7 @@ public:
     }
     /**
      * @brief get the method namespace, for func type only,
-     *   ensured null for global scope (#ZF_NAMESPACE_GLOBAL)
+     *   null or empty string for global scope (#ZF_NAMESPACE_GLOBAL)
      */
     inline const zfchar *methodNamespace(void) const {
         return this->_ZFP_ZFMethod_methodNamespace;
@@ -655,15 +655,15 @@ public:
     ZFFuncAddrType _ZFP_ZFMethod_invokerOrg;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvokerOrg;
-    const zfchar *_ZFP_ZFMethod_methodName;
-    const zfchar *_ZFP_ZFMethod_returnTypeId;
-    const zfchar *_ZFP_ZFMethod_returnTypeName;
+    ZFSigName _ZFP_ZFMethod_methodName;
+    ZFSigName _ZFP_ZFMethod_returnTypeId;
+    ZFSigName _ZFP_ZFMethod_returnTypeName;
     zfuint _ZFP_ZFMethod_paramCount;
     zfuint _ZFP_ZFMethod_paramCountMin;
-    zfchar *_ZFP_ZFMethod_paramBuf;
-    const zfchar **_ZFP_ZFMethod_paramTypeIdList;
-    const zfchar **_ZFP_ZFMethod_paramTypeNameList;
-    const zfchar **_ZFP_ZFMethod_paramNameList;
+    ZFSigName *_ZFP_ZFMethod_paramBuf;
+    ZFSigName *_ZFP_ZFMethod_paramTypeIdList;
+    ZFSigName *_ZFP_ZFMethod_paramTypeNameList;
+    ZFSigName *_ZFP_ZFMethod_paramNameList;
     ZFMethodParamDefaultValueCallback *_ZFP_ZFMethod_paramDefaultValueCallbackList;
     ZFCoreArray<zfautoObject> _ZFP_ZFMethod_paramDefaultValueList;
     zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
@@ -675,7 +675,7 @@ public:
     ZFMethodType _ZFP_ZFMethod_methodType;
 
     // for func type
-    const zfchar *_ZFP_ZFMethod_methodNamespace;
+    ZFSigName _ZFP_ZFMethod_methodNamespace;
 
     // other
     zfbool _ZFP_ZFMethod_methodIsInternal;

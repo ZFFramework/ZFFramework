@@ -41,6 +41,7 @@
 #include "ZFCoreDef/ZFNamespaceImpl.h"
 #include "ZFCoreDef/ZFToken.h"
 #include "ZFCoreDef/ZFVersion.h"
+#include "ZFCoreDef/ZFSigName.h"
 #include "ZFCoreDef/zfstr.h"
 #include "ZFCoreDef/zfstr_CoreType.h"
 

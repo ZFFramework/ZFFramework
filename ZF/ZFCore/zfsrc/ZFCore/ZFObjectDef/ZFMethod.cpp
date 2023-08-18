@@ -41,15 +41,14 @@ void ZFMethod::_ZFP_ZFMethod_init(
     this->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodGenericInvokerOrg = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodType = methodType;
-    this->_ZFP_ZFMethod_methodName = _ZFP_ZFSigNameAddr(methodName);
-    this->_ZFP_ZFMethod_returnTypeId = _ZFP_ZFSigNameAddr(returnTypeId);
-    this->_ZFP_ZFMethod_returnTypeName = _ZFP_ZFSigNameAddr(returnTypeName);
+    this->_ZFP_ZFMethod_methodName = methodName;
+    this->_ZFP_ZFMethod_returnTypeId = returnTypeId;
+    this->_ZFP_ZFMethod_returnTypeName = returnTypeName;
 
     const zfchar *paramTypeIdList[ZFMETHOD_MAX_PARAM];
     const zfchar *paramTypeNameList[ZFMETHOD_MAX_PARAM];
     const zfchar *paramNameList[ZFMETHOD_MAX_PARAM];
     ZFMethodParamDefaultValueCallback paramDefaultValueCallbackList[ZFMETHOD_MAX_PARAM];
-    zfindex paramBufLen = 0;
 
     zfuint paramCount = 0;
     va_list vaList;
@@ -62,9 +61,6 @@ void ZFMethod::_ZFP_ZFMethod_init(
         paramTypeIdList[paramCount] = paramTypeId;
         paramTypeNameList[paramCount] = va_arg(vaList, const zfchar *);
         paramNameList[paramCount] = va_arg(vaList, const zfchar *);
-        paramBufLen += 0
-            + zfslen(paramNameList[paramCount]) + 1
-            ;
 
         ZFMethodParamDefaultValueCallback paramDefaultValueCallback = va_arg(vaList, ZFMethodParamDefaultValueCallback);
         if(paramDefaultValueCallback != zfnull) {
@@ -88,22 +84,19 @@ void ZFMethod::_ZFP_ZFMethod_init(
 
     // store param data
     if(paramCount > 0) {
-        _ZFP_ZFMethod_paramBuf = (zfchar *)zfmalloc(paramBufLen * sizeof(zfchar));
-        zfchar *p = _ZFP_ZFMethod_paramBuf;
+        _ZFP_ZFMethod_paramBuf = (ZFSigName *)zfmalloc((ZFMETHOD_MAX_PARAM + paramCount * 2) * sizeof(ZFSigName));
 
-        _ZFP_ZFMethod_paramTypeIdList = (const zfchar **)zfmalloc(sizeof(const zfchar *) * ZFMETHOD_MAX_PARAM);
-        zfmemset(_ZFP_ZFMethod_paramTypeIdList, 0, sizeof(const zfchar *) * ZFMETHOD_MAX_PARAM);
-
-        _ZFP_ZFMethod_paramTypeNameList = (const zfchar **)zfmalloc(sizeof(const zfchar *) * paramCount);
-        _ZFP_ZFMethod_paramNameList = (const zfchar **)zfmalloc(sizeof(const zfchar *) * paramCount);
+        _ZFP_ZFMethod_paramTypeIdList = _ZFP_ZFMethod_paramBuf;
+        _ZFP_ZFMethod_paramTypeNameList = _ZFP_ZFMethod_paramTypeIdList + ZFMETHOD_MAX_PARAM;
+        _ZFP_ZFMethod_paramNameList = _ZFP_ZFMethod_paramTypeNameList + paramCount;
 
         for(zfuint i = 0; i < paramCount; ++i) {
-            _ZFP_ZFMethod_paramTypeIdList[i] = _ZFP_ZFSigNameAddr(paramTypeIdList[i]);
-            _ZFP_ZFMethod_paramTypeNameList[i] = _ZFP_ZFSigNameAddr(paramTypeNameList[i]);
-
-            _ZFP_ZFMethod_paramNameList[i] = p;
-            zfscpy(p, paramNameList[i]);
-            p += zfslen(paramNameList[i]) + 1;
+            zfnewPlacement(_ZFP_ZFMethod_paramTypeIdList + i, ZFSigName, paramTypeIdList[i]);
+            zfnewPlacement(_ZFP_ZFMethod_paramTypeNameList + i, ZFSigName, paramTypeNameList[i]);
+            zfnewPlacement(_ZFP_ZFMethod_paramNameList + i, ZFSigName, paramNameList[i]);
+        }
+        for(zfuint i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
+            zfnewPlacement(_ZFP_ZFMethod_paramTypeIdList + i, ZFSigName);
         }
 
         _ZFP_ZFMethod_paramDefaultValueCallbackList = (ZFMethodParamDefaultValueCallback *)zfmalloc(sizeof(ZFMethodParamDefaultValueCallback) * paramCount);
@@ -140,7 +133,7 @@ void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfchar *methodNamespace) {
         && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
         && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
     ) {
-        this->_ZFP_ZFMethod_methodNamespace = _ZFP_ZFSigNameAddr(methodNamespace);
+        this->_ZFP_ZFMethod_methodNamespace = methodNamespace;
     }
 
     this->_ZFP_ZFMethod_methodOwnerClass = zfnull;
@@ -188,7 +181,7 @@ ZFMethod::~ZFMethod(void) {
 
     zffree(this->_ZFP_ZFMethod_methodInternalId);
 
-    // registered by _ZFP_ZFSigNameAddr, no need to free
+    // registered by ZFSigName, no need to free
     // _ZFP_ZFMethod_methodName;
     // _ZFP_ZFMethod_returnTypeId;
     // _ZFP_ZFMethod_returnTypeName;
@@ -196,10 +189,15 @@ ZFMethod::~ZFMethod(void) {
     // _ZFP_ZFMethod_paramTypeIdList;
     // _ZFP_ZFMethod_paramTypeNameList;
 
-    zffree(_ZFP_ZFMethod_paramBuf);
-    zffree(_ZFP_ZFMethod_paramTypeIdList); // fixed lengh for performance, ZFMETHOD_MAX_PARAM
-    zffree(_ZFP_ZFMethod_paramTypeNameList); // depends on paramCount
-    zffree(_ZFP_ZFMethod_paramNameList); // depends on paramCount
+    if(_ZFP_ZFMethod_paramBuf != zfnull) {
+        for(zfindex i = 0, count = ZFMETHOD_MAX_PARAM + methodParamCount() * 2; i < count; ++i) {
+            zfdeletePlacement(_ZFP_ZFMethod_paramBuf + i);
+        }
+        zffree(_ZFP_ZFMethod_paramBuf);
+    }
+    // _ZFP_ZFMethod_paramTypeIdList; // fixed lengh for performance, ZFMETHOD_MAX_PARAM
+    // _ZFP_ZFMethod_paramTypeNameList; // depends on paramCount
+    // _ZFP_ZFMethod_paramNameList; // depends on paramCount
 
     zffree(_ZFP_ZFMethod_paramDefaultValueCallbackList);
 }
@@ -374,34 +372,34 @@ void _ZFP_ZFMethodDataHolderInit(void) {
 // ============================================================
 static void _ZFP_ZFMethodInstanceSig(
         ZF_OUT zfstring &ret
-        , ZF_IN const zfchar *methodScope
-        , ZF_IN const zfchar *methodName
-        , ZF_IN_OPT const zfchar *methodParamTypeId0 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId3 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId4 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId5 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId6 /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamTypeId7 /* = zfnull */
+        , ZF_IN const ZFSigName &methodScope
+        , ZF_IN const ZFSigName &methodName
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId0 /* = zfnull */
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId1 /* = zfnull */
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId2 /* = zfnull */
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId3 /* = zfnull */
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId4 /* = zfnull */
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId5 /* = zfnull */
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId6 /* = zfnull */
+        , ZF_IN_OPT const ZFSigName &methodParamTypeId7 /* = zfnull */
         ) {
-    if(methodScope
+    if(!zfstringIsEmpty(methodScope)
         && !zfstringIsEqual(methodScope, ZF_NAMESPACE_GLOBAL_NAME)
         && !zfstringIsEqual(methodScope, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
     ) {
-        zfindexToString(ret, _ZFP_ZFSigForName(methodScope));
+        zfindexToString(ret, methodScope.sigId());
     }
     ret += ':';
-    zfindexToString(ret, _ZFP_ZFSigForName(methodName));
+    zfindexToString(ret, methodName.sigId());
 
-    if(zfstringIsEmpty(methodParamTypeId0)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId0));
-    if(zfstringIsEmpty(methodParamTypeId1)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId1));
-    if(zfstringIsEmpty(methodParamTypeId2)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId2));
-    if(zfstringIsEmpty(methodParamTypeId3)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId3));
-    if(zfstringIsEmpty(methodParamTypeId4)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId4));
-    if(zfstringIsEmpty(methodParamTypeId5)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId5));
-    if(zfstringIsEmpty(methodParamTypeId6)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId6));
-    if(zfstringIsEmpty(methodParamTypeId7)) {return;} ret += '+'; zfindexToString(ret, _ZFP_ZFSigForName(methodParamTypeId7));
+    if(zfstringIsEmpty(methodParamTypeId0)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId0.sigId());
+    if(zfstringIsEmpty(methodParamTypeId1)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId1.sigId());
+    if(zfstringIsEmpty(methodParamTypeId2)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId2.sigId());
+    if(zfstringIsEmpty(methodParamTypeId3)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId3.sigId());
+    if(zfstringIsEmpty(methodParamTypeId4)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId4.sigId());
+    if(zfstringIsEmpty(methodParamTypeId5)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId5.sigId());
+    if(zfstringIsEmpty(methodParamTypeId6)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId6.sigId());
+    if(zfstringIsEmpty(methodParamTypeId7)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId7.sigId());
 }
 
 static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfchar *methodInternalId) {
@@ -475,7 +473,7 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
     zfCoreMutexLocker();
 
     zfCoreAssert(methodGenericInvoker != zfnull);
-    zfCoreAssert(methodOwnerClass == zfnull || methodNamespace == zfnull);
+    zfCoreAssert(methodOwnerClass == zfnull || zfstringIsEmpty(methodNamespace));
     zfCoreAssert(methodName != zfnull && *methodName != '\0');
     zfCoreAssert(returnTypeId != zfnull && *returnTypeId != '\0');
     zfCoreAssert(returnTypeName != zfnull && *returnTypeName != '\0');
@@ -483,23 +481,26 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
     ZFMethod *method = zfnull;
 
     zfindex paramCount = 0;
-    const zfchar *paramTypeId[ZFMETHOD_MAX_PARAM + 1] = {0};
-    const zfchar *paramTypeName[ZFMETHOD_MAX_PARAM + 1] = {0};
-    const zfchar *paramName[ZFMETHOD_MAX_PARAM + 1] = {0};
-    ZFMethodParamDefaultValueCallback paramDefaultValueAccess[ZFMETHOD_MAX_PARAM + 1] = {0}; {
-        paramTypeId[paramCount] = va_arg(vaList, const zfchar *);
-        while(paramTypeId[paramCount] != zfnull) {
-            paramTypeName[paramCount] = va_arg(vaList, const zfchar *);
-            paramName[paramCount] = va_arg(vaList, const zfchar *);
-            paramDefaultValueAccess[paramCount] = va_arg(vaList, ZFMethodParamDefaultValueCallback);
-            ++paramCount;
-            paramTypeId[paramCount] = va_arg(vaList, const zfchar *);
+    ZFSigName paramTypeId[ZFMETHOD_MAX_PARAM];
+    const zfchar *paramTypeName[ZFMETHOD_MAX_PARAM] = {0};
+    const zfchar *paramName[ZFMETHOD_MAX_PARAM] = {0};
+    ZFMethodParamDefaultValueCallback paramDefaultValueAccess[ZFMETHOD_MAX_PARAM] = {0};
+    paramTypeId[paramCount] = va_arg(vaList, const zfchar *);
+    while(paramTypeId[paramCount] != zfnull) {
+        paramTypeName[paramCount] = va_arg(vaList, const zfchar *);
+        paramName[paramCount] = va_arg(vaList, const zfchar *);
+        paramDefaultValueAccess[paramCount] = va_arg(vaList, ZFMethodParamDefaultValueCallback);
+        ++paramCount;
+        if(paramCount >= ZFMETHOD_MAX_PARAM) {
+            break;
         }
+        paramTypeId[paramCount] = va_arg(vaList, const zfchar *);
     }
 
     zfstring methodInternalId;
+    ZFSigName methodScope = methodOwnerClass ? methodOwnerClass->classNameFull() : methodNamespace;
     _ZFP_ZFMethodInstanceSig(methodInternalId
-            , methodOwnerClass ? methodOwnerClass->classNameFull() : methodNamespace
+            , methodScope
             , methodName
             , paramTypeId[0]
             , paramTypeId[1]
@@ -581,14 +582,14 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
                 , methodName
                 , returnTypeId
                 , returnTypeName
-                , paramTypeId[0], paramTypeName[0], paramName[0], paramDefaultValueAccess[0]
-                , paramTypeId[1], paramTypeName[1], paramName[1], paramDefaultValueAccess[1]
-                , paramTypeId[2], paramTypeName[2], paramName[2], paramDefaultValueAccess[2]
-                , paramTypeId[3], paramTypeName[3], paramName[3], paramDefaultValueAccess[3]
-                , paramTypeId[4], paramTypeName[4], paramName[4], paramDefaultValueAccess[4]
-                , paramTypeId[5], paramTypeName[5], paramName[5], paramDefaultValueAccess[5]
-                , paramTypeId[6], paramTypeName[6], paramName[6], paramDefaultValueAccess[6]
-                , paramTypeId[7], paramTypeName[7], paramName[7], paramDefaultValueAccess[7]
+                , paramTypeId[0].cString(), paramTypeName[0], paramName[0], paramDefaultValueAccess[0]
+                , paramTypeId[1].cString(), paramTypeName[1], paramName[1], paramDefaultValueAccess[1]
+                , paramTypeId[2].cString(), paramTypeName[2], paramName[2], paramDefaultValueAccess[2]
+                , paramTypeId[3].cString(), paramTypeName[3], paramName[3], paramDefaultValueAccess[3]
+                , paramTypeId[4].cString(), paramTypeName[4], paramName[4], paramDefaultValueAccess[4]
+                , paramTypeId[5].cString(), paramTypeName[5], paramName[5], paramDefaultValueAccess[5]
+                , paramTypeId[6].cString(), paramTypeName[6], paramName[6], paramDefaultValueAccess[6]
+                , paramTypeId[7].cString(), paramTypeName[7], paramName[7], paramDefaultValueAccess[7]
                 , (const zfchar *)zfnull
             );
 

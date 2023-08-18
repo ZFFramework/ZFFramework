@@ -63,7 +63,7 @@ ZFProperty::ZFProperty(void)
 ZFProperty::~ZFProperty(void) {
     zffree(this->_ZFP_ZFProperty_propertyInternalId);
 
-    // registered by _ZFP_ZFSigNameAddr, no need to free
+    // registered by ZFSigName, no need to free
     // this->_ZFP_ZFProperty_name;
     // this->_ZFP_ZFProperty_typeName;
     // this->_ZFP_ZFProperty_typeId;
@@ -90,9 +90,9 @@ void ZFProperty::_ZFP_ZFPropertyInit(
         // assign property with ZFObject type, is not serializable
         typeIdName = ZFTypeId_none();
     }
-    this->_ZFP_ZFProperty_name = _ZFP_ZFSigNameAddr(name);
-    this->_ZFP_ZFProperty_typeName = _ZFP_ZFSigNameAddr(typeName);
-    this->_ZFP_ZFProperty_typeId = _ZFP_ZFSigNameAddr(typeIdName);
+    this->_ZFP_ZFProperty_name = name;
+    this->_ZFP_ZFProperty_typeName = typeName;
+    this->_ZFP_ZFProperty_typeId = typeIdName;
     this->_ZFP_ZFProperty_setterMethod = setterMethod;
     this->_ZFP_ZFProperty_getterMethod = getterMethod;
     this->_ZFP_ZFProperty_setterMethodCleanup = setterMethodCleanup;
@@ -135,15 +135,15 @@ void ZFPropertyGetAllT(
 // ============================================================
 static void _ZFP_ZFPropertyInstanceSig(
         ZF_OUT zfstring &ret
-        , ZF_IN const zfchar *classNameFull
-        , ZF_IN const zfchar *propertyName
+        , ZF_IN const ZFSigName &classNameFull
+        , ZF_IN const ZFSigName &propertyName
         ) {
     if(classNameFull) {
-        zfindexToString(ret, _ZFP_ZFSigForName(classNameFull));
+        zfindexToString(ret, classNameFull.sigId());
     }
     ret += ':';
     if(propertyName) {
-        zfindexToString(ret, _ZFP_ZFSigForName(propertyName));
+        zfindexToString(ret, propertyName.sigId());
     }
 }
 static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfchar *propertyInternalId) {
@@ -209,7 +209,8 @@ ZFProperty *_ZFP_ZFPropertyRegister(
     zfCoreAssert(callbackValueReset != zfnull);
 
     zfstring propertyInternalId;
-    _ZFP_ZFPropertyInstanceSig(propertyInternalId, propertyOwnerClass->classNameFull(), name);
+    ZFSigName nameHolder = name;
+    _ZFP_ZFPropertyInstanceSig(propertyInternalId, propertyOwnerClass->classNameFull(), nameHolder);
 
     if(propertyIsUserRegister) {
         propertyInfo = _ZFP_ZFPropertyInstanceFind(propertyInternalId);

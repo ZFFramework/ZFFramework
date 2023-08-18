@@ -1,0 +1,91 @@
+/**
+ * @file ZFSigName.h
+ * @brief readonly string container for internal use only
+ */
+
+#ifndef _ZFI_ZFSigName_h_
+#define _ZFI_ZFSigName_h_
+
+#include "ZFCoreTypeDef.h"
+
+ZF_NAMESPACE_GLOBAL_BEGIN
+
+zfclassFwd _ZFP_ZFSigNamePrivate;
+/**
+ * @brief readonly string container for internal use only
+ */
+zffinal zfclassLikePOD ZFLIB_ZFCore ZFSigName {
+public:
+    /** @cond ZFPrivateDoc */
+    ZFSigName(void);
+    ZFSigName(ZF_IN const ZFSigName &ref);
+    ZFSigName(ZF_IN const zfstring &s);
+    ZFSigName(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len = zfindexMax());
+    ~ZFSigName(void);
+    /** @endcond */
+
+public:
+    /**
+     * @brief internal id for the string content
+     *
+     * the id may change if all the reference to one string content is released
+     */
+    zfidentity sigId(void) const;
+
+public:
+    /** @brief whether empty */
+    zfbool isEmpty(void) const;
+
+    /** @brief access string value, return empty string if empty */
+    const zfchar *cString(void) const;
+
+    /** @brief length of string content */
+    zfindex length(void) const;
+
+    /** @brief string comparation */
+    zfint compare(ZF_IN const ZFSigName &ref) const;
+
+    /** @brief string comparation */
+    zfint compare(ZF_IN const zfstring &s) const {
+        return zfsncmp(this->cString(), s, (s.length() >= this->length() ? this->length() : s.length()) + 1);
+    }
+
+    /** @brief string comparation */
+    zfint compare(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len = zfindexMax()) const {
+        return zfsncmp(this->cString(), s ? s : "", (len >= this->length() ? this->length() : len) + 1);
+    }
+
+    /** @cond ZFPrivateDoc */
+public:
+    operator const zfchar *(void) const {return this->cString();}
+    const zfchar &operator [] (ZF_IN zfindex pos) const {return this->cString()[pos];}
+public:
+    ZFSigName &operator = (ZF_IN const ZFSigName &ref);
+    ZFSigName &operator = (ZF_IN const zfstring &s);
+    ZFSigName &operator = (ZF_IN const zfchar *s);
+public:
+    zfbool operator == (ZF_IN const ZFSigName &ref) const {return this->compare(ref) == 0;}
+    zfbool operator != (ZF_IN const ZFSigName &ref) const {return this->compare(ref) != 0;}
+    zfbool operator == (ZF_IN const zfstring &s) const {return this->compare(s) == 0;}
+    zfbool operator != (ZF_IN const zfstring &s) const {return this->compare(s) != 0;}
+    zfbool operator == (ZF_IN const zfchar *s) const {return this->compare(s) == 0;}
+    zfbool operator != (ZF_IN const zfchar *s) const {return this->compare(s) != 0;}
+public:
+    // tricks to make zfstlmap<ZFSigName, xxx> works
+    inline zfbool operator < (ZF_IN const ZFSigName &ref) const {return this->compare(ref) < 0;}
+    inline zfbool operator <= (ZF_IN const ZFSigName &ref) const {return this->compare(ref) <= 0;}
+    inline zfbool operator > (ZF_IN const ZFSigName &ref) const {return this->compare(ref) > 0;}
+    inline zfbool operator >= (ZF_IN const ZFSigName &ref) const {return this->compare(ref) >= 0;}
+    /** @endcond */
+
+private:
+    _ZFP_ZFSigNamePrivate *d;
+};
+ZFOUTPUT_TYPE(ZFSigName, {s += v.cString();})
+
+extern ZFLIB_ZFCore void _ZFP_ZFSigNameInfo(ZF_OUT zfstring &ret);
+
+ZF_NAMESPACE_GLOBAL_END
+
+#endif // #ifndef _ZFI_ZFSigName_h_
+

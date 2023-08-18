@@ -219,9 +219,6 @@ extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(
         , ZF_IN_OPT const zfchar *name = zfnull
         );
 
-extern ZFLIB_ZFCore zfindex _ZFP_ZFSigForName(ZF_IN const zfchar *name);
-extern ZFLIB_ZFCore const zfchar *_ZFP_ZFSigNameAddr(ZF_IN const zfchar *name);
-
 template<typename T_Type>
 zfclassNotPOD _ZFP_zftToStringFallback<T_Type
 , typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrNoRef)>::EnableIf

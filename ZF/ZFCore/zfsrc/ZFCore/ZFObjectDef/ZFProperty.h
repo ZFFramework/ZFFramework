@@ -186,9 +186,9 @@ public:
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserData;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper;
     const ZFClass *_ZFP_ZFProperty_propertyOwnerClass;
-    const zfchar *_ZFP_ZFProperty_name;
-    const zfchar *_ZFP_ZFProperty_typeName;
-    const zfchar *_ZFP_ZFProperty_typeId;
+    ZFSigName _ZFP_ZFProperty_name;
+    ZFSigName _ZFP_ZFProperty_typeName;
+    ZFSigName _ZFP_ZFProperty_typeId;
     const ZFMethod *_ZFP_ZFProperty_setterMethod;
     const ZFMethod *_ZFP_ZFProperty_getterMethod;
     _ZFP_ZFPropertyMethodCleanup _ZFP_ZFProperty_setterMethodCleanup;

@@ -7,8 +7,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlmap<const zfchar *, zfstlvector<const ZFMethod *>, zfcharConst_zfstlComparer> _ZFP_ZFMethodFuncNameMapType;
-typedef zfstlmap<const zfchar *, _ZFP_ZFMethodFuncNameMapType, zfcharConst_zfstlComparer> _ZFP_ZFMethodFuncMapType;
+typedef zfstlmap<ZFSigName, zfstlvector<const ZFMethod *>> _ZFP_ZFMethodFuncNameMapType;
+typedef zfstlmap<ZFSigName, _ZFP_ZFMethodFuncNameMapType> _ZFP_ZFMethodFuncMapType;
 static _ZFP_ZFMethodFuncMapType &_ZFP_ZFMethodFuncMap(void) {
      static _ZFP_ZFMethodFuncMapType m;
      return m;
@@ -16,12 +16,12 @@ static _ZFP_ZFMethodFuncMapType &_ZFP_ZFMethodFuncMap(void) {
 
 void _ZFP_ZFMethodFuncRegister(ZF_IN const ZFMethod *method) {
     _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
-    const zfchar *methodNamespace = method->methodNamespace() ? method->methodNamespace() : "";
-    m[_ZFP_ZFSigNameAddr(methodNamespace)][_ZFP_ZFSigNameAddr(method->methodName())].push_back(method);
+    const zfchar *methodNamespace = !zfstringIsEmpty(method->methodNamespace()) ? method->methodNamespace() : "";
+    m[methodNamespace][method->methodName()].push_back(method);
 }
 void _ZFP_ZFMethodFuncUnregister(ZF_IN const ZFMethod *method) {
     _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
-    const zfchar *methodNamespace = method->methodNamespace() ? method->methodNamespace() : "";
+    const zfchar *methodNamespace = zfstringIsEmpty(method->methodNamespace()) ? method->methodNamespace() : "";
     _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end()) {
         return;

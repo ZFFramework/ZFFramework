@@ -18,7 +18,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethod, const ZFMethod *, {
         return (v != zfnull);
     }, {
         if(v->methodIsFunctionType()) {
-            if(v->methodNamespace() != zfnull) {
+            if(!zfstringIsEmpty(v->methodNamespace())) {
                 s += v->methodNamespace();
                 s += ZFNamespaceSeparator();
             }

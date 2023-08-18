@@ -13,16 +13,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 /** @brief wchar_t wrapper */
 #ifndef _ZFT_zfcharW
-    ZFT_INT_WEAK(wchar_t, zfcharW);
+    typedef wchar_t zfcharW;
 #else
-    ZFT_INT_WEAK(_ZFT_zfcharW, zfcharW);
+    typedef _ZFT_zfcharW zfcharW;
 #endif
 
 /** @brief wstring wrapper */
 #ifndef _ZFT_zfstringW
-    ZFT_INT_WEAK(_zfstr<zfcharW>, zfstringW);
+    typedef zft_zfstring<zfcharW> zfstringW;
 #else
-    ZFT_INT_WEAK(_ZFT_zfstringW, zfstringW);
+    typedef _ZFT_zfstringW zfstringW;
 #endif
 
 // ============================================================

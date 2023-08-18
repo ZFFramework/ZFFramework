@@ -72,6 +72,18 @@ public:
     /** @endcond */
 };
 
+/**
+ * @brief key comparer by string comparation, used in STL
+ */
+zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlComparer {
+public:
+    /** @cond ZFPrivateDoc */
+    inline zfbool operator () (ZFSigName const &k1, ZFSigName const &k2) const {
+        return (k1.compare(k2) < 0);
+    }
+    /** @endcond */
+};
+
 // ============================================================
 /**
  * @brief key hasher by string value hash, used in STL
@@ -103,6 +115,18 @@ zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHasher {
 public:
     /** @cond ZFPrivateDoc */
     zfstlsize operator () (zfstring const &v) const {
+        return (zfstlsize)zfidentityCalcString(v.cString());
+    }
+    /** @endcond */
+};
+
+/**
+ * @brief key hasher by string value hash, used in STL
+ */
+zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlHasher {
+public:
+    /** @cond ZFPrivateDoc */
+    zfstlsize operator () (ZFSigName const &v) const {
         return (zfstlsize)zfidentityCalcString(v.cString());
     }
     /** @endcond */
@@ -152,6 +176,18 @@ zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHashComparer {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (const zfstring &k1, const zfstring &k2) const {
+        return (k1.compare(k2) == 0);
+    }
+    /** @endcond */
+};
+
+/**
+ * @brief key comparer by string comparation, used in STL
+ */
+zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlHashComparer {
+public:
+    /** @cond ZFPrivateDoc */
+    inline zfbool operator () (const ZFSigName &k1, const ZFSigName &k2) const {
         return (k1.compare(k2) == 0);
     }
     /** @endcond */

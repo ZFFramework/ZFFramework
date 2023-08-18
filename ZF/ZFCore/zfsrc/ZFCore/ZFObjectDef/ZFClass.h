@@ -189,7 +189,7 @@ public:
     }
 
     /**
-     * @brief class namespace, ensured null for global scope class
+     * @brief class namespace, null or empty string for global scope class
      */
     inline const zfchar *classNamespace(void) const {
         return this->_ZFP_ZFClass_classNamespace;
@@ -674,9 +674,9 @@ private:
     _ZFP_ZFClassPrivate *d;
     friend zfclassFwd _ZFP_ZFClassPrivate;
     const ZFClass *_ZFP_ZFClass_classParent;
-    const zfchar *_ZFP_ZFClass_classNamespace;
-    const zfchar *_ZFP_ZFClass_className;
-    const zfchar *_ZFP_ZFClass_classNameFull;
+    ZFSigName _ZFP_ZFClass_classNamespace;
+    ZFSigName _ZFP_ZFClass_className;
+    ZFSigName _ZFP_ZFClass_classNameFull;
     zfbool _ZFP_ZFClass_classIsAbstract;
     zfbool _ZFP_ZFClass_classIsInterface;
     zfbool _ZFP_ZFClass_classIsInternal;

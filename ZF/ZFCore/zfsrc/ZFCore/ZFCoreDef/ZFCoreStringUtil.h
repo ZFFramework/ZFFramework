@@ -206,8 +206,14 @@ inline zfbool zfstringIsEqual(
 /**
  * @brief util to check whether string is empty (null or empty string)
  */
-inline zfbool zfstringIsEmpty(ZF_IN const zfchar *s1) {
-    return (s1 == zfnull || *s1 == '\0');
+inline zfbool zfstringIsEmpty(ZF_IN const zfchar *s) {
+    return (s == zfnull || *s == '\0');
+}
+/**
+ * @brief util to check whether string is empty (null or empty string)
+ */
+inline zfbool zfstringIsEmpty(ZF_IN const zfchar *s, ZF_IN zfindex len) {
+    return (s == zfnull || *s == '\0' || len == 0);
 }
 
 // ============================================================

@@ -10,9 +10,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-/** @brief see #_zfstr */
+/** @brief see #zft_zfstring */
 #ifndef _ZFT_zfstring
-    typedef _zfstr<zfchar> zfstring;
+    typedef zft_zfstring<zfchar> zfstring;
 #else
     typedef _ZFT_zfstring zfstring;
 #endif

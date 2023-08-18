@@ -320,9 +320,12 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         ret += this->methodOwnerClass()->classNameFull();
         ret += "::";
     }
-    else if(!zfstringIsEmpty(ZFNamespaceSkipGlobal(this->methodNamespace()))) {
-        ret += ZFNamespaceSkipGlobal(this->methodNamespace());
-        ret += "::";
+    else {
+        const zfchar *ns = ZFNamespaceSkipGlobal(this->methodNamespace());
+        if(!zfstringIsEmpty(ns)) {
+            ret += ns;
+            ret += "::";
+        }
     }
 
     ret += this->methodName();

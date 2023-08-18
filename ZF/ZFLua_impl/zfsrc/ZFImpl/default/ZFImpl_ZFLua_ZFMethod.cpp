@@ -19,7 +19,7 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
     for(zfindex i = 0; i < methodList.count(); ++i) {
         const ZFMethod *method = methodList[i];
         if(!method->methodIsFunctionType()
-            || method->methodNamespace() != zfnull
+            || !zfstringIsEmpty(method->methodNamespace())
             || method->methodIsInternalPrivate()
         ) {
             continue;
@@ -53,7 +53,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
                 allMethod);
             for(zfindex i = 0; i < allMethod.count(); ++i) {
                 const ZFMethod *method = allMethod[i];
-                if(method->methodNamespace() != zfnull) {
+                if(!zfstringIsEmpty(method->methodNamespace())) {
                     zfindex dotPos = zfstringFind(method->methodNamespace(), zfindexMax(), ZFNamespaceSeparator());
                     if(dotPos == zfindexMax()) {
                         methodNamespaceList[method->methodNamespace()] = zftrue;

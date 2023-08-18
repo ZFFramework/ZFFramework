@@ -157,7 +157,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
     zfstring classSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls);
     zfstring classNameFull;
     if(zfsncmp(cls->className(), ZFTypeIdWrapperPrefixName, ZFTypeIdWrapperPrefixNameLen) == 0) {
-        if(cls->classNamespace() != zfnull) {
+        if(!zfstringIsEmpty(cls->classNamespace())) {
             classNameFull += cls->classNamespace();
             classNameFull += ".";
         }
@@ -317,7 +317,7 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(ZF_IN const ZFOutput &output) {
             output << "---@return " << retSig << "\n";
         }
         zfstring funcPrefix;
-        if(m->methodNamespace() != zfnull) {
+        if(!zfstringIsEmpty(m->methodNamespace())) {
             funcPrefix += m->methodNamespace();
             funcPrefix += ".";
         }
