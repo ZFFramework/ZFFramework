@@ -27,7 +27,6 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToBase64
         )
 /**
  * @brief load image from file
- * @note this method has no cache logic
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFromInput
         , ZFMP_IN(const ZFInput &, inputCallback)

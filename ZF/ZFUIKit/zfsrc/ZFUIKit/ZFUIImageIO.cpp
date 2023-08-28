@@ -4,6 +4,64 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+zfclassPOD _ZFP_ZFUIImageFromInputCacheData {
+public:
+    zfchar *inputId;
+    void *nativeImage;
+};
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageFromInputCacheHolder, ZFLevelZFFrameworkNormal) {
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageFromInputCacheHolder) {
+    zfCoreMutexLocker();
+    while(!this->cache.isEmpty()) {
+        _ZFP_ZFUIImageFromInputCacheData cacheData = this->cache.removeFirstAndGet();
+        zffree(cacheData.inputId);
+        ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(cacheData.nativeImage);
+    }
+}
+public:
+    ZFCoreArrayPOD<_ZFP_ZFUIImageFromInputCacheData> cache;
+ZF_GLOBAL_INITIALIZER_END(ZFUIImageFromInputCacheHolder)
+
+static void *_ZFP_ZFUIImageFromInput(ZF_IN const ZFInput &input) {
+    if(zfstringIsEmpty(input.callbackId())) {
+        return ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(input);
+    }
+
+    zfCoreMutexLock();
+    ZF_GLOBAL_INITIALIZER_CLASS(ZFUIImageFromInputCacheHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIImageFromInputCacheHolder);
+    for(zfindex i = 0; i < d->cache.count(); ++i) {
+        if(zfstringIsEqual(d->cache[i].inputId, input.callbackId())) {
+            void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(d->cache[i].nativeImage);
+            if(i != d->cache.count() - 1) {
+                d->cache.add(d->cache.removeAndGet(i));
+            }
+            zfCoreMutexUnlock();
+            return nativeImage;
+        }
+    }
+    zfCoreMutexUnlock();
+
+    void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(input);
+    if(nativeImage == zfnull) {
+        return zfnull;
+    }
+
+    zfCoreMutexLocker();
+    _ZFP_ZFUIImageFromInputCacheData cacheData;
+    cacheData.inputId = zfsCopy(input.callbackId());
+    cacheData.nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(nativeImage);
+    d->cache.add(cacheData);
+
+    while(d->cache.count() > 5) {
+        _ZFP_ZFUIImageFromInputCacheData cacheData = d->cache.removeFirstAndGet();
+        zffree(cacheData.inputId);
+        ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(cacheData.nativeImage);
+    }
+
+    return nativeImage;
+}
+
 // ============================================================
 // raw image io
 ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIImageFromBase64
@@ -13,7 +71,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIImageFromBase64
     zfautoObjectT<ZFUIImage *> ret = ZFUIImage::ClassData()->newInstance();
     ZFUIImage *image = ret;
     if(image != zfnull && ZFBase64Decode(io->output(), inputCallback)) {
-        void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(io->input());
+        void *nativeImage = _ZFP_ZFUIImageFromInput(io->input());
         if(nativeImage != zfnull) {
             image->nativeImage(nativeImage, zffalse);
             return ret;
@@ -42,7 +100,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIImageFromInput
     if(image == zfnull || !inputCallback) {
         return zfnull;
     }
-    void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(inputCallback);
+    void *nativeImage = _ZFP_ZFUIImageFromInput(inputCallback);
     if(nativeImage == zfnull) {
         return zfnull;
     }
@@ -77,7 +135,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(input, ZFUIImageSerializeType_input) {
             "invalid callback");
         return zffalse;
     }
-    void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageFromInput(input);
+    void *nativeImage = _ZFP_ZFUIImageFromInput(input);
     if(nativeImage == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "load image failed");

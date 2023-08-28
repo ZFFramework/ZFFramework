@@ -282,12 +282,12 @@ zfindex zfstringReplaceReversely(
 
 // ============================================================
 // zfstringSplit
-ZFCoreArray<zfstring> zfstringSplit(
-        ZF_IN const zfchar *src
+void zfstringSplitT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &ret
+        , ZF_IN const zfchar *src
         , ZF_IN const zfchar *separator
         , ZF_IN_OPT zfbool keepEmpty /* = zffalse */
         ) {
-    ZFCoreArray<zfstring> ret;
     if(src != zfnull && separator != zfnull && *separator) {
         zfindex len = zfslen(separator);
         const zfchar *srcEnd = src + zfslen(src);
@@ -323,7 +323,87 @@ ZFCoreArray<zfstring> zfstringSplit(
             ret.add(src);
         }
     }
-    return ret;
+}
+void zfstringSplitIndexT(
+        ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN const zfchar *separator
+        , ZF_IN_OPT zfbool keepEmpty /* = zffalse */
+        ) {
+    const zfchar *srcOrig = src;
+    if(src != zfnull && separator != zfnull && *separator) {
+        zfindex len = zfslen(separator);
+        const zfchar *srcEnd = src + zfslen(src);
+        if(src <= srcEnd - len) {
+            const zfchar *p = src;
+            while(p < srcEnd) {
+                if(zfsncmp(p, separator, len) == 0) {
+                    if(p > src || keepEmpty) {
+                        ret.add(ZFIndexRangeMake(src - srcOrig, p - src));
+                        src = p;
+                    }
+                    p += len;
+                    src = p;
+
+                    if(p == srcEnd && keepEmpty) {
+                        ret.add(ZFIndexRangeMake(srcEnd - srcOrig, 0));
+                    }
+                }
+                else {
+                    ++p;
+                }
+            }
+            if(p > src) {
+                ret.add(ZFIndexRangeMake(src - srcOrig, p - src));
+            }
+        }
+        else if(*src || keepEmpty) {
+            ret.add(ZFIndexRangeMake(src - srcOrig, srcEnd - src));
+        }
+    }
+    else if(src != zfnull) {
+        if(*src || keepEmpty) {
+            ret.add(ZFIndexRangeMake(0, zfslen(src)));
+        }
+    }
+}
+
+// ============================================================
+// other
+void zfstringToLowerT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        ) {
+    if(zfstringIsEmpty(src)) {
+        return;
+    }
+    ;
+    for(const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen); src < srcEnd; ++src) {
+        if(*src >= 'A' && *src <= 'Z') {
+            ret += (zfchar)(*src + 32);
+        }
+        else {
+            ret += *src;
+        }
+    }
+}
+void zfstringToUpperT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        ) {
+    if(zfstringIsEmpty(src)) {
+        return;
+    }
+    for(const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen); src < srcEnd; ++src) {
+        if(*src >= 'a' && *src <= 'z') {
+            ret += (zfchar)(*src - 32);
+        }
+        else {
+            ret += *src;
+        }
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

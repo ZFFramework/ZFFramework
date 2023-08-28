@@ -310,10 +310,46 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfindex, zfstringReplaceReversely
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
         )
 
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfstringSplitT
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, separator)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArray<zfstring>, zfstringSplit
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(const zfchar *, separator)
         , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfstringSplitIndexT
+        , ZFMP_OUT(ZFCoreArray<ZFIndexRange> &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, separator)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArrayPOD<ZFIndexRange>, zfstringSplitIndex
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfchar *, separator)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        )
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToLower
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringToLowerT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, zfstringToUpper
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringToUpperT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 
 // ============================================================

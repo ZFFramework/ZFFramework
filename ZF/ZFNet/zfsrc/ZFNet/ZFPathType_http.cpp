@@ -19,6 +19,7 @@ public:
         };
 
     public:
+        zfbool updated;
         zfstring url;
         zfindex contentLength; // total size of the file, zfindexMax if not available
         zfindex curPos;
@@ -26,7 +27,8 @@ public:
         ZFCoreArrayPOD<zfindex> chunkCacheFIFO;
     public:
         _Token(void)
-        : url()
+        : updated(zffalse)
+        , url()
         , contentLength(zfindexMax())
         , curPos(0)
         , chunkCache()
@@ -34,6 +36,21 @@ public:
         {
         }
     public:
+        void update(void) {
+            if(!this->updated) {
+                zfblockedAlloc(ZFHttpRequest, send, this->url, ZFHttpMethod::e_HEAD);
+                zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
+                this->updated = zftrue;
+                if(recv == zfnull || !recv->success()) {
+                    return;
+                }
+                zfstring sizeText = recv->header("Content-Length");
+                if(sizeText.isEmpty()) {
+                    return;
+                }
+                zfindexFromString(this->contentLength, sizeText);
+            }
+        }
         inline zfindex chunkAlign(ZF_IN zfindex p) {
             return (p / ChunkSize) * ChunkSize;
         }
@@ -139,23 +156,8 @@ public:
         if(flag != ZFFileOpenOption::e_Read) {
             return zfnull;
         }
-        zfblockedAlloc(ZFHttpRequest, send, pathData, ZFHttpMethod::e_HEAD);
-        zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
-        if(recv == zfnull || !recv->success()) {
-            return zfnull;
-        }
-        zfstring sizeText = recv->header("Content-Length");
-        if(sizeText.isEmpty()) {
-            return zfnull;
-        }
-        zfindex contentLength;
-        if(!zfindexFromString(contentLength, sizeText) || contentLength == zfindexMax()) {
-            return zfnull;
-        }
-
         _Token *d = zfnew(_Token);
         d->url = pathData;
-        d->contentLength = contentLength;
         return d;
     }
     static zfbool callbackClose(ZF_IN void *token) {
@@ -165,6 +167,7 @@ public:
     }
     static zfindex callbackTell(ZF_IN void *token) {
         _Token *d = (_Token *)token;
+        d->update();
         return d->curPos;
     }
     static zfbool callbackSeek(
@@ -173,6 +176,10 @@ public:
             , ZF_IN_OPT ZFSeekPos position
             ) {
         _Token *d = (_Token *)token;
+        d->update();
+        if(d->contentLength == zfindexMax()) {
+            return zffalse;
+        }
         d->curPos = ZFIOCallbackCalcFSeek(0, d->contentLength, d->curPos, byteSize, position);
         return zftrue;
     }
@@ -182,6 +189,10 @@ public:
             , ZF_IN zfindex maxByteSize
             ) {
         _Token *d = (_Token *)token;
+        d->update();
+        if(d->contentLength == zfindexMax()) {
+            return 0;
+        }
         if(maxByteSize == zfindexMax() || d->curPos + maxByteSize > d->contentLength) {
             maxByteSize = d->contentLength - d->curPos;
         }
@@ -219,13 +230,17 @@ public:
     }
     static zfbool callbackIsEof(ZF_IN void *token) {
         _Token *d = (_Token *)token;
+        d->update();
         return d->curPos >= d->contentLength;
     }
     static zfbool callbackIsError(ZF_IN void *token) {
-        return zffalse;
+        _Token *d = (_Token *)token;
+        d->update();
+        return d->contentLength == zfindexMax();
     }
     static zfindex callbackSize(ZF_IN void *token) {
         _Token *d = (_Token *)token;
+        d->update();
         return d->contentLength;
     }
 };

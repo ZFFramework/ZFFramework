@@ -64,7 +64,7 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfchar *s, ZF_IN_
             _ZFP_ZFSigNameIdUnusedMap().erase(_ZFP_ZFSigNameIdUnusedMap().begin());
         }
         d->s = zfsCopy(s, len);
-        d->length = len != zfindexMax() ? len : zfslen(d->s);
+        d->length = (zfuint)(len != zfindexMax() ? len : zfslen(d->s));
         _ZFP_ZFSigNameMap()[d->s] = d;
         _ZFP_ZFSigNameIdMap()[d->sigId] = zftrue;
         return d;

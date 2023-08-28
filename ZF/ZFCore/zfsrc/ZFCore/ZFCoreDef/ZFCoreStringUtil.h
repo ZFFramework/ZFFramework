@@ -492,11 +492,72 @@ extern ZFLIB_ZFCore zfindex zfstringReplaceReversely(
 // ============================================================
 // zfstringSplit
 /** @brief split string */
-extern ZFLIB_ZFCore ZFCoreArray<zfstring> zfstringSplit(
-        ZF_IN const zfchar *src
+extern ZFLIB_ZFCore void zfstringSplitT(
+        ZF_IN_OUT ZFCoreArray<zfstring> &ret
+        , ZF_IN const zfchar *src
         , ZF_IN const zfchar *separator
         , ZF_IN_OPT zfbool keepEmpty = zffalse
         );
+/** @brief split string */
+inline ZFCoreArray<zfstring> zfstringSplit(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *separator
+        , ZF_IN_OPT zfbool keepEmpty = zffalse
+        ) {
+    ZFCoreArray<zfstring> ret;
+    zfstringSplitT(ret, src, separator, keepEmpty);
+    return ret;
+}
+/** @brief split string */
+extern ZFLIB_ZFCore void zfstringSplitIndexT(
+        ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN const zfchar *separator
+        , ZF_IN_OPT zfbool keepEmpty = zffalse
+        );
+/** @brief split string */
+inline ZFCoreArrayPOD<ZFIndexRange> zfstringSplitIndex(
+        ZF_IN const zfchar *src
+        , ZF_IN const zfchar *separator
+        , ZF_IN_OPT zfbool keepEmpty = zffalse
+        ) {
+    ZFCoreArrayPOD<ZFIndexRange> ret;
+    zfstringSplitIndexT(ret, src, separator, keepEmpty);
+    return ret;
+}
+
+// ============================================================
+// other
+/** @brief to lower case */
+extern ZFLIB_ZFCore void zfstringToLowerT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        );
+/** @brief to lower case */
+inline zfstring zfstringToLower(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        ) {
+    zfstring ret;
+    zfstringToLowerT(ret, src, srcLen);
+    return ret;
+}
+/** @brief to upper case */
+extern ZFLIB_ZFCore void zfstringToUpperT(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        );
+/** @brief to upper case */
+inline zfstring zfstringToUpper(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        ) {
+    zfstring ret;
+    zfstringToUpperT(ret, src, srcLen);
+    return ret;
+}
 
 ZF_NAMESPACE_GLOBAL_END
 
