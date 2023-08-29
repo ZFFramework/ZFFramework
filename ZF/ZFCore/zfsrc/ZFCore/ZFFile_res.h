@@ -45,7 +45,8 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFCoreArray<ZFPathInfo>, ZFResExtPathList)
  * the final file path should be "return value + '/' + resPath"
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, const ZFPathInfo *, ZFResExtPathCheck
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFResExtPathCheck
+        , ZFMP_OUT(ZFPathInfo &, resExtPath)
         , ZFMP_IN(const zfchar *, resPath)
         )
 
