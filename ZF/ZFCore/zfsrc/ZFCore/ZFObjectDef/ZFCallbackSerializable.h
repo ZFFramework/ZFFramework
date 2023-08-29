@@ -20,9 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   <null />
  *
  *   // for #ZFCallbackForMethod
- *   <ZFCallback>
- *       <ZFMethod category="method" ... />
- *   </ZFCallback>
+ *   <ZFCallback method="methodSig" />
  *
  *   // for #ZFCallbackForMemberMethod
  *   // not supported
@@ -36,10 +34,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * with #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE,
  * serializable data:
  * @code
- *   <ZFCallback callbackType="yourType" >
- *       <something category="callbackData" ... >
- *           // custom datas
- *       </something>
+ *   <ZFCallback callbackType="yourType" customAttr="customValue" >
+ *       // custom datas
  *   </ZFCallback>
  * @endcode
  */

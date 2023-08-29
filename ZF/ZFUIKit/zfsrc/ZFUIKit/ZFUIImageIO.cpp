@@ -109,8 +109,13 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObjectT<ZFUIImage *>, ZFUIImageFromInput
     if(!inputCallback.callbackSerializeCustomDisabled()) {
         ZFSerializableData inputData;
         if(ZFCallbackToData(inputData, inputCallback)) {
+            ZFSerializableData customData;
+            customData.itemClass(ZFUIImage::ClassData()->className());
+            inputData.category(ZFSerializableKeyword_ZFUIImageIO_input_imageData);
+            customData.childAdd(inputData);
+
             image->imageSerializableType(ZFUIImageSerializeType_input);
-            image->imageSerializableData(&inputData);
+            image->imageSerializableData(&customData);
         }
     }
     return ret;
@@ -127,9 +132,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFUIImageToOutput
 
 ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(input, ZFUIImageSerializeType_input) {
     ZFCallback input;
-    if(!ZFCallbackFromData(input, serializableData, outErrorHint, outErrorPos)) {
-        return zffalse;
-    }
+    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
+            require, ZFSerializableKeyword_ZFUIImageIO_input_imageData, ZFCallback, input);
     if(!input) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "invalid callback");
@@ -201,7 +205,7 @@ static zfbool _ZFP_ZFUIImageInFrame(
         ZFSerializableData refData;
         zfstring frameString;
         if(image->serializeToData(refData) && ZFUIRectToString(frameString, frame)) {
-            data.attr(ZFSerializableKeyword_ZFUIImageIO_ref_frame, frameString);
+            data.attr(ZFSerializableKeyword_ZFUIImageIO_ref_refFrame, frameString);
             refData.category(ZFSerializableKeyword_ZFUIImageIO_ref);
             data.childAdd(refData);
             ret->imageSerializableType(ZFUIImageSerializeType_ref);
@@ -223,7 +227,7 @@ ZFUIIMAGE_SERIALIZE_TYPE_DEFINE(ref, ZFUIImageSerializeType_ref) {
 
     ZFUIRect frame = ZFUIRectMake(ZFUIPointZero(), ref->imageSizeFixed());
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFUIImageIO_ref_frame, ZFUIRect, frame);
+        check, ZFSerializableKeyword_ZFUIImageIO_ref_refFrame, ZFUIRect, frame);
 
     return _ZFP_ZFUIImageInFrame(ret, ref, frame, zffalse);;
 }

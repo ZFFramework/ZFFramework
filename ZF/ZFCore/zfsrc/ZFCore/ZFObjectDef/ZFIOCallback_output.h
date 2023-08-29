@@ -83,9 +83,9 @@ inline const ZFOutput &operator << (const ZFOutput &output, T const &v) {
  *
  * serializable data:
  * @code
- *   <node>
+ *   <ZFCallback callbackType="ZFOutputDummy">
  *       // dummy input has no contents
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFOutputDummy "ZFOutputDummy"

@@ -11,25 +11,19 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         { // custom serialize logic
             const zfchar *customType = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFCallback_callbackType);
             if(customType != zfnull) {
-                const ZFSerializableData *customData = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFCallback_callbackData);
-                if(customData == zfnull) {
-                    ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
-                        "missing %s", ZFSerializableKeyword_ZFCallback_callbackData);
-                    return zffalse;
-                }
-
                 _ZFP_ZFCallbackSerializeCustomCallback serializeCallback = _ZFP_ZFCallbackSerializeCustomTypeForName(customType);
                 if(serializeCallback == zfnull) {
                     ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                         "no such callback custom serialize type: %s", customType);
                     return zffalse;
                 }
-                if(!serializeCallback(v, *customData, outErrorHint, outErrorPos)) {
+                if(!serializeCallback(v, serializableData, outErrorHint, outErrorPos)) {
                     return zffalse;
                 }
                 v.callbackSerializeCustomType(customType);
-                ZFSerializableData customDataTmp = customData->copy();
+                ZFSerializableData customDataTmp = serializableData.copy();
                 customDataTmp.category(zfnull);
+                customDataTmp.propertyName(zfnull);
                 v.callbackSerializeCustomData(customDataTmp);
 
                 serializableData.resolveMark();
@@ -47,8 +41,8 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         }
 
         const ZFMethod *method = zfnull;
-        ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            require, ZFSerializableKeyword_ZFCallback_method, ZFMethod, method);
+        ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
+                require, ZFSerializableKeyword_ZFCallback_method, ZFMethod, method);
 
         if(method->methodOwnerClass() == zfnull) {
             v = ZFCallbackForMethod(method);
@@ -75,14 +69,17 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
                 ZFSerializableUtilErrorOccurred(outErrorHint, "missing callback serialize custom data");
                 return zffalse;
             }
+
+            const ZFSerializableData &customData = *(v.callbackSerializeCustomData());
+            for(zfiterator it = customData.attrIter(); customData.attrIterValid(it); customData.attrIterNext(it)) {
+                serializableData.attr(customData.attrIterKey(it), customData.attrIterValue(it));
+            }
+            for(zfindex i = 0; i < customData.childCount(); ++i) {
+                serializableData.childAdd(customData.childAt(i).copy());
+            }
+
             serializableData.itemClass(ZFTypeId_ZFCallback());
-
             serializableData.attr(ZFSerializableKeyword_ZFCallback_callbackType, v.callbackSerializeCustomType());
-
-            ZFSerializableData customData = v.callbackSerializeCustomData()->copy();
-            customData.category(ZFSerializableKeyword_ZFCallback_callbackData);
-            serializableData.childAdd(customData);
-
             return zftrue;
         }
 
@@ -90,15 +87,10 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             case ZFCallbackTypeDummy:
                 serializableData.itemClass(ZFSerializableKeyword_null);
                 break;
-            case ZFCallbackTypeMethod: {
+            case ZFCallbackTypeMethod:
                 serializableData.itemClass(ZFTypeId_ZFCallback());
-                ZFSerializableData methodData;
-                if(!ZFMethodToData(methodData, v.callbackMethod(), outErrorHint)) {
-                    return zffalse;
-                }
-                methodData.category(ZFSerializableKeyword_ZFCallback_method);
-                serializableData.childAdd(methodData);
-            }
+                ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
+                        ZFSerializableKeyword_ZFCallback_method, ZFMethod, v.callbackMethod(), zfnull);
                 break;
             case ZFCallbackTypeMemberMethod: {
                 ZFSerializableUtilErrorOccurred(outErrorHint,

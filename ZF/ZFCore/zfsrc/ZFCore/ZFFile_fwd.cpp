@@ -75,12 +75,13 @@ ZFFileFindData::~ZFFileFindData(void) {
 }
 
 void ZFFileFindData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
-    ret += ZFTOKEN_ZFObjectInfoLeft;
     if(this->fileIsDir()) {
         ret += "(dir)";
     }
+    else {
+        ret += "(file)";
+    }
     ret += this->fileName();
-    ret += ZFTOKEN_ZFObjectInfoRight;
 }
 
 ZFFileFindData::Impl &ZFFileFindData::impl(void) const {

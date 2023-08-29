@@ -104,9 +104,9 @@ _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFInput, ZFIOCallback)
  *
  * serializable data:
  * @code
- *   <node>
+ *   <ZFCallback callbackType="ZFInputDummy">
  *       // dummy input has no contents
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFInputDummy "ZFInputDummy"
@@ -122,13 +122,14 @@ extern ZFLIB_ZFCore ZFInput ZFInputDummy(void);
  *
  * serializable data:
  * @code
- *   <node
+ *   <ZFCallback
+ *       callbackType="ZFInputForInputInRange"
  *       start="zfindex" // optional, 0 by default
  *       count="zfindex" // optional, zfindexMax() by default
  *       autoRestorePos="zfbool" // optional, zftrue by default
  *   >
  *       <something category="input" ... /> // required, the source input callback
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFInputForInputInRange "ZFInputForInputInRange"
@@ -167,10 +168,11 @@ extern ZFLIB_ZFCore ZFInput ZFInputForInputInRange(
  *
  * serializable data:
  * @code
- *   <node
+ *   <ZFCallback
+ *       callbackType="ZFInputForBuffer"
  *       buf="xxx" // optional, the buffer contents encoded by zfCoreDataEncode
  *   >
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFInputForBuffer "ZFInputForBuffer"

@@ -44,10 +44,15 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfbool, ZFUIImageToOutput
  *
  * serializable data:
  * @code
- *   <ZFCallback ... />
+ *   <ZFUIImage imageType="input">
+ *       <ZFCallback category="imageData" ... /> // callback serialization, see #ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE
+ *   </ZFUIImage>
  * @endcode
  */
 #define ZFUIImageSerializeType_input "input"
+
+/** @brief keyword for serialize */
+#define ZFSerializableKeyword_ZFUIImageIO_input_imageData "imageData"
 
 // ============================================================
 // ZFUIImageScale
@@ -71,11 +76,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageScal
  *
  * serializable data:
  * @code
- *   <node
- *       frame="ZFUIRect"
+ *   <ZFUIImage
+ *       imageType="ref"
+ *       refFrame="ZFUIRect"
  *   >
  *       <ZFUIImage category="ref" ... />
- *   </node>
+ *   </ZFUIImage>
  * @endcode
  */
 #define ZFUIImageSerializeType_ref "ref"
@@ -83,7 +89,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageScal
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImageIO_ref "ref"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImageIO_ref_frame "frame"
+#define ZFSerializableKeyword_ZFUIImageIO_ref_refFrame "refFrame"
 
 /**
  * @brief clip an exist image and sharing low level data if possible
@@ -113,11 +119,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, ZFUIImageFrom
  *
  * serializable data:
  * @code
- *   <node
+ *   <ZFUIImage
+ *       imageType="color"
  *       color="ZFUIColor" // optional, transparent by default
  *       size="ZFUISize" // optional, (1, 1) by default
  *   >
- *   </node>
+ *   </ZFUIImage>
  * @endcode
  */
 #define ZFUIImageSerializeType_color "color"

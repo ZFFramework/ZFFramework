@@ -154,7 +154,7 @@ ZFOUTPUT_TYPE(ZFFileFindData, {v.objectInfoT(s);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFFileCallback_flags "flags"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFFileCallback_filePath "filePath"
+#define ZFSerializableKeyword_ZFFileCallback_localPath "localPath"
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFFile_fwd_h_

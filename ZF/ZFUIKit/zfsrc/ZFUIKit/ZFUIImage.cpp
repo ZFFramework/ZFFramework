@@ -138,9 +138,7 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     }
 
     // imageBin
-    const zfchar *imageBin = zfnull;
-    ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFUIImage_imageBin, zfstring, imageBin);
+    const zfchar *imageBin = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIImage_imageBin);
     if(imageBin != zfnull) {
         zfblockedAlloc(ZFIOBufferByCacheFile, io);
         if(!ZFBase64Decode(io->output(), ZFInputForBufferUnsafe(imageBin))) {
@@ -177,19 +175,17 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     }
 
     // imageData
-    ZFSerializableData imageData; {
-        const ZFSerializableData *categoryData = ZFSerializableUtil::requireElementByCategory(serializableData, ZFSerializableKeyword_ZFUIImage_imageData);
-        if(categoryData == zfnull) {
-            return zffalse;
-        }
-        if(!fromCallback(this, *categoryData, outErrorHint, outErrorPos)) {
+    ZFSerializableData imageData;
+    {
+        if(!fromCallback(this, serializableData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
 
-        imageData = categoryData->copy();
+        imageData = serializableData.copy();
         imageData.category(zfnull);
-
-        categoryData->resolveMark();
+        imageData.propertyName(zfnull);
+        imageData.attr(ZFSerializableKeyword_ZFUIImage_imageType, zfnull);
+        imageData.attr(ZFSerializableKeyword_ZFUIImage_imageBin, zfnull);
     }
 
     // check
@@ -239,9 +235,13 @@ zfbool ZFUIImage::serializableOnSerializeToData(
                     return zffalse;
                 }
 
-                ZFSerializableData categoryData = this->imageSerializableData()->copy();
-                categoryData.category(ZFSerializableKeyword_ZFUIImage_imageData);
-                serializableData.childAdd(categoryData);
+                const ZFSerializableData &imageData = *(this->imageSerializableData());
+                for(zfiterator it = imageData.attrIter(); imageData.attrIterValid(it); imageData.attrIterNext(it)) {
+                    serializableData.attr(imageData.attrIterKey(it), imageData.attrIterValue(it));
+                }
+                for(zfindex i = 0; i < imageData.childCount(); ++i) {
+                    serializableData.childAdd(imageData.childAt(i).copy());
+                }
             }
         }
     }
@@ -251,12 +251,14 @@ zfbool ZFUIImage::serializableOnSerializeToData(
             ZFSerializableUtilErrorOccurred(outErrorHint, "save image to base64 failed");
             return zffalse;
         }
-        zfstring imageBinRef;
         if(ref != zfnull) {
+            zfstring imageBinRef;
             ZFUIImageToBase64(ZFOutputForString(imageBinRef), ref);
+            if(imageBin.compare(imageBinRef) == 0) {
+                return zftrue;
+            }
         }
-        ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref,
-            ZFSerializableKeyword_ZFUIImage_imageBin, zfstring, imageBin, imageBinRef, zfstring());
+        serializableData.attr(ZFSerializableKeyword_ZFUIImage_imageBin, imageBin);
     }
 
     return zftrue;

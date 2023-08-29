@@ -459,11 +459,12 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfoForLocal
  *
  * serializable data:
  * @code
- *   <node
+ *   <ZFCallback
+ *       callbackType="ZFInputForPathInfo"
  *       pathInfo="ZFPathInfo" // required, the path info
  *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Read by default
  *   >
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFInputForPathInfo "ZFInputForPathInfo"
@@ -519,11 +520,12 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFInputForPathInfoT
  *
  * serializable data:
  * @code
- *   <node
+ *   <ZFCallback
+ *       callbackType="ZFOutputForPathInfo"
  *       pathInfo="ZFPathInfo" // required, the path info
  *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Create by default
  *   >
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFOutputForPathInfo "ZFOutputForPathInfo"
@@ -579,11 +581,12 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFOutputForPathInfoT
  *
  * serializable data:
  * @code
- *   <node
- *       filePath="zfstring" // required, the local path
+ *   <ZFCallback
+ *       callbackType="ZFInputForLocal"
+ *       localPath="zfstring" // required, the local path
  *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Read by default
  *   >
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFInputForLocal "ZFInputForLocal"
@@ -641,15 +644,12 @@ inline zfbool ZFInputForLocalT(
  *
  * serializable data:
  * @code
- *   <node
- *       filePath="zfstring" // required, the local path
+ *   <ZFCallback
+ *       callbackType="ZFOutputForLocal"
+ *       localPath="zfstring" // required, the local path
  *       flags="ZFFileOpenOptionFlags" // optional, ZFFileOpenOption::e_Create by default
  *   >
- *   </node>
- *   <node>
- *       <zfstring category="filePath" ... />
- *       <ZFFileOpenOptionFlags category="flags" ... /> // optional, ZFFileOpenOption::e_Create by default
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFOutputForLocal "ZFOutputForLocal"

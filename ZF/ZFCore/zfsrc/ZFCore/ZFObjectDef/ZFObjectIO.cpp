@@ -70,22 +70,25 @@ zfbool ZFObjectIOLoadT(
     for(zfstlsize i = l.size() - 1; i != (zfstlsize)-1; --i) {
         _ZFP_ZFObjectIOData *d = l[i];
         zfCoreMutexUnlock();
-        if(l[i]->checker(*input.pathInfo())
-                && l[i]->fromInput(ret, input, outErrorHint)
-                ) {
-            zfCoreMutexLock();
-            // move to tail for better search performance
-            if(i != l.size() - 1) {
-                l.erase(l.begin() + i);
-                l.push_back(d);
+        if(l[i]->checker(*input.pathInfo())) {
+            if(l[i]->fromInput(ret, input, outErrorHint)) {
+                zfCoreMutexLock();
+                // move to tail for better search performance
+                if(i != l.size() - 1) {
+                    l.erase(l.begin() + i);
+                    l.push_back(d);
+                }
+                zfCoreMutexUnlock();
+                return zftrue;
             }
-            zfCoreMutexUnlock();
-            return zftrue;
+            else {
+                zfstringAppend(outErrorHint, "\n");
+            }
         }
         zfCoreMutexLock();
     }
     zfCoreMutexUnlock();
-    zfstringAppend(outErrorHint, "no impl for can resolve %s", 
+    zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s", 
         input.pathInfo());
     return zffalse;
 }
@@ -113,22 +116,25 @@ zfbool ZFObjectIOSave(
     for(zfstlsize i = l.size() - 1; i != (zfstlsize)-1; --i) {
         _ZFP_ZFObjectIOData *d = l[i];
         zfCoreMutexUnlock();
-        if(l[i]->checker(*output.pathInfo())
-                && l[i]->toOutput(output, obj, outErrorHint)
-                ) {
-            zfCoreMutexLock();
-            // move to tail for better search performance
-            if(i != l.size() - 1) {
-                l.erase(l.begin() + i);
-                l.push_back(d);
+        if(l[i]->checker(*output.pathInfo())) {
+            if(l[i]->toOutput(output, obj, outErrorHint)) {
+                zfCoreMutexLock();
+                // move to tail for better search performance
+                if(i != l.size() - 1) {
+                    l.erase(l.begin() + i);
+                    l.push_back(d);
+                }
+                zfCoreMutexUnlock();
+                return zftrue;
             }
-            zfCoreMutexUnlock();
-            return zftrue;
+            else {
+                zfstringAppend(outErrorHint, "\n");
+            }
         }
         zfCoreMutexLock();
     }
     zfCoreMutexUnlock();
-    zfstringAppend(outErrorHint, "no impl for can resolve %s", 
+    zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s", 
         output.pathInfo());
     return zffalse;
 }

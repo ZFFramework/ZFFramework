@@ -140,7 +140,6 @@ ZFInput ZFInputForInputInRange(
         ZFSerializableData inputData;
         if(ZFCallbackToData(inputData, inputCallback)) {
             ZFSerializableData customData;
-            customData.itemClass(ZFSerializableKeyword_node);
             inputData.category(ZFSerializableKeyword_ZFInputForInputInRange_input);
             customData.childAdd(inputData);
 
@@ -205,7 +204,6 @@ static void _ZFP_ZFInputForBuffer_serialize(
     zfstring bufEncoded;
     zfCoreDataEncode(bufEncoded, (const zfchar *)src, srcLen);
     ZFSerializableData customData;
-    customData.itemClass(ZFSerializableKeyword_node);
     customData.attr(ZFSerializableKeyword_ZFInputForBuffer_buf, bufEncoded);
     ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForBuffer);
     ret.callbackSerializeCustomData(customData);

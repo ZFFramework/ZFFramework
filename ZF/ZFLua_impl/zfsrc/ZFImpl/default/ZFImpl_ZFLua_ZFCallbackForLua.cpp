@@ -61,6 +61,7 @@ public:
             ZF_IN lua_State *L
             , ZF_IN const ZFArgs &zfargs
             ) {
+        ZFImpl_ZFLua_luaErrorPrepare(L);
         if(this->ownerL == zfnull) {
             return;
         }
@@ -90,7 +91,11 @@ public:
         ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
         int error = lua_pcall(this->ownerL, 1, 0, 0);
-        ZFImpl_ZFLua_execute_errorHandle(this->ownerL, error, zfnull, "[ZFCallbackForLua]");
+        if(error != 0) {
+            zfstring errorHint;
+            ZFImpl_ZFLua_execute_errorHandle(this->ownerL, error, &errorHint, "[ZFCallbackForLua]");
+            ZFLuaErrorOccurredTrim("%s", errorHint);
+        }
     }
 };
 
@@ -341,10 +346,10 @@ private:
 public:
     zfstring logTag(void) {
         if(this->pathInfo.isEmpty()) {
-            return "[ZFCallbackForLua]";
+            return "ZFCallbackForLua";
         }
         else {
-            return zfstr("[ZFCallbackForLua:%s]", ZFPathInfoToString(this->pathInfo));
+            return ZFPathInfoToString(this->pathInfo);
         }
     }
 
@@ -423,7 +428,7 @@ public:
         if(dumpError != 0) {
             lua_pop(L, 1);
             zfstringAppend(errorHint,
-                "%s unable to dump function: %s",
+                "[%s] unable to dump function: %s",
                 this->logTag(),
                 ZFImpl_ZFLua_luaObjectInfo(L, luaStackOffset, zftrue));
             return zffalse;
@@ -438,7 +443,7 @@ public:
             ValueHolder v;
             if(!_fromUpvalue(v, L, name, upvalueIndex)) {
                 zfstringAppend(errorHint,
-                    "%s unable to store upvalue \"%s\" at index %s: %s",
+                    "[%s] unable to store upvalue \"%s\" at index %s: %s",
                     this->logTag(),
                     name,
                     (zfint)upvalueIndex,
@@ -459,6 +464,7 @@ public:
             ZF_IN lua_State *L
             , ZF_IN const ZFArgs &zfargs
             ) {
+        ZFImpl_ZFLua_luaErrorPrepare(L);
         zfstring logTag = this->logTag();
 
         { // stack from empty to [func, zfargs]
@@ -470,7 +476,7 @@ public:
             int loadError = lua_load(L, _funcReader, this, logTag.cString(), "b");
             if(loadError != LUA_OK) {
                 zfCoreCriticalMessageTrim(
-                    "%s unable to load function",
+                    "[%s] unable to load function",
                     logTag);
                 return;
             }
@@ -496,7 +502,7 @@ public:
             for(zfindex i = 0; i < this->upvalues.count(); ++i) {
                 const ValueHolder &v = this->upvalues[i];
                 if(!_ZFP_ZFCallbackForLua_toUpvalue(v, L, luaFuncIndex, luaLocalFuncNameList, luaLocalFuncIndex)) {
-                    zfCoreCriticalMessageTrim("%s unable to restore upvalue: %s",
+                    zfCoreCriticalMessageTrim("[%s] unable to restore upvalue: %s",
                         logTag,
                         valueHolderInfo(v));
                     return;
@@ -509,7 +515,7 @@ public:
             // save func cache
             ZFCorePointerForObject<_ZFP_ZFCallbackForLua_SyncMode *> funcCache(zfnew(_ZFP_ZFCallbackForLua_SyncMode));
             if(!funcCache->setup(L, -2, zfnull)) {
-                zfCoreCriticalMessageTrim("%s unable to store function cache",
+                zfCoreCriticalMessageTrim("[%s] unable to store function cache",
                     logTag);
                 return;
             }
@@ -517,7 +523,11 @@ public:
 
         // finally call, stack: [func, zfargs]
         int error = lua_pcall(L, 1, 0, 0);
-        ZFImpl_ZFLua_execute_errorHandle(L, error, zfnull, logTag);
+        if(error != 0) {
+            zfstring errorHint;
+            ZFImpl_ZFLua_execute_errorHandle(L, error, &errorHint, logTag);
+            ZFLuaErrorOccurredTrim("%s", errorHint);
+        }
     }
 };
 

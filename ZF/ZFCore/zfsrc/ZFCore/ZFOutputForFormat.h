@@ -96,10 +96,10 @@ public:
  *
  * serializable data:
  * @code
- *   <node>
+ *   <ZFCallback callbackType="ZFOutputForFormat">
  *       <ZFCallback category="output" ... /> // the output
  *       <YourOutputFormat category="format" ... /> // the format object
- *   </node>
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFOutputForFormat "ZFOutputForFormat"

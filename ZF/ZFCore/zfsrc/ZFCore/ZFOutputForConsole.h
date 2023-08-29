@@ -15,8 +15,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * serializable data:
  * @code
- *   <node>
- *   </node>
+ *   <ZFCallback callbackType="ZFOutputForConsole">
+ *   </ZFCallback>
  * @endcode
  */
 #define ZFCallbackSerializeCustomType_ZFOutputForConsole "ZFOutputForConsole"

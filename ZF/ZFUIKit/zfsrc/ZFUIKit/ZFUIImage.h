@@ -79,8 +79,6 @@ inline ZFCoreArrayPOD<const zfchar *> ZFUIImageSerializeTypeGetAll(void) {
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImage_imageType "imageType"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFUIImage_imageData "imageData"
-/** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFUIImage_imageBin "imageBin"
 
 // ============================================================
@@ -93,11 +91,11 @@ zfclassFwd _ZFP_ZFUIImagePrivate;
  * \n
  * serializable data:
  * @code
- *   <ZFUIImage imageType="type name for ZFUIIMAGE_SERIALIZE_TYPE_DEFINE" >
- *       <anything category="imageData" ... /> // depends on load logic, see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
- *
- *       // if nothing supplied, we will serialize by binary data
- *       <zfstring category="imageBin" value="image binary data, base64 encoded" />
+ *   <ZFUIImage imageType="type name for ZFUIIMAGE_SERIALIZE_TYPE_DEFINE"
+ *       customAttr="customValue" // extra attributes for impl, see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
+ *       imageBin="image binary data, base64 encoded" // if nothing supplied, we will serialize by binary data
+ *   >
+ *       <anything ... /> // extra attributes for impl, see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
  *   </ZFUIImage>
  * @endcode
  */
