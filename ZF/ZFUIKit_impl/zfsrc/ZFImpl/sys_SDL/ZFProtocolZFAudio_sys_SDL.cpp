@@ -137,7 +137,7 @@ public:
             NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
             nativeAudio->loadTaskId = zfidentityInvalid();
 
-            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0T();
+            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0();
             nativeAudio->impl = implHolder;
             owner->notifyAudioOnLoad(audio, implHolder->impl() != zfnull, implHolder->errorHint());
         } ZFLISTENER_END()
@@ -161,7 +161,7 @@ public:
         ZFLISTENER_1(onLoad
                 , zfstring, url
                 ) {
-            v_zfidentity *taskId = zfargs.param0T();
+            v_zfidentity *taskId = zfargs.param0();
             if(taskId->zfv == zfidentityInvalid()) {return;}
             zfblockedAlloc(_ZFP_ZFAudioImpl_sys_SDL_ImplHolder, implHolder);
             zfargs.result(implHolder);
@@ -200,7 +200,7 @@ public:
             NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
             nativeAudio->loadTaskId = zfidentityInvalid();
 
-            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0T();
+            _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0();
             nativeAudio->impl = implHolder;
             owner->notifyAudioOnLoad(audio, implHolder->impl() != zfnull, implHolder->errorHint());
         } ZFLISTENER_END()

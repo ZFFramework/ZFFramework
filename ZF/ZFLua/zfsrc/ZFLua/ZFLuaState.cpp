@@ -233,7 +233,7 @@ public:
     ZFListener classDataOnChangeListener;
     static void classDataOnChange(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
-        v_ZFClassDataChangeData *changed = zfargs.param0T();
+        v_ZFClassDataChangeData *changed = zfargs.param0();
 
         ZFCoreArrayPOD<void *> stateList;
         ZFCoreArrayPOD<ZFThread *> threadList;

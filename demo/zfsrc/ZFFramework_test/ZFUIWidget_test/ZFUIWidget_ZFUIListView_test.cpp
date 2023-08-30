@@ -145,7 +145,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , ZFUIListView *, listView
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = zfstr("autoScrollSpeedX: %s", listView->autoScrollSpeedX());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
@@ -169,7 +169,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , ZFUIListView *, listView
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = zfstr("autoScrollSpeedY: %s", listView->autoScrollSpeedY());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
@@ -220,7 +220,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , ZFUIListView *, listView
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = zfstr("scrollAreaMargin: %s", listView->scrollAreaMargin());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);

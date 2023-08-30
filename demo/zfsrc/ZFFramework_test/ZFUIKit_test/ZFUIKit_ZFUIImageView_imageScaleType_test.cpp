@@ -91,7 +91,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , zfautoObjectT<ZFArray *>, imageViews
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
 
                 ZFUIImageView *imageView = imageViews->getFirst<ZFUIImageView *>();
                 text->zfv = ZFUIContentScaleType::EnumNameForValue(imageView->imageScaleType());

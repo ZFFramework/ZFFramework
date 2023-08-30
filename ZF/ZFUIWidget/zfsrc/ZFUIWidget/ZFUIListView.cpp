@@ -71,7 +71,7 @@ public:
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFUIListView *listView
             ) {
-        v_zfindex *atIndex = zfargs.param0T();
+        v_zfindex *atIndex = zfargs.param0();
         if(atIndex == zfnull || atIndex->zfv == zfindexMax()) {
             listView->listReload();
         }

@@ -11,7 +11,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIKeyboardStateBuiltinImpl_DataHolder, Z
     this->implRegisterFlag = zffalse;
 
     ZFLISTENER(viewOnEvent) {
-        ZFUIKeyEvent *event = zfargs.param0T();
+        ZFUIKeyEvent *event = zfargs.param0();
         if(event != zfnull) {
             ZFUIKeyboardStateBuiltinImplNotifyKeyEvent(event);
         }

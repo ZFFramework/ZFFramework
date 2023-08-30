@@ -22,7 +22,7 @@ static void _ZFP_ZFUIButtonGroup_setup_common(
         ZFLISTENER_1(buttonEvent
                 , ZFUIButtonGroup *, buttonGroup
                 ) {
-            ZFUIButton *button = zfargs.senderT();
+            ZFUIButton *button = zfargs.sender();
             zfindex buttonIndex = buttonGroup->buttonFind(button);
             zfCoreAssert(buttonIndex != zfindexMax());
             buttonGroup->_ZFP_ZFUIButtonGroup_buttonGroupOnEvent(button, buttonIndex, zfargs.eventId());
@@ -87,7 +87,7 @@ static void _ZFP_ZFUIButtonGroup_setup_Tab(
         ZFLISTENER_1(buttonOnClick
                 , ZFUIButtonGroup *, buttonGroup
                 ) {
-            ZFUIButton *button = zfargs.senderT();
+            ZFUIButton *button = zfargs.sender();
             zfindex buttonIndex = buttonGroup->buttonFind(button);
             zfCoreAssert(buttonIndex != zfindexMax());
             if(buttonIndex == buttonGroup->buttonTabChecked()) {

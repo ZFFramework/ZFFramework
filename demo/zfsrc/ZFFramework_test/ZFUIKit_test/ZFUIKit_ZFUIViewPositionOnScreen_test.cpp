@@ -22,7 +22,7 @@ protected:
         button->label()->text("click me");
 
         ZFLISTENER(buttonOnClick) {
-            zfLogTrim() << "window size: " << ZFUIRectGetSize(ZFUIViewUtil::viewRoot(zfargs.senderT())->viewFrame());
+            zfLogTrim() << "window size: " << ZFUIRectGetSize(ZFUIViewUtil::viewRoot(zfargs.sender())->viewFrame());
             zfLogTrim() << "clicked view's position: " << ZFUIViewPositionOnScreen(zfargs.sender()->toAny());
         } ZFLISTENER_END()
         button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick);

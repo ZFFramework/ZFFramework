@@ -124,7 +124,12 @@ public:
             ZF_IN_OUT zfstring &s
             , ZF_IN T_Type * const &v
             ) {
-        zftToString(s, *v);
+        if(v == zfnull) {
+            s += ZFTOKEN_zfnull;
+        }
+        else {
+            zftToString(s, *v);
+        }
     }
 };
 template<typename T_Type>
@@ -134,7 +139,12 @@ public:
             ZF_IN_OUT zfstring &s
             , ZF_IN const T_Type * const &v
             ) {
-        zftToString(s, *v);
+        if(v == zfnull) {
+            s += ZFTOKEN_zfnull;
+        }
+        else {
+            zftToString(s, *v);
+        }
     }
 };
 

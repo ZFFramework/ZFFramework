@@ -5,6 +5,8 @@
 
 #include "protocol/ZFProtocolZFRes.h"
 
+#include "ZFSTLWrapper/zfstlmap.h"
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -57,6 +59,35 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
     zfCoreMutexLocker();
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
+        ZFPathInfo t = l[i];
+        ZFPathInfoToChild(t, t.pathData, resPath);
+        if(ZFPathInfoIsExist(t)) {
+            resExtPath = (l[i]);
+            return zftrue;
+        }
+    }
+    return zffalse;
+}
+zfclassNotPOD _ZFP_ZFResExtKeyCmp {
+public:
+    inline zfbool operator () (ZFPathInfo const &k1, ZFPathInfo const &k2) const {
+        zfint t = k1.pathType.compare(k2.pathType);
+        return (t < 0 || (t == 0 && k1.pathData.compare(k2.pathData) < 0));
+    }
+};
+typedef zfstlmap<ZFPathInfo, zfbool, _ZFP_ZFResExtKeyCmp> _ZFP_ZFResExtMap;
+static zfbool _ZFP_ZFResExtPathCheck(
+        ZF_OUT ZFPathInfo &resExtPath
+        , ZF_IN const zfchar *resPath
+        , ZF_IN_OUT _ZFP_ZFResExtMap &m
+        ) {
+    zfCoreMutexLocker();
+    ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
+    for(zfindex i = 0; i < l.count(); ++i) {
+        if(m.find(l[i]) != m.end()) {
+            continue;
+        }
+        m[l[i]] = zftrue;
         ZFPathInfo t = l[i];
         ZFPathInfoToChild(t, t.pathData, resPath);
         if(ZFPathInfoIsExist(t)) {
@@ -122,7 +153,9 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFResCopy
 zfclassNotPOD _ZFP_ZFResFindData {
 public:
     zfstring resPathSaved;
-    ZFFileFindData resExtFd;
+    _ZFP_ZFResExtMap resExtResolved;
+    zfstlmap<zfstring, zfbool> resExtItemResolved;
+    ZFFileFindData resExtFd; // valid if resExtPath not empty
     /*
      * if not empty, the file is find from resExtPath
      * ensured end with file separator
@@ -133,6 +166,8 @@ public:
 public:
     _ZFP_ZFResFindData(void)
     : resPathSaved()
+    , resExtResolved()
+    , resExtItemResolved()
     , resExtFd()
     , resExtPath()
     , resFindFirstStarted(zffalse)
@@ -156,10 +191,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResFindFirst
     fd.implAttach(_ZFP_ZFFileFindType_res, implUserData);
     implUserData->resPathSaved = resPath;
 
-    if(ZFResExtPathCheck(implUserData->resExtPath, resPath)) {
+    if(_ZFP_ZFResExtPathCheck(implUserData->resExtPath, resPath, implUserData->resExtResolved)) {
         ZFPathInfo resPathTmp = implUserData->resExtPath;
         ZFPathInfoToChild(resPathTmp, resPathTmp.pathData, resPath);
         if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd)) {
+            implUserData->resExtItemResolved[implUserData->resExtFd.fileName()] = zftrue;
             implUserData->copyToFd(fd.impl());
             return zftrue;
         }
@@ -188,18 +224,54 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFResFindNext
     _ZFP_ZFResFindData *implUserData = (_ZFP_ZFResFindData *)fd.implCheck(_ZFP_ZFFileFindType_res);
 
     if(!implUserData->resExtPath.pathType.isEmpty()) {
-        if(ZFPathInfoFindNext(implUserData->resExtPath, implUserData->resExtFd)) {
+        while(ZFPathInfoFindNext(implUserData->resExtPath, implUserData->resExtFd)) {
+            if(implUserData->resExtItemResolved.find(implUserData->resExtFd.fileName()) != implUserData->resExtItemResolved.end()) {
+                continue;
+            }
+            implUserData->resExtItemResolved[implUserData->resExtFd.fileName()] = zftrue;
             implUserData->copyToFd(fd.impl());
             return zftrue;
         }
-
         ZFPathInfoFindClose(implUserData->resExtPath, implUserData->resExtFd);
+
+        // try next resExtPath
+        while(_ZFP_ZFResExtPathCheck(implUserData->resExtPath, implUserData->resPathSaved, implUserData->resExtResolved)) {
+            ZFPathInfo resPathTmp = implUserData->resExtPath;
+            ZFPathInfoToChild(resPathTmp, resPathTmp.pathData, implUserData->resPathSaved);
+            if(ZFPathInfoFindFirst(resPathTmp, implUserData->resExtFd)) {
+                do {
+                    if(implUserData->resExtItemResolved.find(implUserData->resExtFd.fileName()) != implUserData->resExtItemResolved.end()) {
+                        continue;
+                    }
+                    implUserData->resExtItemResolved[implUserData->resExtFd.fileName()] = zftrue;
+                    implUserData->copyToFd(fd.impl());
+                    return zftrue;
+                } while(ZFPathInfoFindNext(resPathTmp, implUserData->resExtFd));
+                ZFPathInfoFindClose(resPathTmp, implUserData->resExtFd);
+            }
+        }
         implUserData->resExtPath.removeAll();
 
-        implUserData->resFindFirstStarted = ZFPROTOCOL_ACCESS(ZFRes)->resFindFirst(fd.impl(), implUserData->resPathSaved);
-        return implUserData->resFindFirstStarted;
+        // finally fallback to res
+        if(ZFPROTOCOL_ACCESS(ZFRes)->resFindFirst(fd.impl(), implUserData->resPathSaved)) {
+            do {
+                if(implUserData->resExtItemResolved.find(fd.fileName()) != implUserData->resExtItemResolved.end()) {
+                    continue;
+                }
+                implUserData->resFindFirstStarted = zftrue;
+                return zftrue;
+            } while(ZFPROTOCOL_ACCESS(ZFRes)->resFindNext(fd.impl()));
+        }
+        return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFRes)->resFindNext(fd.impl());
+
+    while(ZFPROTOCOL_ACCESS(ZFRes)->resFindNext(fd.impl())) {
+        if(implUserData->resExtItemResolved.find(fd.fileName()) != implUserData->resExtItemResolved.end()) {
+            continue;
+        }
+        return zftrue;
+    }
+    return zffalse;
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFResFindClose
         , ZFMP_IN_OUT(ZFFileFindData &, fd)

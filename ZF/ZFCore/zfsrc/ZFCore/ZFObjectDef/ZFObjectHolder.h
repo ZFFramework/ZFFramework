@@ -49,7 +49,7 @@ public:
      * @brief get the holded object
      */
     inline ZFAny objectHolded(void) {
-        return ZFAny(this->_ZFP_objectHolded);
+        return this->_ZFP_objectHolded;
     }
 
 protected:

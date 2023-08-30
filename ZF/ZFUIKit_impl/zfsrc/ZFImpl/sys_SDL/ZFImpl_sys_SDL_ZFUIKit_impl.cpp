@@ -52,7 +52,7 @@ ZF_NAMESPACE_GLOBAL_END
             return;
         }
         ZFLISTENER(windowOnPause) {
-            ZFUISysWindow *sysWindow = zfargs.senderT();
+            ZFUISysWindow *sysWindow = zfargs.sender();
             zfstring s;
             ZFImpl_sys_SDL_viewTreePrintT(s, (ZFImpl_sys_SDL_View *)sysWindow->rootView()->nativeView());
             zfLogTrim() << s;

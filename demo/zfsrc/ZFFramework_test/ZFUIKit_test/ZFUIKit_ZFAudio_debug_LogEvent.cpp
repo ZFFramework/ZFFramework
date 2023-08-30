@@ -31,10 +31,10 @@ private:
             ;
 
         if(zfargs.eventId() == ZFAudio::EventAudioOnResume()) {
-            audioOnResume(zfargs.senderT());
+            audioOnResume(zfargs.sender());
         }
         else if(zfargs.eventId() == ZFAudio::EventAudioOnPause()) {
-            audioOnPause(zfargs.senderT());
+            audioOnPause(zfargs.sender());
         }
     }
 private:

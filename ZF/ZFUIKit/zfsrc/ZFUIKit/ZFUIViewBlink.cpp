@@ -33,7 +33,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
 static void _ZFP_ZFUIViewBlinkDoOff(ZF_IN ZFUIView *view);
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkDataHolder, ZFLevelZFFrameworkEssential) {
     ZFLISTENER(viewOnDealloc) {
-        _ZFP_ZFUIViewBlinkDoOff(zfargs.senderT());
+        _ZFP_ZFUIViewBlinkDoOff(zfargs.sender());
     } ZFLISTENER_END()
     this->viewOnDeallocListener = viewOnDealloc;
 }
@@ -116,7 +116,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
         ZFLISTENER_1(aniOnStopListener
                 , zfautoObjectT<ZFUIView *>, view
                 ) {
-            ZFAnimation *ani = zfargs.senderT();
+            ZFAnimation *ani = zfargs.sender();
             ZFUIView *blinkView = ani->aniTarget()->to<ZFUIView *>();
 
             v_zfindex *blinkCountLeft = view->objectTag<v_zfindex *>(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);

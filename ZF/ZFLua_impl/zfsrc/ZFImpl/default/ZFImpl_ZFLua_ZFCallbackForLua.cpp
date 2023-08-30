@@ -579,7 +579,7 @@ ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaCallback, void, luaStateOnDetach
         , ZFMP_IN(const ZFArgs &, zfargs)
         ) {
     zfCoreMutexLocker();
-    v_ZFPtr *L = zfargs.param0T();
+    v_ZFPtr *L = zfargs.param0();
     this->syncMode.luaStateOnDetach((lua_State *)L->zfv);
     this->asyncMode.luaStateOnDetach((lua_State *)L->zfv);
 }

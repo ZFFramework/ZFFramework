@@ -71,7 +71,7 @@ zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
         ZFLISTENER_1(onButtonClick
                 , ZFUIKit_test_SettingData *, setting
                 ) {
-            ZFUIButtonBasic *button = ZFAny(zfargs.sender());
+            ZFUIButtonBasic *button = zfargs.sender();
 
             setting->buttonClickListener().execute(ZFArgs()
                     .sender(button)
@@ -129,7 +129,7 @@ void ZFUIKit_test_prepareSettingForProperty(
             , ZFObject *, obj
             , const ZFProperty *, property
             ) {
-        v_zfstring *text = zfargs.param0T();
+        v_zfstring *text = zfargs.param0();
         text->zfv = zfstr("%s : %s", property->propertyName(), ZFPropertyGetInfo(property, obj));
     } ZFLISTENER_END()
     ZFLISTENER_1(buttonClickListener
@@ -163,7 +163,7 @@ void ZFUIKit_test_prepareSettingForLayoutRequest(
     zfCoreAssert(view != zfnull);
 
     ZFLISTENER(buttonTextGetter) {
-        v_zfstring *text = zfargs.param0T();
+        v_zfstring *text = zfargs.param0();
         text->zfv = "layoutRequest";
     } ZFLISTENER_END()
     ZFLISTENER_1(buttonClickListener
@@ -184,7 +184,7 @@ void ZFUIKit_test_prepareSettingForResetProperty(
     settings->add(setting);
 
     ZFLISTENER(buttonTextGetter) {
-        v_zfstring *text = zfargs.param0T();
+        v_zfstring *text = zfargs.param0();
         text->zfv = "reset setting";
     } ZFLISTENER_END()
     setting->buttonTextGetter(buttonTextGetter);

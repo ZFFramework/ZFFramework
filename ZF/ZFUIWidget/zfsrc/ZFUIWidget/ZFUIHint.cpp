@@ -337,7 +337,7 @@ void ZFUIHint::objectOnInit(void) {
             , ZFUIHint *, hint
             ) {
         zfCoreAssertWithMessage(!hint->hintShowing(), "you must not change ZFUIHint's window while it's showing or delaying");
-        ZFUISysWindow *sysWindowOld = zfargs.param0T();
+        ZFUISysWindow *sysWindowOld = zfargs.param0();
         ZFArray *hintListOld = _ZFP_ZFUIHint_hintListForWrite(sysWindowOld);
         ZFArray *hintListNew = _ZFP_ZFUIHint_hintListForWrite(hint->hintWindow()->windowOwnerSysWindow());
         hintListNew->add(hint);

@@ -226,7 +226,7 @@ public:
         zfCoreMutexLocker();
 
         const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
-        ZFStyleable *defaultStyle = zfargs.senderT();
+        ZFStyleable *defaultStyle = zfargs.sender();
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
             ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
 

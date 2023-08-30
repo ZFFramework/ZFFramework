@@ -119,7 +119,7 @@ public:
             _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
             nativeAudio.loadTaskId = zfidentityInvalid();
 
-            v_zfstring *errorHint = zfargs.param0T();
+            v_zfstring *errorHint = zfargs.param0();
             owner->notifyAudioOnLoad(audio, errorHint == zfnull, errorHint);
         } ZFLISTENER_END()
 

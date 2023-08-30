@@ -132,7 +132,7 @@ public:
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFUIOnScreenKeyboardAutoFitLayout *layout
             ) {
-        ZFUIOnScreenKeyboardState *keyboardState = zfargs.senderT();
+        ZFUIOnScreenKeyboardState *keyboardState = zfargs.sender();
         if(keyboardState->keyboardShowing()) {
             if(layout->autoFitFocusedView() != zfnull) {
                 layout->d->autoFitFocusedViewNeedUpdate = zftrue;
@@ -156,7 +156,7 @@ public:
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFUIOnScreenKeyboardAutoFitLayout *layout
             ) {
-        ZFUIView *view = zfargs.senderT();
+        ZFUIView *view = zfargs.sender();
         if(!view->viewFocused()) {
             if(view == layout->d->autoFitFocusedView) {
                 layout->d->autoFitFocusedView = zfnull;

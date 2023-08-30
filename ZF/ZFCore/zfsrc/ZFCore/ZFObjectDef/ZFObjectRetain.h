@@ -313,33 +313,17 @@ T_ZFObject *_ZFP_Obj_AllocCk<T_ZFObject, 1>::CanAlloc(void) {
 #define zfRetainChange(property, propertyValue) \
     do { \
         zfCoreMutexLock(); \
-        ZFAny _ZFP_zfRetainChangeTmpValue = property; \
+        ZFObject *_ZFP_zfRetainChangeTmpValue = ZFCastZFObjectUnchecked(ZFObject *, property); \
         zfunsafe_zfRetain(property = propertyValue); \
-        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue.toObject()); \
+        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue); \
         zfCoreMutexUnlock(); \
     } while(zffalse)
 /** @brief no lock version of #zfRetainChange, use with caution */
 #define zfunsafe_zfRetainChange(property, propertyValue) \
     do { \
-        ZFAny _ZFP_zfRetainChangeTmpValue = property; \
+        ZFObject *_ZFP_zfRetainChangeTmpValue = ZFCastZFObjectUnchecked(ZFObject *, property); \
         zfunsafe_zfRetain(property = propertyValue); \
-        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue.toObject()); \
-    } while(zffalse)
-/** @see zfRetainChange */
-#define zfRetainChange(property, propertyValue) \
-    do { \
-        zfCoreMutexLock(); \
-        ZFAny _ZFP_zfRetainChangeTmpValue = property; \
-        zfunsafe_zfRetain(property = propertyValue); \
-        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue.toObject()); \
-        zfCoreMutexUnlock(); \
-    } while(zffalse)
-/** @brief no lock version of #zfRetainChange, use with caution */
-#define zfunsafe_zfRetainChange(property, propertyValue) \
-    do { \
-        ZFAny _ZFP_zfRetainChangeTmpValue = property; \
-        zfunsafe_zfRetain(property = propertyValue); \
-        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue.toObject()); \
+        zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue); \
     } while(zffalse)
 
 ZF_NAMESPACE_GLOBAL_END

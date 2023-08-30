@@ -32,8 +32,8 @@ protected:
         ZFLISTENER_1(onRecv
                 , ZFTestCase *, testCase
                 ) {
-            ZFHttpRequest *request = zfargs.senderT();
-            ZFHttpResponse *response = zfargs.param0T();
+            ZFHttpRequest *request = zfargs.sender();
+            ZFHttpResponse *response = zfargs.param0();
 
             testCase->testCaseOutput(zfstr("send: %s", request->objectInfo()));
             testCase->testCaseOutput(zfstr("%s", request->contentInfo()));

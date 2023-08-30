@@ -123,7 +123,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , ZFUIScrollView *, scrollView
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = zfstr("autoScrollSpeedX: %s", scrollView->autoScrollSpeedX());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
@@ -147,7 +147,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , ZFUIScrollView *, scrollView
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = zfstr("autoScrollSpeedY: %s", scrollView->autoScrollSpeedY());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
@@ -170,7 +170,7 @@ private:
             settings->add(setting);
 
             ZFLISTENER(buttonTextGetter) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = "scrollChildToVisible";
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
@@ -191,7 +191,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , ZFUIScrollView *, scrollView
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = zfstr("scrollAreaMargin: %s", scrollView->scrollAreaMargin());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);

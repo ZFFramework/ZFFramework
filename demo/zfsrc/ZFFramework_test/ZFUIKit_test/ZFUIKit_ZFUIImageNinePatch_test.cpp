@@ -42,7 +42,7 @@ private:
             ZFLISTENER_1(buttonTextGetter
                     , ZFUIImageView *, imageView
                     ) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 zfbool fill = (imageView->layoutParam()->sizeParam().width == ZFUISizeType::e_Fill);
                 text->zfv = fill ? "fill" : "wrap";
             } ZFLISTENER_END()

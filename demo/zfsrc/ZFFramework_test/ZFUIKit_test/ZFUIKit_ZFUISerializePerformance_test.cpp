@@ -122,7 +122,7 @@ private:
             settings->add(setting);
 
             ZFLISTENER(buttonTextGetter) {
-                v_zfstring *text = zfargs.param0T();
+                v_zfstring *text = zfargs.param0();
                 text->zfv = "change test object";
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
