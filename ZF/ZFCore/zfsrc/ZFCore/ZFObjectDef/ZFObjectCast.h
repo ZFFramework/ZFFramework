@@ -235,6 +235,32 @@ inline ZFInterface *_ZFP_ObjCastUnchecked<ZFInterface *>::c(T_From const &obj) {
     return zfnull;
 }
 
+// ============================================================
+ZFM_CLASS_HAS_MEMBER_DECLARE(ZFAnyC, toObject, ZFObject *(T::*F)(void) const)
+template<typename T_Type, int has_toObject>
+zfclassNotPOD _ZFP_ZFAnyCastT {
+public:
+    static ZFObject *c(ZF_IN T_Type obj) {
+        return (ZFObject *)obj;
+    }
+};
+template<>
+zfclassNotPOD _ZFP_ZFAnyCastT<zfnullT, 0> {
+public:
+    static ZFObject *c(ZF_IN zfnullT const &obj) {
+        return (ZFObject *)zfnull;
+    }
+};
+template<typename T_Type>
+zfclassNotPOD _ZFP_ZFAnyCastT<T_Type, 1> {
+public:
+    static ZFObject *c(ZF_IN T_Type obj) {
+        return obj.toObject();
+    }
+};
+#define _ZFP_ZFAnyCast(T_Type, obj) \
+    (_ZFP_ZFAnyCastT<T_Type, ZFM_CLASS_HAS_MEMBER(ZFAnyC, toObject, T_Type)>::c(obj))
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFObjectCast_h_

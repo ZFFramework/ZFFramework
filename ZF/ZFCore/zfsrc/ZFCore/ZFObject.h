@@ -76,6 +76,7 @@
 #include "ZFObjectDef/zfautoObject.h"
 #include "ZFObjectDef/zfautoObjectFwd.h"
 #include "ZFObjectDef/zfsynchronize.h"
+#include "ZFObjectDef/zfweak.h"
 
 #endif // #ifndef _ZFI_ZFObject_h_
 

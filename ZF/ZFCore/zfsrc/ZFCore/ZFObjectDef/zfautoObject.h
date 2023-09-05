@@ -76,7 +76,9 @@ zfautoObjectT<T_ZFObjectBase>::zfautoObjectT(ZF_IN T_ZFObject *obj)
 }
 template<typename T_ZFObjectBase>
 template<typename T_ZFObject>
-zfautoObjectT<T_ZFObjectBase>::zfautoObjectT(ZF_IN T_ZFObject const &obj) {
+zfautoObjectT<T_ZFObjectBase>::zfautoObjectT(ZF_IN T_ZFObject const &obj)
+: zfautoObject(obj)
+{
     if(this->toObject() != zfnull && ZFCastZFObject(T_ZFObjectBase, this->toObject()) == zfnull) {
         _ZFP_zfautoObjectTError();
     }
