@@ -289,7 +289,7 @@ zfclassFwd _ZFP_ZFUIAutoLayoutPrivate;
  *       <rule
  *           pos=""                 // required, #ZFUIAutoLayoutPos
  *           target=""              // required, rule target, see below
- *           weight=""               // optional, 0 by default
+ *           weight=""              // optional, 0 by default
  *           offset=""              // optional, 0 by default
  *           />
  *       ... // other rules

@@ -168,6 +168,9 @@ public:
 template<typename T_Type>
 zfclassNotPOD ZFCoreInfoGetter {
 public:
+    /**
+     * @brief proto type for obtain object info, see #zftToString
+     */
     typedef void (*InfoGetter)(
             ZF_IN_OUT zfstring &ret
             , ZF_IN T_Type const &v

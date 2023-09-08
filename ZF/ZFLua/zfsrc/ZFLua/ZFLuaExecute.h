@@ -24,7 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * \n
  * here is a list of functions available in lua to communicate with ZFFramework:
  * -  `zfAlloc("ClassName" [params...])`
- *   or `ClassName([params...])``\n
+ *   or `ClassName([params...])`\n
  *   alloc a ZFObject type\n
  *   "ClassName" can be #v_ZFClass, #v_zfstring, or native lua string\n
  *   if extra init param passed,
@@ -60,7 +60,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  value holder
  *   -  `value = YourTypeName("yourTypeData")`
  *     or `value = zfAlloc("YourTypeName")`
- *     or `value = YourTypeName()``\n
+ *     or `value = YourTypeName()`\n
  *     create a non-ZFObject type registered by #ZFTYPEID_DECLARE,
  *     return the associated `YourTypeName` that holds the value\n
  *     "YourTypeName" represents the type name in #ZFTYPEID_DECLARE\n

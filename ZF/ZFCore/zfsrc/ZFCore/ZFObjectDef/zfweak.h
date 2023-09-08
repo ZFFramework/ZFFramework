@@ -53,26 +53,26 @@ zfclassLikePOD ZFLIB_ZFCore zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweak(void)
-    : _obj(zfnull)
+    : _ZFP_obj(zfnull)
     {
     }
     zfweak(ZF_IN const zfweak &obj)
-    : _obj(zfRetain(obj._obj))
+    : _ZFP_obj(zfRetain(obj._ZFP_obj))
     {
     }
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject *obj)
-    : _obj(obj ? zfRetain(obj->toObject()->objectHolder()) : zfnull)
+    : _ZFP_obj(obj ? zfRetain(obj->toObject()->objectHolder()) : zfnull)
     {
     }
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj)
     {
         ZFObject *t = _ZFP_ZFAnyCast(T_ZFObject, obj);
-        _obj = t ? zfRetain(t->objectHolder()) : zfnull;
+        _ZFP_obj = t ? zfRetain(t->objectHolder()) : zfnull;
     }
     ~zfweak(void) {
-        zfRelease(_obj);
+        zfRelease(_ZFP_obj);
     }
 
 public:
@@ -127,14 +127,14 @@ public:
      * @brief get the holded object
      */
     inline ZFAny get(void) const {
-        return _obj ? _obj->objectHolded() : zfnull;
+        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
     }
     /**
      * @brief set the holded object
      */
     template<typename T_ZFObject>
     void set(ZF_IN T_ZFObject *obj) {
-        zfRetainChange(_obj, obj ? obj->toObject()->objectHolder() : zfnull);
+        zfRetainChange(_ZFP_obj, obj ? obj->toObject()->objectHolder() : zfnull);
     }
     /**
      * @brief set the holded object
@@ -142,13 +142,13 @@ public:
     template<typename T_ZFObject>
     void set(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_ZFAnyCast(T_ZFObject, obj);
-        zfRetainChange(_obj, t ? t->objectHolder() : zfnull);
+        zfRetainChange(_ZFP_obj, t ? t->objectHolder() : zfnull);
     }
     /**
      * @brief set the holded object
      */
     void set(ZF_IN const zfweak &obj) {
-        zfRetainChange(_obj, obj._obj);
+        zfRetainChange(_ZFP_obj, obj._ZFP_obj);
     }
 
 public:
@@ -156,7 +156,7 @@ public:
      * @brief get the holded object
      */
     inline ZFObject *toObject(void) const {
-        return _obj ? _obj->objectHolded() : zfnull;
+        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
     }
     /**
      * @brief cast by #ZFCastZFObjectUnchecked
@@ -167,7 +167,7 @@ public:
     }
 
 protected:
-    ZFObjectHolder *_obj;
+    ZFObjectHolder *_ZFP_obj;
 };
 ZFOUTPUT_TYPE(zfweak, {
     if(v) {
@@ -226,7 +226,7 @@ public:
 
 public:
     inline ZFObject *toObject(void) const {
-        return _obj ? _obj->objectHolded() : zfnull;
+        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
     }
     template<typename T_ZFObjectCast>
     inline T_ZFObjectCast to(void) const {
@@ -239,7 +239,7 @@ public:
      * @brief get the holded object
      */
     inline T_ZFObject get(void) const {
-        return _obj ? _obj->objectHolded() : zfnull;
+        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
     }
     /**
      * @brief set the holded object

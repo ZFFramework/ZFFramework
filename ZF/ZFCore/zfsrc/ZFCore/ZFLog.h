@@ -79,6 +79,7 @@ zfclass ZFLIB_ZFCore ZFLogFormat : zfextend ZFObject, zfimplement ZFOutputFormat
     ZFIMPLEMENT_DECLARE(ZFOutputFormat)
 
 public:
+    /** @brief whether auto append endl for each #zfLog call */
     ZFPROPERTY_ASSIGN(zfbool, autoEndl, zftrue)
 
 protected:
