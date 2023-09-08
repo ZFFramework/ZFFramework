@@ -25,7 +25,7 @@ public:
      * @brief see #ZFApp::appRestart
      */
     virtual void appRestart(void);
-ZFPROTOCOL_INTERFACE_END(ZFApp_systemInfo)
+ZFPROTOCOL_INTERFACE_END(ZFApp)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFProtocolZFApp_h_

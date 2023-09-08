@@ -23,21 +23,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * to invoke the method without knowing all actual types\n
  * \n
  * here is a list of functions available in lua to communicate with ZFFramework:
- * -  `zfAlloc("ClassName" [params...])`
- *   or `ClassName([params...])`\n
+ * -  "zfAlloc("ClassName" [params...])"
+ *   or "ClassName([params...])"\n
  *   alloc a ZFObject type\n
  *   "ClassName" can be #v_ZFClass, #v_zfstring, or native lua string\n
  *   if extra init param passed,
  *   your class must supplys reflectable #ZFObject::objectOnInit
  * -  invoker
- *   -  `ret = zfl_call(obj, "functionName", param0, param1, ...)`
- *     or `obj:functionName(param0, param1, ...)`\n
+ *   -  "ret = zfl_call(obj, "functionName", param0, param1, ...)"
+ *     or "obj:functionName(param0, param1, ...)"\n
  *     call object's instance method, params are optional\n
  *     for "functionName", see #ZFTypeId_ZFMethod\n
  *     "functionName" can be #v_ZFMethod, #v_zfstring, or native lua string,
  *     while other types must exactly match the original types
- *   -  `ret = zfl_call(zfnull, "ClassOrNamespace.methodName", param0, param1, ...)`
- *     or `ret = ClassOrNamespace.methodName(param0, param1, ...)`\n
+ *   -  "ret = zfl_call(zfnull, "ClassOrNamespace.methodName", param0, param1, ...)"
+ *     or "ret = ClassOrNamespace.methodName(param0, param1, ...)"\n
  *     call global function or static class member method, params are optional\n
  *     for "functionName", see #ZFTypeId_ZFMethod\n
  *     "functionName" can be #v_ZFMethod, #v_zfstring, #v_ZFClass, or native lua string,
@@ -46,38 +46,38 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     -  #ZF_NAMESPACE_GLOBAL_NAME
  *     -  #ZF_NAMESPACE_GLOBAL_ABBR_NAME
  *     -  empty string
- *   -  while calling functions with lua raw string, such as `func('abc')`,
+ *   -  while calling functions with lua raw string, such as "func('abc')",
  *     we will try to convert to proper param type by string converter,
  *     if overload functions exists,
  *     conversion may take more than once,
  *     until it matches first function
  * -  ZFEnum
- *   -  `YourEnum.e_YourEnumValue()`\n
+ *   -  "YourEnum.e_YourEnumValue()"\n
  *     access the enum value
- *   -  `YourEnumFlags('YourEnumValue1|YourEnumValue2')`
- *     or `YourEnumFlags(YourEnum.e_YourEnumValue1(), YourEnum.e_YourEnumValue2, ...)`\n
+ *   -  "YourEnumFlags('YourEnumValue1|YourEnumValue2')"
+ *     or "YourEnumFlags(YourEnum.e_YourEnumValue1(), YourEnum.e_YourEnumValue2, ...)"\n
  *     create enum flags
  * -  value holder
- *   -  `value = YourTypeName("yourTypeData")`
- *     or `value = zfAlloc("YourTypeName")`
- *     or `value = YourTypeName()`\n
+ *   -  "value = YourTypeName("yourTypeData")"
+ *     or "value = zfAlloc("YourTypeName")"
+ *     or "value = YourTypeName()"\n
  *     create a non-ZFObject type registered by #ZFTYPEID_DECLARE,
- *     return the associated `YourTypeName` that holds the value\n
+ *     return the associated "YourTypeName" that holds the value\n
  *     "YourTypeName" represents the type name in #ZFTYPEID_DECLARE\n
  *     "yourTypeData" store string datas that would be decoded by YourTypeNameFromString\n
  *     "yourTypeData" can be #v_zfstring, or native lua string\n
  *     if your value holder supplys reflectable #ZFObject::objectOnInit
  *     (#ZFOBJECT_ON_INIT_DECLARE_2 series),
  *     the value holder can also be constructed by function like call:
- *     `YourTypeName(param0, param1)`
- *   -  `value:yourFunc()`
- *     or `YourTypeName.YourFunc()`\n
+ *     "YourTypeName(param0, param1)"
+ *   -  "value:yourFunc()"
+ *     or "YourTypeName.YourFunc()"\n
  *     for non-ZFObject types that wrapped by #ZFTYPEID_DECLARE,
  *     you may use #ZFMETHOD_USER_REGISTER_0 series to register methods
- *     to its wrapper type `YourTypeName`,
+ *     to its wrapper type "YourTypeName",
  *     then the methods can be invoked directly to your value type
  * -  value converter
- *   -  `zfl_value(v)`\n
+ *   -  "zfl_value(v)"\n
  *     convert a value to lua's raw value,
  *     the result lua value can be:
  *     -  lua string
@@ -87,7 +87,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   -  these types are automatically converted when return from cpp to lua:
  *     -  v_zfbool => lua boolean
  * -  callback
- *   -  `ZFCallbackForLua(luaFunc)`\n
+ *   -  "ZFCallbackForLua(luaFunc)"\n
  *     create a #ZFListener from lua function\n
  *     the lua function's proto type must be:
  *     @code
@@ -112,12 +112,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       button:observerAdd(ZFUIButton.EventButtonOnClick(), function(zfargs)
  *           end)
  *     @endcode
- *   -  `output:output(text[, size, result])`\n
+ *   -  "output:output(text[, size, result])"\n
  *     write to output callback
- *   -  `input:input(buf [, size, result])`\n
+ *   -  "input:input(buf [, size, result])"\n
  *     read from input callback
  * -  array
- *   -  `ZFCoreArrayCreate([a, b, c, ...])`\n
+ *   -  "ZFCoreArrayCreate([a, b, c, ...])"\n
  *     create a array, params support these types:
  *     -  zfautoObject
  *     -  native lua number (stored as #v_zflongdouble)
@@ -134,8 +134,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     @endcode
  *     note that, all params passed from #ZFLuaExecute are all #zfautoObject type
  * -  util
- *   -  `zfstringAppend(s, fmt, ...)`
- *     or `zfstr(fmt, ...)`\n
+ *   -  "zfstringAppend(s, fmt, ...)"
+ *     or "zfstr(fmt, ...)"\n
  *     fmt can be #v_zfstring, or native lua string\n
  *     following va_args support:
  *     -  #ZFObject, would be converted by #ZFObject::objectInfo
@@ -144,19 +144,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  *     note: the va_args support params up to #ZFMETHOD_MAX_PARAM
  * -  local path info spec
- *   -  `zfl_L()`\n
+ *   -  "zfl_L()"\n
  *     lua_State of current chunk, stored as #v_ZFPtr
- *   -  `ZFLocalPathInfo()`\n
+ *   -  "ZFLocalPathInfo()"\n
  *     return path info of current context, null if not available
- *   -  `zfimport(localFilePath)`\n
+ *   -  "zfimport(localFilePath)"\n
  *     util method for #ZFLuaExecute + #ZFInputForLocal,
  *     useful to load local resource or class definition
  * -  debug helper
- *   -  `zfLog(fmt, ...)`
+ *   -  "zfLog(fmt, ...)"
  *     or zfLogTrim(fmt, ...)\n
  *     use zfstringAppend then output to zfLog
- *   -  `zfl_tableInfo(v)`
- *     or `zfl_tableInfoPrint(v)`\n
+ *   -  "zfl_tableInfo(v)"
+ *     or "zfl_tableInfoPrint(v)"\n
  *     return string that represents the table
  *
  *

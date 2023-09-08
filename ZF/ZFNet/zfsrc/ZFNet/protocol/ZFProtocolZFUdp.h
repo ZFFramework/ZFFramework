@@ -33,7 +33,7 @@ public:
             ZF_IN const zfchar *host
             , ZF_IN zfuint port
             ) zfpurevirtual;
-    /** @brief see #ZFUdp::hostRelease */
+    /** @brief see #ZFUdp::hostResolve */
     virtual void hostRelease(ZF_IN void *hostAddr) zfpurevirtual;
 
 public:

@@ -31,6 +31,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttach
         , ZFMP_IN(const ZFListener &, timerCallback)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
         )
+/** @brief see #ZFGlobalTimerAttach */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, void, ZFGlobalTimerAttachOnce
         , ZFMP_IN(const ZFListener &, timerCallback)
         , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)

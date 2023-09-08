@@ -41,6 +41,7 @@ ZFENUM_END(ZFLIB_ZFCore, ZFProtocolLevel)
  *
  *   ZFProtocolInstanceStateEnum state1 = ZFProtocolInstanceState::e_OnDeallocPrepare;
  *   zfbool t1 = ZFBitTest(state1, ZFProtocolInstanceState::e_OnDealloc); // ensured true
+ * @endcode
  */
 ZFENUM_BEGIN(ZFLIB_ZFCore, ZFProtocolInstanceState)
     ZFENUM_VALUE(OnInit = 0x01)
