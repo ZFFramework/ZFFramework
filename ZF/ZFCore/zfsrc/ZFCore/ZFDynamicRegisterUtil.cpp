@@ -222,6 +222,13 @@ ZFDynamic::ZFDynamic(ZF_IN const zfchar *regTag)
 {
     this->regTag(regTag);
 }
+ZFDynamic::ZFDynamic(ZF_IN ZFObject *regTag)
+: d(zfnew(_ZFP_ZFDynamicPrivate))
+{
+    if(regTag != zfnull) {
+        this->regTag(regTag->objectInfo());
+    }
+}
 ZFDynamic::ZFDynamic(ZF_IN const ZFDynamic &ref)
 : d(ref.d)
 {
@@ -338,7 +345,7 @@ ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag) {
         m.erase(d->regTag);
     }
 
-    if(regTag == zfnull) {
+    if(zfstringIsEmpty(regTag)) {
         d->regTag.removeAll();
         return *this;
     }
@@ -355,6 +362,15 @@ ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag) {
 }
 const zfchar *ZFDynamic::regTag(void) const {
     return (d->regTag.isEmpty() ? zfnull : d->regTag.cString());
+}
+ZFDynamic &ZFDynamic::regTag(ZF_IN ZFObject *regTag) {
+    if(regTag != zfnull) {
+        this->regTag(regTag->objectInfo());
+    }
+    else {
+        this->regTag("");
+    }
+    return *this;
 }
 
 void ZFDynamic::removeAll(void) {
@@ -963,8 +979,16 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
     }, v_ZFDynamic
     , ZFMP_IN(const zfchar *, regTag)
     )
+ZFOBJECT_ON_INIT_USER_REGISTER_1({
+        invokerObject->to<v_ZFDynamic *>()->zfv.regTag(regTag);
+    }, v_ZFDynamic
+    , ZFMP_IN(ZFObject *, regTag)
+    )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, regTag
         , ZFMP_IN(const zfchar *, regTag)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, regTag
+        , ZFMP_IN(ZFObject *, regTag)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const zfchar *, regTag)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, void, removeAll)

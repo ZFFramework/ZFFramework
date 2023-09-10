@@ -476,6 +476,10 @@ void ZFPathInfoImplGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret) {
 }
 
 // ============================================================
+ZFMETHOD_FUNC_DEFINE_0(ZFPathInfo, ZFLocalPathInfo) {
+    return ZFPathInfo();
+}
+
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoForLocalT
         , ZFMP_OUT(ZFPathInfo &, ret)
         , ZFMP_IN(const ZFPathInfo &, pathInfo)

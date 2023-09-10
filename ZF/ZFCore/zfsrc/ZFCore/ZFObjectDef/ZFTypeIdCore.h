@@ -557,10 +557,6 @@ public:
     virtual zfbool objectIsInternal(void) {
         return zftrue;
     }
-    zfoverride
-    virtual zfbool objectIsInternalPrivate(void) {
-        return zftrue;
-    }
 
 protected:
     zfoverride

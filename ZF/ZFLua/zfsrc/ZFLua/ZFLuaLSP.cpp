@@ -399,9 +399,6 @@ static void _ZFP_ZFLuaLSPGenFile_spec(
         << "---@return v_ZFPtr\n"
         << "function zfl_L(...) end\n"
 
-        << "---@return v_ZFPathInfo\n"
-        << "function ZFLocalPathInfo() end\n"
-
         << "---@param v_zfstring\n"
         << "---@return v_ZFOutput\n"
         << "function zfLog(fmt, ...) end\n"

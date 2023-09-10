@@ -58,7 +58,7 @@ extern ZFLIB_ZFCore void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls);
  *   -- OK, myProp implemented from MyInterface
  *   zfLog('%s', obj:myProp())
  *
- *   -- false, only property and mehtod are copied, class has no actual relationship
+ *   -- false, only property and method are copied, class has no actual relationship
  *   zfLog('%s', obj:classData():classIsTypeOf(MyInterface.ClassData()))
  *
  *   -- false, property and method are "copied", not "inherited"

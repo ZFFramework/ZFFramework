@@ -427,6 +427,14 @@ inline ZFCoreArrayPOD<const zfchar *> ZFPathInfoImplGetAll(void) {
 // ============================================================
 // utils
 /**
+ * @brief return local path info for current context
+ *
+ * this method is designed for script only,
+ * when called from cpp side,
+ * it always return a dummy path info
+ */
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFPathInfo, ZFLocalPathInfo)
+/**
  * @brief util to make a child path info relative to existing one,
  *   see also #ZFPathInfoCallbackToChild
  */

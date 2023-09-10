@@ -59,6 +59,8 @@ public:
     ZFDynamic(void);
     /** @brief construct with #regTag */
     ZFDynamic(ZF_IN const zfchar *regTag);
+    /** @brief construct with #regTag (converted from #ZFObject::objectInfo) */
+    ZFDynamic(ZF_IN ZFObject *regTag);
 
     /** @cond ZFPrivateDoc */
     ZFDynamic(ZF_IN const ZFDynamic &ref);
@@ -99,11 +101,13 @@ public:
      * that's not very convenient for script languages\n
      * to solve this, you may use this method to mark the registration,
      * which would automatically unregister old ones if exists,
-     * identified by tha regTag
+     * identified by that regTag
      */
     ZFDynamic &regTag(ZF_IN const zfchar *regTag);
     /** @brief see #regTag */
     const zfchar *regTag(void) const;
+    /** @brief see #regTag */
+    ZFDynamic &regTag(ZF_IN ZFObject *regTag);
 
 public:
     /** @brief see #ZFDynamic */
