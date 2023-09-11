@@ -38,6 +38,13 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zffloat, layoutChildSpaceY) {
     }
 }
 
+ZFMETHOD_DEFINE_2(ZFUIFlowLayout, ZFUIFlowLayoutParam *, childAdd
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        ) {
+    return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+}
+
 // ============================================================
 // override ZFUIView
 static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontal(

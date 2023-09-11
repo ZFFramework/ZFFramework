@@ -246,6 +246,13 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
 ZFSTYLE_DEFAULT_DEFINE(ZFUIAutoLayout)
 ZFOBJECT_REGISTER(ZFUIAutoLayout)
 
+ZFMETHOD_DEFINE_2(ZFUIAutoLayout, ZFUIAutoLayoutParam *, childAdd
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        ) {
+    return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+}
+
 zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */

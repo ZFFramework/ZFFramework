@@ -118,12 +118,10 @@ public:
     // override ZFUIView
 public:
     /** @brief util method for #childAddWithParam */
-    inline ZFUIFlowLayoutParam *childAdd(
-            ZF_IN ZFUIView *view
-            , ZF_IN_OPT zfindex atIndex = zfindexMax()
-            ) {
-        return this->childAddWithParam(view, zfnull, atIndex)->toAny();
-    }
+    ZFMETHOD_DECLARE_2(ZFUIFlowLayoutParam *, childAdd
+            , ZFMP_IN(ZFUIView *, view)
+            , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+            )
 protected:
     zfoverride
     virtual const ZFClass *layoutParamClass(void) {

@@ -31,6 +31,13 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, zffloat, layoutChildSpace) {
     }
 }
 
+ZFMETHOD_DEFINE_2(ZFUILinearLayout, ZFUILinearLayoutParam *, childAdd
+        , ZFMP_IN(ZFUIView *, view)
+        , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
+        ) {
+    return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+}
+
 // ============================================================
 // override ZFUIView
 static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
