@@ -74,6 +74,8 @@ JNIParamTypeContainer &JNIParamTypeContainer::add(const JNIType &paramType) {
 static JavaVM *gs_javaVM = NULL;
 static jint gs_jniVersionDesired = -1;
 
+static JNIGetJNIEnvCallback gs_JNIGetJNIEnvCallback = NULL;
+
 // ============================================================
 bool JNIInit(JavaVM *javaVM, jint version) {
     JNIEnv* jniEnv = NULL;
@@ -87,6 +89,14 @@ bool JNIInit(JavaVM *javaVM, jint version) {
     return true;
 }
 
+bool JNIInit(JNIGetJNIEnvCallback callback) {
+    if(callback == NULL) {
+        return false;
+    }
+    gs_JNIGetJNIEnvCallback = callback;
+    return true;
+}
+
 JavaVM *JNIGetJavaVM(void) {
     return gs_javaVM;
 }
@@ -96,12 +106,17 @@ jint JNIGetDesiredVersion(void) {
 }
 
 JNIEnv *JNIGetJNIEnv(void) {
-    if(gs_javaVM == NULL) {
+    if(gs_JNIGetJNIEnvCallback != NULL) {
+        return gs_JNIGetJNIEnvCallback();
+    }
+    else if(gs_javaVM != NULL) {
+        JNIEnv* jniEnv;
+        gs_javaVM->GetEnv((void**)&jniEnv, gs_jniVersionDesired);
+        return jniEnv;
+    }
+    else {
         return NULL;
     }
-    JNIEnv* jniEnv;
-    gs_javaVM->GetEnv((void**)&jniEnv, gs_jniVersionDesired);
-    return jniEnv;
 }
 
 void JNIConvertClassNameToClassSig(JNIString &ret, const char *className) {

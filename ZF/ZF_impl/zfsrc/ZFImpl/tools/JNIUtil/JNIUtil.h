@@ -86,6 +86,15 @@ public:
 extern _JNI_EXPORT bool JNIInit(JavaVM *javaVM, jint version = JNI_VERSION_1_1);
 
 /**
+ * @brief callback for custom impl
+ */
+typedef JNIEnv *(*JNIGetJNIEnvCallback)(void);
+/**
+ * @brief init jni jniEnv, must be called in your JNI_OnLoad
+ */
+extern _JNI_EXPORT bool JNIInit(JNIGetJNIEnvCallback callback);
+
+/**
  * @brief global java vm
  */
 extern _JNI_EXPORT JavaVM *JNIGetJavaVM(void);
