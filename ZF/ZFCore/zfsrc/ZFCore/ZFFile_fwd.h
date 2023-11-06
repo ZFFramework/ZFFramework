@@ -31,19 +31,19 @@ ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_ZFCore, const zfchar *, ZFFileSepar
  *   while we have binary mode only
  *
  * usage:
- * -  ZFFileOpenOptionCreate\n
+ * -  ZFFileOpenOption::e_Create\n
  *   create a new file for write only
- * -  ZFFileOpenOptionCreate | ZFFileOpenOption::e_Read\n
+ * -  ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read\n
  *   create a new file for read/write
  * -  ZFFileOpenOption::e_Read\n
  *   open a existing file for read only, fail if file not exist
- * -  ZFFileOpenOption::e_Read | ZFFileOpenOptionWrite\n
+ * -  ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write\n
  *   open a existing file for read/write, fail if file not exist
- * -  ZFFileOpenOptionWrite\n
- *   same as ZFFileOpenOptionCreate, create a new file for write only
- * -  ZFFileOpenOptionAppend\n
+ * -  ZFFileOpenOption::e_Write\n
+ *   same as ZFFileOpenOption::e_Create, create a new file for write only
+ * -  ZFFileOpenOption::e_Append\n
  *   open a file for append or create new if not exist, for write only
- * -  ZFFileOpenOptionAppend | ZFFileOpenOption::e_Read\n
+ * -  ZFFileOpenOption::e_Append | ZFFileOpenOption::e_Read\n
  *   open a file for append or create new if not exist, for read/write
  */
 ZFENUM_BEGIN(ZFLIB_ZFCore, ZFFileOpenOption)

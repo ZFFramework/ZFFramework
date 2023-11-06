@@ -1,3 +1,12 @@
+
+#ifndef _JNI_EXPORT
+    #ifdef _WIN32
+        #define _JNI_EXPORT __declspec(dllexport)
+    #else
+        #define _JNI_EXPORT __attribute__((visibility("default")))
+    #endif
+#endif
+
 #include "JNIUtil.h"
 #include <assert.h>
 #include <string>

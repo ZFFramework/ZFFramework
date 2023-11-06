@@ -8,7 +8,7 @@
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_ttf" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_ttf"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_ttf\SDL_ttf.h" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
 
-<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_net" main "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_net"
+<ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_net" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_net"
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\copy_check.<ZF_SH_EXT>" "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_net\SDL_net.h" "<ZF_WORK_DIR>\..\..\..\zf3rd\_tmp\SDL"
 
 <ZF_SH> "<ZF_ROOT_PATH>\tools\common\git_check.<ZF_SH_EXT>" "https://github.com/libsdl-org/SDL_mixer" SDL2 "<ZF_WORK_DIR>\..\..\..\zf3rd\_repo\SDL_mixer"

@@ -6,15 +6,14 @@
 #ifndef _JNIUtil_h_
 #define _JNIUtil_h_
 
-/** @cond ZFPrivateDoc */
-#include "../../ZFImpl_ZF_impl.h"
-#define _JNI_EXPORT ZFLIB_ZF_impl
-/** @endcond */
-
 // ============================================================
 /** @brief used to export symbols */
 #ifndef _JNI_EXPORT
-    #define _JNI_EXPORT
+    #ifdef _WIN32
+        #define _JNI_EXPORT __declspec(dllimport)
+    #else
+        #define _JNI_EXPORT __attribute__((visibility("default")))
+    #endif
 #endif
 
 // ============================================================
