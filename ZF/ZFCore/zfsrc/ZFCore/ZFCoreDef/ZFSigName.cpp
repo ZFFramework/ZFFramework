@@ -124,17 +124,6 @@ zfint ZFSigName::compare(ZF_IN const ZFSigName &ref) const {
     if(d == ref.d) {
         return 0;
     }
-    else if(d == zfnull) {
-        if(ref.d == zfnull) {
-            return 0;
-        }
-        else {
-            return 0 - ref[0];
-        }
-    }
-    else if(ref.d == zfnull) {
-        return (*this)[0] - 0;
-    }
     else {
         return zfscmp(this->cString(), ref.cString());
     }
