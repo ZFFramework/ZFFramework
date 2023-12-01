@@ -36,7 +36,6 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfchar *s, ZF_IN_
     if(zfstringIsEmpty(s, len)) {
         return zfnull;
     }
-    zfCoreMutexLocker();
     zfstlmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlComparer>::iterator it = _ZFP_ZFSigNameMap().find(
             len == zfindexMax()
             ? s
@@ -92,9 +91,11 @@ ZFSigName::ZFSigName(ZF_IN const ZFSigName &ref) {
     }
 }
 ZFSigName::ZFSigName(ZF_IN const zfstring &s) {
+    zfCoreMutexLocker();
     d = _ZFP_ZFSigNameAttach(s);
 }
 ZFSigName::ZFSigName(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len /* = zfindexMax() */) {
+    zfCoreMutexLocker();
     d = _ZFP_ZFSigNameAttach(s, len);
 }
 ZFSigName::~ZFSigName(void) {
