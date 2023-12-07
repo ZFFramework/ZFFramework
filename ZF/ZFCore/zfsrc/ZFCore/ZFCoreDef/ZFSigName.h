@@ -82,7 +82,10 @@ private:
 };
 ZFOUTPUT_TYPE(ZFSigName, {s += v.cString();})
 
-extern ZFLIB_ZFCore void _ZFP_ZFSigNameInfo(ZF_OUT zfstring &ret);
+/**
+ * @brief print all state, for debug use only
+ */
+extern ZFLIB_ZFCore void ZFSigNameInfo(ZF_OUT zfstring &ret);
 
 ZF_NAMESPACE_GLOBAL_END
 

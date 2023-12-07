@@ -471,6 +471,7 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
         , ZF_IN va_list vaList
         ) {
     zfCoreMutexLocker();
+    methodNamespace = ZFNamespaceSkipGlobal(methodNamespace);
 
     zfCoreAssert(methodGenericInvoker != zfnull);
     zfCoreAssert(methodOwnerClass == zfnull || zfstringIsEmpty(methodNamespace));
@@ -499,9 +500,10 @@ ZFMethod *_ZFP_ZFMethodRegisterV(
 
     zfstring methodInternalId;
     ZFSigName methodScope = methodOwnerClass ? methodOwnerClass->classNameFull() : methodNamespace;
+    ZFSigName methodNameSig = methodName;
     _ZFP_ZFMethodInstanceSig(methodInternalId
             , methodScope
-            , methodName
+            , methodNameSig
             , paramTypeId[0]
             , paramTypeId[1]
             , paramTypeId[2]

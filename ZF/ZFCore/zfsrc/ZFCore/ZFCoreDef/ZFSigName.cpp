@@ -2,7 +2,9 @@
 #include "zfstr.h"
 
 #include "../ZFSTLWrapper/zfstlmap.h"
+#include "../ZFSTLWrapper/zfstlhashmap.h"
 #include "../ZFSTLWrapper/zfstlstring.h"
+#include "../ZFSTLWrapper/zfstldeque.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -15,28 +17,37 @@ public:
     zfidentity sigId;
 };
 
+typedef zfstlhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHasher, zfcharConst_zfstlHashComparer> _ZFP_ZFSigNameMapType;
+typedef zfstlmap<zfidentity, zfbool> _ZFP_ZFSigNameIdMapType;
+typedef zfstldeque<_ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameCacheType;
+
 static zfidentity &_ZFP_ZFSigNameId(void) {
     static zfidentity d = zfidentityInvalid();
     return d;
 }
-static zfstlmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlComparer> &_ZFP_ZFSigNameMap(void) {
-    static zfstlmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlComparer> m;
+static _ZFP_ZFSigNameMapType &_ZFP_ZFSigNameMap(void) {
+    static _ZFP_ZFSigNameMapType m;
     return m;
 }
-static zfstlmap<zfidentity, zfbool> &_ZFP_ZFSigNameIdMap(void) {
-    static zfstlmap<zfidentity, zfbool> m;
+static _ZFP_ZFSigNameIdMapType &_ZFP_ZFSigNameIdMap(void) {
+    static _ZFP_ZFSigNameIdMapType m;
     return m;
 }
-static zfstlmap<zfidentity, zfbool> &_ZFP_ZFSigNameIdUnusedMap(void) {
-    static zfstlmap<zfidentity, zfbool> m;
+static _ZFP_ZFSigNameIdMapType &_ZFP_ZFSigNameIdUnusedMap(void) {
+    static _ZFP_ZFSigNameIdMapType m;
     return m;
+}
+static _ZFP_ZFSigNameCacheType &_ZFP_ZFSigNameCache(void) {
+    static _ZFP_ZFSigNameCacheType l;
+    return l;
 }
 
 static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len = zfindexMax()) {
     if(zfstringIsEmpty(s, len)) {
         return zfnull;
     }
-    zfstlmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlComparer>::iterator it = _ZFP_ZFSigNameMap().find(
+    _ZFP_ZFSigNameCache();
+    _ZFP_ZFSigNameMapType::iterator it = _ZFP_ZFSigNameMap().find(
             len == zfindexMax()
             ? s
             : zfstring(s, len).cString()
@@ -72,11 +83,22 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfchar *s, ZF_IN_
 static void _ZFP_ZFSigNameDetach(ZF_IN _ZFP_ZFSigNamePrivate *d) {
     --(d->refCount);
     if(d->refCount == 0) {
-        _ZFP_ZFSigNameMap().erase(d->s);
-        _ZFP_ZFSigNameIdMap().erase(d->sigId);
-        _ZFP_ZFSigNameIdUnusedMap()[d->sigId] = zftrue;
-        zffree(d->s);
-        zfdelete(d);
+        _ZFP_ZFSigNameCacheType &cache = _ZFP_ZFSigNameCache();
+        ++(d->refCount);
+        cache.push_back(d);
+        if(cache.size() >= 32) {
+            d = cache[0];
+            cache.pop_front();
+
+            --(d->refCount);
+            if(d->refCount == 0) {
+                _ZFP_ZFSigNameMap().erase(d->s);
+                _ZFP_ZFSigNameIdMap().erase(d->sigId);
+                _ZFP_ZFSigNameIdUnusedMap()[d->sigId] = zftrue;
+                zffree(d->s);
+                zfdelete(d);
+            }
+        }
     }
 }
 
@@ -164,10 +186,10 @@ ZFSigName &ZFSigName::operator = (ZF_IN const zfchar *s) {
 }
 
 // ============================================================
-void _ZFP_ZFSigNameInfo(ZF_OUT zfstring &ret) {
+void ZFSigNameInfo(ZF_OUT zfstring &ret) {
     zfCoreMutexLocker();
-    zfstlmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlComparer> &m = _ZFP_ZFSigNameMap();
-    for(zfstlmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlComparer>::iterator it = m.begin(); it != m.end(); ++it) {
+    _ZFP_ZFSigNameMapType &m = _ZFP_ZFSigNameMap();
+    for(_ZFP_ZFSigNameMapType::iterator it = m.begin(); it != m.end(); ++it) {
         ret += it->first;
         ret += " : ";
         zfsFromIntT(ret, it->second->refCount);
