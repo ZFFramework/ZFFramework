@@ -10,6 +10,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // ZFClass's global data
 ZF_STATIC_INITIALIZER_INIT(ZFClassDataHolder) {
+    // dummy instance to ensure init order
+    ZFSigName dummy("ZFObject");
 }
 ZF_STATIC_INITIALIZER_DESTROY(ZFClassDataHolder) {
     ZFCoreMap classMapTmp = this->classMap;
