@@ -62,12 +62,11 @@ void ZFMethod::_ZFP_ZFMethod_init(
         paramTypeNameList[paramCount] = va_arg(vaList, const zfchar *);
         paramNameList[paramCount] = va_arg(vaList, const zfchar *);
 
-        ZFMethodParamDefaultValueCallback paramDefaultValueCallback = va_arg(vaList, ZFMethodParamDefaultValueCallback);
-        if(paramDefaultValueCallback != zfnull) {
+        paramDefaultValueCallbackList[paramCount] = va_arg(vaList, ZFMethodParamDefaultValueCallback);
+        if(paramDefaultValueCallbackList[paramCount] != zfnull) {
             if(this->_ZFP_ZFMethod_paramDefaultBeginIndex == (zfuint)-1) {
                 this->_ZFP_ZFMethod_paramDefaultBeginIndex = paramCount;
             }
-            paramDefaultValueCallbackList[paramCount] = paramDefaultValueCallback;
         }
 
         ++paramCount;
@@ -822,10 +821,10 @@ const ZFMethod *ZFMethodAlias(
         }
     }
 
-    const zfchar *paramTypeId[ZFMETHOD_MAX_PARAM];
-    const zfchar *paramTypeName[ZFMETHOD_MAX_PARAM];
-    const zfchar *paramName[ZFMETHOD_MAX_PARAM];
-    ZFMethodParamDefaultValueCallback paramDefaultValueCallback[ZFMETHOD_MAX_PARAM];
+    const zfchar *paramTypeId[ZFMETHOD_MAX_PARAM] = {0};
+    const zfchar *paramTypeName[ZFMETHOD_MAX_PARAM] = {0};
+    const zfchar *paramName[ZFMETHOD_MAX_PARAM] = {0};
+    ZFMethodParamDefaultValueCallback paramDefaultValueCallback[ZFMETHOD_MAX_PARAM] = {0};
     for(zfindex i = 0; i < method->methodParamCount(); ++i) {
         paramTypeId[i] = method->methodParamTypeIdAt(i);
         paramTypeName[i] = method->methodParamTypeNameAt(i);

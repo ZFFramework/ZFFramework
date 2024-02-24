@@ -710,11 +710,19 @@ ZFDynamic &ZFDynamic::method(
     p.methodName(methodName);
     p.methodImpl(methodImpl);
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
-        p.methodParamAddWithDefault(
-            methodParam.methodParamTypeIdAt(i),
-            zfnull,
-            methodParam.methodParamNameAt(i),
-            methodParam.methodParamDefaultValueAt(i));
+        if(methodParam.methodParamDefaultValueAt(i) == ZFMethodGenericInvokerDefaultParam()) {
+            p.methodParamAdd(
+                methodParam.methodParamTypeIdAt(i),
+                zfnull,
+                methodParam.methodParamNameAt(i));
+        }
+        else {
+            p.methodParamAddWithDefault(
+                methodParam.methodParamTypeIdAt(i),
+                zfnull,
+                methodParam.methodParamNameAt(i),
+                methodParam.methodParamDefaultValueAt(i));
+        }
     }
     if(d->cls == zfnull) {
         p.methodNamespace(d->methodNamespace);
@@ -1132,10 +1140,10 @@ const zfchar *ZFMP::methodParamTypeIdAt(ZF_IN zfindex index) const {
     return d->methodParamTypeId[index];
 }
 const zfchar *ZFMP::methodParamNameAt(ZF_IN zfindex index) const {
-    return d->methodParamName[d->methodParamCount];
+    return d->methodParamName[index];
 }
 ZFObject *ZFMP::methodParamDefaultValueAt(ZF_IN zfindex index) const {
-    return d->methodParamDefaultValue[d->methodParamCount];
+    return d->methodParamDefaultValue[index];
 }
 
 ZFMP::ZFMP(void)
