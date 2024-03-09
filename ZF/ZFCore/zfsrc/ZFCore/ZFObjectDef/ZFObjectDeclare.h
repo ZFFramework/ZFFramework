@@ -228,7 +228,11 @@ public:
     protected:
 
 // ============================================================
-/** @brief util macro for subclass to declare #ZFObject::objectOnInit as #ZFMethod */
+/**
+ * @brief util macro for subclass to declare #ZFObject::objectOnInit as #ZFMethod
+ *
+ * note: you must call `this->objectOnInit();` before anything
+ */
 #define ZFOBJECT_ON_INIT_INLINE_1( \
       ZFMP_0 \
     ) \
@@ -598,7 +602,11 @@ public:
         )
 
 // ============================================================
-/** @brief util macro to declare #ZFObject::objectOnInit as #ZFMETHOD_USER_REGISTER_1 */
+/**
+ * @brief util macro to declare #ZFObject::objectOnInit as #ZFMETHOD_USER_REGISTER_1
+ *
+ * note: you must not call `this->objectOnInit();`
+ */
 #define ZFOBJECT_ON_INIT_USER_REGISTER_1(methodInvokerAction, ownerClassSig \
     , ZFMP_0 \
     ) \
@@ -741,6 +749,148 @@ public:
         }, ownerClassSig, \
         protected, ZFMethodTypeVirtual, ZF_CALLER_LINE, \
         void, objectOnInit \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        , _ZFP_MtdP_EXPAND(ZFMP_7) \
+        )
+
+// ============================================================
+/**
+ * @brief util macro to declare #ZFObject::objectOnInit as #ZFMethodUserRegister_1
+ *
+ * note: you must not call `this->objectOnInit();`
+ */
+#define ZFObjectOnInitUserRegister_1(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    ) \
+    ZFMethodUserRegisterDetail_1(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        )
+/** @brief see #ZFObjectOnInitUserRegister_1 */
+#define ZFObjectOnInitUserRegister_2(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    ) \
+    ZFMethodUserRegisterDetail_2(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        )
+/** @brief see #ZFObjectOnInitUserRegister_1 */
+#define ZFObjectOnInitUserRegister_3(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    ) \
+    ZFMethodUserRegisterDetail_3(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        )
+/** @brief see #ZFObjectOnInitUserRegister_1 */
+#define ZFObjectOnInitUserRegister_4(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    ) \
+    ZFMethodUserRegisterDetail_4(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        )
+/** @brief see #ZFObjectOnInitUserRegister_1 */
+#define ZFObjectOnInitUserRegister_5(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    ) \
+    ZFMethodUserRegisterDetail_5(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        )
+/** @brief see #ZFObjectOnInitUserRegister_1 */
+#define ZFObjectOnInitUserRegister_6(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    ) \
+    ZFMethodUserRegisterDetail_6(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        )
+/** @brief see #ZFObjectOnInitUserRegister_1 */
+#define ZFObjectOnInitUserRegister_7(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    , ZFMP_6 \
+    ) \
+    ZFMethodUserRegisterDetail_7(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
+        , _ZFP_MtdP_EXPAND(ZFMP_0) \
+        , _ZFP_MtdP_EXPAND(ZFMP_1) \
+        , _ZFP_MtdP_EXPAND(ZFMP_2) \
+        , _ZFP_MtdP_EXPAND(ZFMP_3) \
+        , _ZFP_MtdP_EXPAND(ZFMP_4) \
+        , _ZFP_MtdP_EXPAND(ZFMP_5) \
+        , _ZFP_MtdP_EXPAND(ZFMP_6) \
+        )
+/** @brief see #ZFObjectOnInitUserRegister_1 */
+#define ZFObjectOnInitUserRegister_8(resultMethod, methodInvokerAction, ownerClass \
+    , ZFMP_0 \
+    , ZFMP_1 \
+    , ZFMP_2 \
+    , ZFMP_3 \
+    , ZFMP_4 \
+    , ZFMP_5 \
+    , ZFMP_6 \
+    , ZFMP_7 \
+    ) \
+    ZFMethodUserRegisterDetail_8(resultMethod, { \
+            invokerObject->_ZFP_ZFObject_objectOnInit(); \
+            methodInvokerAction \
+        }, ownerClass, protected, ZFMethodTypeVirtual, void, "objectOnInit" \
         , _ZFP_MtdP_EXPAND(ZFMP_0) \
         , _ZFP_MtdP_EXPAND(ZFMP_1) \
         , _ZFP_MtdP_EXPAND(ZFMP_2) \

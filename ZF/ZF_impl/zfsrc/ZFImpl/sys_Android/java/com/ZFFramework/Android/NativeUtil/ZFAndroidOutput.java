@@ -3,6 +3,9 @@ package com.ZFFramework.Android.NativeUtil;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/*
+ * wrap Android's OutputStream to ZFOutput
+ */
 public class ZFAndroidOutput {
 
     public OutputStream output = null;

@@ -741,7 +741,7 @@ zfbool ZFClass::newInstanceGenericCheck(
     ZFObject *obj = (ZFObject *)token;
     zfautoObject methodRetDummy;
     zfbool ret = objectOnInitMethod->methodGenericInvoker()(objectOnInitMethod, obj, errorHint, methodRetDummy, paramList);
-    if(ret && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
+    if(ret && obj->d && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
         zfCoreMutexLocker();
         ret = zffalse;
         if(errorHint != zfnull) {

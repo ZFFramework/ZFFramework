@@ -3,6 +3,9 @@ package com.ZFFramework.Android.NativeUtil;
 import java.io.IOException;
 import java.io.InputStream;
 
+/*
+ * wrap Android's InputStream to ZFInput
+ */
 public class ZFAndroidInput {
 
     public InputStream input = null;

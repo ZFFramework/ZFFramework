@@ -512,14 +512,11 @@ ZF_GLOBAL_INITIALIZER_END(ZFDynamicClassEventDataHolder)
 ZFDynamic &ZFDynamic::on(
         ZF_IN zfidentity eventId
         , ZF_IN const ZFListener &callback
+        , ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */
         ) {
     if(d->errorOccurred) {return *this;}
     if(d->cls == zfnull) {
         d->error("have you forgot classBegin?");
-        return *this;
-    }
-    if(!d->cls->classIsDynamicRegister()) {
-        d->error("only dynamic registered class can attach custom class event observer");
         return *this;
     }
     if(eventId == zfidentityInvalid()) {
@@ -537,8 +534,9 @@ ZFDynamic &ZFDynamic::on(
         g->classEventMap[d->cls][eventId].push_back(callback);
 
         const ZFClass *cls = d->cls;
-        ZFLISTENER_1(instanceOnCreate
+        ZFLISTENER_2(instanceOnCreate
                 , const ZFClass *, cls
+                , ZFLevel, level
                 ) {
             ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
             zfstlmap<const ZFClass *, zfstlmap<zfidentity, zfstldeque<ZFListener> > >::iterator itClass = d->classEventMap.find(cls);
@@ -549,7 +547,7 @@ ZFDynamic &ZFDynamic::on(
             zfstlmap<zfidentity, zfstldeque<ZFListener> > &eventMap = itClass->second;
             for(zfstlmap<zfidentity, zfstldeque<ZFListener> >::iterator itEvent = eventMap.begin(); itEvent != eventMap.end(); ++itEvent) {
                 for(zfstlsize i = 0; i < itEvent->second.size(); ++i) {
-                    obj->observerAdd(itEvent->first, itEvent->second[i], ZFLevelZFFrameworkNormal);
+                    obj->observerAdd(itEvent->first, itEvent->second[i], level);
                 }
             }
         } ZFLISTENER_END()
@@ -1025,9 +1023,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, classEnd)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, classCanAllocPublic
         , ZFMP_IN(zfbool, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, on
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, on
         , ZFMP_IN(zfidentity, eventId)
         , ZFMP_IN(const ZFListener &, callback)
+        , ZFMP_IN_OPT(ZFLevel, level, ZFLevelAppNormal)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onInit
         , ZFMP_IN(const ZFListener &, callback)

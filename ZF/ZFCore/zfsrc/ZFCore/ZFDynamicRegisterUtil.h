@@ -151,14 +151,15 @@ public:
     ZFDynamic &on(
             ZF_IN zfidentity eventId
             , ZF_IN const ZFListener &callback
+            , ZF_IN_OPT ZFLevel level = ZFLevelAppNormal
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &onInit(ZF_IN const ZFListener &callback) {
-        return this->on(ZFObject::EventObjectAfterAlloc(), callback);
+        return this->on(ZFObject::EventObjectAfterAlloc(), callback, ZFLevelZFFrameworkStatic);
     }
     /** @brief see #ZFDynamic */
     ZFDynamic &onDealloc(ZF_IN const ZFListener &callback) {
-        return this->on(ZFObject::EventObjectBeforeDealloc(), callback);
+        return this->on(ZFObject::EventObjectBeforeDealloc(), callback, ZFLevelZFFrameworkPostStatic);
     }
 
 public:
