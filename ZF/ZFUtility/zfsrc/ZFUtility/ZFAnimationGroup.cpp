@@ -44,7 +44,7 @@ private:
     zfbool cachedParallel;
     ZFListener cachedOnStartListener;
     ZFListener cachedOnStopListener;
-    ZFCoreArray<zfautoObjectT<ZFTimer *> > childDelayTimers;
+    ZFCoreArray<zfautoT<ZFTimer *> > childDelayTimers;
 
 protected:
     zfoverride
@@ -161,7 +161,7 @@ private:
                     childData->childAni()->aniStart();
                 }
             } ZFLISTENER_END()
-            zfautoObjectT<ZFTimer *> childDelayTimer = ZFTimerOnce(
+            zfautoT<ZFTimer *> childDelayTimer = ZFTimerOnce(
                 childData->childDelayBeforeStart(),
                 childOnDelayFinish);
             if(childDelayTimer != zfnull) {
@@ -264,7 +264,7 @@ zfbool ZFAnimationGroup::serializableOnSerializeFromData(
         if(category == zfnull) {continue;}
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFAnimationGroup_child)) {
-            zfautoObject element;
+            zfauto element;
             if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }

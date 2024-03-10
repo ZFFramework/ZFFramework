@@ -11,7 +11,7 @@ protected:
     typedef _ZFP_ZFCallbackForLua_SyncMode zfself;
 
 public:
-    zfautoObjectT<ZFObjectHolder *> ownerThread;
+    zfautoT<ZFObjectHolder *> ownerThread;
     lua_State *ownerL;
     int luaFunc;
 
@@ -265,7 +265,7 @@ private:
             ret.valueType = ValueType_string;
         }
         else if(lua_isuserdata(L, -1)) {
-            zfautoObject obj;
+            zfauto obj;
             if(!ZFImpl_ZFLua_toObject(obj, L, -1)) {
                 return zffalse;
             }
@@ -380,7 +380,7 @@ public:
                         lua_pushstring(L, "ZFLocalPathInfo"); // [var, 'ZFLocalPathInfo']
                         lua_rawget(L, -2); // [var, (function)ZFLocalPathInfo]
                         lua_pcall(L, 0, 1, 0); // [var, pathInfoObj]
-                        zfautoObject pathInfoHolder;
+                        zfauto pathInfoHolder;
                         ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1);
                         lua_pop(L, 2); // []
 
@@ -401,7 +401,7 @@ public:
                                 "[ZFCallbackForLua] unable to obtain path info, invoke fail");
                             return zffalse;
                         }
-                        zfautoObject pathInfoHolder;
+                        zfauto pathInfoHolder;
                         if(!ZFImpl_ZFLua_toObject(pathInfoHolder, L, -1)) {
                             lua_pop(L, 1);
                             zfstringAppend(errorHint,
@@ -598,7 +598,7 @@ ZFMETHOD_DEFINE_1(_ZFP_I_ZFCallbackForLuaCallback, void, callback
 
 // ============================================================
 zfbool ZFImpl_ZFLua_ZFCallbackForLua(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN lua_State *L
         , ZF_IN int luaStackOffset
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -647,7 +647,7 @@ static int _ZFP_ZFCallbackForLua(ZF_IN lua_State *L) {
     }
 
     zfstring errorHint;
-    zfautoObject ret;
+    zfauto ret;
     if(!ZFImpl_ZFLua_ZFCallbackForLua(ret, L, 1, &errorHint)) {
         return ZFImpl_ZFLua_luaError(L, "%s", errorHint);
     }

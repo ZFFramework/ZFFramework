@@ -15,7 +15,7 @@ protected:
 
         zfLogTrim("============================================================");
         zfLogTrim("ZFThread");
-        zfautoObjectT<ZFThread *> thread;
+        zfautoT<ZFThread *> thread;
 
 #if 1
         zfLogTrim("execute main and thread without lock (async):");

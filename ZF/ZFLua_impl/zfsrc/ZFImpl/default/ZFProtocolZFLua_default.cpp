@@ -32,8 +32,8 @@ public:
             ZF_IN void *L
             , ZF_IN const ZFPathInfo *pathInfoOrNull
             , ZF_IN const ZFInput &input
-            , ZF_OUT_OPT zfautoObject *luaResult = zfnull
-            , ZF_IN_OPT const ZFCoreArray<zfautoObject> *luaParams = zfnull
+            , ZF_OUT_OPT zfauto *luaResult = zfnull
+            , ZF_IN_OPT const ZFCoreArray<zfauto> *luaParams = zfnull
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         if(ZFFrameworkStateCheck(ZFLevelZFFrameworkLow) != ZFFrameworkStateAvailable) {

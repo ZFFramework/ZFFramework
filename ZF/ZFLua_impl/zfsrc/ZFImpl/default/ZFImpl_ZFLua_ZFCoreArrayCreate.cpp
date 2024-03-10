@@ -9,7 +9,7 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
     int count = (int)lua_gettop(L);
 
     for(int i = 0; i < count; ++i) {
-        zfautoObject p;
+        zfauto p;
         if(ZFImpl_ZFLua_toObject(p, L, i + 1)
                 || ZFImpl_ZFLua_toCallback(p, L, i + 1)
                 ) {

@@ -11,7 +11,7 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
         ZF_IN ZFUIListCellUpdaterBasic *owner
         , ZF_IN const ZFUIListCellUpdaterParam &updateParam
         ) {
-    zfautoObject separatorViewHolder = owner->itemCacheAccess(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator);
+    zfauto separatorViewHolder = owner->itemCacheAccess(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator);
     ZFUIView *separatorView = separatorViewHolder.to<ZFUIView *>();
     if(separatorView == zfnull) {
         separatorView = zfAlloc(ZFUIView);

@@ -128,7 +128,7 @@ ZFMAIN_ENTRY() {
         "myView:testFunc('luaParam0')\n"
     );
 
-    zfautoObject obj = ZFClass::classForName("MyChildView")->newInstance();
+    zfauto obj = ZFClass::classForName("MyChildView")->newInstance();
     obj->invoke("testFunc", zflineAlloc(v_zfstring, "cppParam0"));
 
     ZFMethodAlias(ZFMethodForName("MyChildView", "testFunc"), "testAliased");

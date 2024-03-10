@@ -132,8 +132,8 @@ public:
         l->childRemove(nativeRootView);
     }
 
-    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
-        zfautoObject modalWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
+    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+        zfauto modalWindow = zfRetain(ZFUISysWindow::ClassData()->newInstance().to<ZFUISysWindow *>());
         ZFImpl_sys_Qt_Window *nativeModalWindow = new ZFImpl_sys_Qt_Window();
         ZFImpl_sys_Qt_QObjectZFObjectTag(nativeModalWindow, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow", modalWindow->objectHolder());
         nativeModalWindow->installEventFilter(&_eventWrapper);

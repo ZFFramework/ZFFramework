@@ -263,8 +263,8 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
 // ============================================================
 // style holder
 static zfbool _ZFP_ZFStyleChangeFlag = zffalse;
-static zfstlmap<zfstring, zfautoObject> &_ZFP_ZFStyleHolder(void) {
-    static zfstlmap<zfstring, zfautoObject> d;
+static zfstlmap<zfstring, zfauto> &_ZFP_ZFStyleHolder(void) {
+    static zfstlmap<zfstring, zfauto> d;
     return d;
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleCleanup, ZFLevelZFFrameworkNormal) {
@@ -307,13 +307,13 @@ void ZFStyleSet(
         zfCoreMutexUnlock();
     }
 }
-zfautoObject ZFStyleGet(ZF_IN const zfchar *styleKey) {
+zfauto ZFStyleGet(ZF_IN const zfchar *styleKey) {
     if(styleKey == zfnull) {
         return zfnull;
     }
 
     zfCoreMutexLocker();
-    zfautoObject ret;
+    zfauto ret;
     zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
     for(zfstlmap<zfstring, _ZFP_ZFStyleDecoder>::iterator it = m.begin(); it != m.end(); ++it) {
         if(it->second(ret, styleKey)) {
@@ -321,8 +321,8 @@ zfautoObject ZFStyleGet(ZF_IN const zfchar *styleKey) {
         }
     }
 
-    zfstlmap<zfstring, zfautoObject> &d = _ZFP_ZFStyleHolder();
-    zfstlmap<zfstring, zfautoObject>::iterator it = d.find(styleKey);
+    zfstlmap<zfstring, zfauto> &d = _ZFP_ZFStyleHolder();
+    zfstlmap<zfstring, zfauto>::iterator it = d.find(styleKey);
     if(it != d.end()) {
         return it->second;
     }
@@ -335,15 +335,15 @@ void ZFStyleGetAll(
         , ZF_IN_OUT ZFCoreArrayPOD<ZFStyleable *> &styleValue
         ) {
     zfCoreMutexLocker();
-    zfstlmap<zfstring, zfautoObject> &d = _ZFP_ZFStyleHolder();
-    for(zfstlmap<zfstring, zfautoObject>::iterator it = d.begin(); it != d.end(); ++it) {
+    zfstlmap<zfstring, zfauto> &d = _ZFP_ZFStyleHolder();
+    for(zfstlmap<zfstring, zfauto>::iterator it = d.begin(); it != d.end(); ++it) {
         styleKey.add(it->first);
         styleValue.add(it->second);
     }
 }
 void ZFStyleRemoveAll(void) {
     zfCoreMutexLock();
-    zfstlmap<zfstring, zfautoObject> d;
+    zfstlmap<zfstring, zfauto> d;
     _ZFP_ZFStyleChangeFlag = zftrue;
     d.swap(_ZFP_ZFStyleHolder());
     zfCoreMutexUnlock();
@@ -449,7 +449,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleSet
         , ZFMP_IN(const zfchar *, styleKey)
         , ZFMP_IN(ZFStyleable *, styleValue)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfautoObject, ZFStyleGet
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFStyleGet
         , ZFMP_IN(const zfchar *, styleKey)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleGetAll

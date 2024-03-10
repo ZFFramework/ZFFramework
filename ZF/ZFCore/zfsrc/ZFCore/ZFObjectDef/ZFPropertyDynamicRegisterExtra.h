@@ -64,11 +64,11 @@ public:
      * for retain property, it's the property's value,
      * for assign property, it's a #ZFTypeIdWrapper
      */
-    zfautoObject propertyValue;
+    zfauto propertyValue;
     /**
      * @brief see #propertyValue
      */
-    zfautoObject propertyValueOld;
+    zfauto propertyValueOld;
 
 protected:
     /** @cond ZFPrivateDoc */

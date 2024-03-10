@@ -127,7 +127,7 @@ zfclassFwd ZFClass;
  * @brief callback to access method param's default value,
  *   for method generic invoker
  */
-typedef zfautoObject (*ZFMethodParamDefaultValueCallback)(
+typedef zfauto (*ZFMethodParamDefaultValueCallback)(
         ZF_IN const ZFMethod *invokerMethod
         , ZF_IN zfindex paramIndex
         );
@@ -208,13 +208,13 @@ typedef zfautoObject (*ZFMethodParamDefaultValueCallback)(
  * @code
  *   const ZFClass *cls = ...; // we may not know the actual class type
  *   const ZFMethod *method = cls->methodForName("someMethod");
- *   zfautoObject obj = cls->newInstance();
+ *   zfauto obj = cls->newInstance();
  *
  *   // execute
  *   YourReturnType result = method->execute<YourReturnType, ParamType...>(obj, someParam...);
  *
  *   // or, you may use generic version:
- *   zfautoObject result2 = method->methodGenericInvoke(obj, someParam...);
+ *   zfauto result2 = method->methodGenericInvoke(obj, someParam...);
  * @endcode
  * @warning you take the full responsibility to make sure
  *   the ReturnType and ParamType exactly match the method,
@@ -413,7 +413,7 @@ public:
     /**
      * @brief get the method's param default value at index, null if no default param
      */
-    inline zfautoObject methodParamDefaultValueAt(ZF_IN zfindex index) const {
+    inline zfauto methodParamDefaultValueAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
         if(index < this->methodParamDefaultBeginIndex()) {
             return zfnull;
@@ -524,7 +524,7 @@ public:
      * note all params must be exactly same type,
      * use #ZFDI_invoke if you want auto param conversion
      */
-    zfautoObject methodGenericInvoke(ZF_IN_OPT ZFObject *ownerObjOrNull = zfnull
+    zfauto methodGenericInvoke(ZF_IN_OPT ZFObject *ownerObjOrNull = zfnull
                                      , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
                                      , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
                                      , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
@@ -665,7 +665,7 @@ public:
     ZFSigName *_ZFP_ZFMethod_paramTypeNameList;
     ZFSigName *_ZFP_ZFMethod_paramNameList;
     ZFMethodParamDefaultValueCallback *_ZFP_ZFMethod_paramDefaultValueCallbackList;
-    ZFCoreArray<zfautoObject> _ZFP_ZFMethod_paramDefaultValueList;
+    ZFCoreArray<zfauto> _ZFP_ZFMethod_paramDefaultValueList;
     zfuint _ZFP_ZFMethod_paramDefaultBeginIndex;
 
     // for class member type

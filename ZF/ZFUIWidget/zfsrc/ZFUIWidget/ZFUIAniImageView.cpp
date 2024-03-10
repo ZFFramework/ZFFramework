@@ -5,12 +5,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 zfclassNotPOD _ZFP_ZFUIAniImageDataPrivate {
 public:
-    zfautoObjectT<ZFUIImage *> frameSrc;
+    zfautoT<ZFUIImage *> frameSrc;
     ZFUISize frameSizePixel;
     zfindex frameCount;
     ZFCoreArrayPOD<zftimet> frameDurations;
 
-    ZFCoreArray<zfautoObjectT<ZFUIImage *> > frameImages;
+    ZFCoreArray<zfautoT<ZFUIImage *> > frameImages;
     ZFCoreArrayPOD<zfuint> frameTimers;
 };
 
@@ -46,7 +46,7 @@ ZFMETHOD_DEFINE_4(ZFUIAniImageData, zfbool, aniLoad
 
     for(zffloat y = 0, yEnd = imageSizeFixed.height - frameSizePixel.height; y <= yEnd && d->frameImages.count() < frameCount; y += frameSizePixel.height) {
         for(zffloat x = 0, xEnd = imageSizeFixed.width - frameSizePixel.width; x <= xEnd && d->frameImages.count() < frameCount; x += frameSizePixel.width) {
-            zfautoObjectT<ZFUIImage *> frameImage = ZFUIImageInFrame(frameSrc, ZFUIRectMake(
+            zfautoT<ZFUIImage *> frameImage = ZFUIImageInFrame(frameSrc, ZFUIRectMake(
                     x,
                     y,
                     frameSizePixel.width,
@@ -84,7 +84,7 @@ ZFMETHOD_DEFINE_4(ZFUIAniImageData, zfbool, aniLoad
     return zftrue;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIAniImageData, zfautoObjectT<ZFUIImage *> const &, frameSrc) {
+ZFMETHOD_DEFINE_0(ZFUIAniImageData, zfautoT<ZFUIImage *> const &, frameSrc) {
     return d->frameSrc;
 }
 ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFUISize const &, frameSizePixel) {
@@ -97,7 +97,7 @@ ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArrayPOD<zftimet> const &, frameDurati
     return d->frameDurations;
 }
 
-ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArray<zfautoObjectT<ZFUIImage *> > const &, frameImages) {
+ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArray<zfautoT<ZFUIImage *> > const &, frameImages) {
     return d->frameImages;
 }
 ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArrayPOD<zfuint> const &, frameTimers) {
@@ -170,7 +170,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
-    zfautoObject frameSrcImage;
+    zfauto frameSrcImage;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
         require, ZFSerializableKeyword_ZFUIAniImageView_frameSrc, ZFObject, frameSrcImage);
     if(frameSrcImage == zfnull || !frameSrcImage->classData()->classIsTypeOf(ZFUIImage::ClassData())) {
@@ -524,19 +524,19 @@ void ZFUIAniImageView::layoutOnMeasure(
 static zfbool _ZFP_ZFUIAniImageCreate(
         ZF_IN const ZFClass *desiredClass
         , ZF_IN const ZFPathInfo &pathInfo
-        , ZF_IN const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &frameImages
+        , ZF_IN const ZFCoreArray<zfautoT<ZFUIImage *> > &frameImages
         , ZF_IN_OPT const ZFCoreArrayPOD<zftimet> &frameDurations = ZFCoreArrayPOD<zftimet>()
         );
 ZFMETHOD_DEFINE_3(ZFUIAniImageData, zfbool, Create
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages)
+        , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
         , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
         ) {
     return _ZFP_ZFUIAniImageCreate(zfself::ClassData(), pathInfo, frameImages, frameDurations);
 }
 ZFMETHOD_DEFINE_3(ZFUIAniImageView, zfbool, Create
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
-        , ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages)
+        , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
         , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
         ) {
     return _ZFP_ZFUIAniImageCreate(zfself::ClassData(), pathInfo, frameImages, frameDurations);
@@ -544,7 +544,7 @@ ZFMETHOD_DEFINE_3(ZFUIAniImageView, zfbool, Create
 static zfbool _ZFP_ZFUIAniImageCreate(
         ZF_IN const ZFClass *desiredClass
         , ZF_IN const ZFPathInfo &pathInfo
-        , ZF_IN const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &frameImages
+        , ZF_IN const ZFCoreArray<zfautoT<ZFUIImage *> > &frameImages
         , ZF_IN_OPT const ZFCoreArrayPOD<zftimet> &frameDurations /* = ZFCoreArrayPOD<zftimet>() */
         ) {
     if(frameImages.isEmpty()) {
@@ -599,7 +599,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(
                 frameSizePixel.height));
         }
     }
-    zfautoObjectT<ZFUIImage *> frameSrc = ZFUIDraw::endForImage(context);
+    zfautoT<ZFUIImage *> frameSrc = ZFUIDraw::endForImage(context);
     if(frameSrc == zfnull || !ZFUIImageToOutput(imgOutput, frameSrc)) {
         return zffalse;
     }
@@ -616,7 +616,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(
     frameSrc->imageSerializableType(ZFUIImageSerializeType_input);
     frameSrc->imageSerializableData(&imgInputData);
 
-    zfautoObject result = desiredClass->newInstance();
+    zfauto result = desiredClass->newInstance();
     if(desiredClass->classIsTypeOf(ZFUIAniImageData::ClassData())) {
         if(!result.to<ZFUIAniImageData *>()->aniLoad(frameSrc, frameSizePixel, frameCount, frameDurations)) {
             return zffalse;

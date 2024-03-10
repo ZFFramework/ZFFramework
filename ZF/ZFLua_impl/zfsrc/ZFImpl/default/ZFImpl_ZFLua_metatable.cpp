@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFImpl_ZFLua_metatable_PrepareParam(param, luaStackOffset) \
-    zfautoObject _##param; \
+    zfauto _##param; \
     const ZFClass *param##Cls = zfnull; \
     if(!ZFImpl_ZFLua_toNumberT(_##param, L, luaStackOffset, zftrue, &param##Cls)) { \
         return ZFImpl_ZFLua_luaError(L, \
@@ -146,7 +146,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_concat_action(
         return zftrue;
     }
     if(lua_isuserdata(L, luaStackOffset)) {
-        zfautoObject const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
+        zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
         ZFTypeIdWrapper *wrapper = param;
         if(wrapper != zfnull) {
             if(wrapper->wrappedValueToString(v)) {
@@ -195,13 +195,13 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
         , ZF_IN lua_State *L
         ) {
     if(lua_isuserdata(L, 1) && lua_isuserdata(L, 2)) {
-        zfautoObject v1;
+        zfauto v1;
         if(!ZFImpl_ZFLua_toObject(v1, L, 1)) {
             zfstringAppend(errorHint, "[LuaMetatable] unknown param type: %s",
                 ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue));
             return zffalse;
         }
-        zfautoObject v2;
+        zfauto v2;
         if(!ZFImpl_ZFLua_toObject(v2, L, 2)) {
             zfstringAppend(errorHint, "[LuaMetatable] unknown param type: %s",
                 ZFImpl_ZFLua_luaObjectInfo(L, 2, zftrue));
@@ -212,8 +212,8 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
     }
     else {
         if(lua_isnumber(L, 1) || lua_isnumber(L, 2)) {
-            zfautoObject v1;
-            zfautoObject v2;
+            zfauto v1;
+            zfauto v2;
             if(ZFImpl_ZFLua_toNumberT(v1, L, 1)
                     && ZFImpl_ZFLua_toNumberT(v2, L, 2)
                     ) {
@@ -280,7 +280,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_le(ZF_IN lua_State *L) {
 static int _ZFP_ZFImpl_ZFLua_metatable_tostring(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
-    zfautoObject obj;
+    zfauto obj;
     if(!ZFImpl_ZFLua_toObject(obj, L, 1)) {
         return ZFImpl_ZFLua_luaError(L,
             "[__tostring] unknown object type: %s",
@@ -411,13 +411,13 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
     }
 
     if(paramClass0->classIsTypeOf(ZFEnum::ClassData())) {
-        zfautoObject ret = paramClass0->newInstance();
+        zfauto ret = paramClass0->newInstance();
         ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint>(ret, (zfuint)n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }
     if(paramClass1->classIsTypeOf(ZFEnum::ClassData())) {
-        zfautoObject ret = paramClass1->newInstance();
+        zfauto ret = paramClass1->newInstance();
         ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint>(ret, (zfuint)n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;

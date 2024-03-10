@@ -116,7 +116,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFUIView *, ZFUIViewFocusNextMove
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUIKit, zfbool, ZFUIViewFocusResolveKeyEvent
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIKeyEvent *, keyEvent)
-        , ZFMP_OUT_OPT(zfautoObject *, nextFocus, zfnull)
+        , ZFMP_OUT_OPT(zfauto *, nextFocus, zfnull)
         , ZFMP_IN_OPT(ZFUIView *, endParent, zfnull)
         )
 

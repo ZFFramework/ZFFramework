@@ -74,7 +74,7 @@ public:
     zfclassNotPOD NativeAudio {
     public:
         zfidentity loadTaskId;
-        zfautoObjectT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder *> impl;
+        zfautoT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder *> impl;
         int channel;
         zftimet position_resumeTime;
         zftimet position_prev;
@@ -172,7 +172,7 @@ public:
                 implHolder->errorHint(zflineAlloc(v_zfstring, "net load depends on ZFHttpRequest impl"));
             }
             else {
-                zfautoObject inputHolder = ZFInvoke("ZFInputForHttp", zflineAlloc(v_zfstring, url));
+                zfauto inputHolder = ZFInvoke("ZFInputForHttp", zflineAlloc(v_zfstring, url));
                 v_ZFInput *inputTmp = inputHolder;
                 if(inputTmp == zfnull || !inputTmp->zfv) {
                     implHolder->errorHint(zflineAlloc(v_zfstring, zfstr("unable to load from url: %s", url)));
@@ -319,12 +319,12 @@ private:
     static void _implOnFinish(int channel) {
         zfCoreMutexLock();
         zfself *d = (zfself *)ZFPROTOCOL_ACCESS(ZFAudio);
-        zfstlmap<zfidentity, zfautoObjectT<ZFAudio *> >::iterator it = d->_implPlaying.find(channel);
+        zfstlmap<zfidentity, zfautoT<ZFAudio *> >::iterator it = d->_implPlaying.find(channel);
         if(it == d->_implPlaying.end()) {
             zfCoreMutexUnlock();
             return;
         }
-        zfautoObjectT<ZFAudio *> audio = it->second;
+        zfautoT<ZFAudio *> audio = it->second;
         d->_implPlaying.erase(it);
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         nativeAudio->channel = -1;
@@ -345,7 +345,7 @@ private:
     }
 
 private:
-    zfstlmap<zfidentity, zfautoObjectT<ZFAudio *> > _implPlaying;
+    zfstlmap<zfidentity, zfautoT<ZFAudio *> > _implPlaying;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAudioImpl_sys_SDL)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAudioImpl_sys_SDL)
 

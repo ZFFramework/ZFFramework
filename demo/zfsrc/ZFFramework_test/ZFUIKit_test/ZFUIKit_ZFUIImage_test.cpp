@@ -22,10 +22,10 @@ protected:
         container->childAdd(view)->c_sizeFill();
 
         // encode image to binary and load it again to test
-        zfautoObject imageHolder = zfRes("test_normal.png");
+        zfauto imageHolder = zfRes("test_normal.png");
         zfblockedAlloc(ZFIOBufferByMemory, io);
         ZFUIImageToOutput(io->output(), imageHolder);
-        zfautoObject imageNew = ZFUIImageFromInput(io->input());
+        zfauto imageNew = ZFUIImageFromInput(io->input());
         view->image(imageNew);
 
         this->prepareSettingButton(window, view);

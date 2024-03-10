@@ -220,7 +220,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToJson
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFObjectFromJson
-        , ZFMP_OUT(zfautoObject &, ret)
+        , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         ) {
@@ -232,11 +232,11 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFObjectFromJson
         return zffalse;
     }
 }
-ZFMETHOD_FUNC_DEFINE_2(zfautoObject, ZFObjectFromJson
+ZFMETHOD_FUNC_DEFINE_2(zfauto, ZFObjectFromJson
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         ) {
-    zfautoObject ret;
+    zfauto ret;
     ZFObjectFromJson(ret, input, outErrorHint);
     return ret;
 }

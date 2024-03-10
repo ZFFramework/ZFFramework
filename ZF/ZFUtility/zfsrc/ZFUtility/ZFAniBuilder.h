@@ -109,7 +109,7 @@ public:
     /** @brief change the aniTarget */
     const ZFAniBuilder &aniTarget(ZF_IN ZFObject *aniTarget) const;
     /** @brief get the impl animation */
-    zfautoObjectT<ZFAnimation *> toAnimation(void) const;
+    zfautoT<ZFAnimation *> toAnimation(void) const;
 
 public:
     /** @brief see #objectInfo */

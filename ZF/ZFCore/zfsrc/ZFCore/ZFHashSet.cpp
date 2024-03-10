@@ -72,7 +72,7 @@ ZFMETHOD_DEFINE_1(ZFHashSet, void, removeElement
         ) {
     zfiterator it = d->iterFind(obj);
     if(d->iterValid(it)) {
-        zfautoObject key = d->iterKey(it);
+        zfauto key = d->iterKey(it);
         d->iterRemove(it);
         this->contentOnRemove(key);
         this->contentOnChange();
@@ -80,7 +80,7 @@ ZFMETHOD_DEFINE_1(ZFHashSet, void, removeElement
 }
 ZFMETHOD_DEFINE_0(ZFHashSet, void, removeAll) {
     if(!d->isEmpty()) {
-        ZFCoreArray<zfautoObject> tmp;
+        ZFCoreArray<zfauto> tmp;
         tmp.capacity(d->count());
         for(zfiterator it = d->iter(); d->iterValid(it); d->iterNext(it)) {
             tmp.add(d->iterValue(it));
@@ -135,7 +135,7 @@ ZFMETHOD_DEFINE_2(ZFHashSet, void, iterValue
 ZFMETHOD_DEFINE_1(ZFHashSet, void, iterRemove
         , ZFMP_IN_OUT(zfiterator &, it)
         ) {
-    zfautoObject key = d->iterKey(it);
+    zfauto key = d->iterKey(it);
     if(key != zfnull) {
         d->iterRemove(it);
         this->contentOnRemove(key);

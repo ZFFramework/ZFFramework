@@ -11,7 +11,7 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
 
-        zfautoObject testObject = this->prepareTestObject();
+        zfauto testObject = this->prepareTestObject();
 
         {
             zfstring s;
@@ -47,7 +47,7 @@ protected:
     }
 
 private:
-    zfautoObject prepareTestObject(void) {
+    zfauto prepareTestObject(void) {
         zfblockedAlloc(ZFUIAutoLayout, parent);
         parent->viewAlpha(0.5f);
 

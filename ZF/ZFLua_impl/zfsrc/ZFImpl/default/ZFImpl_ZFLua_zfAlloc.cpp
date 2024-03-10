@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfbool ZFImpl_ZFLua_zfAlloc(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN lua_State *L
         , ZF_IN const ZFClass *cls
         , ZF_IN int paramCount
@@ -15,7 +15,7 @@ zfbool ZFImpl_ZFLua_zfAlloc(
         return zftrue;
     }
 
-    zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
+    zfauto paramList[ZFMETHOD_MAX_PARAM] = {
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
@@ -56,7 +56,7 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
             "[zfAlloc] unable to find class: %s", clsName);
     }
 
-    zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
+    zfauto paramList[ZFMETHOD_MAX_PARAM] = {
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
@@ -87,7 +87,7 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
         }
     }
 
-    zfautoObject ret;
+    zfauto ret;
     ZFDI_alloc(ret, zfnull, cls, (zfindex)paramCount, paramList);
     ZFImpl_ZFLua_luaPush(L, ret);
     return 1;

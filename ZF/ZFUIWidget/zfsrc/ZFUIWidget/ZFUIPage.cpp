@@ -59,8 +59,8 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnChange)
 // _ZFP_ZFUIPageManagerPrivate
 zfclassNotPOD _ZFP_ZFUIPageAniOverrideData {
 public:
-    zfautoObjectT<ZFAnimation *> resumeAni;
-    zfautoObjectT<ZFAnimation *> pauseAni;
+    zfautoT<ZFAnimation *> resumeAni;
+    zfautoT<ZFAnimation *> pauseAni;
     zfbool pauseAniHigherPriority;
 };
 zfclassNotPOD _ZFP_ZFUIPageManagerPrivate {
@@ -74,8 +74,8 @@ public:
     ZFUIView *pageContainer;
     ZFCoreArrayPOD<ZFUIPage *> pageList;
     ZFCoreArray<_ZFP_ZFUIPageAniOverrideData> pageAniOverrideList;
-    zfautoObjectT<ZFAnimation *> resumeAni;
-    zfautoObjectT<ZFAnimation *> pauseAni;
+    zfautoT<ZFAnimation *> resumeAni;
+    zfautoT<ZFAnimation *> pauseAni;
     zfint pageMoveFlag;
     ZFUIPage *pageMoveLastResumePage;
     ZFCoreArray<ZFListener> pageRequestQueue;
@@ -367,8 +367,8 @@ void ZFUIPageManager::objectOnDealloc(void) {
 }
 
 void ZFUIPageManager::managerOnCreate(void) {
-    zfautoObjectT<ZFUIView *> managerContainer = (this->managerContainerClass() != zfnull ? this->managerContainerClass() : ZFUIView::ClassData())->newInstance();
-    zfautoObjectT<ZFUIView *> pageContainer = (this->pageContainerClass() != zfnull ? this->pageContainerClass() : ZFUIView::ClassData())->newInstance();
+    zfautoT<ZFUIView *> managerContainer = (this->managerContainerClass() != zfnull ? this->managerContainerClass() : ZFUIView::ClassData())->newInstance();
+    zfautoT<ZFUIView *> pageContainer = (this->pageContainerClass() != zfnull ? this->pageContainerClass() : ZFUIView::ClassData())->newInstance();
     d->managerContainer = managerContainer;
     d->pageContainer = pageContainer;
     zfCoreAssertWithMessage(d->managerContainer != zfnull, "managerContainerClass must be type of %s", ZFUIView::ClassData()->className());

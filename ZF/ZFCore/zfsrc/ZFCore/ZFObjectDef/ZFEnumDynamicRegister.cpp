@@ -108,7 +108,7 @@ static ZFEnum *_ZFP_ZFEnumDynamic_e(
         return ret;
     }
     const _ZFP_ZFEnumData *d = _ZFP_ZFEnumDataFind(invokerMethod->methodOwnerClass());
-    zfautoObject retHolder = invokerMethod->methodOwnerClass()->newInstance();
+    zfauto retHolder = invokerMethod->methodOwnerClass()->newInstance();
     ret = retHolder;
     ret->_ZFP_enumValue(d->enumValueForName(enumName));
     invokerMethod->methodOwnerClass()->classTag(tagKey, retHolder);

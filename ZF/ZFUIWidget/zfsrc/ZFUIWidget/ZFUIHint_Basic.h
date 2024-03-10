@@ -33,18 +33,18 @@ public:
  * -  #ZFUIHintContentBasic as the #ZFUIHint::hintContent
  * -  have an alpha change animation as the hint's show and hide animation
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoObjectT<ZFUIHint *>, ZFUIHintMake
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFUIHint *>, ZFUIHintMake
         , ZFMP_IN(const zfchar *, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         )
 /**
  * @brief #ZFUIHintMake and show the hint
  */
-ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIWidget, zfautoObjectT<ZFUIHint *>, ZFUIHintShow
+ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFUIHint *>, ZFUIHintShow
         , ZFMP_IN(const zfchar *, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {
-    zfautoObjectT<ZFUIHint *> hint = ZFUIHintMake(text, icon);
+    zfautoT<ZFUIHint *> hint = ZFUIHintMake(text, icon);
     hint.to<ZFUIHint *>()->hintShow();
     return hint;
 }

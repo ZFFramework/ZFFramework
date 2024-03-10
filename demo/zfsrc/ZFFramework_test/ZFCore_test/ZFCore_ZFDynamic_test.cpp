@@ -36,7 +36,7 @@ protected:
             .NSEnd()
             ;
         const ZFClass *cls = ZFClass::classForName("ZFDynamicTest");
-        zfautoObject obj = cls->newInstance();
+        zfauto obj = cls->newInstance();
 
         obj->invoke("testProp", zflineAlloc(v_zfstring, "testValue"));
         zfLog() << obj->invoke("testProp");

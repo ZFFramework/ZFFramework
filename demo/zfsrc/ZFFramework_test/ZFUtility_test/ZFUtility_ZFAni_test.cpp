@@ -44,7 +44,7 @@ protected:
         ZFFramework_test_asyncTestCheck();
 
         zfblockedAlloc(_ZFP_ZFUtility_ZFAni_test_Object, target);
-        zfautoObject aniHolder = ZFAni(target, "testProp", "-100", "200");
+        zfauto aniHolder = ZFAni(target, "testProp", "-100", "200");
         ZFAnimation *ani = aniHolder;
         ani->aniDuration(2000);
 

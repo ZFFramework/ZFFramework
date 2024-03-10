@@ -19,7 +19,7 @@ public:
     /**
      * @brief return a copy of this object
      */
-    zffinal zfautoObjectT<ZFCopyable *> copy(void);
+    zffinal zfautoT<ZFCopyable *> copy(void);
     /**
      * @brief see #copy, anotherObj must be same type as this object (by classData),
      *   otherwise, do nothing

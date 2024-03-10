@@ -20,7 +20,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFResCacheAutoCleanup) {
 ZF_GLOBAL_INITIALIZER_END(ZFResCacheAutoCleanup)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfRes
+ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
         , ZFMP_IN(const zfchar *, resFilePath)
         , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
         ) {
@@ -36,12 +36,12 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfRes
     }
     zfCoreMutexLocker();
     if(input.callbackId() != zfnull) {
-        zfautoObject ret = ZFResCache::instance()->cacheGet(input.callbackId());
+        zfauto ret = ZFResCache::instance()->cacheGet(input.callbackId());
         if(ret != zfnull) {
             return ret;
         }
     }
-    zfautoObject ret;
+    zfauto ret;
     if(!ZFObjectIOLoadT(ret, input)) {
         return zfnull;
     }

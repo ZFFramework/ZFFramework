@@ -39,7 +39,7 @@ public:
         void update(void) {
             if(!this->updated) {
                 zfblockedAlloc(ZFHttpRequest, send, this->url, ZFHttpMethod::e_HEAD);
-                zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
+                zfautoT<ZFHttpResponse *> recv = send->requestSync();
                 this->updated = zftrue;
                 if(recv == zfnull || !recv->success()) {
                     return;
@@ -75,7 +75,7 @@ public:
             for(zfindex iRetry = 0; iRetry <= ChunkRetry; ++iRetry) {
                 zfblockedAlloc(ZFHttpRequest, send, url, ZFHttpMethod::e_GET);
                 send->header("Range", zfstr("bytes=%s-%s", chunkPos, chunkEnd - 1));
-                zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
+                zfautoT<ZFHttpResponse *> recv = send->requestSync();
                 if(recv != zfnull && recv->success() && recv->body().bufferSize() == chunkEnd - chunkPos) {
                     zfCoreMutexLocker();
                     ZFBuffer ret;
@@ -97,7 +97,7 @@ public:
 public:
     static zfbool callbackIsExist(ZF_IN const zfchar *pathData) {
         zfblockedAlloc(ZFHttpRequest, send, pathData, ZFHttpMethod::e_HEAD);
-        zfautoObjectT<ZFHttpResponse *> recv = send->requestSync();
+        zfautoT<ZFHttpResponse *> recv = send->requestSync();
         return recv != zfnull && recv->success();
     }
     static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {

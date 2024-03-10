@@ -34,7 +34,7 @@ void ZFUIKit_test_prepareTestWindow(
     window->childAdd(container)->c_sizeFill()->c_margin(0, 50, 0, 0);
 }
 
-zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
+zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
     zfblockedAlloc(ZFUIKit_test_Button, settingsButton);
     settingsButton->label()->text("settings");
     settingsButton->objectTag("settingsHolder", settings);
@@ -111,7 +111,7 @@ void ZFUIKit_test_prepareSettingButtonWithTestWindow(
         ZF_IN ZFUIWindow *window
         , ZF_IN ZFArray *settings
         ) {
-    zfautoObject buttonHolder = ZFUIKit_test_prepareSettingButton(settings);
+    zfauto buttonHolder = ZFUIKit_test_prepareSettingButton(settings);
     ZFUIButton *button = buttonHolder;
     window->childAdd(button)->c_alignTop();
 }
@@ -200,7 +200,7 @@ void ZFUIKit_test_prepareSettingForResetProperty(
             return;
         }
 
-        zfautoObject fromObj = obj->classData()->newInstance();
+        zfauto fromObj = obj->classData()->newInstance();
         for(zfindex i = 0; i < toReset.count(); ++i) {
             ZFPropertyCopy(toReset[i], obj, fromObj);
         }

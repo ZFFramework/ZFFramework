@@ -217,7 +217,7 @@ public:
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfautoObject serializableDataTagRemoveAndGet(ZF_IN const zfchar *key);
+    zffinal zfauto serializableDataTagRemoveAndGet(ZF_IN const zfchar *key);
     /**
      * @brief see #serializableDataTag
      *

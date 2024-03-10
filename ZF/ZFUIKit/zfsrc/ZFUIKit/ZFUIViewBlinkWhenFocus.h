@@ -24,7 +24,7 @@ ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfbool, ZFUIViewBlinkWhenFocusAutoApply)
 /**
  * @brief default mask image for #ZFUIViewBlinkWhenFocusAutoApplyStart, an alpha white image by default
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfautoObject, ZFUIViewBlinkWhenFocusMaskImage)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfauto, ZFUIViewBlinkWhenFocusMaskImage)
 
 /**
  * @brief util method to automatically blink focused view

@@ -21,7 +21,7 @@ public:
     QByteArray body;
     QNetworkReply *response;
     QList<QByteArray> responseRawHeaderList;
-    zfautoObjectT<ZFTimer *> timeoutTimer;
+    zfautoT<ZFTimer *> timeoutTimer;
 
 public:
     _ZFP_ZFHttpRequestImpl_sys_Qt_Task(void)

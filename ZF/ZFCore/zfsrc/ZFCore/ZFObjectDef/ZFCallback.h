@@ -9,7 +9,7 @@
 #include "ZFMethod.h"
 #include "ZFObjectCast.h"
 #include "ZFAny.h"
-#include "zfautoObjectFwd.h"
+#include "zfautoFwd.h"
 #include "ZFPathInfo.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -230,7 +230,7 @@ public:
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfautoObject callbackTagRemoveAndGet(ZF_IN const zfchar *key);
+    zffinal zfauto callbackTagRemoveAndGet(ZF_IN const zfchar *key);
     /**
      * @brief see #callbackTag
      *

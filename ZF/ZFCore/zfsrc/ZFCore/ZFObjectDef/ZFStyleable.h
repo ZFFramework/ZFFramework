@@ -235,7 +235,7 @@ private:
             if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
                 return zfnull; \
             } \
-            zfautoObject obj = _ZFP_ZFStyleableDefault_##YourStyle::ClassData()->newInstance(); \
+            zfauto obj = _ZFP_ZFStyleableDefault_##YourStyle::ClassData()->newInstance(); \
             if(obj != zfnull) { \
                 zfself::_ZFP_ZFStyleablEnumDefaultStyle(obj.to<YourStyle *>()); \
             } \
@@ -441,7 +441,7 @@ extern ZFLIB_ZFCore void ZFStyleSet(
  * @note you may register your own decoder by #ZFSTYLE_DECODER_DEFINE
  *   to supply additional style
  */
-extern ZFLIB_ZFCore zfautoObject ZFStyleGet(ZF_IN const zfchar *styleKey);
+extern ZFLIB_ZFCore zfauto ZFStyleGet(ZF_IN const zfchar *styleKey);
 /**
  * @brief get all styles, for debug use only, see #ZFStyleSet
  */
@@ -518,7 +518,7 @@ extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
  *   ZFSTYLE_DECODER_DEFINE(ZFStyleDecoder_xxx, {
  *       // perform your decode action, proto type:
  *       //   zfbool decode(
- *       //           ZF_OUT zfautoObject &ret
+ *       //           ZF_OUT zfauto &ret
  *       //           , ZF_IN const zfchar *styleKey
  *       //           );
  *   })
@@ -536,14 +536,14 @@ extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
         _ZFP_ZFStyleDecoderUnregister(ZFM_TOSTRING(registerSig)); \
     } \
     static zfbool _ZFP_decode( \
-            ZF_OUT zfautoObject &ret \
+            ZF_OUT zfauto &ret \
             , ZF_IN const zfchar *styleKey \
             ) { \
         decodeAction __VA_ARGS__ \
     } \
     ZF_STATIC_REGISTER_END(ZFStyleDecoder_##registerSig)
 typedef zfbool (*_ZFP_ZFStyleDecoder)(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN const zfchar *styleKey
         );
 extern ZFLIB_ZFCore void _ZFP_ZFStyleDecoderRegister(

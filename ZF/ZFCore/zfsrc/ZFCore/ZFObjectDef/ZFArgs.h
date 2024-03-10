@@ -146,7 +146,7 @@ public:
     }
 
 private:
-    zfclassPOD _ZFP_D {
+    zfclassPOD _ZFP_D { /* ZFTAG_TRICKS: ZFAny is safe to treat as POD */
     public:
         zfidentity eventId;
         ZFAny sender;

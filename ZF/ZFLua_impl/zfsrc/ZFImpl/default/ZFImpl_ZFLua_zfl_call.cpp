@@ -30,10 +30,10 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     }
     int paramCount = count - (luaParamOffset - 1);
 
-    zfautoObject obj;
+    zfauto obj;
     if(!ZFImpl_ZFLua_toObject(obj, L, 1)) {
         return ZFImpl_ZFLua_luaError(L,
-            "[zfl_call] failed to access caller object, expect zfautoObject, got %s, while executing: %s",
+            "[zfl_call] failed to access caller object, expect zfauto, got %s, while executing: %s",
             ZFImpl_ZFLua_luaObjectInfo(L, 1, zftrue),
             ZFImpl_ZFLua_luaObjectInfo(L, 2));
     }
@@ -44,7 +44,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
             ZFImpl_ZFLua_luaObjectInfo(L, 2));
     }
 
-    zfautoObject paramList[ZFMETHOD_MAX_PARAM] = {
+    zfauto paramList[ZFMETHOD_MAX_PARAM] = {
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
         ZFMethodGenericInvokerDefaultParamHolder(),
@@ -81,7 +81,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
         }
     }
 
-    zfautoObject ret;
+    zfauto ret;
     if(ZFLogLevelIsActive(ZFLogLevel::e_Debug)) {
         zfstring errorHint;
         if(ZFDI_invoke(ret, &errorHint, obj, name, (zfindex)paramCount, paramList)) {

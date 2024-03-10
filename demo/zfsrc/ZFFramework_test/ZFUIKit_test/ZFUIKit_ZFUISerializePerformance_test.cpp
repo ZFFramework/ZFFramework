@@ -71,9 +71,9 @@ protected:
         zfself *owner = this;
         ZFLISTENER_2(onStart
                 , zfself *, owner
-                , zfautoObjectT<ZFUITextView *>, outputView
+                , zfautoT<ZFUITextView *>, outputView
                 ) {
-            zfautoObject testObject = owner->prepareTestObject();
+            zfauto testObject = owner->prepareTestObject();
             outputView->text("running...");
             ZFSerializableData data = ZFObjectToData(testObject);
 
@@ -150,7 +150,7 @@ protected:
 public:
     zfindex testObjectType;
     zfindex testObjectTypeCount;
-    zfautoObject prepareTestObject(void) {
+    zfauto prepareTestObject(void) {
         switch(this->testObjectType) {
             case 0: {
                 zfblockedAlloc(ZFUIKit_test_Button, v);

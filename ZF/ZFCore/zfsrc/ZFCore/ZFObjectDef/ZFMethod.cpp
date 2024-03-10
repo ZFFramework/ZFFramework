@@ -252,7 +252,7 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
             ret += this->methodParamNameAt(i);
             if(i >= this->methodParamDefaultBeginIndex()) {
                 ret += " = ";
-                zfautoObject v = this->methodParamDefaultValueAt(i);
+                zfauto v = this->methodParamDefaultValueAt(i);
                 if(v == zfnull) {
                     ret += ZFTOKEN_zfnull;
                 }
@@ -310,7 +310,7 @@ zfbool ZFMethod::methodParamTypeIdIsMatch(ZF_IN const ZFMethod *method) const {
         );
 }
 
-zfautoObject ZFMethod::methodGenericInvoke(
+zfauto ZFMethod::methodGenericInvoke(
         ZF_IN_OPT ZFObject *ownerObjOrNull /* = zfnull */
         , ZF_IN_OPT ZFObject *param0 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param1 /* = ZFMethodGenericInvokerDefaultParam() */
@@ -323,8 +323,8 @@ zfautoObject ZFMethod::methodGenericInvoke(
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) const {
-    zfautoObject ret;
-    zfautoObject paramList[ZFMETHOD_MAX_PARAM];
+    zfauto ret;
+    zfauto paramList[ZFMETHOD_MAX_PARAM];
     paramList[0].zfunsafe_assign(param0);
     paramList[1].zfunsafe_assign(param1);
     paramList[2].zfunsafe_assign(param2);

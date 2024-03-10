@@ -154,13 +154,13 @@ zfclassFwd ZFInterface;
 zfclassFwd ZFClass;
 zfclassFwd ZFProperty;
 zfclassFwd ZFMethod;
-zfclassFwd zfautoObject;
+zfclassFwd zfauto;
 
 // ============================================================
 /**
  * @brief function type to create object
  */
-typedef zfautoObject (*ZFObjectCreator)(void);
+typedef zfauto (*ZFObjectCreator)(void);
 
 // ============================================================
 /**

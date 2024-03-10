@@ -26,7 +26,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUIImageView *, backgroundNorma
     value->image(zfRes("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIHint *>, ZFUIHintMake
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint *>, ZFUIHintMake
         , ZFMP_IN(const zfchar *, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {
@@ -46,7 +46,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFUIHint *>, ZFUIHintMake
 
     return hint;
 }
-ZFMETHOD_FUNC_INLINE_DEFINE_2(zfautoObjectT<ZFUIHint *>, ZFUIHintShow
+ZFMETHOD_FUNC_INLINE_DEFINE_2(zfautoT<ZFUIHint *>, ZFUIHintShow
         , ZFMP_IN(const zfchar *, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         )

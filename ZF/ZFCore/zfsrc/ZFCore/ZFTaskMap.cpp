@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFTaskMapPrivate {
 public:
-    typedef zfstlmap<zfidentity, zfautoObject> TaskMap;
+    typedef zfstlmap<zfidentity, zfauto> TaskMap;
 
 public:
     zfidentity cur;
@@ -44,7 +44,7 @@ ZFMETHOD_DEFINE_1(ZFTaskMap, zfidentity, attach
     d->m[taskId] = taskData;
     return taskId;
 }
-ZFMETHOD_DEFINE_1(ZFTaskMap, zfautoObject, detach
+ZFMETHOD_DEFINE_1(ZFTaskMap, zfauto, detach
         , ZFMP_IN(zfidentity, taskId)
         ) {
     zfsynchronize(this);
@@ -52,11 +52,11 @@ ZFMETHOD_DEFINE_1(ZFTaskMap, zfautoObject, detach
     if(it == d->m.end()) {
         return zfnull;
     }
-    zfautoObject ret = it->second;
+    zfauto ret = it->second;
     d->m.erase(it);
     return ret;
 }
-ZFMETHOD_DEFINE_0(ZFTaskMap, zfautoObjectT<ZFArray *>, detachAll) {
+ZFMETHOD_DEFINE_0(ZFTaskMap, zfautoT<ZFArray *>, detachAll) {
     zfsynchronize(this);
     zfblockedAlloc(ZFArray, ret);
     if(!d->m.empty()) {
@@ -68,7 +68,7 @@ ZFMETHOD_DEFINE_0(ZFTaskMap, zfautoObjectT<ZFArray *>, detachAll) {
     }
     return ret;
 }
-ZFMETHOD_DEFINE_1(ZFTaskMap, zfautoObject, exist
+ZFMETHOD_DEFINE_1(ZFTaskMap, zfauto, exist
         , ZFMP_IN(zfidentity, taskId)
         ) {
     zfsynchronize(this);

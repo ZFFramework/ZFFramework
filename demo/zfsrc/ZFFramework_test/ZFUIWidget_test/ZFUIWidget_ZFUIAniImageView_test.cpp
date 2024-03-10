@@ -25,7 +25,7 @@ protected:
         } ZFLISTENER_END()
         this->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
 
-        zfautoObjectT<ZFUIImage *> frameSrc = zfRes("test_normal.png");
+        zfautoT<ZFUIImage *> frameSrc = zfRes("test_normal.png");
         animatedImageView->aniLoad(frameSrc, ZFUISizeMake(
                 frameSrc->imageSizeFixed().width / 2,
                 frameSrc->imageSizeFixed().height / 2

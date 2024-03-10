@@ -10,13 +10,13 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIListCellUpdater, CellOnRecycle)
 #define _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key) \
     zfchar *cacheKey = zfsConnect("_ZFP_ZFUIListCellUpdater_cacheKey", key); \
     zfblockedFree(cacheKey)
-ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfautoObject, itemCacheAccess
+ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfauto, itemCacheAccess
         , ZFMP_IN(const zfchar *, key)
         ) {
     _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag<ZFArray *>(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty()) {
-        zfautoObject ret = cacheList->getLast();
+        zfauto ret = cacheList->getLast();
         cacheList->removeLast();
         return ret;
     }

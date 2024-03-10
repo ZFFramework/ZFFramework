@@ -20,7 +20,7 @@ protected:
         container->childAdd(layout)->c_sizeFill()->c_margin(40);
         layout->viewBackgroundColor(ZFUIColorRed());
 
-        ZFCoreArray<zfautoObject> v;
+        ZFCoreArray<zfauto> v;
         for(zfindex i = 0; i < 5; ++i) {
             zfblockedAlloc(ZFUITextView, t);
             v.add(t);

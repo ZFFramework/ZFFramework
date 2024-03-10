@@ -69,7 +69,7 @@ public:
     /**
      * @brief util method for impl to achieve cache logic
      */
-    ZFMETHOD_DECLARE_1(zfautoObject, itemCacheAccess
+    ZFMETHOD_DECLARE_1(zfauto, itemCacheAccess
             , ZFMP_IN(const zfchar *, key)
             )
     /** @brief see #itemCacheAccess */

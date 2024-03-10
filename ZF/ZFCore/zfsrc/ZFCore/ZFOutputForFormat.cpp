@@ -180,7 +180,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
     if(formatData == zfnull) {
         return zffalse;
     }
-    zfautoObject formatHolder;
+    zfauto formatHolder;
     if(!ZFObjectFromData(formatHolder, *formatData, outErrorHint, outErrorPos)) {
         return zffalse;
     }

@@ -10,8 +10,8 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_none)
 _ZFP_ZFTYPEID_ID_DATA_REGISTER(void, void)
 
 // ============================================================
-// zfautoObject
-ZFOUTPUT_TYPE_DEFINE(zfautoObject, {
+// zfauto
+ZFOUTPUT_TYPE_DEFINE(zfauto, {
     if(v == zfnull) {
         s += ZFTOKEN_zfnull;
     }

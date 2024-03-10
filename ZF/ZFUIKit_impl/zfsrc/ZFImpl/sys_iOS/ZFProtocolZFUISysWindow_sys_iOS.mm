@@ -255,8 +255,8 @@ public:
         [nativeRootView removeFromSuperview];
     }
 
-    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
-        zfautoObject modalWindow = ZFUISysWindow::ClassData()->newInstance();
+    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+        zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
         _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeModalWindow = [_ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow new];
         nativeModalWindow.ownerZFUISysWindow = modalWindow;
 

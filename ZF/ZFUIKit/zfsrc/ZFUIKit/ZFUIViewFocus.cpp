@@ -437,7 +437,7 @@ static zfbool _ZFP_ZFUIViewFocusResolveKeyEvent_shiftPressed = zffalse;
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIViewFocusResolveKeyEvent
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIKeyEvent *, keyEvent)
-        , ZFMP_OUT_OPT(zfautoObject *, nextFocus, zfnull)
+        , ZFMP_OUT_OPT(zfauto *, nextFocus, zfnull)
         , ZFMP_IN_OPT(ZFUIView *, endParent, zfnull)
         ) {
     if(nextFocus != zfnull) {

@@ -1,10 +1,10 @@
-#include "zfautoObject.h"
+#include "zfauto.h"
 #include "ZFObjectImpl.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfautoObject::zfautoObject(ZF_IN zfautoObject const &ref) {
+zfauto::zfauto(ZF_IN zfauto const &ref) {
     zfCoreMutexLock();
     d = ref.d;
     if(d) {
@@ -12,7 +12,7 @@ zfautoObject::zfautoObject(ZF_IN zfautoObject const &ref) {
     }
     zfCoreMutexUnlock();
 }
-zfautoObject::~zfautoObject(void) {
+zfauto::~zfauto(void) {
     if(d) {
         zfCoreMutexLock();
         if(d->refCount == 1) {
@@ -26,14 +26,14 @@ zfautoObject::~zfautoObject(void) {
     }
 }
 
-zfautoObject &zfautoObject::operator = (ZF_IN zfautoObject const &ref) {
+zfauto &zfauto::operator = (ZF_IN zfauto const &ref) {
     zfCoreMutexLock();
     this->zfunsafe_assign(ref);
     zfCoreMutexUnlock();
     return *this;
 }
 
-void zfautoObject::zfunsafe_assign(ZF_IN ZFObject *obj) {
+void zfauto::zfunsafe_assign(ZF_IN ZFObject *obj) {
     zfunsafe_zfRetain(obj);
     if(d) {
         if(d->refCount == 1) {
@@ -44,7 +44,7 @@ void zfautoObject::zfunsafe_assign(ZF_IN ZFObject *obj) {
         else {
             --(d->refCount);
             if(obj) {
-                d = zfpoolNew(_ZFP_zfautoObjectPrivate, obj);
+                d = zfpoolNew(_ZFP_zfautoPrivate, obj);
             }
             else {
                 d = zfnull;
@@ -52,12 +52,12 @@ void zfautoObject::zfunsafe_assign(ZF_IN ZFObject *obj) {
         }
     }
     else if(obj) {
-        d = zfpoolNew(_ZFP_zfautoObjectPrivate, obj);
+        d = zfpoolNew(_ZFP_zfautoPrivate, obj);
     }
 }
-void zfautoObject::zfunsafe_assign(ZF_IN zfautoObject const &ref) {
+void zfauto::zfunsafe_assign(ZF_IN zfauto const &ref) {
     if(d) {
-        _ZFP_zfautoObjectPrivate *dTmp = d;
+        _ZFP_zfautoPrivate *dTmp = d;
         d = ref.d;
         if(d) {
             ++(d->refCount);
@@ -81,8 +81,8 @@ void zfautoObject::zfunsafe_assign(ZF_IN zfautoObject const &ref) {
 }
 
 // ============================================================
-void _ZFP_zfautoObjectTError(void) {
-    zfCoreCriticalMessageTrim("[zfautoObjectT] cast from incompatible type");
+void _ZFP_zfautoTError(void) {
+    zfCoreCriticalMessageTrim("[zfautoT] cast from incompatible type");
 }
 
 ZF_NAMESPACE_GLOBAL_END

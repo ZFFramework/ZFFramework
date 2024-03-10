@@ -27,7 +27,7 @@ protected:
             serverPort = server->port();
 
             ZFLISTENER_1(serverRecvThread
-                    , zfautoObjectT<ZFUdp *>, server
+                    , zfautoT<ZFUdp *>, server
                     ) {
                 ZFBuffer buf;
                 ZFUdpAddr recvAddr;
@@ -58,8 +58,8 @@ protected:
 
             ZFTestCase *testCase = this;
             ZFLISTENER_2(clientRecvThread
-                    , zfautoObjectT<ZFTestCase *>, testCase
-                    , zfautoObjectT<ZFUdp *>, client
+                    , zfautoT<ZFTestCase *>, testCase
+                    , zfautoT<ZFUdp *>, client
                     ) {
                 ZFBuffer buf;
                 ZFUdpAddr hostAddr;

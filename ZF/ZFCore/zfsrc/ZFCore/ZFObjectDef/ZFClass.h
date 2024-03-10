@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFClass_h_
 #define _ZFI_ZFClass_h_
 
-#include "zfautoObjectFwd.h"
+#include "zfautoFwd.h"
 #include "ZFObjectObserver.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -76,7 +76,7 @@ public:
      * typical usage:
      * @code
      *   const ZFClass *cls = ZFClass::classForName("MyObject");
-     *   zfautoObject objTmp = ((cls != zfnull) ? cls->newInstance() : zfautoObject());
+     *   zfauto objTmp = ((cls != zfnull) ? cls->newInstance() : zfauto());
      *   MyObject *obj = objTmp.to<MyObject *>();
      * @endcode
      * @note the class to find must:
@@ -281,19 +281,19 @@ public:
      *   ZFObject *myObj = zfAlloc(MyObject);
      *   ...
      *   // OK, newObj is a new instance of MyObject
-     *   zfautoObject newObjTmp = myObj->classData()->newInstance();
+     *   zfauto newObjTmp = myObj->classData()->newInstance();
      *   ZFObject *newObj = newObjTmp.toObject();
      * @endcode
      * @note object's no param version of objectOnInit would be called,
      *   if you want to construct with params,
      *   use #newInstanceGenericBegin instead
      */
-    zfautoObject newInstance(void) const;
+    zfauto newInstance(void) const;
     /**
      * @brief same as #newInstance, but explicitly disable cache logic,
      *   see #ZFALLOC_CACHE_RELEASE
      */
-    zfautoObject newInstanceNoCache(void) const;
+    zfauto newInstanceNoCache(void) const;
     /**
      * @brief for advanced reflection use only
      *
@@ -306,7 +306,7 @@ public:
      *   use with caution,
      *   or use #newInstanceGenericBegin if available:
      *   @code
-     *     zfautoObject result;
+     *     zfauto result;
      *     ZFCoreArrayPOD<const ZFMethod *> objectOnInitMethodList;
      *     cls->methodForNameGetAllT(objectOnInitMethodList, "objectOnInit");
      *     // you may do your extra method filters before actual alloc the object
@@ -333,7 +333,7 @@ public:
      *
      * see also #ZFObjectTagKeyword_newInstanceGenericFailed
      */
-    zfautoObject newInstance(
+    zfauto newInstance(
                                ZF_IN     ZFObject *param0
                              , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
                              , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
@@ -348,10 +348,10 @@ public:
     /** @brief see #newInstance */
     zfbool newInstanceGenericCheck(ZF_IN void *&token
                                    , ZF_IN const ZFMethod *objectOnInitMethod
-                                   , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                   , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
                                    , ZF_OUT_OPT zfstring *errorHint = zfnull) const; /* ZFMETHOD_MAX_PARAM */
     /** @brief see #newInstance */
-    zfautoObject newInstanceGenericEnd(
+    zfauto newInstanceGenericEnd(
             ZF_IN void *&token
             , ZF_IN zfbool objectOnInitMethodInvokeSuccess
             ) const;
@@ -599,7 +599,7 @@ public:
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfautoObject classTagRemoveAndGet(ZF_IN const zfchar *key) const;
+    zffinal zfauto classTagRemoveAndGet(ZF_IN const zfchar *key) const;
     /**
      * @brief see #classTag
      *

@@ -29,12 +29,12 @@ protected:
             serverPort = server->port();
 
             ZFLISTENER_1(serverRecvThread
-                    , zfautoObjectT<ZFTcp *>, server
+                    , zfautoT<ZFTcp *>, server
                     ) {
                 ZFBuffer buf;
                 while(server->valid())
                 {
-                    zfautoObjectT<ZFTcp *> conn = server->accept();
+                    zfautoT<ZFTcp *> conn = server->accept();
                     if(conn != zfnull)
                     {
                         buf.bufferSize(0);
@@ -64,8 +64,8 @@ protected:
 
             ZFTestCase *testCase = this;
             ZFLISTENER_2(clientRecvThread
-                    , zfautoObjectT<ZFTestCase *>, testCase
-                    , zfautoObjectT<ZFTcp *>, client
+                    , zfautoT<ZFTestCase *>, testCase
+                    , zfautoT<ZFTcp *>, client
                     ) {
                 ZFBuffer buf;
                 while(client->valid())

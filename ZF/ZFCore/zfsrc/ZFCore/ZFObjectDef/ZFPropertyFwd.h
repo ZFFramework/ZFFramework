@@ -48,7 +48,7 @@ extern ZFLIB_ZFCore void ZFPropertyCallbackIsValueAccessedChange(
 typedef zfbool (*ZFPropertyCallbackIsInitValue)(
         ZF_IN const ZFProperty *property
         , ZF_IN ZFObject *ownerObj
-        , ZF_OUT_OPT zfautoObject *outInitValue /* = zfnull */
+        , ZF_OUT_OPT zfauto *outInitValue /* = zfnull */
         );
 /** @brief change default impl for #ZFPropertyCallbackIsInitValue, use with caution */
 extern ZFLIB_ZFCore void ZFPropertyCallbackIsInitValueChange(
@@ -83,7 +83,7 @@ typedef void (*ZFPropertyCallbackUserRegisterInitValueSetup)(
  *
  * returned object must be valid to #ZFTypeInfo::typeIdClass
  */
-typedef zfautoObject (*ZFPropertyCallbackDynamicRegisterInitValueGetter)(ZF_IN const ZFProperty *property);
+typedef zfauto (*ZFPropertyCallbackDynamicRegisterInitValueGetter)(ZF_IN const ZFProperty *property);
 
 // ============================================================
 typedef void (*_ZFP_PropLifeCycleWrapper)(
@@ -97,7 +97,7 @@ zfclassNotPOD ZFLIB_ZFCore _ZFP_PropLifeCycleData {
 public:
     const ZFClass *propertyOwnerClass;
     _ZFP_PropLifeCycleWrapper propertyLifeCycleWrapper;
-    zfautoObject propertyLifeCycleUserData;
+    zfauto propertyLifeCycleUserData;
 };
 
 ZF_NAMESPACE_GLOBAL_END

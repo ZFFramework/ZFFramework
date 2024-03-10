@@ -33,7 +33,7 @@ zfclass ZFLIB_ZFUtility ZFResCache : zfextend ZFCache {
  * when pathInfo is specified, the resFilePath can be relative path to pathInfo,
  * at this case, the pathInfo must be well formed
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObject, zfRes
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfRes
         , ZFMP_IN(const zfchar *, resFilePath)
         , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
         )

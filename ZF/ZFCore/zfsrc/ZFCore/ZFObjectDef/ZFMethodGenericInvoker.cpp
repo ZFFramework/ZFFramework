@@ -21,7 +21,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodGenericInvokerDefaultParamInit) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFMethodGenericInvokerDefaultParamInit)
 
-zfautoObject _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
+zfauto _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
 
 zfbool _ZFP_MtdGIParamCheck(
         ZF_OUT_OPT zfstring *errorHint
@@ -63,8 +63,8 @@ zfbool _ZFP_ZFMethodGenericInvoke(
         ZF_IN const ZFMethod *invokerMethod
         , ZF_IN ZFObject *invokerObject
         , ZF_OUT_OPT zfstring *errorHint
-        , ZF_OUT zfautoObject &ret
-        , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_OUT zfauto &ret
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         ) {
     return invokerMethod->methodGenericInvoker()(
             invokerMethod

@@ -107,7 +107,7 @@ protected:
         zfsuper::objectOnInit();
     }
 };
-extern zfautoObject ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings);
+extern zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings);
 extern void ZFUIKit_test_prepareSettingButtonWithTestWindow(
         ZF_IN ZFUIWindow *window
         , ZF_IN ZFArray *settings
@@ -156,7 +156,7 @@ protected:
         taskData->property = property_; \
         taskData->propertyValues = propertyValues_.refNew(); \
         ZFLISTENER_1(nextCallback \
-                , zfautoObjectT<_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *>, taskData \
+                , zfautoT<_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *>, taskData \
                 ) { \
             _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *holder = taskData; \
             ZFCoreArray<PropertyType> const &propertyValues = *(const ZFCoreArray<PropertyType> *)holder->propertyValues; \

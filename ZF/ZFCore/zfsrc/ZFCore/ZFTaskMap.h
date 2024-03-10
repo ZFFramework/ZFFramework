@@ -22,13 +22,13 @@ zfclass ZFLIB_ZFCore ZFTaskMap : zfextend ZFObject {
             , ZFMP_IN(ZFObject *, taskData)
             )
     /** @brief see #ZFTaskMap */
-    ZFMETHOD_DECLARE_1(zfautoObject, detach
+    ZFMETHOD_DECLARE_1(zfauto, detach
             , ZFMP_IN(zfidentity, taskId)
             )
     /** @brief see #ZFTaskMap */
-    ZFMETHOD_DECLARE_0(zfautoObjectT<ZFArray *>, detachAll)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFArray *>, detachAll)
     /** @brief see #ZFTaskMap */
-    ZFMETHOD_DECLARE_1(zfautoObject, exist
+    ZFMETHOD_DECLARE_1(zfauto, exist
             , ZFMP_IN(zfidentity, taskId)
             )
 

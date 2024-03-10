@@ -11,19 +11,19 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfbool, invokeSucces
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, const ZFMethod *, invokerMethod)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, ZFObject *, invokerObject)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfstring, errorHint)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, ret)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param0)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param1)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param2)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param3)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param4)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param5)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param6)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfautoObject, param7)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, ret)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param0)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param1)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param2)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param3)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param4)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param5)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param6)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param7)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFMethodInvokeData, zfautoObject, callSuper)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFMethodInvokeData, zfauto, callSuper)
 
-zfautoObject ZFMethodInvokeData::callSuper(void) {
+zfauto ZFMethodInvokeData::callSuper(void) {
     zfCoreAssertWithMessage(invokerMethod->methodIsDynamicRegister(),
         "ZFMethodInvokeData::callSuper() only works for dynamic registered method");
     zfCoreAssertWithMessage(invokerMethod->methodOwnerClass() != zfnull && invokerMethod->methodType() == ZFMethodTypeVirtual,
@@ -73,7 +73,7 @@ zfautoObject ZFMethodInvokeData::callSuper(void) {
 zfclassNotPOD _ZFP_ZFMethodDynamicRegisterParamPrivate {
 public:
     zfuint refCount;
-    zfautoObject methodDynamicRegisterUserData;
+    zfauto methodDynamicRegisterUserData;
     const ZFClass *methodOwnerClass;
     zfstring methodNamespace;
     ZFMethodGenericInvoker methodGenericInvoker;
@@ -88,7 +88,7 @@ public:
     zfstring methodParamTypeName[ZFMETHOD_MAX_PARAM];
     zfstring methodParamName[ZFMETHOD_MAX_PARAM];
     ZFMethodParamDefaultValueCallback methodParamDefaultValueCallback[ZFMETHOD_MAX_PARAM];
-    zfautoObject methodParamDefaultValue[ZFMETHOD_MAX_PARAM];
+    zfauto methodParamDefaultValue[ZFMETHOD_MAX_PARAM];
 
 public:
     _ZFP_ZFMethodDynamicRegisterParamPrivate(void)
@@ -215,7 +215,7 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(
     }
     return *this;
 }
-static zfautoObject _ZFP_ZFMethodDynamicRegisterParamDefaultGetter(
+static zfauto _ZFP_ZFMethodDynamicRegisterParamDefaultGetter(
         ZF_IN const ZFMethod *invokerMethod
         , ZF_IN zfindex paramIndex
         ) {
@@ -372,7 +372,7 @@ public:
     zfindex methodParamCount;
     zfstring methodParamTypeId[ZFMETHOD_MAX_PARAM];
     zfstring methodParamName[ZFMETHOD_MAX_PARAM];
-    zfautoObject methodParamDefaultValue[ZFMETHOD_MAX_PARAM];
+    zfauto methodParamDefaultValue[ZFMETHOD_MAX_PARAM];
 public:
     _ZFP_ZFMPPrivate(void)
     : refCount(1)

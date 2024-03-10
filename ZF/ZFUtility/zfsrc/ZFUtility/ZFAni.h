@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  * aniImpl's param0 is #v_zffloat that holds progress
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine *>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const ZFListener &, aniImpl)
         )
@@ -49,14 +49,14 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, Z
  *     #ZFTYPEID_PROGRESS_DEFINE
  *   -  string that can be serialized by #ZFSerializable::serializeFromString
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine *>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(const zfchar *, from)
         , ZFMP_IN(const zfchar *, to)
         )
 /** @brief see #ZFAni */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine *>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(ZFObject *, from)

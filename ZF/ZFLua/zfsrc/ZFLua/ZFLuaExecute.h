@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * thanks to powerful reflection mechanism in ZFFramework,
  * most of components are registered to lua by reflection automatically\n
  * \n
- * all types of ZFFramework are wrapped as #zfautoObject in lua world,
+ * all types of ZFFramework are wrapped as #zfauto in lua world,
  * including: #ZFObject types (wrapped directly)
  * and non-ZFObject normal C++ types (wrapped by #ZFTypeIdWrapper)\n
  * then, all reflectable #ZFMethod supply #ZFMethodGenericInvoker
@@ -119,7 +119,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  array
  *   -  "ZFCoreArrayCreate([a, b, c, ...])"\n
  *     create a array, params support these types:
- *     -  zfautoObject
+ *     -  zfauto
  *     -  native lua number (stored as #v_zflongdouble)
  *     -  native lua string (stored as #v_zfstring)
  * -  param and return value
@@ -132,7 +132,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       -- return value
  *       return args[1];
  *     @endcode
- *     note that, all params passed from #ZFLuaExecute are all #zfautoObject type
+ *     note that, all params passed from #ZFLuaExecute are all #zfauto type
  * -  util
  *   -  "zfstringAppend(s, fmt, ...)"
  *     or "zfstr(fmt, ...)"\n
@@ -165,15 +165,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  for dynamically loaded library, all types would also be registered normally,
  *   however, won't be automatically unregistered when unloaded
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfautoObject, ZFLuaExecute
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecute
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull)
+        , ZFMP_IN_OPT(const ZFCoreArray<zfauto> *, luaParams, zfnull)
         , ZFMP_IN_OPT(void *, L, zfnull)
         )
 /** @brief see #ZFLuaExecute */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfautoObject, ZFLuaExecute
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecute
         , ZFMP_IN(const zfchar *, buf)
-        , ZFMP_IN_OPT(const ZFCoreArray<zfautoObject> *, luaParams, zfnull)
+        , ZFMP_IN_OPT(const ZFCoreArray<zfauto> *, luaParams, zfnull)
         , ZFMP_IN_OPT(void *, L, zfnull)
         )
 

@@ -15,7 +15,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 // ============================================================
 ZFEXPORT_VAR_DEFINE(ZFFilterForZFObject, ZFUIViewBlinkWhenFocusFilter, ZFFilterForZFObject())
 ZFEXPORT_VAR_DEFINE(zfbool, ZFUIViewBlinkWhenFocusAutoApply, zftrue)
-ZFEXPORT_VAR_DEFINE(zfautoObject, ZFUIViewBlinkWhenFocusMaskImage, zfnull)
+ZFEXPORT_VAR_DEFINE(zfauto, ZFUIViewBlinkWhenFocusMaskImage, zfnull)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkWhenFocus_settingInit, ZFLevelZFFrameworkHigh) {
 }
@@ -57,7 +57,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewBlinkWhenFocusDataHolder) {
     ZFUIViewBlinkWhenFocusMaskImage(zfnull);
 }
 public:
-    zfautoObjectT<ZFUIImage *> maskImageCur;
+    zfautoT<ZFUIImage *> maskImageCur;
     ZFListener viewBlinkOnListener;
     ZFListener viewBlinkOffListener;
     ZFListener focusChangeListener;

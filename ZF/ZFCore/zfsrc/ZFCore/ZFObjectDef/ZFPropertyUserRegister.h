@@ -17,9 +17,9 @@ public:
     typedef void (*DeleteCallback)(ZF_IN void *v);
     void *v;
     DeleteCallback deleteCallback;
-    zfautoObject retainValueHolder;
+    zfauto retainValueHolder;
 public:
-    static zfautoObject create(
+    static zfauto create(
             ZF_IN void *v
             , ZF_IN DeleteCallback deleteCallback
             , ZF_IN_OPT ZFObject *retainValue = zfnull
@@ -68,7 +68,7 @@ public:
         if(holder == zfnull) {
             holder = _ZFP_valueHolderAccess(property, ownerObj);
         }
-        zfautoObject oldValue = holder->retainValueHolder;
+        zfauto oldValue = holder->retainValueHolder;
         ownerObj->objectTag(
                 key,
                 _ZFP_I_PropURDIVH::create(
@@ -102,13 +102,13 @@ public:
     static zfbool callbackIsInitValue(
             ZF_IN const ZFProperty *property
             , ZF_IN ZFObject *ownerObj
-            , ZF_OUT_OPT zfautoObject *outInitValue
+            , ZF_OUT_OPT zfauto *outInitValue
             ) {
         zfCoreMutexLocker();
         if(!callbackIsValueAccessed(property, ownerObj)) {
             return zftrue;
         }
-        zfautoObject tmp;
+        zfauto tmp;
         if(property->callbackUserRegisterInitValueSetup) {
             property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
         }
@@ -147,12 +147,12 @@ private:
         key += property->propertyName();
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
         if(holder == zfnull) {
-            zfautoObject tmp;
+            zfauto tmp;
             if(property->callbackUserRegisterInitValueSetup) {
                 property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
             }
 
-            zfautoObject holderTmp = _ZFP_I_PropURDIVH::create(
+            zfauto holderTmp = _ZFP_I_PropURDIVH::create(
                     zfnew(T_Type, zfRetain(tmp.to<T_Type>())),
                     _deleteCallback,
                     tmp
@@ -224,7 +224,7 @@ public:
     static zfbool callbackIsInitValue(
             ZF_IN const ZFProperty *property
             , ZF_IN ZFObject *ownerObj
-            , ZF_OUT_OPT zfautoObject *outInitValue
+            , ZF_OUT_OPT zfauto *outInitValue
             ) {
         zfCoreMutexLocker();
         if(!callbackIsValueAccessed(property, ownerObj)) {
@@ -264,7 +264,7 @@ private:
                 property->callbackUserRegisterInitValueSetup(property, (void *)&tmp);
             }
 
-            zfautoObject holderTmp = _ZFP_I_PropURDIVH::create(
+            zfauto holderTmp = _ZFP_I_PropURDIVH::create(
                     zfnew(T_Type, tmp),
                     _deleteCallback
                 );
@@ -287,7 +287,7 @@ private:
             typedef Type T_Type; \
             T_Type *valueTmp = zfnull; \
             zfunsafe_zfRetain(*(valueTmp = zfpoolNew(T_Type, InitValueOrEmpty))); \
-            *(zfautoObject *)p = *valueTmp; \
+            *(zfauto *)p = *valueTmp; \
             zfpoolDelete(valueTmp); \
         } \
     };
@@ -487,7 +487,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *   static zfbool myCallbackIsInitValue(
  *           ZF_IN const ZFProperty *property
  *           , ZF_IN ZFObject *ownerObj
- *           , ZF_OUT_OPT zfautoObject *outInitValue
+ *           , ZF_OUT_OPT zfauto *outInitValue
  *           ) {
  *       ...
  *   }

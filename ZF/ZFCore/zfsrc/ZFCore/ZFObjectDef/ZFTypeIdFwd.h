@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFTypeIdFwd_h_
 #define _ZFI_ZFTypeIdFwd_h_
 
-#include "zfautoObjectFwd.h"
+#include "zfautoFwd.h"
 #include "ZFAny.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -129,7 +129,7 @@ public:
      * the stored value can be further accessed by #ZFTypeId::Value
      */
     static zfbool ValueStore(
-            ZF_OUT zfautoObject &obj
+            ZF_OUT zfauto &obj
             , ZF_IN T_Type const &v
             );
 
@@ -173,11 +173,11 @@ public:
     zfclassNotPOD Value {
     public:
         /** @brief try access as raw value, see #ZFTypeId::Value */
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj);
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj);
         /** @brief try access as raw value, see #ZFTypeId::Value */
-        static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj);
+        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj);
         /** @brief finish access as raw value, see #ZFTypeId::Value */
-        static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj);
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj);
     };
     /*
      * if available, the templates above should handle these types,
@@ -430,7 +430,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return v_##TypeName::ClassData(); \
         } \
         static zfbool ValueStore( \
-                ZF_OUT zfautoObject &obj \
+                ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
                 ) { \
             zfCoreMutexLock(); \
@@ -452,25 +452,25 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             > \
         zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+            static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 return ZFCastZFObject(v_##TypeName *, obj)->zfv; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
         template<typename T_Access> \
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 return &(ZFCastZFObject(v_##TypeName *, obj)->zfv); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
     }; \
@@ -508,7 +508,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return v_##TypeName::ClassData(); \
         } \
         static zfbool ValueStore( \
-                ZF_OUT zfautoObject &obj \
+                ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
                 ) { \
             zfCoreMutexLock(); \
@@ -530,25 +530,25 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             > \
         zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+            static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 return ZFCastZFObject(v_##TypeName *, obj)->zfv; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
         template<typename T_Access> \
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+            static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 return &(ZFCastZFObject(v_##TypeName *, obj)->zfv); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
     }; \
@@ -579,7 +579,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return ZFTypeId_none(); \
         } \
         static zfbool ValueStore( \
-                ZF_OUT zfautoObject &obj \
+                ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
                 ) { \
             return zffalse; \
@@ -587,13 +587,13 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         template<typename T_Access = Type> \
         zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return zffalse; \
             } \
-            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+            static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 return typename zftTraits<T_Access>::TrNoRef(); \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
     }; \
@@ -627,7 +627,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return t.typeIdClass(); \
         } \
         static zfbool ValueStore( \
-                ZF_OUT zfautoObject &obj \
+                ZF_OUT zfauto &obj \
                 , ZF_IN _ZFP_PropTypeW_##TypeName const &v \
                 ) { \
             return ZFTypeId<AliasToType>::ValueStore(obj, (AliasToType)v); \
@@ -657,10 +657,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             > \
         zfclassNotPOD Value { \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return (obj != zfnull && ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj)); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+            static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
                 _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
                 *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
@@ -670,7 +670,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                     ); \
                 return *v; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
                     , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
@@ -680,7 +680,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                     ZF_IN ZFObject *obj \
                     , ZF_IN void *v \
                     ) { \
-                zfautoObject objTmp = obj; \
+                zfauto objTmp = obj; \
                 _ZFP_PropTypeW_##TypeName *vTmp = (_ZFP_PropTypeW_##TypeName *)v; \
                 if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) { \
                     AliasToType &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccess(objTmp); \
@@ -695,10 +695,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         private: \
              typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
-            static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+            static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
                 return (obj != zfnull && ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccessAvailable(obj)); \
             } \
-            static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+            static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 AliasToType const &aliasValue = ZFTypeId<AliasToType>::Value<AliasToType const &>::zfvAccess(obj); \
                 _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
                 *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
@@ -710,7 +710,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                     ); \
                 return *p; \
             } \
-            static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+            static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
                     , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
@@ -720,7 +720,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                     ZF_IN ZFObject *obj \
                     , ZF_IN void *v \
                     ) { \
-                zfautoObject objTmp = obj; \
+                zfauto objTmp = obj; \
                 _TrNoRef *p = (_TrNoRef *)v; \
                 _ZFP_PropTypeW_##TypeName *vTmp = (_ZFP_PropTypeW_##TypeName *)*p; \
                 if(ZFTypeId<AliasToType>::Value<AliasToType &>::zfvAccessAvailable(objTmp)) { \

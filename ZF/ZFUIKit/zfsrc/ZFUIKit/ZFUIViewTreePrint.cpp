@@ -12,7 +12,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreePrintAfterDelay
         ) {
     ZFObjectHolder *viewHolder = view->objectHolder();
     ZFLISTENER_2(action
-            , zfautoObjectT<ZFObjectHolder *>, viewHolder
+            , zfautoT<ZFObjectHolder *>, viewHolder
             , ZFOutput, outputCallback
             ) {
         ZFUIView *view = viewHolder->objectHolded();
@@ -231,7 +231,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreeNativePrintAfterDelay
         ) {
     ZFObjectHolder *viewHolder = view->objectHolder();
     ZFLISTENER_2(action
-            , zfautoObjectT<ZFObjectHolder *>, viewHolder
+            , zfautoT<ZFObjectHolder *>, viewHolder
             , ZFOutput, outputCallback
             ) {
         ZFUIView *view = viewHolder->objectHolded();

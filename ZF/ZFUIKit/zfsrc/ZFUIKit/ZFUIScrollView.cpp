@@ -725,7 +725,7 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
 
         ZFObjectHolder *scrollViewHolder = this->objectHolder();
         ZFLISTENER_1(action
-                , zfautoObjectT<ZFObjectHolder *>, scrollViewHolder
+                , zfautoT<ZFObjectHolder *>, scrollViewHolder
                 ) {
             ZFUIScrollView *scrollView = scrollViewHolder->objectHolded();
             if(scrollView == zfnull) {

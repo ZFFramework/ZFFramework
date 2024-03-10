@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFPropertyDynamicRegisterParamPrivate {
 public:
     zfuint refCount;
-    zfautoObject propertyDynamicRegisterUserData;
+    zfauto propertyDynamicRegisterUserData;
     const ZFClass *propertyOwnerClass;
     zfstring propertyTypeId;
     zfstring propertyTypeName;
@@ -222,8 +222,8 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFPropertyDynamicUnregister
 ZFOBJECT_REGISTER(ZFPropertyInvokeData)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, ZFObject *, invokerObject)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, const ZFProperty *, invokerProperty)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, zfautoObject, propertyValue)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, zfautoObject, propertyValueOld)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, zfauto, propertyValue)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, zfauto, propertyValueOld)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

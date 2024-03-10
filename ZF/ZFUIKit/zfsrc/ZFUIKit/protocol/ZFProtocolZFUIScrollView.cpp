@@ -15,7 +15,7 @@ zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(
     ZFObjectHolder *ownerHolder = scrollView->objectHolder();
     ZFLISTENER_2(scrollTimerEvent
             , ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *, impl
-            , zfautoObjectT<ZFObjectHolder *>, ownerHolder
+            , zfautoT<ZFObjectHolder *>, ownerHolder
             ) {
         ZFUIScrollView *scrollView = ownerHolder->objectHolded();
         if(scrollView != zfnull) {

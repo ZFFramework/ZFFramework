@@ -198,7 +198,7 @@ protected:
     /** @brief see #ZFUIPage */
     virtual void pageOnCreate(void) {
         this->_ZFP_ZFUIPage_pageCreated = zftrue;
-        zfautoObjectT<ZFUIView *> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
+        zfautoT<ZFUIView *> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
         this->_ZFP_ZFUIPage_pageView = pageView;
         zfCoreAssertWithMessage(this->_ZFP_ZFUIPage_pageView != zfnull, "pageViewClass must be type of %s", ZFUIView::ClassData()->className());
         zfRetain(this->_ZFP_ZFUIPage_pageView);

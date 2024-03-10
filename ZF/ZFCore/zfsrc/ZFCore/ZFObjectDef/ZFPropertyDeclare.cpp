@@ -125,7 +125,7 @@ void _ZFP_ZFPropertyLifeCycleCall_init_retain(
             )
         , ZF_IN void *rawValueStoreToken
         ) {
-    zfautoObject valueHolder = value;
+    zfauto valueHolder = value;
     _ZFP_ZFPropertyLifeCycleCallAction(
         property->_ZFP_ZFPropertyLifeCycle_OnInit,
         propertyOwnerObject,
@@ -179,7 +179,7 @@ void _ZFP_ZFPropertyLifeCycleCall_dealloc_retain(
         , ZF_IN ZFObject *value
         , ZF_IN zfbool notifyOwnerDetach
         ) {
-    zfautoObject valueHolder = value;
+    zfauto valueHolder = value;
     _ZFP_ZFPropertyLifeCycleCallAction(
         property->_ZFP_ZFPropertyLifeCycle_OnDetach,
         propertyOwnerObject,
@@ -217,8 +217,8 @@ void _ZFP_ZFPropertyLifeCycleCall_setter_retain(
             , ZF_IN ZFObject *value)
         , ZF_IN void *rawValueStoreToken
         ) {
-    zfautoObject valueOld = propertyValueOld;
-    zfautoObject valueNew = propertyValueNew;
+    zfauto valueOld = propertyValueOld;
+    zfauto valueNew = propertyValueNew;
     if(accessed) {
         _ZFP_ZFPropertyLifeCycleCallAction(
             property->_ZFP_ZFPropertyLifeCycle_OnDetach,

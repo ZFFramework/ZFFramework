@@ -20,7 +20,7 @@ public:
             return zfsuperI(ZFUIListAdapter)::cellSizeAt(index, cell);
         #endif
     }
-    virtual zfautoObject cellAt(ZF_IN zfindex index) {
+    virtual zfauto cellAt(ZF_IN zfindex index) {
         zfblockedAlloc(ZFUIListCell, ret);
         ret->cellView(zflineAlloc(ZFUIListCellViewBasic));
         return ret;
@@ -43,7 +43,7 @@ public:
     }
 
     #if 1 // whether use cache
-        virtual inline zfautoObject cellCacheOnAccess(ZF_IN zfindex index) {
+        virtual inline zfauto cellCacheOnAccess(ZF_IN zfindex index) {
             return this->cellCacheDefaultAccess(zfnull);
         }
         virtual inline void cellCacheOnRecycle(ZF_IN ZFUIListCell *cell) {

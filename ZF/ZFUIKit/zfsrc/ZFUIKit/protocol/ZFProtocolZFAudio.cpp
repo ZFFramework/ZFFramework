@@ -10,9 +10,9 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnLoad(
         , ZF_IN v_zfstring *errorHint
         ) {
     ZFLISTENER_3(action
-            , zfautoObjectT<ZFAudio *>, audio
+            , zfautoT<ZFAudio *>, audio
             , zfbool, success
-            , zfautoObjectT<v_zfstring *>, errorHint
+            , zfautoT<v_zfstring *>, errorHint
             ) {
         audio->_ZFP_ZFAudio_OnLoad(success ? ZFResultType::e_Success : ZFResultType::e_Fail, errorHint);
     } ZFLISTENER_END()
@@ -24,9 +24,9 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(
         , ZF_IN v_zfstring *errorHint
         ) {
     ZFLISTENER_3(action
-            , zfautoObjectT<ZFAudio *>, audio
+            , zfautoT<ZFAudio *>, audio
             , zfbool, success
-            , zfautoObjectT<v_zfstring *>, errorHint
+            , zfautoT<v_zfstring *>, errorHint
             ) {
         audio->_ZFP_ZFAudio_OnStop(success ? ZFResultType::e_Success : ZFResultType::e_Fail, errorHint);
     } ZFLISTENER_END()
@@ -34,7 +34,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnStop(
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnResume(ZF_IN ZFAudio *audio) {
     ZFLISTENER_1(action
-            , zfautoObjectT<ZFAudio *>, audio
+            , zfautoT<ZFAudio *>, audio
             ) {
         audio->_ZFP_ZFAudio_OnResume();
     } ZFLISTENER_END()
@@ -42,7 +42,7 @@ void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnResume(ZF_IN ZFAudio *aud
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFAudio)::notifyAudioOnPause(ZF_IN ZFAudio *audio) {
     ZFLISTENER_1(action
-            , zfautoObjectT<ZFAudio *>, audio
+            , zfautoT<ZFAudio *>, audio
             ) {
         audio->_ZFP_ZFAudio_OnPause();
     } ZFLISTENER_END()

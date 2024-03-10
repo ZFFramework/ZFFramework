@@ -142,8 +142,8 @@ public:
         this->pimplOwner->childRemoveAt(index);
         this->childAddOverrideFlag = zffalse;
     }
-    zfautoObjectT<ZFUIListCell *> cellLoadAt(ZF_IN zfindex index) {
-        zfautoObjectT<ZFUIListCell *> ret = this->listAdapter->cellCacheOnAccess(index);
+    zfautoT<ZFUIListCell *> cellLoadAt(ZF_IN zfindex index) {
+        zfautoT<ZFUIListCell *> ret = this->listAdapter->cellCacheOnAccess(index);
         if(ret != zfnull) {
             zfCoreAssertWithMessage(ZFCastZFObject(ZFUIListCell *, ret.toObject()) != zfnull, "list cell %s not type of %s",
                 ret.toObject()->classData()->classNameFull(),
@@ -1314,7 +1314,7 @@ zfbool ZFUIListView::serializableOnSerializeFromData(
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListView_listAdapter)) {continue;}
 
-        zfautoObject element;
+        zfauto element;
         if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }

@@ -21,7 +21,7 @@
  * further more, the registered contents can be combined
  * with all other features in C++ world:
  * @code
- *   zfautoObject obj = ZFClass::classForName("MyClass")->newInstance();
+ *   zfauto obj = ZFClass::classForName("MyClass")->newInstance();
  *   obj->invoke("myProp", zflineAlloc(v_zfstring, "myValue"));
  *   ZFObjectToXml(ZFOutputDefault(), obj);
  * @endcode

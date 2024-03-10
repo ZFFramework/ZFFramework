@@ -135,7 +135,7 @@ public:
      * use this method for performance, instead of "get then remove",
      * since the latter one have two search step
      */
-    ZFMETHOD_DECLARE_1(zfautoObject, removeAndGet
+    ZFMETHOD_DECLARE_1(zfauto, removeAndGet
             , ZFMP_IN(ZFObject *, pKey)
             )
     /**

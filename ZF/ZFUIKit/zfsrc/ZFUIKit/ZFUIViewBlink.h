@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief default mask image for #ZFUIViewBlink, an alpha white image by default
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfautoObject, ZFUIViewBlinkImageDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfauto, ZFUIViewBlinkImageDefault)
 
 /**
  * @brief param for #ZFUIViewBlink

@@ -19,7 +19,7 @@ ZFENUM_DEFINE_FLAGS(ZFFileOpenOption, ZFFileOpenOptionFlags)
 // ZFFileFindData
 zfclassNotPOD _ZFP_ZFFileFindDataPrivate {
 public:
-    typedef zfstlmap<zfstring, zfautoObject> ImplTagMapType;
+    typedef zfstlmap<zfstring, zfauto> ImplTagMapType;
 
 public:
     zfuint refCount;

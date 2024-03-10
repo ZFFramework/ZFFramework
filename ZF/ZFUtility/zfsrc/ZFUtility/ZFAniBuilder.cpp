@@ -51,7 +51,7 @@ const ZFAniBuilder &ZFAniBuilder::ani(
         , ZF_IN_OPT zftimet aniDuration /* = 0 */
         , ZF_IN_OPT ZFTimeLineCurve *aniCurve /* = zfnull */
         ) const {
-    zfautoObjectT<ZFAnimationTimeLine *> ani = ZFAni(this->aniTarget(), name, from, to);
+    zfautoT<ZFAnimationTimeLine *> ani = ZFAni(this->aniTarget(), name, from, to);
     if(ani != zfnull) {
         ani->aniInterval(this->aniInterval());
         d->aniStepPrepare();
@@ -68,7 +68,7 @@ const ZFAniBuilder &ZFAniBuilder::ani(
         , ZF_IN_OPT zftimet aniDuration /* = 0 */
         , ZF_IN_OPT ZFTimeLineCurve *aniCurve /* = zfnull */
         ) const {
-    zfautoObjectT<ZFAnimationTimeLine *> ani = ZFAni(this->aniTarget(), name, from, to);
+    zfautoT<ZFAnimationTimeLine *> ani = ZFAni(this->aniTarget(), name, from, to);
     if(ani != zfnull) {
         ani->aniInterval(this->aniInterval());
         d->aniStepPrepare();
@@ -84,7 +84,7 @@ const ZFAniBuilder &ZFAniBuilder::customAni(
         , ZF_IN_OPT zftimet aniDuration /* = 0 */
         , ZF_IN_OPT ZFTimeLineCurve *aniCurve /* = zfnull */
         ) const {
-    zfautoObjectT<ZFAnimationTimeLine *> ani = ZFAni(this->aniTarget(), customAniCallback);
+    zfautoT<ZFAnimationTimeLine *> ani = ZFAni(this->aniTarget(), customAniCallback);
     if(ani != zfnull) {
         ani->aniInterval(this->aniInterval());
         d->aniStepPrepare();
@@ -143,7 +143,7 @@ const ZFAniBuilder &ZFAniBuilder::aniTarget(ZF_IN ZFObject *aniTarget) const {
     zfRetainChange(d->aniTargetHolder, aniTarget ? aniTarget->objectHolder() : zfnull);
     return *this;
 }
-zfautoObjectT<ZFAnimation *> ZFAniBuilder::toAnimation(void) const {
+zfautoT<ZFAnimation *> ZFAniBuilder::toAnimation(void) const {
     return d->aniGroup;
 }
 
@@ -241,7 +241,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, ZFObject *, aniTarget)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, aniTarget
         , ZFMP_IN(ZFObject *, aniTarget)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, zfautoObjectT<ZFAnimation *>, toAnimation)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, zfautoT<ZFAnimation *>, toAnimation)
 
 void ZFAniBuilder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += "ZFAniBuilder:";

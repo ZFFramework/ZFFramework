@@ -52,7 +52,7 @@ typedef zfstlmap<const zfchar *, _ZFP_ZFCacheList, zfcharConst_zfstlComparer> _Z
 zfclassNotPOD _ZFP_ZFCacheData {
 public:
     zfchar *cacheKey;
-    zfautoObject cacheValue;
+    zfauto cacheValue;
     _ZFP_ZFCacheList::iterator listIt;
     _ZFP_ZFCacheList::iterator mapIt;
 public:
@@ -132,7 +132,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
 
     this->cacheTrimBySize(this->cacheMaxSize());
 }
-ZFMETHOD_DEFINE_1(ZFCache, zfautoObject, cacheGet
+ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
         , ZFMP_IN(const zfchar *, cacheKey)
         ) {
     if(cacheKey == zfnull) {
@@ -214,13 +214,13 @@ ZFMETHOD_DEFINE_1(ZFCache, void, cacheTrimBySize
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFCache, ZFCoreArray<zfautoObject>, cacheGetAll) {
-    ZFCoreArray<zfautoObject> ret;
+ZFMETHOD_DEFINE_0(ZFCache, ZFCoreArray<zfauto>, cacheGetAll) {
+    ZFCoreArray<zfauto> ret;
     this->cacheGetAllT(ret);
     return ret;
 }
 ZFMETHOD_DEFINE_1(ZFCache, void, cacheGetAllT
-        , ZFMP_IN_OUT(ZFCoreArray<zfautoObject> &, ret)
+        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
         ) {
     for(_ZFP_ZFCacheList::iterator listIt = d->cacheList.begin(); listIt != d->cacheList.end(); ++listIt) {
         ret.add((*listIt)->cacheValue);

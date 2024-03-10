@@ -35,14 +35,14 @@ public:
 
 private:
     ZFMETHOD_INLINE_DETAIL_0(private, ZFMethodTypeStatic, ZF_CALLER_LINE
-            , zfautoObject, ZFSerializableKeyword_serializableNewInstanceId
+            , zfauto, ZFSerializableKeyword_serializableNewInstanceId
             ) {
         return ZFNull();
     }
 
 public:
     zfoverride
-    virtual zfautoObject copy(void) {
+    virtual zfauto copy(void) {
         return ZFNull();
     }
 };

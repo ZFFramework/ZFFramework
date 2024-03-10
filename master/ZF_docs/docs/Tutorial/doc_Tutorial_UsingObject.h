@@ -55,7 +55,7 @@
  * @code
  *   {
  *       // similar to shared_ptr in C++ world
- *       zfautoObject obj = zflineAlloc(MyObject);
+ *       zfauto obj = zflineAlloc(MyObject);
  *   } // obj would be released automatically after this code block
  *
  *   {
@@ -78,10 +78,10 @@
  *   func(zfautoRelease(obj)); // obj would be released at future
  * @endcode
  * \n
- * it's recommended to use #zfautoObject for API design
+ * it's recommended to use #zfauto for API design
  * when your function needs to return an allocated object
  * @code
- *   zfautoObject myFunc(void) {
+ *   zfauto myFunc(void) {
  *       zfblockedAlloc(MyObject, obj);
  *       return obj;
  *   }

@@ -76,8 +76,8 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
 
     this->removeAll();
 
-    zfautoObject key;
-    zfautoObject value;
+    zfauto key;
+    zfauto value;
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}

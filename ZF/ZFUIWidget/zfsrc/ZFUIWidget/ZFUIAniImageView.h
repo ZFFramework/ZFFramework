@@ -40,7 +40,7 @@ public:
      */
     ZFMETHOD_DECLARE_STATIC_3(zfbool, Create
             , ZFMP_IN(const ZFPathInfo &, pathInfo)
-            , ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages)
+            , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
             , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
             )
 
@@ -54,7 +54,7 @@ public:
             )
 
     /** @brief see #ZFUIAniImageView */
-    ZFMETHOD_DECLARE_0(zfautoObjectT<ZFUIImage *> const &, frameSrc)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFUIImage *> const &, frameSrc)
     /** @brief see #ZFUIAniImageView */
     ZFMETHOD_DECLARE_0(ZFUISize const &, frameSizePixel)
     /** @brief see #ZFUIAniImageView */
@@ -63,7 +63,7 @@ public:
     ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<zftimet> const &, frameDurations)
 
     /** @brief see #ZFUIAniImageView */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoObjectT<ZFUIImage *> > const &, frameImages)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIImage *> > const &, frameImages)
     /** @brief see #ZFUIAniImageView */
     ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<zfuint> const &, frameTimers)
 
@@ -184,7 +184,7 @@ public:
      */
     ZFMETHOD_DECLARE_STATIC_3(zfbool, Create
             , ZFMP_IN(const ZFPathInfo &, pathInfo)
-            , ZFMP_IN(const ZFCoreArray<zfautoObjectT<ZFUIImage *> > &, frameImages)
+            , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
             , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
             )
 

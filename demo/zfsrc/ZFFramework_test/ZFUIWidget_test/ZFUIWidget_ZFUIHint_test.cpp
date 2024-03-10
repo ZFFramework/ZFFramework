@@ -13,7 +13,7 @@ protected:
         ZFFramework_test_protocolCheck(ZFUISysWindow);
         ZFFramework_test_asyncTestCheck();
 
-        zfautoObject hint = ZFUIHintShow("this is a normal hint");
+        zfauto hint = ZFUIHintShow("this is a normal hint");
         ZFTestCase *testCase = this;
 #if 0
         ZFLISTENER_1(hintOnHide
@@ -29,7 +29,7 @@ protected:
             for(zfindex i = 0; i < 3; ++i) {
                 ZFUIHintShow(zfstr("this is a stacked hint %s", i));
             }
-            zfautoObject last = ZFUIHintShow("this is a very"
+            zfauto last = ZFUIHintShow("this is a very"
                 " long long long long long long long long long long"
                 " long long long long long long long long long long"
                 " long long long long long long long long long hint");

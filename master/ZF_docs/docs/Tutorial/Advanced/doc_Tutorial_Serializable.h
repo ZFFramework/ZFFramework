@@ -27,7 +27,7 @@
  *   ZFSerializableData data = ZFObjectToData(obj);
  *
  *   // serialize object from existing data
- *   zfautoObject serializedObject = ZFObjectFromData(data);
+ *   zfauto serializedObject = ZFObjectFromData(data);
  * @endcode
  *
  * @section DocTag_Tutorial_Serializable_Advanced Advanced

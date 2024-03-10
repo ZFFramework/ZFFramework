@@ -70,7 +70,7 @@ public:
     zfbool hintShowing;
     zfbool hintDelaying;
     ZFAnimation *hintAnimating; // auto retain
-    zfautoObjectT<ZFTimer *> hintShowDelayTimer;
+    zfautoT<ZFTimer *> hintShowDelayTimer;
     ZFListener hintAniShowOnStopListener;
     ZFListener hintShowDelayTimeoutListener;
     ZFListener hintAniHideOnStopListener;

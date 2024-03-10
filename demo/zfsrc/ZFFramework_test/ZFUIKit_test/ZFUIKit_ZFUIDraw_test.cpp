@@ -58,7 +58,7 @@ protected:
         ZFUIKit_ZFUIDraw_test_DrawableView::testDraw(
             context,
             ZFUISizeApplyScale(ZFUISizeMake(100), view1->UIScaleFixed()));
-        zfautoObjectT<ZFUIImage *> image = ZFUIDraw::endForImage(context);
+        zfautoT<ZFUIImage *> image = ZFUIDraw::endForImage(context);
         view1->image(image);
 
         zfblockedAlloc(ZFArray, views);
@@ -83,7 +83,7 @@ private:
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
             ZFLISTENER_1(buttonClickListener
-                    , zfautoObjectT<ZFArray *>, views
+                    , zfautoT<ZFArray *>, views
                     ) {
                 ZFUISize sizeHint = views->get<ZFUIView *>(0)->layoutParam()->sizeHint();
                 if(sizeHint.height == 100) {

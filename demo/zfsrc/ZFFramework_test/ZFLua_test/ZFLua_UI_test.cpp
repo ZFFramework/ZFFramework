@@ -14,7 +14,7 @@ protected:
         ZFFramework_test_protocolCheck(ZFUIView);
         ZFFramework_test_asyncTestCheck();
 
-        zfautoObject result = ZFLuaExecute(
+        zfauto result = ZFLuaExecute(
                 "local window = ZFUIWindow()\n"
                 "window:windowShow()\n"
                 "window:viewBackgroundColor(ZFUIColorRandom())\n"

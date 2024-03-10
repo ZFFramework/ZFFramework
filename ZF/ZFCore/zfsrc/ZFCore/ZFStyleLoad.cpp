@@ -49,7 +49,7 @@ static void _ZFP_ZFStyleLoadImpl(
                 if(fileNameFilter != zfnull && !fileNameFilter->filterCheckActive(fd.fileName())) {
                     continue;
                 }
-                zfautoObject styleValue;
+                zfauto styleValue;
                 if(ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(ZFPathInfo(pathType, pathDataChild)))) {
                     ZFPathOfWithoutExt(relativePathTmp, relativePathTmp);
                     _ZFP_ZFStyleLoad_ZFStyleSet(relativePathTmp, styleValue);
@@ -79,7 +79,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFStyleLoad
         if(fileNameFilter != zfnull && !fileNameFilter->filterCheckActive(fileName)) {
             return zftrue;
         }
-        zfautoObject styleValue;
+        zfauto styleValue;
         if(!ZFObjectIOLoadT(styleValue, ZFInputForPathInfo(pathInfo))) {
             return zffalse;
         }
@@ -102,7 +102,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
             const ZFSerializableData &child = serializableData.childAt(i);
             const zfchar *styleKey = ZFSerializableUtil::checkPropertyName(child);
             if(styleKey != zfnull) {
-                zfautoObject styleValueHolder = ZFObjectFromData(child);
+                zfauto styleValueHolder = ZFObjectFromData(child);
                 ZFStyleable *styleValue = styleValueHolder;
                 if(styleValue != zfnull) {
                     _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
@@ -204,7 +204,7 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
         if(key == zfnull) {
             continue;
         }
-        zfautoObject value;
+        zfauto value;
         if(!ZFObjectFromData(value, elementData, outErrorHint, outErrorPos)) {
             return zffalse;
         }

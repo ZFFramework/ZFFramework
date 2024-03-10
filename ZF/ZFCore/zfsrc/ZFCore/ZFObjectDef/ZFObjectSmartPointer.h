@@ -7,7 +7,7 @@
 #define _ZFI_ZFObjectSmartPointer_h_
 
 #include "ZFObjectRetain.h"
-#include "zfautoObject.h"
+#include "zfauto.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

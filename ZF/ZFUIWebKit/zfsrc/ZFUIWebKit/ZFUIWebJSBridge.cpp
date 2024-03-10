@@ -41,7 +41,7 @@ ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFUIWebJSBridge *, instanceForWebView
         ) {
     ZFUIWebJSBridge *ret = webView->objectTag<ZFUIWebJSBridge *>(_ZFP_ZFUIWebJSBridge_tagKey);
     if(ret == zfnull) {
-        zfautoObject tmp = ZFUIWebJSBridge::ClassData()->newInstance();
+        zfauto tmp = ZFUIWebJSBridge::ClassData()->newInstance();
         ret = tmp;
         ret->d->webView = webView;
         webView->objectTag(_ZFP_ZFUIWebJSBridge_tagKey, ret);

@@ -46,7 +46,7 @@ ZF_STATIC_INITIALIZER_END(ZFClassDataHolder)
 static const ZFClass *_ZFP_ZFClassDummy[1] = {0};
 static _ZFP_ZFObjectToInterfaceCastCallback _ZFP_ZFClassInterfaceCastCallbackDummy[1] = {0};
 
-typedef zfstlmap<zfstring, zfautoObject> _ZFP_ZFClassTagMapType;
+typedef zfstlmap<zfstring, zfauto> _ZFP_ZFClassTagMapType;
 typedef zfstlmap<const ZFProperty *, zfstlmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
 
 typedef zfstlmap<ZFSigName, zfstlvector<const ZFMethod *>> _ZFP_ZFClassMethodMapType;
@@ -83,7 +83,7 @@ public:
     ZFCoreArrayPOD<zfbool *> ZFCoreLibDestroyFlag;
     ZFClass *pimplOwner;
     zfbool classIsDynamicRegister;
-    zfautoObject classDynamicRegisterUserData;
+    zfauto classDynamicRegisterUserData;
     zfstlmap<ZFObject *, zfbool> classDynamicRegisterObjectInstanceMap;
     _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback;
     _ZFP_ZFObjectConstructor constructor;
@@ -652,7 +652,7 @@ ZFObject *ZFClass::classDynamicRegisterUserData(void) const {
     return d->classDynamicRegisterUserData;
 }
 
-zfautoObject ZFClass::newInstance(void) const {
+zfauto ZFClass::newInstance(void) const {
     zfCoreMutexLocker();
     ZFObject *obj = zfnull;
     if(d->objectAllocWithCacheCallback) {
@@ -665,25 +665,25 @@ zfautoObject ZFClass::newInstance(void) const {
             obj->_ZFP_ZFObjectCheckOnInit();
         }
     }
-    zfautoObject ret;
+    zfauto ret;
     ret.zfunsafe_assign(obj);
     zfunsafe_zfRelease(obj);
     return ret;
 }
-zfautoObject ZFClass::newInstanceNoCache(void) const {
+zfauto ZFClass::newInstanceNoCache(void) const {
     zfCoreMutexLocker();
     ZFObject *obj = d->objectConstruct();
     if(obj != zfnull) {
         obj->objectOnInit();
         obj->_ZFP_ZFObjectCheckOnInit();
     }
-    zfautoObject ret;
+    zfauto ret;
     ret.zfunsafe_assign(obj);
     zfunsafe_zfRelease(obj);
     return ret;
 }
 
-zfautoObject ZFClass::newInstance(
+zfauto ZFClass::newInstance(
         ZF_IN     ZFObject *param0
         , ZF_IN_OPT ZFObject *param1 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param2 /* = ZFMethodGenericInvokerDefaultParam() */
@@ -704,7 +704,7 @@ zfautoObject ZFClass::newInstance(
     this->methodForNameGetAllT(objectOnInitMethodList, "objectOnInit");
     void *token = this->newInstanceGenericBegin();
     if(token != zfnull) {
-        zfautoObject paramList[ZFMETHOD_MAX_PARAM];
+        zfauto paramList[ZFMETHOD_MAX_PARAM];
         paramList[0].zfunsafe_assign(param0);
         paramList[1].zfunsafe_assign(param1);
         paramList[2].zfunsafe_assign(param2);
@@ -730,7 +730,7 @@ void *ZFClass::newInstanceGenericBegin(void) const {
 zfbool ZFClass::newInstanceGenericCheck(
         ZF_IN void *&token
         , ZF_IN const ZFMethod *objectOnInitMethod
-        , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */) const {
     if(objectOnInitMethod == zfnull
             // || !this->classIsTypeOf(objectOnInitMethod->methodOwnerClass())
@@ -739,7 +739,7 @@ zfbool ZFClass::newInstanceGenericCheck(
         return zffalse;
     }
     ZFObject *obj = (ZFObject *)token;
-    zfautoObject methodRetDummy;
+    zfauto methodRetDummy;
     zfbool ret = objectOnInitMethod->methodGenericInvoker()(objectOnInitMethod, obj, errorHint, methodRetDummy, paramList);
     if(ret && obj->d && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
         zfCoreMutexLocker();
@@ -762,7 +762,7 @@ zfbool ZFClass::newInstanceGenericCheck(
     }
     return ret;
 }
-zfautoObject ZFClass::newInstanceGenericEnd(
+zfauto ZFClass::newInstanceGenericEnd(
         ZF_IN void *&token
         , ZF_IN zfbool objectOnInitMethodInvokeSuccess
         ) const {
@@ -1112,13 +1112,13 @@ void ZFClass::classTagGetAllKeyValue(
         allValue.add(it->second.toObject());
     }
 }
-zfautoObject ZFClass::classTagRemoveAndGet(ZF_IN const zfchar *key) const {
+zfauto ZFClass::classTagRemoveAndGet(ZF_IN const zfchar *key) const {
     if(key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFClassTagMapType &m = d->classTagMap;
         _ZFP_ZFClassTagMapType::iterator it = m.find(key);
         if(it != m.end()) {
-            zfautoObject ret;
+            zfauto ret;
             ret.zfunsafe_assign(it->second);
             m.erase(it);
             return ret;

@@ -371,26 +371,26 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           > \
  *       zfclassNotPOD Value { \
  *       public: \
- *           static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+ *           static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
  *               return yourChecker(xxx); \
  *           } \
- *           static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+ *           static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
  *               return yourAccess(xxx); \
  *           } \
- *           static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+ *           static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
  *               yourCleanup(xxx); \
  *           } \
  *       }; \
  *       template<typename T_Access> \
  *       zfclassNotPOD Value<T_Access, 1> { \
  *       public: \
- *           static zfbool zfvAccessAvailable(ZF_IN_OUT zfautoObject &obj) { \
+ *           static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
  *               return yourChecker(xxx); \
  *           } \
- *           static T_Access zfvAccess(ZF_IN_OUT zfautoObject &obj) { \
+ *           static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
  *               return yourAccess(xxx); \
  *           } \
- *           static void zfvAccessFinish(ZF_IN_OUT zfautoObject &obj) { \
+ *           static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
  *               yourCleanup(xxx); \
  *           } \
  *       };

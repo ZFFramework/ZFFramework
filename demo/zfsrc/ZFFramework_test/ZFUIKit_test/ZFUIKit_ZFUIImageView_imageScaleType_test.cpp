@@ -14,8 +14,8 @@ protected:
         zfsuper::objectOnInit();
         this->viewBackgroundColor(ZFUIColorYellow());
 
-        zfautoObject imageSmall = zfRes("test_normal.png");
-        zfautoObject imageLarge = ZFUIImageScale(imageSmall, ZFUISizeMake(600));
+        zfauto imageSmall = zfRes("test_normal.png");
+        zfauto imageLarge = ZFUIImageScale(imageSmall, ZFUISizeMake(600));
 
         this->childAdd(this->imageViewSmall());
         this->imageViewSmall()->image(imageSmall);
@@ -89,7 +89,7 @@ private:
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter
-                    , zfautoObjectT<ZFArray *>, imageViews
+                    , zfautoT<ZFArray *>, imageViews
                     ) {
                 v_zfstring *text = zfargs.param0();
 
@@ -99,7 +99,7 @@ private:
             setting->buttonTextGetter(buttonTextGetter);
 
             ZFLISTENER_1(buttonClickListener
-                    , zfautoObjectT<ZFArray *>, imageViews
+                    , zfautoT<ZFArray *>, imageViews
                     ) {
                 ZFUIContentScaleTypeEnum value = imageViews->getFirst<ZFUIImageView *>()->imageScaleType();
                 _nextValue(value);

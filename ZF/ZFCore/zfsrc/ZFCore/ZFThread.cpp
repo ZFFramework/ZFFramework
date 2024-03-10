@@ -283,8 +283,8 @@ ZFMETHOD_DEFINE_2(ZFThread, void, threadStart
     _ZFP_ZFThreadLog("[ZFThread] executeInNewThread begin %s", (const void *)this);
     ZFLISTENER_3(threadCallback
         , ZFThread *, zfThread
-        , zfautoObject, param0
-        , zfautoObject, param1
+        , zfauto, param0
+        , zfauto, param1
         ) {
         _ZFP_ZFThreadPrivate::threadCallback(zfThread, param0, param1);
     } ZFLISTENER_END()

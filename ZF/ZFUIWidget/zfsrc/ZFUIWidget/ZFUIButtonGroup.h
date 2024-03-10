@@ -298,7 +298,7 @@ protected:
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
             ) {
-        zfautoObjectT<ZFArray *> buttons;
+        zfautoT<ZFArray *> buttons;
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
             check, ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, buttons);
 

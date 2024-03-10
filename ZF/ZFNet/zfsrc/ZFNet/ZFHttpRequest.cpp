@@ -10,8 +10,8 @@ zfclassNotPOD _ZFP_ZFHttpRequestPrivate {
 public:
     zfuint refCount;
     void *nativeTask;
-    zfautoObjectT<ZFThread *> ownerThread;
-    zfautoObjectT<ZFHttpResponse *> response;
+    zfautoT<ZFThread *> ownerThread;
+    zfautoT<ZFHttpResponse *> response;
     ZFListener callback;
     ZFBuffer body;
     ZFJson *bodyJsonCache;
@@ -208,18 +208,18 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {
     d->notifyCancel(this);
 }
 
-ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoObjectT<ZFHttpResponse *>, requestSync) {
+ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoT<ZFHttpResponse *>, requestSync) {
     ZFHttpRequest *send = this;
-    zfautoObjectT<ZFHttpResponse *> recv;
+    zfautoT<ZFHttpResponse *> recv;
     zfblockedAlloc(ZFSemaphore, waitLock);
     ZFLISTENER_3(onRequest
             , ZFHttpRequest *, send
             , ZFSemaphore *, waitLock
-            , zfautoObjectT<ZFHttpResponse *> &, recv
+            , zfautoT<ZFHttpResponse *> &, recv
             ) {
         ZFLISTENER_2(onResponse
                 , ZFSemaphore *, waitLock
-                , zfautoObjectT<ZFHttpResponse *> &, recv
+                , zfautoT<ZFHttpResponse *> &, recv
                 ) {
             recv = zfargs.param0();
             waitLock->lockAndBroadcast();
@@ -278,7 +278,7 @@ void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void) {
     if(ZFThread::implAvailable()) {
         ZFHttpRequest *owner = this;
         ZFLISTENER_2(notifyResponse
-                , zfautoObjectT<ZFHttpRequest *>, owner
+                , zfautoT<ZFHttpRequest *>, owner
                 , _ZFP_ZFHttpRequestPrivate *, d
                 ) {
             d->notifyResponse(owner);

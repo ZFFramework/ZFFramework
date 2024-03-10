@@ -64,7 +64,7 @@ public:
     /**
      * @brief see #ZFUISysWindow::modalWindowShow
      */
-    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) zfpurevirtual;
+    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) zfpurevirtual;
     /**
      * @brief see #ZFUISysWindow::modalWindowFinish
      */

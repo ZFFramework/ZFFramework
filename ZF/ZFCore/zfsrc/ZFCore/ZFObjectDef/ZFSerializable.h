@@ -21,7 +21,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * by default, serializable would be created by #ZFClass::newInstance while serializing from data,
  * you may supply this method to override:
- * -  static zfautoObject serializableNewInstance(void);
+ * -  static zfauto serializableNewInstance(void);
  *
  * the method should be supplied as #ZFMethod\n
  * the method should return a newly created object, or retain your existing singleton instance\n
@@ -415,14 +415,14 @@ extern ZFLIB_ZFCore zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj);
  *   which describe a null object,
  *   the result would be null
  */
-extern ZFLIB_ZFCore zfautoObject ZFObjectFromData(
+extern ZFLIB_ZFCore zfauto ZFObjectFromData(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
 /** @brief see #ZFObjectFromData */
 extern ZFLIB_ZFCore zfbool ZFObjectFromData(
-        ZF_OUT zfautoObject &result
+        ZF_OUT zfauto &result
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
@@ -447,12 +447,12 @@ extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(
  * @brief convenient method to #ZFSerializable::serializeFromString
  */
 extern ZFLIB_ZFCore zfbool ZFSerializeFromString(
-        ZF_OUT zfautoObject &result
+        ZF_OUT zfauto &result
         , ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
         );
 /** @brief see #ZFSerializeFromString */
-extern ZFLIB_ZFCore zfautoObject ZFSerializeFromString(
+extern ZFLIB_ZFCore zfauto ZFSerializeFromString(
         ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
         );

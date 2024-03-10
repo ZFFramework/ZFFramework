@@ -70,7 +70,7 @@ public:
         if(this->timer->timerActivateOnMainThread()) {
             zfself *owner = this;
             ZFLISTENER_2(timerMainThread
-                    , zfautoObjectT<zfself *>, owner
+                    , zfautoT<zfself *>, owner
                     , zfidentity, curId
                     ) {
                 owner->_ZFP_timerMainThread(curId);

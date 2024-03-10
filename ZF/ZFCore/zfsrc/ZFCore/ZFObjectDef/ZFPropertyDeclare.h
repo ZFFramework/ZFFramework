@@ -68,7 +68,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *     if not set, the built-in value would be set,
  *     e.g. zffalse for zfbool, empty string for zfstring
  *     (for retain property, the init value must be auto released object,
- *     use #zfautoObject or #zflineAlloc or #zflineRelease is recommended)\n
+ *     use #zfauto or #zflineAlloc or #zflineRelease is recommended)\n
  *   the SetterAccessType/GetterAccessType could be
  *     public/protected/private\n
  *   for example:
@@ -150,8 +150,8 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  * @code
  *   // for retain property
  *   void propertyOnInit(
- *           ZF_IN_OUT zfautoObject [const] &propertyValue
- *           , ZF_IN zfautoObject const &propertyValueOld
+ *           ZF_IN_OUT zfauto [const] &propertyValue
+ *           , ZF_IN zfauto const &propertyValueOld
  *           );
  *
  *   // for assign property
@@ -386,7 +386,7 @@ public:
     public: \
         /** @cond ZFPrivateDoc */ \
         typedef Type PropVT_##Name; \
-        typedef zfautoObject PropHT_##Name; \
+        typedef zfauto PropHT_##Name; \
         /** @endcond */ \
     private: \
         zffinal zfclassNotPOD _ZFP_PropV_##Name { \
@@ -439,7 +439,7 @@ public:
         static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN ZFObject *ownerObj \
-                , ZF_OUT_OPT zfautoObject *outInitValue \
+                , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
             zfself *t = ZFCastZFObjectUnchecked(zfself *, ownerObj); \
             if(t->Name##_PropV._ZFP_accessed()) { \
@@ -516,7 +516,7 @@ public:
         static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN ZFObject *ownerObj \
-                , ZF_OUT_OPT zfautoObject *outInitValue \
+                , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
             zfself *t = ZFCastZFObjectUnchecked(zfself *, ownerObj); \
             if(t->Name##_PropV._ZFP_accessed()) { \

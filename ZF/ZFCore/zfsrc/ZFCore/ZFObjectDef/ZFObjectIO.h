@@ -22,10 +22,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * typical usage:
  * @code
  *   // serialize object from xml file
- *   zfautoObject obj = ZFObjectIOLoad(ZFInputForRes("data.xml"));
+ *   zfauto obj = ZFObjectIOLoad(ZFInputForRes("data.xml"));
  *
  *   // load image
- *   zfautoObject img = ZFObjectIOLoad(ZFInputForRes("image.png"));
+ *   zfauto img = ZFObjectIOLoad(ZFInputForRes("image.png"));
  * @endcode
  * \n
  * how it works:
@@ -39,13 +39,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * to add your own type,
  * please refer to #ZFOBJECTIO_DEFINE
  */
-extern ZFLIB_ZFCore zfautoObject ZFObjectIOLoad(
+extern ZFLIB_ZFCore zfauto ZFObjectIOLoad(
         ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         );
 /** @brief see #ZFObjectIOLoad */
 extern ZFLIB_ZFCore zfbool ZFObjectIOLoadT(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         );
@@ -83,7 +83,7 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
  *           // callback to load object from input
  *           // proto type:
  *           //   zfbool fromInput(
- *           //           ZF_OUT zfautoObject &ret
+ *           //           ZF_OUT zfauto &ret
  *           //           , ZF_IN_OUT const ZFInput &input
  *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
  *           //           );
@@ -110,7 +110,7 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
         checkerAction \
     } \
     static zfbool _ZFP_fromInput( \
-            ZF_OUT zfautoObject &ret \
+            ZF_OUT zfauto &ret \
             , ZF_IN_OUT const ZFInput &input \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             ) { \
@@ -127,7 +127,7 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
 
 typedef zfbool (*_ZFP_ZFObjectIOCallback_checker)(ZF_IN const ZFPathInfo &pathInfo);
 typedef zfbool (*_ZFP_ZFObjectIOCallback_fromInput)(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN_OUT const ZFInput &input
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         );

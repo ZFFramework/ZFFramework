@@ -19,7 +19,7 @@ public:
         TypeImage, /**< @brief target is ZFUIImage */
     } Type;
     Type type; /**< @brief type */
-    zfautoObject target; /**< @brief target */
+    zfauto target; /**< @brief target */
     ZFUISize targetSizePixel; /**< @brief target size in pixel */
     void *impl; /**< @brief impl */
 

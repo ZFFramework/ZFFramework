@@ -114,7 +114,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
         #endif
 
         ZFLISTENER_1(aniOnStopListener
-                , zfautoObjectT<ZFUIView *>, view
+                , zfautoT<ZFUIView *>, view
                 ) {
             ZFAnimation *ani = zfargs.sender();
             ZFUIView *blinkView = ani->aniTarget()->to<ZFUIView *>();
@@ -158,8 +158,8 @@ static void _ZFP_ZFUIViewBlinkDoOn(
         view->objectTag(_ZFP_ZFUIViewBlink_tag_delayTaskId, delayTaskIdTag);
 
         ZFLISTENER_2(blinkDelayOnFinish
-                , zfautoObject, delayTaskIdTag
-                , zfautoObjectT<ZFUIView *>, view
+                , zfauto, delayTaskIdTag
+                , zfautoT<ZFUIView *>, view
                 ) {
             v_zfidentity *delayTaskId = delayTaskIdTag;
             v_zfidentity *delayTaskIdCur = view->objectTag<v_zfidentity *>(_ZFP_ZFUIViewBlink_tag_delayTaskId);
@@ -208,7 +208,7 @@ static void _ZFP_ZFUIViewBlinkDoOff(ZF_IN ZFUIView *view) {
 
 // ============================================================
 // other
-ZFEXPORT_VAR_DEFINE(zfautoObject, ZFUIViewBlinkImageDefault, zfnull)
+ZFEXPORT_VAR_DEFINE(zfauto, ZFUIViewBlinkImageDefault, zfnull)
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkInitSetting, ZFLevelZFFrameworkNormal) {
     (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder);
     if(ZFPROTOCOL_IS_AVAILABLE(ZFUIImage)) {

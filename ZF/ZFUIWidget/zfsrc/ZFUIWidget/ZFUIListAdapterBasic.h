@@ -99,7 +99,7 @@ public:
         return ret->zfv;
     }
     zfoverride
-    virtual zfautoObject cellAt(ZF_IN zfindex index) {
+    virtual zfauto cellAt(ZF_IN zfindex index) {
         zfblockedAlloc(ZFUIListAdapterBasicParam, param);
         param->cellIndex(index);
         this->observerNotify(zfself::EventListCellAt(), param);
@@ -124,7 +124,7 @@ public:
 
 protected:
     zfoverride
-    virtual zfautoObject cellCacheOnAccess(ZF_IN zfindex index) {
+    virtual zfauto cellCacheOnAccess(ZF_IN zfindex index) {
         if(this->observerHasAdd(zfself::EventListCellCacheOnAccess())) {
             zfblockedAlloc(ZFUIListAdapterBasicParam, param);
             param->cellIndex(index);

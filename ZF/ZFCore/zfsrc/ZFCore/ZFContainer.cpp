@@ -66,7 +66,7 @@ zfbool ZFContainer::serializableOnSerializeFromData(
         if(category == zfnull) {continue;}
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFContainer_element)) {
-            zfautoObject element;
+            zfauto element;
             if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }

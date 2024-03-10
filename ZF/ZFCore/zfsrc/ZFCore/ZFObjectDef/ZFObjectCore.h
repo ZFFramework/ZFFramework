@@ -96,7 +96,7 @@ zfclassFwd ZFObjectHolder;
  *   -  #zfblockedAlloc:
  *     declare a ZFObject which looks like allocated in stack,
  *     would be released after nearest code block
- *   -  #zfautoObject:
+ *   -  #zfauto:
  *     declare a holder object which would release its content ZFObject when destroyed,
  *     much like the auto_ptr in C++ world
  * -  when inherit from ZFObject,
@@ -272,7 +272,7 @@ public:
      * param1 is #v_ZFPtrConst holds the old property value
      * (holds null when first time accessed)\n
      * the param1 holds these types:
-     * -  for retain property, it points to (const zfautoObject *)
+     * -  for retain property, it points to (const zfauto *)
      * -  for assign property, it points to (const YourPropertyType *)
      *
      * called when first time accessed, and each time setter is called
@@ -373,7 +373,7 @@ public:
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfautoObject invoke(ZF_IN const zfchar *methodName
+    virtual zfauto invoke(ZF_IN const zfchar *methodName
                                 , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
                                 , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
                                 , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
@@ -389,7 +389,7 @@ public:
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfautoObject invoke(ZF_IN const zfchar *methodName
+    virtual zfauto invoke(ZF_IN const zfchar *methodName
                                 , ZF_IN const zfchar *param0
                                 , ZF_IN_OPT const zfchar *param1 = zfnull
                                 , ZF_IN_OPT const zfchar *param2 = zfnull
@@ -444,7 +444,7 @@ public:
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfautoObject objectTagRemoveAndGet(ZF_IN const zfchar *key);
+    zffinal zfauto objectTagRemoveAndGet(ZF_IN const zfchar *key);
     /**
      * @brief remove all tag
      *
@@ -629,14 +629,14 @@ protected:
      *         ZFOBJECT_PRIVATE_ALLOC("should be created by MyObject::instanceForXxx only")
      *
      *     public:
-     *         static zfautoObject instanceForXxx(xxx) {
+     *         static zfauto instanceForXxx(xxx) {
      *             // can only be allocated by reflection
      *             return zfself::ClassData()->newInstance();
      *         }
      *     };
      *     static void func(void) {
      *         // MyObject *obj = zfAlloc(MyObject); // would compile error
-     *         zfautoObject obj = MyObject::instanceForXxx(xxx); // OK
+     *         zfauto obj = MyObject::instanceForXxx(xxx); // OK
      *     }
      *   @endcode
      */

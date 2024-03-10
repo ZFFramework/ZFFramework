@@ -19,7 +19,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
         const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListAdapterArray_cell)) {continue;}
 
-        zfautoObject element;
+        zfauto element;
         if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }

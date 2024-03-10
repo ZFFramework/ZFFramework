@@ -31,7 +31,7 @@ void _ZFP_ZFStyleKeyHolder::styleOnChange(
         , ZF_IN ZFStyleable *owner
         ) {
     zfCoreMutexLocker();
-    zfautoObject style = ZFStyleGet(owner->styleKey());
+    zfauto style = ZFStyleGet(owner->styleKey());
     if(style != zfnull) {
         zfCoreAssertWithMessageTrim(style->classData()->classIsTypeOf(owner->classData())
             || owner->classData()->classIsTypeOf(style->classData()),
@@ -106,7 +106,7 @@ static zfbool _ZFP_ZFStylePropertyCopy(
         , ZF_IN const zfchar *propertyName
         , ZF_IN const zfchar *styleKey
         ) {
-    zfautoObject styleValue = ZFStyleGet(styleKey);
+    zfauto styleValue = ZFStyleGet(styleKey);
     if(styleValue == zfnull) {
         return zffalse;
     }
@@ -124,8 +124,8 @@ static zfbool _ZFP_ZFStylePropertyCopy(
         return zftrue;
     }
     else {
-        zfautoObject retDummy;
-        zfautoObject paramDummy[ZFMETHOD_MAX_PARAM];
+        zfauto retDummy;
+        zfauto paramDummy[ZFMETHOD_MAX_PARAM];
         paramDummy[0] = styleValue;
         return setterMethod->methodGenericInvoker()(setterMethod, propertyOwner, zfnull, retDummy, paramDummy);
     }

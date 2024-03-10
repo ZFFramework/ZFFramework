@@ -88,8 +88,8 @@ public:
         }
     }
 private:
-    static zfautoObjectT<ZFTimer *> &_taskIdleTimer(void) {
-        static zfautoObjectT<ZFTimer *> d;
+    static zfautoT<ZFTimer *> &_taskIdleTimer(void) {
+        static zfautoT<ZFTimer *> d;
         return d;
     }
     static void _taskIdle(ZF_IN _TaskData *taskData) {
@@ -98,7 +98,7 @@ private:
         if(taskData->ioCount != 0) {
             return;
         }
-        zfautoObjectT<ZFTimer *> &timer = _taskIdleTimer();
+        zfautoT<ZFTimer *> &timer = _taskIdleTimer();
         if(timer == zfnull) {
             ZFLISTENER(delay) {
                 _taskIdleCleanup();

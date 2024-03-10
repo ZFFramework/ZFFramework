@@ -251,7 +251,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     ZFMETHOD_DECLARE_0(void, requestCancel)
 
     /** @brief util to perform sync request */
-    ZFMETHOD_DECLARE_0(zfautoObjectT<ZFHttpResponse *>, requestSync)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFHttpResponse *>, requestSync)
 
     /** @brief print all header info, usually for debug use only */
     ZFMETHOD_DECLARE_0(zfstring, headerInfo)

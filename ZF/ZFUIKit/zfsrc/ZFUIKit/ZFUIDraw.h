@@ -77,7 +77,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void *, beginForImage
         , ZFMP_IN(const ZFUISize &, imageSizePixel)
         )
 /** @brief see #ZFUIDraw::beginForView */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoObjectT<ZFUIImage *>, endForImage
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFUIImage *>, endForImage
         , ZFMP_IN(void *, context)
         )
 

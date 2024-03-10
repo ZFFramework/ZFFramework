@@ -194,7 +194,7 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, remove
         }
     }
 }
-ZFMETHOD_DEFINE_1(ZFHashMap, zfautoObject, removeAndGet
+ZFMETHOD_DEFINE_1(ZFHashMap, zfauto, removeAndGet
         , ZFMP_IN(ZFObject *, pKey)
         ) {
     if(pKey != zfnull) {

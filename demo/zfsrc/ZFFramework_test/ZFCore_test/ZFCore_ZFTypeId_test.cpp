@@ -11,7 +11,7 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        zfautoObject v;
+        zfauto v;
 
         zfblockedAlloc(v_zfstring, test_zfstring, "string type");
         v = test_zfstring;
@@ -43,20 +43,20 @@ protected:
         zfLogTrim() << ZFTypeId<zfstring>::Value<const zfstring * &>::zfvAccess(v);
         zfLogTrim() << ZFTypeId<zfstring>::Value<const zfstring * const &>::zfvAccess(v);
 
-        // zfautoObject processed as normal raw type
-        zfblockedAlloc(v_zfstring, test_String, "zfautoObject");
+        // zfauto processed as normal raw type
+        zfblockedAlloc(v_zfstring, test_String, "zfauto");
         v = test_String;
         zfLogTrim() << "============================================================";
-        zfLogTrim() << "zfautoObject";
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject *>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject *>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject * &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<zfautoObject * const &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject * &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<zfautoObject>::Value<const zfautoObject * const &>::zfvAccess(v);
+        zfLogTrim() << "zfauto";
+        zfLogTrim() << ZFTypeId<zfauto>::Value<zfauto>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<zfauto &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<zfauto *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<zfauto * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<zfauto * const &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto * const &>::zfvAccess(v);
 
         // ZFAny processed as aligned type
         zfblockedAlloc(v_zfstring, test_ZFAny, "ZFAny");

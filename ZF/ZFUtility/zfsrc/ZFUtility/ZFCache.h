@@ -67,7 +67,7 @@ public:
     /**
      * @brief access cache, or return null if not exist
      */
-    ZFMETHOD_DECLARE_1(zfautoObject, cacheGet
+    ZFMETHOD_DECLARE_1(zfauto, cacheGet
             , ZFMP_IN(const zfchar *, cacheKey)
             )
 
@@ -101,12 +101,12 @@ public:
     /**
      * @brief access all cache data, used for debug only
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoObject>, cacheGetAll)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfauto>, cacheGetAll)
     /**
      * @brief see #cacheGetAll
      */
     ZFMETHOD_DECLARE_1(void, cacheGetAllT
-            , ZFMP_IN_OUT(ZFCoreArray<zfautoObject> &, ret)
+            , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
             )
 
 protected:

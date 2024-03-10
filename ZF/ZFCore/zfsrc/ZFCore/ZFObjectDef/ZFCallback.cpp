@@ -12,7 +12,7 @@ void _ZFP_ZFCallback_executeNullCallback(void) {
 
 // ============================================================
 // _ZFP_ZFCallbackPrivate
-typedef zfstlmap<zfstring, zfautoObject> _ZFP_ZFCallbackTagMap;
+typedef zfstlmap<zfstring, zfauto> _ZFP_ZFCallbackTagMap;
 zfclassNotPOD _ZFP_ZFCallbackPrivate {
 public:
     zfuint refCount;
@@ -264,12 +264,12 @@ void ZFCallback::callbackTag(
     }
     else {
         if(tag == zfnull) {
-            zfautoObject holder = it->second;
+            zfauto holder = it->second;
             ZFUNUSED(holder);
             m.erase(it);
         }
         else {
-            zfautoObject holder = it->second;
+            zfauto holder = it->second;
             ZFUNUSED(holder);
             it->second = tag;
         }
@@ -301,13 +301,13 @@ void ZFCallback::callbackTagGetAllKeyValue(
         }
     }
 }
-zfautoObject ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfchar *key) {
+zfauto ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfchar *key) {
     if(d != zfnull && key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
         _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
         if(it != m.end()) {
-            zfautoObject ret = it->second;
+            zfauto ret = it->second;
             m.erase(it);
             return ret;
         }
@@ -490,7 +490,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, callbackTagGetAllK
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackTagRemove
         , ZFMP_IN(const zfchar *, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, zfautoObject, callbackTagRemoveAndGet
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, zfauto, callbackTagRemoveAndGet
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackTagRemoveAll)

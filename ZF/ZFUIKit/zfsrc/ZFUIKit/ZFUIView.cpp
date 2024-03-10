@@ -28,7 +28,7 @@ public:
     ZFUIViewChildLayerEnum viewLayer;
     ZFUILayoutParam *layoutParam; // retain
     ZFUILayoutParam *serializableRefLayoutParam; // retain
-    zfautoObjectT<ZFUILayoutParam *> serializableRefLayoutParamCache;
+    zfautoT<ZFUILayoutParam *> serializableRefLayoutParamCache;
 
     _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType internalViewAutoSerializeTags;
 
@@ -528,7 +528,7 @@ public:
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
             ) {
-        zfautoObjectT<ZFUIView *> internalView;
+        zfautoT<ZFUIView *> internalView;
         if(!ZFObjectFromData(internalView, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
@@ -770,7 +770,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
         if(category == zfnull) {continue;}
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_child)) {
-            zfautoObject element;
+            zfauto element;
             if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
@@ -791,7 +791,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
             categoryData.resolveMark();
         }
         else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_layoutParam)) {
-            zfautoObject layoutParam;
+            zfauto layoutParam;
             if(!ZFObjectFromData(layoutParam, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
@@ -1415,8 +1415,8 @@ void ZFUIView::UIScaleOnChange(void) {
 
 // ============================================================
 // layout logic
-ZFMETHOD_DEFINE_0(ZFUIView, zfautoObjectT<ZFUILayoutParam *>, layoutParamCreate) {
-    zfautoObjectT<ZFUILayoutParam *> layoutParam = this->layoutParamClass()->newInstance();
+ZFMETHOD_DEFINE_0(ZFUIView, zfautoT<ZFUILayoutParam *>, layoutParamCreate) {
+    zfautoT<ZFUILayoutParam *> layoutParam = this->layoutParamClass()->newInstance();
     if(layoutParam == zfnull || !layoutParam.toObject()->classData()->classIsTypeOf(ZFUILayoutParam::ClassData())) {
         return zfnull;
     }
@@ -1431,7 +1431,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, layoutParam
         , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         ) {
     if(this->viewParent() != zfnull && layoutParam != zfnull && !layoutParam->classData()->classIsTypeOf(this->layoutParamClass())) {
-        zfautoObjectT<ZFUILayoutParam *> layoutParamHolder = this->layoutParamCreate();
+        zfautoT<ZFUILayoutParam *> layoutParamHolder = this->layoutParamCreate();
         ZFUILayoutParam *layoutParamTmp = layoutParamHolder.to<ZFUILayoutParam *>();
         layoutParamTmp->styleableCopyFrom(layoutParam);
         d->layoutParamChange(this, layoutParamTmp);
@@ -2074,8 +2074,8 @@ void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
         return;
     }
     for(zfindex i = 0; i < ref->childCount(); ++i) {
-        zfautoObjectT<ZFUIView *> child = ref->childAt(i)->copy();
-        zfautoObjectT<ZFUILayoutParam *> childLayoutParam = ref->childAt(i)->layoutParam()->copy();
+        zfautoT<ZFUIView *> child = ref->childAt(i)->copy();
+        zfautoT<ZFUILayoutParam *> childLayoutParam = ref->childAt(i)->layoutParam()->copy();
         this->childAddWithParam(child, childLayoutParam);
     }
 }

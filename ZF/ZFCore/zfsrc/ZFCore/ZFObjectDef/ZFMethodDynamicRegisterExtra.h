@@ -19,21 +19,21 @@ public:
     const ZFMethod *invokerMethod; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     ZFObject *invokerObject; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     zfstring errorHint; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject ret; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param0; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param1; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param2; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param3; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param4; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param5; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param6; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    zfautoObject param7; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto ret; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param0; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param1; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param2; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param3; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param4; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param5; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param6; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfauto param7; /**< @brief data to hold params for #ZFMethodGenericInvoker */
 
 public:
     /**
      * @brief for dynamic registered method to call parent's method
      */
-    zffinal zfautoObject callSuper(void);
+    zffinal zfauto callSuper(void);
 
 protected:
     /** @cond ZFPrivateDoc */

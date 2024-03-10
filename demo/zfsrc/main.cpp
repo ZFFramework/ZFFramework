@@ -12,12 +12,12 @@
 
 static zfbool _ZFP_ZFFramework_test_luaTest(void);
 static zfbool _ZFP_ZFFramework_test_protocolCheck(void);
-static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void);
+static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void);
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView);
 
 ZFMAIN_ENTRY() {
     if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck()) {
-        zfautoObject containerView = _ZFP_ZFFramework_test_containerViewPrepare();
+        zfauto containerView = _ZFP_ZFFramework_test_containerViewPrepare();
         _ZFP_ZFFramework_test_prepareTestCase(containerView);
     }
 }
@@ -73,7 +73,7 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
     }
     return zftrue;
 }
-static zfautoObject _ZFP_ZFFramework_test_containerViewPrepare(void) {
+static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void) {
     zfblockedAlloc(ZFUIWindow, window);
     window->windowShow();
 
@@ -148,7 +148,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
     subModuleData->testCases = testCases;
 
     ZFLISTENER_1(onClickButton
-            , zfautoObjectT<_ZFP_ZFFramework_test_TestCaseSubModuleData *>, subModuleData
+            , zfautoT<_ZFP_ZFFramework_test_TestCaseSubModuleData *>, subModuleData
             ) {
         zfblockedAlloc(ZFUIWindow, subModuleWindow);
         subModuleWindow->viewBackgroundColor(ZFUIColorWhite());
@@ -196,7 +196,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
             , ZFUIView *, containerView
             ) {
         containerView->viewUIEnableTree(zffalse);
-        zfautoObjectT<ZFTestCase *> running = ZFTestCaseRun(testCase);
+        zfautoT<ZFTestCase *> running = ZFTestCaseRun(testCase);
         if(running != zfnull) {
             ZFLISTENER_1(testCaseOnStop
                     , ZFUIView *, containerView
@@ -226,7 +226,7 @@ ZF_GLOBAL_INITIALIZER_INIT(LuaRunner) {
                 pathInfo.pathData = appParams[0];
             }
 
-            ZFCoreArray<zfautoObject> luaParams;
+            ZFCoreArray<zfauto> luaParams;
             for(zfindex i = 1; i < appParams.count(); ++i) {
                 luaParams.add(zflineAlloc(v_zfstring, appParams[i]));
             }

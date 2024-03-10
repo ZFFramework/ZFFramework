@@ -180,7 +180,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToXml
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFObjectFromXml
-        , ZFMP_OUT(zfautoObject &, ret)
+        , ZFMP_OUT(zfauto &, ret)
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         ) {
@@ -192,11 +192,11 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFObjectFromXml
         return zffalse;
     }
 }
-ZFMETHOD_FUNC_DEFINE_2(zfautoObject, ZFObjectFromXml
+ZFMETHOD_FUNC_DEFINE_2(zfauto, ZFObjectFromXml
         , ZFMP_IN(const ZFInput &, input)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         ) {
-    zfautoObject ret;
+    zfauto ret;
     ZFObjectFromXml(ret, input, outErrorHint);
     return ret;
 }

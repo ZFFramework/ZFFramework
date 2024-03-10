@@ -56,7 +56,7 @@
  *   // optionally, you may declare a lambda-like listener for short
  *   // or, for extra param passing
  *   ZFLISTENER_1(listener2
- *           , zfautoObjectT<v_zfstring *>, myUserData
+ *           , zfautoT<v_zfstring *>, myUserData
  *           ) {
  *       testListener2(zfargs, myUserData);
  *   } ZFLISTENER_END()

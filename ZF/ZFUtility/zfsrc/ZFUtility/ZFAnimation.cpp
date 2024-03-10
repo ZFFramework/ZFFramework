@@ -19,8 +19,8 @@ public:
     zfbool aniRunning;
     zfbool aniDelaying;
     zfidentity aniDelayTaskId;
-    zfautoObjectT<ZFTimer *> aniDelayTimer;
-    zfautoObjectT<ZFTimer *> aniDummyTimer;
+    zfautoT<ZFTimer *> aniDelayTimer;
+    zfautoT<ZFTimer *> aniDummyTimer;
     zfbool aniStoppedByUser;
     zfidentity aniId;
 

@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAnimationTimeLine *>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const ZFListener &, aniImpl)
         ) {
@@ -16,7 +16,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_4(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine *>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(const zfchar *, from)
@@ -29,7 +29,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
     ani->toValue(to);
     return ani;
 }
-ZFMETHOD_FUNC_DEFINE_4(zfautoObjectT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine *>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(ZFObject *, from)
@@ -48,11 +48,11 @@ zfclassNotPOD _ZFP_ZFAniForGenericPrivate {
 public:
     zfbool needUpdate;
 private:
-    zfautoObject _aniTarget;
+    zfauto _aniTarget;
     const ZFMethod *_setterMethod;
     const ZFMethod *_getterMethod;
-    zfautoObject _from;
-    zfautoObject _to;
+    zfauto _from;
+    zfauto _to;
     const ZFTypeInfo *_typeInfo; // null for retain property, non-null for assignable property
 public:
     _ZFP_ZFAniForGenericPrivate(void)
@@ -162,14 +162,14 @@ public:
         }
 
         if(_typeInfo != zfnull) {
-            zfautoObject valueHolder = _typeInfo->typeIdClass()->newInstance();
+            zfauto valueHolder = _typeInfo->typeIdClass()->newInstance();
             ZFProgressable *value = valueHolder;
             if(value != zfnull && value->progressUpdate(_from, _to, progress)) {
                 _setterMethod->methodGenericInvoke(_aniTarget, valueHolder);
             }
         }
         else {
-            zfautoObject valueHolder = _getterMethod->methodGenericInvoke(_aniTarget);
+            zfauto valueHolder = _getterMethod->methodGenericInvoke(_aniTarget);
             ZFProgressable *value = valueHolder;
             if(value != zfnull) {
                 value->progressUpdate(_from, _to, progress);

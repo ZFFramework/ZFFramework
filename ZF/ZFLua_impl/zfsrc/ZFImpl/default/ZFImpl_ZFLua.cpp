@@ -26,9 +26,9 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_luaStateGlobalHolder) *d
         = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_luaStateGlobalHolder);
 
-    ZFImpl_ZFLua_luaClassRegister<zfautoObject>(L, "zfautoObject");
-    { // metatable for zfautoObject
-        luaL_getmetatable(L, "zfautoObject");
+    ZFImpl_ZFLua_luaClassRegister<zfauto>(L, "zfauto");
+    { // metatable for zfauto
+        luaL_getmetatable(L, "zfauto");
         ZFImpl_ZFLua_implSetupMetatable(L, -1);
         lua_pop(L, 1);
     }
@@ -36,7 +36,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     // zfnull
     zfclassNotPOD _ZFP_ZFImpl_ZFLua_zfnullHolder {
     public:
-        static zfautoObject get_zfnull(void) {
+        static zfauto get_zfnull(void) {
             return zfnull;
         }
     };
@@ -57,7 +57,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
         static int f(ZF_IN lua_State *L) {
             zfblockedAlloc(v_ZFPtr, ret);
             ret->zfv = (void *)L;
-            zfautoObject tmp = ret;
+            zfauto tmp = ret;
             ZFImpl_ZFLua_luaPush(L, tmp);
             return 1;
         }
@@ -196,8 +196,8 @@ zfbool ZFImpl_ZFLua_execute(
         ZF_IN lua_State *L
         , ZF_IN const zfchar *buf
         , ZF_IN_OPT zfindex bufLen /* = zfindexMax() */
-        , ZF_OUT_OPT zfautoObject *luaResult /* = zfnull */
-        , ZF_IN_OPT const ZFCoreArray<zfautoObject> *luaParams /* = zfnull */
+        , ZF_OUT_OPT zfauto *luaResult /* = zfnull */
+        , ZF_IN_OPT const ZFCoreArray<zfauto> *luaParams /* = zfnull */
         , ZF_OUT_OPT zfstring *errHint /* = zfnull */
         , ZF_IN_OPT const zfchar *chunkInfo /* = zfnull */
         ) {
@@ -235,7 +235,7 @@ zfbool ZFImpl_ZFLua_execute(
             *luaResult = ret;
             ret->zfv.capacity((zfindex)luaResultNum);
             for(int i = 0; i < luaResultNum; ++i) {
-                zfautoObject tmp;
+                zfauto tmp;
                 ZFImpl_ZFLua_toGeneric(tmp, L, -1 - (luaResultNum - 1 - i));
                 ret->zfv.add(tmp);
             }
@@ -310,7 +310,7 @@ void ZFImpl_ZFLua_luaObjectInfoT(
             break;
         case LUA_TLIGHTUSERDATA:
         case LUA_TUSERDATA: {
-                zfautoObject obj;
+                zfauto obj;
                 if(ZFImpl_ZFLua_toObject(obj, L, luaStackOffset)) {
                     ZFObjectInfoT(ret, obj);
                 }
@@ -355,7 +355,7 @@ void ZFImpl_ZFLua_luaObjectInfoT(
     }
 }
 zfbool ZFImpl_ZFLua_toObject(
-        ZF_OUT zfautoObject &param
+        ZF_OUT zfauto &param
         , ZF_IN lua_State *L
         , ZF_IN int luaStackOffset
         ) {
@@ -369,7 +369,7 @@ zfbool ZFImpl_ZFLua_toObject(
 }
 
 zfbool ZFImpl_ZFLua_toGeneric(
-        ZF_OUT zfautoObject &param
+        ZF_OUT zfauto &param
         , ZF_IN lua_State *L
         , ZF_IN int luaStackOffset
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -416,7 +416,7 @@ zfbool ZFImpl_ZFLua_toGeneric(
         return zftrue;
     }
 
-    zfautoObject const &obj = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
+    zfauto const &obj = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
     if(obj == zfnull) {
         wrapper->zfv("");
         return zftrue;
@@ -437,7 +437,7 @@ zfbool ZFImpl_ZFLua_toGeneric(
 }
 
 zfbool ZFImpl_ZFLua_toCallback(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN lua_State *L
         , ZF_IN int luaStackOffset
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -517,7 +517,7 @@ zfbool ZFImpl_ZFLua_toString(
         return zffalse;
     }
 
-    zfautoObject const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
+    zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
     return ZFImpl_ZFLua_toString(s, param.toObject(), allowEmpty, holderCls);
 }
 zfbool ZFImpl_ZFLua_toString(
@@ -549,7 +549,7 @@ zfbool ZFImpl_ZFLua_toString(
 }
 
 zfbool ZFImpl_ZFLua_toNumberT(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN lua_State *L
         , ZF_IN int luaStackOffset
         , ZF_IN_OPT zfbool allowEmpty /* = zffalse */
@@ -566,12 +566,12 @@ zfbool ZFImpl_ZFLua_toNumberT(
         return zffalse;
     }
 
-    zfautoObject const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
+    zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
     return ZFImpl_ZFLua_toNumberT(ret, param.toObject(), allowEmpty, holderCls);
 }
 
 zfbool ZFImpl_ZFLua_toNumberT(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN ZFObject *obj
         , ZF_IN_OPT zfbool allowEmpty /* = zffalse */
         , ZF_OUT_OPT const ZFClass **holderCls /* = zfnull */
@@ -665,7 +665,7 @@ zfbool ZFImpl_ZFLua_toLuaValue(
         lua_pushboolean(L, ZFCastZFObjectUnchecked(v_zfbool *, obj)->zfv);
         return zftrue;
     }
-    zfautoObject t;
+    zfauto t;
     if(ZFImpl_ZFLua_toNumberT(t, obj, allowEmpty)) {
         lua_pushnumber(L, (lua_Number)t.to<v_zflongdouble *>()->zfv);
         return zftrue;
@@ -687,7 +687,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_zfstringAppend_bool(
         , ZF_IN int i
         ) {
     zfbool ret = zftrue;
-    zfautoObject t;
+    zfauto t;
     if(ZFImpl_ZFLua_toObject(t, L, i)) {
         if(t == zfnull) {
             ret = zffalse;
@@ -714,7 +714,7 @@ static zflongdouble _ZFP_ZFImpl_ZFLua_zfstringAppend_number(
         ZF_IN lua_State *L
         , ZF_IN int i
         ) {
-    zfautoObject t;
+    zfauto t;
     if(ZFImpl_ZFLua_toNumberT(t, L, i, zftrue)) {
         return t->to<v_zflongdouble *>()->zfv;
     }
@@ -727,7 +727,7 @@ static zfstring _ZFP_ZFImpl_ZFLua_zfstringAppend_pointer(
         , ZF_IN int i
         ) {
     zfstring ret;
-    zfautoObject t;
+    zfauto t;
     if(ZFImpl_ZFLua_toObject(t, L, i)) {
         zfstringAppend(ret, "%s", (const void *)t.toObject());
     }
@@ -742,7 +742,7 @@ static zfstring _ZFP_ZFImpl_ZFLua_zfstringAppend_string(
         , ZF_IN zfbool toString
         ) {
     zfstring ret;
-    zfautoObject t;
+    zfauto t;
     if(ZFImpl_ZFLua_toObject(t, L, i)) {
         ZFObjectInfoT(ret, t.toObject());
     }

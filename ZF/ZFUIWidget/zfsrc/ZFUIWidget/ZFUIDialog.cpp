@@ -6,20 +6,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator = ZFUIDialogDefaultLayoutParamCreatorDefault;
-zfautoObject ZFUIDialogDefaultLayoutParamCreatorDefault(void) {
+zfauto ZFUIDialogDefaultLayoutParamCreatorDefault(void) {
     zfblockedAlloc(ZFUILayoutParam, lp);
     lp->layoutAlign(ZFUIAlign::e_Center);
     lp->layoutMargin(ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
     return lp;
 }
 ZFObjectCreator ZFUIDialogDefaultAniShowCreator = ZFUIDialogDefaultAniShowCreatorDefault;
-zfautoObject ZFUIDialogDefaultAniShowCreatorDefault(void) {
+zfauto ZFUIDialogDefaultAniShowCreatorDefault(void) {
     zfblockedAlloc(ZFAnimationNativeView, ani);
     ani->aniAlphaFrom(0);
     return ani;
 }
 ZFObjectCreator ZFUIDialogDefaultAniHideCreator = ZFUIDialogDefaultAniHideCreatorDefault;
-zfautoObject ZFUIDialogDefaultAniHideCreatorDefault(void) {
+zfauto ZFUIDialogDefaultAniHideCreatorDefault(void) {
     zfblockedAlloc(ZFAnimationNativeView, ani);
     ani->aniAlphaTo(0);
     return ani;

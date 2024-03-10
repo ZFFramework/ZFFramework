@@ -12,7 +12,7 @@ ZFOBSERVER_EVENT_GLOBAL_REGISTER(ImportBegin)
 ZFOBSERVER_EVENT_GLOBAL_REGISTER(ImportEnd)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-typedef zfstlmap<zfstring, zfautoObject> _ZFP_zfimportCacheMapType;
+typedef zfstlmap<zfstring, zfauto> _ZFP_zfimportCacheMapType;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfimportDataHolder, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(zfimportDataHolder) {
@@ -21,7 +21,7 @@ public:
     _ZFP_zfimportCacheMapType cacheMap;
 ZF_GLOBAL_INITIALIZER_END(zfimportDataHolder)
 
-static zfbool _ZFP_zfimportFile(ZF_OUT zfautoObject &ret, ZF_IN const ZFInput &input) {
+static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) {
     if(!input) {
         return zffalse;
     }
@@ -67,7 +67,7 @@ static void _ZFP_zfimportDir(
                 _ZFP_zfimportDir(ret, impl, pathInfoRoot, relPath);
             }
             else {
-                zfautoObject obj;
+                zfauto obj;
                 if(_ZFP_zfimportFile(obj, ZFInputForLocal(relPath, pathInfoRoot))) {
                     zfblockedAlloc(v_zfstring, key);
                     key->zfv = relPath;
@@ -79,7 +79,7 @@ static void _ZFP_zfimportDir(
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport
+ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
         , ZFMP_IN(const zfchar *, path)
         , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
         ) {
@@ -99,7 +99,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport
             return ret;
         }
         else {
-            zfautoObject ret;
+            zfauto ret;
             if(_ZFP_zfimportFile(ret, ZFInputForRes(pathFormated))) {
                 return ret;
             }
@@ -131,7 +131,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport
             return ret;
         }
         else {
-            zfautoObject ret;
+            zfauto ret;
             if(_ZFP_zfimportFile(ret, ZFInputForLocal(pathFormated, pathInfo))) {
                 return ret;
             }
@@ -142,7 +142,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObject, zfimport
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_1(zfautoObject, zfimportCacheRemove
+ZFMETHOD_FUNC_DEFINE_1(zfauto, zfimportCacheRemove
         , ZFMP_IN(const zfchar *, callbackId)
         ) {
     if(callbackId == zfnull) {
@@ -152,7 +152,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoObject, zfimportCacheRemove
     _ZFP_zfimportCacheMapType &cacheMap = ZF_GLOBAL_INITIALIZER_INSTANCE(zfimportDataHolder)->cacheMap;
     _ZFP_zfimportCacheMapType::iterator it = cacheMap.find(callbackId);
     if(it != cacheMap.end()) {
-        zfautoObject ret = it->second;
+        zfauto ret = it->second;
         cacheMap.erase(it);
         return ret;
     }

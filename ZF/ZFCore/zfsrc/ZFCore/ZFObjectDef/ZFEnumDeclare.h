@@ -74,7 +74,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     value = e->enumValue(); // return the value stored as EnumName
  *     zfRelease(e);
  *
- *     zfautoObject tmp = ZFClass::classForName("EnumName")->newInstance(); // see #ZFOBJECT_REGISTER for more info
+ *     zfauto tmp = ZFClass::classForName("EnumName")->newInstance(); // see #ZFOBJECT_REGISTER for more info
  *     e = tmp.to<ZFEnum *>();
  *     for(zfindex i = 0; i < e->enumCount(); ++i) { // OK, list all the value and name for e, which is EnumName type
  *         value = e->enumValueAt(i);
@@ -372,7 +372,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
         return ret; \
     } \
     /** @brief see @ref EnumName, return enum object if success */ \
-    extern ZFLIB_ zfbool EnumName##FromString(ZF_OUT zfautoObject &ret, \
+    extern ZFLIB_ zfbool EnumName##FromString(ZF_OUT zfauto &ret, \
                                               ZF_IN const zfchar *src, \
                                               ZF_IN_OPT zfindex srcLen = zfindexMax()); \
     ZFOUTPUT_TYPE_DECLARE(ZFLIB_, EnumName##Enum)
@@ -385,7 +385,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
         return zftrue; \
     } \
     zfbool EnumName##FromString( \
-            ZF_OUT zfautoObject &ret \
+            ZF_OUT zfauto &ret \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             ) { \

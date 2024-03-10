@@ -72,7 +72,7 @@ private:
     }
     static zfbool _getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
-        zfautoObject tag = zflineAlloc(v_zfint, obj->myProp());
+        zfauto tag = zflineAlloc(v_zfint, obj->myProp());
         obj->objectTag(_valueKey(), tag);
         ret = tag;
         return zftrue;
@@ -86,7 +86,7 @@ private:
     static zfbool _callbackIsInitValue(
             ZF_IN const ZFProperty *property
             , ZF_IN ZFObject *ownerObj
-            , ZF_OUT_OPT zfautoObject *outInitValue = zfnull
+            , ZF_OUT_OPT zfauto *outInitValue = zfnull
             ) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj->toAny();
         if(outInitValue != zfnull) {

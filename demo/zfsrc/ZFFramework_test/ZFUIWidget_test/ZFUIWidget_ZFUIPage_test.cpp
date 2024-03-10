@@ -110,7 +110,7 @@ protected:
             ZFUIWidget_ZFUIPage_test_PageManager *pageManager = this;
             ZFLISTENER_2(buttonOnClick
                     , ZFUIWidget_ZFUIPage_test_PageManager *, pageManager
-                    , zfautoObjectT<v_zfstring *>, pageGroupId
+                    , zfautoT<v_zfstring *>, pageGroupId
                     ) {
                 if(!zfargs.sender()->to<ZFUIButton *>()->checked()) { // click checked tab
                     zfargs.sender()->to<ZFUIButton *>()->checked(zftrue);

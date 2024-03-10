@@ -14,7 +14,7 @@
  *   const ZFClass *cls = ZFClass::classForName("MyObject");
  *
  *   // you may create the object's instance by the meta data
- *   zfautoObject objTmp = cls->newInstance();
+ *   zfauto objTmp = cls->newInstance();
  *   ZFObject *obj = objTmp.toObject();
  *
  *   // cast to desired type if necessary
@@ -78,7 +78,7 @@
  * @endcode
  * once registered:
  * @code
- *   zfautoObject obj = ZFClass::classForName("v_YourType")->newInstance();
+ *   zfauto obj = ZFClass::classForName("v_YourType")->newInstance();
  *   int yourProp = obj->classData()->propertyGetterForName("yourProp")->execute<zfint>(obj);
  * @endcode
  * or even for lua: (see also @ref DocTag_Feature_LuaAutoBinding)

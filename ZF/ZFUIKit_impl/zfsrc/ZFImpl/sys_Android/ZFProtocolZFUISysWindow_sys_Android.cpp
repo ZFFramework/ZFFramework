@@ -93,8 +93,8 @@ public:
             );
     }
 
-    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
-        zfautoObject modalWindow = ZFUISysWindow::ClassData()->newInstance();
+    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+        zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_modalWindowShow",
@@ -170,7 +170,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUISysWindow
         , void, native_1mainWindowRegisterForNativeView
         , jobject nativeParent
         ) {
-    zfautoObjectT<ZFUISysWindow *> mainWindow = ZFUISysWindow::nativeWindowEmbedNativeView((void *)nativeParent);
+    zfautoT<ZFUISysWindow *> mainWindow = ZFUISysWindow::nativeWindowEmbedNativeView((void *)nativeParent);
     ZFUISysWindow::mainWindowRegister(mainWindow);
 }
 JNI_METHOD_DECLARE_END()

@@ -63,13 +63,13 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * -  (not recommended) you may use #zfimportCacheRemove/zfimportCacheRemoveAll
  *   to remove the cache
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoObject, zfimport
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfimport
         , ZFMP_IN(const zfchar *, path)
         , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
         )
 
 /** @brief remove the cache created by #zfimport */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfautoObject, zfimportCacheRemove
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfauto, zfimportCacheRemove
         , ZFMP_IN(const zfchar *, callbackId)
         )
 

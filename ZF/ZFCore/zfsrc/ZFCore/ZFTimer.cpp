@@ -150,7 +150,7 @@ void ZFTimer::_ZFP_ZFTimer_timerOnStop(void) {
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerStart
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer *>, ZFTimerStart
         , ZFMP_IN(zftimet, timerInterval)
         , ZFMP_IN(const ZFListener &, timerCallback)
         ) {
@@ -161,7 +161,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerStart
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer *>, ZFTimerOnce
         , ZFMP_IN(zftimet, delay)
         , ZFMP_IN(const ZFListener &, timerCallback)
         ) {
@@ -169,7 +169,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce
     ret->timerInterval(delay);
 
     ZFLISTENER_2(implThreadCallback
-            , zfautoObjectT<ZFTimer *>, ret
+            , zfautoT<ZFTimer *>, ret
             , ZFListener, timerCallback
             ) {
         if(ret->timerStarted()) {
@@ -181,9 +181,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoObjectT<ZFTimer *>, ZFTimerOnce
         ret->timerStop();
     } ZFLISTENER_END()
 
-    zfautoObjectT<ZFThread *> currentThread = ZFThread::currentThread();
+    zfautoT<ZFThread *> currentThread = ZFThread::currentThread();
     ZFLISTENER_2(timerOnActivate
-            , zfautoObjectT<ZFThread *>, currentThread
+            , zfautoT<ZFThread *>, currentThread
             , ZFListener, implThreadCallback
             ) {
         ZFThread::executeInThread(currentThread, implThreadCallback);

@@ -100,13 +100,13 @@ public:
         return d->count();
     }
     zfoverride
-    virtual zfautoObject cellAt(ZF_IN zfindex index) {
+    virtual zfauto cellAt(ZF_IN zfindex index) {
         return d->get(index);
     }
 
 protected:
     zfoverride
-    virtual zfautoObject cellCacheOnAccess(ZF_IN zfindex index) {
+    virtual zfauto cellCacheOnAccess(ZF_IN zfindex index) {
         return d->get(index);
     }
 

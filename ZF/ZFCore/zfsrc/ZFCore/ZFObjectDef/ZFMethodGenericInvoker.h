@@ -23,8 +23,8 @@ zfclassFwd ZFMethod;
 typedef zfbool (*ZFMethodGenericInvoker)(ZF_IN const ZFMethod *invokerMethod
                                          , ZF_IN ZFObject *invokerObject
                                          , ZF_OUT_OPT zfstring *errorHint
-                                         , ZF_OUT zfautoObject &ret
-                                         , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                         , ZF_OUT zfauto &ret
+                                         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
                                          );
 
 /**
@@ -34,8 +34,8 @@ typedef zfbool (*ZFMethodGenericInvoker)(ZF_IN const ZFMethod *invokerMethod
     ZF_IN const ZFMethod *invokerMethod \
     , ZF_IN ZFObject *invokerObject \
     , ZF_OUT_OPT zfstring *errorHint \
-    , ZF_OUT zfautoObject &ret \
-    , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+    , ZF_OUT zfauto &ret \
+    , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
 
 extern ZFLIB_ZFCore ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef;
 /**
@@ -43,11 +43,11 @@ extern ZFLIB_ZFCore ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef;
  */
 #define ZFMethodGenericInvokerDefaultParam() ((ZFObject * const &)_ZFP_ZFMethodGenericInvokerDefaultParamRef)
 
-extern ZFLIB_ZFCore zfautoObject _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
+extern ZFLIB_ZFCore zfauto _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
 /**
  * @brief holder of #ZFMethodGenericInvokerDefaultParam
  */
-#define ZFMethodGenericInvokerDefaultParamHolder() ((zfautoObject const &)_ZFP_ZFMethodGenericInvokerDefaultParamHolderRef)
+#define ZFMethodGenericInvokerDefaultParamHolder() ((zfauto const &)_ZFP_ZFMethodGenericInvokerDefaultParamHolderRef)
 
 // ============================================================
 template<typename T_Dummy, int n>
@@ -84,10 +84,10 @@ extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(
 template<typename T_Type, typename T_Access>
 zfclassNotPOD _ZFP_MtdGIPA {
 public:
-    zfautoObject &obj;
+    zfauto &obj;
 public:
-    explicit _ZFP_MtdGIPA(ZF_IN_OUT zfautoObject &obj) : obj(obj) {}
-    T_Access a(ZF_IN_OPT const zfautoObject &pDef = zfnull) {
+    explicit _ZFP_MtdGIPA(ZF_IN_OUT zfauto &obj) : obj(obj) {}
+    T_Access a(ZF_IN_OPT const zfauto &pDef = zfnull) {
         if(this->obj == ZFMethodGenericInvokerDefaultParam()) {
             this->obj = pDef;
         }
@@ -102,12 +102,12 @@ public:
     _ZFP_MtdGIPA<_TR##N, _T##N>(param).a(DefaultExpandOrEmpty(pDef##N(invokerMethod, N)))
 #define _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS(N, DefaultExpandOrEmpty, ParamType, DefaultValueFix) \
     DefaultExpandOrEmpty( \
-        static zfautoObject pDef##N( \
+        static zfauto pDef##N( \
                 ZF_IN const ZFMethod *invokerMethod \
                 , ZF_IN zfindex index \
                 ) { \
             zftValue<zftTraits<ParamType>::TrNoRef> paramDefault; \
-            zfautoObject ret; \
+            zfauto ret; \
             ZFTypeId<zftTraits<ParamType>::TrNoRef>::ValueStore( \
                 ret, \
                 (paramDefault.zfv DefaultValueFix())); \
@@ -126,8 +126,8 @@ extern ZFLIB_ZFCore void _ZFP_MtdGIRetError(
 template<typename T_ReturnType>
 zfclassNotPOD _ZFP_MtdGIARefA {
 public:
-    static zfbool R(T_ReturnType retTmp, ZFObject *invokerObject, zfautoObject &ret) {
-        zfautoObject invokerObjectHolder = invokerObject;
+    static zfbool R(T_ReturnType retTmp, ZFObject *invokerObject, zfauto &ret) {
+        zfauto invokerObjectHolder = invokerObject;
         typedef typename zftTraits<T_ReturnType>::TrNoRef T_ReturnTypeTmp;
         if(ZFTypeId<T_ReturnTypeTmp>::template Value<T_ReturnType>::zfvAccessAvailable(invokerObjectHolder)
                 && (&retTmp == &(ZFTypeId<T_ReturnTypeTmp>::template Value<T_ReturnType>::zfvAccess(invokerObjectHolder)))
@@ -142,43 +142,43 @@ public:
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef {public:
     static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType retTmp, ZFObject *invokerObject, zfautoObject &ret) {return zffalse;}
+    static zfbool R(T_ReturnType retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType &> {public:
     static zfbool C(void) {return zftrue;}
-    static zfbool R(T_ReturnType &retTmp, ZFObject *invokerObject, zfautoObject &ret) {
+    static zfbool R(T_ReturnType &retTmp, ZFObject *invokerObject, zfauto &ret) {
         return _ZFP_MtdGIARefA<T_ReturnType &>::R(retTmp, invokerObject, ret);
     }
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType const &> {public:
     static zfbool C(void) {return zftrue;}
-    static zfbool R(T_ReturnType const &retTmp, ZFObject *invokerObject, zfautoObject &ret) {
+    static zfbool R(T_ReturnType const &retTmp, ZFObject *invokerObject, zfauto &ret) {
         return _ZFP_MtdGIARefA<T_ReturnType const &>::R(retTmp, invokerObject, ret);
     }
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType *> {public:
     static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType *retTmp, ZFObject *invokerObject, zfautoObject &ret) {return zffalse;}
+    static zfbool R(T_ReturnType *retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType * &> {public:
     static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType * &retTmp, ZFObject *invokerObject, zfautoObject &ret) {return zffalse;}
+    static zfbool R(T_ReturnType * &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType * const &> {public:
     static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType * const &retTmp, ZFObject *invokerObject, zfautoObject &ret) {return zffalse;}
+    static zfbool R(T_ReturnType * const &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<const T_ReturnType *> {public:
     static zfbool C(void) {return zffalse;}
-    static zfbool R(const T_ReturnType *retTmp, ZFObject *invokerObject, zfautoObject &ret) {return zffalse;}
+    static zfbool R(const T_ReturnType *retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<const T_ReturnType * &> {public:
     static zfbool C(void) {return zffalse;}
-    static zfbool R(const T_ReturnType * &retTmp, ZFObject *invokerObject, zfautoObject &ret) {return zffalse;}
+    static zfbool R(const T_ReturnType * &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
 };
 template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<const T_ReturnType * const &> {public:
     static zfbool C(void) {return zffalse;}
-    static zfbool R(const T_ReturnType * const &retTmp, ZFObject *invokerObject, zfautoObject &ret) {return zffalse;}
+    static zfbool R(const T_ReturnType * const &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
 };
 
 template<typename T_ReturnType>
@@ -187,7 +187,7 @@ public:
     typedef T_ReturnType (*Ivk)(
             ZF_IN const ZFMethod *invokerMethod
             , ZF_IN ZFObject *invokerObject
-            , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+            , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             );
 public:
     static zfbool A(
@@ -195,8 +195,8 @@ public:
             , ZF_IN const ZFMethod *invokerMethod
             , ZF_IN ZFObject *invokerObject
             , ZF_OUT_OPT zfstring *errorHint
-            , ZF_OUT_OPT zfautoObject &ret
-            , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+            , ZF_OUT_OPT zfauto &ret
+            , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             ) {
         T_ReturnType retTmp = invoke(invokerMethod, invokerObject, paramList);
         zfCoreMutexLocker();
@@ -224,7 +224,7 @@ public:
     typedef void (*Ivk)(
             ZF_IN const ZFMethod *invokerMethod
             , ZF_IN ZFObject *invokerObject
-            , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+            , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             );
 public:
     static zfbool A(
@@ -232,8 +232,8 @@ public:
             , ZF_IN const ZFMethod *invokerMethod
             , ZF_IN ZFObject *invokerObject
             , ZF_OUT_OPT zfstring *errorHint
-            , ZF_OUT_OPT zfautoObject &ret
-            , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+            , ZF_OUT_OPT zfauto &ret
+            , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             ) {
         invoke(invokerMethod, invokerObject, paramList);
         return zftrue;
@@ -275,8 +275,8 @@ public:
                 ZF_IN const ZFMethod *invokerMethod \
                 , ZF_IN ZFObject *invokerObject \
                 , ZF_OUT_OPT zfstring *errorHint \
-                , ZF_OUT_OPT zfautoObject &ret \
-                , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM] \
+                , ZF_OUT_OPT zfauto &ret \
+                , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM] \
                 ) { \
             ParamExpandOrEmpty0( \
                 if( \
@@ -298,7 +298,7 @@ public:
         static ReturnType I( \
                 ZF_IN const ZFMethod *invokerMethod \
                 , ZF_IN ZFObject *invokerObject \
-                , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM] \
+                , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM] \
                 ) { \
             return invokerMethod->_ZFP_execute<ReturnType \
                     ParamExpandOrEmpty0(ZFM_COMMA() ParamType0) \
@@ -330,8 +330,8 @@ public:
 extern ZFLIB_ZFCore zfbool _ZFP_ZFMethodGenericInvoke(ZF_IN const ZFMethod *invokerMethod
                                                       , ZF_IN ZFObject *invokerObject
                                                       , ZF_OUT_OPT zfstring *errorHint
-                                                      , ZF_OUT zfautoObject &ret
-                                                      , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
+                                                      , ZF_OUT zfauto &ret
+                                                      , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
                                                       );
 extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
         ZF_IN const ZFMethod *method
@@ -356,7 +356,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
             , ZF_IN ZFObject *obj \
             ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA) \
             ) { \
-        zfautoObject _p[ZFMETHOD_MAX_PARAM] = { \
+        zfauto _p[ZFMETHOD_MAX_PARAM] = { \
             ZFMethodGenericInvokerDefaultParamHolder(), \
             ZFMethodGenericInvokerDefaultParamHolder(), \
             ZFMethodGenericInvokerDefaultParamHolder(), \
@@ -367,7 +367,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
             ZFMethodGenericInvokerDefaultParamHolder(), \
         }; \
         ZFM_REPEAT(N, _ZFP_ZFMethodGenericInvoke_REPEAT1, ZFM_EMPTY, ZFM_EMPTY) \
-        zfautoObject _ret; \
+        zfauto _ret; \
         zfstring errorHint; \
         if(!_ZFP_ZFMethodGenericInvoke(method, obj, &errorHint, _ret, _p)) { \
             _ZFP_ZFMethodGenericInvokeError(method, obj, -1, errorHint); \
@@ -383,7 +383,7 @@ zfclassNotPOD _ZFP_MtdGII_P<T_ParamType, 0> {
 public:
     static inline void p(
             ZF_IN_OUT T_ParamType p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
     }
 };
@@ -392,7 +392,7 @@ zfclassNotPOD _ZFP_MtdGII_P<T_ParamType, 1> {
 public:
     static inline void p(
             ZF_IN_OUT T_ParamType p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
     }
 };
@@ -401,7 +401,7 @@ zfclassNotPOD _ZFP_MtdGII_P<T_ParamType const &, 0> {
 public:
     static inline void p(
             ZF_IN_OUT T_ParamType const &p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
     }
 };
@@ -410,7 +410,7 @@ zfclassNotPOD _ZFP_MtdGII_P<const T_ParamType *, 0> {
 public:
     static inline void p(
             ZF_IN_OUT const T_ParamType *p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
     }
 };
@@ -419,7 +419,7 @@ zfclassNotPOD _ZFP_MtdGII_P<const void *, 0> {
 public:
     static inline void p(
             ZF_IN_OUT const void *p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
     }
 };
@@ -428,7 +428,7 @@ zfclassNotPOD _ZFP_MtdGII_P<void *, 0> {
 public:
     static inline void p(
             ZF_IN_OUT void *p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
     }
 };
@@ -437,7 +437,7 @@ zfclassNotPOD _ZFP_MtdGII_P<T_ParamType &, 0> {
 public:
     static void p(
             ZF_IN_OUT T_ParamType &p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
         typedef typename zftTraits<T_ParamType &>::TrNoRef _Type;
         p = ZFTypeId<_Type>::template Value<T_ParamType &>::zfvAccess(h);
@@ -449,7 +449,7 @@ zfclassNotPOD _ZFP_MtdGII_P<T_ParamType *, 0> {
 public:
     static void p(
             ZF_IN_OUT T_ParamType *p
-            , ZF_IN_OUT zfautoObject &h
+            , ZF_IN_OUT zfauto &h
             ) {
         typedef typename zftTraits<T_ParamType *>::TrNoRef _Type;
         if(p) {
@@ -465,7 +465,7 @@ public:
     static T_ReturnType r(
             ZF_IN const ZFMethod *method
             , ZF_IN ZFObject *obj
-            , ZF_IN_OUT zfautoObject &ret
+            , ZF_IN_OUT zfauto &ret
             ) {
         typedef typename zftTraits<T_ReturnType>::TrNoRef _T_ReturnType;
         if(!ZFTypeId<_T_ReturnType>::template Value<T_ReturnType>::zfvAccessAvailable(ret)) {
@@ -480,7 +480,7 @@ public:
     static void r(
             ZF_IN const ZFMethod *method
             , ZF_IN ZFObject *obj
-            , ZF_IN_OUT zfautoObject &ret
+            , ZF_IN_OUT zfauto &ret
             ) {
     }
 };

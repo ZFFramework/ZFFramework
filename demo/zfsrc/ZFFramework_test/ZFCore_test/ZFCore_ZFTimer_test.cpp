@@ -41,7 +41,7 @@ protected:
 
         ZFTestCase *testCase = this;
         ZFLISTENER_1(timerOnce
-                , zfautoObjectT<ZFTestCase *>, testCase
+                , zfautoT<ZFTestCase *>, testCase
                 ) {
             testCase->testCaseOutput(zfstr("timerOnce activated, current thread: %s", ZFThread::currentThread()->objectInfo()));
         } ZFLISTENER_END()

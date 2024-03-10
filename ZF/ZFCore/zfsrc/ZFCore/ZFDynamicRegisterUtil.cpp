@@ -748,14 +748,14 @@ ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     return *this;
 }
 
-static zfautoObject _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
+static zfauto _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
     ZFCopyable *copyable = property->propertyDynamicRegisterUserData()->toAny();
     if(copyable != zfnull) {
         return copyable->copy();
     }
     ZFStyleable *styleable = property->propertyDynamicRegisterUserData()->toAny();
     if(styleable != zfnull) {
-        zfautoObject ret = styleable->classData()->newInstance();
+        zfauto ret = styleable->classData()->newInstance();
         ret.to<ZFStyleable *>()->styleableCopyFrom(styleable);
         return ret;
     }

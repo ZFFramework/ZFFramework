@@ -1,24 +1,24 @@
 /**
- * @file zfautoObjectFwd.h
+ * @file zfautoFwd.h
  * @brief smart pointer for ZFObject
  */
 
-#ifndef _ZFI_zfautoObjectFwd_h_
-#define _ZFI_zfautoObjectFwd_h_
+#ifndef _ZFI_zfautoFwd_h_
+#define _ZFI_zfautoFwd_h_
 
 #include "ZFAny.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// zfautoObject
-zfclassNotPOD ZFLIB_ZFCore _ZFP_zfautoObjectPrivate {
+// zfauto
+zfclassNotPOD ZFLIB_ZFCore _ZFP_zfautoPrivate {
 public:
     zfuint refCount;
     ZFObject *obj;
 public:
-    _ZFP_zfautoObjectPrivate(void) : refCount(1), obj(zfnull) {}
-    _ZFP_zfautoObjectPrivate(ZF_IN ZFObject *obj) : refCount(1), obj(obj) {}
+    _ZFP_zfautoPrivate(void) : refCount(1), obj(zfnull) {}
+    _ZFP_zfautoPrivate(ZF_IN ZFObject *obj) : refCount(1), obj(obj) {}
 };
 
 /**
@@ -26,37 +26,37 @@ public:
  *
  * useful to hold a ZFObject as temp return value:
  * @code
- *   zfautoObject yourFunc(void) {
+ *   zfauto yourFunc(void) {
  *       // alloc an object for return
  *       zfblockedAlloc(ZFObject, obj);
  *
- *       // use zfautoObject to wrap the returned object
- *       return zfautoObject(obj);
+ *       // use zfauto to wrap the returned object
+ *       return zfauto(obj);
  *   }
  *
  *   {
- *       zfautoObject value = yourFunc();
+ *       zfauto value = yourFunc();
  *       ZFObject *obj = value;
- *   } // content obj would be released when zfautoObject destroyed
+ *   } // content obj would be released when zfauto destroyed
  * @endcode
  */
-zffinal zfclassLikePOD ZFLIB_ZFCore zfautoObject {
+zffinal zfclassLikePOD ZFLIB_ZFCore zfauto {
     /** @cond ZFPrivateDoc */
 public:
-    zfautoObject(void) : d(zfnull) {}
-    zfautoObject(ZF_IN zfautoObject const &ref);
+    zfauto(void) : d(zfnull) {}
+    zfauto(ZF_IN zfauto const &ref);
     template<typename T_ZFObject>
-    zfautoObject(ZF_IN T_ZFObject *obj);
+    zfauto(ZF_IN T_ZFObject *obj);
     template<typename T_ZFObject>
-    zfautoObject(ZF_IN T_ZFObject const &obj);
-    zffinal ~zfautoObject(void);
+    zfauto(ZF_IN T_ZFObject const &obj);
+    zffinal ~zfauto(void);
 
 public:
-    zfautoObject &operator = (ZF_IN zfautoObject const &ref);
+    zfauto &operator = (ZF_IN zfauto const &ref);
     template<typename T_ZFObject>
-    zfautoObject &operator = (ZF_IN T_ZFObject *obj);
+    zfauto &operator = (ZF_IN T_ZFObject *obj);
     template<typename T_ZFObject>
-    zfautoObject &operator = (ZF_IN T_ZFObject const &obj);
+    zfauto &operator = (ZF_IN T_ZFObject const &obj);
 
 public:
     template<typename T_ZFObject>
@@ -97,7 +97,7 @@ public:
     /**
      * @brief no lock version of object assign, for low level impl only
      */
-    void zfunsafe_assign(ZF_IN zfautoObject const &ref);
+    void zfunsafe_assign(ZF_IN zfauto const &ref);
     /**
      * @brief get current retain count
      */
@@ -119,24 +119,24 @@ public:
     }
 
 private:
-    _ZFP_zfautoObjectPrivate *d;
+    _ZFP_zfautoPrivate *d;
 };
 
 // ============================================================
-// zfautoObjectT
+// zfautoT
 /**
- * @brief type restrict version of #zfautoObject
+ * @brief type restrict version of #zfauto
  */
 template<typename T_ZFObjectBase>
-zffinal zfclassLikePOD zfautoObjectT : zfextend zfautoObject {
+zffinal zfclassLikePOD zfautoT : zfextend zfauto {
     /** @cond ZFPrivateDoc */
 public:
-    zfautoObjectT(void) : zfautoObject() {}
-    zfautoObjectT(ZF_IN zfautoObject const &ref);
+    zfautoT(void) : zfauto() {}
+    zfautoT(ZF_IN zfauto const &ref);
     template<typename T_ZFObject>
-    zfautoObjectT(ZF_IN T_ZFObject *obj);
+    zfautoT(ZF_IN T_ZFObject *obj);
     template<typename T_ZFObject>
-    zfautoObjectT(ZF_IN T_ZFObject const &obj);
+    zfautoT(ZF_IN T_ZFObject const &obj);
 
 public:
     template<typename T_ZFObject>
@@ -156,30 +156,30 @@ public:
         return (this->toObject() != _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
 public:
-    inline zfbool operator == (ZF_IN zfautoObject const &obj) const {
+    inline zfbool operator == (ZF_IN zfauto const &obj) const {
         return (this->toObject() == obj.toObject());
     }
-    inline zfbool operator != (ZF_IN zfautoObject const &obj) const {
+    inline zfbool operator != (ZF_IN zfauto const &obj) const {
         return (this->toObject() != obj.toObject());
     }
     template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN zfautoObjectT<T_ZFObject> const &obj) const {
+    inline zfbool operator == (ZF_IN zfautoT<T_ZFObject> const &obj) const {
         return (this->toObject() == obj.toObject());
     }
     template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN zfautoObjectT<T_ZFObject> const &obj) const {
+    inline zfbool operator != (ZF_IN zfautoT<T_ZFObject> const &obj) const {
         return (this->toObject() != obj.toObject());
     }
 
 public:
     T_ZFObjectBase operator -> (void) const;
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
-        return zfautoObject::toObject();
+        return zfauto::toObject();
     }
     /** @endcond */
 };
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #ifndef _ZFI_zfautoObjectFwd_h_
+#endif // #ifndef _ZFI_zfautoFwd_h_
 

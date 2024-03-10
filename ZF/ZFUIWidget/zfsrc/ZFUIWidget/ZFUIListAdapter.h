@@ -102,7 +102,7 @@ public:
     /**
      * @brief access list cell at index, assert fail if return null object
      */
-    virtual zfautoObject cellAt(ZF_IN zfindex index) zfpurevirtual;
+    virtual zfauto cellAt(ZF_IN zfindex index) zfpurevirtual;
     /**
      * @brief check cell size at index
      *
@@ -149,7 +149,7 @@ protected:
      *
      * see #cellCacheOnRecycle for more info
      */
-    virtual inline zfautoObject cellCacheOnAccess(ZF_IN zfindex index) {
+    virtual inline zfauto cellCacheOnAccess(ZF_IN zfindex index) {
         return zfnull;
     }
     zffinal inline void _ZFP_ZFUIListAdapter_cellCacheOnRecycle(ZF_IN ZFUIListCell *cell) {
@@ -171,7 +171,7 @@ protected:
 
 public:
     /** @brief see #cellCacheOnRecycle */
-    ZFMETHOD_DECLARE_1(zfautoObjectT<ZFUIListCell *>, cellCacheDefaultAccess
+    ZFMETHOD_DECLARE_1(zfautoT<ZFUIListCell *>, cellCacheDefaultAccess
             , ZFMP_IN(const zfchar *, key)
             )
     /** @brief see #cellCacheOnRecycle */

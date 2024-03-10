@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief for impl to alloc object
  */
 extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_zfAlloc(
-        ZF_OUT zfautoObject &ret
+        ZF_OUT zfauto &ret
         , ZF_IN lua_State *L
         , ZF_IN const ZFClass *cls
         , ZF_IN int paramCount

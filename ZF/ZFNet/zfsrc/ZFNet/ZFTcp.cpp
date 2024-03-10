@@ -108,7 +108,7 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFTcp, zfautoObjectT<ZFTcp *>, accept) {
+ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp *>, accept) {
     switch(d->type) {
         case ZFTcpType::e_Invalid:
             zfLog("calling accept() before open() successfully");

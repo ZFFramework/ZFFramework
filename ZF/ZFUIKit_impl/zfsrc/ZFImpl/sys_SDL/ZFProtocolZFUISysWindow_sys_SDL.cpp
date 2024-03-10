@@ -7,7 +7,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(SysWindowResume, ZFLevelZFFrameworkPostNormal) {
-    zfautoObject *sysWindowHolder = (zfautoObject *)sdlEvent->user.data1;
+    zfauto *sysWindowHolder = (zfauto *)sdlEvent->user.data1;
     ZFUISysWindow *sysWindow = sysWindowHolder->to<ZFObjectHolder *>()->objectHolded();
     if(!sysWindow->nativeWindowIsResumed()) {
         ZFPROTOCOL_ACCESS(ZFUISysWindow)->notifyOnResume(sysWindow);
@@ -43,7 +43,7 @@ public:
             nativeWindow->sdlRenderer = ZFImpl_sys_SDL_mainRenderer();
             this->notifyOnCreate(this->_mainWindow, nativeWindow);
 
-            ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfautoObject, this->_mainWindow->objectHolder()), zfnull);
+            ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfauto, this->_mainWindow->objectHolder()), zfnull);
         }
         return this->_mainWindow;
     }
@@ -84,8 +84,8 @@ public:
         nativeWindow->rootView = zfnull;
     }
 
-    virtual zfautoObject modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
-        zfautoObject modalWindow = ZFUISysWindow::ClassData()->newInstance();
+    virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+        zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
         ZFImpl_sys_SDL_SysWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_SysWindow);
         nativeWindow->ownerZFUISysWindow = this->_mainWindow;
         nativeWindow->builtinWindow = zffalse;
@@ -99,7 +99,7 @@ public:
         SDL_SetRenderDrawBlendMode(nativeWindow->sdlRenderer, SDL_BLENDMODE_BLEND);
         this->notifyOnCreate(modalWindow, nativeWindow);
 
-        ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfautoObject, modalWindow->objectHolder()), zfnull);
+        ZFIMPL_SYS_SDL_USER_EVENT_POST(SysWindowResume, zfnew(zfauto, modalWindow->objectHolder()), zfnull);
         return modalWindow;
     }
     virtual void modalWindowFinish(

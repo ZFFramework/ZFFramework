@@ -27,11 +27,11 @@ extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator;
  * -  have #ZFUIAlign::e_Center as #ZFUILayoutParam::layoutAlign
  * -  have #ZFUIGlobalStyle::itemMargin as #ZFUILayoutParam::layoutMargin
  */
-extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultLayoutParamCreatorDefault(void);
+extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultLayoutParamCreatorDefault(void);
 /**
  * @brief util method to call #ZFUIDialogDefaultLayoutParamCreator
  */
-inline zfautoObject ZFUIDialogDefaultLayoutParam(void) {
+inline zfauto ZFUIDialogDefaultLayoutParam(void) {
     return ((ZFUIDialogDefaultLayoutParamCreator != zfnull) ? ZFUIDialogDefaultLayoutParamCreator() : ZFUIDialogDefaultLayoutParamCreatorDefault());
 }
 
@@ -48,11 +48,11 @@ extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniShowCreator;
  * by default, the animation would be #ZFAnimationNativeView
  * with alpha change
  */
-extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultAniShowCreatorDefault(void);
+extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultAniShowCreatorDefault(void);
 /**
  * @brief util method to call #ZFUIDialogDefaultAniShowCreator
  */
-inline zfautoObject ZFUIDialogDefaultAniShow(void) {
+inline zfauto ZFUIDialogDefaultAniShow(void) {
     return ((ZFUIDialogDefaultAniShowCreator != zfnull) ? ZFUIDialogDefaultAniShowCreator() : ZFUIDialogDefaultAniShowCreatorDefault());
 }
 
@@ -69,11 +69,11 @@ extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniHideCreator;
  * by default, the animation would be #ZFAnimationNativeView
  * with alpha change
  */
-extern ZFLIB_ZFUIWidget zfautoObject ZFUIDialogDefaultAniHideCreatorDefault(void);
+extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultAniHideCreatorDefault(void);
 /**
  * @brief util method to call #ZFUIDialogDefaultAniHideCreator
  */
-inline zfautoObject ZFUIDialogDefaultAniHide(void) {
+inline zfauto ZFUIDialogDefaultAniHide(void) {
     return ((ZFUIDialogDefaultAniHideCreator != zfnull) ? ZFUIDialogDefaultAniHideCreator() : ZFUIDialogDefaultAniHideCreatorDefault());
 }
 

@@ -32,7 +32,7 @@ public:
     }
 };
 typedef zfimplmap<zfstring, _ZFP_ZFSerializableDataAttributeData> _ZFP_ZFSerializableDataAttributeMapType;
-typedef zfstlmap<zfstring, zfautoObject> _ZFP_ZFSerializableDataTagMapType;
+typedef zfstlmap<zfstring, zfauto> _ZFP_ZFSerializableDataTagMapType;
 zfclassNotPOD _ZFP_ZFSerializableDataPrivate {
 public:
     zfuint refCount;
@@ -251,12 +251,12 @@ void ZFSerializableData::serializableDataTag(
     }
     else {
         if(tag == zfnull) {
-            zfautoObject holder = it->second;
+            zfauto holder = it->second;
             ZFUNUSED(holder);
             m.erase(it);
         }
         else {
-            zfautoObject holder = it->second;
+            zfauto holder = it->second;
             ZFUNUSED(holder);
             it->second = tag;
         }
@@ -293,12 +293,12 @@ void ZFSerializableData::serializableDataTagRemove(ZF_IN const zfchar *key) {
         }
     }
 }
-zfautoObject ZFSerializableData::serializableDataTagRemoveAndGet(ZF_IN const zfchar *key) {
+zfauto ZFSerializableData::serializableDataTagRemoveAndGet(ZF_IN const zfchar *key) {
     if(key != zfnull) {
         _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
         if(it != m.end()) {
-            zfautoObject ret = it->second;
+            zfauto ret = it->second;
             m.erase(it);
             return ret;
         }

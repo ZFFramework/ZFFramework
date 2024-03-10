@@ -6,11 +6,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_zfasyncTaskData {
 public:
-    zfautoObjectT<v_zfidentity *> taskId;
+    zfautoT<v_zfidentity *> taskId;
     ZFListener callback;
-    zfautoObject result;
+    zfauto result;
     ZFListener finishCallback;
-    zfautoObjectT<ZFThread *> callerThread;
+    zfautoT<ZFThread *> callerThread;
 };
 
 typedef zfstlmap<zfidentity, _ZFP_zfasyncTaskData *> _ZFP_zfasyncTaskMap;
@@ -31,7 +31,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder) {
             zfCoreMutexUnlock();
             break;
         }
-        zfautoObjectT<ZFThread *> runThread = this->threadPool.removeAndGet(0);
+        zfautoT<ZFThread *> runThread = this->threadPool.removeAndGet(0);
         zfCoreMutexUnlock();
 
         runThread->taskQueueCleanup();
@@ -40,7 +40,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder) {
 }
 public:
     zfuint maxThread;
-    ZFCoreArray<zfautoObjectT<ZFThread *> > threadPool;
+    ZFCoreArray<zfautoT<ZFThread *> > threadPool;
     zfidentity taskIdCur;
     _ZFP_zfasyncTaskMap taskMap;
     ZFCoreArray<_ZFP_zfasyncTaskData *> taskList;
