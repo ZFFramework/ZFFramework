@@ -365,6 +365,103 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ">";
 }
 
+// ============================================================
+zfclassNotPOD _ZFP_ZFMPPrivate {
+public:
+    zfuint refCount;
+    zfindex methodParamCount;
+    zfstring methodParamTypeId[ZFMETHOD_MAX_PARAM];
+    zfstring methodParamName[ZFMETHOD_MAX_PARAM];
+    zfautoObject methodParamDefaultValue[ZFMETHOD_MAX_PARAM];
+public:
+    _ZFP_ZFMPPrivate(void)
+    : refCount(1)
+    , methodParamCount(0)
+    , methodParamTypeId()
+    , methodParamName()
+    , methodParamDefaultValue()
+    {
+    }
+};
+
+ZFMP &ZFMP::mp(
+        ZF_IN const zfchar *methodParamTypeId
+        , ZF_IN_OPT const zfchar *methodParamName /* = zfnull */
+        , ZF_IN_OPT ZFObject *methodParamDefaultValue /* = ZFMethodGenericInvokerDefaultParam() */
+        ) {
+    zfCoreAssert(d->methodParamCount <= ZFMETHOD_MAX_PARAM);
+    d->methodParamTypeId[d->methodParamCount] = methodParamTypeId;
+    d->methodParamName[d->methodParamCount] = methodParamName;
+    d->methodParamDefaultValue[d->methodParamCount] = methodParamDefaultValue;
+    ++(d->methodParamCount);
+    return *this;
+}
+
+zfindex ZFMP::methodParamCount(void) const {
+    return d->methodParamCount;
+}
+const zfchar *ZFMP::methodParamTypeIdAt(ZF_IN zfindex index) const {
+    return d->methodParamTypeId[index];
+}
+const zfchar *ZFMP::methodParamNameAt(ZF_IN zfindex index) const {
+    return d->methodParamName[index];
+}
+ZFObject *ZFMP::methodParamDefaultValueAt(ZF_IN zfindex index) const {
+    return d->methodParamDefaultValue[index];
+}
+
+ZFMP::ZFMP(void)
+: d(zfnew(_ZFP_ZFMPPrivate))
+{
+}
+ZFMP::ZFMP(ZF_IN const ZFMP &ref)
+: d(ref.d)
+{
+    ++(d->refCount);
+}
+ZFMP::~ZFMP(void) {
+    --(d->refCount);
+    if(d->refCount == 0) {
+        zfdelete(d);
+    }
+}
+ZFMP &ZFMP::operator = (ZF_IN const ZFMP &ref) {
+    _ZFP_ZFMPPrivate *dTmp = d;
+    d = ref.d;
+    ++(d->refCount);
+    --(dTmp->refCount);
+    if(dTmp->refCount == 0) {
+        zfdelete(dTmp);
+    }
+    return *this;
+}
+
+void ZFMP::methodParamListInfoT(ZF_IN_OUT zfstring &ret) const {
+    for(zfindex i = 0; i < d->methodParamCount; ++i) {
+        if(i > 0) {
+            ret += ", ";
+        }
+        ret += d->methodParamTypeId[i];
+        ret += " ";
+        if(d->methodParamName[i].isEmpty()) {
+            zfstringAppend(ret, "p%s", i);
+        }
+        else {
+            ret += d->methodParamName[i];
+        }
+        if(d->methodParamDefaultValue[i] != ZFMethodGenericInvokerDefaultParam()) {
+            ret += " = ";
+            ZFObjectInfoT(ret, d->methodParamDefaultValue[i]);
+        }
+    }
+}
+
+void ZFMP::objectInfoT(ZF_IN_OUT zfstring &ret) const {
+    ret += "ZFMP(";
+    this->methodParamListInfoT(ret);
+    ret += ")";
+}
+
 ZF_NAMESPACE_GLOBAL_END
 
 #if _ZFP_ZFOBJECT_METHOD_REG
@@ -373,6 +470,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(const ZFMethod *, ZFMethodDynamicRegister
+        , ZFMP_IN(const ZFClass *, methodOwnerClass)
+        , ZFMP_IN(const zfchar *, methodReturnTypeId)
+        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const ZFMP &, methodParam)
+        , ZFMP_IN(const ZFListener &, methodImpl)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(const ZFMethod *, ZFMethodDynamicRegister
+        , ZFMP_IN(const zfchar *, methodNamespace)
+        , ZFMP_IN(const zfchar *, methodReturnTypeId)
+        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const ZFMP &, methodParam)
+        , ZFMP_IN(const ZFListener &, methodImpl)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodDynamicUnregister

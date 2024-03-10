@@ -733,8 +733,8 @@ zfbool ZFClass::newInstanceGenericCheck(
         , ZF_IN_OUT zfautoObject (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */) const {
     if(objectOnInitMethod == zfnull
-            || !this->classIsTypeOf(objectOnInitMethod->methodOwnerClass())
-            || !zfstringIsEqual(objectOnInitMethod->methodName(), "objectOnInit")
+            // || !this->classIsTypeOf(objectOnInitMethod->methodOwnerClass())
+            // || !zfstringIsEqual(objectOnInitMethod->methodName(), "objectOnInit")
             ) {
         return zffalse;
     }

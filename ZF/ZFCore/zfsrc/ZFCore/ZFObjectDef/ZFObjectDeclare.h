@@ -901,6 +901,21 @@ public:
         , _ZFP_MtdP_EXPAND(ZFMP_7) \
         )
 
+// ============================================================
+zfclassFwd ZFListener;
+zfclassFwd ZFMP;
+/**
+ * @brief util to declare #ZFObject::objectOnInit as #ZFMethodDynamicRegister
+ *
+ * note: you have no need to call `invokerObject->objectOnInit();`
+ */
+extern ZFLIB_ZFCore const ZFMethod *ZFObjectOnInitDynamicRegister(
+        ZF_IN const ZFClass *cls
+        , ZF_IN const ZFMP &methodParam
+        , ZF_IN const ZFListener &methodImpl
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectDeclare_h_
 

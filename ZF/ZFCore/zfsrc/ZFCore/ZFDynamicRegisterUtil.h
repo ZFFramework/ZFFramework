@@ -12,7 +12,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /* ZFMETHOD_MAX_PARAM */
 
 // ============================================================
-zfclassFwd ZFMP;
 zfclassFwd _ZFP_ZFDynamicPrivate;
 /**
  * @brief util class to dynamic register class/method/property
@@ -155,7 +154,7 @@ public:
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &onInit(ZF_IN const ZFListener &callback) {
-        return this->on(ZFObject::EventObjectAfterAlloc(), callback, ZFLevelZFFrameworkStatic);
+        return this->on(ZFObject::EventObjectBeforeAlloc(), callback, ZFLevelZFFrameworkStatic);
     }
     /** @brief see #ZFDynamic */
     ZFDynamic &onDealloc(ZF_IN const ZFListener &callback) {
@@ -300,65 +299,6 @@ ZFOUTPUT_TYPE(ZFDynamic, {v.objectInfoT(s);})
  * ensured called during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkNormal
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFDynamicRemoveAll)
-
-// ============================================================
-zfclassFwd _ZFP_ZFMPPrivate;
-/** @brief util for #ZFDynamic::method */
-zfclassLikePOD ZFLIB_ZFCore ZFMP {
-public:
-    /** @brief util for #ZFDynamic::method */
-    ZFMP &mp(
-            ZF_IN const zfchar *methodParamTypeId
-            , ZF_IN_OPT const zfchar *methodParamName = zfnull
-            , ZF_IN_OPT ZFObject *methodParamDefaultValue = ZFMethodGenericInvokerDefaultParam()
-            );
-
-public:
-    /** @brief util for #ZFDynamic::method */
-    zfindex methodParamCount(void) const;
-    /** @brief util for #ZFDynamic::method */
-    const zfchar *methodParamTypeIdAt(ZF_IN zfindex index) const;
-    /** @brief util for #ZFDynamic::method */
-    const zfchar *methodParamNameAt(ZF_IN zfindex index) const;
-    /** @brief util for #ZFDynamic::method */
-    ZFObject *methodParamDefaultValueAt(ZF_IN zfindex index) const;
-
-
-public:
-    /** @brief see #methodParamListInfo */
-    zffinal void methodParamListInfoT(ZF_IN_OUT zfstring &ret) const;
-    /** @brief return method param info, like: `P0 p0, P1 p1=def1` */
-    zffinal zfstring methodParamListInfo(void) const {
-        zfstring ret;
-        this->methodParamListInfoT(ret);
-        return ret;
-    }
-
-public:
-    /** @brief see #objectInfo */
-    zffinal void objectInfoT(ZF_IN_OUT zfstring &ret) const;
-    /** @brief return object info */
-    zffinal zfstring objectInfo(void) const {
-        zfstring ret;
-        this->objectInfoT(ret);
-        return ret;
-    }
-
-public:
-    /** @cond ZFPrivateDoc */
-    ZFMP(void);
-    ZFMP(ZF_IN const ZFMP &ref);
-    ~ZFMP(void);
-    ZFMP &operator = (ZF_IN const ZFMP &ref);
-    zfbool operator == (ZF_IN const ZFMP &ref) const {return d == ref.d;}
-    zfbool operator != (ZF_IN const ZFMP &ref) const {return d != ref.d;}
-    /** @endcond */
-
-private:
-    _ZFP_ZFMPPrivate *d;
-};
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMP, ZFMP)
-ZFOUTPUT_TYPE(ZFMP, {v.objectInfoT(s);})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFDynamicRegisterUtil_h_

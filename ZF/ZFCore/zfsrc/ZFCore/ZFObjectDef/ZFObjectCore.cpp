@@ -22,9 +22,10 @@ public:
     enum {
         stateFlag_objectIsInternal = 1 << 0,
         stateFlag_objectIsInternalPrivate = 1 << 1,
-        stateFlag_observerHasAddFlag_objectAfterAlloc = 1 << 2,
-        stateFlag_observerHasAddFlag_objectBeforeDealloc = 1 << 3,
-        stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate = 1 << 4,
+        stateFlag_observerHasAddFlag_objectBeforeAlloc = 1 << 2,
+        stateFlag_observerHasAddFlag_objectAfterAlloc = 1 << 3,
+        stateFlag_observerHasAddFlag_objectBeforeDealloc = 1 << 4,
+        stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate = 1 << 5,
     };
     zfuint stateFlags;
     ZFObserver *observerHolder;
@@ -73,17 +74,20 @@ public:
 // ZFObject
 ZFOBJECT_REGISTER(ZFObject)
 
+ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectBeforeAlloc)
 ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectAfterAlloc)
 ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectBeforeDealloc)
 ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectPropertyValueOnUpdate)
 
 static zfuint _ZFP_ZFObject_stateFlags = 0;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObject_stateFlags, ZFLevelZFFrameworkStatic) {
+    ZFGlobalObserver().observerHasAddStateAttach(ZFObject::EventObjectBeforeAlloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
     ZFGlobalObserver().observerHasAddStateAttach(ZFObject::EventObjectAfterAlloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
     ZFGlobalObserver().observerHasAddStateAttach(ZFObject::EventObjectBeforeDealloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc);
     ZFGlobalObserver().observerHasAddStateAttach(ZFObject::EventObjectPropertyValueOnUpdate(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFObject_stateFlags) {
+    ZFGlobalObserver().observerHasAddStateDetach(ZFObject::EventObjectBeforeAlloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
     ZFGlobalObserver().observerHasAddStateDetach(ZFObject::EventObjectAfterAlloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
     ZFGlobalObserver().observerHasAddStateDetach(ZFObject::EventObjectBeforeDealloc(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc);
     ZFGlobalObserver().observerHasAddStateDetach(ZFObject::EventObjectPropertyValueOnUpdate(), &_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate);
@@ -384,6 +388,9 @@ ZFObserver &ZFObject::observerHolder(void) {
 void ZFObject::observerOnAdd(ZF_IN zfidentity eventId) {
     if(zffalse) {
     }
+    else if(eventId == ZFObject::EventObjectBeforeAlloc()) {
+        ZFBitSet(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
+    }
     else if(eventId == ZFObject::EventObjectAfterAlloc()) {
         ZFBitSet(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
     }
@@ -396,6 +403,9 @@ void ZFObject::observerOnAdd(ZF_IN zfidentity eventId) {
 }
 void ZFObject::observerOnRemove(ZF_IN zfidentity eventId) {
     if(zffalse) {
+    }
+    else if(eventId == ZFObject::EventObjectBeforeAlloc()) {
+        ZFBitUnset(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
     }
     else if(eventId == ZFObject::EventObjectAfterAlloc()) {
         ZFBitUnset(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
@@ -460,11 +470,18 @@ ZFObject *ZFObject::_ZFP_ZFObjectCheckOnInit(void) {
     d->objectInstanceState = ZFObjectInstanceStateOnInitFinish;
     this->classData()->_ZFP_ZFClass_propertyAutoInitAction(this);
     this->_ZFP_ObjI_onInitIvk();
+    if(!this->objectIsInternalPrivate()) {
+        this->classData()->_ZFP_ZFClass_instanceObserverNotify(this);
+        if(ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc)
+                || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc)
+                ) {
+            this->observerNotify(ZFObject::EventObjectBeforeAlloc());
+        }
+    }
     this->objectOnInitFinish();
     d->objectInstanceState = ZFObjectInstanceStateIdle;
 
     if(!this->objectIsInternalPrivate()) {
-        this->classData()->_ZFP_ZFClass_instanceObserverNotify(this);
         if(ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc)
                 || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc)
                 ) {

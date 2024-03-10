@@ -241,6 +241,14 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * notified when object allocated (before #objectOnInitFinish\n
+     * this event is only designed for convenient and for debug use only,
+     * usually you should use #ZFClass::instanceObserverAdd
+     */
+    ZFOBSERVER_EVENT(ObjectBeforeAlloc)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * notified when object allocated (after #objectOnInitFinish\n
      * this event is only designed for convenient and for debug use only,
      * usually you should use #ZFClass::instanceObserverAdd
