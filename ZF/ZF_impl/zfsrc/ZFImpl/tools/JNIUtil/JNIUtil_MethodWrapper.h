@@ -45,38 +45,50 @@ namespace JNIUtil {
 
 /** @cond ZFPrivateDoc */
 namespace JNIUtilMethodWrapperPrivate {
-    class _JNI_EXPORT JNIAutoDeleteHolder {
+    class _JNI_EXPORT LocalRefDel {
     public:
-        JNIAutoDeleteHolder(JNIEnv *jniEnv,
-                            jobject obj,
-                            bool globalRef,
-                            const char *callerFile,
-                            const char *callerFunction,
-                            int callerLine)
-        : jniEnvSaved(jniEnv)
-        , objSaved(obj)
-        , globalRefSaved(globalRef)
+        LocalRefDel(jobject obj,
+                    const char *callerFile,
+                    const char *callerFunction,
+                    int callerLine)
+        : objSaved(obj)
         , callerFile(callerFile)
         , callerFunction(callerFunction)
         , callerLine(callerLine)
         {
         }
-        ~JNIAutoDeleteHolder(void) {
-            if(this->jniEnvSaved && this->objSaved) {
-                if(this->globalRefSaved) {
-                    JNIUtilWrap_Released(this->objSaved, this->callerFile, this->callerFunction, this->callerLine, "DeleteGlobalRef");
-                    this->jniEnvSaved->DeleteGlobalRef(this->objSaved);
-                }
-                else {
-                    JNIUtilWrap_Released(this->objSaved, this->callerFile, this->callerFunction, this->callerLine, "DeleteLocalRef");
-                    this->jniEnvSaved->DeleteLocalRef(this->objSaved);
-                }
+        ~LocalRefDel(void) {
+            if(this->objSaved) {
+                JNIUtilWrap_Released(this->objSaved, this->callerFile, this->callerFunction, this->callerLine, "DeleteLocalRef");
+                JNIGetJNIEnv()->DeleteLocalRef(this->objSaved);
             }
         }
     public:
-        JNIEnv *jniEnvSaved;
         jobject objSaved;
-        bool globalRefSaved;
+        const char *callerFile;
+        const char *callerFunction;
+        int callerLine;
+    };
+    class _JNI_EXPORT GlobalRefDel {
+    public:
+        GlobalRefDel(jobject obj,
+                     const char *callerFile,
+                     const char *callerFunction,
+                     int callerLine)
+        : objSaved(obj)
+        , callerFile(callerFile)
+        , callerFunction(callerFunction)
+        , callerLine(callerLine)
+        {
+        }
+        ~GlobalRefDel(void) {
+            if(this->objSaved) {
+                JNIUtilWrap_Released(this->objSaved, this->callerFile, this->callerFunction, this->callerLine, "DeleteGlobalRef");
+                JNIGetJNIEnv()->DeleteGlobalRef(this->objSaved);
+            }
+        }
+    public:
+        jobject objSaved;
         const char *callerFile;
         const char *callerFunction;
         int callerLine;
@@ -86,29 +98,17 @@ namespace JNIUtilMethodWrapperPrivate {
 
 #undef JNILineDeleteLocalRef
 #define JNILineDeleteLocalRef(obj_) \
-    (JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder(JNIUtil::JNIGetJNIEnv(), obj_, false, __FILE__, __FUNCTION__, __LINE__).objSaved)
-#undef JNILineDeleteLocalRefWithEnv
-#define JNILineDeleteLocalRefWithEnv(obj_, jniEnv) \
-    (JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder(jniEnv, obj_, false, __FILE__, __FUNCTION__, __LINE__).objSaved)
+    (JNIUtilMethodWrapperPrivate::LocalRefDel(obj_, __FILE__, __FUNCTION__, __LINE__).objSaved)
 #undef JNILineDeleteGlobalRef
 #define JNILineDeleteGlobalRef(obj_) \
-    (JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder(JNIUtil::JNIGetJNIEnv(), obj_, true, __FILE__, __FUNCTION__, __LINE__).objSaved)
-#undef JNILineDeleteGlobalRefWithEnv
-#define JNILineDeleteGlobalRefWithEnv(obj_, jniEnv) \
-    (JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder(jniEnv, obj_, true, __FILE__, __FUNCTION__, __LINE__).objSaved)
+    (JNIUtilMethodWrapperPrivate::GlobalRefDel(obj_, __FILE__, __FUNCTION__, __LINE__).objSaved)
 
 #undef JNIBlockedDeleteLocalRef
 #define JNIBlockedDeleteLocalRef(obj_) \
-    JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(JNIUtil::JNIGetJNIEnv(), obj_, false, __FILE__, __FUNCTION__, __LINE__)
-#undef JNIBlockedDeleteLocalRefWithEnv
-#define JNIBlockedDeleteLocalRefWithEnv(obj_, jniEnv) \
-    JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(jniEnv, obj_, false, __FILE__, __FUNCTION__, __LINE__)
+    JNIUtilMethodWrapperPrivate::LocalRefDel _JNIUtil_uniqueName(jniRef)(obj_, __FILE__, __FUNCTION__, __LINE__)
 #undef JNIBlockedDeleteGlobalRef
 #define JNIBlockedDeleteGlobalRef(obj_) \
-    JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(JNIUtil::JNIGetJNIEnv(), obj_, true, __FILE__, __FUNCTION__, __LINE__)
-#undef JNIBlockedDeleteGlobalRefWithEnv
-#define JNIBlockedDeleteGlobalRefWithEnv(obj_, jniEnv) \
-    JNIUtilMethodWrapperPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(jniEnv, obj_, true, __FILE__, __FUNCTION__, __LINE__)
+    JNIUtilMethodWrapperPrivate::GlobalRefDel _JNIUtil_uniqueName(jniRef)(obj_, __FILE__, __FUNCTION__, __LINE__)
 #endif // #if JNIUtilWrap_Enable
 
 // ============================================================

@@ -171,7 +171,7 @@ public:
             , (jint)imageSizePixel.width
             , (jint)imageSizePixel.height
             );
-        JNIBlockedDeleteLocalRefWithEnv(implToken, jniEnv);
+        JNIBlockedDeleteLocalRef(implToken);
 
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = zfpoolNew(_ZFP_ZFUIDrawImpl_sys_Android_Token);
         {

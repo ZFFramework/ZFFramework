@@ -61,7 +61,7 @@ public:
                 , JNIConvertZFObjectToJNIType(jniEnv, request)
                 , JNIConvertZFObjectToJNIType(jniEnv, response)
             );
-        JNIBlockedDeleteLocalRefWithEnv((jobject)task->nativeTask, jniEnv);
+        JNIBlockedDeleteLocalRef((jobject)task->nativeTask);
         task->nativeTask = JNIUtilNewGlobalRef(jniEnv, (jobject)task->nativeTask);
         return task;
     }
@@ -174,7 +174,7 @@ public:
                 , (jobject)task->nativeTask
                 , ZFImpl_sys_Android_zfstringToString(key)
             );
-        JNIBlockedDeleteLocalRefWithEnv(jString, jniEnv);
+        JNIBlockedDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
 
@@ -202,7 +202,7 @@ public:
         jobject nativeIt = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId
                 , (jobject)task->nativeTask
             );
-        JNIBlockedDeleteLocalRefWithEnv(nativeIt, jniEnv);
+        JNIBlockedDeleteLocalRef(nativeIt);
         return zfiterator((void *)JNIUtilNewGlobalRef(jniEnv, nativeIt), _ZFP_iterDelete, _ZFP_iterCopy);
     }
     virtual zfbool headerIterValid(
@@ -255,7 +255,7 @@ public:
                 , (jobject)task->nativeTask
                 , (jobject)it.data()
             );
-        JNIBlockedDeleteLocalRefWithEnv(jString, jniEnv);
+        JNIBlockedDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
     virtual zfstring headerIterValue(
@@ -274,7 +274,7 @@ public:
                 , (jobject)task->nativeTask
                 , (jobject)it.data()
             );
-        JNIBlockedDeleteLocalRefWithEnv(jString, jniEnv);
+        JNIBlockedDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
     virtual void headerIterValue(
@@ -392,7 +392,7 @@ public:
                 , (jobject)task->nativeTask
                 , ZFImpl_sys_Android_zfstringToString(key)
             );
-        JNIBlockedDeleteLocalRefWithEnv(jString, jniEnv);
+        JNIBlockedDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
 
@@ -420,7 +420,7 @@ public:
         jobject nativeIt = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId
                 , (jobject)task->nativeTask
             );
-        JNIBlockedDeleteLocalRefWithEnv(nativeIt, jniEnv);
+        JNIBlockedDeleteLocalRef(nativeIt);
         return zfiterator((void *)JNIUtilNewGlobalRef(jniEnv, nativeIt), _ZFP_iterDelete, _ZFP_iterCopy);
     }
     virtual zfbool responseHeaderIterValid(
@@ -473,7 +473,7 @@ public:
                 , (jobject)task->nativeTask
                 , (jobject)it.data()
             );
-        JNIBlockedDeleteLocalRefWithEnv(jString, jniEnv);
+        JNIBlockedDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
     virtual zfstring responseHeaderIterValue(
@@ -492,7 +492,7 @@ public:
                 , (jobject)task->nativeTask
                 , (jobject)it.data()
             );
-        JNIBlockedDeleteLocalRefWithEnv(jString, jniEnv);
+        JNIBlockedDeleteLocalRef(jString);
         return ZFImpl_sys_Android_zfstringFromString(jString);
     }
 

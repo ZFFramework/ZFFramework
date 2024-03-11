@@ -134,8 +134,8 @@ public:
                 .add(JNIType::S_boolean)
             ).c_str());
         jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
-            JNILineDeleteLocalRefWithEnv(ZFImpl_sys_Android_zfstringToString(resPathFixed), jniEnv),
-            JNILineDeleteLocalRefWithEnv(ZFImpl_sys_Android_zfstringToString(dstPath), jniEnv),
+            JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed)),
+            JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(dstPath)),
             isRecursive,
             isForce);
         if(errPosJ == NULL) {

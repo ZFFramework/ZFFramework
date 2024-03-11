@@ -87,7 +87,7 @@ ZFT_INT_WEAK(_ZFT_t_zfbool, zfbool);
  *     zfbool b0 = (n == std::string::npos); // true
  *     zfbool b1 = (zfindexMax() == std::string::npos); // not ensured
  *   @endcode
- * @note all integer types are ensured differs from each other (by #ZFT_INT_STRONG),
+ * @note all integer types are ensured differs from each other (by #ZFT_INT_STRONG if necessary),
  *   so that it's convenient to achieve template specialization\n
  *   however, as the cost, some math operators may have strange behaviors,
  *   use static_cast if necessary\n

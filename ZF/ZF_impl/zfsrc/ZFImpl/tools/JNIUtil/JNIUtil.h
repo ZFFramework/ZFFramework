@@ -160,7 +160,6 @@ inline JNIString JNIConvertClassNameForFindClass(const char *className) {
 
 // ============================================================
 // JNI types
-class _JNITypePrivate;
 /**
  * @brief JNI type utility
  */
@@ -202,20 +201,12 @@ public:
     /**
      * @brief set JNI type
      */
-    void setType(JNIType::Type type);
+    void setType(JNIType::Type type,
+                 const char *classNameOrArrayElementTypeId = NULL);
     /**
      * @brief see #setType
      */
     JNIType::Type getType(void) const;
-
-    /**
-     * @brief see JNIType's constructor
-     */
-    void setClassNameOrArrayElementTypeId(const char *s);
-    /**
-     * @brief see #setClassNameOrArrayElementTypeId
-     */
-    const char *getClassNameOrArrayElementTypeId(void) const;
 
 public:
     /**
@@ -256,7 +247,8 @@ public:
     }
 
 private:
-    _JNITypePrivate *d;
+    JNIType::Type _type;
+    JNIString *_id;
 };
 
 // ============================================================
@@ -395,31 +387,33 @@ void *_JNIConvertPointerFromJNITypeAction(JNIEnv *jniEnv, jbyteArray d);
 // local/global ref cleaner
 /** @cond ZFPrivateDoc */
 namespace JNIUtilPrivate {
-    class _JNI_EXPORT JNIAutoDeleteHolder {
+    class _JNI_EXPORT LocalRefDel {
     public:
-        JNIAutoDeleteHolder(JNIEnv *jniEnv,
-                            jobject obj,
-                            bool globalRef)
-        : jniEnvSaved(jniEnv)
-        , objSaved(obj)
-        , globalRefSaved(globalRef)
+        LocalRefDel(jobject obj)
+        : objSaved(obj)
         {
         }
-        ~JNIAutoDeleteHolder(void) {
-            if(this->jniEnvSaved && this->objSaved) {
-                if(this->globalRefSaved) {
-
-                    this->jniEnvSaved->DeleteGlobalRef(this->objSaved);
-                }
-                else {
-                    this->jniEnvSaved->DeleteLocalRef(this->objSaved);
-                }
+        ~LocalRefDel(void) {
+            if(this->objSaved) {
+                JNIGetJNIEnv()->DeleteLocalRef(this->objSaved);
             }
         }
     public:
-        JNIEnv *jniEnvSaved;
         jobject objSaved;
-        bool globalRefSaved;
+    };
+    class _JNI_EXPORT GlobalRefDel {
+    public:
+        GlobalRefDel(jobject obj)
+        : objSaved(obj)
+        {
+        }
+        ~GlobalRefDel(void) {
+            if(this->objSaved) {
+                JNIGetJNIEnv()->DeleteGlobalRef(this->objSaved);
+            }
+        }
+    public:
+        jobject objSaved;
     };
     #define _JNIUtil_uniqueName(name) _JNIUtil_uniqueName2(name, __LINE__)
     #define _JNIUtil_uniqueName2(name, line) _JNIUtil_uniqueName3(name, line)
@@ -429,29 +423,63 @@ namespace JNIUtilPrivate {
 
 /** @brief util macro to delete object after end line for JNI local object */
 #define JNILineDeleteLocalRef(obj_) \
-    (JNIUtilPrivate::JNIAutoDeleteHolder(JNIUtil::JNIGetJNIEnv(), obj_, false).objSaved)
-/** @brief util macro to delete object after end line for JNI local object */
-#define JNILineDeleteLocalRefWithEnv(obj_, jniEnv) \
-    (JNIUtilPrivate::JNIAutoDeleteHolder(jniEnv, obj_, false).objSaved)
+    (JNIUtilPrivate::LocalRefDel(obj_).objSaved)
 /** @brief util macro to delete object after end line for JNI global object */
 #define JNILineDeleteGlobalRef(obj_) \
-    (JNIUtilPrivate::JNIAutoDeleteHolder(JNIUtil::JNIGetJNIEnv(), obj_, true).objSaved)
-/** @brief util macro to delete object after end line for JNI global object */
-#define JNILineDeleteGlobalRefWithEnv(obj_, jniEnv) \
-    (JNIUtilPrivate::JNIAutoDeleteHolder(jniEnv, obj_, true).objSaved)
+    (JNIUtilPrivate::GlobalRefDel(obj_).objSaved)
 
 /** @brief util macro to delete object after code block for JNI local object */
 #define JNIBlockedDeleteLocalRef(obj_) \
-    JNIUtilPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(JNIUtil::JNIGetJNIEnv(), obj_, false)
-/** @brief util macro to delete object after code block for JNI local object */
-#define JNIBlockedDeleteLocalRefWithEnv(obj_, jniEnv) \
-    JNIUtilPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(jniEnv, obj_, false)
+    JNIUtilPrivate::LocalRefDel _JNIUtil_uniqueName(jniRef)(obj_)
 /** @brief util macro to delete object after code block for JNI global object */
 #define JNIBlockedDeleteGlobalRef(obj_) \
-    JNIUtilPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(JNIUtil::JNIGetJNIEnv(), obj_, true)
-/** @brief util macro to delete object after code block for JNI global object */
-#define JNIBlockedDeleteGlobalRefWithEnv(obj_, jniEnv) \
-    JNIUtilPrivate::JNIAutoDeleteHolder _JNIUtil_uniqueName(jniObjCleaner)(jniEnv, obj_, true)
+    JNIUtilPrivate::GlobalRefDel _JNIUtil_uniqueName(jniRef)(obj_)
+
+// ============================================================
+/** @brief util to hold global ref */
+class _JNI_EXPORT JNIGlobalRef {
+public:
+    /** @brief construct an empty holder */
+    JNIGlobalRef(void) : _obj(NULL) {}
+    /** @brief construct from existing object */
+    JNIGlobalRef(jobject obj) : _obj(obj ? JNIGetJNIEnv()->NewGlobalRef(obj) : NULL) {}
+    /** @brief construct from another holder */
+    JNIGlobalRef(const JNIGlobalRef &obj) : _obj(obj.get() ? JNIGetJNIEnv()->NewGlobalRef(obj.get()) : NULL) {}
+public:
+    /** @brief set referenced object */
+    JNIGlobalRef &set(jobject obj) {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        if(obj) {
+            obj = jniEnv->NewGlobalRef(obj);
+        }
+        if(_obj) {
+            jobject tmp = _obj;
+            _obj = obj;
+            jniEnv->DeleteGlobalRef(tmp);
+        }
+        else {
+            _obj = obj;
+        }
+        return *this;
+    }
+    /** @brief get referenced object */
+    jobject get(void) const {
+        return _obj;
+    }
+public:
+    /** @cond ZFPrivateDoc */
+    JNIGlobalRef &operator = (jobject obj) {
+        this->set(obj);
+        return *this;
+    }
+    JNIGlobalRef &operator = (const JNIGlobalRef &obj) {
+        this->set(obj.get());
+        return *this;
+    }
+    /** @endcond */
+private:
+    jobject _obj;
+};
 
 } // namespace JNIUtil
 #endif // #if NEED_JNIUTIL

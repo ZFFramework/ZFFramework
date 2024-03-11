@@ -49,7 +49,7 @@ public:
             ZFCastStatic(jobject, nativeImage),
             (jint)newSize.width, (jint)newSize.height,
             (jint)ninePatch.left, (jint)ninePatch.top, (jint)ninePatch.right, (jint)ninePatch.bottom);
-        JNIBlockedDeleteLocalRefWithEnv(tmp, jniEnv);
+        JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
     virtual void *imageLoadInFrame(
@@ -68,7 +68,7 @@ public:
             imageScale,
             ZFCastStatic(jobject, nativeImage),
             (jint)frameInImage.x, (jint)frameInImage.y, (jint)frameInImage.width, (jint)frameInImage.height);
-        JNIBlockedDeleteLocalRefWithEnv(tmp, jniEnv);
+        JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
     virtual void *imageLoadFromColor(
@@ -85,7 +85,7 @@ public:
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             ZFImpl_sys_Android_ZFUIColorToColor(color),
             (jint)size.width, (jint)size.height);
-        JNIBlockedDeleteLocalRefWithEnv(tmp, jniEnv);
+        JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
 private:

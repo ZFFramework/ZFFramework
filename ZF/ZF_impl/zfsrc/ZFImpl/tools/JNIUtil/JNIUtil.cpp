@@ -1,10 +1,9 @@
 
-#ifndef _JNI_EXPORT
-    #ifdef _WIN32
-        #define _JNI_EXPORT __declspec(dllexport)
-    #else
-        #define _JNI_EXPORT __attribute__((visibility("default")))
-    #endif
+#undef _JNI_EXPORT
+#ifdef _WIN32
+    #define _JNI_EXPORT __declspec(dllexport)
+#else
+    #define _JNI_EXPORT __attribute__((visibility("default")))
 #endif
 
 #include "JNIUtil.h"
@@ -234,59 +233,90 @@ public:
     }
 };
 
-JNIType::JNIType(void) {
-    d = new _JNITypePrivate();
-    d->type = JNIType::T_boolean;
-    d->needUpdateTypeId = true;
+JNIType::JNIType(void) : _type(JNIType::T_boolean), _id(NULL) {
 }
 JNIType::JNIType(
         JNIType::Type type
         , const char *classNameOrArrayElementTypeId /* = NULL */
-        ) {
-    d = new _JNITypePrivate();
-    d->needUpdateTypeId = true;
-    this->setType(type);
-    this->setClassNameOrArrayElementTypeId(classNameOrArrayElementTypeId);
+        ) : _type(JNIType::T_boolean), _id(NULL) {
+    this->setType(type, classNameOrArrayElementTypeId);
 }
-JNIType::JNIType(const JNIType &ref) {
-    d = new _JNITypePrivate();
-    d->needUpdateTypeId = true;
-    this->setType(ref.getType());
-    this->setClassNameOrArrayElementTypeId(ref.getClassNameOrArrayElementTypeId());
+JNIType::JNIType(const JNIType &ref) : _type(ref._type), _id(NULL) {
+    this->operator=(ref);
 }
 JNIType &JNIType::operator = (const JNIType &ref) {
-    if(d != ref.d) {
-        this->setType(ref.getType());
-        this->setClassNameOrArrayElementTypeId(ref.getClassNameOrArrayElementTypeId());
+    if(this != &ref) {
+        if(_id != NULL) {
+            delete _id;
+            _id = NULL;
+        }
+        _type = ref._type;
+        if(ref._id != NULL) {
+            _id = new JNIString(*ref._id);
+        }
     }
     return *this;
 }
 
-void JNIType::setType(JNIType::Type type) {
-    d->needUpdateTypeId = true;
-    d->type = type;
+void JNIType::setType(JNIType::Type type,
+                      const char *classNameOrArrayElementTypeId /* = NULL */) {
+    _type = type;
+    switch(type) {
+        case T_object:
+            if(_id == NULL) {
+                _id = new JNIString();
+            }
+            else {
+                _id->clear();
+            }
+            JNIConvertClassNameToClassSig(*_id, classNameOrArrayElementTypeId);
+            break;
+        case T_array:
+            if(_id == NULL) {
+                _id = new JNIString();
+            }
+            else {
+                _id->clear();
+            }
+            *_id += '[';
+            *_id += classNameOrArrayElementTypeId;
+            break;
+        default:
+            if(_id != NULL) {
+                _id->clear();
+            }
+            break;
+    }
 }
 JNIType::Type JNIType::getType(void) const {
-    return d->type;
-}
-void JNIType::setClassNameOrArrayElementTypeId(const char *s) {
-    d->needUpdateTypeId = true;
-    if(s == NULL) {
-        d->classNameOrArrayElementTypeId.clear();
-    }
-    else {
-        d->classNameOrArrayElementTypeId = s;
-    }
-}
-const char *JNIType::getClassNameOrArrayElementTypeId(void) const {
-    return d->classNameOrArrayElementTypeId.c_str();
+    return _type;
 }
 const char *JNIType::getId(void) const {
-    if(d->needUpdateTypeId) {
-        d->needUpdateTypeId = false;
-        d->updateId();
+    switch(_type) {
+        case JNIType::T_boolean:
+            return "Z";
+        case JNIType::T_byte:
+            return "B";
+        case JNIType::T_char:
+            return "C";
+        case JNIType::T_short:
+            return "S";
+        case JNIType::T_int:
+            return "I";
+        case JNIType::T_long:
+            return "J";
+        case JNIType::T_float:
+            return "F";
+        case JNIType::T_double:
+            return "D";
+        case JNIType::T_void:
+            return "V";
+        case JNIType::T_object:
+        case JNIType::T_array:
+            return _id->c_str();
+        default:
+            return NULL;
     }
-    return d->typeId.c_str();
 }
 
 // ============================================================
@@ -328,4 +358,6 @@ void *_JNIConvertPointerFromJNITypeAction(JNIEnv *jniEnv, jbyteArray d) {
 
 } // namespace JNIUtil
 #endif // #if NEED_JNIUTIL
+
+#undef _JNI_EXPORT
 
