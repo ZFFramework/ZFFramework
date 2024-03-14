@@ -22,6 +22,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param6)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param7)
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFMethodInvokeData, zfauto, callSuper)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFMethodInvokeData, const zfauto &, paramAt
+        , ZFMP_IN(zfindex, index)
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFMethodInvokeData, ZFMethodInvokeData *, paramSet
+        , ZFMP_IN(zfindex, index)
+        , ZFMP_IN(ZFObject *, param)
+        )
 
 zfauto ZFMethodInvokeData::callSuper(void) {
     zfCoreAssertWithMessage(invokerMethod->methodIsDynamicRegister(),
@@ -67,6 +74,41 @@ zfauto ZFMethodInvokeData::callSuper(void) {
         } while(chain != zfnull);
     } while(zftrue);
     return zfnull;
+}
+
+const zfauto &ZFMethodInvokeData::paramAt(ZF_IN zfindex index) {
+    switch(index) {
+        case 0: return this->param0;
+        case 1: return this->param1;
+        case 2: return this->param2;
+        case 3: return this->param3;
+        case 4: return this->param4;
+        case 5: return this->param5;
+        case 6: return this->param6;
+        case 7: return this->param7;
+        default:
+            zfCoreCriticalIndexOutOfRange(index, 8);
+            return this->param7;
+    } /* ZFMETHOD_MAX_PARAM */
+}
+ZFMethodInvokeData *ZFMethodInvokeData::paramSet(
+        ZF_IN zfindex index
+        , ZF_IN ZFObject *param
+        ) {
+    switch(index) {
+        case 0: this->param0 = param; break;
+        case 1: this->param1 = param; break;
+        case 2: this->param2 = param; break;
+        case 3: this->param3 = param; break;
+        case 4: this->param4 = param; break;
+        case 5: this->param5 = param; break;
+        case 6: this->param6 = param; break;
+        case 7: this->param7 = param; break;
+        default:
+            zfCoreCriticalIndexOutOfRange(index, 8);
+            break;
+    } /* ZFMETHOD_MAX_PARAM */
+    return this;
 }
 
 // ============================================================

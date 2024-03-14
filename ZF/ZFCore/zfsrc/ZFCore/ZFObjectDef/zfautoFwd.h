@@ -80,7 +80,7 @@ public:
     inline ZFObject *operator -> (void) const {
         return this->toObject();
     }
-    inline operator bool (void) const {
+    inline operator zfbool (void) const {
         return (this->toObject() != zfnull);
     }
     template<typename T_ZFObject>
@@ -154,21 +154,6 @@ public:
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
         return (this->toObject() != _ZFP_ZFAnyCast(T_ZFObject, obj));
-    }
-public:
-    inline zfbool operator == (ZF_IN zfauto const &obj) const {
-        return (this->toObject() == obj.toObject());
-    }
-    inline zfbool operator != (ZF_IN zfauto const &obj) const {
-        return (this->toObject() != obj.toObject());
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN zfautoT<T_ZFObject> const &obj) const {
-        return (this->toObject() == obj.toObject());
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN zfautoT<T_ZFObject> const &obj) const {
-        return (this->toObject() != obj.toObject());
     }
 
 public:

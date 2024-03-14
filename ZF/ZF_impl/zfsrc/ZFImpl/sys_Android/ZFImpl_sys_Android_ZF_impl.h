@@ -106,6 +106,72 @@ extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassObject(void);
 extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassString(void);
 
 // ============================================================
+// Boolean
+#define ZFImpl_sys_Android_JNI_ID_Boolean java_lang_Boolean
+#define ZFImpl_sys_Android_JNI_NAME_Boolean "java.lang.Boolean"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassBoolean(void);
+
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_jobjectBooleanTRUE(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_jobjectBooleanFALSE(void);
+inline jobject ZFImpl_sys_Android_newBoolean(ZF_IN jboolean v) {
+    if(v) {
+        return ZFImpl_sys_Android_jobjectBooleanTRUE();
+    }
+    else {
+        return ZFImpl_sys_Android_jobjectBooleanFALSE();
+    }
+}
+
+// ============================================================
+// Byte
+#define ZFImpl_sys_Android_JNI_ID_Byte java_lang_Byte
+#define ZFImpl_sys_Android_JNI_NAME_Byte "java.lang.Byte"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassByte(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newByte(ZF_IN jbyte v);
+
+// ============================================================
+// Character
+#define ZFImpl_sys_Android_JNI_ID_Character java_lang_Character
+#define ZFImpl_sys_Android_JNI_NAME_Character "java.lang.Character"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassCharacter(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newCharacter(ZF_IN jchar v);
+
+// ============================================================
+// Short
+#define ZFImpl_sys_Android_JNI_ID_Short java_lang_Short
+#define ZFImpl_sys_Android_JNI_NAME_Short "java.lang.Short"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassShort(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newShort(ZF_IN jshort v);
+
+// ============================================================
+// Integer
+#define ZFImpl_sys_Android_JNI_ID_Integer java_lang_Integer
+#define ZFImpl_sys_Android_JNI_NAME_Integer "java.lang.Integer"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassInteger(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newInteger(ZF_IN jint v);
+
+// ============================================================
+// Long
+#define ZFImpl_sys_Android_JNI_ID_Long java_lang_Long
+#define ZFImpl_sys_Android_JNI_NAME_Long "java.lang.Long"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassLong(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newLong(ZF_IN jlong v);
+
+// ============================================================
+// Float
+#define ZFImpl_sys_Android_JNI_ID_Float java_lang_Float
+#define ZFImpl_sys_Android_JNI_NAME_Float "java.lang.Float"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassFloat(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newFloat(ZF_IN jfloat v);
+
+// ============================================================
+// Double
+#define ZFImpl_sys_Android_JNI_ID_Double java_lang_Double
+#define ZFImpl_sys_Android_JNI_NAME_Double "java.lang.Double"
+extern ZFLIB_ZF_impl jclass ZFImpl_sys_Android_jclassDouble(void);
+extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v);
+
+// ============================================================
 // ZFAndroidLog
 #define ZFImpl_sys_Android_JNI_ID_ZFAndroidLog ZFImpl_sys_Android_JNI_ID(NativeUtil_ZFAndroidLog)
 #define ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFAndroidLog)

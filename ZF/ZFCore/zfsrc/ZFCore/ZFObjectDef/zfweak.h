@@ -110,8 +110,15 @@ public:
     }
 
 public:
+    inline ZFObject *operator -> (void) const {
+        return this->toObject();
+    }
     inline operator zfbool (void) const {
         return this->toObject() != zfnull;
+    }
+    template<typename T_ZFObject>
+    inline operator T_ZFObject * (void) const {
+        return ZFCastZFObject(T_ZFObject *, this->toObject());
     }
     /** @endcond */
 
@@ -201,16 +208,6 @@ public:
     }
 
 public:
-    inline zfweakT<T_ZFObject> &operator = (ZF_IN zfweakT<T_ZFObject> const &obj) {
-        this->set(obj);
-        return *this;
-    }
-    inline zfweakT<T_ZFObject> &operator = (ZF_IN T_ZFObject obj) {
-        this->set(obj);
-        return *this;
-    }
-
-public:
     zfbool operator == (ZF_IN T_ZFObject obj) const {
         return (this->toObject() == ZFCastZFObjectUnchecked(ZFObject *, obj));
     }
@@ -225,34 +222,13 @@ public:
     }
 
 public:
-    inline ZFObject *toObject(void) const {
-        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
+    T_ZFObject operator -> (void) const {
+        return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
     }
-    template<typename T_ZFObjectCast>
-    inline T_ZFObjectCast to(void) const {
-        return ZFCastZFObjectUnchecked(T_ZFObjectCast, this->toObject());
+    inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
+        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
     }
     /** @endcond */
-
-public:
-    /**
-     * @brief get the holded object
-     */
-    inline T_ZFObject get(void) const {
-        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
-    }
-    /**
-     * @brief set the holded object
-     */
-    void set(ZF_IN T_ZFObject obj) {
-        zfweak::set(obj);
-    }
-    /**
-     * @brief set the holded object
-     */
-    void set(ZF_IN zfweakT<T_ZFObject> const &obj) {
-        zfweak::set((const zfweak &)obj);
-    }
 };
 ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfweakT<T_ZFObject>, {
     if(v) {
