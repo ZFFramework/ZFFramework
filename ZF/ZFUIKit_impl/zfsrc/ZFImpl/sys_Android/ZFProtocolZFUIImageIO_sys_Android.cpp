@@ -38,11 +38,11 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageApplyScale",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_float)
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int).add(JNIType::S_int)
-                .add(JNIType::S_int).add(JNIType::S_int).add(JNIType::S_int).add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_float())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int()).add(JNIType::S_int())
+                .add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             imageScale,
@@ -59,10 +59,10 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageLoadInFrame",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_float)
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int).add(JNIType::S_int).add(JNIType::S_int).add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_float())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             imageScale,
@@ -78,9 +78,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageLoadFromColor",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_int)
-                .add(JNIType::S_int).add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_int())
+                .add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             ZFImpl_sys_Android_ZFUIColorToColor(color),

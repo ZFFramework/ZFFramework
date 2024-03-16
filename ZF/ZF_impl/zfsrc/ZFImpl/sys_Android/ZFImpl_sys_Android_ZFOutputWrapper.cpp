@@ -33,7 +33,7 @@ jobject ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(ZF_IN const ZFOutput &out
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jclsZFOutputWrapper = ZFImpl_sys_Android_jclassZFOutputWrapper();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFOutputWrapper, "native_nativeOutputCreate",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
             .add(JNIPointerJNIType)
         ).c_str());
     v_ZFOutput *outputHolder = zfAlloc(v_ZFOutput); // release when nativeOutputClose

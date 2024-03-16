@@ -83,10 +83,10 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jclsZFAndroidInput = ZFImpl_sys_Android_jclassZFAndroidInput();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidInput, "native_nativeInputRead",
-        JNIGetMethodSig(JNIType::S_int, JNIParamTypeContainer()
-            .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-            .add(JNIType::S_array(JNIType::S_byte))
-            .add(JNIType::S_int)
+        JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
+            .add(JNIType::S_object_Object())
+            .add(JNIType::S_array(JNIType::S_byte()))
+            .add(JNIType::S_int())
         ).c_str());
 
     jbyte *writeBuf = (jbyte *)buf;

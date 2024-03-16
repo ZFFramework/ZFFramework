@@ -39,13 +39,13 @@ public:
     virtual void viewTransform(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewTransform",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
             , ZFCastStatic(jobject, view->nativeView())
@@ -59,13 +59,13 @@ public:
     virtual void viewTransformReset(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewTransform",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
-                .add(JNIType::S_float)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
+                .add(JNIType::S_float())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
             , ZFCastStatic(jobject, view->nativeView())

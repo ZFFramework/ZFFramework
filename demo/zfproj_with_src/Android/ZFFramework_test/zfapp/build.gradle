@@ -113,5 +113,7 @@ task ZFSetup {
         ZFCopyRes(ZF_ROOT_PATH, 'ZFNet_impl')
     }
 }
-preBuild.dependsOn ZFSetup
+afterEvaluate {
+    preBuild.dependsOn ZFSetup
+}
 

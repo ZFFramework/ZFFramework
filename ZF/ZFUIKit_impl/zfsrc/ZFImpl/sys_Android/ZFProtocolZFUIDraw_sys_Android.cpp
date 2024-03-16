@@ -52,7 +52,7 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeDrawableViewCreate",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
@@ -75,8 +75,8 @@ public:
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawRequest",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, drawableView->nativeImplView())
@@ -87,8 +87,8 @@ public:
     virtual zfbool beginForView(ZF_IN_OUT ZFUIDrawToken &token) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_beginForView",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         jobject canvas = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, token.target.to<ZFUIDrawableView *>()->nativeImplView())
@@ -164,8 +164,8 @@ public:
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_beginForImage",
             JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_ZFUIDrawNativeToken), JNIParamTypeContainer()
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         jobject implToken = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId
             , (jint)imageSizePixel.width
@@ -175,13 +175,13 @@ public:
 
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = zfpoolNew(_ZFP_ZFUIDrawImpl_sys_Android_Token);
         {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeToken, "canvas", JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object).getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeToken, "canvas", JNIType::S_object_Object().getId());
             jobject tmp = JNIUtilGetObjectField(jniEnv, implToken, jfId);
             nativeToken->canvas = JNIUtilNewGlobalRef(jniEnv, tmp);
             JNIUtilDeleteLocalRef(jniEnv, tmp);
         }
         {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeToken, "image", JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object).getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeToken, "image", JNIType::S_object_Object().getId());
             jobject tmp = JNIUtilGetObjectField(jniEnv, implToken, jfId);
             nativeToken->image = JNIUtilNewGlobalRef(jniEnv, tmp);
             JNIUtilDeleteLocalRef(jniEnv, tmp);
@@ -240,9 +240,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_antialiasing",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_boolean)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_boolean())
             ).c_str());
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
@@ -258,12 +258,12 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawClear",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
@@ -281,13 +281,13 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawColor",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
@@ -307,17 +307,17 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_drawImage",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         _ZFP_ZFUIDrawImpl_sys_Android_Token *nativeToken = (_ZFP_ZFUIDrawImpl_sys_Android_Token *)token.impl;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId

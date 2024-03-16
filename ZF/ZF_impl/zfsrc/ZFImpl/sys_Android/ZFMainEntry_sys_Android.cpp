@@ -80,7 +80,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFMainEntry_sys_Android_DataHolder)
 JNIObjectHolder ZFImpl_sys_Android_app(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, _ZFP_ZFMainEntry_sys_Android_ownerJClass, "native_app",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
         ).c_str());
     jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
         _ZFP_ZFMainEntry_sys_Android_ownerJClass,
@@ -92,7 +92,7 @@ JNIObjectHolder ZFImpl_sys_Android_app(void) {
 JNIObjectHolder ZFImpl_sys_Android_appContext(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, _ZFP_ZFMainEntry_sys_Android_ownerJClass, "native_appContext",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
         ).c_str());
     jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
         _ZFP_ZFMainEntry_sys_Android_ownerJClass,
@@ -104,7 +104,7 @@ JNIObjectHolder ZFImpl_sys_Android_appContext(void) {
 JNIObjectHolder ZFImpl_sys_Android_assetManager(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, _ZFP_ZFMainEntry_sys_Android_ownerJClass, "native_assetManager",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
         ).c_str());
     jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv,
         _ZFP_ZFMainEntry_sys_Android_ownerJClass,
@@ -116,7 +116,7 @@ JNIObjectHolder ZFImpl_sys_Android_assetManager(void) {
 JNIObjectHolder ZFImpl_sys_Android_mainEntryActivity(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, _ZFP_ZFMainEntry_sys_Android_ownerJClass, "native_mainEntryActivity",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
         ).c_str());
     jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, _ZFP_ZFMainEntry_sys_Android_ownerJClass, jmId);
     JNIObjectHolder ret(tmp);

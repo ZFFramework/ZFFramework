@@ -36,7 +36,7 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeWebViewCreate",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
@@ -51,8 +51,8 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeWebViewDestroy",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         jobject nativeWebViewTmp = ZFCastStatic(jobject, nativeWebView);
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, nativeWebViewTmp);
@@ -65,9 +65,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webLoadUrl",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
         jobject urlTmp = JNIUtilNewStringUTF(jniEnv, url);
         JNIBlockedDeleteLocalRef(urlTmp);
@@ -82,10 +82,10 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webLoadHtml",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
         jobject htmlTmp = JNIUtilNewStringUTF(jniEnv, html);
         JNIBlockedDeleteLocalRef(htmlTmp);
@@ -99,8 +99,8 @@ public:
     virtual void webReload(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webReload",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, webView->nativeImplView()));
@@ -108,8 +108,8 @@ public:
     virtual void webLoadStop(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webLoadStop",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, webView->nativeImplView()));
@@ -118,8 +118,8 @@ public:
     virtual void webGoBack(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webGoBack",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, webView->nativeImplView()));
@@ -127,8 +127,8 @@ public:
     virtual void webGoForward(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webGoForward",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, webView->nativeImplView()));
@@ -137,8 +137,8 @@ public:
     virtual zfbool webLoading(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webLoading",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         return JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, webView->nativeImplView()));
@@ -146,8 +146,8 @@ public:
     virtual zfbool webGoBackAvailable(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webGoBackAvailable",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         return JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, webView->nativeImplView()));
@@ -155,8 +155,8 @@ public:
     virtual zfbool webGoForwardAvailable(ZF_IN ZFUIWebView *webView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_webGoForwardAvailable",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         return JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, webView->nativeImplView()));

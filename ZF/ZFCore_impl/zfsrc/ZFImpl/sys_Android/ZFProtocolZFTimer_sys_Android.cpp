@@ -30,7 +30,7 @@ public:
     virtual void *nativeTimerCreate(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTimerCreate",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
@@ -49,11 +49,11 @@ public:
     virtual void timerStart(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_timerStart",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
                 .add(JNIPointerJNIType)
-                .add(JNIType::S_long)
-                .add(JNIType::S_long)
+                .add(JNIType::S_long())
+                .add(JNIType::S_long())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, timer->nativeTimer()),
@@ -64,8 +64,8 @@ public:
     virtual void timerStop(ZF_IN ZFTimer *timer) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_timerStop",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, timer->nativeTimer()));
     }

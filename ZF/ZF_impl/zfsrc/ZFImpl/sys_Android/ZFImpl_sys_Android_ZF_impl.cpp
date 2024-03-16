@@ -51,11 +51,12 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_jclsHolder, ZFLevelZFFr
     JNIUtilDeleteLocalRef(jniEnv, tmp);
 
     jfieldID jfId;
+    JNIType jfType(JNIType::T_object, ZFImpl_sys_Android_JNI_NAME_Boolean);
 
-    jfId = JNIUtilGetStaticFieldID(jniEnv, this->jclassBoolean, "TRUE", JNIType::S_boolean.getId());
+    jfId = JNIUtilGetStaticFieldID(jniEnv, this->jclassBoolean, "TRUE", jfType.getId());
     this->jobjectBooleanTRUE = JNIUtilNewGlobalRef(jniEnv, JNIUtilGetStaticObjectField(jniEnv, this->jclassBoolean, jfId));
 
-    jfId = JNIUtilGetStaticFieldID(jniEnv, this->jclassBoolean, "FALSE", JNIType::S_boolean.getId());
+    jfId = JNIUtilGetStaticFieldID(jniEnv, this->jclassBoolean, "FALSE", jfType.getId());
     this->jobjectBooleanFALSE = JNIUtilNewGlobalRef(jniEnv, JNIUtilGetStaticObjectField(jniEnv, this->jclassBoolean, jfId));
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_jclsHolder) {
@@ -116,9 +117,9 @@ jclass ZFImpl_sys_Android_jclassByte(void) {
 jobject ZFImpl_sys_Android_newByte(ZF_IN jbyte v) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclassByte;
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "<init>",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-            .add(JNIType::S_byte)
+    static jmethodID jmId = JNIUtilGetMethodID(jniEnv, jcls, "<init>",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_byte())
         ).c_str());
     return JNIUtilNewObject(jniEnv, jcls, jmId, v);
 }
@@ -129,9 +130,9 @@ jclass ZFImpl_sys_Android_jclassCharacter(void) {
 jobject ZFImpl_sys_Android_newCharacter(ZF_IN jchar v) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclassCharacter;
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "<init>",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-            .add(JNIType::S_char)
+    static jmethodID jmId = JNIUtilGetMethodID(jniEnv, jcls, "<init>",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_char())
         ).c_str());
     return JNIUtilNewObject(jniEnv, jcls, jmId, v);
 }
@@ -142,9 +143,9 @@ jclass ZFImpl_sys_Android_jclassShort(void) {
 jobject ZFImpl_sys_Android_newShort(ZF_IN jshort v) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclassShort;
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "<init>",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-            .add(JNIType::S_short)
+    static jmethodID jmId = JNIUtilGetMethodID(jniEnv, jcls, "<init>",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_short())
         ).c_str());
     return JNIUtilNewObject(jniEnv, jcls, jmId, v);
 }
@@ -155,9 +156,9 @@ jclass ZFImpl_sys_Android_jclassInteger(void) {
 jobject ZFImpl_sys_Android_newInteger(ZF_IN jint v) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclassInteger;
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "<init>",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-            .add(JNIType::S_int)
+    static jmethodID jmId = JNIUtilGetMethodID(jniEnv, jcls, "<init>",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_int())
         ).c_str());
     return JNIUtilNewObject(jniEnv, jcls, jmId, v);
 }
@@ -168,9 +169,9 @@ jclass ZFImpl_sys_Android_jclassLong(void) {
 jobject ZFImpl_sys_Android_newLong(ZF_IN jlong v) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclassLong;
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "<init>",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-            .add(JNIType::S_long)
+    static jmethodID jmId = JNIUtilGetMethodID(jniEnv, jcls, "<init>",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_long())
         ).c_str());
     return JNIUtilNewObject(jniEnv, jcls, jmId, v);
 }
@@ -181,9 +182,9 @@ jclass ZFImpl_sys_Android_jclassFloat(void) {
 jobject ZFImpl_sys_Android_newFloat(ZF_IN jfloat v) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclassFloat;
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "<init>",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-            .add(JNIType::S_float)
+    static jmethodID jmId = JNIUtilGetMethodID(jniEnv, jcls, "<init>",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_float())
         ).c_str());
     return JNIUtilNewObject(jniEnv, jcls, jmId, v);
 }
@@ -194,9 +195,9 @@ jclass ZFImpl_sys_Android_jclassDouble(void) {
 jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_jclsHolder)->jclassDouble;
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "<init>",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-            .add(JNIType::S_double)
+    static jmethodID jmId = JNIUtilGetMethodID(jniEnv, jcls, "<init>",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_double())
         ).c_str());
     return JNIUtilNewObject(jniEnv, jcls, jmId, v);
 }
@@ -229,7 +230,7 @@ zfstring ZFImpl_sys_Android_stackTrace(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog).c_str());
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "stackTrace",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
         ).c_str());
     jstring jobjString = ZFCastStatic(jstring, JNIUtilCallStaticObjectMethod(jniEnv, jcls, jmId));
     const char *utf = JNIUtilGetStringUTFChars(jniEnv, jobjString, zfnull);
@@ -244,7 +245,7 @@ void ZFImpl_sys_Android_stackTracePrint(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog).c_str());
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "stackTracePrint",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
         ).c_str());
     JNIUtilCallStaticVoidMethod(jniEnv, jcls, jmId);
 }
@@ -256,8 +257,8 @@ void ZFImpl_sys_Android_objectInfoT(
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jcls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog).c_str());
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "objectInfo",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-            .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+        JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+            .add(JNIType::S_object_Object())
         ).c_str());
     jstring tmp = ZFCastStatic(jstring, JNIUtilCallStaticObjectMethod(jniEnv, jcls, jmId, nativeObject));
     const char *utf = JNIUtilGetStringUTFChars(jniEnv, tmp, zfnull);

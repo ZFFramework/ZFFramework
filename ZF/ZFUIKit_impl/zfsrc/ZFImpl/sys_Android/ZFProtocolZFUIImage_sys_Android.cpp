@@ -30,8 +30,8 @@ public:
     virtual void *nativeImageFromInput(ZF_IN const ZFInput &inputCallback) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageFromInput",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             ZFImpl_sys_Android_ZFInputWrapperFromZFInput(inputCallback));
@@ -48,9 +48,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageToOutput",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
         return (zfbool)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId
              , ZFCastStatic(jobject, nativeImage)
@@ -61,8 +61,8 @@ public:
     virtual void *nativeImageCopy(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageCopy",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, nativeImage));
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
@@ -82,8 +82,8 @@ public:
     virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeImageSize",
-            JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_array(JNIType::S_int()), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, nativeImage));
         jint *jarrSize = JNIUtilGetIntArrayElements(jniEnv, jobjSize, NULL);

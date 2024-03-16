@@ -30,7 +30,7 @@ public:
     virtual void appRestart(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "appRestart",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId);
     }

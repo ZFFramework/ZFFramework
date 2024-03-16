@@ -221,7 +221,7 @@ public:
 public:
     #define _JNIUtil_DECLARE_STATIC_TYPE(Type) \
         /** @brief a static instance for the T_##Type type */ \
-        static const JNIType &S_##Type;
+        static const JNIType &S_##Type(void);
     _JNIUtil_DECLARE_STATIC_TYPE(boolean)
     _JNIUtil_DECLARE_STATIC_TYPE(byte)
     _JNIUtil_DECLARE_STATIC_TYPE(char)
@@ -233,6 +233,14 @@ public:
     _JNIUtil_DECLARE_STATIC_TYPE(void)
 
 public:
+    /**
+     * @brief a static instance for the Object type
+     */
+    static const JNIType &S_object_Object(void);
+    /**
+     * @brief a static instance for the String type
+     */
+    static const JNIType &S_object_String(void);
     /**
      * @brief util method to create object type
      */
@@ -259,9 +267,9 @@ private:
  * you may use JNIParamTypeContainer to create a paramTypeList easily:
  * @code
  *   JNIGetMethodSig(
- *       JNIType::S_boolean,
+ *       JNIType::S_boolean(),
  *       JNIParamTypeContainer()
- *           .add(JNIType::S_byte)
+ *           .add(JNIType::S_byte())
  *           .add(JNIType::T_boolean)
  *           .add(JNIType(JNIType::T_object, "java.lang.String"))
  *       );
@@ -347,9 +355,9 @@ extern _JNI_EXPORT JNIString JNIGetMethodSig(const JNIType &returnType,
  */
 #ifndef JNIPointerJNIType
     #if JNIPointerUseLong
-        #define JNIPointerJNIType JNIType::S_long
+        #define JNIPointerJNIType JNIType::S_long()
     #else
-        #define JNIPointerJNIType JNIType::S_array(JNIType::S_byte)
+        #define JNIPointerJNIType JNIType::S_array(JNIType::S_byte())
     #endif
 #endif
 

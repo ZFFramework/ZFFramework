@@ -94,8 +94,8 @@ public:
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_resIsExist",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, resPathFixed.cString());
         JNIBlockedDeleteLocalRef(param);
@@ -107,8 +107,8 @@ public:
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_resIsDir",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, resPathFixed.cString());
         JNIBlockedDeleteLocalRef(param);
@@ -127,11 +127,11 @@ public:
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_resCopy",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
-                .add(JNIType::S_boolean)
-                .add(JNIType::S_boolean)
+            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+                .add(JNIType::S_object_String())
+                .add(JNIType::S_object_String())
+                .add(JNIType::S_boolean())
+                .add(JNIType::S_boolean())
             ).c_str());
         jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed)),
@@ -276,8 +276,8 @@ public:
         fd.nativeFd = d;
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_listAssets",
-            JNIGetMethodSig(JNIType::S_array(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String)), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_array(JNIType::S_object_String()), JNIParamTypeContainer()
+                .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, absPath.cString());
         JNIBlockedDeleteLocalRef(param);

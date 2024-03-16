@@ -33,9 +33,9 @@ jobject ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZF_IN const ZFInput &input)
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jclsZFInputWrapper = ZFImpl_sys_Android_jclassZFInputWrapper();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFInputWrapper, "native_nativeInputCreate",
-        JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
             .add(JNIPointerJNIType)
-            .add(JNIType::S_boolean)
+            .add(JNIType::S_boolean())
         ).c_str());
     v_ZFInput *inputHolder = zfAlloc(v_ZFInput); // release when nativeInputClose
     inputHolder->zfv = input;

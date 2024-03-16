@@ -39,8 +39,8 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewPositionOnScreen",
-            JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_array(JNIType::S_int()), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         jintArray jobjRect = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, view->nativeView()));

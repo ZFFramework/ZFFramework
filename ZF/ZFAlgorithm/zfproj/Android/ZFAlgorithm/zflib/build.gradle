@@ -63,7 +63,9 @@ task ZFSetup {
         }
     }
 }
-preBuild.dependsOn ZFSetup
+afterEvaluate {
+    preBuild.dependsOn ZFSetup
+}
 
 gradle.buildFinished {
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {

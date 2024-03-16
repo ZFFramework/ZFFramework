@@ -60,6 +60,8 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const zfchar *methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
+        , ZF_IN_OPT ZFMethodType methodType = ZFMethodTypeVirtual
+        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType = ZFMethodPrivilegeTypePublic
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**
@@ -71,6 +73,8 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const zfchar *methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
+        , ZF_IN_OPT ZFMethodType methodType = ZFMethodTypeVirtual
+        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType = ZFMethodPrivilegeTypePublic
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**

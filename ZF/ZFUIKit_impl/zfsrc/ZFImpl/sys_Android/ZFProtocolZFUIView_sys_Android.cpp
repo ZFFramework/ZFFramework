@@ -45,8 +45,8 @@ public:
     virtual zfbool nativeViewCacheOnSave(ZF_IN void *nativeView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_nativeViewCacheOnSave",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, nativeView));
@@ -58,8 +58,8 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_nativeViewCacheOnRestore",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
                 .add(JNIPointerJNIType)
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
@@ -69,7 +69,7 @@ public:
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_nativeViewCreate",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsZFUIView, jmId,
@@ -99,10 +99,10 @@ public:
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_nativeImplView",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -115,12 +115,12 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_nativeImplViewFrame",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -132,8 +132,8 @@ public:
     virtual zffloat UIScaleForImpl(ZF_IN void *nativeView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_UIScaleForImpl",
-            JNIGetMethodSig(JNIType::S_float, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_float(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, nativeView));
@@ -141,8 +141,8 @@ public:
     virtual zffloat UIScaleForPixel(ZF_IN void *nativeView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_UIScaleForPixel",
-            JNIGetMethodSig(JNIType::S_float, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_float(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, nativeView));
@@ -157,9 +157,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_viewVisible",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_boolean)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -171,9 +171,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_viewAlpha",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_float)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_float())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -185,9 +185,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_viewUIEnable",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_boolean)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -199,9 +199,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_viewUIEnableTree",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_boolean)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -213,9 +213,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_viewBackgroundColor",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -232,12 +232,12 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_childAdd",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, parent->nativeView()),
@@ -255,11 +255,11 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_childRemove",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, parent->nativeView()),
@@ -270,8 +270,8 @@ public:
     virtual void childRemoveAllForDealloc(ZF_IN ZFUIView *parent) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_childRemoveAllForDealloc",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, parent->nativeView()));
@@ -284,12 +284,12 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_viewFrame",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()),
@@ -302,8 +302,8 @@ public:
     virtual void layoutRequest(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_layoutRequest",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, view->nativeView()));
@@ -316,10 +316,10 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIView, "native_measureNativeView",
-            JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_array(JNIType::S_int()), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsZFUIView, jmId,
             ZFCastStatic(jobject, nativeView),

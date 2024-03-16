@@ -190,12 +190,16 @@ const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const zfchar *methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
+        , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
+        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType /* = ZFMethodPrivilegeTypePublic */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     ZFMethodDynamicRegisterParam p;
     p.methodReturnTypeId(methodReturnTypeId);
     p.methodName(methodName);
     p.methodImpl(methodImpl);
+    p.methodType(methodType);
+    p.methodPrivilegeType(methodPrivilegeType);
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
         if(methodParam.methodParamDefaultValueAt(i) == ZFMethodGenericInvokerDefaultParam()) {
             p.methodParamAdd(
@@ -220,12 +224,16 @@ const ZFMethod *ZFMethodDynamicRegister(
         , ZF_IN const zfchar *methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
+        , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
+        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType /* = ZFMethodPrivilegeTypePublic */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     ZFMethodDynamicRegisterParam p;
     p.methodReturnTypeId(methodReturnTypeId);
     p.methodName(methodName);
     p.methodImpl(methodImpl);
+    p.methodType(methodType);
+    p.methodPrivilegeType(methodPrivilegeType);
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
         if(methodParam.methodParamDefaultValueAt(i) == ZFMethodGenericInvokerDefaultParam()) {
             p.methodParamAdd(
@@ -241,7 +249,13 @@ const ZFMethod *ZFMethodDynamicRegister(
                 methodParam.methodParamDefaultValueAt(i));
         }
     }
-    p.methodNamespace(methodNamespace);
+    const ZFClass *cls = ZFClass::classForName(methodNamespace);
+    if(cls != zfnull) {
+        p.methodOwnerClass(cls);
+    }
+    else {
+        p.methodNamespace(methodNamespace);
+    }
     return ZFMethodDynamicRegister(p, errorHint);
 }
 

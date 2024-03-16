@@ -514,20 +514,24 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(const ZFMethod *, ZFMethodDynamicRegister
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const ZFClass *, methodOwnerClass)
         , ZFMP_IN(const zfchar *, methodReturnTypeId)
         , ZFMP_IN(const zfchar *, methodName)
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
+        , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, methodPrivilegeType, ZFMethodPrivilegeTypePublic)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(const ZFMethod *, ZFMethodDynamicRegister
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const zfchar *, methodNamespace)
         , ZFMP_IN(const zfchar *, methodReturnTypeId)
         , ZFMP_IN(const zfchar *, methodName)
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
+        , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, methodPrivilegeType, ZFMethodPrivilegeTypePublic)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodDynamicUnregister

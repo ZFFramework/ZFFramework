@@ -702,11 +702,15 @@ ZFDynamic &ZFDynamic::method(
         , ZF_IN const zfchar *methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
+        , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
+        , ZF_IN_OPT ZFMethodPrivilegeType methodPrivilegeType /* = ZFMethodPrivilegeTypePublic */
         ) {
     ZFMethodDynamicRegisterParam p;
     p.methodReturnTypeId(methodReturnTypeId);
     p.methodName(methodName);
     p.methodImpl(methodImpl);
+    p.methodType(methodType);
+    p.methodPrivilegeType(methodPrivilegeType);
     for(zfindex i = 0; i < methodParam.methodParamCount(); ++i) {
         if(methodParam.methodParamDefaultValueAt(i) == ZFMethodGenericInvokerDefaultParam()) {
             p.methodParamAdd(
@@ -1054,11 +1058,13 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, enumEnd
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, event
         , ZFMP_IN(const zfchar *, eventName)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFDynamic, ZFDynamic &, method
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_6(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const zfchar *, methodReturnTypeId)
         , ZFMP_IN(const zfchar *, methodName)
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
+        , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
+        , ZFMP_IN_OPT(ZFMethodPrivilegeType, methodPrivilegeType, ZFMethodPrivilegeTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)

@@ -31,14 +31,14 @@ public:
     virtual zfbool keyboardShowing(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_keyboardShowing",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
             ).c_str());
         return JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId);
     }
     virtual ZFUIRect keyboardFrame(ZF_IN ZFUIOnScreenKeyboardState *keyboardState) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_keyboardFrame",
-            JNIGetMethodSig(JNIType::S_array(JNIType::S_int), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_array(JNIType::S_int()), JNIParamTypeContainer()
             ).c_str());
         jintArray jobjRect = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
         jint *jarrRect = JNIUtilGetIntArrayElements(jniEnv, jobjRect, NULL);
@@ -60,7 +60,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardStateImpl_sys_Android_
     JNIBlockedDeleteLocalRef((jobject)jclsOwner);
 
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsOwner, "native_keyboardStaticInit",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
         ).c_str());
     JNIUtilCallStaticVoidMethod(jniEnv, jclsOwner, jmId);
 }
@@ -71,7 +71,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardStateImpl_sys_Android_init) {
     JNIBlockedDeleteLocalRef((jobject)jclsOwner);
 
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsOwner, "native_keyboardStaticCleanup",
-        JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
         ).c_str());
     JNIUtilCallStaticVoidMethod(jniEnv, jclsOwner, jmId);
 }

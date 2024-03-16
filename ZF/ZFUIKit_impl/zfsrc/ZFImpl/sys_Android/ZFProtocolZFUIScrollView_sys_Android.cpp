@@ -36,7 +36,7 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_nativeScrollViewCreate",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsZFUIScrollView, jmId,
@@ -63,9 +63,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollEnable",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_boolean)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, scrollView->nativeImplView()),
@@ -80,12 +80,12 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollBounce",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_boolean)
-                .add(JNIType::S_boolean)
-                .add(JNIType::S_boolean)
-                .add(JNIType::S_boolean)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_boolean())
+                .add(JNIType::S_boolean())
+                .add(JNIType::S_boolean())
+                .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, scrollView->nativeImplView()),
@@ -100,12 +100,12 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollContentFrame",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, scrollView->nativeImplView()),
@@ -120,9 +120,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollAnimationStart",
-            JNIGetMethodSig(JNIType::S_long, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
             ).c_str());
         return (zftimet)JNIUtilCallStaticLongMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, scrollView->nativeImplView()),
@@ -131,8 +131,8 @@ public:
     virtual void scrollAnimationStop(ZF_IN ZFUIScrollView *scrollView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollAnimationStop",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, scrollView->nativeImplView()));
@@ -146,10 +146,10 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollChildAdd",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, parent->nativeImplView()),
@@ -163,9 +163,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollChildRemove",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, parent->nativeImplView()),
@@ -174,8 +174,8 @@ public:
     virtual void scrollChildRemoveAllForDealloc(ZF_IN ZFUIScrollView *parent) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFUIScrollView, "native_scrollChildRemoveAllForDealloc",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIScrollView, jmId,
             ZFCastStatic(jobject, parent->nativeImplView()));

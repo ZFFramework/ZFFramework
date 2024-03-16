@@ -83,10 +83,10 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jclass jclsZFAndroidOutput = ZFImpl_sys_Android_jclassZFAndroidOutput();
     static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidOutput, "native_nativeOutputWrite",
-        JNIGetMethodSig(JNIType::S_int, JNIParamTypeContainer()
-            .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-            .add(JNIType::S_array(JNIType::S_byte))
-            .add(JNIType::S_int)
+        JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
+            .add(JNIType::S_object_Object())
+            .add(JNIType::S_array(JNIType::S_byte()))
+            .add(JNIType::S_int())
         ).c_str());
 
     const jbyte *src = (const jbyte *)buf;

@@ -49,9 +49,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTaskCreate",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_long)
-                .add(JNIType::S_long)
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_long())
+                .add(JNIType::S_long())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = zfnew(_ZFP_ZFHttpRequestImpl_sys_Android_Task);
@@ -68,8 +68,8 @@ public:
     virtual void nativeTaskDestroy(ZF_IN void *nativeTask) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeTaskDestroy",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -87,10 +87,10 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_url",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
-                .add(JNIType::S_int)
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_String())
+                .add(JNIType::S_int())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -107,9 +107,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_httpMethod",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_String())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -126,10 +126,10 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_header",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_String())
+                .add(JNIType::S_object_String())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -146,9 +146,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerRemove",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_String())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -164,9 +164,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_header",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_String())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -181,8 +181,8 @@ public:
     virtual zfindex headerCount(ZF_IN void *nativeTask) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerCount",
-            JNIGetMethodSig(JNIType::S_int, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -194,8 +194,8 @@ public:
     virtual zfiterator headerIter(ZF_IN void *nativeTask) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerIter",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -211,9 +211,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerIterValid",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -228,9 +228,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerIterNext",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -245,9 +245,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerIterKey",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -264,9 +264,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerIterValue",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -284,10 +284,10 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerIterValue",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_String())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -303,9 +303,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_headerIterRemove",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -338,9 +338,9 @@ public:
                 ) {
             JNIEnv *jniEnv = JNIGetJNIEnv();
             jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsOwner, "native_request",
-                JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                    .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                    .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+                JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                    .add(JNIType::S_object_Object())
+                    .add(JNIType::S_object_Object())
                 ).c_str());
 
             zfCoreMutexLock();
@@ -363,8 +363,8 @@ public:
     virtual void requestCancel(ZF_IN void *nativeTask) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_requestCancel",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -382,9 +382,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_responseHeader",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String))
+            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_String())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -399,8 +399,8 @@ public:
     virtual zfindex responseHeaderCount(ZF_IN void *nativeTask) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_responseHeaderCount",
-            JNIGetMethodSig(JNIType::S_int, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -412,8 +412,8 @@ public:
     virtual zfiterator responseHeaderIter(ZF_IN void *nativeTask) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_responseHeaderIter",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -429,9 +429,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_responseHeaderIterValid",
-            JNIGetMethodSig(JNIType::S_boolean, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -446,9 +446,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_responseHeaderIterNext",
-            JNIGetMethodSig(JNIType::S_void, JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -463,9 +463,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_responseHeaderIterKey",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
@@ -482,9 +482,9 @@ public:
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_responseHeaderIterValue",
-            JNIGetMethodSig(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_String), JNIParamTypeContainer()
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
-                .add(JNIType::S_object(ZFImpl_sys_Android_JNI_NAME_Object))
+            JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
+                .add(JNIType::S_object_Object())
+                .add(JNIType::S_object_Object())
             ).c_str());
 
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;

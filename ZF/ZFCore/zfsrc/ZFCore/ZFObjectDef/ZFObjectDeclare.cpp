@@ -24,6 +24,8 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
             , "objectOnInit"
             , methodParam
             , methodImplWrapper
+            , ZFMethodTypeVirtual
+            , ZFMethodPrivilegeTypeProtected
             , errorHint
             );
 }

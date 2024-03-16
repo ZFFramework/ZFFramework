@@ -171,7 +171,10 @@ void JNIConvertClassNameForFindClass(JNIString &ret, const char *className) {
 
 // ============================================================
 #define _JNIUtil_DEFINE_STATIC_TYPE(Type) \
-    const JNIType &JNIType::S_##Type(JNIType::T_##Type);
+    const JNIType &JNIType::S_##Type(void) { \
+        static JNIType v(JNIType::T_##Type); \
+        return v; \
+    }
 _JNIUtil_DEFINE_STATIC_TYPE(boolean)
 _JNIUtil_DEFINE_STATIC_TYPE(byte)
 _JNIUtil_DEFINE_STATIC_TYPE(char)
@@ -181,6 +184,15 @@ _JNIUtil_DEFINE_STATIC_TYPE(long)
 _JNIUtil_DEFINE_STATIC_TYPE(float)
 _JNIUtil_DEFINE_STATIC_TYPE(double)
 _JNIUtil_DEFINE_STATIC_TYPE(void)
+
+const JNIType &JNIType::S_object_Object(void) {
+    static JNIType v(JNIType::T_object, "java.lang.Object");
+    return v;
+}
+const JNIType &JNIType::S_object_String(void) {
+    static JNIType v(JNIType::T_object, "java.lang.String");
+    return v;
+}
 
 class _JNITypePrivate {
 public:
