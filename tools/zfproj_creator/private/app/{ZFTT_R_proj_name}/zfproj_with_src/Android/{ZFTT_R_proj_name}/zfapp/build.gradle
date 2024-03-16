@@ -283,7 +283,5 @@ task ZFSetup {
         ZFCopyRes(ZF_ROOT_PATH + '/../ZFModule', '{ZFTT_R_impl_ext_name_31}'){ZFTT_CE}
     }
 }
-afterEvaluate {
-    preBuild.dependsOn ZFSetup
-}
+preBuild.dependsOn ZFSetup
 
