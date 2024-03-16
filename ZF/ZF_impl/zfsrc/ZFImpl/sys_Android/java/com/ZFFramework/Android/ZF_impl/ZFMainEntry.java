@@ -11,10 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.ZFFramework.Android.NativeUtil.TestClass;
-import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
-import com.ZFFramework.Android.NativeUtil.ZFAndroidReflect;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,7 +120,6 @@ public final class ZFMainEntry extends Activity {
         _appContext = new WeakReference<Context>(this.getApplicationContext());
         mainEntryActivity(this);
         ZFFrameworkInit();
-        ZFAndroidReflect.register(TestClass.class);
         ZFMainExecute(null);
     }
 
