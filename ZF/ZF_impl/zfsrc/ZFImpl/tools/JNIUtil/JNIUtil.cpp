@@ -185,6 +185,10 @@ _JNIUtil_DEFINE_STATIC_TYPE(float)
 _JNIUtil_DEFINE_STATIC_TYPE(double)
 _JNIUtil_DEFINE_STATIC_TYPE(void)
 
+const JNIType &JNIType::S_object_Class(void) {
+    static JNIType v(JNIType::T_object, "java.lang.Class");
+    return v;
+}
 const JNIType &JNIType::S_object_Object(void) {
     static JNIType v(JNIType::T_object, "java.lang.Object");
     return v;

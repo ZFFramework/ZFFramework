@@ -1291,61 +1291,64 @@ namespace JNIUtilMethodWrapperPrivate {
 // ============================================================
 // other
 namespace JNIUtil {
-/**
- * @brief util object to hold jobject and delete automatically by DeleteGlobalRef
- */
-class _JNI_EXPORT JNIObjectHolder {
+
+/** @brief util to hold global ref */
+class _JNI_EXPORT JNIGlobalRef {
+public:
+    /** @brief construct an empty holder */
+    JNIGlobalRef(void) : _obj(NULL) {}
+    /** @brief construct from existing object */
+    JNIGlobalRef(jobject obj) : _obj(obj ? JNIUtilNewGlobalRef(JNIGetJNIEnv(), obj) : NULL) {}
+    /** @brief construct from another holder */
+    JNIGlobalRef(const JNIGlobalRef &obj) : _obj(obj ? JNIUtilNewGlobalRef(JNIGetJNIEnv(), obj) : NULL) {}
+public:
+    /** @brief set referenced object */
+    JNIGlobalRef &set(jobject obj) {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        if(obj) {
+            obj = JNIUtilNewGlobalRef(jniEnv, obj);
+        }
+        if(_obj) {
+            jobject tmp = _obj;
+            _obj = obj;
+            JNIUtilDeleteGlobalRef(jniEnv, tmp);
+        }
+        else {
+            _obj = obj;
+        }
+        return *this;
+    }
+    /** @brief get referenced object */
+    jobject get(void) const {
+        return _obj;
+    }
 public:
     /** @cond ZFPrivateDoc */
-    JNIObjectHolder(void)
-    : _obj(NULL)
-    {
+    JNIGlobalRef &operator = (jobject obj) {
+        this->set(obj);
+        return *this;
     }
-    JNIObjectHolder(jobject obj)
-    : _obj(obj == NULL ? NULL : JNIUtilNewGlobalRef(JNIGetJNIEnv(), obj))
-    {
+    JNIGlobalRef &operator = (const JNIGlobalRef &obj) {
+        this->set(obj.get());
+        return *this;
     }
-    JNIObjectHolder(const JNIObjectHolder &ref)
-    : _obj(ref.get() == NULL ? NULL : JNIUtilNewGlobalRef(JNIGetJNIEnv(), ref.get()))
-    {
-    }
-    ~JNIObjectHolder(void) {
-        if(_obj != NULL) {
-            JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), _obj);
-        }
+    operator bool (void) const {
+        return _obj != NULL;
     }
     operator jobject (void) const {
         return _obj;
     }
-    JNIObjectHolder &operator = (const JNIObjectHolder &ref) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = ((ref.get() == NULL) ? NULL : JNIUtilNewGlobalRef(jniEnv, ref.get()));
-        if(_obj != NULL) {
-            JNIUtilDeleteGlobalRef(jniEnv, _obj);
-        }
-        _obj = tmp;
-        return *this;
+    operator jclass (void) const {
+        return (jclass)_obj;
     }
-    JNIObjectHolder &operator = (jobject const &obj) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = ((obj == NULL) ? NULL : JNIUtilNewGlobalRef(jniEnv, obj));
-        if(_obj != NULL) {
-            JNIUtilDeleteGlobalRef(jniEnv, _obj);
-        }
-        _obj = tmp;
-        return *this;
+    operator jstring (void) const {
+        return (jstring)_obj;
     }
     /** @endcond */
-public:
-    /**
-     * @brief get the jobject
-     */
-    jobject get(void) const {
-        return _obj;
-    }
 private:
     jobject _obj;
 };
+
 } // namespace JNIUtil
 #endif // #if NEED_JNIUTIL
 

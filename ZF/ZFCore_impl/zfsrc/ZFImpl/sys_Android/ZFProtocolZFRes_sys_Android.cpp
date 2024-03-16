@@ -26,7 +26,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassLikePOD _ZFP_ZFProtocolZFRes_sys_Android_FileToken {
 public:
-    JNIObjectHolder assetManagerHolder;
+    JNIGlobalRef assetManagerHolder;
     AAssetManager *assetManager;
     AAsset *token;
     zfbool isEof;

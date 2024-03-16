@@ -234,6 +234,10 @@ public:
 
 public:
     /**
+     * @brief a static instance for the Class type
+     */
+    static const JNIType &S_object_Class(void);
+    /**
      * @brief a static instance for the Object type
      */
     static const JNIType &S_object_Object(void);
@@ -442,52 +446,6 @@ namespace JNIUtilPrivate {
 /** @brief util macro to delete object after code block for JNI global object */
 #define JNIBlockedDeleteGlobalRef(obj_) \
     JNIUtilPrivate::GlobalRefDel _JNIUtil_uniqueName(jniRef)(obj_)
-
-// ============================================================
-/** @brief util to hold global ref */
-class _JNI_EXPORT JNIGlobalRef {
-public:
-    /** @brief construct an empty holder */
-    JNIGlobalRef(void) : _obj(NULL) {}
-    /** @brief construct from existing object */
-    JNIGlobalRef(jobject obj) : _obj(obj ? JNIGetJNIEnv()->NewGlobalRef(obj) : NULL) {}
-    /** @brief construct from another holder */
-    JNIGlobalRef(const JNIGlobalRef &obj) : _obj(obj.get() ? JNIGetJNIEnv()->NewGlobalRef(obj.get()) : NULL) {}
-public:
-    /** @brief set referenced object */
-    JNIGlobalRef &set(jobject obj) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        if(obj) {
-            obj = jniEnv->NewGlobalRef(obj);
-        }
-        if(_obj) {
-            jobject tmp = _obj;
-            _obj = obj;
-            jniEnv->DeleteGlobalRef(tmp);
-        }
-        else {
-            _obj = obj;
-        }
-        return *this;
-    }
-    /** @brief get referenced object */
-    jobject get(void) const {
-        return _obj;
-    }
-public:
-    /** @cond ZFPrivateDoc */
-    JNIGlobalRef &operator = (jobject obj) {
-        this->set(obj);
-        return *this;
-    }
-    JNIGlobalRef &operator = (const JNIGlobalRef &obj) {
-        this->set(obj.get());
-        return *this;
-    }
-    /** @endcond */
-private:
-    jobject _obj;
-};
 
 } // namespace JNIUtil
 #endif // #if NEED_JNIUTIL
