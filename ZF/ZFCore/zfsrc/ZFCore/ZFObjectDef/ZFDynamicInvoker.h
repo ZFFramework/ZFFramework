@@ -123,17 +123,40 @@ extern ZFLIB_ZFCore const ZFClass *ZFDI_classForName(
  * output format:
  *   (Class0)param0, (Class1)param1, ...
  */
-extern ZFLIB_ZFCore void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
-                                        , zfindex paramCount
-                                        , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
-                                        , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-                                        , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-                                        , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-                                        , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-                                        , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-                                        , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-                                        , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-                                        );
+extern ZFLIB_ZFCore void ZFDI_paramInfo(
+        ZF_IN_OUT zfstring &ret
+        , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+        );
+
+/** @brief util method to calc param count */
+inline zfindex ZFDI_paramCount(
+        ZF_IN ZFObject * const *paramList
+        , ZF_IN_OPT zfindex paramListCount = zfindexMax()
+        ) {
+    zfindex paramCount = 0;
+    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMethodGenericInvokerDefaultParam()) {
+        ++paramCount;
+    }
+    return paramCount;
+}
+/** @brief util method to calc param count */
+inline zfindex ZFDI_paramCount(
+        ZF_IN zfauto const *paramList
+        , ZF_IN_OPT zfindex paramListCount = zfindexMax()
+        ) {
+    zfindex paramCount = 0;
+    while(paramCount < ZFMETHOD_MAX_PARAM && paramCount < paramListCount && paramList[paramCount] != ZFMethodGenericInvokerDefaultParam()) {
+        ++paramCount;
+    }
+    return paramCount;
+}
 
 /**
  * @brief perform advanced dynamic invoke
@@ -162,22 +185,22 @@ extern ZFLIB_ZFCore void ZFDI_paramInfo(ZF_IN_OUT zfstring &ret
  * and invoke it by #ZFMethod::methodGenericInvoke
  */
 extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
-                                       , ZF_OUT_OPT zfstring *errorHint
-                                       , ZF_IN_OPT ZFObject *obj
-                                       , ZF_IN const zfchar *name
-                                       , ZF_IN_OPT zfindex paramCount
-                                       , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-                                       );
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN_OPT ZFObject *obj
+        , ZF_IN const zfchar *name
+        , ZF_IN_OPT zfindex paramCount
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        );
 /**
  * @brief perform advanced dynamic invoke
  */
 extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
-                                       , ZF_OUT_OPT zfstring *errorHint
-                                       , ZF_IN_OPT ZFObject *obj
-                                       , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
-                                       , ZF_IN_OPT zfindex paramCount
-                                       , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-                                       );
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN_OPT ZFObject *obj
+        , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
+        , ZF_IN_OPT zfindex paramCount
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        );
 
 /**
  * @brief perform advanced dynamic class alloc
@@ -186,11 +209,11 @@ extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
  * for the params, see #ZFDI_invoke for more info
  */
 extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfauto &ret
-                                      , ZF_OUT_OPT zfstring *errorHint
-                                      , ZF_IN const ZFClass *cls
-                                      , ZF_IN_OPT zfindex paramCount
-                                      , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-                                      );
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN const ZFClass *cls
+        , ZF_IN_OPT zfindex paramCount
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        );
 
 // ============================================================
 /**
@@ -230,31 +253,48 @@ extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
  *   NS.zfstring.MethodName(...)   // static member method of type wrapper
  * @endcode
  */
-extern ZFLIB_ZFCore zfauto ZFInvoke(ZF_IN const zfchar *name
-                                          , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-                                          , ZF_OUT_OPT zfbool *success = zfnull
-                                          , ZF_OUT_OPT zfstring *errorHint = zfnull
-                                          );
+extern ZFLIB_ZFCore zfauto ZFInvoke(
+        ZF_IN const zfchar *name
+        , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_OUT_OPT zfbool *success = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 /** @brief see #ZFInvoke */
-extern ZFLIB_ZFCore zfauto ZFInvoke(ZF_IN const zfchar *name
-                                          , ZF_IN const zfchar *param0
-                                          , ZF_IN_OPT const zfchar *param1 = zfnull
-                                          , ZF_IN_OPT const zfchar *param2 = zfnull
-                                          , ZF_IN_OPT const zfchar *param3 = zfnull
-                                          , ZF_IN_OPT const zfchar *param4 = zfnull
-                                          , ZF_IN_OPT const zfchar *param5 = zfnull
-                                          , ZF_IN_OPT const zfchar *param6 = zfnull
-                                          , ZF_IN_OPT const zfchar *param7 = zfnull
-                                          , ZF_OUT_OPT zfbool *success = zfnull
-                                          , ZF_OUT_OPT zfstring *errorHint = zfnull
-                                          );
+extern ZFLIB_ZFCore zfauto ZFInvoke(
+        ZF_IN const zfchar *name
+        , ZF_IN const ZFCoreArray<zfauto> &params
+        , ZF_OUT_OPT zfbool *success = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
+
+/** @brief see #ZFInvoke */
+extern ZFLIB_ZFCore zfauto ZFInvoke(
+        ZF_IN const zfchar *name
+        , ZF_IN const zfchar *param0
+        , ZF_IN_OPT const zfchar *param1 = zfnull
+        , ZF_IN_OPT const zfchar *param2 = zfnull
+        , ZF_IN_OPT const zfchar *param3 = zfnull
+        , ZF_IN_OPT const zfchar *param4 = zfnull
+        , ZF_IN_OPT const zfchar *param5 = zfnull
+        , ZF_IN_OPT const zfchar *param6 = zfnull
+        , ZF_IN_OPT const zfchar *param7 = zfnull
+        , ZF_OUT_OPT zfbool *success = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
+/** @brief see #ZFInvoke */
+extern ZFLIB_ZFCore zfauto ZFInvoke(
+        ZF_IN const zfchar *name
+        , ZF_IN const ZFCoreArray<zfstring> &params
+        , ZF_OUT_OPT zfbool *success = zfnull
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFDynamicInvoker_h_

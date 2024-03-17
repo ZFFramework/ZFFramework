@@ -318,7 +318,7 @@ namespace JNIUtilMethodWrapperPrivate {
 
 #ifndef JNIUtilCallBooleanMethodA
 #define JNIUtilCallBooleanMethodA(jniEnv, obj, methodID, args) \
-    _JNIUtilWrapMacro_FuncCalled(CallBooleanMethodA, jniEnv, obj, methodID,  args)
+    _JNIUtilWrapMacro_FuncCalled(CallBooleanMethodA, jniEnv, obj, methodID, args)
 #endif
 
 #ifndef JNIUtilCallByteMethod
@@ -378,7 +378,7 @@ namespace JNIUtilMethodWrapperPrivate {
 
 #ifndef JNIUtilCallIntMethodA
 #define JNIUtilCallIntMethodA(jniEnv, obj, methodID, args) \
-    _JNIUtilWrapMacro_FuncCalled(CallIntMethodA, jniEnv, methodID, args)
+    _JNIUtilWrapMacro_FuncCalled(CallIntMethodA, jniEnv, obj, methodID, args)
 #endif
 
 #ifndef JNIUtilCallLongMethod
@@ -393,7 +393,7 @@ namespace JNIUtilMethodWrapperPrivate {
 
 #ifndef JNIUtilCallLongMethodA
 #define JNIUtilCallLongMethodA(jniEnv, obj, methodID, args) \
-    _JNIUtilWrapMacro_FuncCalled(CallLongMethodVA, jniEnv, obj, methodID, args)
+    _JNIUtilWrapMacro_FuncCalled(CallLongMethodA, jniEnv, obj, methodID, args)
 #endif
 
 #ifndef JNIUtilCallFloatMethod
@@ -1343,6 +1343,9 @@ public:
     }
     operator jstring (void) const {
         return (jstring)_obj;
+    }
+    operator jobjectArray (void) const {
+        return (jobjectArray)_obj;
     }
     /** @endcond */
 private:

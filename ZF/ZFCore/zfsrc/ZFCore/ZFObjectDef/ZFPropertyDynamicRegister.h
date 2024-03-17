@@ -89,12 +89,13 @@ public:
     // ============================================================
     // for custom impl
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyCustomImpl(ZF_IN const ZFMethod *propertySetterMethod
-                                                       , ZF_IN const ZFMethod *propertyGetterMethod
-                                                       , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
-                                                       , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
-                                                       , ZF_IN ZFPropertyCallbackValueReset callbackValueReset
-                                                       );
+    ZFPropertyDynamicRegisterParam &propertyCustomImpl(
+            ZF_IN const ZFMethod *propertySetterMethod
+            , ZF_IN const ZFMethod *propertyGetterMethod
+            , ZF_IN ZFPropertyCallbackIsValueAccessed callbackIsValueAccessed
+            , ZF_IN ZFPropertyCallbackIsInitValue callbackIsInitValue
+            , ZF_IN ZFPropertyCallbackValueReset callbackValueReset
+            );
 
     /** @brief see #ZFPropertyDynamicRegister */
     const ZFMethod *propertyCustomImplSetterMethod(void) const;

@@ -335,10 +335,11 @@ public class ZFAnimationNativeView {
     private static _CurveEaseIn _curveEaseIn = new _CurveEaseIn();
     private static _CurveEaseOut _curveEaseOut = new _CurveEaseOut();
     private static _CurveEaseInOut _curveEaseInOut = new _CurveEaseInOut();
-    public static void native_setup(Object nativeAnimation
-                                    , int aniCurve
-                                    , int aniDuration
-                                    ) {
+    public static void native_setup(
+            Object nativeAnimation
+            , int aniCurve
+            , int aniDuration
+            ) {
         NativeAnimation nativeAnimationTmp = (NativeAnimation)nativeAnimation;
         nativeAnimationTmp.nativeAnimationReset();
 

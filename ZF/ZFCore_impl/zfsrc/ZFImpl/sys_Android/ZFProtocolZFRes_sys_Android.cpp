@@ -276,7 +276,7 @@ public:
         fd.nativeFd = d;
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_listAssets",
-            JNIGetMethodSig(JNIType::S_array(JNIType::S_object_String()), JNIParamTypeContainer()
+            JNIGetMethodSig(JNIType::S_array_String(), JNIParamTypeContainer()
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, absPath.cString());

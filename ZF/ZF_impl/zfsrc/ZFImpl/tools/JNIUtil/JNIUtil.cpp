@@ -42,6 +42,9 @@ JNIString &JNIString::operator = (const char *s) {
 const char *JNIString::c_str(void) const {
     return ((std::string *)_d)->c_str();
 }
+jsize JNIString::length(void) const {
+    return (jsize)((std::string *)_d)->length();
+}
 JNIString::operator const char * (void) const {
     return this->c_str();
 }
@@ -67,6 +70,20 @@ JNIParamTypeContainer::~JNIParamTypeContainer(void) {
 JNIParamTypeContainer &JNIParamTypeContainer::add(const JNIType &paramType) {
     ((std::vector<JNIType> *)_d)->push_back(paramType);
     return *this;
+}
+
+void JNIParamTypeContainer::remove(jint i) {
+    std::vector<JNIType> &t = *((std::vector<JNIType> *)_d);
+    t.erase(t.begin() + (size_t)i);
+}
+void JNIParamTypeContainer::removeAll(void) {
+    ((std::vector<JNIType> *)_d)->clear();
+}
+jsize JNIParamTypeContainer::count(void) const {
+    return (jsize)((std::vector<JNIType> *)_d)->size();
+}
+const JNIType &JNIParamTypeContainer::get(jint i) const {
+    return (*(std::vector<JNIType> *)_d)[i];
 }
 
 // ============================================================
@@ -198,56 +215,18 @@ const JNIType &JNIType::S_object_String(void) {
     return v;
 }
 
-class _JNITypePrivate {
-public:
-    JNIType::Type type;
-    JNIString classNameOrArrayElementTypeId;
-    JNIString typeId;
-    bool needUpdateTypeId;
-
-public:
-    void updateId(void) {
-        this->typeId.clear();
-        switch(this->type) {
-            case JNIType::T_boolean:
-                this->typeId += "Z";
-                break;
-            case JNIType::T_byte:
-                this->typeId += "B";
-                break;
-            case JNIType::T_char:
-                this->typeId += "C";
-                break;
-            case JNIType::T_short:
-                this->typeId += "S";
-                break;
-            case JNIType::T_int:
-                this->typeId += "I";
-                break;
-            case JNIType::T_long:
-                this->typeId += "J";
-                break;
-            case JNIType::T_float:
-                this->typeId += "F";
-                break;
-            case JNIType::T_double:
-                this->typeId += "D";
-                break;
-            case JNIType::T_void:
-                this->typeId += "V";
-                break;
-            case JNIType::T_object:
-                JNIConvertClassNameToClassSig(this->typeId, this->classNameOrArrayElementTypeId.c_str());
-                break;
-            case JNIType::T_array:
-                this->typeId += '[';
-                this->typeId += this->classNameOrArrayElementTypeId;
-                break;
-            default:
-                break;
-        }
-    }
-};
+const JNIType &JNIType::S_array_Class(void) {
+    static JNIType v(JNIType::T_array, S_object_Class().getId());
+    return v;
+}
+const JNIType &JNIType::S_array_Object(void) {
+    static JNIType v(JNIType::T_array, S_object_Object().getId());
+    return v;
+}
+const JNIType &JNIType::S_array_String(void) {
+    static JNIType v(JNIType::T_array, S_object_String().getId());
+    return v;
+}
 
 JNIType::JNIType(void) : _type(JNIType::T_boolean), _id(NULL) {
 }
@@ -279,23 +258,37 @@ void JNIType::setType(JNIType::Type type,
     _type = type;
     switch(type) {
         case T_object:
-            if(_id == NULL) {
-                _id = new JNIString();
+            if(_id != NULL && classNameOrArrayElementTypeId >= _id->c_str() && classNameOrArrayElementTypeId < _id->c_str() + _id->length()) {
+                JNIString tmp = classNameOrArrayElementTypeId;
+                _id->clear();
+                JNIConvertClassNameToClassSig(*_id, tmp);
             }
             else {
-                _id->clear();
+                if(_id == NULL) {
+                    _id = new JNIString();
+                }
+                else {
+                    _id->clear();
+                }
+                JNIConvertClassNameToClassSig(*_id, classNameOrArrayElementTypeId);
             }
-            JNIConvertClassNameToClassSig(*_id, classNameOrArrayElementTypeId);
             break;
         case T_array:
-            if(_id == NULL) {
-                _id = new JNIString();
+            if(_id != NULL && classNameOrArrayElementTypeId >= _id->c_str() && classNameOrArrayElementTypeId < _id->c_str() + _id->length()) {
+                JNIString tmp = classNameOrArrayElementTypeId;
+                _id->clear();
+                *_id += '[';
+                *_id += tmp;
             }
             else {
-                _id->clear();
+                if (_id == NULL) {
+                    _id = new JNIString();
+                } else {
+                    _id->clear();
+                }
+                *_id += '[';
+                *_id += classNameOrArrayElementTypeId;
             }
-            *_id += '[';
-            *_id += classNameOrArrayElementTypeId;
             break;
         default:
             if(_id != NULL) {
@@ -344,8 +337,21 @@ JNIString JNIGetMethodSig(
     JNIString s;
     s += "(";
     for(std::size_t i = 0; i < p.size(); ++i) {
-        const JNIType &t = p[i];
-        s += t.getId();
+        s += p[i].getId();
+    }
+    s += ")";
+    s += returnType.getId();
+    return s;
+}
+JNIString JNIGetMethodSig(
+        const JNIType &returnType
+        , const JNIType *paramTypeList
+        , jsize paramCount
+        ) {
+    JNIString s;
+    s += "(";
+    for(jsize i = 0; i < paramCount; ++i) {
+        s += paramTypeList[i].getId();
     }
     s += ")";
     s += returnType.getId();

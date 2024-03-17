@@ -334,22 +334,23 @@ public:
      * see also #ZFObjectTagKeyword_newInstanceGenericFailed
      */
     zfauto newInstance(
-                               ZF_IN     ZFObject *param0
-                             , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-                             , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-                             , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-                             , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-                             , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-                             , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-                             , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-                             ) const; /* ZFMETHOD_MAX_PARAM */
+            ZF_IN     ZFObject *param0
+            , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+            ) const; /* ZFMETHOD_MAX_PARAM */
     /** @brief see #newInstance */
     void *newInstanceGenericBegin(void) const;
     /** @brief see #newInstance */
-    zfbool newInstanceGenericCheck(ZF_IN void *&token
-                                   , ZF_IN const ZFMethod *objectOnInitMethod
-                                   , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-                                   , ZF_OUT_OPT zfstring *errorHint = zfnull) const; /* ZFMETHOD_MAX_PARAM */
+    zfbool newInstanceGenericCheck(
+            ZF_IN void *&token
+            , ZF_IN const ZFMethod *objectOnInitMethod
+            , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+            , ZF_OUT_OPT zfstring *errorHint = zfnull) const; /* ZFMETHOD_MAX_PARAM */
     /** @brief see #newInstance */
     zfauto newInstanceGenericEnd(
             ZF_IN void *&token
@@ -410,16 +411,17 @@ public:
      * @see methodAt, methodForName
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
-    const ZFMethod *methodForNameIgnoreParent(ZF_IN const zfchar *methodName
-                                              , ZF_IN const zfchar *methodParamTypeId0
-                                              , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-                                              , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-                                              , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-                                              , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-                                              , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-                                              , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-                                              , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
-                                              ) const;
+    const ZFMethod *methodForNameIgnoreParent(
+            ZF_IN const zfchar *methodName
+            , ZF_IN const zfchar *methodParamTypeId0
+            , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+            ) const;
     /** @brief see #methodForNameIgnoreParent */
     const ZFMethod *methodForNameIgnoreParent(ZF_IN const zfchar *methodName) const;
     /** @brief see #methodForNameIgnoreParent */
@@ -441,16 +443,17 @@ public:
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      * @note ensured breadth-first
      */
-    const ZFMethod *methodForName(ZF_IN const zfchar *methodName
-                                  , ZF_IN const zfchar *methodParamTypeId0
-                                  , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
-                                  , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
-                                  , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
-                                  , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
-                                  , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
-                                  , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
-                                  , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
-                                  ) const;
+    const ZFMethod *methodForName(
+            ZF_IN const zfchar *methodName
+            , ZF_IN const zfchar *methodParamTypeId0
+            , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId3 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId4 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId5 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId6 = zfnull
+            , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
+            ) const;
     /** @brief see #methodForName */
     const ZFMethod *methodForName(ZF_IN const zfchar *methodName) const;
     /** @brief see #methodForNameGetAll */

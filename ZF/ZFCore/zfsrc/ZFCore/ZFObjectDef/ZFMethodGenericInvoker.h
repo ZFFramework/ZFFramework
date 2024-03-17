@@ -20,12 +20,13 @@ zfclassFwd ZFMethod;
 /**
  * @brief generic invoker for advanced reflection, see #ZFMethod::methodGenericInvoker
  */
-typedef zfbool (*ZFMethodGenericInvoker)(ZF_IN const ZFMethod *invokerMethod
-                                         , ZF_IN ZFObject *invokerObject
-                                         , ZF_OUT_OPT zfstring *errorHint
-                                         , ZF_OUT zfauto &ret
-                                         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-                                         );
+typedef zfbool (*ZFMethodGenericInvoker)(
+        ZF_IN const ZFMethod *invokerMethod
+        , ZF_IN ZFObject *invokerObject
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_OUT zfauto &ret
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        );
 
 /**
  * @brief util macro to expand params for #ZFMethodGenericInvoker
@@ -327,12 +328,13 @@ public:
     (NULL DefaultExpandOrEmpty(ZFM_EMPTY(), owner::pDef##N))
 
 // ============================================================
-extern ZFLIB_ZFCore zfbool _ZFP_ZFMethodGenericInvoke(ZF_IN const ZFMethod *invokerMethod
-                                                      , ZF_IN ZFObject *invokerObject
-                                                      , ZF_OUT_OPT zfstring *errorHint
-                                                      , ZF_OUT zfauto &ret
-                                                      , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-                                                      );
+extern ZFLIB_ZFCore zfbool _ZFP_ZFMethodGenericInvoke(
+        ZF_IN const ZFMethod *invokerMethod
+        , ZF_IN ZFObject *invokerObject
+        , ZF_OUT_OPT zfstring *errorHint
+        , ZF_OUT zfauto &ret
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        );
 extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
         ZF_IN const ZFMethod *method
         , ZF_IN ZFObject *obj

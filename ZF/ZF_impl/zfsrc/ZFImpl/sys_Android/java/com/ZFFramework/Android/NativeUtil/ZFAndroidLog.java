@@ -146,7 +146,7 @@ public class ZFAndroidLog {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("<%s %08X", obj.getClass().getSimpleName(), obj.hashCode()));
+        sb.append(String.format("<%s %08X (%s)", obj.getClass().getSimpleName(), obj.hashCode(), obj.toString()));
 
         for(Class<?> cls = obj.getClass();
             cls != null && !ZFAndroidLog._isSysClass(cls);

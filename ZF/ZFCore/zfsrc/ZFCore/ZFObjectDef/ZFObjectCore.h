@@ -373,34 +373,57 @@ public:
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfauto invoke(ZF_IN const zfchar *methodName
-                                , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-                                , ZF_OUT_OPT zfbool *success = zfnull
-                                , ZF_OUT_OPT zfstring *errorHint = zfnull
-                                );
+    virtual zfauto invoke(
+            ZF_IN const zfchar *methodName
+            , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param4 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
     /**
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfauto invoke(ZF_IN const zfchar *methodName
-                                , ZF_IN const zfchar *param0
-                                , ZF_IN_OPT const zfchar *param1 = zfnull
-                                , ZF_IN_OPT const zfchar *param2 = zfnull
-                                , ZF_IN_OPT const zfchar *param3 = zfnull
-                                , ZF_IN_OPT const zfchar *param4 = zfnull
-                                , ZF_IN_OPT const zfchar *param5 = zfnull
-                                , ZF_IN_OPT const zfchar *param6 = zfnull
-                                , ZF_IN_OPT const zfchar *param7 = zfnull
-                                , ZF_OUT_OPT zfbool *success = zfnull
-                                , ZF_OUT_OPT zfstring *errorHint = zfnull
-                                );
+    virtual zfauto invoke(
+            ZF_IN const zfchar *methodName
+            , ZF_IN const ZFCoreArray<zfauto> &params
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
+
+    /**
+     * @brief util method to perform #ZFDI_invoke,
+     *   do nothing if fail
+     */
+    virtual zfauto invoke(
+            ZF_IN const zfchar *methodName
+            , ZF_IN const zfchar *param0
+            , ZF_IN_OPT const zfchar *param1 = zfnull
+            , ZF_IN_OPT const zfchar *param2 = zfnull
+            , ZF_IN_OPT const zfchar *param3 = zfnull
+            , ZF_IN_OPT const zfchar *param4 = zfnull
+            , ZF_IN_OPT const zfchar *param5 = zfnull
+            , ZF_IN_OPT const zfchar *param6 = zfnull
+            , ZF_IN_OPT const zfchar *param7 = zfnull
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
+    /**
+     * @brief util method to perform #ZFDI_invoke,
+     *   do nothing if fail
+     */
+    virtual zfauto invoke(
+            ZF_IN const zfchar *methodName
+            , ZF_IN const ZFCoreArray<zfstring> &params
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
 
 public:
     /**

@@ -29,14 +29,14 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
     zfblockedAlloc(ZFMethodInvokeData, d);
     d->invokerMethod = invokerMethod;
     d->invokerObject = invokerObject;
-    d->param0 = paramList[0];
-    d->param1 = paramList[1];
-    d->param2 = paramList[2];
-    d->param3 = paramList[3];
-    d->param4 = paramList[4];
-    d->param5 = paramList[5];
-    d->param6 = paramList[6];
-    d->param7 = paramList[7];
+    d->param0.zfunsafe_assign(paramList[0]);
+    d->param1.zfunsafe_assign(paramList[1]);
+    d->param2.zfunsafe_assign(paramList[2]);
+    d->param3.zfunsafe_assign(paramList[3]);
+    d->param4.zfunsafe_assign(paramList[4]);
+    d->param5.zfunsafe_assign(paramList[5]);
+    d->param6.zfunsafe_assign(paramList[6]);
+    d->param7.zfunsafe_assign(paramList[7]);
 
     ZFListener methodImpl = ZFCastZFObjectUnchecked(v_ZFListener *, invokerMethod->methodDynamicRegisterUserData())->zfv;
     methodImpl.execute(ZFArgs()
@@ -49,14 +49,14 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
         *errorHint += d->errorHint;
     }
     if(d->invokeSuccess) {
-        paramList[0] = d->param0;
-        paramList[1] = d->param1;
-        paramList[2] = d->param2;
-        paramList[3] = d->param3;
-        paramList[4] = d->param4;
-        paramList[5] = d->param5;
-        paramList[6] = d->param6;
-        paramList[7] = d->param7;
+        paramList[0].zfunsafe_assign(d->param0);
+        paramList[1].zfunsafe_assign(d->param1);
+        paramList[2].zfunsafe_assign(d->param2);
+        paramList[3].zfunsafe_assign(d->param3);
+        paramList[4].zfunsafe_assign(d->param4);
+        paramList[5].zfunsafe_assign(d->param5);
+        paramList[6].zfunsafe_assign(d->param6);
+        paramList[7].zfunsafe_assign(d->param7);
     }
     return d->invokeSuccess;
 }

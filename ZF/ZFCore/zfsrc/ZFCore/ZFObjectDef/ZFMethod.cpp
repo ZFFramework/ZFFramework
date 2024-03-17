@@ -672,22 +672,23 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
         );
     va_end(vaList);
 }
-_ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(ZF_IN zfbool dummy
-                                                         , ZF_IN zfbool methodIsUserRegister
-                                                         , ZF_IN zfbool methodIsDynamicRegister
-                                                         , ZF_IN ZFObject *methodDynamicRegisterUserData
-                                                         , ZF_IN ZFFuncAddrType methodInvoker
-                                                         , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-                                                         , ZF_IN ZFMethodType methodType
-                                                         , ZF_IN const ZFClass *methodOwnerClass
-                                                         , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-                                                         , ZF_IN const zfchar *methodNamespace
-                                                         , ZF_IN const zfchar *methodName
-                                                         , ZF_IN const zfchar *returnTypeId
-                                                         , ZF_IN const zfchar *returnTypeName
-                                                         /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
-                                                         , ZF_IN va_list vaList
-                                                         )
+_ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
+        ZF_IN zfbool dummy
+        , ZF_IN zfbool methodIsUserRegister
+        , ZF_IN zfbool methodIsDynamicRegister
+        , ZF_IN ZFObject *methodDynamicRegisterUserData
+        , ZF_IN ZFFuncAddrType methodInvoker
+        , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
+        , ZF_IN ZFMethodType methodType
+        , ZF_IN const ZFClass *methodOwnerClass
+        , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
+        , ZF_IN const zfchar *methodNamespace
+        , ZF_IN const zfchar *methodName
+        , ZF_IN const zfchar *returnTypeId
+        , ZF_IN const zfchar *returnTypeName
+        /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
+        , ZF_IN va_list vaList
+        )
 : method(_ZFP_ZFMethodRegisterV(
             methodIsUserRegister
             , methodIsDynamicRegister
@@ -834,28 +835,29 @@ const ZFMethod *ZFMethodAlias(
     if(method->methodParamCount() != ZFMETHOD_MAX_PARAM) {
         paramTypeId[method->methodParamCount()] = zfnull;
     }
-    ZFMethod *ret = _ZFP_ZFMethodRegister(method->methodIsUserRegister()
-                                , method->methodIsDynamicRegister()
-                                , method->methodDynamicRegisterUserData()
-                                , method->methodInvokerOrg()
-                                , method->methodGenericInvokerOrg()
-                                , method->methodType()
-                                , method->methodOwnerClass()
-                                , method->methodPrivilegeType()
-                                , method->methodNamespace()
-                                , aliasName
-                                , method->methodReturnTypeId()
-                                , method->methodReturnTypeName()
-                                , paramTypeId[0], paramTypeName[0], paramName[0], paramDefaultValueCallback[0]
-                                , paramTypeId[1], paramTypeName[1], paramName[1], paramDefaultValueCallback[1]
-                                , paramTypeId[2], paramTypeName[2], paramName[2], paramDefaultValueCallback[2]
-                                , paramTypeId[3], paramTypeName[3], paramName[3], paramDefaultValueCallback[3]
-                                , paramTypeId[4], paramTypeName[4], paramName[4], paramDefaultValueCallback[4]
-                                , paramTypeId[5], paramTypeName[5], paramName[5], paramDefaultValueCallback[5]
-                                , paramTypeId[6], paramTypeName[6], paramName[6], paramDefaultValueCallback[6]
-                                , paramTypeId[7], paramTypeName[7], paramName[7], paramDefaultValueCallback[7]
-                                , zfnull
-                                );
+    ZFMethod *ret = _ZFP_ZFMethodRegister(
+            method->methodIsUserRegister()
+            , method->methodIsDynamicRegister()
+            , method->methodDynamicRegisterUserData()
+            , method->methodInvokerOrg()
+            , method->methodGenericInvokerOrg()
+            , method->methodType()
+            , method->methodOwnerClass()
+            , method->methodPrivilegeType()
+            , method->methodNamespace()
+            , aliasName
+            , method->methodReturnTypeId()
+            , method->methodReturnTypeName()
+            , paramTypeId[0], paramTypeName[0], paramName[0], paramDefaultValueCallback[0]
+            , paramTypeId[1], paramTypeName[1], paramName[1], paramDefaultValueCallback[1]
+            , paramTypeId[2], paramTypeName[2], paramName[2], paramDefaultValueCallback[2]
+            , paramTypeId[3], paramTypeName[3], paramName[3], paramDefaultValueCallback[3]
+            , paramTypeId[4], paramTypeName[4], paramName[4], paramDefaultValueCallback[4]
+            , paramTypeId[5], paramTypeName[5], paramName[5], paramDefaultValueCallback[5]
+            , paramTypeId[6], paramTypeName[6], paramName[6], paramDefaultValueCallback[6]
+            , paramTypeId[7], paramTypeName[7], paramName[7], paramDefaultValueCallback[7]
+            , zfnull
+            );
     if(ret == zfnull) {
         return zfnull;
     }

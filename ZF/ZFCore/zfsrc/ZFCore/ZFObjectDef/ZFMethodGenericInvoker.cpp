@@ -34,13 +34,15 @@ zfbool _ZFP_MtdGIParamCheck(
     if((param != ZFMethodGenericInvokerDefaultParam() && !zfvAccessAvailable)
             || (param == ZFMethodGenericInvokerDefaultParam() && paramIndex < invokerMethod->methodParamDefaultBeginIndex())
             ) {
-        zfstringAppend(errorHint,
-                "unable to access param%s as type (%s): (%s)%s",
-                paramIndex,
-                paramType,
-                param != zfnull ? param->classData()->className() : ZFTOKEN_zfnull,
-                param
-            );
+        if(errorHint != zfnull) {
+            zfstringAppend(errorHint,
+                    "unable to access param%s as type (%s): (%s)%s",
+                    paramIndex,
+                    paramType,
+                    param != zfnull ? param->classData()->className() : ZFTOKEN_zfnull,
+                    param
+                    );
+        }
         return zffalse;
     }
     else {

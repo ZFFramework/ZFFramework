@@ -52,6 +52,7 @@ public:
     JNIString &operator = (JNIString const &ref);
     JNIString &operator = (const char *s);
     const char *c_str(void) const;
+    jsize length(void) const;
     operator const char * (void) const;
     JNIString &operator += (char c);
     JNIString &operator += (const char *s);
@@ -74,6 +75,16 @@ private:
 public:
     /** @brief see #JNIGetMethodSig */
     JNIParamTypeContainer &add(const JNIType &paramType);
+public:
+    /** @brief see #JNIGetMethodSig */
+    void remove(jint i);
+    /** @brief see #JNIGetMethodSig */
+    void removeAll(void);
+public:
+    /** @brief see #JNIGetMethodSig */
+    jsize count(void) const;
+    /** @brief see #JNIGetMethodSig */
+    const JNIType &get(jint i) const;
 public:
     void *_d;
 };
@@ -234,18 +245,6 @@ public:
 
 public:
     /**
-     * @brief a static instance for the Class type
-     */
-    static const JNIType &S_object_Class(void);
-    /**
-     * @brief a static instance for the Object type
-     */
-    static const JNIType &S_object_Object(void);
-    /**
-     * @brief a static instance for the String type
-     */
-    static const JNIType &S_object_String(void);
-    /**
      * @brief util method to create object type
      */
     static inline JNIType S_object(const char *className) {
@@ -257,6 +256,33 @@ public:
     static inline JNIType S_array(const JNIType &type) {
         return JNIType(JNIType::T_array, type.getId());
     }
+
+public:
+    /**
+     * @brief a static instance for the Class type
+     */
+    static const JNIType &S_object_Class(void);
+    /**
+     * @brief a static instance for the Object type
+     */
+    static const JNIType &S_object_Object(void);
+    /**
+     * @brief a static instance for the String type
+     */
+    static const JNIType &S_object_String(void);
+public:
+    /**
+     * @brief a static instance for the Class type
+     */
+    static const JNIType &S_array_Class(void);
+    /**
+     * @brief a static instance for the Object type
+     */
+    static const JNIType &S_array_Object(void);
+    /**
+     * @brief a static instance for the String type
+     */
+    static const JNIType &S_array_String(void);
 
 private:
     JNIType::Type _type;
@@ -279,8 +305,16 @@ private:
  *       );
  * @endcode
  */
-extern _JNI_EXPORT JNIString JNIGetMethodSig(const JNIType &returnType,
-                                             const JNIParamTypeContainer &paramTypeList);
+extern _JNI_EXPORT JNIString JNIGetMethodSig(
+        const JNIType &returnType
+        , const JNIParamTypeContainer &paramTypeList
+        );
+/** @brief see #JNIGetMethodSig */
+extern _JNI_EXPORT JNIString JNIGetMethodSig(
+        const JNIType &returnType
+        , const JNIType *paramTypeList
+        , jsize paramCount
+        );
 
 /** @cond ZFPrivateDoc */
 #define _JNI_METHOD_DECLARE_BEGIN(OwnerClassId, ReturnType, MethodName, ...) \
