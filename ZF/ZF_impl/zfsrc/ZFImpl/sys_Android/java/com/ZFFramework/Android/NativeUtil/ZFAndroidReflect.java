@@ -11,35 +11,16 @@ import java.lang.reflect.Type;
  * util to register native class to ZF
  *
  * limitations:
- * -  public fileds are registered as setter and getter method with the filed name
- * -  no array type supported (`char[]`, `String[]`, etc)
  * -  when a method referencing other class (as return type or param type),
- *   the referenced class must be registered before register the method
+ *   the referenced class must be registered before register the method,
+ *   so you must register all necessary class (by #registerClass)
+ *   before registering class contents (constructors/methods/fileds, by #registerClassContents),
+ *   otherwise, all the class that has not be registered would be treated as plain Object,
+ *   which may cause invalid method dispatching
+ * -  public fileds are registered as setter and getter method with the filed name
  */
 public class ZFAndroidReflect {
 
-    public static void register(Class<?> cls) {
-        register(cls, null);
-    }
-
-    public static void register(Class<?> cls, String clsNameInZF) {
-        long zfjniPointerCls = registerClass(cls, clsNameInZF);
-        if (zfjniPointerCls == 0) {
-            return;
-        }
-        for (Constructor<?> m : cls.getDeclaredConstructors()) {
-            registerConstructor(zfjniPointerCls, m);
-        }
-        for (Method m : cls.getDeclaredMethods()) {
-            registerMethod(zfjniPointerCls, m);
-        }
-    }
-
-    public static void unregister(Class<?> cls) {
-        unregisterClass(cls);
-    }
-
-    // ============================================================
     public static long registerClass(Class<?> cls) {
         return registerClass(cls, null);
     }
@@ -55,24 +36,25 @@ public class ZFAndroidReflect {
         native_unregisterClass(cls.getName());
     }
 
-    public static void registerConstructor(long zfjniPointerCls, Constructor<?> m) {
-        if (Modifier.isPublic(m.getModifiers())) {
-            native_registerConstructor(
-                    zfjniPointerCls,
-                    _paramTypeNames(m.getGenericParameterTypes())
-            );
+    public static void registerClassContents(Class<?> cls, long zfjniPointerCls) {
+        for (Constructor<?> m : cls.getDeclaredConstructors()) {
+            if (Modifier.isPublic(m.getModifiers())) {
+                native_registerConstructor(
+                        zfjniPointerCls,
+                        _paramTypeNames(m.getGenericParameterTypes())
+                );
+            }
         }
-    }
-
-    public static void registerMethod(long zfjniPointerCls, Method m) {
-        if (Modifier.isPublic(m.getModifiers())) {
-            native_registerMethod(
-                    zfjniPointerCls,
-                    m.getName(),
-                    Modifier.isStatic(m.getModifiers()),
-                    _paramTypeName(m.getGenericReturnType()),
-                    _paramTypeNames(m.getGenericParameterTypes())
-            );
+        for (Method m : cls.getDeclaredMethods()) {
+            if (Modifier.isPublic(m.getModifiers())) {
+                native_registerMethod(
+                        zfjniPointerCls,
+                        m.getName(),
+                        Modifier.isStatic(m.getModifiers()),
+                        _paramTypeName(m.getGenericReturnType()),
+                        _paramTypeNames(m.getGenericParameterTypes())
+                );
+            }
         }
     }
 
@@ -175,5 +157,44 @@ public class ZFAndroidReflect {
                                                      boolean isStatic,
                                                      String returnTypeName,
                                                      String[] paramTypeNames);
+
+    // ============================================================
+    private static long native_registerClass(String clsNameInJava,
+                                             String clsNameInZF) {
+        Class<?> cls = null;
+        try {
+            cls = Class.forName(clsNameInJava);
+        } catch (ClassNotFoundException ignored) {
+        }
+        if (cls != null) {
+            return registerClass(cls, clsNameInZF);
+        } else {
+            return 0;
+        }
+    }
+
+    private static void native_unregisterClass(String clsNameInJava,
+                                               long zfjniPointerCls) {
+        Class<?> cls = null;
+        try {
+            cls = Class.forName(clsNameInJava);
+        } catch (ClassNotFoundException ignored) {
+        }
+        if (cls != null) {
+            unregisterClass(cls);
+        }
+    }
+
+    private static void native_registerClassContents(String clsNameInJava,
+                                                     long zfjniPointerCls) {
+        Class<?> cls = null;
+        try {
+            cls = Class.forName(clsNameInJava);
+        } catch (ClassNotFoundException ignored) {
+        }
+        if (cls != null) {
+            registerClassContents(cls, zfjniPointerCls);
+        }
+    }
 
 }

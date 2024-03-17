@@ -117,7 +117,7 @@ public:
     /** @brief see #ZFMethodDynamicRegister */
     const zfchar *methodNamespace(void) const;
 
-    /** @brief see #ZFMethodDynamicRegister */
+    /** @brief see #ZFMethodDynamicRegister, #ZFMethodGenericInvokerParamsCheck */
     ZFMethodDynamicRegisterParam &methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericInvoker);
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodGenericInvoker methodGenericInvoker(void) const;

@@ -646,6 +646,11 @@ ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() 
 }
 
 static zfbool _ZFP_ZFDynamicEventGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                , 0
+                )) {
+        return zffalse;
+    }
     ret = invokerMethod->methodDynamicRegisterUserData();
     return zftrue;
 }

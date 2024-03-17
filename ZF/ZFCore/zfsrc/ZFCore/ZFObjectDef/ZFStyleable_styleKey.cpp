@@ -127,7 +127,7 @@ static zfbool _ZFP_ZFStylePropertyCopy(
         zfauto retDummy;
         zfauto paramDummy[ZFMETHOD_MAX_PARAM];
         paramDummy[0] = styleValue;
-        return setterMethod->methodGenericInvoker()(setterMethod, propertyOwner, zfnull, retDummy, paramDummy);
+        return setterMethod->methodGenericInvoker()(setterMethod, propertyOwner, zfnull, retDummy, 1, paramDummy);
     }
 }
 void _ZFP_ZFStyleKeyHolder::stylePropertyOnChange(

@@ -7,6 +7,8 @@
 #include "ZFMethodFuncDeclare.h"
 #include "ZFMethodFuncUserRegister.h"
 
+#include "ZFDynamicInvoker.h"
+
 #include "../ZFSTLWrapper/zfstlhashmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -334,7 +336,7 @@ zfauto ZFMethod::methodGenericInvoke(
     paramList[6].zfunsafe_assign(param6);
     paramList[7].zfunsafe_assign(param7);
 
-    zfbool t = this->methodGenericInvoker()(this, ownerObjOrNull, errorHint, ret, paramList);
+    zfbool t = this->methodGenericInvoker()(this, ownerObjOrNull, errorHint, ret, ZFDI_paramCount(paramList), paramList);
     if(success != zfnull) {
         *success = t;
     }

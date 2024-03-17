@@ -233,6 +233,12 @@ public:
 static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     const ZFProperty *property = invokerMethod->methodOwnerProperty();
     _ZFP_I_PropDynRegData *d = ZFCastZFObject(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
+    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                , 1
+                , d->typeInfo->typeIdClass()
+                )) {
+        return zffalse;
+    }
     zfauto valueOld = invokerObject->objectTag(d->tagKey_propertyValue);
     zfbool firstTime = (valueOld == zfnull);
 
@@ -313,6 +319,11 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     return zftrue;
 }
 static zfbool _ZFP_PropDynReg_getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                , 0
+                )) {
+        return zffalse;
+    }
     // ZFTAG_LIMITATION: property's getter would return value reference,
     //   we would store the value to owner object's tag,
     //   see #ZFMethodDynamicRegister for the reason for this behavior

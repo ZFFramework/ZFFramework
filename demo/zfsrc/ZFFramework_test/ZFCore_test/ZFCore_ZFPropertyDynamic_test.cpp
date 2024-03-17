@@ -65,12 +65,23 @@ private:
         return "ZFCore_ZFPropertyDynamic_test_myProp";
     }
     static zfbool _setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+        if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                    , 1
+                    , v_zfint::ClassData()
+                    )) {
+            return zffalse;
+        }
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
         obj->myProp(paramList[0]->to<v_zfint *>()->zfv);
         obj->objectTag(_valueKey(), paramList[0]->to<ZFCopyable *>()->copy());
         return zftrue;
     }
     static zfbool _getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+        if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                    , 0
+                    )) {
+            return zffalse;
+        }
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
         zfauto tag = zflineAlloc(v_zfint, obj->myProp());
         obj->objectTag(_valueKey(), tag);

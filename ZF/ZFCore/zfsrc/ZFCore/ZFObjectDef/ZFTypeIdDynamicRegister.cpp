@@ -27,6 +27,11 @@ ZF_GLOBAL_INITIALIZER_END(ZFTypeIdDynamicRegisterAutoRemove)
 
 // ============================================================
 static zfbool _ZFP_ZFTypeIdGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+    if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
+                , 0
+                )) {
+        return zffalse;
+    }
     ret = zflineAlloc(v_zfstring, invokerMethod->methodName() + zfslen("ZFTypeId_"));
     return zftrue;
 }

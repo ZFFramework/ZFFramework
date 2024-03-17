@@ -26,6 +26,9 @@ ZF_GLOBAL_INITIALIZER_END(ZFMethodDynamicRegisterAutoRemove)
 
 // ============================================================
 static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+    if(!ZFMethodGenericInvokerParamsCheckWithMethod(errorHint, paramCount, paramList, invokerMethod)) {
+        return zffalse;
+    }
     zfblockedAlloc(ZFMethodInvokeData, d);
     d->invokerMethod = invokerMethod;
     d->invokerObject = invokerObject;

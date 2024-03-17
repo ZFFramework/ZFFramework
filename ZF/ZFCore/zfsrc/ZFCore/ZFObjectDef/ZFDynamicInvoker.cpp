@@ -355,7 +355,7 @@ zfbool ZFDI_invoke(
             if(!paramConvertSuccess) {
                 continue;
             }
-            if(method->methodGenericInvoker()(method, obj, errorHintTmp, ret, paramList)) {
+            if(method->methodGenericInvoker()(method, obj, errorHintTmp, ret, paramCount, paramList)) {
                 if(zfstringIsEqual(method->methodReturnTypeId(), ZFTypeId_void())) {
                     ret = obj;
                 }
@@ -491,7 +491,7 @@ zfbool ZFDI_alloc(
             if(!paramConvertSuccess) {
                 continue;
             }
-            if(cls->newInstanceGenericCheck(token, method, paramList, errorHintTmp)) {
+            if(cls->newInstanceGenericCheck(token, method, paramCount, paramList, errorHintTmp)) {
                 ret = cls->newInstanceGenericEnd(token, zftrue);
                 return zftrue;
             }
@@ -667,14 +667,14 @@ zfauto ZFInvoke(
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = ZFMETHOD_MAX_PARAM;
     do {
-        if(param0 == zfnull) {paramCount = 0; break;} else {paramList[0] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param0);}
-        if(param1 == zfnull) {paramCount = 1; break;} else {paramList[1] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param1);}
-        if(param2 == zfnull) {paramCount = 2; break;} else {paramList[2] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param2);}
-        if(param3 == zfnull) {paramCount = 3; break;} else {paramList[3] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param3);}
-        if(param4 == zfnull) {paramCount = 4; break;} else {paramList[4] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param4);}
-        if(param5 == zfnull) {paramCount = 5; break;} else {paramList[5] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param5);}
-        if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param6);}
-        if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7] = zfunsafe_zflineAlloc(ZFDI_Wrapper, param7);}
+        if(param0 == zfnull) {paramCount = 0; break;} else {paramList[0] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param0);}
+        if(param1 == zfnull) {paramCount = 1; break;} else {paramList[1] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param1);}
+        if(param2 == zfnull) {paramCount = 2; break;} else {paramList[2] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param2);}
+        if(param3 == zfnull) {paramCount = 3; break;} else {paramList[3] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param3);}
+        if(param4 == zfnull) {paramCount = 4; break;} else {paramList[4] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param4);}
+        if(param5 == zfnull) {paramCount = 5; break;} else {paramList[5] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param5);}
+        if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param6);}
+        if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param7);}
     } while(zffalse);
     zfCoreMutexUnlock();
     zfauto ret;
@@ -697,7 +697,7 @@ zfauto ZFInvoke(
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = zfmMin((zfindex)ZFMETHOD_MAX_PARAM, params.count());
     for(zfindex i = 0; i < paramCount; ++i) {
-        paramList[i].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_Wrapper, params[i]));
+        paramList[i].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, params[i]));
     }
     for(zfindex i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
         paramList[i].zfunsafe_assign(ZFMethodGenericInvokerDefaultParam());

@@ -25,6 +25,7 @@ typedef zfbool (*ZFMethodGenericInvoker)(
         , ZF_IN ZFObject *invokerObject
         , ZF_OUT_OPT zfstring *errorHint
         , ZF_OUT zfauto &ret
+        , ZF_IN zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         );
 
@@ -36,6 +37,7 @@ typedef zfbool (*ZFMethodGenericInvoker)(
     , ZF_IN ZFObject *invokerObject \
     , ZF_OUT_OPT zfstring *errorHint \
     , ZF_OUT zfauto &ret \
+    , ZF_IN zfindex paramCount \
     , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
 
 extern ZFLIB_ZFCore ZFObject *_ZFP_ZFMethodGenericInvokerDefaultParamRef;
@@ -49,6 +51,39 @@ extern ZFLIB_ZFCore zfauto _ZFP_ZFMethodGenericInvokerDefaultParamHolderRef;
  * @brief holder of #ZFMethodGenericInvokerDefaultParam
  */
 #define ZFMethodGenericInvokerDefaultParamHolder() ((zfauto const &)_ZFP_ZFMethodGenericInvokerDefaultParamHolderRef)
+
+/**
+ * @brief util method for #ZFMethodGenericInvoker to check whether all param type match
+ *
+ * NOTE: when impl by plain #ZFMethodGenericInvoker,
+ * impl take full responsibility to check whether param types matches,
+ * and must return false to indicate the param type mismatch,
+ * and supply necessary error hint\n
+ * to make things easier, you may use this method to check all params are desired type
+ */
+extern ZFLIB_ZFCore zfbool ZFMethodGenericInvokerParamsCheck(
+        ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN zfindex paramCount
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN zfindex paramCountMin
+        , ZF_IN_OPT const ZFClass *paramType0 = zfnull
+        , ZF_IN_OPT const ZFClass *paramType1 = zfnull
+        , ZF_IN_OPT const ZFClass *paramType2 = zfnull
+        , ZF_IN_OPT const ZFClass *paramType3 = zfnull
+        , ZF_IN_OPT const ZFClass *paramType4 = zfnull
+        , ZF_IN_OPT const ZFClass *paramType5 = zfnull
+        , ZF_IN_OPT const ZFClass *paramType6 = zfnull
+        , ZF_IN_OPT const ZFClass *paramType7 = zfnull
+        );
+/**
+ * @brief see #ZFMethodGenericInvokerParamsCheck
+ */
+extern ZFLIB_ZFCore zfbool ZFMethodGenericInvokerParamsCheckWithMethod(
+        ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN zfindex paramCount
+        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN const ZFMethod *method
+        );
 
 // ============================================================
 template<typename T_Dummy, int n>
@@ -277,6 +312,7 @@ public:
                 , ZF_IN ZFObject *invokerObject \
                 , ZF_OUT_OPT zfstring *errorHint \
                 , ZF_OUT_OPT zfauto &ret \
+                , ZF_IN zfindex paramCount \
                 , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM] \
                 ) { \
             ParamExpandOrEmpty0( \
@@ -333,6 +369,7 @@ extern ZFLIB_ZFCore zfbool _ZFP_ZFMethodGenericInvoke(
         , ZF_IN ZFObject *invokerObject
         , ZF_OUT_OPT zfstring *errorHint
         , ZF_OUT zfauto &ret
+        , ZF_IN zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         );
 extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
@@ -371,7 +408,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
         ZFM_REPEAT(N, _ZFP_ZFMethodGenericInvoke_REPEAT1, ZFM_EMPTY, ZFM_EMPTY) \
         zfauto _ret; \
         zfstring errorHint; \
-        if(!_ZFP_ZFMethodGenericInvoke(method, obj, &errorHint, _ret, _p)) { \
+        if(!_ZFP_ZFMethodGenericInvoke(method, obj, &errorHint, _ret, N, _p)) { \
             _ZFP_ZFMethodGenericInvokeError(method, obj, -1, errorHint); \
         } \
         ZFM_REPEAT(N, _ZFP_ZFMethodGenericInvoke_REPEAT2, ZFM_EMPTY, ZFM_EMPTY) \

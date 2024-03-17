@@ -93,19 +93,19 @@ public:
 
 public:
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject *obj) const {
+    inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
         return (this->toObject() == ZFCastZFObjectUnchecked(ZFObject *, obj));
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject *obj) const {
+    inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
         return (this->toObject() != ZFCastZFObjectUnchecked(ZFObject *, obj));
     }
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject const &obj) const {
+    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
         return (this->toObject() == _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject const &obj) const {
+    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
         return (this->toObject() != _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
 
@@ -116,9 +116,11 @@ public:
     inline operator zfbool (void) const {
         return this->toObject() != zfnull;
     }
-    template<typename T_ZFObject>
-    inline operator T_ZFObject * (void) const {
-        return ZFCastZFObject(T_ZFObject *, this->toObject());
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
+    inline operator T_ZFObject (void) const {
+        return ZFCastZFObject(T_ZFObject, this->toObject());
     }
     /** @endcond */
 
@@ -208,21 +210,21 @@ public:
     }
 
 public:
-    zfbool operator == (ZF_IN T_ZFObject obj) const {
+    inline zfbool operator == (ZF_IN T_ZFObject obj) const {
         return (this->toObject() == ZFCastZFObjectUnchecked(ZFObject *, obj));
     }
-    zfbool operator != (ZF_IN T_ZFObject obj) const {
+    inline zfbool operator != (ZF_IN T_ZFObject obj) const {
         return (this->toObject() != ZFCastZFObjectUnchecked(ZFObject *, obj));
     }
-    zfbool operator == (ZF_IN zfweakT<T_ZFObject> const &obj) const {
+    inline zfbool operator == (ZF_IN zfweakT<T_ZFObject> const &obj) const {
         return (this->toObject() == obj.toObject());
     }
-    zfbool operator != (ZF_IN zfweakT<T_ZFObject> const &obj) const {
+    inline zfbool operator != (ZF_IN zfweakT<T_ZFObject> const &obj) const {
         return (this->toObject() != obj.toObject());
     }
 
 public:
-    T_ZFObject operator -> (void) const {
+    inline T_ZFObject operator -> (void) const {
         return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
     }
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work

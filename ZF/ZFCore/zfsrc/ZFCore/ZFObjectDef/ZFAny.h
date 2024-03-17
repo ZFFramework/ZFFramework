@@ -49,44 +49,46 @@ public:
 
 public:
     template<typename T_ZFObject>
-    ZFAny &operator = (ZF_IN T_ZFObject *obj) {
+    inline ZFAny &operator = (ZF_IN T_ZFObject *obj) {
         this->_obj = (obj ? obj->toObject() : zfnull);
         return *this;
     }
     template<typename T_ZFObject>
-    ZFAny &operator = (ZF_IN T_ZFObject const &obj) {
+    inline ZFAny &operator = (ZF_IN T_ZFObject const &obj) {
         this->_obj = _ZFP_ZFAnyCast(T_ZFObject, obj);
         return *this;
     }
 
 public:
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject *obj) const {
+    inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
         return (this->_obj == obj);
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject *obj) const {
+    inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
         return (this->_obj != obj);
     }
     template<typename T_ZFObject>
-    zfbool operator == (ZF_IN T_ZFObject const &obj) const {
+    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
         return (this->_obj == _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
     template<typename T_ZFObject>
-    zfbool operator != (ZF_IN T_ZFObject const &obj) const {
+    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
         return (this->_obj != _ZFP_ZFAnyCast(T_ZFObject, obj));
     }
 
 public:
-    ZFObject *operator -> (void) const {
+    inline ZFObject *operator -> (void) const {
         return this->toObject();
     }
-    operator bool (void) const {
+    inline operator zfbool (void) const {
         return (this->_obj != zfnull);
     }
-    template<typename T_ZFObject>
-    inline operator T_ZFObject * (void) const {
-        return ZFCastZFObject(T_ZFObject *, this->_obj);
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
+    inline operator T_ZFObject (void) const {
+        return ZFCastZFObject(T_ZFObject, this->toObject());
     }
     /** @endcond */
 

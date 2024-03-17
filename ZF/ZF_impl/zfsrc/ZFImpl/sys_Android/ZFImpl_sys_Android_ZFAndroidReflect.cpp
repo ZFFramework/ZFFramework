@@ -1,4 +1,4 @@
-#include "ZFImpl_sys_Android_ZF_impl.h"
+#include "ZFImpl_sys_Android_ZFAndroidReflect.h"
 
 #if ZF_ENV_sys_Android
 
@@ -27,6 +27,7 @@ public:
 ZF_GLOBAL_INITIALIZER_END(ZFAndroidReflectDataHolder)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAndroidReflectAutoClean, ZFLevelZFFrameworkEssential) {
+    this->jclsZFAndroidReflect = JNIUtilFindClass(JNIGetJNIEnv(), JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidReflect).c_str());
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFAndroidReflectAutoClean) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFAndroidReflectDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder);
@@ -40,6 +41,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFAndroidReflectAutoClean) {
         }
     }
 }
+public:
+    JNIGlobalRef jclsZFAndroidReflect;
 ZF_GLOBAL_INITIALIZER_END(ZFAndroidReflectAutoClean)
 
 // ============================================================
@@ -91,6 +94,71 @@ protected:
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFAndroidReflect_Object)
+
+ZFMETHOD_FUNC_DEFINE_1(const ZFClass *, ZFAndroidReflect_classForNameInJava
+        , ZFMP_IN(const zfchar *, clsNameInJava)
+        ) {
+    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder)->clsForNameInJava(clsNameInJava);
+}
+
+ZFMETHOD_FUNC_DEFINE_2(const ZFClass *, ZFAndroidReflect_registerClass
+        , ZFMP_IN(const zfchar *, clsNameInJava)
+        , ZFMP_IN_OPT(const zfchar *, clsNameInZF, zfnull)
+        ) {
+    jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
+    JNIEnv *jniEnv = JNIGetJNIEnv();
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "native_registerClass",
+        JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
+            .add(JNIType::S_object_String())
+            .add(JNIType::S_object_String())
+        ).c_str());
+    JNIPointer zfjniPointerCls = JNIUtilCallStaticLongMethod(jniEnv, jcls, jmId
+            , ZFImpl_sys_Android_zfstringToString(clsNameInJava)
+            , zfstringIsEmpty(clsNameInZF) ? NULL : ZFImpl_sys_Android_zfstringToString(clsNameInZF)
+            );
+    return (const ZFClass *)JNIConvertPointerFromJNIType(jniEnv, zfjniPointerCls);
+}
+ZFMETHOD_FUNC_DEFINE_1(void, ZFAndroidReflect_unregisterClass
+        , ZFMP_IN(const zfchar *, clsNameInJava)
+        ) {
+    const ZFClass *cls = ZFAndroidReflect_classForNameInJava(clsNameInJava);
+    if(cls == zfnull) {
+        return;
+    }
+
+    jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
+    JNIEnv *jniEnv = JNIGetJNIEnv();
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "native_unregisterClass",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_object_String())
+            .add(JNIPointerJNIType)
+        ).c_str());
+    JNIUtilCallStaticVoidMethod(jniEnv, jcls, jmId
+            , ZFImpl_sys_Android_zfstringToString(clsNameInJava)
+            , JNIConvertPointerToJNIType(jniEnv, cls)
+            );
+}
+
+ZFMETHOD_FUNC_DEFINE_1(void, ZFAndroidReflect_registerClassContents
+        , ZFMP_IN(const zfchar *, clsNameInJava)
+        ) {
+    const ZFClass *cls = ZFAndroidReflect_classForNameInJava(clsNameInJava);
+    if(cls == zfnull) {
+        return;
+    }
+
+    jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
+    JNIEnv *jniEnv = JNIGetJNIEnv();
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "native_registerClassContents",
+        JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+            .add(JNIType::S_object_String())
+            .add(JNIPointerJNIType)
+        ).c_str());
+    JNIUtilCallStaticVoidMethod(jniEnv, jcls, jmId
+            , ZFImpl_sys_Android_zfstringToString(clsNameInJava)
+            , JNIConvertPointerToJNIType(jniEnv, cls)
+            );
+}
 
 ZF_NAMESPACE_GLOBAL_END
 
@@ -164,44 +232,49 @@ static zfbool _ZFP_ZFAndroidReflect_typeCheck(ZF_OUT JNIType &jniType, ZF_OUT co
     zfstlmap<zfstring, JNIType::Type>::const_iterator it = typeMap.find(typeName);
     if(it != typeMap.end()) {
         jniType.setType(it->second);
-        switch(it->second) {
-            case JNIType::T_boolean:
-                typeIdZF = ZFTypeId_zfbool();
-                break;
-            case JNIType::T_byte:
-                typeIdZF = ZFTypeId_zfbyte();
-                break;
-            case JNIType::T_char:
-                typeIdZF = ZFTypeId_zfchar();
-                break;
-            case JNIType::T_short:
-                typeIdZF = ZFTypeId_zfint();
-                break;
-            case JNIType::T_int:
-                typeIdZF = ZFTypeId_zfint();
-                break;
-            case JNIType::T_long:
-                typeIdZF = ZFTypeId_zftimet();
-                break;
-            case JNIType::T_float:
-                typeIdZF = ZFTypeId_zffloat();
-                break;
-            case JNIType::T_double:
-                typeIdZF = ZFTypeId_zfdouble();
-                break;
-            case JNIType::T_void:
-                typeIdZF = ZFTypeId_void();
-                break;
-            default:
-                zfCoreCriticalShouldNotGoHere();
-                return zffalse;
+        if(arrayCount == 0) {
+            switch(it->second) {
+                case JNIType::T_boolean:
+                    typeIdZF = ZFTypeId_zfbool();
+                    break;
+                case JNIType::T_byte:
+                    typeIdZF = ZFTypeId_zfbyte();
+                    break;
+                case JNIType::T_char:
+                    typeIdZF = ZFTypeId_zfchar();
+                    break;
+                case JNIType::T_short:
+                    typeIdZF = ZFTypeId_zfint();
+                    break;
+                case JNIType::T_int:
+                    typeIdZF = ZFTypeId_zfint();
+                    break;
+                case JNIType::T_long:
+                    typeIdZF = ZFTypeId_zftimet();
+                    break;
+                case JNIType::T_float:
+                    typeIdZF = ZFTypeId_zffloat();
+                    break;
+                case JNIType::T_double:
+                    typeIdZF = ZFTypeId_zfdouble();
+                    break;
+                case JNIType::T_void:
+                    typeIdZF = ZFTypeId_void();
+                    break;
+                default:
+                    zfCoreCriticalShouldNotGoHere();
+                    return zffalse;
+            }
+        }
+        else {
+            typeIdZF = _ZFP_ZFAndroidReflect_Object::ClassData()->classNameFull();
         }
     }
     else {
         jniType.setType(JNIType::T_object, typeName);
 
         if(arrayCount == 0) {
-            const ZFClass *cls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder)->clsForNameInJava(typeName);
+            const ZFClass *cls = ZFAndroidReflect_classForNameInJava(typeName);
             if (cls != zfnull) {
                 typeIdZF = cls->classNameFull();
             } else {

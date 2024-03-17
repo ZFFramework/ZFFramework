@@ -83,9 +83,11 @@ public:
     inline operator zfbool (void) const {
         return (this->toObject() != zfnull);
     }
-    template<typename T_ZFObject>
-    inline operator T_ZFObject * (void) const {
-        return ZFCastZFObject(T_ZFObject *, this->toObject());
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
+    inline operator T_ZFObject (void) const {
+        return ZFCastZFObject(T_ZFObject, this->toObject());
     }
     /** @endcond */
 

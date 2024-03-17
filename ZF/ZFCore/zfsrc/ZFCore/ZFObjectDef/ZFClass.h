@@ -294,6 +294,8 @@ public:
      *   see #ZFALLOC_CACHE_RELEASE
      */
     zfauto newInstanceNoCache(void) const;
+
+    /* ZFMETHOD_MAX_PARAM */
     /**
      * @brief for advanced reflection use only
      *
@@ -313,7 +315,7 @@ public:
      *     void *token = cls->newInstanceGenericBegin();
      *     if(token != zfnull) {
      *         for(zfindex i = 0; i < objectOnInitMethodList.count(); ++i) {
-     *             if(cls->newInstanceGenericCheck(token, objectOnInitMethodList[i], params...)) {
+     *             if(cls->newInstanceGenericCheck(token, objectOnInitMethodList[i], paramCount, paramList)) {
      *                 result = cls->newInstanceGenericEnd(token, zftrue);
      *                 break;
      *             }
@@ -334,7 +336,7 @@ public:
      * see also #ZFObjectTagKeyword_newInstanceGenericFailed
      */
     zfauto newInstance(
-            ZF_IN     ZFObject *param0
+            ZF_IN ZFObject *param0
             , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
@@ -342,13 +344,42 @@ public:
             , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-            ) const; /* ZFMETHOD_MAX_PARAM */
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) const;
+    /** @brief see #newInstance */
+    zfauto newInstance(
+            ZF_IN const ZFCoreArray<zfauto> &params
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) const;
+    /** @brief see #newInstance */
+    zfauto newInstance(
+            ZF_IN const zfchar *param0
+            , ZF_IN_OPT const zfchar *param1 = zfnull
+            , ZF_IN_OPT const zfchar *param2 = zfnull
+            , ZF_IN_OPT const zfchar *param3 = zfnull
+            , ZF_IN_OPT const zfchar *param4 = zfnull
+            , ZF_IN_OPT const zfchar *param5 = zfnull
+            , ZF_IN_OPT const zfchar *param6 = zfnull
+            , ZF_IN_OPT const zfchar *param7 = zfnull
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) const;
+    /** @brief see #newInstance */
+    zfauto newInstance(
+            ZF_IN const ZFCoreArray<zfstring> &params
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) const;
+
     /** @brief see #newInstance */
     void *newInstanceGenericBegin(void) const;
     /** @brief see #newInstance */
     zfbool newInstanceGenericCheck(
             ZF_IN void *&token
             , ZF_IN const ZFMethod *objectOnInitMethod
+            , ZF_IN zfindex paramCount
             , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             , ZF_OUT_OPT zfstring *errorHint = zfnull) const; /* ZFMETHOD_MAX_PARAM */
     /** @brief see #newInstance */
