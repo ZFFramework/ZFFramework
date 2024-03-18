@@ -4,9 +4,9 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfauto::zfauto(ZF_IN zfauto const &ref) {
+zfauto::zfauto(ZF_IN zfauto const &obj) {
     zfCoreMutexLock();
-    d = ref.d;
+    d = obj.d;
     if(d) {
         ++(d->refCount);
     }
@@ -24,13 +24,6 @@ zfauto::~zfauto(void) {
         }
         zfCoreMutexUnlock();
     }
-}
-
-zfauto &zfauto::operator = (ZF_IN zfauto const &ref) {
-    zfCoreMutexLock();
-    this->zfunsafe_assign(ref);
-    zfCoreMutexUnlock();
-    return *this;
 }
 
 void zfauto::zfunsafe_assign(ZF_IN ZFObject *obj) {
@@ -55,10 +48,10 @@ void zfauto::zfunsafe_assign(ZF_IN ZFObject *obj) {
         d = zfpoolNew(_ZFP_zfautoPrivate, obj);
     }
 }
-void zfauto::zfunsafe_assign(ZF_IN zfauto const &ref) {
+void zfauto::zfunsafe_assign(ZF_IN zfauto const &obj) {
     if(d) {
         _ZFP_zfautoPrivate *dTmp = d;
-        d = ref.d;
+        d = obj.d;
         if(d) {
             ++(d->refCount);
         }
@@ -73,16 +66,11 @@ void zfauto::zfunsafe_assign(ZF_IN zfauto const &ref) {
         }
     }
     else {
-        d = ref.d;
+        d = obj.d;
         if(d) {
             ++(d->refCount);
         }
     }
-}
-
-// ============================================================
-void _ZFP_zfautoTError(void) {
-    zfCoreCriticalMessageTrim("[zfautoT] cast from incompatible type");
 }
 
 ZF_NAMESPACE_GLOBAL_END

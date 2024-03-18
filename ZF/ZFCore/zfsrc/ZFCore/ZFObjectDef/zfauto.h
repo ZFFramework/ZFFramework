@@ -56,37 +56,9 @@ zfauto &zfauto::operator = (ZF_IN T_ZFObject const &p) {
 
 // ============================================================
 /** @cond ZFPrivateDoc */
-extern ZFLIB_ZFCore void _ZFP_zfautoTError(void);
-template<typename T_ZFObjectBase>
-zfautoT<T_ZFObjectBase>::zfautoT(ZF_IN zfauto const &ref)
-: zfauto(ref)
-{
-    if(this->toObject() != zfnull && ZFCastZFObject(T_ZFObjectBase, this->toObject()) == zfnull) {
-        _ZFP_zfautoTError();
-    }
-}
-template<typename T_ZFObjectBase>
 template<typename T_ZFObject>
-zfautoT<T_ZFObjectBase>::zfautoT(ZF_IN T_ZFObject *obj)
-: zfauto(obj)
-{
-    if(this->toObject() != zfnull && ZFCastZFObject(T_ZFObjectBase, this->toObject()) == zfnull) {
-        _ZFP_zfautoTError();
-    }
-}
-template<typename T_ZFObjectBase>
-template<typename T_ZFObject>
-zfautoT<T_ZFObjectBase>::zfautoT(ZF_IN T_ZFObject const &obj)
-: zfauto(obj)
-{
-    if(this->toObject() != zfnull && ZFCastZFObject(T_ZFObjectBase, this->toObject()) == zfnull) {
-        _ZFP_zfautoTError();
-    }
-}
-
-template<typename T_ZFObjectBase>
-T_ZFObjectBase zfautoT<T_ZFObjectBase>::operator -> (void) const {
-    return ZFCastZFObjectUnchecked(T_ZFObjectBase, this->toObject());
+T_ZFObject zfautoT<T_ZFObject>::operator -> (void) const {
+    return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
 }
 /** @endcond */
 

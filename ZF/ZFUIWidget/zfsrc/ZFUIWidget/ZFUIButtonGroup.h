@@ -300,7 +300,9 @@ protected:
             ) {
         zfautoT<ZFArray *> buttons;
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, buttons);
+                check, ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, buttons, {
+                    return zffalse;
+                });
 
         this->buttonRemoveAll();
         for(zfindex i = 0; i < buttons->count(); ++i) {
@@ -322,7 +324,9 @@ protected:
             ) {
         ZFUIButtonGroup *ref = ZFCastZFObject(ZFUIButtonGroup *, referencedOwnerOrNull);
         ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref,
-            ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, this->_ZFP_buttons, ref->_ZFP_buttons, (ZFArray *)zfnull);
+                ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, this->_ZFP_buttons, ref->_ZFP_buttons, zfnull, {
+                    return zffalse;
+                });
         return zftrue;
     }
     /** @brief util for serialization */

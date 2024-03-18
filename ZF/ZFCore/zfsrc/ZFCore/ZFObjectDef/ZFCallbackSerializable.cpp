@@ -42,7 +42,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
 
         const ZFMethod *method = zfnull;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-                require, ZFSerializableKeyword_ZFCallback_method, ZFMethod, method);
+                require, ZFSerializableKeyword_ZFCallback_method, ZFMethod, method, {
+                    return zffalse;
+                });
 
         if(method->methodOwnerClass() == zfnull) {
             v = ZFCallbackForMethod(method);
@@ -90,7 +92,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             case ZFCallbackTypeMethod:
                 serializableData.itemClass(ZFTypeId_ZFCallback());
                 ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-                        ZFSerializableKeyword_ZFCallback_method, ZFMethod, v.callbackMethod(), zfnull);
+                        ZFSerializableKeyword_ZFCallback_method, ZFMethod, v.callbackMethod(), zfnull, {
+                            return zffalse;
+                        });
                 break;
             case ZFCallbackTypeMemberMethod: {
                 ZFSerializableUtilErrorOccurred(outErrorHint,

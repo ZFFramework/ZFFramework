@@ -355,12 +355,16 @@ zfbool ZFTime::serializableOnSerializeFromData(
 
     ZFTimeValue timeValue = ZFTimeValueZero();
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, timeValue);
+            check, ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, timeValue, {
+                return zffalse;
+            });
     this->timeValue(timeValue);
 
     ZFTimeValue timeZone = ZFTime::timeZoneLocal();
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, timeZone);
+            check, ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, timeZone, {
+                return zffalse;
+            });
     this->timeZone(timeZone);
 
     return zftrue;
@@ -374,10 +378,14 @@ zfbool ZFTime::serializableOnSerializeToData(
     zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
 
     ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-        ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, this->timeValue(), ref->timeValue(), ZFTimeValueZero());
+            ZFSerializableKeyword_ZFTime_timeValue, ZFTimeValue, this->timeValue(), ref->timeValue(), ZFTimeValueZero(), {
+                return zffalse;
+            });
 
     ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-        ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, this->timeZone(), ref->timeZone(), ZFTime::timeZoneLocal());
+            ZFSerializableKeyword_ZFTime_timeZone, ZFTimeValue, this->timeZone(), ref->timeZone(), ZFTime::timeZoneLocal(), {
+                return zffalse;
+            });
 
     return zftrue;
 }

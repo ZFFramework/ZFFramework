@@ -139,7 +139,9 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
         // pos
         ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
-            require, ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPos, pos);
+                require, ZFSerializableKeyword_ZFUIAutoLayoutParam_pos, ZFUIAutoLayoutPos, pos, {
+                    return zffalse;
+                });
         if(pos == ZFUIAutoLayoutPos::e_None) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
                 "\"%s\" does not support \"%s\"",
@@ -181,13 +183,17 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
         // weight
         zffloat weight = 0;
         ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, weight);
+                check, ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, weight, {
+                    return zffalse;
+                });
         rule.weight(weight);
 
         // offset
         zffloat offset = 0;
         ZFSerializableUtilSerializeAttributeFromData(element, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, offset);
+                check, ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, offset, {
+                    return zffalse;
+                });
         rule.offset(offset);
 
         // finish
@@ -228,11 +234,15 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
 
         // weight
         ZFSerializableUtilSerializeAttributeToDataNoRef(element, outErrorHint,
-            ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, rule.weight(), 0);
+                ZFSerializableKeyword_ZFUIAutoLayoutParam_weight, zffloat, rule.weight(), 0, {
+                    return zffalse;
+                });
 
         // offset
         ZFSerializableUtilSerializeAttributeToDataNoRef(element, outErrorHint,
-            ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, rule.offset(), 0);
+                ZFSerializableKeyword_ZFUIAutoLayoutParam_offset, zffloat, rule.offset(), 0, {
+                    return zffalse;
+                });
 
         element.itemClass(ZFSerializableKeyword_ZFUIAutoLayoutParam_rule);
         serializableData.childAdd(element);

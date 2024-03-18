@@ -159,7 +159,9 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     // imageType
     const zfchar *typeName = zfnull;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        require, ZFSerializableKeyword_ZFUIImage_imageType, zfstring, typeName);
+            require, ZFSerializableKeyword_ZFUIImage_imageType, zfstring, typeName, {
+                return zffalse;
+            });
     _ZFP_ZFUIImageSerializeFromCallback fromCallback = zfnull; {
         zfCoreMutexLocker();
         _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
@@ -226,7 +228,9 @@ zfbool ZFUIImage::serializableOnSerializeToData(
         else {
             // imageType
             ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-                ZFSerializableKeyword_ZFUIImage_imageType, zfstring, this->imageSerializableType(), ref->imageSerializableType(), "");
+                    ZFSerializableKeyword_ZFUIImage_imageType, zfstring, this->imageSerializableType(), ref->imageSerializableType(), "", {
+                        return zffalse;
+                    });
 
             { // data
                 if(this->imageSerializableData() == zfnull) {

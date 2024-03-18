@@ -60,21 +60,19 @@ public:
     }
 
 public:
+    inline zfbool operator == (ZF_IN ZFAny const &obj) const {
+        return this->toObject() == obj.toObject();
+    }
+    inline zfbool operator != (ZF_IN ZFAny const &obj) const {
+        return this->toObject() != obj.toObject();
+    }
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
-        return (this->_obj == obj);
+        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return (this->_obj != obj);
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
-        return (this->_obj == _ZFP_ZFAnyCast(T_ZFObject, obj));
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
-        return (this->_obj != _ZFP_ZFAnyCast(T_ZFObject, obj));
+        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
 
 public:

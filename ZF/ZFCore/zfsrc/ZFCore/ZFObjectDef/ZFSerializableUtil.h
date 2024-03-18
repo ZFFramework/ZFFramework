@@ -191,7 +191,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 
 /** @brief util macro to impl #ZFSerializable */
 #define ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, \
-    check_or_require, key, TypeName, value) \
+    check_or_require, key, TypeName, value, failAction) \
     do { \
         const zfchar *valueString = ZFSerializableUtil::check_or_require##Attribute(serializableData, key \
             _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
@@ -199,13 +199,13 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
             if(!TypeName##FromString(value, valueString)) { \
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
                     "failed to convert from \"%s\"", valueString); \
-                return zffalse; \
+                failAction \
             } \
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
 #define ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref, \
-    key, TypeName, thisValue, refData, defaultValue) \
+    key, TypeName, thisValue, refData, defaultValue, failAction) \
     do { \
         if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) \
                 || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareTheSame) \
@@ -214,65 +214,73 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
             if(!TypeName##ToString(valueString, thisValue)) { \
                 ZFSerializableUtilErrorOccurred(outErrorHint, \
                     "failed to convert %s to string", key); \
-                return zffalse; \
+                failAction \
             } \
-            serializableData.attr(key, valueString); \
+            else { \
+                serializableData.attr(key, valueString); \
+            } \
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
 #define ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint, \
-    key, TypeName, thisValue, defaultValue) \
+    key, TypeName, thisValue, defaultValue, failAction) \
     do { \
         if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) { \
             zfstring valueString; \
             if(!TypeName##ToString(valueString, thisValue)) { \
                 ZFSerializableUtilErrorOccurred(outErrorHint, \
                     "failed to convert %s to string", key); \
-                return zffalse; \
+                failAction \
             } \
-            serializableData.attr(key, valueString); \
+            else { \
+                serializableData.attr(key, valueString); \
+            } \
         } \
     } while(zffalse)
 
 // ============================================================
 /** @brief util macro to impl #ZFSerializable */
 #define ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos, \
-    check_or_require, key, TypeName, value) \
+    check_or_require, key, TypeName, value, failAction) \
     do { \
         const ZFSerializableData *valueData = ZFSerializableUtil::check_or_require##ElementByCategory(serializableData, key \
             _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
         if(valueData != zfnull) { \
             if(!TypeName##FromData(value, *valueData, outErrorHint, outErrorPos)) { \
-                return zffalse; \
+                failAction \
             } \
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
 #define ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref, \
-    key, TypeName, thisValue, refData, defaultValue) \
+    key, TypeName, thisValue, refData, defaultValue, failAction) \
     do { \
         if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) \
                 || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareTheSame) \
                 ) { \
             ZFSerializableData categoryData; \
             if(!TypeName##ToData(categoryData, thisValue, outErrorHint)) { \
-                return zffalse; \
+                failAction \
             } \
-            categoryData.category(key); \
-            serializableData.childAdd(categoryData); \
+            else { \
+                categoryData.category(key); \
+                serializableData.childAdd(categoryData); \
+            } \
         } \
     } while(zffalse)
 /** @brief util macro to impl #ZFSerializable */
 #define ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint, \
-    key, TypeName, thisValue, defaultValue) \
+    key, TypeName, thisValue, defaultValue, failAction) \
     do { \
         if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) { \
             ZFSerializableData categoryData; \
             if(!TypeName##ToData(categoryData, thisValue, outErrorHint)) { \
-                return zffalse; \
+                failAction \
             } \
-            categoryData.category(key); \
-            serializableData.childAdd(categoryData); \
+            else { \
+                categoryData.category(key); \
+                serializableData.childAdd(categoryData); \
+            } \
         } \
     } while(zffalse)
 

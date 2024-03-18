@@ -172,7 +172,9 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
 
     zfauto frameSrcImage;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-        require, ZFSerializableKeyword_ZFUIAniImageView_frameSrc, ZFObject, frameSrcImage);
+            require, ZFSerializableKeyword_ZFUIAniImageView_frameSrc, ZFObject, frameSrcImage, {
+                return zffalse;
+            });
     if(frameSrcImage == zfnull || !frameSrcImage->classData()->classIsTypeOf(ZFUIImage::ClassData())) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos,
             *ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFUIAniImageView_frameSrc),
@@ -182,11 +184,15 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
 
     ZFUISize frameSizePixel = ZFUISizeZero();
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        require, ZFSerializableKeyword_ZFUIAniImageView_frameSizePixel, ZFUISize, frameSizePixel);
+            require, ZFSerializableKeyword_ZFUIAniImageView_frameSizePixel, ZFUISize, frameSizePixel, {
+                return zffalse;
+            });
 
     zfindex frameCount = zfindexMax();
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFUIAniImageView_frameCount, zfindex, frameCount);
+            check, ZFSerializableKeyword_ZFUIAniImageView_frameCount, zfindex, frameCount, {
+                return zffalse;
+            });
 
     ZFCoreArrayPOD<zftimet> frameDurations;
     const zfchar *frameDurationsString = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIAniImageView_frameDurations);
@@ -215,13 +221,19 @@ zfbool ZFUIAniImageData::serializableOnSerializeToData(
     }
 
     ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref,
-        ZFSerializableKeyword_ZFUIAniImageView_frameSrc, ZFObject, (ZFUIImage *)this->frameSrc(), (ZFUIImage *)ref->frameSrc(), (ZFUIImage *)zfnull);
+            ZFSerializableKeyword_ZFUIAniImageView_frameSrc, ZFObject, (ZFUIImage *)this->frameSrc(), (ZFUIImage *)ref->frameSrc(), (ZFUIImage *)zfnull, {
+                return zffalse;
+            });
 
     ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-        ZFSerializableKeyword_ZFUIAniImageView_frameSizePixel, ZFUISize, this->frameSizePixel(), ref->frameSizePixel(), ZFUISizeZero());
+            ZFSerializableKeyword_ZFUIAniImageView_frameSizePixel, ZFUISize, this->frameSizePixel(), ref->frameSizePixel(), ZFUISizeZero(), {
+                return zffalse;
+            });
 
     ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-        ZFSerializableKeyword_ZFUIAniImageView_frameCount, zfindex, this->frameCount(), ref->frameCount(), zfindexMax());
+            ZFSerializableKeyword_ZFUIAniImageView_frameCount, zfindex, this->frameCount(), ref->frameCount(), zfindexMax(), {
+                return zffalse;
+            });
 
     if(!this->frameDurations().isEmpty()) {
         zfstring frameDurationsString;

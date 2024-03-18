@@ -152,19 +152,27 @@ ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
 
         zffloat p0x = 0;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFCurve_p0x, zffloat, p0x);
+                check, ZFSerializableKeyword_ZFCurve_p0x, zffloat, p0x, {
+                    return zffalse;
+                });
 
         zffloat p0y = 0;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFCurve_p0y, zffloat, p0y);
+                check, ZFSerializableKeyword_ZFCurve_p0y, zffloat, p0y, {
+                    return zffalse;
+                });
 
         zffloat p1x = 1;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFCurve_p1x, zffloat, p1x);
+                check, ZFSerializableKeyword_ZFCurve_p1x, zffloat, p1x, {
+                    return zffalse;
+                });
 
         zffloat p1y = 1;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFCurve_p1y, zffloat, p1y);
+                check, ZFSerializableKeyword_ZFCurve_p1y, zffloat, p1y, {
+                    return zffalse;
+                });
 
         v.controlPoint(p0x, p0y, p1x, p1y);
 
@@ -174,14 +182,22 @@ ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
         serializableData.itemClass(ZFTypeId_ZFCurve());
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFCurve_p0x, zffloat, v.p0x, 0);
+                ZFSerializableKeyword_ZFCurve_p0x, zffloat, v.p0x, 0, {
+                    return zffalse;
+                });
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFCurve_p0y, zffloat, v.p0y, 0);
+                ZFSerializableKeyword_ZFCurve_p0y, zffloat, v.p0y, 0, {
+                    return zffalse;
+                });
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFCurve_p1x, zffloat, v.p1x, 1);
+                ZFSerializableKeyword_ZFCurve_p1x, zffloat, v.p1x, 1, {
+                    return zffalse;
+                });
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFCurve_p1y, zffloat, v.p1y, 1);
+                ZFSerializableKeyword_ZFCurve_p1y, zffloat, v.p1y, 1, {
+                    return zffalse;
+                });
 
         return zftrue;
     }, {

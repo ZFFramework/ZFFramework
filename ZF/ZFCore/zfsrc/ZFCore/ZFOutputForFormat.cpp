@@ -173,7 +173,9 @@ ZFMETHOD_FUNC_DEFINE_2(ZFOutput, ZFOutputForFormat
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCustomType_ZFOutputForFormat) {
     ZFOutput output;
     ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-        require, ZFSerializableKeyword_ZFOutputForFormat_output, ZFCallback, output);
+            require, ZFSerializableKeyword_ZFOutputForFormat_output, ZFCallback, output, {
+                return zffalse;
+            });
 
     const ZFSerializableData *formatData = ZFSerializableUtil::requireElementByCategory(
         serializableData, ZFSerializableKeyword_ZFOutputForFormat_format, outErrorHint, outErrorPos);

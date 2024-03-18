@@ -56,7 +56,9 @@ ZFTYPEID_DEFINE(zfidentity, zfidentity, {
         }
         v = zfidentityInvalid();
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_value, zfidentity, v);
+                check, ZFSerializableKeyword_value, zfidentity, v, {
+                    return zffalse;
+                });
         serializableData.resolveMark();
         return zftrue;
     }, {

@@ -34,27 +34,39 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
 
         v.indexStart = 0;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart, zfindex, v.indexStart);
+                check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart, zfindex, v.indexStart, {
+                    return zffalse;
+                });
 
         v.indexOffset = 1;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexOffset, zfint, v.indexOffset);
+                check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexOffset, zfint, v.indexOffset, {
+                    return zffalse;
+                });
 
         v.indexRadix = 10;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexRadix, zfindex, v.indexRadix);
+                check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexRadix, zfindex, v.indexRadix, {
+                    return zffalse;
+                });
 
         v.indexUpperCase = zftrue;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexUpperCase, zfbool, v.indexUpperCase);
+                check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexUpperCase, zfbool, v.indexUpperCase, {
+                    return zffalse;
+                });
 
         v.indexWidth = 0;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexWidth, zfindex, v.indexWidth);
+                check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexWidth, zfindex, v.indexWidth, {
+                    return zffalse;
+                });
 
         v.indexFlag = ZFTextTemplateIndexFlag::EnumDefault();
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlag, v.indexFlag);
+                check, ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlag, v.indexFlag, {
+                    return zffalse;
+                });
 
         serializableData.resolveMark();
         return zftrue;
@@ -62,22 +74,34 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateIndexData, ZFTextTemplat
         serializableData.itemClass(ZFTypeId_ZFTextTemplateIndexData());
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart, zfindex, v.indexStart, 0);
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart, zfindex, v.indexStart, 0, {
+                    return zffalse;
+                });
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateIndexData_indexOffset, zfint, v.indexOffset, 1);
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexOffset, zfint, v.indexOffset, 1, {
+                    return zffalse;
+                });
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateIndexData_indexRadix, zfindex, v.indexRadix, 10);
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexRadix, zfindex, v.indexRadix, 10, {
+                    return zffalse;
+                });
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateIndexData_indexUpperCase, zfbool, v.indexUpperCase, zftrue);
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexUpperCase, zfbool, v.indexUpperCase, zftrue, {
+                    return zffalse;
+                });
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateIndexData_indexWidth, zfindex, v.indexWidth, 0);
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexWidth, zfindex, v.indexWidth, 0, {
+                    return zffalse;
+                });
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlag, v.indexFlag, ZFTextTemplateIndexFlag::EnumDefault());
+                ZFSerializableKeyword_ZFTextTemplateIndexData_indexFlag, ZFTextTemplateIndexFlag, v.indexFlag, ZFTextTemplateIndexFlag::EnumDefault(), {
+                    return zffalse;
+                });
 
         return zftrue;
     })
@@ -578,7 +602,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
 
         zfbool enableDataDefault = zffalse;
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateParam_enableDataDefault, zfbool, enableDataDefault);
+                check, ZFSerializableKeyword_ZFTextTemplateParam_enableDataDefault, zfbool, enableDataDefault, {
+                    return zffalse;
+                });
         v.enableDataDefault(enableDataDefault);
 
         v.indexDataRemoveAll();
@@ -603,7 +629,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
 
         ZFTextTemplateIndexData indexDataDefault;
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
-            check, ZFSerializableKeyword_ZFTextTemplateParam_indexDataDefault, ZFTextTemplateIndexData, indexDataDefault);
+                check, ZFSerializableKeyword_ZFTextTemplateParam_indexDataDefault, ZFTextTemplateIndexData, indexDataDefault, {
+                    return zffalse;
+                });
         v.indexDataDefault(indexDataDefault);
 
         serializableData.resolveMark();
@@ -644,7 +672,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
         }
 
         ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateParam_enableDataDefault, zfbool, v.enableDataDefault(), zffalse);
+                ZFSerializableKeyword_ZFTextTemplateParam_enableDataDefault, zfbool, v.enableDataDefault(), zffalse, {
+                    return zffalse;
+                });
 
         if(v.indexDataCount() > 0) {
             ZFSerializableData nodeData;
@@ -663,7 +693,9 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
         }
 
         ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint,
-            ZFSerializableKeyword_ZFTextTemplateParam_indexDataDefault, ZFTextTemplateIndexData, v.indexDataDefault(), ZFTextTemplateIndexData());
+                ZFSerializableKeyword_ZFTextTemplateParam_indexDataDefault, ZFTextTemplateIndexData, v.indexDataDefault(), ZFTextTemplateIndexData(), {
+                    return zffalse;
+                });
 
         return zftrue;
     })

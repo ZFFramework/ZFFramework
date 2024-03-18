@@ -653,7 +653,9 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT
         customData.attr(ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfoToString(*(ret.pathInfo())));
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read, {
+                    return zffalse;
+                });
 
         ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForPathInfo);
         ret.callbackSerializeCustomData(customData);
@@ -664,11 +666,15 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForPathInfo, ZFCallbackSerializeCustomType_ZFInputForPathInfo) {
     ZFPathInfo pathInfo;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo);
+            require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo, {
+                return zffalse;
+            });
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
+            check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, {
+                return zffalse;
+            });
 
     ret.callbackSerializeCustomDisable(zftrue);
     ZFInputForPathInfoT(ret, pathInfo.pathType, pathInfo.pathData, flags);
@@ -815,7 +821,9 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT
         customData.attr(ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfoToString(*(ret.pathInfo())));
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create, {
+                    return zffalse;
+                });
 
         ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForPathInfo);
         ret.callbackSerializeCustomData(customData);
@@ -826,11 +834,15 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForPathInfo, ZFCallbackSerializeCustomType_ZFOutputForPathInfo) {
     ZFPathInfo pathInfo;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo);
+            require, ZFSerializableKeyword_ZFFileCallback_pathInfo, ZFPathInfo, pathInfo, {
+                return zffalse;
+            });
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Create;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
+            check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, {
+                return zffalse;
+            });
 
     ret.callbackSerializeCustomDisable(zftrue);
     ZFOutputForPathInfoT(ret, pathInfo.pathType, pathInfo.pathData, flags);
@@ -881,7 +893,9 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForLocalT
         customData.attr(ZFSerializableKeyword_ZFFileCallback_localPath, localPath);
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read);
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Read, {
+                    return zffalse;
+                });
 
         ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFInputForLocal);
         ret.callbackSerializeCustomData(customData);
@@ -904,7 +918,9 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeCust
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Read;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
+            check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, {
+                return zffalse;
+            });
 
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;
@@ -964,7 +980,9 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForLocalT
         customData.attr(ZFSerializableKeyword_ZFFileCallback_localPath, localPath);
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(customData, zfnull,
-            ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create);
+                ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, ZFFileOpenOption::e_Create, {
+                    return zffalse;
+                });
 
         ret.callbackSerializeCustomType(ZFCallbackSerializeCustomType_ZFOutputForLocal);
         ret.callbackSerializeCustomData(customData);
@@ -987,7 +1005,9 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeCus
 
     ZFFileOpenOptionFlags flags = ZFFileOpenOption::e_Create;
     ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-        check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags);
+            check, ZFSerializableKeyword_ZFFileCallback_flags, ZFFileOpenOptionFlags, flags, {
+                return zffalse;
+            });
 
     ret.callbackSerializeCustomDisable(zftrue);
     zfstring pathDataAbs;

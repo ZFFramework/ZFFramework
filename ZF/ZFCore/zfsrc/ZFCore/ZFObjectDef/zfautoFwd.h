@@ -44,7 +44,7 @@ zffinal zfclassLikePOD ZFLIB_ZFCore zfauto {
     /** @cond ZFPrivateDoc */
 public:
     zfauto(void) : d(zfnull) {}
-    zfauto(ZF_IN zfauto const &ref);
+    zfauto(ZF_IN zfauto const &obj);
     template<typename T_ZFObject>
     zfauto(ZF_IN T_ZFObject *obj);
     template<typename T_ZFObject>
@@ -52,28 +52,25 @@ public:
     zffinal ~zfauto(void);
 
 public:
-    zfauto &operator = (ZF_IN zfauto const &ref);
     template<typename T_ZFObject>
     zfauto &operator = (ZF_IN T_ZFObject *obj);
     template<typename T_ZFObject>
     zfauto &operator = (ZF_IN T_ZFObject const &obj);
 
 public:
+    inline zfbool operator == (ZF_IN zfauto const &obj) const {
+        return this->toObject() == obj.toObject();
+    }
+    inline zfbool operator != (ZF_IN zfauto const &obj) const {
+        return this->toObject() != obj.toObject();
+    }
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
-        return (this->toObject() == (obj ? obj->toObject() : zfnull));
+        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return (this->toObject() != (obj ? obj->toObject() : zfnull));
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
-        return (this->toObject() == _ZFP_ZFAnyCast(T_ZFObject, obj));
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
-        return (this->toObject() != _ZFP_ZFAnyCast(T_ZFObject, obj));
+        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
 
 public:
@@ -99,7 +96,7 @@ public:
     /**
      * @brief no lock version of object assign, for low level impl only
      */
-    void zfunsafe_assign(ZF_IN zfauto const &ref);
+    void zfunsafe_assign(ZF_IN zfauto const &obj);
     /**
      * @brief get current retain count
      */
@@ -134,28 +131,27 @@ zffinal zfclassLikePOD zfautoT : zfextend zfauto {
     /** @cond ZFPrivateDoc */
 public:
     zfautoT(void) : zfauto() {}
-    zfautoT(ZF_IN zfauto const &ref);
+    zfautoT(ZF_IN zfauto const &obj) : zfauto(obj) {}
+    zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto(obj) {}
     template<typename T_ZFObject>
-    zfautoT(ZF_IN T_ZFObject *obj);
+    zfautoT(ZF_IN T_ZFObject *obj) : zfauto(obj) {}
     template<typename T_ZFObject>
-    zfautoT(ZF_IN T_ZFObject const &obj);
+    zfautoT(ZF_IN T_ZFObject const &obj) : zfauto(obj) {}
 
 public:
+    inline zfbool operator == (ZF_IN zfautoT<T_ZFObjectBase> const &obj) const {
+        return this->toObject() == obj.toObject();
+    }
+    inline zfbool operator != (ZF_IN zfautoT<T_ZFObjectBase> const &obj) const {
+        return this->toObject() != obj.toObject();
+    }
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
-        return (this->toObject() == (obj ? obj->toObject() : zfnull));
+        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return (this->toObject() != (obj ? obj->toObject() : zfnull));
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
-        return (this->toObject() == _ZFP_ZFAnyCast(T_ZFObject, obj));
-    }
-    template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
-        return (this->toObject() != _ZFP_ZFAnyCast(T_ZFObject, obj));
+        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
 
 public:

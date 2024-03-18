@@ -27,7 +27,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
     _ZFP_ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace)
 #define _ZFP_ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
-    const char *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) { \
+    const zfchar *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) { \
         static _ZFP_ZFNamespaceHolder d(ParentNameSpace::_ZFP_ZF_NAMESPACE_NOT_REGISTERED(), #NameSpace); \
         return d.ns.cString(); \
     } \
@@ -36,15 +36,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     } \
     ZF_STATIC_REGISTER_END(_ZFP_NSReg)
 extern ZFLIB_ZFCore zfstring _ZFP_ZFNamespaceRegister(
-        ZF_IN const char *parent
-        , ZF_IN const char *child
+        ZF_IN const zfchar *parent
+        , ZF_IN const zfchar *child
         );
-extern ZFLIB_ZFCore void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns);
+extern ZFLIB_ZFCore void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns);
 class _ZFP_ZFNamespaceHolder {
 public:
     _ZFP_ZFNamespaceHolder(
-            ZF_IN const char *parent
-            , ZF_IN const char *child
+            ZF_IN const zfchar *parent
+            , ZF_IN const zfchar *child
             )
     : ns(_ZFP_ZFNamespaceRegister(parent, child))
     {
