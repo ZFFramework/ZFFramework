@@ -33,6 +33,7 @@ zfclassLikePOD ZFLIB_ZFCore ZFAny {
     /** @cond ZFPrivateDoc */
 public:
     ZFAny(void) : _obj(zfnull) {}
+    ZFAny(ZF_IN ZFAny const &obj) : _obj(obj.toObject()) {}
     ZFAny(ZF_IN zfnullT const &) : _obj(zfnull) {}
     template<typename T_ZFObject
         , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
@@ -44,6 +45,10 @@ public:
     ZFAny(ZF_IN T_ZFObject const &obj) : _obj(_ZFP_ZFAnyCast(T_ZFObject, obj)) {}
 
 public:
+    inline ZFAny &operator = (ZF_IN ZFAny const &obj) {
+        this->_obj = obj.toObject();
+        return *this;
+    }
     inline ZFAny &operator = (ZF_IN zfnullT const &) {
         this->_obj = zfnull;
         return *this;

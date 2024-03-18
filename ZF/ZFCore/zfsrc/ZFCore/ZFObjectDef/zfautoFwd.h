@@ -57,6 +57,7 @@ public:
     zffinal ~zfauto(void);
 
 public:
+    zfauto &operator = (ZF_IN zfauto const &);
     zfauto &operator = (ZF_IN zfnullT const &);
     template<typename T_ZFObject
         , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf

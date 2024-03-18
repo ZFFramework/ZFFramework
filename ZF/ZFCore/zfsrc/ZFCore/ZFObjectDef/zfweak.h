@@ -53,6 +53,7 @@ zfclassLikePOD ZFLIB_ZFCore zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweak(void) : _ZFP_obj(zfnull) {}
+    zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfRetain(obj._ZFP_obj)) {}
     zfweak(ZF_IN zfnullT const &) : _ZFP_obj(zfnull) {}
     template<typename T_ZFObject
         , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
@@ -70,6 +71,10 @@ public:
     }
 
 public:
+    inline zfweak &operator = (ZF_IN zfweak const &obj) {
+        this->set(obj);
+        return *this;
+    }
     inline zfweak &operator = (ZF_IN zfnullT const &) {
         this->set(zfnull);
         return *this;
