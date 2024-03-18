@@ -236,7 +236,6 @@ inline ZFInterface *_ZFP_ObjCastUnchecked<ZFInterface *>::c(T_From const &obj) {
 }
 
 // ============================================================
-ZFM_CLASS_HAS_MEMBER_DECLARE(ZFAnyC, toObject, ZFObject *(T::*F)(void) const)
 template<typename T_Type, int has_toObject>
 zfclassNotPOD _ZFP_ZFAnyCastT {
 public:
@@ -259,7 +258,7 @@ public:
     }
 };
 #define _ZFP_ZFAnyCast(T_Type, obj) \
-    (_ZFP_ZFAnyCastT<T_Type, ZFM_CLASS_HAS_MEMBER(ZFAnyC, toObject, T_Type)>::c(obj))
+    (_ZFP_ZFAnyCastT<T_Type, zftIsZFObjectType(T_Type)>::c(obj))
 
 ZF_NAMESPACE_GLOBAL_END
 

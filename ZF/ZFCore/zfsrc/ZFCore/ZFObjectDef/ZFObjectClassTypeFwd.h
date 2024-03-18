@@ -166,8 +166,18 @@ typedef zfauto (*ZFObjectCreator)(void);
 /**
  * @brief true if Type is #ZFObject type
  */
-#define zftIsZFObject(Type) ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, Type)
+#define zftIsZFObject(Type) (zftTypeIsSame<Type, ZFObject>::TypeIsSame || ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, Type))
 ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, void (*F)(void))
+/* ZFTAG_TRICKS: zftTypeIsSame<...> is required to prevent incomplete type ZFObject when used in builtin types such as zfauto */
+
+/**
+ * @brief true if Type can cast to #ZFObject
+ *
+ * class with this method is treated can cast to #ZFObject:
+ * ZFObject *toObject(void) const;
+ */
+#define zftIsZFObjectType(Type) ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectTypeCheck, toObject, Type)
+ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectTypeCheck, toObject, ZFObject *(T::*F)(void) const)
 
 // ============================================================
 /** @brief type for #ZFGlobalEvent::EventClassDataChange */

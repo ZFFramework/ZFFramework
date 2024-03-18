@@ -455,6 +455,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       : void (*F)(void)
  *   virtual void func(void)
  *       : void (T::*F)(void)
+ *   void func(void) const
+ *       : void (T::*F)(void) const
  * @endcode
  *
  * limitations:

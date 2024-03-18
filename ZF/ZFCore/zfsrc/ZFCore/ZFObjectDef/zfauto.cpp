@@ -26,6 +26,13 @@ zfauto::~zfauto(void) {
     }
 }
 
+zfauto &zfauto::operator = (ZF_IN zfnullT const &) {
+    zfCoreMutexLock();
+    this->zfunsafe_assign(zfnull);
+    zfCoreMutexUnlock();
+    return *this;
+}
+
 void zfauto::zfunsafe_assign(ZF_IN ZFObject *obj) {
     zfunsafe_zfRetain(obj);
     if(d) {

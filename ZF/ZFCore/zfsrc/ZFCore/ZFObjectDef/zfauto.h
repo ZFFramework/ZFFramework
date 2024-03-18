@@ -13,7 +13,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // zfauto
 /** @cond ZFPrivateDoc */
-template<typename T_ZFObject>
+template<typename T_ZFObject
+        , typename T_Fix /* = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf */
+        >
 zfauto::zfauto(ZF_IN T_ZFObject *p)
 : d(zfnull)
 {
@@ -25,7 +27,9 @@ zfauto::zfauto(ZF_IN T_ZFObject *p)
         zfCoreMutexUnlock();
     }
 }
-template<typename T_ZFObject>
+template<typename T_ZFObject
+        , typename T_Fix /* = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf */
+        >
 zfauto::zfauto(ZF_IN T_ZFObject const &p)
 : d(zfnull)
 {
@@ -38,14 +42,18 @@ zfauto::zfauto(ZF_IN T_ZFObject const &p)
     }
 }
 
-template<typename T_ZFObject>
+template<typename T_ZFObject
+        , typename T_Fix /* = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf */
+        >
 zfauto &zfauto::operator = (ZF_IN T_ZFObject *p) {
     zfCoreMutexLock();
     this->zfunsafe_assign(p ? p->toObject() : zfnull);
     zfCoreMutexUnlock();
     return *this;
 }
-template<typename T_ZFObject>
+template<typename T_ZFObject
+        , typename T_Fix /* = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf */
+        >
 zfauto &zfauto::operator = (ZF_IN T_ZFObject const &p) {
     zfCoreMutexLock();
     this->zfunsafe_assign(_ZFP_ZFAnyCast(T_ZFObject, p));

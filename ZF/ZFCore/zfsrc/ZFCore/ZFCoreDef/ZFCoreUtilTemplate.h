@@ -268,6 +268,22 @@ public:
     static const zfchar *ModifierName(void) {return zftTraitsModifierName_N;}
 };
 template<>
+zfclassNotPOD zftTraits<const void> {
+public:
+    enum {
+        TrIsPtr = 0,
+        TrIsRef = 0,
+        TrModifier = (int)zftTraitsModifier_N,
+    };
+    typedef const void              TrType;
+    typedef const void              TrRef;
+    typedef const void              TrConstRef;
+    typedef const void *            TrPtr;
+    typedef const void *            TrConstPtr;
+    typedef const void              TrNoRef;
+    static const zfchar *ModifierName(void) {return zftTraitsModifierName_N;}
+};
+template<>
 zfclassNotPOD zftTraits<void *> {
 public:
     enum {

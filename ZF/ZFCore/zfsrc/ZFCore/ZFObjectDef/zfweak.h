@@ -52,18 +52,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassLikePOD ZFLIB_ZFCore zfweak {
     /** @cond ZFPrivateDoc */
 public:
-    zfweak(void)
-    : _ZFP_obj(zfnull)
-    {
-    }
-    template<typename T_ZFObject>
-    zfweak(ZF_IN T_ZFObject *obj)
-    : _ZFP_obj(obj ? zfRetain(obj->toObject()->objectHolder()) : zfnull)
-    {
-    }
-    template<typename T_ZFObject>
-    zfweak(ZF_IN T_ZFObject const &obj)
-    {
+    zfweak(void) : _ZFP_obj(zfnull) {}
+    zfweak(ZF_IN zfnullT const &) : _ZFP_obj(zfnull) {}
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
+    zfweak(ZF_IN T_ZFObject *obj) : _ZFP_obj(obj ? zfRetain(obj->toObject()->objectHolder()) : zfnull) {}
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
+    zfweak(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_ZFAnyCast(T_ZFObject, obj);
         _ZFP_obj = t ? zfRetain(t->objectHolder()) : zfnull;
     }
@@ -72,12 +70,20 @@ public:
     }
 
 public:
-    template<typename T_ZFObject>
+    inline zfweak &operator = (ZF_IN zfnullT const &) {
+        this->set(zfnull);
+        return *this;
+    }
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     inline zfweak &operator = (ZF_IN T_ZFObject *obj) {
         this->set(obj);
         return *this;
     }
-    template<typename T_ZFObject>
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     inline zfweak &operator = (ZF_IN T_ZFObject const &obj) {
         this->set(obj);
         return *this;
@@ -90,11 +96,21 @@ public:
     inline zfbool operator != (ZF_IN zfweak const &obj) const {
         return this->toObject() != obj.toObject();
     }
-    template<typename T_ZFObject>
+    inline zfbool operator == (ZF_IN zfnullT const &) const {
+        return this->toObject() == zfnull;
+    }
+    inline zfbool operator != (ZF_IN zfnullT const &) const {
+        return this->toObject() != zfnull;
+    }
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
         return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
-    template<typename T_ZFObject>
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
         return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
@@ -131,14 +147,18 @@ public:
     /**
      * @brief set the holded object
      */
-    template<typename T_ZFObject>
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     void set(ZF_IN T_ZFObject *obj) {
         zfRetainChange(_ZFP_obj, obj ? obj->toObject()->objectHolder() : zfnull);
     }
     /**
      * @brief set the holded object
      */
-    template<typename T_ZFObject>
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     void set(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_ZFAnyCast(T_ZFObject, obj);
         zfRetainChange(_ZFP_obj, t ? t->objectHolder() : zfnull);
@@ -148,6 +168,12 @@ public:
      */
     void set(ZF_IN const zfweak &obj) {
         zfRetainChange(_ZFP_obj, obj._ZFP_obj);
+    }
+    /**
+     * @brief set the holded object
+     */
+    void set(ZF_IN zfnullT const &) {
+        zfRetainChange(_ZFP_obj, zfnull);
     }
 
 public:
@@ -187,9 +213,14 @@ zfclassLikePOD zfweakT : zfextend zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweakT(void) : zfweak() {}
-    template<typename T_ZFObject>
+    zfweakT(ZF_IN zfnullT const &) : zfweak() {}
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     zfweakT(ZF_IN T_ZFObject *obj) : zfweak(obj) {}
-    template<typename T_ZFObject>
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     zfweakT(ZF_IN T_ZFObject const &obj) : zfweak(obj) {}
 
 public:
@@ -199,11 +230,21 @@ public:
     inline zfbool operator != (ZF_IN zfweakT<T_ZFObjectBase> const &obj) const {
         return this->toObject() != obj.toObject();
     }
-    template<typename T_ZFObject>
+    inline zfbool operator == (ZF_IN zfnullT const &) const {
+        return this->toObject() == zfnull;
+    }
+    inline zfbool operator != (ZF_IN zfnullT const &) const {
+        return this->toObject() != zfnull;
+    }
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
         return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
-    template<typename T_ZFObject>
+    template<typename T_ZFObject
+        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+        >
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
         return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }

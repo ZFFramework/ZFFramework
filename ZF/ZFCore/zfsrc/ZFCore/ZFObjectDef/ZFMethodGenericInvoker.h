@@ -123,7 +123,7 @@ public:
     zfauto &obj;
 public:
     explicit _ZFP_MtdGIPA(ZF_IN_OUT zfauto &obj) : obj(obj) {}
-    T_Access a(ZF_IN_OPT const zfauto &pDef = zfnull) {
+    T_Access a(ZF_IN_OPT ZFObject *pDef = zfnull) {
         if(this->obj == ZFMethodGenericInvokerDefaultParam()) {
             this->obj = pDef;
         }
