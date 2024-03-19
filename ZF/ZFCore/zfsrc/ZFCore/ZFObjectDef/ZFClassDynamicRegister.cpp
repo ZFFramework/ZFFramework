@@ -69,6 +69,7 @@ const ZFClass *ZFClassDynamicRegister(
         classDynamicRegisterUserData);
     cls->_ZFP_ZFClass_autoRegister();
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m[cls] = zftrue;
+    _ZFP_ZFNamespaceRegister(zfnull, ZFNamespaceSkipGlobal(cls->classNamespace()));
     return cls;
 }
 void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls) {
@@ -80,6 +81,7 @@ void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls) {
             "[ZFClassDynamicRegister] unregistering class %s that is not dyanmiac registered",
             cls);
     }
+    _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(cls->classNamespace()));
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFClassDynamicRegisterDataHolder)->m.erase(cls);
     cls->classTagRemoveAll();
     ZFClass::_ZFP_ZFClassUnregister(zfnull, cls);

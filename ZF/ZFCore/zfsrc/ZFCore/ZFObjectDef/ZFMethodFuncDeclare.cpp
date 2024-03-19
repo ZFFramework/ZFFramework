@@ -21,7 +21,7 @@ void _ZFP_ZFMethodFuncRegister(ZF_IN const ZFMethod *method) {
 }
 void _ZFP_ZFMethodFuncUnregister(ZF_IN const ZFMethod *method) {
     _ZFP_ZFMethodFuncMapType &m = _ZFP_ZFMethodFuncMap();
-    const zfchar *methodNamespace = zfstringIsEmpty(method->methodNamespace()) ? method->methodNamespace() : "";
+    const zfchar *methodNamespace = !zfstringIsEmpty(method->methodNamespace()) ? method->methodNamespace() : "";
     _ZFP_ZFMethodFuncMapType::iterator itNS = m.find(methodNamespace);
     if(itNS == m.end()) {
         return;

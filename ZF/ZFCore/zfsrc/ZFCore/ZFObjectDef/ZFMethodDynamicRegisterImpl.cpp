@@ -184,6 +184,7 @@ const ZFMethod *ZFMethodDynamicRegister(
         method->_ZFP_ZFMethod_paramDefaultValueList.add(param.methodParamDefaultValueAt(i));
     }
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m[method] = zftrue;
+    _ZFP_ZFNamespaceRegister(zfnull, ZFNamespaceSkipGlobal(method->methodNamespace()));
     return method;
 }
 
@@ -266,6 +267,7 @@ void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method) {
     if(method != zfnull) {
         zfCoreAssert(method->methodIsDynamicRegister());
         zfCoreMutexLocker();
+        _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(method->methodNamespace()));
         ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m.erase(method);
         _ZFP_ZFMethodUnregister(method);
     }

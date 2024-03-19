@@ -70,7 +70,7 @@ zfbool ZFNamespaceSplit(
     const zfchar *pEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen);
     zfbool hasAdd = zffalse;
     while(p < pEnd) {
-        if(zfsncmp(pL, ZFNamespaceSeparator(), ZFNamespaceSeparatorLen()) == 0) {
+        if(zfsncmp(p, ZFNamespaceSeparator(), ZFNamespaceSeparatorLen()) == 0) {
             if(p > pL) {
                 ret.add(ZFIndexRangeMake(pL - src, p - pL));
             }
@@ -96,8 +96,16 @@ zfbool ZFNamespaceSplit(
 // ============================================================
 zfclassLikePOD _ZFP_ZFNamespaceMapType {
 public:
+    zfuint refCount;
     zfstring ns;
     zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> > d;
+public:
+    _ZFP_ZFNamespaceMapType(void)
+        : refCount(1)
+          , ns()
+          , d()
+    {
+    }
 };
 
 static _ZFP_ZFNamespaceMapType &_ZFP_ZFNamespaceMap(void) {
@@ -105,9 +113,12 @@ static _ZFP_ZFNamespaceMapType &_ZFP_ZFNamespaceMap(void) {
     return d;
 }
 zfstring _ZFP_ZFNamespaceRegister(
-        ZF_IN const char *parent
-        , ZF_IN const char *child
+        ZF_IN const zfchar *parent
+        , ZF_IN const zfchar *child
         ) {
+    if(child == zfnull) {
+        return "";
+    }
     zfCoreMutexLocker();
     zfstring ns;
     if(parent != zfnull) {
@@ -129,11 +140,15 @@ zfstring _ZFP_ZFNamespaceRegister(
         }
         else {
             t = it->second.pointerValue();
+            (++t->refCount);
         }
     }
     return ns;
 }
-void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns) {
+void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
+    if(ns == zfnull) {
+        return;
+    }
     zfCoreMutexLocker();
     zfstring nsTmp = ns;
     ZFCoreArrayPOD<ZFIndexRange> pos;
@@ -142,7 +157,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns) {
         return;
     }
     _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
-    for(zfindex i = 0; i < pos.count() - 1; ++i) {
+    for(zfindex i = 0; i < pos.count(); ++i) {
         zfstring key(nsTmp + pos[i].start, pos[i].count);
         zfstlmap<zfstring, ZFCorePointerForObject<_ZFP_ZFNamespaceMapType *> >::iterator it = t->d.find(key);
         if(it == t->d.end()) {
@@ -150,11 +165,14 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const char *ns) {
             break;
         }
         else {
+            --(it->second->refCount);
+            if(it->second->refCount == 0) {
+                t->d.erase(it);
+                t = zfnull;
+                break;
+            }
             t = it->second.pointerValue();
         }
-    }
-    if(t != zfnull) {
-        t->d.erase(zfstring(nsTmp + pos[pos.count() - 1].start));
     }
 }
 
