@@ -236,20 +236,20 @@ inline zfbool zfcmpPODTheSame(
             ) { \
         return zfcmpPODTheSame(v0, v1); \
     } \
-    /** @brief compare by value */ \
+    /** @cond ZFPrivateDoc */ \
     inline zfbool operator == ( \
             ZF_IN Type const &v0 \
             , ZF_IN Type const &v1 \
             ) { \
         return zfcmpPODTheSame(v0, v1); \
     } \
-    /** @brief compare by value */ \
     inline zfbool operator != ( \
             ZF_IN Type const &v0 \
             , ZF_IN Type const &v1 \
             ) { \
         return !zfcmpPODTheSame(v0, v1); \
-    }
+    } \
+    /** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -158,6 +158,20 @@ public:
     }
 };
 
+// ============================================================
+template<typename T_ZFObject
+, typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+>
+inline zfbool operator == (ZF_IN T_ZFObject *obj, ZF_IN ZFAny const &e) {
+    return e.toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
+}
+template<typename T_ZFObject
+, typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
+>
+inline zfbool operator != (ZF_IN T_ZFObject *obj, ZF_IN ZFAny const &e) {
+    return e.toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
+}
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFAny_h_
 
