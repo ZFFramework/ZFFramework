@@ -904,6 +904,7 @@ public:
 // ============================================================
 zfclassFwd ZFListener;
 zfclassFwd ZFMP;
+zfclassFwd ZFMethodDynamicRegisterParam;
 /**
  * @brief util to declare #ZFObject::objectOnInit as #ZFMethodDynamicRegister
  *
@@ -913,6 +914,16 @@ extern ZFLIB_ZFCore const ZFMethod *ZFObjectOnInitDynamicRegister(
         ZF_IN const ZFClass *cls
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
+/**
+ * @brief util to declare #ZFObject::objectOnInit as #ZFMethodDynamicRegister
+ *
+ * note: you have no need to call `invokerObject->objectOnInit();`
+ */
+extern ZFLIB_ZFCore const ZFMethod *ZFObjectOnInitDynamicRegister(
+        ZF_IN const ZFClass *cls
+        , ZF_IN const ZFMethodDynamicRegisterParam &param
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
