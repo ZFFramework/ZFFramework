@@ -153,7 +153,7 @@ zffinal zfclassLikePOD zfautoT : zfextend zfauto {
 public:
     zfautoT(void) : zfauto() {}
     zfautoT(ZF_IN zfauto const &obj) : zfauto(obj) {}
-    zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto(obj) {}
+    zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto((zfauto const &)obj) {}
     zfautoT(ZF_IN zfnullT const &) : zfauto() {}
     template<typename T_ZFObject
         , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
