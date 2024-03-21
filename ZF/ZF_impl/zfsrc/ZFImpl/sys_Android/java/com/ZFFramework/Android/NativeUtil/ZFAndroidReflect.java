@@ -17,6 +17,12 @@ import java.lang.reflect.Type;
  *   before registering class contents (constructors/methods/fileds, by #registerClassContents),
  *   otherwise, all the class that has not be registered would be treated as plain Object,
  *   which may cause invalid method dispatching
+ * -  methods with generic type as param, can not be dispatched if only generic type differ, e.g.
+ *   @code
+ *   public void func(List<String> p);
+ *   public void func(List<Integer> p);
+ *   @endcode
+ *
  * -  public fileds are registered as setter and getter method with the filed name
  */
 public class ZFAndroidReflect {
@@ -233,7 +239,22 @@ public class ZFAndroidReflect {
     }
 
     private static boolean native_typeCheck(String typeName, Object obj) {
-        return obj == null || (_typeName(obj.getClass()).compareTo(typeName) == 0);
+        if (obj == null) {
+            return true;
+        }
+        String typeNameObj = _typeName(obj.getClass());
+        if (typeNameObj.compareTo(typeName) == 0) {
+            return true;
+        }
+        if (typeName.contains("[]") || typeNameObj.contains("[]")) {
+            return false;
+        }
+        Class<?> desired = null;
+        try {
+            desired = Class.forName(typeName);
+        } catch (Exception ignored) {
+        }
+        return desired != null && desired.isAssignableFrom(obj.getClass());
     }
 
 }

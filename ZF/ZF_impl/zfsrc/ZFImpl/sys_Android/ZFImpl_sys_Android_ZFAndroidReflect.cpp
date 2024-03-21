@@ -373,11 +373,11 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
         , ZF_IN const ZFCoreArray<JNIGlobalRef> &paramJNITypeNames
         ) {
     const ZFClass *expectedType = zfnull;
-    for(zfindex i = 0; i < paramJNITypes.count(); ++i) {
-        const JNIType &paramJNIType = paramJNITypes[i];
+    for(zfindex iParam = 0; iParam < paramJNITypes.count(); ++iParam) {
+        const JNIType &paramJNIType = paramJNITypes[iParam];
         switch(paramJNIType.getType()) {
             case JNIType::T_boolean: {
-                v_zfbool *p = paramList[i];
+                v_zfbool *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zfbool::ClassData(); break;}
                 jvalue t;
                 t.z = (jboolean)p->zfv;
@@ -385,7 +385,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             }
             case JNIType::T_byte: {
-                v_zfbyte *p = paramList[i];
+                v_zfbyte *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zfbyte::ClassData(); break;}
                 jvalue t;
                 t.b = (jbyte)p->zfv;
@@ -393,7 +393,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             }
             case JNIType::T_char: {
-                v_zfchar *p = paramList[i];
+                v_zfchar *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zfchar::ClassData(); break;}
                 jvalue t;
                 t.c = (jchar)p->zfv;
@@ -401,7 +401,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             }
             case JNIType::T_short: {
-                v_zfint *p = paramList[i];
+                v_zfint *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zfint::ClassData(); break;}
                 jvalue t;
                 t.s = (jshort)p->zfv;
@@ -409,7 +409,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             }
             case JNIType::T_int: {
-                v_zfint *p = paramList[i];
+                v_zfint *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zfint::ClassData(); break;}
                 jvalue t;
                 t.i = (jint)p->zfv;
@@ -417,7 +417,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             }
             case JNIType::T_long: {
-                v_zftimet *p = paramList[i];
+                v_zftimet *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zftimet::ClassData(); break;}
                 jvalue t;
                 t.j = (jlong)p->zfv;
@@ -425,7 +425,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             }
             case JNIType::T_float: {
-                v_zffloat *p = paramList[i];
+                v_zffloat *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zffloat::ClassData(); break;}
                 jvalue t;
                 t.f = (jfloat)p->zfv;
@@ -433,7 +433,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             }
             case JNIType::T_double: {
-                v_zfdouble *p = paramList[i];
+                v_zfdouble *p = paramList[iParam];
                 if(p == zfnull) {expectedType = v_zfdouble::ClassData(); break;}
                 jvalue t;
                 t.d = (jdouble)p->zfv;
@@ -445,43 +445,58 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                 break;
             case JNIType::T_object:
             case JNIType::T_array: {
-                _ZFP_I_ZFAndroidReflect_Object *p = paramList[i];
+                _ZFP_I_ZFAndroidReflect_Object *p = paramList[iParam];
                 if(p != zfnull) {
                     jvalue t;
                     t.l = p->jobj;
                     params.add(t);
 
-                    jclass jclsZFAndroidReflect = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
-                    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidReflect, "native_typeCheck"
-                            , JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
-                                .add(JNIType::S_object_String())
-                                .add(JNIType::S_object_Object())
-                                ).c_str());
-                    jboolean match = JNIUtilCallStaticBooleanMethod(jniEnv, jclsZFAndroidReflect, jmId
-                            , (jobject)paramJNITypeNames.get(i)
-                            , (jobject)p->jobj
-                            );
-                    if(!match) {
-                        if(errorHint != zfnull) {
-                            zfstringAppend(errorHint, "param%s type mismatch, expect: %s, got: %s"
-                                    , i
-                                    , ZFImpl_sys_Android_zfstringFromString(paramJNITypeNames.get(i))
-                                    , ZFImpl_sys_Android_objectInfo(p->jobj)
-                                    );
+                    if(p->jobj) {
+                        jclass jclsZFAndroidReflect = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
+                        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidReflect, "native_typeCheck"
+                                , JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
+                                    .add(JNIType::S_object_String())
+                                    .add(JNIType::S_object_Object())
+                                    ).c_str());
+                        jboolean match = JNIUtilCallStaticBooleanMethod(jniEnv, jclsZFAndroidReflect, jmId
+                                , (jobject)paramJNITypeNames.get(iParam)
+                                , (jobject)p->jobj
+                                );
+                        if(!match) {
+                            if(errorHint != zfnull) {
+                                zfstringAppend(errorHint, "param%s type mismatch, expect: %s, got: %s"
+                                        , iParam
+                                        , ZFImpl_sys_Android_zfstringFromString(paramJNITypeNames.get(iParam))
+                                        , ZFImpl_sys_Android_objectInfo(p->jobj)
+                                        );
+                            }
+                            return zffalse;
                         }
-                        return zffalse;
                     }
                     break;
                 }
 
-                if(errorHint != zfnull) {
-                    zfstringAppend(errorHint, "param%s type mismatch, expect %s, got: %s"
-                            , i
-                            , paramJNIType.getId()
-                            , paramList[i]
-                            );
+                jvalue t;
+                zfbool implSuccess = zffalse;
+                ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_ToJNITypeCallback> &impl = _ZFP_ZFAndroidReflect_ToJNITypeCallbackList();
+                for(zfindex i = 0; i < impl.count(); ++i) {
+                    if(impl[i](t.l, paramList[i], paramJNIType)) {
+                        params.add(t);
+                        implSuccess = zftrue;
+                        break;
+                    }
                 }
-                return zffalse;
+                if(!implSuccess) {
+                    if(errorHint != zfnull) {
+                        zfstringAppend(errorHint, "param%s type mismatch, expect %s, got: %s"
+                                , iParam
+                                , paramJNIType.getId()
+                                , paramList[iParam]
+                                );
+                    }
+                    return zffalse;
+                }
+                break;
             }
             default:
                 zfCoreCriticalShouldNotGoHere();
@@ -490,9 +505,9 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
         if(expectedType != zfnull) {
             if(errorHint != zfnull) {
                 zfstringAppend(errorHint, "param%s type mismatch, expect: %s, got: %s"
-                        , i
+                        , iParam
                         , expectedType->className()
-                        , paramList[i]
+                        , paramList[iParam]
                         );
             }
             return zffalse;
@@ -557,14 +572,17 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
             }
             _ZFP_I_ZFAndroidReflect_Object *obj = ZFCastZFObject(_ZFP_I_ZFAndroidReflect_Object *, invokerObject);
             obj->autoAlloc = zffalse;
-            for(zfindex i = 0; i < userData->count(); ++i) {
-                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(i)->toAny();
+            for(zfindex iGIData = 0; iGIData < userData->count(); ++iGIData) {
+                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData)->toAny();
                 if(paramCount != GIData->paramJNITypes.count()) {
                     zfstringAppend(errorHint, "expect %s param, got %s", GIData->paramJNITypes.count(), paramCount);
                     continue;
                 }
                 JNIEnv *jniEnv = JNIGetJNIEnv();
                 ZFCoreArrayPOD<jvalue> params;
+                if(errorHint != zfnull && iGIData > 0) {
+                    *errorHint += ", ";
+                }
                 if(!_ZFP_ZFAndroidReflect_paramConvert(jniEnv, params, errorHint, paramList, GIData->paramJNITypes, GIData->paramJNITypeNames)) {
                     continue;
                 }
@@ -595,10 +613,12 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
     else {
         zfblockedAlloc(ZFArray, userData);
         userData->add(GIData);
-        ZFObjectOnInitDynamicRegister(cls, regParam
-                .methodGenericInvoker(_ZFP_GIWrap::GI)
-                .methodDynamicRegisterUserData(userData)
-                );
+        if(ZFObjectOnInitDynamicRegister(cls, regParam
+                    .methodGenericInvoker(_ZFP_GIWrap::GI)
+                    .methodDynamicRegisterUserData(userData)
+                    ) == zfnull) {
+            zfCoreLog("unable to register constructor: %s", regParam);
+        }
     }
 }
 JNI_METHOD_DECLARE_END()
@@ -687,14 +707,17 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                 return zffalse;
             }
             _ZFP_I_ZFAndroidReflect_Object *obj = ZFCastZFObject(_ZFP_I_ZFAndroidReflect_Object *, invokerObject);
-            for(zfindex i = 0; i < userData->count(); ++i) {
-                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(i)->toAny();
+            for(zfindex iGIData = 0; iGIData < userData->count(); ++iGIData) {
+                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData)->toAny();
                 if(paramCount != GIData->paramJNITypes.count()) {
                     zfstringAppend(errorHint, "expect %s param, got %s", GIData->paramJNITypes.count(), paramCount);
                     continue;
                 }
                 JNIEnv *jniEnv = JNIGetJNIEnv();
                 ZFCoreArrayPOD<jvalue> params;
+                if(errorHint != zfnull && iGIData > 0) {
+                    *errorHint += ", ";
+                }
                 if(!_ZFP_ZFAndroidReflect_paramConvert(jniEnv, params, errorHint, paramList, GIData->paramJNITypes, GIData->paramJNITypeNames)) {
                     continue;
                 }
@@ -783,9 +806,19 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ret = tmpCls->newInstance(zflineAlloc(v_ZFPtr, (void *)tmp));
                         }
                         else {
-                            zfblockedAlloc(_ZFP_I_ZFAndroidReflect_Object, wrapper);
-                            wrapper->jobj = tmp;
-                            ret = wrapper;
+                            zfbool implSuccess = zffalse;
+                            ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_FromJNITypeCallback> &impl = _ZFP_ZFAndroidReflect_FromJNITypeCallbackList();
+                            for(zfindex i = 0; i < impl.count(); ++i) {
+                                if(impl[i](ret, tmp, GIData->returnJNIType)) {
+                                    implSuccess = zftrue;
+                                    break;
+                                }
+                            }
+                            if(!implSuccess) {
+                                zfblockedAlloc(_ZFP_I_ZFAndroidReflect_Object, wrapper);
+                                wrapper->jobj = tmp;
+                                ret = wrapper;
+                            }
                         }
                         JNIUtilDeleteLocalRef(jniEnv, tmp);
                         break;
@@ -817,13 +850,15 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
     else {
         zfblockedAlloc(ZFArray, userData);
         userData->add(GIData);
-        ZFMethodDynamicRegister(regParam
-                .methodOwnerClass(cls)
-                .methodReturnTypeId(returnTypeIdZF)
-                .methodName(methodNameZF)
-                .methodGenericInvoker(_ZFP_GIWrap::GI)
-                .methodDynamicRegisterUserData(userData)
-                );
+        if(ZFMethodDynamicRegister(regParam
+                    .methodOwnerClass(cls)
+                    .methodReturnTypeId(returnTypeIdZF)
+                    .methodName(methodNameZF)
+                    .methodGenericInvoker(_ZFP_GIWrap::GI)
+                    .methodDynamicRegisterUserData(userData)
+                    ) == zfnull) {
+            zfCoreLog("unable to register method: %s", regParam);
+        }
     }
 }
 JNI_METHOD_DECLARE_END()
