@@ -16,7 +16,11 @@ protected:
 
         this->testCaseOutput("registering test class");
         this->testCaseOutputSeparator();
-        ZFAndroidReflect_registerClass("com.ZFFramework.Android.ZFFramework_test.ZFAndroidReflectTest");
+        if(ZFAndroidReflect_registerClass("com.ZFFramework.Android.ZFFramework_test.ZFAndroidReflectTest") == zfnull) {
+            this->testCaseStop();
+            return;
+        }
+        ZFAndroidReflect_registerClassContents("com.ZFFramework.Android.ZFFramework_test.ZFAndroidReflectTest");
 
         this->testCaseOutput("invoke constructors");
         this->testCaseOutputSeparator();
@@ -28,6 +32,8 @@ protected:
         ZFInvoke("ZFAndroidReflectTest", ZFInvoke("ZFAndroidReflectTest.TestStringArr"));
         ZFInvoke("ZFAndroidReflectTest", ZFInvoke("ZFAndroidReflectTest.TestUnknownObject"));
 
+        zfstring errorHint;
+        obj = ZFInvoke("ZFAndroidReflectTest", ZFCoreArrayCreate(zfauto, zflineAlloc(v_zfint, 1)), zfnull, &errorHint);
         this->testCaseOutput("invoke methods");
         this->testCaseOutputSeparator();
         zfLogTrim() << obj->invoke("test");

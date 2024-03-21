@@ -38,7 +38,9 @@ public class ZFAndroidReflect {
 
     public static void registerClassContents(Class<?> cls, long zfjniPointerCls) {
         for (Constructor<?> m : cls.getDeclaredConstructors()) {
-            if (Modifier.isPublic(m.getModifiers())) {
+            if (Modifier.isPublic(m.getModifiers())
+                    && m.getGenericParameterTypes().length > 0
+            ) {
                 native_registerConstructor(
                         zfjniPointerCls,
                         _paramTypeNames(m.getGenericParameterTypes())
@@ -63,7 +65,16 @@ public class ZFAndroidReflect {
 
     private static native void native_unregisterClass(String clsNameInJava);
 
-    private static String _paramTypeName(Type type) {
+    // java.util.List<java.lang.String> => java.util.List
+    private static String _typeNameFormat(String typeName) {
+        return typeName.replaceAll("<.*>", "");
+    }
+
+    private static String _typeName(Type type) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            return type.getTypeName();
+        }
+
         /*
          * Java Type => getTypeName() => toString()
          * ============================================================
@@ -80,62 +91,86 @@ public class ZFAndroidReflect {
          * List<?> => java.util.List<?> => java.util.List<?>
          * List<String>[] => java.util.List<java.lang.String>[] => java.util.List<java.lang.String>[]
          */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            return type.getTypeName();
-        } else {
-            // class Xxx
-            String ret = type.toString();
-            if (ret.startsWith("class ")) {
-                ret = ret.substring("class ".length());
-            }
-            int arrayCount = 0;
-            while (ret.startsWith("[")) {
-                if (ret.startsWith("[L")) {
-                    // [Lxxx;
-                    ret = ret.substring(2, ret.length() - 1);
-                } else {
-                    // [I
-                    ret = ret.substring(1);
-                }
-                ++arrayCount;
-            }
-            switch (ret) {
-                case "Z":
-                    ret = "boolean";
-                    break;
-                case "B":
-                    ret = "byte";
-                    break;
-                case "C":
-                    ret = "char";
-                    break;
-                case "S":
-                    ret = "short";
-                    break;
-                case "I":
-                    ret = "int";
-                    break;
-                case "J":
-                    ret = "long";
-                    break;
-                case "F":
-                    ret = "float";
-                    break;
-                case "D":
-                    ret = "double";
-                    break;
-                case "V":
-                    ret = "void";
-                    break;
-                default:
-                    break;
-            }
-            while (arrayCount > 0) {
-                ret += "[]";
-                --arrayCount;
-            }
-            return ret;
+        // class Xxx
+        String ret = type.toString();
+        if (ret.startsWith("class ")) {
+            ret = ret.substring("class ".length());
         }
+        int arrayCount = 0;
+        while (ret.startsWith("[")) {
+            if (ret.startsWith("[L")) {
+                // [Lxxx;
+                ret = ret.substring(2, ret.length() - 1);
+            } else {
+                // [I
+                ret = ret.substring(1);
+            }
+            ++arrayCount;
+        }
+        switch (ret) {
+            case "Z":
+                ret = "boolean";
+                break;
+            case "B":
+                ret = "byte";
+                break;
+            case "C":
+                ret = "char";
+                break;
+            case "S":
+                ret = "short";
+                break;
+            case "I":
+                ret = "int";
+                break;
+            case "J":
+                ret = "long";
+                break;
+            case "F":
+                ret = "float";
+                break;
+            case "D":
+                ret = "double";
+                break;
+            case "V":
+                ret = "void";
+                break;
+            default:
+                break;
+        }
+        while (arrayCount > 0) {
+            ret += "[]";
+            --arrayCount;
+        }
+        return ret;
+    }
+
+    private static String _typeName(Class<?> cls) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return cls.getTypeName();
+        } else {
+            if (cls.isArray()) {
+                try {
+                    Class<?> cl = cls;
+                    int dimensions = 0;
+                    while (cl.isArray()) {
+                        dimensions++;
+                        cl = cl.getComponentType();
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(cl.getName());
+                    for (int i = 0; i < dimensions; i++) {
+                        sb.append("[]");
+                    }
+                    return sb.toString();
+                } catch (Throwable e) { /*FALLTHRU*/ }
+            }
+            return cls.getName();
+        }
+    }
+
+    private static String _paramTypeName(Type type) {
+        return _typeNameFormat(_typeName(type));
     }
 
     private static String[] _paramTypeNames(Type[] types) {
@@ -195,6 +230,10 @@ public class ZFAndroidReflect {
         if (cls != null) {
             registerClassContents(cls, zfjniPointerCls);
         }
+    }
+
+    private static boolean native_typeCheck(String typeName, Object obj) {
+        return obj == null || (_typeName(obj.getClass()).compareTo(typeName) == 0);
     }
 
 }

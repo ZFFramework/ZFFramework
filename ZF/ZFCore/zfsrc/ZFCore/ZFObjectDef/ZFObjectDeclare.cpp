@@ -10,6 +10,11 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
         , ZF_IN const ZFListener &methodImpl
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
+    if(methodParam.methodParamCount() <= 0) {
+        zfstringAppend(errorHint, "dynamic objectOnInit must take at least 1 param");
+        return zfnull;
+    }
+
     ZFLISTENER_1(methodImplWrapper
             , ZFListener, methodImpl
             ) {
@@ -30,17 +35,12 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
             );
 }
 
-zfclass _ZFP_I_ZFObjectOnInitGIData : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFObjectOnInitGIData, ZFObject)
-public:
-    ZFMethodGenericInvoker methodGI;
-    zfauto userData;
-};
 static zfbool _ZFP_ZFObjectOnInitGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-    _ZFP_I_ZFObjectOnInitGIData *userDataWrapper = invokerMethod->methodDynamicRegisterUserData()->toAny();
-    zfauto userData = userDataWrapper->userData;
-    invokerMethod->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodDynamicRegisterUserData = userData;
-    zfbool success = userDataWrapper->methodGI(
+    ZFValueHolder *valueHolder = invokerMethod->methodDynamicRegisterUserData()->objectTag<ZFValueHolder *>("_ZFP_ZFObjectOnInitGI");
+    zfCoreAssert(valueHolder != zfnull);
+    invokerObject->_ZFP_ZFObject_objectOnInit();
+    ZFMethodGenericInvoker methodGI = *valueHolder->holdedDataPointer<ZFMethodGenericInvoker *>();
+    return methodGI(
             invokerMethod
             , invokerObject
             , errorHint
@@ -48,16 +48,25 @@ static zfbool _ZFP_ZFObjectOnInitGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
             , paramCount
             , paramList
             );
-    invokerMethod->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_methodDynamicRegisterUserData = userDataWrapper;
-    return success;
 }
 const ZFMethod *ZFObjectOnInitDynamicRegister(
         ZF_IN const ZFClass *cls
         , ZF_IN const ZFMethodDynamicRegisterParam &param
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    if(param.methodImpl().callbackValid()) {
-        ZFMethodDynamicRegisterParam paramTmp = param;
+    if(param.methodParamCount() <= 0) {
+        zfstringAppend(errorHint, "dynamic objectOnInit must take at least 1 param");
+        return zfnull;
+    }
+
+    ZFMethodDynamicRegisterParam paramTmp = param;
+    paramTmp.methodOwnerClass(cls);
+    paramTmp.methodName("objectOnInit");
+    paramTmp.methodReturnTypeId(ZFTypeId_void());
+    paramTmp.methodType(ZFMethodTypeVirtual);
+    paramTmp.methodPrivilegeType(ZFMethodPrivilegeTypeProtected);
+
+    if(param.methodImpl()) {
         ZFListener methodImpl = param.methodImpl();
         ZFLISTENER_1(methodImplWrapper
                 , ZFListener, methodImpl
@@ -76,16 +85,22 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
         return ZFMethodDynamicRegister(param, errorHint);
     }
 
-    ZFMethodDynamicRegisterParam paramTmp = param;
-    zfblockedAlloc(_ZFP_I_ZFObjectOnInitGIData, userDataWrapper);
-    userDataWrapper->methodGI = param.methodGenericInvoker();
-    userDataWrapper->userData = param.methodDynamicRegisterUserData();
+    ZFMethodGenericInvoker methodGISaved = paramTmp.methodGenericInvoker();
     paramTmp.methodGenericInvoker(_ZFP_ZFObjectOnInitGI);
-    paramTmp.methodDynamicRegisterUserData(userDataWrapper);
-    const ZFMethod *method = ZFMethodDynamicRegister(paramTmp, errorHint);
-    paramTmp.methodGenericInvoker(userDataWrapper->methodGI);
-    paramTmp.methodDynamicRegisterUserData(userDataWrapper->userData);
-    return method;
+
+    zfauto userData = param.methodDynamicRegisterUserData();
+    if(userData == zfnull) {
+        userData = zflineAlloc(ZFObject);
+        paramTmp.methodDynamicRegisterUserData(userData);
+    }
+    ZFMethodGenericInvoker *methodGI = (ZFMethodGenericInvoker *)zfmalloc(sizeof(ZFMethodGenericInvoker));
+    *methodGI = methodGISaved;
+    userData->objectTag("_ZFP_ZFObjectOnInitGI", zflineAlloc(ZFValueHolder
+                , methodGI
+                , ZFValueHolderTypePOD
+                ));
+
+    return ZFMethodDynamicRegister(paramTmp, errorHint);
 }
 
 ZF_NAMESPACE_GLOBAL_END

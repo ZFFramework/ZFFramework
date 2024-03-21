@@ -16,7 +16,6 @@ public class ZFAndroidReflectTest {
     }
 
     public static String[] TestStringArr() {
-        ZFAndroidLog.p("ZFAndroidReflectTest::testStringArr()");
         String[] ret = new String[3];
         for (int i = 0; i < ret.length; ++i) {
             ret[i] = String.format("s_%s", i);
@@ -50,7 +49,7 @@ public class ZFAndroidReflectTest {
     }
 
     public ZFAndroidReflectTest(int[] p) {
-        ZFAndroidLog.p(String.format("ZFAndroidReflectTest(int[] %s", p));
+        ZFAndroidLog.p(String.format("ZFAndroidReflectTest(int[] %s)", p));
     }
 
     public ZFAndroidReflectTest(String[] p) {

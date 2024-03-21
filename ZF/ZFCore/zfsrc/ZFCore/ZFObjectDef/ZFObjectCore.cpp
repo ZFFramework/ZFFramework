@@ -116,9 +116,9 @@ void ZFObject::objectInfoOfInstanceT(ZF_IN_OUT zfstring &ret) {
     ret += ")";
 }
 void ZFObject::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    this->objectInfoOnAppendTokenLeft(ret);
+    ret += ZFTOKEN_ZFObjectInfoLeft;
     this->objectInfoOnAppend(ret);
-    this->objectInfoOnAppendTokenRight(ret);
+    ret += ZFTOKEN_ZFObjectInfoRight;
 }
 void ZFObject::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     this->objectInfoOfInstanceT(ret);

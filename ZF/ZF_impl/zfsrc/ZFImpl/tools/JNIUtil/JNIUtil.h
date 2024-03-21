@@ -230,18 +230,24 @@ public:
     const char *getId(void) const;
 
 public:
-    #define _JNIUtil_DECLARE_STATIC_TYPE(Type) \
-        /** @brief a static instance for the T_##Type type */ \
-        static const JNIType &S_##Type(void);
-    _JNIUtil_DECLARE_STATIC_TYPE(boolean)
-    _JNIUtil_DECLARE_STATIC_TYPE(byte)
-    _JNIUtil_DECLARE_STATIC_TYPE(char)
-    _JNIUtil_DECLARE_STATIC_TYPE(short)
-    _JNIUtil_DECLARE_STATIC_TYPE(int)
-    _JNIUtil_DECLARE_STATIC_TYPE(long)
-    _JNIUtil_DECLARE_STATIC_TYPE(float)
-    _JNIUtil_DECLARE_STATIC_TYPE(double)
-    _JNIUtil_DECLARE_STATIC_TYPE(void)
+    /** @brief a static instance for the T_boolean type */
+    static const JNIType &S_boolean(void);
+    /** @brief a static instance for the T_byte type */
+    static const JNIType &S_byte(void);
+    /** @brief a static instance for the T_char type */
+    static const JNIType &S_char(void);
+    /** @brief a static instance for the T_short type */
+    static const JNIType &S_short(void);
+    /** @brief a static instance for the T_int type */
+    static const JNIType &S_int(void);
+    /** @brief a static instance for the T_long type */
+    static const JNIType &S_long(void);
+    /** @brief a static instance for the T_float type */
+    static const JNIType &S_float(void);
+    /** @brief a static instance for the T_double type */
+    static const JNIType &S_double(void);
+    /** @brief a static instance for the T_void type */
+    static const JNIType &S_void(void);
 
 public:
     /**
@@ -258,30 +264,18 @@ public:
     }
 
 public:
-    /**
-     * @brief a static instance for the Class type
-     */
+    /** @brief a static instance for the Class type */
     static const JNIType &S_object_Class(void);
-    /**
-     * @brief a static instance for the Object type
-     */
+    /** @brief a static instance for the Object type */
     static const JNIType &S_object_Object(void);
-    /**
-     * @brief a static instance for the String type
-     */
+    /** @brief a static instance for the String type */
     static const JNIType &S_object_String(void);
 public:
-    /**
-     * @brief a static instance for the Class type
-     */
+    /** @brief a static instance for the Class type */
     static const JNIType &S_array_Class(void);
-    /**
-     * @brief a static instance for the Object type
-     */
+    /** @brief a static instance for the Object type */
     static const JNIType &S_array_Object(void);
-    /**
-     * @brief a static instance for the String type
-     */
+    /** @brief a static instance for the String type */
     static const JNIType &S_array_String(void);
 
 private:

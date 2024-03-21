@@ -187,46 +187,23 @@ void JNIConvertClassNameForFindClass(JNIString &ret, const char *className) {
 }
 
 // ============================================================
-#define _JNIUtil_DEFINE_STATIC_TYPE(Type) \
-    const JNIType &JNIType::S_##Type(void) { \
-        static JNIType v(JNIType::T_##Type); \
-        return v; \
-    }
-_JNIUtil_DEFINE_STATIC_TYPE(boolean)
-_JNIUtil_DEFINE_STATIC_TYPE(byte)
-_JNIUtil_DEFINE_STATIC_TYPE(char)
-_JNIUtil_DEFINE_STATIC_TYPE(short)
-_JNIUtil_DEFINE_STATIC_TYPE(int)
-_JNIUtil_DEFINE_STATIC_TYPE(long)
-_JNIUtil_DEFINE_STATIC_TYPE(float)
-_JNIUtil_DEFINE_STATIC_TYPE(double)
-_JNIUtil_DEFINE_STATIC_TYPE(void)
+const JNIType &JNIType::S_boolean(void) {static JNIType v(JNIType::T_boolean); return v;}
+const JNIType &JNIType::S_byte(void) {static JNIType v(JNIType::T_byte); return v;}
+const JNIType &JNIType::S_char(void) {static JNIType v(JNIType::T_char); return v;}
+const JNIType &JNIType::S_short(void) {static JNIType v(JNIType::T_short); return v;}
+const JNIType &JNIType::S_int(void) {static JNIType v(JNIType::T_int); return v;}
+const JNIType &JNIType::S_long(void) {static JNIType v(JNIType::T_long); return v;}
+const JNIType &JNIType::S_float(void) {static JNIType v(JNIType::T_float); return v;}
+const JNIType &JNIType::S_double(void) {static JNIType v(JNIType::T_double); return v;}
+const JNIType &JNIType::S_void(void) {static JNIType v(JNIType::T_void); return v;}
 
-const JNIType &JNIType::S_object_Class(void) {
-    static JNIType v(JNIType::T_object, "java.lang.Class");
-    return v;
-}
-const JNIType &JNIType::S_object_Object(void) {
-    static JNIType v(JNIType::T_object, "java.lang.Object");
-    return v;
-}
-const JNIType &JNIType::S_object_String(void) {
-    static JNIType v(JNIType::T_object, "java.lang.String");
-    return v;
-}
+const JNIType &JNIType::S_object_Class(void) {static JNIType v(JNIType::T_object, "java.lang.Class"); return v;}
+const JNIType &JNIType::S_object_Object(void) {static JNIType v(JNIType::T_object, "java.lang.Object"); return v;}
+const JNIType &JNIType::S_object_String(void) {static JNIType v(JNIType::T_object, "java.lang.String"); return v;}
 
-const JNIType &JNIType::S_array_Class(void) {
-    static JNIType v(JNIType::T_array, S_object_Class().getId());
-    return v;
-}
-const JNIType &JNIType::S_array_Object(void) {
-    static JNIType v(JNIType::T_array, S_object_Object().getId());
-    return v;
-}
-const JNIType &JNIType::S_array_String(void) {
-    static JNIType v(JNIType::T_array, S_object_String().getId());
-    return v;
-}
+const JNIType &JNIType::S_array_Class(void) {static JNIType v(JNIType::T_array, S_object_Class().getId()); return v;}
+const JNIType &JNIType::S_array_Object(void) {static JNIType v(JNIType::T_array, S_object_Object().getId()); return v;}
+const JNIType &JNIType::S_array_String(void) {static JNIType v(JNIType::T_array, S_object_String().getId()); return v;}
 
 JNIType::JNIType(void) : _type(JNIType::T_boolean), _id(NULL) {
 }

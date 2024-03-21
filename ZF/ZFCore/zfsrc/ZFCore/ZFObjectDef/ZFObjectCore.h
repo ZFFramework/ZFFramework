@@ -325,18 +325,6 @@ protected:
     /**
      * @brief called by #objectInfoT to append object info as a chain
      */
-    virtual inline void objectInfoOnAppendTokenLeft(ZF_IN_OUT zfstring &ret) {
-        ret += ZFTOKEN_ZFObjectInfoLeft;
-    }
-    /**
-     * @brief called by #objectInfoT to append object info as a chain
-     */
-    virtual inline void objectInfoOnAppendTokenRight(ZF_IN_OUT zfstring &ret) {
-        ret += ZFTOKEN_ZFObjectInfoRight;
-    }
-    /**
-     * @brief called by #objectInfoT to append object info as a chain
-     */
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
 
 public:

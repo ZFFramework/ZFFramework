@@ -832,7 +832,16 @@ zfbool ZFClass::newInstanceGenericCheck(
     ZFObject *obj = (ZFObject *)token;
     zfauto methodRetDummy;
     zfbool ret = objectOnInitMethod->methodGenericInvoker()(objectOnInitMethod, obj, errorHint, methodRetDummy, paramCount, paramList);
-    if(ret && obj->d && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
+    if(!ret && obj->d) {
+        zfCoreMutexLocker();
+        // since objectOnInit already called,
+        // we must ensure init and destroy the object,
+        // then recreate the token
+        obj->_ZFP_ZFObjectCheckOnInit();
+        zfunsafe_zfRelease(obj);
+        token = d->objectConstruct();
+    }
+    else if(ret && obj->d && obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed) != zfnull) {
         zfCoreMutexLocker();
         ret = zffalse;
         if(errorHint != zfnull) {
