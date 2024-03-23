@@ -3,6 +3,7 @@ package com.ZFFramework.Android.ZFFramework_test;
 import com.ZFFramework.Android.NativeUtil.ZFAndroidLog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ZFAndroidReflectTest {
@@ -49,11 +50,11 @@ public class ZFAndroidReflectTest {
     }
 
     public ZFAndroidReflectTest(int[] p) {
-        ZFAndroidLog.p(String.format("ZFAndroidReflectTest(int[] %s)", p));
+        ZFAndroidLog.p(String.format("ZFAndroidReflectTest(int[] %s)", Arrays.toString(p)));
     }
 
     public ZFAndroidReflectTest(String[] p) {
-        ZFAndroidLog.p(String.format("ZFAndroidReflectTest(String[] %s)", (Object[]) p));
+        ZFAndroidLog.p(String.format("ZFAndroidReflectTest(String[] %s)", Arrays.toString(p)));
     }
 
     public ZFAndroidReflectTest(List<String> p) {

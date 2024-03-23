@@ -32,8 +32,6 @@ protected:
         ZFInvoke("ZFAndroidReflectTest", ZFInvoke("ZFAndroidReflectTest.TestStringArr"));
         ZFInvoke("ZFAndroidReflectTest", ZFInvoke("ZFAndroidReflectTest.TestUnknownObject"));
 
-        zfstring errorHint;
-        obj = ZFInvoke("ZFAndroidReflectTest", ZFCoreArrayCreate(zfauto, zflineAlloc(v_zfint, 1)), zfnull, &errorHint);
         this->testCaseOutput("invoke methods");
         this->testCaseOutputSeparator();
         zfLogTrim() << obj->invoke("test");
