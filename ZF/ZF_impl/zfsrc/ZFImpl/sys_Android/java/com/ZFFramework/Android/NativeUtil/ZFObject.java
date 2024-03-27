@@ -2,12 +2,20 @@ package com.ZFFramework.Android.NativeUtil;
 
 public class ZFObject {
 
+    public static long invoke(String methodName) {
+        return native_invoke(0, methodName, null);
+    }
+
     public static long invoke(String methodName, long... params) {
         return native_invoke(0, methodName, _paramsConvert(params));
     }
 
     public static long invoke(String methodName, String... params) {
         return native_invoke_generic(0, methodName, _paramsConvert(params));
+    }
+
+    public static long invoke(long zfjniPointer, String methodName) {
+        return native_invoke(zfjniPointer, methodName, null);
     }
 
     public static long invoke(long zfjniPointer, String methodName, long... params) {
@@ -19,16 +27,18 @@ public class ZFObject {
     }
 
     // ============================================================
-    public static void zfRetain(long zfjniPointer) {
+    public static long zfRetain(long zfjniPointer) {
         native_zfRetain(zfjniPointer);
+        return zfjniPointer;
     }
 
     public static void zfRelease(long zfjniPointer) {
         native_zfRelease(zfjniPointer);
     }
 
-    public static void zfautoRelease(long zfjniPointer) {
+    public static long zfautoRelease(long zfjniPointer) {
         native_zfautoRelease(zfjniPointer);
+        return zfjniPointer;
     }
 
     // ============================================================
