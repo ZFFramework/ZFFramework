@@ -296,6 +296,16 @@ extern ZFLIB_ZFCore zfauto ZFInvokeDetail(
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 
+// ============================================================
+zfclassFwd ZFOutput;
+/**
+ * @brief callbacks when any dynamic invoker fails
+ *
+ * note: adding anything to this would cause great performance issue,
+ * use only if necessary
+ */
+extern ZFLIB_ZFCore ZFCoreArray<ZFOutput> &ZFDI_errorCallbacks(void);
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFDynamicInvoker_h_
 

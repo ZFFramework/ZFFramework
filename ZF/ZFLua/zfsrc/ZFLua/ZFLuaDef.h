@@ -15,14 +15,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #endif
 
 // ============================================================
-extern ZFLIB_ZFLua ZFCoreArray<ZFOutput> &_ZFP_ZFLuaErrorCallbacks(void);
 /**
  * @brief callbacks that would be called when lua related error occurred,
  *   for debug use only
  *
  * by default, #ZFOutputDefault would be added during #ZFLevelZFFrameworkNormal
  */
-#define ZFLuaErrorCallbacks _ZFP_ZFLuaErrorCallbacks()
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, ZFCoreArray<ZFOutput> &, ZFLuaErrorCallbacks)
+
 extern ZFLIB_ZFLua void _ZFP_ZFLuaErrorOccurred(
         ZF_IN const ZFCallerInfo &callerInfo
         , ZF_IN const zfchar *text
