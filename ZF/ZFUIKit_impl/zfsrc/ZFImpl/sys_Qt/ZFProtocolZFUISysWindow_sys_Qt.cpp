@@ -116,6 +116,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindow
             , ZF_OUT_OPT void *&nativeParentView
             ) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         QGraphicsWidget *nativeWindow = ZFCastStatic(QGraphicsWidget *, sysWindow->nativeWindow());
 
         QGraphicsWidget *nativeRootView = ZFCastStatic(QGraphicsWidget *, sysWindow->rootView()->nativeView());
@@ -126,6 +129,9 @@ public:
         nativeParentView = (void *)nativeWindow;
     }
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         QGraphicsWidget *nativeWindow = ZFCastStatic(QGraphicsWidget *, sysWindow->nativeWindow());
         QGraphicsWidget *nativeRootView = ZFCastStatic(QGraphicsWidget *, sysWindow->rootView()->nativeView());
         ZFImpl_sys_Qt_BaseLayout *l = (ZFImpl_sys_Qt_BaseLayout *)(nativeWindow->layout());
@@ -148,6 +154,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindowOwner
             , ZF_IN ZFUISysWindow *sysWindowToFinish
             ) {
+        if(sysWindowToFinish->nativeWindow() == zfnull) {
+            return;
+        }
         QGraphicsWidget *nativeModalWindow = ZFCastStatic(QGraphicsWidget *, sysWindowOwner->nativeWindow());
         nativeModalWindow->hide();
         nativeModalWindow->removeEventFilter(&_eventWrapper);
@@ -162,6 +171,9 @@ public:
         sysWindow->sysWindowLayoutParam()->sizeHint(ZFUISizeMake(480, 640));
     }
     virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         _ZFP_ZFUISysWindowImpl_sys_Qt_updateWindowLayout(sysWindow, (QGraphicsWidget *)sysWindow->nativeWindow());
     }
 

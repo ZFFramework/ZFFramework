@@ -16,9 +16,14 @@ ZFImpl_ZFLua_implPathInfo_DEFINE(zfimport,
         "end"
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaExecute,
+        "function (p, ...)"
+        "    return ZF.ZFLuaExecuteDetail(p, ZFCoreArrayCreate(...), zfl_L());"
+        "end"
+    )
+ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaExecuteDetail,
         "function (...)"
         "    local arg={...};"
-        "    return ZF.ZFLuaExecute(arg[1] or ZFCallback(), arg[2] or ZFCoreArray(), arg[3] or zfl_L());"
+        "    return ZF.ZFLuaExecuteDetail(arg[1] or ZFCallback(), arg[2] or ZFCoreArray(), arg[3] or zfl_L());"
         "end"
     )
 ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLuaGC,

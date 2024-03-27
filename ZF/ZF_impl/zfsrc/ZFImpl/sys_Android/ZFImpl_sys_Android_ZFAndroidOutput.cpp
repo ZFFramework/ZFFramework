@@ -52,12 +52,20 @@ protected:
 
 public:
     void removeAll(void) {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
         if(this->nativeOutputWrapper != NULL) {
-            JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), this->nativeOutputWrapper);
+            jclass jclsZFAndroidOutput = ZFImpl_sys_Android_jclassZFAndroidOutput();
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidOutput, "native_nativeOutputClose",
+                    JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
+                        .add(JNIType::S_object_Object())
+                        ).c_str());
+            JNIUtilCallStaticVoidMethod(jniEnv, jclsZFAndroidOutput, jmId, this->nativeOutputWrapper);
+
+            JNIUtilDeleteGlobalRef(jniEnv, this->nativeOutputWrapper);
             this->nativeOutputWrapper = zfnull;
         }
         if(this->nativeBuf != NULL) {
-            JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), this->nativeBuf);
+            JNIUtilDeleteGlobalRef(jniEnv, this->nativeBuf);
             this->nativeBuf = NULL;
         }
     }

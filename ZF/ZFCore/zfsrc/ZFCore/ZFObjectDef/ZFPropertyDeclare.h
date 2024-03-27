@@ -320,7 +320,7 @@ template<typename T_Type>
 zfclassNotPOD _ZFP_PropWeak<T_Type, 1> {
 public:
     static inline ZFObject *v(ZF_IN T_Type const &p) {
-        return ZFObjectToObject(p);
+        return ZFCastZFObject(ZFObject *, p);
     }
 };
 
@@ -600,13 +600,13 @@ public:
                 ) { \
             zfCoreMutexLock(); \
             zfbool accessed = Name##_PropV._ZFP_accessed(); \
-            ZFObject *valueOld = ZFObjectToObject(Name##_PropV._ZFP_init(this->toObject(), zffalse)); \
+            ZFObject *valueOld = ZFCastZFObject(ZFObject *, Name##_PropV._ZFP_init(this->toObject(), zffalse)); \
             _ZFP_ZFPropertyLifeCycleCall_setter_retain( \
                 zfself::_ZFP_Prop_##Name(), \
                 this->toObject(), \
                 accessed, \
                 valueOld, \
-                ZFObjectToObject(propertyValue), \
+                ZFCastZFObject(ZFObject *, propertyValue), \
                 _ZFP_PropRVSC_r<zfself::PropVT_##Name>::f, \
                 Name##_PropV._ZFP_v); \
             zfCoreMutexUnlock(); \

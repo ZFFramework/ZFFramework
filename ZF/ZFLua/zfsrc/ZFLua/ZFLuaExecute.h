@@ -165,15 +165,49 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * -  for dynamically loaded library, all types would also be registered normally,
  *   however, won't be automatically unregistered when unloaded
  */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecute
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, zfauto, ZFLuaExecute
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_IN_OPT(const ZFCoreArray<zfauto> *, luaParams, zfnull)
+        )
+/** @brief see #ZFLuaExecute */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, zfauto, ZFLuaExecute
+        , ZFMP_IN(const zfchar *, buf)
+        )
+/** @brief see #ZFLuaExecute */
+ZFMETHOD_FUNC_DECLARE_8(ZFLIB_ZFLua, zfauto, ZFLuaExecute
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN(ZFObject *, param0)
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param5, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
+        /* ZFMETHOD_MAX_PARAM */
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
+        )
+/** @brief see #ZFLuaExecute */
+ZFMETHOD_FUNC_DECLARE_8(ZFLIB_ZFLua, zfauto, ZFLuaExecute
+        , ZFMP_IN(const zfchar *, buf)
+        , ZFMP_IN(ZFObject *, param0)
+        , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param3, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param4, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param5, ZFMethodGenericInvokerDefaultParam())
+        , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
+        /* ZFMETHOD_MAX_PARAM */
+        // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
+        )
+/** @brief see #ZFLuaExecute */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecuteDetail
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN(const ZFCoreArray<zfauto> &, luaParams)
         , ZFMP_IN_OPT(void *, L, zfnull)
         )
 /** @brief see #ZFLuaExecute */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecute
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFLua, zfauto, ZFLuaExecuteDetail
         , ZFMP_IN(const zfchar *, buf)
-        , ZFMP_IN_OPT(const ZFCoreArray<zfauto> *, luaParams, zfnull)
+        , ZFMP_IN(const ZFCoreArray<zfauto> &, luaParams)
         , ZFMP_IN_OPT(void *, L, zfnull)
         )
 

@@ -291,11 +291,10 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUISysWindow *, modalWindowShow) {
         modalWindow = d->embedImpl->modalWindowShow(this);
     }
     else {
-        zfCoreAssertWithMessage(this->nativeWindow() != zfnull,
-            "you can only create modal window after ZFUISysWindow created, see ZFUISysWindow::nativeWindowIsCreated");
-
         modalWindow = ZFPROTOCOL_ACCESS(ZFUISysWindow)->modalWindowShow(this);
     }
+
+    zfCoreAssertWithMessage(modalWindow != zfnull, "modalWindowShow not available on embeded window");
 
     d->modalWindowShowing = zfRetain(modalWindow);
     d->modalWindowShowing->d->modalWindowOwner = this;

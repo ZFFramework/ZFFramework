@@ -69,6 +69,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindow
             , ZF_OUT_OPT void *&nativeParentView
             ) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeWindowRootViewOnAdd",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
@@ -81,6 +84,9 @@ public:
             );
     }
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeWindowRootViewOnRemove",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
@@ -94,6 +100,9 @@ public:
     }
 
     virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+        if(sysWindowOwner->nativeWindow() == zfnull) {
+            return zfnull;
+        }
         zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -112,6 +121,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindowOwner
             , ZF_IN ZFUISysWindow *sysWindowToFinish
             ) {
+        if(sysWindowToFinish->nativeWindow() == zfnull) {
+            return;
+        }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_modalWindowFinish",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
@@ -124,6 +136,9 @@ public:
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
     }
     virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_sysWindowLayoutParamOnChange",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
@@ -134,6 +149,9 @@ public:
     }
 
     virtual ZFUIOrientationEnum sysWindowOrientation(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return ZFUIOrientation::e_Top;
+        }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_sysWindowOrientation",
             JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
@@ -147,6 +165,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindow
             , ZF_IN const ZFUIOrientationFlags &flags
             ) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_sysWindowOrientationFlags",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()

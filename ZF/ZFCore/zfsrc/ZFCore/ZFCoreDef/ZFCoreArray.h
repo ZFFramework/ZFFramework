@@ -392,9 +392,8 @@ public:
      * @brief add element
      */
     void add(ZF_IN T_Element const &e) {
-        T_Element t = e;
         _capacityRequire(this->count() + 1);
-        _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, &t, d->PODType);
+        _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, &e, d->PODType);
         ++(d->count);
     }
     /**
@@ -408,13 +407,12 @@ public:
             zfCoreCriticalIndexOutOfRange(index, this->count() + 1);
             return;
         }
-        T_Element t = e;
         _capacityRequire(this->count() + 1);
         _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, d->PODType);
         T_Element *pos = d->buf + index;
         _ZFP_ZFCoreArray_objMove(pos + 1, pos, this->count() - index, d->PODType);
         ++(d->count);
-        *pos = t;
+        *pos = e;
     }
     /**
      * @brief add elements, src can be part of this array's buffer

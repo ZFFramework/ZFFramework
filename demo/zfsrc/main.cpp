@@ -230,7 +230,7 @@ ZF_GLOBAL_INITIALIZER_INIT(LuaRunner) {
             for(zfindex i = 1; i < appParams.count(); ++i) {
                 luaParams.add(zflineAlloc(v_zfstring, appParams[i]));
             }
-            ZFLuaExecute(ZFInputForPathInfo(pathInfo), &luaParams);
+            ZFLuaExecuteDetail(ZFInputForPathInfo(pathInfo), luaParams);
         }
     } ZFLISTENER_END()
     this->callback = action;

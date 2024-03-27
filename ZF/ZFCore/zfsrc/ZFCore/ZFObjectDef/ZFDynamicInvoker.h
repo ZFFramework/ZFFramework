@@ -255,7 +255,11 @@ extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
  */
 extern ZFLIB_ZFCore zfauto ZFInvoke(
         ZF_IN const zfchar *name
-        , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+        );
+/** @brief see #ZFInvoke */
+extern ZFLIB_ZFCore zfauto ZFInvoke(
+        ZF_IN const zfchar *name
+        , ZF_IN ZFObject *param0
         , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
         , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
         , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
@@ -263,11 +267,9 @@ extern ZFLIB_ZFCore zfauto ZFInvoke(
         , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
         , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
         , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-        , ZF_OUT_OPT zfbool *success = zfnull
-        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFInvoke */
-extern ZFLIB_ZFCore zfauto ZFInvoke(
+extern ZFLIB_ZFCore zfauto ZFInvokeDetail(
         ZF_IN const zfchar *name
         , ZF_IN const ZFCoreArray<zfauto> &params
         , ZF_OUT_OPT zfbool *success = zfnull
@@ -285,11 +287,9 @@ extern ZFLIB_ZFCore zfauto ZFInvoke(
         , ZF_IN_OPT const zfchar *param5 = zfnull
         , ZF_IN_OPT const zfchar *param6 = zfnull
         , ZF_IN_OPT const zfchar *param7 = zfnull
-        , ZF_OUT_OPT zfbool *success = zfnull
-        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFInvoke */
-extern ZFLIB_ZFCore zfauto ZFInvoke(
+extern ZFLIB_ZFCore zfauto ZFInvokeDetail(
         ZF_IN const zfchar *name
         , ZF_IN const ZFCoreArray<zfstring> &params
         , ZF_OUT_OPT zfbool *success = zfnull

@@ -72,12 +72,18 @@ public:
             ZF_IN ZFUISysWindow *sysWindow
             , ZF_OUT_OPT void *&nativeParentView
             ) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
         nativeWindow->rootView = (ZFImpl_sys_SDL_View *)sysWindow->rootView()->nativeView();
         nativeWindow->rootView->sysWindowAttach(nativeWindow);
         nativeWindow->renderStart();
     }
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
         nativeWindow->rootView->sysWindowDetach();
         nativeWindow->renderStop();
@@ -85,6 +91,9 @@ public:
     }
 
     virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+        if(sysWindowOwner->nativeWindow() == zfnull) {
+            return zfnull;
+        }
         zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
         ZFImpl_sys_SDL_SysWindow *nativeWindow = zfnew(ZFImpl_sys_SDL_SysWindow);
         nativeWindow->ownerZFUISysWindow = this->_mainWindow;
@@ -106,6 +115,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindowOwner
             , ZF_IN ZFUISysWindow *sysWindowToFinish
             ) {
+        if(sysWindowToFinish->nativeWindow() == zfnull) {
+            return;
+        }
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindowToFinish->nativeWindow();
         if(sysWindowToFinish->nativeWindowIsResumed()) {
             this->notifyOnPause(sysWindowToFinish);
@@ -117,6 +129,9 @@ public:
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
     }
     virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         ZFImpl_sys_SDL_SysWindow *nativeWindow = (ZFImpl_sys_SDL_SysWindow *)sysWindow->nativeWindow();
         SDL_Rect sdlRect;
         SDL_GetDisplayUsableBounds(0, &sdlRect);

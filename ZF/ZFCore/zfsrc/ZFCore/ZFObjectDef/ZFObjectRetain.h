@@ -26,56 +26,56 @@ public:
 public:
     static inline T_ZFObject *CanAlloc(void);
     template<typename P0>
-    static inline T_ZFObject *CanAlloc(P0 p0) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0);
         obj->_ZFP_ZFObjectCheckOnInit();
         return obj;
     }
     template<typename P0, typename P1>
-    static inline T_ZFObject *CanAlloc(P0 p0, P1 p1) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0, P1 const &p1) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0, p1);
         obj->_ZFP_ZFObjectCheckOnInit();
         return obj;
     }
     template<typename P0, typename P1, typename P2>
-    static inline T_ZFObject *CanAlloc(P0 p0, P1 p1, P2 p2) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0, P1 const &p1, P2 const &p2) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0, p1, p2);
         obj->_ZFP_ZFObjectCheckOnInit();
         return obj;
     }
     template<typename P0, typename P1, typename P2, typename P3>
-    static inline T_ZFObject *CanAlloc(P0 p0, P1 p1, P2 p2, P3 p3) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0, p1, p2, p3);
         obj->_ZFP_ZFObjectCheckOnInit();
         return obj;
     }
     template<typename P0, typename P1, typename P2, typename P3, typename P4>
-    static inline T_ZFObject *CanAlloc(P0 p0, P1 p1, P2 p2, P3 p3, P4 p4) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0, p1, p2, p3, p4);
         obj->_ZFP_ZFObjectCheckOnInit();
         return obj;
     }
     template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5>
-    static inline T_ZFObject *CanAlloc(P0 p0, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0, p1, p2, p3, p4, p5);
         obj->_ZFP_ZFObjectCheckOnInit();
         return obj;
     }
     template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
-    static inline T_ZFObject *CanAlloc(P0 p0, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5, P6 const &p6) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0, p1, p2, p3, p4, p5, p6);
         obj->_ZFP_ZFObjectCheckOnInit();
         return obj;
     }
     template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
-    static inline T_ZFObject *CanAlloc(P0 p0, P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7) {
+    static inline T_ZFObject *CanAlloc(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5, P6 const &p6, P7 const &p7) {
         T_ZFObject *obj = _ZFP_ObjCastInternal(T_ZFObject *, T_ZFObject::_ZFP_Obj_ctor());
         obj->objectOnInit(p0, p1, p2, p3, p4, p5, p6, p7);
         obj->_ZFP_ZFObjectCheckOnInit();

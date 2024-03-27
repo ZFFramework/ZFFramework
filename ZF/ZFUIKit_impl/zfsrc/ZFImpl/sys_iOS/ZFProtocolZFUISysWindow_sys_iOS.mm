@@ -243,6 +243,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindow
             , ZF_OUT_OPT void *&nativeParentView
             ) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeWindow = (__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow();
 
         UIView *nativeRootView = (__bridge UIView *)sysWindow->rootView()->nativeView();
@@ -251,11 +254,17 @@ public:
         nativeParentView = (__bridge void *)nativeWindow.view;
     }
     virtual void nativeWindowRootViewOnRemove(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         UIView *nativeRootView = (__bridge UIView *)sysWindow->rootView()->nativeView();
         [nativeRootView removeFromSuperview];
     }
 
     virtual zfauto modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+        if(sysWindowOwner->nativeWindow() == zfnull) {
+            return zfnull;
+        }
         zfauto modalWindow = ZFUISysWindow::ClassData()->newInstance();
         _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *nativeModalWindow = [_ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow new];
         nativeModalWindow.ownerZFUISysWindow = modalWindow;
@@ -269,6 +278,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindowOwner
             , ZF_IN ZFUISysWindow *sysWindowToFinish
             ) {
+        if(sysWindowToFinish->nativeWindow() == zfnull) {
+            return;
+        }
         [(__bridge UIViewController *)sysWindowOwner->nativeWindow() dismissViewControllerAnimated:YES completion:nil];
         this->notifyOnDestroy(sysWindowToFinish);
     }
@@ -276,6 +288,9 @@ public:
     virtual void sysWindowLayoutParamOnInit(ZF_IN ZFUISysWindow *sysWindow) {
     }
     virtual void sysWindowLayoutParamOnChange(ZF_IN ZFUISysWindow *sysWindow) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         [(__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow() _ZFP_updateLayout];
     }
 
@@ -286,6 +301,9 @@ public:
             ZF_IN ZFUISysWindow *sysWindow
             , ZF_IN const ZFUIOrientationFlags &flags
             ) {
+        if(sysWindow->nativeWindow() == zfnull) {
+            return;
+        }
         ((__bridge _ZFP_ZFUISysWindowImpl_sys_iOS_NativeWindow *)sysWindow->nativeWindow()).sysWindowOrientationFlags = flags;
     }
 

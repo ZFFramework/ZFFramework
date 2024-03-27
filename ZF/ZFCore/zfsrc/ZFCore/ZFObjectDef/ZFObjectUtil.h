@@ -11,16 +11,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// to object
-/**
- * @brief util method to convert to #ZFObject
- */
-template<typename T_ZFObject>
-inline ZFObject *ZFObjectToObject(ZF_IN T_ZFObject *obj) {
-    return (obj ? obj->toObject() : zfnull);
-}
-
-// ============================================================
 // compare
 /**
  * @brief util method to compare two ZFObject,
@@ -114,7 +104,7 @@ public:
             ZF_IN T0 const &e0
             , ZF_IN T1 const &e1
             ) {
-        return ZFObjectCompare(ZFObjectToObject(e0), ZFObjectToObject(e1));
+        return ZFObjectCompare(ZFCastZFObject(ZFObject *, e0), ZFCastZFObject(ZFObject *, e1));
     }
 };
 /** @endcond */

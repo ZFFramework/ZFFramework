@@ -363,7 +363,14 @@ public:
      */
     virtual zfauto invoke(
             ZF_IN const zfchar *methodName
-            , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+            );
+    /**
+     * @brief util method to perform #ZFDI_invoke,
+     *   do nothing if fail
+     */
+    virtual zfauto invoke(
+            ZF_IN const zfchar *methodName
+            , ZF_IN ZFObject *param0
             , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
@@ -371,14 +378,12 @@ public:
             , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_OUT_OPT zfbool *success = zfnull
-            , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
     /**
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfauto invoke(
+    virtual zfauto invokeDetail(
             ZF_IN const zfchar *methodName
             , ZF_IN const ZFCoreArray<zfauto> &params
             , ZF_OUT_OPT zfbool *success = zfnull
@@ -399,14 +404,12 @@ public:
             , ZF_IN_OPT const zfchar *param5 = zfnull
             , ZF_IN_OPT const zfchar *param6 = zfnull
             , ZF_IN_OPT const zfchar *param7 = zfnull
-            , ZF_OUT_OPT zfbool *success = zfnull
-            , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
     /**
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfauto invoke(
+    virtual zfauto invokeDetail(
             ZF_IN const zfchar *methodName
             , ZF_IN const ZFCoreArray<zfstring> &params
             , ZF_OUT_OPT zfbool *success = zfnull

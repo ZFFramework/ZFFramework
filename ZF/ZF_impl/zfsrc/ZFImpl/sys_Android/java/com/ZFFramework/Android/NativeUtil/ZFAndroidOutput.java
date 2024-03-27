@@ -15,7 +15,7 @@ public class ZFAndroidOutput {
     }
 
     // ============================================================
-    public static int native_nativeOutputWrite(Object nativeOutput, byte[] buf, int size) {
+    private static int native_nativeOutputWrite(Object nativeOutput, byte[] buf, int size) {
         ZFAndroidOutput nativeOutputTmp = (ZFAndroidOutput) nativeOutput;
         if (nativeOutputTmp.output == null) {
             return 0;
@@ -26,6 +26,19 @@ public class ZFAndroidOutput {
         } catch (IOException ignored) {
         }
         return 0;
+    }
+
+    private static void native_nativeOutputClose(Object nativeOutput) {
+        ZFAndroidOutput nativeOutputTmp = (ZFAndroidOutput) nativeOutput;
+        if (nativeOutputTmp.output == null) {
+            return;
+        }
+        try {
+            nativeOutputTmp.output.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        nativeOutputTmp.output = null;
     }
 
 }

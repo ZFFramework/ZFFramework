@@ -15,7 +15,7 @@ public class ZFAndroidInput {
     }
 
     // ============================================================
-    public static int native_nativeInputRead(Object nativeInput, byte[] buf, int count) {
+    private static int native_nativeInputRead(Object nativeInput, byte[] buf, int count) {
         if (buf == null) {
             // not supported
             return -1;
@@ -34,6 +34,19 @@ public class ZFAndroidInput {
         } catch (IOException ignored) {
         }
         return 0;
+    }
+
+    private static void native_nativeInputClose(Object nativeInput) {
+        ZFAndroidInput nativeInputTmp = (ZFAndroidInput) nativeInput;
+        if (nativeInputTmp.input == null) {
+            return;
+        }
+        try {
+            nativeInputTmp.input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        nativeInputTmp.input = null;
     }
 
 }

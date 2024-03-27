@@ -133,7 +133,19 @@ ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
 /* ZFMETHOD_MAX_PARAM */
 zfauto ZFObject::invoke(
         ZF_IN const zfchar *methodName
-        , ZF_IN_OPT ZFObject *param0 /* = ZFMethodGenericInvokerDefaultParam() */
+        ) {
+    zfauto paramList[ZFMETHOD_MAX_PARAM];
+    zfauto ret;
+    if(ZFDI_invoke(ret, zfnull, this, methodName, 0, paramList)) {
+        return ret;
+    }
+    else {
+        return zfnull;
+    }
+}
+zfauto ZFObject::invoke(
+        ZF_IN const zfchar *methodName
+        , ZF_IN ZFObject *param0
         , ZF_IN_OPT ZFObject *param1 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param2 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param3 /* = ZFMethodGenericInvokerDefaultParam() */
@@ -141,8 +153,6 @@ zfauto ZFObject::invoke(
         , ZF_IN_OPT ZFObject *param5 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param6 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMethodGenericInvokerDefaultParam() */
-        , ZF_OUT_OPT zfbool *success /* = zfnull */
-        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     zfCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
@@ -160,16 +170,14 @@ zfauto ZFObject::invoke(
     zfCoreMutexUnlock();
 
     zfauto ret;
-    if(ZFDI_invoke(ret, errorHint, this, methodName, paramCount, paramList)) {
-        if(success != zfnull) {*success = zftrue;}
+    if(ZFDI_invoke(ret, zfnull, this, methodName, paramCount, paramList)) {
         return ret;
     }
     else {
-        if(success != zfnull) {*success = zffalse;}
         return zfnull;
     }
 }
-zfauto ZFObject::invoke(
+zfauto ZFObject::invokeDetail(
         ZF_IN const zfchar *methodName
         , ZF_IN const ZFCoreArray<zfauto> &params
         , ZF_OUT_OPT zfbool *success /* = zfnull */
@@ -207,8 +215,6 @@ zfauto ZFObject::invoke(
         , ZF_IN_OPT const zfchar *param5 /* = zfnull */
         , ZF_IN_OPT const zfchar *param6 /* = zfnull */
         , ZF_IN_OPT const zfchar *param7 /* = zfnull */
-        , ZF_OUT_OPT zfbool *success /* = zfnull */
-        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     zfCoreMutexLock();
     zfauto paramList[ZFMETHOD_MAX_PARAM];
@@ -226,16 +232,14 @@ zfauto ZFObject::invoke(
     zfCoreMutexUnlock();
 
     zfauto ret;
-    if(ZFDI_invoke(ret, errorHint, this, methodName, paramCount, paramList)) {
-        if(success != zfnull) {*success = zftrue;}
+    if(ZFDI_invoke(ret, zfnull, this, methodName, paramCount, paramList)) {
         return ret;
     }
     else {
-        if(success != zfnull) {*success = zffalse;}
         return zfnull;
     }
 }
-zfauto ZFObject::invoke(
+zfauto ZFObject::invokeDetail(
         ZF_IN const zfchar *methodName
         , ZF_IN const ZFCoreArray<zfstring> &params
         , ZF_OUT_OPT zfbool *success /* = zfnull */
@@ -690,6 +694,9 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFCompareResult, objectComp
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfbool, equalTo
         , ZFMP_IN(ZFObject *, anotherObj)
         )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfauto, invoke
+        , ZFMP_IN(const zfchar *, methodName)
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_8(ZFObject, zfauto, invoke
         , ZFMP_IN(const zfchar *, methodName)
         , ZFMP_IN_OPT(ZFObject *, param0, ZFMethodGenericInvokerDefaultParam())
@@ -701,15 +708,13 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_8(ZFObject, zfauto, invoke
         , ZFMP_IN_OPT(ZFObject *, param6, ZFMethodGenericInvokerDefaultParam())
         // ZFMETHOD_MAX_PARAM
         // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
-        // , ZFMP_OUT_OPT(zfbool *, success, zfnull)
-        // , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
-    )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, zfauto, invoke
+        )
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, zfauto, invokeDetail
         , ZFMP_IN(const zfchar *, methodName)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
-    )
+        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectTagExist)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTag
         , ZFMP_IN(const zfchar *, key)
