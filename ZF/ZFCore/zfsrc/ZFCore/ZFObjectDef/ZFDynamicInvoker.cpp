@@ -77,6 +77,7 @@ public:
 public:
     inline zfbool errorOccurred(void) {
         if(_errorHint) {
+            *_errorHint += "\n";
             for(zfindex i = 0; i < ZFDI_errorCallbacks().count(); ++i) {
                 ZFDI_errorCallbacks()[i].execute(_errorHint->cString(), _errorHint->length() * sizeof(zfchar));
             }
