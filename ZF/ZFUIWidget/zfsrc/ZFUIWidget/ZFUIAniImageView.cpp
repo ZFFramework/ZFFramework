@@ -196,7 +196,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
 
     ZFCoreArrayPOD<zftimet> frameDurations;
     const zfchar *frameDurationsString = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIAniImageView_frameDurations);
-    if(frameDurationsString != zfnull && !ZFCoreArrayFromString(frameDurations, zftimetFromString, frameDurationsString)) {
+    if(frameDurationsString != zfnull && !ZFCoreArrayFromString(frameDurations, frameDurationsString)) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "invalid %s: %s",
             ZFSerializableKeyword_ZFUIAniImageView_frameDurations,
@@ -237,7 +237,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeToData(
 
     if(!this->frameDurations().isEmpty()) {
         zfstring frameDurationsString;
-        if(!ZFCoreArrayToString(frameDurationsString, zftimetToString, this->frameDurations())) {
+        if(!ZFCoreArrayToString(frameDurationsString, this->frameDurations())) {
             return zffalse;
         }
         serializableData.attr(ZFSerializableKeyword_ZFUIAniImageView_frameDurations, frameDurationsString);

@@ -231,13 +231,13 @@ zfbool ZFImpl_ZFLua_execute(
             ZFImpl_ZFLua_toGeneric(*luaResult, L, -1);
         }
         else {
-            zfblockedAlloc(v_ZFCoreArray, ret);
-            *luaResult = ret;
-            ret->zfv.capacity((zfindex)luaResultNum);
+            ZFCoreArray<zfauto> ret;
+            *luaResult = zflineAlloc(v_ZFCoreArray, ret);
+            ret.capacity((zfindex)luaResultNum);
             for(int i = 0; i < luaResultNum; ++i) {
                 zfauto tmp;
                 ZFImpl_ZFLua_toGeneric(tmp, L, -1 - (luaResultNum - 1 - i));
-                ret->zfv.add(tmp);
+                ret.add(tmp);
             }
         }
     }

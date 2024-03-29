@@ -50,7 +50,6 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
         element = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFRegExpResult_namedGroups);
         if(element != zfnull && !ZFCoreArrayFromData(
                     v.namedGroups,
-                    ZFIndexRangeFromData,
                     serializableData,
                     outErrorHint,
                     outErrorPos
@@ -73,7 +72,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
 
         if(!v.namedGroups.isEmpty()) {
             ZFSerializableData element;
-            if(!ZFCoreArrayToData(element, ZFIndexRangeToData, v.namedGroups, outErrorHint)) {
+            if(!ZFCoreArrayToData(element, v.namedGroups, outErrorHint)) {
                 return zffalse;
             }
             element.category(ZFSerializableKeyword_ZFRegExpResult_namedGroups);

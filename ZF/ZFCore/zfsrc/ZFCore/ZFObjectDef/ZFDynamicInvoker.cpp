@@ -64,13 +64,15 @@ public:
         if(errorHint == zfnull && !ZFDI_errorCallbacks().isEmpty()) {
             errorHint = zfnew(zfstring);
             _errorHint = errorHint;
+            _deleteFlag = zftrue;
         }
         else {
-            _errorHint = zfnull;
+            _errorHint = errorHint;
+            _deleteFlag = zffalse;
         }
     }
     _ZFP_ZFDI_ErrorHolder(void) {
-        if(_errorHint) {
+        if(_deleteFlag) {
             zfdelete(_errorHint);
         }
     }
@@ -81,11 +83,13 @@ public:
             for(zfindex i = 0; i < ZFDI_errorCallbacks().count(); ++i) {
                 ZFDI_errorCallbacks()[i].execute(_errorHint->cString(), _errorHint->length() * sizeof(zfchar));
             }
+            _errorHint->remove(_errorHint->length() - 1);
         }
         return zffalse;
     }
 private:
     zfstring *_errorHint;
+    zfbool _deleteFlag;
 };
 #define _ZFP_ZFDI_errorPrepare() \
     _ZFP_ZFDI_ErrorHolder _ZFP_ZFDI_errorH(errorHint)

@@ -170,11 +170,29 @@ public:
     virtual void *refImpl(void) const zfpurevirtual;
 
     /** @brief see #objectInfo */
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const zfpurevirtual;
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const {
+        this->objectInfoOfContentT(ret, 10);
+    }
     /** @brief return object info */
-    inline zfstring objectInfo(void) const {
+    virtual zfstring objectInfo(void) const {
         zfstring ret;
         this->objectInfoT(ret);
+        return ret;
+    }
+
+    /** @brief return content info */
+    virtual void objectInfoOfContentT(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT zfindex maxCount = zfindexMax()
+            , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
+            ) const zfpurevirtual;
+    /** @brief return content info */
+    virtual zfstring objectInfoOfContent(
+            ZF_IN_OPT zfindex maxCount = zfindexMax()
+            , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
+            ) const {
+        zfstring ret;
+        this->objectInfoOfContentT(ret, maxCount, token);
         return ret;
     }
 
@@ -183,6 +201,94 @@ public:
     virtual zfbool operator == (ZF_IN const ZFCoreArrayBase &ref) const zfpurevirtual;
     virtual zfbool operator != (ZF_IN const ZFCoreArrayBase &ref) const zfpurevirtual;
     /** @endcond */
+
+public:
+    /**
+     * @brief whether the array contains POD type
+     */
+    virtual zfbool isPODType(void) const zfpurevirtual;
+    /**
+     * @brief change capacity to hold at least newCapacity
+     *
+     * do nothing if newCapacity not changed or less than current capacity
+     */
+    virtual void capacity(ZF_IN zfindex newCapacity) zfpurevirtual;
+    /**
+     * @brief trim current capacity
+     *
+     * do nothing if not necessary to trim
+     */
+    virtual void capacityTrim(void) zfpurevirtual;
+    /**
+     * @brief get capacity
+     */
+    virtual zfindex capacity(void) const zfpurevirtual;
+
+    /**
+     * @brief remove element at index with count, assert fail if out of range
+     */
+    virtual void remove(ZF_IN zfindex index) zfpurevirtual;
+    /**
+     * @brief remove element at index with count, assert fail if out of range
+     */
+    virtual void remove(
+            ZF_IN zfindex index
+            , ZF_IN zfindex count
+            ) zfpurevirtual;
+    /**
+     * @brief remove first or do nothing if empty
+     */
+    virtual void removeFirst(void) zfpurevirtual;
+    /**
+     * @brief remove last or do nothing if empty
+     */
+    virtual void removeLast(void) zfpurevirtual;
+    /**
+     * @brief remove all content
+     */
+    virtual void removeAll(void) zfpurevirtual;
+    /**
+     * @brief move element
+     */
+    virtual void move(
+            ZF_IN zfindex fromIndex
+            , ZF_IN zfindex toIndexOrIndexMax
+            ) zfpurevirtual;
+    /**
+     * @brief element count of this array
+     */
+    virtual zfindex count(void) const zfpurevirtual;
+    /**
+     * @brief true if empty
+     */
+    virtual zfbool isEmpty(void) const zfpurevirtual;
+
+public:
+    /** @brief generic version */
+    virtual void genericSwap(ZF_IN_OUT ZFCoreArrayBase &ref) zfpurevirtual;
+    /** @brief generic version */
+    virtual void genericCopyFrom(ZF_IN const ZFCoreArrayBase &ref) zfpurevirtual;
+    /** @brief generic version */
+    virtual void genericAdd(ZF_IN const void *e) zfpurevirtual;
+    /** @brief generic version */
+    virtual void genericAdd(
+            ZF_IN zfindex index
+            , ZF_IN const void *e
+            ) zfpurevirtual;
+    /** @brief generic version */
+    virtual void genericAddFrom(
+            ZF_IN const void *e
+            , ZF_IN zfindex count
+            ) zfpurevirtual;
+    /** @brief generic version */
+    virtual void genericAddFrom(ZF_IN const ZFCoreArrayBase &ref) zfpurevirtual;
+    /** @brief generic version */
+    virtual void genericSet(
+            ZF_IN zfindex index
+            , ZF_IN const void *e
+            ) zfpurevirtual;
+    /** @brief generic version */
+    virtual const void *genericGet(ZF_IN zfindex index) const zfpurevirtual;
 };
 ZFOUTPUT_TYPE(ZFCoreArrayBase, {v.objectInfoT(s);})
 
@@ -227,13 +333,9 @@ public:
             zfdelete(d);
         }
     }
-    /**
-     * @brief new reference
-     */
+    zfoverride
     virtual ZFCoreArrayBase *refNew(void) const {return zfnew(ZFCoreArray<T_Element>, *this);}
-    /**
-     * @brief get the impl
-     */
+    zfoverride
     virtual void *refImpl(void) const {return d;}
     /**
      * @brief retain the array, if you want to copy, use #copyFrom instead
@@ -311,17 +413,20 @@ public:
 
 public:
     zfoverride
-    virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const {
-        this->objectInfoOfContentT(ret, 10);
-    }
-
-public:
-    /** @brief see #objectInfoOfContent */
-    void objectInfoOfContentT(
+    virtual void objectInfoOfContentT(
             ZF_IN_OUT zfstring &ret
             , ZF_IN_OPT zfindex maxCount = zfindexMax()
             , ZF_IN_OPT const ZFTokenForContainer &token = ZFTokenForContainerDefault()
-            , ZF_IN_OPT typename ZFCoreInfoGetter<T_Element>::InfoGetter infoGetter = zfnull
+            ) const {
+        this->objectInfoOfContentT(ret, maxCount, token, zfnull);
+    }
+
+    /** @brief see #objectInfoOfContent */
+    void objectInfoOfContentT(
+            ZF_IN_OUT zfstring &ret
+            , ZF_IN_OPT zfindex maxCount
+            , ZF_IN_OPT const ZFTokenForContainer &token
+            , ZF_IN_OPT typename ZFCoreInfoGetter<T_Element>::InfoGetter infoGetter
             ) const {
         zfindex count = 0;
         ret += token.tokenLeft;
@@ -358,34 +463,25 @@ public:
     }
 
 public:
-    /**
-     * @brief whether the array contains POD type
-     */
-    zfbool isPODType(void) const {return d->PODType;}
-    /**
-     * @brief change capacity to hold at least newCapacity
-     *
-     * do nothing if newCapacity not changed or less than current capacity
-     */
-    void capacity(ZF_IN zfindex newCapacity) {
+    zfoverride
+    virtual zfbool isPODType(void) const {return d->PODType;}
+
+    zfoverride
+    virtual void capacity(ZF_IN zfindex newCapacity) {
         _capacityRequire(newCapacity);
     }
-    /**
-     * @brief trim current capacity
-     *
-     * do nothing if not necessary to trim
-     */
-    void capacityTrim(void) {
+    zfoverride
+    virtual void capacityTrim(void) {
         zfindex capacity = this->count();
         _capacityOptimize(capacity);
         if(capacity != this->capacity()) {
             _capacityDoChange(capacity);
         }
     }
-    /**
-     * @brief get capacity
-     */
-    zfindex capacity(void) const {return (zfindex)d->capacity;}
+    zfoverride
+    virtual zfindex capacity(void) const {
+        return (zfindex)d->capacity;
+    }
 
 public:
     /**
@@ -609,10 +705,8 @@ public:
         return removedCount;
     }
 
-    /**
-     * @brief remove element at index with count, assert fail if out of range
-     */
-    void remove(ZF_IN zfindex index) {
+    zfoverride
+    virtual void remove(ZF_IN zfindex index) {
         if(index >= this->count()) {
             zfCoreCriticalIndexOutOfRange(index, this->count());
             return;
@@ -621,10 +715,8 @@ public:
         _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - 1, d->buf + d->count, d->PODType);
         --(d->count);
     }
-    /**
-     * @brief remove element at index with count, assert fail if out of range
-     */
-    void remove(
+    zfoverride
+    virtual void remove(
             ZF_IN zfindex index
             , ZF_IN zfindex count
             ) {
@@ -650,10 +742,8 @@ public:
         this->remove(index);
         return t;
     }
-    /**
-     * @brief remove first or do nothing if empty
-     */
-    void removeFirst(void) {
+    zfoverride
+    virtual void removeFirst(void) {
         if(!this->isEmpty()) {
             this->remove(0);
         }
@@ -668,10 +758,8 @@ public:
         this->remove(0);
         return t;
     }
-    /**
-     * @brief remove last or do nothing if empty
-     */
-    void removeLast(void) {
+    zfoverride
+    virtual void removeLast(void) {
         if(!this->isEmpty()) {
             this->remove(this->count() - 1);
         }
@@ -686,18 +774,14 @@ public:
         this->remove(this->count() - 1);
         return t;
     }
-    /**
-     * @brief remove all content
-     */
-    void removeAll(void) {
+    zfoverride
+    virtual void removeAll(void) {
         _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
         d->count = 0;
     }
 
-    /**
-     * @brief move element
-     */
-    void move(
+    zfoverride
+    virtual void move(
             ZF_IN zfindex fromIndex
             , ZF_IN zfindex toIndexOrIndexMax
             ) {
@@ -807,14 +891,10 @@ public:
      */
     const T_Element *arrayBuf(void) const {return d->buf;}
 
-    /**
-     * @brief element count of this array
-     */
-    zfindex count(void) const {return (zfindex)d->count;}
-    /**
-     * @brief true if empty
-     */
-    zfbool isEmpty(void) const {return (d->count == 0);}
+    zfoverride
+    virtual zfindex count(void) const {return (zfindex)d->count;}
+    zfoverride
+    virtual zfbool isEmpty(void) const {return (d->count == 0);}
 
 public:
     /**
@@ -835,6 +915,33 @@ public:
                 ascending);
         }
     }
+
+public:
+    zfoverride
+    virtual void genericSwap(ZF_IN_OUT ZFCoreArrayBase &ref) {this->swap((ZFCoreArray<T_Element> &)ref);}
+    zfoverride
+    virtual void genericCopyFrom(ZF_IN const ZFCoreArrayBase &ref) {this->copyFrom((const ZFCoreArray<T_Element> &)ref);}
+    zfoverride
+    virtual void genericAdd(ZF_IN const void *e) {this->add(*(const T_Element *)e);}
+    zfoverride
+    virtual void genericAdd(
+            ZF_IN zfindex index
+            , ZF_IN const void *e
+            ) {this->add(index, *(const T_Element *)e);}
+    zfoverride
+    virtual void genericAddFrom(
+            ZF_IN const void *e
+            , ZF_IN zfindex count
+            ) {this->addFrom((const T_Element *)e, count);}
+    zfoverride
+    virtual void genericAddFrom(ZF_IN const ZFCoreArrayBase &ref) {this->addFrom((const ZFCoreArray<T_Element> &)ref);}
+    zfoverride
+    virtual void genericSet(
+            ZF_IN zfindex index
+            , ZF_IN const void *e
+            ) {this->set(index, *(const T_Element *)e);}
+    zfoverride
+    virtual const void *genericGet(ZF_IN zfindex index) const {return &(this->get(index));}
 
 protected:
     void _ZFP_PODType(void) {d->PODType = zftrue;}

@@ -335,6 +335,23 @@ public:
             ZFTypeId<zfweak>::Value<T_Access>::zfvAccessFinish(obj);
         }
     };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return ValueStore(obj, *(const zfweakT<T_ZFObject> *)v);
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        if(!Value<zfweakT<T_ZFObject> >::zfvAccessAvailable(obj)) {
+            return zfnull;
+        }
+        return (void *)zfnew(zfweakT<T_ZFObject>, Value<zfweakT<T_ZFObject> >::zfvAccess(obj));
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((zfweakT<T_ZFObject> *)v);
+        Value<zfweakT<T_ZFObject> >::zfvAccessFinish(obj);
+    }
 };
 /** @endcond */
 

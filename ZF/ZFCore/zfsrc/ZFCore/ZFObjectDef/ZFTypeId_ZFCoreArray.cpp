@@ -3,85 +3,252 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-_ZFP_ZFTYPEID_ID_DATA_REGISTER(ZFCoreArray, ZFCoreArray<zfauto>)
-
-void v_ZFCoreArray::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    this->zfv.objectInfoT(ret);
+zfbool _ZFP_ZFCoreArrayFromString(
+        ZF_IN const ZFTypeInfo *elementType
+        , ZF_IN_OUT ZFCoreArrayBase &v
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        ) {
+    ZFCoreArrayPOD<ZFIndexRange> pos;
+    if(!zfCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "[", "]", zftrue)) {
+        return zffalse;
+    }
+    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+        for(zfindex i = 0; i < pos.count(); ++i) {
+            zfstring elementString;
+            zfCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
+            zfauto e = elementType->typeIdClass()->newInstance();
+            ZFTypeIdWrapper *eTmp = e;
+            if(eTmp == zfnull || !eTmp->wrappedValueFromString(elementString, elementString.length())) {
+                return zffalse;
+            }
+            void *eGeneric = elementType->genericAccess(e);
+            if(eGeneric == zfnull) {
+                return zffalse;
+            }
+            v.genericAdd(eGeneric);
+            elementType->genericAccessFinish(e, eGeneric);
+        }
+    }
+    else {
+        for(zfindex i = 0; i < pos.count(); ++i) {
+            zfstring elementString;
+            zfCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
+            zfauto e = elementType->typeIdClass()->newInstance();
+            ZFSerializable *eTmp = e;
+            if(eTmp == zfnull || !eTmp->serializeFromString(elementString)) {
+                return zffalse;
+            }
+            void *eGeneric = elementType->genericAccess(e);
+            if(eGeneric == zfnull) {
+                return zffalse;
+            }
+            v.genericAdd(eGeneric);
+            elementType->genericAccessFinish(e, eGeneric);
+        }
+    }
+    return zftrue;
+}
+zfbool _ZFP_ZFCoreArrayToString(
+        ZF_IN const ZFTypeInfo *elementType
+        , ZF_OUT zfstring &s
+        , ZF_IN ZFCoreArrayBase const &v
+        ) {
+    s += "[";
+    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+        for(zfindex i = 0; i < v.count(); ++i) {
+            if(i != 0) {
+                s += ",";
+            }
+            zfauto e;
+            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+                return zffalse;
+            }
+            ZFTypeIdWrapper *eTmp = e;
+            if(eTmp == zfnull) {
+                return zffalse;
+            }
+            zfstring elementString;
+            if(!eTmp->wrappedValueToString(elementString)) {
+                return zffalse;
+            }
+            zfCoreDataEncode(s, elementString.cString(), elementString.length());
+        }
+    }
+    else {
+        for(zfindex i = 0; i < v.count(); ++i) {
+            if(i != 0) {
+                s += ",";
+            }
+            zfauto e;
+            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+                return zffalse;
+            }
+            ZFSerializable *eTmp = e;
+            if(eTmp == zfnull) {
+                return zffalse;
+            }
+            zfstring elementString;
+            if(!eTmp->serializeToString(elementString)) {
+                return zffalse;
+            }
+            zfCoreDataEncode(s, elementString.cString(), elementString.length());
+        }
+    }
+    s += "]";
+    return zftrue;
+}
+zfbool _ZFP_ZFCoreArrayFromData(
+        ZF_IN const ZFTypeInfo *elementType
+        , ZF_IN_OUT ZFCoreArrayBase &v
+        , ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
+        ) {
+    v.removeAll();
+    if(!ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCoreArray(), outErrorHint, outErrorPos)) {
+        return zffalse;
+    }
+    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+        for(zfindex i = 0; i < serializableData.childCount(); ++i) {
+            const ZFSerializableData &element = serializableData.childAt(i);
+            if(element.resolved()) {
+                continue;
+            }
+            zfauto e = elementType->typeIdClass()->newInstance();
+            ZFTypeIdWrapper *eTmp = e;
+            if(eTmp == zfnull || !eTmp->wrappedValueFromData(element, outErrorHint, outErrorPos)) {
+                return zffalse;
+            }
+            void *eGeneric = elementType->genericAccess(e);
+            if(eGeneric == zfnull) {
+                return zffalse;
+            }
+            v.genericAdd(eGeneric);
+            elementType->genericAccessFinish(e, eGeneric);
+        }
+    }
+    else {
+        for(zfindex i = 0; i < serializableData.childCount(); ++i) {
+            const ZFSerializableData &element = serializableData.childAt(i);
+            if(element.resolved()) {
+                continue;
+            }
+            zfauto e = elementType->typeIdClass()->newInstance();
+            ZFSerializable *eTmp = e;
+            if(eTmp == zfnull || !eTmp->serializeFromData(element, outErrorHint, outErrorPos)) {
+                return zffalse;
+            }
+            void *eGeneric = elementType->genericAccess(e);
+            if(eGeneric == zfnull) {
+                return zffalse;
+            }
+            v.genericAdd(eGeneric);
+            elementType->genericAccessFinish(e, eGeneric);
+        }
+    }
+    return zftrue;
+}
+zfbool _ZFP_ZFCoreArrayToData(
+        ZF_IN const ZFTypeInfo *elementType
+        , ZF_OUT ZFSerializableData &serializableData
+        , ZF_IN ZFCoreArrayBase const &v
+        , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
+        ) {
+    serializableData.itemClass(ZFTypeId_ZFCoreArray());
+    if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+        for(zfindex i = 0; i < v.count(); ++i) {
+            zfauto e;
+            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+                return zffalse;
+            }
+            ZFTypeIdWrapper *eTmp = e;
+            if(eTmp == zfnull) {
+                return zffalse;
+            }
+            ZFSerializableData element;
+            if(!eTmp->wrappedValueToData(element, outErrorHint)) {
+                return zffalse;
+            }
+            serializableData.childAdd(element);
+        }
+    }
+    else {
+        for(zfindex i = 0; i < v.count(); ++i) {
+            zfauto e;
+            if(!elementType->genericValueStore(e, v.genericGet(i))) {
+                return zffalse;
+            }
+            ZFSerializable *eTmp = e;
+            if(eTmp == zfnull) {
+                return zffalse;
+            }
+            ZFSerializableData element;
+            if(!eTmp->serializeToData(element, outErrorHint)) {
+                return zffalse;
+            }
+            serializableData.childAdd(element);
+        }
+    }
+    return zftrue;
 }
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, void, copyFrom
-        , ZFMP_IN(const ZFCoreArray<zfauto> &, ref)
+// ============================================================
+_ZFP_ZFTYPEID_ID_DATA_REGISTER(ZFCoreArray, ZFCoreArray<zfauto>)
+
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, copyFrom
+        , ZFMP_IN(v_ZFCoreArray *, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, ZFCompareResult, objectCompare
-        , ZFMP_IN(const ZFCoreArray<zfauto> &, ref)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFCoreArray, void, objectInfoOfContentT
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(v_ZFCoreArray, void, objectInfoOfContentT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
         , ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCoreArray, zfstring, objectInfoOfContent
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, zfstring, objectInfoOfContent
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
         , ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault())
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfbool, isPODType)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, void, capacity
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfbool, isPODType)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, capacity
         , ZFMP_IN(zfindex, newCapacity)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, void, capacityTrim)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfindex, capacity)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, void, add
-        , ZFMP_IN(zfauto const &, e)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, capacityTrim)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfindex, capacity)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, add
+        , ZFMP_IN(ZFObject *, e)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCoreArray, void, add
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, add
         , ZFMP_IN(zfindex, index)
-        , ZFMP_IN(zfauto const &, e)
+        , ZFMP_IN(ZFObject *, e)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, void, addFrom
-        , ZFMP_IN(const ZFCoreArray<zfauto> &, ref)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, addFrom
+        , ZFMP_IN(v_ZFCoreArray *, ref)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, zfindex, find
-        , ZFMP_IN(zfauto const &, e)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, zfindex, findReversely
-        , ZFMP_IN(zfauto const &, e)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, zfbool, removeElement
-        , ZFMP_IN(zfauto const &, e)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, zfbool, removeElementReversely
-        , ZFMP_IN(zfauto const &, e)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, zfindex, removeElementAll
-        , ZFMP_IN(zfauto const &, e)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, void, remove
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, remove
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCoreArray, void, remove
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, remove
         , ZFMP_IN(zfindex, index)
         , ZFMP_IN(zfindex, count)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, void, removeFirst)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfauto, removeFirstAndGet)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, void, removeLast)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfauto, removeLastAndGet)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, void, removeAll)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCoreArray, void, move
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, removeFirst)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, removeLast)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, void, removeAll)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, move
         , ZFMP_IN(zfindex, fromIndex)
         , ZFMP_IN(zfindex, toIndexOrIndexMax)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCoreArray, void, set
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, set
         , ZFMP_IN(zfindex, index)
-        , ZFMP_IN(zfauto const &, e)
+        , ZFMP_IN(ZFObject *, e)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCoreArray, zfauto &, get
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, zfauto, get
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfauto const &, getFirst)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfauto const &, getLast)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfindex, count)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCoreArray, zfbool, isEmpty)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, getFirst)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfauto, getLast)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfindex, count)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfbool, isEmpty)
 
 ZF_NAMESPACE_GLOBAL_END
 

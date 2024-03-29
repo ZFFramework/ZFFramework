@@ -94,6 +94,30 @@ public:
     virtual const ZFClass *typeIdClass(void) const {
         return this->enumClass;
     }
+
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        obj = enumClass->newInstance();
+        ZFEnum *p = obj;
+        if(p == zfnull) {
+            return zffalse;
+        }
+        p->enumValue(*(const zfuint *)v);
+        return zftrue;
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        ZFEnum *p = obj;
+        if(p == zfnull) {
+            return zfnull;
+        }
+        return (void *)zfnew(zfuint, p->enumValue());
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((zfuint *)v);
+    }
 };
 
 // ============================================================

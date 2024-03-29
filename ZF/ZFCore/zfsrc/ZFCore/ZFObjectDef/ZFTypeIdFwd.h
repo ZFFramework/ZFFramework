@@ -52,6 +52,33 @@ public:
      *   a proper #ZFTypeIdWrapper would be returned
      */
     virtual const ZFClass *typeIdClass(void) const zfpurevirtual;
+
+public:
+    /**
+     * @brief advanced generic value access
+     *
+     * note:
+     * -  this is raw access without type check,
+     *   you must ensure the access is valid
+     * -  since aliased type (#ZFTYPEID_ALIAS_DECLARE) share same base #ZFTypeInfo,
+     *   the type returned from #ZFTypeInfoForName won't work and always result to crash for aliased type,
+     *   it's recommended to access by creating new instance of #ZFTypeId,
+     *   instead of access by #ZFTypeInfoForName
+     *
+     * when access:
+     * -  for ZFObject type
+     *   -  obj: should store the ZFObject itself
+     *   -  v: must be a pointer to `T_Type` of `ZFTypeId<T_Type>`,
+     *     e.g. `zfauto`, `zfweakT<SomeZFObject>`, `SomeZFObject *`
+     * -  for non-ZFObject type
+     *   -  obj: should store the proper #ZFTypeIdWrapper
+     *   -  v: must be a pointer to `T_Type` of `ZFTypeId<T_Type>`
+     */
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const zfpurevirtual;
+    /** @brief see #genericValueStore */
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const zfpurevirtual;
+    /** @brief see #genericValueStore */
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const zfpurevirtual;
 };
 
 // ============================================================
@@ -473,6 +500,23 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
+    public: \
+        zfoverride \
+        virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
+            return ValueStore(obj, *(const _ZFP_PropTypeW_##TypeName *)v); \
+        } \
+        zfoverride \
+        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+            if(!Value<_ZFP_PropTypeW_##TypeName>::zfvAccessAvailable(obj)) { \
+                return zfnull; \
+            } \
+            return (void *)zfnew(_ZFP_PropTypeW_##TypeName, Value<_ZFP_PropTypeW_##TypeName>::zfvAccess(obj)); \
+        } \
+        zfoverride \
+        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
+            zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
+            Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
+        } \
     }; \
     /** @endcond */
 
@@ -551,6 +595,23 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
+    public: \
+        zfoverride \
+        virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
+            return ValueStore(obj, *(const _ZFP_PropTypeW_##TypeName *)v); \
+        } \
+        zfoverride \
+        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+            if(!Value<_ZFP_PropTypeW_##TypeName>::zfvAccessAvailable(obj)) { \
+                return zfnull; \
+            } \
+            return (void *)zfnew(_ZFP_PropTypeW_##TypeName, Value<_ZFP_PropTypeW_##TypeName>::zfvAccess(obj)); \
+        } \
+        zfoverride \
+        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
+            zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
+            Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
+        } \
     }; \
     /** @endcond */
 
@@ -596,6 +657,18 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
         }; \
+    public: \
+        zfoverride \
+        virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
+            return zffalse; \
+        } \
+        zfoverride \
+        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+            return zfnull; \
+        } \
+        zfoverride \
+        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
+        } \
     }; \
     /** @endcond */
 
@@ -633,6 +706,23 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return ZFTypeId<AliasToType>::ValueStore(obj, (AliasToType)v); \
         } \
         TypeIdValueConversion(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+    public: \
+        zfoverride \
+        virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
+            return ValueStore(obj, *(const _ZFP_PropTypeW_##TypeName *)v); \
+        } \
+        zfoverride \
+        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+            if(!Value<_ZFP_PropTypeW_##TypeName>::zfvAccessAvailable(obj)) { \
+                return zfnull; \
+            } \
+            return (void *)zfnew(_ZFP_PropTypeW_##TypeName, Value<_ZFP_PropTypeW_##TypeName>::zfvAccess(obj)); \
+        } \
+        zfoverride \
+        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
+            zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
+            Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
+        } \
     }; \
     /** @endcond */ \
     /** @brief type wrapper for #ZFTypeId::Value */ \

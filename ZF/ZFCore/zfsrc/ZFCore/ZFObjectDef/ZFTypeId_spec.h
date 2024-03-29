@@ -51,6 +51,18 @@ public:
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return zffalse;
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        return zfnull;
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+    }
 };
 /** @endcond */
 
@@ -59,6 +71,8 @@ public:
 /** @cond ZFPrivateDoc */
 template<typename T_Type>
 zfclassNotPOD ZFTypeId<T_Type, 1, 1> : zfextend ZFTypeInfo {
+private:
+    typedef typename zftTraits<T_Type>::TrType _ZFP_T_ZFObject;
 public:
     enum {
         TypeIdRegistered = 1,
@@ -77,7 +91,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return typename zftTraits<T_Type>::TrType::ClassData();
+        return _ZFP_T_ZFObject::ClassData();
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
@@ -151,7 +165,7 @@ public:
             *holder = ZFCastZFObject(T_Type, obj);
             _ZFP_PropAliasAttach(obj, holder,
                 zfsConnectLineFree(
-                    typename zftTraits<_TrNoRef>::TrType::ClassData()->classNameFull(),
+                    _ZFP_T_ZFObject::ClassData()->classNameFull(),
                     ":",
                     zftTraits<T_Access>::ModifierName()),
                 _ZFP_PropAliasOnDetach);
@@ -163,7 +177,7 @@ public:
             }
             _ZFP_PropAliasAttach(obj,
                 zfsConnectLineFree(
-                    typename zftTraits<_TrNoRef>::TrType::ClassData()->classNameFull(),
+                    _ZFP_T_ZFObject::ClassData()->classNameFull(),
                     ":",
                     zftTraits<T_Access>::ModifierName())
                 );
@@ -177,6 +191,23 @@ public:
             zfdelete(vTmp);
         }
     };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return ValueStore(obj, *(const T_Type *)v);
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        if(!Value<T_Type>::zfvAccessAvailable(obj)) {
+            return zfnull;
+        }
+        return (void *)zfnew(T_Type, Value<T_Type>::zfvAccess(obj));
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((T_Type *)v);
+        Value<T_Type>::zfvAccessFinish(obj);
+    }
 };
 /** @endcond */
 
@@ -246,6 +277,23 @@ public:
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return ValueStore(obj, *(const zfauto *)v);
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        if(!Value<zfauto>::zfvAccessAvailable(obj)) {
+            return zfnull;
+        }
+        return (void *)zfnew(zfauto, Value<zfauto>::zfvAccess(obj));
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((zfauto *)v);
+        Value<zfauto>::zfvAccessFinish(obj);
+    }
 };
 /** @endcond */
 
@@ -254,6 +302,8 @@ public:
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObject>
 zfclassNotPOD ZFTypeId<zfautoT<T_ZFObject>, 0, 0> : zfextend ZFTypeInfo {
+private:
+    typedef typename zftTraits<T_ZFObject>::TrType _ZFP_T_ZFObject;
 public:
     enum {
         TypeIdRegistered = 1,
@@ -272,7 +322,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return typename zftTraits<T_ZFObject>::TrType::ClassData();
+        return _ZFP_T_ZFObject::ClassData();
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
@@ -314,6 +364,23 @@ public:
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return ValueStore(obj, *(const zfautoT<T_ZFObject> *)v);
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        if(!Value<zfautoT<T_ZFObject>>::zfvAccessAvailable(obj)) {
+            return zfnull;
+        }
+        return (void *)zfnew(zfautoT<T_ZFObject>, Value<zfautoT<T_ZFObject>>::zfvAccess(obj));
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((zfautoT<T_ZFObject> *)v);
+        Value<zfautoT<T_ZFObject>>::zfvAccessFinish(obj);
+    }
 };
 /** @endcond */
 
@@ -385,6 +452,23 @@ public:
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return ValueStore(obj, *(const ZFAny *)v);
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        if(!Value<ZFAny>::zfvAccessAvailable(obj)) {
+            return zfnull;
+        }
+        return (void *)zfnew(ZFAny, Value<ZFAny>::zfvAccess(obj));
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((ZFAny *)v);
+        Value<ZFAny>::zfvAccessFinish(obj);
+    }
 };
 /** @endcond */
 
@@ -394,6 +478,7 @@ public:
 template<typename T_Type>
 zfclassNotPOD ZFTypeId<T_Type *, 0, 1> : zfextend ZFTypeInfo {
 public:
+    typedef T_Type * T_TypePtr;
     typedef typename zftTraits<T_Type *>::TrType T_Type_;
 public:
     enum {
@@ -464,6 +549,23 @@ public:
             }
         }
     };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return ValueStore(obj, *(const T_TypePtr *)v);
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        if(!Value<T_TypePtr>::zfvAccessAvailable(obj)) {
+            return zfnull;
+        }
+        return (void *)zfnew(T_TypePtr, Value<T_TypePtr>::zfvAccess(obj));
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((T_TypePtr *)v);
+        Value<T_TypePtr>::zfvAccessFinish(obj);
+    }
 };
 /** @endcond */
 

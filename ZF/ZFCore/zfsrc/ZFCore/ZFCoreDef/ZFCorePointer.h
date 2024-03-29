@@ -184,12 +184,15 @@ public:
      * @brief set the pointer value
      */
     inline void pointerValue(ZF_IN T_Pointer const &value) {
-        if(d->pointerValue != zfnull) {
-            T_ZFCorePointerType::pointerOnDelete(d->pointerValue);
-        }
-        d->pointerValue = value;
-        if(value) {
-            T_ZFCorePointerType::pointerOnRetain(d->pointerValue);
+        if(d->pointerValue != value) {
+            T_Pointer pointerValueOld = d->pointerValue;
+            d->pointerValue = value;
+            if(value) {
+                T_ZFCorePointerType::pointerOnRetain(d->pointerValue);
+            }
+            if(pointerValueOld != zfnull) {
+                T_ZFCorePointerType::pointerOnDelete(pointerValueOld);
+            }
         }
     }
     /**
@@ -201,8 +204,14 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    inline T_Pointer const & operator -> (void) const {
+    inline T_Pointer operator -> (void) const {
         return d->pointerValue;
+    }
+    inline zfbool operator == (ZF_IN zfnullT const &p) const {
+        return (d->pointerValue == p);
+    }
+    inline zfbool operator != (ZF_IN zfnullT const &p) const {
+        return (d->pointerValue != p);
     }
     inline zfbool operator == (ZF_IN T_Pointer const &p) const {
         return (d->pointerValue == p);
@@ -210,10 +219,10 @@ public:
     inline zfbool operator != (ZF_IN T_Pointer const &p) const {
         return (d->pointerValue != p);
     }
-    inline zfbool operator == (ZF_IN const ZFCorePointer<T_Pointer, T_ZFCorePointerType> &ref) {
+    inline zfbool operator == (ZF_IN ZFCorePointer<T_Pointer, T_ZFCorePointerType> const &ref) const {
         return (d->pointerValue == ref.d->pointerValue);
     }
-    inline zfbool operator != (ZF_IN const ZFCorePointer<T_Pointer, T_ZFCorePointerType> &ref) {
+    inline zfbool operator != (ZF_IN ZFCorePointer<T_Pointer, T_ZFCorePointerType> const &ref) const {
         return (d->pointerValue == ref.d->pointerValue);
     }
     /** @endcond */
@@ -221,6 +230,10 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     ZFCorePointer(void)
+    : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
+    {
+    }
+    ZFCorePointer(ZF_IN zfnullT const &value)
     : d(zfnew(_ZFP_ZFCorePointerPrivate<T_Pointer>))
     {
     }
@@ -260,7 +273,7 @@ public:
         this->pointerValue(value);
         return *this;
     }
-    operator T_Pointer const & (void) const {
+    operator T_Pointer (void) const {
         return d->pointerValue;
     }
     /** @endcond */
@@ -332,37 +345,41 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
  * @endcode
  */
 #define ZFCOREPOINTER_DECLARE(T_ZFCorePointer, pointerRetainAction, pointerDeleteAction) \
-    template<typename T_Type> \
+    template<typename T_Pointer> \
     zfclassNotPOD _ZFP_CPT_##T_ZFCorePointer { \
     public: \
-        static inline void pointerOnRetain(T_Type const &p) \
+        static inline void pointerOnRetain(T_Pointer const &p) \
         pointerRetainAction \
-        static inline void pointerOnDelete(T_Type const &p) \
+        static inline void pointerOnDelete(T_Pointer const &p) \
         pointerDeleteAction \
     }; \
     /** @brief see #ZFCorePointer */ \
-    template<typename T_Type> \
-    zfclassLikePOD T_ZFCorePointer : zfextend ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> > { \
+    template<typename T_Pointer> \
+    zfclassLikePOD T_ZFCorePointer : zfextend ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > { \
     public: \
         /** @cond ZFPrivateDoc */ \
         T_ZFCorePointer(void) \
-        : ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> >() \
+        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >() \
         { \
         } \
-        T_ZFCorePointer(T_Type const &value) \
-        : ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> >(value) \
+        T_ZFCorePointer(ZF_IN T_Pointer const &value) \
+        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >(value) \
         { \
         } \
-        T_ZFCorePointer(ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> > const &ref) \
-        : ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> >(ref) \
+        T_ZFCorePointer(ZF_IN zfnullT const &value) \
+        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >() \
         { \
         } \
-        T_ZFCorePointer<T_Type> &operator = (T_Type const &value) { \
-            ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> >::operator = (value); \
+        T_ZFCorePointer(ZF_IN ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > const &ref) \
+        : ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >(ref) \
+        { \
+        } \
+        T_ZFCorePointer<T_Pointer> &operator = (ZF_IN T_Pointer const &value) { \
+            ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >::operator = (value); \
             return *this; \
         } \
-        T_ZFCorePointer<T_Type> &operator = (ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> > const &ref) { \
-            ZFCorePointer<T_Type, _ZFP_CPT_##T_ZFCorePointer<T_Type> >::operator = (ref); \
+        T_ZFCorePointer<T_Pointer> &operator = (ZF_IN ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> > const &ref) { \
+            ZFCorePointer<T_Pointer, _ZFP_CPT_##T_ZFCorePointer<T_Pointer> >::operator = (ref); \
             return *this; \
         } \
         template<typename T_PointerDesired> \
@@ -372,6 +389,24 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
         template<typename T_Ref> \
         inline T_Ref operator *(void) const { \
             return *(this->pointerValue()); \
+        } \
+        inline zfbool operator == (ZF_IN zfnullT const &p) const { \
+            return (this->pointerValue() == p); \
+        } \
+        inline zfbool operator != (ZF_IN zfnullT const &p) const { \
+            return (this->pointerValue() != p); \
+        } \
+        inline zfbool operator == (ZF_IN T_Pointer const &p) const { \
+            return (this->pointerValue() == p); \
+        } \
+        inline zfbool operator != (ZF_IN T_Pointer const &p) const { \
+            return (this->pointerValue() != p); \
+        } \
+        inline zfbool operator == (ZF_IN T_ZFCorePointer<T_Pointer> const &ref) const { \
+            return (this->pointerValue() == ref.pointerValue()); \
+        } \
+        inline zfbool operator != (ZF_IN T_ZFCorePointer<T_Pointer> const &ref) const { \
+            return (this->pointerValue() == ref.pointerValue()); \
         } \
         /** @endcond */ \
     }; \

@@ -112,6 +112,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 zfdelete(vTmp); \
             } \
         }; \
+        zfoverride \
+        virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
+            return ValueStore(obj, *(const EnumName##Enum *)v); \
+        } \
+        zfoverride \
+        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+            if(!Value<EnumName##Enum>::zfvAccessAvailable(obj)) { \
+                return zfnull; \
+            } \
+            return (void *)zfnew(EnumName##Enum, Value<EnumName##Enum>::zfvAccess(obj)); \
+        } \
+        zfoverride \
+        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
+            zfdelete((EnumName##Enum *)v); \
+            Value<EnumName##Enum>::zfvAccessFinish(obj); \
+        } \
     }; \
     /** @endcond */
 
@@ -262,6 +278,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 zfdelete(vTmp); \
             } \
         }; \
+        zfoverride \
+        virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const { \
+            return ValueStore(obj, *(const EnumFlagsName *)v); \
+        } \
+        zfoverride \
+        virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const { \
+            if(!Value<EnumFlagsName>::zfvAccessAvailable(obj)) { \
+                return zfnull; \
+            } \
+            return (void *)zfnew(EnumFlagsName, Value<EnumFlagsName>::zfvAccess(obj)); \
+        } \
+        zfoverride \
+        virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
+            zfdelete((EnumFlagsName *)v); \
+            Value<EnumFlagsName>::zfvAccessFinish(obj); \
+        } \
     }; \
     /** @endcond */
 
