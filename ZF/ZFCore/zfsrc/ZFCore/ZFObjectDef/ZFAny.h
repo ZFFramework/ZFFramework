@@ -28,6 +28,10 @@ zfclassFwd ZFObjectHolder;
  *   // or use toObject
  *   ZFObject *orig = any.toObject();
  * @endcode
+ *
+ * note: ZFAny stores raw ZFObject pointer,
+ * use #zfauto or #zfweak for most case,
+ * use ZFAny only if necessary
  */
 zfclassLikePOD ZFLIB_ZFCore ZFAny {
     /** @cond ZFPrivateDoc */
@@ -91,7 +95,7 @@ public:
         , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
         >
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
+        return this->toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
     }
 
 public:

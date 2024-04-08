@@ -56,16 +56,20 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFResExtPathCheck
         , ZFMP_OUT(ZFPathInfo &, resExtPath)
         , ZFMP_IN(const zfchar *, resPath)
         ) {
-    zfCoreMutexLocker();
+    zfCoreMutexLock();
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
         ZFPathInfo t = l[i];
+        zfCoreMutexUnlock();
         ZFPathInfoToChild(t, t.pathData, resPath);
         if(ZFPathInfoIsExist(t)) {
+            zfCoreMutexLocker();
             resExtPath = (l[i]);
             return zftrue;
         }
+        zfCoreMutexLock();
     }
+    zfCoreMutexUnlock();
     return zffalse;
 }
 zfclassNotPOD _ZFP_ZFResExtKeyCmp {
@@ -81,7 +85,7 @@ static zfbool _ZFP_ZFResExtPathCheck(
         , ZF_IN const zfchar *resPath
         , ZF_IN_OUT _ZFP_ZFResExtMap &m
         ) {
-    zfCoreMutexLocker();
+    zfCoreMutexLock();
     ZFCoreArray<ZFPathInfo> &l = _ZFP_ZFResExtPathList;
     for(zfindex i = 0; i < l.count(); ++i) {
         if(m.find(l[i]) != m.end()) {
@@ -89,12 +93,16 @@ static zfbool _ZFP_ZFResExtPathCheck(
         }
         m[l[i]] = zftrue;
         ZFPathInfo t = l[i];
+        zfCoreMutexUnlock();
         ZFPathInfoToChild(t, t.pathData, resPath);
         if(ZFPathInfoIsExist(t)) {
+            zfCoreMutexLocker();
             resExtPath = (l[i]);
             return zftrue;
         }
+        zfCoreMutexLock();
     }
+    zfCoreMutexUnlock();
     return zffalse;
 }
 

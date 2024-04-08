@@ -117,7 +117,7 @@ public:
         , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
         >
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
+        return this->toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
     }
 
 public:
@@ -251,7 +251,7 @@ public:
         , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
         >
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
+        return this->toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
     }
 
 public:
