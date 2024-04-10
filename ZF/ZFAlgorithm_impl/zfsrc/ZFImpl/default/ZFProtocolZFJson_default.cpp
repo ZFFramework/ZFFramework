@@ -54,14 +54,14 @@ public:
 private:
     ZFJson jsonParse(ZF_IN_OUT ZFBuffer &buf) {
         if(buf.buffer() == zfnull) {
-            return ZFJson();
+            return zfnull;
         }
         _ZFP_ZFJsonImpl_default_MemoryPoolHolder *docHolder = zfnew(_ZFP_ZFJsonImpl_default_MemoryPoolHolder);
         docHolder->buf = buf;
         docHolder->implJsonDoc.ParseInsitu<rapidjson::kParseNumbersAsStringsFlag>(buf.text());
         if(docHolder->implJsonDoc.HasParseError()) {
             zfdelete(docHolder);
-            return ZFJson();
+            return zfnull;
         }
         ZFJson ret = this->jsonConvert(docHolder->implJsonDoc, docHolder);
         if(docHolder->docRefCount == 0) {
@@ -76,7 +76,7 @@ private:
             ) {
         switch(implJsonItem.GetType()) {
             case rapidjson::kNullType:
-                return ZFJson();
+                return zfnull;
             case rapidjson::kFalseType:
             case rapidjson::kTrueType:
             case rapidjson::kStringType:
@@ -97,7 +97,7 @@ private:
                 for(rapidjson::Value::ConstValueIterator it = implJsonItem.Begin(); it != implJsonItem.End(); ++it) {
                     ZFJson jsonChild = this->jsonConvert(*it, docHolder);
                     if(!jsonChild) {
-                        return ZFJson();
+                        return zfnull;
                     }
                     jsonArray.childAdd(jsonChild);
                 }
@@ -108,7 +108,7 @@ private:
                 for(rapidjson::Value::ConstMemberIterator it = implJsonItem.MemberBegin(); it != implJsonItem.MemberEnd(); ++it) {
                     ZFJson jsonChild = this->jsonConvert(it->value, docHolder);
                     if(!jsonChild) {
-                        return ZFJson();
+                        return zfnull;
                     }
                     ++(docHolder->docRefCount);
                     this->jsonMemoryPool_jsonItem(jsonObject, it->name.GetString(), docHolder, jsonChild);
@@ -117,7 +117,7 @@ private:
             }
             default:
                 zfCoreCriticalShouldNotGoHere();
-                return ZFJson();
+                return zfnull;
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFJsonImpl_default)

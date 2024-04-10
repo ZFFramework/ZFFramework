@@ -1135,7 +1135,7 @@ ZFXml &ZFXml::attrRemoveAll(void) {
 
 ZFXml ZFXml::attr(ZF_IN const zfchar *name) const {
     if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name)) {
-        return ZFXml();
+        return zfnull;
     }
 
     for(_ZFP_ZFXmlPrivate *xmlAttribute = d->attrFirst; xmlAttribute != zfnull; xmlAttribute = xmlAttribute->siblingNext) {
@@ -1143,7 +1143,7 @@ ZFXml ZFXml::attr(ZF_IN const zfchar *name) const {
             return ZFXml(xmlAttribute);
         }
     }
-    return ZFXml();
+    return zfnull;
 }
 const zfchar *ZFXml::attrValue(ZF_IN const zfchar *name) const {
     if(d == zfnull || d->attrFirst == zfnull || zfstringIsEmpty(name)) {
@@ -1242,7 +1242,7 @@ ZFXml ZFXml::childFirst(
         , ZF_IN_OPT const ZFXml *afterThis /* = zfnull */
         ) const {
     if(d == zfnull) {
-        return ZFXml();
+        return zfnull;
     }
     _ZFP_ZFXmlPrivate *xmlChild = (afterThis != zfnull && afterThis->d && afterThis->d->xmlParent == d && afterThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? afterThis->d->siblingNext
@@ -1263,7 +1263,7 @@ ZFXml ZFXml::childLast(
         , ZF_IN_OPT const ZFXml *beforeThis /* = zfnull */
         ) const {
     if(d == zfnull) {
-        return ZFXml();
+        return zfnull;
     }
     _ZFP_ZFXmlPrivate *xmlChild = (beforeThis != zfnull && beforeThis->d && beforeThis->d->xmlParent == d && beforeThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? beforeThis->d->siblingPrev
@@ -1284,7 +1284,7 @@ ZFXml ZFXml::childFirstElement(
         , ZF_IN_OPT const ZFXml *afterThis /* = zfnull */
         ) const {
     if(d == zfnull) {
-        return ZFXml();
+        return zfnull;
     }
     _ZFP_ZFXmlPrivate *xmlChild = (afterThis != zfnull && afterThis->d && afterThis->d->xmlParent == d && afterThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? afterThis->d->siblingNext
@@ -1305,7 +1305,7 @@ ZFXml ZFXml::childLastElement(
         , ZF_IN_OPT const ZFXml *beforeThis /* = zfnull */
         ) const {
     if(d == zfnull) {
-        return ZFXml();
+        return zfnull;
     }
     _ZFP_ZFXmlPrivate *xmlChild = (beforeThis != zfnull && beforeThis->d && beforeThis->d->xmlParent == d && beforeThis->xmlType() != ZFXmlType::e_XmlAttribute)
         ? beforeThis->d->siblingPrev
@@ -1324,7 +1324,7 @@ ZFXml ZFXml::childLastElement(
 
 ZFXml ZFXml::siblingNext(ZF_IN const zfchar *name /* = zfnull */) const {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute) {
-        return ZFXml();
+        return zfnull;
     }
 
     if(zfstringIsEmpty(name)) {
@@ -1340,7 +1340,7 @@ ZFXml ZFXml::siblingNext(ZF_IN const zfchar *name /* = zfnull */) const {
 }
 ZFXml ZFXml::siblingPrev(ZF_IN const zfchar *name /* = zfnull */) const {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute) {
-        return ZFXml();
+        return zfnull;
     }
 
     if(zfstringIsEmpty(name)) {
@@ -1356,7 +1356,7 @@ ZFXml ZFXml::siblingPrev(ZF_IN const zfchar *name /* = zfnull */) const {
 }
 ZFXml ZFXml::siblingNextElement(ZF_IN const zfchar *name /* = zfnull */) const {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute) {
-        return ZFXml();
+        return zfnull;
     }
 
     if(zfstringIsEmpty(name)) {
@@ -1372,7 +1372,7 @@ ZFXml ZFXml::siblingNextElement(ZF_IN const zfchar *name /* = zfnull */) const {
 }
 ZFXml ZFXml::siblingPrevElement(ZF_IN const zfchar *name /* = zfnull */) const {
     if(d == zfnull || d->xmlType == ZFXmlType::e_XmlAttribute) {
-        return ZFXml();
+        return zfnull;
     }
 
     if(zfstringIsEmpty(name)) {

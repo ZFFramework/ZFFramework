@@ -135,7 +135,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJson, ZFSerializableDataToJson
         ) {
     if(serializableData.itemClass() == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "missing serializable class");
-        return ZFJson();
+        return zfnull;
     }
 
     ZFJson ret(ZFJsonType::e_JsonObject);
@@ -152,7 +152,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFJson, ZFSerializableDataToJson
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         ZFJson child = ZFSerializableDataToJson(serializableData.childAt(i), outErrorHint, outErrorPos);
         if(child.jsonType() == ZFJsonType::e_JsonNull) {
-            return ZFJson();
+            return zfnull;
         }
         elementJsonArray.childAdd(child);
     }

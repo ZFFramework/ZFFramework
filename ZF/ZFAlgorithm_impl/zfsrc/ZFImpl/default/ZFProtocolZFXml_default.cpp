@@ -52,14 +52,14 @@ public:
 private:
     ZFXml xmlParse(ZF_IN_OUT ZFBuffer &buf) {
         if(buf.buffer() == zfnull) {
-            return ZFXml();
+            return zfnull;
         }
         _ZFP_ZFXmlImpl_default_MemoryPoolHolder *docHolder = zfnew(_ZFP_ZFXmlImpl_default_MemoryPoolHolder);
         docHolder->buf = buf;
         pugi::xml_parse_result implResult = docHolder->implXmlDoc.load_buffer_inplace(buf.buffer(), buf.bufferSize(), pugi::parse_full);
         if(implResult.status != pugi::status_ok) {
             zfdelete(docHolder);
-            return ZFXml();
+            return zfnull;
         }
         ZFXml doc(ZFXmlType::e_XmlDocument);
         this->translateChildren(docHolder->implXmlDoc, doc, docHolder);

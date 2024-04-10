@@ -6,6 +6,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPATHTYPE_DEFINE(http)
 
+extern zfbool _ZFP_ZFPathType_http_IsDir(ZF_IN const zfchar *pathData);
+
+extern zfbool _ZFP_ZFPathType_http_FindFirst(
+        ZF_IN_OUT ZFFileFindData &fd
+        , ZF_IN const zfchar *pathData
+        );
+extern zfbool _ZFP_ZFPathType_http_FindNext(ZF_IN_OUT ZFFileFindData &fd);
+extern void _ZFP_ZFPathType_http_FindClose(ZF_IN_OUT ZFFileFindData &fd);
+
 // ============================================================
 // http
 zfclassNotPOD _ZFP_ZFPathType_http {
@@ -96,12 +105,19 @@ public:
 
 public:
     static zfbool callbackIsExist(ZF_IN const zfchar *pathData) {
-        zfblockedAlloc(ZFHttpRequest, send, pathData, ZFHttpMethod::e_HEAD);
+        if(zfstringIsEmpty(pathData)) {
+            return zffalse;
+        }
+        zfstring url = pathData;
+        if(url[url.length() - 1] != '/') {
+            url += '/';
+        }
+        zfblockedAlloc(ZFHttpRequest, send, url, ZFHttpMethod::e_HEAD);
         zfautoT<ZFHttpResponse *> recv = send->requestSync();
         return recv != zfnull && recv->success();
     }
     static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {
-        return zffalse;
+        return _ZFP_ZFPathType_http_IsDir(pathData);
     }
     static zfbool callbackToFileName(
             ZF_IN const zfchar *pathData
@@ -141,12 +157,13 @@ public:
             ZF_IN_OUT ZFFileFindData &fd
             , ZF_IN const zfchar *pathData
             ) {
-        return zffalse;
+        return _ZFP_ZFPathType_http_FindFirst(fd, pathData);
     }
     static zfbool callbackFindNext(ZF_IN_OUT ZFFileFindData &fd) {
-        return zffalse;
+        return _ZFP_ZFPathType_http_FindNext(fd);
     }
     static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd) {
+        _ZFP_ZFPathType_http_FindClose(fd);
     }
     static void *callbackOpen(
             ZF_IN const zfchar *pathData

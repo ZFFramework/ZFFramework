@@ -611,7 +611,7 @@ ZFJson ZFJson::attr(ZF_IN const zfchar *key) const {
             return d->jsonItemMap[index]->jsonItem;
         }
     }
-    return ZFJson();
+    return zfnull;
 }
 const zfchar *ZFJson::attrValue(ZF_IN const zfchar *key) const {
     if(d) {
@@ -693,7 +693,7 @@ ZFJson ZFJson::attrIterValue(ZF_IN const zfiterator &it) const {
         return d->jsonItemMap[*data]->jsonItem;
     }
     else {
-        return ZFJson();
+        return zfnull;
     }
 }
 

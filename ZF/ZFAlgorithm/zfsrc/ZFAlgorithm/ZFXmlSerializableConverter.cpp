@@ -98,7 +98,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
         ) {
     if(serializableData.itemClass() == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "missing serializable class");
-        return ZFXml();
+        return zfnull;
     }
 
     ZFXml ret(ZFXmlType::e_XmlElement);
@@ -115,7 +115,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         ZFXml child = ZFSerializableDataToXml(serializableData.childAt(i), outErrorHint, outErrorPos);
         if(child.xmlType() == ZFXmlType::e_XmlNull) {
-            return ZFXml();
+            return zfnull;
         }
         ret.childAdd(child);
     }
