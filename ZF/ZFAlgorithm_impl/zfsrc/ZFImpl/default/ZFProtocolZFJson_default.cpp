@@ -4,26 +4,9 @@
 #define RAPIDJSON_DEFAULT_ALLOCATOR ::RAPIDJSON_NAMESPACE::MemoryPoolAllocator< ::RAPIDJSON_NAMESPACE::CrtAllocator >
 #include "../_repo/rapidjson/document.h"
 #include "../_repo/rapidjson/reader.h"
+#include "../_repo/rapidjson/error/en.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
-
-zfclassNotPOD _ZFP_ZFJsonImpl_default_MemoryPoolHolder {
-public:
-    /*
-     * as for rapidjson, string values are directly stored in owner document's buffer,
-     * store ref count, init as 0, each child node refering to the doc would inc the ref count
-     */
-    zfindex docRefCount;
-    ZFBuffer buf;
-    rapidjson::Document implJsonDoc;
-public:
-    _ZFP_ZFJsonImpl_default_MemoryPoolHolder(void)
-    : docRefCount(0)
-    , buf()
-    , implJsonDoc()
-    {
-    }
-};
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFJsonImpl_default, ZFJson, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("rapidjson")
@@ -31,49 +14,40 @@ public:
     virtual ZFJson jsonParse(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex size = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         ZFBuffer buf;
         buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
         return this->jsonParse(buf);
     }
-    virtual ZFJson jsonParse(ZF_IN const ZFInput &inputCallback) {
+    virtual ZFJson jsonParse(
+            ZF_IN const ZFInput &inputCallback
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
         ZFBuffer buf;
         ZFInputRead(buf, inputCallback);
         return this->jsonParse(buf);
     }
-    virtual void jsonMemoryPoolRelease(
-            ZF_IN void *token
-            , ZF_IN const zfchar *value
-            ) {
-        _ZFP_ZFJsonImpl_default_MemoryPoolHolder *docHolder = (_ZFP_ZFJsonImpl_default_MemoryPoolHolder *)token;
-        --(docHolder->docRefCount);
-        if(docHolder->docRefCount == 0) {
-            zfdelete(docHolder);
-        }
-    }
 private:
-    ZFJson jsonParse(ZF_IN_OUT ZFBuffer &buf) {
+    ZFJson jsonParse(
+            ZF_IN_OUT ZFBuffer &buf
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
         if(buf.buffer() == zfnull) {
             return zfnull;
         }
-        _ZFP_ZFJsonImpl_default_MemoryPoolHolder *docHolder = zfnew(_ZFP_ZFJsonImpl_default_MemoryPoolHolder);
-        docHolder->buf = buf;
-        docHolder->implJsonDoc.ParseInsitu<rapidjson::kParseNumbersAsStringsFlag>(buf.text());
-        if(docHolder->implJsonDoc.HasParseError()) {
-            zfdelete(docHolder);
+        rapidjson::Document implJsonDoc;
+        implJsonDoc.ParseInsitu<rapidjson::kParseNumbersAsStringsFlag>(buf.text());
+        if(implJsonDoc.HasParseError()) {
+            if(errorHint) {
+                *errorHint += rapidjson::GetParseError_En(implJsonDoc.GetParseError());
+            }
             return zfnull;
         }
-        ZFJson ret = this->jsonConvert(docHolder->implJsonDoc, docHolder);
-        if(docHolder->docRefCount == 0) {
-            zfdelete(docHolder);
-        }
-        return ret;
+        return this->jsonConvert(implJsonDoc);
     }
 private:
-    ZFJson jsonConvert(
-            ZF_IN const rapidjson::Value &implJsonItem
-            , ZF_IN _ZFP_ZFJsonImpl_default_MemoryPoolHolder *docHolder
-            ) {
+    ZFJson jsonConvert(ZF_IN const rapidjson::Value &implJsonItem) {
         switch(implJsonItem.GetType()) {
             case rapidjson::kNullType:
                 return zfnull;
@@ -82,20 +56,14 @@ private:
             case rapidjson::kStringType:
             case rapidjson::kNumberType: {
                 ZFJson jsonValue(ZFJsonType::e_JsonValue);
-                ++(docHolder->docRefCount);
                 const char *implString = implJsonItem.GetString();
-                if(implString[implJsonItem.GetStringLength()] == '\0') {
-                    this->jsonMemoryPool_jsonValue(jsonValue, implString, docHolder);
-                }
-                else {
-                    jsonValue.jsonValue(zfstring(implString, implJsonItem.GetStringLength()));
-                }
+                jsonValue.jsonValue(zfstring(implString, implJsonItem.GetStringLength()));
                 return jsonValue;
             }
             case rapidjson::kArrayType: {
                 ZFJson jsonArray(ZFJsonType::e_JsonArray);
                 for(rapidjson::Value::ConstValueIterator it = implJsonItem.Begin(); it != implJsonItem.End(); ++it) {
-                    ZFJson jsonChild = this->jsonConvert(*it, docHolder);
+                    ZFJson jsonChild = this->jsonConvert(*it);
                     if(!jsonChild) {
                         return zfnull;
                     }
@@ -106,12 +74,11 @@ private:
             case rapidjson::kObjectType: {
                 ZFJson jsonObject(ZFJsonType::e_JsonObject);
                 for(rapidjson::Value::ConstMemberIterator it = implJsonItem.MemberBegin(); it != implJsonItem.MemberEnd(); ++it) {
-                    ZFJson jsonChild = this->jsonConvert(it->value, docHolder);
+                    ZFJson jsonChild = this->jsonConvert(it->value);
                     if(!jsonChild) {
                         return zfnull;
                     }
-                    ++(docHolder->docRefCount);
-                    this->jsonMemoryPool_jsonItem(jsonObject, it->name.GetString(), docHolder, jsonChild);
+                    jsonObject.attr(it->name.GetString(), jsonChild);
                 }
                 return jsonObject;
             }

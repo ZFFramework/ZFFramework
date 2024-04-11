@@ -234,17 +234,6 @@ public:
      */
     ZFJson copy(void) const;
 
-public:
-    zffinal void _ZFP_ZFJson_jsonMemoryPool_jsonValue(
-            ZF_IN const zfchar *value
-            , ZF_IN void *token
-            );
-    zffinal void _ZFP_ZFJson_jsonMemoryPool_jsonItem(
-            ZF_IN const zfchar *key
-            , ZF_IN void *token
-            , ZF_IN const ZFJson &jsonItem
-            );
-
     // ============================================================
     // for value type
 public:

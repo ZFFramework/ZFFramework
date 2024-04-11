@@ -2,6 +2,7 @@
 #include "protocol/ZFProtocolZFJson.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstldeque.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -206,209 +207,49 @@ static void _ZFP_ZFJsonToOutput_output(
 }
 
 // ============================================================
-zfclassLikePOD _ZFP_ZFJsonMemoryPoolString {
-private:
-    void *_token;
-    union {
-        zfchar *_s;
-        const zfchar *_sInPool;
-    } _s;
-
-private:
-    _ZFP_ZFJsonMemoryPoolString(ZF_IN const _ZFP_ZFJsonMemoryPoolString &ref);
-    _ZFP_ZFJsonMemoryPoolString &operator = (ZF_IN const _ZFP_ZFJsonMemoryPoolString &ref);
-public:
-    _ZFP_ZFJsonMemoryPoolString(void)
-    : _token(zfnull)
-    , _s()
-    {
-    }
-    _ZFP_ZFJsonMemoryPoolString(ZF_IN const zfchar *s)
-    : _token(zfnull)
-    , _s()
-    {
-        _s._s = zfsCopy(s);
-    }
-    _ZFP_ZFJsonMemoryPoolString(
-            ZF_IN const zfchar *s
-            , ZF_IN void *token
-            )
-    : _token(token)
-    , _s()
-    {
-        _s._sInPool = s;
-    }
-    ~_ZFP_ZFJsonMemoryPoolString(void) {
-        if(_token) {
-            ZFPROTOCOL_ACCESS(ZFJson)->jsonMemoryPoolRelease(_token, _s._sInPool);
-        }
-        else {
-            zffree(_s._s);
-        }
-    }
-
-public:
-    void value(ZF_IN const zfchar *value) {
-        if(_token) {
-            ZFPROTOCOL_ACCESS(ZFJson)->jsonMemoryPoolRelease(_token, _s._sInPool);
-            _token = zfnull;
-            _s._s = zfnull;
-        }
-        zfsChange(_s._s, value);
-    }
-    void value(
-            ZF_IN const zfchar *value
-            , ZF_IN void *token
-            ) {
-        if(_token) {
-            ZFPROTOCOL_ACCESS(ZFJson)->jsonMemoryPoolRelease(_token, _s._sInPool);
-            _token = zfnull;
-            _s._s = zfnull;
-        }
-        else {
-            zffree(_s._s);
-        }
-        _token = token;
-        _s._sInPool = value;
-    }
-    inline const zfchar *value(void) const {
-        return _s._sInPool;
-    }
-};
-zfclassNotPOD _ZFP_ZFJsonData {
-public:
-    _ZFP_ZFJsonMemoryPoolString jsonKey;
-    ZFJson jsonItem;
-public:
-    _ZFP_ZFJsonData(
-            ZF_IN const zfchar *jsonKey
-            , ZF_IN const ZFJson &jsonItem
-            )
-    : jsonKey(jsonKey)
-    , jsonItem(jsonItem)
-    {
-    }
-    _ZFP_ZFJsonData(
-            ZF_IN const zfchar *jsonKey
-            , ZF_IN void *jsonKeyToken
-            , ZF_IN const ZFJson &jsonItem
-            )
-    : jsonKey(jsonKey, jsonKeyToken)
-    , jsonItem(jsonItem)
-    {
-    }
-};
 zfclassNotPOD _ZFP_ZFJsonPrivate {
+public:
+    typedef zfimplmap<zfstring, ZFJson> AttrMap;
+    typedef zfstldeque<ZFJson> ChildList;
 public:
     zfuint refCount;
     ZFJsonTypeEnum jsonType;
-    _ZFP_ZFJsonMemoryPoolString jsonValue;
-    zfstldeque<_ZFP_ZFJsonData *> jsonItemMap;
-    zfstldeque<ZFJson> jsonArrayChildren;
+    union {
+        zfchar *jsonValue; // for ZFJsonType::e_JsonValue
+        AttrMap *attrMap; // for ZFJsonType::e_JsonObject
+        ChildList *childList; // for ZFJsonType::e_JsonArray
+    } d;
 
 public:
     explicit _ZFP_ZFJsonPrivate(ZF_IN ZFJsonTypeEnum jsonType)
     : refCount(1)
     , jsonType(jsonType)
-    , jsonValue()
-    , jsonItemMap()
-    , jsonArrayChildren()
     {
+        d.jsonValue = zfnull;
     }
     ~_ZFP_ZFJsonPrivate(void) {
-        this->jsonItemMapClear();
-    }
-
-public:
-    void jsonItemMapClear(void) {
-        for(zfstlsize i = 0; i < this->jsonItemMap.size(); ++i) {
-            zfdelete(this->jsonItemMap[i]);
-        }
-        this->jsonItemMap.clear();
-    }
-
-    void jsonItemMapAdd(ZF_IN _ZFP_ZFJsonData *jsonItemData) {
-        if(this->jsonItemMap.empty()) {
-            this->jsonItemMap.push_back(jsonItemData);
-            return;
-        }
-        zfstlsize l = 0;
-        zfstlsize r = this->jsonItemMap.size() - 1;
-        zfint cmp = 0;
-        do {
-            zfstlsize i = (l + r) / 2;
-            _ZFP_ZFJsonData *t = this->jsonItemMap[i];
-            cmp = zfscmp(jsonItemData->jsonKey.value(), t->jsonKey.value());
-            if(cmp == 0) {
-                l = i;
+        switch(this->jsonType) {
+            case ZFJsonType::e_JsonNull:
                 break;
-            }
-            if(l == r) {
+            case ZFJsonType::e_JsonValue:
+                if(d.jsonValue) {
+                    zffree(d.jsonValue);
+                }
                 break;
-            }
-
-            if(cmp < 0) {
-                if(i == l) {
-                    break;
+            case ZFJsonType::e_JsonObject:
+                if(d.attrMap) {
+                    zfdelete(d.attrMap);
                 }
-                r = i;
-            }
-            else {
-                if(l == i || i + 1 == r) {
-                    l = i + 1;
-                }
-                else {
-                    l = i;
-                }
-            }
-        } while(zftrue);
-
-        if(cmp == 0) {
-            zfdelete(this->jsonItemMap[l]);
-            this->jsonItemMap[l] = jsonItemData;
-        }
-        else {
-            if(cmp > 0) {
-                ++l;
-            }
-            this->jsonItemMap.insert(this->jsonItemMap.begin() + l, jsonItemData);
-        }
-    }
-
-    zfstlsize jsonItemMapIndex(ZF_IN const zfchar *key) {
-        if(key == zfnull || this->jsonItemMap.empty()) {
-            return (zfstlsize)-1;
-        }
-        zfstlsize l = 0;
-        zfstlsize r = this->jsonItemMap.size() - 1;
-        zfint cmp = -1;
-        do {
-            zfstlsize i = (l + r) / 2;
-            _ZFP_ZFJsonData *t = this->jsonItemMap[i];
-            cmp = zfscmp(key, t->jsonKey.value());
-            if(cmp == 0) {
-                return i;
-            }
-            if(l == r) {
                 break;
-            }
-
-            if(cmp < 0) {
-                if(i == l) {
-                    break;
+            case ZFJsonType::e_JsonArray:
+                if(d.childList) {
+                    zfdelete(d.childList);
                 }
-                r = i;
-            }
-            else {
-                if(l == i || i + 1 == r) {
-                    l = i + 1;
-                }
-                else {
-                    l = i;
-                }
-            }
-        } while(zftrue);
-        return (zfstlsize)-1;
+                break;
+            default:
+                zfCoreCriticalShouldNotGoHere();
+                break;
+        }
     }
 };
 
@@ -426,7 +267,7 @@ ZFJson::ZFJson(void)
 {
 }
 ZFJson::ZFJson(ZF_IN const zfnullT &dummy)
-: d(zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonObject))
+: d(zfnull)
 {
 }
 ZFJson::ZFJson(ZF_IN ZFJsonTypeEnum jsonType) {
@@ -530,31 +371,6 @@ ZFJson ZFJson::copy(void) const {
     return ret;
 }
 
-void ZFJson::_ZFP_ZFJson_jsonMemoryPool_jsonValue(
-        ZF_IN const zfchar *value
-        , ZF_IN void *token
-        ) {
-    if(d == zfnull) {
-        d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonValue);
-    }
-    zfCoreAssert(this->jsonType() == ZFJsonType::e_JsonValue);
-    d->jsonValue.value(value, token);
-}
-void ZFJson::_ZFP_ZFJson_jsonMemoryPool_jsonItem(
-        ZF_IN const zfchar *key
-        , ZF_IN void *token
-        , ZF_IN const ZFJson &jsonItem
-        ) {
-    if(d == zfnull) {
-        d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonObject);
-    }
-    zfCoreAssert(this->jsonType() == ZFJsonType::e_JsonObject);
-    zfCoreAssert(jsonItem);
-    if(key != zfnull) {
-        d->jsonItemMapAdd(zfnew(_ZFP_ZFJsonData, key, token, jsonItem));
-    }
-}
-
 // ============================================================
 // for value type
 ZFJson &ZFJson::jsonValue(ZF_IN const zfchar *value) {
@@ -562,11 +378,11 @@ ZFJson &ZFJson::jsonValue(ZF_IN const zfchar *value) {
         d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonValue);
     }
     zfCoreAssert(this->jsonType() == ZFJsonType::e_JsonValue);
-    d->jsonValue.value(value);
+    zfsChange(d->d.jsonValue, value);
     return *this;
 }
 const zfchar *ZFJson::jsonValue(void) const {
-    return d ? d->jsonValue.value() : zfnull;
+    return d && d->jsonType == ZFJsonType::e_JsonValue ? d->d.jsonValue : zfnull;
 }
 
 // ============================================================
@@ -597,7 +413,10 @@ ZFJson &ZFJson::attr(
     }
     zfCoreAssert(this->jsonType() == ZFJsonType::e_JsonObject);
     if(jsonItem) {
-        d->jsonItemMapAdd(zfnew(_ZFP_ZFJsonData, key, jsonItem));
+        if(d->d.attrMap == zfnull) {
+            d->d.attrMap = zfnew(_ZFP_ZFJsonPrivate::AttrMap);
+        }
+        (*(d->d.attrMap))[key] = jsonItem;
     }
     else {
         this->attrRemove(key);
@@ -605,92 +424,81 @@ ZFJson &ZFJson::attr(
     return *this;
 }
 ZFJson ZFJson::attr(ZF_IN const zfchar *key) const {
-    if(d) {
-        zfstlsize index = d->jsonItemMapIndex(key);
-        if(index != (zfstlsize)-1) {
-            return d->jsonItemMap[index]->jsonItem;
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        _ZFP_ZFJsonPrivate::AttrMap::iterator it = d->d.attrMap->find(key);
+        if(it != d->d.attrMap->end()) {
+            return it->second;
         }
     }
     return zfnull;
 }
 const zfchar *ZFJson::attrValue(ZF_IN const zfchar *key) const {
-    if(d) {
-        zfstlsize index = d->jsonItemMapIndex(key);
-        if(index != (zfstlsize)-1) {
-            return d->jsonItemMap[index]->jsonItem.jsonValue();
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        _ZFP_ZFJsonPrivate::AttrMap::iterator it = d->d.attrMap->find(key);
+        if(it != d->d.attrMap->end() && it->second.jsonType() == ZFJsonType::e_JsonValue) {
+            return it->second.jsonValue();
         }
     }
     return zfnull;
 }
 
 ZFJson &ZFJson::attrRemove(ZF_IN const zfchar *key) {
-    if(d) {
-        zfstlsize index = d->jsonItemMapIndex(key);
-        if(index != (zfstlsize)-1) {
-            zfdelete(d->jsonItemMap[index]);
-            d->jsonItemMap.erase(d->jsonItemMap.begin() + index);
-        }
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        d->d.attrMap->erase(key);
     }
     return *this;
 }
 
 ZFJson &ZFJson::attrRemoveAll(void) {
-    if(d) {
-        d->jsonItemMapClear();
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        d->d.attrMap->clear();
     }
     return *this;
 }
 
 zfindex ZFJson::attrCount(void) const {
-    return d ? (zfindex)d->jsonItemMap.size() : 0;
+    return d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap ? (zfindex)d->d.attrMap->size() : 0;
 }
 
-static void _ZFP_ZFJson_iterDeleteCallback(void *data) {
-    zfdelete(ZFCastStatic(zfstlsize *, data));
-}
-static void *_ZFP_ZFJson_iterCopyCallback(void *data) {
-    return zfnew(zfstlsize,
-        *ZFCastStatic(zfstlsize *, data));
-}
 zfiterator ZFJson::attrIter(void) const {
-    return zfiterator(
-        zfnew(zfstlsize, 0),
-        _ZFP_ZFJson_iterDeleteCallback,
-        _ZFP_ZFJson_iterCopyCallback);
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        return d->d.attrMap->iter();
+    }
+    else {
+        return zfiteratorInvalid();
+    }
 }
 
 zfiterator ZFJson::attrIterFind(ZF_IN const zfchar *key) const {
-    return zfiterator(
-        zfnew(zfstlsize, d ? d->jsonItemMapIndex(key) : -1),
-        _ZFP_ZFJson_iterDeleteCallback,
-        _ZFP_ZFJson_iterCopyCallback);
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        return d->d.attrMap->iterFind(key);
+    }
+    else {
+        return zfiteratorInvalid();
+    }
 }
 
 zfbool ZFJson::attrIterValid(ZF_IN const zfiterator &it) const {
-    zfstlsize *data = it.data<zfstlsize *>();
-    return (data != zfnull && d && *data < d->jsonItemMap.size());
+    return d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap && d->d.attrMap->iterValid(it);
 }
 
 void ZFJson::attrIterNext(ZF_IN_OUT zfiterator &it) const {
-    zfstlsize *data = it.data<zfstlsize *>();
-    if(data && d && *data < d->jsonItemMap.size()) {
-        ++(*data);
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        d->d.attrMap->iterNext(it);
     }
 }
 
 const zfchar *ZFJson::attrIterKey(ZF_IN const zfiterator &it) const {
-    zfstlsize *data = it.data<zfstlsize *>();
-    if(data && d && *data < d->jsonItemMap.size()) {
-        return d->jsonItemMap[*data]->jsonKey.value();
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        return d->d.attrMap->iterKey(it);
     }
     else {
         return zfnull;
     }
 }
 ZFJson ZFJson::attrIterValue(ZF_IN const zfiterator &it) const {
-    zfstlsize *data = it.data<zfstlsize *>();
-    if(data && d && *data < d->jsonItemMap.size()) {
-        return d->jsonItemMap[*data]->jsonItem;
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        return d->d.attrMap->iterValue(it);
     }
     else {
         return zfnull;
@@ -701,35 +509,42 @@ void ZFJson::attrIterValue(
         ZF_IN_OUT zfiterator &it
         , ZF_IN const ZFJson &jsonItem
         ) {
-    if(!jsonItem) {
-        this->attrIterRemove(it);
-        return;
+    if(d == zfnull) {
+        d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonObject);
     }
     zfCoreAssert(this->jsonType() == ZFJsonType::e_JsonObject);
-    zfstlsize *data = it.data<zfstlsize *>();
-    if(data && d && *data < d->jsonItemMap.size()) {
-        _ZFP_ZFJsonData *jsonItemData = d->jsonItemMap[*data];
-        jsonItemData->jsonItem = jsonItem;
+    if(!jsonItem) {
+        this->attrIterRemove(it);
+    }
+    else {
+        if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+            d->d.attrMap->iterValue(it, jsonItem);
+        }
     }
 }
 
 void ZFJson::attrIterRemove(ZF_IN_OUT zfiterator &it) {
-    zfstlsize *data = it.data<zfstlsize *>();
-    if(data && d && *data < d->jsonItemMap.size()) {
-        zfdelete(d->jsonItemMap[*data]);
-        d->jsonItemMap.erase(d->jsonItemMap.begin() + (*data));
+    if(d && d->jsonType == ZFJsonType::e_JsonObject && d->d.attrMap) {
+        d->d.attrMap->iterRemove(it);
     }
 }
 
 // ============================================================
 zfindex ZFJson::childCount(void) const {
-    return d ? (zfindex)d->jsonArrayChildren.size() : 0;
+    if(d && d->jsonType == ZFJsonType::e_JsonArray && d->d.childList) {
+        return (zfindex)d->d.childList->size();
+    }
+    else {
+        return 0;
+    }
 }
 ZFJson ZFJson::childAt(ZF_IN zfindex index) const {
-    if(index >= this->childCount()) {
-        zfCoreCriticalIndexOutOfRange(index, this->childCount());
+    if(d && d->jsonType == ZFJsonType::e_JsonArray && d->d.childList && index < (zfindex)d->d.childList->size()) {
+        return d->d.childList->at((zfstlsize)index);
     }
-    return d->jsonArrayChildren[index];
+    else {
+        return zfnull;
+    }
 }
 
 ZFJson &ZFJson::childAdd(
@@ -746,15 +561,18 @@ ZFJson &ZFJson::childAdd(
         d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonArray);
     }
     zfCoreAssert(this->jsonType() == ZFJsonType::e_JsonArray);
-    if(atIndex == zfindexMax()) {
-        atIndex = (zfindex)d->jsonArrayChildren.size();
+    if(d->d.childList == zfnull) {
+        d->d.childList = zfnew(_ZFP_ZFJsonPrivate::ChildList);
     }
-    else if(atIndex > (zfindex)d->jsonArrayChildren.size()) {
-        zfCoreCriticalIndexOutOfRange(atIndex, (zfindex)(d->jsonArrayChildren.size() + 1));
+    if(atIndex == zfindexMax()) {
+        atIndex = (zfindex)d->d.childList->size();
+    }
+    else if(atIndex > (zfindex)d->d.childList->size()) {
+        zfCoreCriticalIndexOutOfRange(atIndex, (zfindex)d->d.childList->size() + 1);
         return *this;
     }
     zfCoreAssertWithMessage(jsonObject, "add null object");
-    d->jsonArrayChildren.insert(d->jsonArrayChildren.begin() + atIndex, jsonObject);
+    d->d.childList->insert(d->d.childList->begin() + atIndex, jsonObject);
     return *this;
 }
 
@@ -762,19 +580,21 @@ ZFJson &ZFJson::childRemoveAt(ZF_IN zfindex index) {
     if(index >= this->childCount()) {
         zfCoreCriticalIndexOutOfRange(index, this->childCount());
     }
-    d->jsonArrayChildren.erase(d->jsonArrayChildren.begin() + index);
+    if(d && d->jsonType == ZFJsonType::e_JsonArray && d->d.childList) {
+        d->d.childList->erase(d->d.childList->begin() + index);
+    }
     return *this;
 }
 ZFJson &ZFJson::childRemoveAll(void) {
-    if(d) {
-        d->jsonArrayChildren.clear();
+    if(d && d->jsonType == ZFJsonType::e_JsonArray && d->d.childList) {
+        d->d.childList->clear();
     }
     return *this;
 }
 zfindex ZFJson::childFind(ZF_IN const ZFJson &jsonObject) const {
-    if(d) {
-        for(zfstlsize i = 0; i < d->jsonArrayChildren.size(); ++i) {
-            if(jsonObject == d->jsonArrayChildren[i]) {
+    if(d && d->jsonType == ZFJsonType::e_JsonArray && d->d.childList) {
+        for(zfstlsize i = 0; i < d->d.childList->size(); ++i) {
+            if(jsonObject == d->d.childList->at(i)) {
                 return (zfindex)i;
             }
         }
