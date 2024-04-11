@@ -20,8 +20,6 @@ public:
     zfindex index;
 };
 
-static void _ZFP_ZFPathType_http_htmlFix(ZF_OUT zfstring &ret, ZF_IN const zfchar *src);
-
 zfbool _ZFP_ZFPathType_http_FindNext(ZF_IN_OUT ZFFileFindData &fd);
 zfbool _ZFP_ZFPathType_http_FindFirst(
         ZF_IN_OUT ZFFileFindData &fd
@@ -36,56 +34,52 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
     if(!recv->success() || !zfstringIsEqual(recv->header("Content-Type"), "text/html")) {
         return zffalse;
     }
-    zfstring body;
-    _ZFP_ZFPathType_http_htmlFix(body, recv->bodyText());
-    ZFXml root = ZFXmlFromString(body);
-    if(!root) {
-        return zffalse;
-    }
+    const zfchar *body = recv->bodyText();
 
     zfblockedAlloc(ZFRegExp, pattern
+            , "(?<=<a .*href=\")([^\"]+)(?=\")"
+            );
+    zfblockedAlloc(ZFRegExp, ignorePattern
             , "^/|^[a-z]+://|[\\?&=~]|\\./|^\\.+$"
             );
 
     _ZFP_ZFPathType_http_FindData *impl = zfnew(_ZFP_ZFPathType_http_FindData);
-    ZFCoreArray<ZFXml> toCheck;
-    toCheck.add(root);
-    do {
-        ZFXml item = toCheck.removeLastAndGet();
-        ZFXml child = item.childLastElement();
-        while(child) {
-            toCheck.add(child);
-            child = child.siblingPrevElement();
+    while(*body) {
+        ZFRegExpResult match;
+        pattern->regExpMatch(match, body);
+        if(!match.matched) {
+            break;
         }
-        if(zfstringIsEqual(item.xmlName(), "a")) {
-            const zfchar *url = item.attrValue("href");
-            if(zfstringIsEmpty(url)) {
+        const zfchar *url = body + match.matchedRange.start;
+        const zfchar *urlEnd = url + match.matchedRange.count;
+        body += match.matchedRange.start + match.matchedRange.count;
+
+        if(url[0] == '.' && url[1] == '/') {
+            url += 2;
+            if(url >= urlEnd) {
                 continue;
             }
-            if(url[0] == '.' && url[1] == '/') {
-                url += 2;
-                if(*url == '\0') {
-                    continue;
-                }
-            }
-            ZFRegExpResult match;
-            pattern->regExpMatch(match, url);
-            if(match.matched) {
-                continue;
-            }
-            zfindex len = zfslen(url);
-            if(url[len - 1] == '/') {
-                if(zfstringFind(url, len - 1, '/') == zfindexMax()) {
-                    impl->dirs.add(zfstring(url, len - 1));
-                }
-            }
-            else {
-                if(zfstringFind(url, '/') == zfindexMax()) {
-                    impl->files.add(url);
-                }
+        }
+        ZFRegExpResult ignoreResult;
+        ignorePattern->regExpMatch(ignoreResult, url, urlEnd - url);
+        if(ignoreResult.matched) {
+            continue;
+        }
+        if(*(urlEnd - 1) == '/') {
+            if(zfstringFind(url, urlEnd - url - 1, '/') == zfindexMax()) {
+                zfstring result;
+                zfCoreDataDecode(result, url, urlEnd - url - 1);
+                impl->dirs.add(result);
             }
         }
-    } while(!toCheck.isEmpty());
+        else {
+            if(zfstringFind(url, urlEnd - url, '/') == zfindexMax()) {
+                zfstring result;
+                zfCoreDataDecode(result, url, urlEnd - url);
+                impl->files.add(result);
+            }
+        }
+    }
 
     if(impl->dirs.isEmpty() && impl->files.isEmpty()) {
         zfdelete(impl);
@@ -123,31 +117,6 @@ void _ZFP_ZFPathType_http_FindClose(ZF_IN_OUT ZFFileFindData &fd) {
     fd.implDetach();
     _ZFP_ZFPathType_http_FindData *impl = (_ZFP_ZFPathType_http_FindData *)fd.implUserData();
     zfdelete(impl);
-}
-
-static void _ZFP_ZFPathType_http_htmlFix(ZF_OUT zfstring &ret, ZF_IN const zfchar *src) {
-    // remove void elements: https://developer.mozilla.org/en-US/docs/Glossary/Void_element
-    zfblockedAlloc(ZFRegExp, reg
-            , "<(area|base|br|col|embed|hr|img|input|link|meta|source|track|wbr)\\b[^>]*>"
-            );
-    do {
-        ZFRegExpResult match;
-        reg->regExpMatch(match, src);
-        if(!match.matched) {
-            break;
-        }
-        ret.append(src, match.matchedRange.start);
-        src += match.matchedRange.start + match.matchedRange.count;
-    } while(zftrue);
-    if(src != zfnull) {
-        ret += src;
-    }
-
-    // convert DOCTYPE
-    zfindex index = zfstringFind(ret, 32, "<!doctype");
-    if(index != zfindexMax()) {
-        ret.replace(index, 9 /* zfslen("<!doctype") */, "<!DOCTYPE");
-    }
 }
 
 ZF_NAMESPACE_GLOBAL_END
