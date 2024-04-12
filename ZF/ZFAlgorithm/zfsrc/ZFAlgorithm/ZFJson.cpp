@@ -608,7 +608,7 @@ ZFJson::operator zfstring (void) const {
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFJson, ZFJson, {
-        v = ZFPROTOCOL_ACCESS(ZFJson)->jsonParse(src, srcLen);
+        v = ZFPROTOCOL_ACCESS(ZFJson)->jsonParse(src, srcLen, errorHint);
         return v;
     }, {
         return ZFJsonToOutput(ZFOutputForString(s), v);
@@ -698,16 +698,18 @@ ZFMETHOD_FUNC_DEFINE_0(ZFJson, ZFJsonObject) {return ZFJson(ZFJsonType::e_JsonOb
 ZFMETHOD_FUNC_DEFINE_0(ZFJson, ZFJsonArray) {return ZFJson(ZFJsonType::e_JsonArray);}
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(ZFJson, ZFJsonFromInput
+ZFMETHOD_FUNC_DEFINE_2(ZFJson, ZFJsonFromInput
         , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         ) {
-    return ZFPROTOCOL_ACCESS(ZFJson)->jsonParse(input);
+    return ZFPROTOCOL_ACCESS(ZFJson)->jsonParse(input, errorHint);
 }
-ZFMETHOD_FUNC_DEFINE_2(ZFJson, ZFJsonFromString
+ZFMETHOD_FUNC_DEFINE_3(ZFJson, ZFJsonFromString
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         ) {
-    return ZFPROTOCOL_ACCESS(ZFJson)->jsonParse(src, length);
+    return ZFPROTOCOL_ACCESS(ZFJson)->jsonParse(src, srcLen, errorHint);
 }
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFJsonToOutput

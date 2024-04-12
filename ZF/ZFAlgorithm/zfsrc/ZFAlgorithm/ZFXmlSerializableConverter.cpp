@@ -133,9 +133,8 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFSerializableDataFromXml
         zfstringAppend(outErrorHint, "invalid input callback");
         return zffalse;
     }
-    ZFXml xmlElement = ZFXmlFromInput(input).childFirstElement();
-    if(xmlElement.xmlType() == ZFXmlType::e_XmlNull) {
-        zfstringAppend(outErrorHint, "unable to parse xml from input");
+    ZFXml xmlElement = ZFXmlFromInput(input, outErrorHint).childFirstElement();
+    if(!xmlElement) {
         return zffalse;
     }
     if(!ZFSerializableDataFromXml(ret, xmlElement, outErrorHint)) {

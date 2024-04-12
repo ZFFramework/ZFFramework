@@ -14,11 +14,13 @@ extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayFromString(
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayToString(
         ZF_IN const ZFTypeInfo *elementType
         , ZF_OUT zfstring &s
         , ZF_IN ZFCoreArrayBase const &v
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 extern ZFLIB_ZFCore zfbool _ZFP_ZFCoreArrayFromData(
         ZF_IN const ZFTypeInfo *elementType
@@ -228,6 +230,7 @@ public:
     virtual zfbool wrappedValueFromString(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         if(this->zfv == zfnull) {
             return zffalse;
@@ -237,10 +240,14 @@ public:
                 , *(this->zfv)
                 , src
                 , srcLen
+                , errorHint
                 );
     }
     zfoverride
-    virtual zfbool wrappedValueToString(ZF_IN_OUT zfstring &s) {
+    virtual zfbool wrappedValueToString(
+            ZF_IN_OUT zfstring &s
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
         if(this->zfv == zfnull) {
             return zffalse;
         }
@@ -248,6 +255,7 @@ public:
                 this->elementType
                 , s
                 , *(this->zfv)
+                , errorHint
                 );
     }
 
@@ -671,12 +679,14 @@ zfbool ZFCoreArrayFromString(
         ZF_IN_OUT ZFCoreArray<T_Type> &v
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     return _ZFP_ZFCoreArrayFromString(
             zflineDelete(zfnew(ZFTypeId<T_Type>))
             , v
             , src
             , srcLen
+            , errorHint
             );
 }
 /** @brief convert array to string */
@@ -684,20 +694,23 @@ template<typename T_Type>
 zfbool ZFCoreArrayToString(
         ZF_OUT zfstring &s
         , ZF_IN ZFCoreArray<T_Type> const &v
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     return _ZFP_ZFCoreArrayToString(
             zflineDelete(zfnew(ZFTypeId<T_Type>))
             , s
             , v
+            , errorHint
             );
 }
 /** @brief convert array to string */
 template<typename T_Type>
 zfstring ZFCoreArrayToString(
         ZF_IN ZFCoreArray<T_Type> const &v
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     zfstring ret;
-    if(ZFCoreArrayToString(ret, v)) {
+    if(ZFCoreArrayToString(ret, v, errorHint)) {
         return ret;
     }
     else {

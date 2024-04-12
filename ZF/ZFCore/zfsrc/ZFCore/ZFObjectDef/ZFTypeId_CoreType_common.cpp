@@ -24,6 +24,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbool, zfbool, {
                 v = zffalse;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -33,7 +36,13 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbool, zfbool, {
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(zfbyte, zfbyte, {
-        return zfsToIntT(v, src, srcLen, 16, zffalse);
+        if(!zfsToIntT(v, src, srcLen, 16, zffalse)) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
+            return zffalse;
+        }
+        return zftrue;
     }, {
         return zfsFromIntT(s, v, 16);
     })
@@ -155,25 +164,33 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPtrConst, const void *)
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
-        if(src == zfnull) {return zffalse;}
-        if(zfsncmp(src, ZFTOKEN_ZFCompareTheSame, srcLen) == 0) {
-            v = ZFCompareTheSame;
-            return zftrue;
-        }
-        else if(zfsncmp(src, ZFTOKEN_ZFCompareSmaller, srcLen) == 0) {
-            v = ZFCompareSmaller;
-            return zftrue;
-        }
-        else if(zfsncmp(src, ZFTOKEN_ZFCompareGreater, srcLen) == 0) {
-            v = ZFCompareGreater;
-            return zftrue;
-        }
-        else if(zfsncmp(src, ZFTOKEN_ZFCompareUncomparable, srcLen) == 0) {
-            v = ZFCompareUncomparable;
-            return zftrue;
-        }
-        else {
-            return zffalse;
+        const zfchar *tokens[] = ZFM_EXPAND({
+            ZFTOKEN_ZFCompareUncomparable,
+            ZFTOKEN_ZFCompareSmaller,
+            ZFTOKEN_ZFCompareTheSame,
+            ZFTOKEN_ZFCompareGreater,
+            "",
+        });
+        zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
+        v = ZFCompareUncomparable;
+        switch(matched) {
+            case 0:
+                v = ZFCompareUncomparable;
+                return zftrue;
+            case 1:
+                v = ZFCompareSmaller;
+                return zftrue;
+            case 2:
+                v = ZFCompareTheSame;
+                return zftrue;
+            case 3:
+                v = ZFCompareGreater;
+                return zftrue;
+            default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
+                return zffalse;
         }
     }, {
         switch(v) {
@@ -229,6 +246,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSeekPos, ZFSeekPos, {
                 v = ZFSeekPosBegin;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -262,6 +282,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFIndexRange, ZFIndexRange, {
         v = ZFIndexRangeZero();
         ZFCoreArrayPOD<zfindex> pair;
         if(!zfCoreDataPairSplitInt(pair, 2, src, srcLen)) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
             return zffalse;
         }
         v.start = pair[0];
@@ -377,6 +400,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFLevel, ZFLevel, {
                 return zftrue;
 
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -475,6 +501,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
                 v = ZFFrameworkStateNotAvailable;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -550,57 +579,64 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, zfbool, bufferAutoFree)
 // ============================================================
 // ZFCallerInfo
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallerInfo, ZFCallerInfo, {
-        ZFIndexRange pos[3];
-        zfmemset(pos, 0, sizeof(pos));
-        const zfchar *p = src;
-        const zfchar *pEnd = src + ((srcLen == zfindexMax()) ? zfslen(src) : srcLen);
+        do {
+            ZFIndexRange pos[3];
+            zfmemset(pos, 0, sizeof(pos));
+            const zfchar *p = src;
+            const zfchar *pEnd = src + ((srcLen == zfindexMax()) ? zfslen(src) : srcLen);
 
-        zfcharSkipSpace(p, pEnd);
-        if(p >= pEnd) {
-            v = ZFCallerInfo();
+            zfcharSkipSpace(p, pEnd);
+            if(p >= pEnd) {
+                v = ZFCallerInfo();
+                return zftrue;
+            }
+            if(*p != '[') {
+                break;
+            }
+            ++p;
+
+            if(*p != ' ') {
+                pos[0].start = p - src;
+                while(*p != ' ' && p < pEnd) {++p;}
+                pos[0].count = p - src - pos[0].start;
+            }
+            ++p;
+
+            if(*p != ' ') {
+                pos[1].start = p - src;
+                while(*p != ' ' && p < pEnd) {++p;}
+                pos[1].count = p - src - pos[1].start;
+            }
+            ++p;
+
+            if(*p != '(') {
+                break;
+            }
+            ++p;
+            pos[2].start = p - src;
+            while(*p != ')' && p < pEnd) {++p;}
+            pos[2].count = p - src - pos[2].start;
+
+            if(p + 2 > pEnd || *p != ')' || *(p + 1) != ']') {
+                break;
+            }
+
+            v.callerInfo(
+                    (pos[0].count > 0)
+                        ? zfstring(src + pos[0].start, pos[0].count).cString()
+                        : zfnull,
+                    (pos[1].count > 0)
+                        ? zfstring(src + pos[1].start, pos[1].count).cString()
+                        : zfnull,
+                    (zfuint)zfsToInt(zfstring(src + pos[2].start, pos[2].count).cString())
+                );
             return zftrue;
-        }
-        if(*p != '[') {
-            return zffalse;
-        }
-        ++p;
+        } while(zffalse);
 
-        if(*p != ' ') {
-            pos[0].start = p - src;
-            while(*p != ' ' && p < pEnd) {++p;}
-            pos[0].count = p - src - pos[0].start;
+        if(errorHint) {
+            zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
         }
-        ++p;
-
-        if(*p != ' ') {
-            pos[1].start = p - src;
-            while(*p != ' ' && p < pEnd) {++p;}
-            pos[1].count = p - src - pos[1].start;
-        }
-        ++p;
-
-        if(*p != '(') {
-            return zffalse;
-        }
-        ++p;
-        pos[2].start = p - src;
-        while(*p != ')' && p < pEnd) {++p;}
-        pos[2].count = p - src - pos[2].start;
-
-        if(p + 2 > pEnd || *p != ')' || *(p + 1) != ']') {
-            return zffalse;
-        }
-
-        v.callerInfo(
-                (pos[0].count > 0)
-                    ? zfstring(src + pos[0].start, pos[0].count).cString()
-                    : zfnull,
-                (pos[1].count > 0)
-                    ? zfstring(src + pos[1].start, pos[1].count).cString()
-                    : zfnull,
-                (zfuint)zfsToInt(zfstring(src + pos[2].start, pos[2].count).cString())
-            );
-        return zftrue;
+        return zffalse;
     }, {
         v.callerInfoT(s);
         return zftrue;
@@ -639,6 +675,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterType, ZFFilterType, {
                 v = ZFFilterTypeExclude;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -679,6 +718,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterCallbackResult, ZFFilterCallbackResu
                 v = ZFFilterCallbackResultNotActive;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -820,7 +862,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPathInfo, ZFPathInfo, {
         const zfchar *srcEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen);
         const zfchar *p = src;
         while(*p != ZFSerializableKeyword_ZFPathInfo_separator[0] && p < srcEnd) {++p;}
-        if(*p != ZFSerializableKeyword_ZFPathInfo_separator[0]) {return zffalse;}
+        if(*p != ZFSerializableKeyword_ZFPathInfo_separator[0]) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
+            return zffalse;
+        }
         v.pathType.assign(src, p - src);
         ++p;
         v.pathData.assign(p, srcEnd - p);

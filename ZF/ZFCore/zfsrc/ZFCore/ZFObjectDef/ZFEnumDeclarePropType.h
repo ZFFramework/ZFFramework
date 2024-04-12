@@ -140,7 +140,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             v = (EnumName##Enum)EnumName::EnumValueForName( \
                     (srcLen == zfindexMax()) ? src : zfstring(src, srcLen).cString() \
                 ); \
-            return ((zfuint)v != ZFEnumInvalid()); \
+            if(v == ZFEnumInvalid()) { \
+                if(errorHint) { \
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen)); \
+                } \
+                return zffalse; \
+            } \
+            return zftrue; \
         }, { \
             s += EnumName::EnumNameForValue(v); \
             return zftrue; \
@@ -303,6 +309,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             if(!zfflagsFromString(flags, \
                         EnumName::ClassData(), \
                         src, srcLen)) { \
+                if(errorHint) { \
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen)); \
+                } \
                 return zffalse; \
             } \
             v.enumValue((zfuint)flags); \

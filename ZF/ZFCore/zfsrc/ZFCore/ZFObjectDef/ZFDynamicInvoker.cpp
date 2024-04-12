@@ -396,7 +396,7 @@ zfbool ZFDI_invoke(
                 if(wrapper != zfnull) {
                     zfauto paramTmp;
                     if(!ZFDI_objectFromString(
-                                paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp)
+                                paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), zfindexMax(), errorHintTmp)
                                 ) {
                         paramConvertSuccess = zffalse;
                         break;
@@ -533,7 +533,7 @@ zfbool ZFDI_alloc(
                 if(wrapper != zfnull) {
                     zfauto paramTmp;
                     if(!ZFDI_objectFromString(
-                                paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), errorHintTmp)
+                                paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), zfindexMax(), errorHintTmp)
                                 ) {
                         paramConvertSuccess = zffalse;
                         break;
@@ -584,7 +584,8 @@ zfbool ZFDI_alloc(
 zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *s
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(cls == zfnull) {
@@ -598,20 +599,20 @@ zfbool ZFDI_objectFromString(
     else if(cls->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
         ret = cls->newInstance();
         ZFTypeIdWrapper *wrapper = ret;
-        if(wrapper != zfnull && wrapper->wrappedValueFromString(s)) {
+        if(wrapper != zfnull && wrapper->wrappedValueFromString(src, srcLen)) {
             return zftrue;
         }
         else {
-            zfstringAppend(errorHint, "%s can not be converted from string \"%s\"", cls->classNameFull(), s);
+            zfstringAppend(errorHint, "%s can not be converted from string \"%s\"", cls->classNameFull(), zfstring(src, srcLen));
             return zffalse;
         }
     }
     else {
-        if(ZFSerializeFromString(ret, cls, s)) {
+        if(ZFSerializeFromString(ret, cls, src, srcLen, errorHint)) {
             return zftrue;
         }
         else {
-            zfstringAppend(errorHint, "%s can not be converted from string \"%s\"", cls->classNameFull(), s);
+            zfstringAppend(errorHint, "%s can not be converted from string \"%s\"", cls->classNameFull(), zfstring(src, srcLen));
             return zffalse;
         }
     }
@@ -619,7 +620,8 @@ zfbool ZFDI_objectFromString(
 zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
         , ZF_IN const zfchar *typeId
-        , ZF_IN const zfchar *s
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     const ZFClass *cls = ZFDI_classForName(typeId);
@@ -630,12 +632,12 @@ zfbool ZFDI_objectFromString(
     }
     else if(cls == ZFObject::ClassData()) {
         zfblockedAlloc(v_zfstring, tmp);
-        tmp->zfv = s;
+        tmp->zfv.assign(src, srcLen);
         ret = tmp;
         return zftrue;
     }
     else {
-        return ZFDI_objectFromString(ret, cls, s, errorHint);
+        return ZFDI_objectFromString(ret, cls, src, srcLen, errorHint);
     }
 }
 

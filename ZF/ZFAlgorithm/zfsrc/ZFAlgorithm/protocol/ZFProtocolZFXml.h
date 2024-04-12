@@ -45,11 +45,15 @@ public:
     virtual ZFXml xmlParse(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex size = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) zfpurevirtual;
     /**
      * @brief parse xml document
      */
-    virtual ZFXml xmlParse(ZF_IN const ZFInput &inputCallback) zfpurevirtual;
+    virtual ZFXml xmlParse(
+            ZF_IN const ZFInput &inputCallback
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFXml)
 
 ZF_NAMESPACE_GLOBAL_END

@@ -9,7 +9,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // utils
 #define _ZFP_ZFTYPEID_DEFINE_int_allow_negative(TypeName, Type) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER(TypeName, Type, { \
-            return zfsToIntT(v, src, srcLen, 10, zftrue); \
+            if(!zfsToIntT(v, src, srcLen, 10, zftrue)) { \
+                if(errorHint) { \
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen)); \
+                } \
+                return zffalse; \
+            } \
+            return zftrue; \
         }, { \
             return zfsFromIntT(s, v); \
         })
@@ -20,7 +26,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 return zftrue; \
             } \
             else { \
-                return zfsToIntT(v, src, srcLen, 10, zffalse); \
+                if(!zfsToIntT(v, src, srcLen, 10, zffalse)) { \
+                    if(errorHint) { \
+                        zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen)); \
+                    } \
+                    return zftrue; \
+                } \
+                return zffalse; \
             } \
         }, { \
             if(v == ((Type)-1)) { \

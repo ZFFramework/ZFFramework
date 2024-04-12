@@ -11,24 +11,34 @@ public:
     virtual ZFXml xmlParse(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex size = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         ZFBuffer buf;
         buf.bufferCopy(src, (size != zfindexMax() ? size : zfslen(src)) * sizeof(zfchar));
         return this->xmlParse(buf);
     }
-    virtual ZFXml xmlParse(ZF_IN const ZFInput &inputCallback) {
+    virtual ZFXml xmlParse(
+            ZF_IN const ZFInput &inputCallback
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
         ZFBuffer buf;
         ZFInputRead(buf, inputCallback);
         return this->xmlParse(buf);
     }
 private:
-    ZFXml xmlParse(ZF_IN_OUT ZFBuffer &buf) {
+    ZFXml xmlParse(
+            ZF_IN_OUT ZFBuffer &buf
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
         if(buf.buffer() == zfnull) {
             return zfnull;
         }
         pugi::xml_document implXmlDoc;
         pugi::xml_parse_result implResult = implXmlDoc.load_buffer_inplace(buf.buffer(), buf.bufferSize(), pugi::parse_full);
         if(implResult.status != pugi::status_ok) {
+            if(errorHint) {
+                *errorHint += implResult.description();
+            }
             return zfnull;
         }
         ZFXml doc(ZFXmlType::e_XmlDocument);

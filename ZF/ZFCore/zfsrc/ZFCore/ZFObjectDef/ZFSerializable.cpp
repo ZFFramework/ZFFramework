@@ -268,7 +268,11 @@ zfbool ZFSerializable::serializeToData(
     return zftrue;
 }
 
-zffinal zfbool ZFSerializable::serializeFromString(ZF_IN const zfchar *src) {
+zffinal zfbool ZFSerializable::serializeFromString(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
     // dynamic
     const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeFromString");
     if(dynamicMethod != zfnull
@@ -276,9 +280,12 @@ zffinal zfbool ZFSerializable::serializeFromString(ZF_IN const zfchar *src) {
             ) {
         return zffalse;
     }
-    return this->serializableOnSerializeFromString(src);
+    return this->serializableOnSerializeFromString(src, srcLen, errorHint);
 }
-zffinal zfbool ZFSerializable::serializeToString(ZF_IN_OUT zfstring &ret) {
+zffinal zfbool ZFSerializable::serializeToString(
+        ZF_IN_OUT zfstring &ret
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
     // dynamic
     const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnSerializeToString");
     if(dynamicMethod != zfnull
@@ -286,7 +293,7 @@ zffinal zfbool ZFSerializable::serializeToString(ZF_IN_OUT zfstring &ret) {
             ) {
         return zffalse;
     }
-    return this->serializableOnSerializeToString(ret);
+    return this->serializableOnSerializeToString(ret, errorHint);
 }
 
 _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_getPropertyTypeHolder(void) {
@@ -702,6 +709,8 @@ zfbool ZFSerializeFromString(
         ZF_OUT zfauto &result
         , ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(cls == zfnull || !cls->classIsTypeOf(ZFSerializable::ClassData())) {
         return zffalse;
@@ -718,7 +727,7 @@ zfbool ZFSerializeFromString(
         result = zfnull;
         return zffalse;
     }
-    if(!serializable->serializeFromString(src)) {
+    if(!serializable->serializeFromString(src, srcLen, errorHint)) {
         result = zfnull;
         return zffalse;
     }
@@ -729,14 +738,17 @@ zfbool ZFSerializeFromString(
 zfauto ZFSerializeFromString(
         ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     zfauto ret;
-    ZFSerializeFromString(ret, cls, src);
+    ZFSerializeFromString(ret, cls, src, srcLen, errorHint);
     return ret;
 }
 zfbool ZFSerializeToString(
         ZF_IN_OUT zfstring &ret
         , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(obj == zfnull) {
         return zftrue;
@@ -745,11 +757,14 @@ zfbool ZFSerializeToString(
     if(t == zfnull) {
         return zffalse;
     }
-    return t->serializeToString(ret);
+    return t->serializeToString(ret, errorHint);
 }
-zfstring ZFSerializeToString(ZF_IN ZFObject *obj) {
+zfstring ZFSerializeToString(
+        ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
     zfstring ret;
-    ZFSerializeToString(ret, obj);
+    ZFSerializeToString(ret, obj, errorHint);
     return ret;
 }
 
@@ -770,11 +785,14 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFSerializable, zfbool, serializeToDa
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         , ZFMP_IN_OPT(ZFSerializable *, referencedOwnerOrNull, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFSerializable, zfbool, serializeFromString
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFSerializable, zfbool, serializeFromString
         , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFSerializable, zfbool, serializeToString
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFSerializable, zfbool, serializeToString
         , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFSerializable, void, serializableGetAllSerializablePropertyT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
@@ -816,21 +834,27 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(ZFSerializableData, ZFObjectToData
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         , ZFMP_IN_OPT(ZFSerializable *, referencedOwnerOrNull, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializeFromString
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(zfbool, ZFSerializeFromString
         , ZFMP_OUT(zfauto &, result)
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfauto, ZFSerializeFromString
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFSerializeFromString
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFSerializeToString
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFSerializeToString
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFSerializeToString
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfstring, ZFSerializeToString
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 
 ZF_NAMESPACE_GLOBAL_END

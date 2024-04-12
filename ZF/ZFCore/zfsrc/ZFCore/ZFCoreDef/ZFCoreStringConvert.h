@@ -20,16 +20,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ZF_OUT Type &v \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen = zfindexMax() \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
     /** @brief util method to convert TypeName to string */ \
     extern ZFLIB_ zfbool TypeName##ToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN Type const &v \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
     /** @brief util method to convert TypeName to string */ \
-    inline zfstring TypeName##ToString(ZF_IN Type const &v) { \
+    inline zfstring TypeName##ToString( \
+            ZF_IN Type const &v \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
         zfstring s; \
-        TypeName##ToString(s, v); \
+        TypeName##ToString(s, v, errorHint); \
         return s; \
     }
 /**
@@ -42,12 +47,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           //           ZF_OUT YourType &v
  *           //           , ZF_IN const zfchar *src
  *           //           , ZF_IN_OPT zfindex srcLen = zfindexMax()
+ *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
  *           //           );
  *       }, {
  *           // proto type:
  *           //   zfbool YourTypeNameToString(
  *           //           ZF_IN_OUT zfstring &s
  *           //           , ZF_IN YourType const &v
+ *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
  *           //           );
  *           // append result to s
  *       })
@@ -58,12 +65,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ZF_OUT Type &v \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         convertFromStringAction \
     } \
     zfbool TypeName##ToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN Type const &v \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         convertToStringAction \
     }

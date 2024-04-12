@@ -21,17 +21,22 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 inline zfbool zfstringToString(
         ZF_IN_OUT zfstring &s
         , ZF_IN const zfchar *v
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     s += v;
     return zftrue;
 }
-inline zfstring zfstringToString(ZF_IN const zfchar *v) {
+inline zfstring zfstringToString(
+        ZF_IN const zfchar *v
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        ) {
     return zfstring(v);
 }
 inline zfbool zfstringFromString(
         ZF_OUT const zfchar *&v
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         ) {
     if(srcLen != zfindexMax() && src[srcLen] != '\0') {
         return zffalse;

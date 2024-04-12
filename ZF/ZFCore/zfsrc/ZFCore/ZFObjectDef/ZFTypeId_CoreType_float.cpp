@@ -8,7 +8,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // utils
 #define _ZFP_ZFTYPEID_DEFINE_float(TypeName, Type) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER(TypeName, Type, { \
-            return zfsToFloatT(v, src, srcLen); \
+            if(!zfsToFloatT(v, src, srcLen)) { \
+                if(errorHint) { \
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen)); \
+                } \
+                return zffalse; \
+            } \
+            return zftrue; \
         }, { \
             return zfsFromFloatT(s, v); \
         })

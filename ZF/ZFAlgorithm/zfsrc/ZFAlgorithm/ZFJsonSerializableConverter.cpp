@@ -174,9 +174,8 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFSerializableDataFromJson
         zfstringAppend(outErrorHint, "invalid input callback");
         return zffalse;
     }
-    ZFJson jsonElement = ZFJsonFromInput(input);
-    if(jsonElement.jsonType() == ZFJsonType::e_JsonNull) {
-        zfstringAppend(outErrorHint, "unable to parse json from input");
+    ZFJson jsonElement = ZFJsonFromInput(input, outErrorHint);
+    if(!jsonElement) {
         return zffalse;
     }
     if(!ZFSerializableDataFromJson(ret, jsonElement, outErrorHint)) {

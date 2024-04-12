@@ -8,6 +8,7 @@ zfbool _ZFP_ZFCoreArrayFromString(
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     ZFCoreArrayPOD<ZFIndexRange> pos;
     if(!zfCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "[", "]", zftrue)) {
@@ -19,7 +20,7 @@ zfbool _ZFP_ZFCoreArrayFromString(
             zfCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
             zfauto e = elementType->typeIdClass()->newInstance();
             ZFTypeIdWrapper *eTmp = e;
-            if(eTmp == zfnull || !eTmp->wrappedValueFromString(elementString, elementString.length())) {
+            if(eTmp == zfnull || !eTmp->wrappedValueFromString(elementString, elementString.length(), errorHint)) {
                 return zffalse;
             }
             void *eGeneric = elementType->genericAccess(e);
@@ -36,7 +37,7 @@ zfbool _ZFP_ZFCoreArrayFromString(
             zfCoreDataDecode(elementString, zfstring(src + pos[i].start, pos[i].count));
             zfauto e = elementType->typeIdClass()->newInstance();
             ZFSerializable *eTmp = e;
-            if(eTmp == zfnull || !eTmp->serializeFromString(elementString)) {
+            if(eTmp == zfnull || !eTmp->serializeFromString(elementString, elementString.length(), errorHint)) {
                 return zffalse;
             }
             void *eGeneric = elementType->genericAccess(e);
@@ -53,6 +54,7 @@ zfbool _ZFP_ZFCoreArrayToString(
         ZF_IN const ZFTypeInfo *elementType
         , ZF_OUT zfstring &s
         , ZF_IN ZFCoreArrayBase const &v
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     s += "[";
     if(elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
@@ -69,7 +71,7 @@ zfbool _ZFP_ZFCoreArrayToString(
                 return zffalse;
             }
             zfstring elementString;
-            if(!eTmp->wrappedValueToString(elementString)) {
+            if(!eTmp->wrappedValueToString(elementString, errorHint)) {
                 return zffalse;
             }
             zfCoreDataEncode(s, elementString.cString(), elementString.length());
@@ -89,7 +91,7 @@ zfbool _ZFP_ZFCoreArrayToString(
                 return zffalse;
             }
             zfstring elementString;
-            if(!eTmp->serializeToString(elementString)) {
+            if(!eTmp->serializeToString(elementString, errorHint)) {
                 return zffalse;
             }
             zfCoreDataEncode(s, elementString.cString(), elementString.length());

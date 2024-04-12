@@ -377,15 +377,17 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonArray)
 /**
  * @brief parse json, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromInput
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromInput
         , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 /**
  * @brief parse json, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromString
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFJson, ZFJsonFromString
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, length, zfindexMax())
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 
 /**

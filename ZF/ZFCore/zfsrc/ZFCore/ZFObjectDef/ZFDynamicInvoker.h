@@ -222,7 +222,8 @@ extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfauto &ret
 extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
         , ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *s
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /**
@@ -231,7 +232,8 @@ extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
 extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
         , ZF_IN const zfchar *typeId
-        , ZF_IN const zfchar *s
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 

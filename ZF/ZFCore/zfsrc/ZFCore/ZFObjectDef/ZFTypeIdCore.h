@@ -65,12 +65,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           //           ZF_OUT YourType &v
  *           //           , ZF_IN const zfchar *src
  *           //           , ZF_IN_OPT zfindex srcLen = zfindexMax()
+ *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
  *           //           );
  *       }, {
  *           // convertToString callbackk, proto type:
  *           //   zfbool YourTypeToString(
  *           //           ZF_IN_OUT zfstring &s
  *           //           , ZF_IN YourType const &v
+ *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
  *           //           );
  *       })
  *
@@ -204,25 +206,28 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
         _method_ToSerializable2 = method_ToSerializable2; \
-        ZFMethodFuncUserRegister_3(method_FromString, { \
-                return TypeName##FromString(v, src, srcLen); \
+        ZFMethodFuncUserRegister_4(method_FromString, { \
+                return TypeName##FromString(v, src, srcLen, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##FromString) \
             , ZFMP_OUT(Type &, v) \
             , ZFMP_IN(const zfchar *, src) \
-            , ZFMP_OUT_OPT(zfindex, srcLen, zfindexMax()) \
+            , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
+            , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
         _method_FromString = method_FromString; \
-        ZFMethodFuncUserRegister_2(method_ToString, { \
-                return TypeName##ToString(s, v); \
+        ZFMethodFuncUserRegister_3(method_ToString, { \
+                return TypeName##ToString(s, v, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##ToString) \
             , ZFMP_OUT(zfstring &, s) \
             , ZFMP_IN(Type const &, v) \
+            , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
         _method_ToString = method_ToString; \
-        ZFMethodFuncUserRegister_1(method_ToString2, { \
-                return TypeName##ToString(v); \
+        ZFMethodFuncUserRegister_2(method_ToString2, { \
+                return TypeName##ToString(v, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfstring, ZFM_TOSTRING(TypeName##ToString) \
             , ZFMP_IN(Type const &, v) \
+            , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
         _method_ToString2 = method_ToString2; \
     } \
@@ -536,11 +541,15 @@ public:
     virtual zfbool wrappedValueFromString(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) zfpurevirtual;
     /**
      * @brief convert to string
      */
-    virtual zfbool wrappedValueToString(ZF_IN_OUT zfstring &s) zfpurevirtual;
+    virtual zfbool wrappedValueToString(
+            ZF_IN_OUT zfstring &s
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) zfpurevirtual;
 
 public:
     zfoverride
@@ -598,7 +607,7 @@ protected:
                 || (ref != zfnull && this->objectCompare(ref) != ZFCompareTheSame)
                 ) {
             zfstring valueString;
-            if(!this->wrappedValueToString(valueString)) {
+            if(!this->wrappedValueToString(valueString, outErrorHint)) {
                 return zffalse;
             }
             serializableData.propertyValue(valueString);
@@ -608,12 +617,19 @@ protected:
     }
 protected:
     zfoverride
-    virtual inline zfbool serializableOnSerializeFromString(ZF_IN const zfchar *src) {
-        return this->wrappedValueFromString(src);
+    virtual inline zfbool serializableOnSerializeFromString(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
+        return this->wrappedValueFromString(src, srcLen, errorHint);
     }
     zfoverride
-    virtual inline zfbool serializableOnSerializeToString(ZF_IN_OUT zfstring &ret) {
-        return this->wrappedValueToString(ret);
+    virtual inline zfbool serializableOnSerializeToString(
+            ZF_IN_OUT zfstring &ret
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
+        return this->wrappedValueToString(ret, errorHint);
     }
 };
 

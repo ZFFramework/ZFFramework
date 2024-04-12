@@ -206,9 +206,16 @@ public:
      *   or #ZFMethodDynamicRegister series\n
      *   typically, this is useful for script language with #ZFDynamic
      */
-    zffinal zfbool serializeFromString(ZF_IN const zfchar *src);
+    zffinal zfbool serializeFromString(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
     /** @brief see #serializeFromString */
-    zffinal zfbool serializeToString(ZF_IN_OUT zfstring &ret);
+    zffinal zfbool serializeToString(
+            ZF_IN_OUT zfstring &ret
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
 
 private:
     zffinal _ZFP_I_ZFSerializablePropertyTypeHolder *_ZFP_ZFSerializable_getPropertyTypeHolder(void);
@@ -377,11 +384,18 @@ protected:
 
 protected:
     /** @brief see #serializeFromString */
-    virtual zfbool serializableOnSerializeFromString(ZF_IN const zfchar *src) {
+    virtual zfbool serializableOnSerializeFromString(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
         return zffalse;
     }
     /** @brief see #serializeFromString */
-    virtual zfbool serializableOnSerializeToString(ZF_IN_OUT zfstring &ret) {
+    virtual zfbool serializableOnSerializeToString(
+            ZF_IN_OUT zfstring &ret
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) {
         return zffalse;
     }
 
@@ -450,19 +464,27 @@ extern ZFLIB_ZFCore zfbool ZFSerializeFromString(
         ZF_OUT zfauto &result
         , ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFSerializeFromString */
 extern ZFLIB_ZFCore zfauto ZFSerializeFromString(
         ZF_IN const ZFClass *cls
         , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFSerializeFromString */
 extern ZFLIB_ZFCore zfbool ZFSerializeToString(
         ZF_IN_OUT zfstring &ret
         , ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
         );
 /** @brief see #ZFSerializeFromString */
-extern ZFLIB_ZFCore zfstring ZFSerializeToString(ZF_IN ZFObject *obj);
+extern ZFLIB_ZFCore zfstring ZFSerializeToString(
+        ZF_IN ZFObject *obj
+        , ZF_OUT_OPT zfstring *errorHint = zfnull
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFSerializable_h_

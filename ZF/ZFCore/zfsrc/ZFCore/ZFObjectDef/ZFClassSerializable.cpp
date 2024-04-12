@@ -11,7 +11,13 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddPar
 
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClass, const ZFClass *, {
         v = ZFClass::classForName((srcLen == zfindexMax()) ? src : zfstring(src, srcLen).cString());
-        return (v != zfnull);
+        if(v == zfnull) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "no class for name: \"%s\"", zfstring(src, srcLen));
+            }
+            return zffalse;
+        }
+        return zftrue;
     }, {
         if(v) {
             s += v->classNameFull();

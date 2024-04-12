@@ -9,19 +9,17 @@ ZFENUM_DEFINE(ZFUISizeType)
 // ZFUISizeParam
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISizeParam, ZFUISizeParam, {
         ZFCoreArrayPOD<ZFIndexRange> pos;
-        if(!zfCoreDataPairSplitString(pos, 2, src, srcLen)) {
-            return zffalse;
+        if(zfCoreDataPairSplitString(pos, 2, src, srcLen)
+                && ZFUISizeTypeFromString(v.width, src + pos[0].start, pos[0].count)
+                && ZFUISizeTypeFromString(v.height, src + pos[1].start, pos[1].count)
+                ) {
+            return zftrue;
         }
 
-        if(!ZFUISizeTypeFromString(v.width, src + pos[0].start, pos[0].count)) {
-            return zffalse;
+        if(errorHint) {
+            zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
         }
-
-        if(!ZFUISizeTypeFromString(v.height, src + pos[1].start, pos[1].count)) {
-            return zffalse;
-        }
-
-        return zftrue;
+        return zffalse;
     }, {
         s += "(";
         ZFUISizeTypeToString(s, v.width);

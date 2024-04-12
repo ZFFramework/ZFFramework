@@ -169,6 +169,7 @@ zfbool ZFEnum::wrappedValueToData(
 zfbool ZFEnum::wrappedValueFromString(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(zfsncmp(ZFEnumNameInvalid(), src, srcLen == zfindexMax() ? zfslen(src) : srcLen) == 0) {
         this->enumValue(ZFEnumInvalid());
@@ -182,6 +183,9 @@ zfbool ZFEnum::wrappedValueFromString(
             return zftrue;
         }
         else {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
             return zffalse;
         }
     }
@@ -196,7 +200,10 @@ zfbool ZFEnum::wrappedValueFromString(
         }
     }
 }
-zfbool ZFEnum::wrappedValueToString(ZF_IN_OUT zfstring &s) {
+zfbool ZFEnum::wrappedValueToString(
+        ZF_IN_OUT zfstring &s
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
     if(this->enumIsFlags()) {
         return zfflagsToString(s, this->classData(), (zfflags)this->enumValue());
     }

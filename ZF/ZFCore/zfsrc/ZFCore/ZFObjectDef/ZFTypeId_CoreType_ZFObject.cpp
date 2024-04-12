@@ -29,6 +29,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClassDataChangeType, ZFClassDataChangeType
                 v = ZFClassDataChangeTypeClassAliasDetach;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -101,6 +104,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFilterForZFClassType, ZFFilterForZFClassTy
                 v = ZFFilterForZFClassTypeExclude;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -161,6 +167,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodPrivilegeType, ZFMethodPrivilegeType
                 v = ZFMethodPrivilegeTypePublic;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -209,6 +218,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethodType, ZFMethodType, {
                 v = ZFMethodTypeVirtual;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -585,6 +597,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFObjectInstanceState, ZFObjectInstanceState
                 v = ZFObjectInstanceStateIdle;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {
@@ -646,6 +661,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallbackType, ZFCallbackType, {
                 v = ZFCallbackTypeDummy;
                 return zftrue;
             default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
                 return zffalse;
         }
     }, {

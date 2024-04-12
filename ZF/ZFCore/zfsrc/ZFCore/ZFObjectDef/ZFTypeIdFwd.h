@@ -293,17 +293,27 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfoverride \
         virtual zfbool wrappedValuePreferStringConverter(void); \
         zfoverride \
-        virtual zfbool wrappedValueFromData(ZF_IN const ZFSerializableData &serializableData, \
-                                            ZF_OUT_OPT zfstring *outErrorHint = zfnull, \
-                                            ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull); \
+        virtual zfbool wrappedValueFromData( \
+                ZF_IN const ZFSerializableData &serializableData \
+                , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+                , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
+                ); \
         zfoverride \
-        virtual zfbool wrappedValueToData(ZF_OUT ZFSerializableData &serializableData, \
-                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull); \
+        virtual zfbool wrappedValueToData( \
+                ZF_OUT ZFSerializableData &serializableData \
+                , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+                ); \
         zfoverride \
-        virtual zfbool wrappedValueFromString(ZF_IN const zfchar *src, \
-                                              ZF_IN_OPT zfindex srcLen = zfindexMax()); \
+        virtual zfbool wrappedValueFromString( \
+                ZF_IN const zfchar *src \
+                , ZF_IN_OPT zfindex srcLen = zfindexMax() \
+                , ZF_OUT_OPT zfstring *errorHint = zfnull \
+                ); \
         zfoverride \
-        virtual zfbool wrappedValueToString(ZF_IN_OUT zfstring &s); \
+        virtual zfbool wrappedValueToString( \
+                ZF_IN_OUT zfstring &s \
+                , ZF_OUT_OPT zfstring *errorHint = zfnull \
+                ); \
     public: \
         static _ZFP_ZFTypeIdProgressUpdate _ZFP_ZFTypeId_progressUpdate; \
         zfoverride \
@@ -370,11 +380,15 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     zfbool v_##TypeName::wrappedValueFromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
-        return TypeName##FromString(this->zfv, src, srcLen); \
+        return TypeName##FromString(this->zfv, src, srcLen, errorHint); \
     } \
-    zfbool v_##TypeName::wrappedValueToString(ZF_IN_OUT zfstring &s) { \
-        return TypeName##ToString(s, this->zfv); \
+    zfbool v_##TypeName::wrappedValueToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
+            ) { \
+        return TypeName##ToString(s, this->zfv, errorHint); \
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_NOT_SERIALIZABLE(TypeName, Type) \
@@ -401,10 +415,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     zfbool v_##TypeName::wrappedValueFromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         return zffalse; \
     } \
-    zfbool v_##TypeName::wrappedValueToString(ZF_IN_OUT zfstring &s) { \
+    zfbool v_##TypeName::wrappedValueToString( \
+            ZF_IN_OUT zfstring &s \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
+            ) { \
         return zffalse; \
     }
 

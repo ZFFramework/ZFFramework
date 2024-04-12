@@ -51,6 +51,9 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointApplyScaleReversely
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIPoint, ZFUIPoint, {
         ZFCoreArrayPOD<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
             return zffalse;
         }
         v.x = buf[0];
@@ -129,6 +132,9 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIMargin, ZFUIMarginDec
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIMargin, ZFUIMargin, {
         ZFCoreArrayPOD<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
             return zffalse;
         }
         v.left = buf[0];
@@ -244,6 +250,9 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUISize, ZFUISizeApplyMarginReversely
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISize, ZFUISize, {
         ZFCoreArrayPOD<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
             return zffalse;
         }
         v.width = buf[0];
@@ -364,6 +373,9 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIRect, ZFUIRectApplyMarginReversely
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIRect, ZFUIRect, {
         ZFCoreArrayPOD<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+            }
             return zffalse;
         }
         v.x = buf[0];
@@ -523,9 +535,10 @@ ZFMETHOD_FUNC_DEFINE_1(ZFUIAlignEnum, ZFUIAlignGetY
 ZFEXPORT_VAR_READONLY_DEFINE(ZFUIColor, ZFUIColorZero, ZFUIColorMake(0, 0, 0, 0))
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIColor, ZFUIColor, {
         zft_ZFUIColor c = 0;
+        zfbool success = zffalse;
         do {
             if(src == zfnull) {
-                return zffalse;
+                break;
             }
             if(srcLen == zfindexMax()) {
                 srcLen = zfslen(src);
@@ -539,7 +552,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIColor, ZFUIColor, {
                 src += 2;
             }
             if(srcLen != 3 && srcLen != 4 && srcLen != 6 && srcLen != 8) {
-                return zffalse;
+                break;
             }
 
             c = 0xFFFFFFFF;
@@ -547,43 +560,52 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIColor, ZFUIColor, {
 
             if(srcLen <= 4) {
                 tmp = 0;
-                if(!zfsToIntT(tmp, src, 1, 16)) {return zffalse;} src += 1;
+                if(!zfsToIntT(tmp, src, 1, 16)) {break;} src += 1;
                 c = ((c << 8) | (tmp * 16 + tmp));
 
                 tmp = 0;
-                if(!zfsToIntT(tmp, src, 1, 16)) {return zffalse;} src += 1;
+                if(!zfsToIntT(tmp, src, 1, 16)) {break;} src += 1;
                 c = ((c << 8) | (tmp * 16 + tmp));
 
                 tmp = 0;
-                if(!zfsToIntT(tmp, src, 1, 16)) {return zffalse;} src += 1;
+                if(!zfsToIntT(tmp, src, 1, 16)) {break;} src += 1;
                 c = ((c << 8) | (tmp * 16 + tmp));
 
                 if(srcLen == 4) {
                     tmp = 0;
-                    if(!zfsToIntT(tmp, src, 1, 16)) {return zffalse;} src += 1;
+                    if(!zfsToIntT(tmp, src, 1, 16)) {break;} src += 1;
                     c = ((c << 8) | (tmp * 16 + tmp));
                 }
             }
             else {
                 tmp = 0;
-                if(!zfsToIntT(tmp, src, 2, 16)) {return zffalse;} src += 2;
+                if(!zfsToIntT(tmp, src, 2, 16)) {break;} src += 2;
                 c = ((c << 8) | tmp);
 
                 tmp = 0;
-                if(!zfsToIntT(tmp, src, 2, 16)) {return zffalse;} src += 2;
+                if(!zfsToIntT(tmp, src, 2, 16)) {break;} src += 2;
                 c = ((c << 8) | tmp);
 
                 tmp = 0;
-                if(!zfsToIntT(tmp, src, 2, 16)) {return zffalse;} src += 2;
+                if(!zfsToIntT(tmp, src, 2, 16)) {break;} src += 2;
                 c = ((c << 8) | tmp);
 
                 if(srcLen == 8) {
                     tmp = 0;
-                    if(!zfsToIntT(tmp, src, 2, 16)) {return zffalse;} src += 2;
+                    if(!zfsToIntT(tmp, src, 2, 16)) {break;} src += 2;
                     c = ((c << 8) | tmp);
                 }
             }
+
+            success = zftrue;
         } while(zffalse);
+
+        if(!success) {
+            if(errorHint) {
+                zfstringAppend(errorHint, "invalid color value at: \"%s\"", zfstring(src, srcLen));
+            }
+            return zffalse;
+        }
 
         v = c;
 

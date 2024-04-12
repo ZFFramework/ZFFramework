@@ -124,9 +124,13 @@ public:
     virtual zfbool wrappedValueFromString(
             ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
     zfoverride
-    virtual zfbool wrappedValueToString(ZF_IN_OUT zfstring &s);
+    virtual zfbool wrappedValueToString(
+            ZF_IN_OUT zfstring &s
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
 
 public:
     /**

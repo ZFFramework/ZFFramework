@@ -656,15 +656,17 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXmlVisitCallback, ZFXmlVisitCallbac
 /**
  * @brief parse xml document, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromInput
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromInput
         , ZFMP_IN(const ZFInput &, callback)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 /**
  * @brief parse xml document, or return an item with null type if fail
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromString
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlFromString
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, size, zfindexMax())
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 
 // ============================================================

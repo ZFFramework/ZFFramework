@@ -1325,7 +1325,7 @@ ZFXml::operator zfstring (void) const {
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXml, ZFXml, {
-        v = ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, srcLen);
+        v = ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, srcLen, errorHint);
         return v;
     }, {
         return ZFXmlToString(s, v, ZFXmlOutputFlagsTrim());
@@ -1466,16 +1466,18 @@ ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlPI
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlFromInput
+ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlFromInput
         , ZFMP_IN(const ZFInput &, callback)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         ) {
-    return ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(callback);
+    return ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(callback, errorHint);
 }
-ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlFromString
+ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFXmlFromString
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, size, zfindexMax())
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         ) {
-    return ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, size);
+    return ZFPROTOCOL_ACCESS(ZFXml)->xmlParse(src, srcLen, errorHint);
 }
 
 ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFXmlToOutput

@@ -364,22 +364,30 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
     extern ZFLIB_ zfbool EnumName##ToString( \
             ZF_IN_OUT zfstring &ret \
             , ZF_IN EnumName *const &value \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
     /** @brief see @ref EnumName, return empty string if error */ \
-    inline zfstring EnumName##ToString(ZF_IN EnumName *const &value) { \
+    inline zfstring EnumName##ToString( \
+            ZF_IN EnumName *const &value \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
         zfstring ret; \
-        EnumName##ToString(ret, value); \
+        EnumName##ToString(ret, value, errorHint); \
         return ret; \
     } \
     /** @brief see @ref EnumName, return enum object if success */ \
-    extern ZFLIB_ zfbool EnumName##FromString(ZF_OUT zfauto &ret, \
-                                              ZF_IN const zfchar *src, \
-                                              ZF_IN_OPT zfindex srcLen = zfindexMax()); \
+    extern ZFLIB_ zfbool EnumName##FromString( \
+            ZF_OUT zfauto &ret \
+            , ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen = zfindexMax() \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ); \
     ZFOUTPUT_TYPE_DECLARE(ZFLIB_, EnumName##Enum)
 #define _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
     zfbool EnumName##ToString( \
             ZF_IN_OUT zfstring &ret \
             , ZF_IN EnumName *const &value \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         ret += ((value == zfnull) ? "" : value->enumName()); \
         return zftrue; \
@@ -388,6 +396,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             ZF_OUT zfauto &ret \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
+            , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) { \
             ret = zflineAlloc(EnumName, ZFEnumInvalid()); \
@@ -396,6 +405,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
         zfuint tmpValue = EnumName::EnumValueForName( \
             (srcLen == zfindexMax()) ? src : zfstring(src, srcLen).cString()); \
         if(tmpValue == ZFEnumInvalid()) { \
+            zfstringAppend(errorHint, "no enum named: \"%s\"", zfstring(src, srcLen)); \
             return zffalse; \
         } \
         else { \
