@@ -190,15 +190,6 @@ public:
      */
     const zfchar *xmlValue(void) const;
 
-    zffinal void _ZFP_ZFXml_xmlMemoryPool_xmlName(
-            ZF_IN const zfchar *xmlName
-            , ZF_IN void *token
-            );
-    zffinal void _ZFP_ZFXml_xmlMemoryPool_xmlValue(
-            ZF_IN const zfchar *xmlValue
-            , ZF_IN void *token
-            );
-
     // ============================================================
 public:
     /**
