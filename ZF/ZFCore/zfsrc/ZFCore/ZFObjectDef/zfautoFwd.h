@@ -46,26 +46,18 @@ public:
     zfauto(void) : d(zfnull) {}
     zfauto(ZF_IN zfauto const &obj);
     zfauto(ZF_IN zfnullT const &) : d(zfnull) {}
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     zfauto(ZF_IN T_ZFObject *obj);
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     zfauto(ZF_IN T_ZFObject const &obj);
     zffinal ~zfauto(void);
 
 public:
     zfauto &operator = (ZF_IN zfauto const &);
     zfauto &operator = (ZF_IN zfnullT const &);
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     zfauto &operator = (ZF_IN T_ZFObject *obj);
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     zfauto &operator = (ZF_IN T_ZFObject const &obj);
 
 public:
@@ -81,15 +73,11 @@ public:
     inline zfbool operator != (ZF_IN zfnullT const &) const {
         return this->toObject() != zfnull;
     }
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
         return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
         return this->toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
     }
@@ -101,11 +89,9 @@ public:
     inline operator zfbool (void) const {
         return (this->toObject() != zfnull);
     }
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
-    inline operator T_ZFObject (void) const {
-        return ZFCastZFObject(T_ZFObject, this->toObject());
+    template<typename T_ZFObject>
+    inline operator T_ZFObject * (void) const {
+        return ZFCastZFObject(T_ZFObject *, this->toObject());
     }
     /** @endcond */
 
@@ -155,13 +141,9 @@ public:
     zfautoT(ZF_IN zfauto const &obj) : zfauto(obj) {}
     zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto((zfauto const &)obj) {}
     zfautoT(ZF_IN zfnullT const &) : zfauto() {}
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     zfautoT(ZF_IN T_ZFObject *obj) : zfauto(obj) {}
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObjectType(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     zfautoT(ZF_IN T_ZFObject const &obj) : zfauto(obj) {}
 
 public:
@@ -177,15 +159,11 @@ public:
     inline zfbool operator != (ZF_IN zfnullT const &) const {
         return this->toObject() != zfnull;
     }
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
         return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
     }
-    template<typename T_ZFObject
-        , typename T_Fix = typename zftEnableIf<zftIsZFObject(typename zftTraits<T_ZFObject>::TrType)>::EnableIf
-        >
+    template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
         return this->toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
     }

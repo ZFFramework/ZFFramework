@@ -64,17 +64,17 @@ public:
         }
         return *this;
     }
+public:
+    /** @cond ZFPrivateDoc */
+    template<typename T>
+    inline const ZFOutput &operator << (ZF_IN T const &v) const {
+        zfstring s;
+        zftToString(s, v);
+        output(s.cString(), s.length() * sizeof(zfchar));
+        return *this;
+    }
+    /** @endcond */
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFOutput, ZFIOCallback)
-
-/** @cond ZFPrivateDoc */
-template<typename T>
-inline const ZFOutput &operator << (const ZFOutput &output, T const &v) {
-    zfstring s;
-    zftToString(s, v);
-    output.output(s.cString(), s.length() * sizeof(zfchar));
-    return output;
-}
-/** @endcond */
 
 // ============================================================
 // common output callbacks

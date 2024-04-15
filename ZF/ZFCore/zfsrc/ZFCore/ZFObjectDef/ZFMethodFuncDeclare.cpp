@@ -7,7 +7,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlmap<ZFSigName, zfstlvector<const ZFMethod *>> _ZFP_ZFMethodFuncNameMapType;
+typedef zfstlmap<ZFSigName, zfstlvector<const ZFMethod *> > _ZFP_ZFMethodFuncNameMapType;
 typedef zfstlmap<ZFSigName, _ZFP_ZFMethodFuncNameMapType> _ZFP_ZFMethodFuncMapType;
 static _ZFP_ZFMethodFuncMapType &_ZFP_ZFMethodFuncMap(void) {
      static _ZFP_ZFMethodFuncMapType m;

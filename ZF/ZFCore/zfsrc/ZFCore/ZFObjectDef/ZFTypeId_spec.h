@@ -371,15 +371,15 @@ public:
     }
     zfoverride
     virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
-        if(!Value<zfautoT<T_ZFObject>>::zfvAccessAvailable(obj)) {
+        if(!Value<zfautoT<T_ZFObject> >::zfvAccessAvailable(obj)) {
             return zfnull;
         }
-        return (void *)zfnew(zfautoT<T_ZFObject>, Value<zfautoT<T_ZFObject>>::zfvAccess(obj));
+        return (void *)zfnew(zfautoT<T_ZFObject>, Value<zfautoT<T_ZFObject> >::zfvAccess(obj));
     }
     zfoverride
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
         zfdelete((zfautoT<T_ZFObject> *)v);
-        Value<zfautoT<T_ZFObject>>::zfvAccessFinish(obj);
+        Value<zfautoT<T_ZFObject> >::zfvAccessFinish(obj);
     }
 };
 /** @endcond */

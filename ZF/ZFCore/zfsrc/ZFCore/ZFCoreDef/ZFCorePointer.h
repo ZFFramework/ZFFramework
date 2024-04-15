@@ -208,10 +208,10 @@ public:
         return d->pointerValue;
     }
     inline zfbool operator == (ZF_IN zfnullT const &p) const {
-        return (d->pointerValue == p);
+        return (d->pointerValue == zfnull);
     }
     inline zfbool operator != (ZF_IN zfnullT const &p) const {
-        return (d->pointerValue != p);
+        return (d->pointerValue != zfnull);
     }
     inline zfbool operator == (ZF_IN T_Pointer const &p) const {
         return (d->pointerValue == p);
@@ -391,10 +391,10 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
             return *(this->pointerValue()); \
         } \
         inline zfbool operator == (ZF_IN zfnullT const &p) const { \
-            return (this->pointerValue() == p); \
+            return (this->pointerValue() == zfnull); \
         } \
         inline zfbool operator != (ZF_IN zfnullT const &p) const { \
-            return (this->pointerValue() != p); \
+            return (this->pointerValue() != zfnull); \
         } \
         inline zfbool operator == (ZF_IN T_Pointer const &p) const { \
             return (this->pointerValue() == p); \

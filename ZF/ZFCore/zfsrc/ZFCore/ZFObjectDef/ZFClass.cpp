@@ -50,7 +50,7 @@ static _ZFP_ZFObjectToInterfaceCastCallback _ZFP_ZFClassInterfaceCastCallbackDum
 typedef zfstlmap<zfstring, zfauto> _ZFP_ZFClassTagMapType;
 typedef zfstlmap<const ZFProperty *, zfstlmap<const ZFClass *, zfbool> > _ZFP_ZFClassPropertyInitStepMapType;
 
-typedef zfstlmap<ZFSigName, zfstlvector<const ZFMethod *>> _ZFP_ZFClassMethodMapType;
+typedef zfstlmap<ZFSigName, zfstlvector<const ZFMethod *> > _ZFP_ZFClassMethodMapType;
 typedef zfstlmap<ZFSigName, const ZFProperty *> _ZFP_ZFClassPropertyMapType;
 
 zfclassNotPOD _ZFP_ZFClassPrivate {

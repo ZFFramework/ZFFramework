@@ -92,7 +92,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
             case ZFCallbackTypeMethod:
                 serializableData.itemClass(ZFTypeId_ZFCallback());
                 ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-                        ZFSerializableKeyword_ZFCallback_method, ZFMethod, v.callbackMethod(), zfnull, {
+                        ZFSerializableKeyword_ZFCallback_method, ZFMethod, v.callbackMethod(), (const ZFMethod *)zfnull, {
                             return zffalse;
                         });
                 break;
