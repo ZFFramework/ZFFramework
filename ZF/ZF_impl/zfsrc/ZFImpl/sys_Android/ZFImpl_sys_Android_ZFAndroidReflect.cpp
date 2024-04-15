@@ -255,7 +255,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         return JNIPointerInvalid;
     }
 
-    ZFImpl_sys_Android_zfstringFromStringT(clsInfo->clsNameInJava, clsNameInJava);
+    clsInfo->clsNameInJava = ZFImpl_sys_Android_zfstringFromString(clsNameInJava);
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder)->clsMap[clsInfo->clsNameInJava] = clsZF;
     return JNIConvertPointerToJNIType(JNIGetJNIEnv(), clsZF);
 }

@@ -56,7 +56,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
         jsize count = JNIUtilGetArrayLength(jniEnv, params);
         for(jsize i = 0; i < count; ++i) {
             jobject param = JNIUtilGetObjectArrayElement(jniEnv, params, i);
-            paramsZF.add(ZFImpl_sys_Android_zfstringFromStringT(param));
+            paramsZF.add(ZFImpl_sys_Android_zfstringFromString(param));
             JNIUtilDeleteLocalRef(jniEnv, param);
         }
     }
