@@ -353,7 +353,7 @@ ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
 void ZFUIImage::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     ret += " ";
-    ZFUISizeToString(ret, this->imageSize());
+    ZFUISizeToStringT(ret, this->imageSize());
 }
 
 ZFMETHOD_DEFINE_0(ZFUIImage, void *, nativeImage) {

@@ -66,7 +66,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFSerializableDataToJson
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_IN_OPT(const ZFJsonOutputFlags &, flags, ZFJsonOutputFlagsDefault())
+        , ZFMP_IN_OPT(const ZFJsonOutputToken &, token, ZFJsonOutputTokenDefault())
         )
 
 // ============================================================
@@ -90,7 +90,7 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFObjectToJson
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_IN_OPT(const ZFJsonOutputFlags &, flags, ZFJsonOutputFlagsDefault())
+        , ZFMP_IN_OPT(const ZFJsonOutputToken &, token, ZFJsonOutputTokenDefault())
         )
 
 ZF_NAMESPACE_GLOBAL_END

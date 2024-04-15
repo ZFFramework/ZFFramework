@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfbool _ZFP_ZFCoreArrayFromString(
+zfbool _ZFP_ZFCoreArrayFromStringT(
         ZF_IN const ZFTypeInfo *elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const zfchar *src
@@ -50,7 +50,7 @@ zfbool _ZFP_ZFCoreArrayFromString(
     }
     return zftrue;
 }
-zfbool _ZFP_ZFCoreArrayToString(
+zfbool _ZFP_ZFCoreArrayToStringT(
         ZF_IN const ZFTypeInfo *elementType
         , ZF_OUT zfstring &s
         , ZF_IN ZFCoreArrayBase const &v
@@ -100,7 +100,7 @@ zfbool _ZFP_ZFCoreArrayToString(
     s += "]";
     return zftrue;
 }
-zfbool _ZFP_ZFCoreArrayFromData(
+zfbool _ZFP_ZFCoreArrayFromDataT(
         ZF_IN const ZFTypeInfo *elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
         , ZF_IN const ZFSerializableData &serializableData
@@ -151,7 +151,7 @@ zfbool _ZFP_ZFCoreArrayFromData(
     }
     return zftrue;
 }
-zfbool _ZFP_ZFCoreArrayToData(
+zfbool _ZFP_ZFCoreArrayToDataT(
         ZF_IN const ZFTypeInfo *elementType
         , ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFCoreArrayBase const &v

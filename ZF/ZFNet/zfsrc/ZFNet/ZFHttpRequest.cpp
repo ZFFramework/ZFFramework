@@ -173,7 +173,7 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, body
         , ZFMP_IN(const ZFJson &, json)
         ) {
     zfstring text;
-    ZFJsonToString(text, json, ZFJsonOutputFlagsTrim());
+    ZFJsonToStringT(text, json, ZFJsonOutputTokenTrim());
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, (const void *)text.cString(), text.length());
     return this;
 }

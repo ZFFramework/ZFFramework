@@ -525,7 +525,7 @@ zfbool ZFObjectFromZfsd(
         ) {
     ZFSerializableData data;
     if(ZFSerializableDataFromZfsd(data, input, outErrorHint)) {
-        return ZFObjectFromData(ret, data, outErrorHint);
+        return ZFObjectFromDataT(ret, data, outErrorHint);
     }
     else {
         return zffalse;
@@ -547,7 +547,7 @@ zfbool ZFObjectToZfsd(
         , ZF_IN_OPT zfbool prettyPrint /* = zftrue */
         ) {
     ZFSerializableData serializableData;
-    if(!ZFObjectToData(serializableData, obj, outErrorHint)) {
+    if(!ZFObjectToDataT(serializableData, obj, outErrorHint)) {
         return zffalse;
     }
     else {

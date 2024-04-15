@@ -75,7 +75,8 @@ protected:
                 ) {
             zfauto testObject = owner->prepareTestObject();
             outputView->text("running...");
-            ZFSerializableData data = ZFObjectToData(testObject);
+            ZFSerializableData data;
+            ZFObjectToDataT(data, testObject);
 
             zfindex toDataTimes = 1000;
             ZFCoreStatistic::invokeTimeLogBegin("ZFUISerializePerformance_test_toData");

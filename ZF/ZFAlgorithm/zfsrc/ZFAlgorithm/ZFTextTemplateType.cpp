@@ -21,7 +21,7 @@ void ZFTextTemplateIndexData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     }
 
     ret += " ";
-    ZFTextTemplateIndexFlagToString(ret, this->indexFlag);
+    ZFTextTemplateIndexFlagToStringT(ret, this->indexFlag);
 
     ret += ZFTOKEN_ZFObjectInfoRight;
 }
@@ -517,7 +517,7 @@ void ZFTextTemplateParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         else {ret += ", ";}
 
         ret += "enableDataDefault: ";
-        zfboolToString(ret, this->enableDataDefault());
+        zfboolToStringT(ret, this->enableDataDefault());
     }
 
     if(!d->indexDataList.isEmpty()) {
@@ -572,7 +572,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 }
                 item.resolvePropertyNameMark();
                 zfstring value;
-                if(!zfstringFromData(value, item, outErrorHint, outErrorPos)) {
+                if(!zfstringFromDataT(value, item, outErrorHint, outErrorPos)) {
                     return zffalse;
                 }
                 v.replaceDataAdd(key, value);
@@ -592,7 +592,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 }
                 item.resolvePropertyNameMark();
                 zfbool value = zffalse;
-                if(!zfboolFromData(value, item, outErrorHint, outErrorPos)) {
+                if(!zfboolFromDataT(value, item, outErrorHint, outErrorPos)) {
                     return zffalse;
                 }
                 v.enableDataAdd(key, value);
@@ -619,7 +619,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
                 }
                 item.resolvePropertyNameMark();
                 ZFTextTemplateIndexData value;
-                if(!ZFTextTemplateIndexDataFromData(value, item, outErrorHint, outErrorPos)) {
+                if(!ZFTextTemplateIndexDataFromDataT(value, item, outErrorHint, outErrorPos)) {
                     return zffalse;
                 }
                 v.indexDataAdd(key, value);
@@ -643,7 +643,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
             ZFSerializableData nodeData;
             for(zfindex i = 0; i < v.replaceDataCount(); ++i) {
                 ZFSerializableData itemData;
-                if(!zfstringToData(itemData, v.replaceDataAt(i), outErrorHint)) {
+                if(!zfstringToDataT(itemData, v.replaceDataAt(i), outErrorHint)) {
                     return zffalse;
                 }
                 itemData.propertyName(v.replaceDataNameAt(i));
@@ -659,7 +659,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
             ZFSerializableData nodeData;
             for(zfindex i = 0; i < v.enableDataCount(); ++i) {
                 ZFSerializableData itemData;
-                if(!zfboolToData(itemData, v.enableDataAt(i), outErrorHint)) {
+                if(!zfboolToDataT(itemData, v.enableDataAt(i), outErrorHint)) {
                     return zffalse;
                 }
                 itemData.propertyName(v.enableDataNameAt(i));
@@ -680,7 +680,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFTextTemplateParam, ZFTextTemplatePar
             ZFSerializableData nodeData;
             for(zfindex i = 0; i < v.indexDataCount(); ++i) {
                 ZFSerializableData itemData;
-                if(!ZFTextTemplateIndexDataToData(itemData, *(v.indexDataAt(i)), outErrorHint)) {
+                if(!ZFTextTemplateIndexDataToDataT(itemData, *(v.indexDataAt(i)), outErrorHint)) {
                     return zffalse;
                 }
                 itemData.propertyName(v.indexDataNameAt(i));

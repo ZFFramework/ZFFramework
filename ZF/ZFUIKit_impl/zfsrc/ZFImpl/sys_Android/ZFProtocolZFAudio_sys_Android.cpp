@@ -206,7 +206,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAudio
     }
     else {
         zfblockedAlloc(v_zfstring, errorHintHolder);
-        ZFImpl_sys_Android_zfstringFromString(errorHintHolder->zfv, errorHint);
+        ZFImpl_sys_Android_zfstringFromStringT(errorHintHolder->zfv, errorHint);
         ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnLoad(audio, (zfbool)success, errorHintHolder);
     }
 }
@@ -224,7 +224,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAudio
     }
     else {
         zfblockedAlloc(v_zfstring, errorHintHolder);
-        ZFImpl_sys_Android_zfstringFromString(errorHintHolder->zfv, errorHint);
+        ZFImpl_sys_Android_zfstringFromStringT(errorHintHolder->zfv, errorHint);
         ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(audio, (zfbool)success, errorHintHolder);
     }
 }

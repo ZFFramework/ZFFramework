@@ -644,7 +644,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFInputForPathInfoT
     ret.pathInfo(pathType, pathData);
 
     zfstring callbackId;
-    ZFPathInfoToString(callbackId, *ret.pathInfo());
+    ZFPathInfoToStringT(callbackId, *ret.pathInfo());
     ret.callbackId(callbackId);
 
     if(!ret.callbackSerializeCustomDisabled()) {
@@ -812,7 +812,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFOutputForPathInfoT
     ret.pathInfo(pathType, pathData);
 
     zfstring callbackId;
-    ZFPathInfoToString(callbackId, *ret.pathInfo());
+    ZFPathInfoToStringT(callbackId, *ret.pathInfo());
     ret.callbackId(callbackId);
 
     if(!ret.callbackSerializeCustomDisabled()) {

@@ -20,7 +20,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListAdapterArray_cell)) {continue;}
 
         zfauto element;
-        if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(element == zfnull) {
@@ -51,7 +51,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeToData(
     if(ref == zfnull || ref->cellCount() == 0) {
         for(zfindex i = 0, count = this->cellCount(); i < count; ++i) {
             ZFSerializableData cellData;
-            if(!ZFObjectToData(cellData, this->cellAt(i), outErrorHint)) {
+            if(!ZFObjectToDataT(cellData, this->cellAt(i), outErrorHint)) {
                 return zffalse;
             }
             cellData.category(ZFSerializableKeyword_ZFUIListAdapterArray_cell);

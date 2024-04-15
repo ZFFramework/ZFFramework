@@ -197,7 +197,7 @@ ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurve)
 #define ZFSerializableKeyword_ZFCurve_p1y "p1y"
 
 // ============================================================
-ZFOUTPUT_TYPE(ZFCurve, {ZFCurveToString(s, v);})
+ZFOUTPUT_TYPE(ZFCurve, {ZFCurveToStringT(s, v);})
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFCurve_h_

@@ -360,8 +360,15 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
 
 // ============================================================
 #define _ZFP_ZFENUM_CONVERTER_DECLARE(ZFLIB_, EnumName) \
+    /** @brief see @ref EnumName, return enum object if success */ \
+    extern ZFLIB_ zfbool EnumName##FromStringT( \
+            ZF_OUT zfauto &ret \
+            , ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen = zfindexMax() \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ); \
     /** @brief see @ref EnumName, return empty string if error */ \
-    extern ZFLIB_ zfbool EnumName##ToString( \
+    extern ZFLIB_ zfbool EnumName##ToStringT( \
             ZF_IN_OUT zfstring &ret \
             , ZF_IN EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
@@ -372,19 +379,12 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
         zfstring ret; \
-        EnumName##ToString(ret, value, errorHint); \
+        EnumName##ToStringT(ret, value, errorHint); \
         return ret; \
     } \
-    /** @brief see @ref EnumName, return enum object if success */ \
-    extern ZFLIB_ zfbool EnumName##FromString( \
-            ZF_OUT zfauto &ret \
-            , ZF_IN const zfchar *src \
-            , ZF_IN_OPT zfindex srcLen = zfindexMax() \
-            , ZF_OUT_OPT zfstring *errorHint = zfnull \
-            ); \
     ZFOUTPUT_TYPE_DECLARE(ZFLIB_, EnumName##Enum)
 #define _ZFP_ZFENUM_CONVERTER_DEFINE(EnumName) \
-    zfbool EnumName##ToString( \
+    zfbool EnumName##ToStringT( \
             ZF_IN_OUT zfstring &ret \
             , ZF_IN EnumName *const &value \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
@@ -392,7 +392,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
         ret += ((value == zfnull) ? "" : value->enumName()); \
         return zftrue; \
     } \
-    zfbool EnumName##FromString( \
+    zfbool EnumName##FromStringT( \
             ZF_OUT zfauto &ret \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
@@ -469,7 +469,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
 #define _ZFP_ZFENUM_FLAGS_DEFINE(EnumName, EnumFlagsName) \
     ZFOUTPUT_TYPE_DEFINE(EnumFlagsName, {v.objectInfoT(s);}) \
     void EnumFlagsName::objectInfoT(ZF_IN_OUT zfstring &ret) const { \
-        zfflagsToString(ret, EnumName::ClassData(), (zfflags)this->enumValue()); \
+        zfflagsToStringT(ret, EnumName::ClassData(), (zfflags)this->enumValue()); \
     } \
     _ZFP_ZFENUM_FLAGS_PROP_TYPE_DEFINE(EnumName, EnumFlagsName)
 

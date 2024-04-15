@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // string conversion spec
 #define _ZFP_zfflagsInvalidToken ("0x0")
-zfbool zfflagsToString(
+zfbool zfflagsToStringT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const zfflags *flagList
         , ZF_IN const zfchar **nameList
@@ -76,7 +76,7 @@ zfbool zfflagsToString(
 
     return zftrue;
 }
-zfbool zfflagsFromString(
+zfbool zfflagsFromStringT(
         ZF_OUT zfflags &ret
         , ZF_IN const zfflags *flagList
         , ZF_IN const zfchar **nameList
@@ -127,7 +127,7 @@ zfbool zfflagsFromString(
     return zftrue;
 }
 
-zfbool zfstringFromData(
+zfbool zfstringFromDataT(
         ZF_OUT const zfchar * &v
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -145,7 +145,7 @@ zfbool zfstringFromData(
     v = valueString;
     return zftrue;
 }
-zfbool zfstringToData(
+zfbool zfstringToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const zfchar * const &v
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */

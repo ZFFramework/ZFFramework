@@ -10,7 +10,7 @@ ZFOBJECT_REGISTER(ZFUIMouseEvent)
 void ZFUIMouseEvent::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     ret += ZFUIMouseAction::EnumNameForValue(this->mouseAction);
     ret += " ";
-    ZFUIPointToString(ret, this->mousePoint);
+    ZFUIPointToStringT(ret, this->mousePoint);
 
     if(this->mouseButton != ZFUIMouseButton::e_MouseButtonLeft) {
         ret += " ";

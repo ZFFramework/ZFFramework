@@ -196,7 +196,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
         const zfchar *valueString = ZFSerializableUtil::check_or_require##Attribute(serializableData, key \
             _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
         if(valueString != zfnull) { \
-            if(!TypeName##FromString(value, valueString)) { \
+            if(!TypeName##FromStringT(value, valueString)) { \
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
                     "failed to convert from \"%s\"", valueString); \
                 failAction \
@@ -211,7 +211,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
                 || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareTheSame) \
                 ) { \
             zfstring valueString; \
-            if(!TypeName##ToString(valueString, thisValue)) { \
+            if(!TypeName##ToStringT(valueString, thisValue)) { \
                 ZFSerializableUtilErrorOccurred(outErrorHint, \
                     "failed to convert %s to string", key); \
                 failAction \
@@ -227,7 +227,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
     do { \
         if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) { \
             zfstring valueString; \
-            if(!TypeName##ToString(valueString, thisValue)) { \
+            if(!TypeName##ToStringT(valueString, thisValue)) { \
                 ZFSerializableUtilErrorOccurred(outErrorHint, \
                     "failed to convert %s to string", key); \
                 failAction \
@@ -246,7 +246,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
         const ZFSerializableData *valueData = ZFSerializableUtil::check_or_require##ElementByCategory(serializableData, key \
             _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
         if(valueData != zfnull) { \
-            if(!TypeName##FromData(value, *valueData, outErrorHint, outErrorPos)) { \
+            if(!TypeName##FromDataT(value, *valueData, outErrorHint, outErrorPos)) { \
                 failAction \
             } \
         } \
@@ -259,7 +259,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
                 || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareTheSame) \
                 ) { \
             ZFSerializableData categoryData; \
-            if(!TypeName##ToData(categoryData, thisValue, outErrorHint)) { \
+            if(!TypeName##ToDataT(categoryData, thisValue, outErrorHint)) { \
                 failAction \
             } \
             else { \
@@ -274,7 +274,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
     do { \
         if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) { \
             ZFSerializableData categoryData; \
-            if(!TypeName##ToData(categoryData, thisValue, outErrorHint)) { \
+            if(!TypeName##ToDataT(categoryData, thisValue, outErrorHint)) { \
                 failAction \
             } \
             else { \

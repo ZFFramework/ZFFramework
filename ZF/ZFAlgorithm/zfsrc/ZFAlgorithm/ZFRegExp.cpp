@@ -9,7 +9,7 @@ void ZFRegExpResult::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         ret += "matched";
         if(this->matchedRange != ZFIndexRangeZero()) {
             ret += " in ";
-            ZFIndexRangeToString(ret, this->matchedRange);
+            ZFIndexRangeToStringT(ret, this->matchedRange);
         }
         if(!this->namedGroups.isEmpty()) {
             ret += ", named groups: ";
@@ -17,7 +17,7 @@ void ZFRegExpResult::objectInfoT(ZF_IN_OUT zfstring &ret) const {
                 if(i != 0) {
                     ret += ", ";
                 }
-                ZFIndexRangeToString(ret, this->namedGroups[i]);
+                ZFIndexRangeToStringT(ret, this->namedGroups[i]);
             }
         }
     }
@@ -48,7 +48,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
 
         v.namedGroups.removeAll();
         element = ZFSerializableUtil::checkElementByCategory(serializableData, ZFSerializableKeyword_ZFRegExpResult_namedGroups);
-        if(element != zfnull && !ZFCoreArrayFromData(
+        if(element != zfnull && !ZFCoreArrayFromDataT(
                     v.namedGroups,
                     serializableData,
                     outErrorHint,
@@ -72,7 +72,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFRegExpResult, ZFRegExpResult, {
 
         if(!v.namedGroups.isEmpty()) {
             ZFSerializableData element;
-            if(!ZFCoreArrayToData(element, v.namedGroups, outErrorHint)) {
+            if(!ZFCoreArrayToDataT(element, v.namedGroups, outErrorHint)) {
                 return zffalse;
             }
             element.category(ZFSerializableKeyword_ZFRegExpResult_namedGroups);

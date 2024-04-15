@@ -29,7 +29,7 @@ ZFAndroidReflect_FromJNIType_DEFINE(common) {
         zfblockedAlloc(v_zfstring, ret);
         obj = ret;
         if(jobj != NULL) {
-            ZFImpl_sys_Android_zfstringFromString(ret->zfv, jobj);
+            ZFImpl_sys_Android_zfstringFromStringT(ret->zfv, jobj);
         }
         return zftrue;
     }

@@ -429,26 +429,26 @@ extern ZFLIB_ZFCore zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj);
  *   which describe a null object,
  *   the result would be null
  */
-extern ZFLIB_ZFCore zfauto ZFObjectFromData(
-        ZF_IN const ZFSerializableData &serializableData
-        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
-        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
-        );
-/** @brief see #ZFObjectFromData */
-extern ZFLIB_ZFCore zfbool ZFObjectFromData(
+extern ZFLIB_ZFCore zfbool ZFObjectFromDataT(
         ZF_OUT zfauto &result
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
-/** @brief see #ZFObjectFromData */
-extern ZFLIB_ZFCore zfbool ZFObjectToData(
+/** @brief see #ZFObjectFromDataT */
+extern ZFLIB_ZFCore zfauto ZFObjectFromData(
+        ZF_IN const ZFSerializableData &serializableData
+        , ZF_OUT_OPT zfstring *outErrorHint = zfnull
+        , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
+        );
+/** @brief see #ZFObjectFromDataT */
+extern ZFLIB_ZFCore zfbool ZFObjectToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull = zfnull
         );
-/** @brief see #ZFObjectFromData */
+/** @brief see #ZFObjectFromDataT */
 extern ZFLIB_ZFCore ZFSerializableData ZFObjectToData(
         ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfbool *outSuccess = zfnull

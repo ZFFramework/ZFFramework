@@ -269,7 +269,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
     // detect error line
     zfindex errorLine = zfindexMax();
     if(tokenL != zfindexMax() && tokenR != zfindexMax()) {
-        zfindexFromString(errorLine, (const zfchar *)nativeError + tokenL, tokenR);
+        zfindexFromStringT(errorLine, (const zfchar *)nativeError + tokenL, tokenR);
         nativeError = nativeError + tokenL + tokenR + 1;
         while(*nativeError == ' ') {++nativeError;}
     }
@@ -282,7 +282,7 @@ void ZFImpl_ZFLua_execute_errorHandle(
     }
     if(errorLine != zfindexMax()) {
         *errHint += ", line: ";
-        zfindexToString(*errHint, errorLine);
+        zfindexToStringT(*errHint, errorLine);
     }
     lua_pop(L, 1);
 }
@@ -306,7 +306,7 @@ void ZFImpl_ZFLua_luaObjectInfoT(
             ret += "<nil>";
             break;
         case LUA_TBOOLEAN:
-            zfboolToString(ret, (lua_toboolean(L, luaStackOffset) != 0));
+            zfboolToStringT(ret, (lua_toboolean(L, luaStackOffset) != 0));
             break;
         case LUA_TLIGHTUSERDATA:
         case LUA_TUSERDATA: {
@@ -320,7 +320,7 @@ void ZFImpl_ZFLua_luaObjectInfoT(
             }
             break;
         case LUA_TNUMBER:
-            zfdoubleToString(ret, (zfdouble)lua_tonumber(L, luaStackOffset));
+            zfdoubleToStringT(ret, (zfdouble)lua_tonumber(L, luaStackOffset));
             break;
         case LUA_TSTRING:
             ret += lua_tostring(L, luaStackOffset);

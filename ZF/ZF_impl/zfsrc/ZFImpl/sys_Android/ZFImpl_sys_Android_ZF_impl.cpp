@@ -203,7 +203,7 @@ jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v) {
 }
 
 // ============================================================
-void ZFImpl_sys_Android_zfstringFromString(
+void ZFImpl_sys_Android_zfstringFromStringT(
         ZF_IN_OUT zfstring &s
         , ZF_IN jobject jstr
         ) {

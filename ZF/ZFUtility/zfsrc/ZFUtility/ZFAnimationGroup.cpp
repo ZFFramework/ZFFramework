@@ -265,7 +265,7 @@ zfbool ZFAnimationGroup::serializableOnSerializeFromData(
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFAnimationGroup_child)) {
             zfauto element;
-            if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
+            if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
             if(element == zfnull) {
@@ -302,7 +302,7 @@ zfbool ZFAnimationGroup::serializableOnSerializeToData(
     if(ref == zfnull) {
         for(zfindex i = 0; i < d->childAnis->count(); ++i) {
             ZFSerializableData elementData;
-            if(!ZFObjectToData(elementData, d->childAnis->get(i), outErrorHint)) {
+            if(!ZFObjectToDataT(elementData, d->childAnis->get(i), outErrorHint)) {
                 return zffalse;
             }
             elementData.category(ZFSerializableKeyword_ZFAnimationGroup_child);

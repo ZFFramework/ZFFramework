@@ -108,7 +108,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage *>, ZFUIImageFromInput
 
     if(!inputCallback.callbackSerializeCustomDisabled()) {
         ZFSerializableData inputData;
-        if(ZFCallbackToData(inputData, inputCallback)) {
+        if(ZFCallbackToDataT(inputData, inputCallback)) {
             ZFSerializableData customData;
             customData.itemClass(ZFUIImage::ClassData()->className());
             inputData.category(ZFSerializableKeyword_ZFUIImageIO_input_imageData);
@@ -206,7 +206,7 @@ static zfbool _ZFP_ZFUIImageInFrame(
         data.itemClass(ZFSerializableKeyword_node);
         ZFSerializableData refData;
         zfstring frameString;
-        if(image->serializeToData(refData) && ZFUIRectToString(frameString, frame)) {
+        if(image->serializeToData(refData) && ZFUIRectToStringT(frameString, frame)) {
             data.attr(ZFSerializableKeyword_ZFUIImageIO_ref_refFrame, frameString);
             refData.category(ZFSerializableKeyword_ZFUIImageIO_ref);
             data.childAdd(refData);

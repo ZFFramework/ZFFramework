@@ -408,7 +408,7 @@ zfbool ZFSerializable::serializableOnSerializePropertyFromData(
         ) {
     if(property->propertyIsRetainProperty()) {
         zfauto obj;
-        if(!ZFObjectFromData(obj, propertyData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(obj, propertyData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(obj != zfnull && !obj.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty())) {
@@ -471,7 +471,7 @@ zfbool ZFSerializable::serializableOnSerializePropertyToData(
 
     if(property->propertyIsRetainProperty()) {
         ZFSerializableData propertyData;
-        if(!ZFObjectToData(propertyData, propertyValue, outErrorHint)) {
+        if(!ZFObjectToDataT(propertyData, propertyValue, outErrorHint)) {
             return zffalse;
         }
         propertyData.propertyName(property->propertyName());
@@ -611,7 +611,7 @@ zfbool ZFObjectIsSerializable(ZF_IN ZFObject *obj) {
 }
 
 // ============================================================
-zfbool ZFObjectFromData(
+zfbool ZFObjectFromDataT(
         ZF_OUT zfauto &result
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -666,10 +666,10 @@ zfauto ZFObjectFromData(
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
     zfauto result;
-    ZFObjectFromData(result, serializableData, outErrorHint, outErrorPos);
+    ZFObjectFromDataT(result, serializableData, outErrorHint, outErrorPos);
     return result;
 }
-zfbool ZFObjectToData(
+zfbool ZFObjectToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN ZFObject *obj
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -695,7 +695,7 @@ ZFSerializableData ZFObjectToData(
         , ZF_IN_OPT ZFSerializable *referencedOwnerOrNull /* = zfnull */
         ) {
     ZFSerializableData serializableData;
-    zfbool success = ZFObjectToData(serializableData, obj, outErrorHint, referencedOwnerOrNull);
+    zfbool success = ZFObjectToDataT(serializableData, obj, outErrorHint, referencedOwnerOrNull);
     if(outSuccess != zfnull) {
         *outSuccess = success;
     }
@@ -811,18 +811,18 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfbool, ZFObjectIsSerializable
         , ZFMP_IN(ZFObject *, obj)
         )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfauto, ZFObjectFromData
-        , ZFMP_IN(const ZFSerializableData &, serializableData)
-        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectFromData
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectFromDataT
         , ZFMP_OUT(zfauto &, result)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
         , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectToData
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfauto, ZFObjectFromData
+        , ZFMP_IN(const ZFSerializableData &, serializableData)
+        , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
+        , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfbool, ZFObjectToDataT
         , ZFMP_OUT(ZFSerializableData &, serializableData)
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)

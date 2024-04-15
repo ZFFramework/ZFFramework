@@ -334,7 +334,7 @@ void ZFMethodDynamicRegisterParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += "<ZFMethodDynamicRegisterParam ";
 
     if(this->methodPrivilegeType() != ZFMethodPrivilegeTypePublic) {
-        ZFMethodPrivilegeTypeToString(ret, this->methodPrivilegeType());
+        ZFMethodPrivilegeTypeToStringT(ret, this->methodPrivilegeType());
         ret += ":";
     }
 

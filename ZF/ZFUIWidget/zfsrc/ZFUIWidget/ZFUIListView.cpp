@@ -1315,7 +1315,7 @@ zfbool ZFUIListView::serializableOnSerializeFromData(
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListView_listAdapter)) {continue;}
 
         zfauto element;
-        if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(element != zfnull
@@ -1345,7 +1345,7 @@ zfbool ZFUIListView::serializableOnSerializeToData(
     }
 
     ZFSerializableData categoryData;
-    if(!ZFObjectToData(categoryData, this->listAdapter()->toObject(), outErrorHint,
+    if(!ZFObjectToDataT(categoryData, this->listAdapter()->toObject(), outErrorHint,
                 ref ? ZFCastZFObject(ZFSerializable *, ref->listAdapter()) : zfnull
                 )) {
         return zffalse;

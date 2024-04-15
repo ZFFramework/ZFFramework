@@ -369,26 +369,26 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
             ) { \
-        return TypeName##FromData(this->zfv, serializableData, outErrorHint, outErrorPos); \
+        return TypeName##FromDataT(this->zfv, serializableData, outErrorHint, outErrorPos); \
     } \
     zfbool v_##TypeName::wrappedValueToData( \
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
-        return TypeName##ToData(serializableData, this->zfv, outErrorHint); \
+        return TypeName##ToDataT(serializableData, this->zfv, outErrorHint); \
     } \
     zfbool v_##TypeName::wrappedValueFromString( \
             ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
-        return TypeName##FromString(this->zfv, src, srcLen, errorHint); \
+        return TypeName##FromStringT(this->zfv, src, srcLen, errorHint); \
     } \
     zfbool v_##TypeName::wrappedValueToString( \
             ZF_IN_OUT zfstring &s \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
-        return TypeName##ToString(s, this->zfv, errorHint); \
+        return TypeName##ToStringT(s, this->zfv, errorHint); \
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_NOT_SERIALIZABLE(TypeName, Type) \

@@ -16,14 +16,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 #define ZFCORETYPE_STRING_CONVERTER_DECLARE(ZFLIB_, TypeName, Type) \
     /** @brief util method to convert TypeName from string */ \
-    extern ZFLIB_ zfbool TypeName##FromString( \
+    extern ZFLIB_ zfbool TypeName##FromStringT( \
             ZF_OUT Type &v \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen = zfindexMax() \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ); \
+    /** @brief util method to convert TypeName from string */ \
+    inline Type TypeName##FromString( \
+            ZF_IN const zfchar *src \
+            , ZF_IN_OPT zfindex srcLen = zfindexMax() \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
+        Type v; \
+        TypeName##FromStringT(v, src, srcLen, errorHint); \
+        return v; \
+    } \
     /** @brief util method to convert TypeName to string */ \
-    extern ZFLIB_ zfbool TypeName##ToString( \
+    extern ZFLIB_ zfbool TypeName##ToStringT( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN Type const &v \
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
@@ -34,7 +44,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZF_OUT_OPT zfstring *errorHint = zfnull \
             ) { \
         zfstring s; \
-        TypeName##ToString(s, v, errorHint); \
+        TypeName##ToStringT(s, v, errorHint); \
         return s; \
     }
 /**
@@ -43,7 +53,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @code
  *   ZFCORETYPE_STRING_CONVERTER_DEFINE(YourTypeName, YourType, {
  *           // proto type:
- *           //   zfbool YourTypeNameFromString(
+ *           //   zfbool YourTypeNameFromStringT(
  *           //           ZF_OUT YourType &v
  *           //           , ZF_IN const zfchar *src
  *           //           , ZF_IN_OPT zfindex srcLen = zfindexMax()
@@ -51,7 +61,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           //           );
  *       }, {
  *           // proto type:
- *           //   zfbool YourTypeNameToString(
+ *           //   zfbool YourTypeNameToStringT(
  *           //           ZF_IN_OUT zfstring &s
  *           //           , ZF_IN YourType const &v
  *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
@@ -61,7 +71,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 #define ZFCORETYPE_STRING_CONVERTER_DEFINE(TypeName, Type, convertFromStringAction, convertToStringAction) \
-    zfbool TypeName##FromString( \
+    zfbool TypeName##FromStringT( \
             ZF_OUT Type &v \
             , ZF_IN const zfchar *src \
             , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */ \
@@ -69,7 +79,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ) { \
         convertFromStringAction \
     } \
-    zfbool TypeName##ToString( \
+    zfbool TypeName##ToStringT( \
             ZF_IN_OUT zfstring &s \
             , ZF_IN Type const &v \
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \

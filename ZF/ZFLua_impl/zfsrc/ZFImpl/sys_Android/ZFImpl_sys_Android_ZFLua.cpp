@@ -17,7 +17,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFLua
         , jlongArray params
         ) {
     zfstring bufZF;
-    ZFImpl_sys_Android_zfstringFromString(bufZF, buf);
+    ZFImpl_sys_Android_zfstringFromStringT(bufZF, buf);
 
     ZFCoreArray<zfauto> paramsZF;
     if(params != NULL) {

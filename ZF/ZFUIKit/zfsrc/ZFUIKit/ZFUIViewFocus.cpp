@@ -81,7 +81,7 @@ public:
     ZFUIPoint center;
 };
 ZFOUTPUT_TYPE(_ZFP_ZFUIViewFocusData, {
-    ZFUIPointToString(s, v.center);
+    ZFUIPointToStringT(s, v.center);
     s += " ";
     ZFObjectInfoT(s, v.view);
 })

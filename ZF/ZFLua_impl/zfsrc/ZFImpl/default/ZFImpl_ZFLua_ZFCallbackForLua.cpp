@@ -177,15 +177,15 @@ public:
                 break;
             case ValueType_bool:
                 ret += "(bool)";
-                zfboolToString(ret, (zfbool)v.v.boolValue);
+                zfboolToStringT(ret, (zfbool)v.v.boolValue);
                 break;
             case ValueType_int:
                 ret += "(int)";
-                zfintToString(ret, (zfint)v.v.intValue);
+                zfintToStringT(ret, (zfint)v.v.intValue);
                 break;
             case ValueType_number:
                 ret += "(number)";
-                zflongdoubleToString(ret, (zflongdouble)v.v.numberValue);
+                zflongdoubleToStringT(ret, (zflongdouble)v.v.numberValue);
                 break;
             case ValueType_string:
                 ret += "(string)";
@@ -193,7 +193,7 @@ public:
                 break;
             default:
                 ret += "(Unknown)";
-                zfintToString(ret, (zfint)v.valueType);
+                zfintToStringT(ret, (zfint)v.valueType);
                 break;
         }
         return ret;

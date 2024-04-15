@@ -139,11 +139,11 @@ static void _ZFP_ZFPropertyInstanceSig(
         , ZF_IN const ZFSigName &propertyName
         ) {
     if(classNameFull) {
-        zfindexToString(ret, classNameFull.sigId());
+        zfindexToStringT(ret, classNameFull.sigId());
     }
     ret += ':';
     if(propertyName) {
-        zfindexToString(ret, propertyName.sigId());
+        zfindexToStringT(ret, propertyName.sigId());
     }
 }
 static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfchar *propertyInternalId) {

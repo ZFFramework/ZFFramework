@@ -22,10 +22,10 @@
  *
  *   ZFTYPEID_DEFINE_BY_STRING_CONVERTER(MyCppType, MyCppType, {
  *           // supply MyCppType's string conversion
- *           return zfintFromString(v.myValue, src, srcLen);
+ *           return zfintFromStringT(v.myValue, src, srcLen);
  *       }, {
  *           // supply MyCppType's string conversion
- *           return zfintToString(s, v.myValue);
+ *           return zfintToStringT(s, v.myValue);
  *       })
  * @endcode
  *

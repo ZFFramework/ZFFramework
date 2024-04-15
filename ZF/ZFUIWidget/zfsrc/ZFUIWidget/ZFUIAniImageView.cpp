@@ -127,9 +127,9 @@ void ZFUIAniImageData::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     if(!this->frameImages().isEmpty()) {
         ret += " ";
-        ZFUISizeToString(ret, this->frameSizePixel());
+        ZFUISizeToStringT(ret, this->frameSizePixel());
         ret += ",";
-        zfindexToString(ret, this->frameCount());
+        zfindexToStringT(ret, this->frameCount());
     }
 }
 ZFCompareResult ZFUIAniImageData::objectCompare(ZF_IN ZFObject *anotherObj) {
@@ -196,7 +196,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
 
     ZFCoreArrayPOD<zftimet> frameDurations;
     const zfchar *frameDurationsString = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIAniImageView_frameDurations);
-    if(frameDurationsString != zfnull && !ZFCoreArrayFromString(frameDurations, frameDurationsString)) {
+    if(frameDurationsString != zfnull && !ZFCoreArrayFromStringT(frameDurations, frameDurationsString)) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "invalid %s: %s",
             ZFSerializableKeyword_ZFUIAniImageView_frameDurations,
@@ -237,7 +237,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeToData(
 
     if(!this->frameDurations().isEmpty()) {
         zfstring frameDurationsString;
-        if(!ZFCoreArrayToString(frameDurationsString, this->frameDurations())) {
+        if(!ZFCoreArrayToStringT(frameDurationsString, this->frameDurations())) {
             return zffalse;
         }
         serializableData.attr(ZFSerializableKeyword_ZFUIAniImageView_frameDurations, frameDurationsString);
@@ -504,9 +504,9 @@ void ZFUIAniImageView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
     if(this->aniDataValid()) {
         ret += " ";
-        ZFUISizeToString(ret, this->aniData()->frameSizePixel());
+        ZFUISizeToStringT(ret, this->aniData()->frameSizePixel());
         ret += ",";
-        zfindexToString(ret, this->aniData()->frameCount());
+        zfindexToStringT(ret, this->aniData()->frameCount());
     }
 }
 
@@ -622,7 +622,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(
         return zffalse;
     }
     ZFSerializableData imgInputData;
-    if(!ZFCallbackToData(imgInputData, imgInput)) {
+    if(!ZFCallbackToDataT(imgInputData, imgInput)) {
         return zffalse;
     }
     frameSrc->imageSerializableType(ZFUIImageSerializeType_input);

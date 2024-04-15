@@ -144,8 +144,8 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFOutputForFormatT
         ZFSerializableData outputData;
         ZFSerializableData formatData;
         if(format->classData()->classIsTypeOf(ZFSerializable::ClassData())
-                && ZFCallbackToData(outputData, output)
-                && ZFObjectToData(formatData, format->toObject())
+                && ZFCallbackToDataT(outputData, output)
+                && ZFObjectToDataT(formatData, format->toObject())
                 ) {
             ZFSerializableData serializableData;
             outputData.category(ZFSerializableKeyword_ZFOutputForFormat_output);
@@ -183,7 +183,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForFormat, ZFCallbackSerializeCu
         return zffalse;
     }
     zfauto formatHolder;
-    if(!ZFObjectFromData(formatHolder, *formatData, outErrorHint, outErrorPos)) {
+    if(!ZFObjectFromDataT(formatHolder, *formatData, outErrorHint, outErrorPos)) {
         return zffalse;
     }
     ZFOutputFormat *format = formatHolder;

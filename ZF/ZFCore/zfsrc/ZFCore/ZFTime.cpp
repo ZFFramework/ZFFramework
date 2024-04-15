@@ -110,7 +110,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFCompareResult, ZFTimeValueCompare
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeValueToStringFriendly
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeValueToStringFriendlyT
         , ZFMP_IN_OUT(zfstring &, s)
         , ZFMP_IN(ZFTimeValue const &, v)
         ) {
@@ -249,7 +249,7 @@ ZFTYPEID_PROGRESS_DEFINE(ZFTimeValue, ZFTimeValue, {
 // ============================================================
 // ZFTimeInfo
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFTimeInfo, ZFTimeInfo)
-ZFOUTPUT_TYPE_DEFINE(ZFTimeInfo, {ZFTimeInfoToString(s, v);})
+ZFOUTPUT_TYPE_DEFINE(ZFTimeInfo, {ZFTimeInfoToStringT(s, v);})
 
 ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeInfo, ZFTimeInfoZero, ZFTimeInfoMake(0, 0, 0, 0, 0, 0, 0, 0))
 
@@ -264,7 +264,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_8(ZFTimeInfo, ZFTimeInfoMake
         , ZFMP_IN(zfuint const &, microSecond)
         )
 
-ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeInfoToString
+ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFTimeInfoToStringT
         , ZFMP_IN_OUT(zfstring &, s)
         , ZFMP_IN(ZFTimeInfo const &, v)
         ) {

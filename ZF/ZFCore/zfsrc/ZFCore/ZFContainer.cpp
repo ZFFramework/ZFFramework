@@ -67,7 +67,7 @@ zfbool ZFContainer::serializableOnSerializeFromData(
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFContainer_element)) {
             zfauto element;
-            if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
+            if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
             if(element == zfnull) {
@@ -93,7 +93,7 @@ zfbool ZFContainer::serializableOnSerializeToData(
     if(ref == zfnull) {
         for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
             ZFSerializableData elementData;
-            if(!ZFObjectToData(elementData, this->iterValue(it), outErrorHint)) {
+            if(!ZFObjectToDataT(elementData, this->iterValue(it), outErrorHint)) {
                 return zffalse;
             }
             elementData.category(ZFSerializableKeyword_ZFContainer_element);
@@ -123,7 +123,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
             ZFObject *element = this->iterValue(it);
             ZFSerializableData elementData;
-            if(!ZFObjectToData(elementData, element, outErrorHint)) {
+            if(!ZFObjectToDataT(elementData, element, outErrorHint)) {
                 return zffalse;
             }
             elementData.category(ZFSerializableKeyword_ZFContainer_element);
@@ -144,7 +144,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         }
 
         ZFSerializableData elementData;
-        if(!ZFObjectToData(elementData, element, outErrorHint)) {
+        if(!ZFObjectToDataT(elementData, element, outErrorHint)) {
             return zffalse;
         }
         elementData.category(ZFSerializableKeyword_ZFContainer_element);

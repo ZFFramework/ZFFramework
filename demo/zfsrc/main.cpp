@@ -221,7 +221,7 @@ ZF_GLOBAL_INITIALIZER_INIT(LuaRunner) {
             const ZFCoreArray<zfstring> &appParams = ZFApp::appParams();
 
             ZFPathInfo pathInfo;
-            if(!ZFPathInfoFromString(pathInfo, appParams[0])) {
+            if(!ZFPathInfoFromStringT(pathInfo, appParams[0])) {
                 pathInfo.pathType = ZFPathType_file();
                 pathInfo.pathData = appParams[0];
             }

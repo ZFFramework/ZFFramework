@@ -143,7 +143,7 @@ public:
         }
         else {
             if(errPos != zfnull) {
-                ZFImpl_sys_Android_zfstringFromString(*errPos, errPosJ);
+                ZFImpl_sys_Android_zfstringFromStringT(*errPos, errPosJ);
             }
             return zffalse;
         }

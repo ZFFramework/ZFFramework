@@ -33,30 +33,17 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
     }
     serializableData.itemClass(xmlElement.xmlName());
 
-    ZFXml attribute = xmlElement.attrFirst();
-    while(attribute) {
-        if(attribute.xmlName() == zfnull) {
-            ZFSerializableUtilErrorOccurred(outErrorHint, "missing xml attribute name");
-            if(outErrorPos != zfnull) {
-                *outErrorPos = attribute;
-            }
-            return zffalse;
-        }
-        serializableData.attr(attribute.xmlName(), attribute.xmlValue());
-
-        attribute = attribute.attrNext();
+    for(zfiterator it = xmlElement.attrIter(); xmlElement.attrIterValid(it); xmlElement.attrIterNext(it)) {
+        serializableData.attr(xmlElement.attrIterKey(it), xmlElement.attrIterValue(it));
     }
 
-    ZFXml element = xmlElement.childFirstElement();
-    while(element) {
+    for(zfindex i = 0; i < xmlElement.childCount(); ++i) {
         ZFSerializableData childData;
-        if(!_ZFP_ZFSerializableDataFromXml(childData, element, outErrorHint, outErrorPos)) {
+        if(!_ZFP_ZFSerializableDataFromXml(childData, xmlElement.childAt(i), outErrorHint, outErrorPos)) {
             return zffalse;
         }
         serializableData.childAdd(childData);
-        element = element.siblingNextElement();
     }
-
     return zftrue;
 }
 
@@ -133,7 +120,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFSerializableDataFromXml
         zfstringAppend(outErrorHint, "invalid input callback");
         return zffalse;
     }
-    ZFXml xmlElement = ZFXmlFromInput(input, outErrorHint).childFirstElement();
+    ZFXml xmlElement = ZFXmlFromInput(input, outErrorHint).childElement();
     if(!xmlElement) {
         return zffalse;
     }
@@ -160,12 +147,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToXml
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_IN_OPT(const ZFXmlOutputFlags &, flags, ZFXmlOutputFlagsDefault())
+        , ZFMP_IN_OPT(const ZFXmlOutputToken &, token, ZFXmlOutputTokenDefault())
         ) {
     ZFXml xmlElement;
     if(ZFSerializableDataToXml(xmlElement, serializableData, outErrorHint)) {
-        xmlElement.attrSortRecursively();
-        zfbool ret = ZFXmlToOutput(outputCallback, xmlElement, flags);
+        zfbool ret = ZFXmlToOutput(outputCallback, xmlElement, token);
         outputCallback.execute("\n");
         if(!ret) {
             zfstringAppend(outErrorHint, "unable to convert xml to string");
@@ -185,7 +171,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFObjectFromXml
         ) {
     ZFSerializableData data;
     if(ZFSerializableDataFromXml(data, input, outErrorHint)) {
-        return ZFObjectFromData(ret, data, outErrorHint);
+        return ZFObjectFromDataT(ret, data, outErrorHint);
     }
     else {
         return zffalse;
@@ -203,14 +189,14 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFObjectToXml
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_IN_OPT(const ZFXmlOutputFlags &, flags, ZFXmlOutputFlagsDefault())
+        , ZFMP_IN_OPT(const ZFXmlOutputToken &, token, ZFXmlOutputTokenDefault())
         ) {
     ZFSerializableData serializableData;
-    if(!ZFObjectToData(serializableData, obj, outErrorHint)) {
+    if(!ZFObjectToDataT(serializableData, obj, outErrorHint)) {
         return zffalse;
     }
     else {
-        return ZFSerializableDataToXml(outputCallback, serializableData, outErrorHint, flags);
+        return ZFSerializableDataToXml(outputCallback, serializableData, outErrorHint, token);
     }
 }
 

@@ -20,7 +20,7 @@ zfbool ZFEnum::serializableOnSerializeFromData(
         if(!zfstringIsEqual(valueString, ZFEnumNameInvalid())) {
             if(this->enumIsFlags()) {
                 zfflags t = zfflagsZero();
-                if(zfflagsFromString(t, this->classData(), valueString)) {
+                if(zfflagsFromStringT(t, this->classData(), valueString)) {
                     enumValue = (zfuint)t;
                 }
             }
@@ -53,7 +53,7 @@ zfbool ZFEnum::serializableOnSerializeToData(
             ) {
         if(this->enumIsFlags()) {
             zfstring s;
-            if(!zfflagsToString(s, this->classData(), (zfflags)this->enumValue())) {
+            if(!zfflagsToStringT(s, this->classData(), (zfflags)this->enumValue())) {
                 ZFSerializableUtilErrorOccurred(outErrorHint,
                     "unable convert enum value to string: %s",
                     this);
@@ -99,7 +99,7 @@ void ZFEnum::objectInfoT(ZF_IN_OUT zfstring &ret) {
     }
     else {
         if(this->enumIsFlags()) {
-            zfflagsToString(ret, this->classData(), (zfflags)this->enumValue());
+            zfflagsToStringT(ret, this->classData(), (zfflags)this->enumValue());
         }
         else {
             ret += this->enumName();
@@ -178,7 +178,7 @@ zfbool ZFEnum::wrappedValueFromString(
 
     if(this->enumIsFlags()) {
         zfflags t = zfflagsZero();
-        if(zfflagsFromString(t, this->classData(), src, srcLen)) {
+        if(zfflagsFromStringT(t, this->classData(), src, srcLen)) {
             this->enumValue((zfuint)t);
             return zftrue;
         }
@@ -205,7 +205,7 @@ zfbool ZFEnum::wrappedValueToString(
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
     if(this->enumIsFlags()) {
-        return zfflagsToString(s, this->classData(), (zfflags)this->enumValue());
+        return zfflagsToStringT(s, this->classData(), (zfflags)this->enumValue());
     }
     else {
         s += this->enumName();
@@ -257,7 +257,7 @@ protected:
         zfsuper::objectOnDealloc();
     }
 };
-zfbool zfflagsToString(
+zfbool zfflagsToStringT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const ZFClass *enumClass
         , ZF_IN zfflags const &value
@@ -269,19 +269,19 @@ zfbool zfflagsToString(
     zfCoreMutexLocker();
     if(enumClass != zfnull && enumClass->classIsTypeOf(ZFEnum::ClassData())) {
         _ZFP_I_ZFEnum_stringConverterDataHolder *d = _ZFP_I_ZFEnum_stringConverterDataHolder::setup(enumClass);
-        return zfflagsToString(ret,
+        return zfflagsToStringT(ret,
             d->flagList, d->nameList, d->enumCount,
             value,
             includeNotConverted, exclusiveMode, notConverted, separatorToken);
     }
     else {
-        return zfflagsToString(ret,
+        return zfflagsToStringT(ret,
             zfnull, zfnull, 0,
             value,
             includeNotConverted, exclusiveMode, notConverted, separatorToken);
     }
 }
-zfbool zfflagsFromString(
+zfbool zfflagsFromStringT(
         ZF_OUT zfflags &ret
         , ZF_IN const ZFClass *enumClass
         , ZF_IN const zfchar *src
@@ -292,14 +292,14 @@ zfbool zfflagsFromString(
     zfCoreMutexLocker();
     if(enumClass != zfnull && enumClass->classIsTypeOf(ZFEnum::ClassData())) {
         _ZFP_I_ZFEnum_stringConverterDataHolder *d = _ZFP_I_ZFEnum_stringConverterDataHolder::setup(enumClass);
-        return zfflagsFromString(
+        return zfflagsFromStringT(
             ret,
             d->flagList, d->nameList, d->enumCount,
             src, srcLen, separatorToken,
             outErrorPos);
     }
     else {
-        return zfflagsFromString(
+        return zfflagsFromStringT(
             ret,
             zfnull, zfnull, 0,
             src, srcLen, separatorToken,
@@ -364,7 +364,20 @@ ZFMETHOD_USER_REGISTER_DETAIL_1({
     , ZFMP_IN(ZFEnum *, value)
     )
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_7(zfbool, zfflagsToString
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(zfbool, zfflagsFromStringT
+        , ZFMP_OUT(zfflags &, ret)
+        , ZFMP_IN(const ZFClass *, enumClass)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(zfchar, separatorToken, '|')
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfflags, zfflagsFromString
+        , ZFMP_IN(const ZFClass *, enumClass)
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
+        , ZFMP_IN_OPT(zfchar, separatorToken, '|')
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_7(zfbool, zfflagsToStringT
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const ZFClass *, enumClass)
         , ZFMP_IN(zfflags const &, value)
@@ -379,13 +392,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(zfstring, zfflagsToString
         , ZFMP_IN_OPT(zfbool, includeNotConverted, zftrue)
         , ZFMP_IN_OPT(zfbool, exclusiveMode, zffalse)
         , ZFMP_OUT_OPT(zfflags *, notConverted, zfnull)
-        , ZFMP_IN_OPT(zfchar, separatorToken, '|')
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_5(zfbool, zfflagsFromString
-        , ZFMP_OUT(zfflags &, ret)
-        , ZFMP_IN(const ZFClass *, enumClass)
-        , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         , ZFMP_IN_OPT(zfchar, separatorToken, '|')
         )
 

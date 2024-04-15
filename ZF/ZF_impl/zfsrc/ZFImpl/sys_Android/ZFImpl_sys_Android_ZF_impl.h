@@ -192,13 +192,13 @@ extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v);
 #endif
 
 // ============================================================
-extern ZFLIB_ZF_impl void ZFImpl_sys_Android_zfstringFromString(
+extern ZFLIB_ZF_impl void ZFImpl_sys_Android_zfstringFromStringT(
         ZF_IN_OUT zfstring &s
         , ZF_IN jobject jstr
         );
 inline zfstring ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr) {
     zfstring ret;
-    ZFImpl_sys_Android_zfstringFromString(ret, jstr);
+    ZFImpl_sys_Android_zfstringFromStringT(ret, jstr);
     return ret;
 }
 // note returned object must be deleted by DeleteLocalRef

@@ -39,7 +39,8 @@ protected:
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFJson parse from string:");
-        ZFJson json = ZFJsonFromString(src);
+        ZFJson json;
+        ZFJsonFromStringT(json, src);
 
         this->testCaseOutput("ZFJson parse from string, result:");
         zfLogTrim() << ZFJsonToString(json);

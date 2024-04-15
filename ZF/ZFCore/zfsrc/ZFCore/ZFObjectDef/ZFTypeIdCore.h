@@ -40,7 +40,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   // register your type
  *   ZFTYPEID_DEFINE(YourType, YourType, {
  *           // serializeFrom callback, proto type:
- *           //   zfbool YourTypeFromData(
+ *           //   zfbool YourTypeFromDataT(
  *           //           ZF_OUT YourType &v
  *           //           , ZF_IN const ZFSerializableData &serializableData
  *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
@@ -51,7 +51,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           //   * serialize from serializableData
  *       }, {
  *           // serializeTo callback, proto type:
- *           //   zfbool YourTypeToData(
+ *           //   zfbool YourTypeToDataT(
  *           //           ZF_OUT ZFSerializableData &serializableData
  *           //           , ZF_IN YourType const &v
  *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
@@ -61,7 +61,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           //   * save type value to the serializableData
  *       }, {
  *           // convertFromString callback, proto type:
- *           //   zfbool YourTypeFromString(
+ *           //   zfbool YourTypeFromStringT(
  *           //           ZF_OUT YourType &v
  *           //           , ZF_IN const zfchar *src
  *           //           , ZF_IN_OPT zfindex srcLen = zfindexMax()
@@ -69,7 +69,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *           //           );
  *       }, {
  *           // convertToString callbackk, proto type:
- *           //   zfbool YourTypeToString(
+ *           //   zfbool YourTypeToStringT(
  *           //           ZF_IN_OUT zfstring &s
  *           //           , ZF_IN YourType const &v
  *           //           , ZF_OUT_OPT zfstring *errorHint = zfnull
@@ -115,10 +115,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return ZFM_TOSTRING_DIRECT(TypeName); \
     } \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    extern ZFLIB_ zfbool TypeName##FromData(ZF_OUT Type &v, \
-                                            ZF_IN const ZFSerializableData &serializableData, \
-                                            ZF_OUT_OPT zfstring *outErrorHint = zfnull, \
-                                            ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull); \
+    extern ZFLIB_ zfbool TypeName##FromDataT( \
+            ZF_OUT Type &v \
+            , ZF_IN const ZFSerializableData &serializableData \
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+            , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
+            ); \
     /** @brief see #ZFTYPEID_DECLARE */ \
     inline Type TypeName##FromData( \
             ZF_IN const ZFSerializableData &serializableData \
@@ -126,7 +128,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull \
             ) { \
         Type ret; \
-        if(TypeName##FromData(ret, serializableData, outErrorHint, outErrorPos)) { \
+        if(TypeName##FromDataT(ret, serializableData, outErrorHint, outErrorPos)) { \
             return ret; \
         } \
         else { \
@@ -136,16 +138,18 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         return ret; \
     } \
     /** @brief see #ZFTYPEID_DECLARE */ \
-    extern ZFLIB_ zfbool TypeName##ToData(ZF_OUT ZFSerializableData &serializableData, \
-                                          ZF_IN Type const &v, \
-                                          ZF_OUT_OPT zfstring *outErrorHint = zfnull); \
+    extern ZFLIB_ zfbool TypeName##ToDataT( \
+            ZF_OUT ZFSerializableData &serializableData \
+            , ZF_IN Type const &v \
+            , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
+            ); \
     /** @brief see #ZFTYPEID_DECLARE */ \
     inline ZFSerializableData TypeName##ToData( \
             ZF_IN Type const &v \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             ) { \
         ZFSerializableData ret; \
-        if(TypeName##ToData(ret, v, outErrorHint)) { \
+        if(TypeName##ToDataT(ret, v, outErrorHint)) { \
             return ret; \
         } \
         else { \
@@ -161,7 +165,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief see #ZFTYPEID_DECLARE */
 #define ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, serializeFromAction, serializeToAction, convertFromStringAction, convertToStringAction) \
-    zfbool TypeName##FromData( \
+    zfbool TypeName##FromDataT( \
             ZF_OUT Type &v \
             , ZF_IN const ZFSerializableData &serializableData \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
@@ -169,7 +173,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ) { \
         ZFM_EXPAND(serializeFromAction) \
     } \
-    zfbool TypeName##ToData( \
+    zfbool TypeName##ToDataT( \
             ZF_OUT ZFSerializableData &serializableData \
             , ZF_IN Type const &v \
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
@@ -182,70 +186,90 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFTYPEID_DEFINE_METHOD_REGISTER(TypeName, Type) \
     ZF_STATIC_REGISTER_INIT(PropMtdReg_##TypeName) { \
-        ZFMethodFuncUserRegister_4(method_FromSerializable, { \
-                return TypeName##FromData(v, serializableData, outErrorHint, outErrorPos); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##FromData) \
+        ZFMethodFuncUserRegister_4(method_FromDataT, { \
+                return TypeName##FromDataT(v, serializableData, outErrorHint, outErrorPos); \
+            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##FromDataT) \
             , ZFMP_OUT(Type &, v) \
             , ZFMP_IN(const ZFSerializableData &, serializableData) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
             ); \
-        _method_FromSerializable = method_FromSerializable; \
-        ZFMethodFuncUserRegister_3(method_ToSerializable, { \
-                return TypeName##ToData(serializableData, v, outErrorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##ToData) \
+        _method_FromDataT = method_FromDataT; \
+        ZFMethodFuncUserRegister_3(method_FromData, { \
+                return TypeName##FromData(serializableData, outErrorHint, outErrorPos); \
+            }, ZF_NAMESPACE_GLOBAL_NAME, Type, ZFM_TOSTRING(TypeName##FromData) \
+            , ZFMP_IN(const ZFSerializableData &, serializableData) \
+            , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
+            , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
+            ); \
+        _method_FromData = method_FromData; \
+        ZFMethodFuncUserRegister_3(method_ToDataT, { \
+                return TypeName##ToDataT(serializableData, v, outErrorHint); \
+            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##ToDataT) \
             , ZFMP_OUT(ZFSerializableData &, serializableData) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
-        _method_ToSerializable = method_ToSerializable; \
-        ZFMethodFuncUserRegister_2(method_ToSerializable2, { \
+        _method_ToDataT = method_ToDataT; \
+        ZFMethodFuncUserRegister_2(method_ToData, { \
                 return TypeName##ToData(v, outErrorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, ZFSerializableData, ZFM_TOSTRING(TypeName##ToData) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
-        _method_ToSerializable2 = method_ToSerializable2; \
-        ZFMethodFuncUserRegister_4(method_FromString, { \
-                return TypeName##FromString(v, src, srcLen, errorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##FromString) \
+        _method_ToData = method_ToData; \
+        ZFMethodFuncUserRegister_4(method_FromStringT, { \
+                return TypeName##FromStringT(v, src, srcLen, errorHint); \
+            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##FromStringT) \
             , ZFMP_OUT(Type &, v) \
             , ZFMP_IN(const zfchar *, src) \
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
+        _method_FromStringT = method_FromStringT; \
+        ZFMethodFuncUserRegister_3(method_FromString, { \
+                return TypeName##FromString(src, srcLen, errorHint); \
+            }, ZF_NAMESPACE_GLOBAL_NAME, Type, ZFM_TOSTRING(TypeName##FromString) \
+            , ZFMP_IN(const zfchar *, src) \
+            , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
+            , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
+            ); \
         _method_FromString = method_FromString; \
-        ZFMethodFuncUserRegister_3(method_ToString, { \
-                return TypeName##ToString(s, v, errorHint); \
-            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##ToString) \
+        ZFMethodFuncUserRegister_3(method_ToStringT, { \
+                return TypeName##ToStringT(s, v, errorHint); \
+            }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##ToStringT) \
             , ZFMP_OUT(zfstring &, s) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        _method_ToString = method_ToString; \
-        ZFMethodFuncUserRegister_2(method_ToString2, { \
+        _method_ToStringT = method_ToStringT; \
+        ZFMethodFuncUserRegister_2(method_ToString, { \
                 return TypeName##ToString(v, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfstring, ZFM_TOSTRING(TypeName##ToString) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        _method_ToString2 = method_ToString2; \
+        _method_ToString = method_ToString; \
     } \
     ZF_STATIC_REGISTER_DESTROY(PropMtdReg_##TypeName) { \
-        ZFMethodFuncUserUnregister(_method_FromSerializable); \
-        ZFMethodFuncUserUnregister(_method_ToSerializable); \
-        ZFMethodFuncUserUnregister(_method_ToSerializable2); \
+        ZFMethodFuncUserUnregister(_method_FromDataT); \
+        ZFMethodFuncUserUnregister(_method_FromData); \
+        ZFMethodFuncUserUnregister(_method_ToDataT); \
+        ZFMethodFuncUserUnregister(_method_ToData); \
+        ZFMethodFuncUserUnregister(_method_FromStringT); \
         ZFMethodFuncUserUnregister(_method_FromString); \
+        ZFMethodFuncUserUnregister(_method_ToStringT); \
         ZFMethodFuncUserUnregister(_method_ToString); \
-        ZFMethodFuncUserUnregister(_method_ToString2); \
     } \
     public: \
-        const ZFMethod *_method_FromSerializable; \
-        const ZFMethod *_method_ToSerializable; \
-        const ZFMethod *_method_ToSerializable2; \
+        const ZFMethod *_method_FromDataT; \
+        const ZFMethod *_method_FromData; \
+        const ZFMethod *_method_ToDataT; \
+        const ZFMethod *_method_ToData; \
+        const ZFMethod *_method_FromStringT; \
         const ZFMethod *_method_FromString; \
+        const ZFMethod *_method_ToStringT; \
         const ZFMethod *_method_ToString; \
-        const ZFMethod *_method_ToString2; \
     ZF_STATIC_REGISTER_END(PropMtdReg_##TypeName)
 
 /** @brief see #ZFTYPEID_DECLARE */
@@ -265,7 +289,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             v = _Type(); \
             return zftrue; \
         } \
-        if(!TypeName##FromString(v, valueString)) { \
+        if(!TypeName##FromStringT(v, valueString)) { \
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
                 "invalid value: \"%s\"", valueString); \
             return zffalse; \
@@ -275,7 +299,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     }, { \
         serializableData.itemClass(ZFTypeId_##TypeName()); \
         zfstring s; \
-        if(!TypeName##ToString(s, v)) { \
+        if(!TypeName##ToStringT(s, v)) { \
             ZFSerializableUtilErrorOccurred(outErrorHint, \
                 "unable to convert value to string"); \
             return zffalse; \
@@ -294,10 +318,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZFTYPEID_DEFINE_WITH_CUSTOM_WRAPPER(TypeName, Type, ZFM_EXPAND(serializeFromAction), ZFM_EXPAND(serializeToAction), { \
         ZFSerializableData serializableData; \
         return (ZFSerializableDataFromZfsd(serializableData, src, srcLen) \
-            && TypeName##FromData(v, serializableData)); \
+            && TypeName##FromDataT(v, serializableData)); \
     }, { \
         ZFSerializableData serializableData; \
-        if(TypeName##ToData(serializableData, v)) { \
+        if(TypeName##ToDataT(serializableData, v)) { \
             return ZFSerializableDataToZfsd(s, serializableData, zfnull, zffalse); \
         } \
         else { \

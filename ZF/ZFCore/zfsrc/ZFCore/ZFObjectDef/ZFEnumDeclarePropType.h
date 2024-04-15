@@ -306,7 +306,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFENUM_FLAGS_PROP_TYPE_DEFINE(EnumName, EnumFlagsName) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumFlagsName, EnumFlagsName, { \
             zfflags flags = zfflagsZero(); \
-            if(!zfflagsFromString(flags, \
+            if(!zfflagsFromStringT(flags, \
                         EnumName::ClassData(), \
                         src, srcLen)) { \
                 if(errorHint) { \
@@ -317,7 +317,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             v.enumValue((zfuint)flags); \
             return zftrue; \
         }, { \
-            return zfflagsToString(s, EnumName::ClassData(), (zfflags)v.enumValue()); \
+            return zfflagsToStringT(s, EnumName::ClassData(), (zfflags)v.enumValue()); \
         }) \
     ZFOBJECT_REGISTER(v_##EnumFlagsName)
 

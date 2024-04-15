@@ -529,7 +529,7 @@ public:
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
             ) {
         zfautoT<ZFUIView *> internalView;
-        if(!ZFObjectFromData(internalView, categoryData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(internalView, categoryData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(internalView == zfnull) {
@@ -648,7 +648,7 @@ public:
                     continue;
                 }
                 ZFSerializableData childData;
-                if(!ZFObjectToData(childData, tmp, outErrorHint)) {
+                if(!ZFObjectToDataT(childData, tmp, outErrorHint)) {
                     return zffalse;
                 }
                 childData.category(categoryTag);
@@ -674,7 +674,7 @@ public:
                     continue;
                 }
                 ZFSerializableData childData;
-                if(!ZFObjectToData(childData, tmp, outErrorHint)) {
+                if(!ZFObjectToDataT(childData, tmp, outErrorHint)) {
                     return zffalse;
                 }
                 childData.category(categoryTag);
@@ -771,7 +771,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_child)) {
             zfauto element;
-            if(!ZFObjectFromData(element, categoryData, outErrorHint, outErrorPos)) {
+            if(!ZFObjectFromDataT(element, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
             if(element == zfnull) {
@@ -792,7 +792,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
         }
         else if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_layoutParam)) {
             zfauto layoutParam;
-            if(!ZFObjectFromData(layoutParam, categoryData, outErrorHint, outErrorPos)) {
+            if(!ZFObjectFromDataT(layoutParam, categoryData, outErrorHint, outErrorPos)) {
                 return zffalse;
             }
             if(layoutParam == zfnull) {
@@ -858,7 +858,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
         }
         if(refLayoutParam != zfnull) {
             ZFSerializableData categoryData;
-            if(!ZFObjectToData(categoryData, d->layoutParam, outErrorHint, refLayoutParam)) {
+            if(!ZFObjectToDataT(categoryData, d->layoutParam, outErrorHint, refLayoutParam)) {
                 return zffalse;
             }
             if(categoryData.attrCount() > 0 || categoryData.childCount() > 0) {
@@ -887,7 +887,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
         if(ref == zfnull || ref->childCount() == 0) {
             for(zfindex i = 0, count = this->childCount(); i < count; ++i) {
                 ZFSerializableData childData;
-                if(!ZFObjectToData(childData, this->childAt(i), outErrorHint)) {
+                if(!ZFObjectToDataT(childData, this->childAt(i), outErrorHint)) {
                     return zffalse;
                 }
                 childData.category(ZFSerializableKeyword_ZFUIView_child);
@@ -1193,7 +1193,7 @@ void ZFUIView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     }
 
     ret += " ";
-    ZFUIRectToString(ret, this->viewFrame());
+    ZFUIRectToStringT(ret, this->viewFrame());
     if(this->UIScale() != 1) {
         zfstringAppend(ret, "(UIScale:%s)", this->UIScale());
     }

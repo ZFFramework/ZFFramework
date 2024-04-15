@@ -32,7 +32,7 @@ public:
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTimeValue, ZFTimeValue)
 
-ZFOUTPUT_TYPE(ZFTimeValue, {ZFTimeValueToString(s, v);})
+ZFOUTPUT_TYPE(ZFTimeValue, {ZFTimeValueToStringT(s, v);})
 
 ZFCORE_POD_COMPARER_DECLARE(ZFTimeValue)
 
@@ -186,16 +186,16 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, ZFCompareResult, ZFTimeValueCompare
  *
  * can't be converted back from string, usually for debug use only
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFTimeValueToStringFriendly
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFTimeValueToStringFriendlyT
         , ZFMP_IN_OUT(zfstring &, s)
         , ZFMP_IN(ZFTimeValue const &, v)
         )
-/** @brief see #ZFTimeValueToStringFriendly */
+/** @brief see #ZFTimeValueToStringFriendlyT */
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFTimeValueToStringFriendly
         , ZFMP_IN(ZFTimeValue const &, v)
         ) {
     zfstring s;
-    ZFTimeValueToStringFriendly(s, v);
+    ZFTimeValueToStringFriendlyT(s, v);
     return s;
 }
 
@@ -306,16 +306,16 @@ ZFCORE_POD_COMPARER_DECLARE(ZFTimeInfo)
 /**
  * @brief convert ZFTimeInfo to string
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFTimeInfoToString
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFTimeInfoToStringT
         , ZFMP_IN_OUT(zfstring &, s)
         , ZFMP_IN(ZFTimeInfo const &, v)
         )
-/** @brief see #ZFTimeInfoToString */
+/** @brief see #ZFTimeInfoToStringT */
 ZFMETHOD_FUNC_INLINE_DECLARE_1(ZFLIB_ZFCore, zfstring, ZFTimeInfoToString
         , ZFMP_IN(ZFTimeInfo const &, v)
         ) {
     zfstring s;
-    ZFTimeInfoToString(s, v);
+    ZFTimeInfoToStringT(s, v);
     return s;
 }
 

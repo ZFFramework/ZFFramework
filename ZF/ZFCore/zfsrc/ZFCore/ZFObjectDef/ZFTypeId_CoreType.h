@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // string conversion spec
 /** @cond ZFPrivateDoc */
-inline zfbool zfstringToString(
+inline zfbool zfstringToStringT(
         ZF_IN_OUT zfstring &s
         , ZF_IN const zfchar *v
         , ZF_OUT_OPT zfstring *errorHint = zfnull
@@ -32,7 +32,7 @@ inline zfstring zfstringToString(
         ) {
     return zfstring(v);
 }
-inline zfbool zfstringFromString(
+inline zfbool zfstringFromStringT(
         ZF_OUT const zfchar *&v
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
@@ -52,7 +52,7 @@ inline zfbool zfstringFromString(
  * returned (const zfchar *) propertyValue is the pointer to serializableData's value,
  * you should ensure it's alive while using the propertyValue
  */
-extern ZFLIB_ZFCore zfbool zfstringFromData(
+extern ZFLIB_ZFCore zfbool zfstringFromDataT(
         ZF_OUT const zfchar * &propertyValue
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
@@ -61,7 +61,7 @@ extern ZFLIB_ZFCore zfbool zfstringFromData(
 /**
  * @brief see #zfstringToData, designed for performance
  */
-extern ZFLIB_ZFCore zfbool zfstringToData(
+extern ZFLIB_ZFCore zfbool zfstringToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const zfchar * const &propertyValue
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
@@ -83,7 +83,7 @@ extern ZFLIB_ZFCore zfbool zfstringToData(
  * -  notConverted if all value recognized, notConverted would be set to 0,
  *   otherwise, the not converted value would be set
  */
-extern ZFLIB_ZFCore zfbool zfflagsToString(
+extern ZFLIB_ZFCore zfbool zfflagsToStringT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const zfflags *flagList
         , ZF_IN const zfchar **nameList
@@ -94,7 +94,7 @@ extern ZFLIB_ZFCore zfbool zfflagsToString(
         , ZF_OUT_OPT zfflags *notConverted = zfnull
         , ZF_IN_OPT zfchar separatorToken = '|'
         );
-/** @brief see #zfflagsToString */
+/** @brief see #zfflagsToStringT */
 inline zfstring zfflagsToString(
         ZF_IN const zfflags *flagList
         , ZF_IN const zfchar **nameList
@@ -106,7 +106,7 @@ inline zfstring zfflagsToString(
         , ZF_IN_OPT zfchar separatorToken = '|'
         ) {
     zfstring ret;
-    zfflagsToString(ret, flagList, nameList, listCount, value, includeNotConverted, exclusiveMode, notConverted, separatorToken);
+    zfflagsToStringT(ret, flagList, nameList, listCount, value, includeNotConverted, exclusiveMode, notConverted, separatorToken);
     return ret;
 }
 
@@ -117,7 +117,7 @@ inline zfstring zfflagsToString(
  * -  pErrPos pointer to first char where error occurred,
  *   a non converted format is not regarded as error
  */
-extern ZFLIB_ZFCore zfbool zfflagsFromString(
+extern ZFLIB_ZFCore zfbool zfflagsFromStringT(
         ZF_OUT zfflags &ret
         , ZF_IN const zfflags *flagList
         , ZF_IN const zfchar **nameList
@@ -427,7 +427,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFFilterForString, ZFFilterForString)
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFPathInfo, ZFPathInfo)
-ZFOUTPUT_TYPE(ZFPathInfo, {ZFPathInfoToString(s, v);})
+ZFOUTPUT_TYPE(ZFPathInfo, {ZFPathInfoToStringT(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFPathInfo_separator ":"
 
@@ -447,7 +447,7 @@ ZFOUTPUT_TYPE(ZFPathInfo, {ZFPathInfoToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTokenForContainer, ZFTokenForContainer)
-ZFOUTPUT_TYPE(ZFTokenForContainer, {ZFTokenForContainerToString(s, v);})
+ZFOUTPUT_TYPE(ZFTokenForContainer, {ZFTokenForContainerToStringT(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTokenForContainer_tokenLeft "tokenLeft"
 /** @brief keyword for serialize */
@@ -482,7 +482,7 @@ ZFOUTPUT_TYPE(ZFTokenForContainer, {ZFTokenForContainerToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainer)
-ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToString(s, v);})
+ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToStringT(s, v);})
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTokenForKeyValueContainer_tokenLeft "tokenLeft"
 /** @brief keyword for serialize */
@@ -512,7 +512,7 @@ ZFOUTPUT_TYPE(ZFTokenForKeyValueContainer, {ZFTokenForKeyValueContainerToString(
  * @brief see #ZFTYPEID_DECLARE
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFClassDataChangeType, ZFClassDataChangeType)
-ZFOUTPUT_TYPE(ZFClassDataChangeType, {ZFClassDataChangeTypeToString(s, v);})
+ZFOUTPUT_TYPE(ZFClassDataChangeType, {ZFClassDataChangeTypeToStringT(s, v);})
 /**
  * @brief see #ZFTYPEID_DECLARE
  */
@@ -528,7 +528,7 @@ ZFOUTPUT_TYPE(ZFClassDataChangeData, {v.objectInfoT(s);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFFilterForZFClassType, ZFFilterForZFClassType)
-ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToString(s, v);})
+ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToStringT(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -539,7 +539,7 @@ ZFOUTPUT_TYPE(ZFFilterForZFClassType, {ZFFilterForZFClassTypeToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodPrivilegeType, ZFMethodPrivilegeType)
-ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {ZFMethodPrivilegeTypeToString(s, v);})
+ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {ZFMethodPrivilegeTypeToStringT(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -550,7 +550,7 @@ ZFOUTPUT_TYPE(ZFMethodPrivilegeType, {ZFMethodPrivilegeTypeToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFMethodType, ZFMethodType)
-ZFOUTPUT_TYPE(ZFMethodType, {ZFMethodTypeToString(s, v);})
+ZFOUTPUT_TYPE(ZFMethodType, {ZFMethodTypeToStringT(s, v);})
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFMethodParamDefaultValueCallback, ZFMethodParamDefaultValueCallback)
 
@@ -595,7 +595,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFComparer_ZFObject, ZFComparer<ZFObj
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFObjectInstanceState, ZFObjectInstanceState)
-ZFOUTPUT_TYPE(ZFObjectInstanceState, {ZFObjectInstanceStateToString(s, v);})
+ZFOUTPUT_TYPE(ZFObjectInstanceState, {ZFObjectInstanceStateToStringT(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -606,7 +606,7 @@ ZFOUTPUT_TYPE(ZFObjectInstanceState, {ZFObjectInstanceStateToString(s, v);})
  * @endcode
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFCallbackType, ZFCallbackType)
-ZFOUTPUT_TYPE(ZFCallbackType, {ZFCallbackTypeToString(s, v);})
+ZFOUTPUT_TYPE(ZFCallbackType, {ZFCallbackTypeToStringT(s, v);})
 
 /**
  * @brief see #ZFTYPEID_DECLARE

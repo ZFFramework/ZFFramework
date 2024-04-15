@@ -102,10 +102,12 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
             const ZFSerializableData &child = serializableData.childAt(i);
             const zfchar *styleKey = ZFSerializableUtil::checkPropertyName(child);
             if(styleKey != zfnull) {
-                zfauto styleValueHolder = ZFObjectFromData(child);
-                ZFStyleable *styleValue = styleValueHolder;
-                if(styleValue != zfnull) {
-                    _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
+                zfauto styleValueHolder;
+                if(ZFObjectFromDataT(styleValueHolder, child)) {
+                    ZFStyleable *styleValue = styleValueHolder;
+                    if(styleValue != zfnull) {
+                        _ZFP_ZFStyleLoad_ZFStyleSet(styleKey, styleValue);
+                    }
                 }
             }
         }
@@ -205,7 +207,7 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
             continue;
         }
         zfauto value;
-        if(!ZFObjectFromData(value, elementData, outErrorHint, outErrorPos)) {
+        if(!ZFObjectFromDataT(value, elementData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
         if(ZFCastZFObject(ZFStyleable *, value) == zfnull) {
@@ -233,7 +235,7 @@ zfbool ZFStyleList::serializableOnSerializeToData(
     }
     for(zfindex i = 0; i < d->keyList.count(); ++i) {
         ZFSerializableData elementData;
-        if(!ZFObjectToData(elementData, d->valueList[i]->toObject(), outErrorHint)) {
+        if(!ZFObjectToDataT(elementData, d->valueList[i]->toObject(), outErrorHint)) {
             return zffalse;
         }
         elementData.propertyName(d->keyList[i]);

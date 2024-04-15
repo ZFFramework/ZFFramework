@@ -388,19 +388,19 @@ static void _ZFP_ZFMethodInstanceSig(
         && !zfstringIsEqual(methodScope, ZF_NAMESPACE_GLOBAL_NAME)
         && !zfstringIsEqual(methodScope, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
     ) {
-        zfindexToString(ret, methodScope.sigId());
+        zfindexToStringT(ret, methodScope.sigId());
     }
     ret += ':';
-    zfindexToString(ret, methodName.sigId());
+    zfindexToStringT(ret, methodName.sigId());
 
-    if(zfstringIsEmpty(methodParamTypeId0)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId0.sigId());
-    if(zfstringIsEmpty(methodParamTypeId1)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId1.sigId());
-    if(zfstringIsEmpty(methodParamTypeId2)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId2.sigId());
-    if(zfstringIsEmpty(methodParamTypeId3)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId3.sigId());
-    if(zfstringIsEmpty(methodParamTypeId4)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId4.sigId());
-    if(zfstringIsEmpty(methodParamTypeId5)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId5.sigId());
-    if(zfstringIsEmpty(methodParamTypeId6)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId6.sigId());
-    if(zfstringIsEmpty(methodParamTypeId7)) {return;} ret += '+'; zfindexToString(ret, methodParamTypeId7.sigId());
+    if(zfstringIsEmpty(methodParamTypeId0)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId0.sigId());
+    if(zfstringIsEmpty(methodParamTypeId1)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId1.sigId());
+    if(zfstringIsEmpty(methodParamTypeId2)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId2.sigId());
+    if(zfstringIsEmpty(methodParamTypeId3)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId3.sigId());
+    if(zfstringIsEmpty(methodParamTypeId4)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId4.sigId());
+    if(zfstringIsEmpty(methodParamTypeId5)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId5.sigId());
+    if(zfstringIsEmpty(methodParamTypeId6)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId6.sigId());
+    if(zfstringIsEmpty(methodParamTypeId7)) {return;} ret += '+'; zfindexToStringT(ret, methodParamTypeId7.sigId());
 }
 
 static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfchar *methodInternalId) {

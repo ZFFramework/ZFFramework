@@ -30,7 +30,8 @@ protected:
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFXml parse from string:");
-        ZFXml doc = ZFXmlFromString(src);
+        ZFXml doc;
+        ZFXmlFromStringT(doc, src);
 
         this->testCaseOutput("ZFXml parse from string, result:");
         zfLogTrim() << ZFXmlToString(doc);

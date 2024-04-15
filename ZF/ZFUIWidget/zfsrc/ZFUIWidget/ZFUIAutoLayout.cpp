@@ -169,7 +169,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
             while(*valueTmp != '\0' && *valueTmp != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token) {++valueTmp;}
             ZFUIAutoLayoutPosEnum targetPos = ZFUIAutoLayoutPos::e_None;
             if(*valueTmp != ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token
-                    || !ZFUIAutoLayoutPosFromString(targetPos, value, valueTmp - value)
+                    || !ZFUIAutoLayoutPosFromStringT(targetPos, value, valueTmp - value)
                     ) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, element,
                     "invalid target value: %s",
@@ -226,7 +226,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
         // target
         {
             zfstring target;
-            ZFUIAutoLayoutPosToString(target, rule.targetPos());
+            ZFUIAutoLayoutPosToStringT(target, rule.targetPos());
             target += ZFSerializableKeyword_ZFUIAutoLayoutParam_target_token;
             _ZFP_ZFUIAutoLayout_targetIdUpdate(target, rule, this->ownerParent(), this->ownerChild());
             element.attr(ZFSerializableKeyword_ZFUIAutoLayoutParam_target, target);
@@ -317,7 +317,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
         }
         else {
             zfindex childIndexRef = zfindexMax();
-            if(zfindexFromString(childIndexRef, targetId) && childIndexRef < parent->childCount()) {
+            if(zfindexFromStringT(childIndexRef, targetId) && childIndexRef < parent->childCount()) {
                 rule.target(parent->childAt(childIndexRef));
             }
         }
@@ -349,7 +349,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
             return zffalse;
         }
         else {
-            zfindexToString(targetId, childIndexRef);
+            zfindexToStringT(targetId, childIndexRef);
         }
     }
     return zftrue;

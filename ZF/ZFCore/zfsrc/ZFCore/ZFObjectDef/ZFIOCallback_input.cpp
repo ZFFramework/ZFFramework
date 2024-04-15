@@ -138,7 +138,7 @@ ZFInput ZFInputForInputInRange(
 
     if(!inputCallback.callbackSerializeCustomDisabled()) {
         ZFSerializableData inputData;
-        if(ZFCallbackToData(inputData, inputCallback)) {
+        if(ZFCallbackToDataT(inputData, inputCallback)) {
             ZFSerializableData customData;
             inputData.category(ZFSerializableKeyword_ZFInputForInputInRange_input);
             customData.childAdd(inputData);

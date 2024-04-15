@@ -17,7 +17,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
         , jlongArray params
         ) {
     zfstring methodNameZF;
-    ZFImpl_sys_Android_zfstringFromString(methodNameZF, methodName);
+    ZFImpl_sys_Android_zfstringFromStringT(methodNameZF, methodName);
 
     ZFCoreArray<zfauto> paramsZF;
     if(params != NULL) {
@@ -49,14 +49,14 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
         , jobjectArray params
         ) {
     zfstring methodNameZF;
-    ZFImpl_sys_Android_zfstringFromString(methodNameZF, methodName);
+    ZFImpl_sys_Android_zfstringFromStringT(methodNameZF, methodName);
 
     ZFCoreArray<zfstring> paramsZF;
     if(params != NULL) {
         jsize count = JNIUtilGetArrayLength(jniEnv, params);
         for(jsize i = 0; i < count; ++i) {
             jobject param = JNIUtilGetObjectArrayElement(jniEnv, params, i);
-            paramsZF.add(ZFImpl_sys_Android_zfstringFromString(param));
+            paramsZF.add(ZFImpl_sys_Android_zfstringFromStringT(param));
             JNIUtilDeleteLocalRef(jniEnv, param);
         }
     }

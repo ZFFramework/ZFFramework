@@ -10,8 +10,8 @@ ZFENUM_DEFINE(ZFUISizeType)
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISizeParam, ZFUISizeParam, {
         ZFCoreArrayPOD<ZFIndexRange> pos;
         if(zfCoreDataPairSplitString(pos, 2, src, srcLen)
-                && ZFUISizeTypeFromString(v.width, src + pos[0].start, pos[0].count)
-                && ZFUISizeTypeFromString(v.height, src + pos[1].start, pos[1].count)
+                && ZFUISizeTypeFromStringT(v.width, src + pos[0].start, pos[0].count)
+                && ZFUISizeTypeFromStringT(v.height, src + pos[1].start, pos[1].count)
                 ) {
             return zftrue;
         }
@@ -22,9 +22,9 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISizeParam, ZFUISizeParam, {
         return zffalse;
     }, {
         s += "(";
-        ZFUISizeTypeToString(s, v.width);
+        ZFUISizeTypeToStringT(s, v.width);
         s += ", ";
-        ZFUISizeTypeToString(s, v.height);
+        ZFUISizeTypeToStringT(s, v.height);
         s += ")";
         return zftrue;
     })

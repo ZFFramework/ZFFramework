@@ -240,7 +240,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         , jstring clsNameInZF
         ) {
     zfstring clsName;
-    ZFImpl_sys_Android_zfstringFromString(clsName, clsNameInZF);
+    ZFImpl_sys_Android_zfstringFromStringT(clsName, clsNameInZF);
     zfstring errorHint;
     zfblockedAlloc(_ZFP_I_ZFAndroidReflect_ClassInfo, clsInfo);
     clsInfo->jcls = cls;
@@ -255,7 +255,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         return JNIPointerInvalid;
     }
 
-    clsInfo->clsNameInJava = ZFImpl_sys_Android_zfstringFromString(clsNameInJava);
+    ZFImpl_sys_Android_zfstringFromStringT(clsInfo->clsNameInJava, clsNameInJava);
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder)->clsMap[clsInfo->clsNameInJava] = clsZF;
     return JNIConvertPointerToJNIType(JNIGetJNIEnv(), clsZF);
 }
@@ -266,7 +266,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         , jstring clsNameInJava
         ) {
     zfstring clsName;
-    ZFImpl_sys_Android_zfstringFromString(clsName, clsNameInJava);
+    ZFImpl_sys_Android_zfstringFromStringT(clsName, clsNameInJava);
     ZF_GLOBAL_INITIALIZER_CLASS(ZFAndroidReflectDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder);
     _ZFP_ZFAndroidReflect_ClassMapType::iterator it = d->clsMap.find(clsName);
     if(it != d->clsMap.end()) {
@@ -536,7 +536,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         for(jsize i = 0; i < paramCount; ++i) {
             paramTypeName.removeAll();
             jobject paramJNITypeName = JNIUtilGetObjectArrayElement(jniEnv, paramTypeNames, i);
-            ZFImpl_sys_Android_zfstringFromString(paramTypeName, paramJNITypeName);
+            ZFImpl_sys_Android_zfstringFromStringT(paramTypeName, paramJNITypeName);
             if(!_ZFP_ZFAndroidReflect_typeCheck(paramJNIType, typeIdZF, paramTypeName)) {
                 zfCoreCriticalMessage("unknown type name: %s", paramTypeName);
             }
@@ -636,14 +636,14 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
     zfCoreAssert(clsInfo != zfnull);
 
     zfstring methodNameZF;
-    ZFImpl_sys_Android_zfstringFromString(methodNameZF, methodName);
+    ZFImpl_sys_Android_zfstringFromStringT(methodNameZF, methodName);
 
     // return type
     JNIType returnJNIType;
     zfstring returnTypeNameZF;
     const zfchar *returnTypeIdZF = zfnull;
     {
-        ZFImpl_sys_Android_zfstringFromString(returnTypeNameZF, returnTypeName);
+        ZFImpl_sys_Android_zfstringFromStringT(returnTypeNameZF, returnTypeName);
         if(!_ZFP_ZFAndroidReflect_typeCheck(returnJNIType, returnTypeIdZF, returnTypeNameZF)) {
             zfCoreCriticalMessage("unknown type name: %s", returnTypeNameZF);
         }
@@ -661,7 +661,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         for(jsize i = 0; i < paramCount; ++i) {
             paramTypeName.removeAll();
             jobject paramJNITypeName = JNIUtilGetObjectArrayElement(jniEnv, paramTypeNames, i);
-            ZFImpl_sys_Android_zfstringFromString(paramTypeName, paramJNITypeName);
+            ZFImpl_sys_Android_zfstringFromStringT(paramTypeName, paramJNITypeName);
             if(!_ZFP_ZFAndroidReflect_typeCheck(paramJNIType, typeIdZF, paramTypeName)) {
                 zfCoreCriticalMessage("unknown type name: %s", paramTypeName);
             }

@@ -4,7 +4,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPathInfo::ZFPathInfo(ZF_IN const zfchar *pathInfoString) {
-    ZFPathInfoFromString(*this, pathInfoString);
+    ZFPathInfoFromStringT(*this, pathInfoString);
 }
 
 ZF_NAMESPACE_GLOBAL_END

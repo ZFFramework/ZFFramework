@@ -55,7 +55,7 @@ public:
  */
 ZFTYPEID_DECLARE(ZFLIB_ZFUIKit, ZFUISizeParam, ZFUISizeParam)
 
-ZFOUTPUT_TYPE(ZFUISizeParam, {ZFUISizeParamToString(s, v);})
+ZFOUTPUT_TYPE(ZFUISizeParam, {ZFUISizeParamToStringT(s, v);})
 
 ZFCORE_POD_COMPARER_DECLARE(ZFUISizeParam)
 

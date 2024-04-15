@@ -63,7 +63,7 @@ void ZFUIOnScreenKeyboardState::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsFromPointerT(ret, this->keyboardOwnerSysWindow());
     if(this->keyboardShowing()) {
         ret += " keyboardFrame: ";
-        ZFUIRectToString(ret, this->keyboardFrame());
+        ZFUIRectToStringT(ret, this->keyboardFrame());
     }
     else {
         ret += " keyboardNotShow";

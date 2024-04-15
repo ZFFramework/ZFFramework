@@ -201,11 +201,11 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToJson
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(const ZFSerializableData &, serializableData)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_IN_OPT(const ZFJsonOutputFlags &, flags, ZFJsonOutputFlagsDefault())
+        , ZFMP_IN_OPT(const ZFJsonOutputToken &, token, ZFJsonOutputTokenDefault())
         ) {
     ZFJson jsonObject;
     if(ZFSerializableDataToJson(jsonObject, serializableData, outErrorHint)) {
-        zfbool ret = ZFJsonToOutput(outputCallback, jsonObject, flags);
+        zfbool ret = ZFJsonToOutput(outputCallback, jsonObject, token);
         outputCallback.execute("\n");
         if(!ret) {
             zfstringAppend(outErrorHint, "unable to convert json to string");
@@ -225,7 +225,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFObjectFromJson
         ) {
     ZFSerializableData data;
     if(ZFSerializableDataFromJson(data, input, outErrorHint)) {
-        return ZFObjectFromData(ret, data, outErrorHint);
+        return ZFObjectFromDataT(ret, data, outErrorHint);
     }
     else {
         return zffalse;
@@ -243,14 +243,14 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFObjectToJson
         , ZFMP_IN(const ZFOutput &, outputCallback)
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull)
-        , ZFMP_IN_OPT(const ZFJsonOutputFlags &, flags, ZFJsonOutputFlagsDefault())
+        , ZFMP_IN_OPT(const ZFJsonOutputToken &, token, ZFJsonOutputTokenDefault())
         ) {
     ZFSerializableData serializableData;
-    if(!ZFObjectToData(serializableData, obj, outErrorHint)) {
+    if(!ZFObjectToDataT(serializableData, obj, outErrorHint)) {
         return zffalse;
     }
     else {
-        return ZFSerializableDataToJson(outputCallback, serializableData, outErrorHint, flags);
+        return ZFSerializableDataToJson(outputCallback, serializableData, outErrorHint, token);
     }
 }
 

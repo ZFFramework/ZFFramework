@@ -57,7 +57,7 @@ public:
                 if(sizeText.isEmpty()) {
                     return;
                 }
-                zfindexFromString(this->contentLength, sizeText);
+                zfindexFromStringT(this->contentLength, sizeText);
             }
         }
         inline zfindex chunkAlign(ZF_IN zfindex p) {

@@ -167,9 +167,9 @@ protected:
         ret += this->stateHint();
         if(this->started()) {
             ret += " ";
-            zftimetToString(ret, this->position() / 1000);
+            zftimetToStringT(ret, this->position() / 1000);
             ret += "/";
-            zftimetToString(ret, this->duration() / 1000);
+            zftimetToStringT(ret, this->duration() / 1000);
         }
     }
 

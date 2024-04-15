@@ -76,7 +76,7 @@ ZFTYPEID_DEFINE(zfidentity, zfidentity, {
     }, {
         serializableData.itemClass(ZFTypeId_zfidentity());
         zfstring s;
-        if(!zfidentityToString(s, v)) {
+        if(!zfidentityToStringT(s, v)) {
             ZFSerializableUtilErrorOccurred(outErrorHint,
                 "unable to convert value to string");
             return zffalse;

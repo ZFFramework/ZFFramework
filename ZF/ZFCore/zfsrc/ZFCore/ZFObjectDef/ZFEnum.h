@@ -231,9 +231,34 @@ public:
 // ============================================================
 // zfflags conversion
 /**
+ * @brief zfflags conversion using ZFEnum as source, see #zfflagsFromString
+ */
+extern ZFLIB_ZFCore zfbool zfflagsFromStringT(
+        ZF_OUT zfflags &ret
+        , ZF_IN const ZFClass *enumClass
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        );
+/**
+ * @brief zfflags conversion using ZFEnum as source, see #zfflagsFromStringT
+ */
+inline zfflags zfflagsFromString(
+        ZF_IN const ZFClass *enumClass
+        , ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen = zfindexMax()
+        , ZF_IN_OPT zfchar separatorToken = '|'
+        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
+        ) {
+    zfflags ret = 0;
+    zfflagsFromStringT(ret, enumClass, src, srcLen, separatorToken, outErrorPos);
+    return ret;
+}
+/**
  * @brief zfflags conversion using ZFEnum as source, see #zfflagsToString
  */
-extern ZFLIB_ZFCore zfbool zfflagsToString(
+extern ZFLIB_ZFCore zfbool zfflagsToStringT(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const ZFClass *enumClass
         , ZF_IN zfflags const &value
@@ -242,7 +267,7 @@ extern ZFLIB_ZFCore zfbool zfflagsToString(
         , ZF_OUT_OPT zfflags *notConverted = zfnull
         , ZF_IN_OPT zfchar separatorToken = '|'
         );
-/** @brief see #zfflagsToString */
+/** @brief see #zfflagsToStringT */
 inline zfstring zfflagsToString(
         ZF_IN const ZFClass *enumClass
         , ZF_IN zfflags const &value
@@ -252,20 +277,9 @@ inline zfstring zfflagsToString(
         , ZF_IN_OPT zfchar separatorToken = '|'
         ) {
     zfstring ret;
-    zfflagsToString(ret, enumClass, value, includeNotConverted, exclusiveMode, notConverted, separatorToken);
+    zfflagsToStringT(ret, enumClass, value, includeNotConverted, exclusiveMode, notConverted, separatorToken);
     return ret;
 }
-/**
- * @brief zfflags conversion using ZFEnum as source, see #zfflagsFromString
- */
-extern ZFLIB_ZFCore zfbool zfflagsFromString(
-        ZF_OUT zfflags &ret
-        , ZF_IN const ZFClass *enumClass
-        , ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex srcLen = zfindexMax()
-        , ZF_IN_OPT zfchar separatorToken = '|'
-        , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
-        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFEnum_h_

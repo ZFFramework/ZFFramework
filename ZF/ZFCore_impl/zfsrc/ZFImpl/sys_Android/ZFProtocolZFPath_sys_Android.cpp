@@ -40,7 +40,7 @@ public:
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
-            ZFImpl_sys_Android_zfstringFromString(this->_pathForModuleFile, path);
+            ZFImpl_sys_Android_zfstringFromStringT(this->_pathForModuleFile, path);
             zfCoreAssert(!this->_pathForModuleFile.isEmpty());
         }
         return this->_pathForModuleFile;
@@ -53,7 +53,7 @@ public:
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
-            ZFImpl_sys_Android_zfstringFromString(this->_pathForSetting, path);
+            ZFImpl_sys_Android_zfstringFromStringT(this->_pathForSetting, path);
             zfCoreAssert(!this->_pathForSetting.isEmpty());
         }
         return this->_pathForSetting;
@@ -69,7 +69,7 @@ public:
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
-            ZFImpl_sys_Android_zfstringFromString(this->_pathForStorage, path);
+            ZFImpl_sys_Android_zfstringFromStringT(this->_pathForStorage, path);
             zfCoreAssert(!this->_pathForStorage.isEmpty());
         }
         return this->_pathForStorage;
@@ -85,7 +85,7 @@ public:
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
-            ZFImpl_sys_Android_zfstringFromString(this->_pathForStorageShared, path);
+            ZFImpl_sys_Android_zfstringFromStringT(this->_pathForStorageShared, path);
             zfCoreAssert(!this->_pathForStorageShared.isEmpty());
         }
         return this->_pathForStorageShared;
@@ -101,7 +101,7 @@ public:
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
             jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
-            ZFImpl_sys_Android_zfstringFromString(this->_pathForCache, path);
+            ZFImpl_sys_Android_zfstringFromStringT(this->_pathForCache, path);
             zfCoreAssert(!this->_pathForCache.isEmpty());
         }
         return this->_pathForCache;
