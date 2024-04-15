@@ -30,9 +30,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     if(errorHint) { \
                         zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen)); \
                     } \
-                    return zftrue; \
+                    return zffalse; \
                 } \
-                return zffalse; \
+                return zftrue; \
             } \
         }, { \
             if(v == ((Type)-1)) { \
