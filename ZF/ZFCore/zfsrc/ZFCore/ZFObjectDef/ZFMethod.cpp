@@ -317,7 +317,7 @@ zfauto ZFMethod::methodInvoke(
         ) const {
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfauto ret;
-    if(this->methodGenericInvoker()(this, ownerObjOrNull, zfnull, ret, ZFDI_paramCount(paramList), paramList)) {
+    if(this->methodGenericInvoker()(ret, zfnull, ownerObjOrNull, this, 0, paramList)) {
         return ret;
     }
     else {
@@ -350,7 +350,7 @@ zfauto ZFMethod::methodInvoke(
     } while(zffalse);
     zfCoreMutexUnlock();
     zfauto ret;
-    if(this->methodGenericInvoker()(this, ownerObjOrNull, zfnull, ret, paramCount, paramList)) {
+    if(this->methodGenericInvoker()(ret, zfnull, ownerObjOrNull, this, paramCount, paramList)) {
         return ret;
     }
     else {
@@ -374,7 +374,7 @@ zfauto ZFMethod::methodInvokeDetail(
     }
     zfCoreMutexUnlock();
     zfauto ret;
-    if(this->methodGenericInvoker()(this, ownerObjOrNull, errorHint, ret, paramCount, paramList)) {
+    if(this->methodGenericInvoker()(ret, errorHint, ownerObjOrNull, this, paramCount, paramList)) {
         if(success != zfnull) {*success = zftrue;}
         return ret;
     }
@@ -409,7 +409,7 @@ zfauto ZFMethod::methodInvokeGeneric(
     } while(zffalse);
     zfCoreMutexUnlock();
     zfauto ret;
-    if(this->methodGenericInvoker()(this, ownerObjOrNull, zfnull, ret, paramCount, paramList)) {
+    if(this->methodGenericInvoker()(ret, zfnull, ownerObjOrNull, this, paramCount, paramList)) {
         return ret;
     }
     else {
@@ -433,7 +433,7 @@ zfauto ZFMethod::methodInvokeGenericDetail(
     }
     zfCoreMutexUnlock();
     zfauto ret;
-    if(this->methodGenericInvoker()(this, ownerObjOrNull, errorHint, ret, paramCount, paramList)) {
+    if(this->methodGenericInvoker()(ret, errorHint, ownerObjOrNull, this, paramCount, paramList)) {
         if(success != zfnull) {*success = zftrue;}
         return ret;
     }

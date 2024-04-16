@@ -246,19 +246,12 @@ void _ZFP_MtdGIRetError(
 }
 
 // ============================================================
-zfbool _ZFP_ZFMethodGenericInvoke(
-        ZF_IN const ZFMethod *invokerMethod
-        , ZF_IN ZFObject *invokerObject
-        , ZF_OUT_OPT zfstring *errorHint
-        , ZF_OUT zfauto &ret
-        , ZF_IN zfindex paramCount
-        , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
-        ) {
+zfbool _ZFP_ZFMethodGenericInvoke(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     return invokerMethod->methodGenericInvoker()(
-            invokerMethod
-            , invokerObject
+            ret
             , errorHint
-            , ret
+            , invokerObject
+            , invokerMethod
             , paramCount
             , paramList
         );

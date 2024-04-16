@@ -63,8 +63,8 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
 
     ZFObject *obj = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointer);
     zfauto ret = (obj == zfnull
-            ? ZFInvokeDetail(methodNameZF, paramsZF)
-            : obj->invokeDetail(methodNameZF, paramsZF)
+            ? ZFInvokeGenericDetail(methodNameZF, paramsZF)
+            : obj->invokeGenericDetail(methodNameZF, paramsZF)
             );
     if(ret) {
         zfautoRelease(zfRetain(ret));

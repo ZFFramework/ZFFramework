@@ -41,10 +41,10 @@ static zfbool _ZFP_ZFObjectOnInitGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     invokerObject->_ZFP_ZFObject_objectOnInit();
     ZFMethodGenericInvoker methodGI = *valueHolder->holdedDataPointer<ZFMethodGenericInvoker *>();
     return methodGI(
-            invokerMethod
-            , invokerObject
+            ret
             , errorHint
-            , ret
+            , invokerObject
+            , invokerMethod
             , paramCount
             , paramList
             );

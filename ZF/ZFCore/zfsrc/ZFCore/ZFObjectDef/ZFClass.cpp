@@ -807,7 +807,7 @@ zfbool ZFClass::newInstanceGenericCheck(
     }
     ZFObject *obj = (ZFObject *)token;
     zfauto methodRetDummy;
-    zfbool ret = objectOnInitMethod->methodGenericInvoker()(objectOnInitMethod, obj, errorHint, methodRetDummy, paramCount, paramList);
+    zfbool ret = objectOnInitMethod->methodGenericInvoker()(methodRetDummy, errorHint, obj, objectOnInitMethod, paramCount, paramList);
     if(!ret && obj->d) {
         zfCoreMutexLocker();
         // since objectOnInit already called,

@@ -408,7 +408,7 @@ zfbool ZFDI_invoke(
             if(!paramConvertSuccess) {
                 continue;
             }
-            if(method->methodGenericInvoker()(method, obj, errorHintTmp, ret, paramCount, paramList)) {
+            if(method->methodGenericInvoker()(ret, errorHintTmp, obj, method, paramCount, paramList)) {
                 if(zfstringIsEqual(method->methodReturnTypeId(), ZFTypeId_void())) {
                     ret = obj;
                 }
