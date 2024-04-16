@@ -70,7 +70,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsInternal)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsInternalPrivate)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classCanAllocPublic)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfauto, newInstance)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfauto, newInstanceNoCache)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, zfauto, newInstance
     , ZFMP_IN(ZFObject *, param0)
     , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
@@ -84,8 +83,26 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, zfauto, newInstance
     // , ZFMP_OUT_OPT(zfbool *, success, zfnull)
     // , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
     )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFClass, zfauto, newInstance
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFClass, zfauto, newInstanceDetail
     , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
+    , ZFMP_OUT_OPT(zfbool *, success, zfnull)
+    , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+    )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, zfauto, newInstanceGeneric
+    , ZFMP_IN(const zfchar *, param0)
+    , ZFMP_IN_OPT(const zfchar *, param1, zfnull)
+    , ZFMP_IN_OPT(const zfchar *, param2, zfnull)
+    , ZFMP_IN_OPT(const zfchar *, param3, zfnull)
+    , ZFMP_IN_OPT(const zfchar *, param4, zfnull)
+    , ZFMP_IN_OPT(const zfchar *, param5, zfnull)
+    , ZFMP_IN_OPT(const zfchar *, param6, zfnull)
+    , ZFMP_IN_OPT(const zfchar *, param7, zfnull)
+    // ZFMETHOD_MAX_PARAM
+    // , ZFMP_OUT_OPT(zfbool *, success, zfnull)
+    // , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+    )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFClass, zfauto, newInstanceGenericDetail
+    , ZFMP_IN(const ZFCoreArray<zfstring> &, params)
     , ZFMP_OUT_OPT(zfbool *, success, zfnull)
     , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
     )

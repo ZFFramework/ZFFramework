@@ -57,8 +57,8 @@ inline ZFCompareResult ZFPropertyCompare(
         , ZF_IN ZFObject *obj1
         ) {
     return ZFObjectCompare(
-        propertyInfo->getterMethod()->methodGenericInvoke(obj0).toObject(),
-        propertyInfo->getterMethod()->methodGenericInvoke(obj1).toObject());
+        propertyInfo->getterMethod()->methodInvoke(obj0).toObject(),
+        propertyInfo->getterMethod()->methodInvoke(obj1).toObject());
 }
 
 // ============================================================
@@ -71,7 +71,7 @@ inline void ZFPropertyCopy(
         , ZF_IN ZFObject *dstObj
         , ZF_IN ZFObject *srcObj
         ) {
-    propertyInfo->setterMethod()->methodGenericInvoke(dstObj, propertyInfo->getterMethod()->methodGenericInvoke(srcObj));
+    propertyInfo->setterMethod()->methodInvoke(dstObj, propertyInfo->getterMethod()->methodInvoke(srcObj));
 }
 
 // ============================================================
@@ -105,7 +105,7 @@ inline void ZFPropertyGetInfo(
         , ZF_IN const ZFProperty *propertyInfo
         , ZF_IN ZFObject *ownerObject
         ) {
-    ZFObjectInfoT(ret, propertyInfo->getterMethod()->methodGenericInvoke(ownerObject));
+    ZFObjectInfoT(ret, propertyInfo->getterMethod()->methodInvoke(ownerObject));
 }
 /** @brief see #ZFPropertyGetInfo */
 inline zfstring ZFPropertyGetInfo(

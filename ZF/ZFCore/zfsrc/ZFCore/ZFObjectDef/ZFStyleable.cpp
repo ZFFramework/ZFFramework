@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFStyleable *ZFStyleable::defaultStyle(void) {
     const ZFMethod *method = this->classData()->methodForName("DefaultStyle");
     if(method != zfnull) {
-        return method->methodGenericInvoke(zfnull);
+        return method->methodInvoke(zfnull);
     }
     else {
         return zfnull;
@@ -113,16 +113,16 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
         }
             break;
         case ZFStyleable::PropertyTypeStyleable: {
-            ZFStyleable *selfPropertyValue = property->getterMethod()->methodGenericInvoke(this->toObject());
-            ZFStyleable *anotherPropertyValue = property->getterMethod()->methodGenericInvoke(anotherStyleable->toObject());
+            ZFStyleable *selfPropertyValue = property->getterMethod()->methodInvoke(this->toObject());
+            ZFStyleable *anotherPropertyValue = property->getterMethod()->methodInvoke(anotherStyleable->toObject());
             if(selfPropertyValue != zfnull && anotherPropertyValue != zfnull) {
                 selfPropertyValue->styleableCopyFrom(anotherPropertyValue);
             }
         }
             break;
         case ZFStyleable::PropertyTypeCopyable: {
-            ZFCopyable *selfPropertyValue = property->getterMethod()->methodGenericInvoke(this->toObject());
-            ZFObject *anotherPropertyValue = property->getterMethod()->methodGenericInvoke(anotherStyleable->toObject());
+            ZFCopyable *selfPropertyValue = property->getterMethod()->methodInvoke(this->toObject());
+            ZFObject *anotherPropertyValue = property->getterMethod()->methodInvoke(anotherStyleable->toObject());
             if(selfPropertyValue != zfnull && anotherPropertyValue != zfnull) {
                 selfPropertyValue->copyFrom(anotherPropertyValue);
             }

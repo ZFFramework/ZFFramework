@@ -214,7 +214,7 @@ typedef zfauto (*ZFMethodParamDefaultValueCallback)(
  *   YourReturnType result = method->execute<YourReturnType, ParamType...>(obj, someParam...);
  *
  *   // or, you may use generic version:
- *   zfauto result2 = method->methodGenericInvoke(obj, someParam...);
+ *   zfauto result2 = method->methodInvoke(obj, someParam...);
  * @endcode
  * @warning you take the full responsibility to make sure
  *   the ReturnType and ParamType exactly match the method,
@@ -518,15 +518,20 @@ public:
     inline ZFMethodGenericInvoker methodGenericInvoker(void) const {
         return this->_ZFP_ZFMethod_methodGenericInvoker;
     }
+    /* ZFMETHOD_MAX_PARAM */
     /**
      * @brief util method to invoke #ZFMethodGenericInvoker
      *
      * note all params must be exactly same type,
      * use #ZFDI_invoke if you want auto param conversion
      */
-    zfauto methodGenericInvoke(
+    zfauto methodInvoke(
             ZF_IN_OPT ZFObject *ownerObjOrNull = zfnull
-            , ZF_IN_OPT ZFObject *param0 = ZFMethodGenericInvokerDefaultParam()
+            ) const;
+    /** @brief see #methodInvoke */
+    zfauto methodInvoke(
+            ZF_IN ZFObject *ownerObjOrNull
+            , ZF_IN ZFObject *param0
             , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param3 = ZFMethodGenericInvokerDefaultParam()
@@ -534,10 +539,34 @@ public:
             , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+            ) const;
+    /** @brief see #methodInvoke */
+    zfauto methodInvokeDetail(
+            ZF_IN ZFObject *ownerObjOrNull
+            , ZF_IN const ZFCoreArray<zfauto> &params
             , ZF_OUT_OPT zfbool *success = zfnull
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) const;
-    /* ZFMETHOD_MAX_PARAM */
+    /** @brief see #methodInvoke */
+    zfauto methodInvokeGeneric(
+            ZF_IN ZFObject *ownerObjOrNull
+            , ZF_IN const zfchar *param0
+            , ZF_IN_OPT const zfchar *param1 = zfnull
+            , ZF_IN_OPT const zfchar *param2 = zfnull
+            , ZF_IN_OPT const zfchar *param3 = zfnull
+            , ZF_IN_OPT const zfchar *param4 = zfnull
+            , ZF_IN_OPT const zfchar *param5 = zfnull
+            , ZF_IN_OPT const zfchar *param6 = zfnull
+            , ZF_IN_OPT const zfchar *param7 = zfnull
+            ) const;
+    /** @brief see #methodInvoke */
+    zfauto methodInvokeGenericDetail(
+            ZF_IN ZFObject *ownerObjOrNull
+            , ZF_IN const ZFCoreArray<zfstring> &params
+            , ZF_OUT_OPT zfbool *success = zfnull
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            ) const;
+
     /**
      * @brief see #methodGenericInvoker
      */

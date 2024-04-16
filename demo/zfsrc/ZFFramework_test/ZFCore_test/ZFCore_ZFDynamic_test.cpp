@@ -44,7 +44,7 @@ protected:
 
         const ZFMethod *method = ZFMethodForName("ZFDynamicTestNS", "testMethod");
         zfLog() << method;
-        zfLog() << method->methodGenericInvoke(zfnull, zflineAlloc(v_zfstring, "testParam"));
+        zfLog() << method->methodInvoke(zfnull, zflineAlloc(v_zfstring, "testParam"));
 
         d.removeAll();
         this->testCaseStop();

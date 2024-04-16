@@ -714,7 +714,7 @@ zfauto ZFInvokeDetail(
     }
 }
 
-zfauto ZFInvoke(
+zfauto ZFInvokeGeneric(
         ZF_IN const zfchar *name
         , ZF_IN const zfchar *param0
         , ZF_IN_OPT const zfchar *param1 /* = zfnull */
@@ -747,7 +747,7 @@ zfauto ZFInvoke(
         return zfnull;
     }
 }
-zfauto ZFInvokeDetail(
+zfauto ZFInvokeGenericDetail(
         ZF_IN const zfchar *name
         , ZF_IN const ZFCoreArray<zfstring> &params
         , ZF_OUT_OPT zfbool *success /* = zfnull */
@@ -799,6 +799,24 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfauto, ZFInvoke
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFInvokeDetail
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
+        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
+        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfauto, ZFInvokeGeneric
+        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfchar *, param0)
+        , ZFMP_IN_OPT(const zfchar *, param1, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, param2, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, param3, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, param4, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, param5, zfnull)
+        , ZFMP_IN_OPT(const zfchar *, param6, zfnull)
+        /* ZFMETHOD_MAX_PARAM */
+        // , ZFMP_IN_OPT(const zfchar *, param7, zfnull)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFInvokeGenericDetail
+        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const ZFCoreArray<zfstring> &, params)
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )

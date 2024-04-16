@@ -182,7 +182,7 @@ inline zfindex ZFDI_paramCount(
  * note: only public methods are allowed to be called by this method,
  * non-public method would result to fail,
  * but you can still explicitly find the method by #ZFMethodForName
- * and invoke it by #ZFMethod::methodGenericInvoke
+ * and invoke it by #ZFMethod::methodInvoke
  */
 extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
         , ZF_OUT_OPT zfstring *errorHint
@@ -279,7 +279,7 @@ extern ZFLIB_ZFCore zfauto ZFInvokeDetail(
         );
 
 /** @brief see #ZFInvoke */
-extern ZFLIB_ZFCore zfauto ZFInvoke(
+extern ZFLIB_ZFCore zfauto ZFInvokeGeneric(
         ZF_IN const zfchar *name
         , ZF_IN const zfchar *param0
         , ZF_IN_OPT const zfchar *param1 = zfnull
@@ -291,7 +291,7 @@ extern ZFLIB_ZFCore zfauto ZFInvoke(
         , ZF_IN_OPT const zfchar *param7 = zfnull
         );
 /** @brief see #ZFInvoke */
-extern ZFLIB_ZFCore zfauto ZFInvokeDetail(
+extern ZFLIB_ZFCore zfauto ZFInvokeGenericDetail(
         ZF_IN const zfchar *name
         , ZF_IN const ZFCoreArray<zfstring> &params
         , ZF_OUT_OPT zfbool *success = zfnull

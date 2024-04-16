@@ -116,7 +116,7 @@ static zfbool _ZFP_ZFStylePropertyCopy(
     }
     const ZFMethod *setterMethod = propertyOwner->classData()->propertySetterForName(propertyName);
     if(setterMethod == zfnull || !setterMethod->methodIsPublic()) {
-        ZFStyleable *styleable = getterMethod->methodGenericInvoke(propertyOwner);
+        ZFStyleable *styleable = getterMethod->methodInvoke(propertyOwner);
         if(styleable == zfnull) {
             return zffalse;
         }

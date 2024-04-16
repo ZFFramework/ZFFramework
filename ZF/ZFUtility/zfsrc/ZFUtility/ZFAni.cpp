@@ -143,7 +143,7 @@ public:
     }
     void update(ZF_IN zffloat progress) {
         if(_from == zfnull) {
-            _from = _getterMethod->methodGenericInvoke(_aniTarget);
+            _from = _getterMethod->methodInvoke(_aniTarget);
             if(_from == zfnull) {
                 return;
             }
@@ -152,7 +152,7 @@ public:
             }
         }
         if(_to == zfnull) {
-            _to = _getterMethod->methodGenericInvoke(_aniTarget);
+            _to = _getterMethod->methodInvoke(_aniTarget);
             if(_to == zfnull) {
                 return;
             }
@@ -165,11 +165,11 @@ public:
             zfauto valueHolder = _typeInfo->typeIdClass()->newInstance();
             ZFProgressable *value = valueHolder;
             if(value != zfnull && value->progressUpdate(_from, _to, progress)) {
-                _setterMethod->methodGenericInvoke(_aniTarget, valueHolder);
+                _setterMethod->methodInvoke(_aniTarget, valueHolder);
             }
         }
         else {
-            zfauto valueHolder = _getterMethod->methodGenericInvoke(_aniTarget);
+            zfauto valueHolder = _getterMethod->methodInvoke(_aniTarget);
             ZFProgressable *value = valueHolder;
             if(value != zfnull) {
                 value->progressUpdate(_from, _to, progress);
@@ -206,13 +206,13 @@ private:
         if(_from == zfnull && _to == zfnull) {
             return zffalse;
         }
-        if(_getterMethod->methodGenericInvoke(_aniTarget) == zfnull) {
+        if(_getterMethod->methodInvoke(_aniTarget) == zfnull) {
             return zffalse;
         }
 
         if(_setterMethod == zfnull) { // ani by getter only
             if(ZFClass::classForName(_getterMethod->methodReturnTypeId()) == zfnull
-                    || ZFCastZFObject(ZFProgressable *, _getterMethod->methodGenericInvoke(_aniTarget)) == zfnull
+                    || ZFCastZFObject(ZFProgressable *, _getterMethod->methodInvoke(_aniTarget)) == zfnull
                     ) { // ani by getter only valid for retain property
                 return zffalse;
             }

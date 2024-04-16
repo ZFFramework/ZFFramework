@@ -394,7 +394,7 @@ public:
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfauto invoke(
+    virtual zfauto invokeGeneric(
             ZF_IN const zfchar *methodName
             , ZF_IN const zfchar *param0
             , ZF_IN_OPT const zfchar *param1 = zfnull
@@ -409,7 +409,7 @@ public:
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
-    virtual zfauto invokeDetail(
+    virtual zfauto invokeGenericDetail(
             ZF_IN const zfchar *methodName
             , ZF_IN const ZFCoreArray<zfstring> &params
             , ZF_OUT_OPT zfbool *success = zfnull

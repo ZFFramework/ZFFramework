@@ -289,11 +289,6 @@ public:
      *   use #newInstanceGenericBegin instead
      */
     zfauto newInstance(void) const;
-    /**
-     * @brief same as #newInstance, but explicitly disable cache logic,
-     *   see #ZFALLOC_CACHE_RELEASE
-     */
-    zfauto newInstanceNoCache(void) const;
 
     /* ZFMETHOD_MAX_PARAM */
     /**
@@ -344,17 +339,15 @@ public:
             , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
-            , ZF_OUT_OPT zfbool *success = zfnull
-            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) const;
     /** @brief see #newInstance */
-    zfauto newInstance(
+    zfauto newInstanceDetail(
             ZF_IN const ZFCoreArray<zfauto> &params
             , ZF_OUT_OPT zfbool *success = zfnull
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) const;
     /** @brief see #newInstance */
-    zfauto newInstance(
+    zfauto newInstanceGeneric(
             ZF_IN const zfchar *param0
             , ZF_IN_OPT const zfchar *param1 = zfnull
             , ZF_IN_OPT const zfchar *param2 = zfnull
@@ -363,11 +356,9 @@ public:
             , ZF_IN_OPT const zfchar *param5 = zfnull
             , ZF_IN_OPT const zfchar *param6 = zfnull
             , ZF_IN_OPT const zfchar *param7 = zfnull
-            , ZF_OUT_OPT zfbool *success = zfnull
-            , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) const;
     /** @brief see #newInstance */
-    zfauto newInstance(
+    zfauto newInstanceGenericDetail(
             ZF_IN const ZFCoreArray<zfstring> &params
             , ZF_OUT_OPT zfbool *success = zfnull
             , ZF_OUT_OPT zfstring *errorHint = zfnull

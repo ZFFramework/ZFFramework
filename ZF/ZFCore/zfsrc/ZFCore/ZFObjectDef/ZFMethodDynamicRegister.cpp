@@ -57,7 +57,7 @@ zfauto ZFMethodInvokeData::callSuper(void) {
             for(zfindex i = 0; i < buf.count(); ++i) {
                 const ZFMethod *m = buf[i];
                 if(m->methodParamTypeIdIsMatch(invokerMethod)) {
-                    return m->methodGenericInvoke(invokerObject
+                    return m->methodInvoke(invokerObject
                             , param0
                             , param1
                             , param2
