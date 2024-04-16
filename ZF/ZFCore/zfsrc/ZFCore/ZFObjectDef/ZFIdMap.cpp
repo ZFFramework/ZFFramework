@@ -154,7 +154,7 @@ zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName) {
 }
 void ZFIdMapGetAll(
         ZF_IN_OUT ZFCoreArrayPOD<zfidentity> &idValues
-        , ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &idNames
+        , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
         ) {
     zfCoreMutexLocker();
     _ZFP_ZFIdMapModuleData &moduleData = _ZFP_ZFIdMapModuleDataRef();
@@ -188,7 +188,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFIdMapIdForName
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFIdMapGetAll
         , ZFMP_IN_OUT(ZFCoreArrayPOD<zfidentity> &, idValues)
-        , ZFMP_IN_OUT(ZFCoreArrayPOD<const zfchar *> &, idNames)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFIdMapDynamicRegister
         , ZFMP_IN(const zfchar *, idName)

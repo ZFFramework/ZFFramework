@@ -6,7 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
         ZFCoreArrayPOD<const ZFClass *> allClass = ZFClassGetAll();
         if(!allClass.isEmpty()) {
-            ZFCoreArrayPOD<const zfchar *> classNameList;
+            ZFCoreArray<zfstring> classNameList;
             classNameList.capacity(allClass.count());
             for(zfindex i = 0; i < allClass.count(); ++i) {
                 const ZFClass *cls = allClass[i];
@@ -30,12 +30,12 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
             if(data.changeType == ZFClassDataChangeTypeAttach) {
                 ZFImpl_ZFLua_implSetupScope(
                     stateList,
-                    ZFCoreArrayPODCreate(const zfchar *, data.changedClass->className()));
+                    ZFCoreArrayCreate(zfstring, data.changedClass->className()));
             }
             else if(data.changeType == ZFClassDataChangeTypeClassAliasAttach) {
                 ZFImpl_ZFLua_implSetupScope(
                     stateList,
-                    ZFCoreArrayPODCreate(const zfchar *, data.name));
+                    ZFCoreArrayCreate(zfstring, data.name));
             }
         }
     }))

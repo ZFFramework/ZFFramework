@@ -331,7 +331,7 @@ zfauto ZFStyleGet(ZF_IN const zfchar *styleKey) {
     }
 }
 void ZFStyleGetAll(
-        ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &styleKey
+        ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
         , ZF_IN_OUT ZFCoreArrayPOD<ZFStyleable *> &styleValue
         ) {
     zfCoreMutexLocker();
@@ -453,7 +453,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFStyleGet
         , ZFMP_IN(const zfchar *, styleKey)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleGetAll
-        , ZFMP_IN_OUT(ZFCoreArrayPOD<const zfchar *> &, styleKey)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, styleKey)
         , ZFMP_IN_OUT(ZFCoreArrayPOD<ZFStyleable *>, styleValue)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleRemoveAll)

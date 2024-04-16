@@ -15,6 +15,10 @@ win32 {
     #       (too many sections), disable it for Windows by default
     ZF_UNITY_BUILD = 0
 }
+macx {
+    # NOTE: seems cause clang hang up, disable for now
+    ZF_UNITY_BUILD = 0
+}
 
 # ZFFramework's root path
 ZF_ROOT_PATH = $$clean_path($${_PRO_FILE_PWD_}/../../../../../../ZFFramework)

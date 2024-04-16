@@ -1201,7 +1201,7 @@ ZFObject *ZFClass::classTag(ZF_IN const zfchar *key) const {
     return zfnull;
 }
 void ZFClass::classTagGetAllKeyValue(
-        ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+        ZF_IN_OUT ZFCoreArray<zfstring> &allKey
         , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
         ) const {
     _ZFP_ZFClassTagMapType &m = d->classTagMap;

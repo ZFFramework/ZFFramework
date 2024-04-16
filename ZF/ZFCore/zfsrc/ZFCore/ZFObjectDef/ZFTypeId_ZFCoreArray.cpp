@@ -196,7 +196,64 @@ zfbool _ZFP_ZFCoreArrayToDataT(
 }
 
 // ============================================================
+zfbool v_ZFCoreArray::elementTypeInit(ZF_IN const zfchar *elementTypeId) {
+    if(this->elementType != zfnull) {
+        return zffalse;
+    }
+
+    const ZFTypeInfo *typeInfo = ZFTypeInfoForName(elementTypeId);
+    if(typeInfo != zfnull) {
+        this->zfv = typeInfo->genericArrayNew();
+        if(this->zfv == zfnull) {
+            return zffalse;
+        }
+        this->elementType = typeInfo;
+        this->_ZFP_elementTypeHolder = zfnull;
+        return zftrue;
+    }
+    return zffalse;
+}
+zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
+    if(element == zfnull) {
+        return zfnull;
+    }
+    if(this->elementType == zfnull) {
+        ZFTypeIdWrapper *v = ZFCastZFObject(ZFTypeIdWrapper *, element);
+        if(v != zfnull) {
+            if(!this->elementTypeInit(v->wrappedValueTypeId())) {
+                return zfnull;
+            }
+            return element;
+        }
+        return zfnull;
+    }
+    if(this->elementType->typeIdClass() == zfnull) {
+        return zfnull;
+    }
+    if(element->classData()->classIsTypeOf(this->elementType->typeIdClass())) {
+        return element;
+    }
+    if(element->classData()->classIsTypeOf(v_zfstring::ClassData())
+            && this->elementType->typeIdClass()->classIsTypeOf(ZFTypeIdWrapper::ClassData())
+            ) {
+        zfauto ret = this->elementType->typeIdClass()->newInstance();
+        ZFTypeIdWrapper *retTmp = ret;
+        v_zfstring *src = ZFCastZFObject(v_zfstring *, element);
+        if(retTmp->wrappedValueFromString(src->zfv, src->zfv.length())) {
+            return ret;
+        }
+    }
+    return zfnull;
+}
+
+// ============================================================
 _ZFP_ZFTYPEID_ID_DATA_REGISTER(ZFCoreArray, ZFCoreArray<zfauto>)
+
+ZFOBJECT_ON_INIT_USER_REGISTER_1({
+    invokerObject->to<v_ZFCoreArray *>()->elementTypeInit(elementTypeId);
+}, v_ZFCoreArray
+, ZFMP_IN(const zfchar *, elementTypeId)
+)
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, copyFrom
         , ZFMP_IN(v_ZFCoreArray *, ref)

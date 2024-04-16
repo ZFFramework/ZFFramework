@@ -128,6 +128,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             zfdelete((EnumName##Enum *)v); \
             Value<EnumName##Enum>::zfvAccessFinish(obj); \
         } \
+        zfoverride \
+        virtual ZFCoreArrayBase *genericArrayNew(void) const { \
+            return zfnew(ZFCoreArray<EnumName##Enum>); \
+        } \
     }; \
     /** @endcond */
 
@@ -299,6 +303,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
             zfdelete((EnumFlagsName *)v); \
             Value<EnumFlagsName>::zfvAccessFinish(obj); \
+        } \
+        zfoverride \
+        virtual ZFCoreArrayBase *genericArrayNew(void) const { \
+            return zfnew(ZFCoreArray<EnumFlagsName>); \
         } \
     }; \
     /** @endcond */

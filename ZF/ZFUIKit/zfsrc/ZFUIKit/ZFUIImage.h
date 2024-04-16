@@ -66,12 +66,12 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfch
                                                                     ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */)
 
 /** @brief see #ZFUIImageSerializeTypeGetAll */
-extern ZFLIB_ZFUIKit void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret);
+extern ZFLIB_ZFUIKit void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);
 /**
  * @brief usually for debug use only
  */
-inline ZFCoreArrayPOD<const zfchar *> ZFUIImageSerializeTypeGetAll(void) {
-    ZFCoreArrayPOD<const zfchar *> ret;
+inline ZFCoreArray<zfstring> ZFUIImageSerializeTypeGetAll(void) {
+    ZFCoreArray<zfstring> ret;
     ZFUIImageSerializeTypeGetAllT(ret);
     return ret;
 }

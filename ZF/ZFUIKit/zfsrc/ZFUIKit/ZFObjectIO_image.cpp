@@ -18,7 +18,7 @@ void ZFObjectIO_image_imageExtAdd(ZF_IN const zfchar *imageExt) {
 void ZFObjectIO_image_imageExtRemove(ZF_IN const zfchar *imageExt) {
     _ZFP_ZFObjectIO_image_imageExtMap().erase(imageExt);
 }
-void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret) {
+void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     _ZFP_ZFObjectIO_image_imageExtMapType &m = _ZFP_ZFObjectIO_image_imageExtMap();
     for(_ZFP_ZFObjectIO_image_imageExtMapType::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->first);

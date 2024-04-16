@@ -66,14 +66,30 @@ public:
     /** @brief the value, see #ZFTypeId::Value */
     ZFCoreArrayBase *zfv;
     /** @brief type info for element */
-    ZFCorePointerForObject<ZFTypeInfo *> elementType;
+    const ZFTypeInfo *elementType;
+private:
+    ZFCorePointerBase *_ZFP_elementTypeHolder;
+
+public:
+    /** @brief init element type */
+    virtual zfbool elementTypeInit(ZF_IN const zfchar *elementTypeId);
+private:
+    zfauto _ZFP_elementTypeCheck(ZF_IN ZFObject *element);
+
 protected:
     /** @brief init with value */
     template<typename T_Type>
     void objectOnInit(ZF_IN const ZFCoreArray<T_Type> &v) {
         this->objectOnInit();
         this->zfv = v.refNew();
-        this->elementType = zfnew(ZFTypeId<T_Type>);
+        this->_ZFP_elementTypeHolder = zfnew(ZFCorePointerForObject<ZFTypeInfo *>, zfnew(ZFTypeId<T_Type>));
+        this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
+    }
+
+    /** @brief init with #elementTypeInit */
+    virtual void objectOnInit(ZF_IN const zfchar *elementTypeId) {
+        this->objectOnInit();
+        this->elementTypeInit(elementTypeId);
     }
 
     zfoverride
@@ -81,6 +97,7 @@ protected:
         zfsuper::objectOnInit();
         this->zfv = zfnull;
         this->elementType = zfnull;
+        this->_ZFP_elementTypeHolder = zfnull;
     }
 
     zfoverride
@@ -122,16 +139,24 @@ public:
             return;
         }
         ZFCoreArrayBase *zfvOld = this->zfv;
+        ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
         if(t != zfnull && t->zfv != zfnull) {
             this->zfv = t->zfv->refNew();
             this->elementType = t->elementType;
+            if(t->_ZFP_elementTypeHolder) {
+                this->_ZFP_elementTypeHolder = t->_ZFP_elementTypeHolder->refNew();
+            }
         }
         else {
             this->zfv = zfnull;
             this->elementType = zfnull;
+            this->_ZFP_elementTypeHolder = zfnull;
         }
         if(zfvOld != zfnull) {
             zfvOld->refDelete();
+        }
+        if(holderOld != zfnull) {
+            holderOld->refDelete();
         }
     }
     zfoverride
@@ -147,7 +172,9 @@ public:
         const ZFCoreArrayBase *vTmp = (const ZFCoreArrayBase *)v;
         ZFCoreArrayBase *old = this->zfv;
         this->zfv = vTmp->refNew();
-        old->refDelete();
+        if(old) {
+            old->refDelete();
+        }
     }
     /** @brief set the internal value */
     virtual void wrappedValue(ZF_IN const ZFCoreArrayBase &v) {
@@ -156,33 +183,41 @@ public:
     /** @brief set the internal value */
     template<typename T_Type>
     void wrappedValue(ZF_IN const ZFCoreArray<T_Type> &v) {
-        ZFCoreArrayBase *old = this->zfv;
+        ZFCoreArrayBase *zfvOld = this->zfv;
+        ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
         this->zfv = v.refNew();
-        this->elementType = zfnew(ZFTypeId<T_Type>);
-        old->refDelete();
+        this->_ZFP_elementTypeHolder = zfnew(ZFCorePointerForObject<ZFTypeInfo *>, zfnew(ZFTypeId<T_Type>));
+        this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
+        if(zfvOld) {
+            zfvOld->refDelete();
+        }
+        if(holderOld) {
+            holderOld->refDelete();
+        }
     }
     /** @brief set the internal value */
     template<typename T_Type>
     void wrappedValue(ZF_IN const ZFCoreArrayPOD<T_Type> &v) {
-        ZFCoreArrayBase *old = this->zfv;
-        this->zfv = v.refNew();
-        this->elementType = zfnew(ZFTypeId<T_Type>);
-        old->refDelete();
+        this->wrappedValue((const ZFCoreArray<T_Type> &)v);
     }
     zfoverride
     virtual void wrappedValueCopy(ZF_IN void *v) {
-        if(this->zfv != zfnull) {
-            *(ZFCoreArrayBase *)v = *this->zfv;
-        }
+        zfCoreAssertWithMessageTrim(this->elementType != zfnull, "wrappedValueCopy without explicit element type");
+        *(ZFCoreArrayBase *)v = *this->zfv;
     }
 public:
     zfoverride
     virtual void wrappedValueReset(void) {
         if(this->zfv) {
-            ZFCoreArrayBase *old = this->zfv;
+            ZFCoreArrayBase *zfvOld = this->zfv;
+            ZFCorePointerBase *holderOld = this->_ZFP_elementTypeHolder;
             this->zfv = zfnull;
             this->elementType = zfnull;
-            old->refDelete();
+            this->_ZFP_elementTypeHolder = zfnull;
+            zfvOld->refDelete();
+            if(holderOld) {
+                holderOld->refDelete();
+            }
         }
     }
     zfoverride
@@ -233,6 +268,9 @@ public:
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         if(this->zfv == zfnull) {
+            if(errorHint) {
+                *errorHint += "not available for plain array type";
+            }
             return zffalse;
         }
         return _ZFP_ZFCoreArrayFromStringT(
@@ -249,6 +287,9 @@ public:
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         if(this->zfv == zfnull) {
+            if(errorHint) {
+                *errorHint += "not available for plain array type";
+            }
             return zffalse;
         }
         return _ZFP_ZFCoreArrayToStringT(
@@ -262,9 +303,9 @@ public:
 public:
     /** @cond ZFPrivateDoc */
     void copyFrom(ZF_IN v_ZFCoreArray *ref) {
-        if(this->zfv != zfnull
+        if(this->elementType != zfnull
                 && ref != zfnull
-                && ref->zfv != zfnull
+                && ref->elementType != zfnull
                 ) {
             this->zfv->genericCopyFrom(*(ref->zfv));
         }
@@ -318,14 +359,16 @@ public:
         }
     }
     void add(ZF_IN ZFObject *e) {
-        if(this->zfv == zfnull) {
+        zfauto t = _ZFP_elementTypeCheck(e);
+        if(!t) {
             return;
         }
-        zfauto t = e;
         void *v = this->elementType->genericAccess(t);
-        if(v == zfnull) {
-            return;
-        }
+        zfCoreAssertWithMessageTrim(v != zfnull
+                , "add with different element type, desired: %s, got: %s"
+                , this->elementType ? this->elementType->typeId() : zfnull
+                , e ? e->classData()->classNameFull() : zfnull
+                );
         this->zfv->genericAdd(v);
         this->elementType->genericAccessFinish(t, v);
     }
@@ -333,18 +376,20 @@ public:
             ZF_IN zfindex index
             , ZF_IN ZFObject *e
             ) {
-        if(this->zfv == zfnull) {
+        zfauto t = _ZFP_elementTypeCheck(e);
+        if(!t) {
             return;
         }
         if(index > this->count()) {
             zfCoreCriticalIndexOutOfRange(index, this->count() + 1);
             return;
         }
-        zfauto t = e;
         void *v = this->elementType->genericAccess(t);
-        if(v == zfnull) {
-            return;
-        }
+        zfCoreAssertWithMessageTrim(v != zfnull
+                , "add with different element type, desired: %s, got: %s"
+                , this->elementType ? this->elementType->typeId() : zfnull
+                , e ? e->classData()->classNameFull() : zfnull
+                );
         this->zfv->genericAdd(index, v);
         this->elementType->genericAccessFinish(t, v);
     }
@@ -397,14 +442,16 @@ public:
             ZF_IN zfindex index
             , ZF_IN ZFObject *e
             ) {
-        if(this->zfv == zfnull) {
+        zfauto t = _ZFP_elementTypeCheck(e);
+        if(!t) {
             return;
         }
-        zfauto t = e;
         void *v = this->elementType->genericAccess(t);
-        if(v == zfnull) {
-            return;
-        }
+        zfCoreAssertWithMessageTrim(v != zfnull
+                , "add with different element type, desired: %s, got: %s"
+                , this->elementType ? this->elementType->typeId() : zfnull
+                , e ? e->classData()->classNameFull() : zfnull
+                );
         this->zfv->genericSet(index, v);
         this->elementType->genericAccessFinish(t, v);
     }
@@ -574,6 +621,10 @@ public:
         zfdelete((ZFCoreArray<T_Type> *)v);
         Value<ZFCoreArray<T_Type> >::zfvAccessFinish(obj);
     }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<ZFCoreArray<T_Type> >);
+    }
 };
 
 template<typename T_Type>
@@ -668,6 +719,10 @@ public:
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
         zfdelete((ZFCoreArrayPOD<T_Type> *)v);
         Value<ZFCoreArrayPOD<T_Type> >::zfvAccessFinish(obj);
+    }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<ZFCoreArrayPOD<T_Type> >);
     }
 };
 /** @endcond */

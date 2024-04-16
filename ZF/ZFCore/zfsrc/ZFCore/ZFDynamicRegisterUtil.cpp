@@ -271,7 +271,7 @@ void ZFDynamic::exportTag(
     ZFCoreArrayPOD<const ZFTypeInfo *> allTypeId;
     ZFTypeInfoGetAllT(allTypeId);
 
-    ZFCoreArrayPOD<const zfchar *> allNamespace;
+    ZFCoreArray<zfstring> allNamespace;
     ZFNamespaceGetAllT(allNamespace);
 
     zfstlmap<zfstring, zfbool> tags;

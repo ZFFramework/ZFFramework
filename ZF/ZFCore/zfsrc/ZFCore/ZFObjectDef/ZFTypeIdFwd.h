@@ -79,6 +79,11 @@ public:
     virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const zfpurevirtual;
     /** @brief see #genericValueStore */
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const zfpurevirtual;
+
+    /**
+     * @brief create generic array type
+     */
+    virtual ZFCoreArrayBase *genericArrayNew(void) const zfpurevirtual;
 };
 
 // ============================================================
@@ -535,6 +540,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
             Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
         } \
+        zfoverride \
+        virtual ZFCoreArrayBase *genericArrayNew(void) const { \
+            return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
+        } \
     }; \
     /** @endcond */
 
@@ -630,6 +639,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
             Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
         } \
+        zfoverride \
+        virtual ZFCoreArrayBase *genericArrayNew(void) const { \
+            return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
+        } \
     }; \
     /** @endcond */
 
@@ -687,6 +700,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfoverride \
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
         } \
+        zfoverride \
+        virtual ZFCoreArrayBase *genericArrayNew(void) const { \
+            return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
+        } \
     }; \
     /** @endcond */
 
@@ -740,6 +757,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const { \
             zfdelete((_ZFP_PropTypeW_##TypeName *)v); \
             Value<_ZFP_PropTypeW_##TypeName>::zfvAccessFinish(obj); \
+        } \
+        zfoverride \
+        virtual ZFCoreArrayBase *genericArrayNew(void) const { \
+            return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
         } \
     }; \
     /** @endcond */ \

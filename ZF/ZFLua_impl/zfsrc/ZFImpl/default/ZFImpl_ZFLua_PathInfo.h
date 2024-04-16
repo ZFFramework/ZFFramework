@@ -59,7 +59,7 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implPathInfoSetup(
 extern ZFLIB_ZFLua_impl zfbool ZFImpl_ZFLua_implPathInfoExist(ZF_IN const zfchar *luaFuncName);
 
 /** @brief return luaFuncName list registered */
-extern ZFLIB_ZFLua_impl const ZFCoreArrayPOD<const zfchar *> &ZFImpl_ZFLua_implPathInfoList(void);
+extern ZFLIB_ZFLua_impl const ZFCoreArray<zfstring> &ZFImpl_ZFLua_implPathInfoList(void);
 
 /** @see #ZFImpl_ZFLua_implPathInfoSetup */
 #define ZFImpl_ZFLua_implPathInfo_DEFINE(luaFunc, luaFuncBody) \

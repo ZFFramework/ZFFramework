@@ -97,26 +97,26 @@ extern ZFLIB_ZFCore zfbool ZFNamespaceSplit(
 /**
  * @brief get all namespace
  */
-extern ZFLIB_ZFCore void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret);
+extern ZFLIB_ZFCore void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);
 /** @brief see #ZFNamespaceGetAllT */
-inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(void) {
-    ZFCoreArrayPOD<const zfchar *> ret;
+inline ZFCoreArray<zfstring> ZFNamespaceGetAll(void) {
+    ZFCoreArray<zfstring> ret;
     ZFNamespaceGetAllT(ret);
     return ret;
 }
 
 /** @brief see #ZFNamespaceGetAllT */
 extern ZFLIB_ZFCore void ZFNamespaceGetAllT(
-        ZF_IN_OUT ZFCoreArray<const zfchar *> &ret
+        ZF_IN_OUT ZFCoreArray<zfstring> &ret
         , ZF_IN const zfchar *parent
         , ZF_IN_OPT zfbool recursive = zffalse
         );
 /** @brief see #ZFNamespaceGetAllT */
-inline ZFCoreArrayPOD<const zfchar *> ZFNamespaceGetAll(
+inline ZFCoreArray<zfstring> ZFNamespaceGetAll(
         ZF_IN const zfchar *parent
         , ZF_IN_OPT zfbool recursive = zffalse
         ) {
-    ZFCoreArrayPOD<const zfchar *> ret;
+    ZFCoreArray<zfstring> ret;
     ZFNamespaceGetAllT(ret, parent, recursive);
     return ret;
 }

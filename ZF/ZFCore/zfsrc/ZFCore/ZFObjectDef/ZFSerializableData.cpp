@@ -273,7 +273,7 @@ ZFObject *ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const
     return zfnull;
 }
 void ZFSerializableData::serializableDataTagGetAllKeyValue(
-        ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+        ZF_IN_OUT ZFCoreArray<zfstring> &allKey
         , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
         ) const {
     _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;

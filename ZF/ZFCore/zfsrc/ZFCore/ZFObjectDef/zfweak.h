@@ -326,6 +326,10 @@ public:
         zfdelete((zfweakT<T_ZFObject> *)v);
         Value<zfweakT<T_ZFObject> >::zfvAccessFinish(obj);
     }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<zfweakT<T_ZFObject> >);
+    }
 };
 /** @endcond */
 

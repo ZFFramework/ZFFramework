@@ -176,7 +176,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
     }
 }
 
-void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret) {
+void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     zfCoreMutexLocker();
     ZFCoreQueuePOD<_ZFP_ZFNamespaceMapType *> toCheck;
     toCheck.add(&_ZFP_ZFNamespaceMap());
@@ -192,7 +192,7 @@ void ZFNamespaceGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret) {
 }
 
 void ZFNamespaceGetAllT(
-        ZF_IN_OUT ZFCoreArray<const zfchar *> &ret
+        ZF_IN_OUT ZFCoreArray<zfstring> &ret
         , ZF_IN const zfchar *parent
         , ZF_IN_OPT zfbool recursive /* = zffalse */
         ) {

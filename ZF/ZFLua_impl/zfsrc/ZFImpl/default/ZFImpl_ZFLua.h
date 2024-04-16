@@ -125,7 +125,7 @@ extern ZFLIB_ZFLua_impl void _ZFP_ZFImpl_ZFLua_implSetupCallbackUnregister(
 /** @brief see #ZFImpl_ZFLua_luaStateOpen */
 extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupScope(
         ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList
-        , ZF_IN ZFCoreArray<const zfchar *> const &scopeNameList
+        , ZF_IN ZFCoreArray<zfstring> const &scopeNameList
         );
 /**
  * @brief setup metatable for zfauto in lua env

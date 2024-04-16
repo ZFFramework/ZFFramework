@@ -118,6 +118,10 @@ public:
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
         zfdelete((zfuint *)v);
     }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<zfuint>);
+    }
 };
 
 // ============================================================

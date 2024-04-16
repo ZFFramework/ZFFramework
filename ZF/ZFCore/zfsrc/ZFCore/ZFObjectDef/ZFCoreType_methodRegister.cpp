@@ -365,15 +365,15 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFNamespaceSplit
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFNamespaceGetAllT
-        , ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, ret)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArrayPOD<const zfchar *>, ZFNamespaceGetAll)
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<zfstring>, ZFNamespaceGetAll)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFNamespaceGetAllT
-        , ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, ret)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, ret)
         , ZFMP_IN(const zfchar *, parent)
         , ZFMP_IN_OPT(zfbool, recursive, zffalse)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const zfchar *>, ZFNamespaceGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<zfstring>, ZFNamespaceGetAll
         , ZFMP_IN(const zfchar *, parent)
         , ZFMP_IN_OPT(zfbool, recursive, zffalse)
         )

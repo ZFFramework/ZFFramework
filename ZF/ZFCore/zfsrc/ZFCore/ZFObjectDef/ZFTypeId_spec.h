@@ -63,6 +63,10 @@ public:
     zfoverride
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
     }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnull;
+    }
 };
 /** @endcond */
 
@@ -208,6 +212,10 @@ public:
         zfdelete((T_Type *)v);
         Value<T_Type>::zfvAccessFinish(obj);
     }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<T_Type>);
+    }
 };
 /** @endcond */
 
@@ -293,6 +301,10 @@ public:
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
         zfdelete((zfauto *)v);
         Value<zfauto>::zfvAccessFinish(obj);
+    }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<zfauto>);
     }
 };
 /** @endcond */
@@ -381,6 +393,10 @@ public:
         zfdelete((zfautoT<T_ZFObject> *)v);
         Value<zfautoT<T_ZFObject> >::zfvAccessFinish(obj);
     }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<zfautoT<T_ZFObject> >);
+    }
 };
 /** @endcond */
 
@@ -468,6 +484,10 @@ public:
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
         zfdelete((ZFAny *)v);
         Value<ZFAny>::zfvAccessFinish(obj);
+    }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<ZFAny>);
     }
 };
 /** @endcond */
@@ -565,6 +585,10 @@ public:
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
         zfdelete((T_TypePtr *)v);
         Value<T_TypePtr>::zfvAccessFinish(obj);
+    }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<T_TypePtr>);
     }
 };
 /** @endcond */

@@ -31,10 +31,10 @@ extern ZFLIB_ZFUIKit void ZFObjectIO_image_imageExtAdd(ZF_IN const zfchar *image
 /** @brief see #ZFObjectIO_image_imageExtAdd */
 extern ZFLIB_ZFUIKit void ZFObjectIO_image_imageExtRemove(ZF_IN const zfchar *imageExt);
 /** @brief see #ZFObjectIO_image_imageExtAdd */
-extern ZFLIB_ZFUIKit void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret);
+extern ZFLIB_ZFUIKit void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);
 /** @brief see #ZFObjectIO_image_imageExtAdd */
-inline ZFCoreArrayPOD<const zfchar *> ZFObjectIO_image_imageExtGetAll(void) {
-    ZFCoreArrayPOD<const zfchar *> ret;
+inline ZFCoreArray<zfstring> ZFObjectIO_image_imageExtGetAll(void) {
+    ZFCoreArray<zfstring> ret;
     ZFObjectIO_image_imageExtGetAllT(ret);
     return ret;
 }

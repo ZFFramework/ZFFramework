@@ -287,7 +287,7 @@ ZFObject *ZFCallback::callbackTag(ZF_IN const zfchar *key) const {
     return zfnull;
 }
 void ZFCallback::callbackTagGetAllKeyValue(
-        ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+        ZF_IN_OUT ZFCoreArray<zfstring> &allKey
         , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
         ) const {
     if(d != zfnull) {
@@ -484,7 +484,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, ZFObject *, callbackTag
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, callbackTagGetAllKeyValue
-        , ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, allKey)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
         , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackTagRemove

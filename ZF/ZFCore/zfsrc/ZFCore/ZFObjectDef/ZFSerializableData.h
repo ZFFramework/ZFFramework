@@ -207,7 +207,7 @@ public:
     }
     /** @brief see #serializableDataTag */
     zffinal void serializableDataTagGetAllKeyValue(
-            ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+            ZF_IN_OUT ZFCoreArray<zfstring> &allKey
             , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
             ) const;
     /**

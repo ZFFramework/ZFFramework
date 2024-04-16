@@ -20,7 +20,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_ZFLua_implPathInfoData) {
 public:
     _ZFP_ZFImpl_ZFLua_PathInfoStateMapType stateMap; // <lua_State *, needUpdate>
     _ZFP_ZFImpl_ZFLua_PathInfoMapType pathInfoMap; // <luaFuncName, luaFuncBody>
-    ZFCoreArrayPOD<const zfchar *> luaFuncNameList;
+    ZFCoreArray<zfstring> luaFuncNameList;
 private:
     ZFListener luaStateOnAttachListener;
     ZFListener luaStateOnDetachListener;
@@ -151,7 +151,7 @@ zfbool ZFImpl_ZFLua_implPathInfoExist(ZF_IN const zfchar *luaFuncName) {
     return d->pathInfoMap.find(luaFuncName) != d->pathInfoMap.end();
 }
 
-const ZFCoreArrayPOD<const zfchar *> &ZFImpl_ZFLua_implPathInfoList(void) {
+const ZFCoreArray<zfstring> &ZFImpl_ZFLua_implPathInfoList(void) {
     return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData)->luaFuncNameList;
 }
 

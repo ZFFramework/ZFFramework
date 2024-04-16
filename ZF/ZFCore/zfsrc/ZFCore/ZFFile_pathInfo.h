@@ -414,12 +414,12 @@ extern ZFLIB_ZFCore void _ZFP_ZFPathInfoUnregister(ZF_IN const zfchar *pathType)
  */
 extern ZFLIB_ZFCore const ZFPathInfoImpl *ZFPathInfoImplForPathType(ZF_IN const zfchar *pathType);
 /** @brief see #ZFPathInfoImplGetAll */
-extern ZFLIB_ZFCore void ZFPathInfoImplGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret);
+extern ZFLIB_ZFCore void ZFPathInfoImplGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret);
 /**
  * @brief get all data registered by #ZFPATHTYPE_FILEIO_REGISTER
  */
-inline ZFCoreArrayPOD<const zfchar *> ZFPathInfoImplGetAll(void) {
-    ZFCoreArrayPOD<const zfchar *> ret;
+inline ZFCoreArray<zfstring> ZFPathInfoImplGetAll(void) {
+    ZFCoreArray<zfstring> ret;
     ZFPathInfoImplGetAllT(ret);
     return ret;
 }

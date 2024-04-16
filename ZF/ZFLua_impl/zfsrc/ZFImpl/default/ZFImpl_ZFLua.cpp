@@ -83,7 +83,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     // global NS
     ZFImpl_ZFLua_implSetupScope(
             ZFCoreArrayPODCreate(lua_State *, L),
-            ZFCoreArrayPODCreate(const zfchar *, ZF_NAMESPACE_GLOBAL_NAME, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
+            ZFCoreArrayCreate(zfstring, ZF_NAMESPACE_GLOBAL_NAME, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
         );
 
     // each impl setup callback
@@ -155,7 +155,7 @@ static void _ZFP_ZFImpl_ZFLua_implSetupScope(
 }
 void ZFImpl_ZFLua_implSetupScope(
         ZF_IN_OUT ZFCoreArray<lua_State *> const &luaStateList
-        , ZF_IN ZFCoreArray<const zfchar *> const &scopeNameList
+        , ZF_IN ZFCoreArray<zfstring> const &scopeNameList
         ) {
     zfstring code;
     if(scopeNameList.count() >= 100) {

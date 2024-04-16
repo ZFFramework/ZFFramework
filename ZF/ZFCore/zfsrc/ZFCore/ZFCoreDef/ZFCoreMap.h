@@ -140,12 +140,12 @@ public:
     }
 
     /** @brief see #allKey */
-    zffinal void allKeyT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret) const;
+    zffinal void allKeyT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) const;
     /**
      * @brief return a copy of all keys
      */
-    inline ZFCoreArrayPOD<const zfchar *> allKey(void) const {
-        ZFCoreArrayPOD<const zfchar *> ret;
+    inline ZFCoreArray<zfstring> allKey(void) const {
+        ZFCoreArray<zfstring> ret;
         this->allKeyT(ret);
         return ret;
     }

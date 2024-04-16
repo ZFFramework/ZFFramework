@@ -468,7 +468,7 @@ const ZFPathInfoImpl *ZFPathInfoImplForPathType(ZF_IN const zfchar *pathType) {
         return &(it->second);
     }
 }
-void ZFPathInfoImplGetAllT(ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &ret) {
+void ZFPathInfoImplGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     zfstlmap<zfstring, ZFPathInfoImpl> &m = _ZFP_ZFPathInfoImplMap();
     for(zfstlmap<zfstring, ZFPathInfoImpl>::iterator it = m.begin(); it != m.end(); ++it) {
         ret.add(it->first);

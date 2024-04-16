@@ -292,7 +292,7 @@ private:
             ZF_IN const ValueHolder &v
             , ZF_IN lua_State *L
             , ZF_IN int luaFuncIndex
-            , ZF_IN const ZFCoreArrayPOD<const zfchar *> &luaLocalFuncNameList
+            , ZF_IN const ZFCoreArray<zfstring> &luaLocalFuncNameList
             , ZF_IN int luaLocalFuncIndex
             ) {
         switch(v.valueType) {
@@ -488,7 +488,7 @@ public:
             ZFImpl_ZFLua_luaPush(L, zfargsHolder);
 
             // restore local path info, stack: [func, zfargs, localFunc0, localFunc1, ...]
-            const ZFCoreArrayPOD<const zfchar *> &luaLocalFuncNameList = ZFImpl_ZFLua_implPathInfoList();
+            const ZFCoreArray<zfstring> &luaLocalFuncNameList = ZFImpl_ZFLua_implPathInfoList();
             int luaLocalFuncIndex = lua_gettop(L) + 1; {
                 zfstring code;
                 ZFImpl_ZFLua_implPathInfoSetup(L, code, &(this->pathInfo), zffalse);

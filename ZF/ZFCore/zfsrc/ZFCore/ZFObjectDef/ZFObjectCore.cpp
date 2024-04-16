@@ -314,7 +314,7 @@ ZFObject *ZFObject::objectTag(ZF_IN const zfchar *key) {
     return zfnull;
 }
 void ZFObject::objectTagGetAllKeyValue(
-        ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+        ZF_IN_OUT ZFCoreArray<zfstring> &allKey
         , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
         ) {
     zfCoreMutexLocker();
@@ -724,7 +724,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFObject *, objectTag
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTagGetAllKeyValue
-        , ZFMP_IN_OUT(ZFCoreArray<const zfchar *> &, allKey)
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
         , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectTagRemove

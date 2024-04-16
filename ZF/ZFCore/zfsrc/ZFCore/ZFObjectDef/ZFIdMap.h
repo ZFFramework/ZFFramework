@@ -44,7 +44,7 @@ extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName);
  */
 extern ZFLIB_ZFCore void ZFIdMapGetAll(
         ZF_IN_OUT ZFCoreArrayPOD<zfidentity> &idValues
-        , ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &idNames
+        , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
         );
 
 /**

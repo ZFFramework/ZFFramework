@@ -446,7 +446,7 @@ extern ZFLIB_ZFCore zfauto ZFStyleGet(ZF_IN const zfchar *styleKey);
  * @brief get all styles, for debug use only, see #ZFStyleSet
  */
 extern ZFLIB_ZFCore void ZFStyleGetAll(
-        ZF_IN_OUT ZFCoreArrayPOD<const zfchar *> &styleKey
+        ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
         , ZF_IN_OUT ZFCoreArrayPOD<ZFStyleable *> &styleValue
         );
 /**

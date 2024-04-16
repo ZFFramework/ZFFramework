@@ -192,7 +192,7 @@ ZFCorePointerBase *ZFCoreMap::get(ZF_IN const zfchar *key) const {
     return it->second;
 }
 
-void ZFCoreMap::allKeyT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret) const {
+void ZFCoreMap::allKeyT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) const {
     ret.capacity(ret.count() + this->count());
     for(_ZFP_ZFCoreMapPrivate::MapType::const_iterator it = d->m.begin();
             it != d->m.end();

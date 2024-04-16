@@ -218,7 +218,7 @@ public:
     }
     /** @brief see #callbackTag */
     zffinal void callbackTagGetAllKeyValue(
-            ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+            ZF_IN_OUT ZFCoreArray<zfstring> &allKey
             , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
             ) const;
     /**

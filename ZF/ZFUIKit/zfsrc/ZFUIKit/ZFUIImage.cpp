@@ -31,7 +31,7 @@ void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfchar *name) {
     m.erase(name);
 }
 
-void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<const zfchar *> &ret) {
+void ZFUIImageSerializeTypeGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {
     zfCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
     for(_ZFP_ZFUIImageSerializeDataMapType::iterator it = m.begin(); it != m.end(); ++it) {

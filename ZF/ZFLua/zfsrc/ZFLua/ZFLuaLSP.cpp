@@ -162,7 +162,7 @@ static void _ZFP_ZFLuaLSPGenFile_allNS(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
-    ZFCoreArrayPOD<const zfchar *> allNS = ZFNamespaceGetAll();
+    ZFCoreArray<zfstring> allNS = ZFNamespaceGetAll();
     zfstlmap<zfstring, zfbool> NSMap;
     for(zfindex i = 0; i < allNS.count(); ++i) {
         _ZFP_ZFLuaLSPGenFile_NS(output, luaKeywords, NSMap, allNS[i]);

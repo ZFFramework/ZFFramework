@@ -446,7 +446,7 @@ public:
      * @brief get all key value
      */
     zffinal void objectTagGetAllKeyValue(
-            ZF_IN_OUT ZFCoreArray<const zfchar *> &allKey
+            ZF_IN_OUT ZFCoreArray<zfstring> &allKey
             , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
             );
     /**

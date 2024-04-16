@@ -43,7 +43,7 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
 ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
         ZFCoreArrayPOD<lua_State *> luaStateList;
         luaStateList.add(L);
-        ZFCoreArrayPOD<const zfchar *> scopeNameList;
+        ZFCoreArray<zfstring> scopeNameList;
 
         ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
         zfstlmap<zfstring, zfbool> methodNamespaceList;
@@ -83,7 +83,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
                 stateList.add(L);
                 ZFImpl_ZFLua_implSetupScope(
                     stateList,
-                    ZFCoreArrayPODCreate(const zfchar *, data.changedMethod->methodNamespace()));
+                    ZFCoreArrayCreate(zfstring, data.changedMethod->methodNamespace()));
 
                 _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
                     stateList,
