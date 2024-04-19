@@ -175,7 +175,8 @@ void ZFContainer::objectOnDeallocPrepare(void) {
 }
 
 zfidentity ZFContainer::objectHash(void) {
-    ZFObject *first = zfnull; {
+    ZFObject *first = zfnull;
+    {
         zfiterator it = this->iter();
         if(this->iterValid(it)) {
             first = this->iterValue(it);

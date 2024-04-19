@@ -475,7 +475,8 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
 }
 void ZFImpl_sys_SDL_View::dispatchWheelEvent(ZF_IN SDL_Event *sdlEvent) {
     zfCoreAssert(sdlEvent->type == SDL_MOUSEWHEEL);
-    ZFUIView *target = zfnull; {
+    ZFUIView *target = zfnull;
+    {
         ZFImpl_sys_SDL_View *sdlView = this->mouseTestGlobal(sdlEvent->wheel.mouseX, sdlEvent->wheel.mouseY);
         while(sdlView != zfnull && sdlView->ownerZFUIView == zfnull) {
             sdlView = sdlView->parent;

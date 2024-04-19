@@ -953,7 +953,8 @@ public:
                 this->cellSizeList.add(cellSizeHint);
             }
         }
-        zffloat totalSize = 0; {
+        zffloat totalSize = 0;
+        {
             const zffloat *buf = this->cellSizeList.arrayBuf();
             for(zfindex i = 0, iEnd = this->cellSizeList.count(); i < iEnd; ++i) {
                 totalSize += *buf;

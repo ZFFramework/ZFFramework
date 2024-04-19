@@ -122,7 +122,8 @@ public:
 
         // if(owner != zfnull)
         {
-            _ZFP_ZFObserverGroupTaskData **head = zfnull; {
+            _ZFP_ZFObserverGroupTaskData **head = zfnull;
+            {
                 _TaskMap::iterator it = this->ownerMap.find(owner);
                 if(it == this->ownerMap.end()) {
                     head = &(this->ownerMap[owner]);
@@ -141,7 +142,8 @@ public:
         }
 
         if(target != zfnull) {
-            _ZFP_ZFObserverGroupTaskData **head = zfnull; {
+            _ZFP_ZFObserverGroupTaskData **head = zfnull;
+            {
                 _TaskMap::iterator it = this->targetMap.find(target);
                 if(it == this->targetMap.end()) {
                     head = &(this->targetMap[target]);

@@ -1501,9 +1501,8 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
             this->layoutOnMeasure(d->measureResult->measuredSize, sizeHint, sizeParam);
         }
 
-        this->layoutOnMeasureFinish(d->measureResult->measuredSize, sizeHint, sizeParam); {
-            this->observerNotify(ZFUIView::EventViewLayoutOnMeasureFinish(), d->measureResult);
-        }
+        this->layoutOnMeasureFinish(d->measureResult->measuredSize, sizeHint, sizeParam);
+        this->observerNotify(ZFUIView::EventViewLayoutOnMeasureFinish(), d->measureResult);
 
         if(d->measureResult->measuredSize.width < 0) {
             if(this->viewSizePrefer().width >= 0) {
@@ -2022,22 +2021,20 @@ void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
     }
     else if(eventClass->classIsTypeOf(ZFUIKeyEvent::ClassData())) {
         ZFUIKeyEvent *eventTmp = ZFCastZFObjectUnchecked(ZFUIKeyEvent *, event);
-        this->viewEventOnKeyEvent(eventTmp); {
-            ZFUIView *view = this->viewParent();
-            while(view != zfnull && !event->eventResolved()) {
-                view->viewEventOnKeyEvent(eventTmp);
-                view = view->viewParent();
-            }
+        this->viewEventOnKeyEvent(eventTmp);
+        ZFUIView *view = this->viewParent();
+        while(view != zfnull && !event->eventResolved()) {
+            view->viewEventOnKeyEvent(eventTmp);
+            view = view->viewParent();
         }
     }
     else if(eventClass->classIsTypeOf(ZFUIWheelEvent::ClassData())) {
         ZFUIWheelEvent *eventTmp = ZFCastZFObjectUnchecked(ZFUIWheelEvent *, event);
-        this->viewEventOnWheelEvent(eventTmp); {
-            ZFUIView *view = this->viewParent();
-            while(view != zfnull && !event->eventResolved()) {
-                view->viewEventOnWheelEvent(eventTmp);
-                view = view->viewParent();
-            }
+        this->viewEventOnWheelEvent(eventTmp);
+        ZFUIView *view = this->viewParent();
+        while(view != zfnull && !event->eventResolved()) {
+            view->viewEventOnWheelEvent(eventTmp);
+            view = view->viewParent();
         }
     }
 }

@@ -489,7 +489,8 @@ public:
 
             // restore local path info, stack: [func, zfargs, localFunc0, localFunc1, ...]
             const ZFCoreArray<zfstring> &luaLocalFuncNameList = ZFImpl_ZFLua_implPathInfoList();
-            int luaLocalFuncIndex = lua_gettop(L) + 1; {
+            int luaLocalFuncIndex = lua_gettop(L) + 1;
+            {
                 zfstring code;
                 ZFImpl_ZFLua_implPathInfoSetup(L, code, &(this->pathInfo), zffalse);
                 int error = luaL_loadbuffer(L, code.cString(), code.length(), zfnull);

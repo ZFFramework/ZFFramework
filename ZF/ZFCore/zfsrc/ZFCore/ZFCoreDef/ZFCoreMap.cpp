@@ -95,12 +95,14 @@ void ZFCoreMap::objectInfoOfContentT(
                 ret += token.tokenSeparator;
             }
 
-            ret += token.tokenPairLeft; {
+            ret += token.tokenPairLeft;
+            {
                 ret += token.tokenKeyLeft;
                 ret += this->iterKey(it);
                 ret += token.tokenKeyRight;
             }
-            ret += token.tokenPairSeparator; {
+            ret += token.tokenPairSeparator;
+            {
                 ret += token.tokenValueLeft;
                 ZFCorePointerBase *value = this->iterValue(it);
                 if(value == zfnull) {

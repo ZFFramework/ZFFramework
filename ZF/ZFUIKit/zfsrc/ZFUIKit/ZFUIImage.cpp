@@ -162,7 +162,8 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
             require, ZFSerializableKeyword_ZFUIImage_imageType, zfstring, typeName, {
                 return zffalse;
             });
-    _ZFP_ZFUIImageSerializeFromCallback fromCallback = zfnull; {
+    _ZFP_ZFUIImageSerializeFromCallback fromCallback = zfnull;
+    {
         zfCoreMutexLocker();
         _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
         _ZFP_ZFUIImageSerializeDataMapType::iterator it = m.find(typeName);
