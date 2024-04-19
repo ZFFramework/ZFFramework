@@ -166,9 +166,9 @@ typedef zfauto (*ZFObjectCreator)(void);
 /**
  * @brief true if Type is #ZFObject type
  */
-#define zftIsZFObject(Type) (zftTypeIsSame<Type, ZFObject>::TypeIsSame || ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, Type))
+#define zftIsZFObject(Type) (zftIsSame<Type, ZFObject>::Value || ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, Type))
 ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, void (*F)(void))
-/* ZFTAG_TRICKS: zftTypeIsSame<...> is required to prevent incomplete type ZFObject when used in builtin types such as zfauto */
+/* ZFTAG_TRICKS: zftIsSame<...> is required to prevent incomplete type ZFObject when used in builtin types such as zfauto */
 
 /**
  * @brief true if Type can cast to #ZFObject
@@ -231,7 +231,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(
 
 template<typename T_Type>
 zfclassNotPOD _ZFP_zftToStringFallback<T_Type
-, typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrNoRef)>::EnableIf
+, typename zftEnableIf<zftIsZFObject(typename zftTraits<T_Type>::TrNoRef)>::Value
 > {
 public:
     static inline void a(

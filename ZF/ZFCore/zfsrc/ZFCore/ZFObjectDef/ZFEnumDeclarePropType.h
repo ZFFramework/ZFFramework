@@ -60,10 +60,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         template<typename T_Access = EnumName##Enum \
             , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && zftTypeIsSame< \
+                && zftIsSame< \
                         typename zftTraits<T_Access>::TrNoRef, \
                         EnumName##Enum \
-                    >::TypeIsSame != 1) \
+                    >::Value != 1) \
                 ? 1 : 0) \
             , typename T_Fix = void \
             > \
@@ -236,10 +236,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         template<typename T_Access = EnumFlagsName \
             , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
-                && zftTypeIsSame< \
+                && zftIsSame< \
                         typename zftTraits<T_Access>::TrNoRef, \
                         EnumFlagsName \
-                    >::TypeIsSame != 1) \
+                    >::Value != 1) \
                 ? 1 : 0) \
             , typename T_Fix = void \
             > \

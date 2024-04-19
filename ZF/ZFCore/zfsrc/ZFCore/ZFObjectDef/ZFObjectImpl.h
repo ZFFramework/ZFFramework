@@ -17,7 +17,7 @@
 #include "ZFPropertySerializable.h"
 #include "ZFCallbackSerializable.h"
 #include "ZFListenerDeclare.h"
-#include "ZFObjectSmartPointer.h"
+#include "ZFObjectAutoPtr.h"
 #include "ZFIOCallback.h"
 #include "ZFSerializable.h"
 #include "ZFFilterForZFClass.h"

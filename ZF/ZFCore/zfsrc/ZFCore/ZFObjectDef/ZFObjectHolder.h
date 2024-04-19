@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFObjectHolder_h_
 #define _ZFI_ZFObjectHolder_h_
 
-#include "ZFObjectSmartPointer.h"
+#include "ZFObjectAutoPtr.h"
 #include "ZFTypeId.h"
 #include "ZFPropertyDeclare.h"
 

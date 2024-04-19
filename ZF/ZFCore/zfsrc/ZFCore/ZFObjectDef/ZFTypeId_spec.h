@@ -106,10 +106,10 @@ public:
     }
     template<typename T_Access = T_Type
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     T_Type
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >
@@ -255,10 +255,10 @@ public:
     }
     template<typename T_Access = zfauto
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     zfauto
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >
@@ -345,10 +345,10 @@ public:
     }
     template<typename T_Access = zfautoT<T_ZFObject>
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     zfautoT<T_ZFObject>
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >
@@ -436,10 +436,10 @@ public:
     }
     template<typename T_Access = ZFAny
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     ZFAny
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >
@@ -535,10 +535,10 @@ public:
     }
     template<typename T_Access = T_Type *
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     T_Type_
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >

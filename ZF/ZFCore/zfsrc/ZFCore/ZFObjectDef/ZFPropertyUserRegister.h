@@ -7,7 +7,7 @@
 #define _ZFI_ZFPropertyUserRegister_h_
 
 #include "ZFMethodUserRegister.h"
-#include "ZFObjectSmartPointer.h"
+#include "ZFObjectAutoPtr.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

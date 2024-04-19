@@ -61,7 +61,7 @@ inline T_ZFObjectTo _ZFP_ObjCastExplicit(T_ZFObjectFrom const &obj) {
 
 #define _ZFP_ObjCastType(TrType) \
     (zftIsZFObject(TrType) \
-        ? (zftTypeIsTypeOf<TrType, ZFObject>::TypeIsTypeOf \
+        ? (zftIsTypeOf<TrType, ZFObject>::Value \
                 ? _ZFP_ObjCastTypeZFObject \
                 : _ZFP_ObjCastTypeZFInterface \
             ) \
@@ -140,7 +140,7 @@ inline T_To _ZFP_ObjCast<T_To>::c(T_From const &obj) {
     typedef typename zftTraits<T_To>::TrType T_ToTmp;
     typedef typename zftTraits<T_From>::TrType T_FromTmp;
     return _ZFP_ObjCastHolder<
-            zftTypeIsTypeOf<typename zftTraits<T_From>::TrType, typename zftTraits<T_To>::TrType>::TypeIsTypeOf,
+            zftIsTypeOf<typename zftTraits<T_From>::TrType, typename zftTraits<T_To>::TrType>::Value,
             T_To, T_From,
             _ZFP_ObjCastType(T_ToTmp), _ZFP_ObjCastType(T_FromTmp)
         >::c(obj);
@@ -223,7 +223,7 @@ inline T_To _ZFP_ObjCastUnchecked<T_To>::c(T_From const &obj) {
     typedef typename zftTraits<T_To>::TrType T_ToTmp;
     typedef typename zftTraits<T_From>::TrType T_FromTmp;
     return _ZFP_ObjCastUncheckedHolder<
-            zftTypeIsTypeOf<typename zftTraits<T_From>::TrType, typename zftTraits<T_To>::TrType>::TypeIsTypeOf,
+            zftIsTypeOf<typename zftTraits<T_From>::TrType, typename zftTraits<T_To>::TrType>::Value,
             T_To, T_From,
             _ZFP_ObjCastType(T_ToTmp), _ZFP_ObjCastType(T_FromTmp)
         >::c(obj);

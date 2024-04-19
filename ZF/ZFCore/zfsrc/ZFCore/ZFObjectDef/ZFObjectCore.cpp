@@ -1,4 +1,4 @@
-#include "ZFObjectSmartPointer.h"
+#include "ZFObjectAutoPtr.h"
 #include "ZFObjectImpl.h"
 #include "zfsynchronize.h"
 #include "ZFDynamicInvoker.h"

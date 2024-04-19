@@ -96,8 +96,8 @@ inline zfidentity ZFObjectHash(ZF_IN ZFObject *obj) {
 template<typename T0, typename T1>
 zfclassNotPOD ZFComparerDefaultHolder<T0, T1
     , void, void
-    , typename zftEnableIf<zftIsZFObject(typename zftTraits<T0>::TrType)>::EnableIf
-    , typename zftEnableIf<zftIsZFObject(typename zftTraits<T1>::TrType)>::EnableIf
+    , typename zftEnableIf<zftIsZFObject(typename zftTraits<T0>::TrType)>::Value
+    , typename zftEnableIf<zftIsZFObject(typename zftTraits<T1>::TrType)>::Value
     > {
 public:
     static ZFCompareResult comparer(

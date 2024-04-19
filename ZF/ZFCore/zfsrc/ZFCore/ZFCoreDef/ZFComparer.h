@@ -70,8 +70,8 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(
     /** @cond ZFPrivateDoc */ \
     template<typename T0, typename T1> \
     zfclassNotPOD ZFComparerDefaultHolder<T0, T1 \
-        , typename zftEnableIf<zftTypeIsTypeOf<T0, T_Comparable0>::TypeIsTypeOf>::EnableIf \
-        , typename zftEnableIf<zftTypeIsTypeOf<T1, T_Comparable1>::TypeIsTypeOf>::EnableIf \
+        , typename zftEnableIf<zftIsTypeOf<T0, T_Comparable0>::Value>::Value \
+        , typename zftEnableIf<zftIsTypeOf<T1, T_Comparable1>::Value>::Value \
         > \
     { \
     public: \

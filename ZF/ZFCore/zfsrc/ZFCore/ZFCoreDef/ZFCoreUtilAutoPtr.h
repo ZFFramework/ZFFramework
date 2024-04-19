@@ -1,10 +1,10 @@
 /**
- * @file ZFCoreUtilSmartDelete.h
+ * @file ZFCoreUtilAutoPtr.h
  * @brief utilities for ZFFramework
  */
 
-#ifndef _ZFI_ZFCoreUtilSmartDelete_h_
-#define _ZFI_ZFCoreUtilSmartDelete_h_
+#ifndef _ZFI_ZFCoreUtilAutoPtr_h_
+#define _ZFI_ZFCoreUtilAutoPtr_h_
 
 #include "ZFCoreTypeDef.h"
 
@@ -130,5 +130,5 @@ void _ZFP_zfblockedDeleteSetup(
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #ifndef _ZFI_ZFCoreUtilSmartDelete_h_
+#endif // #ifndef _ZFI_ZFCoreUtilAutoPtr_h_
 

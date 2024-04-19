@@ -558,10 +558,10 @@ public:
     }
     template<typename T_Access = ZFCoreArray<T_Type>
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     ZFCoreArray<T_Type>
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >
@@ -657,10 +657,10 @@ public:
     }
     template<typename T_Access = ZFCoreArrayPOD<T_Type>
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     ZFCoreArray<T_Type>
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >

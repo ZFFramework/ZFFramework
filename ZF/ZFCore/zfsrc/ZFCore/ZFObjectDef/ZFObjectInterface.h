@@ -130,7 +130,7 @@ public:
     , Interface::ClassData(), &zfself::_ZFP_ZFInterfaceCastCallback_##Interface
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_CAST_CALLBACK(Interface) \
     static ZFInterface *_ZFP_ZFInterfaceCastCallback_##Interface(ZF_IN ZFObject * const &obj) { \
-        return _ZFP_ZFInterfaceCastWrapper<zfself, Interface, (zftTypeIsTypeOf<zfself, ZFObject>::TypeIsTypeOf ? 0 : 1)>::_ZFP_cast(obj); \
+        return _ZFP_ZFInterfaceCastWrapper<zfself, Interface, (zftIsTypeOf<zfself, ZFObject>::Value ? 0 : 1)>::_ZFP_cast(obj); \
     }
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_INTERFACE_ON_INIT(Interface) \
     Interface::_ZFP_ObjI_onInit();

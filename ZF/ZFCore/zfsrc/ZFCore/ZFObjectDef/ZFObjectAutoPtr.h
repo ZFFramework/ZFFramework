@@ -1,10 +1,10 @@
 /**
- * @file ZFObjectSmartPointer.h
+ * @file ZFObjectAutoPtr.h
  * @brief smart pointer for ZFObject
  */
 
-#ifndef _ZFI_ZFObjectSmartPointer_h_
-#define _ZFI_ZFObjectSmartPointer_h_
+#ifndef _ZFI_ZFObjectAutoPtr_h_
+#define _ZFI_ZFObjectAutoPtr_h_
 
 #include "ZFObjectRetain.h"
 #include "zfauto.h"
@@ -201,5 +201,5 @@ private:
 
 ZF_NAMESPACE_GLOBAL_END
 
-#endif // #ifndef _ZFI_ZFObjectSmartPointer_h_
+#endif // #ifndef _ZFI_ZFObjectAutoPtr_h_
 

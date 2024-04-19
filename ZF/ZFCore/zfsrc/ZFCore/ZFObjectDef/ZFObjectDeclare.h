@@ -24,7 +24,7 @@ public:
  * @brief class ref to proper super type, see #ZFObject for more info
  */
 #define zfsuperI(T_SuperType) \
-    _ZFP_zfsuperI<zfsuper, T_SuperType, zftTypeIsTypeOf<zfsuper, T_SuperType>::TypeIsTypeOf>::SuperType
+    _ZFP_zfsuperI<zfsuper, T_SuperType, zftIsTypeOf<zfsuper, T_SuperType>::Value>::SuperType
 
 // ============================================================
 #define _ZFP_ZFOBJECT_DECLARE_PROTECTED_CONSTRUCTOR(ChildClass, SuperClass) \

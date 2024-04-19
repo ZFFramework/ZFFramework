@@ -276,10 +276,10 @@ public:
     }
     template<typename T_Access = zfweakT<T_ZFObject>
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftTypeIsSame<
+            && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
                     zfweakT<T_ZFObject>
-                >::TypeIsSame != 1)
+                >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
         >

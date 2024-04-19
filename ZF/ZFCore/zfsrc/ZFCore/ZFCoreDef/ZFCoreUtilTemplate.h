@@ -391,33 +391,33 @@ template<>
 zfclassNotPOD zftEnableIf<1> {
 public:
     /** @brief std::enable_if wrapper */
-    typedef void EnableIf;
+    typedef void Value;
 };
 
 // ============================================================
 /** @brief std::is_same wrapper */
 template<typename T0, typename T1>
-zfclassNotPOD zftTypeIsSame {
+zfclassNotPOD zftIsSame {
 public:
     enum {
         /** @brief std::is_same wrapper */
-        TypeIsSame = 0
+        Value = 0
     };
 };
 /** @brief std::is_same wrapper */
 template<typename T>
-zfclassNotPOD zftTypeIsSame<T, T> {
+zfclassNotPOD zftIsSame<T, T> {
 public:
     enum {
         /** @brief std::is_same wrapper */
-        TypeIsSame = 1
+        Value = 1
     };
 };
 
 // ============================================================
 /** @brief std::is_class wrapper */
 template<typename T>
-zfclassNotPOD zftTypeIsClass {
+zfclassNotPOD zftIsClass {
 private:
     template<typename U>
     static char _test(int U::*);
@@ -426,15 +426,15 @@ private:
 public:
     enum {
         /** @brief std::is_class wrapper */
-        TypeIsClass = ((sizeof(_test<T>(0)) == sizeof(char)) ? 1 : 0)
+        Value = ((sizeof(_test<T>(0)) == sizeof(char)) ? 1 : 0)
     };
 };
 
 // ============================================================
 /** @brief std::is_base_of wrapper */
 template<typename TChild, typename TBase,
-    bool _IsClass = (zftTypeIsClass<TChild>::TypeIsClass && zftTypeIsClass<TBase>::TypeIsClass)>
-zfclassNotPOD zftTypeIsTypeOf {
+    bool _IsClass = (zftIsClass<TChild>::Value && zftIsClass<TBase>::Value)>
+zfclassNotPOD zftIsTypeOf {
 private:
     template<typename T_Dummy>
     static char _test(TChild const &, T_Dummy);
@@ -447,25 +447,25 @@ private:
 public:
     enum {
         /** @brief std::is_base_of wrapper */
-        TypeIsTypeOf = ((sizeof(_test(_Conv(), 0)) == sizeof(char)) ? 1 : 0)
+        Value = ((sizeof(_test(_Conv(), 0)) == sizeof(char)) ? 1 : 0)
     };
 };
 /** @brief std::is_base_of wrapper */
 template<typename TChild, typename TBase>
-zfclassNotPOD zftTypeIsTypeOf<TChild, TBase, false> {
+zfclassNotPOD zftIsTypeOf<TChild, TBase, false> {
 public:
     enum {
         /** @brief std::is_base_of wrapper */
-        TypeIsTypeOf = zftTypeIsSame<TChild, TBase>::TypeIsSame
+        Value = zftIsSame<TChild, TBase>::Value
     };
 };
 /** @brief std::is_base_of wrapper */
 template<typename T>
-zfclassNotPOD zftTypeIsTypeOf<T, T, true> {
+zfclassNotPOD zftIsTypeOf<T, T, true> {
 public:
     enum {
         /** @brief std::is_base_of wrapper */
-        TypeIsTypeOf = 1
+        Value = 1
     };
 };
 

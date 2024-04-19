@@ -391,10 +391,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   #define MyExpand(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
  *       template<typename T_Access = _ZFP_PropTypeW_##TypeName \
  *           , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
- *               && zftTypeIsSame< \
+ *               && zftIsSame< \
  *                       typename zftTraits<T_Access>::TrNoRef, \
  *                       _ZFP_PropTypeW_##TypeName \
- *                   >::TypeIsSame != 1) \
+ *                   >::Value != 1) \
  *               ? 1 : 0) \
  *           , typename T_Fix = void \
  *           > \
