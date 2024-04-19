@@ -176,7 +176,9 @@ public:
      *   auto increase capacity if necessary
      */
     void addFrom(ZF_IN const ZFCoreArray<T_POD> &arr) {
-        this->addFrom(arr.arrayBuf(), arr.count());
+        for(zfindex i = 0, iEnd = arr.count(); i < iEnd; ++i) {
+            this->add(arr[i]);
+        }
     }
     /**
      * @brief push element at tail of the queue,

@@ -954,12 +954,8 @@ public:
             }
         }
         zffloat totalSize = 0;
-        {
-            const zffloat *buf = this->cellSizeList.arrayBuf();
-            for(zfindex i = 0, iEnd = this->cellSizeList.count(); i < iEnd; ++i) {
-                totalSize += *buf;
-                ++buf;
-            }
+        for(zfindex i = 0, iEnd = this->cellSizeList.count(); i < iEnd; ++i) {
+            totalSize += this->cellSizeList[i];
         }
         this->scrollContentFrameOverrideFlag = zftrue;
         switch(this->pimplOwner->listOrientation()) {
@@ -1158,8 +1154,8 @@ public:
 private:
     zffloat scrollListCellDesiredPosCalc(void) {
         zffloat offset = 0;
-        for(const zffloat *p = this->cellSizeList.arrayBuf(), *pEnd = p + this->scrollListCellIndex; p != pEnd; ++p) {
-            offset += *p;
+        for(zfindex i = 0, iEnd = this->cellSizeList.count(); i < iEnd; ++i) {
+            offset += this->cellSizeList[i];
         }
         if(this->scrollListCellToHead) {
             return this->scrollListCellOffset - offset;

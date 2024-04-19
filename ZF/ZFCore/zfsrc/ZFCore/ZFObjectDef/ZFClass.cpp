@@ -295,7 +295,9 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
             cls->d->interfaceCastListCache = (const ZFClass **)zfrealloc(
                 cls->d->interfaceCastListCache != _ZFP_ZFClassDummy ? cls->d->interfaceCastListCache : zfnull
                 , sizeof(const ZFClass *) * (parentInterfaceList.count() + 1));
-            zfmemcpy(cls->d->interfaceCastListCache, parentInterfaceList.arrayBuf(), sizeof(const ZFClass *) * parentInterfaceList.count());
+            for(zfindex i = 0, iEnd = parentInterfaceList.count(); i < iEnd; ++i) {
+                cls->d->interfaceCastListCache[i] = parentInterfaceList[i];
+            }
             cls->d->interfaceCastListCache[parentInterfaceList.count()] = zfnull;
         }
 
@@ -322,7 +324,9 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
             cls->d->interfaceCastCallbackListCache = (_ZFP_ZFObjectToInterfaceCastCallback *)zfrealloc(
                 cls->d->interfaceCastCallbackListCache != _ZFP_ZFClassInterfaceCastCallbackDummy ? cls->d->interfaceCastCallbackListCache : zfnull
                 , sizeof(_ZFP_ZFObjectToInterfaceCastCallback) * (parentInterfaceCastList.count() + 1));
-            zfmemcpy(cls->d->interfaceCastCallbackListCache, parentInterfaceCastList.arrayBuf(), sizeof(_ZFP_ZFObjectToInterfaceCastCallback) * parentInterfaceCastList.count());
+            for(zfindex i = 0, iEnd = parentInterfaceCastList.count(); i < iEnd; ++i) {
+                cls->d->interfaceCastCallbackListCache[i] = parentInterfaceCastList[i];
+            }
             cls->d->interfaceCastCallbackListCache[parentInterfaceCastList.count()] = zfnull;
         }
     }
@@ -636,12 +640,11 @@ void ZFClass::objectInfoOfInheritTreeT(ZF_IN_OUT zfstring &ret) const {
 }
 
 zfbool ZFClass::classIsTypeOf(ZF_IN const ZFClass *cls) const {
-    const ZFClass **p = (cls->classIsInterface() ? d->parentTypeCache.arrayBuf() : d->parentClassCache.arrayBuf());
-    while(*p) {
-        if(*p == cls) {
+    const ZFCoreArrayPOD<const ZFClass *> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
+    for(zfindex i = 0, iEnd = p.count(); i < iEnd; ++i) {
+        if(p[i] == cls) {
             return zftrue;
         }
-        ++p;
     }
     return zffalse;
 }
@@ -1467,13 +1470,17 @@ void ZFClass::_ZFP_ZFClass_interfaceRegister(
         d->interfaceCastListCache = (const ZFClass **)zfrealloc(
             d->interfaceCastListCache != _ZFP_ZFClassDummy ? d->interfaceCastListCache : zfnull
             , sizeof(const ZFClass *) * (clsList.count() + 1));
-        zfmemcpy(d->interfaceCastListCache, clsList.arrayBuf(), sizeof(const ZFClass *) * clsList.count());
+        for(zfindex i = 0, iEnd = clsList.count(); i < iEnd; ++i) {
+            d->interfaceCastListCache[i] = clsList[i];
+        }
         d->interfaceCastListCache[clsList.count()] = zfnull;
 
         d->interfaceCastCallbackListCache = (_ZFP_ZFObjectToInterfaceCastCallback *)zfrealloc(
             d->interfaceCastCallbackListCache != _ZFP_ZFClassInterfaceCastCallbackDummy ? d->interfaceCastCallbackListCache : zfnull
             , sizeof(_ZFP_ZFObjectToInterfaceCastCallback) * (callbackList.count() + 1));
-        zfmemcpy(d->interfaceCastCallbackListCache, callbackList.arrayBuf(), sizeof(_ZFP_ZFObjectToInterfaceCastCallback) * callbackList.count());
+        for(zfindex i = 0, iEnd = callbackList.count(); i < iEnd; ++i) {
+            d->interfaceCastCallbackListCache[i] = callbackList[i];
+        }
         d->interfaceCastCallbackListCache[callbackList.count()] = zfnull;
     }
 }

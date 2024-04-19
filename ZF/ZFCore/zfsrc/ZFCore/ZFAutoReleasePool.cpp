@@ -68,22 +68,13 @@ void ZFAutoReleasePool::poolAdd(ZF_IN ZFObject *obj) {
 }
 void ZFAutoReleasePool::poolDrain() {
     if(!d->array.isEmpty()) {
-        _ZFP_ZFAutoReleasePoolData *tmp = zfnull;
-        zfindex count = 0;
         zfCoreMutexLock();
-        if(!d->array.isEmpty()) {
-            count = d->array.count();
-            tmp = (_ZFP_ZFAutoReleasePoolData *)zfmalloc(sizeof(_ZFP_ZFAutoReleasePoolData) * count);
-            zfmemcpy(tmp, d->array.arrayBuf(), sizeof(_ZFP_ZFAutoReleasePoolData) * count);
-            d->array.removeAll();
-        }
+        ZFCoreArrayPOD<_ZFP_ZFAutoReleasePoolData> tmp;
+        tmp.swap(d->array);
         zfCoreMutexUnlock();
 
-        if(tmp != zfnull) {
-            for(zfindex i = 0; i < count; ++i) {
-                zfRelease(tmp[i].obj);
-            }
-            zffree(tmp);
+        for(zfindex i = 0; i < tmp.count(); ++i) {
+            zfRelease(tmp[i].obj);
         }
     }
 }
