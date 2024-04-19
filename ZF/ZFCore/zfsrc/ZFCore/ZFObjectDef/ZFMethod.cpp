@@ -39,9 +39,9 @@ void ZFMethod::_ZFP_ZFMethod_init(
     this->_ZFP_ZFMethod_methodIsDynamicRegister = methodIsDynamicRegister;
     this->_ZFP_ZFMethod_methodDynamicRegisterUserData = zfRetain(methodDynamicRegisterUserData);
     this->_ZFP_ZFMethod_invoker = invoker;
-    this->_ZFP_ZFMethod_invokerOrg = invoker;
+    this->_ZFP_ZFMethod_invokerOrig = invoker;
     this->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
-    this->_ZFP_ZFMethod_methodGenericInvokerOrg = methodGenericInvoker;
+    this->_ZFP_ZFMethod_methodGenericInvokerOrig = methodGenericInvoker;
     this->_ZFP_ZFMethod_methodType = methodType;
     this->_ZFP_ZFMethod_methodName = methodName;
     this->_ZFP_ZFMethod_returnTypeId = returnTypeId;
@@ -152,9 +152,9 @@ ZFMethod::ZFMethod(void)
 , _ZFP_ZFMethod_methodIsDynamicRegister(zffalse)
 , _ZFP_ZFMethod_methodDynamicRegisterUserData(zfnull)
 , _ZFP_ZFMethod_invoker(zfnull)
-, _ZFP_ZFMethod_invokerOrg(zfnull)
+, _ZFP_ZFMethod_invokerOrig(zfnull)
 , _ZFP_ZFMethod_methodGenericInvoker(zfnull)
-, _ZFP_ZFMethod_methodGenericInvokerOrg(zfnull)
+, _ZFP_ZFMethod_methodGenericInvokerOrig(zfnull)
 , _ZFP_ZFMethod_methodName(zfnull)
 , _ZFP_ZFMethod_returnTypeId(zfnull)
 , _ZFP_ZFMethod_returnTypeName(zfnull)
@@ -450,13 +450,13 @@ void ZFMethod::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericIn
         m->_ZFP_ZFMethod_methodGenericInvoker = methodGenericInvoker;
     }
     else {
-        m->_ZFP_ZFMethod_methodGenericInvoker = m->_ZFP_ZFMethod_methodGenericInvokerOrg;
+        m->_ZFP_ZFMethod_methodGenericInvoker = m->_ZFP_ZFMethod_methodGenericInvokerOrig;
     }
 }
 
 void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const {
     this->_ZFP_ZFMethod_removeConst()->_ZFP_ZFMethod_invoker =
-        ((methodInvoker != zfnull) ? methodInvoker : this->_ZFP_ZFMethod_invokerOrg);
+        ((methodInvoker != zfnull) ? methodInvoker : this->_ZFP_ZFMethod_invokerOrig);
 }
 
 // ============================================================
@@ -941,8 +941,8 @@ const ZFMethod *ZFMethodAlias(
             method->methodIsUserRegister()
             , method->methodIsDynamicRegister()
             , method->methodDynamicRegisterUserData()
-            , method->methodInvokerOrg()
-            , method->methodGenericInvokerOrg()
+            , method->methodInvokerOrig()
+            , method->methodGenericInvokerOrig()
             , method->methodType()
             , method->methodOwnerClass()
             , method->methodPrivilegeType()

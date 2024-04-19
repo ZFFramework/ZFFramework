@@ -454,7 +454,7 @@ public:
      * @brief override original #methodInvoker
      *
      * set null to remove the overrided value,
-     * the original invoker can be accessed by #methodInvokerOrg
+     * the original invoker can be accessed by #methodInvokerOrig
      * @note no safe check for the method's proto type,
      *   you must ensure it's valid and safe to be called
      * @note assume the original method's proto type is:
@@ -476,8 +476,8 @@ public:
     /**
      * @brief see #methodInvoker
      */
-    inline ZFFuncAddrType methodInvokerOrg(void) const {
-        return this->_ZFP_ZFMethod_invokerOrg;
+    inline ZFFuncAddrType methodInvokerOrig(void) const {
+        return this->_ZFP_ZFMethod_invokerOrig;
     }
 
     /**
@@ -570,14 +570,14 @@ public:
     /**
      * @brief see #methodGenericInvoker
      */
-    inline ZFMethodGenericInvoker methodGenericInvokerOrg(void) const {
-        return this->_ZFP_ZFMethod_methodGenericInvokerOrg;
+    inline ZFMethodGenericInvoker methodGenericInvokerOrig(void) const {
+        return this->_ZFP_ZFMethod_methodGenericInvokerOrig;
     }
 
     /**
      * @brief change default impl for #methodGenericInvoker
      *
-     * the original invoker can be accessed by #methodGenericInvokerOrg
+     * the original invoker can be accessed by #methodGenericInvokerOrig
      */
     void methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericInvoker) const;
 
@@ -682,9 +682,9 @@ public:
     zfbool _ZFP_ZFMethod_methodIsDynamicRegister;
     ZFObject *_ZFP_ZFMethod_methodDynamicRegisterUserData;
     ZFFuncAddrType _ZFP_ZFMethod_invoker;
-    ZFFuncAddrType _ZFP_ZFMethod_invokerOrg;
+    ZFFuncAddrType _ZFP_ZFMethod_invokerOrig;
     ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvoker;
-    ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvokerOrg;
+    ZFMethodGenericInvoker _ZFP_ZFMethod_methodGenericInvokerOrig;
     ZFSigName _ZFP_ZFMethod_methodName;
     ZFSigName _ZFP_ZFMethod_returnTypeId;
     ZFSigName _ZFP_ZFMethod_returnTypeName;

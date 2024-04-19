@@ -217,14 +217,14 @@ static void _ZFP_ZFUIViewImpl_sys_iOS_notifyViewFocusChanged(ZF_IN UIView *nativ
 
 static void _ZFP_ZFUIViewImpl_sys_iOS_methodSwizzlePrepare(void) {
     {
-        Method methodOrg =  class_getInstanceMethod([UIResponder class], @selector(becomeFirstResponder));
+        Method methodOrig =  class_getInstanceMethod([UIResponder class], @selector(becomeFirstResponder));
         Method methodNew = class_getInstanceMethod([UIResponder class], @selector(_ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_becomeFirstResponder));
-        method_exchangeImplementations(methodOrg, methodNew);
+        method_exchangeImplementations(methodOrig, methodNew);
     }
     {
-        Method methodOrg =  class_getInstanceMethod([UIResponder class], @selector(resignFirstResponder));
+        Method methodOrig =  class_getInstanceMethod([UIResponder class], @selector(resignFirstResponder));
         Method methodNew = class_getInstanceMethod([UIResponder class], @selector(_ZFP_ZFUIViewImpl_sys_iOS_methodSwizzling_resignFirstResponder));
-        method_exchangeImplementations(methodOrg, methodNew);
+        method_exchangeImplementations(methodOrig, methodNew);
     }
 }
 

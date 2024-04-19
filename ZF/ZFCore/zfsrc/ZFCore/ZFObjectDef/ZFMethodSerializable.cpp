@@ -82,7 +82,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFFuncAddrType, methodInvo
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, methodInvoker
         , ZFMP_IN(ZFFuncAddrType, methodInvoker)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFFuncAddrType, methodInvokerOrg)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFFuncAddrType, methodInvokerOrig)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodGenericInvoker, methodGenericInvoker)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, zfauto, methodInvoke
         , ZFMP_IN_OPT(ZFObject *, ownerObjOrNull, zfnull)
@@ -123,7 +123,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFMethod, zfauto, methodInvokeGeneri
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodGenericInvoker, methodGenericInvokerOrg)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodGenericInvoker, methodGenericInvokerOrig)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, methodGenericInvoker
         , ZFMP_IN(ZFMethodGenericInvoker, methodGenericInvoker)
         )

@@ -140,7 +140,7 @@ void ZFImplementDynamicRegister(
         param
                 .methodDynamicRegisterUserData(methodToImplement->methodDynamicRegisterUserData())
                 .methodOwnerClass(cls)
-                .methodGenericInvoker(methodToImplement->methodGenericInvokerOrg())
+                .methodGenericInvoker(methodToImplement->methodGenericInvokerOrig())
                 .methodType(methodToImplement->methodType())
                 .methodPrivilegeType(methodToImplement->methodPrivilegeType())
                 .methodName(methodToImplement->methodName())
