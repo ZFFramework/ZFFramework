@@ -22,9 +22,10 @@ template<typename T_Comparable0, typename T_Comparable1,
 zfclassNotPOD ZFComparerDefaultHolder {
 public:
     /**
-     * @brief default comparer, compare by value
+     * @brief default comparer
      *
-     * element must support operator = and operator < and operator >
+     * same as #ZFComparerCheckEqual by default,
+     * use #ZFCOMPARER_DEFAULT_DECLARE to implement custom compare logic
      */
     static ZFCompareResult comparer(
             ZF_IN T_Comparable0 const &v0

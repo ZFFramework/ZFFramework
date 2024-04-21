@@ -196,7 +196,7 @@ zfindex _ZFP_zfmSort(
  * @brief sort with custom comparer in range [left, right], holder must support operator []
  */
 template<typename T_Element, typename T_Holder>
-void zfmSort(
+zfbool zfmSort(
         ZF_IN T_Holder &holder
         , ZF_IN zfindex left
         , ZF_IN zfindex right
@@ -204,17 +204,25 @@ void zfmSort(
         ) {
     if(left < right) {
         zfindex mid = _ZFP_zfmSort<T_Element>(holder, left, right, comparer, zftrue);
-        if(mid > 0) {
-            zfmSort<T_Element>(holder, left, mid - 1, comparer);
+        if(mid == zfindexMax()) {
+            return zffalse;
         }
-        zfmSort<T_Element>(holder, mid + 1, right, comparer);
+        if(mid > 0) {
+            if(!zfmSort<T_Element>(holder, left, mid - 1, comparer)) {
+                return zffalse;
+            }
+        }
+        if(!zfmSort<T_Element>(holder, mid + 1, right, comparer)) {
+            return zffalse;
+        }
     }
+    return zftrue;
 }
 /**
  * @brief sort with custom comparer in range [left, right], holder must support operator []
  */
 template<typename T_Element, typename T_Holder>
-void zfmSortReversely(
+zfbool zfmSortReversely(
         ZF_IN T_Holder &holder
         , ZF_IN zfindex left
         , ZF_IN zfindex right
@@ -222,11 +230,19 @@ void zfmSortReversely(
         ) {
     if(left < right) {
         zfindex mid = _ZFP_zfmSort<T_Element>(holder, left, right, comparer, zffalse);
-        if(mid > 0) {
-            zfmSortReversely<T_Element>(holder, left, mid - 1, comparer);
+        if(mid == zfindexMax()) {
+            return zffalse;
         }
-        zfmSortReversely<T_Element>(holder, mid + 1, right, comparer);
+        if(mid > 0) {
+            if(!zfmSortReversely<T_Element>(holder, left, mid - 1, comparer)) {
+                return zffalse;
+            }
+        }
+        if(!zfmSortReversely<T_Element>(holder, mid + 1, right, comparer)) {
+            return zffalse;
+        }
     }
+    return zftrue;
 }
 
 ZF_NAMESPACE_GLOBAL_END
