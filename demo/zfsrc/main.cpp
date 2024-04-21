@@ -55,7 +55,7 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
                     return ZFComparerDefault(v0.protocolName, v1.protocolName);
                 }
             };
-            implDatas.sort(_ZFP_main_ZFProtocolImplInfo_sort::action);
+            implDatas.sort(0, zfindexMax(), _ZFP_main_ZFProtocolImplInfo_sort::action);
 
             zfLogTrim() << "note, these protocol has not been implemented:";
             for(zfindex i = 0; i < implDatas.count(); ++i) {
@@ -105,7 +105,7 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
             return ZFComparerDefault(cls0->classNameFull(), cls1->classNameFull());
         }
     };
-    allTestCase.sort(_ZFP_main_class_sort::action);
+    allTestCase.sort(0, zfindexMax(), _ZFP_main_class_sort::action);
 
     while(!allTestCase.isEmpty()) {
         ZFCoreArrayPOD<const ZFClass *> subModule;

@@ -194,8 +194,15 @@ public:
     /**
      * @brief sort content in range [start, start + count), all of content must be comparable
      */
-    ZFMETHOD_DECLARE_4(void, sort
-            , ZFMP_IN_OPT(zfbool, ascending, zftrue)
+    ZFMETHOD_DECLARE_3(void, sort
+            , ZFMP_IN_OPT(zfindex, start, 0)
+            , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+            , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+            )
+    /**
+     * @brief sort content in range [start, start + count), all of content must be comparable
+     */
+    ZFMETHOD_DECLARE_3(void, sortReversely
             , ZFMP_IN_OPT(zfindex, start, 0)
             , ZFMP_IN_OPT(zfindex, count, zfindexMax())
             , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)

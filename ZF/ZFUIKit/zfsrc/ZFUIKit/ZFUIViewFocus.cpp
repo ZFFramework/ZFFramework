@@ -340,7 +340,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
 
     ZFUIView *ret = zfnull;
     if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Right) && ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Bottom)) { // tab
-        focusDatas.sort(_ZFP_ZFUIViewFocusNextFind_comparer_tab);
+        focusDatas.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_tab);
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatas, zftrue, view);
         if(ret != zfnull) {
             return ret;
@@ -348,7 +348,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
         return _ZFP_ZFUIViewFocusDataFindFirst(focusDatas, zftrue, view);
     }
     if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Left) && ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Top)) { // shift tab
-        focusDatas.sort(_ZFP_ZFUIViewFocusNextFind_comparer_tab);
+        focusDatas.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_tab);
         ret = _ZFP_ZFUIViewFocusDataFindNext(focusDatas, zffalse, view);
         if(ret != zfnull) {
             return ret;
@@ -360,10 +360,10 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
     ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> focusDatasY;
     focusDatasY.copyFrom(focusDatas);
 
-    focusDatasX.sort(_ZFP_ZFUIViewFocusNextFind_comparer_x);
+    focusDatasX.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_x);
     _ZFP_ZFUIViewFocusDataRemoveForX(focusDatasX, view, viewCenter);
 
-    focusDatasY.sort(_ZFP_ZFUIViewFocusNextFind_comparer_y);
+    focusDatasY.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_y);
     _ZFP_ZFUIViewFocusDataRemoveForY(focusDatasY, view, viewCenter);
 
     if(ZFBitTest(param.focusDirection(), ZFUIOrientation::e_Right)) {

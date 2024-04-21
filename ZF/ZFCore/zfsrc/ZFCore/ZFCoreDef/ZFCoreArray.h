@@ -901,18 +901,32 @@ public:
      * @brief sort element
      */
     void sort(
-            ZF_IN typename ZFComparer<T_Element>::Comparer elementComparer
-            , ZF_IN_OPT zfbool ascending = zftrue
-            , ZF_IN_OPT zfindex start = 0
+            ZF_IN_OPT zfindex start = 0
             , ZF_IN_OPT zfindex count = zfindexMax()
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer elementComparer = ZFComparerDefault
             ) {
         if(!this->isEmpty() && start + 1 < this->count() && count > 1) {
             zfmSort<T_Element>(
                 d->buf,
-                elementComparer,
                 start,
                 (count > this->count() - start) ? (this->count() - 1) : (start + count - 1),
-                ascending);
+                elementComparer);
+        }
+    }
+    /**
+     * @brief sort element
+     */
+    void sortReversely(
+            ZF_IN_OPT zfindex start = 0
+            , ZF_IN_OPT zfindex count = zfindexMax()
+            , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer elementComparer = ZFComparerDefault
+            ) {
+        if(!this->isEmpty() && start + 1 < this->count() && count > 1) {
+            zfmSortReversely<T_Element>(
+                d->buf,
+                start,
+                (count > this->count() - start) ? (this->count() - 1) : (start + count - 1),
+                elementComparer);
         }
     }
 

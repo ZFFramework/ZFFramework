@@ -253,7 +253,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFProtocolImplInfoPrint
     ZFCoreArray<ZFProtocolImplInfo> notImplemented = ZFProtocolImplInfoGetAllNotImplemented();
     ZFCoreArray<ZFProtocolImplInfo> implemented = ZFProtocolImplInfoGetAllImplemented();
     if(!notImplemented.isEmpty()) {
-        notImplemented.sort(_ZFP_ZFProtocolImplInfoPrint_sortComparer);
+        notImplemented.sort(0, zfindexMax(), _ZFP_ZFProtocolImplInfoPrint_sortComparer);
 
         callback.execute("not implemented:\n");
         for(zfindex i = 0; i < notImplemented.count(); ++i) {
@@ -264,7 +264,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFProtocolImplInfoPrint
         }
     }
     if(!implemented.isEmpty()) {
-        implemented.sort(_ZFP_ZFProtocolImplInfoPrint_sortComparer);
+        implemented.sort(0, zfindexMax(), _ZFP_ZFProtocolImplInfoPrint_sortComparer);
 
         callback.execute("implemented:\n");
         for(zfindex i = 0; i < implemented.count(); ++i) {

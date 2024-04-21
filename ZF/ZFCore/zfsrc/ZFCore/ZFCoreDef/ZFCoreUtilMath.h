@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFCoreUtilMath_h_
 #define _ZFI_ZFCoreUtilMath_h_
 
-#include "ZFCoreTypeDef.h"
+#include "ZFComparer.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
@@ -155,9 +155,9 @@ T_int zfmRand(
 template<typename T_Element, typename T_Holder>
 zfindex _ZFP_zfmSort(
         ZF_IN T_Holder &holder
-        , ZF_IN typename ZFComparer<T_Element>::Comparer comparer
         , ZF_IN zfindex left
         , ZF_IN zfindex right
+        , ZF_IN typename ZFComparer<T_Element>::Comparer comparer
         , ZF_IN zfbool ascending
         ) {
     ZFCompareResult cmpToken = (ascending ? ZFCompareGreater : ZFCompareSmaller);
@@ -198,17 +198,34 @@ zfindex _ZFP_zfmSort(
 template<typename T_Element, typename T_Holder>
 void zfmSort(
         ZF_IN T_Holder &holder
-        , ZF_IN typename ZFComparer<T_Element>::Comparer comparer
         , ZF_IN zfindex left
         , ZF_IN zfindex right
-        , ZF_IN_OPT zfbool ascending = zftrue
+        , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
         ) {
     if(left < right) {
-        zfindex mid = _ZFP_zfmSort<T_Element>(holder, comparer, left, right, ascending);
+        zfindex mid = _ZFP_zfmSort<T_Element>(holder, left, right, comparer, zftrue);
         if(mid > 0) {
-            zfmSort<T_Element>(holder, comparer, left, mid - 1, ascending);
+            zfmSort<T_Element>(holder, left, mid - 1, comparer);
         }
-        zfmSort<T_Element>(holder, comparer, mid + 1, right, ascending);
+        zfmSort<T_Element>(holder, mid + 1, right, comparer);
+    }
+}
+/**
+ * @brief sort with custom comparer in range [left, right], holder must support operator []
+ */
+template<typename T_Element, typename T_Holder>
+void zfmSortReversely(
+        ZF_IN T_Holder &holder
+        , ZF_IN zfindex left
+        , ZF_IN zfindex right
+        , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerDefault
+        ) {
+    if(left < right) {
+        zfindex mid = _ZFP_zfmSort<T_Element>(holder, left, right, comparer, zffalse);
+        if(mid > 0) {
+            zfmSortReversely<T_Element>(holder, left, mid - 1, comparer);
+        }
+        zfmSortReversely<T_Element>(holder, mid + 1, right, comparer);
     }
 }
 

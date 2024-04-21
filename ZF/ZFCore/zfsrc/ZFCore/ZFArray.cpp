@@ -376,8 +376,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, move
     this->contentOnChange();
 }
 
-ZFMETHOD_DEFINE_4(ZFArray, void, sort
-        , ZFMP_IN_OPT(zfbool, ascending, zftrue)
+ZFMETHOD_DEFINE_3(ZFArray, void, sort
         , ZFMP_IN_OPT(zfindex, start, 0)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
         , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
@@ -385,10 +384,24 @@ ZFMETHOD_DEFINE_4(ZFArray, void, sort
     if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
         zfmSort<ZFObject *>(
             d->data,
-            comparer,
             start,
             (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1),
-            ascending);
+            comparer);
+
+        this->contentOnChange();
+    }
+}
+ZFMETHOD_DEFINE_3(ZFArray, void, sortReversely
+        , ZFMP_IN_OPT(zfindex, start, 0)
+        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+        , ZFMP_IN_OPT(ZFComparer<ZFObject *>::Comparer, comparer, ZFComparerCheckEqual)
+        ) {
+    if(d->data.size() > 0 && start + 1 < d->data.size() && count > 1) {
+        zfmSortReversely<ZFObject *>(
+            d->data,
+            start,
+            (count > d->data.size() - start) ? (d->data.size() - 1) : (start + count - 1),
+            comparer);
 
         this->contentOnChange();
     }
