@@ -24,7 +24,7 @@ static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
 typedef zfstlhashmap<zfstring, const ZFClass *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_ClassMapCache;
 static _ZFP_ZFDI_ClassMapCache _ZFP_ZFDI_classMapCache;
 
-typedef zfstlhashmap<zfstring, ZFCoreArrayPOD<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
+typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
 static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal) {
@@ -267,7 +267,7 @@ zfbool ZFDI_invoke(
         key += name;
         _ZFP_ZFDI_MethodMapCache::iterator it = _ZFP_ZFDI_methodMapCache.find(key);
         if(it != _ZFP_ZFDI_methodMapCache.end()) {
-            ZFCoreArrayPOD<const ZFMethod *> methodList = it->second;
+            ZFCoreArray<const ZFMethod *> methodList = it->second;
             zfCoreMutexUnlock();
             return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList)
                 || _ZFP_ZFDI_errorOccurred();
@@ -277,7 +277,7 @@ zfbool ZFDI_invoke(
         }
     }
 
-    ZFCoreArrayPOD<const ZFMethod *> methodList;
+    ZFCoreArray<const ZFMethod *> methodList;
 
     // obj->methodName()
     if(obj != zfnull) {
@@ -485,7 +485,7 @@ zfbool ZFDI_alloc(
             return zftrue;
         }
     }
-    ZFCoreArrayPOD<const ZFMethod *> methodList;
+    ZFCoreArray<const ZFMethod *> methodList;
     cls->methodForNameGetAllT(methodList, "objectOnInit");
     if(methodList.isEmpty()) {
         if(errorHint != zfnull) {

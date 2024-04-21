@@ -87,7 +87,7 @@ static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void) {
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
         ZF_IN ZFUIView *containerView
         , ZF_IN const zfchar *subModuleName
-        , ZF_IN ZFCoreArrayPOD<const ZFClass *> const &testCases
+        , ZF_IN ZFCoreArray<const ZFClass *> const &testCases
         );
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
         ZF_IN ZFUIView *containerView
@@ -95,7 +95,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
         , ZF_IN const ZFClass *testCase
         );
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView) {
-    ZFCoreArrayPOD<const ZFClass *> allTestCase = ZFTestCaseGetAll();
+    ZFCoreArray<const ZFClass *> allTestCase = ZFTestCaseGetAll();
     zfclassNotPOD _ZFP_main_class_sort {
     public:
         static ZFCompareResult action(
@@ -108,7 +108,7 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
     allTestCase.sort(0, zfindexMax(), _ZFP_main_class_sort::action);
 
     while(!allTestCase.isEmpty()) {
-        ZFCoreArrayPOD<const ZFClass *> subModule;
+        ZFCoreArray<const ZFClass *> subModule;
         zfstring subModuleName = allTestCase[0]->classNameFull();
         {
             zfindex t = zfstringFind(subModuleName, '_');
@@ -133,12 +133,12 @@ zfclass _ZFP_ZFFramework_test_TestCaseSubModuleData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFFramework_test_TestCaseSubModuleData, ZFObject)
 
     zfstring subModuleName;
-    ZFCoreArrayPOD<const ZFClass *> testCases;
+    ZFCoreArray<const ZFClass *> testCases;
 };
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
         ZF_IN ZFUIView *containerView
         , ZF_IN const zfchar *subModuleName
-        , ZF_IN ZFCoreArrayPOD<const ZFClass *> const &testCases
+        , ZF_IN ZFCoreArray<const ZFClass *> const &testCases
         ) {
     zfblockedAlloc(ZFUIKit_test_Button, button);
     containerView->childAdd(button);

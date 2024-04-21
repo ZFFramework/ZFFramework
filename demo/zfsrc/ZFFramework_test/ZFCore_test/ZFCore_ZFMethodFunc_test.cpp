@@ -110,7 +110,7 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        ZFCoreArrayPOD<const ZFMethod *> methods;
+        ZFCoreArray<const ZFMethod *> methods;
         ZFFilterForZFMethod filter;
         {
             zfclassNotPOD _Holder {

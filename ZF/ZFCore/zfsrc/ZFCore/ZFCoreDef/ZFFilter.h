@@ -438,7 +438,7 @@ protected:
 
 private:
     typedef ZFCoreArray<_ZFP_ZFFilterData<T_Internal> > _FiltersType;
-    typedef ZFCoreArrayPOD<typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback> _CustomFilterCallbacksType;
+    typedef ZFCoreArray<typename ZFFilterBase<T_Public, T_Internal>::CustomFilterCallback> _CustomFilterCallbacksType;
     _FiltersType _filters;
     _CustomFilterCallbacksType *_customFilters;
 };

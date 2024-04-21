@@ -30,7 +30,7 @@ public:
 
 zfclassNotPOD ZFLIB_ZF_impl ZFImpl_sys_Qt_BaseLayout : public QGraphicsLayout {
 protected:
-    ZFCoreArrayPOD<QGraphicsWidget *> children;
+    ZFCoreArray<QGraphicsWidget *> children;
 protected:
     virtual void onLayout(const QRectF &rect) {}
 public:

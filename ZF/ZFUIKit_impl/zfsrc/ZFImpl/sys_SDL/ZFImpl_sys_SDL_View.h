@@ -76,7 +76,7 @@ public:
     /** @brief native rect, relative to parent */
     SDL_Rect rect;
     /** @brief callback for impl to render contents */
-    ZFCoreArrayPOD<RenderCallback> renderImpls;
+    ZFCoreArray<RenderCallback> renderImpls;
     /** @brief whether #renderRequest called and not rendered */
     zfbool renderRequested;
     /**

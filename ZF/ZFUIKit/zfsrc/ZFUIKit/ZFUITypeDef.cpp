@@ -49,7 +49,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIPoint, ZFUIPointApplyScaleReversely
         , ZFMP_IN(zffloat, scale)
         )
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIPoint, ZFUIPoint, {
-        ZFCoreArrayPOD<zffloat> buf;
+        ZFCoreArray<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
@@ -130,7 +130,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIMargin, ZFUIMarginDec
         , ZFMP_IN(const ZFUIMargin &, v1)
         )
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIMargin, ZFUIMargin, {
-        ZFCoreArrayPOD<zffloat> buf;
+        ZFCoreArray<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
@@ -248,7 +248,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUISize, ZFUISizeApplyMarginReversely
         )
 
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISize, ZFUISize, {
-        ZFCoreArrayPOD<zffloat> buf;
+        ZFCoreArray<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
@@ -371,7 +371,7 @@ ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFUIRect, ZFUIRectApplyMarginReversely
         , ZFMP_IN(const ZFUIMargin &, margin)
         )
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUIRect, ZFUIRect, {
-        ZFCoreArrayPOD<zffloat> buf;
+        ZFCoreArray<zffloat> buf;
         if(!zfCoreDataPairSplitFloat(buf, 4, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));

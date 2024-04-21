@@ -17,7 +17,7 @@ public:
 zfclass _ZFP_I_ZFSerializablePropertyTypeHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFSerializablePropertyTypeHolder, ZFObject)
 public:
-    ZFCoreArrayPOD<_ZFP_ZFSerializable_PropertyTypeData *> serializableProperty;
+    ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> serializableProperty;
     ZFCoreMap serializablePropertyMap; // _ZFP_ZFSerializable_PropertyTypeData *
 
 public:
@@ -206,7 +206,7 @@ zfbool ZFSerializable::serializeToData(
 
     // property
     {
-        const ZFCoreArrayPOD<_ZFP_ZFSerializable_PropertyTypeData *> &allProperty = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
+        const ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> &allProperty = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
         for(zfindex i = 0; i < allProperty.count(); ++i) {
             _ZFP_ZFSerializable_PropertyTypeData *data = allProperty[i];
             switch(data->propertyType) {
@@ -301,11 +301,11 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
     _ZFP_I_ZFSerializablePropertyTypeHolder *holder = this->classData()->classTag<_ZFP_I_ZFSerializablePropertyTypeHolder *>(_ZFP_I_ZFSerializablePropertyTypeHolder::ClassData()->classNameFull());
     if(holder == zfnull) {
         zfunsafe_zfblockedAlloc(_ZFP_I_ZFSerializablePropertyTypeHolder, holderTmp);
-        ZFCoreArrayPOD<const ZFProperty *> allProperty;
+        ZFCoreArray<const ZFProperty *> allProperty;
         {
             // the order affects the serialization step's order,
             // sort parent's property first for human-readable
-            ZFCoreArrayPOD<const ZFClass *> allClass;
+            ZFCoreArray<const ZFClass *> allClass;
             const ZFClass *tmpCls = this->classData();
             allClass.add(tmpCls);
             do {
@@ -351,7 +351,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
     return holder;
 }
 void ZFSerializable::serializableGetAllSerializablePropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) {
-    const ZFCoreArrayPOD<_ZFP_ZFSerializable_PropertyTypeData *> &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
+    const ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
     for(zfindex i = 0; i < tmp.count(); ++i) {
         if(tmp[i]->propertyType == ZFSerializablePropertyTypeSerializableProperty) {
             ret.add(tmp[i]->property);
@@ -359,7 +359,7 @@ void ZFSerializable::serializableGetAllSerializablePropertyT(ZF_IN_OUT ZFCoreArr
     }
 }
 void ZFSerializable::serializableGetAllSerializableEmbededPropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) {
-    const ZFCoreArrayPOD<_ZFP_ZFSerializable_PropertyTypeData *> &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
+    const ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
     for(zfindex i = 0; i < tmp.count(); ++i) {
         if(tmp[i]->propertyType == ZFSerializablePropertyTypeEmbededProperty) {
             ret.add(tmp[i]->property);
@@ -797,11 +797,11 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFSerializable, zfbool, serializeToSt
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFSerializable, void, serializableGetAllSerializablePropertyT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFSerializable, ZFCoreArrayPOD<const ZFProperty *>, serializableGetAllSerializableProperty)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFSerializable, ZFCoreArray<const ZFProperty *>, serializableGetAllSerializableProperty)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFSerializable, void, serializableGetAllSerializableEmbededPropertyT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFSerializable, ZFCoreArrayPOD<const ZFProperty *>, serializableGetAllSerializableEmbededProperty)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFSerializable, ZFCoreArray<const ZFProperty *>, serializableGetAllSerializableEmbededProperty)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFSerializable, void, serializableInfoT
         , ZFMP_IN_OUT(zfstring &, ret)
         )

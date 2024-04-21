@@ -13,85 +13,61 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-// ============================================================
-template<typename T_Element>
-static void _ZFP_ZFCoreArray_objCreate(
-        ZF_IN T_Element *p
-        , ZF_IN T_Element *pEnd
-        , ZF_IN zfbool PODType
-        ) {
-    if(!PODType) {
-        while(p != pEnd) {
-            zfnewPlacement(p, T_Element);
-            ++p;
-        }
-    }
-}
-template<typename T_Element>
-static void _ZFP_ZFCoreArray_objCreate(
-        ZF_IN T_Element *p
-        , ZF_IN T_Element *pEnd
-        , ZF_IN const T_Element *src
-        , ZF_IN zfbool PODType
-        ) {
-    if(PODType) {
-        zfmemcpy(p, src, (pEnd - p) * sizeof(T_Element));
-    }
-    else {
-        while(p != pEnd) {
-            zfnewPlacement(p, T_Element, *src);
-            ++p;
-            ++src;
-        }
-    }
-}
-template<typename T_Element>
-static void _ZFP_ZFCoreArray_objMove(
-        ZF_IN T_Element *dst
-        , ZF_IN const T_Element *src
-        , ZF_IN zfindex count
-        , ZF_IN zfbool PODType
-        ) {
-    if(PODType) {
-        zfmemmove(dst, src, count * sizeof(T_Element));
-    }
-    else {
-        zfmemmoveObject(dst, src, count);
-    }
-}
-template<typename T_Element>
-static void _ZFP_ZFCoreArray_objDestroy(
-        ZF_IN T_Element *p
-        , ZF_IN T_Element *pEnd
-        , ZF_IN zfbool PODType
-        ) {
-    if(!PODType) {
-        while(p != pEnd) {
-            zfdeletePlacement(p);
-            ++p;
-        }
-    }
-}
 template<typename T_Element>
 zffinal zfclassNotPOD _ZFP_ZFCoreArrayPrivate {
 public:
     zfuint refCount;
-    zfbool PODType;
     T_Element *buf;
     zfuint capacity;
     zfuint count;
 public:
     _ZFP_ZFCoreArrayPrivate(void)
     : refCount(1)
-    , PODType(zffalse)
     , buf(zfnull)
     , capacity(0)
     , count(0)
     {
     }
     ~_ZFP_ZFCoreArrayPrivate(void) {
-        _ZFP_ZFCoreArray_objDestroy(this->buf, this->buf + this->count, this->PODType);
+        this->objDestroy(this->buf, this->buf + this->count);
         zffree(this->buf);
+    }
+public:
+    void objCreate(
+        ZF_IN T_Element *p
+        , ZF_IN T_Element *pEnd
+        ) {
+        while(p != pEnd) {
+            zfnewPlacement(p, T_Element);
+            ++p;
+        }
+    }
+    void objCreate(
+        ZF_IN T_Element *p
+        , ZF_IN T_Element *pEnd
+        , ZF_IN const T_Element *src
+        ) {
+        while(p != pEnd) {
+            zfnewPlacement(p, T_Element, *src);
+            ++p;
+            ++src;
+        }
+    }
+    void objMove(
+            ZF_IN T_Element *dst
+            , ZF_IN const T_Element *src
+            , ZF_IN zfindex count
+            ) {
+        zfmemmoveObject(dst, src, count);
+    }
+    void objDestroy(
+            ZF_IN T_Element *p
+            , ZF_IN T_Element *pEnd
+            ) {
+        while(p != pEnd) {
+            zfdeletePlacement(p);
+            ++p;
+        }
     }
 };
 
@@ -204,10 +180,6 @@ public:
 
 public:
     /**
-     * @brief whether the array contains POD type
-     */
-    virtual zfbool isPODType(void) const zfpurevirtual;
-    /**
      * @brief change capacity to hold at least newCapacity
      *
      * do nothing if newCapacity not changed or less than current capacity
@@ -307,8 +279,7 @@ ZFOUTPUT_TYPE(ZFCoreArrayBase, {v.objectInfoT(s);})
  * -  use other containers such as ZFArray in your app,
  *   if performance is really a matter,
  *   choose any other containers you like,
- *   but try not to abuse them,
- *   since it really bricks the portability of your code
+ *   but try not to export them
  */
 template<typename T_Element>
 zffinal zfclassLikePOD ZFCoreArray : zfextend ZFCoreArrayBase {
@@ -381,11 +352,11 @@ public:
     void copyFrom(ZF_IN const ZFCoreArray<T_Element> &ref) {
         if(d != ref.d) {
             if(d->buf) {
-                _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
+                d->objDestroy(d->buf, d->buf + d->count);
                 d->count = 0;
             }
             _capacityRequire(ref.count());
-            _ZFP_ZFCoreArray_objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf(), d->PODType);
+            d->objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf());
             d->count = (zfuint)ref.count();
         }
     }
@@ -464,9 +435,6 @@ public:
 
 public:
     zfoverride
-    virtual zfbool isPODType(void) const {return d->PODType;}
-
-    zfoverride
     virtual void capacity(ZF_IN zfindex newCapacity) {
         _capacityRequire(newCapacity);
     }
@@ -489,7 +457,7 @@ public:
      */
     void add(ZF_IN T_Element const &e) {
         _capacityRequire(this->count() + 1);
-        _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, &e, d->PODType);
+        d->objCreate(d->buf + d->count, d->buf + d->count + 1, &e);
         ++(d->count);
     }
     /**
@@ -504,9 +472,9 @@ public:
             return;
         }
         _capacityRequire(this->count() + 1);
-        _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + 1, d->PODType);
+        d->objCreate(d->buf + d->count, d->buf + d->count + 1);
         T_Element *pos = d->buf + index;
-        _ZFP_ZFCoreArray_objMove(pos + 1, pos, this->count() - index, d->PODType);
+        d->objMove(pos + 1, pos, this->count() - index);
         ++(d->count);
         *pos = e;
     }
@@ -522,7 +490,7 @@ public:
         }
         if(src < d->buf || src >= d->buf + d->capacity) {
             _capacityRequire(this->count() + count);
-            _ZFP_ZFCoreArray_objCreate(d->buf + d->count, d->buf + d->count + count, src, d->PODType);
+            d->objCreate(d->buf + d->count, d->buf + d->count + count, src);
             d->count += (zfuint)count;
         }
         else {
@@ -711,8 +679,8 @@ public:
             zfCoreCriticalIndexOutOfRange(index, this->count());
             return;
         }
-        _ZFP_ZFCoreArray_objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1, d->PODType);
-        _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - 1, d->buf + d->count, d->PODType);
+        d->objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1);
+        d->objDestroy(d->buf + d->count - 1, d->buf + d->count);
         --(d->count);
     }
     zfoverride
@@ -727,8 +695,8 @@ public:
         if(count > this->count() - index) {
             count = this->count() - index;
         }
-        _ZFP_ZFCoreArray_objMove(d->buf + index, d->buf + index + count, this->count() - (index + count), d->PODType);
-        _ZFP_ZFCoreArray_objDestroy(d->buf + d->count - count, d->buf + d->count, d->PODType);
+        d->objMove(d->buf + index, d->buf + index + count, this->count() - (index + count));
+        d->objDestroy(d->buf + d->count - count, d->buf + d->count);
         d->count -= count;
     }
     /**
@@ -776,7 +744,7 @@ public:
     }
     zfoverride
     virtual void removeAll(void) {
-        _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
+        d->objDestroy(d->buf, d->buf + d->count);
         d->count = 0;
     }
 
@@ -801,10 +769,10 @@ public:
         }
         T_Element t = d->buf[fromIndex];
         if(fromIndex < toIndexOrIndexMax) {
-            _ZFP_ZFCoreArray_objMove(d->buf + fromIndex, d->buf + fromIndex + 1, toIndexOrIndexMax - fromIndex, d->PODType);
+            d->objMove(d->buf + fromIndex, d->buf + fromIndex + 1, toIndexOrIndexMax - fromIndex);
         }
         else {
-            _ZFP_ZFCoreArray_objMove(d->buf + toIndexOrIndexMax + 1, d->buf + toIndexOrIndexMax, fromIndex - toIndexOrIndexMax, d->PODType);
+            d->objMove(d->buf + toIndexOrIndexMax + 1, d->buf + toIndexOrIndexMax, fromIndex - toIndexOrIndexMax);
         }
         d->buf[toIndexOrIndexMax] = t;
     }
@@ -957,8 +925,6 @@ public:
     zfoverride
     virtual const void *genericGet(ZF_IN zfindex index) const {return &(this->get(index));}
 
-protected:
-    void _ZFP_PODType(void) {d->PODType = zftrue;}
 private:
     _ZFP_ZFCoreArrayPrivate<T_Element> *d;
 private:
@@ -980,7 +946,7 @@ private:
     }
     void _capacityDoChange(ZF_IN zfindex capacity) {
         if(capacity == 0) {
-            _ZFP_ZFCoreArray_objDestroy(d->buf, d->buf + d->count, d->PODType);
+            d->objDestroy(d->buf, d->buf + d->count);
             zffree(d->buf);
             d->buf = zfnull;
             d->capacity = 0;
@@ -991,68 +957,18 @@ private:
             zfuint oldCount = d->count;
 
             T_Element *newBuf = (T_Element *)zfmalloc(capacity * sizeof(T_Element));
-            _ZFP_ZFCoreArray_objCreate(newBuf, newBuf + oldCount, oldBuf, d->PODType);
+            d->objCreate(newBuf, newBuf + oldCount, oldBuf);
 
             d->buf = newBuf;
             d->capacity = (zfuint)capacity;
             d->count = oldCount;
 
-            _ZFP_ZFCoreArray_objDestroy(oldBuf, oldBuf + oldCount, d->PODType);
+            d->objDestroy(oldBuf, oldBuf + oldCount);
             zffree(oldBuf);
         }
     }
 };
 ZFOUTPUT_TYPE_TEMPLATE(typename T_Element, ZFCoreArray<T_Element>, {v.objectInfoT(s);})
-
-// ============================================================
-/**
- * @brief POD version of #ZFCoreArray
- *
- * typically has higher performance than non-POD version
- * @warning you should ensure the content type is POD type
- */
-template<typename T_Element>
-zffinal zfclassLikePOD ZFCoreArrayPOD : zfextend ZFCoreArray<T_Element> {
-public:
-    /**
-     * @brief see #ZFCoreArray
-     */
-    ZFCoreArrayPOD(void)
-    : ZFCoreArray<T_Element>()
-    {
-        this->_ZFP_PODType();
-    }
-    /**
-     * @brief see #ZFCoreArray
-     */
-    ZFCoreArrayPOD(ZF_IN zfindex capacity)
-    : ZFCoreArray<T_Element>(capacity)
-    {
-        this->_ZFP_PODType();
-    }
-    /**
-     * @brief see #ZFCoreArray
-     */
-    ZFCoreArrayPOD(ZF_IN const ZFCoreArray<T_Element> &ref)
-    : ZFCoreArray<T_Element>(ref)
-    {
-    }
-    /**
-     * @brief see #ZFCoreArray
-     */
-    ZFCoreArrayPOD<T_Element> &operator = (ZF_IN const ZFCoreArray<T_Element> &ref) {
-        ZFCoreArray<T_Element>::operator = (ref);
-        return *this;
-    }
-    /**
-     * @brief see #ZFCoreArray
-     */
-    ZFCoreArrayPOD<T_Element> &operator = (ZF_IN const ZFCoreArrayPOD<T_Element> &ref) {
-        ZFCoreArray<T_Element>::operator = (ref);
-        return *this;
-    }
-};
-ZFOUTPUT_TYPE_TEMPLATE(typename T_Element, ZFCoreArrayPOD<T_Element>, {v.objectInfoT(s);})
 
 template<typename T_Element>
 zfclassLikePOD _ZFP_ZFCoreArrayCreate {
@@ -1064,17 +980,6 @@ public:
 
 public:
     ZFCoreArray<T_Element> v;
-};
-template<typename T_Element>
-zfclassLikePOD _ZFP_ZFCoreArrayPODCreate {
-public:
-    inline _ZFP_ZFCoreArrayPODCreate<T_Element> &add(ZF_IN T_Element const &v) {
-        this->v.add(v);
-        return *this;
-    }
-
-public:
-    ZFCoreArrayPOD<T_Element> v;
 };
 #define _ZFP_ZFCoreArrayCreate_action_expand(value) .add(value)
 #define _ZFP_ZFCoreArrayCreate_action(CreatorType, values, ...) \
@@ -1088,10 +993,6 @@ public:
  * @endcode
  */
 #define ZFCoreArrayCreate(ElementType, values, ...) _ZFP_ZFCoreArrayCreate_action(_ZFP_ZFCoreArrayCreate<ElementType>, values, ##__VA_ARGS__)
-/**
- * @brief create POD version, see #ZFCoreArrayCreate
- */
-#define ZFCoreArrayPODCreate(ElementType, values, ...) _ZFP_ZFCoreArrayCreate_action(_ZFP_ZFCoreArrayPODCreate<ElementType>, values, ##__VA_ARGS__)
 
 ZF_NAMESPACE_GLOBAL_END
 

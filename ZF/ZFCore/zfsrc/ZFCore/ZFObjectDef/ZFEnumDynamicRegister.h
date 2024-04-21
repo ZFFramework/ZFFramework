@@ -17,7 +17,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 extern ZFLIB_ZFCore const ZFClass *ZFEnumDynamicRegister(
         ZF_IN const zfchar *enumClassName
-        , ZF_IN const ZFCoreArrayPOD<zfuint> &enumValues
+        , ZF_IN const ZFCoreArray<zfuint> &enumValues
         , ZF_IN const ZFCoreArray<zfstring> &enumNames
         , ZF_IN zfuint enumDefault = ZFEnumInvalid()
         , ZF_IN zfbool enumIsFlags = zffalse

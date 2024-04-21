@@ -23,7 +23,7 @@ public:
     zfidentity idValue;
     zfstring idName;
     zfbool isDynamicRegister;
-    ZFCoreArrayPOD<zfbool *> ZFCoreLibDestroyFlag;
+    ZFCoreArray<zfbool *> ZFCoreLibDestroyFlag;
 
 public:
     _ZFP_ZFIdMapData(void)
@@ -153,7 +153,7 @@ zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName) {
     return zfidentityInvalid();
 }
 void ZFIdMapGetAll(
-        ZF_IN_OUT ZFCoreArrayPOD<zfidentity> &idValues
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
         , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
         ) {
     zfCoreMutexLocker();
@@ -187,7 +187,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFIdMapIdForName
         , ZFMP_IN(const zfchar *, idName)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFIdMapGetAll
-        , ZFMP_IN_OUT(ZFCoreArrayPOD<zfidentity> &, idValues)
+        , ZFMP_IN_OUT(ZFCoreArray<zfidentity> &, idValues)
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, idNames)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFIdMapDynamicRegister

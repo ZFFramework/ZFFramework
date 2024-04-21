@@ -42,7 +42,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIDialog)
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogAllDialog, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIDialogAllDialog) {
-    ZFCoreArrayPOD<ZFUIDialog *> tmp;
+    ZFCoreArray<ZFUIDialog *> tmp;
     tmp.copyFrom(this->allDialog);
     for(zfindex i = 0; i < tmp.count(); ++i) {
         if(tmp[i]->dialogShowing()) {
@@ -51,14 +51,14 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIDialogAllDialog) {
     }
 }
 public:
-    ZFCoreArrayPOD<ZFUIDialog *> allDialog;
+    ZFCoreArray<ZFUIDialog *> allDialog;
 ZF_GLOBAL_INITIALIZER_END(ZFUIDialogAllDialog)
 #define _ZFP_ZFUIDialogAllDialog ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIDialogAllDialog)->allDialog
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogAutoHide, ZFLevelZFFrameworkLow) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIDialogAutoHide) {
-    ZFCoreArrayPOD<ZFUIDialog *> tmp;
+    ZFCoreArray<ZFUIDialog *> tmp;
     tmp.copyFrom(_ZFP_ZFUIDialogAllDialog);
     for(zfindex i = 0; i < tmp.count(); ++i) {
         if(tmp[i]->dialogShowing()) {

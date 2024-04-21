@@ -99,7 +99,7 @@ public:
      *
      * use with caution, use with #zfCoreMutexLock
      */
-    ZFMETHOD_DECLARE_STATIC_0(const ZFCoreArrayPOD<ZFThread *> &, allThread)
+    ZFMETHOD_DECLARE_STATIC_0(const ZFCoreArray<ZFThread *> &, allThread)
 
     /**
      * @brief return main thread

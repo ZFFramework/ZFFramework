@@ -220,7 +220,7 @@ void operator /= (
 
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFTimeValue, ZFTimeValue, {
-        ZFCoreArrayPOD<zftimet> tmp;
+        ZFCoreArray<zftimet> tmp;
         if(!zfCoreDataPairSplitInt(tmp, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));

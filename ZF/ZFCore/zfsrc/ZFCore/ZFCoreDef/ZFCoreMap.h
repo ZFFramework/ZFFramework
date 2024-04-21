@@ -155,8 +155,8 @@ public:
     /**
      * @brief return a copy of all values
      */
-    inline ZFCoreArrayPOD<ZFCorePointerBase *> allValue(void) const {
-        ZFCoreArrayPOD<ZFCorePointerBase *> ret;
+    inline ZFCoreArray<ZFCorePointerBase *> allValue(void) const {
+        ZFCoreArray<ZFCorePointerBase *> ret;
         this->allValueT(ret);
         return ret;
     }

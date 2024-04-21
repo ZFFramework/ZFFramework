@@ -74,7 +74,7 @@ public:
      *
      * would be empty if not supported
      */
-    ZFCoreArrayPOD<ZFIndexRange> namedGroups;
+    ZFCoreArray<ZFIndexRange> namedGroups;
 
 public:
     /** @brief see #objectInfo */

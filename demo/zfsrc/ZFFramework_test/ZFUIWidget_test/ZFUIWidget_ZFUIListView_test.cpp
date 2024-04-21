@@ -129,13 +129,13 @@ private:
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceHorizontalAlways));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceVerticalAlways));
         ZFUIKit_test_prepareSettingForNormalProperty(settings, listView, ZFUIOrientationEnum, ZFPropertyAccess(ZFUIListView, listOrientation),
-            ZFCoreArrayPODCreate(ZFUIOrientationEnum
+            ZFCoreArrayCreate(ZFUIOrientationEnum
                 , ZFUIOrientation::e_Top
                 , ZFUIOrientation::e_Left
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
                 ));
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView->listAdapter()->toObject(), zffloat, ZFPropertyAccess(ZFUIListAdapter, cellSizeHint), ZFCoreArrayPODCreate(zffloat, 56, 100, 44));
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView->listAdapter()->toObject(), zffloat, ZFPropertyAccess(ZFUIListAdapter, cellSizeHint), ZFCoreArrayCreate(zffloat, 56, 100, 44));
 
 #define _ZFP_ZFUIWidget_ZFUIListView_test_autoScrollSpeed 100
         { // auto scroll x

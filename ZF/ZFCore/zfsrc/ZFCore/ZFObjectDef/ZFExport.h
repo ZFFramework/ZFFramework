@@ -223,7 +223,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             ZFMethodFuncUserUnregister(m[i]); \
         } \
     } \
-    ZFCoreArrayPOD<const ZFMethod *> m; \
+    ZFCoreArray<const ZFMethod *> m; \
     ZF_STATIC_REGISTER_END(ZFEXPORT_ENUM_##EnumName##_##RegSig)
 #define _ZFP_ZFEXPORT_ENUM_EXPAND(v) \
     { \

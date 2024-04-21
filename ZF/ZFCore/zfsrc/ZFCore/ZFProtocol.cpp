@@ -17,7 +17,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocol
 zfclassLikePOD _ZFP_ZFProtocolDataPrivateData {
 public:
     _ZFP_ZFProtocolData data;
-    ZFCoreArrayPOD<zfbool *> ZFCoreLibDestroyFlag;
+    ZFCoreArray<zfbool *> ZFCoreLibDestroyFlag;
 };
 ZF_STATIC_INITIALIZER_INIT(ZFProtocolDataHolder) {
 }
@@ -33,7 +33,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFProtocolImplCleanup_protocolOnDeallocPre
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDeallocPrepare) {
     ZFCoreMap &implDataMap = _ZFP_ZFProtocolDataMap;
-    ZFCoreArrayPOD<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
     implDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         _ZFP_ZFProtocolDataPrivateData *dataHolder = allValue[i];
@@ -49,7 +49,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFProtocolImplCleanup_protocolOnDealloc, Z
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFProtocolImplCleanup_protocolOnDealloc) {
     ZFCoreMap &implDataMap = _ZFP_ZFProtocolDataMap;
-    ZFCoreArrayPOD<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
     implDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         _ZFP_ZFProtocolDataPrivateData *dataHolder = allValue[i];
@@ -166,7 +166,7 @@ static void _ZFP_ZFProtocolImplInfoCopy(
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll) {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
-    ZFCoreArrayPOD<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
     _ZFP_ZFProtocolDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         ZFProtocolImplInfo data;
@@ -179,7 +179,7 @@ ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllImplemented) {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
-    ZFCoreArrayPOD<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
     _ZFP_ZFProtocolDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         ZFProtocolImplInfo data;
@@ -195,7 +195,7 @@ ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAll
 ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<ZFProtocolImplInfo>, ZFProtocolImplInfoGetAllNotImplemented) {
     ZFCoreArray<ZFProtocolImplInfo> ret;
 
-    ZFCoreArrayPOD<_ZFP_ZFProtocolDataPrivateData *> allValue;
+    ZFCoreArray<_ZFP_ZFProtocolDataPrivateData *> allValue;
     _ZFP_ZFProtocolDataMap.allValueT(allValue);
     for(zfindex i = 0; i < allValue.count(); ++i) {
         ZFProtocolImplInfo data;

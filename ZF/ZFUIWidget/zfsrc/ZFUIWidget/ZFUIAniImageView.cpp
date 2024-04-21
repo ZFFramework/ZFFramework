@@ -8,10 +8,10 @@ public:
     zfautoT<ZFUIImage *> frameSrc;
     ZFUISize frameSizePixel;
     zfindex frameCount;
-    ZFCoreArrayPOD<zftimet> frameDurations;
+    ZFCoreArray<zftimet> frameDurations;
 
     ZFCoreArray<zfautoT<ZFUIImage *> > frameImages;
-    ZFCoreArrayPOD<zfuint> frameTimers;
+    ZFCoreArray<zfuint> frameTimers;
 };
 
 // ============================================================
@@ -23,7 +23,7 @@ ZFMETHOD_DEFINE_4(ZFUIAniImageData, zfbool, aniLoad
         , ZFMP_IN(ZFUIImage *, frameSrc)
         , ZFMP_IN(const ZFUISize &, frameSizePixel)
         , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-        , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+        , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
         ) {
     if(frameSrc == zfnull
         || frameSizePixel.width <= 0 || frameSizePixel.height <= 0
@@ -93,14 +93,14 @@ ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFUISize const &, frameSizePixel) {
 ZFMETHOD_DEFINE_0(ZFUIAniImageData, zfindex const &, frameCount) {
     return d->frameCount;
 }
-ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArrayPOD<zftimet> const &, frameDurations) {
+ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArray<zftimet> const &, frameDurations) {
     return d->frameDurations;
 }
 
 ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArray<zfautoT<ZFUIImage *> > const &, frameImages) {
     return d->frameImages;
 }
-ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArrayPOD<zfuint> const &, frameTimers) {
+ZFMETHOD_DEFINE_0(ZFUIAniImageData, ZFCoreArray<zfuint> const &, frameTimers) {
     return d->frameTimers;
 }
 
@@ -108,7 +108,7 @@ ZFOBJECT_ON_INIT_DEFINE_4(ZFUIAniImageData
         , ZFMP_IN(ZFUIImage *, frameSrc)
         , ZFMP_IN(const ZFUISize &, frameSizePixel)
         , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-        , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+        , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
         ) {
     this->objectOnInit();
     this->aniLoad(frameSrc, frameSizePixel, frameCount, frameDurations);
@@ -194,7 +194,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeFromData(
                 return zffalse;
             });
 
-    ZFCoreArrayPOD<zftimet> frameDurations;
+    ZFCoreArray<zftimet> frameDurations;
     const zfchar *frameDurationsString = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIAniImageView_frameDurations);
     if(frameDurationsString != zfnull && !ZFCoreArrayFromStringT(frameDurations, frameDurationsString)) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
@@ -316,7 +316,7 @@ ZFMETHOD_DEFINE_4(ZFUIAniImageView, zfbool, aniLoad
         , ZFMP_IN(ZFUIImage *, frameSrc)
         , ZFMP_IN(const ZFUISize &, frameSizePixel)
         , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-        , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+        , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
         ) {
     if(this->aniData() == zfnull) {
         this->aniData(zflineAlloc(ZFUIAniImageData));
@@ -485,7 +485,7 @@ ZFOBJECT_ON_INIT_DEFINE_4(ZFUIAniImageView
         , ZFMP_IN(ZFUIImage *, frameSrc)
         , ZFMP_IN(const ZFUISize &, frameSizePixel)
         , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-        , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+        , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
         ) {
     this->objectOnInit();
     this->aniLoad(frameSrc, frameSizePixel, frameCount, frameDurations);
@@ -537,19 +537,19 @@ static zfbool _ZFP_ZFUIAniImageCreate(
         ZF_IN const ZFClass *desiredClass
         , ZF_IN const ZFPathInfo &pathInfo
         , ZF_IN const ZFCoreArray<zfautoT<ZFUIImage *> > &frameImages
-        , ZF_IN_OPT const ZFCoreArrayPOD<zftimet> &frameDurations = ZFCoreArrayPOD<zftimet>()
+        , ZF_IN_OPT const ZFCoreArray<zftimet> &frameDurations = ZFCoreArray<zftimet>()
         );
 ZFMETHOD_DEFINE_3(ZFUIAniImageData, zfbool, Create
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
-        , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
+        , ZFMP_IN_OPT(const ZFCoreArray<zftimet> &, frameDurations, ZFCoreArray<zftimet>())
         ) {
     return _ZFP_ZFUIAniImageCreate(zfself::ClassData(), pathInfo, frameImages, frameDurations);
 }
 ZFMETHOD_DEFINE_3(ZFUIAniImageView, zfbool, Create
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
-        , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
+        , ZFMP_IN_OPT(const ZFCoreArray<zftimet> &, frameDurations, ZFCoreArray<zftimet>())
         ) {
     return _ZFP_ZFUIAniImageCreate(zfself::ClassData(), pathInfo, frameImages, frameDurations);
 }
@@ -557,7 +557,7 @@ static zfbool _ZFP_ZFUIAniImageCreate(
         ZF_IN const ZFClass *desiredClass
         , ZF_IN const ZFPathInfo &pathInfo
         , ZF_IN const ZFCoreArray<zfautoT<ZFUIImage *> > &frameImages
-        , ZF_IN_OPT const ZFCoreArrayPOD<zftimet> &frameDurations /* = ZFCoreArrayPOD<zftimet>() */
+        , ZF_IN_OPT const ZFCoreArray<zftimet> &frameDurations /* = ZFCoreArray<zftimet>() */
         ) {
     if(frameImages.isEmpty()) {
         return zffalse;

@@ -87,7 +87,7 @@ ZFOUTPUT_TYPE(_ZFP_ZFUIViewFocusData, {
 })
 
 static void _ZFP_ZFUIViewFocusNextFind(
-        ZF_IN_OUT ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> &focusDatas
+        ZF_IN_OUT ZFCoreArray<_ZFP_ZFUIViewFocusData> &focusDatas
         , ZF_IN ZFUIView *view
         , ZF_IN zfbool includingInternalViews
         , ZF_IN zffloat offsetX
@@ -115,7 +115,7 @@ static void _ZFP_ZFUIViewFocusNextFind(
             offsetY + view->viewFrame().y);
     }
     if(includingInternalViews) {
-        ZFCoreArrayPOD<ZFUIView *> viewArray = view->internalBgViewArray();
+        ZFCoreArray<ZFUIView *> viewArray = view->internalBgViewArray();
         for(zfindex i = 0; i < viewArray.count(); ++i) {
             _ZFP_ZFUIViewFocusNextFind(
                 focusDatas,
@@ -192,7 +192,7 @@ static ZFCompareResult _ZFP_ZFUIViewFocusNextFind_comparerForFind(
 
 #define _ZFP_ZFUIViewFocusRatioFix 2
 void _ZFP_ZFUIViewFocusDataRemoveForX(
-        ZF_IN ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> &focusDatas
+        ZF_IN ZFCoreArray<_ZFP_ZFUIViewFocusData> &focusDatas
         , ZF_IN ZFUIView *refView
         , ZF_IN const ZFUIPoint &refCenter
         ) {
@@ -216,7 +216,7 @@ void _ZFP_ZFUIViewFocusDataRemoveForX(
     }
 }
 void _ZFP_ZFUIViewFocusDataRemoveForY(
-        ZF_IN ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> &focusDatas
+        ZF_IN ZFCoreArray<_ZFP_ZFUIViewFocusData> &focusDatas
         , ZF_IN ZFUIView *refView
         , ZF_IN const ZFUIPoint &refCenter
         ) {
@@ -241,7 +241,7 @@ void _ZFP_ZFUIViewFocusDataRemoveForY(
 }
 
 ZFUIView *_ZFP_ZFUIViewFocusDataFindNext(
-        ZF_IN const ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> &focusDatas
+        ZF_IN const ZFCoreArray<_ZFP_ZFUIViewFocusData> &focusDatas
         , ZF_IN zfbool ascending
         , ZF_IN ZFUIView *view
         ) {
@@ -267,7 +267,7 @@ ZFUIView *_ZFP_ZFUIViewFocusDataFindNext(
     }
 }
 ZFUIView *_ZFP_ZFUIViewFocusDataFindFirst(
-        ZF_IN const ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> &focusDatas
+        ZF_IN const ZFCoreArray<_ZFP_ZFUIViewFocusData> &focusDatas
         , ZF_IN zfbool ascending
         , ZF_IN ZFUIView *view
         ) {
@@ -335,7 +335,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
         viewCenter.y += root->viewFrame().y;
         root = root->viewParent();
     }
-    ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> focusDatas;
+    ZFCoreArray<_ZFP_ZFUIViewFocusData> focusDatas;
     _ZFP_ZFUIViewFocusNextFind(focusDatas, root, param.focusInternalViews(), 0, 0);
 
     ZFUIView *ret = zfnull;
@@ -356,8 +356,8 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
         return _ZFP_ZFUIViewFocusDataFindFirst(focusDatas, zffalse, view);
     }
 
-    ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> focusDatasX = focusDatas;
-    ZFCoreArrayPOD<_ZFP_ZFUIViewFocusData> focusDatasY;
+    ZFCoreArray<_ZFP_ZFUIViewFocusData> focusDatasX = focusDatas;
+    ZFCoreArray<_ZFP_ZFUIViewFocusData> focusDatasY;
     focusDatasY.copyFrom(focusDatas);
 
     focusDatasX.sort(0, zfindexMax(), _ZFP_ZFUIViewFocusNextFind_comparer_x);

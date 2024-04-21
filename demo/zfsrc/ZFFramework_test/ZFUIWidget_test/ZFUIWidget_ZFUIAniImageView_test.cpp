@@ -31,7 +31,7 @@ protected:
                 frameSrc->imageSizeFixed().height / 2
             ),
             4,
-            ZFCoreArrayPODCreate(zftimet, 100, 500, 1000));
+            ZFCoreArrayCreate(zftimet, 100, 500, 1000));
 
         this->prepareActionLog(animatedImageView);
         this->prepareActionButton(container, animatedImageView);

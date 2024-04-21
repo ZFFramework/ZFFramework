@@ -26,11 +26,11 @@ extern ZFLIB_ZFCore void allClassParentT(
 /**
  * @brief util to get all parent class
  */
-inline ZFCoreArrayPOD<const ZFClass *> allClassParent(
+inline ZFCoreArray<const ZFClass *> allClassParent(
         ZF_IN const ZFClass *cls
         , ZF_IN_OPT const ZFFilterForZFClass *filter = zfnull
         ) {
-    ZFCoreArrayPOD<const ZFClass *> ret;
+    ZFCoreArray<const ZFClass *> ret;
     ZFClassUtil::allClassParentT(ret, cls, filter);
     return ret;
 }
@@ -44,11 +44,11 @@ extern ZFLIB_ZFCore void allMethodT(
 /**
  * @brief util to get all method in inherit tree
  */
-inline ZFCoreArrayPOD<const ZFMethod *> allMethod(
+inline ZFCoreArray<const ZFMethod *> allMethod(
         ZF_IN const ZFClass *cls
         , ZF_IN_OPT const ZFFilterForZFMethod *filter = zfnull
         ) {
-    ZFCoreArrayPOD<const ZFMethod *> ret;
+    ZFCoreArray<const ZFMethod *> ret;
     ZFClassUtil::allMethodT(ret, cls, filter);
     return ret;
 }
@@ -62,11 +62,11 @@ extern ZFLIB_ZFCore void allPropertyT(
 /**
  * @brief util to get all property in inherit tree
  */
-inline ZFCoreArrayPOD<const ZFProperty *> allProperty(
+inline ZFCoreArray<const ZFProperty *> allProperty(
         ZF_IN const ZFClass *cls
         , ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull
         ) {
-    ZFCoreArrayPOD<const ZFProperty *> ret;
+    ZFCoreArray<const ZFProperty *> ret;
     ZFClassUtil::allPropertyT(ret, cls, filter);
     return ret;
 }

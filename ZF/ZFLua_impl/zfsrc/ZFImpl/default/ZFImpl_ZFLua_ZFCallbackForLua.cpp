@@ -203,7 +203,7 @@ public:
     ZFPathInfo pathInfo;
     ZFBuffer func;
     zfbool funcReaderDone;
-    ZFCoreArrayPOD<ValueHolder> upvalues;
+    ZFCoreArray<ValueHolder> upvalues;
 
 public:
     ~_ZFP_ZFCallbackForLua_AsyncMode(void) {
@@ -215,8 +215,8 @@ public:
         this->pathInfo.removeAll();
         this->func.bufferFree();
         if(!this->upvalues.isEmpty()) {
-            ZFCoreArrayPOD<ValueHolder> tmp = this->upvalues;
-            this->upvalues = ZFCoreArrayPOD<ValueHolder>();
+            ZFCoreArray<ValueHolder> tmp = this->upvalues;
+            this->upvalues = ZFCoreArray<ValueHolder>();
             for(zfindex i = 0; i < tmp.count(); ++i) {
                 valueHolderCleanup(tmp[i]);
             }

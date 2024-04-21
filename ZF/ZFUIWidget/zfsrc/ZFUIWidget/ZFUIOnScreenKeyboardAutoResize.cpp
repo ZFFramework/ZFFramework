@@ -139,7 +139,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIOnScreenKeyboardAutoResizeDataHolder) {
         "ZFUIOnScreenKeyboardAutoResizeStart/ZFUIOnScreenKeyboardAutoResizeStop mismatch, have you forgot to stop?");
 }
 public:
-    ZFCoreArrayPOD<ZFUIWindow *> windowList;
+    ZFCoreArray<ZFUIWindow *> windowList;
 ZF_GLOBAL_INITIALIZER_END(ZFUIOnScreenKeyboardAutoResizeDataHolder)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardAutoResizeAutoStop, ZFLevelZFFrameworkEssential) {

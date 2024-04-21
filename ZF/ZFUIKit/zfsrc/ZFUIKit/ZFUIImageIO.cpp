@@ -20,7 +20,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageFromInputCacheHolder) {
     }
 }
 public:
-    ZFCoreArrayPOD<_ZFP_ZFUIImageFromInputCacheData> cache;
+    ZFCoreArray<_ZFP_ZFUIImageFromInputCacheData> cache;
 ZF_GLOBAL_INITIALIZER_END(ZFUIImageFromInputCacheHolder)
 
 static void *_ZFP_ZFUIImageFromInput(ZF_IN const ZFInput &input) {

@@ -14,7 +14,7 @@ zfclass _ZFP_I_ZFEnumDynamicHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFEnumDynamicHolder, ZFObject)
 public:
     _ZFP_ZFEnumData *d;
-    ZFCoreArrayPOD<const ZFMethod *> userRegMethods;
+    ZFCoreArray<const ZFMethod *> userRegMethods;
 };
 zfclass _ZFP_I_ZFEnumDynamic : zfextend ZFEnum {
     ZFOBJECT_DECLARE(_ZFP_I_ZFEnumDynamic, ZFEnum)
@@ -144,7 +144,7 @@ static ZFEnum *_ZFP_ZFEnumDynamic_e(
 }
 const ZFClass *ZFEnumDynamicRegister(
         ZF_IN const zfchar *enumClassName
-        , ZF_IN const ZFCoreArrayPOD<zfuint> &enumValues
+        , ZF_IN const ZFCoreArray<zfuint> &enumValues
         , ZF_IN const ZFCoreArray<zfstring> &enumNames
         , ZF_IN zfuint enumDefault /* = ZFEnumInvalid() */
         , ZF_IN zfbool enumIsFlags /* = zffalse */
@@ -236,7 +236,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(const ZFClass *, ZFEnumDynamicRegister
         , ZFMP_IN(const zfchar *, enumClassName)
-        , ZFMP_IN(const ZFCoreArrayPOD<zfuint> &, enumValues)
+        , ZFMP_IN(const ZFCoreArray<zfuint> &, enumValues)
         , ZFMP_IN(const ZFCoreArray<zfstring> &, enumNames)
         , ZFMP_IN_OPT(zfuint, enumDefault, ZFEnumInvalid())
         , ZFMP_IN_OPT(zfbool, enumIsFlags, zffalse)

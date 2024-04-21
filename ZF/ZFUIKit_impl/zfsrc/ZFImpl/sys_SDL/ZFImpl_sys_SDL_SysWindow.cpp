@@ -9,8 +9,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFCoreArrayPOD<ZFImpl_sys_SDL_SysWindow *> &ZFImpl_sys_SDL_SysWindow::allWindow(void) {
-    static ZFCoreArrayPOD<ZFImpl_sys_SDL_SysWindow *> l;
+ZFCoreArray<ZFImpl_sys_SDL_SysWindow *> &ZFImpl_sys_SDL_SysWindow::allWindow(void) {
+    static ZFCoreArray<ZFImpl_sys_SDL_SysWindow *> l;
     return l;
 }
 
@@ -204,7 +204,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_SysWindow_EventDispatch) {
 }
 public:
     static ZFImpl_sys_SDL_SysWindow *sysWindowForWindowId(ZF_IN Uint32 sdlWindowId) {
-        ZFCoreArrayPOD<ZFImpl_sys_SDL_SysWindow *> &l = ZFImpl_sys_SDL_SysWindow::allWindow();
+        ZFCoreArray<ZFImpl_sys_SDL_SysWindow *> &l = ZFImpl_sys_SDL_SysWindow::allWindow();
         for(zfindex i = l.count() - 1; i != zfindexMax(); --i) {
             if(SDL_GetWindowID(l[i]->sdlWindow) == sdlWindowId
                 && l[i]->rootView != zfnull

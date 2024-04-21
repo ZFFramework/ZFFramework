@@ -245,7 +245,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::layoutChild(
     }
     _layouting[childIndex] = zftrue;
 
-    ZFCoreArrayPOD<zfindex> chain;
+    ZFCoreArray<zfindex> chain;
     ZFUIAutoLayoutParam *layoutParam = parent->childAt(childIndex)->layoutParam<ZFUIAutoLayoutParam *>();
     const ZFUIAutoLayoutRule *ruleList = layoutParam->_ZFP_AL_d.ruleList;
     ZFUIAutoLayoutPosEnum posHead = xAxis ? ZFUIAutoLayoutPos::e_Left : ZFUIAutoLayoutPos::e_Top;

@@ -15,12 +15,12 @@ ZF_STATIC_INITIALIZER_END(ZFEnumDataHolder)
 // ============================================================
 zfclassNotPOD _ZFP_ZFEnumDataPrivate {
 public:
-    typedef zfstlmap<zfuint, ZFCoreArrayPOD<zfchar *> > ValueMapType;
+    typedef zfstlmap<zfuint, ZFCoreArray<zfchar *> > ValueMapType;
     ValueMapType valueMap;
     typedef zfstlmap<const zfchar *, zfuint, zfcharConst_zfstlComparer> NameMapType;
     NameMapType nameMap;
-    ZFCoreArrayPOD<zfuint> vl; // ensured no duplicated value
-    ZFCoreArrayPOD<zfchar *> nl; // for duplicated value, only first stored
+    ZFCoreArray<zfuint> vl; // ensured no duplicated value
+    ZFCoreArray<zfchar *> nl; // for duplicated value, only first stored
 public:
     ~_ZFP_ZFEnumDataPrivate(void) {
         this->nameMap.clear();
@@ -134,7 +134,7 @@ const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass) {
     return _ZFP_ZFEnumDataMap.get<_ZFP_ZFEnumData *>(enumClass->classNameFull());
 }
 void _ZFP_ZFEnumMethodReg(
-        ZF_IN_OUT ZFCoreArrayPOD<const ZFMethod *> &ret
+        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
         , ZF_IN const _ZFP_ZFEnumData *d
         ) {
     {

@@ -63,7 +63,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFTestCaseGetAllT
 /**
  * @brief get all test case currently registered
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUtility, ZFCoreArrayPOD<const ZFClass *>, ZFTestCaseGetAll)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFUtility, ZFCoreArray<const ZFClass *>, ZFTestCaseGetAll)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTestCaseUtil_h_

@@ -126,7 +126,7 @@ zfstring _ZFP_ZFNamespaceRegister(
         ns += ZFNamespaceSeparator();
     }
     ns += child;
-    ZFCoreArrayPOD<ZFIndexRange> pos;
+    ZFCoreArray<ZFIndexRange> pos;
     ZFNamespaceSplit(pos, ns, ns.length());
     _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
     for(zfindex i = 0; i < pos.count(); ++i) {
@@ -151,7 +151,7 @@ void _ZFP_ZFNamespaceUnregister(ZF_IN const zfchar *ns) {
     }
     zfCoreMutexLocker();
     zfstring nsTmp = ns;
-    ZFCoreArrayPOD<ZFIndexRange> pos;
+    ZFCoreArray<ZFIndexRange> pos;
     ZFNamespaceSplit(pos, nsTmp, nsTmp.length());
     if(pos.count() < 1) {
         return;
@@ -200,7 +200,7 @@ void ZFNamespaceGetAllT(
     parent = ZFNamespaceSkipGlobal(parent);
     _ZFP_ZFNamespaceMapType *t = &_ZFP_ZFNamespaceMap();
     if(parent != zfnull) {
-        ZFCoreArrayPOD<ZFIndexRange> pos;
+        ZFCoreArray<ZFIndexRange> pos;
         ZFNamespaceSplit(pos, parent);
         for(zfindex i = 0; i < pos.count(); ++i) {
             zfstring key(parent + pos[i].start, pos[i].count);

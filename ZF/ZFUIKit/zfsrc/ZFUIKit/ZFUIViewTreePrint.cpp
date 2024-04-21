@@ -35,7 +35,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewTreePrintDataHolder, ZFLevelZFFram
 public:
     // ordered by:
     // ZFUIView, classBaseA, classChildA, classBaseB, classChildB
-    ZFCoreArrayPOD<_ZFP_ZFUIViewTreePrintData> datas;
+    ZFCoreArray<_ZFP_ZFUIViewTreePrintData> datas;
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewTreePrintDataHolder)
 
 zfclassPOD _ZFP_ZFUIViewTreePrintPrintData {
@@ -56,7 +56,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
 
     ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zflineAlloc(ZFOutputFormatBasic)->c_removeEndl(zftrue));
 
-    ZFCoreArrayPOD<_ZFP_ZFUIViewTreePrintPrintData> printDatas;
+    ZFCoreArray<_ZFP_ZFUIViewTreePrintPrintData> printDatas;
     _ZFP_ZFUIViewTreePrintPrintData rootPrintData;
     rootPrintData.view = view;
     rootPrintData.depth = 0;
@@ -70,10 +70,10 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         printDatas.removeLast();
 
         // all children
-        ZFCoreArrayPOD<ZFUIView *> implViews = printData.view->internalImplViewArray();
-        ZFCoreArrayPOD<ZFUIView *> bgViews = printData.view->internalBgViewArray();
-        ZFCoreArrayPOD<ZFUIView *> normalViews = printData.view->childArray();
-        ZFCoreArrayPOD<ZFUIView *> fgViews = printData.view->internalFgViewArray();
+        ZFCoreArray<ZFUIView *> implViews = printData.view->internalImplViewArray();
+        ZFCoreArray<ZFUIView *> bgViews = printData.view->internalBgViewArray();
+        ZFCoreArray<ZFUIView *> normalViews = printData.view->childArray();
+        ZFCoreArray<ZFUIView *> fgViews = printData.view->internalFgViewArray();
         for(zfindex i = fgViews.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
             printDataTmp.view = fgViews.get(i)->to<ZFUIView *>();
@@ -131,7 +131,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
                 return;
         }
 
-        ZFCoreArrayPOD<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
+        ZFCoreArray<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
         zfbool exist = zffalse;
         for(zfindex i = datas.count() - 1; i != zfindexMax(); --i) {
             if(printData.view->classData()->classIsTypeOf(datas[i].viewClass)) {
@@ -155,7 +155,7 @@ void ZFUIViewTreePrintInfoGetterForClass(
         , ZF_IN ZFUIViewTreePrintInfoGetter viewInfoGetter
         ) {
     zfCoreAssert(viewClass != zfnull && viewClass->classIsTypeOf(ZFUIView::ClassData()));
-    ZFCoreArrayPOD<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
+    ZFCoreArray<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
     if(viewInfoGetter == zfnull) {
         for(zfindex i = 0; i < datas.count(); ++i) {
             const ZFClass *cls = datas[i].viewClass;
@@ -194,7 +194,7 @@ void ZFUIViewTreePrintInfoGetterForClass(
     }
 }
 ZFUIViewTreePrintInfoGetter ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass) {
-    ZFCoreArrayPOD<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
+    ZFCoreArray<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
     for(zfindex i = datas.count() - 1; i != zfindexMax(); --i) {
         if(datas[i].viewClass == viewClass) {
             return datas[i].viewInfoGetter;

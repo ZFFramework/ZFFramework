@@ -41,7 +41,7 @@ zfclassFwd _ZFP_ZFImpl_sys_SDL_SysWindowPrivate;
 zffinal zfclassNotPOD ZFLIB_ZFUIKit_impl ZFImpl_sys_SDL_SysWindow {
 public:
     /** @brief access all window instance */
-    static ZFCoreArrayPOD<ZFImpl_sys_SDL_SysWindow *> &allWindow(void);
+    static ZFCoreArray<ZFImpl_sys_SDL_SysWindow *> &allWindow(void);
 
 private:
     _ZFP_ZFImpl_sys_SDL_SysWindowPrivate *d;

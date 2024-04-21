@@ -304,7 +304,7 @@ public:
      *   or use #newInstanceGenericBegin if available:
      *   @code
      *     zfauto result;
-     *     ZFCoreArrayPOD<const ZFMethod *> objectOnInitMethodList;
+     *     ZFCoreArray<const ZFMethod *> objectOnInitMethodList;
      *     cls->methodForNameGetAllT(objectOnInitMethodList, "objectOnInit");
      *     // you may do your extra method filters before actual alloc the object
      *     void *token = cls->newInstanceGenericBegin();
@@ -415,8 +415,8 @@ public:
     /**
      * @brief get all method, including methods inherited from parent
      */
-    ZFCoreArrayPOD<const ZFMethod *> methodGetAll(void) const {
-        ZFCoreArrayPOD<const ZFMethod *> ret;
+    ZFCoreArray<const ZFMethod *> methodGetAll(void) const {
+        ZFCoreArray<const ZFMethod *> ret;
         this->methodGetAllT(ret);
         return ret;
     }
@@ -452,8 +452,8 @@ public:
             , ZF_IN const zfchar *methodName
             ) const;
     /** @brief see #methodForNameIgnoreParent */
-    ZFCoreArrayPOD<const ZFMethod *> methodForNameIgnoreParentGetAll(ZF_IN const zfchar *methodName) const {
-        ZFCoreArrayPOD<const ZFMethod *> ret;
+    ZFCoreArray<const ZFMethod *> methodForNameIgnoreParentGetAll(ZF_IN const zfchar *methodName) const {
+        ZFCoreArray<const ZFMethod *> ret;
         this->methodForNameIgnoreParentGetAllT(ret, methodName);
         return ret;
     }
@@ -486,8 +486,8 @@ public:
     /**
      * @brief get all method with name, ignoring method id
      */
-    ZFCoreArrayPOD<const ZFMethod *> methodForNameGetAll(ZF_IN const zfchar *methodName) const {
-        ZFCoreArrayPOD<const ZFMethod *> ret;
+    ZFCoreArray<const ZFMethod *> methodForNameGetAll(ZF_IN const zfchar *methodName) const {
+        ZFCoreArray<const ZFMethod *> ret;
         this->methodForNameGetAllT(ret, methodName);
         return ret;
     }
@@ -519,8 +519,8 @@ public:
     /**
      * @brief get all property, including properties inherited from parent
      */
-    ZFCoreArrayPOD<const ZFProperty *> propertyGetAll(void) const {
-        ZFCoreArrayPOD<const ZFProperty *> ret;
+    ZFCoreArray<const ZFProperty *> propertyGetAll(void) const {
+        ZFCoreArray<const ZFProperty *> ret;
         this->propertyGetAllT(ret);
         return ret;
     }
@@ -755,8 +755,8 @@ extern ZFLIB_ZFCore void ZFClassGetAllT(
 /**
  * @brief get all class currently registered, for debug use only
  */
-inline ZFCoreArrayPOD<const ZFClass *> ZFClassGetAll(ZF_IN_OPT const ZFFilterForZFClass *classFilter = zfnull) {
-    ZFCoreArrayPOD<const ZFClass *> ret;
+inline ZFCoreArray<const ZFClass *> ZFClassGetAll(ZF_IN_OPT const ZFFilterForZFClass *classFilter = zfnull) {
+    ZFCoreArray<const ZFClass *> ret;
     ZFClassGetAllT(ret, classFilter);
     return ret;
 }

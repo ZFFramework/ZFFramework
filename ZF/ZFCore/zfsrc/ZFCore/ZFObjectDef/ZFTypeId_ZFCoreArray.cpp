@@ -10,7 +10,7 @@ zfbool _ZFP_ZFCoreArrayFromStringT(
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    ZFCoreArrayPOD<ZFIndexRange> pos;
+    ZFCoreArray<ZFIndexRange> pos;
     if(!zfCoreDataPairSplitString(pos, zfindexMax(), src, srcLen, ",", "[", "]", zftrue)) {
         return zffalse;
     }
@@ -267,7 +267,6 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, zfstring, objectInfoOf
         , ZFMP_IN_OPT(zfindex, maxCount, zfindexMax())
         , ZFMP_IN_OPT(const ZFTokenForContainer &, token, ZFTokenForContainerDefault())
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(v_ZFCoreArray, zfbool, isPODType)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, capacity
         , ZFMP_IN(zfindex, newCapacity)
         )

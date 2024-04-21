@@ -23,9 +23,9 @@ zfclass _ZFP_I_ZFStyleable_PropertyTypeHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFStyleable_PropertyTypeHolder, ZFObject)
 
 public:
-    ZFCoreArrayPOD<const ZFProperty *> normalProperty;
-    ZFCoreArrayPOD<const ZFProperty *> styleableProperty;
-    ZFCoreArrayPOD<const ZFProperty *> copyableProperty;
+    ZFCoreArray<const ZFProperty *> normalProperty;
+    ZFCoreArray<const ZFProperty *> styleableProperty;
+    ZFCoreArray<const ZFProperty *> copyableProperty;
 };
 
 // ============================================================
@@ -142,7 +142,7 @@ _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getProperty
     if(holder == zfnull) {
         zfunsafe_zfblockedAlloc(_ZFP_I_ZFStyleable_PropertyTypeHolder, holderTmp);
 
-        const ZFCoreArrayPOD<const ZFProperty *> allProperty = ZFClassUtil::allProperty(this->classData());
+        const ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(this->classData());
         const ZFProperty *propertyTmp = zfnull;
         for(zfindex i = 0; i < allProperty.count(); ++i) {
             propertyTmp = allProperty[i];
@@ -195,7 +195,7 @@ zfclass _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData, ZFObject)
 
 public:
-    ZFCoreArrayPOD<ZFObjectHolder *> styles;
+    ZFCoreArray<ZFObjectHolder *> styles;
 };
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFStyleDefaultApplyAutoCopyDataHolder, ZFLevelZFFrameworkEssential) {
     this->styleOnDeallocListener = ZFCallbackForFunc(zfself::styleOnDealloc);
@@ -230,7 +230,7 @@ public:
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
             ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
 
-        ZFCoreArrayPOD<ZFObjectHolder *> styles;
+        ZFCoreArray<ZFObjectHolder *> styles;
         styles.copyFrom(taskData->styles);
         for(zfindex i = 0; i < styles.count(); ++i) {
             ZFPropertyCopy(property, styles[i]->objectHolded(), zfargs.sender());
@@ -332,7 +332,7 @@ zfauto ZFStyleGet(ZF_IN const zfchar *styleKey) {
 }
 void ZFStyleGetAll(
         ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
-        , ZF_IN_OUT ZFCoreArrayPOD<ZFStyleable *> &styleValue
+        , ZF_IN_OUT ZFCoreArray<ZFStyleable *> &styleValue
         ) {
     zfCoreMutexLocker();
     zfstlmap<zfstring, zfauto> &d = _ZFP_ZFStyleHolder();
@@ -454,7 +454,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFStyleGet
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleGetAll
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, styleKey)
-        , ZFMP_IN_OUT(ZFCoreArrayPOD<ZFStyleable *>, styleValue)
+        , ZFMP_IN_OUT(ZFCoreArray<ZFStyleable *>, styleValue)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleRemoveAll)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, ZFStyleChangeBegin)

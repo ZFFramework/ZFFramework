@@ -23,8 +23,8 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIKeyboardStateBuiltinImpl_DataHolder) {
     _ZFP_ZFUIKeyboardStateBuiltinImpl_available = zffalse;
 }
 public:
-    ZFCoreArrayPOD<ZFUIKeyCodeEnum> keyPressed;
-    ZFCoreArrayPOD<zfflags> keyPressedRaw;
+    ZFCoreArray<ZFUIKeyCodeEnum> keyPressed;
+    ZFCoreArray<zfflags> keyPressedRaw;
     ZFListener viewOnEventListener;
 
     zfbool implRegisterFlag;

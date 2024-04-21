@@ -195,12 +195,12 @@ public:
 };
 
 // ============================================================
-static ZFCoreArrayPOD<ZFUIHint *> _ZFP_ZFUIHint_allHint;
+static ZFCoreArray<ZFUIHint *> _ZFP_ZFUIHint_allHint;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIHintAutoFinish, ZFLevelZFFrameworkLow) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIHintAutoFinish) {
-    ZFCoreArrayPOD<ZFUIHint *> t = _ZFP_ZFUIHint_allHint;
-    _ZFP_ZFUIHint_allHint = ZFCoreArrayPOD<ZFUIHint *>();
+    ZFCoreArray<ZFUIHint *> t = _ZFP_ZFUIHint_allHint;
+    _ZFP_ZFUIHint_allHint = ZFCoreArray<ZFUIHint *>();
     for(zfindex i = 0; i < t.count(); ++i) {
         t[i]->hintHide();
     }
@@ -215,10 +215,10 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnUpdate)
 ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnShow)
 ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnHide)
 
-ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArrayPOD<ZFUIHint *>, hintList
+ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<ZFUIHint *>, hintList
         , ZFMP_IN_OPT(ZFUISysWindow *, inSysWindow, zfnull)
         ) {
-    ZFCoreArrayPOD<ZFUIHint *> ret;
+    ZFCoreArray<ZFUIHint *> ret;
 
     ZFArray *hintList = _ZFP_ZFUIHint_hintListForRead(inSysWindow);
     if(hintList == zfnull) {

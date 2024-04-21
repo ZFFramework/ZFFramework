@@ -151,8 +151,8 @@ public:
     }
 
 private:
-    ZFCoreArrayPOD<_ZFP_ZFFilterForZFClassData> _ZFP_ZFFilterForZFClass_filters;
-    ZFCoreArrayPOD<ZFFilterForZFClass::CustomFilterCallback> _ZFP_ZFFilterForZFClass_customFilterCallbacks;
+    ZFCoreArray<_ZFP_ZFFilterForZFClassData> _ZFP_ZFFilterForZFClass_filters;
+    ZFCoreArray<ZFFilterForZFClass::CustomFilterCallback> _ZFP_ZFFilterForZFClass_customFilterCallbacks;
 };
 
 ZF_NAMESPACE_GLOBAL_END

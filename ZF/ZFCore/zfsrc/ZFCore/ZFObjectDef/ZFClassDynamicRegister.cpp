@@ -99,8 +99,8 @@ void ZFImplementDynamicRegister(
     }
     zfCoreMutexLocker();
 
-    ZFCoreArrayPOD<const ZFMethod *> allPropertyMethod;
-    ZFCoreArrayPOD<const ZFProperty *> allProperty;
+    ZFCoreArray<const ZFMethod *> allPropertyMethod;
+    ZFCoreArray<const ZFProperty *> allProperty;
     clsToImplement->propertyGetAllT(allProperty);
     for(zfindex iProperty = 0; iProperty < allProperty.count(); ++iProperty) {
         const ZFProperty *propertyToImplement = allProperty[iProperty];
@@ -127,7 +127,7 @@ void ZFImplementDynamicRegister(
         }
     }
 
-    ZFCoreArrayPOD<const ZFMethod *> allMethod;
+    ZFCoreArray<const ZFMethod *> allMethod;
     clsToImplement->methodGetAllT(allMethod);
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *methodToImplement = allMethod[iMethod];
@@ -180,7 +180,7 @@ void ZFImplementDynamicUnregister(
     }
     zfCoreMutexLocker();
 
-    ZFCoreArrayPOD<const ZFProperty *> allProperty;
+    ZFCoreArray<const ZFProperty *> allProperty;
     clsToImplement->propertyGetAllT(allProperty);
     for(zfindex iProperty = 0; iProperty < allProperty.count(); ++iProperty) {
         const ZFProperty *propertyToImplement = allProperty[iProperty];
@@ -197,7 +197,7 @@ void ZFImplementDynamicUnregister(
         ZFPropertyDynamicUnregister(property);
     }
 
-    ZFCoreArrayPOD<const ZFMethod *> allMethod;
+    ZFCoreArray<const ZFMethod *> allMethod;
     clsToImplement->methodGetAllT(allMethod);
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *methodToImplement = allMethod[iMethod];

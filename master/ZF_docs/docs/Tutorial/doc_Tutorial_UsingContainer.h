@@ -14,9 +14,6 @@
  *     array.add("element");
  *     const zfstring &e = array[0];
  *
- *     // or use POD version for performance, can hold POD types only
- *     ZFCoreArrayPOD<zfindex> arrayPOD;
- *
  *     ZFCoreMap map;
  *     // can hold string as key type and any type as value type,
  *     // while value type can only be wrapped by ZFCorePointer

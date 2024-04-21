@@ -909,7 +909,7 @@ const ZFMethod *ZFMethodAlias(
     if(method == zfnull || zfstringIsEmpty(aliasName)) {
         return zfnull;
     }
-    ZFCoreArrayPOD<const ZFMethod *> exist;
+    ZFCoreArray<const ZFMethod *> exist;
     if(method->methodOwnerClass() != zfnull) {
         method->methodOwnerClass()->methodForNameGetAllT(exist, aliasName);
     }
@@ -977,8 +977,8 @@ static void _ZFP_ZFMethodAliasRemove(ZF_IN const ZFMethod *aliasMethod) {
     to->_ZFP_ZFMethod_methodAliasFrom = zfnull;
 
     if(!to->methodAliasTo().isEmpty()) {
-        ZFCoreArrayPOD<const ZFMethod *> chain = to->_ZFP_ZFMethod_methodAliasTo;
-        to->_ZFP_ZFMethod_methodAliasTo = ZFCoreArrayPOD<const ZFMethod *>();
+        ZFCoreArray<const ZFMethod *> chain = to->_ZFP_ZFMethod_methodAliasTo;
+        to->_ZFP_ZFMethod_methodAliasTo = ZFCoreArray<const ZFMethod *>();
 
         for(zfindex i = 0; i < chain.count(); ++i) {
             ZFMethod *chainTmp = chain[i]->_ZFP_ZFMethod_removeConst();
@@ -1004,7 +1004,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFMethodGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
         , ZFMP_IN_OPT(const ZFFilterForZFMethod *, methodFilter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArrayPOD<const ZFMethod *>, ZFMethodGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFMethod *>, ZFMethodGetAll
         , ZFMP_IN_OPT(const ZFFilterForZFMethod *, methodFilter, zfnull)
         )
 
@@ -1030,7 +1030,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFMethodForNameGetAllT
         , ZFMP_IN(const zfchar *, classNameOrNamespace)
         , ZFMP_IN(const zfchar *, methodName)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const ZFMethod *>, ZFMethodForNameGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFMethod *>, ZFMethodForNameGetAll
         , ZFMP_IN(const zfchar *, classNameOrNamespace)
         , ZFMP_IN(const zfchar *, methodName)
         )

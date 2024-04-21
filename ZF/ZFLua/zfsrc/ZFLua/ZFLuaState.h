@@ -35,7 +35,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFLua, void, ZFLuaStateChange
         )
 
 /** @brief get lua state list for current thread, see #ZFLuaState */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, ZFCoreArrayPOD<void *>, ZFLuaStateList)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFLua, ZFCoreArray<void *>, ZFLuaStateList)
 
 /** @brief get lua state list for all thread, use with caution, see #ZFLuaState */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFLua, void, ZFLuaStateListForAllThread

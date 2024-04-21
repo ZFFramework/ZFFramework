@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
-        ZFCoreArrayPOD<const ZFClass *> allClass = ZFClassGetAll();
+        ZFCoreArray<const ZFClass *> allClass = ZFClassGetAll();
         if(!allClass.isEmpty()) {
             ZFCoreArray<zfstring> classNameList;
             classNameList.capacity(allClass.count());
@@ -16,7 +16,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
             }
 
             ZFImpl_ZFLua_implSetupScope(
-                ZFCoreArrayPODCreate(lua_State *, L),
+                ZFCoreArrayCreate(lua_State *, L),
                 classNameList);
         }
     }), ZFM_EXPAND({
@@ -25,7 +25,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFClass, ZFM_EXPAND({
                 && !data.changedClass->classIsInternalPrivate()
                 && zfstringIsEmpty(data.changedClass->classNamespace())
                 ) {
-            ZFCoreArrayPOD<lua_State *> stateList;
+            ZFCoreArray<lua_State *> stateList;
             stateList.add(L);
             if(data.changeType == ZFClassDataChangeTypeAttach) {
                 ZFImpl_ZFLua_implSetupScope(

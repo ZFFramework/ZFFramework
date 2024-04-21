@@ -10,7 +10,7 @@ public:
 zfclassNotPOD _ZFP_ZFAutoReleasePoolPrivate {
 public:
     zfindex maxSize;
-    ZFCoreArrayPOD<_ZFP_ZFAutoReleasePoolData> array;
+    ZFCoreArray<_ZFP_ZFAutoReleasePoolData> array;
 public:
     _ZFP_ZFAutoReleasePoolPrivate(void)
     : maxSize(zfindexMax())
@@ -69,7 +69,7 @@ void ZFAutoReleasePool::poolAdd(ZF_IN ZFObject *obj) {
 void ZFAutoReleasePool::poolDrain() {
     if(!d->array.isEmpty()) {
         zfCoreMutexLock();
-        ZFCoreArrayPOD<_ZFP_ZFAutoReleasePoolData> tmp;
+        ZFCoreArray<_ZFP_ZFAutoReleasePoolData> tmp;
         tmp.swap(d->array);
         zfCoreMutexUnlock();
 

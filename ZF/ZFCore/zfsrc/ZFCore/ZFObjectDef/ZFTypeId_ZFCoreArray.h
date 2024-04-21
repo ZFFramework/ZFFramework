@@ -195,11 +195,6 @@ public:
             holderOld->refDelete();
         }
     }
-    /** @brief set the internal value */
-    template<typename T_Type>
-    void wrappedValue(ZF_IN const ZFCoreArrayPOD<T_Type> &v) {
-        this->wrappedValue((const ZFCoreArray<T_Type> &)v);
-    }
     zfoverride
     virtual void wrappedValueCopy(ZF_IN void *v) {
         zfCoreAssertWithMessageTrim(this->elementType != zfnull, "wrappedValueCopy without explicit element type");
@@ -336,9 +331,6 @@ public:
             ret += token.tokenRight;
             return ret;
         }
-    }
-    zfbool isPODType(void) {
-        return this->zfv != zfnull && this->zfv->isPODType();
     }
     void capacity(ZF_IN zfindex newCapacity) {
         if(this->zfv != zfnull) {
@@ -522,7 +514,6 @@ protected:
 };
 
 /** @cond ZFPrivateDoc */
-
 template<typename T_Type>
 zfclassNotPOD ZFTypeId<ZFCoreArray<T_Type>, 0, 0> : zfextend ZFTypeInfo {
 public:
@@ -624,105 +615,6 @@ public:
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
         return zfnew(ZFCoreArray<ZFCoreArray<T_Type> >);
-    }
-};
-
-template<typename T_Type>
-zfclassNotPOD ZFTypeId<ZFCoreArrayPOD<T_Type>, 0, 0> : zfextend ZFTypeInfo {
-public:
-    enum {
-        TypeIdRegistered = ZFTypeId<T_Type>::TypeIdRegistered,
-        TypeIdSerializable = ZFTypeId<T_Type>::TypeIdSerializable,
-    };
-    static inline const zfchar *TypeId(void) {
-        return ZFTypeId_ZFCoreArray();
-    }
-    zfoverride
-    virtual zfbool typeIdSerializable(void) const {
-        return TypeIdSerializable;
-    }
-    zfoverride
-    virtual const zfchar *typeId(void) const {
-        return TypeId();
-    }
-    zfoverride
-    virtual const ZFClass *typeIdClass(void) const {
-        return v_ZFCoreArray::ClassData();
-    }
-    static zfbool ValueStore(
-            ZF_OUT zfauto &obj
-            , ZF_IN ZFCoreArray<T_Type> const &v
-            ) {
-        return ZFTypeId<ZFCoreArray<T_Type> >::ValueStore(obj, v);
-    }
-    template<typename T_Access = ZFCoreArrayPOD<T_Type>
-        , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
-            && zftIsSame<
-                    typename zftTraits<T_Access>::TrNoRef,
-                    ZFCoreArray<T_Type>
-                >::Value != 1)
-            ? 1 : 0)
-        , typename T_Fix = void
-        >
-    zfclassNotPOD Value {
-    public:
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
-            return t != zfnull && (
-                    t->elementType == zfnull
-                    || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
-                    );
-        }
-        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
-            if(t->zfv == zfnull) {
-                t->wrappedValue(typename zftTraits<T_Access>::TrType());
-            }
-            return (T_Access)(ZFCoreArrayPOD<T_Type> &)(*(t->zfv));
-        }
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
-        }
-    };
-    template<typename T_Access>
-    zfclassNotPOD Value<T_Access, 1> {
-    public:
-        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
-            return t != zfnull && (
-                    t->elementType == zfnull
-                    || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
-                    );
-        }
-        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
-            if(t->zfv == zfnull) {
-                t->wrappedValue(typename zftTraits<T_Access>::TrType());
-            }
-            return (T_Access)(ZFCoreArrayPOD<T_Type> *)(t->zfv);
-        }
-        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
-        }
-    };
-public:
-    zfoverride
-    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
-        return ValueStore(obj, *(const ZFCoreArrayPOD<T_Type> *)v);
-    }
-    zfoverride
-    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
-        if(!Value<ZFCoreArrayPOD<T_Type> >::zfvAccessAvailable(obj)) {
-            return zfnull;
-        }
-        return (void *)zfnew(ZFCoreArrayPOD<T_Type>, Value<ZFCoreArrayPOD<T_Type> >::zfvAccess(obj));
-    }
-    zfoverride
-    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
-        zfdelete((ZFCoreArrayPOD<T_Type> *)v);
-        Value<ZFCoreArrayPOD<T_Type> >::zfvAccessFinish(obj);
-    }
-    zfoverride
-    virtual ZFCoreArrayBase *genericArrayNew(void) const {
-        return zfnew(ZFCoreArray<ZFCoreArrayPOD<T_Type> >);
     }
 };
 /** @endcond */

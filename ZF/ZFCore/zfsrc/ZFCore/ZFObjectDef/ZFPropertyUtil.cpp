@@ -10,13 +10,13 @@ void ZFPropertyCopyAll(
         ZF_IN ZFObject *dstObj
         , ZF_IN ZFObject *srcObj
         , ZF_IN_OPT const ZFFilterForZFProperty *filter /* = zfnull */
-        , ZF_OUT_OPT ZFCoreArrayPOD<const ZFProperty *> *copiedProperties /* = zfnull */
+        , ZF_OUT_OPT ZFCoreArray<const ZFProperty *> *copiedProperties /* = zfnull */
         ) {
     if(dstObj == zfnull || srcObj == zfnull) {
         return;
     }
 
-    ZFCoreArrayPOD<const ZFProperty *> allProperty = ZFClassUtil::allProperty(dstObj->classData(), filter);
+    ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(dstObj->classData(), filter);
     const ZFClass *srcClass = srcObj->classData();
     for(zfindex i = 0; i < allProperty.count(); ++i) {
         const ZFProperty *property = allProperty.get(i);
@@ -58,7 +58,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, ZFPropertyCopyAll
         , ZFMP_IN(ZFObject *, dstObj)
         , ZFMP_IN(ZFObject *, srcObj)
         , ZFMP_IN_OPT(const ZFFilterForZFProperty *, filter, zfnull)
-        , ZFMP_OUT_OPT(ZFCoreArrayPOD<const ZFProperty *> *, copiedProperties, zfnull)
+        , ZFMP_OUT_OPT(ZFCoreArray<const ZFProperty *> *, copiedProperties, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFPropertyGetInfo
         , ZFMP_IN_OUT(zfstring &, ret)

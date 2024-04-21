@@ -200,7 +200,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFMethodFuncForNameGetAllT
         , ZFMP_IN(const zfchar *, methodNamespace)
         , ZFMP_IN(const zfchar *, methodName)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const ZFMethod *>, ZFMethodFuncForNameGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFMethod *>, ZFMethodFuncForNameGetAll
         , ZFMP_IN(const zfchar *, methodNamespace)
         , ZFMP_IN(const zfchar *, methodName)
         )
@@ -208,7 +208,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFMethodFuncGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
         , ZFMP_IN_OPT(const ZFFilterForZFMethod *, filter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArrayPOD<const ZFMethod *>, ZFMethodFuncGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFMethod *>, ZFMethodFuncGetAll
         , ZFMP_IN_OPT(const ZFFilterForZFMethod *, filter, zfnull)
         )
 

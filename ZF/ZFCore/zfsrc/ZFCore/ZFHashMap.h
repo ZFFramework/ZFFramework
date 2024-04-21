@@ -49,7 +49,7 @@ public:
             , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
             )
     /** @brief see #allKey */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFObject *>, allKey)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFObject *>, allKey)
 
     /**
      * @brief get a copy of all value
@@ -58,7 +58,7 @@ public:
             , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
             )
     /** @brief see #allValue */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFObject *>, allValue)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFObject *>, allValue)
 
 public:
     /**
@@ -80,8 +80,8 @@ public:
     }
     /** @brief see #allKey */
     template<typename T_ZFObject>
-    ZFCoreArrayPOD<T_ZFObject> allKey(void) {
-        ZFCoreArrayPOD<T_ZFObject> ret;
+    ZFCoreArray<T_ZFObject> allKey(void) {
+        ZFCoreArray<T_ZFObject> ret;
         this->allKeyT(ret);
         return ret;
     }
@@ -96,8 +96,8 @@ public:
     }
     /** @brief see #allValue */
     template<typename T_ZFObject>
-    ZFCoreArrayPOD<T_ZFObject> allValue(void) {
-        ZFCoreArrayPOD<T_ZFObject> ret;
+    ZFCoreArray<T_ZFObject> allValue(void) {
+        ZFCoreArray<T_ZFObject> ret;
         this->allValueT(ret);
         return ret;
     }

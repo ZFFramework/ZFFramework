@@ -35,7 +35,7 @@ public:
             return view;
         }
         ZFUIView *ret = zfnull;
-        ZFCoreArrayPOD<ZFUIView *> children = view->childArray();
+        ZFCoreArray<ZFUIView *> children = view->childArray();
         for(zfindex i = 0; i < children.count(); ++i) {
             ret = this->viewFocusFind(children[i]);
             if(ret != zfnull) {

@@ -39,7 +39,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkDataHolder, ZFLevelZFFramewor
 }
 public:
     ZFListener viewOnDeallocListener;
-    ZFCoreArrayPOD<ZFUIView *> blinkingViews;
+    ZFCoreArray<ZFUIView *> blinkingViews;
     ZFIdentityGenerator delayTaskIdGenerator;
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkDataHolder)
 

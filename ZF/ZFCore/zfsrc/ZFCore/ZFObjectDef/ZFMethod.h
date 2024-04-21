@@ -291,7 +291,7 @@ public:
         return this->_ZFP_ZFMethod_methodAliasFrom;
     }
     /** @brief see #ZFMethodAlias */
-    inline const ZFCoreArrayPOD<const ZFMethod *> &methodAliasTo(void) const {
+    inline const ZFCoreArray<const ZFMethod *> &methodAliasTo(void) const {
         return this->_ZFP_ZFMethod_methodAliasTo;
     }
 
@@ -675,7 +675,7 @@ public:
     // general
     zfuint _ZFP_ZFMethod_refCount;
     const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
-    ZFCoreArrayPOD<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
+    ZFCoreArray<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
     zfchar *_ZFP_ZFMethod_methodInternalId;
     zfbool _ZFP_ZFMethod_methodIsUserRegister;
     ZFObject *_ZFP_ZFMethod_methodUserRegisterUserData;
@@ -803,8 +803,8 @@ extern ZFLIB_ZFCore void ZFMethodGetAllT(
  * use with caution\n
  * use #ZFClass::methodForName or #ZFMethodFuncForName if necessary
  */
-inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodGetAll(ZF_IN_OPT const ZFFilterForZFMethod *methodFilter = zfnull) {
-    ZFCoreArrayPOD<const ZFMethod *> ret;
+inline ZFCoreArray<const ZFMethod *> ZFMethodGetAll(ZF_IN_OPT const ZFFilterForZFMethod *methodFilter = zfnull) {
+    ZFCoreArray<const ZFMethod *> ret;
     ZFMethodGetAllT(ret, methodFilter);
     return ret;
 }
@@ -846,11 +846,11 @@ extern ZFLIB_ZFCore void ZFMethodForNameGetAllT(
         , ZF_IN const zfchar *methodName
         );
 /** @brief see #ZFMethodForNameGetAllT */
-inline ZFCoreArrayPOD<const ZFMethod *> ZFMethodForNameGetAll(
+inline ZFCoreArray<const ZFMethod *> ZFMethodForNameGetAll(
         ZF_IN const zfchar *classNameOrNamespace
         , ZF_IN const zfchar *methodName
         ) {
-    ZFCoreArrayPOD<const ZFMethod *> ret;
+    ZFCoreArray<const ZFMethod *> ret;
     ZFMethodForNameGetAllT(ret, classNameOrNamespace, methodName);
     return ret;
 }

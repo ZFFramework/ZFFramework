@@ -115,7 +115,7 @@ protected:
                 if(!zfargs.sender()->to<ZFUIButton *>()->checked()) { // click checked tab
                     zfargs.sender()->to<ZFUIButton *>()->checked(zftrue);
 
-                    ZFCoreArrayPOD<ZFUIPage *> pageToDestroy;
+                    ZFCoreArray<ZFUIPage *> pageToDestroy;
                     for(zfindex i = pageManager->pageCount() - 1; i != zfindexMax(); --i) {
                         if(pageManager->pageAt(i)->pageGroupId().compare(pageGroupId->zfv) == 0) {
                             pageToDestroy.add(pageManager->pageAt(i));

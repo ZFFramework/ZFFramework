@@ -9,20 +9,20 @@ public:
     ZFObject **cache;
     zfindex *cacheCount;
 };
-static ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &_ZFP_zfAllocCacheDataList(void) {
-    static ZFCoreArrayPOD<_ZFP_zfAllocCacheData> d;
+static ZFCoreArray<_ZFP_zfAllocCacheData> &_ZFP_zfAllocCacheDataList(void) {
+    static ZFCoreArray<_ZFP_zfAllocCacheData> d;
     return d;
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ObjCacheDataHolder, ZFLevelZFFrameworkNormal) {
-    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
+    ZFCoreArray<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {
         *(d[i].enableFlag) = zftrue;
     }
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ObjCacheDataHolder) {
-    ZFCoreArrayPOD<ZFObject *> toRelease;
-    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
+    ZFCoreArray<ZFObject *> toRelease;
+    ZFCoreArray<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {
         *(d[i].enableFlag) = zffalse;
         toRelease.addFrom(d[i].cache, *(d[i].cacheCount));
@@ -36,8 +36,8 @@ ZF_GLOBAL_INITIALIZER_END(ObjCacheDataHolder)
 
 void zfAllocCacheRemoveAll(void) {
     zfCoreMutexLocker();
-    ZFCoreArrayPOD<ZFObject *> toRelease;
-    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
+    ZFCoreArray<ZFObject *> toRelease;
+    ZFCoreArray<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = d.count() - 1; i != zfindexMax(); --i) {
         toRelease.addFrom(d[i].cache, *(d[i].cacheCount));
         *(d[i].cacheCount) = 0;
@@ -52,7 +52,7 @@ void _ZFP_zfAllocCacheImplRegister(
         , ZF_IN_OUT ZFObject **cache
         , ZF_IN_OUT zfindex &cacheCount
         ) {
-    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
+    ZFCoreArray<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     _ZFP_zfAllocCacheData item;
     item.enableFlag = &enableFlag;
     item.cache = cache;
@@ -63,10 +63,10 @@ void _ZFP_zfAllocCacheImplRegister(
     }
 }
 void _ZFP_zfAllocCacheImplUnregister(ZF_IN_OUT zfbool &enableFlag) {
-    ZFCoreArrayPOD<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
+    ZFCoreArray<_ZFP_zfAllocCacheData> &d = _ZFP_zfAllocCacheDataList();
     for(zfindex i = 0; i < d.count(); ++i) {
         if(&enableFlag == d[i].enableFlag) {
-            ZFCoreArrayPOD<ZFObject *> toRelease;
+            ZFCoreArray<ZFObject *> toRelease;
             toRelease.addFrom(d[i].cache, *(d[i].cacheCount));
 
             *(d[i].cacheCount) = 0;

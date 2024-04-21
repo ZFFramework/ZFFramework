@@ -58,7 +58,7 @@ private:
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIOrientationEnum, ZFPropertyAccess(ZFUILinearLayout, layoutOrientation),
-            ZFCoreArrayPODCreate(ZFUIOrientationEnum
+            ZFCoreArrayCreate(ZFUIOrientationEnum
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
                 , ZFUIOrientation::e_Left
@@ -66,7 +66,7 @@ private:
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, ZFUIMargin, ZFPropertyAccess(ZFUILinearLayout, layoutChildMargin),
-            ZFCoreArrayPODCreate(ZFUIMargin
+            ZFCoreArrayCreate(ZFUIMargin
                 , ZFUIMarginZero()
                 , ZFUIMarginMake(8)
                 , ZFUIMarginMake(12)
@@ -74,7 +74,7 @@ private:
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout, zffloat, ZFPropertyAccess(ZFUILinearLayout, layoutChildSpace),
-            ZFCoreArrayPODCreate(zffloat
+            ZFCoreArrayCreate(zffloat
                 , 0
                 , 8
                 , 12
@@ -82,7 +82,7 @@ private:
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, layout->layoutParam(), ZFUISizeParam, ZFPropertyAccess(ZFUILayoutParam, sizeParam),
-            ZFCoreArrayPODCreate(ZFUISizeParam
+            ZFCoreArrayCreate(ZFUISizeParam
                 , ZFUISizeParamWrapWrap()
                 , ZFUISizeParamFillWrap()
                 , ZFUISizeParamWrapFill()

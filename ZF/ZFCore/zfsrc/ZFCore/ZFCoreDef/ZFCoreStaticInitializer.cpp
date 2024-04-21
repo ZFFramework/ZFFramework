@@ -28,11 +28,11 @@ public:
 
 zfclassLikePOD _ZFP_SI_Data {
 public:
-    ZFCoreArrayPOD<_ZFP_SI_ItemData *> datas;
+    ZFCoreArray<_ZFP_SI_ItemData *> datas;
 public:
     ~_ZFP_SI_Data(void) {
-        ZFCoreArrayPOD<_ZFP_SI_ItemData *> tmp = datas;
-        datas = ZFCoreArrayPOD<_ZFP_SI_ItemData *>();
+        ZFCoreArray<_ZFP_SI_ItemData *> tmp = datas;
+        datas = ZFCoreArray<_ZFP_SI_ItemData *>();
         for(zfindex i = 0; i < tmp.count(); ++i) {
             zfdelete(tmp[i]);
         }

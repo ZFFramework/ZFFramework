@@ -228,7 +228,7 @@ public:
      * returned value should not be stored,
      * since visible cell may change frequently
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIListCell *>, listVisibleCell)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIListCell *>, listVisibleCell)
     /**
      * @brief return first visible cell's index, valid only if #listReloadRequested is not true
      *

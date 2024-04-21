@@ -14,7 +14,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIView)
 // _ZFP_ZFUIViewPrivate
 zfclassLikePOD _ZFP_ZFUIViewLayerData {
 public:
-    ZFCoreArrayPOD<ZFUIView *> views;
+    ZFCoreArray<ZFUIView *> views;
 };
 typedef zfstlmap<zfstring, zfbool> _ZFP_ZFUIViewInternalViewAutoSerializeTagMapType;
 zfclassNotPOD _ZFP_ZFUIViewPrivate {
@@ -369,8 +369,8 @@ public:
 
         owner->layoutRequest();
 
-        ZFCoreArrayPOD<ZFUIView *> tmp = layer.views;
-        layer.views = ZFCoreArrayPOD<ZFUIView *>();
+        ZFCoreArray<ZFUIView *> tmp = layer.views;
+        layer.views = ZFCoreArray<ZFUIView *>();
 
         zfindex prevLayerCount = this->viewLayerPrevCount(layer);
         for(zfindex i = tmp.count() - 1; i != zfindexMax(); --i) {
@@ -480,8 +480,8 @@ public:
             , ZF_IN ZFUIView *view1
             , ZF_IN ZFUIViewChildLayerEnum childLayer
             ) {
-        const ZFCoreArrayPOD<ZFUIView *> *children0 = zfnull;
-        const ZFCoreArrayPOD<ZFUIView *> *children1 = zfnull;
+        const ZFCoreArray<ZFUIView *> *children0 = zfnull;
+        const ZFCoreArray<ZFUIView *> *children1 = zfnull;
         switch(childLayer) {
             case ZFUIViewChildLayer::e_Normal:
                 children0 = &(view0->d->layerNormal.views);
@@ -551,7 +551,7 @@ public:
             return zffalse;
         }
         ZFUIView *exist = zfnull;
-        const ZFCoreArrayPOD<ZFUIView *> *views = zfnull;
+        const ZFCoreArray<ZFUIView *> *views = zfnull;
         switch(childLayer) {
             case ZFUIViewChildLayer::e_Normal:
                 zfCoreCriticalShouldNotGoHere();
@@ -607,8 +607,8 @@ public:
             , ZF_IN ZFUIView *ref
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
             ) {
-        const ZFCoreArrayPOD<ZFUIView *> *views = zfnull;
-        const ZFCoreArrayPOD<ZFUIView *> *viewsRef = zfnull;
+        const ZFCoreArray<ZFUIView *> *views = zfnull;
+        const ZFCoreArray<ZFUIView *> *viewsRef = zfnull;
         const zfchar *categoryTag = zfnull;
         switch(childLayer) {
             case ZFUIViewChildLayer::e_Normal:
@@ -1044,7 +1044,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewNativeViewCache) {
         ZFPROTOCOL_ACCESS(ZFUIView)->nativeViewDestroy(this->nativeViewCache.removeLastAndGet());
     }
 }
-ZFCoreArrayPOD<void *> nativeViewCache;
+ZFCoreArray<void *> nativeViewCache;
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewNativeViewCache)
 
 void ZFUIView::objectOnInit(void) {
@@ -1057,7 +1057,7 @@ void ZFUIView::objectOnInit(void) {
         d->nativeView = ZFPROTOCOL_ACCESS(ZFUIView)->nativeViewCreate(this);
     }
     else {
-        ZFCoreArrayPOD<void *> &nativeViewCache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewNativeViewCache)->nativeViewCache;
+        ZFCoreArray<void *> &nativeViewCache = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewNativeViewCache)->nativeViewCache;
         if(nativeViewCache.isEmpty()) {
             d->nativeView = ZFPROTOCOL_ACCESS(ZFUIView)->nativeViewCreate(this);
         }
@@ -1109,10 +1109,10 @@ void ZFUIView::objectOnDeallocPrepare(void) {
     // directly remove all children, better performance
     this->implChildOnRemoveAllForDealloc();
 
-    ZFCoreArrayPOD<ZFUIView *> &layerNormal = d->layerNormal.views;
-    ZFCoreArrayPOD<ZFUIView *> &layerInternalFg = d->layerInternalFg.views;
-    ZFCoreArrayPOD<ZFUIView *> &layerInternalBg = d->layerInternalBg.views;
-    ZFCoreArrayPOD<ZFUIView *> &layerInternalImpl = d->layerInternalImpl.views;
+    ZFCoreArray<ZFUIView *> &layerNormal = d->layerNormal.views;
+    ZFCoreArray<ZFUIView *> &layerInternalFg = d->layerInternalFg.views;
+    ZFCoreArray<ZFUIView *> &layerInternalBg = d->layerInternalBg.views;
+    ZFCoreArray<ZFUIView *> &layerInternalImpl = d->layerInternalImpl.views;
 
     for(zfindex i = layerNormal.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = layerNormal[i];
@@ -1810,14 +1810,14 @@ ZFMETHOD_DEFINE_1(ZFUIView, zfindex, childFind
         ) {
     return d->childFind(d->layerNormal, view);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, childArray) {
+ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<ZFUIView *>, childArray) {
     return d->layerNormal.views;
 }
 ZFMETHOD_DEFINE_0(ZFUIView, ZFUIViewChildLayerEnum, viewLayer) {
     return d->viewLayer;
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, childRawArray) {
-    ZFCoreArrayPOD<ZFUIView *> ret;
+ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<ZFUIView *>, childRawArray) {
+    ZFCoreArray<ZFUIView *> ret;
     ret.capacity(
         d->layerInternalBg.views.count()
         + d->layerInternalBg.views.count()
@@ -1890,7 +1890,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalImplViewRemove
         ) {
     d->childRemove(this, ZFUIViewChildLayer::e_InternalImpl, d->layerInternalImpl, view);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, internalImplViewArray) {
+ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<ZFUIView *>, internalImplViewArray) {
     return d->layerInternalImpl.views;
 }
 
@@ -1906,7 +1906,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalBgViewRemove
         ) {
     d->childRemove(this, ZFUIViewChildLayer::e_InternalBg, d->layerInternalBg, view);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, internalBgViewArray) {
+ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<ZFUIView *>, internalBgViewArray) {
     return d->layerInternalBg.views;
 }
 
@@ -1922,7 +1922,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalFgViewRemove
         ) {
     d->childRemove(this, ZFUIViewChildLayer::e_InternalFg, d->layerInternalFg, view);
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArrayPOD<ZFUIView *>, internalFgViewArray) {
+ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<ZFUIView *>, internalFgViewArray) {
     return d->layerInternalFg.views;
 }
 

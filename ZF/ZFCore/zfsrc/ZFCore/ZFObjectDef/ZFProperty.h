@@ -212,8 +212,8 @@ extern ZFLIB_ZFCore void ZFPropertyGetAllT(
 /**
  * @brief get all property currently registered, for debug use only
  */
-inline ZFCoreArrayPOD<const ZFProperty *> ZFPropertyGetAll(ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull) {
-    ZFCoreArrayPOD<const ZFProperty *> ret;
+inline ZFCoreArray<const ZFProperty *> ZFPropertyGetAll(ZF_IN_OPT const ZFFilterForZFProperty *propertyFilter = zfnull) {
+    ZFCoreArray<const ZFProperty *> ret;
     ZFPropertyGetAllT(ret, propertyFilter);
     return ret;
 }

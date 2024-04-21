@@ -112,15 +112,15 @@ public:
     /** @brief see #ZFDynamic */
     void removeAll(void);
     /** @brief see #ZFDynamic */
-    const ZFCoreArrayPOD<const ZFClass *> &allClass(void) const;
+    const ZFCoreArray<const ZFClass *> &allClass(void) const;
     /** @brief see #ZFDynamic */
-    const ZFCoreArrayPOD<const ZFClass *> &allEnum(void) const;
+    const ZFCoreArray<const ZFClass *> &allEnum(void) const;
     /** @brief see #ZFDynamic */
-    const ZFCoreArrayPOD<const ZFMethod *> &allMethod(void) const;
+    const ZFCoreArray<const ZFMethod *> &allMethod(void) const;
     /** @brief see #ZFDynamic */
-    const ZFCoreArrayPOD<const ZFProperty *> &allProperty(void) const;
+    const ZFCoreArray<const ZFProperty *> &allProperty(void) const;
     /** @brief see #ZFDynamic */
-    const ZFCoreArrayPOD<zfidentity> &allEvent(void) const;
+    const ZFCoreArray<zfidentity> &allEvent(void) const;
 
 public:
     /** @brief see #ZFDynamic */

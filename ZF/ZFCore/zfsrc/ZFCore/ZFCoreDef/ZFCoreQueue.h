@@ -273,8 +273,8 @@ public:
     /**
      * @brief copy contents to array
      */
-    ZFCoreArrayPOD<T_POD> toArray(void) const {
-        ZFCoreArrayPOD<T_POD> ret;
+    ZFCoreArray<T_POD> toArray(void) const {
+        ZFCoreArray<T_POD> ret;
         this->toArrayT(ret);
         return ret;
     }

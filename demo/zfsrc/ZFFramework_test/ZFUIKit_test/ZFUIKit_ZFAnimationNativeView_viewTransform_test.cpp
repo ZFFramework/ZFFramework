@@ -51,7 +51,7 @@ private:
             ) {
         zfblockedAlloc(ZFArray, settings);
 
-        ZFUIKit_test_prepareSettingForResetProperty(settings, ani, ZFCoreArrayPODCreate(const ZFProperty *
+        ZFUIKit_test_prepareSettingForResetProperty(settings, ani, ZFCoreArrayCreate(const ZFProperty *
                 , ZFPropertyAccess(ZFAnimationNativeView, aniCurve)
                 , ZFPropertyAccess(ZFAnimationNativeView, aniAlphaFrom)
                 , ZFPropertyAccess(ZFAnimationNativeView, aniAlphaTo)
@@ -82,13 +82,13 @@ private:
             ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zftimet, ZFPropertyAccess(ZFAnimationNativeView, aniDuration),
-            ZFCoreArrayPODCreate(zftimet
+            ZFCoreArrayCreate(zftimet
                 , (zftimet)0
                 , (zftimet)3000
                 ));
 
         ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, ZFAnimationNativeViewCurveEnum, ZFPropertyAccess(ZFAnimationNativeView, aniCurve),
-            ZFCoreArrayPODCreate(ZFAnimationNativeViewCurveEnum
+            ZFCoreArrayCreate(ZFAnimationNativeViewCurveEnum
                 , ZFAnimationNativeViewCurve::e_Linear
                 , ZFAnimationNativeViewCurve::e_EaseIn
                 , ZFAnimationNativeViewCurve::e_EaseOut
@@ -97,12 +97,12 @@ private:
 
         { // aniAlpha
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniAlphaFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniAlphaTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
@@ -110,34 +110,34 @@ private:
 
         { // aniScale
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniScaleXFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniScaleXTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniScaleYFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniScaleYTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniScaleZFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniScaleZTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 1.0f
                     , 0.0f
                     ));
@@ -145,34 +145,34 @@ private:
 
         { // aniTranslate
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslateXFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0.0f
                     , 1.0f
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslateXTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0.0f
                     , 1.0f
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslateYFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0.0f
                     , 1.0f
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslateYTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0.0f
                     , 1.0f
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslateZFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0.0f
                     , 1.0f
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslateZTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0.0f
                     , 1.0f
                     ));
@@ -180,34 +180,34 @@ private:
 
         { // aniTranslatePixel
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslatePixelXFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslatePixelXTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslatePixelYFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslatePixelYTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslatePixelZFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniTranslatePixelZTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 100
                     ));
@@ -215,34 +215,34 @@ private:
 
         { // aniRotate
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniRotateXFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniRotateXTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniRotateYFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniRotateYTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
 
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniRotateZFrom),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));
             ZFUIKit_test_prepareSettingForNormalProperty(settings, ani, zffloat, ZFPropertyAccess(ZFAnimationNativeView, aniRotateZTo),
-                ZFCoreArrayPODCreate(zffloat
+                ZFCoreArrayCreate(zffloat
                     , 0
                     , 90
                     ));

@@ -225,8 +225,8 @@ public:
     /**
      * @brief get all serializable property, usually for debug only, see #serializableOnCheckPropertyType
      */
-    inline ZFCoreArrayPOD<const ZFProperty *> serializableGetAllSerializableProperty(void) {
-        ZFCoreArrayPOD<const ZFProperty *> ret;
+    inline ZFCoreArray<const ZFProperty *> serializableGetAllSerializableProperty(void) {
+        ZFCoreArray<const ZFProperty *> ret;
         this->serializableGetAllSerializablePropertyT(ret);
         return ret;
     }
@@ -235,8 +235,8 @@ public:
     /**
      * @brief get all serializable embeded property, usually for debug only, see #serializableOnCheckPropertyType
      */
-    inline ZFCoreArrayPOD<const ZFProperty *> serializableGetAllSerializableEmbededProperty(void) {
-        ZFCoreArrayPOD<const ZFProperty *> ret;
+    inline ZFCoreArray<const ZFProperty *> serializableGetAllSerializableEmbededProperty(void) {
+        ZFCoreArray<const ZFProperty *> ret;
         this->serializableGetAllSerializableEmbededPropertyT(ret);
         return ret;
     }

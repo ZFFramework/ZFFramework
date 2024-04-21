@@ -40,17 +40,17 @@ public:
     zfuint enumDefault;
     zfbool enumIsFlags;
     zfuint enumValueNext;
-    ZFCoreArrayPOD<zfuint> enumValues;
+    ZFCoreArray<zfuint> enumValues;
     ZFCoreArray<zfstring> enumNames;
 
     // state
-    ZFCoreArrayPOD<const ZFClass *> allClass;
-    ZFCoreArrayPOD<_ZFP_ZFDynamicImplement> allImplement;
-    ZFCoreArrayPOD<const ZFClass *> allEnum;
-    ZFCoreArrayPOD<const ZFMethod *> allMethod;
-    ZFCoreArrayPOD<const ZFProperty *> allProperty;
-    ZFCoreArrayPOD<_ZFP_ZFDynamicPropLifeCycle> allPropertyLifeCycle;
-    ZFCoreArrayPOD<zfidentity> allEvent;
+    ZFCoreArray<const ZFClass *> allClass;
+    ZFCoreArray<_ZFP_ZFDynamicImplement> allImplement;
+    ZFCoreArray<const ZFClass *> allEnum;
+    ZFCoreArray<const ZFMethod *> allMethod;
+    ZFCoreArray<const ZFProperty *> allProperty;
+    ZFCoreArray<_ZFP_ZFDynamicPropLifeCycle> allPropertyLifeCycle;
+    ZFCoreArray<zfidentity> allEvent;
 public:
     _ZFP_ZFDynamicPrivate(void)
     : refCount(1)
@@ -111,24 +111,24 @@ public:
 public:
     void removeAll(void) {
         if(!this->allEvent.isEmpty()) {
-            ZFCoreArrayPOD<zfidentity> allEvent = this->allEvent;
-            this->allEvent = ZFCoreArrayPOD<zfidentity>();
+            ZFCoreArray<zfidentity> allEvent = this->allEvent;
+            this->allEvent = ZFCoreArray<zfidentity>();
             for(zfindex i = allEvent.count() - 1; i != zfindexMax(); --i) {
                 ZFIdMapDynamicUnregister(allEvent[i]);
             }
         }
 
         if(!this->allMethod.isEmpty()) {
-            ZFCoreArrayPOD<const ZFMethod *> allMethod = this->allMethod;
-            this->allMethod = ZFCoreArrayPOD<const ZFMethod *>();
+            ZFCoreArray<const ZFMethod *> allMethod = this->allMethod;
+            this->allMethod = ZFCoreArray<const ZFMethod *>();
             for(zfindex i = allMethod.count() - 1; i != zfindexMax(); --i) {
                 ZFMethodDynamicUnregister(allMethod[i]);
             }
         }
 
         if(!this->allPropertyLifeCycle.isEmpty()) {
-            ZFCoreArrayPOD<_ZFP_ZFDynamicPropLifeCycle> allPropertyLifeCycle = this->allPropertyLifeCycle;
-            this->allPropertyLifeCycle = ZFCoreArrayPOD<_ZFP_ZFDynamicPropLifeCycle>();
+            ZFCoreArray<_ZFP_ZFDynamicPropLifeCycle> allPropertyLifeCycle = this->allPropertyLifeCycle;
+            this->allPropertyLifeCycle = ZFCoreArray<_ZFP_ZFDynamicPropLifeCycle>();
             for(zfindex i = allPropertyLifeCycle.count() - 1; i != zfindexMax(); --i) {
                 _ZFP_ZFDynamicPropLifeCycle const &item = allPropertyLifeCycle[i];
                 ZFPropertyDynamicUnregisterLifeCycle(item.property, item.ownerClassOrNull, item.lifeCycle);
@@ -136,32 +136,32 @@ public:
         }
 
         if(!this->allProperty.isEmpty()) {
-            ZFCoreArrayPOD<const ZFProperty *> allProperty = this->allProperty;
-            this->allProperty = ZFCoreArrayPOD<const ZFProperty *>();
+            ZFCoreArray<const ZFProperty *> allProperty = this->allProperty;
+            this->allProperty = ZFCoreArray<const ZFProperty *>();
             for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
                 ZFPropertyDynamicUnregister(allProperty[i]);
             }
         }
 
         if(!this->allEnum.isEmpty()) {
-            ZFCoreArrayPOD<const ZFClass *> allEnum = this->allEnum;
-            this->allEnum = ZFCoreArrayPOD<const ZFClass *>();
+            ZFCoreArray<const ZFClass *> allEnum = this->allEnum;
+            this->allEnum = ZFCoreArray<const ZFClass *>();
             for(zfindex i = allEnum.count() - 1; i != zfindexMax(); --i) {
                 ZFEnumDynamicUnregister(allEnum[i]);
             }
         }
 
         if(!this->allImplement.isEmpty()) {
-            ZFCoreArrayPOD<_ZFP_ZFDynamicImplement> allImplement = this->allImplement;
-            this->allImplement = ZFCoreArrayPOD<_ZFP_ZFDynamicImplement>();
+            ZFCoreArray<_ZFP_ZFDynamicImplement> allImplement = this->allImplement;
+            this->allImplement = ZFCoreArray<_ZFP_ZFDynamicImplement>();
             for(zfindex i = allImplement.count() - 1; i != zfindexMax(); --i) {
                 ZFImplementDynamicUnregister(allImplement[i].cls, allImplement[i].clsToImplement);
             }
         }
 
         if(!this->allClass.isEmpty()) {
-            ZFCoreArrayPOD<const ZFClass *> allClass = this->allClass;
-            this->allClass = ZFCoreArrayPOD<const ZFClass *>();
+            ZFCoreArray<const ZFClass *> allClass = this->allClass;
+            this->allClass = ZFCoreArray<const ZFClass *>();
             for(zfindex i = allClass.count() - 1; i != zfindexMax(); --i) {
                 ZFClassDynamicUnregister(allClass[i]);
             }
@@ -188,13 +188,13 @@ public:
 ZF_STATIC_INITIALIZER_INIT(ZFDynamicDataHolder) {
 }
 public:
-    ZFCoreArrayPOD<_ZFP_ZFDynamicPrivate *> allImpl;
+    ZFCoreArray<_ZFP_ZFDynamicPrivate *> allImpl;
 public:
     void removeAll(void) {
         if(!this->allImpl.isEmpty()) {
             zfCoreMutexLocker();
-            ZFCoreArrayPOD<_ZFP_ZFDynamicPrivate *> allImpl = this->allImpl;
-            this->allImpl = ZFCoreArrayPOD<_ZFP_ZFDynamicPrivate *>();
+            ZFCoreArray<_ZFP_ZFDynamicPrivate *> allImpl = this->allImpl;
+            this->allImpl = ZFCoreArray<_ZFP_ZFDynamicPrivate *>();
             for(zfindex i = allImpl.count() - 1; i != zfindexMax(); --i) {
                 _ZFP_ZFDynamicPrivate *impl = allImpl[i];
                 impl->removeAll();
@@ -262,13 +262,13 @@ void ZFDynamic::exportTag(
         return;
     }
 
-    ZFCoreArrayPOD<const ZFClass *> allClass;
+    ZFCoreArray<const ZFClass *> allClass;
     ZFClassGetAllT(allClass);
 
-    ZFCoreArrayPOD<const ZFMethod *> allMethod;
+    ZFCoreArray<const ZFMethod *> allMethod;
     ZFMethodGetAllT(allMethod);
 
-    ZFCoreArrayPOD<const ZFTypeInfo *> allTypeId;
+    ZFCoreArray<const ZFTypeInfo *> allTypeId;
     ZFTypeInfoGetAllT(allTypeId);
 
     ZFCoreArray<zfstring> allNamespace;
@@ -378,19 +378,19 @@ void ZFDynamic::removeAll(void) {
     d->removeAll();
 }
 
-const ZFCoreArrayPOD<const ZFClass *> &ZFDynamic::allClass(void) const {
+const ZFCoreArray<const ZFClass *> &ZFDynamic::allClass(void) const {
     return d->allClass;
 }
-const ZFCoreArrayPOD<const ZFClass *> &ZFDynamic::allEnum(void) const {
+const ZFCoreArray<const ZFClass *> &ZFDynamic::allEnum(void) const {
     return d->allEnum;
 }
-const ZFCoreArrayPOD<const ZFMethod *> &ZFDynamic::allMethod(void) const {
+const ZFCoreArray<const ZFMethod *> &ZFDynamic::allMethod(void) const {
     return d->allMethod;
 }
-const ZFCoreArrayPOD<const ZFProperty *> &ZFDynamic::allProperty(void) const {
+const ZFCoreArray<const ZFProperty *> &ZFDynamic::allProperty(void) const {
     return d->allProperty;
 }
-const ZFCoreArrayPOD<zfidentity> &ZFDynamic::allEvent(void) const {
+const ZFCoreArray<zfidentity> &ZFDynamic::allEvent(void) const {
     return d->allEvent;
 }
 
@@ -1007,11 +1007,11 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, regTag
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const zfchar *, regTag)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, void, removeAll)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArrayPOD<const ZFClass *> &, allClass)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArrayPOD<const ZFClass *> &, allEnum)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArrayPOD<const ZFMethod *> &, allMethod)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArrayPOD<const ZFProperty *> &, allProperty)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArrayPOD<zfidentity> &, allEvent)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFClass *> &, allClass)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFClass *> &, allEnum)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFMethod *> &, allMethod)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFProperty *> &, allProperty)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<zfidentity> &, allEvent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
         , ZFMP_IN(const zfchar *, classNameFull)
         , ZFMP_IN_OPT(const ZFClass *, classParent, ZFObject::ClassData())

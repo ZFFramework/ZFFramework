@@ -7,19 +7,19 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void) {
-    static ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> d;
+ZFCoreArray<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void) {
+    static ZFCoreArray<ZFFrameworkStateChangeCallback> d;
     return d;
 }
-ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void) {
-    static ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> d;
+ZFCoreArray<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkCleanupPrepareCallbacks(void) {
+    static ZFCoreArray<ZFFrameworkStateChangeCallback> d;
     return d;
 }
 
 zfclassNotPOD _ZFP_GI_Data {
 public:
     zfuint refCount;
-    ZFCoreArrayPOD<zfbool *> ZFCoreLibDestroyFlag;
+    ZFCoreArray<zfbool *> ZFCoreLibDestroyFlag;
     ZFFrameworkState state;
     zfstring name;
     ZFLevel level;
@@ -59,10 +59,10 @@ static void _ZFP_GI_keyForName(
     key += name;
 }
 
-static void _ZFP_GI_instanceInit(ZFCoreArrayPOD<_ZFP_GI_Data *> &list) {
+static void _ZFP_GI_instanceInit(ZFCoreArray<_ZFP_GI_Data *> &list) {
     if(!list.isEmpty()) {
         // array may be changed during init step, copy it first
-        ZFCoreArrayPOD<_ZFP_GI_Data *> tmp;
+        ZFCoreArray<_ZFP_GI_Data *> tmp;
         tmp.copyFrom(list);
         for(zfindex i = 0; i < tmp.count(); ++i) {
             _ZFP_GI_Data *data = tmp.get(i);
@@ -72,7 +72,7 @@ static void _ZFP_GI_instanceInit(ZFCoreArrayPOD<_ZFP_GI_Data *> &list) {
         }
     }
 }
-static void _ZFP_GI_instanceDealloc(ZFCoreArrayPOD<_ZFP_GI_Data *> &list) {
+static void _ZFP_GI_instanceDealloc(ZFCoreArray<_ZFP_GI_Data *> &list) {
     zfbool hasDataToClean = zftrue;
     do {
         hasDataToClean = zffalse;
@@ -93,65 +93,65 @@ public:
     ZFFrameworkState state;
 
     ZFFrameworkState stateZFFrameworkStatic;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkStatic;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkStatic;
     ZFCoreMap dataMapLevelZFFrameworkStatic; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkEssential;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkEssential;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkEssential;
     ZFCoreMap dataMapLevelZFFrameworkEssential; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkHigh;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkHigh;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkHigh;
     ZFCoreMap dataMapLevelZFFrameworkHigh; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkNormal;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkNormal;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkNormal;
     ZFCoreMap dataMapLevelZFFrameworkNormal; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkLow;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkLow;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkLow;
     ZFCoreMap dataMapLevelZFFrameworkLow; // _ZFP_GI_Data *
 
 
     ZFFrameworkState stateAppEssential;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelAppEssential;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelAppEssential;
     ZFCoreMap dataMapLevelAppEssential; // _ZFP_GI_Data *
 
     ZFFrameworkState stateAppHigh;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelAppHigh;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelAppHigh;
     ZFCoreMap dataMapLevelAppHigh; // _ZFP_GI_Data *
 
     ZFFrameworkState stateAppNormal;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelAppNormal;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelAppNormal;
     ZFCoreMap dataMapLevelAppNormal; // _ZFP_GI_Data *
 
     ZFFrameworkState stateAppLow;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelAppLow;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelAppLow;
     ZFCoreMap dataMapLevelAppLow; // _ZFP_GI_Data *
 
 
     ZFFrameworkState stateZFFrameworkPostLow;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkPostLow;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkPostLow;
     ZFCoreMap dataMapLevelZFFrameworkPostLow; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkPostNormal;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkPostNormal;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkPostNormal;
     ZFCoreMap dataMapLevelZFFrameworkPostNormal; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkPostHigh;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkPostHigh;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkPostHigh;
     ZFCoreMap dataMapLevelZFFrameworkPostHigh; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkPostEssential;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkPostEssential;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkPostEssential;
     ZFCoreMap dataMapLevelZFFrameworkPostEssential; // _ZFP_GI_Data *
 
     ZFFrameworkState stateZFFrameworkPostStatic;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> dataLevelZFFrameworkPostStatic;
+    ZFCoreArray<_ZFP_GI_Data *> dataLevelZFFrameworkPostStatic;
     ZFCoreMap dataMapLevelZFFrameworkPostStatic; // _ZFP_GI_Data *
 
 public:
-    ZFCoreArrayPOD<_ZFP_GI_Data *> &dataListForLevel(ZF_IN ZFLevel level) {
+    ZFCoreArray<_ZFP_GI_Data *> &dataListForLevel(ZF_IN ZFLevel level) {
         switch(level) {
             case ZFLevelZFFrameworkStatic:
                 return this->dataLevelZFFrameworkStatic;
@@ -349,7 +349,7 @@ void ZFFrameworkInit(void) {
 
         d.state = ZFFrameworkStateAvailable;
 
-        ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &m = ZFFrameworkInitFinishCallbacks;
+        ZFCoreArray<ZFFrameworkStateChangeCallback> &m = ZFFrameworkInitFinishCallbacks;
         for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }
@@ -382,7 +382,7 @@ void ZFFrameworkCleanup(void) {
     if(d.state == ZFFrameworkStateAvailable) {
         d.state = ZFFrameworkStateCleanupProcessing;
 
-        ZFCoreArrayPOD<ZFFrameworkStateChangeCallback> &m = ZFFrameworkCleanupPrepareCallbacks;
+        ZFCoreArray<ZFFrameworkStateChangeCallback> &m = ZFFrameworkCleanupPrepareCallbacks;
         for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }
@@ -507,7 +507,7 @@ static void _ZFP_GI_dataRegister(
         , ZF_IN _ZFP_GI_Destructor destructor
         ) {
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> &dataList = holder.dataListForLevel(level);
+    ZFCoreArray<_ZFP_GI_Data *> &dataList = holder.dataListForLevel(level);
     ZFCoreMap &dataMap = holder.dataMapForLevel(level);
     zfstring key;
     _ZFP_GI_keyForName(key, name, level);
@@ -564,7 +564,7 @@ static void _ZFP_GI_dataUnregister(
         return;
     }
     _ZFP_GI_DataContainer &holder = _ZFP_GI_dataContainerInstance;
-    ZFCoreArrayPOD<_ZFP_GI_Data *> &dataList = holder.dataListForLevel(level);
+    ZFCoreArray<_ZFP_GI_Data *> &dataList = holder.dataListForLevel(level);
     ZFCoreMap &dataMap = holder.dataMapForLevel(level);
     zfstring key;
     _ZFP_GI_keyForName(key, name, level);
@@ -623,7 +623,7 @@ static void **_ZFP_GI_instanceAccess(
     return &(data->instance);
 }
 
-static const _ZFP_GI_Data *_ZFP_GI_dependencyCheck(ZFCoreArrayPOD<_ZFP_GI_Data *> &data) {
+static const _ZFP_GI_Data *_ZFP_GI_dependencyCheck(ZFCoreArray<_ZFP_GI_Data *> &data) {
     for(zfindex i = 0; i < data.count(); ++i) {
         if(data[i]->instance == zfnull) {
             return data[i];
@@ -697,7 +697,7 @@ void _ZFP_GI_notifyInstanceCreated(ZF_IN const _ZFP_GI_Data *data) {
     }
 
     // reorder in same level
-    ZFCoreArrayPOD<_ZFP_GI_Data *> &dataList = d.dataListForLevel(data->level);
+    ZFCoreArray<_ZFP_GI_Data *> &dataList = d.dataListForLevel(data->level);
     zfindex prevNull = zfindexMax();
     zfindex self = 0;
     for(zfindex i = 0; i < dataList.count(); ++i) {

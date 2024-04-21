@@ -101,8 +101,8 @@ extern ZFLIB_ZFCore void ZFTypeInfoGetAllT(ZF_IN_OUT ZFCoreArray<const ZFTypeInf
 /**
  * @brief access type id data
  */
-inline ZFCoreArrayPOD<const ZFTypeInfo *> ZFTypeInfoGetAll(void) {
-    ZFCoreArrayPOD<const ZFTypeInfo *> ret;
+inline ZFCoreArray<const ZFTypeInfo *> ZFTypeInfoGetAll(void) {
+    ZFCoreArray<const ZFTypeInfo *> ret;
     ZFTypeInfoGetAllT(ret);
     return ret;
 }

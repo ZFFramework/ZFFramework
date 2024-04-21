@@ -89,8 +89,8 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, allKeyT
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArrayPOD<ZFObject *>, allKey) {
-    ZFCoreArrayPOD<ZFObject *> ret;
+ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArray<ZFObject *>, allKey) {
+    ZFCoreArray<ZFObject *> ret;
     this->allKeyT(ret);
     return ret;
 }
@@ -105,8 +105,8 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, allValueT
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArrayPOD<ZFObject *>, allValue) {
-    ZFCoreArrayPOD<ZFObject *> ret;
+ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArray<ZFObject *>, allValue) {
+    ZFCoreArray<ZFObject *> ret;
     this->allValueT(ret);
     return ret;
 }

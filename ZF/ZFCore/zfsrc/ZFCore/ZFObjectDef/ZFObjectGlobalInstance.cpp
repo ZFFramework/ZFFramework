@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     } \
     ZF_GLOBAL_INITIALIZER_DESTROY(Name) { \
         while(!this->instances.isEmpty()) { \
-            ZFCoreArrayPOD<ZFCorePointerBase *> tmp; \
+            ZFCoreArray<ZFCorePointerBase *> tmp; \
             tmp.copyFrom(this->instances); \
             this->instances.removeAll(); \
             for(zfindex i = 0; i < tmp.count(); ++i) { \
@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     } \
     public: \
-        ZFCoreArrayPOD<ZFCorePointerBase *> instances; \
+        ZFCoreArray<ZFCorePointerBase *> instances; \
     ZF_GLOBAL_INITIALIZER_END(Name)
 #define _ZFP_ZFObjectGlobalInstanceDefine(Name, Level) \
     _ZFP_ZFObjectGlobalInstanceDefine_(Name, Level)
@@ -38,7 +38,7 @@ _ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFramewo
 _ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkPostHigh), ZFLevelZFFrameworkPostHigh)
 _ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkPostEssential), ZFLevelZFFrameworkPostEssential)
 
-static ZFCoreArrayPOD<ZFCorePointerBase *> &_ZFP_ZFObjectGlobalInstanceRef(ZF_IN ZFLevel level) {
+static ZFCoreArray<ZFCorePointerBase *> &_ZFP_ZFObjectGlobalInstanceRef(ZF_IN ZFLevel level) {
     switch(level) {
         case ZFLevelZFFrameworkEssential:
             return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkEssential)->instances;
@@ -98,7 +98,7 @@ void ZFObjectGlobalInstanceRemove(
         ZF_IN ZFCorePointerBase *sp
         , ZF_IN ZFLevel level
         ) {
-    ZFCoreArrayPOD<ZFCorePointerBase *> &instances = _ZFP_ZFObjectGlobalInstanceRef(level);
+    ZFCoreArray<ZFCorePointerBase *> &instances = _ZFP_ZFObjectGlobalInstanceRef(level);
     zfindex index = instances.find(sp);
     if(index != zfindexMax()) {
         instances.remove(index);

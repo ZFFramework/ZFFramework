@@ -10,7 +10,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethod, const ZFMethod *, {
-        ZFCoreArrayPOD<ZFIndexRange> pos;
+        ZFCoreArray<ZFIndexRange> pos;
         if(!ZFMethodSigSplit(pos, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));

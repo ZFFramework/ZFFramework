@@ -63,7 +63,7 @@ public:
     ZFListener focusChangeListener;
     ZFListener mouseDownListener;
     ZFListener viewOnDeallocListener;
-    ZFCoreArrayPOD<ZFUIView *> focusedViews;
+    ZFCoreArray<ZFUIView *> focusedViews;
     static void viewBlinkOn(ZF_IN const ZFArgs &zfargs) {
         ZFGlobalObserver().observerNotifyWithSender(
             zfargs.sender(), ZFGlobalEvent::EventViewBlinkWhenFocusViewBlinkOn());

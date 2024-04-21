@@ -43,7 +43,7 @@ extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName);
  * @note can be found only if accessed or registered by #ZFIDMAP_REGISTER
  */
 extern ZFLIB_ZFCore void ZFIdMapGetAll(
-        ZF_IN_OUT ZFCoreArrayPOD<zfidentity> &idValues
+        ZF_IN_OUT ZFCoreArray<zfidentity> &idValues
         , ZF_IN_OUT ZFCoreArray<zfstring> &idNames
         );
 

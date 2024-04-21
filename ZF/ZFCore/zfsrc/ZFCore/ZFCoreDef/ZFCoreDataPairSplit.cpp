@@ -38,7 +38,7 @@ zfbool zfCoreDataPairSplitString(
 
     // each item
     zfindex count = 0;
-    ZFCoreArrayPOD<zfindex> itemTokenMatch;
+    ZFCoreArray<zfindex> itemTokenMatch;
     do {
         // skip item header space
         zfcharSkipSpace(p, srcEnd);

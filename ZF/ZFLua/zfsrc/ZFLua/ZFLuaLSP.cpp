@@ -142,7 +142,7 @@ static void _ZFP_ZFLuaLSPGenFile_NS(
             ) {
         return;
     }
-    ZFCoreArrayPOD<ZFIndexRange> pos;
+    ZFCoreArray<ZFIndexRange> pos;
     ZFNamespaceSplit(pos, NS);
     for(zfindex i = 0; i < pos.count() - 1; ++i) {
         _ZFP_ZFLuaLSPGenFile_NS(output, luaKeywords, NSMap, zfstring(NS, 0, pos[i].start + pos[i].count));
@@ -222,7 +222,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         ---@return NS_Cls
         function NS.v_Cls(P0) end
      */
-    ZFCoreArrayPOD<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
+    ZFCoreArray<const ZFMethod *> ctorMethods = cls->methodForNameGetAll("objectOnInit");
     for(zfindex iMethod = 0; iMethod < ctorMethods.count(); ++iMethod) {
         const ZFMethod *m = ctorMethods[iMethod];
         if(m->methodParamCount() == 0
@@ -244,8 +244,8 @@ static void _ZFP_ZFLuaLSPGenFile_class(
             ;
     }
 
-    zfstlmap<const zfchar *, ZFCoreArrayPOD<const ZFMethod *>, zfcharConst_zfstlComparer> methodMap;
-    ZFCoreArrayPOD<const ZFMethod *> allMethod = cls->methodGetAll();
+    zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlComparer> methodMap;
+    ZFCoreArray<const ZFMethod *> allMethod = cls->methodGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
         if(!m->methodIsPublic() || m->methodIsInternal()
@@ -255,7 +255,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
                 ) {
             continue;
         }
-        zfstlmap<const zfchar *, ZFCoreArrayPOD<const ZFMethod *>, zfcharConst_zfstlComparer>::iterator itMethod = methodMap.find(m->methodName());
+        zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlComparer>::iterator itMethod = methodMap.find(m->methodName());
         if(itMethod != methodMap.end()) {
             zfbool exist = zffalse;
             for(zfindex i = i < itMethod->second.count() - 1; i != zfindexMax(); --i) {
@@ -313,7 +313,7 @@ static void _ZFP_ZFLuaLSPGenFile_allClass(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
-    ZFCoreArrayPOD<const ZFClass *> allClass = ZFClassGetAll();
+    ZFCoreArray<const ZFClass *> allClass = ZFClassGetAll();
     zfstlmap<const ZFClass *, zfbool> clsMap;
     for(zfindex i = 0; i < allClass.count(); ++i) {
         const ZFClass *cls = allClass[i];
@@ -331,7 +331,7 @@ static void _ZFP_ZFLuaLSPGenFile_allMethod(
         ZF_IN const ZFOutput &output
         , ZF_IN const zfstlmap<zfstring, zfbool> &luaKeywords
         ) {
-    ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
+    ZFCoreArray<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
         if(m->methodIsInternal()

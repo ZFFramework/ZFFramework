@@ -17,13 +17,13 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        ZFCoreArrayPOD<ZFAudio *> audios;
+        ZFCoreArray<ZFAudio *> audios;
         audios.add(this->audio0());
         audios.add(this->audio1());
         audios.add(this->audio2());
 
         ZFLISTENER_1(testCaseOnStop
-                , ZFCoreArrayPOD<ZFAudio *>, audios
+                , ZFCoreArray<ZFAudio *>, audios
                 ) {
             for(zfindex i = 0; i < audios.count(); ++i) {
                 audios[i]->stop();

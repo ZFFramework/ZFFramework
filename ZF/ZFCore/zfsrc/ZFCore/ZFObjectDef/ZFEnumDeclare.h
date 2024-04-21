@@ -329,7 +329,7 @@ public:
 // ============================================================
 extern ZFLIB_ZFCore const _ZFP_ZFEnumData *_ZFP_ZFEnumDataFind(ZF_IN const ZFClass *enumClass);
 extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
-        ZF_IN_OUT ZFCoreArrayPOD<const ZFMethod *> &ret
+        ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
         , ZF_IN const _ZFP_ZFEnumData *d
         );
 #define _ZFP_ZFENUM_DEFINE(EnumName) \
@@ -351,7 +351,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             ZFMethodUserUnregister(_m[i]); \
         } \
     } \
-    ZFCoreArrayPOD<const ZFMethod *> _m; \
+    ZFCoreArray<const ZFMethod *> _m; \
     ZF_STATIC_REGISTER_END(EnumReg_##EnumName)
 
 #define _ZFP_ZFENUM_DEFINE_FLAGS(EnumName, EnumFlagsName) \

@@ -129,8 +129,8 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
 // ============================================================
 zfclassNotPOD _ZFP_ZFStyleListPrivate {
 public:
-    ZFCoreArrayPOD<zfchar *> keyList;
-    ZFCoreArrayPOD<ZFStyleable *> valueList;
+    ZFCoreArray<zfchar *> keyList;
+    ZFCoreArray<ZFStyleable *> valueList;
 };
 
 ZFMETHOD_DEFINE_0(ZFStyleList, zfindex, itemCount) {
@@ -175,10 +175,10 @@ void ZFStyleList::objectOnInit(void) {
 }
 void ZFStyleList::objectOnDealloc(void) {
     if(!d->keyList.isEmpty()) {
-        ZFCoreArrayPOD<zfchar *> keyListTmp = d->keyList;
-        d->keyList = ZFCoreArrayPOD<zfchar *>();
-        ZFCoreArrayPOD<ZFStyleable *> valueListTmp = d->valueList;
-        d->valueList = ZFCoreArrayPOD<ZFStyleable *>();
+        ZFCoreArray<zfchar *> keyListTmp = d->keyList;
+        d->keyList = ZFCoreArray<zfchar *>();
+        ZFCoreArray<ZFStyleable *> valueListTmp = d->valueList;
+        d->valueList = ZFCoreArray<ZFStyleable *>();
         for(zfindex i = 0; i < keyListTmp.count(); ++i) {
             zffree(keyListTmp[i]);
             zfRelease(valueListTmp[i]);

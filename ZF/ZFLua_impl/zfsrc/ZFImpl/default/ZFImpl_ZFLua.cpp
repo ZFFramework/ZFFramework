@@ -14,9 +14,9 @@ void ZFImpl_ZFLua_luaStateClose(ZF_IN lua_State *L) {
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_ZFLua_luaStateGlobalHolder, ZFLevelZFFrameworkEssential) {
 }
-ZFCoreArrayPOD<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupAttach;
-ZFCoreArrayPOD<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupDetach;
-ZFCoreArrayPOD<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange> setupClassDataChange;
+ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupAttach;
+ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupCallback> setupDetach;
+ZFCoreArray<_ZFP_ZFImpl_ZFLua_ImplSetupClassDataChange> setupClassDataChange;
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_luaStateGlobalHolder)
 
 void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
@@ -82,7 +82,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
 
     // global NS
     ZFImpl_ZFLua_implSetupScope(
-            ZFCoreArrayPODCreate(lua_State *, L),
+            ZFCoreArrayCreate(lua_State *, L),
             ZFCoreArrayCreate(zfstring, ZF_NAMESPACE_GLOBAL_NAME, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
         );
 

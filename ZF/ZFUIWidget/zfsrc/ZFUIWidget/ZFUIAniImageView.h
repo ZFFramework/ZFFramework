@@ -41,7 +41,7 @@ public:
     ZFMETHOD_DECLARE_STATIC_3(zfbool, Create
             , ZFMP_IN(const ZFPathInfo &, pathInfo)
             , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
-            , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            , ZFMP_IN_OPT(const ZFCoreArray<zftimet> &, frameDurations, ZFCoreArray<zftimet>())
             )
 
 public:
@@ -50,7 +50,7 @@ public:
             , ZFMP_IN(ZFUIImage *, frameSrc)
             , ZFMP_IN(const ZFUISize &, frameSizePixel)
             , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
             )
 
     /** @brief see #ZFUIAniImageView */
@@ -60,12 +60,12 @@ public:
     /** @brief see #ZFUIAniImageView */
     ZFMETHOD_DECLARE_0(zfindex const &, frameCount)
     /** @brief see #ZFUIAniImageView */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<zftimet> const &, frameDurations)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zftimet> const &, frameDurations)
 
     /** @brief see #ZFUIAniImageView */
     ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIImage *> > const &, frameImages)
     /** @brief see #ZFUIAniImageView */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<zfuint> const &, frameTimers)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfuint> const &, frameTimers)
 
 protected:
     /**
@@ -75,7 +75,7 @@ protected:
             ZFMP_IN(ZFUIImage *, frameSrc)
             , ZFMP_IN(const ZFUISize &, frameSizePixel)
             , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
             )
     zfoverride
     virtual void objectOnInit(void);
@@ -185,7 +185,7 @@ public:
     ZFMETHOD_DECLARE_STATIC_3(zfbool, Create
             , ZFMP_IN(const ZFPathInfo &, pathInfo)
             , ZFMP_IN(const ZFCoreArray<zfautoT<ZFUIImage *> > &, frameImages)
-            , ZFMP_IN_OPT(const ZFCoreArrayPOD<zftimet> &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            , ZFMP_IN_OPT(const ZFCoreArray<zftimet> &, frameDurations, ZFCoreArray<zftimet>())
             )
 
     // ============================================================
@@ -198,7 +198,7 @@ public:
             , ZFMP_IN(ZFUIImage *, frameSrc)
             , ZFMP_IN(const ZFUISize &, frameSizePixel)
             , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
             )
 
     /**
@@ -280,7 +280,7 @@ protected:
             ZFMP_IN(ZFUIImage *, frameSrc)
             , ZFMP_IN(const ZFUISize &, frameSizePixel)
             , ZFMP_IN_OPT(zfindex, frameCount, zfindexMax())
-            , ZFMP_IN_OPT(ZFCoreArrayPOD<zftimet> const &, frameDurations, ZFCoreArrayPOD<zftimet>())
+            , ZFMP_IN_OPT(ZFCoreArray<zftimet> const &, frameDurations, ZFCoreArray<zftimet>())
             )
 
     zfoverride

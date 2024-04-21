@@ -65,7 +65,7 @@ private:
 
 public:
     static void _taskIdleCleanup(void) {
-        ZFCoreArrayPOD<_TaskData *> toCleanup;
+        ZFCoreArray<_TaskData *> toCleanup;
 
         {
             zfCoreMutexLocker();

@@ -53,7 +53,7 @@ zfbool zfCoreDataPairSplitInt(
         , ZF_IN_OPT zfbool allowEmptyItem = zffalse
         , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
-    ZFCoreArrayPOD<ZFIndexRange> splited;
+    ZFCoreArray<ZFIndexRange> splited;
     if(!zfCoreDataPairSplitString(
                 splited,
                 desiredCountOrIndexMax,
@@ -90,7 +90,7 @@ zfbool zfCoreDataPairSplitFloat(
         , ZF_IN_OPT zfbool allowEmptyItem = zffalse
         , ZF_OUT_OPT const zfchar **outErrorPos = zfnull
         ) {
-    ZFCoreArrayPOD<ZFIndexRange> splited;
+    ZFCoreArray<ZFIndexRange> splited;
     if(!zfCoreDataPairSplitString(
                 splited,
                 desiredCountOrIndexMax,

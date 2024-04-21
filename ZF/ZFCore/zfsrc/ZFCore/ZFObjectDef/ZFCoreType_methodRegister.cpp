@@ -62,7 +62,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitString
         , ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitInt
-        , ZFMP_IN_OUT(ZFCoreArrayPOD<zfint> &, outData)
+        , ZFMP_IN_OUT(ZFCoreArray<zfint> &, outData)
         , ZFMP_IN(zfindex, desiredCountOrIndexMax)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
@@ -72,7 +72,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitInt
         , ZFMP_IN_OPT(zfbool, allowEmptyItem, zffalse)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfbool, zfCoreDataPairSplitFloat
-        , ZFMP_IN_OUT(ZFCoreArrayPOD<zffloat> &, outData)
+        , ZFMP_IN_OUT(ZFCoreArray<zffloat> &, outData)
         , ZFMP_IN(zfindex, desiredCountOrIndexMax)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
@@ -327,7 +327,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(void, zfstringSplitIndexT
         , ZFMP_IN(const zfchar *, separator)
         , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArrayPOD<ZFIndexRange>, zfstringSplitIndex
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCoreArray<ZFIndexRange>, zfstringSplitIndex
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(const zfchar *, separator)
         , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)

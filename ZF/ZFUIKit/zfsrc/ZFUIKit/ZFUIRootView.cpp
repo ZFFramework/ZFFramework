@@ -10,7 +10,7 @@ ZFOBJECT_REGISTER(ZFUIRootView)
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIRootView, ZFUISysWindow *, rootViewOwnerSysWindow)
 
-ZFMETHOD_DEFINE_0(ZFUIRootView, const ZFCoreArrayPOD<ZFUIWindow *> &, windowList) {
+ZFMETHOD_DEFINE_0(ZFUIRootView, const ZFCoreArray<ZFUIWindow *> &, windowList) {
     return _ZFP_ZFUIRootView_windowList;
 }
 

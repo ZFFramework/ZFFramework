@@ -38,7 +38,7 @@ zfauto ZFMethodInvokeData::callSuper(void) {
 
     ZFCoreQueuePOD<const ZFClass *> toCheck;
     const ZFClass *cls = invokerMethod->methodOwnerClass();
-    ZFCoreArrayPOD<const ZFMethod *> buf;
+    ZFCoreArray<const ZFMethod *> buf;
     do {
         if(cls->classParent() != zfnull) {
             toCheck.add(cls->classParent());

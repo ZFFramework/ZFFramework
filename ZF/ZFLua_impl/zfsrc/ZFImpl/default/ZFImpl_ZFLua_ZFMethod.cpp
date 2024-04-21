@@ -6,8 +6,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
-        ZF_IN const ZFCoreArrayPOD<lua_State *> &luaStateList
-        , ZF_IN const ZFCoreArrayPOD<const ZFMethod *> &methodList
+        ZF_IN const ZFCoreArray<lua_State *> &luaStateList
+        , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
         ) {
     zfstring code;
     if(methodList.count() >= 100) {
@@ -41,11 +41,11 @@ static void _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
     }
 }
 ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
-        ZFCoreArrayPOD<lua_State *> luaStateList;
+        ZFCoreArray<lua_State *> luaStateList;
         luaStateList.add(L);
         ZFCoreArray<zfstring> scopeNameList;
 
-        ZFCoreArrayPOD<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
+        ZFCoreArray<const ZFMethod *> allMethod = ZFMethodFuncGetAll();
         zfstlmap<zfstring, zfbool> methodNamespaceList;
         if(!allMethod.isEmpty()) {
             _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
@@ -79,7 +79,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
     }), ZFM_EXPAND({
         if(data.changedMethod != zfnull && data.changeType == ZFClassDataChangeTypeAttach) {
             if(data.changedMethod->methodIsFunctionType()) {
-                ZFCoreArrayPOD<lua_State *> stateList;
+                ZFCoreArray<lua_State *> stateList;
                 stateList.add(L);
                 ZFImpl_ZFLua_implSetupScope(
                     stateList,
@@ -87,7 +87,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
 
                 _ZFP_ZFImpl_ZFLua_ZFMethod_setupGlobalMethod(
                     stateList,
-                    ZFCoreArrayPODCreate(const ZFMethod *, data.changedMethod));
+                    ZFCoreArrayCreate(const ZFMethod *, data.changedMethod));
             }
         }
     }))

@@ -447,7 +447,7 @@ extern ZFLIB_ZFCore zfauto ZFStyleGet(ZF_IN const zfchar *styleKey);
  */
 extern ZFLIB_ZFCore void ZFStyleGetAll(
         ZF_IN_OUT ZFCoreArray<zfstring> &styleKey
-        , ZF_IN_OUT ZFCoreArrayPOD<ZFStyleable *> &styleValue
+        , ZF_IN_OUT ZFCoreArray<ZFStyleable *> &styleValue
         );
 /**
  * @brief remove all styles, see #ZFStyleSet

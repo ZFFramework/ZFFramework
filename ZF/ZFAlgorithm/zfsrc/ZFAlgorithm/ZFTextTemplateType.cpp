@@ -132,15 +132,15 @@ zfclassNotPOD _ZFP_ZFTextTemplateParamPrivate {
 public:
     zfuint refCount;
 
-    ZFCoreArrayPOD<_ZFP_ZFTextTemplateReplaceData *> replaceDataList;
+    ZFCoreArray<_ZFP_ZFTextTemplateReplaceData *> replaceDataList;
     ZFCoreMap replaceDataMap; // map to _ZFP_ZFTextTemplateReplaceData *
 
     zfbool enableDataDefault;
-    ZFCoreArrayPOD<_ZFP_ZFTextTemplateEnableData *> enableDataList;
+    ZFCoreArray<_ZFP_ZFTextTemplateEnableData *> enableDataList;
     ZFCoreMap enableDataMap; // map to _ZFP_ZFTextTemplateEnableData *
 
     ZFTextTemplateIndexData indexDataDefault;
-    ZFCoreArrayPOD<_ZFP_ZFTextTemplateIndexData *> indexDataList;
+    ZFCoreArray<_ZFP_ZFTextTemplateIndexData *> indexDataList;
     ZFCoreMap indexDataMap; // map to _ZFP_ZFTextTemplateIndexData *
 
 public:

@@ -17,8 +17,8 @@ public:
     zfbool listQuickReloadRequested;
     zfbool cellNeedUpdate;
     zfindex cellCount;
-    ZFCoreArrayPOD<zffloat> cellSizeList;
-    ZFCoreArrayPOD<ZFUIListCell *> listVisibleCell; // retain manually
+    ZFCoreArray<zffloat> cellSizeList;
+    ZFCoreArray<ZFUIListCell *> listVisibleCell; // retain manually
     ZFIndexRange listVisibleCellIndexRange;
     /*
      * left: left most cell's x
@@ -1512,7 +1512,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt
     zfRelease(cellOld);
 }
 
-ZFMETHOD_DEFINE_0(ZFUIListView, ZFCoreArrayPOD<ZFUIListCell *>, listVisibleCell) {
+ZFMETHOD_DEFINE_0(ZFUIListView, ZFCoreArray<ZFUIListCell *>, listVisibleCell) {
     return d->listVisibleCell;
 }
 ZFMETHOD_DEFINE_0(ZFUIListView, const ZFIndexRange &, listVisibleCellIndexRange) {

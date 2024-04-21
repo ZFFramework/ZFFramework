@@ -152,7 +152,7 @@ void ZFUIKit_test_prepareSettingForBoolProperty(
     zfCoreAssert(zfstringIsEqual(property->propertyTypeId(), ZFTypeId_zfbool()));
 
     zfbool value = property->getterMethod()->execute<zfbool const &>(obj);
-    ZFUIKit_test_prepareSettingForNormalProperty(settings, obj, zfbool, property, ZFCoreArrayPODCreate(zfbool, value, !value));
+    ZFUIKit_test_prepareSettingForNormalProperty(settings, obj, zfbool, property, ZFCoreArrayCreate(zfbool, value, !value));
 }
 
 void ZFUIKit_test_prepareSettingForLayoutRequest(
@@ -178,7 +178,7 @@ void ZFUIKit_test_prepareSettingForLayoutRequest(
 void ZFUIKit_test_prepareSettingForResetProperty(
         ZF_IN_OUT ZFArray *settings
         , ZF_IN ZFObject *obj
-        , ZF_IN const ZFCoreArrayPOD<const ZFProperty *> &propertyList
+        , ZF_IN const ZFCoreArray<const ZFProperty *> &propertyList
         ) {
     zfblockedAlloc(ZFUIKit_test_SettingData, setting);
     settings->add(setting);
@@ -192,9 +192,9 @@ void ZFUIKit_test_prepareSettingForResetProperty(
     ZFLISTENER_3(buttonClickListener
             , ZFArray *, settings
             , ZFObject *, obj
-            , ZFCoreArrayPOD<const ZFProperty *>, propertyList
+            , ZFCoreArray<const ZFProperty *>, propertyList
             ) {
-        const ZFCoreArrayPOD<const ZFProperty *> &toReset = propertyList;
+        const ZFCoreArray<const ZFProperty *> &toReset = propertyList;
 
         if(obj == zfnull || settings == zfnull || toReset.isEmpty()) {
             return;

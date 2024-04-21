@@ -296,7 +296,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFPropertyGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFProperty *> &, ret)
         , ZFMP_IN_OPT(const ZFFilterForZFProperty *, propertyFilter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArrayPOD<const ZFProperty *>, ZFPropertyGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFProperty *>, ZFPropertyGetAll
         , ZFMP_IN_OPT(const ZFFilterForZFProperty *, propertyFilter, zfnull)
         )
 

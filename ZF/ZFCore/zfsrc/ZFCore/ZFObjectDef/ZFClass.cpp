@@ -81,7 +81,7 @@ public:
      *   at this case, simply use static holder object would cause crash during app's destruction,
      *   since ZFFramework already unloaded when the holder object try to unregister class map
      */
-    ZFCoreArrayPOD<zfbool *> ZFCoreLibDestroyFlag;
+    ZFCoreArray<zfbool *> ZFCoreLibDestroyFlag;
     ZFClass *pimplOwner;
     zfbool classIsDynamicRegister;
     zfauto classDynamicRegisterUserData;
@@ -94,11 +94,11 @@ public:
     zfbool needAutoRegister;
     zfbool needRegisterImplementedInterface;
     zfbool needFinalInit;
-    ZFCoreArrayPOD<const ZFClass *> implementedInterface;
+    ZFCoreArray<const ZFClass *> implementedInterface;
     _ZFP_ZFClassMethodMapType methodMap; // method of this cls only
-    ZFCoreArrayPOD<const ZFMethod *> methodList; // method of this cls only
+    ZFCoreArray<const ZFMethod *> methodList; // method of this cls only
     _ZFP_ZFClassPropertyMapType propertyMap; // property of this cls only
-    ZFCoreArrayPOD<const ZFProperty *> propertyList; // property of this cls only
+    ZFCoreArray<const ZFProperty *> propertyList; // property of this cls only
     /*
      * store all property that has override parent's OnInit step by #ZFPROPERTY_ON_INIT_DECLARE
      * including self and all parent
@@ -260,8 +260,8 @@ public:
     // ============================================================
     // caches
 public:
-    ZFCoreArrayPOD<const ZFClass *> parentClassCache; // for classIsTypeOf(class), ensured end with a null element for performance
-    ZFCoreArrayPOD<const ZFClass *> parentTypeCache; // for classIsTypeOf(interface), ensured end with a null element for performance
+    ZFCoreArray<const ZFClass *> parentClassCache; // for classIsTypeOf(class), ensured end with a null element for performance
+    ZFCoreArray<const ZFClass *> parentTypeCache; // for classIsTypeOf(interface), ensured end with a null element for performance
 
     zfbool methodAndPropertyCacheNeedUpdate;
     _ZFP_ZFClassMethodMapType methodMapCache; // method of this cls and all parent, order ensured from self > parent > parent interface
@@ -273,7 +273,7 @@ public:
 
 void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
     { // copy parent's interface cast datas
-        ZFCoreArrayPOD<const ZFClass *> parentInterfaceList;
+        ZFCoreArray<const ZFClass *> parentInterfaceList;
         if(cls->classParent() != zfnull) {
             for(const ZFClass **p = cls->classParent()->d->interfaceCastListCache; *p != zfnull; ++p) {
                 if(parentInterfaceList.find(*p, ZFComparerCheckEqual) == zfindexMax()) {
@@ -301,7 +301,7 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
             cls->d->interfaceCastListCache[parentInterfaceList.count()] = zfnull;
         }
 
-        ZFCoreArrayPOD<_ZFP_ZFObjectToInterfaceCastCallback> parentInterfaceCastList;
+        ZFCoreArray<_ZFP_ZFObjectToInterfaceCastCallback> parentInterfaceCastList;
         if(cls->classParent() != zfnull) {
             for(_ZFP_ZFObjectToInterfaceCastCallback *p = cls->classParent()->d->interfaceCastCallbackListCache; *p != zfnull; ++p) {
                 if(parentInterfaceCastList.find(*p, ZFComparerCheckEqual) == zfindexMax()) {
@@ -380,8 +380,8 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
 }
 
 void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
-    ZFCoreArrayPOD<const ZFClass *> &parentClassCache = cls->d->parentClassCache;
-    ZFCoreArrayPOD<const ZFClass *> parentTypeCache = cls->d->parentTypeCache;
+    ZFCoreArray<const ZFClass *> &parentClassCache = cls->d->parentClassCache;
+    ZFCoreArray<const ZFClass *> parentTypeCache = cls->d->parentTypeCache;
     parentClassCache.removeAll();
     parentTypeCache.removeAll();
 
@@ -448,7 +448,7 @@ void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls)
 // ============================================================
 // clear class tag both in ZFLevelZFFrameworkEssential and ZFLevelZFFrameworkHigh
 static void _ZFP_ZFClass_classTagClear(void) {
-    ZFCoreArrayPOD<const ZFClass *> allClass;
+    ZFCoreArray<const ZFClass *> allClass;
     _ZFP_ZFClassMap.allValueT(allClass);
     for(zfindex i = 0; i < allClass.count(); ++i) {
         allClass.get(i)->classTagRemoveAll();
@@ -640,7 +640,7 @@ void ZFClass::objectInfoOfInheritTreeT(ZF_IN_OUT zfstring &ret) const {
 }
 
 zfbool ZFClass::classIsTypeOf(ZF_IN const ZFClass *cls) const {
-    const ZFCoreArrayPOD<const ZFClass *> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
+    const ZFCoreArray<const ZFClass *> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
     for(zfindex i = 0, iEnd = p.count(); i < iEnd; ++i) {
         if(p[i] == cls) {
             return zftrue;
@@ -1440,8 +1440,8 @@ void ZFClass::_ZFP_ZFClass_interfaceRegister(
         ) {
     d->needRegisterImplementedInterface = zffalse;
 
-    ZFCoreArrayPOD<const ZFClass *> clsList;
-    ZFCoreArrayPOD<_ZFP_ZFObjectToInterfaceCastCallback> callbackList;
+    ZFCoreArray<const ZFClass *> clsList;
+    ZFCoreArray<_ZFP_ZFObjectToInterfaceCastCallback> callbackList;
     {
         va_list vaList;
         va_start(vaList, callback);
@@ -1803,7 +1803,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFClass *> &, ret)
         , ZFMP_IN_OPT(const ZFFilterForZFClass *, classFilter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArrayPOD<const ZFClass *>, ZFClassGetAll
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFClass *>, ZFClassGetAll
         , ZFMP_IN_OPT(const ZFFilterForZFClass *, classFilter, zfnull)
         )
 

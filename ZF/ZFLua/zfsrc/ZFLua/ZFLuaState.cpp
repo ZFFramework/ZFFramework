@@ -16,11 +16,11 @@ public:
     ZFThread *ownerThread;
     void *L;
     zfbool autoClose;
-    ZFCoreArrayPOD<void *> LList;
+    ZFCoreArray<void *> LList;
 
 public:
-    static ZFCoreArrayPOD<_ZFP_I_ZFLuaStateHolder *> &attachList(void) {
-        static ZFCoreArrayPOD<_ZFP_I_ZFLuaStateHolder *> d;
+    static ZFCoreArray<_ZFP_I_ZFLuaStateHolder *> &attachList(void) {
+        static ZFCoreArray<_ZFP_I_ZFLuaStateHolder *> d;
         return d;
     }
 
@@ -141,8 +141,8 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLuaStateAutoClean, ZFLevelZFFrameworkNor
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaStateAutoClean) {
     zfCoreMutexLocker();
-    ZFCoreArrayPOD<void *> stateList;
-    ZFCoreArrayPOD<ZFThread *> threadList;
+    ZFCoreArray<void *> stateList;
+    ZFCoreArray<ZFThread *> threadList;
     ZFLuaStateListForAllThread(stateList, threadList);
     for(zfindex i = threadList.count() - 1; i != zfindexMax(); --i) {
         threadList[i]->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), zfnull);
@@ -165,7 +165,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateChange
     }
 }
 
-ZFMETHOD_FUNC_DEFINE_0(ZFCoreArrayPOD<void *>, ZFLuaStateList) {
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<void *>, ZFLuaStateList) {
     zfCoreMutexLocker();
     return _ZFP_I_ZFLuaStateHolder::prepareForCurrentThread()->LList;
 }
@@ -174,7 +174,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFLuaStateListForAllThread
         , ZFMP_OUT(ZFCoreArray<ZFThread *>, threadList)
         ) {
     zfCoreMutexLocker();
-    ZFCoreArrayPOD<_ZFP_I_ZFLuaStateHolder *> &d = _ZFP_I_ZFLuaStateHolder::attachList();
+    ZFCoreArray<_ZFP_I_ZFLuaStateHolder *> &d = _ZFP_I_ZFLuaStateHolder::attachList();
 
     for(zfindex iHolder = 0; iHolder < d.count(); ++iHolder) {
         _ZFP_I_ZFLuaStateHolder *holder = d[iHolder];
@@ -235,8 +235,8 @@ public:
         zfCoreMutexLocker();
         v_ZFClassDataChangeData *changed = zfargs.param0();
 
-        ZFCoreArrayPOD<void *> stateList;
-        ZFCoreArrayPOD<ZFThread *> threadList;
+        ZFCoreArray<void *> stateList;
+        ZFCoreArray<ZFThread *> threadList;
         ZFLuaStateListForAllThread(stateList, threadList);
         ZFPROTOCOL_INTERFACE_CLASS(ZFLua) *impl = ZFPROTOCOL_ACCESS(ZFLua);
         for(zfindex i = 0; i < stateList.count(); ++i) {

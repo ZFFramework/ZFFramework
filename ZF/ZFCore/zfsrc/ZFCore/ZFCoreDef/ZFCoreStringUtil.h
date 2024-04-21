@@ -516,12 +516,12 @@ extern ZFLIB_ZFCore void zfstringSplitIndexT(
         , ZF_IN_OPT zfbool keepEmpty = zffalse
         );
 /** @brief split string */
-inline ZFCoreArrayPOD<ZFIndexRange> zfstringSplitIndex(
+inline ZFCoreArray<ZFIndexRange> zfstringSplitIndex(
         ZF_IN const zfchar *src
         , ZF_IN const zfchar *separator
         , ZF_IN_OPT zfbool keepEmpty = zffalse
         ) {
-    ZFCoreArrayPOD<ZFIndexRange> ret;
+    ZFCoreArray<ZFIndexRange> ret;
     zfstringSplitIndexT(ret, src, separator, keepEmpty);
     return ret;
 }

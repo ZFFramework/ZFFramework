@@ -7,12 +7,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // core log
-ZFCoreArrayPOD<ZFImplOutputCoreLogCallback> &_ZFP_ZFImplOutputCoreLogCallbackList(void) {
-    static ZFCoreArrayPOD<ZFImplOutputCoreLogCallback> d;
+ZFCoreArray<ZFImplOutputCoreLogCallback> &_ZFP_ZFImplOutputCoreLogCallbackList(void) {
+    static ZFCoreArray<ZFImplOutputCoreLogCallback> d;
     return d;
 }
 void ZFImplOutputCoreLog(ZF_IN const zfchar *src) {
-    static ZFCoreArrayPOD<ZFImplOutputCoreLogCallback> &d = ZFImplOutputCoreLogCallbackList;
+    static ZFCoreArray<ZFImplOutputCoreLogCallback> &d = ZFImplOutputCoreLogCallbackList;
     for(zfindex i = 0; i < d.count(); ++i) {
         d[i](src);
     }
@@ -29,15 +29,15 @@ void ZFImplOutputCoreLog(ZF_IN const zfchar *src) {
 
 // ============================================================
 // normal log
-ZFCoreArrayPOD<ZFImplOutputCallback> &_ZFP_ZFImplOutputCallbackList(void) {
-    static ZFCoreArrayPOD<ZFImplOutputCallback> d;
+ZFCoreArray<ZFImplOutputCallback> &_ZFP_ZFImplOutputCallbackList(void) {
+    static ZFCoreArray<ZFImplOutputCallback> d;
     return d;
 }
 void ZFImplOutput(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         ) {
-    static ZFCoreArrayPOD<ZFImplOutputCallback> &d = ZFImplOutputCallbackList;
+    static ZFCoreArray<ZFImplOutputCallback> &d = ZFImplOutputCallbackList;
     for(zfindex i = 0; i < d.count(); ++i) {
         d[i](src, srcLen);
     }

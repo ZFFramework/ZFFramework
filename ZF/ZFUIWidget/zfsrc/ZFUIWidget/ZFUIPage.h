@@ -446,7 +446,7 @@ public:
      * you must not reorder the list,
      * except when using with #pageMoveBegin
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIPage *> &, pageList)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIPage *> &, pageList)
     /**
      * @brief page at index
      */
@@ -481,7 +481,7 @@ public:
     /**
      * @brief find page by ZFUIPage::pageGroupId
      */
-    ZFMETHOD_DECLARE_1(ZFCoreArrayPOD<ZFUIPage *>, pageListForGroupId
+    ZFMETHOD_DECLARE_1(ZFCoreArray<ZFUIPage *>, pageListForGroupId
             , ZFMP_IN(const zfchar *, pageGroupId)
             )
 

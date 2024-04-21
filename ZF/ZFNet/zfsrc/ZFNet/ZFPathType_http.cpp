@@ -33,7 +33,7 @@ public:
         zfindex contentLength; // total size of the file, zfindexMax if not available
         zfindex curPos;
         zfstlmap<zfindex, ZFBuffer> chunkCache; // <chunkAlign, buffer>
-        ZFCoreArrayPOD<zfindex> chunkCacheFIFO;
+        ZFCoreArray<zfindex> chunkCacheFIFO;
     public:
         _Token(void)
         : updated(zffalse)

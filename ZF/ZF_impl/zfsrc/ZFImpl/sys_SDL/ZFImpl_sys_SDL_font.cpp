@@ -14,7 +14,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_fontDataHolder) {
     this->fontCacheRemoveAll();
 }
 public:
-    ZFCoreArrayPOD<ZFImpl_sys_SDL_FontData *> fontCache; // latest cache at tail
+    ZFCoreArray<ZFImpl_sys_SDL_FontData *> fontCache; // latest cache at tail
 public:
     void fontCacheRemoveAll(void) {
         while(!fontCache.isEmpty()) {

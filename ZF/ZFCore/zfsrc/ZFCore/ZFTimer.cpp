@@ -24,15 +24,15 @@ public:
     }
 };
 
-static ZFCoreArrayPOD<ZFTimer *> &_ZFP_ZFTimerList(void) {
-    static ZFCoreArrayPOD<ZFTimer *> d;
+static ZFCoreArray<ZFTimer *> &_ZFP_ZFTimerList(void) {
+    static ZFCoreArray<ZFTimer *> d;
     return d;
 }
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTimerList, ZFLevelZFFrameworkNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFTimerList) {
     zfCoreMutexLock();
-    ZFCoreArrayPOD<ZFTimer *> &d = _ZFP_ZFTimerList();
+    ZFCoreArray<ZFTimer *> &d = _ZFP_ZFTimerList();
     while(!d.isEmpty()) {
         ZFTimer *timer = d.removeLastAndGet();
         zfblockedRelease(zfRetain(timer));

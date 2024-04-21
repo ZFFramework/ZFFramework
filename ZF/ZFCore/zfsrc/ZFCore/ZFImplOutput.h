@@ -19,7 +19,7 @@ typedef void (*ZFImplOutputCoreLogCallback)(ZF_IN const zfchar *src);
  * @brief callback to extend the native log output
  */
 #define ZFImplOutputCoreLogCallbackList _ZFP_ZFImplOutputCoreLogCallbackList()
-extern ZFLIB_ZFCore ZFCoreArrayPOD<ZFImplOutputCoreLogCallback> &_ZFP_ZFImplOutputCoreLogCallbackList(void);
+extern ZFLIB_ZFCore ZFCoreArray<ZFImplOutputCoreLogCallback> &_ZFP_ZFImplOutputCoreLogCallbackList(void);
 
 /**
  * @brief used to output log to native env
@@ -39,7 +39,7 @@ typedef void (*ZFImplOutputCallback)(
  * @brief callback to extend the native log output
  */
 #define ZFImplOutputCallbackList _ZFP_ZFImplOutputCallbackList()
-extern ZFLIB_ZFCore ZFCoreArrayPOD<ZFImplOutputCallback> &_ZFP_ZFImplOutputCallbackList(void);
+extern ZFLIB_ZFCore ZFCoreArray<ZFImplOutputCallback> &_ZFP_ZFImplOutputCallbackList(void);
 
 /**
  * @brief used to output log to native env

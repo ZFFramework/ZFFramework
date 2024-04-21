@@ -72,7 +72,7 @@ public:
     zfint managerUIBlocked;
     ZFUIView *managerContainer;
     ZFUIView *pageContainer;
-    ZFCoreArrayPOD<ZFUIPage *> pageList;
+    ZFCoreArray<ZFUIPage *> pageList;
     ZFCoreArray<_ZFP_ZFUIPageAniOverrideData> pageAniOverrideList;
     zfautoT<ZFAnimation *> resumeAni;
     zfautoT<ZFAnimation *> pauseAni;
@@ -559,14 +559,14 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, zfindex, pageIndex
     return this->pageList().find(page);
 }
 
-ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFCoreArrayPOD<ZFUIPage *> &, pageList) {
+ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFCoreArray<ZFUIPage *> &, pageList) {
     return d->pageList;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFCoreArrayPOD<ZFUIPage *>, pageListForGroupId
+ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFCoreArray<ZFUIPage *>, pageListForGroupId
         , ZFMP_IN(const zfchar *, pageGroupId)
         ) {
-    ZFCoreArrayPOD<ZFUIPage *> ret;
+    ZFCoreArray<ZFUIPage *> ret;
     for(zfindex i = 0; i < d->pageList.count(); ++i) {
         if(zfstringIsEqual(d->pageList[i]->pageGroupId(), pageGroupId)) {
             ret.add(d->pageList[i]);

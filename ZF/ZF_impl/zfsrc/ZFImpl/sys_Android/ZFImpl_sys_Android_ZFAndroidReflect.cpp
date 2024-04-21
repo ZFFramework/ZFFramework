@@ -10,12 +10,12 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-static ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_ToJNITypeCallback> &_ZFP_ZFAndroidReflect_ToJNITypeCallbackList(void) {
-    static ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_ToJNITypeCallback> d;
+static ZFCoreArray<_ZFP_ZFAndroidReflect_ToJNITypeCallback> &_ZFP_ZFAndroidReflect_ToJNITypeCallbackList(void) {
+    static ZFCoreArray<_ZFP_ZFAndroidReflect_ToJNITypeCallback> d;
     return d;
 }
-static ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_FromJNITypeCallback> &_ZFP_ZFAndroidReflect_FromJNITypeCallbackList(void) {
-    static ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_FromJNITypeCallback> d;
+static ZFCoreArray<_ZFP_ZFAndroidReflect_FromJNITypeCallback> &_ZFP_ZFAndroidReflect_FromJNITypeCallbackList(void) {
+    static ZFCoreArray<_ZFP_ZFAndroidReflect_FromJNITypeCallback> d;
     return d;
 }
 
@@ -64,7 +64,7 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAndroidReflectAutoClean, ZFLevelZFFramew
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFAndroidReflectAutoClean) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFAndroidReflectDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder);
     if(!d->clsMap.empty()) {
-        ZFCoreArrayPOD<const ZFClass *> tmp;
+        ZFCoreArray<const ZFClass *> tmp;
         for(_ZFP_ZFAndroidReflect_ClassMapType::iterator it = d->clsMap.begin(); it != d->clsMap.end(); ++it) {
             tmp.add(it->second);
         }
@@ -480,7 +480,7 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
 
                 jvalue t;
                 zfbool implSuccess = zffalse;
-                ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_ToJNITypeCallback> &impl = _ZFP_ZFAndroidReflect_ToJNITypeCallbackList();
+                ZFCoreArray<_ZFP_ZFAndroidReflect_ToJNITypeCallback> &impl = _ZFP_ZFAndroidReflect_ToJNITypeCallbackList();
                 for(zfindex i = 0; i < impl.count(); ++i) {
                     if(impl[i](t.l, paramList[i], paramJNIType)) {
                         params.push_back(t);
@@ -809,7 +809,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                         }
                         else {
                             zfbool implSuccess = zffalse;
-                            ZFCoreArrayPOD<_ZFP_ZFAndroidReflect_FromJNITypeCallback> &impl = _ZFP_ZFAndroidReflect_FromJNITypeCallbackList();
+                            ZFCoreArray<_ZFP_ZFAndroidReflect_FromJNITypeCallback> &impl = _ZFP_ZFAndroidReflect_FromJNITypeCallbackList();
                             for(zfindex i = 0; i < impl.count(); ++i) {
                                 if(impl[i](ret, tmp, GIData->returnJNIType)) {
                                     implSuccess = zftrue;

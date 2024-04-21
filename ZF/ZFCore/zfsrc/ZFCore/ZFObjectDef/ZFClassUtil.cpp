@@ -42,7 +42,7 @@ void allMethodT(
         , ZF_IN const ZFClass *cls
         , ZF_IN_OPT const ZFFilterForZFMethod *filter /* = zfnull */
         ) {
-    ZFCoreArrayPOD<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
+    ZFCoreArray<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
     for(zfindex i = 0; i < allClassParent.count(); ++i) {
         const ZFClass *cls = allClassParent.get(i);
         for(zfindex j = 0; j < cls->methodCount(); ++j) {
@@ -58,7 +58,7 @@ void allPropertyT(
         , ZF_IN const ZFClass *cls
         , ZF_IN_OPT const ZFFilterForZFProperty *filter /* = zfnull */
         ) {
-    ZFCoreArrayPOD<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
+    ZFCoreArray<const ZFClass *> allClassParent = ZFClassUtil::allClassParent(cls, (filter == zfnull) ? zfnull : &(filter->classFilter));
     for(zfindex i = 0; i < allClassParent.count(); ++i) {
         const ZFClass *cls = allClassParent.get(i);
         for(zfindex j = 0; j < cls->propertyCount(); ++j) {
@@ -83,7 +83,7 @@ zfbool allPropertyIsEqual(
     const ZFClass *cls0 = obj0->classData();
     const ZFClass *cls1 = obj1->classData();
 
-    ZFCoreArrayPOD<const ZFProperty *> allProperty = ZFClassUtil::allProperty(cls0, filter);
+    ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(cls0, filter);
     for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
         if(cls1->classIsTypeOf(allProperty[i]->propertyOwnerClass())
                 && ZFPropertyCompare(allProperty[i], obj0, obj1) != ZFCompareTheSame
@@ -105,7 +105,7 @@ void objectPropertyInfo(
         return;
     }
 
-    ZFCoreArrayPOD<const ZFProperty *> allProperty = ZFClassUtil::allProperty(obj->classData());
+    ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(obj->classData());
     zfindex count = 0;
     zfindex index = 0;
     for( ; index < allProperty.count() && count < maxCount; ++index) {
@@ -180,7 +180,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, allClassParentT
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN_OPT(const ZFFilterForZFClass *, filter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const ZFClass *>, allClassParent
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFClass *>, allClassParent
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN_OPT(const ZFFilterForZFClass *, filter, zfnull)
         )
@@ -189,7 +189,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, allMethodT
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN_OPT(const ZFFilterForZFMethod *, filter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const ZFMethod *>, allMethod
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFMethod *>, allMethod
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN_OPT(const ZFFilterForZFMethod *, filter, zfnull)
         )
@@ -198,7 +198,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, allPropertyT
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN_OPT(const ZFFilterForZFProperty *, filter, zfnull)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArrayPOD<const ZFProperty *>, allProperty
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFProperty *>, allProperty
         , ZFMP_IN(const ZFClass *, cls)
         , ZFMP_IN_OPT(const ZFFilterForZFProperty *, filter, zfnull)
         )

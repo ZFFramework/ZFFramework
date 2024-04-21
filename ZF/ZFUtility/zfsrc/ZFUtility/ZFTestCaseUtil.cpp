@@ -96,7 +96,7 @@ public:
     }
 private:
     zfbool running;
-    ZFCoreArrayPOD<const ZFClass *> testCases;
+    ZFCoreArray<const ZFClass *> testCases;
     zfautoT<ZFTestCase *> testCaseRunning;
     ZFListener testCaseFinishListener;
 private:
@@ -104,7 +104,7 @@ private:
             ZF_OUT ZFCoreArray<const ZFClass *> &ret
             , ZF_IN_OPT const ZFCoreArray<const ZFClass *> *toStart = zfnull
             ) {
-        ZFCoreArrayPOD<const ZFClass *> allClass;
+        ZFCoreArray<const ZFClass *> allClass;
         if(toStart == zfnull || toStart->isEmpty()) {
             allClass = ZFClassGetAll();
         }
@@ -138,8 +138,8 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFTestCaseGetAllT
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTestCaseRunAllHolder)->testCaseList(ret);
 }
 
-ZFMETHOD_FUNC_DEFINE_0(ZFCoreArrayPOD<const ZFClass *>, ZFTestCaseGetAll) {
-    ZFCoreArrayPOD<const ZFClass *> ret;
+ZFMETHOD_FUNC_DEFINE_0(ZFCoreArray<const ZFClass *>, ZFTestCaseGetAll) {
+    ZFCoreArray<const ZFClass *> ret;
     ZFTestCaseGetAllT(ret);
     return ret;
 }

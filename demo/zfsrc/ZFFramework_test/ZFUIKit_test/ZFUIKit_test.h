@@ -178,7 +178,7 @@ extern void ZFUIKit_test_prepareSettingForLayoutRequest(
 extern void ZFUIKit_test_prepareSettingForResetProperty(
         ZF_IN_OUT ZFArray *settings
         , ZF_IN ZFObject *obj
-        , ZF_IN const ZFCoreArrayPOD<const ZFProperty *> &propertyList
+        , ZF_IN const ZFCoreArray<const ZFProperty *> &propertyList
         );
 
 ZF_NAMESPACE_GLOBAL_END

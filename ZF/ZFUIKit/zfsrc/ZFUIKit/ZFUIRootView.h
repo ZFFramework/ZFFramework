@@ -32,7 +32,7 @@ public:
     /**
      * @brief all #ZFUIWindow attached to the root view
      */
-    ZFMETHOD_DECLARE_0(const ZFCoreArrayPOD<ZFUIWindow *> &, windowList)
+    ZFMETHOD_DECLARE_0(const ZFCoreArray<ZFUIWindow *> &, windowList)
 
 protected:
     zfoverride
@@ -55,7 +55,7 @@ protected:
 
 public:
     ZFUISysWindow *_ZFP_ZFUIRootView_rootViewOwnerSysWindow;
-    ZFCoreArrayPOD<ZFUIWindow *> _ZFP_ZFUIRootView_windowList;
+    ZFCoreArray<ZFUIWindow *> _ZFP_ZFUIRootView_windowList;
 };
 
 ZF_NAMESPACE_GLOBAL_END

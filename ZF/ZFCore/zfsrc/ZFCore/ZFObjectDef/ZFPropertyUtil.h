@@ -92,7 +92,7 @@ extern ZFLIB_ZFCore void ZFPropertyCopyAll(
         ZF_IN ZFObject *dstObj
         , ZF_IN ZFObject *srcObj
         , ZF_IN_OPT const ZFFilterForZFProperty *filter = zfnull
-        , ZF_OUT_OPT ZFCoreArrayPOD<const ZFProperty *> *copiedProperties = zfnull
+        , ZF_OUT_OPT ZFCoreArray<const ZFProperty *> *copiedProperties = zfnull
         );
 
 // ============================================================

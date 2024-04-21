@@ -42,18 +42,18 @@ private:
         static zfautoT<ZFTimer *> d;
         return d;
     }
-    static ZFCoreArrayPOD<ZFAudio *> &_playing(void) {
-        static ZFCoreArrayPOD<ZFAudio *> d;
+    static ZFCoreArray<ZFAudio *> &_playing(void) {
+        static ZFCoreArray<ZFAudio *> d;
         return d;
     }
     static void audioOnResume(ZF_IN ZFAudio *audio) {
         zfautoT<ZFTimer *> &timer = _timer();
-        ZFCoreArrayPOD<ZFAudio *> &playing = _playing();
+        ZFCoreArray<ZFAudio *> &playing = _playing();
 
         playing.add(audio);
         if(playing.count() == 1) {
             ZFLISTENER_1(onTimer
-                    , ZFCoreArrayPOD<ZFAudio *> const &, playing
+                    , ZFCoreArray<ZFAudio *> const &, playing
                     ) {
                 for(zfindex i = 0; i < playing.count(); ++i) {
                     ZFAudio *audio = playing[i];
@@ -65,7 +65,7 @@ private:
     }
     static void audioOnPause(ZF_IN ZFAudio *audio) {
         zfautoT<ZFTimer *> &timer = _timer();
-        ZFCoreArrayPOD<ZFAudio *> &playing = _playing();
+        ZFCoreArray<ZFAudio *> &playing = _playing();
 
         playing.removeElement(audio);
         if(playing.isEmpty()) {

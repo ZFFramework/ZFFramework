@@ -280,7 +280,7 @@ ZFEXPORT_ENUM_DEFINE(ZFSeekPos
 // ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFIndexRange, ZFIndexRange, {
         v = ZFIndexRangeZero();
-        ZFCoreArrayPOD<zfindex> pair;
+        ZFCoreArray<zfindex> pair;
         if(!zfCoreDataPairSplitInt(pair, 2, src, srcLen)) {
             if(errorHint) {
                 zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));

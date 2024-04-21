@@ -8,7 +8,7 @@ ZFENUM_DEFINE(ZFUISizeType)
 // ============================================================
 // ZFUISizeParam
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFUISizeParam, ZFUISizeParam, {
-        ZFCoreArrayPOD<ZFIndexRange> pos;
+        ZFCoreArray<ZFIndexRange> pos;
         if(zfCoreDataPairSplitString(pos, 2, src, srcLen)
                 && ZFUISizeTypeFromStringT(v.width, src + pos[0].start, pos[0].count)
                 && ZFUISizeTypeFromStringT(v.height, src + pos[1].start, pos[1].count)

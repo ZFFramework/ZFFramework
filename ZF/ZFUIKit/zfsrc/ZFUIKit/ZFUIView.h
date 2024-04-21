@@ -953,7 +953,7 @@ public:
     /**
      * @brief get the child view array
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIView *>, childArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, childArray)
 
     /**
      * @brief this view belongs to which layer of parent,
@@ -967,7 +967,7 @@ public:
      *
      * children are ensured ordered by (impl, bg, normal, fg) views
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIView *>, childRawArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, childRawArray)
 
     // ============================================================
     // events
@@ -1003,7 +1003,7 @@ public:
             , ZFMP_IN(ZFUIView *, view)
             )
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIView *>, internalImplViewArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, internalImplViewArray)
 
 public:
     /**
@@ -1035,7 +1035,7 @@ public:
     /**
      * @brief usually for debug use only, try to avoid use this in your app for other purpose
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIView *>, internalBgViewArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, internalBgViewArray)
 
 public:
     /** @brief see #internalBgViewAdd */
@@ -1049,7 +1049,7 @@ public:
             , ZFMP_IN(ZFUIView *, view)
             )
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_0(ZFCoreArrayPOD<ZFUIView *>, internalFgViewArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, internalFgViewArray)
 
     // ============================================================
     // other internal view logic

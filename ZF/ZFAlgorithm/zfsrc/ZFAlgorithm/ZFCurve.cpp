@@ -201,7 +201,7 @@ ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
 
         return zftrue;
     }, {
-        ZFCoreArrayPOD<zffloat> tmp;
+        ZFCoreArray<zffloat> tmp;
         if(!zfCoreDataPairSplitFloat(tmp, 4, src, srcLen)) {
             return zffalse;
         }

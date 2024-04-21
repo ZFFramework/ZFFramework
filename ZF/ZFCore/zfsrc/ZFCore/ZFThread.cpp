@@ -14,7 +14,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-static ZFCoreArrayPOD<ZFThread *> _ZFP_ZFThread_allThread;
+static ZFCoreArray<ZFThread *> _ZFP_ZFThread_allThread;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThread_allThreadCleanup, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup) {
@@ -183,7 +183,7 @@ ZFMETHOD_DEFINE_0(ZFThread, zfbool, implMainThreadTaskAvailable) {
     return impl->executeInMainThreadAvailable();
 }
 
-ZFMETHOD_DEFINE_0(ZFThread, const ZFCoreArrayPOD<ZFThread *> &, allThread) {
+ZFMETHOD_DEFINE_0(ZFThread, const ZFCoreArray<ZFThread *> &, allThread) {
     return _ZFP_ZFThread_allThread;
 }
 ZFMETHOD_DEFINE_0(ZFThread, ZFThread *, mainThread) {
