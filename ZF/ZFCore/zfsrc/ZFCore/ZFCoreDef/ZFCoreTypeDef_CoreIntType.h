@@ -91,8 +91,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     class _zft_##D { \
     protected: \
         typedef _zft_##D D; \
-    public: \
         T t; \
+    public: \
         _zft_##D(void) : t() {} \
         _zft_##D(const D &t_) : t(t_.t) {} \
         _zft_##D(const T t_) : t(t_) {} \

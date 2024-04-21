@@ -66,9 +66,9 @@ private:
             return nil;
         }
         ZFUISize srcSize = ZFUISizeMake(image.size.width * image.scale, image.size.height * image.scale);
-        zfbool sizeChanged = !ZFUISizeIsEqual(scaleToSize, srcSize);
+        zfbool sizeChanged = (scaleToSize != srcSize);
         if([image respondsToSelector:@selector(resizableImageWithCapInsets:resizingMode:)]) {
-            if(sizeChanged && !ZFUIMarginIsEqual(scaleUseNinePatch, ZFUIMarginZero())) {
+            if(sizeChanged && (scaleUseNinePatch != ZFUIMarginZero())) {
                 UIEdgeInsets edgeInsets = UIEdgeInsetsZero;
                 if(scaleUseNinePatch.left + scaleUseNinePatch.right < srcSize.width) {
                     edgeInsets.left = scaleUseNinePatch.left / image.scale;
@@ -89,7 +89,7 @@ private:
             }
         }
         else {
-            if(ZFUIMarginIsEqual(scaleUseNinePatch, ZFUIMarginZero())
+            if(scaleUseNinePatch == ZFUIMarginZero()
                     || (scaleUseNinePatch.left + scaleUseNinePatch.right > srcSize.width
                         && scaleUseNinePatch.top + scaleUseNinePatch.bottom > srcSize.height)
                         ) {

@@ -1464,11 +1464,11 @@ ZFMETHOD_DEFINE_2(ZFUIView, const ZFUISize &, layoutMeasure
     }
 
     if(ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
-            || !ZFUISizeIsEqual(d->measureResult->sizeHint, sizeHint)
-            || !ZFUISizeParamIsEqual(d->measureResult->sizeParam, sizeParam)
+            || d->measureResult->sizeHint != sizeHint
+            || d->measureResult->sizeParam != sizeParam
             ) {
         if(!ZFBitTest(d->stateFlag, _ZFP_ZFUIViewPrivate::stateFlag_layoutRequested)
-                && ZFUISizeParamIsEqual(d->measureResult->sizeParam, sizeParam)
+                && d->measureResult->sizeParam == sizeParam
                 ) {
             // if all these cond matchs, result is ensured not changed
             // * prev measure with wrap, and result a size less than size hint

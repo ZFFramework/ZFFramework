@@ -7,7 +7,6 @@
 #define _ZFI_ZFComparer_h_
 
 #include "ZFCoreUtilTemplate.h"
-#include "ZFCoreUtilMath.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

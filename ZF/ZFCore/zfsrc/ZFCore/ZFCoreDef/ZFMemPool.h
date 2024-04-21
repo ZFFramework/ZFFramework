@@ -49,8 +49,9 @@ template<int N>
 zfclassNotPOD _ZFP_zfpoolSizeAlign {
 public:
     enum {
-        _A = sizeof(const void *) * 2,
+        _A = (N <= sizeof(const void *) * 4 ? sizeof(const void *) : sizeof(const void *) * 4),
         V = ((N % _A) == 0 ? N : ((N / _A) + 1) * _A),
+        M = (N <= sizeof(const void *) * 4 ? 32 : N <= sizeof(const void *) * 8 ? 8 : 4),
     };
 };
 template<int N>
@@ -66,6 +67,7 @@ public:
         if(_available) {
             _ZFP_zfpoolObjectBlock<N> *t = _available;
             _available = _available->next;
+            --_count;
             return t;
         }
         else {
@@ -73,13 +75,20 @@ public:
         }
     }
     void poolFree(ZF_IN void *obj) {
-        _ZFP_zfpoolObjectBlock<N> *t = (_ZFP_zfpoolObjectBlock<N> *)obj;
-        t->next = _available;
-        _available = t;
+        if(_count >= _ZFP_zfpoolSizeAlign<N>::M) {
+            zffree(obj);
+        }
+        else {
+            ++_count;
+            _ZFP_zfpoolObjectBlock<N> *t = (_ZFP_zfpoolObjectBlock<N> *)obj;
+            t->next = _available;
+            _available = t;
+        }
     }
 public:
     _ZFP_zfpoolObject(void)
     : _available(zfnull)
+    , _count(0)
     {
     }
     ~_ZFP_zfpoolObject(void) {
@@ -95,6 +104,7 @@ public:
     }
 private:
     _ZFP_zfpoolObjectBlock<N> *_available;
+    zfuint _count;
 };
 
 template<typename T_Type>
