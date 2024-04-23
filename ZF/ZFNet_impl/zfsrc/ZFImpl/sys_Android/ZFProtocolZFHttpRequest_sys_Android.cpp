@@ -349,7 +349,9 @@ public:
                 return;
             }
             jobject nativeTask = (jobject)task->nativeTask;
-            jobject nativeInput = ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZFInputForBuffer(task->body));
+            jobject nativeInput = task->body.bufferSize() > 0
+                ? ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZFInputForBuffer(task->body))
+                : NULL;
             zfCoreMutexUnlock();
 
             JNIUtilCallStaticVoidMethod(JNIGetJNIEnv(), jclsOwner, jmId
@@ -520,7 +522,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest
         ) {
     ZFHttpRequest *request = ZFCastZFObject(ZFHttpRequest *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpRequest));
     ZFHttpResponse *response = ZFCastZFObject(ZFHttpResponse *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpResponse));
-    response->success(code == 200);
+    response->success(code >= 200 && code < 300);
     response->code(code);
     response->errorHint(ZFImpl_sys_Android_zfstringFromString(errorHint));
     if(nativeBodyInput != NULL) {

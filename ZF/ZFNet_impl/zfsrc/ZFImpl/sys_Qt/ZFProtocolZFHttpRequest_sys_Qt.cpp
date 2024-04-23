@@ -82,12 +82,11 @@ public slots:
 
         bool ok = false;
         int code = nativeResponse->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt(&ok);
+        this->ownerResponse->success(nativeResponse->error() == QNetworkReply::NoError);
         if(ok) {
-            this->ownerResponse->success(code == 200);
             this->ownerResponse->code((zfint)code);
         }
         else {
-            this->ownerResponse->success(nativeResponse->error() == QNetworkReply::NoError);
             this->ownerResponse->code((zfint)nativeResponse->error());
         }
         if(nativeResponse->error() != QNetworkReply::NoError) {

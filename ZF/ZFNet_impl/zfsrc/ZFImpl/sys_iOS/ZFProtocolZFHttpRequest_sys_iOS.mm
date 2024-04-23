@@ -184,7 +184,8 @@ public:
                 weakTask.ownerResponse->errorHint(ZFImpl_sys_iOS_zfstringFromNSString([NSString stringWithFormat:@"\"%@\"", error.localizedDescription]));
             }
             else {
-                weakTask.ownerResponse->success(((NSHTTPURLResponse *)response).statusCode == 200);
+                NSInteger code = ((NSHTTPURLResponse *)response).statusCode;
+                weakTask.ownerResponse->success(code >= 200 && code < 300);
                 weakTask.ownerResponse->code((zfint)(((NSHTTPURLResponse *)response).statusCode));
             }
             weakTask.response = (NSHTTPURLResponse *)response;

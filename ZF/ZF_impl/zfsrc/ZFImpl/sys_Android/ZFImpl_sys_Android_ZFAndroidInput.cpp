@@ -110,8 +110,8 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
             break;
         }
         JNIUtilGetByteArrayRegion(jniEnv, this->nativeBuf, 0, nativeRead, writeBuf);
-        toRead -= blockSize;
-        writeBuf += blockSize;
+        toRead -= nativeRead;
+        writeBuf += nativeRead;
         if(nativeRead != blockSize) {
             break;
         }
