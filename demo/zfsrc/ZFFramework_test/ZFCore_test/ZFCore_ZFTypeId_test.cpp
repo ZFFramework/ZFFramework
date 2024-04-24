@@ -13,7 +13,7 @@ protected:
 
         zfauto v;
 
-        zfblockedAlloc(v_zfstring, test_zfstring, "string type");
+        zfobj<v_zfstring> test_zfstring("string type");
         v = test_zfstring;
 
         // for aliased type, when accessed, a new instance would be created and stored as tag in holder object
@@ -44,7 +44,7 @@ protected:
         zfLogTrim() << ZFTypeId<zfstring>::Value<const zfstring * const &>::zfvAccess(v);
 
         // zfauto processed as normal raw type
-        zfblockedAlloc(v_zfstring, test_String, "zfauto");
+        zfobj<v_zfstring> test_String("zfauto");
         v = test_String;
         zfLogTrim() << "============================================================";
         zfLogTrim() << "zfauto";
@@ -59,7 +59,7 @@ protected:
         zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto * const &>::zfvAccess(v);
 
         // ZFAny processed as aligned type
-        zfblockedAlloc(v_zfstring, test_ZFAny, "ZFAny");
+        zfobj<v_zfstring> test_ZFAny("ZFAny");
         v = test_ZFAny;
         zfLogTrim() << "============================================================";
         zfLogTrim() << "ZFAny";

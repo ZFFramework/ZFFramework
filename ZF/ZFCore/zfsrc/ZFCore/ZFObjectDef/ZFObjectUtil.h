@@ -35,7 +35,7 @@ inline ZFCompareResult ZFObjectCompare(
             return ZFCompareUncomparable;
         }
         else {
-            return e0->toObject()->objectCompare(e1->toObject());
+            return e0->objectCompare(e1);
         }
     }
 }

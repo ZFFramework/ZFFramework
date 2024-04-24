@@ -163,14 +163,14 @@ public:
     /** @cond ZFPrivateDoc */
     ZFJson(void);
     ZFJson(ZF_IN const zfnullT &dummy);
-    ZFJson(ZF_IN ZFJsonTypeEnum jsonType);
+    ZFJson(ZF_IN ZFJsonTypeEnum type);
     ZFJson(ZF_IN const ZFJson &ref);
     virtual ~ZFJson(void);
 
     ZFJson &operator = (ZF_IN const ZFJson &ref);
     ZFJson &operator = (ZF_IN const zfnullT &dummy);
-    inline zfbool operator == (ZF_IN const zfnullT &ref) const {return !this->jsonTypeValid();}
-    inline zfbool operator != (ZF_IN const zfnullT &ref) const {return this->jsonTypeValid();}
+    inline zfbool operator == (ZF_IN const zfnullT &ref) const {return !this->valid();}
+    inline zfbool operator != (ZF_IN const zfnullT &ref) const {return this->valid();}
     zfbool operator == (ZF_IN const ZFJson &ref) const;
     inline zfbool operator != (ZF_IN const ZFJson &ref) const {return !(this->operator == (ref));}
     /** @endcond */
@@ -194,16 +194,16 @@ public:
 
     // ============================================================
 public:
-    void _ZFP_ZFJson_jsonType(ZF_IN ZFJsonTypeEnum jsonType);
+    void _ZFP_ZFJson_jsonType(ZF_IN ZFJsonTypeEnum type);
     /**
      * @brief type of this item
      */
-    ZFJsonTypeEnum jsonType(void) const;
+    ZFJsonTypeEnum type(void) const;
     /**
-     * @brief true if #jsonType is not #ZFJsonType::e_JsonNull
+     * @brief true if #type is not #ZFJsonType::e_JsonNull
      */
-    inline zfbool jsonTypeValid(void) const {
-        return (this->jsonType() != ZFJsonType::e_JsonNull);
+    inline zfbool valid(void) const {
+        return (this->type() != ZFJsonType::e_JsonNull);
     }
 
     /**
@@ -219,11 +219,11 @@ public:
     /**
      * @brief value of the node, valid only for #ZFJsonType::e_JsonValue type
      */
-    ZFJson &jsonValue(ZF_IN const zfchar *value);
+    ZFJson &value(ZF_IN const zfchar *value);
     /**
-     * @brief see #jsonValue
+     * @brief see #value
      */
-    const zfchar *jsonValue(void) const;
+    const zfchar *value(void) const;
 
     // ============================================================
     // for object type
@@ -303,7 +303,7 @@ public:
      * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_JsonArray
      */
     ZFJson &childAdd(
-            ZF_IN const zfchar *jsonValue
+            ZF_IN const zfchar *value
             , ZF_IN_OPT zfindex index = zfindexMax()
             );
     /**
@@ -331,8 +331,8 @@ public:
 public:
     /** @brief return #ZFJsonToString */
     operator zfstring (void) const;
-    /** @brief return #jsonTypeValid */
-    inline operator zfbool (void) const {return this->jsonTypeValid();}
+    /** @brief return #valid */
+    inline operator zfbool (void) const {return this->valid();}
     /** @brief access #attr */
     inline ZFJson operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
     /** @brief access #childAt */

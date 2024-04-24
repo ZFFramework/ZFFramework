@@ -18,7 +18,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   void outputFunc(ZF_IN const ZFOutput &callback) {...}
  *   void inputFunc(ZF_IN const ZFInput &callback) {...}
  *
- *   zfblockedAlloc(ZFIOBufferByXxx, io);
+ *   zfobj<ZFIOBufferByXxx> io;
  *   outputFunc(io->output()); // output data to io's internal buffer
  *   inputFunc(io->input()); // input data from io's internal buffer
  * @endcode

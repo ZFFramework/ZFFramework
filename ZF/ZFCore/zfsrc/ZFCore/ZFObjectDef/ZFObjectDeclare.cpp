@@ -90,13 +90,13 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
 
     zfauto userData = param.methodDynamicRegisterUserData();
     if(userData == zfnull) {
-        userData = zflineAlloc(ZFObject);
+        userData = zfobj<ZFObject>();
         paramTmp.methodDynamicRegisterUserData(userData);
     }
     ZFMethodGenericInvoker *methodGI = (ZFMethodGenericInvoker *)zfmalloc(sizeof(ZFMethodGenericInvoker));
     *methodGI = methodGISaved;
-    userData->objectTag("_ZFP_ZFObjectOnInitGI", zflineAlloc(ZFValueHolder
-                , methodGI
+    userData->objectTag("_ZFP_ZFObjectOnInitGI", zfobj<ZFValueHolder>(
+                methodGI
                 , ZFValueHolderTypePOD
                 ));
 

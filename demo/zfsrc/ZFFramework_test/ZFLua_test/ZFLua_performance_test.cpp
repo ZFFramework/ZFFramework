@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 static int _ZFP_ZFLua_performance_test_alloc(lua_State *L) {
-    zfblockedAlloc(ZFObject, t);
+    zfobj<ZFObject> t;
     ZFUNUSED(t);
     return 0;
 }

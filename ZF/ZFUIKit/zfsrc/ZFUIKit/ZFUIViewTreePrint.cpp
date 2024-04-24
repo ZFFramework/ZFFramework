@@ -12,7 +12,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreePrintAfterDelay
         ) {
     ZFObjectHolder *viewHolder = view->objectHolder();
     ZFLISTENER_2(action
-            , zfautoT<ZFObjectHolder *>, viewHolder
+            , zfautoT<ZFObjectHolder>, viewHolder
             , ZFOutput, outputCallback
             ) {
         ZFUIView *view = viewHolder->objectHolded();
@@ -54,7 +54,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         return;
     }
 
-    ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zflineAlloc(ZFOutputFormatBasic)->c_removeEndl(zftrue));
+    ZFOutput outputCallbackNoEndl = ZFOutputForFormat(outputCallback, zfobj<ZFOutputFormatBasic>()->c_removeEndl(zftrue));
 
     ZFCoreArray<_ZFP_ZFUIViewTreePrintPrintData> printDatas;
     _ZFP_ZFUIViewTreePrintPrintData rootPrintData;
@@ -231,7 +231,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreeNativePrintAfterDelay
         ) {
     ZFObjectHolder *viewHolder = view->objectHolder();
     ZFLISTENER_2(action
-            , zfautoT<ZFObjectHolder *>, viewHolder
+            , zfautoT<ZFObjectHolder>, viewHolder
             , ZFOutput, outputCallback
             ) {
         ZFUIView *view = viewHolder->objectHolded();

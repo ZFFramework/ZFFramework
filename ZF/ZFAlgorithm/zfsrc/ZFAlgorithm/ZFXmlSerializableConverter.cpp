@@ -16,7 +16,7 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
         }
         return zffalse;
     }
-    if(xmlElement.xmlType() != ZFXmlType::e_XmlElement) {
+    if(xmlElement.type() != ZFXmlType::e_XmlElement) {
         ZFSerializableUtilErrorOccurred(outErrorHint, "param not type of xml element");
         if(outErrorPos != zfnull) {
             *outErrorPos = xmlElement;
@@ -24,14 +24,14 @@ static zfbool _ZFP_ZFSerializableDataFromXml(
         return zffalse;
     }
 
-    if(xmlElement.xmlName() == zfnull) {
+    if(xmlElement.name() == zfnull) {
         ZFSerializableUtilErrorOccurred(outErrorHint, "missing xml node name");
         if(outErrorPos != zfnull) {
             *outErrorPos = xmlElement;
         }
         return zffalse;
     }
-    serializableData.itemClass(xmlElement.xmlName());
+    serializableData.itemClass(xmlElement.name());
 
     for(zfiterator it = xmlElement.attrIter(); xmlElement.attrIterValid(it); xmlElement.attrIterNext(it)) {
         serializableData.attr(xmlElement.attrIterKey(it), xmlElement.attrIterValue(it));
@@ -76,7 +76,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFSerializableDataToXml
         , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull)
         ) {
     xmlElement = ZFSerializableDataToXml(serializableData, outErrorHint, outErrorPos);
-    return (xmlElement.xmlType() != ZFXmlType::e_XmlNull);
+    return (xmlElement.type() != ZFXmlType::e_XmlNull);
 }
 ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
         , ZFMP_IN(const ZFSerializableData &, serializableData)
@@ -89,7 +89,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
     }
 
     ZFXml ret(ZFXmlType::e_XmlElement);
-    ret.xmlName(serializableData.itemClass());
+    ret.name(serializableData.itemClass());
 
     for(zfiterator it = serializableData.attrIter();
             serializableData.attrIterValid(it);
@@ -101,7 +101,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFXml, ZFSerializableDataToXml
 
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         ZFXml child = ZFSerializableDataToXml(serializableData.childAt(i), outErrorHint, outErrorPos);
-        if(child.xmlType() == ZFXmlType::e_XmlNull) {
+        if(child.type() == ZFXmlType::e_XmlNull) {
             return zfnull;
         }
         ret.childAdd(child);

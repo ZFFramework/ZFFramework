@@ -25,8 +25,8 @@ protected:
         this->testCaseOutput("invoke constructors");
         this->testCaseOutputSeparator();
         zfauto obj = ZFInvoke("ZFAndroidReflectTest");
-        ZFInvoke("ZFAndroidReflectTest", zflineAlloc(v_zfint, 1));
-        ZFInvoke("ZFAndroidReflectTest", zflineAlloc(v_zfstring, "2"));
+        ZFInvoke("ZFAndroidReflectTest", zfobj<v_zfint>(1));
+        ZFInvoke("ZFAndroidReflectTest", zfobj<v_zfstring>("2"));
         ZFInvoke("ZFAndroidReflectTest", obj);
         ZFInvoke("ZFAndroidReflectTest", ZFInvoke("ZFAndroidReflectTest.TestIntArr"));
         ZFInvoke("ZFAndroidReflectTest", ZFInvoke("ZFAndroidReflectTest.TestStringArr"));

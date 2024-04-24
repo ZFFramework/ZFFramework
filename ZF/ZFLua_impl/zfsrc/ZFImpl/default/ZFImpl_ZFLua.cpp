@@ -55,7 +55,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     zfclassNotPOD _ZFP_ZFImpl_ZFLua_LHolder {
     public:
         static int f(ZF_IN lua_State *L) {
-            zfblockedAlloc(v_ZFPtr, ret);
+            zfobj<v_ZFPtr> ret;
             ret->zfv = (void *)L;
             zfauto tmp = ret;
             ZFImpl_ZFLua_luaPush(L, tmp);
@@ -232,7 +232,7 @@ zfbool ZFImpl_ZFLua_execute(
         }
         else {
             ZFCoreArray<zfauto> ret;
-            *luaResult = zflineAlloc(v_ZFCoreArray, ret);
+            *luaResult = zfobj<v_ZFCoreArray>(ret);
             ret.capacity((zfindex)luaResultNum);
             for(int i = 0; i < luaResultNum; ++i) {
                 zfauto tmp;
@@ -381,7 +381,7 @@ zfbool ZFImpl_ZFLua_toGeneric(
         return ZFImpl_ZFLua_toCallback(param, L, luaStackOffset, errorHint);
     }
 
-    zfblockedAlloc(ZFDI_Wrapper, wrapper);
+    zfobj<ZFDI_Wrapper> wrapper;
     if(lua_isnumber(L, luaStackOffset)) {
         lua_Number n = lua_tonumber(L, luaStackOffset);
         if(zfmAbs(n - (long)n) < zffloatEpsilon) {
@@ -408,7 +408,7 @@ zfbool ZFImpl_ZFLua_toGeneric(
         return zftrue;
     }
     if(!lua_isuserdata(L, luaStackOffset)) {
-        zfblockedAlloc(ZFImpl_ZFLuaValue, holder);
+        zfobj<ZFImpl_ZFLuaValue> holder;
         holder->L = L;
         lua_pushvalue(L, luaStackOffset);
         holder->luaValue = luaL_ref(L, LUA_REGISTRYINDEX);
@@ -559,7 +559,7 @@ zfbool ZFImpl_ZFLua_toNumberT(
     int success = 0;
     lua_Number num = lua_tonumberx(L, luaStackOffset, &success);
     if(success) {
-        ret = zflineAlloc(v_zflongdouble, (zflongdouble)num);
+        ret = zfobj<v_zflongdouble>((zflongdouble)num);
         return zftrue;
     }
     if(!lua_isuserdata(L, luaStackOffset)) {
@@ -579,7 +579,7 @@ zfbool ZFImpl_ZFLua_toNumberT(
     if(holderCls != zfnull) {*holderCls = zfnull;}
     if(obj == zfnull) {
         if(allowEmpty) {
-            ret = zflineAlloc(v_zflongdouble, 0);
+            ret = zfobj<v_zflongdouble>(0);
             return zftrue;
         }
         else {
@@ -590,27 +590,27 @@ zfbool ZFImpl_ZFLua_toNumberT(
     const ZFClass *cls = obj->classData();
     if(holderCls != zfnull) {*holderCls = cls;}
     if(cls->classIsTypeOf(v_zfbool::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfbool *, obj)->zfv ? 1 : 0));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfbool *, obj)->zfv ? 1 : 0));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfindex::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfindex *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfindex *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfint::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfint *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfint *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfuint::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfuint *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfuint *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zffloat::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zffloat *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zffloat *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfdouble::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfdouble *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfdouble *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zflongdouble::ClassData())) {
@@ -618,23 +618,23 @@ zfbool ZFImpl_ZFLua_toNumberT(
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfbyte::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfbyte *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfbyte *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zftimet::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zftimet *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zftimet *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfflags::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfflags *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfflags *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfidentity::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfidentity *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(v_zfidentity *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(ZFEnum::ClassData())) {
-        ret = zflineAlloc(v_zflongdouble, (zft_zflongdouble)(ZFCastZFObjectUnchecked(ZFEnum *, obj)->enumValue()));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(ZFCastZFObjectUnchecked(ZFEnum *, obj)->enumValue()));
         return zftrue;
     }
     else {

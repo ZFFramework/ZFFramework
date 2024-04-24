@@ -14,14 +14,15 @@ Homepage:
 * Online docs: http://ZFFramework.com
 * Github repo: https://github.com/ZFFramework/ZFFramework
 
-    * [![Doxygen](https://github.com/ZFFramework/ZFFramework/actions/workflows/doxygen.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/doxygen.yml)
-    * [![Android](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml)
-    * [![CMake](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake.yml)
-    * [![iOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml)
-    * [![Qt Linux](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml)
-    * [![Qt MacOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml)
-    * [![Qt Windows](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml)
-    * NOTE: this repo would keep clean (remove unnecessary history) and update frequently,
+    [![Doxygen](https://github.com/ZFFramework/ZFFramework/actions/workflows/doxygen.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/doxygen.yml)
+    [![Android](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/android.yml)
+    [![CMake](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/cmake.yml)
+    [![iOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/ios.yml)
+    [![Qt Linux](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_linux.yml)
+    [![Qt MacOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml)
+    [![Qt Windows](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml)
+
+* NOTE: this repo would keep clean (remove unnecessary history) and update frequently,
     if you want stable or history version, please refer to [ZFFrameworkDist](https://github.com/ZFFrameworkDist/ZFFramework)
 
 
@@ -38,23 +39,22 @@ ZFMAIN_ENTRY() { // app starts from here
     zfLog() << "hello wolrd";
 
     // show a window (full screen by default)
-    zfblockedAlloc(ZFUIWindow, window);
+    zfobj<ZFUIWindow> window;
     window->windowShow();
 
     // show a hello world as a text view
-    zfblockedAlloc(ZFUITextView, textView);
+    zfobj<ZFUITextView> textView;
     window->childAdd(textView)->c_alignTop()->c_margin(40);
     textView->text("hello world");
 
     // button and click (as observer)
-    zfblockedAlloc(ZFUIButtonBasic, button);
+    zfobj<ZFUIButtonBasic> button;
     window->childAdd(button)->c_alignBottom()->c_margin(40);
     button->label()->text("click me");
-    ZFLISTENER(onClick) {
+    button->onClick([](const ZFArgs &zfargs) {
         ZFUIButtonBasic *button = zfargs.sender();
         zfLogTrim() << "button clicked: " << button;
-    } ZFLISTENER_END()
-    button->onClick(onClick);
+    });
 }
 ```
 
@@ -80,17 +80,6 @@ button:label():text('click me')
 button:onClick(
     function (zfargs)
         zfLog('button clicked: %s', zfargs:sender())
-    end,
-    button:objectHolder())
-```
-
-further more, it's easy to run lua code in thread (real native thread, not lua coroutine):
-
-```lua
-local capture = 123
-zfLog('thread: %s, capture: %s', ZFThread.currentThread(), capture)
-zfasync(function(zfargs)
-        zfLog('thread: %s, capture: %s', ZFThread.currentThread(), capture)
     end)
 ```
 
@@ -129,7 +118,7 @@ ZFMAIN_ENTRY() {
     );
 
     zfauto obj = ZFClass::classForName("MyChildView")->newInstance();
-    obj->invoke("testFunc", zflineAlloc(v_zfstring, "cppParam0"));
+    obj->invoke("testFunc", zfobj<v_zfstring>("cppParam0"));
 
     ZFMethodAlias(ZFMethodForName("MyChildView", "testFunc"), "testAliased");
     ZFLuaExecute(
@@ -150,6 +139,16 @@ ZFMAIN_ENTRY() {
     ZFResExtPathAdd("ZFCompress:http:http://192.168.xxx.xxx/xxx.zip|");
     ZFInputRead(zfLogTrim(), ZFInputForRes("path/in/zip/file.txt"));
     ZFPathInfoTreePrint(ZFPathInfo("res:"));
+}
+```
+
+abstract R/W
+
+```cpp
+#include "ZFCore.h"
+ZFMAIN_ENTRY() {
+    ZFInputRead(zfLogTrim(), ZFInputForHttp("http://xxx.xxx/xxx.json"));
+    zfauto obj = ZFObjectFromJson(ZFInputForHttp("http://xxx.xxx/xxx.json"))
 }
 ```
 
@@ -189,42 +188,12 @@ ZFMAIN_ENTRY() {
 * fully modularization, "core + protocol + dynamic implementation" design
 
     support any platform if you are able to supply a native C++ implementation,
-    most of implementation can be replaced easily, and implementation is required only if its owner module being used
+    most of implementation can be replaced easily and dynamically,
+    all implementation is required only if its owner module being used
 
 * easy to communicate with native code
 
     even to embed UI elements and native UI elements with each other
-
-* UI module to write cross-platform UI easily
-* built-in auto scale logic to support multiple screen size
-
-    you have no need to write size-dependent code in both app and implementation
-
-
-## Current status
-
-* finished
-    * core module (memory management, reflection, serialization)
-    * basic UI module (view, window, label, image view, button, layout, scroll view, list view)
-    * basic algorithm (xml, json, regexp, md5, base64, crc32, encryption, compression)
-    * common platform implementations (iOS, Android, Qt)
-    * auto lua binding by reflection
-* working
-    * more useful UI modules
-    * basic network module
-    * basic database module
-* future
-    * standalone visual UI editor
-    * more IDE / compile env integrations
-    * more platform implementations
-
-
-## What we do
-
-* aiming to be portable and can be ported easily,
-    aiming to be lightweighted and able to be embeded easily,
-    you may simply drag and drop all src files to your build system
-* fully dynamic, extensible
 
 
 ## License

@@ -49,19 +49,19 @@ protected:
 
         container->viewBackgroundColor(ZFUIColorRandom(1));
 
-        zfblockedAlloc(ZFUIKit_ZFUIDraw_test_DrawableView, view0);
+        zfobj<ZFUIKit_ZFUIDraw_test_DrawableView> view0;
         container->childAdd(view0)->c_sizeFill(100, 100)->c_alignLeft();
 
-        zfblockedAlloc(ZFUIImageView, view1);
+        zfobj<ZFUIImageView> view1;
         container->childAdd(view1)->c_sizeFill(100, 100)->c_alignRight();
         void *context = ZFUIDraw::beginForImage(ZFUISizeApplyScale(ZFUISizeMake(100), view1->UIScaleFixed()));
         ZFUIKit_ZFUIDraw_test_DrawableView::testDraw(
             context,
             ZFUISizeApplyScale(ZFUISizeMake(100), view1->UIScaleFixed()));
-        zfautoT<ZFUIImage *> image = ZFUIDraw::endForImage(context);
+        zfautoT<ZFUIImage> image = ZFUIDraw::endForImage(context);
         view1->image(image);
 
-        zfblockedAlloc(ZFArray, views);
+        zfobj<ZFArray> views;
         views->add(view0);
         views->add(view1);
         this->prepareSettingButton(window, views);
@@ -72,10 +72,10 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFArray *views
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         { // imageScaleType
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
             ZFLISTENER(buttonTextGetter) {
                 v_zfstring *text = zfargs.param0();
@@ -83,7 +83,7 @@ private:
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
             ZFLISTENER_1(buttonClickListener
-                    , zfautoT<ZFArray *>, views
+                    , zfautoT<ZFArray>, views
                     ) {
                 ZFUISize sizeHint = views->get<ZFUIView *>(0)->layoutParam()->sizeHint();
                 if(sizeHint.height == 100) {

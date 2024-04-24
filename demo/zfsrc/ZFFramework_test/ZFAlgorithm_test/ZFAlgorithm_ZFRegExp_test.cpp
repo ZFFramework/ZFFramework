@@ -11,7 +11,7 @@ protected:
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFRegExp);
 
-        zfblockedAlloc(ZFRegExp, regexp);
+        zfobj<ZFRegExp> regexp;
         const zfchar *patternFrom = "(ab*c)(?<n0>ab*c)";
         const zfchar *patternTo = "{$1}";
         const zfchar *stringFrom = "zacabcabbcabbbcz";

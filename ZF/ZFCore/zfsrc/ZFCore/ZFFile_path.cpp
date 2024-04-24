@@ -59,7 +59,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForSetting
         , ZFMP_IN_OPT(const zfchar *, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForSettingOnChange())) {
-        zfblockedAlloc(v_zfstring, old, ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting());
+        zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting());
         ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting(path);
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFPathForSettingOnChange(), old);
     }
@@ -81,7 +81,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorage
         , ZFMP_IN_OPT(const zfchar *, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForStorageOnChange())) {
-        zfblockedAlloc(v_zfstring, old, ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage());
+        zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage());
         ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage(path);
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFPathForStorageOnChange(), old);
     }
@@ -103,7 +103,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorageShared
         , ZFMP_IN_OPT(const zfchar *, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForStorageSharedOnChange())) {
-        zfblockedAlloc(v_zfstring, old, ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared());
+        zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared());
         ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared(path);
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFPathForStorageSharedOnChange(), old);
     }
@@ -127,7 +127,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForCache
         , ZFMP_IN_OPT(const zfchar *, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForCacheOnChange())) {
-        zfblockedAlloc(v_zfstring, old, ZFPROTOCOL_ACCESS(ZFPath)->pathForCache());
+        zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForCache());
         ZFPROTOCOL_ACCESS(ZFPath)->pathForCache(path);
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventZFPathForCacheOnChange(), old);
     }

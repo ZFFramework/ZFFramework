@@ -28,7 +28,7 @@ public:
  * @code
  *   zfauto yourFunc(void) {
  *       // alloc an object for return
- *       zfblockedAlloc(ZFObject, obj);
+ *       zfobj<ZFObject> obj;
  *
  *       // use zfauto to wrap the returned object
  *       return zfauto(obj);
@@ -53,7 +53,7 @@ public:
     zffinal ~zfauto(void);
 
 public:
-    zfauto &operator = (ZF_IN zfauto const &);
+    zfauto &operator = (ZF_IN zfauto const &obj);
     zfauto &operator = (ZF_IN zfnullT const &);
     template<typename T_ZFObject>
     zfauto &operator = (ZF_IN T_ZFObject *obj);
@@ -169,7 +169,7 @@ public:
     }
 
 public:
-    T_ZFObjectBase operator -> (void) const;
+    T_ZFObjectBase *operator -> (void) const;
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
         return zfauto::toObject();
     }

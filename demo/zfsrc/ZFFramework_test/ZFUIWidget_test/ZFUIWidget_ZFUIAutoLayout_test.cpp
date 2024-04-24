@@ -16,13 +16,13 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIAutoLayout, layout);
+        zfobj<ZFUIAutoLayout> layout;
         container->childAdd(layout)->c_sizeFill()->c_margin(40);
         layout->viewBackgroundColor(ZFUIColorRed());
 
         ZFCoreArray<zfauto> v;
         for(zfindex i = 0; i < 5; ++i) {
-            zfblockedAlloc(ZFUITextView, t);
+            zfobj<ZFUITextView> t;
             v.add(t);
             t->text(zfstr("text %s", i));
             t->viewBackgroundColor(ZFUIColorRandom());
@@ -43,7 +43,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIAutoLayout *layout
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 

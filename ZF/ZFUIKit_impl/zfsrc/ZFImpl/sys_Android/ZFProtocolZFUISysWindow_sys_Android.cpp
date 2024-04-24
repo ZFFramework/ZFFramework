@@ -191,7 +191,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUISysWindow
         , void, native_1mainWindowRegisterForNativeView
         , jobject nativeParent
         ) {
-    zfautoT<ZFUISysWindow *> mainWindow = ZFUISysWindow::nativeWindowEmbedNativeView((void *)nativeParent);
+    zfautoT<ZFUISysWindow> mainWindow = ZFUISysWindow::nativeWindowEmbedNativeView((void *)nativeParent);
     ZFUISysWindow::mainWindowRegister(mainWindow);
 }
 JNI_METHOD_DECLARE_END()
@@ -272,7 +272,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUISysWindow
         , jint keyCode
         , jint keyCodeRaw
         ) {
-    zfblockedAlloc(ZFUIKeyEvent, event);
+    zfobj<ZFUIKeyEvent> event;
     event->eventResolved(zffalse);
     event->keyId = keyId;
     event->keyAction = (ZFUIKeyActionEnum)keyAction;

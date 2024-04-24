@@ -122,7 +122,7 @@ ZFOutput ZFImpl_sys_Android_ZFOutputFromZFAndroidOutput(ZF_IN jobject nativeOutp
     }
     JNIEnv *jniEnv = JNIGetJNIEnv();
 
-    zfblockedAlloc(_ZFP_I_ZFAndroidOutput, owner);
+    zfobj<_ZFP_I_ZFAndroidOutput> owner;
     owner->nativeOutputWrapper = JNIUtilNewGlobalRef(jniEnv, nativeOutputWrapper);
     owner->nativeBuf = (jbyteArray)JNIUtilNewGlobalRef(jniEnv, JNILineDeleteLocalRef(JNIUtilNewByteArray(jniEnv, _ZFP_ZFAndroidOutputBufSize)));
     ZFOutput ret = ZFCallbackForMemberMethod(owner, ZFMethodAccess(_ZFP_I_ZFAndroidOutput, onOutput));

@@ -22,7 +22,7 @@
  * with all other features in C++ world:
  * @code
  *   zfauto obj = ZFClass::classForName("MyClass")->newInstance();
- *   obj->invoke("myProp", zflineAlloc(v_zfstring, "myValue"));
+ *   obj->invoke("myProp", zfobj<v_zfstring>("myValue"));
  *   ZFObjectToXml(ZFOutputDefault(), obj);
  * @endcode
  */

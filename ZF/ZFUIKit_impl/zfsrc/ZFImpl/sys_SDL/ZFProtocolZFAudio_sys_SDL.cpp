@@ -74,7 +74,7 @@ public:
     zfclassNotPOD NativeAudio {
     public:
         zfidentity loadTaskId;
-        zfautoT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder *> impl;
+        zfautoT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> impl;
         int channel;
         zftimet position_resumeTime;
         zftimet position_prev;
@@ -121,11 +121,11 @@ public:
                 , ZFInput, input
                 ) {
             Mix_Chunk *impl = Mix_LoadWAV_RW(ZFImpl_sys_SDL_ZFInputToSDL_RWops(input), 1);
-            zfblockedAlloc(_ZFP_ZFAudioImpl_sys_SDL_ImplHolder, implHolder);
+            zfobj<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> implHolder;
             implHolder->impl(impl);
             const char *errorHint = Mix_GetError();
             if(errorHint != zfnull && *errorHint) {
-                implHolder->errorHint(zflineAlloc(v_zfstring, errorHint));
+                implHolder->errorHint(zfobj<v_zfstring>(errorHint));
             }
             zfargs.result(implHolder);
         } ZFLISTENER_END()
@@ -152,7 +152,7 @@ public:
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         const ZFMethod *loaderMethod = ZFMethodFuncForName(zfnull, "ZFInputForHttp");
         if(loaderMethod == zfnull || !ZFProtocolIsAvailable("ZFHttpRequest")) {
-            zfblockedAlloc(v_zfstring, errorHint);
+            zfobj<v_zfstring> errorHint;
             errorHint->zfv = "net load depends on ZFHttpRequest impl";
             this->notifyAudioOnLoad(audio, zffalse, errorHint);
             return;
@@ -163,19 +163,19 @@ public:
                 ) {
             v_zfidentity *taskId = zfargs.param0();
             if(taskId->zfv == zfidentityInvalid()) {return;}
-            zfblockedAlloc(_ZFP_ZFAudioImpl_sys_SDL_ImplHolder, implHolder);
+            zfobj<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> implHolder;
             zfargs.result(implHolder);
 
             ZFInput input;
             const ZFMethod *loaderMethod = ZFMethodFuncForName(zfnull, "ZFInputForHttp");
             if(loaderMethod == zfnull || !ZFProtocolIsAvailable("ZFHttpRequest")) {
-                implHolder->errorHint(zflineAlloc(v_zfstring, "net load depends on ZFHttpRequest impl"));
+                implHolder->errorHint(zfobj<v_zfstring>("net load depends on ZFHttpRequest impl"));
             }
             else {
-                zfauto inputHolder = ZFInvoke("ZFInputForHttp", zflineAlloc(v_zfstring, url));
+                zfauto inputHolder = ZFInvoke("ZFInputForHttp", zfobj<v_zfstring>(url));
                 v_ZFInput *inputTmp = inputHolder;
                 if(inputTmp == zfnull || !inputTmp->zfv) {
-                    implHolder->errorHint(zflineAlloc(v_zfstring, zfstr("unable to load from url: %s", url)));
+                    implHolder->errorHint(zfobj<v_zfstring>(zfstr("unable to load from url: %s", url)));
                 }
                 else {
                     input = inputTmp->zfv;
@@ -188,7 +188,7 @@ public:
                 implHolder->impl(impl);
                 const char *errorHint = Mix_GetError();
                 if(errorHint != zfnull && *errorHint) {
-                    implHolder->errorHint(zflineAlloc(v_zfstring, errorHint));
+                    implHolder->errorHint(zfobj<v_zfstring>(errorHint));
                 }
             }
         } ZFLISTENER_END()
@@ -219,7 +219,7 @@ public:
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         nativeAudio->channel = Mix_PlayChannelTimed(-1, nativeAudio->impl->impl(), 0, (int)_durationForChunk(nativeAudio->impl->impl()));
         if(nativeAudio->channel == -1) {
-            zfblockedAlloc(v_zfstring, errorHint);
+            zfobj<v_zfstring> errorHint;
             const char *implError = Mix_GetError();
             if(implError != zfnull && *implError) {
                 errorHint->zfv = implError;
@@ -319,12 +319,12 @@ private:
     static void _implOnFinish(int channel) {
         zfCoreMutexLock();
         zfself *d = (zfself *)ZFPROTOCOL_ACCESS(ZFAudio);
-        zfstlmap<zfidentity, zfautoT<ZFAudio *> >::iterator it = d->_implPlaying.find(channel);
+        zfstlmap<zfidentity, zfautoT<ZFAudio> >::iterator it = d->_implPlaying.find(channel);
         if(it == d->_implPlaying.end()) {
             zfCoreMutexUnlock();
             return;
         }
-        zfautoT<ZFAudio *> audio = it->second;
+        zfautoT<ZFAudio> audio = it->second;
         d->_implPlaying.erase(it);
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
         nativeAudio->channel = -1;
@@ -345,7 +345,7 @@ private:
     }
 
 private:
-    zfstlmap<zfidentity, zfautoT<ZFAudio *> > _implPlaying;
+    zfstlmap<zfidentity, zfautoT<ZFAudio> > _implPlaying;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAudioImpl_sys_SDL)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAudioImpl_sys_SDL)
 

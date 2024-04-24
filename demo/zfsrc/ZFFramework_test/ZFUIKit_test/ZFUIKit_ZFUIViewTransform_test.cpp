@@ -17,14 +17,14 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIImageView, view);
+        zfobj<ZFUIImageView> view;
         container->childAdd(view)->c_sizeFill(100, 100)->c_alignTop()->c_margin(0, 100, 0, 0);
         view->image(zfRes("test_normal.png"));
 
         zffloat margin = 120;
 
         // viewTranslateX
-        zfblockedAlloc(ZFUIKit_test_Button, viewTranslateXDec);
+        zfobj<ZFUIKit_test_Button> viewTranslateXDec;
         window->childAdd(viewTranslateXDec)->c_alignBottom()->c_margin(0, 0, margin, 200);
         viewTranslateXDec->label()->text("viewTranslateX -");
         ZFLISTENER_1(viewTranslateXOnDec
@@ -34,7 +34,7 @@ protected:
         } ZFLISTENER_END()
         viewTranslateXDec->onClick(viewTranslateXOnDec);
 
-        zfblockedAlloc(ZFUIKit_test_Button, viewTranslateXInc);
+        zfobj<ZFUIKit_test_Button> viewTranslateXInc;
         window->childAdd(viewTranslateXInc)->c_alignBottom()->c_margin(margin, 0, 0, 200);
         viewTranslateXInc->label()->text("viewTranslateX +");
         ZFLISTENER_1(viewTranslateXOnInc
@@ -45,7 +45,7 @@ protected:
         viewTranslateXInc->onClick(viewTranslateXOnInc);
 
         // viewTranslateY
-        zfblockedAlloc(ZFUIKit_test_Button, viewTranslateYDec);
+        zfobj<ZFUIKit_test_Button> viewTranslateYDec;
         window->childAdd(viewTranslateYDec)->c_alignBottom()->c_margin(0, 0, margin, 150);
         viewTranslateYDec->label()->text("viewTranslateY -");
         ZFLISTENER_1(viewTranslateYOnDec
@@ -55,7 +55,7 @@ protected:
         } ZFLISTENER_END()
         viewTranslateYDec->onClick(viewTranslateYOnDec);
 
-        zfblockedAlloc(ZFUIKit_test_Button, viewTranslateYInc);
+        zfobj<ZFUIKit_test_Button> viewTranslateYInc;
         window->childAdd(viewTranslateYInc)->c_alignBottom()->c_margin(margin, 0, 0, 150);
         viewTranslateYInc->label()->text("viewTranslateY +");
         ZFLISTENER_1(viewTranslateYOnInc
@@ -66,7 +66,7 @@ protected:
         viewTranslateYInc->onClick(viewTranslateYOnInc);
 
         // viewScaleX
-        zfblockedAlloc(ZFUIKit_test_Button, viewScaleXDec);
+        zfobj<ZFUIKit_test_Button> viewScaleXDec;
         window->childAdd(viewScaleXDec)->c_alignBottom()->c_margin(0, 0, margin, 100);
         viewScaleXDec->label()->text("viewScaleX -");
         ZFLISTENER_1(viewScaleXOnDec
@@ -76,7 +76,7 @@ protected:
         } ZFLISTENER_END()
         viewScaleXDec->onClick(viewScaleXOnDec);
 
-        zfblockedAlloc(ZFUIKit_test_Button, viewScaleXInc);
+        zfobj<ZFUIKit_test_Button> viewScaleXInc;
         window->childAdd(viewScaleXInc)->c_alignBottom()->c_margin(margin, 0, 0, 100);
         viewScaleXInc->label()->text("viewScaleX +");
         ZFLISTENER_1(viewScaleXOnInc
@@ -87,7 +87,7 @@ protected:
         viewScaleXInc->onClick(viewScaleXOnInc);
 
         // viewScaleY
-        zfblockedAlloc(ZFUIKit_test_Button, viewScaleYDec);
+        zfobj<ZFUIKit_test_Button> viewScaleYDec;
         window->childAdd(viewScaleYDec)->c_alignBottom()->c_margin(0, 0, margin, 50);
         viewScaleYDec->label()->text("viewScaleY -");
         ZFLISTENER_1(viewScaleYOnDec
@@ -97,7 +97,7 @@ protected:
         } ZFLISTENER_END()
         viewScaleYDec->onClick(viewScaleYOnDec);
 
-        zfblockedAlloc(ZFUIKit_test_Button, viewScaleYInc);
+        zfobj<ZFUIKit_test_Button> viewScaleYInc;
         window->childAdd(viewScaleYInc)->c_alignBottom()->c_margin(margin, 0, 0, 50);
         viewScaleYInc->label()->text("viewScaleY +");
         ZFLISTENER_1(viewScaleYOnInc
@@ -108,7 +108,7 @@ protected:
         viewScaleYInc->onClick(viewScaleYOnInc);
 
         // viewRotateZ
-        zfblockedAlloc(ZFUIKit_test_Button, viewRotateZDec);
+        zfobj<ZFUIKit_test_Button> viewRotateZDec;
         window->childAdd(viewRotateZDec)->c_alignBottom()->c_margin(0, 0, margin, 0);
         viewRotateZDec->label()->text("viewRotateZ -");
         ZFLISTENER_1(viewRotateZOnDec
@@ -118,7 +118,7 @@ protected:
         } ZFLISTENER_END()
         viewRotateZDec->onClick(viewRotateZOnDec);
 
-        zfblockedAlloc(ZFUIKit_test_Button, viewRotateZInc);
+        zfobj<ZFUIKit_test_Button> viewRotateZInc;
         window->childAdd(viewRotateZInc)->c_alignBottom()->c_margin(margin, 0, 0, 0);
         viewRotateZInc->label()->text("viewRotateZ +");
         ZFLISTENER_1(viewRotateZOnInc

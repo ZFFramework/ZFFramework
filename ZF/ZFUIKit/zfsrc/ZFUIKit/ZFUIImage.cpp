@@ -140,7 +140,7 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     // imageBin
     const zfchar *imageBin = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIImage_imageBin);
     if(imageBin != zfnull) {
-        zfblockedAlloc(ZFIOBufferByCacheFile, io);
+        zfobj<ZFIOBufferByCacheFile> io;
         if(!ZFBase64Decode(io->output(), ZFInputForBufferUnsafe(imageBin))) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                 "invalid base64 data: \"%s\"", imageBin);

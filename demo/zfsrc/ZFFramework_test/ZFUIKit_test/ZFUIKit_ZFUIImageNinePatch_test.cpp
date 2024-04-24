@@ -18,7 +18,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIImageView, imageView);
+        zfobj<ZFUIImageView> imageView;
         container->childAdd(imageView)->c_alignCenter();
         imageView->image(zfRes("test_normal.png").to<ZFCopyable *>()->copy());
         imageView->image()->imageNinePatch(ZFUIMarginMake(
@@ -33,10 +33,10 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIImageView *imageView
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         { // wrap or fill
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter

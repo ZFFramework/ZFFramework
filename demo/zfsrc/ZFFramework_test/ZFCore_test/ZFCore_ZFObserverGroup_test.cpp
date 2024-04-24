@@ -13,10 +13,10 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
 
-        zfblockedAlloc(v_zfstring, testObserver0, "testObserver0");
+        zfobj<v_zfstring> testObserver0("testObserver0");
         ZFObserver testObserver1;
         ZFObject *testObserver2 = zfAlloc(v_zfstring, "testObserver2");
-        zfblockedAlloc(v_zfstring, testObserver3, "testObserver3");
+        zfobj<v_zfstring> testObserver3("testObserver3");
         ZFObject *owner = zfAlloc(ZFObject);
 
         ZFLISTENER(observer

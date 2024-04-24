@@ -128,7 +128,7 @@ protected:
      */
     virtual inline void listAdapterOnReload(ZF_IN_OPT zfindex atIndexOrMax = zfindexMax()) {
         this->toObject()->observerNotify(zfself::EventListAdapterOnReload(),
-            (atIndexOrMax == zfindexMax()) ? zfnull : zflineAlloc(v_zfindex, atIndexOrMax));
+            (atIndexOrMax == zfindexMax()) ? zfnull : zfobj<v_zfindex>(atIndexOrMax).toObject());
     }
     /**
      * @brief see #EventListCellOnUpdate
@@ -137,7 +137,7 @@ protected:
             ZF_IN zfindex atIndex
             , ZF_IN ZFUIListCell *cell
             ) {
-        this->toObject()->observerNotify(zfself::EventListCellOnUpdate(), cell, zflineAlloc(v_zfindex, atIndex));
+        this->toObject()->observerNotify(zfself::EventListCellOnUpdate(), cell, zfobj<v_zfindex>(atIndex));
     }
 
     // ============================================================
@@ -171,7 +171,7 @@ protected:
 
 public:
     /** @brief see #cellCacheOnRecycle */
-    ZFMETHOD_DECLARE_1(zfautoT<ZFUIListCell *>, cellCacheDefaultAccess
+    ZFMETHOD_DECLARE_1(zfautoT<ZFUIListCell>, cellCacheDefaultAccess
             , ZFMP_IN(const zfchar *, key)
             )
     /** @brief see #cellCacheOnRecycle */

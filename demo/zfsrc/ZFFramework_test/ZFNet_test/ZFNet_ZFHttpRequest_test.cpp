@@ -19,7 +19,7 @@ protected:
         ZFHttpMethodEnum httpMethod = ZFHttpMethod::e_GET;
 
         this->testCaseOutput("header test");
-        zfblockedAlloc(ZFHttpRequest, headerTest, url, httpMethod);
+        zfobj<ZFHttpRequest> headerTest(url, httpMethod);
         headerTest->header("k1", "v1_1");
         headerTest->header("k1", "v1_2");
         headerTest->header("k2", "v2_1");
@@ -41,10 +41,10 @@ protected:
             testCase->testCaseOutput(zfstr("%s", response->contentInfo()));
             testCase->testCaseStop();
         } ZFLISTENER_END()
-        zflineAlloc(ZFHttpRequest, url, httpMethod)
+        zfobj<ZFHttpRequest>(url, httpMethod)
             ->request(onRecv);
 
-        zflineAlloc(ZFHttpRequest, url, httpMethod)
+        zfobj<ZFHttpRequest>(url, httpMethod)
             ->request(onRecv)
             ->requestCancel();
     }

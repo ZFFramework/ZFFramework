@@ -43,7 +43,7 @@ protected:
         ZFFramework_test_protocolCheck(ZFTimer);
         ZFFramework_test_asyncTestCheck();
 
-        zfblockedAlloc(_ZFP_ZFUtility_ZFAni_test_Object, target);
+        zfobj<_ZFP_ZFUtility_ZFAni_test_Object> target;
         zfauto aniHolder = ZFAni(target, "testProp", "-100", "200");
         ZFAnimation *ani = aniHolder;
         ani->aniDuration(2000);

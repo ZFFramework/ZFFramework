@@ -16,7 +16,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUITextView, view);
+        zfobj<ZFUITextView> view;
         container->childAdd(view)->c_alignCenter();
         view->text("test text");
 
@@ -25,10 +25,10 @@ protected:
 
 private:
     void prepareSettingButton(ZF_IN ZFUIWindow *window) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         { // UIScale
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
             ZFLISTENER(buttonTextGetter) {
                 v_zfstring *text = zfargs.param0();

@@ -330,10 +330,10 @@ public:
 
     virtual void request(ZF_IN void *nativeTask) {
         _ZFP_ZFHttpRequestImpl_sys_Android_Task *task = (_ZFP_ZFHttpRequestImpl_sys_Android_Task *)nativeTask;
-        zfautoT<v_zfbool *> running = task->running;
+        zfautoT<v_zfbool> running = task->running;
         ZFLISTENER_3(run
                 , jclass, jclsOwner
-                , zfautoT<v_zfbool *>, running
+                , zfautoT<v_zfbool>, running
                 , _ZFP_ZFHttpRequestImpl_sys_Android_Task *, task
                 ) {
             JNIEnv *jniEnv = JNIGetJNIEnv();

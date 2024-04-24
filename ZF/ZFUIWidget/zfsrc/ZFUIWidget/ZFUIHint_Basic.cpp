@@ -26,27 +26,27 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUIImageView *, backgroundNorma
     value->image(zfRes("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
 }
 
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint *>, ZFUIHintMake
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintMake
         , ZFMP_IN(const zfchar *, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {
-    zfblockedAlloc(ZFUIHint, hint);
+    zfobj<ZFUIHint> hint;
 
-    zfblockedAlloc(ZFAnimationNativeView, hintAniShow);
+    zfobj<ZFAnimationNativeView> hintAniShow;
     hint->hintAniShow(hintAniShow);
     hintAniShow->aniAlphaFrom(0);
-    zfblockedAlloc(ZFAnimationNativeView, hintAniHide);
+    zfobj<ZFAnimationNativeView> hintAniHide;
     hint->hintAniHide(hintAniHide);
     hintAniHide->aniAlphaTo(0);
 
-    zfblockedAlloc(ZFUIHintContentBasic, hintContent);
+    zfobj<ZFUIHintContentBasic> hintContent;
     hint->hintContent(hintContent);
     hintContent->label()->text(text);
     hintContent->icon()->image(icon);
 
     return hint;
 }
-ZFMETHOD_FUNC_INLINE_DEFINE_2(zfautoT<ZFUIHint *>, ZFUIHintShow
+ZFMETHOD_FUNC_INLINE_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintShow
         , ZFMP_IN(const zfchar *, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         )

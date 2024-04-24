@@ -32,7 +32,7 @@ static zfbool _ZFP_ZFTypeIdGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
                 )) {
         return zffalse;
     }
-    ret = zflineAlloc(v_zfstring, invokerMethod->methodName() + zfslen("ZFTypeId_"));
+    ret = zfobj<v_zfstring>(invokerMethod->methodName() + zfslen("ZFTypeId_"));
     return zftrue;
 }
 zfbool ZFTypeIdDynamicRegister(

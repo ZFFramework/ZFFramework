@@ -60,7 +60,7 @@ protected:
     /** @brief see #EventTestCaseOnOutput */
     virtual inline void testCaseOnOutput(ZF_IN const zfchar *info) {
         if(this->observerHasAdd(ZFTestCase::EventTestCaseOnOutput())) {
-            this->observerNotify(ZFTestCase::EventTestCaseOnOutput(), zflineAlloc(v_zfstring, info));
+            this->observerNotify(ZFTestCase::EventTestCaseOnOutput(), zfobj<v_zfstring>(info));
         }
     }
     /** @brief see #EventTestCaseOnStart */
@@ -73,8 +73,7 @@ protected:
     }
     /** @brief see #EventTestCaseOnStop */
     virtual inline void testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseResult) {
-        zfblockedAlloc(ZFResultType, testCaseResultTmp, testCaseResult);
-        this->observerNotify(ZFTestCase::EventTestCaseOnStop(), testCaseResultTmp);
+        this->observerNotify(ZFTestCase::EventTestCaseOnStop(), zfobj<ZFResultType>(testCaseResult));
         zfRelease(this);
     }
 

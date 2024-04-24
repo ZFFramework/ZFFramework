@@ -20,7 +20,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   zfweak p1 = obj;
  *   ZFArray *access1 = p1.get();
  *
- *   zfweakT<ZFArray *> p2 = obj;
+ *   zfweakT<ZFArray> p2 = obj;
  *   if(p2) {
  *       p2.get()->add(xxx);
  *   }
@@ -229,8 +229,8 @@ public:
     }
 
 public:
-    inline T_ZFObjectBase operator -> (void) const {
-        return ZFCastZFObjectUnchecked(T_ZFObjectBase, this->toObject());
+    inline T_ZFObjectBase *operator -> (void) const {
+        return ZFCastZFObjectUnchecked(T_ZFObjectBase *, this->toObject());
     }
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
         return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;

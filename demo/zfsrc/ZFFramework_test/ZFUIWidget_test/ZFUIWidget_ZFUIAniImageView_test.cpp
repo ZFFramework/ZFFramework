@@ -16,7 +16,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIAniImageView, animatedImageView);
+        zfobj<ZFUIAniImageView> animatedImageView;
         container->childAdd(animatedImageView)->c_alignCenter();
         ZFLISTENER_1(testCaseOnStop
                 , ZFUIAniImageView *, animatedImageView
@@ -25,7 +25,7 @@ protected:
         } ZFLISTENER_END()
         this->observerAdd(ZFTestCase::EventTestCaseOnStop(), testCaseOnStop);
 
-        zfautoT<ZFUIImage *> frameSrc = zfRes("test_normal.png");
+        zfautoT<ZFUIImage> frameSrc = zfRes("test_normal.png");
         animatedImageView->aniLoad(frameSrc, ZFUISizeMake(
                 frameSrc->imageSizeFixed().width / 2,
                 frameSrc->imageSizeFixed().height / 2
@@ -78,7 +78,7 @@ private:
                 ) {
             animatedImageView->aniFrameNext();
         } ZFLISTENER_END()
-        zfblockedAlloc(ZFUIKit_test_Button, manualButton);
+        zfobj<ZFUIKit_test_Button> manualButton;
         container->childAdd(manualButton)->c_alignLeftBottom();
         manualButton->label()->text("manual");
         manualButton->observerAdd(ZFUIButton::EventButtonOnClick(), manualOnClick);
@@ -88,7 +88,7 @@ private:
                 ) {
             animatedImageView->aniStart();
         } ZFLISTENER_END()
-        zfblockedAlloc(ZFUIKit_test_Button, startButton);
+        zfobj<ZFUIKit_test_Button> startButton;
         container->childAdd(startButton)->c_alignBottom();
         startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
@@ -98,7 +98,7 @@ private:
                 ) {
             animatedImageView->aniStop();
         } ZFLISTENER_END()
-        zfblockedAlloc(ZFUIKit_test_Button, stopButton);
+        zfobj<ZFUIKit_test_Button> stopButton;
         container->childAdd(stopButton)->c_alignRightBottom();
         stopButton->label()->text("stop");
         stopButton->observerAdd(ZFUIButton::EventButtonOnClick(), stopOnClick);
@@ -107,7 +107,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIAniImageView *animatedImageView
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);
     }

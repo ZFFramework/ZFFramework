@@ -3,39 +3,39 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAnimationTimeLine>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const ZFListener &, aniImpl)
         ) {
     if(!aniImpl) {
         return zfnull;
     }
-    zfblockedAlloc(ZFAniForCustomAni, ani);
+    zfobj<ZFAniForCustomAni> ani;
     ani->customAniCallback(aniImpl);
     return ani;
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(const zfchar *, from)
         , ZFMP_IN(const zfchar *, to)
         ) {
-    zfblockedAlloc(ZFAniForGeneric, ani);
+    zfobj<ZFAniForGeneric> ani;
     ani->aniTarget(target);
     ani->name(name);
     ani->fromValue(from);
     ani->toValue(to);
     return ani;
 }
-ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine *>, ZFAni
+ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         ) {
-    zfblockedAlloc(ZFAniForObject, ani);
+    zfobj<ZFAniForObject> ani;
     ani->aniTarget(target);
     ani->name(name);
     ani->fromValue(from);

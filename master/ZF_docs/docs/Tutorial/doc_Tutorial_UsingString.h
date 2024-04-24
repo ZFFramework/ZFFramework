@@ -23,8 +23,8 @@
  *   zfLog() << cppStyle << " " << cppStyle2.cString();
  *
  *   // string container as object type
- *   zfblockedAlloc(v_zfstring, zfStyle, "object-style string");
- *   zfblockedAlloc(v_zfstring, zfStyle2);
+ *   zfobj<v_zfstring> zfStyle("object-style string");
+ *   zfobj<v_zfstring> zfStyle2;
  *   zfStyle2->zfv = "copied object-style string";
  *   zfLog() << zfStyle << " " << zfStyle2->zfv;
  * @endcode

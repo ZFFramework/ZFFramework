@@ -19,7 +19,7 @@
  *
  * once declared, the object can be serialized by:
  * @code
- *   zfblockedAlloc(MyObject, obj);
+ *   zfobj<MyObject> obj;
  *
  *   // serialize to an data holder,
  *   // which can be converted to raw data and write to file,

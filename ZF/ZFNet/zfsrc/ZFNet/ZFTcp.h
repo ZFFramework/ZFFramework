@@ -95,7 +95,7 @@ public:
      * -  this method may or may not block current thread (depends on impl),
      *   recommended to put it in thread and loop with sleep
      */
-    ZFMETHOD_DECLARE_0(zfautoT<ZFTcp *>, accept)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFTcp>, accept)
 
     // ============================================================
 public:

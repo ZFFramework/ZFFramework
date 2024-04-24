@@ -73,71 +73,75 @@ protected:
         }
         this->testCaseOutputSeparator();
 
-        zfblockedAlloc(ZFTime, t, ZFTime::currentTimeValue());
+        zfobj<ZFTime> t(ZFTime::currentTimeValue());
         this->testCaseOutput("current time:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t));
 
-        zfblockedAlloc(ZFTime, t2, ZFTimeValueZero());
+        zfobj<ZFTime> t2(ZFTimeValueZero());
         this->testCaseOutput("zero time:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t2));
 
-        zfblockedAlloc(ZFTime, t3, ZFTimeInfoMake(
-            t->timeInfoYear(),
-            t->timeInfoMonth(),
-            t->timeInfoDay(),
-            t->timeInfoHour(),
-            t->timeInfoMinute(),
-            t->timeInfoSecond(),
-            t->timeInfoMiliSecond(),
-            t->timeInfoMicroSecond()));
+        zfobj<ZFTime> t3(ZFTimeInfoMake(
+                    t->timeInfoYear(),
+                    t->timeInfoMonth(),
+                    t->timeInfoDay(),
+                    t->timeInfoHour(),
+                    t->timeInfoMinute(),
+                    t->timeInfoSecond(),
+                    t->timeInfoMiliSecond(),
+                    t->timeInfoMicroSecond()
+                    ));
         this->testCaseOutput("create a ZFTime:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t3));
 
-        zfblockedAlloc(ZFTime, t4, ZFTimeInfoMake(
-            t->timeInfoYear() - 300,
-            t->timeInfoMonth(),
-            t->timeInfoDay(),
-            t->timeInfoHour(),
-            t->timeInfoMinute(),
-            t->timeInfoSecond(),
-            t->timeInfoMiliSecond(),
-            t->timeInfoMicroSecond()));
+        zfobj<ZFTime> t4(ZFTimeInfoMake(
+                    t->timeInfoYear() - 300,
+                    t->timeInfoMonth(),
+                    t->timeInfoDay(),
+                    t->timeInfoHour(),
+                    t->timeInfoMinute(),
+                    t->timeInfoSecond(),
+                    t->timeInfoMiliSecond(),
+                    t->timeInfoMicroSecond()
+                    ));
         this->testCaseOutput("time before 1970:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t4));
 
-        zfblockedAlloc(ZFTime, t5, ZFTimeInfoMake(
-            t->timeInfoYear() - 3000,
-            t->timeInfoMonth(),
-            t->timeInfoDay(),
-            t->timeInfoHour(),
-            t->timeInfoMinute(),
-            t->timeInfoSecond(),
-            t->timeInfoMiliSecond(),
-            t->timeInfoMicroSecond()));
+        zfobj<ZFTime> t5(ZFTimeInfoMake(
+                    t->timeInfoYear() - 3000,
+                    t->timeInfoMonth(),
+                    t->timeInfoDay(),
+                    t->timeInfoHour(),
+                    t->timeInfoMinute(),
+                    t->timeInfoSecond(),
+                    t->timeInfoMiliSecond(),
+                    t->timeInfoMicroSecond()
+                    ));
         this->testCaseOutput("time before 0000:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t5));
 
-        zfblockedAlloc(ZFTime, t6, ZFTimeInfoMake(
-            t->timeInfoYear() + 3000,
-            t->timeInfoMonth(),
-            t->timeInfoDay(),
-            t->timeInfoHour(),
-            t->timeInfoMinute(),
-            t->timeInfoSecond(),
-            t->timeInfoMiliSecond(),
-            t->timeInfoMicroSecond()));
+        zfobj<ZFTime> t6(ZFTimeInfoMake(
+                    t->timeInfoYear() + 3000,
+                    t->timeInfoMonth(),
+                    t->timeInfoDay(),
+                    t->timeInfoHour(),
+                    t->timeInfoMinute(),
+                    t->timeInfoSecond(),
+                    t->timeInfoMiliSecond(),
+                    t->timeInfoMicroSecond()
+                    ));
         this->testCaseOutput("time after 3000:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t6));
 
-        zfblockedAlloc(ZFTime, t7, t->timeValue());
+        zfobj<ZFTime> t7(t->timeValue());
         this->testCaseOutput("copy a ZFTime:");
         this->testCaseOutput(_ZFP_ZFCore_ZFTime_test_printZFTime(t7));
 
         // ============================================================
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFTime performance test");
-        zfblockedAlloc(ZFTime, tCur1);
-        zfblockedAlloc(ZFTime, tCur2);
+        zfobj<ZFTime> tCur1;
+        zfobj<ZFTime> tCur2;
 
         this->testCaseOutput("\naccess none");
         tCur1->timeValue(ZFTime::currentTimeValue());

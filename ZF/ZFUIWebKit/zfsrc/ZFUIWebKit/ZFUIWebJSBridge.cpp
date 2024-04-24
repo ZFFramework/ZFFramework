@@ -56,7 +56,7 @@ ZFMETHOD_DEFINE_0(ZFUIWebJSBridge, ZFUIWebView *, webView) {
 ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, webMessageSend
         , ZFMP_IN_OUT(ZFJson &, messageSend)
         ) {
-    zfblockedAlloc(ZFUIWebJSBridgeSendData, dataSend);
+    zfobj<ZFUIWebJSBridgeSendData> dataSend;
     dataSend->messageSend = messageSend;
     this->webMessageBeforeSend(dataSend);
     dataSend->messageResponse = ZFPROTOCOL_ACCESS(ZFUIWebJSBridge)->webMessageSend(this, messageSend);
@@ -64,7 +64,7 @@ ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFJson, webMessageSend
     return dataSend->messageResponse;
 }
 ZFJson ZFUIWebJSBridge::_ZFP_ZFUIWebJSBridge_notifyWebMessageRecv(ZF_IN_OUT ZFJson &messageRecv) {
-    zfblockedAlloc(ZFUIWebJSBridgeRecvData, dataRecv);
+    zfobj<ZFUIWebJSBridgeRecvData> dataRecv;
     dataRecv->messageRecv = messageRecv;
     this->webMessageBeforeRecv(dataRecv);
     this->webMessageAfterRecv(dataRecv);

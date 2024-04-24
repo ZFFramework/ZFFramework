@@ -399,7 +399,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             , ZF_OUT_OPT zfstring *errorHint /* = zfnull */ \
             ) { \
         if(zfsncmp(src, ZFEnumNameInvalid(), srcLen) == 0) { \
-            ret = zflineAlloc(EnumName, ZFEnumInvalid()); \
+            ret = zfobj<EnumName>(ZFEnumInvalid()); \
             return zftrue; \
         } \
         zfuint tmpValue = EnumName::EnumValueForName( \
@@ -409,7 +409,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFEnumMethodReg(
             return zffalse; \
         } \
         else { \
-            ret = zflineAlloc(EnumName, tmpValue); \
+            ret = zfobj<EnumName>(tmpValue); \
             return zftrue; \
         } \
     } \

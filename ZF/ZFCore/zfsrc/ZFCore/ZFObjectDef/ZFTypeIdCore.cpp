@@ -61,7 +61,7 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
                     success = invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueFromString(s);
                 }
                 if(!success) {
-                    zfblockedAlloc(v_zfstring, errorHint);
+                    zfobj<v_zfstring> errorHint;
                     zfstringAppend(errorHint->zfv, "unable to construct %s from (%s)%s",
                         invokerObject->classData()->className(),
                         src->classData()->className(),

@@ -6,7 +6,7 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
     ZFImpl_ZFLua_luaErrorPrepare(L);
 
     ZFCoreArray<zfauto> retArr;
-    zfblockedAlloc(v_ZFCoreArray, ret, retArr);
+    zfobj<v_ZFCoreArray> ret(retArr);
     int count = (int)lua_gettop(L);
 
     for(int i = 0; i < count; ++i) {
@@ -18,7 +18,7 @@ static int _ZFP_ZFImpl_ZFLua_ZFCoreArrayCreate(ZF_IN lua_State *L) {
             continue;
         }
 
-        zfblockedAlloc(v_zfstring, pTmp);
+        zfobj<v_zfstring> pTmp;
         if(ZFImpl_ZFLua_toString(pTmp->zfv, L, i + 1, zftrue)) {
             retArr.add(pTmp);
             continue;

@@ -206,7 +206,7 @@ protected:
     }
     /** @brief see #EventAniOnStopOrInvalid */
     virtual inline void aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
-        this->observerNotify(ZFAnimation::EventAniOnStopOrInvalid(), zflineAlloc(v_zfbool, aniValid));
+        this->observerNotify(ZFAnimation::EventAniOnStopOrInvalid(), zfobj<v_zfbool>(aniValid));
     }
     /**
      * @brief subclass must notify after the animation stop

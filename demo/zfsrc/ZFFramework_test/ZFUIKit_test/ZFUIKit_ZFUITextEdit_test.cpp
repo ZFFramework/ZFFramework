@@ -22,13 +22,13 @@ protected:
             textEdit->viewFocusRequest(zffalse);
         } ZFLISTENER_END()
 
-        zfblockedAlloc(ZFUITextEdit, view);
+        zfobj<ZFUITextEdit> view;
         container->childAdd(view)->c_widthFill()->c_margin(40);
         view->viewBackgroundColor(ZFUIColorRed());
         view->observerAdd(ZFUITextEdit::EventTextOnReturnClick(), onClickReturn);
         view->textPlaceHolder()->text("first text edit");
 
-        zfblockedAlloc(ZFUITextEdit, view2);
+        zfobj<ZFUITextEdit> view2;
         container->childAdd(view2)->c_sizeFill()->c_margin(40, 100, 40, 40);
         view2->viewBackgroundColor(ZFUIColorBlue());
         view2->observerAdd(ZFUITextEdit::EventTextOnReturnClick(), onClickReturn);
@@ -42,7 +42,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUITextEdit *view
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
         ZFUIKit_test_prepareSettingForBoolProperty(settings, view, ZFPropertyAccess(ZFUITextEdit, textEditEnable));
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);

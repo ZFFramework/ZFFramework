@@ -140,7 +140,7 @@ _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getProperty
     _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->classData()->classTag<_ZFP_I_ZFStyleable_PropertyTypeHolder *>(
         _ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
     if(holder == zfnull) {
-        zfunsafe_zfblockedAlloc(_ZFP_I_ZFStyleable_PropertyTypeHolder, holderTmp);
+        zfobj<_ZFP_I_ZFStyleable_PropertyTypeHolder> holderTmp;
 
         const ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(this->classData());
         const ZFProperty *propertyTmp = zfnull;

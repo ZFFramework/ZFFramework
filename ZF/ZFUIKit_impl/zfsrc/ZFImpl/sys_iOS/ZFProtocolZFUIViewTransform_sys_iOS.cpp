@@ -23,7 +23,7 @@ public:
         // delay for some time
         _delayTaskMap[view] = zftrue;
         zfself *thiz = this;
-        zfautoT<ZFObjectHolder *> holder = view->objectHolder();
+        zfautoT<ZFObjectHolder> holder = view->objectHolder();
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             ZFUIView *viewTmp = holder->objectHolded();
             if(viewTmp == zfnull || thiz->_delayTaskMap.find(viewTmp) == thiz->_delayTaskMap.end()) {

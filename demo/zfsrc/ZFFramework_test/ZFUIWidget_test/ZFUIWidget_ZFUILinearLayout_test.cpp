@@ -16,7 +16,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUILinearLayout, layout);
+        zfobj<ZFUILinearLayout> layout;
         container->childAdd(layout)->c_margin(40);
         layout->viewBackgroundColor(ZFUIColorRed());
 
@@ -28,7 +28,7 @@ protected:
 private:
     void prepareChildren(ZF_IN ZFUILinearLayout *layout) {
         for(zfindex i = 0; i < 3; ++i) {
-            zfblockedAlloc(ZFUITextView, child);
+            zfobj<ZFUITextView> child;
             layout->childAdd(child);
             child->text(zfstr("text %s", i));
             child->textAlign(ZFUIAlign::e_Center);
@@ -38,11 +38,11 @@ private:
         layout->childAt(1)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
         layout->childAt(2)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(2);
 
-        zfblockedAlloc(ZFUILinearLayout, l);
+        zfobj<ZFUILinearLayout> l;
         layout->childAdd(l);
         l->layoutOrientation(ZFUIOrientation::e_Bottom);
         for(zfindex i = 0; i < 3; ++i) {
-            zfblockedAlloc(ZFUITextView, child);
+            zfobj<ZFUITextView> child;
             l->childAdd(child);
             child->text(zfstr("text %s", 3 + i));
             child->textAlign(ZFUIAlign::e_Center);
@@ -53,7 +53,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUILinearLayout *layout
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 

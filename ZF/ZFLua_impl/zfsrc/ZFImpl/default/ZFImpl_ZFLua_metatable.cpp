@@ -426,37 +426,37 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
     if(zffalse) {
     }
     else if(paramClass0->classIsTypeOf(v_zfbool::ClassData()) || paramClass1->classIsTypeOf(v_zfbool::ClassData())) {
-        zfblockedAlloc(v_zfbool, ret);
+        zfobj<v_zfbool> ret;
         ret->zfv = (zfmAbs(n) <= zffloatEpsilon);
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfflags::ClassData()) || paramClass1->classIsTypeOf(v_zfflags::ClassData())) {
-        zfblockedAlloc(v_zfflags, ret);
+        zfobj<v_zfflags> ret;
         ret->zfv = (zfflags)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfidentity::ClassData()) || paramClass1->classIsTypeOf(v_zfidentity::ClassData())) {
-        zfblockedAlloc(v_zfidentity, ret);
+        zfobj<v_zfidentity> ret;
         ret->zfv = (zfidentity)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfindex::ClassData()) || paramClass1->classIsTypeOf(v_zfindex::ClassData())) {
-        zfblockedAlloc(v_zfindex, ret);
+        zfobj<v_zfindex> ret;
         ret->zfv = (zfindex)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zftimet::ClassData()) || paramClass1->classIsTypeOf(v_zftimet::ClassData())) {
-        zfblockedAlloc(v_zftimet, ret);
+        zfobj<v_zftimet> ret;
         ret->zfv = (zftimet)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }
     else if(paramClass0->classIsTypeOf(v_zfbyte::ClassData()) || paramClass1->classIsTypeOf(v_zfbyte::ClassData())) {
-        zfblockedAlloc(v_zfbyte, ret);
+        zfobj<v_zfbyte> ret;
         ret->zfv = (zfbyte)n;
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;

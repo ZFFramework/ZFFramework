@@ -29,10 +29,10 @@
  *   all container would automatically retain elements when add,
  *   and release when remove
  *   @code
- *     zfblockedAlloc(ZFArray, array);
+ *     zfobj<ZFArray> array;
  *
  *     // can hold ZFObject types only
- *     array->add(zflineAlloc(v_zfstring));
+ *     array->add(zfobj<v_zfstring>());
  *   @endcode
  */
 

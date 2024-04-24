@@ -101,61 +101,6 @@ public:
     zfunsafe_zflineRelease(zfunsafe_zfAlloc(T_ZFObject, ##__VA_ARGS__))
 
 // ============================================================
-template<typename T_ZFObject>
-zffinal zfclassLikePOD _ZFP_zfblockedAllocContainer {
-public:
-    _ZFP_zfblockedAllocContainer(ZF_IN T_ZFObject *obj)
-    : obj(obj)
-    {
-    }
-    ~_ZFP_zfblockedAllocContainer(void) {
-        zfRelease(this->obj);
-    }
-public:
-    T_ZFObject *obj;
-};
-template<typename T_ZFObject>
-zffinal zfclassLikePOD _ZFP_zfunsafe_zfblockedAllocContainer {
-public:
-    _ZFP_zfunsafe_zfblockedAllocContainer(ZF_IN T_ZFObject *obj)
-    : obj(obj)
-    {
-    }
-    ~_ZFP_zfunsafe_zfblockedAllocContainer(void) {
-        zfRelease(this->obj);
-    }
-public:
-    T_ZFObject *obj;
-};
-/**
- * @brief alloc a ZFObject looks like on a stack
- *
- * @code
- *   v_zfstring *saved = zfnull;
- *   {
- *       zfblockedAlloc(
- *           v_zfstring, // object's type
- *           s, // object's name
- *           "init value" // params passed to object's objectOnInit
- *       );
- *       s->objectInfo(); // access like normal ZFObject
- *       saved = zfRetain(s); // you may retain it and save it
- *   } // s would be released after this block
- *   saved->objectInfo(); // s is still alive since we retained it in the block
- *   zfRelease(saved); // release it
- * @endcode
- */
-#define zfblockedAlloc(T_ZFObject, name, ...) \
-    _ZFP_zfblockedAllocContainer<T_ZFObject> \
-        ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name) (zfAlloc(T_ZFObject, ##__VA_ARGS__)); \
-    T_ZFObject *name = (ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name).obj)
-/** @brief no lock version of #zfblockedAlloc, use with caution */
-#define zfunsafe_zfblockedAlloc(T_ZFObject, name, ...) \
-    _ZFP_zfunsafe_zfblockedAllocContainer<T_ZFObject> \
-        ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name) (zfunsafe_zfAlloc(T_ZFObject, ##__VA_ARGS__)); \
-    T_ZFObject *name = (ZFM_CAT(_ZFP_zfblockedAlloc_hold_, name).obj)
-
-// ============================================================
 zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedReleaseContainer {
 public:
     template<typename T_ZFObject>
@@ -198,6 +143,102 @@ private:
 /** @brief no lock version of #zfblockedRelease, use with caution */
 #define zfunsafe_zfblockedRelease(obj) \
     _ZFP_zfunsafe_zfblockedReleaseContainer ZFUniqueName(zfblockedRelease) (obj)
+
+/**
+ * @brief util class to alloc and hold ZFObject type
+ *
+ * usage:
+ * @code
+ *   zfobj<ZFUIView> v;
+ *
+ *   // equivalence
+ *   zfautoT<ZFUIView> v = zflineAlloc(ZFUIView);
+ * @endcode
+ *
+ * note, this type is a util class in cpp world,
+ * it's not reflectable and can not be used in ZFMethod,
+ * use zfauto or zfautoT instead
+ */
+template<typename T_ZFObjectBase>
+zfclassLikePOD zfobj : zfextend zfautoT<T_ZFObjectBase> {
+    /** @cond ZFPrivateDoc */
+public:
+    zfobj(void)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase));}
+
+    template<typename P0>
+    zfobj(P0 const &p0)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0));}
+
+    template<typename P0, typename P1>
+    zfobj(P0 const &p0, P1 const &p1)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1));}
+
+    template<typename P0, typename P1, typename P2>
+    zfobj(P0 const &p0, P1 const &p1, P2 const &p2)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2));}
+
+    template<typename P0, typename P1, typename P2, typename P3>
+    zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3));}
+
+    template<typename P0, typename P1, typename P2, typename P3, typename P4>
+    zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4));}
+
+    template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5>
+    zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5));}
+
+    template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6>
+    zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5, P6 const &p6)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6));}
+
+    template<typename P0, typename P1, typename P2, typename P3, typename P4, typename P5, typename P6, typename P7>
+    zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5, P6 const &p6, P7 const &p7)
+    : zfautoT<T_ZFObjectBase>()
+    {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6, p7));}
+    /** @endcond */
+};
+
+// ============================================================
+template<typename T_ZFObject, typename T_To, int T_ToType>
+zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(zfobj<T_ZFObject> const &obj) {
+        return ZFCastZFObject(T_To, obj.toObject());
+    }
+};
+template<typename T_ZFObject, typename T_From, int T_FromType>
+zfclassNotPOD _ZFP_ObjCastHolder<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+public:
+    static inline zfobj<T_ZFObject> c(T_From obj) {
+        return ZFCastZFObject(ZFObject *, obj);
+    }
+};
+
+template<typename T_ZFObject, typename T_To, int T_ToType>
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(zfobj<T_ZFObject> const &obj) {
+        return ZFCastZFObjectUnchecked(T_To, obj.toObject());
+    }
+};
+template<typename T_ZFObject, typename T_From, int T_FromType>
+zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+public:
+    static inline zfobj<T_ZFObject> c(T_From obj) {
+        return ZFCastZFObjectUnchecked(ZFObject *, obj);
+    }
+};
 
 ZF_NAMESPACE_GLOBAL_END
 

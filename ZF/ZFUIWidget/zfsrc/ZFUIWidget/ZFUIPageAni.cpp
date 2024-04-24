@@ -39,12 +39,12 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForAlpha
     }
 
     if(alphaInPage != zfnull) {
-        zfblockedAlloc(ZFAnimationNativeView, alphaInAni);
+        zfobj<ZFAnimationNativeView> alphaInAni;
         alphaInPage->pageAni(alphaInAni);
         alphaInAni->aniAlphaFrom(0);
     }
     if(alphaOutPage != zfnull) {
-        zfblockedAlloc(ZFAnimationNativeView, alphaOutAni);
+        zfobj<ZFAnimationNativeView> alphaOutAni;
         alphaOutPage->pageAni(alphaOutAni);
         alphaOutAni->aniAlphaTo(0);
     }
@@ -61,13 +61,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
     if(resumeOrPauseReason->classData()->classIsTypeOf(ZFUIPageResumeReason::ClassData())) {
         if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, requestInAni);
+                zfobj<ZFAnimationNativeView> requestInAni;
                 page->pageAni(requestInAni);
                 requestInAni->aniTranslateXFrom(1);
                 requestInAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
             }
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, requestOutAni);
+                zfobj<ZFAnimationNativeView> requestOutAni;
                 siblingPage->pageAni(requestOutAni);
                 requestOutAni->aniTranslateXTo(-1);
                 requestOutAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
@@ -75,13 +75,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         }
         else { // ZFUIPageResumeReason::e_FromBackground
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, resumeInAni);
+                zfobj<ZFAnimationNativeView> resumeInAni;
                 page->pageAni(resumeInAni);
                 resumeInAni->aniTranslateXFrom(-1);
                 resumeInAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
             }
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, resumeOutAni);
+                zfobj<ZFAnimationNativeView> resumeOutAni;
                 siblingPage->pageAni(resumeOutAni);
                 resumeOutAni->aniTranslateXTo(1);
                 resumeOutAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
@@ -91,13 +91,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
     else {
         if(resumeOrPauseReason->enumValue() == ZFUIPagePauseReason::e_ToBackground) {
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, requestInAni);
+                zfobj<ZFAnimationNativeView> requestInAni;
                 siblingPage->pageAni(requestInAni);
                 requestInAni->aniTranslateXFrom(1);
                 requestInAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
             }
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, requestOutAni);
+                zfobj<ZFAnimationNativeView> requestOutAni;
                 page->pageAni(requestOutAni);
                 requestOutAni->aniTranslateXTo(-1);
                 requestOutAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
@@ -105,13 +105,13 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForSlide
         }
         else { // ZFUIPagePauseReason::e_BeforeDestroy
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, resumeInAni);
+                zfobj<ZFAnimationNativeView> resumeInAni;
                 siblingPage->pageAni(resumeInAni);
                 resumeInAni->aniTranslateXFrom(-1);
                 resumeInAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
             }
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, resumeOutAni);
+                zfobj<ZFAnimationNativeView> resumeOutAni;
                 page->pageAni(resumeOutAni);
                 resumeOutAni->aniTranslateXTo(1);
                 resumeOutAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
@@ -131,23 +131,23 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
     if(resumeOrPauseReason->classData()->classIsTypeOf(ZFUIPageResumeReason::ClassData())) {
         if(resumeOrPauseReason->enumValue() == ZFUIPageResumeReason::e_ByRequest) {
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, requestInAni);
+                zfobj<ZFAnimationNativeView> requestInAni;
                 page->pageAni(requestInAni);
                 requestInAni->aniTranslateYFrom(0);
                 requestInAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
             }
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimation, requestOutAni);
+                zfobj<ZFAnimation> requestOutAni;
                 siblingPage->pageAni(requestOutAni);
             }
         }
         else { // ZFUIPageResumeReason::e_FromBackground
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimation, resumeInAni);
+                zfobj<ZFAnimation> resumeInAni;
                 page->pageAni(resumeInAni);
             }
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, resumeOutAni);
+                zfobj<ZFAnimationNativeView> resumeOutAni;
                 siblingPage->pageAni(resumeOutAni);
                 resumeOutAni->aniTranslateYTo(1);
                 resumeOutAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseIn);
@@ -157,23 +157,23 @@ ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFUIPageAniPrepareForPopup
     else {
         if(resumeOrPauseReason->enumValue() == ZFUIPagePauseReason::e_ToBackground) {
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, requestInAni);
+                zfobj<ZFAnimationNativeView> requestInAni;
                 siblingPage->pageAni(requestInAni);
                 requestInAni->aniTranslateYFrom(0);
                 requestInAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseOut);
             }
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimation, requestOutAni);
+                zfobj<ZFAnimation> requestOutAni;
                 page->pageAni(requestOutAni);
             }
         }
         else { // ZFUIPagePauseReason::e_BeforeDestroy
             if(siblingPage != zfnull) {
-                zfblockedAlloc(ZFAnimation, resumeInAni);
+                zfobj<ZFAnimation> resumeInAni;
                 siblingPage->pageAni(resumeInAni);
             }
             if(page != zfnull) {
-                zfblockedAlloc(ZFAnimationNativeView, resumeOutAni);
+                zfobj<ZFAnimationNativeView> resumeOutAni;
                 page->pageAni(resumeOutAni);
                 resumeOutAni->aniTranslateYTo(1);
                 resumeOutAni->aniCurve(ZFAnimationNativeViewCurve::e_EaseIn);

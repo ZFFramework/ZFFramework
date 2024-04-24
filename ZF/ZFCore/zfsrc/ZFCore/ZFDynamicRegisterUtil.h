@@ -205,7 +205,7 @@ public:
      *   ZFDynamic()
      *       .method("void", "myMethod", ZFMP()
      *           .mp("zfint", "p0")
-     *           .mp("zfint", "p1", zflineAlloc(v_zfint, 123))
+     *           .mp("zfint", "p1", zfobj<v_zfint>(123))
      *           , methodImpl);
      * @endcode
      */

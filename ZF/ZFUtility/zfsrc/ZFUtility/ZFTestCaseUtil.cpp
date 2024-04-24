@@ -8,7 +8,7 @@ ZFOBSERVER_EVENT_GLOBAL_REGISTER(TestCaseRunAllOnStop)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase *>, ZFTestCaseRun
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase>, ZFTestCaseRun
         , ZFMP_IN(const ZFClass *, cls)
         ) {
     if(cls == zfnull || !cls->classIsTypeOf(ZFTestCase::ClassData())) {
@@ -22,7 +22,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase *>, ZFTestCaseRun
     testCase->testCaseStart();
     return testCase->testCaseIsRunning() ? testCase : zfnull;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase *>, ZFTestCaseRun
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase>, ZFTestCaseRun
         , ZFMP_IN(const zfchar *, classNameFull)
         ) {
     return ZFTestCaseRun(ZFClass::classForName(classNameFull));
@@ -97,7 +97,7 @@ public:
 private:
     zfbool running;
     ZFCoreArray<const ZFClass *> testCases;
-    zfautoT<ZFTestCase *> testCaseRunning;
+    zfautoT<ZFTestCase> testCaseRunning;
     ZFListener testCaseFinishListener;
 private:
     static void testCaseListPrepare(

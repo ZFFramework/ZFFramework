@@ -157,7 +157,7 @@ void ZFAnimationTimeLine::aniImplStop(void) {
 void ZFAnimationTimeLine::aniTimeLineOnUpdate(ZF_IN zffloat progress) {
     this->observerNotify(
         ZFAnimationTimeLine::EventAniTimeLineOnUpdate(),
-        zflineAlloc(v_zffloat, progress));
+        zfobj<v_zffloat>(progress));
 }
 
 ZF_NAMESPACE_GLOBAL_END

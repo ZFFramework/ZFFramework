@@ -56,9 +56,9 @@ ZFMETHOD_DEFINE_1(ZFTaskMap, zfauto, detach
     d->m.erase(it);
     return ret;
 }
-ZFMETHOD_DEFINE_0(ZFTaskMap, zfautoT<ZFArray *>, detachAll) {
+ZFMETHOD_DEFINE_0(ZFTaskMap, zfautoT<ZFArray>, detachAll) {
     zfsynchronize(this);
-    zfblockedAlloc(ZFArray, ret);
+    zfobj<ZFArray> ret;
     if(!d->m.empty()) {
         _ZFP_ZFTaskMapPrivate::TaskMap m;
         m.swap(d->m);

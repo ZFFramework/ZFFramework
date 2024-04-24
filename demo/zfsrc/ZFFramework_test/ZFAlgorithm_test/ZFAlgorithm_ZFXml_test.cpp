@@ -39,7 +39,7 @@ protected:
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFXml add element");
         ZFXml element(ZFXmlType::e_XmlElement);
-        element.xmlName("testElement");
+        element.name("testElement");
         doc.childAdd(element);
         this->testCaseOutput("ZFXml add element, result:");
         zfLogTrim() << ZFXmlToString(doc);

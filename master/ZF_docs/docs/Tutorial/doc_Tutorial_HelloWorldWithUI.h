@@ -9,12 +9,12 @@
  *
  *   ZFMAIN_ENTRY() {
  *       // typically we will start UI by creating a ZFUIWindow
- *       zfblockedAlloc(ZFUIWindow, window);
+ *       zfobj<ZFUIWindow> window;
  *       // show the window
  *       window->windowShow();
  *
  *       // create a text view and set text content
- *       zfblockedAlloc(ZFUITextView, textView);
+ *       zfobj<ZFUITextView> textView;
  *       textView->text("hello world");
  *
  *       // add to window

@@ -38,8 +38,8 @@ private:
         }
     }
 private:
-    static zfautoT<ZFTimer *> &_timer(void) {
-        static zfautoT<ZFTimer *> d;
+    static zfautoT<ZFTimer> &_timer(void) {
+        static zfautoT<ZFTimer> d;
         return d;
     }
     static ZFCoreArray<ZFAudio *> &_playing(void) {
@@ -47,7 +47,7 @@ private:
         return d;
     }
     static void audioOnResume(ZF_IN ZFAudio *audio) {
-        zfautoT<ZFTimer *> &timer = _timer();
+        zfautoT<ZFTimer> &timer = _timer();
         ZFCoreArray<ZFAudio *> &playing = _playing();
 
         playing.add(audio);
@@ -64,7 +64,7 @@ private:
         }
     }
     static void audioOnPause(ZF_IN ZFAudio *audio) {
-        zfautoT<ZFTimer *> &timer = _timer();
+        zfautoT<ZFTimer> &timer = _timer();
         ZFCoreArray<ZFAudio *> &playing = _playing();
 
         playing.removeElement(audio);

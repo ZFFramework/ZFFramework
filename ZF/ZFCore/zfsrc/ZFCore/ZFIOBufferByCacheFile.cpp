@@ -100,13 +100,13 @@ void ZFIOBufferByCacheFile::objectOnInit(void) {
     zfsuper::objectOnInit();
     _ZFP_ZFIOBufferByCacheFile *d = zfpoolNew(_ZFP_ZFIOBufferByCacheFile);
 
-    zfblockedAlloc(_ZFP_ZFIOBufferByCacheFile_input, iOwner);
+    zfobj<_ZFP_ZFIOBufferByCacheFile_input> iOwner;
     iOwner->d = d;
     ++(d->refCount);
     this->_ZFP_input = ZFCallbackForMemberMethod(iOwner, ZFMethodAccess(_ZFP_ZFIOBufferByCacheFile_input, onInput));
     this->_ZFP_input.ioOwner(iOwner);
 
-    zfblockedAlloc(_ZFP_ZFIOBufferByCacheFile_output, oOwner);
+    zfobj<_ZFP_ZFIOBufferByCacheFile_output> oOwner;
     oOwner->d = d;
     ++(d->refCount);
     this->_ZFP_output = ZFCallbackForMemberMethod(oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByCacheFile_output, onOutput));

@@ -31,7 +31,7 @@ public:
             sysWindow, this->nativeParent, sysWindow->rootView()->nativeView());
     }
 
-    virtual zfautoT<ZFUISysWindow *> modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
+    virtual zfautoT<ZFUISysWindow> modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) {
         return ZFUISysWindow::nativeWindowEmbedNativeView(this->nativeParent);
     }
     virtual void modalWindowFinish(
@@ -43,12 +43,12 @@ public:
 };
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFUISysWindow, zfautoT<ZFUISysWindow *>, nativeWindowEmbedNativeView
+ZFMETHOD_DEFINE_1(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView
         , ZFMP_IN(void *, nativeParent)
         ) {
-    zfblockedAlloc(_ZFP_ZFUISysWindowEmbedNativeViewImpl, embedImpl);
+    zfobj<_ZFP_ZFUISysWindowEmbedNativeViewImpl> embedImpl;
     embedImpl->nativeParent = nativeParent;
-    zfautoT<ZFUISysWindow *> ret = ZFUISysWindow::nativeWindowEmbed(embedImpl);
+    zfautoT<ZFUISysWindow> ret = ZFUISysWindow::nativeWindowEmbed(embedImpl);
     ZFUISysWindow *window = ret;
     embedImpl->notifyOnCreate(window, zfnull);
     embedImpl->notifyOnResume(window);
@@ -71,7 +71,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUISysWindowEmbedNativeViewAutoRemove) {
 }
 zfstlmap<zfstring, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFUISysWindowEmbedNativeViewAutoRemove)
-ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow *>, nativeWindowEmbedNativeView
+ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView
         , ZFMP_IN(void *, nativeParent)
         , ZFMP_IN(const zfchar *, sysWindowName)
         ) {
@@ -80,7 +80,7 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow *>, nativeWindowEmbedNati
         return zfnull;
     }
 
-    zfautoT<ZFUISysWindow *> sysWindow = ZFUISysWindow::nativeWindowEmbedNativeView(nativeParent);
+    zfautoT<ZFUISysWindow> sysWindow = ZFUISysWindow::nativeWindowEmbedNativeView(nativeParent);
     if(sysWindow == zfnull || zfstringIsEmpty(sysWindowName)) {
         return sysWindow;
     }

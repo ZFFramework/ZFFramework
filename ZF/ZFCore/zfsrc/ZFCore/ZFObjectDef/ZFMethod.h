@@ -872,7 +872,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodForNameGetAll(
  *   ZFMethodAlias(ZFMethodAccess(MyClass, foo), "bar");
  *   zfLogTrim() << MyClass::ClassData()->methodForName("foo");
  *   zfLogTrim() << MyClass::ClassData()->methodForName("bar");
- *   zfblockedAlloc(MyClass, obj);
+ *   zfobj<MyClass> obj;
  *   obj->invoke("foo");
  *   obj->invoke("bar");
  * @endcode

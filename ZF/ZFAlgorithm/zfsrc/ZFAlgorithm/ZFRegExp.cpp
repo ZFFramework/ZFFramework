@@ -259,7 +259,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(const zfchar *, pattern)
         ) {
-    zfblockedAlloc(ZFRegExp, regexp);
+    zfobj<ZFRegExp> regexp;
     ZFRegExpResult result;
     regexp->regExpCompile(pattern);
     regexp->regExpMatch(result, src);
@@ -271,7 +271,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace
         , ZFMP_IN(const zfchar *, patternTo)
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         ) {
-    zfblockedAlloc(ZFRegExp, regexp);
+    zfobj<ZFRegExp> regexp;
     regexp->regExpCompile(patternFrom);
     zfstring ret;
     ZFRegExpResult result;
@@ -285,7 +285,7 @@ ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit
         ) {
     ZFCoreArray<zfstring> ret;
     if(src != zfnull && separatorPattern != zfnull && *separatorPattern) {
-        zfblockedAlloc(ZFRegExp, regexp);
+        zfobj<ZFRegExp> regexp;
         regexp->regExpCompile(separatorPattern);
         ZFRegExpResult result;
         do {

@@ -106,7 +106,7 @@ public:
     /**
      * @brief list updater to update list cells, holds #ZFUIListCellUpdater
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFArray *, cellUpdater, zflineAlloc(ZFArray))
+    ZFPROPERTY_RETAIN_READONLY(ZFArray *, cellUpdater, zfobj<ZFArray>())
 
     /**
      * @brief direction to layout children, #ZFUIOrientation::e_Top by default

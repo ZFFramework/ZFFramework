@@ -11,8 +11,8 @@
  *
  *   public:
  *       void test(void) {
- *           zfblockedAlloc(ZFObject, myParam0);
- *           zfblockedAlloc(ZFObject, myParam1);
+ *           zfobj<ZFObject> myParam0;
+ *           zfobj<ZFObject> myParam1;
  *           this->observerNotify(
  *               MyObject::EventMyEvent(), // event id to notify
  *               myParam0, // param0
@@ -40,9 +40,9 @@
  * @endcode
  * @code
  *   // the object to test observer
- *   zfblockedAlloc(MyObject, obj);
+ *   zfobj<MyObject> obj;
  *   // the object to test user data passing
- *   zfblockedAlloc(v_zfstring, myUserData, "myUserData");
+ *   zfobj<v_zfstring> myUserData("myUserData");
  *
  *   // we use ZFListener as observer callback type,
  *   // which takes two param as ZFArgs and ZFObject,
@@ -56,7 +56,7 @@
  *   // optionally, you may declare a lambda-like listener for short
  *   // or, for extra param passing
  *   ZFLISTENER_1(listener2
- *           , zfautoT<v_zfstring *>, myUserData
+ *           , zfautoT<v_zfstring>, myUserData
  *           ) {
  *       testListener2(zfargs, myUserData);
  *   } ZFLISTENER_END()
@@ -67,8 +67,8 @@
  *
  *   // or, you may notify it manually
  *   // but it's your responsibility to ensure the passed params suit for the listener
- *   zfblockedAlloc(ZFObject, myParam0);
- *   zfblockedAlloc(ZFObject, myParam1);
+ *   zfobj<ZFObject> myParam0;
+ *   zfobj<ZFObject> myParam1;
  *   obj->observerNotify(MyObject::EventMyEvent(), myParam0, myParam1);
  * @endcode
  */

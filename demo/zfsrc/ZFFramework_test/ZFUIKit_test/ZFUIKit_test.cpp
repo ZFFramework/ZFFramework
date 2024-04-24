@@ -16,7 +16,7 @@ void ZFUIKit_test_prepareTestWindow(
     window->windowShow();
 
     // close button
-    zfblockedAlloc(ZFUIKit_test_Button, closeButton);
+    zfobj<ZFUIKit_test_Button> closeButton;
     window->childAdd(closeButton)->c_alignRightTop();
     closeButton->label()->text("close");
     ZFLISTENER_2(onClickCloseButton
@@ -35,11 +35,11 @@ void ZFUIKit_test_prepareTestWindow(
 }
 
 zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
-    zfblockedAlloc(ZFUIKit_test_Button, settingsButton);
+    zfobj<ZFUIKit_test_Button> settingsButton;
     settingsButton->label()->text("settings");
     settingsButton->objectTag("settingsHolder", settings);
 
-    zfblockedAlloc(ZFUIKit_test_Window, window);
+    zfobj<ZFUIKit_test_Window> window;
     settingsButton->objectTag("setting window", window);
     window->viewAlpha(0.8f);
     ZFLISTENER_1(onClickSetting
@@ -49,7 +49,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
     } ZFLISTENER_END()
     settingsButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickSetting);
 
-    zfblockedAlloc(ZFUIKit_test_Button, closeButton);
+    zfobj<ZFUIKit_test_Button> closeButton;
     window->childAdd(closeButton)->c_alignTop();
     closeButton->label()->text("done");
     ZFLISTENER_1(onClickCloseButton
@@ -59,14 +59,14 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
     } ZFLISTENER_END()
     closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), onClickCloseButton);
 
-    zfblockedAlloc(ZFUIKit_test_ListView, listView);
+    zfobj<ZFUIKit_test_ListView> listView;
     window->childAdd(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
     for(zfindex i = 0; i < settings->count(); ++i) {
         ZFUIKit_test_SettingData *setting = settings->get<ZFUIKit_test_SettingData *>(i);
         zfCoreAssert(setting->buttonTextGetter());
         zfCoreAssert(setting->buttonClickListener());
 
-        zfblockedAlloc(ZFUIKit_test_Button, button);
+        zfobj<ZFUIKit_test_Button> button;
         listView->childAdd(button);
         ZFLISTENER_1(onButtonClick
                 , ZFUIKit_test_SettingData *, setting
@@ -85,7 +85,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
                 , ZFUIKit_test_SettingData *, setting
                 , ZFUIButtonBasic *, button
                 ) {
-            zfblockedAlloc(v_zfstring, buttonText);
+            zfobj<v_zfstring> buttonText;
             setting->buttonTextGetter().execute(ZFArgs()
                     .sender(button)
                     .param0(buttonText)
@@ -95,7 +95,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
         } ZFLISTENER_END()
         setting->observerAdd(ZFUIKit_test_SettingData::EventSettingOnChange(), settingOnChange);
 
-        zfblockedAlloc(v_zfstring, buttonText);
+        zfobj<v_zfstring> buttonText;
         setting->buttonTextGetter().execute(ZFArgs()
                 .sender(button)
                 .param0(buttonText)
@@ -138,7 +138,7 @@ void ZFUIKit_test_prepareSettingForProperty(
         nextCallback.execute();
     } ZFLISTENER_END()
 
-    settings->add(zflineAlloc(ZFUIKit_test_SettingData, buttonTextGetter, buttonClickListener));
+    settings->add(zfobj<ZFUIKit_test_SettingData>(buttonTextGetter, buttonClickListener));
 }
 
 void ZFUIKit_test_prepareSettingForBoolProperty(
@@ -172,7 +172,7 @@ void ZFUIKit_test_prepareSettingForLayoutRequest(
         view->layoutRequest();
     } ZFLISTENER_END()
 
-    settings->add(zflineAlloc(ZFUIKit_test_SettingData, buttonTextGetter, buttonClickListener));
+    settings->add(zfobj<ZFUIKit_test_SettingData>(buttonTextGetter, buttonClickListener));
 }
 
 void ZFUIKit_test_prepareSettingForResetProperty(
@@ -180,7 +180,7 @@ void ZFUIKit_test_prepareSettingForResetProperty(
         , ZF_IN ZFObject *obj
         , ZF_IN const ZFCoreArray<const ZFProperty *> &propertyList
         ) {
-    zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+    zfobj<ZFUIKit_test_SettingData> setting;
     settings->add(setting);
 
     ZFLISTENER(buttonTextGetter) {

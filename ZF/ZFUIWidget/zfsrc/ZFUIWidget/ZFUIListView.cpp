@@ -142,8 +142,8 @@ public:
         this->pimplOwner->childRemoveAt(index);
         this->childAddOverrideFlag = zffalse;
     }
-    zfautoT<ZFUIListCell *> cellLoadAt(ZF_IN zfindex index) {
-        zfautoT<ZFUIListCell *> ret = this->listAdapter->cellCacheOnAccess(index);
+    zfautoT<ZFUIListCell> cellLoadAt(ZF_IN zfindex index) {
+        zfautoT<ZFUIListCell> ret = this->listAdapter->cellCacheOnAccess(index);
         if(ret != zfnull) {
             zfCoreAssertWithMessage(ZFCastZFObject(ZFUIListCell *, ret.toObject()) != zfnull, "list cell %s not type of %s",
                 ret.toObject()->classData()->classNameFull(),
@@ -174,7 +174,7 @@ public:
                 ZFObject *cellUpdater = this->pimplOwner->cellUpdater()->get(i);
                 cellUpdater->to<ZFUIListCellUpdater *>()->cellOnUpdate(updateParam);
                 if(cellUpdater->observerHasAdd(ZFUIListCellUpdater::EventCellOnUpdate())) {
-                    zfblockedAlloc(v_ZFUIListCellUpdaterParam, param0, updateParam);
+                    zfobj<v_ZFUIListCellUpdaterParam> param0(updateParam);
                     cellUpdater->observerNotify(ZFUIListCellUpdater::EventCellOnUpdate(), param0);
                 }
             }

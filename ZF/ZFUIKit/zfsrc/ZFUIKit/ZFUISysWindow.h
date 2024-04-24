@@ -104,7 +104,7 @@ public:
      * \n
      * see #ZFUISysWindowEmbedImpl for all the impl that you need to implement
      */
-    static zfautoT<ZFUISysWindow *> nativeWindowEmbed(ZF_IN ZFUISysWindowEmbedImpl *embedImpl);
+    static zfautoT<ZFUISysWindow> nativeWindowEmbed(ZF_IN ZFUISysWindowEmbedImpl *embedImpl);
 
     /**
      * @brief see #nativeWindowEmbed
@@ -126,7 +126,7 @@ public:
      * before destroy the nativeParent\n
      * the nativeParent must support add one or more child which fill itself
      */
-    ZFMETHOD_DECLARE_STATIC_1(zfautoT<ZFUISysWindow *>, nativeWindowEmbedNativeView
+    ZFMETHOD_DECLARE_STATIC_1(zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView
             , ZFMP_IN(void *, nativeParent)
             )
 
@@ -138,12 +138,12 @@ public:
      * @code
      *   zfauto sysWindow = ZFUISysWindow::nativeWindowEmbedNativeView(nativeParent, "MyWindow");
      *   if(sysWindow != zfnull) {
-     *       zfblockedAlloc(ZFUIWindow, window, ZFInvoke("MyWindow"));
+     *       zfobj<ZFUIWindow> window(ZFInvoke("MyWindow"));
      *       ...
      *   }
      * @endcode
      */
-    ZFMETHOD_DECLARE_STATIC_2(zfautoT<ZFUISysWindow *>, nativeWindowEmbedNativeView
+    ZFMETHOD_DECLARE_STATIC_2(zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView
             , ZFMP_IN(void *, nativeParent)
             , ZFMP_IN(const zfchar *, sysWindowName)
             )
@@ -389,7 +389,7 @@ public:
     /**
      * @brief see #ZFUISysWindow::modalWindowShow
      */
-    virtual zfautoT<ZFUISysWindow *> modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) zfpurevirtual;
+    virtual zfautoT<ZFUISysWindow> modalWindowShow(ZF_IN ZFUISysWindow *sysWindowOwner) zfpurevirtual;
     /**
      * @brief see #ZFUISysWindow::modalWindowFinish
      */

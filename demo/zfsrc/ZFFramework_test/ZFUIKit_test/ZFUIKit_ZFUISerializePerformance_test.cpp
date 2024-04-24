@@ -32,7 +32,7 @@ public:
             zfself::ClassData()->propertyForName(v)
                 ->setterMethod()->execute<void, zfstring const &>(this, v);
         }
-        this->vObj(zflineAlloc(_ZFP_ZFUISerializePerformance_test_TestObject));
+        this->vObj(zfobj<_ZFP_ZFUISerializePerformance_test_TestObject>());
         this->vObj()->v0("dummy");
     }
 };
@@ -54,24 +54,24 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIView, outputViewContainer);
+        zfobj<ZFUIView> outputViewContainer;
         container->childAdd(outputViewContainer)->c_sizeFill()->c_margin(0, 50, 0, 0);
         outputViewContainer->viewBackgroundColor(ZFUIColorBlack());
 
-        zfblockedAlloc(ZFUITextView, outputView);
+        zfobj<ZFUITextView> outputView;
         outputViewContainer->childAdd(outputView)->c_widthFill();
         outputView->textSingleLine(zffalse);
         outputView->textColor(ZFUIColorWhite());
         outputView->text("press start");
 
-        zfblockedAlloc(ZFUIKit_test_Button, startButton);
+        zfobj<ZFUIKit_test_Button> startButton;
         container->childAdd(startButton)->c_alignTop();
         startButton->label()->text("start");
 
         zfself *owner = this;
         ZFLISTENER_2(onStart
                 , zfself *, owner
-                , zfautoT<ZFUITextView *>, outputView
+                , zfautoT<ZFUITextView>, outputView
                 ) {
             zfauto testObject = owner->prepareTestObject();
             outputView->text("running...");
@@ -116,10 +116,10 @@ protected:
 
 private:
     void prepareSettingButton(ZF_IN ZFUIWindow *window) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         { // auto scroll x
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER(buttonTextGetter) {
@@ -154,18 +154,18 @@ public:
     zfauto prepareTestObject(void) {
         switch(this->testObjectType) {
             case 0: {
-                zfblockedAlloc(ZFUIKit_test_Button, v);
+                zfobj<ZFUIKit_test_Button> v;
                 v->background()->viewBackgroundColor(ZFUIColorRandom());
                 return v;
             }
             case 1: {
-                zfblockedAlloc(ZFUIImageView, v);
+                zfobj<ZFUIImageView> v;
                 v->image(ZFUIImageFromColor(ZFUIColorRed()));
                 return v;
             }
             case 2:
             default: {
-                zfblockedAlloc(_ZFP_ZFUISerializePerformance_test_TestObject, v);
+                zfobj<_ZFP_ZFUISerializePerformance_test_TestObject> v;
                 v->modifyProperty();
                 return v;
             }

@@ -31,7 +31,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFLuaGCHolder) {
         this->gcTask->timerStop();
     }
 }
-zfautoT<ZFTimer *> gcTask;
+zfautoT<ZFTimer> gcTask;
 zfstlmap<void *, zfbool> m;
 ZFListener luaStateOnDetachListener;
 static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {

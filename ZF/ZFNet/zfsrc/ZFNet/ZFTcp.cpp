@@ -108,7 +108,7 @@ ZFMETHOD_DEFINE_2(ZFTcp, zfbool, remoteInfo
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp *>, accept) {
+ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp>, accept) {
     switch(d->type) {
         case ZFTcpType::e_Invalid:
             zfLog("calling accept() before open() successfully");
@@ -124,7 +124,7 @@ ZFMETHOD_DEFINE_0(ZFTcp, zfautoT<ZFTcp *>, accept) {
     if(acceptSocket == zfnull) {
         return zfnull;
     }
-    zfblockedAlloc(ZFTcp, ret);
+    zfobj<ZFTcp> ret;
     ret->d->nativeSocket = acceptSocket;
     ret->d->host = d->host;
     ret->d->port = d->port;

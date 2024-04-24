@@ -17,7 +17,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIImageView, view);
+        zfobj<ZFUIImageView> view;
         container->childAdd(view)->c_alignCenter();
         view->viewSizePrefer(ZFUISizeMake(80, 60));
         view->viewBackgroundColor(ZFUIColorRandom());
@@ -36,20 +36,20 @@ protected:
                 ) {
             ani->aniStart();
         } ZFLISTENER_END()
-        zfblockedAlloc(ZFUIKit_test_Button, startButton);
+        zfobj<ZFUIKit_test_Button> startButton;
         startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
         container->childAdd(startButton)->c_alignRightTop();
     }
 
-    ZFPROPERTY_RETAIN_READONLY(ZFAnimationNativeView *, ani, zflineAlloc(ZFAnimationNativeView))
+    ZFPROPERTY_RETAIN_READONLY(ZFAnimationNativeView *, ani, zfobj<ZFAnimationNativeView>())
 
 private:
     void prepareSettingButton(
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFAnimationNativeView *ani
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingForResetProperty(settings, ani, ZFCoreArrayCreate(const ZFProperty *
                 , ZFPropertyAccess(ZFAnimationNativeView, aniCurve)

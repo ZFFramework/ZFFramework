@@ -4,7 +4,7 @@
  * with observer logic of ZFObject,
  * it's easy to listen on button click event
  * @code
- *   zfblockedAlloc(ZFUIButtonBasic, button);
+ *   zfobj<ZFUIButtonBasic> button;
  *
  *   // declare button click listener
  *   ZFLISTENER(onClickListener) {

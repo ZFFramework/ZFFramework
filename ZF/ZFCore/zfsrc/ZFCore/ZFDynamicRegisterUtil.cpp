@@ -686,7 +686,7 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
     idValue = ZFIdMapDynamicRegister(idName);
     d->allEvent.add(idValue);
 
-    zfblockedAlloc(v_zfidentity, t);
+    zfobj<v_zfidentity> t;
     t->zfv = idValue;
     const ZFMethod *method = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
             .methodGenericInvoker(_ZFP_ZFDynamicEventGI)

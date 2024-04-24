@@ -51,7 +51,7 @@ protected:
 
         this->testCaseOutput(zfstr("property: %s", property));
 
-        zfblockedAlloc(_ZFP_ZFCore_ZFPropertyDynamic_test_Object, obj);
+        zfobj<_ZFP_ZFCore_ZFPropertyDynamic_test_Object> obj;
         obj->myProp(123);
         this->testCaseOutput(zfstr("obj: %s", obj));
 
@@ -83,7 +83,7 @@ private:
             return zffalse;
         }
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
-        zfauto tag = zflineAlloc(v_zfint, obj->myProp());
+        zfauto tag = zfobj<v_zfint>(obj->myProp());
         obj->objectTag(_valueKey(), tag);
         ret = tag;
         return zftrue;
@@ -101,7 +101,7 @@ private:
             ) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj->toAny();
         if(outInitValue != zfnull) {
-            *outInitValue = zflineAlloc(v_zfint);
+            *outInitValue = zfobj<v_zfint>();
         }
         return (obj->myProp() == 0);
     }

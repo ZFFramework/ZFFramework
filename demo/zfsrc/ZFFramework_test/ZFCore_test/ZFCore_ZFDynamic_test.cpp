@@ -16,7 +16,7 @@ protected:
 
         ZFLISTENER(methodCallback) {
             ZFMethodInvokeData *d = zfargs.param0()->toAny();
-            zfblockedAlloc(v_zfstring, ret);
+            zfobj<v_zfstring> ret;
             ret->zfv += d->param0->to<v_zfstring *>()->zfv;
             ret->zfv += "(modified)";
             zfautoRelease(zfRetain(ret)); // take care of this
@@ -38,13 +38,13 @@ protected:
         const ZFClass *cls = ZFClass::classForName("ZFDynamicTest");
         zfauto obj = cls->newInstance();
 
-        obj->invoke("testProp", zflineAlloc(v_zfstring, "testValue"));
+        obj->invoke("testProp", zfobj<v_zfstring>("testValue"));
         zfLog() << obj->invoke("testProp");
-        zfLog() << obj->invoke("testMethod", zflineAlloc(v_zfstring, "testParam"));
+        zfLog() << obj->invoke("testMethod", zfobj<v_zfstring>("testParam"));
 
         const ZFMethod *method = ZFMethodForName("ZFDynamicTestNS", "testMethod");
         zfLog() << method;
-        zfLog() << method->methodInvoke(zfnull, zflineAlloc(v_zfstring, "testParam"));
+        zfLog() << method->methodInvoke(zfnull, zfobj<v_zfstring>("testParam"));
 
         d.removeAll();
         this->testCaseStop();

@@ -12,7 +12,7 @@ zfauto _ZFP_I_PropURDIVH::create(
         , ZF_IN DeleteCallback deleteCallback
         , ZF_IN_OPT ZFObject *retainValue /* = zfnull */
         ) {
-    zfblockedAlloc(_ZFP_I_PropURDIVH, holder);
+    zfobj<_ZFP_I_PropURDIVH> holder;
     holder->v = v;
     holder->deleteCallback = deleteCallback;
     holder->retainValueHolder = retainValue;

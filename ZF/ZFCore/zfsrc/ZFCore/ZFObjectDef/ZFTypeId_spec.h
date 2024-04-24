@@ -322,7 +322,7 @@ public:
         TypeIdSerializable = 1,
     };
     static inline const zfchar *TypeId(void) {
-        return ZFTypeId<T_ZFObject>::TypeId();
+        return ZFTypeId<_ZFP_T_ZFObject *>::TypeId();
     }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {

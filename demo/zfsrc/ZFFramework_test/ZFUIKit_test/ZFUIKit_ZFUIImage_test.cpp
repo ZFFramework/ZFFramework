@@ -18,12 +18,12 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIImageView, view);
+        zfobj<ZFUIImageView> view;
         container->childAdd(view)->c_sizeFill();
 
         // encode image to binary and load it again to test
         zfauto imageHolder = zfRes("test_normal.png");
-        zfblockedAlloc(ZFIOBufferByMemory, io);
+        zfobj<ZFIOBufferByMemory> io;
         ZFUIImageToOutput(io->output(), imageHolder);
         zfauto imageNew = ZFUIImageFromInput(io->input());
         view->image(imageNew);
@@ -36,7 +36,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIImageView *view
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);
     }

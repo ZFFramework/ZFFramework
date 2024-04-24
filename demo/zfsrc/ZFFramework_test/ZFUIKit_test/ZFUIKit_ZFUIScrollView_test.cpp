@@ -17,7 +17,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIScrollView, scrollView);
+        zfobj<ZFUIScrollView> scrollView;
         container->childAdd(scrollView)->c_sizeFill()->c_margin(40);
         scrollView->viewBackgroundColor(ZFUIColorRed());
 
@@ -25,7 +25,7 @@ protected:
         this->setupScrollContent(scrollView, ZFUISizeMake(120), ZFUISizeMake(60), ZFUISizeMake(10));
 
 #if 1 // test embeded scroll view
-        zfblockedAlloc(ZFUIScrollView, embededScrollView);
+        zfobj<ZFUIScrollView> embededScrollView;
         scrollView->childAdd(embededScrollView)->c_sizeFill(200, 100)->c_margin(80);
         embededScrollView->viewBackgroundColor(ZFUIColorMake(0, 0, 1, 0.75f));
 
@@ -91,7 +91,7 @@ private:
                     x <= scrollView->scrollContentFrame().height - itemSize.width - contentMargin.right;
                     x += itemSize.width + itemSpace.width
                     ) {
-                zfblockedAlloc(ZFUIButton, btn);
+                zfobj<ZFUIButton> btn;
                 scrollView->childAdd(btn)->c_sizeFill(itemSize)->c_margin(x, y, 0, 0);
                 btn->viewBackgroundColor(ZFUIColorRandom(0.75f));
 
@@ -106,7 +106,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIScrollView *scrollView
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
         ZFUIKit_test_prepareSettingForBoolProperty(settings, scrollView, ZFPropertyAccess(ZFUIScrollView, scrollAlignToAxis));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, scrollView, ZFPropertyAccess(ZFUIScrollView, scrollBounceHorizontal));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, scrollView, ZFPropertyAccess(ZFUIScrollView, scrollBounceVertical));
@@ -117,7 +117,7 @@ private:
 
 #define _ZFP_ZFUIKit_ZFUIScrollView_test_autoScrollSpeed 100
         { // auto scroll x
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter
@@ -141,7 +141,7 @@ private:
             setting->buttonClickListener(buttonClickListener);
         }
         { // auto scroll y
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter
@@ -166,7 +166,7 @@ private:
         }
 
         { // scroll child to visible
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER(buttonTextGetter) {
@@ -185,7 +185,7 @@ private:
         }
 
         { // scrollAreaMargin
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter

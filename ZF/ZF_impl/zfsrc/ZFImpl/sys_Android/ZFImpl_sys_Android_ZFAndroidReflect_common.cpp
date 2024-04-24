@@ -26,7 +26,7 @@ ZFAndroidReflect_FromJNIType_DEFINE(common) {
     }
 
     if(zfstringIsEqual(jniType.getId(), JNIType::S_object_String().getId())) {
-        zfblockedAlloc(v_zfstring, ret);
+        zfobj<v_zfstring> ret;
         obj = ret;
         if(jobj != NULL) {
             ZFImpl_sys_Android_zfstringFromStringT(ret->zfv, jobj);

@@ -15,7 +15,7 @@ protected:
 
         zfLogTrim("============================================================");
         zfLogTrim("ZFThread");
-        zfautoT<ZFThread *> thread;
+        zfautoT<ZFThread> thread;
 
 #if 1
         zfLogTrim("execute main and thread without lock (async):");
@@ -30,7 +30,7 @@ protected:
             }
             zfLogTrim("async thread end");
         } ZFLISTENER_END()
-        thread = zflineAlloc(ZFThread, asyncFunc);
+        thread = zfobj<ZFThread>(asyncFunc);
         thread->threadStart();
         for(zfindex i = 0; i < 5; ++i) {
             for(zfindex j = 0; j < 10; ++j) {
@@ -60,7 +60,7 @@ protected:
             }
             zfLogTrim("sync thread end");
         } ZFLISTENER_END()
-        thread = zflineAlloc(ZFThread, syncFunc);
+        thread = zfobj<ZFThread>(syncFunc);
         thread->threadStart();
         for(zfindex i = 0; i < 5; ++i) {
             zfCoreMutexLock();

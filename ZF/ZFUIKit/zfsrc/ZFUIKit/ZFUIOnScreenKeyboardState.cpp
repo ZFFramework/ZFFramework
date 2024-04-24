@@ -16,7 +16,7 @@ ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, ZFUIOnScreenKeyboardState *, instan
     }
     ZFUIOnScreenKeyboardState *ret = sysWindow->objectTag<ZFUIOnScreenKeyboardState *>("_ZFP_ZFUIOnScreenKeyboardState");
     if(ret == zfnull) {
-        zfblockedAlloc(ZFUIOnScreenKeyboardState, tmp);
+        zfobj<ZFUIOnScreenKeyboardState> tmp;
         sysWindow->objectTag("_ZFP_ZFUIOnScreenKeyboardState", tmp);
         tmp->_ZFP_ZFUIOnScreenKeyboardState_keyboardOwnerSysWindow = sysWindow;
         ret = tmp;

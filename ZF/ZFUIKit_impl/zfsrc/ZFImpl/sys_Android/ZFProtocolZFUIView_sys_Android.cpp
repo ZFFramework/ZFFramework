@@ -362,7 +362,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
         , jint mousePointX
         , jint mousePointY
         ) {
-    zfblockedAlloc(ZFUIMouseEvent, event);
+    zfobj<ZFUIMouseEvent> event;
     event->eventResolved(zffalse);
     event->mouseId = mouseId;
     event->mouseAction = (ZFUIMouseActionEnum)mouseAction;
@@ -382,7 +382,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
         , jint keyCode
         , jint keyCodeRaw
         ) {
-    zfblockedAlloc(ZFUIKeyEvent, event);
+    zfobj<ZFUIKeyEvent> event;
     event->eventResolved(zffalse);
     event->keyId = keyId;
     event->keyAction = (ZFUIKeyActionEnum)keyAction;

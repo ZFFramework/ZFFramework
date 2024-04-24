@@ -77,7 +77,7 @@
     for(UITouch *touch in touches) {
         [self._ZFP_mouseRecords addObject:touch];
 
-        zfblockedAlloc(ZFUIMouseEvent, ev);
+        zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseDown;
@@ -101,7 +101,7 @@
     }
 
     for(UITouch *touch in self._ZFP_mouseRecords) {
-        zfblockedAlloc(ZFUIMouseEvent, ev);
+        zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseMove;
@@ -121,7 +121,7 @@
     for(UITouch *touch in touches) {
         [self._ZFP_mouseRecords removeObject:touch];
 
-        zfblockedAlloc(ZFUIMouseEvent, ev);
+        zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseUp;
@@ -141,7 +141,7 @@
     for(UITouch *touch in touches) {
         [self._ZFP_mouseRecords removeObject:touch];
 
-        zfblockedAlloc(ZFUIMouseEvent, ev);
+        zfobj<ZFUIMouseEvent> ev;
         ev->eventResolved(zffalse);
         ev->mouseId = (zft_zfidentity)[touch hash];
         ev->mouseAction = ZFUIMouseAction::e_MouseCancel;

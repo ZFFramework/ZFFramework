@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 static int _ZFP_ZFImpl_ZFLua_zfstr(ZF_IN lua_State *L) {
-    zfblockedAlloc(v_zfstring, s);
+    zfobj<v_zfstring> s;
     ZFImpl_ZFLua_zfstringAppend(L, s->zfv);
     ZFImpl_ZFLua_luaPush(L, s);
     return 1;
@@ -17,7 +17,7 @@ static int _ZFP_ZFImpl_ZFLua_zfstringAppend(ZF_IN lua_State *L) {
     }
     v_zfstring *s = obj;
     if(s == zfnull) {
-        ZFImpl_ZFLua_luaPush(L, zflineAlloc(v_zfstring));
+        ZFImpl_ZFLua_luaPush(L, zfobj<v_zfstring>());
         return 1;
     }
 

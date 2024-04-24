@@ -5,8 +5,8 @@
  * and it's easy to serialize from and to xml format\n
  * here's a quick example to see the xml output format:
  * @code
- *   zfblockedAlloc(ZFUIView, parent);
- *   zfblockedAlloc(ZFUIButtonBasic, child);
+ *   zfobj<ZFUIView> parent;
+ *   zfobj<ZFUIButtonBasic> child;
  *   parent->childAdd(child)->c_sizeFill();
  *   child->label()->text("button");
  *

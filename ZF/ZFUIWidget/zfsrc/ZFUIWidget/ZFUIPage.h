@@ -49,15 +49,15 @@ zfclassFwd ZFUIPageManager;
  * and a #ZFUIPageManager is the holder to manage multiple pages\n
  * typical usage:
  * @code
- *   zfblockedAlloc(ZFUIPageManager, pm);
+ *   zfobj<ZFUIPageManager> pm;
  *   pm->observerAdd(ZFUIPageManager::EventManagerOnCreate, myPMCreateCallback);
  *   pm->managerCreateForWindow();
  *   ZFUIPageManager::instance(pm);
  *
- *   zfblockedAlloc(MyCustomPage, page1);
+ *   zfobj<MyCustomPage> page1;
  *   ZFUIPageManager::instance()->pageCreate(page1);
  *   ...
- *   zfblockedAlloc(ZFUIPage, page2);
+ *   zfobj<ZFUIPage> page2;
  *   page2->observerAdd(ZFUIPage::EventPageOnCreate(), myCreateCallback);
  *   ZFUIPageManager::instance()->pageCreate(page2);
  *   ...
@@ -198,7 +198,7 @@ protected:
     /** @brief see #ZFUIPage */
     virtual void pageOnCreate(void) {
         this->_ZFP_ZFUIPage_pageCreated = zftrue;
-        zfautoT<ZFUIView *> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
+        zfautoT<ZFUIView> pageView = (this->pageViewClass() != zfnull ? this->pageViewClass() : ZFUIView::ClassData())->newInstance();
         this->_ZFP_ZFUIPage_pageView = pageView;
         zfCoreAssertWithMessage(this->_ZFP_ZFUIPage_pageView != zfnull, "pageViewClass must be type of %s", ZFUIView::ClassData()->className());
         zfRetain(this->_ZFP_ZFUIPage_pageView);

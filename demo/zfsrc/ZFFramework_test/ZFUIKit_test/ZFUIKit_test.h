@@ -151,12 +151,12 @@ protected:
 };
 #define ZFUIKit_test_prepareSettingForNormalProperty(settings, obj_, PropertyType, property_, propertyValues_) \
     do { \
-        zfblockedAlloc(_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder, taskData); \
+        zfobj<_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder> taskData; \
         taskData->obj = obj_; \
         taskData->property = property_; \
         taskData->propertyValues = propertyValues_.refNew(); \
         ZFLISTENER_1(nextCallback \
-                , zfautoT<_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *>, taskData \
+                , zfautoT<_ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder>, taskData \
                 ) { \
             _ZFP_I_ZFUIKit_test_prepareSettingForNormalProperty_Holder *holder = taskData; \
             ZFCoreArray<PropertyType> const &propertyValues = *(const ZFCoreArray<PropertyType> *)holder->propertyValues; \

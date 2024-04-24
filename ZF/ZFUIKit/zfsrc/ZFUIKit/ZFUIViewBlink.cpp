@@ -89,7 +89,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
     }
 
     {
-        zfblockedAlloc(_ZFP_ZFUIViewBlinkView, t);
+        zfobj<_ZFP_ZFUIViewBlinkView> t;
         view->internalFgViewAdd(t);
         view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkView, t);
         t->layoutParam()->sizeParam(ZFUISizeParamFillFill());
@@ -101,10 +101,10 @@ static void _ZFP_ZFUIViewBlinkDoOn(
 
     if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView) && !_ZFP_ZFUIViewBlink_DEBUG_noAni) {
         if(blinkParam.blinkCount() > 1) {
-            view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkCountLeft, zflineAlloc(v_zfindex, blinkParam.blinkCount() - 1));
+            view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkCountLeft, zfobj<v_zfindex>(blinkParam.blinkCount() - 1));
         }
 
-        zfblockedAlloc(ZFAnimationNativeView, ani);
+        zfobj<ZFAnimationNativeView> ani;
         view->objectTag(_ZFP_ZFUIViewBlink_tag_ani, ani);
         ani->aniAlphaTo(0);
         #if _ZFP_ZFUIViewBlink_DEBUG_duration
@@ -114,7 +114,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
         #endif
 
         ZFLISTENER_1(aniOnStopListener
-                , zfautoT<ZFUIView *>, view
+                , zfautoT<ZFUIView>, view
                 ) {
             ZFAnimation *ani = zfargs.sender();
             ZFUIView *blinkView = ani->aniTarget()->to<ZFUIView *>();
@@ -154,12 +154,12 @@ static void _ZFP_ZFUIViewBlinkDoOn(
 
         ZFGlobalObserver().observerNotifyWithSender(view, ZFGlobalEvent::EventViewBlinkOn());
         zfidentity delayTaskId = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder)->delayTaskIdGenerator.idAcquire();
-        zfblockedAlloc(v_zfidentity, delayTaskIdTag, delayTaskId);
+        zfobj<v_zfidentity> delayTaskIdTag(delayTaskId);
         view->objectTag(_ZFP_ZFUIViewBlink_tag_delayTaskId, delayTaskIdTag);
 
         ZFLISTENER_2(blinkDelayOnFinish
                 , zfauto, delayTaskIdTag
-                , zfautoT<ZFUIView *>, view
+                , zfautoT<ZFUIView>, view
                 ) {
             v_zfidentity *delayTaskId = delayTaskIdTag;
             v_zfidentity *delayTaskIdCur = view->objectTag<v_zfidentity *>(_ZFP_ZFUIViewBlink_tag_delayTaskId);

@@ -173,7 +173,7 @@ const ZFClass *ZFEnumDynamicRegister(
     }
 
     // class
-    zfblockedAlloc(_ZFP_I_ZFEnumDynamicHolder, d);
+    zfobj<_ZFP_I_ZFEnumDynamicHolder> d;
     const ZFClass *enumClass = ZFClassDynamicRegister(
         enumClassName, _ZFP_I_ZFEnumDynamic::ClassData(),
         d, errorHint);

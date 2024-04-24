@@ -631,7 +631,7 @@ zfbool ZFDI_objectFromString(
         return zffalse;
     }
     else if(cls == ZFObject::ClassData()) {
-        zfblockedAlloc(v_zfstring, tmp);
+        zfobj<v_zfstring> tmp;
         tmp->zfv.assign(src, srcLen);
         ret = tmp;
         return zftrue;
@@ -729,14 +729,14 @@ zfauto ZFInvokeGeneric(
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfindex paramCount = ZFMETHOD_MAX_PARAM;
     do {
-        if(param0 == zfnull) {paramCount = 0; break;} else {paramList[0] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param0);}
-        if(param1 == zfnull) {paramCount = 1; break;} else {paramList[1] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param1);}
-        if(param2 == zfnull) {paramCount = 2; break;} else {paramList[2] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param2);}
-        if(param3 == zfnull) {paramCount = 3; break;} else {paramList[3] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param3);}
-        if(param4 == zfnull) {paramCount = 4; break;} else {paramList[4] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param4);}
-        if(param5 == zfnull) {paramCount = 5; break;} else {paramList[5] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param5);}
-        if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param6);}
-        if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7] = zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param7);}
+        if(param0 == zfnull) {paramCount = 0; break;} else {paramList[0].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param0));}
+        if(param1 == zfnull) {paramCount = 1; break;} else {paramList[1].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param1));}
+        if(param2 == zfnull) {paramCount = 2; break;} else {paramList[2].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param2));}
+        if(param3 == zfnull) {paramCount = 3; break;} else {paramList[3].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param3));}
+        if(param4 == zfnull) {paramCount = 4; break;} else {paramList[4].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param4));}
+        if(param5 == zfnull) {paramCount = 5; break;} else {paramList[5].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param5));}
+        if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param6));}
+        if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param7));}
     } while(zffalse);
     zfCoreMutexUnlock();
     zfauto ret;

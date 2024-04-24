@@ -55,13 +55,13 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt
 #define _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key) \
     zfchar *cacheKey = zfsConnect("_ZFP_ZFUIListAdapter_cacheKey", key); \
     zfblockedFree(cacheKey)
-ZFMETHOD_DEFINE_1(ZFUIListAdapter, zfautoT<ZFUIListCell *>, cellCacheDefaultAccess
+ZFMETHOD_DEFINE_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellCacheDefaultAccess
         , ZFMP_IN(const zfchar *, key)
         ) {
     _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag<ZFArray *>(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty()) {
-        zfautoT<ZFUIListCell *> ret = cacheList->getLast();
+        zfautoT<ZFUIListCell> ret = cacheList->getLast();
         cacheList->removeLast();
         return ret;
     }
@@ -85,7 +85,7 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, void, cellCacheDefaultRecycle
 
 // ============================================================
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIListAdapter, zfindex, cellCount)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFUIListAdapter, zfautoT<ZFUIListCell *>, cellAt
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellAt
         , ZFMP_IN(zfindex, index)
         )
 

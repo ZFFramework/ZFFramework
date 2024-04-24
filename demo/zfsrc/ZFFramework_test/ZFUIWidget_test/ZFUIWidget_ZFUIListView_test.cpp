@@ -21,8 +21,8 @@ public:
         #endif
     }
     virtual zfauto cellAt(ZF_IN zfindex index) {
-        zfblockedAlloc(ZFUIListCell, ret);
-        ret->cellView(zflineAlloc(ZFUIListCellViewBasic));
+        zfobj<ZFUIListCell> ret;
+        ret->cellView(zfobj<ZFUIListCellViewBasic>());
         return ret;
     }
     virtual inline void cellOnUpdate(
@@ -55,7 +55,7 @@ public:
 zfclass ZFUIWidget_ZFUIListView_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test, ZFFramework_test_TestCase)
 
-    ZFPROPERTY_RETAIN(ZFUIListAdapter *, listAdapter, zflineAlloc(ZFUIWidget_ZFUIListView_test_ListAdapter))
+    ZFPROPERTY_RETAIN(ZFUIListAdapter *, listAdapter, zfobj<ZFUIWidget_ZFUIListView_test_ListAdapter>())
 
 protected:
     zfoverride
@@ -68,12 +68,12 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIListView, listView);
+        zfobj<ZFUIListView> listView;
         container->childAdd(listView)->c_sizeFill()->c_margin(40);
         listView->viewBackgroundColor(ZFUIColorRed());
         listView->listAdapter(this->listAdapter());
         {
-            zfblockedAlloc(ZFUIListCellUpdaterBasic, cellUpdater);
+            zfobj<ZFUIListCellUpdaterBasic> cellUpdater;
             listView->cellUpdater()->add(cellUpdater);
             cellUpdater->separatorSize(5);
             cellUpdater->separatorColor(ZFUIColorRed());
@@ -122,7 +122,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIListView *listView
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollAlignToAxis));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceHorizontal));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, listView, ZFPropertyAccess(ZFUIListView, scrollBounceVertical));
@@ -139,7 +139,7 @@ private:
 
 #define _ZFP_ZFUIWidget_ZFUIListView_test_autoScrollSpeed 100
         { // auto scroll x
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter
@@ -163,7 +163,7 @@ private:
             setting->buttonClickListener(buttonClickListener);
         }
         { // auto scroll y
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter
@@ -207,14 +207,14 @@ private:
                     listView->scrollListCellToTail(toIndex, toOffset, animated);
                 }
             } ZFLISTENER_END()
-            zfblockedAlloc(ZFUIKit_test_Button, randomScrollButton);
+            zfobj<ZFUIKit_test_Button> randomScrollButton;
             window->childAdd(randomScrollButton);
             randomScrollButton->label()->text("random scroll");
             randomScrollButton->observerAdd(ZFUIButton::EventButtonOnClick(), buttonClickListener);
         }
 
         { // scrollAreaMargin
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter

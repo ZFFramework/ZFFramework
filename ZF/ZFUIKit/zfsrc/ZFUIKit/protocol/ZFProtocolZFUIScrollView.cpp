@@ -15,14 +15,14 @@ zftimet _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStart(
     ZFObjectHolder *ownerHolder = scrollView->objectHolder();
     ZFLISTENER_2(scrollTimerEvent
             , ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *, impl
-            , zfautoT<ZFObjectHolder *>, ownerHolder
+            , zfautoT<ZFObjectHolder>, ownerHolder
             ) {
         ZFUIScrollView *scrollView = ownerHolder->objectHolded();
         if(scrollView != zfnull) {
             impl->notifyScrollViewScrollAnimation(scrollView, ZFTime::timestamp());
         }
     } ZFLISTENER_END()
-    scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer", zflineAlloc(v_ZFListener, scrollTimerEvent));
+    scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer", zfobj<v_ZFListener>(scrollTimerEvent));
     ZFGlobalTimerAttach(scrollTimerEvent);
     return ZFTime::timestamp();
 }

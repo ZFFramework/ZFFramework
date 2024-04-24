@@ -17,7 +17,7 @@
  *       valueCapture.width = 999;
  *   } ZFLISTENER_END()
  *
- *   zfblockedAlloc(ZFUIButton, btn);
+ *   zfobj<ZFUIButton> btn;
  *   btn->observerAdd(ZFUIButton::EventButtonOnClick(), onClick);
  *
  *   zfLogTrim() << "before invoke: " << refCapture << valueCapture;

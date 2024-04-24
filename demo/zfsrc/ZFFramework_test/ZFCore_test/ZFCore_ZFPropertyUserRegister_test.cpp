@@ -20,7 +20,7 @@ protected:
         zfsuper::testCaseOnStart();
 
         {
-            zfblockedAlloc(_ZFP_ZFCore_ZFPropertyUserRegister_test_Object, obj);
+            zfobj<_ZFP_ZFCore_ZFPropertyUserRegister_test_Object> obj;
             obj->valueNormal(1);
 
             this->testCaseOutputSeparator();
@@ -39,14 +39,14 @@ protected:
         }
 
         {
-            zfblockedAlloc(_ZFP_ZFCore_ZFPropertyUserRegister_test_Object, obj);
+            zfobj<_ZFP_ZFCore_ZFPropertyUserRegister_test_Object> obj;
             obj->valueNormal(1);
 
             this->testCaseOutputSeparator();
             this->testCaseOutput("try modify and serialize a statically registered property, result");
 
             obj->classData()->propertyForName("valueStatic")->setterMethod()
-                ->execute<void, v_zfstring * const &>(obj, zflineAlloc(v_zfstring, "value"));
+                ->execute<void, v_zfstring * const &>(obj, zfobj<v_zfstring>("value"));
             ZFObjectToXml(ZFOutputDefault(), obj);
         }
 

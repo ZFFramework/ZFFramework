@@ -70,10 +70,10 @@ private:
             case rapidjson::kTrueType:
             case rapidjson::kStringType:
             case rapidjson::kNumberType: {
-                ZFJson jsonValue(ZFJsonType::e_JsonValue);
+                ZFJson value(ZFJsonType::e_JsonValue);
                 const char *implString = implJsonItem.GetString();
-                jsonValue.jsonValue(zfstring(implString, implJsonItem.GetStringLength()));
-                return jsonValue;
+                value.value(zfstring(implString, implJsonItem.GetStringLength()));
+                return value;
             }
             case rapidjson::kArrayType: {
                 ZFJson jsonArray(ZFJsonType::e_JsonArray);

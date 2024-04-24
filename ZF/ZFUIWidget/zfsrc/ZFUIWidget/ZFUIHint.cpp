@@ -25,7 +25,7 @@ static ZFArray *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUISysWindow *inSysWindow)
     }
     ZFArray *hintList = inSysWindow->objectTag<ZFArray *>("_ZFP_ZFUIHint_hintList");
     if(hintList == zfnull) {
-        zfblockedAlloc(ZFArray, hintListTmp);
+        zfobj<ZFArray> hintListTmp;
         hintList = hintListTmp;
         inSysWindow->objectTag("_ZFP_ZFUIHint_hintList", hintList);
     }
@@ -70,7 +70,7 @@ public:
     zfbool hintShowing;
     zfbool hintDelaying;
     ZFAnimation *hintAnimating; // auto retain
-    zfautoT<ZFTimer *> hintShowDelayTimer;
+    zfautoT<ZFTimer> hintShowDelayTimer;
     ZFListener hintAniShowOnStopListener;
     ZFListener hintShowDelayTimeoutListener;
     ZFListener hintAniHideOnStopListener;

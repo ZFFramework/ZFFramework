@@ -340,7 +340,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                     mouseState.viewDown->sdlMouseGrabCallback(mouseState.viewDown, sdlEvent, x, y);
                 }
                 else {
-                    zfblockedAlloc(ZFUIMouseEvent, event);
+                    zfobj<ZFUIMouseEvent> event;
                     event->mouseId = mouseState.mouseId;
                     event->mouseAction = ZFUIMouseAction::e_MouseMove;
                     event->mouseButton = mouseButton;
@@ -355,7 +355,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                 if(mouseState.viewHover != viewHover) {
                     if(mouseState.viewHover != zfnull) {
                         if(mouseState.viewHover->ownerZFUIView != zfnull && mouseState.mouseId != zfidentityInvalid()) {
-                            zfblockedAlloc(ZFUIMouseEvent, hoverExit);
+                            zfobj<ZFUIMouseEvent> hoverExit;
                             hoverExit->mouseId = mouseState.mouseId;
                             hoverExit->mouseAction = ZFUIMouseAction::e_MouseHoverExit;
                             hoverExit->mouseButton = mouseButton;
@@ -374,7 +374,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                         mouseState.viewHover = viewHover;
 
                         mouseState.mouseId = this->sysWindow->mouseIdGen.idAcquire();
-                        zfblockedAlloc(ZFUIMouseEvent, hoverEnter);
+                        zfobj<ZFUIMouseEvent> hoverEnter;
                         hoverEnter->mouseId = mouseState.mouseId;
                         hoverEnter->mouseAction = ZFUIMouseAction::e_MouseHoverEnter;
                         hoverEnter->mouseButton = mouseButton;
@@ -387,7 +387,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
 
                 if(mouseState.viewHover != zfnull && mouseState.viewHover->ownerZFUIView != zfnull) {
                     zfCoreAssert(mouseState.mouseId != zfidentityInvalid());
-                    zfblockedAlloc(ZFUIMouseEvent, event);
+                    zfobj<ZFUIMouseEvent> event;
                     event->mouseId = mouseState.mouseId;
                     event->mouseAction = ZFUIMouseAction::e_MouseHover;
                     event->mouseButton = mouseButton;
@@ -424,7 +424,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
 
             mouseState.viewDown = viewDown;
             mouseState.mouseId = this->sysWindow->mouseIdGen.idAcquire();
-            zfblockedAlloc(ZFUIMouseEvent, event);
+            zfobj<ZFUIMouseEvent> event;
             event->mouseId = mouseState.mouseId;
             event->mouseAction = ZFUIMouseAction::e_MouseDown;
             event->mouseButton = mouseButton;
@@ -456,7 +456,7 @@ void ZFImpl_sys_SDL_View::dispatchMouseEvent(ZF_IN SDL_Event *sdlEvent) {
                     viewDownPrev->sdlMouseGrabCallback(viewDownPrev, sdlEvent, x, y);
                 }
                 else {
-                    zfblockedAlloc(ZFUIMouseEvent, event);
+                    zfobj<ZFUIMouseEvent> event;
                     event->mouseId = mouseIdPrev;
                     event->mouseAction = mouseAction;
                     event->mouseButton = mouseButton;
@@ -494,7 +494,7 @@ void ZFImpl_sys_SDL_View::dispatchWheelEvent(ZF_IN SDL_Event *sdlEvent) {
         }
     }
     if(target != zfnull) {
-        zfblockedAlloc(ZFUIWheelEvent, event);
+        zfobj<ZFUIWheelEvent> event;
         event->wheelX = (zffloat)sdlEvent->wheel.x;
         event->wheelY = (zffloat)sdlEvent->wheel.y;
         ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(target, event);
@@ -511,7 +511,7 @@ void ZFImpl_sys_SDL_View::dispatchKeyEvent(ZF_IN SDL_Event *sdlEvent) {
         }
     }
     if(target != zfnull) {
-        zfblockedAlloc(ZFUIKeyEvent, event);
+        zfobj<ZFUIKeyEvent> event;
         event->keyId = zfidentityHash(sdlEvent->key.windowID, sdlEvent->key.keysym.sym, sdlEvent->key.keysym.scancode);
         if(sdlEvent->key.repeat) {
             event->keyAction = ZFUIKeyAction::e_KeyRepeat;

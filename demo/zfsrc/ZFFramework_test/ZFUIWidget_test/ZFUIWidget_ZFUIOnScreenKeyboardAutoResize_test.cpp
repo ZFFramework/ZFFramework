@@ -20,7 +20,7 @@ protected:
 
         container->viewBackgroundColor(ZFUIColorGreen());
         for(zfindex i = 0; i < 3; ++i) {
-            zfblockedAlloc(ZFUITextEdit, view);
+            zfobj<ZFUITextEdit> view;
             container->childAdd(view)->c_widthFill()->c_margin(10);
             view->viewBackgroundColor(ZFUIColorRandom());
         }

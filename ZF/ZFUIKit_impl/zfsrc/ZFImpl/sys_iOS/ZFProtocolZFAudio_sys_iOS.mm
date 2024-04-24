@@ -43,7 +43,7 @@
             ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(self.owner, zftrue, zfnull);
         }
         else {
-            zfblockedAlloc(v_zfstring, errorHint);
+            zfobj<v_zfstring> errorHint;
             errorHint->zfv = "play failed";
             ZFPROTOCOL_ACCESS(ZFAudio)->notifyAudioOnStop(self.owner, zffalse, errorHint);
         }
@@ -83,7 +83,7 @@ public:
             ZFBuffer buf;
             ZFInputRead(buf, input);
             if(buf.bufferSize() == 0) {
-                zfblockedAlloc(v_zfstring, errorHint);
+                zfobj<v_zfstring> errorHint;
                 errorHint->zfv = "unable to load from input";
                 zfargs.result(errorHint);
                 return;
@@ -94,7 +94,7 @@ public:
             NSError *error = nil;
             nativeAudio.audio = [[AVAudioPlayer alloc] initWithData:data error:&error];
             if(error != nil) {
-                zfblockedAlloc(v_zfstring, errorHint);
+                zfobj<v_zfstring> errorHint;
                 ZFImpl_sys_iOS_zfstringFromNSString(errorHint->zfv, error.description);
                 nativeAudio.audio = nil;
                 zfargs.result(errorHint);
@@ -103,7 +103,7 @@ public:
             [nativeAudio audioAttach];
             if(![nativeAudio.audio play]) {
                 [nativeAudio audioDetach];
-                zfblockedAlloc(v_zfstring, errorHint);
+                zfobj<v_zfstring> errorHint;
                 errorHint->zfv = "unable to play audio";
                 zfargs.result(errorHint);
                 return;
@@ -134,7 +134,7 @@ public:
         NSError *error = nil;
         nativeAudio.audio = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL URLWithString:ZFImpl_sys_iOS_zfstringToNSString(url)] error:&error];
         if(error != nil) {
-            zfblockedAlloc(v_zfstring, errorHint);
+            zfobj<v_zfstring> errorHint;
             ZFImpl_sys_iOS_zfstringFromNSString(errorHint->zfv, error.description);
             nativeAudio.audio = nil;
             this->notifyAudioOnLoad(audio, zffalse, errorHint);
@@ -143,7 +143,7 @@ public:
         [nativeAudio audioAttach];
         if(![nativeAudio.audio play]) {
             [nativeAudio audioDetach];
-            zfblockedAlloc(v_zfstring, errorHint);
+            zfobj<v_zfstring> errorHint;
             errorHint->zfv = "unable to play audio";
             this->notifyAudioOnLoad(audio, zffalse, errorHint);
             return;
@@ -167,7 +167,7 @@ public:
             this->notifyAudioOnResume(audio);
         }
         else {
-            zfblockedAlloc(v_zfstring, errorHint);
+            zfobj<v_zfstring> errorHint;
             errorHint->zfv = "unable to play audio";
             this->notifyAudioOnStop(audio, zffalse, errorHint);
         }

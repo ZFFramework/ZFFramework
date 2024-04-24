@@ -57,7 +57,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIViewBlinkWhenFocusDataHolder) {
     ZFUIViewBlinkWhenFocusMaskImage(zfnull);
 }
 public:
-    zfautoT<ZFUIImage *> maskImageCur;
+    zfautoT<ZFUIImage> maskImageCur;
     ZFListener viewBlinkOnListener;
     ZFListener viewBlinkOffListener;
     ZFListener focusChangeListener;

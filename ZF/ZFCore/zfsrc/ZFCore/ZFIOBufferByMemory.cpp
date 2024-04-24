@@ -82,13 +82,13 @@ void ZFIOBufferByMemory::objectOnInit(void) {
     zfsuper::objectOnInit();
     _ZFP_ZFIOBufferByMemory *d = zfpoolNew(_ZFP_ZFIOBufferByMemory);
 
-    zfblockedAlloc(_ZFP_ZFIOBufferByMemory_input, iOwner);
+    zfobj<_ZFP_ZFIOBufferByMemory_input> iOwner;
     iOwner->d = d;
     ++(d->refCount);
     this->_ZFP_input = ZFCallbackForMemberMethod(iOwner, ZFMethodAccess(_ZFP_ZFIOBufferByMemory_input, onInput));
     this->_ZFP_input.ioOwner(iOwner);
 
-    zfblockedAlloc(_ZFP_ZFIOBufferByMemory_output, oOwner);
+    zfobj<_ZFP_ZFIOBufferByMemory_output> oOwner;
     oOwner->d = d;
     ++(d->refCount);
     this->_ZFP_output = ZFCallbackForMemberMethod(oOwner, ZFMethodAccess(_ZFP_ZFIOBufferByMemory_output, onOutput));

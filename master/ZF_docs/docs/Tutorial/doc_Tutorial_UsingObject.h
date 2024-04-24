@@ -55,17 +55,17 @@
  * @code
  *   {
  *       // similar to shared_ptr in C++ world
- *       zfauto obj = zflineAlloc(MyObject);
+ *       zfauto obj = zfobj<MyObject>();
  *   } // obj would be released automatically after this code block
  *
  *   {
  *       // allocate an object which looks like being allocated in stack
- *       zfblockedAlloc(MyObject, obj);
+ *       zfobj<MyObject> obj;
  *   } // obj would be released automatically after this code block
  *
  *   // allocate an temp object which would be released automatically
  *   // after end of this code line
- *   func(zflineAlloc(MyObject));
+ *   func(zfobj<MyObject>());
  *
  *   MyObject *obj = zfAlloc(MyObject);
  *   // release the object automatically after end of this code line
@@ -82,7 +82,7 @@
  * when your function needs to return an allocated object
  * @code
  *   zfauto myFunc(void) {
- *       zfblockedAlloc(MyObject, obj);
+ *       zfobj<MyObject> obj;
  *       return obj;
  *   }
  * @endcode

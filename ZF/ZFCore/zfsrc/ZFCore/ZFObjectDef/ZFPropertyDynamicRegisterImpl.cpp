@@ -113,7 +113,7 @@ public:
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) {
         if(property->propertyIsRetainProperty()) {
-            zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
+            zfobj<_ZFP_I_PropDynRetainHolder> holder;
             if(this->initValueCallback != zfnull) {
                 holder->zfv = this->initValueCallback(property);
             }
@@ -137,7 +137,7 @@ public:
                         ret = propClass->newInstance();
                     }
                     else {
-                        zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
+                        zfobj<_ZFP_I_PropDynRetainHolder> holder;
                         ret = holder;
                     }
                     return zftrue;
@@ -264,14 +264,14 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
             if(valueNew != zfnull && !valueNew.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty())) {
                 break;
             }
-            zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
+            zfobj<_ZFP_I_PropDynRetainHolder> holder;
             holder->zfv = valueNew;
             value = holder;
         }
         else {
             const ZFClass *propClass = d->typeInfo->typeIdClass();
             if(propClass != zfnull && !propClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
-                zfblockedAlloc(_ZFP_I_PropDynRetainHolder, holder);
+                zfobj<_ZFP_I_PropDynRetainHolder> holder;
                 holder->zfv = valueNew;
                 value = holder;
             }
@@ -473,7 +473,7 @@ const ZFProperty *ZFPropertyDynamicRegister(
         return zfnull;
     }
 
-    zfblockedAlloc(_ZFP_I_PropDynRegData, userDataWrapper);
+    zfobj<_ZFP_I_PropDynRegData> userDataWrapper;
     userDataWrapper->propertySaved = zfnull;
     userDataWrapper->typeInfo = d;
     userDataWrapper->initValueCallback = param.propertyInitValueCallback();
@@ -671,7 +671,7 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
         return;
     }
 
-    zfblockedAlloc(ZFPropertyInvokeData, invokeData);
+    zfobj<ZFPropertyInvokeData> invokeData;
     invokeData->invokerObject = propertyOwnerObject;
     invokeData->invokerProperty = property;
 
@@ -763,7 +763,7 @@ zfbool ZFPropertyDynamicRegisterLifeCycle(
     _ZFP_PropLifeCycleData data;
     data.propertyOwnerClass = property->propertyOwnerClass();
     data.propertyLifeCycleWrapper = _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper;
-    zfblockedAlloc(_ZFP_I_PropDynRegLifeCycleData, implUserData);
+    zfobj<_ZFP_I_PropDynRegLifeCycleData> implUserData;
     implUserData->lifeCycle = lifeCycle;
     implUserData->callback = callback;
     data.propertyLifeCycleUserData = implUserData;

@@ -94,13 +94,13 @@ public:
 public:
     zfoverride
     virtual zfindex cellCount(void) {
-        zfblockedAlloc(v_zfindex, ret);
+        zfobj<v_zfindex> ret;
         this->observerNotify(zfself::EventListCellCount(), ret);
         return ret->zfv;
     }
     zfoverride
     virtual zfauto cellAt(ZF_IN zfindex index) {
-        zfblockedAlloc(ZFUIListAdapterBasicParam, param);
+        zfobj<ZFUIListAdapterBasicParam> param;
         param->cellIndex(index);
         this->observerNotify(zfself::EventListCellAt(), param);
         return param->cell();
@@ -111,7 +111,7 @@ public:
             , ZF_IN ZFUIListCell *cell
             ) {
         if(this->observerHasAdd(zfself::EventListCellSizeAt())) {
-            zfblockedAlloc(ZFUIListAdapterBasicParam, param);
+            zfobj<ZFUIListAdapterBasicParam> param;
             param->cellIndex(index);
             param->cell(cell);
             this->observerNotify(zfself::EventListCellSizeAt(), param);
@@ -126,7 +126,7 @@ protected:
     zfoverride
     virtual zfauto cellCacheOnAccess(ZF_IN zfindex index) {
         if(this->observerHasAdd(zfself::EventListCellCacheOnAccess())) {
-            zfblockedAlloc(ZFUIListAdapterBasicParam, param);
+            zfobj<ZFUIListAdapterBasicParam> param;
             param->cellIndex(index);
             this->observerNotify(zfself::EventListCellCacheOnAccess(), param);
             return param->cell();

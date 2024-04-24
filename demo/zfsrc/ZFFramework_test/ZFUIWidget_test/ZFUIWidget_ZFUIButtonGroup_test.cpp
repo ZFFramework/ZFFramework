@@ -16,7 +16,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIButtonGroupBasic, layout);
+        zfobj<ZFUIButtonGroupBasic> layout;
         container->childAdd(layout)->c_margin(40);
         layout->buttonGroupType(ZFUIButtonGroupType::e_Tab);
         layout->layoutOrientation(ZFUIOrientation::e_Top);
@@ -38,7 +38,7 @@ protected:
 private:
     void prepareChildren(ZF_IN ZFUIButtonGroup *layout) {
         for(zfindex i = 0; i < 4; ++i) {
-            zfblockedAlloc(ZFUIButtonRatio, child);
+            zfobj<ZFUIButtonRatio> child;
             layout->buttonAdd(child);
             child->label()->text(zfstr("btn %s", i));
         }
@@ -47,7 +47,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIButtonGroup *layout
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingForBoolProperty(settings, layout->toObject(), ZFPropertyAccess(ZFUIButtonGroup, buttonTabAllowUnchecked));
 

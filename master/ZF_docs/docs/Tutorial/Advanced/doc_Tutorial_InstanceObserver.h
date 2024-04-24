@@ -8,9 +8,9 @@
  *   } ZFLISTENER_END()
  *   MyClass::ClassData()->instanceObserverAdd(objCreated);
  *
- *   zfblockedAlloc(MyClass); // would cause objCreated being called
- *   zfblockedAlloc(SomeTypeOfMyClass); // would cause objCreated being called
- *   zfblockedAlloc(NotTypeOfMyClass); // would not cause objCreated being called
+ *   zfobj<MyClass> p0; // would cause objCreated being called
+ *   zfobj<SomeTypeOfMyClass> p1; // would cause objCreated being called
+ *   zfobj<NotTypeOfMyClass> p2; // would not cause objCreated being called
  * @endcode
  */
 

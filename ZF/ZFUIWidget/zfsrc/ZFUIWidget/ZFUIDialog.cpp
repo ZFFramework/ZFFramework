@@ -7,20 +7,20 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 ZFObjectCreator ZFUIDialogDefaultLayoutParamCreator = ZFUIDialogDefaultLayoutParamCreatorDefault;
 zfauto ZFUIDialogDefaultLayoutParamCreatorDefault(void) {
-    zfblockedAlloc(ZFUILayoutParam, lp);
+    zfobj<ZFUILayoutParam> lp;
     lp->layoutAlign(ZFUIAlign::e_Center);
     lp->layoutMargin(ZFUIMarginMake(ZFUIGlobalStyle::DefaultStyle()->itemMargin()));
     return lp;
 }
 ZFObjectCreator ZFUIDialogDefaultAniShowCreator = ZFUIDialogDefaultAniShowCreatorDefault;
 zfauto ZFUIDialogDefaultAniShowCreatorDefault(void) {
-    zfblockedAlloc(ZFAnimationNativeView, ani);
+    zfobj<ZFAnimationNativeView> ani;
     ani->aniAlphaFrom(0);
     return ani;
 }
 ZFObjectCreator ZFUIDialogDefaultAniHideCreator = ZFUIDialogDefaultAniHideCreatorDefault;
 zfauto ZFUIDialogDefaultAniHideCreatorDefault(void) {
-    zfblockedAlloc(ZFAnimationNativeView, ani);
+    zfobj<ZFAnimationNativeView> ani;
     ani->aniAlphaTo(0);
     return ani;
 }
@@ -150,7 +150,7 @@ public:
             if(this->pimplOwner->dialogFocusAutomatically()) {
                 ZFUIView *v = this->pimplOwner->dialogFocusOnUpdate();
                 if(this->pimplOwner->observerHasAdd(ZFUIDialog::EventDialogFocusOnUpdate())) {
-                    zfblockedAlloc(ZFObjectHolder, param0, v);
+                    zfobj<ZFObjectHolder> param0(v);
                     this->pimplOwner->observerNotify(ZFUIDialog::EventDialogFocusOnUpdate(), param0);
                 }
                 if(v != zfnull) {
@@ -422,7 +422,7 @@ void ZFUIDialog::objectOnInit(void) {
     d->dialogClickMask->observerAdd(ZFUIButton::EventButtonOnClick(),
         ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, dialogClickMaskOnClick)));
 
-    zfblockedAlloc(_ZFP_ZFUIDialogContentHolder, dialogContentHolder);
+    zfobj<_ZFP_ZFUIDialogContentHolder> dialogContentHolder;
     d->childAdd(dialogContentHolder)->c_sizeFill();
     dialogContentHolder->pimplOwner = d;
     dialogContentHolder->viewUIEnable(zffalse);

@@ -17,7 +17,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIWebView, testView);
+        zfobj<ZFUIWebView> testView;
         container->childAdd(testView)->c_sizeFill()->c_margin(40);
         testView->viewBackgroundColor(ZFUIColorRed());
 
@@ -36,7 +36,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIWebView *testView
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingButtonWithTestWindow(window, settings);
     }

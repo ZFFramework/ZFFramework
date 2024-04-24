@@ -4,11 +4,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfbool _ZFP_ZFPathType_http_IsDir(ZF_IN const zfchar *pathData) {
     zfindex len = zfslen(pathData);
-    zfblockedAlloc(ZFHttpRequest, send
-            , len > 0 && pathData[len - 1] == '/' ? pathData : zfstr("%s/", pathData).cString()
+    zfobj<ZFHttpRequest> send(
+            len > 0 && pathData[len - 1] == '/' ? pathData : zfstr("%s/", pathData).cString()
             , ZFHttpMethod::e_GET
             );
-    zfautoT<ZFHttpResponse *> recv = send->requestSync();
+    zfautoT<ZFHttpResponse> recv = send->requestSync();
     return recv->success() && zfstringIsEqual(recv->header("Content-Type"), "text/html");
 }
 
@@ -26,22 +26,18 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
         , ZF_IN const zfchar *pathData
         ) {
     zfindex len = zfslen(pathData);
-    zfblockedAlloc(ZFHttpRequest, send
-            , len > 0 && pathData[len - 1] == '/' ? pathData : zfstr("%s/", pathData).cString()
+    zfobj<ZFHttpRequest> send(
+            len > 0 && pathData[len - 1] == '/' ? pathData : zfstr("%s/", pathData).cString()
             , ZFHttpMethod::e_GET
             );
-    zfautoT<ZFHttpResponse *> recv = send->requestSync();
+    zfautoT<ZFHttpResponse> recv = send->requestSync();
     if(!recv->success() || !zfstringIsEqual(recv->header("Content-Type"), "text/html")) {
         return zffalse;
     }
     const zfchar *body = recv->bodyText();
 
-    zfblockedAlloc(ZFRegExp, pattern
-            , "(?<=<a .*href=\")([^\"]+)(?=\")"
-            );
-    zfblockedAlloc(ZFRegExp, ignorePattern
-            , "^/|^[a-z]+://|[\\?&=~]|\\./|^\\.+$"
-            );
+    zfobj<ZFRegExp> pattern("(?<=<a .*href=\")([^\"]+)(?=\")");
+    zfobj<ZFRegExp> ignorePattern("^/|^[a-z]+://|[\\?&=~]|\\./|^\\.+$");
 
     _ZFP_ZFPathType_http_FindData *impl = zfnew(_ZFP_ZFPathType_http_FindData);
     while(*body) {

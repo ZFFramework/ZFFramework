@@ -243,7 +243,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
     zfstring clsName;
     ZFImpl_sys_Android_zfstringFromStringT(clsName, clsNameInZF);
     zfstring errorHint;
-    zfblockedAlloc(_ZFP_I_ZFAndroidReflect_ClassInfo, clsInfo);
+    zfobj<_ZFP_I_ZFAndroidReflect_ClassInfo> clsInfo;
     clsInfo->jcls = cls;
     const ZFClass *clsZF = ZFClassDynamicRegister(
             clsName
@@ -560,7 +560,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
             , JNIGetMethodSig(JNIType::S_void(), paramJNITypes.data(), (jsize)paramJNITypes.size()).c_str()
             );
 
-    zfblockedAlloc(_ZFP_I_ZFAndroidReflect_GIData, GIData);
+    zfobj<_ZFP_I_ZFAndroidReflect_GIData> GIData;
     GIData->jcls = clsInfo->jcls;
     GIData->jmId = jmId;
     GIData->paramJNITypes = paramJNITypes;
@@ -613,7 +613,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         userData->add(GIData);
     }
     else {
-        zfblockedAlloc(ZFArray, userData);
+        zfobj<ZFArray> userData;
         userData->add(GIData);
         if(ZFObjectOnInitDynamicRegister(cls, regParam
                     .methodGenericInvoker(_ZFP_GIWrap::GI)
@@ -693,7 +693,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
             , JNIGetMethodSig(JNIType::S_void(), paramJNITypes.data(), (jsize)paramJNITypes.size()).c_str()
             );
 
-    zfblockedAlloc(_ZFP_I_ZFAndroidReflect_GIData, GIData);
+    zfobj<_ZFP_I_ZFAndroidReflect_GIData> GIData;
     GIData->jcls = clsInfo->jcls;
     GIData->isStatic = (zfbool)isStatic;
     GIData->jmId = jmId;
@@ -729,7 +729,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticBooleanMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallBooleanMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zfbool, (zfbool)tmp);
+                        ret = zfobj<v_zfbool>((zfbool)tmp);
                         break;
                     }
                     case JNIType::T_byte: {
@@ -737,7 +737,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticByteMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallByteMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zfbyte, (zfbyte)tmp);
+                        ret = zfobj<v_zfbyte>((zfbyte)tmp);
                         break;
                     }
                     case JNIType::T_char: {
@@ -745,7 +745,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticCharMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallCharMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zfchar, (zfchar)tmp);
+                        ret = zfobj<v_zfchar>((zfchar)tmp);
                         break;
                     }
                     case JNIType::T_short: {
@@ -753,7 +753,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticShortMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallShortMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zfint, (zfint)tmp);
+                        ret = zfobj<v_zfint>((zfint)tmp);
                         break;
                     }
                     case JNIType::T_int: {
@@ -761,7 +761,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticIntMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallIntMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zfint, (zfint)tmp);
+                        ret = zfobj<v_zfint>((zfint)tmp);
                         break;
                     }
                     case JNIType::T_long: {
@@ -769,7 +769,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticLongMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallLongMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zftimet, (zftimet)tmp);
+                        ret = zfobj<v_zftimet>((zftimet)tmp);
                         break;
                     }
                     case JNIType::T_float: {
@@ -777,7 +777,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticFloatMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallFloatMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zffloat, (zffloat)tmp);
+                        ret = zfobj<v_zffloat>((zffloat)tmp);
                         break;
                     }
                     case JNIType::T_double: {
@@ -785,7 +785,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ? JNIUtilCallStaticDoubleMethodA(jniEnv, GIData->jcls, GIData->jmId, params.data())
                             : JNIUtilCallDoubleMethodA(jniEnv, obj->jobj, GIData->jmId, params.data())
                             ;
-                        ret = zflineAlloc(v_zfdouble, (zfdouble)tmp);
+                        ret = zfobj<v_zfdouble>((zfdouble)tmp);
                         break;
                     }
                     case JNIType::T_void: {
@@ -805,7 +805,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                             ;
                         const ZFClass *tmpCls = ZFAndroidReflect_classForNameInJava(GIData->returnTypeNameZF);
                         if(tmpCls != zfnull && tmpCls->classIsTypeOf(_ZFP_I_ZFAndroidReflect_Object::ClassData())) {
-                            ret = tmpCls->newInstance(zflineAlloc(v_ZFPtr, (void *)tmp));
+                            ret = tmpCls->newInstance(zfobj<v_ZFPtr>((void *)tmp));
                         }
                         else {
                             zfbool implSuccess = zffalse;
@@ -817,7 +817,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
                                 }
                             }
                             if(!implSuccess) {
-                                zfblockedAlloc(_ZFP_I_ZFAndroidReflect_Object, wrapper);
+                                zfobj<_ZFP_I_ZFAndroidReflect_Object> wrapper;
                                 wrapper->jobj = tmp;
                                 ret = wrapper;
                             }
@@ -850,7 +850,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         userData->add(GIData);
     }
     else {
-        zfblockedAlloc(ZFArray, userData);
+        zfobj<ZFArray> userData;
         userData->add(GIData);
         if(ZFMethodDynamicRegister(regParam
                     .methodOwnerClass(cls)

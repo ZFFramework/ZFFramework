@@ -5,8 +5,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFUIKit_ZFUIImageView_imageScaleType_test_Container : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIImageView_imageScaleType_test_Container, ZFUIView)
 
-    ZFPROPERTY_RETAIN(ZFUIImageView *, imageViewSmall, zflineAlloc(ZFUIImageView))
-    ZFPROPERTY_RETAIN(ZFUIImageView *, imageViewLarge, zflineAlloc(ZFUIImageView))
+    ZFPROPERTY_RETAIN(ZFUIImageView *, imageViewSmall, zfobj<ZFUIImageView>())
+    ZFPROPERTY_RETAIN(ZFUIImageView *, imageViewLarge, zfobj<ZFUIImageView>())
 
 protected:
     zfoverride
@@ -59,10 +59,10 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIKit_ZFUIImageView_imageScaleType_test_Container, layout);
+        zfobj<ZFUIKit_ZFUIImageView_imageScaleType_test_Container> layout;
         container->childAdd(layout)->c_sizeFill();
 
-        zfblockedAlloc(ZFArray, imageViews);
+        zfobj<ZFArray> imageViews;
         imageViews->add(layout->imageViewSmall());
         imageViews->add(layout->imageViewLarge());
         this->prepareSettingButton(window, imageViews);
@@ -82,14 +82,14 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFArray *imageViews
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         { // imageScaleType
-            zfblockedAlloc(ZFUIKit_test_SettingData, setting);
+            zfobj<ZFUIKit_test_SettingData> setting;
             settings->add(setting);
 
             ZFLISTENER_1(buttonTextGetter
-                    , zfautoT<ZFArray *>, imageViews
+                    , zfautoT<ZFArray>, imageViews
                     ) {
                 v_zfstring *text = zfargs.param0();
 
@@ -99,7 +99,7 @@ private:
             setting->buttonTextGetter(buttonTextGetter);
 
             ZFLISTENER_1(buttonClickListener
-                    , zfautoT<ZFArray *>, imageViews
+                    , zfautoT<ZFArray>, imageViews
                     ) {
                 ZFUIContentScaleTypeEnum value = imageViews->getFirst<ZFUIImageView *>()->imageScaleType();
                 _nextValue(value);

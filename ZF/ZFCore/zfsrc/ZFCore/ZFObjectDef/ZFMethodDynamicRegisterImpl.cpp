@@ -29,7 +29,7 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
     if(!ZFMethodGenericInvokerParamsCheckWithMethod(errorHint, paramCount, paramList, invokerMethod)) {
         return zffalse;
     }
-    zfblockedAlloc(ZFMethodInvokeData, d);
+    zfobj<ZFMethodInvokeData> d;
     d->invokerMethod = invokerMethod;
     d->invokerObject = invokerObject;
     d->param0.zfunsafe_assign(paramList[0]);
@@ -158,7 +158,7 @@ const ZFMethod *ZFMethodDynamicRegister(
     ZFMethod *method = _ZFP_ZFMethodRegister(zffalse
             , zftrue
             , methodImplValid
-                ? zflineAlloc(v_ZFListener, param.methodImpl())
+                ? zfobj<v_ZFListener>(param.methodImpl()).toObject()
                 : param.methodDynamicRegisterUserData()
             , zfnull
             , methodImplValid ? _ZFP_I_ZFMethodDynamicRegisterGI : param.methodGenericInvoker()

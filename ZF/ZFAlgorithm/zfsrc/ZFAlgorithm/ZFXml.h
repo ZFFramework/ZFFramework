@@ -19,9 +19,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     XmlDeclaration
  *     XmlDocType
  *     XmlPI
- * has xmlName:
+ * has name:
  *     XmlElement, XmlPI
- * has xmlValue:
+ * has value:
  *     XmlText, XmlComment, XmlDocType, XmlPI
  * has attribute:
  *     XmlElement, XmlDeclaration
@@ -86,14 +86,14 @@ public:
     /** @cond ZFPrivateDoc */
     ZFXml(void);
     ZFXml(ZF_IN const zfnullT &dummy);
-    ZFXml(ZF_IN ZFXmlTypeEnum xmlType);
+    ZFXml(ZF_IN ZFXmlTypeEnum type);
     ZFXml(ZF_IN const ZFXml &ref);
     virtual ~ZFXml(void);
 
     ZFXml &operator = (ZF_IN const ZFXml &ref);
     ZFXml &operator = (ZF_IN const zfnullT &dummy);
-    inline zfbool operator == (ZF_IN const zfnullT &dummy) const {return !this->xmlTypeValid();}
-    inline zfbool operator != (ZF_IN const zfnullT &dummy) const {return this->xmlTypeValid();}
+    inline zfbool operator == (ZF_IN const zfnullT &dummy) const {return !this->valid();}
+    inline zfbool operator != (ZF_IN const zfnullT &dummy) const {return this->valid();}
     zfbool operator == (ZF_IN const ZFXml &ref) const;
     inline zfbool operator != (ZF_IN const ZFXml &ref) const {return !(this->operator == (ref));}
     /** @endcond */
@@ -117,16 +117,16 @@ public:
 
     // ============================================================
 public:
-    void _ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum xmlType);
+    void _ZFP_ZFXml_xmlType(ZF_IN ZFXmlTypeEnum type);
     /**
      * @brief type of this item
      */
-    ZFXmlTypeEnum xmlType(void) const;
+    ZFXmlTypeEnum type(void) const;
     /**
-     * @brief true if #xmlType is #ZFXmlType::e_XmlNull
+     * @brief true if #type is #ZFXmlType::e_XmlNull
      */
-    inline zfbool xmlTypeValid(void) const {
-        return (this->xmlType() != ZFXmlType::e_XmlNull);
+    inline zfbool valid(void) const {
+        return (this->type() != ZFXmlType::e_XmlNull);
     }
 
 public:
@@ -142,11 +142,11 @@ public:
      * -  XmlText: always null
      * -  XmlComment: always null
      */
-    ZFXml &xmlName(ZF_IN const zfchar *name);
+    ZFXml &name(ZF_IN const zfchar *name);
     /**
-     * @brief see #xmlName
+     * @brief see #name
      */
-    const zfchar *xmlName(void) const;
+    const zfchar *name(void) const;
 
     /**
      * @brief value of the node
@@ -160,11 +160,11 @@ public:
      * -  XmlText: the text itself without tags if CDATA
      * -  XmlComment: the comment itself without tags
      */
-    ZFXml &xmlValue(ZF_IN const zfchar *value);
+    ZFXml &value(ZF_IN const zfchar *value);
     /**
-     * @brief see #xmlValue
+     * @brief see #value
      */
-    const zfchar *xmlValue(void) const;
+    const zfchar *value(void) const;
 
     // ============================================================
 public:
@@ -271,19 +271,19 @@ public:
     /**
      * @brief CDATA or not, for #ZFXmlType::e_XmlText
      */
-    void xmlTextCDATA(ZF_IN zfbool xmlTextCDATA);
+    void CDATA(ZF_IN zfbool CDATA);
     /**
-     * @brief see #xmlTextCDATA
+     * @brief see #CDATA
      */
-    zfbool xmlTextCDATA(void) const;
+    zfbool CDATA(void) const;
 
     // ============================================================
     // quick access
 public:
     /** @brief return #ZFXmlToString */
     operator zfstring (void) const;
-    /** @brief return #xmlTypeValid */
-    inline operator zfbool (void) const {return this->xmlTypeValid();}
+    /** @brief return #valid */
+    inline operator zfbool (void) const {return this->valid();}
     /** @brief access #attr */
     inline const zfchar *operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
     /** @brief access #childAt */
@@ -299,15 +299,15 @@ ZFOUTPUT_TYPE(ZFXml, {v.objectInfoT(s);})
 
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlElement
-        , ZFMP_IN(const zfchar *, xmlName)
+        , ZFMP_IN(const zfchar *, name)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlText
-        , ZFMP_IN(const zfchar *, xmlValue)
+        , ZFMP_IN(const zfchar *, value)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlComment
-        , ZFMP_IN(const zfchar *, xmlValue)
+        , ZFMP_IN(const zfchar *, value)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocument)
@@ -315,12 +315,12 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocument)
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDeclaration)
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocType
-        , ZFMP_IN(const zfchar *, xmlValue)
+        , ZFMP_IN(const zfchar *, value)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlPI
-        , ZFMP_IN(const zfchar *, xmlName)
-        , ZFMP_IN(const zfchar *, xmlValue)
+        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfchar *, value)
         )
 
 // ============================================================

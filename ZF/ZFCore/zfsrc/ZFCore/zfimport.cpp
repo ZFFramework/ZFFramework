@@ -35,7 +35,7 @@ static zfbool _ZFP_zfimportFile(ZF_OUT zfauto &ret, ZF_IN const ZFInput &input) 
         }
     }
 
-    zfblockedAlloc(v_ZFInput, inputHolder);
+    zfobj<v_ZFInput> inputHolder;
     inputHolder->zfv = input;
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventImportBegin(), inputHolder);
     zfbool success = ZFObjectIOLoadT(ret, input);
@@ -69,7 +69,7 @@ static void _ZFP_zfimportDir(
             else {
                 zfauto obj;
                 if(_ZFP_zfimportFile(obj, ZFInputForLocal(relPath, pathInfoRoot))) {
-                    zfblockedAlloc(v_zfstring, key);
+                    zfobj<v_zfstring> key;
                     key->zfv = relPath;
                     ret->set(key, obj != zfnull ? obj.toObject() : ZFNull());
                 }
@@ -94,7 +94,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
             if(impl == zfnull) {
                 return zfnull;
             }
-            zfblockedAlloc(ZFMap, ret);
+            zfobj<ZFMap> ret;
             _ZFP_zfimportDir(ret, *impl, ZFPathInfo(ZFPathType_res(), ""), pathFormated);
             return ret;
         }
@@ -126,7 +126,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
             }
         }
         if(impl->callbackIsDir(pathData)) {
-            zfblockedAlloc(ZFMap, ret);
+            zfobj<ZFMap> ret;
             _ZFP_zfimportDir(ret, *impl, ZFPathInfo(pathInfo->pathType, pathData), "");
             return ret;
         }

@@ -78,7 +78,7 @@ ZFMETHOD_FUNC_DEFINE_1(ZFInput, ZFInputForImpl
     if(!impl) {
         return zfnull;
     }
-    zfblockedAlloc(_ZFP_I_ZFInputForImplOwner, owner);
+    zfobj<_ZFP_I_ZFInputForImplOwner> owner;
     owner->impl = impl;
     ZFInput ret = ZFCallbackForMemberMethod(owner, ZFMethodAccess(_ZFP_I_ZFInputForImplOwner, onInput));
     ret.callbackOwnerObjectRetain();

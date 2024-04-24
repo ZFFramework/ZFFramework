@@ -31,7 +31,7 @@ public:
         zfRetain(this);
         ++(this->threadCallbackTaskId);
         this->timerThread = zfAlloc(ZFThread, ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, threadCallback)));
-        this->timerThread->threadStart(zflineAlloc(v_zfidentity, this->threadCallbackTaskId));
+        this->timerThread->threadStart(zfobj<v_zfidentity>(this->threadCallbackTaskId));
     }
     zffinal void timerStop(void) {
         ++(this->threadCallbackTaskId);
@@ -70,7 +70,7 @@ public:
         if(this->timer->timerActivateOnMainThread()) {
             zfself *owner = this;
             ZFLISTENER_2(timerMainThread
-                    , zfautoT<zfself *>, owner
+                    , zfautoT<zfself>, owner
                     , zfidentity, curId
                     ) {
                 owner->_ZFP_timerMainThread(curId);

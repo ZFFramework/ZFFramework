@@ -6,11 +6,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_zfasyncTaskData {
 public:
-    zfautoT<v_zfidentity *> taskId;
+    zfautoT<v_zfidentity> taskId;
     ZFListener callback;
     zfauto result;
     ZFListener finishCallback;
-    zfautoT<ZFThread *> callerThread;
+    zfautoT<ZFThread> callerThread;
 };
 
 typedef zfstlmap<zfidentity, _ZFP_zfasyncTaskData *> _ZFP_zfasyncTaskMap;
@@ -31,7 +31,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder) {
             zfCoreMutexUnlock();
             break;
         }
-        zfautoT<ZFThread *> runThread = this->threadPool.removeAndGet(0);
+        zfautoT<ZFThread> runThread = this->threadPool.removeAndGet(0);
         zfCoreMutexUnlock();
 
         runThread->taskQueueCleanup();
@@ -40,7 +40,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder) {
 }
 public:
     zfuint maxThread;
-    ZFCoreArray<zfautoT<ZFThread *> > threadPool;
+    ZFCoreArray<zfautoT<ZFThread> > threadPool;
     zfidentity taskIdCur;
     _ZFP_zfasyncTaskMap taskMap;
     ZFCoreArray<_ZFP_zfasyncTaskData *> taskList;
@@ -156,7 +156,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync
         }
     } while(d->taskMap.find(d->taskIdCur) != d->taskMap.end());
     _ZFP_zfasyncTaskData *taskData = zfnew(_ZFP_zfasyncTaskData);
-    taskData->taskId = zflineAlloc(v_zfidentity, d->taskIdCur);
+    taskData->taskId = zfobj<v_zfidentity>(d->taskIdCur);
     taskData->callback = callback;
     taskData->finishCallback = finishCallback;
     taskData->callerThread = ZFThread::currentThread();
@@ -173,7 +173,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync
     }
     while(d->threadPool.count() < d->maxThread && taskCount > 0) {
         --taskCount;
-        zfblockedAlloc(ZFThread, threadPool);
+        zfobj<ZFThread> threadPool;
         d->threadPool.add(threadPool);
         threadPool->taskQueueInit();
         threadPool->threadStart();

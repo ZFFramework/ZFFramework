@@ -56,9 +56,9 @@ zfauto &zfauto::operator = (ZF_IN T_ZFObject const &p) {
 
 // ============================================================
 /** @cond ZFPrivateDoc */
-template<typename T_ZFObject>
-T_ZFObject zfautoT<T_ZFObject>::operator -> (void) const {
-    return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
+template<typename T_ZFObjectBase>
+T_ZFObjectBase *zfautoT<T_ZFObjectBase>::operator -> (void) const {
+    return ZFCastZFObjectUnchecked(T_ZFObjectBase *, this->toObject());
 }
 /** @endcond */
 

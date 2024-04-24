@@ -77,23 +77,19 @@ public:
 
 public:
     #if ZF_ENV_LAMBDA
-    template<typename T_Func>
-    ZFListener(ZF_IN T_Func f) {
-        std::function<void(const ZFArgs &)> fTmp = f;
+    ZFListener(ZF_IN std::function<void(const ZFArgs &)> const &f) {
         ZFLISTENER_1(wrapper
-                , std::function<void(const ZFArgs &)>, fTmp
+                , std::function<void(const ZFArgs &)>, f
                 ) {
-            fTmp(zfargs);
+            f(zfargs);
         } ZFLISTENER_END()
         this->operator = (wrapper);
     }
-    template<typename T_Func>
-    ZFListener &operator = (ZF_IN T_Func f) {
-        std::function<void(const ZFArgs &)> fTmp = f;
+    ZFListener &operator = (ZF_IN std::function<void(const ZFArgs &)> const &f) {
         ZFLISTENER_1(wrapper
-                , std::function<void(const ZFArgs &)>, fTmp
+                , std::function<void(const ZFArgs &)>, f
                 ) {
-            fTmp(zfargs);
+            f(zfargs);
         } ZFLISTENER_END()
         return this->operator = (wrapper);
     }

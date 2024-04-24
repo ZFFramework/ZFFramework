@@ -16,13 +16,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * we would create an instance of the test case and running it\n
  * return the test case if success and not stopped immediately
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFTestCase *>, ZFTestCaseRun
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFTestCase>, ZFTestCaseRun
         , ZFMP_IN(const ZFClass *, cls)
         )
 /**
  * @brief see #ZFTestCaseRun
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFTestCase *>, ZFTestCaseRun
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFTestCase>, ZFTestCaseRun
         , ZFMP_IN(const zfchar *, classNameFull)
         )
 

@@ -17,7 +17,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIKit_test_Button, button);
+        zfobj<ZFUIKit_test_Button> button;
         container->childAdd(button)->c_alignCenter();
         button->label()->text("click me");
 

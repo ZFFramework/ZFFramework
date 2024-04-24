@@ -48,14 +48,14 @@ protected:
 
 private:
     zfauto prepareTestObject(void) {
-        zfblockedAlloc(ZFUIAutoLayout, parent);
+        zfobj<ZFUIAutoLayout> parent;
         parent->viewAlpha(0.5f);
 
-        zfblockedAlloc(ZFUIView, child0);
+        zfobj<ZFUIView> child0;
         child0->viewUIEnableTree(zffalse);
         parent->childAdd(child0)->c_left()->c_toParent();
 
-        zfblockedAlloc(ZFUITextView, child1);
+        zfobj<ZFUITextView> child1;
         child1->text("special chars: \r\n\t\"'-_=+<>()[]{}");
         parent->childAdd(child1)->c_right()->c_toParentRight();
 

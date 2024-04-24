@@ -103,7 +103,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStart
         taskData->startCount += 1;
         return;
     }
-    zfblockedAlloc(_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData, taskDataTmp);
+    zfobj<_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData> taskDataTmp;
     taskData = taskDataTmp;
     taskData->ownerWindow = window;
     window->objectTag(_ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull(), taskDataTmp);

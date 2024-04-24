@@ -179,7 +179,7 @@ protected:
             ZF_IN ZFResultTypeEnum result
             , ZF_IN v_zfstring *errorHint
             ) {
-        zfblockedAlloc(ZFResultType, resultHolder);
+        zfobj<ZFResultType> resultHolder;
         resultHolder->enumValue(result);
         this->observerNotify(ZFAudio::EventAudioOnLoad(), resultHolder, errorHint);
     }
@@ -192,7 +192,7 @@ protected:
             ZF_IN ZFResultTypeEnum result
             , ZF_IN v_zfstring *errorHint
             ) {
-        zfblockedAlloc(ZFResultType, resultHolder);
+        zfobj<ZFResultType> resultHolder;
         resultHolder->enumValue(result);
         this->observerNotify(ZFAudio::EventAudioOnStop(), resultHolder, errorHint);
     }

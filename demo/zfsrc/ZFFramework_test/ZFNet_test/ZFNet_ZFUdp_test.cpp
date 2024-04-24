@@ -14,7 +14,7 @@ protected:
 
         zfuint serverPort = 0;
         {
-            zfblockedAlloc(ZFUdp, server);
+            zfobj<ZFUdp> server;
             ZFLISTENER(serverOnDealloc) {
                 zfLogTrim() << "server dealloc";
             } ZFLISTENER_END()
@@ -27,7 +27,7 @@ protected:
             serverPort = server->port();
 
             ZFLISTENER_1(serverRecvThread
-                    , zfautoT<ZFUdp *>, server
+                    , zfautoT<ZFUdp>, server
                     ) {
                 ZFBuffer buf;
                 ZFUdpAddr recvAddr;
@@ -45,7 +45,7 @@ protected:
         }
 
         {
-            zfblockedAlloc(ZFUdp, client);
+            zfobj<ZFUdp> client;
             ZFLISTENER(clientOnDealloc) {
                 zfLogTrim() << "client dealloc";
             } ZFLISTENER_END()
@@ -58,8 +58,8 @@ protected:
 
             ZFTestCase *testCase = this;
             ZFLISTENER_2(clientRecvThread
-                    , zfautoT<ZFTestCase *>, testCase
-                    , zfautoT<ZFUdp *>, client
+                    , zfautoT<ZFTestCase>, testCase
+                    , zfautoT<ZFUdp>, client
                     ) {
                 ZFBuffer buf;
                 ZFUdpAddr hostAddr;

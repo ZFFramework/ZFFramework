@@ -84,14 +84,14 @@ ZFMETHOD_FUNC_DEFINE_1(void *, beginForImage
     }
     return token;
 }
-ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage *>, endForImage
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, endForImage
         , ZFMP_IN(void *, context)
         ) {
     ZFUIDrawToken *token = (ZFUIDrawToken *)context;
     zfCoreAssertWithMessage(token->type == ZFUIDrawToken::TypeImage,
         "ZFUIDraw::endForImage called with a mismatch context");
     void *nativeImage = ZFPROTOCOL_ACCESS(ZFUIDrawForImage)->endForImage(*token);
-    zfautoT<ZFUIImage *> ret = token->target;
+    zfautoT<ZFUIImage> ret = token->target;
     ret->nativeImage(nativeImage, zffalse);
     zfpoolDelete(token);
     if(nativeImage == zfnull) {

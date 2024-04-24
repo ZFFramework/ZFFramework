@@ -11,7 +11,7 @@ protected:
     typedef _ZFP_ZFCallbackForLua_SyncMode zfself;
 
 public:
-    zfautoT<ZFObjectHolder *> ownerThread;
+    zfautoT<ZFObjectHolder> ownerThread;
     lua_State *ownerL;
     int luaFunc;
 
@@ -86,7 +86,7 @@ public:
             return;
         }
 
-        zfblockedAlloc(v_ZFArgs, zfargsHolder);
+        zfobj<v_ZFArgs> zfargsHolder;
         zfargsHolder->zfv = zfargs;
         ZFImpl_ZFLua_luaPush(this->ownerL, zfargsHolder);
 
@@ -483,7 +483,7 @@ public:
             int luaFuncIndex = lua_gettop(L);
 
             // set function args, stack: [func, zfargs]
-            zfblockedAlloc(v_ZFArgs, zfargsHolder);
+            zfobj<v_ZFArgs> zfargsHolder;
             zfargsHolder->zfv = zfargs;
             ZFImpl_ZFLua_luaPush(L, zfargsHolder);
 
@@ -616,7 +616,7 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLua(
     zfCoreMutexLocker();
     ZFImpl_ZFLua_DEBUG_luaStackChecker(ck, L, 0);
 
-    zfblockedAlloc(_ZFP_I_ZFCallbackForLuaCallback, callbackOwner);
+    zfobj<_ZFP_I_ZFCallbackForLuaCallback> callbackOwner;
     if(!callbackOwner->syncMode.setup(L, luaStackOffset, errorHint)
             || !callbackOwner->asyncMode.setup(L, luaStackOffset, errorHint)
             ) {
@@ -624,7 +624,7 @@ zfbool ZFImpl_ZFLua_ZFCallbackForLua(
     }
 
     // result
-    zfblockedAlloc(v_ZFCallback, callback);
+    zfobj<v_ZFCallback> callback;
     callback->zfv = ZFCallbackForMemberMethod(callbackOwner, ZFMethodAccess(_ZFP_I_ZFCallbackForLuaCallback, callback));
     callback->zfv.callbackOwnerObjectRetain();
     ret = callback;

@@ -56,15 +56,15 @@ protected:
         zfsuper::testCaseOnStart();
 
         this->testCaseOutput("plain alloc");
-        zfblockedAlloc(ZFCore_ZFMethod_order_test_Object, o0);
+        zfobj<ZFCore_ZFMethod_order_test_Object> o0;
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("alloc with string param");
-        ZFCore_ZFMethod_order_test_Object::ClassData()->newInstance(zflineAlloc(v_zfstring, "param"));
+        ZFCore_ZFMethod_order_test_Object::ClassData()->newInstance(zfobj<v_zfstring>("param"));
 
         this->testCaseOutputSeparator();
         this->testCaseOutput("alloc with int param");
-        ZFCore_ZFMethod_order_test_Object::ClassData()->newInstance(zflineAlloc(v_zfint, 123));
+        ZFCore_ZFMethod_order_test_Object::ClassData()->newInstance(zfobj<v_zfint>(123));
 
         this->testCaseStop();
     }

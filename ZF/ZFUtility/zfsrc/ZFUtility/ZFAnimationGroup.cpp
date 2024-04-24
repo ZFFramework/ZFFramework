@@ -44,7 +44,7 @@ private:
     zfbool cachedParallel;
     ZFListener cachedOnStartListener;
     ZFListener cachedOnStopListener;
-    ZFCoreArray<zfautoT<ZFTimer *> > childDelayTimers;
+    ZFCoreArray<zfautoT<ZFTimer> > childDelayTimers;
 
 protected:
     zfoverride
@@ -96,7 +96,7 @@ public:
             this->childDelayTimers.removeAll();
         }
         if(!this->childBuf->isEmpty()) {
-            zfblockedAlloc(ZFArray, childToStop, this->childBuf);
+            zfobj<ZFArray> childToStop(this->childBuf);
             this->childBuf->removeAll();
             if(this->cachedParallel) {
                 for(zfindex i = 0; i < childToStop->count(); ++i) {
@@ -118,7 +118,7 @@ public:
 private:
     void doStartParallel(void) {
         zfidentity aniId = this->pimplOwner->aniId();
-        zfblockedAlloc(ZFArray, tmpArray, this->childAnis);
+        zfobj<ZFArray> tmpArray(this->childAnis);
         this->childBuf->addFrom(this->childAnis);
         for(zfindex i = 0; aniId == this->pimplOwner->aniId() && i < tmpArray->count(); ++i) {
             ZFAnimationGroupChildData *childData = tmpArray->get<ZFAnimationGroupChildData *>(i);
@@ -161,7 +161,7 @@ private:
                     childData->childAni()->aniStart();
                 }
             } ZFLISTENER_END()
-            zfautoT<ZFTimer *> childDelayTimer = ZFTimerOnce(
+            zfautoT<ZFTimer> childDelayTimer = ZFTimerOnce(
                 childData->childDelayBeforeStart(),
                 childOnDelayFinish);
             if(childDelayTimer != zfnull) {
@@ -377,7 +377,7 @@ ZFCompareResult ZFAnimationGroup::objectCompare(ZF_IN ZFObject *anotherObj) {
 ZFMETHOD_DEFINE_1(ZFAnimationGroup, void, childAniAdd
         , ZFMP_IN(ZFAnimation *, ani)
         ) {
-    zfblockedAlloc(ZFAnimationGroupChildData, childData);
+    zfobj<ZFAnimationGroupChildData> childData;
     childData->childAni(ani);
     this->childAniDataAdd(childData);
 }

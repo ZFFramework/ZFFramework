@@ -68,7 +68,7 @@ protected:
         this->testCaseOutputSeparator();
         this->testCaseOutput("ZFProperty");
         {
-            zfblockedAlloc(_ZFP_ZFCore_ZFProperty_test_TestChild, p);
+            zfobj<_ZFP_ZFCore_ZFProperty_test_TestChild> p;
 
             // property list
             const ZFClass *clsTmp = p->classData();
@@ -94,11 +94,11 @@ protected:
             zfLogTrim();
             zfLogTrim() << "retain";
 
-            p->propertyRetain(zflineAlloc(ZFObject));
+            p->propertyRetain(zfobj<ZFObject>());
             zfLog() << p->propertyRetain();
 
 #if 0 // this should not compile
-            p->propertyRetainReadonly(zflineAlloc(ZFObject));
+            p->propertyRetainReadonly(zfobj<ZFObject>());
 #endif
             zfLog() << p->propertyRetainReadonly();
 
@@ -116,7 +116,7 @@ protected:
 
             // weak
             {
-                zfblockedAlloc(ZFObject, value);
+                zfobj<ZFObject> value;
                 p->propertyWeak(value);
                 zfLog() << p->propertyWeak();
             }
@@ -125,8 +125,8 @@ protected:
             // copy
             this->testCaseOutputSeparator();
             this->testCaseOutput("copy propertis");
-            zfblockedAlloc(_ZFP_ZFCore_ZFProperty_test_TestBase, pBase);
-            zfblockedAlloc(_ZFP_ZFCore_ZFProperty_test_TestChild, pChild);
+            zfobj<_ZFP_ZFCore_ZFProperty_test_TestBase> pBase;
+            zfobj<_ZFP_ZFCore_ZFProperty_test_TestChild> pChild;
             pBase->propertyAssign("string set in another");
             ZFPropertyCopyAll(pChild, pBase);
             this->testCaseOutputSeparator();

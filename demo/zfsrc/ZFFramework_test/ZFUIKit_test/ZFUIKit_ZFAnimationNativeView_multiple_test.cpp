@@ -17,7 +17,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIView, view);
+        zfobj<ZFUIView> view;
         container->childAdd(view)->c_alignCenter();
         view->viewSizePrefer(ZFUISizeMake(80, 60));
         view->viewBackgroundColor(ZFUIColorRandom());
@@ -25,22 +25,22 @@ protected:
         ZFLISTENER_1(startOnClick
                 , ZFUIView *, view
                 ) {
-            zfblockedAlloc(ZFAnimationGroup, aniGroup);
+            zfobj<ZFAnimationGroup> aniGroup;
             aniGroup->aniTarget(view);
 
-            zfblockedAlloc(ZFAnimationNativeView, ani0);
+            zfobj<ZFAnimationNativeView> ani0;
             aniGroup->childAniAdd(ani0);
             ani0->aniTranslateXTo(1);
             ani0->aniDuration(3000);
 
-            zfblockedAlloc(ZFAnimationNativeView, ani1);
+            zfobj<ZFAnimationNativeView> ani1;
             aniGroup->childAniAdd(ani1);
             ani1->aniRotateZTo(180);
             ani1->aniDuration(3000);
 
             aniGroup->aniStart();
         } ZFLISTENER_END()
-        zfblockedAlloc(ZFUIKit_test_Button, startButton);
+        zfobj<ZFUIKit_test_Button> startButton;
         startButton->label()->text("start");
         startButton->observerAdd(ZFUIButton::EventButtonOnClick(), startOnClick);
         container->childAdd(startButton)->c_alignRightTop();

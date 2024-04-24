@@ -274,7 +274,7 @@ ZFInput ZFInputForBuffer(
         ZF_IN const ZFBuffer &buffer
         , ZF_IN_OPT zfbool serializable /* = zffalse */
         ) {
-    zfblockedAlloc(_ZFP_I_ZFInputForBufferOwner, owner);
+    zfobj<_ZFP_I_ZFInputForBufferOwner> owner;
     owner->p = 0;
     owner->buffer = buffer;
     ZFInput ret = ZFCallbackForMemberMethod(
@@ -355,8 +355,8 @@ static ZFInput _ZFP_ZFInputForBuffer(
         count = zfslen((const zfchar *)src);
     }
     if(copy) {
-        zfblockedAlloc(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
-        zfblockedAlloc(v_ZFBuffer, buf);
+        zfobj<_ZFP_I_ZFInputForBufferUnsafeOwner> owner;
+        zfobj<v_ZFBuffer> buf;
         buf->zfv.bufferCopy(src, count * sizeof(zfchar));
         owner->pStart = (const zfbyte *)buf->zfv.buffer();
         owner->pEnd = owner->pStart + buf->zfv.bufferSize();
@@ -371,7 +371,7 @@ static ZFInput _ZFP_ZFInputForBuffer(
         return ret;
     }
     else {
-        zfblockedAlloc(_ZFP_I_ZFInputForBufferUnsafeOwner, owner);
+        zfobj<_ZFP_I_ZFInputForBufferUnsafeOwner> owner;
         owner->pStart = (const zfbyte *)src;
         owner->pEnd = owner->pStart + count;
         owner->p = owner->pStart;

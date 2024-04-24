@@ -16,7 +16,7 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIFlowLayout, layout);
+        zfobj<ZFUIFlowLayout> layout;
         container->childAdd(layout)->c_margin(40, 40 + ZFUIGlobalStyle::DefaultStyle()->itemSizeButton(), 40, 40);
         layout->viewBackgroundColor(ZFUIColorRed());
 
@@ -27,12 +27,12 @@ protected:
 
 private:
     void prepareAddRemoveButton(ZFUIView *container, ZFUIView *layout) {
-        zfblockedAlloc(ZFUIKit_test_Button, addButton);
+        zfobj<ZFUIKit_test_Button> addButton;
         container->childAdd(addButton);
         ZFLISTENER_1(addButtonOnClick
                 , ZFUIView *, layout
                 ) {
-            zfblockedAlloc(ZFUITextView, view);
+            zfobj<ZFUITextView> view;
             layout->childAdd(view);
             view->viewBackgroundColor(ZFUIColorRandom());
             zfindex textLength = zfmRand(1, 10);
@@ -48,7 +48,7 @@ private:
         addButton->observerAdd(ZFUIButton::EventButtonOnClick(), addButtonOnClick);
         addButton->label()->text("add");
 
-        zfblockedAlloc(ZFUIKit_test_Button, removeButton);
+        zfobj<ZFUIKit_test_Button> removeButton;
         container->childAdd(removeButton)->c_margin(70, 0, 0, 0);
         ZFLISTENER_1(removeButtonOnClick
                 , ZFUIView *, layout
@@ -64,7 +64,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIFlowLayout *layout
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingForLayoutRequest(settings, layout);
 

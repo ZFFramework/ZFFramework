@@ -146,7 +146,7 @@ private:
 /**
  * @brief util to start timer
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTimer *>, ZFTimerStart
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTimer>, ZFTimerStart
         , ZFMP_IN(zftimet, timerInterval)
         , ZFMP_IN(const ZFListener &, timerCallback)
         )
@@ -156,7 +156,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTimer *>, ZFTimerStart
  *
  * we would try to run the timerCallback in the same thread that call this method
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTimer *>, ZFTimerOnce
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfautoT<ZFTimer>, ZFTimerOnce
         , ZFMP_IN(zftimet, delay)
         , ZFMP_IN(const ZFListener &, timerCallback)
         )

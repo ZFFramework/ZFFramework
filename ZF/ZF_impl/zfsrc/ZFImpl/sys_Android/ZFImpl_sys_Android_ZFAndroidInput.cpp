@@ -125,7 +125,7 @@ ZFInput ZFImpl_sys_Android_ZFInputFromZFAndroidInput(ZF_IN jobject nativeInputWr
     }
     JNIEnv *jniEnv = JNIGetJNIEnv();
 
-    zfblockedAlloc(_ZFP_I_ZFAndroidInput, owner);
+    zfobj<_ZFP_I_ZFAndroidInput> owner;
     owner->nativeInputWrapper = JNIUtilNewGlobalRef(jniEnv, nativeInputWrapper);
     owner->nativeBuf = (jbyteArray)JNIUtilNewGlobalRef(jniEnv, JNILineDeleteLocalRef(JNIUtilNewByteArray(jniEnv, _ZFP_ZFAndroidInputBufSize)));
     ZFInput ret = ZFCallbackForMemberMethod(owner, ZFMethodAccess(_ZFP_I_ZFAndroidInput, onInput));

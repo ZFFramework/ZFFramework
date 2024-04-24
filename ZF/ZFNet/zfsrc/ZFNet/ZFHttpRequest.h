@@ -116,7 +116,7 @@ private:
  *       ZFJson response = zfargs.param0()->to<ZFHttpResponse *>()->bodyJson();
  *       zfLogTrim() << response;
  *   } ZFLISTENER_END()
- *   zflineAlloc(ZFHttpRequest, "http://xxx", "POST")
+ *   zfobj<ZFHttpRequest>("http://xxx", "POST")
  *       ->header("Content-Type", "application/json;charset=UTF-8;")
  *       ->body(ZFJson()
  *           .attr("k", "v")
@@ -251,7 +251,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     ZFMETHOD_DECLARE_0(void, requestCancel)
 
     /** @brief util to perform sync request */
-    ZFMETHOD_DECLARE_0(zfautoT<ZFHttpResponse *>, requestSync)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFHttpResponse>, requestSync)
 
     /** @brief print all header info, usually for debug use only */
     ZFMETHOD_DECLARE_0(zfstring, headerInfo)

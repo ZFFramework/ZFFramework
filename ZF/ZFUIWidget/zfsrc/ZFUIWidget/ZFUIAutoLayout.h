@@ -38,7 +38,7 @@ public:
     ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, pos, ZFUIAutoLayoutPos::e_None)
 
 private:
-    zfautoT<ZFObjectHolder *> target_PropV;
+    zfautoT<ZFObjectHolder> target_PropV;
 public:
     /** @brief see #ZFUIAutoLayout */
     inline ZFUIView *target(void) const {
@@ -242,7 +242,7 @@ public:
     zfclassLikePOD _ZFP_Data {
     public:
         ZFUIAutoLayout *ownerParent;
-        zfautoT<ZFObjectHolder *> ownerChild;
+        zfautoT<ZFObjectHolder> ownerChild;
         ZFUIAutoLayoutRule ruleList[ZFUIAutoLayoutPos::ZFEnumCount];
         zfbool posAttached[ZFUIAutoLayoutPos::ZFEnumCount];
         zfbool posReset;

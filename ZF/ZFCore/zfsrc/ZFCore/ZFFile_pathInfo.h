@@ -788,7 +788,11 @@ extern ZFLIB_ZFCore zfbool ZFPathInfoChainParse(
         );
 
 extern ZFLIB_ZFCore const zfchar _ZFP_ZFPathInfoChainCharMap[256];
-/** @brief see #ZFPathInfoChainParse */
+/**
+ * @brief see #ZFPathInfoChainParse
+ *
+ * only `%` and `|` would be escaped
+ */
 #define ZFPathInfoChainCharMap() _ZFP_ZFPathInfoChainCharMap
 
 ZF_NAMESPACE_GLOBAL_END

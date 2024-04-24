@@ -10,10 +10,10 @@ ZFMAIN_ENTRY() {
 }
 
 static void myTestCode(void) {
-    zfblockedAlloc(ZFUIWindow, window);
+    zfobj<ZFUIWindow> window;
     window->windowShow();
 
-    zfblockedAlloc(ZFUITextView, textView);
+    zfobj<ZFUITextView> textView;
     window->childAdd(textView)->c_alignCenter();
     textView->text("hello world\n\nhello ZFFramework");
     textView->textSingleLine(zffalse);

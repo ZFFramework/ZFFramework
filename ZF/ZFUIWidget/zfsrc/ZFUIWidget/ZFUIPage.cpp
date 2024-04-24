@@ -59,8 +59,8 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnChange)
 // _ZFP_ZFUIPageManagerPrivate
 zfclassNotPOD _ZFP_ZFUIPageAniOverrideData {
 public:
-    zfautoT<ZFAnimation *> resumeAni;
-    zfautoT<ZFAnimation *> pauseAni;
+    zfautoT<ZFAnimation> resumeAni;
+    zfautoT<ZFAnimation> pauseAni;
     zfbool pauseAniHigherPriority;
 };
 zfclassNotPOD _ZFP_ZFUIPageManagerPrivate {
@@ -74,8 +74,8 @@ public:
     ZFUIView *pageContainer;
     ZFCoreArray<ZFUIPage *> pageList;
     ZFCoreArray<_ZFP_ZFUIPageAniOverrideData> pageAniOverrideList;
-    zfautoT<ZFAnimation *> resumeAni;
-    zfautoT<ZFAnimation *> pauseAni;
+    zfautoT<ZFAnimation> resumeAni;
+    zfautoT<ZFAnimation> pauseAni;
     zfint pageMoveFlag;
     ZFUIPage *pageMoveLastResumePage;
     ZFCoreArray<ZFListener> pageRequestQueue;
@@ -149,7 +149,7 @@ public:
         pageOnCreate(page);
         if(!page->pageResumed()) {
             page->pageOnResume(resumeReason);
-            zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
+            zfobj<ZFUIPageResumeReason> resumeReasonHolder(resumeReason);
             page->observerNotify(ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
             page->pageManager()->observerNotifyWithSender(page, ZFUIPage::EventPageOnResume(), resumeReasonHolder, siblingPage);
         }
@@ -160,7 +160,7 @@ public:
             , ZF_IN ZFUIPage *siblingPage
             ) {
         if(page->pageResumed()) {
-            zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
+            zfobj<ZFUIPagePauseReason> pauseReasonHolder(pauseReason);
             page->pageManager()->observerNotifyWithSender(page, ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
             page->observerNotify(ZFUIPage::EventPageOnPause(), pauseReasonHolder, siblingPage);
             page->pageOnPause(pauseReason);
@@ -238,19 +238,19 @@ public:
                     break;
                 case ZFUIPageResumeReason::e_ByRequest:
                     if(resumePage == zfnull || (pausePage != zfnull && pausePage->pageAniPriority() > resumePage->pageAniPriority())) {
-                        pageAniOnPrepare(pausePage, zflineAlloc(ZFUIPagePauseReason, pauseReason), resumePage);
+                        pageAniOnPrepare(pausePage, zfobj<ZFUIPagePauseReason>(pauseReason), resumePage);
                         manager->pageContainer()->childMove(pausePage->pageView(), zfindexMax());
                     }
                     else {
-                        pageAniOnPrepare(resumePage, zflineAlloc(ZFUIPageResumeReason, resumeReason), pausePage);
+                        pageAniOnPrepare(resumePage, zfobj<ZFUIPageResumeReason>(resumeReason), pausePage);
                     }
                     break;
                 case ZFUIPageResumeReason::e_FromBackground:
                     if(pausePage == zfnull || (resumePage != zfnull && resumePage->pageAniPriority() > pausePage->pageAniPriority())) {
-                        pageAniOnPrepare(resumePage, zflineAlloc(ZFUIPageResumeReason, resumeReason), pausePage);
+                        pageAniOnPrepare(resumePage, zfobj<ZFUIPageResumeReason>(resumeReason), pausePage);
                     }
                     else {
-                        pageAniOnPrepare(pausePage, zflineAlloc(ZFUIPagePauseReason, pauseReason), resumePage);
+                        pageAniOnPrepare(pausePage, zfobj<ZFUIPagePauseReason>(pauseReason), resumePage);
                         manager->pageContainer()->childMove(pausePage->pageView(), zfindexMax());
                     }
                     break;
@@ -315,12 +315,12 @@ public:
             , ZF_IN ZFUIPagePauseReasonEnum pauseReason
             ) {
         if(pausePage != zfnull) {
-            zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
+            zfobj<ZFUIPagePauseReason> pauseReasonHolder(pauseReason);
             pausePage->observerNotify(ZFUIPage::EventPageAniOnStart(), pauseReasonHolder);
             manager->observerNotifyWithSender(pausePage, ZFUIPage::EventPageAniOnStart(), pauseReasonHolder);
         }
         if(resumePage != zfnull) {
-            zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
+            zfobj<ZFUIPageResumeReason> resumeReasonHolder(resumeReason);
             resumePage->observerNotify(ZFUIPage::EventPageAniOnStart(), resumeReasonHolder);
             manager->observerNotifyWithSender(resumePage, ZFUIPage::EventPageAniOnStart(), resumeReasonHolder);
         }
@@ -338,12 +338,12 @@ public:
         if(pausePage != zfnull) {
             manager->pageContainer()->childRemove(pausePage->pageView());
 
-            zfblockedAlloc(ZFUIPagePauseReason, pauseReasonHolder, pauseReason);
+            zfobj<ZFUIPagePauseReason> pauseReasonHolder(pauseReason);
             pausePage->observerNotify(ZFUIPage::EventPageAniOnStop(), pauseReasonHolder);
             manager->observerNotifyWithSender(pausePage, ZFUIPage::EventPageAniOnStop(), pauseReasonHolder);
         }
         if(resumePage != zfnull) {
-            zfblockedAlloc(ZFUIPageResumeReason, resumeReasonHolder, resumeReason);
+            zfobj<ZFUIPageResumeReason> resumeReasonHolder(resumeReason);
             resumePage->observerNotify(ZFUIPage::EventPageAniOnStop(), resumeReasonHolder);
             manager->observerNotifyWithSender(resumePage, ZFUIPage::EventPageAniOnStop(), resumeReasonHolder);
         }
@@ -367,8 +367,8 @@ void ZFUIPageManager::objectOnDealloc(void) {
 }
 
 void ZFUIPageManager::managerOnCreate(void) {
-    zfautoT<ZFUIView *> managerContainer = (this->managerContainerClass() != zfnull ? this->managerContainerClass() : ZFUIView::ClassData())->newInstance();
-    zfautoT<ZFUIView *> pageContainer = (this->pageContainerClass() != zfnull ? this->pageContainerClass() : ZFUIView::ClassData())->newInstance();
+    zfautoT<ZFUIView> managerContainer = (this->managerContainerClass() != zfnull ? this->managerContainerClass() : ZFUIView::ClassData())->newInstance();
+    zfautoT<ZFUIView> pageContainer = (this->pageContainerClass() != zfnull ? this->pageContainerClass() : ZFUIView::ClassData())->newInstance();
     d->managerContainer = managerContainer;
     d->pageContainer = pageContainer;
     zfCoreAssertWithMessage(d->managerContainer != zfnull, "managerContainerClass must be type of %s", ZFUIView::ClassData()->className());
@@ -455,7 +455,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfbool, managerResumed) {
 ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIWindow *, managerCreateForWindow
         , ZFMP_IN_OPT(ZFUISysWindow *, windowOwnerSysWindow, zfnull)
         ) {
-    zfblockedAlloc(ZFUIWindow, window, windowOwnerSysWindow);
+    zfobj<ZFUIWindow> window(windowOwnerSysWindow);
     d->managerOwnerWindow = window;
 
     this->managerCreate();

@@ -74,10 +74,10 @@ static zfbool _ZFP_ZFFramework_test_protocolCheck(void) {
     return zftrue;
 }
 static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void) {
-    zfblockedAlloc(ZFUIWindow, window);
+    zfobj<ZFUIWindow> window;
     window->windowShow();
 
-    zfblockedAlloc(ZFUIKit_test_ListView, containerView);
+    zfobj<ZFUIKit_test_ListView> containerView;
     window->childAdd(containerView)->c_sizeFill();
 
     ZFUIViewFocusNextMove(window);
@@ -140,24 +140,24 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
         , ZF_IN const zfchar *subModuleName
         , ZF_IN ZFCoreArray<const ZFClass *> const &testCases
         ) {
-    zfblockedAlloc(ZFUIKit_test_Button, button);
+    zfobj<ZFUIKit_test_Button> button;
     containerView->childAdd(button);
 
-    zfblockedAlloc(_ZFP_ZFFramework_test_TestCaseSubModuleData, subModuleData);
+    zfobj<_ZFP_ZFFramework_test_TestCaseSubModuleData> subModuleData;
     subModuleData->subModuleName = subModuleName;
     subModuleData->testCases = testCases;
 
     ZFLISTENER_1(onClickButton
-            , zfautoT<_ZFP_ZFFramework_test_TestCaseSubModuleData *>, subModuleData
+            , zfautoT<_ZFP_ZFFramework_test_TestCaseSubModuleData>, subModuleData
             ) {
-        zfblockedAlloc(ZFUIWindow, subModuleWindow);
+        zfobj<ZFUIWindow> subModuleWindow;
         subModuleWindow->viewBackgroundColor(ZFUIColorWhite());
         subModuleWindow->windowShow();
-        zfblockedAlloc(ZFUIKit_test_ListView, containerView);
+        zfobj<ZFUIKit_test_ListView> containerView;
         subModuleWindow->childAdd(containerView)->c_sizeFill();
 
         {
-            zfblockedAlloc(ZFUIKit_test_Button, closeButton);
+            zfobj<ZFUIKit_test_Button> closeButton;
             containerView->childAdd(closeButton);
             closeButton->label()->text("back");
             ZFLISTENER_1(closeButtonOnClick
@@ -168,7 +168,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
             closeButton->observerAdd(ZFUIButton::EventButtonOnClick(), closeButtonOnClick);
             closeButton->background()->viewBackgroundColor(ZFUIColorRed());
 
-            zfblockedAlloc(ZFUIView, separator);
+            zfobj<ZFUIView> separator;
             containerView->childAdd(separator);
             separator->viewSizeMin(ZFUISizeMake(0, 5));
             separator->viewSizeMax(ZFUISizeMake(-1, 5));
@@ -188,7 +188,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
         , ZF_IN const zfchar *subModuleName
         , ZF_IN const ZFClass *testCase
         ) {
-    zfblockedAlloc(ZFUIKit_test_Button, button);
+    zfobj<ZFUIKit_test_Button> button;
     containerView->childAdd(button);
 
     ZFLISTENER_2(onClickButton
@@ -196,7 +196,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
             , ZFUIView *, containerView
             ) {
         containerView->viewUIEnableTree(zffalse);
-        zfautoT<ZFTestCase *> running = ZFTestCaseRun(testCase);
+        zfautoT<ZFTestCase> running = ZFTestCaseRun(testCase);
         if(running != zfnull) {
             ZFLISTENER_1(testCaseOnStop
                     , ZFUIView *, containerView
@@ -228,7 +228,7 @@ ZF_GLOBAL_INITIALIZER_INIT(LuaRunner) {
 
             ZFCoreArray<zfauto> luaParams;
             for(zfindex i = 1; i < appParams.count(); ++i) {
-                luaParams.add(zflineAlloc(v_zfstring, appParams[i]));
+                luaParams.add(zfobj<v_zfstring>(appParams[i]));
             }
             ZFLuaExecuteDetail(ZFInputForPathInfo(pathInfo), luaParams);
         }

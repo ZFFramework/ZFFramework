@@ -93,7 +93,7 @@ zfclassFwd ZFObjectHolder;
  *     same as zflineRelease(zfAlloc(...)) defined for short
  *   -  #zfblockedRelease:
  *     release after nearest code block
- *   -  #zfblockedAlloc:
+ *   -  #zfobj:
  *     declare a ZFObject which looks like allocated in stack,
  *     would be released after nearest code block
  *   -  #zfauto:

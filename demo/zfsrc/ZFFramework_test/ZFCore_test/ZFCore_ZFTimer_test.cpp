@@ -16,7 +16,7 @@ protected:
         this->testCaseOutput("ZFTimer");
         this->testCaseOutput(zfstr("current thread: %s", ZFThread::currentThread()->objectInfo()));
 
-        zfblockedAlloc(ZFTimer, timer);
+        zfobj<ZFTimer> timer;
 
         ZFTestCase *owner = this;
         ZFLISTENER_1(timerOnActivate
@@ -41,7 +41,7 @@ protected:
 
         ZFTestCase *testCase = this;
         ZFLISTENER_1(timerOnce
-                , zfautoT<ZFTestCase *>, testCase
+                , zfautoT<ZFTestCase>, testCase
                 ) {
             testCase->testCaseOutput(zfstr("timerOnce activated, current thread: %s", ZFThread::currentThread()->objectInfo()));
         } ZFLISTENER_END()

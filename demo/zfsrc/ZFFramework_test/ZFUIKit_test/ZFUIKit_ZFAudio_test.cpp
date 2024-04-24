@@ -41,7 +41,7 @@ protected:
             zffloat btnY = 0;
             ZFAudio *audio = audios[iAudio];
 
-            zfblockedAlloc(ZFUITextView, stateLabel);
+            zfobj<ZFUITextView> stateLabel;
             container->childAdd(stateLabel)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             stateLabel->textAlign(ZFUIAlign::e_Center);
@@ -59,7 +59,7 @@ protected:
             audio->observerAdd(ZFAudio::EventAudioOnLoop(), stateOnUpdate);
             ZFListener(stateOnUpdate).execute();
 
-            zfblockedAlloc(ZFUIKit_test_Button, loadBtn);
+            zfobj<ZFUIKit_test_Button> loadBtn;
             container->childAdd(loadBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             loadBtn->label()->text("load");
@@ -70,7 +70,7 @@ protected:
             } ZFLISTENER_END()
             loadBtn->onClick(loadOnClick);
 
-            zfblockedAlloc(ZFUIKit_test_Button, startBtn);
+            zfobj<ZFUIKit_test_Button> startBtn;
             container->childAdd(startBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             startBtn->label()->text("start");
@@ -81,7 +81,7 @@ protected:
             } ZFLISTENER_END()
             startBtn->onClick(startOnClick);
 
-            zfblockedAlloc(ZFUIKit_test_Button, stopBtn);
+            zfobj<ZFUIKit_test_Button> stopBtn;
             container->childAdd(stopBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             stopBtn->label()->text("stop");
@@ -92,7 +92,7 @@ protected:
             } ZFLISTENER_END()
             stopBtn->onClick(stopOnClick);
 
-            zfblockedAlloc(ZFUIKit_test_Button, pauseBtn);
+            zfobj<ZFUIKit_test_Button> pauseBtn;
             container->childAdd(pauseBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             pauseBtn->label()->text("pause");
@@ -103,7 +103,7 @@ protected:
             } ZFLISTENER_END()
             pauseBtn->onClick(pauseOnClick);
 
-            zfblockedAlloc(ZFUIKit_test_Button, resumeBtn);
+            zfobj<ZFUIKit_test_Button> resumeBtn;
             container->childAdd(resumeBtn)->c_sizeFill(btnWidth, btnHeight)->c_alignLeftTop(btnX, btnY);
             btnY += btnHeight + space;
             resumeBtn->label()->text("resume");
@@ -116,9 +116,9 @@ protected:
         }
     }
 
-    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio0, zflineAlloc(ZFAudio))
-    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio1, zflineAlloc(ZFAudio))
-    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio2, zflineAlloc(ZFAudio))
+    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio0, zfobj<ZFAudio>())
+    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio1, zfobj<ZFAudio>())
+    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio2, zfobj<ZFAudio>())
 };
 ZFOBJECT_REGISTER(ZFUIKit_ZFAudio_test)
 

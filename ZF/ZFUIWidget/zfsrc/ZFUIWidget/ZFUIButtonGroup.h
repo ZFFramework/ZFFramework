@@ -183,7 +183,7 @@ protected:
             button,
             eventId,
             this->toObject(),
-            zflineAlloc(v_zfindex, buttonIndex));
+            zfobj<v_zfindex>(buttonIndex));
     }
     /** @brief see #EventButtonOnAdd */
     virtual inline void buttonOnAdd(
@@ -194,7 +194,7 @@ protected:
             button,
             ZFUIButtonGroup::EventButtonOnAdd(),
             this->toObject(),
-            zflineAlloc(v_zfindex, buttonIndex));
+            zfobj<v_zfindex>(buttonIndex));
     }
     /** @brief see #EventButtonOnRemove */
     virtual inline void buttonOnRemove(
@@ -205,7 +205,7 @@ protected:
             button,
             ZFUIButtonGroup::EventButtonOnRemove(),
             this->toObject(),
-            zflineAlloc(v_zfindex, buttonIndex));
+            zfobj<v_zfindex>(buttonIndex));
     }
 
     // ============================================================
@@ -269,7 +269,7 @@ protected:
             button,
             ZFUIButtonGroup::EventButtonTabOnChange(),
             this->toObject(),
-            zflineAlloc(v_zfindex, buttonIndexPrev));
+            zfobj<v_zfindex>(buttonIndexPrev));
     }
     /** @brief see #EventButtonTabOnClickChecked */
     virtual inline void buttonTabOnClickChecked(
@@ -280,7 +280,7 @@ protected:
             button,
             ZFUIButtonGroup::EventButtonTabOnClickChecked(),
             this->toObject(),
-            zflineAlloc(v_zfindex, buttonIndex));
+            zfobj<v_zfindex>(buttonIndex));
     }
 
 protected:
@@ -298,7 +298,7 @@ protected:
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
             ) {
-        zfautoT<ZFArray *> buttons;
+        zfautoT<ZFArray> buttons;
         ZFSerializableUtilSerializeCategoryFromData(serializableData, outErrorHint, outErrorPos,
                 check, ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, buttons, {
                     return zffalse;

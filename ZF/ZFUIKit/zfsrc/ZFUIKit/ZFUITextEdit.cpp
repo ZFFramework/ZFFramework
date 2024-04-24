@@ -68,7 +68,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardReturnTypeEnum, te
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditKeyboardReturnType(this, this->textEditKeyboardReturnType());
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, ZFUITextView *, textPlaceHolder) {
-    zfblockedAlloc(ZFUITextView, textPlaceHolder);
+    zfobj<ZFUITextView> textPlaceHolder;
     propertyValue = textPlaceHolder;
     textPlaceHolder->textColor(ZFUIGlobalStyle::DefaultStyle()->textColorHint());
     textPlaceHolder->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
@@ -339,14 +339,14 @@ void ZFUITextEdit::textOnChangeCheck(
     }
 
     if(this->observerHasAdd(ZFUITextEdit::EventTextOnChangeCheck())) {
-        zfblockedAlloc(v_zfbool, t, shouldChange);
-        this->observerNotify(ZFUITextEdit::EventTextOnChangeCheck(), zflineAlloc(v_zfstring, newText), t);
+        zfobj<v_zfbool> t(shouldChange);
+        this->observerNotify(ZFUITextEdit::EventTextOnChangeCheck(), zfobj<v_zfstring>(newText), t);
         shouldChange = t->zfv;
     }
 }
 void ZFUITextEdit::textOnChange(ZF_IN const zfchar *oldText) {
     if(this->observerHasAdd(ZFUITextEdit::EventTextOnChange())) {
-        zfblockedAlloc(v_zfstring, oldTextTmp, oldText);
+        zfobj<v_zfstring> oldTextTmp(oldText);
         this->observerNotify(ZFUITextEdit::EventTextOnChange(), oldTextTmp);
     }
 }

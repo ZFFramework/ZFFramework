@@ -16,13 +16,13 @@ protected:
         ZFUIView *container = zfnull;
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
-        zfblockedAlloc(ZFUIOnScreenKeyboardAutoFitLayout, layout);
+        zfobj<ZFUIOnScreenKeyboardAutoFitLayout> layout;
         container->childAdd(layout)->c_sizeFill();
         this->prepareSettingButton(window, layout);
 
         layout->viewBackgroundColor(ZFUIColorGreen());
         for(zfindex i = 0; i < 3; ++i) {
-            zfblockedAlloc(ZFUITextEdit, view);
+            zfobj<ZFUITextEdit> view;
             layout->childAdd(view)->c_widthFill()->c_margin(10);
             view->viewBackgroundColor(ZFUIColorRandom());
         }
@@ -36,7 +36,7 @@ private:
             ZF_IN ZFUIWindow *window
             , ZF_IN ZFUIOnScreenKeyboardAutoFitLayout *layout
             ) {
-        zfblockedAlloc(ZFArray, settings);
+        zfobj<ZFArray> settings;
 
         ZFUIKit_test_prepareSettingForBoolProperty(settings, layout, ZFPropertyAccess(ZFUIOnScreenKeyboardAutoFitLayout, autoFitEnable));
         ZFUIKit_test_prepareSettingForBoolProperty(settings, layout, ZFPropertyAccess(ZFUIOnScreenKeyboardAutoFitLayout, autoFitFocusedViewToVisible));
