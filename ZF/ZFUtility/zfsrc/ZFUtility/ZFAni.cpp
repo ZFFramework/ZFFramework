@@ -90,7 +90,7 @@ public:
         _to = to;
         return this->_setup();
     }
-    zfbool checkSetup(
+    zfbool checkSetupGeneric(
             ZF_IN ZFObject *aniTarget
             , ZF_IN const zfchar *name
             , ZF_IN const zfchar *from
@@ -236,8 +236,8 @@ ZFOBJECT_REGISTER(ZFAniForCustomAni)
 
 ZFOBJECT_REGISTER(ZFAniForObject)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, zfstring, name) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, ZFObject *, fromValue) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, ZFObject *, toValue) {d->needUpdate = true;}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, ZFAny, fromValue) {d->needUpdate = true;}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, ZFAny, toValue) {d->needUpdate = true;}
 void ZFAniForObject::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
     zfsuper::aniImplTargetOnChange(aniTargetOld);
     d->needUpdate = zftrue;
@@ -272,7 +272,7 @@ void ZFAniForGeneric::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
 }
 zfbool ZFAniForGeneric::aniImplCheckValid(void) {
     if(!zfsuper::aniImplCheckValid()) {return zffalse;}
-    return d->checkSetup(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
+    return d->checkSetupGeneric(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
 }
 void ZFAniForGeneric::aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
     d->cleanup();

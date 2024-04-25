@@ -160,64 +160,6 @@ extern ZFLIB_ZFCore void _ZFP_MtdGIRetError(
         );
 
 template<typename T_ReturnType>
-zfclassNotPOD _ZFP_MtdGIARefA {
-public:
-    static zfbool R(T_ReturnType retTmp, ZFObject *invokerObject, zfauto &ret) {
-        zfauto invokerObjectHolder = invokerObject;
-        typedef typename zftTraits<T_ReturnType>::TrNoRef T_ReturnTypeTmp;
-        if(ZFTypeId<T_ReturnTypeTmp>::template Value<T_ReturnType>::zfvAccessAvailable(invokerObjectHolder)
-                && (&retTmp == &(ZFTypeId<T_ReturnTypeTmp>::template Value<T_ReturnType>::zfvAccess(invokerObjectHolder)))
-                ) {
-            ret = invokerObject;
-            return zftrue;
-        }
-        else {
-            return zffalse;
-        }
-    }
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef {public:
-    static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType &> {public:
-    static zfbool C(void) {return zftrue;}
-    static zfbool R(T_ReturnType &retTmp, ZFObject *invokerObject, zfauto &ret) {
-        return _ZFP_MtdGIARefA<T_ReturnType &>::R(retTmp, invokerObject, ret);
-    }
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType const &> {public:
-    static zfbool C(void) {return zftrue;}
-    static zfbool R(T_ReturnType const &retTmp, ZFObject *invokerObject, zfauto &ret) {
-        return _ZFP_MtdGIARefA<T_ReturnType const &>::R(retTmp, invokerObject, ret);
-    }
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType *> {public:
-    static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType *retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType * &> {public:
-    static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType * &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<T_ReturnType * const &> {public:
-    static zfbool C(void) {return zffalse;}
-    static zfbool R(T_ReturnType * const &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<const T_ReturnType *> {public:
-    static zfbool C(void) {return zffalse;}
-    static zfbool R(const T_ReturnType *retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<const T_ReturnType * &> {public:
-    static zfbool C(void) {return zffalse;}
-    static zfbool R(const T_ReturnType * &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
-};
-template<typename T_ReturnType> zfclassNotPOD _ZFP_MtdGIARef<const T_ReturnType * const &> {public:
-    static zfbool C(void) {return zffalse;}
-    static zfbool R(const T_ReturnType * const &retTmp, ZFObject *invokerObject, zfauto &ret) {return zffalse;}
-};
-
-template<typename T_ReturnType>
 zfclassNotPOD _ZFP_MtdGIA {
 public:
     typedef T_ReturnType (*Ivk)(
@@ -237,9 +179,6 @@ public:
         T_ReturnType retTmp = invoke(invokerMethod, invokerObject, paramList);
         zfCoreMutexLocker();
         typedef typename zftTraits<T_ReturnType>::TrNoRef T_ReturnTypeTmp;
-        if(_ZFP_MtdGIARef<T_ReturnType>::C() && _ZFP_MtdGIARef<T_ReturnType>::R(retTmp, invokerObject, ret)) {
-            return zftrue;
-        }
         if(ZFTypeId<T_ReturnTypeTmp>::ValueStore(ret, retTmp)) {
             _ZFP_ZFTypeIdWrapperMarkConstCheck<T_ReturnType>::a(ret);
             return zftrue;

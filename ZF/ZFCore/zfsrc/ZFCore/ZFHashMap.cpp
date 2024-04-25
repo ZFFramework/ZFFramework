@@ -1,6 +1,5 @@
 #include "ZFHashMap.h"
 #include "ZFSTLWrapper/zfstlhashmap.h"
-#include "ZFSTLWrapper/zfstlvector.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -67,7 +66,7 @@ ZFMETHOD_DEFINE_1(ZFHashMap, zfbool, isContain
     return (pKey != zfnull && d->data.find(pKey) != d->data.end());
 }
 
-ZFMETHOD_DEFINE_1(ZFHashMap, ZFObject *, get
+ZFMETHOD_DEFINE_1(ZFHashMap, ZFAny, get
         , ZFMP_IN(ZFObject *, pKey)
         ) {
     if(pKey != zfnull) {
@@ -80,7 +79,7 @@ ZFMETHOD_DEFINE_1(ZFHashMap, ZFObject *, get
 }
 
 ZFMETHOD_DEFINE_1(ZFHashMap, void, allKeyT
-        , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
+        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
         ) {
     if(!this->isEmpty()) {
         ret.capacity(ret.count() + this->count());
@@ -89,14 +88,14 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, allKeyT
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArray<ZFObject *>, allKey) {
-    ZFCoreArray<ZFObject *> ret;
+ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArray<zfauto>, allKey) {
+    ZFCoreArray<zfauto> ret;
     this->allKeyT(ret);
     return ret;
 }
 
 ZFMETHOD_DEFINE_1(ZFHashMap, void, allValueT
-        , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
+        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
         ) {
     if(!this->isEmpty()) {
         ret.capacity(ret.count() + this->count());
@@ -105,8 +104,8 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, allValueT
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArray<ZFObject *>, allValue) {
-    ZFCoreArray<ZFObject *> ret;
+ZFMETHOD_DEFINE_0(ZFHashMap, ZFCoreArray<zfauto>, allValue) {
+    ZFCoreArray<zfauto> ret;
     this->allValueT(ret);
     return ret;
 }
@@ -250,12 +249,12 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, iterNext
     d->data.iterNext(it);
 }
 
-ZFMETHOD_DEFINE_1(ZFHashMap, ZFObject *, iterKey
+ZFMETHOD_DEFINE_1(ZFHashMap, ZFAny, iterKey
         , ZFMP_IN(const zfiterator &, it)
         ) {
     return d->data.iterKey(it);
 }
-ZFMETHOD_DEFINE_1(ZFHashMap, ZFObject *, iterValue
+ZFMETHOD_DEFINE_1(ZFHashMap, ZFAny, iterValue
         , ZFMP_IN(const zfiterator &, it)
         ) {
     return d->data.iterValue(it);

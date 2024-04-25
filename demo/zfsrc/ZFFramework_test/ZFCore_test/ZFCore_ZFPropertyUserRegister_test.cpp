@@ -46,7 +46,7 @@ protected:
             this->testCaseOutput("try modify and serialize a statically registered property, result");
 
             obj->classData()->propertyForName("valueStatic")->setterMethod()
-                ->execute<void, v_zfstring * const &>(obj, zfobj<v_zfstring>("value"));
+                ->execute<void, v_zfstring *>(obj, zfobj<v_zfstring>("value"));
             ZFObjectToXml(ZFOutputDefault(), obj);
         }
 

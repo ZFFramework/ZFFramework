@@ -119,6 +119,11 @@ public:
     inline operator T_ZFObject * (void) const {
         return ZFCastZFObject(T_ZFObject *, this->toObject());
     }
+
+public:
+    static const ZFClass *ClassData(void) {
+        return ZFObject::ClassData();
+    }
     /** @endcond */
 
 public:
@@ -183,13 +188,16 @@ protected:
 };
 ZFOUTPUT_TYPE(zfweak, {
     if(v) {
-        v.get()->objectInfoT(s);
+        v.toObject()->objectInfoT(s);
     }
     else {
         s += ZFTOKEN_zfnull;
     }
 })
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfweak, zfweak)
+ZFCOMPARER_DEFAULT_DECLARE(zfweak, zfweak, {
+        return ZFObjectCompare(v0.toObject(), v1.toObject());
+    })
 
 // ============================================================
 /**
@@ -235,11 +243,16 @@ public:
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
         return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
     }
+
+public:
+    static const ZFClass *ClassData(void) {
+        return T_ZFObjectBase::ClassData();
+    }
     /** @endcond */
 };
 ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfweakT<T_ZFObject>, {
     if(v) {
-        v.get()->objectInfoT(s);
+        v.toObject()->objectInfoT(s);
     }
     else {
         s += ZFTOKEN_zfnull;

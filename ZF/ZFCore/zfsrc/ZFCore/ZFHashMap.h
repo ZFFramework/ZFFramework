@@ -38,7 +38,7 @@ public:
     /**
      * @brief get element by key or null if no such key
      */
-    ZFMETHOD_DECLARE_1(ZFObject *, get
+    ZFMETHOD_DECLARE_1(ZFAny, get
             , ZFMP_IN(ZFObject *, pKey)
             )
 
@@ -46,19 +46,19 @@ public:
      * @brief get a copy of all key
      */
     ZFMETHOD_DECLARE_1(void, allKeyT
-            , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
+            , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
             )
     /** @brief see #allKey */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFObject *>, allKey)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfauto>, allKey)
 
     /**
      * @brief get a copy of all value
      */
     ZFMETHOD_DECLARE_1(void, allValueT
-            , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, ret)
+            , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
             )
     /** @brief see #allValue */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFObject *>, allValue)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfauto>, allValue)
 
 public:
     /**
@@ -174,12 +174,12 @@ public:
             )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFObject *, iterKey
+    ZFMETHOD_DECLARE_1(ZFAny, iterKey
             , ZFMP_IN(const zfiterator &, it)
             )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFObject *, iterValue
+    ZFMETHOD_DECLARE_1(ZFAny, iterValue
             , ZFMP_IN(const zfiterator &, it)
             )
 

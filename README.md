@@ -1,4 +1,20 @@
 
+<!-- vim-markdown-toc GFM -->
+
+* [Introduction](#introduction)
+* [Quick overview](#quick-overview)
+    * [cpp hello world](#cpp-hello-world)
+    * [lua hello world](#lua-hello-world)
+    * [powerful dynamic register](#powerful-dynamic-register)
+    * [powerful abstract IO](#powerful-abstract-io)
+* [Getting started](#getting-started)
+* [Detailed](#detailed)
+    * [Requirement](#requirement)
+    * [Main features](#main-features)
+    * [License](#license)
+
+<!-- vim-markdown-toc -->
+
 # Introduction
 
 welcome to ZFFramework, a cross-platform and powerful application framework in C++
@@ -22,8 +38,7 @@ Homepage:
     [![Qt MacOS](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_macos.yml)
     [![Qt Windows](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml/badge.svg)](https://github.com/ZFFramework/ZFFramework/actions/workflows/qt_windows.yml)
 
-* NOTE: this repo would keep clean (remove unnecessary history) and update frequently,
-    if you want stable or history version, please refer to [ZFFrameworkDist](https://github.com/ZFFrameworkDist/ZFFramework)
+* history version: [ZFFrameworkDist](https://github.com/ZFFrameworkDist/ZFFramework)
 
 
 # Quick overview

@@ -448,7 +448,7 @@ void ZFObserver::objectInfoT(ZF_OUT zfstring &ret) const {
     }
 }
 
-ZFObject *ZFObserver::observerOwner(void) const {
+ZFAny ZFObserver::observerOwner(void) const {
     return d->observerOwner;
 }
 void ZFObserver::_ZFP_ZFObserver_observerOwner(ZF_IN ZFObject *obj) {

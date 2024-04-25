@@ -210,7 +210,7 @@ public:
             , ZF_IN ZFObject *tag
             );
     /** @brief see #callbackTag */
-    zffinal ZFObject *callbackTag(ZF_IN const zfchar *key) const;
+    zffinal ZFAny callbackTag(ZF_IN const zfchar *key) const;
     /** @brief see #callbackTag */
     template<typename T_ZFObject>
     T_ZFObject callbackTag(ZF_IN const zfchar *key) const {
@@ -219,7 +219,7 @@ public:
     /** @brief see #callbackTag */
     zffinal void callbackTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
-            , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+            , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
             ) const;
     /**
      * @brief remove tag, same as set tag to null
@@ -257,7 +257,7 @@ public:
      * @brief get the owner object,
      *   valid only if type is class member method
      */
-    zffinal ZFObject *callbackOwnerObject(void) const;
+    zffinal ZFAny callbackOwnerObject(void) const;
 
     /**
      * @brief get the method or null if not declared by ZFMethod
@@ -356,7 +356,7 @@ public:
      *
      * typically this is used for #ZFArgs::userData
      */
-    zffinal ZFObject *userData(void) const;
+    zffinal ZFAny userData(void) const;
     /** @brief see #userData */
     zffinal void userData(ZF_IN ZFObject *userData);
 

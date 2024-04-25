@@ -87,5 +87,9 @@ void zfauto::zfunsafe_assign(ZF_IN zfauto const &obj) {
     }
 }
 
+const ZFClass *zfauto::ClassData(void) {
+    return ZFObject::ClassData();
+}
+
 ZF_NAMESPACE_GLOBAL_END
 

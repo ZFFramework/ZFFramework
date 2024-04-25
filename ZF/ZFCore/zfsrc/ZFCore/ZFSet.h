@@ -83,7 +83,7 @@ public:
             )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFObject *, iterValue
+    ZFMETHOD_DECLARE_1(ZFAny, iterValue
             , ZFMP_IN(const zfiterator &, it)
             )
 

@@ -39,7 +39,11 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *   which would automatically generate setter and getter for you\n
  *   here's a list of what they'll generate
  *   (assume property's type is Type and property's name is yourPropName):
- *   -  ZFPROPERTY_RETAIN / ZFPROPERTY_ASSIGN:
+ *   -  ZFPROPERTY_RETAIN:
+ *     -  public:\n
+ *       virtual void yourPropName(Type propertyValue); // (reflectable)\n
+ *       virtual Type yourPropName(void); // (reflectable)
+ *   -  ZFPROPERTY_ASSIGN:
  *     -  public:\n
  *       virtual void yourPropName(Type const &propertyValue); // (reflectable)\n
  *       virtual Type const &yourPropName(void); // (reflectable)
@@ -111,7 +115,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
 #define ZFPROPERTY_RETAIN_DETAIL( \
     Type, Name, InitValueOrEmpty, \
     SetterAccessType, GetterAccessType) \
-        _ZFP_ZFPROPERTY_GETTER(GetterAccessType, Type, Name) \
+        _ZFP_ZFPROPERTY_GETTER_RETAIN(GetterAccessType, Type, Name) \
         /** @brief see @ref Name */ \
         _ZFP_ZFPROPERTY_SETTER_RETAIN(SetterAccessType, Type, Name) \
         _ZFP_ZFPROPERTY_DECLARE_RETAIN(Type, zftTraits<Type>::TrType::ClassData()->classNameFull(), Name, \
@@ -135,7 +139,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
 #define ZFPROPERTY_ASSIGN_DETAIL( \
     Type, Name, InitValueOrEmpty, \
     SetterAccessType, GetterAccessType) \
-        _ZFP_ZFPROPERTY_GETTER(GetterAccessType, Type, Name) \
+        _ZFP_ZFPROPERTY_GETTER_ASSIGN(GetterAccessType, Type, Name) \
         /** @brief see @ref Name */ \
         _ZFP_ZFPROPERTY_SETTER_ASSIGN(SetterAccessType, Type, Name) \
         _ZFP_ZFPROPERTY_DECLARE_ASSIGN(Type, ZFTypeId<zftTraits<Type>::TrNoRef>::TypeId(), Name, \
@@ -336,7 +340,7 @@ public:
                     , ZFM_TOSTRING(Type) \
                     , ZFTypeId_noneOrType \
                     , ZFMethodAccessDetail_1(zfself, Name \
-                        , ZFMP_IN(Type const &, propertyValue) \
+                        , ZFMP_IN(Type, propertyValue) \
                         ) \
                     , ZFMethodAccessDetail_0(zfself, Name) \
                     , zfnull \
@@ -589,7 +593,7 @@ public:
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, S \
                 , void, Name \
-                , _ZFP_MtdP_EXPAND(ZFMP_IN(Type const &, propertyValue)) \
+                , _ZFP_MtdP_EXPAND(ZFMP_IN(Type, propertyValue)) \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
@@ -643,12 +647,31 @@ public:
             zfCoreMutexUnlock(); \
         } \
     public:
-#define _ZFP_ZFPROPERTY_GETTER(AccessType, Type, Name) \
+#define _ZFP_ZFPROPERTY_GETTER_RETAIN(AccessType, Type, Name) \
     AccessType: \
         _ZFP_ZFMETHOD_INLINE( \
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, G \
-                , Type const &, Name \
+                , Type, Name \
+                , _ZFP_ZFMP_DUMMY() \
+                , _ZFP_ZFMP_DUMMY() \
+                , _ZFP_ZFMP_DUMMY() \
+                , _ZFP_ZFMP_DUMMY() \
+                , _ZFP_ZFMP_DUMMY() \
+                , _ZFP_ZFMP_DUMMY() \
+                , _ZFP_ZFMP_DUMMY() \
+                , _ZFP_ZFMP_DUMMY() \
+                ) { \
+            zfCoreMutexLocker(); \
+            return Name##_PropV._ZFP_init(this->toObject(), zftrue); \
+        } \
+    public:
+#define _ZFP_ZFPROPERTY_GETTER_ASSIGN(AccessType, Type, Name) \
+    AccessType: \
+        _ZFP_ZFMETHOD_INLINE( \
+                notAutoRegister \
+                , AccessType, ZFMethodTypeVirtual, G \
+                , Type, Name \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \

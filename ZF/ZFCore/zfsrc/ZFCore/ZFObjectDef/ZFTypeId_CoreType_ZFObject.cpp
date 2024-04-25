@@ -319,7 +319,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFObserver, void, observerNotifyWith
         , ZFMP_IN_OPT(ZFObject *, param0, zfnull)
         , ZFMP_IN_OPT(ZFObject *, param1, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserver, ZFObject *, observerOwner)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFObserver, ZFAny, observerOwner)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFilterForZFClass, ZFFilterForZFClass)
@@ -423,7 +423,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForZFObject, void, filterRem
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForZFObject, void, filterRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFilterForZFObject, zfindex, filterCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForZFObject, ZFObject *, filterElementAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForZFObject, ZFAny, filterElementAt
         , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFilterForZFObject, ZFFilterType, filterTypeAt
@@ -441,7 +441,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFMethodDynamicRegisterParam, ZFMethodDynamicRegiste
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, void, methodDynamicRegisterUserData
         , ZFMP_IN(ZFObject *, methodDynamicRegisterUserData)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, ZFObject *, methodDynamicRegisterUserData)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethodDynamicRegisterParam, ZFAny, methodDynamicRegisterUserData)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethodDynamicRegisterParam, void, methodOwnerClass
         , ZFMP_IN(const ZFClass *, methodOwnerClass)
         )
@@ -518,7 +518,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfchar *, methodParamTyp
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, const zfchar *, methodParamNameAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, ZFObject *, methodParamDefaultValueAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMP, ZFAny, methodParamDefaultValueAt
         , ZFMP_IN(zfindex, index)
         )
 
@@ -528,7 +528,7 @@ ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPropertyDynamicRegisterParam, ZFPropertyDynamicReg
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void, propertyDynamicRegisterUserData
         , ZFMP_IN(ZFObject *, propertyDynamicRegisterUserData)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFObject *, propertyDynamicRegisterUserData)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFPropertyDynamicRegisterParam, ZFAny, propertyDynamicRegisterUserData)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFPropertyDynamicRegisterParam, void, propertyOwnerClass
         , ZFMP_IN(const ZFClass *, propertyOwnerClass)
         )
@@ -739,12 +739,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFSerializableData, void, serializab
         , ZFMP_IN(const zfchar *, key)
         , ZFMP_IN(ZFObject *, tag)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFSerializableData, ZFObject *, serializableDataTag
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFSerializableData, ZFAny, serializableDataTag
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFSerializableData, void, serializableDataTagGetAllKeyValue
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
-        , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, allValue)
+        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFSerializableData, void, serializableDataTagRemove
         , ZFMP_IN(const zfchar *, key)

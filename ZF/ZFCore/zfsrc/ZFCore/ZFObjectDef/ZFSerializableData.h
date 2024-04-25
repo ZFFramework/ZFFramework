@@ -199,7 +199,7 @@ public:
     /**
      * @brief see #serializableDataTag
      */
-    zffinal ZFObject *serializableDataTag(ZF_IN const zfchar *key) const;
+    zffinal ZFAny serializableDataTag(ZF_IN const zfchar *key) const;
     /** @brief see #serializableDataTag */
     template<typename T_ZFObject>
     T_ZFObject serializableDataTag(ZF_IN const zfchar *key) const {
@@ -208,7 +208,7 @@ public:
     /** @brief see #serializableDataTag */
     zffinal void serializableDataTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
-            , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+            , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
             ) const;
     /**
      * @brief remove tag, same as set tag to null

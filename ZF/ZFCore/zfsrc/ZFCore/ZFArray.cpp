@@ -43,7 +43,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, isContain
         ) {
     return (this->find(obj, comparer) != zfindexMax());
 }
-ZFMETHOD_DEFINE_1(ZFArray, ZFObject *, get
+ZFMETHOD_DEFINE_1(ZFArray, ZFAny, get
         , ZFMP_IN(zfindex, index)
         ) {
     if(index >= d->data.size()) {
@@ -52,13 +52,13 @@ ZFMETHOD_DEFINE_1(ZFArray, ZFObject *, get
     }
     return d->data[index];
 }
-ZFMETHOD_DEFINE_0(ZFArray, ZFObject *, getFirst) {
+ZFMETHOD_DEFINE_0(ZFArray, ZFAny, getFirst) {
     if(d->data.empty()) {
         return zfnull;
     }
     return d->data[0];
 }
-ZFMETHOD_DEFINE_0(ZFArray, ZFObject *, getLast) {
+ZFMETHOD_DEFINE_0(ZFArray, ZFAny, getLast) {
     if(d->data.empty()) {
         return zfnull;
     }
@@ -451,7 +451,7 @@ ZFMETHOD_DEFINE_1(ZFArray, void, iterNext
     }
 }
 
-ZFMETHOD_DEFINE_1(ZFArray, ZFObject *, iterValue
+ZFMETHOD_DEFINE_1(ZFArray, ZFAny, iterValue
         , ZFMP_IN(const zfiterator &, it)
         ) {
     zfindex *index = it.data<zfindex *>();

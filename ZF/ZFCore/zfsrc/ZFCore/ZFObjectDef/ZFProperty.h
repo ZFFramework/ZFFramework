@@ -63,7 +63,7 @@ public:
     /**
      * @brief see #ZFPropertyDynamicRegister
      */
-    inline ZFObject *propertyDynamicRegisterUserData(void) const {
+    inline ZFAny propertyDynamicRegisterUserData(void) const {
         return this->_ZFP_ZFProperty_propertyDynamicRegisterUserData;
     }
     /**

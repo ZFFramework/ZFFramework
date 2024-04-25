@@ -105,7 +105,7 @@ public:
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodDynamicRegisterParam &methodDynamicRegisterUserData(ZF_IN ZFObject *methodDynamicRegisterUserData);
     /** @brief see #ZFMethodDynamicRegister */
-    ZFObject *methodDynamicRegisterUserData(void) const;
+    ZFAny methodDynamicRegisterUserData(void) const;
 
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodDynamicRegisterParam &methodOwnerClass(ZF_IN const ZFClass *methodOwnerClass);
@@ -181,7 +181,7 @@ public:
     /** @brief see #ZFMethodDynamicRegister */
     ZFMethodParamDefaultValueCallback methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const;
     /** @brief see #ZFMethodDynamicRegister */
-    ZFObject *methodParamDefaultValueAt(ZF_IN zfindex index) const;
+    ZFAny methodParamDefaultValueAt(ZF_IN zfindex index) const;
 
 public:
     /** @brief see #objectInfo */
@@ -227,7 +227,7 @@ public:
     /** @brief util for #ZFDynamic::method */
     const zfchar *methodParamNameAt(ZF_IN zfindex index) const;
     /** @brief util for #ZFDynamic::method */
-    ZFObject *methodParamDefaultValueAt(ZF_IN zfindex index) const;
+    ZFAny methodParamDefaultValueAt(ZF_IN zfindex index) const;
 
 
 public:

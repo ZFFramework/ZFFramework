@@ -1,6 +1,5 @@
 #include "ZFObjectAutoPtr.h"
 #include "ZFObjectImpl.h"
-#include "zfsynchronize.h"
 #include "ZFDynamicInvoker.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
@@ -299,7 +298,7 @@ void ZFObject::objectTag(
         zfunsafe_zfRelease(obj);
     }
 }
-ZFObject *ZFObject::objectTag(ZF_IN const zfchar *key) {
+ZFAny ZFObject::objectTag(ZF_IN const zfchar *key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap.find(key);
@@ -311,7 +310,7 @@ ZFObject *ZFObject::objectTag(ZF_IN const zfchar *key) {
 }
 void ZFObject::objectTagGetAllKeyValue(
         ZF_IN_OUT ZFCoreArray<zfstring> &allKey
-        , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+        , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) {
     zfCoreMutexLocker();
     _ZFP_ZFObjectTagMapType &m = d->objectTagMap;
@@ -734,12 +733,12 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTag
         , ZFMP_IN(const zfchar *, key)
         , ZFMP_IN(ZFObject *, tag)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFObject *, objectTag
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFAny, objectTag
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTagGetAllKeyValue
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
-        , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, allValue)
+        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectTagRemove
         , ZFMP_IN(const zfchar *, key)

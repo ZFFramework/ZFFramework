@@ -310,7 +310,7 @@ public:
     /**
      * @brief store impl state for #ZFMethodUserRegister_0
      */
-    inline ZFObject *methodUserRegisterUserData(void) const {
+    inline ZFAny methodUserRegisterUserData(void) const {
         return this->_ZFP_ZFMethod_methodUserRegisterUserData;
     }
     /**
@@ -326,7 +326,7 @@ public:
     /**
      * @brief see #ZFMethodDynamicRegister
      */
-    inline ZFObject *methodDynamicRegisterUserData(void) const {
+    inline ZFAny methodDynamicRegisterUserData(void) const {
         return this->_ZFP_ZFMethod_methodDynamicRegisterUserData;
     }
     /**

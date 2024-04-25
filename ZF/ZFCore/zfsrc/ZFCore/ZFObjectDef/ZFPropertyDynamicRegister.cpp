@@ -50,7 +50,7 @@ ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyDynamicR
     d->propertyDynamicRegisterUserData = propertyDynamicRegisterUserData;
     return *this;
 }
-ZFObject *ZFPropertyDynamicRegisterParam::propertyDynamicRegisterUserData(void) const {
+ZFAny ZFPropertyDynamicRegisterParam::propertyDynamicRegisterUserData(void) const {
     return d->propertyDynamicRegisterUserData;
 }
 
@@ -220,7 +220,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFPropertyDynamicUnregister
         )
 
 ZFOBJECT_REGISTER(ZFPropertyInvokeData)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, ZFObject *, invokerObject)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, ZFAny, invokerObject)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, const ZFProperty *, invokerProperty)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, zfauto, propertyValue)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFPropertyInvokeData, zfauto, propertyValueOld)

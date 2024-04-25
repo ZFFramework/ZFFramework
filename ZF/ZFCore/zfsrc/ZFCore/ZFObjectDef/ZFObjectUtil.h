@@ -110,22 +110,12 @@ public:
 /** @endcond */
 
 // ============================================================
+ZFCOMPARER_DEFAULT_DECLARE(ZFAny, ZFAny, {
+        return ZFObjectCompare(v0.toObject(), v1.toObject());
+    })
 ZFCOMPARER_DEFAULT_DECLARE(zfauto, zfauto, {
         return ZFObjectCompare(v0.toObject(), v1.toObject());
     })
-
-/** @cond ZFPrivateDoc */
-template<typename T_ZFObject0, typename T_ZFObject1>
-zfclassNotPOD ZFComparerDefaultHolder<zfautoT<T_ZFObject0>, zfautoT<T_ZFObject1> > {
-public:
-    static ZFCompareResult comparer(
-            ZF_IN zfautoT<T_ZFObject0> const &v0
-            , ZF_IN zfautoT<T_ZFObject1> const &v1
-            ) {
-        return ZFObjectCompare(v0.toObject(), v1.toObject());
-    }
-};
-/** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectUtil_h_

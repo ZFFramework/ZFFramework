@@ -88,7 +88,7 @@ public:
     /**
      * @brief util to get #ZFCallbackTagKeyword_ioOwner
      */
-    virtual ZFObject *ioOwner(void) const {
+    virtual ZFAny ioOwner(void) const {
         return this->callbackTag(ZFCallbackTagKeyword_ioOwner);
     }
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFIOCallback, ZFCallback)

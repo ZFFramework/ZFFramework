@@ -262,7 +262,7 @@ void ZFSerializableData::serializableDataTag(
         }
     }
 }
-ZFObject *ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const {
+ZFAny ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const {
     if(key != zfnull) {
         _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
@@ -274,7 +274,7 @@ ZFObject *ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const
 }
 void ZFSerializableData::serializableDataTagGetAllKeyValue(
         ZF_IN_OUT ZFCoreArray<zfstring> &allKey
-        , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+        , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) const {
     _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
     allKey.capacity(allKey.count() + m.size());

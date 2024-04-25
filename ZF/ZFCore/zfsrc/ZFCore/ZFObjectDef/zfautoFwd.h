@@ -93,6 +93,9 @@ public:
     inline operator T_ZFObject * (void) const {
         return ZFCastZFObject(T_ZFObject *, this->toObject());
     }
+
+public:
+    static const ZFClass *ClassData(void);
     /** @endcond */
 
 public:
@@ -173,6 +176,9 @@ public:
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
         return zfauto::toObject();
     }
+
+public:
+    static const ZFClass *ClassData(void);
     /** @endcond */
 };
 

@@ -51,7 +51,7 @@ public:
      *
      * iter must be valid
      */
-    virtual ZFObject *iterValue(ZF_IN const zfiterator &it) zfpurevirtual;
+    virtual ZFAny iterValue(ZF_IN const zfiterator &it) zfpurevirtual;
 
 public:
     /**
@@ -95,7 +95,7 @@ public:
     /**
      * @brief get key value pair with iter, see #zfiterator
      */
-    virtual ZFObject *iterKey(ZF_IN const zfiterator &it) zfpurevirtual;
+    virtual ZFAny iterKey(ZF_IN const zfiterator &it) zfpurevirtual;
 
 public:
     /**

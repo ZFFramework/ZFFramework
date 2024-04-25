@@ -434,7 +434,7 @@ public:
     /**
      * @brief see #objectTag
      */
-    zffinal ZFObject *objectTag(ZF_IN const zfchar *key);
+    zffinal ZFAny objectTag(ZF_IN const zfchar *key);
     /**
      * @brief see #objectTag
      */
@@ -447,7 +447,7 @@ public:
      */
     zffinal void objectTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
-            , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+            , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
             );
     /**
      * @brief remove tag, same as set tag to null

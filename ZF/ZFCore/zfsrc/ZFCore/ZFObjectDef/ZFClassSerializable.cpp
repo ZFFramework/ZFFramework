@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFClassInstanceObserverAddParam, ZFClassInstanceObserverAddParam)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFListener, observer)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFObject *, owner)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFAny, owner)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, ZFLevel, observerLevel)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFClassInstanceObserverAddParam, zfbool , observeAllChildType)
 
@@ -169,12 +169,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFClass, void, classTag
         , ZFMP_IN(const zfchar *, key)
         , ZFMP_IN(ZFObject *, tag)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, ZFObject *, classTag
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, ZFAny, classTag
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFClass, void, classTagGetAllKeyValue
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
-        , ZFMP_IN_OUT(ZFCoreArray<ZFObject *> &, allValue)
+        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, classTagRemove
         , ZFMP_IN(const zfchar *, key)

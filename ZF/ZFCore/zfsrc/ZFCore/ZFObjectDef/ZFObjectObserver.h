@@ -208,7 +208,7 @@ public:
 
 public:
     /** @brief owner object of this observer holder, or null if none */
-    zffinal ZFObject *observerOwner(void) const;
+    zffinal ZFAny observerOwner(void) const;
     zffinal void _ZFP_ZFObserver_observerOwner(ZF_IN ZFObject *obj);
 
 private:

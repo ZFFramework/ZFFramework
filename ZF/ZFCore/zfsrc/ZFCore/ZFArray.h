@@ -40,19 +40,19 @@ public:
     /**
      * @brief return object at index, assert failure if out of range
      */
-    ZFMETHOD_DECLARE_1(ZFObject *, get
+    ZFMETHOD_DECLARE_1(ZFAny, get
             , ZFMP_IN(zfindex, index)
             )
 
     /**
      * @brief return first object or zfnull if empty
      */
-    ZFMETHOD_DECLARE_0(ZFObject *, getFirst)
+    ZFMETHOD_DECLARE_0(ZFAny, getFirst)
 
     /**
      * @brief return last object or zfnull if empty
      */
-    ZFMETHOD_DECLARE_0(ZFObject *, getLast)
+    ZFMETHOD_DECLARE_0(ZFAny, getLast)
 
     /**
      * @brief find element, compared by #ZFObject::objectCompare by default
@@ -238,7 +238,7 @@ public:
             )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFObject *, iterValue
+    ZFMETHOD_DECLARE_1(ZFAny, iterValue
             , ZFMP_IN(const zfiterator &, it)
             )
 

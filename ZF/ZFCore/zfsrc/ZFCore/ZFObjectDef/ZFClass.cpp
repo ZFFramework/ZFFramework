@@ -652,7 +652,7 @@ zfbool ZFClass::classIsTypeOf(ZF_IN const ZFClass *cls) const {
 zfbool ZFClass::classIsDynamicRegister(void) const {
     return d->classIsDynamicRegister;
 }
-ZFObject *ZFClass::classDynamicRegisterUserData(void) const {
+ZFAny ZFClass::classDynamicRegisterUserData(void) const {
     return d->classDynamicRegisterUserData;
 }
 
@@ -1169,7 +1169,7 @@ void ZFClass::classTag(
         zfunsafe_zfRelease(obj);
     }
 }
-ZFObject *ZFClass::classTag(ZF_IN const zfchar *key) const {
+ZFAny ZFClass::classTag(ZF_IN const zfchar *key) const {
     if(key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFClassTagMapType::iterator it = d->classTagMap.find(key);
@@ -1181,7 +1181,7 @@ ZFObject *ZFClass::classTag(ZF_IN const zfchar *key) const {
 }
 void ZFClass::classTagGetAllKeyValue(
         ZF_IN_OUT ZFCoreArray<zfstring> &allKey
-        , ZF_IN_OUT ZFCoreArray<ZFObject *> &allValue
+        , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) const {
     _ZFP_ZFClassTagMapType &m = d->classTagMap;
     allKey.capacity(allKey.count() + m.size());

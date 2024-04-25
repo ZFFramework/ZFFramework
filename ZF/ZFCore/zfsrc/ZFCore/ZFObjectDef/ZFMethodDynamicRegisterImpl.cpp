@@ -159,7 +159,7 @@ const ZFMethod *ZFMethodDynamicRegister(
             , zftrue
             , methodImplValid
                 ? zfobj<v_ZFListener>(param.methodImpl()).toObject()
-                : param.methodDynamicRegisterUserData()
+                : param.methodDynamicRegisterUserData().toObject()
             , zfnull
             , methodImplValid ? _ZFP_I_ZFMethodDynamicRegisterGI : param.methodGenericInvoker()
             , methodType

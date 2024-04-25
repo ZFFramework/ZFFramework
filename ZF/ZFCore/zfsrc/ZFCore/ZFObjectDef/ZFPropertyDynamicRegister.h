@@ -44,7 +44,7 @@ public:
     /** @brief see #ZFPropertyDynamicRegister */
     ZFPropertyDynamicRegisterParam &propertyDynamicRegisterUserData(ZF_IN ZFObject *propertyDynamicRegisterUserData);
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFObject *propertyDynamicRegisterUserData(void) const;
+    ZFAny propertyDynamicRegisterUserData(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
     ZFPropertyDynamicRegisterParam &propertyOwnerClass(ZF_IN const ZFClass *propertyOwnerClass);

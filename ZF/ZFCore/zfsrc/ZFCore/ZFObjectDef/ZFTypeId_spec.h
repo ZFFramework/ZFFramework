@@ -311,6 +311,15 @@ public:
 
 // ============================================================
 // zfautoT
+ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfautoT<T_ZFObject>, {
+    if(v) {
+        v.toObject()->objectInfoT(s);
+    }
+    else {
+        s += ZFTOKEN_zfnull;
+    }
+})
+
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObject>
 zfclassNotPOD ZFTypeId<zfautoT<T_ZFObject>, 0, 0> : zfextend ZFTypeInfo {

@@ -105,9 +105,9 @@ public:
     const ZFAniBuilder &aniStart(ZF_IN const ZFListener &onStopOrOnInvalidCallback) const;
 
     /** @brief get the aniTarget */
-    ZFObject *aniTarget(void) const;
+    ZFAny aniTarget(void) const;
     /** @brief change the aniTarget */
-    const ZFAniBuilder &aniTarget(ZF_IN ZFObject *aniTarget) const;
+    const ZFAniBuilder &aniTarget(ZF_IN ZFAny aniTarget) const;
     /** @brief get the impl animation */
     zfautoT<ZFAnimation> toAnimation(void) const;
 

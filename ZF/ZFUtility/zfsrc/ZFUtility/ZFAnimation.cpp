@@ -52,7 +52,7 @@ ZFMETHOD_DEFINE_0(ZFAnimation, zftimet, aniDurationFixed) {
 }
 
 ZFMETHOD_DEFINE_1(ZFAnimation, void, aniTarget
-        , ZFMP_IN(ZFObject *, aniTarget)
+        , ZFMP_IN(ZFAny, aniTarget)
         ) {
     zfCoreAssertWithMessage(!d->aniRunning, "change animation's target while animation is running");
     ZFObjectHolder *aniTargetHolderTmp = d->aniTargetHolder;
@@ -61,7 +61,7 @@ ZFMETHOD_DEFINE_1(ZFAnimation, void, aniTarget
     this->aniImplTargetOnChange(aniTargetHolderTmp ? aniTargetHolderTmp->objectHolded().toObject() : zfnull);
     zfRetainChange(d->aniTargetHolder, aniTarget ? aniTarget->objectHolder() : zfnull);
 }
-ZFMETHOD_DEFINE_0(ZFAnimation, ZFObject *, aniTarget) {
+ZFMETHOD_DEFINE_0(ZFAnimation, ZFAny, aniTarget) {
     return d->aniTargetHolder ? d->aniTargetHolder->objectHolded().toObject() : zfnull;
 }
 

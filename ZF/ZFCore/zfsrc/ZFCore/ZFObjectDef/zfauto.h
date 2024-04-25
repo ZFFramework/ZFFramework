@@ -60,6 +60,11 @@ template<typename T_ZFObjectBase>
 T_ZFObjectBase *zfautoT<T_ZFObjectBase>::operator -> (void) const {
     return ZFCastZFObjectUnchecked(T_ZFObjectBase *, this->toObject());
 }
+
+template<typename T_ZFObjectBase>
+const ZFClass *zfautoT<T_ZFObjectBase>::ClassData(void) {
+    return T_ZFObjectBase::ClassData();
+}
 /** @endcond */
 
 // ============================================================
