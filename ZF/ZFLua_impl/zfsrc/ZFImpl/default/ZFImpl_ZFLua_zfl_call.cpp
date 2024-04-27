@@ -82,7 +82,7 @@ static int _ZFP_ZFImpl_ZFLua_zfl_call(ZF_IN lua_State *L) {
     }
 
     zfauto ret;
-    if(ZFDI_invoke(ret, zfnull, obj, name, (zfindex)paramCount, paramList)) {
+    if(ZFDI_invoke(ret, zfnull, obj, name, (zfindex)paramCount, paramList, zftrue)) {
         ZFImpl_ZFLua_luaPush(L, ret);
         return 1;
     }

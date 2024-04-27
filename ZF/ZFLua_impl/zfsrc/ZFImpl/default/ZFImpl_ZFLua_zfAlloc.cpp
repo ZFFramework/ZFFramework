@@ -30,7 +30,7 @@ zfbool ZFImpl_ZFLua_zfAlloc(
             return zffalse;
         }
     }
-    return ZFDI_alloc(ret, errorHint, cls, (zfindex)paramCount, paramList);
+    return ZFDI_alloc(ret, errorHint, cls, (zfindex)paramCount, paramList, zftrue);
 }
 
 // ============================================================
@@ -74,7 +74,7 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
     }
 
     zfauto ret;
-    ZFDI_alloc(ret, zfnull, cls, (zfindex)paramCount, paramList);
+    ZFDI_alloc(ret, zfnull, cls, (zfindex)paramCount, paramList, zftrue);
     ZFImpl_ZFLua_luaPush(L, ret);
     return 1;
 }

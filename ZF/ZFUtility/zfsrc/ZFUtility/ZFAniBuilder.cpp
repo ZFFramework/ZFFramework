@@ -61,23 +61,6 @@ const ZFAniBuilder &ZFAniBuilder::ani(
     }
     return *this;
 }
-const ZFAniBuilder &ZFAniBuilder::ani(
-        ZF_IN const zfchar *name
-        , ZF_IN const zfchar *from
-        , ZF_IN const zfchar *to
-        , ZF_IN_OPT zftimet aniDuration /* = 0 */
-        , ZF_IN_OPT ZFTimeLineCurve *aniCurve /* = zfnull */
-        ) const {
-    zfautoT<ZFAnimationTimeLine> ani = ZFAni(this->aniTarget(), name, from, to);
-    if(ani != zfnull) {
-        ani->aniInterval(this->aniInterval());
-        d->aniStepPrepare();
-        d->aniStep->childAniAdd(ani);
-        ani->aniDuration(aniDuration);
-        ani->aniCurve(aniCurve);
-    }
-    return *this;
-}
 
 const ZFAniBuilder &ZFAniBuilder::customAni(
         ZF_IN const ZFListener &customAniCallback
@@ -183,13 +166,6 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
     , ZFMP_IN(ZFObject *, aniTarget)
     )
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFAniBuilder, const ZFAniBuilder &, ani
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN(const zfchar *, from)
-        , ZFMP_IN(const zfchar *, to)
-        , ZFMP_IN_OPT(zftimet, aniDuration, 0)
-        , ZFMP_IN_OPT(ZFTimeLineCurve *, aniCurve, zfnull)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFAniBuilder, const ZFAniBuilder &, ani
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(ZFObject *, from)

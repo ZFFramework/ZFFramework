@@ -390,32 +390,6 @@ public:
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             );
 
-    /**
-     * @brief util method to perform #ZFDI_invoke,
-     *   do nothing if fail
-     */
-    virtual zfauto invokeGeneric(
-            ZF_IN const zfchar *methodName
-            , ZF_IN const zfchar *param0
-            , ZF_IN_OPT const zfchar *param1 = zfnull
-            , ZF_IN_OPT const zfchar *param2 = zfnull
-            , ZF_IN_OPT const zfchar *param3 = zfnull
-            , ZF_IN_OPT const zfchar *param4 = zfnull
-            , ZF_IN_OPT const zfchar *param5 = zfnull
-            , ZF_IN_OPT const zfchar *param6 = zfnull
-            , ZF_IN_OPT const zfchar *param7 = zfnull
-            );
-    /**
-     * @brief util method to perform #ZFDI_invoke,
-     *   do nothing if fail
-     */
-    virtual zfauto invokeGenericDetail(
-            ZF_IN const zfchar *methodName
-            , ZF_IN const ZFCoreArray<zfstring> &params
-            , ZF_OUT_OPT zfbool *success = zfnull
-            , ZF_OUT_OPT zfstring *errorHint = zfnull
-            );
-
 public:
     /**
      * @brief see #objectTag, true if this object has tag,

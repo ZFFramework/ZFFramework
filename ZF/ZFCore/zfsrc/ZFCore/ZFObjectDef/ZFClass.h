@@ -346,23 +346,6 @@ public:
             , ZF_OUT_OPT zfbool *success = zfnull
             , ZF_OUT_OPT zfstring *errorHint = zfnull
             ) const;
-    /** @brief see #newInstance */
-    zfauto newInstanceGeneric(
-            ZF_IN const zfchar *param0
-            , ZF_IN_OPT const zfchar *param1 = zfnull
-            , ZF_IN_OPT const zfchar *param2 = zfnull
-            , ZF_IN_OPT const zfchar *param3 = zfnull
-            , ZF_IN_OPT const zfchar *param4 = zfnull
-            , ZF_IN_OPT const zfchar *param5 = zfnull
-            , ZF_IN_OPT const zfchar *param6 = zfnull
-            , ZF_IN_OPT const zfchar *param7 = zfnull
-            ) const;
-    /** @brief see #newInstance */
-    zfauto newInstanceGenericDetail(
-            ZF_IN const ZFCoreArray<zfstring> &params
-            , ZF_OUT_OPT zfbool *success = zfnull
-            , ZF_OUT_OPT zfstring *errorHint = zfnull
-            ) const;
 
     /** @brief see #newInstance */
     void *newInstanceGenericBegin(void) const;

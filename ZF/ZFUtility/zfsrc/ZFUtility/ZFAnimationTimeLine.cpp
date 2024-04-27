@@ -56,6 +56,7 @@ public:
                 owner->d->builtinTimer->observerAdd(ZFTimer::EventTimerOnActivate(), builtinTimerOnActivate);
             }
             owner->d->builtinTimer->timerInterval(owner->aniInterval() > 0 ? owner->aniInterval() : ZFGlobalTimerIntervalDefault());
+            owner->d->builtinTimerStartTime = ZFTime::timestamp();
             owner->d->builtinTimer->timerStart();
         }
         _update(owner, 0);

@@ -19,23 +19,10 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAnimationTimeLine>, ZFAni
 ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN(const zfchar *, from)
-        , ZFMP_IN(const zfchar *, to)
-        ) {
-    zfobj<ZFAniForGeneric> ani;
-    ani->aniTarget(target);
-    ani->name(name);
-    ani->fromValue(from);
-    ani->toValue(to);
-    return ani;
-}
-ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine>, ZFAni
-        , ZFMP_IN(ZFObject *, target)
-        , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         ) {
-    zfobj<ZFAniForObject> ani;
+    zfobj<ZFAniForGeneric> ani;
     ani->aniTarget(target);
     ani->name(name);
     ani->fromValue(from);
@@ -60,7 +47,7 @@ public:
     , _aniTarget(zfnull)
     , _setterMethod(zfnull)
     , _getterMethod(zfnull)
-    , _from()
+    , _from(zfnull)
     , _to(zfnull)
     , _typeInfo(zfnull)
     {
@@ -86,60 +73,20 @@ public:
         if(!this->_prepare(aniTarget, name)) {
             return zffalse;
         }
-        _from = from;
-        _to = to;
-        return this->_setup();
-    }
-    zfbool checkSetupGeneric(
-            ZF_IN ZFObject *aniTarget
-            , ZF_IN const zfchar *name
-            , ZF_IN const zfchar *from
-            , ZF_IN const zfchar *to
-            ) {
-        if(!this->needUpdate) {
-            return zftrue;
-        }
-        if(!this->_prepare(aniTarget, name)) {
-            return zffalse;
-        }
         const zfchar *typeId = _getterMethod->methodReturnTypeId();
         const ZFClass *typeClass = ZFClass::classForName(typeId);
-        if(typeClass != zfnull) {
-            if(!typeClass->classIsTypeOf(ZFSerializable::ClassData())) {
-                return zffalse;
-            }
-            _from = typeClass->newInstance();
-            if(!zfstringIsEmpty(from)) {
-                if(!_from.to<ZFSerializable *>()->serializeFromString(from)) {
-                    return zffalse;
-                }
-            }
-            _to = typeClass->newInstance();
-            if(!zfstringIsEmpty(to)) {
-                if(!_to.to<ZFSerializable *>()->serializeFromString(to)) {
-                    return zffalse;
-                }
-            }
-        }
-        else {
-            const ZFTypeInfo *typeInfo = ZFTypeInfoForName(typeId);
+        if(typeClass == zfnull) {
+            const ZFTypeInfo *typeInfo = (typeClass == zfnull ? ZFTypeInfoForName(typeId) : zfnull);
             if(typeInfo == zfnull || typeInfo->typeIdClass() == zfnull || typeInfo->typeIdClass()->classIsAbstract()) {
                 return zffalse;
             }
-            _from = typeInfo->typeIdClass()->newInstance();
-            if(!zfstringIsEmpty(from)) {
-                if(!_from.to<ZFTypeIdWrapper *>()->wrappedValueFromString(from)) {
-                    return zffalse;
-                }
-            }
-            _to = typeInfo->typeIdClass()->newInstance();
-            if(!zfstringIsEmpty(to)) {
-                if(!_to.to<ZFTypeIdWrapper *>()->wrappedValueFromString(to)) {
-                    return zffalse;
-                }
-            }
+            typeClass = typeInfo->typeIdClass();
         }
-        return this->_setup();
+        return zftrue
+            && this->_convert(_from, from, typeClass)
+            && this->_convert(_to, to, typeClass)
+            && this->_setup()
+            ;
     }
     void update(ZF_IN zffloat progress) {
         if(_from == zfnull) {
@@ -202,6 +149,49 @@ private:
         _aniTarget = aniTarget;
         return (_getterMethod != zfnull);
     }
+    static zfbool _convert(
+            ZF_OUT zfauto &dst
+            , ZF_IN ZFObject *src
+            , ZF_IN const ZFClass *typeClass
+            ) {
+        if(src == zfnull
+                || src->classData() == ZFObject::ClassData()
+                || src->classData()->classIsTypeOf(typeClass)
+                ) {
+            dst = src;
+            return zftrue;
+        }
+        const zfchar *s = zfnull;
+        v_zfstring *tmp = ZFCastZFObject(v_zfstring *, src);
+        if(tmp != zfnull) {
+            s = tmp->zfv;
+        }
+        else {
+            ZFDI_Wrapper *tmp2 = ZFCastZFObject(ZFDI_Wrapper *, src);
+            if(tmp2 != zfnull) {
+                s = tmp2->zfv();
+            }
+        }
+        if(s == zfnull) {
+            return zffalse;
+        }
+        dst = typeClass->newInstance();
+        if(!zfstringIsEmpty(s)) {
+            if(typeClass->classIsTypeOf(ZFTypeIdWrapper::ClassData())) {
+                if(!dst.to<ZFTypeIdWrapper *>()->wrappedValueFromString(s)) {
+                    return zffalse;
+                }
+            }
+            else {
+                if(!typeClass->classIsTypeOf(ZFSerializable::ClassData())
+                        || !dst.to<ZFSerializable *>()->serializeFromString(s)
+                        ) {
+                    return zffalse;
+                }
+            }
+        }
+        return zftrue;
+    }
     zfbool _setup(void) {
         if(_from == zfnull && _to == zfnull) {
             return zffalse;
@@ -234,45 +224,17 @@ private:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAniForCustomAni)
 
-ZFOBJECT_REGISTER(ZFAniForObject)
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, zfstring, name) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, ZFAny, fromValue) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForObject, ZFAny, toValue) {d->needUpdate = true;}
-void ZFAniForObject::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
-    zfsuper::aniImplTargetOnChange(aniTargetOld);
-    d->needUpdate = zftrue;
-}
-zfbool ZFAniForObject::aniImplCheckValid(void) {
-    if(!zfsuper::aniImplCheckValid()) {return zffalse;}
-    return d->checkSetup(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
-}
-void ZFAniForObject::aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
-    d->cleanup();
-    zfsuper::aniOnStopOrInvalid(aniValid);
-}
-void ZFAniForObject::aniTimeLineOnUpdate(ZF_IN zffloat progress) {
-    d->update(progress);
-}
-void ZFAniForObject::objectOnInit(void) {
-    zfsuper::objectOnInit();
-    d = zfpoolNew(_ZFP_ZFAniForGenericPrivate);
-}
-void ZFAniForObject::objectOnDealloc(void) {
-    zfpoolDelete(d);
-    zfsuper::objectOnDealloc();
-}
-
 ZFOBJECT_REGISTER(ZFAniForGeneric)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, name) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, fromValue) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, toValue) {d->needUpdate = true;}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, ZFAny, fromValue) {d->needUpdate = true;}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, ZFAny, toValue) {d->needUpdate = true;}
 void ZFAniForGeneric::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
     zfsuper::aniImplTargetOnChange(aniTargetOld);
     d->needUpdate = zftrue;
 }
 zfbool ZFAniForGeneric::aniImplCheckValid(void) {
     if(!zfsuper::aniImplCheckValid()) {return zffalse;}
-    return d->checkSetupGeneric(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
+    return d->checkSetup(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
 }
 void ZFAniForGeneric::aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
     d->cleanup();

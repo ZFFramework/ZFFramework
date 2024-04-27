@@ -47,15 +47,8 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
  *   -  proper #ZFTypeIdWrapper for assign property,
  *     and the type of the property must be registered by
  *     #ZFTYPEID_PROGRESS_DEFINE
- *   -  string that can be serialized by #ZFSerializable::serializeFromString
+ *   -  v_zfstring or ZFDI_WrapperBase that can be serialized by #ZFSerializable::serializeFromString
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
-        , ZFMP_IN(ZFObject *, target)
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN(const zfchar *, from)
-        , ZFMP_IN(const zfchar *, to)
-        )
-/** @brief see #ZFAni */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
         , ZFMP_IN(ZFObject *, target)
         , ZFMP_IN(const zfchar *, name)
@@ -104,8 +97,8 @@ private:
 
 zfclassFwd _ZFP_ZFAniForGenericPrivate;
 /** @brief util for #ZFAni */
-zfclass ZFLIB_ZFUtility ZFAniForObject : zfextend ZFAnimationTimeLine {
-    ZFOBJECT_DECLARE(ZFAniForObject, ZFAnimationTimeLine)
+zfclass ZFLIB_ZFUtility ZFAniForGeneric : zfextend ZFAnimationTimeLine {
+    ZFOBJECT_DECLARE(ZFAniForGeneric, ZFAnimationTimeLine)
 public:
     /** @brief name of property to animate, see #ZFAni */
     ZFPROPERTY_ASSIGN(zfstring, name)
@@ -117,37 +110,6 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, name)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFAny, fromValue)
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFAny, toValue)
-protected:
-    zfoverride
-    virtual void aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld);
-    zfoverride
-    virtual zfbool aniImplCheckValid(void);
-    zfoverride
-    virtual void aniOnStopOrInvalid(ZF_IN zfbool aniValid);
-    zfoverride
-    virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress);
-    zfoverride
-    virtual void objectOnInit(void);
-    zfoverride
-    virtual void objectOnDealloc(void);
-private:
-    _ZFP_ZFAniForGenericPrivate *d;
-};
-
-/** @brief util for #ZFAni */
-zfclass ZFLIB_ZFUtility ZFAniForGeneric : zfextend ZFAnimationTimeLine {
-    ZFOBJECT_DECLARE(ZFAniForGeneric, ZFAnimationTimeLine)
-public:
-    /** @brief name of property to animate, see #ZFAni */
-    ZFPROPERTY_ASSIGN(zfstring, name)
-    /** @brief from value of ani, see #ZFAni */
-    ZFPROPERTY_ASSIGN(zfstring, fromValue)
-    /** @brief to value of ani, see #ZFAni */
-    ZFPROPERTY_ASSIGN(zfstring, toValue)
-
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, name)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, fromValue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, toValue)
 protected:
     zfoverride
     virtual void aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld);

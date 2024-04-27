@@ -105,24 +105,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFMethod, zfauto, methodInvokeDetail
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFMethod, zfauto, methodInvokeGeneric
-        , ZFMP_IN(ZFObject *, ownerObjOrNull)
-        , ZFMP_IN(const zfchar *, param0)
-        , ZFMP_IN_OPT(const zfchar *, param1, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param2, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param3, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param4, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param5, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param6, zfnull)
-        /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(const zfchar *, param7, zfnull)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFMethod, zfauto, methodInvokeGenericDetail
-        , ZFMP_IN(ZFObject *, ownerObjOrNull)
-        , ZFMP_IN(const ZFCoreArray<zfstring> &, params)
-        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
-        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
-        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, ZFMethodGenericInvoker, methodGenericInvokerOrig)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, void, methodGenericInvoker
         , ZFMP_IN(ZFMethodGenericInvoker, methodGenericInvoker)

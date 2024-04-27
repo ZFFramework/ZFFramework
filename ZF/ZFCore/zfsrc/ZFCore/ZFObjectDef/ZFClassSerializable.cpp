@@ -88,24 +88,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFClass, zfauto, newInstanceDetail
     , ZFMP_OUT_OPT(zfbool *, success, zfnull)
     , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
     )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, zfauto, newInstanceGeneric
-    , ZFMP_IN(const zfchar *, param0)
-    , ZFMP_IN_OPT(const zfchar *, param1, zfnull)
-    , ZFMP_IN_OPT(const zfchar *, param2, zfnull)
-    , ZFMP_IN_OPT(const zfchar *, param3, zfnull)
-    , ZFMP_IN_OPT(const zfchar *, param4, zfnull)
-    , ZFMP_IN_OPT(const zfchar *, param5, zfnull)
-    , ZFMP_IN_OPT(const zfchar *, param6, zfnull)
-    , ZFMP_IN_OPT(const zfchar *, param7, zfnull)
-    // ZFMETHOD_MAX_PARAM
-    // , ZFMP_OUT_OPT(zfbool *, success, zfnull)
-    // , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
-    )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFClass, zfauto, newInstanceGenericDetail
-    , ZFMP_IN(const ZFCoreArray<zfstring> &, params)
-    , ZFMP_OUT_OPT(zfbool *, success, zfnull)
-    , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
-    )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfindex, implementedInterfaceCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFClass *, implementedInterfaceAt
         , ZFMP_IN(zfindex, index)

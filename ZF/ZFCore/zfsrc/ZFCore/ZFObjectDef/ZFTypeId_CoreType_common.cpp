@@ -306,19 +306,9 @@ ZFTYPEID_PROGRESS_DEFINE(ZFIndexRange, ZFIndexRange, {
             ret.count = zfindexMax();
         }
         else {
-            zfindex end = zfindexMax();
-            if(from.count != zfindexMax()) {
-                end = zfmMin(end, from.start + from.count);
-            }
-            if(to.count != zfindexMax()) {
-                end = zfmMin(end, to.start + to.count);
-            }
-            zfindex fromCount = (from.count != zfindexMax() ? from.count : end - from.start);
-            zfindex toCount = (to.count != zfindexMax() ? to.count : end - to.start);
+            zfindex fromCount = (from.count != zfindexMax() ? from.count : to.count);
+            zfindex toCount = (to.count != zfindexMax() ? to.count : from.count);
             ret.count = (zfindex)(fromCount + (zfindex)((toCount - fromCount) * progress));
-            if(ret.start + ret.count > end) {
-                ret.count = end - ret.start;
-            }
         }
     }
 })

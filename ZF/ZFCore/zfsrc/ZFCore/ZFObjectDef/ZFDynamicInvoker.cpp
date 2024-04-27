@@ -214,6 +214,7 @@ static zfbool _ZFP_ZFDI_invoke(
         , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
         , ZF_IN_OPT zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN_OPT zfbool convStr = zffalse
         ) {
     if(methodList.isEmpty()) {
         if(errorHint != zfnull) {
@@ -245,7 +246,7 @@ static zfbool _ZFP_ZFDI_invoke(
             key += name;
             _ZFP_ZFDI_methodMapCache[key].addFrom(methodList);
         }
-        return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList);
+        return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList, convStr);
     }
 }
 zfbool ZFDI_invoke(
@@ -255,6 +256,7 @@ zfbool ZFDI_invoke(
         , ZF_IN const zfchar *name
         , ZF_IN_OPT zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
     _ZFP_ZFDI_errorPrepare();
     if(_ZFP_ZFDI_cacheEnable) {
@@ -269,7 +271,7 @@ zfbool ZFDI_invoke(
         if(it != _ZFP_ZFDI_methodMapCache.end()) {
             ZFCoreArray<const ZFMethod *> methodList = it->second;
             zfCoreMutexUnlock();
-            return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList)
+            return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList, convStr)
                 || _ZFP_ZFDI_errorOccurred();
         }
         else {
@@ -282,7 +284,7 @@ zfbool ZFDI_invoke(
     // obj->methodName()
     if(obj != zfnull) {
         obj->classData()->methodForNameGetAllT(methodList, name);
-        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList)
+        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
             || _ZFP_ZFDI_errorOccurred();
     }
 
@@ -291,7 +293,7 @@ zfbool ZFDI_invoke(
         // methodName()
         ZFMethodFuncForNameGetAllT(methodList, zfnull, name);
         if(!methodList.isEmpty()) {
-            return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList)
+            return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
                 || _ZFP_ZFDI_errorOccurred();
         }
 
@@ -299,12 +301,12 @@ zfbool ZFDI_invoke(
         // v_ClassName()
         const ZFClass *cls = ZFDI_classForName(name, zfnull);
         if(cls != zfnull) {
-            return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList)
+            return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
                 || _ZFP_ZFDI_errorOccurred();
         }
 
         // fail
-        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList)
+        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
             || _ZFP_ZFDI_errorOccurred();
     }
     else {
@@ -317,7 +319,7 @@ zfbool ZFDI_invoke(
             const ZFClass *cls = ZFDI_classForName(scopeTmp, zfnull);
             if(cls != zfnull) {
                 cls->methodForNameGetAllT(methodList, nameTmp);
-                return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList)
+                return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
                     || _ZFP_ZFDI_errorOccurred();
             }
         }
@@ -327,14 +329,14 @@ zfbool ZFDI_invoke(
         {
             const ZFClass *cls = ZFDI_classForName(name, zfnull);
             if(cls != zfnull) {
-                return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList)
+                return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
                     || _ZFP_ZFDI_errorOccurred();
             }
         }
 
         // NS.methodName()
         ZFMethodFuncForNameGetAllT(methodList, scopeTmp, nameTmp);
-        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList)
+        return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
             || _ZFP_ZFDI_errorOccurred();
     }
 }
@@ -345,6 +347,7 @@ zfbool ZFDI_invoke(
         , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
         , ZF_IN_OPT zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
     _ZFP_ZFDI_errorPrepare();
     if(methodList.isEmpty()) {
@@ -392,17 +395,31 @@ zfbool ZFDI_invoke(
 
             zfbool paramConvertSuccess = zftrue;
             for(zfindex iParam = 0; iParam < paramCount; ++iParam) {
+                const zfchar *s = zfnull;
                 ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
                 if(wrapper != zfnull) {
+                    s = wrapper->zfv();
+                }
+                else if(convStr) {
+                    v_zfstring *holder = ZFCastZFObject(v_zfstring *, paramList[iParam]);
+                    if(holder != zfnull
+                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
+                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())
+                            ) {
+                        s = holder->zfv;
+                    }
+                }
+                if(s != zfnull) {
                     zfauto paramTmp;
                     if(!ZFDI_objectFromString(
-                                paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), zfindexMax(), errorHintTmp)
+                                paramTmp, method->methodParamTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
                                 ) {
                         paramConvertSuccess = zffalse;
                         break;
                     }
                     paramBackup[iParam] = paramList[iParam];
                     paramList[iParam] = paramTmp;
+                    continue;
                 }
             }
             if(!paramConvertSuccess) {
@@ -449,6 +466,7 @@ zfbool ZFDI_alloc(
         , ZF_IN const ZFClass *cls
         , ZF_IN zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
+        , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
     _ZFP_ZFDI_errorPrepare();
     if(cls == zfnull) {
@@ -529,17 +547,31 @@ zfbool ZFDI_alloc(
 
             zfbool paramConvertSuccess = zftrue;
             for(zfindex iParam = 0; iParam < paramCount; ++iParam) {
+                const zfchar *s = zfnull;
                 ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
                 if(wrapper != zfnull) {
+                    s = wrapper->zfv();
+                }
+                else if(convStr) {
+                    v_zfstring *holder = ZFCastZFObject(v_zfstring *, paramList[iParam]);
+                    if(holder != zfnull
+                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
+                            && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())
+                            ) {
+                        s = holder->zfv;
+                    }
+                }
+                if(s != zfnull) {
                     zfauto paramTmp;
                     if(!ZFDI_objectFromString(
-                                paramTmp, method->methodParamTypeIdAt(iParam), wrapper->zfv(), zfindexMax(), errorHintTmp)
+                                paramTmp, method->methodParamTypeIdAt(iParam), s, zfindexMax(), errorHintTmp)
                                 ) {
                         paramConvertSuccess = zffalse;
                         break;
                     }
                     paramBackup[iParam] = paramList[iParam];
                     paramList[iParam] = paramTmp;
+                    continue;
                 }
             }
             if(!paramConvertSuccess) {
@@ -647,7 +679,7 @@ zfauto ZFInvoke(
         ) {
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfauto ret;
-    if(ZFDI_invoke(ret, zfnull, zfnull, name, 0, paramList)) {
+    if(ZFDI_invoke(ret, zfnull, zfnull, name, 0, paramList, zftrue)) {
         return ret;
     }
     else {
@@ -680,7 +712,7 @@ zfauto ZFInvoke(
     } while(zffalse);
     zfCoreMutexUnlock();
     zfauto ret;
-    if(ZFDI_invoke(ret, zfnull, zfnull, name, paramCount, paramList)) {
+    if(ZFDI_invoke(ret, zfnull, zfnull, name, paramCount, paramList, zftrue)) {
         return ret;
     }
     else {
@@ -704,67 +736,7 @@ zfauto ZFInvokeDetail(
     }
     zfCoreMutexUnlock();
     zfauto ret;
-    if(ZFDI_invoke(ret, errorHint, zfnull, name, paramCount, paramList)) {
-        if(success != zfnull) {*success = zftrue;}
-        return ret;
-    }
-    else {
-        if(success != zfnull) {*success = zffalse;}
-        return zfnull;
-    }
-}
-
-zfauto ZFInvokeGeneric(
-        ZF_IN const zfchar *name
-        , ZF_IN const zfchar *param0
-        , ZF_IN_OPT const zfchar *param1 /* = zfnull */
-        , ZF_IN_OPT const zfchar *param2 /* = zfnull */
-        , ZF_IN_OPT const zfchar *param3 /* = zfnull */
-        , ZF_IN_OPT const zfchar *param4 /* = zfnull */
-        , ZF_IN_OPT const zfchar *param5 /* = zfnull */
-        , ZF_IN_OPT const zfchar *param6 /* = zfnull */
-        , ZF_IN_OPT const zfchar *param7 /* = zfnull */
-        ) {
-    zfCoreMutexLock();
-    zfauto paramList[ZFMETHOD_MAX_PARAM];
-    zfindex paramCount = ZFMETHOD_MAX_PARAM;
-    do {
-        if(param0 == zfnull) {paramCount = 0; break;} else {paramList[0].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param0));}
-        if(param1 == zfnull) {paramCount = 1; break;} else {paramList[1].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param1));}
-        if(param2 == zfnull) {paramCount = 2; break;} else {paramList[2].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param2));}
-        if(param3 == zfnull) {paramCount = 3; break;} else {paramList[3].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param3));}
-        if(param4 == zfnull) {paramCount = 4; break;} else {paramList[4].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param4));}
-        if(param5 == zfnull) {paramCount = 5; break;} else {paramList[5].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param5));}
-        if(param6 == zfnull) {paramCount = 6; break;} else {paramList[6].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param6));}
-        if(param7 == zfnull) {paramCount = 7; break;} else {paramList[7].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, param7));}
-    } while(zffalse);
-    zfCoreMutexUnlock();
-    zfauto ret;
-    if(ZFDI_invoke(ret, zfnull, zfnull, name, paramCount, paramList)) {
-        return ret;
-    }
-    else {
-        return zfnull;
-    }
-}
-zfauto ZFInvokeGenericDetail(
-        ZF_IN const zfchar *name
-        , ZF_IN const ZFCoreArray<zfstring> &params
-        , ZF_OUT_OPT zfbool *success /* = zfnull */
-        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
-        ) {
-    zfCoreMutexLock();
-    zfauto paramList[ZFMETHOD_MAX_PARAM];
-    zfindex paramCount = zfmMin((zfindex)ZFMETHOD_MAX_PARAM, params.count());
-    for(zfindex i = 0; i < paramCount; ++i) {
-        paramList[i].zfunsafe_assign(zfunsafe_zflineAlloc(ZFDI_WrapperRaw, params[i]));
-    }
-    for(zfindex i = paramCount; i < ZFMETHOD_MAX_PARAM; ++i) {
-        paramList[i].zfunsafe_assign(ZFMethodGenericInvokerDefaultParam());
-    }
-    zfCoreMutexUnlock();
-    zfauto ret;
-    if(ZFDI_invoke(ret, errorHint, zfnull, name, paramCount, paramList)) {
+    if(ZFDI_invoke(ret, errorHint, zfnull, name, paramCount, paramList, zftrue)) {
         if(success != zfnull) {*success = zftrue;}
         return ret;
     }
@@ -799,24 +771,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfauto, ZFInvoke
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFInvokeDetail
         , ZFMP_IN(const zfchar *, name)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
-        , ZFMP_OUT_OPT(zfbool *, success, zfnull)
-        , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfauto, ZFInvokeGeneric
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN(const zfchar *, param0)
-        , ZFMP_IN_OPT(const zfchar *, param1, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param2, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param3, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param4, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param5, zfnull)
-        , ZFMP_IN_OPT(const zfchar *, param6, zfnull)
-        /* ZFMETHOD_MAX_PARAM */
-        // , ZFMP_IN_OPT(const zfchar *, param7, zfnull)
-        )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFInvokeGenericDetail
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN(const ZFCoreArray<zfstring> &, params)
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )

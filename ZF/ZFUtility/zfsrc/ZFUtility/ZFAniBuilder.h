@@ -16,17 +16,17 @@ zfclassFwd _ZFP_ZFAniBuilderPrivate;
  * usage:
  * @code
  *   ZFAniBuilder(target)
- *       .ani("prop0", "from0", "to0", duration, curve) // ani run in group 1
+ *       .ani("prop0", from0, to0, duration, curve) // ani run in group 1
  *
- *       .wait(waitTime)                                // wait before next ani group
+ *       .wait(waitTime)                            // wait before next ani group
  *
- *       .ani("prop1", "from1", "to1")                  // ani run in group 2
- *       .ani("prop2", "from2", "to2")                  // ani run in group 2
- *       .step(callback)                                // commit group 2
+ *       .ani("prop1", from1, to1)                  // ani run in group 2
+ *       .ani("prop2", from2, to2)                  // ani run in group 2
+ *       .step(callback)                            // commit group 2
  *
- *       .customAni(customAniCallback)                  // custom ani, run in group 3
+ *       .customAni(customAniCallback)              // custom ani, run in group 3
  *
- *       .aniOnStart(callback)                          // attach observers
+ *       .aniOnStart(callback)                      // attach observers
  *       .aniOnStop(callback)
  *       .aniStart(onStopOrOnInvalidCallback);
  * @endcode
@@ -35,14 +35,6 @@ zfclassFwd _ZFP_ZFAniBuilderPrivate;
  */
 zffinal zfclassLikePOD ZFAniBuilder {
 public:
-    /** @brief see #ZFAniBuilder */
-    const ZFAniBuilder &ani(
-            ZF_IN const zfchar *name
-            , ZF_IN const zfchar *from
-            , ZF_IN const zfchar *to
-            , ZF_IN_OPT zftimet aniDuration = 0
-            , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
-            ) const;
     /** @brief see #ZFAniBuilder */
     const ZFAniBuilder &ani(
             ZF_IN const zfchar *name
