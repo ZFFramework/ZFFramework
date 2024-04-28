@@ -81,20 +81,20 @@ defineReplace(ZFAddLib) {
     _ZF_IS_IMPL=$$2
     _ZF_LIBNAME=$$3
     equals(_ZF_IS_IMPL, 1) {
-        ZF_PROJ_SRC_EXT_PATH += $${_ZF_MODULE_PATH}/ZF/$${_ZF_LIBNAME}/zfsrc
-        ZF_PROJ_SRC_EXT_PATH += $${_ZF_MODULE_PATH}/ZF/$${_ZF_LIBNAME}/zfsrc_ext
+        ZF_PROJ_SRC_EXT_PATH += $${_ZF_MODULE_PATH}/$${_ZF_LIBNAME}/zfsrc
+        ZF_PROJ_SRC_EXT_PATH += $${_ZF_MODULE_PATH}/$${_ZF_LIBNAME}/zfsrc_ext
         export(ZF_PROJ_SRC_EXT_PATH)
     } else {
-        ZF_PROJ_SRC_PATH += $${_ZF_MODULE_PATH}/ZF/$${_ZF_LIBNAME}/zfsrc
+        ZF_PROJ_SRC_PATH += $${_ZF_MODULE_PATH}/$${_ZF_LIBNAME}/zfsrc
         export(ZF_PROJ_SRC_PATH)
-        ZF_PROJ_SRC_EXT_PATH += $${_ZF_MODULE_PATH}/ZF/$${_ZF_LIBNAME}/zfsrc_ext
+        ZF_PROJ_SRC_EXT_PATH += $${_ZF_MODULE_PATH}/$${_ZF_LIBNAME}/zfsrc_ext
         export(ZF_PROJ_SRC_EXT_PATH)
     }
-    INCLUDEPATH += $${_ZF_MODULE_PATH}/ZF/$${_ZF_LIBNAME}/zfsrc
+    INCLUDEPATH += $${_ZF_MODULE_PATH}/$${_ZF_LIBNAME}/zfsrc
     export(INCLUDEPATH)
     QMAKE_POST_LINK += $${_ZF_SCRIPT_CALL} \
         $$system_path($$clean_path($${ZF_ROOT_PATH}/tools/util/copy_res.$${_ZF_SCRIPT_EXT})) \
-        $$system_path($$clean_path($${_ZF_MODULE_PATH}/ZF/$${_ZF_LIBNAME}/zfres)) \
+        $$system_path($$clean_path($${_ZF_MODULE_PATH}/$${_ZF_LIBNAME}/zfres)) \
         $${_ZF_RES_DEPLOY_PATH} \
         $$escape_expand(\\n\\t)
     export(QMAKE_POST_LINK)
@@ -102,21 +102,21 @@ defineReplace(ZFAddLib) {
 }
 
 # ZF dependency
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFCore)
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFAlgorithm)
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFUtility)
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFUIKit)
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFUIWidget)
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFLua)
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFUIWebKit)
-$$ZFAddLib($${ZF_ROOT_PATH}, 0, ZFNet)
-$$ZFAddLib($${ZF_ROOT_PATH}, 1, ZF_impl)
-$$ZFAddLib($${ZF_ROOT_PATH}, 1, ZFCore_impl)
-$$ZFAddLib($${ZF_ROOT_PATH}, 1, ZFAlgorithm_impl)
-$$ZFAddLib($${ZF_ROOT_PATH}, 1, ZFUIKit_impl)
-$$ZFAddLib($${ZF_ROOT_PATH}, 1, ZFLua_impl)
-$$ZFAddLib($${ZF_ROOT_PATH}, 1, ZFUIWebKit_impl)
-$$ZFAddLib($${ZF_ROOT_PATH}, 1, ZFNet_impl)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFCore)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFAlgorithm)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFUtility)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFUIKit)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFUIWidget)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFLua)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFUIWebKit)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 0, ZFNet)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZF_impl)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFCore_impl)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFAlgorithm_impl)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFUIKit_impl)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFLua_impl)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFUIWebKit_impl)
+$$ZFAddLib($${ZF_ROOT_PATH}/ZF, 1, ZFNet_impl)
 
 
 # ======================================================================

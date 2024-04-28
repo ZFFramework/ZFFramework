@@ -23,6 +23,6 @@ fi
 ZF_ROOT_PATH=$WORK_DIR/../..
 
 if ! test "x-$MODULE_BRANCH" = "x-LOCAL" ; then
-    sh "$ZF_ROOT_PATH/tools/common/git_check.sh" $MODULE_REPO $MODULE_BRANCH "$ZF_ROOT_PATH/../ZFModule/ZF/$MODULE_NAME"
+    sh "$ZF_ROOT_PATH/tools/common/git_check.sh" $MODULE_REPO $MODULE_BRANCH "$ZF_ROOT_PATH/ZFModule/$MODULE_NAME"
 fi
 

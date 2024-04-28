@@ -36,9 +36,8 @@ printUsage() {
     echo "            YourProjName/"
     echo "                zfproj/"
     echo "        ZFModule/"
-    echo "            ZF/"
-    echo "                YourProjName/"
-    echo "                    zfproj/"
+    echo "            YourProjName/"
+    echo "                zfproj/"
 }
 
 if test "x-$CONFIG_FILE_PATH" = "x-" ; then
@@ -57,15 +56,15 @@ elif test "x-$CONFIG_FILE_PATH" = "x--app" || test "x-$CONFIG_FILE_PATH" = "x--l
         ZF_OUTPUT="../.."
         ZF_INPLACE_SRC="\$ZF_NAME"
     elif test "x-$CONFIG_FILE_PATH" = "x--lib" ; then
-        _CONFIG_FILE_PATH="$OUTPUT_PATH/ZFModule/ZF/$PROJ_NAME/zfscript/zfautoscript_zfproj.txt"
+        _CONFIG_FILE_PATH="$OUTPUT_PATH/ZFModule/$PROJ_NAME/zfscript/zfautoscript_zfproj.txt"
         ZF_TYPE=lib
         ZF_OUTPUT=".."
-        ZF_INPLACE_SRC="ZFModule/ZF/\$ZF_NAME"
+        ZF_INPLACE_SRC="ZFModule/\$ZF_NAME"
     elif test "x-$CONFIG_FILE_PATH" = "x--impl" ; then
-        _CONFIG_FILE_PATH="$OUTPUT_PATH/ZFModule/ZF/$PROJ_NAME/zfscript/zfautoscript_zfproj.txt"
+        _CONFIG_FILE_PATH="$OUTPUT_PATH/ZFModule/$PROJ_NAME/zfscript/zfautoscript_zfproj.txt"
         ZF_TYPE=impl
         ZF_OUTPUT=".."
-        ZF_INPLACE_SRC="ZFModule/ZF/\$ZF_NAME"
+        ZF_INPLACE_SRC="ZFModule/\$ZF_NAME"
     fi
     mkdir -p "${_CONFIG_FILE_PATH%[/\\]*}"
     rm "$_CONFIG_FILE_PATH" >/dev/null 2>&1
@@ -326,10 +325,10 @@ if test "x-$ZF_TYPE" = "x-app" ; then
     _TMP_DIR_DST="$_TMP_DIR/$ZFTT_R_proj_name/"
 elif test "x-$ZF_TYPE" = "x-lib" ; then
     _TMP_DIR_SRC="$WORK_DIR/private/lib/."
-    _TMP_DIR_DST="$_TMP_DIR/ZFModule/ZF/$ZFTT_R_proj_name/"
+    _TMP_DIR_DST="$_TMP_DIR/ZFModule/$ZFTT_R_proj_name/"
 elif test "x-$ZF_TYPE" = "x-impl" ; then
     _TMP_DIR_SRC="$WORK_DIR/private/lib/."
-    _TMP_DIR_DST="$_TMP_DIR/ZFModule/ZF/$ZFTT_R_proj_name/"
+    _TMP_DIR_DST="$_TMP_DIR/ZFModule/$ZFTT_R_proj_name/"
 fi
 mkdir -p "$_TMP_DIR_DST" >/dev/null 2>&1
 _SYNC_EXCLUDE=

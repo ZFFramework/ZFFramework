@@ -66,15 +66,15 @@ function zfproj_init(ZF_TYPE, PROJ_NAME, DST_PATH)
         ZF_OUTPUT = '../..'
         ZF_INPLACE_SRC = '$ZF_NAME'
     elseif ZF_TYPE == 'lib' then
-        CONFIG_FILE_PATH = DST_PATH .. '/ZFModule/ZF/' .. PROJ_NAME .. '/zfscript/zfautoscript_zfproj.txt'
+        CONFIG_FILE_PATH = DST_PATH .. '/ZFModule/' .. PROJ_NAME .. '/zfscript/zfautoscript_zfproj.txt'
         ZF_TYPE = 'lib'
         ZF_OUTPUT = '..'
-        ZF_INPLACE_SRC = 'ZFModule/ZF/$ZF_NAME'
+        ZF_INPLACE_SRC = 'ZFModule/$ZF_NAME'
     elseif ZF_TYPE == 'impl' then
-        CONFIG_FILE_PATH = DST_PATH .. '/ZFModule/ZF/' .. PROJ_NAME .. '/zfscript/zfautoscript_zfproj.txt'
+        CONFIG_FILE_PATH = DST_PATH .. '/ZFModule/' .. PROJ_NAME .. '/zfscript/zfautoscript_zfproj.txt'
         ZF_TYPE = 'impl'
         ZF_OUTPUT = '..'
-        ZF_INPLACE_SRC = 'ZFModule/ZF/$ZF_NAME'
+        ZF_INPLACE_SRC = 'ZFModule/$ZF_NAME'
     else
         printUsage()
         return
@@ -341,10 +341,10 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         _TMP_DIR_DST = _TMP_DIR .. '/' .. param:replaceData('proj_name') .. '/'
     elseif zfstringIsEqual(config:get('ZF_TYPE'), 'lib') then
         _TMP_DIR_SRC = WORK_DIR .. '/private/lib/.'
-        _TMP_DIR_DST = _TMP_DIR .. '/ZFModule/ZF/' .. param:replaceData('proj_name') .. '/'
+        _TMP_DIR_DST = _TMP_DIR .. '/ZFModule/' .. param:replaceData('proj_name') .. '/'
     elseif zfstringIsEqual(config:get('ZF_TYPE'), 'impl') then
         _TMP_DIR_SRC = WORK_DIR .. '/private/lib/.'
-        _TMP_DIR_DST = _TMP_DIR .. '/ZFModule/ZF/' .. param:replaceData('proj_name') .. '/'
+        _TMP_DIR_DST = _TMP_DIR .. '/ZFModule/' .. param:replaceData('proj_name') .. '/'
     end
 
     local _SYNC_EXCLUDE = ZFCoreArray()
