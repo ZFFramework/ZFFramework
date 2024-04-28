@@ -24,6 +24,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         static inline const zfchar *TypeId(void) { \
             return ZFTypeId_##EnumName(); \
         } \
+        static inline const ZFClass *TypeIdClass(void) { \
+            return EnumName::ClassData(); \
+        } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
@@ -34,7 +37,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         zfoverride \
         virtual const ZFClass *typeIdClass(void) const { \
-            return EnumName::ClassData(); \
+            return TypeIdClass(); \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
@@ -192,6 +195,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         static inline const zfchar *TypeId(void) { \
             return ZFTypeId_##EnumFlagsName(); \
         } \
+        static inline const ZFClass *TypeIdClass(void) { \
+            return v_##EnumFlagsName::ClassData(); \
+        } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
@@ -202,7 +208,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
         zfoverride \
         virtual const ZFClass *typeIdClass(void) const { \
-            return v_##EnumFlagsName::ClassData(); \
+            return TypeIdClass(); \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \

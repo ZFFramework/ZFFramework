@@ -524,6 +524,9 @@ public:
     static inline const zfchar *TypeId(void) {
         return ZFTypeId_ZFCoreArray();
     }
+    static inline const ZFClass *TypeIdClass(void) {
+        return v_ZFCoreArray::ClassData();
+    }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
         return TypeIdSerializable;
@@ -534,7 +537,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return v_ZFCoreArray::ClassData();
+        return TypeIdClass();
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj

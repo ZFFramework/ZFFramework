@@ -27,6 +27,9 @@ public:
     static inline const zfchar *TypeId(void) {
         return ZFTypeId_void();
     }
+    virtual const ZFClass *TypeIdClass(void) const {
+        return zfnull;
+    }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
         return TypeIdSerializable;
@@ -37,7 +40,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return zfnull;
+        return TypeIdClass();
     }
     template<typename T_Access = zfint>
     zfclassNotPOD Value {
@@ -85,6 +88,9 @@ public:
     static inline const zfchar *TypeId(void) {
         return zftTraits<T_Type>::TrType::ClassData()->classNameFull();
     }
+    static inline const ZFClass *TypeIdClass(void) {
+        return _ZFP_T_ZFObject::ClassData();
+    }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
         return TypeIdSerializable;
@@ -95,7 +101,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return _ZFP_T_ZFObject::ClassData();
+        return TypeIdClass();
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
@@ -234,6 +240,9 @@ public:
     static inline const zfchar *TypeId(void) {
         return ZFObject::ClassData()->classNameFull();
     }
+    static inline const ZFClass *TypeIdClass(void) {
+        return ZFObject::ClassData();
+    }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
         return TypeIdSerializable;
@@ -244,7 +253,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return ZFObject::ClassData();
+        return TypeIdClass();
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
@@ -333,6 +342,9 @@ public:
     static inline const zfchar *TypeId(void) {
         return ZFTypeId<_ZFP_T_ZFObject *>::TypeId();
     }
+    static inline const ZFClass *TypeIdClass(void) {
+        return _ZFP_T_ZFObject::ClassData();
+    }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
         return TypeIdSerializable;
@@ -343,7 +355,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return _ZFP_T_ZFObject::ClassData();
+        return TypeIdClass();
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
@@ -424,6 +436,9 @@ public:
     static inline const zfchar *TypeId(void) {
         return ZFObject::ClassData()->classNameFull();
     }
+    static inline const ZFClass *TypeIdClass(void) {
+        return ZFObject::ClassData();
+    }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
         return TypeIdSerializable;
@@ -434,7 +449,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        return ZFObject::ClassData();
+        return TypeIdClass();
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
@@ -543,6 +558,9 @@ public:
     static inline const zfchar *TypeId(void) {
         return ZFTypeId<T_Type_>::TypeId();
     }
+    static inline const ZFClass *TypeIdClass(void) {
+        return ZFTypeId<T_Type_>::TypeIdClass();
+    }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
         return TypeIdSerializable;
@@ -553,8 +571,7 @@ public:
     }
     zfoverride
     virtual const ZFClass *typeIdClass(void) const {
-        ZFTypeId<T_Type_> t;
-        return t.typeIdClass();
+        return TypeIdClass();
     }
     static zfbool ValueStore(ZF_OUT zfauto &obj, T_Type * const &v) {
         if(v == zfnull) {

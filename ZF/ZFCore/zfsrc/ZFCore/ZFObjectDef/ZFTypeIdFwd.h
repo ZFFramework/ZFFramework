@@ -467,6 +467,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         static inline const zfchar *TypeId(void) { \
             return ZFTypeId_##TypeName(); \
         } \
+        static inline const ZFClass *TypeIdClass(void) { \
+            return v_##TypeName::ClassData(); \
+        } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
@@ -477,7 +480,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         } \
         zfoverride \
         virtual const ZFClass *typeIdClass(void) const { \
-            return v_##TypeName::ClassData(); \
+            return TypeIdClass(); \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
@@ -566,6 +569,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         static inline const zfchar *TypeId(void) { \
             return ZFTypeId_##TypeName(); \
         } \
+        static inline const ZFClass *TypeIdClass(void) { \
+            return v_##TypeName::ClassData(); \
+        } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
@@ -576,7 +582,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         } \
         zfoverride \
         virtual const ZFClass *typeIdClass(void) const { \
-            return v_##TypeName::ClassData(); \
+            return TypeIdClass(); \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
@@ -721,6 +727,9 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         static inline const zfchar *TypeId(void) { \
             return ZFTypeId<AliasToType>::TypeId(); \
         } \
+        static inline const ZFClass *TypeIdClass(void) { \
+            return ZFTypeId<AliasToType>::TypeIdClass(); \
+        } \
         zfoverride \
         virtual zfbool typeIdSerializable(void) const { \
             return TypeIdSerializable; \
@@ -731,8 +740,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         } \
         zfoverride \
         virtual const ZFClass *typeIdClass(void) const { \
-            ZFTypeId<AliasToType> t; \
-            return t.typeIdClass(); \
+            return TypeIdClass(); \
         } \
         static zfbool ValueStore( \
                 ZF_OUT zfauto &obj \
