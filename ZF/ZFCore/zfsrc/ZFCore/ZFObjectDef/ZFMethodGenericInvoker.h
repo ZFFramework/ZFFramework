@@ -87,7 +87,7 @@ extern ZFLIB_ZFCore zfbool ZFMethodGenericInvokerParamsCheckWithMethod(
 
 // ============================================================
 template<typename T_Dummy, int n>
-zfclassNotPOD _ZFP_MtdGICk {
+zfclassNotPOD _ZFP_MtdGICk { // check whether type registered
 };
 template<typename T_Dummy>
 zfclassNotPOD _ZFP_MtdGICk<T_Dummy, 1> {
@@ -118,7 +118,7 @@ extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(
         ZFM_TOSTRING(ParamType), \
         param)
 template<typename T_Type, typename T_Access>
-zfclassNotPOD _ZFP_MtdGIPA {
+zfclassNotPOD _ZFP_MtdGIPA { // Param Access
 public:
     zfauto &obj;
 public:
@@ -160,7 +160,7 @@ extern ZFLIB_ZFCore void _ZFP_MtdGIRetError(
         );
 
 template<typename T_ReturnType>
-zfclassNotPOD _ZFP_MtdGIA {
+zfclassNotPOD _ZFP_MtdGIA { // Access with raw invoker
 public:
     typedef T_ReturnType (*Ivk)(
             ZF_IN const ZFMethod *invokerMethod
@@ -341,7 +341,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
     }
 
 template<typename T_ParamType, int isZFObject>
-zfclassNotPOD _ZFP_MtdGII_P;
+zfclassNotPOD _ZFP_MtdGII_P; // Param access
 template<typename T_ParamType>
 zfclassNotPOD _ZFP_MtdGII_P<T_ParamType, 0> {
 public:
@@ -424,7 +424,7 @@ public:
 };
 
 template<typename T_ReturnType>
-zfclassNotPOD _ZFP_MtdGII_R {
+zfclassNotPOD _ZFP_MtdGII_R { // Return access
 public:
     static T_ReturnType r(
             ZF_IN const ZFMethod *method

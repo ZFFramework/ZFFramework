@@ -51,20 +51,22 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFObject
     zfstring methodNameZF;
     ZFImpl_sys_Android_zfstringFromStringT(methodNameZF, methodName);
 
-    ZFCoreArray<zfstring> paramsZF;
+    ZFCoreArray<zfauto> paramsZF;
     if(params != NULL) {
         jsize count = JNIUtilGetArrayLength(jniEnv, params);
         for(jsize i = 0; i < count; ++i) {
             jobject param = JNIUtilGetObjectArrayElement(jniEnv, params, i);
-            paramsZF.add(ZFImpl_sys_Android_zfstringFromString(param));
+            zfobj<v_zfstring> tmp;
+            ZFImpl_sys_Android_zfstringFromStringT(tmp->zfv, param) ;
+            paramsZF.add(tmp);
             JNIUtilDeleteLocalRef(jniEnv, param);
         }
     }
 
     ZFObject *obj = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointer);
     zfauto ret = (obj == zfnull
-            ? ZFInvokeGenericDetail(methodNameZF, paramsZF)
-            : obj->invokeGenericDetail(methodNameZF, paramsZF)
+            ? ZFInvokeDetail(methodNameZF, paramsZF)
+            : obj->invokeDetail(methodNameZF, paramsZF)
             );
     if(ret) {
         zfautoRelease(zfRetain(ret));

@@ -412,13 +412,13 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
 
     if(paramClass0->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass0->newInstance();
-        ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint>(ret, (zfuint)n);
+        ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }
     if(paramClass1->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass1->newInstance();
-        ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint>(ret, (zfuint)n);
+        ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }

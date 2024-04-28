@@ -41,8 +41,8 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
  *   (assume property's type is Type and property's name is yourPropName):
  *   -  ZFPROPERTY_RETAIN:
  *     -  public:\n
- *       virtual void yourPropName(Type propertyValue); // (reflectable)\n
- *       virtual Type yourPropName(void); // (reflectable)
+ *       virtual void yourPropName(Type const &propertyValue); // (reflectable)\n
+ *       virtual Type const &yourPropName(void); // (reflectable)
  *   -  ZFPROPERTY_ASSIGN:
  *     -  public:\n
  *       virtual void yourPropName(Type const &propertyValue); // (reflectable)\n
@@ -340,7 +340,7 @@ public:
                     , ZFM_TOSTRING(Type) \
                     , ZFTypeId_noneOrType \
                     , ZFMethodAccessDetail_1(zfself, Name \
-                        , ZFMP_IN(Type, propertyValue) \
+                        , ZFMP_IN(Type const &, propertyValue) \
                         ) \
                     , ZFMethodAccessDetail_0(zfself, Name) \
                     , zfnull \
@@ -593,7 +593,7 @@ public:
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, S \
                 , void, Name \
-                , _ZFP_MtdP_EXPAND(ZFMP_IN(Type, propertyValue)) \
+                , _ZFP_MtdP_EXPAND(ZFMP_IN(Type const &, propertyValue)) \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
@@ -652,7 +652,7 @@ public:
         _ZFP_ZFMETHOD_INLINE( \
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, G \
-                , Type, Name \
+                , Type const &, Name \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
@@ -671,7 +671,7 @@ public:
         _ZFP_ZFMETHOD_INLINE( \
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, G \
-                , Type, Name \
+                , Type const &, Name \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \

@@ -177,7 +177,7 @@ public:
     /**
      * @brief get the enum value, or #ZFEnumInvalid if invalid
      */
-    virtual zfuint enumValue(void) {
+    virtual zfuint const &enumValue(void) {
         return _ZFP_ZFEnum_value;
     }
     /**
@@ -204,7 +204,7 @@ public:
      *
      * must be the enum's value or ZFEnumInvalid
      */
-    virtual void enumValue(ZF_IN zfuint value) {
+    virtual void enumValue(ZF_IN zfuint const &value) {
         if(!this->enumIsFlags() && !this->enumContainValue(value)) {
             _ZFP_ZFEnum_value = ZFEnumInvalid();
             return;

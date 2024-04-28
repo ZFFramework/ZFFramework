@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD ZFLIB_ZFCore _ZFP_zfautoPrivate {
 public:
     zfuint refCount;
-    ZFObject *obj;
+    ZFAny obj;
 public:
     _ZFP_zfautoPrivate(void) : refCount(1), obj(zfnull) {}
     _ZFP_zfautoPrivate(ZF_IN ZFObject *obj) : refCount(1), obj(obj) {}
@@ -129,6 +129,10 @@ public:
 
 private:
     _ZFP_zfautoPrivate *d;
+public:
+    ZFAny const &_ZFP_ZAny(void) const {
+        return d->obj;
+    }
 };
 
 // ============================================================

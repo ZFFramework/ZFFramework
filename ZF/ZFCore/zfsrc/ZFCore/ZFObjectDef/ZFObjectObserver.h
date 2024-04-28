@@ -77,7 +77,8 @@ public:
 
 public:
     #if ZF_ENV_LAMBDA
-    ZFListener(ZF_IN std::function<void(const ZFArgs &)> const &f) {
+    template<typename T_Func>
+    ZFListener(ZF_IN T_Func f) {
         ZFLISTENER_1(wrapper
                 , std::function<void(const ZFArgs &)>, f
                 ) {
@@ -85,7 +86,8 @@ public:
         } ZFLISTENER_END()
         this->operator = (wrapper);
     }
-    ZFListener &operator = (ZF_IN std::function<void(const ZFArgs &)> const &f) {
+    template<typename T_Func>
+    ZFListener &operator = (ZF_IN T_Func f) {
         ZFLISTENER_1(wrapper
                 , std::function<void(const ZFArgs &)>, f
                 ) {

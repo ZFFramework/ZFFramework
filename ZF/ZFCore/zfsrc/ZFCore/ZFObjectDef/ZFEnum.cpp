@@ -345,14 +345,14 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfchar *, enumNameForVa
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfbool, enumIsFlags)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfuint, enumDefault)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfuint, enumValue)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfuint const &, enumValue)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, const zfchar *, enumName)
 ZFMETHOD_USER_REGISTER_DETAIL_1({
         invokerObject->to<ZFEnum *>()->_ZFP_ZFEnum_value = value;
     }, ZFEnum,
     protected, ZFMethodTypeVirtual, ZF_CALLER_LINE,
     void, enumValue
-    , ZFMP_IN(zfuint, value)
+    , ZFMP_IN(zfuint const &, value)
     )
 ZFMETHOD_USER_REGISTER_DETAIL_1({
         if(value != zfnull) {

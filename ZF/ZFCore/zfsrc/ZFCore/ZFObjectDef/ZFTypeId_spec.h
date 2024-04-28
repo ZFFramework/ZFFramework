@@ -179,7 +179,7 @@ public:
             if(obj == zfnull) {
                 return;
             }
-            _ZFP_PropAliasAttach(obj,
+            _ZFP_PropAliasDetach(obj,
                 zfsConnectLineFree(
                     _ZFP_T_ZFObject::ClassData()->classNameFull(),
                     ":",
@@ -457,10 +457,36 @@ public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
             return zftrue;
         }
-        static ZFAny zfvAccess(ZF_IN_OUT zfauto &obj) {
-            return obj;
+        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
+            if(obj == zfnull) {
+                static ZFAny _d;
+                return _d;
+            }
+            ZFAny *holder = zfnew(ZFAny, obj);
+            _ZFP_PropAliasAttach(obj, holder,
+                zfsConnectLineFree(
+                    "ZFAny:",
+                    zftTraits<T_Access>::ModifierName()),
+                _ZFP_PropAliasOnDetach);
+            return *holder;
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+            if(obj == zfnull) {
+                return;
+            }
+            _ZFP_PropAliasDetach(obj,
+                zfsConnectLineFree(
+                    "ZFAny:",
+                    zftTraits<T_Access>::ModifierName())
+                );
+        }
+    private:
+        static void _ZFP_PropAliasOnDetach(
+                ZF_IN ZFObject *obj
+                , ZF_IN void *v
+                ) {
+            ZFAny *vTmp = (ZFAny *)v;
+            zfdelete(vTmp);
         }
     };
     template<typename T_Access>
