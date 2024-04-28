@@ -31,12 +31,7 @@ public:
             ZF_IN T_Comparable0 const &v0
             , ZF_IN T_Comparable1 const &v1
             ) {
-        if(v0 == v1) {
-            return ZFCompareTheSame;
-        }
-        else {
-            return ZFCompareUncomparable;
-        }
+        return (v0 == v1) ? ZFCompareTheSame :ZFCompareUncomparable;
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
@@ -46,6 +41,28 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(
         ) {
     return ZFComparerDefaultHolder<T_Comparable0, T_Comparable1>::comparer(v0, v1);
 }
+#if 1 // tricks to solve NULL compare for cpp03
+    template<typename T_Comparable>
+    inline ZFCompareResult _ZFP_ZFComparerDefault(
+            ZF_IN T_Comparable const &v0
+            , ZF_IN zfnullT const &v1
+            ) {
+        return (v0 == zfnull) ? ZFCompareTheSame :ZFCompareUncomparable;
+    }
+    template<typename T_Comparable>
+    inline ZFCompareResult _ZFP_ZFComparerDefault(
+            ZF_IN zfnullT const &v0
+            , ZF_IN T_Comparable const &v1
+            ) {
+        return (zfnull == v1) ? ZFCompareTheSame :ZFCompareUncomparable;
+    }
+    inline ZFCompareResult _ZFP_ZFComparerDefault(
+            ZF_IN zfnullT const &v0
+            , ZF_IN zfnullT const &v1
+            ) {
+        return ZFComparerDefaultHolder<zfnullT, zfnullT>::comparer(v0, v1);
+    }
+#endif
 /**
  * @brief default comparer for common types, see #ZFComparer
  *
