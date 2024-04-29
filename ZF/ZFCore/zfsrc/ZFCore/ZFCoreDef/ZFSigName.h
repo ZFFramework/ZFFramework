@@ -70,7 +70,7 @@ public:
     zfbool operator == (ZF_IN const zfchar *s) const {return this->compare(s) == 0;}
     zfbool operator != (ZF_IN const zfchar *s) const {return this->compare(s) != 0;}
 public:
-    // tricks to make zfstlmap<ZFSigName, xxx> works
+    /* ZFTAG_TRICKS: tricks to make zfstlmap<ZFSigName, xxx> works */
     inline zfbool operator < (ZF_IN const ZFSigName &ref) const {return this->compare(ref) < 0;}
     inline zfbool operator <= (ZF_IN const ZFSigName &ref) const {return this->compare(ref) <= 0;}
     inline zfbool operator > (ZF_IN const ZFSigName &ref) const {return this->compare(ref) > 0;}

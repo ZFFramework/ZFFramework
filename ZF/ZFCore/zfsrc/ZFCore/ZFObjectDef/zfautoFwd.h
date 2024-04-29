@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD ZFLIB_ZFCore _ZFP_zfautoPrivate {
 public:
     zfuint refCount;
-    ZFObject *obj;
+    ZFAny obj;
 public:
     _ZFP_zfautoPrivate(void) : refCount(1), obj(zfnull) {}
     _ZFP_zfautoPrivate(ZF_IN ZFObject *obj) : refCount(1), obj(obj) {}
@@ -92,6 +92,11 @@ public:
     template<typename T_ZFObject>
     inline operator T_ZFObject * (void) const {
         return ZFCastZFObject(T_ZFObject *, this->toObject());
+    }
+
+public:
+    const ZFAny &_ZFP_ZFAny(void) const {
+        return d->obj;
     }
 
 public:

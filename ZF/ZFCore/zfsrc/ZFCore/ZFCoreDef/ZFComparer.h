@@ -41,7 +41,7 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(
         ) {
     return ZFComparerDefaultHolder<T_Comparable0, T_Comparable1>::comparer(v0, v1);
 }
-#if 1 // tricks to solve NULL compare for cpp03
+#if 1 /* ZFTAG_TRICKS: tricks to solve NULL compare for cpp03 */
     template<typename T_Comparable>
     inline ZFCompareResult _ZFP_ZFComparerDefault(
             ZF_IN T_Comparable const &v0

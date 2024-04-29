@@ -58,7 +58,7 @@ protected:
         zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto * &>::zfvAccess(v);
         zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto * const &>::zfvAccess(v);
 
-        // ZFAny processed as aligned type
+        // ZFAny can only accessed as value or const ref
         zfobj<v_zfstring> test_ZFAny("ZFAny");
         v = test_ZFAny;
         zfLogTrim() << "============================================================";

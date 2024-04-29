@@ -161,7 +161,7 @@ public:
     zfbool operator == (ZF_IN const T_Char *ref) const {return (this->compare(ref) == 0);}
     zfbool operator != (ZF_IN const T_Char *ref) const {return (this->compare(ref) != 0);}
 public:
-    // tricks to make zfstlmap<zfstring, xxx> works
+    /* ZFTAG_TRICKS: tricks to make zfstlmap<zfstring, xxx> works */
     inline zfbool operator < (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->compare(ref) < 0;}
     inline zfbool operator <= (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->compare(ref) <= 0;}
     inline zfbool operator > (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->compare(ref) > 0;}

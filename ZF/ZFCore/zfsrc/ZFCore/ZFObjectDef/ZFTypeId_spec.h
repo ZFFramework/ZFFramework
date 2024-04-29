@@ -332,18 +332,16 @@ ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfautoT<T_ZFObject>, {
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObject>
 zfclassNotPOD ZFTypeId<zfautoT<T_ZFObject>, 0, 0> : zfextend ZFTypeInfo {
-private:
-    typedef typename zftTraits<T_ZFObject>::TrType _ZFP_T_ZFObject;
 public:
     enum {
         TypeIdRegistered = 1,
         TypeIdSerializable = 1,
     };
     static inline const zfchar *TypeId(void) {
-        return ZFTypeId<_ZFP_T_ZFObject *>::TypeId();
+        return ZFTypeId<T_ZFObject *>::TypeId();
     }
     static inline const ZFClass *TypeIdClass(void) {
-        return _ZFP_T_ZFObject::ClassData();
+        return T_ZFObject::ClassData();
     }
     zfoverride
     virtual zfbool typeIdSerializable(void) const {
@@ -391,7 +389,7 @@ public:
             return zftrue;
         }
         static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
-            // zfautoT ensured safe for reinterpret cast
+            /* ZFTAG_TRICKS: zfautoT ensured safe for reinterpret cast */
             return (typename zftTraits<T_Access>::TrNoRef)&obj;
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
@@ -477,31 +475,24 @@ public:
                 static ZFAny _d;
                 return _d;
             }
-            ZFAny *holder = zfnew(ZFAny, obj);
-            _ZFP_PropAliasAttach(obj, holder,
-                zfsConnectLineFree(
-                    "ZFAny:",
-                    zftTraits<T_Access>::ModifierName()),
-                _ZFP_PropAliasOnDetach);
-            return *holder;
+            else {
+                return obj._ZFP_ZFAny();
+            }
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
-            if(obj == zfnull) {
-                return;
-            }
-            _ZFP_PropAliasDetach(obj,
-                zfsConnectLineFree(
-                    "ZFAny:",
-                    zftTraits<T_Access>::ModifierName())
-                );
         }
-    private:
-        static void _ZFP_PropAliasOnDetach(
-                ZF_IN ZFObject *obj
-                , ZF_IN void *v
-                ) {
-            ZFAny *vTmp = (ZFAny *)v;
-            zfdelete(vTmp);
+    };
+    template<>
+    zfclassNotPOD Value<ZFAny &, 0> {
+    public:
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+            return zffalse;
+        }
+        static ZFAny &zfvAccess(ZF_IN_OUT zfauto &obj) {
+            static ZFAny _d;
+            return _d;
+        }
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
     template<typename T_Access>
@@ -512,7 +503,7 @@ public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
             return zffalse;
         }
-        static const ZFAny *zfvAccess(ZF_IN_OUT zfauto &obj) {
+        static _TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
             return zfnull;
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
@@ -525,19 +516,133 @@ public:
     }
     zfoverride
     virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
-        if(!Value<ZFAny>::zfvAccessAvailable(obj)) {
-            return zfnull;
-        }
-        return (void *)zfnew(ZFAny, Value<ZFAny>::zfvAccess(obj));
+        return (void *)zfnew(ZFAny, obj);
     }
     zfoverride
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
         zfdelete((ZFAny *)v);
-        Value<ZFAny>::zfvAccessFinish(obj);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
         return zfnew(ZFCoreArray<ZFAny>);
+    }
+};
+/** @endcond */
+
+// ============================================================
+// ZFAnyT
+ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, ZFAnyT<T_ZFObject>, {
+    if(v) {
+        v.toObject()->objectInfoT(s);
+    }
+    else {
+        s += ZFTOKEN_zfnull;
+    }
+})
+
+/** @cond ZFPrivateDoc */
+template<typename T_ZFObject>
+zfclassNotPOD ZFTypeId<ZFAnyT<T_ZFObject>, 0, 0> : zfextend ZFTypeInfo {
+public:
+    enum {
+        TypeIdRegistered = 1,
+        TypeIdSerializable = 1,
+    };
+    static inline const zfchar *TypeId(void) {
+        return ZFTypeId<T_ZFObject *>::TypeId();
+    }
+    static inline const ZFClass *TypeIdClass(void) {
+        return T_ZFObject::ClassData();
+    }
+    zfoverride
+    virtual zfbool typeIdSerializable(void) const {
+        return TypeIdSerializable;
+    }
+    zfoverride
+    virtual const zfchar *typeId(void) const {
+        return TypeId();
+    }
+    zfoverride
+    virtual const ZFClass *typeIdClass(void) const {
+        return TypeIdClass();
+    }
+    static zfbool ValueStore(
+            ZF_OUT zfauto &obj
+            , ZF_IN ZFAnyT<T_ZFObject> const &v
+            ) {
+        obj = v;
+        return zftrue;
+    }
+    template<typename T_Access = ZFAnyT<T_ZFObject>
+        , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
+            && zftIsSame<
+                    typename zftTraits<T_Access>::TrNoRef,
+                    ZFAnyT<T_ZFObject>
+                >::Value != 1)
+            ? 1 : 0)
+        , typename T_Fix = void
+        >
+    zfclassNotPOD Value {
+    public:
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+            return zftrue;
+        }
+        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
+            if(obj == zfnull) {
+                static ZFAnyT<T_ZFObject> _d;
+                return _d;
+            }
+            else {
+                /* ZFTAG_TRICKS: ZFAnyT ensured safe for reinterpret cast */
+                return (T_Access)obj._ZFP_ZFAny();
+            }
+        }
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+        }
+    };
+    template<>
+    zfclassNotPOD Value<ZFAnyT<T_ZFObject> &, 0> {
+    public:
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+            return zffalse;
+        }
+        static ZFAnyT<T_ZFObject> &zfvAccess(ZF_IN_OUT zfauto &obj) {
+            static ZFAnyT<T_ZFObject> _d;
+            return _d;
+        }
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+        }
+    };
+    template<typename T_Access>
+    zfclassNotPOD Value<T_Access, 1> {
+    private:
+        typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef;
+    public:
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
+            return zffalse;
+        }
+        static _TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
+            return zfnull;
+        }
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
+        }
+    };
+public:
+    zfoverride
+    virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
+        return ValueStore(obj, *(const ZFAnyT<T_ZFObject> *)v);
+    }
+    zfoverride
+    virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
+        return (void *)zfnew(ZFAnyT<T_ZFObject>, obj);
+    }
+    zfoverride
+    virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
+        zfdelete((ZFAnyT<T_ZFObject> *)v);
+    }
+    zfoverride
+    virtual ZFCoreArrayBase *genericArrayNew(void) const {
+        return zfnew(ZFCoreArray<ZFAnyT<T_ZFObject> >);
     }
 };
 /** @endcond */

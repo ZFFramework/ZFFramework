@@ -183,7 +183,7 @@ public:
         return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
     }
 
-protected:
+private:
     ZFObjectHolder *_ZFP_obj;
 };
 ZFOUTPUT_TYPE(zfweak, {
@@ -241,7 +241,7 @@ public:
         return ZFCastZFObjectUnchecked(T_ZFObjectBase *, this->toObject());
     }
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
-        return _ZFP_obj ? _ZFP_obj->objectHolded() : zfnull;
+        return zfweak::toObject();
     }
 
 public:
