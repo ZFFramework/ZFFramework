@@ -132,6 +132,13 @@ public:
         return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
     }
 
+    /**
+     * @brief see #ZFV
+     */
+    inline ZFV zfv(void) const {
+        return ZFV(this->toObject());
+    }
+
 private:
     _ZFP_zfautoPrivate *d;
 };

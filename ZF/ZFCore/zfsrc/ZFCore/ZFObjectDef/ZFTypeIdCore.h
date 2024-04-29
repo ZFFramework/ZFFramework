@@ -717,6 +717,22 @@ protected:
             ret = (Type)(from + (Type)((to - from) * progress)); \
         })
 
+// ============================================================
+template<typename T_Type>
+ZFV::operator T_Type const &(void) const {
+    ZFTypeIdWrapper *w = ZFCastZFObject(ZFTypeIdWrapper *, _ZFP_obj);
+    if(w != zfnull && w->classData()->classIsTypeOf(ZFTypeId<T_Type>::TypeIdClass())) {
+        return *(const T_Type *)w->wrappedValue();
+    }
+    else {
+        zfCoreCriticalMessageTrim("unable to access %s from object: %s"
+                , ZFTypeId<T_Type>::TypeId()
+                , _ZFP_obj
+                );
+        return *(const T_Type *)_ZFP_obj;
+    }
+}
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTypeIdCore_h_
 

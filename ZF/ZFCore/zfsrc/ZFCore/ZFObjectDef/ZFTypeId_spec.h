@@ -9,6 +9,7 @@
 #include "ZFTypeIdCore.h"
 #include "ZFIOCallback.h"
 #include "zfauto.h"
+#include "ZFObjectAutoPtr.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -418,6 +419,17 @@ public:
     }
 };
 /** @endcond */
+
+// ============================================================
+// zfobj
+ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfobj<T_ZFObject>, {
+    if(v) {
+        v.toObject()->objectInfoT(s);
+    }
+    else {
+        s += ZFTOKEN_zfnull;
+    }
+})
 
 // ============================================================
 // ZFAny

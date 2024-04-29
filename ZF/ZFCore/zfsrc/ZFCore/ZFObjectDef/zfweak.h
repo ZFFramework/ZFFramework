@@ -183,6 +183,13 @@ public:
         return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
     }
 
+    /**
+     * @brief see #ZFV
+     */
+    inline ZFV zfv(void) const {
+        return ZFV(this->toObject());
+    }
+
 private:
     ZFObjectHolder *_ZFP_obj;
 };

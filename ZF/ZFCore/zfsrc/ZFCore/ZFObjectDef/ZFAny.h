@@ -12,6 +12,29 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd ZFObject;
 zfclassFwd ZFObjectHolder;
 
+/**
+ * @brief a helper class to convert any #ZFTypeIdWrapper to its original type
+ *
+ * this class is not intend to be used by user,
+ * it's a convenient wrapper for api design,
+ * typical usage:
+ * @code
+ *   zfobj<v_zfstring> obj;
+ *   zfstring const &v = obj.zfv();
+ * @endcode
+ */
+zfclassNotPOD ZFLIB_ZFCore ZFV {
+    /** @cond ZFPrivateDoc */
+public:
+    ZFV(ZF_IN ZFObject *obj) : _ZFP_obj(obj) {}
+public:
+    template<typename T_Type>
+    operator T_Type const &(void) const;
+    /** @endcond */
+private:
+    ZFObject *_ZFP_obj;
+};
+
 // ============================================================
 // ZFAny
 /**
@@ -115,6 +138,13 @@ public:
     template<typename T_ZFObject>
     inline T_ZFObject to(void) const {
         return ZFCastZFObjectUnchecked(T_ZFObject, _ZFP_obj);
+    }
+
+    /**
+     * @brief see #ZFV
+     */
+    inline ZFV zfv(void) const {
+        return ZFV(this->toObject());
     }
 
 private:
