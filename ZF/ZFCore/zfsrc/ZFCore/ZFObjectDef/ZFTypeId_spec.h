@@ -494,8 +494,8 @@ public:
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<ZFAny &, 0> {
+    template<typename T_Fix>
+    zfclassNotPOD Value<ZFAny &, 0, T_Fix> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
             return zffalse;
@@ -612,8 +612,8 @@ public:
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
-    template<>
-    zfclassNotPOD Value<ZFAnyT<T_ZFObject> &, 0> {
+    template<typename T_Fix>
+    zfclassNotPOD Value<ZFAnyT<T_ZFObject> &, 0, T_Fix> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
             return zffalse;
