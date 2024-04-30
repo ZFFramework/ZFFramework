@@ -38,11 +38,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFPropertyIsValueAccessed
         , ZFMP_IN(const ZFProperty *, propertyInfo)
-        , ZFMP_IN(ZFObject *, ownerObj)
+        , ZFMP_IN(ZFAny const &, ownerObj)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, ZFPropertyIsInitValue
         , ZFMP_IN(const ZFProperty *, propertyInfo)
-        , ZFMP_IN(ZFObject *, ownerObj)
+        , ZFMP_IN(ZFAny const &, ownerObj)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFCompareResult, ZFPropertyCompare
         , ZFMP_IN(const ZFProperty *, propertyInfo)

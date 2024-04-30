@@ -442,7 +442,7 @@ public:
     private: \
         static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFObject *ownerObj \
+                , ZF_IN ZFAny const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
             zfself *t = ZFCastZFObjectUnchecked(zfself *, ownerObj); \
@@ -519,7 +519,7 @@ public:
     private: \
         static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFObject *ownerObj \
+                , ZF_IN ZFAny const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
             zfself *t = ZFCastZFObjectUnchecked(zfself *, ownerObj); \
@@ -545,26 +545,26 @@ public:
     private: \
         static zfbool _ZFP_propCbAccessed_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFObject *ownerObj \
+                , ZF_IN ZFAny const &ownerObj \
                 ) { \
             return ZFCastZFObjectUnchecked(zfself *, ownerObj)->Name##_PropV._ZFP_accessed(); \
         } \
     private: \
         static void _ZFP_propCbReset_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFObject *owner \
+                , ZF_IN ZFAny const &owner \
                 ) { \
             ZFCastZFObjectUnchecked(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zftrue); \
         } \
         static void _ZFP_propCbEnsureInit_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFObject *owner \
+                , ZF_IN ZFAny const &owner \
                 ) { \
             ZFCastZFObjectUnchecked(zfself *, owner)->Name##_PropV._ZFP_init(owner, zftrue); \
         } \
         static void _ZFP_propCbDel_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFObject *owner \
+                , ZF_IN ZFAny const &owner \
                 ) { \
             ZFCastZFObjectUnchecked(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zffalse); \
         } \

@@ -9,7 +9,7 @@ ZFOBJECT_REGISTER(ZFCopyable)
 zfautoT<ZFCopyable> ZFCopyable::copy(void) {
     zfautoT<ZFCopyable> ret = this->classData()->newInstance();
     if(ret != zfnull) {
-        ZFCastZFObjectUnchecked(zfself *, ret.toObject())->copyableOnCopyFrom(this->toObject());
+        ZFCastZFObjectUnchecked(zfself *, ret)->copyableOnCopyFrom(this->toObject());
     }
     return ret;
 }

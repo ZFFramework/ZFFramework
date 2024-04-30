@@ -31,7 +31,7 @@ public:
             ZF_IN T_Comparable0 const &v0
             , ZF_IN T_Comparable1 const &v1
             ) {
-        return (v0 == v1) ? ZFCompareTheSame :ZFCompareUncomparable;
+        return (v0 == v1) ? ZFCompareTheSame : ZFCompareUncomparable;
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
@@ -47,14 +47,14 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(
             ZF_IN T_Comparable const &v0
             , ZF_IN zfnullT const &v1
             ) {
-        return (v0 == zfnull) ? ZFCompareTheSame :ZFCompareUncomparable;
+        return (v0 == zfnull) ? ZFCompareTheSame : ZFCompareUncomparable;
     }
     template<typename T_Comparable>
     inline ZFCompareResult _ZFP_ZFComparerDefault(
             ZF_IN zfnullT const &v0
             , ZF_IN T_Comparable const &v1
             ) {
-        return (zfnull == v1) ? ZFCompareTheSame :ZFCompareUncomparable;
+        return (zfnull == v1) ? ZFCompareTheSame : ZFCompareUncomparable;
     }
     inline ZFCompareResult _ZFP_ZFComparerDefault(
             ZF_IN zfnullT const &v0

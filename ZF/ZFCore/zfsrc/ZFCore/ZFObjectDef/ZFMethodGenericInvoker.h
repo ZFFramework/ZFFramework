@@ -23,7 +23,7 @@ zfclassFwd ZFMethod;
 typedef zfbool (*ZFMethodGenericInvoker)(
         ZF_OUT zfauto &ret
         , ZF_OUT_OPT zfstring *errorHint
-        , ZF_IN ZFObject *invokerObject
+        , ZF_IN ZFAny const &invokerObject
         , ZF_IN const ZFMethod *invokerMethod
         , ZF_IN zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
@@ -35,7 +35,7 @@ typedef zfbool (*ZFMethodGenericInvoker)(
 #define ZFMETHOD_GENERIC_INVOKER_PARAMS \
     ZF_OUT zfauto &ret \
     , ZF_OUT_OPT zfstring *errorHint \
-    , ZF_IN ZFObject *invokerObject \
+    , ZF_IN ZFAny const &invokerObject \
     , ZF_IN const ZFMethod *invokerMethod \
     , ZF_IN zfindex paramCount \
     , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
@@ -164,14 +164,14 @@ zfclassNotPOD _ZFP_MtdGIA { // Access with raw invoker
 public:
     typedef T_ReturnType (*Ivk)(
             ZF_IN const ZFMethod *invokerMethod
-            , ZF_IN ZFObject *invokerObject
+            , ZF_IN ZFAny const &invokerObject
             , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             );
 public:
     static zfbool A(
             ZF_IN Ivk invoke
             , ZF_IN const ZFMethod *invokerMethod
-            , ZF_IN ZFObject *invokerObject
+            , ZF_IN ZFAny const &invokerObject
             , ZF_OUT_OPT zfstring *errorHint
             , ZF_OUT_OPT zfauto &ret
             , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
@@ -198,14 +198,14 @@ zfclassNotPOD _ZFP_MtdGIA<void> {
 public:
     typedef void (*Ivk)(
             ZF_IN const ZFMethod *invokerMethod
-            , ZF_IN ZFObject *invokerObject
+            , ZF_IN ZFAny const &invokerObject
             , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
             );
 public:
     static zfbool A(
             ZF_IN Ivk invoke
             , ZF_IN const ZFMethod *invokerMethod
-            , ZF_IN ZFObject *invokerObject
+            , ZF_IN ZFAny const &invokerObject
             , ZF_OUT_OPT zfstring *errorHint
             , ZF_OUT_OPT zfauto &ret
             , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
@@ -266,7 +266,7 @@ public:
     private: \
         static ReturnType I( \
                 ZF_IN const ZFMethod *invokerMethod \
-                , ZF_IN ZFObject *invokerObject \
+                , ZF_IN ZFAny const &invokerObject \
                 , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM] \
                 ) { \
             return invokerMethod->_ZFP_execute<ReturnType \
@@ -317,7 +317,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
     T_ReturnType _ZFP_MtdGII( \
             ZF_IN const ZFMethod *method \
-            , ZF_IN ZFObject *obj \
+            , ZF_IN ZFAny const &obj \
             ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA) \
             ) { \
         zfauto _p[ZFMETHOD_MAX_PARAM] = { \

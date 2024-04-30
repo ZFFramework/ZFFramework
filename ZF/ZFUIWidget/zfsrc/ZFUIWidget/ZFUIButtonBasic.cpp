@@ -55,7 +55,7 @@ public:
 public:
     void labelViewPrepare(void) {
         if(this->labelView == zfnull) {
-            ZFObject *obj = zfRetain(this->pimplOwner->buttonLabelClass()->newInstance().toObject());
+            ZFObject *obj = zfRetain(this->pimplOwner->buttonLabelClass()->newInstance());
             this->labelView = ZFCastZFObject(ZFUITextView *, obj);
             zfCoreAssert(this->labelView != zfnull);
             this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->labelView));
@@ -63,7 +63,7 @@ public:
     }
     void iconViewPrepare(void) {
         if(this->iconView == zfnull) {
-            ZFObject *obj = zfRetain(this->pimplOwner->buttonIconClass()->newInstance().toObject());
+            ZFObject *obj = zfRetain(this->pimplOwner->buttonIconClass()->newInstance());
             this->iconView = ZFCastZFObject(ZFUIImageView *, obj);
             zfCoreAssert(this->iconView != zfnull);
             this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->iconView));
@@ -77,7 +77,7 @@ public:
     }
     void backgroundViewPrepare(void) {
         if(this->backgroundView == zfnull) {
-            ZFObject *obj = zfRetain(this->pimplOwner->buttonBackgroundClass()->newInstance().toObject());
+            ZFObject *obj = zfRetain(this->pimplOwner->buttonBackgroundClass()->newInstance());
             this->backgroundView = ZFCastZFObject(ZFUIImageView *, obj);
             zfCoreAssert(this->backgroundView != zfnull);
             this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->backgroundView));

@@ -207,7 +207,35 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
                 ZFImpl_ZFLua_luaObjectInfo(L, 2, zftrue));
             return zffalse;
         }
-        ret = ZFComparerDefault(v1, v2);
+
+        if(v1 == zfnull) {
+            if(v2 == zfnull) {
+                ret = ZFCompareTheSame;
+            }
+            else {
+                ZFTypeIdWrapper *t = v2;
+                if(t != zfnull && t->wrappedValueIsInit()) {
+                    ret = ZFCompareTheSame;
+                }
+                else {
+                    ret = ZFCompareUncomparable;
+                }
+            }
+        }
+        else {
+            if(v2 == zfnull) {
+                ZFTypeIdWrapper *t = v1;
+                if(t != zfnull && t->wrappedValueIsInit()) {
+                    ret = ZFCompareTheSame;
+                }
+                else {
+                    ret = ZFCompareUncomparable;
+                }
+            }
+            else {
+                ret = v1->objectCompare(v2);
+            }
+        }
         return zftrue;
     }
     else {
@@ -288,7 +316,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_tostring(ZF_IN lua_State *L) {
     }
 
     zfstring ret;
-    ZFObjectInfoT(ret, obj.toObject());
+    ZFObjectInfoT(ret, obj);
     lua_pushstring(L, ret.cString());
     return 1;
 }
@@ -412,13 +440,13 @@ static int _ZFP_ZFImpl_ZFLua_metatableStoreResult(
 
     if(paramClass0->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass0->newInstance();
-        ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
+        ret->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }
     if(paramClass1->classIsTypeOf(ZFEnum::ClassData())) {
         zfauto ret = paramClass1->newInstance();
-        ret.toObject()->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
+        ret->classData()->propertySetterForName("enumValue")->execute<void, zfuint const &>(ret, (zfuint)n);
         ZFImpl_ZFLua_luaPush(L, ret);
         return zftrue;
     }

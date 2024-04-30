@@ -568,14 +568,14 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
     zfclassNotPOD _ZFP_GIWrap {
     public:
         static zfbool GI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-            ZFArray *userData = ZFCastZFObject(ZFArray *, invokerMethod->methodDynamicRegisterUserData());
+            ZFArray *userData = invokerMethod->methodDynamicRegisterUserData();
             if(userData == zfnull) {
                 return zffalse;
             }
             _ZFP_I_ZFAndroidReflect_Object *obj = ZFCastZFObject(_ZFP_I_ZFAndroidReflect_Object *, invokerObject);
             obj->autoAlloc = zffalse;
             for(zfindex iGIData = 0; iGIData < userData->count(); ++iGIData) {
-                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData)->toAny();
+                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData);
                 if(paramCount != (zfindex)GIData->paramJNITypes.size()) {
                     zfstringAppend(errorHint, "expect %s param, got %s", (zfindex)GIData->paramJNITypes.size(), paramCount);
                     continue;
@@ -704,13 +704,13 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
     zfclassNotPOD _ZFP_GIWrap {
     public:
         static zfbool GI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
-            ZFArray *userData = ZFCastZFObject(ZFArray *, invokerMethod->methodDynamicRegisterUserData());
+            ZFArray *userData = invokerMethod->methodDynamicRegisterUserData();
             if(userData == zfnull) {
                 return zffalse;
             }
             _ZFP_I_ZFAndroidReflect_Object *obj = ZFCastZFObject(_ZFP_I_ZFAndroidReflect_Object *, invokerObject);
             for(zfindex iGIData = 0; iGIData < userData->count(); ++iGIData) {
-                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData)->toAny();
+                _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData);
                 if(paramCount != (zfindex)GIData->paramJNITypes.size()) {
                     zfstringAppend(errorHint, "expect %s param, got %s", (zfindex)GIData->paramJNITypes.size(), paramCount);
                     continue;

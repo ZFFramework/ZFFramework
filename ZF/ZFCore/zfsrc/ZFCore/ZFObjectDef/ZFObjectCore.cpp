@@ -243,7 +243,7 @@ ZFAny ZFObject::objectTag(ZF_IN const zfchar *key) {
         zfCoreMutexLocker();
         _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap.find(key);
         if(it != d->objectTagMap.end()) {
-            return it->second.toObject();
+            return it->second;
         }
     }
     return zfnull;
@@ -258,7 +258,7 @@ void ZFObject::objectTagGetAllKeyValue(
     allValue.capacity(allValue.count() + m.size());
     for(_ZFP_ZFObjectTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
         allKey.add(it->first);
-        allValue.add(it->second.toObject());
+        allValue.add(it->second);
     }
 }
 zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfchar *key) {

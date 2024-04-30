@@ -35,8 +35,8 @@ private:
             child->viewBackgroundColor(ZFUIColorRandom());
         }
 
-        layout->childAt(1)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
-        layout->childAt(2)->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(2);
+        layout->childAt(1)->layoutParam().to<ZFUILinearLayoutParam *>()->layoutWeight(1);
+        layout->childAt(2)->layoutParam().to<ZFUILinearLayoutParam *>()->layoutWeight(2);
 
         zfobj<ZFUILinearLayout> l;
         layout->childAdd(l);

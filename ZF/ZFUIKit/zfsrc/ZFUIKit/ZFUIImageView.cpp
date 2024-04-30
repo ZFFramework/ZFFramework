@@ -23,7 +23,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIImage *, image) {
             ZFLISTENER_1(imageNinePatchChanged
                     , ZFUIImageView *, owner
                     ) {
-                const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
+                const ZFProperty *property = zfargs.param0().zfv();
                 if(property == ZFPropertyAccess(ZFUIImage, imageNinePatch)
                         || property == ZFPropertyAccess(ZFUIImage, imageScale)) {
                     ZFUIImage *image = owner->image();
@@ -94,10 +94,10 @@ void ZFUIImageView::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUIImageView_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFUIView *view
+                ZF_IN ZFAnyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
-            ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewDestroy(view->to<ZFUIImageView *>(), nativeImplView);
+            ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewDestroy(view, nativeImplView);
         }
     };
     zfbool nativeImplViewRequireVirtualIndex = zftrue;

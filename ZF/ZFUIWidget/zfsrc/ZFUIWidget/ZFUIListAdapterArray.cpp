@@ -28,10 +28,10 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeFromData(
                 "null cell");
             return zffalse;
         }
-        if(!element.toObject()->classData()->classIsTypeOf(ZFUIListCell::ClassData())) {
+        if(!element->classData()->classIsTypeOf(ZFUIListCell::ClassData())) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                 "%s not type of %s",
-                element.toObject()->objectInfoOfInstance(), ZFUIListCell::ClassData()->classNameFull());
+                element->objectInfoOfInstance(), ZFUIListCell::ClassData()->classNameFull());
             return zffalse;
         }
         this->cellAdd(element);
@@ -65,7 +65,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeToData(
         }
         else {
             for(zfindex i = 0; i < this->cellCount(); ++i) {
-                if(!ZFObjectCompare(this->cellAt(i).toObject(), ref->cellAt(i).toObject())) {
+                if(!ZFObjectCompare(this->cellAt(i), ref->cellAt(i))) {
                     cellAllSame = zffalse;
                 }
             }

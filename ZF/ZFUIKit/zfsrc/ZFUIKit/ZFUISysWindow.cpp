@@ -12,13 +12,13 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 // ============================================================
 zfclassNotPOD _ZFP_ZFUISysWindowPrivate {
 public:
-    ZFUISysWindowEmbedImpl *embedImpl; // auto retain
+    zfautoT<ZFUISysWindowEmbedImpl> embedImpl;
     void *nativeWindow;
-    ZFUIRootView *windowRootView;
+    zfautoT<ZFUIRootView> windowRootView;
     ZFUIOrientationFlags sysWindowOrientationFlags;
     ZFUISysWindow *modalWindowOwner;
-    ZFUISysWindow *modalWindowShowing; // manually retain
-    ZFUILayoutParam *sysWindowLayoutParam;
+    zfautoT<ZFUISysWindow> modalWindowShowing;
+    zfautoT<ZFUILayoutParam> sysWindowLayoutParam;
     ZFListener sysWindowLayoutParamOnChangeListener;
     zfbool nativeWindowCreated;
     zfbool nativeWindowResumed;
@@ -41,9 +41,6 @@ public:
     , sysWindowMargin()
     {
     }
-    ~_ZFP_ZFUISysWindowPrivate(void) {
-        zfRelease(this->embedImpl);
-    }
 };
 
 ZFOBJECT_REGISTER(ZFUISysWindow)
@@ -58,8 +55,8 @@ ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnKeyEvent)
 
 zfautoT<ZFUISysWindow> ZFUISysWindow::nativeWindowEmbed(ZF_IN ZFUISysWindowEmbedImpl *embedImpl) {
     zfautoT<ZFUISysWindow> tmp = ZFUISysWindow::ClassData()->newInstance();
-    ZFUISysWindow *ret = tmp.to<ZFUISysWindow *>();
-    ret->d->embedImpl = zfRetain(embedImpl);
+    ZFUISysWindow *ret = tmp;
+    ret->d->embedImpl = embedImpl;
     embedImpl->_ZFP_ownerZFUISysWindow = ret;
     embedImpl->sysWindowLayoutParamOnInit(ret);
     return tmp;
@@ -175,9 +172,9 @@ void ZFUISysWindow::sysWindowMarginOnUpdate(ZF_IN const ZFUIMargin &sysWindowMar
 void ZFUISysWindow::objectOnInit(void) {
     zfsuper::objectOnInit();
     d = zfpoolNew(_ZFP_ZFUISysWindowPrivate);
-    d->windowRootView = zfRetain(ZFUIRootView::ClassData()->newInstance().to<ZFUIRootView *>());
+    d->windowRootView = ZFUIRootView::ClassData()->newInstance();
     d->windowRootView->_ZFP_ZFUIRootView_rootViewOwnerSysWindow = this;
-    d->sysWindowLayoutParam = zfAlloc(ZFUILayoutParam);
+    d->sysWindowLayoutParam = zflineAlloc(ZFUILayoutParam);
     d->sysWindowLayoutParam->sizeParam(ZFUISizeParamFillFill());
 }
 void ZFUISysWindow::objectOnInitFinish(void) {
@@ -220,8 +217,6 @@ void ZFUISysWindow::objectOnDeallocPrepare(void) {
     zfsuper::objectOnDeallocPrepare();
 }
 void ZFUISysWindow::objectOnDealloc(void) {
-    zfRelease(d->sysWindowLayoutParam);
-    zfRelease(d->windowRootView);
     zfpoolDelete(d);
     d = zfnull;
     zfsuper::objectOnDealloc();
@@ -296,7 +291,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUISysWindow *, modalWindowShow) {
 
     zfCoreAssertWithMessage(modalWindow != zfnull, "modalWindowShow not available on embeded window");
 
-    d->modalWindowShowing = zfRetain(modalWindow);
+    d->modalWindowShowing = modalWindow;
     d->modalWindowShowing->d->modalWindowOwner = this;
     return modalWindow;
 }
@@ -309,7 +304,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, void, modalWindowFinish) {
     else {
         ZFPROTOCOL_ACCESS(ZFUISysWindow)->modalWindowFinish(d->modalWindowOwner, this);
     }
-    zfblockedRelease(d->modalWindowOwner->d->modalWindowShowing);
+    zfblockedRelease(zfRetain(d->modalWindowOwner->d->modalWindowShowing));
     d->modalWindowOwner->d->modalWindowShowing = zfnull;
     d->modalWindowOwner = zfnull;
 

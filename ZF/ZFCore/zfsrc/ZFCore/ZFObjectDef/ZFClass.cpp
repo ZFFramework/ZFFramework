@@ -1116,7 +1116,7 @@ ZFAny ZFClass::classTag(ZF_IN const zfchar *key) const {
         zfCoreMutexLocker();
         _ZFP_ZFClassTagMapType::iterator it = d->classTagMap.find(key);
         if(it != d->classTagMap.end()) {
-            return it->second.toObject();
+            return it->second;
         }
     }
     return zfnull;
@@ -1130,7 +1130,7 @@ void ZFClass::classTagGetAllKeyValue(
     allValue.capacity(allValue.count() + m.size());
     for(_ZFP_ZFClassTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
         allKey.add(it->first);
-        allValue.add(it->second.toObject());
+        allValue.add(it->second);
     }
 }
 zfauto ZFClass::classTagRemoveAndGet(ZF_IN const zfchar *key) const {

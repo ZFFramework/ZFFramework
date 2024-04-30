@@ -256,11 +256,11 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
 ZFSTYLE_DEFAULT_DEFINE(ZFUIAutoLayout)
 ZFOBJECT_REGISTER(ZFUIAutoLayout)
 
-ZFMETHOD_DEFINE_2(ZFUIAutoLayout, ZFUIAutoLayoutParam *, childAdd
+ZFMETHOD_DEFINE_2(ZFUIAutoLayout, ZFAnyT<ZFUIAutoLayoutParam>, childAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+    return this->childAddWithParam(view, zfnull, atIndex);
 }
 
 zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
@@ -274,7 +274,7 @@ zfbool ZFUIAutoLayout::serializableOnSerializeFromData(
 
     for(zfindex iChild = this->childCount() - 1; iChild != zfindexMax(); --iChild) {
         ZFUIView *child = this->childAt(iChild);
-        ZFUIAutoLayoutParam *lp = child->layoutParam<ZFUIAutoLayoutParam *>();
+        ZFUIAutoLayoutParam *lp = child->layoutParam();
         for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
             ZFUIAutoLayoutRule &rule = lp->_ZFP_AL_d.ruleList[i];
             if(!rule._ZFP_AL_targetId.isEmpty()) {

@@ -18,7 +18,7 @@ protected:
         ZFUIKit_test_prepareTestWindow(window, container, this);
 
         ZFLISTENER(onClickReturn) {
-            ZFUITextEdit *textEdit = zfargs.sender()->toAny();
+            ZFUITextEdit *textEdit = zfargs.sender();
             textEdit->viewFocusRequest(zffalse);
         } ZFLISTENER_END()
 

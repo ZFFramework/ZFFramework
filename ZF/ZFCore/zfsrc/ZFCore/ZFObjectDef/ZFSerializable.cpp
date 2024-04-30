@@ -411,10 +411,10 @@ zfbool ZFSerializable::serializableOnSerializePropertyFromData(
         if(!ZFObjectFromDataT(obj, propertyData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
-        if(obj != zfnull && !obj.toObject()->classData()->classIsTypeOf(property->propertyClassOfRetainProperty())) {
+        if(obj != zfnull && !obj->classData()->classIsTypeOf(property->propertyClassOfRetainProperty())) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, propertyData,
                 "object %s not type of %s",
-                obj.toObject()->objectInfoOfInstance(), property->propertyClassOfRetainProperty()->classNameFull());
+                obj->objectInfoOfInstance(), property->propertyClassOfRetainProperty()->classNameFull());
             return zffalse;
         }
         property->setterMethod()->methodInvoke(this->toObject(), obj);
@@ -647,11 +647,11 @@ zfbool ZFObjectFromDataT(
             obj = cls->newInstance();
         }
     }
-    ZFSerializable *tmp = ZFCastZFObject(ZFSerializable *, obj.toObject());
+    ZFSerializable *tmp = obj;
     if(tmp == zfnull || !tmp->serializable()) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "object %s not serializable",
-            ZFObjectInfoOfInstance(obj.toObject()));
+            ZFObjectInfoOfInstance(obj));
         return zffalse;
     }
     if(!tmp->serializeFromData(serializableData, outErrorHint, outErrorPos)) {

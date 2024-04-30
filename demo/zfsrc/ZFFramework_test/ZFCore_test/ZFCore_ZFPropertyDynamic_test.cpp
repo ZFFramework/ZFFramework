@@ -71,7 +71,7 @@ private:
                     )) {
             return zffalse;
         }
-        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
+        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject;
         obj->myProp(paramList[0]->to<v_zfint *>()->zfv);
         obj->objectTag(_valueKey(), paramList[0]->to<ZFCopyable *>()->copy());
         return zftrue;
@@ -82,7 +82,7 @@ private:
                     )) {
             return zffalse;
         }
-        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject->toAny();
+        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = invokerObject;
         zfauto tag = zfobj<v_zfint>(obj->myProp());
         obj->objectTag(_valueKey(), tag);
         ret = tag;
@@ -90,16 +90,16 @@ private:
     }
     static zfbool _callbackIsValueAccessed(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             ) {
         return !_callbackIsInitValue(property, ownerObj);
     }
     static zfbool _callbackIsInitValue(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             , ZF_OUT_OPT zfauto *outInitValue = zfnull
             ) {
-        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj->toAny();
+        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj;
         if(outInitValue != zfnull) {
             *outInitValue = zfobj<v_zfint>();
         }
@@ -107,9 +107,9 @@ private:
     }
     static void _callbackValueReset(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             ) {
-        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj->toAny();
+        _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj;
         obj->objectTagRemove(_valueKey());
         obj->myProp(0);
     }

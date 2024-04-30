@@ -15,7 +15,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test) {
         ZFLISTENER(action) {
             zfLogTrim() << "[ZFUIOnScreenKeyboardState] state changed: " << zfargs.sender();
         } ZFLISTENER_END()
-        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
+        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender());
         state->observerAdd(ZFUIOnScreenKeyboardState::EventKeyboardStateOnChange(), action);
         _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData task;
         task.state = state;
@@ -28,7 +28,7 @@ ZF_GLOBAL_INITIALIZER_INIT(ZFUIOnScreenKeyboardState_test) {
     ZFLISTENER_1(sysWindowOnDestroy
             , ZFCoreArray<_ZFP_ZFUIOnScreenKeyboardState_test_ObserverData>, taskList
             ) {
-        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender()->toAny());
+        ZFUIOnScreenKeyboardState *state = ZFUIOnScreenKeyboardState::instanceForSysWindow(zfargs.sender());
         for(zfindex i = taskList.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIOnScreenKeyboardState_test_ObserverData const &task = taskList[i];
             if(task.state == state) {

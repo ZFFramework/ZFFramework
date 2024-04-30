@@ -78,7 +78,7 @@ void ZFUITextEditWidget::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &na
     }
 }
 zfbool ZFUITextEditWidget::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
-    if(internalView == this->textEditClearButton()->toObject()) {
+    if(internalView == this->textEditClearButton()) {
         return zffalse;
     }
     return zfsuper::internalViewShouldLayout(internalView);

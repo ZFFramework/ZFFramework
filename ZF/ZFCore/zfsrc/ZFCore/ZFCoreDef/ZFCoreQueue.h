@@ -175,7 +175,8 @@ public:
      * @brief push element at tail of the queue,
      *   auto increase capacity if necessary
      */
-    void addFrom(ZF_IN const ZFCoreArray<T_POD> &arr) {
+    template<typename T_Type>
+    void addFrom(ZF_IN const ZFCoreArray<T_Type> &arr) {
         for(zfindex i = 0, iEnd = arr.count(); i < iEnd; ++i) {
             this->add(arr[i]);
         }
@@ -262,7 +263,8 @@ public:
     /**
      * @brief copy contents to array
      */
-    void toArrayT(ZF_IN_OUT ZFCoreArray<T_POD> &array) const {
+    template<typename T_Type>
+    void toArrayT(ZF_IN_OUT ZFCoreArray<T_Type> &array) const {
         array.capacity(array.capacity() + this->count());
         T_POD *p = _pHead;
         while(p != _pTail) {

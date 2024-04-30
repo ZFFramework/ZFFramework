@@ -15,7 +15,7 @@
  *
  *   // you may create the object's instance by the meta data
  *   zfauto objTmp = cls->newInstance();
- *   ZFObject *obj = objTmp.toObject();
+ *   ZFObject *obj = objTmp;
  *
  *   // cast to desired type if necessary
  *   MyObject *myObj = ZFCastZFObject(MyObject *, obj);

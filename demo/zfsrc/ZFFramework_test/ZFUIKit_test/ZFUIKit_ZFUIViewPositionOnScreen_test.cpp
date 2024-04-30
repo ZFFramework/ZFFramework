@@ -23,7 +23,7 @@ protected:
 
         ZFLISTENER(buttonOnClick) {
             zfLogTrim() << "window size: " << ZFUIRectGetSize(ZFUIViewUtil::viewRoot(zfargs.sender())->viewFrame());
-            zfLogTrim() << "clicked view's position: " << ZFUIViewPositionOnScreen(zfargs.sender()->toAny());
+            zfLogTrim() << "clicked view's position: " << ZFUIViewPositionOnScreen(zfargs.sender());
         } ZFLISTENER_END()
         button->observerAdd(ZFUIButton::EventButtonOnClick(), buttonOnClick);
     }

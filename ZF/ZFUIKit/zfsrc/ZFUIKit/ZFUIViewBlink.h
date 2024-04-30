@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief default mask image for #ZFUIViewBlink, an alpha white image by default
  */
-ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfauto, ZFUIViewBlinkImageDefault)
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIViewBlinkImageDefault)
 
 /**
  * @brief param for #ZFUIViewBlink
@@ -24,7 +24,7 @@ zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewBlinkParam {
 
 public:
     /** @brief image to blink, null to use default */
-    ZFCORE_PARAM(ZFUIImage *, blinkImage)
+    ZFCORE_PARAM(zfautoT<ZFUIImage>, blinkImage)
 
     /** @brief duration to blink, 0 to use #ZFAnimationDurationDefault, 0 by default */
     ZFCORE_PARAM(zftimet, blinkDuration)

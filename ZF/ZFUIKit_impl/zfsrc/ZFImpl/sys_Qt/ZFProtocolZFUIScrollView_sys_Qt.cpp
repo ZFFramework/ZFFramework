@@ -352,7 +352,7 @@ public:
             ZF_IN zffloat x
             , ZF_IN zffloat y
             ) {
-        ZFCoreArray<ZFUIView *> fgViews = _ZFP_ownerZFUIScrollView->internalFgViewArray();
+        ZFCoreArray<zfautoT<ZFUIView> > fgViews = _ZFP_ownerZFUIScrollView->internalFgViewArray();
         for(zfindex i = fgViews.count() - 1; i != zfindexMax(); --i) {
             QGraphicsWidget *t = ZFCastStatic(QGraphicsWidget *, fgViews[i]->nativeView());
             if(t->isVisible() && t->acceptTouchEvents() && t->geometry().contains(x, y)) {

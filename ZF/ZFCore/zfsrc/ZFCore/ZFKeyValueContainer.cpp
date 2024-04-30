@@ -88,7 +88,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
             if(key != zfnull) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                     "missing value for key %s (%s)",
-                    key.toObject()->objectInfoOfInstance(),
+                    key->objectInfoOfInstance(),
                     key);
                 return zffalse;
             }
@@ -113,7 +113,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, "null value");
                 return zffalse;
             }
-            this->iterAdd(key.toObject(), value.toObject());
+            this->iterAdd(key, value);
             key = zfnull;
             value = zfnull;
         }
@@ -121,7 +121,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeFromData(
     if(key != zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "missing value for key %s (%s)",
-            key.toObject()->objectInfoOfInstance(),
+            key->objectInfoOfInstance(),
             key);
         return zffalse;
     }

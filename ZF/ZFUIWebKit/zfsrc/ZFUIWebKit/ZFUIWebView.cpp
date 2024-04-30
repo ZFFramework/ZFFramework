@@ -53,10 +53,10 @@ void ZFUIWebView::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUIWebView_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFUIView *view
+                ZF_IN ZFAnyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
-            ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewDestroy(view->to<ZFUIWebView *>(), nativeImplView);
+            ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewDestroy(view, nativeImplView);
         }
     };
     zfbool nativeImplViewRequireVirtualIndex = zftrue;

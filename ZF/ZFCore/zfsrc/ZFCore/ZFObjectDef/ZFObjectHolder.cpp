@@ -18,14 +18,14 @@ void ZFObjectHolder::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
 }
 
 zfidentity ZFObjectHolder::objectHash(void) {
-    return ZFObjectHash(this->_ZFP_objectHolded.toObject());
+    return ZFObjectHash(this->_ZFP_objectHolded);
 }
 ZFCompareResult ZFObjectHolder::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
     zfself *another = ZFCastZFObject(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
-    return ZFObjectCompare(this->_ZFP_objectHolded.toObject(), another->_ZFP_objectHolded.toObject());
+    return ZFObjectCompare(this->_ZFP_objectHolded, another->_ZFP_objectHolded);
 }
 
 ZF_NAMESPACE_GLOBAL_END

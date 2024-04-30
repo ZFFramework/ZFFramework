@@ -53,7 +53,7 @@
  * you may achieve more complex style logic:
  * @code
  *   ZFLISTENER(myObjCreated) {
- *       MyStyleableObject *obj = zfargs.sender()->toAny();
+ *       MyStyleableObject *obj = zfargs.sender();
  *
  *       // change default setting for all instance of MyStyleableObject
  *       obj->myProperty(xxx);

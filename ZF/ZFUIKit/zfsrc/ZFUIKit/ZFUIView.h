@@ -31,7 +31,7 @@ zfclassFwd ZFUIView;
  * @brief see #ZFUIView::nativeImplView
  */
 typedef void (*ZFUIViewNativeImplViewDeleteCallback)(
-        ZF_IN ZFUIView *view
+        ZF_IN ZFAnyT<ZFUIView> const &view
         , ZF_IN void *nativeImplView
         );
 
@@ -744,14 +744,7 @@ public:
      * return null if the view has no parent,
      * automatically invoke the view's #layoutRequest if the layout param's property changed
      */
-    ZFMETHOD_DECLARE_0(ZFUILayoutParam *, layoutParam)
-    /**
-     * @brief see #layoutParam
-     */
-    template<typename T_LayoutParam>
-    T_LayoutParam layoutParam(void) {
-        return ZFCastZFObjectUnchecked(T_LayoutParam, this->layoutParam());
-    }
+    ZFMETHOD_DECLARE_0(ZFAnyT<ZFUILayoutParam>, layoutParam)
 
 public:
     /**
@@ -880,17 +873,17 @@ public:
      * otherwise, a new layout param would be created
      * and source layout param would be copied to the newly created layout param
      */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, childAddWithParam
+    ZFMETHOD_DECLARE_3(ZFAnyT<ZFUILayoutParam>, childAddWithParam
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN(ZFUILayoutParam *, layoutParam)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
     /** @brief util method for #childAddWithParam */
-    inline ZFUILayoutParam *childAdd(
+    inline ZFAnyT<ZFUILayoutParam> childAdd(
             ZF_IN ZFUIView *view
             , ZF_IN_OPT zfindex atIndex = zfindexMax()
             ) {
-        return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+        return this->childAddWithParam(view, zfnull, atIndex);
     }
     /**
      * @brief remove view or do nothing if view isn't added to this view
@@ -941,7 +934,7 @@ public:
     /**
      * @brief get child view at index or assert fail if out of range
      */
-    ZFMETHOD_DECLARE_1(ZFUIView *, childAt
+    ZFMETHOD_DECLARE_1(ZFAnyT<ZFUIView>, childAt
             , ZFMP_IN(zfindex, index)
             )
     /**
@@ -953,7 +946,7 @@ public:
     /**
      * @brief get the child view array
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, childArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, childArray)
 
     /**
      * @brief this view belongs to which layer of parent,
@@ -967,7 +960,7 @@ public:
      *
      * children are ensured ordered by (impl, bg, normal, fg) views
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, childRawArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, childRawArray)
 
     // ============================================================
     // events
@@ -1003,7 +996,7 @@ public:
             , ZFMP_IN(ZFUIView *, view)
             )
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, internalImplViewArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, internalImplViewArray)
 
 public:
     /**
@@ -1035,7 +1028,7 @@ public:
     /**
      * @brief usually for debug use only, try to avoid use this in your app for other purpose
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, internalBgViewArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, internalBgViewArray)
 
 public:
     /** @brief see #internalBgViewAdd */
@@ -1049,7 +1042,7 @@ public:
             , ZFMP_IN(ZFUIView *, view)
             )
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<ZFUIView *>, internalFgViewArray)
+    ZFMETHOD_DECLARE_0(ZFCoreArray<zfautoT<ZFUIView> >, internalFgViewArray)
 
     // ============================================================
     // other internal view logic

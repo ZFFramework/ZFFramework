@@ -267,7 +267,7 @@ ZFAny ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const {
         _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
         if(it != m.end()) {
-            return it->second.toObject();
+            return it->second;
         }
     }
     return zfnull;
@@ -281,7 +281,7 @@ void ZFSerializableData::serializableDataTagGetAllKeyValue(
     allValue.capacity(allValue.count() + m.size());
     for(_ZFP_ZFSerializableDataTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
         allKey.add(it->first);
-        allValue.add(it->second.toObject());
+        allValue.add(it->second);
     }
 }
 void ZFSerializableData::serializableDataTagRemove(ZF_IN const zfchar *key) {

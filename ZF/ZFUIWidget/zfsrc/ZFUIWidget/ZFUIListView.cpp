@@ -145,16 +145,16 @@ public:
     zfautoT<ZFUIListCell> cellLoadAt(ZF_IN zfindex index) {
         zfautoT<ZFUIListCell> ret = this->listAdapter->cellCacheOnAccess(index);
         if(ret != zfnull) {
-            zfCoreAssertWithMessage(ZFCastZFObject(ZFUIListCell *, ret.toObject()) != zfnull, "list cell %s not type of %s",
-                ret.toObject()->classData()->classNameFull(),
+            zfCoreAssertWithMessage(ZFCastZFObject(ZFUIListCell *, ret) != zfnull, "list cell %s not type of %s",
+                ret->classData()->classNameFull(),
                 ZFUIListCell::ClassData()->classNameFull());
             return ret;
         }
         ret = this->listAdapter->cellAt(index);
         zfCoreAssertWithMessage(ret != zfnull, "cellAt must return a %s", ZFUIListCell::ClassData()->classNameFull());
-        ZFUIListCell *cell = ZFCastZFObject(ZFUIListCell *, ret.toObject());
+        ZFUIListCell *cell = ret;
         zfCoreAssertWithMessage(cell != zfnull, "list cell %s not type of %s",
-            ret.toObject()->classData()->classNameFull(),
+            ret->classData()->classNameFull(),
             ZFUIListCell::ClassData()->classNameFull());
         return ret;
     }
@@ -1316,11 +1316,11 @@ zfbool ZFUIListView::serializableOnSerializeFromData(
             return zffalse;
         }
         if(element != zfnull
-                && !element.toObject()->classData()->classIsTypeOf(ZFUIListAdapter::ClassData())
+                && !element->classData()->classIsTypeOf(ZFUIListAdapter::ClassData())
                 ) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                 "%s not type of %s",
-                element.toObject()->objectInfoOfInstance(), ZFUIListAdapter::ClassData()->classNameFull());
+                element->objectInfoOfInstance(), ZFUIListAdapter::ClassData()->classNameFull());
             return zffalse;
         }
 

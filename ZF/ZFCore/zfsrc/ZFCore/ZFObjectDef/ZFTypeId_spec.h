@@ -465,7 +465,7 @@ public:
             ZF_OUT zfauto &obj
             , ZF_IN ZFAny const &v
             ) {
-        obj = v.toObject();
+        obj = v;
         return zftrue;
     }
     template<typename T_Access = ZFAny

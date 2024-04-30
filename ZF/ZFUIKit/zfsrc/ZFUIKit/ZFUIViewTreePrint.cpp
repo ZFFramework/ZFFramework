@@ -10,12 +10,10 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreePrintAfterDelay
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
         ) {
-    ZFObjectHolder *viewHolder = view->objectHolder();
     ZFLISTENER_2(action
-            , zfautoT<ZFObjectHolder>, viewHolder
+            , zfweakT<ZFUIView>, view
             , ZFOutput, outputCallback
             ) {
-        ZFUIView *view = viewHolder->objectHolded();
         if(view != zfnull) {
             ZFUIViewTreePrint(view, outputCallback);
         }
@@ -70,13 +68,13 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         printDatas.removeLast();
 
         // all children
-        ZFCoreArray<ZFUIView *> implViews = printData.view->internalImplViewArray();
-        ZFCoreArray<ZFUIView *> bgViews = printData.view->internalBgViewArray();
-        ZFCoreArray<ZFUIView *> normalViews = printData.view->childArray();
-        ZFCoreArray<ZFUIView *> fgViews = printData.view->internalFgViewArray();
+        ZFCoreArray<zfautoT<ZFUIView> > implViews = printData.view->internalImplViewArray();
+        ZFCoreArray<zfautoT<ZFUIView> > bgViews = printData.view->internalBgViewArray();
+        ZFCoreArray<zfautoT<ZFUIView> > normalViews = printData.view->childArray();
+        ZFCoreArray<zfautoT<ZFUIView> > fgViews = printData.view->internalFgViewArray();
         for(zfindex i = fgViews.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
-            printDataTmp.view = fgViews.get(i)->to<ZFUIView *>();
+            printDataTmp.view = fgViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = ZFUIViewChildLayer::e_InternalFg;
@@ -84,7 +82,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         }
         for(zfindex i = normalViews.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
-            printDataTmp.view = normalViews.get(i)->to<ZFUIView *>();
+            printDataTmp.view = normalViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = ZFUIViewChildLayer::e_Normal;
@@ -92,7 +90,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         }
         for(zfindex i = bgViews.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
-            printDataTmp.view = bgViews.get(i)->to<ZFUIView *>();
+            printDataTmp.view = bgViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = ZFUIViewChildLayer::e_InternalBg;
@@ -100,7 +98,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         }
         for(zfindex i = implViews.count() - 1; i != zfindexMax(); --i) {
             _ZFP_ZFUIViewTreePrintPrintData printDataTmp;
-            printDataTmp.view = implViews.get(i)->to<ZFUIView *>();
+            printDataTmp.view = implViews.get(i);
             printDataTmp.depth = printData.depth + 1;
             printDataTmp.siblingIndex = i;
             printDataTmp.layer = ZFUIViewChildLayer::e_InternalImpl;
@@ -229,12 +227,10 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreeNativePrintAfterDelay
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFOutput &, outputCallback, ZFOutputDefault())
         ) {
-    ZFObjectHolder *viewHolder = view->objectHolder();
     ZFLISTENER_2(action
-            , zfautoT<ZFObjectHolder>, viewHolder
+            , zfweakT<ZFUIView>, view
             , ZFOutput, outputCallback
             ) {
-        ZFUIView *view = viewHolder->objectHolded();
         if(view != zfnull) {
             ZFUIViewTreeNativePrint(view, outputCallback);
         }

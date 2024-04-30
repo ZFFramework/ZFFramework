@@ -16,11 +16,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassFwd ZFProperty;
 typedef void (*_ZFP_ZFPropertyCallbackEnsureInit)(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFObject *owner
+        , ZF_IN ZFAny const &owner
         );
 typedef void (*_ZFP_ZFPropertyCallbackDealloc)(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFObject *owner
+        , ZF_IN ZFAny const &owner
         );
 typedef void (*_ZFP_ZFPropertyMethodCleanup)(ZF_IN const ZFMethod *method);
 /**

@@ -86,7 +86,7 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNative
     }
 
     ZFMethodFuncUserRegister_0(method, {
-            return invokerMethod->methodUserRegisterUserData()->to<ZFUISysWindow *>();
+            return invokerMethod->methodUserRegisterUserData();
         }, "", ZFUISysWindow *, sysWindowName);
     method->methodUserRegisterUserData(sysWindow);
 

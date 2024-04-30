@@ -97,7 +97,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
     }
     blinkView->image((blinkParam.blinkImage() != zfnull)
         ? blinkParam.blinkImage()
-        : ZFUIViewBlinkImageDefault().to<ZFUIImage *>());
+        : ZFUIViewBlinkImageDefault());
 
     if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView) && !_ZFP_ZFUIViewBlink_DEBUG_noAni) {
         if(blinkParam.blinkCount() > 1) {
@@ -117,7 +117,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
                 , zfautoT<ZFUIView>, view
                 ) {
             ZFAnimation *ani = zfargs.sender();
-            ZFUIView *blinkView = ani->aniTarget()->to<ZFUIView *>();
+            ZFUIView *blinkView = ani->aniTarget();
 
             v_zfindex *blinkCountLeft = view->objectTag<v_zfindex *>(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
             if(blinkCountLeft != zfnull) {
@@ -208,7 +208,7 @@ static void _ZFP_ZFUIViewBlinkDoOff(ZF_IN ZFUIView *view) {
 
 // ============================================================
 // other
-ZFEXPORT_VAR_DEFINE(zfauto, ZFUIViewBlinkImageDefault, zfnull)
+ZFEXPORT_VAR_DEFINE(zfautoT<ZFUIImage>, ZFUIViewBlinkImageDefault, zfnull)
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewBlinkInitSetting, ZFLevelZFFrameworkNormal) {
     (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder);
     if(ZFPROTOCOL_IS_AVAILABLE(ZFUIImage)) {

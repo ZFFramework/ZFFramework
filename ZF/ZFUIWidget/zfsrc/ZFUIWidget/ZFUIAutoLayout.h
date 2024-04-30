@@ -373,7 +373,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextend ZFUIView {
     // override ZFUIView
 public:
     /** @brief util method for #childAddWithParam */
-    ZFMETHOD_DECLARE_2(ZFUIAutoLayoutParam *, childAdd
+    ZFMETHOD_DECLARE_2(ZFAnyT<ZFUIAutoLayoutParam>, childAdd
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )

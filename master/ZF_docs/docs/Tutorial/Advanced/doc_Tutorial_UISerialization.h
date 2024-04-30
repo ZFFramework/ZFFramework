@@ -19,7 +19,7 @@
  *   ZFSerializableData dataNew = ZFSerializableDataFromXml(ZFInputForBufferUnsafe(xmlString));
  *   zfauto objNew = ZFObjectFromData(dataNew);
  *   zfLogTrim() << "re-serialized object:";
- *   zfLogTrim() << objNew.toObject();
+ *   zfLogTrim() << objNew;
  * @endcode
  * which would output these:
  * @code

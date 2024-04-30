@@ -111,7 +111,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowShow) {
     }
     zfindex windowIndex = 0;
     zfindex addToIndex = 0;
-    ZFCoreArray<ZFUIView *> tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
     for(zfindex i = 0; i < tmpArray.count(); ++i) {
         ZFUIWindow *tmpWindow = ZFCastZFObject(ZFUIWindow *, tmpArray.get(i));
         if(tmpWindow != zfnull) {
@@ -151,7 +151,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop) {
         return;
     }
 
-    ZFCoreArray<ZFUIView *> tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
     ZFUIWindowLevelEnum selfWindowLevel = this->windowLevel();
     zfindex topIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
@@ -176,7 +176,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
         return;
     }
 
-    ZFCoreArray<ZFUIView *> tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
+    ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
     ZFUIWindowLevelEnum selfWindowLevel = this->windowLevel();
     zfindex bottomIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();

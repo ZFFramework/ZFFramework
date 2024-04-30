@@ -596,8 +596,8 @@ void ZFUIScrollView::objectOnInit(void) {
 
     d = zfAlloc(_ZFP_ZFUIScrollViewPrivate);
     d->pimplOwner = this;
-    d->xScroll = zfRetain(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstance().toObject()));
-    d->yScroll = zfRetain(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstance().toObject()));
+    d->xScroll = zfRetain(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstance()));
+    d->yScroll = zfRetain(ZFCastZFObject(ZFUIScroller *, this->scrollerClass()->newInstance()));
     zfCoreAssertWithMessage(d->xScroll != zfnull && d->yScroll != zfnull,
         "scrollerClass must return a class type of %s",
         ZFUIScroller::ClassData()->classNameFull());
@@ -610,10 +610,10 @@ void ZFUIScrollView::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUIScrollView_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFUIView *view
+                ZF_IN ZFAnyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
-            ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewDestroy(view->to<ZFUIScrollView *>(), nativeImplView);
+            ZFPROTOCOL_ACCESS(ZFUIScrollView)->nativeScrollViewDestroy(view, nativeImplView);
         }
     };
     zfbool nativeImplViewRequireVirtualIndex = zftrue;
@@ -723,11 +723,10 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
         d->yScroll->scrollOwnerSizeChanged(yScrollOwnerSize);
         d->scrollerUpdate();
 
-        ZFObjectHolder *scrollViewHolder = this->objectHolder();
+        zfweakT<zfself> scrollView = this;
         ZFLISTENER_1(action
-                , zfautoT<ZFObjectHolder>, scrollViewHolder
+                , zfweakT<zfself>, scrollView
                 ) {
-            ZFUIScrollView *scrollView = scrollViewHolder->objectHolded();
             if(scrollView == zfnull) {
                 return;
             }
@@ -968,7 +967,7 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollThumbHorizontalClass
         d->xScrollThumb = zfnull;
     }
     if(cls != zfnull) {
-        d->xScrollThumb = zfRetain(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstance().toObject()));
+        d->xScrollThumb = zfRetain(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstance()));
         if(d->xScrollThumb != zfnull) {
             d->xScrollThumb->_scrollView = this;
             d->xScrollThumb->_horizontal = zftrue;
@@ -993,7 +992,7 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollThumbVerticalClass
         d->yScrollThumb = zfnull;
     }
     if(cls != zfnull) {
-        d->yScrollThumb = zfRetain(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstance().toObject()));
+        d->yScrollThumb = zfRetain(ZFCastZFObject(ZFUIScrollThumb *, cls->newInstance()));
         if(d->yScrollThumb != zfnull) {
             d->yScrollThumb->_scrollView = this;
             d->yScrollThumb->_horizontal = zffalse;

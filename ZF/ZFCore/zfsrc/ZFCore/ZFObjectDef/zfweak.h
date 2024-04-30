@@ -195,6 +195,7 @@ private:
 };
 ZFOUTPUT_TYPE(zfweak, {
     if(v) {
+        s += "[weak]";
         v.toObject()->objectInfoT(s);
     }
     else {
@@ -259,6 +260,7 @@ public:
 };
 ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfweakT<T_ZFObject>, {
     if(v) {
+        s += "[weak]";
         v.toObject()->objectInfoT(s);
     }
     else {

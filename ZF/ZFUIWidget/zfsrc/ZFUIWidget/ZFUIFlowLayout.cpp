@@ -38,11 +38,11 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zffloat, layoutChildSpaceY) {
     }
 }
 
-ZFMETHOD_DEFINE_2(ZFUIFlowLayout, ZFUIFlowLayoutParam *, childAdd
+ZFMETHOD_DEFINE_2(ZFUIFlowLayout, ZFAnyT<ZFUIFlowLayoutParam>, childAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+    return this->childAddWithParam(view, zfnull, atIndex);
 }
 
 // ============================================================
@@ -149,7 +149,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureHorizontalLine(
     childIndexStop = parent->childCount();
     for(zfindex i = childIndexStart; i < parent->childCount(); ++i) {
         ZFUIView *child = parent->childAt(i);
-        ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
+        ZFUIFlowLayoutParam *layoutParam = child->layoutParam();
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }
@@ -198,7 +198,7 @@ static ZFUISize _ZFP_ZFUIFlowLayout_measureVerticalLine(
     childIndexStop = parent->childCount();
     for(zfindex i = childIndexStart; i < parent->childCount(); ++i) {
         ZFUIView *child = parent->childAt(i);
-        ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
+        ZFUIFlowLayoutParam *layoutParam = child->layoutParam();
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }
@@ -316,7 +316,7 @@ static void _ZFP_ZFUIFlowLayout_layoutHorizontal(
         zffloat usedSize = (positiveDirectionX ? parent->layoutChildMargin().left : parent->layoutChildMargin().right);
         for(zfindex i = childIndexStart; i < childIndex; ++i) {
             ZFUIView *child = parent->childAt(i);
-            ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
+            ZFUIFlowLayoutParam *layoutParam = child->layoutParam();
             if(!child->viewVisible() && !layoutParam->reserveSpace()) {
                 continue ;
             }
@@ -376,7 +376,7 @@ static void _ZFP_ZFUIFlowLayout_layoutVertical(
         zffloat usedSize = (positiveDirectionY ? parent->layoutChildMargin().top : parent->layoutChildMargin().bottom);
         for(zfindex i = childIndexStart; i < childIndex; ++i) {
             ZFUIView *child = parent->childAt(i);
-            ZFUIFlowLayoutParam *layoutParam = child->layoutParam()->toAny();
+            ZFUIFlowLayoutParam *layoutParam = child->layoutParam();
             if(!child->viewVisible() && !layoutParam->reserveSpace()) {
                 continue ;
             }

@@ -280,7 +280,7 @@ ZFAny ZFCallback::callbackTag(ZF_IN const zfchar *key) const {
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
         _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
         if(it != m.end()) {
-            return it->second.toObject();
+            return it->second;
         }
     }
     return zfnull;
@@ -296,7 +296,7 @@ void ZFCallback::callbackTagGetAllKeyValue(
         allValue.capacity(allValue.count() + m.size());
         for(_ZFP_ZFCallbackTagMap::iterator it = m.begin(); it != m.end(); ++it) {
             allKey.add(it->first);
-            allValue.add(it->second.toObject());
+            allValue.add(it->second);
         }
     }
 }

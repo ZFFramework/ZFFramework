@@ -31,11 +31,11 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, zffloat, layoutChildSpace) {
     }
 }
 
-ZFMETHOD_DEFINE_2(ZFUILinearLayout, ZFUILinearLayoutParam *, childAdd
+ZFMETHOD_DEFINE_2(ZFUILinearLayout, ZFAnyT<ZFUILinearLayoutParam>, childAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {
-    return this->childAddWithParam(view, zfnull, atIndex)->toAny();
+    return this->childAddWithParam(view, zfnull, atIndex);
 }
 
 // ============================================================
@@ -112,7 +112,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureHorizontal(
     }
     for(zfindex i = 0; i < parent->childCount(); ++i) {
         ZFUIView *child = parent->childAt(i);
-        ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
+        ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }
@@ -157,7 +157,7 @@ static ZFUISize _ZFP_ZFUILinearLayout_measureVertical(
     }
     for(zfindex i = 0; i < parent->childCount(); ++i) {
         ZFUIView *child = parent->childAt(i);
-        ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
+        ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }
@@ -204,7 +204,7 @@ static void _ZFP_ZFUILinearLayout_layoutHorizontal(
     zffloat usedSize = (positiveDirection ? parent->layoutChildMargin().left : parent->layoutChildMargin().right);
     for(zfindex i = 0; i < parent->childCount(); ++i) {
         ZFUIView *child = parent->childAt(i);
-        ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
+        ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }
@@ -251,7 +251,7 @@ static void _ZFP_ZFUILinearLayout_layoutVertical(
     zffloat usedSize = (positiveDirection ? parent->layoutChildMargin().top : parent->layoutChildMargin().bottom);
     for(zfindex i = 0; i < parent->childCount(); ++i) {
         ZFUIView *child = parent->childAt(i);
-        ZFUILinearLayoutParam *layoutParam = child->layoutParam()->toAny();
+        ZFUILinearLayoutParam *layoutParam = child->layoutParam();
         if(!child->viewVisible() && !layoutParam->reserveSpace()) {
             continue ;
         }

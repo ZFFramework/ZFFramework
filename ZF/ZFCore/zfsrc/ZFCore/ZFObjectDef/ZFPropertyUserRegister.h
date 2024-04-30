@@ -92,7 +92,7 @@ public:
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
     static zfbool callbackIsValueAccessed(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             ) {
         return (ownerObj->objectTag(
                 zfsConnectLineFree("_ZFP_PropURDIRetain_", property->propertyName())
@@ -101,7 +101,7 @@ public:
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
     static zfbool callbackIsInitValue(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             , ZF_OUT_OPT zfauto *outInitValue
             ) {
         zfCoreMutexLocker();
@@ -130,7 +130,7 @@ public:
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
     static void callbackValueReset(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
@@ -214,7 +214,7 @@ public:
     /** @brief default impl for #ZFPropertyUserRegisterAssign */
     static zfbool callbackIsValueAccessed(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             ) {
         return (ownerObj->objectTag(
                 zfsConnectLineFree("_ZFP_PropURDIAssign_", property->propertyName())
@@ -223,7 +223,7 @@ public:
     /** @brief default impl for #ZFPropertyUserRegisterAssign */
     static zfbool callbackIsInitValue(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             , ZF_OUT_OPT zfauto *outInitValue
             ) {
         zfCoreMutexLocker();
@@ -242,7 +242,7 @@ public:
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
     static void callbackValueReset(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFObject *ownerObj
+            , ZF_IN ZFAny const &ownerObj
             ) {
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
@@ -480,20 +480,20 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
  *   }
  *   static zfbool myCallbackIsValueAccessed(
  *           ZF_IN const ZFProperty *
- *           , ZF_IN ZFObject *ownerObj
+ *           , ZF_IN ZFAny const &ownerObj
  *           ) {
  *       ...
  *   }
  *   static zfbool myCallbackIsInitValue(
  *           ZF_IN const ZFProperty *property
- *           , ZF_IN ZFObject *ownerObj
+ *           , ZF_IN ZFAny const &ownerObj
  *           , ZF_OUT_OPT zfauto *outInitValue
  *           ) {
  *       ...
  *   }
  *   static void myCallbackValueReset(
  *           ZF_IN const ZFProperty *property
- *           , ZF_IN ZFObject *ownerObj
+ *           , ZF_IN ZFAny const &ownerObj
  *           ) {
  *       ...
  *   }

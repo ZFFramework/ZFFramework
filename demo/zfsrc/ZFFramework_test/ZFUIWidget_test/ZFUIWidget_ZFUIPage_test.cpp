@@ -95,7 +95,7 @@ protected:
         zfsuper::managerOnCreate();
 
         this->managerContainer()->to<ZFUILinearLayout *>()->layoutOrientation(ZFUIOrientation::e_Top);
-        this->pageContainer()->layoutParam<ZFUILinearLayoutParam *>()->layoutWeight(1);
+        this->pageContainer()->layoutParam().to<ZFUILinearLayoutParam *>()->layoutWeight(1);
 
         this->managerContainer()->childAdd(this->_buttonLayout())->c_widthFill();
         this->_buttonLayout()->layoutOrientation(ZFUIOrientation::e_Left);
@@ -129,7 +129,7 @@ protected:
                 }
                 else {
                     for(zfindex i = 0; i < pageManager->_buttonLayout()->childCount(); ++i) {
-                        ZFUIButton *button = pageManager->_buttonLayout()->childAt(i)->toAny();
+                        ZFUIButton *button = pageManager->_buttonLayout()->childAt(i);
                         button->checked(zffalse);
                     }
                     zfargs.sender()->to<ZFUIButton *>()->checked(zftrue);

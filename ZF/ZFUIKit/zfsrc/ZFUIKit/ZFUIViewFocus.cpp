@@ -36,8 +36,8 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup
 
     ZFObjectHolder *nextFocusHolderOld = from->objectTag<ZFObjectHolder *>(_ZFP_ZFUIViewFocus_tag_nextFocus);
     if(nextFocusHolderOld != zfnull) {
-        nextFocusHolderOld->objectHolded().toObject()->observerRemove(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
-        nextFocusHolderOld->objectHolded().toObject()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
+        nextFocusHolderOld->objectHolded()->observerRemove(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
+        nextFocusHolderOld->objectHolded()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
         from->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocus);
     }
 
@@ -115,7 +115,7 @@ static void _ZFP_ZFUIViewFocusNextFind(
             offsetY + view->viewFrame().y);
     }
     if(includingInternalViews) {
-        ZFCoreArray<ZFUIView *> viewArray = view->internalBgViewArray();
+        ZFCoreArray<zfautoT<ZFUIView> > viewArray = view->internalBgViewArray();
         for(zfindex i = 0; i < viewArray.count(); ++i) {
             _ZFP_ZFUIViewFocusNextFind(
                 focusDatas,

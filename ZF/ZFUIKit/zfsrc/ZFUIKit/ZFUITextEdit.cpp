@@ -143,10 +143,10 @@ void ZFUITextEdit::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUITextEdit_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFUIView *view
+                ZF_IN ZFAnyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
-            ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditDestroy(view->to<ZFUITextEdit *>(), nativeImplView);
+            ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditDestroy(view, nativeImplView);
         }
     };
     zfbool nativeImplViewRequireVirtualIndex = zftrue;
@@ -216,7 +216,7 @@ ZFMETHOD_DEFINE_2(ZFUITextEdit, void, measureTextEdit
             && !this->textPlaceHolder()->text().isEmpty()
             ) {
         ZFUISize hintSize = ZFUISizeZero();
-        this->textPlaceHolder()->to<ZFUITextView *>()->measureTextView(hintSize);
+        this->textPlaceHolder()->measureTextView(hintSize);
         if(ret.width < hintSize.width) {
             ret.width = hintSize.width;
         }
@@ -408,7 +408,7 @@ zfbool ZFUITextEdit::internalViewShouldLayout(ZF_IN ZFUIView *internalView) {
 void ZFUITextEdit::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     zfsuper::internalViewOnLayout(bounds);
 
-    ZFUITextView *textPlaceHolder = this->textPlaceHolder()->to<ZFUITextView *>();
+    ZFUITextView *textPlaceHolder = this->textPlaceHolder();
     textPlaceHolder->viewFrame(ZFUIRectApplyMargin(
             bounds,
             ZFUIMarginInc(this->nativeImplViewMargin(), textPlaceHolder->layoutParam()->layoutMargin())

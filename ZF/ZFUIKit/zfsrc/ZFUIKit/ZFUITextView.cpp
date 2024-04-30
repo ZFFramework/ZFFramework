@@ -80,10 +80,10 @@ void ZFUITextView::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUITextView_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFUIView *view
+                ZF_IN ZFAnyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
-            ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewDestroy(view->to<ZFUITextView *>(), nativeImplView);
+            ZFPROTOCOL_ACCESS(ZFUITextView)->nativeTextViewDestroy(view, nativeImplView);
         }
     };
     zfbool nativeImplViewRequireVirtualIndex = zftrue;

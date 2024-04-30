@@ -16,7 +16,7 @@ ZFOUTPUT_TYPE_DEFINE(zfauto, {
         s += ZFTOKEN_zfnull;
     }
     else {
-        v.toObject()->objectInfoT(s);
+        v->objectInfoT(s);
     }
 })
 
@@ -27,7 +27,7 @@ ZFOUTPUT_TYPE_DEFINE(ZFAny, {
         s += ZFTOKEN_zfnull;
     }
     else {
-        v.toObject()->objectInfoT(s);
+        v->objectInfoT(s);
     }
 })
 

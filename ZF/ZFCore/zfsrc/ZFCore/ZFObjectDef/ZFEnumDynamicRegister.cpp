@@ -216,7 +216,7 @@ void ZFEnumDynamicUnregister(ZF_IN const ZFClass *enumClass) {
         return;
     }
 
-    _ZFP_I_ZFEnumDynamicHolder *d = enumClass->classDynamicRegisterUserData()->toAny();
+    _ZFP_I_ZFEnumDynamicHolder *d = enumClass->classDynamicRegisterUserData();
     if(d == zfnull) {
         return;
     }

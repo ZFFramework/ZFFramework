@@ -259,7 +259,7 @@ void ZFMethod::objectInfoT(ZF_IN_OUT zfstring &ret) const {
                     ret += ZFTOKEN_zfnull;
                 }
                 else {
-                    v.toObject()->objectInfoT(ret);
+                    v->objectInfoT(ret);
                 }
             }
         }

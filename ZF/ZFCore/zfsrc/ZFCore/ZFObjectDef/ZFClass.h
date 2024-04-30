@@ -282,7 +282,7 @@ public:
      *   ...
      *   // OK, newObj is a new instance of MyObject
      *   zfauto newObjTmp = myObj->classData()->newInstance();
-     *   ZFObject *newObj = newObjTmp.toObject();
+     *   ZFObject *newObj = newObjTmp;
      * @endcode
      * @note object's no param version of objectOnInit would be called,
      *   if you want to construct with params,

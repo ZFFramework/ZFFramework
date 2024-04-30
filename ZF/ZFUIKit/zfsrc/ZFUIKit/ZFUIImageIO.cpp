@@ -261,7 +261,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIImage>, ZFUIImageFromNativeImage
         return zfnull;
     }
     zfautoT<ZFUIImage> ret = ZFUIImage::ClassData()->newInstance();
-    ret.to<ZFUIImage *>()->nativeImage(nativeImage);
+    ret->nativeImage(nativeImage);
     return ret;
 }
 

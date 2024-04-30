@@ -518,7 +518,7 @@ zfbool ZFImpl_ZFLua_toString(
     }
 
     zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
-    return ZFImpl_ZFLua_toString(s, param.toObject(), allowEmpty, holderCls);
+    return ZFImpl_ZFLua_toString(s, param, allowEmpty, holderCls);
 }
 zfbool ZFImpl_ZFLua_toString(
         ZF_IN_OUT const zfchar *&s
@@ -567,7 +567,7 @@ zfbool ZFImpl_ZFLua_toNumberT(
     }
 
     zfauto const &param = ZFImpl_ZFLua_luaGet(L, luaStackOffset);
-    return ZFImpl_ZFLua_toNumberT(ret, param.toObject(), allowEmpty, holderCls);
+    return ZFImpl_ZFLua_toNumberT(ret, param, allowEmpty, holderCls);
 }
 
 zfbool ZFImpl_ZFLua_toNumberT(
@@ -744,7 +744,7 @@ static zfstring _ZFP_ZFImpl_ZFLua_zfstringAppend_string(
     zfstring ret;
     zfauto t;
     if(ZFImpl_ZFLua_toObject(t, L, i)) {
-        ZFObjectInfoT(ret, t.toObject());
+        ZFObjectInfoT(ret, t);
     }
     else if(ZFImpl_ZFLua_toString(ret, L, i)) {
         // nothing to do

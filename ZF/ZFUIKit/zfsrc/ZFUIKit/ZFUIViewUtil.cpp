@@ -47,7 +47,7 @@ ZFMETHOD_FUNC_DEFINE_5(ZFUIView *, viewChildAt
         return zfnull;
     }
 
-    ZFCoreArray<ZFUIView *> childList = view->internalFgViewArray();
+    ZFCoreArray<zfautoT<ZFUIView> > childList = view->internalFgViewArray();
     for(zfindex i = childList.count() - 1; i != zfindexMax(); --i) {
         ZFUIView *child = childList[i];
         ZFUIView *tmp = ZFUIViewUtil::viewChildAt(child, ZFUIPointMake(

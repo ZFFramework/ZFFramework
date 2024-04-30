@@ -38,10 +38,10 @@ protected:
                 ) {
                 testCase->testCaseStop();
             } ZFLISTENER_END()
-            last.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), lastHintOnHide);
+            last->observerAdd(ZFUIHint::EventHintOnHide(), lastHintOnHide);
         } ZFLISTENER_END()
 #endif
-        hint.toObject()->observerAdd(ZFUIHint::EventHintOnHide(), hintOnHide);
+        hint->observerAdd(ZFUIHint::EventHintOnHide(), hintOnHide);
     }
 };
 ZFOBJECT_REGISTER(ZFUIWidget_ZFUIHint_test)

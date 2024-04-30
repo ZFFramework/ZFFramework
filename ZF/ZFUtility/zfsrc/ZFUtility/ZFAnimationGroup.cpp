@@ -273,12 +273,12 @@ zfbool ZFAnimationGroup::serializableOnSerializeFromData(
                     "null child");
                 return zffalse;
             }
-            if(!element.toObject()->classData()->classIsTypeOf(ZFAnimationGroupChildData::ClassData())) {
+            if(!element->classData()->classIsTypeOf(ZFAnimationGroupChildData::ClassData())) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
-                    "object %s not type of %s", element.toObject()->objectInfoOfInstance(), ZFAnimationGroupChildData::ClassData());
+                    "object %s not type of %s", element->objectInfoOfInstance(), ZFAnimationGroupChildData::ClassData());
                 return zffalse;
             }
-            ZFAnimationGroupChildData *childData = ZFCastZFObjectUnchecked(ZFAnimationGroupChildData *, element.toObject());
+            ZFAnimationGroupChildData *childData = element;
             if(childData->childAni() == zfnull) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, categoryData,
                     "null child animation");

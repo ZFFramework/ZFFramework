@@ -31,7 +31,7 @@ public:
             ) {
         zfsuperI(ZFUIListAdapter)::cellOnUpdate(atIndex, cell);
 
-        ZFUIListCellViewBasic *tmp = cell->cellView()->toAny();
+        ZFUIListCellViewBasic *tmp = cell->cellView();
         tmp->cellLabelMain()->text(zfstr("main %s", atIndex));
         if(zfmRand(3) == 0) {
             tmp->cellLabelSub()->text(zfstr("sub %s", atIndex));

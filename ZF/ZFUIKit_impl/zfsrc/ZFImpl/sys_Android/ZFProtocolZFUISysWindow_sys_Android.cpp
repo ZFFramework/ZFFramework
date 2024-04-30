@@ -113,7 +113,7 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             ZFCastStatic(jobject, sysWindowOwner->nativeWindow()),
-            JNIConvertZFObjectToJNIType(jniEnv, modalWindow.toObject()));
+            JNIConvertZFObjectToJNIType(jniEnv, modalWindow));
 
         return modalWindow;
     }

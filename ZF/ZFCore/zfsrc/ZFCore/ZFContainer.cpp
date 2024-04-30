@@ -75,7 +75,7 @@ zfbool ZFContainer::serializableOnSerializeFromData(
                     "null element");
                 return zffalse;
             }
-            this->iterAdd(element.toObject());
+            this->iterAdd(element);
 
             categoryData.resolveMark();
         }
