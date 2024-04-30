@@ -15,27 +15,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObject>
 zfauto::zfauto(ZF_IN T_ZFObject *p)
-: d(zfnull)
+: _ZFP_obj(zfRetain(p ? p->toObject() : zfnull))
 {
-    ZFObject *obj = (p ? p->toObject() : zfnull);
-    if(obj) {
-        zfCoreMutexLock();
-        d = zfpoolNew(_ZFP_zfautoPrivate,
-            zfunsafe_zfRetain(obj));
-        zfCoreMutexUnlock();
-    }
 }
 template<typename T_ZFObject>
 zfauto::zfauto(ZF_IN T_ZFObject const &p)
-: d(zfnull)
+: _ZFP_obj(zfRetain(_ZFP_ZFAnyCast(T_ZFObject, p)))
 {
-    ZFObject *obj = _ZFP_ZFAnyCast(T_ZFObject, p);
-    if(obj) {
-        zfCoreMutexLock();
-        d = zfpoolNew(_ZFP_zfautoPrivate,
-            zfunsafe_zfRetain(obj));
-        zfCoreMutexUnlock();
-    }
 }
 
 template<typename T_ZFObject>

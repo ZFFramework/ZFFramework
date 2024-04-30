@@ -12,15 +12,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // zfauto
-zfclassNotPOD ZFLIB_ZFCore _ZFP_zfautoPrivate {
-public:
-    zfuint refCount;
-    ZFAny obj;
-public:
-    _ZFP_zfautoPrivate(void) : refCount(1), obj(zfnull) {}
-    _ZFP_zfautoPrivate(ZF_IN ZFObject *obj) : refCount(1), obj(obj) {}
-};
-
 /**
  * @brief a ZFObject holder which would release content object automatically when destroyed
  *
@@ -43,9 +34,9 @@ public:
 zffinal zfclassLikePOD ZFLIB_ZFCore zfauto {
     /** @cond ZFPrivateDoc */
 public:
-    zfauto(void) : d(zfnull) {}
+    zfauto(void) : _ZFP_obj(zfnull) {}
     zfauto(ZF_IN zfauto const &obj);
-    zfauto(ZF_IN zfnullT const &) : d(zfnull) {}
+    zfauto(ZF_IN zfnullT const &) : _ZFP_obj(zfnull) {}
     template<typename T_ZFObject>
     zfauto(ZF_IN T_ZFObject *obj);
     template<typename T_ZFObject>
@@ -96,7 +87,7 @@ public:
 
 public:
     const ZFAny &_ZFP_ZFAny(void) const {
-        return d->obj;
+        return _ZFP_obj;
     }
 
 public:
@@ -115,14 +106,12 @@ public:
     /**
      * @brief get current retain count
      */
-    zfindex objectRetainCount(void) const {
-        return (zfindex)(d ? d->refCount : 0);
-    }
+    zfindex objectRetainCount(void) const;
     /**
      * @brief get the holded object
      */
     inline ZFObject *toObject(void) const {
-        return (d ? d->obj : zfnull);
+        return _ZFP_obj;
     }
     /**
      * @brief cast by #ZFCastZFObjectUnchecked
@@ -140,7 +129,7 @@ public:
     }
 
 private:
-    _ZFP_zfautoPrivate *d;
+    ZFAny _ZFP_obj;
 };
 
 // ============================================================

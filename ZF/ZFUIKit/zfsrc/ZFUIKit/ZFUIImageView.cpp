@@ -23,7 +23,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIImage *, image) {
             ZFLISTENER_1(imageNinePatchChanged
                     , ZFUIImageView *, owner
                     ) {
-                const ZFProperty *property = zfargs.param0().zfv();
+                const ZFProperty *const &property = zfargs.param0().zfv();
                 if(property == ZFPropertyAccess(ZFUIImage, imageNinePatch)
                         || property == ZFPropertyAccess(ZFUIImage, imageScale)) {
                     ZFUIImage *image = owner->image();
