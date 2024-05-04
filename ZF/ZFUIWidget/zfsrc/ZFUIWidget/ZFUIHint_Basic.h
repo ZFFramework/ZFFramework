@@ -45,7 +45,7 @@ ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFUIHint>, ZFUIHintShow
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {
     zfautoT<ZFUIHint> hint = ZFUIHintMake(text, icon);
-    hint.to<ZFUIHint *>()->hintShow();
+    hint->hintShow();
     return hint;
 }
 

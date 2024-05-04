@@ -161,7 +161,8 @@ ZFAniBuilder &ZFAniBuilder::operator = (ZF_IN const ZFAniBuilder &ref) {
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFAniBuilder, ZFAniBuilder)
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<v_ZFAniBuilder *>()->zfv.aniTarget(aniTarget);
+        ZFAniBuilder const &v = invokerObject.zfv();
+        v.aniTarget(aniTarget);
     }, v_ZFAniBuilder
     , ZFMP_IN(ZFObject *, aniTarget)
     )

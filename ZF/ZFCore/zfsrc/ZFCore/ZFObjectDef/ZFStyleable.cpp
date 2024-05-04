@@ -225,7 +225,7 @@ public:
     static void defaultStyleOnChange(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
 
-        const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
+        const ZFProperty *const &property = zfargs.param0().zfv();
         ZFStyleable *defaultStyle = zfargs.sender();
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
             ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
@@ -393,8 +393,8 @@ private:
     ZFListener styleOnInvalidListener;
     static void styleOnInvalid(ZF_IN const ZFArgs &zfargs) {
         if(_ZFP_ZFStyleInvalidCheckDisableFlag) {return;}
-        const zfchar *propertyName = zfargs.param0()->to<v_zfstring *>()->zfv;
-        const zfchar *styleKey = zfargs.param1()->to<v_zfstring *>()->zfv;
+        zfstring const &propertyName = zfargs.param0().zfv();
+        zfstring const &styleKey = zfargs.param1().zfv();
         if(zfstringIsEmpty(propertyName)) {
             zfCoreCriticalMessageTrim(
                     "[ZFStyle] %s unable to apply style \"%s\"",

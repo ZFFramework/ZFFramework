@@ -6,7 +6,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFTYPEID_ACCESS_ONLY_DEFINE(zfweak, zfweak)
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<v_zfweak *>()->zfv.set(obj);
+        v_zfweak *v = invokerObject;
+        v->zfv.set(obj);
     }, v_zfweak
     , ZFMP_IN(ZFObject *, obj)
     )

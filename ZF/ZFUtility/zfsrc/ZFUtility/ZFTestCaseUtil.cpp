@@ -18,7 +18,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase>, ZFTestCaseRun
     if(testCaseTmp == zfnull || !testCaseTmp->classData()->classIsTypeOf(ZFTestCase::ClassData())) {
         return zfnull;
     }
-    ZFTestCase *testCase = testCaseTmp.to<ZFTestCase *>();
+    ZFTestCase *testCase = testCaseTmp;
     testCase->testCaseStart();
     return testCase->testCaseIsRunning() ? testCase : zfnull;
 }

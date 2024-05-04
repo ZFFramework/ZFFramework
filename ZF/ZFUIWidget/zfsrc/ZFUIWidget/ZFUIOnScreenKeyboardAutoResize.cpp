@@ -292,7 +292,7 @@ static void _ZFP_ZFUIOnScreenKeyboardAutoResize_windowLayoutMarginChange(
         ZF_IN const ZFArgs &zfargs
         , ZF_IN _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData
         ) {
-    const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv;
+    const ZFProperty *const &property = zfargs.param0().zfv();
     if(property != ZFPropertyAccess(ZFUILayoutParam, layoutMargin)) {
         return;
     }

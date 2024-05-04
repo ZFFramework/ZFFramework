@@ -22,7 +22,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, ZFUIButtonBasic *, textEditClearBu
 
 static void _ZFP_ZFUITextEditWidget_updateClearButton(ZF_IN ZFUITextEditWidget *textEditWidget) {
     if(textEditWidget->textEditClearButtonAutoEnable()) {
-        textEditWidget->textEditClearButton()->to<ZFUIView *>()->viewVisible(
+        textEditWidget->textEditClearButton()->viewVisible(
             !textEditWidget->text().isEmpty());
     }
 }
@@ -34,12 +34,12 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEditWidget, zfbool, textEditClearButtonAutoE
 void ZFUITextEditWidget::objectOnInit(void) {
     zfsuper::objectOnInit();
 
-    ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView()->to<ZFUIImageView *>();
+    ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView();
     this->internalImplViewAdd(textEditBackgroundView);
     textEditBackgroundView->layoutParam()->sizeParam(ZFUISizeParamFillFill());
     textEditBackgroundView->serializableRefLayoutParam()->sizeParam(ZFUISizeParamFillFill());
 
-    ZFUIButtonBasic *textEditClearButton = this->textEditClearButton()->to<ZFUIButtonBasic *>();
+    ZFUIButtonBasic *textEditClearButton = this->textEditClearButton();
     this->internalBgViewAdd(textEditClearButton);
     textEditClearButton->layoutParam()->layoutAlign(ZFUIAlign::e_Right);
     textEditClearButton->serializableRefLayoutParam()->layoutAlign(ZFUIAlign::e_Right);
@@ -57,7 +57,7 @@ void ZFUITextEditWidget::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
 void ZFUITextEditWidget::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &nativeImplViewMargin) {
     zfsuper::nativeImplViewMarginImplUpdate(nativeImplViewMargin);
 
-    ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView()->to<ZFUIImageView *>();
+    ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView();
     if(textEditBackgroundView->viewVisible()) {
         ZFUIImage *image = textEditBackgroundView->image();
         if(image != zfnull) {
@@ -65,7 +65,7 @@ void ZFUITextEditWidget::nativeImplViewMarginImplUpdate(ZF_IN_OUT ZFUIMargin &na
         }
     }
 
-    ZFUIButtonBasic *textEditClearButton = this->textEditClearButton()->to<ZFUIButtonBasic *>();
+    ZFUIButtonBasic *textEditClearButton = this->textEditClearButton();
     if(textEditClearButton->viewVisible()) {
         textEditClearButton->layoutMeasure(ZFUISizeInvalid(), ZFUISizeParamWrapWrap());
         zffloat size = ZFUIMarginGetWidth(textEditClearButton->layoutParam()->layoutMargin()) + textEditClearButton->layoutMeasuredSize().width;
@@ -86,13 +86,13 @@ zfbool ZFUITextEditWidget::internalViewShouldLayout(ZF_IN ZFUIView *internalView
 void ZFUITextEditWidget::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     zfsuper::internalViewOnLayout(bounds);
 
-    ZFUIButtonBasic *textEditClearButton = this->textEditClearButton()->to<ZFUIButtonBasic *>();
+    ZFUIButtonBasic *textEditClearButton = this->textEditClearButton();
     if(!textEditClearButton->viewVisible()) {
         return;
     }
 
     ZFUIMargin margin = ZFUIMarginZero();
-    ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView()->to<ZFUIImageView *>();
+    ZFUIImageView *textEditBackgroundView = this->textEditBackgroundView();
     if(textEditBackgroundView->viewVisible()) {
         ZFUIImage *image = textEditBackgroundView->image();
         if(image != zfnull) {

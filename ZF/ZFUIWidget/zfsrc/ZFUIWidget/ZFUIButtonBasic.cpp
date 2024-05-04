@@ -69,9 +69,8 @@ public:
             this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->iconView));
 
             if(this->labelView != zfnull) {
-                ZFUIView *t = this->labelView->to<ZFUIView *>();
-                this->pimplOwner->internalBgViewRemove(t);
-                this->pimplOwner->internalBgViewAdd(t);
+                this->pimplOwner->internalBgViewRemove(this->labelView);
+                this->pimplOwner->internalBgViewAdd(this->labelView);
             }
         }
     }
@@ -83,14 +82,12 @@ public:
             this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->backgroundView));
 
             if(this->iconView != zfnull) {
-                ZFUIView *t = this->iconView->to<ZFUIView *>();
-                this->pimplOwner->internalBgViewRemove(t);
-                this->pimplOwner->internalBgViewAdd(t);
+                this->pimplOwner->internalBgViewRemove(this->iconView);
+                this->pimplOwner->internalBgViewAdd(this->iconView);
             }
             if(this->labelView != zfnull) {
-                ZFUIView *t = this->labelView->to<ZFUIView *>();
-                this->pimplOwner->internalBgViewRemove(t);
-                this->pimplOwner->internalBgViewAdd(t);
+                this->pimplOwner->internalBgViewRemove(this->labelView);
+                this->pimplOwner->internalBgViewAdd(this->labelView);
             }
         }
     }
@@ -164,7 +161,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
             ZFLISTENER_1(callback \
                     , ZFUIButtonBasic *, button \
                     ) { \
-                const ZFProperty *property = zfargs.param0()->to<v_ZFProperty *>()->zfv; \
+                const ZFProperty *const &property = zfargs.param0().zfv(); \
                 button->d->T_Component##ViewPrepare(); \
                 if(button->buttonState() == ZFUIButtonState::e_##T_State) { \
                     ZFPropertyCopy(property, button->T_Component##View()->toObject(), zfargs.sender()); \
@@ -204,31 +201,31 @@ _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Checke
 _ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Disabled, ZFUIImageView, image)
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelNormal) {
-    ZFUITextView *v = propertyValue.to<ZFUITextView *>();
+    ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorNormal());
 
     d->labelViewPrepare();
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelHighlighted) {
-    ZFUITextView *v = propertyValue.to<ZFUITextView *>();
+    ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorHighlighted());
 
     d->labelViewPrepare();
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelChecked) {
-    ZFUITextView *v = propertyValue.to<ZFUITextView *>();
+    ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorChecked());
 
     d->labelViewPrepare();
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelCheckedHighlighted) {
-    ZFUITextView *v = propertyValue.to<ZFUITextView *>();
+    ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorCheckedHighlighted());
 
     d->labelViewPrepare();
 }
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelDisabled) {
-    ZFUITextView *v = propertyValue.to<ZFUITextView *>();
+    ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorDisabled());
 
     d->labelViewPrepare();

@@ -75,7 +75,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *     zfRelease(e);
  *
  *     zfauto tmp = ZFClass::classForName("EnumName")->newInstance(); // see #ZFOBJECT_REGISTER for more info
- *     e = tmp.to<ZFEnum *>();
+ *     e = tmp;
  *     for(zfindex i = 0; i < e->enumCount(); ++i) { // OK, list all the value and name for e, which is EnumName type
  *         value = e->enumValueAt(i);
  *         name = e->enumNameAt(i);

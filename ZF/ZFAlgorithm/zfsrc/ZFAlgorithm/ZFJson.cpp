@@ -606,7 +606,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFJson, ZFJson, {
     })
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<v_ZFJson *>()->zfv._ZFP_ZFJson_jsonType(type);
+        v_ZFJson *v = invokerObject;
+        v->zfv._ZFP_ZFJson_jsonType(type);
     }, v_ZFJson
     , ZFMP_IN(ZFJsonTypeEnum, type)
     )

@@ -116,7 +116,7 @@ public:
             *outInitValue = tmp;
         }
         T_Type cur = getterInvoker(property->getterMethod(), ownerObj);
-        T_Type initValueTmp = tmp.to<T_Type>();
+        T_Type initValueTmp = tmp;
         if(cur == initValueTmp) {
             return zftrue;
         }
@@ -153,7 +153,7 @@ private:
             }
 
             zfauto holderTmp = _ZFP_I_PropURDIVH::create(
-                    zfnew(T_Type, zfRetain(tmp.to<T_Type>())),
+                    zfnew(T_Type, zfRetain(tmp)),
                     _deleteCallback,
                     tmp
                 );

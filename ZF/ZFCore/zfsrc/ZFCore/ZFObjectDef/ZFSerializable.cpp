@@ -553,8 +553,9 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(
         return zftrue;
     }
 
-    zfauto obj = property->getterMethod()->methodInvoke(this->toObject());
-    if(obj == zfnull || !ZFObjectIsSerializable(obj)) {
+    zfauto objHolder = property->getterMethod()->methodInvoke(this->toObject());
+    ZFSerializable *obj = objHolder;
+    if(obj == zfnull || !ZFObjectIsSerializable(obj->toObject())) {
         return zftrue;
     }
 
@@ -562,7 +563,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(
     if(referencedOwnerOrNull != zfnull) {
         zfauto t = property->getterMethod()->methodInvoke(referencedOwnerOrNull->toObject());
         if(t != zfnull) {
-            propertyRef = t->to<ZFSerializable *>();
+            propertyRef = t;
         }
     }
     if(propertyRef == zfnull) {
@@ -570,7 +571,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(
     }
 
     ZFSerializableData propertyData;
-    if(!obj->to<zfself *>()->serializeToData(propertyData, outErrorHint, propertyRef)) {
+    if(!obj->serializeToData(propertyData, outErrorHint, propertyRef)) {
         return zffalse;
     }
 

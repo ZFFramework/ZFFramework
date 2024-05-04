@@ -12,7 +12,7 @@ static ZFUIView *_ZFP_ZFUIListCellUpdaterBasic_setupSeparator(
         , ZF_IN const ZFUIListCellUpdaterParam &updateParam
         ) {
     zfauto separatorViewHolder = owner->itemCacheAccess(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator);
-    ZFUIView *separatorView = separatorViewHolder.to<ZFUIView *>();
+    ZFUIView *separatorView = separatorViewHolder;
     if(separatorView == zfnull) {
         separatorView = zfAlloc(ZFUIView);
         separatorViewHolder = separatorView;
@@ -99,16 +99,16 @@ void ZFUIListCellUpdaterBasic::cellOnUpdate(ZF_IN const ZFUIListCellUpdaterParam
 void ZFUIListCellUpdaterBasic::cellOnRecycle(ZF_IN ZFUIListCell *cell) {
     zfsuperI(ZFUIListCellUpdater)::cellOnRecycle(cell);
 
-    ZFObject *separatorHead = cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head);
+    ZFUIView *separatorHead = cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head);
     if(separatorHead != zfnull) {
         this->itemCacheRecycle(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator, separatorHead);
-        cell->internalFgViewRemove(separatorHead->to<ZFUIView *>());
+        cell->internalFgViewRemove(separatorHead);
         cell->objectTagRemove(_ZFP_ZFUIListCellUpdaterBasic_tag_separator_head);
     }
-    ZFObject *separatorTail = cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator);
+    ZFUIView *separatorTail = cell->objectTag(_ZFP_ZFUIListCellUpdaterBasic_tag_separator);
     if(separatorTail != zfnull) {
         this->itemCacheRecycle(_ZFP_ZFUIListCellUpdaterBasic_cacheKey_separator, separatorTail);
-        cell->internalFgViewRemove(separatorTail->to<ZFUIView *>());
+        cell->internalFgViewRemove(separatorTail);
         cell->objectTagRemove(_ZFP_ZFUIListCellUpdaterBasic_tag_separator);
     }
 }

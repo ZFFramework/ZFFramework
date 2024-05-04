@@ -248,7 +248,7 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_USER_REGISTER_3({
-        v_ZFCallback *owner = invokerObject->to<v_ZFCallback *>();
+        v_ZFCallback *owner = invokerObject;
         ZFOutput output = owner->zfv;
         output.output(src, size, result);
         return owner;
@@ -258,7 +258,7 @@ ZFMETHOD_USER_REGISTER_3({
     , ZFMP_OUT_OPT(zfindex *, result, zfnull)
     )
 ZFMETHOD_USER_REGISTER_3({
-        v_ZFCallback *owner = invokerObject->to<v_ZFCallback *>();
+        v_ZFCallback *owner = invokerObject;
         ZFOutput output = owner->zfv;
         output.output(src, size, result);
         return owner;

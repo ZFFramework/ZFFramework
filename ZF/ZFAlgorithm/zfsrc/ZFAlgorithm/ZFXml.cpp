@@ -506,7 +506,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFXml, ZFXml, {
     })
 
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<v_ZFXml *>()->zfv._ZFP_ZFXml_xmlType(type);
+        v_ZFXml *v = invokerObject;
+        v->zfv._ZFP_ZFXml_xmlType(type);
     }, v_ZFXml
     , ZFMP_IN(ZFXmlTypeEnum, type)
     )

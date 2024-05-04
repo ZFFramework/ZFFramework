@@ -113,8 +113,8 @@ private:
  * typical usage:
  * @code
  *   ZFLISTENER(onRecv) {
- *       ZFJson response = zfargs.param0()->to<ZFHttpResponse *>()->bodyJson();
- *       zfLogTrim() << response;
+ *       ZFHttpResponse *response = zfargs.param0();
+ *       zfLogTrim() << response->bodyJson();
  *   } ZFLISTENER_END()
  *   zfobj<ZFHttpRequest>("http://xxx", "POST")
  *       ->header("Content-Type", "application/json;charset=UTF-8;")

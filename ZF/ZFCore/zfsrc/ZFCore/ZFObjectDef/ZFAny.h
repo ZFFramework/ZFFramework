@@ -29,7 +29,7 @@ public:
     ZFV(ZF_IN ZFObject *obj) : _ZFP_obj(obj) {}
 public:
     template<typename T_Type>
-    operator T_Type const &(void) const;
+    operator T_Type &(void) const;
     /** @endcond */
 private:
     ZFObject *_ZFP_obj;

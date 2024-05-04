@@ -150,17 +150,17 @@ public:
     /**
      * @brief dialog's layout param, created by #ZFUIDialogDefaultLayoutParamCreator by default
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUILayoutParam *, dialogLayoutParam, ZFUIDialogDefaultLayoutParamCreator().to<ZFUILayoutParam *>())
+    ZFPROPERTY_RETAIN_READONLY(ZFUILayoutParam *, dialogLayoutParam, ZFUIDialogDefaultLayoutParamCreator())
 
     /**
      * @brief dialog's show animation, #ZFUIDialogDefaultAniShowCreator by default
      */
-    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniShow, ZFUIDialogDefaultAniShowCreator().to<ZFAnimation *>())
+    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniShow, ZFUIDialogDefaultAniShowCreator())
 
     /**
      * @brief dialog's hide animation, #ZFUIDialogDefaultAniHideCreator by default
      */
-    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniHide, ZFUIDialogDefaultAniHideCreator().to<ZFAnimation *>())
+    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniHide, ZFUIDialogDefaultAniHideCreator())
 
     /**
      * @brief dialog's background image

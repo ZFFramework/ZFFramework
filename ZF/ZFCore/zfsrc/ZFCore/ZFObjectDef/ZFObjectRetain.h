@@ -110,7 +110,7 @@ inline void _ZFP_zfRetainAction(ZF_IN ZFObject *obj) {
     }
 }
 template<typename T_ZFObject>
-inline T_ZFObject _ZFP_zfRetain(ZF_IN T_ZFObject obj) {
+inline T_ZFObject const &_ZFP_zfRetain(ZF_IN T_ZFObject const &obj) {
     _ZFP_zfRetainAction(ZFCastZFObjectUnchecked(ZFObject *, obj));
     return obj;
 }

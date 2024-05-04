@@ -50,7 +50,7 @@ public:
             ) {
         zfRetain(this);
         zfblockedRelease(this);
-        zfidentity curId = zfargs.param0()->to<v_zfidentity *>()->zfv;
+        zfidentity const &curId = zfargs.param0().zfv();
 
         // delay
         if(curId != this->threadCallbackTaskId) {return;}

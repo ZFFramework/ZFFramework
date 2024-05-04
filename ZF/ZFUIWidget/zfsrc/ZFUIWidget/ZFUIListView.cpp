@@ -319,7 +319,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -379,7 +379,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -439,7 +439,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -493,7 +493,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -568,7 +568,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -629,7 +629,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -690,7 +690,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -747,7 +747,7 @@ public:
                             continue;
                         }
                         this->cellNeedUpdate = zftrue;
-                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index).to<ZFUIListCell *>());
+                        ZFUIListCell *cellNew = zfRetain(this->cellLoadAt(index));
                         zffloat cellSizeNew = this->cellSizeAt(index, cellNew);
                         if(cellSizeNew != this->cellSizeList[index]) {
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
@@ -1476,7 +1476,7 @@ ZFMETHOD_DEFINE_1(ZFUIListView, void, listReloadCellAt
     ZFUIListCell *cellOld = d->listVisibleCell[indexOfVisibleCell];
     ZFUIRect cellOldFrame = d->listVisibleCellFrame(index);
 
-    ZFUIListCell *cellNew = zfRetain(d->cellLoadAt(index).to<ZFUIListCell *>());
+    ZFUIListCell *cellNew = zfRetain(d->cellLoadAt(index));
     d->listVisibleCell[indexOfVisibleCell] = cellNew;
 
     this->childReplaceAt(indexOfVisibleCell, cellNew);

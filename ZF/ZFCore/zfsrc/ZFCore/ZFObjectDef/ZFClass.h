@@ -77,7 +77,7 @@ public:
      * @code
      *   const ZFClass *cls = ZFClass::classForName("MyObject");
      *   zfauto objTmp = ((cls != zfnull) ? cls->newInstance() : zfauto());
-     *   MyObject *obj = objTmp.to<MyObject *>();
+     *   MyObject *obj = objTmp;
      * @endcode
      * @note the class to find must:
      *   -  inherit from ZFObject or its subclass

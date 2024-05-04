@@ -11,7 +11,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFUIImage>, ZFUIViewCapture
     }
     zfautoT<ZFUIImage> ret = ZFUIImage::ClassData()->newInstance();
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewCapture) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewCapture);
-    if(impl != zfnull && impl->viewCapture(view, ret.to<ZFUIImage *>())) {
+    if(impl != zfnull && impl->viewCapture(view, ret)) {
         return ret;
     }
     else {

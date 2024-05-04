@@ -719,18 +719,15 @@ protected:
 
 // ============================================================
 template<typename T_Type>
-ZFV::operator T_Type const &(void) const {
+ZFV::operator T_Type &(void) const {
     ZFTypeIdWrapper *w = ZFCastZFObject(ZFTypeIdWrapper *, _ZFP_obj);
-    if(w != zfnull && w->classData()->classIsTypeOf(ZFTypeId<T_Type>::TypeIdClass())) {
-        return *(const T_Type *)w->wrappedValue();
-    }
-    else {
-        zfCoreCriticalMessageTrim("unable to access %s from object: %s"
-                , ZFTypeId<T_Type>::TypeId()
-                , _ZFP_obj
-                );
-        return *(const T_Type *)_ZFP_obj;
-    }
+    typedef typename zftTraits<T_Type &>::TrNoRef T_Type_;
+    zfCoreAssertWithMessageTrim(w != zfnull && w->classData()->classIsTypeOf(ZFTypeId<T_Type_>::TypeIdClass())
+            , "unable to access %s from object: %s"
+            , ZFTypeId<T_Type_>::TypeId()
+            , _ZFP_obj
+            );
+    return *(T_Type_ *)w->wrappedValue();
 }
 
 ZF_NAMESPACE_GLOBAL_END

@@ -96,7 +96,7 @@ ZFTYPEID_PROGRESS_DEFINE(zfstring, zfstring, {
 })
 
 ZFOBJECT_ON_INIT_USER_REGISTER_3({
-        zfstring &zfv = invokerObject->to<v_zfstring *>()->zfv;
+        zfstring &zfv = invokerObject.zfv();
         zfv.assign(src + pos, len);
     }, v_zfstring
     , ZFMP_IN(const zfchar *, src)
@@ -869,7 +869,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFPathInfo, ZFPathInfo, {
         return zftrue;
     })
 ZFOBJECT_ON_INIT_USER_REGISTER_2({
-        ZFPathInfo &zfv = invokerObject->to<v_ZFPathInfo *>()->zfv;
+        ZFPathInfo &zfv = invokerObject.zfv();
         zfv.pathType = pathType;
         zfv.pathData = pathData;
     }, v_ZFPathInfo

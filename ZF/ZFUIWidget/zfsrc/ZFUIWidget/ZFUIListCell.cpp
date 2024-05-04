@@ -19,7 +19,7 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCell, ZFAnyT<ZFUIView>, cellView) {
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCell, ZFUILayoutParam *, cellViewLayoutParam) {
     propertyValue = this->layoutParamCreate();
-    ZFUILayoutParam *value = propertyValue.to<ZFUILayoutParam *>();
+    ZFUILayoutParam *value = propertyValue;
     value->sizeParam(ZFUISizeParamFillFill());
     value->layoutAlign(ZFUIAlign::e_Center);
 }

@@ -75,7 +75,7 @@ public:
     void allKeyT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
         ret.capacity(ret.count() + this->count());
         for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
-            ret.add(this->iterKey(it)->to<T_ZFObject>());
+            ret.add(ZFCastZFObject(T_ZFObject *, this->iterKey(it)));
         }
     }
     /** @brief see #allKey */
@@ -91,7 +91,7 @@ public:
     void allValueT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
         ret.capacity(ret.count() + this->count());
         for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
-            ret.add(this->iterValue(it)->to<T_ZFObject>());
+            ret.add(ZFCastZFObject(T_ZFObject *, this->iterValue(it)));
         }
     }
     /** @brief see #allValue */
