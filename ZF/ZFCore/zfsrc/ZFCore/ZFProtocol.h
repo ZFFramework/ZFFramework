@@ -315,7 +315,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 _ZFP_ZFProtocolImplAccess(); \
                 zfself *retVal = zfnull; \
                 if(_d.isAvailableCk != zfnull && _d.isAvailableCk()) { \
-                    retVal = ZFCastStatic(zfself *, _d.implConstructor()); \
+                    retVal = (zfself *)_d.implConstructor(); \
                     if(retVal != zfnull) { \
                         retVal->_ZFP_ZFProtocol_protocolInstanceState = ZFProtocolInstanceState::e_OnInit; \
                         retVal->protocolOnInit(); \
@@ -361,7 +361,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                         return zfnull; \
                     } \
                 } \
-                return ZFCastStatic(zfself *, impl); \
+                return (zfself *)impl; \
             } \
             static zfself *_ZFP_ZFProtocolTryAccess(void) { \
                 static ZFProtocol *&impl = zfself::_ZFP_ZFProtocolDataRef().implInstance; \
@@ -378,7 +378,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                         _d.implInstance = zfnull; \
                     } \
                 } \
-                return ZFCastStatic(zfself *, impl); \
+                return (zfself *)impl; \
             } \
             static zfbool _ZFP_ZFProtocolIsAvailableCk(void) { \
                 return zftrue; \

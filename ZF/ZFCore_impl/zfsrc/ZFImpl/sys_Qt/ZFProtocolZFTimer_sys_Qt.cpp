@@ -80,15 +80,15 @@ public:
             ZF_IN ZFTimer *timer
             , ZF_IN void *nativeTimer
             ) {
-        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimerTmp = ZFCastStatic(_ZFP_ZFTimerImpl_sys_Qt_Timer *, nativeTimer);
+        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimerTmp = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)nativeTimer;
         zfdelete(nativeTimerTmp);
     }
     virtual void timerStart(ZF_IN ZFTimer *timer) {
-        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = ZFCastStatic(_ZFP_ZFTimerImpl_sys_Qt_Timer *, timer->nativeTimer());
+        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
         nativeTimer->timerStart();
     }
     virtual void timerStop(ZF_IN ZFTimer *timer) {
-        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = ZFCastStatic(_ZFP_ZFTimerImpl_sys_Qt_Timer *, timer->nativeTimer());
+        _ZFP_ZFTimerImpl_sys_Qt_Timer *nativeTimer = (_ZFP_ZFTimerImpl_sys_Qt_Timer *)timer->nativeTimer();
         nativeTimer->timerStop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_sys_Qt)

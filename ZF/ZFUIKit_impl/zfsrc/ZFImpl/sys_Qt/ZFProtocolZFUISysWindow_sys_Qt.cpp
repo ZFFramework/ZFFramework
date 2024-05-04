@@ -119,9 +119,9 @@ public:
         if(sysWindow->nativeWindow() == zfnull) {
             return;
         }
-        QGraphicsWidget *nativeWindow = ZFCastStatic(QGraphicsWidget *, sysWindow->nativeWindow());
+        QGraphicsWidget *nativeWindow = (QGraphicsWidget *)sysWindow->nativeWindow();
 
-        QGraphicsWidget *nativeRootView = ZFCastStatic(QGraphicsWidget *, sysWindow->rootView()->nativeView());
+        QGraphicsWidget *nativeRootView = (QGraphicsWidget *)sysWindow->rootView()->nativeView();
         zfCoreAssertWithMessageTrim(nativeWindow->layout() != NULL,
             "[ZFUISysWindow] window's QGraphicsWidget::layout not set");
         ZFImpl_sys_Qt_BaseLayout *l = (ZFImpl_sys_Qt_BaseLayout *)(nativeWindow->layout());
@@ -132,8 +132,8 @@ public:
         if(sysWindow->nativeWindow() == zfnull) {
             return;
         }
-        QGraphicsWidget *nativeWindow = ZFCastStatic(QGraphicsWidget *, sysWindow->nativeWindow());
-        QGraphicsWidget *nativeRootView = ZFCastStatic(QGraphicsWidget *, sysWindow->rootView()->nativeView());
+        QGraphicsWidget *nativeWindow = (QGraphicsWidget *)sysWindow->nativeWindow();
+        QGraphicsWidget *nativeRootView = (QGraphicsWidget *)sysWindow->rootView()->nativeView();
         ZFImpl_sys_Qt_BaseLayout *l = (ZFImpl_sys_Qt_BaseLayout *)(nativeWindow->layout());
         l->childRemove(nativeRootView);
     }
@@ -157,7 +157,7 @@ public:
         if(sysWindowToFinish->nativeWindow() == zfnull) {
             return;
         }
-        QGraphicsWidget *nativeModalWindow = ZFCastStatic(QGraphicsWidget *, sysWindowOwner->nativeWindow());
+        QGraphicsWidget *nativeModalWindow = (QGraphicsWidget *)sysWindowOwner->nativeWindow();
         nativeModalWindow->hide();
         nativeModalWindow->removeEventFilter(&_eventWrapper);
         this->notifyOnDestroy(sysWindowToFinish);

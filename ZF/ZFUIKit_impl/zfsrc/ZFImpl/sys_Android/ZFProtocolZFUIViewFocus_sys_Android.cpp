@@ -44,7 +44,7 @@ public:
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             viewFocusable);
     }
     virtual zfbool viewFocused(ZF_IN ZFUIView *view) {
@@ -53,7 +53,7 @@ public:
             JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        return JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, view->nativeView()));
+        return JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId, (jobject)view->nativeView());
     }
     virtual ZFUIView *viewFocusFind(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -61,8 +61,8 @@ public:
             JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIPointer zfjniPointerFocusedChild = JNIUtilCallStaticLongMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, view->nativeView()));
-        return ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerFocusedChild));
+        JNIPointer zfjniPointerFocusedChild = JNIUtilCallStaticLongMethod(jniEnv, this->jclsOwner, jmId, (jobject)view->nativeView());
+        return JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerFocusedChild);
     }
     virtual void viewFocusRequest(
             ZF_IN ZFUIView *view
@@ -75,7 +75,7 @@ public:
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             viewFocus);
     }
 
@@ -90,7 +90,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIViewFocus
         , void, native_1notifyViewFocusChanged
         , JNIPointer zfjniPointerOwnerZFUIView
         ) {
-    ZFUIView *view = ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView));
+    ZFUIView *view = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView);
     if(!ZFBitTest(view->objectInstanceState(), ZFObjectInstanceStateOnDealloc)) {
         ZFPROTOCOL_ACCESS(ZFUIViewFocus)->notifyViewFocusChanged(view);
     }

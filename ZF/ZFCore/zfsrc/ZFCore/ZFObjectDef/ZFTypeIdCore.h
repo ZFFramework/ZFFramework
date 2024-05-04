@@ -475,7 +475,7 @@ public:
      * @brief util to mark #wrappedValueIsConst
      */
     static void markConst(ZF_IN_OUT_OPT ZFObject *obj) {
-        zfself *t = ZFCastZFObject(zfself *, obj);
+        zfself *t = zfcast(zfself *, obj);
         if(t != zfnull) {
             t->wrappedValueIsConst = zftrue;
         }
@@ -625,7 +625,7 @@ protected:
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             ) {
         if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-        zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+        zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
         if((ref == zfnull && !this->wrappedValueIsInit())
                 || (ref != zfnull && this->objectCompare(ref) != ZFCompareTheSame)
@@ -696,9 +696,9 @@ protected:
             , ZF_IN ZFProgressable *_to \
             , ZF_IN zffloat progress \
             ) { \
-        v_##TypeName *_retH = ZFCastZFObject(v_##TypeName *, _ret); \
-        v_##TypeName *_fromH = ZFCastZFObject(v_##TypeName *, _from); \
-        v_##TypeName *_toH = ZFCastZFObject(v_##TypeName *, _to); \
+        v_##TypeName *_retH = zfcast(v_##TypeName *, _ret); \
+        v_##TypeName *_fromH = zfcast(v_##TypeName *, _from); \
+        v_##TypeName *_toH = zfcast(v_##TypeName *, _to); \
         if(_retH == zfnull || _fromH == zfnull || _toH == zfnull) { \
             return zffalse; \
         } \
@@ -720,7 +720,7 @@ protected:
 // ============================================================
 template<typename T_Type>
 ZFV::operator T_Type &(void) const {
-    ZFTypeIdWrapper *w = ZFCastZFObject(ZFTypeIdWrapper *, _ZFP_obj);
+    ZFTypeIdWrapper *w = zfcast(ZFTypeIdWrapper *, _ZFP_obj);
     typedef typename zftTraits<T_Type &>::TrNoRef T_Type_;
     zfCoreAssertWithMessageTrim(w != zfnull && w->classData()->classIsTypeOf(ZFTypeId<T_Type_>::TypeIdClass())
             , "unable to access %s from object: %s"

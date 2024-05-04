@@ -125,7 +125,7 @@ private:
         typedef _ZFP_GI_##Name zfself; \
     public: \
         static _ZFP_GI_##Name *_ZFP_GI_instance(void) { \
-            return ZFCastStatic(_ZFP_GI_##Name *, _ZFP_GI_reg_##Name.instanceAccess()); \
+            return (_ZFP_GI_##Name *)_ZFP_GI_reg_##Name.instanceAccess(); \
         } \
         _ZFP_GI_##Name(void)
 /**

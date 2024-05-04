@@ -218,7 +218,7 @@ zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
         return zfnull;
     }
     if(this->elementType == zfnull) {
-        ZFTypeIdWrapper *v = ZFCastZFObject(ZFTypeIdWrapper *, element);
+        ZFTypeIdWrapper *v = zfcast(ZFTypeIdWrapper *, element);
         if(v != zfnull) {
             if(!this->elementTypeInit(v->wrappedValueTypeId())) {
                 return zfnull;
@@ -238,7 +238,7 @@ zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
             ) {
         zfauto ret = this->elementType->typeIdClass()->newInstance();
         ZFTypeIdWrapper *retTmp = ret;
-        v_zfstring *src = ZFCastZFObject(v_zfstring *, element);
+        v_zfstring *src = zfcast(v_zfstring *, element);
         if(retTmp->wrappedValueFromString(src->zfv, src->zfv.length())) {
             return ret;
         }

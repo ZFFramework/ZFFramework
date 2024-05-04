@@ -119,7 +119,7 @@ public:
 
     zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
-        zfself *t = ZFCastZFObject(zfself *, anotherObj);
+        zfself *t = zfcast(zfself *, anotherObj);
         if(t != zfnull
                 && this->zfv != zfnull
                 && t->zfv != zfnull
@@ -134,7 +134,7 @@ public:
 public:
     zfoverride
     virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) {
-        zfself *t = ZFCastZFObject(zfself *, ref);
+        zfself *t = zfcast(zfself *, ref);
         if(t == this) {
             return;
         }
@@ -562,14 +562,14 @@ public:
     zfclassNotPOD Value {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
             return t != zfnull && (
                     t->elementType == zfnull
                     || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
                     );
         }
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
             if(t->zfv == zfnull) {
                 t->wrappedValue(typename zftTraits<T_Access>::TrType());
             }
@@ -582,14 +582,14 @@ public:
     zfclassNotPOD Value<T_Access, 1> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
             return t != zfnull && (
                     t->elementType == zfnull
                     || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
                     );
         }
         static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = ZFCastZFObject(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
             if(t->zfv == zfnull) {
                 t->wrappedValue(typename zftTraits<T_Access>::TrType());
             }

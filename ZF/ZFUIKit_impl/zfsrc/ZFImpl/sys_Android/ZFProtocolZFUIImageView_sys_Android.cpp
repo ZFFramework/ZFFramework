@@ -45,7 +45,7 @@ public:
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
-        return ZFCastStatic(void *, ret);
+        return (void *)ret;
     }
     virtual void nativeImageViewDestroy(
             ZF_IN ZFUIImageView *imageView
@@ -56,7 +56,7 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject nativeImageViewTmp = ZFCastStatic(jobject, nativeImageView);
+        jobject nativeImageViewTmp = (jobject)nativeImageView;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, nativeImageViewTmp);
         JNIUtilDeleteGlobalRef(jniEnv, nativeImageViewTmp);
     }
@@ -72,8 +72,8 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, imageView->nativeImplView()),
-            ZFCastStatic(jobject, (image == zfnull) ? zfnull : image->nativeImage()));
+            (jobject)imageView->nativeImplView(),
+            (jobject)(image == zfnull) ? zfnull : image->nativeImage());
     }
     virtual void imageNinePatchChanged(
             ZF_IN ZFUIImageView *imageView
@@ -91,7 +91,7 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, imageView->nativeImplView())
+            (jobject)imageView->nativeImplView()
             , (jfloat)imageScale
             , (jint)imageNinePatch.left
             , (jint)imageNinePatch.top

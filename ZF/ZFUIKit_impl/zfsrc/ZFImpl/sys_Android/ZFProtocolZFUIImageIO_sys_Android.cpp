@@ -46,7 +46,7 @@ public:
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             imageScale,
-            ZFCastStatic(jobject, nativeImage),
+            (jobject)nativeImage,
             (jint)newSize.width, (jint)newSize.height,
             (jint)ninePatch.left, (jint)ninePatch.top, (jint)ninePatch.right, (jint)ninePatch.bottom);
         JNIBlockedDeleteLocalRef(tmp);
@@ -66,7 +66,7 @@ public:
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
             imageScale,
-            ZFCastStatic(jobject, nativeImage),
+            (jobject)nativeImage,
             (jint)frameInImage.x, (jint)frameInImage.y, (jint)frameInImage.width, (jint)frameInImage.height);
         JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);

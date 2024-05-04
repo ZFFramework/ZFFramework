@@ -591,7 +591,7 @@ public:
      */
     template<typename T_ZFObject>
     T_ZFObject classTag(ZF_IN const zfchar *key) const {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->classTag(key));
+        return zfunsafe_zfcast(T_ZFObject, this->classTag(key));
     }
     /** @brief see #classTag */
     zffinal void classTagGetAllKeyValue(

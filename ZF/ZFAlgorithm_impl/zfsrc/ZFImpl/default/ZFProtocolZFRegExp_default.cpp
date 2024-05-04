@@ -19,7 +19,7 @@ public:
             ZF_IN ZFRegExp *regExp
             , ZF_IN void *nativeRegExp
             ) {
-        zfdelete(ZFCastStatic(CRegexpT<zfchar> *, nativeRegExp));
+        zfdelete((CRegexpT<zfchar> *)nativeRegExp);
     }
 
     virtual void regExpCompile(
@@ -27,7 +27,7 @@ public:
             , ZF_IN const zfchar *pattern
             , ZF_IN_OPT ZFRegExpOptionFlags flag = ZFRegExpOptionFlags::EnumDefault()
             ) {
-        CRegexpT<zfchar> *regexp = ZFCastStatic(CRegexpT<zfchar> *, regExp->nativeRegExp());
+        CRegexpT<zfchar> *regexp = (CRegexpT<zfchar> *)regExp->nativeRegExp();
 
         int tmp = NO_FLAG;
         if(ZFBitTest(flag, ZFRegExpOption::e_IgnoreCase)) {
@@ -46,7 +46,7 @@ public:
             ZF_IN ZFRegExp *regExp
             , ZF_IN const zfchar *name
             ) {
-        CRegexpT<zfchar> *regexp = ZFCastStatic(CRegexpT<zfchar> *, regExp->nativeRegExp());
+        CRegexpT<zfchar> *regexp = (CRegexpT<zfchar> *)regExp->nativeRegExp();
 
         zfint ret = regexp->GetNamedGroupNumber(name);
         return ((ret < 0) ? zfindexMax() : (zfindex)ret);
@@ -58,7 +58,7 @@ public:
             , ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLength = zfindexMax()
             ) {
-        CRegexpT<zfchar> *regexp = ZFCastStatic(CRegexpT<zfchar> *, regExp->nativeRegExp());
+        CRegexpT<zfchar> *regexp = (CRegexpT<zfchar> *)regExp->nativeRegExp();
 
         MatchResult regexpResult = ((srcLength == zfindexMax())
             ? regexp->Match(src)
@@ -71,7 +71,7 @@ public:
             , ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLength = zfindexMax()
             ) {
-        CRegexpT<zfchar> *regexp = ZFCastStatic(CRegexpT<zfchar> *, regExp->nativeRegExp());
+        CRegexpT<zfchar> *regexp = (CRegexpT<zfchar> *)regExp->nativeRegExp();
 
         MatchResult regexpResult = ((srcLength == zfindexMax())
             ? regexp->MatchExact(src)
@@ -88,7 +88,7 @@ public:
             , ZF_IN_OPT zfindex srcLength = zfindexMax()
             , ZF_IN_OPT zfindex maxReplaceCount = zfindexMax()
             ) {
-        CRegexpT<zfchar> *regexp = ZFCastStatic(CRegexpT<zfchar> *, regExp->nativeRegExp());
+        CRegexpT<zfchar> *regexp = (CRegexpT<zfchar> *)regExp->nativeRegExp();
 
         zfint dummy;
         MatchResult regexpResult;

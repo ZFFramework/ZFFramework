@@ -210,7 +210,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     // check
     if(d->nativeImage == zfnull) {
@@ -271,7 +271,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
 
 void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuperI(ZFCopyable)::styleableOnCopyFrom(anotherStyleable);
-    d->copyFrom(ZFCastZFObjectUnchecked(zfself *, anotherStyleable)->d);
+    d->copyFrom(zfunsafe_zfcast(zfself *, anotherStyleable)->d);
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImage, zffloat, imageScale) {
@@ -337,7 +337,7 @@ zfidentity ZFUIImage::objectHash(void) {
 }
 ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(d->nativeImage == another->d->nativeImage

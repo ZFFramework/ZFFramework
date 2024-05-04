@@ -8,7 +8,7 @@ static void _ZFP_ZFStyleLoad_ZFStyleSet(
         , ZF_IN ZFStyleable *styleValue
         ) {
     if(styleValue != zfnull && styleValue->classData()->classIsTypeOf(ZFStyleList::ClassData())) {
-        ZFStyleLoad(ZFCastZFObjectUnchecked(ZFStyleList *, styleValue));
+        ZFStyleLoad(zfunsafe_zfcast(ZFStyleList *, styleValue));
     }
     else {
         ZFStyleSet(styleKey, styleValue);
@@ -210,7 +210,7 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
         if(!ZFObjectFromDataT(value, elementData, outErrorHint, outErrorPos)) {
             return zffalse;
         }
-        if(ZFCastZFObject(ZFStyleable *, value) == zfnull) {
+        if(zfcast(ZFStyleable *, value) == zfnull) {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, elementData,
                 "%s not type of %s",
                 value,

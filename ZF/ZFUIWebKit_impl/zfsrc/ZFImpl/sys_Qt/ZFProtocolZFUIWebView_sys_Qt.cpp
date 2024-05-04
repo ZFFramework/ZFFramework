@@ -63,7 +63,7 @@ public:
             ZF_IN ZFUIWebView *webView
             , ZF_IN void *nativeWebView
             ) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebViewTmp = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, nativeWebView);
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebViewTmp = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)nativeWebView;
         nativeWebViewTmp->deleteLater();
     }
 
@@ -71,7 +71,7 @@ public:
             ZF_IN ZFUIWebView *webView
             , ZF_IN const zfchar *url
             ) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->load(QUrl(QString::fromUtf8(url)));
         nativeWebView->show();
     }
@@ -80,7 +80,7 @@ public:
             , ZF_IN const zfchar *html
             , ZF_IN_OPT const zfchar *baseUrl = zfnull
             ) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->setHtml(QString::fromUtf8(html),
                                (baseUrl == zfnull)
                                ? QUrl()
@@ -89,33 +89,33 @@ public:
         nativeWebView->show();
     }
     virtual void webReload(ZF_IN ZFUIWebView *webView) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->reload();
     }
     virtual void webLoadStop(ZF_IN ZFUIWebView *webView) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->stop();
     }
 
     virtual void webGoBack(ZF_IN ZFUIWebView *webView) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->back();
     }
     virtual void webGoForward(ZF_IN ZFUIWebView *webView) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         nativeWebView->forward();
     }
 
     virtual zfbool webLoading(ZF_IN ZFUIWebView *webView) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         return nativeWebView->_ZFP_loading;
     }
     virtual zfbool webGoBackAvailable(ZF_IN ZFUIWebView *webView) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         return nativeWebView->history()->canGoBack();
     }
     virtual zfbool webGoForwardAvailable(ZF_IN ZFUIWebView *webView) {
-        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = ZFCastStatic(_ZFP_ZFUIWebViewImpl_sys_Qt_View *, webView->nativeImplView());
+        _ZFP_ZFUIWebViewImpl_sys_Qt_View *nativeWebView = (_ZFP_ZFUIWebViewImpl_sys_Qt_View *)webView->nativeImplView();
         return nativeWebView->history()->canGoForward();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIWebViewImpl_sys_Qt)

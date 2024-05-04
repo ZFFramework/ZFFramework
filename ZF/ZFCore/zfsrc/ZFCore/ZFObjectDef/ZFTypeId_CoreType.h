@@ -183,10 +183,10 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
     zfclassNotPOD Value { \
     public: \
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-            return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
+            return obj == zfnull || (zfcast(v_zfstring *, obj) != zfnull); \
         } \
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-            return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
+            return obj == zfnull ? zfnull : zfcast(v_zfstring *, obj)->zfv.cString(); \
         } \
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
         } \
@@ -195,10 +195,10 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
     zfclassNotPOD Value<T_Access const &, 0> { \
     public: \
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-            return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
+            return obj == zfnull || (zfcast(v_zfstring *, obj) != zfnull); \
         } \
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-            return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
+            return obj == zfnull ? zfnull : zfcast(v_zfstring *, obj)->zfv.cString(); \
         } \
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
         } \
@@ -209,10 +209,10 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
          typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
     public: \
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-            return obj == zfnull || (ZFCastZFObject(v_zfstring *, obj) != zfnull); \
+            return obj == zfnull || (zfcast(v_zfstring *, obj) != zfnull); \
         } \
         static _TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
-            return obj == zfnull ? zfnull : ZFCastZFObject(v_zfstring *, obj)->zfv.cString(); \
+            return obj == zfnull ? zfnull : zfcast(v_zfstring *, obj)->zfv.cString(); \
         } \
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
         } \

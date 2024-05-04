@@ -104,7 +104,7 @@ public:
             ZF_IN T0 const &e0
             , ZF_IN T1 const &e1
             ) {
-        return ZFObjectCompare(ZFCastZFObject(ZFObject *, e0), ZFCastZFObject(ZFObject *, e1));
+        return ZFObjectCompare(zfcast(ZFObject *, e0), zfcast(ZFObject *, e1));
     }
 };
 /** @endcond */

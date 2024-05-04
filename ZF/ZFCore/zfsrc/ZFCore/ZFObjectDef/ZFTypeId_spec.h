@@ -108,7 +108,7 @@ public:
             ZF_OUT zfauto &obj
             , ZF_IN T_Type const &v
             ) {
-        obj = ZFCastZFObjectUnchecked(ZFObject *, v);
+        obj = zfunsafe_zfcast(ZFObject *, v);
         return zftrue;
     }
     template<typename T_Access = T_Type
@@ -123,14 +123,14 @@ public:
     zfclassNotPOD Value {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            return (obj == zfnull || ZFCastZFObject(T_Type, obj) != zfnull);
+            return (obj == zfnull || zfcast(T_Type, obj) != zfnull);
         }
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
             if(obj == zfnull) {
                 static T_Type _d = zfnull;
                 return _d;
             }
-            T_Type *holder = zfnew(T_Type, ZFCastZFObject(T_Type, obj));
+            T_Type *holder = zfnew(T_Type, zfcast(T_Type, obj));
             _ZFP_PropAliasAttach(obj, holder,
                 zfsConnectLineFree(
                     zftTraits<T_Type>::TrType::ClassData()->classNameFull(),
@@ -165,7 +165,7 @@ public:
         typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef;
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            return (obj == zfnull || ZFCastZFObject(T_Type, obj) != zfnull);
+            return (obj == zfnull || zfcast(T_Type, obj) != zfnull);
         }
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
             if(obj == zfnull) {
@@ -173,7 +173,7 @@ public:
                 return _d;
             }
             _TrNoRef *holder = zfnew(_TrNoRef);
-            *holder = ZFCastZFObject(T_Type, obj);
+            *holder = zfcast(T_Type, obj);
             _ZFP_PropAliasAttach(obj, holder,
                 zfsConnectLineFree(
                     _ZFP_T_ZFObject::ClassData()->classNameFull(),

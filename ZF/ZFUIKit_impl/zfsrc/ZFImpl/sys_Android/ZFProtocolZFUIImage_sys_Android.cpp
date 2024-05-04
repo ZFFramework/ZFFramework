@@ -53,7 +53,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         return (zfbool)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId
-             , ZFCastStatic(jobject, nativeImage)
+             , (jobject)nativeImage
              , ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(outputCallback)
              );
     }
@@ -64,7 +64,7 @@ public:
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, nativeImage));
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, (jobject)nativeImage);
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return ret;
@@ -72,11 +72,11 @@ public:
 
     virtual void *nativeImageRetain(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        return JNIUtilNewGlobalRef(jniEnv, ZFCastStatic(jobject, nativeImage));
+        return JNIUtilNewGlobalRef(jniEnv, (jobject)nativeImage);
     }
     virtual void nativeImageRelease(ZF_IN void *nativeImage) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, ZFCastStatic(jobject, nativeImage));
+        JNIUtilDeleteGlobalRef(jniEnv, (jobject)nativeImage);
     }
 
     virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage) {
@@ -85,7 +85,7 @@ public:
             JNIGetMethodSig(JNIType::S_array(JNIType::S_int()), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, ZFCastStatic(jobject, nativeImage));
+        jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, (jobject)nativeImage);
         jint *jarrSize = JNIUtilGetIntArrayElements(jniEnv, jobjSize, NULL);
         ZFUISize ret = ZFUISizeMake((zffloat)jarrSize[0], (zffloat)jarrSize[1]);
         JNIUtilReleaseIntArrayElements(jniEnv, jobjSize, jarrSize, JNI_ABORT);

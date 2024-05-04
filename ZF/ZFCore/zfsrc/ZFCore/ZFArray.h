@@ -75,21 +75,21 @@ public:
      */
     template<typename T_ZFObject>
     T_ZFObject get(ZF_IN zfindex index) {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->get(index));
+        return zfunsafe_zfcast(T_ZFObject, this->get(index));
     }
     /**
      * @brief util getter to get and cast to desired type
      */
     template<typename T_ZFObject>
     T_ZFObject getFirst(void) {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->getFirst());
+        return zfunsafe_zfcast(T_ZFObject, this->getFirst());
     }
     /**
      * @brief util getter to get and cast to desired type
      */
     template<typename T_ZFObject>
     T_ZFObject getLast(void) {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->getLast());
+        return zfunsafe_zfcast(T_ZFObject, this->getLast());
     }
 
 public:

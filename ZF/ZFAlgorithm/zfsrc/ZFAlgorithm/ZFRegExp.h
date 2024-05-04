@@ -161,7 +161,7 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        ZFRegExp *another = ZFCastZFObjectUnchecked(zfself *, anotherObj);
+        ZFRegExp *another = zfunsafe_zfcast(zfself *, anotherObj);
         this->regExpCompile(another->regExpPattern(), another->regExpFlag());
     }
 

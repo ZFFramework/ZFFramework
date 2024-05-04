@@ -114,7 +114,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindFirst(
     return zftrue;
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindNext(ZF_IN_OUT ZFFileFindData::Impl &fd) {
-    ZFFileFindData::Impl *normalFd = ZFCastStatic(ZFFileFindData::Impl *, fd.nativeFd);
+    ZFFileFindData::Impl *normalFd = (ZFFileFindData::Impl *)fd.nativeFd;
     if(!ZFPROTOCOL_ACCESS(ZFFile)->fileFindNext(*normalFd)) {
         return zffalse;
     }
@@ -123,7 +123,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindNext(ZF_IN_OUT ZFFileFindData::
     return zftrue;
 }
 void ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resFindClose(ZF_IN_OUT ZFFileFindData::Impl &fd) {
-    ZFFileFindData::Impl *normalFd = ZFCastStatic(ZFFileFindData::Impl *, fd.nativeFd);
+    ZFFileFindData::Impl *normalFd = (ZFFileFindData::Impl *)fd.nativeFd;
     ZFPROTOCOL_ACCESS(ZFFile)->fileFindClose(*normalFd);
     zfdelete(normalFd);
     fd.nativeFd = zfnull;

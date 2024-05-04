@@ -306,7 +306,7 @@ protected:
 
         this->buttonRemoveAll();
         for(zfindex i = 0; i < buttons->count(); ++i) {
-            ZFUIButton *button = ZFCastZFObject(ZFUIButton *, buttons->get(i));
+            ZFUIButton *button = zfcast(ZFUIButton *, buttons->get(i));
             if(button == zfnull) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
                     "item %s not type of %s", buttons->get(i), ZFUIButton::ClassData()->className());
@@ -322,7 +322,7 @@ protected:
             , ZF_IN ZFSerializable *referencedOwnerOrNull
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             ) {
-        ZFUIButtonGroup *ref = ZFCastZFObject(ZFUIButtonGroup *, referencedOwnerOrNull);
+        ZFUIButtonGroup *ref = zfcast(ZFUIButtonGroup *, referencedOwnerOrNull);
         ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref,
                 ZFSerializableKeyword_ZFUIButtonGroup_buttons, ZFObject, this->_ZFP_buttons, ref->_ZFP_buttons, zfnull, {
                     return zffalse;

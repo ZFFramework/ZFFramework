@@ -59,7 +59,7 @@ public:
             JNIConvertZFObjectToJNIType(jniEnv, drawableView));
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
-        return ZFCastStatic(void *, ret);
+        return (void *)ret;
     }
     virtual void nativeDrawableViewDestroy(
             ZF_IN ZFUIDrawableView *drawableView
@@ -68,7 +68,7 @@ public:
         // for performance, we won't have JNI call to destroy, simply delete the global ref
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject nativeDrawableViewTmp = ZFCastStatic(jobject, nativeDrawableView);
+        jobject nativeDrawableViewTmp = (jobject)nativeDrawableView;
         JNIUtilDeleteGlobalRef(jniEnv, nativeDrawableViewTmp);
     }
 
@@ -79,7 +79,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, drawableView->nativeImplView())
+            (jobject)drawableView->nativeImplView()
             );
     }
 
@@ -91,7 +91,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         jobject canvas = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, token.target.to<ZFUIDrawableView *>()->nativeImplView())
+            (jobject)token.target.to<ZFUIDrawableView *>()->nativeImplView()
             );
         if(canvas == NULL) {
             return zffalse;
@@ -120,7 +120,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIDrawableView
         , JNIPointer zfjniPointerOwnerZFUIDrawableView
         ) {
     ZFPROTOCOL_ACCESS(ZFUIDrawForView)->notifyOnDraw(
-        ZFCastZFObject(ZFUIDrawableView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIDrawableView)));
+        JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIDrawableView));
 }
 JNI_METHOD_DECLARE_END()
 ZF_NAMESPACE_GLOBAL_BEGIN

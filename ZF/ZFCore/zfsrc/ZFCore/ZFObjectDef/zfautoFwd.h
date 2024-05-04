@@ -82,7 +82,7 @@ public:
     }
     template<typename T_ZFObject>
     inline operator T_ZFObject * (void) const {
-        return ZFCastZFObject(T_ZFObject *, this->toObject());
+        return zfcast(T_ZFObject *, this->toObject());
     }
 
 public:
@@ -114,11 +114,11 @@ public:
         return _ZFP_obj;
     }
     /**
-     * @brief cast by #ZFCastZFObjectUnchecked
+     * @brief cast by #zfunsafe_zfcast
      */
     template<typename T_ZFObject>
     inline T_ZFObject to(void) const {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
+        return zfunsafe_zfcast(T_ZFObject, this->toObject());
     }
 
     /**

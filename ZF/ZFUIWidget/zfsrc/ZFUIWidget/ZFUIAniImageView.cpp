@@ -133,7 +133,7 @@ void ZFUIAniImageData::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     }
 }
 ZFCompareResult ZFUIAniImageData::objectCompare(ZF_IN ZFObject *anotherObj) {
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another != zfnull
         && ZFObjectCompare(this->frameSrc(), another->frameSrc()) == ZFCompareTheSame
         && this->frameSizePixel() == another->frameSizePixel()
@@ -149,7 +149,7 @@ ZFCompareResult ZFUIAniImageData::objectCompare(ZF_IN ZFObject *anotherObj) {
 
 void ZFUIAniImageData::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuper::styleableOnCopyFrom(anotherStyleable);
-    zfself *another = ZFCastZFObject(zfself *, anotherStyleable);
+    zfself *another = zfcast(zfself *, anotherStyleable);
     if(another == this || another == zfnull) {return;}
 
     d->frameSrc = another->d->frameSrc;
@@ -212,7 +212,7 @@ zfbool ZFUIAniImageData::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
     if(ref != zfnull && this->objectCompare(ref) == ZFCompareTheSame) {
         return zftrue;
     }

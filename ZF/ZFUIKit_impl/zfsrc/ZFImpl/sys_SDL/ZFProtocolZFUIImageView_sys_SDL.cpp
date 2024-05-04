@@ -56,7 +56,7 @@ private:
             , ZF_IN const SDL_Rect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
-        ZFUIImageView *owner = ZFCastZFObject(ZFUIImageView *, nativeView->ownerZFUIView);
+        ZFUIImageView *owner = zfcast(ZFUIImageView *, nativeView->ownerZFUIView);
         if(owner == zfnull || owner->image() == zfnull) {
             return zffalse;
         }

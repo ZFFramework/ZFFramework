@@ -67,7 +67,7 @@ public:
      */
     template<typename T_ZFObject>
     T_ZFObject get(ZF_IN ZFObject *pKey) {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->get(pKey));
+        return zfunsafe_zfcast(T_ZFObject, this->get(pKey));
     }
 
     /** @brief see #allKey */
@@ -75,7 +75,7 @@ public:
     void allKeyT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
         ret.capacity(ret.count() + this->count());
         for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
-            ret.add(ZFCastZFObject(T_ZFObject *, this->iterKey(it)));
+            ret.add(zfcast(T_ZFObject *, this->iterKey(it)));
         }
     }
     /** @brief see #allKey */
@@ -91,7 +91,7 @@ public:
     void allValueT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
         ret.capacity(ret.count() + this->count());
         for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
-            ret.add(ZFCastZFObject(T_ZFObject *, this->iterValue(it)));
+            ret.add(zfcast(T_ZFObject *, this->iterValue(it)));
         }
     }
     /** @brief see #allValue */
@@ -149,7 +149,7 @@ public:
      */
     template<typename T_ZFObject>
     T_ZFObject removeAndGet(ZF_IN ZFObject *pKey) {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->removeAndGet(pKey));
+        return zfunsafe_zfcast(T_ZFObject, this->removeAndGet(pKey));
     }
 
     // ============================================================

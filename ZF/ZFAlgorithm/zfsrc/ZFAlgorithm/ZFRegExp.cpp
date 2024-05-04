@@ -139,7 +139,7 @@ zfbool ZFRegExp::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
             ZFSerializableKeyword_ZFRegExp_pattern, zfstring, this->regExpPattern(), ref->regExpPattern(), "", {
@@ -185,7 +185,7 @@ zfidentity ZFRegExp::objectHash(void) {
 }
 ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(zfstringIsEqual(this->regExpPattern(), another->regExpPattern())

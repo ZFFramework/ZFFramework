@@ -76,14 +76,14 @@ public:
             ZF_IN ZFUIImageView *imageView
             , ZF_IN void *nativeImageView
             ) {
-        delete ZFCastStatic(_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *, nativeImageView);
+        delete (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)nativeImageView;
     }
 
     virtual void image(
             ZF_IN ZFUIImageView *imageView
             , ZF_IN ZFUIImage *image
             ) {
-        _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *nativeImplView = ZFCastStatic(_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *, imageView->nativeImplView());
+        _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *nativeImplView = (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)imageView->nativeImplView();
         nativeImplView->update();
     }
     virtual void imageNinePatchChanged(
@@ -91,7 +91,7 @@ public:
             , ZF_IN zffloat imageScale
             , ZF_IN const ZFUIMargin &imageNinePatch
             ) {
-        _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *nativeImplView = ZFCastStatic(_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *, imageView->nativeImplView());
+        _ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *nativeImplView = (_ZFP_ZFUIImageViewImpl_sys_Qt_ImageView *)imageView->nativeImplView();
         nativeImplView->_ZFP_imageScale = imageScale;
         nativeImplView->_ZFP_imageNinePatchScaled = ZFUIMarginApplyScaleReversely(imageNinePatch, imageScale);
         nativeImplView->update();

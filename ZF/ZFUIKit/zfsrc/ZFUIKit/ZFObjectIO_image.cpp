@@ -49,7 +49,7 @@ ZFOBJECTIO_DEFINE(image, ZFM_EXPAND({
             return zftrue;
         }
     }, {
-        ZFUIImage *image = ZFCastZFObject(ZFUIImage *, obj);
+        ZFUIImage *image = zfcast(ZFUIImage *, obj);
         if(image == zfnull) {
             zfstringAppend(outErrorHint,
                 "object %s is not type of %s",

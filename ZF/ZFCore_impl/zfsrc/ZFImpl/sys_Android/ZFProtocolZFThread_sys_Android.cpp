@@ -105,18 +105,18 @@ public:
         zfCoreAssertWithMessage(_ZFP_ZFThreadImpl_sys_Android_threadMap.find(*token) == _ZFP_ZFThreadImpl_sys_Android_threadMap.end(),
             "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_sys_Android_threadMap[*token] = ownerZFThread;
-        return ZFCastStatic(void *, token);
+        return (void *)token;
     }
     virtual void nativeThreadUnregister(ZF_IN void *token) {
         zfCoreMutexLocker();
-        _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *threadId = ZFCastStatic(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *, token);
+        _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *threadId = (_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token;
         _ZFP_ZFThreadImpl_sys_Android_threadMap.erase(*threadId);
-        zfdelete(ZFCastStatic(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *, token));
+        zfdelete((_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token);
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Android_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_sys_Android_threadMap.find(
-            *ZFCastStatic(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *, token));
+            *(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *)token);
         if(it != _ZFP_ZFThreadImpl_sys_Android_threadMap.end()) {
             return it->second;
         }
@@ -146,7 +146,7 @@ public:
         JNIUtilCallStaticVoidMethod(jniEnv,
             this->jclsOwner,
             jmId,
-            ZFCastStatic(jlong, miliSecs));
+            (jlong)miliSecs);
     }
 
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
@@ -178,7 +178,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
 
-        jobject nativeTokenTmp = ZFCastStatic(jobject, nativeToken);
+        jobject nativeTokenTmp = (jobject)nativeToken;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, nativeTokenTmp);
         JNIUtilDeleteGlobalRef(jniEnv, nativeTokenTmp);
     }
@@ -215,7 +215,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
 
-        jobject nativeTokenTmp = ZFCastStatic(jobject, nativeToken);
+        jobject nativeTokenTmp = (jobject)nativeToken;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, nativeTokenTmp);
         JNIUtilDeleteGlobalRef(jniEnv, nativeTokenTmp);
     }

@@ -41,7 +41,7 @@ public:
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
-        return ZFCastStatic(void *, ret);
+        return (void *)ret;
     }
     virtual void nativeTextViewDestroy(
             ZF_IN ZFUITextView *textView
@@ -52,7 +52,7 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject nativeTextViewTmp = ZFCastStatic(jobject, nativeTextView);
+        jobject nativeTextViewTmp = (jobject)nativeTextView;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, nativeTextViewTmp);
         JNIUtilDeleteGlobalRef(jniEnv, nativeTextViewTmp);
     }
@@ -71,8 +71,8 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
-            ZFCastStatic(jobject, ZFImpl_sys_Android_zfstringToString(text)));
+            (jobject)textView->nativeImplView(),
+            (jobject)ZFImpl_sys_Android_zfstringToString(text));
     }
     virtual void textAppearance(
             ZF_IN ZFUITextView *textView
@@ -85,8 +85,8 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
-            ZFCastStatic(jint, textAppearance));
+            (jobject)textView->nativeImplView(),
+            (jint)textAppearance);
     }
     virtual void textAlign(
             ZF_IN ZFUITextView *textView
@@ -99,8 +99,8 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
-            ZFCastStatic(jint, textAlign));
+            (jobject)textView->nativeImplView(),
+            (jint)textAlign);
     }
     virtual void textColor(
             ZF_IN ZFUITextView *textView
@@ -113,7 +113,7 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
+            (jobject)textView->nativeImplView(),
             ZFImpl_sys_Android_ZFUIColorToColor(textColor));
     }
     virtual void textSize(
@@ -145,8 +145,8 @@ public:
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
-            ZFCastStatic(jboolean, textSingleLine));
+            (jobject)textView->nativeImplView(),
+            (jboolean)textSingleLine);
     }
     virtual void textTruncateMode(
             ZF_IN ZFUITextView *textView
@@ -159,8 +159,8 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
-            ZFCastStatic(jint, textTruncateMode));
+            (jobject)textView->nativeImplView(),
+            (jint)textTruncateMode);
     }
 
     // ============================================================
@@ -180,10 +180,10 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
-            ZFCastStatic(jint, sizeHint.width),
-            ZFCastStatic(jint, sizeHint.height),
-            ZFCastStatic(jint, textSize));
+            (jobject)textView->nativeImplView(),
+            (jint)sizeHint.width,
+            (jint)sizeHint.height,
+            (jint)textSize);
         jint *jarrSize = JNIUtilGetIntArrayElements(jniEnv, jobjSize, NULL);
         ZFUISize ret = ZFUISizeMake((zffloat)jarrSize[0], (zffloat)jarrSize[1]);
         JNIUtilReleaseIntArrayElements(jniEnv, jobjSize, jarrSize, JNI_ABORT);
@@ -198,8 +198,8 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         jint ret = JNIUtilCallStaticIntMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()));
-        return ZFCastStatic(zffloat, ret);
+            (jobject)textView->nativeImplView());
+        return (zffloat)ret;
     }
 
     virtual void layoutNativeTextView(
@@ -214,7 +214,7 @@ public:
             ).c_str());
         zffloat fixedTextSize = this->calcTextSizeAutoChange(textView, viewSize);
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, textView->nativeImplView()),
+            (jobject)textView->nativeImplView(),
             (jint)fixedTextSize);
     }
 

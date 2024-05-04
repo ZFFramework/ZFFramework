@@ -66,13 +66,13 @@ public:
             return (void *)zfnew(_ZFP_SI_##Name); \
         } \
         static void _ZFP_SI_dtor_##Name(ZF_IN void *p) { \
-            zfdelete(ZFCastStatic(_ZFP_SI_##Name *, p)); \
+            zfdelete((_ZFP_SI_##Name *)p); \
         } \
         static _ZFP_SI_##Name *_ZFP_SI_instanceAccess(void) { \
             static _ZFP_SI_Holder d(ZFM_TOSTRING_DIRECT(Name), \
                 _ZFP_SI_##Name::_ZFP_SI_ctor_##Name, \
                 _ZFP_SI_##Name::_ZFP_SI_dtor_##Name); \
-            return ZFCastStatic(_ZFP_SI_##Name *, d.instance); \
+            return (_ZFP_SI_##Name *)d.instance; \
         } \
     public: \
         _ZFP_SI_##Name(void)

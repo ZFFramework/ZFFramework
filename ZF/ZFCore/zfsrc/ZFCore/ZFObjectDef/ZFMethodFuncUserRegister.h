@@ -30,7 +30,7 @@ extern ZFLIB_ZFCore void ZFMethodFuncUserUnregister(ZF_IN const ZFMethod *method
         zftrue \
         , zffalse \
         , zfnull \
-        , ZFCastReinterpret(ZFFuncAddrType, methodInvoker) \
+        , reinterpret_cast<ZFFuncAddrType>(methodInvoker) \
         , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(GenericInvokerOwner) \
         , ZFMethodTypeStatic \
         , zfnull \

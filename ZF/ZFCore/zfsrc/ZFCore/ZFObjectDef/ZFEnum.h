@@ -58,7 +58,7 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->enumValue(ZFCastZFObjectUnchecked(zfself *, anotherObj)->enumValue());
+        this->enumValue(zfunsafe_zfcast(zfself *, anotherObj)->enumValue());
     }
 
 protected:
@@ -186,7 +186,7 @@ public:
      */
     template<typename T_EnumType>
     inline T_EnumType enumValue(void) {
-        return ZFCastStatic(T_EnumType, _ZFP_ZFEnum_value);
+        return (T_EnumType)_ZFP_ZFEnum_value;
     }
     /**
      * @brief get current value's name, or ZFEnumNameInvalid if invalid
@@ -221,7 +221,7 @@ public:
 public:
     zfoverride
     virtual void wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) {
-        zfself *refTmp = ZFCastZFObject(zfself *, ref);
+        zfself *refTmp = zfcast(zfself *, ref);
         if(refTmp != zfnull) {
             this->_ZFP_ZFEnum_value = refTmp->_ZFP_ZFEnum_value;
         }

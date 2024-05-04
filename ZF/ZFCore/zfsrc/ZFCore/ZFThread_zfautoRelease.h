@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 extern ZFLIB_ZFCore void _ZFP_zfautoReleaseAction(ZF_IN ZFObject *obj);
 template<typename T_ZFObject>
 inline T_ZFObject _ZFP_zfautoRelease(ZF_IN T_ZFObject obj) {
-    _ZFP_zfautoReleaseAction(ZFCastZFObjectUnchecked(ZFObject *, obj));
+    _ZFP_zfautoReleaseAction(zfunsafe_zfcast(ZFObject *, obj));
     return obj;
 }
 /**

@@ -30,7 +30,7 @@ zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zflineRelease {
 public:
     template<typename T_ZFObject>
     T_ZFObject set(T_ZFObject obj) {
-        this->obj = ZFCastZFObjectUnchecked(ZFObject *, obj);
+        this->obj = zfunsafe_zfcast(ZFObject *, obj);
         return obj;
     }
 public:
@@ -48,7 +48,7 @@ zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfunsafe_zflineRelease {
 public:
     template<typename T_ZFObject>
     T_ZFObject set(T_ZFObject obj) {
-        this->obj = ZFCastZFObjectUnchecked(ZFObject *, obj);
+        this->obj = zfunsafe_zfcast(ZFObject *, obj);
         return obj;
     }
 public:
@@ -105,7 +105,7 @@ zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedReleaseContainer {
 public:
     template<typename T_ZFObject>
     _ZFP_zfblockedReleaseContainer(ZF_IN T_ZFObject obj)
-    : obj(ZFCastZFObjectUnchecked(ZFObject *, obj))
+    : obj(zfunsafe_zfcast(ZFObject *, obj))
     {
     }
     ~_ZFP_zfblockedReleaseContainer(void) {
@@ -118,7 +118,7 @@ zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfunsafe_zfblockedReleaseContainer {
 public:
     template<typename T_ZFObject>
     _ZFP_zfunsafe_zfblockedReleaseContainer(ZF_IN T_ZFObject obj)
-    : obj(ZFCastZFObjectUnchecked(ZFObject *, obj))
+    : obj(zfunsafe_zfcast(ZFObject *, obj))
     {
     }
     ~_ZFP_zfunsafe_zfblockedReleaseContainer(void) {
@@ -211,32 +211,32 @@ public:
 
 // ============================================================
 template<typename T_ZFObject, typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD _ZFP_ObjCastH<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(zfobj<T_ZFObject> const &obj) {
-        return ZFCastZFObject(T_To, obj.toObject());
+        return zfcast(T_To, obj.toObject());
     }
 };
 template<typename T_ZFObject, typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+zfclassNotPOD _ZFP_ObjCastH<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
     static inline zfobj<T_ZFObject> c(T_From obj) {
-        return ZFCastZFObject(ZFObject *, obj);
+        return zfcast(ZFObject *, obj);
     }
 };
 
 template<typename T_ZFObject, typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(zfobj<T_ZFObject> const &obj) {
-        return ZFCastZFObjectUnchecked(T_To, obj.toObject());
+        return zfunsafe_zfcast(T_To, obj.toObject());
     }
 };
 template<typename T_ZFObject, typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
     static inline zfobj<T_ZFObject> c(T_From obj) {
-        return ZFCastZFObjectUnchecked(ZFObject *, obj);
+        return zfunsafe_zfcast(ZFObject *, obj);
     }
 };
 

@@ -117,7 +117,7 @@ public:
     }
     template<typename T_ZFObject>
     inline operator T_ZFObject * (void) const {
-        return ZFCastZFObject(T_ZFObject *, this->toObject());
+        return zfcast(T_ZFObject *, this->toObject());
     }
 
 public:
@@ -176,11 +176,11 @@ public:
         return _ZFP_obj ? _ZFP_obj->objectHolded().toObject() : zfnull;
     }
     /**
-     * @brief cast by #ZFCastZFObjectUnchecked
+     * @brief cast by #zfunsafe_zfcast
      */
     template<typename T_ZFObject>
     inline T_ZFObject to(void) const {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->toObject());
+        return zfunsafe_zfcast(T_ZFObject, this->toObject());
     }
 
     /**
@@ -246,7 +246,7 @@ public:
 
 public:
     inline T_ZFObjectBase *operator -> (void) const {
-        return ZFCastZFObjectUnchecked(T_ZFObjectBase *, this->toObject());
+        return zfunsafe_zfcast(T_ZFObjectBase *, this->toObject());
     }
     inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
         return zfweak::toObject();
@@ -360,63 +360,63 @@ public:
 
 // ============================================================
 template<typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, zfweak, T_ToType, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD _ZFP_ObjCastH<0, T_To, zfweak, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(zfweak const &obj) {
-        return ZFCastZFObject(T_To, obj.toObject());
+        return zfcast(T_To, obj.toObject());
     }
 };
 template<typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, zfweak, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+zfclassNotPOD _ZFP_ObjCastH<0, zfweak, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
     static inline zfweak c(T_From obj) {
-        return ZFCastZFObject(ZFObject *, obj);
+        return zfcast(ZFObject *, obj);
     }
 };
 
 template<typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, zfweak, T_ToType, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, zfweak, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(zfweak const &obj) {
-        return ZFCastZFObjectUnchecked(T_To, obj.toObject());
+        return zfunsafe_zfcast(T_To, obj.toObject());
     }
 };
 template<typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, zfweak, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, zfweak, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
     static inline zfweak c(T_From obj) {
-        return ZFCastZFObjectUnchecked(ZFObject *, obj);
+        return zfunsafe_zfcast(ZFObject *, obj);
     }
 };
 
 // ============================================================
 template<typename T_ZFObject, typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, T_To, zfweakT<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD _ZFP_ObjCastH<0, T_To, zfweakT<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(zfweakT<T_ZFObject> const &obj) {
-        return ZFCastZFObject(T_To, obj.toObject());
+        return zfcast(T_To, obj.toObject());
     }
 };
 template<typename T_ZFObject, typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastHolder<0, zfweakT<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+zfclassNotPOD _ZFP_ObjCastH<0, zfweakT<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
     static inline zfweakT<T_ZFObject> c(T_From obj) {
-        return ZFCastZFObject(ZFObject *, obj);
+        return zfcast(ZFObject *, obj);
     }
 };
 
 template<typename T_ZFObject, typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, T_To, zfweakT<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, zfweakT<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
 public:
     static inline T_To c(zfweakT<T_ZFObject> const &obj) {
-        return ZFCastZFObjectUnchecked(T_To, obj.toObject());
+        return zfunsafe_zfcast(T_To, obj.toObject());
     }
 };
 template<typename T_ZFObject, typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastUncheckedHolder<0, zfweakT<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, zfweakT<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
 public:
     static inline zfweakT<T_ZFObject> c(T_From obj) {
-        return ZFCastZFObjectUnchecked(ZFObject *, obj);
+        return zfunsafe_zfcast(ZFObject *, obj);
     }
 };
 

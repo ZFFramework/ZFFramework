@@ -90,13 +90,13 @@ void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_detach(ZF_IN void *token) {
     tokenTmp->detach();
 }
 void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_cleanup(ZF_IN void *token) {
-    delete ZFCastStatic(_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *, token);
+    delete (_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *)token;
 }
 void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusable(
         ZF_IN void *token
         , ZF_IN zfbool v
         ) {
-    _ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *t = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *, token);
+    _ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *t = (_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *)token;
     if(v) {
         t->nativeOwner->setFocusPolicy(Qt::ClickFocus);
         if(t->nativeImplView != zfnull) {
@@ -116,7 +116,7 @@ void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusRequest(
         ZF_IN void *token
         , ZF_IN zfbool v
         ) {
-    _ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *t = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *, token);
+    _ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *t = (_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *)token;
     if(v) {
         t->nativeOwner->setFocus();
     }
@@ -125,7 +125,7 @@ void _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusRequest(
     }
 }
 zfbool _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocused(ZF_IN void *token) {
-    _ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *t = ZFCastStatic(_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *, token);
+    _ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *t = (_ZFP_ZFUIViewImpl_sys_Qt_FocusProxyToken *)token;
     return t->nativeOwner->hasFocus();
 }
 

@@ -56,17 +56,17 @@ public:
     void labelViewPrepare(void) {
         if(this->labelView == zfnull) {
             ZFObject *obj = zfRetain(this->pimplOwner->buttonLabelClass()->newInstance());
-            this->labelView = ZFCastZFObject(ZFUITextView *, obj);
+            this->labelView = zfcast(ZFUITextView *, obj);
             zfCoreAssert(this->labelView != zfnull);
-            this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->labelView));
+            this->pimplOwner->internalBgViewAdd(zfunsafe_zfcast(ZFUIView *, this->labelView));
         }
     }
     void iconViewPrepare(void) {
         if(this->iconView == zfnull) {
             ZFObject *obj = zfRetain(this->pimplOwner->buttonIconClass()->newInstance());
-            this->iconView = ZFCastZFObject(ZFUIImageView *, obj);
+            this->iconView = zfcast(ZFUIImageView *, obj);
             zfCoreAssert(this->iconView != zfnull);
-            this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->iconView));
+            this->pimplOwner->internalBgViewAdd(zfunsafe_zfcast(ZFUIView *, this->iconView));
 
             if(this->labelView != zfnull) {
                 this->pimplOwner->internalBgViewRemove(this->labelView);
@@ -77,9 +77,9 @@ public:
     void backgroundViewPrepare(void) {
         if(this->backgroundView == zfnull) {
             ZFObject *obj = zfRetain(this->pimplOwner->buttonBackgroundClass()->newInstance());
-            this->backgroundView = ZFCastZFObject(ZFUIImageView *, obj);
+            this->backgroundView = zfcast(ZFUIImageView *, obj);
             zfCoreAssert(this->backgroundView != zfnull);
-            this->pimplOwner->internalBgViewAdd(ZFCastZFObjectUnchecked(ZFUIView *, this->backgroundView));
+            this->pimplOwner->internalBgViewAdd(zfunsafe_zfcast(ZFUIView *, this->backgroundView));
 
             if(this->iconView != zfnull) {
                 this->pimplOwner->internalBgViewRemove(this->iconView);
@@ -347,9 +347,9 @@ void ZFUIButtonBasic::layoutOnMeasure(
         , ZF_IN const ZFUISize &sizeHint
         , ZF_IN const ZFUISizeParam &sizeParam
         ) {
-    ZFUIView *labelView = ZFCastZFObjectUnchecked(ZFUIView *, d->labelView);
-    ZFUIView *iconView = ZFCastZFObjectUnchecked(ZFUIView *, d->iconView);
-    ZFUIView *backgroundView = ZFCastZFObjectUnchecked(ZFUIView *, d->backgroundView);
+    ZFUIView *labelView = zfunsafe_zfcast(ZFUIView *, d->labelView);
+    ZFUIView *iconView = zfunsafe_zfcast(ZFUIView *, d->iconView);
+    ZFUIView *backgroundView = zfunsafe_zfcast(ZFUIView *, d->backgroundView);
     ZFUISize sizeHintTmp = sizeHint;
     if(sizeHintTmp.width >= 0) {
         sizeHintTmp.width -= this->contentMargin().left + this->contentMargin().right;
@@ -434,15 +434,15 @@ void ZFUIButtonBasic::layoutOnMeasure(
 void ZFUIButtonBasic::internalViewOnLayout(ZF_IN const ZFUIRect &bounds) {
     zfsuper::internalViewOnLayout(bounds);
 
-    ZFUIView *backgroundView = ZFCastZFObjectUnchecked(ZFUIView *, d->backgroundView);
+    ZFUIView *backgroundView = zfunsafe_zfcast(ZFUIView *, d->backgroundView);
     if(backgroundView != zfnull) {
         backgroundView->viewFrame(ZFUIRectApplyMargin(bounds, this->backgroundMargin()));
     }
 
     ZFUISize sizeHint = ZFUISizeApplyMargin(ZFUIRectGetSize(bounds), this->contentMargin());
 
-    ZFUIView *labelView = ZFCastZFObjectUnchecked(ZFUIView *, d->labelView);
-    ZFUIView *iconView = ZFCastZFObjectUnchecked(ZFUIView *, d->iconView);
+    ZFUIView *labelView = zfunsafe_zfcast(ZFUIView *, d->labelView);
+    ZFUIView *iconView = zfunsafe_zfcast(ZFUIView *, d->iconView);
 
     ZFUISize labelSize = ZFUISizeZero();
     if(labelView != zfnull && labelView->viewVisible() && !d->labelView->text().isEmpty()) {
@@ -533,19 +533,19 @@ void ZFUIButtonBasic::buttonStateOnUpdate(void) {
     #define _ZFP_ZFUIButtonBasic_buttonStateOn(T_State) \
         if(d->labelView != zfnull) { \
             if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, label##T_State), this)) { \
-                ZFCastZFObjectUnchecked(ZFStyleable *, d->labelView)->styleableCopyFrom(ZFCastZFObjectUnchecked(ZFStyleable *, this->label##T_State())); \
+                zfunsafe_zfcast(ZFStyleable *, d->labelView)->styleableCopyFrom(zfunsafe_zfcast(ZFStyleable *, this->label##T_State())); \
             } \
             d->labelViewUpdate(); \
         } \
         if(d->iconView != zfnull) { \
             if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, icon##T_State), this)) { \
-                ZFCastZFObjectUnchecked(ZFStyleable *, d->iconView)->styleableCopyFrom(ZFCastZFObjectUnchecked(ZFStyleable *, this->icon##T_State())); \
+                zfunsafe_zfcast(ZFStyleable *, d->iconView)->styleableCopyFrom(zfunsafe_zfcast(ZFStyleable *, this->icon##T_State())); \
             } \
             d->iconViewUpdate(); \
         } \
         if(d->backgroundView != zfnull) { \
             if(ZFPropertyIsValueAccessed(ZFPropertyAccess(ZFUIButtonBasic, background##T_State), this)) { \
-                ZFCastZFObjectUnchecked(ZFStyleable *, d->backgroundView)->styleableCopyFrom(ZFCastZFObjectUnchecked(ZFStyleable *, this->background##T_State())); \
+                zfunsafe_zfcast(ZFStyleable *, d->backgroundView)->styleableCopyFrom(zfunsafe_zfcast(ZFStyleable *, this->background##T_State())); \
             } \
             d->backgroundViewUpdate(); \
         }

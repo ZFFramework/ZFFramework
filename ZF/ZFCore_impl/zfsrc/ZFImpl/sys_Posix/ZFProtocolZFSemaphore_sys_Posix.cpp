@@ -27,23 +27,23 @@ public:
             ZF_IN ZFSemaphore *semaphore
             , ZF_IN void *nativeSemaphore
             ) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Posix_Token *, nativeSemaphore);
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)nativeSemaphore;
         pthread_cond_destroy(&(semaphoreToken->sema));
         pthread_mutex_destroy(&(semaphoreToken->semaLocker));
         zfdelete(semaphoreToken);
     }
 
     virtual void semaphoreLock(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Posix_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
         pthread_mutex_lock(&(semaphoreToken->semaLocker));
     }
     virtual void semaphoreUnlock(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Posix_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
         pthread_mutex_unlock(&(semaphoreToken->semaLocker));
     }
 
     virtual void semaphoreSignal(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Posix_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
 
         if(semaphoreToken->waiterCount > 0) {
             --(semaphoreToken->waiterCount);
@@ -51,7 +51,7 @@ public:
         }
     }
     virtual void semaphoreBroadcast(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Posix_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
 
         if(semaphoreToken->waiterCount > 0) {
             zfindex tmp = semaphoreToken->waiterCount;
@@ -60,7 +60,7 @@ public:
         }
     }
     virtual void semaphoreWait(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Posix_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
 
         ++(semaphoreToken->waiterCount);
         this->semaWait(semaphoreToken);
@@ -69,7 +69,7 @@ public:
             ZF_IN ZFSemaphore *semaphore
             , ZF_IN zftimet miliSecsTimeout
             ) {
-        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Posix_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Posix_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Posix_Token *)semaphore->nativeSemaphore();
 
         ++(semaphoreToken->waiterCount);
 

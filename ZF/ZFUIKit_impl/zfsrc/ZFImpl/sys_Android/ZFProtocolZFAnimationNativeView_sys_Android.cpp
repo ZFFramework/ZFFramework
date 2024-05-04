@@ -49,7 +49,7 @@ public:
             JNIConvertZFObjectToJNIType(jniEnv, ani));
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
-        return ZFCastStatic(void *, ret);
+        return (void *)ret;
     }
     virtual void nativeAniDestroy(
             ZF_IN ZFAnimationNativeView *ani
@@ -60,7 +60,7 @@ public:
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        jobject tmp = ZFCastStatic(jobject, nativeAni);
+        jobject tmp = (jobject)nativeAni;
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, tmp);
         JNIUtilDeleteGlobalRef(jniEnv, tmp);
     }
@@ -77,8 +77,8 @@ public:
             ).c_str());
         this->nativeAniSetup(ani, nativeAniScale);
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, ani->nativeAnimation()),
-            ZFCastStatic(jobject, ZFCastStatic(ZFUIView *, ani->aniTarget())->nativeView()));
+            (jobject)ani->nativeAnimation(),
+            (jobject)(ZFUIView *)ani->aniTarget()->nativeView());
     }
     virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -88,8 +88,8 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, ani->nativeAnimation()),
-            ZFCastStatic(jobject, ZFCastStatic(ZFUIView *, ani->aniTarget())->nativeView()));
+            (jobject)ani->nativeAnimation(),
+            (jobject)(ZFUIView *)ani->aniTarget()->nativeView());
     }
 
 private:
@@ -104,7 +104,7 @@ private:
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
-        jobject nativeAnimation = ZFCastStatic(jobject, ani->nativeAnimation());
+        jobject nativeAnimation = (jobject)ani->nativeAnimation();
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
             , nativeAnimation
             , (jint)ani->aniCurve()
@@ -240,7 +240,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAnimationNativeView
         , JNIPointer zfjniPointerOwnerZFAnimationNativeView
         ) {
     ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->notifyAniStop(
-        ZFCastZFObject(ZFAnimationNativeView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFAnimationNativeView)));
+        JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFAnimationNativeView));
 }
 JNI_METHOD_DECLARE_END()
 

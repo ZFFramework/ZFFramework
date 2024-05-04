@@ -790,7 +790,7 @@ ZFDynamic &ZFDynamic::property(
     param.propertySetterType(setterPrivilegeType);
     param.propertyGetterType(getterPrivilegeType);
     if(propertyInitValue != zfnull) {
-        ZFTypeIdWrapper *propertyInitValueWrapper = ZFCastZFObject(ZFTypeIdWrapper *, propertyInitValue);
+        ZFTypeIdWrapper *propertyInitValueWrapper = zfcast(ZFTypeIdWrapper *, propertyInitValue);
         if(propertyInitValueWrapper == zfnull) {
             d->error(zfstr("assign property's type must be %s: %s"
                         , ZFTypeIdWrapper::ClassData()->classNameFull()
@@ -830,8 +830,8 @@ ZFDynamic &ZFDynamic::property(
                         ));
             return *this;
         }
-        if(ZFCastZFObject(ZFCopyable *, propertyInitValue) == zfnull
-                && ZFCastZFObject(ZFStyleable *, propertyInitValue) == zfnull
+        if(zfcast(ZFCopyable *, propertyInitValue) == zfnull
+                && zfcast(ZFStyleable *, propertyInitValue) == zfnull
                 ) {
             d->error(zfstr("init value %s is not type of %s or %s"
                         , propertyInitValue

@@ -46,7 +46,7 @@ zfbool ZFUIListAdapterArray::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     if(ref == zfnull || ref->cellCount() == 0) {
         for(zfindex i = 0, count = this->cellCount(); i < count; ++i) {

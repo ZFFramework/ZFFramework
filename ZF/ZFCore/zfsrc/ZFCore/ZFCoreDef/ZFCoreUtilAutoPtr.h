@@ -90,7 +90,7 @@ _ZFP_zflineDeleteContainer<T_Object> _ZFP_zflineDeleteWrapper(ZF_IN T_Object *p)
 typedef void (*_ZFP_zfblockedDeleteCallback)(ZF_IN void *p);
 template<typename T_Object>
 void _ZFP_zfblockedDeleteOnDelete(ZF_IN void *p) {
-    zfdelete(ZFCastStatic(T_Object *, p));
+    zfdelete((T_Object *)p);
 }
 zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedDeleteContainer {
 public:
@@ -109,7 +109,7 @@ void _ZFP_zfblockedDeleteSetup(
         ZF_IN _ZFP_zfblockedDeleteContainer *container
         , ZF_IN T_Object * const &p
         ) {
-    container->p = ZFCastStatic(void *, p);
+    container->p = (void *)p;
     container->deleteCallback = _ZFP_zfblockedDeleteOnDelete<T_Object>;
 }
 /**

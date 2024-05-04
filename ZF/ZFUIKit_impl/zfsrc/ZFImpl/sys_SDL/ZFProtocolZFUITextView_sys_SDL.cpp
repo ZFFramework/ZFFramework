@@ -32,7 +32,7 @@ public:
             , ZF_IN ZFImpl_sys_SDL_View *owner
             , ZF_IN const ZFUISize &sizeHint
             ) {
-        ZFUITextView *textView = ZFCastZFObject(ZFUITextView *, owner->ownerZFUIView);
+        ZFUITextView *textView = zfcast(ZFUITextView *, owner->ownerZFUIView);
         if(textView != zfnull) {
             ret = ZFPROTOCOL_ACCESS(ZFUITextView)->measureNativeTextView(textView, sizeHint, textView->textSize() * textView->UIScaleFixed());
         }
@@ -205,7 +205,7 @@ private:
             , ZF_IN const SDL_Rect &parentRect
             , ZF_IN zffloat treeAlpha
             ) {
-        ZFUITextView *owner = ZFCastZFObject(ZFUITextView *, nativeView->ownerZFUIView);
+        ZFUITextView *owner = zfcast(ZFUITextView *, nativeView->ownerZFUIView);
         if(owner == zfnull || owner->text().isEmpty()) {
             return zffalse;
         }

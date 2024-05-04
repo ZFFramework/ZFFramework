@@ -92,7 +92,7 @@ public:
             OwnerClass::accessMethodName(t); \
             releaseAction(t); \
         } \
-        return ZFCastStatic(AccessTypeName *, holder->d); \
+        return (AccessTypeName *)holder->d; \
     } \
     void OwnerClass::accessMethodName(ZF_IN AccessTypeName *newInstance) { \
         if(ZFFrameworkStateCheck(ZFLevel_) == ZFFrameworkStateNotAvailable) { \
@@ -130,7 +130,7 @@ public:
         OwnerClass::_ZFP_ZFClassSingletonCleaner_##accessMethodName() = zfnull; \
         _ZFP_ZFClassSingletonPointerHolder *holder = _ZFP_ZFClassSingletonInstanceRefAccess(sig); \
         holder->d = zfnull; \
-        releaseAction(ZFCastStatic(AccessTypeName *, instance)); \
+        releaseAction((AccessTypeName *)instance); \
     }
 /**
  * @brief util macro to declare a singleton instance access for normal object type

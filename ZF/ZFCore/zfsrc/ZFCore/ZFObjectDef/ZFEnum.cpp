@@ -46,7 +46,7 @@ zfbool ZFEnum::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     if((ref == zfnull && this->enumValue() != ZFEnumInvalid())
             || (ref != zfnull && this->enumValue() != ref->enumValue())
@@ -120,7 +120,7 @@ ZFCompareResult ZFEnum::objectCompare(ZF_IN ZFObject *anotherObj) {
         return ZFCompareUncomparable;
     }
 
-    zfself *another = ZFCastZFObjectUnchecked(zfself *, anotherObj);
+    zfself *another = zfunsafe_zfcast(zfself *, anotherObj);
     if(this->enumValue() == ZFEnumInvalid()
             || another->enumValue() == ZFEnumInvalid()
             ) {

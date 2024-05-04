@@ -117,19 +117,19 @@ public:
         zfbool exist = (_ZFP_ZFThreadImpl_sys_Qt_threadMap.find(*token) != _ZFP_ZFThreadImpl_sys_Qt_threadMap.end());
         zfCoreAssertWithMessage(!exist, "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_sys_Qt_threadMap[*token] = ownerZFThread;
-        return ZFCastStatic(void *, token);
+        return (void *)token;
     }
     virtual void nativeThreadUnregister(ZF_IN void *token) {
         {
             zfCoreMutexLocker();
             _ZFP_ZFThreadImpl_sys_Qt_threadMap.erase(_ZFP_ZFThreadImpl_sys_Qt_getNativeThreadId());
         }
-        delete ZFCastStatic(_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *, token);
+        delete (_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *)token;
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Qt_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_sys_Qt_threadMap.find(
-            *ZFCastStatic(_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *, token));
+            *(_ZFP_ZFThreadImpl_sys_Qt_NativeThreadIdType *)token);
         if(it != _ZFP_ZFThreadImpl_sys_Qt_threadMap.end()) {
             return it->second;
         }

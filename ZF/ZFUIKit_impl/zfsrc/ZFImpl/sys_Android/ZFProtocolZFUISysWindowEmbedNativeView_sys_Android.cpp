@@ -44,10 +44,10 @@ public:
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        parent = (void *)JNIUtilNewGlobalRef(jniEnv, ZFCastStatic(jobject, parent));
+        parent = (void *)JNIUtilNewGlobalRef(jniEnv, (jobject)parent);
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, parent),
-            ZFCastStatic(jobject, child)
+            (jobject)parent,
+            (jobject)child
             );
     }
     virtual void nativeViewRemove(
@@ -62,10 +62,10 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, parent),
-            ZFCastStatic(jobject, child)
+            (jobject)parent,
+            (jobject)child
             );
-        JNIUtilDeleteGlobalRef(jniEnv, ZFCastStatic(jobject, parent));
+        JNIUtilDeleteGlobalRef(jniEnv, (jobject)parent);
     }
 
 private:

@@ -42,7 +42,7 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, ZFUIWindow *, windowForView
         forView = forView->viewParent();
     }
     if(forView != zfnull) {
-        return ZFCastZFObject(ZFUIWindow *, forView);
+        return zfcast(ZFUIWindow *, forView);
     }
     return zfnull;
 }
@@ -113,7 +113,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowShow) {
     zfindex addToIndex = 0;
     ZFCoreArray<zfautoT<ZFUIView> > tmpArray = this->windowOwnerSysWindow()->rootView()->childArray();
     for(zfindex i = 0; i < tmpArray.count(); ++i) {
-        ZFUIWindow *tmpWindow = ZFCastZFObject(ZFUIWindow *, tmpArray.get(i));
+        ZFUIWindow *tmpWindow = zfcast(ZFUIWindow *, tmpArray.get(i));
         if(tmpWindow != zfnull) {
             if(tmpWindow->windowLevel() <= this->windowLevel()) {
                 ++windowIndex;
@@ -133,7 +133,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowHide) {
     }
 
     zfRetain(this);
-    ZFUIRootView *rootView = ZFCastZFObject(ZFUIRootView *, this->viewParent());
+    ZFUIRootView *rootView = zfcast(ZFUIRootView *, this->viewParent());
     if(rootView != zfnull) {
         rootView->_ZFP_ZFUIRootView_windowList.removeElement(this);
     }
@@ -156,7 +156,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToTop) {
     zfindex topIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
     for(zfindex i = tmpArray.count() - 1; i != zfindexMax(); --i) {
-        ZFUIWindow *tmpWindow = ZFCastZFObject(ZFUIWindow *, tmpArray.get(i));
+        ZFUIWindow *tmpWindow = zfcast(ZFUIWindow *, tmpArray.get(i));
         if(tmpWindow != zfnull) {
             if(topIndex == zfindexMax() && tmpWindow->windowLevel() == selfWindowLevel) {
                 topIndex = i;
@@ -181,7 +181,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
     zfindex bottomIndex = zfindexMax();
     zfindex selfIndex = zfindexMax();
     for(zfindex i = 0; i < tmpArray.count(); ++i) {
-        ZFUIWindow *tmpWindow = ZFCastZFObject(ZFUIWindow *, tmpArray.get(i));
+        ZFUIWindow *tmpWindow = zfcast(ZFUIWindow *, tmpArray.get(i));
         if(tmpWindow != zfnull) {
             if(bottomIndex == zfindexMax() && tmpWindow->windowLevel() == selfWindowLevel) {
                 bottomIndex = i;

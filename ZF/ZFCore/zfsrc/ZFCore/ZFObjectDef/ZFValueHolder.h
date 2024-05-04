@@ -91,13 +91,13 @@ public:
     /** @brief util method to cast #holdedData */
     template<typename T_RawType>
     inline T_RawType holdedDataPointer(void) {
-        return ZFCastStatic(T_RawType, this->holdedData);
+        return (T_RawType)this->holdedData;
     }
     /** @brief util method to cast #holdedData */
     template<typename T_RawType>
     inline T_RawType holdedDataRef(void) {
         typedef typename zftTraits<T_RawType>::TrPtr T_RawTypePointer;
-        return *ZFCastStatic(T_RawTypePointer, this->holdedData);
+        return *(T_RawTypePointer)this->holdedData;
     }
 
 protected:
@@ -118,12 +118,12 @@ public:
     }
     template<typename T_Object>
     static void TypeObject(ZF_IN void *holdedData) {
-        zfdelete(ZFCastStatic(T_Object, holdedData));
+        zfdelete((T_Object)holdedData);
     }
     template<typename T_Object>
     static void TypePoolObject(ZF_IN void *holdedData) {
         zfCoreMutexLock();
-        zfpoolDelete(ZFCastStatic(T_Object, holdedData));
+        zfpoolDelete((T_Object)holdedData);
         zfCoreMutexUnlock();
     }
 };

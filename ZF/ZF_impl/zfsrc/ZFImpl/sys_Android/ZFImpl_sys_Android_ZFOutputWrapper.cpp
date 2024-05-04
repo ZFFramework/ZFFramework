@@ -52,7 +52,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , jlong offset
         , jlong size
         ) {
-    v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
+    v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
     ZFOutput output = outputHolder->zfv;
 
     if(buf == NULL) {
@@ -76,7 +76,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , void, native_1nativeOutputClose
         , JNIPointer zfjniPointerOwnerZFOutput
         ) {
-    v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
+    v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
     zfRelease(outputHolder);
 }
 JNI_METHOD_DECLARE_END()
@@ -87,7 +87,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , jlong size
         , jint pos
         ) {
-    v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
+    v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
     ZFOutput output = outputHolder->zfv;
     return (jboolean)output.ioSeek((zfindex)size, (ZFSeekPos)pos);
 }
@@ -97,7 +97,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , jlong, native_1nativeOutputTell
         , JNIPointer zfjniPointerOwnerZFOutput
         ) {
-    v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
+    v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
     ZFOutput output = outputHolder->zfv;
     zfindex pos = output.ioTell();
     if(pos == zfindexMax()) {
@@ -113,7 +113,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , jlong, native_1nativeOutputSize
         , JNIPointer zfjniPointerOwnerZFOutput
         ) {
-    v_ZFOutput *outputHolder = ZFCastZFObject(v_ZFOutput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput));
+    v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
     ZFOutput output = outputHolder->zfv;
     zfindex size = output.ioSize();
     if(size == zfindexMax()) {

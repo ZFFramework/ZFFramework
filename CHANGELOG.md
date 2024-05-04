@@ -1,6 +1,6 @@
 # 0.10.0RC
 
-* simplify some api
+* various api change for convenient
 * optimize thread impl
 * optimize native UI embed logic
 * optimize external res logic

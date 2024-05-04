@@ -22,7 +22,7 @@ public:
     }
     template<typename T_ZFCorePointer>
     static inline T_Pointer *toPointer(ZF_IN T_ZFCorePointer p) {
-        return ZFCastStatic(T_Pointer *, p->pointerValueAccessNonConst());
+        return (T_Pointer *)p->pointerValueAccessNonConst();
     }
 };
 template<typename T_Pointer>
@@ -33,7 +33,7 @@ public:
     }
     template<typename T_ZFCorePointer>
     static inline const T_Pointer *toPointer(ZF_IN T_ZFCorePointer p) {
-        return ZFCastStatic(const T_Pointer *, p->pointerValueAccess());
+        return (const T_Pointer *)p->pointerValueAccess();
     }
 };
 

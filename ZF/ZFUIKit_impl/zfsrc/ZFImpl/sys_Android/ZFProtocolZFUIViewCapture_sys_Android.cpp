@@ -45,7 +45,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, view->nativeView()));
+            (jobject)view->nativeView());
         image->nativeImage(tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
         return zftrue;

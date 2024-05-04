@@ -69,16 +69,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief same as static_cast<Type>(obj)
- */
-#define ZFCastStatic(Type, obj) (static_cast<Type>(obj))
-/**
- * @brief same as reinterpret_cast<Type>(obj)
- */
-#define ZFCastReinterpret(Type, obj) (reinterpret_cast<Type>(obj))
-
-// ============================================================
-/**
  * @brief a macro to show that a class doesn't allow copy constructor
  *
  * usage:

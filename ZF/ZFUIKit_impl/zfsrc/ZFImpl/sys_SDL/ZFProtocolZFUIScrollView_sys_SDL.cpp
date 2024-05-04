@@ -290,7 +290,7 @@ public:
             ZF_IN ZFUIScrollView *scrollView
             , ZF_IN const ZFUIRect &frame
             ) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = ZFCastStatic(_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *, scrollView->nativeImplView());
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeScrollView = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)scrollView->nativeImplView();
         nativeScrollView->rect.x = frame.x;
         nativeScrollView->rect.y = frame.y;
         nativeScrollView->rect.w = frame.width;
@@ -304,8 +304,8 @@ public:
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex atIndex
             ) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = ZFCastStatic(_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *, parent->nativeImplView());
-        ZFImpl_sys_SDL_View *nativeChild = ZFCastStatic(ZFImpl_sys_SDL_View *, child->nativeView());
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)parent->nativeImplView();
+        ZFImpl_sys_SDL_View *nativeChild = (ZFImpl_sys_SDL_View *)child->nativeView();
         nativeParent->childAttach(atIndex, nativeChild);
         nativeParent->layoutRequest();
     }
@@ -314,12 +314,12 @@ public:
             , ZF_IN ZFUIView *child
             , ZF_IN zfindex atIndex
             ) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = ZFCastStatic(_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *, parent->nativeImplView());
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)parent->nativeImplView();
         nativeParent->childDetach(atIndex);
         nativeParent->layoutRequest();
     }
     virtual void scrollChildRemoveAllForDealloc(ZF_IN ZFUIScrollView *parent) {
-        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = ZFCastStatic(_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *, parent->nativeImplView());
+        _ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *nativeParent = (_ZFP_ZFUIScrollViewImpl_sys_SDL_ScrollView *)parent->nativeImplView();
         for(zfindex i = 0; i < nativeParent->children.count(); ++i) {
             ZFImpl_sys_SDL_View *nativeChild = nativeParent->children[i];
             nativeChild->parent = zfnull;

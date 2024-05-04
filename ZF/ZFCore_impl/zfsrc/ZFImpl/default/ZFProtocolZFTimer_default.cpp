@@ -118,17 +118,17 @@ public:
             ZF_IN ZFTimer *timer
             , ZF_IN void *nativeTimer
             ) {
-        _ZFP_ZFTimerImpl_default_Timer *token = ZFCastStatic(_ZFP_ZFTimerImpl_default_Timer *, nativeTimer);
+        _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)nativeTimer;
         zfRelease(token);
     }
     virtual void timerStart(ZF_IN ZFTimer *timer) {
-        _ZFP_ZFTimerImpl_default_Timer *token = ZFCastStatic(_ZFP_ZFTimerImpl_default_Timer *, timer->nativeTimer());
+        _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)timer->nativeTimer();
         token->impl = this;
         token->timer = timer;
         token->timerStart();
     }
     virtual void timerStop(ZF_IN ZFTimer *timer) {
-        _ZFP_ZFTimerImpl_default_Timer *token = ZFCastStatic(_ZFP_ZFTimerImpl_default_Timer *, timer->nativeTimer());
+        _ZFP_ZFTimerImpl_default_Timer *token = (_ZFP_ZFTimerImpl_default_Timer *)timer->nativeTimer();
         token->timerStop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_default)

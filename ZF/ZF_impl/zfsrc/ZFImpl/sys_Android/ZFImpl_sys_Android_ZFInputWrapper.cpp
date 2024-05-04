@@ -54,7 +54,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
         , jlong offset
         , jlong size
         ) {
-    v_ZFInput *inputHolder = ZFCastZFObject(v_ZFInput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput));
+    v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
     ZFInput input = inputHolder->zfv;
 
     jbyte rawBuf[64];
@@ -78,7 +78,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
         , void, native_1nativeInputClose
         , JNIPointer zfjniPointerOwnerZFInput
         ) {
-    v_ZFInput *inputHolder = ZFCastZFObject(v_ZFInput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput));
+    v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
     zfRelease(inputHolder);
 }
 JNI_METHOD_DECLARE_END()
@@ -89,7 +89,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
         , jlong size
         , jint pos
         ) {
-    v_ZFInput *inputHolder = ZFCastZFObject(v_ZFInput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput));
+    v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
     ZFInput input = inputHolder->zfv;
     return (jboolean)input.ioSeek((zfindex)size, (ZFSeekPos)pos);
 }
@@ -99,7 +99,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
         , jlong, native_1nativeInputTell
         , JNIPointer zfjniPointerOwnerZFInput
         ) {
-    v_ZFInput *inputHolder = ZFCastZFObject(v_ZFInput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput));
+    v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
     ZFInput input = inputHolder->zfv;
     zfindex pos = input.ioTell();
     if(pos == zfindexMax()) {
@@ -115,7 +115,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFInputWrapper
         , jlong, native_1nativeInputSize
         , JNIPointer zfjniPointerOwnerZFInput
         ) {
-    v_ZFInput *inputHolder = ZFCastZFObject(v_ZFInput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput));
+    v_ZFInput *inputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFInput);
     ZFInput input = inputHolder->zfv;
     zfindex size = input.ioSize();
     if(size == zfindexMax()) {

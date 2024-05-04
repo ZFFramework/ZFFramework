@@ -22,7 +22,7 @@ zfidentity ZFObjectHolder::objectHash(void) {
 }
 ZFCompareResult ZFObjectHolder::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     return ZFObjectCompare(this->_ZFP_objectHolded, another->_ZFP_objectHolded);

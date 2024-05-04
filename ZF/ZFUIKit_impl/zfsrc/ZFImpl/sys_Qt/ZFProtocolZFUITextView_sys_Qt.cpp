@@ -57,12 +57,12 @@ public:
             ZF_IN ZFUITextView *textView
             , ZF_IN void *nativeTextView
             ) {
-        QGraphicsProxyWidget *proxy = ZFCastStatic(QGraphicsProxyWidget *, nativeTextView);
+        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)nativeTextView;
         delete proxy;
     }
 private:
     _ZFP_ZFUITextViewImpl_sys_Qt_TextView *getNativeImplView(ZF_IN ZFUITextView *textView) {
-        QGraphicsProxyWidget *proxy = ZFCastStatic(QGraphicsProxyWidget *, textView->nativeImplView());
+        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)textView->nativeImplView();
         return qobject_cast<_ZFP_ZFUITextViewImpl_sys_Qt_TextView *>(proxy->widget());
     }
 
@@ -149,7 +149,7 @@ public:
             , ZF_IN ZFUITextTruncateModeEnum const &textTruncateMode
             ) {
 #if 0 // not supported for now
-        _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = ZFCastStatic(_ZFP_ZFUITextViewImpl_sys_Qt_TextView *, textView->nativeImplView());
+        _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = (_ZFP_ZFUITextViewImpl_sys_Qt_TextView *)textView->nativeImplView();
         switch(textTruncateMode) {
             case ZFUITextTruncateMode::e_Disable:
                 break;

@@ -26,23 +26,23 @@ public:
             ZF_IN ZFSemaphore *semaphore
             , ZF_IN void *nativeSemaphore
             ) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Windows_Token *, nativeSemaphore);
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)nativeSemaphore;
         CloseHandle(semaphoreToken->sema);
         DeleteCriticalSection(&(semaphoreToken->semaMutex));
         zfdelete(semaphoreToken);
     }
 
     virtual void semaphoreLock(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Windows_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
         EnterCriticalSection(&(semaphoreToken->semaMutex));
     }
     virtual void semaphoreUnlock(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Windows_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
         LeaveCriticalSection(&(semaphoreToken->semaMutex));
     }
 
     virtual void semaphoreSignal(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Windows_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
 
         if(semaphoreToken->waiterCount > 0) {
             --(semaphoreToken->waiterCount);
@@ -50,7 +50,7 @@ public:
         }
     }
     virtual void semaphoreBroadcast(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Windows_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
 
         if(semaphoreToken->waiterCount > 0) {
             zfindex tmp = semaphoreToken->waiterCount;
@@ -59,7 +59,7 @@ public:
         }
     }
     virtual void semaphoreWait(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Windows_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
 
         ++(semaphoreToken->waiterCount);
         this->semaWait(semaphoreToken);
@@ -68,7 +68,7 @@ public:
             ZF_IN ZFSemaphore *semaphore
             , ZF_IN zftimet miliSecsTimeout
             ) {
-        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Windows_Token *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Windows_Token *semaphoreToken = (_ZFP_ZFSemaphoreImpl_sys_Windows_Token *)semaphore->nativeSemaphore();
 
         ++(semaphoreToken->waiterCount);
 

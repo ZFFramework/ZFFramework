@@ -834,7 +834,7 @@ zfbool ZFUIView::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     // layoutParam
     if(d->layoutParam != zfnull && this->viewParent() != zfnull) {
@@ -1130,7 +1130,7 @@ zfidentity ZFUIView::objectHash(void) {
 }
 ZFCompareResult ZFUIView::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(this->childCount() != another->childCount()) {
@@ -1982,12 +1982,12 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend
 void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
     const ZFClass *eventClass = event->classData();
     if(eventClass->classIsTypeOf(ZFUIMouseEvent::ClassData())) {
-        ZFUIMouseEvent *mouseEvent = ZFCastZFObjectUnchecked(ZFUIMouseEvent *, event);
+        ZFUIMouseEvent *mouseEvent = zfunsafe_zfcast(ZFUIMouseEvent *, event);
         this->viewEventOnMouseEvent(mouseEvent);
         mouseEvent->eventResolved(zftrue);
     }
     else if(eventClass->classIsTypeOf(ZFUIKeyEvent::ClassData())) {
-        ZFUIKeyEvent *eventTmp = ZFCastZFObjectUnchecked(ZFUIKeyEvent *, event);
+        ZFUIKeyEvent *eventTmp = zfunsafe_zfcast(ZFUIKeyEvent *, event);
         this->viewEventOnKeyEvent(eventTmp);
         ZFUIView *view = this->viewParent();
         while(view != zfnull && !event->eventResolved()) {
@@ -1996,7 +1996,7 @@ void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
         }
     }
     else if(eventClass->classIsTypeOf(ZFUIWheelEvent::ClassData())) {
-        ZFUIWheelEvent *eventTmp = ZFCastZFObjectUnchecked(ZFUIWheelEvent *, event);
+        ZFUIWheelEvent *eventTmp = zfunsafe_zfcast(ZFUIWheelEvent *, event);
         this->viewEventOnWheelEvent(eventTmp);
         ZFUIView *view = this->viewParent();
         while(view != zfnull && !event->eventResolved()) {
@@ -2033,7 +2033,7 @@ void ZFUIView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent) {
 // override
 void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
-    ZFUIView *ref = ZFCastZFObject(ZFUIView *, anotherStyleable);
+    ZFUIView *ref = zfcast(ZFUIView *, anotherStyleable);
     if(ref == zfnull || this->childCount() != 0) {
         return;
     }

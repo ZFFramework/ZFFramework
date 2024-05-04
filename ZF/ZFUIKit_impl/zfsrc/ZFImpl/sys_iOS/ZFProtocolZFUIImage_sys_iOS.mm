@@ -37,7 +37,7 @@ public:
             return zffalse;
         }
 
-        const zfbyte *buf = ZFCastStatic(const zfbyte *, nsData.bytes);
+        const zfbyte *buf = (const zfbyte *)nsData.bytes;
         zfindex size = nsData.length;
         static const zfindex blockSize = 10240;
         const zfbyte *bufEnd = buf + size;

@@ -49,7 +49,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, nativeView));
+            (jobject)nativeView);
         return zftrue;
     }
     virtual void nativeViewCacheOnRestore(
@@ -63,7 +63,7 @@ public:
                 .add(JNIPointerJNIType)
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, nativeView),
+            (jobject)nativeView,
             JNIConvertZFObjectToJNIType(jniEnv, view));
     }
     virtual void *nativeViewCreate(ZF_IN ZFUIView *view) {
@@ -82,7 +82,7 @@ public:
         // for performance, we won't have JNI call to destroy, simply delete the global ref
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject nativeViewTmp = ZFCastStatic(jobject, nativeView);
+        jobject nativeViewTmp = (jobject)nativeView;
         JNIUtilDeleteGlobalRef(jniEnv, nativeViewTmp);
     }
 
@@ -105,8 +105,8 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
-            ZFCastStatic(jobject, nativeImplView),
+            (jobject)view->nativeView(),
+            (jobject)nativeImplView,
             (jint)virtualIndex);
     }
     virtual void nativeImplViewFrame(
@@ -123,7 +123,7 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             (jint)rect.x,
             (jint)rect.y,
             (jint)rect.width,
@@ -136,7 +136,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, nativeView));
+            (jobject)nativeView);
     }
     virtual zffloat UIScaleForPixel(ZF_IN void *nativeView) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -145,7 +145,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         return (zffloat)JNIUtilCallStaticFloatMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, nativeView));
+            (jobject)nativeView);
     }
 
     // ============================================================
@@ -162,7 +162,7 @@ public:
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             (jboolean)viewVisible);
     }
     virtual void viewAlpha(
@@ -176,7 +176,7 @@ public:
                 .add(JNIType::S_float())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             (jfloat)viewAlpha);
     }
     virtual void viewUIEnable(
@@ -190,7 +190,7 @@ public:
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             (jboolean)viewUIEnable);
     }
     virtual void viewUIEnableTree(
@@ -204,7 +204,7 @@ public:
                 .add(JNIType::S_boolean())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             (jboolean)viewUIEnableTree);
     }
     virtual void viewBackgroundColor(
@@ -218,7 +218,7 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             ZFImpl_sys_Android_ZFUIColorToColor(viewBackgroundColor));
     }
 
@@ -240,8 +240,8 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, parent->nativeView()),
-            ZFCastStatic(jobject, child->nativeView()),
+            (jobject)parent->nativeView(),
+            (jobject)child->nativeView(),
             (jint)virtualIndex,
             (jint)childLayer,
             (jint)childLayerIndex);
@@ -262,7 +262,7 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, parent->nativeView()),
+            (jobject)parent->nativeView(),
             (jint)virtualIndex,
             (jint)childLayer,
             (jint)childLayerIndex);
@@ -274,7 +274,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, parent->nativeView()));
+            (jobject)parent->nativeView());
     }
 
 public:
@@ -292,7 +292,7 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()),
+            (jobject)view->nativeView(),
             (jint)rect.x,
             (jint)rect.y,
             (jint)rect.width,
@@ -306,7 +306,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, view->nativeView()));
+            (jobject)view->nativeView());
     }
 
     virtual void measureNativeView(
@@ -322,7 +322,7 @@ public:
                 .add(JNIType::S_int())
             ).c_str());
         jintArray jobjSize = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsZFUIView, jmId,
-            ZFCastStatic(jobject, nativeView),
+            (jobject)nativeView,
             (jint)sizeHint.width,
             (jint)sizeHint.height);
         jint *jarrSize = JNIUtilGetIntArrayElements(jniEnv, jobjSize, NULL);
@@ -350,7 +350,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
         , jint rect_height
         ) {
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyLayoutView(
-        ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView)),
+        JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),
         ZFUIRectMake((zffloat)rect_x, (zffloat)rect_y, (zffloat)rect_width, (zffloat)rect_height));
 }
 JNI_METHOD_DECLARE_END()
@@ -369,7 +369,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
     event->mousePoint = ZFUIPointMake(mousePointX, mousePointY);
     event->mouseButton = ZFUIMouseButton::e_MouseButtonLeft;
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
-        ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView)),
+        JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),
         event);
 }
 JNI_METHOD_DECLARE_END()
@@ -389,7 +389,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIView
     event->keyCode = (ZFUIKeyCodeEnum)keyCode;
     event->keyCodeRaw = keyCodeRaw;
     ZFPROTOCOL_ACCESS(ZFUIView)->notifyUIEvent(
-        ZFCastZFObject(ZFUIView *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView)),
+        JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFUIView),
         event);
     return event->eventResolved();
 }

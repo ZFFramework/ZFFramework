@@ -145,7 +145,7 @@ public:
     zfautoT<ZFUIListCell> cellLoadAt(ZF_IN zfindex index) {
         zfautoT<ZFUIListCell> ret = this->listAdapter->cellCacheOnAccess(index);
         if(ret != zfnull) {
-            zfCoreAssertWithMessage(ZFCastZFObject(ZFUIListCell *, ret) != zfnull, "list cell %s not type of %s",
+            zfCoreAssertWithMessage(zfcast(ZFUIListCell *, ret) != zfnull, "list cell %s not type of %s",
                 ret->classData()->classNameFull(),
                 ZFUIListCell::ClassData()->classNameFull());
             return ret;
@@ -1335,7 +1335,7 @@ zfbool ZFUIListView::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     if(!this->listAdapterSerializable() || this->listAdapter() == zfnull) {
         return zftrue;
@@ -1343,7 +1343,7 @@ zfbool ZFUIListView::serializableOnSerializeToData(
 
     ZFSerializableData categoryData;
     if(!ZFObjectToDataT(categoryData, this->listAdapter()->toObject(), outErrorHint,
-                ref ? ZFCastZFObject(ZFSerializable *, ref->listAdapter()) : zfnull
+                ref ? zfcast(ZFSerializable *, ref->listAdapter()) : zfnull
                 )) {
         return zffalse;
     }

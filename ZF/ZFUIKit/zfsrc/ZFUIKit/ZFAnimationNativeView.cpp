@@ -60,7 +60,7 @@ ZFCompareResult ZFAnimationNativeView::objectCompare(ZF_IN ZFObject *anotherObj)
     if(zfsuper::ZFObject::objectCompare(anotherObj) != ZFCompareTheSame) {
         return ZFCompareUncomparable;
     }
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(zftrue

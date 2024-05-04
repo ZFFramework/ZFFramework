@@ -14,7 +14,7 @@ zfidentity ZFAnimationGroupChildData::objectHash(void) {
 }
 ZFCompareResult ZFAnimationGroupChildData::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(ZFObjectCompare(this->childAni(), another->childAni()) == ZFCompareTheSame
@@ -297,7 +297,7 @@ zfbool ZFAnimationGroup::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     if(ref == zfnull) {
         for(zfindex i = 0; i < d->childAnis->count(); ++i) {
@@ -361,7 +361,7 @@ ZFCompareResult ZFAnimationGroup::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(zfsuper::objectCompare(anotherObj) != ZFCompareTheSame) {
         return ZFCompareUncomparable;
     }
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(ZFObjectCompare(d->childAnis, another->d->childAnis) == ZFCompareTheSame

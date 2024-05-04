@@ -173,7 +173,7 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->styleableCopyFrom(ZFCastZFObjectUnchecked(zfself *, anotherObj));
+        this->styleableCopyFrom(zfunsafe_zfcast(zfself *, anotherObj));
     }
 };
 
@@ -240,7 +240,7 @@ private:
                 zfself::_ZFP_ZFStyleablEnumDefaultStyle(obj.to<YourStyle *>()); \
             } \
         } \
-        return ZFCastStatic(YourStyle *, holder->d); \
+        return (YourStyle *)holder->d; \
     } \
     ZFMETHOD_USER_REGISTER_DETAIL_0({ \
             return YourStyle::DefaultStyle(); \
@@ -280,7 +280,7 @@ private:
         YourStyle::_ZFP_ZFStyleableDefaultCleaner() = zfnull; \
         _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(ZFM_TOSTRING(YourStyle)); \
         holder->d = zfnull; \
-        zfRelease(ZFCastStatic(YourStyle *, instance)); \
+        zfRelease((YourStyle *)instance); \
     }
 
 /**

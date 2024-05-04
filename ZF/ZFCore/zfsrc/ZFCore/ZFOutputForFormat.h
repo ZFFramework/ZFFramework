@@ -47,7 +47,7 @@ public:
      */
     template<typename T_ZFOutputFormat>
     static T_ZFOutputFormat getFormat(ZF_IN const ZFCallback &output) {
-        return ZFCastZFObject(T_ZFOutputFormat, zfself::getFormat(output));
+        return zfcast(T_ZFOutputFormat, zfself::getFormat(output));
     }
 
     /**

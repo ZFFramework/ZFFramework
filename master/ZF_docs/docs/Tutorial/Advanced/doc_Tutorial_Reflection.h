@@ -18,7 +18,7 @@
  *   ZFObject *obj = objTmp;
  *
  *   // cast to desired type if necessary
- *   MyObject *myObj = ZFCastZFObject(MyObject *, obj);
+ *   MyObject *myObj = zfcast(MyObject *, obj);
  *
  *   // also, you may access class's info by ZFClass's method
  *   zfLog() << "class name: " << cls->className();

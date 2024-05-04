@@ -60,9 +60,9 @@ zfclassFwd ZFClass;
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
     inline T_ReturnType execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
         if(this->_ZFP_ZFMethod_invoker) { \
-            return ZFCastReinterpret( \
-                    T_ReturnType (*)(const ZFMethod *, ZFAny const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)), \
-                    this->_ZFP_ZFMethod_invoker) \
+            return reinterpret_cast< \
+                    T_ReturnType (*)(const ZFMethod *, ZFAny const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
+                    >(this->_ZFP_ZFMethod_invoker) \
                 (this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA)); \
         } \
         else { \
@@ -74,9 +74,9 @@ zfclassFwd ZFClass;
     /* this would save much binary size by removing support of dynamic method forwarding, for internal impl use only, use with caution */ \
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
     inline T_ReturnType _ZFP_execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
-        return ZFCastReinterpret( \
-                T_ReturnType (*)(const ZFMethod *, ZFAny const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)), \
-                this->_ZFP_ZFMethod_invoker) \
+        return reinterpret_cast< \
+                T_ReturnType (*)(const ZFMethod *, ZFAny const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
+                >(this->_ZFP_ZFMethod_invoker) \
             (this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA)); \
     }
 

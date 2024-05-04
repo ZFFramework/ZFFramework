@@ -27,7 +27,7 @@ public:
             ZF_IN void *nativeImage
             , ZF_OUT const ZFOutput &outputCallback
             ) {
-        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage *nativeImageTmp = (QImage *)nativeImage;
         QByteArray buf;
         QBuffer buffer(&buf);
         buffer.open(QIODevice::ReadWrite);
@@ -39,25 +39,25 @@ public:
     }
 
     virtual void *nativeImageCopy(ZF_IN void *nativeImage) {
-        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage *nativeImageTmp = (QImage *)nativeImage;
         QImage *ret = new QImage();
         *ret = nativeImageTmp->copy();
         return ret;
     }
 
     virtual void *nativeImageRetain(ZF_IN void *nativeImage) {
-        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage *nativeImageTmp = (QImage *)nativeImage;
         QImage *ret = new QImage();
         *ret = *nativeImageTmp;
         return ret;
     }
     virtual void nativeImageRelease(ZF_IN void *nativeImage) {
-        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage *nativeImageTmp = (QImage *)nativeImage;
         delete nativeImageTmp;
     }
 
     virtual ZFUISize nativeImageSize(ZF_IN void *nativeImage) {
-        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage *nativeImageTmp = (QImage *)nativeImage;
         return ZFImpl_sys_Qt_ZFUISizeFromQSize(nativeImageTmp->size());
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageImpl_sys_Qt)

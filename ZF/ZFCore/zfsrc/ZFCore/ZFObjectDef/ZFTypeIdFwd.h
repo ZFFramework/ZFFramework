@@ -343,7 +343,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zftToString(ret, this->zfv); \
     } \
     void v_##TypeName::wrappedValueOnAssign(ZF_IN ZFTypeIdWrapper *ref) { \
-        zfself *refTmp = ZFCastZFObject(zfself *, ref); \
+        zfself *refTmp = zfcast(zfself *, ref); \
         if(refTmp != zfnull) { \
             this->zfv = refTmp->zfv; \
         } \
@@ -433,7 +433,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMPARABLE(TypeName, Type) \
     ZFCompareResult v_##TypeName::objectCompare(ZF_IN ZFObject *anotherObj) { \
-        ZFTypeIdWrapper *t = ZFCastZFObject(ZFTypeIdWrapper *, anotherObj); \
+        ZFTypeIdWrapper *t = zfcast(ZFTypeIdWrapper *, anotherObj); \
         if(t == zfnull || !zfstringIsEqual(this->wrappedValueTypeId(), t->wrappedValueTypeId())) { \
             return ZFCompareUncomparable; \
         } \
@@ -506,10 +506,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
+                return (zfcast(v_##TypeName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                return ZFCastZFObject(v_##TypeName *, obj)->zfv; \
+                return zfcast(v_##TypeName *, obj)->zfv; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -518,10 +518,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
+                return (zfcast(v_##TypeName *, obj) != zfnull); \
             } \
             static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                return &(ZFCastZFObject(v_##TypeName *, obj)->zfv); \
+                return &(zfcast(v_##TypeName *, obj)->zfv); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -608,10 +608,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
+                return (zfcast(v_##TypeName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                return ZFCastZFObject(v_##TypeName *, obj)->zfv; \
+                return zfcast(v_##TypeName *, obj)->zfv; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -620,10 +620,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         zfclassNotPOD Value<T_Access, 1> { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(v_##TypeName *, obj) != zfnull); \
+                return (zfcast(v_##TypeName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                return &(ZFCastZFObject(v_##TypeName *, obj)->zfv); \
+                return &(zfcast(v_##TypeName *, obj)->zfv); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \

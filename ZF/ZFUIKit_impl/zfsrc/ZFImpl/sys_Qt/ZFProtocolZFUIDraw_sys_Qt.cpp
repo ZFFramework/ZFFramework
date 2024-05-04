@@ -51,7 +51,7 @@ public:
             ZF_IN ZFUIDrawableView *drawableView
             , ZF_IN void *nativeDrawableView
             ) {
-        delete ZFCastStatic(_ZFP_ZFUIDrawableViewImpl_sys_Qt *, nativeDrawableView);
+        delete (_ZFP_ZFUIDrawableViewImpl_sys_Qt *)nativeDrawableView;
     }
 
     virtual void drawRequest(ZF_IN ZFUIDrawableView *drawableView) {

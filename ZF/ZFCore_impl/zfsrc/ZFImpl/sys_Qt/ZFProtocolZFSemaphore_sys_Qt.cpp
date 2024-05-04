@@ -27,35 +27,35 @@ public:
             ZF_IN ZFSemaphore *semaphore
             , ZF_IN void *nativeSemaphore
             ) {
-        zfdelete(ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *, nativeSemaphore));
+        zfdelete((_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)nativeSemaphore);
     }
 
     virtual void semaphoreLock(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = (_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore();
         nativeSemaphore->_ZFP_mutex.lock();
     }
     virtual void semaphoreUnlock(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = (_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore();
         nativeSemaphore->_ZFP_mutex.unlock();
     }
 
     virtual void semaphoreSignal(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = (_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore();
         nativeSemaphore->wakeOne();
     }
     virtual void semaphoreBroadcast(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = (_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore();
         nativeSemaphore->wakeAll();
     }
     virtual void semaphoreWait(ZF_IN ZFSemaphore *semaphore) {
-        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = (_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore();
         nativeSemaphore->wait(&(nativeSemaphore->_ZFP_mutex));
     }
     virtual zfbool semaphoreWait(
             ZF_IN ZFSemaphore *semaphore
             , ZF_IN zftimet miliSecsTimeout
             ) {
-        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = ZFCastStatic(_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *, semaphore->nativeSemaphore());
+        _ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *nativeSemaphore = (_ZFP_ZFSemaphoreImpl_sys_Qt_Semaphore *)semaphore->nativeSemaphore();
         zfbool ret = nativeSemaphore->wait(&(nativeSemaphore->_ZFP_mutex), miliSecsTimeout);
         return ret;
     }

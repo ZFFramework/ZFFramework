@@ -182,13 +182,13 @@ extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v);
  * @brief see #JNIConvertPointerToJNIType
  */
 #ifndef JNIConvertZFObjectToJNIType
-#define JNIConvertZFObjectToJNIType(jniEnv, p) JNIConvertPointerToJNIType(jniEnv, ZFCastZFObject(ZFObject *, p))
+#define JNIConvertZFObjectToJNIType(jniEnv, p) JNIConvertPointerToJNIType(jniEnv, zfunsafe_zfcast(ZFObject *, p))
 #endif
 /**
  * @brief see #JNIConvertPointerToJNIType
  */
 #ifndef JNIConvertZFObjectFromJNIType
-#define JNIConvertZFObjectFromJNIType(jniEnv, d) ZFCastStatic(ZFObject *, JNIConvertPointerFromJNIType(jniEnv, d))
+#define JNIConvertZFObjectFromJNIType(jniEnv, d) ZFAny((ZFObject *)JNIConvertPointerFromJNIType(jniEnv, d))
 #endif
 
 // ============================================================

@@ -156,7 +156,7 @@ public:
     /** @brief owner page manager */
     template<typename T_ZFUIPageManager>
     T_ZFUIPageManager pageManager(void) {
-        return ZFCastZFObjectUnchecked(T_ZFUIPageManager, this->pageManager());
+        return zfunsafe_zfcast(T_ZFUIPageManager, this->pageManager());
     }
 
     /** @brief the page's container view, ensured not null */
@@ -458,7 +458,7 @@ public:
      */
     template<typename T_ZFUIPage>
     inline T_ZFUIPage pageAt(ZF_IN zfindex index) {
-        return ZFCastZFObjectUnchecked(T_ZFUIPage, this->pageAt(index));
+        return zfunsafe_zfcast(T_ZFUIPage, this->pageAt(index));
     }
     /**
      * @brief return foreground page or null if no page
@@ -469,7 +469,7 @@ public:
      */
     template<typename T_ZFUIPage>
     inline T_ZFUIPage pageForeground(void) {
-        return ZFCastZFObjectUnchecked(T_ZFUIPage, this->pageForeground());
+        return zfunsafe_zfcast(T_ZFUIPage, this->pageForeground());
     }
     /**
      * @brief find page index

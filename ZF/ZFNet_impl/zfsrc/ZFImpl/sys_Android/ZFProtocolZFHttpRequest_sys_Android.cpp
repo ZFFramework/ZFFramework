@@ -520,8 +520,8 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFHttpRequest
         , jstring errorHint
         , jobject nativeBodyInput
         ) {
-    ZFHttpRequest *request = ZFCastZFObject(ZFHttpRequest *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpRequest));
-    ZFHttpResponse *response = ZFCastZFObject(ZFHttpResponse *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpResponse));
+    ZFHttpRequest *request = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpRequest);
+    ZFHttpResponse *response = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFHttpResponse);
     response->success(code >= 200 && code < 300);
     response->code(code);
     response->errorHint(ZFImpl_sys_Android_zfstringFromString(errorHint));

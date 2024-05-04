@@ -18,7 +18,7 @@ public:
             ZF_IN ZFUIView *view
             , ZF_OUT ZFUIRect &rect
             ) {
-        QGraphicsWidget *nativeView = ZFCastStatic(QGraphicsWidget *, view->nativeView());
+        QGraphicsWidget *nativeView = (QGraphicsWidget *)view->nativeView();
 
         QPointF nativePos = nativeView->mapToScene(QPointF(0, 0));
         rect.x = nativePos.x();

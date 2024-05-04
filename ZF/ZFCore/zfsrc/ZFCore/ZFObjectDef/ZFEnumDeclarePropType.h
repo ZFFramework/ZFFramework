@@ -73,11 +73,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
+                return (zfcast(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
-                return *(typename zftTraits<T_Access>::TrNoRef *)(&(ZFCastZFObject(EnumName *, obj)->_ZFP_ZFEnum_value)); \
+                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(EnumName *, obj)->_ZFP_ZFEnum_value)); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -88,10 +88,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
              typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
+                return (zfcast(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                EnumName *t = ZFCastZFObject(EnumName *, obj); \
+                EnumName *t = zfcast(EnumName *, obj); \
                 _TrNoRef *holder = zfnew(_TrNoRef); \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
@@ -252,11 +252,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         zfclassNotPOD Value { \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
+                return (zfcast(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
-                return *(typename zftTraits<T_Access>::TrNoRef *)(&(ZFCastZFObject(EnumName *, obj)->_ZFP_ZFEnum_value)); \
+                return *(typename zftTraits<T_Access>::TrNoRef *)(&(zfcast(EnumName *, obj)->_ZFP_ZFEnum_value)); \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
             } \
@@ -267,10 +267,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             typedef typename zftTraits<T_Access>::TrNoRef _TrNoRef; \
         public: \
             static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
-                return (ZFCastZFObject(EnumName *, obj) != zfnull); \
+                return (zfcast(EnumName *, obj) != zfnull); \
             } \
             static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
-                EnumName *t = ZFCastZFObject(EnumName *, obj); \
+                EnumName *t = zfcast(EnumName *, obj); \
                 _TrNoRef *holder = zfnew(_TrNoRef); \
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \

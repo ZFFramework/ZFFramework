@@ -43,7 +43,7 @@ static void _ZFP_ZFThreadImpl_default_sleep(zftimet miliSecs) {
 }
 static void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data);
 static DWORD WINAPI _ZFP_ZFThreadImpl_default_nativeCallback(LPVOID param) {
-    _ZFP_ZFThreadImpl_default_threadCallback(ZFCastStatic(_ZFP_ZFThreadImpl_default_ExecuteData *, param));
+    _ZFP_ZFThreadImpl_default_threadCallback((_ZFP_ZFThreadImpl_default_ExecuteData *)param);
     return 0;
 }
 static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_default_ExecuteData *data) {
@@ -59,7 +59,7 @@ static void _ZFP_ZFThreadImpl_default_sleep(zftimet miliSecs) {
 }
 static void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data);
 static void *_ZFP_ZFThreadImpl_default_nativeCallback(void *param) {
-    _ZFP_ZFThreadImpl_default_threadCallback(ZFCastStatic(_ZFP_ZFThreadImpl_default_ExecuteData *, param));
+    _ZFP_ZFThreadImpl_default_threadCallback((_ZFP_ZFThreadImpl_default_ExecuteData *)param);
     return zfnull;
 }
 static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_default_ExecuteData *data) {
@@ -104,15 +104,15 @@ public:
         zfCoreAssertWithMessage(_ZFP_ZFThreadImpl_default_threadMap.find(*token) == _ZFP_ZFThreadImpl_default_threadMap.end(),
             "thread already registered: %s", ownerZFThread);
         _ZFP_ZFThreadImpl_default_threadMap[*token] = ownerZFThread;
-        return ZFCastStatic(void *, token);
+        return (void *)token;
     }
     virtual void nativeThreadUnregister(ZF_IN void *token) {
         _ZFP_ZFThreadImpl_default_threadMap.erase(_ZFP_ZFThreadImpl_default_getNativeThreadId());
-        zfdelete(ZFCastStatic(_ZFP_ZFThreadImpl_default_NativeThreadIdType *, token));
+        zfdelete((_ZFP_ZFThreadImpl_default_NativeThreadIdType *)token);
     }
     virtual ZFThread *threadForToken(ZF_IN void *token) {
         _ZFP_ZFThreadImpl_default_ThreadMapType::iterator it = _ZFP_ZFThreadImpl_default_threadMap.find(
-            *ZFCastStatic(_ZFP_ZFThreadImpl_default_NativeThreadIdType *, token));
+            *(_ZFP_ZFThreadImpl_default_NativeThreadIdType *)token);
         if(it != _ZFP_ZFThreadImpl_default_threadMap.end()) {
             return it->second;
         }

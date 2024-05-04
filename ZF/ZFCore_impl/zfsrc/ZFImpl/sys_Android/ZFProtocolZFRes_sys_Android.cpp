@@ -181,7 +181,7 @@ public:
             return zffalse;
         }
 
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
         AAsset_close(d->token);
         zfdelete(d);
         return zftrue;
@@ -190,7 +190,7 @@ public:
         if(token == zfnull) {
             return zfindexMax();
         }
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
         return (AAsset_getLength(d->token) - AAsset_getRemainingLength(d->token));
     }
     virtual zfbool resSeek(
@@ -201,7 +201,7 @@ public:
         if(token == zfnull) {
             return zffalse;
         }
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
         zfint seekPos = SEEK_SET;
         long seekSize = (long)byteSize;
         switch(position) {
@@ -232,7 +232,7 @@ public:
         if(token == zfnull || maxByteSize == 0) {
             return 0;
         }
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
         if(d->isEof || d->isError) {
             return 0;
         }
@@ -250,14 +250,14 @@ public:
         if(token == zfnull) {
             return zffalse;
         }
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
         return d->isEof;
     }
     virtual zfbool resIsError(ZF_IN void *token) {
         if(token == zfnull) {
             return zffalse;
         }
-        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FileToken *, token);
+        _ZFP_ZFProtocolZFRes_sys_Android_FileToken *d = (_ZFP_ZFProtocolZFRes_sys_Android_FileToken *)token;
         return d->isError;
     }
 
@@ -298,7 +298,7 @@ public:
             return zffalse;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FindData *, fd.nativeFd);
+        _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = (_ZFP_ZFProtocolZFRes_sys_Android_FindData *)fd.nativeFd;
         if(d->curFileIndex >= JNIUtilGetArrayLength(jniEnv, d->files)) {
             return zffalse;
         }
@@ -338,7 +338,7 @@ public:
             return;
         }
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = ZFCastStatic(_ZFP_ZFProtocolZFRes_sys_Android_FindData *, fd.nativeFd);
+        _ZFP_ZFProtocolZFRes_sys_Android_FindData *d = (_ZFP_ZFProtocolZFRes_sys_Android_FindData *)fd.nativeFd;
         if(d->files != zfnull) {
             JNIUtilDeleteGlobalRef(jniEnv, d->files);
             d->files = zfnull;

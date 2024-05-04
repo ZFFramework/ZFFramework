@@ -10,7 +10,7 @@ ZFAndroidReflect_ToJNIType_DEFINE(common) {
     }
 
     if(zfstringIsEqual(jniType.getId(), JNIType::S_object_String().getId())) {
-        v_zfstring *t = ZFCastZFObject(v_zfstring *, obj);
+        v_zfstring *t = zfcast(v_zfstring *, obj);
         if(t != zfnull) {
             jobj = ZFImpl_sys_Android_zfstringToString(t->zfv);
             return zftrue;

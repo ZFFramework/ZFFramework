@@ -21,7 +21,7 @@ public:
             , ZF_IN const ZFUISize &newSize
             , ZF_IN const ZFUIMargin &ninePatch
             ) {
-        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage *nativeImageTmp = (QImage *)nativeImage;
         if(ninePatch == ZFUIMarginZero()) {
             QImage *ret = new QImage();
             *ret = nativeImageTmp->scaled(
@@ -37,7 +37,7 @@ public:
             , ZF_IN void *nativeImage
             , ZF_IN const ZFUIRect &frameInImage
             ) {
-        QImage *nativeImageTmp = ZFCastStatic(QImage *, nativeImage);
+        QImage *nativeImageTmp = (QImage *)nativeImage;
         QImage retTmp = nativeImageTmp->copy(frameInImage.x, frameInImage.y, frameInImage.width, frameInImage.height);
         return new QImage(retTmp);
     }

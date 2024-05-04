@@ -162,12 +162,12 @@ private:
             return zftrue;
         }
         const zfchar *s = zfnull;
-        v_zfstring *tmp = ZFCastZFObject(v_zfstring *, src);
+        v_zfstring *tmp = zfcast(v_zfstring *, src);
         if(tmp != zfnull) {
             s = tmp->zfv;
         }
         else {
-            ZFDI_Wrapper *tmp2 = ZFCastZFObject(ZFDI_Wrapper *, src);
+            ZFDI_Wrapper *tmp2 = zfcast(ZFDI_Wrapper *, src);
             if(tmp2 != zfnull) {
                 s = tmp2->zfv();
             }
@@ -202,7 +202,7 @@ private:
 
         if(_setterMethod == zfnull) { // ani by getter only
             if(ZFClass::classForName(_getterMethod->methodReturnTypeId()) == zfnull
-                    || ZFCastZFObject(ZFProgressable *, _getterMethod->methodInvoke(_aniTarget)) == zfnull
+                    || zfcast(ZFProgressable *, _getterMethod->methodInvoke(_aniTarget)) == zfnull
                     ) { // ani by getter only valid for retain property
                 return zffalse;
             }

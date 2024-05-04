@@ -371,8 +371,8 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->timeValue(ZFCastZFObjectUnchecked(zfself *, anotherObj)->timeValue());
-        this->timeZone(ZFCastZFObjectUnchecked(zfself *, anotherObj)->timeZone());
+        this->timeValue(zfunsafe_zfcast(zfself *, anotherObj)->timeValue());
+        this->timeZone(zfunsafe_zfcast(zfself *, anotherObj)->timeZone());
     }
 
 public:

@@ -45,7 +45,7 @@ private:
     ZFListener classDataChangeListener;
     static void classDataChange(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
-        const ZFClassDataChangeData &changed = ZFCastZFObjectUnchecked(v_ZFClassDataChangeData *, zfargs.param0())->zfv;
+        const ZFClassDataChangeData &changed = zfunsafe_zfcast(v_ZFClassDataChangeData *, zfargs.param0())->zfv;
         if(changed.changedClass != zfnull) {
             _ZFP_ZFDI_classMapCache.clear();
         }
@@ -102,13 +102,13 @@ const zfchar *ZFDI_toString(ZF_IN ZFObject *obj) {
         return zfnull;
     }
     {
-        v_zfstring *t = ZFCastZFObject(v_zfstring *, obj);
+        v_zfstring *t = zfcast(v_zfstring *, obj);
         if(t != zfnull) {
             return t->zfv;
         }
     }
     {
-        ZFDI_WrapperBase *t = ZFCastZFObject(ZFDI_WrapperBase *, obj);
+        ZFDI_WrapperBase *t = zfcast(ZFDI_WrapperBase *, obj);
         if(t != zfnull) {
             return t->zfv();
         }
@@ -396,12 +396,12 @@ zfbool ZFDI_invoke(
             zfbool paramConvertSuccess = zftrue;
             for(zfindex iParam = 0; iParam < paramCount; ++iParam) {
                 const zfchar *s = zfnull;
-                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
+                ZFDI_WrapperBase *wrapper = zfcast(ZFDI_WrapperBase *, paramList[iParam]);
                 if(wrapper != zfnull) {
                     s = wrapper->zfv();
                 }
                 else if(convStr) {
-                    v_zfstring *holder = ZFCastZFObject(v_zfstring *, paramList[iParam]);
+                    v_zfstring *holder = zfcast(v_zfstring *, paramList[iParam]);
                     if(holder != zfnull
                             && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
                             && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())
@@ -548,12 +548,12 @@ zfbool ZFDI_alloc(
             zfbool paramConvertSuccess = zftrue;
             for(zfindex iParam = 0; iParam < paramCount; ++iParam) {
                 const zfchar *s = zfnull;
-                ZFDI_WrapperBase *wrapper = ZFCastZFObject(ZFDI_WrapperBase *, paramList[iParam]);
+                ZFDI_WrapperBase *wrapper = zfcast(ZFDI_WrapperBase *, paramList[iParam]);
                 if(wrapper != zfnull) {
                     s = wrapper->zfv();
                 }
                 else if(convStr) {
-                    v_zfstring *holder = ZFCastZFObject(v_zfstring *, paramList[iParam]);
+                    v_zfstring *holder = zfcast(v_zfstring *, paramList[iParam]);
                     if(holder != zfnull
                             && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFObject::ClassData()->classNameFull())
                             && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())

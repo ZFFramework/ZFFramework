@@ -230,14 +230,14 @@ public:
      */
     template<typename T_Type>
     T_Type bufferT(void) {
-        return ZFCastStatic(T_Type, this->buffer());
+        return (T_Type)this->buffer();
     }
     /**
      * @brief access the buffer
      */
     template<typename T_Type>
     T_Type bufferT(void) const {
-        return ZFCastStatic(T_Type, this->buffer());
+        return (T_Type)this->buffer();
     }
     /**
      * @brief whether the buffer would be free-ed automatically

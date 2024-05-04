@@ -88,7 +88,7 @@ zfbool ZFContainer::serializableOnSerializeToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeToData(serializableData, referencedOwnerOrNull, outErrorHint)) {return zffalse;}
-    zfself *ref = ZFCastZFObject(zfself *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     if(ref == zfnull) {
         for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
@@ -111,7 +111,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
-    ZFContainer *ref = ZFCastZFObject(ZFContainer *, referencedOwnerOrNull);
+    ZFContainer *ref = zfcast(ZFContainer *, referencedOwnerOrNull);
     if(ref == zfnull) {
         ZFSerializableUtilErrorOccurred(outErrorHint,
             "%s not type of %s",
@@ -162,7 +162,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
 
 void ZFContainer::copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
     zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another != zfnull && this != another) {
         this->removeAll();
         this->addFrom(another);
@@ -191,7 +191,7 @@ zfidentity ZFContainer::objectHash(void) {
 }
 ZFCompareResult ZFContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(this->count() != another->count()

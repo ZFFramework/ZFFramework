@@ -24,7 +24,7 @@ public:
             ZF_IN ZFUIView *view
             , ZF_IN_OUT ZFUIImage *image
             ) {
-        QGraphicsWidget *nativeView = ZFCastStatic(QGraphicsWidget *, view->nativeView());
+        QGraphicsWidget *nativeView = (QGraphicsWidget *)view->nativeView();
 
         QImage nativeImage(nativeView->geometry().width(), nativeView->geometry().height(), QImage::Format_ARGB32);
         nativeImage.fill(QColor(0, 0, 0, 0));

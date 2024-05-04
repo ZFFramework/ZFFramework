@@ -43,7 +43,7 @@ public:
                 .add(JNIType::S_object_Object())
             ).c_str());
         jintArray jobjRect = (jintArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
-            ZFCastStatic(jobject, view->nativeView()));
+            (jobject)view->nativeView());
         jint *jarrRect = JNIUtilGetIntArrayElements(jniEnv, jobjRect, NULL);
         rect = ZFUIRectMake((zffloat)jarrRect[0], (zffloat)jarrRect[1], (zffloat)jarrRect[2], (zffloat)jarrRect[3]);
         JNIUtilReleaseIntArrayElements(jniEnv, jobjRect, jarrRect, JNI_ABORT);

@@ -78,7 +78,7 @@ public:
         /** @cond ZFPrivateDoc */ \
         template<typename T_ZFObject> \
         inline T_ZFObject to(void) { \
-            return ZFCastZFObjectUnchecked(T_ZFObject, this); \
+            return zfunsafe_zfcast(T_ZFObject, this); \
         } \
         inline ZFAny toAny(void) { \
             return ZFAny(this); \
@@ -123,7 +123,7 @@ zfclassNotPOD _ZFP_ZFInterfaceCastWrapper<T_FromZFObjectOrZFInterface, T_ToZFInt
 public:
     template<typename T_ZFObject>
     static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject * const &obj) {
-        return ZFCastZFObjectUnchecked(T_ToZFInterface *, obj->toObject());
+        return zfunsafe_zfcast(T_ToZFInterface *, obj->toObject());
     }
 };
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_PARAM(Interface) \

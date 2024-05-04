@@ -42,7 +42,7 @@ private:
 public:
     /** @brief see #ZFUIAutoLayout */
     inline ZFUIView *target(void) const {
-        return this->target_PropV ? ZFCastZFObject(ZFUIView *, this->target_PropV->objectHolded()) : zfnull;
+        return this->target_PropV ? zfcast(ZFUIView *, this->target_PropV->objectHolded()) : zfnull;
     }
     /** @brief see @ref target */
     inline ZFUIAutoLayoutRule &target(ZF_IN ZFUIView * const &value) {

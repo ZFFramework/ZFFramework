@@ -181,13 +181,13 @@ void ZFCallback::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         case ZFCallbackTypeRawFunction:
             ret += ZFTOKEN_ZFObjectInfoLeft;
             ret += "ZFCallback func: ";
-            zfsFromPointerT(ret, ZFCastReinterpret(const void *, this->callbackRawFunction()));
+            zfsFromPointerT(ret, reinterpret_cast<const void *>(this->callbackRawFunction()));
             ret += ZFTOKEN_ZFObjectInfoRight;
             break;
         case ZFCallbackTypeLambda:
             ret += ZFTOKEN_ZFObjectInfoLeft;
             ret += "ZFCallback lambda: ";
-            zfsFromPointerT(ret, ZFCastReinterpret(const void *, this->callbackLambdaInvoker()));
+            zfsFromPointerT(ret, reinterpret_cast<const void *>(this->callbackLambdaInvoker()));
             ret += ZFTOKEN_ZFObjectInfoRight;
             break;
         default:

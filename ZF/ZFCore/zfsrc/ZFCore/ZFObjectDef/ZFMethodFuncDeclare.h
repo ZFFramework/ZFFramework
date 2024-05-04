@@ -396,7 +396,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodFuncGetAll(ZF_IN_OPT const ZFFilter
         static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                 , zffalse \
                 , zfnull \
-                , ZFCastReinterpret(ZFFuncAddrType, &_ZFP_MtdFH_##MethodName##_##RegSig::methodInvoker) \
+                , reinterpret_cast<ZFFuncAddrType>(&_ZFP_MtdFH_##MethodName##_##RegSig::methodInvoker) \
                 , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdFH_##MethodName##_##RegSig) \
                 , ZFMethodTypeStatic \
                 , zfnull \

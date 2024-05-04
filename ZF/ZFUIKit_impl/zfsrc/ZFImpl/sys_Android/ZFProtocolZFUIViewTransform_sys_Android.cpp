@@ -48,7 +48,7 @@ public:
                 .add(JNIType::S_float())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
-            , ZFCastStatic(jobject, view->nativeView())
+            , (jobject)view->nativeView()
             , (jfloat)(view->viewTranslateX() * view->UIScaleFixed())
             , (jfloat)(view->viewTranslateY() * view->UIScaleFixed())
             , (jfloat)view->viewScaleX()
@@ -68,7 +68,7 @@ public:
                 .add(JNIType::S_float())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
-            , ZFCastStatic(jobject, view->nativeView())
+            , (jobject)view->nativeView()
             , (jfloat)0
             , (jfloat)0
             , (jfloat)1

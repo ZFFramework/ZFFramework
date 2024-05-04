@@ -31,7 +31,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         zftrue \
         , zffalse \
         , zfnull \
-        , ZFCastReinterpret(ZFFuncAddrType, methodInvoker) \
+        , reinterpret_cast<ZFFuncAddrType>(methodInvoker) \
         , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(GenericInvokerOwner) \
         , ZFMethodType_ \
         , ownerClass \
@@ -227,7 +227,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , ParamExpandOrEmpty7, ParamType7, param7, DefaultExpandOrEmpty7, DefaultValueFix7 \
     ) \
     _ZFP_ZFMETHOD_USER_REGISTER({ \
-                return (ReturnType)ZFCastZFObject(ownerClassSig *, invokerObject)->methodName( \
+                return (ReturnType)zfcast(ownerClassSig *, invokerObject)->methodName( \
                         ParamExpandOrEmpty0(ZFM_EMPTY() param0) \
                         ParamExpandOrEmpty1(ZFM_COMMA() param1) \
                         ParamExpandOrEmpty2(ZFM_COMMA() param2) \

@@ -311,7 +311,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
                 ) { \
-            return ZFCastZFObjectUnchecked(zfself *, invokerObject)->MethodName( \
+            return zfunsafe_zfcast(zfself *, invokerObject)->MethodName( \
                     ParamExpandOrEmpty0(            param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() param1) \
                     ParamExpandOrEmpty2(ZFM_COMMA() param2) \
@@ -336,7 +336,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             static _ZFP_ZFMethodRegisterHolder _methodHolder(zffalse \
                     , zffalse \
                     , zfnull \
-                    , ZFCastReinterpret(ZFFuncAddrType, &zfself::_ZFP_MtdI_##MethodName##_##RegSig) \
+                    , reinterpret_cast<ZFFuncAddrType>(&zfself::_ZFP_MtdI_##MethodName##_##RegSig) \
                     , _ZFP_ZFMETHOD_GENERIC_INVOKER_ADDR(_ZFP_MtdH_##MethodName##_##RegSig) \
                     , ZFMethodType_ \
                     , zfself::ClassData() \
@@ -465,7 +465,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
                 ) { \
-            return ZFCastZFObjectUnchecked(zfself *, invokerObject)->MethodName( \
+            return zfunsafe_zfcast(zfself *, invokerObject)->MethodName( \
                     ParamExpandOrEmpty0(            param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() param1) \
                     ParamExpandOrEmpty2(ZFM_COMMA() param2) \
@@ -486,7 +486,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7) \
                 )) { \
-            return ZFCastReinterpret(ZFFuncAddrType, &zfself::_ZFP_MtdI_##MethodName##_##RegSig); \
+            return reinterpret_cast<ZFFuncAddrType>(&zfself::_ZFP_MtdI_##MethodName##_##RegSig); \
         } \
         static inline ZFMethodPrivilegeType _ZFP_MtdS_P_##MethodName(void (*)( \
                 ParamExpandOrEmpty0(ZFM_EMPTY() ParamType0) \

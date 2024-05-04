@@ -15,11 +15,11 @@ void ZFValueHolder::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
 zfidentity ZFValueHolder::objectHash(void) {
     return zfidentityHash(
         zfidentityCalcPointer(this->holdedData),
-        zfidentityCalcPointer(ZFCastReinterpret(void *, this->holderType)));
+        zfidentityCalcPointer(reinterpret_cast<void *>(this->holderType)));
 }
 ZFCompareResult ZFValueHolder::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {return ZFCompareTheSame;}
-    zfself *another = ZFCastZFObject(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(this->holdedData == another->holdedData

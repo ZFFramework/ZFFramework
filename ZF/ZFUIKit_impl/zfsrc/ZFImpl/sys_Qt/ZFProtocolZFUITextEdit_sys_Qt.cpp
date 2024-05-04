@@ -169,12 +169,12 @@ public:
             ZF_IN ZFUITextEdit *textEdit
             , ZF_IN void *nativeTextEdit
             ) {
-        QGraphicsProxyWidget *proxy = ZFCastStatic(QGraphicsProxyWidget *, nativeTextEdit);
+        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)nativeTextEdit;
         delete proxy;
     }
 private:
     _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *getNativeImplView(ZF_IN ZFUITextEdit *textEdit) {
-        QGraphicsProxyWidget *proxy = ZFCastStatic(QGraphicsProxyWidget *, textEdit->nativeImplView());
+        QGraphicsProxyWidget *proxy = (QGraphicsProxyWidget *)textEdit->nativeImplView();
         return qobject_cast<_ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *>(proxy->widget());
     }
 

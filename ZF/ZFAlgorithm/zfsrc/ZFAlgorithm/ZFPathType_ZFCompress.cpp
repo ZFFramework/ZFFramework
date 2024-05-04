@@ -314,7 +314,7 @@ public:
     }
     static void callbackFindClose(ZF_IN_OUT ZFFileFindData &fd) {
         _TaskData *taskData = zfnull;
-        ZFValueHolder *taskDataHolder = ZFCastZFObject(ZFValueHolder *, fd.implTag("_ZFP_ZFPathType_ZFCompress"));
+        ZFValueHolder *taskDataHolder = zfcast(ZFValueHolder *, fd.implTag("_ZFP_ZFPathType_ZFCompress"));
         if(taskDataHolder != zfnull) {
             taskData = taskDataHolder->holdedDataPointer<_TaskData *>();
         }

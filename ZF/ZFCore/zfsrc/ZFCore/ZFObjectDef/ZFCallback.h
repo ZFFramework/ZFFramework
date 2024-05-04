@@ -214,7 +214,7 @@ public:
     /** @brief see #callbackTag */
     template<typename T_ZFObject>
     T_ZFObject callbackTag(ZF_IN const zfchar *key) const {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->callbackTag(key));
+        return zfunsafe_zfcast(T_ZFObject, this->callbackTag(key));
     }
     /** @brief see #callbackTag */
     zffinal void callbackTagGetAllKeyValue(

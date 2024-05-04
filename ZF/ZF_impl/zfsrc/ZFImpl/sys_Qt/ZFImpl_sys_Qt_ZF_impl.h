@@ -38,7 +38,7 @@ T_ZFObject ZFImpl_sys_Qt_QObjectZFObjectTag(
         ZF_IN_OUT QObject *obj
         , ZF_IN const zfchar *name
         ) {
-    return ZFCastZFObjectUnchecked(T_ZFObject, ZFImpl_sys_Qt_QObjectZFObjectTag(obj, name));
+    return zfunsafe_zfcast(T_ZFObject, ZFImpl_sys_Qt_QObjectZFObjectTag(obj, name));
 }
 
 // ============================================================

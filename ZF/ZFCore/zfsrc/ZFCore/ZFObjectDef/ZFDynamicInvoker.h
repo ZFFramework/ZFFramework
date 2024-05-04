@@ -39,7 +39,7 @@ public:
     }
     zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
-        zfself *ref = ZFCastZFObject(zfself *, anotherObj);
+        zfself *ref = zfcast(zfself *, anotherObj);
         if(ref != zfnull) {
             return ZFComparerDefault(this->zfv(), ref->zfv());
         }

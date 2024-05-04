@@ -69,7 +69,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFLua
         , JNIPointer zfjniPointerZFInput
         , jlongArray params
         ) {
-    v_ZFInput *inputZF = ZFCastZFObject(v_ZFInput *, JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerZFInput));
+    v_ZFInput *inputZF = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerZFInput);
     if(inputZF == zfnull) {
         return NULL;
     }

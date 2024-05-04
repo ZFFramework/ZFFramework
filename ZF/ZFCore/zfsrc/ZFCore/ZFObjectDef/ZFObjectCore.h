@@ -414,7 +414,7 @@ public:
      */
     template<typename T_ZFObject>
     T_ZFObject objectTag(ZF_IN const zfchar *key) {
-        return ZFCastZFObjectUnchecked(T_ZFObject, this->objectTag(key));
+        return zfunsafe_zfcast(T_ZFObject, this->objectTag(key));
     }
     /**
      * @brief get all key value

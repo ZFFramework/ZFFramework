@@ -33,9 +33,9 @@ most of them has `ZFTAG_` as prefix:
 * `ZFTAG_TRICKS` : unconventional tricks to achieve unconventional goals
 
 
-## ZFCastZFObject
+## zfcast
 
-we use ZFCastZFObject for dynamic type cast, instead of traditional `dynamic_cast`
+we use zfcast for dynamic type cast, instead of traditional `dynamic_cast`
 
 the main reason for that is the performance, ZFFramework use multi-inheritance to simulate interface logic,
 which would cause deep inherit tree, which cause `dynamic_cast` to be very slow
