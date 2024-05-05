@@ -78,7 +78,7 @@ public:
         this->nativeAniSetup(ani, nativeAniScale);
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             (jobject)ani->nativeAnimation(),
-            (jobject)(ZFUIView *)ani->aniTarget()->nativeView());
+            (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView());
     }
     virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
@@ -89,7 +89,7 @@ public:
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
             (jobject)ani->nativeAnimation(),
-            (jobject)(ZFUIView *)ani->aniTarget()->nativeView());
+            (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView());
     }
 
 private:
