@@ -92,7 +92,7 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
  *           // proto type:
  *           //   zfbool toOutput(
  *           //           ZF_IN_OUT const ZFOutput &output
- *           //           , ZF_IN ZFObject *obj
+ *           //           , ZF_IN ZFAny const &obj
  *           //           , ZF_OUT_OPT zfstring *outErrorHint = zfnull
  *           //           );
  *       })
@@ -118,7 +118,7 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
     } \
     static zfbool _ZFP_toOutput( \
             ZF_IN_OUT const ZFOutput &output \
-            , ZF_IN ZFObject *obj \
+            , ZF_IN ZFAny const &obj \
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull \
             ) { \
         toOutputAction \
@@ -133,7 +133,7 @@ typedef zfbool (*_ZFP_ZFObjectIOCallback_fromInput)(
         );
 typedef zfbool (*_ZFP_ZFObjectIOCallback_toOutput)(
         ZF_IN_OUT const ZFOutput &output
-        , ZF_IN ZFObject *obj
+        , ZF_IN ZFAny const &obj
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         );
 extern ZFLIB_ZFCore void _ZFP_ZFObjectIORegister(

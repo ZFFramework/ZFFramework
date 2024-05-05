@@ -61,7 +61,7 @@ void ZFImpl_sys_Qt_QObjectZFObjectTag(
         ZFImpl_sys_Qt_QObjectTag(obj, name, QVariant::fromValue(valueWrapper));
     }
 }
-ZFObject *ZFImpl_sys_Qt_QObjectZFObjectTag(
+ZFAny ZFImpl_sys_Qt_QObjectZFObjectTag(
         ZF_IN_OUT QObject *obj
         , ZF_IN const zfchar *name
         ) {

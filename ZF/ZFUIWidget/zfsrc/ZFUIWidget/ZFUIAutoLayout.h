@@ -38,20 +38,15 @@ public:
     ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, pos, ZFUIAutoLayoutPos::e_None)
 
 private:
-    zfautoT<ZFObjectHolder> target_PropV;
+    zfweakT<ZFUIView> target_PropV;
 public:
     /** @brief see #ZFUIAutoLayout */
-    inline ZFUIView *target(void) const {
-        return this->target_PropV ? zfcast(ZFUIView *, this->target_PropV->objectHolded()) : zfnull;
+    inline ZFAnyT<ZFUIView> target(void) const {
+        return this->target_PropV;
     }
     /** @brief see @ref target */
     inline ZFUIAutoLayoutRule &target(ZF_IN ZFUIView * const &value) {
-        if(value != zfnull) {
-            this->target_PropV = value->objectHolder();
-        }
-        else {
-            this->target_PropV = zfnull;
-        }
+        this->target_PropV = value;
         return *this;
     }
     ZFUIView *_ZFP_targetForLayout(ZF_IN ZFUIView *parent) const {

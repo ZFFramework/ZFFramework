@@ -596,8 +596,8 @@ void ZFUIScrollView::objectOnInit(void) {
 
     d = zfAlloc(_ZFP_ZFUIScrollViewPrivate);
     d->pimplOwner = this;
-    d->xScroll = zfRetain(zfcast(ZFUIScroller *, this->scrollerClass()->newInstance()));
-    d->yScroll = zfRetain(zfcast(ZFUIScroller *, this->scrollerClass()->newInstance()));
+    d->xScroll = zfRetain(this->scrollerClass()->newInstance());
+    d->yScroll = zfRetain(this->scrollerClass()->newInstance());
     zfCoreAssertWithMessage(d->xScroll != zfnull && d->yScroll != zfnull,
         "scrollerClass must return a class type of %s",
         ZFUIScroller::ClassData()->classNameFull());
@@ -967,7 +967,7 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollThumbHorizontalClass
         d->xScrollThumb = zfnull;
     }
     if(cls != zfnull) {
-        d->xScrollThumb = zfRetain(zfcast(ZFUIScrollThumb *, cls->newInstance()));
+        d->xScrollThumb = zfRetain(cls->newInstance());
         if(d->xScrollThumb != zfnull) {
             d->xScrollThumb->_scrollView = this;
             d->xScrollThumb->_horizontal = zftrue;
@@ -992,7 +992,7 @@ ZFMETHOD_DEFINE_1(ZFUIScrollView, void, scrollThumbVerticalClass
         d->yScrollThumb = zfnull;
     }
     if(cls != zfnull) {
-        d->yScrollThumb = zfRetain(zfcast(ZFUIScrollThumb *, cls->newInstance()));
+        d->yScrollThumb = zfRetain(cls->newInstance());
         if(d->yScrollThumb != zfnull) {
             d->yScrollThumb->_scrollView = this;
             d->yScrollThumb->_horizontal = zffalse;

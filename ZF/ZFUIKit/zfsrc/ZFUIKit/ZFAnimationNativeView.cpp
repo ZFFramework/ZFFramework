@@ -124,10 +124,10 @@ void ZFAnimationNativeView::aniOnStop(void) {
 
 void ZFAnimationNativeView::aniImplStart(void) {
     zfsuper::aniImplStart();
-    ZFUIView *aniTarget = ZFAny(this->aniTarget());
+    ZFUIView *aniTarget = this->aniTarget();
     ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->nativeAniStart(this,
         aniTarget != zfnull ? aniTarget->UIScaleFixed() : 1.0f);
-    ZFUIView *parent = aniTarget;
+    ZFAnyT<ZFUIView> parent = aniTarget;
     while(parent->viewParent() != zfnull) {
         parent = parent->viewParent();
     }

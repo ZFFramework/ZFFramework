@@ -109,7 +109,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfstring, text) {
         ZFPROTOCOL_ACCESS(ZFUITextEdit)->text(this, this->text());
     }
     if(propertyValueOld.compare(this->text()) != 0) {
-        zfunsafe_zfcast(ZFUIView *, this->textPlaceHolder())->viewVisible(this->text().isEmpty());
+        this->textPlaceHolder()->viewVisible(this->text().isEmpty());
         this->layoutRequest();
     }
 }
@@ -156,7 +156,7 @@ void ZFUITextEdit::objectOnInit(void) {
         _ZFP_ZFUITextEdit_nativeImplViewDestroy::action,
         nativeImplViewRequireVirtualIndex);
 
-    ZFUIView *textPlaceHolderTmp = zfcast(ZFUIView *, this->textPlaceHolder());
+    ZFUIView *textPlaceHolderTmp = this->textPlaceHolder();
     if(textPlaceHolderTmp == zfnull) {
         if(this->textPlaceHolder() != zfnull) {
             zfCoreCriticalClassNotTypeOf(this->textPlaceHolder()->classData(), ZFUIView::ClassData());
@@ -268,12 +268,12 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
                 this->textEditNotifyConfirm();
             }
             if(this->viewFocused()) {
-                ZFUIView *next = ZFUIViewFocusNextFind(this);
+                ZFAnyT<ZFUIView> next = ZFUIViewFocusNextFind(this);
                 if(next == zfnull) {
                     this->textEditEnd();
                 }
                 else {
-                    ZFUITextEdit *nextTmp = zfcast(ZFUITextEdit *, next);
+                    ZFUITextEdit *nextTmp = next;
                     if(nextTmp != zfnull) {
                         nextTmp->textEditBegin();
                     }

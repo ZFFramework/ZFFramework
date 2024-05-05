@@ -145,7 +145,7 @@ public:
     zfautoT<ZFUIListCell> cellLoadAt(ZF_IN zfindex index) {
         zfautoT<ZFUIListCell> ret = this->listAdapter->cellCacheOnAccess(index);
         if(ret != zfnull) {
-            zfCoreAssertWithMessage(zfcast(ZFUIListCell *, ret) != zfnull, "list cell %s not type of %s",
+            zfCoreAssertWithMessage(ret != zfnull, "list cell %s not type of %s",
                 ret->classData()->classNameFull(),
                 ZFUIListCell::ClassData()->classNameFull());
             return ret;

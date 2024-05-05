@@ -1328,7 +1328,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFUIView *, viewFocusFind) {
 
 // ============================================================
 // parent
-ZFMETHOD_DEFINE_0(ZFUIView, ZFUIView *, viewParent) {
+ZFMETHOD_DEFINE_0(ZFUIView, ZFAnyT<ZFUIView>, viewParent) {
     return d->viewParent;
 }
 
@@ -2033,7 +2033,7 @@ void ZFUIView::viewEventOnWheelEvent(ZF_IN ZFUIWheelEvent *wheelEvent) {
 // override
 void ZFUIView::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuperI(ZFStyleable)::styleableOnCopyFrom(anotherStyleable);
-    ZFUIView *ref = zfcast(ZFUIView *, anotherStyleable);
+    ZFUIView *ref = zfcast(zfself *, anotherStyleable);
     if(ref == zfnull || this->childCount() != 0) {
         return;
     }

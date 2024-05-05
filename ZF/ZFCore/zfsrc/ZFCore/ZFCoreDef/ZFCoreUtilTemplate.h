@@ -469,6 +469,28 @@ public:
     };
 };
 
+// ============================================================
+/** @brief std::is_pod wrapper */
+template<typename T_Type>
+zfclassNotPOD zftIsPOD {
+public:
+    enum {
+        /** @brief std::is_pod wrapper */
+        Value = !zftIsClass<T_Type>::Value,
+    };
+};
+/** @brief explicitly declare as POD */
+#define ZFCORE_POD_DECLARE(Type) \
+    /** @cond ZFPrivateDoc */ \
+    template<> \
+    zfclassNotPOD zftIsPOD<Type> { \
+    public: \
+        enum { \
+            Value = 1, \
+        }; \
+    }; \
+    /** @endcond */
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFCoreUtilTemplate_h_

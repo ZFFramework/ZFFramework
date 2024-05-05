@@ -103,7 +103,7 @@ ZFSerializablePropertyType ZFUIAutoLayoutParam::serializableOnCheckPropertyType(
 }
 
 ZFCompareResult ZFUIAutoLayoutParam::objectCompare(ZF_IN ZFObject *anotherObj) {
-    ZFUIAutoLayoutParam *ref = zfcast(ZFUIAutoLayoutParam *, anotherObj);
+    zfself *ref = zfcast(zfself *, anotherObj);
     if(anotherObj == zfnull || zfsuper::objectCompare(anotherObj) != ZFCompareTheSame) {
         return ZFCompareUncomparable;
     }

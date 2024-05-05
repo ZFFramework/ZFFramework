@@ -52,9 +52,6 @@ public:
         virtual inline ZFObject *toObject(void) { \
             return this; \
         } \
-        inline ZFAny toAny(void) { \
-            return ZFAny(this); \
-        } \
         /** @endcond */ \
     public: \
         /** @brief get instance's class info */ \

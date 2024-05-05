@@ -148,7 +148,7 @@ public:
             this->viewUIEnableTree(zftrue);
             ZFUIViewBlinkWhenFocusAutoApplyPause();
             if(this->pimplOwner->dialogFocusAutomatically()) {
-                ZFUIView *v = this->pimplOwner->dialogFocusOnUpdate();
+                ZFAnyT<ZFUIView> v = this->pimplOwner->dialogFocusOnUpdate();
                 if(this->pimplOwner->observerHasAdd(ZFUIDialog::EventDialogFocusOnUpdate())) {
                     zfobj<ZFObjectHolder> param0(v);
                     this->pimplOwner->observerNotify(ZFUIDialog::EventDialogFocusOnUpdate(), param0);
@@ -404,7 +404,7 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, ZFUIView *, dialogInternalBackgroundContainer) {
     return d->dialogBg;
 }
 
-ZFUIView *ZFUIDialog::dialogFocusOnUpdate(void) {
+ZFAnyT<ZFUIView> ZFUIDialog::dialogFocusOnUpdate(void) {
     return ZFUIViewFocusNextMove(this->dialogInternalContainer(),
         ZFUIViewFocusNextParam().focusDirection(ZFUIOrientation::e_Left | ZFUIOrientation::e_Top));
 }

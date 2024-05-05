@@ -624,7 +624,7 @@ public:
     /**
      * @brief parent view or null if none
      */
-    ZFMETHOD_DECLARE_0(ZFUIView *, viewParent)
+    ZFMETHOD_DECLARE_0(ZFAnyT<ZFUIView>, viewParent)
 
     /**
      * @brief remove this view from parent or do nothing if no parent

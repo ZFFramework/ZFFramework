@@ -13,6 +13,75 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+template<typename T_Element, bool isPOD = zftIsPOD<T_Element>::Value>
+zfclassNotPOD _ZFP_ZFCoreArrayW {
+public:
+    static void objCreate(
+        ZF_IN T_Element *p
+        , ZF_IN T_Element *pEnd
+        ) {
+        while(p != pEnd) {
+            zfnewPlacement(p, T_Element);
+            ++p;
+        }
+    }
+    static void objCreate(
+        ZF_IN T_Element *p
+        , ZF_IN T_Element *pEnd
+        , ZF_IN const T_Element *src
+        ) {
+        while(p != pEnd) {
+            zfnewPlacement(p, T_Element, *src);
+            ++p;
+            ++src;
+        }
+    }
+    static void objMove(
+            ZF_IN T_Element *dst
+            , ZF_IN const T_Element *src
+            , ZF_IN zfindex count
+            ) {
+        zfmemmoveObject(dst, src, count);
+    }
+    static void objDestroy(
+            ZF_IN T_Element *p
+            , ZF_IN T_Element *pEnd
+            ) {
+        while(p != pEnd) {
+            zfdeletePlacement(p);
+            ++p;
+        }
+    }
+};
+template<typename T_Element>
+zfclassNotPOD _ZFP_ZFCoreArrayW<T_Element, true> {
+public:
+    static void objCreate(
+        ZF_IN T_Element *p
+        , ZF_IN T_Element *pEnd
+        ) {
+    }
+    static void objCreate(
+        ZF_IN T_Element *p
+        , ZF_IN T_Element *pEnd
+        , ZF_IN const T_Element *src
+        ) {
+        zfmemcpy(p, src, (pEnd - p) * sizeof(T_Element));
+    }
+    static void objMove(
+            ZF_IN T_Element *dst
+            , ZF_IN const T_Element *src
+            , ZF_IN zfindex count
+            ) {
+        zfmemmove(dst, src, count * sizeof(T_Element));
+    }
+    static void objDestroy(
+            ZF_IN T_Element *p
+            , ZF_IN T_Element *pEnd
+            ) {
+    }
+};
+
 template<typename T_Element>
 zffinal zfclassNotPOD _ZFP_ZFCoreArrayPrivate {
 public:
@@ -29,45 +98,8 @@ public:
     {
     }
     ~_ZFP_ZFCoreArrayPrivate(void) {
-        this->objDestroy(this->buf, this->buf + this->count);
+        _ZFP_ZFCoreArrayW<T_Element>::objDestroy(this->buf, this->buf + this->count);
         zffree(this->buf);
-    }
-public:
-    void objCreate(
-        ZF_IN T_Element *p
-        , ZF_IN T_Element *pEnd
-        ) {
-        while(p != pEnd) {
-            zfnewPlacement(p, T_Element);
-            ++p;
-        }
-    }
-    void objCreate(
-        ZF_IN T_Element *p
-        , ZF_IN T_Element *pEnd
-        , ZF_IN const T_Element *src
-        ) {
-        while(p != pEnd) {
-            zfnewPlacement(p, T_Element, *src);
-            ++p;
-            ++src;
-        }
-    }
-    void objMove(
-            ZF_IN T_Element *dst
-            , ZF_IN const T_Element *src
-            , ZF_IN zfindex count
-            ) {
-        zfmemmoveObject(dst, src, count);
-    }
-    void objDestroy(
-            ZF_IN T_Element *p
-            , ZF_IN T_Element *pEnd
-            ) {
-        while(p != pEnd) {
-            zfdeletePlacement(p);
-            ++p;
-        }
     }
 };
 
@@ -352,11 +384,11 @@ public:
     void copyFrom(ZF_IN const ZFCoreArray<T_Element> &ref) {
         if(d != ref.d) {
             if(d->buf) {
-                d->objDestroy(d->buf, d->buf + d->count);
+                _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
                 d->count = 0;
             }
             _capacityRequire(ref.count());
-            d->objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf());
+            _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf, d->buf + ref.count(), ref.arrayBuf());
             d->count = (zfuint)ref.count();
         }
     }
@@ -457,7 +489,7 @@ public:
      */
     void add(ZF_IN T_Element const &e) {
         _capacityRequire(this->count() + 1);
-        d->objCreate(d->buf + d->count, d->buf + d->count + 1, &e);
+        _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + d->count + 1, &e);
         ++(d->count);
     }
     /**
@@ -472,9 +504,9 @@ public:
             return;
         }
         _capacityRequire(this->count() + 1);
-        d->objCreate(d->buf + d->count, d->buf + d->count + 1);
+        _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + d->count + 1);
         T_Element *pos = d->buf + index;
-        d->objMove(pos + 1, pos, this->count() - index);
+        _ZFP_ZFCoreArrayW<T_Element>::objMove(pos + 1, pos, this->count() - index);
         ++(d->count);
         *pos = e;
     }
@@ -490,7 +522,7 @@ public:
         }
         if(src < d->buf || src >= d->buf + d->capacity) {
             _capacityRequire(this->count() + count);
-            d->objCreate(d->buf + d->count, d->buf + d->count + count, src);
+            _ZFP_ZFCoreArrayW<T_Element>::objCreate(d->buf + d->count, d->buf + d->count + count, src);
             d->count += (zfuint)count;
         }
         else {
@@ -679,8 +711,8 @@ public:
             zfCoreCriticalIndexOutOfRange(index, this->count());
             return;
         }
-        d->objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1);
-        d->objDestroy(d->buf + d->count - 1, d->buf + d->count);
+        _ZFP_ZFCoreArrayW<T_Element>::objMove(d->buf + index, d->buf + index + 1, this->count() - index - 1);
+        _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf + d->count - 1, d->buf + d->count);
         --(d->count);
     }
     zfoverride
@@ -695,8 +727,8 @@ public:
         if(count > this->count() - index) {
             count = this->count() - index;
         }
-        d->objMove(d->buf + index, d->buf + index + count, this->count() - (index + count));
-        d->objDestroy(d->buf + d->count - count, d->buf + d->count);
+        _ZFP_ZFCoreArrayW<T_Element>::objMove(d->buf + index, d->buf + index + count, this->count() - (index + count));
+        _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf + d->count - count, d->buf + d->count);
         d->count -= count;
     }
     /**
@@ -744,7 +776,7 @@ public:
     }
     zfoverride
     virtual void removeAll(void) {
-        d->objDestroy(d->buf, d->buf + d->count);
+        _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
         d->count = 0;
     }
 
@@ -769,10 +801,10 @@ public:
         }
         T_Element t = d->buf[fromIndex];
         if(fromIndex < toIndexOrIndexMax) {
-            d->objMove(d->buf + fromIndex, d->buf + fromIndex + 1, toIndexOrIndexMax - fromIndex);
+            _ZFP_ZFCoreArrayW<T_Element>::objMove(d->buf + fromIndex, d->buf + fromIndex + 1, toIndexOrIndexMax - fromIndex);
         }
         else {
-            d->objMove(d->buf + toIndexOrIndexMax + 1, d->buf + toIndexOrIndexMax, fromIndex - toIndexOrIndexMax);
+            _ZFP_ZFCoreArrayW<T_Element>::objMove(d->buf + toIndexOrIndexMax + 1, d->buf + toIndexOrIndexMax, fromIndex - toIndexOrIndexMax);
         }
         d->buf[toIndexOrIndexMax] = t;
     }
@@ -946,7 +978,7 @@ private:
     }
     void _capacityDoChange(ZF_IN zfindex capacity) {
         if(capacity == 0) {
-            d->objDestroy(d->buf, d->buf + d->count);
+            _ZFP_ZFCoreArrayW<T_Element>::objDestroy(d->buf, d->buf + d->count);
             zffree(d->buf);
             d->buf = zfnull;
             d->capacity = 0;
@@ -957,13 +989,13 @@ private:
             zfuint oldCount = d->count;
 
             T_Element *newBuf = (T_Element *)zfmalloc(capacity * sizeof(T_Element));
-            d->objCreate(newBuf, newBuf + oldCount, oldBuf);
+            _ZFP_ZFCoreArrayW<T_Element>::objCreate(newBuf, newBuf + oldCount, oldBuf);
 
             d->buf = newBuf;
             d->capacity = (zfuint)capacity;
             d->count = oldCount;
 
-            d->objDestroy(oldBuf, oldBuf + oldCount);
+            _ZFP_ZFCoreArrayW<T_Element>::objDestroy(oldBuf, oldBuf + oldCount);
             zffree(oldBuf);
         }
     }

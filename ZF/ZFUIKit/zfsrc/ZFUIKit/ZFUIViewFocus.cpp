@@ -310,7 +310,7 @@ void ZFUIViewFocusNextParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 }
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
+ZFMETHOD_FUNC_DEFINE_2(ZFAnyT<ZFUIView>, ZFUIViewFocusNextFind
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam())
         ) {
@@ -421,11 +421,11 @@ ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextFind
     return zfnull;
 }
 
-ZFMETHOD_FUNC_DEFINE_2(ZFUIView *, ZFUIViewFocusNextMove
+ZFMETHOD_FUNC_DEFINE_2(ZFAnyT<ZFUIView>, ZFUIViewFocusNextMove
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam())
         ) {
-    ZFUIView *next = ZFUIViewFocusNextFind(view, param);
+    ZFAnyT<ZFUIView> next = ZFUIViewFocusNextFind(view, param);
     if(next != zfnull) {
         next->viewFocusRequest(zftrue);
     }
@@ -491,7 +491,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFUIViewFocusResolveKeyEvent
         return zftrue;
     }
     param.focusEndParent(endParent);
-    ZFUIView *next = ZFUIViewFocusNextMove(view, param);
+    ZFAnyT<ZFUIView> next = ZFUIViewFocusNextMove(view, param);
     if(nextFocus != zfnull) {
         *nextFocus = next;
     }

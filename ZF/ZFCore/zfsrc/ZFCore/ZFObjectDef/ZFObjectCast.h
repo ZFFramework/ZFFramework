@@ -145,12 +145,18 @@ inline T_To _ZFP_ObjCast<T_To>::c(T_From const &obj) {
             _ZFP_ObjCastType(T_ToTmp), _ZFP_ObjCastType(T_FromTmp)
         >::c(obj);
 }
+// direct cast to ZFInterface is not allowed
 template<>
-template<typename T_From>
-inline ZFInterface *_ZFP_ObjCast<ZFInterface *>::c(T_From const &obj) {
-    zfCoreCriticalMessageTrim("[zfunsafe_zfcast] direct cast to ZFInterface is not allowed");
-    return zfnull;
-}
+zfclassNotPOD _ZFP_ObjCast<ZFInterface *> {};
+// spec for const void *
+template<>
+zfclassNotPOD _ZFP_ObjCast<const void *> {
+public:
+    template<typename T_From>
+    static inline const void *c(T_From const &obj) {
+        return (const void *)zfcast(ZFObject *, obj);
+    }
+};
 
 
 // ============================================================
@@ -228,12 +234,19 @@ inline T_To _ZFP_ObjCastNoCk<T_To>::c(T_From const &obj) {
             _ZFP_ObjCastType(T_ToTmp), _ZFP_ObjCastType(T_FromTmp)
         >::c(obj);
 }
+// direct cast to ZFInterface is not allowed
 template<>
-template<typename T_From>
-inline ZFInterface *_ZFP_ObjCastNoCk<ZFInterface *>::c(T_From const &obj) {
-    zfCoreCriticalMessageTrim("[zfunsafe_zfcast] direct cast to ZFInterface is not allowed");
-    return zfnull;
-}
+zfclassNotPOD _ZFP_ObjCastNoCk<ZFInterface *> {};
+// spec for const void *
+template<>
+zfclassNotPOD _ZFP_ObjCastNoCk<const void *> {
+public:
+    template<typename T_From>
+    static inline const void *c(T_From const &obj) {
+        return (const void *)zfcast(ZFObject *, obj);
+    }
+};
+
 
 // ============================================================
 template<typename T_Type, int has_toObject>

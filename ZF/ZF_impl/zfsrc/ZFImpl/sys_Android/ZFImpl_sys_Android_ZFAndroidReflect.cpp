@@ -115,7 +115,7 @@ protected:
         if(this->jobj || !this->autoAlloc) {
             return;
         }
-        _ZFP_I_ZFAndroidReflect_ClassInfo *clsInfo = zfcast(_ZFP_I_ZFAndroidReflect_ClassInfo *, this->classData()->classDynamicRegisterUserData());
+        _ZFP_I_ZFAndroidReflect_ClassInfo *clsInfo = this->classData()->classDynamicRegisterUserData();
         if(clsInfo == zfnull) {
             return;
         }
@@ -524,7 +524,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         , jobjectArray paramTypeNames
         ) {
     const ZFClass *cls = (const ZFClass *)JNIConvertPointerFromJNIType(JNIGetJNIEnv(), zfjniPointerCls);
-    _ZFP_I_ZFAndroidReflect_ClassInfo *clsInfo = zfcast(_ZFP_I_ZFAndroidReflect_ClassInfo *, cls->classDynamicRegisterUserData());
+    _ZFP_I_ZFAndroidReflect_ClassInfo *clsInfo = cls->classDynamicRegisterUserData();
     zfCoreAssert(clsInfo != zfnull);
 
     ZFMethodDynamicRegisterParam regParam;
@@ -572,7 +572,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
             if(userData == zfnull) {
                 return zffalse;
             }
-            _ZFP_I_ZFAndroidReflect_Object *obj = zfcast(_ZFP_I_ZFAndroidReflect_Object *, invokerObject);
+            _ZFP_I_ZFAndroidReflect_Object *obj = invokerObject;
             obj->autoAlloc = zffalse;
             for(zfindex iGIData = 0; iGIData < userData->count(); ++iGIData) {
                 _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData);
@@ -608,7 +608,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
             , regParam.methodParamTypeIdAt(7)
             );
     if(exist != zfnull) {
-        ZFArray *userData = zfcast(ZFArray *, exist->methodDynamicRegisterUserData());
+        ZFArray *userData = exist->methodDynamicRegisterUserData();
         zfCoreAssert(userData != zfnull);
         userData->add(GIData);
     }
@@ -634,7 +634,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
         , jobjectArray paramTypeNames
         ) {
     const ZFClass *cls = (const ZFClass *)JNIConvertPointerFromJNIType(JNIGetJNIEnv(), zfjniPointerCls);
-    _ZFP_I_ZFAndroidReflect_ClassInfo *clsInfo = zfcast(_ZFP_I_ZFAndroidReflect_ClassInfo *, cls->classDynamicRegisterUserData());
+    _ZFP_I_ZFAndroidReflect_ClassInfo *clsInfo = cls->classDynamicRegisterUserData();
     zfCoreAssert(clsInfo != zfnull);
 
     zfstring methodNameZF;
@@ -708,7 +708,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
             if(userData == zfnull) {
                 return zffalse;
             }
-            _ZFP_I_ZFAndroidReflect_Object *obj = zfcast(_ZFP_I_ZFAndroidReflect_Object *, invokerObject);
+            _ZFP_I_ZFAndroidReflect_Object *obj = invokerObject;
             for(zfindex iGIData = 0; iGIData < userData->count(); ++iGIData) {
                 _ZFP_I_ZFAndroidReflect_GIData *GIData = userData->get(iGIData);
                 if(paramCount != (zfindex)GIData->paramJNITypes.size()) {
@@ -845,7 +845,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect
             , regParam.methodParamTypeIdAt(7)
             );
     if(exist != zfnull) {
-        ZFArray *userData = zfcast(ZFArray *, exist->methodDynamicRegisterUserData());
+        ZFArray *userData = exist->methodDynamicRegisterUserData();
         zfCoreAssert(userData != zfnull);
         userData->add(GIData);
     }

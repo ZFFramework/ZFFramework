@@ -35,7 +35,11 @@ class _ZFP_ZFUISysWindowImpl_sys_Qt_EventWrapper : public QObject {
 
 protected:
     virtual bool eventFilter(QObject *obj, QEvent *event) {
-        ZFUISysWindow *owner = ZFImpl_sys_Qt_QObjectZFObjectTag<ZFObjectHolder *>(obj, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow")->objectHolded();
+        ZFObjectHolder *ownerHolder = ZFImpl_sys_Qt_QObjectZFObjectTag(obj, "_ZFP_ZFUISysWindowImpl_sys_Qt_ownerZFUISysWindow");
+        if(ownerHolder == zfnull) {
+            return false;
+        }
+        ZFUISysWindow *owner = ownerHolder->objectHolded();
         if(owner == zfnull) {
             return false;
         }

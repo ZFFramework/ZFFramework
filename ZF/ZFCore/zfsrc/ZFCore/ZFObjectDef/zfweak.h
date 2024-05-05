@@ -189,6 +189,13 @@ public:
     inline ZFV zfv(void) const {
         return ZFV(this->toObject());
     }
+    /**
+     * @brief see #ZFV
+     */
+    template<typename T_Type>
+    inline T_Type &zfv(void) const {
+        return (T_Type &)ZFV(this->toObject());
+    }
 
 private:
     ZFObjectHolder *_ZFP_obj;
@@ -311,27 +318,28 @@ public:
     zfclassNotPOD Value {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            return ZFTypeId<zfweak>::Value<T_Access>::zfvAccessAvailable(obj);
+            return ZFTypeId<zfweak>::Value<zfweak &>::zfvAccessAvailable(obj);
         }
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
-            return ZFTypeId<zfweak>::Value<T_Access>::zfvAccess(obj);
+            // zfweakT ensured safe for reinterpret cast
+            return (T_Access)ZFTypeId<zfweak>::Value<zfweak &>::zfvAccess(obj);
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
-            ZFTypeId<zfweak>::Value<T_Access>::zfvAccessFinish(obj);
+            ZFTypeId<zfweak>::Value<zfweak &>::zfvAccessFinish(obj);
         }
     };
     template<typename T_Access>
     zfclassNotPOD Value<T_Access, 1> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            return ZFTypeId<zfweak>::Value<T_Access>::zfvAccessAvailable(obj);
+            return ZFTypeId<zfweak>::Value<zfweak *>::zfvAccessAvailable(obj);
         }
-        static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
+        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
             // zfweakT ensured safe for reinterpret cast
-            return (typename zftTraits<T_Access>::TrNoRef)ZFTypeId<zfweak>::Value<T_Access>::zfvAccess(obj);
+            return (T_Access)ZFTypeId<zfweak>::Value<zfweak *>::zfvAccess(obj);
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
-            ZFTypeId<zfweak>::Value<T_Access>::zfvAccessFinish(obj);
+            ZFTypeId<zfweak>::Value<zfweak *>::zfvAccessFinish(obj);
         }
     };
 public:

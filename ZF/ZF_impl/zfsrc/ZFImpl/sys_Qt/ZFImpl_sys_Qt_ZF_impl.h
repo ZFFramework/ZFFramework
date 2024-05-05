@@ -29,17 +29,10 @@ extern ZFLIB_ZF_impl void ZFImpl_sys_Qt_QObjectZFObjectTag(
         , ZF_IN const zfchar *name
         , ZF_IN ZFObject *tag
         );
-extern ZFLIB_ZF_impl ZFObject *ZFImpl_sys_Qt_QObjectZFObjectTag(
+extern ZFLIB_ZF_impl ZFAny ZFImpl_sys_Qt_QObjectZFObjectTag(
         ZF_IN_OUT QObject *obj
         , ZF_IN const zfchar *name
         );
-template<typename T_ZFObject>
-T_ZFObject ZFImpl_sys_Qt_QObjectZFObjectTag(
-        ZF_IN_OUT QObject *obj
-        , ZF_IN const zfchar *name
-        ) {
-    return zfunsafe_zfcast(T_ZFObject, ZFImpl_sys_Qt_QObjectZFObjectTag(obj, name));
-}
 
 // ============================================================
 /**
