@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextSetupDataHolder, ZFLevelZFFrameworkEssential) {
     ZFLISTENER(nextFocusOnDealloc) {
-        ZFObjectHolder *nextFocusOwner = zfargs.sender()->objectTag<ZFObjectHolder *>(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
+        ZFObjectHolder *nextFocusOwner = zfargs.sender()->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
         if(nextFocusOwner == zfnull) {
             return;
         }
@@ -34,7 +34,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFUIViewFocusNextSetupDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewFocusNextSetupDataHolder);
 
-    ZFObjectHolder *nextFocusHolderOld = from->objectTag<ZFObjectHolder *>(_ZFP_ZFUIViewFocus_tag_nextFocus);
+    ZFObjectHolder *nextFocusHolderOld = from->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus);
     if(nextFocusHolderOld != zfnull) {
         nextFocusHolderOld->objectHolded()->observerRemove(ZFObject::EventObjectBeforeDealloc(), d->nextFocusOnDeallocListener);
         nextFocusHolderOld->objectHolded()->objectTagRemove(_ZFP_ZFUIViewFocus_tag_nextFocusOwner);
@@ -319,7 +319,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfanyT<ZFUIView>, ZFUIViewFocusNextFind
     }
 
     {
-        ZFObjectHolder *t = view->objectTag<ZFObjectHolder *>(_ZFP_ZFUIViewFocus_tag_nextFocus);
+        ZFObjectHolder *t = view->objectTag(_ZFP_ZFUIViewFocus_tag_nextFocus);
         if(t != zfnull) {
             return t->objectHolded();
         }

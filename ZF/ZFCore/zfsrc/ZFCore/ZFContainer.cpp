@@ -111,7 +111,7 @@ zfbool ZFContainer::serializableOnSerializeToDataWithRef(
         , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
-    ZFContainer *ref = zfcast(ZFContainer *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
     if(ref == zfnull) {
         ZFSerializableUtilErrorOccurred(outErrorHint,
             "%s not type of %s",

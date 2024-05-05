@@ -203,10 +203,10 @@ ZFMETHOD_DEFINE_1(ZFUIButtonGroup, zfindex, buttonFind
         ) {
     return this->_ZFP_buttons->find(button);
 }
-ZFMETHOD_DEFINE_1(ZFUIButtonGroup, ZFUIButton *, buttonAt
+ZFMETHOD_DEFINE_1(ZFUIButtonGroup, zfanyT<ZFUIButton>, buttonAt
         , ZFMP_IN(zfindex, buttonIndex)
         ) {
-    return this->_ZFP_buttons->get<ZFUIButton *>(buttonIndex);
+    return this->_ZFP_buttons->get(buttonIndex);
 }
 ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, buttonAdd
         , ZFMP_IN(ZFUIButton *, button)

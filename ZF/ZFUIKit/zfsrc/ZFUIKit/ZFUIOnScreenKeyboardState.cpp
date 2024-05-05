@@ -14,7 +14,7 @@ ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, ZFUIOnScreenKeyboardState *, instan
     if(sysWindow == zfnull) {
         sysWindow = ZFUISysWindow::mainWindow();
     }
-    ZFUIOnScreenKeyboardState *ret = sysWindow->objectTag<ZFUIOnScreenKeyboardState *>("_ZFP_ZFUIOnScreenKeyboardState");
+    ZFUIOnScreenKeyboardState *ret = sysWindow->objectTag("_ZFP_ZFUIOnScreenKeyboardState");
     if(ret == zfnull) {
         zfobj<ZFUIOnScreenKeyboardState> tmp;
         sysWindow->objectTag("_ZFP_ZFUIOnScreenKeyboardState", tmp);

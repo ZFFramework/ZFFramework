@@ -106,7 +106,7 @@ public:
     /**
      * @brief get button at index
      */
-    ZFMETHOD_DECLARE_1(ZFUIButton *, buttonAt
+    ZFMETHOD_DECLARE_1(zfanyT<ZFUIButton>, buttonAt
             , ZFMP_IN(zfindex, buttonIndex)
             )
     /**

@@ -14,7 +14,7 @@ ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfauto, itemCacheAccess
         , ZFMP_IN(const zfchar *, key)
         ) {
     _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key);
-    ZFArray *cacheList = this->toObject()->objectTag<ZFArray *>(cacheKey);
+    ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList != zfnull && !cacheList->isEmpty()) {
         zfauto ret = cacheList->getLast();
         cacheList->removeLast();
@@ -29,7 +29,7 @@ ZFMETHOD_DEFINE_2(ZFUIListCellUpdater, void, itemCacheRecycle
         , ZFMP_IN(ZFObject *, cache)
         ) {
     _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key);
-    ZFArray *cacheList = this->toObject()->objectTag<ZFArray *>(cacheKey);
+    ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
     if(cacheList == zfnull) {
         cacheList = zfAlloc(ZFArray);
         this->toObject()->objectTag(cacheKey, cacheList);

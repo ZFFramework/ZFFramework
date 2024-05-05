@@ -212,11 +212,6 @@ public:
     /** @brief see #callbackTag */
     zffinal zfany callbackTag(ZF_IN const zfchar *key) const;
     /** @brief see #callbackTag */
-    template<typename T_ZFObject>
-    T_ZFObject callbackTag(ZF_IN const zfchar *key) const {
-        return zfunsafe_zfcast(T_ZFObject, this->callbackTag(key));
-    }
-    /** @brief see #callbackTag */
     zffinal void callbackTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
             , ZF_IN_OUT ZFCoreArray<zfauto> &allValue

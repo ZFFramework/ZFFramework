@@ -298,7 +298,7 @@ zffinal zfbool ZFSerializable::serializeToString(
 
 _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_getPropertyTypeHolder(void) {
     zfCoreMutexLocker();
-    _ZFP_I_ZFSerializablePropertyTypeHolder *holder = this->classData()->classTag<_ZFP_I_ZFSerializablePropertyTypeHolder *>(_ZFP_I_ZFSerializablePropertyTypeHolder::ClassData()->classNameFull());
+    _ZFP_I_ZFSerializablePropertyTypeHolder *holder = this->classData()->classTag(_ZFP_I_ZFSerializablePropertyTypeHolder::ClassData()->classNameFull());
     if(holder == zfnull) {
         zfobj<_ZFP_I_ZFSerializablePropertyTypeHolder> holderTmp;
         ZFCoreArray<const ZFProperty *> allProperty;

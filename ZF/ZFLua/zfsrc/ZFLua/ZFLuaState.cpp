@@ -33,7 +33,7 @@ public:
         if(curThread == zfnull) {
             return _ZFP_I_ZFLuaStateHolder::instance();
         }
-        _ZFP_I_ZFLuaStateHolder *holder = curThread->objectTag<_ZFP_I_ZFLuaStateHolder *>(_ZFP_I_ZFLuaStateHolder::ClassData()->className());
+        _ZFP_I_ZFLuaStateHolder *holder = curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className());
         if(holder == zfnull) {
             holder = zfAlloc(_ZFP_I_ZFLuaStateHolder);
             curThread->objectTag(_ZFP_I_ZFLuaStateHolder::ClassData()->className(), holder);

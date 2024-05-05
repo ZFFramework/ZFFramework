@@ -83,7 +83,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
         ZF_IN ZFUIView *view
         , ZF_IN const ZFUIViewBlinkParam &blinkParam
         ) {
-    _ZFP_ZFUIViewBlinkView *blinkView = view->objectTag<_ZFP_ZFUIViewBlinkView *>(_ZFP_ZFUIViewBlink_tag_blinkView);
+    _ZFP_ZFUIViewBlinkView *blinkView = view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkView);
     if(blinkView != zfnull) {
         return;
     }
@@ -119,7 +119,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
             ZFAnimation *ani = zfargs.sender();
             ZFUIView *blinkView = ani->aniTarget();
 
-            v_zfindex *blinkCountLeft = view->objectTag<v_zfindex *>(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
+            v_zfindex *blinkCountLeft = view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
             if(blinkCountLeft != zfnull) {
                 if(blinkCountLeft->zfv <= 1) {
                     view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
@@ -162,7 +162,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
                 , zfautoT<ZFUIView>, view
                 ) {
             v_zfidentity *delayTaskId = delayTaskIdTag;
-            v_zfidentity *delayTaskIdCur = view->objectTag<v_zfidentity *>(_ZFP_ZFUIViewBlink_tag_delayTaskId);
+            v_zfidentity *delayTaskIdCur = view->objectTag(_ZFP_ZFUIViewBlink_tag_delayTaskId);
             if(delayTaskId != delayTaskIdCur) {
                 return;
             }
@@ -181,7 +181,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
     }
 }
 static void _ZFP_ZFUIViewBlink_noAni_doOff(ZF_IN ZFUIView *view) {
-    ZFUIView *blinkView = view->objectTag<ZFUIView *>(_ZFP_ZFUIViewBlink_tag_blinkView);
+    ZFUIView *blinkView = view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkView);
 
     view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_blinkView);
     blinkView->viewRemoveFromParent();
@@ -191,12 +191,12 @@ static void _ZFP_ZFUIViewBlink_noAni_doOff(ZF_IN ZFUIView *view) {
     ZFGlobalObserver().observerNotifyWithSender(view, ZFGlobalEvent::EventViewBlinkOff());
 }
 static void _ZFP_ZFUIViewBlinkDoOff(ZF_IN ZFUIView *view) {
-    _ZFP_ZFUIViewBlinkView *blinkView = view->objectTag<_ZFP_ZFUIViewBlinkView *>(_ZFP_ZFUIViewBlink_tag_blinkView);
+    _ZFP_ZFUIViewBlinkView *blinkView = view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkView);
     if(blinkView == zfnull) {
         return;
     }
 
-    ZFAnimation *ani = view->objectTag<ZFAnimation *>(_ZFP_ZFUIViewBlink_tag_ani);
+    ZFAnimation *ani = view->objectTag(_ZFP_ZFUIViewBlink_tag_ani);
     if(ani != zfnull) {
         view->objectTagRemove(_ZFP_ZFUIViewBlink_tag_blinkCountLeft);
         ani->aniStop();

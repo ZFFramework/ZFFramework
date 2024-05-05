@@ -150,13 +150,8 @@ public:
     // page manager
 public:
     /** @brief owner page manager */
-    virtual ZFUIPageManager *pageManager(void) {
+    virtual zfanyT<ZFUIPageManager> pageManager(void) {
         return this->_ZFP_ZFUIPage_pageManager;
-    }
-    /** @brief owner page manager */
-    template<typename T_ZFUIPageManager>
-    T_ZFUIPageManager pageManager(void) {
-        return zfunsafe_zfcast(T_ZFUIPageManager, this->pageManager());
     }
 
     /** @brief the page's container view, ensured not null */
@@ -450,27 +445,13 @@ public:
     /**
      * @brief page at index
      */
-    ZFMETHOD_DECLARE_1(ZFUIPage *, pageAt
+    ZFMETHOD_DECLARE_1(zfanyT<ZFUIPage>, pageAt
             , ZFMP_IN(zfindex, index)
             )
     /**
-     * @brief page at index
-     */
-    template<typename T_ZFUIPage>
-    inline T_ZFUIPage pageAt(ZF_IN zfindex index) {
-        return zfunsafe_zfcast(T_ZFUIPage, this->pageAt(index));
-    }
-    /**
      * @brief return foreground page or null if no page
      */
-    ZFMETHOD_DECLARE_0(ZFUIPage *, pageForeground)
-    /**
-     * @brief return foreground page or null if no page
-     */
-    template<typename T_ZFUIPage>
-    inline T_ZFUIPage pageForeground(void) {
-        return zfunsafe_zfcast(T_ZFUIPage, this->pageForeground());
-    }
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIPage>, pageForeground)
     /**
      * @brief find page index
      */

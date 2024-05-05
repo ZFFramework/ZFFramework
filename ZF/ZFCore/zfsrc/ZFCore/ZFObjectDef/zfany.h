@@ -21,7 +21,7 @@ zfclassFwd ZFObjectHolder;
  * @code
  *   zfobj<v_zfstring> obj;
  *   zfstring const &v = obj.zfv();
- *   const zfchar *v2 = obj.zfv<zfstring>();
+ *   const zfchar *v2 = (zfstring const &)obj.zfv();
  * @endcode
  */
 zfclassNotPOD ZFLIB_ZFCore ZFV {
@@ -146,13 +146,6 @@ public:
      */
     inline ZFV zfv(void) const {
         return ZFV(this->toObject());
-    }
-    /**
-     * @brief see #ZFV
-     */
-    template<typename T_Type>
-    inline T_Type &zfv(void) const {
-        return (T_Type &)ZFV(this->toObject());
     }
 
 private:

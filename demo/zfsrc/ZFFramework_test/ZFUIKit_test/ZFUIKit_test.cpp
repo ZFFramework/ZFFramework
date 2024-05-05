@@ -62,7 +62,7 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
     zfobj<ZFUIKit_test_ListView> listView;
     window->childAdd(listView)->c_sizeFill()->c_margin(0, 50, 0, 0);
     for(zfindex i = 0; i < settings->count(); ++i) {
-        ZFUIKit_test_SettingData *setting = settings->get<ZFUIKit_test_SettingData *>(i);
+        ZFUIKit_test_SettingData *setting = settings->get(i);
         zfCoreAssert(setting->buttonTextGetter());
         zfCoreAssert(setting->buttonClickListener());
 
@@ -205,7 +205,8 @@ void ZFUIKit_test_prepareSettingForResetProperty(
             ZFPropertyCopy(toReset[i], obj, fromObj);
         }
         for(zfindex i = 0; i < settings->count(); ++i) {
-            settings->get<ZFUIKit_test_SettingData *>(i)->settingUpdate();
+            ZFUIKit_test_SettingData *setting = settings->get(i);
+            setting->settingUpdate();
         }
     } ZFLISTENER_END()
     setting->buttonClickListener(buttonClickListener);

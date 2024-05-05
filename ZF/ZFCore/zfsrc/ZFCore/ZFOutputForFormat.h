@@ -45,16 +45,7 @@ public:
      * @brief try access the output format passed to #ZFOutputForFormat,
      *   return null if not available
      */
-    template<typename T_ZFOutputFormat>
-    static T_ZFOutputFormat getFormat(ZF_IN const ZFCallback &output) {
-        return zfcast(T_ZFOutputFormat, zfself::getFormat(output));
-    }
-
-    /**
-     * @brief try access the output format passed to #ZFOutputForFormat,
-     *   return null if not available
-     */
-    ZFMETHOD_DECLARE_STATIC_1(ZFOutputFormat *, getFormat
+    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFOutputFormat>, getFormat
             , ZFMP_IN(const ZFCallback &, output)
             )
     /**

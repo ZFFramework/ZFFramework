@@ -39,7 +39,7 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterRecv)
 ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFUIWebJSBridge *, instanceForWebView
         , ZFMP_IN(ZFUIWebView *, webView)
         ) {
-    ZFUIWebJSBridge *ret = webView->objectTag<ZFUIWebJSBridge *>(_ZFP_ZFUIWebJSBridge_tagKey);
+    ZFUIWebJSBridge *ret = webView->objectTag(_ZFP_ZFUIWebJSBridge_tagKey);
     if(ret == zfnull) {
         zfauto tmp = ZFUIWebJSBridge::ClassData()->newInstance();
         ret = tmp;

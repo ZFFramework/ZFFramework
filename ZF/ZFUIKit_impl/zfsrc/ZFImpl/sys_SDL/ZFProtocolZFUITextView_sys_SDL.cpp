@@ -144,7 +144,7 @@ public:
     }
 
     virtual zffloat textSizeCurrent(ZF_IN ZFUITextView *textView) {
-        v_zffloat *textSizeCurrent = textView->objectTag<v_zffloat *>("_ZFP_ZFImpl_sys_SDL_textSize");
+        v_zffloat *textSizeCurrent = textView->objectTag("_ZFP_ZFImpl_sys_SDL_textSize");
         return textSizeCurrent != zfnull ? textSizeCurrent->zfv : textView->textSize();
     }
 
@@ -250,7 +250,7 @@ private:
 
         zffloat textSizeCurrent;
         {
-            v_zffloat *tmp = owner->objectTag<v_zffloat *>("_ZFP_ZFImpl_sys_SDL_textSize");
+            v_zffloat *tmp = owner->objectTag("_ZFP_ZFImpl_sys_SDL_textSize");
             if(tmp == zfnull) {
                 textSizeCurrent = ZFPROTOCOL_ACCESS(ZFUITextView)->calcTextSizeAutoChange(owner, ZFUIRectGetSize(targetRectTmp));
                 owner->objectTag("_ZFP_ZFImpl_sys_SDL_textSize", zfobj<v_zffloat>(textSizeCurrent));

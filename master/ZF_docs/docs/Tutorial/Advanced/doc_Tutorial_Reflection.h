@@ -14,11 +14,10 @@
  *   const ZFClass *cls = ZFClass::classForName("MyObject");
  *
  *   // you may create the object's instance by the meta data
- *   zfauto objTmp = cls->newInstance();
- *   ZFObject *obj = objTmp;
+ *   zfauto obj = cls->newInstance();
  *
  *   // cast to desired type if necessary
- *   MyObject *myObj = zfcast(MyObject *, obj);
+ *   MyObject *myObj = obj;
  *
  *   // also, you may access class's info by ZFClass's method
  *   zfLog() << "class name: " << cls->className();

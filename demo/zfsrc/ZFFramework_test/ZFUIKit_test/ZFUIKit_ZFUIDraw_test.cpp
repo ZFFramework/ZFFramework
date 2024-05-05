@@ -85,7 +85,8 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , zfautoT<ZFArray>, views
                     ) {
-                ZFUISize sizeHint = views->get<ZFUIView *>(0)->layoutParam()->sizeHint();
+                ZFUIView *first = views->getFirst();
+                ZFUISize sizeHint = first->layoutParam()->sizeHint();
                 if(sizeHint.height == 100) {
                     sizeHint.height = 150;
                 }
@@ -93,7 +94,8 @@ private:
                     sizeHint.height = 100;
                 }
                 for(zfindex i = 0; i < views->count(); ++i) {
-                    views->get<ZFUIView *>(i)->layoutParam()->sizeHint(sizeHint);
+                    ZFUIView *child = views->get(i);
+                    child->layoutParam()->sizeHint(sizeHint);
                 }
             } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);

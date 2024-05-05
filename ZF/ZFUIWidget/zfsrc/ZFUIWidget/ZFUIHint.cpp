@@ -14,7 +14,7 @@ static ZFArray *_ZFP_ZFUIHint_hintListForRead(ZF_IN ZFUISysWindow *inSysWindow) 
     if(inSysWindow == zfnull) {
         return zfnull;
     }
-    return inSysWindow->objectTag<ZFArray *>("_ZFP_ZFUIHint_hintList");
+    return inSysWindow->objectTag("_ZFP_ZFUIHint_hintList");
 }
 static ZFArray *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUISysWindow *inSysWindow) {
     if(inSysWindow == zfnull) {
@@ -23,7 +23,7 @@ static ZFArray *_ZFP_ZFUIHint_hintListForWrite(ZF_IN ZFUISysWindow *inSysWindow)
     if(inSysWindow == zfnull) {
         return zfnull;
     }
-    ZFArray *hintList = inSysWindow->objectTag<ZFArray *>("_ZFP_ZFUIHint_hintList");
+    ZFArray *hintList = inSysWindow->objectTag("_ZFP_ZFUIHint_hintList");
     if(hintList == zfnull) {
         zfobj<ZFArray> hintListTmp;
         hintList = hintListTmp;
@@ -185,7 +185,7 @@ public:
         this->pimplOwner->hintOnHide();
         this->pimplOwner->hintWindow()->windowHide();
         if(!hintList->isEmpty()) {
-            ZFUIHint *hint = hintList->getFirst<ZFUIHint *>();
+            ZFUIHint *hint = hintList->getFirst();
             if(hint->hintDelaying()) {
                 hint->d->hintDoShow();
             }
@@ -215,10 +215,10 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnUpdate)
 ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnShow)
 ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnHide)
 
-ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<ZFUIHint *>, hintList
+ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<zfautoT<ZFUIHint> >, hintList
         , ZFMP_IN_OPT(ZFUISysWindow *, inSysWindow, zfnull)
         ) {
-    ZFCoreArray<ZFUIHint *> ret;
+    ZFCoreArray<zfautoT<ZFUIHint> > ret;
 
     ZFArray *hintList = _ZFP_ZFUIHint_hintListForRead(inSysWindow);
     if(hintList == zfnull) {
@@ -226,7 +226,7 @@ ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<ZFUIHint *>, hintList
     }
 
     for(zfindex i = 0; i < hintList->count(); ++i) {
-        ret.add(hintList->get<ZFUIHint *>(i));
+        ret.add(hintList->get(i));
     }
 
     return ret;
@@ -343,13 +343,13 @@ void ZFUIHint::objectOnInit(void) {
         hintListNew->add(hint);
         hintListOld->removeElement(hint, ZFComparerCheckEqual);
         if(!hintListOld->isEmpty()) {
-            ZFUIHint *hint = hintListOld->getFirst<ZFUIHint *>();
+            ZFUIHint *hint = hintListOld->getFirst();
             if(hint->hintDelaying()) {
                 hint->d->hintDoShow();
             }
         }
         if(!hintListNew->isEmpty()) {
-            ZFUIHint *tmp = hintListNew->getFirst<ZFUIHint *>();
+            ZFUIHint *tmp = hintListNew->getFirst();
             if(!tmp->d->hintShowing) {
                 tmp->d->hintDoShow();
             }

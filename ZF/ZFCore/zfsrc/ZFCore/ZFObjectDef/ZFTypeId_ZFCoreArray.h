@@ -562,14 +562,14 @@ public:
     zfclassNotPOD Value {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = obj;
             return t != zfnull && (
                     t->elementType == zfnull
                     || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
                     );
         }
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = obj;
             if(t->zfv == zfnull) {
                 t->wrappedValue(typename zftTraits<T_Access>::TrType());
             }
@@ -582,14 +582,14 @@ public:
     zfclassNotPOD Value<T_Access, 1> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = obj;
             return t != zfnull && (
                     t->elementType == zfnull
                     || zfstringIsEqual(t->elementType->typeId(), ZFTypeId<T_Type>::TypeId())
                     );
         }
         static typename zftTraits<T_Access>::TrNoRef zfvAccess(ZF_IN_OUT zfauto &obj) {
-            v_ZFCoreArray *t = zfcast(v_ZFCoreArray *, obj);
+            v_ZFCoreArray *t = obj;
             if(t->zfv == zfnull) {
                 t->wrappedValue(typename zftTraits<T_Access>::TrType());
             }

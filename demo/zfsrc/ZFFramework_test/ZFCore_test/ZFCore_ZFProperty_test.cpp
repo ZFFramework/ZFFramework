@@ -73,7 +73,8 @@ protected:
             // property list
             const ZFClass *clsTmp = p->classData();
             ZFOutput log = zfLog();
-            ZFOutputFormat::getFormat<ZFLogFormat *>(log)->autoEndl(zffalse);
+            zfanyT<ZFLogFormat> fmt = ZFOutputFormat::getFormat(log);
+            fmt->autoEndl(zffalse);
             log << "list: ";
             for(zfindex i = 0; i < clsTmp->propertyCount(); ++i) {
                 if(i > 0) {

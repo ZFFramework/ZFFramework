@@ -71,29 +71,6 @@ public:
 
 public:
     /**
-     * @brief util getter to get and cast to desired type
-     */
-    template<typename T_ZFObject>
-    T_ZFObject get(ZF_IN zfindex index) {
-        return zfunsafe_zfcast(T_ZFObject, this->get(index));
-    }
-    /**
-     * @brief util getter to get and cast to desired type
-     */
-    template<typename T_ZFObject>
-    T_ZFObject getFirst(void) {
-        return zfunsafe_zfcast(T_ZFObject, this->getFirst());
-    }
-    /**
-     * @brief util getter to get and cast to desired type
-     */
-    template<typename T_ZFObject>
-    T_ZFObject getLast(void) {
-        return zfunsafe_zfcast(T_ZFObject, this->getLast());
-    }
-
-public:
-    /**
      * @brief insert object at index, assert failure if obj = zfnull
      *   or index out of range [0, count]
      * @note null object is not allowed, use #ZFNull if necessary

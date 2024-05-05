@@ -168,7 +168,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
         , ZF_IN ZFSerializable *referencedOwnerOrNull
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
-    ZFKeyValueContainer *ref = zfcast(ZFKeyValueContainer *, referencedOwnerOrNull);
+    zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
     if(ref == zfnull) {
         ZFSerializableUtilErrorOccurred(outErrorHint,
             "%s not type of %s",

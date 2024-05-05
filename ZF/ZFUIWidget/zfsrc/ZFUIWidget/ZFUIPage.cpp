@@ -17,7 +17,7 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageAniOnPrepare)
 ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageAniOnStart)
 ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageAniOnStop)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIPage, ZFUIPageManager *, pageManager)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIPage, zfanyT<ZFUIPageManager>, pageManager)
 ZFMETHOD_DEFINE_0(ZFUIPage, ZFUIView *, pageView) {
     return _ZFP_ZFUIPage_pageView;
 }
@@ -542,12 +542,12 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, zfindex, managerUIBlockedCount) {
 ZFMETHOD_DEFINE_0(ZFUIPageManager, zfindex, pageCount) {
     return this->pageList().count();
 }
-ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFUIPage *, pageAt
+ZFMETHOD_DEFINE_1(ZFUIPageManager, zfanyT<ZFUIPage>, pageAt
         , ZFMP_IN(zfindex, index)
         ) {
     return this->pageList().get(index);
 }
-ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFUIPage *, pageForeground) {
+ZFMETHOD_DEFINE_0(ZFUIPageManager, zfanyT<ZFUIPage>, pageForeground) {
     if(!this->pageList().isEmpty()) {
         return this->pageList().getLast();
     }

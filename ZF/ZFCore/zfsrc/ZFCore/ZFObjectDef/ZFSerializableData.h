@@ -201,11 +201,6 @@ public:
      */
     zffinal zfany serializableDataTag(ZF_IN const zfchar *key) const;
     /** @brief see #serializableDataTag */
-    template<typename T_ZFObject>
-    T_ZFObject serializableDataTag(ZF_IN const zfchar *key) const {
-        return zfunsafe_zfcast(T_ZFObject, this->serializableDataTag(key));
-    }
-    /** @brief see #serializableDataTag */
     zffinal void serializableDataTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
             , ZF_IN_OUT ZFCoreArray<zfauto> &allValue

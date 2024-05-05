@@ -62,48 +62,6 @@ public:
 
 public:
     /**
-     * @brief util method to get and cast to desired type,
-     *   no type safe check and type must be valid
-     */
-    template<typename T_ZFObject>
-    T_ZFObject get(ZF_IN ZFObject *pKey) {
-        return zfunsafe_zfcast(T_ZFObject, this->get(pKey));
-    }
-
-    /** @brief see #allKey */
-    template<typename T_ZFObject>
-    void allKeyT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
-        ret.capacity(ret.count() + this->count());
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
-            ret.add(zfcast(T_ZFObject *, this->iterKey(it)));
-        }
-    }
-    /** @brief see #allKey */
-    template<typename T_ZFObject>
-    ZFCoreArray<T_ZFObject> allKey(void) {
-        ZFCoreArray<T_ZFObject> ret;
-        this->allKeyT(ret);
-        return ret;
-    }
-
-    /** @brief see #allValue */
-    template<typename T_ZFObject>
-    void allValueT(ZF_IN_OUT ZFCoreArray<T_ZFObject> &ret) {
-        ret.capacity(ret.count() + this->count());
-        for(zfiterator it = this->iter(); this->iterValid(it); this->iterNext(it)) {
-            ret.add(zfcast(T_ZFObject *, this->iterValue(it)));
-        }
-    }
-    /** @brief see #allValue */
-    template<typename T_ZFObject>
-    ZFCoreArray<T_ZFObject> allValue(void) {
-        ZFCoreArray<T_ZFObject> ret;
-        this->allValueT(ret);
-        return ret;
-    }
-
-public:
-    /**
      * @brief add data from another container
      */
     ZFMETHOD_DECLARE_1(void, addFrom
@@ -142,15 +100,6 @@ public:
      * @brief remove all content
      */
     ZFMETHOD_DECLARE_0(void, removeAll)
-
-public:
-    /**
-     * @brief util method to get and cast to desired type
-     */
-    template<typename T_ZFObject>
-    T_ZFObject removeAndGet(ZF_IN ZFObject *pKey) {
-        return zfunsafe_zfcast(T_ZFObject, this->removeAndGet(pKey));
-    }
 
     // ============================================================
     // ZFIterable

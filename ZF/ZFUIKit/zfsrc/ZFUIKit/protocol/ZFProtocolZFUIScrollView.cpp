@@ -28,7 +28,7 @@ void _ZFP_ZFProtocolZFUIScrollView_scrollAnimationStop(
         ZF_IN ZFPROTOCOL_INTERFACE_CLASS(ZFUIScrollView) *impl
         , ZF_IN ZFUIScrollView *scrollView
         ) {
-    v_ZFListener *scrollTimer = scrollView->objectTag<v_ZFListener *>("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
+    v_ZFListener *scrollTimer = scrollView->objectTag("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
     zfRetain(scrollTimer);
     scrollView->objectTagRemove("_ZFP_ZFProtocolZFUIScrollView_scrollTimer");
     ZFGlobalTimerDetach(scrollTimer->zfv);

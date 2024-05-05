@@ -93,7 +93,7 @@ private:
                     ) {
                 v_zfstring *text = zfargs.param0();
 
-                ZFUIImageView *imageView = imageViews->getFirst<ZFUIImageView *>();
+                ZFUIImageView *imageView = imageViews->getFirst();
                 text->zfv = ZFUIContentScaleType::EnumNameForValue(imageView->imageScaleType());
             } ZFLISTENER_END()
             setting->buttonTextGetter(buttonTextGetter);
@@ -101,10 +101,12 @@ private:
             ZFLISTENER_1(buttonClickListener
                     , zfautoT<ZFArray>, imageViews
                     ) {
-                ZFUIContentScaleTypeEnum value = imageViews->getFirst<ZFUIImageView *>()->imageScaleType();
+                ZFUIImageView *first = imageViews->getFirst();
+                ZFUIContentScaleTypeEnum value = first->imageScaleType();
                 _nextValue(value);
                 for(zfindex i = 0; i < imageViews->count(); ++i) {
-                    imageViews->get<ZFUIImageView *>(i)->imageScaleType(value);
+                    ZFUIImageView *child = imageViews->get(i);
+                    child->imageScaleType(value);
                 }
             } ZFLISTENER_END()
             setting->buttonClickListener(buttonClickListener);

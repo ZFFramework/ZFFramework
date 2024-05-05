@@ -64,7 +64,7 @@ public:
         const ZFProperty *property = method->methodOwnerClass()->propertyForName(
             key.cString() + zfslen("_ZFP_PropURDIRetain_"));
 
-        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
+        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
         if(holder == zfnull) {
             holder = _ZFP_valueHolderAccess(property, ownerObj);
         }
@@ -145,7 +145,7 @@ private:
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
-        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
+        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
         if(holder == zfnull) {
             zfauto tmp;
             if(property->callbackUserRegisterInitValueSetup) {
@@ -187,7 +187,7 @@ public:
         const ZFProperty *property = method->methodOwnerClass()->propertyForName(
             key.cString() + zfslen("_ZFP_PropURDIRetain_"));
 
-        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
+        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
         if(holder == zfnull) {
             holder = _ZFP_valueHolderAccess(property, ownerObj);
         }
@@ -257,7 +257,7 @@ private:
         zfCoreMutexLocker();
         zfstring key = "_ZFP_PropURDIAssign_";
         key += property->propertyName();
-        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag<_ZFP_I_PropURDIVH *>(key);
+        _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
         if(holder == zfnull) {
             T_Type tmp = T_Type();
             if(property->callbackUserRegisterInitValueSetup) {

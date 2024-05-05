@@ -132,7 +132,7 @@ void ZFAnimation::_ZFP_ZFAnimation_aniImplDelayNotifyFinish(ZF_IN zfidentity tas
 }
 void ZFAnimation::_ZFP_ZFAnimation_aniReadyStart(void) {
     if(this->aniTarget() != zfnull) {
-        _ZFP_I_ZFAnimationAniList *aniList = this->aniTarget()->objectTag<_ZFP_I_ZFAnimationAniList *>(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
+        _ZFP_I_ZFAnimationAniList *aniList = this->aniTarget()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
         if(aniList == zfnull) {
             aniList = zfAlloc(_ZFP_I_ZFAnimationAniList);
             this->aniTarget()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull(), aniList);
@@ -148,7 +148,7 @@ void ZFAnimation::_ZFP_ZFAnimation_aniReadyStart(void) {
 }
 void ZFAnimation::_ZFP_ZFAnimation_aniReadyStop(void) {
     if(this->aniTarget() != zfnull) {
-        _ZFP_I_ZFAnimationAniList *aniList = this->aniTarget()->objectTag<_ZFP_I_ZFAnimationAniList *>(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
+        _ZFP_I_ZFAnimationAniList *aniList = this->aniTarget()->objectTag(_ZFP_I_ZFAnimationAniList::ClassData()->classNameFull());
         if(aniList != zfnull) {
             aniList->aniList.removeElement(this);
         }

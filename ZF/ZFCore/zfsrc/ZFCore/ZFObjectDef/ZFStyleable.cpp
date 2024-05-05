@@ -137,8 +137,7 @@ void ZFStyleable::styleableOnCopyPropertyFrom(
 
 _ZFP_I_ZFStyleable_PropertyTypeHolder *ZFStyleable::_ZFP_ZFStyleable_getPropertyTypeHolder(void) {
     zfCoreMutexLocker();
-    _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->classData()->classTag<_ZFP_I_ZFStyleable_PropertyTypeHolder *>(
-        _ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
+    _ZFP_I_ZFStyleable_PropertyTypeHolder *holder = this->classData()->classTag(_ZFP_I_ZFStyleable_PropertyTypeHolder::ClassData()->classNameFull());
     if(holder == zfnull) {
         zfobj<_ZFP_I_ZFStyleable_PropertyTypeHolder> holderTmp;
 
@@ -211,7 +210,7 @@ public:
         ZFStyleable *defaultStyle = zfargs.sender()->to<ZFStyleable *>()->defaultStyle();
         zfCoreAssert(defaultStyle != zfnull);
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
-            ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
+            ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
         zfCoreAssert(taskData != zfnull);
 
         taskData->styles.removeElement(zfargs.sender()->objectHolder());
@@ -228,7 +227,7 @@ public:
         const ZFProperty *const &property = zfargs.param0().zfv();
         ZFStyleable *defaultStyle = zfargs.sender();
         _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
-            ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
+            ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
 
         ZFCoreArray<ZFObjectHolder *> styles;
         styles.copyFrom(taskData->styles);
@@ -244,7 +243,7 @@ void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
         ZFStyleable *defaultStyle = style->defaultStyle();
         if(defaultStyle != zfnull) {
             _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
-                ->objectTag<_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *>(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
+                ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
             if(taskData == zfnull) {
                 taskData = zfAlloc(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData);
                 defaultStyle->toObject()->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull(), taskData);

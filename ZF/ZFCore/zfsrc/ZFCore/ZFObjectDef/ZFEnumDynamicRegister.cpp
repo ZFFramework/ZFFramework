@@ -131,7 +131,7 @@ static ZFEnum *_ZFP_ZFEnumDynamic_e(
         ) {
     const zfchar *enumName = invokerMethod->methodName() + zfslen("e_");
     zfstring tagKey = zfstr("_ZFP_EnumDyn_%s", enumName);
-    ZFEnum *ret = invokerMethod->methodOwnerClass()->classTag<ZFEnum *>(tagKey);
+    ZFEnum *ret = invokerMethod->methodOwnerClass()->classTag(tagKey);
     if(ret != zfnull) {
         return ret;
     }

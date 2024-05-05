@@ -410,13 +410,6 @@ public:
      */
     zffinal zfany objectTag(ZF_IN const zfchar *key);
     /**
-     * @brief see #objectTag
-     */
-    template<typename T_ZFObject>
-    T_ZFObject objectTag(ZF_IN const zfchar *key) {
-        return zfunsafe_zfcast(T_ZFObject, this->objectTag(key));
-    }
-    /**
      * @brief get all key value
      */
     zffinal void objectTagGetAllKeyValue(
@@ -694,13 +687,6 @@ public:
      */
     inline ZFV zfv(void) {
         return ZFV(this);
-    }
-    /**
-     * @brief see #ZFV
-     */
-    template<typename T_Type>
-    inline T_Type &zfv(void) {
-        return (T_Type &)ZFV(this);
     }
 
 public:

@@ -766,7 +766,7 @@ zfbool ZFClass::newInstanceGenericCheck(
         zfCoreMutexLocker();
         ret = zffalse;
         if(errorHint != zfnull) {
-            v_zfstring *error = zfcast(v_zfstring *, obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed));
+            v_zfstring *error = obj->objectTag(ZFObjectTagKeyword_newInstanceGenericFailed);
             if(error != zfnull) {
                 *errorHint += error->zfv;
             }

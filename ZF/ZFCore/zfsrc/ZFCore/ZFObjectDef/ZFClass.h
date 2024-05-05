@@ -586,13 +586,6 @@ public:
      * @brief see #classTag
      */
     zfany classTag(ZF_IN const zfchar *key) const;
-    /**
-     * @brief see #classTag
-     */
-    template<typename T_ZFObject>
-    T_ZFObject classTag(ZF_IN const zfchar *key) const {
-        return zfunsafe_zfcast(T_ZFObject, this->classTag(key));
-    }
     /** @brief see #classTag */
     zffinal void classTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey

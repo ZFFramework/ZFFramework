@@ -56,7 +56,8 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
  *
  * these behavior can be changed by:
  * @code
- *   ZFOutputFormat::getFormat<ZFLogFormat *>()->autoEndl(xxx);
+ *   zfanyT<ZFLogFormat> fmt = ZFOutputFormat::getFormat(output);
+ *   fmt->autoEndl(xxx);
  * @endcode
  * and they would be reset to default state after each zfLog call
  */
