@@ -25,9 +25,9 @@ zfclass ZFLIB_ZFUIWidget ZFUIListCell : zfextend ZFUIView {
     /**
      * @brief the content view
      */
-    ZFPROPERTY_RETAIN(ZFAnyT<ZFUIView>, cellView)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFAnyT<ZFUIView>, cellView)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFAnyT<ZFUIView>, cellView)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIView>, cellView)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIView>, cellView)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, cellView)
 
     /**
      * @brief content view's layout param,

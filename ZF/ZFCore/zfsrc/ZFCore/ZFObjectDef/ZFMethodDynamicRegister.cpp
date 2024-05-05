@@ -9,7 +9,7 @@ ZFOBJECT_REGISTER(ZFMethodInvokeData)
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfbool, invokeSuccess)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, const ZFMethod *, invokerMethod)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, ZFAny, invokerObject)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfany, invokerObject)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfstring, errorHint)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, ret)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFMethodInvokeData, zfauto, param0)
@@ -160,7 +160,7 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodDynamicRegiste
     d->methodDynamicRegisterUserData = methodDynamicRegisterUserData;
     return *this;
 }
-ZFAny ZFMethodDynamicRegisterParam::methodDynamicRegisterUserData(void) const {
+zfany ZFMethodDynamicRegisterParam::methodDynamicRegisterUserData(void) const {
     return d->methodDynamicRegisterUserData;
 }
 
@@ -298,7 +298,7 @@ const zfchar *ZFMethodDynamicRegisterParam::methodParamNameAt(ZF_IN zfindex inde
 ZFMethodParamDefaultValueCallback ZFMethodDynamicRegisterParam::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
     return (index < d->methodParamCount ? d->methodParamDefaultValueCallback[index] : zfnull);
 }
-ZFAny ZFMethodDynamicRegisterParam::methodParamDefaultValueAt(ZF_IN zfindex index) const {
+zfany ZFMethodDynamicRegisterParam::methodParamDefaultValueAt(ZF_IN zfindex index) const {
     return (index < d->methodParamCount ? d->methodParamDefaultValue[index].toObject() : zfnull);
 }
 
@@ -448,7 +448,7 @@ const zfchar *ZFMP::methodParamTypeIdAt(ZF_IN zfindex index) const {
 const zfchar *ZFMP::methodParamNameAt(ZF_IN zfindex index) const {
     return d->methodParamName[index];
 }
-ZFAny ZFMP::methodParamDefaultValueAt(ZF_IN zfindex index) const {
+zfany ZFMP::methodParamDefaultValueAt(ZF_IN zfindex index) const {
     return d->methodParamDefaultValue[index];
 }
 

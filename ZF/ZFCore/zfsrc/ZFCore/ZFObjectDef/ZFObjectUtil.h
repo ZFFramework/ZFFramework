@@ -110,7 +110,7 @@ public:
 /** @endcond */
 
 // ============================================================
-ZFCOMPARER_DEFAULT_DECLARE(ZFAny, ZFAny, {
+ZFCOMPARER_DEFAULT_DECLARE(zfany, zfany, {
         return ZFObjectCompare(v0, v1);
     })
 ZFCOMPARER_DEFAULT_DECLARE(zfauto, zfauto, {

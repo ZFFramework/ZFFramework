@@ -21,8 +21,8 @@ ZFOUTPUT_TYPE_DEFINE(zfauto, {
 })
 
 // ============================================================
-// ZFAny
-ZFOUTPUT_TYPE_DEFINE(ZFAny, {
+// zfany
+ZFOUTPUT_TYPE_DEFINE(zfany, {
     if(v == zfnull) {
         s += ZFTOKEN_zfnull;
     }

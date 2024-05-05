@@ -103,13 +103,13 @@ public:
     /** @brief name of property to animate, see #ZFAni */
     ZFPROPERTY_ASSIGN(zfstring, name)
     /** @brief from value of ani, see #ZFAni */
-    ZFPROPERTY_RETAIN(ZFAny, fromValue)
+    ZFPROPERTY_RETAIN(zfany, fromValue)
     /** @brief to value of ani, see #ZFAni */
-    ZFPROPERTY_RETAIN(ZFAny, toValue)
+    ZFPROPERTY_RETAIN(zfany, toValue)
 
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, name)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFAny, fromValue)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFAny, toValue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfany, fromValue)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfany, toValue)
 protected:
     zfoverride
     virtual void aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld);

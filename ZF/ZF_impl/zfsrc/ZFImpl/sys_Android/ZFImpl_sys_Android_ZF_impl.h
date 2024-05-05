@@ -188,7 +188,7 @@ extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v);
  * @brief see #JNIConvertPointerToJNIType
  */
 #ifndef JNIConvertZFObjectFromJNIType
-#define JNIConvertZFObjectFromJNIType(jniEnv, d) ZFAny((ZFObject *)JNIConvertPointerFromJNIType(jniEnv, d))
+#define JNIConvertZFObjectFromJNIType(jniEnv, d) zfany((ZFObject *)JNIConvertPointerFromJNIType(jniEnv, d))
 #endif
 
 // ============================================================

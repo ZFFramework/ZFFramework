@@ -91,12 +91,12 @@ public:
      * (although most animation subclass need a target)
      */
     ZFMETHOD_DECLARE_1(void, aniTarget
-            , ZFMP_IN(ZFAny, aniTarget)
+            , ZFMP_IN(zfany, aniTarget)
             )
     /**
      * @brief animation's target
      */
-    ZFMETHOD_DECLARE_0(ZFAny, aniTarget)
+    ZFMETHOD_DECLARE_0(zfany, aniTarget)
 
     // ============================================================
     // start stop

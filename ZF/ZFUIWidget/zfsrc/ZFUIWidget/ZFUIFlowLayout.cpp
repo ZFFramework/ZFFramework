@@ -38,7 +38,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIFlowLayout, zffloat, layoutChildSpaceY) {
     }
 }
 
-ZFMETHOD_DEFINE_2(ZFUIFlowLayout, ZFAnyT<ZFUIFlowLayoutParam>, childAdd
+ZFMETHOD_DEFINE_2(ZFUIFlowLayout, zfanyT<ZFUIFlowLayoutParam>, childAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {

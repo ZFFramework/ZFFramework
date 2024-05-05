@@ -6,7 +6,6 @@
 #ifndef _ZFI_ZFObject_h_
 #define _ZFI_ZFObject_h_
 
-#include "ZFObjectDef/ZFAny.h"
 #include "ZFObjectDef/ZFArgs.h"
 #include "ZFObjectDef/ZFCallback.h"
 #include "ZFObjectDef/ZFCallbackSerializable.h"
@@ -73,6 +72,7 @@
 #include "ZFObjectDef/ZFTypeId.h"
 #include "ZFObjectDef/ZFTypeIdDynamicRegister.h"
 #include "ZFObjectDef/ZFValueHolder.h"
+#include "ZFObjectDef/zfany.h"
 #include "ZFObjectDef/zfauto.h"
 #include "ZFObjectDef/zfautoFwd.h"
 #include "ZFObjectDef/zfsynchronize.h"

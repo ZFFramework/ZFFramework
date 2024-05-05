@@ -32,7 +32,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZF_impl, void, ZFAndroidReflect_registerClassConte
 #define ZFAndroidReflect_ToJNIType_DEFINE(regSig) \
     static zfbool _ZFP_ZFAndroidReflect_ToJNIType_##regSig( \
             ZF_OUT jobject &jobj \
-            , ZF_IN ZFAny const &obj \
+            , ZF_IN zfany const &obj \
             , ZF_IN const JNIType &jniType \
             ); \
     ZF_STATIC_REGISTER_INIT(_ZFP_ZFAndroidReflect_ToJNIType_##regSig) { \
@@ -44,7 +44,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZF_impl, void, ZFAndroidReflect_registerClassConte
     ZF_STATIC_REGISTER_END(_ZFP_ZFAndroidReflect_ToJNIType_##regSig) \
     static zfbool _ZFP_ZFAndroidReflect_ToJNIType_##regSig( \
             ZF_OUT jobject &jobj \
-            , ZF_IN ZFAny const &obj \
+            , ZF_IN zfany const &obj \
             , ZF_IN const JNIType &jniType \
             )
 
@@ -70,7 +70,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZF_impl, void, ZFAndroidReflect_registerClassConte
 
 typedef zfbool (*_ZFP_ZFAndroidReflect_ToJNITypeCallback)(
         ZF_OUT jobject &jobj
-        , ZF_IN ZFAny const &obj
+        , ZF_IN zfany const &obj
         , ZF_IN const JNIType &jniType
         );
 typedef zfbool (*_ZFP_ZFAndroidReflect_FromJNITypeCallback)(

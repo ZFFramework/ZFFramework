@@ -53,7 +53,7 @@ void ZFUIWebView::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUIWebView_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFAnyT<ZFUIView> const &view
+                ZF_IN zfanyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
             ZFPROTOCOL_ACCESS(ZFUIWebView)->nativeWebViewDestroy(view, nativeImplView);

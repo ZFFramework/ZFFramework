@@ -33,7 +33,7 @@ zffinal zfclassLikePOD ZFLIB_ZFCore ZFClassInstanceObserverAddParam {
     ZFCORE_PARAM(ZFListener, observer)
 
     /** @brief see #ZFClass::instanceObserverAdd */
-    ZFCORE_PARAM(ZFAny, owner, zfnull)
+    ZFCORE_PARAM(zfany, owner, zfnull)
 
     /** @brief see #ZFClass::instanceObserverAdd */
     ZFCORE_PARAM(ZFLevel, observerLevel, ZFLevelAppNormal)
@@ -221,7 +221,7 @@ public:
     /**
      * @brief see #ZFClassDynamicRegister
      */
-    ZFAny classDynamicRegisterUserData(void) const;
+    zfany classDynamicRegisterUserData(void) const;
     /**
      * @brief true if the class is abstract class
      *
@@ -585,7 +585,7 @@ public:
     /**
      * @brief see #classTag
      */
-    ZFAny classTag(ZF_IN const zfchar *key) const;
+    zfany classTag(ZF_IN const zfchar *key) const;
     /**
      * @brief see #classTag
      */

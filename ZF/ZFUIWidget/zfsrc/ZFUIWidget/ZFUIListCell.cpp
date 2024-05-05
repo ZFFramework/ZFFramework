@@ -6,12 +6,12 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIListCell)
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIListCell)
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCell, ZFAnyT<ZFUIView>, cellView) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCell, zfanyT<ZFUIView>, cellView) {
     if(this->cellView() != zfnull) {
         this->internalFgViewAdd(this->cellView(), this->cellViewLayoutParam());
     }
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCell, ZFAnyT<ZFUIView>, cellView) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCell, zfanyT<ZFUIView>, cellView) {
     if(this->cellView() != zfnull) {
         this->internalFgViewRemove(this->cellView());
     }

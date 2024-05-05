@@ -17,7 +17,7 @@ zfclass ZFLIB_ZFCore ZFMethodInvokeData : zfextend ZFObject {
 public:
     zfbool invokeSuccess; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     const ZFMethod *invokerMethod; /**< @brief data to hold params for #ZFMethodGenericInvoker */
-    ZFAny invokerObject; /**< @brief data to hold params for #ZFMethodGenericInvoker */
+    zfany invokerObject; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     zfstring errorHint; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     zfauto ret; /**< @brief data to hold params for #ZFMethodGenericInvoker */
     /* ZFMETHOD_MAX_PARAM */

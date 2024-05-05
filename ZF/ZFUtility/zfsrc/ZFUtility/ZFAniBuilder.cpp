@@ -119,10 +119,10 @@ const ZFAniBuilder &ZFAniBuilder::aniStart(ZF_IN const ZFListener &onStopOrOnInv
     return *this;
 }
 
-ZFAny ZFAniBuilder::aniTarget(void) const {
+zfany ZFAniBuilder::aniTarget(void) const {
     return d->aniTargetHolder ? d->aniTargetHolder->objectHolded().toObject() : zfnull;
 }
-const ZFAniBuilder &ZFAniBuilder::aniTarget(ZF_IN ZFAny aniTarget) const {
+const ZFAniBuilder &ZFAniBuilder::aniTarget(ZF_IN zfany aniTarget) const {
     zfRetainChange(d->aniTargetHolder, aniTarget ? aniTarget->objectHolder() : zfnull);
     return *this;
 }
@@ -214,7 +214,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, 
         , ZFMP_IN(const ZFListener &, onStopOrOnInvalidCallback)
         )
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, ZFAny, aniTarget)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, zfany, aniTarget)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, aniTarget
         , ZFMP_IN(ZFObject *, aniTarget)
         )

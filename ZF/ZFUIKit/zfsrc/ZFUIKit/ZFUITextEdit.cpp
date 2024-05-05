@@ -143,7 +143,7 @@ void ZFUITextEdit::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUITextEdit_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFAnyT<ZFUIView> const &view
+                ZF_IN zfanyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
             ZFPROTOCOL_ACCESS(ZFUITextEdit)->nativeTextEditDestroy(view, nativeImplView);
@@ -268,7 +268,7 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
                 this->textEditNotifyConfirm();
             }
             if(this->viewFocused()) {
-                ZFAnyT<ZFUIView> next = ZFUIViewFocusNextFind(this);
+                zfanyT<ZFUIView> next = ZFUIViewFocusNextFind(this);
                 if(next == zfnull) {
                     this->textEditEnd();
                 }

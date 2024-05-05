@@ -31,7 +31,7 @@ zfclassFwd ZFUIView;
  * @brief see #ZFUIView::nativeImplView
  */
 typedef void (*ZFUIViewNativeImplViewDeleteCallback)(
-        ZF_IN ZFAnyT<ZFUIView> const &view
+        ZF_IN zfanyT<ZFUIView> const &view
         , ZF_IN void *nativeImplView
         );
 
@@ -624,7 +624,7 @@ public:
     /**
      * @brief parent view or null if none
      */
-    ZFMETHOD_DECLARE_0(ZFAnyT<ZFUIView>, viewParent)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, viewParent)
 
     /**
      * @brief remove this view from parent or do nothing if no parent
@@ -744,7 +744,7 @@ public:
      * return null if the view has no parent,
      * automatically invoke the view's #layoutRequest if the layout param's property changed
      */
-    ZFMETHOD_DECLARE_0(ZFAnyT<ZFUILayoutParam>, layoutParam)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUILayoutParam>, layoutParam)
 
 public:
     /**
@@ -873,13 +873,13 @@ public:
      * otherwise, a new layout param would be created
      * and source layout param would be copied to the newly created layout param
      */
-    ZFMETHOD_DECLARE_3(ZFAnyT<ZFUILayoutParam>, childAddWithParam
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, childAddWithParam
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN(ZFUILayoutParam *, layoutParam)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )
     /** @brief util method for #childAddWithParam */
-    inline ZFAnyT<ZFUILayoutParam> childAdd(
+    inline zfanyT<ZFUILayoutParam> childAdd(
             ZF_IN ZFUIView *view
             , ZF_IN_OPT zfindex atIndex = zfindexMax()
             ) {
@@ -934,7 +934,7 @@ public:
     /**
      * @brief get child view at index or assert fail if out of range
      */
-    ZFMETHOD_DECLARE_1(ZFAnyT<ZFUIView>, childAt
+    ZFMETHOD_DECLARE_1(zfanyT<ZFUIView>, childAt
             , ZFMP_IN(zfindex, index)
             )
     /**

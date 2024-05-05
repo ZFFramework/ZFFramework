@@ -127,7 +127,7 @@ public:
 // ============================================================
 static ZFEnum *_ZFP_ZFEnumDynamic_e(
         ZF_IN const ZFMethod *invokerMethod
-        , ZF_IN ZFAny const &invokerObject
+        , ZF_IN zfany const &invokerObject
         ) {
     const zfchar *enumName = invokerMethod->methodName() + zfslen("e_");
     zfstring tagKey = zfstr("_ZFP_EnumDyn_%s", enumName);

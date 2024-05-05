@@ -41,7 +41,7 @@ private:
     zfweakT<ZFUIView> target_PropV;
 public:
     /** @brief see #ZFUIAutoLayout */
-    inline ZFAnyT<ZFUIView> target(void) const {
+    inline zfanyT<ZFUIView> target(void) const {
         return this->target_PropV;
     }
     /** @brief see @ref target */
@@ -368,7 +368,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayout : zfextend ZFUIView {
     // override ZFUIView
 public:
     /** @brief util method for #childAddWithParam */
-    ZFMETHOD_DECLARE_2(ZFAnyT<ZFUIAutoLayoutParam>, childAdd
+    ZFMETHOD_DECLARE_2(zfanyT<ZFUIAutoLayoutParam>, childAdd
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )

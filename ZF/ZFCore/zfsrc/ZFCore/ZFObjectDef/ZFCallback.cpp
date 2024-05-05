@@ -274,7 +274,7 @@ void ZFCallback::callbackTag(
         }
     }
 }
-ZFAny ZFCallback::callbackTag(ZF_IN const zfchar *key) const {
+zfany ZFCallback::callbackTag(ZF_IN const zfchar *key) const {
     if(d != zfnull && key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
@@ -325,7 +325,7 @@ ZFCallbackType ZFCallback::callbackType(void) const {
     return (d ? d->callbackType : ZFCallbackTypeDummy);
 }
 
-ZFAny ZFCallback::callbackOwnerObject(void) const {
+zfany ZFCallback::callbackOwnerObject(void) const {
     return (d ? d->callbackOwnerObject : zfnull);
 }
 
@@ -443,7 +443,7 @@ void ZFCallback::pathInfo(
     }
 }
 
-ZFAny ZFCallback::userData(void) const {
+zfany ZFCallback::userData(void) const {
     return d ? d->userData : zfnull;
 }
 void ZFCallback::userData(ZF_IN ZFObject *userData) {
@@ -479,7 +479,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, callbackTag
         , ZFMP_IN(const zfchar *, key)
         , ZFMP_IN(ZFObject *, tag)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, ZFAny, callbackTag
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, zfany, callbackTag
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, callbackTagGetAllKeyValue
@@ -495,7 +495,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, zfauto, callbackTagRemov
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackTagRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfbool, callbackValid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, ZFCallbackType, callbackType)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, ZFAny, callbackOwnerObject)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfany, callbackOwnerObject)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, const ZFMethod *, callbackMethod)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, ZFFuncAddrType, callbackRawFunction)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackOwnerObjectRetain)

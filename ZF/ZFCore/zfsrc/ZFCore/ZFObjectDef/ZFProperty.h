@@ -9,18 +9,18 @@
 #include "ZFPropertyFwd.h"
 #include "ZFTypeIdFwd.h"
 #include "ZFMethod.h"
-#include "ZFAny.h"
+#include "zfany.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 zfclassFwd ZFProperty;
 typedef void (*_ZFP_ZFPropertyCallbackEnsureInit)(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &owner
+        , ZF_IN zfany const &owner
         );
 typedef void (*_ZFP_ZFPropertyCallbackDealloc)(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &owner
+        , ZF_IN zfany const &owner
         );
 typedef void (*_ZFP_ZFPropertyMethodCleanup)(ZF_IN const ZFMethod *method);
 /**
@@ -63,7 +63,7 @@ public:
     /**
      * @brief see #ZFPropertyDynamicRegister
      */
-    inline ZFAny propertyDynamicRegisterUserData(void) const {
+    inline zfany propertyDynamicRegisterUserData(void) const {
         return this->_ZFP_ZFProperty_propertyDynamicRegisterUserData;
     }
     /**

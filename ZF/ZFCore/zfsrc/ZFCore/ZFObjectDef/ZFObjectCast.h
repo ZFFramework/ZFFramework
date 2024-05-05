@@ -250,28 +250,28 @@ public:
 
 // ============================================================
 template<typename T_Type, int has_toObject>
-zfclassNotPOD _ZFP_ZFAnyCastT {
+zfclassNotPOD _ZFP_zfanyCastT {
 public:
     static ZFObject *c(ZF_IN T_Type obj) {
         return (ZFObject *)obj;
     }
 };
 template<>
-zfclassNotPOD _ZFP_ZFAnyCastT<zfnullT, 0> {
+zfclassNotPOD _ZFP_zfanyCastT<zfnullT, 0> {
 public:
     static ZFObject *c(ZF_IN zfnullT const &obj) {
         return (ZFObject *)zfnull;
     }
 };
 template<typename T_Type>
-zfclassNotPOD _ZFP_ZFAnyCastT<T_Type, 1> {
+zfclassNotPOD _ZFP_zfanyCastT<T_Type, 1> {
 public:
     static ZFObject *c(ZF_IN T_Type obj) {
         return obj.toObject();
     }
 };
-#define _ZFP_ZFAnyCast(T_Type, obj) \
-    (_ZFP_ZFAnyCastT<T_Type, zftIsZFObjectType(T_Type)>::c(obj))
+#define _ZFP_zfanyCast(T_Type, obj) \
+    (_ZFP_zfanyCastT<T_Type, zftIsZFObjectType(T_Type)>::c(obj))
 
 ZF_NAMESPACE_GLOBAL_END
 

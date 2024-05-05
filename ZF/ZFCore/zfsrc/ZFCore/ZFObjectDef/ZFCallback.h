@@ -8,7 +8,7 @@
 
 #include "ZFMethod.h"
 #include "ZFObjectCast.h"
-#include "ZFAny.h"
+#include "zfany.h"
 #include "zfautoFwd.h"
 #include "ZFPathInfo.h"
 
@@ -210,7 +210,7 @@ public:
             , ZF_IN ZFObject *tag
             );
     /** @brief see #callbackTag */
-    zffinal ZFAny callbackTag(ZF_IN const zfchar *key) const;
+    zffinal zfany callbackTag(ZF_IN const zfchar *key) const;
     /** @brief see #callbackTag */
     template<typename T_ZFObject>
     T_ZFObject callbackTag(ZF_IN const zfchar *key) const {
@@ -257,7 +257,7 @@ public:
      * @brief get the owner object,
      *   valid only if type is class member method
      */
-    zffinal ZFAny callbackOwnerObject(void) const;
+    zffinal zfany callbackOwnerObject(void) const;
 
     /**
      * @brief get the method or null if not declared by ZFMethod
@@ -356,7 +356,7 @@ public:
      *
      * typically this is used for #ZFArgs::userData
      */
-    zffinal ZFAny userData(void) const;
+    zffinal zfany userData(void) const;
     /** @brief see #userData */
     zffinal void userData(ZF_IN ZFObject *userData);
 

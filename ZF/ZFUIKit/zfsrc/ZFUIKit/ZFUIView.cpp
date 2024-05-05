@@ -1328,7 +1328,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFUIView *, viewFocusFind) {
 
 // ============================================================
 // parent
-ZFMETHOD_DEFINE_0(ZFUIView, ZFAnyT<ZFUIView>, viewParent) {
+ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUIView>, viewParent) {
     return d->viewParent;
 }
 
@@ -1408,7 +1408,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, layoutParam
         d->layoutParamChange(this, layoutParam);
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFAnyT<ZFUILayoutParam>, layoutParam) {
+ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUILayoutParam>, layoutParam) {
     return d->layoutParam;
 }
 
@@ -1719,7 +1719,7 @@ ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById
     return zfnull;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, ZFAnyT<ZFUILayoutParam>, childAddWithParam
+ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, childAddWithParam
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUILayoutParam *, layoutParam)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
@@ -1768,7 +1768,7 @@ ZFMETHOD_DEFINE_2(ZFUIView, void, childReplaceAt
 ZFMETHOD_DEFINE_0(ZFUIView, zfindex, childCount) {
     return d->childCount(d->layerNormal);
 }
-ZFMETHOD_DEFINE_1(ZFUIView, ZFAnyT<ZFUIView>, childAt
+ZFMETHOD_DEFINE_1(ZFUIView, zfanyT<ZFUIView>, childAt
         , ZFMP_IN(zfindex, index)
         ) {
     return d->childAt(d->layerNormal, index);

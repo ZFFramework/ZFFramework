@@ -48,7 +48,7 @@ public:
     /**
      * @brief get the holded object
      */
-    inline ZFAny objectHolded(void) {
+    inline zfany objectHolded(void) {
         return this->_ZFP_objectHolded;
     }
 
@@ -90,7 +90,7 @@ public:
     }
 
 public:
-    ZFAny _ZFP_objectHolded;
+    zfany _ZFP_objectHolded;
 };
 
 ZF_NAMESPACE_GLOBAL_END

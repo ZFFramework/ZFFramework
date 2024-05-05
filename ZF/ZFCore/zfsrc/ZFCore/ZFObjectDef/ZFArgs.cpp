@@ -7,16 +7,16 @@ ZFArgs::~ZFArgs(void) {
     zfRelease(d.result);
 }
 
-ZFAny const &ZFArgs::result(void) const {
+zfany const &ZFArgs::result(void) const {
     return d.result;
 }
-ZFArgs const &ZFArgs::result(ZF_IN ZFAny const &result) const {
+ZFArgs const &ZFArgs::result(ZF_IN zfany const &result) const {
     if(this->_ZFP_result != zfnull) {
         zfRetainChange(*(this->_ZFP_result), result);
     }
     return *this;
 }
-ZFArgs &ZFArgs::result(ZF_IN ZFAny const &result) {
+ZFArgs &ZFArgs::result(ZF_IN zfany const &result) {
     if(this->_ZFP_result != zfnull) {
         zfRetainChange(*(this->_ZFP_result), result);
     }

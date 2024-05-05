@@ -90,13 +90,13 @@ private:
     }
     static zfbool _callbackIsValueAccessed(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFAny const &ownerObj
+            , ZF_IN zfany const &ownerObj
             ) {
         return !_callbackIsInitValue(property, ownerObj);
     }
     static zfbool _callbackIsInitValue(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFAny const &ownerObj
+            , ZF_IN zfany const &ownerObj
             , ZF_OUT_OPT zfauto *outInitValue = zfnull
             ) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj;
@@ -107,7 +107,7 @@ private:
     }
     static void _callbackValueReset(
             ZF_IN const ZFProperty *property
-            , ZF_IN ZFAny const &ownerObj
+            , ZF_IN zfany const &ownerObj
             ) {
         _ZFP_ZFCore_ZFPropertyDynamic_test_Object *obj = ownerObj;
         obj->objectTagRemove(_valueKey());

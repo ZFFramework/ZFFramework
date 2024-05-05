@@ -117,7 +117,7 @@ ZFMETHOD_DEFINE_1(ZFSet, void, iterNext
     d->iterNext(it);
 }
 
-ZFMETHOD_DEFINE_1(ZFSet, ZFAny, iterValue
+ZFMETHOD_DEFINE_1(ZFSet, zfany, iterValue
         , ZFMP_IN(const zfiterator &, it)
         ) {
     return d->iterValue(it);

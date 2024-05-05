@@ -256,7 +256,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeToData(
 ZFSTYLE_DEFAULT_DEFINE(ZFUIAutoLayout)
 ZFOBJECT_REGISTER(ZFUIAutoLayout)
 
-ZFMETHOD_DEFINE_2(ZFUIAutoLayout, ZFAnyT<ZFUIAutoLayoutParam>, childAdd
+ZFMETHOD_DEFINE_2(ZFUIAutoLayout, zfanyT<ZFUIAutoLayoutParam>, childAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {

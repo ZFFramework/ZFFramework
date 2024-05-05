@@ -199,7 +199,7 @@ public:
     /**
      * @brief see #serializableDataTag
      */
-    zffinal ZFAny serializableDataTag(ZF_IN const zfchar *key) const;
+    zffinal zfany serializableDataTag(ZF_IN const zfchar *key) const;
     /** @brief see #serializableDataTag */
     template<typename T_ZFObject>
     T_ZFObject serializableDataTag(ZF_IN const zfchar *key) const {

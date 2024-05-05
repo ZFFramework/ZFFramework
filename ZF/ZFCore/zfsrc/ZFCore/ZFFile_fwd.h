@@ -141,7 +141,7 @@ public:
             , ZF_IN ZFObject *value
             ) const;
     /** @brief util for impl to store extra data */
-    ZFAny implTag(ZF_IN const zfchar *key) const;
+    zfany implTag(ZF_IN const zfchar *key) const;
 private:
     _ZFP_ZFFileFindDataPrivate *d;
 };

@@ -66,7 +66,7 @@ static void _ZFP_ZFUIRootView_layoutParamApply(
 }
 void ZFUIRootView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
     for(zfindex i = 0; i < this->childCount(); ++i) {
-        ZFAnyT<ZFUIView> child = this->childAt(i);
+        zfanyT<ZFUIView> child = this->childAt(i);
         ZFUIWindow *window = child;
         if(window == zfnull || !window->sysWindowMarginShouldApply()) {
             child->viewFrame(

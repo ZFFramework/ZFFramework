@@ -226,8 +226,8 @@ ZFOBJECT_REGISTER(ZFAniForCustomAni)
 
 ZFOBJECT_REGISTER(ZFAniForGeneric)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, name) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, ZFAny, fromValue) {d->needUpdate = true;}
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, ZFAny, toValue) {d->needUpdate = true;}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, fromValue) {d->needUpdate = true;}
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, toValue) {d->needUpdate = true;}
 void ZFAniForGeneric::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
     zfsuper::aniImplTargetOnChange(aniTargetOld);
     d->needUpdate = zftrue;

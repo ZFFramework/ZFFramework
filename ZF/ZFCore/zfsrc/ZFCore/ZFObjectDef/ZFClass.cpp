@@ -652,7 +652,7 @@ zfbool ZFClass::classIsTypeOf(ZF_IN const ZFClass *cls) const {
 zfbool ZFClass::classIsDynamicRegister(void) const {
     return d->classIsDynamicRegister;
 }
-ZFAny ZFClass::classDynamicRegisterUserData(void) const {
+zfany ZFClass::classDynamicRegisterUserData(void) const {
     return d->classDynamicRegisterUserData;
 }
 
@@ -1111,7 +1111,7 @@ void ZFClass::classTag(
         zfunsafe_zfRelease(obj);
     }
 }
-ZFAny ZFClass::classTag(ZF_IN const zfchar *key) const {
+zfany ZFClass::classTag(ZF_IN const zfchar *key) const {
     if(key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFClassTagMapType::iterator it = d->classTagMap.find(key);

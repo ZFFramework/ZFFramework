@@ -58,20 +58,20 @@ protected:
         zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto * &>::zfvAccess(v);
         zfLogTrim() << ZFTypeId<zfauto>::Value<const zfauto * const &>::zfvAccess(v);
 
-        // ZFAny can only accessed as value or const ref
-        zfobj<v_zfstring> test_ZFAny("ZFAny");
-        v = test_ZFAny;
+        // zfany can only accessed as value or const ref
+        zfobj<v_zfstring> test_zfany("zfany");
+        v = test_zfany;
         zfLogTrim() << "============================================================";
-        zfLogTrim() << "ZFAny";
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny *>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny *>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny * &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<ZFAny * const &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny * &>::zfvAccess(v);
-        zfLogTrim() << ZFTypeId<ZFAny>::Value<const ZFAny * const &>::zfvAccess(v);
+        zfLogTrim() << "zfany";
+        zfLogTrim() << ZFTypeId<zfany>::Value<zfany>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<const zfany &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<zfany &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<zfany *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<const zfany *>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<zfany * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<zfany * const &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<const zfany * &>::zfvAccess(v);
+        zfLogTrim() << ZFTypeId<zfany>::Value<const zfany * const &>::zfvAccess(v);
 
         this->testCaseStop();
     }

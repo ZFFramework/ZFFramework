@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFObjectDeclare_h_
 #define _ZFI_ZFObjectDeclare_h_
 
-#include "ZFAny.h"
+#include "zfany.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

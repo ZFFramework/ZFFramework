@@ -118,7 +118,7 @@ public:
     // override ZFUIView
 public:
     /** @brief util method for #childAddWithParam */
-    ZFMETHOD_DECLARE_2(ZFAnyT<ZFUIFlowLayoutParam>, childAdd
+    ZFMETHOD_DECLARE_2(zfanyT<ZFUIFlowLayoutParam>, childAdd
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
             )

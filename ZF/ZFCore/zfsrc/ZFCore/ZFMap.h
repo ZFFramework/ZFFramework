@@ -38,7 +38,7 @@ public:
     /**
      * @brief get element by key or null if no such key
      */
-    ZFMETHOD_DECLARE_1(ZFAny, get
+    ZFMETHOD_DECLARE_1(zfany, get
             , ZFMP_IN(ZFObject *, pKey)
             )
 
@@ -174,12 +174,12 @@ public:
             )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFAny, iterKey
+    ZFMETHOD_DECLARE_1(zfany, iterKey
             , ZFMP_IN(const zfiterator &, it)
             )
 
     /** @brief see #zfiterator */
-    ZFMETHOD_DECLARE_1(ZFAny, iterValue
+    ZFMETHOD_DECLARE_1(zfany, iterValue
             , ZFMP_IN(const zfiterator &, it)
             )
 

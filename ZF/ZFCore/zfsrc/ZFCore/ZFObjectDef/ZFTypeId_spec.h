@@ -432,12 +432,12 @@ ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfobj<T_ZFObject>, {
 })
 
 // ============================================================
-// ZFAny
-ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFAny)
+// zfany
+ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, zfany)
 
 /** @cond ZFPrivateDoc */
 template<>
-zfclassNotPOD ZFTypeId<ZFAny> : zfextend ZFTypeInfo {
+zfclassNotPOD ZFTypeId<zfany> : zfextend ZFTypeInfo {
 public:
     enum {
         TypeIdRegistered = 1,
@@ -463,16 +463,16 @@ public:
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
-            , ZF_IN ZFAny const &v
+            , ZF_IN zfany const &v
             ) {
         obj = v;
         return zftrue;
     }
-    template<typename T_Access = ZFAny
+    template<typename T_Access = zfany
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
             && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
-                    ZFAny
+                    zfany
                 >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
@@ -484,24 +484,24 @@ public:
         }
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
             if(obj == zfnull) {
-                static ZFAny _d;
+                static zfany _d;
                 return _d;
             }
             else {
-                return obj._ZFP_ZFAny();
+                return obj._ZFP_zfany();
             }
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
     template<typename T_Fix>
-    zfclassNotPOD Value<ZFAny &, 0, T_Fix> {
+    zfclassNotPOD Value<zfany &, 0, T_Fix> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
             return zffalse;
         }
-        static ZFAny &zfvAccess(ZF_IN_OUT zfauto &obj) {
-            static ZFAny _d;
+        static zfany &zfvAccess(ZF_IN_OUT zfauto &obj) {
+            static zfany _d;
             return _d;
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
@@ -524,26 +524,26 @@ public:
 public:
     zfoverride
     virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
-        return ValueStore(obj, *(const ZFAny *)v);
+        return ValueStore(obj, *(const zfany *)v);
     }
     zfoverride
     virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
-        return (void *)zfnew(ZFAny, obj);
+        return (void *)zfnew(zfany, obj);
     }
     zfoverride
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
-        zfdelete((ZFAny *)v);
+        zfdelete((zfany *)v);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
-        return zfnew(ZFCoreArray<ZFAny>);
+        return zfnew(ZFCoreArray<zfany>);
     }
 };
 /** @endcond */
 
 // ============================================================
-// ZFAnyT
-ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, ZFAnyT<T_ZFObject>, {
+// zfanyT
+ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, zfanyT<T_ZFObject>, {
     if(v) {
         v.toObject()->objectInfoT(s);
     }
@@ -554,7 +554,7 @@ ZFOUTPUT_TYPE_TEMPLATE(typename T_ZFObject, ZFAnyT<T_ZFObject>, {
 
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObject>
-zfclassNotPOD ZFTypeId<ZFAnyT<T_ZFObject>, 0, 0> : zfextend ZFTypeInfo {
+zfclassNotPOD ZFTypeId<zfanyT<T_ZFObject>, 0, 0> : zfextend ZFTypeInfo {
 public:
     enum {
         TypeIdRegistered = 1,
@@ -580,16 +580,16 @@ public:
     }
     static zfbool ValueStore(
             ZF_OUT zfauto &obj
-            , ZF_IN ZFAnyT<T_ZFObject> const &v
+            , ZF_IN zfanyT<T_ZFObject> const &v
             ) {
         obj = v;
         return zftrue;
     }
-    template<typename T_Access = ZFAnyT<T_ZFObject>
+    template<typename T_Access = zfanyT<T_ZFObject>
         , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr
             && zftIsSame<
                     typename zftTraits<T_Access>::TrNoRef,
-                    ZFAnyT<T_ZFObject>
+                    zfanyT<T_ZFObject>
                 >::Value != 1)
             ? 1 : 0)
         , typename T_Fix = void
@@ -601,25 +601,25 @@ public:
         }
         static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) {
             if(obj == zfnull) {
-                static ZFAnyT<T_ZFObject> _d;
+                static zfanyT<T_ZFObject> _d;
                 return _d;
             }
             else {
-                /* ZFTAG_TRICKS: ZFAnyT ensured safe for reinterpret cast */
-                return (T_Access)obj._ZFP_ZFAny();
+                /* ZFTAG_TRICKS: zfanyT ensured safe for reinterpret cast */
+                return (T_Access)obj._ZFP_zfany();
             }
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
         }
     };
     template<typename T_Fix>
-    zfclassNotPOD Value<ZFAnyT<T_ZFObject> &, 0, T_Fix> {
+    zfclassNotPOD Value<zfanyT<T_ZFObject> &, 0, T_Fix> {
     public:
         static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) {
             return zffalse;
         }
-        static ZFAnyT<T_ZFObject> &zfvAccess(ZF_IN_OUT zfauto &obj) {
-            static ZFAnyT<T_ZFObject> _d;
+        static zfanyT<T_ZFObject> &zfvAccess(ZF_IN_OUT zfauto &obj) {
+            static zfanyT<T_ZFObject> _d;
             return _d;
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
@@ -642,19 +642,19 @@ public:
 public:
     zfoverride
     virtual zfbool genericValueStore(ZF_OUT zfauto &obj, ZF_IN const void *v) const {
-        return ValueStore(obj, *(const ZFAnyT<T_ZFObject> *)v);
+        return ValueStore(obj, *(const zfanyT<T_ZFObject> *)v);
     }
     zfoverride
     virtual void *genericAccess(ZF_IN_OUT zfauto &obj) const {
-        return (void *)zfnew(ZFAnyT<T_ZFObject>, obj);
+        return (void *)zfnew(zfanyT<T_ZFObject>, obj);
     }
     zfoverride
     virtual void genericAccessFinish(ZF_IN_OUT zfauto &obj, ZF_IN void *v) const {
-        zfdelete((ZFAnyT<T_ZFObject> *)v);
+        zfdelete((zfanyT<T_ZFObject> *)v);
     }
     zfoverride
     virtual ZFCoreArrayBase *genericArrayNew(void) const {
-        return zfnew(ZFCoreArray<ZFAnyT<T_ZFObject> >);
+        return zfnew(ZFCoreArray<zfanyT<T_ZFObject> >);
     }
 };
 /** @endcond */

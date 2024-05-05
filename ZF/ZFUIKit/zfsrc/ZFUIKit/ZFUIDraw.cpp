@@ -21,7 +21,7 @@ void ZFUIDrawableView::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUIDrawableView_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFAnyT<ZFUIView> const &view
+                ZF_IN zfanyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
             ZFPROTOCOL_ACCESS(ZFUIDrawForView)->nativeDrawableViewDestroy(view, nativeImplView);

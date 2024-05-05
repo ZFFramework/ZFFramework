@@ -35,7 +35,7 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnResume)
 ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnPause)
 ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnRotate)
 
-ZFMETHOD_DEFINE_1(ZFUIWindow, ZFAnyT<ZFUIWindow>, windowForView
+ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIWindow>, windowForView
         , ZFMP_IN(ZFUIView *, forView)
         ) {
     while(forView != zfnull && !forView->classData()->classIsTypeOf(ZFUIWindow::ClassData())) {
@@ -47,7 +47,7 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, ZFAnyT<ZFUIWindow>, windowForView
 ZFMETHOD_DEFINE_1(ZFUIWindow, ZFUISysWindow *, sysWindowForView
         , ZFMP_IN(ZFUIView *, view)
         ) {
-    ZFAnyT<ZFUIWindow> window = ZFUIWindow::windowForView(view);
+    zfanyT<ZFUIWindow> window = ZFUIWindow::windowForView(view);
     return ((window != zfnull) ? window->windowOwnerSysWindow() : zfnull);
 }
 

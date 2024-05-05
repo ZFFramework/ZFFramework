@@ -93,7 +93,7 @@ ZFOUTPUT_TYPE(ZFUIViewFocusNextParam, {v.objectInfoT(s);})
  *
  * return first focusable view if found
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFAnyT<ZFUIView>, ZFUIViewFocusNextFind
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, ZFUIViewFocusNextFind
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam())
         )
@@ -101,7 +101,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFAnyT<ZFUIView>, ZFUIViewFocusNextFind
 /**
  * @brief move focus to next if available or do nothing otherwise, see #ZFUIViewFocusNextFind
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, ZFAnyT<ZFUIView>, ZFUIViewFocusNextMove
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfanyT<ZFUIView>, ZFUIViewFocusNextMove
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(const ZFUIViewFocusNextParam &, param, ZFUIViewFocusNextParam())
         )

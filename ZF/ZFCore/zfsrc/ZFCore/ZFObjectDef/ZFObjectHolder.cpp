@@ -37,7 +37,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObjectHolder, void, objectHolded
         , ZFMP_IN(ZFObject *, obj)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObjectHolder, ZFAny, objectHolded)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObjectHolder, zfany, objectHolded)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

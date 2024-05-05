@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFObjectCore_h_
 #define _ZFI_ZFObjectCore_h_
 
-#include "ZFAny.h"
+#include "zfany.h"
 #include "ZFClass.h"
 #include "ZFMethod.h"
 #include "ZFObjectDeclare.h"
@@ -408,7 +408,7 @@ public:
     /**
      * @brief see #objectTag
      */
-    zffinal ZFAny objectTag(ZF_IN const zfchar *key);
+    zffinal zfany objectTag(ZF_IN const zfchar *key);
     /**
      * @brief see #objectTag
      */

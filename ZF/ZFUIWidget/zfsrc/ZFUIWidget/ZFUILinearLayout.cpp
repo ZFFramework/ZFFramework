@@ -31,7 +31,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUILinearLayout, zffloat, layoutChildSpace) {
     }
 }
 
-ZFMETHOD_DEFINE_2(ZFUILinearLayout, ZFAnyT<ZFUILinearLayoutParam>, childAdd
+ZFMETHOD_DEFINE_2(ZFUILinearLayout, zfanyT<ZFUILinearLayoutParam>, childAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(zfindex, atIndex, zfindexMax())
         ) {

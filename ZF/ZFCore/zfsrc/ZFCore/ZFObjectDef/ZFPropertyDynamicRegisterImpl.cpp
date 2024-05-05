@@ -359,14 +359,14 @@ static zfbool _ZFP_PropDynReg_getterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
 
 static zfbool _ZFP_PropDynReg_callbackIsValueAccessed(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         ) {
     _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     return (ownerObj->objectTag(d->tagKey_propertyValue) != zfnull);
 }
 static zfbool _ZFP_PropDynReg_callbackIsInitValue(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         , ZF_OUT_OPT zfauto *outInitValue /* = zfnull */
         ) {
     _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
@@ -408,7 +408,7 @@ static zfbool _ZFP_PropDynReg_callbackIsInitValue(
 }
 static void _ZFP_PropDynReg_callbackValueReset(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         ) {
     _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     ownerObj->objectTagRemove(d->tagKey_propertyValue);

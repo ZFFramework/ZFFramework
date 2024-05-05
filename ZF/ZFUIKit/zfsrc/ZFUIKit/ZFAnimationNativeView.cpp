@@ -105,7 +105,7 @@ zfbool ZFAnimationNativeView::aniImplCheckValid(void) {
 
 void ZFAnimationNativeView::aniOnStart(void) {
     zfsuper::aniOnStart();
-    ZFUIView *aniTarget = ZFAny(this->aniTarget());
+    ZFUIView *aniTarget = zfany(this->aniTarget());
     if(aniTarget == zfnull || !this->aniTargetAutoDisable()) {
         d->aniTargetAutoDisableFlag = zffalse;
     }
@@ -115,7 +115,7 @@ void ZFAnimationNativeView::aniOnStart(void) {
     }
 }
 void ZFAnimationNativeView::aniOnStop(void) {
-    ZFUIView *aniTarget = ZFAny(this->aniTarget());
+    ZFUIView *aniTarget = zfany(this->aniTarget());
     if(aniTarget != zfnull && d->aniTargetAutoDisableFlag) {
         aniTarget->viewUIEnableTree(zftrue);
     }
@@ -127,7 +127,7 @@ void ZFAnimationNativeView::aniImplStart(void) {
     ZFUIView *aniTarget = this->aniTarget();
     ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->nativeAniStart(this,
         aniTarget != zfnull ? aniTarget->UIScaleFixed() : 1.0f);
-    ZFAnyT<ZFUIView> parent = aniTarget;
+    zfanyT<ZFUIView> parent = aniTarget;
     while(parent->viewParent() != zfnull) {
         parent = parent->viewParent();
     }

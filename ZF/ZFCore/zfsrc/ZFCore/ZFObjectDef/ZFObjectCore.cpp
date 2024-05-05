@@ -238,7 +238,7 @@ void ZFObject::objectTag(
         zfunsafe_zfRelease(obj);
     }
 }
-ZFAny ZFObject::objectTag(ZF_IN const zfchar *key) {
+zfany ZFObject::objectTag(ZF_IN const zfchar *key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap.find(key);
@@ -655,7 +655,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTag
         , ZFMP_IN(const zfchar *, key)
         , ZFMP_IN(ZFObject *, tag)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, ZFAny, objectTag
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfany, objectTag
         , ZFMP_IN(const zfchar *, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTagGetAllKeyValue

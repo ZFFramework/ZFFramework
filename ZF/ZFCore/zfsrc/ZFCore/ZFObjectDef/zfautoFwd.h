@@ -6,7 +6,7 @@
 #ifndef _ZFI_zfautoFwd_h_
 #define _ZFI_zfautoFwd_h_
 
-#include "ZFAny.h"
+#include "zfany.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -66,11 +66,11 @@ public:
     }
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
+        return this->toObject() == _ZFP_zfanyCast(ZFObject *, obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
+        return this->toObject() != _ZFP_zfanyCast(ZFObject *, obj);
     }
 
 public:
@@ -86,7 +86,7 @@ public:
     }
 
 public:
-    const ZFAny &_ZFP_ZFAny(void) const {
+    const zfany &_ZFP_zfany(void) const {
         return _ZFP_obj;
     }
 
@@ -136,7 +136,7 @@ public:
     }
 
 private:
-    ZFAny _ZFP_obj;
+    zfany _ZFP_obj;
 };
 
 // ============================================================
@@ -172,16 +172,16 @@ public:
     }
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() == _ZFP_ZFAnyCast(ZFObject *, obj);
+        return this->toObject() == _ZFP_zfanyCast(ZFObject *, obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() != _ZFP_ZFAnyCast(ZFObject *, obj);
+        return this->toObject() != _ZFP_zfanyCast(ZFObject *, obj);
     }
 
 public:
     T_ZFObjectBase *operator -> (void) const;
-    inline ZFObject *toObject(void) const { // required for _ZFP_ZFAnyCast to work
+    inline ZFObject *toObject(void) const { // required for _ZFP_zfanyCast to work
         return zfauto::toObject();
     }
 

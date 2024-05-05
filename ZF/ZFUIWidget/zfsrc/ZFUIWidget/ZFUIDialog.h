@@ -293,7 +293,7 @@ protected:
      * you may override this method to supply custom focus logic\n
      * note, this method won't be called if #dialogFocusAutomatically not set
      */
-    virtual ZFAnyT<ZFUIView> dialogFocusOnUpdate(void);
+    virtual zfanyT<ZFUIView> dialogFocusOnUpdate(void);
 
 protected:
     zfoverride

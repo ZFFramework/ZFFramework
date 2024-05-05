@@ -121,7 +121,7 @@ public:
     /**
      * @brief util method to get window of a view, or null if not in a window
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFAnyT<ZFUIWindow>, windowForView
+    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIWindow>, windowForView
             , ZFMP_IN(ZFUIView *, forView)
             )
 

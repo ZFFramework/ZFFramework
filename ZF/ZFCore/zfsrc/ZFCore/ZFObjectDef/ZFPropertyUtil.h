@@ -17,7 +17,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 inline zfbool ZFPropertyIsValueAccessed(
         ZF_IN const ZFProperty *propertyInfo
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         ) {
     return propertyInfo->callbackIsValueAccessed(propertyInfo, ownerObj);
 }
@@ -29,7 +29,7 @@ inline zfbool ZFPropertyIsValueAccessed(
  */
 inline zfbool ZFPropertyIsInitValue(
         ZF_IN const ZFProperty *propertyInfo
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         ) {
     return propertyInfo->callbackIsInitValue(propertyInfo, ownerObj, zfnull);
 }
@@ -41,7 +41,7 @@ inline zfbool ZFPropertyIsInitValue(
  */
 inline void ZFPropertyValueReset(
         ZF_IN const ZFProperty *propertyInfo
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         ) {
     propertyInfo->callbackValueReset(propertyInfo, ownerObj);
 }

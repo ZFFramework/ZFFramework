@@ -442,7 +442,7 @@ public:
     private: \
         static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFAny const &ownerObj \
+                , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
             zfself *t = zfunsafe_zfcast(zfself *, ownerObj); \
@@ -519,7 +519,7 @@ public:
     private: \
         static zfbool _ZFP_propCbIsInit_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFAny const &ownerObj \
+                , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
             zfself *t = zfunsafe_zfcast(zfself *, ownerObj); \
@@ -545,26 +545,26 @@ public:
     private: \
         static zfbool _ZFP_propCbAccessed_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFAny const &ownerObj \
+                , ZF_IN zfany const &ownerObj \
                 ) { \
             return zfunsafe_zfcast(zfself *, ownerObj)->Name##_PropV._ZFP_accessed(); \
         } \
     private: \
         static void _ZFP_propCbReset_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFAny const &owner \
+                , ZF_IN zfany const &owner \
                 ) { \
             zfunsafe_zfcast(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zftrue); \
         } \
         static void _ZFP_propCbEnsureInit_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFAny const &owner \
+                , ZF_IN zfany const &owner \
                 ) { \
             zfunsafe_zfcast(zfself *, owner)->Name##_PropV._ZFP_init(owner, zftrue); \
         } \
         static void _ZFP_propCbDel_##Name( \
                 ZF_IN const ZFProperty *property \
-                , ZF_IN ZFAny const &owner \
+                , ZF_IN zfany const &owner \
                 ) { \
             zfunsafe_zfcast(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zffalse); \
         } \

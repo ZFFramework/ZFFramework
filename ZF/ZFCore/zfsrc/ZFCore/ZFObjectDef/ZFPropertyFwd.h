@@ -26,7 +26,7 @@ zfclassFwd ZFSerializableData;
  */
 typedef zfbool (*ZFPropertyCallbackIsValueAccessed)(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         );
 /** @brief change default impl for #ZFPropertyCallbackIsValueAccessed, use with caution */
 extern ZFLIB_ZFCore void ZFPropertyCallbackIsValueAccessedChange(
@@ -47,7 +47,7 @@ extern ZFLIB_ZFCore void ZFPropertyCallbackIsValueAccessedChange(
  */
 typedef zfbool (*ZFPropertyCallbackIsInitValue)(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         , ZF_OUT_OPT zfauto *outInitValue /* = zfnull */
         );
 /** @brief change default impl for #ZFPropertyCallbackIsInitValue, use with caution */
@@ -62,7 +62,7 @@ extern ZFLIB_ZFCore void ZFPropertyCallbackIsInitValueChange(
  */
 typedef void (*ZFPropertyCallbackValueReset)(
         ZF_IN const ZFProperty *property
-        , ZF_IN ZFAny const &ownerObj
+        , ZF_IN zfany const &ownerObj
         );
 /** @brief change default impl for #ZFPropertyCallbackValueReset, use with caution */
 extern ZFLIB_ZFCore void ZFPropertyCallbackValueResetChange(

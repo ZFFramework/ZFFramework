@@ -94,7 +94,7 @@ void ZFUIImageView::objectOnInit(void) {
     zfclassNotPOD _ZFP_ZFUIImageView_nativeImplViewDestroy {
     public:
         static void action(
-                ZF_IN ZFAnyT<ZFUIView> const &view
+                ZF_IN zfanyT<ZFUIView> const &view
                 , ZF_IN void *nativeImplView
                 ) {
             ZFPROTOCOL_ACCESS(ZFUIImageView)->nativeImageViewDestroy(view, nativeImplView);

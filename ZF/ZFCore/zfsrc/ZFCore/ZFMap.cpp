@@ -66,7 +66,7 @@ ZFMETHOD_DEFINE_1(ZFMap, zfbool, isContain
     return (pKey != zfnull && d->data.find(pKey) != d->data.end());
 }
 
-ZFMETHOD_DEFINE_1(ZFMap, ZFAny, get
+ZFMETHOD_DEFINE_1(ZFMap, zfany, get
         , ZFMP_IN(ZFObject *, pKey)
         ) {
     if(pKey != zfnull) {
@@ -245,12 +245,12 @@ ZFMETHOD_DEFINE_1(ZFMap, void, iterNext
         ) {
     d->data.iterNext(it);
 }
-ZFMETHOD_DEFINE_1(ZFMap, ZFAny, iterKey
+ZFMETHOD_DEFINE_1(ZFMap, zfany, iterKey
         , ZFMP_IN(const zfiterator &, it)
         ) {
     return d->data.iterKey(it);
 }
-ZFMETHOD_DEFINE_1(ZFMap, ZFAny, iterValue
+ZFMETHOD_DEFINE_1(ZFMap, zfany, iterValue
         , ZFMP_IN(const zfiterator &, it)
         ) {
     return d->data.iterValue(it);

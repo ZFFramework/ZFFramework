@@ -53,7 +53,7 @@ public:
     /**
      * @brief holds the owner object of the property
      */
-    ZFAny invokerObject;
+    zfany invokerObject;
     /**
      * @brief holds the owner property
      */

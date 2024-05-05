@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFArgs_h_
 #define _ZFI_ZFArgs_h_
 
-#include "ZFAny.h"
+#include "zfany.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -30,40 +30,40 @@ public:
      * @brief who notified the listener event, may be null
      * @note the sneder has no auto retain
      */
-    ZFArgs &sender(ZF_IN ZFAny const &v) {d.sender = v; return *this;}
+    ZFArgs &sender(ZF_IN zfany const &v) {d.sender = v; return *this;}
     /** @brief see #sender */
-    ZFAny const &sender(void) const {return d.sender;}
+    zfany const &sender(void) const {return d.sender;}
     /**
      * @brief params, may be null
      * @note the param has no auto retain
      */
-    ZFArgs &param0(ZF_IN ZFAny const &v) {d.param0 = v; return *this;}
+    ZFArgs &param0(ZF_IN zfany const &v) {d.param0 = v; return *this;}
     /** @brief see #param0 */
-    ZFAny const &param0(void) const {return d.param0;}
+    zfany const &param0(void) const {return d.param0;}
     /**
      * @brief params, may be null
      * @note the param has no auto retain
      */
-    ZFArgs &param1(ZF_IN ZFAny const &v) {d.param1 = v; return *this;}
+    ZFArgs &param1(ZF_IN zfany const &v) {d.param1 = v; return *this;}
     /** @brief see #param1 */
-    ZFAny const &param1(void) const {return d.param1;}
+    zfany const &param1(void) const {return d.param1;}
     /**
      * @brief extra user data passed from #ZFCallback::userData
      * @note the userData stored in #ZFArgs has no auto retain
      */
-    ZFArgs &userData(ZF_IN ZFAny const &v) {d.userData = v; return *this;}
+    ZFArgs &userData(ZF_IN zfany const &v) {d.userData = v; return *this;}
     /** @brief see #userData */
-    ZFAny const &userData(void) const {return d.userData;}
+    zfany const &userData(void) const {return d.userData;}
 
     /**
      * @brief result, must first enabled by #resultEnable
      * @note the result would be retained
      */
-    ZFAny const &result(void) const;
+    zfany const &result(void) const;
     /** @brief see #result */
-    ZFArgs const &result(ZF_IN ZFAny const &result) const;
+    ZFArgs const &result(ZF_IN zfany const &result) const;
     /** @brief see #result */
-    ZFArgs &result(ZF_IN ZFAny const &result);
+    ZFArgs &result(ZF_IN zfany const &result);
 
     /** @brief see #result */
     ZFArgs &resultEnable(ZF_IN zfbool enable);
@@ -146,18 +146,18 @@ public:
     }
 
 private:
-    zfclassPOD _ZFP_D { /* ZFTAG_TRICKS: ZFAny is safe to treat as POD */
+    zfclassPOD _ZFP_D { /* ZFTAG_TRICKS: zfany is safe to treat as POD */
     public:
         zfidentity eventId;
-        ZFAny sender;
-        ZFAny param0;
-        ZFAny param1;
-        ZFAny userData;
-        ZFAny result;
+        zfany sender;
+        zfany param0;
+        zfany param1;
+        zfany userData;
+        zfany result;
         zfbool eventFiltered;
     };
     _ZFP_D d;
-    ZFAny *_ZFP_result;
+    zfany *_ZFP_result;
     zfbool *_ZFP_eventFiltered;
 };
 

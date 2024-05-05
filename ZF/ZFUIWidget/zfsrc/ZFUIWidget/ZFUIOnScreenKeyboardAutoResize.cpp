@@ -97,7 +97,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStart
 
     zfCoreMutexLocker();
 
-    _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = ZFAny(window->objectTag(
+    _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = zfany(window->objectTag(
         _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));
     if(taskData != zfnull) {
         taskData->startCount += 1;
@@ -119,7 +119,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFUIOnScreenKeyboardAutoResizeStop
 
     zfCoreMutexLocker();
 
-    _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = ZFAny(window->objectTag(
+    _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData *taskData = zfany(window->objectTag(
         _ZFP_I_ZFUIOnScreenKeyboardAutoResizeTaskData::ClassData()->classNameFull()));
     if(taskData == zfnull) {
         return;

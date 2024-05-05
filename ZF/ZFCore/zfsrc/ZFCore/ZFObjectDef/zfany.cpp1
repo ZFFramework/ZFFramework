@@ -3,7 +3,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-const ZFClass *ZFAny::ClassData(void) {
+const ZFClass *zfany::ClassData(void) {
     return ZFObject::ClassData();
 }
 

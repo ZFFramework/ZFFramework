@@ -135,7 +135,7 @@ void ZFFileFindData::implTag(
         (*(d->implTagMap))[key] = value;
     }
 }
-ZFAny ZFFileFindData::implTag(ZF_IN const zfchar *key) const {
+zfany ZFFileFindData::implTag(ZF_IN const zfchar *key) const {
     if(zfstringIsEmpty(key) || d->implTagMap) {
         return zfnull;
     }
@@ -169,7 +169,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implTag
         , ZFMP_IN(const zfchar *, key)
         , ZFMP_IN(ZFObject *, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, ZFAny, implTag
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFFileFindData, zfany, implTag
         , ZFMP_IN(const zfchar *, key)
         )
 

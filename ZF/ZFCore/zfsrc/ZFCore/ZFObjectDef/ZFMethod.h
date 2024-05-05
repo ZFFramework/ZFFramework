@@ -61,7 +61,7 @@ zfclassFwd ZFClass;
     inline T_ReturnType execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
         if(this->_ZFP_ZFMethod_invoker) { \
             return reinterpret_cast< \
-                    T_ReturnType (*)(const ZFMethod *, ZFAny const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
+                    T_ReturnType (*)(const ZFMethod *, zfany const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
                     >(this->_ZFP_ZFMethod_invoker) \
                 (this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA)); \
         } \
@@ -75,7 +75,7 @@ zfclassFwd ZFClass;
     template<typename T_ReturnType ZFM_REPEAT(N, ZFM_REPEAT_TEMPLATE, ZFM_COMMA, ZFM_COMMA)> \
     inline T_ReturnType _ZFP_execute(ZFObject *obj ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) const { \
         return reinterpret_cast< \
-                T_ReturnType (*)(const ZFMethod *, ZFAny const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
+                T_ReturnType (*)(const ZFMethod *, zfany const & ZFM_REPEAT(N, ZFM_REPEAT_PARAM, ZFM_COMMA, ZFM_COMMA)) \
                 >(this->_ZFP_ZFMethod_invoker) \
             (this, obj ZFM_REPEAT(N, ZFM_REPEAT_NAME, ZFM_COMMA, ZFM_COMMA)); \
     }
@@ -310,7 +310,7 @@ public:
     /**
      * @brief store impl state for #ZFMethodUserRegister_0
      */
-    inline ZFAny methodUserRegisterUserData(void) const {
+    inline zfany methodUserRegisterUserData(void) const {
         return this->_ZFP_ZFMethod_methodUserRegisterUserData;
     }
     /**
@@ -326,7 +326,7 @@ public:
     /**
      * @brief see #ZFMethodDynamicRegister
      */
-    inline ZFAny methodDynamicRegisterUserData(void) const {
+    inline zfany methodDynamicRegisterUserData(void) const {
         return this->_ZFP_ZFMethod_methodDynamicRegisterUserData;
     }
     /**
@@ -436,7 +436,7 @@ public:
      * @code
      *   ReturnType methodInvoker(
      *           ZF_IN const ZFMethod *invokerMethod
-     *           , ZF_IN ZFAny const &invokerObject
+     *           , ZF_IN zfany const &invokerObject
      *           , ZF_IN ParamType0 param0
      *           , ZF_IN ParamType1 param1
      *           , / * ... * /);
@@ -465,7 +465,7 @@ public:
      *   @code
      *     ReturnType method(
      *         const ZFMethod *invokerMethod
-     *         , ZFAny const &invokerObject
+     *         , zfany const &invokerObject
      *         , ParamType0 param0
      *         , ParamType1 param1
      *         , ...

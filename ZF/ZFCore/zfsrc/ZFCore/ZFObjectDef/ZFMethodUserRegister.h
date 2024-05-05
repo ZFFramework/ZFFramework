@@ -111,7 +111,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         public: \
             static ReturnType invoker( \
                     ZF_IN const ZFMethod *invokerMethod \
-                    , ZF_IN ZFAny const &invokerObject \
+                    , ZF_IN zfany const &invokerObject \
                     ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
                     ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \
@@ -171,7 +171,7 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
     public: \
         static ReturnType invoker( \
                 ZF_IN const ZFMethod *invokerMethod \
-                , ZF_IN ZFAny const &invokerObject \
+                , ZF_IN zfany const &invokerObject \
                 ParamExpandOrEmpty0(ZFM_COMMA() ParamType0 param0) \
                 ParamExpandOrEmpty1(ZFM_COMMA() ParamType1 param1) \
                 ParamExpandOrEmpty2(ZFM_COMMA() ParamType2 param2) \

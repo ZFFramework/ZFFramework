@@ -262,7 +262,7 @@ void ZFSerializableData::serializableDataTag(
         }
     }
 }
-ZFAny ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const {
+zfany ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const {
     if(key != zfnull) {
         _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
