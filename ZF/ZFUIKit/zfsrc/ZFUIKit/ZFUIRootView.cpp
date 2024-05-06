@@ -8,9 +8,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIRootView)
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIRootView, ZFUISysWindow *, rootViewOwnerSysWindow)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIRootView, zfanyT<ZFUISysWindow> const &, rootViewOwnerSysWindow)
 
-ZFMETHOD_DEFINE_0(ZFUIRootView, const ZFCoreArray<ZFUIWindow *> &, windowList) {
+ZFMETHOD_DEFINE_0(ZFUIRootView, const ZFCoreArray<zfautoT<ZFUIWindow> > &, windowList) {
     return _ZFP_ZFUIRootView_windowList;
 }
 

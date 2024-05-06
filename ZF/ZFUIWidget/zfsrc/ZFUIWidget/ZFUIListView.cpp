@@ -1218,7 +1218,7 @@ ZFOBSERVER_EVENT_REGISTER(ZFUIListView, ListCellOnDetach)
 ZFOBSERVER_EVENT_REGISTER(ZFUIListView, ListVisibleCellOnChange)
 
 #define _ZFP_ZFUIListView_listAdapterHolderTag "_ZFP_ZFUIListView_listAdapterHolderTag"
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIListAdapter *, listAdapter) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfanyT<ZFUIListAdapter>, listAdapter) {
     d->listAdapter = this->listAdapter();
     d->listAdapterAfterAttach();
 
@@ -1226,7 +1226,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, ZFUIListAdapter *, listAdapter) {
         this->listReload();
     }
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListView, ZFUIListAdapter *, listAdapter) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListView, zfanyT<ZFUIListAdapter>, listAdapter) {
     d->listAdapterBeforeDetach();
     d->listAdapter = zfnull;
     this->objectTagRemove(_ZFP_ZFUIListView_listAdapterHolderTag);

@@ -204,7 +204,7 @@ public:
     /**
      * @brief the animation data, see #ZFUIAniImageView
      */
-    ZFPROPERTY_RETAIN(ZFUIAniImageData *, aniData)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIAniImageData>, aniData)
 
     /**
      * @brief true if #aniData is not null and valid

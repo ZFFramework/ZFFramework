@@ -13,16 +13,16 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, ZFUIAlignFlags, contentAlign) {
     propertyValue = ZFUIAlign::e_Left;
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, ZFUIImageView *, iconNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, zfanyT<ZFUIImageView>, iconNormal) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonRatio_IconNormal.png"));
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, ZFUIImageView *, iconHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, zfanyT<ZFUIImageView>, iconHighlighted) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonRatio_IconHighlighted.png"));
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, ZFUIImageView *, iconChecked) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, zfanyT<ZFUIImageView>, iconChecked) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonRatio_IconChecked.png"));
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, ZFUIImageView *, iconCheckedHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonRatio, zfanyT<ZFUIImageView>, iconCheckedHighlighted) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonRatio_IconCheckedHighlighted.png"));
 }
 

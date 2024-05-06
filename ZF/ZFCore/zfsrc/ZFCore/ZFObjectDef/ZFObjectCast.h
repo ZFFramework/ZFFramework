@@ -132,6 +132,30 @@ public:
             : zfnull);
     }
 };
+// unknown to any
+template<typename T_To, typename T_From, int T_ToType>
+zfclassNotPOD _ZFP_ObjCastH<0, T_To, T_From, T_ToType, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(T_From const &obj) {
+        return zfcast(T_To, obj.toObject());
+    }
+};
+// any to unknown
+template<typename T_To, typename T_From, int T_FromType>
+zfclassNotPOD _ZFP_ObjCastH<0, T_To, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+public:
+    static inline T_To c(T_From const &obj) {
+        return T_To(obj);
+    }
+};
+// unknown to unknown
+template<typename T_To, typename T_From>
+zfclassNotPOD _ZFP_ObjCastH<0, T_To, T_From, _ZFP_ObjCastTypeUnknown, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(T_From const &obj) {
+        return T_To(obj.toObject());
+    }
+};
 
 // invoker
 template<typename T_To>
@@ -219,6 +243,30 @@ public:
                 obj->toObject(),
                 zftTraits<T_To>::TrType::ClassData()))
             : zfnull);
+    }
+};
+// unknown to any
+template<typename T_To, typename T_From, int T_ToType>
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, T_From, T_ToType, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(T_From const &obj) {
+        return zfunsafe_zfcast(T_To, obj.toObject());
+    }
+};
+// any to unknown
+template<typename T_To, typename T_From, int T_FromType>
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
+public:
+    static inline T_To c(T_From const &obj) {
+        return T_To(obj);
+    }
+};
+// unknown to unknown
+template<typename T_To, typename T_From>
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, T_From, _ZFP_ObjCastTypeUnknown, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(T_From const &obj) {
+        return T_To(obj.toObject());
     }
 };
 

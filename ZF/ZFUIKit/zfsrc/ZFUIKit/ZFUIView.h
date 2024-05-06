@@ -606,7 +606,7 @@ public:
     /**
      * @brief recursively to find focused child, take care of performance
      */
-    ZFMETHOD_DECLARE_0(ZFUIView *, viewFocusFind)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, viewFocusFind)
 protected:
     /** @brief see #EventViewFocusOnChange */
     virtual inline void viewFocusOnChange(void) {
@@ -858,7 +858,7 @@ public:
     /**
      * @brief find view by viewId, return the view or null if not found
      */
-    ZFMETHOD_DECLARE_3(ZFUIView *, childFindById
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUIView>, childFindById
             , ZFMP_IN(const zfchar *, viewId)
             , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
             , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
@@ -986,7 +986,7 @@ protected:
     // internal views
 public:
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalImplViewAdd
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalImplViewAdd
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
             , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
@@ -1016,7 +1016,7 @@ public:
      * \n
      * internal views has no measure steps, its size always depends on parent's size
      */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalBgViewAdd
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalBgViewAdd
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
             , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
@@ -1032,7 +1032,7 @@ public:
 
 public:
     /** @brief see #internalBgViewAdd */
-    ZFMETHOD_DECLARE_3(ZFUILayoutParam *, internalFgViewAdd
+    ZFMETHOD_DECLARE_3(zfanyT<ZFUILayoutParam>, internalFgViewAdd
             , ZFMP_IN(ZFUIView *, view)
             , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
             , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)

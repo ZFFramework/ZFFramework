@@ -129,7 +129,7 @@ public:
      * @brief util method to get owner sys window for the view,
      *   return null if not in view tree or failed to get
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUISysWindow *, sysWindowForView
+    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUISysWindow>, sysWindowForView
             , ZFMP_IN(ZFUIView *, view)
             )
 
@@ -175,7 +175,7 @@ public:
      * usually you should have only one #ZFUISysWindow in your app
      * so you have no need to care about this method
      */
-    ZFMETHOD_DECLARE_0(ZFUISysWindow *, windowOwnerSysWindow)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, windowOwnerSysWindow)
 protected:
     /** @brief see #EventWindowOwnerSysWindowOnChange */
     virtual inline void windowOwnerSysWindowOnChange(ZF_IN ZFUISysWindow *oldSysWindow) {
@@ -213,7 +213,7 @@ public:
      *
      * default param is fill parent (with sizeWeight (1, 1) and all others zero)
      */
-    ZFMETHOD_DECLARE_0(ZFUILayoutParam *, windowLayoutParam)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUILayoutParam>, windowLayoutParam)
 
 protected:
     /** @brief see #EventWindowOnShow */

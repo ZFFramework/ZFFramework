@@ -43,110 +43,53 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief ZFObject auto retain version of #ZFCORE_PARAM
+ * @brief ZFObject weak version of #ZFCORE_PARAM
  */
-#define ZFCORE_PARAM_RETAIN(T_ParamType, paramName, ...) \
-    _ZFP_ZFCORE_PARAM_RETAIN(T_ParamType, paramName, _ZFP_ZFCORE_PARAM_RETAIN_INIT(__VA_ARGS__))
-#define _ZFP_ZFCORE_PARAM_RETAIN_INIT(...) __VA_ARGS__
-#define _ZFP_ZFCORE_PARAM_RETAIN(T_ParamType, paramName, initValue) \
+#define ZFCORE_PARAM_WEAK(T_ParamType, paramName, ...) \
+    _ZFP_ZFCORE_PARAM_WEAK(T_ParamType, paramName, _ZFP_ZFCORE_PARAM_WEAK_INIT(__VA_ARGS__))
+#define _ZFP_ZFCORE_PARAM_WEAK_INIT(...) __VA_ARGS__
+#define _ZFP_ZFCORE_PARAM_WEAK(T_ParamType, paramName, initValue) \
     public: \
         T_ParamType const &paramName(void) const { \
-            return this->paramName##_PropV.value; \
+            return (*(this->paramName##_PropV.value) = this->paramName##_PropV.holder); \
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD paramName##_ZFCoreParam { \
+        zfclassLikePOD paramName##_PropT { \
+        private: \
+            typedef T_ParamType ImplType; \
         public: \
-            paramName##_ZFCoreParam(void) \
-            : value(zfnull) \
+            paramName##_PropT(void) \
+            : holder(initValue) \
             { \
-                T_ParamType *t = zfnull; \
-                this->value = zfRetain(*(t = zfnew(T_ParamType, initValue))); \
-                zfdelete(t); \
+                this->value = zfnew(ImplType, this->holder); \
             } \
-            paramName##_ZFCoreParam(ZF_IN const paramName##_ZFCoreParam &ref) { \
-                this->value = zfRetain(ref.value); \
+            paramName##_PropT(ZF_IN const paramName##_PropT &ref) \
+            : holder(ref.holder) \
+            { \
+                this->value = zfnew(ImplType, this->holder); \
             } \
-            ~paramName##_ZFCoreParam(void) { \
-                zfRelease(this->value); \
+            ~paramName##_PropT(void) { \
+                zfdelete(this->value); \
             } \
-            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref) { \
-                zfCoreMutexLock(); \
-                zfunsafe_zfRetain(ref.value); \
-                zfunsafe_zfRelease(this->value); \
-                zfCoreMutexUnlock(); \
-                this->value = ref.value; \
+            paramName##_PropT &operator = (ZF_IN const paramName##_PropT &ref) { \
+                this->holder = ref.holder; \
+                *(this->value) = this->holder; \
                 return *this; \
             } \
         public: \
-            T_ParamType value; \
+            ImplType *value; \
+            zfweak holder; \
         }; \
-        paramName##_ZFCoreParam paramName##_PropV; \
+        paramName##_PropT paramName##_PropV; \
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
         zfself &paramName(ZF_IN T_ParamType const &value) { \
-            zfCoreMutexLock(); \
-            zfunsafe_zfRetain(value); \
-            zfunsafe_zfRelease(this->paramName##_PropV.value); \
-            zfCoreMutexUnlock(); \
-            this->paramName##_PropV.value = value; \
+            this->paramName##_PropV.holder = value; \
+            *(this->paramName##_PropV.value) = this->paramName##_PropV.holder; \
             return *this; \
         }
-
-// ============================================================
-#define _ZFP_ZFCORE_PARAM_RETAIN_DECLARE(T_ParamType, paramName) \
-    public: \
-        T_ParamType const &paramName(void) const; \
-    private: \
-        /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD paramName##_ZFCoreParam { \
-        public: \
-            paramName##_ZFCoreParam(void); \
-            paramName##_ZFCoreParam(ZF_IN const paramName##_ZFCoreParam &ref); \
-            ~paramName##_ZFCoreParam(void); \
-            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref); \
-        public: \
-            T_ParamType value; \
-        }; \
-        paramName##_ZFCoreParam paramName##_PropV; \
-        /** @endcond */ \
-    public: \
-        /** @brief see @ref paramName */ \
-        zfself &paramName(ZF_IN T_ParamType const &value);
-#define _ZFP_ZFCORE_PARAM_RETAIN_DEFINE(T_Owner, T_ParamType, paramName, initValue) \
-    T_ParamType const &T_Owner::paramName(void) const { \
-        return this->paramName##_PropV.value; \
-    } \
-    /** @cond ZFPrivateDoc */ \
-    T_Owner::paramName##_ZFCoreParam::paramName##_ZFCoreParam(void) { \
-        T_ParamType *t = zfnull; \
-        this->value = zfRetain(*(t = zfnew(T_ParamType, initValue))); \
-        zfdelete(t); \
-    } \
-    T_Owner::paramName##_ZFCoreParam::paramName##_ZFCoreParam(ZF_IN const T_Owner::paramName##_ZFCoreParam &ref) { \
-        this->value = zfRetain(ref.value); \
-    } \
-    T_Owner::paramName##_ZFCoreParam::~paramName##_ZFCoreParam(void) { \
-        zfRelease(this->value); \
-    } \
-    T_Owner::paramName##_ZFCoreParam &T_Owner::paramName##_ZFCoreParam::operator = (ZF_IN const T_Owner::paramName##_ZFCoreParam &ref) { \
-        zfCoreMutexLock(); \
-        zfunsafe_zfRetain(ref.value); \
-        zfunsafe_zfRelease(this->value); \
-        zfCoreMutexUnlock(); \
-        this->value = ref.value; \
-        return *this; \
-    } \
-    /** @endcond */ \
-    T_Owner::zfself &T_Owner::paramName(ZF_IN T_ParamType const &value) { \
-        zfCoreMutexLock(); \
-        zfunsafe_zfRetain(value); \
-        zfunsafe_zfRelease(this->paramName##_PropV.value); \
-        zfCoreMutexUnlock(); \
-        this->paramName##_PropV.value = value; \
-        return *this; \
-    }
 
 // ============================================================
 zfclassFwd ZFObject;
@@ -166,8 +109,8 @@ typedef zfauto (*ZFObjectCreator)(void);
 /**
  * @brief true if Type is #ZFObject type
  */
-#define zftIsZFObject(Type) (zftIsSame<Type, ZFObject>::Value || ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, Type))
-ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, void (*F)(void))
+#define zftIsZFObject(Type) (zftIsSame<Type, ZFObject>::Value || ZFM_CLASS_HAS_MEMBER(ObjCk, _ZFP_zftIsZFObject, Type))
+ZFM_CLASS_HAS_MEMBER_DECLARE(ObjCk, _ZFP_zftIsZFObject, void (*F)(void))
 /* ZFTAG_TRICKS: zftIsSame<...> is required to prevent incomplete type ZFObject when used in builtin types such as zfauto */
 
 /**
@@ -176,8 +119,8 @@ ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectCheck, _ZFP_zftIsZFObject, void (
  * class with this method is treated can cast to #ZFObject:
  * ZFObject *toObject(void) const;
  */
-#define zftIsZFObjectType(Type) ZFM_CLASS_HAS_MEMBER(_ZFP_zftIsZFObjectTypeCheck, toObject, Type)
-ZFM_CLASS_HAS_MEMBER_DECLARE(_ZFP_zftIsZFObjectTypeCheck, toObject, ZFObject *(T::*F)(void) const)
+#define zftIsZFObjectType(Type) ZFM_CLASS_HAS_MEMBER(ObjTCk, toObject, Type)
+ZFM_CLASS_HAS_MEMBER_DECLARE(ObjTCk, toObject, ZFObject *(T::*F)(void) const)
 
 // ============================================================
 /** @brief type for #ZFGlobalEvent::EventClassDataChange */

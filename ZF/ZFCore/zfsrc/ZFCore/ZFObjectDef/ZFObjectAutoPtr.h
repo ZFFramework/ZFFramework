@@ -149,10 +149,11 @@ private:
  *
  * usage:
  * @code
- *   zfobj<ZFUIView> v;
+ *   zfobj<MyObject> v(param0, param1);
  *
  *   // equivalence
- *   zfautoT<ZFUIView> v = zflineAlloc(ZFUIView);
+ *   zfautoT<MyObject> v = zflineAlloc(MyObject, param0, param1);
+ *   zfautoT<MyObject> v = zfobj<MyObject>(param0, param1);
  * @endcode
  *
  * note, this type is a util class in cpp world,
@@ -207,37 +208,6 @@ public:
     : zfautoT<T_ZFObjectBase>()
     {zfCoreMutexLocker(); this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6, p7));}
     /** @endcond */
-};
-
-// ============================================================
-template<typename T_ZFObject, typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastH<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
-public:
-    static inline T_To c(zfobj<T_ZFObject> const &obj) {
-        return zfcast(T_To, obj.toObject());
-    }
-};
-template<typename T_ZFObject, typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastH<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
-public:
-    static inline zfobj<T_ZFObject> c(T_From obj) {
-        return zfcast(ZFObject *, obj);
-    }
-};
-
-template<typename T_ZFObject, typename T_To, int T_ToType>
-zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, zfobj<T_ZFObject>, T_ToType, _ZFP_ObjCastTypeUnknown> {
-public:
-    static inline T_To c(zfobj<T_ZFObject> const &obj) {
-        return zfunsafe_zfcast(T_To, obj.toObject());
-    }
-};
-template<typename T_ZFObject, typename T_From, int T_FromType>
-zfclassNotPOD _ZFP_ObjCastNoCkH<0, zfobj<T_ZFObject>, T_From, _ZFP_ObjCastTypeUnknown, T_FromType> {
-public:
-    static inline zfobj<T_ZFObject> c(T_From obj) {
-        return zfunsafe_zfcast(ZFObject *, obj);
-    }
 };
 
 ZF_NAMESPACE_GLOBAL_END

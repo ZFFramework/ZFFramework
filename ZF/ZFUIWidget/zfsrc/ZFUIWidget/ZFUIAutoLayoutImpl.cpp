@@ -86,6 +86,18 @@ public:
             _childFrame[i].height = childSize.height;
         }
     }
+    ZFUIView *targetForLayout(
+            ZF_IN ZFUIAutoLayoutRule const &rule
+            , ZF_IN ZFUIView *parent
+            ) {
+        ZFUIView *target = rule.target();
+        if(target == zfnull || target == parent || target->viewParent() != parent) {
+            return parent;
+        }
+        else {
+            return target;
+        }
+    }
     zfbool isFixedRule(ZF_IN const ZFUIAutoLayoutRule &rule) {
         return (rule.pos() != ZFUIAutoLayoutPos::e_None && rule.weight() != 0);
     }
@@ -297,7 +309,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChildSize(
     }
     _layouting[childIndex] = zftrue;
 
-    ZFUIView *target = rule._ZFP_targetForLayout(parent);
+    ZFUIView *target = this->targetForLayout(rule, parent);
 
     zffloat &_childSize = xAxis ? _childFrame[childIndex].width : _childFrame[childIndex].height;
     zffloat weight = (rule.weight() > 0 ? rule.weight() : 1);
@@ -349,12 +361,12 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(
 
     // head
     do {
-        ZFUIView *target = ruleListCur[posHead]._ZFP_targetForLayout(parent);
+        ZFUIView *target = this->targetForLayout(ruleListCur[posHead], parent);
         if(ruleListCur[posHead].pos() == ZFUIAutoLayoutPos::e_None || target == parent) {
             break;
         }
         ruleListNext = target->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList;
-        if(ruleListNext[posTail].pos() != ZFUIAutoLayoutPos::e_None && ruleListNext[posTail]._ZFP_targetForLayout(parent) == childPrev) {
+        if(ruleListNext[posTail].pos() != ZFUIAutoLayoutPos::e_None && this->targetForLayout(ruleListNext[posTail], parent) == childPrev) {
             if(!centerChildHasAdd) {
                 centerChildHasAdd = zftrue;
                 chain.add(0, parent->childArray().find(childPrev));
@@ -372,12 +384,12 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(
     ruleListCur = ruleList;
     childPrev = parent->childAt(childIndex);
     do {
-        ZFUIView *target = ruleListCur[posTail]._ZFP_targetForLayout(parent);
+        ZFUIView *target = this->targetForLayout(ruleListCur[posTail], parent);
         if(ruleListCur[posTail].pos() == ZFUIAutoLayoutPos::e_None || target == parent) {
             break;
         }
         ruleListNext = target->layoutParam().to<ZFUIAutoLayoutParam *>()->_ZFP_AL_d.ruleList;
-        if(ruleListNext[posHead].pos() != ZFUIAutoLayoutPos::e_None && ruleListNext[posHead]._ZFP_targetForLayout(parent) == childPrev) {
+        if(ruleListNext[posHead].pos() != ZFUIAutoLayoutPos::e_None && this->targetForLayout(ruleListNext[posHead], parent) == childPrev) {
             if(!centerChildHasAdd) {
                 centerChildHasAdd = zftrue;
                 chain.add(parent->childArray().find(childPrev));
@@ -420,7 +432,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::calcChildHead(
         ) {
     head = 0;
     if(ruleList[posHead].pos() != ZFUIAutoLayoutPos::e_None) {
-        ZFUIView *target = ruleList[posHead]._ZFP_targetForLayout(parent);
+        ZFUIView *target = this->targetForLayout(ruleList[posHead], parent);
         if(target != parent) {
             zfindex targetIndex = parent->childArray().find(target);
             this->layoutChild(parent, targetIndex, xAxis);
@@ -442,7 +454,7 @@ void _ZFP_ZFUIAutoLayoutPrivate::calcChildTail(
         ) {
     tail = xAxis ? _parentWidth : _parentHeight;
     if(ruleList[posTail].pos() != ZFUIAutoLayoutPos::e_None) {
-        ZFUIView *target = ruleList[posTail]._ZFP_targetForLayout(parent);
+        ZFUIView *target = this->targetForLayout(ruleList[posTail], parent);
         if(target != parent) {
             zfindex targetIndex = parent->childArray().find(target);
             this->layoutChild(parent, targetIndex, xAxis);

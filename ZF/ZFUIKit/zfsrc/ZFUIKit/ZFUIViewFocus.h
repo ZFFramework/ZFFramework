@@ -53,7 +53,7 @@ zfclassLikePOD ZFLIB_ZFUIKit ZFUIViewFocusNextParam {
     /**
      * @brief only find within this view, null to end with #ZFUIWindow, null by default
      */
-    ZFCORE_PARAM(ZFUIView *, focusEndParent)
+    ZFCORE_PARAM(zfanyT<ZFUIView>, focusEndParent)
     /**
      * @brief whether to find internal views, true by default
      */

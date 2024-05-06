@@ -169,8 +169,8 @@ public:
     /**
      * @brief text place holder
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, textPlaceHolder, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, textPlaceHolder)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUITextView>, textPlaceHolder, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUITextView>, textPlaceHolder)
 
     /**
      * @brief text filter, null by default
@@ -181,8 +181,8 @@ public:
      *   text would be replaced to null
      * @note null or empty text would always treated as match for safe
      */
-    ZFPROPERTY_RETAIN(ZFRegExp *, textEditFilter)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFRegExp *, textEditFilter)
+    ZFPROPERTY_RETAIN(zfanyT<ZFRegExp>, textEditFilter)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFRegExp>, textEditFilter)
 
     /**
      * @brief text edit's cursor position

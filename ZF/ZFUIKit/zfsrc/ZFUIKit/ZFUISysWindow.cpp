@@ -111,7 +111,7 @@ void ZFUISysWindow::mainWindowRegister(ZF_IN ZFUISysWindow *window) {
     ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventSysWindowMainWindowOnAttach());
 }
 
-ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUISysWindow *, mainWindow) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, mainWindow) {
     if(_ZFP_ZFUISysWindow_mainWindow == zfnull) {
         _ZFP_ZFUISysWindow_mainWindowBuiltin = ZFPROTOCOL_ACCESS(ZFUISysWindow)->mainWindow();
         _ZFP_ZFUISysWindow_mainWindow = _ZFP_ZFUISysWindow_mainWindowBuiltin;
@@ -134,7 +134,7 @@ ZFMETHOD_DEFINE_1(ZFUISysWindow, void, keyWindow
         zfRetainChange(_ZFP_ZFUISysWindow_keyWindow, window->objectHolder());
     }
 }
-ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUISysWindow *, keyWindow) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, keyWindow) {
     ZFUISysWindow *ret = zfnull;
     if(_ZFP_ZFUISysWindow_keyWindow != zfnull) {
         ret = _ZFP_ZFUISysWindow_keyWindow->objectHolded();
@@ -278,7 +278,7 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, const ZFUIOrientationFlags &, sysWindowOrientat
     return d->sysWindowOrientationFlags;
 }
 
-ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUISysWindow *, modalWindowShow) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfautoT<ZFUISysWindow>, modalWindowShow) {
     zfCoreAssertWithMessage(d->modalWindowShowing == zfnull, "already has a showing modal window, you must finish it first");
 
     zfautoT<ZFUISysWindow> modalWindow;
@@ -310,17 +310,17 @@ ZFMETHOD_DEFINE_0(ZFUISysWindow, void, modalWindowFinish) {
 
     zfRelease(this);
 }
-ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUISysWindow *, modalWindowShowingWindow) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, modalWindowShowingWindow) {
     return d->modalWindowShowing;
 }
-ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUISysWindow *, modalWindowOwner) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUISysWindow>, modalWindowOwner) {
     return d->modalWindowOwner;
 }
 
-ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUILayoutParam *, sysWindowLayoutParam) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUILayoutParam>, sysWindowLayoutParam) {
     return d->sysWindowLayoutParam;
 }
-ZFMETHOD_DEFINE_0(ZFUISysWindow, ZFUIRootView *, rootView) {
+ZFMETHOD_DEFINE_0(ZFUISysWindow, zfanyT<ZFUIRootView>, rootView) {
     return d->windowRootView;
 }
 

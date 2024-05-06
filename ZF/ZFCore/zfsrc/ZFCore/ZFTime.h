@@ -19,6 +19,7 @@ public:
     zftimet sec;     /**< second */
     zftimet usec;    /**< micro second */
 };
+ZFCORE_POD_DECLARE(ZFTimeValue)
 
 /**
  * @brief see #ZFTYPEID_DECLARE
@@ -276,6 +277,7 @@ public:
     zfuint miliSecond;   /**< [0, 999] */
     zfuint microSecond;  /**< [0, 999] */
 };
+ZFCORE_POD_DECLARE(ZFTimeInfo)
 
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfo)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFTimeInfo)

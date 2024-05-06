@@ -215,7 +215,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIOnScreenKeyboardAutoFitLayout, zfbool, autoFitSc
     }
 }
 
-ZFUIView *ZFUIOnScreenKeyboardAutoFitLayout::autoFitFocusedView(void) {
+ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardAutoFitLayout, zfanyT<ZFUIView>, autoFitFocusedView) {
     return d->autoFitFocusedView;
 }
 

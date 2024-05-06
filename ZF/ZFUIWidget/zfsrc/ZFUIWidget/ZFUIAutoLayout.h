@@ -36,29 +36,8 @@ zfclassLikePOD ZFLIB_ZFUIWidget ZFUIAutoLayoutRule {
 public:
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, pos, ZFUIAutoLayoutPos::e_None)
-
-private:
-    zfweakT<ZFUIView> target_PropV;
-public:
     /** @brief see #ZFUIAutoLayout */
-    inline zfanyT<ZFUIView> target(void) const {
-        return this->target_PropV;
-    }
-    /** @brief see @ref target */
-    inline ZFUIAutoLayoutRule &target(ZF_IN ZFUIView * const &value) {
-        this->target_PropV = value;
-        return *this;
-    }
-    ZFUIView *_ZFP_targetForLayout(ZF_IN ZFUIView *parent) const {
-        ZFUIView *target = this->target();
-        if(target == zfnull || target == parent || target->viewParent() != parent) {
-            return parent;
-        }
-        else {
-            return target;
-        }
-    }
-
+    ZFCORE_PARAM_WEAK(zfanyT<ZFUIView>, target)
     /** @brief see #ZFUIAutoLayout */
     ZFCORE_PARAM(ZFUIAutoLayoutPosEnum, targetPos, ZFUIAutoLayoutPos::e_None)
     /** @brief see #ZFUIAutoLayout */
@@ -124,10 +103,10 @@ zfclass ZFLIB_ZFUIWidget ZFUIAutoLayoutParam : zfextend ZFUILayoutParam {
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIMargin, layoutMargin)
 
     /** @brief the owner parent view this param attached to */
-    ZFMETHOD_DECLARE_0(ZFUIAutoLayout *, ownerParent)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIAutoLayout>, ownerParent)
 
     /** @brief the owner child view this param attached to */
-    ZFMETHOD_DECLARE_0(ZFUIView *, ownerChild)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, ownerChild)
 
     // ============================================================
     // rule state
@@ -236,7 +215,7 @@ protected:
 public:
     zfclassLikePOD _ZFP_Data {
     public:
-        ZFUIAutoLayout *ownerParent;
+        zfanyT<ZFUIAutoLayout> ownerParent;
         zfautoT<ZFObjectHolder> ownerChild;
         ZFUIAutoLayoutRule ruleList[ZFUIAutoLayoutPos::ZFEnumCount];
         zfbool posAttached[ZFUIAutoLayoutPos::ZFEnumCount];

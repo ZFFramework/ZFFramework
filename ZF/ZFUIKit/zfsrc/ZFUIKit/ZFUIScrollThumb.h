@@ -60,7 +60,7 @@ public:
     /**
      * @brief owner scroll view
      */
-    zffinal inline ZFUIScrollView *scrollView(void) {
+    zffinal inline zfanyT<ZFUIScrollView> const &scrollView(void) {
         return this->_scrollView;
     }
     /**
@@ -88,7 +88,7 @@ public:
     virtual void scrollThumbUpdate(void) zfpurevirtual;
 
 private:
-    ZFUIScrollView *_scrollView;
+    zfanyT<ZFUIScrollView> _scrollView;
     zfbool _horizontal;
     friend zfclassFwd ZFUIScrollView;
 };

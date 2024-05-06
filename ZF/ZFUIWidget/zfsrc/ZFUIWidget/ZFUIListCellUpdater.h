@@ -22,6 +22,7 @@ public:
     ZFUISize listContainerSize; /**< @brief owner list container's size */
     zffloat cellSizeHint; /**< @brief list cell's size hint */
 };
+ZFCORE_POD_DECLARE(ZFUIListCellUpdaterParam)
 ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUIWidget, ZFUIListCellUpdaterParam, ZFUIListCellUpdaterParam)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFUIWidget, ZFUIListCellUpdaterParam)
 ZFCORE_POD_COMPARER_DECLARE(ZFUIListCellUpdaterParam)

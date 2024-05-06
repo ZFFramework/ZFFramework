@@ -179,86 +179,86 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIButtonBasic)
             d->T_Component##T_State##ChangedListener); \
     }
 
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Normal, ZFUITextView, text)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Highlighted, ZFUITextView, text)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Checked, ZFUITextView, text)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, CheckedHighlighted, ZFUITextView, text)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUITextView *, label, Disabled, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUITextView>, label, Normal, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUITextView>, label, Highlighted, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUITextView>, label, Checked, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUITextView>, label, CheckedHighlighted, ZFUITextView, text)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUITextView>, label, Disabled, ZFUITextView, text)
 
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Normal, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Highlighted, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Checked, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, CheckedHighlighted, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, icon, Disabled, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, icon, Normal, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, icon, Highlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, icon, Checked, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, icon, CheckedHighlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, icon, Disabled, ZFUIImageView, image)
 
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Normal, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Highlighted, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Checked, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, CheckedHighlighted, ZFUIImageView, image)
-_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(ZFUIImageView *, background, Disabled, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, background, Normal, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, background, Highlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, background, Checked, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, background, CheckedHighlighted, ZFUIImageView, image)
+_ZFP_ZFUIBUTTONBASIC_BUTTON_COMPONENT_DEFINE(zfanyT<ZFUIImageView>, background, Disabled, ZFUIImageView, image)
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUITextView>, labelNormal) {
     ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorNormal());
 
     d->labelViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUITextView>, labelHighlighted) {
     ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorHighlighted());
 
     d->labelViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelChecked) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUITextView>, labelChecked) {
     ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorChecked());
 
     d->labelViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelCheckedHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUITextView>, labelCheckedHighlighted) {
     ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorCheckedHighlighted());
 
     d->labelViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUITextView *, labelDisabled) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUITextView>, labelDisabled) {
     ZFUITextView *v = propertyValue;
     v->textColor(ZFUIGlobalStyle::DefaultStyle()->controlColorDisabled());
 
     d->labelViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, iconNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, iconNormal) {
     d->iconViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, iconHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, iconHighlighted) {
     d->iconViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, iconChecked) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, iconChecked) {
     d->iconViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, iconCheckedHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, iconCheckedHighlighted) {
     d->iconViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, iconDisabled) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, iconDisabled) {
     d->iconViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, backgroundNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, backgroundNormal) {
     d->backgroundViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, backgroundHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, backgroundHighlighted) {
     d->backgroundViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, backgroundChecked) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, backgroundChecked) {
     d->backgroundViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, backgroundCheckedHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, backgroundCheckedHighlighted) {
     d->backgroundViewPrepare();
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, ZFUIImageView *, backgroundDisabled) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonBasic, zfanyT<ZFUIImageView>, backgroundDisabled) {
     d->backgroundViewPrepare();
 }
 
-ZFMETHOD_DEFINE_1(ZFUIButtonBasic, ZFUITextView *, label
+ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUITextView>, label
         , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
@@ -277,7 +277,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, ZFUITextView *, label
             return zfnull;
     }
 }
-ZFMETHOD_DEFINE_1(ZFUIButtonBasic, ZFUIImageView *, icon
+ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, icon
         , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
@@ -296,7 +296,7 @@ ZFMETHOD_DEFINE_1(ZFUIButtonBasic, ZFUIImageView *, icon
             return zfnull;
     }
 }
-ZFMETHOD_DEFINE_1(ZFUIButtonBasic, ZFUIImageView *, background
+ZFMETHOD_DEFINE_1(ZFUIButtonBasic, zfanyT<ZFUIImageView>, background
         , ZFMP_IN_OPT(ZFUIButtonStateEnum, forState, ZFUIButtonState::e_Normal)
         ) {
     switch(forState) {
@@ -570,15 +570,15 @@ const ZFClass *ZFUIButtonBasic::buttonBackgroundClass(void) {
     return ZFUIImageView::ClassData();
 }
 
-ZFMETHOD_DEFINE_0(ZFUIButtonBasic, ZFUITextView *, labelView) {
+ZFMETHOD_DEFINE_0(ZFUIButtonBasic, zfanyT<ZFUITextView>, labelView) {
     d->labelViewPrepare();
     return d->labelView;
 }
-ZFMETHOD_DEFINE_0(ZFUIButtonBasic, ZFUIImageView *, iconView) {
+ZFMETHOD_DEFINE_0(ZFUIButtonBasic, zfanyT<ZFUIImageView>, iconView) {
     d->iconViewPrepare();
     return d->iconView;
 }
-ZFMETHOD_DEFINE_0(ZFUIButtonBasic, ZFUIImageView *, backgroundView) {
+ZFMETHOD_DEFINE_0(ZFUIButtonBasic, zfanyT<ZFUIImageView>, backgroundView) {
     d->backgroundViewPrepare();
     return d->backgroundView;
 }

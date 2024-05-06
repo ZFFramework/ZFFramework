@@ -179,7 +179,7 @@ public:
      * to embed ZFFramework to native framework,
      * you may use #mainWindowRegister
      */
-    ZFMETHOD_DECLARE_STATIC_0(ZFUISysWindow *, mainWindow)
+    ZFMETHOD_DECLARE_STATIC_0(zfanyT<ZFUISysWindow>, mainWindow)
     /**
      * @brief whether #mainWindow has attached
      */
@@ -194,7 +194,7 @@ public:
     /**
      * @brief see #keyWindow, return #mainWindow if not set
      */
-    ZFMETHOD_DECLARE_STATIC_0(ZFUISysWindow *, keyWindow)
+    ZFMETHOD_DECLARE_STATIC_0(zfanyT<ZFUISysWindow>, keyWindow)
 
 public:
     /**
@@ -298,7 +298,7 @@ public:
      * it's recommended that app have only one ZFUISysWindow,
      * use #ZFUIWindow if necessary
      */
-    ZFMETHOD_DECLARE_0(ZFUISysWindow *, modalWindowShow)
+    ZFMETHOD_DECLARE_0(zfautoT<ZFUISysWindow>, modalWindowShow)
     /**
      * @brief finish and destroy self as a modal window
      */
@@ -306,17 +306,17 @@ public:
     /**
      * @brief get self's current showing modal window
      */
-    ZFMETHOD_DECLARE_0(ZFUISysWindow *, modalWindowShowingWindow)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, modalWindowShowingWindow)
     /**
      * @brief get self's owner if self is a showing modal window
      */
-    ZFMETHOD_DECLARE_0(ZFUISysWindow *, modalWindowOwner)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, modalWindowOwner)
 
 public:
     /**
      * @brief get window's layout param, fill parent by default
      */
-    ZFMETHOD_DECLARE_0(ZFUILayoutParam *, sysWindowLayoutParam)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUILayoutParam>, sysWindowLayoutParam)
 
     /**
      * @brief access the root view of the window
@@ -324,7 +324,7 @@ public:
      * the root view is ensured #ZFUIRootView type,
      * and you must not add it to another view
      */
-    ZFMETHOD_DECLARE_0(ZFUIRootView *, rootView)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIRootView>, rootView)
 
 public:
     zffinal ZFUIRect _ZFP_ZFUISysWindow_measureWindow(ZF_IN const ZFUIRect &rootRefRect);
@@ -350,11 +350,11 @@ zfinterface ZFLIB_ZFUIKit ZFUISysWindowEmbedImpl : zfextend ZFInterface {
     ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(ZFUISysWindowEmbedImpl, ZFInterface)
 
 public:
-    ZFUISysWindow *_ZFP_ownerZFUISysWindow;
+    zfanyT<ZFUISysWindow> _ZFP_ownerZFUISysWindow;
     /**
      * @brief the attached #ZFUISysWindow
      */
-    inline ZFUISysWindow *ownerZFUISysWindow(void) {
+    inline zfanyT<ZFUISysWindow> const &ownerZFUISysWindow(void) {
         return this->_ZFP_ownerZFUISysWindow;
     }
 

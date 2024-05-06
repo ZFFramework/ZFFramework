@@ -1316,7 +1316,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewFocusRequest
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIView, ZFUIView *, viewFocusFind) {
+ZFMETHOD_DEFINE_0(ZFUIView, zfanyT<ZFUIView>, viewFocusFind) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFUIViewFocus) *impl = ZFPROTOCOL_TRY_ACCESS(ZFUIViewFocus);
     if(impl == zfnull) {
         return zfnull;
@@ -1667,7 +1667,7 @@ void ZFUIView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 
 // ============================================================
 // child views
-ZFMETHOD_DEFINE_3(ZFUIView, ZFUIView *, childFindById
+ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindById
         , ZFMP_IN(const zfchar *, viewId)
         , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
         , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
@@ -1846,7 +1846,7 @@ void ZFUIView::viewOnRemoveFromParent(ZF_IN ZFUIView *parent) {
 
 // ============================================================
 // internal views
-ZFMETHOD_DEFINE_3(ZFUIView, ZFUILayoutParam *, internalImplViewAdd
+ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalImplViewAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
         , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
@@ -1862,7 +1862,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, internalImplViewArr
     return d->layerInternalImpl.views;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, ZFUILayoutParam *, internalBgViewAdd
+ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalBgViewAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
         , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)
@@ -1878,7 +1878,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, internalBgViewArray
     return d->layerInternalBg.views;
 }
 
-ZFMETHOD_DEFINE_3(ZFUIView, ZFUILayoutParam *, internalFgViewAdd
+ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUILayoutParam>, internalFgViewAdd
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN_OPT(ZFUILayoutParam *, layoutParam, zfnull)
         , ZFMP_IN_OPT(zfbool, addAsTopMost, zftrue)

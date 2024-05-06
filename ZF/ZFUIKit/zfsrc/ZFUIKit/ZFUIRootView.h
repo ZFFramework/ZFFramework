@@ -25,14 +25,14 @@ public:
     /**
      * @brief owner #ZFUISysWindow
      */
-    zffinal ZFUISysWindow *rootViewOwnerSysWindow(void) {
+    zffinal zfanyT<ZFUISysWindow> const &rootViewOwnerSysWindow(void) {
         return this->_ZFP_ZFUIRootView_rootViewOwnerSysWindow;
     }
 
     /**
      * @brief all #ZFUIWindow attached to the root view
      */
-    ZFMETHOD_DECLARE_0(const ZFCoreArray<ZFUIWindow *> &, windowList)
+    ZFMETHOD_DECLARE_0(const ZFCoreArray<zfautoT<ZFUIWindow> > &, windowList)
 
 protected:
     zfoverride
@@ -54,8 +54,8 @@ protected:
     virtual void layoutOnLayout(ZF_IN const ZFUIRect &bounds);
 
 public:
-    ZFUISysWindow *_ZFP_ZFUIRootView_rootViewOwnerSysWindow;
-    ZFCoreArray<ZFUIWindow *> _ZFP_ZFUIRootView_windowList;
+    zfanyT<ZFUISysWindow> _ZFP_ZFUIRootView_rootViewOwnerSysWindow;
+    ZFCoreArray<zfautoT<ZFUIWindow> > _ZFP_ZFUIRootView_windowList;
 };
 
 ZF_NAMESPACE_GLOBAL_END

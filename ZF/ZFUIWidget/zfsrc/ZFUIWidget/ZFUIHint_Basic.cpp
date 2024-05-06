@@ -15,13 +15,13 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUISize, viewSizeMin) {
         ZFUIGlobalStyle::DefaultStyle()->itemSizeButton());
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUITextView *, labelNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUITextView>, labelNormal) {
     ZFUITextView *value = propertyValue;
     value->textColor(ZFUIColorWhite());
     value->textSingleLine(zffalse);
     value->textSizeAutoChangeMinSize(0);
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, ZFUIImageView *, backgroundNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, backgroundNormal) {
     ZFUIImageView *value = propertyValue;
     value->image(zfRes("ZFUIWidget/ZFUIHintContentBasic_background.xml"));
 }

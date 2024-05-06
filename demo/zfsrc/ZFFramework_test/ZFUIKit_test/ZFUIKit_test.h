@@ -18,10 +18,10 @@ zfclass ZFUIKit_test_Window : zfextend ZFUIWindow {
 zfclass ZFUIKit_test_Button : zfextend ZFUIButtonBasic {
     ZFOBJECT_DECLARE(ZFUIKit_test_Button, ZFUIButtonBasic)
 
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundNormal) {
+    ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, backgroundNormal) {
         propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorGreen());
     }
-    ZFPROPERTY_ON_INIT_INLINE(ZFUIImageView *, backgroundHighlighted) {
+    ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFUIImageView>, backgroundHighlighted) {
         propertyValue.to<ZFUIImageView *>()->viewBackgroundColor(ZFUIColorBlue());
     }
 };

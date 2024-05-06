@@ -85,9 +85,9 @@ public:
      * by default, the list adapter won't be serialized during the list view's serialization,
      * you can enable it by #listAdapterSerializable
      */
-    ZFPROPERTY_ASSIGN(ZFUIListAdapter *, listAdapter)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIListAdapter *, listAdapter)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFUIListAdapter *, listAdapter)
+    ZFPROPERTY_ASSIGN(zfanyT<ZFUIListAdapter>, listAdapter)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIListAdapter>, listAdapter)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIListAdapter>, listAdapter)
     /**
      * @brief set and retain the list adapter
      *
@@ -106,7 +106,7 @@ public:
     /**
      * @brief list updater to update list cells, holds #ZFUIListCellUpdater
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFArray *, cellUpdater, zfobj<ZFArray>())
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFArray>, cellUpdater, zfobj<ZFArray>())
 
     /**
      * @brief direction to layout children, #ZFUIOrientation::e_Top by default

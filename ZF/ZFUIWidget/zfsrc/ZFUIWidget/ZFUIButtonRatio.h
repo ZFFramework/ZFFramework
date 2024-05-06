@@ -21,10 +21,10 @@ zfclass ZFLIB_ZFUIWidget ZFUIButtonRatio : zfextend ZFUIButtonBasic {
 public:
     ZFPROPERTY_ON_INIT_DECLARE(zfbool, checkable)
     ZFPROPERTY_ON_INIT_DECLARE(ZFUIAlignFlags, contentAlign)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconNormal)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconHighlighted)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconChecked)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, iconCheckedHighlighted)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, iconNormal)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, iconHighlighted)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, iconChecked)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, iconCheckedHighlighted)
 };
 
 ZF_NAMESPACE_GLOBAL_END

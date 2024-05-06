@@ -3,7 +3,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 ZF_NAMESPACE_BEGIN(ZFUIViewUtil)
 
-ZFMETHOD_FUNC_DEFINE_1(ZFUIView *, viewRoot
+ZFMETHOD_FUNC_DEFINE_1(zfanyT<ZFUIView>, viewRoot
         , ZFMP_IN(ZFUIView *, view)
         ) {
     if(view != zfnull) {
@@ -30,7 +30,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, viewIsChildOf
     return zffalse;
 }
 
-ZFMETHOD_FUNC_DEFINE_5(ZFUIView *, viewChildAt
+ZFMETHOD_FUNC_DEFINE_5(zfanyT<ZFUIView>, viewChildAt
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(const ZFUIPoint &, pos)
         , ZFMP_IN_OPT(zfbool, filterDisabledView, zffalse)

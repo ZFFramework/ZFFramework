@@ -13,16 +13,16 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, ZFUIAlignFlags, contentAlign) {
     propertyValue = ZFUIAlign::e_Left;
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, ZFUIImageView *, iconNormal) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, zfanyT<ZFUIImageView>, iconNormal) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonCheckBox_IconNormal.png"));
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, ZFUIImageView *, iconHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, zfanyT<ZFUIImageView>, iconHighlighted) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonCheckBox_IconHighlighted.png"));
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, ZFUIImageView *, iconChecked) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, zfanyT<ZFUIImageView>, iconChecked) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonCheckBox_IconChecked.png"));
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, ZFUIImageView *, iconCheckedHighlighted) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIButtonCheckBox, zfanyT<ZFUIImageView>, iconCheckedHighlighted) {
     propertyValue.to<ZFUIImageView *>()->image(zfRes("ZFUIWidget/ZFUIButtonCheckBox_IconCheckedHighlighted.png"));
 }
 

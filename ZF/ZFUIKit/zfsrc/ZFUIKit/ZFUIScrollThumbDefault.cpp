@@ -133,12 +133,12 @@ void ZFUIScrollThumbDefault::objectOnDealloc(void) {
     zfsuper::objectOnDealloc();
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollThumbDefault, ZFUIImage *, scrollThumbImageHorizontal) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollThumbDefault, zfanyT<ZFUIImage>, scrollThumbImageHorizontal) {
     if(this->scrollThumbHorizontal()) {
         d->thumbView->image(this->scrollThumbImageHorizontal());
     }
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollThumbDefault, ZFUIImage *, scrollThumbImageVertical) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollThumbDefault, zfanyT<ZFUIImage>, scrollThumbImageVertical) {
     if(!this->scrollThumbHorizontal()) {
         d->thumbView->image(this->scrollThumbImageVertical());
     }

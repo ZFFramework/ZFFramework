@@ -490,6 +490,24 @@ public:
         }; \
     }; \
     /** @endcond */
+/** @brief explicitly declare as POD */
+#define ZFCORE_POD_DECLARE_TEMPLATE(T_Type, Type) \
+    /** @cond ZFPrivateDoc */ \
+    template<T_Type> \
+    zfclassNotPOD zftIsPOD<Type > { \
+    public: \
+        enum { \
+            Value = 1, \
+        }; \
+    }; \
+    /** @endcond */
+
+ZFCORE_POD_DECLARE(zfdouble)
+ZFCORE_POD_DECLARE(zflongdouble)
+ZFCORE_POD_DECLARE(zftimet)
+ZFCORE_POD_DECLARE(zfflags)
+ZFCORE_POD_DECLARE(zfidentity)
+ZFCORE_POD_DECLARE(ZFIndexRange)
 
 ZF_NAMESPACE_GLOBAL_END
 

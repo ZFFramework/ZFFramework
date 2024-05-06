@@ -16,7 +16,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIImageView, zfbool, viewUIEnableTree) {
     propertyValue = zffalse;
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIImage *, image) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
     if(this->image() != zfnull) {
         if(!this->imageUpdateListener) {
             ZFUIImageView *owner = this;
@@ -56,7 +56,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImageView, ZFUIImage *, image) {
         this->layoutRequest();
     }
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIImageView, ZFUIImage *, image) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIImageView, zfanyT<ZFUIImage>, image) {
     if(this->image() != zfnull) {
         if(this->imageUpdateListener) {
             this->image()->observerRemove(ZFObject::EventObjectPropertyValueOnUpdate(), this->imageUpdateListener);

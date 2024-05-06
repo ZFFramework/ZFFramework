@@ -327,6 +327,20 @@ public:
         return zfcast(ZFObject *, p);
     }
 };
+template<>
+zfclassNotPOD _ZFP_PropWeak<zfany, 0> {
+public:
+    static inline ZFObject *v(ZF_IN zfany const &p) {
+        return zfcast(ZFObject *, p);
+    }
+};
+template<typename T_Type>
+zfclassNotPOD _ZFP_PropWeak<zfanyT<T_Type>, 0> {
+public:
+    static inline ZFObject *v(ZF_IN zfanyT<T_Type> const &p) {
+        return zfcast(ZFObject *, p);
+    }
+};
 
 #define _ZFP_ZFPROPERTY_DECLARE_REGISTER_RETAIN(Type, ZFTypeId_noneOrType, Name, \
                                                 propertyClassOfRetainProperty) \

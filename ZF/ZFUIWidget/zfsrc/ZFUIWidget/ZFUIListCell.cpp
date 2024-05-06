@@ -17,7 +17,7 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCell, zfanyT<ZFUIView>, cellView) {
     }
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCell, ZFUILayoutParam *, cellViewLayoutParam) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCell, zfanyT<ZFUILayoutParam>, cellViewLayoutParam) {
     propertyValue = this->layoutParamCreate();
     ZFUILayoutParam *value = propertyValue;
     value->sizeParam(ZFUISizeParamFillFill());

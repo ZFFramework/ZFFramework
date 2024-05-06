@@ -44,7 +44,7 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIWindow>, windowForView
     return forView;
 }
 
-ZFMETHOD_DEFINE_1(ZFUIWindow, ZFUISysWindow *, sysWindowForView
+ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUISysWindow>, sysWindowForView
         , ZFMP_IN(ZFUIView *, view)
         ) {
     zfanyT<ZFUIWindow> window = ZFUIWindow::windowForView(view);
@@ -95,7 +95,7 @@ ZFMETHOD_DEFINE_1(ZFUIWindow, void, windowOwnerSysWindow
         }
     }
 }
-ZFMETHOD_DEFINE_0(ZFUIWindow, ZFUISysWindow *, windowOwnerSysWindow) {
+ZFMETHOD_DEFINE_0(ZFUIWindow, zfanyT<ZFUISysWindow>, windowOwnerSysWindow) {
     if(d->windowOwnerSysWindow == zfnull) {
         d->windowOwnerSysWindow = ZFUISysWindow::keyWindow();
     }
@@ -194,7 +194,7 @@ ZFMETHOD_DEFINE_0(ZFUIWindow, void, windowMoveToBottom) {
     }
 }
 
-ZFMETHOD_DEFINE_0(ZFUIWindow, ZFUILayoutParam *, windowLayoutParam) {
+ZFMETHOD_DEFINE_0(ZFUIWindow, zfanyT<ZFUILayoutParam>, windowLayoutParam) {
     return d->windowLayoutParam;
 }
 

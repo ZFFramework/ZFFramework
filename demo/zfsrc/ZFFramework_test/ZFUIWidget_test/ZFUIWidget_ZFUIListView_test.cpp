@@ -55,7 +55,7 @@ public:
 zfclass ZFUIWidget_ZFUIListView_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFUIWidget_ZFUIListView_test, ZFFramework_test_TestCase)
 
-    ZFPROPERTY_RETAIN(ZFUIListAdapter *, listAdapter, zfobj<ZFUIWidget_ZFUIListView_test_ListAdapter>())
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIListAdapter>, listAdapter, zfobj<ZFUIWidget_ZFUIListView_test_ListAdapter>())
 
 protected:
     zfoverride
@@ -135,7 +135,7 @@ private:
                 , ZFUIOrientation::e_Right
                 , ZFUIOrientation::e_Bottom
                 ));
-        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView->listAdapter()->toObject(), zffloat, ZFPropertyAccess(ZFUIListAdapter, cellSizeHint), ZFCoreArrayCreate(zffloat, 56, 100, 44));
+        ZFUIKit_test_prepareSettingForNormalProperty(settings, listView->listAdapter(), zffloat, ZFPropertyAccess(ZFUIListAdapter, cellSizeHint), ZFCoreArrayCreate(zffloat, 56, 100, 44));
 
 #define _ZFP_ZFUIWidget_ZFUIListView_test_autoScrollSpeed 100
         { // auto scroll x

@@ -20,13 +20,13 @@ public:
     /**
      * @brief access keyboard state for sys window
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUIOnScreenKeyboardState *, instanceForSysWindow
+    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIOnScreenKeyboardState>, instanceForSysWindow
             , ZFMP_IN_OPT(ZFUISysWindow *, sysWindow, zfnull)
             )
     /**
      * @brief access keyboard state for view
      */
-    ZFMETHOD_DECLARE_STATIC_1(ZFUIOnScreenKeyboardState *, instanceForView
+    ZFMETHOD_DECLARE_STATIC_1(zfanyT<ZFUIOnScreenKeyboardState>, instanceForView
             , ZFMP_IN_OPT(ZFUIView *, view, zfnull)
             )
 
@@ -35,7 +35,7 @@ public:
      * @brief owner sys window, null and invalid if not accessed by #instanceForSysWindow
      *   (which is typically not allowed)
      */
-    ZFMETHOD_DECLARE_0(ZFUISysWindow *, keyboardOwnerSysWindow)
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUISysWindow>, keyboardOwnerSysWindow)
 
 public:
     /**

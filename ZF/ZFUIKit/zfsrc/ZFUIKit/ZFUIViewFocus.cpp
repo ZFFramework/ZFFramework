@@ -297,7 +297,7 @@ ZFUIView *_ZFP_ZFUIViewFocusDataFindFirst(
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFUIViewFocusNextParam, ZFUIViewFocusNextParam)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, ZFUIOrientationFlags, focusDirection)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, zfbool, focusLoopMode)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, ZFUIView *, focusEndParent)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, zfanyT<ZFUIView>, focusEndParent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_SETTER_GETTER(v_ZFUIViewFocusNextParam, zfbool, focusInternalViews)
 
 void ZFUIViewFocusNextParam::objectInfoT(ZF_IN_OUT zfstring &ret) const {

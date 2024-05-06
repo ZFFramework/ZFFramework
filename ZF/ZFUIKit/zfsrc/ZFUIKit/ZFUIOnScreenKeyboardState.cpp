@@ -8,7 +8,7 @@ ZFOBJECT_REGISTER(ZFUIOnScreenKeyboardState)
 
 ZFOBSERVER_EVENT_REGISTER(ZFUIOnScreenKeyboardState, KeyboardStateOnChange)
 
-ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, ZFUIOnScreenKeyboardState *, instanceForSysWindow
+ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, zfanyT<ZFUIOnScreenKeyboardState>, instanceForSysWindow
         , ZFMP_IN_OPT(ZFUISysWindow *, sysWindow, zfnull)
         ) {
     if(sysWindow == zfnull) {
@@ -23,13 +23,13 @@ ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, ZFUIOnScreenKeyboardState *, instan
     }
     return ret;
 }
-ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, ZFUIOnScreenKeyboardState *, instanceForView
+ZFMETHOD_DEFINE_1(ZFUIOnScreenKeyboardState, zfanyT<ZFUIOnScreenKeyboardState>, instanceForView
         , ZFMP_IN_OPT(ZFUIView *, view, zfnull)
         ) {
     return ZFUIOnScreenKeyboardState::instanceForSysWindow(ZFUIWindow::sysWindowForView(view));
 }
 
-ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, ZFUISysWindow *, keyboardOwnerSysWindow) {
+ZFMETHOD_DEFINE_0(ZFUIOnScreenKeyboardState, zfanyT<ZFUISysWindow>, keyboardOwnerSysWindow) {
     return _ZFP_ZFUIOnScreenKeyboardState_keyboardOwnerSysWindow;
 }
 

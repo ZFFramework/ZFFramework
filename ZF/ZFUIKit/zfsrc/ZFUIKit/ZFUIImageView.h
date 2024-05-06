@@ -28,9 +28,9 @@ public:
     /**
      * @brief image for this view
      */
-    ZFPROPERTY_RETAIN(ZFUIImage *, image)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImage *, image)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImage *, image)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, image)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, image)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImage>, image)
 
     /**
      * @brief image scale type, fill by default

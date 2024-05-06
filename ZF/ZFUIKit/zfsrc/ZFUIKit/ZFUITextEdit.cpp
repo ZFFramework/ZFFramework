@@ -67,13 +67,13 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardTypeEnum, textEdit
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFUITextEditKeyboardReturnTypeEnum, textEditKeyboardReturnType) {
     ZFPROTOCOL_ACCESS(ZFUITextEdit)->textEditKeyboardReturnType(this, this->textEditKeyboardReturnType());
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, ZFUITextView *, textPlaceHolder) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEdit, zfanyT<ZFUITextView>, textPlaceHolder) {
     zfobj<ZFUITextView> textPlaceHolder;
     propertyValue = textPlaceHolder;
     textPlaceHolder->textColor(ZFUIGlobalStyle::DefaultStyle()->textColorHint());
     textPlaceHolder->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, ZFRegExp *, textEditFilter) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUITextEdit, zfanyT<ZFRegExp>, textEditFilter) {
     if(!this->text().isEmpty() && !this->textShouldChange(this->text())) {
         this->text("");
     }

@@ -42,6 +42,7 @@ public:
     ZFUISizeTypeEnum width;   /**< @brief width */
     ZFUISizeTypeEnum height;  /**< @brief height */
 };
+ZFCORE_POD_DECLARE(ZFUISizeParam)
 
 /**
  * @brief see #ZFTYPEID_DECLARE

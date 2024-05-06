@@ -43,7 +43,7 @@ public:
     /**
      * @brief current focused child view inside this layout, null if none
      */
-    virtual ZFUIView *autoFitFocusedView(void);
+    ZFMETHOD_DECLARE_0(zfanyT<ZFUIView>, autoFitFocusedView)
 
 protected:
     zfoverride

@@ -525,24 +525,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         } \
     private: \
         /** @cond ZFPrivateDoc */ \
-        zfclassLikePOD paramName##_ZFCoreParam { \
+        zfclassLikePOD paramName##_PropT { \
         public: \
-            paramName##_ZFCoreParam(void) \
+            paramName##_PropT(void) \
             : value(initValue) \
             { \
             } \
-            paramName##_ZFCoreParam(ZF_IN const paramName##_ZFCoreParam &ref) \
+            paramName##_PropT(ZF_IN const paramName##_PropT &ref) \
             : value(ref.value) \
             { \
             } \
-            paramName##_ZFCoreParam &operator = (ZF_IN const paramName##_ZFCoreParam &ref) { \
+            paramName##_PropT &operator = (ZF_IN const paramName##_PropT &ref) { \
                 this->value = ref.value; \
                 return *this; \
             } \
         public: \
             T_ParamType value; \
         }; \
-        paramName##_ZFCoreParam paramName##_PropV; \
+        paramName##_PropT paramName##_PropV; \
         /** @endcond */ \
     public: \
         /** @brief see @ref paramName */ \
