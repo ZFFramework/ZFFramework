@@ -32,7 +32,6 @@ public:
     /** @brief see #ZFListener */
     inline void execute(void) const {
         ZFArgs zfargs;
-        zfargs.userData(this->userData());
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */
@@ -42,7 +41,6 @@ public:
     /** @brief see #ZFListener */
     inline void operator () (void) const {
         ZFArgs zfargs;
-        zfargs.userData(this->userData());
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
     /** @brief see #ZFListener */

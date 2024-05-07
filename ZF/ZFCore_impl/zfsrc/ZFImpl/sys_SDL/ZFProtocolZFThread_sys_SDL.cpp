@@ -42,9 +42,7 @@ ZFIMPL_SYS_SDL_USER_EVENT_HANDLER(MainThreadTask, ZFLevelZFFrameworkNormal) {
     }
     ZFListener runnable = *(_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.begin());
     zfCoreMutexUnlock();
-    runnable.execute(ZFArgs()
-            .userData(runnable.userData())
-        );
+    runnable.execute();
     if(!_ZFP_ZFImpl_sys_SDL_MainThreadTaskQueue.empty()) {
         _ZFP_ZFImpl_sys_SDL_MainThreadRunNext();
     }

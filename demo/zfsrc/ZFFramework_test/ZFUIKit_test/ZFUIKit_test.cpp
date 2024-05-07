@@ -75,7 +75,6 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
 
             setting->buttonClickListener().execute(ZFArgs()
                     .sender(button)
-                    .userData(setting->buttonClickListener().userData())
                 );
             setting->settingUpdate();
         } ZFLISTENER_END()
@@ -89,7 +88,6 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
             setting->buttonTextGetter().execute(ZFArgs()
                     .sender(button)
                     .param0(buttonText)
-                    .userData(setting->buttonTextGetter().userData())
                 );
             button->label()->text(buttonText->zfv);
         } ZFLISTENER_END()
@@ -99,7 +97,6 @@ zfauto ZFUIKit_test_prepareSettingButton(ZF_IN ZFArray *settings) {
         setting->buttonTextGetter().execute(ZFArgs()
                 .sender(button)
                 .param0(buttonText)
-                .userData(setting->buttonTextGetter().userData())
             );
         button->label()->text(buttonText->zfv);
     }

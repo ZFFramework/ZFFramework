@@ -45,7 +45,6 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
     methodImpl.execute(ZFArgs()
             .sender(invokerObject)
             .param0(d)
-            .userData(methodImpl.userData())
         );
     ret = d->ret;
     if(errorHint != zfnull) {

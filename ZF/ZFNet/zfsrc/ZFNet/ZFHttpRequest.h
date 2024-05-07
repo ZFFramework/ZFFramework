@@ -273,6 +273,50 @@ public:
     void _ZFP_ZFHttpRequest_notifyResponse(void);
 };
 
+// ============================================================
+/** @brief url encode util */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFNet, zfstring, ZFUrlEncode
+        , ZFMP_IN(const zfchar *, src)
+        )
+/** @brief url encode util */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFNet, void, ZFUrlEncodeT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        )
+
+/** @brief url decode util */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFNet, zfstring, ZFUrlDecode
+        , ZFMP_IN(const zfchar *, src)
+        )
+/** @brief url decode util */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFNet, void, ZFUrlDecodeT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        )
+
+/** @brief util to generate url */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFNet, zfstring, ZFUrlForParam
+        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const ZFJson &, params)
+        )
+/** @brief util to modify url */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFNet, void, ZFUrlParamSet
+        , ZFMP_IN_OUT(zfstring &, url)
+        , ZFMP_IN(const ZFJson &, params)
+        )
+/** @brief util to modify url */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFNet, void, ZFUrlParamSet
+        , ZFMP_IN_OUT(zfstring &, url)
+        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfchar *, value)
+        )
+/** @brief util to get param from url */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFNet, zfstring, ZFUrlParamGet
+        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN_OPT(const zfchar *, def, zfnull)
+        )
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFHttpRequest_h_
 

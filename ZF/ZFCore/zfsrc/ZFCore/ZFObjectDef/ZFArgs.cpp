@@ -54,10 +54,6 @@ void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const {
         ret += ", param1: ";
         ZFObjectInfoT(ret, this->param1());
     }
-    if(this->userData() != zfnull) {
-        ret += ", userData: ";
-        ZFObjectInfoT(ret, this->userData());
-    }
     if(this->result() != zfnull) {
         ret += ", result: ";
         ZFObjectInfoT(ret, this->result());

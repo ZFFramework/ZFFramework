@@ -77,7 +77,6 @@ protected:
             this->customAniCallback().execute(ZFArgs()
                     .sender(this)
                     .param0(this->_ZFP_progressHolder)
-                    .userData(this->customAniCallback().userData())
                 );
         }
     }

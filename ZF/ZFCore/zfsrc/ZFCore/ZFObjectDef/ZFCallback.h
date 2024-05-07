@@ -345,16 +345,6 @@ public:
             , ZF_IN const zfchar *pathData
             );
 
-public:
-    /**
-     * @brief extra user data stored in this callback, automatically retained
-     *
-     * typically this is used for #ZFArgs::userData
-     */
-    zffinal zfany userData(void) const;
-    /** @brief see #userData */
-    zffinal void userData(ZF_IN ZFObject *userData);
-
 private:
     _ZFP_ZFCallbackPrivate *d;
 };

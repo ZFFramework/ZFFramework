@@ -59,7 +59,6 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForImplOwner, zfindex, onOutput
                 .param0(this->_srcCache)
                 .param1(this->_countCache)
                 .result(this->_resultCache)
-                .userData(this->impl.userData())
             );
         return this->_resultCache->zfv;
     }

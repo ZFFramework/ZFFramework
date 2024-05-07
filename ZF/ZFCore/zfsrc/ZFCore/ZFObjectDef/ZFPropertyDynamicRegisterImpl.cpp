@@ -682,7 +682,6 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
         implUserData->callback.execute(ZFArgs()
                 .sender(propertyOwnerObject)
                 .param0(invokeData)
-                .userData(implUserData->callback.userData())
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
             *(zfauto *)propertyValue = invokeData->propertyValue;
@@ -709,7 +708,6 @@ static void _ZFP_ZFPropertyDynamicRegisterLifeCycleWrapper(
         implUserData->callback.execute(ZFArgs()
                 .sender(propertyOwnerObject)
                 .param0(invokeData)
-                .userData(implUserData->callback.userData())
             );
         if(!_ZFP_ZFPropertyLifeCycleIsReadonly(implUserData->lifeCycle)) {
             propertyValueHolder->wrappedValueCopy(propertyValue);

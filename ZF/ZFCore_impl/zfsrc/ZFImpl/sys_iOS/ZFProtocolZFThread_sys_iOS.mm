@@ -19,16 +19,12 @@
 - (void)threadCallback:(id)dummy {
     @autoreleasepool {
         if(!self.cancelFlag) {
-            self.runnable.execute(ZFArgs()
-                    .userData(self.runnable.userData())
-                );
+            self.runnable.execute();
         }
     }
 
     if(self.runnableCleanup) {
-        self.runnableCleanup.execute(ZFArgs()
-                .userData(self.runnableCleanup.userData())
-            );
+        self.runnableCleanup.execute();
     }
     self._selfHolder = nil;
 }

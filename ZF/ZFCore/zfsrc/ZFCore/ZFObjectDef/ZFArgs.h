@@ -47,13 +47,6 @@ public:
     ZFArgs &param1(ZF_IN zfany const &v) {d.param1 = v; return *this;}
     /** @brief see #param1 */
     zfany const &param1(void) const {return d.param1;}
-    /**
-     * @brief extra user data passed from #ZFCallback::userData
-     * @note the userData stored in #ZFArgs has no auto retain
-     */
-    ZFArgs &userData(ZF_IN zfany const &v) {d.userData = v; return *this;}
-    /** @brief see #userData */
-    zfany const &userData(void) const {return d.userData;}
 
     /**
      * @brief result, must first enabled by #resultEnable
@@ -152,7 +145,6 @@ private:
         zfany sender;
         zfany param0;
         zfany param1;
-        zfany userData;
         zfany result;
         zfbool eventFiltered;
     };

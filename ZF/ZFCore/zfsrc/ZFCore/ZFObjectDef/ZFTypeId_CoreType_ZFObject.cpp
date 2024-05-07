@@ -263,10 +263,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, void, param1
         , ZFMP_IN(ZFObject *, v)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfany, param1)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, void, userData
-        , ZFMP_IN(ZFObject *, v)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfany, userData)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, void, result
         , ZFMP_IN(ZFObject *, v)
         )

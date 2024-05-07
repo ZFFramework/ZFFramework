@@ -45,7 +45,6 @@ public:
             this->callback.execute(ZFArgs()
                     .sender(owner)
                     .param0(this->response)
-                    .userData(this->callback.userData())
                 );
         }
         this->callback = ZFCallback();
@@ -398,6 +397,113 @@ void ZFHttpResponse::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     }
     zfstringAppend(ret, " header:%s", this->headerCount());
     zfstringAppend(ret, " body:%s", this->body().bufferSize());
+}
+
+// ============================================================
+ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFUrlEncode
+        , ZFMP_IN(const zfchar *, src)
+        ) {
+    zfstring ret;
+    ZFUrlEncodeT(ret, src);
+    return ret;
+}
+ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlEncodeT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        ) {
+    zfCoreDataEncode(ret, src);
+}
+
+ZFMETHOD_FUNC_DEFINE_1(zfstring, ZFUrlDecode
+        , ZFMP_IN(const zfchar *, src)
+        ) {
+    zfstring ret;
+    ZFUrlDecodeT(ret, src);
+    return ret;
+}
+ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlDecodeT
+        , ZFMP_IN_OUT(zfstring &, ret)
+        , ZFMP_IN(const zfchar *, src)
+        ) {
+    zfCoreDataDecode(ret, src);
+}
+
+ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFUrlForParam
+        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const ZFJson &, params)
+        ) {
+    zfstring ret = url;
+    ZFUrlParamSet(ret, params);
+    return ret;
+}
+ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlParamSet
+        , ZFMP_IN_OUT(zfstring &, url)
+        , ZFMP_IN(const ZFJson &, params)
+        ) {
+    for(zfiterator it = params.attrIter(); params.attrIterValid(it); params.attrIterNext(it)) {
+        const zfchar *key = params.attrIterKey(it);
+        ZFJson valueHolder = params.attrIterValue(it);
+        if(valueHolder.type() != ZFJsonType::e_JsonValue) {
+            continue;
+        }
+        const zfchar *value = valueHolder.value();
+        if(zfstringIsEmpty(key) || zfstringIsEmpty(value)) {
+            continue;
+        }
+        ZFUrlParamSet(url, key, value);
+    }
+}
+ZFMETHOD_FUNC_DEFINE_3(void, ZFUrlParamSet
+        , ZFMP_IN_OUT(zfstring &, url)
+        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfchar *, value)
+        ) {
+    zfindex p = zfstringFind(url, zfstr("?%s=", key));
+    if(p == zfindexMax()) {
+        p = zfstringFind(url, zfstr("&%s=", key));
+        if(p == zfindexMax()) {
+            url += (zfstringFind(url, '?') != zfindexMax() ? '&' : '?');
+            url += key;
+            url += '=';
+            ZFUrlEncodeT(url, value);
+            return;
+        }
+    }
+
+    zfindex start = p + 1 + zfslen(key) + 1;
+    zfindex end = zfstringFind(url.cString() + start, '&');
+    if(end == zfindexMax()) {
+        url.remove(start);
+        ZFUrlEncodeT(url, value);
+    }
+    else {
+        url.replace(start, end - start, ZFUrlEncode(value));
+    }
+}
+ZFMETHOD_FUNC_DEFINE_3(zfstring, ZFUrlParamGet
+        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN_OPT(const zfchar *, def, zfnull)
+        ) {
+    if(zfstringIsEmpty(url)) {
+        return def;
+    }
+    zfindex p = zfstringFind(url, zfstr("?%s=", key));
+    if(p == zfindexMax()) {
+        p = zfstringFind(url, zfstr("&%s=", key));
+        if(p == zfindexMax()) {
+            return def;
+        }
+    }
+    zfindex keyLen = zfslen(key);
+    zfindex start = p + 1 + keyLen + 1;
+    zfindex end = zfstringFind(url + start, '&');
+    if(end == zfindexMax()) {
+        return (url + start);
+    }
+    else {
+        return zfstring(url + start, end - start);
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

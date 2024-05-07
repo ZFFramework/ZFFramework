@@ -553,9 +553,7 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const {
             ;
         for(zfstlsize i = 0; i < d->instanceObserverCached.size() && !zfargs.eventFiltered(); ++i) {
             _ZFP_ZFClassPrivate::InstanceObserverData &data = *(d->instanceObserverCached[i]);
-            data.observer.execute(zfargs
-                    .userData(data.observer.userData())
-                );
+            data.observer.execute(zfargs);
         }
     }
 }

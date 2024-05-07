@@ -175,7 +175,6 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFTimer>, ZFTimerOnce
         if(ret->timerStarted()) {
             timerCallback.execute(ZFArgs()
                     .sender(ret)
-                    .userData(timerCallback.userData())
                 );
         }
         ret->timerStop();

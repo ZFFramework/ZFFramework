@@ -30,7 +30,6 @@ public:
     zfchar *serializableCustomType;
     ZFSerializableData *serializableCustomData;
     ZFPathInfo *pathInfo;
-    ZFObject *userData;
 
 public:
     _ZFP_ZFCallbackPrivate(void)
@@ -48,7 +47,6 @@ public:
     , serializableCustomType(zfnull)
     , serializableCustomData(zfnull)
     , pathInfo(zfnull)
-    , userData(zfnull)
     {
     }
     ~_ZFP_ZFCallbackPrivate(void) {
@@ -62,7 +60,6 @@ public:
         if(this->callbackLambdaImplDestroy) {
             this->callbackLambdaImplDestroy(this->callbackLambdaImpl);
         }
-        zfRelease(this->userData);
     }
 };
 
@@ -441,17 +438,6 @@ void ZFCallback::pathInfo(
             d->pathInfo = zfnull;
         }
     }
-}
-
-zfany ZFCallback::userData(void) const {
-    return d ? d->userData : zfnull;
-}
-void ZFCallback::userData(ZF_IN ZFObject *userData) {
-    zfCoreMutexLocker();
-    if(d == zfnull) {
-        d = zfnew(_ZFP_ZFCallbackPrivate);
-    }
-    zfunsafe_zfRetainChange(d->userData, userData);
 }
 
 ZF_NAMESPACE_GLOBAL_END

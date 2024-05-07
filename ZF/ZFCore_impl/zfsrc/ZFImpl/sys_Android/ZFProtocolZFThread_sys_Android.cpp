@@ -245,9 +245,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread
         , jobject nativeThread
         ) {
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
-    d->runnable.execute(ZFArgs()
-            .userData(d->runnable.userData())
-        );
+    d->runnable.execute();
     zfdelete(d);
 }
 JNI_METHOD_DECLARE_END()
@@ -258,12 +256,8 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFThread
         , _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType nativeThread
         ) {
     _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = _ZFP_ZFThreadImpl_sys_Android_getExecuteData(executeDataId);
-    d->runnable.execute(ZFArgs()
-            .userData(d->runnable.userData())
-        );
-    d->runnableCleanup.execute(ZFArgs()
-            .userData(d->runnableCleanup.userData())
-        );
+    d->runnable.execute();
+    d->runnableCleanup.execute();
     zfdelete(d);
 }
 JNI_METHOD_DECLARE_END()

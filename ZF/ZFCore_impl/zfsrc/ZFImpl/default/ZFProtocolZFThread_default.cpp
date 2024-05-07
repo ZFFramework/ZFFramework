@@ -86,12 +86,8 @@ ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_default_DataHolder)
 #define _ZFP_ZFThreadImpl_default_threadMap (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFThreadImpl_default_DataHolder)->threadMap)
 
 void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data) {
-    data->runnable.execute(ZFArgs()
-            .userData(data->runnable.userData())
-        );
-    data->runnableCleanup.execute(ZFArgs()
-            .userData(data->runnableCleanup.userData())
-        );
+    data->runnable.execute();
+    data->runnableCleanup.execute();
     zfdelete(data);
 }
 
