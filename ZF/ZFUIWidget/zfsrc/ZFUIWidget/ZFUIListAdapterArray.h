@@ -100,7 +100,7 @@ public:
         return d->count();
     }
     zfoverride
-    virtual zfauto cellAt(ZF_IN zfindex index) {
+    virtual zfautoT<ZFUIListCell> cellAt(ZF_IN zfindex index) {
         return d->get(index);
     }
 

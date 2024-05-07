@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 zfclassPOD ZFLIB_ZFUIWidget ZFUIListCellUpdaterParam {
 public:
-    ZFUIListCell *cell; /**< @brief the cell */
+    zfanyT<ZFUIListCell> cell; /**< @brief the cell */
     zfindex cellIndex; /**< @brief cell's index */
     zfindex cellCount; /**< @brief cell's total count */
     ZFUIOrientationEnum listOrientation; /**< @brief owner list container's orientation */

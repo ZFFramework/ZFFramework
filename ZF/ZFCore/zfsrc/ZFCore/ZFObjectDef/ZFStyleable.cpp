@@ -8,7 +8,7 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFStyleable *ZFStyleable::defaultStyle(void) {
+zfanyT<ZFStyleable> ZFStyleable::defaultStyle(void) {
     const ZFMethod *method = this->classData()->methodForName("DefaultStyle");
     if(method != zfnull) {
         return method->methodInvoke(zfnull);
@@ -207,17 +207,17 @@ public:
     static void styleOnDealloc(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
 
-        ZFStyleable *defaultStyle = zfargs.sender()->to<ZFStyleable *>()->defaultStyle();
+        ZFObject *defaultStyle = zfargs.sender()->to<ZFStyleable *>()->defaultStyle();
         zfCoreAssert(defaultStyle != zfnull);
-        _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
+        _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle
             ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
         zfCoreAssert(taskData != zfnull);
 
         taskData->styles.removeElement(zfargs.sender()->objectHolder());
 
         if(taskData->styles.isEmpty()) {
-            defaultStyle->toObject()->objectTagRemove(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
-            defaultStyle->toObject()->observerRemove(ZFObject::EventObjectPropertyValueOnUpdate(),
+            defaultStyle->objectTagRemove(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
+            defaultStyle->observerRemove(ZFObject::EventObjectPropertyValueOnUpdate(),
                 ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnChangeListener);
         }
     }
@@ -225,8 +225,8 @@ public:
         zfCoreMutexLocker();
 
         const ZFProperty *const &property = zfargs.param0().zfv();
-        ZFStyleable *defaultStyle = zfargs.sender();
-        _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
+        ZFObject *defaultStyle = zfargs.sender();
+        _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle
             ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
 
         ZFCoreArray<ZFObjectHolder *> styles;
@@ -240,16 +240,16 @@ ZF_GLOBAL_INITIALIZER_END(ZFStyleDefaultApplyAutoCopyDataHolder)
 void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style) {
     zfCoreMutexLocker();
     if(style != zfnull && !style->styleableIsDefaultStyle()) {
-        ZFStyleable *defaultStyle = style->defaultStyle();
+        ZFObject *defaultStyle = style->defaultStyle();
         if(defaultStyle != zfnull) {
-            _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle->toObject()
+            _ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData *taskData = defaultStyle
                 ->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull());
             if(taskData == zfnull) {
                 taskData = zfAlloc(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData);
-                defaultStyle->toObject()->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull(), taskData);
+                defaultStyle->objectTag(_ZFP_I_ZFStyleDefaultApplyAutoCopyTaskData::ClassData()->classNameFull(), taskData);
                 zfRelease(taskData);
 
-                defaultStyle->toObject()->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(),
+                defaultStyle->observerAdd(ZFObject::EventObjectPropertyValueOnUpdate(),
                     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFStyleDefaultApplyAutoCopyDataHolder)->defaultStyleOnChangeListener);
             }
             taskData->styles.add(style->toObject()->objectHolder());
@@ -416,7 +416,7 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, ZFStyleable *, defaultStyle)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfanyT<ZFStyleable>, defaultStyle)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleableCopyFrom
         , ZFMP_IN(ZFStyleable *, anotherStyleable)
         )

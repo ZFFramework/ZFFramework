@@ -39,7 +39,7 @@ public:
      * (see #ZFSTYLE_DEFAULT_DECLARE),
      * cache it first if necessary
      */
-    virtual ZFStyleable *defaultStyle(void);
+    virtual zfanyT<ZFStyleable> defaultStyle(void);
 
 public:
     /**
@@ -213,7 +213,7 @@ private:
         zfclass _ZFP_ZFStyleableDefault_##YourStyle; \
     public: \
         /** \n default style for @ref YourStyle */ \
-        static YourStyle *DefaultStyle(void); \
+        static zfanyT<YourStyle> DefaultStyle(void); \
     private: \
         static void _ZFP_ZFStyleablEnumDefaultStyle(ZF_IN YourStyle *newInstance); \
         static ZFCorePointerBase *&_ZFP_ZFStyleableDefaultCleaner(void); \
@@ -228,7 +228,7 @@ private:
             return zftrue; \
         } \
     }; \
-    YourStyle *YourStyle::DefaultStyle(void) { \
+    zfanyT<YourStyle> YourStyle::DefaultStyle(void) { \
         static _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(ZFM_TOSTRING(YourStyle)); \
         if(holder->d == zfnull) { \
             zfCoreMutexLocker(); \
@@ -246,7 +246,7 @@ private:
             return YourStyle::DefaultStyle(); \
         }, YourStyle, \
         public, ZFMethodTypeStatic, s, \
-        YourStyle *, DefaultStyle) \
+        zfanyT<YourStyle>, DefaultStyle) \
     void YourStyle::_ZFP_ZFStyleablEnumDefaultStyle(ZF_IN YourStyle *newInstance) { \
         if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
             return; \
@@ -299,8 +299,8 @@ private:
  * @endcode
  * the macros above declare these types for you:
  * -  default style access method:
- *   static YourObjectStyle *DefaultStyle(void);
- *   virtual ZFStyleable *defaultStyle(void);
+ *   static zfanyT<YourObjectStyle> DefaultStyle(void);
+ *   virtual zfanyT<ZFStyleable> defaultStyle(void);
  *
  * \n
  * @note a style holder object would be created automatically when access the default style,
@@ -341,7 +341,7 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
 #define ZFSTYLE_DEFAULT_AUTO_COPY() \
     ZFINTERFACE_ON_INIT_DECLARE() { \
         if(!this->styleableIsDefaultStyle()) { \
-            ZFStyleable *defaultStyle = this->defaultStyle(); \
+            zfanyT<ZFStyleable> defaultStyle = this->defaultStyle(); \
             if(defaultStyle != zfnull) { \
                 this->styleableCopyFrom(defaultStyle); \
                 ZFStyleDefaultApplyAutoCopy(this); \

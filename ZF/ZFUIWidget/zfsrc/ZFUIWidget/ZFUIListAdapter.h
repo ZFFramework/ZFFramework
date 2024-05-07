@@ -102,7 +102,7 @@ public:
     /**
      * @brief access list cell at index, assert fail if return null object
      */
-    virtual zfauto cellAt(ZF_IN zfindex index) zfpurevirtual;
+    virtual zfautoT<ZFUIListCell> cellAt(ZF_IN zfindex index) zfpurevirtual;
     /**
      * @brief check cell size at index
      *

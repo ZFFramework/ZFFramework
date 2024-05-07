@@ -57,7 +57,7 @@ private:
  * use #zfauto or #zfweak for most case,
  * use zfany only if necessary
  */
-zfclassLikePOD ZFLIB_ZFCore zfany {
+zfclassPOD ZFLIB_ZFCore zfany {
     /** @cond ZFPrivateDoc */
 public:
     zfany(void) : _ZFP_obj(zfnull) {}
@@ -158,7 +158,7 @@ ZFCORE_POD_DECLARE(zfany)
  * @brief see #zfany
  */
 template<typename T_ZFObjectBase>
-zfclassLikePOD zfanyT : zfextend zfany {
+zfclassPOD zfanyT : zfextend zfany {
     /** @cond ZFPrivateDoc */
 public:
     zfanyT(void) : zfany() {}

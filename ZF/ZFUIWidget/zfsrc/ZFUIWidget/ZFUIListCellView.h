@@ -21,15 +21,15 @@ public:
     /**
      * @brief container for icon, you may add your own custom view
      */
-    virtual ZFUIView *cellIconContainer(void) zfpurevirtual;
+    virtual zfanyT<ZFUIView> cellIconContainer(void) zfpurevirtual;
     /**
      * @brief container for center item, you may add your own custom view
      */
-    virtual ZFUIView *cellCenterContainer(void) zfpurevirtual;
+    virtual zfanyT<ZFUIView> cellCenterContainer(void) zfpurevirtual;
     /**
      * @brief container for accessory, you may add your own custom view
      */
-    virtual ZFUIView *cellAccessoryContainer(void) zfpurevirtual;
+    virtual zfanyT<ZFUIView> cellAccessoryContainer(void) zfpurevirtual;
 
 protected:
     zfoverride

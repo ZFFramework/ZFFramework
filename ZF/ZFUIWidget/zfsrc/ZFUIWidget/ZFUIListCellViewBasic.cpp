@@ -54,19 +54,19 @@ ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub)
     this->cellLabelSub()->viewRemoveFromParent();
 }
 
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellIconContainer) {
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, zfanyT<ZFUIView>, cellIconContainer) {
     return d->cellIconContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellCenterContainer) {
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, zfanyT<ZFUIView>, cellCenterContainer) {
     return d->cellCenterContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellLabelMainContainer) {
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, zfanyT<ZFUIView>, cellLabelMainContainer) {
     return d->cellLabelMainContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellLabelSubContainer) {
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, zfanyT<ZFUIView>, cellLabelSubContainer) {
     return d->cellLabelSubContainer;
 }
-ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, ZFUIView *, cellAccessoryContainer) {
+ZFMETHOD_DEFINE_0(ZFUIListCellViewBasic, zfanyT<ZFUIView>, cellAccessoryContainer) {
     return d->cellAccessoryContainer;
 }
 

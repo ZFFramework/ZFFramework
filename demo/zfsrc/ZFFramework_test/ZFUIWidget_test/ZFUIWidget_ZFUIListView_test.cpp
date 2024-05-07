@@ -20,7 +20,7 @@ public:
             return zfsuperI(ZFUIListAdapter)::cellSizeAt(index, cell);
         #endif
     }
-    virtual zfauto cellAt(ZF_IN zfindex index) {
+    virtual zfautoT<ZFUIListCell> cellAt(ZF_IN zfindex index) {
         zfobj<ZFUIListCell> ret;
         ret->cellView(zfobj<ZFUIListCellViewBasic>());
         return ret;

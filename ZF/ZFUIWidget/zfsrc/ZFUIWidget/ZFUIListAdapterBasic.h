@@ -15,7 +15,7 @@ zfclass ZFLIB_ZFUIWidget ZFUIListAdapterBasicParam : zfextend ZFObject {
 
 public:
     /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
-    ZFPROPERTY_RETAIN(ZFUIListCell *, cell)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIListCell>, cell)
     /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
     ZFPROPERTY_ASSIGN(zfindex, cellIndex)
     /** @brief see #ZFUIListAdapterBasic::EventListCellAt */
@@ -99,7 +99,7 @@ public:
         return ret->zfv;
     }
     zfoverride
-    virtual zfauto cellAt(ZF_IN zfindex index) {
+    virtual zfautoT<ZFUIListCell> cellAt(ZF_IN zfindex index) {
         zfobj<ZFUIListAdapterBasicParam> param;
         param->cellIndex(index);
         this->observerNotify(zfself::EventListCellAt(), param);
