@@ -23,7 +23,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   ZFOutputForImpl(function(zfargs)
  *       local src = zfargs:param0()
  *       local size = zfargs:param1()
- *       local result = zfargs:param1()
+ *       local result = zfargs:result()
  *       local yourWrittenLength = yourOutput(buf, count)
  *       -- return size actually written
  *       result:zfv(yourWrittenLength)
