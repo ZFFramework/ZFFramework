@@ -123,8 +123,8 @@ extern _JNI_EXPORT JNIEnv *JNIGetJNIEnv(void);
 /**
  * @brief convert class name to JNI class sig
  *
- * for example, convert "com.example.OutterClass$InnerClass"
- * to "Lcom/example/OutterClass$InnerClass;"\n
+ * for example, convert "com.example.OuterClass$InnerClass"
+ * to "Lcom/example/OuterClass$InnerClass;"\n
  * class name can be get by SomeClass.class.getName() in your jave code
  */
 extern _JNI_EXPORT void JNIConvertClassNameToClassSig(JNIString &ret, const char *className);
@@ -138,8 +138,8 @@ inline JNIString JNIConvertClassNameToClassSig(const char *className) {
 /**
  * @brief convert JNI class sig to class name
  *
- * for example, convert "Lcom/example/OutterClass$InnerClass;"
- * to "com.example.OutterClass$InnerClass"
+ * for example, convert "Lcom/example/OuterClass$InnerClass;"
+ * to "com.example.OuterClass$InnerClass"
  */
 extern _JNI_EXPORT void JNIConvertClassNameFromClassSig(JNIString &ret, const char *classSig);
 /** @brief see #JNIConvertClassNameFromClassSig */
@@ -152,8 +152,8 @@ inline JNIString JNIConvertClassNameFromClassSig(const char *className) {
 /**
  * @brief convert class name for FindClass in JNI
  *
- * for example, convert "com.example.OutterClass$InnerClass"
- * to "com/example/OutterClass$InnerClass"\n
+ * for example, convert "com.example.OuterClass$InnerClass"
+ * to "com/example/OuterClass$InnerClass"\n
  * class name can be get by SomeClass.class.getName() in your jave code
  */
 extern _JNI_EXPORT void JNIConvertClassNameForFindClass(JNIString &ret, const char *className);
@@ -200,7 +200,7 @@ public:
      *
      * classNameOrArrayElementTypeId is only valid if type is object and array\n
      * if object, it means the class name of the object
-     * such as "com.example.OutterClass$InnerClass"\n
+     * such as "com.example.OuterClass$InnerClass"\n
      * if array, it means the type id which can be accessed by another #JNIType::getId
      */
     JNIType(JNIType::Type type,
@@ -336,11 +336,11 @@ extern _JNI_EXPORT JNIString JNIGetMethodSig(
  * you should replace it with "_1" instead of '_'\n
  * if class name has inner class,
  * you should separate the inner class by "_00024" instead of '$',
- * such as "com_package_OutterClass_00024InnerClass"\n
+ * such as "com_package_OuterClass_00024InnerClass"\n
  * \n
  * then, the final name would be like this:
- *   com_some_1package_OutterClass_00024InnerClass_method_1name\n
- * which stands for "com.some_package.OutterClass$InnerClass"'s
+ *   com_some_1package_OuterClass_00024InnerClass_method_1name\n
+ * which stands for "com.some_package.OuterClass$InnerClass"'s
  * method named "method_name"
  */
 #define JNI_METHOD_DECLARE_BEGIN(OwnerClassId, ReturnType, MethodName, ...) \

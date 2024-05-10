@@ -21,7 +21,7 @@ protected:
         refCapture.executeExact<void>();
         this->testCaseOutput(zfstr("after invoke: %s", capture));
 
-        ZFCallback outter;
+        ZFCallback outer;
         {
             zfstring value = "init";
             ZFTestCase *testCase = this;
@@ -32,9 +32,9 @@ protected:
                     ) {
                 testCase->testCaseOutput(zfstr("value capture: %s", value));
             } ZFLAMBDA_END()
-            outter = valueCapture;
+            outer = valueCapture;
         }
-        outter.executeExact<void>();
+        outer.executeExact<void>();
 
 
         ZFLAMBDA_0(lambdaWithZeroParam

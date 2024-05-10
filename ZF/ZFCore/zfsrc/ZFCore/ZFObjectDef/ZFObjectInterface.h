@@ -39,6 +39,7 @@ public:
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(InterfaceName) \
     public: \
         static void _ZFP_zftIsZFObject(void) {} \
+        static void _ZFP_zftIsZFInterface(void) {} \
     protected: \
         /** @brief typedef for super (always #ZFInterface for an interface type) */ \
         typedef ParentInterface zfsuper; \

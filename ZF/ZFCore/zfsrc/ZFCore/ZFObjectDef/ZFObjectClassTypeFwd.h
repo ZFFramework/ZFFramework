@@ -107,11 +107,17 @@ typedef zfauto (*ZFObjectCreator)(void);
 
 // ============================================================
 /**
- * @brief true if Type is #ZFObject type
+ * @brief true if Type is #ZFObject type or #ZFInterface type
  */
 #define zftIsZFObject(Type) (zftIsSame<Type, ZFObject>::Value || ZFM_CLASS_HAS_MEMBER(ObjCk, _ZFP_zftIsZFObject, Type))
 ZFM_CLASS_HAS_MEMBER_DECLARE(ObjCk, _ZFP_zftIsZFObject, void (*F)(void))
 /* ZFTAG_TRICKS: zftIsSame<...> is required to prevent incomplete type ZFObject when used in builtin types such as zfauto */
+
+/**
+ * @brief true if Type is #ZFObject type or #ZFInterface type
+ */
+#define zftIsZFInterface(Type) (ZFM_CLASS_HAS_MEMBER(ObjCk, _ZFP_zftIsZFInterface, Type))
+ZFM_CLASS_HAS_MEMBER_DECLARE(ObjCk, _ZFP_zftIsZFInterface, void (*F)(void))
 
 /**
  * @brief true if Type can cast to #ZFObject
