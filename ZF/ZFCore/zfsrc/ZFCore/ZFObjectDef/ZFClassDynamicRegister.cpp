@@ -59,6 +59,7 @@ const ZFClass *ZFClassDynamicRegister(
         dotPos == zfindexMax() ? zfnull : zfstring(classNameFull, dotPos).cString(),
         dotPos == zfindexMax() ? classNameFull : classNameFull + dotPos + ZFNamespaceSeparatorLen(),
         parent,
+        zfnull,
         zftrue,
         parent->_ZFP_objectAllocWithCacheCallback(),
         parent->_ZFP_objectConstructor(),

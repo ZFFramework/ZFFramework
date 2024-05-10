@@ -51,7 +51,7 @@ typedef enum {
 #define ZFTOKEN_ZFObjectInstanceStateOnDealloc "ZFObjectInstanceStateOnDealloc"
 
 // ============================================================
-zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFObjectDummyParent {
+zfclassNotPOD ZFLIB_ZFCore _ZFP_Obj_Base {
 public:
     static const ZFClass *ClassData(void) {
         return zfnull;
@@ -111,19 +111,17 @@ zfclassFwd ZFObjectHolder;
  *   and, no multiple inheritance is allowed while using ZFObject\n
  *   additionally, you should add #ZFOBJECT_REGISTER if you want the ZFClass map function
  *   @see ZFOBJECT_DECLARE, zfextend
- * -  embeded class can be declared,
- *   however, you must make sure it's name is unique,
- *   we doesn't support class names with namespace
+ * -  nested inner class or interface can be declared,
+ *   however, (ZFTAG_LIMITATION) you must make sure outer class is declared
  *   @code
  *     zfclass YourOutterClass : zfextend ZFObject {
  *         ZFOBJECT_DECLARE(YourOutterClass, ZFObject)
  *
- *         // inner class is allowed,
- *         // but you must ensure it's class name is unique,
- *         // since no namespace qualifier is supported,
- *         // its full class name is "YourInnerClass" instead of "YourOutterClass::YourInnerClass"
  *         zfclass YourInnerClass : zfextend ZFObject {
- *             ZFOBJECT_DECLARE(YourInnerClass, ZFObject)
+ *             ZFOBJECT_DECLARE(YourInnerClass, ZFObject, YourOutterClass) // <= note for the outer class
+ *         };
+ *         zfinterface YourInnerInterface : zfextend ZFInterface {
+ *             ZFINTERFACE_DECLARE(YourInnerClass, ZFInterface, YourOutterClass) // <= note for the outer class
  *         };
  *     };
  *   @endcode
@@ -209,8 +207,8 @@ zfclassFwd ZFObjectHolder;
  *   (usually have no need, and modify at your own risk)
  */
 zfclass ZFLIB_ZFCore ZFObject {
-    _ZFP_ZFOBJECT_DECLARE(ZFObject, _ZFP_ZFObjectDummyParent)
-    _ZFP_ZFOBJECT_DECLARE_OBJECT(ZFObject, _ZFP_ZFObjectDummyParent)
+    _ZFP_ZFOBJECT_DECLARE(ZFObject, _ZFP_Obj_Base)
+    _ZFP_ZFOBJECT_DECLARE_OBJECT(ZFObject, _ZFP_Obj_Base, _ZFP_Obj_Base)
 
 public:
     /** @cond ZFPrivateDoc */

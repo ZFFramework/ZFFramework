@@ -89,7 +89,7 @@ public:
  * @brief iterable that with key value pair, see #zfiterator
  */
 zfinterface ZFLIB_ZFCore ZFIterableKeyValue : zfextend ZFInterface {
-    ZFINTERFACE_DECLARE(ZFIterableKeyValue, ZFIterable)
+    ZFINTERFACE_DECLARE(ZFIterableKeyValue, ZFInterface)
 
 public:
     /**

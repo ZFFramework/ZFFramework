@@ -1191,6 +1191,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN const zfchar *classNamespace
         , ZF_IN const zfchar *className
         , ZF_IN const ZFClass *parent
+        , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
         , ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback
         , ZF_IN _ZFP_ZFObjectConstructor constructor
@@ -1201,6 +1202,9 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN ZFObject *classDynamicRegisterUserData
         ) {
     zfCoreMutexLocker();
+    if(outer != zfnull) {
+        classNamespace = outer->classNameFull();
+    }
 
     // method data holder is required during _ZFP_ZFClassUnregister,
     // access here to ensure init order
@@ -1595,6 +1599,7 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
         ZF_IN const zfchar *classNamespace
         , ZF_IN const zfchar *className
         , ZF_IN const ZFClass *parent
+        , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
         , ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback
         , ZF_IN _ZFP_ZFObjectConstructor constructor
@@ -1612,6 +1617,7 @@ _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
         classNamespace,
         className,
         parent,
+        outer,
         classCanAllocPublic,
         objectAllocWithCacheCallback,
         constructor,

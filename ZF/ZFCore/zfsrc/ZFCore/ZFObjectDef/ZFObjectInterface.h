@@ -35,7 +35,7 @@ public:
 public:
     static void _ZFP_ObjI_ICk(void) {}
 };
-#define _ZFP_ZFINTERFACE_DECLARE(InterfaceName, ParentInterface) \
+#define _ZFP_ZFINTERFACE_DECLARE(InterfaceName, ParentInterface, OuterClass, ...) \
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(InterfaceName) \
     public: \
         static void _ZFP_zftIsZFObject(void) {} \
@@ -61,6 +61,7 @@ public:
                     ZF_NAMESPACE_CURRENT(), \
                     ZFM_TOSTRING_DIRECT(InterfaceName), \
                     ParentInterface::ClassData(), \
+                    OuterClass::ClassData(), \
                     zftrue, \
                     zfnull, \
                     zfnull, \
@@ -91,14 +92,13 @@ public:
  * and must also declare an virtual protected destructor
  */
 #define ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(InterfaceName, ParentInterface, ...) \
-        _ZFP_ZFINTERFACE_DECLARE(InterfaceName, ZFInterface) \
-        _ZFP_ZFIMPLEMENT_DECLARE(ParentInterface, ##__VA_ARGS__) \
+        _ZFP_ZFINTERFACE_DECLARE(InterfaceName, ParentInterface, ##__VA_ARGS__, _ZFP_ObjI_Base) \
     public:
 /**
  * @brief see #ZFInterface
  */
 #define ZFINTERFACE_DECLARE(InterfaceName, ParentInterface, ...) \
-        ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(InterfaceName, ParentInterface, ##__VA_ARGS__) \
+        _ZFP_ZFINTERFACE_DECLARE(InterfaceName, ParentInterface, ##__VA_ARGS__, _ZFP_ObjI_Base) \
     protected: \
         /** @cond ZFPrivateDoc */ \
         InterfaceName(void) {} \
@@ -186,7 +186,7 @@ public:
  * @code
  *   // declare an interface
  *   zfinterface YourInterface : zfextend ZFInterface {
- *       ZFINTERFACE_DECLARE(YourInterface, ParentInterface1, ParentInterface2, ...)
+ *       ZFINTERFACE_DECLARE(YourInterface, ZFInterface)
  *   };
  *
  *   // implement an interface
@@ -237,8 +237,7 @@ public:
  *       ZFINTERFACE_DECLARE(IParent1, ZFInterface)
  *   };
  *   zfinterface IChild : zfextend ZFInterface { // note: here is always ZFInterface
- *       // interface that extend from other interfaces
- *       ZFINTERFACE_DECLARE(IChild, IParent0, IParent1)
+ *       ZFINTERFACE_DECLARE(IChild, ZFInterface)
  *   };
  *   zfclass ObjParent : zfextend ZFObject, zfimplement IParent0 {
  *       ZFOBJECT_DECLARE(ObjParent, ZFObject)
@@ -253,7 +252,7 @@ public:
  * @endcode
  */
 zfinterface ZFLIB_ZFCore ZFInterface {
-    _ZFP_ZFINTERFACE_DECLARE(ZFInterface, _ZFP_ObjI_Base)
+    _ZFP_ZFINTERFACE_DECLARE(ZFInterface, _ZFP_ObjI_Base, _ZFP_ObjI_Base)
 
 protected:
     /** @cond ZFPrivateDoc */

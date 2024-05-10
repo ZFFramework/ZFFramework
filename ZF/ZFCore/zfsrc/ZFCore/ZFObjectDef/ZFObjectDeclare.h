@@ -68,7 +68,7 @@ public:
             } \
         } \
     public:
-#define _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass) \
+#define _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass, OuterClass, ...) \
     public: \
         enum {_ZFP_ZFObjectCanAlloc = 1}; \
     public: \
@@ -87,6 +87,7 @@ public:
                     ZF_NAMESPACE_CURRENT(), \
                     ZFM_TOSTRING_DIRECT(ChildClass), \
                     zfsuper::ClassData(), \
+                    OuterClass::ClassData(), \
                     (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
                     (&zfself::_ZFP_zfAllocCacheIvk != &zfsuper::_ZFP_zfAllocCacheIvk) \
                         ? &zfself::_ZFP_zfAllocCacheIvk \
@@ -97,7 +98,7 @@ public:
                 ); \
             return _holder.cls; \
         }
-#define _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass) \
+#define _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, OuterClass, ...) \
     public: \
         typedef enum {_ZFP_ZFObjectCanAlloc = 0} _ZFP_ZFObjectCanAllocChecker; \
     public: \
@@ -107,6 +108,7 @@ public:
                     ZF_NAMESPACE_CURRENT(), \
                     ZFM_TOSTRING_DIRECT(ChildClass), \
                     zfsuper::ClassData(), \
+                    OuterClass::ClassData(), \
                     (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
                     zfnull, \
                     zfnull, \
@@ -121,9 +123,9 @@ public:
  * for more information, please refer to #ZFObject
  * @see ZFObject, ZFOBJECT_REGISTER, ZFOBJECT_DECLARE_ABSTRACT
  */
-#define ZFOBJECT_DECLARE(ChildClass, SuperClass) \
+#define ZFOBJECT_DECLARE(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass) \
+    _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
     _ZFP_ZFOBJECT_DECLARE_PROTECTED_CONSTRUCTOR(ChildClass, SuperClass) \
     public:
 /**
@@ -137,9 +139,9 @@ public:
  * NOTE: never abuse this macro,
  * and strongly recommended not to allow ZFObject create on stack (i.e. public constructors)
  */
-#define ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ChildClass, SuperClass) \
+#define ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass) \
+    _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
     public:
 /**
  * @brief necessary for every abstract class inherit from ZFObject
@@ -147,17 +149,17 @@ public:
  * for more information, please refer to #ZFObject
  * @see ZFObject, ZFOBJECT_REGISTER, ZFOBJECT_DECLARE
  */
-#define ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass) \
+#define ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass) \
+    _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
     _ZFP_ZFOBJECT_DECLARE_PROTECTED_CONSTRUCTOR(ChildClass, SuperClass) \
     public:
 /**
  * @brief see #ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR
  */
-#define ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ChildClass, SuperClass) \
+#define ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass) \
+    _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
     public:
 
 /**

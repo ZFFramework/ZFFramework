@@ -619,6 +619,7 @@ public:
             , ZF_IN const zfchar *classNamespace
             , ZF_IN const zfchar *className
             , ZF_IN const ZFClass *parent
+            , ZF_IN const ZFClass *outer
             , ZF_IN zfbool classCanAllocPublic
             , ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback
             , ZF_IN _ZFP_ZFObjectConstructor constructor
@@ -706,6 +707,7 @@ public:
             ZF_IN const zfchar *classNamespace
             , ZF_IN const zfchar *className
             , ZF_IN const ZFClass *parent
+            , ZF_IN const ZFClass *outer
             , ZF_IN zfbool classCanAllocPublic
             , ZF_IN _ZFP_zfAllocCacheCallback objectAllocWithCacheCallback
             , ZF_IN _ZFP_ZFObjectConstructor constructor
