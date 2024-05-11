@@ -126,13 +126,13 @@ public:
     /** @brief see #ZFDynamic */
     ZFDynamic &classBegin(
             ZF_IN const zfchar *classNameFull
-            , ZF_IN_OPT const ZFClass *classParent = ZFObject::ClassData()
+            , ZF_IN const zfchar *parentClassNameFull
             , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &classBegin(
             ZF_IN const zfchar *classNameFull
-            , ZF_IN const zfchar *parentClassNameFull
+            , ZF_IN_OPT const ZFClass *classParent = ZFObject::ClassData()
             , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
             );
     /** @brief see #ZFDynamic */

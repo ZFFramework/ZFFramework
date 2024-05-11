@@ -24,6 +24,68 @@ public:
     const ZFClass *ownerClassOrNull;
     ZFPropertyLifeCycle lifeCycle;
 };
+zfclassLikePOD _ZFP_ZFDynamicRegScopeInfo {
+public:
+    typedef enum {
+        ScopeType_NS,
+        ScopeType_class,
+        ScopeType_enum,
+    } ScopeType;
+public:
+    zfclassLikePOD EnumInfo {
+    public:
+        zfstring enumClassName;
+        zfuint enumDefault;
+        zfbool enumIsFlags;
+        zfuint enumValueNext;
+        ZFCoreArray<zfuint> enumValues;
+        ZFCoreArray<zfstring> enumNames;
+    };
+    typedef union {
+        zfchar *NS; // for NSBegin, full namespace, including nested
+        const ZFClass *cls; // for classBegin
+        EnumInfo *enumInfo; // for enumBegin
+    } D;
+public:
+    ScopeType scopeType;
+    D d;
+public:
+    const zfchar *scopeNS(void) {
+        switch(this->scopeType) {
+            case ScopeType_NS:
+                return d.NS;
+            case ScopeType_class:
+                return d.cls->classNameFull();
+            default:
+                return zfnull;
+        }
+    }
+public:
+    _ZFP_ZFDynamicRegScopeInfo(ScopeType scopeType)
+    : scopeType(scopeType)
+    {
+        if(scopeType == ScopeType_enum) {
+            d.enumInfo = zfnew(EnumInfo);
+        }
+        else {
+            zfmemset(&d, 0, sizeof(D));
+        }
+    }
+    ~_ZFP_ZFDynamicRegScopeInfo(void) {
+        switch(scopeType) {
+            case ScopeType_NS:
+                zffree(d.NS);
+                break;
+            case ScopeType_class:
+                break;
+            case ScopeType_enum:
+                zfdelete(d.enumInfo);
+                break;
+            default:
+                break;
+        }
+    }
+};
 zfclassNotPOD _ZFP_ZFDynamicPrivate {
 public:
     // global
@@ -32,16 +94,7 @@ public:
     zfstring regTag;
 
     // scope
-    const ZFClass *cls;
-    zfstring methodNamespace;
-    zfstring enumClassName;
-
-    // enumBegin
-    zfuint enumDefault;
-    zfbool enumIsFlags;
-    zfuint enumValueNext;
-    ZFCoreArray<zfuint> enumValues;
-    ZFCoreArray<zfstring> enumNames;
+    ZFCoreArray<_ZFP_ZFDynamicRegScopeInfo *> scopeList;
 
     // state
     ZFCoreArray<const ZFClass *> allClass;
@@ -56,14 +109,7 @@ public:
     : refCount(1)
     , errorOccurred(zffalse)
     , regTag()
-    , cls(zfnull)
-    , methodNamespace()
-    , enumClassName()
-    , enumDefault(ZFEnumInvalid())
-    , enumIsFlags(zffalse)
-    , enumValueNext(0)
-    , enumValues()
-    , enumNames()
+    , scopeList()
     , allClass()
     , allImplement()
     , allEnum()
@@ -75,7 +121,11 @@ public:
         this->attachGlobal();
     }
     ~_ZFP_ZFDynamicPrivate(void) {
-        this->scopeBeginCheck();
+        this->scopeCheck_all();
+        while(!this->scopeList.isEmpty()) {
+            _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.removeLastAndGet();
+            zfdelete(scope);
+        }
     }
 public:
     void error(ZF_IN const zfchar *errorHint) {
@@ -91,21 +141,58 @@ public:
         }
     }
 public:
-    zfbool scopeBeginCheck(void) {
-        if(this->cls != zfnull) {
-            this->error("have you forgot classEnd?");
-            return zffalse;
-        }
-        else if(!this->methodNamespace.isEmpty()) {
-            this->error("have you forgot NSEnd?");
-            return zffalse;
-        }
-        else if(!this->enumClassName.isEmpty()) {
-            this->error("have you forgot enumEnd?");
-            return zffalse;
+    zfbool scopeCheck_all(void) {
+        if(this->scopeList.isEmpty()) {
+            return zftrue;
         }
         else {
+            _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.getLast();
+            switch(scope->scopeType) {
+                case _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS:
+                    this->error("have you forgot NSEnd?");
+                    return zffalse;
+                case _ZFP_ZFDynamicRegScopeInfo::ScopeType_class:
+                    this->error("have you forgot classEnd?");
+                    return zffalse;
+                case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
+                    this->error("have you forgot enumEnd?");
+                    return zffalse;
+                default:
+                    return zftrue;
+            }
+        }
+    }
+    zfbool scopeCheck_NS(void) {
+        if(this->scopeList.isEmpty()) {
             return zftrue;
+        }
+        else {
+            _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.getLast();
+            switch(scope->scopeType) {
+                case _ZFP_ZFDynamicRegScopeInfo::ScopeType_class:
+                    this->error("have you forgot classEnd?");
+                    return zffalse;
+                case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
+                    this->error("have you forgot enumEnd?");
+                    return zffalse;
+                default:
+                    return zftrue;
+            }
+        }
+    }
+    zfbool scopeCheck_class(void) {
+        if(this->scopeList.isEmpty()) {
+            return zftrue;
+        }
+        else {
+            _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.getLast();
+            switch(scope->scopeType) {
+                case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
+                    this->error("have you forgot enumEnd?");
+                    return zffalse;
+                default:
+                    return zftrue;
+            }
         }
     }
 public:
@@ -172,13 +259,11 @@ public:
             _ZFP_ZFDynamicRegTagMap().erase(this->regTag);
             this->regTag.removeAll();
         }
-        this->cls = zfnull;
-        this->enumClassName.removeAll();
-        this->enumDefault = ZFEnumInvalid();
-        this->enumIsFlags = zffalse;
-        this->enumValueNext = 0;
-        this->enumValues.removeAll();
-        this->enumNames.removeAll();
+
+        while(!this->scopeList.isEmpty()) {
+            _ZFP_ZFDynamicRegScopeInfo *scope = this->scopeList.removeLastAndGet();
+            zfdelete(scope);
+        }
     }
 public:
     void attachGlobal(void);
@@ -396,16 +481,51 @@ const ZFCoreArray<zfidentity> &ZFDynamic::allEvent(void) const {
 
 ZFDynamic &ZFDynamic::classBegin(
         ZF_IN const zfchar *classNameFull
+        , ZF_IN const zfchar *parentClassNameFull
+        , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
+        ) {
+    if(d->errorOccurred) {return *this;}
+    if(!d->scopeCheck_class()) {return *this;}
+    if(zfstringIsEmpty(parentClassNameFull)) {
+        return this->classBegin(classNameFull, ZFObject::ClassData(), classDynamicRegisterUserData);
+    }
+    else {
+        const ZFClass *classParent = ZFClass::classForName(parentClassNameFull);
+        if(classParent != zfnull) {
+            return this->classBegin(classNameFull, classParent, classDynamicRegisterUserData);
+        }
+
+        _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+        if(scope != zfnull && scope->scopeNS() != zfnull) {
+            classParent = ZFClass::classForName(parentClassNameFull, scope->scopeNS());
+            if(classParent != zfnull) {
+                return this->classBegin(classNameFull, classParent, classDynamicRegisterUserData);
+            }
+        }
+
+        d->error(zfstr("no such classParent: %s", parentClassNameFull));
+        return *this;
+    }
+}
+ZFDynamic &ZFDynamic::classBegin(
+        ZF_IN const zfchar *classNameFull
         , ZF_IN_OPT const ZFClass *classParent /* = ZFObject::ClassData() */
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
         ) {
     if(d->errorOccurred) {return *this;}
-    if(!d->scopeBeginCheck()) {return *this;}
-    d->cls = ZFClass::classForName(classNameFull);
-    if(d->cls == zfnull) {
+    if(!d->scopeCheck_class()) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    const ZFClass *cls = ZFClass::classForName(classNameFull, scopePrev ? scopePrev->scopeNS() : zfnull);
+    if(cls != zfnull) {
+        _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
+        d->scopeList.add(scope);
+        scope->d.cls = cls;
+    }
+    else {
         zfstring errorHint;
         const ZFClass *dynClass = ZFClassDynamicRegister(
-            classNameFull, classParent, classDynamicRegisterUserData, &errorHint);
+            scopePrev && scopePrev->scopeNS() ? zfstr("%s.%s", scopePrev->scopeNS(), classNameFull).cString() : classNameFull,
+            classParent, classDynamicRegisterUserData, &errorHint);
         if(dynClass == zfnull) {
             d->error(zfstr("unable to register class: %s, reason: %s"
                         , classNameFull
@@ -414,67 +534,63 @@ ZFDynamic &ZFDynamic::classBegin(
         }
         else {
             d->allClass.add(dynClass);
-            d->cls = dynClass;
+
+            _ZFP_ZFDynamicRegScopeInfo *scopeNew = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
+            d->scopeList.add(scopeNew);
+            scopeNew->d.cls = dynClass;
         }
     }
     return *this;
 }
-ZFDynamic &ZFDynamic::classBegin(
-        ZF_IN const zfchar *classNameFull
-        , ZF_IN const zfchar *parentClassNameFull
-        , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
-        ) {
-    if(d->errorOccurred) {return *this;}
-    if(!d->scopeBeginCheck()) {return *this;}
-    if(zfstringIsEmpty(parentClassNameFull)) {
-        return this->classBegin(classNameFull, ZFObject::ClassData(), classDynamicRegisterUserData);
-    }
-    else {
-        const ZFClass *classParent = ZFClass::classForName(parentClassNameFull);
-        if(classParent == zfnull) {
-            d->error(zfstr("no such classParent: %s", parentClassNameFull));
-            return *this;
-        }
-        else {
-            return this->classBegin(classNameFull, classParent, classDynamicRegisterUserData);
-        }
-    }
-}
 ZFDynamic &ZFDynamic::classBegin(ZF_IN const ZFClass *cls) {
     if(d->errorOccurred) {return *this;}
-    if(!d->scopeBeginCheck()) {return *this;}
-    d->cls = cls;
-    if(d->cls == zfnull) {
+    if(!d->scopeCheck_class()) {return *this;}
+    if(cls == zfnull) {
         d->error("null class");
+    }
+    else {
+        _ZFP_ZFDynamicRegScopeInfo *scopeNew = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_class);
+        d->scopeList.add(scopeNew);
+        scopeNew->scopeType = _ZFP_ZFDynamicRegScopeInfo::ScopeType_class;
+        scopeNew->d.cls = cls;
     }
     return *this;
 }
 ZFDynamic &ZFDynamic::classEnd(void) {
     if(d->errorOccurred) {return *this;}
-    if(d->cls == zfnull) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error("no paired classBegin");
     }
-    d->cls = zfnull;
+    else {
+        d->scopeList.removeLast();
+        zfdelete(scope);
+    }
     return *this;
 }
 
 ZFDynamic &ZFDynamic::classImplement(ZF_IN const ZFClass *clsToImplement) {
     if(d->errorOccurred) {return *this;}
-    if(d->cls == zfnull) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error("no paired classBegin");
     }
-    ZFImplementDynamicRegister(d->cls, clsToImplement);
+    else {
+        ZFImplementDynamicRegister(scope->d.cls, clsToImplement);
+    }
     return *this;
 }
 
 ZFDynamic &ZFDynamic::classCanAllocPublic(ZF_IN zfbool value) {
     if(d->errorOccurred) {return *this;}
-    if(d->cls == zfnull) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error("have you forgot classBegin?");
-        return *this;
     }
-    if(d->cls->classIsDynamicRegister()) {
-        d->cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classCanAllocPublic = value;
+    else {
+        if(scope->d.cls->classIsDynamicRegister()) {
+            scope->d.cls->_ZFP_ZFClass_removeConst()->_ZFP_ZFClass_classCanAllocPublic = value;
+        }
     }
     return *this;
 }
@@ -515,7 +631,8 @@ ZFDynamic &ZFDynamic::on(
         , ZF_IN_OPT ZFLevel level /* = ZFLevelAppNormal */
         ) {
     if(d->errorOccurred) {return *this;}
-    if(d->cls == zfnull) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error("have you forgot classBegin?");
         return *this;
     }
@@ -527,13 +644,13 @@ ZFDynamic &ZFDynamic::on(
         d->error("invalid callback");
         return *this;
     }
+    const ZFClass *cls = scope->d.cls;
 
     ZF_GLOBAL_INITIALIZER_CLASS(ZFDynamicClassEventDataHolder) *g = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFDynamicClassEventDataHolder);
-    zfstlmap<const ZFClass *, zfstlmap<zfidentity, zfstldeque<ZFListener> > >::iterator it = g->classEventMap.find(d->cls);
+    zfstlmap<const ZFClass *, zfstlmap<zfidentity, zfstldeque<ZFListener> > >::iterator it = g->classEventMap.find(cls);
     if(it == g->classEventMap.end()) {
-        g->classEventMap[d->cls][eventId].push_back(callback);
+        g->classEventMap[cls][eventId].push_back(callback);
 
-        const ZFClass *cls = d->cls;
         ZFLISTENER_2(instanceOnCreate
                 , const ZFClass *, cls
                 , ZFLevel, level
@@ -551,7 +668,7 @@ ZFDynamic &ZFDynamic::on(
                 }
             }
         } ZFLISTENER_END()
-        d->cls->instanceObserverAdd(instanceOnCreate, zfnull, ZFLevelZFFrameworkNormal);
+        cls->instanceObserverAdd(instanceOnCreate, zfnull, ZFLevelZFFrameworkNormal);
     }
     else {
         it->second[eventId].push_back(callback);
@@ -562,36 +679,62 @@ ZFDynamic &ZFDynamic::on(
 
 ZFDynamic &ZFDynamic::NSBegin(ZF_IN_OPT const zfchar *methodNamespace /* = ZF_NAMESPACE_GLOBAL_NAME */) {
     if(d->errorOccurred) {return *this;}
-    if(!d->scopeBeginCheck()) {return *this;}
-    if(zfstringIsEmpty(methodNamespace) || zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME)) {
-        d->methodNamespace = ZF_NAMESPACE_GLOBAL_NAME;
+    if(!d->scopeCheck_NS()) {return *this;}
+    methodNamespace = ZFNamespaceSkipGlobal(methodNamespace);
+    if(zfstringIsEmpty(methodNamespace)) {
+        d->error("empty namespace or NSBegin on global namespace");
+        return *this;
+    }
+    _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
+    d->scopeList.add(scope);
+    if(scopePrev != zfnull) {
+        scope->d.NS = zfsConnect(scope->scopeNS(), ".", methodNamespace);
     }
     else {
-        d->methodNamespace = methodNamespace;
+        scope->d.NS = zfsCopy(methodNamespace);
     }
     return *this;
 }
 ZFDynamic &ZFDynamic::NSEnd(void) {
     if(d->errorOccurred) {return *this;}
-    if(d->methodNamespace.isEmpty()) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS) {
         d->error("no paired NSBegin");
     }
-    d->methodNamespace.removeAll();
+    else {
+        d->scopeList.removeLast();
+        zfdelete(scope);
+    }
     return *this;
 }
 
 ZFDynamic &ZFDynamic::enumBegin(ZF_IN const zfchar *enumClassName) {
     if(d->errorOccurred) {return *this;}
-    if(!d->scopeBeginCheck()) {return *this;}
-    d->enumClassName = enumClassName;
-    d->enumIsFlags = zffalse;
+    if(!d->scopeCheck_class()) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
+    d->scopeList.add(scope);
+    if(scopePrev != zfnull) {
+        scope->d.enumInfo->enumClassName += scopePrev->scopeNS();
+        scope->d.enumInfo->enumClassName += ".";
+    }
+    scope->d.enumInfo->enumClassName += enumClassName;
+    scope->d.enumInfo->enumIsFlags = zffalse;
     return *this;
 }
 ZFDynamic &ZFDynamic::enumBeginFlags(ZF_IN const zfchar *enumClassName) {
     if(d->errorOccurred) {return *this;}
-    if(!d->scopeBeginCheck()) {return *this;}
-    d->enumClassName = enumClassName;
-    d->enumIsFlags = zftrue;
+    if(!d->scopeCheck_class()) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
+    d->scopeList.add(scope);
+    if(scopePrev != zfnull) {
+        scope->d.enumInfo->enumClassName += scopePrev->scopeNS();
+        scope->d.enumInfo->enumClassName += ".";
+    }
+    scope->d.enumInfo->enumClassName += enumClassName;
+    scope->d.enumInfo->enumIsFlags = zftrue;
     return *this;
 }
 ZFDynamic &ZFDynamic::enumValue(
@@ -599,49 +742,47 @@ ZFDynamic &ZFDynamic::enumValue(
         , ZF_IN_OPT zfuint enumValue /* = ZFEnumInvalid() */
         ) {
     if(d->errorOccurred) {return *this;}
-    if(d->enumClassName.isEmpty()) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
         d->error("have you forgot enumBegin?");
         return *this;
     }
     if(enumValue == ZFEnumInvalid()) {
-        enumValue = d->enumValueNext;
-        ++(d->enumValueNext);
+        enumValue = scope->d.enumInfo->enumValueNext;
+        ++(scope->d.enumInfo->enumValueNext);
     }
     else {
-        if(d->enumValueNext <= enumValue) {
-            d->enumValueNext = enumValue + 1;
+        if(scope->d.enumInfo->enumValueNext <= enumValue) {
+            scope->d.enumInfo->enumValueNext = enumValue + 1;
         }
     }
-    d->enumValues.add(enumValue);
-    d->enumNames.add(enumName);
+    scope->d.enumInfo->enumValues.add(enumValue);
+    scope->d.enumInfo->enumNames.add(enumName);
     return *this;
 }
 ZFDynamic &ZFDynamic::enumEnd(ZF_IN_OPT zfuint enumDefault /* = ZFEnumInvalid() */) {
     if(d->errorOccurred) {return *this;}
-    if(d->enumClassName.isEmpty()) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
         d->error("have you forgot enumBegin?");
         return *this;
     }
+    d->scopeList.removeLast();
+    zfblockedDelete(scope);
 
     zfstring errorHint;
     const ZFClass *enumClass = ZFEnumDynamicRegister(
-        d->enumClassName,
-        d->enumValues,
-        d->enumNames,
-        d->enumDefault,
-        d->enumIsFlags,
+        scope->d.enumInfo->enumClassName,
+        scope->d.enumInfo->enumValues,
+        scope->d.enumInfo->enumNames,
+        scope->d.enumInfo->enumDefault,
+        scope->d.enumInfo->enumIsFlags,
         &errorHint);
     if(enumClass == zfnull) {
         d->error(zfstr("unable to register enum, reason: %s", errorHint));
         return *this;
     }
     d->allEnum.add(enumClass);
-    d->enumClassName.removeAll();
-    d->enumDefault = ZFEnumInvalid();
-    d->enumIsFlags = zffalse;
-    d->enumValueNext = 0;
-    d->enumValues.removeAll();
-    d->enumNames.removeAll();
     return *this;
 }
 
@@ -656,7 +797,8 @@ static zfbool _ZFP_ZFDynamicEventGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
 }
 ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
     if(d->errorOccurred) {return *this;}
-    if(!d->enumClassName.isEmpty()) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope != zfnull && scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
         d->error("can not be called within enumBegin");
         return *this;
     }
@@ -665,16 +807,19 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
         return *this;
     }
     zfstring idName;
-    if(d->cls != zfnull) {
-        idName += d->cls->classNameFull();
+    const ZFClass *cls = zfnull;
+    const zfchar *NS = zfnull;
+    if(scope == zfnull) {
+        idName += ZF_NAMESPACE_GLOBAL_NAME;
+        NS = ZF_NAMESPACE_GLOBAL_NAME;
     }
-    else {
-        if(d->methodNamespace.isEmpty()) {
-            idName += ZF_NAMESPACE_GLOBAL_NAME;
-        }
-        else {
-            idName += d->methodNamespace;
-        }
+    else if(scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS) {
+        idName += scope->d.NS;
+        NS = scope->d.NS;
+    }
+    else if(scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        idName += scope->d.cls->classNameFull();
+        cls = scope->d.cls;
     }
     idName += "::Event";
     idName += eventName;
@@ -691,8 +836,8 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
     const ZFMethod *method = ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
             .methodGenericInvoker(_ZFP_ZFDynamicEventGI)
             .methodDynamicRegisterUserData(t)
-            .methodOwnerClass(d->cls)
-            .methodNamespace(d->methodNamespace)
+            .methodOwnerClass(cls)
+            .methodNamespace(NS)
             .methodName(zfstr("Event%s", eventName))
             .methodReturnTypeId(ZFTypeId_zfidentity())
         );
@@ -731,18 +876,27 @@ ZFDynamic &ZFDynamic::method(
                 methodParam.methodParamDefaultValueAt(i));
         }
     }
-    if(d->cls == zfnull) {
-        p.methodNamespace(d->methodNamespace);
-    }
-    else {
-        p.methodOwnerClass(d->cls);
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope != zfnull) {
+        switch(scope->scopeType) {
+            case _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS:
+                p.methodNamespace(scope->d.NS);
+                break;
+            case _ZFP_ZFDynamicRegScopeInfo::ScopeType_class:
+                p.methodOwnerClass(scope->d.cls);
+                break;
+            case _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum:
+            default:
+                break;
+        }
     }
     return this->method(p);
 }
 
 ZFDynamic &ZFDynamic::method(ZF_IN const ZFMethodDynamicRegisterParam &param) {
     if(d->errorOccurred) {return *this;}
-    if(!d->enumClassName.isEmpty()) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope != zfnull && scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
         d->error("can not be called within enumBegin");
         return *this;
     }
@@ -778,12 +932,17 @@ ZFDynamic &ZFDynamic::property(
         , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error("have you forgot classBegin?");
+        return *this;
+    }
     const ZFClass *cls = ZFClass::classForName(propertyTypeId);
     if(cls != zfnull) {
         return this->property(cls, propertyName, propertyInitValue, setterPrivilegeType, getterPrivilegeType);
     }
     ZFPropertyDynamicRegisterParam param;
-    param.propertyOwnerClass(d->cls);
+    param.propertyOwnerClass(scope->d.cls);
     param.propertyTypeId(propertyTypeId);
     param.propertyClassOfRetainProperty(ZFClass::classForName(propertyTypeId));
     param.propertyName(propertyName);
@@ -811,12 +970,17 @@ ZFDynamic &ZFDynamic::property(
         , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
         ) {
     if(d->errorOccurred) {return *this;}
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
+        d->error("have you forgot classBegin?");
+        return *this;
+    }
     if(propertyClassOfRetainProperty == zfnull) {
         d->error("propertyClassOfRetainProperty not set");
         return *this;
     }
     ZFPropertyDynamicRegisterParam param;
-    param.propertyOwnerClass(d->cls);
+    param.propertyOwnerClass(scope->d.cls);
     param.propertyTypeId(propertyClassOfRetainProperty->classNameFull());
     param.propertyName(propertyName);
     param.propertyClassOfRetainProperty(propertyClassOfRetainProperty);
@@ -847,11 +1011,8 @@ ZFDynamic &ZFDynamic::property(
 }
 ZFDynamic &ZFDynamic::property(ZF_IN const ZFPropertyDynamicRegisterParam &param) {
     if(d->errorOccurred) {return *this;}
-    if(!d->enumClassName.isEmpty()) {
-        d->error("can not be called within enumBegin");
-        return *this;
-    }
-    if(d->cls == zfnull) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error("have you forgot classBegin?");
         return *this;
     }
@@ -897,24 +1058,21 @@ ZFDynamic &ZFDynamic::propertyLifeCycle(
         , ZF_IN const ZFListener &callback
         ) {
     if(d->errorOccurred) {return *this;}
-    if(!d->enumClassName.isEmpty()) {
-        d->error("can not be called within enumBegin");
-        return *this;
-    }
-    if(d->cls == zfnull) {
+    _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
+    if(scope == zfnull || scope->scopeType != _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         d->error("have you forgot classBegin?");
         return *this;
     }
     _ZFP_ZFDynamicPropLifeCycle item;
-    item.property = d->cls->propertyForName(propertyName);
-    item.ownerClassOrNull = d->cls;
+    item.property = scope->d.cls->propertyForName(propertyName);
+    item.ownerClassOrNull = scope->d.cls;
     item.lifeCycle = lifeCycle;
     if(item.property == zfnull) {
-        d->error(zfstr("no property %s for class %s", propertyName, d->cls->className()));
+        d->error(zfstr("no property %s for class %s", propertyName, scope->d.cls->className()));
         return *this;
     }
     zfstring errorHint;
-    if(!ZFPropertyDynamicRegisterLifeCycle(item.property, d->cls, lifeCycle, callback)) {
+    if(!ZFPropertyDynamicRegisterLifeCycle(item.property, scope->d.cls, lifeCycle, callback)) {
         d->error(zfstr("%s", errorHint));
         return *this;
     }
@@ -1016,12 +1174,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const Z
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<zfidentity> &, allEvent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
         , ZFMP_IN(const zfchar *, classNameFull)
-        , ZFMP_IN_OPT(const ZFClass *, classParent, ZFObject::ClassData())
+        , ZFMP_IN(const zfchar *, parentClassNameFull)
         , ZFMP_IN_OPT(ZFObject *, classDynamicRegisterUserData, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
         , ZFMP_IN(const zfchar *, classNameFull)
-        , ZFMP_IN(const zfchar *, parentClassNameFull)
+        , ZFMP_IN_OPT(const ZFClass *, classParent, ZFObject::ClassData())
         , ZFMP_IN_OPT(ZFObject *, classDynamicRegisterUserData, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, classBegin

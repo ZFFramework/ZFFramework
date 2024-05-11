@@ -1284,6 +1284,14 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     if(needFinalInit) {
         _ZFP_ZFClassPrivate::classInitFinish(cls);
 
+        // ClassData() registered here instead of ZFOBJECT_REGISTER,
+        // to reduce output executable size and runtime memory usage,
+        // unregistered during class unregister
+        ZFMethodUserRegisterDetail_0(resultMethod, {
+                return invokerMethod->methodOwnerClass();
+            }, cls, public, ZFMethodTypeStatic,
+            const ZFClass *, "ClassData");
+
         // notify
         _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, cls, zfnull, zfnull);
     }
@@ -1331,9 +1339,7 @@ void ZFClass::_ZFP_ZFClassUnregister(
         *_ZFP_ZFClassMap.iterValue(itClass));
     _ZFP_ZFClassMap.iterRemove(itClass);
 
-    if(!cls->d->needAutoRegister) {
-        ZFMethodUserUnregister(cls->methodForNameIgnoreParent("ClassData"));
-    }
+    ZFMethodUserUnregister(cls->methodForNameIgnoreParent("ClassData"));
 
     d->classDynamicRegisterUserData = zfnull;
     cls->classTagRemoveAll();
@@ -1355,20 +1361,10 @@ void ZFClass::_ZFP_ZFClass_autoRegister(void) const {
     if(d->needAutoRegister) {
         d->needAutoRegister = zffalse;
 
-        // ClassData() registered here instead of ZFOBJECT_REGISTER,
-        // to reduce output executable size and runtime memory usage,
-        // unregistered during class unregister
-        ZFMethodUserRegisterDetail_0(resultMethod, {
-                return invokerMethod->methodOwnerClass();
-            }, this, public, ZFMethodTypeStatic,
-            const ZFClass *, "ClassData");
-
-        {
-            // create dummy instance to ensure static init of the object would take effect
-            // including method and property register
-            if(d->constructor != zfnull) {
-                d->destructor(d->constructor());
-            }
+        // create dummy instance to ensure static init of the object would take effect
+        // including method and property register
+        if(d->constructor != zfnull) {
+            d->destructor(d->constructor());
         }
     }
 }

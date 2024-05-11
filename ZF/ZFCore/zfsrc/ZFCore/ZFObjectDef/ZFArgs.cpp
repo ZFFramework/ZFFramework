@@ -36,30 +36,30 @@ zfbool ZFArgs::resultEnabled(void) const {
 
 void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
-    zfstringAppend(ret, "ZFArgs(%s)", (const void *)this);
+    ret += "ZFArgs";
     const zfchar *eventName = ZFIdMapNameForId(this->eventId());
     if(eventName != zfnull) {
-        ret += ", event: ";
+        ret += " event:";
         ret += eventName;
     }
     if(this->sender() != zfnull) {
-        ret += ", sender: ";
+        ret += " sender:";
         ZFObjectInfoT(ret, this->sender());
     }
     if(this->param0() != zfnull) {
-        ret += ", param0: ";
+        ret += " param0:";
         ZFObjectInfoT(ret, this->param0());
     }
     if(this->param1() != zfnull) {
-        ret += ", param1: ";
+        ret += " param1:";
         ZFObjectInfoT(ret, this->param1());
     }
     if(this->result() != zfnull) {
-        ret += ", result: ";
+        ret += " result:";
         ZFObjectInfoT(ret, this->result());
     }
     if(this->eventFiltered()) {
-        ret += ", filtered: ";
+        ret += " filtered:";
         ret += ZFTOKEN_zfbool_zftrue;
     }
     ret += ZFTOKEN_ZFObjectInfoRight;

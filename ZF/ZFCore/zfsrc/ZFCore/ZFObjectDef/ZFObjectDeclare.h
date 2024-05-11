@@ -201,11 +201,29 @@ public:
  *   typically this has no other side effect,
  *   since you can't alloc abstract class by reflection
  */
-#define ZFOBJECT_REGISTER(T_ZFObject) \
-    ZF_STATIC_REGISTER_INIT(ObjR_##T_ZFObject) { \
-        (void)T_ZFObject::ClassData()->_ZFP_ZFClass_autoRegister(); \
+#define ZFOBJECT_REGISTER(T_ZFObject, ...) \
+    _ZFP_ZFOBJECT_REGISTER( \
+            _ZFP_ZFOBJECT_REGISTER_regSig(ZFM_PARAM_NUM(T_ZFObject, ##__VA_ARGS__), T_ZFObject, ##__VA_ARGS__), \
+            ZFM_FIX_PARAM(_ZFP_ZFOBJECT_REGISTER_clsSig_EXPAND, ZFM_EMPTY, T_ZFObject, ##__VA_ARGS__) \
+            )
+#define _ZFP_ZFOBJECT_REGISTER(regSig, clsSig) \
+    ZF_STATIC_REGISTER_INIT(regSig) { \
+        (void)clsSig ClassData()->_ZFP_ZFClass_autoRegister(); \
     } \
-    ZF_STATIC_REGISTER_END(ObjR_##T_ZFObject)
+    ZF_STATIC_REGISTER_END(regSig)
+
+#define _ZFP_ZFOBJECT_REGISTER_regSig_1(T0) ObjR_##T0
+#define _ZFP_ZFOBJECT_REGISTER_regSig_2(T0, T1) ObjR_##T0##T1
+#define _ZFP_ZFOBJECT_REGISTER_regSig_3(T0, T1, T2) ObjR_##T0##T1##T2
+#define _ZFP_ZFOBJECT_REGISTER_regSig_4(T0, T1, T2, T3) ObjR_##T0##T1##T2##T3
+#define _ZFP_ZFOBJECT_REGISTER_regSig_5(T0, T1, T2, T3, T4) ObjR_##T0##T1##T2##T3##T4
+#define _ZFP_ZFOBJECT_REGISTER_regSig_6(T0, T1, T2, T3, T4, T5) ObjR_##T0##T1##T2##T3##T4##T5
+#define _ZFP_ZFOBJECT_REGISTER_regSig_7(T0, T1, T2, T3, T4, T5, T6) ObjR_##T0##T1##T2##T3##T4##T5##T6
+#define _ZFP_ZFOBJECT_REGISTER_regSig_8(T0, T1, T2, T3, T4, T5, T6, T7) ObjR_##T0##T1##T2##T3##T4##T5##T6##T7
+#define _ZFP_ZFOBJECT_REGISTER_regSig_(N, T, ...) _ZFP_ZFOBJECT_REGISTER_regSig_##N(T, ##__VA_ARGS__)
+#define _ZFP_ZFOBJECT_REGISTER_regSig(N, T, ...) _ZFP_ZFOBJECT_REGISTER_regSig_(N, T, ##__VA_ARGS__)
+
+#define _ZFP_ZFOBJECT_REGISTER_clsSig_EXPAND(T) T::
 
 /**
  * @brief mark this object can not be allocated directly
