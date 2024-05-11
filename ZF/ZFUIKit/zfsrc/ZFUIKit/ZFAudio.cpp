@@ -32,12 +32,12 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAudio)
 
-ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnLoad)
-ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnStart)
-ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnStop)
-ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnResume)
-ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnPause)
-ZFOBSERVER_EVENT_REGISTER(ZFAudio, AudioOnLoop)
+ZFEVENT_REGISTER(ZFAudio, AudioOnLoad)
+ZFEVENT_REGISTER(ZFAudio, AudioOnStart)
+ZFEVENT_REGISTER(ZFAudio, AudioOnStop)
+ZFEVENT_REGISTER(ZFAudio, AudioOnResume)
+ZFEVENT_REGISTER(ZFAudio, AudioOnPause)
+ZFEVENT_REGISTER(ZFAudio, AudioOnLoop)
 
 ZFMETHOD_DEFINE_0(ZFAudio, zfbool, implAvailable) {
     return ZFPROTOCOL_IS_AVAILABLE(ZFAudio);

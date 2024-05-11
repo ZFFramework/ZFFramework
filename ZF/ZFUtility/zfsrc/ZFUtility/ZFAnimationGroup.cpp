@@ -244,8 +244,8 @@ private:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAnimationGroup)
 
-ZFOBSERVER_EVENT_REGISTER(ZFAnimationGroup, AniGroupOnChildStart)
-ZFOBSERVER_EVENT_REGISTER(ZFAnimationGroup, AniGroupOnChildStop)
+ZFEVENT_REGISTER(ZFAnimationGroup, AniGroupOnChildStart)
+ZFEVENT_REGISTER(ZFAnimationGroup, AniGroupOnChildStop)
 
 // ============================================================
 // serialize

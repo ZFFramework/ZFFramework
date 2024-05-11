@@ -6,7 +6,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(SysWindowMainWindowOnAttach)
+ZFEVENT_GLOBAL_REGISTER(SysWindowMainWindowOnAttach)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
@@ -45,13 +45,13 @@ public:
 
 ZFOBJECT_REGISTER(ZFUISysWindow)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnCreate)
-ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnDestroy)
-ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnResume)
-ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnPause)
-ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnRotate)
-ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowMarginOnUpdate)
-ZFOBSERVER_EVENT_REGISTER(ZFUISysWindow, SysWindowOnKeyEvent)
+ZFEVENT_REGISTER(ZFUISysWindow, SysWindowOnCreate)
+ZFEVENT_REGISTER(ZFUISysWindow, SysWindowOnDestroy)
+ZFEVENT_REGISTER(ZFUISysWindow, SysWindowOnResume)
+ZFEVENT_REGISTER(ZFUISysWindow, SysWindowOnPause)
+ZFEVENT_REGISTER(ZFUISysWindow, SysWindowOnRotate)
+ZFEVENT_REGISTER(ZFUISysWindow, SysWindowMarginOnUpdate)
+ZFEVENT_REGISTER(ZFUISysWindow, SysWindowOnKeyEvent)
 
 zfautoT<ZFUISysWindow> ZFUISysWindow::nativeWindowEmbed(ZF_IN ZFUISysWindowEmbedImpl *embedImpl) {
     zfautoT<ZFUISysWindow> tmp = ZFUISysWindow::ClassData()->newInstance();

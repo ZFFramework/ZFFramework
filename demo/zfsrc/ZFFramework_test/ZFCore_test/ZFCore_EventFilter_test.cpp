@@ -4,8 +4,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL(ZFCore_EventFilter_test)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ZFCore_EventFilter_test)
+ZFEVENT_GLOBAL(ZFCore_EventFilter_test)
+ZFEVENT_GLOBAL_REGISTER(ZFCore_EventFilter_test)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 zfclass ZFCore_EventFilter_test : zfextend ZFFramework_test_TestCase {

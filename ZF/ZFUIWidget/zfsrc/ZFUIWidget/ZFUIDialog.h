@@ -99,32 +99,32 @@ public:
      *
      * called when dialog show,
      */
-    ZFOBSERVER_EVENT(DialogBeforeShow)
+    ZFEVENT(DialogBeforeShow)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when dialog show,
      */
-    ZFOBSERVER_EVENT(DialogAfterShow)
+    ZFEVENT(DialogAfterShow)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when dialog hide
      */
-    ZFOBSERVER_EVENT(DialogBeforeHide)
+    ZFEVENT(DialogBeforeHide)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when dialog hide
      */
-    ZFOBSERVER_EVENT(DialogAfterHide)
+    ZFEVENT(DialogAfterHide)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called after dialog show, to update focus\n
      * param0 is a #ZFObjectHolder to store the result view to focus
      */
-    ZFOBSERVER_EVENT(DialogFocusOnUpdate)
+    ZFEVENT(DialogFocusOnUpdate)
 
 public:
     // ============================================================

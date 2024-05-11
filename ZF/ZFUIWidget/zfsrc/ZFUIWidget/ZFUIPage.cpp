@@ -8,14 +8,14 @@ ZFENUM_DEFINE(ZFUIPagePauseReason)
 
 ZFOBJECT_REGISTER(ZFUIPage)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageOnCreate)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageOnResume)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageOnPause)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageOnDestroy)
+ZFEVENT_REGISTER(ZFUIPage, PageOnCreate)
+ZFEVENT_REGISTER(ZFUIPage, PageOnResume)
+ZFEVENT_REGISTER(ZFUIPage, PageOnPause)
+ZFEVENT_REGISTER(ZFUIPage, PageOnDestroy)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageAniOnPrepare)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageAniOnStart)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPage, PageAniOnStop)
+ZFEVENT_REGISTER(ZFUIPage, PageAniOnPrepare)
+ZFEVENT_REGISTER(ZFUIPage, PageAniOnStart)
+ZFEVENT_REGISTER(ZFUIPage, PageAniOnStop)
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFUIPage, zfanyT<ZFUIPageManager>, pageManager)
 ZFMETHOD_DEFINE_0(ZFUIPage, ZFUIView *, pageView) {
@@ -49,11 +49,11 @@ ZFMETHOD_DEFINE_0(ZFUIPage, ZFAnimation *, pageAni) {
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIPageManager)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIPageManager, ManagerOnCreate)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPageManager, ManagerOnResume)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPageManager, ManagerOnPause)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPageManager, ManagerOnDestroy)
-ZFOBSERVER_EVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnChange)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnCreate)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnResume)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnPause)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerOnDestroy)
+ZFEVENT_REGISTER(ZFUIPageManager, ManagerUIBlockedOnChange)
 
 // ============================================================
 // _ZFP_ZFUIPageManagerPrivate

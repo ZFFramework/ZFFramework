@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIScrollThumb)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollThumb, ScrollThumbOnUpdate)
+ZFEVENT_REGISTER(ZFUIScrollThumb, ScrollThumbOnUpdate)
 
 void ZFUIScrollThumb::scrollThumbPosFromViewPos(
         ZF_OUT zffloat &scrollThumbResultPos

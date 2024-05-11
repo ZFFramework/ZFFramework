@@ -79,7 +79,7 @@ zfclass ZFUIKit_test_SettingData : zfextend ZFObject {
     ZFOBJECT_DECLARE(ZFUIKit_test_SettingData, ZFObject)
 
 public:
-    ZFOBSERVER_EVENT(SettingOnChange)
+    ZFEVENT(SettingOnChange)
 
 public:
     /**

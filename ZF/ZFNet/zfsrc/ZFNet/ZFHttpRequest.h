@@ -134,7 +134,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      * param0 is the #ZFHttpResponse\n
      * call in the same thread that #request was called
      */
-    ZFOBSERVER_EVENT(OnResponsePrepare)
+    ZFEVENT(OnResponsePrepare)
     /**
      * @brief called when any response received or timeout
      *
@@ -142,7 +142,7 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      * param0 is the #ZFHttpResponse\n
      * call in the same thread that #request was called
      */
-    ZFOBSERVER_EVENT(OnResponse)
+    ZFEVENT(OnResponse)
 
     /**
      * @brief init and connect

@@ -54,21 +54,21 @@ public:
      *
      * called when element added or removed or order changed
      */
-    ZFOBSERVER_EVENT(ContentOnChange)
+    ZFEVENT(ContentOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when element added\n
      * param0 is the element added to this container
      */
-    ZFOBSERVER_EVENT(ContentOnAdd)
+    ZFEVENT(ContentOnAdd)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when element removed\n
      * param0 is the element removed from this container
      */
-    ZFOBSERVER_EVENT(ContentOnRemove)
+    ZFEVENT(ContentOnRemove)
 
 public:
     /**

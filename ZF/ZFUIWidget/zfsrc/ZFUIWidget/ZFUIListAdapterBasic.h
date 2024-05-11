@@ -68,28 +68,28 @@ public:
      * called when #cellCount,
      * param0 is #v_zfindex that holds the cell count
      */
-    ZFOBSERVER_EVENT(ListCellCount)
+    ZFEVENT(ListCellCount)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #cellAt,
      * param0 is #ZFUIListAdapterBasicParam
      */
-    ZFOBSERVER_EVENT(ListCellAt)
+    ZFEVENT(ListCellAt)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #cellSizeAt,
      * param0 is #ZFUIListAdapterBasicParam
      */
-    ZFOBSERVER_EVENT(ListCellSizeAt)
+    ZFEVENT(ListCellSizeAt)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #cellCacheOnAccess,
      * param0 is #ZFUIListAdapterBasicParam
      */
-    ZFOBSERVER_EVENT(ListCellCacheOnAccess)
+    ZFEVENT(ListCellCacheOnAccess)
 
 public:
     zfoverride

@@ -117,9 +117,9 @@ public:
 // ZFThread
 ZFOBJECT_REGISTER(ZFThread)
 
-ZFOBSERVER_EVENT_REGISTER(ZFThread, ThreadOnStart)
-ZFOBSERVER_EVENT_REGISTER(ZFThread, ThreadOnStop)
-ZFOBSERVER_EVENT_REGISTER(ZFThread, ThreadTaskQueueOnFinish)
+ZFEVENT_REGISTER(ZFThread, ThreadOnStart)
+ZFEVENT_REGISTER(ZFThread, ThreadOnStop)
+ZFEVENT_REGISTER(ZFThread, ThreadTaskQueueOnFinish)
 
 ZFMETHOD_DEFINE_0(ZFThread, void *, nativeThreadRegister) {
     zfCoreMutexLocker();

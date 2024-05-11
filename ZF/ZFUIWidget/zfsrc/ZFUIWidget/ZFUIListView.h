@@ -57,7 +57,7 @@ public:
      *   during this event,
      *   you can only access them during #EventListVisibleCellOnChange
      */
-    ZFOBSERVER_EVENT(ListCellOnAttach)
+    ZFEVENT(ListCellOnAttach)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -67,13 +67,13 @@ public:
      *   during this event,
      *   you can only access them during #EventListVisibleCellOnChange
      */
-    ZFOBSERVER_EVENT(ListCellOnDetach)
+    ZFEVENT(ListCellOnDetach)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when list visible cell changed
      */
-    ZFOBSERVER_EVENT(ListVisibleCellOnChange)
+    ZFEVENT(ListVisibleCellOnChange)
 
 public:
     // ============================================================

@@ -1213,9 +1213,9 @@ private:
 // ZFUIListView
 ZFOBJECT_REGISTER(ZFUIListView)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIListView, ListCellOnAttach)
-ZFOBSERVER_EVENT_REGISTER(ZFUIListView, ListCellOnDetach)
-ZFOBSERVER_EVENT_REGISTER(ZFUIListView, ListVisibleCellOnChange)
+ZFEVENT_REGISTER(ZFUIListView, ListCellOnAttach)
+ZFEVENT_REGISTER(ZFUIListView, ListCellOnDetach)
+ZFEVENT_REGISTER(ZFUIListView, ListVisibleCellOnChange)
 
 #define _ZFP_ZFUIListView_listAdapterHolderTag "_ZFP_ZFUIListView_listAdapterHolderTag"
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListView, zfanyT<ZFUIListAdapter>, listAdapter) {

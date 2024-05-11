@@ -4,12 +4,12 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyStart)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyStop)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyPause)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyResume)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusViewBlinkOn)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusViewBlinkOff)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyStart)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyStop)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyPause)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusAutoApplyResume)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusViewBlinkOn)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkWhenFocusViewBlinkOff)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================

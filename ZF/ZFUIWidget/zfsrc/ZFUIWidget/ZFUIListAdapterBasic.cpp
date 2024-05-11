@@ -6,10 +6,10 @@ ZFOBJECT_REGISTER(ZFUIListAdapterBasicParam)
 
 ZFOBJECT_REGISTER(ZFUIListAdapterBasic)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIListAdapterBasic, ListCellCount)
-ZFOBSERVER_EVENT_REGISTER(ZFUIListAdapterBasic, ListCellAt)
-ZFOBSERVER_EVENT_REGISTER(ZFUIListAdapterBasic, ListCellSizeAt)
-ZFOBSERVER_EVENT_REGISTER(ZFUIListAdapterBasic, ListCellCacheOnAccess)
+ZFEVENT_REGISTER(ZFUIListAdapterBasic, ListCellCount)
+ZFEVENT_REGISTER(ZFUIListAdapterBasic, ListCellAt)
+ZFEVENT_REGISTER(ZFUIListAdapterBasic, ListCellSizeAt)
+ZFEVENT_REGISTER(ZFUIListAdapterBasic, ListCellCacheOnAccess)
 
 ZF_NAMESPACE_GLOBAL_END
 

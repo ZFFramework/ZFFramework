@@ -53,14 +53,14 @@ ZF_NAMESPACE_BEGIN(ZFApp)
  * notified when #ZFMainExecute, before #ZFMAIN_ENTRY and #ZFApp::EventAppEntry,
  * to let impl to supply custom #ZFApp::appParams dispatch
  */
-ZFOBSERVER_EVENT_GLOBAL(AppParamDispatch)
+ZFEVENT_GLOBAL(AppParamDispatch)
 
 /**
  * @brief see #ZFObject::observerNotify
  *
  * notified when #ZFMainExecute, after #ZFMAIN_ENTRY
  */
-ZFOBSERVER_EVENT_GLOBAL(AppEntry)
+ZFEVENT_GLOBAL(AppEntry)
 
 /**
  * @brief get the app params

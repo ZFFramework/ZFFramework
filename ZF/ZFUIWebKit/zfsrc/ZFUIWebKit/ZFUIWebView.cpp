@@ -10,7 +10,7 @@ ZFSTYLE_DEFAULT_DEFINE(ZFUIWebView)
 // ZFUIWebView
 ZFOBJECT_REGISTER(ZFUIWebView)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIWebView, WebLoadStateOnChange)
+ZFEVENT_REGISTER(ZFUIWebView, WebLoadStateOnChange)
 
 ZFMETHOD_DEFINE_1(ZFUIWebView, void, webLoadUrl
         , ZFMP_IN(const zfchar *, url)

@@ -135,7 +135,7 @@ public:
      * (#ZFObject::EventObjectPropertyValueOnUpdate),
      * you may also notify it manually to show the layout param changed
      */
-    ZFOBSERVER_EVENT(LayoutParamOnChange)
+    ZFEVENT(LayoutParamOnChange)
 
 
 public:

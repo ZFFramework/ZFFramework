@@ -83,39 +83,39 @@ public:
      * notified when window's windowOwnerSysWindow changed,
      * param0 is the old value
      */
-    ZFOBSERVER_EVENT(WindowOwnerSysWindowOnChange)
+    ZFEVENT(WindowOwnerSysWindowOnChange)
 
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when window attached to native container
      */
-    ZFOBSERVER_EVENT(WindowOnShow)
+    ZFEVENT(WindowOnShow)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when window detached from native container
      */
-    ZFOBSERVER_EVENT(WindowOnHide)
+    ZFEVENT(WindowOnHide)
 
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when #ZFUISysWindow::EventSysWindowOnResume
      */
-    ZFOBSERVER_EVENT(WindowOwnerSysWindowOnResume)
+    ZFEVENT(WindowOwnerSysWindowOnResume)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when #ZFUISysWindow::EventSysWindowOnPause
      */
-    ZFOBSERVER_EVENT(WindowOwnerSysWindowOnPause)
+    ZFEVENT(WindowOwnerSysWindowOnPause)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when #ZFUISysWindow::EventSysWindowOnRotate
      */
-    ZFOBSERVER_EVENT(WindowOwnerSysWindowOnRotate)
+    ZFEVENT(WindowOwnerSysWindowOnRotate)
 
 public:
     /**

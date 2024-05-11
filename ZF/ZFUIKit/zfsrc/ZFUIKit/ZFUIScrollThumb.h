@@ -23,7 +23,7 @@ public:
      *
      * called when thumb updated
      */
-    ZFOBSERVER_EVENT(ScrollThumbOnUpdate)
+    ZFEVENT(ScrollThumbOnUpdate)
 
 public:
     /**

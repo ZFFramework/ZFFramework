@@ -27,7 +27,7 @@ public:
      * called when load start or stop,
      * new state can be checked by #webLoading
      */
-    ZFOBSERVER_EVENT(WebLoadStateOnChange)
+    ZFEVENT(WebLoadStateOnChange)
 
 public:
     // ============================================================

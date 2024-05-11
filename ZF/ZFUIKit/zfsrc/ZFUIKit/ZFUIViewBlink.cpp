@@ -9,8 +9,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkOn)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ViewBlinkOff)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkOn)
+ZFEVENT_GLOBAL_REGISTER(ViewBlinkOff)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================

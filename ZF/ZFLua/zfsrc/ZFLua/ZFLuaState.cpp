@@ -216,8 +216,8 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLuaStateDetach
 
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(LuaStateOnAttach)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(LuaStateOnDetach)
+ZFEVENT_GLOBAL_REGISTER(LuaStateOnAttach)
+ZFEVENT_GLOBAL_REGISTER(LuaStateOnDetach)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================

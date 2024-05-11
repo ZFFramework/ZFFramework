@@ -88,13 +88,13 @@ public:
      *
      * param0 is the child animation
      */
-    ZFOBSERVER_EVENT(AniGroupOnChildStart)
+    ZFEVENT(AniGroupOnChildStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * param0 is the child animation
      */
-    ZFOBSERVER_EVENT(AniGroupOnChildStop)
+    ZFEVENT(AniGroupOnChildStop)
 
     // ============================================================
     // serialize

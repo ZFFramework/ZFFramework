@@ -64,8 +64,8 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFHttpRequest)
 
-ZFOBSERVER_EVENT_REGISTER(ZFHttpRequest, OnResponsePrepare)
-ZFOBSERVER_EVENT_REGISTER(ZFHttpRequest, OnResponse)
+ZFEVENT_REGISTER(ZFHttpRequest, OnResponsePrepare)
+ZFEVENT_REGISTER(ZFHttpRequest, OnResponse)
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFHttpRequest
         , ZFMP_IN(const zfchar *, url)

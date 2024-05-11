@@ -88,14 +88,14 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * sender is the view that was blinked\n
  * notified when a view start to blink
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkOn)
+ZFEVENT_GLOBAL(ViewBlinkOn)
 /**
  * @brief see #ZFObject::observerNotify
  *
  * sender is the view that was blinked\n
  * notified when a view stop blink
  */
-ZFOBSERVER_EVENT_GLOBAL(ViewBlinkOff)
+ZFEVENT_GLOBAL(ViewBlinkOff)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 ZF_NAMESPACE_GLOBAL_END

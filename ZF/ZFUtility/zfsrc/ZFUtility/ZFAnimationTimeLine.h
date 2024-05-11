@@ -37,7 +37,7 @@ public:
      *
      * param0 is a float #v_zffloat containing current time line progress
      */
-    ZFOBSERVER_EVENT(AniTimeLineOnUpdate)
+    ZFEVENT(AniTimeLineOnUpdate)
 
     // ============================================================
     // object

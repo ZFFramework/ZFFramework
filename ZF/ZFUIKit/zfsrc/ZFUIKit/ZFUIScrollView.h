@@ -43,61 +43,61 @@ public:
      *
      * called when drag begin
      */
-    ZFOBSERVER_EVENT(ScrollOnDragBegin)
+    ZFEVENT(ScrollOnDragBegin)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when drag
      */
-    ZFOBSERVER_EVENT(ScrollOnDrag)
+    ZFEVENT(ScrollOnDrag)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when drag end
      */
-    ZFOBSERVER_EVENT(ScrollOnDragEnd)
+    ZFEVENT(ScrollOnDragEnd)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when scroll begin
      */
-    ZFOBSERVER_EVENT(ScrollOnScrollBegin)
+    ZFEVENT(ScrollOnScrollBegin)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when scroll
      */
-    ZFOBSERVER_EVENT(ScrollOnScroll)
+    ZFEVENT(ScrollOnScroll)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when scroll end
      */
-    ZFOBSERVER_EVENT(ScrollOnScrollEnd)
+    ZFEVENT(ScrollOnScrollEnd)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #scrollArea changed
      */
-    ZFOBSERVER_EVENT(ScrollAreaOnChange)
+    ZFEVENT(ScrollAreaOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #scrollContentFrame changed
      */
-    ZFOBSERVER_EVENT(ScrollContentFrameOnChange)
+    ZFEVENT(ScrollContentFrameOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when auto scroll started
      */
-    ZFOBSERVER_EVENT(ScrollAutoScrollOnStart)
+    ZFEVENT(ScrollAutoScrollOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when auto scroll stopped
      */
-    ZFOBSERVER_EVENT(ScrollAutoScrollOnStop)
+    ZFEVENT(ScrollAutoScrollOnStop)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -110,7 +110,7 @@ public:
      *
      * "called manually" means not overrided by #scrollOverride
      */
-    ZFOBSERVER_EVENT(ScrollOnScrolledByUser)
+    ZFEVENT(ScrollOnScrolledByUser)
 
 public:
     // ============================================================

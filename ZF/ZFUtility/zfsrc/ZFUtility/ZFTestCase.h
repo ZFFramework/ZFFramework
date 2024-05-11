@@ -32,25 +32,25 @@ public:
      * param0 is a #v_zfstring holds the output,
      * notified when #testCaseOutput called
      */
-    ZFOBSERVER_EVENT(TestCaseOnOutput)
+    ZFEVENT(TestCaseOnOutput)
     /**
      * @brief called when test started
      *
      * called when test case started
      */
-    ZFOBSERVER_EVENT(TestCaseOnStart)
+    ZFEVENT(TestCaseOnStart)
     /**
      * @brief called when test progress
      *
      * param0 is the param passed from #testCaseProgress
      */
-    ZFOBSERVER_EVENT(TestCaseOnProgress)
+    ZFEVENT(TestCaseOnProgress)
     /**
      * @brief called when test stopped
      *
      * param0 is #ZFResultType
      */
-    ZFOBSERVER_EVENT(TestCaseOnStop)
+    ZFEVENT(TestCaseOnStop)
 
 protected:
     zfoverride

@@ -86,7 +86,7 @@ public:
      * called when page created\n
      * this event would also be fired to it's owner #pageManager
      */
-    ZFOBSERVER_EVENT(PageOnCreate)
+    ZFEVENT(PageOnCreate)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -95,7 +95,7 @@ public:
      * param1 is the sibling pause page or null\n
      * this event would also be fired to it's owner #pageManager
      */
-    ZFOBSERVER_EVENT(PageOnResume)
+    ZFEVENT(PageOnResume)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -104,14 +104,14 @@ public:
      * param1 is the sibling resume page or null\n
      * this event would also be fired to it's owner #pageManager
      */
-    ZFOBSERVER_EVENT(PageOnPause)
+    ZFEVENT(PageOnPause)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when page destroyed\n
      * this event would also be fired to it's owner #pageManager
      */
-    ZFOBSERVER_EVENT(PageOnDestroy)
+    ZFEVENT(PageOnDestroy)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -123,7 +123,7 @@ public:
      * see #pageAniOnPrepare for more info\n
      * this event would also be fired to it's owner #pageManager
      */
-    ZFOBSERVER_EVENT(PageAniOnPrepare)
+    ZFEVENT(PageAniOnPrepare)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -134,7 +134,7 @@ public:
      * param0 is the #ZFUIPagePauseReason/#ZFUIPageResumeReason\n
      * this event would also be fired to it's owner #pageManager
      */
-    ZFOBSERVER_EVENT(PageAniOnStart)
+    ZFEVENT(PageAniOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -144,7 +144,7 @@ public:
      * param0 is the #ZFUIPagePauseReason/#ZFUIPageResumeReason\n
      * this event would also be fired to it's owner #pageManager
      */
-    ZFOBSERVER_EVENT(PageAniOnStop)
+    ZFEVENT(PageAniOnStop)
 
     // ============================================================
     // page manager
@@ -290,25 +290,25 @@ public:
      *
      * called when page manager created
      */
-    ZFOBSERVER_EVENT(ManagerOnCreate)
+    ZFEVENT(ManagerOnCreate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when page manager resumed
      */
-    ZFOBSERVER_EVENT(ManagerOnResume)
+    ZFEVENT(ManagerOnResume)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when page manager resumed
      */
-    ZFOBSERVER_EVENT(ManagerOnPause)
+    ZFEVENT(ManagerOnPause)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when page manager destroyed
      */
-    ZFOBSERVER_EVENT(ManagerOnDestroy)
+    ZFEVENT(ManagerOnDestroy)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -316,7 +316,7 @@ public:
      * called when #managerUIBlockedOnChange,
      * see #managerUIBlocked
      */
-    ZFOBSERVER_EVENT(ManagerUIBlockedOnChange)
+    ZFEVENT(ManagerUIBlockedOnChange)
 
     // ============================================================
     // manager creation

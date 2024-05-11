@@ -45,14 +45,14 @@ public:
      * called when #cellOnUpdate,
      * param0 is #v_ZFUIListCellUpdaterParam
      */
-    ZFOBSERVER_EVENT(CellOnUpdate)
+    ZFEVENT(CellOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #cellOnRecycle,
      * param0 is #ZFUIListCell
      */
-    ZFOBSERVER_EVENT(CellOnRecycle)
+    ZFEVENT(CellOnRecycle)
 
 protected:
     /**

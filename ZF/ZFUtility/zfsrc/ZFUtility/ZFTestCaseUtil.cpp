@@ -3,8 +3,8 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(TestCaseRunAllOnStart)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(TestCaseRunAllOnStop)
+ZFEVENT_GLOBAL_REGISTER(TestCaseRunAllOnStart)
+ZFEVENT_GLOBAL_REGISTER(TestCaseRunAllOnStop)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================

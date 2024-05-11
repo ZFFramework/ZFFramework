@@ -27,7 +27,7 @@ public:
      * called to draw the contents,
      * see #ZFUIDrawableView
      */
-    ZFOBSERVER_EVENT(OnDraw)
+    ZFEVENT(OnDraw)
 
 public:
     /**

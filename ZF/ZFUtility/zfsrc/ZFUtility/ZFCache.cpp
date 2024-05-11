@@ -93,8 +93,8 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFCache)
 
-ZFOBSERVER_EVENT_REGISTER(ZFCache, CacheOnAdd)
-ZFOBSERVER_EVENT_REGISTER(ZFCache, CacheOnRemove)
+ZFEVENT_REGISTER(ZFCache, CacheOnAdd)
+ZFEVENT_REGISTER(ZFCache, CacheOnRemove)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfindex, cacheMaxSize) {
     this->cacheTrimBySize(this->cacheMaxSize());

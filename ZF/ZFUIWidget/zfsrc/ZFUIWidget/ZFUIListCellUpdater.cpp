@@ -4,8 +4,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIListCellUpdater)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIListCellUpdater, CellOnUpdate)
-ZFOBSERVER_EVENT_REGISTER(ZFUIListCellUpdater, CellOnRecycle)
+ZFEVENT_REGISTER(ZFUIListCellUpdater, CellOnUpdate)
+ZFEVENT_REGISTER(ZFUIListCellUpdater, CellOnRecycle)
 
 #define _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key) \
     zfchar *cacheKey = zfsConnect("_ZFP_ZFUIListCellUpdater_cacheKey", key); \

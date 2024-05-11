@@ -20,7 +20,7 @@ public:
      *
      * called when internal data changed by #aniLoad
      */
-    ZFOBSERVER_EVENT(AniDataOnUpdate)
+    ZFEVENT(AniDataOnUpdate)
 
 public:
     /**
@@ -156,27 +156,27 @@ public:
      *
      * called when #aniStart
      */
-    ZFOBSERVER_EVENT(AniOnStart)
+    ZFEVENT(AniOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when all frames finished,
      * not called if ready to #EventAniOnStop
      */
-    ZFOBSERVER_EVENT(AniOnLoop)
+    ZFEVENT(AniOnLoop)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #aniStop
      */
-    ZFOBSERVER_EVENT(AniOnStop)
+    ZFEVENT(AniOnStop)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when frame changed (both for #aniStart or change #aniFrame manually),
      * current frame can be obtained by #aniFrame
      */
-    ZFOBSERVER_EVENT(AniOnFrame)
+    ZFEVENT(AniOnFrame)
 
 public:
     /**

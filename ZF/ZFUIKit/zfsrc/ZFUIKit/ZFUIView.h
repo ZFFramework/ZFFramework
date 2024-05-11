@@ -103,7 +103,7 @@ public:
      * called when child added or removed or order changed,
      * may be normal child or internal child
      */
-    ZFOBSERVER_EVENT(ViewChildOnChange)
+    ZFEVENT(ViewChildOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -111,7 +111,7 @@ public:
      * param0 is the child,
      * param1 is #ZFUIViewChildLayer
      */
-    ZFOBSERVER_EVENT(ViewChildOnAdd)
+    ZFEVENT(ViewChildOnAdd)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -119,51 +119,51 @@ public:
      * param0 is the child,
      * param1 is #ZFUIViewChildLayer
      */
-    ZFOBSERVER_EVENT(ViewChildOnRemove)
+    ZFEVENT(ViewChildOnRemove)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when this view added to parent,
      * param0 is the parent added to
      */
-    ZFOBSERVER_EVENT(ViewOnAddToParent)
+    ZFEVENT(ViewOnAddToParent)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * param0 is the parent removed from
      */
-    ZFOBSERVER_EVENT(ViewOnRemoveFromParent)
+    ZFEVENT(ViewOnRemoveFromParent)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when this view or parent view's #UIScale or #UIScaleFixed changed
      */
-    ZFOBSERVER_EVENT(UIScaleOnChange)
+    ZFEVENT(UIScaleOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when view's focus state changed, both obtain or resign
      */
-    ZFOBSERVER_EVENT(ViewFocusOnChange)
+    ZFEVENT(ViewFocusOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * param0 is the #ZFUIEvent
      */
-    ZFOBSERVER_EVENT(ViewOnEvent)
+    ZFEVENT(ViewOnEvent)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #layoutRequest called
      */
-    ZFOBSERVER_EVENT(ViewLayoutOnLayoutRequest)
+    ZFEVENT(ViewLayoutOnLayoutRequest)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * param0 is a #ZFUIViewMeasureResult,
      * you may change the measured size to override the measure result
      */
-    ZFOBSERVER_EVENT(ViewLayoutOnMeasureFinish)
+    ZFEVENT(ViewLayoutOnMeasureFinish)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -171,26 +171,26 @@ public:
      * use #viewFramePrev if necessary,
      * you may safely modify children's #layoutParam during this method
      */
-    ZFOBSERVER_EVENT(ViewLayoutOnLayoutPrepare)
+    ZFEVENT(ViewLayoutOnLayoutPrepare)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called to do actual layout steps
      */
-    ZFOBSERVER_EVENT(ViewLayoutOnLayout)
+    ZFEVENT(ViewLayoutOnLayout)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when layout finished,
      * typically you should not modify #layoutParam during this event
      */
-    ZFOBSERVER_EVENT(ViewLayoutOnLayoutFinish)
+    ZFEVENT(ViewLayoutOnLayoutFinish)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when #nativeImplViewMarginUpdate and value differs from old
      */
-    ZFOBSERVER_EVENT(NativeImplViewMarginOnUpdate)
+    ZFEVENT(NativeImplViewMarginOnUpdate)
 
     // ============================================================
     // serialize

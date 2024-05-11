@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass _ZFP_ZFLua_ZFCallbackForLua_test_Object : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFLua_ZFCallbackForLua_test_Object, ZFObject)
 
-    ZFOBSERVER_EVENT(Test)
+    ZFEVENT(Test)
 
 public:
     ZFMETHOD_INLINE_0(void, notifyTest) {
@@ -35,7 +35,7 @@ protected:
     }
 };
 ZFOBJECT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object)
-ZFOBSERVER_EVENT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object, Test)
+ZFEVENT_REGISTER(_ZFP_ZFLua_ZFCallbackForLua_test_Object, Test)
 
 zfclass ZFLua_ZFCallbackForLua_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFLua_ZFCallbackForLua_test, ZFFramework_test_TestCase)

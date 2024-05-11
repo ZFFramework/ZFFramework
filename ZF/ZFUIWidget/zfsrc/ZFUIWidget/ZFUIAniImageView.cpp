@@ -17,7 +17,7 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIAniImageData)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIAniImageData, AniDataOnUpdate)
+ZFEVENT_REGISTER(ZFUIAniImageData, AniDataOnUpdate)
 
 ZFMETHOD_DEFINE_4(ZFUIAniImageData, zfbool, aniLoad
         , ZFMP_IN(ZFUIImage *, frameSrc)
@@ -307,10 +307,10 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIAniImageView)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIAniImageView, AniOnStart)
-ZFOBSERVER_EVENT_REGISTER(ZFUIAniImageView, AniOnLoop)
-ZFOBSERVER_EVENT_REGISTER(ZFUIAniImageView, AniOnStop)
-ZFOBSERVER_EVENT_REGISTER(ZFUIAniImageView, AniOnFrame)
+ZFEVENT_REGISTER(ZFUIAniImageView, AniOnStart)
+ZFEVENT_REGISTER(ZFUIAniImageView, AniOnLoop)
+ZFEVENT_REGISTER(ZFUIAniImageView, AniOnStop)
+ZFEVENT_REGISTER(ZFUIAniImageView, AniOnFrame)
 
 ZFMETHOD_DEFINE_4(ZFUIAniImageView, zfbool, aniLoad
         , ZFMP_IN(ZFUIImage *, frameSrc)

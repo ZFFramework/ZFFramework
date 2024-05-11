@@ -37,7 +37,7 @@ public:
      * called when timer started
      * @note on what thread this event is fired depends on impl
      */
-    ZFOBSERVER_EVENT(TimerOnStart)
+    ZFEVENT(TimerOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -45,14 +45,14 @@ public:
      * @note on what thread this event is fired depends on impl,
      *   unless #timerActivateOnMainThread was set
      */
-    ZFOBSERVER_EVENT(TimerOnActivate)
+    ZFEVENT(TimerOnActivate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when timer stopped, ensured in the same thread that stop the timer
      * @note timer start and stop event is not ensured paired
      */
-    ZFOBSERVER_EVENT(TimerOnStop)
+    ZFEVENT(TimerOnStop)
 
 protected:
     /**

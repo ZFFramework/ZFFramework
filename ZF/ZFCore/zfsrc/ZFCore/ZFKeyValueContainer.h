@@ -66,7 +66,7 @@ public:
      *
      * called when element added or removed or order changed
      */
-    ZFOBSERVER_EVENT(ContentOnChange)
+    ZFEVENT(ContentOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -74,7 +74,7 @@ public:
      * param0 is the element key,
      * param1 is the element value
      */
-    ZFOBSERVER_EVENT(ContentOnAdd)
+    ZFEVENT(ContentOnAdd)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -82,7 +82,7 @@ public:
      * param0 is the element key,
      * param1 is the element value
      */
-    ZFOBSERVER_EVENT(ContentOnRemove)
+    ZFEVENT(ContentOnRemove)
 
 public:
     /**

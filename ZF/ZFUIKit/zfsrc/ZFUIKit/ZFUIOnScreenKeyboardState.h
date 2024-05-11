@@ -43,7 +43,7 @@ public:
      *
      * called when keyboard visibility changed or keyboard frame changed
      */
-    ZFOBSERVER_EVENT(KeyboardStateOnChange)
+    ZFEVENT(KeyboardStateOnChange)
 
 public:
     /**

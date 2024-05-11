@@ -30,10 +30,10 @@ public:
 // ZFUIWebJSBridge
 ZFOBJECT_REGISTER(ZFUIWebJSBridge)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIWebJSBridge, WebMessageBeforeSend)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterSend)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWebJSBridge, WebMessageBeforeRecv)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterRecv)
+ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageBeforeSend)
+ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterSend)
+ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageBeforeRecv)
+ZFEVENT_REGISTER(ZFUIWebJSBridge, WebMessageAfterRecv)
 
 #define _ZFP_ZFUIWebJSBridge_tagKey "_ZFP_ZFUIWebJSBridge_tagKey"
 ZFMETHOD_DEFINE_1(ZFUIWebJSBridge, ZFUIWebJSBridge *, instanceForWebView

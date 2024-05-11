@@ -30,7 +30,7 @@ public:
      * typically, this event would be fired by #listAdapterNotifyReload
      * which would be called by list adapter impl
      */
-    ZFOBSERVER_EVENT(ListAdapterOnReload)
+    ZFEVENT(ListAdapterOnReload)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -38,14 +38,14 @@ public:
      * param0 is the #ZFUIListCell,
      * param1 is the index of the list cell (as #v_zfindex)
      */
-    ZFOBSERVER_EVENT(ListCellOnUpdate)
+    ZFEVENT(ListCellOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when recycle list cell,
      * param0 is the list cell
      */
-    ZFOBSERVER_EVENT(ListCellCacheOnRecycle)
+    ZFEVENT(ListCellCacheOnRecycle)
 
     // ============================================================
     // owner state

@@ -31,13 +31,13 @@ public:
      *
      * called in the same thread of the thread task
      */
-    ZFOBSERVER_EVENT(ThreadOnRegister)
+    ZFEVENT(ThreadOnRegister)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called in the same thread of the thread task
      */
-    ZFOBSERVER_EVENT(ThreadOnUnregister)
+    ZFEVENT(ThreadOnUnregister)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -45,20 +45,20 @@ public:
      * called in the same thread of the thread task,
      * param0 and param1 is the params passed from #threadStart
      */
-    ZFOBSERVER_EVENT(ThreadOnStart)
+    ZFEVENT(ThreadOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called in the same thread of the thread task,
      * param0 and param1 is the params passed from #threadStart
      */
-    ZFOBSERVER_EVENT(ThreadOnStop)
+    ZFEVENT(ThreadOnStop)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when all of #taskQueueCount finished
      */
-    ZFOBSERVER_EVENT(ThreadTaskQueueOnFinish)
+    ZFEVENT(ThreadTaskQueueOnFinish)
 
     // ============================================================
     // thread control

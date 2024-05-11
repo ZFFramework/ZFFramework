@@ -232,10 +232,10 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  * usage:
  * @code
  *   zfclass YourClass ... {
- *       ZFOBSERVER_EVENT(YourEvent)
+ *       ZFEVENT(YourEvent)
  *   };
  *
- *   ZFOBSERVER_EVENT_REGISTER(YourClass, YourEvent)
+ *   ZFEVENT_REGISTER(YourClass, YourEvent)
  * @endcode
  * declare a event for ZFObject's observer logic,
  * declared event name can be accessed by:
@@ -257,38 +257,38 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   and you can use #ZFIdMapIdForName or #ZFIdMapNameForId
  *   to convert them easily
  */
-#define ZFOBSERVER_EVENT(YourEvent) \
+#define ZFEVENT(YourEvent) \
     ZFIDMAP_DETAIL(Event, YourEvent)
 
-/** @brief see #ZFOBSERVER_EVENT */
-#define ZFOBSERVER_EVENT_REGISTER(YourClass, YourEvent) \
+/** @brief see #ZFEVENT */
+#define ZFEVENT_REGISTER(YourClass, YourEvent) \
     ZFIDMAP_REGISTER_DETAIL(YourClass, Event, YourEvent)
 
 // ============================================================
 /**
- * @brief declare a observer event in global scope, see #ZFOBSERVER_EVENT
+ * @brief declare a observer event in global scope, see #ZFEVENT
  *
  * usage:
  * @code
  *   // in header files
  *   ZF_NAMESPACE_BEGIN(YourNamespace)
  *   / ** @brief you can add doxygen docs here * /
- *   ZFOBSERVER_EVENT_GLOBAL(YourEvent)
+ *   ZFEVENT_GLOBAL(YourEvent)
  *   ZF_NAMESPACE_END(YourNamespace)
  *
- *   ZFOBSERVER_EVENT_GLOBAL_REGISTER(YourNamespace, YourEvent)
+ *   ZFEVENT_GLOBAL_REGISTER(YourNamespace, YourEvent)
  *
  *   // use the event
  *   zfidentity eventId = YourNamespace::EventYourEvent();
  * @endcode
- * unlike #ZFOBSERVER_EVENT, this macro would declare event outside of class scope,
- * typically you should use #ZFOBSERVER_EVENT_GLOBAL which have "ZFGlobalEvent" as namespace
+ * unlike #ZFEVENT, this macro would declare event outside of class scope,
+ * typically you should use #ZFEVENT_GLOBAL which have "ZFGlobalEvent" as namespace
  */
-#define ZFOBSERVER_EVENT_GLOBAL(YourEvent) \
+#define ZFEVENT_GLOBAL(YourEvent) \
     ZFIDMAP_GLOBAL_DETAIL(Event, YourEvent)
 
-/** @brief see #ZFOBSERVER_EVENT */
-#define ZFOBSERVER_EVENT_GLOBAL_REGISTER(YourEvent) \
+/** @brief see #ZFEVENT */
+#define ZFEVENT_GLOBAL_REGISTER(YourEvent) \
     ZFIDMAP_GLOBAL_REGISTER_DETAIL(Event, YourEvent)
 
 ZF_NAMESPACE_GLOBAL_END

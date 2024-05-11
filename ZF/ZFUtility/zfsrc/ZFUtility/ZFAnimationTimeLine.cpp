@@ -115,7 +115,7 @@ private:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAnimationTimeLine)
 
-ZFOBSERVER_EVENT_REGISTER(ZFAnimationTimeLine, AniTimeLineOnUpdate)
+ZFEVENT_REGISTER(ZFAnimationTimeLine, AniTimeLineOnUpdate)
 
 // ============================================================
 // object

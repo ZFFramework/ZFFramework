@@ -26,14 +26,14 @@ public:
      * called when cache added,
      * param0 is the added cache
      */
-    ZFOBSERVER_EVENT(CacheOnAdd)
+    ZFEVENT(CacheOnAdd)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when cache removed,
      * param0 is the removed cache
      */
-    ZFOBSERVER_EVENT(CacheOnRemove)
+    ZFEVENT(CacheOnRemove)
 
 public:
     /**

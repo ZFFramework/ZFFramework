@@ -95,11 +95,11 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      */
-    ZFOBSERVER_EVENT(TextOnEditBegin)
+    ZFEVENT(TextOnEditBegin)
     /**
      * @brief see #ZFObject::observerNotify
      */
-    ZFOBSERVER_EVENT(TextOnEditEnd)
+    ZFEVENT(TextOnEditEnd)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -113,27 +113,27 @@ public:
      *   and store result to param1,
      *   you may change the value to modify the filter result
      */
-    ZFOBSERVER_EVENT(TextOnChangeCheck)
+    ZFEVENT(TextOnChangeCheck)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when text changed,
      * param0 is the old text (as #v_zfstring)
      */
-    ZFOBSERVER_EVENT(TextOnChange)
+    ZFEVENT(TextOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when return clicked
      */
-    ZFOBSERVER_EVENT(TextOnReturnClick)
+    ZFEVENT(TextOnReturnClick)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * util event fired when return clicked or focus lost,
      * or, you may manually notify it by #textEditNotifyConfirm
      */
-    ZFOBSERVER_EVENT(TextOnEditConfirm)
+    ZFEVENT(TextOnEditConfirm)
 
 public:
     // ============================================================

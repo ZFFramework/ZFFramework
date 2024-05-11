@@ -41,11 +41,11 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAnimation)
 
-ZFOBSERVER_EVENT_REGISTER(ZFAnimation, AniOnInvalid)
-ZFOBSERVER_EVENT_REGISTER(ZFAnimation, AniOnDelayFinish)
-ZFOBSERVER_EVENT_REGISTER(ZFAnimation, AniOnStart)
-ZFOBSERVER_EVENT_REGISTER(ZFAnimation, AniOnStop)
-ZFOBSERVER_EVENT_REGISTER(ZFAnimation, AniOnStopOrInvalid)
+ZFEVENT_REGISTER(ZFAnimation, AniOnInvalid)
+ZFEVENT_REGISTER(ZFAnimation, AniOnDelayFinish)
+ZFEVENT_REGISTER(ZFAnimation, AniOnStart)
+ZFEVENT_REGISTER(ZFAnimation, AniOnStop)
+ZFEVENT_REGISTER(ZFAnimation, AniOnStopOrInvalid)
 
 ZFMETHOD_DEFINE_0(ZFAnimation, zftimet, aniDurationFixed) {
     return (this->aniDuration() > 0 ? this->aniDuration() : ZFAnimationDurationDefault());

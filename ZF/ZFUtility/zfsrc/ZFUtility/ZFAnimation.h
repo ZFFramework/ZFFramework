@@ -30,13 +30,13 @@ public:
      *
      * called when start an invalid animation
      */
-    ZFOBSERVER_EVENT(AniOnInvalid)
+    ZFEVENT(AniOnInvalid)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when animation delay finished
      */
-    ZFOBSERVER_EVENT(AniOnDelayFinish)
+    ZFEVENT(AniOnDelayFinish)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -45,13 +45,13 @@ public:
      *   this event would be fired before delay,
      *   use #EventAniOnDelayFinish if necessary
      */
-    ZFOBSERVER_EVENT(AniOnStart)
+    ZFEVENT(AniOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when animation stopped
      */
-    ZFOBSERVER_EVENT(AniOnStop)
+    ZFEVENT(AniOnStop)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -59,7 +59,7 @@ public:
      * designed for convenient,
      * param0 is a #v_zfbool to show whether the animation is valid
      */
-    ZFOBSERVER_EVENT(AniOnStopOrInvalid)
+    ZFEVENT(AniOnStopOrInvalid)
 
     // ============================================================
     // property

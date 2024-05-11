@@ -182,7 +182,7 @@ public:
 
 public:
     /**
-     * @brief register a event, see also #ZFOBSERVER_EVENT #ZFOBSERVER_EVENT_GLOBAL
+     * @brief register a event, see also #ZFEVENT #ZFEVENT_GLOBAL
      *
      * if within class scope (#classBegin),
      * `YourClassName::EventYourEvent` would be registered,

@@ -372,8 +372,8 @@ void ZFStyleChangeEnd() {
 }
 
 ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ZFStyleOnChange)
-ZFOBSERVER_EVENT_GLOBAL_REGISTER(ZFStyleOnInvalid)
+ZFEVENT_GLOBAL_REGISTER(ZFStyleOnChange)
+ZFEVENT_GLOBAL_REGISTER(ZFStyleOnInvalid)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 static zfbool _ZFP_ZFStyleInvalidCheckDisableFlag = zffalse;

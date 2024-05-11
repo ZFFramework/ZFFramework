@@ -172,10 +172,8 @@ public:
         } \
     } \
     const ZFMethod *m_id; \
-    const ZFMethod *m_idName; \
     ZF_STATIC_REGISTER_DESTROY(ZFIdMap_##Scope##_##YourIdName) { \
         ZFMethodUserUnregister(this->m_id); \
-        ZFMethodUserUnregister(this->m_idName); \
     } \
     ZF_STATIC_REGISTER_END(ZFIdMap_##Scope##_##YourIdName)
 
@@ -196,10 +194,8 @@ public:
     } \
     ZF_STATIC_REGISTER_DESTROY(ZFIdMap_##YourIdName) { \
         ZFMethodFuncUserUnregister(this->m_id); \
-        ZFMethodFuncUserUnregister(this->m_idName); \
     } \
     const ZFMethod *m_id; \
-    const ZFMethod *m_idName; \
     ZF_STATIC_REGISTER_END(ZFIdMap_##YourIdName) \
 
 ZF_NAMESPACE_GLOBAL_END

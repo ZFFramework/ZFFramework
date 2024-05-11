@@ -5,8 +5,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFCore_ZFObserverGroup_test : zfextend ZFFramework_test_TestCase {
     ZFOBJECT_DECLARE(ZFCore_ZFObserverGroup_test, ZFFramework_test_TestCase)
 
-    ZFOBSERVER_EVENT(ZFObserverGroupTest0)
-    ZFOBSERVER_EVENT(ZFObserverGroupTest1)
+    ZFEVENT(ZFObserverGroupTest0)
+    ZFEVENT(ZFObserverGroupTest1)
 
 protected:
     zfoverride
@@ -74,8 +74,8 @@ protected:
     }
 };
 ZFOBJECT_REGISTER(ZFCore_ZFObserverGroup_test)
-ZFOBSERVER_EVENT_REGISTER(ZFCore_ZFObserverGroup_test, ZFObserverGroupTest0)
-ZFOBSERVER_EVENT_REGISTER(ZFCore_ZFObserverGroup_test, ZFObserverGroupTest1)
+ZFEVENT_REGISTER(ZFCore_ZFObserverGroup_test, ZFObserverGroupTest0)
+ZFEVENT_REGISTER(ZFCore_ZFObserverGroup_test, ZFObserverGroupTest1)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -4,9 +4,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFKeyValueContainer)
 
-ZFOBSERVER_EVENT_REGISTER(ZFKeyValueContainer, ContentOnChange)
-ZFOBSERVER_EVENT_REGISTER(ZFKeyValueContainer, ContentOnAdd)
-ZFOBSERVER_EVENT_REGISTER(ZFKeyValueContainer, ContentOnRemove)
+ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnChange)
+ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnAdd)
+ZFEVENT_REGISTER(ZFKeyValueContainer, ContentOnRemove)
 
 ZFMETHOD_DEFINE_3(ZFKeyValueContainer, void, objectInfoOfContentT
         , ZFMP_IN_OUT(zfstring &, ret)

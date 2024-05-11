@@ -4,7 +4,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFUIDrawableView)
-ZFOBSERVER_EVENT_REGISTER(ZFUIDrawableView, OnDraw)
+ZFEVENT_REGISTER(ZFUIDrawableView, OnDraw)
 
 ZFMETHOD_DEFINE_0(ZFUIDrawableView, void, drawRequest) {
     ZFPROTOCOL_ACCESS(ZFUIDrawForView)->drawRequest(this);

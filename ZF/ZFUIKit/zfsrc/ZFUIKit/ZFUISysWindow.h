@@ -17,7 +17,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
  * either by access #ZFUISysWindow::mainWindow,
  * or by #ZFUISysWindow::mainWindowRegister
  */
-ZFOBSERVER_EVENT_GLOBAL(SysWindowMainWindowOnAttach)
+ZFEVENT_GLOBAL(SysWindowMainWindowOnAttach)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
 // ============================================================
@@ -43,39 +43,39 @@ public:
      * notified when window created,
      * see #nativeWindowIsCreated for more info
      */
-    ZFOBSERVER_EVENT(SysWindowOnCreate)
+    ZFEVENT(SysWindowOnCreate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when window about to destroy
      */
-    ZFOBSERVER_EVENT(SysWindowOnDestroy)
+    ZFEVENT(SysWindowOnDestroy)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when window become active
      */
-    ZFOBSERVER_EVENT(SysWindowOnResume)
+    ZFEVENT(SysWindowOnResume)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when window enter background
      */
-    ZFOBSERVER_EVENT(SysWindowOnPause)
+    ZFEVENT(SysWindowOnPause)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when window rotated,
      * new orientation can be accessed by #sysWindowOrientation
      */
-    ZFOBSERVER_EVENT(SysWindowOnRotate)
+    ZFEVENT(SysWindowOnRotate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * notified when #sysWindowMargin changed,
      * param0 is a #v_ZFUIMargin that holds the old window margin
      */
-    ZFOBSERVER_EVENT(SysWindowMarginOnUpdate)
+    ZFEVENT(SysWindowMarginOnUpdate)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -84,7 +84,7 @@ public:
      * and none of it's view handled the event by #ZFUIEvent::eventResolved\n
      * param0 is the #ZFUIKeyEvent
      */
-    ZFOBSERVER_EVENT(SysWindowOnKeyEvent)
+    ZFEVENT(SysWindowOnKeyEvent)
 
 public:
     /**

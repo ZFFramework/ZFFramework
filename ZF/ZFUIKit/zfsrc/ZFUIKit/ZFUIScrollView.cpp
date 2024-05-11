@@ -529,17 +529,17 @@ public:
 // ZFUIScrollView
 ZFOBJECT_REGISTER(ZFUIScrollView)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollOnDragBegin)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollOnDrag)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollOnDragEnd)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollOnScrollBegin)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollOnScroll)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollOnScrollEnd)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollAreaOnChange)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollContentFrameOnChange)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollAutoScrollOnStart)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollAutoScrollOnStop)
-ZFOBSERVER_EVENT_REGISTER(ZFUIScrollView, ScrollOnScrolledByUser)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnDragBegin)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnDrag)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnDragEnd)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScrollBegin)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScroll)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScrollEnd)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollAreaOnChange)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollContentFrameOnChange)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollAutoScrollOnStart)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollAutoScrollOnStop)
+ZFEVENT_REGISTER(ZFUIScrollView, ScrollOnScrolledByUser)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIScrollView, zfbool, scrollEnable) {
     d->xScrollEnable = this->scrollEnable();

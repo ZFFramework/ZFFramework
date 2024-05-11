@@ -259,11 +259,11 @@ zfclass _ZFP_I_ZFUIDialog_DialogClickMask : zfextend ZFUIButton {
 // ZFUIDialog
 ZFOBJECT_REGISTER(ZFUIDialog)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIDialog, DialogBeforeShow)
-ZFOBSERVER_EVENT_REGISTER(ZFUIDialog, DialogAfterShow)
-ZFOBSERVER_EVENT_REGISTER(ZFUIDialog, DialogBeforeHide)
-ZFOBSERVER_EVENT_REGISTER(ZFUIDialog, DialogAfterHide)
-ZFOBSERVER_EVENT_REGISTER(ZFUIDialog, DialogFocusOnUpdate)
+ZFEVENT_REGISTER(ZFUIDialog, DialogBeforeShow)
+ZFEVENT_REGISTER(ZFUIDialog, DialogAfterShow)
+ZFEVENT_REGISTER(ZFUIDialog, DialogBeforeHide)
+ZFEVENT_REGISTER(ZFUIDialog, DialogAfterHide)
+ZFEVENT_REGISTER(ZFUIDialog, DialogFocusOnUpdate)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIColor, dialogWindowColor) {
     d->dialogWindowBg->viewBackgroundColor(this->dialogWindowColor());

@@ -5,8 +5,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIListAdapter)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIListAdapter, ListCellOnUpdate)
-ZFOBSERVER_EVENT_REGISTER(ZFUIListAdapter, ListCellCacheOnRecycle)
+ZFEVENT_REGISTER(ZFUIListAdapter, ListCellOnUpdate)
+ZFEVENT_REGISTER(ZFUIListAdapter, ListCellCacheOnRecycle)
 
 // ============================================================
 ZFMETHOD_DEFINE_0(ZFUIListAdapter, ZFUIOrientationEnum, listOrientation) {

@@ -6,10 +6,10 @@ ZFENUM_DEFINE(ZFUIButtonGroupType)
 
 ZFOBJECT_REGISTER(ZFUIButtonGroup)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIButtonGroup, ButtonOnAdd)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButtonGroup, ButtonOnRemove)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnChange)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnClickChecked)
+ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonOnAdd)
+ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonOnRemove)
+ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnChange)
+ZFEVENT_REGISTER(ZFUIButtonGroup, ButtonTabOnClickChecked)
 
 // ============================================================
 // common

@@ -28,12 +28,12 @@ public:
 // ZFUIWindow
 ZFOBJECT_REGISTER(ZFUIWindow)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnChange)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOnShow)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOnHide)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnResume)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnPause)
-ZFOBSERVER_EVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnRotate)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnChange)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOnShow)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOnHide)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnResume)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnPause)
+ZFEVENT_REGISTER(ZFUIWindow, WindowOwnerSysWindowOnRotate)
 
 ZFMETHOD_DEFINE_1(ZFUIWindow, zfanyT<ZFUIWindow>, windowForView
         , ZFMP_IN(ZFUIView *, forView)

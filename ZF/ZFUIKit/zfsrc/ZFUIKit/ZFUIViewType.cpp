@@ -47,7 +47,7 @@ ZFEXPORT_VAR_READONLY_DEFINE(ZFUISizeParam, ZFUISizeParamFillFill, ZFUISizeParam
 
 // ============================================================
 ZFOBJECT_REGISTER(ZFUILayoutParam)
-ZFOBSERVER_EVENT_REGISTER(ZFUILayoutParam, LayoutParamOnChange)
+ZFEVENT_REGISTER(ZFUILayoutParam, LayoutParamOnChange)
 
 // ============================================================
 // util

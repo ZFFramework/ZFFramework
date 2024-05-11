@@ -34,25 +34,25 @@ public:
      * typically used for one-time init for each hint object,
      * to update app-wide default setting
      */
-    ZFOBSERVER_EVENT(HintOnInit)
+    ZFEVENT(HintOnInit)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called to update the hint object before show (each time)
      */
-    ZFOBSERVER_EVENT(HintOnUpdate)
+    ZFEVENT(HintOnUpdate)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when the hint showed
      */
-    ZFOBSERVER_EVENT(HintOnShow)
+    ZFEVENT(HintOnShow)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when the hint hide
      */
-    ZFOBSERVER_EVENT(HintOnHide)
+    ZFEVENT(HintOnHide)
 
 public:
     /**

@@ -7,7 +7,7 @@
  *   zfclass MyObject : zfextend ZFObject {
  *       ZFOBJECT_DECLARE(MyObject, ZFObject)
  *
- *       ZFOBSERVER_EVENT(MyEvent)
+ *       ZFEVENT(MyEvent)
  *
  *   public:
  *       void test(void) {

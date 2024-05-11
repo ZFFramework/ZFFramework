@@ -210,10 +210,10 @@ ZF_GLOBAL_INITIALIZER_END(ZFUIHintAutoFinish)
 // ============================================================
 ZFOBJECT_REGISTER(ZFUIHint)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnInit)
-ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnUpdate)
-ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnShow)
-ZFOBSERVER_EVENT_REGISTER(ZFUIHint, HintOnHide)
+ZFEVENT_REGISTER(ZFUIHint, HintOnInit)
+ZFEVENT_REGISTER(ZFUIHint, HintOnUpdate)
+ZFEVENT_REGISTER(ZFUIHint, HintOnShow)
+ZFEVENT_REGISTER(ZFUIHint, HintOnHide)
 
 ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<zfautoT<ZFUIHint> >, hintList
         , ZFMP_IN_OPT(ZFUISysWindow *, inSysWindow, zfnull)

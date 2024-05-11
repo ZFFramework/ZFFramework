@@ -73,10 +73,10 @@ public:
 // ZFObject
 ZFOBJECT_REGISTER(ZFObject)
 
-ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectBeforeAlloc)
-ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectAfterAlloc)
-ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectBeforeDealloc)
-ZFOBSERVER_EVENT_REGISTER(ZFObject, ObjectPropertyValueOnUpdate)
+ZFEVENT_REGISTER(ZFObject, ObjectBeforeAlloc)
+ZFEVENT_REGISTER(ZFObject, ObjectAfterAlloc)
+ZFEVENT_REGISTER(ZFObject, ObjectBeforeDealloc)
+ZFEVENT_REGISTER(ZFObject, ObjectPropertyValueOnUpdate)
 
 static zfuint _ZFP_ZFObject_stateFlags = 0;
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFObject_stateFlags, ZFLevelZFFrameworkStatic) {

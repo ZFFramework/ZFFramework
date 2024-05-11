@@ -245,15 +245,15 @@ public:
 // ZFUIButton
 ZFOBJECT_REGISTER(ZFUIButton)
 
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonOnClick)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonStateOnUpdate)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonMouseOnDown)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveEnter)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveExit)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveInside)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveOutside)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonMouseOnUpInside)
-ZFOBSERVER_EVENT_REGISTER(ZFUIButton, ButtonMouseOnUp)
+ZFEVENT_REGISTER(ZFUIButton, ButtonOnClick)
+ZFEVENT_REGISTER(ZFUIButton, ButtonStateOnUpdate)
+ZFEVENT_REGISTER(ZFUIButton, ButtonMouseOnDown)
+ZFEVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveEnter)
+ZFEVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveExit)
+ZFEVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveInside)
+ZFEVENT_REGISTER(ZFUIButton, ButtonMouseOnMoveOutside)
+ZFEVENT_REGISTER(ZFUIButton, ButtonMouseOnUpInside)
+ZFEVENT_REGISTER(ZFUIButton, ButtonMouseOnUp)
 
 ZFPROPERTY_ON_INIT_DEFINE(ZFUIButton, zfbool, viewFocusable) {
     propertyValue = zftrue;

@@ -62,28 +62,28 @@ public:
      * called when receive message from web\n
      * param0 is a #ZFUIWebJSBridgeSendData
      */
-    ZFOBSERVER_EVENT(WebMessageBeforeSend)
+    ZFEVENT(WebMessageBeforeSend)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when receive message from web\n
      * param0 is a #ZFUIWebJSBridgeSendData
      */
-    ZFOBSERVER_EVENT(WebMessageAfterSend)
+    ZFEVENT(WebMessageAfterSend)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when receive message from web\n
      * param0 is a #ZFUIWebJSBridgeRecvData
      */
-    ZFOBSERVER_EVENT(WebMessageBeforeRecv)
+    ZFEVENT(WebMessageBeforeRecv)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when receive message from web\n
      * param0 is a #ZFUIWebJSBridgeRecvData
      */
-    ZFOBSERVER_EVENT(WebMessageAfterRecv)
+    ZFEVENT(WebMessageAfterRecv)
 
 public:
     /**

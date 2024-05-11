@@ -74,7 +74,7 @@ public:
      * param0 is this button group itself,
      * param1 is a #v_zfindex which shows the button's index
      */
-    ZFOBSERVER_EVENT(ButtonOnAdd)
+    ZFEVENT(ButtonOnAdd)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -83,7 +83,7 @@ public:
      * param0 is this button group itself,
      * param1 is a #v_zfindex which shows the button's index
      */
-    ZFOBSERVER_EVENT(ButtonOnRemove)
+    ZFEVENT(ButtonOnRemove)
 
 public:
     /**
@@ -221,7 +221,7 @@ public:
      * param1 is a #v_zfindex which shows the previous checked button index
      * (may be #zfindexMax if nothing checked previously)
      */
-    ZFOBSERVER_EVENT(ButtonTabOnChange)
+    ZFEVENT(ButtonTabOnChange)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -231,7 +231,7 @@ public:
      * param0 is the button group itself,
      * param1 is a #v_zfindex which shows the button's index
      */
-    ZFOBSERVER_EVENT(ButtonTabOnClickChecked)
+    ZFEVENT(ButtonTabOnClickChecked)
 
     /**
      * @brief for #ZFUIButtonGroupType::e_Tab type only, whether allow uncheck all button, false by default

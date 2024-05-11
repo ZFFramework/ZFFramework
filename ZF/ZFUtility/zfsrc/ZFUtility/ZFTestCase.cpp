@@ -4,10 +4,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFTestCase)
 
-ZFOBSERVER_EVENT_REGISTER(ZFTestCase, TestCaseOnOutput)
-ZFOBSERVER_EVENT_REGISTER(ZFTestCase, TestCaseOnStart)
-ZFOBSERVER_EVENT_REGISTER(ZFTestCase, TestCaseOnProgress)
-ZFOBSERVER_EVENT_REGISTER(ZFTestCase, TestCaseOnStop)
+ZFEVENT_REGISTER(ZFTestCase, TestCaseOnOutput)
+ZFEVENT_REGISTER(ZFTestCase, TestCaseOnStart)
+ZFEVENT_REGISTER(ZFTestCase, TestCaseOnProgress)
+ZFEVENT_REGISTER(ZFTestCase, TestCaseOnStop)
 
 void ZFTestCase::objectOnDeallocPrepare(void) {
     zfCoreAssert(!this->testCaseIsRunning());

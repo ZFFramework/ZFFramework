@@ -4,9 +4,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECT_REGISTER(ZFContainer)
 
-ZFOBSERVER_EVENT_REGISTER(ZFContainer, ContentOnChange)
-ZFOBSERVER_EVENT_REGISTER(ZFContainer, ContentOnAdd)
-ZFOBSERVER_EVENT_REGISTER(ZFContainer, ContentOnRemove)
+ZFEVENT_REGISTER(ZFContainer, ContentOnChange)
+ZFEVENT_REGISTER(ZFContainer, ContentOnAdd)
+ZFEVENT_REGISTER(ZFContainer, ContentOnRemove)
 
 ZFMETHOD_DEFINE_3(ZFContainer, void, objectInfoOfContentT
         , ZFMP_IN_OUT(zfstring &, ret)

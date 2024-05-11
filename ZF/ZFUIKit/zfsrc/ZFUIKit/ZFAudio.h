@@ -26,13 +26,13 @@ public:
      * param0 is a #ZFResultType shows the load result,
      * param1 is a #v_zfstring shows the error hint if load fail
      */
-    ZFOBSERVER_EVENT(AudioOnLoad)
+    ZFEVENT(AudioOnLoad)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when audio started, ensured called in ZFThread::mainThread
      */
-    ZFOBSERVER_EVENT(AudioOnStart)
+    ZFEVENT(AudioOnStart)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -40,26 +40,26 @@ public:
      * param0 is a #ZFResultType shows the play result,
      * param1 is a #v_zfstring shows the error hint if play fail
      */
-    ZFOBSERVER_EVENT(AudioOnStop)
+    ZFEVENT(AudioOnStop)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when audio start success and about to play,
      * or resume from pause, ensured called in ZFThread::mainThread
      */
-    ZFOBSERVER_EVENT(AudioOnResume)
+    ZFEVENT(AudioOnResume)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when audio pause, ensured called in ZFThread::mainThread
      */
-    ZFOBSERVER_EVENT(AudioOnPause)
+    ZFEVENT(AudioOnPause)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when audio looped, ensured called in ZFThread::mainThread
      */
-    ZFOBSERVER_EVENT(AudioOnLoop)
+    ZFEVENT(AudioOnLoop)
 
     // ============================================================
 public:

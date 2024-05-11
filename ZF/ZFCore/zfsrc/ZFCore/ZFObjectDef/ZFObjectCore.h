@@ -240,7 +240,7 @@ public:
      * this event is only designed for convenient and for debug use only,
      * usually you should use #ZFClass::instanceObserverAdd
      */
-    ZFOBSERVER_EVENT(ObjectBeforeAlloc)
+    ZFEVENT(ObjectBeforeAlloc)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -248,7 +248,7 @@ public:
      * this event is only designed for convenient and for debug use only,
      * usually you should use #ZFClass::instanceObserverAdd
      */
-    ZFOBSERVER_EVENT(ObjectAfterAlloc)
+    ZFEVENT(ObjectAfterAlloc)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -259,7 +259,7 @@ public:
      * after notified this event, all observer of this event would be removed,
      * so that it's safe to release the object again to finally destroy the object
      */
-    ZFOBSERVER_EVENT(ObjectBeforeDealloc)
+    ZFEVENT(ObjectBeforeDealloc)
     /**
      * @brief see #ZFObject::observerNotify
      *
@@ -272,7 +272,7 @@ public:
      *
      * called when first time accessed, and each time setter is called
      */
-    ZFOBSERVER_EVENT(ObjectPropertyValueOnUpdate)
+    ZFEVENT(ObjectPropertyValueOnUpdate)
 
 public:
     /**
@@ -494,7 +494,7 @@ public:
      *       // declare your event here,
      *       // which would generate a method:
      *       //   static const zfchar *EventYourEvent(void)
-     *       ZFOBSERVER_EVENT(YourEvent)
+     *       ZFEVENT(YourEvent)
      *   };
      *   // notify using declared event
      *   yourClass->observerNotify(YourClass::EventYourEvent(), params...);

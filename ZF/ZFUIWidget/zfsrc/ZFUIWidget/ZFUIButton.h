@@ -53,13 +53,13 @@ public:
      * param0 is the #ZFUIMouseEvent or #ZFUIKeyEvent that cause the button click,
      * or null for other clicked reason, such as #simulateClick
      */
-    ZFOBSERVER_EVENT(ButtonOnClick)
+    ZFEVENT(ButtonOnClick)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when button init finished and each time button state update
      */
-    ZFOBSERVER_EVENT(ButtonStateOnUpdate)
+    ZFEVENT(ButtonStateOnUpdate)
 
     /**
      * @brief see #ZFObject::observerNotify
@@ -67,49 +67,49 @@ public:
      * called when button mouse down,
      * param0 is the #ZFUIMouseEvent
      */
-    ZFOBSERVER_EVENT(ButtonMouseOnDown)
+    ZFEVENT(ButtonMouseOnDown)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when mouse move from outside to inside,
      * param0 is the #ZFUIMouseEvent
      */
-    ZFOBSERVER_EVENT(ButtonMouseOnMoveEnter)
+    ZFEVENT(ButtonMouseOnMoveEnter)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when mouse move from inside to outside,
      * param0 is the #ZFUIMouseEvent
      */
-    ZFOBSERVER_EVENT(ButtonMouseOnMoveExit)
+    ZFEVENT(ButtonMouseOnMoveExit)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when mouse move inside the button,
      * param0 is the #ZFUIMouseEvent
      */
-    ZFOBSERVER_EVENT(ButtonMouseOnMoveInside)
+    ZFEVENT(ButtonMouseOnMoveInside)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when mouse move outside the button,
      * param0 is the #ZFUIMouseEvent
      */
-    ZFOBSERVER_EVENT(ButtonMouseOnMoveOutside)
+    ZFEVENT(ButtonMouseOnMoveOutside)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when button mouse up inside (clicked),
      * param0 is the #ZFUIMouseEvent
      */
-    ZFOBSERVER_EVENT(ButtonMouseOnUpInside)
+    ZFEVENT(ButtonMouseOnUpInside)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when button mouse up (outside or cancel),
      * param0 is the #ZFUIMouseEvent
      */
-    ZFOBSERVER_EVENT(ButtonMouseOnUp)
+    ZFEVENT(ButtonMouseOnUp)
 
 public:
     // ============================================================
