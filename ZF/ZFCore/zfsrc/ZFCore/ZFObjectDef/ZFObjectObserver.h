@@ -241,12 +241,12 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  * declared event name can be accessed by:
  * @code
  *   zfidentity eventId = YourClass::EventYourEvent();
- *   const zfchar *eventName = ZFIdMapNameForId(eventId);
+ *   const zfchar *eventName = ZFEventNameForId(eventId);
  * @endcode
  * note that subclass may declare a event same as parent,
  * while the final event name is different:\n
- *   ParentClass::EventYourEvent() => "ParentClassEventYourEvent"\n
- *   ChildClass::EventYourEvent() => "ChildClassEventYourEvent"\n
+ *   ParentClass::EventYourEvent() => "ParentClass.EventYourEvent"\n
+ *   ChildClass::EventYourEvent() => "ChildClass.EventYourEvent"\n
  * \n
  * @note we declare the event id as int types for performance,
  *   it's ensured each event has different event id,
@@ -254,11 +254,15 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  *   after relaunching the app,
  *   the event id is not ensured the same,
  *   you should use the name of the event to store or pass between apps,
- *   and you can use #ZFIdMapIdForName or #ZFIdMapNameForId
+ *   and you can use #ZFEventIdForName or #ZFEventNameForId
  *   to convert them easily
  */
 #define ZFEVENT(YourEvent) \
     ZFIDMAP_DETAIL(Event, YourEvent)
+
+/** @brief see #ZFEVENT */
+#define ZFEVENT_INLINE(YourEvent) \
+    ZFIDMAP_DETAIL_INLINE(Event, YourEvent)
 
 /** @brief see #ZFEVENT */
 #define ZFEVENT_REGISTER(YourClass, YourEvent) \
@@ -290,6 +294,45 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
 /** @brief see #ZFEVENT */
 #define ZFEVENT_GLOBAL_REGISTER(YourEvent) \
     ZFIDMAP_GLOBAL_REGISTER_DETAIL(Event, YourEvent)
+
+// ============================================================
+/**
+ * @brief get id name from id value, or null if no such id, see #ZFEventIdForName
+ */
+inline const zfchar *ZFEventNameForId(ZF_IN zfidentity idValue) {
+    return ZFIdMapNameForId(idValue);
+}
+/**
+ * @brief get id value from id name, or #zfidentityInvalid if no such id name
+ *
+ * the id name should looks like `YourClass.EventYourIdName` or `YourNamespace.EventYourIdName`
+ *
+ * note: can be found only if:
+ * -  declared with #ZFEVENT_INLINE
+ * -  registered by #ZFEVENT_REGISTER series
+ * -  ever accessed
+ */
+inline zfidentity ZFEventIdForName(ZF_IN const zfchar *idName) {
+    return ZFIdMapIdForName(idName);
+}
+
+/**
+ * @brief dynamically register your own id
+ *
+ * assert fail if already registered
+ */
+inline zfidentity ZFEventDynamicRegister(ZF_IN const zfchar *idName) {
+    return ZFIdMapDynamicRegister(idName);
+}
+/**
+ * @brief unregister id that was registered by #ZFEventDynamicRegister
+ *
+ * do nothing if no such id,
+ * assert fail if the id is not dynamically registered
+ */
+inline void ZFEventDynamicUnregister(ZF_IN zfidentity idValue) {
+    ZFIdMapDynamicUnregister(idValue);
+}
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectObserver_h_

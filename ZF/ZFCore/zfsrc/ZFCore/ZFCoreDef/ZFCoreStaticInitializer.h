@@ -68,7 +68,7 @@ public:
         static void _ZFP_SI_dtor_##Name(ZF_IN void *p) { \
             zfdelete((_ZFP_SI_##Name *)p); \
         } \
-        static _ZFP_SI_##Name *_ZFP_SI_instanceAccess(void) { \
+        static _ZFP_SI_##Name *_ZFP_SI_I(void) { \
             static _ZFP_SI_Holder d(ZFM_TOSTRING_DIRECT(Name), \
                 _ZFP_SI_##Name::_ZFP_SI_ctor_##Name, \
                 _ZFP_SI_##Name::_ZFP_SI_dtor_##Name); \
@@ -87,14 +87,14 @@ public:
 #define ZF_STATIC_INITIALIZER_END(Name) \
     }; \
     ZF_STATIC_REGISTER_INIT(SI_##Name) { \
-        _ZFP_SI_##Name::_ZFP_SI_instanceAccess(); \
+        _ZFP_SI_##Name::_ZFP_SI_I(); \
     } \
     ZF_STATIC_REGISTER_END(SI_##Name)
 /**
  * @brief access the instance of the initializer
  */
 #define ZF_STATIC_INITIALIZER_INSTANCE(Name) \
-    (_ZFP_SI_##Name::_ZFP_SI_instanceAccess())
+    (_ZFP_SI_##Name::_ZFP_SI_I())
 
 #define _ZFP_ZF_STATIC_INITIALIZER_CLASS(Name) \
     _ZFP_SI_##Name

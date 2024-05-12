@@ -188,7 +188,7 @@ public:
      * `YourClassName::EventYourEvent` would be registered,
      * otherwise, `YourNamespace::EventYourEvent` would be registered\n
      * registered event would include:
-     * -  an event registered by #ZFIdMapDynamicRegister
+     * -  an event registered by #ZFEventDynamicRegister
      * -  a #ZFMethod to access the event
      */
     ZFDynamic &event(ZF_IN const zfchar *eventName);

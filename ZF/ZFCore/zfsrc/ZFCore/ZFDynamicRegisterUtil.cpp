@@ -201,7 +201,7 @@ public:
             ZFCoreArray<zfidentity> allEvent = this->allEvent;
             this->allEvent = ZFCoreArray<zfidentity>();
             for(zfindex i = allEvent.count() - 1; i != zfindexMax(); --i) {
-                ZFIdMapDynamicUnregister(allEvent[i]);
+                ZFEventDynamicUnregister(allEvent[i]);
             }
         }
 
@@ -821,14 +821,14 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
         idName += scope->d.cls->classNameFull();
         cls = scope->d.cls;
     }
-    idName += "::Event";
+    idName += ".Event";
     idName += eventName;
-    zfidentity idValue = ZFIdMapIdForName(idName);
+    zfidentity idValue = ZFEventIdForName(idName);
     if(idValue != zfidentityInvalid()) {
         d->error(zfstr("%s already exists", idName));
         return *this;
     }
-    idValue = ZFIdMapDynamicRegister(idName);
+    idValue = ZFEventDynamicRegister(idName);
     d->allEvent.add(idValue);
 
     zfobj<v_zfidentity> t;

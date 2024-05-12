@@ -7,17 +7,17 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodDynamicRegisterDataHolder, ZFLevelZFFrameworkStatic) {
+static zfstlmap<const ZFMethod *, zfbool> &_ZFP_ZFMethodDynRegData(void) {
+    static zfstlmap<const ZFMethod *, zfbool> d;
+    return d;
 }
-zfstlmap<const ZFMethod *, zfbool> m;
-ZF_GLOBAL_INITIALIZER_END(ZFMethodDynamicRegisterDataHolder)
 
 // ============================================================
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFMethodDynamicRegisterAutoRemove, ZFLevelZFFrameworkHigh) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFMethodDynamicRegisterAutoRemove) {
     zfstlmap<const ZFMethod *, zfbool> t;
-    t.swap(ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m);
+    t.swap(_ZFP_ZFMethodDynRegData());
     for(zfstlmap<const ZFMethod *, zfbool>::iterator it = t.begin(); it != t.end(); ++it) {
         _ZFP_ZFMethodUnregister(it->first);
     }
@@ -182,7 +182,7 @@ const ZFMethod *ZFMethodDynamicRegister(
     for(zfindex i = 0; i < param.methodParamCount(); ++i) {
         method->_ZFP_ZFMethod_paramDefaultValueList.add(param.methodParamDefaultValueAt(i));
     }
-    ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m[method] = zftrue;
+    _ZFP_ZFMethodDynRegData()[method] = zftrue;
     _ZFP_ZFNamespaceRegister(zfnull, ZFNamespaceSkipGlobal(method->methodNamespace()));
     return method;
 }
@@ -267,7 +267,7 @@ void ZFMethodDynamicUnregister(ZF_IN const ZFMethod *method) {
         zfCoreAssert(method->methodIsDynamicRegister());
         zfCoreMutexLocker();
         _ZFP_ZFNamespaceUnregister(ZFNamespaceSkipGlobal(method->methodNamespace()));
-        ZF_GLOBAL_INITIALIZER_INSTANCE(ZFMethodDynamicRegisterDataHolder)->m.erase(method);
+        _ZFP_ZFMethodDynRegData().erase(method);
         _ZFP_ZFMethodUnregister(method);
     }
 }

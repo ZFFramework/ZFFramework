@@ -207,6 +207,8 @@ public:
             ZFM_FIX_PARAM(_ZFP_ZFOBJECT_REGISTER_clsSig_EXPAND, ZFM_EMPTY, T_ZFObject, ##__VA_ARGS__) \
             )
 #define _ZFP_ZFOBJECT_REGISTER(regSig, clsSig) \
+    _ZFP_ZFOBJECT_REGISTER_(regSig, clsSig)
+#define _ZFP_ZFOBJECT_REGISTER_(regSig, clsSig) \
     ZF_STATIC_REGISTER_INIT(regSig) { \
         (void)clsSig ClassData()->_ZFP_ZFClass_autoRegister(); \
     } \

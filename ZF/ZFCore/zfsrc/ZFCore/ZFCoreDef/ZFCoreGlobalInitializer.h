@@ -124,7 +124,7 @@ private:
     protected: \
         typedef _ZFP_GI_##Name zfself; \
     public: \
-        static _ZFP_GI_##Name *_ZFP_GI_instance(void) { \
+        static _ZFP_GI_##Name *_ZFP_GI_I(void) { \
             return (_ZFP_GI_##Name *)_ZFP_GI_reg_##Name.instanceAccess(); \
         } \
         _ZFP_GI_##Name(void)
@@ -188,7 +188,7 @@ private:
     _ZFP_ZF_GLOBAL_INITIALIZER_END(Name)
 
 #define _ZFP_ZF_GLOBAL_INITIALIZER_INSTANCE(Name) \
-    (_ZFP_GI_##Name::_ZFP_GI_instance())
+    (_ZFP_GI_##Name::_ZFP_GI_I())
 /**
  * @brief access the instance of the initializer
  */

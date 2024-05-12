@@ -25,7 +25,7 @@ private:
     static void onEvent(ZF_IN const ZFArgs &zfargs) {
         zfLogTrim()
             << zfargs.sender()
-            << ZFIdMapNameForId(zfargs.eventId())
+            << ZFEventNameForId(zfargs.eventId())
             << zfargs.param0()
             << zfargs.param1()
             ;

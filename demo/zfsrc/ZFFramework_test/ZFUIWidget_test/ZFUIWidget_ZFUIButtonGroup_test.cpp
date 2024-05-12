@@ -28,7 +28,7 @@ protected:
         ZFLISTENER(buttonGroupAction) {
             zfLogTrim()
                 << zfargs.sender()
-                << ZFIdMapNameForId(zfargs.eventId())
+                << ZFEventNameForId(zfargs.eventId())
                 << ", checked:" << zfargs.param1();
         } ZFLISTENER_END()
         layout->observerAdd(ZFUIButtonGroup::EventButtonTabOnClickChecked(), buttonGroupAction);

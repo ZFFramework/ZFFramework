@@ -96,7 +96,7 @@ public:
         if(this->observerOwner && ZFBitTest(this->observerOwner->objectInstanceState(), ZFObjectInstanceStateOnDealloc)) {
             zfCoreCriticalMessageTrim("[ZFObject] you must not add observer while object is deallocating, class: %s, event: %s",
                 this->observerOwner->classData()->classNameFull(),
-                ZFIdMapNameForId(eventId));
+                ZFEventNameForId(eventId));
             return;
         }
 
@@ -431,7 +431,7 @@ void ZFObserver::objectInfoT(ZF_OUT zfstring &ret) const {
                 ++it
                 ) {
             ret += "\n  ";
-            ret += ZFIdMapNameForId(it->first);
+            ret += ZFEventNameForId(it->first);
             ret += ":";
 
             _ZFP_ZFObserverData *p = it->second;
@@ -474,6 +474,19 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFObserver &, ZFGlobalObserver)
+
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(const zfchar *, ZFEventNameForId
+        , ZFMP_IN(zfidentity, idValue)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFEventIdForName
+        , ZFMP_IN(const zfchar *, idName)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFEventDynamicRegister
+        , ZFMP_IN(const zfchar *, idName)
+        )
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFEventDynamicUnregister
+        , ZFMP_IN(zfidentity, idValue)
+        )
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

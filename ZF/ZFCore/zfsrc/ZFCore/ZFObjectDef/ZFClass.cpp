@@ -10,37 +10,44 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFClass's global data
-ZF_STATIC_INITIALIZER_INIT(ZFClassDataHolder) {
-    // dummy instance to ensure init order
-    ZFSigName dummy("ZFObject");
-}
-ZF_STATIC_INITIALIZER_DESTROY(ZFClassDataHolder) {
-    ZFCoreMap classMapTmp = this->classMap;
-    ZFCoreMap delayDeleteMapTmp = this->delayDeleteMap;
-    this->classMap = ZFCoreMap();
-    this->delayDeleteMap = ZFCoreMap();
+zfclassNotPOD _ZFP_ZFClassDataHolder {
+public:
+    ZFCoreMap classMap; // <classNameFull, ZFClass *>
+    ZFCoreMap delayDeleteMap; // <classNameFull, ZFClass *>
+    /*
+     * delay delete a class
+     * ZFClass may be registered by different module,
+     * while unloading a module,
+     * _ZFP_ZFClassUnregister would be called to unload the class,
+     * however, it may be called earlier than object instance's dealloc step,
+     * so we cache the ZFClass object,
+     * remove from the activating classMap,
+     * and delete them all during ZFClassDataHolder's dealloc step
+     *
+     * this can't resolve the problem perfectly,
+     * but did resolve most cases
+     */
+public:
+    _ZFP_ZFClassDataHolder(void) {
+        // dummy instance to ensure init order
+        ZFSigName dummy("ZFObject");
+    }
+    ~_ZFP_ZFClassDataHolder(void) {
+        ZFCoreMap classMapTmp = this->classMap;
+        ZFCoreMap delayDeleteMapTmp = this->delayDeleteMap;
+        this->classMap = ZFCoreMap();
+        this->delayDeleteMap = ZFCoreMap();
 
-    delayDeleteMapTmp.removeAll();
-    classMapTmp.removeAll();
+        delayDeleteMapTmp.removeAll();
+        classMapTmp.removeAll();
+    }
+};
+static _ZFP_ZFClassDataHolder &_ZFP_ZFClassData(void) {
+    static _ZFP_ZFClassDataHolder d;
+    return d;
 }
-ZFCoreMap classMap; // <classNameFull, ZFClass *>
-ZFCoreMap delayDeleteMap; // <classNameFull, ZFClass *>
-/*
- * delay delete a class
- * ZFClass may be registered by different module,
- * while unloading a module,
- * _ZFP_ZFClassUnregister would be called to unload the class,
- * however, it may be called earlier than object instance's dealloc step,
- * so we cache the ZFClass object,
- * remove from the activating classMap,
- * and delete them all during ZFClassDataHolder's dealloc step
- *
- * this can't resolve the problem perfectly,
- * but did resolve most cases
- */
-ZF_STATIC_INITIALIZER_END(ZFClassDataHolder)
-#define _ZFP_ZFClassMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFClassDataHolder)->classMap)
-#define _ZFP_ZFClassDelayDeleteMap (ZF_STATIC_INITIALIZER_INSTANCE(ZFClassDataHolder)->delayDeleteMap)
+#define _ZFP_ZFClassMap (_ZFP_ZFClassData().classMap)
+#define _ZFP_ZFClassDelayDeleteMap (_ZFP_ZFClassData().delayDeleteMap)
 
 // ============================================================
 // _ZFP_ZFClassPrivate

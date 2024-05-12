@@ -1,18 +1,50 @@
 #include "ZFIdMap.h"
 #include "ZFObjectImpl.h"
+#include "ZFCore/ZFObjectDef/ZFMethodDynamicRegisterExtra.h"
 
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-_ZFP_ZFIdMapHolder::_ZFP_ZFIdMapHolder(ZF_IN const zfchar *idName)
+_ZFP_ZFIdMapHolder::_ZFP_ZFIdMapHolder(
+        ZF_IN const zfchar *idName
+        , ZF_IN const ZFClass *ownerClass
+        , ZF_IN const zfchar *ownerNamespace
+        , ZF_IN const zfchar *methodName
+)
 : ZFCoreLibDestroyFlag(zffalse)
-, idName(idName)
 , idValue(_ZFP_ZFIdMapRegister(&ZFCoreLibDestroyFlag, idName))
 {
+    zfclassNotPOD _ZFP_IdMap_GI {
+    public:
+        static zfbool GI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
+            ret = invokerMethod->methodDynamicRegisterUserData();
+            return zftrue;
+        }
+    };
+    ZFMethodDynamicRegister(ZFMethodDynamicRegisterParam()
+            .methodOwnerClass(ownerClass)
+            .methodNamespace(ownerNamespace)
+            .methodType(ZFMethodTypeStatic)
+            .methodReturnTypeId(ZFTypeId_zfidentity())
+            .methodName(methodName)
+            .methodGenericInvoker(_ZFP_IdMap_GI::GI)
+            .methodDynamicRegisterUserData(zfobj<v_zfidentity>(*idValue))
+            );
 }
 _ZFP_ZFIdMapHolder::~_ZFP_ZFIdMapHolder(void) {
+    const zfchar *idName = ZFIdMapNameForId(*idValue);
+    if(idName != zfnull) {
+        zfindex dotPos = zfstringFindReversely(idName, ".");
+        const ZFMethod *method = dotPos != zfindexMax()
+            ? ZFMethodForName(zfstring(idName, dotPos), idName + dotPos + 1)
+            : ZFMethodForName(zfnull, idName)
+            ;
+        if(method != zfnull) {
+            ZFMethodDynamicUnregister(method);
+        }
+    }
     _ZFP_ZFIdMapUnregister(&ZFCoreLibDestroyFlag, *idValue);
 }
 
