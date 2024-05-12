@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Setup MSVC cmd
-      uses: TheMrMilchmann/setup-msvc-dev@v2
+      uses: TheMrMilchmann/setup-msvc-dev@v3
       with:
         export-path-to-vcvarsall: VCVARSALL_PATH
         arch: x64
