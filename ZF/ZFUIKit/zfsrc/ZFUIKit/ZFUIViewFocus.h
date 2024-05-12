@@ -28,7 +28,7 @@ extern ZFLIB_ZFUIKit void _ZFP_ZFUIViewFocusNextSetupChain(
  * @brief util method to chain all view's next focus target by #ZFUIViewFocusNextSetup
  */
 #define ZFUIViewFocusNextSetupChain(view0, view1, ...) \
-    _ZFP_ZFUIViewFocusNextSetupChain(view0, view1, ##__VA_ARGS__, _ZFP_ZFUIViewFocusNextSetupChainEndPtr)
+    ZFM_VA_APPEND(_ZFP_ZFUIViewFocusNextSetupChain, _ZFP_ZFUIViewFocusNextSetupChainEndPtr, view0, view1, ##__VA_ARGS__)
 
 // ============================================================
 /**

@@ -366,6 +366,15 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         ,_30,_31,_32,_33 \
     , NAME, ...) NAME
 
+// ============================================================
+/**
+ * @brief util to appending item after __VA_ARGS__
+ */
+#define ZFM_VA_APPEND(ToExpand, ToAppend, ...) \
+    _ZFP_ZFM_VA_APPEND(ToExpand, _ZFP_ZFM_VA_APPEND_RM_FIRST(dummy, ##__VA_ARGS__, ToAppend))
+#define _ZFP_ZFM_VA_APPEND_CALL(M, P) M P
+#define _ZFP_ZFM_VA_APPEND_RM_FIRST(first, ...) __VA_ARGS__
+#define _ZFP_ZFM_VA_APPEND(ToExpand, ...) _ZFP_ZFM_VA_APPEND_CALL(ToExpand, (__VA_ARGS__))
 
 // ============================================================
 #define _ZFP_zfidentityHash_EXPAND(v) (zft_zfidentity)(v)

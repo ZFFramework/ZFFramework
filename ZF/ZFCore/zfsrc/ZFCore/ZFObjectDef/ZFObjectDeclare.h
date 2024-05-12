@@ -125,7 +125,7 @@ public:
  */
 #define ZFOBJECT_DECLARE(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
+    ZFM_VA_APPEND(_ZFP_ZFOBJECT_DECLARE_OBJECT, _ZFP_Obj_Base, ChildClass, SuperClass, ##__VA_ARGS__) \
     _ZFP_ZFOBJECT_DECLARE_PROTECTED_CONSTRUCTOR(ChildClass, SuperClass) \
     public:
 /**
@@ -141,7 +141,7 @@ public:
  */
 #define ZFOBJECT_DECLARE_WITH_CUSTOM_CTOR(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_OBJECT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
+    ZFM_VA_APPEND(_ZFP_ZFOBJECT_DECLARE_OBJECT, _ZFP_Obj_Base, ChildClass, SuperClass, ##__VA_ARGS__) \
     public:
 /**
  * @brief necessary for every abstract class inherit from ZFObject
@@ -151,7 +151,7 @@ public:
  */
 #define ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
+    ZFM_VA_APPEND(_ZFP_ZFOBJECT_DECLARE_ABSTRACT, _ZFP_Obj_Base, ChildClass, SuperClass, ##__VA_ARGS__) \
     _ZFP_ZFOBJECT_DECLARE_PROTECTED_CONSTRUCTOR(ChildClass, SuperClass) \
     public:
 /**
@@ -159,7 +159,7 @@ public:
  */
 #define ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ChildClass, SuperClass, ...) \
     _ZFP_ZFOBJECT_DECLARE(ChildClass, SuperClass) \
-    _ZFP_ZFOBJECT_DECLARE_ABSTRACT(ChildClass, SuperClass, ##__VA_ARGS__, _ZFP_Obj_Base) \
+    ZFM_VA_APPEND(_ZFP_ZFOBJECT_DECLARE_ABSTRACT, _ZFP_Obj_Base, ChildClass, SuperClass, ##__VA_ARGS__) \
     public:
 
 /**

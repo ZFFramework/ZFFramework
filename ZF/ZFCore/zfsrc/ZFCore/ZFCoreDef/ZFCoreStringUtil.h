@@ -168,7 +168,8 @@ inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src, ...) {
  *
  * null string would be treated as empty string
  */
-#define zfsConnect(src, ...) _ZFP_zfsConnect(src, ##__VA_ARGS__, _ZFP_zfsConnectEndPtr)
+#define zfsConnect(src, ...) \
+    ZFM_VA_APPEND(_ZFP_zfsConnect, _ZFP_zfsConnectEndPtr, src, ##__VA_ARGS__)
 
 // ============================================================
 /**

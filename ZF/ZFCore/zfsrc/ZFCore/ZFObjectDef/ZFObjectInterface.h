@@ -92,13 +92,13 @@ public:
  * and must also declare an virtual protected destructor
  */
 #define ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(InterfaceName, ParentInterface, ...) \
-        _ZFP_ZFINTERFACE_DECLARE(InterfaceName, ParentInterface, ##__VA_ARGS__, _ZFP_ObjI_Base) \
+        ZFM_VA_APPEND(_ZFP_ZFINTERFACE_DECLARE, _ZFP_ObjI_Base, InterfaceName, ParentInterface, ##__VA_ARGS__) \
     public:
 /**
  * @brief see #ZFInterface
  */
 #define ZFINTERFACE_DECLARE(InterfaceName, ParentInterface, ...) \
-        _ZFP_ZFINTERFACE_DECLARE(InterfaceName, ParentInterface, ##__VA_ARGS__, _ZFP_ObjI_Base) \
+        ZFM_VA_APPEND(_ZFP_ZFINTERFACE_DECLARE, _ZFP_ObjI_Base, InterfaceName, ParentInterface, ##__VA_ARGS__) \
     protected: \
         /** @cond ZFPrivateDoc */ \
         InterfaceName(void) {} \
