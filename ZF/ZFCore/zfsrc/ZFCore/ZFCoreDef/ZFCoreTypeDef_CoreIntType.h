@@ -20,7 +20,7 @@
 #endif
 
 #if ZF_ENV_STDINT
-    #include <stdint.h>
+    #include <cstdint>
 #endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN

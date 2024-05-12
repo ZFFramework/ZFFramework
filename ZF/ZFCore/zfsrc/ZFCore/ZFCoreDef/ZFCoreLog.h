@@ -18,7 +18,7 @@
  * @see zfCoreAssert
  */
 #if ZF_ENV_DEBUG
-    #include <assert.h>
+    #include <cassert>
     #define zfassert(b) assert(b)
 #else
     #define zfassert(b) ((void)0)

@@ -7,7 +7,7 @@
 #define _ZFI_ZFCoreTypeDef_CorePrimitiveType_h_
 
 #include "ZFCoreEnvDef.h"
-#include <stddef.h>
+#include <cstddef>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

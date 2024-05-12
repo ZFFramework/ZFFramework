@@ -1,7 +1,7 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFImplOutput.h"
 #include "ZFCore/ZFString.h"
-#include <stdio.h>
+#include <cstdio>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

@@ -210,18 +210,14 @@ public:
     _ZFP_ZFOBJECT_REGISTER_(regSig, clsSig)
 #define _ZFP_ZFOBJECT_REGISTER_(regSig, clsSig) \
     ZF_STATIC_REGISTER_INIT(regSig) { \
-        (void)clsSig ClassData()->_ZFP_ZFClass_autoRegister(); \
+        clsSig ClassData()->_ZFP_ZFClass_autoRegister(); \
     } \
     ZF_STATIC_REGISTER_END(regSig)
 
 #define _ZFP_ZFOBJECT_REGISTER_regSig_1(T0) ObjR_##T0
-#define _ZFP_ZFOBJECT_REGISTER_regSig_2(T0, T1) ObjR_##T0##T1
-#define _ZFP_ZFOBJECT_REGISTER_regSig_3(T0, T1, T2) ObjR_##T0##T1##T2
-#define _ZFP_ZFOBJECT_REGISTER_regSig_4(T0, T1, T2, T3) ObjR_##T0##T1##T2##T3
-#define _ZFP_ZFOBJECT_REGISTER_regSig_5(T0, T1, T2, T3, T4) ObjR_##T0##T1##T2##T3##T4
-#define _ZFP_ZFOBJECT_REGISTER_regSig_6(T0, T1, T2, T3, T4, T5) ObjR_##T0##T1##T2##T3##T4##T5
-#define _ZFP_ZFOBJECT_REGISTER_regSig_7(T0, T1, T2, T3, T4, T5, T6) ObjR_##T0##T1##T2##T3##T4##T5##T6
-#define _ZFP_ZFOBJECT_REGISTER_regSig_8(T0, T1, T2, T3, T4, T5, T6, T7) ObjR_##T0##T1##T2##T3##T4##T5##T6##T7
+#define _ZFP_ZFOBJECT_REGISTER_regSig_2(T0, T1) ObjR_##T0##_##T1
+#define _ZFP_ZFOBJECT_REGISTER_regSig_3(T0, T1, T2) ObjR_##T0##_##T1##_##T2
+#define _ZFP_ZFOBJECT_REGISTER_regSig_4(T0, T1, T2, T3) ObjR_##T0##_##T1##_##T2##_##T3
 #define _ZFP_ZFOBJECT_REGISTER_regSig_(N, T, ...) _ZFP_ZFOBJECT_REGISTER_regSig_##N(T, ##__VA_ARGS__)
 #define _ZFP_ZFOBJECT_REGISTER_regSig(N, T, ...) _ZFP_ZFOBJECT_REGISTER_regSig_(N, T, ##__VA_ARGS__)
 

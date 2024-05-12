@@ -1,6 +1,6 @@
 #include "ZFUIScrollerDefault.h"
 
-#include <math.h> // for sqrt
+#include <cmath> // for sqrt
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

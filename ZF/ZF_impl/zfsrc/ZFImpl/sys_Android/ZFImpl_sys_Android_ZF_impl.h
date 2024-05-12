@@ -48,7 +48,7 @@
     #endif
     #ifndef JNIUtilWrap_FuncCalled
         #if 1
-            #include <time.h>
+            #include <ctime>
             class _JNIUtilWrap_FuncCalledTimeLog {
             public:
                 _JNIUtilWrap_FuncCalledTimeLog(const char *callerFunction)

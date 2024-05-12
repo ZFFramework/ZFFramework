@@ -7,8 +7,8 @@
 #define _ZFI_ZFCoreTypeDef_CharType_h_
 
 #include "ZFCoreTypeDef_CoreType.h"
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

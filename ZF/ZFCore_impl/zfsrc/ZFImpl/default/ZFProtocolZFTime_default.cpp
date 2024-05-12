@@ -4,7 +4,7 @@
 
 #include "ZFImpl/ZFImpl_env.h"
 
-#include <time.h>
+#include <ctime>
 #if ZF_ENV_sys_Windows
     #include <Windows.h>
 #elif __APPLE__

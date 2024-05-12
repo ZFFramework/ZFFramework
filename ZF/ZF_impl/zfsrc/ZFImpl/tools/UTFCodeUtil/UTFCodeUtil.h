@@ -11,7 +11,7 @@
 #define UTFCodeUtil_EXPORT ZFLIB_ZF_impl
 /** @endcond */
 
-#include <wchar.h>
+#include <cwchar>
 
 /** @brief used to export symbols */
 #ifndef UTFCodeUtil_EXPORT

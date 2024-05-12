@@ -7,7 +7,7 @@
 #define _ZFI_ZFString_h_
 
 #include "ZFObject.h"
-#include <wchar.h>
+#include <cwchar>
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================

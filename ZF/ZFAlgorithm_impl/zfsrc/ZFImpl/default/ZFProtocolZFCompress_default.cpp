@@ -7,7 +7,7 @@
 #include "../_repo/miniz/miniz.h"
 
 #ifndef MINIZ_NO_TIME
-#include <time.h>
+#include <ctime>
 #endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN

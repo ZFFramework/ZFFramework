@@ -7,9 +7,9 @@
 #define _ZFI_ZFCoreTypeDef_ClassType_h_
 
 #include "ZFCoreTypeDef_CoreType.h"
-#include <stdlib.h>
-#include <memory.h>
-#include <string.h>
+#include <cstdlib>
+#include <memory>
+#include <cstring>
 
 // for internal debug use only
 // #define _ZFP_ZFMEM_LOG_DISABLE_MEMPOOL 1

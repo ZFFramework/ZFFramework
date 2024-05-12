@@ -147,7 +147,7 @@ ZF_NAMESPACE_GLOBAL_END
         #define _ZFP_I_log(fmt, ...) \
             qDebug(fmt, ##__VA_ARGS__)
     #else
-        #include <stdio.h>
+        #include <cstdio>
         #define _ZFP_I_log(fmt, ...) \
             do { \
                 printf(fmt, ##__VA_ARGS__); \

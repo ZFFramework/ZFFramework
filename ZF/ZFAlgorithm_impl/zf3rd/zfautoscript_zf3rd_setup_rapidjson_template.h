@@ -3,8 +3,8 @@
 #define _ZFI_zf3rd_rapidjson_fix
 
 #define RAPIDJSON_NO_INT64DEFINE
-#include <stdint.h>
-#include <inttypes.h>
+#include <cstdint>
+#include <cinttypes>
 
 #endif // #ifndef _ZFI_zf3rd_rapidjson_fix
 

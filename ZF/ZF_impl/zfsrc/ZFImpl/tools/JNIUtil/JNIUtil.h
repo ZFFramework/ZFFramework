@@ -27,7 +27,7 @@
 #endif
 
 #if NEED_JNIUTIL
-#include <stdlib.h>
+#include <cstdlib>
 #include <jni.h>
 
 #if defined(__cplusplus) || defined(c_plusplus)
