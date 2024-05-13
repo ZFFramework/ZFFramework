@@ -8,6 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define ZFImpl_sys_Android_JNI_ID_ZFUIViewTransform ZFImpl_sys_Android_JNI_ID(ZFUIKit_1impl_ZFUIViewTransform)
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIViewTransform ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIViewTransform)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIViewTransform, ZFImpl_sys_Android_JNI_NAME_ZFUIViewTransform)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Android, ZFUIViewTransform, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:View")
@@ -15,30 +16,13 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIViewTransformImpl_sys_Android, ZFUIViewTrans
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = zfnull;
-
-        tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFUIViewTransform).c_str());
-        this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
-        zfsuper::protocolOnDealloc();
-    }
-public:
     virtual ZFUITransformFlags viewTransformAvailable(void) {
         return ZFUITransform::e_Transform2D;
     }
 
     virtual void viewTransform(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewTransform",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIViewTransform(), "native_viewTransform",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_float())
@@ -47,7 +31,7 @@ public:
                 .add(JNIType::S_float())
                 .add(JNIType::S_float())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewTransform(), jmId
             , (jobject)view->nativeView()
             , (jfloat)(view->viewTranslateX() * view->UIScaleFixed())
             , (jfloat)(view->viewTranslateY() * view->UIScaleFixed())
@@ -58,7 +42,7 @@ public:
     }
     virtual void viewTransformReset(ZF_IN ZFUIView *view) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_viewTransform",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIViewTransform(), "native_viewTransform",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_float())
@@ -67,7 +51,7 @@ public:
                 .add(JNIType::S_float())
                 .add(JNIType::S_float())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIViewTransform(), jmId
             , (jobject)view->nativeView()
             , (jfloat)0
             , (jfloat)0
@@ -76,9 +60,6 @@ public:
             , (jfloat)0
             );
     }
-
-private:
-    jclass jclsOwner;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewTransformImpl_sys_Android)
 

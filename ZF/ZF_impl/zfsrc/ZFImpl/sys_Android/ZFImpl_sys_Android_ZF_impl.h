@@ -177,6 +177,31 @@ extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v);
 #define ZFImpl_sys_Android_JNI_NAME_ZFAndroidLog ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFAndroidLog)
 
 // ============================================================
+// jclass util
+zfclassLikePOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_Android_jclass {
+public:
+    _ZFP_ZFImpl_sys_Android_jclass(ZF_IN const zfchar *className) {
+        JNIEnv *jniEnv = JNIGetJNIEnv();
+        cls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(className).c_str());
+        zfCoreAssert(cls != NULL);
+        JNIBlockedDeleteLocalRef(cls);
+        cls = (jclass)JNIUtilNewGlobalRef(jniEnv, cls);
+    }
+    ~_ZFP_ZFImpl_sys_Android_jclass(void) {
+        if(cls != NULL) {
+            JNIUtilDeleteGlobalRef(JNIGetJNIEnv(), cls);
+        }
+    }
+public:
+    jclass cls;
+};
+#define ZFImpl_sys_Android_jclass_DEFINE(funcName, className) \
+    jclass funcName(void) { \
+        static _ZFP_ZFImpl_sys_Android_jclass d(className); \
+        return d.cls; \
+    }
+
+// ============================================================
 // utils
 /**
  * @brief see #JNIConvertPointerToJNIType

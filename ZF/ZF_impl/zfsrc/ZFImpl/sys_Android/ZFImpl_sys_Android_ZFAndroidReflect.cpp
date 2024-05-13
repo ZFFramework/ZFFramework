@@ -7,6 +7,7 @@
 
 #define ZFImpl_sys_Android_JNI_ID_ZFAndroidReflect ZFImpl_sys_Android_JNI_ID(NativeUtil_ZFAndroidReflect)
 #define ZFImpl_sys_Android_JNI_NAME_ZFAndroidReflect ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFAndroidReflect)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidReflect, ZFImpl_sys_Android_JNI_NAME_ZFAndroidReflect)
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -59,7 +60,6 @@ public:
 ZF_GLOBAL_INITIALIZER_END(ZFAndroidReflectDataHolder)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFAndroidReflectAutoClean, ZFLevelZFFrameworkEssential) {
-    this->jclsZFAndroidReflect = JNIUtilFindClass(JNIGetJNIEnv(), JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidReflect).c_str());
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFAndroidReflectAutoClean) {
     ZF_GLOBAL_INITIALIZER_CLASS(ZFAndroidReflectDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectDataHolder);
@@ -73,8 +73,6 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFAndroidReflectAutoClean) {
         }
     }
 }
-public:
-    JNIGlobalRef jclsZFAndroidReflect;
 ZF_GLOBAL_INITIALIZER_END(ZFAndroidReflectAutoClean)
 
 // ============================================================
@@ -176,14 +174,13 @@ ZFMETHOD_FUNC_DEFINE_2(const ZFClass *, ZFAndroidReflect_registerClass
         , ZFMP_IN(const zfchar *, clsNameInJava)
         , ZFMP_IN_OPT(const zfchar *, clsNameInZF, zfnull)
         ) {
-    jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "native_registerClass",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), "native_registerClass",
         JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
             .add(JNIType::S_object_String())
             .add(JNIType::S_object_String())
         ).c_str());
-    JNIPointer zfjniPointerCls = JNIUtilCallStaticLongMethod(jniEnv, jcls, jmId
+    JNIPointer zfjniPointerCls = JNIUtilCallStaticLongMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), jmId
             , ZFImpl_sys_Android_zfstringToString(clsNameInJava)
             , zfstringIsEmpty(clsNameInZF) ? NULL : ZFImpl_sys_Android_zfstringToString(clsNameInZF)
             );
@@ -197,14 +194,13 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFAndroidReflect_unregisterClass
         return;
     }
 
-    jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "native_unregisterClass",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), "native_unregisterClass",
         JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
             .add(JNIType::S_object_String())
             .add(JNIPointerJNIType)
         ).c_str());
-    JNIUtilCallStaticVoidMethod(jniEnv, jcls, jmId
+    JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), jmId
             , ZFImpl_sys_Android_zfstringToString(clsNameInJava)
             , JNIConvertPointerToJNIType(jniEnv, cls)
             );
@@ -218,14 +214,13 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFAndroidReflect_registerClassContents
         return;
     }
 
-    jclass jcls = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "native_registerClassContents",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), "native_registerClassContents",
         JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
             .add(JNIType::S_object_String())
             .add(JNIPointerJNIType)
         ).c_str());
-    JNIUtilCallStaticVoidMethod(jniEnv, jcls, jmId
+    JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), jmId
             , ZFImpl_sys_Android_zfstringToString(clsNameInJava)
             , JNIConvertPointerToJNIType(jniEnv, cls)
             );
@@ -454,13 +449,12 @@ static zfbool _ZFP_ZFAndroidReflect_paramConvert(
                     params.push_back(t);
 
                     if(p->jobj) {
-                        jclass jclsZFAndroidReflect = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFAndroidReflectAutoClean)->jclsZFAndroidReflect;
-                        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidReflect, "native_typeCheck"
+                        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), "native_typeCheck"
                                 , JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                                     .add(JNIType::S_object_String())
                                     .add(JNIType::S_object_Object())
                                     ).c_str());
-                        jboolean match = JNIUtilCallStaticBooleanMethod(jniEnv, jclsZFAndroidReflect, jmId
+                        jboolean match = JNIUtilCallStaticBooleanMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidReflect(), jmId
                                 , (jobject)paramJNITypeNames[iParam]
                                 , (jobject)p->jobj
                                 );

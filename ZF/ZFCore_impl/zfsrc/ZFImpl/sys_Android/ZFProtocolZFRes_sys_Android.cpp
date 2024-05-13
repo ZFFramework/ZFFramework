@@ -21,8 +21,10 @@
 #include <android/asset_manager_jni.h>
 
 ZF_NAMESPACE_GLOBAL_BEGIN
+
 #define ZFImpl_sys_Android_JNI_ID_ZFRes ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFRes)
 #define ZFImpl_sys_Android_JNI_NAME_ZFRes ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFRes)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFRes, ZFImpl_sys_Android_JNI_NAME_ZFRes)
 
 zfclassLikePOD _ZFP_ZFProtocolZFRes_sys_Android_FileToken {
 public:
@@ -75,17 +77,6 @@ public:
         this->zfresPrefixLen = zfslen(this->zfresPrefix);
         this->zfresPostfix = ".mp2";
         this->zfresPostfixLen = zfslen(this->zfresPostfix);
-
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFRes).c_str());
-        this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
-        zfsuper::protocolOnDealloc();
     }
 public:
     virtual zfbool resIsExist(ZF_IN const zfchar *resPath) {
@@ -93,26 +84,26 @@ public:
         this->resPathFormat(resPathFixed, resPath);
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_resIsExist",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFRes(), "native_resIsExist",
             JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, resPathFixed.cString());
         JNIBlockedDeleteLocalRef(param);
-        return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId, param);
+        return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId, param);
     }
     virtual zfbool resIsDir(ZF_IN const zfchar *resPath) {
         zfstring resPathFixed;
         this->resPathFormat(resPathFixed, resPath);
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_resIsDir",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFRes(), "native_resIsDir",
             JNIGetMethodSig(JNIType::S_boolean(), JNIParamTypeContainer()
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, resPathFixed.cString());
         JNIBlockedDeleteLocalRef(param);
-        return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, this->jclsOwner, jmId, param);
+        return (zfbool)JNIUtilCallStaticBooleanMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId, param);
     }
 
     virtual zfbool resCopy(
@@ -126,14 +117,14 @@ public:
         this->resPathFormat(resPathFixed, resPath);
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_resCopy",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFRes(), "native_resCopy",
             JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
                 .add(JNIType::S_object_String())
                 .add(JNIType::S_object_String())
                 .add(JNIType::S_boolean())
                 .add(JNIType::S_boolean())
             ).c_str());
-        jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
+        jobject errPosJ = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId,
             JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(resPathFixed)),
             JNILineDeleteLocalRef(ZFImpl_sys_Android_zfstringToString(dstPath)),
             isRecursive,
@@ -275,13 +266,13 @@ public:
             + ((absPath.length() > this->zfresPrefixLen) ? 1 : 0);
         fd.nativeFd = d;
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_listAssets",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFRes(), "native_listAssets",
             JNIGetMethodSig(JNIType::S_array_String(), JNIParamTypeContainer()
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring param = JNIUtilNewStringUTF(jniEnv, absPath.cString());
         JNIBlockedDeleteLocalRef(param);
-        jobjectArray files = (jobjectArray)JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId, param);
+        jobjectArray files = (jobjectArray)JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFRes(), jmId, param);
         JNIBlockedDeleteLocalRef(files);
         zfbool success = zffalse;
         if(files != zfnull) {
@@ -348,7 +339,6 @@ public:
     }
 
 private:
-    jclass jclsOwner;
     /*
      * AssetManager doesn't support these format:
      * -  "." => ""

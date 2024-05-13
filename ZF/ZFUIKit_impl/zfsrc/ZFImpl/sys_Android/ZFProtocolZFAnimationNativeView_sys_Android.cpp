@@ -7,9 +7,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define ZFImpl_sys_Android_JNI_ID_ZFAnimationNativeView ZFImpl_sys_Android_JNI_ID(ZFUIKit_1impl_ZFAnimationNativeView)
 #define ZFImpl_sys_Android_JNI_NAME_ZFAnimationNativeView ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFAnimationNativeView)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAnimationNativeView, ZFImpl_sys_Android_JNI_NAME_ZFAnimationNativeView)
 
 #define ZFImpl_sys_Android_JNI_ID_ZFAnimationNativeView_NativeAnimation ZFImpl_sys_Android_JNI_ID(ZFUIKit_1impl_ZFAnimationNativeView_00024NativeAnimation)
 #define ZFImpl_sys_Android_JNI_NAME_ZFAnimationNativeView_NativeAnimation ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFAnimationNativeView$NativeAnimation)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation, ZFImpl_sys_Android_JNI_NAME_ZFAnimationNativeView_NativeAnimation)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAnimationNativeViewImpl_sys_Android, ZFAnimationNativeView, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Animation")
@@ -17,35 +19,13 @@ ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAnimationNativeViewImpl_sys_Android, ZFAnimati
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
 public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = zfnull;
-
-        tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAnimationNativeView).c_str());
-        this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-
-        tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAnimationNativeView_NativeAnimation).c_str());
-        this->jclsNativeAnimation = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsNativeAnimation);
-        zfsuper::protocolOnDealloc();
-    }
-public:
     virtual void *nativeAniCreate(ZF_IN ZFAnimationNativeView *ani) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeAniCreate",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), "native_nativeAniCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), jmId,
             JNIConvertZFObjectToJNIType(jniEnv, ani));
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
@@ -56,12 +36,12 @@ public:
             , ZF_IN void *nativeAni
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeAniDestroy",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), "native_nativeAniDestroy",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
         jobject tmp = (jobject)nativeAni;
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, tmp);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), jmId, tmp);
         JNIUtilDeleteGlobalRef(jniEnv, tmp);
     }
 
@@ -70,24 +50,24 @@ public:
             , ZF_IN zffloat nativeAniScale
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeAniStart",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), "native_nativeAniStart",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
         this->nativeAniSetup(ani, nativeAniScale);
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), jmId,
             (jobject)ani->nativeAnimation(),
             (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView());
     }
     virtual void nativeAniStop(ZF_IN ZFAnimationNativeView *ani) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeAniStop",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), "native_nativeAniStop",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), jmId,
             (jobject)ani->nativeAnimation(),
             (jobject)ani->aniTarget().to<ZFUIView *>()->nativeView());
     }
@@ -98,14 +78,14 @@ private:
             , ZF_IN zffloat nativeAniScale
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_setup",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), "native_setup",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int())
                 .add(JNIType::S_int())
             ).c_str());
         jobject nativeAnimation = (jobject)ani->nativeAnimation();
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView(), jmId
             , nativeAnimation
             , (jint)ani->aniCurve()
             , (jint)ani->aniDurationFixed()
@@ -114,122 +94,118 @@ private:
         // ============================================================
         // alpha
         if(ani->aniAlphaFrom() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniAlphaFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniAlphaFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniAlphaFrom());
         }
         if(ani->aniAlphaTo() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniAlphaTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniAlphaTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniAlphaTo());
         }
         // ============================================================
         // scale
         if(ani->aniScaleXFrom() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniScaleXFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniScaleXFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniScaleXFrom());
         }
         if(ani->aniScaleXTo() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniScaleXTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniScaleXTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniScaleXTo());
         }
         if(ani->aniScaleYFrom() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniScaleYFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniScaleYFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniScaleYFrom());
         }
         if(ani->aniScaleYTo() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniScaleYTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniScaleYTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniScaleYTo());
         }
         if(ani->aniScaleZFrom() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniScaleZFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniScaleZFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniScaleZFrom());
         }
         if(ani->aniScaleZTo() != 1) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniScaleZTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniScaleZTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniScaleZTo());
         }
         // ============================================================
         // translate by view size's percent
         if(ani->aniTranslateXFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslateXFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslateXFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateXFrom());
         }
         if(ani->aniTranslateXTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslateXTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslateXTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateXTo());
         }
         if(ani->aniTranslateYFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslateYFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslateYFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateYFrom());
         }
         if(ani->aniTranslateYTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslateYTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslateYTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateYTo());
         }
         if(ani->aniTranslateZFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslateZFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslateZFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateZFrom());
         }
         if(ani->aniTranslateZTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslateZTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslateZTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniTranslateZTo());
         }
         // ============================================================
         // translate by pixel
         if(ani->aniTranslatePixelXFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslatePixelXFrom", JNIType::S_int().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslatePixelXFrom", JNIType::S_int().getId());
             JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelXFrom() * nativeAniScale));
         }
         if(ani->aniTranslatePixelXTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslatePixelXTo", JNIType::S_int().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslatePixelXTo", JNIType::S_int().getId());
             JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelXTo() * nativeAniScale));
         }
         if(ani->aniTranslatePixelYFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslatePixelYFrom", JNIType::S_int().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslatePixelYFrom", JNIType::S_int().getId());
             JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelYFrom() * nativeAniScale));
         }
         if(ani->aniTranslatePixelYTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslatePixelYTo", JNIType::S_int().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslatePixelYTo", JNIType::S_int().getId());
             JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelYTo() * nativeAniScale));
         }
         if(ani->aniTranslatePixelZFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslatePixelZFrom", JNIType::S_int().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslatePixelZFrom", JNIType::S_int().getId());
             JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelZFrom() * nativeAniScale));
         }
         if(ani->aniTranslatePixelZTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniTranslatePixelZTo", JNIType::S_int().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniTranslatePixelZTo", JNIType::S_int().getId());
             JNIUtilSetIntField(jniEnv, nativeAnimation, jfId, (jint)(ani->aniTranslatePixelZTo() * nativeAniScale));
         }
         // ============================================================
         // rotate
         if(ani->aniRotateXFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniRotateXFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniRotateXFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniRotateXFrom());
         }
         if(ani->aniRotateXTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniRotateXTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniRotateXTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniRotateXTo());
         }
         if(ani->aniRotateYFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniRotateYFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniRotateYFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniRotateYFrom());
         }
         if(ani->aniRotateYTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniRotateYTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniRotateYTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniRotateYTo());
         }
         if(ani->aniRotateZFrom() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniRotateZFrom", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniRotateZFrom", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniRotateZFrom());
         }
         if(ani->aniRotateZTo() != 0) {
-            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, this->jclsNativeAnimation, "aniRotateZTo", JNIType::S_float().getId());
+            static jfieldID jfId = JNIUtilGetFieldID(jniEnv, ZFImpl_sys_Android_jclassZFAnimationNativeView_NativeAnimation(), "aniRotateZTo", JNIType::S_float().getId());
             JNIUtilSetFloatField(jniEnv, nativeAnimation, jfId, ani->aniRotateZTo());
         }
     }
-
-private:
-    jclass jclsOwner;
-    jclass jclsNativeAnimation;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAnimationNativeViewImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAnimationNativeViewImpl_sys_Android)
 

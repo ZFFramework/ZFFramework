@@ -3,45 +3,9 @@
 #if ZF_ENV_sys_Android
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFUIKit_impl_jclsHolder, ZFLevelZFFrameworkEssential) {
-    jobject tmp = zfnull;
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidPoint).c_str());
-    this->jclsPoint = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidSize).c_str());
-    this->jclsSize = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidMargin).c_str());
-    this->jclsMargin = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidRect).c_str());
-    this->jclsRect = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFUIKit_impl_jclsHolder) {
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsPoint);
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsSize);
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsMargin);
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsRect);
-}
-public:
-    jclass jclsPoint;
-    jclass jclsSize;
-    jclass jclsMargin;
-    jclass jclsRect;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFUIKit_impl_jclsHolder)
-
 // ============================================================
 // Point
-jclass ZFImpl_sys_Android_jclassZFAndroidPoint(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFUIKit_impl_jclsHolder)->jclsPoint;
-}
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidPoint, ZFImpl_sys_Android_JNI_NAME_ZFAndroidPoint)
 jobject ZFImpl_sys_Android_ZFUIPointToZFAndroidPoint(
         ZF_IN const ZFUIPoint &point
         , ZF_IN_OUT jobject jobjPoint
@@ -77,9 +41,7 @@ void ZFImpl_sys_Android_ZFUIPointFromZFAndroidPointT(
 
 // ============================================================
 // Size
-jclass ZFImpl_sys_Android_jclassZFAndroidSize(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFUIKit_impl_jclsHolder)->jclsSize;
-}
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidSize, ZFImpl_sys_Android_JNI_NAME_ZFAndroidSize)
 jobject ZFImpl_sys_Android_ZFUISizeToZFAndroidSize(
         ZF_IN const ZFUISize &size
         , ZF_IN_OUT jobject jobjSize
@@ -115,9 +77,7 @@ void ZFImpl_sys_Android_ZFUISizeFromZFAndroidSizeT(
 
 // ============================================================
 // Margin
-jclass ZFImpl_sys_Android_jclassZFAndroidMargin(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFUIKit_impl_jclsHolder)->jclsMargin;
-}
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidMargin, ZFImpl_sys_Android_JNI_NAME_ZFAndroidMargin)
 jobject ZFImpl_sys_Android_ZFUIMarginToZFAndroidMargin(
         ZF_IN const ZFUIMargin &margin
         , ZF_IN_OUT jobject jobjMargin
@@ -161,9 +121,7 @@ void ZFImpl_sys_Android_ZFUIMarginFromZFAndroidMarginT(
 
 // ============================================================
 // Rect
-jclass ZFImpl_sys_Android_jclassZFAndroidRect(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFUIKit_impl_jclsHolder)->jclsRect;
-}
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidRect, ZFImpl_sys_Android_JNI_NAME_ZFAndroidRect)
 jobject ZFImpl_sys_Android_ZFUIRectToZFAndroidRect(
         ZF_IN const ZFUIRect &rect
         , ZF_IN_OUT jobject jobjRect
@@ -226,17 +184,18 @@ void ZFImpl_sys_Android_ZFUIColorFromColorT(
 }
 
 // ============================================================
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidUI, ZFImpl_sys_Android_JNI_NAME_ZFAndroidUI)
+
 void ZFImpl_sys_Android_viewTreePrintT(
         ZF_OUT zfstring &ret
         , ZF_IN jobject nativeView
         ) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    jclass jcls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidUI).c_str());
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jcls, "native_viewTreePrint",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidUI(), "native_viewTreePrint",
         JNIGetMethodSig(JNIType::S_object_String(), JNIParamTypeContainer()
             .add(JNIType::S_object_Object())
         ).c_str());
-    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, jcls, jmId, nativeView);
+    jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidUI(), jmId, nativeView);
     const char *utf = JNIUtilGetStringUTFChars(jniEnv, (jstring)tmp, zfnull);
     ret += utf;
     JNIUtilReleaseStringUTFChars(jniEnv, (jstring)tmp, utf);

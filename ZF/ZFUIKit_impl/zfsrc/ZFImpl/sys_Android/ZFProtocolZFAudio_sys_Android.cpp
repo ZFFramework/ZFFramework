@@ -7,36 +7,19 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define ZFImpl_sys_Android_JNI_ID_ZFAudio ZFImpl_sys_Android_JNI_ID(ZFUIKit_1impl_ZFAudio)
 #define ZFImpl_sys_Android_JNI_NAME_ZFAudio ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFAudio)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAudio, ZFImpl_sys_Android_JNI_NAME_ZFAudio)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAudioImpl_sys_Android, ZFAudio, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:MediaPlayer")
 
 public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = zfnull;
-
-        tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAudio).c_str());
-        this->jclsZFAudio = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFAudio);
-        zfsuper::protocolOnDealloc();
-    }
-
-public:
     virtual void *nativeAudioCreate(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioCreate",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioCreate",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIPointerJNIType)
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsZFAudio, jmId,
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             JNIConvertZFObjectToJNIType(jniEnv, audio));
         jobject ret = JNIUtilNewGlobalRef(jniEnv, tmp);
         JNIUtilDeleteLocalRef(jniEnv, tmp);
@@ -44,12 +27,12 @@ public:
     }
     virtual void nativeAudioDestroy(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioDestroy",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioDestroy",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
         jobject nativeAudioTmp = (jobject)audio->nativeAudio();
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId, nativeAudioTmp);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId, nativeAudioTmp);
         JNIUtilDeleteGlobalRef(jniEnv, nativeAudioTmp);
     }
 
@@ -58,12 +41,12 @@ public:
             , ZF_IN const ZFInput &input
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioLoad",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioLoad",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio(),
             ZFImpl_sys_Android_ZFInputWrapperFromZFInput(input));
     }
@@ -72,86 +55,86 @@ public:
             , ZF_IN const zfchar *url
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioLoad",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioLoad",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_String())
             ).c_str());
         jstring jniUrl = JNIUtilNewStringUTF(jniEnv, url);
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio(),
             jniUrl);
         JNIUtilDeleteLocalRef(jniEnv, jniUrl);
     }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioLoadCancel",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioLoadCancel",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio()
             );
     }
 
     virtual void nativeAudioStart(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioStart",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioStart",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio()
             );
     }
     virtual void nativeAudioStop(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioStop",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioStop",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio()
             );
     }
     virtual void nativeAudioResume(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioResume",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioResume",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio()
             );
     }
     virtual void nativeAudioPause(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioPause",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioPause",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio()
             );
     }
 
     virtual zftimet nativeAudioDuration(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioDuration",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioDuration",
             JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        return (zftimet)JNIUtilCallStaticLongMethod(jniEnv, this->jclsZFAudio, jmId,
+        return (zftimet)JNIUtilCallStaticLongMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio()
             );
     }
     virtual zftimet nativeAudioPosition(ZF_IN ZFAudio *audio) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioPosition",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioPosition",
             JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
-        return (zftimet)JNIUtilCallStaticLongMethod(jniEnv, this->jclsZFAudio, jmId,
+        return (zftimet)JNIUtilCallStaticLongMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio()
             );
     }
@@ -160,12 +143,12 @@ public:
             , ZF_IN zftimet position
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioPosition",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioPosition",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_long())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio(),
             (jlong)position
             );
@@ -176,19 +159,16 @@ public:
             , ZF_IN zffloat volume
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsZFAudio, "native_nativeAudioVolume",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioVolume",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_float())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsZFAudio, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), jmId,
             (jobject)audio->nativeAudio(),
             (jfloat)volume
             );
     }
-
-private:
-    jclass jclsZFAudio;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAudioImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAudioImpl_sys_Android)
 

@@ -3,26 +3,13 @@
 
 #if ZF_ENV_sys_Android
 ZF_NAMESPACE_GLOBAL_BEGIN
+
 #define ZFImpl_sys_Android_JNI_ID_ZFPath ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFPath)
 #define ZFImpl_sys_Android_JNI_NAME_ZFPath ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFPath)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFPath, ZFImpl_sys_Android_JNI_NAME_ZFPath)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Android, ZFPath, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:FileSystem")
-public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFPath).c_str());
-        this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
-        zfsuper::protocolOnDealloc();
-    }
 public:
     virtual const zfchar *pathForModule(void) {
         if(this->_pathForModule.isEmpty()) {
@@ -36,10 +23,10 @@ public:
     virtual const zfchar *pathForModuleFile(void) {
         if(this->_pathForModuleFile.isEmpty()) {
             JNIEnv *jniEnv = JNIGetJNIEnv();
-            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_pathForModuleFile",
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFPath(), "native_pathForModuleFile",
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
-            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
+            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForModuleFile, path);
             zfCoreAssert(!this->_pathForModuleFile.isEmpty());
         }
@@ -49,10 +36,10 @@ public:
     virtual const zfchar *pathForSetting(void) {
         if(this->_pathForSetting.isEmpty()) {
             JNIEnv *jniEnv = JNIGetJNIEnv();
-            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_pathForSetting",
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFPath(), "native_pathForSetting",
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
-            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
+            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForSetting, path);
             zfCoreAssert(!this->_pathForSetting.isEmpty());
         }
@@ -65,10 +52,10 @@ public:
     virtual const zfchar *pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
             JNIEnv *jniEnv = JNIGetJNIEnv();
-            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_pathForStorage",
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFPath(), "native_pathForStorage",
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
-            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
+            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForStorage, path);
             zfCoreAssert(!this->_pathForStorage.isEmpty());
         }
@@ -81,10 +68,10 @@ public:
     virtual const zfchar *pathForStorageShared(void) {
         if(this->_pathForStorageShared.isEmpty()) {
             JNIEnv *jniEnv = JNIGetJNIEnv();
-            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_pathForStorageShared",
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFPath(), "native_pathForStorageShared",
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
-            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
+            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForStorageShared, path);
             zfCoreAssert(!this->_pathForStorageShared.isEmpty());
         }
@@ -97,10 +84,10 @@ public:
     virtual const zfchar *pathForCache(void) {
         if(this->_pathForCache.isEmpty()) {
             JNIEnv *jniEnv = JNIGetJNIEnv();
-            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_pathForCache",
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFPath(), "native_pathForCache",
                 JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 ).c_str());
-            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId);
+            jobject path = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFPath(), jmId);
             ZFImpl_sys_Android_zfstringFromStringT(this->_pathForCache, path);
             zfCoreAssert(!this->_pathForCache.isEmpty());
         }
@@ -112,9 +99,6 @@ public:
     virtual void pathForCacheClear(void) {
         ZFFileRemove(this->_pathForCache, zfHint("isRecursive")zftrue, zfHint("isForce")zftrue);
     }
-
-private:
-    jclass jclsOwner;
 private:
     zfstring _pathForModule;
     zfstring _pathForModuleFile;

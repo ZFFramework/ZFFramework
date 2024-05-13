@@ -7,28 +7,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define ZFImpl_sys_Android_JNI_ID_ZFUIImageIO ZFImpl_sys_Android_JNI_ID(ZFUIKit_1impl_ZFUIImageIO)
 #define ZFImpl_sys_Android_JNI_NAME_ZFUIImageIO ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUIImageIO)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUIImageIO, ZFImpl_sys_Android_JNI_NAME_ZFUIImageIO)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUIImageIOImpl_sys_Android, ZFUIImageIO, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:BitmapDrawable")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIImage, "Android:BitmapDrawable")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
-public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFUIImageIO).c_str());
-        this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
-        zfsuper::protocolOnDealloc();
-    }
-
 public:
     virtual void *imageApplyScale(
             ZF_IN zffloat imageScale
@@ -37,14 +22,14 @@ public:
             , ZF_IN const ZFUIMargin &ninePatch
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageApplyScale",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), "native_imageApplyScale",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_float())
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int()).add(JNIType::S_int())
                 .add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId,
             imageScale,
             (jobject)nativeImage,
             (jint)newSize.width, (jint)newSize.height,
@@ -58,13 +43,13 @@ public:
             , ZF_IN const ZFUIRect &frameInImage
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageLoadInFrame",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), "native_imageLoadInFrame",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_float())
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId,
             imageScale,
             (jobject)nativeImage,
             (jint)frameInImage.x, (jint)frameInImage.y, (jint)frameInImage.width, (jint)frameInImage.height);
@@ -77,19 +62,17 @@ public:
             , ZF_IN const ZFUISize &size
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_imageLoadFromColor",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), "native_imageLoadFromColor",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_int())
                 .add(JNIType::S_int()).add(JNIType::S_int())
             ).c_str());
-        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, this->jclsOwner, jmId,
+        jobject tmp = JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFUIImageIO(), jmId,
             ZFImpl_sys_Android_ZFUIColorToColor(color),
             (jint)size.width, (jint)size.height);
         JNIBlockedDeleteLocalRef(tmp);
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
-private:
-    jclass jclsOwner;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageIOImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageIOImpl_sys_Android)
 

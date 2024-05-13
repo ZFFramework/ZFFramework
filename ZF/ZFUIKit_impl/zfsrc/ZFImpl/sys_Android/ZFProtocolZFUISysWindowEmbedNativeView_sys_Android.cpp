@@ -8,29 +8,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define ZFImpl_sys_Android_JNI_ID_ZFUISysWindowEmbedNativeView ZFImpl_sys_Android_JNI_ID(ZFUIKit_1impl_ZFUISysWindowEmbedNativeView)
 #define ZFImpl_sys_Android_JNI_NAME_ZFUISysWindowEmbedNativeView ZFImpl_sys_Android_JNI_NAME(ZFUIKit_impl.ZFUISysWindowEmbedNativeView)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView, ZFImpl_sys_Android_JNI_NAME_ZFUISysWindowEmbedNativeView)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFUISysWindowEmbedNativeViewImpl_sys_Android, ZFUISysWindowEmbedNativeView, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN()
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(ZFUIView, "Android:View")
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_END()
-
-public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = zfnull;
-
-        tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFUISysWindowEmbedNativeView).c_str());
-        this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
-        zfsuper::protocolOnDealloc();
-    }
 
 public:
     virtual void nativeViewAdd(
@@ -39,13 +22,13 @@ public:
             , ZF_IN void *child
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeViewAdd",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), "native_nativeViewAdd",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
         parent = (void *)JNIUtilNewGlobalRef(jniEnv, (jobject)parent);
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), jmId,
             (jobject)parent,
             (jobject)child
             );
@@ -56,20 +39,17 @@ public:
             , ZF_IN void *child
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_nativeViewRemove",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), "native_nativeViewRemove",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
                 .add(JNIType::S_object_Object())
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId,
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFUISysWindowEmbedNativeView(), jmId,
             (jobject)parent,
             (jobject)child
             );
         JNIUtilDeleteGlobalRef(jniEnv, (jobject)parent);
     }
-
-private:
-    jclass jclsOwner;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowEmbedNativeViewImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUISysWindowEmbedNativeViewImpl_sys_Android)
 

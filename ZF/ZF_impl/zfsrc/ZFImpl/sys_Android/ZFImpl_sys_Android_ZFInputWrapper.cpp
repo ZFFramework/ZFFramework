@@ -6,40 +6,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFInputWrapper
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFInputWrapper_jclsHolder, ZFLevelZFFrameworkStatic) {
-    jobject tmp = zfnull;
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFInputWrapper).c_str());
-    this->jclsZFInputWrapper = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFInputWrapper_jclsHolder) {
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFInputWrapper);
-}
-public:
-    jclass jclsZFInputWrapper;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFInputWrapper_jclsHolder)
-
-jclass ZFImpl_sys_Android_jclassZFInputWrapper(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFInputWrapper_jclsHolder)->jclsZFInputWrapper;
-}
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFInputWrapper, ZFImpl_sys_Android_JNI_NAME_ZFInputWrapper)
 jobject ZFImpl_sys_Android_ZFInputWrapperFromZFInput(ZF_IN const ZFInput &input) {
     if(!input) {
         return NULL;
     }
 
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    jclass jclsZFInputWrapper = ZFImpl_sys_Android_jclassZFInputWrapper();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFInputWrapper, "native_nativeInputCreate",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFInputWrapper(), "native_nativeInputCreate",
         JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
             .add(JNIPointerJNIType)
             .add(JNIType::S_boolean())
         ).c_str());
     v_ZFInput *inputHolder = zfAlloc(v_ZFInput); // release when nativeInputClose
     inputHolder->zfv = input;
-    return JNIUtilCallStaticObjectMethod(jniEnv, jclsZFInputWrapper, jmId
+    return JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFInputWrapper(), jmId
         , JNIConvertZFObjectToJNIType(jniEnv, inputHolder)
         , (jboolean)(input.ioSize() != zfindexMax())
         );

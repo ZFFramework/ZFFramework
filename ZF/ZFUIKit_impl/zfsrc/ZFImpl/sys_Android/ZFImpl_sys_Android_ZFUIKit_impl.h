@@ -114,6 +114,7 @@ inline ZFUIColor ZFImpl_sys_Android_ZFUIColorFromColor(ZF_IN jint jColor) {
 // ZFAndroidUI
 #define ZFImpl_sys_Android_JNI_ID_ZFAndroidUI ZFImpl_sys_Android_JNI_ID(NativeUtil_ZFAndroidUI)
 #define ZFImpl_sys_Android_JNI_NAME_ZFAndroidUI ZFImpl_sys_Android_JNI_NAME(NativeUtil.ZFAndroidUI)
+extern ZFLIB_ZFUIKit_impl jclass ZFImpl_sys_Android_jclassZFAndroidUI(void);
 
 extern ZFLIB_ZFUIKit_impl void ZFImpl_sys_Android_viewTreePrintT(
         ZF_OUT zfstring &ret

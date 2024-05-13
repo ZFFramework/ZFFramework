@@ -6,25 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFAndroidOutput
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder, ZFLevelZFFrameworkStatic) {
-    jobject tmp = zfnull;
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidOutput).c_str());
-    this->jclsZFAndroidOutput = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder) {
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFAndroidOutput);
-}
-public:
-    jclass jclsZFAndroidOutput;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder)
-
-jclass ZFImpl_sys_Android_jclassZFAndroidOutput(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFAndroidOutput_jclsHolder)->jclsZFAndroidOutput;
-}
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidOutput, ZFImpl_sys_Android_JNI_NAME_ZFAndroidOutput)
 
 #define _ZFP_ZFAndroidOutputBufSize 1024
 zfclass _ZFP_I_ZFAndroidOutput : zfextend ZFObject {
@@ -54,12 +36,11 @@ public:
     void removeAll(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         if(this->nativeOutputWrapper != NULL) {
-            jclass jclsZFAndroidOutput = ZFImpl_sys_Android_jclassZFAndroidOutput();
-            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidOutput, "native_nativeOutputClose",
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidOutput(), "native_nativeOutputClose",
                     JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                         .add(JNIType::S_object_Object())
                         ).c_str());
-            JNIUtilCallStaticVoidMethod(jniEnv, jclsZFAndroidOutput, jmId, this->nativeOutputWrapper);
+            JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidOutput(), jmId, this->nativeOutputWrapper);
 
             JNIUtilDeleteGlobalRef(jniEnv, this->nativeOutputWrapper);
             this->nativeOutputWrapper = zfnull;
@@ -89,8 +70,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput
     }
 
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    jclass jclsZFAndroidOutput = ZFImpl_sys_Android_jclassZFAndroidOutput();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidOutput, "native_nativeOutputWrite",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidOutput(), "native_nativeOutputWrite",
         JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
             .add(JNIType::S_object_Object())
             .add(JNIType::S_array(JNIType::S_byte()))
@@ -102,7 +82,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidOutput, zfindex, onOutput
     while(toWrite > 0) {
         jint blockSize = toWrite > _ZFP_ZFAndroidOutputBufSize ? _ZFP_ZFAndroidOutputBufSize : toWrite;
         JNIUtilSetByteArrayRegion(jniEnv, this->nativeBuf, 0, blockSize, src);
-        jint nativeWritten = JNIUtilCallStaticIntMethod(jniEnv, jclsZFAndroidOutput, jmId
+        jint nativeWritten = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidOutput(), jmId
             , this->nativeOutputWrapper
             , this->nativeBuf
             , blockSize

@@ -6,37 +6,20 @@
 #if ZF_ENV_sys_Android
 
 ZF_NAMESPACE_GLOBAL_BEGIN
+
 #define ZFImpl_sys_Android_JNI_ID_ZFApp ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFApp)
 #define ZFImpl_sys_Android_JNI_NAME_ZFApp ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFApp)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFApp, ZFImpl_sys_Android_JNI_NAME_ZFApp)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFAppImpl_sys_Android, ZFApp, ZFProtocolLevel::e_SystemNormal)
 public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFApp).c_str());
-        this->jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-        JNIUtilDeleteLocalRef(jniEnv, tmp);
-    }
-    zfoverride
-    virtual void protocolOnDealloc(void) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        JNIUtilDeleteGlobalRef(jniEnv, this->jclsOwner);
-        zfsuper::protocolOnDealloc();
-    }
-
-public:
     virtual void appRestart(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "appRestart",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFApp(), "appRestart",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
             ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFApp(), jmId);
     }
-
-private:
-    jclass jclsOwner;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAppImpl_sys_Android)
 

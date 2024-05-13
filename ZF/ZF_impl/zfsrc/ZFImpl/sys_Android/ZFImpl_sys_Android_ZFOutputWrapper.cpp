@@ -6,39 +6,21 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFOutputWrapper
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder, ZFLevelZFFrameworkStatic) {
-    jobject tmp = zfnull;
-    JNIEnv *jniEnv = JNIGetJNIEnv();
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFOutputWrapper, ZFImpl_sys_Android_JNI_NAME_ZFOutputWrapper)
 
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFOutputWrapper).c_str());
-    this->jclsZFOutputWrapper = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder) {
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFOutputWrapper);
-}
-public:
-    jclass jclsZFOutputWrapper;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder)
-
-jclass ZFImpl_sys_Android_jclassZFOutputWrapper(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFOutputWrapper_jclsHolder)->jclsZFOutputWrapper;
-}
 jobject ZFImpl_sys_Android_ZFOutputWrapperFromZFOutput(ZF_IN const ZFOutput &output) {
     if(!output) {
         return NULL;
     }
 
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    jclass jclsZFOutputWrapper = ZFImpl_sys_Android_jclassZFOutputWrapper();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFOutputWrapper, "native_nativeOutputCreate",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFOutputWrapper(), "native_nativeOutputCreate",
         JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
             .add(JNIPointerJNIType)
         ).c_str());
     v_ZFOutput *outputHolder = zfAlloc(v_ZFOutput); // release when nativeOutputClose
     outputHolder->zfv = output;
-    return JNIUtilCallStaticObjectMethod(jniEnv, jclsZFOutputWrapper, jmId
+    return JNIUtilCallStaticObjectMethod(jniEnv, ZFImpl_sys_Android_jclassZFOutputWrapper(), jmId
         , JNIConvertZFObjectToJNIType(jniEnv, outputHolder)
         );
 }

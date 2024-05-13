@@ -8,6 +8,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define ZFImpl_sys_Android_JNI_ID_ZFThread ZFImpl_sys_Android_JNI_ID(ZFCore_1impl_ZFThread)
 #define ZFImpl_sys_Android_JNI_NAME_ZFThread ZFImpl_sys_Android_JNI_NAME(ZFCore_impl.ZFThread)
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFThread, ZFImpl_sys_Android_JNI_NAME_ZFThread)
 
 // ============================================================
 // global type
@@ -34,27 +35,13 @@ typedef jint _ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType;
 typedef zfstlmap<_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType, ZFThread *> _ZFP_ZFThreadImpl_sys_Android_ThreadMapType;
 typedef zfstlmap<_ZFP_ZFThreadImpl_sys_Android_ExecuteDataIdType, _ZFP_ZFThreadImpl_sys_Android_ExecuteData *> _ZFP_ZFThreadImpl_sys_Android_ExecuteDataMapType;
 
-static jclass _ZFP_ZFThreadImpl_sys_Android_jclsOwner = NULL;
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFThreadImpl_sys_Android_jclsHolder, ZFLevelZFFrameworkStatic) {
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    jobject tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFThread).c_str());
-    _ZFP_ZFThreadImpl_sys_Android_jclsOwner = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFThreadImpl_sys_Android_jclsHolder) {
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    JNIUtilDeleteGlobalRef(jniEnv, _ZFP_ZFThreadImpl_sys_Android_jclsOwner);
-    _ZFP_ZFThreadImpl_sys_Android_jclsOwner = NULL;
-}
-ZF_GLOBAL_INITIALIZER_END(ZFThreadImpl_sys_Android_jclsHolder)
-
 static _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType _ZFP_ZFThreadImpl_sys_Android_getNativeThreadId(void) {
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, _ZFP_ZFThreadImpl_sys_Android_jclsOwner, "native_currentThread",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_currentThread",
         JNIGetMethodSig(JNIType::S_long(), JNIParamTypeContainer()
         ).c_str());
     _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType ret = JNIUtilCallStaticLongMethod(jniEnv,
-        _ZFP_ZFThreadImpl_sys_Android_jclsOwner,
+        ZFImpl_sys_Android_jclassZFThread(),
         jmId);
     return ret;
 }
@@ -91,13 +78,6 @@ static void _ZFP_ZFThreadImpl_sys_Android_updateExecuteId(void) {
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFThreadImpl_sys_Android, ZFThread, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Thread")
 public:
-    zfoverride
-    virtual void protocolOnInit(void) {
-        zfsuper::protocolOnInit();
-        (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ZFThreadImpl_sys_Android_jclsHolder);
-        this->jclsOwner = _ZFP_ZFThreadImpl_sys_Android_jclsOwner;
-    }
-
     virtual void *nativeThreadRegister(ZF_IN ZFThread *ownerZFThread) {
         zfCoreMutexLocker();
         _ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType *token = zfnew(_ZFP_ZFThreadImpl_sys_Android_NativeThreadIdType);
@@ -139,12 +119,12 @@ public:
 
     virtual void sleep(ZF_IN zftimet miliSecs) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_sleep",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_sleep",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_long())
             ).c_str());
         JNIUtilCallStaticVoidMethod(jniEnv,
-            this->jclsOwner,
+            ZFImpl_sys_Android_jclassZFThread(),
             jmId,
             (jlong)miliSecs);
     }
@@ -160,26 +140,26 @@ public:
         zfCoreMutexUnlock();
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_executeInMainThread",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInMainThread",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_int())
             ).c_str());
 
         jobject nativeToken = JNIUtilCallStaticObjectMethod(jniEnv,
-            this->jclsOwner,
+            ZFImpl_sys_Android_jclassZFThread(),
             jmId,
             curId);
         return JNIUtilNewGlobalRef(jniEnv, nativeToken);
     }
     virtual void executeInMainThreadCleanup(ZF_IN void *nativeToken) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_executeInMainThreadCleanup",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInMainThreadCleanup",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
 
         jobject nativeTokenTmp = (jobject)nativeToken;
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, nativeTokenTmp);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFThread(), jmId, nativeTokenTmp);
         JNIUtilDeleteGlobalRef(jniEnv, nativeTokenTmp);
     }
 
@@ -197,31 +177,28 @@ public:
         zfCoreMutexUnlock();
 
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_executeInNewThread",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInNewThread",
             JNIGetMethodSig(JNIType::S_object_Object(), JNIParamTypeContainer()
                 .add(JNIType::S_int())
             ).c_str());
 
         jobject nativeToken = JNIUtilCallStaticObjectMethod(jniEnv,
-            this->jclsOwner,
+            ZFImpl_sys_Android_jclassZFThread(),
             jmId,
             curId);
         return JNIUtilNewGlobalRef(jniEnv, nativeToken);
     }
     virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, this->jclsOwner, "native_executeInNewThreadCleanup",
+        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_executeInNewThreadCleanup",
             JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                 .add(JNIType::S_object_Object())
             ).c_str());
 
         jobject nativeTokenTmp = (jobject)nativeToken;
-        JNIUtilCallStaticVoidMethod(jniEnv, this->jclsOwner, jmId, nativeTokenTmp);
+        JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFThread(), jmId, nativeTokenTmp);
         JNIUtilDeleteGlobalRef(jniEnv, nativeTokenTmp);
     }
-
-private:
-    jclass jclsOwner;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFThreadImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFThreadImpl_sys_Android)
 

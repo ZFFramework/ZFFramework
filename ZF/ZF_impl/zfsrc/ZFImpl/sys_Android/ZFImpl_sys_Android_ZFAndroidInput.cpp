@@ -6,25 +6,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFAndroidInput
-ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder, ZFLevelZFFrameworkStatic) {
-    jobject tmp = zfnull;
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-
-    tmp = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(ZFImpl_sys_Android_JNI_NAME_ZFAndroidInput).c_str());
-    this->jclsZFAndroidInput = (jclass)JNIUtilNewGlobalRef(jniEnv, tmp);
-    JNIUtilDeleteLocalRef(jniEnv, tmp);
-}
-ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder) {
-    JNIEnv *jniEnv = JNIGetJNIEnv();
-    JNIUtilDeleteGlobalRef(jniEnv, this->jclsZFAndroidInput);
-}
-public:
-    jclass jclsZFAndroidInput;
-ZF_GLOBAL_INITIALIZER_END(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder)
-
-jclass ZFImpl_sys_Android_jclassZFAndroidInput(void) {
-    return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_sys_Android_ZFAndroidInput_jclsHolder)->jclsZFAndroidInput;
-}
+ZFImpl_sys_Android_jclass_DEFINE(ZFImpl_sys_Android_jclassZFAndroidInput, ZFImpl_sys_Android_JNI_NAME_ZFAndroidInput)
 
 #define _ZFP_ZFAndroidInputBufSize 256
 zfclass _ZFP_I_ZFAndroidInput : zfextend ZFObject {
@@ -54,12 +36,11 @@ public:
     void removeAll(void) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         if(this->nativeInputWrapper != NULL) {
-            jclass jclsZFAndroidInput = ZFImpl_sys_Android_jclassZFAndroidInput();
-            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidInput, "native_nativeInputClose",
+            static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidInput(), "native_nativeInputClose",
                     JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
                         .add(JNIType::S_object_Object())
                         ).c_str());
-            JNIUtilCallStaticVoidMethod(jniEnv, jclsZFAndroidInput, jmId, this->nativeInputWrapper);
+            JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidInput(), jmId, this->nativeInputWrapper);
 
             JNIUtilDeleteGlobalRef(jniEnv, this->nativeInputWrapper);
             this->nativeInputWrapper = zfnull;
@@ -89,8 +70,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
     }
 
     JNIEnv *jniEnv = JNIGetJNIEnv();
-    jclass jclsZFAndroidInput = ZFImpl_sys_Android_jclassZFAndroidInput();
-    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, jclsZFAndroidInput, "native_nativeInputRead",
+    static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAndroidInput(), "native_nativeInputRead",
         JNIGetMethodSig(JNIType::S_int(), JNIParamTypeContainer()
             .add(JNIType::S_object_Object())
             .add(JNIType::S_array(JNIType::S_byte()))
@@ -101,7 +81,7 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFAndroidInput, zfindex, onInput
     jint toRead = (jint)count;
     while(toRead > 0) {
         jint blockSize = (toRead > _ZFP_ZFAndroidInputBufSize ? _ZFP_ZFAndroidInputBufSize : toRead);
-        jint nativeRead = JNIUtilCallStaticIntMethod(jniEnv, jclsZFAndroidInput, jmId
+        jint nativeRead = JNIUtilCallStaticIntMethod(jniEnv, ZFImpl_sys_Android_jclassZFAndroidInput(), jmId
             , this->nativeInputWrapper
             , this->nativeBuf
             , blockSize
