@@ -63,7 +63,7 @@ public:
  */
 #define ZFPATHTYPE_DECLARE(ZFLIB_, pathType) \
     ZFMETHOD_FUNC_INLINE_DECLARE_0(ZFLIB_, const zfchar *, ZFPathType_##pathType) { \
-        return ZFM_TOSTRING_DIRECT(pathType); \
+        return ZFM_TOSTRING(pathType); \
     }
 
 /**

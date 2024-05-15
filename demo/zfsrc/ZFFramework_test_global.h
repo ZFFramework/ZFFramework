@@ -31,7 +31,7 @@ private:
 
 #define ZFFramework_test_protocolCheck(ProtocolName) \
     do { \
-        if(!ZFProtocolIsAvailable(ZFM_TOSTRING_DIRECT(ProtocolName))) { \
+        if(!ZFProtocolIsAvailable(#ProtocolName)) { \
             this->testCaseOutput(#ProtocolName " not available, skip test case"); \
             this->testCaseStop(); \
             return; \

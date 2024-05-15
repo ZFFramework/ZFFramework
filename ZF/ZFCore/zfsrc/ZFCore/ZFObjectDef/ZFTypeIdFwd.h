@@ -109,7 +109,7 @@ inline ZFCoreArray<const ZFTypeInfo *> ZFTypeInfoGetAll(void) {
 
 // ============================================================
 template<typename T_Dummy>
-zfclassNotPOD _ZFP_ZFTypeIdRegChecker {
+zfclassNotPOD _ZFP_ZFTypeIdRegCk {
 };
 /**
  * @brief type data traits for #ZFTYPEID_DECLARE
@@ -126,7 +126,7 @@ template<typename T_Type
 zfclassNotPOD ZFTypeId : zfextend ZFTypeInfo {
 public:
     /** @cond ZFPrivateDoc */
-    typedef typename _ZFP_ZFTypeIdRegChecker<T_Type>::AllTypeMustBeRegisteredBy_ZFTYPEID_XXX _TypeChecker;
+    typedef typename _ZFP_ZFTypeIdRegCk<T_Type>::TypeNotRegisteredBy_ZFTYPEID _TypeChecker;
     /** @endcond */
 public:
     enum {
@@ -337,7 +337,6 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     };
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
-    ZFOBJECT_REGISTER(v_##TypeName) \
     _ZFP_ZFTypeIdProgressUpdate v_##TypeName::_ZFP_ZFTypeId_progressUpdate = zfnull; \
     void v_##TypeName::objectInfoT(ZF_IN_OUT zfstring &ret) { \
         zftToString(ret, this->zfv); \
@@ -351,19 +350,22 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     const zfchar *v_##TypeName::wrappedValueTypeId(void) { \
         return ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId(); \
     } \
-    ZFMETHOD_USER_REGISTER_DETAIL_0({ \
-            return invokerObject->to<v_##TypeName *>()->zfv; \
-        }, v_##TypeName, \
-        public, ZFMethodTypeVirtual, G, \
-        _ZFP_PropTypeW_##TypeName const &, zfv \
-        ) \
-    ZFMETHOD_USER_REGISTER_DETAIL_1({ \
-            invokerObject->to<v_##TypeName *>()->zfv = value; \
-        }, v_##TypeName, \
-        public, ZFMethodTypeVirtual, S, \
-        void, zfv \
-        , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, value) \
-        )
+    ZF_STATIC_REGISTER_INIT(TypeIdReg_##TypeName) { \
+        v_##TypeName::ClassData()->_ZFP_ZFClass_autoRegister(); \
+        ZFMethodUserRegister_1(setterMethod, { \
+                invokerObject->to<v_##TypeName *>()->zfv = value; \
+            }, v_##TypeName::ClassData(), void, "zfv" \
+            , ZFMP_IN(_ZFP_PropTypeW_##TypeName const &, value) \
+            ); \
+        ZFMethodUserRegister_0(getterMethod, { \
+                return invokerObject->to<v_##TypeName *>()->zfv; \
+            }, v_##TypeName::ClassData(), _ZFP_PropTypeW_##TypeName const &, "zfv"); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(TypeIdReg_##TypeName) { \
+        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent("zfv", ZFTypeId<_ZFP_PropTypeW_##TypeName>::TypeId())); \
+        ZFMethodUserUnregister(v_##TypeName::ClassData()->methodForNameIgnoreParent("zfv", zfnull)); \
+    } \
+    ZF_STATIC_REGISTER_END(TypeIdReg_##TypeName)
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_SERIALIZABLE(TypeName, Type, preferStringConverter) \
     zfbool v_##TypeName::wrappedValuePreferStringConverter(void) { \
@@ -406,7 +408,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */ \
             ) { \
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData, \
-            "registered type %s is not serializable", ZFM_TOSTRING_DIRECT(TypeName)); \
+            "registered type %s is not serializable", #TypeName); \
         return zffalse; \
     } \
     zfbool v_##TypeName::wrappedValueToData( \
@@ -414,7 +416,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */ \
             ) { \
         ZFSerializableUtilErrorOccurred(outErrorHint, \
-            "registered type %s is not serializable", ZFM_TOSTRING_DIRECT(TypeName)); \
+            "registered type %s is not serializable", #TypeName); \
         return zffalse; \
     } \
     zfbool v_##TypeName::wrappedValueFromString( \
@@ -802,14 +804,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
                 *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
                 _ZFP_PropAliasAttach(obj, v \
-                    , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *v; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
@@ -842,14 +844,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 _TrNoRef *p = zfnew(_TrNoRef); \
                 *p = v; \
                 _ZFP_PropAliasAttach(obj, p \
-                    , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *p; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfsConnectLineFree(ZFM_TOSTRING(TypeName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \

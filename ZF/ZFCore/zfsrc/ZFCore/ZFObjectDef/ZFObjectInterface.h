@@ -59,7 +59,7 @@ public:
         static const ZFClass *ClassData(void) { \
             static _ZFP_ZFClassRegisterHolder _holder( \
                     ZF_NAMESPACE_CURRENT(), \
-                    ZFM_TOSTRING_DIRECT(InterfaceName), \
+                    #InterfaceName, \
                     ParentInterface::ClassData(), \
                     OuterClass::ClassData(), \
                     zftrue, \

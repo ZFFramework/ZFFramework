@@ -10,11 +10,37 @@
 #include "ZFMethodFuncUserRegister.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFEXPORT_VAR_INIT_VALUE(Type, Name, initValue) \
-    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ExpV_##Name, ZFLevelZFFrameworkEssential) { \
-        _ZFP_v_##Name = (initValue); \
+#define _ZFP_ZFEXPORT_VAR_DEFINE(Type, Name) \
+    ZF_STATIC_REGISTER_INIT(ExportV_##Name) { \
+        ZFMethodFuncUserRegister_1(setterMethod, { \
+                    (Name)(v); \
+                }, ZF_NAMESPACE_CURRENT(), \
+                void, #Name \
+                , ZFMP_IN(Type const &, v) \
+                ); \
+        ZFMethodFuncUserRegister_0(getterMethod, { \
+                    return (Name)(); \
+                }, ZF_NAMESPACE_CURRENT(), \
+                Type &, #Name \
+                ); \
     } \
-    ZF_GLOBAL_INITIALIZER_END(ExpV_##Name)
+    ZF_STATIC_REGISTER_DESTROY(ExportV_##Name) { \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), #Name, ZFTypeId<Type>::TypeId())); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), #Name, zfnull)); \
+    } \
+    ZF_STATIC_REGISTER_END(ExportV_##Name)
+#define _ZFP_ZFEXPORT_VAR_DEFINE_READONLY(Type, Name) \
+    ZF_STATIC_REGISTER_INIT(ExportV_##Name) { \
+        ZFMethodFuncUserRegister_0(getterMethod, { \
+                    return (Name)(); \
+                }, ZF_NAMESPACE_CURRENT(), \
+                Type const &, #Name \
+                ); \
+    } \
+    ZF_STATIC_REGISTER_DESTROY(ExportV_##Name) { \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(ZF_NAMESPACE_CURRENT(), #Name, zfnull)); \
+    } \
+    ZF_STATIC_REGISTER_END(ExportV_##Name)
 
 // ============================================================
 /**
@@ -38,102 +64,51 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * for readonly var, use #ZFEXPORT_VAR_READONLY_DECLARE\n
  * to alias existing var, use #ZFEXPORT_VAR_ALIAS_DECLARE\n
  * for existing raw var, use #ZFEXPORT_VAR_VALUEREF_DECLARE\n
- *
- * @note the init value would be applied during #ZFFrameworkInit as level #ZFLevelZFFrameworkEssential,
- *   if you want to ensure the init value applied,
- *   you can use ZFExportVarEnsureInit_YourVarName
  */
 #define ZFEXPORT_VAR_DECLARE(ZFLIB_, Type, Name) \
     /** @cond ZFPrivateDoc */ \
     extern ZFLIB_ Type _ZFP_v_##Name; \
     /** @endcond */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
-            Type &, Name \
-            ) { \
+    inline Type &_ZFP_ZFMETHOD_FUNC_NAME(Name)(void) { \
         return _ZFP_v_##Name; \
     } \
     /** @brief see @ref Name */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(ZFLIB_, S, \
-            void, Name \
-            , ZFMP_IN(Type const &, v) \
-            ) { \
+    inline void _ZFP_ZFMETHOD_FUNC_NAME(Name)(ZF_IN Type const &v) { \
         _ZFP_v_##Name = v; \
-    } \
-    /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
+    }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_DEFINE(Type, Name, initValue) \
-    Type _ZFP_v_##Name; \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_0(G, \
-        Type &, Name \
-        ) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_1(S, \
-        void, Name \
-        , ZFMP_IN(Type const &, v) \
-        ) \
-    _ZFP_ZFEXPORT_VAR_INIT_VALUE(Type, Name, initValue) \
-    void ZFExportVarEnsureInit_##Name(void) { \
-        (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ExpV_##Name); \
-    }
+    Type _ZFP_v_##Name = (initValue); \
+    _ZFP_ZFEXPORT_VAR_DEFINE(Type, Name)
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_ALIAS_DECLARE(ZFLIB_, Type, Name, AliasName) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
-            Type &, Name \
-            ) { \
+    inline Type &_ZFP_ZFMETHOD_FUNC_NAME(Name)(void) { \
         return (AliasName)(); \
     } \
     /** @brief see @ref Name */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(ZFLIB_, S, \
-            void, Name \
-            , ZFMP_IN(Type const &, v) \
-            ) { \
+    inline void _ZFP_ZFMETHOD_FUNC_NAME(Name)(ZF_IN Type const &v) { \
         AliasName(v); \
-    } \
-    /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
+    }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_ALIAS_DEFINE(Type, Name, AliasName) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_0(G, \
-        Type &, Name \
-        ) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_1(S, \
-        void, Name \
-        , ZFMP_IN(Type const &, v) \
-        ) \
-    void ZFExportVarEnsureInit_##Name(void) { \
-        ZFExportVarEnsureInit_##AliasName(); \
-    }
+#define ZFEXPORT_VAR_ALIAS_DEFINE(Type, Name) \
+    _ZFP_ZFEXPORT_VAR_DEFINE(Type, Name)
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_VALUEREF_DECLARE(ZFLIB_, Type, Name, ValueRef) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
-            Type &, Name \
-            ) { \
+    inline Type &_ZFP_ZFMETHOD_FUNC_NAME(Name)(void) { \
         return ValueRef; \
     } \
     /** @brief see @ref Name */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_1(ZFLIB_, S, \
-            void, Name \
-            , ZFMP_IN(Type const &, v) \
-            ) { \
+    inline void _ZFP_ZFMETHOD_FUNC_NAME(Name)(ZF_IN Type const &v) { \
         ValueRef = v; \
-    } \
-    /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    inline void ZFExportVarEnsureInit_##Name(void) { \
     }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_VALUEREF_DEFINE(Type, Name, ValueRef) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_0(G, \
-        Type &, Name \
-        ) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_1(S, \
-        void, Name \
-        , ZFMP_IN(Type const &, v) \
-        )
+#define ZFEXPORT_VAR_VALUEREF_DEFINE(Type, Name) \
+    _ZFP_ZFEXPORT_VAR_DEFINE(Type, Name)
 
 // ============================================================
 /** @brief see #ZFEXPORT_VAR_DECLARE */
@@ -141,60 +116,34 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     /** @cond ZFPrivateDoc */ \
     extern ZFLIB_ Type _ZFP_v_##Name; \
     /** @endcond */ \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
-            Type const &, Name \
-            ) { \
+    inline Type const &_ZFP_ZFMETHOD_FUNC_NAME(Name)(void) { \
         return _ZFP_v_##Name; \
-    } \
-    /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
+    }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_READONLY_DEFINE(Type, Name, initValue) \
-    Type _ZFP_v_##Name; \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_0(G, \
-        Type const &, Name \
-        ) \
-    _ZFP_ZFEXPORT_VAR_INIT_VALUE(Type, Name, initValue) \
-    void ZFExportVarEnsureInit_##Name(void) { \
-        (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ExpV_##Name); \
-    }
+    Type _ZFP_v_##Name = (initValue); \
+    _ZFP_ZFEXPORT_VAR_DEFINE_READONLY(Type, Name)
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_READONLY_ALIAS_DECLARE(ZFLIB_, Type, Name, AliasName) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
-            Type const &, Name \
-            ) { \
+    inline Type const &_ZFP_ZFMETHOD_FUNC_NAME(Name)(void) { \
         return (AliasName)(); \
-    } \
-    /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    extern ZFLIB_ void ZFExportVarEnsureInit_##Name(void);
+    }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_READONLY_ALIAS_DEFINE(Type, Name, AliasName) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_0(G, \
-        Type const &, Name \
-        ) \
-    void ZFExportVarEnsureInit_##Name(void) { \
-        ZFExportVarEnsureInit_##AliasName(); \
-    }
+#define ZFEXPORT_VAR_READONLY_ALIAS_DEFINE(Type, Name) \
+    _ZFP_ZFEXPORT_VAR_DEFINE_READONLY(Type, Name)
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
 #define ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_, Type, Name, ValueRef) \
-    ZFMETHOD_FUNC_INLINE_DECLARE_DETAIL_0(ZFLIB_, G, \
-            Type const &, Name \
-            ) { \
+    inline Type const &_ZFP_ZFMETHOD_FUNC_NAME(Name)(void) { \
         return ValueRef; \
-    } \
-    /** @brief see #ZFEXPORT_VAR_DECLARE */ \
-    inline void ZFExportVarEnsureInit_##Name(void) { \
     }
 
 /** @brief see #ZFEXPORT_VAR_DECLARE */
-#define ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(Type, Name, ValueRef) \
-    ZFMETHOD_FUNC_INLINE_DEFINE_DETAIL_0(G, \
-        Type const &, Name \
-        )
+#define ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(Type, Name) \
+    _ZFP_ZFEXPORT_VAR_DEFINE_READONLY(Type, Name)
 
 // ============================================================
 /**
@@ -208,26 +157,28 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 #define ZFEXPORT_ENUM_DEFINE(EnumName, enumValues, ...) \
-    _ZFP_ZFEXPORT_ENUM_DEFINE(ZF_CALLER_LINE, EnumName, enumValues, ##__VA_ARGS__)
+    _ZFP_ZFEXPORT_ENUM_DEFINE(EnumName, enumValues, ##__VA_ARGS__)
 
 #define _ZFP_ZFEXPORT_ENUM_DEFINE_EXPAND(...) __VA_ARGS__
 #define _ZFP_ZFEXPORT_ENUM_DEFINE(...) \
     _ZFP_ZFEXPORT_ENUM_DEFINE_EXPAND(_ZFP_ZFEXPORT_ENUM_DEFINE_(__VA_ARGS__))
-#define _ZFP_ZFEXPORT_ENUM_DEFINE_(RegSig, EnumName, enumValues, ...) \
-    ZF_STATIC_REGISTER_INIT(ZFEXPORT_ENUM_##EnumName##_##RegSig) { \
+#define _ZFP_ZFEXPORT_ENUM_DEFINE_(EnumName, enumValues, ...) \
+    ZF_STATIC_REGISTER_INIT(ExportEnum_##EnumName) { \
         typedef EnumName _EnumName; \
         ZFM_FIX_PARAM(_ZFP_ZFEXPORT_ENUM_EXPAND, ZFM_EMPTY, enumValues, ##__VA_ARGS__) \
     } \
-    ZF_STATIC_REGISTER_DESTROY(ZFEXPORT_ENUM_##EnumName##_##RegSig) { \
+    ZF_STATIC_REGISTER_DESTROY(ExportEnum_##EnumName) { \
         for(zfindex i = 0; i < m.count(); ++i) { \
             ZFMethodFuncUserUnregister(m[i]); \
         } \
     } \
     ZFCoreArray<const ZFMethod *> m; \
-    ZF_STATIC_REGISTER_END(ZFEXPORT_ENUM_##EnumName##_##RegSig)
+    ZF_STATIC_REGISTER_END(ExportEnum_##EnumName)
 #define _ZFP_ZFEXPORT_ENUM_EXPAND(v) \
     { \
-        ZFMethodFuncUserRegister_0(resultMethod, {return v;}, ZF_NAMESPACE_CURRENT(), _EnumName, ZFM_TOSTRING(v)); \
+        ZFMethodFuncUserRegister_0(resultMethod, { \
+                return v; \
+            }, ZF_NAMESPACE_CURRENT(), _EnumName, #v); \
         m.add(resultMethod); \
     }
 

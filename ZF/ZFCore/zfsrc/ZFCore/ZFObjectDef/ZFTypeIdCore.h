@@ -112,7 +112,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTYPEID_DECLARE_WITH_CUSTOM_WRAPPER(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfchar *ZFTypeId_##TypeName(void) { \
-        return ZFM_TOSTRING_DIRECT(TypeName); \
+        return #TypeName; \
     } \
     /** @brief see #ZFTYPEID_DECLARE */ \
     extern ZFLIB_ zfbool TypeName##FromDataT( \
@@ -194,7 +194,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
             ); \
-        _method_FromDataT = method_FromDataT; \
         ZFMethodFuncUserRegister_3(method_FromData, { \
                 return TypeName##FromData(serializableData, outErrorHint, outErrorPos); \
             }, ZF_NAMESPACE_GLOBAL_NAME, Type, ZFM_TOSTRING(TypeName##FromData) \
@@ -202,7 +201,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             , ZFMP_OUT_OPT(ZFSerializableData *, outErrorPos, zfnull) \
             ); \
-        _method_FromData = method_FromData; \
         ZFMethodFuncUserRegister_3(method_ToDataT, { \
                 return TypeName##ToDataT(serializableData, v, outErrorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##ToDataT) \
@@ -210,14 +208,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
-        _method_ToDataT = method_ToDataT; \
         ZFMethodFuncUserRegister_2(method_ToData, { \
                 return TypeName##ToData(v, outErrorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, ZFSerializableData, ZFM_TOSTRING(TypeName##ToData) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, outErrorHint, zfnull) \
             ); \
-        _method_ToData = method_ToData; \
         ZFMethodFuncUserRegister_4(method_FromStringT, { \
                 return TypeName##FromStringT(v, src, srcLen, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##FromStringT) \
@@ -226,7 +222,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        _method_FromStringT = method_FromStringT; \
         ZFMethodFuncUserRegister_3(method_FromString, { \
                 return TypeName##FromString(src, srcLen, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, Type, ZFM_TOSTRING(TypeName##FromString) \
@@ -234,7 +229,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax()) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        _method_FromString = method_FromString; \
         ZFMethodFuncUserRegister_3(method_ToStringT, { \
                 return TypeName##ToStringT(s, v, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfbool, ZFM_TOSTRING(TypeName##ToStringT) \
@@ -242,34 +236,55 @@ ZF_NAMESPACE_GLOBAL_BEGIN
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        _method_ToStringT = method_ToStringT; \
         ZFMethodFuncUserRegister_2(method_ToString, { \
                 return TypeName##ToString(v, errorHint); \
             }, ZF_NAMESPACE_GLOBAL_NAME, zfstring, ZFM_TOSTRING(TypeName##ToString) \
             , ZFMP_IN(Type const &, v) \
             , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull) \
             ); \
-        _method_ToString = method_ToString; \
     } \
     ZF_STATIC_REGISTER_DESTROY(PropMtdReg_##TypeName) { \
-        ZFMethodFuncUserUnregister(_method_FromDataT); \
-        ZFMethodFuncUserUnregister(_method_FromData); \
-        ZFMethodFuncUserUnregister(_method_ToDataT); \
-        ZFMethodFuncUserUnregister(_method_ToData); \
-        ZFMethodFuncUserUnregister(_method_FromStringT); \
-        ZFMethodFuncUserUnregister(_method_FromString); \
-        ZFMethodFuncUserUnregister(_method_ToStringT); \
-        ZFMethodFuncUserUnregister(_method_ToString); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromDataT) \
+                    , ZFTypeId_##TypeName() \
+                    , ZFTypeId_ZFSerializableData() \
+                    , ZFTypeId_zfstring() \
+                    , ZFTypeId_ZFSerializableData() \
+                    )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromData) \
+                    , ZFTypeId_ZFSerializableData() \
+                    , ZFTypeId_zfstring() \
+                    , ZFTypeId_ZFSerializableData() \
+                    )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToDataT) \
+                    , ZFTypeId_ZFSerializableData() \
+                    , ZFTypeId_##TypeName() \
+                    , ZFTypeId_zfstring() \
+                    )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToData) \
+                    , ZFTypeId_##TypeName() \
+                    , ZFTypeId_zfstring() \
+                    )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromStringT) \
+                    , ZFTypeId_##TypeName() \
+                    , ZFTypeId_zfstring() \
+                    , ZFTypeId_zfindex() \
+                    , ZFTypeId_zfstring() \
+                    )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##FromString) \
+                    , ZFTypeId_zfstring() \
+                    , ZFTypeId_zfindex() \
+                    , ZFTypeId_zfstring() \
+                    )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToStringT) \
+                    , ZFTypeId_zfstring() \
+                    , ZFTypeId_##TypeName() \
+                    , ZFTypeId_zfstring() \
+                    )); \
+        ZFMethodFuncUserUnregister(ZFMethodFuncForName(zfnull, ZFM_TOSTRING(TypeName##ToString) \
+                    , ZFTypeId_##TypeName() \
+                    , ZFTypeId_zfstring() \
+                    )); \
     } \
-    public: \
-        const ZFMethod *_method_FromDataT; \
-        const ZFMethod *_method_FromData; \
-        const ZFMethod *_method_ToDataT; \
-        const ZFMethod *_method_ToData; \
-        const ZFMethod *_method_FromStringT; \
-        const ZFMethod *_method_FromString; \
-        const ZFMethod *_method_ToStringT; \
-        const ZFMethod *_method_ToString; \
     ZF_STATIC_REGISTER_END(PropMtdReg_##TypeName)
 
 /** @brief see #ZFTYPEID_DECLARE */
@@ -343,7 +358,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type) \
     /** \n */ \
     inline const zfchar *ZFTypeId_##TypeName(void) { \
-        return ZFM_TOSTRING_DIRECT(TypeName); \
+        return #TypeName; \
     } \
     _ZFP_ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_, TypeName, Type)
 /** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */

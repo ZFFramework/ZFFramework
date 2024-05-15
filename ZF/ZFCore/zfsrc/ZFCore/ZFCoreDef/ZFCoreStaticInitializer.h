@@ -69,7 +69,7 @@ public:
             zfdelete((_ZFP_SI_##Name *)p); \
         } \
         static _ZFP_SI_##Name *_ZFP_SI_I(void) { \
-            static _ZFP_SI_Holder d(ZFM_TOSTRING_DIRECT(Name), \
+            static _ZFP_SI_Holder d(#Name, \
                 _ZFP_SI_##Name::_ZFP_SI_ctor_##Name, \
                 _ZFP_SI_##Name::_ZFP_SI_dtor_##Name); \
             return (_ZFP_SI_##Name *)d.instance; \

@@ -146,22 +146,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFM_EXPAND(...) __VA_ARGS__
 
 /**
- * @brief concatenate a and b to ab without expand a or b
- */
-#define ZFM_CAT_DIRECT(a, b) a##b
-/**
  * @brief expand a and b, then concatenate to ab
  */
-#define ZFM_CAT(a, b) ZFM_CAT_DIRECT(a, b)
+#define ZFM_CAT(a, b) _ZFP_ZFM_CAT(a, b)
+#define _ZFP_ZFM_CAT(a, b) a##b
 
 /**
  * @brief convert macro to string
  */
-#define ZFM_TOSTRING_DIRECT(a) #a
-/**
- * @brief convert macro to string
- */
-#define ZFM_TOSTRING(a) ZFM_TOSTRING_DIRECT(a)
+#define ZFM_TOSTRING(a) _ZFP_ZFM_TOSTRING(a)
+#define _ZFP_ZFM_TOSTRING(a) #a
 
 // ============================================================
 #define _ZFP_ZFM_N_INC_T(n) _ZFP_ZFM_N_INC_##n

@@ -92,7 +92,7 @@ zfclassNotPOD _ZFP_MtdGICk { // check whether type registered
 template<typename T_Dummy>
 zfclassNotPOD _ZFP_MtdGICk<T_Dummy, 1> {
 public:
-    typedef int TypeMustRegisterByZFPROPERTY;
+    typedef int TypeNotRegisteredBy_ZFTYPEID;
 };
 extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(
         ZF_OUT_OPT zfstring *errorHint
@@ -108,14 +108,14 @@ extern ZFLIB_ZFCore zfbool _ZFP_MtdGIParamCheck(
     typedef _ZFP_MtdGICk< \
             _TR##N, \
             ZFTypeId<_TR##N>::TypeIdRegistered \
-        >::TypeMustRegisterByZFPROPERTY _Ck##N;
+        >::TypeNotRegisteredBy_ZFTYPEID _Ck##N;
 #define _ZFP_ZFMETHOD_GENERIC_INVOKER_PARAM_PREPARE_EXPAND(N, DefaultExpandOrEmpty, ParamType, param) \
     _ZFP_MtdGIParamCheck( \
         errorHint, \
         ZFTypeId<_TR##N>::Value<_T##N>::zfvAccessAvailable(param), \
         invokerMethod, \
         (_Ck##N)N, \
-        ZFM_TOSTRING(ParamType), \
+        #ParamType, \
         param)
 template<typename T_Type, typename T_Access>
 zfclassNotPOD _ZFP_MtdGIPA { // Param Access

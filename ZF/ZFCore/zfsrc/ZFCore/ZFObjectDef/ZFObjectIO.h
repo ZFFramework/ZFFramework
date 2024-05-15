@@ -100,11 +100,11 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
  */
 #define ZFOBJECTIO_DEFINE(registerSig, checkerAction, fromInputAction, toOutputAction) \
     ZF_STATIC_REGISTER_INIT(ObjIOReg_##registerSig) { \
-        _ZFP_ZFObjectIORegister(ZFM_TOSTRING_DIRECT(registerSig), \
+        _ZFP_ZFObjectIORegister(ZFM_TOSTRING(registerSig), \
             zfself::_ZFP_checker, zfself::_ZFP_fromInput, zfself::_ZFP_toOutput); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ObjIOReg_##registerSig) { \
-        _ZFP_ZFObjectIOUnregister(ZFM_TOSTRING_DIRECT(registerSig)); \
+        _ZFP_ZFObjectIOUnregister(ZFM_TOSTRING(registerSig)); \
     } \
     static zfbool _ZFP_checker(ZF_IN const ZFPathInfo &pathInfo) { \
         checkerAction \

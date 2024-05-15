@@ -23,53 +23,53 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFObjectGlobalInstanceDefine(Name, Level) \
     _ZFP_ZFObjectGlobalInstanceDefine_(Name, Level)
 
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkEssential), ZFLevelZFFrameworkEssential)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkHigh), ZFLevelZFFrameworkHigh)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkNormal), ZFLevelZFFrameworkNormal)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkLow), ZFLevelZFFrameworkLow)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkEssential, ZFLevelZFFrameworkEssential)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkHigh, ZFLevelZFFrameworkHigh)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkNormal, ZFLevelZFFrameworkNormal)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkLow, ZFLevelZFFrameworkLow)
 
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, AppEssential), ZFLevelAppEssential)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, AppHigh), ZFLevelAppHigh)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, AppNormal), ZFLevelAppNormal)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, AppLow), ZFLevelAppLow)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_AppEssential, ZFLevelAppEssential)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_AppHigh, ZFLevelAppHigh)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_AppNormal, ZFLevelAppNormal)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_AppLow, ZFLevelAppLow)
 
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkPostLow), ZFLevelZFFrameworkPostLow)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkPostNormal), ZFLevelZFFrameworkPostNormal)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkPostHigh), ZFLevelZFFrameworkPostHigh)
-_ZFP_ZFObjectGlobalInstanceDefine(ZFM_CAT(ZFObjectGlobalInstanceLevel, ZFFrameworkPostEssential), ZFLevelZFFrameworkPostEssential)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkPostLow, ZFLevelZFFrameworkPostLow)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkPostNormal, ZFLevelZFFrameworkPostNormal)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkPostHigh, ZFLevelZFFrameworkPostHigh)
+_ZFP_ZFObjectGlobalInstanceDefine(ObjGI_ZFFrameworkPostEssential, ZFLevelZFFrameworkPostEssential)
 
 static ZFCoreArray<ZFCorePointerBase *> &_ZFP_ZFObjectGlobalInstanceRef(ZF_IN ZFLevel level) {
     switch(level) {
         case ZFLevelZFFrameworkEssential:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkEssential)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkEssential)->instances;
         case ZFLevelZFFrameworkHigh:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkHigh)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkHigh)->instances;
         case ZFLevelZFFrameworkNormal:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkNormal)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkNormal)->instances;
         case ZFLevelZFFrameworkLow:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkLow)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkLow)->instances;
 
         case ZFLevelAppEssential:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelAppEssential)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_AppEssential)->instances;
         case ZFLevelAppHigh:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelAppHigh)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_AppHigh)->instances;
         case ZFLevelAppNormal:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelAppNormal)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_AppNormal)->instances;
         case ZFLevelAppLow:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelAppLow)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_AppLow)->instances;
 
         case ZFLevelZFFrameworkPostLow:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkPostLow)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkPostLow)->instances;
         case ZFLevelZFFrameworkPostNormal:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkPostNormal)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkPostNormal)->instances;
         case ZFLevelZFFrameworkPostHigh:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkPostHigh)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkPostHigh)->instances;
         case ZFLevelZFFrameworkPostEssential:
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelZFFrameworkPostEssential)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_ZFFrameworkPostEssential)->instances;
 
         default:
             zfCoreCriticalShouldNotGoHere();
-            return ZF_GLOBAL_INITIALIZER_INSTANCE(ZFObjectGlobalInstanceLevelAppLow)->instances;
+            return ZF_GLOBAL_INITIALIZER_INSTANCE(ObjGI_AppLow)->instances;
     }
 }
 

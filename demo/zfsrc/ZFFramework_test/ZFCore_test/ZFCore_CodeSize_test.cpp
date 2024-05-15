@@ -3,19 +3,19 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// 34249070
-#define _ZFP_ZFCore_CodeSize_test_Dummy_ENABLE                  0 // x~x,     106960, 34356030
-#define _ZFP_ZFCore_CodeSize_test_StaticRegister_ENABLE         0 // 1000~7N, 74256, 34323326
-#define _ZFP_ZFCore_CodeSize_test_StaticInit_ENABLE             0 // 10~10,   308336, 34557406
-#define _ZFP_ZFCore_CodeSize_test_GlobalInit_ENABLE             0 // 150~N,   151248, 34400318
-#define _ZFP_ZFCore_CodeSize_test_Object_ENABLE                 0 // 250~N,   559856, 34808926
-#define _ZFP_ZFCore_CodeSize_test_Method_ENABLE                 0 // 800~5N,  318592, 34567662
-#define _ZFP_ZFCore_CodeSize_test_MethodFunc_ENABLE             0 // 300~N,   336080, 34585150
-#define _ZFP_ZFCore_CodeSize_test_MethodUserRegister_ENABLE     0 // 600~600, 210960, 34460030
-#define _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_ENABLE 0 // 350~350, 217680, 34466750
-#define _ZFP_ZFCore_CodeSize_test_Property_ENABLE               0 // 500~3N,  1151888, 35400958
-#define _ZFP_ZFCore_CodeSize_test_PropertyUserRegister_ENABLE   0 // 10~10,   453856, 34702926
-#define _ZFP_ZFCore_CodeSize_test_PropertyType_ENABLE           0 // 90~N,    2227632, 36476702
+// 64797888
+#define _ZFP_ZFCore_CodeSize_test_Dummy_ENABLE                  0 // 67776 64865664
+#define _ZFP_ZFCore_CodeSize_test_StaticRegister_ENABLE         0 // 59824 64857712
+#define _ZFP_ZFCore_CodeSize_test_StaticInit_ENABLE             0 // 350592 65148480
+#define _ZFP_ZFCore_CodeSize_test_GlobalInit_ENABLE             0 // 122824 64920712
+#define _ZFP_ZFCore_CodeSize_test_Object_ENABLE                 0 // 654912 65452800
+#define _ZFP_ZFCore_CodeSize_test_Method_ENABLE                 0 // 382032 65179920
+#define _ZFP_ZFCore_CodeSize_test_MethodFunc_ENABLE             0 // 357568 65155456
+#define _ZFP_ZFCore_CodeSize_test_MethodUserRegister_ENABLE     0 // 245408 65043296
+#define _ZFP_ZFCore_CodeSize_test_MethodFuncUserRegister_ENABLE 0 // 245784 65043672
+#define _ZFP_ZFCore_CodeSize_test_Property_ENABLE               0 // 1517752 66315640
+#define _ZFP_ZFCore_CodeSize_test_PropertyUserRegister_ENABLE   0 // 686592 65484480
+#define _ZFP_ZFCore_CodeSize_test_PropertyType_ENABLE           0 // 8243360 73041248
 
 // ============================================================
 // dummy object

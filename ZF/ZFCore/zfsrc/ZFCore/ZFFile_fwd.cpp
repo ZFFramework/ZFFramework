@@ -8,8 +8,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ZFFileSeparator
 const zfchar _ZFP_ZFFileSeparator = '/';
 const zfchar *_ZFP_ZFFileSeparatorString = "/";
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfchar, ZFFileSeparator, _ZFP_ZFFileSeparator)
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(const zfchar *, ZFFileSeparatorString, _ZFP_ZFFileSeparatorString)
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfchar, ZFFileSeparator)
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(const zfchar *, ZFFileSeparatorString)
 
 // ============================================================
 // ZFFileOpenOption

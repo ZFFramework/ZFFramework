@@ -216,7 +216,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
         public: \
             zfoverride \
             virtual const zfchar *protocolName(void) const { \
-                return ZFM_TOSTRING_DIRECT(ModuleName); \
+                return #ModuleName; \
             } \
         public: \
             static zfbool *_ZFP_ZFProtocolZFCoreLibDestroyFlag(void) { \
@@ -226,7 +226,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
             static _ZFP_ZFProtocolData &_ZFP_ZFProtocolDataRef(void) { \
                 static _ZFP_ZFProtocolData &_d = _ZFP_ZFProtocolImplDataRegister( \
                     zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), \
-                    ZFM_TOSTRING_DIRECT(ModuleName), \
+                    #ModuleName, \
                     zfself::_ZFP_ZFProtocolTryAccessCallbackFunc, \
                     zfself::_ZFP_ZFProtocolOptional()); \
                 return _d; \
@@ -333,7 +333,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     _d.implInstance = zfself::_ZFP_ZFProtocolNewInstance(); \
                     if(_d.implInstance == zfnull) { \
                         zfCoreCriticalMessageTrim("no implementation for protocol \"%s\"", \
-                            ZFM_TOSTRING(ModuleName)); \
+                            #ModuleName); \
                         return zfnull; \
                     } \
                     const zfchar *desiredImplPlatformHint = zfnull; \
@@ -511,7 +511,7 @@ private:
         public: \
             zfoverride \
             virtual const zfchar *protocolImplementationName(void) const { \
-                return ZFM_TOSTRING_DIRECT(ImplementationName); \
+                return #ImplementationName; \
             } \
             zfoverride \
             virtual ZFProtocolLevelEnum protocolImplementationLevel(void) const { \
@@ -525,13 +525,13 @@ private:
                 if(ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolDataRef().implConstructor == &ImplementationClass::_ZFP_##ImplementationClass##_ctor) { \
                     ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default); \
                 } \
-                _ZFP_ZFProtocolImplDataUnregister(zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), ZFM_TOSTRING_DIRECT(ModuleName)); \
+                _ZFP_ZFProtocolImplDataUnregister(zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), #ModuleName); \
             } \
             static zfbool _ZFP_ZFProtocolRegister(void) { \
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationRegister( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
                     &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
-                    ZFM_TOSTRING_DIRECT(ImplementationName), \
+                    #ImplementationName, \
                     implLevel); \
                 static _ZFP_ZFProtocolImplRegisterHolder _holder( \
                     zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), \
@@ -542,7 +542,7 @@ private:
                 ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationChange( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
                     &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
-                    ZFM_TOSTRING_DIRECT(ImplementationName), \
+                    #ImplementationName, \
                     implLevel); \
                 return zftrue; \
             }

@@ -116,10 +116,10 @@ public:
         /** \n */ \
         static zfidentity prefix##YourIdName(void) { \
             static _ZFP_ZFIdMapHolder d( \
-                    zfsConnectLineFree(zfself::ClassData()->classNameFull(), ".", ZFM_TOSTRING_DIRECT(prefix##YourIdName)) \
+                    zfsConnectLineFree(zfself::ClassData()->classNameFull(), ".", ZFM_TOSTRING(prefix##YourIdName)) \
                     , zfself::ClassData() \
                     , zfnull \
-                    , ZFM_TOSTRING_DIRECT(prefix##YourIdName) \
+                    , ZFM_TOSTRING(prefix##YourIdName) \
                 ); \
             return *(d.idValue); \
         }
@@ -169,10 +169,10 @@ public:
     /** \n */ \
     inline zfidentity prefix##YourIdName(void) { \
         static _ZFP_ZFIdMapHolder d( \
-                zfsConnectLineFree(ZF_NAMESPACE_CURRENT(), ".", ZFM_TOSTRING_DIRECT(prefix##YourIdName)) \
+                zfsConnectLineFree(ZF_NAMESPACE_CURRENT(), ".", ZFM_TOSTRING(prefix##YourIdName)) \
                 , zfnull \
                 , ZF_NAMESPACE_CURRENT() \
-                , ZFM_TOSTRING_DIRECT(prefix##YourIdName) \
+                , ZFM_TOSTRING(prefix##YourIdName) \
             ); \
         return *(d.idValue); \
     }

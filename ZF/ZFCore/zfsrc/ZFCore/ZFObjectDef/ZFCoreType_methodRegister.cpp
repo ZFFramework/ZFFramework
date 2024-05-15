@@ -393,10 +393,10 @@ ZFEXPORT_VAR_READONLY_DEFINE(zfflags, zfflagsZero, zfflagsZero())
 ZFEXPORT_VAR_READONLY_DEFINE(zfidentity, zfidentityZero, zfidentityZero())
 ZFEXPORT_VAR_READONLY_DEFINE(zfidentity, zfidentityInvalid, zfidentityInvalid())
 
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfiterator, zfiteratorInvalid, zfiteratorInvalid())
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfiterator, zfiteratorInvalid)
 
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeZero, ZFIndexRangeZero())
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeMax, ZFIndexRangeMax())
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeZero)
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFIndexRange, ZFIndexRangeMax)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFIndexRange, ZFIndexRangeMake
         , ZFMP_IN(zfindex, start)
         , ZFMP_IN(zfindex, count)
@@ -515,14 +515,14 @@ ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFVERSION_BUILD, ZFVERSION_BUILD())
 
 // ============================================================
 // ZFTokenForContainer
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerTrim, ZFTokenForContainerTrim())
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerDetail, ZFTokenForContainerDetail())
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerPlainList, ZFTokenForContainerPlainList())
-ZFEXPORT_VAR_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerDefault, ZFTokenForContainerDefault())
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerTrim)
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerDetail)
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerPlainList)
+ZFEXPORT_VAR_VALUEREF_DEFINE(ZFTokenForContainer, ZFTokenForContainerDefault)
 
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainerTrim, ZFTokenForKeyValueContainerTrim())
-ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainerDetail, ZFTokenForKeyValueContainerDetail())
-ZFEXPORT_VAR_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainerDefault, ZFTokenForKeyValueContainerDefault())
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainerTrim)
+ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainerDetail)
+ZFEXPORT_VAR_VALUEREF_DEFINE(ZFTokenForKeyValueContainer, ZFTokenForKeyValueContainerDefault)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

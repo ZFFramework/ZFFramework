@@ -85,7 +85,7 @@ public:
         static const ZFClass *ClassData(void) { \
             static _ZFP_ZFClassRegisterHolder _holder( \
                     ZF_NAMESPACE_CURRENT(), \
-                    ZFM_TOSTRING_DIRECT(ChildClass), \
+                    #ChildClass, \
                     zfsuper::ClassData(), \
                     OuterClass::ClassData(), \
                     (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \
@@ -106,7 +106,7 @@ public:
         static const ZFClass *ClassData(void) { \
             static _ZFP_ZFClassRegisterHolder _holder( \
                     ZF_NAMESPACE_CURRENT(), \
-                    ZFM_TOSTRING_DIRECT(ChildClass), \
+                    #ChildClass, \
                     zfsuper::ClassData(), \
                     OuterClass::ClassData(), \
                     (zfself::_ZFP_ZFObjectCanAllocPublic != 0), \

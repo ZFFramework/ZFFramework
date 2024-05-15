@@ -125,13 +125,13 @@ protected:
  * upon assert fail, finish the test case by #ZFTestCase::testCaseStop
  */
 #define ZFTestCaseAssert(cond) \
-    ZFTestCaseAssertWithMessage(cond, "test failed: %s", ZFM_TOSTRING(cond))
+    ZFTestCaseAssertWithMessage(cond, "test failed: %s", #cond)
 /** @brief see #ZFTestCaseAssert */
 #define ZFTestCaseAssertTrim(cond) \
-    ZFTestCaseAssertTrimWithMessage(cond, "test failed: %s", ZFM_TOSTRING(cond))
+    ZFTestCaseAssertTrimWithMessage(cond, "test failed: %s", #cond)
 /** @brief see #ZFTestCaseAssert */
 #define ZFTestCaseAssertDetail(cond, callerInfo) \
-    ZFTestCaseAssertDetailWithMessage(cond, callerInfo, "test failed: %s", ZFM_TOSTRING(cond))
+    ZFTestCaseAssertDetailWithMessage(cond, callerInfo, "test failed: %s", #cond)
 
 /** @brief see #ZFTestCaseAssert */
 #define ZFTestCaseAssertWithMessage(cond, fmt, ...) \

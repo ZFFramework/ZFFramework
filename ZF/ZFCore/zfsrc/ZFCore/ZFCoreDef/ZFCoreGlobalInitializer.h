@@ -115,7 +115,7 @@ private:
 #define _ZFP_ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(Name, ZFLevel_) \
     static void *_ZFP_GI_ctor_##Name(void); \
     static void _ZFP_GI_dtor_##Name(ZF_IN void *p); \
-    static _ZFP_GI_Reg _ZFP_GI_reg_##Name(ZFM_TOSTRING(Name), \
+    static _ZFP_GI_Reg _ZFP_GI_reg_##Name(#Name, \
             ZFLevel_, \
             _ZFP_GI_ctor_##Name, \
             _ZFP_GI_dtor_##Name \

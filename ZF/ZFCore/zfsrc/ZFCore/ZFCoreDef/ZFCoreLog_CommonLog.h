@@ -44,13 +44,13 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
  * @note unlike zfassert, this function is always active, even if ZF_ENV_DEBUG is zftrue
  * @see zfassert
  */
-#define zfCoreAssert(exp) zfCoreAssertWithMessage(exp, "assert failed for \"%s\"", ZFM_TOSTRING(exp))
+#define zfCoreAssert(exp) zfCoreAssertWithMessage(exp, "assert failed for \"%s\"", #exp)
 
 /** @brief see #zfCoreAssert */
-#define zfCoreAssertTrim(exp) zfCoreAssertWithMessageTrim(exp, "assert failed for \"%s\"", ZFM_TOSTRING(exp))
+#define zfCoreAssertTrim(exp) zfCoreAssertWithMessageTrim(exp, "assert failed for \"%s\"", #exp)
 
 /** @brief see #zfCoreAssert */
-#define zfCoreAssertDetail(exp, callerInfo) zfCoreAssertWithMessageDetail(exp, callerInfo, "assert failed for \"%s\"", ZFM_TOSTRING(exp))
+#define zfCoreAssertDetail(exp, callerInfo) zfCoreAssertWithMessageDetail(exp, callerInfo, "assert failed for \"%s\"", #exp)
 
 // ============================================================
 /**

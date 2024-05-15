@@ -96,14 +96,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 _ZFP_PropAliasAttach(obj, holder \
-                    , zfsConnectLineFree(ZFM_TOSTRING(EnumName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#EnumName, ":", zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *holder; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfsConnectLineFree(ZFM_TOSTRING(EnumName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#EnumName, ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
@@ -275,14 +275,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 /* ZFTAG_TRICKS: EnumReinterpretCast */ \
                 *holder = (_TrNoRef)(&(t->_ZFP_ZFEnum_value)); \
                 _ZFP_PropAliasAttach(obj, holder \
-                    , zfsConnectLineFree(ZFM_TOSTRING(EnumName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#EnumName, ":", zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *holder; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfsConnectLineFree(ZFM_TOSTRING(EnumName), ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfsConnectLineFree(#EnumName, ":", zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \

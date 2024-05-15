@@ -3,7 +3,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFOutputForConsole_ZFOutputDefaultExt, ZFLevelZFFrameworkEssential) {
-    ZFExportVarEnsureInit_ZFOutputForConsole();
     saved = ZFOutputDefault();
     ZFOutputDefault(ZFOutputForConsole());
 }

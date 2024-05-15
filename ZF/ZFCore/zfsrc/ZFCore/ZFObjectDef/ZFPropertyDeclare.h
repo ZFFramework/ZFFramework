@@ -350,8 +350,8 @@ public:
                     , zffalse \
                     , zfnull \
                     , zfself::ClassData() \
-                    , ZFM_TOSTRING(Name) \
-                    , ZFM_TOSTRING(Type) \
+                    , #Name \
+                    , #Type \
                     , ZFTypeId_noneOrType \
                     , ZFMethodAccessDetail_1(zfself, Name \
                         , ZFMP_IN(Type const &, propertyValue) \
@@ -378,8 +378,8 @@ public:
                     , zffalse \
                     , zfnull \
                     , zfself::ClassData() \
-                    , ZFM_TOSTRING(Name) \
-                    , ZFM_TOSTRING(Type) \
+                    , #Name \
+                    , #Type \
                     , ZFTypeId_noneOrType \
                     , ZFMethodAccessDetail_1(zfself, Name \
                         , ZFMP_IN(Type const &, propertyValue) \
@@ -710,7 +710,7 @@ public:
                 if(needInit) { \
                     needInit = zffalse; \
                     _ZFP_ZFPropertyLifeCycleRegister( \
-                        ZFM_TOSTRING(lifeCycleName), \
+                        #lifeCycleName, \
                         zfself::_ZFP_Prop_##Name(), \
                         zfself::ClassData(), \
                         zfself::_ZFP_propLI_##lifeCycleName##_##Name); \
@@ -742,7 +742,7 @@ public:
 #define _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DEFINE(OwnerClass, Type, Name, lifeCycleName, constFix, extraRegStep) \
     ZF_STATIC_REGISTER_INIT(propL_##OwnerClass##_##lifeCycleName##_##Name) { \
         _ZFP_ZFPropertyLifeCycleRegister( \
-            ZFM_TOSTRING(lifeCycleName), \
+            #lifeCycleName, \
             OwnerClass::_ZFP_Prop_##Name(), \
             OwnerClass::ClassData(), \
             a); \

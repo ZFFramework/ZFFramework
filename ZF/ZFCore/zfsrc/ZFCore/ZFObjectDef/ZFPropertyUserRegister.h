@@ -322,7 +322,7 @@ private:
         , zfnull \
         , ownerClass \
         , propertyNameString \
-        , ZFM_TOSTRING(Type) \
+        , #Type \
         , ZFTypeId_noneOrType \
         , setterMethod \
         , getterMethod \
@@ -355,7 +355,7 @@ private:
         , zfnull \
         , ownerClass \
         , propertyNameString \
-        , ZFM_TOSTRING(Type) \
+        , #Type \
         , ZFTypeId_noneOrType \
         , setterMethod \
         , getterMethod \
@@ -432,7 +432,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
             ZFMethodUserRegisterDetail_1(setterMethod, { \
                     Func_ZFPropertySetterInvoker(invokerMethod, invokerObject, value); \
                 }, ownerClassSig::ClassData(), SetterAccessType, ZFMethodTypeVirtual, \
-                void, ZFM_TOSTRING(propertyNameSig), \
+                void, #propertyNameSig, \
                 ZFMP_IN(Type const &, value)); \
             return setterMethod; \
         } \
@@ -440,7 +440,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
             ZFMethodUserRegisterDetail_0(getterMethod, { \
                     return Func_ZFPropertyGetterInvoker(invokerMethod, invokerObject); \
                 }, ownerClassSig::ClassData(), GetterAccessType, ZFMethodTypeVirtual, \
-                Type const &, ZFM_TOSTRING(propertyNameSig)); \
+                Type const &, #propertyNameSig); \
             return getterMethod; \
         } \
     }; \
@@ -448,7 +448,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPropertyMethodCleanup_UserReg(ZF_IN const ZFMeth
     static _ZFP_ZFPropertyRegisterHolder _ZFP_PropURH_##ownerClassSig##_##propertyNameSig \
         _ZFP_ZFPropertyUserRegister_ParamExpand_##RetainOrAssign( \
             ownerClassSig##_##propertyNameSig, ownerClassSig::ClassData(), \
-            Type, ZFM_TOSTRING(propertyNameSig), \
+            Type, #propertyNameSig, \
             ZFTypeId_noneOrType, \
             _ZFP_PropURMH_##ownerClassSig##_##propertyNameSig::S(), \
             _ZFP_PropURMH_##ownerClassSig##_##propertyNameSig::G(), \

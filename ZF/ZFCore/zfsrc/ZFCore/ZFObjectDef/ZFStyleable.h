@@ -229,7 +229,7 @@ private:
         } \
     }; \
     zfanyT<YourStyle> YourStyle::DefaultStyle(void) { \
-        static _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(ZFM_TOSTRING(YourStyle)); \
+        static _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(#YourStyle); \
         if(holder->d == zfnull) { \
             zfCoreMutexLocker(); \
             if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
@@ -251,7 +251,7 @@ private:
         if(ZFFrameworkStateCheck(_ZFP_ZFStyleableDefault_level) == ZFFrameworkStateNotAvailable) { \
             return; \
         } \
-        _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(ZFM_TOSTRING(YourStyle)); \
+        _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(#YourStyle); \
         if(holder->d == newInstance) { \
             return; \
         } \
@@ -278,7 +278,7 @@ private:
     } \
     void YourStyle::_ZFP_ZFStyleableDefaultOnDelete(ZF_IN void *instance) { \
         YourStyle::_ZFP_ZFStyleableDefaultCleaner() = zfnull; \
-        _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(ZFM_TOSTRING(YourStyle)); \
+        _ZFP_ZFStyleableDefaultPointerHolder *holder = _ZFP_ZFStyleableDefaultRefAccess(#YourStyle); \
         holder->d = zfnull; \
         zfRelease((YourStyle *)instance); \
     }
@@ -530,10 +530,10 @@ extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
     _ZFP_ZFSTYLE_DECODER_DEFINE(registerSig, decodeAction, ##__VA_ARGS__)
 #define _ZFP_ZFSTYLE_DECODER_DEFINE(registerSig, decodeAction, ...) \
     ZF_STATIC_REGISTER_INIT(ZFStyleDecoder_##registerSig) { \
-        _ZFP_ZFStyleDecoderRegister(ZFM_TOSTRING(registerSig), zfself::_ZFP_decode); \
+        _ZFP_ZFStyleDecoderRegister(#registerSig, zfself::_ZFP_decode); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ZFStyleDecoder_##registerSig) { \
-        _ZFP_ZFStyleDecoderUnregister(ZFM_TOSTRING(registerSig)); \
+        _ZFP_ZFStyleDecoderUnregister(#registerSig); \
     } \
     static zfbool _ZFP_decode( \
             ZF_OUT zfauto &ret \
