@@ -194,6 +194,8 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFImpl_sys_SDL_SysWindow_EventDispatch, ZF
     ZFImpl_sys_SDL_eventHandlerAdd(SDL_KEYUP, onKeyEvent, ZFLevelZFFrameworkNormal);
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFImpl_sys_SDL_SysWindow_EventDispatch) {
+    ZFImpl_sys_SDL_eventHandlerRemove(SDL_WINDOWEVENT, onWindowEvent);
+
     ZFImpl_sys_SDL_eventHandlerRemove(SDL_MOUSEMOTION, onMouseEvent);
     ZFImpl_sys_SDL_eventHandlerRemove(SDL_MOUSEBUTTONDOWN, onMouseEvent);
     ZFImpl_sys_SDL_eventHandlerRemove(SDL_MOUSEBUTTONUP, onMouseEvent);
