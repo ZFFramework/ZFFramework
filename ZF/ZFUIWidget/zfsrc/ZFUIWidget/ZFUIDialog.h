@@ -45,7 +45,7 @@ extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniShowCreator;
 /**
  * @brief see #ZFUIDialogDefaultAniShowCreator
  *
- * by default, the animation would be #ZFAnimationNativeView
+ * by default, the animation would be #ZFAniForGeneric
  * with alpha change
  */
 extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultAniShowCreatorDefault(void);
@@ -66,7 +66,7 @@ extern ZFLIB_ZFUIWidget ZFObjectCreator ZFUIDialogDefaultAniHideCreator;
 /**
  * @brief see #ZFUIDialogDefaultAniHideCreator
  *
- * by default, the animation would be #ZFAnimationNativeView
+ * by default, the animation would be #ZFAniForGeneric
  * with alpha change
  */
 extern ZFLIB_ZFUIWidget zfauto ZFUIDialogDefaultAniHideCreatorDefault(void);

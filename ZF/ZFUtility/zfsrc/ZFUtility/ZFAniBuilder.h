@@ -24,7 +24,7 @@ zfclassFwd _ZFP_ZFAniBuilderPrivate;
  *       .ani("prop2", from2, to2)                  // ani run in group 2
  *       .step(callback)                            // commit group 2
  *
- *       .customAni(customAniCallback)              // custom ani, run in group 3
+ *       .customAni(aniImpl)                        // custom ani, run in group 3
  *
  *       .aniOnStart(callback)                      // attach observers
  *       .aniOnStop(callback)
@@ -47,10 +47,10 @@ public:
     /**
      * @brief see #ZFAniBuilder
      *
-     * customAniCallback's param0 is a #v_zffloat holds the ani progress
+     * aniImpl's param0 is a #v_zffloat holds the ani progress
      */
     const ZFAniBuilder &customAni(
-            ZF_IN const ZFListener &customAniCallback
+            ZF_IN const ZFListener &aniImpl
             , ZF_IN_OPT zftimet aniDuration = 0
             , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
             ) const;

@@ -16,8 +16,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * usage:
  * @code
  *   ZFLISTENER(aniImpl) {
+ *       ZFAnimation *ani = zfargs.sender();
  *       zffloat const &progress = zfargs.param0().zfv();
- *       yourAniImpl(progress, zfargs.sender());
+ *       yourAniImpl(progress, ani);
  *   } ZFLISTENER_END()
  *   ZFAni(target, aniImpl)->aniStart();
  * @endcode
@@ -59,22 +60,22 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
 // ============================================================
 // utils for impl
 /** @brief util for custom ani */
-zfclass ZFLIB_ZFUtility ZFAniForCustomAni : zfextend ZFAnimationTimeLine {
-    ZFOBJECT_DECLARE(ZFAniForCustomAni, ZFAnimationTimeLine)
+zfclass ZFLIB_ZFUtility ZFAniForImpl : zfextend ZFAnimationTimeLine {
+    ZFOBJECT_DECLARE(ZFAniForImpl, ZFAnimationTimeLine)
 public:
     /**
      * @brief the custom ani callback
      *
-     * sender is the #ZFAniForCustomAni,
+     * sender is the #ZFAniForImpl,
      * param0 is #v_zffloat holds progress of the ani
      */
-    ZFPROPERTY_ASSIGN(ZFListener, customAniCallback)
+    ZFPROPERTY_ASSIGN(ZFListener, aniImpl)
 protected:
     zfoverride
     virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress) {
-        if(this->customAniCallback()) {
+        if(this->aniImpl()) {
             this->_ZFP_progressHolder->zfv = progress;
-            this->customAniCallback().execute(ZFArgs()
+            this->aniImpl().execute(ZFArgs()
                     .sender(this)
                     .param0(this->_ZFP_progressHolder)
                 );
@@ -109,11 +110,17 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfstring, name)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfany, fromValue)
     ZFPROPERTY_ON_ATTACH_DECLARE(zfany, toValue)
+
+    /** @brief whether auto restore to prev state, true by default */
+    ZFPROPERTY_ASSIGN(zfbool, autoRestore, zftrue)
+
 protected:
     zfoverride
     virtual void aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld);
     zfoverride
     virtual zfbool aniImplCheckValid(void);
+    zfoverride
+    virtual void aniOnStart(void);
     zfoverride
     virtual void aniOnStopOrInvalid(ZF_IN zfbool aniValid);
     zfoverride

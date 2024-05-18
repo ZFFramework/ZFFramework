@@ -32,12 +32,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintMake
         ) {
     zfobj<ZFUIHint> hint;
 
-    zfobj<ZFAnimationNativeView> hintAniShow;
-    hint->hintAniShow(hintAniShow);
-    hintAniShow->aniAlphaFrom(0);
-    zfobj<ZFAnimationNativeView> hintAniHide;
-    hint->hintAniHide(hintAniHide);
-    hintAniHide->aniAlphaTo(0);
+    hint->hintAniShow(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+    hint->hintAniHide(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
 
     zfobj<ZFUIHintContentBasic> hintContent;
     hint->hintContent(hintContent);

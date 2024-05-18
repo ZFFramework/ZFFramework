@@ -134,13 +134,17 @@ protected:
                     }
                     zfargs.sender()->to<ZFUIButton *>()->checked(zftrue);
 
-                    zfobj<ZFAnimationNativeView> resumeAni;
-                    resumeAni->aniScaleXFrom(0.8f);
-                    resumeAni->aniScaleYFrom(0.8f);
-                    resumeAni->aniAlphaFrom(0.5f);
-                    zfobj<ZFAnimationNativeView> pauseAni;
-                    pauseAni->aniAlphaTo(0);
-                    pageManager->pageAniOverride(resumeAni, pauseAni);
+                    pageManager->pageAniOverride(
+                            ZFAniBuilder()
+                            .ani("viewScaleX", zfobj<v_zffloat>(0.8f), zfobj<v_zffloat>(1))
+                            .ani("viewScaleY", zfobj<v_zffloat>(0.8f), zfobj<v_zffloat>(1))
+                            .ani("viewAlpha", zfobj<v_zffloat>(0.5f), zfobj<v_zffloat>(1))
+                            .toAnimation(),
+
+                            ZFAniBuilder()
+                            .ani("viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0))
+                            .toAnimation()
+                            );
 
                     if(pageManager->pageListForGroupId(pageGroupId->zfv).isEmpty()) {
                         zfobj<ZFUIWidget_ZFUIPage_test_Page> page;
@@ -175,7 +179,6 @@ protected:
     virtual void testCaseOnStart(void) {
         zfsuper::testCaseOnStart();
         ZFFramework_test_protocolCheck(ZFUIView);
-        ZFFramework_test_protocolCheck(ZFAnimationNativeView);
         ZFFramework_test_asyncTestCheck();
 
         ZFUIWindow *window = zfnull;

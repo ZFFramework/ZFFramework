@@ -99,14 +99,21 @@ static void _ZFP_ZFUIViewBlinkDoOn(
         ? blinkParam.blinkImage()
         : ZFUIViewBlinkImageDefault());
 
-    if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView) && !_ZFP_ZFUIViewBlink_DEBUG_noAni) {
+    if(!_ZFP_ZFUIViewBlink_DEBUG_noAni) {
         if(blinkParam.blinkCount() > 1) {
             view->objectTag(_ZFP_ZFUIViewBlink_tag_blinkCountLeft, zfobj<v_zfindex>(blinkParam.blinkCount() - 1));
         }
 
-        zfobj<ZFAnimationNativeView> ani;
+        zfautoT<ZFAnimation> ani;
+        if(ZFPROTOCOL_IS_AVAILABLE(ZFAnimationNativeView)) {
+            zfobj<ZFAnimationNativeView> tmp;
+            ani = tmp;
+            tmp->aniAlphaTo(0);
+        }
+        else {
+            ani = ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0));
+        }
         view->objectTag(_ZFP_ZFUIViewBlink_tag_ani, ani);
-        ani->aniAlphaTo(0);
         #if _ZFP_ZFUIViewBlink_DEBUG_duration
             ani->aniDuration(5000);
         #else

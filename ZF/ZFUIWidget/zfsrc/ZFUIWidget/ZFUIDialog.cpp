@@ -14,15 +14,11 @@ zfauto ZFUIDialogDefaultLayoutParamCreatorDefault(void) {
 }
 ZFObjectCreator ZFUIDialogDefaultAniShowCreator = ZFUIDialogDefaultAniShowCreatorDefault;
 zfauto ZFUIDialogDefaultAniShowCreatorDefault(void) {
-    zfobj<ZFAnimationNativeView> ani;
-    ani->aniAlphaFrom(0);
-    return ani;
+    return ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1));
 }
 ZFObjectCreator ZFUIDialogDefaultAniHideCreator = ZFUIDialogDefaultAniHideCreatorDefault;
 zfauto ZFUIDialogDefaultAniHideCreatorDefault(void) {
-    zfobj<ZFAnimationNativeView> ani;
-    ani->aniAlphaTo(0);
-    return ani;
+    return ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0));
 }
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIDialogDefaultCreatorReset, ZFLevelZFFrameworkNormal) {
@@ -88,8 +84,8 @@ zfclass _ZFP_I_ZFUIDialogPrivate : zfextend ZFUIWindow {
 public:
     ZFUIDialog *pimplOwner;
     ZFUIView *dialogWindowBg;
-    ZFAnimationNativeView *dialogWindowAniShow;
-    ZFAnimationNativeView *dialogWindowAniHide;
+    ZFAnimation *dialogWindowAniShow;
+    ZFAnimation *dialogWindowAniHide;
     ZFUIButton *dialogClickMask;
     ZFUIImageView *dialogBg;
     ZFUIOnScreenKeyboardAutoFitLayout *dialogContainer;
@@ -435,10 +431,8 @@ void ZFUIDialog::objectOnInit(void) {
     d->dialogContainer = zfAlloc(ZFUIOnScreenKeyboardAutoFitLayout);
     d->dialogBg->childAdd(d->dialogContainer)->c_sizeFill();
 
-    d->dialogWindowAniShow = zfAlloc(ZFAnimationNativeView);
-    d->dialogWindowAniShow->aniAlphaFrom(0);
-    d->dialogWindowAniHide = zfAlloc(ZFAnimationNativeView);
-    d->dialogWindowAniHide->aniAlphaTo(0);
+    d->dialogWindowAniShow = zfRetain(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(0), zfobj<v_zffloat>(1)));
+    d->dialogWindowAniHide = zfRetain(ZFAni(zfnull, "viewAlpha", zfobj<v_zffloat>(1), zfobj<v_zffloat>(0)));
 
     d->aniShowOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniShowOnStop));
     d->aniHideOnStopListener = ZFCallbackForMemberMethod(d, ZFMethodAccess(_ZFP_I_ZFUIDialogPrivate, aniHideOnStop));

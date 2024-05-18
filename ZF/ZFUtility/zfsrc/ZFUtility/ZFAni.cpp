@@ -10,8 +10,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAnimationTimeLine>, ZFAni
     if(!aniImpl) {
         return zfnull;
     }
-    zfobj<ZFAniForCustomAni> ani;
-    ani->customAniCallback(aniImpl);
+    zfobj<ZFAniForImpl> ani;
+    ani->aniImpl(aniImpl);
     return ani;
 }
 
@@ -38,6 +38,8 @@ private:
     zfauto _aniTarget;
     const ZFMethod *_setterMethod;
     const ZFMethod *_getterMethod;
+    zfauto _valueSaved;
+    zfautoT<ZFProgressable> _valueHolder;
     zfauto _from;
     zfauto _to;
     const ZFTypeInfo *_typeInfo; // null for retain property, non-null for assignable property
@@ -47,6 +49,8 @@ public:
     , _aniTarget(zfnull)
     , _setterMethod(zfnull)
     , _getterMethod(zfnull)
+    , _valueSaved()
+    , _valueHolder()
     , _from(zfnull)
     , _to(zfnull)
     , _typeInfo(zfnull)
@@ -54,9 +58,12 @@ public:
     }
 public:
     void cleanup(void) {
+        this->valueSavedRestore();
         _aniTarget = zfnull;
         _setterMethod = zfnull;
         _getterMethod = zfnull;
+        _valueSaved = zfnull;
+        _valueHolder = zfnull;
         _from = zfnull;
         _to = zfnull;
         _typeInfo = zfnull;
@@ -109,10 +116,8 @@ public:
         }
 
         if(_typeInfo != zfnull) {
-            zfauto valueHolder = _typeInfo->typeIdClass()->newInstance();
-            ZFProgressable *value = valueHolder;
-            if(value != zfnull && value->progressUpdate(_from, _to, progress)) {
-                _setterMethod->methodInvoke(_aniTarget, valueHolder);
+            if(_valueHolder != zfnull && _valueHolder->progressUpdate(_from, _to, progress)) {
+                _setterMethod->methodInvoke(_aniTarget, _valueHolder);
             }
         }
         else {
@@ -122,6 +127,19 @@ public:
                 value->progressUpdate(_from, _to, progress);
             }
         }
+    }
+    void valueSavedUpdate(void) {
+        if(_typeInfo == zfnull) {
+            _valueSaved = zfnull;
+            return;
+        }
+        _valueSaved = _getterMethod->methodInvoke(_aniTarget);
+    }
+    void valueSavedRestore(void) {
+        if(_valueSaved == zfnull || _typeInfo == zfnull) {
+            return;
+        }
+        _setterMethod->methodInvoke(_aniTarget, _valueSaved);
     }
 private:
     zfbool _prepare(
@@ -216,13 +234,14 @@ private:
             ) {
                 return zffalse;
             }
+            _valueHolder = _typeInfo->typeIdClass()->newInstance();
         }
         return zftrue;
     }
 };
 
 // ============================================================
-ZFOBJECT_REGISTER(ZFAniForCustomAni)
+ZFOBJECT_REGISTER(ZFAniForImpl)
 
 ZFOBJECT_REGISTER(ZFAniForGeneric)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, name) {d->needUpdate = true;}
@@ -235,6 +254,10 @@ void ZFAniForGeneric::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
 zfbool ZFAniForGeneric::aniImplCheckValid(void) {
     if(!zfsuper::aniImplCheckValid()) {return zffalse;}
     return d->checkSetup(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
+}
+void ZFAniForGeneric::aniOnStart(void) {
+    zfsuper::aniOnStart();
+    d->valueSavedUpdate();
 }
 void ZFAniForGeneric::aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
     d->cleanup();
