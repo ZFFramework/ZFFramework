@@ -7,7 +7,6 @@
 #define _ZFI_ZFAnimationTimeLine_h_
 
 #include "ZFAnimation.h"
-#include "ZFTimeLineCurve.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -59,7 +58,7 @@ public:
     /**
      * @brief curve for time line, null to use linear time line, null by default
      */
-    ZFPROPERTY_RETAIN(ZFTimeLineCurve *, aniCurve)
+    ZFPROPERTY_RETAIN(ZFCurve *, aniCurve)
     /**
      * @brief interval to update time line, in miliseconds, -1 by default
      *

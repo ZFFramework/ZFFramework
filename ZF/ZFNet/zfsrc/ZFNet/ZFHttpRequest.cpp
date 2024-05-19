@@ -2,6 +2,10 @@
 
 #include "protocol/ZFProtocolZFHttpRequest.h"
 
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
+
+#define _ZFP_ZFHttpRequest_DEBUG 0
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFENUM_DEFINE(ZFHttpMethod)
@@ -17,7 +21,7 @@ public:
     ZFJson *bodyJsonCache;
 public:
     _ZFP_ZFHttpRequestPrivate(void)
-    : refCount(2)
+    : refCount(2) // for ZFHttpRequest and ZFHttpResponse, one for each
     , nativeTask(zfnull)
     , ownerThread()
     , response(ZFHttpResponse::ClassData()->newInstance())
@@ -197,6 +201,9 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, request
         d->ownerThread = ZFThread::currentThread();
     }
     d->callback = callback;
+#if _ZFP_ZFHttpRequest_DEBUG
+    zfLogTrim("[ZFHttpRequest] request: %s", this);
+#endif
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask);
 
     return this;
@@ -221,6 +228,9 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync) {
                 , zfautoT<ZFHttpResponse> &, recv
                 ) {
             recv = zfargs.param0();
+#if _ZFP_ZFHttpRequest_DEBUG
+    zfLogTrim("[ZFHttpRequest] recv: %s", recv);
+#endif
             waitLock->lockAndBroadcast();
         } ZFLISTENER_END()
         send->request(onResponse);
@@ -503,6 +513,119 @@ ZFMETHOD_FUNC_DEFINE_3(zfstring, ZFUrlParamGet
     }
     else {
         return zfstring(url + start, end - start);
+    }
+}
+
+// ============================================================
+#define _ZFP_ZFHttpHeadCacheTime (5*60*1000)
+#define _ZFP_ZFHttpHeadCacheMax (32)
+
+zfclassNotPOD _ZFP_ZFHttpHeadCache {
+public:
+    zfstring url;
+    zftimet cacheTime;
+    zfautoT<ZFHttpResponse> cache;
+    _ZFP_ZFHttpHeadCache *prev;
+    _ZFP_ZFHttpHeadCache *next;
+public:
+    _ZFP_ZFHttpHeadCache(void)
+    : url()
+    , cacheTime(ZFTime::currentTimeMiliSeconds())
+    , cache()
+    , prev(zfnull)
+    , next(zfnull)
+    {
+    }
+};
+typedef zfstlmap<const zfchar *, _ZFP_ZFHttpHeadCache *, zfcharConst_zfstlComparer> _ZFP_ZFHttpHeadCacheMapType;
+static _ZFP_ZFHttpHeadCacheMapType _ZFP_ZFHttpHeadCacheMap; // <url, _ZFP_ZFHttpHeadCache>
+static _ZFP_ZFHttpHeadCache *_ZFP_ZFHttpHeadCacheFirst = zfnull;
+static _ZFP_ZFHttpHeadCache *_ZFP_ZFHttpHeadCacheLast = zfnull;
+
+ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
+        , ZFMP_IN(const zfchar *, url)
+        ) {
+    zftimet curTime = ZFTime::currentTimeMiliSeconds();
+    {
+        zfCoreMutexLocker();
+        _ZFP_ZFHttpHeadCacheMapType::iterator cacheIt = _ZFP_ZFHttpHeadCacheMap.find(url);
+        if(cacheIt != _ZFP_ZFHttpHeadCacheMap.end()) {
+            _ZFP_ZFHttpHeadCache *cache = cacheIt->second;
+            if(cache->cacheTime + _ZFP_ZFHttpHeadCacheTime > curTime) {
+                // cache valid, move to head
+                if(cache != _ZFP_ZFHttpHeadCacheFirst) {
+                    if(cache->next != zfnull) {
+                        cache->next->prev = cache->prev;
+                    }
+                    if(cache->prev != zfnull) {
+                        cache->prev->next = cache->next;
+                    }
+                    if(cache == _ZFP_ZFHttpHeadCacheLast && _ZFP_ZFHttpHeadCacheLast->prev != zfnull) {
+                        _ZFP_ZFHttpHeadCacheLast = _ZFP_ZFHttpHeadCacheLast->prev;
+                    }
+                    cache->prev = zfnull;
+                    cache->next = _ZFP_ZFHttpHeadCacheFirst;
+                    _ZFP_ZFHttpHeadCacheFirst->prev = cache;
+                }
+                return cache->cache;
+            }
+            else {
+                // cache invalid, remove
+                if(cache->next != zfnull) {
+                    cache->next->prev = cache->prev;
+                }
+                if(cache->prev != zfnull) {
+                    cache->prev->next = cache->next;
+                }
+                if(cache == _ZFP_ZFHttpHeadCacheFirst) {
+                    _ZFP_ZFHttpHeadCacheFirst = cache->next;
+                }
+                if(cache == _ZFP_ZFHttpHeadCacheLast) {
+                    _ZFP_ZFHttpHeadCacheLast = cache->prev;
+                }
+                _ZFP_ZFHttpHeadCacheMap.erase(cacheIt);
+                zfdelete(cache);
+            }
+        }
+    }
+
+    // no match, load
+    zfautoT<ZFHttpResponse> recv = zfobj<ZFHttpRequest>(url, ZFHttpMethod::e_HEAD)->requestSync();
+    if(recv == zfnull) {
+        return recv;
+    }
+
+    zfCoreMutexLocker();
+    _ZFP_ZFHttpHeadCache *cache = zfnew(_ZFP_ZFHttpHeadCache);
+    cache->url = url;
+    cache->cache = recv;
+    cache->next = _ZFP_ZFHttpHeadCacheFirst;
+    if(_ZFP_ZFHttpHeadCacheFirst != zfnull) {
+        _ZFP_ZFHttpHeadCacheFirst->prev = cache;
+    }
+    else {
+        _ZFP_ZFHttpHeadCacheFirst = cache;
+        _ZFP_ZFHttpHeadCacheLast = cache;
+    }
+    _ZFP_ZFHttpHeadCacheMap[cache->url] = cache;
+
+    while(_ZFP_ZFHttpHeadCacheMap.size() > _ZFP_ZFHttpHeadCacheMax) {
+        _ZFP_ZFHttpHeadCache *tmp = _ZFP_ZFHttpHeadCacheLast;
+        _ZFP_ZFHttpHeadCacheLast = _ZFP_ZFHttpHeadCacheLast->prev;
+        _ZFP_ZFHttpHeadCacheLast->next = zfnull;
+        _ZFP_ZFHttpHeadCacheMap.erase(tmp->url);
+        zfdelete(tmp);
+    }
+
+    return recv;
+}
+ZFMETHOD_FUNC_DEFINE_0(void, ZFHttpHeadCacheClear) {
+    zfCoreMutexLocker();
+    if(_ZFP_ZFHttpHeadCacheFirst != zfnull) {
+        _ZFP_ZFHttpHeadCacheFirst = zfnull;
+        _ZFP_ZFHttpHeadCacheLast = zfnull;
+        _ZFP_ZFHttpHeadCacheMapType tmp;
+        _ZFP_ZFHttpHeadCacheMap.swap(tmp);
     }
 }
 

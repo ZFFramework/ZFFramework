@@ -2,16 +2,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfbool _ZFP_ZFPathType_http_IsDir(ZF_IN const zfchar *pathData) {
-    zfindex len = zfslen(pathData);
-    zfobj<ZFHttpRequest> send(
-            len > 0 && pathData[len - 1] == '/' ? pathData : zfstr("%s/", pathData).cString()
-            , ZFHttpMethod::e_GET
-            );
-    zfautoT<ZFHttpResponse> recv = send->requestSync();
-    return recv->success() && zfstringIsEqual(recv->header("Content-Type"), "text/html");
-}
-
 // ============================================================
 zfclassNotPOD _ZFP_ZFPathType_http_FindData {
 public:

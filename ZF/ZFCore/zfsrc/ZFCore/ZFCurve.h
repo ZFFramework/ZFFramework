@@ -1,12 +1,12 @@
 /**
- * @file ZFTimeLineCurve.h
+ * @file ZFCurve.h
  * @brief time based event driver
  */
 
-#ifndef _ZFI_ZFTimeLine_h_
-#define _ZFI_ZFTimeLine_h_
+#ifndef _ZFI_ZFCurve_h_
+#define _ZFI_ZFCurve_h_
 
-#include "ZFUtilityDef.h"
+#include "ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -15,8 +15,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * you may supply a subclass to achive custom time line,
  * but must make sure it is serializable and copyable
  */
-zfabstract ZFLIB_ZFUtility ZFTimeLineCurve : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
-    ZFOBJECT_DECLARE_ABSTRACT(ZFTimeLineCurve, ZFObject)
+zfabstract ZFLIB_ZFCore ZFCurve : zfextend ZFObject, zfimplement ZFSerializable, zfimplement ZFCopyable {
+    ZFOBJECT_DECLARE_ABSTRACT(ZFCurve, ZFObject)
     ZFIMPLEMENT_DECLARE(ZFSerializable, ZFCopyable)
 
 public:
@@ -39,6 +39,20 @@ protected:
     virtual zffloat progressOnUpdate(ZF_IN zffloat time) zfpurevirtual;
 };
 
+// ============================================================
+/**
+ * @brief linear time line, see #ZFCurve
+ */
+zfclass ZFLIB_ZFCore ZFCurveLinear : zfextend ZFCurve {
+    ZFOBJECT_DECLARE(ZFCurveLinear, ZFCurve)
+
+protected:
+    zfoverride
+    virtual zffloat progressOnUpdate(ZF_IN zffloat time) {
+        return time;
+    }
+};
+
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFTimeLine_h_
+#endif // #ifndef _ZFI_ZFCurve_h_
 

@@ -15,8 +15,6 @@
 #include "ZFUtility/ZFResCache.h"
 #include "ZFUtility/ZFTestCase.h"
 #include "ZFUtility/ZFTestCaseUtil.h"
-#include "ZFUtility/ZFTimeLineCurve.h"
-#include "ZFUtility/ZFTimeLineCurve_common.h"
 #include "ZFUtility/ZFUtilityDef.h"
 
 #endif // #ifndef _ZFI_ZFUtility_h_

@@ -149,13 +149,13 @@ public:
         return progress;
     }
     static zffloat _aniCurveFuncEaseIn(ZF_IN zffloat progress) {
-        return ZFCurveEaseIn().y_by_x(progress);
+        return ZFBezierEaseIn().y_by_x(progress);
     }
     static zffloat _aniCurveFuncEaseOut(ZF_IN zffloat progress) {
-        return ZFCurveEaseOut().y_by_x(progress);
+        return ZFBezierEaseOut().y_by_x(progress);
     }
     static zffloat _aniCurveFuncEaseInOut(ZF_IN zffloat progress) {
-        return ZFCurveEaseInOut().y_by_x(progress);
+        return ZFBezierEaseInOut().y_by_x(progress);
     }
     void nativeAniStart(void) {
         this->aniProgress = 0;

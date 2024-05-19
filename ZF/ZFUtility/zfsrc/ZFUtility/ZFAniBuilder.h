@@ -41,7 +41,7 @@ public:
             , ZF_IN ZFObject *from
             , ZF_IN ZFObject *to
             , ZF_IN_OPT zftimet aniDuration = 0
-            , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
+            , ZF_IN_OPT ZFCurve *aniCurve = zfnull
             ) const;
 
     /**
@@ -52,7 +52,7 @@ public:
     const ZFAniBuilder &customAni(
             ZF_IN const ZFListener &aniImpl
             , ZF_IN_OPT zftimet aniDuration = 0
-            , ZF_IN_OPT ZFTimeLineCurve *aniCurve = zfnull
+            , ZF_IN_OPT ZFCurve *aniCurve = zfnull
             ) const;
 
 public:

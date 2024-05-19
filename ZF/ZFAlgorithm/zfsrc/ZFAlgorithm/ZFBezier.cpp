@@ -1,9 +1,9 @@
-#include "ZFCurve.h"
+#include "ZFBezier.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-ZFCurve &ZFCurve::controlPoint(
+ZFBezier &ZFBezier::controlPoint(
         ZF_IN zffloat p0x
         , ZF_IN zffloat p0y
         , ZF_IN zffloat p1x
@@ -24,23 +24,23 @@ ZFCurve &ZFCurve::controlPoint(
     return *this;
 }
 
-zffloat ZFCurve::y_by_t(ZF_IN zffloat t) const {
+zffloat ZFBezier::y_by_t(ZF_IN zffloat t) const {
     return ((ay * t + by) * t + cy) * t;
 }
 
-zffloat ZFCurve::y_by_x(ZF_IN zffloat x) const {
+zffloat ZFBezier::y_by_x(ZF_IN zffloat x) const {
     return this->y_by_t(this->t_by_x(x));
 }
 
-zffloat ZFCurve::x_by_t(ZF_IN zffloat t) const {
+zffloat ZFBezier::x_by_t(ZF_IN zffloat t) const {
     return ((ax * t + bx) * t + cx) * t;
 }
 
-zffloat ZFCurve::x_by_y(ZF_IN zffloat y) const {
+zffloat ZFBezier::x_by_y(ZF_IN zffloat y) const {
     return this->x_by_t(this->t_by_y(y));
 }
 
-zffloat ZFCurve::t_by_x(ZF_IN zffloat x) const {
+zffloat ZFBezier::t_by_x(ZF_IN zffloat x) const {
     zffloat t0;
     zffloat t1;
     zffloat t2 = x;
@@ -87,7 +87,7 @@ zffloat ZFCurve::t_by_x(ZF_IN zffloat x) const {
     return t2;
 }
 
-zffloat ZFCurve::t_by_y(ZF_IN zffloat y) const {
+zffloat ZFBezier::t_by_y(ZF_IN zffloat y) const {
     zffloat t0;
     zffloat t1;
     zffloat t2 = y;
@@ -135,42 +135,42 @@ zffloat ZFCurve::t_by_y(ZF_IN zffloat y) const {
 }
 
 // ============================================================
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveZero, ZFCurve(0, 0, 1, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveLinear, ZFCurve(0, 0, 1, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveEaseIn, ZFCurve(0.8f, 0, 1, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveEaseOut, ZFCurve(0, 0, 0.2f, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveEaseInOut, ZFCurve(0.8f, 0, 0.2f, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveBounceIn, ZFCurve(0.2f, -0.5f, 1, 1))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveBounceOut, ZFCurve(0, 0, 0.8f, 1.5f))
-ZFEXPORT_VAR_READONLY_DEFINE(ZFCurve, ZFCurveBounceInOut, ZFCurve(0.2f, -0.5f, 0.8f, 1.5f))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierZero, ZFBezier(0, 0, 1, 1))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierLinear, ZFBezier(0, 0, 1, 1))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierEaseIn, ZFBezier(0.8f, 0, 1, 1))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierEaseOut, ZFBezier(0, 0, 0.2f, 1))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierEaseInOut, ZFBezier(0.8f, 0, 0.2f, 1))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBounceIn, ZFBezier(0.2f, -0.5f, 1, 1))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBounceOut, ZFBezier(0, 0, 0.8f, 1.5f))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFBezier, ZFBezierBounceInOut, ZFBezier(0.2f, -0.5f, 0.8f, 1.5f))
 
 // ============================================================
-ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFCurve(), outErrorHint, outErrorPos) == zfnull) {
+ZFTYPEID_DEFINE(ZFBezier, ZFBezier, {
+        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_ZFBezier(), outErrorHint, outErrorPos) == zfnull) {
             return zffalse;
         }
 
         zffloat p0x = 0;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFCurve_p0x, zffloat, p0x, {
+                check, ZFSerializableKeyword_ZFBezier_p0x, zffloat, p0x, {
                     return zffalse;
                 });
 
         zffloat p0y = 0;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFCurve_p0y, zffloat, p0y, {
+                check, ZFSerializableKeyword_ZFBezier_p0y, zffloat, p0y, {
                     return zffalse;
                 });
 
         zffloat p1x = 1;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFCurve_p1x, zffloat, p1x, {
+                check, ZFSerializableKeyword_ZFBezier_p1x, zffloat, p1x, {
                     return zffalse;
                 });
 
         zffloat p1y = 1;
         ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_ZFCurve_p1y, zffloat, p1y, {
+                check, ZFSerializableKeyword_ZFBezier_p1y, zffloat, p1y, {
                     return zffalse;
                 });
 
@@ -179,23 +179,23 @@ ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
         serializableData.resolveMark();
         return zftrue;
     }, {
-        serializableData.itemClass(ZFTypeId_ZFCurve());
+        serializableData.itemClass(ZFTypeId_ZFBezier());
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFCurve_p0x, zffloat, v.p0x, 0, {
+                ZFSerializableKeyword_ZFBezier_p0x, zffloat, v.p0x, 0, {
                     return zffalse;
                 });
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFCurve_p0y, zffloat, v.p0y, 0, {
+                ZFSerializableKeyword_ZFBezier_p0y, zffloat, v.p0y, 0, {
                     return zffalse;
                 });
 
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFCurve_p1x, zffloat, v.p1x, 1, {
+                ZFSerializableKeyword_ZFBezier_p1x, zffloat, v.p1x, 1, {
                     return zffalse;
                 });
         ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint,
-                ZFSerializableKeyword_ZFCurve_p1y, zffloat, v.p1y, 1, {
+                ZFSerializableKeyword_ZFBezier_p1y, zffloat, v.p1y, 1, {
                     return zffalse;
                 });
 
@@ -219,34 +219,34 @@ ZFTYPEID_DEFINE(ZFCurve, ZFCurve, {
         s += ")";
         return zftrue;
     })
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFCurve, void, controlPoint
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFBezier, void, controlPoint
         , ZFMP_IN(zffloat, p0x)
         , ZFMP_IN(zffloat, p0y)
         , ZFMP_IN(zffloat, p1x)
         , ZFMP_IN(zffloat, p1y)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, y_by_t
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, y_by_t
         , ZFMP_IN(zffloat, t)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, y_by_x
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, y_by_x
         , ZFMP_IN(zffloat, x)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, x_by_t
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, x_by_t
         , ZFMP_IN(zffloat, t)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, x_by_y
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, x_by_y
         , ZFMP_IN(zffloat, y)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, t_by_x
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, t_by_x
         , ZFMP_IN(zffloat, x)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCurve, zffloat, t_by_y
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBezier, zffloat, t_by_y
         , ZFMP_IN(zffloat, y)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFCurve, zffloat, p0x)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFCurve, zffloat, p0y)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFCurve, zffloat, p1x)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFCurve, zffloat, p1y)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFBezier, zffloat, p0x)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFBezier, zffloat, p0y)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFBezier, zffloat, p1x)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_VAR(v_ZFBezier, zffloat, p1y)
 
 ZF_NAMESPACE_GLOBAL_END
 

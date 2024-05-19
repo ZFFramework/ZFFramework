@@ -6,8 +6,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPATHTYPE_DEFINE(http)
 
-extern zfbool _ZFP_ZFPathType_http_IsDir(ZF_IN const zfchar *pathData);
-
 extern zfbool _ZFP_ZFPathType_http_FindFirst(
         ZF_IN_OUT ZFFileFindData &fd
         , ZF_IN const zfchar *pathData
@@ -47,8 +45,7 @@ public:
     public:
         void update(void) {
             if(!this->updated) {
-                zfobj<ZFHttpRequest> send(this->url, ZFHttpMethod::e_HEAD);
-                zfautoT<ZFHttpResponse> recv = send->requestSync();
+                zfautoT<ZFHttpResponse> recv = ZFHttpHeadCache(this->url);
                 this->updated = zftrue;
                 if(recv == zfnull || !recv->success()) {
                     return;
@@ -108,16 +105,21 @@ public:
         if(zfstringIsEmpty(pathData)) {
             return zffalse;
         }
-        zfstring url = pathData;
-        if(url[url.length() - 1] != '/') {
-            url += '/';
-        }
-        zfobj<ZFHttpRequest> send(url, ZFHttpMethod::e_HEAD);
-        zfautoT<ZFHttpResponse> recv = send->requestSync();
+        zfautoT<ZFHttpResponse> recv = ZFHttpHeadCache(pathData[zfslen(pathData) - 1] == '/'
+                ? pathData
+                : zfstr("%s/", pathData).cString()
+                );
         return recv != zfnull && recv->success();
     }
     static zfbool callbackIsDir(ZF_IN const zfchar *pathData) {
-        return _ZFP_ZFPathType_http_IsDir(pathData);
+        if(zfstringIsEmpty(pathData)) {
+            return zftrue;
+        }
+        zfautoT<ZFHttpResponse> recv = ZFHttpHeadCache(pathData[zfslen(pathData) - 1] == '/'
+                ? pathData
+                : zfstr("%s/", pathData).cString()
+                );
+        return recv->success() && zfstringIsEqual(recv->header("Content-Type"), "text/html");
     }
     static zfbool callbackToFileName(
             ZF_IN const zfchar *pathData

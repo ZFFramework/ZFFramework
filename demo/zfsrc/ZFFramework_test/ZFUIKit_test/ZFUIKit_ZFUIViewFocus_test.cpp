@@ -15,7 +15,7 @@ private:
     static void viewFocusOnChange(ZF_IN const ZFArgs &zfargs) {
         zfLogTrim() << "[ZFUIViewFocus]"
             << zfargs.sender()
-            << "changed to" << zfargs.sender()->to<ZFUIView *>()->viewFocused();
+            << " changed to " << zfargs.sender()->to<ZFUIView *>()->viewFocused();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewFocusState_test)
 #endif

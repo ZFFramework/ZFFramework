@@ -16,6 +16,8 @@ static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void);
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView);
 
 ZFMAIN_ENTRY() {
+    ZFResExtPathAdd(ZFPathInfo(ZFPathType_http(), "http://localhost"));
+
     if(!_ZFP_ZFFramework_test_luaTest() && _ZFP_ZFFramework_test_protocolCheck()) {
         zfauto containerView = _ZFP_ZFFramework_test_containerViewPrepare();
         _ZFP_ZFFramework_test_prepareTestCase(containerView);

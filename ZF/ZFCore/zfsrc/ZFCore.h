@@ -12,6 +12,7 @@
 #include "ZFCore/ZFContainer.h"
 #include "ZFCore/ZFCoreDef.h"
 #include "ZFCore/ZFCoreStatistic_ZFTime.h"
+#include "ZFCore/ZFCurve.h"
 #include "ZFCore/ZFDynamicRegisterUtil.h"
 #include "ZFCore/ZFEnvInfo.h"
 #include "ZFCore/ZFFile.h"

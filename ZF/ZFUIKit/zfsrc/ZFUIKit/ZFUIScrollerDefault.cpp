@@ -110,7 +110,7 @@ public:
             return _ZFP_ZFUIScrollerDefault_scrollAniBounceMax;
         }
         else {
-            zffloat ret = (zffloat)(ZFCurveEaseOut().y_by_x((zffloat)dragOffset / _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax) * _ZFP_ZFUIScrollerDefault_scrollAniBounceMax);
+            zffloat ret = (zffloat)(ZFBezierEaseOut().y_by_x((zffloat)dragOffset / _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax) * _ZFP_ZFUIScrollerDefault_scrollAniBounceMax);
             return zfmMin(ret, dragOffset);
         }
     }
@@ -119,7 +119,7 @@ public:
             return _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax;
         }
         else {
-            zffloat ret = (zffloat)(ZFCurveEaseOut().x_by_y((zffloat)scrollBounce / _ZFP_ZFUIScrollerDefault_scrollAniBounceMax) * _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax);
+            zffloat ret = (zffloat)(ZFBezierEaseOut().x_by_y((zffloat)scrollBounce / _ZFP_ZFUIScrollerDefault_scrollAniBounceMax) * _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax);
             return zfmMax(ret, scrollBounce);
         }
     }
@@ -216,7 +216,7 @@ public:
         }
 
         zffloat progress = (zffloat)(curTime - this->aniByPointStartTime) / (this->aniByPointStopTime - this->aniByPointStartTime);
-        zffloat offsetProgress = ZFCurveEaseOut().y_by_x(progress);
+        zffloat offsetProgress = ZFBezierEaseOut().y_by_x(progress);
 
         this->contentOffset = this->aniByPointStartPos + (this->aniByPointStopPos - this->aniByPointStartPos) * offsetProgress;
         if(zfmAbs(this->contentOffset - this->aniByPointStopPos) <= 1) {
@@ -234,7 +234,7 @@ public:
         if(offset >= _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax) {
             return _ZFP_ZFUIScrollerDefault_aniByPointDurationMax;
         }
-        zftimet ret = (zft_zftimet)(ZFCurveLinear().y_by_x((zft_zffloat)offset / _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax)
+        zftimet ret = (zft_zftimet)(ZFBezierLinear().y_by_x((zft_zffloat)offset / _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax)
             * _ZFP_ZFUIScrollerDefault_aniByPointDurationMax);
         if(ret < _ZFP_ZFUIScrollerDefault_aniByPointDurationMin) {
             return _ZFP_ZFUIScrollerDefault_aniByPointDurationMin;

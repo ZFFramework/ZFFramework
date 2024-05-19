@@ -8,9 +8,10 @@
 
 #include "ZFAlgorithm/ZFAlgorithmDef.h"
 #include "ZFAlgorithm/ZFBase64.h"
+#include "ZFAlgorithm/ZFBezier.h"
 #include "ZFAlgorithm/ZFCompress.h"
 #include "ZFAlgorithm/ZFCrc32.h"
-#include "ZFAlgorithm/ZFCurve.h"
+#include "ZFAlgorithm/ZFCurve_common.h"
 #include "ZFAlgorithm/ZFEncrypt.h"
 #include "ZFAlgorithm/ZFJson.h"
 #include "ZFAlgorithm/ZFJsonSerializableConverter.h"

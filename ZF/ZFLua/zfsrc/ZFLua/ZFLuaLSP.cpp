@@ -258,7 +258,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
         zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlComparer>::iterator itMethod = methodMap.find(m->methodName());
         if(itMethod != methodMap.end()) {
             zfbool exist = zffalse;
-            for(zfindex i = i < itMethod->second.count() - 1; i != zfindexMax(); --i) {
+            for(zfindex i = itMethod->second.count() - 1; i != zfindexMax(); --i) {
                 const ZFMethod *methodExist = itMethod->second[i];
                 if(m->methodParamTypeIdIsMatch(methodExist)) {
                     exist = zftrue;

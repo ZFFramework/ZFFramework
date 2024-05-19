@@ -1,10 +1,10 @@
 /**
- * @file ZFCurve.h
+ * @file ZFBezier.h
  * @brief curve
  */
 
-#ifndef _ZFI_ZFCurve_h_
-#define _ZFI_ZFCurve_h_
+#ifndef _ZFI_ZFBezier_h_
+#define _ZFI_ZFBezier_h_
 
 #include "ZFAlgorithmDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
@@ -12,14 +12,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief curve
  */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFCurve {
+zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFBezier {
 public:
     /** @brief construct a linear curve */
-    ZFCurve(void) {
+    ZFBezier(void) {
         this->controlPoint(0, 0, 1, 1);
     }
     /** @brief construct from another curve */
-    ZFCurve(ZF_IN const ZFCurve &ref)
+    ZFBezier(ZF_IN const ZFBezier &ref)
     : p0x(ref.p0x)
     , p0y(ref.p0y)
     , p1x(ref.p1x)
@@ -33,7 +33,7 @@ public:
     {
     }
     /** @brief construct with control point */
-    ZFCurve(
+    ZFBezier(
             ZF_IN zffloat p0x
             , ZF_IN zffloat p0y
             , ZF_IN zffloat p1x
@@ -42,7 +42,7 @@ public:
         this->controlPoint(p0x, p0y, p1x, p1y);
     }
     /** @cond ZFPrivateDoc */
-    ZFCurve &operator = (ZF_IN const ZFCurve &ref) {
+    ZFBezier &operator = (ZF_IN const ZFBezier &ref) {
         this->p0x = ref.p0x;
         this->p0y = ref.p0y;
         this->p1x = ref.p1x;
@@ -55,19 +55,19 @@ public:
         this->cy = ref.cy;
         return *this;
     }
-    zfbool operator == (ZF_IN const ZFCurve &ref) const {
+    zfbool operator == (ZF_IN const ZFBezier &ref) const {
         return (this->p0x == ref.p0x
             && this->p0y == ref.p0y
             && this->p1x == ref.p1x
             && this->p1y == ref.p1y
             );
     }
-    inline zfbool operator != (ZF_IN const ZFCurve &ref) const {return !this->operator == (ref);}
+    inline zfbool operator != (ZF_IN const ZFBezier &ref) const {return !this->operator == (ref);}
     /** @endcond */
 
 public:
     /** @brief change control point */
-    ZFCurve &controlPoint(
+    ZFBezier &controlPoint(
             ZF_IN zffloat p0x
             , ZF_IN zffloat p0y
             , ZF_IN zffloat p1x
@@ -136,35 +136,35 @@ private:
 /**
  * @brief linear curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveZero)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierZero)
 /**
  * @brief linear curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveLinear)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierLinear)
 /**
  * @brief ease in curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveEaseIn)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierEaseIn)
 /**
  * @brief ease out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveEaseOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierEaseOut)
 /**
  * @brief ease in out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveEaseInOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierEaseInOut)
 /**
  * @brief bounce in curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceIn)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBounceIn)
 /**
  * @brief bounce out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBounceOut)
 /**
  * @brief bounce in out curve
  */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceInOut)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezierBounceInOut)
 
 // ============================================================
 /**
@@ -172,7 +172,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceInOut)
  *
  * serializable data:
  * @code
- *   <ZFCurve
+ *   <ZFBezier
  *       p0x="0" // optional, 0 by default
  *       p0y="0" // optional, 0 by default
  *       p1x="1" // optional, 1 by default
@@ -185,20 +185,20 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurveBounceInOut)
  *   (p0x, p0y, p1x, p1y)
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFCurve, ZFCurve)
+ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFBezier, ZFBezier)
 
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFCurve_p0x "p0x"
+#define ZFSerializableKeyword_ZFBezier_p0x "p0x"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFCurve_p0y "p0y"
+#define ZFSerializableKeyword_ZFBezier_p0y "p0y"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFCurve_p1x "p1x"
+#define ZFSerializableKeyword_ZFBezier_p1x "p1x"
 /** @brief keyword for serialize */
-#define ZFSerializableKeyword_ZFCurve_p1y "p1y"
+#define ZFSerializableKeyword_ZFBezier_p1y "p1y"
 
 // ============================================================
-ZFOUTPUT_TYPE(ZFCurve, {ZFCurveToStringT(s, v);})
+ZFOUTPUT_TYPE(ZFBezier, {ZFBezierToStringT(s, v);})
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFCurve_h_
+#endif // #ifndef _ZFI_ZFBezier_h_
 
