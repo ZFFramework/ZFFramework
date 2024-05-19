@@ -18,14 +18,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define ZFTypeId_none() ""
 
 // ============================================================
-/** @brief class prefix for subclass of #ZFTypeIdWrapper */
-#define ZFTypeIdWrapperPrefix v_
-/** @brief see #ZFTypeIdWrapperPrefix */
-#define ZFTypeIdWrapperPrefixName "v_"
-/** @brief see #ZFTypeIdWrapperPrefix */
-#define ZFTypeIdWrapperPrefixNameLen 2 // zfslen("v_")
-
-// ============================================================
 zfclassFwd ZFSerializableData;
 /**
  * @brief base protocol for #ZFTypeId
@@ -185,6 +177,10 @@ public:
      *   public:
      *       YourType zfv;
      *   };
+     *
+     *   // this should return "YourType" instead of "v_YourType"
+     *   // see ZFClass::classForName for more info
+     *   const zfchar *clsName = v_YourType::ClassData()->className();
      * @endcode
      * \n
      * this method may or may not access the original value\n

@@ -169,14 +169,7 @@ void ZFImpl_ZFLua_implSetupScope(
         if(zfstringIsEmpty(scopeName)) {
             continue;
         }
-        if(zfsncmp(scopeName, ZFImpl_ZFLua_PropTypePrefix, ZFImpl_ZFLua_PropTypePrefixLen) == 0
-                && !zfstringIsEmpty(scopeName + ZFImpl_ZFLua_PropTypePrefixLen)
-                ) {
-            _ZFP_ZFImpl_ZFLua_implSetupScope(code, scopeName + ZFImpl_ZFLua_PropTypePrefixLen);
-        }
-        else {
-            _ZFP_ZFImpl_ZFLua_implSetupScope(code, scopeName);
-        }
+        _ZFP_ZFImpl_ZFLua_implSetupScope(code, scopeName);
         if(i != 0 && (i % 100) == 0) {
             for(zfindex iL = 0; iL < luaStateList.count(); ++iL) {
                 ZFImpl_ZFLua_execute(luaStateList[iL], code);

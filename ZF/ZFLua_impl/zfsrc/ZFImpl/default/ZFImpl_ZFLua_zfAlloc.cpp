@@ -50,7 +50,7 @@ static int _ZFP_ZFImpl_ZFLua_zfAlloc(ZF_IN lua_State *L) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfAlloc] unable to access class name");
     }
-    const ZFClass *cls = ZFDI_classForName(clsName, zfnull);
+    const ZFClass *cls = ZFClass::classForName(clsName, zfnull);
     if(cls == zfnull) {
         return ZFImpl_ZFLua_luaError(L,
             "[zfAlloc] unable to find class: %s", clsName);

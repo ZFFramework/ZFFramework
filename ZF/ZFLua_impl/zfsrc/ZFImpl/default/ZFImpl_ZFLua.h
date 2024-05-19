@@ -136,12 +136,6 @@ extern ZFLIB_ZFLua_impl void ZFImpl_ZFLua_implSetupMetatable(
         );
 
 // ============================================================
-/** @brief class prefix for #ZFTypeIdWrapper impl */
-#define ZFImpl_ZFLua_PropTypePrefix ZFTypeIdWrapperPrefixName
-/** @brief see #ZFImpl_ZFLua_PropTypePrefix */
-#define ZFImpl_ZFLua_PropTypePrefixLen ZFTypeIdWrapperPrefixNameLen
-
-// ============================================================
 /**
  * @brief run lua code, L must be first initialized by #ZFImpl_ZFLua_luaStateAttach
  *

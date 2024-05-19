@@ -62,7 +62,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  * a ZFSerializableData can hold these datas:
  * -  serializable class:
  *   ZFObject's class name or other non-ZFObject's type name,
- *   such as "v_zfstring", "zfstring" and "zfint"
+ *   such as "zfstring" and "zfint"
  * -  property name:
  *   used only when the serializable belongs to another serializable,
  *   it's the property name,

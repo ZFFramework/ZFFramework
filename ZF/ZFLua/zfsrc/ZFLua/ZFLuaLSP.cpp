@@ -186,17 +186,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
     }
 
     zfstring classSig = _ZFP_ZFLuaLSPGenFile_typeIdToSig(cls);
-    zfstring classNameFull;
-    if(zfsncmp(cls->className(), ZFTypeIdWrapperPrefixName, ZFTypeIdWrapperPrefixNameLen) == 0) {
-        if(!zfstringIsEmpty(cls->classNamespace())) {
-            classNameFull += cls->classNamespace();
-            classNameFull += ".";
-        }
-        classNameFull += cls->className() + ZFTypeIdWrapperPrefixNameLen;
-    }
-    else {
-        classNameFull += cls->classNameFull();
-    }
+    const zfchar *classNameFull = cls->classNameFull();
 
     /* class
         NS.v_Cls = {}

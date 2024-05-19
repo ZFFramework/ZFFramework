@@ -91,6 +91,7 @@ public:
      *   or full format ("Scope0.Scope1.MyObject"),
      *   while in simple format,
      *   the class must be placed in global scope (#ZF_NAMESPACE_GLOBAL)
+     * @note for #ZFTypeIdWrapper, the class name would be "YourType" instead of "v_YourType"
      */
     static const ZFClass *classForName(ZF_IN const zfchar *classNameOrFullName);
     /**

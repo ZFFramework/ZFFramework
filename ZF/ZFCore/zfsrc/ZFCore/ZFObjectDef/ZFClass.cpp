@@ -1213,6 +1213,10 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         classNamespace = outer->classNameFull();
     }
 
+    if(zfsncmp(className, "v_", 2) == 0) {
+        className += 2;
+    }
+
     // method data holder is required during _ZFP_ZFClassUnregister,
     // access here to ensure init order
     _ZFP_ZFMethodDataHolderInit();

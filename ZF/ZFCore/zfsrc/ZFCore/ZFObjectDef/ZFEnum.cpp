@@ -85,14 +85,7 @@ void ZFEnum::objectInfoT(ZF_IN_OUT zfstring &ret) {
         ret += this->classData()->classNamespace();
         ret += ZFNamespaceSeparator();
     }
-    if(this->enumIsFlags()
-            && zfsncmp(this->classData()->className(), ZFTypeIdWrapperPrefixName, ZFTypeIdWrapperPrefixNameLen) == 0
-            ) {
-        ret += this->classData()->className() + ZFTypeIdWrapperPrefixNameLen;
-    }
-    else {
-        ret += this->classData()->className();
-    }
+    ret += this->classData()->className();
     ret += "::";
     if(this->enumValue() == ZFEnumInvalid()) {
         ret += ZFEnumNameInvalid();

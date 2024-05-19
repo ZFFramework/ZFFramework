@@ -106,18 +106,6 @@ protected:
 extern ZFLIB_ZFCore const zfchar *ZFDI_toString(ZF_IN ZFObject *obj);
 
 /**
- * @brief util method to find class as well as type id wrapper class
- *
- * we will try to find class by #ZFClass::classForName,
- * if unable to find,
- * we will append #ZFTypeIdWrapperPrefixName to find again, e.g.
- * "ClassName" to "v_ClassName" or "NS.ClassName" to "NS.v_ClassName"
- */
-extern ZFLIB_ZFCore const ZFClass *ZFDI_classForName(
-        ZF_IN const zfchar *className
-        , ZF_IN_OPT const zfchar *NS = zfnull
-        );
-/**
  * @brief util to print param info
  *
  * output format:
@@ -207,7 +195,7 @@ extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
 /**
  * @brief perform advanced dynamic class alloc
  *
- * use #ZFDI_classForName to find class,
+ * use #ZFClass::classForName to find class,
  * for the params, see #ZFDI_invoke for more info
  */
 extern ZFLIB_ZFCore zfbool ZFDI_alloc(ZF_OUT zfauto &ret

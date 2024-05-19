@@ -21,9 +21,6 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
 // ============================================================
 static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
 
-typedef zfstlhashmap<zfstring, const ZFClass *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_ClassMapCache;
-static _ZFP_ZFDI_ClassMapCache _ZFP_ZFDI_classMapCache;
-
 typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
 static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
@@ -45,10 +42,6 @@ private:
     ZFListener classDataChangeListener;
     static void classDataChange(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
-        const ZFClassDataChangeData &changed = zfargs.param0().zfv();
-        if(changed.changedClass != zfnull) {
-            _ZFP_ZFDI_classMapCache.clear();
-        }
         _ZFP_ZFDI_methodMapCache.clear();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
@@ -114,46 +107,6 @@ const zfchar *ZFDI_toString(ZF_IN ZFObject *obj) {
         }
     }
     return zfnull;
-}
-
-const ZFClass *ZFDI_classForName(
-        ZF_IN const zfchar *className
-        , ZF_IN_OPT const zfchar *NS /* = zfnull */
-        ) {
-    if(className == zfnull) {
-        return zfnull;
-    }
-    zfstring key;
-    key += className;
-    if(NS != zfnull) {
-        key += ":";
-        key += NS;
-    }
-    _ZFP_ZFDI_ClassMapCache::iterator it = _ZFP_ZFDI_classMapCache.find(key);
-    if(it != _ZFP_ZFDI_classMapCache.end()) {
-        return it->second;
-    }
-
-    const ZFClass *cls = ZFClass::classForName(className, NS);
-    if(cls == zfnull) {
-        zfindex dotPos = zfstringFindReversely(className, zfindexMax(), ZFNamespaceSeparator(), ZFNamespaceSeparatorLen());
-        if(dotPos == zfindexMax()) {
-            zfstring classNameTmp;
-            classNameTmp += ZFTypeIdWrapperPrefixName;
-            classNameTmp += className;
-            cls = ZFClass::classForName(classNameTmp, NS);
-        }
-        else {
-            zfstring classNameTmp;
-            classNameTmp.append(className, dotPos + ZFNamespaceSeparatorLen());
-            classNameTmp += ZFTypeIdWrapperPrefixName;
-            classNameTmp += className + dotPos + ZFNamespaceSeparatorLen();
-            cls = ZFClass::classForName(classNameTmp, NS);
-        }
-    }
-
-    _ZFP_ZFDI_classMapCache[key] = cls;
-    return cls;
 }
 
 static void _ZFP_ZFDI_paramInfo(
@@ -299,7 +252,7 @@ zfbool ZFDI_invoke(
 
         // ClassName()
         // v_ClassName()
-        const ZFClass *cls = ZFDI_classForName(name, zfnull);
+        const ZFClass *cls = ZFClass::classForName(name, zfnull);
         if(cls != zfnull) {
             return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
                 || _ZFP_ZFDI_errorOccurred();
@@ -317,7 +270,7 @@ zfbool ZFDI_invoke(
         // NS.v_ClassName()
         // NS.ClassName.InnerClassName()
         {
-            const ZFClass *cls = ZFDI_classForName(name, zfnull);
+            const ZFClass *cls = ZFClass::classForName(name, zfnull);
             if(cls != zfnull) {
                 return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
                     || _ZFP_ZFDI_errorOccurred();
@@ -327,7 +280,7 @@ zfbool ZFDI_invoke(
         // NS.ClassName.methodName()
         // NS.v_ClassName.methodName()
         {
-            const ZFClass *cls = ZFDI_classForName(scopeTmp, zfnull);
+            const ZFClass *cls = ZFClass::classForName(scopeTmp, zfnull);
             if(cls != zfnull) {
                 cls->methodForNameGetAllT(methodList, nameTmp);
                 return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
@@ -657,7 +610,7 @@ zfbool ZFDI_objectFromString(
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
-    const ZFClass *cls = ZFDI_classForName(typeId);
+    const ZFClass *cls = ZFClass::classForName(typeId);
     if(cls == zfnull) {
         zfstringAppend(errorHint, "no such type \"%s\"",
             typeId);
