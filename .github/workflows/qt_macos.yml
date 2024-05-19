@@ -25,7 +25,7 @@ jobs:
         host: mac
         target: desktop
         modules: qtwebengine
-        version: 5.15.16
+        version: 6.5.3 # https://bugreports.qt.io/browse/QTBUG-117225
 
     - name: ZFSetup
       run: |
