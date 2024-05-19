@@ -25,6 +25,7 @@ jobs:
         host: mac
         target: desktop
         modules: qtwebengine
+        version: 5.15.16
 
     - name: ZFSetup
       run: |
