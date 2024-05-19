@@ -231,13 +231,13 @@ void _ZFP_zfstringAppend(
             continue;
         }
         if(!flags.hasFlag()) {
-            _ZFP_zfstringAppendAction(s, flags, p, paramIndex < paramCount ? param[paramIndex] : "");
+            _ZFP_zfstringAppendAction(s, flags, p, paramIndex < paramCount ? param[paramIndex].cString() : "");
             ++paramIndex;
             continue;
         }
 
         zfstring tmp;
-        _ZFP_zfstringAppendAction(tmp, flags, p, paramIndex < paramCount ? param[paramIndex] : "");
+        _ZFP_zfstringAppendAction(tmp, flags, p, paramIndex < paramCount ? param[paramIndex].cString() : "");
         ++paramIndex;
 
         if(flags.precision != zfindexMax()) {

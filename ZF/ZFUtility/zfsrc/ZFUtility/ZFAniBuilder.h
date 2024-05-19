@@ -33,7 +33,7 @@ zfclassFwd _ZFP_ZFAniBuilderPrivate;
  *
  * see also #ZFAni
  */
-zffinal zfclassLikePOD ZFAniBuilder {
+zffinal zfclassLikePOD ZFLIB_ZFUtility ZFAniBuilder {
 public:
     /** @brief see #ZFAniBuilder */
     const ZFAniBuilder &ani(

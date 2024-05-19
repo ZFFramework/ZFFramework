@@ -2,29 +2,44 @@
 #include "ZFCore/protocol/ZFProtocolZFObjectMutex.h"
 
 #if ZF_ENV_sys_Qt
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
 #include <QMutex>
+#else
+#include <QRecursiveMutex>
+#endif
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 zfclassNotPOD _ZFP_ZFObjectMutexImpl_sys_Qt {
 public:
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    typedef QMutex Mutex;
+#else
+    typedef QRecursiveMutex Mutex;
+#endif
+public:
     static void *implInit(void) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
         return zfnew(QMutex, QMutex::Recursive);
+#else
+        return zfnew(QRecursiveMutex);
+#endif
     }
     static void implDealloc(ZF_IN void *implObject) {
-        QMutex *mutex = (QMutex *)implObject;
+        Mutex *mutex = (Mutex *)implObject;
         zfdelete(mutex);
     }
     static void implLock(ZF_IN void *implObject) {
-        QMutex *mutex = (QMutex *)implObject;
+        Mutex *mutex = (Mutex *)implObject;
         mutex->lock();
     }
     static void implUnlock(ZF_IN void *implObject) {
-        QMutex *mutex = (QMutex *)implObject;
+        Mutex *mutex = (Mutex *)implObject;
         mutex->unlock();
     }
     static zfbool implTryLock(ZF_IN void *implObject) {
-        QMutex *mutex = (QMutex *)implObject;
+        Mutex *mutex = (Mutex *)implObject;
         return mutex->tryLock();
     }
 };
