@@ -219,7 +219,7 @@ ZFMETHOD_DEFINE_2(ZFUIButtonGroup, void, buttonAdd
         zfCoreCriticalIndexOutOfRange(atIndex, this->buttonCount());
         return;
     }
-    this->_ZFP_buttons->add(atIndex, button);
+    this->_ZFP_buttons->add(button, atIndex);
     _ZFP_ZFUIButtonGroup_setup(this, button, atIndex);
     this->buttonOnAdd(button, atIndex);
 }

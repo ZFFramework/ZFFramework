@@ -369,11 +369,11 @@ void _ZFP_ZFUIAutoLayoutPrivate::updateChain(
         if(ruleListNext[posTail].pos() != ZFUIAutoLayoutPos::e_None && this->targetForLayout(ruleListNext[posTail], parent) == childPrev) {
             if(!centerChildHasAdd) {
                 centerChildHasAdd = zftrue;
-                chain.add(0, parent->childArray().find(childPrev));
+                chain.add(parent->childArray().find(childPrev), 0);
             }
             childPrev = target;
             ruleListCur = ruleListNext;
-            chain.add(0, parent->childArray().find(childPrev));
+            chain.add(parent->childArray().find(childPrev), 0);
         }
         else {
             break;

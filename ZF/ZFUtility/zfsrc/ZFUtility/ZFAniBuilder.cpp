@@ -1,5 +1,5 @@
 #include "ZFAniBuilder.h"
-#include "ZFAnimationGroup.h"
+#include "ZFAniGroup.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -9,35 +9,34 @@ public:
     zfuint refCount;
     zftimet aniInterval;
     ZFObjectHolder *aniTargetHolder;
-    ZFAnimationGroup *aniGroup;
-    ZFAnimationGroup *aniStep;
+    ZFAniQueue *aniQueue;
+    ZFAniGroup *aniStep;
 public:
     _ZFP_ZFAniBuilderPrivate(void)
     : refCount(1)
     , aniInterval(0)
     , aniTargetHolder(zfnull)
-    , aniGroup(zfnull)
+    , aniQueue(zfnull)
     , aniStep(zfnull)
     {
-        this->aniGroup = zfAlloc(ZFAnimationGroup);
-        this->aniGroup->aniParallel(zffalse);
+        this->aniQueue = zfAlloc(ZFAniQueue);
     }
     ~_ZFP_ZFAniBuilderPrivate(void) {
         this->aniStepCommit();
         zfRetainChange(this->aniStep, zfnull);
-        zfRetainChange(this->aniGroup, zfnull);
+        zfRetainChange(this->aniQueue, zfnull);
         zfRetainChange(this->aniTargetHolder, zfnull);
     }
 public:
     void aniStepPrepare(void) {
         if(this->aniStep == zfnull) {
-            this->aniStep = zfAlloc(ZFAnimationGroup);
+            this->aniStep = zfAlloc(ZFAniGroup);
         }
     }
     void aniStepCommit(ZF_IN_OPT const ZFListener &cb = ZFListener()) {
         if(this->aniStep != zfnull) {
             this->aniStep->observerAddForOnce(ZFAnimation::EventAniOnStopOrInvalid(), cb);
-            this->aniGroup->childAniAdd(this->aniStep);
+            this->aniQueue->ani(this->aniStep);
             zfRetainChange(this->aniStep, zfnull);
         }
     }
@@ -55,7 +54,7 @@ const ZFAniBuilder &ZFAniBuilder::ani(
     if(ani != zfnull) {
         ani->aniInterval(this->aniInterval());
         d->aniStepPrepare();
-        d->aniStep->childAniAdd(ani);
+        d->aniStep->ani(ani);
         ani->aniDuration(aniDuration);
         ani->aniCurve(aniCurve);
     }
@@ -71,7 +70,7 @@ const ZFAniBuilder &ZFAniBuilder::customAni(
     if(ani != zfnull) {
         ani->aniInterval(this->aniInterval());
         d->aniStepPrepare();
-        d->aniStep->childAniAdd(ani);
+        d->aniStep->ani(ani);
         ani->aniDuration(aniDuration);
         ani->aniCurve(aniCurve);
     }
@@ -83,7 +82,7 @@ const ZFAniBuilder &ZFAniBuilder::wait(ZF_IN zftimet waitTime) const {
     zfobj<ZFAnimation> ani;
     ani->aniDuration(waitTime);
     d->aniStepPrepare();
-    d->aniStep->childAniAdd(ani);
+    d->aniStep->ani(ani);
     d->aniStepCommit();
     return *this;
 }
@@ -109,13 +108,13 @@ const ZFAniBuilder &ZFAniBuilder::aniOnEvent(
         ZF_IN zfidentity aniEvent
         , ZF_IN const ZFListener &cb
         ) const {
-    d->aniGroup->observerAdd(aniEvent, cb);
+    d->aniQueue->observerAdd(aniEvent, cb);
     return *this;
 }
 
 const ZFAniBuilder &ZFAniBuilder::aniStart(void) const {
     d->aniStepCommit();
-    d->aniGroup->aniStart();
+    d->aniQueue->aniStart();
     return *this;
 }
 const ZFAniBuilder &ZFAniBuilder::aniStart(ZF_IN const ZFListener &onStopOrOnInvalidCallback) const {
@@ -132,7 +131,7 @@ const ZFAniBuilder &ZFAniBuilder::aniTarget(ZF_IN zfany aniTarget) const {
     return *this;
 }
 zfautoT<ZFAnimation> ZFAniBuilder::toAnimation(void) const {
-    return d->aniGroup;
+    return d->aniQueue;
 }
 
 ZFAniBuilder::ZFAniBuilder(ZF_IN_OPT ZFObject *aniTarget /* = zfnull */) {
@@ -230,8 +229,8 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFAniBuilder, zfautoT<ZFAnimation>, 
 
 void ZFAniBuilder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += "ZFAniBuilder:";
-    if(d->aniGroup != zfnull) {
-        d->aniGroup->objectInfoT(ret);
+    if(d->aniQueue != zfnull) {
+        d->aniQueue->objectInfoT(ret);
     }
     else {
         ret += ZFTOKEN_zfnull;

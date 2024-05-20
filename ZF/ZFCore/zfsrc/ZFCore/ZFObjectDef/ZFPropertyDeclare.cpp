@@ -63,7 +63,7 @@ void _ZFP_ZFPropertyLifeCycleRegister(
     _ZFP_PropLifeCycleData data;
     data.propertyOwnerClass = propertyOwnerClass;
     data.propertyLifeCycleWrapper = propertyLifeCycleWrapper;
-    d.add(index, data);
+    d.add(data, index);
 }
 void _ZFP_ZFPropertyLifeCycleUnregister(
         ZF_IN const zfchar *lifeCycleName

@@ -30,7 +30,7 @@ void ZFImpl_sys_SDL_View::childAttach(
         ZF_IN zfindex index
         , ZF_IN ZFImpl_sys_SDL_View *child
         ) {
-    this->children.add(index, child);
+    this->children.add(child, index);
     child->parent = this;
     if(this->sysWindow != zfnull) {
         child->sysWindowAttach(sysWindow);

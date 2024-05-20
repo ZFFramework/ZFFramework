@@ -365,8 +365,8 @@ public:
         this->elementType->genericAccessFinish(t, v);
     }
     void add(
-            ZF_IN zfindex index
-            , ZF_IN ZFObject *e
+            ZF_IN ZFObject *e
+            , ZF_IN zfindex index
             ) {
         zfauto t = _ZFP_elementTypeCheck(e);
         if(!t) {
@@ -382,7 +382,7 @@ public:
                 , this->elementType ? this->elementType->typeId() : zfnull
                 , e ? e->classData()->classNameFull() : zfnull
                 );
-        this->zfv->genericAdd(index, v);
+        this->zfv->genericAdd(v, index);
         this->elementType->genericAccessFinish(t, v);
     }
     void addFrom(ZF_IN v_ZFCoreArray *ref) {

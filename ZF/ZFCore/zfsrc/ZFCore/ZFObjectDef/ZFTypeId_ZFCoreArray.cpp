@@ -276,8 +276,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, add
         , ZFMP_IN(ZFObject *, e)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(v_ZFCoreArray, void, add
-        , ZFMP_IN(zfindex, index)
         , ZFMP_IN(ZFObject *, e)
+        , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, addFrom
         , ZFMP_IN(v_ZFCoreArray *, ref)

@@ -76,8 +76,8 @@ public:
      * @note null object is not allowed, use #ZFNull if necessary
      */
     ZFMETHOD_DECLARE_2(void, add
-            , ZFMP_IN(zfindex, indexAddTo)
             , ZFMP_IN(ZFObject *, obj)
+            , ZFMP_IN(zfindex, indexAddTo)
             )
     /**
      * @brief insert object to last, assert failure if obj = zfnull, see #add

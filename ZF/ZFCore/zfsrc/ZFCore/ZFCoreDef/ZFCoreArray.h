@@ -276,8 +276,8 @@ public:
     virtual void genericAdd(ZF_IN const void *e) zfpurevirtual;
     /** @brief generic version */
     virtual void genericAdd(
-            ZF_IN zfindex index
-            , ZF_IN const void *e
+            ZF_IN const void *e
+            , ZF_IN zfindex index
             ) zfpurevirtual;
     /** @brief generic version */
     virtual void genericAddFrom(
@@ -496,8 +496,8 @@ public:
      * @brief add element at index
      */
     void add(
-            ZF_IN zfindex index
-            , ZF_IN T_Element const &e
+            ZF_IN T_Element const &e
+            , ZF_IN zfindex index
             ) {
         if(index > this->count()) {
             zfCoreCriticalIndexOutOfRange(index, this->count() + 1);
@@ -939,9 +939,9 @@ public:
     virtual void genericAdd(ZF_IN const void *e) {this->add(*(const T_Element *)e);}
     zfoverride
     virtual void genericAdd(
-            ZF_IN zfindex index
-            , ZF_IN const void *e
-            ) {this->add(index, *(const T_Element *)e);}
+            ZF_IN const void *e
+            , ZF_IN zfindex index
+            ) {this->add(*(const T_Element *)e, index);}
     zfoverride
     virtual void genericAddFrom(
             ZF_IN const void *e

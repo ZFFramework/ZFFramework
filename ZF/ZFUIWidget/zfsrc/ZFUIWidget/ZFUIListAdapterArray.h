@@ -65,10 +65,10 @@ public:
      * @brief add cell at index
      */
     ZFMETHOD_INLINE_2(void, cellAdd
-            , ZFMP_IN(zfindex, index)
             , ZFMP_IN(ZFUIListCell *, cell)
+            , ZFMP_IN(zfindex, index)
             ) {
-        d->add(index, cell);
+        d->add(cell, index);
     }
     /**
      * @brief remove cell

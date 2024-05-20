@@ -307,7 +307,7 @@ public:
         if(atIndex == zfindexMax()) {
             atIndex = layer.views.count();
         }
-        layer.views.add(atIndex, view);
+        layer.views.add(view, atIndex);
         owner->implChildOnAdd(view, this->viewLayerPrevCount(layer) + atIndex, childLayer, atIndex);
 
         owner->layoutRequest();

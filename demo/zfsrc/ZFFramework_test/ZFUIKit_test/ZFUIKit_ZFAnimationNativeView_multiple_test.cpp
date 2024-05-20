@@ -25,16 +25,16 @@ protected:
         ZFLISTENER_1(startOnClick
                 , ZFUIView *, view
                 ) {
-            zfobj<ZFAnimationGroup> aniGroup;
+            zfobj<ZFAniGroup> aniGroup;
             aniGroup->aniTarget(view);
 
             zfobj<ZFAnimationNativeView> ani0;
-            aniGroup->childAniAdd(ani0);
+            aniGroup->ani(ani0);
             ani0->aniTranslateXTo(1);
             ani0->aniDuration(3000);
 
             zfobj<ZFAnimationNativeView> ani1;
-            aniGroup->childAniAdd(ani1);
+            aniGroup->ani(ani1);
             ani1->aniRotateZTo(180);
             ani1->aniDuration(3000);
 

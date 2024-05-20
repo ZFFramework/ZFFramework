@@ -93,8 +93,8 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, findReversely
     return zfindexMax();
 }
 ZFMETHOD_DEFINE_2(ZFArray, void, add
-        , ZFMP_IN(zfindex, indexAddTo)
         , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN(zfindex, indexAddTo)
         ) {
     zfCoreAssertWithMessage(obj != zfnull, "insert null object");
     zfRetain(obj);
@@ -492,7 +492,7 @@ ZFMETHOD_DEFINE_2(ZFArray, void, iterAdd
         ) {
     zfindex *index = it.data<zfindex *>();
     if(index != zfnull && *index < d->data.size()) {
-        this->add((*index)++, value);
+        this->add(value, (*index)++);
     }
     else {
         this->add(value);

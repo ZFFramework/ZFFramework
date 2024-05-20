@@ -98,7 +98,7 @@ void ZFImpl_sys_Qt_BaseLayout::childAdd(
     else {
         this->addChildLayoutItem(item);
         item->stackBefore(this->children[index]);
-        this->children.add(index, item);
+        this->children.add(item, index);
     }
     this->invalidate();
 }

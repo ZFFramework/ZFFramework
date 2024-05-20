@@ -325,7 +325,7 @@ public:
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
-                        this->listVisibleCell.add(0, cellNew);
+                        this->listVisibleCell.add(cellNew, 0);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
                         this->childAdd(cellNew, 0);
@@ -385,7 +385,7 @@ public:
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
-                        this->listVisibleCell.add(0, cellNew);
+                        this->listVisibleCell.add(cellNew, 0);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
                         this->childAdd(cellNew, 0);
@@ -445,7 +445,7 @@ public:
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
-                        this->listVisibleCell.add(0, cellNew);
+                        this->listVisibleCell.add(cellNew, 0);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
                         this->childAdd(cellNew, 0);
@@ -499,7 +499,7 @@ public:
                             sizeDelta += cellSizeNew - this->cellSizeList[index];
                             this->cellSizeList[index] = cellSizeNew;
                         }
-                        this->listVisibleCell.add(0, cellNew);
+                        this->listVisibleCell.add(cellNew, 0);
                         this->listVisibleCellIndexRange.start = index;
                         ++(this->listVisibleCellIndexRange.count);
                         this->childAdd(cellNew, 0);

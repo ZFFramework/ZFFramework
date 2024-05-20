@@ -184,12 +184,7 @@ void ZFUIViewTreePrintInfoGetterForClass(
     _ZFP_ZFUIViewTreePrintData data;
     data.viewClass = viewClass;
     data.viewInfoGetter = viewInfoGetter;
-    if(indexAddTo == zfindexMax()) {
-        datas.add(data);
-    }
-    else {
-        datas.add(indexAddTo, data);
-    }
+    datas.add(data, indexAddTo);
 }
 ZFUIViewTreePrintInfoGetter ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass) {
     ZFCoreArray<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
