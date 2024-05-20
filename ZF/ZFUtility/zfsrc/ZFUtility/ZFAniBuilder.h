@@ -17,13 +17,16 @@ zfclassFwd _ZFP_ZFAniBuilderPrivate;
  * @code
  *   ZFAniBuilder(target)
  *       .ani("prop0", from0, to0, duration, curve) // ani run in group 1
+ *       .loop(2)                                   // loop 2 for group 1
  *
  *       .wait(waitTime)                            // wait before next ani group
  *
  *       .ani("prop1", from1, to1)                  // ani run in group 2
  *       .ani("prop2", from2, to2)                  // ani run in group 2
+ *       .loop(2)                                   // loop 2 for group 2
  *       .step(callback)                            // commit group 2
  *
+ *       .loop(2)                                   // loop 2 for group 3
  *       .customAni(aniImpl)                        // custom ani, run in group 3
  *
  *       .aniOnStart(callback)                      // attach observers
@@ -60,6 +63,8 @@ public:
     const ZFAniBuilder &wait(ZF_IN zftimet waitTime) const;
     /** @brief see #ZFAniBuilder */
     const ZFAniBuilder &step(ZF_IN_OPT const ZFListener &cb = ZFListener()) const;
+    /** @brief see #ZFAniBuilder */
+    const ZFAniBuilder &loop(ZF_IN zfindex aniLoop) const;
 
 public:
     /** @brief see #ZFAnimationTimeLine::aniInterval */

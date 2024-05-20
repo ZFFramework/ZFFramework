@@ -57,17 +57,6 @@ public:
     {
     }
 public:
-    void cleanup(void) {
-        this->valueSavedRestore();
-        _aniTarget = zfnull;
-        _setterMethod = zfnull;
-        _getterMethod = zfnull;
-        _valueSaved = zfnull;
-        _valueHolder = zfnull;
-        _from = zfnull;
-        _to = zfnull;
-        _typeInfo = zfnull;
-    }
     zfbool checkSetup(
             ZF_IN ZFObject *aniTarget
             , ZF_IN const zfchar *name
@@ -260,7 +249,7 @@ void ZFAniForGeneric::aniOnStart(void) {
     d->valueSavedUpdate();
 }
 void ZFAniForGeneric::aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
-    d->cleanup();
+    d->valueSavedRestore();
     zfsuper::aniOnStopOrInvalid(aniValid);
 }
 void ZFAniForGeneric::aniTimeLineOnUpdate(ZF_IN zffloat progress) {

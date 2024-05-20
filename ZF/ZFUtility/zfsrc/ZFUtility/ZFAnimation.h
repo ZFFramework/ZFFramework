@@ -49,6 +49,13 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
+     * called when animation looped,
+     * current loop count can be accessed by #aniLoopCur
+     */
+    ZFEVENT(AniOnLoop)
+    /**
+     * @brief see #ZFObject::observerNotify
+     *
      * called when animation stopped
      */
     ZFEVENT(AniOnStop)
@@ -81,6 +88,13 @@ public:
      *   false by default
      */
     ZFPROPERTY_ASSIGN(zfbool, aniAutoStopPrev)
+
+    /**
+     * @brief loop count, 0 by default
+     *
+     * 0 mean no loop, use #zfindexMax for infinite loop
+     */
+    ZFPROPERTY_ASSIGN(zfindex, aniLoop)
 
 public:
     /**
@@ -135,11 +149,17 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfidentity, aniId)
 
-public:
     /**
      * @brief check whether animation is valid, see #aniImplCheckValid
      */
     ZFMETHOD_DECLARE_0(zfbool, aniValid)
+
+    /**
+     * @brief current loop count, 0 for first time
+     *
+     * reset when #aniStart, see #aniLoop for more info
+     */
+    ZFMETHOD_DECLARE_0(zfindex, aniLoopCur)
 
 protected:
     /** @brief called when #aniTarget changed */
@@ -156,7 +176,7 @@ protected:
     }
 
 public:
-    zffinal void _ZFP_ZFAnimation_aniImplDelayNotifyFinish(ZF_IN zfidentity taskId);
+    zffinal void _ZFP_ZFAnimation_aniImplDelayNotifyFinish(void);
     zffinal void _ZFP_ZFAnimation_aniReadyStart(void);
     zffinal void _ZFP_ZFAnimation_aniReadyStop(void);
     zffinal void _ZFP_ZFAnimation_aniDummyNotifyStop(void);
@@ -199,6 +219,10 @@ protected:
     /** @brief see #EventAniOnStart */
     virtual inline void aniOnStart(void) {
         this->observerNotify(ZFAnimation::EventAniOnStart());
+    }
+    /** @brief see #EventAniOnLoop */
+    virtual inline void aniOnLoop(void) {
+        this->observerNotify(ZFAnimation::EventAniOnLoop());
     }
     /** @brief see #EventAniOnStop */
     virtual inline void aniOnStop(void) {

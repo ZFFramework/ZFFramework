@@ -91,6 +91,11 @@ const ZFAniBuilder &ZFAniBuilder::step(ZF_IN_OPT const ZFListener &cb /* = ZFLis
     d->aniStepCommit(cb);
     return *this;
 }
+const ZFAniBuilder &ZFAniBuilder::loop(ZF_IN zfindex aniLoop) const {
+    d->aniStepPrepare();
+    d->aniStep->aniLoop(aniLoop);
+    return *this;
+}
 
 const ZFAniBuilder &ZFAniBuilder::aniInterval(ZF_IN const zftimet &v) const {
     d->aniInterval = v;
@@ -185,6 +190,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, 
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, step
         , ZFMP_IN_OPT(const ZFListener &, cb, ZFListener())
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, loop
+        , ZFMP_IN(zfindex, aniLoop)
         )
 
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFAniBuilder, const ZFAniBuilder &, aniInterval
