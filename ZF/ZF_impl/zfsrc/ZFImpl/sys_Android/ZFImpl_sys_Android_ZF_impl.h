@@ -217,14 +217,37 @@ public:
 #endif
 
 // ============================================================
+zfclassLikePOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_Android_String {
+public:
+    _ZFP_ZFImpl_sys_Android_String(void) : _jstr(NULL), _str(NULL) {
+    }
+    _ZFP_ZFImpl_sys_Android_String(ZF_IN jobject jstr)
+    : _jstr((jstring)jstr)
+    , _str(_jstr ? JNIUtilGetStringUTFChars(JNIGetJNIEnv(), _jstr, NULL) : NULL)
+    {
+    }
+    ~_ZFP_ZFImpl_sys_Android_String(void) {
+        if(_jstr && _str) {
+            JNIUtilReleaseStringUTFChars(JNIGetJNIEnv(), _jstr, _str);
+        }
+    }
+public:
+    operator const char * (void) const {
+        return _str;
+    }
+    operator zfstring (void) const {
+        return zfstring(_str);
+    }
+private:
+    jstring _jstr;
+    const char *_str;
+};
 extern ZFLIB_ZF_impl void ZFImpl_sys_Android_zfstringFromStringT(
         ZF_IN_OUT zfstring &s
         , ZF_IN jobject jstr
         );
-inline zfstring ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr) {
-    zfstring ret;
-    ZFImpl_sys_Android_zfstringFromStringT(ret, jstr);
-    return ret;
+inline _ZFP_ZFImpl_sys_Android_String ZFImpl_sys_Android_zfstringFromString(ZF_IN jobject jstr) {
+    return _ZFP_ZFImpl_sys_Android_String(jstr);
 }
 // note returned object must be deleted by DeleteLocalRef
 extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_zfstringToString(ZF_IN const zfchar *s);
