@@ -111,7 +111,7 @@ public:
                 this->hintAniShowOnStopListener = callback;
             }
             this->hintAnimating->observerAddForOnce(
-                ZFAnimation::EventAniOnStopOrInvalid(),
+                ZFAnimation::EventAniOnStop(),
                 this->hintAniShowOnStopListener);
             this->hintAnimating->aniTarget(this->pimplOwner->hintWindow());
             this->hintAnimating->aniStart();
@@ -160,7 +160,7 @@ public:
                 this->hintAniHideOnStopListener = callback;
             }
             this->hintAnimating->observerAddForOnce(
-                ZFAnimation::EventAniOnStopOrInvalid(),
+                ZFAnimation::EventAniOnStop(),
                 this->hintAniHideOnStopListener);
             this->hintAnimating->aniTarget(this->pimplOwner->hintWindow());
             this->hintAnimating->aniStart();
@@ -294,8 +294,8 @@ ZFMETHOD_DEFINE_0(ZFUIHint, void, hintHide) {
                 d->hintShowDelayTimer = zfnull;
             }
             if(d->hintAnimating != zfnull) {
-                d->hintAnimating->observerRemove(ZFAnimation::EventAniOnStopOrInvalid(), d->hintAniShowOnStopListener);
-                d->hintAnimating->observerRemove(ZFAnimation::EventAniOnStopOrInvalid(), d->hintAniHideOnStopListener);
+                d->hintAnimating->observerRemove(ZFAnimation::EventAniOnStop(), d->hintAniShowOnStopListener);
+                d->hintAnimating->observerRemove(ZFAnimation::EventAniOnStop(), d->hintAniHideOnStopListener);
                 ZFAnimation *hintAniTmp = d->hintAnimating;
                 d->hintAnimating = zfnull;
                 hintAniTmp->aniStop();

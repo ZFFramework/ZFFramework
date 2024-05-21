@@ -28,22 +28,23 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when start an invalid animation
+     * called when animation delay begin
      */
-    ZFEVENT(AniOnInvalid)
+    ZFEVENT(AniOnDelayBegin)
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when animation delay finished
+     * called when animation delay finished,
+     * param0 is a #ZFResultType to show the delay result
      */
-    ZFEVENT(AniOnDelayFinish)
+    ZFEVENT(AniOnDelayEnd)
     /**
      * @brief see #ZFObject::observerNotify
      *
      * called when animation started
      * @note for delayed animation,
      *   this event would be fired before delay,
-     *   use #EventAniOnDelayFinish if necessary
+     *   use #EventAniOnDelayEnd if necessary
      */
     ZFEVENT(AniOnStart)
     /**
@@ -56,17 +57,10 @@ public:
     /**
      * @brief see #ZFObject::observerNotify
      *
-     * called when animation stopped
+     * called when animation stopped or invalid,
+     * param0 is a #ZFResultType to show the result
      */
     ZFEVENT(AniOnStop)
-    /**
-     * @brief see #ZFObject::observerNotify
-     *
-     * called when animation stopped or invalid,
-     * designed for convenient,
-     * param0 is a #v_zfbool to show whether the animation is valid
-     */
-    ZFEVENT(AniOnStopOrInvalid)
 
     // ============================================================
     // property
@@ -105,7 +99,7 @@ public:
      * (although most animation subclass need a target)
      */
     ZFMETHOD_DECLARE_1(void, aniTarget
-            , ZFMP_IN(zfany, aniTarget)
+            , ZFMP_IN(ZFObject *, aniTarget)
             )
     /**
      * @brief animation's target
@@ -161,6 +155,28 @@ public:
      */
     ZFMETHOD_DECLARE_0(zfindex, aniLoopCur)
 
+public:
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, aniOnDelayBegin
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, aniOnDelayEnd
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, aniOnStart
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, aniOnLoop
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, aniOnStop
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+
 protected:
     /** @brief called when #aniTarget changed */
     virtual void aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {}
@@ -172,7 +188,7 @@ protected:
      * for common case, you should check whether the target is valid
      */
     virtual zfbool aniImplCheckValid(void) {
-        return (this->aniDurationFixed() > 0);
+        return zftrue;
     }
 
 public:
@@ -208,13 +224,13 @@ protected:
      * @brief for subclass to stop actual animation
      */
     virtual void aniImplStop(void);
-    /** @brief see #EventAniOnInvalid */
-    virtual inline void aniOnInvalid(void) {
-        this->observerNotify(ZFAnimation::EventAniOnInvalid());
+    /** @brief see #EventAniOnDelayBegin */
+    virtual inline void aniOnDelayBegin(void) {
+        this->observerNotify(ZFAnimation::EventAniOnDelayBegin());
     }
-    /** @brief see #EventAniOnDelayFinish */
-    virtual inline void aniOnDelayFinish(void) {
-        this->observerNotify(ZFAnimation::EventAniOnDelayFinish());
+    /** @brief see #EventAniOnDelayEnd */
+    virtual inline void aniOnDelayEnd(ZF_IN ZFResultTypeEnum resultType) {
+        this->observerNotify(ZFAnimation::EventAniOnDelayEnd(), zfobj<ZFResultType>(resultType));
     }
     /** @brief see #EventAniOnStart */
     virtual inline void aniOnStart(void) {
@@ -225,17 +241,19 @@ protected:
         this->observerNotify(ZFAnimation::EventAniOnLoop());
     }
     /** @brief see #EventAniOnStop */
-    virtual inline void aniOnStop(void) {
-        this->observerNotify(ZFAnimation::EventAniOnStop());
-    }
-    /** @brief see #EventAniOnStopOrInvalid */
-    virtual inline void aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
-        this->observerNotify(ZFAnimation::EventAniOnStopOrInvalid(), zfobj<v_zfbool>(aniValid));
+    virtual inline void aniOnStop(ZF_IN ZFResultTypeEnum resultType) {
+        this->observerNotify(ZFAnimation::EventAniOnStop(), zfobj<ZFResultType>(resultType));
     }
     /**
      * @brief subclass must notify after the animation stop
      */
-    zffinal void aniImplNotifyStop(void);
+    zffinal void aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType = ZFResultType::e_Success);
+
+protected:
+    /** @brief init with #aniTarget */
+    ZFOBJECT_ON_INIT_DECLARE_1(
+            ZFMP_IN(ZFObject *, aniTarget)
+            )
 
 protected:
     zfoverride

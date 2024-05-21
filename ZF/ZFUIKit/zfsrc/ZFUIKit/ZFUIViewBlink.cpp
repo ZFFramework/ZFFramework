@@ -150,7 +150,7 @@ static void _ZFP_ZFUIViewBlinkDoOn(
             ZFGlobalObserver().observerNotifyWithSender(view, ZFGlobalEvent::EventViewBlinkOff());
         } ZFLISTENER_END()
         view->observerAdd(ZFObject::EventObjectBeforeDealloc(), ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewBlinkDataHolder)->viewOnDeallocListener);
-        ani->observerAdd(ZFAnimation::EventAniOnStopOrInvalid(), aniOnStopListener);
+        ani->observerAdd(ZFAnimation::EventAniOnStop(), aniOnStopListener);
         ani->aniTarget(blinkView);
 
         ZFGlobalObserver().observerNotifyWithSender(view, ZFGlobalEvent::EventViewBlinkOn());

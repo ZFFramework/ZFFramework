@@ -18,6 +18,7 @@ public:
     ZFObjectHolder *aniTargetHolder;
     zfbool aniRunning;
     zfbool aniDelaying;
+    zfbool aniImplStartFlag;
     zfautoT<ZFTimer> aniDelayTimer;
     zfautoT<ZFTimer> aniDummyTimer;
     zfbool aniStoppedByUser;
@@ -29,6 +30,7 @@ public:
     : aniTargetHolder(zfnull)
     , aniRunning(zffalse)
     , aniDelaying(zffalse)
+    , aniImplStartFlag(zffalse)
     , aniDelayTimer()
     , aniDummyTimer()
     , aniStoppedByUser(zffalse)
@@ -41,19 +43,18 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFAnimation)
 
-ZFEVENT_REGISTER(ZFAnimation, AniOnInvalid)
-ZFEVENT_REGISTER(ZFAnimation, AniOnDelayFinish)
+ZFEVENT_REGISTER(ZFAnimation, AniOnDelayBegin)
+ZFEVENT_REGISTER(ZFAnimation, AniOnDelayEnd)
 ZFEVENT_REGISTER(ZFAnimation, AniOnStart)
 ZFEVENT_REGISTER(ZFAnimation, AniOnLoop)
 ZFEVENT_REGISTER(ZFAnimation, AniOnStop)
-ZFEVENT_REGISTER(ZFAnimation, AniOnStopOrInvalid)
 
 ZFMETHOD_DEFINE_0(ZFAnimation, zftimet, aniDurationFixed) {
     return (this->aniDuration() > 0 ? this->aniDuration() : ZFAnimationDurationDefault());
 }
 
 ZFMETHOD_DEFINE_1(ZFAnimation, void, aniTarget
-        , ZFMP_IN(zfany, aniTarget)
+        , ZFMP_IN(ZFObject *, aniTarget)
         ) {
     zfCoreAssertWithMessage(!d->aniRunning, "change animation's target while animation is running");
     ZFObjectHolder *aniTargetHolderTmp = d->aniTargetHolder;
@@ -71,9 +72,10 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStart) {
     this->_ZFP_ZFAnimation_aniReadyStart();
 
     d->aniStoppedByUser = zffalse;
+    d->aniLoopCur = 0;
     if(!this->aniValid()) {
-        this->aniOnInvalid();
-        this->aniOnStopOrInvalid(zffalse);
+        this->aniOnStart();
+        this->aniOnStop(ZFResultType::e_Fail);
         return;
     }
 
@@ -89,6 +91,7 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStart) {
         this->aniImplDelay();
     }
     else {
+        d->aniImplStartFlag = zftrue;
         this->aniImplStart();
     }
     this->aniOnStart();
@@ -109,10 +112,7 @@ ZFMETHOD_DEFINE_0(ZFAnimation, void, aniStop) {
         d->aniDelaying = zffalse;
         this->aniImplDelayCancel();
     }
-    else {
-        this->aniImplStop();
-    }
-    this->aniImplNotifyStop();
+    this->aniImplNotifyStop(ZFResultType::e_Cancel);
 }
 ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniStoppedByUser) {
     return d->aniStoppedByUser;
@@ -128,6 +128,32 @@ ZFMETHOD_DEFINE_0(ZFAnimation, zfbool, aniValid) {
 
 ZFMETHOD_DEFINE_0(ZFAnimation, zfindex, aniLoopCur) {
     return d->aniLoopCur;
+}
+
+ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnDelayBegin
+        , ZFMP_IN(const ZFListener &, cb)
+        ) {
+    this->observerAdd(zfself::EventAniOnDelayBegin(), cb);
+}
+ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnDelayEnd
+        , ZFMP_IN(const ZFListener &, cb)
+        ) {
+    this->observerAdd(zfself::EventAniOnDelayEnd(), cb);
+}
+ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStart
+        , ZFMP_IN(const ZFListener &, cb)
+        ) {
+    this->observerAdd(zfself::EventAniOnStart(), cb);
+}
+ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnLoop
+        , ZFMP_IN(const ZFListener &, cb)
+        ) {
+    this->observerAdd(zfself::EventAniOnLoop(), cb);
+}
+ZFMETHOD_DEFINE_1(ZFAnimation, void, aniOnStop
+        , ZFMP_IN(const ZFListener &, cb)
+        ) {
+    this->observerAdd(zfself::EventAniOnStop(), cb);
 }
 
 void ZFAnimation::_ZFP_ZFAnimation_aniImplDelayNotifyFinish() {
@@ -171,16 +197,20 @@ void ZFAnimation::aniImplDelay(void) {
     d->aniDelayTimer = ZFTimerOnce(
         this->aniDelay(),
         delayOnFinish);
+    this->aniOnDelayBegin();
 }
 void ZFAnimation::aniImplDelayCancel(void) {
     if(d->aniDelayTimer != zfnull) {
         d->aniDelayTimer->timerStop();
         d->aniDelayTimer = zfnull;
+        this->aniOnDelayEnd(ZFResultType::e_Cancel);
     }
 }
 void ZFAnimation::aniImplDelayNotifyFinish(void) {
     zfCoreAssertWithMessage(d->aniDelaying, "notify delay finish an animation which not delaying");
+    this->aniOnDelayEnd(ZFResultType::e_Success);
     d->aniDelaying = zffalse;
+    d->aniImplStartFlag = zftrue;
     this->aniImplStart();
 }
 
@@ -207,24 +237,40 @@ void ZFAnimation::aniImplStop(void) {
     }
 }
 
-void ZFAnimation::aniImplNotifyStop(void) {
-    zfCoreAssertWithMessage(d->aniRunning, "notify stop an animation which not started");
+void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = ZFResultType::e_Success */) {
+    zfCoreAssertWithMessage(d->aniRunning && d->aniImplStartFlag, "notify stop an animation which not started");
     this->_ZFP_ZFAnimation_aniReadyStop();
     ZFObject *aniTargetToRelease = this->aniTarget();
 
+    d->aniImplStartFlag = zffalse;
+    this->aniImplStop();
+
     ++(d->aniLoopCur);
     if(this->aniLoop() == zfindexMax() || d->aniLoopCur <= this->aniLoop()) {
-        this->aniImplStart();
         this->aniOnLoop();
+        if(this->aniDelay() > 0) {
+            d->aniDelaying = zftrue;
+            this->aniImplDelay();
+        }
+        else {
+            d->aniImplStartFlag = zftrue;
+            this->aniImplStart();
+        }
         return;
     }
 
     d->aniRunning = zffalse;
-    this->aniOnStop();
-    this->aniOnStopOrInvalid(zftrue);
+    this->aniOnStop(resultType);
 
     zfRelease(aniTargetToRelease);
     zfRelease(this);
+}
+
+ZFOBJECT_ON_INIT_DEFINE_1(ZFAnimation
+        , ZFMP_IN(ZFObject *, aniTarget)
+        ) {
+    this->objectOnInit();
+    this->aniTarget(aniTarget);
 }
 
 void ZFAnimation::objectOnInit(void) {

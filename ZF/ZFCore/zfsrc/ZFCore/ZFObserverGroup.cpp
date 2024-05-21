@@ -464,6 +464,17 @@ void ZFObserverGroupHolder::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserverGroupHolder, ZFObserverGroupHolder)
 
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObserverGroupHolder &, observerAdd
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFObserverGroupHolder, const ZFObserverGroupHolder &, observerAddForOnce
+        , ZFMP_IN(zfidentity, eventId)
+        , ZFMP_IN(const ZFListener &, observer)
+        , ZFMP_IN_OPT(ZFLevel, observerLevel, ZFLevelAppNormal)
+        )
+
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(ZFObserverGroupHolder, ZFObserverGroup
         , ZFMP_IN(ZFObject *, owner)

@@ -212,7 +212,7 @@ protected:
     zfoverride
     virtual void aniOnStart(void);
     zfoverride
-    virtual void aniOnStop(void);
+    virtual void aniOnStop(ZF_IN ZFResultTypeEnum resultType);
 
 protected:
     zfoverride

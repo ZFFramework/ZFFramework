@@ -499,7 +499,10 @@ public:
             ZF_IN T_Element const &e
             , ZF_IN zfindex index
             ) {
-        if(index > this->count()) {
+        if(index == zfindexMax()) {
+            index = this->count();
+        }
+        else if(index > this->count()) {
             zfCoreCriticalIndexOutOfRange(index, this->count() + 1);
             return;
         }

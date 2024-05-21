@@ -236,6 +236,7 @@ ZFOBJECT_REGISTER(ZFAniForGeneric)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfstring, name) {d->needUpdate = true;}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, fromValue) {d->needUpdate = true;}
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFAniForGeneric, zfany, toValue) {d->needUpdate = true;}
+
 void ZFAniForGeneric::aniImplTargetOnChange(ZF_IN ZFObject *aniTargetOld) {
     zfsuper::aniImplTargetOnChange(aniTargetOld);
     d->needUpdate = zftrue;
@@ -244,13 +245,13 @@ zfbool ZFAniForGeneric::aniImplCheckValid(void) {
     if(!zfsuper::aniImplCheckValid()) {return zffalse;}
     return d->checkSetup(this->aniTarget(), this->name(), this->fromValue(), this->toValue());
 }
-void ZFAniForGeneric::aniOnStart(void) {
-    zfsuper::aniOnStart();
+void ZFAniForGeneric::aniImplStart(void) {
     d->valueSavedUpdate();
+    zfsuper::aniImplStart();
 }
-void ZFAniForGeneric::aniOnStopOrInvalid(ZF_IN zfbool aniValid) {
+void ZFAniForGeneric::aniImplStop(void) {
+    zfsuper::aniImplStop();
     d->valueSavedRestore();
-    zfsuper::aniOnStopOrInvalid(aniValid);
 }
 void ZFAniForGeneric::aniTimeLineOnUpdate(ZF_IN zffloat progress) {
     d->update(progress);

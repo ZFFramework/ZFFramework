@@ -315,14 +315,14 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogShow) {
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
         d->dialogWindowAniShow->aniTarget(d->dialogWindowBg);
         d->dialogWindowAniShow->observerAddForOnce(
-            ZFAnimation::EventAniOnStopOrInvalid(),
+            ZFAnimation::EventAniOnStop(),
             d->aniShowOnStopListener);
         d->dialogWindowAniShow->aniStart();
     }
     if(this->dialogAniShow() != zfnull) {
         this->dialogAniShow()->aniTarget(d->dialogBg);
         this->dialogAniShow()->observerAddForOnce(
-            ZFAnimation::EventAniOnStopOrInvalid(),
+            ZFAnimation::EventAniOnStop(),
             d->aniShowOnStopListener);
         this->dialogAniShow()->aniStart();
     }
@@ -345,14 +345,14 @@ ZFMETHOD_DEFINE_0(ZFUIDialog, void, dialogHide) {
     if(this->dialogWindowColor() != ZFUIColorZero() && this->dialogWindowAutoDim()) {
         d->dialogWindowAniHide->aniTarget(d->dialogWindowBg);
         d->dialogWindowAniHide->observerAddForOnce(
-            ZFAnimation::EventAniOnStopOrInvalid(),
+            ZFAnimation::EventAniOnStop(),
             d->aniHideOnStopListener);
         d->dialogWindowAniHide->aniStart();
     }
     if(this->dialogAniHide() != zfnull) {
         this->dialogAniHide()->aniTarget(d->dialogBg);
         this->dialogAniHide()->observerAddForOnce(
-            ZFAnimation::EventAniOnStopOrInvalid(),
+            ZFAnimation::EventAniOnStop(),
             d->aniHideOnStopListener);
         this->dialogAniHide()->aniStart();
     }

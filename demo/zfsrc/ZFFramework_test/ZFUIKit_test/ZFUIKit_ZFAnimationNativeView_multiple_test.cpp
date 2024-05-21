@@ -29,12 +29,12 @@ protected:
             aniGroup->aniTarget(view);
 
             zfobj<ZFAnimationNativeView> ani0;
-            aniGroup->ani(ani0);
+            aniGroup->child(ani0);
             ani0->aniTranslateXTo(1);
             ani0->aniDuration(3000);
 
             zfobj<ZFAnimationNativeView> ani1;
-            aniGroup->ani(ani1);
+            aniGroup->child(ani1);
             ani1->aniRotateZTo(180);
             ani1->aniDuration(3000);
 

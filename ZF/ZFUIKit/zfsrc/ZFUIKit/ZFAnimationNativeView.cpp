@@ -114,12 +114,12 @@ void ZFAnimationNativeView::aniOnStart(void) {
         aniTarget->viewUIEnableTree(zffalse);
     }
 }
-void ZFAnimationNativeView::aniOnStop(void) {
+void ZFAnimationNativeView::aniOnStop(ZF_IN ZFResultTypeEnum resultType) {
     ZFUIView *aniTarget = zfany(this->aniTarget());
     if(aniTarget != zfnull && d->aniTargetAutoDisableFlag) {
         aniTarget->viewUIEnableTree(zftrue);
     }
-    zfsuper::aniOnStop();
+    zfsuper::aniOnStop(resultType);
 }
 
 void ZFAnimationNativeView::aniImplStart(void) {

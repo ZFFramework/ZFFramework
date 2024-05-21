@@ -96,6 +96,12 @@ ZFMETHOD_DEFINE_2(ZFArray, void, add
         , ZFMP_IN(ZFObject *, obj)
         , ZFMP_IN(zfindex, indexAddTo)
         ) {
+    if(indexAddTo == zfindexMax()) {
+        indexAddTo = this->count();;
+    }
+    else if(indexAddTo > this->count()) {
+        zfCoreCriticalIndexOutOfRange(indexAddTo, this->count());
+    }
     zfCoreAssertWithMessage(obj != zfnull, "insert null object");
     zfRetain(obj);
     d->data.insert(d->data.begin() + indexAddTo, obj);
@@ -282,6 +288,10 @@ ZFMETHOD_DEFINE_2(ZFArray, void, remove
         , ZFMP_IN(zfindex, index)
         , ZFMP_IN_OPT(zfindex, count, 1)
         ) {
+    if(index >= this->count()) {
+        zfCoreCriticalIndexOutOfRange(index, this->count());
+        return;
+    }
     if(count == 1) {
         ZFObject *tmp = d->data[index];
         d->data.erase(d->data.begin() + index);

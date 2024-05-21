@@ -83,42 +83,139 @@ public:
     /**
      * @brief add child animation
      */
-    ZFMETHOD_DECLARE_2(void, ani
+    ZFMETHOD_DECLARE_2(void, child
             , ZFMP_IN(ZFAnimation *, ani)
             , ZFMP_IN_OPT(zfindex, index, zfindexMax())
             )
     /**
      * @brief child animation count
      */
-    ZFMETHOD_DECLARE_0(zfindex, aniCount)
+    ZFMETHOD_DECLARE_0(zfindex, childCount)
     /**
      * @brief get child animation
      */
-    ZFMETHOD_DECLARE_1(ZFAnimation *, aniAt
+    ZFMETHOD_DECLARE_1(zfanyT<ZFAnimation>, childAt
             , ZFMP_IN(zfindex , index)
             )
     /**
      * @brief remove child animation
      */
-    ZFMETHOD_DECLARE_1(void, aniRemoveAt
+    ZFMETHOD_DECLARE_1(void, childRemoveAt
             , ZFMP_IN(zfindex, index)
             )
     /**
      * @brief remove all child animation
      */
-    ZFMETHOD_DECLARE_0(void, aniRemoveAll)
+    ZFMETHOD_DECLARE_0(void, childRemoveAll)
+
+public:
+    /**
+     * @brief get child animation's target, or null if not specified
+     */
+    ZFMETHOD_DECLARE_1(zfany, childTargetAt
+            , ZFMP_IN(zfindex , index)
+            )
+    /**
+     * @brief set child animation's target
+     */
+    ZFMETHOD_DECLARE_2(void, childTargetAt
+            , ZFMP_IN(zfindex , index)
+            , ZFMP_IN(zfany, aniTarget)
+            )
+
+    /**
+     * @brief get child animation's target, or null if not specified
+     */
+    ZFMETHOD_DECLARE_1(zftimet, childDurationAt
+            , ZFMP_IN(zfindex , index)
+            )
+    /**
+     * @brief set child animation's target
+     */
+    ZFMETHOD_DECLARE_2(void, childDurationAt
+            , ZFMP_IN(zfindex , index)
+            , ZFMP_IN(zftimet, aniDuration)
+            )
 
     // ============================================================
     // property
 public:
     /**
      * @brief whether update all children's aniTarget, true by default
+     *
+     * when true, child's aniTarget would be set to group's state,
+     * unless #childTargetAt was set
      */
     ZFPROPERTY_ASSIGN(zfbool, autoUpdateTarget, zftrue)
     /**
      * @brief whether update all children's aniDuration, true by default
+     *
+     * when true, child's aniDuration would be set to group's state,
+     * unless #childTargetAt was set
      */
     ZFPROPERTY_ASSIGN(zfbool, autoUpdateDuration, zftrue)
+
+public:
+    zfoverride
+    virtual zftimet aniDurationFixed(void);
+
+    // ============================================================
+    // util for chained call
+public:
+    /** @brief util to add child animation */
+    ZFMETHOD_DECLARE_3(void, child
+            , ZFMP_IN(const zfchar *, name)
+            , ZFMP_IN(ZFObject *, from)
+            , ZFMP_IN(ZFObject *, to)
+            )
+    /** @brief util to add child animation */
+    ZFMETHOD_DECLARE_1(void, childImpl
+            , ZFMP_IN(const ZFListener &, aniImpl)
+            )
+
+public:
+    /** @brief util to set last child's property */
+    ZFMETHOD_DECLARE_1(void, childTarget
+            , ZFMP_IN(ZFObject *, aniTarget)
+            )
+    /** @brief util to set last child's property */
+    ZFMETHOD_DECLARE_1(void, childDelay
+            , ZFMP_IN(zftimet, aniDelay)
+            )
+    /** @brief util to set last child's property */
+    ZFMETHOD_DECLARE_1(void, childDuration
+            , ZFMP_IN(zftimet, aniDuration)
+            )
+    /** @brief util to set last child's property */
+    ZFMETHOD_DECLARE_1(void, childLoop
+            , ZFMP_IN(zfindex, aniLoop)
+            )
+    /** @brief util to set last child's property */
+    ZFMETHOD_DECLARE_1(void, childCurve
+            , ZFMP_IN(ZFCurve *, aniCurve)
+            )
+
+public:
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, childOnDelayBegin
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, childOnDelayEnd
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, childOnStart
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, childOnLoop
+            , ZFMP_IN(const ZFListener &, cb)
+            )
+    /** @brief util to attach observer */
+    ZFMETHOD_DECLARE_1(void, childOnStop
+            , ZFMP_IN(const ZFListener &, cb)
+            )
 
     // ============================================================
     // start stop
@@ -154,6 +251,7 @@ private:
     friend zfclassFwd _ZFP_ZFAniGroupPrivate;
 };
 
+// ============================================================
 /**
  * @brief animation queue
  *
@@ -168,6 +266,14 @@ private:
  */
 zfclass ZFLIB_ZFUtility ZFAniQueue : zfextend ZFAniGroup {
     ZFOBJECT_DECLARE(ZFAniQueue, ZFAniGroup)
+
+public:
+    /**
+     * @brief util to add a dummy child animation to wait specified duration
+     */
+    ZFMETHOD_DECLARE_1(void, wait
+            , ZFMP_IN(zftimet, duration)
+            )
 
 protected:
     zfoverride

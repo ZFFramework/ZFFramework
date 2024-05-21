@@ -120,9 +120,9 @@ protected:
     zfoverride
     virtual zfbool aniImplCheckValid(void);
     zfoverride
-    virtual void aniOnStart(void);
+    virtual void aniImplStart(void);
     zfoverride
-    virtual void aniOnStopOrInvalid(ZF_IN zfbool aniValid);
+    virtual void aniImplStop(void);
     zfoverride
     virtual void aniTimeLineOnUpdate(ZF_IN zffloat progress);
     zfoverride

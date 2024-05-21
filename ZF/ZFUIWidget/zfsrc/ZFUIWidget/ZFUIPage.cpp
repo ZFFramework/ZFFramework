@@ -282,7 +282,7 @@ public:
                     pageAniOnStop(pausePage->pageManager(), resumePage, resumeReason, pausePage, pauseReason);
                 } ZFLISTENER_END()
                 manager->d->pauseAni->observerAddForOnce(
-                    ZFAnimation::EventAniOnStopOrInvalid(),
+                    ZFAnimation::EventAniOnStop(),
                     aniOnStop);
                 manager->d->pauseAni->aniStart();
             }
@@ -300,7 +300,7 @@ public:
                 pageAniOnStop(resumePage->pageManager(), resumePage, resumeReason, pausePage, pauseReason);
             } ZFLISTENER_END()
             manager->d->resumeAni->observerAddForOnce(
-                ZFAnimation::EventAniOnStopOrInvalid(),
+                ZFAnimation::EventAniOnStop(),
                 aniOnStop);
             manager->d->resumeAni->aniStart();
         }

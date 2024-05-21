@@ -223,6 +223,7 @@ void ZFImpl_sys_SDL_View::render(
         dst.y -= offset / 2;
         dst.h += offset;
     }
+    SDL_RenderSetClipRect(renderer, &parentRect);
     SDL_RenderCopyExF(renderer, this->renderCache, &src, &dst, angle, zfnull, SDL_FLIP_NONE);
 }
 
