@@ -71,7 +71,7 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFLua
         ) {
     v_ZFInput *inputZF = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerZFInput);
     if(inputZF == zfnull) {
-        return NULL;
+        return JNIConvertZFObjectToJNIType(jniEnv, zfnull);
     }
 
     ZFCoreArray<zfauto> paramsZF;

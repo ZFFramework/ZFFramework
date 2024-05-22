@@ -156,6 +156,14 @@ public:
         return T_To(obj.toObject());
     }
 };
+// zfnull to any
+template<typename T_To, int T_ToType>
+zfclassNotPOD _ZFP_ObjCastH<0, T_To, zfnullT, T_ToType, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(zfnullT const &obj) {
+        return T_To(zfnull);
+    }
+};
 
 // invoker
 template<typename T_To>
@@ -267,6 +275,14 @@ zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, T_From, _ZFP_ObjCastTypeUnknown, _ZFP_O
 public:
     static inline T_To c(T_From const &obj) {
         return T_To(obj.toObject());
+    }
+};
+// zfnull to any
+template<typename T_To, int T_ToType>
+zfclassNotPOD _ZFP_ObjCastNoCkH<0, T_To, zfnullT, T_ToType, _ZFP_ObjCastTypeUnknown> {
+public:
+    static inline T_To c(zfnullT const &obj) {
+        return T_To(zfnull);
     }
 };
 
