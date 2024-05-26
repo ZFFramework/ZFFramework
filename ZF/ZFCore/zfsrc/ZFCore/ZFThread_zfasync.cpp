@@ -139,7 +139,7 @@ ZF_GLOBAL_INITIALIZER_END(zfasyncDataHolder)
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync
             , ZFMP_IN(const ZFListener &, callback)
-            , ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback())
+            , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
             ) {
     if(!callback) {
         return zfidentityInvalid();

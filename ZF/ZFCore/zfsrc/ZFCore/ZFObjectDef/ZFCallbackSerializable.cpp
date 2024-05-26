@@ -32,7 +32,7 @@ ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         }
 
         if(zfstringIsEqual(serializableData.itemClass(), ZFSerializableKeyword_null)) {
-            v = ZFCallback();
+            v = zfnull;
             serializableData.resolveMark();
             return zftrue;
         }

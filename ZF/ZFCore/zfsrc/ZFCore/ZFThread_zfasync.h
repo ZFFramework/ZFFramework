@@ -31,7 +31,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfidentity, zfasync
         , ZFMP_IN(const ZFListener &, callback)
-        , ZFMP_IN_OPT(const ZFListener &, finishCallback, ZFCallback())
+        , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
         )
 
 /**

@@ -91,7 +91,7 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfbool, httpsAvailable) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(ZFHttpRequest, ZFHttpRequest *, header
+ZFMETHOD_DEFINE_2(ZFHttpRequest, void, header
         , ZFMP_IN(const zfchar *, key)
         , ZFMP_IN(const zfchar *, value)
         ) {
@@ -101,15 +101,13 @@ ZFMETHOD_DEFINE_2(ZFHttpRequest, ZFHttpRequest *, header
         }
         ZFPROTOCOL_ACCESS(ZFHttpRequest)->header(d->nativeTask, key, value);
     }
-    return this;
 }
-ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, headerRemove
+ZFMETHOD_DEFINE_1(ZFHttpRequest, void, headerRemove
         , ZFMP_IN(const zfchar *, key)
         ) {
     if(!zfstringIsEmpty(key)) {
         ZFPROTOCOL_ACCESS(ZFHttpRequest)->headerRemove(d->nativeTask, key);
     }
-    return this;
 }
 ZFMETHOD_DEFINE_1(ZFHttpRequest, zfstring, header
         , ZFMP_IN(const zfchar *, key)
@@ -162,28 +160,25 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, void, headerIterRemove
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_2(ZFHttpRequest, ZFHttpRequest *, body
+ZFMETHOD_DEFINE_2(ZFHttpRequest, void, body
         , ZFMP_IN(const zfchar *, text)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
         ) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask,
         (const void *)text,
         ((count == zfindexMax()) ? zfslen(text) : count) * sizeof(zfchar));
-    return this;
 }
-ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, body
+ZFMETHOD_DEFINE_1(ZFHttpRequest, void, body
         , ZFMP_IN(const ZFJson &, json)
         ) {
     zfstring text;
     ZFJsonToStringT(text, json, ZFJsonOutputTokenTrim());
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, (const void *)text.cString(), text.length());
-    return this;
 }
-ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, body
+ZFMETHOD_DEFINE_1(ZFHttpRequest, void, body
         , ZFMP_IN(const ZFBuffer &, buf)
         ) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->body(d->nativeTask, buf.buffer(), buf.bufferSize());
-    return this;
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, ZFBuffer, body) {
@@ -191,8 +186,8 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, ZFBuffer, body) {
 }
 
 // ============================================================
-ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, request
-        , ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback())
+ZFMETHOD_DEFINE_1(ZFHttpRequest, void, request
+        , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
         ) {
     zfRetain(this); // release in notifyResponse
 
@@ -203,8 +198,6 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, request
     this->observerNotify(zfself::EventOnRequestPrepare());
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask);
     this->observerNotify(zfself::EventOnRequest());
-
-    return this;
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {

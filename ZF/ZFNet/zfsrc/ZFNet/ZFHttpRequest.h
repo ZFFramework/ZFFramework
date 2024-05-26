@@ -190,12 +190,12 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      * note, null or empty value is also valid,
      * use #headerRemove or #headerIterRemove to remove
      */
-    ZFMETHOD_DECLARE_2(ZFHttpRequest *, header
+    ZFMETHOD_DECLARE_2(void, header
             , ZFMP_IN(const zfchar *, key)
             , ZFMP_IN(const zfchar *, value)
             )
     /** @brief remove http header */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, headerRemove
+    ZFMETHOD_DECLARE_1(void, headerRemove
             , ZFMP_IN(const zfchar *, key)
             )
     /** @brief get http header */
@@ -236,16 +236,16 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
 
     // ============================================================
     /** @brief append content to body */
-    ZFMETHOD_DECLARE_2(ZFHttpRequest *, body
+    ZFMETHOD_DECLARE_2(void, body
             , ZFMP_IN(const zfchar *, text)
             , ZFMP_IN_OPT(zfindex, count, zfindexMax())
             )
     /** @brief append content to body */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, body
+    ZFMETHOD_DECLARE_1(void, body
             , ZFMP_IN(const ZFJson &, json)
             )
     /** @brief append content to body */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, body
+    ZFMETHOD_DECLARE_1(void, body
             , ZFMP_IN(const ZFBuffer &, buf)
             )
 
@@ -261,8 +261,8 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      * param0 is the #ZFHttpResponse or null if timeout,
      * param1 is a #ZFResultType to indicate result type
      */
-    ZFMETHOD_DECLARE_1(ZFHttpRequest *, request
-            , ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback())
+    ZFMETHOD_DECLARE_1(void, request
+            , ZFMP_IN_OPT(const ZFListener &, callback, zfnull)
             )
 
     /** @brief cancel the request */
