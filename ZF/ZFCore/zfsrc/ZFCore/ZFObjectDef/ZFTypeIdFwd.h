@@ -769,16 +769,11 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
         } \
     }; \
-    /** @endcond */ \
+    /** @endcond */    /** @endcond */ \
     /** @brief type wrapper for #ZFTypeId::Value */ \
-    zfclass ZFLIB_ v_##TypeName : zfextend v_##AliasToTypeName { \
-        ZFOBJECT_DECLARE(v_##TypeName, v_##AliasToTypeName) \
-        ZFALLOC_CACHE_RELEASE({ \
-            cache->wrappedValueReset(); \
-        }) \
-    };
-#define _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type) \
-    ZFOBJECT_REGISTER(v_##TypeName)
+    typedef v_##AliasToTypeName v_##TypeName;
+
+#define _ZFP_ZFTYPEID_ALIAS_DEFINE(AliasToTypeName, AliasToType, TypeName, Type)
 
 #define _ZFP_ZFTYPEID_ALIAS_EXPAND_DEFAULT(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
         template<typename T_Access = _ZFP_PropTypeW_##TypeName \
