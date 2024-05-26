@@ -231,6 +231,7 @@ public final class ZFHttpRequest {
         if (!task.running) {
             return;
         }
+        task._sendHeaderUpdate();
 
         do {
             if (task.connection == null) {

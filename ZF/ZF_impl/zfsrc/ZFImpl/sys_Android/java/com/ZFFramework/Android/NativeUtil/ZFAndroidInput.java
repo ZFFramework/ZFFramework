@@ -24,16 +24,18 @@ public class ZFAndroidInput {
         if (nativeInputTmp.input == null) {
             return 0;
         }
-        try {
-            int read = nativeInputTmp.input.read(buf, 0, count);
-            if (read <= 0) {
-                return 0;
-            } else {
-                return read;
+        int offset = 0;
+        do {
+            try {
+                int read = nativeInputTmp.input.read(buf, offset, count - offset);
+                if (read <= 0) {
+                    break;
+                }
+                offset += read;
+            } catch (IOException ignored) {
             }
-        } catch (IOException ignored) {
-        }
-        return 0;
+        } while (offset < count);
+        return offset;
     }
 
     private static void native_nativeInputClose(Object nativeInput) {

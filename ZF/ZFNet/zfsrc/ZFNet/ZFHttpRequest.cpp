@@ -4,8 +4,6 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
-#define _ZFP_ZFHttpRequest_DEBUG 0
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFENUM_DEFINE(ZFHttpMethod)
@@ -39,28 +37,27 @@ public:
     }
 
 public:
-    void notifyResponse(ZF_IN ZFHttpRequest *owner) {
+    void notifyResponse(ZF_IN ZFHttpRequest *owner, ZF_IN ZFResultTypeEnum resultType) {
+        ZFListener callbackTmp = this->callback;
+        this->callback = zfnull;
+        zfautoT<ZFHttpResponse> responseTmp = this->response;
+        this->response = zfnull;
+        zfautoT<ZFThread> ownerThreadTmp = this->ownerThread;
+        this->ownerThread = zfnull;
+        zfobj<ZFResultType> resultTypeTmp = resultType;
+
         if(this->bodyJsonCache != zfnull) {
             zfdelete(this->bodyJsonCache);
             this->bodyJsonCache = zfnull;
         }
-        owner->observerNotify(ZFHttpRequest::EventOnResponsePrepare(), this->response);
-        if(this->callback) {
-            this->callback.execute(ZFArgs()
+        owner->observerNotify(ZFHttpRequest::EventOnResponsePrepare(), responseTmp, resultTypeTmp);
+        if(callbackTmp) {
+            callbackTmp.execute(ZFArgs()
                     .sender(owner)
-                    .param0(this->response)
+                    .param0(responseTmp)
                 );
         }
-        this->callback = ZFCallback();
-        owner->observerNotify(ZFHttpRequest::EventOnResponse(), this->response);
-        this->response = zfnull;
-        this->ownerThread = zfnull;
-        zfRelease(owner);
-    }
-    void notifyCancel(ZF_IN ZFHttpRequest *owner) {
-        this->callback = ZFCallback();
-        this->response = zfnull;
-        this->ownerThread = zfnull;
+        owner->observerNotify(ZFHttpRequest::EventOnResponse(), responseTmp, resultTypeTmp);
         zfRelease(owner);
     }
 };
@@ -68,6 +65,8 @@ public:
 // ============================================================
 ZFOBJECT_REGISTER(ZFHttpRequest)
 
+ZFEVENT_REGISTER(ZFHttpRequest, OnRequestPrepare)
+ZFEVENT_REGISTER(ZFHttpRequest, OnRequest)
 ZFEVENT_REGISTER(ZFHttpRequest, OnResponsePrepare)
 ZFEVENT_REGISTER(ZFHttpRequest, OnResponse)
 
@@ -201,20 +200,21 @@ ZFMETHOD_DEFINE_1(ZFHttpRequest, ZFHttpRequest *, request
         d->ownerThread = ZFThread::currentThread();
     }
     d->callback = callback;
-#if _ZFP_ZFHttpRequest_DEBUG
-    zfLogTrim("[ZFHttpRequest] request: %s", this);
-#endif
+    this->observerNotify(zfself::EventOnRequestPrepare());
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->request(d->nativeTask);
+    this->observerNotify(zfself::EventOnRequest());
 
     return this;
 }
 
 ZFMETHOD_DEFINE_0(ZFHttpRequest, void, requestCancel) {
     ZFPROTOCOL_ACCESS(ZFHttpRequest)->requestCancel(d->nativeTask);
-    d->notifyCancel(this);
+    d->notifyResponse(this, ZFResultType::e_Cancel);
 }
 
-ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync) {
+ZFMETHOD_DEFINE_1(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync
+        , ZFMP_IN_OPT(zftimet, timeout, zfindexMax())
+        ) {
     ZFHttpRequest *send = this;
     zfautoT<ZFHttpResponse> recv;
     zfobj<ZFSemaphore> waitLock;
@@ -228,16 +228,15 @@ ZFMETHOD_DEFINE_0(ZFHttpRequest, zfautoT<ZFHttpResponse>, requestSync) {
                 , zfautoT<ZFHttpResponse> &, recv
                 ) {
             recv = zfargs.param0();
-#if _ZFP_ZFHttpRequest_DEBUG
-    zfLogTrim("[ZFHttpRequest] recv: %s", recv);
-#endif
             waitLock->lockAndBroadcast();
         } ZFLISTENER_END()
         send->request(onResponse);
     } ZFLISTENER_END()
     zfasync(onRequest);
 
-    waitLock->lockAndWait();
+    if(!waitLock->lockAndWait(timeout)) {
+        this->requestCancel();
+    }
     return recv;
 }
 
@@ -290,12 +289,12 @@ void ZFHttpRequest::_ZFP_ZFHttpRequest_notifyResponse(void) {
                 , zfautoT<ZFHttpRequest>, owner
                 , _ZFP_ZFHttpRequestPrivate *, d
                 ) {
-            d->notifyResponse(owner);
+            d->notifyResponse(owner, ZFResultType::e_Success);
         } ZFLISTENER_END()
         ZFThread::executeInThread(d->ownerThread, notifyResponse);
     }
     else {
-        d->notifyResponse(this);
+        d->notifyResponse(this, ZFResultType::e_Success);
     }
 }
 

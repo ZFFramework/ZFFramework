@@ -128,10 +128,26 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     ZFOBJECT_DECLARE(ZFHttpRequest, ZFStyleableObject)
 
     /**
+     * @brief called before request
+     *
+     * sender is the #ZFHttpRequest\n
+     * call in the same thread that #request was called
+     */
+    ZFEVENT(OnRequestPrepare)
+    /**
+     * @brief called after request
+     *
+     * sender is the #ZFHttpRequest\n
+     * call in the same thread that #request was called
+     */
+    ZFEVENT(OnRequest)
+
+    /**
      * @brief called when any response received or timeout, before #EventOnResponse and impl callback
      *
      * sender is the #ZFHttpRequest,
-     * param0 is the #ZFHttpResponse\n
+     * param0 is the #ZFHttpResponse or null if timeout,
+     * param1 is a #ZFResultType to indicate result type\n
      * call in the same thread that #request was called
      */
     ZFEVENT(OnResponsePrepare)
@@ -139,7 +155,8 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      * @brief called when any response received or timeout
      *
      * sender is the #ZFHttpRequest,
-     * param0 is the #ZFHttpResponse\n
+     * param0 is the #ZFHttpResponse or null if timeout,
+     * param1 is a #ZFResultType to indicate result type\n
      * call in the same thread that #request was called
      */
     ZFEVENT(OnResponse)
@@ -241,7 +258,8 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
      *
      * callback would be called in the same thread that called this method,
      * sender is the owner #ZFHttpRequest,
-     * param0 is the #ZFHttpResponse
+     * param0 is the #ZFHttpResponse or null if timeout,
+     * param1 is a #ZFResultType to indicate result type
      */
     ZFMETHOD_DECLARE_1(ZFHttpRequest *, request
             , ZFMP_IN_OPT(const ZFListener &, callback, ZFCallback())
@@ -250,8 +268,10 @@ zfclass ZFLIB_ZFNet ZFHttpRequest : zfextend ZFStyleableObject {
     /** @brief cancel the request */
     ZFMETHOD_DECLARE_0(void, requestCancel)
 
-    /** @brief util to perform sync request */
-    ZFMETHOD_DECLARE_0(zfautoT<ZFHttpResponse>, requestSync)
+    /** @brief util to perform sync request, return null if timeout */
+    ZFMETHOD_DECLARE_1(zfautoT<ZFHttpResponse>, requestSync
+            , ZFMP_IN_OPT(zftimet, timeout, zfindexMax())
+            )
 
     /** @brief print all header info, usually for debug use only */
     ZFMETHOD_DECLARE_0(zfstring, headerInfo)

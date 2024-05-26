@@ -81,13 +81,10 @@ void ZFEnum::objectOnInit(ZF_IN ZFEnum *another) {
 }
 
 void ZFEnum::objectInfoT(ZF_IN_OUT zfstring &ret) {
-    if(!zfstringIsEmpty(this->classData()->classNamespace())) {
-        ret += this->classData()->classNamespace();
-        ret += ZFNamespaceSeparator();
-    }
-    ret += this->classData()->className();
-    ret += "::";
     if(this->enumValue() == ZFEnumInvalid()) {
+        ret += "(";
+        ret += this->classData()->className();
+        ret += ")";
         ret += ZFEnumNameInvalid();
     }
     else {

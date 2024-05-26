@@ -180,10 +180,13 @@ extern ZFLIB_ZF_impl jobject ZFImpl_sys_Android_newDouble(ZF_IN jdouble v);
 // jclass util
 zfclassLikePOD ZFLIB_ZF_impl _ZFP_ZFImpl_sys_Android_jclass {
 public:
-    _ZFP_ZFImpl_sys_Android_jclass(ZF_IN const zfchar *className) {
+    _ZFP_ZFImpl_sys_Android_jclass(
+            ZF_IN const zfchar *funcName
+            , ZF_IN const zfchar *className
+            ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         cls = JNIUtilFindClass(jniEnv, JNIConvertClassNameForFindClass(className).c_str());
-        zfCoreAssert(cls != NULL);
+        zfCoreAssertWithMessage(cls != NULL, "no class named: %s, for jclass: %s", className, funcName);
         JNIBlockedDeleteLocalRef(cls);
         cls = (jclass)JNIUtilNewGlobalRef(jniEnv, cls);
     }
@@ -197,7 +200,7 @@ public:
 };
 #define ZFImpl_sys_Android_jclass_DEFINE(funcName, className) \
     jclass funcName(void) { \
-        static _ZFP_ZFImpl_sys_Android_jclass d(className); \
+        static _ZFP_ZFImpl_sys_Android_jclass d(#funcName, className); \
         return d.cls; \
     }
 
