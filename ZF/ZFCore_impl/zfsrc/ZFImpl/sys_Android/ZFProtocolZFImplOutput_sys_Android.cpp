@@ -5,33 +5,21 @@
 #if ZF_ENV_sys_Android
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-#define _ZFP_ZFImpl_sys_Android_ZFImplOutput_output(fmt, ...) \
-    AndroidLogDetail(AndroidLogLevelA, AndroidLogTagDefault(), fmt, ##__VA_ARGS__)
-
-zfclass _ZFP_I_ZFImplOutputImpl_sys_Android_SyncObject : zfextend ZFObject {
-    ZFOBJECT_DECLARE(_ZFP_I_ZFImplOutputImpl_sys_Android_SyncObject, ZFObject)
-};
-
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_sys_Android, ZFImplOutput, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Logcat")
 public:
     zfoverride
-    virtual void protocolOnInitFinish(void) {
-        zfsuper::protocolOnInitFinish();
-        this->syncObj = zfAlloc(_ZFP_I_ZFImplOutputImpl_sys_Android_SyncObject);
-    }
-    zfoverride
     virtual void protocolOnDeallocPrepare(void) {
         if(this->savedString.length() > 0) {
-            _ZFP_ZFImpl_sys_Android_ZFImplOutput_output("%s", this->savedString.cString());
+            this->doOutput(this->savedString, 0, this->savedString.length());
         }
-        zfRelease(this->syncObj);
         zfsuper::protocolOnDeallocPrepare();
     }
 
 public:
     virtual void outputCoreLog(ZF_IN const zfchar *s) {
         zfstring tmp = s;
+        zfsynchronize(this->syncObj);
         this->checkOutput(tmp);
     }
     virtual void outputLog(
@@ -39,16 +27,11 @@ public:
             , ZF_IN_OPT zfindex count = zfindexMax()
             ) {
         zfsynchronize(this->syncObj);
-        if(count == zfindexMax()) {
-            this->savedString += s;
-        }
-        else {
-            this->savedString += zfstring(s, count);
-        }
+        this->savedString.append(s, count);
         this->checkOutput(this->savedString);
     }
 private:
-    ZFObject *syncObj;
+    zfobj<ZFObject> syncObj;
     zfstring savedString;
     void checkOutput(ZF_IN_OUT zfstring &s) {
         if(s.isEmpty()) {
@@ -62,12 +45,34 @@ private:
                 break;
             }
             s[pL + p] = '\0';
-            _ZFP_ZFImpl_sys_Android_ZFImplOutput_output("%s", s.cString() + pL);
+            this->doOutput(s, pL, pL + p);
             pL = pL + p + 1;
         } while(zftrue);
         if(pL != 0) {
             s.remove(0, pL);
         }
+    }
+    void doOutput(ZF_IN_OUT zfstring &s, ZF_IN zfindex pL, ZF_IN zfindex pR) {
+        static const zfindex maxLen = 1000;
+        if(pR - pL > maxLen) {
+            do {
+                zfindex p = pL + maxLen;
+                zfchar c = s[p];
+                s[p] = '\0';
+                this->implOutput(s.cString() + pL);
+                pL += maxLen;
+                s[p] = c;
+            } while(pR - pL > maxLen);
+            if(pR > pL) {
+                this->implOutput(s.cString() + pL);
+            }
+        }
+        else {
+            this->implOutput(s.cString() + pL);
+        }
+    }
+    inline void implOutput(ZF_IN const zfchar *s) {
+        AndroidLogDetail(AndroidLogLevelE, AndroidLogTagDefault(), "%s", s);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFImplOutputImpl_sys_Android)
 ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFImplOutputImpl_sys_Android)

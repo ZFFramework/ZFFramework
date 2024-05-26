@@ -105,9 +105,17 @@ public:
         if(zfstringIsEmpty(pathData)) {
             return zffalse;
         }
-        zfautoT<ZFHttpResponse> recv = ZFHttpHeadCache(pathData[zfslen(pathData) - 1] == '/'
+        zfindex len = zfslen(pathData);
+        zfautoT<ZFHttpResponse> recv = ZFHttpHeadCache(pathData[len - 1] == '/'
                 ? pathData
                 : zfstr("%s/", pathData).cString()
+                );
+        if(recv != zfnull && recv->success()) {
+            return zftrue;
+        }
+        recv = ZFHttpHeadCache(pathData[len - 1] == '/'
+                ? zfstring(pathData, len - 1).cString()
+                : pathData
                 );
         return recv != zfnull && recv->success();
     }

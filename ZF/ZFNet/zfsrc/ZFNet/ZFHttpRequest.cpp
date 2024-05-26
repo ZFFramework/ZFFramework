@@ -55,6 +55,7 @@ public:
             callbackTmp.execute(ZFArgs()
                     .sender(owner)
                     .param0(responseTmp)
+                    .param1(resultTypeTmp)
                 );
         }
         owner->observerNotify(ZFHttpRequest::EventOnResponse(), responseTmp, resultTypeTmp);
