@@ -267,8 +267,8 @@ public:
     // ============================================================
     // caches
 public:
-    ZFCoreArray<const ZFClass *> parentClassCache; // for classIsTypeOf(class), ensured end with a null element for performance
-    ZFCoreArray<const ZFClass *> parentTypeCache; // for classIsTypeOf(interface), ensured end with a null element for performance
+    zfstlmap<const ZFClass *, zfbool> parentClassCache; // for classIsTypeOf(class)
+    zfstlmap<const ZFClass *, zfbool> parentTypeCache; // for classIsTypeOf(interface)
 
     zfbool methodAndPropertyCacheNeedUpdate;
     _ZFP_ZFClassMethodMapType methodMapCache; // method of this cls and all parent, order ensured from self > parent > parent interface
@@ -387,19 +387,18 @@ void _ZFP_ZFClassPrivate::classInitFinish(ZF_IN ZFClass *cls) {
 }
 
 void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
-    ZFCoreArray<const ZFClass *> &parentClassCache = cls->d->parentClassCache;
-    ZFCoreArray<const ZFClass *> parentTypeCache = cls->d->parentTypeCache;
-    parentClassCache.removeAll();
-    parentTypeCache.removeAll();
+    zfstlmap<const ZFClass *, zfbool> &parentClassCache = cls->d->parentClassCache;
+    zfstlmap<const ZFClass *, zfbool> &parentTypeCache = cls->d->parentTypeCache;
+    parentClassCache.clear();
+    parentTypeCache.clear();
 
     if(!cls->classIsInterface()) {
         const ZFClass *t = cls;
         do {
-            parentClassCache.add(t);
+            parentClassCache[t] = zftrue;
             t = t->classParent();
         } while(t != zfnull);
     }
-    parentClassCache.add(zfnull);
 
     {
         ZFCoreQueuePOD<const ZFClass *> toCheck;
@@ -411,12 +410,9 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
             }
             toCheck.addFrom(t->d->implementedInterface);
 
-            if(parentTypeCache.find(t) == zfindexMax()) {
-                parentTypeCache.add(t);
-            }
+            parentTypeCache[t] = zftrue;
         } while(!toCheck.isEmpty());
     }
-    parentTypeCache.add(zfnull);
 }
 
 void _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(ZF_IN const ZFClass *cls) {
@@ -645,13 +641,8 @@ void ZFClass::objectInfoOfInheritTreeT(ZF_IN_OUT zfstring &ret) const {
 }
 
 zfbool ZFClass::classIsTypeOf(ZF_IN const ZFClass *cls) const {
-    const ZFCoreArray<const ZFClass *> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
-    for(zfindex i = 0, iEnd = p.count(); i < iEnd; ++i) {
-        if(p[i] == cls) {
-            return zftrue;
-        }
-    }
-    return zffalse;
+    zfstlmap<const ZFClass *, zfbool> &p = (cls->classIsInterface() ? d->parentTypeCache : d->parentClassCache);
+    return p.find(cls) != p.end();
 }
 
 zfbool ZFClass::classIsDynamicRegister(void) const {
