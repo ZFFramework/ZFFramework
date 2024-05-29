@@ -311,7 +311,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
                 ) { \
-            return zfunsafe_zfcast(zfself *, invokerObject)->MethodName( \
+            return zfcast(zfself *, invokerObject)->MethodName( \
                     ParamExpandOrEmpty0(            param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() param1) \
                     ParamExpandOrEmpty2(ZFM_COMMA() param2) \
@@ -465,7 +465,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                 ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
                 ) { \
-            return zfunsafe_zfcast(zfself *, invokerObject)->MethodName( \
+            return zfcast(zfself *, invokerObject)->MethodName( \
                     ParamExpandOrEmpty0(            param0) \
                     ParamExpandOrEmpty1(ZFM_COMMA() param1) \
                     ParamExpandOrEmpty2(ZFM_COMMA() param2) \

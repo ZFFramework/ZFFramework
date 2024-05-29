@@ -36,44 +36,32 @@ extern ZFLIB_ZFCore void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls);
 
 // ============================================================
 /**
- * @brief util to dynamic register methods and properties from another class
+ * @brief advanced dynamic implement
  *
- * example for lua:
+ * usage:
  * @code
- *   ZFDynamic()
- *       :classBegin('MyInterface')
- *       :property('zfstring', 'myProp')
- *       :classEnd();
+ *   zfclass ExistClass : zfextend ZFObject {...};
+ *   zfclass AttachClass : zfextend ZFObject {...};
  *
- *   ZFDynamic()
- *       :classBegin('MyClass')
- *       :classImplement('MyInterface')
- *       :propertyOnInt('myProp', function(zfargs)
- *           -- OK, override property init step
- *       end)
- *       :classEnd();
+ *   // register
+ *   ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData());
  *
- *   local obj = MyClass()
+ *   // create object
+ *   zfobj<ExistClass> obj;
  *
- *   -- OK, myProp implemented from MyInterface
- *   zfLog('%s', obj:myProp())
+ *   // access as AttachClass
+ *   AttachClass *p = obj; // OK
  *
- *   -- false, only property and method are copied, class has no actual relationship
- *   zfLog('%s', obj:classData():classIsTypeOf(MyInterface.ClassData()))
- *
- *   -- false, property and method are "copied", not "inherited"
- *   zfLog('%s', obj:classData():methodForName('myProp') == MyInterface.ClassData():methodForName('myProp'))
+ *   // call AttachClass's method
+ *   obj->invoke("methodInAttachClass"); // OK
  * @endcode
+ * this is useful to extend existing class, simplar to category of Object-C
  */
-extern ZFLIB_ZFCore void ZFImplementDynamicRegister(
+extern ZFLIB_ZFCore zfbool ZFImplementDynamicRegister(
         ZF_IN const ZFClass *cls
         , ZF_IN const ZFClass *clsToImplement
-        , ZF_OUT_OPT ZFCoreArray<const ZFMethod *> *methodRegistered = zfnull
-        , ZF_OUT_OPT ZFCoreArray<const ZFProperty *> *propertyRegistered = zfnull
         );
-/**
- * @brief unregister contents that registered by #ZFImplementDynamicRegister
- */
+/** @brief see #ZFImplementDynamicRegister */
 extern ZFLIB_ZFCore void ZFImplementDynamicUnregister(
         ZF_IN const ZFClass *cls
         , ZF_IN const ZFClass *clsToImplement

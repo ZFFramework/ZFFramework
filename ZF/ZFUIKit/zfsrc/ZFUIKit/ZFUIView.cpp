@@ -1982,12 +1982,12 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, viewEventSend
 void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
     const ZFClass *eventClass = event->classData();
     if(eventClass->classIsTypeOf(ZFUIMouseEvent::ClassData())) {
-        ZFUIMouseEvent *mouseEvent = zfunsafe_zfcast(ZFUIMouseEvent *, event);
+        ZFUIMouseEvent *mouseEvent = zfcast(ZFUIMouseEvent *, event);
         this->viewEventOnMouseEvent(mouseEvent);
         mouseEvent->eventResolved(zftrue);
     }
     else if(eventClass->classIsTypeOf(ZFUIKeyEvent::ClassData())) {
-        ZFUIKeyEvent *eventTmp = zfunsafe_zfcast(ZFUIKeyEvent *, event);
+        ZFUIKeyEvent *eventTmp = zfcast(ZFUIKeyEvent *, event);
         this->viewEventOnKeyEvent(eventTmp);
         ZFUIView *view = this->viewParent();
         while(view != zfnull && !event->eventResolved()) {
@@ -1996,7 +1996,7 @@ void ZFUIView::viewEventOnEvent(ZF_IN ZFUIEvent *event) {
         }
     }
     else if(eventClass->classIsTypeOf(ZFUIWheelEvent::ClassData())) {
-        ZFUIWheelEvent *eventTmp = zfunsafe_zfcast(ZFUIWheelEvent *, event);
+        ZFUIWheelEvent *eventTmp = zfcast(ZFUIWheelEvent *, event);
         this->viewEventOnWheelEvent(eventTmp);
         ZFUIView *view = this->viewParent();
         while(view != zfnull && !event->eventResolved()) {

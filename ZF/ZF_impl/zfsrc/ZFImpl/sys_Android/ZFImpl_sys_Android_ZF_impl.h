@@ -210,7 +210,7 @@ public:
  * @brief see #JNIConvertPointerToJNIType
  */
 #ifndef JNIConvertZFObjectToJNIType
-#define JNIConvertZFObjectToJNIType(jniEnv, p) JNIConvertPointerToJNIType(jniEnv, zfunsafe_zfcast(ZFObject *, p))
+#define JNIConvertZFObjectToJNIType(jniEnv, p) JNIConvertPointerToJNIType(jniEnv, zfcast(ZFObject *, p))
 #endif
 /**
  * @brief see #JNIConvertPointerToJNIType

@@ -173,7 +173,7 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->styleableCopyFrom(zfunsafe_zfcast(zfself *, anotherObj));
+        this->styleableCopyFrom(zfcast(zfself *, anotherObj));
     }
 };
 

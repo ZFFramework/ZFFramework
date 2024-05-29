@@ -583,27 +583,27 @@ zfbool ZFImpl_ZFLua_toNumberT(
     const ZFClass *cls = obj->classData();
     if(holderCls != zfnull) {*holderCls = cls;}
     if(cls->classIsTypeOf(v_zfbool::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfbool *, obj)->zfv ? 1 : 0));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfbool *, obj)->zfv ? 1 : 0));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfindex::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfindex *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfindex *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfint::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfint *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfint *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfuint::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfuint *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfuint *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zffloat::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zffloat *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zffloat *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfdouble::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfdouble *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfdouble *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zflongdouble::ClassData())) {
@@ -611,23 +611,23 @@ zfbool ZFImpl_ZFLua_toNumberT(
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfbyte::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfbyte *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfbyte *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zftimet::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zftimet *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zftimet *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfflags::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfflags *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfflags *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(v_zfidentity::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(v_zfidentity *, obj)->zfv));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(v_zfidentity *, obj)->zfv));
         return zftrue;
     }
     else if(cls->classIsTypeOf(ZFEnum::ClassData())) {
-        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfunsafe_zfcast(ZFEnum *, obj)->enumValue()));
+        ret = zfobj<v_zflongdouble>((zft_zflongdouble)(zfcast(ZFEnum *, obj)->enumValue()));
         return zftrue;
     }
     else {
@@ -655,7 +655,7 @@ zfbool ZFImpl_ZFLua_toLuaValue(
         return zftrue;
     }
     if(obj->classData()->classIsTypeOf(v_zfbool::ClassData())) {
-        lua_pushboolean(L, zfunsafe_zfcast(v_zfbool *, obj)->zfv);
+        lua_pushboolean(L, zfcast(v_zfbool *, obj)->zfv);
         return zftrue;
     }
     zfauto t;

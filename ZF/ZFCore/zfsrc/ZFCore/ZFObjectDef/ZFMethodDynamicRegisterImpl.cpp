@@ -41,7 +41,7 @@ static zfbool _ZFP_I_ZFMethodDynamicRegisterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) 
     d->param6.zfunsafe_assign(paramList[6]);
     d->param7.zfunsafe_assign(paramList[7]);
 
-    ZFListener methodImpl = zfunsafe_zfcast(v_ZFListener *, invokerMethod->methodDynamicRegisterUserData())->zfv;
+    ZFListener methodImpl = zfcast(v_ZFListener *, invokerMethod->methodDynamicRegisterUserData())->zfv;
     methodImpl.execute(ZFArgs()
             .sender(invokerObject)
             .param0(d)

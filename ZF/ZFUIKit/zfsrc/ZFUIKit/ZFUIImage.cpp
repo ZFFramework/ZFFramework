@@ -271,7 +271,7 @@ zfbool ZFUIImage::serializableOnSerializeToData(
 
 void ZFUIImage::styleableOnCopyFrom(ZF_IN ZFStyleable *anotherStyleable) {
     zfsuperI(ZFCopyable)::styleableOnCopyFrom(anotherStyleable);
-    d->copyFrom(zfunsafe_zfcast(zfself *, anotherStyleable)->d);
+    d->copyFrom(zfcast(zfself *, anotherStyleable)->d);
 }
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIImage, zffloat, imageScale) {

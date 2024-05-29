@@ -30,7 +30,7 @@ zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zflineRelease {
 public:
     template<typename T_ZFObject>
     T_ZFObject set(T_ZFObject obj) {
-        this->obj = zfunsafe_zfcast(ZFObject *, obj);
+        this->obj = zfcast(ZFObject *, obj);
         return obj;
     }
 public:
@@ -48,7 +48,7 @@ zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_zfunsafe_zflineRelease {
 public:
     template<typename T_ZFObject>
     T_ZFObject set(T_ZFObject obj) {
-        this->obj = zfunsafe_zfcast(ZFObject *, obj);
+        this->obj = zfcast(ZFObject *, obj);
         return obj;
     }
 public:
@@ -105,7 +105,7 @@ zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedReleaseContainer {
 public:
     template<typename T_ZFObject>
     _ZFP_zfblockedReleaseContainer(ZF_IN T_ZFObject obj)
-    : obj(zfunsafe_zfcast(ZFObject *, obj))
+    : obj(zfcast(ZFObject *, obj))
     {
     }
     ~_ZFP_zfblockedReleaseContainer(void) {
@@ -118,7 +118,7 @@ zffinal zfclassLikePOD ZFLIB_ZFCore _ZFP_zfunsafe_zfblockedReleaseContainer {
 public:
     template<typename T_ZFObject>
     _ZFP_zfunsafe_zfblockedReleaseContainer(ZF_IN T_ZFObject obj)
-    : obj(zfunsafe_zfcast(ZFObject *, obj))
+    : obj(zfcast(ZFObject *, obj))
     {
     }
     ~_ZFP_zfunsafe_zfblockedReleaseContainer(void) {

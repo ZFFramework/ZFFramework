@@ -47,7 +47,7 @@ public:
         /** @cond ZFPrivateDoc */ \
         template<typename T_ZFObject> \
         inline T_ZFObject to(void) { \
-            return zfunsafe_zfcast(T_ZFObject, this); \
+            return zfcast(T_ZFObject, this); \
         } \
         virtual inline ZFObject *toObject(void) { \
             return this; \

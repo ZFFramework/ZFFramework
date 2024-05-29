@@ -50,7 +50,7 @@
     self._nativeAniKey = nil;
 }
 - (void)nativeAniStart {
-    UIView *aniTarget = (__bridge UIView *)zfunsafe_zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
+    UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
     CAMediaTimingFunction *nativeCurve = nil;
     switch(self.ownerAni->aniCurve()) {
         case ZFAnimationNativeViewCurve::e_Linear:
@@ -146,7 +146,7 @@
     [aniTarget.layer addAnimation:self forKey:self._nativeAniKey];
 }
 - (void)nativeAniStop {
-    UIView *aniTarget = (__bridge UIView *)zfunsafe_zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
+    UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
     [aniTarget.layer removeAnimationForKey:self._nativeAniKey];
     self._nativeAniDelegate.owner = nil;
     self._nativeAniDelegate = nil;
@@ -158,7 +158,7 @@
 - (void)_nativeAniOnStop:(zfidentity)aniId finished:(BOOL)finished {
     if(aniId == self.ownerAni->aniId()) {
         self.delegate = nil;
-        UIView *aniTarget = (__bridge UIView *)zfunsafe_zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
+        UIView *aniTarget = (__bridge UIView *)zfcast(ZFUIView *, self.ownerAni->aniTarget())->nativeView();
         [aniTarget.layer removeAnimationForKey:self._nativeAniKey];
         ZFPROTOCOL_ACCESS(ZFAnimationNativeView)->notifyAniStop(self.ownerAni);
     }

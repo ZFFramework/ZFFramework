@@ -19,7 +19,7 @@ zfclassFwd ZFProperty;
 typedef ZFObject *(*_ZFP_ZFObjectConstructor)(void);
 typedef void (*_ZFP_ZFObjectDestructor)(ZF_IN ZFObject *obj);
 typedef void (*_ZFP_ZFObjectCheckInitImplementationListCallback)(ZF_IN_OUT ZFClass *cls);
-typedef ZFInterface * (*_ZFP_ZFObjectToInterfaceCastCallback)(ZF_IN ZFObject * const &obj);
+typedef ZFInterface * (*_ZFP_ZFObjectToInterfaceCastCallback)(ZF_IN ZFObject *obj);
 
 typedef ZFObject *(*_ZFP_zfAllocCacheCallback)(void);
 typedef void (*_ZFP_zfAllocCacheReleaseCallback)(ZF_IN ZFObject *obj);
@@ -647,9 +647,16 @@ public:
             , ...
             );
     ZFInterface *_ZFP_ZFClass_interfaceCast(
-            ZF_IN ZFObject * const &obj
+            ZF_IN ZFObject *obj
             , ZF_IN const ZFClass *interfaceClass
             ) const;
+    ZFObject *_ZFP_ZFClass_objectCast(
+            ZF_IN ZFObject *obj
+            , ZF_IN const ZFClass *objectClass
+            ) const;
+
+    zfbool _ZFP_ZFClass_ZFImplementDynamicRegister(ZF_IN const ZFClass *clsToImplement) const;
+    void _ZFP_ZFClass_ZFImplementDynamicUnregister(ZF_IN const ZFClass *clsToImplement) const;
 
     void _ZFP_ZFClass_objectDesctuct(ZF_IN ZFObject *obj) const;
     ZFClass *_ZFP_ZFClass_removeConst(void) const {

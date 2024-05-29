@@ -706,6 +706,8 @@ protected:
 public:
     zffinal void _ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseCallback callback);
     zffinal _ZFP_zfAllocCacheReleaseCallback _ZFP_ZFObject_zfAllocCacheRelease(void);
+    zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void);
+    zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement);
 
 public:
     const ZFClass *_ZFP_ZFObject_classDynamic;

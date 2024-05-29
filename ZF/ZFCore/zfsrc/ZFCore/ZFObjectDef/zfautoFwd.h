@@ -114,11 +114,11 @@ public:
         return _ZFP_obj;
     }
     /**
-     * @brief cast by #zfunsafe_zfcast
+     * @brief cast by #zfcast
      */
     template<typename T_ZFObject>
     inline T_ZFObject to(void) const {
-        return zfunsafe_zfcast(T_ZFObject, this->toObject());
+        return zfcast(T_ZFObject, this->toObject());
     }
 
     /**

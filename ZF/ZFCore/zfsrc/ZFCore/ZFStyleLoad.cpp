@@ -8,7 +8,7 @@ static void _ZFP_ZFStyleLoad_ZFStyleSet(
         , ZF_IN ZFStyleable *styleValue
         ) {
     if(styleValue != zfnull && styleValue->classData()->classIsTypeOf(ZFStyleList::ClassData())) {
-        ZFStyleLoad(zfunsafe_zfcast(ZFStyleList *, styleValue));
+        ZFStyleLoad(zfcast(ZFStyleList *, styleValue));
     }
     else {
         ZFStyleSet(styleKey, styleValue);

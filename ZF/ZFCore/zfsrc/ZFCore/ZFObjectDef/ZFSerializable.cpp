@@ -535,7 +535,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyFromData(
             return zffalse;
         }
     }
-    return zfunsafe_zfcast(zfself *, obj)->serializeFromData(propertyData, outErrorHint, outErrorPos);
+    return zfcast(zfself *, obj)->serializeFromData(propertyData, outErrorHint, outErrorPos);
 }
 zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(
         ZF_OUT ZFSerializableData &ownerData

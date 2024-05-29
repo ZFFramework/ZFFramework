@@ -58,7 +58,7 @@ protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
-        this->enumValue(zfunsafe_zfcast(zfself *, anotherObj)->enumValue());
+        this->enumValue(zfcast(zfself *, anotherObj)->enumValue());
     }
 
 protected:

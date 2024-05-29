@@ -110,7 +110,7 @@ ZFCompareResult ZFEnum::objectCompare(ZF_IN ZFObject *anotherObj) {
         return ZFCompareUncomparable;
     }
 
-    zfself *another = zfunsafe_zfcast(zfself *, anotherObj);
+    zfself *another = zfcast(zfself *, anotherObj);
     if(this->enumValue() == ZFEnumInvalid()
             || another->enumValue() == ZFEnumInvalid()
             ) {

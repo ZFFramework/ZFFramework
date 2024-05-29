@@ -10,13 +10,24 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // _ZFP_ZFObjectPrivate
 typedef zfstlmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
+zfclassNotPOD _ZFP_ZFImplementDynamicHolder {
+public:
+    ZFObject *owner;
+    zfstlmap<const ZFClass *, zfauto> holder;
+public:
+    _ZFP_ZFImplementDynamicHolder(void)
+    : owner(zfnull)
+    , holder()
+    {
+    }
+};
 zfclassNotPOD _ZFP_ZFObjectPrivate {
 public:
     zfuint objectRetainCount;
     ZFObjectInstanceState objectInstanceState;
     ZFObjectHolder *objectHolder;
     void *mutexImpl;
-    _ZFP_ZFObjectTagMapType objectTagMap;
+    _ZFP_ZFObjectTagMapType *objectTagMap;
     zfstlvector<const ZFProperty *> propertyAccessed;
     enum {
         stateFlag_objectIsInternal = 1 << 0,
@@ -31,17 +42,20 @@ public:
 
     _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
 
+    _ZFP_ZFImplementDynamicHolder *ZFImplementDynamicHolder;
+
 public:
     _ZFP_ZFObjectPrivate(ZF_IN const ZFClass *cls)
     : objectRetainCount(1)
     , objectInstanceState(ZFObjectInstanceStateOnInit)
     , objectHolder(zfnull)
     , mutexImpl(zfnull)
-    , objectTagMap()
+    , objectTagMap(zfnull)
     , propertyAccessed()
     , stateFlags(0)
     , observerHolder(zfnull)
     , zfAllocCacheRelease(zfnull)
+    , ZFImplementDynamicHolder(zfnull)
     {
         if(cls->classIsInternal()) {
             ZFBitSet(this->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal);
@@ -52,7 +66,10 @@ public:
     }
     ~_ZFP_ZFObjectPrivate(void) {
         if(this->observerHolder) {
-            zfdelete(this->observerHolder);
+            zfpoolDelete(this->observerHolder);
+        }
+        if(this->ZFImplementDynamicHolder) {
+            zfpoolDelete(this->ZFImplementDynamicHolder);
         }
     }
 
@@ -203,7 +220,7 @@ zfauto ZFObject::invokeDetail(
 }
 
 zfbool ZFObject::objectTagExist(void) {
-    return !(d->objectTagMap.empty());
+    return d->objectTagMap && !(d->objectTagMap->empty());
 }
 void ZFObject::objectTag(
         ZF_IN const zfchar *key
@@ -220,7 +237,10 @@ void ZFObject::objectTag(
         return;
     }
 
-    _ZFP_ZFObjectTagMapType &m = d->objectTagMap;
+    if(d->objectTagMap == zfnull) {
+        d->objectTagMap = zfpoolNew(_ZFP_ZFObjectTagMapType);
+    }
+    _ZFP_ZFObjectTagMapType &m = *(d->objectTagMap);
     _ZFP_ZFObjectTagMapType::iterator it = m.find(key);
     if(it == m.end()) {
         if(tag != zfnull) {
@@ -241,9 +261,11 @@ void ZFObject::objectTag(
 zfany ZFObject::objectTag(ZF_IN const zfchar *key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
-        _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap.find(key);
-        if(it != d->objectTagMap.end()) {
-            return it->second;
+        if(d->objectTagMap) {
+            _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap->find(key);
+            if(it != d->objectTagMap->end()) {
+                return it->second;
+            }
         }
     }
     return zfnull;
@@ -253,32 +275,36 @@ void ZFObject::objectTagGetAllKeyValue(
         , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) {
     zfCoreMutexLocker();
-    _ZFP_ZFObjectTagMapType &m = d->objectTagMap;
-    allKey.capacity(allKey.count() + m.size());
-    allValue.capacity(allValue.count() + m.size());
-    for(_ZFP_ZFObjectTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
-        allKey.add(it->first);
-        allValue.add(it->second);
+    if(d->objectTagMap) {
+        _ZFP_ZFObjectTagMapType &m = *(d->objectTagMap);
+        allKey.capacity(allKey.count() + m.size());
+        allValue.capacity(allValue.count() + m.size());
+        for(_ZFP_ZFObjectTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
+            allKey.add(it->first);
+            allValue.add(it->second);
+        }
     }
 }
 zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfchar *key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
-        _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap.find(key);
-        if(it != d->objectTagMap.end()) {
-            zfauto ret;
-            ret.zfunsafe_assign(it->second);
-            d->objectTagMap.erase(it);
-            return ret;
+        if(d->objectTagMap) {
+            _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap->find(key);
+            if(it != d->objectTagMap->end()) {
+                zfauto ret;
+                ret.zfunsafe_assign(it->second);
+                d->objectTagMap->erase(it);
+                return ret;
+            }
         }
     }
     return zfnull;
 }
 void ZFObject::objectTagRemoveAll(void) {
-    if(!d->objectTagMap.empty()) {
+    if(d->objectTagMap && !d->objectTagMap->empty()) {
         zfCoreMutexLocker();
         _ZFP_ZFObjectTagMapType tmp;
-        tmp.swap(d->objectTagMap);
+        tmp.swap(*(d->objectTagMap));
     }
 }
 
@@ -539,8 +565,16 @@ void ZFObject::objectOnDealloc(void) {
         d->mutexImpl = zfnull;
     }
 
+    if(d->objectTagMap) {
+        if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
+            zfpoolDelete(d->objectTagMap);
+        }
+    }
+
     if(d->objectHolder) {
-        d->objectHolder->objectHolded(zfnull);
+        if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
+            d->objectHolder->objectHolded(zfnull);
+        }
         zfRelease(d->objectHolder);
     }
 
@@ -604,6 +638,46 @@ void ZFObject::_ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseC
 }
 _ZFP_zfAllocCacheReleaseCallback ZFObject::_ZFP_ZFObject_zfAllocCacheRelease(void) {
     return d->zfAllocCacheRelease;
+}
+
+ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void) {
+    return d->ZFImplementDynamicHolder ? d->ZFImplementDynamicHolder->owner : this;
+}
+ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement) {
+    if(d->ZFImplementDynamicHolder == zfnull) {
+        d->ZFImplementDynamicHolder = zfpoolNew(_ZFP_ZFImplementDynamicHolder);
+        d->ZFImplementDynamicHolder->owner = this;
+    }
+    zfstlmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder->holder.find(clsToImplement);
+    if(it != d->ZFImplementDynamicHolder->holder.end()) {
+        return it->second;
+    }
+    else {
+        zfauto holder = clsToImplement->newInstance();
+        d->ZFImplementDynamicHolder->holder[clsToImplement] = holder;
+        holder->d->ZFImplementDynamicHolder = zfpoolNew(_ZFP_ZFImplementDynamicHolder);
+        holder->d->ZFImplementDynamicHolder->owner = this;
+
+        // alias internal data to owner
+        holder->d->objectHolder = zfRetain(this->objectHolder());
+        holder->d->observerHolder = zfpoolNew(ZFObserver, this->observerHolder());
+        if(d->objectTagMap == zfnull) {
+            d->objectTagMap = zfpoolNew(_ZFP_ZFObjectTagMapType);
+        }
+        if(holder->d->objectTagMap != zfnull) {
+            for(_ZFP_ZFObjectTagMapType::iterator it = holder->d->objectTagMap->begin(); it != holder->d->objectTagMap->end(); ++it) {
+                (*(d->objectTagMap))[it->first] = it->second;
+            }
+            _ZFP_ZFObjectTagMapType *tmp = holder->d->objectTagMap;
+            holder->d->objectTagMap = d->objectTagMap;
+            zfpoolDelete(tmp);
+        }
+        else {
+            holder->d->objectTagMap = d->objectTagMap;
+        }
+
+        return holder;
+    }
 }
 
 ZF_NAMESPACE_GLOBAL_END

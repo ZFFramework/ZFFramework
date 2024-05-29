@@ -80,7 +80,7 @@ public:
         /** @cond ZFPrivateDoc */ \
         template<typename T_ZFObject> \
         inline T_ZFObject to(void) { \
-            return zfunsafe_zfcast(T_ZFObject, this); \
+            return zfcast(T_ZFObject, this); \
         } \
         /** @endcond */ \
     public:
@@ -106,29 +106,29 @@ public:
         /** @endcond */ \
     public:
 
-template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface, int isInterface>
+template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface, int isFromInterface>
 zfclassNotPOD _ZFP_ObjICW { // interface cast wrapper
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
 zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, T_ToZFInterface, 0> {
 public:
-    static ZFInterface *_ZFP_cast(ZF_IN ZFObject * const &obj) {
-        return (T_ToZFInterface *)static_cast<T_FromZFObjectOrZFInterface *>(obj);
+    static ZFInterface *_ZFP_cast(ZF_IN ZFObject *obj) {
+        return (T_ToZFInterface *)zfcast(T_FromZFObjectOrZFInterface *, obj);
     }
 };
 template<typename T_FromZFObjectOrZFInterface, typename T_ToZFInterface>
 zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, T_ToZFInterface, 1> {
 public:
     template<typename T_ZFObject>
-    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject * const &obj) {
-        return zfunsafe_zfcast(T_ToZFInterface *, obj->toObject());
+    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject *obj) {
+        return zfcast(T_ToZFInterface *, obj->toObject());
     }
 };
 template<typename T_FromZFObjectOrZFInterface>
 zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, ZFInterface, 0> {
 public:
     template<typename T_ZFObject>
-    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject * const &obj) {
+    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject *obj) {
         return zfnull;
     }
 };
@@ -136,14 +136,14 @@ template<typename T_FromZFObjectOrZFInterface>
 zfclassNotPOD _ZFP_ObjICW<T_FromZFObjectOrZFInterface, ZFInterface, 1> {
 public:
     template<typename T_ZFObject>
-    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject * const &obj) {
+    static inline ZFInterface *_ZFP_cast(ZF_IN T_ZFObject *obj) {
         return zfnull;
     }
 };
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_PARAM(Interface) \
     , Interface::ClassData(), &zfself::_ZFP_ObjICCb_##Interface
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_CAST_CALLBACK(Interface) \
-    static ZFInterface *_ZFP_ObjICCb_##Interface(ZF_IN ZFObject * const &obj) { \
+    static ZFInterface *_ZFP_ObjICCb_##Interface(ZF_IN ZFObject *obj) { \
         return _ZFP_ObjICW<zfself, Interface, (zftIsTypeOf<zfself, ZFObject>::Value ? 0 : 1)>::_ZFP_cast(obj); \
     }
 #define _ZFP_ZFIMPLEMENT_DECLARE_EXPAND_INTERFACE_ON_INIT(Interface) \

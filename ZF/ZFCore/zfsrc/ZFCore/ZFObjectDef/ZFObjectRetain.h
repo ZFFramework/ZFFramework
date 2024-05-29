@@ -111,7 +111,7 @@ inline void _ZFP_zfRetainAction(ZF_IN ZFObject *obj) {
 }
 template<typename T_ZFObject>
 inline T_ZFObject const &_ZFP_zfRetain(ZF_IN T_ZFObject const &obj) {
-    _ZFP_zfRetainAction(zfunsafe_zfcast(ZFObject *, obj));
+    _ZFP_zfRetainAction(zfcast(ZFObject *, obj));
     return obj;
 }
 /**
@@ -132,7 +132,7 @@ inline void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj) {
 }
 template<typename T_ZFObject>
 inline void _ZFP_zfRelease(ZF_IN T_ZFObject obj) {
-    _ZFP_zfReleaseAction(zfunsafe_zfcast(ZFObject *, obj));
+    _ZFP_zfReleaseAction(zfcast(ZFObject *, obj));
 }
 /**
  * @brief release an object, see #ZFObject
@@ -183,7 +183,7 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject obj) {
         } \
         static void _ZFP_zfAllocCacheRelease(ZF_IN ZFObject *_obj) { \
             zfsuper::_ZFP_zfAllocCacheRelease(_obj); \
-            zfself *cache = zfunsafe_zfcast(zfself *, _obj); \
+            zfself *cache = zfcast(zfself *, _obj); \
             ZFUNUSED(cache); \
             action \
         } \
@@ -195,7 +195,7 @@ inline void _ZFP_zfRelease(ZF_IN T_ZFObject obj) {
         /** @cond ZFPrivateDoc */ \
         static void _ZFP_zfAllocCacheRelease(ZF_IN ZFObject *_obj) { \
             zfsuper::_ZFP_zfAllocCacheRelease(_obj); \
-            zfself *cache = zfunsafe_zfcast(zfself *, _obj); \
+            zfself *cache = zfcast(zfself *, _obj); \
             ZFUNUSED(cache); \
             action \
         } \
@@ -225,7 +225,7 @@ public:
                 ZFObject *ret = cache()[--(cacheCount())];
                 ret->_ZFP_ZFObject_zfAllocCacheRelease(zfself::_ZFP_zfAllocCacheRelease);
                 ret->classData()->_ZFP_ZFClass_instanceObserverNotify(ret);
-                return zfunsafe_zfcast(T_ZFObject *, ret);
+                return zfcast(T_ZFObject *, ret);
             }
             else {
                 T_ZFObject *ret = _ZFP_zfAllocInternal(T_ZFObject);
@@ -313,7 +313,7 @@ T_ZFObject *_ZFP_Obj_AllocCk<T_ZFObject, 1>::CanAlloc(void) {
 #define zfRetainChange(property, propertyValue) \
     do { \
         zfCoreMutexLock(); \
-        ZFObject *_ZFP_zfRetainChangeTmpValue = zfunsafe_zfcast(ZFObject *, property); \
+        ZFObject *_ZFP_zfRetainChangeTmpValue = zfcast(ZFObject *, property); \
         zfunsafe_zfRetain(property = propertyValue); \
         zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue); \
         zfCoreMutexUnlock(); \
@@ -321,7 +321,7 @@ T_ZFObject *_ZFP_Obj_AllocCk<T_ZFObject, 1>::CanAlloc(void) {
 /** @brief no lock version of #zfRetainChange, use with caution */
 #define zfunsafe_zfRetainChange(property, propertyValue) \
     do { \
-        ZFObject *_ZFP_zfRetainChangeTmpValue = zfunsafe_zfcast(ZFObject *, property); \
+        ZFObject *_ZFP_zfRetainChangeTmpValue = zfcast(ZFObject *, property); \
         zfunsafe_zfRetain(property = propertyValue); \
         zfunsafe_zfRelease(_ZFP_zfRetainChangeTmpValue); \
     } while(zffalse)

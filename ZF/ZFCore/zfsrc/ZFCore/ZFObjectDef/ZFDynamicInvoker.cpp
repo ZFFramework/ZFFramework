@@ -133,15 +133,16 @@ void ZFDI_paramInfo(
         , ZF_IN_OPT ZFObject *param5 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param6 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param7 /* = ZFMethodGenericInvokerDefaultParam() */
+        , ZF_IN_OPT zfindex paramCount /* = zfindexMax() */
         ) {
-    if(param0 == ZFMethodGenericInvokerDefaultParam()) {
+    if(paramCount == 0 || param0 == ZFMethodGenericInvokerDefaultParam()) {
         return;
     }
     do {
         _ZFP_ZFDI_paramInfo(ret, param0);
 
         #define _ZFP_ZFDI_paramInfo_loop(N) \
-            if(param##N == ZFMethodGenericInvokerDefaultParam()) { \
+            if(N >= paramCount || param##N == ZFMethodGenericInvokerDefaultParam()) { \
                 break; \
             } \
             else { \
@@ -183,8 +184,13 @@ static zfbool _ZFP_ZFDI_invoke(
                     , paramList[5]
                     , paramList[6]
                     , paramList[7]
+                    , paramCount
                 );
             *errorHint += ")";
+            if(obj != zfnull) {
+                *errorHint += ", for object: ";
+                obj->objectInfoT(*errorHint);
+            }
         }
         return zffalse;
     }
@@ -211,6 +217,9 @@ zfbool ZFDI_invoke(
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
+    if(obj != zfnull) {
+        obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
+    }
     _ZFP_ZFDI_errorPrepare();
     if(_ZFP_ZFDI_cacheEnable) {
         zfCoreMutexLock();
@@ -303,6 +312,9 @@ zfbool ZFDI_invoke(
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr /* = zffalse */
         ) {
+    if(obj != zfnull) {
+        obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
+    }
     _ZFP_ZFDI_errorPrepare();
     if(methodList.isEmpty()) {
         if(errorHint != zfnull) {
@@ -408,6 +420,7 @@ zfbool ZFDI_invoke(
                     , paramList[5]
                     , paramList[6]
                     , paramList[7]
+                    , paramCount
                 );
         }
     }
@@ -561,6 +574,7 @@ zfbool ZFDI_alloc(
                     , paramList[5]
                     , paramList[6]
                     , paramList[7]
+                    , paramCount
                 );
         }
     }

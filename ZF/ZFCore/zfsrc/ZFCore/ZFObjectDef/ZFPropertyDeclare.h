@@ -427,7 +427,7 @@ public:
                     _ZFP_ZFPropertyLifeCycleCall_init_retain( \
                         zfself::_ZFP_Prop_##Name(), \
                         owner, \
-                        zfunsafe_zfcast(ZFObject *, this->_ZFP_v->value()), \
+                        zfcast(ZFObject *, this->_ZFP_v->value()), \
                         notifyOwnerAttach, \
                         _ZFP_PropRVSC_r<zfself::PropVT_##Name>::f, \
                         this->_ZFP_v); \
@@ -444,7 +444,7 @@ public:
                 _ZFP_ZFPropertyLifeCycleCall_dealloc_retain( \
                     zfself::_ZFP_Prop_##Name(), \
                     owner, \
-                    zfunsafe_zfcast(ZFObject *, this->_ZFP_v->value()), \
+                    zfcast(ZFObject *, this->_ZFP_v->value()), \
                     notifyOwnerDetach); \
                 zfpoolDelete(this->_ZFP_v); \
                 this->_ZFP_v = zfnull; \
@@ -459,7 +459,7 @@ public:
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
-            zfself *t = zfunsafe_zfcast(zfself *, ownerObj); \
+            zfself *t = zfcast(zfself *, ownerObj); \
             if(t->Name##_PropV._ZFP_accessed()) { \
                 zfself::_ZFP_PropV_##Name _holder; \
                 if(outInitValue != zfnull) { \
@@ -536,7 +536,7 @@ public:
                 , ZF_IN zfany const &ownerObj \
                 , ZF_OUT_OPT zfauto *outInitValue \
                 ) { \
-            zfself *t = zfunsafe_zfcast(zfself *, ownerObj); \
+            zfself *t = zfcast(zfself *, ownerObj); \
             if(t->Name##_PropV._ZFP_accessed()) { \
                 zfself::_ZFP_PropV_##Name _holder; \
                 if(outInitValue != zfnull) { \
@@ -561,26 +561,26 @@ public:
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &ownerObj \
                 ) { \
-            return zfunsafe_zfcast(zfself *, ownerObj)->Name##_PropV._ZFP_accessed(); \
+            return zfcast(zfself *, ownerObj)->Name##_PropV._ZFP_accessed(); \
         } \
     private: \
         static void _ZFP_propCbReset_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
-            zfunsafe_zfcast(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zftrue); \
+            zfcast(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zftrue); \
         } \
         static void _ZFP_propCbEnsureInit_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
-            zfunsafe_zfcast(zfself *, owner)->Name##_PropV._ZFP_init(owner, zftrue); \
+            zfcast(zfself *, owner)->Name##_PropV._ZFP_init(owner, zftrue); \
         } \
         static void _ZFP_propCbDel_##Name( \
                 ZF_IN const ZFProperty *property \
                 , ZF_IN zfany const &owner \
                 ) { \
-            zfunsafe_zfcast(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zffalse); \
+            zfcast(zfself *, owner)->Name##_PropV._ZFP_dealloc(owner, zffalse); \
         } \
     public:
 
@@ -726,7 +726,7 @@ public:
                 , ZF_IN const void *propertyValueOld \
                 , ZF_IN ZFObject *propertyLifeCycleUserData \
                 ) { \
-            zfunsafe_zfcast(zfself *, propertyOwnerObject)->zfself::_ZFP_propL_##lifeCycleName##_##Name( \
+            zfcast(zfself *, propertyOwnerObject)->zfself::_ZFP_propL_##lifeCycleName##_##Name( \
                 *(constFix(const) zfself::PropHT_##Name *)propertyValue, \
                 *(zfself::PropHT_##Name *)propertyValueOld); \
         } \
@@ -756,7 +756,7 @@ public:
                 , ZF_IN const void *propertyValueOld \
                 , ZF_IN ZFObject *propertyLifeCycleUserData \
                 ) { \
-            zfunsafe_zfcast(OwnerClass *, propertyOwnerObject)->OwnerClass::_ZFP_propL_##lifeCycleName##_##Name( \
+            zfcast(OwnerClass *, propertyOwnerObject)->OwnerClass::_ZFP_propL_##lifeCycleName##_##Name( \
                 *(constFix(const) OwnerClass::PropHT_##Name *)propertyValue, \
                 *(OwnerClass::PropHT_##Name *)propertyValueOld); \
         } \

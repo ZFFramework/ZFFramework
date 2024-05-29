@@ -44,7 +44,7 @@ zfauto &zfauto::operator = (ZF_IN T_ZFObject const &p) {
 /** @cond ZFPrivateDoc */
 template<typename T_ZFObjectBase>
 T_ZFObjectBase *zfautoT<T_ZFObjectBase>::operator -> (void) const {
-    return zfunsafe_zfcast(T_ZFObjectBase *, this->toObject());
+    return zfcast(T_ZFObjectBase *, this->toObject());
 }
 
 template<typename T_ZFObjectBase>

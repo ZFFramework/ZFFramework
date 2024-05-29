@@ -121,6 +121,7 @@ extern ZFLIB_ZFCore void ZFDI_paramInfo(
         , ZF_IN_OPT ZFObject *param5 = ZFMethodGenericInvokerDefaultParam()
         , ZF_IN_OPT ZFObject *param6 = ZFMethodGenericInvokerDefaultParam()
         , ZF_IN_OPT ZFObject *param7 = ZFMethodGenericInvokerDefaultParam()
+        , ZF_IN_OPT zfindex paramCount = zfindexMax()
         );
 
 /** @brief util method to calc param count */

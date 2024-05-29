@@ -176,11 +176,11 @@ public:
         return _ZFP_obj ? _ZFP_obj->objectHolded().toObject() : zfnull;
     }
     /**
-     * @brief cast by #zfunsafe_zfcast
+     * @brief cast by #zfcast
      */
     template<typename T_ZFObject>
     inline T_ZFObject to(void) const {
-        return zfunsafe_zfcast(T_ZFObject, this->toObject());
+        return zfcast(T_ZFObject, this->toObject());
     }
 
     /**
@@ -246,7 +246,7 @@ public:
 
 public:
     inline T_ZFObjectBase *operator -> (void) const {
-        return zfunsafe_zfcast(T_ZFObjectBase *, this->toObject());
+        return zfcast(T_ZFObjectBase *, this->toObject());
     }
     inline ZFObject *toObject(void) const { // required for _ZFP_zfanyCast to work
         return zfweak::toObject();

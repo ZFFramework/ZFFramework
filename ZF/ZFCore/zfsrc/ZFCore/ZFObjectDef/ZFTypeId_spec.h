@@ -108,7 +108,7 @@ public:
             ZF_OUT zfauto &obj
             , ZF_IN T_Type const &v
             ) {
-        obj = zfunsafe_zfcast(ZFObject *, v);
+        obj = zfcast(ZFObject *, v);
         return zftrue;
     }
     template<typename T_Access = T_Type
