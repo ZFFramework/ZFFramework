@@ -5,7 +5,7 @@
 #ifndef _ZFI_ZFMemPool_h_
 #define _ZFI_ZFMemPool_h_
 
-#include "ZFCoreTypeDef.h"
+#include "ZFCoreMutex.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -25,7 +25,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @def zfpoolNew
  * @brief internal use only, for allocating internal types for performance
  *
- * @warning no thread-safe
  * @warning pointers passed to zfpoolDelete must be the same with the type you create
  * @def zfpoolDelete
  * @brief see #zfpoolNew
@@ -111,6 +110,7 @@ template<typename T_Type>
 zfclassNotPOD _ZFP_zfpoolObjectHolder {
 public:
     static void *poolMalloc(void) {
+        zfCoreMutexLocker();
         return _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign<sizeof(T_Type)>::V>::instance().poolMalloc();
     }
     static void poolDelete(ZF_IN T_Type *obj) {
@@ -121,7 +121,9 @@ public:
 template<typename T_Type>
 inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
     if(obj) {
+        zfCoreMutexLock();
         _ZFP_zfpoolObjectHolder<T_Type>::poolDelete(obj);
+        zfCoreMutexUnlock();
     }
 }
 

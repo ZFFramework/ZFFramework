@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     printf("%s", zfstr("%s %s\n", callerInfo, zfstr(fmt, ##__VA_ARGS__)).cString())
 
 _ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(
-        ZF_IN ZFObject *obj
+        ZF_IN zfany const &obj
         , ZF_IN const ZFCallerInfo &callerInfo
         )
 : m_obj(obj)
@@ -42,7 +42,7 @@ _ZFP_zfsynchronizeContainerWithLog::~_ZFP_zfsynchronizeContainerWithLog(void) {
 
 // ============================================================
 void _ZFP_zfsynchronizeLockWithLog(
-        ZF_IN ZFObject *obj
+        ZF_IN zfany const &obj
         , ZF_IN const ZFCallerInfo &callerInfo
         ) {
     if(obj == zfnull) {
@@ -63,7 +63,7 @@ void _ZFP_zfsynchronizeLockWithLog(
         obj->objectInfoOfInstance());
 }
 void _ZFP_zfsynchronizeUnlockWithLog(
-        ZF_IN ZFObject *obj
+        ZF_IN zfany const &obj
         , ZF_IN const ZFCallerInfo &callerInfo
         ) {
     if(obj == zfnull) {
@@ -91,10 +91,10 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeLock
-        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN(zfany const &, obj)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, zfsynchronizeUnlock
-        , ZFMP_IN(ZFObject *, obj)
+        , ZFMP_IN(zfany const &, obj)
         )
 
 ZF_NAMESPACE_GLOBAL_END

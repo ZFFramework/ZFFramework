@@ -238,7 +238,9 @@ void ZFAnimation::aniImplStop(void) {
 }
 
 void ZFAnimation::aniImplNotifyStop(ZF_IN_OPT ZFResultTypeEnum resultType /* = ZFResultType::e_Success */) {
-    zfCoreAssertWithMessage(d->aniRunning && d->aniImplStartFlag, "notify stop an animation which not started");
+    if(!d->aniRunning || !d->aniImplStartFlag) {
+        return;
+    }
     this->_ZFP_ZFAnimation_aniReadyStop();
     ZFObject *aniTargetToRelease = this->aniTarget();
 

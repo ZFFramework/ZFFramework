@@ -34,8 +34,8 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
     if(!input) {
         return zfnull;
     }
-    zfCoreMutexLocker();
     if(input.callbackId() != zfnull) {
+        zfCoreMutexLocker();
         zfauto ret = ZFResCache::instance()->cacheGet(input.callbackId());
         if(ret != zfnull) {
             return ret;
@@ -45,6 +45,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
     if(!ZFObjectIOLoadT(ret, input)) {
         return zfnull;
     }
+    zfCoreMutexLocker();
     if(ret != zfnull && input.callbackId() != zfnull) {
         ZFResCache::instance()->cacheAdd(input.callbackId(), ret);
     }

@@ -94,7 +94,7 @@ zfclassNotPOD _ZFP_Obj_AllocCk<T_ZFObject, 0> {
  * then zfAlloc would automatically has cache logic
  */
 #define zfAlloc(T_ZFObject, ...) \
-    (zfCoreMutexLockerHolder(), zfunsafe_zfAlloc(T_ZFObject, ##__VA_ARGS__))
+    zfunsafe_zfAlloc(T_ZFObject, ##__VA_ARGS__)
 /** @brief no lock version of #zfAlloc, use with caution */
 #define zfunsafe_zfAlloc(T_ZFObject, ...) \
     _ZFP_zfAlloc(T_ZFObject, ##__VA_ARGS__)
