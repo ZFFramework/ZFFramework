@@ -86,10 +86,6 @@ void ZFProperty::_ZFP_ZFPropertyInit(
     this->_ZFP_ZFProperty_propertyIsDynamicRegister = propertyIsDynamicRegister;
     this->_ZFP_ZFProperty_propertyDynamicRegisterUserData = zfRetain(propertyDynamicRegisterUserData);
     this->_ZFP_ZFProperty_propertyOwnerClass = propertyOwnerClass;
-    if(propertyClassOfRetainProperty == zfnull && ZFClass::classForName(typeIdName) != zfnull) {
-        // assign property with ZFObject type, is not serializable
-        typeIdName = ZFTypeId_none();
-    }
     this->_ZFP_ZFProperty_name = name;
     this->_ZFP_ZFProperty_typeName = typeName;
     this->_ZFP_ZFProperty_typeId = typeIdName;

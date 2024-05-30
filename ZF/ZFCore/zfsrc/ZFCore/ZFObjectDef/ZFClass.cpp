@@ -356,6 +356,10 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
         }
         toCheck.addFrom(t->d->implementedInterface);
 
+        for(zfstlmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator itCast = t->d->interfaceCastMap.begin(); itCast != t->d->interfaceCastMap.end(); ++itCast) {
+            interfaceCastCache[itCast->first] = itCast->second;
+        }
+
         parentTypeCache[t] = zftrue;
         parentClassCache[t] = zftrue;
 
@@ -363,10 +367,6 @@ void _ZFP_ZFClassPrivate::classParentCacheUpdate(ZF_IN const ZFClass *cls) {
             parentClassCache[itImpl->first] = zftrue;
             parentTypeCache[itImpl->first] = zftrue;
             ZFImplementDynamicCache[itImpl->first] = zftrue;
-
-            for(zfstlmap<const ZFClass *, _ZFP_ZFObjectToInterfaceCastCallback>::iterator itCast = t->d->interfaceCastMap.begin(); itCast != t->d->interfaceCastMap.end(); ++itCast) {
-                interfaceCastCache[itCast->first] = itCast->second;
-            }
         }
     } while(!toCheck.isEmpty());
 }

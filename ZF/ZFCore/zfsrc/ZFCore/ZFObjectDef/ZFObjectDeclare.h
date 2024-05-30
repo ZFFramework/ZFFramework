@@ -170,11 +170,16 @@ public:
  *   // in something.h:
  *   zfclass YourClass : zfextend BaseClass {
  *       ZFOBJECT_DECLARE(YourClass, BaseClass)
+ *
+ *       zfclass InnerClass : zfextend OtherBaseClass {
+ *           ZFOBJECT_DECLARE(InnerClass, OtherBaseClass, YourClass)
+ *       };
  *   };
  *
  *   // in something.cpp:
  *   #include "something.h"
  *   ZFOBJECT_REGISTER(YourClass)
+ *   ZFOBJECT_REGISTER(YourClass, InnerClass)
  * @endcode
  * you only need this if you want to use reflection,
  * such as ZFClass::classForName\n

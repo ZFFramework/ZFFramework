@@ -314,25 +314,34 @@ ZFMETHOD_DEFINE_0(ZFThread, zfbool, threadStopRequested) {
 
 ZFMETHOD_DEFINE_0(ZFThread, void, threadWait) {
     zfCoreMutexLock();
+    d->threadWaitSema->semaphoreLock();
     if(!d->startFlag) {
+        d->threadWaitSema->semaphoreUnlock();
         zfCoreMutexUnlock();
         return;
     }
     zfCoreMutexUnlock();
     _ZFP_ZFThreadLog("[ZFThread] threadWait begin %s", (const void *)this);
-    d->threadWaitSema->lockAndWait();
+    d->threadWaitSema->semaphoreWait();
+    d->threadWaitSema->semaphoreUnlock();
     _ZFP_ZFThreadLog("[ZFThread] threadWait end %s", (const void *)this);
 }
 ZFMETHOD_DEFINE_1(ZFThread, zfbool, threadWait
         , ZFMP_IN(zftimet, miliSecs)
         ) {
     zfCoreMutexLock();
+    d->threadWaitSema->semaphoreLock();
     if(!d->startFlag) {
+        d->threadWaitSema->semaphoreUnlock();
         zfCoreMutexUnlock();
         return zftrue;
     }
     zfCoreMutexUnlock();
-    return d->threadWaitSema->lockAndWait(miliSecs);
+    _ZFP_ZFThreadLog("[ZFThread] threadWait begin %s", (const void *)this);
+    zfbool ret = d->threadWaitSema->semaphoreWait(miliSecs);
+    d->threadWaitSema->semaphoreUnlock();
+    _ZFP_ZFThreadLog("[ZFThread] threadWait end %s", (const void *)this);
+    return ret;
 }
 
 ZFMETHOD_DEFINE_0(ZFThread, zfbool, isMainThread) {
@@ -488,13 +497,16 @@ void _ZFP_ZFThreadPrivate::threadCallback(
             break;
         }
         if(d->taskQueue.empty()) {
-            zfThread->ThreadTaskQueueOnFinish();
+            zfThread->threadTaskQueueOnFinish();
+            d->taskQueueSema->semaphoreLock();
             if(!d->taskQueue.empty()) {
+                d->taskQueueSema->semaphoreUnlock();
                 zfCoreMutexUnlock();
                 continue;
             }
             zfCoreMutexUnlock();
-            d->taskQueueSema->lockAndWait();
+            d->taskQueueSema->semaphoreWait();
+            d->taskQueueSema->semaphoreUnlock();
             continue;
         }
 

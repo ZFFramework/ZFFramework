@@ -67,6 +67,18 @@ extern ZFLIB_ZFCore void ZFImplementDynamicUnregister(
         , ZF_IN const ZFClass *clsToImplement
         );
 
+/**
+ * @brief util macro to register #ZFImplementDynamicRegister
+ */
+#define ZFCLASS_EXTEND(regSig, ExistClass, AttachClass) \
+    ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(DynImpl_##regSig, ZFLevelZFFrameworkStatic) { \
+        ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData()); \
+    } \
+    ZF_GLOBAL_INITIALIZER_DESTROY(DynImpl_##regSig) { \
+        ZFImplementDynamicUnregister(ExistClass::ClassData(), AttachClass::ClassData()); \
+    } \
+    ZF_GLOBAL_INITIALIZER_END(DynImpl_##regSig)
+
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFClassDynamicRegister_h_
 

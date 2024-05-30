@@ -315,7 +315,7 @@ protected:
         this->observerNotify(ZFThread::EventThreadOnStop(), zfargs.param0(), zfargs.param1());
     }
     /** @brief see #EventThreadTaskQueueOnFinish */
-    virtual inline void ThreadTaskQueueOnFinish(void) {
+    virtual inline void threadTaskQueueOnFinish(void) {
         this->observerNotify(ZFThread::EventThreadTaskQueueOnFinish());
     }
 

@@ -1,5 +1,5 @@
 /**
- * @page DocTag_Feature_ExtendExistingClass Extend existing class
+ * @page DocTag_Feature_ExtendExistingClass Extend existing cpp class
  *
  * similar to category of Object-C, it's possible to extend existing cpp class in ZFFramework:
  * @code
@@ -18,7 +18,7 @@
  *   };
  *
  *   // extend ExistClass by AttachClass
- *   ZFCLASS_EXTEND(ExistClass, AttachClass)
+ *   ZFCLASS_EXTEND(ExistClass_AttachClass, ExistClass, AttachClass)
  *   // or
  *   ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData());
  *
