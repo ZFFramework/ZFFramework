@@ -7,6 +7,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+#define _ZFP_ZFDI_CACHE_ENABLE 0
+
 typedef zfstlmap<zfindex, zfauto> _ZFP_ZFDI_ParamBackupMapType;
 
 // ============================================================
@@ -19,8 +21,8 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFDI_WrapperBase, void, zfv
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv)
 
 // ============================================================
+#if _ZFP_ZFDI_CACHE_ENABLE
 static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
-
 typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
 static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
@@ -45,6 +47,7 @@ private:
         _ZFP_ZFDI_methodMapCache.clear();
     }
 ZF_GLOBAL_INITIALIZER_END(ZFDI_MethodCache)
+#endif
 
 // ============================================================
 ZFCoreArray<ZFOutput> &ZFDI_errorCallbacks(void) {
@@ -195,6 +198,7 @@ static zfbool _ZFP_ZFDI_invoke(
         return zffalse;
     }
     else {
+#if _ZFP_ZFDI_CACHE_ENABLE
         if(_ZFP_ZFDI_cacheEnable) {
             zfCoreMutexLocker();
             zfstring key;
@@ -205,6 +209,7 @@ static zfbool _ZFP_ZFDI_invoke(
             key += name;
             _ZFP_ZFDI_methodMapCache[key].addFrom(methodList);
         }
+#endif
         return ZFDI_invoke(ret, errorHint, obj, methodList, paramCount, paramList, convStr);
     }
 }
@@ -221,6 +226,7 @@ zfbool ZFDI_invoke(
         obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
     }
     _ZFP_ZFDI_errorPrepare();
+#if _ZFP_ZFDI_CACHE_ENABLE
     if(_ZFP_ZFDI_cacheEnable) {
         zfCoreMutexLock();
         zfstring key;
@@ -240,6 +246,7 @@ zfbool ZFDI_invoke(
             zfCoreMutexUnlock();
         }
     }
+#endif
 
     ZFCoreArray<const ZFMethod *> methodList;
 
@@ -275,17 +282,6 @@ zfbool ZFDI_invoke(
         zfstring scopeTmp(name, dotPos);
         const zfchar *nameTmp = name + dotPos + 1;
 
-        // NS.ClassName()
-        // NS.v_ClassName()
-        // NS.ClassName.InnerClassName()
-        {
-            const ZFClass *cls = ZFClass::classForName(name, zfnull);
-            if(cls != zfnull) {
-                return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
-                    || _ZFP_ZFDI_errorOccurred();
-            }
-        }
-
         // NS.ClassName.methodName()
         // NS.v_ClassName.methodName()
         {
@@ -298,7 +294,26 @@ zfbool ZFDI_invoke(
         }
 
         // NS.methodName()
-        ZFMethodFuncForNameGetAllT(methodList, scopeTmp, nameTmp);
+        {
+            ZFMethodFuncForNameGetAllT(methodList, scopeTmp, nameTmp);
+            if(!methodList.isEmpty()) {
+                return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
+                    || _ZFP_ZFDI_errorOccurred();
+            }
+        }
+
+        // NS.ClassName()
+        // NS.v_ClassName()
+        // NS.ClassName.InnerClassName()
+        {
+            const ZFClass *cls = ZFClass::classForName(name, zfnull);
+            if(cls != zfnull) {
+                return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
+                    || _ZFP_ZFDI_errorOccurred();
+            }
+        }
+
+        // fail
         return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
             || _ZFP_ZFDI_errorOccurred();
     }

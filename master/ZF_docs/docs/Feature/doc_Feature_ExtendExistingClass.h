@@ -18,9 +18,15 @@
  *   };
  *
  *   // extend ExistClass by AttachClass
- *   ZFCLASS_EXTEND(ExistClass_AttachClass, ExistClass, AttachClass)
+ *   ZFCLASS_EXTEND(MyRegSig, ExistClass, AttachClass)
  *   // or
- *   ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData());
+ *   ZF_GLOBAL_INITIALIZER_INIT(MyRegSig) {
+ *       ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData());
+ *   }
+ *   ZF_GLOBAL_INITIALIZER_DESTROY(MyRegSig) {
+ *       ZFImplementDynamicUnregister(ExistClass::ClassData(), AttachClass::ClassData());
+ *   }
+ *   ZF_GLOBAL_INITIALIZER_END(MyRegSig)
  *
  *   // now the ExistClass would have AttachClass's method
  *   zfobj<ExistClass> obj;
@@ -29,19 +35,12 @@
  *
  *   // this is useful in script
  *   ZFLuaExecute(
+ *       "ZFImplementDynamicRegister(ExistClass.ClassData(), AttachClass.ClassData())\n"
+ *       "\n"
  *       "local obj = ExistClass()\n"
  *       "obj:funcInExistClass()\n"
  *       "obj:funcInAttachClass()\n"
  *       );
- * @endcode
- *
- * as you can see, we are able to register class/method/property in script language\n
- * further more, the registered contents can be combined
- * with all other features in C++ world:
- * @code
- *   zfauto obj = ZFClass::classForName("MyClass")->newInstance();
- *   obj->invoke("myProp", zfobj<v_zfstring>("myValue"));
- *   ZFObjectToXml(ZFOutputDefault(), obj);
  * @endcode
  */
 
