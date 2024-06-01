@@ -102,9 +102,5 @@ void _ZFP_PropAliasDetach(
     obj->objectTagRemove(key);
 }
 
-void _ZFP_ZFTypeIdWrapperMarkConst(ZF_IN_OUT_OPT ZFObject *zfv) {
-    ZFTypeIdWrapper::markConst(zfv);
-}
-
 ZF_NAMESPACE_GLOBAL_END
 

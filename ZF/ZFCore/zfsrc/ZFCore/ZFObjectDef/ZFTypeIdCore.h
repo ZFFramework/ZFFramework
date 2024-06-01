@@ -474,39 +474,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @endcode
  */
 zfabstract ZFLIB_ZFCore ZFTypeIdWrapper : zfextend ZFStyleableObject, zfimplement ZFProgressable {
-    ZFOBJECT_DECLARE_ABSTRACT_WITH_CUSTOM_CTOR(ZFTypeIdWrapper, ZFStyleableObject)
+    ZFOBJECT_DECLARE_ABSTRACT(ZFTypeIdWrapper, ZFStyleableObject)
     ZFIMPLEMENT_DECLARE(ZFProgressable)
     ZFALLOC_CACHE_RELEASE_ABSTRACT({
-        cache->wrappedValueIsConst = zffalse;
         cache->wrappedValueReset();
     })
 
 public:
     /**
-     * @brief whether the holded value should not be changed
-     */
-    zfbool wrappedValueIsConst;
-    /**
-     * @brief util to mark #wrappedValueIsConst
-     */
-    static void markConst(ZF_IN_OUT_OPT ZFObject *obj) {
-        zfself *t = zfcast(zfself *, obj);
-        if(t != zfnull) {
-            t->wrappedValueIsConst = zftrue;
-        }
-    }
-
-/** @cond ZFPrivateDoc */
-protected:
-    ZFTypeIdWrapper(void) : wrappedValueIsConst(zffalse) {}
-/** @endcond */
-
-public:
-    /**
-     * @brief copy internal value, assert fail if #wrappedValueIsConst
+     * @brief copy internal value
      */
     zffinal ZFTypeIdWrapper *wrappedValueAssign(ZF_IN ZFTypeIdWrapper *ref) {
-        zfCoreAssert(!this->wrappedValueIsConst);
         this->wrappedValueOnAssign(ref);
         return this;
     }

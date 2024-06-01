@@ -880,28 +880,6 @@ extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(
         , ZF_IN const zfchar *typeName
         );
 
-extern ZFLIB_ZFCore void _ZFP_ZFTypeIdWrapperMarkConst(ZF_IN_OUT_OPT ZFObject *zfv);
-template<typename T_Type, int isConst = (zffalse
-        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_R
-        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_P
-        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_PR
-        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_PCR
-        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_CPR
-        || zftTraits<T_Type>::TrModifier == (int)zftTraitsModifier_CPR
-    ) ? 1 : 0>
-zfclassNotPOD _ZFP_ZFTypeIdWrapperMarkConstCheck {
-public:
-    static inline void a(ZF_IN_OUT_OPT ZFObject *zfv) {
-    }
-};
-template<typename T_Type>
-zfclassNotPOD _ZFP_ZFTypeIdWrapperMarkConstCheck<T_Type, 1> {
-public:
-    static inline void a(ZF_IN_OUT_OPT ZFObject *zfv) {
-        _ZFP_ZFTypeIdWrapperMarkConst(zfv);
-    }
-};
-
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTypeIdFwd_h_
 

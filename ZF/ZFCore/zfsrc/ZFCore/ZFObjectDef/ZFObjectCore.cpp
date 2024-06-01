@@ -10,21 +10,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // _ZFP_ZFObjectPrivate
 typedef zfstlmap<zfstring, zfauto> _ZFP_ZFObjectTagMapType;
-zfclassNotPOD _ZFP_ZFImplementDynamicHolder {
-public:
-    ZFObject *owner;
-    zfstlmap<const ZFClass *, zfauto> holder;
-public:
-    _ZFP_ZFImplementDynamicHolder(void)
-    : owner(zfnull)
-    , holder()
-    {
-    }
-};
+
 zfclassNotPOD _ZFP_ZFObjectPrivate {
 public:
-    zfuint objectRetainCount;
-    ZFObjectInstanceState objectInstanceState;
     ZFObjectHolder *objectHolder;
     void *mutexImpl;
     _ZFP_ZFObjectTagMapType *objectTagMap;
@@ -37,50 +25,29 @@ public:
         stateFlag_observerHasAddFlag_objectBeforeDealloc = 1 << 4,
         stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate = 1 << 5,
     };
-    zfuint stateFlags;
     ZFObserver *observerHolder;
-
     _ZFP_zfAllocCacheReleaseCallback zfAllocCacheRelease;
-
-    _ZFP_ZFImplementDynamicHolder *ZFImplementDynamicHolder;
+    ZFObject *ZFImplementDynamicOwner;
+    zfstlmap<const ZFClass *, zfauto> ZFImplementDynamicHolder;
 
 public:
-    _ZFP_ZFObjectPrivate(ZF_IN const ZFClass *cls)
-    : objectRetainCount(1)
-    , objectInstanceState(ZFObjectInstanceStateOnInit)
-    , objectHolder(zfnull)
+    _ZFP_ZFObjectPrivate(void)
+    : objectHolder(zfnull)
     , mutexImpl(zfnull)
     , objectTagMap(zfnull)
     , propertyAccessed()
-    , stateFlags(0)
     , observerHolder(zfnull)
     , zfAllocCacheRelease(zfnull)
-    , ZFImplementDynamicHolder(zfnull)
+    , ZFImplementDynamicOwner(zfnull)
+    , ZFImplementDynamicHolder()
     {
-        if(cls->classIsInternal()) {
-            ZFBitSet(this->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal);
-        }
-        if(cls->classIsInternalPrivate()) {
-            ZFBitSet(this->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
-        }
-    }
-    ~_ZFP_ZFObjectPrivate(void) {
-        if(this->observerHolder) {
-            zfpoolDelete(this->observerHolder);
-        }
-        if(this->ZFImplementDynamicHolder) {
-            zfpoolDelete(this->ZFImplementDynamicHolder);
-        }
     }
 
 public:
     ZFObserver &observerHolderCheck(ZF_IN ZFObject *owner) {
         if(this->observerHolder == zfnull) {
-            zfCoreMutexLocker();
-            if(this->observerHolder == zfnull) {
-                this->observerHolder = zfpoolNew(ZFObserver);
-                this->observerHolder->_ZFP_ZFObserver_observerOwner(owner);
-            }
+            this->observerHolder = zfpoolNew(ZFObserver);
+            this->observerHolder->_ZFP_ZFObserver_observerOwner(owner);
         }
         return *this->observerHolder;
     }
@@ -110,17 +77,13 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFObject_stateFlags) {
 }
 ZF_GLOBAL_INITIALIZER_END(ZFObject_stateFlags)
 
-zfindex ZFObject::objectRetainCount(void) {
-    return (zfindex)d->objectRetainCount;
-}
-
 ZFObjectHolder *ZFObject::objectHolder(void) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+    }
     if(d->objectHolder == zfnull) {
-        zfCoreMutexLocker();
-        if(d->objectHolder == zfnull) {
-            d->objectHolder = zfunsafe_zfAlloc(ZFObjectHolder);
-            d->objectHolder->objectHolded(this);
-        }
+        d->objectHolder = zfunsafe_zfAlloc(ZFObjectHolder);
+        d->objectHolder->objectHolded(this);
     }
     return d->objectHolder;
 }
@@ -220,14 +183,14 @@ zfauto ZFObject::invokeDetail(
 }
 
 zfbool ZFObject::objectTagExist(void) {
-    return d->objectTagMap && !(d->objectTagMap->empty());
+    return d && d->objectTagMap && !(d->objectTagMap->empty());
 }
 void ZFObject::objectTag(
         ZF_IN const zfchar *key
         , ZF_IN ZFObject *tag
         ) {
     zfCoreMutexLocker();
-    if(ZFBitTest(d->objectInstanceState, ZFObjectInstanceStateOnDealloc) && tag != zfnull) {
+    if(ZFBitTest(_objectInstanceState, ZFObjectInstanceStateOnDealloc) && tag != zfnull) {
         zfCoreCriticalMessageTrim("[ZFObject] you must not set tag while object is deallocating, class: %s, tag: %s",
             this->classData()->classNameFull(),
             key);
@@ -237,6 +200,9 @@ void ZFObject::objectTag(
         return;
     }
 
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+    }
     if(d->objectTagMap == zfnull) {
         d->objectTagMap = zfpoolNew(_ZFP_ZFObjectTagMapType);
     }
@@ -261,7 +227,7 @@ void ZFObject::objectTag(
 zfany ZFObject::objectTag(ZF_IN const zfchar *key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
-        if(d->objectTagMap) {
+        if(d && d->objectTagMap) {
             _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap->find(key);
             if(it != d->objectTagMap->end()) {
                 return it->second;
@@ -275,7 +241,7 @@ void ZFObject::objectTagGetAllKeyValue(
         , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) {
     zfCoreMutexLocker();
-    if(d->objectTagMap) {
+    if(d && d->objectTagMap) {
         _ZFP_ZFObjectTagMapType &m = *(d->objectTagMap);
         allKey.capacity(allKey.count() + m.size());
         allValue.capacity(allValue.count() + m.size());
@@ -288,7 +254,7 @@ void ZFObject::objectTagGetAllKeyValue(
 zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfchar *key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
-        if(d->objectTagMap) {
+        if(d && d->objectTagMap) {
             _ZFP_ZFObjectTagMapType::iterator it = d->objectTagMap->find(key);
             if(it != d->objectTagMap->end()) {
                 zfauto ret;
@@ -301,7 +267,7 @@ zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfchar *key) {
     return zfnull;
 }
 void ZFObject::objectTagRemoveAll(void) {
-    if(d->objectTagMap && !d->objectTagMap->empty()) {
+    if(d && d->objectTagMap && !d->objectTagMap->empty()) {
         zfCoreMutexLocker();
         _ZFP_ZFObjectTagMapType tmp;
         tmp.swap(*(d->objectTagMap));
@@ -313,7 +279,7 @@ void ZFObject::observerAdd(
         , ZF_IN const ZFListener &observer
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
         ) {
-    return d->observerHolderCheck(this).observerAdd(
+    return this->observerHolder().observerAdd(
         eventId,
         observer,
         observerLevel);
@@ -323,7 +289,7 @@ void ZFObject::observerAddForOnce(
         , ZF_IN const ZFListener &observer
         , ZF_IN_OPT ZFLevel observerLevel /* = ZFLevelAppNormal */
         ) {
-    return d->observerHolderCheck(this).observerAddForOnce(
+    return this->observerHolder().observerAddForOnce(
         eventId,
         observer,
         observerLevel);
@@ -332,22 +298,22 @@ void ZFObject::observerRemove(
         ZF_IN zfidentity eventId
         , ZF_IN const ZFListener &callback
         ) {
-    if(d->observerHolder) {
+    if(d && d->observerHolder) {
         d->observerHolder->observerRemove(eventId, callback);
     }
 }
 void ZFObject::observerRemoveAll(ZF_IN zfidentity eventId) {
-    if(d->observerHolder) {
+    if(d && d->observerHolder) {
         d->observerHolder->observerRemoveAll(eventId);
     }
 }
 void ZFObject::observerRemoveAll(void) {
-    if(d->observerHolder) {
+    if(d && d->observerHolder) {
         d->observerHolder->observerRemoveAll();
     }
 }
 zfbool ZFObject::observerHasAdd(void) {
-    if(d->observerHolder) {
+    if(d && d->observerHolder) {
         return d->observerHolder->observerHasAdd();
     }
     else {
@@ -355,7 +321,7 @@ zfbool ZFObject::observerHasAdd(void) {
     }
 }
 zfbool ZFObject::observerHasAdd(ZF_IN zfidentity eventId) {
-    if(d->observerHolder) {
+    if(d && d->observerHolder) {
         return d->observerHolder->observerHasAdd(eventId);
     }
     else {
@@ -367,7 +333,7 @@ void ZFObject::observerNotify(
         , ZF_IN_OPT ZFObject *param0 /* = zfnull */
         , ZF_IN_OPT ZFObject *param1 /* = zfnull */
         ) {
-    if(d->observerHolder) {
+    if(d && d->observerHolder) {
         d->observerHolder->observerNotify(eventId, param0, param1);
     }
     else {
@@ -380,7 +346,7 @@ void ZFObject::observerNotifyWithSender(
         , ZF_IN_OPT ZFObject *param0 /* = zfnull */
         , ZF_IN_OPT ZFObject *param1 /* = zfnull */
         ) {
-    if(d->observerHolder) {
+    if(d && d->observerHolder) {
         d->observerHolder->observerNotifyWithSender(customSender, eventId, param0, param1);
     }
     else {
@@ -388,48 +354,58 @@ void ZFObject::observerNotifyWithSender(
     }
 }
 ZFObserver &ZFObject::observerHolder(void) {
-    return d->observerHolderCheck(this);
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+    }
+    if(d->observerHolder == zfnull) {
+        d->observerHolder = zfpoolNew(ZFObserver);
+        d->observerHolder->_ZFP_ZFObserver_observerOwner(this);
+    }
+    return *d->observerHolder;
 }
 
 void ZFObject::observerOnAdd(ZF_IN zfidentity eventId) {
     if(zffalse) {
     }
     else if(eventId == ZFObject::EventObjectBeforeAlloc()) {
-        ZFBitSet(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
+        ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
     }
     else if(eventId == ZFObject::EventObjectAfterAlloc()) {
-        ZFBitSet(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
+        ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
     }
     else if(eventId == ZFObject::EventObjectBeforeDealloc()) {
-        ZFBitSet(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc);
+        ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc);
     }
     else if(eventId == ZFObject::EventObjectPropertyValueOnUpdate()) {
-        ZFBitSet(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate);
+        ZFBitSet(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate);
     }
 }
 void ZFObject::observerOnRemove(ZF_IN zfidentity eventId) {
     if(zffalse) {
     }
     else if(eventId == ZFObject::EventObjectBeforeAlloc()) {
-        ZFBitUnset(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
+        ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc);
     }
     else if(eventId == ZFObject::EventObjectAfterAlloc()) {
-        ZFBitUnset(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
+        ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc);
     }
     else if(eventId == ZFObject::EventObjectBeforeDealloc()) {
-        ZFBitUnset(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc);
+        ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc);
     }
     else if(eventId == ZFObject::EventObjectPropertyValueOnUpdate()) {
-        ZFBitUnset(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate);
+        ZFBitUnset(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate);
     }
 }
 
 void ZFObject::_ZFP_ZFObjectLock(void) {
-    if(d->mutexImpl) {
+    if(d && d->mutexImpl) {
         _ZFP_ZFObjectMutexImplLock(d->mutexImpl);
     }
     else {
         zfCoreMutexLock();
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        }
         if(_ZFP_ZFObjectMutexImplInit) {
             if(d->mutexImpl == zfnull) {
                 d->mutexImpl = _ZFP_ZFObjectMutexImplInit();
@@ -442,12 +418,12 @@ void ZFObject::_ZFP_ZFObjectLock(void) {
     }
 }
 void ZFObject::_ZFP_ZFObjectUnlock(void) {
-    if(d->mutexImpl) {
+    if(d && d->mutexImpl) {
         _ZFP_ZFObjectMutexImplUnlock(d->mutexImpl);
     }
 }
 zfbool ZFObject::_ZFP_ZFObjectTryLock(void) {
-    if(d->mutexImpl) {
+    if(d && d->mutexImpl) {
         return _ZFP_ZFObjectMutexImplTryLock(d->mutexImpl);
     }
     else {
@@ -468,27 +444,22 @@ zfbool ZFObject::_ZFP_ZFObjectTryLock(void) {
 }
 
 ZFObject *ZFObject::_ZFP_ZFObjectCheckOnInit(void) {
-    if(d == zfnull) {
-        zfCoreCriticalMessageTrim("[ZFObject] ZFObject::objectOnInit() not called");
-        return zfnull;
-    }
-
-    d->objectInstanceState = ZFObjectInstanceStateOnInitFinish;
+    _objectInstanceState = ZFObjectInstanceStateOnInitFinish;
     this->classData()->_ZFP_ZFClass_propertyAutoInitAction(this);
     this->_ZFP_ObjI_onInitIvk();
     if(!this->objectIsInternalPrivate()) {
         this->classData()->_ZFP_ZFClass_instanceObserverNotify(this);
-        if(ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc)
+        if(ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc)
                 || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeAlloc)
                 ) {
             this->observerNotify(ZFObject::EventObjectBeforeAlloc());
         }
     }
     this->objectOnInitFinish();
-    d->objectInstanceState = ZFObjectInstanceStateIdle;
+    _objectInstanceState = ZFObjectInstanceStateIdle;
 
     if(!this->objectIsInternalPrivate()) {
-        if(ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc)
+        if(ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc)
                 || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectAfterAlloc)
                 ) {
             this->observerNotify(ZFObject::EventObjectAfterAlloc());
@@ -498,12 +469,15 @@ ZFObject *ZFObject::_ZFP_ZFObjectCheckOnInit(void) {
     return this;
 }
 void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
-    if(ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
+    if(ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
             || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectBeforeDealloc)
             ) {
-        if(d->objectRetainCount == 1) {
+        if(_objectRetainCount == 1) {
             this->observerNotify(ZFObject::EventObjectBeforeDealloc());
-            if(d->objectRetainCount > 1) {
+            if(_objectRetainCount > 1) {
+                if(d == zfnull) {
+                    d = zfpoolNew(_ZFP_ZFObjectPrivate);
+                }
                 d->zfAllocCacheRelease = zfnull;
                 this->objectOnRelease();
                 this->observerRemoveAll(ZFObject::EventObjectBeforeDealloc());
@@ -512,98 +486,85 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
         }
     }
 
-    if(d->zfAllocCacheRelease && d->objectRetainCount == 1) { // check to save cache
+    if(d && d->zfAllocCacheRelease && _objectRetainCount == 1) { // check to save cache
         this->observerRemoveAll();
         d->zfAllocCacheRelease(this);
         return;
     }
 
     this->objectOnRelease();
-    if(d->objectRetainCount > 0) {
+    if(_objectRetainCount > 0) {
         return;
     }
 
-    d->objectInstanceState = ZFObjectInstanceStateOnDeallocPrepare;
+    _objectInstanceState = ZFObjectInstanceStateOnDeallocPrepare;
     this->objectOnDeallocPrepare();
     this->_ZFP_ObjI_onDeallocIvk();
-    for(zfstlsize i = d->propertyAccessed.size() - 1; i != (zfstlsize)-1; --i) {
-        const ZFProperty *property = d->propertyAccessed[i];
-        if(property->_ZFP_ZFProperty_callbackDealloc) {
-            property->_ZFP_ZFProperty_callbackDealloc(property, this);
+    if(d) {
+        for(zfstlsize i = d->propertyAccessed.size() - 1; i != (zfstlsize)-1; --i) {
+            const ZFProperty *property = d->propertyAccessed[i];
+            if(property->_ZFP_ZFProperty_callbackDealloc) {
+                property->_ZFP_ZFProperty_callbackDealloc(property, this);
+            }
         }
     }
-    d->objectInstanceState = ZFObjectInstanceStateOnDealloc;
+    _objectInstanceState = ZFObjectInstanceStateOnDealloc;
     this->objectOnDealloc();
-    if(d != zfnull) {
-        zfCoreCriticalMessageTrim("[ZFObject] ZFObject::objectOnDealloc() not called");
-        return;
-    }
     this->classData()->_ZFP_ZFClass_objectDesctuct(this);
 }
 
 void ZFObject::objectOnInit(void) {
-    if(d != zfnull) {
-        zfCoreCriticalMessageTrim("[ZFObject] ZFObject::objectOnInit() called twice");
-        return;
+    if(this->classData()->classIsInternal()) {
+        ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal);
     }
-
-    // note that (d != zfnull) is also used to check whether ZFObject::objectOnInit() is called
-    d = zfpoolNew(_ZFP_ZFObjectPrivate, this->classData());
+    if(this->classData()->classIsInternalPrivate()) {
+        ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
+    }
 }
 void ZFObject::objectOnDealloc(void) {
-    if(d == zfnull) {
-        zfCoreCriticalMessageTrim("[ZFObject] ZFObject::objectOnDealloc() called twice");
-        return;
-    }
-
     if(_ZFP_ZFObject_classDynamic) {
         _ZFP_ZFObject_classDynamic->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
     }
 
-    if(d->mutexImpl) {
-        _ZFP_ZFObjectMutexImplDealloc(d->mutexImpl);
-        d->mutexImpl = zfnull;
-    }
-
-    if(d->objectTagMap) {
-        if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
-            zfpoolDelete(d->objectTagMap);
+    if(d) {
+        if(d->mutexImpl) {
+            _ZFP_ZFObjectMutexImplDealloc(d->mutexImpl);
+            d->mutexImpl = zfnull;
         }
-    }
 
-    if(d->objectHolder) {
-        if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
-            d->objectHolder->objectHolded(zfnull);
+        if(d->objectTagMap) {
+            if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
+                zfpoolDelete(d->objectTagMap);
+            }
         }
-        zfRelease(d->objectHolder);
+
+        if(d->observerHolder) {
+            zfpoolDelete(d->observerHolder);
+        }
+
+        if(d->objectHolder) {
+            if(this->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf() == this) {
+                d->objectHolder->objectHolded(zfnull);
+            }
+            zfRelease(d->objectHolder);
+        }
+
+        zfpoolDelete(d);
     }
-
-    zfpoolDelete(d);
-    // note that (d == zfnull) is also used to check whether ZFObject::objectOnDealloc() is called
-    d = zfnull;
-}
-void ZFObject::objectOnRetain(void) {
-    zfCoreAssertWithMessageTrim(d->objectRetainCount > 0,
-        "[ZFObject] retain an object while deallocating: %s", this->objectInfoOfInstance());
-    ++(d->objectRetainCount);
-}
-void ZFObject::objectOnRelease(void) {
-    --(d->objectRetainCount);
-}
-
-ZFObjectInstanceState ZFObject::objectInstanceState(void) {
-    return d->objectInstanceState;
 }
 
 zfbool ZFObject::objectIsInternal(void) {
-    return ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal)
-        || ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
+    return ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternal)
+        || ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
 }
 zfbool ZFObject::objectIsInternalPrivate(void) {
-    return ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
+    return ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
 }
 
 void ZFObject::_ZFP_ZFObject_objectPropertyValueAttach(ZF_IN const ZFProperty *property) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+    }
     d->propertyAccessed.push_back(property);
 }
 void ZFObject::_ZFP_ZFObject_objectPropertyValueDetach(ZF_IN const ZFProperty *property) {
@@ -619,7 +580,7 @@ void ZFObject::objectPropertyValueOnUpdate(
         , ZF_IN const void *oldValue
         ) {
     if(!this->objectIsInternalPrivate()
-            && (ZFBitTest(d->stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate)
+            && (ZFBitTest(_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate)
                 || ZFBitTest(_ZFP_ZFObject_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_observerHasAddFlag_objectPropertyValueOnUpdate))
                 ) {
         v_ZFProperty *param0 = zfunsafe_zfAlloc(v_ZFProperty);
@@ -634,29 +595,33 @@ void ZFObject::objectPropertyValueOnUpdate(
 
 // ============================================================
 void ZFObject::_ZFP_ZFObject_zfAllocCacheRelease(ZF_IN _ZFP_zfAllocCacheReleaseCallback callback) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFObjectPrivate);
+    }
     d->zfAllocCacheRelease = callback;
 }
 _ZFP_zfAllocCacheReleaseCallback ZFObject::_ZFP_ZFObject_zfAllocCacheRelease(void) {
-    return d->zfAllocCacheRelease;
+    return d ? d->zfAllocCacheRelease : zfnull;
 }
 
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void) {
-    return d->ZFImplementDynamicHolder ? d->ZFImplementDynamicHolder->owner : this;
+    return d && d->ZFImplementDynamicOwner ? d->ZFImplementDynamicOwner : this;
 }
 ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement) {
-    if(d->ZFImplementDynamicHolder == zfnull) {
-        d->ZFImplementDynamicHolder = zfpoolNew(_ZFP_ZFImplementDynamicHolder);
-        d->ZFImplementDynamicHolder->owner = this;
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFObjectPrivate);
     }
-    zfstlmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder->holder.find(clsToImplement);
-    if(it != d->ZFImplementDynamicHolder->holder.end()) {
+    zfstlmap<const ZFClass *, zfauto>::iterator it = d->ZFImplementDynamicHolder.find(clsToImplement);
+    if(it != d->ZFImplementDynamicHolder.end()) {
         return it->second;
     }
     else {
         zfauto holder = clsToImplement->newInstance();
-        d->ZFImplementDynamicHolder->holder[clsToImplement] = holder;
-        holder->d->ZFImplementDynamicHolder = zfpoolNew(_ZFP_ZFImplementDynamicHolder);
-        holder->d->ZFImplementDynamicHolder->owner = this;
+        d->ZFImplementDynamicHolder[clsToImplement] = holder;
+        if(holder->d == zfnull) {
+            holder->d = zfpoolNew(_ZFP_ZFObjectPrivate);
+        }
+        holder->d->ZFImplementDynamicOwner = this;
 
         // alias internal data to owner
         holder->d->objectHolder = zfRetain(this->objectHolder());

@@ -147,7 +147,6 @@ public:
             ZFTypeId<zftTraits<ParamType>::TrNoRef>::ValueStore( \
                 ret, \
                 (paramDefault.zfv DefaultValueFix())); \
-            ZFTypeIdWrapper::markConst(ret); \
             return ret; \
         } \
     )
@@ -180,7 +179,6 @@ public:
         zfCoreMutexLocker();
         typedef typename zftTraits<T_ReturnType>::TrNoRef T_ReturnTypeTmp;
         if(ZFTypeId<T_ReturnTypeTmp>::ValueStore(ret, retTmp)) {
-            _ZFP_ZFTypeIdWrapperMarkConstCheck<T_ReturnType>::a(ret);
             return zftrue;
         }
         else {
@@ -308,8 +306,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodGenericInvokeError(
         typedef typename zftTraits<Type##N>::TrNoRef _Type##N; \
         if(!ZFTypeId<_Type##N>::ValueStore(_p[N], param##N)) { \
             _ZFP_ZFMethodGenericInvokeError(method, obj, N); \
-        } \
-        _ZFP_ZFTypeIdWrapperMarkConstCheck<Type##N>::a(_p[N]);
+        }
 #define _ZFP_ZFMethodGenericInvoke_REPEAT2(N) \
         _ZFP_MtdGII_P<Type##N, zftIsZFObject(typename zftTraits<Type##N>::TrType)>::p(param##N, _p[N]);
 

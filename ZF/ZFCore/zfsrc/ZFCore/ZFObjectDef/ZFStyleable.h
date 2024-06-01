@@ -29,7 +29,7 @@ zfclassFwd _ZFP_ZFStyleKeyHolder;
  * for a list of copy method, please refer to #ZFStyleable::styleableOnCheckPropertyType
  */
 zfinterface ZFLIB_ZFCore ZFStyleable : zfextend ZFInterface {
-    ZFINTERFACE_DECLARE_WITH_CUSTOM_CTOR(ZFStyleable, ZFInterface)
+    ZFINTERFACE_DECLARE(ZFStyleable, ZFInterface)
 
 public:
     /**
@@ -147,12 +147,8 @@ public:
         }
     }
 private:
-    _ZFP_ZFStyleKeyHolder *_ZFP_styleKey;
     friend zfclassFwd _ZFP_ZFStyleKeyHolder;
 protected:
-    /** @cond ZFPrivateDoc */
-    ZFStyleable(void) : _ZFP_styleKey(zfnull) {}
-    /** @endcond */
     ZFINTERFACE_ON_DEALLOC_DECLARE();
 };
 

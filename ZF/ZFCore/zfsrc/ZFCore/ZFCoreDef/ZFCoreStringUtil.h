@@ -53,15 +53,15 @@ inline zfchar *zfsChange(
         ZF_IN_OUT zfchar *&dst
         , ZF_IN const zfchar *src
         ) {
-    if(!src) {
+    if(src) {
+        zfindex size = sizeof(zfchar) * (zfslen(src) + 1);
+        dst = (zfchar *)zfrealloc(dst, size);
+        zfmemcpy(dst, src, size);
+    }
+    else {
         zffree(dst);
         dst = zfnull;
-        return dst;
     }
-
-    zfindex size = sizeof(zfchar) * (zfslen(src) + 1);
-    dst = (zfchar *)zfrealloc(dst, size);
-    zfmemcpy(dst, src, size);
     return dst;
 }
 /**

@@ -12,10 +12,6 @@ ZF_NAMESPACE_GLOBAL_END
 #include "../ZFObject.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_VAR(ZFTypeIdWrapper, zfbool, wrappedValueIsConst)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, void, markConst
-        , ZFMP_IN(ZFObject *, obj)
-        )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, ZFTypeIdWrapper *, wrappedValueAssign
         , ZFMP_IN(ZFTypeIdWrapper *, ref)
         )

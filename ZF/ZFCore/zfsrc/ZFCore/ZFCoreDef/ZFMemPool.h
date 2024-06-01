@@ -20,6 +20,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     #endif
 #endif
 
+#define _ZFP_ZFMEMPOOL_DEBUG 0
+
 // ============================================================
 /**
  * @def zfpoolNew
@@ -126,6 +128,74 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
         zfCoreMutexUnlock();
     }
 }
+
+// ============================================================
+#if _ZFP_ZFMEMPOOL_DEBUG
+    template<typename T_Type>
+    zfclassNotPOD _ZFP_zfpoolDebug {
+    public:
+        static T_Type *a(T_Type *obj) {
+            if(obj) {
+                zfCoreMutexLocker();
+                Item *&p_ = p();
+                Item *&pEnd_ = pEnd();
+                Item *&cEnd_ = cEnd();
+                if(pEnd_ == cEnd_) {
+                    zfindex count = pEnd_ - p_;
+                    zfindex capacity = count ? count * 2 : 8;
+                    p_ = (Item *)zfrealloc(p_, capacity * sizeof(Item));
+                    pEnd_ = p_ + count;
+                    cEnd_ = p_ + capacity;
+                }
+                *pEnd_ = obj;
+                ++pEnd_;
+            }
+            return obj;
+        }
+        static T_Type *d(T_Type *obj) {
+            if(obj) {
+                Item *&p_ = p();
+                Item *&pEnd_ = pEnd();
+                for(Item *t = p_; t != pEnd_; ++t) {
+                    if(*t == obj) {
+                        zfmemmove(t, t + 1, pEnd_ - (t + 1));
+                        --pEnd_;
+                        break;
+                    }
+                }
+            }
+            return obj;
+        }
+    public:
+        typedef T_Type *Item;
+        static Item *&p(void) {
+            static Item *d = zfnull;
+            return d;
+        }
+        static Item *&pEnd(void) {
+            static Item *d = zfnull;
+            return d;
+        }
+        static Item *&cEnd(void) {
+            static Item *d = zfnull;
+            return d;
+        }
+    };
+    template<typename T_Type>
+    inline void _ZFP_zfpoolDebugDelete(ZF_IN T_Type *obj) {
+        if(obj) {
+            zfCoreMutexLock();
+            _ZFP_zfpoolDebug<T_Type>::d(obj);
+            _ZFP_zfpoolObjectHolder<T_Type>::poolDelete(obj);
+            zfCoreMutexUnlock();
+        }
+    }
+
+    #undef zfpoolNew
+    #undef zfpoolDelete
+    #define zfpoolNew(T_Type, ...) _ZFP_zfpoolDebug<T_Type>::a(zfnewPlacement((_ZFP_zfpoolObjectHolder<T_Type>::poolMalloc()), T_Type, ##__VA_ARGS__))
+    #define zfpoolDelete(obj) _ZFP_zfpoolDebugDelete(obj)
+#endif
 
 ZF_NAMESPACE_GLOBAL_END
 

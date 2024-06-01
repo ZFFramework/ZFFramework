@@ -8,7 +8,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFStyleKeyHolder {
+zfclass _ZFP_ZFStyleKeyHolder : zfextend ZFObject {
+    ZFOBJECT_DECLARE(_ZFP_ZFStyleKeyHolder, ZFObject)
 public:
     zfchar *styleKey;
     zfstlmap<zfstring, zfstring> stylePropertyKeyMap;
@@ -23,6 +24,17 @@ public:
             ZF_IN const ZFArgs &zfargs
             , ZF_IN ZFStyleable *owner
             );
+protected:
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+        this->styleKey = zfnull;
+    }
+    zfoverride
+    virtual void objectOnDealloc(void) {
+        zfsChange(this->styleKey, zfnull);
+        zfsuper::objectOnDealloc();
+    }
 };
 
 // ============================================================
@@ -41,43 +53,43 @@ void _ZFP_ZFStyleKeyHolder::styleOnChange(
 
         owner->styleableCopyFrom(style);
     }
-    else {
-        owner->styleKey(zfnull);
-    }
 }
 void ZFStyleable::styleKey(ZF_IN const zfchar *styleKey) {
     zfCoreMutexLocker();
+    _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(styleKey == zfnull) {
-        if(_ZFP_styleKey != zfnull) {
-            zfsChange(_ZFP_styleKey->styleKey, styleKey);
+        if(holder != zfnull) {
+            zfsChange(holder->styleKey, styleKey);
             ZFGlobalObserver().observerRemove(
                 ZFGlobalEvent::EventZFStyleOnChange(),
-                _ZFP_styleKey->styleOnChangeListener);
+                holder->styleOnChangeListener);
         }
     }
     else {
-        if(_ZFP_styleKey == zfnull) {
-            _ZFP_styleKey = zfpoolNew(_ZFP_ZFStyleKeyHolder);
+        if(holder == zfnull) {
+            zfobj<_ZFP_ZFStyleKeyHolder> holderTmp;
+            holder = holderTmp;
+            this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className(), holder);
         }
-        if(_ZFP_styleKey->styleKey == zfnull) {
-            if(!_ZFP_styleKey->styleOnChangeListener) {
+        if(holder->styleKey == zfnull) {
+            if(!holder->styleOnChangeListener) {
                 ZFStyleable *owner = this;
                 ZFLISTENER_1(styleOnChange
                         , ZFStyleable *, owner
                         ) {
                     _ZFP_ZFStyleKeyHolder::styleOnChange(zfargs, owner);
                 } ZFLISTENER_END()
-                _ZFP_styleKey->styleOnChangeListener = styleOnChange;
+                holder->styleOnChangeListener = styleOnChange;
             }
             ZFGlobalObserver().observerAdd(
                 ZFGlobalEvent::EventZFStyleOnChange(),
-                _ZFP_styleKey->styleOnChangeListener);
+                holder->styleOnChangeListener);
         }
-        zfsChange(_ZFP_styleKey->styleKey, styleKey);
+        zfsChange(holder->styleKey, styleKey);
         ZFArgs zfargs;
         _ZFP_ZFStyleKeyHolder::styleOnChange(zfargs, this);
 
-        if(_ZFP_styleKey->styleKey == zfnull) {
+        if(holder->styleKey == zfnull) {
             v_zfstring *param0 = zfunsafe_zfAlloc(v_zfstring);
             v_zfstring *param1 = zfunsafe_zfAlloc(v_zfstring);
             param1->zfv = styleKey;
@@ -92,12 +104,8 @@ void ZFStyleable::styleKey(ZF_IN const zfchar *styleKey) {
     }
 }
 const zfchar *ZFStyleable::styleKey(void) {
-    if(_ZFP_styleKey) {
-        return _ZFP_styleKey->styleKey;
-    }
-    else {
-        return zfnull;
-    }
+    _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
+    return holder ? holder->styleKey : zfnull;
 }
 
 // ============================================================
@@ -135,9 +143,12 @@ void _ZFP_ZFStyleKeyHolder::stylePropertyOnChange(
         , ZF_IN ZFStyleable *owner
         ) {
     zfCoreMutexLocker();
-    zfstlmap<zfstring, zfstring> &m = owner->_ZFP_styleKey->stylePropertyKeyMap;
-    for(zfstlmap<zfstring, zfstring>::iterator it = m.begin(); it != m.end(); ++it) {
-        _ZFP_ZFStylePropertyCopy(owner->toObject(), it->first, it->second);
+    _ZFP_ZFStyleKeyHolder *holder = owner->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
+    if(holder != zfnull) {
+        zfstlmap<zfstring, zfstring> &m = holder->stylePropertyKeyMap;
+        for(zfstlmap<zfstring, zfstring>::iterator it = m.begin(); it != m.end(); ++it) {
+            _ZFP_ZFStylePropertyCopy(owner->toObject(), it->first, it->second);
+        }
     }
 }
 void ZFStyleable::styleKeyForProperty(
@@ -148,42 +159,45 @@ void ZFStyleable::styleKeyForProperty(
         return;
     }
     zfCoreMutexLocker();
+    _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
     if(styleKey == zfnull) {
-        if(_ZFP_styleKey != zfnull) {
-            _ZFP_styleKey->stylePropertyKeyMap.erase(propertyName);
-            if(_ZFP_styleKey->stylePropertyKeyMap.empty()) {
+        if(holder != zfnull) {
+            holder->stylePropertyKeyMap.erase(propertyName);
+            if(holder->stylePropertyKeyMap.empty()) {
                 ZFGlobalObserver().observerRemove(
                     ZFGlobalEvent::EventZFStyleOnChange(),
-                    _ZFP_styleKey->stylePropertyOnChangeListener);
+                    holder->stylePropertyOnChangeListener);
             }
         }
     }
     else {
-        if(_ZFP_styleKey == zfnull) {
-            _ZFP_styleKey = zfpoolNew(_ZFP_ZFStyleKeyHolder);
+        if(holder == zfnull) {
+            zfobj<_ZFP_ZFStyleKeyHolder> holderTmp;
+            holder = holderTmp;
+            this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className(), holder);
         }
-        zfbool oldEmpty = _ZFP_styleKey->stylePropertyKeyMap.empty();
-        _ZFP_styleKey->stylePropertyKeyMap[propertyName] = styleKey;
+        zfbool oldEmpty = holder->stylePropertyKeyMap.empty();
+        holder->stylePropertyKeyMap[propertyName] = styleKey;
         if(oldEmpty) {
-            if(!_ZFP_styleKey->stylePropertyOnChangeListener) {
+            if(!holder->stylePropertyOnChangeListener) {
                 ZFStyleable *owner = this;
                 ZFLISTENER_1(stylePropertyOnChange
                         , ZFStyleable *, owner
                         ) {
                     _ZFP_ZFStyleKeyHolder::stylePropertyOnChange(zfargs, owner);
                 } ZFLISTENER_END()
-                _ZFP_styleKey->stylePropertyOnChangeListener = stylePropertyOnChange;
+                holder->stylePropertyOnChangeListener = stylePropertyOnChange;
             }
             ZFGlobalObserver().observerAdd(
                 ZFGlobalEvent::EventZFStyleOnChange(),
-                _ZFP_styleKey->stylePropertyOnChangeListener);
+                holder->stylePropertyOnChangeListener);
         }
         if(!_ZFP_ZFStylePropertyCopy(this->toObject(), propertyName, styleKey)) {
-            _ZFP_styleKey->stylePropertyKeyMap.erase(propertyName);
-            if(_ZFP_styleKey->stylePropertyKeyMap.empty()) {
+            holder->stylePropertyKeyMap.erase(propertyName);
+            if(holder->stylePropertyKeyMap.empty()) {
                 ZFGlobalObserver().observerRemove(
                     ZFGlobalEvent::EventZFStyleOnChange(),
-                    _ZFP_styleKey->stylePropertyOnChangeListener);
+                    holder->stylePropertyOnChangeListener);
             }
             v_zfstring *param0 = zfunsafe_zfAlloc(v_zfstring);
             param0->zfv = propertyName;
@@ -204,9 +218,10 @@ const zfchar *ZFStyleable::styleKeyForProperty(ZF_IN const zfchar *propertyName)
         return zfnull;
     }
     zfCoreMutexLocker();
-    if(_ZFP_styleKey != zfnull) {
-        zfstlmap<zfstring, zfstring>::iterator it = _ZFP_styleKey->stylePropertyKeyMap.find(propertyName);
-        if(it != _ZFP_styleKey->stylePropertyKeyMap.end()) {
+    _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
+    if(holder != zfnull) {
+        zfstlmap<zfstring, zfstring>::iterator it = holder->stylePropertyKeyMap.find(propertyName);
+        if(it != holder->stylePropertyKeyMap.end()) {
             return it->second;
         }
         else {
@@ -219,20 +234,20 @@ const zfchar *ZFStyleable::styleKeyForProperty(ZF_IN const zfchar *propertyName)
 }
 
 ZFINTERFACE_ON_DEALLOC_DEFINE(ZFStyleable) {
-    if(_ZFP_styleKey) {
-        if(_ZFP_styleKey->styleKey != zfnull) {
+    _ZFP_ZFStyleKeyHolder *holder = this->toObject()->objectTag(_ZFP_ZFStyleKeyHolder::ClassData()->className());
+    if(holder) {
+        if(holder->styleKey != zfnull) {
             ZFGlobalObserver().observerRemove(
                 ZFGlobalEvent::EventZFStyleOnChange(),
-                _ZFP_styleKey->styleOnChangeListener);
-            zffree(_ZFP_styleKey->styleKey);
-            _ZFP_styleKey->styleKey = zfnull;
+                holder->styleOnChangeListener);
+            zffree(holder->styleKey);
+            holder->styleKey = zfnull;
         }
-        if(!_ZFP_styleKey->stylePropertyKeyMap.empty()) {
+        if(!holder->stylePropertyKeyMap.empty()) {
             ZFGlobalObserver().observerRemove(
                 ZFGlobalEvent::EventZFStyleOnChange(),
-                _ZFP_styleKey->stylePropertyOnChangeListener);
+                holder->stylePropertyOnChangeListener);
         }
-        zfpoolDelete(_ZFP_styleKey);
     }
 }
 

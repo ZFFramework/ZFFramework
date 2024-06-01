@@ -219,16 +219,6 @@ public:
     virtual inline void _ZFP_ObjI_onInitIvk(void) {}
     virtual inline void _ZFP_ObjI_onDeallocIvk(void) {}
     /** @endcond */
-protected:
-    /** @cond ZFPrivateDoc */
-    ZFObject(void)
-    : _ZFP_ZFObject_classDynamic(zfnull)
-    , d(zfnull)
-    {
-    }
-    virtual ~ZFObject(void) {
-    }
-    /** @endcond */
 
     // ============================================================
     // observer events
@@ -279,7 +269,9 @@ public:
      * @brief return the object's retain count
      * @see zfRetain, zfRelease
      */
-    zffinal zfindex objectRetainCount(void);
+    zffinal inline zfindex objectRetainCount(void) {
+        return _objectRetainCount;
+    }
 
     /**
      * @brief return an object holder that hold this object without affecting retain count
@@ -647,20 +639,28 @@ protected:
      * subclass must call superclass's objectOnRetain before any other code if override\n
      * usually you should not override this method
      */
-    virtual void objectOnRetain(void);
+    virtual inline void objectOnRetain(void) {
+        zfCoreAssertWithMessageTrim(_objectRetainCount > 0,
+            "[ZFObject] retain an object while deallocating: %s", this->objectInfoOfInstance());
+        ++_objectRetainCount;
+    }
     /**
      * @brief called to release object
      *
      * subclass must call superclass's onRelase after any other code if override\n
      * usually you should not override this method
      */
-    virtual void objectOnRelease(void);
+    virtual inline void objectOnRelease(void) {
+        --_objectRetainCount;
+    }
 
 public:
     /**
      * @brief object instance's state
      */
-    zffinal ZFObjectInstanceState objectInstanceState(void);
+    zffinal inline ZFObjectInstanceState objectInstanceState(void) {
+        return _objectInstanceState;
+    }
 
 public:
     /**
@@ -709,10 +709,6 @@ public:
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf(void);
     zffinal ZFObject *_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *clsToImplement);
 
-public:
-    const ZFClass *_ZFP_ZFObject_classDynamic;
-private:
-    _ZFP_ZFObjectPrivate *d;
 private:
     friend zfclassFwd ZFClass;
     friend zfclassFwd ZFObserver;
@@ -721,6 +717,26 @@ private:
     friend zfclassFwd _ZFP_Obj_AllocCk;
     friend void _ZFP_zfRetainAction(ZF_IN ZFObject *obj);
     friend void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj);
+public:
+    const ZFClass *_ZFP_ZFObject_classDynamic;
+private:
+    _ZFP_ZFObjectPrivate *d;
+    ZFObjectInstanceState _objectInstanceState;
+    zfuint _objectRetainCount;
+    zfuint _stateFlags;
+protected:
+    /** @cond ZFPrivateDoc */
+    ZFObject(void)
+    : _ZFP_ZFObject_classDynamic(zfnull)
+    , d(zfnull)
+    , _objectInstanceState(ZFObjectInstanceStateOnInit)
+    , _objectRetainCount(1)
+    , _stateFlags(0)
+    {
+    }
+    virtual ~ZFObject(void) {
+    }
+    /** @endcond */
 };
 
 ZF_NAMESPACE_GLOBAL_END

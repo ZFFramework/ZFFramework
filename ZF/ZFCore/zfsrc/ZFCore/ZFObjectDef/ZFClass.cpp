@@ -1389,11 +1389,11 @@ ZFObject *ZFClass::_ZFP_ZFClass_objectCast(
         ) const {
     obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
     _ZFP_ZFClassPrivate *d = obj->classData()->d;
-    if(d->ZFImplementDynamicCache.find(objectClass) != d->ZFImplementDynamicCache.end()) {
-        return obj->_ZFP_ZFObject_ZFImplementDynamicHolder(objectClass);
-    }
-    else if(d->parentClassCache.find(objectClass) != d->parentClassCache.end()) {
+    if(d->parentClassCache.find(objectClass) != d->parentClassCache.end()) {
         return obj;
+    }
+    else if(d->ZFImplementDynamicCache.find(objectClass) != d->ZFImplementDynamicCache.end()) {
+        return obj->_ZFP_ZFObject_ZFImplementDynamicHolder(objectClass);
     }
     else {
         return zfnull;
