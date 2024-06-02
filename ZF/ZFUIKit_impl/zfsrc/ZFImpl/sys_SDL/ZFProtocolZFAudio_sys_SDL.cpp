@@ -12,7 +12,7 @@ zfclass _ZFP_ZFAudioImpl_sys_SDL_ImplHolder : zfextend ZFObject {
     ZFOBJECT_DECLARE(_ZFP_ZFAudioImpl_sys_SDL_ImplHolder, ZFObject)
 
 public:
-    ZFPROPERTY_RETAIN(v_zfstring *, errorHint)
+    ZFPROPERTY_RETAIN(zfanyT<v_zfstring>, errorHint)
 
 public:
     void impl(ZF_IN Mix_Chunk *impl) {

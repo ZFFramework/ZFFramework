@@ -86,7 +86,7 @@ zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;
  *   // assume we have a object hold a ZFArray as retain property:
  *   zfclass TestClass : zfextend ZFSerializable {
  *       ZFOBJECT_DECLARE(TestClass, ZFSerializable)
- *       ZFPROPERTY_RETAIN(ZFArray *, testProperty)
+ *       ZFPROPERTY_RETAIN(zfanyT<ZFArray>, testProperty)
  *       ...
  *   };
  *

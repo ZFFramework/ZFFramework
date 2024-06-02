@@ -42,7 +42,7 @@ protected:
         container->childAdd(startButton)->c_alignRightTop();
     }
 
-    ZFPROPERTY_RETAIN_READONLY(ZFAnimationNativeView *, ani, zfobj<ZFAnimationNativeView>())
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFAnimationNativeView>, ani, zfobj<ZFAnimationNativeView>())
 
 private:
     void prepareSettingButton(

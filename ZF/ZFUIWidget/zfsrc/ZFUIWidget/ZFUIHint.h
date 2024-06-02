@@ -84,9 +84,9 @@ public:
     /**
      * @brief the actual hint view
      */
-    ZFPROPERTY_RETAIN(ZFUIView *, hintContent)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIView *, hintContent)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFUIView *, hintContent)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIView>, hintContent)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIView>, hintContent)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, hintContent)
 
     /**
      * @brief hint duration in miliseconds, 0 to use #ZFUIHintDurationDefault, 0 by default
@@ -100,11 +100,11 @@ public:
     /**
      * @brief the animation to show the hint, null by default
      */
-    ZFPROPERTY_RETAIN(ZFAnimation *, hintAniShow)
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, hintAniShow)
     /**
      * @brief the animation to hide the hint, null by default
      */
-    ZFPROPERTY_RETAIN(ZFAnimation *, hintAniHide)
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, hintAniHide)
 
     /**
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,

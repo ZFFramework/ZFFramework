@@ -5,8 +5,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclass ZFUIKit_ZFUIImageView_imageScaleType_test_Container : zfextend ZFUIView {
     ZFOBJECT_DECLARE(ZFUIKit_ZFUIImageView_imageScaleType_test_Container, ZFUIView)
 
-    ZFPROPERTY_RETAIN(ZFUIImageView *, imageViewSmall, zfobj<ZFUIImageView>())
-    ZFPROPERTY_RETAIN(ZFUIImageView *, imageViewLarge, zfobj<ZFUIImageView>())
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImageView>, imageViewSmall, zfobj<ZFUIImageView>())
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImageView>, imageViewLarge, zfobj<ZFUIImageView>())
 
 protected:
     zfoverride

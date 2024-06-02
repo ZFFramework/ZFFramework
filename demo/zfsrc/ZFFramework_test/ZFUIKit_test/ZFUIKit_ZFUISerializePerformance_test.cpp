@@ -6,7 +6,7 @@ zfclass _ZFP_ZFUISerializePerformance_test_TestObject : zfextend ZFObject, zfimp
     ZFOBJECT_DECLARE(_ZFP_ZFUISerializePerformance_test_TestObject, ZFObject)
     ZFIMPLEMENT_DECLARE(ZFSerializable)
 
-    ZFPROPERTY_RETAIN(_ZFP_ZFUISerializePerformance_test_TestObject *, vObj)
+    ZFPROPERTY_RETAIN(zfanyT<_ZFP_ZFUISerializePerformance_test_TestObject>, vObj)
 
     ZFPROPERTY_ASSIGN(zfstring, v0)
     ZFPROPERTY_ASSIGN(zfstring, v1)

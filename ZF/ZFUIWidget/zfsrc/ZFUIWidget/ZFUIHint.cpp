@@ -232,12 +232,12 @@ ZFMETHOD_DEFINE_1(ZFUIHint, ZFCoreArray<zfautoT<ZFUIHint> >, hintList
     return ret;
 }
 
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIHint, ZFUIView *, hintContent) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIHint, zfanyT<ZFUIView>, hintContent) {
     if(this->hintContent() != zfnull) {
         this->hintWindow()->childAdd(this->hintContent());
     }
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIHint, ZFUIView *, hintContent) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIHint, zfanyT<ZFUIView>, hintContent) {
     if(this->hintContent() != zfnull) {
         this->hintContent()->viewRemoveFromParent();
     }

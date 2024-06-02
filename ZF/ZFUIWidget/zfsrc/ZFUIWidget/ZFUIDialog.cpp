@@ -264,15 +264,15 @@ ZFEVENT_REGISTER(ZFUIDialog, DialogFocusOnUpdate)
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIColor, dialogWindowColor) {
     d->dialogWindowBg->viewBackgroundColor(this->dialogWindowColor());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIImage *, dialogBackgroundImage) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIImage>, dialogBackgroundImage) {
     d->dialogBg->image(this->dialogBackgroundImage());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, ZFUIView *, dialogView) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, dialogView) {
     if(this->dialogView() != zfnull) {
         d->dialogContainer->childAdd(this->dialogView())->c_alignCenter();
     }
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIDialog, ZFUIView *, dialogView) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIDialog, zfanyT<ZFUIView>, dialogView) {
     if(this->dialogView() != zfnull) {
         d->dialogContainer->childRemove(this->dialogView());
     }

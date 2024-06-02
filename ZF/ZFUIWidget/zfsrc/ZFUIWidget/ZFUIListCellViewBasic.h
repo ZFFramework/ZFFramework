@@ -25,26 +25,26 @@ public:
     /**
      * @brief cell's icon
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, cellIcon, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, cellIcon)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImageView *, cellIcon)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFUIImageView *, cellIcon)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, cellIcon, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, cellIcon)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImageView>, cellIcon)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIImageView>, cellIcon)
 
     /**
      * @brief cell's main label
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, cellLabelMain, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, cellLabelMain)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextView *, cellLabelMain)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFUITextView *, cellLabelMain)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUITextView>, cellLabelMain, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUITextView>, cellLabelMain)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUITextView>, cellLabelMain)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUITextView>, cellLabelMain)
 
     /**
      * @brief cell's sub label
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUITextView *, cellLabelSub, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUITextView *, cellLabelSub)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUITextView *, cellLabelSub)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFUITextView *, cellLabelSub)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUITextView>, cellLabelSub, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUITextView>, cellLabelSub)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUITextView>, cellLabelSub)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUITextView>, cellLabelSub)
 
 public:
     /**

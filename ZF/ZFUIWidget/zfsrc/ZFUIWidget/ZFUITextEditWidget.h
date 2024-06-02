@@ -27,16 +27,16 @@ public:
      *
      * note, image's nine patch would be added to #ZFUIView::nativeImplViewMargin
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIImageView *, textEditBackgroundView, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIImageView *, textEditBackgroundView)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIImageView>, textEditBackgroundView, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIImageView>, textEditBackgroundView)
 
     /**
      * @brief the clear button
      *
      * note, the clear button's size would be added to #ZFUIView::nativeImplViewMargin
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUIButtonBasic *, textEditClearButton, ZFPropertyNoInitValue)
-    ZFPROPERTY_ON_INIT_DECLARE(ZFUIButtonBasic *, textEditClearButton)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUIButtonBasic>, textEditClearButton, ZFPropertyNoInitValue)
+    ZFPROPERTY_ON_INIT_DECLARE(zfanyT<ZFUIButtonBasic>, textEditClearButton)
 
     /**
      * @brief whether automatically show or hide clear button, false by default

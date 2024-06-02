@@ -18,39 +18,39 @@ public:
 ZFOBJECT_REGISTER(ZFUIListCellViewBasic)
 ZFSTYLE_DEFAULT_DEFINE(ZFUIListCellViewBasic)
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon) {
     zfobj<ZFUIImageView> cellIcon;
     propertyValue = cellIcon;
     cellIcon->viewSizeMax(ZFUISizeMake(ZFUIGlobalStyle::DefaultStyle()->itemSizeIcon()));
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon) {
     this->cellIconContainer()->childAdd(this->cellIcon())->c_alignCenter();
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUIImageView *, cellIcon) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUIImageView>, cellIcon) {
     this->cellIcon()->viewRemoveFromParent();
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelMain) {
     zfobj<ZFUITextView> cellLabelMain;
     propertyValue = cellLabelMain;
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelMain) {
     this->cellLabelMainContainer()->childAdd(this->cellLabelMain())->c_alignLeft();
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelMain) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelMain) {
     this->cellLabelMain()->viewRemoveFromParent();
 }
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelSub) {
     zfobj<ZFUITextView> cellLabelSub;
     propertyValue = cellLabelSub;
     cellLabelSub->textColor(ZFUIGlobalStyle::DefaultStyle()->textColorSecondary());
     cellLabelSub->textSize(ZFUIGlobalStyle::DefaultStyle()->textSizeSmall());
 }
-ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub) {
+ZFPROPERTY_ON_ATTACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelSub) {
     this->cellLabelSubContainer()->childAdd(this->cellLabelSub())->c_alignLeft();
 }
-ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, ZFUITextView *, cellLabelSub) {
+ZFPROPERTY_ON_DETACH_DEFINE(ZFUIListCellViewBasic, zfanyT<ZFUITextView>, cellLabelSub) {
     this->cellLabelSub()->viewRemoveFromParent();
 }
 

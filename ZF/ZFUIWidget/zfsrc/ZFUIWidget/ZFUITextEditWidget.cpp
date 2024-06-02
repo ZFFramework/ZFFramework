@@ -7,12 +7,12 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFOBJECT_REGISTER(ZFUITextEditWidget)
 ZFSTYLE_DEFAULT_DEFINE(ZFUITextEditWidget)
 
-ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, ZFUIImageView *, textEditBackgroundView) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, zfanyT<ZFUIImageView>, textEditBackgroundView) {
     zfobj<ZFUIImageView> textEditBackgroundView;
     propertyValue = textEditBackgroundView;
     textEditBackgroundView->image(zfRes("ZFUIWidget/ZFUITextEditWidget_background.xml"));
 }
-ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, ZFUIButtonBasic *, textEditClearButton) {
+ZFPROPERTY_ON_INIT_DEFINE(ZFUITextEditWidget, zfanyT<ZFUIButtonBasic>, textEditClearButton) {
     zfobj<ZFUIButtonBasic> textEditClearButton;
     propertyValue = textEditClearButton;
     textEditClearButton->icon()->image(zfRes("ZFUIWidget/ZFUITextEditWidget_clearButton.xml"));

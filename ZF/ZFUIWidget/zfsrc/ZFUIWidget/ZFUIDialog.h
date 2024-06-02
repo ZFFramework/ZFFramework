@@ -150,25 +150,25 @@ public:
     /**
      * @brief dialog's layout param, created by #ZFUIDialogDefaultLayoutParamCreator by default
      */
-    ZFPROPERTY_RETAIN_READONLY(ZFUILayoutParam *, dialogLayoutParam, ZFUIDialogDefaultLayoutParamCreator())
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFUILayoutParam>, dialogLayoutParam, ZFUIDialogDefaultLayoutParamCreator())
 
     /**
      * @brief dialog's show animation, #ZFUIDialogDefaultAniShowCreator by default
      */
-    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniShow, ZFUIDialogDefaultAniShowCreator())
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, dialogAniShow, ZFUIDialogDefaultAniShowCreator())
 
     /**
      * @brief dialog's hide animation, #ZFUIDialogDefaultAniHideCreator by default
      */
-    ZFPROPERTY_RETAIN(ZFAnimation *, dialogAniHide, ZFUIDialogDefaultAniHideCreator())
+    ZFPROPERTY_RETAIN(zfanyT<ZFAnimation>, dialogAniHide, ZFUIDialogDefaultAniHideCreator())
 
     /**
      * @brief dialog's background image
      *
      * note that the #ZFUIImage::imageNinePatch would be used as dialog content's margin
      */
-    ZFPROPERTY_RETAIN(ZFUIImage *, dialogBackgroundImage, zfRes("ZFUIWidget/ZFUIDialog_background.xml"))
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIImage *, dialogBackgroundImage)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIImage>, dialogBackgroundImage, zfRes("ZFUIWidget/ZFUIDialog_background.xml"))
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIImage>, dialogBackgroundImage)
 
     /**
      * @brief whether automatically focus to dialog content, true by default
@@ -194,9 +194,9 @@ public:
      * subclass should use #ZFUIDialog::dialogInternalContainer to achieve additional logic,
      * which is internal view and won't be serialized
      */
-    ZFPROPERTY_RETAIN(ZFUIView *, dialogView)
-    ZFPROPERTY_ON_ATTACH_DECLARE(ZFUIView *, dialogView)
-    ZFPROPERTY_ON_DETACH_DECLARE(ZFUIView *, dialogView)
+    ZFPROPERTY_RETAIN(zfanyT<ZFUIView>, dialogView)
+    ZFPROPERTY_ON_ATTACH_DECLARE(zfanyT<ZFUIView>, dialogView)
+    ZFPROPERTY_ON_DETACH_DECLARE(zfanyT<ZFUIView>, dialogView)
 
     /**
      * @brief whether automatically fix frame according to #ZFUIOnScreenKeyboardAutoResizeStart,

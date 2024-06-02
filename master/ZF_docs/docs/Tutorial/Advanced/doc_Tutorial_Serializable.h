@@ -13,7 +13,7 @@
  *
  *       // object type property can be serialized automatically
  *       // if it's serializable
- *       ZFPROPERTY_RETAIN(SomeSerializable *, mySerializableProperty)
+ *       ZFPROPERTY_RETAIN(zfanyT<SomeSerializable>, mySerializableProperty)
  *   };
  * @endcode
  *

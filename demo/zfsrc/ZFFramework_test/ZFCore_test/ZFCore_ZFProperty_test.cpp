@@ -7,27 +7,27 @@ zfclass _ZFP_ZFCore_ZFProperty_test_TestBase : zfextend ZFObject {
 
 public:
     // retain
-    ZFPROPERTY_RETAIN(ZFObject *, propertyRetain)
-    ZFPROPERTY_RETAIN_READONLY(ZFObject *, propertyRetainReadonly, ZFPropertyNoInitValue)
+    ZFPROPERTY_RETAIN(zfanyT<ZFObject>, propertyRetain)
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFObject>, propertyRetainReadonly, ZFPropertyNoInitValue)
 
     // assign
     ZFPROPERTY_ASSIGN(zfstring, propertyAssign)
     ZFPROPERTY_ASSIGN_READONLY(zfstring, propertyAssignReadonly, ZFPropertyNoInitValue)
 
     // weak
-    ZFPROPERTY_ASSIGN(ZFObject *, propertyWeak)
+    ZFPROPERTY_ASSIGN(zfanyT<ZFObject>, propertyWeak)
 
     // custom callback
-    ZFPROPERTY_ON_INIT_INLINE(ZFObject *, propertyRetain) {
+    ZFPROPERTY_ON_INIT_INLINE(zfanyT<ZFObject>, propertyRetain) {
         zfLog();
     }
-    ZFPROPERTY_ON_VERIFY_INLINE(ZFObject *, propertyRetain) {
+    ZFPROPERTY_ON_VERIFY_INLINE(zfanyT<ZFObject>, propertyRetain) {
         zfLog();
     }
-    ZFPROPERTY_ON_ATTACH_INLINE(ZFObject *, propertyRetain) {
+    ZFPROPERTY_ON_ATTACH_INLINE(zfanyT<ZFObject>, propertyRetain) {
         zfLog();
     }
-    ZFPROPERTY_ON_DETACH_INLINE(ZFObject *, propertyRetain) {
+    ZFPROPERTY_ON_DETACH_INLINE(zfanyT<ZFObject>, propertyRetain) {
         zfLog();
     }
 

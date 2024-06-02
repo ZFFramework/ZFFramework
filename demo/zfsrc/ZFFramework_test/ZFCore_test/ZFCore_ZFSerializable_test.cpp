@@ -28,7 +28,7 @@ zfclass _ZFP_ZFCore_ZFSerializable_test_TestClassContainer : zfextend ZFObject, 
     ZFIMPLEMENT_DECLARE(ZFSerializable)
 
 public:
-    ZFPROPERTY_RETAIN(ZFObject *, serializableMember)
+    ZFPROPERTY_RETAIN(zfanyT<ZFObject>, serializableMember)
 
 protected:
     zfoverride

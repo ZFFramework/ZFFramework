@@ -58,7 +58,7 @@ public:
     /**
      * @brief curve for time line, null to use linear time line, null by default
      */
-    ZFPROPERTY_RETAIN(ZFCurve *, aniCurve)
+    ZFPROPERTY_RETAIN(zfanyT<ZFCurve>, aniCurve)
     /**
      * @brief interval to update time line, in miliseconds, -1 by default
      *

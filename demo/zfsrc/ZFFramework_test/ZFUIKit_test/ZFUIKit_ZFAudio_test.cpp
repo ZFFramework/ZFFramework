@@ -116,9 +116,9 @@ protected:
         }
     }
 
-    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio0, zfobj<ZFAudio>())
-    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio1, zfobj<ZFAudio>())
-    ZFPROPERTY_RETAIN_READONLY(ZFAudio *, audio2, zfobj<ZFAudio>())
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFAudio>, audio0, zfobj<ZFAudio>())
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFAudio>, audio1, zfobj<ZFAudio>())
+    ZFPROPERTY_RETAIN_READONLY(zfanyT<ZFAudio>, audio2, zfobj<ZFAudio>())
 };
 ZFOBJECT_REGISTER(ZFUIKit_ZFAudio_test)
 
