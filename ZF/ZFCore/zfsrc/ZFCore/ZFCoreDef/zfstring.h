@@ -355,7 +355,7 @@ public:
 public:
     /** @brief access string value */
     inline const T_Char *cString(void) const {
-        return d ? d->s.ptr : "";
+        return d ? d->s.ptr : (const T_Char *)&d;
     }
     /** @brief length of the string */
     inline zfindex length(void) const {
