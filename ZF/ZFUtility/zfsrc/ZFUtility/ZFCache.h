@@ -49,7 +49,7 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(zfbool, cacheTrimWhenReceiveMemoryWarning)
 
     /**
-     * @brief leave how many cache alive while #cacheTrim, 0.2 by default
+     * @brief leave how many cache alive while #cacheTrimWhenReceiveMemoryWarning, 0.2 by default
      */
     ZFPROPERTY_ASSIGN(zffloat, cacheTrimThreshold, 0.2f)
 
@@ -65,9 +65,15 @@ public:
             , ZFMP_IN(ZFObject *, cacheValue)
             )
     /**
-     * @brief access cache, or return null if not exist
+     * @brief access and remove cache, or return null if not exist, see #cacheCheck
      */
     ZFMETHOD_DECLARE_1(zfauto, cacheGet
+            , ZFMP_IN(const zfchar *, cacheKey)
+            )
+    /**
+     * @brief check cache, or return null if not exist, see #cacheGet
+     */
+    ZFMETHOD_DECLARE_1(zfauto, cacheCheck
             , ZFMP_IN(const zfchar *, cacheKey)
             )
 
@@ -83,17 +89,10 @@ public:
     ZFMETHOD_DECLARE_0(void, cacheRemoveAll)
 
     /**
-     * @brief trim the cache to reduce memory
-     *
-     * by default, this method would call #cacheTrimBySize
-     * according to #cacheTrimThreshold
-     */
-    ZFMETHOD_DECLARE_0(void, cacheTrim)
-    /**
      * @brief util method to trim the cache
      *   so that the cached data won't exceeds specified size
      */
-    ZFMETHOD_DECLARE_1(void, cacheTrimBySize
+    ZFMETHOD_DECLARE_1(void, cacheTrim
             , ZFMP_IN(zfindex , size)
             )
 
@@ -101,12 +100,9 @@ public:
     /**
      * @brief access all cache data, used for debug only
      */
-    ZFMETHOD_DECLARE_0(ZFCoreArray<zfauto>, cacheGetAll)
-    /**
-     * @brief see #cacheGetAll
-     */
-    ZFMETHOD_DECLARE_1(void, cacheGetAllT
-            , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
+    ZFMETHOD_DECLARE_2(void, cacheGetAllT
+            , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, cacheKeyList)
+            , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, cacheValueList)
             )
 
 protected:
@@ -129,6 +125,7 @@ protected:
 
 private:
     _ZFP_ZFCachePrivate *d;
+    friend zfclassFwd _ZFP_ZFCachePrivate;
 };
 
 ZF_NAMESPACE_GLOBAL_END

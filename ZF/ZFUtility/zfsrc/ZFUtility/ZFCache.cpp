@@ -16,7 +16,8 @@ public:
     static void cacheTrim(ZF_IN const ZFArgs &zfargs) {
         const zfstlmap<ZFCache *, zfbool> &attachedObject = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->attachedObject;
         for(zfstlmap<ZFCache *, zfbool>::const_iterator it = attachedObject.begin(); it != attachedObject.end(); ++it) {
-            it->first->cacheTrim();
+            ZFCache *holder = it->first;
+            holder->cacheTrim(holder->cacheMaxSize() * holder->cacheTrimThreshold());
         }
     }
     void cacheTrimListenerSetup(
@@ -48,46 +49,21 @@ ZF_GLOBAL_INITIALIZER_END(ZFCacheDataHolder)
 // ============================================================
 zfclassFwd _ZFP_ZFCacheData;
 typedef zfstllist<_ZFP_ZFCacheData *> _ZFP_ZFCacheList;
-typedef zfstlmap<const zfchar *, _ZFP_ZFCacheList, zfcharConst_zfstlComparer> _ZFP_ZFCacheMap;
+typedef zfstlmap<zfstring, _ZFP_ZFCacheList> _ZFP_ZFCacheMap;
 zfclassNotPOD _ZFP_ZFCacheData {
 public:
-    zfchar *cacheKey;
-    zfauto cacheValue;
-    _ZFP_ZFCacheList::iterator listIt;
-    _ZFP_ZFCacheList::iterator mapIt;
-public:
-    ~_ZFP_ZFCacheData(void) {
-        if(this->cacheKey) {
-            zffree(this->cacheKey);
-        }
-    }
+    ZFObject *cacheValue; // retained only when added to cacheList
+    ZFListener cacheOnDeallocListener; // used to detect and move from aliveList to cacheList
+    _ZFP_ZFCacheMap::iterator cacheMapIt; // it of _ZFP_ZFCachePrivate::cacheMap
+    _ZFP_ZFCacheList::iterator cacheMapListIt; // it of _ZFP_ZFCachePrivate::cacheMap[cacheKey]
+    _ZFP_ZFCacheList::iterator cacheListIt; // it of _ZFP_ZFCachePrivate::cacheList, invalid if still used by app
+    _ZFP_ZFCacheList::iterator aliveListIt; // it of _ZFP_ZFCachePrivate::aliveList, invalid if not used by app
 };
 zfclassNotPOD _ZFP_ZFCachePrivate {
 public:
-    /*
-     * new cache added to tail
-     */
-    _ZFP_ZFCacheList cacheList;
-    _ZFP_ZFCacheMap cacheMap;
-
-public:
-    _ZFP_ZFCacheData *popFirst(void) {
-        if(this->cacheList.empty()) {
-            return zfnull;
-        }
-        else {
-            _ZFP_ZFCacheData *cacheData = *(this->cacheList.begin());
-            this->cacheList.pop_front();
-
-            _ZFP_ZFCacheMap::iterator mapIt = this->cacheMap.find(cacheData->cacheKey);
-            mapIt->second.erase(cacheData->mapIt);
-            if(mapIt->second.empty()) {
-                this->cacheMap.erase(mapIt);
-            }
-
-            return cacheData;
-        }
-    }
+    _ZFP_ZFCacheMap cacheMap; // all including used and not used by app
+    _ZFP_ZFCacheList cacheList; // not used by app, new cache added or moved to tail
+    _ZFP_ZFCacheList aliveList; // still used by app
 };
 
 // ============================================================
@@ -97,7 +73,7 @@ ZFEVENT_REGISTER(ZFCache, CacheOnAdd)
 ZFEVENT_REGISTER(ZFCache, CacheOnRemove)
 
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfindex, cacheMaxSize) {
-    this->cacheTrimBySize(this->cacheMaxSize());
+    this->cacheTrim(this->cacheMaxSize());
 }
 ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfbool, cacheTrimWhenReceiveMemoryWarning) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFCacheDataHolder)->cacheTrimListenerSetup(
@@ -112,25 +88,45 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
         return;
     }
 
-    zfCoreMutexLock();
-    _ZFP_ZFCacheData *cacheData = zfpoolNew(_ZFP_ZFCacheData);
-    zfCoreMutexUnlock();
+    {
+        zfsynchronize(this);
+        _ZFP_ZFCacheData *cacheData = zfpoolNew(_ZFP_ZFCacheData);
+        cacheData->cacheValue = cacheValue;
+        ZFLISTENER_2(cacheOnDealloc
+                , _ZFP_ZFCachePrivate *, d
+                , _ZFP_ZFCacheData *, cacheData
+                ) {
+            d->aliveList.erase(cacheData->aliveListIt);
+            cacheData->aliveListIt = d->aliveList.end();
 
-    cacheData->cacheKey = zfsCopy(cacheKey);
-    cacheData->cacheValue = cacheValue;
+            d->cacheList.push_back(cacheData);
+            cacheData->cacheListIt = d->cacheList.end();
+            --(cacheData->cacheListIt);
 
-    d->cacheList.push_back(cacheData);
-    cacheData->listIt = d->cacheList.end();
-    --(cacheData->listIt);
+            zfRetain(cacheData->cacheValue);
+            // would be removed by retain in EventObjectBeforeDealloc
+            // cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+        } ZFLISTENER_END()
+        cacheData->cacheOnDeallocListener = cacheOnDealloc;
 
-    _ZFP_ZFCacheList &cacheList = d->cacheMap[cacheData->cacheKey];
-    cacheList.push_back(cacheData);
-    cacheData->mapIt = cacheList.end();
-    --(cacheData->mapIt);
+        cacheData->cacheMapIt = d->cacheMap.insert(zfstlpair<zfstring, _ZFP_ZFCacheList>(cacheKey, _ZFP_ZFCacheList())).first;
+        _ZFP_ZFCacheList &cacheList = cacheData->cacheMapIt->second;
+
+        cacheList.push_back(cacheData);
+        cacheData->cacheMapListIt = cacheList.end();
+        --(cacheData->cacheMapListIt);
+
+        cacheData->cacheListIt = d->cacheList.end();
+
+        d->aliveList.push_back(cacheData);
+        cacheData->aliveListIt = d->aliveList.end();
+        --(cacheData->aliveListIt);
+
+        cacheValue->observerAdd(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+    }
 
     this->cacheOnAdd(cacheValue);
-
-    this->cacheTrimBySize(this->cacheMaxSize());
+    this->cacheTrim(this->cacheMaxSize());
 }
 ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
         , ZFMP_IN(const zfchar *, cacheKey)
@@ -138,92 +134,144 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
     if(cacheKey == zfnull) {
         return zfnull;
     }
-
-    _ZFP_ZFCacheMap::iterator mapIt = d->cacheMap.find(cacheKey);
-    if(mapIt == d->cacheMap.end()) {
+    zfsynchronize(this);
+    _ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.find(cacheKey);
+    if(cacheMapIt == d->cacheMap.end() || cacheMapIt->second.empty()) {
         return zfnull;
     }
+    _ZFP_ZFCacheData *cacheData = *(cacheMapIt->second.begin());
+    zfauto ret = cacheData->cacheValue;
 
-    _ZFP_ZFCacheData *cacheData = *(mapIt->second.begin());
-    if(mapIt->second.size() != 1) {
-        mapIt->second.pop_front();
-        mapIt->second.push_back(cacheData);
-        cacheData->mapIt = mapIt->second.end();
-        --(cacheData->mapIt);
+    if(cacheData->aliveListIt != d->aliveList.end()) {
+        cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+        d->aliveList.erase(cacheData->aliveListIt);
     }
-    if(d->cacheList.size() != 1) {
-        d->cacheList.erase(cacheData->listIt);
-        d->cacheList.push_back(cacheData);
-        cacheData->listIt = d->cacheList.end();
-        --(cacheData->listIt);
+    if(cacheData->cacheListIt != d->cacheList.end()) {
+        d->cacheList.erase(cacheData->cacheListIt);
+        zfRelease(cacheData->cacheValue);
+    }
+    cacheData->cacheMapIt->second.erase(cacheData->cacheMapListIt);
+    zfpoolDelete(cacheData);
+
+    this->cacheOnRemove(ret);
+    return ret;
+}
+ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
+        , ZFMP_IN(const zfchar *, cacheKey)
+        ) {
+    if(cacheKey == zfnull) {
+        return zfnull;
+    }
+    zfsynchronize(this);
+    _ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.find(cacheKey);
+    if(cacheMapIt == d->cacheMap.end() || cacheMapIt->second.empty()) {
+        return zfnull;
+    }
+    _ZFP_ZFCacheData *cacheData = *(cacheMapIt->second.begin());
+    zfauto ret = cacheData->cacheValue;
+
+    // move to aliveList
+    if(cacheData->aliveListIt == d->aliveList.end()) {
+        d->cacheList.erase(cacheData->cacheListIt);
+        cacheData->cacheListIt = d->cacheList.end();
+        zfRelease(cacheData->cacheValue);
+
+        d->aliveList.push_back(cacheData);
+        cacheData->aliveListIt = d->aliveList.end();
+        --(cacheData->aliveListIt);
+
+        cacheData->cacheValue->observerAdd(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
     }
 
-    return cacheData->cacheValue;
+    return ret;
 }
 
 ZFMETHOD_DEFINE_1(ZFCache, void, cacheRemove
         , ZFMP_IN(const zfchar *, cacheKey)
         ) {
-    _ZFP_ZFCacheMap::iterator mapIt = d->cacheMap.find(cacheKey);
-    if(mapIt == d->cacheMap.end()) {
+    _ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.find(cacheKey);
+    if(cacheMapIt == d->cacheMap.end() || cacheMapIt->second.empty()) {
         return;
     }
+    zfsynchronize(this);
+    do {
+        _ZFP_ZFCacheList &cacheList = cacheMapIt->second;
+        _ZFP_ZFCacheData *cacheData = *(cacheList.begin());
+        ZFObject *toRelease = zfnull;
 
-    _ZFP_ZFCacheList cacheList;
-    cacheList.swap(mapIt->second);
-    d->cacheMap.erase(mapIt);
+        cacheList.erase(cacheData->cacheMapListIt);
+        if(cacheData->cacheListIt != d->cacheList.end()) {
+            d->cacheList.erase(cacheData->cacheListIt);
+            toRelease = cacheData->cacheValue;
+        }
+        if(cacheData->aliveListIt != d->aliveList.end()) {
+            d->aliveList.erase(cacheData->aliveListIt);
+            cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+        }
 
-    for(_ZFP_ZFCacheList::iterator listIt = cacheList.begin(); listIt != cacheList.end(); ++listIt) {
-        d->cacheList.erase((*listIt)->listIt);
-    }
-
-    zfCoreMutexLocker();
-    for(_ZFP_ZFCacheList::iterator listIt = cacheList.begin(); listIt != cacheList.end(); ++listIt) {
-        this->cacheOnRemove((*listIt)->cacheValue);
-        zfpoolDelete(*listIt);
-    }
+        this->cacheOnRemove(cacheData->cacheValue);
+        zfRelease(toRelease);
+        zfpoolDelete(cacheData);
+    } while(!cacheMapIt->second.empty());
 }
 
 ZFMETHOD_DEFINE_0(ZFCache, void, cacheRemoveAll) {
     if(d->cacheList.empty()) {
         return;
     }
-    _ZFP_ZFCacheList cacheList;
-    cacheList.swap(d->cacheList);
-    d->cacheMap.clear();
+    zfsynchronize(this);
+    do {
+        for(_ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.begin(); cacheMapIt != d->cacheMap.end(); ++cacheMapIt) {
+            while(!cacheMapIt->second.empty()) {
+                _ZFP_ZFCacheList &cacheList = cacheMapIt->second;
+                _ZFP_ZFCacheData *cacheData = *(cacheList.begin());
+                ZFObject *toRelease = zfnull;
 
-    zfCoreMutexLocker();
-    for(_ZFP_ZFCacheList::iterator listIt = cacheList.begin(); listIt != cacheList.end(); ++listIt) {
-        this->cacheOnRemove((*listIt)->cacheValue);
-        zfpoolDelete(*listIt);
-    }
+                cacheList.erase(cacheData->cacheMapListIt);
+                if(cacheData->cacheListIt != d->cacheList.end()) {
+                    d->cacheList.erase(cacheData->cacheListIt);
+                    toRelease = cacheData->cacheValue;
+                }
+                if(cacheData->aliveListIt != d->aliveList.end()) {
+                    d->aliveList.erase(cacheData->aliveListIt);
+                    cacheData->cacheValue->observerRemove(ZFObject::EventObjectBeforeDealloc(), cacheData->cacheOnDeallocListener);
+                }
+
+                this->cacheOnRemove(cacheData->cacheValue);
+                zfRelease(toRelease);
+                zfpoolDelete(cacheData);
+            }
+        }
+    } while(!d->cacheList.empty());
 }
 
-ZFMETHOD_DEFINE_0(ZFCache, void, cacheTrim) {
-    this->cacheTrimBySize(this->cacheTrimThreshold());
-}
-
-ZFMETHOD_DEFINE_1(ZFCache, void, cacheTrimBySize
+ZFMETHOD_DEFINE_1(ZFCache, void, cacheTrim
         , ZFMP_IN(zfindex, size)
         ) {
-    zfCoreMutexLocker();
-    while(d->cacheList.size() > (zfstlsize)size) {
-        _ZFP_ZFCacheData *cacheData = d->popFirst();
-        this->cacheOnRemove(cacheData->cacheValue);
-        zfpoolDelete(cacheData);
+    if(d->cacheList.size() <= (zfstlsize)size) {
+        return;
     }
+    zfsynchronize(this);
+    do {
+        _ZFP_ZFCacheData *cacheData = *(d->cacheList.begin());
+        cacheData->cacheMapIt->second.erase(cacheData->cacheMapListIt);
+        d->cacheList.erase(cacheData->cacheListIt);
+        zfRelease(cacheData->cacheValue);
+        zfpoolDelete(cacheData);
+    } while(d->cacheList.size() > (zfstlsize)size);
 }
 
-ZFMETHOD_DEFINE_0(ZFCache, ZFCoreArray<zfauto>, cacheGetAll) {
-    ZFCoreArray<zfauto> ret;
-    this->cacheGetAllT(ret);
-    return ret;
-}
-ZFMETHOD_DEFINE_1(ZFCache, void, cacheGetAllT
-        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, ret)
+ZFMETHOD_DEFINE_2(ZFCache, void, cacheGetAllT
+        , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, cacheKeyList)
+        , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, cacheValueList)
         ) {
-    for(_ZFP_ZFCacheList::iterator listIt = d->cacheList.begin(); listIt != d->cacheList.end(); ++listIt) {
-        ret.add((*listIt)->cacheValue);
+    for(_ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.begin(); cacheMapIt != d->cacheMap.end(); ++cacheMapIt) {
+        const zfstring &cacheKey = cacheMapIt->first;
+        _ZFP_ZFCacheList &cacheList = cacheMapIt->second;
+        for(_ZFP_ZFCacheList::iterator cacheListIt = cacheList.begin(); cacheListIt != cacheList.end(); ++cacheListIt) {
+            cacheKeyList.add(cacheKey);
+            cacheValueList.add((*cacheListIt)->cacheValue);
+        }
     }
 }
 
