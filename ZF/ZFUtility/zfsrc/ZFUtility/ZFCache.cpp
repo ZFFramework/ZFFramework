@@ -106,8 +106,8 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfbool, cacheTrimWhenReceiveMemoryWarning) 
 
 ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
         , ZFMP_IN(const zfchar *, cacheKey)
-        , ZFMP_IN(ZFObject *, cacheValue
-        )) {
+        , ZFMP_IN(ZFObject *, cacheValue)
+        ) {
     if(cacheKey == zfnull || cacheValue == zfnull) {
         return;
     }

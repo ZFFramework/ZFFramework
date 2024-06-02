@@ -6,7 +6,8 @@
 #ifndef _ZFI_ZFCoreMutex_h_
 #define _ZFI_ZFCoreMutex_h_
 
-#include "ZFCoreTypeDef.h"
+#include "ZFCoreTypeDef_ClassType.h"
+#include "ZFCoreTypeDef_CoreType.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief mutex impl */
