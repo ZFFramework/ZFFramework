@@ -116,7 +116,7 @@ void ZFImpl_sys_Android_zfstringFromStringT(
     }
     JNIEnv *jniEnv = JNIGetJNIEnv();
     jstring nativeString = (jstring)jstr;
-    const zfchar *utf8 = JNIUtilGetStringUTFChars(jniEnv, nativeString, zfnull);
+    const char *utf8 = JNIUtilGetStringUTFChars(jniEnv, nativeString, zfnull);
     if(utf8 != zfnull) {
         s += utf8;
     }

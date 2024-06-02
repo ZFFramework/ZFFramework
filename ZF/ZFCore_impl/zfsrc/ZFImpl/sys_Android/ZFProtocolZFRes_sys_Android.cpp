@@ -295,7 +295,7 @@ public:
         }
         jstring jsPath = (jstring)JNIUtilGetObjectArrayElement(jniEnv, d->files, d->curFileIndex);
         ++d->curFileIndex;
-        const zfchar *sName = JNIUtilGetStringUTFChars(jniEnv, jsPath, zfnull);
+        const char *sName = JNIUtilGetStringUTFChars(jniEnv, jsPath, zfnull);
         fd.fileName = sName;
         JNIUtilReleaseStringUTFChars(jniEnv, jsPath, sName);
 
