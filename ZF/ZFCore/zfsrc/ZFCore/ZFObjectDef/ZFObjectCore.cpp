@@ -196,7 +196,7 @@ void ZFObject::objectTag(
             key);
         return;
     }
-    if(key == zfnull) {
+    if(key == zfnull || (d == zfnull && tag == zfnull)) {
         return;
     }
 
@@ -475,10 +475,6 @@ void ZFObject::_ZFP_ZFObjectCheckRelease(void) {
         if(_objectRetainCount == 1) {
             this->observerNotify(ZFObject::EventObjectBeforeDealloc());
             if(_objectRetainCount > 1) {
-                if(d == zfnull) {
-                    d = zfpoolNew(_ZFP_ZFObjectPrivate);
-                }
-                d->zfAllocCacheRelease = zfnull;
                 this->objectOnRelease();
                 this->observerRemoveAll(ZFObject::EventObjectBeforeDealloc());
                 return;
