@@ -142,7 +142,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfbool, isEmpty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, capacity
         , ZFMP_IN(zfindex, capacity)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfindex, capacity)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, remove
         , ZFMP_IN_OPT(zfindex, pos, 0)
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())

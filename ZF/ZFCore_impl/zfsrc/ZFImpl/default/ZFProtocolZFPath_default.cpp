@@ -1,6 +1,6 @@
 #include "ZFImpl_default_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFPath.h"
-#include "ZFCore/ZFString.h"
+#include "ZFCore/zfstringW.h"
 
 #include "ZFImpl/ZFImpl_env.h"
 

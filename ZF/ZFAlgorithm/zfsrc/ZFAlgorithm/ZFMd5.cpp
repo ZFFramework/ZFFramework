@@ -161,7 +161,7 @@ ZFMETHOD_FUNC_DEFINE_3(zfstring, ZFMd5
  * This processes one or more 64-byte data blocks, but does NOT update
  * the bit counters.  There are no alignment requirements.
  */
-static const void *body(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size) {
+static const void *_ZFP_ZFMd5_body(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size) {
     const zfbyte *ptr;
     zft_zfuint32 a, b, c, d;
     zft_zfuint32 saved_a, saved_b, saved_c, saved_d;
@@ -299,11 +299,11 @@ void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex size) {
         memcpy(&ctx->buffer[used], data, available);
         data = (const zfbyte *)data + available;
         size -= available;
-        body(ctx, ctx->buffer, 64);
+        _ZFP_ZFMd5_body(ctx, ctx->buffer, 64);
     }
 
     if (size >= 64) {
-        data = body(ctx, data, size & ~(zfindex)0x3f);
+        data = _ZFP_ZFMd5_body(ctx, data, size & ~(zfindex)0x3f);
         size &= 0x3f;
     }
 
@@ -321,7 +321,7 @@ void _ZFP_ZFMd5_Final(zfbyte *result, _ZFP_ZFMd5_CTX *ctx) {
 
     if (available < 8) {
         memset(&ctx->buffer[used], 0, available);
-        body(ctx, ctx->buffer, 64);
+        _ZFP_ZFMd5_body(ctx, ctx->buffer, 64);
         used = 0;
         available = 64;
     }
@@ -338,7 +338,7 @@ void _ZFP_ZFMd5_Final(zfbyte *result, _ZFP_ZFMd5_CTX *ctx) {
     ctx->buffer[62] = (zfbyte)(ctx->hi >> 16);
     ctx->buffer[63] = (zfbyte)(ctx->hi >> 24);
 
-    body(ctx, ctx->buffer, 64);
+    _ZFP_ZFMd5_body(ctx, ctx->buffer, 64);
 
     result[0] = (zfbyte)(ctx->a);
     result[1] = (zfbyte)(ctx->a >> 8);

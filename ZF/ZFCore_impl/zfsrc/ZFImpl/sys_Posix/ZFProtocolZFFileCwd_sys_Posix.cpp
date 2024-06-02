@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_Posix_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFFileCwd.h"
-#include "ZFCore/ZFString.h"
+#include "ZFCore/zfstringW.h"
 
 #if ZF_ENV_sys_Posix
 #include <unistd.h>

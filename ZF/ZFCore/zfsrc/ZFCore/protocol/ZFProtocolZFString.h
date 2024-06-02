@@ -1,17 +1,17 @@
 /**
  * @file ZFProtocolZFString.h
- * @brief protocol for ZFString
+ * @brief protocol for zfstringW
  */
 
 #ifndef _ZFI_ZFProtocolZFString_h_
 #define _ZFI_ZFProtocolZFString_h_
 
 #include "ZFCore/ZFProtocol.h"
-#include "ZFCore/ZFString.h"
+#include "ZFCore/zfstringW.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief protocol for ZFString
+ * @brief protocol for zfstringW
  */
 ZFPROTOCOL_INTERFACE_BEGIN(ZFLIB_ZFCore, ZFString)
 public:

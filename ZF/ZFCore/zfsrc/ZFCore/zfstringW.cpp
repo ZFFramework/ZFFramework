@@ -1,4 +1,4 @@
-#include "ZFString.h"
+#include "zfstringW.h"
 #include "protocol/ZFProtocolZFString.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN

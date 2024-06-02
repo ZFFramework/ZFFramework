@@ -80,17 +80,21 @@ zfidentity zfidentityCalcString(
         ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         ) {
-    zfidentity hash = zfidentityZero();
+    // FNV-1a
+    // https://en.wikipedia.org/wiki/Fowler–Noll–Vo_hash_function
+    zft_zfidentity hash = 0x811c9dc5;
     if(src) {
         if(srcLen == zfindexMax()) {
             while(*src) {
-                hash = hash * 131 + (*src++);
+                hash = (hash ^ *src) * 0x01000193;
+                ++src;
             }
         }
         else {
             const zfchar *srcEnd = src + srcLen;
             while(src < srcEnd) {
-                hash = hash * 131 + (*src++);
+                hash = (hash ^ *src) * 0x01000193;
+                ++src;
             }
         }
     }
@@ -102,10 +106,11 @@ zfidentity zfidentityCalcBuf(
         ) {
     const zfbyte *p = (const zfbyte *)src;
     const zfbyte *pEnd = p + srcLen;
-    zfidentity hash = zfidentityZero();
+    zft_zfidentity hash = 0x811c9dc5;
     if(p) {
         while(p < pEnd) {
-            hash = hash * 131 + (*p++);
+            hash = (hash ^ *p) * 0x01000193;
+            ++p;
         }
     }
     return hash;

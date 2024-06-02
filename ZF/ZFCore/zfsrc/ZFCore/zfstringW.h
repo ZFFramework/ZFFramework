@@ -1,10 +1,10 @@
 /**
- * @file ZFString.h
+ * @file zfstringW.h
  * @brief string util
  */
 
-#ifndef _ZFI_ZFString_h_
-#define _ZFI_ZFString_h_
+#ifndef _ZFI_zfstringW_h_
+#define _ZFI_zfstringW_h_
 
 #include "ZFObject.h"
 #include <cwchar>
@@ -133,5 +133,5 @@ inline zfstringW zfstringToUTF16BE(
 extern ZFLIB_ZFCore zfindex zfstringWordCountOfUTF8(ZF_IN const zfchar *utf8String);
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFString_h_
+#endif // #ifndef _ZFI_zfstringW_h_
 

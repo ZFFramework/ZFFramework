@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFCoreTypeDef_StringType_h_
 #define _ZFI_ZFCoreTypeDef_StringType_h_
 
-#include "ZFCoreString.h"
+#include "zfstring.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 

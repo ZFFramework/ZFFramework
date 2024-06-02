@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_iOS_ZF_impl.h"
 
-#include "ZFCore/ZFString.h"
+#include "ZFCore/zfstringW.h"
 
 #if ZF_ENV_sys_iOS
 

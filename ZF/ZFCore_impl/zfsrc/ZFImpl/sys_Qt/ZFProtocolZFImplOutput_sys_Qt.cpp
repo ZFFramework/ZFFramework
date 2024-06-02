@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_Qt_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFImplOutput.h"
-#include "ZFCore/ZFString.h"
+#include "ZFCore/zfstringW.h"
 
 #if ZF_ENV_sys_Qt
 #include <QDebug>

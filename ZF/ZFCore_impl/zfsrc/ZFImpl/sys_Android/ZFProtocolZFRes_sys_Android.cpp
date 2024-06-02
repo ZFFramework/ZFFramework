@@ -1,6 +1,6 @@
 #include "ZFImpl_sys_Android_ZFCore_impl.h"
 #include "ZFCore/protocol/ZFProtocolZFRes.h"
-#include "ZFCore/ZFString.h"
+#include "ZFCore/zfstringW.h"
 #include "ZFImpl/sys_Android/ZFMainEntry_sys_Android.h"
 
 #if ZF_ENV_sys_Android

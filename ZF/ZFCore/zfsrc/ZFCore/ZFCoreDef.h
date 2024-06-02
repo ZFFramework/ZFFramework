@@ -25,7 +25,6 @@
 #include "ZFCoreDef/ZFCoreStaticInitializer.h"
 #include "ZFCoreDef/ZFCoreStaticRegister.h"
 #include "ZFCoreDef/ZFCoreStatistic.h"
-#include "ZFCoreDef/ZFCoreString.h"
 #include "ZFCoreDef/ZFCoreStringConvert.h"
 #include "ZFCoreDef/ZFCoreStringUtil.h"
 #include "ZFCoreDef/ZFCoreTypeDef.h"
@@ -44,6 +43,7 @@
 #include "ZFCoreDef/ZFVersion.h"
 #include "ZFCoreDef/zfstr.h"
 #include "ZFCoreDef/zfstr_CoreType.h"
+#include "ZFCoreDef/zfstring.h"
 
 #endif // #ifndef _ZFI_ZFCoreDef_h_
 
