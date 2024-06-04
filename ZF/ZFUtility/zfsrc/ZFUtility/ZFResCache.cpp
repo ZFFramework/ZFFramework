@@ -14,7 +14,6 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFResCache, zfindex, cacheMaxSize) {
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFResCacheAutoCleanup, ZFLevelZFFrameworkPostNormal) {
 }
 ZF_GLOBAL_INITIALIZER_DESTROY(ZFResCacheAutoCleanup) {
-    ZFResCache::instance()->cacheMaxSize(0);
     ZFResCache::instance()->cacheRemoveAll();
 }
 ZF_GLOBAL_INITIALIZER_END(ZFResCacheAutoCleanup)
