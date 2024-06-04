@@ -162,6 +162,32 @@ public:
     }
     /** @endcond */
 
+    /** @cond ZFPrivateDoc */
+public:
+    zfclassLikePOD Char {
+    public:
+        Char(ZF_IN zft_zfstring<T_Char> &ref, ZF_IN zfindex pos) : _ref(ref), _pos(pos) {}
+        T_Char &operator = (ZF_IN T_Char const &c) {
+            _ref.set(_pos, c);
+            return _ref.zfunsafe_buffer()[_pos];
+        }
+        T_Char &operator = (ZF_IN Char const &c) {
+            _ref.set(_pos, (T_Char)c);
+            return _ref.zfunsafe_buffer()[_pos];
+        }
+        operator T_Char (void) const {
+            return _ref.get(_pos);
+        }
+    private:
+        zft_zfstring<T_Char> &_ref;
+        zfindex _pos;
+    };
+    template<typename T_Int>
+    inline Char operator [] (ZF_IN T_Int pos) {
+        return Char(*this, (zfindex)pos);
+    }
+    /** @endcond */
+
 public:
     /**
      * @brief swap internal data without deep copy,
@@ -300,6 +326,9 @@ public:
             zfmemcpy(_buf + replacePos, s, len * sizeof(T_Char));
             _head(_buf).length = (zfuint)(lenTmp + len - replaceLen);
             _buf[_head(_buf).length] = '\0';
+            if(_head(_buf).capacity >= 128 && len <= 32) {
+                capacityTrim();
+            }
         }
         return *this;
     }
@@ -327,6 +356,10 @@ public:
     inline zfindex capacity(void) const {
         return _buf ? (zfindex)(_head(_buf).capacity - 1) : 0;
     }
+    /** @brief trim to a proper capacity to save memory */
+    inline void capacityTrim(void) {
+        _capacityChange(this->length());
+    }
     /** @brief remove part of the string */
     void remove(
             ZF_IN zfindex pos
@@ -342,6 +375,9 @@ public:
                 zfmemmove(_buf + pos, _buf + pos + len, (lenTmp - pos - len) * sizeof(T_Char));
                 _head(_buf).length -= len;
                 _buf[_head(_buf).length] = '\0';
+                if(_head(_buf).capacity >= 128 && len <= 32) {
+                    capacityTrim();
+                }
             }
         }
     }
@@ -350,8 +386,14 @@ public:
         if(_buf) {
             zfCoreMutexLocker();
             if(_head(_buf).refCount == 1) {
-                _buf[0] = '\0';
-                _head(_buf).length = 0;
+                if(_head(_buf).capacity >= 64) {
+                    zffree(&_head(_buf));
+                    _buf = zfnull;
+                }
+                else {
+                    _buf[0] = '\0';
+                    _head(_buf).length = 0;
+                }
             }
             else {
                 --(_head(_buf).refCount);
@@ -387,24 +429,21 @@ private:
     }
 private:
     static inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity) {
-        if(capacity < 64) {
+        if(capacity < 32) {
             capacity = ((capacity / 16) + 1) * 16;
         }
-        else if(capacity < 256) {
-            capacity = ((capacity / 64) + 1) * 64;
+        else if(capacity < 64) {
+            capacity = ((capacity / 32) + 1) * 32;
         }
         else if(capacity < 1024) {
-            capacity = ((capacity / 256) + 1) * 256;
+            capacity = ((capacity / 128) + 1) * 128;
         }
         else {
             capacity = ((capacity / 1024) + 1) * 1024;
         }
     }
-    void _prepareWrite(ZF_IN zfindex capacity) {
+    void _capacityChange(ZF_IN zfindex capacity) {
         _capacityOptimize(capacity);
-        if(_buf && capacity <= _head(_buf).capacity && _head(_buf).refCount == 1) {
-            return;
-        }
         zfCoreMutexLocker();
         if(_buf && _head(_buf).refCount == 1) {
             _ZFP_zfstringHead *head = (_ZFP_zfstringHead *)_buf - 1;
@@ -427,6 +466,11 @@ private:
                 head->length = 0;
                 _buf[0] = '\0';
             }
+        }
+    }
+    inline void _prepareWrite(ZF_IN zfindex capacity) {
+        if(_buf == zfnull || capacity >= _head(_buf).capacity || _head(_buf).refCount > 1) {
+            _capacityChange(capacity);
         }
     }
     static zfindex _len(ZF_IN const T_Char *s) {

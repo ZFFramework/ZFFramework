@@ -95,14 +95,31 @@ ZFTYPEID_PROGRESS_DEFINE(zfstring, zfstring, {
     }
 })
 
+ZFOBJECT_ON_INIT_USER_REGISTER_2({
+        zfstring &zfv = invokerObject.zfv();
+        zfv.assign(src, len);
+    }, v_zfstring
+    , ZFMP_IN(const zfchar *, src)
+    , ZFMP_IN(zfindex, len)
+    )
 ZFOBJECT_ON_INIT_USER_REGISTER_3({
         zfstring &zfv = invokerObject.zfv();
         zfv.assign(src + pos, len);
     }, v_zfstring
     , ZFMP_IN(const zfchar *, src)
     , ZFMP_IN(zfindex, pos)
-    , ZFMP_IN_OPT(zfindex, len, zfindexMax())
+    , ZFMP_IN(zfindex, len)
     )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, set
+        , ZFMP_IN(zfindex, pos)
+        , ZFMP_IN(zfchar, c)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, zfchar, get
+        , ZFMP_IN(zfindex, pos)
+        )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, swap
+        , ZFMP_IN_OUT(zfstring &, ref)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, append
         , ZFMP_IN(const zfstring &, s)
         )
@@ -142,6 +159,8 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfbool, isEmpty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_zfstring, void, capacity
         , ZFMP_IN(zfindex, capacity)
         )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, zfindex, capacity)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_zfstring, void, capacityTrim)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, void, remove
         , ZFMP_IN_OPT(zfindex, pos, 0)
         , ZFMP_IN_OPT(zfindex, len, zfindexMax())
@@ -524,6 +543,9 @@ ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(zfiterator, zfiterator)
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFBuffer, ZFBuffer)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void, bufferFree)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFBuffer, void *, bufferGiveUp)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFBuffer, void, bufferSwap
+        , ZFMP_IN_OUT(ZFBuffer &, buf)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFBuffer, void, zfunsafe_bufferChange
         , ZFMP_IN(void *, buffer)
         , ZFMP_IN(zfindex, bufferCapacity)

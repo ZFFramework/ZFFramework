@@ -44,7 +44,7 @@ private:
             if(p == zfindexMax()) {
                 break;
             }
-            s.set(pL + p, '\0');
+            s[pL + p] = '\0';
             this->doOutput(s, pL, pL + p);
             pL = pL + p + 1;
         } while(zftrue);
@@ -58,10 +58,10 @@ private:
             do {
                 zfindex p = pL + maxLen;
                 zfchar c = s[p];
-                s.set(p, '\0');
+                s[p] = '\0';
                 this->implOutput(s.cString() + pL);
                 pL += maxLen;
-                s.set(p, c);
+                s[p] = c;
             } while(pR - pL > maxLen);
             if(pR > pL) {
                 this->implOutput(s.cString() + pL);
