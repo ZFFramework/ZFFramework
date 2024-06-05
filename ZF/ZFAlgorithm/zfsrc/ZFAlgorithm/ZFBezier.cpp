@@ -70,7 +70,7 @@ zffloat ZFBezier::t_by_x(ZF_IN zffloat x) const {
         return t1;
     }
 
-    while(t0 < t1) {
+    while(t0 < t1 - zffloatEpsilon) {
         x2 = this->x_by_t(t2);
         if(zfmAbs(x2 - x) < zffloatEpsilon) {
             return t2;
@@ -117,7 +117,7 @@ zffloat ZFBezier::t_by_y(ZF_IN zffloat y) const {
         return t1;
     }
 
-    while(t0 < t1) {
+    while(t0 < t1 - zffloatEpsilon) {
         y2 = this->y_by_t(t2);
         if(zfmAbs(y2 - y) < zffloatEpsilon) {
             return t2;

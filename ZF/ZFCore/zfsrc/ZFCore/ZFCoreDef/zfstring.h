@@ -448,7 +448,7 @@ private:
         if(_buf && _head(_buf).refCount == 1) {
             _ZFP_zfstringHead *head = (_ZFP_zfstringHead *)_buf - 1;
             head = (_ZFP_zfstringHead *)zfrealloc(head, sizeof(_ZFP_zfstringHead) + capacity * sizeof(T_Char));
-            head->capacity = capacity;
+            head->capacity = (zfuint)capacity;
             _buf = (T_Char *)(head + 1);
         }
         else {
@@ -456,7 +456,7 @@ private:
             _ZFP_zfstringHead *head = (_ZFP_zfstringHead *)zfmalloc(sizeof(_ZFP_zfstringHead) + capacity * sizeof(T_Char));
             _buf = (T_Char *)(head + 1);
             head->refCount = 1;
-            head->capacity = capacity;
+            head->capacity = (zfuint)capacity;
             if(bufTmp) {
                 head->length = _head(bufTmp).length;
                 zfmemcpy(_buf, bufTmp, (_head(bufTmp).length + 1) * sizeof(T_Char));
