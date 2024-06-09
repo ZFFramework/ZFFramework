@@ -13,7 +13,7 @@ if not defined CLEAN_WHAT (
 )
 if %_CLEANUP_build% == 1 (
     call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%" "zfautoscript_cleanup*.zfsh"
-    call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%\..\ZFModule" "zfautoscript_cleanup*.zfsh"
+    call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%\ZFModule" "zfautoscript_cleanup*.zfsh"
 )
 
 set _CLEANUP_zf3rd=0
@@ -24,7 +24,7 @@ if not defined CLEAN_WHAT (
 )
 if %_CLEANUP_zf3rd% == 1 (
     call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%" "zfautoscript_zf3rd_cleanup*.zfsh"
-    call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%\..\ZFModule" "zfautoscript_zf3rd_cleanup*.zfsh"
+    call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%\ZFModule" "zfautoscript_zf3rd_cleanup*.zfsh"
 )
 
 rmdir /s/q "%WORK_DIR%\_release" >nul 2>&1
