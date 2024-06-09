@@ -377,7 +377,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local pathInfo = zfargs:param0()
         ---@type v_ZFFileFindData
         local fd = zfargs:param1()
-        local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length())
+        local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_SRC_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
             if ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)) ~= ZFIndexRangeZero() then
@@ -408,7 +408,7 @@ function zfproj_creator(CONFIG_FILE_PATH, DST_PATH)
         local pathInfo = zfargs:param0()
         ---@type v_ZFFileFindData
         local fd = zfargs:param1()
-        local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length())
+        local relPath = zfstring(pathInfo:pathData(), _TMP_DIR_FORMATED:length(), zfindexMax())
         local filtered = zffalse
         for i=0,zfl_value(_SYNC_EXCLUDE:count()) - 1 do
             if ZFRegExpFind(relPath, _SYNC_EXCLUDE:get(i)) ~= ZFIndexRangeZero() then
@@ -444,7 +444,7 @@ function zfproj_recursive(SRC_DIR, DST_DIR)
         local pathInfo = zfargs:param0()
         ---@type v_ZFFileFindData
         local fd = zfargs:param1()
-        local relPath = zfstring(pathInfo:pathData(), SRC_DIR_FORMATED:length())
+        local relPath = zfstring(pathInfo:pathData(), SRC_DIR_FORMATED:length(), zfindexMax())
         local filtered = (not zfstringIsEqual(fd:fileName(), 'zfautoscript_zfproj.txt'))
         if not filtered then
             for i=0,zfl_value(ZF_EXCLUDE_FILE_TMP:count()) - 1 do

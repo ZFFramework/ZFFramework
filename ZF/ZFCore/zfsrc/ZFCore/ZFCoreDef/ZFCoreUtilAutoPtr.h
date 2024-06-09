@@ -15,8 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 template<typename T_POD>
 zfclassLikePOD _ZFP_zflineFreeContainer {
 public:
-    _ZFP_zflineFreeContainer(ZF_IN const _ZFP_zflineFreeContainer &ref) : p(ref.p) {}
-    _ZFP_zflineFreeContainer(ZF_IN T_POD *p) : p(p) {}
+    explicit _ZFP_zflineFreeContainer(ZF_IN T_POD *p) : p(p) {}
     ~_ZFP_zflineFreeContainer(void) {
         zffree(p);
     }

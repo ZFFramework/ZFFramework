@@ -107,14 +107,12 @@ public:
         }
     }
     /** @brief copy content from another string */
-    zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, zfindex pos)
+    zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, zfindex len)
     {
         zfCoreMutexLocker();
         d = _ZFP_Empty();
         ++(d->refCount);
-        if(pos < s.length()) {
-            this->assign(s.cString() + pos);
-        }
+        this->assign(s.cString(), len);
     }
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, zfindex pos, zfindex len)
@@ -147,6 +145,16 @@ public:
         ++(d->refCount);
         if(s) {
             this->assign(s, len);
+        }
+    }
+    /** @brief copy content from another string */
+    zft_zfstring(ZF_IN const T_Char *s, zfindex pos, zfindex len)
+    {
+        zfCoreMutexLocker();
+        d = _ZFP_Empty();
+        ++(d->refCount);
+        if(s) {
+            this->assign(s + pos, len);
         }
     }
     ~zft_zfstring(void) {
