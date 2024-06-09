@@ -1,6 +1,6 @@
 /**
  * @file zfstring.h
- * @brief string impl to reduce dependency of std::string
+ * @brief low level string container
  */
 
 #ifndef _ZFI_zfstring_h_
@@ -13,6 +13,50 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+// ============================================================
+template<typename T_Char>
+zfindex _ZFP_zfstring_len(ZF_IN const T_Char *s) {
+    const T_Char *p = s;
+    while(*p) {++p;}
+    return p - s;
+}
+template<typename T_Char>
+zfint _ZFP_zfstring_cmp(
+        ZF_IN const T_Char *s1
+        , ZF_IN const T_Char *s2
+        ) {
+    while(*s1 && *s2 && *s1 == *s2) {++s1, ++s2;}
+    return *s1 - *s2;
+}
+template<typename T_Char>
+zfint _ZFP_zfstring_ncmp(
+        ZF_IN const T_Char *s1
+        , ZF_IN const T_Char *s2
+        , ZF_IN zfindex len
+        ) {
+    while(--len && *s1 && *s2 && *s1 == *s2) {++s1, ++s2;}
+    return *s1 - *s2;
+}
+
+// ============================================================
+inline zfindex _ZFP_zfstring_len(ZF_IN const zfchar *s) {
+    return zfslen(s);
+}
+inline zfint _ZFP_zfstring_cmp(
+        ZF_IN const zfchar *s1
+        , ZF_IN const zfchar *s2
+        ) {
+    return zfscmp(s1, s2);
+}
+inline zfint _ZFP_zfstring_ncmp(
+        ZF_IN const zfchar *s1
+        , ZF_IN const zfchar *s2
+        , ZF_IN zfindex len
+        ) {
+    return zfsncmp(s1, s2, len);
+}
+
+// ============================================================
 /**
  * @brief low level string container
  */
@@ -32,6 +76,10 @@ public:
         zfCoreMutexLocker();
         d = s.d;
         ++(d->refCount);
+        if(d->capacity == 0 && d->d.ptr) {
+            // zftext got retained, deep copy for safe
+            _prepareWrite(d->length);
+        }
     }
     /** @brief copy content from another string */
     zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, zfindex pos)
@@ -207,7 +255,7 @@ public:
             ) {
         if(s) {
             if(len == zfindexMax()) {
-                len = _len(s);
+                len = _ZFP_zfstring_len(s);
             }
             zfindex lenTmp = this->length();
             _prepareWrite(lenTmp + len);
@@ -230,7 +278,7 @@ public:
             ) {
         if(len == zfindexMax()) {
             if(s) {
-                len = _len(s);
+                len = _ZFP_zfstring_len(s);
             }
             else {
                 len = 0;
@@ -277,7 +325,7 @@ public:
         }
         else if(s) {
             if(len == zfindexMax()) {
-                len = _len(s);
+                len = _ZFP_zfstring_len(s);
             }
             zfindex lenTmp = this->length();
             _prepareWrite(lenTmp + len);
@@ -314,7 +362,7 @@ public:
                 replaceLen = lenTmp - replacePos;
             }
             if(len == zfindexMax()) {
-                len = _len(s);
+                len = _ZFP_zfstring_len(s);
             }
             if(len > replaceLen) {
                 _prepareWrite(lenTmp + len - replaceLen);
@@ -411,7 +459,7 @@ public:
 
 public:
     /** @brief compare with another string */
-    inline zfint compare(ZF_IN const zft_zfstring<T_Char> &s) const {return _cmp(this->cString(), s.cString());}
+    inline zfint compare(ZF_IN const zft_zfstring<T_Char> &s) const {return _ZFP_zfstring_cmp(this->cString(), s.cString());}
     /** @brief compare with another string */
     zfint compare(
             ZF_IN const T_Char *s
@@ -420,9 +468,9 @@ public:
         const T_Char *buf = this->cString();
         if(s) {
             if(len == zfindexMax()) {
-                len = _len(s);
+                len = _ZFP_zfstring_len(s);
             }
-            return _ncmp(buf, s, (len >= this->length() ? this->length() : len) + 1);
+            return _ZFP_zfstring_ncmp(buf, s, (len >= this->length() ? this->length() : len) + 1);
         }
         else {
             return (zfint)buf[0];
@@ -441,6 +489,14 @@ private:
         } d;
     public:
         D(void) : refCount(1), capacity(0), length(0), d() {}
+    public:
+        zfclassLikePOD H {
+        public:
+            H(void) : d(zfnew(D)) {}
+            ~H(void) {zfdelete(d);}
+        public:
+            D *d;
+        };
     };
 private:
     D *d;
@@ -452,7 +508,7 @@ public:
     static zft_zfstring<T_Char> shared(ZF_IN const T_Char *sLiteral) {
         D *d = zfpoolNew(D);
         d->d.ptr = sLiteral;
-        d->length = _len(sLiteral);
+        d->length = _ZFP_zfstring_len(sLiteral);
         return zft_zfstring<T_Char>(d);
     }
 private:
@@ -462,8 +518,8 @@ private:
     }
 private:
     static D *_ZFP_Empty(void) {
-        static D *d = zfpoolNew(D);
-        return d;
+        static typename D::H d;
+        return d.d;
     }
     static inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity) {
         if(capacity < 32) {
@@ -516,32 +572,14 @@ private:
             _capacityChange(capacity);
         }
     }
-    static zfindex _len(ZF_IN const T_Char *s) {
-        const T_Char *p = s;
-        while(*p) {++p;}
-        return p - s;
-    }
-    static zfint _cmp(
-            ZF_IN const T_Char *s1
-            , ZF_IN const T_Char *s2
-            ) {
-        while(*s1 && *s2 && *s1 == *s2) {++s1, ++s2;}
-        return *s1 - *s2;
-    }
-    static zfint _ncmp(
-            ZF_IN const T_Char *s1
-            , ZF_IN const T_Char *s2
-            , ZF_IN zfindex len
-            ) {
-        while(--len && *s1 && *s2 && *s1 == *s2) {++s1, ++s2;}
-        return *s1 - *s2;
-    }
 };
 
 /**
  * @brief util macro for zfstring::shared
  */
-#define zftext(s) zfstring::shared(s)
+#ifndef zftext
+    #define zftext(s) zfstring::shared(s)
+#endif
 
 ZF_NAMESPACE_GLOBAL_END
 
