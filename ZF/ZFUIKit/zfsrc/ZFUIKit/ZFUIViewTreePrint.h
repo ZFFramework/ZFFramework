@@ -28,15 +28,10 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUIKit, void, ZFUIViewTreePrintAfterDelay
         )
 
 /**
- * @brief info getter for #ZFUIViewTreePrint, see #ZFUIViewTreePrintInfoGetterForClass
- */
-typedef void (*ZFUIViewTreePrintInfoGetter)(
-        ZF_IN_OUT const ZFOutput &outputCallback
-        , ZF_IN ZFUIView *view
-        );
-/**
  * @brief register a custom info getter for output info of a view type using #ZFUIViewTreePrint
  *
+ * viewInfoGetter's sender is the view being checking,
+ * param0 is a #ZFOutput to output the view's info\n
  * output should contain only infomations without extra new line or tokens,
  * newly set would override old one, set null to remove\n
  * you may add your own at runtime, using #ZF_GLOBAL_INITIALIZER_INIT is recommended\n
@@ -48,12 +43,12 @@ typedef void (*ZFUIViewTreePrintInfoGetter)(
  */
 extern ZFLIB_ZFUIKit void ZFUIViewTreePrintInfoGetterForClass(
         ZF_IN const ZFClass *viewClass
-        , ZF_IN ZFUIViewTreePrintInfoGetter viewInfoGetter
+        , ZF_IN const ZFListener &viewInfoGetter
         );
 /**
  * @brief see #ZFUIViewTreePrintInfoGetterForClass
  */
-extern ZFLIB_ZFUIKit ZFUIViewTreePrintInfoGetter ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass);
+extern ZFLIB_ZFUIKit ZFListener ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass);
 
 // ============================================================
 /**

@@ -25,7 +25,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUIViewTreePrintAfterDelay
 zfclassPOD _ZFP_ZFUIViewTreePrintData {
 public:
     const ZFClass *viewClass;
-    ZFUIViewTreePrintInfoGetter viewInfoGetter;
+    ZFListener viewInfoGetter;
 };
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewTreePrintDataHolder, ZFLevelZFFrameworkEssential) {
@@ -133,7 +133,10 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
         zfbool exist = zffalse;
         for(zfindex i = datas.count() - 1; i != zfindexMax(); --i) {
             if(printData.view->classData()->classIsTypeOf(datas[i].viewClass)) {
-                datas[i].viewInfoGetter(outputCallbackNoEndl, printData.view);
+                datas[i].viewInfoGetter.execute(ZFArgs()
+                        .sender(printData.view)
+                        .param0(zfobj<v_ZFOutput>(outputCallbackNoEndl))
+                        );
                 exist = zftrue;
                 break;
             }
@@ -150,7 +153,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewTreePrint
 
 void ZFUIViewTreePrintInfoGetterForClass(
         ZF_IN const ZFClass *viewClass
-        , ZF_IN ZFUIViewTreePrintInfoGetter viewInfoGetter
+        , ZF_IN const ZFListener &viewInfoGetter
         ) {
     zfCoreAssert(viewClass != zfnull && viewClass->classIsTypeOf(ZFUIView::ClassData()));
     ZFCoreArray<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
@@ -186,7 +189,7 @@ void ZFUIViewTreePrintInfoGetterForClass(
     data.viewInfoGetter = viewInfoGetter;
     datas.add(data, indexAddTo);
 }
-ZFUIViewTreePrintInfoGetter ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass) {
+ZFListener ZFUIViewTreePrintInfoGetterForClass(ZF_IN const ZFClass *viewClass) {
     ZFCoreArray<_ZFP_ZFUIViewTreePrintData> &datas = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIViewTreePrintDataHolder)->datas;
     for(zfindex i = datas.count() - 1; i != zfindexMax(); --i) {
         if(datas[i].viewClass == viewClass) {

@@ -34,10 +34,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief use to declare friend if your type has non-public constructors
  */
 #if ZF_ENV_ZFMEMPOOL_ENABLE
-    #define zfpoolNew(T_Type, ...) zfnewPlacement((_ZFP_zfpoolObjectHolder<T_Type>::poolMalloc()), T_Type, ##__VA_ARGS__)
+    #define zfpoolNew(T_Type, ...) zfnewPlacement((_ZFP_MP_Obj<T_Type>::pNew()), T_Type, ##__VA_ARGS__)
     #define zfpoolDelete(obj) _ZFP_zfpoolDelete(obj)
     #define zfpoolDeclareFriend() \
-        friend zfclassFwd _ZFP_zfpoolObjectHolder<zfself>;
+        friend zfclassFwd _ZFP_MP_Obj<zfself>;
 #else
     #define zfpoolNew(T_Type, ...) zfnew(T_Type, ##__VA_ARGS__)
     #define zfpoolDelete(obj) zfdelete(obj)
@@ -47,84 +47,86 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 // impl
 template<int N>
-zfclassNotPOD _ZFP_zfpoolSizeAlign {
+zfclassNotPOD _ZFP_MP_SA { // Size Align
 public:
     enum {
-        _A = (N <= sizeof(const void *) * 4 ? sizeof(const void *) : sizeof(const void *) * 4),
+        _A = (N <= sizeof(zfuint) * 4 ? sizeof(zfuint) * 2 : sizeof(zfuint) * 8),
         V = ((N % _A) == 0 ? N : ((N / _A) + 1) * _A),
         M = (N <= sizeof(const void *) * 4 ? 32 : N <= sizeof(const void *) * 8 ? 8 : 4),
     };
 };
 template<int N>
-union ZFLIB_ZFCore _ZFP_zfpoolObjectBlock {
+union ZFLIB_ZFCore _ZFP_MP_B { // Block
 public:
     zfbyte buf[N];
-    _ZFP_zfpoolObjectBlock<N> *next;
+    _ZFP_MP_B<N> *next;
 };
 template<int N>
-zfclassNotPOD _ZFP_zfpoolObject {
+zfclassNotPOD _ZFP_MP_H { // Holder
 public:
-    void *poolMalloc(void) {
-        if(_available) {
-            _ZFP_zfpoolObjectBlock<N> *t = _available;
-            _available = _available->next;
-            --_count;
+    static void *pNew(void) {
+        _ZFP_MP_H<N> &d = _instance();
+        if(d.available) {
+            _ZFP_MP_B<N> *t = d.available;
+            d.available = d.available->next;
+            --d.count;
             return t;
         }
         else {
-            return zfmalloc(sizeof(_ZFP_zfpoolObjectBlock<N>));
+            return zfmalloc(sizeof(_ZFP_MP_B<N>));
         }
     }
-    void poolFree(ZF_IN void *obj) {
-        if(_count >= _ZFP_zfpoolSizeAlign<N>::M) {
+    static void pDel(ZF_IN void *obj) {
+        _ZFP_MP_H<N> &d = _instance();
+        if(d.count >= _ZFP_MP_SA<N>::M) {
             zffree(obj);
         }
         else {
-            ++_count;
-            _ZFP_zfpoolObjectBlock<N> *t = (_ZFP_zfpoolObjectBlock<N> *)obj;
-            t->next = _available;
-            _available = t;
+            ++d.count;
+            _ZFP_MP_B<N> *t = (_ZFP_MP_B<N> *)obj;
+            t->next = d.available;
+            d.available = t;
         }
     }
-public:
-    _ZFP_zfpoolObject(void)
-    : _available(zfnull)
-    , _count(0)
+private:
+    _ZFP_MP_H(void)
+    : available(zfnull)
+    , count(0)
     {
     }
-    ~_ZFP_zfpoolObject(void) {
-        while(_available) {
-            _ZFP_zfpoolObjectBlock<N> *t = _available;
-            _available = _available->next;
+    ~_ZFP_MP_H(void) {
+        while(available) {
+            _ZFP_MP_B<N> *t = available;
+            available = available->next;
             zffree(t);
         }
     }
-    static _ZFP_zfpoolObject<N> &instance(void) {
-        static _ZFP_zfpoolObject<N> d;
+    static _ZFP_MP_H<N> &_instance(void) {
+        static _ZFP_MP_H<N> d;
         return d;
     }
 private:
-    _ZFP_zfpoolObjectBlock<N> *_available;
-    zfuint _count;
+    _ZFP_MP_B<N> *available;
+    zfuint count;
 };
 
 template<typename T_Type>
-zfclassNotPOD _ZFP_zfpoolObjectHolder {
+zfclassNotPOD _ZFP_MP_Obj {
 public:
-    static void *poolMalloc(void) {
+    static void *pNew(void) {
         zfCoreMutexLocker();
-        return _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign<sizeof(T_Type)>::V>::instance().poolMalloc();
+        return _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pNew();
     }
-    static void poolDelete(ZF_IN T_Type *obj) {
+    static void pDel(ZF_IN T_Type *obj) {
         obj->~T_Type();
-        _ZFP_zfpoolObject<_ZFP_zfpoolSizeAlign<sizeof(T_Type)>::V>::instance().poolFree(obj);
+        _ZFP_MP_H<_ZFP_MP_SA<sizeof(T_Type)>::V>::pDel(obj);
     }
 };
 template<typename T_Type>
 inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
     if(obj) {
         zfCoreMutexLock();
-        _ZFP_zfpoolObjectHolder<T_Type>::poolDelete(obj);
+        _ZFP_MP_Obj<T_Type>::pDel(obj);
         zfCoreMutexUnlock();
     }
 }
@@ -132,7 +134,7 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
 // ============================================================
 #if _ZFP_ZFMEMPOOL_DEBUG
     template<typename T_Type>
-    zfclassNotPOD _ZFP_zfpoolDebug {
+    zfclassNotPOD _ZFP_MP_ObjDebug {
     public:
         static T_Type *a(T_Type *obj) {
             if(obj) {
@@ -182,19 +184,19 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
         }
     };
     template<typename T_Type>
-    inline void _ZFP_zfpoolDebugDelete(ZF_IN T_Type *obj) {
+    inline void _ZFP_MP_ObjDebugDelete(ZF_IN T_Type *obj) {
         if(obj) {
             zfCoreMutexLock();
-            _ZFP_zfpoolDebug<T_Type>::d(obj);
-            _ZFP_zfpoolObjectHolder<T_Type>::poolDelete(obj);
+            _ZFP_MP_ObjDebug<T_Type>::d(obj);
+            _ZFP_MP_Obj<T_Type>::pDel(obj);
             zfCoreMutexUnlock();
         }
     }
 
     #undef zfpoolNew
     #undef zfpoolDelete
-    #define zfpoolNew(T_Type, ...) _ZFP_zfpoolDebug<T_Type>::a(zfnewPlacement((_ZFP_zfpoolObjectHolder<T_Type>::poolMalloc()), T_Type, ##__VA_ARGS__))
-    #define zfpoolDelete(obj) _ZFP_zfpoolDebugDelete(obj)
+    #define zfpoolNew(T_Type, ...) _ZFP_MP_ObjDebug<T_Type>::a(zfnewPlacement((_ZFP_MP_Obj<T_Type>::pNew()), T_Type, ##__VA_ARGS__))
+    #define zfpoolDelete(obj) _ZFP_MP_ObjDebugDelete(obj)
 #endif
 
 ZF_NAMESPACE_GLOBAL_END
