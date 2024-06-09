@@ -34,7 +34,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief use to declare friend if your type has non-public constructors
  */
 #if ZF_ENV_ZFMEMPOOL_ENABLE
-    #define zfpoolNew(T_Type, ...) zfnewPlacement((_ZFP_MP_Obj<T_Type>::pNew()), T_Type, ##__VA_ARGS__)
+    #define zfpoolNew(T_Type, ...) zfnewPlacement((_ZFP_MP_Obj<T_Type >::pNew()), T_Type, ##__VA_ARGS__)
     #define zfpoolDelete(obj) _ZFP_zfpoolDelete(obj)
     #define zfpoolDeclareFriend() \
         friend zfclassFwd _ZFP_MP_Obj<zfself>;
@@ -195,7 +195,7 @@ inline void _ZFP_zfpoolDelete(ZF_IN T_Type *obj) {
 
     #undef zfpoolNew
     #undef zfpoolDelete
-    #define zfpoolNew(T_Type, ...) _ZFP_MP_ObjDebug<T_Type>::a(zfnewPlacement((_ZFP_MP_Obj<T_Type>::pNew()), T_Type, ##__VA_ARGS__))
+    #define zfpoolNew(T_Type, ...) _ZFP_MP_ObjDebug<T_Type >::a(zfnewPlacement((_ZFP_MP_Obj<T_Type >::pNew()), T_Type, ##__VA_ARGS__))
     #define zfpoolDelete(obj) _ZFP_MP_ObjDebugDelete(obj)
 #endif
 

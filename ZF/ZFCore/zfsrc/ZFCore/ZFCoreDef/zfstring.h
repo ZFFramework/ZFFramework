@@ -56,6 +56,31 @@ inline zfint _ZFP_zfstring_ncmp(
     return zfsncmp(s1, s2, len);
 }
 
+template<typename T_Char>
+zfclassNotPOD _ZFP_zfstringD {
+public:
+    zfuint refCount;
+    zfuint capacity;
+    zfuint length;
+    union {
+        T_Char *buf; // capacity != 0
+        const T_Char *ptr; // capacity = 0
+    } d;
+public:
+    _ZFP_zfstringD(void) : refCount(1), capacity(0), length(0), d() {
+        static T_Char buf[1] = {0};
+        d.ptr = buf;
+    }
+};
+template<typename T_Char>
+zfclassLikePOD _ZFP_zfstringH {
+public:
+    _ZFP_zfstringH(void) : d(zfnew(_ZFP_zfstringD<T_Char>)) {}
+    ~_ZFP_zfstringH(void) {zfdelete(d);}
+public:
+    _ZFP_zfstringD<T_Char> *d;
+};
+
 // ============================================================
 /**
  * @brief low level string container
@@ -76,7 +101,7 @@ public:
         zfCoreMutexLocker();
         d = s.d;
         ++(d->refCount);
-        if(d->capacity == 0 && d->d.ptr) {
+        if(d->capacity == 0 && d->length) {
             // zftext got retained, deep copy for safe
             _prepareWrite(d->length);
         }
@@ -143,7 +168,7 @@ public:
 public:
     inline zft_zfstring<T_Char> &operator = (ZF_IN const zft_zfstring<T_Char> &s) {
         zfCoreMutexLocker();
-        D *dTmp = d;
+        _ZFP_zfstringD<T_Char> *dTmp = d;
         d = s.d;
         ++(d->refCount);
         if(dTmp->refCount == 1) {
@@ -240,7 +265,7 @@ public:
      */
     void swap(ZF_IN_OUT zft_zfstring<T_Char> &ref) {
         zfCoreMutexLocker();
-        D *dTmp = d;
+        _ZFP_zfstringD<T_Char> *dTmp = d;
         d = ref.d;
         ref.d = dTmp;
     }
@@ -459,7 +484,9 @@ public:
 
 public:
     /** @brief compare with another string */
-    inline zfint compare(ZF_IN const zft_zfstring<T_Char> &s) const {return _ZFP_zfstring_cmp(this->cString(), s.cString());}
+    inline zfint compare(ZF_IN const zft_zfstring<T_Char> &s) const {
+        return _ZFP_zfstring_cmp(this->cString(), s.cString());
+    }
     /** @brief compare with another string */
     zfint compare(
             ZF_IN const T_Char *s
@@ -478,47 +505,26 @@ public:
     }
 
 private:
-    zfclassNotPOD D {
-    public:
-        zfuint refCount;
-        zfuint capacity;
-        zfuint length;
-        union {
-            T_Char *buf; // capacity != 0
-            const T_Char *ptr; // capacity = 0
-        } d;
-    public:
-        D(void) : refCount(1), capacity(0), length(0), d() {}
-    public:
-        zfclassLikePOD H {
-        public:
-            H(void) : d(zfnew(D)) {}
-            ~H(void) {zfdelete(d);}
-        public:
-            D *d;
-        };
-    };
-private:
-    D *d;
+    _ZFP_zfstringD<T_Char> *d;
 public:
     /**
      * @brief explicitly create from literal string,
      *   you must ensure the literal's life exceeds the returned string
      */
     static zft_zfstring<T_Char> shared(ZF_IN const T_Char *sLiteral) {
-        D *d = zfpoolNew(D);
+        _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
         d->d.ptr = sLiteral;
         d->length = _ZFP_zfstring_len(sLiteral);
         return zft_zfstring<T_Char>(d);
     }
 private:
-    explicit zft_zfstring(ZF_IN D *d)
+    explicit zft_zfstring(ZF_IN _ZFP_zfstringD<T_Char> *d)
     : d(d)
     {
     }
 private:
-    static D *_ZFP_Empty(void) {
-        static typename D::H d;
+    static _ZFP_zfstringD<T_Char> *_ZFP_Empty(void) {
+        static _ZFP_zfstringH<T_Char> d;
         return d.d;
     }
     static inline void _capacityOptimize(ZF_IN_OUT zfindex &capacity) {
@@ -554,8 +560,8 @@ private:
             }
         }
         else {
-            D *dTmp = d;
-            d = zfpoolNew(D);
+            _ZFP_zfstringD<T_Char> *dTmp = d;
+            d = zfpoolNew(_ZFP_zfstringD<T_Char>);
             d->length = dTmp->length;
             d->d.buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
             if(dTmp->d.ptr) {
