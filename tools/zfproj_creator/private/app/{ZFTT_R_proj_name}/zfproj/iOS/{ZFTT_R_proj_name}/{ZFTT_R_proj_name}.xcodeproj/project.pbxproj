@@ -11,12 +11,6 @@
 		1A5C8F19FB797592E3ECDCC4DACC03BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C9BFA88C08E42779AD4884FC1C06585 /* AppDelegate.mm */; };
 		1381B0090EE2FFC94CEBCC26FD0BB659 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F061EB7C9BD5F52121B0557A615D83C0 /* RootViewController.m */; };
 		8C685169DF0F9CAEA05119F61AA2CC7D /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */; };
-		3CB33592BF3B13EDC738B807067D5D6C /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 92D4752C4014B0C3ACB8A222AC41FA50 /* Icon@2x.png */; };
-		4D62EE679847C1DA4912179DCCC786D8 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 180356FC1063A700CD5782320AB96DA4 /* Icon.png */; };
-		9C424F0584E327DD77DD241C14240DB1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = D01A9F9B443A7DB46BCE695ADBBFC55D /* Icon-72.png */; };
-		9F74A258BD406F304D89045DF5E40A34 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D108275A6468BEA69C8E0941D81453E6 /* Default-568h@2x.png */; };
-		B444E1034EE4F71F860956EDA8CD79F3 /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E6076B3FC80DEDD41ADEAD3C95FB9E9 /* Icon-50.png */; };
-		CC0FB20D751D4331B68A1682029828DA /* Icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 75C6F8AF0F0F8CAE69C9F8A7D513DFD8 /* Icon-29.png */; };
 		9114F54B3293CB2D81EC41BA424E0C80 /* zfgensrc_{ZFTT_R_proj_name}.mm in Sources */ = {isa = PBXBuildFile; fileRef = FD5801B28AC8914DA65F53FCC0475CBF /* zfgensrc_{ZFTT_R_proj_name}.mm */; };
 		225992AB450843CE0ACBB110B9E2E8D1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7356A4CDEE0DA695AF0242663FB72F /* Foundation.framework */; };{ZFTT_C_needUIKit}
 		414DAB3B5425C363571BAC3280F9B493 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A97409EF1CF450DBCC76C57412AF681 /* UIKit.framework */; };
@@ -165,12 +159,6 @@
 		F83F53F7BBBB8AC77B4AA39ED59AA7A2 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		F061EB7C9BD5F52121B0557A615D83C0 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
-		180356FC1063A700CD5782320AB96DA4 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		75C6F8AF0F0F8CAE69C9F8A7D513DFD8 /* Icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-29.png"; sourceTree = "<group>"; };
-		92D4752C4014B0C3ACB8A222AC41FA50 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
-		9E6076B3FC80DEDD41ADEAD3C95FB9E9 /* Icon-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-50.png"; sourceTree = "<group>"; };
-		D01A9F9B443A7DB46BCE695ADBBFC55D /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
-		D108275A6468BEA69C8E0941D81453E6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		4D8A3E41B3E26CBCCDD757E9DF517B06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8524A496906EAEDA20274170DA321750 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		332F88D638391DCF6EC5E545AD032306 /* {ZFTT_R_proj_name}.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = {ZFTT_R_proj_name}.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -482,12 +470,6 @@
 				F83F53F7BBBB8AC77B4AA39ED59AA7A2 /* RootViewController.h */,
 				F061EB7C9BD5F52121B0557A615D83C0 /* RootViewController.m */,
 				2CDE8D1329D70F734DD71E72A528349C /* RootViewController.xib */,
-				D108275A6468BEA69C8E0941D81453E6 /* Default-568h@2x.png */,
-				75C6F8AF0F0F8CAE69C9F8A7D513DFD8 /* Icon-29.png */,
-				9E6076B3FC80DEDD41ADEAD3C95FB9E9 /* Icon-50.png */,
-				D01A9F9B443A7DB46BCE695ADBBFC55D /* Icon-72.png */,
-				180356FC1063A700CD5782320AB96DA4 /* Icon.png */,
-				92D4752C4014B0C3ACB8A222AC41FA50 /* Icon@2x.png */,
 				4D8A3E41B3E26CBCCDD757E9DF517B06 /* Info.plist */,
 				8524A496906EAEDA20274170DA321750 /* LaunchScreen.storyboard */,
 				FD5801B28AC8914DA65F53FCC0475CBF /* zfgensrc_{ZFTT_R_proj_name}.mm */,
@@ -720,12 +702,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C685169DF0F9CAEA05119F61AA2CC7D /* RootViewController.xib in Resources */,
-				9F74A258BD406F304D89045DF5E40A34 /* Default-568h@2x.png in Resources */,
-				CC0FB20D751D4331B68A1682029828DA /* Icon-29.png in Resources */,
-				B444E1034EE4F71F860956EDA8CD79F3 /* Icon-50.png in Resources */,
-				9C424F0584E327DD77DD241C14240DB1 /* Icon-72.png in Resources */,
-				4D62EE679847C1DA4912179DCCC786D8 /* Icon.png in Resources */,
-				3CB33592BF3B13EDC738B807067D5D6C /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
