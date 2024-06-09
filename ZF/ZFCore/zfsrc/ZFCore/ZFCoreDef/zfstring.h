@@ -514,7 +514,7 @@ public:
     static zft_zfstring<T_Char> shared(ZF_IN const T_Char *sLiteral) {
         _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
         d->d.ptr = sLiteral;
-        d->length = _ZFP_zfstring_len(sLiteral);
+        d->length = (zfuint)_ZFP_zfstring_len(sLiteral);
         return zft_zfstring<T_Char>(d);
     }
 private:
