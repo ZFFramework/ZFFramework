@@ -9,6 +9,18 @@ ZFImpl_ZFLua_implPathInfo_DEFINE(ZFLocalPathInfo,
         "    return zfl_l or zfnull;"
         "end"
     )
+ZFImpl_ZFLua_implPathInfo_DEFINE(ZFInputForLocal,
+        "function (l, ...)"
+        "    local arg={...};"
+        "    return ZF.ZFInputForLocal(l, arg[1] or zfl_l or zfnull);"
+        "end"
+    )
+ZFImpl_ZFLua_implPathInfo_DEFINE(ZFOutputForLocal,
+        "function (l, ...)"
+        "    local arg={...};"
+        "    return ZF.ZFOutputForLocal(l, arg[1] or zfl_l or zfnull);"
+        "end"
+    )
 ZFImpl_ZFLua_implPathInfo_DEFINE(zfimport,
         "function (l, ...)"
         "    local arg={...};"

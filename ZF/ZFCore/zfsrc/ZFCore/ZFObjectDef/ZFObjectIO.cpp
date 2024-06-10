@@ -8,7 +8,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 zfclassNotPOD _ZFP_ZFObjectIOData {
 public:
-    zfstring registerSig;
     _ZFP_ZFObjectIOCallback_checker checker;
     _ZFP_ZFObjectIOCallback_fromInput fromInput;
     _ZFP_ZFObjectIOCallback_toOutput toOutput;
@@ -27,7 +26,8 @@ void _ZFP_ZFObjectIORegister(
     zfCoreMutexLocker();
     zfstldeque<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
     for(zfstlsize i = 0; i < l.size(); ++i) {
-        if(l[i]->registerSig.compare(registerSig) == 0) {
+        _ZFP_ZFObjectIOData *item = l[i];
+        if(item->checker == checker && item->fromInput == fromInput && item->toOutput == toOutput) {
             zfCoreCriticalMessageTrim("[ZFObjectIO] \"%s\" already registered",
                 registerSig);
             return;
@@ -35,19 +35,24 @@ void _ZFP_ZFObjectIORegister(
     }
 
     _ZFP_ZFObjectIOData *data = zfnew(_ZFP_ZFObjectIOData);
-    data->registerSig = registerSig;
     data->checker = checker;
     data->fromInput = fromInput;
     data->toOutput = toOutput;
     l.push_back(data);
 }
-void _ZFP_ZFObjectIOUnregister(ZF_IN const zfchar *registerSig) {
+void _ZFP_ZFObjectIOUnregister(
+        ZF_IN const zfchar *registerSig
+        , ZF_IN _ZFP_ZFObjectIOCallback_checker checker
+        , ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput
+        , ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput
+        ) {
     zfCoreMutexLocker();
     zfstldeque<_ZFP_ZFObjectIOData *> &l = _ZFP_ZFObjectIODataList();
     for(zfstlsize i = 0; i < l.size(); ++i) {
-        if(l[i]->registerSig.compare(registerSig) == 0) {
-            zfdelete(l[i]);
+        _ZFP_ZFObjectIOData *item = l[i];
+        if(item->checker == checker && item->fromInput == fromInput && item->toOutput == toOutput) {
             l.erase(l.begin() + i);
+            zfdelete(item);
             break;
         }
     }
@@ -60,8 +65,7 @@ zfbool ZFObjectIOLoadT(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(input.pathInfo() == zfnull) {
-        zfstringAppend(outErrorHint, "callback %s does not have path info",
-            input);
+        zfstringAppend(outErrorHint, "callback %s does not have path info", input);
         return zffalse;
     }
 
@@ -88,8 +92,7 @@ zfbool ZFObjectIOLoadT(
         zfCoreMutexLock();
     }
     zfCoreMutexUnlock();
-    zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s", 
-        input.pathInfo());
+    zfstringAppend(outErrorHint, "no ZFObjectIO impl can resolve %s", input.pathInfo());
     return zffalse;
 }
 zfauto ZFObjectIOLoad(

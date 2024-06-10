@@ -30,6 +30,11 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
     else {
         input = ZFInputForLocal(resFilePath, pathInfo);
     }
+    return zfRes(input);
+}
+ZFMETHOD_FUNC_DEFINE_1(zfauto, zfRes
+        , ZFMP_IN(const ZFInput &, input)
+        ) {
     if(!input) {
         return zfnull;
     }
@@ -47,6 +52,29 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
         ZFResCache::instance()->cacheAdd(input.callbackId(), ret);
     }
     return ret;
+}
+ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN(const ZFListener &, loadImpl)
+        ) {
+    if(!input || !loadImpl) {
+        return zfnull;
+    }
+    if(input.callbackId() != zfnull) {
+        zfauto ret = ZFResCache::instance()->cacheCheck(input.callbackId());
+        if(ret != zfnull) {
+            return ret;
+        }
+    }
+    zfobj<v_ZFInput> inputHolder(input);
+    ZFArgs zfargs;
+    zfargs.sender(inputHolder);
+    zfargs.resultEnable(zftrue);
+    loadImpl.execute(zfargs);
+    if(zfargs.result() && input.callbackId() != zfnull) {
+        ZFResCache::instance()->cacheAdd(input.callbackId(), zfargs.result());
+    }
+    return zfargs.result();
 }
 
 ZF_NAMESPACE_GLOBAL_END

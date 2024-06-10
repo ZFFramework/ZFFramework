@@ -100,11 +100,10 @@ extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
  */
 #define ZFOBJECTIO_DEFINE(registerSig, checkerAction, fromInputAction, toOutputAction) \
     ZF_STATIC_REGISTER_INIT(ObjIOReg_##registerSig) { \
-        _ZFP_ZFObjectIORegister(ZFM_TOSTRING(registerSig), \
-            zfself::_ZFP_checker, zfself::_ZFP_fromInput, zfself::_ZFP_toOutput); \
+        _ZFP_ZFObjectIORegister(#registerSig, zfself::_ZFP_checker, zfself::_ZFP_fromInput, zfself::_ZFP_toOutput); \
     } \
     ZF_STATIC_REGISTER_DESTROY(ObjIOReg_##registerSig) { \
-        _ZFP_ZFObjectIOUnregister(ZFM_TOSTRING(registerSig)); \
+        _ZFP_ZFObjectIOUnregister(#registerSig, zfself::_ZFP_checker, zfself::_ZFP_fromInput, zfself::_ZFP_toOutput); \
     } \
     static zfbool _ZFP_checker(ZF_IN const ZFPathInfo &pathInfo) { \
         checkerAction \
@@ -142,7 +141,12 @@ extern ZFLIB_ZFCore void _ZFP_ZFObjectIORegister(
         , ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput
         , ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput
         );
-extern ZFLIB_ZFCore void _ZFP_ZFObjectIOUnregister(ZF_IN const zfchar *registerSig);
+extern ZFLIB_ZFCore void _ZFP_ZFObjectIOUnregister(
+        ZF_IN const zfchar *registerSig
+        , ZF_IN _ZFP_ZFObjectIOCallback_checker checker
+        , ZF_IN _ZFP_ZFObjectIOCallback_fromInput fromInput
+        , ZF_IN _ZFP_ZFObjectIOCallback_toOutput toOutput
+        );
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFObjectIO_h_

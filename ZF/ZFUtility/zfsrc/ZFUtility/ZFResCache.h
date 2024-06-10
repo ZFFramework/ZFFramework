@@ -27,8 +27,7 @@ zfclass ZFLIB_ZFUtility ZFResCache : zfextend ZFCache {
  * @brief load resource by #ZFObjectIOLoad
  *
  * automatically cache the resource in #ZFResCache,
- * you should not modified the returned object if cache enabled\n
- * to remove cache, use #ZFCache::cacheRemove\n
+ * you should not modified the returned object\n
  * \n
  * when pathInfo is specified, the resFilePath can be relative path to pathInfo,
  * at this case, the pathInfo must be well formed
@@ -36,6 +35,25 @@ zfclass ZFLIB_ZFUtility ZFResCache : zfextend ZFCache {
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfRes
         , ZFMP_IN(const zfchar *, resFilePath)
         , ZFMP_IN_OPT(const ZFPathInfo *, pathInfo, zfnull)
+        )
+/**
+ * @brief load resource by #ZFObjectIOLoad with specified input
+ *
+ * automatically cache result in #ZFResCache with #ZFCallback::callbackId as cache key
+ */
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfauto, zfRes
+        , ZFMP_IN(const ZFInput &, input)
+        )
+/**
+ * @brief load resource with custom impl with specified input
+ *
+ * automatically cache result in #ZFResCache with #ZFCallback::callbackId as cache key\n
+ * loadImpl's sender is the source ZFInput,
+ * and must set #ZFArgs::result if load success
+ */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfauto, zfRes
+        , ZFMP_IN(const ZFInput &, input)
+        , ZFMP_IN(const ZFListener &, loadImpl)
         )
 
 ZF_NAMESPACE_GLOBAL_END
