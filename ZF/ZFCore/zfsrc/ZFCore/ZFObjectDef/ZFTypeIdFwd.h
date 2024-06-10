@@ -223,7 +223,14 @@ public:
 };
 
 // ============================================================
-#define _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
+/**
+ * @brief manually register a custom type id
+ *
+ * you must have these things available before register:
+ * -  `const zfchar *ZFTypeId_YourTypeName()`
+ * -  specialization for `ZFTypeId<YourType>`
+ */
+#define ZFTYPEID_ID_DATA_REGISTER(TypeName, Type) \
     ZF_STATIC_REGISTER_INIT(PropTIReg_##TypeName) { \
         typedef Type _ZFP_PropTypeW2_##TypeName; \
         _ZFP_ZFTypeInfoRegister(ZFTypeId_##TypeName(), \

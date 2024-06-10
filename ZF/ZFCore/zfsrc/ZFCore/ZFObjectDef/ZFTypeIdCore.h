@@ -182,7 +182,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     } \
     ZFCORETYPE_STRING_CONVERTER_DEFINE(TypeName, Type, ZFM_EXPAND(convertFromStringAction), ZFM_EXPAND(convertToStringAction)) \
     _ZFP_ZFTYPEID_DEFINE_METHOD_REGISTER(TypeName, Type) \
-    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+    ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
 
 #define _ZFP_ZFTYPEID_DEFINE_METHOD_REGISTER(TypeName, Type) \
     ZF_STATIC_REGISTER_INIT(PropMtdReg_##TypeName) { \
@@ -364,11 +364,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
     _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE(TypeName, Type) \
-    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+    ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
 /** @brief see #ZFTYPEID_ACCESS_ONLY_DECLARE */
 #define ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TypeName, Type) \
     _ZFP_ZFTYPEID_ACCESS_ONLY_DEFINE_UNCOMPARABLE(TypeName, Type) \
-    _ZFP_ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
+    ZFTYPEID_ID_DATA_REGISTER(TypeName, Type)
 
 // ============================================================
 /**
