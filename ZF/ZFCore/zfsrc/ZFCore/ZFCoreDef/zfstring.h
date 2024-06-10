@@ -107,7 +107,7 @@ public:
         }
     }
     /** @brief copy content from another string */
-    zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, zfindex len)
+    zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, ZF_IN zfindex len)
     {
         zfCoreMutexLocker();
         d = _ZFP_Empty();
@@ -115,7 +115,7 @@ public:
         this->assign(s.cString(), len);
     }
     /** @brief copy content from another string */
-    zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, zfindex pos, zfindex len)
+    zft_zfstring(ZF_IN const zft_zfstring<T_Char> &s, ZF_IN zfindex pos, ZF_IN zfindex len)
     {
         zfCoreMutexLocker();
         d = _ZFP_Empty();
@@ -138,7 +138,7 @@ public:
         }
     }
     /** @brief copy content from another string */
-    zft_zfstring(ZF_IN const T_Char *s, zfindex len)
+    zft_zfstring(ZF_IN const T_Char *s, ZF_IN zfindex len)
     {
         zfCoreMutexLocker();
         d = _ZFP_Empty();
@@ -148,7 +148,7 @@ public:
         }
     }
     /** @brief copy content from another string */
-    zft_zfstring(ZF_IN const T_Char *s, zfindex pos, zfindex len)
+    zft_zfstring(ZF_IN const T_Char *s, ZF_IN zfindex pos, ZF_IN zfindex len)
     {
         zfCoreMutexLocker();
         d = _ZFP_Empty();
@@ -156,6 +156,13 @@ public:
         if(s) {
             this->assign(s + pos, len);
         }
+    }
+    /** @brief construct empty string */
+    zft_zfstring(ZF_IN const zfnullT &dummy)
+    {
+        zfCoreMutexLocker();
+        d = _ZFP_Empty();
+        ++(d->refCount);
     }
     ~zft_zfstring(void) {
         zfCoreMutexLocker();
@@ -172,7 +179,9 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    inline operator const T_Char *(void) const {return this->cString();}
+    inline operator const T_Char *(void) const {
+        return this->cString();
+    }
 public:
     inline zft_zfstring<T_Char> &operator = (ZF_IN const zft_zfstring<T_Char> &s) {
         zfCoreMutexLocker();
@@ -191,10 +200,13 @@ public:
         return *this;
     }
     inline zft_zfstring<T_Char> &operator = (ZF_IN const T_Char *s) {return this->assign(s);}
+    inline zft_zfstring<T_Char> &operator = (ZF_IN zfnullT const &dummy) {return this->assign(dummy);}
     zfbool operator == (ZF_IN const zft_zfstring<T_Char> &ref) const {return (this->compare(ref) == 0);}
     zfbool operator != (ZF_IN const zft_zfstring<T_Char> &ref) const {return (this->compare(ref) != 0);}
     zfbool operator == (ZF_IN const T_Char *ref) const {return (this->compare(ref) == 0);}
     zfbool operator != (ZF_IN const T_Char *ref) const {return (this->compare(ref) != 0);}
+    zfbool operator == (ZF_IN zfnullT const &dummy) const {return this->isEmpty();}
+    zfbool operator != (ZF_IN zfnullT const &dummy) const {return !this->isEmpty();}
 public:
     /* ZFTAG_TRICKS: tricks to make zfstlmap<zfstring, xxx> works */
     inline zfbool operator < (ZF_IN const zft_zfstring<T_Char> &ref) const {return this->compare(ref) < 0;}
@@ -244,7 +256,7 @@ public:
 public:
     zfclassLikePOD Char {
     public:
-        Char(ZF_IN zft_zfstring<T_Char> &ref, ZF_IN zfindex pos) : _ref(ref), _pos(pos) {}
+        Char(ZF_IN zft_zfstring<T_Char> &ref, ZF_IN zfuint pos) : _ref(ref), _pos(pos) {}
         T_Char &operator = (ZF_IN T_Char const &c) {
             _ref.set(_pos, c);
             return _ref.zfunsafe_buffer()[_pos];
@@ -258,11 +270,11 @@ public:
         }
     private:
         zft_zfstring<T_Char> &_ref;
-        zfindex _pos;
+        zfuint _pos;
     };
     template<typename T_Int>
     inline Char operator [] (ZF_IN T_Int pos) {
-        return Char(*this, (zfindex)pos);
+        return Char(*this, (zfuint)pos);
     }
     /** @endcond */
 
@@ -280,7 +292,33 @@ public:
 
 public:
     /** @brief append string */
-    inline zft_zfstring<T_Char> &append(ZF_IN const zft_zfstring<T_Char> &s) {this->append(s.cString(), s.length()); return *this;}
+    inline zft_zfstring<T_Char> &append(ZF_IN const zft_zfstring<T_Char> &s) {
+        _prepareWrite(this->length());
+        return this->append(s.cString(), s.length());
+    }
+    /** @brief append string */
+    inline zft_zfstring<T_Char> &append(
+            ZF_IN const zft_zfstring<T_Char> &s
+            , ZF_IN zfindex len
+            ) {
+        _prepareWrite(this->length());
+        return this->append(s.cString(), len <= s.length() ? len : s.length());
+    }
+    /** @brief append string */
+    inline zft_zfstring<T_Char> &append(
+            ZF_IN const zft_zfstring<T_Char> &s
+            , ZF_IN zfindex offset
+            , ZF_IN zfindex len
+            ) {
+        if(offset > s.length()) {
+            offset = s.length();
+        }
+        if(len > s.length() - offset) {
+            len = s.length() - offset;
+        }
+        _prepareWrite(this->length());
+        return this->append(s.cString() + offset, len);
+    }
     /** @brief append string */
     zft_zfstring<T_Char> &append(
             ZF_IN const T_Char *s
@@ -305,6 +343,29 @@ public:
         return *this;
     }
     /** @brief replace all content of the string */
+    inline zft_zfstring<T_Char> &assign(
+            ZF_IN const zft_zfstring<T_Char> &s
+            , ZF_IN zfindex len
+            ) {
+        _prepareWrite(this->length());
+        return this->assign(s.cString(), len <= s.length() ? len : s.length());
+    }
+    /** @brief replace all content of the string */
+    inline zft_zfstring<T_Char> &assign(
+            ZF_IN const zft_zfstring<T_Char> &s
+            , ZF_IN zfindex offset
+            , ZF_IN zfindex len
+            ) {
+        if(offset > s.length()) {
+            offset = s.length();
+        }
+        if(len > s.length() - offset) {
+            len = s.length() - offset;
+        }
+        _prepareWrite(this->length());
+        return this->assign(s.cString() + offset, len);
+    }
+    /** @brief replace all content of the string */
     zft_zfstring<T_Char> &assign(
             ZF_IN const T_Char *s
             , ZF_IN_OPT zfindex len = zfindexMax()
@@ -321,6 +382,22 @@ public:
         d->length = (zfuint)len;
         zfmemcpy(d->d.buf, s, len * sizeof(T_Char));
         d->d.buf[len] = '\0';
+        return *this;
+    }
+    /** @brief replace all content of the string */
+    inline zft_zfstring<T_Char> &assign(ZF_IN const zfnullT &dummy) {
+        zfCoreMutexLocker();
+        if(!this->isEmpty()){
+            if(d->refCount == 1) {
+                this->removeAll();
+            }
+            else {
+                _ZFP_zfstringD<T_Char> *dTmp = d;
+                d = _ZFP_Empty();
+                ++(d->refCount);
+                --(dTmp->refCount);
+            }
+        }
         return *this;
     }
 
@@ -519,11 +596,19 @@ public:
      * @brief explicitly create from literal string,
      *   you must ensure the literal's life exceeds the returned string
      */
-    static zft_zfstring<T_Char> shared(ZF_IN const T_Char *sLiteral) {
-        _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
-        d->d.ptr = sLiteral;
-        d->length = (zfuint)_ZFP_zfstring_len(sLiteral);
-        return zft_zfstring<T_Char>(d);
+    static zft_zfstring<T_Char> shared(
+            ZF_IN const T_Char *sLiteral
+            , ZF_IN_OPT zfindex length = zfindexMax()
+            ) {
+        if(sLiteral == zfnull || *sLiteral == '\0' || length == 0) {
+            return zft_zfstring<T_Char>();
+        }
+        else {
+            _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
+            d->d.ptr = sLiteral;
+            d->length = (length == zfindexMax() ? (zfuint)_ZFP_zfstring_len(sLiteral) : length);
+            return zft_zfstring<T_Char>(d);
+        }
     }
 private:
     explicit zft_zfstring(ZF_IN _ZFP_zfstringD<T_Char> *d)

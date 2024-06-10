@@ -65,10 +65,7 @@ especially for different STL versions when linking
 we use zfstring as low level string container, which is reproduce of std::string
 
 * to reduce dependency for STL, usually it's a pain to export STL containers because of different STL versions
-* behaviors changed:
-    * able to construct from a null char string
-    * NO thread-safe supported,
-        which should be implemented manually
+* suit for ZFFramework's design
 
 
 ## ZFCoreArray/ZFCoreMap
