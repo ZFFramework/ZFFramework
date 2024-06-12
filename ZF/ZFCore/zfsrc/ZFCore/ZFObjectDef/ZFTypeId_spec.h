@@ -75,6 +75,86 @@ public:
 /** @endcond */
 
 // ============================================================
+// const void * / void *
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, zfptr, const void *)
+
+#define _ZFP_ZFTYPEID_ALIAS_EXPAND_zfptr(ZFLIB_, AliasToTypeName, AliasToType, TypeName, Type) \
+    static void *const &_ZFP_dummy(void) { \
+        static void *dummy = zfnull; \
+        return dummy; \
+    } \
+    template<typename T_Access = _ZFP_PropTypeW_##TypeName \
+        , int T_IsPointer = ((zftTraits<typename zftTraits<T_Access>::TrNoRef>::TrIsPtr \
+            && zftIsSame< \
+                    typename zftTraits<T_Access>::TrNoRef, \
+                    _ZFP_PropTypeW_##TypeName \
+                >::Value != 1) \
+            ? 1 : 0) \
+        , typename T_Fix = void \
+        > \
+    zfclassNotPOD Value { \
+    public: \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            return obj == zfnull || (zfcast(v_zfptr *, obj) != zfnull); \
+        } \
+        static T_Access zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            return obj == zfnull ? _ZFP_dummy() : const_cast<T_Access>(zfcast(v_zfptr *, obj)->zfv); \
+        } \
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        } \
+    }; \
+    template<typename T_Access> \
+    zfclassNotPOD Value<T_Access const &, 0> { \
+    public: \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            return obj == zfnull || (zfcast(v_zfptr *, obj) != zfnull); \
+        } \
+        static T_Access const &zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            return obj == zfnull ? _ZFP_dummy() : const_cast<T_Access const &>(zfcast(v_zfptr *, obj)->zfv); \
+        } \
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        } \
+    }; \
+    template<typename T_Access> \
+    zfclassNotPOD Value<T_Access &, 0> { \
+    public: \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            return (zfcast(v_zfptr *, obj) != zfnull); \
+        } \
+        static T_Access &zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            return const_cast<T_Access &>(zfcast(v_zfptr *, obj)->zfv); \
+        } \
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        } \
+    }; \
+    template<typename T_Access> \
+    zfclassNotPOD Value<const T_Access *, 1> { \
+    public: \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            return obj == zfnull || (zfcast(v_zfptr *, obj) != zfnull); \
+        } \
+        static const T_Access *zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            return obj == zfnull ? &_ZFP_dummy() : const_cast<const T_Access *>(&(zfcast(v_zfptr *, obj)->zfv)); \
+        } \
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        } \
+    }; \
+    template<typename T_Access> \
+    zfclassNotPOD Value<T_Access *, 1> { \
+    public: \
+        static zfbool zfvAccessAvailable(ZF_IN_OUT zfauto &obj) { \
+            return (zfcast(v_zfptr *, obj) != zfnull); \
+        } \
+        static T_Access *zfvAccess(ZF_IN_OUT zfauto &obj) { \
+            return const_cast<T_Access *>(&(zfcast(v_zfptr *, obj)->zfv)); \
+        } \
+        static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
+        } \
+    };
+ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfptr, const void *, zfptrW, void *, _ZFP_ZFTYPEID_ALIAS_EXPAND_zfptr)
+#undef _ZFP_ZFTYPEID_ALIAS_EXPAND_zfptr
+
+// ============================================================
 // ZFObject
 /** @cond ZFPrivateDoc */
 template<typename T_Type>

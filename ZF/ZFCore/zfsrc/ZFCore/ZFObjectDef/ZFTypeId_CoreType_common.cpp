@@ -180,10 +180,6 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_zfstring, zfint, compare
 ZFTYPEID_ALIAS_DEFINE(zfstring, zfstring, cString, const zfchar *)
 
 // ============================================================
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPtr, void *)
-ZFTYPEID_ACCESS_ONLY_DEFINE(ZFPtrConst, const void *)
-
-// ============================================================
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
         const zfchar *tokens[] = ZFM_EXPAND({
             ZFTOKEN_ZFCompareUncomparable,

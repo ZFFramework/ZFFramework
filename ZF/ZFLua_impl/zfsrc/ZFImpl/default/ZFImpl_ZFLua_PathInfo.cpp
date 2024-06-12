@@ -28,13 +28,13 @@ private:
     static void luaStateOnAttach(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
         ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
-        lua_State *L = (lua_State *)zfargs.param0()->to<v_ZFPtr *>()->zfv;
+        lua_State *L = (lua_State *)const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv);
         d->stateMap[L] = zftrue;
     }
     static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
         zfCoreMutexLocker();
         ZF_GLOBAL_INITIALIZER_CLASS(ZFImpl_ZFLua_implPathInfoData) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFImpl_ZFLua_implPathInfoData);
-        lua_State *L = (lua_State *)zfargs.param0()->to<v_ZFPtr *>()->zfv;
+        lua_State *L = (lua_State *)const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv);
         d->stateMap.erase(L);
     }
 ZF_GLOBAL_INITIALIZER_END(ZFImpl_ZFLua_implPathInfoData)

@@ -37,7 +37,7 @@ ZFListener luaStateOnDetachListener;
 static void luaStateOnDetach(ZF_IN const ZFArgs &zfargs) {
     zfCoreMutexLocker();
     zfstlmap<void *, zfbool> &m = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFLuaGCHolder)->m;
-    m.erase(zfargs.param0()->to<v_ZFPtr *>()->zfv);
+    m.erase(const_cast<void *>(zfargs.param0()->to<v_zfptr *>()->zfv));
 }
 ZF_GLOBAL_INITIALIZER_END(ZFLuaGCHolder)
 

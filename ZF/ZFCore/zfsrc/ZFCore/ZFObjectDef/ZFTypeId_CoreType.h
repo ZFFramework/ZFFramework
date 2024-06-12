@@ -234,10 +234,6 @@ ZFTYPEID_DECLARE(ZFLIB_ZFCore, zfstring, zfstring)
 ZFTYPEID_ALIAS_DECLARE_CUSTOM(ZFLIB_ZFCore, zfstring, zfstring, cString, const zfchar *, _ZFP_ZFTYPEID_ALIAS_EXPAND_cString)
 #undef _ZFP_ZFTYPEID_ALIAS_EXPAND_cString
 
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPtr, void *)
-
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFPtrConst, const void *)
-
 /**
  * @brief see #ZFTYPEID_DECLARE
  *

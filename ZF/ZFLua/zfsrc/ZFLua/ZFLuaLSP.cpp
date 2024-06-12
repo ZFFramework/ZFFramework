@@ -386,7 +386,7 @@ static void _ZFP_ZFLuaLSPGenFile_spec(
         << "---@return v_zfstring\n"
         << "function zfstr(fmt, ...) end\n"
 
-        << "---@return v_ZFPtr\n"
+        << "---@return v_zfptr\n"
         << "function zfl_L(...) end\n"
 
         << "---@param v_zfstring\n"

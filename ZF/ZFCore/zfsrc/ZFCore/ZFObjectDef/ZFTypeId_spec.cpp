@@ -10,6 +10,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_none)
 ZFTYPEID_ID_DATA_REGISTER(void, void)
 
 // ============================================================
+// const void * / void *
+ZFTYPEID_ACCESS_ONLY_DEFINE(zfptr, const void *)
+ZFTYPEID_ALIAS_DEFINE(zfptr, const void *, zfptrW, void *)
+
+// ============================================================
 // zfauto
 ZFOUTPUT_TYPE_DEFINE(zfauto, {
     if(v == zfnull) {

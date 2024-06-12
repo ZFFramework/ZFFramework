@@ -55,7 +55,7 @@ void ZFImpl_ZFLua_luaStateAttach(ZF_IN lua_State *L) {
     zfclassNotPOD _ZFP_ZFImpl_ZFLua_LHolder {
     public:
         static int f(ZF_IN lua_State *L) {
-            zfobj<v_ZFPtr> ret;
+            zfobj<v_zfptr> ret;
             ret->zfv = (void *)L;
             zfauto tmp = ret;
             ZFImpl_ZFLua_luaPush(L, tmp);
