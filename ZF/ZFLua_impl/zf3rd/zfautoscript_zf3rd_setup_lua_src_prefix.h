@@ -6,3 +6,10 @@
 #define system(...) (-1)
 #endif
 
+#include "luaconf.h"
+
+#undef l_likely
+#undef l_unlikely
+#define l_likely(x) luai_likely(x)
+#define l_unlikely(x) luai_unlikely(x)
+

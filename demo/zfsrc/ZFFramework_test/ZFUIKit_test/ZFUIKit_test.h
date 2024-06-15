@@ -164,7 +164,7 @@ protected:
             if(holder->index >= propertyValues.count()) { \
                 holder->index = 0; \
             } \
-            holder->property->setterMethod()->execute<void ZFM_COMMA() PropertyType const &>( \
+            holder->property->setterMethod()->execute<void, PropertyType const &>( \
                 holder->obj, propertyValues[holder->index]); \
         } ZFLISTENER_END() \
         ZFUIKit_test_prepareSettingForProperty(settings, taskData->obj, taskData->property, nextCallback); \

@@ -35,6 +35,28 @@ public:
 };
 
 // ============================================================
+/**
+ * @brief util macro to expand type
+ *
+ * @code
+ *   #define MY_MACRO(P0, P1) xxx
+ *
+ *   MY_MACRO(int, int) // OK
+ *   MY_MACRO(zfstlmap<int, int>, int) // not work
+ *   MY_MACRO(zftType(zfstlmap<int, int>), int) // OK
+ * @endcode
+ */
+#define zftType(...) \
+    _ZFP_zftType<void(__VA_ARGS__)>::Type
+template<typename T>
+zfclassNotPOD _ZFP_zftType;
+template<typename T_Ret, typename T_Type>
+zfclassNotPOD _ZFP_zftType<T_Ret (T_Type)> {
+public:
+    typedef T_Type Type;
+};
+
+// ============================================================
 // zftTraits
 /** @brief see #zftTraits::ModifierName */
 typedef enum {
