@@ -48,12 +48,9 @@ public:
         ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
     }
 
-public:
-    /** @brief function type for #ZFListener */
-    typedef void (*FUNC_TYPE)(ZF_IN const ZFArgs &zfargs);
-
     /** @cond ZFPrivateDoc */
 public:
+    typedef void (*FUNC_TYPE)(ZF_IN const ZFArgs &zfargs);
     ZFListener(ZF_IN FUNC_TYPE f) {
         FUNC_TYPE fTmp = f;
         ZFLISTENER_1(wrapper
@@ -61,7 +58,7 @@ public:
                 ) {
             fTmp(zfargs);
         } ZFLISTENER_END()
-        this->operator = (wrapper);
+        ZFCallback::operator = ((const ZFCallback &)wrapper);
     }
     ZFListener &operator = (ZF_IN FUNC_TYPE f) {
         FUNC_TYPE fTmp = f;
@@ -70,11 +67,12 @@ public:
                 ) {
             fTmp(zfargs);
         } ZFLISTENER_END()
-        return this->operator = (wrapper);
+        ZFCallback::operator = ((const ZFCallback &)wrapper);
+        return *this;
     }
 
+#if ZF_ENV_LAMBDA
 public:
-    #if ZF_ENV_LAMBDA
     template<typename T_Func>
     ZFListener(ZF_IN T_Func f) {
         ZFLISTENER_1(wrapper
@@ -82,7 +80,7 @@ public:
                 ) {
             f(zfargs);
         } ZFLISTENER_END()
-        this->operator = (wrapper);
+        ZFCallback::operator = ((const ZFCallback &)wrapper);
     }
     template<typename T_Func>
     ZFListener &operator = (ZF_IN T_Func f) {
@@ -91,9 +89,10 @@ public:
                 ) {
             f(zfargs);
         } ZFLISTENER_END()
-        return this->operator = (wrapper);
+        ZFCallback::operator = ((const ZFCallback &)wrapper);
+        return *this;
     }
-    #endif
+#endif
     /** @endcond */
 _ZFP_ZFCALLBACK_DECLARE_END_NO_ALIAS(ZFLIB_ZFCore, ZFListener, ZFCallback)
 

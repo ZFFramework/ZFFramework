@@ -404,12 +404,20 @@ private:
         : ParentType(ref) \
         { \
         } \
+        CallbackTypeName(ZF_IN const CallbackTypeName &ref) \
+        : ParentType((const ZFCallback &)ref) \
+        { \
+        } \
+        CallbackTypeName &operator = (ZF_IN const zfnullT &dummy) { \
+            ParentType::operator = (dummy); \
+            return *this; \
+        } \
         CallbackTypeName &operator = (ZF_IN const ZFCallback &ref) { \
             ParentType::operator = (ref); \
             return *this; \
         } \
-        CallbackTypeName &operator = (ZF_IN const zfnullT &dummy) { \
-            ParentType::operator = (dummy); \
+        CallbackTypeName &operator = (ZF_IN const CallbackTypeName &ref) { \
+            ParentType::operator = ((const ZFCallback &)ref); \
             return *this; \
         } \
         /** @endcond */
