@@ -1,33 +1,33 @@
 /**
- * @file ZFTaskMap.h
+ * @file ZFTaskIdGen.h
  * @brief task map util
  */
 
-#ifndef _ZFI_ZFTaskMap_h_
-#define _ZFI_ZFTaskMap_h_
+#ifndef _ZFI_ZFTaskIdGen_h_
+#define _ZFI_ZFTaskIdGen_h_
 
-#include "ZFArray.h"
+#include "ZFUtilityDef.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassFwd _ZFP_ZFTaskMapPrivate;
+zfclassFwd _ZFP_ZFTaskIdGenPrivate;
 /**
  * @brief task map util
  */
-zfclass ZFLIB_ZFCore ZFTaskMap : zfextend ZFObject {
-    ZFOBJECT_DECLARE(ZFTaskMap, ZFObject)
+zfclass ZFLIB_ZFUtility ZFTaskIdGen : zfextend ZFObject {
+    ZFOBJECT_DECLARE(ZFTaskIdGen, ZFObject)
 
-    /** @brief see #ZFTaskMap */
+    /** @brief see #ZFTaskIdGen */
     ZFMETHOD_DECLARE_1(zfidentity, attach
             , ZFMP_IN(ZFObject *, taskData)
             )
-    /** @brief see #ZFTaskMap */
+    /** @brief see #ZFTaskIdGen */
     ZFMETHOD_DECLARE_1(zfauto, detach
             , ZFMP_IN(zfidentity, taskId)
             )
-    /** @brief see #ZFTaskMap */
+    /** @brief see #ZFTaskIdGen */
     ZFMETHOD_DECLARE_0(zfautoT<ZFArray>, detachAll)
-    /** @brief see #ZFTaskMap */
+    /** @brief see #ZFTaskIdGen */
     ZFMETHOD_DECLARE_1(zfauto, exist
             , ZFMP_IN(zfidentity, taskId)
             )
@@ -39,9 +39,9 @@ protected:
     virtual void objectOnDealloc(void);
 
 private:
-    _ZFP_ZFTaskMapPrivate *d;
+    _ZFP_ZFTaskIdGenPrivate *d;
 };
 
 ZF_NAMESPACE_GLOBAL_END
-#endif // #ifndef _ZFI_ZFTaskMap_h_
+#endif // #ifndef _ZFI_ZFTaskIdGen_h_
 

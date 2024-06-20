@@ -12,6 +12,7 @@
 #include "ZFUtility/ZFAnimationTimeLine.h"
 #include "ZFUtility/ZFCache.h"
 #include "ZFUtility/ZFResCache.h"
+#include "ZFUtility/ZFTask.h"
 #include "ZFUtility/ZFTestCase.h"
 #include "ZFUtility/ZFTestCaseUtil.h"
 #include "ZFUtility/ZFUtilityDef.h"

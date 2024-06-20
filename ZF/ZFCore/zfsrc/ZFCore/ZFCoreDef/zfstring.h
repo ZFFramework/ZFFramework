@@ -293,7 +293,6 @@ public:
 public:
     /** @brief append string */
     inline zft_zfstring<T_Char> &append(ZF_IN const zft_zfstring<T_Char> &s) {
-        _prepareWrite(this->length());
         return this->append(s.cString(), s.length());
     }
     /** @brief append string */
@@ -301,7 +300,6 @@ public:
             ZF_IN const zft_zfstring<T_Char> &s
             , ZF_IN zfindex len
             ) {
-        _prepareWrite(this->length());
         return this->append(s.cString(), len <= s.length() ? len : s.length());
     }
     /** @brief append string */
@@ -316,8 +314,13 @@ public:
         if(len > s.length() - offset) {
             len = s.length() - offset;
         }
-        _prepareWrite(this->length());
-        return this->append(s.cString() + offset, len);
+        if(len > 0) {
+            _prepareWrite(this->length());
+            return this->append(s.cString() + offset, len);
+        }
+        else {
+            return *this;
+        }
     }
     /** @brief append string */
     zft_zfstring<T_Char> &append(
@@ -328,10 +331,12 @@ public:
             if(len == zfindexMax()) {
                 len = _ZFP_zfstring_len(s);
             }
-            zfindex lenTmp = this->length();
-            _prepareWrite(lenTmp + len);
-            zfmemcpy(d->d.buf + lenTmp, s, len * sizeof(T_Char));
-            d->d.buf[d->length = (zfuint)(lenTmp + len)] = '\0';
+            if(len > 0) {
+                zfindex lenTmp = this->length();
+                _prepareWrite(lenTmp + len);
+                zfmemcpy(d->d.buf + lenTmp, s, len * sizeof(T_Char));
+                d->d.buf[d->length = (zfuint)(lenTmp + len)] = '\0';
+            }
         }
         return *this;
     }
@@ -347,7 +352,6 @@ public:
             ZF_IN const zft_zfstring<T_Char> &s
             , ZF_IN zfindex len
             ) {
-        _prepareWrite(this->length());
         return this->assign(s.cString(), len <= s.length() ? len : s.length());
     }
     /** @brief replace all content of the string */
@@ -362,8 +366,13 @@ public:
         if(len > s.length() - offset) {
             len = s.length() - offset;
         }
-        _prepareWrite(this->length());
-        return this->assign(s.cString() + offset, len);
+        if(len > 0) {
+            _prepareWrite(this->length());
+            return this->assign(s.cString() + offset, len);
+        }
+        else {
+            return *this;
+        }
     }
     /** @brief replace all content of the string */
     zft_zfstring<T_Char> &assign(
@@ -378,10 +387,12 @@ public:
                 len = 0;
             }
         }
-        _prepareWrite(len);;
-        d->length = (zfuint)len;
-        zfmemcpy(d->d.buf, s, len * sizeof(T_Char));
-        d->d.buf[len] = '\0';
+        if(len > 0) {
+            _prepareWrite(len);;
+            d->length = (zfuint)len;
+            zfmemcpy(d->d.buf, s, len * sizeof(T_Char));
+            d->d.buf[len] = '\0';
+        }
         return *this;
     }
     /** @brief replace all content of the string */

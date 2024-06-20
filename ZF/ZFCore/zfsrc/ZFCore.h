@@ -46,7 +46,6 @@
 #include "ZFCore/ZFSet.h"
 #include "ZFCore/zfstringW.h"
 #include "ZFCore/ZFStyleLoad.h"
-#include "ZFCore/ZFTaskMap.h"
 #include "ZFCore/ZFThread.h"
 #include "ZFCore/ZFThread_zfasync.h"
 #include "ZFCore/ZFThread_zfautoRelease.h"

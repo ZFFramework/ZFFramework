@@ -1,9 +1,9 @@
-#include "ZFTaskMap.h"
-#include "ZFSTLWrapper/zfstlmap.h"
+#include "ZFTaskIdGen.h"
+#include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassNotPOD _ZFP_ZFTaskMapPrivate {
+zfclassNotPOD _ZFP_ZFTaskIdGenPrivate {
 public:
     typedef zfstlmap<zfidentity, zfauto> TaskMap;
 
@@ -12,25 +12,25 @@ public:
     TaskMap m;
 
 public:
-    _ZFP_ZFTaskMapPrivate(void)
+    _ZFP_ZFTaskIdGenPrivate(void)
     : cur(0)
     , m()
     {
     }
 };
 
-ZFOBJECT_REGISTER(ZFTaskMap)
+ZFOBJECT_REGISTER(ZFTaskIdGen)
 
-void ZFTaskMap::objectOnInit(void) {
+void ZFTaskIdGen::objectOnInit(void) {
     zfsuper::objectOnInit();
-    d = zfpoolNew(_ZFP_ZFTaskMapPrivate);
+    d = zfpoolNew(_ZFP_ZFTaskIdGenPrivate);
 }
-void ZFTaskMap::objectOnDealloc(void) {
+void ZFTaskIdGen::objectOnDealloc(void) {
     zfpoolDelete(d);
     zfsuper::objectOnDealloc();
 }
 
-ZFMETHOD_DEFINE_1(ZFTaskMap, zfidentity, attach
+ZFMETHOD_DEFINE_1(ZFTaskIdGen, zfidentity, attach
         , ZFMP_IN(ZFObject *, taskData)
         ) {
     zfsynchronize(this);
@@ -44,11 +44,11 @@ ZFMETHOD_DEFINE_1(ZFTaskMap, zfidentity, attach
     d->m[taskId] = taskData;
     return taskId;
 }
-ZFMETHOD_DEFINE_1(ZFTaskMap, zfauto, detach
+ZFMETHOD_DEFINE_1(ZFTaskIdGen, zfauto, detach
         , ZFMP_IN(zfidentity, taskId)
         ) {
     zfsynchronize(this);
-    _ZFP_ZFTaskMapPrivate::TaskMap::iterator it = d->m.find(taskId);
+    _ZFP_ZFTaskIdGenPrivate::TaskMap::iterator it = d->m.find(taskId);
     if(it == d->m.end()) {
         return zfnull;
     }
@@ -56,23 +56,23 @@ ZFMETHOD_DEFINE_1(ZFTaskMap, zfauto, detach
     d->m.erase(it);
     return ret;
 }
-ZFMETHOD_DEFINE_0(ZFTaskMap, zfautoT<ZFArray>, detachAll) {
+ZFMETHOD_DEFINE_0(ZFTaskIdGen, zfautoT<ZFArray>, detachAll) {
     zfsynchronize(this);
     zfobj<ZFArray> ret;
     if(!d->m.empty()) {
-        _ZFP_ZFTaskMapPrivate::TaskMap m;
+        _ZFP_ZFTaskIdGenPrivate::TaskMap m;
         m.swap(d->m);
-        for(_ZFP_ZFTaskMapPrivate::TaskMap::iterator it = m.begin(); it != m.end(); ++it) {
+        for(_ZFP_ZFTaskIdGenPrivate::TaskMap::iterator it = m.begin(); it != m.end(); ++it) {
             ret->add(it->second);
         }
     }
     return ret;
 }
-ZFMETHOD_DEFINE_1(ZFTaskMap, zfauto, exist
+ZFMETHOD_DEFINE_1(ZFTaskIdGen, zfauto, exist
         , ZFMP_IN(zfidentity, taskId)
         ) {
     zfsynchronize(this);
-    _ZFP_ZFTaskMapPrivate::TaskMap::iterator it = d->m.find(taskId);
+    _ZFP_ZFTaskIdGenPrivate::TaskMap::iterator it = d->m.find(taskId);
     if(it == d->m.end()) {
         return zfnull;
     }
