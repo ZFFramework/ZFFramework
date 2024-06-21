@@ -116,6 +116,8 @@ protected:
         this->stop();
         zfsuper::objectOnDeallocPrepare();
     }
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 
 private:
     zfbool _ZFP_started;
@@ -166,6 +168,8 @@ public:
     virtual void taskOnStart(void);
     zfoverride
     virtual void taskOnStop(void);
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 };
 
 /**
@@ -204,6 +208,8 @@ public:
     virtual void taskOnStart(void);
     zfoverride
     virtual void taskOnStop(void);
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 };
 
 ZF_NAMESPACE_GLOBAL_END

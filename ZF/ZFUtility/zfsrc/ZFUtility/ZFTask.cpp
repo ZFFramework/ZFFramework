@@ -79,6 +79,31 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFTask
     this->implStop(implStop);
 }
 
+void ZFTask::objectInfoT(ZF_IN_OUT zfstring &ret) {
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+    if(this->started()) {
+        zfstringAppend(ret, "%s running"
+                , this->classData()->className()
+                );
+    }
+    else {
+        zfstringAppend(ret, "%s %s"
+                , this->classData()->className()
+                , this->resultType()
+                );
+        if(!this->errorHint().isEmpty()) {
+            ret += ":\"";
+            ret += this->errorHint();
+            ret += "\"";
+        }
+        if(this->result() != zfnull) {
+            ret += ", result: ";
+            this->result()->objectInfoT(ret);
+        }
+    }
+    ret += ZFTOKEN_ZFObjectInfoRight;
+}
+
 // ============================================================
 ZFOBJECT_REGISTER(ZFTaskGroup)
 
@@ -146,6 +171,29 @@ void ZFTaskGroup::taskOnStop(void) {
         }
     }
     zfsuper::taskOnStop();
+}
+
+void ZFTaskGroup::objectInfoT(ZF_IN_OUT zfstring &ret) {
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+    if(this->started()) {
+        zfstringAppend(ret, "%s running"
+                , this->classData()->className()
+                );
+    }
+    else {
+        zfstringAppend(ret, "%s %s"
+                , this->classData()->className()
+                , this->resultType()
+                );
+        if(!this->errorHint().isEmpty()) {
+            ret += ":\"";
+            ret += this->errorHint();
+            ret += "\"";
+        }
+        ret += " ";
+        this->childArray()->objectInfoOfContentT(ret);
+    }
+    ret += ZFTOKEN_ZFObjectInfoRight;
 }
 
 // ============================================================
@@ -223,6 +271,29 @@ void ZFTaskQueue::taskOnStop(void) {
         }
     }
     zfsuper::taskOnStop();
+}
+
+void ZFTaskQueue::objectInfoT(ZF_IN_OUT zfstring &ret) {
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+    if(this->started()) {
+        zfstringAppend(ret, "%s running"
+                , this->classData()->className()
+                );
+    }
+    else {
+        zfstringAppend(ret, "%s %s"
+                , this->classData()->className()
+                , this->resultType()
+                );
+        if(!this->errorHint().isEmpty()) {
+            ret += ":\"";
+            ret += this->errorHint();
+            ret += "\"";
+        }
+        ret += " ";
+        this->childArray()->objectInfoOfContentT(ret);
+    }
+    ret += ZFTOKEN_ZFObjectInfoRight;
 }
 
 ZF_NAMESPACE_GLOBAL_END
