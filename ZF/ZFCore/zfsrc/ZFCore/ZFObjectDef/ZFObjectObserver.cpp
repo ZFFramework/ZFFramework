@@ -360,7 +360,6 @@ void ZFObserver::observerNotifyWithSender(
         .sender(customSender)
         .param0(param0)
         .param1(param1)
-        .eventFilterEnable(zftrue)
         ;
     if(d->observerOwner != zfnull) {
         d->observerOwner->observerOnEvent(zfargs);

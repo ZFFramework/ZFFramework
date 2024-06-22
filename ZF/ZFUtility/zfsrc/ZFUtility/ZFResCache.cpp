@@ -69,7 +69,6 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfRes
     zfobj<v_ZFInput> inputHolder(input);
     ZFArgs zfargs;
     zfargs.sender(inputHolder);
-    zfargs.resultEnable(zftrue);
     loadImpl.execute(zfargs);
     if(zfargs.result() && input.callbackId() != zfnull) {
         ZFResCache::instance()->cacheAdd(input.callbackId(), zfargs.result());

@@ -12,44 +12,42 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFArgs
+zfclassFwd _ZFP_ZFArgsPrivate;
 /**
  * @brief listener data used by #ZFListener
- *
- * @note this object only hold the necessary datas as pointer,
- *   without auto retain or release logic
  */
 zffinal zfclassLikePOD ZFLIB_ZFCore ZFArgs {
 public:
     /**
      * @brief event id, may be #zfidentityInvalid
      */
-    ZFArgs &eventId(ZF_IN zfidentity const &v) {d.eventId = v; return *this;}
+    ZFArgs &eventId(ZF_IN zfidentity const &v);
     /** @brief see #eventId */
-    zfidentity const &eventId(void) const {return d.eventId;}
+    zfidentity const &eventId(void) const;
     /**
      * @brief who notified the listener event, may be null
      * @note the sneder has no auto retain
      */
-    ZFArgs &sender(ZF_IN zfany const &v) {d.sender = v; return *this;}
+    ZFArgs &sender(ZF_IN zfany const &v);
     /** @brief see #sender */
-    zfany const &sender(void) const {return d.sender;}
+    zfany const &sender(void) const;
     /**
      * @brief params, may be null
      * @note the param has no auto retain
      */
-    ZFArgs &param0(ZF_IN zfany const &v) {d.param0 = v; return *this;}
+    ZFArgs &param0(ZF_IN zfany const &v);
     /** @brief see #param0 */
-    zfany const &param0(void) const {return d.param0;}
+    zfany const &param0(void) const;
     /**
      * @brief params, may be null
      * @note the param has no auto retain
      */
-    ZFArgs &param1(ZF_IN zfany const &v) {d.param1 = v; return *this;}
+    ZFArgs &param1(ZF_IN zfany const &v);
     /** @brief see #param1 */
-    zfany const &param1(void) const {return d.param1;}
+    zfany const &param1(void) const;
 
     /**
-     * @brief result, must first enabled by #resultEnable
+     * @brief the result
      * @note the result would be retained
      */
     zfany const &result(void) const;
@@ -57,11 +55,6 @@ public:
     ZFArgs const &result(ZF_IN zfany const &result) const;
     /** @brief see #result */
     ZFArgs &result(ZF_IN zfany const &result);
-
-    /** @brief see #result */
-    ZFArgs &resultEnable(ZF_IN zfbool enable);
-    /** @brief see #result */
-    zfbool resultEnabled(void) const;
 
 public:
     // ============================================================
@@ -72,59 +65,30 @@ public:
      * to achieve event filter,
      * you may attach an #ZFObserver::observerAdd with higher #ZFLevel,
      * and set #eventFiltered to true,
-     * then the event would not be further dispatched\n
-     * the #eventFilterEnable must be called to enable filter logic
+     * then the event would not be further dispatched
      */
-    inline ZFArgs const &eventFiltered(ZF_IN zfbool eventFiltered) const {if(this->_ZFP_eventFiltered) {*(this->_ZFP_eventFiltered) = eventFiltered;} return *this;}
+    ZFArgs const &eventFiltered(ZF_IN zfbool eventFiltered) const;
     /** @brief see #eventFiltered */
-    inline ZFArgs &eventFiltered(ZF_IN zfbool eventFiltered) {if(this->_ZFP_eventFiltered) {*(this->_ZFP_eventFiltered) = eventFiltered;} return *this;}
+    ZFArgs &eventFiltered(ZF_IN zfbool eventFiltered);
     /** @brief see #eventFiltered */
-    inline zfbool eventFiltered(void) const {if(this->_ZFP_eventFiltered) {return *(this->_ZFP_eventFiltered);} else {return zffalse;}}
-
-    /** @brief see #eventFiltered */
-    inline ZFArgs &eventFilterEnable(ZF_IN zfbool enable) {this->_ZFP_eventFiltered = enable ? &(d.eventFiltered) : zfnull; return *this;}
-    /** @brief see #eventFiltered */
-    inline zfbool eventFilterEnabled(void) const {return this->_ZFP_eventFiltered != zfnull;}
+    zfbool eventFiltered(void) const;
 
     // ============================================================
 public:
     /**
      * @brief main constructor
      */
-    ZFArgs(void)
-    : _ZFP_result(zfnull)
-    , _ZFP_eventFiltered(zfnull)
-    {
-        zfmemset(&d, 0, sizeof(_ZFP_D));
-        d.eventId = zfidentityInvalid();
-    }
+    ZFArgs(void);
     /**
      * @brief construct with another data
      */
-    ZFArgs(ZF_IN const ZFArgs &ref)
-    : _ZFP_result(zfnull)
-    , _ZFP_eventFiltered(zfnull)
-    {
-        this->operator = (ref);
-    }
+    ZFArgs(ZF_IN const ZFArgs &ref);
 
 public:
     /** @cond ZFPrivateDoc */
     zffinal ~ZFArgs(void);
-    ZFArgs &operator = (ZF_IN const ZFArgs &ref) {
-        zfmemcpy(&d, &ref.d, sizeof(_ZFP_D));
-        this->resultEnable(ref.resultEnabled());
-        this->result(ref.result());
-        this->eventFilterEnable(ref.eventFilterEnabled());
-        return *this;
-    }
-    zfbool operator == (ZF_IN const ZFArgs &ref) const {
-        return (zftrue
-                && zfmemcmp(&d, &ref.d, sizeof(_ZFP_D)) == 0
-                && this->resultEnabled() == ref.resultEnabled()
-                && this->eventFilterEnabled() == ref.eventFilterEnabled()
-            );
-    }
+    ZFArgs &operator = (ZF_IN const ZFArgs &ref);
+    zfbool operator == (ZF_IN const ZFArgs &ref) const;
     inline zfbool operator != (ZF_IN const ZFArgs &ref) const {return !this->operator == (ref);}
     /** @endcond */
 
@@ -139,18 +103,7 @@ public:
     }
 
 private:
-    zfclassPOD _ZFP_D { /* ZFTAG_TRICKS: zfany is safe to treat as POD */
-    public:
-        zfidentity eventId;
-        zfany sender;
-        zfany param0;
-        zfany param1;
-        zfany result;
-        zfbool eventFiltered;
-    };
-    _ZFP_D d;
-    zfany *_ZFP_result;
-    zfbool *_ZFP_eventFiltered;
+    _ZFP_ZFArgsPrivate *d;
 };
 
 ZF_NAMESPACE_GLOBAL_END

@@ -57,7 +57,6 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFInputForImplOwner, zfindex, onInput
         this->_bufCache->zfv.removeAll();
         this->_resultCache->zfv = 0;
         this->impl.execute(ZFArgs()
-                .resultEnable(zftrue)
                 .param0(this->_bufCache)
                 .param1(this->_countCache)
                 .result(this->_resultCache)

@@ -521,7 +521,6 @@ void ZFClass::_ZFP_ZFClass_instanceObserverNotify(ZF_IN ZFObject *obj) const {
     if(!d->instanceObserverCached.empty()) {
         ZFArgs zfargs;
         zfargs
-            .eventFilterEnable(zftrue)
             .eventId(ZFObject::EventObjectAfterAlloc())
             .sender(obj)
             ;

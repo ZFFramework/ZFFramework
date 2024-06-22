@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * finishCallback would run in the same thread that called this method\n
  * \n
  * for the callback:
- * -  #ZFArgs::param0 is a #ZFObject holds running task id,
+ * -  #ZFArgs::sender is a #ZFObject holds running task id,
  *   it's set to null if canceled by #zfasyncCancel,
  *   you may check it during thread running
  * -  #ZFArgs::result can be set to store the callback's result,

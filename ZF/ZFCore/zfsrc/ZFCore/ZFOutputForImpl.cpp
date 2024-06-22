@@ -55,7 +55,6 @@ ZFMETHOD_DEFINE_2(_ZFP_I_ZFOutputForImplOwner, zfindex, onOutput
         this->_countCache->zfv = count;
         this->_resultCache->zfv = count;
         this->impl.execute(ZFArgs()
-                .resultEnable(zftrue)
                 .param0(this->_srcCache)
                 .param1(this->_countCache)
                 .result(this->_resultCache)

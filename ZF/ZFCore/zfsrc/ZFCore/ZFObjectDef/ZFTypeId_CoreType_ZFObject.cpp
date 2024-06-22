@@ -267,18 +267,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, void, result
         , ZFMP_IN(ZFObject *, v)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfany, result)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, ZFArgs &, resultEnable
-        , ZFMP_IN(zfbool, enable)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfbool, resultEnabled)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, void, eventFiltered
         , ZFMP_IN(zfbool, eventFiltered)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfbool, eventFiltered)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFArgs, ZFArgs &, eventFilterEnable
-        , ZFMP_IN(zfbool, enable)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFArgs, zfbool, eventFilterEnabled)
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFObserver, ZFObserver)
