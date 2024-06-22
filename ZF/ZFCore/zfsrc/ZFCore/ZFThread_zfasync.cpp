@@ -137,12 +137,12 @@ public:
 ZF_GLOBAL_INITIALIZER_END(zfasyncDataHolder)
 
 // ============================================================
-ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync
+ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
             , ZFMP_IN(const ZFListener &, callback)
             , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
             ) {
     if(!callback) {
-        return zfidentityInvalid();
+        return zfnull;
     }
 
     zfCoreMutexLocker();
@@ -178,15 +178,19 @@ ZFMETHOD_FUNC_DEFINE_2(zfidentity, zfasync
         threadPool->taskQueueAdd(d->threadScheduleCallback);
     }
 
-    return taskData->taskId->zfv;
+    return taskData->taskId;
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void, zfasyncCancel
-            , ZFMP_IN(zfidentity, taskId)
+            , ZFMP_IN(ZFObject *, taskId)
             ) {
     zfCoreMutexLocker();
+    v_zfidentity *taskIdTmp = zfcast(v_zfidentity *, taskId);
+    if(taskIdTmp == zfnull) {
+        return;
+    }
     ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-    _ZFP_zfasyncTaskMap::iterator it = d->taskMap.find(taskId);
+    _ZFP_zfasyncTaskMap::iterator it = d->taskMap.find(taskIdTmp->zfv);
     if(it == d->taskMap.end()) {
         return;
     }

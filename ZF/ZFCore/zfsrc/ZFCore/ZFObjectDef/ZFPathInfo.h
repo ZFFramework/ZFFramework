@@ -49,6 +49,7 @@ public:
     zfbool operator != (ZF_IN const ZFPathInfo &pathInfo) const {return !this->operator == (pathInfo);}
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return (this->pathType == zfnull && this->pathData == zfnull);}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return !this->operator == (dummy);}
+    operator zfbool (void) const {return !this->isEmpty();}
     /** @endcond */
 
 public:

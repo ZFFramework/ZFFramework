@@ -8,12 +8,12 @@
 @interface _ZFP_ZFAudioImpl_sys_iOS_Audio : NSObject<AVAudioPlayerDelegate>
 @property (nonatomic, assign) ZFAudio *owner;
 @property (nonatomic, strong) AVAudioPlayer *audio;
-@property (nonatomic, assign) zfidentity loadTaskId;
+@property (nonatomic, assign) zfauto loadTaskId;
 @end
 @implementation _ZFP_ZFAudioImpl_sys_iOS_Audio
 - (instancetype)init {
     self = [super init];
-    self.loadTaskId = zfidentityInvalid();
+    self.loadTaskId = zfnull;
     return self;
 }
 - (void)audioAttach {
@@ -117,7 +117,7 @@ public:
                 , ZFAudio *, audio
                 ) {
             _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
-            nativeAudio.loadTaskId = zfidentityInvalid();
+            nativeAudio.loadTaskId = zfnull;
 
             v_zfstring *errorHint = zfargs.param0();
             owner->notifyAudioOnLoad(audio, errorHint == zfnull, errorHint);
@@ -153,9 +153,9 @@ public:
     }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
-        if(nativeAudio.loadTaskId != zfidentityInvalid()) {
+        if(nativeAudio.loadTaskId) {
             zfasyncCancel(nativeAudio.loadTaskId);
-            nativeAudio.loadTaskId = zfidentityInvalid();
+            nativeAudio.loadTaskId = zfnull;
         }
         [nativeAudio audioDetach];
     }

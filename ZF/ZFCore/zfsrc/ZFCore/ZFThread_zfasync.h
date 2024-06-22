@@ -16,8 +16,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * finishCallback would run in the same thread that called this method\n
  * \n
  * for the callback:
- * -  #ZFArgs::param0 is a #v_zfidentity holds running task id,
- *   it's set to zfidentityInvalid if canceled by #zfasyncCancel,
+ * -  #ZFArgs::param0 is a #ZFObject holds running task id,
+ *   it's set to null if canceled by #zfasyncCancel,
  *   you may check it during thread running
  * -  #ZFArgs::result can be set to store the callback's result,
  *   which would passed to finishCallback as #ZFArgs::param0
@@ -29,7 +29,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * the callback may or may not be canceled,
  * but finishCallback would be canceled
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfidentity, zfasync
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfasync
         , ZFMP_IN(const ZFListener &, callback)
         , ZFMP_IN_OPT(const ZFListener &, finishCallback, zfnull)
         )
@@ -38,7 +38,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfidentity, zfasync
  * @brief try to cancel the task or finishCallback started by #zfasync
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel
-        , ZFMP_IN(zfidentity, taskId)
+        , ZFMP_IN(ZFObject *, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

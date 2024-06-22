@@ -73,7 +73,7 @@ public:
 public:
     zfclassNotPOD NativeAudio {
     public:
-        zfidentity loadTaskId;
+        zfauto loadTaskId;
         zfautoT<_ZFP_ZFAudioImpl_sys_SDL_ImplHolder> impl;
         int channel;
         zftimet position_resumeTime;
@@ -90,7 +90,7 @@ public:
 
     public:
         NativeAudio(void)
-        : loadTaskId(zfidentityInvalid())
+        : loadTaskId(zfnull)
         , impl()
         , channel(-1)
         , position_resumeTime(0)
@@ -135,7 +135,7 @@ public:
                 , ZFAudio *, audio
                 ) {
             NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-            nativeAudio->loadTaskId = zfidentityInvalid();
+            nativeAudio->loadTaskId = zfnull;
 
             _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0();
             nativeAudio->impl = implHolder;
@@ -198,7 +198,7 @@ public:
                 , ZFAudio *, audio
                 ) {
             NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-            nativeAudio->loadTaskId = zfidentityInvalid();
+            nativeAudio->loadTaskId = zfnull;
 
             _ZFP_ZFAudioImpl_sys_SDL_ImplHolder *implHolder = zfargs.param0();
             nativeAudio->impl = implHolder;
@@ -209,9 +209,9 @@ public:
     }
     virtual void nativeAudioLoadCancel(ZF_IN ZFAudio *audio) {
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();
-        if(nativeAudio->loadTaskId != zfidentityInvalid()) {
+        if(nativeAudio->loadTaskId) {
             zfasyncCancel(nativeAudio->loadTaskId);
-            nativeAudio->loadTaskId = zfidentityInvalid();
+            nativeAudio->loadTaskId = zfnull;
         }
     }
 
