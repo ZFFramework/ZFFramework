@@ -86,15 +86,16 @@ public:
     }
 
 public:
-    const zfany &_ZFP_zfany(void) const {
-        return _ZFP_obj;
-    }
-
-public:
     static const ZFClass *ClassData(void);
     /** @endcond */
 
 public:
+    /**
+     * @brief access as #zfany
+     */
+    const zfany &asAny(void) const {
+        return _ZFP_obj;
+    }
     /**
      * @brief no lock version of object assign, for low level impl only
      */

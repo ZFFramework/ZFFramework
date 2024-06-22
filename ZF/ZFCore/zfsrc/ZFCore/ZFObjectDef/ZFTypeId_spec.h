@@ -568,7 +568,7 @@ public:
                 return _d;
             }
             else {
-                return obj._ZFP_zfany();
+                return obj.asAny();
             }
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {
@@ -686,7 +686,7 @@ public:
             }
             else {
                 /* ZFTAG_TRICKS: zfanyT ensured safe for reinterpret cast */
-                return (T_Access)obj._ZFP_zfany();
+                return (T_Access)obj.asAny();
             }
         }
         static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) {

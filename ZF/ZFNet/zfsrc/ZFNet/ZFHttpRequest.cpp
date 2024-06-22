@@ -523,7 +523,7 @@ public:
 public:
     _ZFP_ZFHttpHeadCache(void)
     : url()
-    , cacheTime(ZFTime::currentTimeMiliSeconds())
+    , cacheTime(ZFTime::currentTime())
     , cache()
     , prev(zfnull)
     , next(zfnull)
@@ -538,7 +538,7 @@ static _ZFP_ZFHttpHeadCache *_ZFP_ZFHttpHeadCacheLast = zfnull;
 ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFHttpResponse>, ZFHttpHeadCache
         , ZFMP_IN(const zfchar *, url)
         ) {
-    zftimet curTime = ZFTime::currentTimeMiliSeconds();
+    zftimet curTime = ZFTime::currentTime();
     {
         zfCoreMutexLocker();
         _ZFP_ZFHttpHeadCacheMapType::iterator cacheIt = _ZFP_ZFHttpHeadCacheMap.find(url);

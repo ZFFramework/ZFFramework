@@ -3,15 +3,15 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassPOD _ZFP_ZFArgsPrivate {
+zfclassNotPOD _ZFP_ZFArgsPrivate {
 public:
     zfuint refCount;
     zfbool eventFiltered;
     zfidentity eventId;
     zfany sender;
-    zfany param0;
-    zfany param1;
-    zfany result;
+    zfauto param0;
+    zfauto param1;
+    zfauto result;
 public:
     _ZFP_ZFArgsPrivate(void)
     : refCount(1)
@@ -44,25 +44,25 @@ ZFArgs &ZFArgs::param0(ZF_IN zfany const &v) {
     return *this;
 }
 zfany const &ZFArgs::param0(void) const {
-    return d->param0;
+    return d->param0.asAny();
 }
 ZFArgs &ZFArgs::param1(ZF_IN zfany const &v) {
     d->param1 = v;
     return *this;
 }
 zfany const &ZFArgs::param1(void) const {
-    return d->param1;
+    return d->param1.asAny();
 }
 
 zfany const &ZFArgs::result(void) const {
-    return d->result;
+    return d->result.asAny();
 }
 ZFArgs const &ZFArgs::result(ZF_IN zfany const &result) const {
-    zfRetainChange(d->result, result);
+    d->result = result;
     return *this;
 }
 ZFArgs &ZFArgs::result(ZF_IN zfany const &result) {
-    zfRetainChange(d->result, result);
+    d->result = result;
     return *this;
 }
 
@@ -80,9 +80,6 @@ zfbool ZFArgs::eventFiltered(void) const {
 
 ZFArgs::ZFArgs(void) {
     d = zfpoolNew(_ZFP_ZFArgsPrivate);
-    zfmemset(d, 0, sizeof(_ZFP_ZFArgsPrivate));
-    d->refCount = 1;
-    d->eventId = zfidentityInvalid();
 }
 ZFArgs::ZFArgs(ZF_IN const ZFArgs &ref) {
     d = ref.d;
@@ -91,7 +88,6 @@ ZFArgs::ZFArgs(ZF_IN const ZFArgs &ref) {
 
 ZFArgs::~ZFArgs(void) {
     if(d->refCount == 1) {
-        zfRelease(d->result);
         zfpoolDelete(d);
     }
     else {
@@ -105,7 +101,6 @@ ZFArgs &ZFArgs::operator = (ZF_IN const ZFArgs &ref) {
         ++(d->refCount);
         --(dTmp->refCount);
         if(dTmp->refCount == 0) {
-            zfRelease(dTmp->result);
             zfpoolDelete(dTmp);
         }
     }

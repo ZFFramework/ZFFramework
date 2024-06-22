@@ -412,7 +412,7 @@ ZFMETHOD_DEFINE_0(ZFTime, ZFTimeValue, currentTimeValue) {
     _ZFP_ZFTimeImpl->currentTimeValue(tv);
     return tv;
 }
-ZFMETHOD_DEFINE_0(ZFTime, zftimet, currentTimeMiliSeconds) {
+ZFMETHOD_DEFINE_0(ZFTime, zftimet, currentTime) {
     return ZFTimeValueToMiliSeconds(ZFTime::currentTimeValue());
 }
 ZFMETHOD_DEFINE_1(ZFTime, ZFTimeInfo, currentTimeInfo

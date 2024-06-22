@@ -410,7 +410,7 @@ public:
     /**
      * @brief equal to ZFTimeValueToMiliSeconds(currentTimeValue())
      */
-    ZFMETHOD_DECLARE_STATIC_0(zftimet, currentTimeMiliSeconds)
+    ZFMETHOD_DECLARE_STATIC_0(zftimet, currentTime)
     /**
      * @brief return current time info, util method to #currentTimeValue
      */
