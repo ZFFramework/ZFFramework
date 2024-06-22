@@ -1,11 +1,9 @@
 #include "ZFObjectIO_lua.h"
-#include "ZFPathType_lua.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOBJECTIO_DEFINE(lua, {
-        return (zfstringIsEqual(pathInfo.pathType.cString(), ZFPathType_lua())
-            || ZFObjectIOImplCheck(pathInfo, "lua"));
+        return ZFObjectIOImplCheck(pathInfo, "lua");
     }, {
         ret = ZFLuaExecute(input);
         return input;

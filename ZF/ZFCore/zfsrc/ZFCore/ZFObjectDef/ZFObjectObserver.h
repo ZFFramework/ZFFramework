@@ -50,6 +50,22 @@ public:
 
     /** @cond ZFPrivateDoc */
 public:
+    ZFListener(
+            ZF_IN ZFObject *owner
+            , ZF_IN const ZFMethod *f) {
+        ZFCallback::operator = (ZFCallbackForMemberMethod(owner, f));
+    }
+    ZFListener(ZF_IN const ZFMethod *f) {
+        ZFCallback::operator = (ZFCallbackForMethod(f));
+    }
+    ZFListener &operator = (ZF_IN const ZFMethod *f) {
+        ZFCallback::operator = (ZFCallbackForMethod(f));
+        return *this;
+    }
+    /** @endcond */
+
+    /** @cond ZFPrivateDoc */
+public:
     typedef void (*FUNC_TYPE)(ZF_IN const ZFArgs &zfargs);
     ZFListener(ZF_IN FUNC_TYPE f) {
         FUNC_TYPE fTmp = f;
@@ -70,7 +86,9 @@ public:
         ZFCallback::operator = ((const ZFCallback &)wrapper);
         return *this;
     }
+    /** @endcond */
 
+    /** @cond ZFPrivateDoc */
 #if ZF_ENV_LAMBDA
 public:
     template<typename T_Func>
