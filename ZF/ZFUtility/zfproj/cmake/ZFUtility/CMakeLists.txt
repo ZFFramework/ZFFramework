@@ -34,6 +34,7 @@ function(ZFAddLib ZF_LIB_NAME_)
 endfunction(ZFAddLib)
 
 ZFAddLib(ZFCore)
+ZFAddLib(ZFAlgorithm)
 
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"

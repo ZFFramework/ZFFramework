@@ -2,4 +2,5 @@
 -I./zfsrc
 
 -I../../../ZFFramework/ZF/ZFCore/zfsrc
+-I../../../ZFFramework/ZF/ZFAlgorithm/zfsrc
 

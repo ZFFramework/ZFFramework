@@ -21,9 +21,6 @@
 #include "ZFAlgorithm/ZFPathType_ZFCompress.h"
 #include "ZFAlgorithm/ZFPathType_base64.h"
 #include "ZFAlgorithm/ZFRegExp.h"
-#include "ZFAlgorithm/ZFTextTemplate.h"
-#include "ZFAlgorithm/ZFTextTemplateRun.h"
-#include "ZFAlgorithm/ZFTextTemplateType.h"
 #include "ZFAlgorithm/ZFXml.h"
 #include "ZFAlgorithm/ZFXmlSerializableConverter.h"
 

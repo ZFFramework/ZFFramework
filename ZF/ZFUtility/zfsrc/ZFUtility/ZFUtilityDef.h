@@ -7,6 +7,7 @@
 #define _ZFI_ZFUtilityDef_h_
 
 #include "ZFCore.h"
+#include "ZFAlgorithm.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief used to export symbols */

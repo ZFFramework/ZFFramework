@@ -1,9 +1,9 @@
-#include "ZFAlgorithm_test.h"
+#include "ZFUtility_test.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclass ZFAlgorithm_ZFTextTemplate_test : zfextend ZFFramework_test_TestCase {
-    ZFOBJECT_DECLARE(ZFAlgorithm_ZFTextTemplate_test, ZFFramework_test_TestCase)
+zfclass ZFUtility_ZFTextTemplate_test : zfextend ZFFramework_test_TestCase {
+    ZFOBJECT_DECLARE(ZFUtility_ZFTextTemplate_test, ZFFramework_test_TestCase)
 
 protected:
     zfoverride
@@ -58,7 +58,7 @@ protected:
         this->testCaseStop();
     }
 };
-ZFOBJECT_REGISTER(ZFAlgorithm_ZFTextTemplate_test)
+ZFOBJECT_REGISTER(ZFUtility_ZFTextTemplate_test)
 
 ZF_NAMESPACE_GLOBAL_END
 

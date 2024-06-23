@@ -44,6 +44,7 @@ android {
 dependencies {
     implementation fileTree(includes: ['*.jar'], dir: 'libs')
     implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFCore/src/main/libs', includes: ['*.jar'])
+    implementation fileTree(dir: ZF_ROOT_PATH + '/_release/Android/module/ZFAlgorithm/src/main/libs', includes: ['*.jar'])
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os

@@ -79,14 +79,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   -  "{ZFTT_IR_myKey}":\n
  *     reset index state for "myKey"
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfindex, ZFTextTemplateApply
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfindex, ZFTextTemplateApply
         , ZFMP_IN(const ZFTextTemplateParam &, param)
         , ZFMP_IN(const ZFOutput &, output)
         , ZFMP_IN(const zfchar *, data)
         , ZFMP_IN_OPT(zfindex, dataSize, zfindexMax())
         )
 /** @brief see #ZFTextTemplateApply */
-ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfindex, ZFTextTemplateApply
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfindex, ZFTextTemplateApply
         , ZFMP_IN(const ZFTextTemplateParam &, param)
         , ZFMP_IN(const ZFOutput &, output)
         , ZFMP_IN(const ZFInput &, input)

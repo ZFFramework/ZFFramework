@@ -6,4 +6,5 @@ ZF_INPLACE = 1
 ZF_INPLACE_SRC = ZFModule/ZF/$ZF_NAME
 
 ZF_LIB += ZFCore
+ZF_LIB += ZFAlgorithm
 

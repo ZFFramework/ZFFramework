@@ -3,7 +3,7 @@
 <ZF_COMMENT> 1. use zfproj.sh to create "lib" or "impl" type module
 <ZF_COMMENT>    https://github.com/ZFFramework/ZFFramework/blob/master/tools/zfproj_creator/zfproj.sh
 <ZF_COMMENT>    result structure should be:
-<ZF_COMMENT>        ZFModule/ZF/YourLibName/
+<ZF_COMMENT>        ZFFramework/ZFModule/YourLibName/
 <ZF_COMMENT>            .git/
 <ZF_COMMENT>            zfproj/
 <ZF_COMMENT>            zfres/

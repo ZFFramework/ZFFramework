@@ -11,10 +11,14 @@
 #include "ZFUtility/ZFAnimation.h"
 #include "ZFUtility/ZFAnimationTimeLine.h"
 #include "ZFUtility/ZFCache.h"
+#include "ZFUtility/ZFIOCache.h"
 #include "ZFUtility/ZFResCache.h"
 #include "ZFUtility/ZFTask.h"
 #include "ZFUtility/ZFTestCase.h"
 #include "ZFUtility/ZFTestCaseUtil.h"
+#include "ZFUtility/ZFTextTemplate.h"
+#include "ZFUtility/ZFTextTemplateRun.h"
+#include "ZFUtility/ZFTextTemplateType.h"
 #include "ZFUtility/ZFUtilityDef.h"
 
 #endif // #ifndef _ZFI_ZFUtility_h_

@@ -29,7 +29,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * \n
  * by default, all setting would be copied from #ZFTextTemplateRunParamDefault
  */
-zffinal zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateRunParam {
+zffinal zfclassLikePOD ZFLIB_ZFUtility ZFTextTemplateRunParam {
 public:
     ZFFilterForString dirNameFilter; /**< @brief see #ZFTextTemplateRunParam */
     ZFFilterForString dirContentFilter; /**< @brief see #ZFTextTemplateRunParam */
@@ -68,9 +68,9 @@ public:
     }
     /** @endcond */
 };
-ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFAlgorithm, ZFTextTemplateRunParam, ZFTextTemplateRunParam)
+ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFUtility, ZFTextTemplateRunParam, ZFTextTemplateRunParam)
 
-extern ZFLIB_ZFAlgorithm ZFTextTemplateRunParam &_ZFP_ZFTextTemplateRunParamDefault(void);
+extern ZFLIB_ZFUtility ZFTextTemplateRunParam &_ZFP_ZFTextTemplateRunParamDefault(void);
 /**
  * @brief default param for #ZFTextTemplateRun
  *
@@ -84,7 +84,7 @@ extern ZFLIB_ZFAlgorithm ZFTextTemplateRunParam &_ZFP_ZFTextTemplateRunParamDefa
 /**
  * @brief util method to apply #ZFTextTemplateApply to a given path recursively
  */
-ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFTextTemplateRun
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfbool, ZFTextTemplateRun
         , ZFMP_IN(const zfchar *, path)
         , ZFMP_IN(const ZFTextTemplateParam &, textTemplateParam)
         , ZFMP_IN_OPT(const ZFTextTemplateRunParam &, runParam, ZFTextTemplateRunParamDefault())

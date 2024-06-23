@@ -1,7 +1,5 @@
 #include "ZFTextTemplateRun.h"
 
-#include "ZFRegExp.h"
-
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFTextTemplateRunParamDefault_DECLARE(typeName) \

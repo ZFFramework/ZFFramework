@@ -6,14 +6,14 @@
 #ifndef _ZFI_ZFTextTemplateType_h_
 #define _ZFI_ZFTextTemplateType_h_
 
-#include "ZFAlgorithmDef.h"
+#include "ZFUtilityDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
  * @brief index output flags for #ZFTextTemplateIndexData
  */
-ZFENUM_BEGIN(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexFlag)
+ZFENUM_BEGIN(ZFLIB_ZFUtility, ZFTextTemplateIndexFlag)
     ZFENUM_VALUE(LeadingZero)
     ZFENUM_VALUE(LeadingSpace)
     ZFENUM_VALUE(TailSpace)
@@ -21,11 +21,11 @@ ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(LeadingZero)
     ZFENUM_VALUE_REGISTER(LeadingSpace)
     ZFENUM_VALUE_REGISTER(TailSpace)
-ZFENUM_END(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexFlag)
+ZFENUM_END(ZFLIB_ZFUtility, ZFTextTemplateIndexFlag)
 
 // ============================================================
 /** @brief see #ZFTextTemplateApply */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateIndexData {
+zfclassLikePOD ZFLIB_ZFUtility ZFTextTemplateIndexData {
 public:
     /**
      * @brief start index, 0 by default
@@ -116,7 +116,7 @@ public:
  *   />
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFTextTemplateIndexData, ZFTextTemplateIndexData)
+ZFTYPEID_DECLARE(ZFLIB_ZFUtility, ZFTextTemplateIndexData, ZFTextTemplateIndexData)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateIndexData_indexStart "indexStart"
@@ -136,7 +136,7 @@ ZFOUTPUT_TYPE(ZFTextTemplateIndexData, {v.objectInfoT(s);})
 // ============================================================
 zfclassFwd _ZFP_ZFTextTemplateParamPrivate;
 /** @brief see #ZFTextTemplateApply */
-zfclassLikePOD ZFLIB_ZFAlgorithm ZFTextTemplateParam {
+zfclassLikePOD ZFLIB_ZFUtility ZFTextTemplateParam {
 public:
     // ============================================================
     /** @brief see #ZFTextTemplateApply */
@@ -277,7 +277,7 @@ private:
  *   </ZFTextTemplateParam>
  * @endcode
  */
-ZFTYPEID_DECLARE(ZFLIB_ZFAlgorithm, ZFTextTemplateParam, ZFTextTemplateParam)
+ZFTYPEID_DECLARE(ZFLIB_ZFUtility, ZFTextTemplateParam, ZFTextTemplateParam)
 
 /** @brief keyword for serialize */
 #define ZFSerializableKeyword_ZFTextTemplateParam_replace "replace"
