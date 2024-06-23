@@ -167,10 +167,6 @@ public:
             tv.sec = tvTmp.tv_sec;
             tv.usec = tvTmp.tv_usec;
         #endif
-
-        // offset from 0 to 1970
-        static const zftimet secondsBetween1970 = (zftimet)(1970 * zftimetOneYear + (-_ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(0) + 1) * zftimetOneDay);
-        tv.sec += secondsBetween1970;
     }
     virtual zfbool timeInfoFromTimeValue(
             ZF_OUT ZFTimeInfo &ti

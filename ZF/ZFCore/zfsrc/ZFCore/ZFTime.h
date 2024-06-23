@@ -283,7 +283,7 @@ ZFTYPEID_ACCESS_ONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfo)
 ZFOUTPUT_TYPE_DECLARE(ZFLIB_ZFCore, ZFTimeInfo)
 
 /**
- * @brief a zero time info (0000-00-00 00:00:00.000 000)
+ * @brief a zero time info (1970-01-01 00:00:00.000 000)
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, ZFTimeInfo, ZFTimeInfoZero)
 /**

@@ -176,9 +176,6 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForCache
         )
 /**
  * @brief clear all caches under #ZFPathForCache
- *
- * note, this method is ensured called during #ZFFrameworkCleanup
- * as level #ZFLevelZFFrameworkLow
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, void, ZFPathForCacheClear)
 
