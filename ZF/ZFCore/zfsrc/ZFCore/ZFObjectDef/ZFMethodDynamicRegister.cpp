@@ -111,6 +111,63 @@ ZFMethodInvokeData *ZFMethodInvokeData::paramSet(
     return this;
 }
 
+void ZFMethodInvokeData::objectInfoT(ZF_IN_OUT zfstring &ret) {
+    ret += ZFTOKEN_ZFObjectInfoLeft;
+    ret += this->classData()->className();
+    if(!this->invokeSuccess) {
+        ret += "(fail)";
+    }
+
+    // return type
+    ret += " ";
+    if(this->ret) {
+        this->ret->objectInfoT(ret);
+    }
+    else if(this->invokerMethod != zfnull) {
+        ret += this->invokerMethod->methodReturnTypeId();
+    }
+    else {
+        ret += "?";
+    }
+
+    // scope
+    ret += " ";
+    if(this->invokerObject != zfnull) {
+        this->invokerObject->objectInfoOfInstanceT(ret);
+        ret += ".";
+    }
+    else if(this->invokerMethod != zfnull) {
+        if(!zfstringIsEmpty(this->invokerMethod->methodNamespace())) {
+            ret += this->invokerMethod->methodNamespace();
+            ret += "::";
+        }
+    }
+
+    // method name
+    if(this->invokerMethod != zfnull) {
+        ret += this->invokerMethod->methodName();
+    }
+    else {
+        ret += "?";
+    }
+
+    // params
+    ret += "(";
+    for(zfindex i = 0; i < ZFMETHOD_MAX_PARAM; ++i) {
+        const zfauto &param = this->paramAt(i);
+        if(!param || param == ZFMethodGenericInvokerDefaultParam()) {
+            break;
+        }
+        if(i > 0) {
+            ret += ", ";
+        }
+        param->objectInfoT(ret);
+    }
+    ret += ")";
+
+    ret += ZFTOKEN_ZFObjectInfoRight;
+}
+
 // ============================================================
 zfclassNotPOD _ZFP_ZFMethodDynamicRegisterParamPrivate {
 public:

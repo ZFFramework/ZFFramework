@@ -75,6 +75,9 @@ public:
     virtual zfbool objectIsInternalPrivate(void) {
         return zftrue;
     }
+protected:
+    zfoverride
+    virtual void objectInfoT(ZF_IN_OUT zfstring &ret);
 };
 
 ZF_NAMESPACE_GLOBAL_END

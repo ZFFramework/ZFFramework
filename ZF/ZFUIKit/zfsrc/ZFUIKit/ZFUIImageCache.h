@@ -6,7 +6,7 @@
 #ifndef _ZFI_ZFUIImageCache_h_
 #define _ZFI_ZFUIImageCache_h_
 
-#include "ZFUIWidgetDef.h"
+#include "ZFUIKitDef.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
@@ -16,14 +16,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * param1 would be a #ZFResultType indicates load result\n
  * use #ZFIOCache to config cache logic
  */
-ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfauto, ZFUIImageLoad
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfauto, ZFUIImageLoad
         , ZFMP_IN(const ZFInput &, src)
         , ZFMP_IN(const ZFListener &, callback)
         )
 /**
  * @brief cancel load task of #ZFUIImageLoad
  */
-ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIWidget, void, ZFUIImageLoadCancel
+ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIImageLoadCancel
         , ZFMP_IN(ZFObject *, taskId)
         )
 

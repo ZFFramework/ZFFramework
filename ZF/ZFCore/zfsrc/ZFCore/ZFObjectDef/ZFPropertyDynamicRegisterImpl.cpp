@@ -237,7 +237,7 @@ static zfbool _ZFP_PropDynReg_setterGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     _ZFP_I_PropDynRegData *d = zfcast(_ZFP_I_PropDynRegData *, property->_ZFP_ZFProperty_propertyDynamicRegisterUserDataWrapper);
     if(!ZFMethodGenericInvokerParamsCheck(errorHint, paramCount, paramList
                 , 1
-                , d->typeInfo->typeIdClass()
+                , property->propertyClassOfRetainProperty() ? property->propertyClassOfRetainProperty() : d->typeInfo->typeIdClass()
                 )) {
         return zffalse;
     }

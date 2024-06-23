@@ -120,7 +120,7 @@ void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     }
     if(this->sender() != zfnull) {
         ret += " sender:";
-        ZFObjectInfoT(ret, this->sender());
+        ZFObjectInfoOfInstanceT(ret, this->sender());
     }
     if(this->param0() != zfnull) {
         ret += " param0:";
