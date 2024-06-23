@@ -23,6 +23,7 @@ ZFPATHTYPE_FILEIO_REGISTER(res, ZFPathType_res()
         , ZFPathInfoCallbackToParentDefault
         , ZFPathInfoCallbackPathCreateDefault
         , ZFPathInfoCallbackRemoveDefault
+        , ZFPathInfoCallbackMoveDefault
         , ZFResFindFirst
         , ZFResFindNext
         , ZFResFindClose

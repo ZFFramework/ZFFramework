@@ -60,6 +60,13 @@ public:
             ) {
         return zffalse;
     }
+    static zfbool callbackMove(
+            ZF_IN const zfchar *pathDataFrom
+            , ZF_IN const zfchar *pathDataTo
+            , ZF_IN_OPT zfbool isForce
+            ) {
+        return zffalse;
+    }
     static zfbool callbackFindFirst(
             ZF_IN_OUT ZFFileFindData &fd
             , ZF_IN const zfchar *pathData
@@ -146,6 +153,7 @@ ZFPATHTYPE_FILEIO_REGISTER(base64, ZFPathType_base64()
         , _ZFP_ZFPathType_base64::callbackToParent
         , _ZFP_ZFPathType_base64::callbackPathCreate
         , _ZFP_ZFPathType_base64::callbackRemove
+        , _ZFP_ZFPathType_base64::callbackMove
         , _ZFP_ZFPathType_base64::callbackFindFirst
         , _ZFP_ZFPathType_base64::callbackFindNext
         , _ZFP_ZFPathType_base64::callbackFindClose

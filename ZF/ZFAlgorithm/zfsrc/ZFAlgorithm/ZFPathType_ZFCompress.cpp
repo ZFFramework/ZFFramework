@@ -290,6 +290,27 @@ public:
         _taskIdle(taskData);
         return ret;
     }
+    static zfbool callbackMove(
+            ZF_IN const zfchar *pathDataFrom
+            , ZF_IN const zfchar *pathDataTo
+            , ZF_IN_OPT zfbool isForce
+            ) {
+        const zfchar *relPathFrom = zfnull;
+        _TaskData *taskDataFrom = _taskCreate(relPathFrom, pathDataFrom, _TaskTypeCompress);
+        const zfchar *relPathTo = zfnull;
+        _TaskData *taskDataTo = _taskCreate(relPathTo, pathDataTo, _TaskTypeCompress);
+        zfbool ret = zffalse;
+        if(taskDataFrom != zfnull && taskDataTo != zfnull) {
+            ret = ZFCompressContentMove(taskDataFrom->taskToken, relPathFrom, relPathTo, isForce);
+        }
+        if(taskDataFrom != zfnull) {
+            _taskIdle(taskDataFrom);
+        }
+        if(taskDataTo != zfnull) {
+            _taskIdle(taskDataTo);
+        }
+        return ret;
+    }
     static zfbool callbackFindFirst(
             ZF_IN_OUT ZFFileFindData &fd
             , ZF_IN const zfchar *pathData
@@ -450,6 +471,7 @@ ZFPATHTYPE_FILEIO_REGISTER(ZFCompress, ZFPathType_ZFCompress()
         , _ZFP_ZFPathType_ZFCompress::callbackToParent
         , _ZFP_ZFPathType_ZFCompress::callbackPathCreate
         , _ZFP_ZFPathType_ZFCompress::callbackRemove
+        , _ZFP_ZFPathType_ZFCompress::callbackMove
         , _ZFP_ZFPathType_ZFCompress::callbackFindFirst
         , _ZFP_ZFPathType_ZFCompress::callbackFindNext
         , _ZFP_ZFPathType_ZFCompress::callbackFindClose

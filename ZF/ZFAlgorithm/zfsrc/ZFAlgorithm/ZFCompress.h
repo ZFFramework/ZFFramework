@@ -96,6 +96,13 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfbool, ZFCompressContentRemove
         , ZFMP_IN_OUT(void *, compressToken)
         , ZFMP_IN(const zfchar *, filePathInZip)
         )
+/** @brief see #ZFCompressBegin */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfbool, ZFCompressContentMove
+        , ZFMP_IN_OUT(void *, compressToken)
+        , ZFMP_IN(const zfchar *, filePathInZipFrom)
+        , ZFMP_IN(const zfchar *, filePathInZipTO)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        )
 
 /** @brief see #ZFCompressBegin */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, void *, ZFDecompressBegin

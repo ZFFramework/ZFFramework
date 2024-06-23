@@ -129,7 +129,7 @@ zfbool ZFRegExp::serializableOnSerializeFromData(
                 return zffalse;
             });
 
-    this->regExpCompile(pattern ? pattern : "", flag);
+    this->pattern(pattern ? pattern : "", flag);
 
     return zftrue;
 }
@@ -142,15 +142,39 @@ zfbool ZFRegExp::serializableOnSerializeToData(
     zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
     ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-            ZFSerializableKeyword_ZFRegExp_pattern, zfstring, this->regExpPattern(), ref->regExpPattern(), "", {
+            ZFSerializableKeyword_ZFRegExp_pattern, zfstring, this->pattern(), ref->pattern(), "", {
                 return zffalse;
             });
 
     ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref,
-            ZFSerializableKeyword_ZFRegExp_flag, ZFRegExpOptionFlags, this->regExpFlag(), ref->regExpFlag(), ZFRegExpOptionFlags::EnumDefault(), {
+            ZFSerializableKeyword_ZFRegExp_flag, ZFRegExpOptionFlags, this->options(), ref->options(), ZFRegExpOptionFlags::EnumDefault(), {
                 return zffalse;
             });
 
+    return zftrue;
+}
+
+zfbool ZFRegExp::serializableOnSerializeFromString(
+        ZF_IN const zfchar *src
+        , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    this->pattern(srcLen == zfindexMax()
+            ? src : zfstring(src, srcLen).cString()
+            );
+    return zftrue;
+}
+zfbool ZFRegExp::serializableOnSerializeToString(
+        ZF_IN_OUT zfstring &ret
+        , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
+        ) {
+    if(zffalse
+            || ZFBitTest(this->options(), ZFRegExpOption::e_IgnoreCase)
+            ) {
+        zfstringAppend(errorHint, "only regexp with default options can be serialized to string, got: %s", this->options());
+        return zffalse;
+    }
+    ret += this->pattern();
     return zftrue;
 }
 
@@ -159,7 +183,7 @@ ZFOBJECT_ON_INIT_DEFINE_2(ZFRegExp
         , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
         ) {
     this->objectOnInit();
-    zfself::regExpCompile(pattern, flag);
+    zfself::pattern(pattern, flag);
 }
 void ZFRegExp::objectOnInit(void) {
     zfsuper::objectOnInit();
@@ -179,8 +203,8 @@ void ZFRegExp::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
 }
 
 zfidentity ZFRegExp::objectHash(void) {
-    ZFRegExpOptionFlags flag = this->regExpFlag();
-    return zfidentityHash(zfidentityCalcString(this->regExpPattern()),
+    ZFRegExpOptionFlags flag = this->options();
+    return zfidentityHash(zfidentityCalcString(this->pattern()),
                          zfidentityCalcPOD(flag));
 }
 ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj) {
@@ -188,8 +212,8 @@ ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj) {
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
-    if(zfstringIsEqual(this->regExpPattern(), another->regExpPattern())
-            && this->regExpFlag() == another->regExpFlag()
+    if(zfstringIsEqual(this->pattern(), another->pattern())
+            && this->options() == another->options()
             ) {
         return ZFCompareTheSame;
     }
@@ -200,22 +224,22 @@ ZFMETHOD_DEFINE_0(ZFRegExp, void *, nativeRegExp) {
     return d->nativeRegExp;
 }
 
-ZFMETHOD_DEFINE_0(ZFRegExp, const zfchar *, regExpPattern) {
+ZFMETHOD_DEFINE_0(ZFRegExp, const zfchar *, pattern) {
     return (d->pattern.isEmpty() ? zfnull : d->pattern.cString());
 }
-ZFMETHOD_DEFINE_0(ZFRegExp, ZFRegExpOptionFlags, regExpFlag) {
+ZFMETHOD_DEFINE_0(ZFRegExp, ZFRegExpOptionFlags, options) {
     return d->flag;
 }
-ZFMETHOD_DEFINE_1(ZFRegExp, zfindex, regExpNamedGroupIndexForName
+ZFMETHOD_DEFINE_1(ZFRegExp, zfindex, namedGroupIndexForName
         , ZFMP_IN(const zfchar *, name)
         ) {
     if(name == zfnull) {
         return zfindexMax();
     }
-    return ZFPROTOCOL_ACCESS(ZFRegExp)->regExpNamedGroupIndexForName(this, name);
+    return ZFPROTOCOL_ACCESS(ZFRegExp)->namedGroupIndexForName(this, name);
 }
 
-ZFMETHOD_DEFINE_2(ZFRegExp, void, regExpCompile
+ZFMETHOD_DEFINE_2(ZFRegExp, void, pattern
         , ZFMP_IN(const zfchar *, pattern)
         , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
         ) {
@@ -224,25 +248,17 @@ ZFMETHOD_DEFINE_2(ZFRegExp, void, regExpCompile
     }
     d->pattern = pattern;
     d->flag = flag;
-    ZFPROTOCOL_ACCESS(ZFRegExp)->regExpCompile(this, pattern, flag);
+    ZFPROTOCOL_ACCESS(ZFRegExp)->pattern(this, pattern, flag);
 }
-ZFMETHOD_DEFINE_3(ZFRegExp, void, regExpMatch
+ZFMETHOD_DEFINE_3(ZFRegExp, void, find
         , ZFMP_OUT(ZFRegExpResult &, result)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
         ) {
     result.namedGroups.removeAll();
-    ZFPROTOCOL_ACCESS(ZFRegExp)->regExpMatch(this, result, src, srcLength);
+    ZFPROTOCOL_ACCESS(ZFRegExp)->find(this, result, src, srcLength);
 }
-ZFMETHOD_DEFINE_3(ZFRegExp, void, regExpMatchExact
-        , ZFMP_OUT(ZFRegExpResult &, result)
-        , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
-        ) {
-    result.namedGroups.removeAll();
-    ZFPROTOCOL_ACCESS(ZFRegExp)->regExpMatchExact(this, result, src, srcLength);
-}
-ZFMETHOD_DEFINE_6(ZFRegExp, void, regExpReplace
+ZFMETHOD_DEFINE_6(ZFRegExp, void, replace
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_OUT(ZFRegExpResult &, result)
         , ZFMP_IN(const zfchar *, replacePattern)
@@ -251,45 +267,62 @@ ZFMETHOD_DEFINE_6(ZFRegExp, void, regExpReplace
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         ) {
     result.namedGroups.removeAll();
-    ZFPROTOCOL_ACCESS(ZFRegExp)->regExpReplace(this, ret, result, replacePattern, src, srcLength, maxReplaceCount);
+    ZFPROTOCOL_ACCESS(ZFRegExp)->replace(this, ret, result, replacePattern, src, srcLength, maxReplaceCount);
 }
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN(const zfchar *, pattern)
+        , ZFMP_IN(ZFRegExp *, pattern)
         ) {
-    zfobj<ZFRegExp> regexp;
     ZFRegExpResult result;
-    regexp->regExpCompile(pattern);
-    regexp->regExpMatch(result, src);
+    if(pattern) {
+        pattern->find(result, src);
+    }
     return result.matchedRange;
 }
+ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, pattern)
+        ) {
+    return ZFRegExpFind(src, zfobj<ZFRegExp>(pattern));
+}
+
 ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN(const zfchar *, patternFrom)
+        , ZFMP_IN(ZFRegExp *, patternFrom)
         , ZFMP_IN(const zfchar *, patternTo)
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         ) {
-    zfobj<ZFRegExp> regexp;
-    regexp->regExpCompile(patternFrom);
-    zfstring ret;
-    ZFRegExpResult result;
-    regexp->regExpReplace(ret, result, patternTo, src, zfindexMax(), maxReplaceCount);
-    return ret;
+    if(patternFrom) {
+        ZFRegExpResult result;
+        zfstring ret;
+        patternFrom->replace(ret, result, patternTo, src, zfindexMax(), maxReplaceCount);
+        return ret;
+    }
+    else {
+        return src;
+    }
 }
+ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, patternFrom)
+        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
+        ) {
+    return ZFRegExpReplace(src, zfobj<ZFRegExp>(patternFrom), patternTo, maxReplaceCount);
+}
+
 ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN(const zfchar *, separatorPattern)
+        , ZFMP_IN(ZFRegExp *, separatorPattern)
         , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
         ) {
     ZFCoreArray<zfstring> ret;
-    if(src != zfnull && separatorPattern != zfnull && *separatorPattern) {
-        zfobj<ZFRegExp> regexp;
-        regexp->regExpCompile(separatorPattern);
+    if(src != zfnull && separatorPattern != zfnull) {
         ZFRegExpResult result;
         do {
-            regexp->regExpMatch(result, src);
+            separatorPattern->find(result, src);
             if(!result.matched || result.matchedRange == ZFIndexRangeZero()) {
                 if(*src || keepEmpty) {
                     ret.add(src);
@@ -309,6 +342,13 @@ ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit
         }
     }
     return ret;
+}
+ZFMETHOD_FUNC_DEFINE_3(ZFCoreArray<zfstring>, ZFRegExpSplit
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, separatorPattern)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
+        ) {
+    return ZFRegExpSplit(src, zfobj<ZFRegExp>(separatorPattern), keepEmpty);
 }
 
 ZF_NAMESPACE_GLOBAL_END

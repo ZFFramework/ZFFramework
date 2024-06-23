@@ -134,7 +134,7 @@ zfclassFwd _ZFP_ZFRegExpPrivate;
  * serializable data:
  * @code
  *   <ZFRegExp
- *       partten="regExpPattern" // optional
+ *       partten="pattern" // optional
  *       flag="ZFRegExpOptionFlags" // optional
  *   />
  * @endcode
@@ -156,18 +156,29 @@ protected:
             , ZF_IN ZFSerializable *referencedOwnerOrNull
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
             );
+    zfoverride
+    virtual zfbool serializableOnSerializeFromString(
+            ZF_IN const zfchar *src
+            , ZF_IN_OPT zfindex srcLen = zfindexMax()
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
+    zfoverride
+    virtual zfbool serializableOnSerializeToString(
+            ZF_IN_OUT zfstring &ret
+            , ZF_OUT_OPT zfstring *errorHint = zfnull
+            );
 
 protected:
     zfoverride
     virtual void copyableOnCopyFrom(ZF_IN ZFObject *anotherObj) {
         zfsuperI(ZFCopyable)::copyableOnCopyFrom(anotherObj);
         ZFRegExp *another = zfcast(zfself *, anotherObj);
-        this->regExpCompile(another->regExpPattern(), another->regExpFlag());
+        this->pattern(another->pattern(), another->options());
     }
 
 protected:
     /**
-     * @brief init with pattern, see #regExpCompile
+     * @brief init with pattern, see #pattern
      */
     ZFOBJECT_ON_INIT_DECLARE_2(
             ZFMP_IN(const zfchar *, pattern)
@@ -200,41 +211,33 @@ public:
 
 public:
     /**
-     * @brief get current pattern or null if not set, use #regExpCompile to change
+     * @brief get current pattern or null if not set, use #pattern to change
      */
-    ZFMETHOD_DECLARE_0(const zfchar *, regExpPattern)
+    ZFMETHOD_DECLARE_0(const zfchar *, pattern)
     /**
-     * @brief get current flag or ZFRegExpOptionNone if not set, use #regExpCompile to change
+     * @brief get current flag or ZFRegExpOptionNone if not set, use #pattern to change
      */
-    ZFMETHOD_DECLARE_0(ZFRegExpOptionFlags, regExpFlag)
+    ZFMETHOD_DECLARE_0(ZFRegExpOptionFlags, options)
     /**
-     * @brief get named group's number which can be used as "$n" while #regExpReplace, or zfindexMax() if no such group
+     * @brief get named group's number which can be used as "$n" while #replace, or zfindexMax() if no such group
      */
-    ZFMETHOD_DECLARE_1(zfindex, regExpNamedGroupIndexForName
+    ZFMETHOD_DECLARE_1(zfindex, namedGroupIndexForName
             , ZFMP_IN(const zfchar *, name)
             )
 
 public:
     /**
-     * @brief regExpCompile the pattern
+     * @brief change the pattern
      */
-    ZFMETHOD_DECLARE_2(void, regExpCompile
+    ZFMETHOD_DECLARE_2(void, pattern
             , ZFMP_IN(const zfchar *, pattern)
             , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
             )
 
     /**
-     * @brief test the src with this compiled pattern, see #regExpMatchExact
+     * @brief test the src with this compiled pattern
      */
-    ZFMETHOD_DECLARE_3(void, regExpMatch
-            , ZFMP_OUT(ZFRegExpResult &, result)
-            , ZFMP_IN(const zfchar *, src)
-            , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
-            )
-    /**
-     * @brief test the src which must match the pattern exactly, see #regExpMatch
-     */
-    ZFMETHOD_DECLARE_3(void, regExpMatchExact
+    ZFMETHOD_DECLARE_3(void, find
             , ZFMP_OUT(ZFRegExpResult &, result)
             , ZFMP_IN(const zfchar *, src)
             , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
@@ -243,7 +246,7 @@ public:
     /**
      * @brief replace src with this pattern and replacePattern
      */
-    ZFMETHOD_DECLARE_6(void, regExpReplace
+    ZFMETHOD_DECLARE_6(void, replace
             , ZFMP_OUT(zfstring &, ret)
             , ZFMP_OUT(ZFRegExpResult &, result)
             , ZFMP_IN(const zfchar *, replacePattern)
@@ -259,19 +262,39 @@ private:
 /** @brief util to find by regexp */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFIndexRange, ZFRegExpFind
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN(const zfchar *, pattern)
+        , ZFMP_IN(ZFRegExp *, pattern)
+        )
+/** @brief util to find by regexp */
+ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFIndexRange, ZFRegExpFind
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, pattern)
+        )
+
+/** @brief util to replace by regexp */
+ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfstring, ZFRegExpReplace
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(ZFRegExp *, patternFrom)
+        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         )
 /** @brief util to replace by regexp */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfstring, ZFRegExpReplace
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN(const zfchar *, patternFrom)
+        , ZFMP_IN(const zfstring &, patternFrom)
         , ZFMP_IN(const zfchar *, patternTo)
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
+        )
+
+/** @brief util to split by regexp */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFCoreArray<zfstring>, ZFRegExpSplit
+        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(ZFRegExp *, separatorPattern)
+        , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
         )
 /** @brief util to split by regexp */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, ZFCoreArray<zfstring>, ZFRegExpSplit
         , ZFMP_IN(const zfchar *, src)
-        , ZFMP_IN(const zfchar *, separatorPattern)
+        , ZFMP_IN(const zfstring &, separatorPattern)
         , ZFMP_IN_OPT(zfbool, keepEmpty, zffalse)
         )
 

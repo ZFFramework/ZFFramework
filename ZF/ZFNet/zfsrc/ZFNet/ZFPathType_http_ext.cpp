@@ -32,7 +32,7 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
     _ZFP_ZFPathType_http_FindData *impl = zfnew(_ZFP_ZFPathType_http_FindData);
     while(*body) {
         ZFRegExpResult match;
-        pattern->regExpMatch(match, body);
+        pattern->find(match, body);
         if(!match.matched) {
             break;
         }
@@ -47,7 +47,7 @@ zfbool _ZFP_ZFPathType_http_FindFirst(
             }
         }
         ZFRegExpResult ignoreResult;
-        ignorePattern->regExpMatch(ignoreResult, url, urlEnd - url);
+        ignorePattern->find(ignoreResult, url, urlEnd - url);
         if(ignoreResult.matched) {
             continue;
         }

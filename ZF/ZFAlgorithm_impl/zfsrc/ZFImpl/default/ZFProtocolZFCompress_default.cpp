@@ -117,6 +117,16 @@ public:
         return zffalse;
     }
 
+    virtual zfbool compressContentMove(
+            ZF_IN_OUT void *compressToken
+            , ZF_IN const zfchar *filePathInZipFrom
+            , ZF_IN const zfchar *filePathInZipTo
+            , ZF_IN_OPT zfbool isForce = zftrue
+            ) {
+        // not implemented yet
+        return zffalse;
+    }
+
     virtual void *decompressBegin(ZF_IN_OUT const ZFInput &inputZip) {
         mz_zip_archive *zip = (mz_zip_archive *)zfmalloc(sizeof(mz_zip_archive));
         zfmemset(zip, 0, sizeof(mz_zip_archive));

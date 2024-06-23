@@ -85,7 +85,12 @@ private:
             return zffalse;
         }
         if(srcIsDir) {
-            return this->copyOrMoveDir(isCopy, srcPath, dstPath, isForce, errPos);
+            if(isCopy) {
+                return this->copyDir(srcPath, dstPath, isForce, errPos);
+            }
+            else {
+                return this->moveDir(srcPath, dstPath, isForce, errPos);
+            }
         }
         else {
             if(isCopy) {
@@ -113,11 +118,9 @@ public:
     virtual zfbool fileMove(
             ZF_IN const zfchar *srcPath
             , ZF_IN const zfchar *dstPath
-            , ZF_IN_OPT zfbool isRecursive = zftrue
             , ZF_IN_OPT zfbool isForce = zftrue
-            , ZF_IN_OPT zfstring *errPos = zfnull
             ) {
-        return this->cp_or_mv(zffalse, srcPath, dstPath, isRecursive, isForce, errPos);
+        return this->cp_or_mv(zffalse, srcPath, dstPath, zftrue, isForce, zfnull);
     }
     virtual zfbool fileRemove(
             ZF_IN const zfchar *path
@@ -419,9 +422,16 @@ private:
             return zftrue;
         #endif // #if ZF_ENV_sys_Windows #else
     }
-    zfbool copyOrMoveDir(
-            ZF_IN zfbool isCopy
-            , ZF_IN const zfchar *srcPath
+    zfbool moveDir(
+            ZF_IN const zfchar *srcPath
+            , ZF_IN const zfchar *dstPath
+            , ZF_IN zfbool isForce
+            , ZF_IN_OPT zfstring *errPos
+            ) {
+        return this->moveFile(srcPath, dstPath, isForce, errPos);
+    }
+    zfbool copyDir(
+            ZF_IN const zfchar *srcPath
             , ZF_IN const zfchar *dstPath
             , ZF_IN zfbool isForce
             , ZF_IN_OPT zfstring *errPos
@@ -458,29 +468,15 @@ private:
                         stacksDirDst.add(dstTmp);
                     }
                     else {
-                        if(isCopy) {
-                            if(!this->copyFile(srcTmp, dstTmp, isForce, errPos)) {
-                                this->fileFindClose(fd);
-                                return zffalse;
-                            }
-                        }
-                        else {
-                            if(!this->moveFile(srcTmp, dstTmp, isForce, errPos)) {
-                                this->fileFindClose(fd);
-                                return zffalse;
-                            }
+                        if(!this->copyFile(srcTmp, dstTmp, isForce, errPos)) {
+                            this->fileFindClose(fd);
+                            return zffalse;
                         }
                     }
                 } while(this->fileFindNext(fd));
                 this->fileFindClose(fd);
             } // if(this->fileFindFirst(fd, srcDir))
         } // while(!stacksDirSrc.empty())
-
-        if(!isCopy) {
-            if(!this->removeDir(srcPath, zffalse, errPos)) {
-                return zffalse;
-            }
-        }
 
         return zftrue;
     }

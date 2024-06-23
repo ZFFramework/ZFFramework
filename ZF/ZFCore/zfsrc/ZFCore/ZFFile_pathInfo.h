@@ -44,6 +44,12 @@ typedef zfbool (*ZFPathInfoCallbackRemove)(
         , ZF_IN_OPT zfstring *errPos
         );
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+typedef zfbool (*ZFPathInfoCallbackMove)(
+        ZF_IN const zfchar *pathDataFrom
+        , ZF_IN const zfchar *pathDataTo
+        , ZF_IN_OPT zfbool isForce
+        );
+/** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 typedef zfbool (*ZFPathInfoCallbackFindFirst)(
         ZF_IN_OUT ZFFileFindData &fd
         , ZF_IN const zfchar *pathData
@@ -122,6 +128,12 @@ extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackRemoveDefault(
         , ZF_IN_OPT zfbool isRecursive = zftrue
         , ZF_IN_OPT zfbool isForce = zftrue
         , ZF_IN_OPT zfstring *errPos = zfnull
+        );
+/** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackMoveDefault(
+        ZF_IN const zfchar *pathDataFrom
+        , ZF_IN const zfchar *pathDataTo
+        , ZF_IN_OPT zfbool isForce = zftrue
         );
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 extern ZFLIB_ZFCore zfbool ZFPathInfoCallbackFindFirstDefault(
@@ -215,6 +227,12 @@ ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFCore, zfbool, ZFPathInfoRemove
         , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
+        )
+/** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFPathInfoMove
+        , ZFMP_IN(const ZFPathInfo &, pathInfoFrom)
+        , ZFMP_IN(const zfchar *, pathDataTo)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
         )
 /** @brief see #ZFPATHTYPE_FILEIO_REGISTER */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfbool, ZFPathInfoFindFirst
@@ -321,6 +339,7 @@ public:
     ZFPathInfoCallbackToParent callbackToParent; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
     ZFPathInfoCallbackPathCreate callbackPathCreate; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
     ZFPathInfoCallbackRemove callbackRemove; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
+    ZFPathInfoCallbackMove callbackMove; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
     ZFPathInfoCallbackFindFirst callbackFindFirst; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
     ZFPathInfoCallbackFindNext callbackFindNext; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
     ZFPathInfoCallbackFindClose callbackFindClose; /**< @brief see #ZFPATHTYPE_FILEIO_REGISTER */
@@ -366,6 +385,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPathInfoUnregister(ZF_IN const zfchar *pathType)
         , callbackToParent_ \
         , callbackPathCreate_ \
         , callbackRemove_ \
+        , callbackMove_ \
         , callbackFindFirst_ \
         , callbackFindNext_ \
         , callbackFindClose_ \
@@ -389,6 +409,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFPathInfoUnregister(ZF_IN const zfchar *pathType)
         data.callbackToParent = callbackToParent_; \
         data.callbackPathCreate = callbackPathCreate_; \
         data.callbackRemove = callbackRemove_; \
+        data.callbackMove = callbackMove_; \
         data.callbackFindFirst = callbackFindFirst_; \
         data.callbackFindNext = callbackFindNext_; \
         data.callbackFindClose = callbackFindClose_; \

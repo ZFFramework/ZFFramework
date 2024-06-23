@@ -15,7 +15,7 @@ public:
     zfautoT<ZFThread> callerThread;
 };
 
-typedef zfstlmap<zfidentity, _ZFP_I_zfasyncTaskData *> _ZFP_zfasyncTaskMap;
+typedef zfstlmap<zfidentity, zfautoT<_ZFP_I_zfasyncTaskData> > _ZFP_zfasyncTaskMap;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(zfasyncDataHolder, ZFLevelZFFrameworkHigh) {
     this->maxThread = 8;
@@ -25,9 +25,7 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder) {
     do {
         zfCoreMutexLock();
         while(!this->taskList.isEmpty()) {
-            _ZFP_I_zfasyncTaskData *taskData = this->taskList.removeAndGet(this->taskList.count() - 1);
-            this->taskMap.erase(taskData->taskId);
-            this->taskCleanup(taskData);
+            zfasyncCancel(this->taskList.getLast());
         }
         if(this->threadPool.isEmpty()) {
             zfCoreMutexUnlock();
@@ -58,17 +56,11 @@ public:
             }
 
             ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-            _ZFP_I_zfasyncTaskData *taskData = zfnull;
+            zfautoT<_ZFP_I_zfasyncTaskData> taskData;
             for(zfindex i = 0; i < d->taskList.count(); ++i) {
                 if(d->taskList[i]->callerThread != runThread) {
                     taskData = d->taskList.removeAndGet(i);
                     d->taskMap.erase(taskData->taskId);
-                    if(taskData->taskId == zfidentityInvalid()) {
-                        d->taskCleanup(taskData);
-                        taskData = zfnull;
-                        --i;
-                        continue;
-                    }
                     break;
                 }
             }
@@ -96,7 +88,7 @@ public:
             zfCoreMutexUnlock();
 
             ZFLISTENER_1(callerThread
-                    , _ZFP_I_zfasyncTaskData *, taskData
+                    , zfautoT<_ZFP_I_zfasyncTaskData>, taskData
                     ) {
                 ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_callerThread(zfargs, taskData);
             } ZFLISTENER_END()
@@ -130,7 +122,6 @@ public:
         taskData->result = zfnull;
         taskData->finishCallback = zfnull;
         taskData->callerThread = zfnull;
-        zfRelease(taskData);
     }
 ZF_GLOBAL_INITIALIZER_END(zfasyncDataHolder)
 
@@ -151,7 +142,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
             d->taskIdCur = 0;
         }
     } while(d->taskMap.find(d->taskIdCur) != d->taskMap.end());
-    _ZFP_I_zfasyncTaskData *taskData = zfAlloc(_ZFP_I_zfasyncTaskData);
+    zfobj<_ZFP_I_zfasyncTaskData> taskData;
     taskData->taskId = d->taskIdCur;
     taskData->callback = callback;
     taskData->finishCallback = finishCallback;
@@ -189,11 +180,10 @@ ZFMETHOD_FUNC_DEFINE_1(void, zfasyncCancel
     }
     ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
     d->taskMap.erase(taskData->taskId);
+    d->taskList.removeElement(taskData);
 
     taskData->zfargs.sender(zfnull);
     taskData->taskId = zfidentityInvalid();
-    d->taskList.removeElement(taskData);
-    d->taskCleanup(taskData);
 }
 
 ZF_NAMESPACE_GLOBAL_END

@@ -331,7 +331,7 @@ void ZFUITextEdit::textOnChangeCheck(
     shouldChange = zftrue;
     if(newText != zfnull && *newText != '\0' && this->textEditFilter() != zfnull) {
         ZFRegExpResult regexpResult;
-        this->textEditFilter()->regExpMatchExact(regexpResult, newText);
+        this->textEditFilter()->find(regexpResult, newText);
         if(!regexpResult.matched) {
             shouldChange = zffalse;
             return;

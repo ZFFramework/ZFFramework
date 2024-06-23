@@ -50,17 +50,15 @@ ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileCopy
     return ZFPROTOCOL_ACCESS(ZFFile)->fileCopy(srcPath, dstPath, isRecursive, isForce, errPos);
 }
 
-ZFMETHOD_FUNC_DEFINE_5(zfbool, ZFFileMove
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFFileMove
         , ZFMP_IN(const zfchar *, srcPath)
         , ZFMP_IN(const zfchar *, dstPath)
-        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         ) {
     if(srcPath == zfnull || dstPath == zfnull) {
         return zffalse;
     }
-    return ZFPROTOCOL_ACCESS(ZFFile)->fileMove(srcPath, dstPath, isRecursive, isForce, errPos);
+    return ZFPROTOCOL_ACCESS(ZFFile)->fileMove(srcPath, dstPath, isForce);
 }
 ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFFileRemove
         , ZFMP_IN(const zfchar *, path)

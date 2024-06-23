@@ -38,6 +38,7 @@ ZFPATHTYPE_DEFINE(text)
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackToParent \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackPathCreate \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackRemove \
+            , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackMove \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackFindFirst \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackFindNext \
             , ZFFileIOImpl::FileIO<_ZFP_ZFPathType_##registerSig>::callbackFindClose \
@@ -111,6 +112,13 @@ public:
             , ZF_IN_OPT zfbool isRecursive
             , ZF_IN_OPT zfbool isForce
             , ZF_IN_OPT zfstring *errPos
+            ) {
+        return zffalse;
+    }
+    static zfbool callbackMove(
+            ZF_IN const zfchar *pathDataFrom
+            , ZF_IN const zfchar *pathDataTo
+            , ZF_IN_OPT zfbool isForce
             ) {
         return zffalse;
     }
@@ -199,6 +207,7 @@ ZFPATHTYPE_FILEIO_REGISTER(text, ZFPathType_text()
         , _ZFP_ZFPathType_text::callbackToParent
         , _ZFP_ZFPathType_text::callbackPathCreate
         , _ZFP_ZFPathType_text::callbackRemove
+        , _ZFP_ZFPathType_text::callbackMove
         , _ZFP_ZFPathType_text::callbackFindFirst
         , _ZFP_ZFPathType_text::callbackFindNext
         , _ZFP_ZFPathType_text::callbackFindClose

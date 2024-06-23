@@ -59,7 +59,7 @@ public:
     zfweak(ZF_IN T_ZFObject *obj) : _ZFP_obj(obj ? zfRetain(obj->toObject()->objectHolder()) : zfnull) {}
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj) {
-        ZFObject *t = _ZFP_zfanyCast(T_ZFObject, obj);
+        ZFObject *t = _ZFP_zfanyCast(ZFObject *, obj);
         _ZFP_obj = t ? zfRetain(t->objectHolder()) : zfnull;
     }
     ~zfweak(void) {
@@ -152,7 +152,7 @@ public:
      */
     template<typename T_ZFObject>
     void set(ZF_IN T_ZFObject const &obj) {
-        ZFObject *t = _ZFP_zfanyCast(T_ZFObject, obj);
+        ZFObject *t = _ZFP_zfanyCast(ZFObject *, obj);
         zfRetainChange(_ZFP_obj, t ? t->objectHolder() : zfnull);
     }
     /**

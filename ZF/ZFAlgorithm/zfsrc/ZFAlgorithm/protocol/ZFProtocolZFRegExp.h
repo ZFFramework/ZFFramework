@@ -27,36 +27,29 @@ public:
             , ZF_IN void *nativeRegExp
             ) zfpurevirtual;
 
-    /** @brief see ZFRegExp::regExpCompile */
-    virtual void regExpCompile(
+    /** @brief see ZFRegExp::pattern */
+    virtual void pattern(
             ZF_IN ZFRegExp *regExp
             , ZF_IN const zfchar *pattern
             , ZF_IN_OPT ZFRegExpOptionFlags flag = ZFRegExpOptionFlags::EnumDefault()
             ) zfpurevirtual;
 
-    /** @brief see ZFRegExp::regExpNamedGroupIndexForName */
-    virtual zfindex regExpNamedGroupIndexForName(
+    /** @brief see ZFRegExp::namedGroupIndexForName */
+    virtual zfindex namedGroupIndexForName(
             ZF_IN ZFRegExp *regExp
             , ZF_IN const zfchar *name
             ) zfpurevirtual;
 
-    /** @brief see ZFRegExp::regExpMatch */
-    virtual void regExpMatch(
-            ZF_IN ZFRegExp *regExp
-            , ZF_OUT ZFRegExpResult &result
-            , ZF_IN const zfchar *src
-            , ZF_IN_OPT zfindex srcLength = zfindexMax()
-            ) zfpurevirtual;
-    /** @brief see ZFRegExp::regExpMatchExact */
-    virtual void regExpMatchExact(
+    /** @brief see ZFRegExp::find */
+    virtual void find(
             ZF_IN ZFRegExp *regExp
             , ZF_OUT ZFRegExpResult &result
             , ZF_IN const zfchar *src
             , ZF_IN_OPT zfindex srcLength = zfindexMax()
             ) zfpurevirtual;
 
-    /** @brief see ZFRegExp::regExpReplace */
-    virtual void regExpReplace(
+    /** @brief see ZFRegExp::replace */
+    virtual void replace(
             ZF_IN ZFRegExp *regExp
             , ZF_OUT zfstring &ret
             , ZF_OUT ZFRegExpResult &result

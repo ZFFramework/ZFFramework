@@ -57,12 +57,10 @@ ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileCopy
  * @brief move a file or directory from srcPath to dstPath
  * @note path must be well formed, use #ZFPathFormat if necessary
  */
-ZFMETHOD_FUNC_DECLARE_5(ZFLIB_ZFCore, zfbool, ZFFileMove
+ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFCore, zfbool, ZFFileMove
         , ZFMP_IN(const zfchar *, srcPath)
         , ZFMP_IN(const zfchar *, dstPath)
-        , ZFMP_IN_OPT(zfbool, isRecursive, zftrue)
         , ZFMP_IN_OPT(zfbool, isForce, zftrue)
-        , ZFMP_IN_OPT(zfstring *, errPos, zfnull)
         )
 /**
  * @brief delete a file or directory from srcPath to dstPath

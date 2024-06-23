@@ -62,6 +62,19 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFCompressContentRemove
         return ZFPROTOCOL_ACCESS(ZFCompress)->compressContentRemove(compressToken, filePathInZip);
     }
 }
+ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFCompressContentMove
+        , ZFMP_IN_OUT(void *, compressToken)
+        , ZFMP_IN(const zfchar *, filePathInZipFrom)
+        , ZFMP_IN(const zfchar *, filePathInZipTo)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        ) {
+    if(compressToken == zfnull || zfstringIsEmpty(filePathInZipFrom) || zfstringIsEmpty(filePathInZipTo)) {
+        return zffalse;
+    }
+    else {
+        return ZFPROTOCOL_ACCESS(ZFCompress)->compressContentMove(compressToken, filePathInZipFrom, filePathInZipTo, isForce);
+    }
+}
 
 ZFMETHOD_FUNC_DEFINE_1(void *, ZFDecompressBegin
         , ZFMP_IN_OUT(const ZFInput &, inputZip)

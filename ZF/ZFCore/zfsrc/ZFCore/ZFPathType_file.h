@@ -156,6 +156,17 @@ public:
             return zftrue;
         }
     }
+    static zfbool callbackMove(
+            ZF_IN const zfchar *pathDataFrom
+            , ZF_IN const zfchar *pathDataTo
+            , ZF_IN_OPT zfbool isForce
+            ) {
+        zfstring pathDataFromAbs;
+        T_Holder::pathConvert(pathDataFromAbs, pathDataFrom);
+        zfstring pathDataToAbs;
+        T_Holder::pathConvert(pathDataToAbs, pathDataTo);
+        return ZFFileMove(pathDataFromAbs, pathDataToAbs, isForce);
+    }
     static zfbool callbackFindFirst(
             ZF_IN_OUT ZFFileFindData &fd
             , ZF_IN const zfchar *pathData

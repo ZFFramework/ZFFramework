@@ -16,6 +16,7 @@ ZFPATHTYPE_FILEIO_REGISTER(file, ZFPathType_file()
         , ZFPathInfoCallbackToParentDefault
         , ZFPathCreate
         , ZFFileRemove
+        , ZFFileMove
         , ZFFileFindFirst
         , ZFFileFindNext
         , ZFFileFindClose

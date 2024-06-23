@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     static ZFFilterCallbackResult _ZFP_ZFTextTemplateRunParamDefault_##typeName##Filter(ZF_IN const zfchar *const &value) { \
         if(_ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule != zfnull) { \
             ZFRegExpResult regExpResult; \
-            _ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule->regExpMatch(regExpResult, value); \
+            _ZFP_ZFTextTemplateRunParamDefault_##typeName##FilterRule->find(regExpResult, value); \
             if(regExpResult.matched) { \
                 return ZFFilterCallbackResultNotActive; \
             } \
@@ -26,14 +26,14 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTextTemplateRunParamDefaultSetting, ZFLe
     #if 0
     _ZFP_ZFTextTemplateRunParamDefault_dirNameFilterRule = zfAlloc(ZFRegExp);
     ZFTextTemplateRunParamDefault().dirNameFilter.customFilterCallbackAdd(_ZFP_ZFTextTemplateRunParamDefault_dirNameFilter);
-    _ZFP_ZFTextTemplateRunParamDefault_dirNameFilterRule->regExpCompile(
+    _ZFP_ZFTextTemplateRunParamDefault_dirNameFilterRule->pattern(
             ""
         );
     #endif
 
     _ZFP_ZFTextTemplateRunParamDefault_dirContentFilterRule = zfAlloc(ZFRegExp);
     ZFTextTemplateRunParamDefault().dirContentFilter.customFilterCallbackAdd(_ZFP_ZFTextTemplateRunParamDefault_dirContentFilter);
-    _ZFP_ZFTextTemplateRunParamDefault_dirContentFilterRule->regExpCompile(
+    _ZFP_ZFTextTemplateRunParamDefault_dirContentFilterRule->pattern(
             "(^\\.git$)"
             "|(^\\.svn$)"
             "|(^\\.hg$)"
@@ -42,14 +42,14 @@ ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFTextTemplateRunParamDefaultSetting, ZFLe
     #if 0
     _ZFP_ZFTextTemplateRunParamDefault_fileNameFilterRule = zfAlloc(ZFRegExp);
     ZFTextTemplateRunParamDefault().fileNameFilter.customFilterCallbackAdd(_ZFP_ZFTextTemplateRunParamDefault_fileNameFilter);
-    _ZFP_ZFTextTemplateRunParamDefault_fileNameFilterRule->regExpCompile(
+    _ZFP_ZFTextTemplateRunParamDefault_fileNameFilterRule->pattern(
             ""
         );
     #endif
 
     _ZFP_ZFTextTemplateRunParamDefault_fileContentFilterRule = zfAlloc(ZFRegExp);
     ZFTextTemplateRunParamDefault().fileContentFilter.customFilterCallbackAdd(_ZFP_ZFTextTemplateRunParamDefault_fileContentFilter);
-    _ZFP_ZFTextTemplateRunParamDefault_fileContentFilterRule->regExpCompile(
+    _ZFP_ZFTextTemplateRunParamDefault_fileContentFilterRule->pattern(
             "(\\.ico$)"
             "|(\\.icns$)"
 

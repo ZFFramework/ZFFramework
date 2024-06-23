@@ -131,7 +131,7 @@ inline void _ZFP_zfReleaseAction(ZF_IN ZFObject *obj) {
     }
 }
 template<typename T_ZFObject>
-inline void _ZFP_zfRelease(ZF_IN T_ZFObject obj) {
+inline void _ZFP_zfRelease(ZF_IN T_ZFObject const &obj) {
     _ZFP_zfReleaseAction(zfcast(ZFObject *, obj));
 }
 /**

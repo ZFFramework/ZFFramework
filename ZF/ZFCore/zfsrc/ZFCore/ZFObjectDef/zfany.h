@@ -66,7 +66,7 @@ public:
     template<typename T_ZFObject>
     zfany(ZF_IN T_ZFObject *obj) : _ZFP_obj(obj ? obj->toObject() : zfnull) {}
     template<typename T_ZFObject>
-    zfany(ZF_IN T_ZFObject const &obj) : _ZFP_obj(_ZFP_zfanyCast(T_ZFObject, obj)) {}
+    zfany(ZF_IN T_ZFObject const &obj) : _ZFP_obj(_ZFP_zfanyCast(ZFObject *, obj)) {}
 
 public:
     inline zfany &operator = (ZF_IN zfany const &obj) {
@@ -84,7 +84,7 @@ public:
     }
     template<typename T_ZFObject>
     inline zfany &operator = (ZF_IN T_ZFObject const &obj) {
-        _ZFP_obj = _ZFP_zfanyCast(T_ZFObject, obj);
+        _ZFP_obj = _ZFP_zfanyCast(ZFObject *, obj);
         return *this;
     }
 

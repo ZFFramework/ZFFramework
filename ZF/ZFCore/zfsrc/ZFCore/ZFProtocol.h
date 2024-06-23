@@ -12,15 +12,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // ============================================================
 /**
  * @brief level type for ZFProtocol, see #ZFPROTOCOL_IMPLEMENTATION_BEGIN
+ *
+ * greater value has higher priority to override existing
  */
 ZFENUM_BEGIN(ZFLIB_ZFCore, ZFProtocolLevel)
-    ZFENUM_VALUE(Default)
-    ZFENUM_VALUE(SystemLow)
-    ZFENUM_VALUE(SystemNormal)
-    ZFENUM_VALUE(SystemHigh)
-    ZFENUM_VALUE(AppLow)
-    ZFENUM_VALUE(AppNormal)
-    ZFENUM_VALUE(AppHigh)
+    ZFENUM_VALUE(Default = 1000)
+    ZFENUM_VALUE(SystemLow = 2000)
+    ZFENUM_VALUE(SystemNormal = 3000)
+    ZFENUM_VALUE(SystemHigh = 4000)
+    ZFENUM_VALUE(AppLow = 5000)
+    ZFENUM_VALUE(AppNormal = 6000)
+    ZFENUM_VALUE(AppHigh = 7000)
 ZFENUM_SEPARATOR()
     ZFENUM_VALUE_REGISTER(Default)
     ZFENUM_VALUE_REGISTER(SystemLow)

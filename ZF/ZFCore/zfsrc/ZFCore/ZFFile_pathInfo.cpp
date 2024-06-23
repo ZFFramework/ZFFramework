@@ -74,6 +74,13 @@ zfbool ZFPathInfoCallbackRemoveDefault(
         ) {
     return zffalse;
 }
+zfbool ZFPathInfoCallbackMoveDefault(
+        ZF_IN const zfchar *pathDataFrom
+        , ZF_IN const zfchar *pathDataTo
+        , ZF_IN_OPT zfbool isForce /* = zftrue */
+        ) {
+    return zffalse;
+}
 zfbool ZFPathInfoCallbackFindFirstDefault(
         ZF_IN_OUT ZFFileFindData &fd
         , ZF_IN const zfchar *pathData
@@ -257,6 +264,19 @@ ZFMETHOD_FUNC_DEFINE_4(zfbool, ZFPathInfoRemove
         return data->callbackRemove(pathInfo.pathData, isRecursive, isForce, errPos);
     }
 }
+ZFMETHOD_FUNC_DEFINE_3(zfbool, ZFPathInfoMove
+        , ZFMP_IN(const ZFPathInfo &, pathInfoFrom)
+        , ZFMP_IN(const zfchar *, pathDataTo)
+        , ZFMP_IN_OPT(zfbool, isForce, zftrue)
+        ) {
+    ZFPathInfoImpl *data = _ZFP_ZFPathInfoImplForPathType(pathInfoFrom.pathType);
+    if(data == zfnull) {
+        return ZFPathInfoCallbackMoveDefault(pathInfoFrom.pathData, pathDataTo, isForce);
+    }
+    else {
+        return data->callbackMove(pathInfoFrom.pathData, pathDataTo, isForce);
+    }
+}
 ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathInfoFindFirst
         , ZFMP_IN(const ZFPathInfo &, pathInfo)
         , ZFMP_IN_OUT(ZFFileFindData &, fd)
@@ -438,6 +458,7 @@ void _ZFP_ZFPathInfoRegister(
             && data.callbackToParent != zfnull
             && data.callbackPathCreate != zfnull
             && data.callbackRemove != zfnull
+            && data.callbackMove != zfnull
             && data.callbackFindFirst != zfnull
             && data.callbackFindNext != zfnull
             && data.callbackFindClose != zfnull

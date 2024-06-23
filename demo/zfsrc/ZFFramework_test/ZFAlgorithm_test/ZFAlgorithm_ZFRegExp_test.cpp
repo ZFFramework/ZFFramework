@@ -16,17 +16,17 @@ protected:
         const zfchar *patternTo = "{$1}";
         const zfchar *stringFrom = "zacabcabbcabbbcz";
 
-        regexp->regExpCompile(patternFrom);
+        regexp->pattern(patternFrom);
 
         {
             ZFRegExpResult result;
             this->testCaseOutputSeparator();
             this->testCaseOutput("find:");
-            regexp->regExpMatch(result, stringFrom);
+            regexp->find(result, stringFrom);
             this->testCaseOutput(zfstr("  pattern    : %s", patternFrom));
             this->testCaseOutput(zfstr("  string     : %s", stringFrom));
             this->testCaseOutput(zfstr("  result     : %s", result));
-            this->testCaseOutput(zfstr("  named group: %s", regexp->regExpNamedGroupIndexForName("n0")));
+            this->testCaseOutput(zfstr("  named group: %s", regexp->namedGroupIndexForName("n0")));
         }
 
         {
@@ -34,13 +34,13 @@ protected:
             zfstring stringTo;
             this->testCaseOutputSeparator();
             this->testCaseOutput("replace:");
-            regexp->regExpReplace(stringTo, result, patternTo, stringFrom);
+            regexp->replace(stringTo, result, patternTo, stringFrom);
             this->testCaseOutput(zfstr("  pattern from: %s", patternFrom));
             this->testCaseOutput(zfstr("  pattern to  : %s", patternTo));
             this->testCaseOutput(zfstr("  string  from: %s", stringFrom));
             this->testCaseOutput(zfstr("  string  to  : %s", stringTo));
             this->testCaseOutput(zfstr("  match result: %s", result));
-            this->testCaseOutput(zfstr("  named group: %s", regexp->regExpNamedGroupIndexForName("n0")));
+            this->testCaseOutput(zfstr("  named group: %s", regexp->namedGroupIndexForName("n0")));
         }
         this->testCaseStop();
     }

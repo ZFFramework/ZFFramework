@@ -617,7 +617,7 @@ public:
         else {
             _ZFP_zfstringD<T_Char> *d = zfpoolNew(_ZFP_zfstringD<T_Char>);
             d->d.ptr = sLiteral;
-            d->length = (length == zfindexMax() ? (zfuint)_ZFP_zfstring_len(sLiteral) : length);
+            d->length = (zfuint)(length == zfindexMax() ? _ZFP_zfstring_len(sLiteral) : length);
             return zft_zfstring<T_Char>(d);
         }
     }

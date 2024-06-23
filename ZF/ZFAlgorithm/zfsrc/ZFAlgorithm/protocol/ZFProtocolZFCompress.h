@@ -39,6 +39,13 @@ public:
             ZF_IN_OUT void *compressToken
             , ZF_IN const zfchar *filePathInZip
             ) zfpurevirtual;
+    /** @brief see #ZFCompressBegin */
+    virtual zfbool compressContentMove(
+            ZF_IN_OUT void *compressToken
+            , ZF_IN const zfchar *filePathInZipFrom
+            , ZF_IN const zfchar *filePathInZipTo
+            , ZF_IN_OPT zfbool isForce = zftrue
+            ) zfpurevirtual;
 
     // ============================================================
     /** @brief see #ZFCompressBegin */
