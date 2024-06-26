@@ -32,4 +32,5 @@ ZFAddLib(ZFCore)
 ZFAddLib(ZFAlgorithm)
 ZFAddLib(ZFUtility)
 ZFAddLib(ZFUIKit)
+ZFAddLib(ZFNet)
 

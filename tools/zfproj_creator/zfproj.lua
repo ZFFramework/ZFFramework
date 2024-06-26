@@ -476,5 +476,6 @@ if #args > 0 then
     else
         zfproj_creator(args[1], args[2])
     end
+    ZFApp.appExit(0)
 end
 

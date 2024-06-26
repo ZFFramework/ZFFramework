@@ -37,6 +37,7 @@ ZFAddLib(ZFCore)
 ZFAddLib(ZFAlgorithm)
 ZFAddLib(ZFUtility)
 ZFAddLib(ZFUIKit)
+ZFAddLib(ZFNet)
 
 install(
     DIRECTORY "${PROJECT_SOURCE_DIR}/../../../zfsrc/"
