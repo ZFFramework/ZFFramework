@@ -35,6 +35,17 @@ extern ZFLIB_ZFCore const ZFClass *ZFClassDynamicRegister(
 extern ZFLIB_ZFCore void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls);
 
 // ============================================================
+/** @brief see #ZFCLASS_EXTEND */
+extern ZFLIB_ZFCore zfbool ZFImplementDynamicRegister(
+        ZF_IN const ZFClass *cls
+        , ZF_IN const ZFClass *clsToImplement
+        );
+/** @brief see #ZFCLASS_EXTEND */
+extern ZFLIB_ZFCore void ZFImplementDynamicUnregister(
+        ZF_IN const ZFClass *cls
+        , ZF_IN const ZFClass *clsToImplement
+        );
+
 /**
  * @brief advanced dynamic implement
  *
@@ -44,7 +55,10 @@ extern ZFLIB_ZFCore void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls);
  *   zfclass AttachClass : zfextend ZFObject {...};
  *
  *   // register
- *   ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData());
+ *   // ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData());
+ *
+ *   // or use the util macro for short
+ *   ZFCLASS_EXTEND(ExistClass, AttachClass)
  *
  *   // create object
  *   zfobj<ExistClass> obj;
@@ -57,20 +71,13 @@ extern ZFLIB_ZFCore void ZFClassDynamicUnregister(ZF_IN const ZFClass *cls);
  * @endcode
  * this is useful to extend existing class, simplar to category of Object-C
  */
-extern ZFLIB_ZFCore zfbool ZFImplementDynamicRegister(
-        ZF_IN const ZFClass *cls
-        , ZF_IN const ZFClass *clsToImplement
-        );
-/** @brief see #ZFImplementDynamicRegister */
-extern ZFLIB_ZFCore void ZFImplementDynamicUnregister(
-        ZF_IN const ZFClass *cls
-        , ZF_IN const ZFClass *clsToImplement
-        );
+#define ZFCLASS_EXTEND(ExistClass, AttachClass) \
+    ZFCLASS_EXTEND_DETAIL(ExistClass, AttachClass, ExistClass##_##AttachClass)
 
 /**
- * @brief util macro to register #ZFImplementDynamicRegister
+ * @brief #ZFCLASS_EXTEND with custom regSig
  */
-#define ZFCLASS_EXTEND(regSig, ExistClass, AttachClass) \
+#define ZFCLASS_EXTEND_DETAIL(ExistClass, AttachClass, regSig) \
     ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(DynImpl_##regSig, ZFLevelZFFrameworkStatic) { \
         ZFImplementDynamicRegister(ExistClass::ClassData(), AttachClass::ClassData()); \
     } \

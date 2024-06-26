@@ -10,6 +10,7 @@
 #include "ZFAlgorithm.h"
 #include "ZFUtility.h"
 #include "ZFUIKit.h"
+#include "ZFNet.h"
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /** @brief used to export symbols */
