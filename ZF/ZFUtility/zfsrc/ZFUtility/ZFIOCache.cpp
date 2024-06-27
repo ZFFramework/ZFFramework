@@ -204,6 +204,7 @@ public:
         {
             ZFInput cacheSrc = ZFInputForPathInfo(localPathInfo);
             if(cacheSrc) {
+                cacheSrc.callbackInfoCopy(this->src);
                 _loadImplAction(cacheSrc);
                 if(_result) {
                     return;
@@ -216,10 +217,8 @@ public:
         }
 
         // read src and write to local cache file
-        ZFPathInfo tmpPathInfo = ZFIOCache::instance()->localCachePathInfoFixed();
-        ZFPathInfoToChild(tmpPathInfo, zfstr(".%s", ZFMd5(_callbackId)));
         {
-            ZFOutput tmpDst = ZFOutputForPathInfo(tmpPathInfo);
+            ZFOutput tmpDst = ZFOutputForPathInfo(localPathInfo);
             zfbool success = zffalse;
             if(tmpDst) {
                 const zfindex sizeToRead = 1024;
@@ -232,25 +231,23 @@ public:
             }
             if(!success) {
                 tmpDst = zfnull;
-                ZFPathInfoRemove(tmpPathInfo);
+                ZFPathInfoRemove(localPathInfo);
                 return;
             }
         }
 
         // local from cache
         {
-            ZFInput cacheSrc = ZFInputForPathInfo(tmpPathInfo);
-            _loadImplAction(cacheSrc);
-            cacheSrc = zfnull;
+            ZFInput cacheSrc = ZFInputForPathInfo(localPathInfo);
+            if(cacheSrc) {
+                cacheSrc.callbackInfoCopy(this->src);
+                _loadImplAction(cacheSrc);
+                cacheSrc = zfnull;
+            }
         }
         if(!_result) {
+            ZFPathInfoRemove(localPathInfo);
             return;
-        }
-
-        // load success, move to cache
-        if(!ZFPathInfoMove(tmpPathInfo, localPathInfo.pathData)) {
-            ZFPathInfoCopy(tmpPathInfo, localPathInfo);
-            ZFPathInfoRemove(tmpPathInfo);
         }
 
         // add cache and limit cache size

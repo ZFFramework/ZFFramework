@@ -289,6 +289,23 @@ public:
     zffinal void callbackOwnerObjectRelease(void) const;
 
     // ============================================================
+public:
+    /**
+     * @brief util method to copy callback info from another callback
+     */
+    zffinal void callbackInfoCopy(ZF_IN const ZFCallback &src) {
+        this->callbackId(src.callbackId());
+        if(src.callbackSerializeCustomDisabled()) {
+            this->callbackSerializeCustomDisable(zftrue);
+        }
+        else {
+            this->callbackSerializeCustomType(src.callbackSerializeCustomType());
+            this->callbackSerializeCustomData(src.callbackSerializeCustomData());
+        }
+        this->pathInfo(src.pathInfo());
+    }
+
+    // ============================================================
     // callback serialize logic
 public:
     /**

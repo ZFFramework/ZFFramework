@@ -1388,11 +1388,11 @@ ZFObject *ZFClass::_ZFP_ZFClass_objectCast(
         ) const {
     obj = obj->_ZFP_ZFObject_ZFImplementDynamicOwnerOrSelf();
     _ZFP_ZFClassPrivate *d = obj->classData()->d;
-    if(d->parentClassCache.find(objectClass) != d->parentClassCache.end()) {
-        return obj;
-    }
-    else if(d->ZFImplementDynamicCache.find(objectClass) != d->ZFImplementDynamicCache.end()) {
+    if(d->ZFImplementDynamicCache.find(objectClass) != d->ZFImplementDynamicCache.end()) {
         return obj->_ZFP_ZFObject_ZFImplementDynamicHolder(objectClass);
+    }
+    else if(d->parentClassCache.find(objectClass) != d->parentClassCache.end()) {
+        return obj;
     }
     else {
         return zfnull;
@@ -1405,11 +1405,11 @@ zfbool ZFClass::_ZFP_ZFClass_ZFImplementDynamicRegister(ZF_IN const ZFClass *cls
         return zffalse;
     }
     if(this->classIsAbstract()) {
-        zfCoreLogTrim("[ZFImplementDynamicRegister] cls must not abstract: %s", this, clsToImplement);
+        zfCoreLogTrim("[ZFImplementDynamicRegister] cls must not abstract: %s", this);
         return zffalse;
     }
     if(clsToImplement->classIsAbstract()) {
-        zfCoreLogTrim("[ZFImplementDynamicRegister] clsToImplement must not abstract: %s", this, clsToImplement);
+        zfCoreLogTrim("[ZFImplementDynamicRegister] clsToImplement must not abstract: %s", clsToImplement);
         return zffalse;
     }
     d->ZFImplementDynamicMap[clsToImplement] = zftrue;

@@ -110,6 +110,10 @@ public:
     virtual zfbool wrappedValueIsInit(void);
 public:
     zfoverride
+    virtual zfbool wrappedValuePreferStringConverter(void) {
+        return zftrue;
+    }
+    zfoverride
     virtual zfbool wrappedValueFromData(
             ZF_IN const ZFSerializableData &serializableData
             , ZF_OUT_OPT zfstring *outErrorHint = zfnull
