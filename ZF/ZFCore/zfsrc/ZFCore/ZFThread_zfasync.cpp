@@ -162,6 +162,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
         --taskCount;
         zfobj<ZFThread> threadPool;
         d->threadPool.add(threadPool);
+        threadPool->threadName("zfasync pool");
         threadPool->taskQueueInit();
         threadPool->threadStart();
         threadPool->taskQueueAdd(d->threadScheduleCallback);

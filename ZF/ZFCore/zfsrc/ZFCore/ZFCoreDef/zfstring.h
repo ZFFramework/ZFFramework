@@ -182,6 +182,10 @@ public:
     inline operator const T_Char *(void) const {
         return this->cString();
     }
+    // should be explicit since `s+n` would result to unexpected conversion
+    explicit inline operator zfbool (void) const {
+        return !this->isEmpty();
+    }
 public:
     inline zft_zfstring<T_Char> &operator = (ZF_IN const zft_zfstring<T_Char> &s) {
         zfCoreMutexLocker();

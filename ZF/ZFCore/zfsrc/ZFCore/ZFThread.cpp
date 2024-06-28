@@ -5,6 +5,11 @@
 
 #include "ZFCore/ZFSTLWrapper/zfstllist.h"
 
+#define _ZFP_ZFThreadCleanup_DEBUG 0
+#if _ZFP_ZFThreadCleanup_DEBUG
+#include "ZFTime.h"
+#endif
+
 #if 0
     #define _ZFP_ZFThreadLog(fmt, ...) zfCoreLogTrim(fmt, ##__VA_ARGS__)
 #else
@@ -25,7 +30,21 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFThread_allThreadCleanup) {
         zfCoreAssert(zfThread->threadStarted());
         zfCoreMutexUnlock();
         zfThread->taskQueueCleanup();
+#if _ZFP_ZFThreadCleanup_DEBUG
+        zfCoreLogTrim("[ZFThreadCleanup_DEBUG] %s threadWait begin: %s"
+                , ZFTimeValueToStringFriendly(ZFTime::currentTimeValue())
+                , zfThread
+                );
+        zfThread->taskQueueCleanup();
         zfThread->threadWait();
+        zfCoreLogTrim("[ZFThreadCleanup_DEBUG] %s threadWait end: %s"
+                , ZFTimeValueToStringFriendly(ZFTime::currentTimeValue())
+                , zfThread
+                );
+#else
+        zfThread->taskQueueCleanup();
+        zfThread->threadWait();
+#endif
     }
 }
 ZF_GLOBAL_INITIALIZER_END(ZFThread_allThreadCleanup)
@@ -121,12 +140,15 @@ ZFEVENT_REGISTER(ZFThread, ThreadOnStart)
 ZFEVENT_REGISTER(ZFThread, ThreadOnStop)
 ZFEVENT_REGISTER(ZFThread, ThreadTaskQueueOnFinish)
 
-ZFMETHOD_DEFINE_0(ZFThread, void *, nativeThreadRegister) {
+ZFMETHOD_DEFINE_1(ZFThread, void *, nativeThreadRegister
+        , ZFMP_IN(const zfchar *, threadName)
+        ) {
     zfCoreMutexLocker();
     ZFThread *zfThread = ZFThread::currentThread();
     zfCoreAssert(zfThread == zfnull);
 
     zfThread = zfAlloc(_ZFP_I_ZFThreadNativeRegisterThread);
+    zfThread->threadName(threadName);
     void *ret = ZFPROTOCOL_ACCESS(ZFThread)->nativeThreadRegister(zfThread);
     _ZFP_ZFThread_allThread.add(zfThread);
     zfThread->threadOnRegister();
@@ -255,6 +277,11 @@ void ZFThread::objectOnDeallocPrepare(void) {
 
 void ZFThread::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
     zfsuper::objectInfoOnAppend(ret);
+    if(this->threadName()) {
+        ret += "(";
+        ret += this->threadName();
+        ret += ")";
+    }
     if(this->isMainThread()) {
         ret += " MainThread";
     }
@@ -505,7 +532,21 @@ void _ZFP_ZFThreadPrivate::threadCallback(
                 continue;
             }
             zfCoreMutexUnlock();
+#if _ZFP_ZFThreadCleanup_DEBUG
+            zfCoreLogTrim("[ZFThreadCleanup_DEBUG] %s %s taskWait begin: %s"
+                    , ZFTimeValueToStringFriendly(ZFTime::currentTimeValue())
+                    , zfThread->isMainThread()
+                    , zfThread
+                    );
             d->taskQueueSema->semaphoreWait();
+            zfCoreLogTrim("[ZFThreadCleanup_DEBUG] %s %s taskWait end: %s"
+                    , ZFTimeValueToStringFriendly(ZFTime::currentTimeValue())
+                    , zfThread->isMainThread()
+                    , zfThread
+                    );
+#else
+            d->taskQueueSema->semaphoreWait();
+#endif
             d->taskQueueSema->semaphoreUnlock();
             continue;
         }

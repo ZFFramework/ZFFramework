@@ -123,7 +123,7 @@ void ZFTimer::_ZFP_ZFTimer_timerOnStart(void) {
     }
 
     if(ZFThread::currentThread() == zfnull) {
-        d->timerThreadToken = ZFThread::nativeThreadRegister();
+        d->timerThreadToken = ZFThread::nativeThreadRegister("timer thread");
     }
     this->timerOnStart();
 }

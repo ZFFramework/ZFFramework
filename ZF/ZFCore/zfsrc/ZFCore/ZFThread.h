@@ -73,7 +73,9 @@ public:
      * you must take good care when calling this method\n
      * main thread has no need to register
      */
-    ZFMETHOD_DECLARE_STATIC_0(void *, nativeThreadRegister)
+    ZFMETHOD_DECLARE_STATIC_1(void *, nativeThreadRegister
+            , ZFMP_IN(const zfchar *, threadName)
+            )
     /**
      * @brief see #nativeThreadRegister
      *
@@ -163,6 +165,11 @@ protected:
     virtual void objectInfoOnAppend(ZF_IN_OUT zfstring &ret);
 
 public:
+    /**
+     * @brief thread name for debug use
+     */
+    ZFPROPERTY_ASSIGN(zfstring, threadName)
+
     /**
      * @brief the main callback to run
      *

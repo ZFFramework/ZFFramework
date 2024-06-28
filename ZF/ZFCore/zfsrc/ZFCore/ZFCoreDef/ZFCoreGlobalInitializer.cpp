@@ -5,6 +5,47 @@
 #include "ZFCoreMap.h"
 #include "ZFCoreStringConvert.h"
 
+#define _ZFP_ZFCoreGlobalInitializer_DEBUG 0
+#if _ZFP_ZFCoreGlobalInitializer_DEBUG
+    #include "ZFImpl/ZFImpl_env.h"
+    #include <ctime>
+    #if ZF_ENV_sys_Windows
+        #include <Windows.h>
+    #elif __APPLE__
+        #include <sys/time.h>
+        #include <mach/mach.h>
+        #include <mach/mach_time.h>
+    #else
+        // need -lrt for Posix
+        #include <sys/time.h>
+    #endif
+    static zftimet _ZFP_ZFCoreGlobalInitializer_timestamp(void) {
+        #if ZF_ENV_sys_Windows
+            return (zftimet)GetTickCount();
+        #elif __APPLE__
+            static mach_timebase_info_data_t _timebaseInfo;
+            if(_timebaseInfo.denom == 0) {
+                (void)mach_timebase_info(&_timebaseInfo);
+            }
+            return (zftimet)(((mach_absolute_time() / 1000000) * _timebaseInfo.numer) / _timebaseInfo.denom);
+        #else
+            struct timespec ts;
+            clock_gettime(CLOCK_MONOTONIC, &ts);
+            return (zftimet)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+        #endif
+    }
+    #define _ZFP_ZFCoreGlobalInitializer_begin() \
+        zftimet _ZFP_ZFCoreGlobalInitializer_curTime = _ZFP_ZFCoreGlobalInitializer_timestamp()
+    #define _ZFP_ZFCoreGlobalInitializer_end(fmt, ...) \
+        printf("%u " fmt "\n" \
+                , (unsigned int)(_ZFP_ZFCoreGlobalInitializer_timestamp() - _ZFP_ZFCoreGlobalInitializer_curTime) \
+                , ##__VA_ARGS__ \
+                )
+#else
+    #define _ZFP_ZFCoreGlobalInitializer_begin()
+    #define _ZFP_ZFCoreGlobalInitializer_end(fmt, ...)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFCoreArray<ZFFrameworkStateChangeCallback> &_ZFP_ZFFrameworkInitFinishCallbacks(void) {
@@ -44,7 +85,9 @@ public:
             *(this->ZFCoreLibDestroyFlag[i]) = zftrue;
         }
         if(this->instance != zfnull) {
+            _ZFP_ZFCoreGlobalInitializer_begin();
             this->destructor(this->instance);
+            _ZFP_ZFCoreGlobalInitializer_end("destroy %s", this->name.cString());
         }
     }
 };
@@ -67,7 +110,9 @@ static void _ZFP_GI_instanceInit(ZFCoreArray<_ZFP_GI_Data *> &list) {
         for(zfindex i = 0; i < tmp.count(); ++i) {
             _ZFP_GI_Data *data = tmp.get(i);
             if(data->instance == zfnull) {
+                _ZFP_ZFCoreGlobalInitializer_begin();
                 data->instance = data->constructor();
+                _ZFP_ZFCoreGlobalInitializer_end("create %s", data->name.cString());
             }
         }
     }
@@ -82,7 +127,9 @@ static void _ZFP_GI_instanceDealloc(ZFCoreArray<_ZFP_GI_Data *> &list) {
                 hasDataToClean = zftrue;
                 void *tmp = data->instance;
                 data->instance = zfnull;
+                _ZFP_ZFCoreGlobalInitializer_begin();
                 data->destructor(tmp);
+                _ZFP_ZFCoreGlobalInitializer_end("destroy %s", data->name.cString());
             }
         }
     } while(hasDataToClean);
@@ -616,7 +663,9 @@ static void **_ZFP_GI_instanceAccess(
     }
 
     if(data->instance == zfnull) {
+        _ZFP_ZFCoreGlobalInitializer_begin();
         data->instance = data->constructor();
+        _ZFP_ZFCoreGlobalInitializer_end("create %s", data->name.cString());
         _ZFP_GI_notifyInstanceCreated(data);
     }
 

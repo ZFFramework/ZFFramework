@@ -31,6 +31,7 @@ public:
         zfRetain(this);
         ++(this->threadCallbackTaskId);
         this->timerThread = zfAlloc(ZFThread, ZFCallbackForMemberMethod(this, ZFMethodAccess(zfself, threadCallback)));
+        this->timerThread->threadName("ZFTimerImpl_default");
         this->timerThread->threadStart(zfobj<v_zfidentity>(this->threadCallbackTaskId));
     }
     zffinal void timerStop(void) {

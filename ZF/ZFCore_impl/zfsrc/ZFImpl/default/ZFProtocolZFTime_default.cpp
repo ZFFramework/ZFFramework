@@ -18,6 +18,8 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+#define _ZFP_ZFTimeImpl_default_largeTimeSupport 1
+
 // ============================================================
 // common define
 #define _ZFP_ZFTimeImpl_default_leapYear(year) \
@@ -172,17 +174,18 @@ public:
             ZF_OUT ZFTimeInfo &ti
             , ZF_IN const ZFTimeValue &tv
             ) {
+#if _ZFP_ZFTimeImpl_default_largeTimeSupport
         zfmemset(&ti, 0, sizeof(ZFTimeInfo));
 
         zftimet secTmp = tv.sec;
         zfbool leapYear = zffalse;
 
         // year
-        ti.year = (zfint)(secTmp / zftimetOneYear);
-        zfint leapYearNum = ((ti.year == 0) ? 0 : ZFTime::leapYearBetween(-1, ti.year));
+        ti.year = (zfint)(secTmp / zftimetOneYear) + 1970;
+        zfint leapYearNum = _ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(ti.year);
         ti.year -= (zfint)(leapYearNum / 365);
-        leapYearNum = ((ti.year == 0) ? 0 : ZFTime::leapYearBetween(-1, ti.year));
-        secTmp -= (ti.year * zftimetOneYear + leapYearNum * zftimetOneDay);
+        leapYearNum = _ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(ti.year);
+        secTmp -= ((ti.year - 1970) * zftimetOneYear + leapYearNum * zftimetOneDay);
         if(secTmp < 0) {
             while(secTmp < 0) {
                 secTmp += zftimetOneYear;
@@ -243,31 +246,47 @@ public:
 
         // microSecond
         ti.microSecond = (zfuint)(usecTmp % 1000);
-
+#else
+        zfCoreMutexLocker();
+        time_t t = (time_t)tv.sec;
+        struct tm *tm = gmtime(&t);
+        if(tm == NULL) {
+            return zffalse;
+        }
+        ti.year = tm->tm_year + 1900;
+        ti.month = tm->tm_mon;
+        ti.day = tm->tm_mday - 1;
+        ti.hour = tm->tm_hour;
+        ti.minute = tm->tm_min;
+        ti.second = tm->tm_sec;
+        ti.miliSecond = tv.usec / 1000;
+        ti.microSecond = tv.usec % 1000;
+#endif
         return zftrue;
     }
     virtual zfbool timeInfoToTimeValue(
             ZF_OUT ZFTimeValue &tv
             , ZF_IN const ZFTimeInfo &ti
             ) {
+#if _ZFP_ZFTimeImpl_default_largeTimeSupport
         zfmemset(&tv, 0, sizeof(ZFTimeValue));
         if(!this->timeInfoIsValid(ti)) {
             return zffalse;
         }
 
         tv.sec =
-            ti.year * zftimetOneYear + ((ti.year == 0) ? 0 : ZFTime::leapYearBetween(-1, ti.year)) * zftimetOneDay
+            (ti.year - 1970) * zftimetOneYear + _ZFP_ZFTimeImpl_default_calcLeapYearBetween1970(ti.year) * zftimetOneDay
             + _ZFP_ZFTimeImpl_default_MonthToSec[ti.month]
             + ti.day * zftimetOneDay
             + ti.hour * zftimetOneHour
             + ti.minute * zftimetOneMinute
             + ti.second;
-        if(ti.year != 0 && _ZFP_ZFTimeImpl_default_leapYear(ti.year)) {
-            if(ti.year > 0 && ti.month <= 1) {
-                tv.sec -= zftimetOneDay;
-            }
-            else if(ti.year < 0 && (ti.month > 1 || (ti.month == 1 && ti.day == 28))) {
+        if(_ZFP_ZFTimeImpl_default_leapYear(ti.year)) {
+            if(ti.year > 1970 && (ti.month > 1 || (ti.month == 1 && ti.day == 28))) {
                 tv.sec += zftimetOneDay;
+            }
+            else if(ti.year < 1970 && (ti.month < 1 || (ti.month == 1 && ti.day < 28))) {
+                tv.sec -= zftimetOneDay;
             }
         }
 
@@ -283,7 +302,19 @@ public:
                 tv.usec = 0;
             }
         }
-
+#else
+        struct tm tm;
+        zfmemset(&tm, 0, sizeof(struct tm));
+        tm.tm_year = ti.year - 1900;
+        tm.tm_mon = ti.month;
+        tm.tm_mday = ti.day + 1;
+        tm.tm_hour = ti.hour;
+        tm.tm_min = ti.minute;
+        tm.tm_sec = ti.second;
+        tv.sec = (zftimet)mktime(&tm);
+        tv.sec += tm.tm_gmtoff;
+        tv.usec = ti.miliSecond * 1000 + ti.microSecond;
+#endif
         return zftrue;
     }
     virtual const ZFTimeValue &timeZoneLocal(void) {
@@ -308,8 +339,8 @@ public:
             ZF_IN const ZFTimeValue &tv
             , ZF_IN const ZFTimeInfo &ti
             ) {
-        // dayOfWeek of 0000-01-01
-        #define _ZFP_ZFTimeImpl_default_baseDayOfWeek 6
+        // dayOfWeek of 1970-01-01
+        #define _ZFP_ZFTimeImpl_default_baseDayOfWeek 4
         return ((
                  (zfuint)((_ZFP_ZFTimeImpl_default_baseDayOfWeek + (tv.sec / zftimetOneDay)) % 7)
                  + 7) % 7);
