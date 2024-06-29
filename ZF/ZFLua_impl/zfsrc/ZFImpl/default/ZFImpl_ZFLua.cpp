@@ -373,6 +373,12 @@ zfbool ZFImpl_ZFLua_toGeneric(
     else if(lua_isfunction(L, luaStackOffset)) {
         return ZFImpl_ZFLua_toCallback(param, L, luaStackOffset, errorHint);
     }
+    else if(lua_isboolean(L, luaStackOffset)) {
+        zfobj<v_zfbool> wrapper;
+        wrapper->zfv = (zfbool)lua_toboolean(L, luaStackOffset);
+        param = wrapper;
+        return zftrue;
+    }
 
     zfobj<ZFDI_Wrapper> wrapper;
     if(lua_isnumber(L, luaStackOffset)) {
@@ -388,11 +394,6 @@ zfbool ZFImpl_ZFLua_toGeneric(
     }
     if(lua_isstring(L, luaStackOffset)) {
         wrapper->zfv(lua_tostring(L, luaStackOffset));
-        param = wrapper;
-        return zftrue;
-    }
-    if(lua_isboolean(L, luaStackOffset)) {
-        wrapper->zfv((zfbool)lua_toboolean(L, luaStackOffset) ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse);
         param = wrapper;
         return zftrue;
     }
