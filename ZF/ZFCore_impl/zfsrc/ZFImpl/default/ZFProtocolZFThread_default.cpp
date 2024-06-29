@@ -38,9 +38,6 @@ typedef DWORD _ZFP_ZFThreadImpl_default_NativeThreadIdType;
 static _ZFP_ZFThreadImpl_default_NativeThreadIdType _ZFP_ZFThreadImpl_default_getNativeThreadId(void) {
     return GetCurrentThreadId();
 }
-static void _ZFP_ZFThreadImpl_default_sleep(zftimet miliSecs) {
-    Sleep((DWORD)miliSecs);
-}
 static void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data);
 static DWORD WINAPI _ZFP_ZFThreadImpl_default_nativeCallback(LPVOID param) {
     _ZFP_ZFThreadImpl_default_threadCallback((_ZFP_ZFThreadImpl_default_ExecuteData *)param);
@@ -53,9 +50,6 @@ static void _ZFP_ZFThreadImpl_default_startNativeThread(_ZFP_ZFThreadImpl_defaul
 typedef pthread_t _ZFP_ZFThreadImpl_default_NativeThreadIdType;
 static _ZFP_ZFThreadImpl_default_NativeThreadIdType _ZFP_ZFThreadImpl_default_getNativeThreadId(void) {
     return pthread_self();
-}
-static void _ZFP_ZFThreadImpl_default_sleep(zftimet miliSecs) {
-    usleep((unsigned int)(miliSecs * 1000));
 }
 static void _ZFP_ZFThreadImpl_default_threadCallback(_ZFP_ZFThreadImpl_default_ExecuteData *data);
 static void *_ZFP_ZFThreadImpl_default_nativeCallback(void *param) {
@@ -127,10 +121,6 @@ public:
             return zfnull;
         }
         return it->second;
-    }
-
-    virtual void sleep(ZF_IN zftimet miliSecs) {
-        _ZFP_ZFThreadImpl_default_sleep(miliSecs);
     }
 
     virtual zfbool executeInMainThreadAvailable(void) {

@@ -34,7 +34,9 @@ ZF_GLOBAL_INITIALIZER_DESTROY(zfasyncDataHolder) {
         zfautoT<ZFThread> runThread = this->threadPool.removeAndGet(0);
         zfCoreMutexUnlock();
 
+        runThread->threadStop();
         runThread->taskQueueCleanup();
+        runThread->sleepCancel();
         runThread->threadWait();
     } while(zftrue);
 }

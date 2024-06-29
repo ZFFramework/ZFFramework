@@ -105,10 +105,6 @@ public:
         return it->second;
     }
 
-    virtual void sleep(ZF_IN zftimet miliSecs) {
-        [NSThread sleepForTimeInterval:((double)miliSecs / 1000)];
-    }
-
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
         _ZFP_ZFThreadImpl_sys_iOS_ThreadOwner *threadOwner = [_ZFP_ZFThreadImpl_sys_iOS_ThreadOwner new];
         threadOwner._selfHolder = threadOwner;

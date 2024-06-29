@@ -24,7 +24,7 @@ ZFPATHTYPE_DEFINE(text)
             const zfchar *prefix = pathPrefixFunc(); \
             zfindex prefixLen = zfslen(prefix); \
             if(zfsncmp(pathData, prefix, prefixLen) == 0 \
-                    && *(pathData + prefixLen) == ZFFileSeparator() \
+                    && pathData[prefixLen] == ZFFileSeparator() \
                     ) { \
                 pathData.remove(0, prefixLen + 1); \
             } \

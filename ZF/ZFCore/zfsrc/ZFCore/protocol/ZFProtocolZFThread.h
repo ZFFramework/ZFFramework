@@ -45,7 +45,22 @@ public:
     /**
      * @brief see #ZFThread::sleep
      */
-    virtual void sleep(ZF_IN zftimet miliSecs) zfpurevirtual;
+    virtual void *sleepTokenCreate(void);
+    /**
+     * @brief see #ZFThread::sleep
+     */
+    virtual void sleepTokenDestroy(ZF_IN void *sleepToken);
+    /**
+     * @brief see #ZFThread::sleep
+     */
+    virtual zfbool sleep(
+            ZF_IN void *sleepToken
+            , ZF_IN zftimet miliSecs
+            );
+    /**
+     * @brief see #ZFThread::sleep
+     */
+    virtual void sleepCancel(ZF_IN void *sleepToken);
 
     /**
      * @brief whether #executeInMainThread available

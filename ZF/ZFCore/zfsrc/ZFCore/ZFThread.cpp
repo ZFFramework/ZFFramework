@@ -67,6 +67,7 @@ public:
     void *threadToken;
     zfbool mainThreadTaskRunning;
     void *mainThreadToken;
+    void *sleepToken;
 
 public:
     _ZFP_ZFThreadPrivate(void)
@@ -82,6 +83,7 @@ public:
     , threadToken(zfnull)
     , mainThreadTaskRunning(zffalse)
     , mainThreadToken(zfnull)
+    , sleepToken(zfnull)
     {
     }
     ~_ZFP_ZFThreadPrivate(void) {
@@ -214,10 +216,32 @@ ZFMETHOD_DEFINE_0(ZFThread, ZFThread *, currentThread) {
     return ZFPROTOCOL_ACCESS(ZFThread)->currentThread();
 }
 
-ZFMETHOD_DEFINE_1(ZFThread, void, sleep
+ZFMETHOD_DEFINE_1(ZFThread, zfbool, sleep
         , ZFMP_IN(zftimet, miliSecs)
         ) {
-    ZFPROTOCOL_ACCESS(ZFThread)->sleep(miliSecs);
+    ZFThread *cur = ZFThread::currentThread();
+    zfCoreAssertWithMessageTrim(cur, "ZFThread::sleep() depends on current thread registered");
+    zfCoreAssert(cur->d->sleepToken == zfnull);
+    ZFPROTOCOL_INTERFACE_CLASS(ZFThread) *impl = ZFPROTOCOL_ACCESS(ZFThread);
+    {
+        zfCoreMutexLocker();
+        cur->d->sleepToken = impl->sleepTokenCreate();
+        if(cur->d->sleepToken == zfnull) {
+            return zffalse;
+        }
+    }
+    zfbool ret = impl->sleep(cur->d->sleepToken, miliSecs);
+    {
+        zfCoreMutexLocker();
+        impl->sleepTokenDestroy(cur->d->sleepToken);
+        cur->d->sleepToken = zfnull;
+    }
+    return ret;
+}
+ZFMETHOD_DEFINE_0(ZFThread, void, sleepCancel) {
+    if(d->sleepToken) {
+        ZFPROTOCOL_ACCESS(ZFThread)->sleepCancel(d->sleepToken);
+    }
 }
 
 ZFMETHOD_DEFINE_2(ZFThread, ZFThread *, executeInThread

@@ -79,12 +79,4 @@ public final class ZFThread {
     protected static long native_currentThread() {
         return ZFThread.currentThreadId();
     }
-
-    protected static void native_sleep(long miliSecs) {
-        try {
-            Thread.sleep(miliSecs);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 }

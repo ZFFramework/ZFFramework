@@ -117,10 +117,17 @@ public:
     /**
      * @brief make current thread sleep for miliSecs,
      *   note this method may be not accurate
+     *
+     * return true if reached to specified time,
+     * or false if canceled by #sleepCancel
      */
-    ZFMETHOD_DECLARE_STATIC_1(void, sleep
+    ZFMETHOD_DECLARE_STATIC_1(zfbool, sleep
             , ZFMP_IN(zftimet, miliSecs)
             )
+    /**
+     * @brief cancel #sleep or do nothing if not sleepping
+     */
+    ZFMETHOD_DECLARE_0(void, sleepCancel)
 
     /**
      * @brief util to run callback in specified thread,
@@ -213,17 +220,19 @@ public:
      *
      * return immediately if thread isn't running
      *
-     * note, do not wait on thread that has called #taskQueueInit,
-     * since it would never end until #taskQueueCleanup
+     * note:
+     * -  do not wait on thread that has called #taskQueueInit without #taskQueueCleanup,
+     *   since it would never end until #taskQueueCleanup
+     * -  when wait for thread that has called #sleep,
+     *   it would wait until sleep done or #sleepCancel called
      */
     ZFMETHOD_DECLARE_0(void, threadWait)
 
     /**
      * @brief wait until thread finished running, or timeout
      *
-     * return immediately if thread isn't running
-     * @return true if wait success or thread isn't running\n
-     *         false if wait timeout or error
+     * return true immediately if thread isn't running,
+     * or false if wait timeout or error
      */
     ZFMETHOD_DECLARE_1(zfbool, threadWait
             , ZFMP_IN(zftimet, miliSecs)

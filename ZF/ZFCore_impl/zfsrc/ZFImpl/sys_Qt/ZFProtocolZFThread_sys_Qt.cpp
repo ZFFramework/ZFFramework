@@ -143,10 +143,6 @@ public:
         return it->second;
     }
 
-    virtual void sleep(ZF_IN zftimet miliSecs) {
-        QThread::msleep(miliSecs);
-    }
-
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
         _ZFP_ZFThreadImpl_sys_Qt_ListenerHolder *listenerHolder = zfnew(_ZFP_ZFThreadImpl_sys_Qt_ListenerHolder);
         listenerHolder->runnable = runnable;

@@ -52,17 +52,18 @@ public:
         zfRetain(this);
         zfblockedRelease(this);
         zfidentity const &curId = zfargs.param0().zfv();
+        ZFThread *curThread = ZFThread::currentThread();
 
         // delay
-        if(curId != this->threadCallbackTaskId) {return;}
+        if(curId != this->threadCallbackTaskId || curThread->threadStopRequested()) {return;}
         if(this->timer->timerDelay() > 0) {
             ZFThread::sleep(this->timer->timerDelay());
         }
 
         // start
-        if(curId != this->threadCallbackTaskId) {return;}
+        if(curId != this->threadCallbackTaskId || curThread->threadStopRequested()) {return;}
         this->timerThreadStarted = zftrue;
-        if(curId != this->threadCallbackTaskId) {return;}
+        if(curId != this->threadCallbackTaskId || curThread->threadStopRequested()) {return;}
 
         this->timerThreadStartNotified = zftrue;
         this->impl->notifyTimerStart(this->timer);
@@ -76,19 +77,17 @@ public:
                     ) {
                 owner->_ZFP_timerMainThread(curId);
             } ZFLISTENER_END()
-            while(curId == this->threadCallbackTaskId) {
-                while(curId == this->threadCallbackTaskId) {
-                    ZFThread::sleep(this->timer->timerInterval());
-                    if(this->threadCallbackTaskId == curId) {
-                        ZFThread::mainThread()->taskQueueAdd(timerMainThread);
-                    }
+            while(curId == this->threadCallbackTaskId && !curThread->threadStopRequested()) {
+                ZFThread::sleep(this->timer->timerInterval());
+                if(this->threadCallbackTaskId == curId && !curThread->threadStopRequested()) {
+                    ZFThread::mainThread()->taskQueueAdd(timerMainThread);
                 }
             }
         }
         else {
-            while(curId == this->threadCallbackTaskId) {
+            while(curId == this->threadCallbackTaskId && !curThread->threadStopRequested()) {
                 ZFThread::sleep(this->timer->timerInterval());
-                if(this->threadCallbackTaskId == curId) {
+                if(this->threadCallbackTaskId == curId && !curThread->threadStopRequested()) {
                     this->impl->notifyTimerActivate(this->timer);
                 }
             }

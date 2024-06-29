@@ -26,9 +26,14 @@ public:
         ZFLISTENER_1(runnable
                 , _ZFP_ZFThreadImpl_default_TaskData *, taskData
                 ) {
-            ZFPROTOCOL_ACCESS(ZFThread)->sleep(100);
+            ZFPROTOCOL_INTERFACE_CLASS(ZFThread) *threadImpl = ZFPROTOCOL_ACCESS(ZFThread);
+            void *sleepToken = threadImpl->sleepTokenCreate();
+            if(sleepToken) {
+                threadImpl->sleep(sleepToken, 100);
+                threadImpl->sleepTokenDestroy(sleepToken);
+            }
             if(taskData->threadToken != zfnull) {
-                ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThreadCleanup(taskData->threadToken);
+                threadImpl->executeInNewThreadCleanup(taskData->threadToken);
                 taskData->threadToken = zfnull;
             }
 

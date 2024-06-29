@@ -1,9 +1,27 @@
 #include "ZFProtocolZFThread.h"
+#include "../ZFSemaphore.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFPROTOCOL_INTERFACE_REGISTER(ZFThread)
 
+void *ZFPROTOCOL_INTERFACE_CLASS(ZFThread)::sleepTokenCreate(void) {
+    return zfAlloc(ZFSemaphore);
+}
+void ZFPROTOCOL_INTERFACE_CLASS(ZFThread)::sleepTokenDestroy(ZF_IN void *sleepToken) {
+    zfRelease((ZFSemaphore *)sleepToken);
+}
+zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFThread)::sleep(
+            ZF_IN void *sleepToken
+            , ZF_IN zftimet miliSecs
+            ) {
+    return ((ZFSemaphore *)sleepToken)->lockAndWait(miliSecs);
+}
+void ZFPROTOCOL_INTERFACE_CLASS(ZFThread)::sleepCancel(ZF_IN void *sleepToken) {
+    ((ZFSemaphore *)sleepToken)->lockAndBroadcast();
+}
+
+// ============================================================
 static ZFMainThreadTaskImplCallbackExecute _ZFP_ZFMainThreadTaskImplExecute = zfnull;
 static ZFMainThreadTaskImplCallbackCleanup _ZFP_ZFMainThreadTaskImplCleanup = zfnull;
 

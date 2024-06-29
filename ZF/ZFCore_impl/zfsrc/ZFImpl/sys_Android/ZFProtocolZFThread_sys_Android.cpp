@@ -117,18 +117,6 @@ public:
         return it->second;
     }
 
-    virtual void sleep(ZF_IN zftimet miliSecs) {
-        JNIEnv *jniEnv = JNIGetJNIEnv();
-        static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFThread(), "native_sleep",
-            JNIGetMethodSig(JNIType::S_void(), JNIParamTypeContainer()
-                .add(JNIType::S_long())
-            ).c_str());
-        JNIUtilCallStaticVoidMethod(jniEnv,
-            ZFImpl_sys_Android_jclassZFThread(),
-            jmId,
-            (jlong)miliSecs);
-    }
-
     virtual void *executeInMainThread(ZF_IN const ZFListener &runnable) {
         zfCoreMutexLock();
         _ZFP_ZFThreadImpl_sys_Android_ExecuteData *d = zfnew(_ZFP_ZFThreadImpl_sys_Android_ExecuteData,
