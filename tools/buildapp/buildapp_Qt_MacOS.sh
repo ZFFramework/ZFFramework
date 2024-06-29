@@ -13,6 +13,9 @@ _TMP_PATH=$PROJ_PATH/../../_tmp/Qt_MacOS/$PROJ_NAME/release
 _OLD_DIR=$(pwd)
 cd "$PROJ_PATH/Qt/$PROJ_NAME"
 _PROJ_PATH=$(pwd)
+cd "$_OLD_DIR"
+
+_OLD_DIR=$(pwd)
 mkdir -p "$_TMP_PATH" >/dev/null 2>&1
 cd "$_TMP_PATH"
 qmake "$_PROJ_PATH/$PROJ_NAME.pro" CONFIG+=release
