@@ -18,6 +18,6 @@ for %%a in (%DST_PATH%\..) do set _DST_PARENT=%%~fa
 mkdir "%_DST_PARENT%" >nul 2>&1
 
 >nul 2>&1 (
-    more "%SRC_PATH%" >> "%DST_PATH%"
+    copy /b "%DST_PATH%"+"%SRC_PATH%" "%DST_PATH%"
 )
 

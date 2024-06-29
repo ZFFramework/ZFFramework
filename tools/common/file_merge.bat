@@ -17,8 +17,9 @@ exit /b 1
 for %%a in (%DST_PATH%\..) do set _DST_PARENT=%%~fa
 mkdir "%_DST_PARENT%" >nul 2>&1
 
+del /q "%DST_PATH%" >nul 2>&1
 >nul 2>&1 (
-    more "%FILE1_PATH%" > "%DST_PATH%"
+    copy /b "%DST_PATH%"+"%FILE1_PATH%" "%DST_PATH%"
 )
 
 shift
@@ -27,7 +28,7 @@ shift
 set FILEN_PATH=%~1%
 if defined FILEN_PATH (
     >nul 2>&1 (
-        more "%FILEN_PATH%" >> "%DST_PATH%"
+        copy /b "%DST_PATH%"+"%FILEN_PATH%" "%DST_PATH%"
     )
     goto :all_file
 )
