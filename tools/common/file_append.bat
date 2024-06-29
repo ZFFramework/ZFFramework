@@ -17,7 +17,14 @@ exit /b 1
 for %%a in (%DST_PATH%\..) do set _DST_PARENT=%%~fa
 mkdir "%_DST_PARENT%" >nul 2>&1
 
->nul 2>&1 (
-    copy /b "%DST_PATH%"+"%SRC_PATH%" "%DST_PATH%"
+if exist "filepath" (
+    >nul 2>&1 (
+        copy /b "%DST_PATH%"+"%SRC_PATH%" "%DST_PATH%"
+    )
+)
+else (
+    >nul 2>&1 (
+        copy /b "%SRC_PATH%" "%DST_PATH%"
+    )
 )
 

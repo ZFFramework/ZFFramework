@@ -19,7 +19,7 @@ mkdir "%_DST_PARENT%" >nul 2>&1
 
 del /q "%DST_PATH%" >nul 2>&1
 >nul 2>&1 (
-    copy /b "%DST_PATH%"+"%FILE1_PATH%" "%DST_PATH%"
+    copy /b "%FILE1_PATH%" "%DST_PATH%"
 )
 
 shift
