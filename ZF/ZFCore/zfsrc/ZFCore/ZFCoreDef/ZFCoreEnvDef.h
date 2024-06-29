@@ -21,7 +21,7 @@
     #ifdef _WIN32
         #define ZF_ENV_IMPORT __declspec(dllimport)
     #else
-        #define ZF_ENV_IMPORT __attribute__((visibility("default")))
+        #define ZF_ENV_IMPORT
     #endif
 #endif
 

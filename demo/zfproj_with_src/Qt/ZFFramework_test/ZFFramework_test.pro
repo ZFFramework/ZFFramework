@@ -42,6 +42,22 @@ ZF_PROJ_SRC_EXT_PATH += $${_PRO_FILE_PWD_}/../../../zfsrc_ext
 # can hold one or more paths, separated by space
 ZF_PROJ_RES_PATH = $${_PRO_FILE_PWD_}/../../../zfres
 
+# dllimport not work for app with all src, disable it explicitly
+DEFINES += ZFLIB_ZFCore=
+DEFINES += ZFLIB_ZFAlgorithm=
+DEFINES += ZFLIB_ZFUtility=
+DEFINES += ZFLIB_ZFUIKit=
+DEFINES += ZFLIB_ZFUIWidget=
+DEFINES += ZFLIB_ZFLua=
+DEFINES += ZFLIB_ZFUIWebKit=
+DEFINES += ZFLIB_ZFNet=
+DEFINES += ZFLIB_ZF_impl=
+DEFINES += ZFLIB_ZFCore_impl=
+DEFINES += ZFLIB_ZFAlgorithm_impl=
+DEFINES += ZFLIB_ZFUIKit_impl=
+DEFINES += ZFLIB_ZFLua_impl=
+DEFINES += ZFLIB_ZFUIWebKit_impl=
+DEFINES += ZFLIB_ZFNet_impl=
 
 # ======================================================================
 CONFIG(debug, debug|release) {

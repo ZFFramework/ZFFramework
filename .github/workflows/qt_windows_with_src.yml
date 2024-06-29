@@ -1,4 +1,4 @@
-name: Qt Windows
+name: Qt Windows with src
 
 on:
   push:

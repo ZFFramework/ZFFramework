@@ -185,3 +185,8 @@ if(COMMAND zfprojConfigAfter_{ZFTT_R_proj_name})
     zfprojConfigAfter_{ZFTT_R_proj_name}({ZFTT_R_proj_name})
 endif()
 
+# dllimport not work for app with all src, disable it explicitly
+foreach(LIB_NAME_ ${ZF_LIB_NAMES})
+    target_compile_definitions({ZFTT_R_proj_name} PUBLIC ZFLIB_${LIB_NAME_}=)
+endforeach()
+
