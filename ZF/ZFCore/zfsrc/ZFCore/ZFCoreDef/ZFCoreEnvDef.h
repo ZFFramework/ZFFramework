@@ -19,7 +19,7 @@
 /** @brief used to import symbols */
 #ifndef ZF_ENV_IMPORT
     #ifdef _WIN32
-        #define ZF_ENV_IMPORT
+        #define ZF_ENV_IMPORT __declspec(dllimport)
     #else
         #define ZF_ENV_IMPORT __attribute__((visibility("default")))
     #endif
