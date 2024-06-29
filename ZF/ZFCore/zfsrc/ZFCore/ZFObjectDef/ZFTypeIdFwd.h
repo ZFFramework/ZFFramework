@@ -323,15 +323,15 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 , ZF_OUT_OPT zfstring *errorHint = zfnull \
                 ); \
     public: \
-        static _ZFP_ZFTypeIdProgressUpdate _ZFP_ZFTypeId_progressUpdate; \
+        static _ZFP_ZFTypeIdProgressUpdate &_ZFP_ZFTypeId_progressUpdate(void); \
         zfoverride \
         virtual zfbool progressUpdate( \
                 ZF_IN ZFProgressable *from \
                 , ZF_IN ZFProgressable *to \
                 , ZF_IN zffloat progress \
                 ) { \
-            if(zfself::_ZFP_ZFTypeId_progressUpdate) { \
-                return zfself::_ZFP_ZFTypeId_progressUpdate(this, from, to, progress); \
+            if(zfself::_ZFP_ZFTypeId_progressUpdate()) { \
+                return zfself::_ZFP_ZFTypeId_progressUpdate()(this, from, to, progress); \
             } \
             else { \
                 return zffalse; \
@@ -340,7 +340,10 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
     };
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_COMMON(TypeName, Type) \
-    _ZFP_ZFTypeIdProgressUpdate v_##TypeName::_ZFP_ZFTypeId_progressUpdate = zfnull; \
+    _ZFP_ZFTypeIdProgressUpdate &v_##TypeName::_ZFP_ZFTypeId_progressUpdate(void) { \
+        static _ZFP_ZFTypeIdProgressUpdate d = zfnull; \
+        return d; \
+    } \
     void v_##TypeName::objectInfoT(ZF_IN_OUT zfstring &ret) { \
         zftToString(ret, this->zfv); \
     } \

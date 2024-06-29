@@ -681,7 +681,7 @@ protected:
  */
 #define ZFTYPEID_PROGRESS_DEFINE(TypeName, Type, progressUpdateAction) \
     ZF_STATIC_REGISTER_INIT(_ZFP_ZFTypeIdProgressReg_##TypeName) { \
-        v_##TypeName::_ZFP_ZFTypeId_progressUpdate = zfself::I; \
+        v_##TypeName::_ZFP_ZFTypeId_progressUpdate() = zfself::I; \
     } \
     static zfbool I( \
             ZF_IN_OUT ZFProgressable *_ret \
