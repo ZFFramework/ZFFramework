@@ -7,41 +7,19 @@
 
 #define _ZFP_ZFCoreGlobalInitializer_DEBUG 0
 #if _ZFP_ZFCoreGlobalInitializer_DEBUG
-    #include "ZFImpl/ZFImpl_env.h"
-    #include <ctime>
-    #if ZF_ENV_sys_Windows
-        #include <Windows.h>
-    #elif __APPLE__
-        #include <sys/time.h>
-        #include <mach/mach.h>
-        #include <mach/mach_time.h>
-    #else
-        // need -lrt for Posix
-        #include <sys/time.h>
-    #endif
-    static zftimet _ZFP_ZFCoreGlobalInitializer_timestamp(void) {
-        #if ZF_ENV_sys_Windows
-            return (zftimet)GetTickCount();
-        #elif __APPLE__
-            static mach_timebase_info_data_t _timebaseInfo;
-            if(_timebaseInfo.denom == 0) {
-                (void)mach_timebase_info(&_timebaseInfo);
-            }
-            return (zftimet)(((mach_absolute_time() / 1000000) * _timebaseInfo.numer) / _timebaseInfo.denom);
-        #else
-            struct timespec ts;
-            clock_gettime(CLOCK_MONOTONIC, &ts);
-            return (zftimet)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
-        #endif
-    }
+    #include "ZFCore/ZFCoreDef/zfimplLog.h"
+    #define _ZFP_ZFCoreGlobalInitializer_log(fmt, ...) \
+        zfimplLog("%s [ZFGI] " fmt, zfimplTime(), ##__VA_ARGS__)
+
     #define _ZFP_ZFCoreGlobalInitializer_begin() \
-        zftimet _ZFP_ZFCoreGlobalInitializer_curTime = _ZFP_ZFCoreGlobalInitializer_timestamp()
+        zftimet _ZFP_ZFCoreGlobalInitializer_curTime = zfimplTimestamp()
     #define _ZFP_ZFCoreGlobalInitializer_end(fmt, ...) \
-        printf("%u " fmt "\n" \
-                , (unsigned int)(_ZFP_ZFCoreGlobalInitializer_timestamp() - _ZFP_ZFCoreGlobalInitializer_curTime) \
+        zfimplLog("[ZFGI] %u " fmt \
+                , (unsigned int)(zfimplTimestamp() - _ZFP_ZFCoreGlobalInitializer_curTime) \
                 , ##__VA_ARGS__ \
                 )
 #else
+    #define _ZFP_ZFCoreGlobalInitializer_log(fmt, ...)
     #define _ZFP_ZFCoreGlobalInitializer_begin()
     #define _ZFP_ZFCoreGlobalInitializer_end(fmt, ...)
 #endif
@@ -325,6 +303,7 @@ public:
     }
 };
 void ZFFrameworkInit(void) {
+    _ZFP_ZFCoreGlobalInitializer_log("ZFFrameworkInit begin");
     static _ZFP_ZFFrameworkAutoCleanupHolder _holder;
     zfbool mutexAvailable = ZFCoreMutexImplAvailable();
     if(mutexAvailable) {
@@ -335,60 +314,74 @@ void ZFFrameworkInit(void) {
     if(d.state == ZFFrameworkStateNotAvailable) {
         d.state = ZFFrameworkStateInitRunning;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkStatic");
         d.stateZFFrameworkStatic = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkStatic);
         d.stateZFFrameworkStatic = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkEssential");
         d.stateZFFrameworkEssential = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkEssential);
         d.stateZFFrameworkEssential = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkHigh");
         d.stateZFFrameworkHigh = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkHigh);
         d.stateZFFrameworkHigh = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkNormal");
         d.stateZFFrameworkNormal = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkNormal);
         d.stateZFFrameworkNormal = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkLow");
         d.stateZFFrameworkLow = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkLow);
         d.stateZFFrameworkLow = ZFFrameworkStateAvailable;
 
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelAppEssential");
         d.stateAppEssential = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppEssential);
         d.stateAppEssential = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelAppHigh");
         d.stateAppHigh = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppHigh);
         d.stateAppHigh = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelAppNormal");
         d.stateAppNormal = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppNormal);
         d.stateAppNormal = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelAppLow");
         d.stateAppLow = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppLow);
         d.stateAppLow = ZFFrameworkStateAvailable;
 
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkPost");
         d.stateZFFrameworkPostLow = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostLow);
         d.stateZFFrameworkPostLow = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkPostNormal");
         d.stateZFFrameworkPostNormal = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostNormal);
         d.stateZFFrameworkPostNormal = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkPostHigh");
         d.stateZFFrameworkPostHigh = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostHigh);
         d.stateZFFrameworkPostHigh = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkPostEssential");
         d.stateZFFrameworkPostEssential = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostEssential);
         d.stateZFFrameworkPostEssential = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init ZFLevelZFFrameworkPostStatic");
         d.stateZFFrameworkPostStatic = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostStatic);
         d.stateZFFrameworkPostStatic = ZFFrameworkStateAvailable;
@@ -396,6 +389,7 @@ void ZFFrameworkInit(void) {
 
         d.state = ZFFrameworkStateAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("init notify callback");
         ZFCoreArray<ZFFrameworkStateChangeCallback> &m = ZFFrameworkInitFinishCallbacks;
         for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
@@ -423,77 +417,95 @@ void ZFFrameworkInit(void) {
     if(mutexAvailable) {
         zfCoreMutexUnlock();
     }
+    _ZFP_ZFCoreGlobalInitializer_log("ZFFrameworkInit end");
 }
 void ZFFrameworkCleanup(void) {
+    _ZFP_ZFCoreGlobalInitializer_log("ZFFrameworkCleanup begin");
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
     if(d.state == ZFFrameworkStateAvailable) {
         d.state = ZFFrameworkStateCleanupRunning;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup notify callback");
         ZFCoreArray<ZFFrameworkStateChangeCallback> &m = ZFFrameworkCleanupPrepareCallbacks;
         for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkPostStatic");
         d.stateZFFrameworkPostStatic = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostStatic);
         d.stateZFFrameworkPostStatic = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkPostEssential");
         d.stateZFFrameworkPostEssential = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostEssential);
         d.stateZFFrameworkPostEssential = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkPostHigh");
         d.stateZFFrameworkPostHigh = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostHigh);
         d.stateZFFrameworkPostHigh = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkPostNormal");
         d.stateZFFrameworkPostNormal = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostNormal);
         d.stateZFFrameworkPostNormal = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkPostLow");
         d.stateZFFrameworkPostLow = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostLow);
         d.stateZFFrameworkPostLow = ZFFrameworkStateNotAvailable;
 
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelAppLow");
         d.stateAppLow = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppLow);
         d.stateAppLow = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelAppNormal");
         d.stateAppNormal = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppNormal);
         d.stateAppNormal = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelAppHigh");
         d.stateAppHigh = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppHigh);
         d.stateAppHigh = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelAppEssential");
         d.stateAppEssential = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppEssential);
         d.stateAppEssential = ZFFrameworkStateNotAvailable;
 
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkLow");
         d.stateZFFrameworkLow = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkLow);
         d.stateZFFrameworkLow = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkNormal");
         d.stateZFFrameworkNormal = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkNormal);
         d.stateZFFrameworkNormal = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkHigh");
         d.stateZFFrameworkHigh = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkHigh);
         d.stateZFFrameworkHigh = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkEssential");
         d.stateZFFrameworkEssential = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkEssential);
         d.stateZFFrameworkEssential = ZFFrameworkStateNotAvailable;
 
+        _ZFP_ZFCoreGlobalInitializer_log("cleanup ZFLevelZFFrameworkStatic");
         d.stateZFFrameworkStatic = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkStatic);
         d.stateZFFrameworkStatic = ZFFrameworkStateNotAvailable;
 
         d.state = ZFFrameworkStateNotAvailable;
     }
+    _ZFP_ZFCoreGlobalInitializer_log("ZFFrameworkCleanup end");
 }
 
 void ZFFrameworkAssertInit(void) {

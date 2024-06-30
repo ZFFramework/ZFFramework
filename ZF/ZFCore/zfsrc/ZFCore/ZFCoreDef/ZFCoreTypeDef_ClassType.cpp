@@ -22,6 +22,8 @@ ZF_NAMESPACE_GLOBAL_END
 
 // ============================================================
 #if _ZFP_ZFMEM_LOG
+#include "zfimplLog.h"
+#define _ZFP_ZFMemLog(fmt, ...) zfimplLog("[ZFMem] " fmt, ##__VA_ARGS__)
 #include "../ZFSTLWrapper/zfstlmap.h"
 #include "../ZFSTLWrapper/zfstlstring.h"
 #include "../ZFSTLWrapper/zfstldeque.h"
@@ -63,7 +65,7 @@ void _ZFP_ZFMEM_logNew(void *p, const char *action, const char *file, const char
     zfstlstring hint;
     _ZFP_ZFMEM_hint(hint, action, file, func, line);
     #if _ZFP_ZFMEM_LOG_VERBOSE
-    printf("%p %s\n", p, hint.c_str());
+    _ZFP_ZFMemLog("%p %s", p, hint.c_str());
     #endif
 
     zfstlmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
@@ -77,7 +79,7 @@ void _ZFP_ZFMEM_logDelete(void *p, const char *action, const char *file, const c
     #if _ZFP_ZFMEM_LOG_VERBOSE
     zfstlstring hint;
     _ZFP_ZFMEM_hint(hint, action, file, func, line);
-    printf("%p %s\n", p, hint.c_str());
+    _ZFP_ZFMemLog("%p %s", p, hint.c_str());
     #endif
 
     zfstlmap<void *, zfstlstring> &d = _ZFP_ZFMEM_d();
@@ -90,7 +92,7 @@ void _ZFP_ZFMEM_printStatus(int threshold /* = 10 */) {
     for(zfstlmap<void *, zfstlstring>::iterator it = d.begin(); it != d.end(); ++it) {
         ++(m[it->second]);
     }
-    printf("============================================================\n");
+    _ZFP_ZFMemLog("============================================================");
     zfstldeque<int> countList;
     zfstldeque<const char *> hintList;
     for(zfstlmap<zfstlstring, zfint>::iterator it = m.begin(); it != m.end(); ++it) {
@@ -104,7 +106,7 @@ void _ZFP_ZFMEM_printStatus(int threshold /* = 10 */) {
         }
     }
     for(zfstlsize i = 0; i < countList.size(); ++i) {
-        printf("%8d %s\n", countList[i], hintList[i]);
+        _ZFP_ZFMemLog("%8d %s", countList[i], hintList[i]);
     }
 }
 

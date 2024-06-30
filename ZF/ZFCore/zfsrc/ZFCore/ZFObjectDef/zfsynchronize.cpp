@@ -5,8 +5,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 #if _ZFP_ZFSYNCHRONIZE_LOG_ENABLE
+#include "ZFCore/ZFCoreDef/zfimplLog.h"
 #define _ZFP_zfsynchronizeLog(callerInfo, fmt, ...) \
-    printf("%s", zfstr("%s %s\n", callerInfo, zfstr(fmt, ##__VA_ARGS__)).cString())
+    zfimplLog("[zfsynchronize] %s", zfstr("%s %s\n", callerInfo, zfstr(fmt, ##__VA_ARGS__)).cString())
 
 _ZFP_zfsynchronizeContainerWithLog::_ZFP_zfsynchronizeContainerWithLog(
         ZF_IN zfany const &obj

@@ -136,27 +136,5 @@ extern ZFLIB_ZFCore void _ZFP_zfCoreCritical(
 
 ZF_NAMESPACE_GLOBAL_END
 
-#if zfzfzfLogEnable // test only
-    #if (defined(ANDROID) || defined(__ANDROID__))
-        #include <jni.h>
-        #include <android/log.h>
-        #define _ZFP_I_log(fmt, ...) \
-            ((void)__android_log_print(ANDROID_LOG_ERROR, "JNILog", fmt, ##__VA_ARGS__))
-    #elif (defined(QT_VERSION) || defined(QT_CORE_LIB))
-        #include <QDebug>
-        #define _ZFP_I_log(fmt, ...) \
-            qDebug(fmt, ##__VA_ARGS__)
-    #else
-        #include <cstdio>
-        #define _ZFP_I_log(fmt, ...) \
-            do { \
-                printf(fmt, ##__VA_ARGS__); \
-                printf("\n"); \
-            } while(false)
-    #endif
-    #define zfzfzfLog(fmt, ...) \
-        _ZFP_I_log(fmt, ##__VA_ARGS__)
-#endif
-
 #endif // #ifndef _ZFI_ZFCoreLog_CommonLog_h_
 
