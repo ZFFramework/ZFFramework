@@ -6,46 +6,35 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ZFAndroidLog {
-    public static void p(String msg) {
-        android.util.Log.e(ZFAndroidLog.defaultLogTag, msg);
+
+    public static String defaultLogTag = "JNILog";
+
+    public static void p(String fmt) {
+        android.util.Log.e(ZFAndroidLog.defaultLogTag, fmt);
     }
 
-    public static void p(String tag, String msg) {
-        android.util.Log.e(tag, msg);
+    public static void p(String fmt, Object... args) {
+        android.util.Log.e(ZFAndroidLog.defaultLogTag, String.format(fmt, args));
     }
 
-    public static void p(Class<?> cls, String msg) {
-        android.util.Log.e(cls.getSimpleName(), msg);
+    public static void assertMsg(String fmt) {
+        ZFAndroidLog._printAssertMsg(fmt);
     }
 
-    public static String logTagForClass(Class<?> cls) {
-        return cls.getSimpleName();
-    }
-
-    public static String defaultLogTag = "";
-
-    public static void assertMsg(String sMsg) {
-        ZFAndroidLog._printAssertMsg(ZFAndroidLog.defaultLogTag, sMsg);
-    }
-
-    public static void assertMsg(String sTag, String sMsg) {
-        ZFAndroidLog._printAssertMsg(sTag, sMsg);
+    public static void assertMsg(String fmt, Object... args) {
+        ZFAndroidLog._printAssertMsg(String.format(fmt, args));
     }
 
     public static void shouldNotGoHere() {
-        ZFAndroidLog._printAssertMsg(ZFAndroidLog.defaultLogTag, "should not go here");
+        ZFAndroidLog._printAssertMsg("should not go here");
     }
 
-    public static void shouldNotGoHere(String sTag) {
-        ZFAndroidLog._printAssertMsg(sTag, "should not go here");
-    }
-
-    private static void _printAssertMsg(String sTag, String sMsg) {
-        ZFAndroidLog.p(sTag, "====================  assert message   ====================");
+    private static void _printAssertMsg(String msg) {
         StackTraceElement ste = Thread.currentThread().getStackTrace()[4];
-        ZFAndroidLog.p(sTag, String.format("| called by %s [%s (%d)]", ste.getMethodName(), ste.getFileName(), ste.getLineNumber()));
-        ZFAndroidLog.p(sTag, "| " + sMsg);
-        ZFAndroidLog.p(sTag, "====================  assert message   ====================");
+        ZFAndroidLog.p("====================  assert message   ====================");
+        ZFAndroidLog.p("| called by %s [%s (%d)]", ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
+        ZFAndroidLog.p("| " + msg);
+        ZFAndroidLog.p("====================  assert message   ====================");
     }
 
     // caller info
@@ -63,24 +52,6 @@ public class ZFAndroidLog {
         return String.format("[%s %s (%d)]", ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
     }
 
-    // log called function
-    public static void logFunc() {
-        ZFAndroidLog._logFunc(ZFAndroidLog.defaultLogTag, "");
-    }
-
-    public static void logFunc(String msg) {
-        ZFAndroidLog._logFunc(ZFAndroidLog.defaultLogTag, msg);
-    }
-
-    public static void logFunc(String tag, String msg) {
-        ZFAndroidLog._logFunc(tag, msg);
-    }
-
-    private static void _logFunc(String tag, String msg) {
-        StackTraceElement ste = Thread.currentThread().getStackTrace()[4];
-        ZFAndroidLog.p(tag, String.format("%s %s", ste.getMethodName(), msg));
-    }
-
     // stack trace
     public static String stackTrace() {
         return ZFAndroidLog._stackTrace(0, Integer.MAX_VALUE);
@@ -96,7 +67,7 @@ public class ZFAndroidLog {
 
     private static String _stackTrace(int levelIgnore, int maxNum) {
         StringBuilder sb = new StringBuilder();
-        StackTraceElement ste[] = Thread.currentThread().getStackTrace();
+        StackTraceElement[] ste = Thread.currentThread().getStackTrace();
         sb.append("==================== stack trace begin ====================");
         sb.append('\n');
         for (int i = 4 + levelIgnore, num = 0; i < ste.length && num < maxNum; ++i, ++num) {
@@ -112,31 +83,27 @@ public class ZFAndroidLog {
     }
 
     public static void stackTracePrint() {
-        ZFAndroidLog._stackTracePrint(ZFAndroidLog.defaultLogTag, 0, Integer.MAX_VALUE);
+        ZFAndroidLog._stackTracePrint(0, Integer.MAX_VALUE);
     }
 
     public static void stackTracePrint(int levelIgnore) {
-        ZFAndroidLog._stackTracePrint(ZFAndroidLog.defaultLogTag, levelIgnore, Integer.MAX_VALUE);
+        ZFAndroidLog._stackTracePrint(levelIgnore, Integer.MAX_VALUE);
     }
 
     public static void stackTracePrint(int levelIgnore, int maxNum) {
-        ZFAndroidLog._stackTracePrint(ZFAndroidLog.defaultLogTag, levelIgnore, maxNum);
+        ZFAndroidLog._stackTracePrint(levelIgnore, maxNum);
     }
 
-    public static void stackTracePrint(String sTag, int levelIgnore, int maxNum) {
-        ZFAndroidLog._stackTracePrint(sTag, levelIgnore, maxNum);
-    }
-
-    private static void _stackTracePrint(String sTag, int levelIgnore, int maxNum) {
-        StackTraceElement ste[] = Thread.currentThread().getStackTrace();
-        ZFAndroidLog.p(sTag, "==================== stack trace begin ====================");
+    private static void _stackTracePrint(int levelIgnore, int maxNum) {
+        StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+        ZFAndroidLog.p("==================== stack trace begin ====================");
         for (int i = 4 + levelIgnore, num = 0; i < ste.length && num < maxNum; ++i, ++num) {
-            ZFAndroidLog.p(sTag, String.format("|  %s [%s (%d)]",
+            ZFAndroidLog.p(String.format("|  %s [%s (%d)]",
                     ste[i].getMethodName(),
                     ste[i].getFileName(),
                     ste[i].getLineNumber()));
         }
-        ZFAndroidLog.p(sTag, "====================  stack trace end  ====================");
+        ZFAndroidLog.p("====================  stack trace end  ====================");
     }
 
     /**
@@ -155,7 +122,7 @@ public class ZFAndroidLog {
 
     // log utils
     @SuppressLint("SimpleDateFormat")
-    private static SimpleDateFormat _curTimeToStringFmtCache = new SimpleDateFormat("HH:mm:ss.SSS");
+    private static final SimpleDateFormat _curTimeToStringFmtCache = new SimpleDateFormat("HH:mm:ss.SSS");
 
     public static String curTimeToString() {
         return _curTimeToStringFmtCache.format(new Date());
