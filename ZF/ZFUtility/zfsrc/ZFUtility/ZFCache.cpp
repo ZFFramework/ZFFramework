@@ -99,7 +99,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
             d->aliveList.erase(cacheData->aliveListIt);
             cacheData->aliveListIt = d->aliveList.end();
 
-            if(ZFFrameworkStateCheck() == ZFFrameworkStateCleanupProcessing) {
+            if(ZFFrameworkStateCheck() == ZFFrameworkStateCleanupRunning) {
                 return;
             }
 

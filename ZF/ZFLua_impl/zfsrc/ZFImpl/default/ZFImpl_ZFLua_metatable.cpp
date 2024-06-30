@@ -210,12 +210,12 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
 
         if(v1 == zfnull) {
             if(v2 == zfnull) {
-                ret = ZFCompareTheSame;
+                ret = ZFCompareEqual;
             }
             else {
                 ZFTypeIdWrapper *t = v2;
                 if(t != zfnull && t->wrappedValueIsInit()) {
-                    ret = ZFCompareTheSame;
+                    ret = ZFCompareEqual;
                 }
                 else {
                     ret = ZFCompareUncomparable;
@@ -226,7 +226,7 @@ static zfbool _ZFP_ZFImpl_ZFLua_metatable_cmp(
             if(v2 == zfnull) {
                 ZFTypeIdWrapper *t = v1;
                 if(t != zfnull && t->wrappedValueIsInit()) {
-                    ret = ZFCompareTheSame;
+                    ret = ZFCompareEqual;
                 }
                 else {
                     ret = ZFCompareUncomparable;
@@ -276,7 +276,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_eq(ZF_IN lua_State *L) {
             "%s",
             errorHint);
     }
-    lua_pushboolean(L, (result == ZFCompareTheSame));
+    lua_pushboolean(L, (result == ZFCompareEqual));
     return 1;
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_lt(ZF_IN lua_State *L) {
@@ -302,7 +302,7 @@ static int _ZFP_ZFImpl_ZFLua_metatable_le(ZF_IN lua_State *L) {
             "%s",
             errorHint);
     }
-    lua_pushboolean(L, (result == ZFCompareSmaller || result == ZFCompareTheSame));
+    lua_pushboolean(L, (result == ZFCompareSmaller || result == ZFCompareEqual));
     return 1;
 }
 static int _ZFP_ZFImpl_ZFLua_metatable_tostring(ZF_IN lua_State *L) {

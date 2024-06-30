@@ -119,7 +119,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(zfbool, zfstringIsEqual
 ZFMETHOD_FUNC_USER_REGISTER_2({
         v_zfstring *t1 = zfcast(v_zfstring *, s1);
         v_zfstring *t2 = zfcast(v_zfstring *, s2);
-        return ((t1 == zfnull || t1->zfv.isEmpty()) && t2 == zfnull || t2->zfv.isEmpty()) || ZFObjectCompare(t1, t2) == ZFCompareTheSame;
+        return ((t1 == zfnull || t1->zfv.isEmpty()) && t2 == zfnull || t2->zfv.isEmpty()) || ZFObjectCompare(t1, t2) == ZFCompareEqual;
     }, zfbool, zfstringIsEqual
     , ZFMP_IN(ZFObject *, s1)
     , ZFMP_IN(ZFObject *, s2)

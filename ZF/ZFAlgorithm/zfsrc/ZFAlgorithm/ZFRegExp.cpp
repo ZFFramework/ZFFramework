@@ -208,14 +208,14 @@ zfidentity ZFRegExp::objectHash(void) {
                          zfidentityCalcPOD(flag));
 }
 ZFCompareResult ZFRegExp::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareTheSame;}
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(zfstringIsEqual(this->pattern(), another->pattern())
             && this->options() == another->options()
             ) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     return ZFCompareUncomparable;
 }

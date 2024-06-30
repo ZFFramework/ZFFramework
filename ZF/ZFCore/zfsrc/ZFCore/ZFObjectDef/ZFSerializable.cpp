@@ -107,7 +107,7 @@ zfbool ZFSerializable::serializeFromData(
 
             // serialize the property
             switch(data->propertyType) {
-                case ZFSerializablePropertyTypeSerializableProperty: {
+                case ZFSerializablePropertyTypeSerializable: {
                         const zfchar *styleKey = ZFSerializableUtil::checkAttribute(element, ZFSerializableKeyword_styleKey);
                         if(styleKey != zfnull) {
                             if(styleable == zfnull) {
@@ -130,7 +130,7 @@ zfbool ZFSerializable::serializeFromData(
                         return zffalse;
                     }
                     break;
-                case ZFSerializablePropertyTypeEmbededProperty:
+                case ZFSerializablePropertyTypeEmbeded:
                     if(!this->serializableOnSerializeEmbededPropertyFromData(
                                 element,
                                 data->property,
@@ -141,6 +141,7 @@ zfbool ZFSerializable::serializeFromData(
                     }
                     break;
                 case ZFSerializablePropertyTypeNotSerializable:
+                case ZFSerializablePropertyTypeUnspecified:
                 default:
                     zfCoreCriticalShouldNotGoHere();
                     return zffalse;
@@ -209,8 +210,18 @@ zfbool ZFSerializable::serializeToData(
         const ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> &allProperty = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
         for(zfindex i = 0; i < allProperty.count(); ++i) {
             _ZFP_ZFSerializable_PropertyTypeData *data = allProperty[i];
-            switch(data->propertyType) {
-                case ZFSerializablePropertyTypeSerializableProperty:
+
+            ZFSerializablePropertyType propertyType = ZFSerializablePropertyTypeUnspecified;
+            const ZFMethod *dynamicMethod = this->classData()->methodForName("serializableOnCheckPropertyType");
+            if(dynamicMethod != zfnull) {
+                propertyType = dynamicMethod->execute<ZFSerializablePropertyType, const ZFProperty *>(this->toObject(), data->property);
+            }
+            if(propertyType == ZFSerializablePropertyTypeUnspecified) {
+                propertyType = data->propertyType;
+            }
+
+            switch(propertyType) {
+                case ZFSerializablePropertyTypeSerializable:
                     if(styleable != zfnull) {
                         const zfchar *styleKey = styleable->styleKeyForProperty(data->property);
                         if(styleKey != zfnull) {
@@ -231,7 +242,7 @@ zfbool ZFSerializable::serializeToData(
                         return zffalse;
                     }
                     break;
-                case ZFSerializablePropertyTypeEmbededProperty:
+                case ZFSerializablePropertyTypeEmbeded:
                     if(!this->serializableOnSerializeEmbededPropertyToData(
                                 serializableData
                                 , data->property
@@ -242,6 +253,8 @@ zfbool ZFSerializable::serializeToData(
                     }
                     break;
                 case ZFSerializablePropertyTypeNotSerializable:
+                    break;
+                case ZFSerializablePropertyTypeUnspecified:
                 default:
                     zfCoreCriticalShouldNotGoHere();
                     return zffalse;
@@ -309,6 +322,9 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
             const ZFClass *tmpCls = this->classData();
             allClass.add(tmpCls);
             do {
+                for(zfindex i = tmpCls->dynamicInterfaceCount() - 1; i != zfindexMax(); --i) {
+                    allClass.add(tmpCls->dynamicInterfaceAt(i));
+                }
                 for(zfindex i = tmpCls->implementedInterfaceCount() - 1; i != zfindexMax(); --i) {
                     allClass.add(tmpCls->implementedInterfaceAt(i));
                 }
@@ -328,13 +344,15 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
         for(zfindex i = 0; i < allProperty.count(); ++i) {
             const ZFProperty *property = allProperty[i];
             switch(this->serializableOnCheckPropertyType(property)) {
+                case ZFSerializablePropertyTypeUnspecified:
+                    break;
                 case ZFSerializablePropertyTypeNotSerializable:
                     break;
-                case ZFSerializablePropertyTypeSerializableProperty:
-                    holderTmp->addData(property, ZFSerializablePropertyTypeSerializableProperty);
+                case ZFSerializablePropertyTypeSerializable:
+                    holderTmp->addData(property, ZFSerializablePropertyTypeSerializable);
                     break;
-                case ZFSerializablePropertyTypeEmbededProperty:
-                    holderTmp->addData(property, ZFSerializablePropertyTypeEmbededProperty);
+                case ZFSerializablePropertyTypeEmbeded:
+                    holderTmp->addData(property, ZFSerializablePropertyTypeEmbeded);
                     break;
                 default:
                     zfCoreCriticalShouldNotGoHere();
@@ -353,7 +371,7 @@ _ZFP_I_ZFSerializablePropertyTypeHolder *ZFSerializable::_ZFP_ZFSerializable_get
 void ZFSerializable::serializableGetAllSerializablePropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) {
     const ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
     for(zfindex i = 0; i < tmp.count(); ++i) {
-        if(tmp[i]->propertyType == ZFSerializablePropertyTypeSerializableProperty) {
+        if(tmp[i]->propertyType == ZFSerializablePropertyTypeSerializable) {
             ret.add(tmp[i]->property);
         }
     }
@@ -361,7 +379,7 @@ void ZFSerializable::serializableGetAllSerializablePropertyT(ZF_IN_OUT ZFCoreArr
 void ZFSerializable::serializableGetAllSerializableEmbededPropertyT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) {
     const ZFCoreArray<_ZFP_ZFSerializable_PropertyTypeData *> &tmp = this->_ZFP_ZFSerializable_getPropertyTypeHolder()->serializableProperty;
     for(zfindex i = 0; i < tmp.count(); ++i) {
-        if(tmp[i]->propertyType == ZFSerializablePropertyTypeEmbededProperty) {
+        if(tmp[i]->propertyType == ZFSerializablePropertyTypeEmbeded) {
             ret.add(tmp[i]->property);
         }
     }
@@ -376,7 +394,7 @@ ZFSerializablePropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN
                 return ZFSerializablePropertyTypeNotSerializable;
             }
             else {
-                return ZFSerializablePropertyTypeEmbededProperty;
+                return ZFSerializablePropertyTypeEmbeded;
             }
         }
         else {
@@ -384,7 +402,7 @@ ZFSerializablePropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN
                 return ZFSerializablePropertyTypeNotSerializable;
             }
             else {
-                return ZFSerializablePropertyTypeSerializableProperty;
+                return ZFSerializablePropertyTypeSerializable;
             }
         }
     }
@@ -395,7 +413,7 @@ ZFSerializablePropertyType ZFSerializable::serializableOnCheckPropertyType(ZF_IN
             return ZFSerializablePropertyTypeNotSerializable;
         }
         else {
-            return ZFSerializablePropertyTypeSerializableProperty;
+            return ZFSerializablePropertyTypeSerializable;
         }
     }
 }
@@ -451,7 +469,7 @@ zfbool ZFSerializable::serializableOnSerializePropertyToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(referencedOwnerOrNull != zfnull
-            && ZFPropertyCompare(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareTheSame
+            && ZFPropertyCompare(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareEqual
             ) {
         return zftrue;
     }
@@ -544,7 +562,7 @@ zfbool ZFSerializable::serializableOnSerializeEmbededPropertyToData(
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         ) {
     if(referencedOwnerOrNull != zfnull
-            && ZFPropertyCompare(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareTheSame
+            && ZFPropertyCompare(property, this->toObject(), referencedOwnerOrNull->toObject()) == ZFCompareEqual
             ) {
         return zftrue;
     }

@@ -183,7 +183,7 @@ static ZFCompareResult _ZFP_ZFUIViewFocusNextFind_comparerForFind(
         , ZF_IN ZFUIView * const &v1
         ) {
     if(v0.view == v1) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     else {
         return ZFCompareUncomparable;

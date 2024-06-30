@@ -95,10 +95,10 @@ void _ZFP_ZFProtocolImplDataUnregister(zfbool *ZFCoreLibDestroyFlag, const zfcha
 }
 void _ZFP_ZFProtocolImplAccess(void) {
     // access to ensure init order
-    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkStatic) == ZFFrameworkStateInitProcessing) {
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkStatic) == ZFFrameworkStateInitRunning) {
         (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ZFProtocolImplCleanup_protocolOnDealloc);
     }
-    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkEssential) == ZFFrameworkStateInitProcessing) {
+    if(ZFFrameworkStateCheck(ZFLevelZFFrameworkEssential) == ZFFrameworkStateInitRunning) {
         (void)ZF_GLOBAL_INITIALIZER_INSTANCE(ZFProtocolImplCleanup_protocolOnDeallocPrepare);
     }
 }
@@ -220,7 +220,7 @@ static ZFCompareResult _ZFP_ZFProtocolImplInfoPrint_sortComparer(
         return ZFCompareGreater;
     }
     else {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
 }
 ZFMETHOD_FUNC_DEFINE_2(void, ZFProtocolImplInfoPrint

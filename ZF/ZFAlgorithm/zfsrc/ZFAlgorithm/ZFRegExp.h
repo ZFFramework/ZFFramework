@@ -91,7 +91,7 @@ public:
     zfbool operator == (ZF_IN const ZFRegExpResult &ref) const {
         return (this->matched == ref.matched
                 && this->matchedRange == ref.matchedRange
-                && this->namedGroups.objectCompare(ref.namedGroups) == ZFCompareTheSame);
+                && this->namedGroups.objectCompare(ref.namedGroups) == ZFCompareEqual);
     }
     inline zfbool operator != (ZF_IN const ZFRegExpResult &ref) const {return !this->operator == (ref);}
     /** @endcond */
@@ -197,7 +197,7 @@ public:
     zfoverride
     virtual zfidentity objectHash(void);
     /**
-     * @brief ZFCompareTheSame if pattern and flag both the same,
+     * @brief ZFCompareEqual if pattern and flag both the same,
      *   ZFCompareUncomparable otherwise
      */
     zfoverride

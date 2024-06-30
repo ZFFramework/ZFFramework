@@ -197,7 +197,7 @@ ZFT_INT_STRONG(zft_zfuint32, zfidentity)
  */
 #define zfidentityInvalid() ((zfidentity)-1)
 /** @brief string tokens */
-#define ZFTOKEN_zfidentityInvalid "zfidentityInvalid"
+#define ZFTOKEN_zfidentityInvalid "Invalid"
 
 ZF_NAMESPACE_GLOBAL_END
 

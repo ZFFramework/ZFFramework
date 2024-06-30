@@ -190,7 +190,7 @@ zfidentity ZFContainer::objectHash(void) {
     }
 }
 ZFCompareResult ZFContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareTheSame;}
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
@@ -203,11 +203,11 @@ ZFCompareResult ZFContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
             this->iterValid(it);
             this->iterNext(it), another->iterNext(itRef)
             ) {
-        if(ZFObjectCompare(this->iterValue(it), another->iterValue(itRef)) != ZFCompareTheSame) {
+        if(ZFObjectCompare(this->iterValue(it), another->iterValue(itRef)) != ZFCompareEqual) {
             return ZFCompareUncomparable;
         }
     }
-    return ZFCompareTheSame;
+    return ZFCompareEqual;
 }
 
 ZF_NAMESPACE_GLOBAL_END

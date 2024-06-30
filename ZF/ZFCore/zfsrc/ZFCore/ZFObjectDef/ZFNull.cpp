@@ -21,7 +21,7 @@ public:
     zfoverride
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj) {
         if(this == anotherObj || (anotherObj != zfnull && anotherObj->classData() == ZFNullObject::ClassData())) {
-            return ZFCompareTheSame;
+            return ZFCompareEqual;
         }
         return ZFCompareUncomparable;
     }

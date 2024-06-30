@@ -26,15 +26,15 @@ typedef enum {
     ZFCallbackTypeLambda, /**< @brief lambda function that can capture other vars */
 } ZFCallbackType;
 /** @brief string tokens */
-#define ZFTOKEN_ZFCallbackTypeDummy "TypeDummy"
+#define ZFTOKEN_ZFCallbackTypeDummy "Dummy"
 /** @brief string tokens */
-#define ZFTOKEN_ZFCallbackTypeMethod "TypeMethod"
+#define ZFTOKEN_ZFCallbackTypeMethod "Method"
 /** @brief string tokens */
-#define ZFTOKEN_ZFCallbackTypeMemberMethod "TypeMemeberMethod"
+#define ZFTOKEN_ZFCallbackTypeMemberMethod "MemeberMethod"
 /** @brief string tokens */
-#define ZFTOKEN_ZFCallbackTypeRawFunction "TypeRawFunction"
+#define ZFTOKEN_ZFCallbackTypeRawFunction "RawFunction"
 /** @brief string tokens */
-#define ZFTOKEN_ZFCallbackTypeLambda "TypeLambda"
+#define ZFTOKEN_ZFCallbackTypeLambda "Lambda"
 
 // ============================================================
 // callback invoker
@@ -111,8 +111,8 @@ public:
     ZFCallback &operator = (ZF_IN const ZFCallback &ref);
     ZFCallback &operator = (ZF_IN const zfnullT &dummy);
     virtual ~ZFCallback(void);
-    zfbool operator == (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) == ZFCompareTheSame);}
-    zfbool operator != (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) != ZFCompareTheSame);}
+    zfbool operator == (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) == ZFCompareEqual);}
+    zfbool operator != (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) != ZFCompareEqual);}
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return (d == zfnull);}
     zfbool operator != (ZF_IN const zfnullT &dummy) const {return (d != zfnull);}
     operator bool (void) const {return this->callbackValid();}
@@ -169,7 +169,7 @@ public:
      * @brief compare callback by instance only (same callback contents not necessarily to be same instance)
      */
     zffinal ZFCompareResult objectCompareByInstance(ZF_IN const ZFCallback &ref) const {
-        return ((d == ref.d) ? ZFCompareTheSame : ZFCompareUncomparable);
+        return ((d == ref.d) ? ZFCompareEqual : ZFCompareUncomparable);
     }
 
 public:

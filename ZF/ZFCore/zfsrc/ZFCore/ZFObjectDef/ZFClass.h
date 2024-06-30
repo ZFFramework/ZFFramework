@@ -59,6 +59,7 @@ public:
 
 // ============================================================
 zfclassFwd _ZFP_ZFClassPrivate;
+zfclassFwd _ZFP_ZFObjectPrivate;
 /**
  * @brief ZFObject's class info
  * @see ZFObject
@@ -363,14 +364,24 @@ public:
             , ZF_IN zfbool objectOnInitMethodInvokeSuccess
             ) const;
 
+    zffinal zfauto _ZFP_ZFClass_newInstance(ZF_IN _ZFP_ZFObjectPrivate *dObj) const;
+
     /**
-     * @brief get implemented interface count
+     * @brief get implemented interface count, see #dynamicInterfaceAt
      */
     zfindex implementedInterfaceCount(void) const;
     /**
-     * @brief get implemented interface
+     * @brief get implemented interface, see #dynamicInterfaceAt
      */
     const ZFClass *implementedInterfaceAt(ZF_IN zfindex index) const;
+    /**
+     * @brief get dynamic interface registered by #ZFImplementDynamicRegister, see #implementedInterfaceAt
+     */
+    zfindex dynamicInterfaceCount(void) const;
+    /**
+     * @brief get dynamic interface registered by #ZFImplementDynamicRegister, see #implementedInterfaceAt
+     */
+    const ZFClass *dynamicInterfaceAt(ZF_IN zfindex index) const;
 
     // ============================================================
     // ZFMethod

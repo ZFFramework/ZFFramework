@@ -57,7 +57,7 @@ zfidentity ZFAnimationNativeView::objectHash(void) {
         );
 }
 ZFCompareResult ZFAnimationNativeView::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(zfsuper::ZFObject::objectCompare(anotherObj) != ZFCompareTheSame) {
+    if(zfsuper::ZFObject::objectCompare(anotherObj) != ZFCompareEqual) {
         return ZFCompareUncomparable;
     }
     zfself *another = zfcast(zfself *, anotherObj);
@@ -86,7 +86,7 @@ ZFCompareResult ZFAnimationNativeView::objectCompare(ZF_IN ZFObject *anotherObj)
         && this->aniRotateZFrom() == another->aniRotateZFrom()
         && this->aniRotateZTo() == another->aniRotateZTo()
         ) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     return ZFCompareUncomparable;
 }

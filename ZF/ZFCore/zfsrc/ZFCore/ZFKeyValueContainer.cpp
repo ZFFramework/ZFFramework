@@ -205,7 +205,7 @@ zfbool ZFKeyValueContainer::serializableOnSerializeToDataWithRef(
         ZFObject *value = this->iterValue(it);
         zfiterator itTmp = tmp->iterFind(key);
         if(ref->iterValid(itTmp)) {
-            if(ZFObjectCompare(value, tmp->iterValue(itTmp)) == ZFCompareTheSame) {
+            if(ZFObjectCompare(value, tmp->iterValue(itTmp)) == ZFCompareEqual) {
                 tmp->iterRemove(itTmp);
                 continue;
             }
@@ -264,7 +264,7 @@ zfidentity ZFKeyValueContainer::objectHash(void) {
     }
 }
 ZFCompareResult ZFKeyValueContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareTheSame;}
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
@@ -280,12 +280,12 @@ ZFCompareResult ZFKeyValueContainer::objectCompare(ZF_IN ZFObject *anotherObj) {
         if(!another->iterValid(it1)) {
             return ZFCompareUncomparable;
         }
-        if(ZFObjectCompare(this->iterValue(it0), another->iterValue(it1)) != ZFCompareTheSame) {
+        if(ZFObjectCompare(this->iterValue(it0), another->iterValue(it1)) != ZFCompareEqual) {
             return ZFCompareUncomparable;
         }
         another->iterNext(it1);
     }
-    return ZFCompareTheSame;
+    return ZFCompareEqual;
 }
 
 ZF_NAMESPACE_GLOBAL_END

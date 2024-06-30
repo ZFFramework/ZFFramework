@@ -86,7 +86,7 @@ public:
      */
     virtual ZFCompareResult objectCompare(ZF_IN const ZFCorePointerBase &another) const {
         return ((this->pointerValueAccess() == another.pointerValueAccess())
-            ? ZFCompareTheSame
+            ? ZFCompareEqual
             : ZFCompareUncomparable);
     }
 

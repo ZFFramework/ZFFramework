@@ -46,6 +46,9 @@ zfauto ZFMethodInvokeData::callSuper(void) {
         for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
             toCheck.add(cls->implementedInterfaceAt(i));
         }
+        for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
+            toCheck.add(cls->dynamicInterfaceAt(i));
+        }
         if(toCheck.isEmpty()) {
             break;
         }

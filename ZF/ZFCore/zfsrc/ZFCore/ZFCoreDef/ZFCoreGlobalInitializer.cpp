@@ -333,63 +333,63 @@ void ZFFrameworkInit(void) {
 
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
     if(d.state == ZFFrameworkStateNotAvailable) {
-        d.state = ZFFrameworkStateInitProcessing;
+        d.state = ZFFrameworkStateInitRunning;
 
-        d.stateZFFrameworkStatic = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkStatic = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkStatic);
         d.stateZFFrameworkStatic = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkEssential = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkEssential = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkEssential);
         d.stateZFFrameworkEssential = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkHigh = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkHigh = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkHigh);
         d.stateZFFrameworkHigh = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkNormal = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkNormal = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkNormal);
         d.stateZFFrameworkNormal = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkLow = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkLow = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkLow);
         d.stateZFFrameworkLow = ZFFrameworkStateAvailable;
 
 
-        d.stateAppEssential = ZFFrameworkStateInitProcessing;
+        d.stateAppEssential = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppEssential);
         d.stateAppEssential = ZFFrameworkStateAvailable;
 
-        d.stateAppHigh = ZFFrameworkStateInitProcessing;
+        d.stateAppHigh = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppHigh);
         d.stateAppHigh = ZFFrameworkStateAvailable;
 
-        d.stateAppNormal = ZFFrameworkStateInitProcessing;
+        d.stateAppNormal = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppNormal);
         d.stateAppNormal = ZFFrameworkStateAvailable;
 
-        d.stateAppLow = ZFFrameworkStateInitProcessing;
+        d.stateAppLow = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelAppLow);
         d.stateAppLow = ZFFrameworkStateAvailable;
 
 
-        d.stateZFFrameworkPostLow = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkPostLow = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostLow);
         d.stateZFFrameworkPostLow = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkPostNormal = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkPostNormal = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostNormal);
         d.stateZFFrameworkPostNormal = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkPostHigh = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkPostHigh = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostHigh);
         d.stateZFFrameworkPostHigh = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkPostEssential = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkPostEssential = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostEssential);
         d.stateZFFrameworkPostEssential = ZFFrameworkStateAvailable;
 
-        d.stateZFFrameworkPostStatic = ZFFrameworkStateInitProcessing;
+        d.stateZFFrameworkPostStatic = ZFFrameworkStateInitRunning;
         _ZFP_GI_instanceInit(d.dataLevelZFFrameworkPostStatic);
         d.stateZFFrameworkPostStatic = ZFFrameworkStateAvailable;
 
@@ -427,68 +427,68 @@ void ZFFrameworkInit(void) {
 void ZFFrameworkCleanup(void) {
     _ZFP_GI_DataContainer &d = _ZFP_GI_dataContainerInstance;
     if(d.state == ZFFrameworkStateAvailable) {
-        d.state = ZFFrameworkStateCleanupProcessing;
+        d.state = ZFFrameworkStateCleanupRunning;
 
         ZFCoreArray<ZFFrameworkStateChangeCallback> &m = ZFFrameworkCleanupPrepareCallbacks;
         for(zfindex i = 0; i < m.count(); ++i) {
             m[i]();
         }
 
-        d.stateZFFrameworkPostStatic = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkPostStatic = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostStatic);
         d.stateZFFrameworkPostStatic = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkPostEssential = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkPostEssential = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostEssential);
         d.stateZFFrameworkPostEssential = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkPostHigh = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkPostHigh = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostHigh);
         d.stateZFFrameworkPostHigh = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkPostNormal = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkPostNormal = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostNormal);
         d.stateZFFrameworkPostNormal = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkPostLow = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkPostLow = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkPostLow);
         d.stateZFFrameworkPostLow = ZFFrameworkStateNotAvailable;
 
 
-        d.stateAppLow = ZFFrameworkStateCleanupProcessing;
+        d.stateAppLow = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppLow);
         d.stateAppLow = ZFFrameworkStateNotAvailable;
 
-        d.stateAppNormal = ZFFrameworkStateCleanupProcessing;
+        d.stateAppNormal = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppNormal);
         d.stateAppNormal = ZFFrameworkStateNotAvailable;
 
-        d.stateAppHigh = ZFFrameworkStateCleanupProcessing;
+        d.stateAppHigh = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppHigh);
         d.stateAppHigh = ZFFrameworkStateNotAvailable;
 
-        d.stateAppEssential = ZFFrameworkStateCleanupProcessing;
+        d.stateAppEssential = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelAppEssential);
         d.stateAppEssential = ZFFrameworkStateNotAvailable;
 
 
-        d.stateZFFrameworkLow = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkLow = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkLow);
         d.stateZFFrameworkLow = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkNormal = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkNormal = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkNormal);
         d.stateZFFrameworkNormal = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkHigh = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkHigh = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkHigh);
         d.stateZFFrameworkHigh = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkEssential = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkEssential = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkEssential);
         d.stateZFFrameworkEssential = ZFFrameworkStateNotAvailable;
 
-        d.stateZFFrameworkStatic = ZFFrameworkStateCleanupProcessing;
+        d.stateZFFrameworkStatic = ZFFrameworkStateCleanupRunning;
         _ZFP_GI_instanceDealloc(d.dataLevelZFFrameworkStatic);
         d.stateZFFrameworkStatic = ZFFrameworkStateNotAvailable;
 
@@ -579,7 +579,7 @@ static void _ZFP_GI_dataRegister(
         case ZFFrameworkStateNotAvailable:
             // this is the normal routine
             break;
-        case ZFFrameworkStateInitProcessing:
+        case ZFFrameworkStateInitRunning:
             // static register during init processing,
             // may unable to detect dependency
             zfCoreCriticalMessageTrim(
@@ -590,7 +590,7 @@ static void _ZFP_GI_dataRegister(
             // registered after init finish, manually load it
             _ZFP_GI_instanceAccess(name, level);
             break;
-        case ZFFrameworkStateCleanupProcessing:
+        case ZFFrameworkStateCleanupRunning:
             // static register during cleanup processing,
             // may cause wrong cleanup order
             zfCoreCriticalMessageTrim(
@@ -643,7 +643,7 @@ static void **_ZFP_GI_instanceAccess(
     static void *dummy = zfnull;
     zfCoreMutexLocker();
 
-    if(ZFFrameworkStateCheck(level) == ZFFrameworkStateCleanupProcessing) {
+    if(ZFFrameworkStateCheck(level) == ZFFrameworkStateCleanupRunning) {
         zfCoreCriticalMessageTrim(
             "try to reenter global initializer during ZFFrameworkCleanup, name: %s, "
             "typically due to invalid global initializer dependency",

@@ -80,8 +80,8 @@ ZFOUTPUT_TYPE(ZFCompareResult, {
         case ZFCompareSmaller:
             s += ZFTOKEN_ZFCompareSmaller;
             break;
-        case ZFCompareTheSame:
-            s += ZFTOKEN_ZFCompareTheSame;
+        case ZFCompareEqual:
+            s += ZFTOKEN_ZFCompareEqual;
             break;
         case ZFCompareGreater:
             s += ZFTOKEN_ZFCompareGreater;

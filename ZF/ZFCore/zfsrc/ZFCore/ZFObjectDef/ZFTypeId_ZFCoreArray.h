@@ -125,7 +125,7 @@ public:
                 && t->zfv != zfnull
                 && this->zfv->refImpl() == t->zfv->refImpl()
                 ) {
-            return ZFCompareTheSame;
+            return ZFCompareEqual;
         }
         else {
             return ZFCompareUncomparable;

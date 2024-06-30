@@ -47,33 +47,33 @@ extern ZFLIB_ZFCore void ZFFrameworkCleanup(void);
  */
 typedef enum {
     ZFFrameworkStateNotAvailable, /**< @brief not available */
-    ZFFrameworkStateInitProcessing, /**< @brief during init step (#ZFFrameworkInit) */
+    ZFFrameworkStateInitRunning, /**< @brief during init step (#ZFFrameworkInit) */
     ZFFrameworkStateAvailable, /**< @brief available, init finished */
-    ZFFrameworkStateCleanupProcessing, /**< @brief during cleanup step (#ZFFrameworkCleanup) */
+    ZFFrameworkStateCleanupRunning, /**< @brief during cleanup step (#ZFFrameworkCleanup) */
 } ZFFrameworkState;
 
 /** @brief string tokens */
-#define ZFTOKEN_ZFFrameworkStateNotAvailable "StateNotAvailable"
+#define ZFTOKEN_ZFFrameworkStateNotAvailable "NotAvailable"
 /** @brief string tokens */
-#define ZFTOKEN_ZFFrameworkStateInitProcessing "StateInitProcessing"
+#define ZFTOKEN_ZFFrameworkStateInitRunning "InitRunning"
 /** @brief string tokens */
-#define ZFTOKEN_ZFFrameworkStateAvailable "StateAvailable"
+#define ZFTOKEN_ZFFrameworkStateAvailable "Available"
 /** @brief string tokens */
-#define ZFTOKEN_ZFFrameworkStateCleanupProcessing "StateCleanupProcessing"
+#define ZFTOKEN_ZFFrameworkStateCleanupRunning "CleanupRunning"
 
 ZFOUTPUT_TYPE(ZFFrameworkState, {
     switch(v) {
         case ZFFrameworkStateNotAvailable:
             s += ZFTOKEN_ZFFrameworkStateNotAvailable;
             break;
-        case ZFFrameworkStateInitProcessing:
-            s += ZFTOKEN_ZFFrameworkStateInitProcessing;
+        case ZFFrameworkStateInitRunning:
+            s += ZFTOKEN_ZFFrameworkStateInitRunning;
             break;
         case ZFFrameworkStateAvailable:
             s += ZFTOKEN_ZFFrameworkStateAvailable;
             break;
-        case ZFFrameworkStateCleanupProcessing:
-            s += ZFTOKEN_ZFFrameworkStateCleanupProcessing;
+        case ZFFrameworkStateCleanupRunning:
+            s += ZFTOKEN_ZFFrameworkStateCleanupRunning;
             break;
         default:
             break;

@@ -407,11 +407,11 @@ public:
             return ZFCompareUncomparable;
         }
         for(zfindex i = this->count() - 1; i != zfindexMax(); --i) {
-            if(comparer(this->get(i), ref.get(i)) != ZFCompareTheSame) {
+            if(comparer(this->get(i), ref.get(i)) != ZFCompareEqual) {
                 return ZFCompareUncomparable;
             }
         }
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
 
 public:
@@ -551,7 +551,7 @@ public:
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
             ) const {
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareTheSame) {
+            if(comparer(*p, e) == ZFCompareEqual) {
                 return (p - d->buf);
             }
         }
@@ -566,7 +566,7 @@ public:
             ) const {
         if(d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
-                if(comparer(*p, e) == ZFCompareTheSame) {
+                if(comparer(*p, e) == ZFCompareEqual) {
                     return (p - d->buf);
                 }
             }
@@ -582,7 +582,7 @@ public:
             , ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer
             ) const {
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareTheSame) {
+            if(comparer(*p, e) == ZFCompareEqual) {
                 return (p - d->buf);
             }
         }
@@ -598,7 +598,7 @@ public:
             ) const {
         if(d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
-                if(comparer(*p, e) == ZFCompareTheSame) {
+                if(comparer(*p, e) == ZFCompareEqual) {
                     return (p - d->buf);
                 }
             }
@@ -614,7 +614,7 @@ public:
             , ZF_IN_OPT typename ZFComparer<T_Element>::Comparer comparer = ZFComparerCheckEqual
             ) {
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareTheSame) {
+            if(comparer(*p, e) == ZFCompareEqual) {
                 this->remove(p - d->buf);
                 return zftrue;
             }
@@ -630,7 +630,7 @@ public:
             , ZF_IN typename ZFComparer<T_Element, T_Another>::Comparer comparer
             ) {
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareTheSame) {
+            if(comparer(*p, e) == ZFCompareEqual) {
                 this->remove(p - d->buf);
                 return zftrue;
             }
@@ -646,7 +646,7 @@ public:
             ) {
         if(d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
-                if(comparer(*p, e) == ZFCompareTheSame) {
+                if(comparer(*p, e) == ZFCompareEqual) {
                     this->remove(p - d->buf);
                     return zftrue;
                 }
@@ -664,7 +664,7 @@ public:
             ) {
         if(d->buf) {
             for(T_Element *p = d->buf + d->count - 1; p >= d->buf; --p) {
-                if(comparer(*p, e) == ZFCompareTheSame) {
+                if(comparer(*p, e) == ZFCompareEqual) {
                     this->remove(p - d->buf);
                     return zftrue;
                 }
@@ -681,7 +681,7 @@ public:
             ) {
         zfindex removedCount = 0;
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareTheSame) {
+            if(comparer(*p, e) == ZFCompareEqual) {
                 ++removedCount;
                 this->remove(p - d->buf);
                 --p;
@@ -699,7 +699,7 @@ public:
             ) {
         zfindex removedCount = 0;
         for(T_Element *p = d->buf, *pEnd = d->buf + d->count; p < pEnd; ++p) {
-            if(comparer(*p, e) == ZFCompareTheSame) {
+            if(comparer(*p, e) == ZFCompareEqual) {
                 ++removedCount;
                 this->remove(p - d->buf);
                 --p;

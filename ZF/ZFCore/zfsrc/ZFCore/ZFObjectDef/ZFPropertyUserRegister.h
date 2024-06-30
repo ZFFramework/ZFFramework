@@ -124,7 +124,7 @@ public:
             return zffalse;
         }
         else {
-            return (cur->toObject()->objectCompare(initValueTmp->toObject()) == ZFCompareTheSame);
+            return (cur->toObject()->objectCompare(initValueTmp->toObject()) == ZFCompareEqual);
         }
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */

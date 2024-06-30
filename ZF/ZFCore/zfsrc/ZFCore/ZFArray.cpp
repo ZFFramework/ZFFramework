@@ -72,7 +72,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, find
         return zfindexMax();
     }
     for(zfstlsize i = 0; i < d->data.size(); ++i) {
-        if(comparer(d->data[i], obj) == ZFCompareTheSame) {
+        if(comparer(d->data[i], obj) == ZFCompareEqual) {
             return (zfindex)i;
         }
     }
@@ -86,7 +86,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, findReversely
         return zfindexMax();
     }
     for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
-        if(comparer(d->data[i], obj) == ZFCompareTheSame) {
+        if(comparer(d->data[i], obj) == ZFCompareEqual) {
             return (zfindex)i;
         }
     }
@@ -159,7 +159,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElement
         ) {
     if(obj) {
         for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
-            if((*it)->objectCompare(obj) == ZFCompareTheSame) {
+            if((*it)->objectCompare(obj) == ZFCompareEqual) {
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
                 zfRelease(toRelease);
@@ -181,7 +181,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElement
         ) {
     if(obj && comparer) {
         for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
-            if(comparer(*it, obj) == ZFCompareTheSame) {
+            if(comparer(*it, obj) == ZFCompareEqual) {
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
                 zfRelease(toRelease);
@@ -202,7 +202,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfbool, removeElementRevsersely
         ) {
     if(obj) {
         for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
-            if(d->data[i]->objectCompare(obj) == ZFCompareTheSame) {
+            if(d->data[i]->objectCompare(obj) == ZFCompareEqual) {
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
                 zfRelease(toRelease);
@@ -221,7 +221,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfbool, removeElementRevsersely
         ) {
     if(obj && comparer) {
         for(zfstlsize i = d->data.size() - 1; i != (zfstlsize)-1; --i) {
-            if(comparer(d->data[i], obj) == ZFCompareTheSame) {
+            if(comparer(d->data[i], obj) == ZFCompareEqual) {
                 ZFObject *toRelease = d->data[i];
                 d->data.erase(d->data.begin() + i);
                 zfRelease(toRelease);
@@ -240,7 +240,7 @@ ZFMETHOD_DEFINE_1(ZFArray, zfindex, removeElementAll
     zfindex removedCount = 0;
     if(obj) {
         for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
-            if((*it)->objectCompare(obj) == ZFCompareTheSame) {
+            if((*it)->objectCompare(obj) == ZFCompareEqual) {
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);
@@ -265,7 +265,7 @@ ZFMETHOD_DEFINE_2(ZFArray, zfindex, removeElementAll
     zfindex removedCount = 0;
     if(obj && comparer) {
         for(zfstldeque<ZFObject *>::iterator it = d->data.begin(); it != d->data.end(); ) {
-            if(comparer(*it, obj) == ZFCompareTheSame) {
+            if(comparer(*it, obj) == ZFCompareEqual) {
                 ++removedCount;
                 ZFObject *toRelease = *it;
                 it = d->data.erase(it);

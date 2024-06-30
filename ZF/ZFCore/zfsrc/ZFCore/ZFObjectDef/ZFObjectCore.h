@@ -40,15 +40,15 @@ typedef enum {
     ZFObjectInstanceStateOnDealloc = 0x10, /**< @brief object is under #ZFObject::objectOnDealloc */
 } ZFObjectInstanceState;
 /** @brief string tokens */
-#define ZFTOKEN_ZFObjectInstanceStateOnInit "ZFObjectInstanceStateOnInit"
+#define ZFTOKEN_ZFObjectInstanceStateOnInit "OnInit"
 /** @brief string tokens */
-#define ZFTOKEN_ZFObjectInstanceStateOnInitFinish "ZFObjectInstanceStateOnInitFinish"
+#define ZFTOKEN_ZFObjectInstanceStateOnInitFinish "OnInitFinish"
 /** @brief string tokens */
-#define ZFTOKEN_ZFObjectInstanceStateIdle "ZFObjectInstanceStateIdle"
+#define ZFTOKEN_ZFObjectInstanceStateIdle "Idle"
 /** @brief string tokens */
-#define ZFTOKEN_ZFObjectInstanceStateOnDeallocPrepare "ZFObjectInstanceStateOnDeallocPrepare"
+#define ZFTOKEN_ZFObjectInstanceStateOnDeallocPrepare "OnDeallocPrepare"
 /** @brief string tokens */
-#define ZFTOKEN_ZFObjectInstanceStateOnDealloc "ZFObjectInstanceStateOnDealloc"
+#define ZFTOKEN_ZFObjectInstanceStateOnDealloc "OnDealloc"
 
 // ============================================================
 zfclassNotPOD ZFLIB_ZFCore _ZFP_Obj_Base {
@@ -322,7 +322,7 @@ public:
      * \n
      * if you override this method, you must ensure
      * two objects have same hash if they are regarded as same
-     * (i.e. #objectCompare return #ZFCompareTheSame)\n
+     * (i.e. #objectCompare return #ZFCompareEqual)\n
      * this method may or may not be called frequently,
      * you should always try to make the implementation
      * have good performance
@@ -330,7 +330,7 @@ public:
     virtual zfidentity objectHash(void);
     /**
      * @brief compare with anotherObj
-     * @return ZFCompareTheSame if this == anotherObj\n
+     * @return ZFCompareEqual if this == anotherObj\n
      *         ZFCompareUncomparable otherwise
      * @warning if your override #objectCompare,
      *   you must also override #objectHash,
@@ -339,7 +339,7 @@ public:
     virtual ZFCompareResult objectCompare(ZF_IN ZFObject *anotherObj);
     /** @brief util to #objectCompare */
     virtual zfbool equalTo(ZF_IN ZFObject *anotherObj) {
-        return this->objectCompare(anotherObj) == ZFCompareTheSame;
+        return this->objectCompare(anotherObj) == ZFCompareEqual;
     }
 
 public:

@@ -99,7 +99,7 @@ void ZFEnum::objectInfoT(ZF_IN_OUT zfstring &ret) {
 
 ZFCompareResult ZFEnum::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(this == anotherObj) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     if(anotherObj == zfnull) {
         return ZFCompareUncomparable;
@@ -121,7 +121,7 @@ ZFCompareResult ZFEnum::objectCompare(ZF_IN ZFObject *anotherObj) {
         return ZFCompareSmaller;
     }
     else if(n == 0) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     else {
         return ZFCompareGreater;

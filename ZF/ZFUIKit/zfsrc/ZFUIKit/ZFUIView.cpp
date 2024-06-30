@@ -496,7 +496,7 @@ public:
             return zffalse;
         }
         for(zfindex i = children0->count() - 1; i != zfindexMax(); --i) {
-            if(ZFObjectCompare(children0->get(i), children1->get(i)) != ZFCompareTheSame) {
+            if(ZFObjectCompare(children0->get(i), children1->get(i)) != ZFCompareEqual) {
                 return zffalse;
             }
         }
@@ -1129,16 +1129,16 @@ zfidentity ZFUIView::objectHash(void) {
     return hash;
 }
 ZFCompareResult ZFUIView::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareTheSame;}
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(this->childCount() != another->childCount()) {
         return ZFCompareUncomparable;
     }
-    if(ZFObjectCompare(d->layoutParam, another->d->layoutParam) != ZFCompareTheSame) {
-        if((d->layoutParam == zfnull || ZFObjectCompare(d->layoutParam, d->serializableRefLayoutParam) == ZFCompareTheSame)
-                != (another->d->layoutParam == zfnull || ZFObjectCompare(another->d->layoutParam, another->d->serializableRefLayoutParam) == ZFCompareTheSame)
+    if(ZFObjectCompare(d->layoutParam, another->d->layoutParam) != ZFCompareEqual) {
+        if((d->layoutParam == zfnull || ZFObjectCompare(d->layoutParam, d->serializableRefLayoutParam) == ZFCompareEqual)
+                != (another->d->layoutParam == zfnull || ZFObjectCompare(another->d->layoutParam, another->d->serializableRefLayoutParam) == ZFCompareEqual)
                 ) {
             return ZFCompareUncomparable;
         }
@@ -1151,7 +1151,7 @@ ZFCompareResult ZFUIView::objectCompare(ZF_IN ZFObject *anotherObj) {
             ) {
         return ZFCompareUncomparable;
     }
-    return ZFCompareTheSame;
+    return ZFCompareEqual;
 }
 
 void ZFUIView::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {

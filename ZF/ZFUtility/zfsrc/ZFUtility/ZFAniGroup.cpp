@@ -294,7 +294,7 @@ zfbool ZFAniGroup::serializableOnSerializeToData(
         }
         else {
             for(zfindex i = 0; i < this->childCount(); ++i) {
-                if(ZFObjectCompare(this->childAt(i), ref->childAt(i)) != ZFCompareTheSame) {
+                if(ZFObjectCompare(this->childAt(i), ref->childAt(i)) != ZFCompareEqual) {
                     mismatch = zftrue;
                     break;
                 }
@@ -333,7 +333,7 @@ zfidentity ZFAniGroup::objectHash(void) {
     return d->childDatas->objectHash();
 }
 ZFCompareResult ZFAniGroup::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(zfsuper::objectCompare(anotherObj) != ZFCompareTheSame) {
+    if(zfsuper::objectCompare(anotherObj) != ZFCompareEqual) {
         return ZFCompareUncomparable;
     }
     zfself *another = zfcast(zfself *, anotherObj);

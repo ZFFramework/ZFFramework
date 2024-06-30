@@ -28,17 +28,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 typedef enum {
     ZFCompareUncomparable = -2, /**< can't be compared */
     ZFCompareSmaller = -1, /**< left < right */
-    ZFCompareTheSame = 0, /**< left == right */
+    ZFCompareEqual = 0, /**< left == right */
     ZFCompareGreater = 1, /**< left > right */
 } ZFCompareResult;
 /** @brief string tokens */
-#define ZFTOKEN_ZFCompareUncomparable "CompareUncomparable"
+#define ZFTOKEN_ZFCompareUncomparable "Uncomparable"
 /** @brief string tokens */
-#define ZFTOKEN_ZFCompareSmaller "CompareSmaller"
+#define ZFTOKEN_ZFCompareSmaller "Smaller"
 /** @brief string tokens */
-#define ZFTOKEN_ZFCompareTheSame "CompareTheSame"
+#define ZFTOKEN_ZFCompareEqual "Equal"
 /** @brief string tokens */
-#define ZFTOKEN_ZFCompareGreater "CompareGreater"
+#define ZFTOKEN_ZFCompareGreater "Greater"
 
 // ============================================================
 /**
@@ -95,7 +95,7 @@ inline ZFCompareResult ZFIndexRangeIsEqual(
         ZF_IN const ZFIndexRange &e0
         , ZF_IN const ZFIndexRange &e1
         ) {
-    return ((e0.start == e1.start && e0.count == e1.count) ? ZFCompareTheSame : ZFCompareUncomparable);
+    return ((e0.start == e1.start && e0.count == e1.count) ? ZFCompareEqual : ZFCompareUncomparable);
 }
 /**
  * @brief true if contain index in range

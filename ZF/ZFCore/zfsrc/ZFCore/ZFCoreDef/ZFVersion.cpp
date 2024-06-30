@@ -97,7 +97,7 @@ ZFCompareResult zfVersionCompare(
             case ZFCompareSmaller:
             case ZFCompareGreater:
                 return cmp;
-            case ZFCompareTheSame:
+            case ZFCompareEqual:
                 continue;
             default:
                 zfCoreCriticalShouldNotGoHere();
@@ -111,7 +111,7 @@ ZFCompareResult zfVersionCompare(
         return ZFCompareSmaller;
     }
     else {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
 }
 

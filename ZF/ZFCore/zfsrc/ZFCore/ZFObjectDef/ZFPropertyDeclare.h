@@ -468,7 +468,7 @@ public:
                 } \
                 zfbool ret = (ZFComparerDefault( \
                         t->Name(), _holder._ZFP_init(ownerObj, zffalse)) \
-                    == ZFCompareTheSame); \
+                    == ZFCompareEqual); \
                 _holder._ZFP_dealloc(ownerObj, zffalse); \
                 return ret; \
             } \
@@ -545,7 +545,7 @@ public:
                 } \
                 zfbool ret = (ZFComparerDefault( \
                         t->Name(), _holder._ZFP_init(ownerObj, zffalse)) \
-                    == ZFCompareTheSame); \
+                    == ZFCompareEqual); \
                 _holder._ZFP_dealloc(ownerObj, zffalse); \
                 return ret; \
             } \

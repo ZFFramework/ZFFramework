@@ -31,7 +31,7 @@ public:
             ZF_IN T_Comparable0 const &v0
             , ZF_IN T_Comparable1 const &v1
             ) {
-        return (v0 == v1) ? ZFCompareTheSame : ZFCompareUncomparable;
+        return (v0 == v1) ? ZFCompareEqual : ZFCompareUncomparable;
     }
 };
 template<typename T_Comparable0, typename T_Comparable1>
@@ -47,14 +47,14 @@ inline ZFCompareResult _ZFP_ZFComparerDefault(
             ZF_IN T_Comparable const &v0
             , ZF_IN zfnullT const &v1
             ) {
-        return (v0 == zfnull) ? ZFCompareTheSame : ZFCompareUncomparable;
+        return (v0 == zfnull) ? ZFCompareEqual : ZFCompareUncomparable;
     }
     template<typename T_Comparable>
     inline ZFCompareResult _ZFP_ZFComparerDefault(
             ZF_IN zfnullT const &v0
             , ZF_IN T_Comparable const &v1
             ) {
-        return (zfnull == v1) ? ZFCompareTheSame : ZFCompareUncomparable;
+        return (zfnull == v1) ? ZFCompareEqual : ZFCompareUncomparable;
     }
     inline ZFCompareResult _ZFP_ZFComparerDefault(
             ZF_IN zfnullT const &v0
@@ -137,7 +137,7 @@ inline ZFCompareResult _ZFP_ZFComparerNumeric(
         , ZF_IN T1 const &v1
         ) {
     if(v0 == v1) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     else if(v0 < v1) {
         return ZFCompareSmaller;
@@ -160,7 +160,7 @@ inline ZFCompareResult _ZFP_ZFComparerCheckEqual(
         ZF_IN T_Comparable0 const &v0
         , ZF_IN T_Comparable1 const &v1
         ) {
-    return ((v0 == v1) ? ZFCompareTheSame : ZFCompareUncomparable);
+    return ((v0 == v1) ? ZFCompareEqual : ZFCompareUncomparable);
 }
 /**
  * @brief compare by operator == only, see #ZFComparer
@@ -174,7 +174,7 @@ inline ZFCompareResult _ZFP_ZFComparerForPOD(
         ZF_IN T_Comparable const &v0
         , ZF_IN T_Comparable const &v1
         ) {
-    return ((zfmemcmp(&v0, &v1, sizeof(T_Comparable)) == 0) ? ZFCompareTheSame : ZFCompareUncomparable);
+    return ((zfmemcmp(&v0, &v1, sizeof(T_Comparable)) == 0) ? ZFCompareEqual : ZFCompareUncomparable);
 }
 /**
  * @brief default comparer for POD types, compare by memory, see #ZFComparer
@@ -205,7 +205,7 @@ ZFCOMPARER_DEFAULT_DECLARE(const zfchar *, const zfchar *, {
             return ZFCompareGreater;
         }
         else {
-            return ZFCompareTheSame;
+            return ZFCompareEqual;
         }
     })
 ZFCOMPARER_DEFAULT_DECLARE(zfstring, zfstring, {
@@ -217,7 +217,7 @@ ZFCOMPARER_DEFAULT_DECLARE(zfstring, zfstring, {
             return ZFCompareGreater;
         }
         else {
-            return ZFCompareTheSame;
+            return ZFCompareEqual;
         }
     })
 ZFCOMPARER_DEFAULT_DECLARE_ALIAS(zfindex, zfindex, ZFComparerNumeric)

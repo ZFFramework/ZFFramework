@@ -14,7 +14,7 @@ public:
 zfclassNotPOD _ZFP_ZFHashMapKeyComparer {
 public:
     zfbool operator () (ZFObject * const &v0, ZFObject * const &v1) const {
-        return (v0->objectCompare(v1) == ZFCompareTheSame);
+        return (v0->objectCompare(v1) == ZFCompareEqual);
     }
 };
 

@@ -678,6 +678,56 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCallbackType, ZFCallbackType, {
     })
 
 // ============================================================
+ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFSerializablePropertyType, ZFSerializablePropertyType, {
+        const zfchar *tokens[] = ZFM_EXPAND({
+            ZFTOKEN_ZFSerializablePropertyTypeUnspecified,
+            ZFTOKEN_ZFSerializablePropertyTypeNotSerializable,
+            ZFTOKEN_ZFSerializablePropertyTypeSerializable,
+            ZFTOKEN_ZFSerializablePropertyTypeEmbeded,
+            "",
+        });
+        zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
+        v = ZFSerializablePropertyTypeUnspecified;
+        switch(matched) {
+            case 0:
+                v = ZFSerializablePropertyTypeUnspecified;
+                return zftrue;
+            case 1:
+                v = ZFSerializablePropertyTypeNotSerializable;
+                return zftrue;
+            case 2:
+                v = ZFSerializablePropertyTypeSerializable;
+                return zftrue;
+            case 3:
+                v = ZFSerializablePropertyTypeEmbeded;
+                return zftrue;
+            default:
+                if(errorHint) {
+                    zfstringAppend(errorHint, "invalid value: \"%s\"", zfstring(src, srcLen));
+                }
+                return zffalse;
+        }
+    }, {
+        switch(v) {
+            case ZFSerializablePropertyTypeUnspecified:
+                s += ZFTOKEN_ZFSerializablePropertyTypeUnspecified;
+                return zftrue;
+            case ZFSerializablePropertyTypeNotSerializable:
+                s += ZFTOKEN_ZFSerializablePropertyTypeNotSerializable;
+                return zftrue;
+            case ZFSerializablePropertyTypeSerializable:
+                s += ZFTOKEN_ZFSerializablePropertyTypeSerializable;
+                return zftrue;
+            case ZFSerializablePropertyTypeEmbeded:
+                s += ZFTOKEN_ZFSerializablePropertyTypeEmbeded;
+                return zftrue;
+            default:
+                zfCoreCriticalShouldNotGoHere();
+                return zffalse;
+        }
+    })
+
+// ============================================================
 ZFTYPEID_DEFINE(ZFSerializableData, ZFSerializableData, {
         v = serializableData;
         return zftrue;

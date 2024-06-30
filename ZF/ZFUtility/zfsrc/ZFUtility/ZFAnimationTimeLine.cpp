@@ -139,7 +139,7 @@ ZFCompareResult ZFAnimationTimeLine::objectCompare(ZF_IN ZFObject *anotherObj) {
     if(anotherObj != zfnull && anotherObj->classData()->classIsTypeOf(zfself::ClassData())
             && ZFClassUtil::allPropertyIsEqual(this, anotherObj)
             ) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     return ZFCompareUncomparable;
 }

@@ -200,7 +200,7 @@ ZFCompareResult ZFCallback::objectCompare(ZF_IN const ZFCallback &ref) const {
             && this->callbackMethod() == ref.callbackMethod()
             && this->callbackRawFunction() == ref.callbackRawFunction()
             ))
-        ? ZFCompareTheSame : ZFCompareUncomparable);
+        ? ZFCompareEqual : ZFCompareUncomparable);
 }
 
 void ZFCallback::callbackClear(void) {

@@ -18,14 +18,14 @@ zfidentity ZFValueHolder::objectHash(void) {
         zfidentityCalcPointer(reinterpret_cast<void *>(this->holderType)));
 }
 ZFCompareResult ZFValueHolder::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareTheSame;}
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
     if(this->holdedData == another->holdedData
             && this->holderType == another->holderType
             ) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     else {
         return ZFCompareUncomparable;

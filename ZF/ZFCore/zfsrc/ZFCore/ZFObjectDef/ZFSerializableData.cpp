@@ -609,7 +609,7 @@ void ZFSerializableData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 
 ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData &another) const {
     if(d == another.d) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
 
     if(!zfstringIsEqual(this->itemClass(), another.itemClass())
@@ -626,11 +626,11 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
         }
     }
     for(zfindex i = 0; i < this->childCount(); ++i) {
-        if(this->childAt(i).objectCompare(another.childAt(i)) != ZFCompareTheSame) {
+        if(this->childAt(i).objectCompare(another.childAt(i)) != ZFCompareEqual) {
             return ZFCompareUncomparable;
         }
     }
-    return ZFCompareTheSame;
+    return ZFCompareEqual;
 }
 
 zfbool ZFSerializableData::isEmpty(void) const {

@@ -450,7 +450,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
         } \
     } \
     zfbool v_##TypeName::wrappedValueIsInit(void) { \
-        return (ZFComparerDefault(this->zfv, zftValue<_ZFP_PropTypeW_##TypeName>().zfv) == ZFCompareTheSame); \
+        return (ZFComparerDefault(this->zfv, zftValue<_ZFP_PropTypeW_##TypeName>().zfv) == ZFCompareEqual); \
     }
 
 #define _ZFP_ZFTYPEID_WRAPPER_DEFINE_UNCOMPARABLE(TypeName, Type) \

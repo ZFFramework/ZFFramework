@@ -621,7 +621,7 @@ protected:
         zfself *ref = zfcast(zfself *, referencedOwnerOrNull);
 
         if((ref == zfnull && !this->wrappedValueIsInit())
-                || (ref != zfnull && this->objectCompare(ref) != ZFCompareTheSame)
+                || (ref != zfnull && this->objectCompare(ref) != ZFCompareEqual)
                 ) {
             zfstring valueString;
             if(!this->wrappedValueToString(valueString, outErrorHint)) {

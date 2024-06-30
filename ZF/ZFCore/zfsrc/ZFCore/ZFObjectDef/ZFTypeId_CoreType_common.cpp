@@ -184,7 +184,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
         const zfchar *tokens[] = ZFM_EXPAND({
             ZFTOKEN_ZFCompareUncomparable,
             ZFTOKEN_ZFCompareSmaller,
-            ZFTOKEN_ZFCompareTheSame,
+            ZFTOKEN_ZFCompareEqual,
             ZFTOKEN_ZFCompareGreater,
             "",
         });
@@ -198,7 +198,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
                 v = ZFCompareSmaller;
                 return zftrue;
             case 2:
-                v = ZFCompareTheSame;
+                v = ZFCompareEqual;
                 return zftrue;
             case 3:
                 v = ZFCompareGreater;
@@ -217,8 +217,8 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
             case ZFCompareSmaller:
                 s += ZFTOKEN_ZFCompareSmaller;
                 return zftrue;
-            case ZFCompareTheSame:
-                s += ZFTOKEN_ZFCompareTheSame;
+            case ZFCompareEqual:
+                s += ZFTOKEN_ZFCompareEqual;
                 return zftrue;
             case ZFCompareGreater:
                 s += ZFTOKEN_ZFCompareGreater;
@@ -231,7 +231,7 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFCompareResult, ZFCompareResult, {
 ZFEXPORT_ENUM_DEFINE(ZFCompareResult
         , ZFCompareUncomparable
         , ZFCompareSmaller
-        , ZFCompareTheSame
+        , ZFCompareEqual
         , ZFCompareGreater
         )
 
@@ -484,9 +484,9 @@ ZFEXPORT_ENUM_DEFINE(ZFLevel
 ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
         const zfchar *tokens[] = ZFM_EXPAND({
             ZFTOKEN_ZFFrameworkStateNotAvailable,
-            ZFTOKEN_ZFFrameworkStateInitProcessing,
+            ZFTOKEN_ZFFrameworkStateInitRunning,
             ZFTOKEN_ZFFrameworkStateAvailable,
-            ZFTOKEN_ZFFrameworkStateCleanupProcessing,
+            ZFTOKEN_ZFFrameworkStateCleanupRunning,
             "",
         });
         zfindex matched = zfsCheckMatch(tokens, ZFM_ARRAY_SIZE(tokens), src, srcLen);
@@ -496,13 +496,13 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
                 v = ZFFrameworkStateNotAvailable;
                 return zftrue;
             case 1:
-                v = ZFFrameworkStateInitProcessing;
+                v = ZFFrameworkStateInitRunning;
                 return zftrue;
             case 2:
                 v = ZFFrameworkStateAvailable;
                 return zftrue;
             case 3:
-                v = ZFFrameworkStateCleanupProcessing;
+                v = ZFFrameworkStateCleanupRunning;
                 return zftrue;
             case 4:
                 v = ZFFrameworkStateNotAvailable;
@@ -518,14 +518,14 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFFrameworkState, ZFFrameworkState, {
             case ZFFrameworkStateNotAvailable:
                 s += ZFTOKEN_ZFFrameworkStateNotAvailable;
                 return zftrue;
-            case ZFFrameworkStateInitProcessing:
-                s += ZFTOKEN_ZFFrameworkStateInitProcessing;
+            case ZFFrameworkStateInitRunning:
+                s += ZFTOKEN_ZFFrameworkStateInitRunning;
                 return zftrue;
             case ZFFrameworkStateAvailable:
                 s += ZFTOKEN_ZFFrameworkStateAvailable;
                 return zftrue;
-            case ZFFrameworkStateCleanupProcessing:
-                s += ZFTOKEN_ZFFrameworkStateCleanupProcessing;
+            case ZFFrameworkStateCleanupRunning:
+                s += ZFTOKEN_ZFFrameworkStateCleanupRunning;
                 return zftrue;
             default:
                 return zffalse;

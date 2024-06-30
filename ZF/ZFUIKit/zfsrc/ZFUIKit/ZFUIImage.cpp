@@ -336,7 +336,7 @@ zfidentity ZFUIImage::objectHash(void) {
     return zfidentityCalcPointer(d->nativeImage);
 }
 ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareTheSame;}
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 
@@ -345,9 +345,9 @@ ZFCompareResult ZFUIImage::objectCompare(ZF_IN ZFObject *anotherObj) {
             && zfstringIsEqual(d->serializableType, another->d->serializableType)
             && ((d->serializableData == zfnull && another->d->serializableData == zfnull)
                 || (d->serializableData != zfnull && another->d->serializableData != zfnull
-                    && d->serializableData->objectCompare(*(another->d->serializableData)) == ZFCompareTheSame))
+                    && d->serializableData->objectCompare(*(another->d->serializableData)) == ZFCompareEqual))
                     ) {
-        return ZFCompareTheSame;
+        return ZFCompareEqual;
     }
     return ZFCompareUncomparable;
 }

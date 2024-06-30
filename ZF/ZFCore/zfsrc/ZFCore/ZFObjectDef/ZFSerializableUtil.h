@@ -207,8 +207,8 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 #define ZFSerializableUtilSerializeAttributeToData(serializableData, outErrorHint, ref, \
     key, TypeName, thisValue, refData, defaultValue, failAction) \
     do { \
-        if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) \
-                || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareTheSame) \
+        if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) \
+                || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareEqual) \
                 ) { \
             zfstring valueString; \
             if(!TypeName##ToStringT(valueString, thisValue)) { \
@@ -225,7 +225,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 #define ZFSerializableUtilSerializeAttributeToDataNoRef(serializableData, outErrorHint, \
     key, TypeName, thisValue, defaultValue, failAction) \
     do { \
-        if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) { \
+        if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) { \
             zfstring valueString; \
             if(!TypeName##ToStringT(valueString, thisValue)) { \
                 ZFSerializableUtilErrorOccurred(outErrorHint, \
@@ -255,8 +255,8 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 #define ZFSerializableUtilSerializeCategoryToData(serializableData, outErrorHint, ref, \
     key, TypeName, thisValue, refData, defaultValue, failAction) \
     do { \
-        if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) \
-                || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareTheSame) \
+        if((ref == zfnull && ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) \
+                || (ref != zfnull && ZFComparerDefault(thisValue, refData) != ZFCompareEqual) \
                 ) { \
             ZFSerializableData categoryData; \
             if(!TypeName##ToDataT(categoryData, thisValue, outErrorHint)) { \
@@ -272,7 +272,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 #define ZFSerializableUtilSerializeCategoryToDataNoRef(serializableData, outErrorHint, \
     key, TypeName, thisValue, defaultValue, failAction) \
     do { \
-        if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareTheSame) { \
+        if(ZFComparerDefault(thisValue, defaultValue) != ZFCompareEqual) { \
             ZFSerializableData categoryData; \
             if(!TypeName##ToDataT(categoryData, thisValue, outErrorHint)) { \
                 failAction \

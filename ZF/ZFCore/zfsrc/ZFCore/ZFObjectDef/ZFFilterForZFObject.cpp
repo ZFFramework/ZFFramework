@@ -46,7 +46,7 @@ zfbool ZFFilterForZFObject::filterOnCheckEqual(
         ZF_IN ZFObject * const &e1
         , ZF_IN ZFObject * const &e2
         ) const {
-    return (ZFObjectCompare(e1, e2) == ZFCompareTheSame);
+    return (ZFObjectCompare(e1, e2) == ZFCompareEqual);
 }
 zfbool ZFFilterForZFObject::filterOnCheckActive(ZF_IN ZFObject * const &e) const {
     if(!zfsuper::filterOnCheckActive(e)) {

@@ -106,7 +106,7 @@ zfidentity ZFObject::objectHash(void) {
     return zfidentityCalcPointer(this);
 }
 ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
-    return ((this == anotherObj) ? ZFCompareTheSame : ZFCompareUncomparable);
+    return ((this == anotherObj) ? ZFCompareEqual : ZFCompareUncomparable);
 }
 
 /* ZFMETHOD_MAX_PARAM */
@@ -612,12 +612,10 @@ ZFObject *ZFObject::_ZFP_ZFObject_ZFImplementDynamicHolder(ZF_IN const ZFClass *
         return it->second;
     }
     else {
-        zfauto holder = clsToImplement->newInstance();
+        _ZFP_ZFObjectPrivate *dObj = zfpoolNew(_ZFP_ZFObjectPrivate);
+        dObj->ZFImplementDynamicOwner = this;
+        zfauto holder = clsToImplement->_ZFP_ZFClass_newInstance(dObj);
         d->ZFImplementDynamicHolder[clsToImplement] = holder;
-        if(holder->d == zfnull) {
-            holder->d = zfpoolNew(_ZFP_ZFObjectPrivate);
-        }
-        holder->d->ZFImplementDynamicOwner = this;
 
         // alias internal data to owner
         holder->d->objectHolder = zfRetain(this->objectHolder());

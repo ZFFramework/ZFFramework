@@ -102,7 +102,7 @@ ZFSerializablePropertyType ZFUIAutoLayoutParam::serializableOnCheckPropertyType(
 
 ZFCompareResult ZFUIAutoLayoutParam::objectCompare(ZF_IN ZFObject *anotherObj) {
     zfself *ref = zfcast(zfself *, anotherObj);
-    if(anotherObj == zfnull || zfsuper::objectCompare(anotherObj) != ZFCompareTheSame) {
+    if(anotherObj == zfnull || zfsuper::objectCompare(anotherObj) != ZFCompareEqual) {
         return ZFCompareUncomparable;
     }
     for(zfindex i = ZFUIAutoLayoutPos::e_None + 1; i < ZFUIAutoLayoutPos::ZFEnumCount; ++i) {
@@ -110,7 +110,7 @@ ZFCompareResult ZFUIAutoLayoutParam::objectCompare(ZF_IN ZFObject *anotherObj) {
             return ZFCompareUncomparable;
         }
     }
-    return ZFCompareTheSame;
+    return ZFCompareEqual;
 }
 
 zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(

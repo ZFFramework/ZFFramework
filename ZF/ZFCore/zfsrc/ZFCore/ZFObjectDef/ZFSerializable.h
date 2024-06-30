@@ -41,16 +41,28 @@ typedef enum {
     /**
      * @brief see #ZFSerializable::serializableOnCheckPropertyType
      */
+    ZFSerializablePropertyTypeUnspecified,
+    /**
+     * @brief see #ZFSerializable::serializableOnCheckPropertyType
+     */
     ZFSerializablePropertyTypeNotSerializable,
     /**
      * @brief see #ZFSerializable::serializableOnCheckPropertyType
      */
-    ZFSerializablePropertyTypeSerializableProperty,
+    ZFSerializablePropertyTypeSerializable,
     /**
      * @brief see #ZFSerializable::serializableOnCheckPropertyType
      */
-    ZFSerializablePropertyTypeEmbededProperty,
+    ZFSerializablePropertyTypeEmbeded,
 } ZFSerializablePropertyType;
+/** @brief string tokens */
+#define ZFTOKEN_ZFSerializablePropertyTypeUnspecified "Unspecified"
+/** @brief string tokens */
+#define ZFTOKEN_ZFSerializablePropertyTypeNotSerializable "NotSerializable"
+/** @brief string tokens */
+#define ZFTOKEN_ZFSerializablePropertyTypeSerializable "Serializable"
+/** @brief string tokens */
+#define ZFTOKEN_ZFSerializablePropertyTypeEmbeded "Embeded"
 
 // ============================================================
 zfclassFwd _ZFP_I_ZFSerializablePropertyTypeHolder;

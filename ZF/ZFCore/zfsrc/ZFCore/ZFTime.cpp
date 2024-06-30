@@ -93,7 +93,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFCompareResult, ZFTimeValueCompare
         ) {
     if(tv1.sec == tv2.sec) {
         if(tv1.usec == tv2.usec) {
-            return ZFCompareTheSame;
+            return ZFCompareEqual;
         }
         else if(tv1.usec < tv2.usec) {
             return ZFCompareSmaller;
@@ -512,7 +512,7 @@ zfidentity ZFTime::objectHash(void) {
 }
 
 ZFCompareResult ZFTime::objectCompare(ZF_IN ZFObject *anotherObj) {
-    if(this == anotherObj) {return ZFCompareTheSame;}
+    if(this == anotherObj) {return ZFCompareEqual;}
     zfself *another = zfcast(zfself *, anotherObj);
     if(another == zfnull) {return ZFCompareUncomparable;}
 

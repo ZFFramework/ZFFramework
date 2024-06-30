@@ -609,6 +609,17 @@ ZFOUTPUT_TYPE(ZFCallbackType, {ZFCallbackTypeToStringT(s, v);})
  *
  * serializable data:
  * @code
+ *   <ZFSerializablePropertyType value="value" />
+ * @endcode
+ */
+ZFTYPEID_DECLARE(ZFLIB_ZFCore, ZFSerializablePropertyType, ZFSerializablePropertyType)
+ZFOUTPUT_TYPE(ZFSerializablePropertyType, {ZFSerializablePropertyTypeToStringT(s, v);})
+
+/**
+ * @brief see #ZFTYPEID_DECLARE
+ *
+ * serializable data:
+ * @code
  *   <ZFSerializableData />
  * @endcode
  */

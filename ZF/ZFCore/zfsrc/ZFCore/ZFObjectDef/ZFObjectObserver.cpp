@@ -247,7 +247,7 @@ void ZFObserver::observerRemove(
     if(it != d->observerMap.end()) {
         _ZFP_ZFObserverData *p = it->second;
         do {
-            if(p->observer.objectCompareByInstance(callback) == ZFCompareTheSame) {
+            if(p->observer.objectCompareByInstance(callback) == ZFCompareEqual) {
                 d->observerDetach(it, p);
 
                 if(it->second == zfnull) {

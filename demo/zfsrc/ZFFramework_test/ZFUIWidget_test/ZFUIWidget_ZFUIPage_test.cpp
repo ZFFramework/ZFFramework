@@ -60,7 +60,7 @@ protected:
             , ZF_IN const zfchar * const &e1
             ) {
         if(zfstringIsEqual(e0->pageGroupId(), e1)) {
-            return ZFCompareTheSame;
+            return ZFCompareEqual;
         }
         return ZFCompareUncomparable;
     }

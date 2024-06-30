@@ -16,6 +16,9 @@ void allClassParentT(
     if(filter == zfnull) {
         while(cls != zfnull) {
             ret.add(cls);
+            for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
+                ret.add(cls->dynamicInterfaceAt(i));
+            }
             for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
                 ret.add(cls->implementedInterfaceAt(i));
             }
@@ -26,6 +29,11 @@ void allClassParentT(
         while(cls != zfnull) {
             if(filter->filterCheckActive(cls)) {
                 ret.add(cls);
+            }
+            for(zfindex i = 0; i < cls->dynamicInterfaceCount(); ++i) {
+                if(filter->filterCheckActive(cls->dynamicInterfaceAt(i))) {
+                    ret.add(cls->dynamicInterfaceAt(i));
+                }
             }
             for(zfindex i = 0; i < cls->implementedInterfaceCount(); ++i) {
                 if(filter->filterCheckActive(cls->implementedInterfaceAt(i))) {
@@ -86,7 +94,7 @@ zfbool allPropertyIsEqual(
     ZFCoreArray<const ZFProperty *> allProperty = ZFClassUtil::allProperty(cls0, filter);
     for(zfindex i = allProperty.count() - 1; i != zfindexMax(); --i) {
         if(cls1->classIsTypeOf(allProperty[i]->propertyOwnerClass())
-                && ZFPropertyCompare(allProperty[i], obj0, obj1) != ZFCompareTheSame
+                && ZFPropertyCompare(allProperty[i], obj0, obj1) != ZFCompareEqual
                 ) {
             return zffalse;
         }

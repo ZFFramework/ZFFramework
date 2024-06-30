@@ -14,7 +14,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // compare
 /**
  * @brief util method to compare two ZFObject,
- *   return #ZFCompareTheSame if both null,
+ *   return #ZFCompareEqual if both null,
  *   return #ZFCompareUncomparable if one null but the other is not null,
  *   return compare result by #ZFObject::objectCompare if both not null
  */
@@ -24,7 +24,7 @@ inline ZFCompareResult ZFObjectCompare(
         ) {
     if(e0 == zfnull) {
         if(e1 == zfnull) {
-            return ZFCompareTheSame;
+            return ZFCompareEqual;
         }
         else {
             return ZFCompareUncomparable;

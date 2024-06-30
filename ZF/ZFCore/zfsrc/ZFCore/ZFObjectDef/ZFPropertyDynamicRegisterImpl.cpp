@@ -401,7 +401,7 @@ static zfbool _ZFP_PropDynReg_callbackIsInitValue(
                     *outInitValue = initValue;
                 }
             }
-            ret = (tag->objectCompare(initValue) == ZFCompareTheSame);
+            ret = (tag->objectCompare(initValue) == ZFCompareEqual);
         }
     }
     return ret;
