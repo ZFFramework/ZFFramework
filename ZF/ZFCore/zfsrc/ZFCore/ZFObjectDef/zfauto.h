@@ -20,7 +20,7 @@ zfauto::zfauto(ZF_IN T_ZFObject *p)
 }
 template<typename T_ZFObject>
 zfauto::zfauto(ZF_IN T_ZFObject const &p)
-: _ZFP_obj(zfRetain(_ZFP_zfanyCast(ZFObject *, p)))
+: _ZFP_obj(zfRetain(_ZFP_zfanyCast(p)))
 {
 }
 
@@ -34,7 +34,7 @@ zfauto &zfauto::operator = (ZF_IN T_ZFObject *p) {
 template<typename T_ZFObject>
 zfauto &zfauto::operator = (ZF_IN T_ZFObject const &p) {
     zfCoreMutexLock();
-    this->zfunsafe_assign(_ZFP_zfanyCast(ZFObject *, p));
+    this->zfunsafe_assign(_ZFP_zfanyCast(p));
     zfCoreMutexUnlock();
     return *this;
 }
@@ -57,21 +57,21 @@ const ZFClass *zfautoT<T_ZFObjectBase>::ClassData(void) {
 // ============================================================
 template<typename T_ZFObject>
 inline zfbool operator == (ZF_IN T_ZFObject *obj, ZF_IN zfauto const &e) {
-    return e.toObject() == _ZFP_zfanyCast(ZFObject *, obj);
+    return e.toObject() == _ZFP_zfanyCast(obj);
 }
 template<typename T_ZFObject>
 inline zfbool operator != (ZF_IN T_ZFObject *obj, ZF_IN zfauto const &e) {
-    return e.toObject() != _ZFP_zfanyCast(ZFObject *, obj);
+    return e.toObject() != _ZFP_zfanyCast(obj);
 }
 
 // ============================================================
 template<typename T_ZFObject, typename T_ZFObjectBase>
 inline zfbool operator == (ZF_IN T_ZFObject *obj, ZF_IN zfautoT<T_ZFObjectBase> const &e) {
-    return e.toObject() == _ZFP_zfanyCast(ZFObject *, obj);
+    return e.toObject() == _ZFP_zfanyCast(obj);
 }
 template<typename T_ZFObject, typename T_ZFObjectBase>
 inline zfbool operator != (ZF_IN T_ZFObject *obj, ZF_IN zfautoT<T_ZFObjectBase> const &e) {
-    return e.toObject() != _ZFP_zfanyCast(ZFObject *, obj);
+    return e.toObject() != _ZFP_zfanyCast(obj);
 }
 /** @endcond */
 

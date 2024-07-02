@@ -66,11 +66,11 @@ public:
     }
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() == _ZFP_zfanyCast(ZFObject *, obj);
+        return this->toObject() == _ZFP_zfanyCast(obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() != _ZFP_zfanyCast(ZFObject *, obj);
+        return this->toObject() != _ZFP_zfanyCast(obj);
     }
 
 public:
@@ -164,11 +164,11 @@ public:
     }
     template<typename T_ZFObject>
     inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() == _ZFP_zfanyCast(ZFObject *, obj);
+        return this->toObject() == _ZFP_zfanyCast(obj);
     }
     template<typename T_ZFObject>
     inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
-        return this->toObject() != _ZFP_zfanyCast(ZFObject *, obj);
+        return this->toObject() != _ZFP_zfanyCast(obj);
     }
 
 public:
