@@ -50,7 +50,7 @@ public:
     }
 };
 template<typename T_Type>
-zfclassNotPOD _ZFP_zfanyCastH<T_Type, 0> {
+zfclassNotPOD _ZFP_zfanyCastH<T_Type, 1> {
 public:
     static inline ZFObject *c(ZF_IN T_Type const &obj) {
         return obj.toObject();
@@ -59,7 +59,7 @@ public:
 template<typename T_Type>
 inline ZFObject *_ZFP_zfanyCast(ZF_IN T_Type const &obj) {
     typedef typename zftTraits<T_Type>::TrType T_TypeTmp;
-    return _ZFP_zfanyCastH<T_Type, zftIsZFObject(T_TypeTmp)>::c(obj);
+    return _ZFP_zfanyCastH<T_Type, zftIsZFObject(T_TypeTmp) || zftIsZFObjectType(T_TypeTmp)>::c(obj);
 }
 
 // ============================================================

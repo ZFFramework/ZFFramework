@@ -207,6 +207,11 @@ public:
     zfobj(P0 const &p0, P1 const &p1, P2 const &p2, P3 const &p3, P4 const &p4, P5 const &p5, P6 const &p6, P7 const &p7)
     : zfautoT<T_ZFObjectBase>()
     {this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6, p7));}
+
+public:
+    inline ZFObject *toObject(void) const { // required for _ZFP_zfanyCast to work
+        return zfautoT<T_ZFObjectBase>::toObject();
+    }
     /** @endcond */
 };
 
