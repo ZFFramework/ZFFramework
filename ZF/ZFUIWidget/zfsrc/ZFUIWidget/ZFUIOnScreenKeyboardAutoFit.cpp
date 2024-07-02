@@ -295,7 +295,7 @@ void ZFUIOnScreenKeyboardAutoFitLayout::layoutOnLayoutPrepare(ZF_IN const ZFUIRe
                     owner->scrollChildToVisible(owner->autoFitFocusedView());
                 }
             } ZFLISTENER_END()
-            ZFThread::post(scrollFocusedViewToVisibleDelay);
+            zfpost(scrollFocusedViewToVisibleDelay);
         }
     }
 }

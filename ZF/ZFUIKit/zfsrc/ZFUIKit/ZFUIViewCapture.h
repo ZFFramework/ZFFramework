@@ -15,7 +15,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief capture ZFUIView to ZFUIImage
  *
  * note: you could only capture view when the view fully layouted and displayed,
- * use #ZFThread::post or #ZFTimerOnce if necessary
+ * use #zfpost or #ZFTimerOnce if necessary
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, zfautoT<ZFUIImage>, ZFUIViewCapture
         , ZFMP_IN(ZFUIView *, view)

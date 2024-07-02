@@ -142,17 +142,6 @@ public:
             , ZFMP_IN(const ZFListener &, callback)
             )
 
-    /**
-     * @brief util to run callback in current thread's #taskQueueAdd,
-     *   or run in #mainThread if current thread's #taskQueueAvailable is false
-     *
-     * return the actual thread that added the task,
-     * you may use #taskQueueRemove to remove the task
-     */
-    ZFMETHOD_DECLARE_STATIC_1(ZFThread *, post
-            , ZFMP_IN(const ZFListener &, callback)
-            )
-
     // ============================================================
     // thread instance method
 protected:

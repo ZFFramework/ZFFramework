@@ -5,6 +5,27 @@
 #include "ZFCore/ZFSTLWrapper/zfstlmap.h"
 #include "ZFCore/ZFSTLWrapper/zfstlvector.h"
 
+#define _ZFP_ZFObjectPrivate_DEBUG 0
+#if _ZFP_ZFObjectPrivate_DEBUG
+#include "ZFCore/ZFTimer.h"
+static zfindex _ZFP_ZFObjectAllocCount = 0;
+static zfindex _ZFP_ZFObjectCount = 0;
+static zfindex _ZFP_ZFObjectPrivateAllocCount = 0;
+static zfindex _ZFP_ZFObjectPrivateCount = 0;
+ZF_GLOBAL_INITIALIZER_INIT(ZFObjectCount) {
+    ZFLISTENER(action) {
+        zfCoreLogTrim("[ZFObjectCount] %s/%s %s/%s"
+                , _ZFP_ZFObjectCount
+                , _ZFP_ZFObjectAllocCount
+                , _ZFP_ZFObjectPrivateCount
+                , _ZFP_ZFObjectPrivateAllocCount
+                );
+    } ZFLISTENER_END()
+    ZFTimerOnce(3000, action);
+}
+ZF_GLOBAL_INITIALIZER_END(ZFObjectCount)
+#endif
+
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
@@ -41,7 +62,16 @@ public:
     , ZFImplementDynamicOwner(zfnull)
     , ZFImplementDynamicHolder()
     {
+#if _ZFP_ZFObjectPrivate_DEBUG
+        ++_ZFP_ZFObjectPrivateAllocCount;
+        ++_ZFP_ZFObjectPrivateCount;
+#endif
     }
+#if _ZFP_ZFObjectPrivate_DEBUG
+    ~_ZFP_ZFObjectPrivate(void) {
+        --_ZFP_ZFObjectPrivateCount;
+    }
+#endif
 
 public:
     ZFObserver &observerHolderCheck(ZF_IN ZFObject *owner) {
@@ -516,8 +546,15 @@ void ZFObject::objectOnInit(void) {
     if(this->classData()->classIsInternalPrivate()) {
         ZFBitSet(this->_stateFlags, _ZFP_ZFObjectPrivate::stateFlag_objectIsInternalPrivate);
     }
+#if _ZFP_ZFObjectPrivate_DEBUG
+        ++_ZFP_ZFObjectAllocCount;
+        ++_ZFP_ZFObjectCount;
+#endif
 }
 void ZFObject::objectOnDealloc(void) {
+#if _ZFP_ZFObjectPrivate_DEBUG
+        --_ZFP_ZFObjectCount;
+#endif
     if(_ZFP_ZFObject_classDynamic) {
         _ZFP_ZFObject_classDynamic->_ZFP_classDynamicRegisterObjectInstanceDetach(this);
     }

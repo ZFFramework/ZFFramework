@@ -738,7 +738,7 @@ void ZFUIScrollView::layoutOnLayoutPrepare(ZF_IN const ZFUIRect &bounds) {
                     zffalse);
             }
         } ZFLISTENER_END()
-        ZFThread::post(action);
+        zfpost(action);
     }
 
     d->scrollThumbUpdate();

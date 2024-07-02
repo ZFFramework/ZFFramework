@@ -236,7 +236,7 @@ ZFMETHOD_DEFINE_1(ZFThread, zfbool, sleep
         impl->sleepTokenDestroy(cur->d->sleepToken);
         cur->d->sleepToken = zfnull;
     }
-    return ret;
+    return !ret;
 }
 ZFMETHOD_DEFINE_0(ZFThread, void, sleepCancel) {
     if(d->sleepToken) {
@@ -249,17 +249,6 @@ ZFMETHOD_DEFINE_2(ZFThread, ZFThread *, executeInThread
         , ZFMP_IN(const ZFListener &, callback)
         ) {
     ZFThread *ret = (thread != zfnull && thread->taskQueueAvailable() ? thread : ZFThread::mainThread());
-    ret->taskQueueAdd(callback);
-    return ret;
-}
-
-ZFMETHOD_DEFINE_1(ZFThread, ZFThread *, post
-        , ZFMP_IN(const ZFListener &, callback)
-        ) {
-    ZFThread *ret = ZFThread::currentThread();
-    if(ret == zfnull || !ret->taskQueueAvailable()) {
-        ret = ZFThread::mainThread();
-    }
     ret->taskQueueAdd(callback);
     return ret;
 }
