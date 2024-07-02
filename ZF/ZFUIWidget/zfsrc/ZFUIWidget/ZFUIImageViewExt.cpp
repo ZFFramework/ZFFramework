@@ -26,7 +26,7 @@ void ZFUIImageViewExt::imageOnLoad(ZF_IN const ZFInput &src) {
     if(owner == zfnull) {
         return;
     }
-    if(!this->imageSrc()) {
+    if(!src) {
         if(owner->image() == zfnull) {
             owner->image(this->imageFail());
         }
@@ -50,7 +50,7 @@ void ZFUIImageViewExt::imageOnLoad(ZF_IN const ZFInput &src) {
             owner->image(zfcast(zfself *, owner)->imageFail());
         }
     } ZFLISTENER_END()
-    _taskId = ZFUIImageLoad(this->imageSrc(), loadOnFinish);
+    _taskId = ZFUIImageLoad(src, loadOnFinish);
 }
 
 // ============================================================
