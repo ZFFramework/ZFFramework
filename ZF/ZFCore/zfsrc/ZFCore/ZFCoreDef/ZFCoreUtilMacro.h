@@ -523,6 +523,9 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZFCORE_PARAM_INIT(...) __VA_ARGS__
 #define _ZFP_ZFCORE_PARAM(T_ParamType, paramName, initValue) \
     public: \
+        inline T_ParamType &paramName(void) { \
+            return this->paramName##_PropV.value; \
+        } \
         inline T_ParamType const &paramName(void) const { \
             return this->paramName##_PropV.value; \
         } \
