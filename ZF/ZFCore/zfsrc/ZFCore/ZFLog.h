@@ -20,14 +20,27 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFMutex *, ZFLogMutex)
 
-extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo);
+/** @brief see #ZFLogHeader */
+typedef zfstring (*ZFLogHeaderFunc)(ZF_IN const ZFCallerInfo &callerInfo);
 /**
- * @brief a convenient debug header string
+ * @brief callback to obtain log header for #zfLog
  *
- * typically looks like this (not ensured):\n
- *   "timestamp [file scope::function (line)] "
+ * set to #ZFLogHeaderDefault at #ZFLevelZFFrameworkStatic,
+ * set to null to disable header info\n
+ * by default, the header would looks like this (not ensured):\n
+ *   "12:34:56.123 [file scope::function (line)] "\n
+ * the default header can be configured by:
+ * -  #ZFLogHeaderDefault_logTime
+ * -  #ZFLogHeaderDefault_logCaller
  */
-#define ZFLOG_HEADER_STRING (_ZFP_ZFLogHeaderString(ZFCallerInfoMake()).cString())
+extern ZFLIB_ZFCore ZFLogHeaderFunc ZFLogHeader;
+
+/** @brief see #ZFLogHeader */
+extern ZFLIB_ZFCore zfstring ZFLogHeaderDefault(ZF_IN const ZFCallerInfo &callerInfo);
+/** @brief see #ZFLogHeader, enabled by default */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, zfbool, ZFLogHeaderDefault_logTime)
+/** @brief see #ZFLogHeader, enabled by default, set to false if #ZFLogLevel::e_Verbose is not active */
+ZFEXPORT_VAR_DECLARE(ZFLIB_ZFCore, zfbool, ZFLogHeaderDefault_logCaller)
 
 // ============================================================
 /**
@@ -35,11 +48,11 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
  *
  * typical usage:
  * @code
- *   // output anything with ZFLOG_HEADER_STRING
+ *   // output anything with ZFLogHeader
  *   zfLog() << anything;
  *   zfLog("formated: %s", someText);
  *
- *   // or, trim version without ZFLOG_HEADER_STRING
+ *   // or, trim version without ZFLogHeader
  *   zfLogTrim() << anything;
  *   zfLogTrim("formated: %s", someText);
  * @endcode
@@ -61,7 +74,7 @@ extern ZFLIB_ZFCore zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &ca
  * @endcode
  * and they would be reset to default state after each zfLog call
  */
-#define zfLog(...) _ZFP_zfLog(ZFLOG_HEADER_STRING, zfstr(__VA_ARGS__))
+#define zfLog(...) _ZFP_zfLog((ZFLogHeader ? ZFLogHeader(ZFCallerInfoMake()).cString() : zfnull), zfstr(__VA_ARGS__))
 
 /** @brief see #zfLog */
 #define zfLogTrim(...) _ZFP_zfLog(zfnull, zfstr(__VA_ARGS__))

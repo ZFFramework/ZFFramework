@@ -70,19 +70,37 @@ ZFMETHOD_FUNC_DEFINE_0(ZFLogFormat *, ZFLogFormatDefault) {
     return _ZFP_ZFLogFormatHolder;
 }
 
-zfstring _ZFP_ZFLogHeaderString(ZF_IN const ZFCallerInfo &callerInfo) {
+ZFLogHeaderFunc ZFLogHeader = zfnull;
+
+ZFEXPORT_VAR_DEFINE(zfbool, ZFLogHeaderDefault_logTime, zftrue)
+ZFEXPORT_VAR_DEFINE(zfbool, ZFLogHeaderDefault_logCaller, zftrue)
+
+zfstring ZFLogHeaderDefault(ZF_IN const ZFCallerInfo &callerInfo) {
     zfstring ret;
-    ZFTimeInfo ti = ZFTime::currentTimeInfo();
-    zfstringAppend(ret,
-        "%02s:%02s:%02s.%03s ",
-        ti.hour,
-        ti.minute,
-        ti.second,
-        ti.miliSecond);
-    callerInfo.callerInfoT(ret);
-    ret += " ";
+    if(ZFLogHeaderDefault_logTime()) {
+        ZFTimeInfo ti = ZFTime::currentTimeInfo();
+        zfstringAppend(ret,
+            "%02s:%02s:%02s.%03s ",
+            ti.hour,
+            ti.minute,
+            ti.second,
+            ti.miliSecond);
+    }
+    if(ZFLogHeaderDefault_logCaller()) {
+        callerInfo.callerInfoT(ret);
+        ret += " ";
+    }
     return ret;
 }
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLogHeaderInit, ZFLevelZFFrameworkStatic) {
+    ZFLogHeader = ZFLogHeaderDefault;
+    ZFLogHeaderDefault_logTime(zftrue);
+    ZFLogHeaderDefault_logCaller(ZFLogLevelIsActive(ZFLogLevel::e_Verbose));
+}
+ZF_GLOBAL_INITIALIZER_DESTROY(ZFLogHeaderInit) {
+    ZFLogHeader = zfnull;
+}
+ZF_GLOBAL_INITIALIZER_END(ZFLogHeaderInit)
 
 // ============================================================
 static zfindex _ZFP_zfLogOnOutput(

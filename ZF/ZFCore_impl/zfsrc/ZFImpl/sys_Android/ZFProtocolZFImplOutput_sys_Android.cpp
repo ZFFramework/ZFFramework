@@ -5,6 +5,12 @@
 #if ZF_ENV_sys_Android
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFLog_sys_Android, ZFLevelZFFrameworkEssential) {
+    // Android's log already has time
+    ZFLogHeaderDefault_logTime(zffalse);
+}
+ZF_GLOBAL_INITIALIZER_END(ZFLog_sys_Android)
+
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFImplOutputImpl_sys_Android, ZFImplOutput, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Android:Logcat")
 public:

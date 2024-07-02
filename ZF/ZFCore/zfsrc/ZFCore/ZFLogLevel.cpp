@@ -1,4 +1,5 @@
 #include "ZFLogLevel.h"
+#include "ZFLog.h"
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
@@ -13,6 +14,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFLogLevelDefault
         , ZFMP_IN(ZFLogLevelEnum, level)
         ) {
     _ZFP_ZFLogLevelGlobal = level;
+    ZFLogHeaderDefault_logCaller(ZFLogLevelIsActive(ZFLogLevel::e_Verbose));
     if(ZFFrameworkStateCheck(ZFLevelZFFrameworkEssential) == ZFFrameworkStateAvailable) {
         ZFGlobalObserver().observerNotify(ZFGlobalEvent::EventLogLevelOnChange());
     }
