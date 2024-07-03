@@ -30,22 +30,46 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFCALLBACK_DECLARE_BEGIN(ZFLIB_ZFCore, ZFListener, ZFCallback)
 public:
     /** @brief see #ZFListener */
-    inline void execute(void) const {
-        ZFArgs zfargs;
-        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+    inline zfbool execute(void) const {
+        if(this->callbackValid()) {
+            ZFArgs zfargs;
+            ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+            return zftrue;
+        }
+        else {
+            return zffalse;
+        }
     }
     /** @brief see #ZFListener */
-    inline void execute(ZF_IN const ZFArgs &zfargs) const {
-        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+    inline zfbool execute(ZF_IN const ZFArgs &zfargs) const {
+        if(this->callbackValid()) {
+            ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+            return zftrue;
+        }
+        else {
+            return zffalse;
+        }
     }
     /** @brief see #ZFListener */
-    inline void operator () (void) const {
-        ZFArgs zfargs;
-        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+    inline zfbool operator () (void) const {
+        if(this->callbackValid()) {
+            ZFArgs zfargs;
+            ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+            return zftrue;
+        }
+        else {
+            return zffalse;
+        }
     }
     /** @brief see #ZFListener */
-    inline void operator () (ZF_IN const ZFArgs &zfargs) const {
-        ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+    inline zfbool operator () (ZF_IN const ZFArgs &zfargs) const {
+        if(this->callbackValid()) {
+            ZFCallback::executeExact<void, const ZFArgs &>(zfargs);
+            return zftrue;
+        }
+        else {
+            return zffalse;
+        }
     }
 
     /** @cond ZFPrivateDoc */

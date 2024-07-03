@@ -41,14 +41,24 @@ public:
             ZF_IN const void *src
             , ZF_IN_OPT zfindex count = zfindexMax()
             ) const {
-        return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
+        if(this->callbackValid()) {
+            return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
+        }
+        else {
+            return 0;
+        }
     }
     /** @brief see #ZFOutput */
     inline zfindex operator () (
             ZF_IN const void *src
             , ZF_IN_OPT zfindex count = zfindexMax()
             ) const {
-        return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
+        if(this->callbackValid()) {
+            return ZFCallback::executeExact<zfindex, const void *, zfindex>(src, count);
+        }
+        else {
+            return 0;
+        }
     }
     /** @brief see #ZFOutput */
     inline const ZFOutput &output(

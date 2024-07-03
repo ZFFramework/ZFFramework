@@ -431,11 +431,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFMETHOD_USER_REGISTER_0({
         return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute();
     }, v_ZFCallback,
-    void, execute)
+    zfbool, execute)
 ZFMETHOD_USER_REGISTER_1({
         return ZFListener(invokerObject->to<v_ZFCallback *>()->zfv).execute(zfargs);
     }, v_ZFCallback,
-    void, execute
+    zfbool, execute
     , ZFMP_IN(const ZFArgs &, zfargs)
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackClear)

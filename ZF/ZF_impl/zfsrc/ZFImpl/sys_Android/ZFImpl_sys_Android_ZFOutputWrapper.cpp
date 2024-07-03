@@ -34,19 +34,11 @@ JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFOutputWrapper
         , jlong offset
         , jlong size
         ) {
+    if(buf == NULL) {
+        return (jlong)0;
+    }
     v_ZFOutput *outputHolder = JNIConvertZFObjectFromJNIType(jniEnv, zfjniPointerOwnerZFOutput);
     ZFOutput output = outputHolder->zfv;
-
-    if(buf == NULL) {
-        zfindex ret = output.execute(zfnull, zfindexMax());
-        if(ret == zfindexMax()) {
-            return -1;
-        }
-        else {
-            return (jlong)ret;
-        }
-    }
-
     jbyte *rawBuf = JNIUtilGetByteArrayElements(jniEnv, buf, NULL);
     zfindex written = output.execute(rawBuf + offset, size);
     JNIUtilReleaseByteArrayElements(jniEnv, buf, rawBuf, 0);

@@ -41,14 +41,24 @@ public:
             ZF_OUT void *buf
             , ZF_IN zfindex count
             ) const {
-        return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
+        if(this->callbackValid()) {
+            return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
+        }
+        else {
+            return 0;
+        }
     }
     /** @brief see #ZFInput */
     inline zfindex operator () (
             ZF_OUT void *buf
             , ZF_IN zfindex count
             ) const {
-        return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
+        if(this->callbackValid()) {
+            return ZFCallback::executeExact<zfindex, void *, zfindex>(buf, count);
+        }
+        else {
+            return 0;
+        }
     }
     /** @brief see #ZFInput */
     const ZFInput &input(
