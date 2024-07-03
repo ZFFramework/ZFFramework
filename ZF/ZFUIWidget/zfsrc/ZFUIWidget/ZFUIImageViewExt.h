@@ -38,7 +38,9 @@ public:
     ZFPROPERTY_ON_ATTACH_DECLARE(ZFInput, imageSrc)
 
 protected:
+    /** @brief called to load image */
     virtual void imageOnLoad(ZF_IN const ZFInput &src);
+    /** @brief when #imageUrl or #imageSrc set, #ZFUIImageView::image would be ignored from serialize */
     ZFMETHOD_DECLARE_PROTECTED_1(ZFSerializablePropertyType, serializableOnCheckPropertyType
             , ZFMP_IN(const ZFProperty *, property)
             )

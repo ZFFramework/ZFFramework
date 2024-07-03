@@ -30,7 +30,7 @@ public:
      * @brief start the task
      *
      * note an empty or invalid task is not treated as error,
-     * it would result to #taskStop with success get called
+     * it would result to #stop with success get called
      */
     ZFMETHOD_DECLARE_1(void, start
             , ZFMP_IN_OPT(const ZFListener &, onStop, zfnull)

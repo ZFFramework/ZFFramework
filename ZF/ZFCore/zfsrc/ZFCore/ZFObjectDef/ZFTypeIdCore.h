@@ -711,6 +711,7 @@ protected:
         })
 
 // ============================================================
+/** @cond ZFPrivateDoc */
 template<typename T_Type>
 ZFV::operator T_Type &(void) const {
     ZFTypeIdWrapper *w = zfcast(ZFTypeIdWrapper *, _ZFP_obj);
@@ -722,6 +723,7 @@ ZFV::operator T_Type &(void) const {
             );
     return *(T_Type_ *)w->wrappedValue();
 }
+/** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFTypeIdCore_h_

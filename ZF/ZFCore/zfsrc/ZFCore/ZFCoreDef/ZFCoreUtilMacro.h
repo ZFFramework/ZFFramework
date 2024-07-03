@@ -526,11 +526,11 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         inline T_ParamType &paramName(void) { \
             return this->paramName##_PropV.value; \
         } \
+        /** @cond ZFPrivateDoc */ \
         inline T_ParamType const &paramName(void) const { \
             return this->paramName##_PropV.value; \
         } \
     private: \
-        /** @cond ZFPrivateDoc */ \
         zfclassLikePOD paramName##_PropT { \
         public: \
             paramName##_PropT(void) \

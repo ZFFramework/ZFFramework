@@ -779,7 +779,7 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
             return zfnew(ZFCoreArray<_ZFP_PropTypeW_##TypeName>); \
         } \
     }; \
-    /** @endcond */    /** @endcond */ \
+    /** @endcond */ \
     /** @brief type wrapper for #ZFTypeId::Value */ \
     typedef v_##AliasToTypeName v_##TypeName;
 

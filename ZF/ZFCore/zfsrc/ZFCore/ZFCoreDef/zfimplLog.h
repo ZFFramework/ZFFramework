@@ -118,6 +118,6 @@
     #define zfimplTime() _ZFP_zfimplTime().buf
 #endif
 
-/** @cond endcond */
+/** @endcond */
 #endif // #ifndef _ZFI_zfimplLog_h_
 
