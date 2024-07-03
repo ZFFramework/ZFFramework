@@ -41,7 +41,7 @@ private:
             }
         }
     };
-    typedef zfstlmap<const zfchar *, _TaskData *, zfcharConst_zfstlComparer> _TaskMap;
+    typedef zfstlmap<const zfchar *, _TaskData *, zfcharConst_zfstlLess> _TaskMap;
 
     zfclassNotPOD _Token {
     public:
@@ -322,7 +322,7 @@ public:
         }
         zfbool ret = ZFDecompressContentFindFirst(fd, taskData->taskToken, relPath);
         if(ret) {
-            zfobj<ZFValueHolder> taskDataHolder(taskData, ZFValueHolderTypePointerRef);
+            zfobj<ZFValueHolder> taskDataHolder(taskData, ZFValueHolderTypePointerRef());
             fd.implTag("_ZFP_ZFPathType_ZFCompress", taskDataHolder);
         }
         else {

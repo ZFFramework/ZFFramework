@@ -72,12 +72,12 @@ public:
             }
             zfCoreMutexUnlock();
 
-            taskData->zfargs.sender(taskData);
+            taskData->zfargs.param0(taskData);
             taskData->callback.execute(taskData->zfargs);
 
             zfCoreMutexLock();
             taskData->result = taskData->zfargs.result();
-            if(taskData->zfargs.sender() == zfnull) {
+            if(taskData->zfargs.param0() == zfnull) {
                 d->taskCleanup(taskData);
                 zfCoreMutexUnlock();
                 continue;
@@ -89,21 +89,21 @@ public:
             }
             zfCoreMutexUnlock();
 
-            ZFLISTENER_1(callerThread
+            ZFLISTENER_1(notifyFinish
                     , zfautoT<_ZFP_I_zfasyncTaskData>, taskData
                     ) {
-                ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_callerThread(zfargs, taskData);
+                ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder)::_ZFP_notifyFinish(zfargs, taskData);
             } ZFLISTENER_END()
-            ZFThread::executeInThread(taskData->callerThread, callerThread);
+            ZFThread::executeInThread(ZFThread::mainThread(), notifyFinish);
         } while(zftrue);
     }
-    static void _ZFP_callerThread(
+    static void _ZFP_notifyFinish(
             ZF_IN const ZFArgs &zfargs
             , ZF_IN _ZFP_I_zfasyncTaskData *taskData
             ) {
         zfCoreMutexLock();
         ZF_GLOBAL_INITIALIZER_CLASS(zfasyncDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(zfasyncDataHolder);
-        if(taskData->zfargs.sender() == zfnull) {
+        if(taskData->zfargs.param0() == zfnull) {
             d->taskCleanup(taskData);
             zfCoreMutexUnlock();
             return;
@@ -111,7 +111,7 @@ public:
         zfCoreMutexUnlock();
 
         taskData->finishCallback.execute(ZFArgs()
-                .param0(taskData->result)
+                .result(taskData->result)
             );
 
         zfCoreMutexLock();
@@ -185,7 +185,7 @@ ZFMETHOD_FUNC_DEFINE_1(void, zfasyncCancel
     d->taskMap.erase(taskData->taskId);
     d->taskList.removeElement(taskData);
 
-    taskData->zfargs.sender(zfnull);
+    taskData->zfargs.param0(zfnull);
     taskData->taskId = zfidentityInvalid();
 }
 

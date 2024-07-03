@@ -17,7 +17,7 @@ public:
     zfidentity sigId;
 };
 
-typedef zfstlhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHasher, zfcharConst_zfstlHashComparer> _ZFP_ZFSigNameMapType;
+typedef zfstlhashmap<const zfchar *, _ZFP_ZFSigNamePrivate *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFSigNameMapType;
 typedef zfstlmap<zfidentity, zfbool> _ZFP_ZFSigNameIdMapType;
 typedef zfstldeque<_ZFP_ZFSigNamePrivate *> _ZFP_ZFSigNameCacheType;
 

@@ -73,7 +73,7 @@ public:
     }
 };
 typedef zfstlmap<zfidentity, _ZFP_ZFIdMapData *> _ZFP_ZFIdMapDataIdMapType;
-typedef zfstlmap<const zfchar *, _ZFP_ZFIdMapData *, zfcharConst_zfstlComparer> _ZFP_ZFIdMapDataNameMapType;
+typedef zfstlmap<const zfchar *, _ZFP_ZFIdMapData *, zfcharConst_zfstlLess> _ZFP_ZFIdMapDataNameMapType;
 
 zfclassLikePOD _ZFP_ZFIdMapModuleData {
 public:

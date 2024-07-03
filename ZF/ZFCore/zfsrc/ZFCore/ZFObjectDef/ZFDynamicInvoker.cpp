@@ -23,7 +23,7 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFDI_WrapperBase, const zfchar *, zfv
 // ============================================================
 #if _ZFP_ZFDI_CACHE_ENABLE
 static zfbool _ZFP_ZFDI_cacheEnable = zffalse;
-typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHasher, zfstring_zfstlHashComparer> _ZFP_ZFDI_MethodMapCache;
+typedef zfstlhashmap<zfstring, ZFCoreArray<const ZFMethod *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFDI_MethodMapCache;
 static _ZFP_ZFDI_MethodMapCache _ZFP_ZFDI_methodMapCache;
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFDI_MethodCache, ZFLevelZFFrameworkNormal) {

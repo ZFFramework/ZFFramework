@@ -13,17 +13,17 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  * @brief util to run code asynchronizely
  *
  * callback would run in new thread,
- * finishCallback would run in the same thread that called this method\n
+ * finishCallback would run in #ZFThread::mainThread\n
  * \n
  * for the callback:
- * -  #ZFArgs::sender is a #ZFObject holds running task id,
+ * -  #ZFArgs::param0 is a #ZFObject holds running task id,
  *   it's set to null if canceled by #zfasyncCancel,
  *   you may check it during thread running
  * -  #ZFArgs::result can be set to store the callback's result,
  *   which would passed to finishCallback as #ZFArgs::param0
  *
  * for the finishCallback:
- * -  #ZFArgs::param0 is the result object passed from callback
+ * -  #ZFArgs::result is the result object passed from callback
  *
  * when #zfasyncCancel called after this method,
  * the callback may or may not be canceled,

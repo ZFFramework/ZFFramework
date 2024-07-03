@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 zfclassNotPOD _ZFP_ZFCoreMapPrivate {
 public:
 #if ZF_ENV_ZFCOREMAP_USE_HASHMAP
-    typedef zfimplhashmap<zfstring, ZFCorePointerBase *, zfstring_zfstlHasher, zfstring_zfstlHashComparer> MapType;
+    typedef zfimplhashmap<zfstring, ZFCorePointerBase *, zfstring_zfstlHash, zfstring_zfstlEqual> MapType;
 #else
     typedef zfimplmap<zfstring, ZFCorePointerBase *> MapType;
 #endif

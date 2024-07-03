@@ -13,9 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 ZFCOREPOINTER_DECLARE(ZFCorePointerForPoolObject, {}, {
-        zfCoreMutexLock();
         zfpoolDelete(p);
-        zfCoreMutexUnlock();
     })
 
 // ============================================================

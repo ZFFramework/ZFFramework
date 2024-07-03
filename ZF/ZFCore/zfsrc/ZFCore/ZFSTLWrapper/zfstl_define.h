@@ -40,7 +40,7 @@
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlComparer {
+zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlLess {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (const zfchar * const &k1, const zfchar * const &k2) const {
@@ -51,7 +51,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlComparer {
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlLess {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (zfchar * const &k1, zfchar * const &k2) const {
@@ -63,7 +63,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlComparer {
+zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlLess {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (const zfstring &k1, const zfstring &k2) const {
@@ -75,7 +75,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlComparer {
+zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlLess {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (ZFSigName const &k1, ZFSigName const &k2) const {
@@ -88,7 +88,7 @@ public:
 /**
  * @brief key hasher by string value hash, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlHasher {
+zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlHash {
 public:
     /** @cond ZFPrivateDoc */
     zfstlsize operator () (const zfchar * const &v) const {
@@ -99,7 +99,7 @@ public:
 /**
  * @brief key hasher by string value hash, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHasher {
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHash {
 public:
     /** @cond ZFPrivateDoc */
     zfstlsize operator () (zfchar * const &v) const {
@@ -111,7 +111,7 @@ public:
 /**
  * @brief key hasher by string value hash, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHasher {
+zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHash {
 public:
     /** @cond ZFPrivateDoc */
     zfstlsize operator () (zfstring const &v) const {
@@ -123,7 +123,7 @@ public:
 /**
  * @brief key hasher by string value hash, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlHasher {
+zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlHash {
 public:
     /** @cond ZFPrivateDoc */
     zfstlsize operator () (ZFSigName const &v) const {
@@ -136,7 +136,7 @@ public:
  * @brief key hasher by pointer value hash, used in STL
  */
 template<typename T_Pointer>
-zfclassNotPOD zfpointer_zfstlHasher {
+zfclassNotPOD zfpointer_zfstlHash {
 public:
     /** @cond ZFPrivateDoc */
     zfstlsize operator () (T_Pointer const &v) const {
@@ -149,7 +149,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlHashComparer {
+zfclassNotPOD ZFLIB_ZFCore zfcharConst_zfstlEqual {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (const zfchar * const &k1, const zfchar * const &k2) const {
@@ -160,7 +160,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlHashComparer {
+zfclassNotPOD ZFLIB_ZFCore zfchar_zfstlEqual {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (zfchar * const &k1, zfchar * const &k2) const {
@@ -172,7 +172,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlHashComparer {
+zfclassNotPOD ZFLIB_ZFCore zfstring_zfstlEqual {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (const zfstring &k1, const zfstring &k2) const {
@@ -184,7 +184,7 @@ public:
 /**
  * @brief key comparer by string comparation, used in STL
  */
-zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlHashComparer {
+zfclassNotPOD ZFLIB_ZFCore ZFSigName_zfstlEqual {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (const ZFSigName &k1, const ZFSigName &k2) const {
@@ -197,7 +197,7 @@ public:
  * @brief key comparer by pointer value comparation, used in STL
  */
 template<typename T_Pointer>
-zfclassNotPOD zfpointer_zfstlHashComparer {
+zfclassNotPOD zfpointer_zfstlEqual {
 public:
     /** @cond ZFPrivateDoc */
     inline zfbool operator () (T_Pointer const &k1, T_Pointer const &k2) const {

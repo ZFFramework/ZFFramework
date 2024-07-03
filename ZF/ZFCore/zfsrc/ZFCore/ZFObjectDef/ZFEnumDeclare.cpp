@@ -17,7 +17,7 @@ zfclassNotPOD _ZFP_ZFEnumDataPrivate {
 public:
     typedef zfstlmap<zfuint, ZFCoreArray<zfchar *> > ValueMapType;
     ValueMapType valueMap;
-    typedef zfstlmap<const zfchar *, zfuint, zfcharConst_zfstlComparer> NameMapType;
+    typedef zfstlmap<const zfchar *, zfuint, zfcharConst_zfstlLess> NameMapType;
     NameMapType nameMap;
     ZFCoreArray<zfuint> vl; // ensured no duplicated value
     ZFCoreArray<zfchar *> nl; // for duplicated value, only first stored

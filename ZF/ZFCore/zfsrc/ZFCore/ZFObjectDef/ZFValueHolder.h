@@ -122,19 +122,17 @@ public:
     }
     template<typename T_Object>
     static void TypePoolObject(ZF_IN void *holdedData) {
-        zfCoreMutexLock();
         zfpoolDelete((T_Object)holdedData);
-        zfCoreMutexUnlock();
     }
 };
 /** @brief see #ZFValueHolderType */
-#define ZFValueHolderTypePointerRef _ZFP_ZFValueHolderType::TypePointerRef
+#define ZFValueHolderTypePointerRef() _ZFP_ZFValueHolderType::TypePointerRef
 /** @brief see #ZFValueHolderType */
-#define ZFValueHolderTypePOD _ZFP_ZFValueHolderType::TypePOD
+#define ZFValueHolderTypePOD() _ZFP_ZFValueHolderType::TypePOD
 /** @brief see #ZFValueHolderType */
-#define ZFValueHolderTypeObject _ZFP_ZFValueHolderType::TypeObject
+#define ZFValueHolderTypeObject(T_Object, ...) _ZFP_ZFValueHolderType::TypeObject<T_Object, ##__VA_ARGS__>
 /** @brief see #ZFValueHolderType */
-#define ZFValueHolderTypePoolObject _ZFP_ZFValueHolderType::TypePoolObject
+#define ZFValueHolderTypePoolObject(T_Object, ...) _ZFP_ZFValueHolderType::TypePoolObject<T_Object, ##__VA_ARGS__>
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFValueHolder_h_

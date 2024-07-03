@@ -234,7 +234,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
             ;
     }
 
-    zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlComparer> methodMap;
+    zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlLess> methodMap;
     ZFCoreArray<const ZFMethod *> allMethod = cls->methodGetAll();
     for(zfindex iMethod = 0; iMethod < allMethod.count(); ++iMethod) {
         const ZFMethod *m = allMethod[iMethod];
@@ -245,7 +245,7 @@ static void _ZFP_ZFLuaLSPGenFile_class(
                 ) {
             continue;
         }
-        zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlComparer>::iterator itMethod = methodMap.find(m->methodName());
+        zfstlmap<const zfchar *, ZFCoreArray<const ZFMethod *>, zfcharConst_zfstlLess>::iterator itMethod = methodMap.find(m->methodName());
         if(itMethod != methodMap.end()) {
             zfbool exist = zffalse;
             for(zfindex i = itMethod->second.count() - 1; i != zfindexMax(); --i) {

@@ -99,7 +99,7 @@ void ZFProperty::_ZFP_ZFPropertyInit(
 }
 
 // ============================================================
-typedef zfstlhashmap<const zfchar *, ZFProperty *, zfcharConst_zfstlHasher, zfcharConst_zfstlHashComparer> _ZFP_ZFPropertyMapType;
+typedef zfstlhashmap<const zfchar *, ZFProperty *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFPropertyMapType;
 static _ZFP_ZFPropertyMapType &_ZFP_ZFPropertyMap(void) {
     static _ZFP_ZFPropertyMapType m;
     return m;

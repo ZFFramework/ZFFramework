@@ -530,7 +530,7 @@ public:
     {
     }
 };
-typedef zfstlmap<const zfchar *, _ZFP_ZFHttpHeadCache *, zfcharConst_zfstlComparer> _ZFP_ZFHttpHeadCacheMapType;
+typedef zfstlmap<const zfchar *, _ZFP_ZFHttpHeadCache *, zfcharConst_zfstlLess> _ZFP_ZFHttpHeadCacheMapType;
 static _ZFP_ZFHttpHeadCacheMapType _ZFP_ZFHttpHeadCacheMap; // <url, _ZFP_ZFHttpHeadCache>
 static _ZFP_ZFHttpHeadCache *_ZFP_ZFHttpHeadCacheFirst = zfnull;
 static _ZFP_ZFHttpHeadCache *_ZFP_ZFHttpHeadCacheLast = zfnull;

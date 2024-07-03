@@ -386,6 +386,9 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
         inline T_PointerDesired pointerValueT(void) const { \
             return _ZFP_ZFCorePointerHelper<T_PointerDesired>::toPointer(this); \
         } \
+        inline T_Pointer operator -> (void) const { \
+            return this->pointerValue(); \
+        } \
         template<typename T_Ref> \
         inline T_Ref operator *(void) const { \
             return *(this->pointerValue()); \

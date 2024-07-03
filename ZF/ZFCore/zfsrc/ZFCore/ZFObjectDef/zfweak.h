@@ -189,9 +189,15 @@ public:
     inline ZFV zfv(void) const {
         return ZFV(this->toObject());
     }
+    /**
+     * @brief access as #zfany
+     */
+    const zfany &asAny(void) const {
+        return _ZFP_obj;
+    }
 
 private:
-    ZFObjectHolder *_ZFP_obj;
+    zfanyT<ZFObjectHolder> _ZFP_obj;
 };
 ZFOUTPUT_TYPE(zfweak, {
     if(v) {

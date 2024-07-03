@@ -97,7 +97,7 @@ const ZFMethod *ZFObjectOnInitDynamicRegister(
     *methodGI = methodGISaved;
     userData->objectTag("_ZFP_ZFObjectOnInitGI", zfobj<ZFValueHolder>(
                 methodGI
-                , ZFValueHolderTypePOD
+                , ZFValueHolderTypePOD()
                 ));
 
     return ZFMethodDynamicRegister(paramTmp, errorHint);
