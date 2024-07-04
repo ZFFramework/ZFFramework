@@ -69,7 +69,7 @@ public:
         if(!this->_prepare(aniTarget, name)) {
             return zffalse;
         }
-        const zfchar *typeId = _getterMethod->methodReturnTypeId();
+        zfstring typeId = _getterMethod->methodReturnTypeId();
         const ZFClass *typeClass = ZFClass::classForName(typeId);
         if(typeClass == zfnull) {
             const ZFTypeInfo *typeInfo = (typeClass == zfnull ? ZFTypeInfoForName(typeId) : zfnull);

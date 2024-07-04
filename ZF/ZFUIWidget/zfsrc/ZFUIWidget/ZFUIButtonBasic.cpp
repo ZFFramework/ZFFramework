@@ -91,18 +91,18 @@ public:
 
 public:
     void labelViewUpdate(void) {
-        const zfchar *value = this->pimplOwner->label(this->pimplOwner->buttonState())->text();
-        if(*value == '\0') {
+        zfstring value = this->pimplOwner->label(this->pimplOwner->buttonState())->text();
+        if(value == zfnull) {
             if(this->pimplOwner->buttonState() == ZFUIButtonState::e_Checked) {
                 value = this->pimplOwner->labelHighlighted()->text();
             }
             else if(this->pimplOwner->buttonState() == ZFUIButtonState::e_CheckedHighlighted) {
                 value = this->pimplOwner->labelChecked()->text();
-                if(*value == '\0') {
+                if(value == zfnull) {
                     value = this->pimplOwner->labelHighlighted()->text();
                 }
             }
-            if(*value == '\0') {
+            if(value == zfnull) {
                 value = this->pimplOwner->labelNormal()->text();
             }
         }

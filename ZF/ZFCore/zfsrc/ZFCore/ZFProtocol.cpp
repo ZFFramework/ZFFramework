@@ -212,7 +212,7 @@ static ZFCompareResult _ZFP_ZFProtocolImplInfoPrint_sortComparer(
         ZF_IN const ZFProtocolImplInfo &e0
         , ZF_IN const ZFProtocolImplInfo &e1
         ) {
-    zfint t = zfscmp(e0.protocolName.cString(), e1.protocolName.cString());
+    zfint t = e0.protocolName.compare(e1.protocolName);
     if(t < 0) {
         return ZFCompareSmaller;
     }

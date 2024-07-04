@@ -9,10 +9,8 @@ ZFOBJECT_REGISTER(ZFFramework_test_TestCase)
 
 void ZFFramework_test_TestCase::objectOnInit(void) {
     zfsuper::objectOnInit();
-    this->_testCaseTmpPath = zfstr("%s%sZFFramework_test%s%s",
+    this->_testCaseTmpPath = zfstr("%s/ZFFramework_test/%s",
         ZFPathForCache(),
-        ZFFileSeparator(),
-        ZFFileSeparator(),
         this->classData()->classNameFull());
 }
 void ZFFramework_test_TestCase::objectOnDealloc(void) {
@@ -33,12 +31,12 @@ void ZFFramework_test_TestCase::testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseRe
 void ZFFramework_test_TestCase::testCaseOutputSeparator(void) {
     this->testCaseOutput("----------------------------------------");
 }
-const zfchar *ZFFramework_test_TestCase::testCaseTmpPath(void) {
+zfstring ZFFramework_test_TestCase::testCaseTmpPath(void) {
     return this->_testCaseTmpPath;
 }
 zfstring ZFFramework_test_TestCase::testCaseUseTmpFile(ZF_IN const zfchar *fileName) {
     zfstring ret = this->testCaseTmpPath();
-    ret += ZFFileSeparator();
+    ret += '/';
     ret += fileName;
     this->testCaseAddFileToRemove(ret);
     return ret;

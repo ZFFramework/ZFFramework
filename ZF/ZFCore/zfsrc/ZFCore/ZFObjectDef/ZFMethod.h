@@ -664,9 +664,12 @@ public:
     const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
     ZFCoreArray<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
     zfchar *_ZFP_ZFMethod_methodInternalId;
+
+    zfbool _ZFP_ZFMethod_methodIsInternal;
+    zfbool _ZFP_ZFMethod_methodIsInternalPrivate;
     zfbool _ZFP_ZFMethod_methodIsUserRegister;
-    ZFObject *_ZFP_ZFMethod_methodUserRegisterUserData;
     zfbool _ZFP_ZFMethod_methodIsDynamicRegister;
+    ZFObject *_ZFP_ZFMethod_methodUserRegisterUserData;
     ZFObject *_ZFP_ZFMethod_methodDynamicRegisterUserData;
     ZFFuncAddrType _ZFP_ZFMethod_invoker;
     ZFFuncAddrType _ZFP_ZFMethod_invokerOrig;
@@ -693,10 +696,6 @@ public:
 
     // for func type
     ZFSigName _ZFP_ZFMethod_methodNamespace;
-
-    // other
-    zfbool _ZFP_ZFMethod_methodIsInternal;
-    zfbool _ZFP_ZFMethod_methodIsInternalPrivate;
 };
 
 // ============================================================

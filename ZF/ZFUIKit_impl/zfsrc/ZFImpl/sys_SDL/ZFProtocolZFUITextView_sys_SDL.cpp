@@ -414,11 +414,11 @@ private:
             zfindex strip = (stripMin + stripMax) / 2;
             textNew.removeAll();
             if(strip < p) {
-                textNew.append(text.cString(), p - strip);
+                textNew.append(text, p - strip);
             }
             textNew.append("..");
             if(p + strip < text.length()) {
-                textNew.append(text.cString() + p + strip, text.length() - p - strip);
+                textNew.append(text + p + strip, text.length() - p - strip);
             }
             if(textSingleLine) {
                 if(TTF_SizeUTF8(sdlFont, textNew, &w, &h) != 0) {

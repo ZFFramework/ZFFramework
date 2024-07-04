@@ -100,12 +100,12 @@ public:
             ) {
         mz_zip_archive *zip = (mz_zip_archive *)compressToken;
         zfindex len = zfslen(filePathInZip);
-        if(filePathInZip[len - 1] == ZFFileSeparator()) {
+        if(filePathInZip[len - 1] == '/') {
             return mz_zip_writer_add_mem(zip, filePathInZip, NULL, 0, 0);
         }
         else {
             zfstring tmp = filePathInZip;
-            tmp += ZFFileSeparator();
+            tmp += '/';
             return mz_zip_writer_add_mem(zip, tmp.cString(), NULL, 0, 0);
         }
     }

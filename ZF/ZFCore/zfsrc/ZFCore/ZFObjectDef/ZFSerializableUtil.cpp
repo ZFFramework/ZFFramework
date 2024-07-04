@@ -16,7 +16,7 @@ void _ZFP_errorOccurredAt(
         ZF_OUT_OPT zfstring *outErrorHint
         , ZF_OUT_OPT ZFSerializableData *outErrorPos
         , ZF_IN const ZFSerializableData &errorPos
-        , ZF_IN const zfchar *text
+        , ZF_IN const zfstring &text
         ) {
     if(outErrorPos != zfnull) {
         *outErrorPos = errorPos;
@@ -33,7 +33,7 @@ void _ZFP_errorOccurredAt(
 
 void _ZFP_errorOccurred(
         ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_IN const zfchar *text
+        , ZF_IN const zfstring &text
         ) {
     if(outErrorHint != zfnull) {
         *outErrorHint += text;
@@ -44,11 +44,11 @@ void _ZFP_errorOccurred(
 #endif
 }
 
-const zfchar *checkItemClass(
+zfstring checkItemClass(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredClass
+        , ZF_IN const zfstring &desiredClass
         ) {
-    const zfchar *serializableClass = serializableData.itemClass();
+    zfstring serializableClass = serializableData.itemClass();
     if(zfstringIsEqual(desiredClass, ZFTypeId_none())) {
         return serializableClass;
     }
@@ -61,13 +61,13 @@ const zfchar *checkItemClass(
         }
     }
 }
-const zfchar *requireItemClass(
+zfstring requireItemClass(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredClass
+        , ZF_IN const zfstring &desiredClass
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
-    const zfchar *ret = checkItemClass(serializableData, desiredClass);
+    zfstring ret = checkItemClass(serializableData, desiredClass);
     if(ret == zfnull) {
         if(desiredClass == zfnull || *desiredClass == '\0') {
             ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
@@ -81,9 +81,9 @@ const zfchar *requireItemClass(
     return ret;
 }
 
-const zfchar *checkAttribute(
+zfstring checkAttribute(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredAttribute
+        , ZF_IN const zfstring &desiredAttribute
         ) {
     zfiterator it = serializableData.attrIterFind(desiredAttribute);
     if(!serializableData.attrIterValid(it)) {
@@ -92,13 +92,13 @@ const zfchar *checkAttribute(
     serializableData.attrIterResolveMark(it);
     return serializableData.attrIterValue(it);
 }
-const zfchar *requireAttribute(
+zfstring requireAttribute(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredAttribute
+        , ZF_IN const zfstring &desiredAttribute
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
-    const zfchar *ret = checkAttribute(serializableData, desiredAttribute);
+    zfstring ret = checkAttribute(serializableData, desiredAttribute);
     if(ret == zfnull) {
         ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
             "missing attribute \"%s\"", desiredAttribute);
@@ -108,7 +108,7 @@ const zfchar *requireAttribute(
 
 const ZFSerializableData *checkElementByName(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementName
+        , ZF_IN const zfstring &desiredElementName
         ) {
     zfindex index = serializableData.childForName(desiredElementName);
     if(index == zfindexMax()) {
@@ -119,7 +119,7 @@ const ZFSerializableData *checkElementByName(
 }
 const ZFSerializableData *requireElementByName(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementName
+        , ZF_IN const zfstring &desiredElementName
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {
@@ -134,7 +134,7 @@ const ZFSerializableData *requireElementByName(
 
 const ZFSerializableData *checkElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementCategory
+        , ZF_IN const zfstring &desiredElementCategory
         ) {
     zfindex index = serializableData.childForCategory(desiredElementCategory);
     if(index == zfindexMax()) {
@@ -145,7 +145,7 @@ const ZFSerializableData *checkElementByCategory(
 }
 const ZFSerializableData *requireElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementCategory
+        , ZF_IN const zfstring &desiredElementCategory
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         ) {

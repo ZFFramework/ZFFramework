@@ -48,7 +48,7 @@ zfbool ZFSerializable::serializeFromData(
     // style logic
     ZFStyleable *styleable = zfcast(ZFStyleable *, this);
     {
-        const zfchar *styleKey = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_styleKey);
+        zfstring styleKey = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_styleKey);
         if(styleKey != zfnull) {
             if(styleable == zfnull) {
                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
@@ -63,7 +63,7 @@ zfbool ZFSerializable::serializeFromData(
     // property with wrappedValuePreferStringConverter
     {
         for(zfiterator it = serializableData.attrIter(); serializableData.attrIterValid(it); serializableData.attrIterNext(it)) {
-            const zfchar *name = serializableData.attrIterKey(it);
+            zfstring name = serializableData.attrIterKey(it);
             if(serializableData.attrIterResolved(it)) {
                 continue;
             }
@@ -96,7 +96,7 @@ zfbool ZFSerializable::serializeFromData(
             if(element.resolved() || element.category() != zfnull) {
                 continue;
             }
-            const zfchar *propertyName = ZFSerializableUtil::checkPropertyName(element);
+            zfstring propertyName = ZFSerializableUtil::checkPropertyName(element);
             if(propertyName == zfnull) {
                 continue;
             }
@@ -108,7 +108,7 @@ zfbool ZFSerializable::serializeFromData(
             // serialize the property
             switch(data->propertyType) {
                 case ZFSerializablePropertyTypeSerializable: {
-                        const zfchar *styleKey = ZFSerializableUtil::checkAttribute(element, ZFSerializableKeyword_styleKey);
+                        zfstring styleKey = ZFSerializableUtil::checkAttribute(element, ZFSerializableKeyword_styleKey);
                         if(styleKey != zfnull) {
                             if(styleable == zfnull) {
                                 ZFSerializableUtilErrorOccurredAt(outErrorHint, outErrorPos, serializableData,
@@ -638,7 +638,7 @@ zfbool ZFObjectFromDataT(
         ) {
     result = zfnull;
 
-    const zfchar *serializableClass = ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_none(), outErrorHint, outErrorPos);
+    zfstring serializableClass = ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_none(), outErrorHint, outErrorPos);
     if(serializableClass == zfnull) {
         return zffalse;
     }

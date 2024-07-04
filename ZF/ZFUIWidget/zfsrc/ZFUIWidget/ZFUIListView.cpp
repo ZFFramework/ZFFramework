@@ -1308,7 +1308,7 @@ zfbool ZFUIListView::serializableOnSerializeFromData(
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
-        const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
+        zfstring category = ZFSerializableUtil::checkCategory(categoryData);
         if(!zfstringIsEqual(category, ZFSerializableKeyword_ZFUIListView_listAdapter)) {continue;}
 
         zfauto element;

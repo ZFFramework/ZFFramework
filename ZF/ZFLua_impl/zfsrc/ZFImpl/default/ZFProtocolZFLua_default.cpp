@@ -46,7 +46,7 @@ public:
         zfstring buf;
         ZFImpl_ZFLua_implPathInfoSetup((lua_State *)L, buf, pathInfoOrNull);
         ZFInputRead(buf, input);
-        return ZFImpl_ZFLua_execute((lua_State *)L, buf.cString(), buf.length(), luaResult, luaParams, errorHint, input.callbackId());
+        return ZFImpl_ZFLua_execute((lua_State *)L, buf, buf.length(), luaResult, luaParams, errorHint, input.callbackId());
     }
 
     virtual void luaGC(ZF_IN void *L) {

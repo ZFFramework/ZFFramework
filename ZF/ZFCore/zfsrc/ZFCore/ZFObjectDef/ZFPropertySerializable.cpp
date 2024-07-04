@@ -17,7 +17,7 @@ ZFTYPEID_DEFINE(ZFProperty, const ZFProperty *, {
             return zffalse;
         }
 
-        const zfchar *tmpValue = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFProperty_owner, outErrorHint, outErrorPos);
+        zfstring tmpValue = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFProperty_owner, outErrorHint, outErrorPos);
         if(tmpValue == zfnull) {
             return zffalse;
         }

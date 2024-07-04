@@ -17,14 +17,14 @@ ZFPATHTYPE_DEFINE(text)
                 , ZF_IN const zfchar *pathData \
                 ) { \
             ret += pathPrefixFunc(); \
-            ret += ZFFileSeparator(); \
+            ret += '/'; \
             ret += pathData; \
         } \
         static void pathRevert(ZF_IN_OUT zfstring &pathData) { \
             const zfchar *prefix = pathPrefixFunc(); \
             zfindex prefixLen = zfslen(prefix); \
             if(zfsncmp(pathData, prefix, prefixLen) == 0 \
-                    && pathData[prefixLen] == ZFFileSeparator() \
+                    && pathData[prefixLen] == '/' \
                     ) { \
                 pathData.remove(0, prefixLen + 1); \
             } \

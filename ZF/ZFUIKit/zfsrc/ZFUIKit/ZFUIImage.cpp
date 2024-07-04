@@ -51,7 +51,7 @@ public:
     ZFListener globalImageScaleOnChangeListener;
 
 public:
-    zfchar *serializableType;
+    zfstring serializableType;
     const ZFSerializableData *serializableData;
 
 public:
@@ -79,7 +79,7 @@ public:
         }
         this->imageSizeFixed = ZFUISizeZero();
         this->imageSize = ZFUISizeZero();
-        zfsChange(this->serializableType, (const zfchar *)zfnull);
+        this->serializableType = zfnull;
         if(this->serializableData != zfnull) {
             zfdelete(this->serializableData);
             this->serializableData = zfnull;
@@ -89,7 +89,7 @@ public:
             this->nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(another->nativeImage);
         }
         this->imageSizeUpdate();
-        zfsChange(this->serializableType, another->serializableType);
+        this->serializableType = another->serializableType;
         if(another->serializableData != zfnull) {
             this->serializableData = zfnew(ZFSerializableData, *(another->serializableData));
         }
@@ -108,7 +108,6 @@ public:
     {
     }
     ~_ZFP_ZFUIImagePrivate(void) {
-        zffree(this->serializableType);
         zfdelete(this->serializableData);
     }
 };
@@ -138,7 +137,7 @@ zfbool ZFUIImage::serializableOnSerializeFromData(
     }
 
     // imageBin
-    const zfchar *imageBin = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIImage_imageBin);
+    zfstring imageBin = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFUIImage_imageBin);
     if(imageBin != zfnull) {
         zfobj<ZFIOBufferByCacheFile> io;
         if(!ZFBase64Decode(io->output(), ZFInputForBufferUnsafe(imageBin))) {
@@ -385,10 +384,10 @@ void ZFUIImage::nativeImage(
     }
 }
 
-void ZFUIImage::imageSerializableType(ZF_IN const zfchar *typeName) {
-    zfsChange(d->serializableType, typeName);
+void ZFUIImage::imageSerializableType(ZF_IN const zfstring &typeName) {
+    d->serializableType = typeName;
 }
-const zfchar *ZFUIImage::imageSerializableType(void) {
+zfstring ZFUIImage::imageSerializableType(void) {
     return d->serializableType;
 }
 void ZFUIImage::imageSerializableData(ZF_IN const ZFSerializableData *serializableData) {

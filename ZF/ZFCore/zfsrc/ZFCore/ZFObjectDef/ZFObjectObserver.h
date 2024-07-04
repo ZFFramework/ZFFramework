@@ -282,7 +282,7 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
  * declared event name can be accessed by:
  * @code
  *   zfidentity eventId = YourClass::EventYourEvent();
- *   const zfchar *eventName = ZFEventNameForId(eventId);
+ *   zfstring eventName = ZFEventNameForId(eventId);
  * @endcode
  * note that subclass may declare a event same as parent,
  * while the final event name is different:\n
@@ -340,7 +340,7 @@ extern ZFLIB_ZFCore ZFObserver &ZFGlobalObserver(void);
 /**
  * @brief get id name from id value, or null if no such id, see #ZFEventIdForName
  */
-inline const zfchar *ZFEventNameForId(ZF_IN zfidentity idValue) {
+inline zfstring ZFEventNameForId(ZF_IN zfidentity idValue) {
     return ZFIdMapNameForId(idValue);
 }
 /**
@@ -353,7 +353,7 @@ inline const zfchar *ZFEventNameForId(ZF_IN zfidentity idValue) {
  * -  registered by #ZFEVENT_REGISTER series
  * -  ever accessed
  */
-inline zfidentity ZFEventIdForName(ZF_IN const zfchar *idName) {
+inline zfidentity ZFEventIdForName(ZF_IN const zfstring &idName) {
     return ZFIdMapIdForName(idName);
 }
 
@@ -362,7 +362,7 @@ inline zfidentity ZFEventIdForName(ZF_IN const zfchar *idName) {
  *
  * assert fail if already registered
  */
-inline zfidentity ZFEventDynamicRegister(ZF_IN const zfchar *idName) {
+inline zfidentity ZFEventDynamicRegister(ZF_IN const zfstring &idName) {
     return ZFIdMapDynamicRegister(idName);
 }
 /**

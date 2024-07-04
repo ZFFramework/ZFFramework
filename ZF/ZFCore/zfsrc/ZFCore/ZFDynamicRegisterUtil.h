@@ -57,9 +57,7 @@ public:
     /** @brief main constructor */
     ZFDynamic(void);
     /** @brief construct with #regTag */
-    ZFDynamic(ZF_IN const zfchar *regTag);
-    /** @brief construct with #regTag (converted from #ZFObject::objectInfo) */
-    ZFDynamic(ZF_IN ZFObject *regTag);
+    ZFDynamic(ZF_IN const zfstring &regTag);
 
     /** @cond ZFPrivateDoc */
     ZFDynamic(ZF_IN const ZFDynamic &ref);
@@ -102,11 +100,9 @@ public:
      * which would automatically unregister old ones if exists,
      * identified by that regTag
      */
-    ZFDynamic &regTag(ZF_IN const zfchar *regTag);
+    ZFDynamic &regTag(ZF_IN const zfstring &regTag);
     /** @brief see #regTag */
-    const zfchar *regTag(void) const;
-    /** @brief see #regTag */
-    ZFDynamic &regTag(ZF_IN ZFObject *regTag);
+    zfstring regTag(void) const;
 
 public:
     /** @brief see #ZFDynamic */
@@ -125,13 +121,13 @@ public:
 public:
     /** @brief see #ZFDynamic */
     ZFDynamic &classBegin(
-            ZF_IN const zfchar *classNameFull
-            , ZF_IN const zfchar *parentClassNameFull
+            ZF_IN const zfstring &classNameFull
+            , ZF_IN const zfstring &parentClassNameFull
             , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
             );
     /** @brief see #ZFDynamic */
     ZFDynamic &classBegin(
-            ZF_IN const zfchar *classNameFull
+            ZF_IN const zfstring &classNameFull
             , ZF_IN_OPT const ZFClass *classParent = ZFObject::ClassData()
             , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
             );
@@ -163,18 +159,18 @@ public:
 
 public:
     /** @brief see #ZFDynamic */
-    ZFDynamic &NSBegin(ZF_IN_OPT const zfchar *methodNamespace = ZF_NAMESPACE_GLOBAL_NAME);
+    ZFDynamic &NSBegin(ZF_IN const zfstring &methodNamespace);
     /** @brief see #ZFDynamic */
     ZFDynamic &NSEnd(void);
 
 public:
     /** @brief see #ZFDynamic */
-    ZFDynamic &enumBegin(ZF_IN const zfchar *enumClassName);
+    ZFDynamic &enumBegin(ZF_IN const zfstring &enumClassName);
     /** @brief see #ZFDynamic */
-    ZFDynamic &enumBeginFlags(ZF_IN const zfchar *enumClassName);
+    ZFDynamic &enumBeginFlags(ZF_IN const zfstring &enumClassName);
     /** @brief see #ZFDynamic */
     ZFDynamic &enumValue(
-            ZF_IN const zfchar *enumName
+            ZF_IN const zfstring &enumName
             , ZF_IN_OPT zfuint enumValue = ZFEnumInvalid()
             );
     /** @brief see #ZFDynamic */
@@ -191,7 +187,7 @@ public:
      * -  an event registered by #ZFEventDynamicRegister
      * -  a #ZFMethod to access the event
      */
-    ZFDynamic &event(ZF_IN const zfchar *eventName);
+    ZFDynamic &event(ZF_IN const zfstring &eventName);
 
 public:
     /**
@@ -210,8 +206,8 @@ public:
      * @endcode
      */
     ZFDynamic &method(
-            ZF_IN const zfchar *methodReturnTypeId
-            , ZF_IN const zfchar *methodName
+            ZF_IN const zfstring &methodReturnTypeId
+            , ZF_IN const zfstring &methodName
             , ZF_IN const ZFMP &methodParam
             , ZF_IN const ZFListener &methodImpl
             , ZF_IN_OPT ZFMethodType methodType = ZFMethodTypeVirtual
@@ -224,8 +220,8 @@ public:
 public:
     /** @brief see #ZFDynamic */
     ZFDynamic &property(
-            ZF_IN const zfchar *propertyTypeId
-            , ZF_IN const zfchar *propertyName
+            ZF_IN const zfstring &propertyTypeId
+            , ZF_IN const zfstring &propertyName
             , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
             , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic
             , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic
@@ -233,7 +229,7 @@ public:
     /** @brief see #ZFDynamic */
     ZFDynamic &property(
             ZF_IN const ZFClass *propertyClassOfRetainProperty
-            , ZF_IN const zfchar *propertyName
+            , ZF_IN const zfstring &propertyName
             , ZF_IN_OPT ZFObject *propertyInitValue = zfnull
             , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType = ZFMethodPrivilegeTypePublic
             , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType = ZFMethodPrivilegeTypePublic
@@ -243,28 +239,28 @@ public:
 
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnInit(
-            ZF_IN const zfchar *propertyName
+            ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &callback
             );
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnVerify(
-            ZF_IN const zfchar *propertyName
+            ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &callback
             );
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnAttach(
-            ZF_IN const zfchar *propertyName
+            ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &callback
             );
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyOnDetach(
-            ZF_IN const zfchar *propertyName
+            ZF_IN const zfstring &propertyName
             , ZF_IN const ZFListener &callback
             );
 
     /** @brief util to #ZFPropertyDynamicRegisterLifeCycle */
     ZFDynamic &propertyLifeCycle(
-            ZF_IN const zfchar *propertyName
+            ZF_IN const zfstring &propertyName
             , ZF_IN ZFPropertyLifeCycle lifeCycle
             , ZF_IN const ZFListener &callback
             );

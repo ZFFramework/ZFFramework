@@ -33,7 +33,7 @@ public:
                 & FILE_ATTRIBUTE_DIRECTORY) != 0);
         #else // #if ZF_ENV_sys_Windows
             zfstring tmp = path;
-            tmp += ZFFileSeparator();
+            tmp += '/';
             struct stat statbuf;
             if(lstat(tmp.cString(), &statbuf) < 0) {return zffalse;}
             return S_ISDIR(statbuf.st_mode);
@@ -156,7 +156,7 @@ public:
             zfstringToUTF8(zfd.fileName, fd.cFileName, ZFStringEncoding::e_UTF16);
 
             zfstring filePath = this->parentPath;
-            filePath += ZFFileSeparator();
+            filePath += '/';
             filePath += zfd.fileName;
 
             zfd.fileIsDir = ZFFileIsDir(filePath);
@@ -174,7 +174,7 @@ public:
             zfd.fileName = pDirent->d_name;
 
             zfstring filePath = this->parentPath;
-            filePath += ZFFileSeparator();
+            filePath += '/';
             filePath += zfd.fileName;
 
             zfd.fileIsDir = ZFFileIsDir(filePath);
@@ -196,10 +196,9 @@ public:
         #if ZF_ENV_sys_Windows
             zfstring tmp;
             tmp += path;
-            tmp += ZFFileSeparator();
-            tmp += '*';
+            tmp += "/*";
             nativeFd->hFind = FindFirstFileW(
-                zfstringToUTF16(tmp.cString(), ZFStringEncoding::e_UTF8).cString(),
+                zfstringToUTF16(tmp, ZFStringEncoding::e_UTF8).cString(),
                 &(nativeFd->fd));
             if(nativeFd->hFind == INVALID_HANDLE_VALUE) {break;}
 
@@ -216,8 +215,8 @@ public:
         #endif // #if ZF_ENV_sys_Windows #else
         } while(zffalse);
         if(success) {
-            while(zfstringIsEqual(fd.fileName.cString(), ".")
-                    || zfstringIsEqual(fd.fileName.cString(), "..")
+            while(zfstringIsEqual(fd.fileName, ".")
+                    || zfstringIsEqual(fd.fileName, "..")
                     ) {
                 if(!this->fileFindNext(fd)) {
                     this->fileFindClose(fd);
@@ -241,8 +240,8 @@ public:
             if(nativeFd->pDirent == zfnull) {return zffalse;}
             nativeFd->setup(fd);
         #endif // #if ZF_ENV_sys_Windows #else
-        if(zfstringIsEqual(fd.fileName.cString(), ".")
-                || zfstringIsEqual(fd.fileName.cString(), "..")
+        if(zfstringIsEqual(fd.fileName, ".")
+                || zfstringIsEqual(fd.fileName, "..")
                 ) {
             return this->fileFindNext(fd);
         }
@@ -304,7 +303,7 @@ private:
             , ZF_IN_OPT zfbool excludeLastLevel = zffalse
             ) {
         zfstring pathTmp = path;
-        zfindex indexL = zfstringFindReversely(pathTmp, pathTmp.length(), ZFFileSeparatorString());
+        zfindex indexL = zfstringFindReversely(pathTmp, pathTmp.length(), '/');
         if(indexL == zfindexMax()) {
             if(!excludeLastLevel) {
                 return this->makeDir(pathTmp, errPos);
@@ -335,7 +334,7 @@ private:
             if(indexL == zfindexMax()) {
                 break;
             }
-            indexL = zfstringFindReversely(pathTmp, pathTmp.length(), ZFFileSeparatorString());
+            indexL = zfstringFindReversely(pathTmp, pathTmp.length(), '/');
             if(indexL != zfindexMax()) {
                 pathTmp.remove(indexL);
             }
@@ -456,12 +455,12 @@ private:
                 do {
                     zfstring srcTmp;
                     srcTmp += srcDir;
-                    srcTmp += ZFFileSeparator();
+                    srcTmp += '/';
                     srcTmp += fd.fileName;
 
                     zfstring dstTmp;
                     dstTmp += dstDir;
-                    dstTmp += ZFFileSeparator();
+                    dstTmp += '/';
                     dstTmp += fd.fileName;
                     if(this->fileIsDir(srcTmp)) {
                         stacksDirSrc.add(srcTmp);
@@ -525,7 +524,7 @@ private:
             if(isForce) {
                 #if ZF_ENV_sys_Windows
                     SetFileAttributesW(
-                        zfstringToUTF16(dirPath.cString(), ZFStringEncoding::e_UTF8).cString(),
+                        zfstringToUTF16(dirPath, ZFStringEncoding::e_UTF8).cString(),
                         FILE_ATTRIBUTE_NORMAL);
                 #else // #if ZF_ENV_sys_Windows
                     chmod(dirPath.cString(), 0777);
@@ -537,7 +536,7 @@ private:
                 do {
                     zfstring filePath;
                     filePath += dirPath;
-                    filePath += ZFFileSeparator();
+                    filePath += '/';
                     filePath += fd.fileName;
                     if(this->fileIsDir(filePath)) {
                         dirsToCheck.add(filePath);
@@ -558,7 +557,7 @@ private:
             emptyDirsToDel.removeLast();
 
             #if ZF_ENV_sys_Windows
-                if(RemoveDirectoryW(zfstringToUTF16(pathTmp.cString(), ZFStringEncoding::e_UTF8).cString()) == 0) {
+                if(RemoveDirectoryW(zfstringToUTF16(pathTmp, ZFStringEncoding::e_UTF8).cString()) == 0) {
                     zfself::SetErrPos(errPos, pathTmp);
                     return zffalse;
                 }

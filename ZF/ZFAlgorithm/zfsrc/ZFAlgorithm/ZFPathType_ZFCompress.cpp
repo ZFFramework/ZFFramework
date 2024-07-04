@@ -194,14 +194,14 @@ public:
         if(taskData == zfnull) {
             return zffalse;
         }
-        while(*relPath == ZFFileSeparator()) {
+        while(*relPath == '/') {
             ++relPath;
         }
         if(zfstringIsEmpty(relPath)) {
             return zftrue;
         }
         zfbool exist = (ZFDecompressContentIndex(taskData->taskToken, relPath) != zfindexMax())
-            || (ZFDecompressContentIndex(taskData->taskToken, zfstr("%s%s", relPath, ZFFileSeparator())) != zfindexMax());
+            || (ZFDecompressContentIndex(taskData->taskToken, zfstr("%s%s", relPath, '/')) != zfindexMax());
         _taskIdle(taskData);
         return exist;
     }
@@ -211,14 +211,14 @@ public:
         if(taskData == zfnull) {
             return zffalse;
         }
-        while(*relPath == ZFFileSeparator()) {
+        while(*relPath == '/') {
             ++relPath;
         }
         if(zfstringIsEmpty(relPath)) {
             return zftrue;
         }
         zfbool isDir = ZFDecompressContentIsDir(taskData->taskToken, ZFDecompressContentIndex(taskData->taskToken,
-                relPath[zfslen(relPath) - 1] == ZFFileSeparator() ? relPath : zfstr("%s%s", relPath, ZFFileSeparator()).cString()
+                relPath[zfslen(relPath) - 1] == '/' ? relPath : zfstr("%s/", relPath).cString()
             ));
         _taskIdle(taskData);
         return isDir;
@@ -243,7 +243,7 @@ public:
             pathDataChild += pathData;
         }
         if(pathData[pathDataLen - 1] != '|') {
-            pathDataChild += ZFFileSeparator();
+            pathDataChild += '/';
         }
         pathDataChild += childName;
 

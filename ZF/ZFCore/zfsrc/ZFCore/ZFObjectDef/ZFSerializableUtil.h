@@ -26,11 +26,11 @@ extern ZFLIB_ZFCore void _ZFP_errorOccurredAt(
         ZF_OUT_OPT zfstring *outErrorHint
         , ZF_OUT_OPT ZFSerializableData *outErrorPos
         , ZF_IN const ZFSerializableData &errorPos
-        , ZF_IN const zfchar *text
+        , ZF_IN const zfstring &text
         );
 extern ZFLIB_ZFCore void _ZFP_errorOccurred(
         ZF_OUT_OPT zfstring *outErrorHint
-        , ZF_IN const zfchar *text
+        , ZF_IN const zfstring &text
         );
 
 /**
@@ -39,16 +39,16 @@ extern ZFLIB_ZFCore void _ZFP_errorOccurred(
  * use #ZFTypeId_none shows that any class name is allowed except empty\n
  * return null if no match
  */
-extern ZFLIB_ZFCore const zfchar *checkItemClass(
+extern ZFLIB_ZFCore zfstring checkItemClass(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredClass
+        , ZF_IN const zfstring &desiredClass
         );
 /**
  * @brief see #checkItemClass, output error hint if failed
  */
-extern ZFLIB_ZFCore const zfchar *requireItemClass(
+extern ZFLIB_ZFCore zfstring requireItemClass(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredClass
+        , ZF_IN const zfstring &desiredClass
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
@@ -59,17 +59,17 @@ extern ZFLIB_ZFCore const zfchar *requireItemClass(
  *
  * return null if not exist
  */
-extern ZFLIB_ZFCore const zfchar *checkAttribute(
+extern ZFLIB_ZFCore zfstring checkAttribute(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredAttribute
+        , ZF_IN const zfstring &desiredAttribute
         );
 /**
  * @brief see #checkAttribute, output error hint if failed,
  *   auto mark as resolved
  */
-extern ZFLIB_ZFCore const zfchar *requireAttribute(
+extern ZFLIB_ZFCore zfstring requireAttribute(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredAttribute
+        , ZF_IN const zfstring &desiredAttribute
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
@@ -80,7 +80,7 @@ extern ZFLIB_ZFCore const zfchar *requireAttribute(
  */
 extern ZFLIB_ZFCore const ZFSerializableData *checkElementByName(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementName
+        , ZF_IN const zfstring &desiredElementName
         );
 /**
  * @brief see #checkElementByName, output error hint if failed,
@@ -88,7 +88,7 @@ extern ZFLIB_ZFCore const ZFSerializableData *checkElementByName(
  */
 extern ZFLIB_ZFCore const ZFSerializableData *requireElementByName(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementName
+        , ZF_IN const zfstring &desiredElementName
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
@@ -99,7 +99,7 @@ extern ZFLIB_ZFCore const ZFSerializableData *requireElementByName(
  */
 extern ZFLIB_ZFCore const ZFSerializableData *checkElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementCategory
+        , ZF_IN const zfstring &desiredElementCategory
         );
 /**
  * @brief see #checkElementByCategory, output error hint if failed,
@@ -107,7 +107,7 @@ extern ZFLIB_ZFCore const ZFSerializableData *checkElementByCategory(
  */
 extern ZFLIB_ZFCore const ZFSerializableData *requireElementByCategory(
         ZF_IN const ZFSerializableData &serializableData
-        , ZF_IN const zfchar *desiredElementCategory
+        , ZF_IN const zfstring &desiredElementCategory
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
@@ -116,14 +116,14 @@ extern ZFLIB_ZFCore const ZFSerializableData *requireElementByCategory(
  * @brief util to check whether the serializable data contains property name attribute,
  *   auto mark as resolved
  */
-inline const zfchar *checkPropertyName(ZF_IN const ZFSerializableData &serializableData) {
+inline zfstring checkPropertyName(ZF_IN const ZFSerializableData &serializableData) {
     return ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_prop);
 }
 /**
  * @brief see #checkPropertyName, output error hint if failed,
  *   auto mark as resolved
  */
-inline const zfchar *requirePropertyName(
+inline zfstring requirePropertyName(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
@@ -135,14 +135,14 @@ inline const zfchar *requirePropertyName(
  * @brief util to check whether the serializable data contains property value attribute,
  *   auto mark as resolved
  */
-inline const zfchar *checkPropertyValue(ZF_IN const ZFSerializableData &serializableData) {
+inline zfstring checkPropertyValue(ZF_IN const ZFSerializableData &serializableData) {
     return ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_value);
 }
 /**
  * @brief see #checkPropertyValue, output error hint if failed,
  *   auto mark as resolved
  */
-inline const zfchar *requirePropertyValue(
+inline zfstring requirePropertyValue(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
@@ -154,14 +154,14 @@ inline const zfchar *requirePropertyValue(
  * @brief util to check whether the serializable data contains category,
  *   auto mark as resolved
  */
-inline const zfchar *checkCategory(ZF_IN const ZFSerializableData &serializableData) {
+inline zfstring checkCategory(ZF_IN const ZFSerializableData &serializableData) {
     return ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_category);
 }
 /**
  * @brief see #checkCategory, output error hint if failed,
  *   auto mark as resolved
  */
-inline const zfchar *requireCategory(
+inline zfstring requireCategory(
         ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
@@ -193,7 +193,7 @@ extern ZFLIB_ZFCore zfbool printResolveStatus(
 #define ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos, \
     check_or_require, key, TypeName, value, failAction) \
     do { \
-        const zfchar *valueString = ZFSerializableUtil::check_or_require##Attribute(serializableData, key \
+        zfstring valueString = ZFSerializableUtil::check_or_require##Attribute(serializableData, key \
             _ZFP_ZFSerializableUtilSerializeFromData(check_or_require, outErrorHint, outErrorPos)); \
         if(valueString != zfnull) { \
             if(!TypeName##FromStringT(value, valueString)) { \

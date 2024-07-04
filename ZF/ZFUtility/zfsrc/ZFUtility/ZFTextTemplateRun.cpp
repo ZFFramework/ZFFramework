@@ -89,7 +89,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyName(
 
     zfstring pathNew;
     if(ZFPathParentOf(pathNew, path)) {
-        pathNew += ZFFileSeparator();
+        pathNew += '/';
     }
     pathNew += fileNameNew;
 
@@ -124,7 +124,7 @@ static zfbool _ZFP_ZFTextTemplateRun_applyDir(
     if(ZFFileFindFirst(fd, path)) {
         do {
             zfstring fullPath = path;
-            fullPath += ZFFileSeparator();
+            fullPath += '/';
             fullPath += fd.fileName();
             if(fd.fileIsDir()) {
                 if(!_ZFP_ZFTextTemplateRun_applyDir(fullPath, textTemplateParam, runParam, outErrorHint)) {

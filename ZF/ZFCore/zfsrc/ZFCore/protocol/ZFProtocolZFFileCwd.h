@@ -19,11 +19,11 @@ public:
     /**
      * @brief see #ZFPathForCwd
      */
-    virtual const zfchar *pathForCwd(void) zfpurevirtual;
+    virtual zfstring pathForCwd(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForCwdChange
      */
-    virtual zfbool pathForCwdChange(ZF_IN const zfchar *pathForCwd) zfpurevirtual;
+    virtual zfbool pathForCwdChange(ZF_IN const zfstring &pathForCwd) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFFileCwd)
 
 ZF_NAMESPACE_GLOBAL_END

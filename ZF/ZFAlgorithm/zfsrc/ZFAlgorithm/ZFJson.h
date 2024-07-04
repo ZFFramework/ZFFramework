@@ -219,11 +219,11 @@ public:
     /**
      * @brief value of the node, valid only for #ZFJsonType::e_JsonValue type
      */
-    ZFJson &value(ZF_IN const zfchar *value);
+    ZFJson &value(ZF_IN const zfstring &value);
     /**
      * @brief see #value
      */
-    const zfchar *value(void) const;
+    zfstring value(void) const;
 
     // ============================================================
     // for object type
@@ -237,29 +237,29 @@ public:
      * @brief set json item for key, valid only for #ZFJsonType::e_JsonObject
      */
     ZFJson &attr(
-            ZF_IN const zfchar *key
-            , ZF_IN const zfchar *value
+            ZF_IN const zfstring &key
+            , ZF_IN const zfstring &value
             );
     /**
      * @brief set json item for key, valid only for #ZFJsonType::e_JsonObject
      */
     ZFJson &attr(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN const ZFJson &item
             );
     /**
      * @brief get json item for key, valid only for #ZFJsonType::e_JsonObject
      */
-    ZFJson attr(ZF_IN const zfchar *key) const;
+    ZFJson attr(ZF_IN const zfstring &key) const;
     /**
      * @brief util method to access json value, valid only for #ZFJsonType::e_JsonObject
      */
-    const zfchar *attrValue(ZF_IN const zfchar *key) const;
+    zfstring attrValue(ZF_IN const zfstring &key) const;
 
     /**
      * @brief remove json item, valid only for #ZFJsonType::e_JsonObject
      */
-    ZFJson &attrRemove(ZF_IN const zfchar *key);
+    ZFJson &attrRemove(ZF_IN const zfstring &key);
     /**
      * @brief remove all json item, valid only for #ZFJsonType::e_JsonObject
      */
@@ -269,13 +269,13 @@ public:
     /** @brief see #zfiterator */
     zfiterator attrIter(void) const;
     /** @brief see #zfiterator */
-    zfiterator attrIterFind(ZF_IN const zfchar *key) const;
+    zfiterator attrIterFind(ZF_IN const zfstring &key) const;
     /** @brief see #zfiterator */
     zfbool attrIterValid(ZF_IN const zfiterator &it) const;
     /** @brief see #zfiterator */
     void attrIterNext(ZF_IN_OUT zfiterator &it) const;
     /** @brief see #zfiterator */
-    const zfchar *attrIterKey(ZF_IN const zfiterator &it) const;
+    zfstring attrIterKey(ZF_IN const zfiterator &it) const;
     /** @brief see #zfiterator */
     ZFJson attrIterValue(ZF_IN const zfiterator &it) const;
 
@@ -303,7 +303,7 @@ public:
      * @brief add json child to specified index (ranged in [0, count]), valid only for #ZFJsonType::e_JsonArray
      */
     ZFJson &childAdd(
-            ZF_IN const zfchar *value
+            ZF_IN const zfstring &value
             , ZF_IN_OPT zfindex index = zfindexMax()
             );
     /**
@@ -334,7 +334,7 @@ public:
     /** @brief return #valid */
     inline operator zfbool (void) const {return this->valid();}
     /** @brief access #attr */
-    inline ZFJson operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
+    inline ZFJson operator [] (ZF_IN const zfstring &key) const {return this->attr(key);}
     /** @brief access #childAt */
     inline ZFJson operator [] (ZF_IN zfindex const &index) const {return this->childAt(index);}
 
@@ -408,7 +408,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfstring, ZFJsonToString
  */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, void, ZFJsonEscapeCharEncode
         , ZFMP_OUT(zfstring &, dst)
-        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, src)
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
         )
 /**

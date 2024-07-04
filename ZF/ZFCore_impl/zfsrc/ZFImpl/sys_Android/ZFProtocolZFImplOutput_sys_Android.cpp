@@ -46,7 +46,7 @@ private:
 
         zfindex pL = 0;
         do {
-            zfindex p = zfstringFind(s.cString() + pL, s.length() - pL, '\n');
+            zfindex p = zfstringFind(s + pL, s.length() - pL, '\n');
             if(p == zfindexMax()) {
                 break;
             }
@@ -65,16 +65,16 @@ private:
                 zfindex p = pL + maxLen;
                 zfchar c = s[p];
                 s[p] = '\0';
-                this->implOutput(s.cString() + pL);
+                this->implOutput(s + pL);
                 pL += maxLen;
                 s[p] = c;
             } while(pR - pL > maxLen);
             if(pR > pL) {
-                this->implOutput(s.cString() + pL);
+                this->implOutput(s + pL);
             }
         }
         else {
-            this->implOutput(s.cString() + pL);
+            this->implOutput(s + pL);
         }
     }
     inline void implOutput(ZF_IN const zfchar *s) {

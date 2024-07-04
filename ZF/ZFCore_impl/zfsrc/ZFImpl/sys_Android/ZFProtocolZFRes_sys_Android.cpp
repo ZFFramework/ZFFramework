@@ -300,12 +300,12 @@ public:
         JNIUtilReleaseStringUTFChars(jniEnv, jsPath, sName);
 
         zfstring absPath = this->zfresPrefix;
-        absPath += ZFFileSeparator();
+        absPath += '/';
         if(!d->parentPath.isEmpty()) {
             absPath += d->parentPath;
-            absPath += ZFFileSeparator();
+            absPath += '/';
         }
-        absPath += fd.fileName.cString();
+        absPath += fd.fileName;
 
         AAsset *asset = AAssetManager_open(
             AAssetManager_fromJava(jniEnv, ZFImpl_sys_Android_assetManager()),
@@ -355,7 +355,7 @@ private:
         if(zfstringIsEqual(s, ".")) {
             return;
         }
-        ret += ZFFileSeparator();
+        ret += '/';
         ret += s;
         zfindex tmp;
 

@@ -29,7 +29,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 #define _ZFP_ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
     const zfchar *_ZFP_ZF_NAMESPACE_NOT_REGISTERED(void) { \
         static _ZFP_ZFNamespaceHolder d(ParentNameSpace::_ZFP_ZF_NAMESPACE_NOT_REGISTERED(), #NameSpace); \
-        return d.ns.cString(); \
+        return d.ns; \
     } \
     ZF_STATIC_REGISTER_INIT(_ZFP_NSReg) { \
         _ZFP_ZF_NAMESPACE_NOT_REGISTERED(); \
@@ -50,7 +50,7 @@ public:
     {
     }
     ~_ZFP_ZFNamespaceHolder(void) {
-        _ZFP_ZFNamespaceUnregister(this->ns.cString());
+        _ZFP_ZFNamespaceUnregister(this->ns);
     }
 public:
     zfstring ns;

@@ -474,14 +474,14 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFObserver &, ZFGlobalObserver)
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(const zfchar *, ZFEventNameForId
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfstring, ZFEventNameForId
         , ZFMP_IN(zfidentity, idValue)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFEventIdForName
-        , ZFMP_IN(const zfchar *, idName)
+        , ZFMP_IN(const zfstring &, idName)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, ZFEventDynamicRegister
-        , ZFMP_IN(const zfchar *, idName)
+        , ZFMP_IN(const zfstring &, idName)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFEventDynamicUnregister
         , ZFMP_IN(zfidentity, idValue)

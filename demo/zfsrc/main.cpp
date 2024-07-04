@@ -116,7 +116,7 @@ static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView)
                 subModuleName.removeAll();
             }
             else {
-                subModuleName = zfstring(subModuleName.cString(), t);
+                subModuleName = zfstring(subModuleName, t);
             }
         }
         for(zfindex i = 0; i < allTestCase.count(); ++i) {

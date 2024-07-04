@@ -10,21 +10,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-// ZFFileSeparator
-extern ZFLIB_ZFCore const zfchar _ZFP_ZFFileSeparator;
-extern ZFLIB_ZFCore const zfchar *_ZFP_ZFFileSeparatorString;
-
-/**
- * @brief file separator (ensured to be '/' for now)
- */
-ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_ZFCore, zfchar, ZFFileSeparator, _ZFP_ZFFileSeparator)
-
-/**
- * @brief string version of #ZFFileSeparator
- */
-ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_ZFCore, const zfchar *, ZFFileSeparatorString, _ZFP_ZFFileSeparatorString)
-
-// ============================================================
 // ZFFileOpenOption
 /**
  * @brief open falgs, similar to fopen's flags,
@@ -81,7 +66,7 @@ public:
     /**
      * @brief return file name of file
      */
-    const zfchar *fileName(void) const {
+    const zfstring &fileName(void) const {
         return this->impl().fileName;
     }
     /**
@@ -122,26 +107,26 @@ public:
     /** @brief the impl */
     Impl &impl(void) const;
     /** @brief name for the impl */
-    const zfchar *implName(void) const;
+    zfstring implName(void) const;
     /** @brief user data passed from #implAttach */
     void *implUserData(void) const;
     /** @brief begin first find */
     void implAttach(
-            ZF_IN const zfchar *implName
+            ZF_IN const zfstring &implName
             , ZF_IN_OPT void *implUserData = zfnull
             );
     /** @brief close find */
     void implDetach(void);
     /** @brief check whether impl matches, assert fail if not match, return the #implUserData */
-    void *implCheck(ZF_IN const zfchar *implName) const;
+    void *implCheck(ZF_IN const zfstring &implName) const;
 
     /** @brief util for impl to store extra data */
     void implTag(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN ZFObject *value
             ) const;
     /** @brief util for impl to store extra data */
-    zfany implTag(ZF_IN const zfchar *key) const;
+    zfany implTag(ZF_IN const zfstring &key) const;
 private:
     _ZFP_ZFFileFindDataPrivate *d;
 };

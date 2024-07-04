@@ -444,13 +444,13 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUrlParamSet
         , ZFMP_IN(const ZFJson &, params)
         ) {
     for(zfiterator it = params.attrIter(); params.attrIterValid(it); params.attrIterNext(it)) {
-        const zfchar *key = params.attrIterKey(it);
+        zfstring key = params.attrIterKey(it);
         ZFJson valueHolder = params.attrIterValue(it);
         if(valueHolder.type() != ZFJsonType::e_JsonValue) {
             continue;
         }
-        const zfchar *value = valueHolder.value();
-        if(zfstringIsEmpty(key) || zfstringIsEmpty(value)) {
+        zfstring value = valueHolder.value();
+        if(key == zfnull || value == zfnull) {
             continue;
         }
         ZFUrlParamSet(url, key, value);
@@ -474,7 +474,7 @@ ZFMETHOD_FUNC_DEFINE_3(void, ZFUrlParamSet
     }
 
     zfindex start = p + 1 + zfslen(key) + 1;
-    zfindex end = zfstringFind(url.cString() + start, '&');
+    zfindex end = zfstringFind(url + start, '&');
     if(end == zfindexMax()) {
         url.remove(start);
         ZFUrlEncodeT(url, value);

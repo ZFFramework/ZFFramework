@@ -230,7 +230,7 @@ static zfbool _ZFP_ZFCompressDir(
 
     zfstring filePathInZip = parentPathInZip;
     if(!filePathInZip.isEmpty()) {
-        filePathInZip += ZFFileSeparator();
+        filePathInZip += '/';
     }
     filePathInZip += inputName;
 
@@ -324,7 +324,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFDecompressDir
                 break;
             }
 
-            if(!filePathInZip.isEmpty() && filePathInZip[filePathInZip.length() - 1] == ZFFileSeparator()) {
+            if(!filePathInZip.isEmpty() && filePathInZip[filePathInZip.length() - 1] == '/') {
                 if(!fileImpl->callbackPathCreate(outputPath, zftrue, zfnull)) {
                     success = zffalse;
                     break;

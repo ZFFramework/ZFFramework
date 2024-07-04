@@ -20,7 +20,7 @@ public:
     ZFSigName(void);
     ZFSigName(ZF_IN const ZFSigName &ref);
     ZFSigName(ZF_IN const zfstring &s);
-    ZFSigName(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len = zfindexMax());
+    ZFSigName(ZF_IN const zfchar *s);
     ~ZFSigName(void);
     /** @endcond */
 
@@ -38,6 +38,8 @@ public:
 
     /** @brief access string value, return empty string if empty */
     const zfchar *cString(void) const;
+    /** @brief access string value, return empty string if empty */
+    zfstring zfString(void) const;
 
     /** @brief length of string content */
     zfindex length(void) const;
@@ -47,17 +49,17 @@ public:
 
     /** @brief string comparation */
     zfint compare(ZF_IN const zfstring &s) const {
-        return zfsncmp(this->cString(), s, (s.length() >= this->length() ? this->length() : s.length()) + 1);
+        return this->zfString().compare(s);
     }
 
     /** @brief string comparation */
-    zfint compare(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len = zfindexMax()) const {
-        return zfsncmp(this->cString(), s ? s : "", (len >= this->length() ? this->length() : len) + 1);
+    zfint compare(ZF_IN const zfchar *s) const {
+        return zfscmp(this->cString(), s ? s : "");
     }
-
     /** @cond ZFPrivateDoc */
 public:
     operator const zfchar *(void) const {return this->cString();}
+    operator zfstring (void) const;
 public:
     ZFSigName &operator = (ZF_IN const ZFSigName &ref);
     ZFSigName &operator = (ZF_IN const zfstring &s);

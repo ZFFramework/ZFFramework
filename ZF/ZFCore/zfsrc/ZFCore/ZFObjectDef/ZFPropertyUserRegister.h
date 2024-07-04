@@ -62,7 +62,7 @@ public:
         zfstring key = "_ZFP_PropURDIRetain_";
         key += method->methodName();
         const ZFProperty *property = method->methodOwnerClass()->propertyForName(
-            key.cString() + zfslen("_ZFP_PropURDIRetain_"));
+            key + zfslen("_ZFP_PropURDIRetain_"));
 
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
         if(holder == zfnull) {
@@ -185,7 +185,7 @@ public:
         zfstring key = "_ZFP_PropURDIAssign_";
         key += method->methodName();
         const ZFProperty *property = method->methodOwnerClass()->propertyForName(
-            key.cString() + zfslen("_ZFP_PropURDIRetain_"));
+            key + zfslen("_ZFP_PropURDIRetain_"));
 
         _ZFP_I_PropURDIVH *holder = ownerObj->objectTag(key);
         if(holder == zfnull) {

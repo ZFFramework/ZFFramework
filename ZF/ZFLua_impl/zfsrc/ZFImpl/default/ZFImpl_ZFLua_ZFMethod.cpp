@@ -59,7 +59,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
                         methodNamespaceList[method->methodNamespace()] = zftrue;
                     }
                     else {
-                        methodNamespaceList[zfstring(method->methodNamespace(), dotPos).cString()] = zftrue;
+                        methodNamespaceList[zfstring(method->methodNamespace(), dotPos)] = zftrue;
                     }
                 }
             }

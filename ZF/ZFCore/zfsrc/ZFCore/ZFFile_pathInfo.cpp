@@ -26,7 +26,7 @@ zfbool ZFPathInfoCallbackToChildDefault(
     if(pathData >= pathDataChild.cString() && pathData < pathDataChild.cString() + pathDataChild.length()) {
         if(pathData == pathDataChild.cString()) {
             if(!pathDataChild.isEmpty()) {
-                pathDataChild += ZFFileSeparator();
+                pathDataChild += '/';
             }
             pathDataChild += childName;
         }
@@ -34,7 +34,7 @@ zfbool ZFPathInfoCallbackToChildDefault(
             zfstring t;
             if(!zfstringIsEmpty(pathData)) {
                 t += pathData;
-                t += ZFFileSeparator();
+                t += '/';
             }
             t += childName;
             pathDataChild = t;
@@ -43,7 +43,7 @@ zfbool ZFPathInfoCallbackToChildDefault(
     else {
         pathDataChild += pathData;
         if(!zfstringIsEmpty(pathData) && !zfstringIsEmpty(childName)) {
-            pathDataChild += ZFFileSeparator();
+            pathDataChild += '/';
         }
         pathDataChild += childName;
     }
@@ -932,7 +932,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForLocal, ZFCallbackSerializeCust
         return zffalse;
     }
 
-    const zfchar *localPath = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFFileCallback_localPath, outErrorHint, outErrorPos);
+    zfstring localPath = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFFileCallback_localPath, outErrorHint, outErrorPos);
     if(localPath == zfnull) {
         return zffalse;
     }
@@ -1019,7 +1019,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeCus
         return zffalse;
     }
 
-    const zfchar *localPath = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFFileCallback_localPath, outErrorHint, outErrorPos);
+    zfstring localPath = ZFSerializableUtil::requireAttribute(serializableData, ZFSerializableKeyword_ZFFileCallback_localPath, outErrorHint, outErrorPos);
     if(localPath == zfnull) {
         return zffalse;
     }
@@ -1112,7 +1112,7 @@ const ZFPathInfoImpl *ZFPathInfoParseAndVerify(
         ) {
     zfindex pathTypeLenSaved = pathType.length();
     if(ZFPathInfoParse(pathType, pathData, pathInfo)) {
-        const ZFPathInfoImpl *ret = ZFPathInfoImplForPathType(pathType.cString() + pathTypeLenSaved);
+        const ZFPathInfoImpl *ret = ZFPathInfoImplForPathType(pathType + pathTypeLenSaved);
         if(ret == zfnull) {
             pathType.remove(pathTypeLenSaved);
             pathData = zfnull;

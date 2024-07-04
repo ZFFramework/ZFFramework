@@ -57,7 +57,7 @@ public:
                         continue;
                     }
                     _ZFP_ZFIOCacheData cacheData;
-                    zftimetFromStringT(cacheData.cacheTime, childPath.cString() + 32 + 1);
+                    zftimetFromStringT(cacheData.cacheTime, childPath + 32 + 1);
                     if(curTime - cacheData.cacheTime >= cacheTimeMax) {
                         impl->callbackRemove(childPath, zffalse, zftrue, zfnull);
                         continue;

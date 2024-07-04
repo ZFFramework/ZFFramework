@@ -23,9 +23,9 @@ public:
     {
         zfstringAppend(this->tmpFilePath, "%s%sZFIOBufferByCacheFile_%s",
             ZFPathForCache(),
-            ZFFileSeparator(),
+            '/',
             zfidentityCalcPointer(this));
-        this->token = ZFFileOpen(this->tmpFilePath.cString(),
+        this->token = ZFFileOpen(this->tmpFilePath,
             ZFFileOpenOption::e_Create | ZFFileOpenOption::e_Read | ZFFileOpenOption::e_Write);
     }
     ~_ZFP_ZFIOBufferByCacheFile(void) {
@@ -33,7 +33,7 @@ public:
             ZFFileClose(this->token);
             this->token = zfnull;
         }
-        ZFFileRemove(this->tmpFilePath.cString(), zfHint("recursive")zffalse, zfHint("force")zftrue);
+        ZFFileRemove(this->tmpFilePath, zfHint("recursive")zffalse, zfHint("force")zftrue);
     }
 };
 

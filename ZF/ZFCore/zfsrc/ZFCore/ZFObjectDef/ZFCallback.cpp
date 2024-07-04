@@ -15,7 +15,7 @@ typedef zfstlmap<zfstring, zfauto> _ZFP_ZFCallbackTagMap;
 zfclassNotPOD _ZFP_ZFCallbackPrivate {
 public:
     zfuint refCount;
-    zfchar *callbackId;
+    zfstring callbackId;
     _ZFP_ZFCallbackTagMap callbackTagMap;
 
     ZFCallbackType callbackType;
@@ -50,7 +50,6 @@ public:
     {
     }
     ~_ZFP_ZFCallbackPrivate(void) {
-        zffree(this->callbackId);
         if(this->callbackOwnerObjectRetainFlag != 0) {
             zfRelease(this->callbackOwnerObject);
         }
@@ -207,22 +206,19 @@ void ZFCallback::callbackClear(void) {
     _ZFP_ZFCallbackPrivateDataChange(d, zfnull);
 }
 
-void ZFCallback::callbackId(ZF_IN const zfchar *callbackId) {
+void ZFCallback::callbackId(ZF_IN const zfstring &callbackId) {
     zfCoreMutexLocker();
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFCallbackPrivate);
     }
-    if(callbackId != zfnull && *callbackId == '\0') {
-        callbackId = zfnull;
-    }
-    zfsChange(d->callbackId, callbackId);
+    d->callbackId = callbackId;
 }
-const zfchar *ZFCallback::callbackId(void) const {
+zfstring ZFCallback::callbackId(void) const {
     return (d ? d->callbackId : zfnull);
 }
 
 void ZFCallback::callbackTag(
-        ZF_IN const zfchar *key
+        ZF_IN const zfstring &key
         , ZF_IN ZFObject *tag
         ) {
     if(key == zfnull) {
@@ -253,7 +249,7 @@ void ZFCallback::callbackTag(
         }
     }
 }
-zfany ZFCallback::callbackTag(ZF_IN const zfchar *key) const {
+zfany ZFCallback::callbackTag(ZF_IN const zfstring &key) const {
     if(d != zfnull && key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
@@ -279,7 +275,7 @@ void ZFCallback::callbackTagGetAllKeyValue(
         }
     }
 }
-zfauto ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfchar *key) {
+zfauto ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfstring &key) {
     if(d != zfnull && key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
@@ -336,19 +332,19 @@ void ZFCallback::callbackOwnerObjectRelease(void) const {
     if(d != zfnull && d->callbackOwnerObjectRetainFlag > 0) {
         --(d->callbackOwnerObjectRetainFlag);
         if(d->callbackOwnerObjectRetainFlag == 0) {
-            zfRetainChange(d->callbackOwnerObject, zfnull);
+            zfRelease(d->callbackOwnerObject);
         }
     }
 }
 
-void ZFCallback::callbackSerializeCustomType(ZF_IN const zfchar *customType) {
+void ZFCallback::callbackSerializeCustomType(ZF_IN const zfstring &customType) {
     zfCoreMutexLocker();
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFCallbackPrivate);
     }
     zfsChange(d->serializableCustomType, customType);
 }
-const zfchar *ZFCallback::callbackSerializeCustomType(void) const {
+zfstring ZFCallback::callbackSerializeCustomType(void) const {
     return (d ? d->serializableCustomType : zfnull);
 }
 void ZFCallback::callbackSerializeCustomData(ZF_IN const ZFSerializableData *customData) {
@@ -398,8 +394,8 @@ void ZFCallback::pathInfo(ZF_IN const ZFPathInfo *pathInfo) {
     }
 }
 void ZFCallback::pathInfo(
-        ZF_IN const zfchar *pathType
-        , ZF_IN const zfchar *pathData
+        ZF_IN const zfstring &pathType
+        , ZF_IN const zfstring &pathData
         ) {
     zfCoreMutexLocker();
     if(d == zfnull) {
@@ -440,25 +436,25 @@ ZFMETHOD_USER_REGISTER_1({
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackClear)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackId
-        , ZFMP_IN(const zfchar *, callbackId)
+        , ZFMP_IN(const zfstring &, callbackId)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, const zfchar *, callbackId)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfstring, callbackId)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, callbackTag
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(ZFObject *, tag)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, zfany, callbackTag
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, callbackTagGetAllKeyValue
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
         , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackTagRemove
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, zfauto, callbackTagRemoveAndGet
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, void, callbackTagRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfbool, callbackValid)
@@ -472,9 +468,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackInfoCopy
         , ZFMP_IN(const ZFCallback &, src)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackSerializeCustomType
-        , ZFMP_IN(const zfchar *, customType)
+        , ZFMP_IN(const zfstring &, customType)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, const zfchar *, callbackSerializeCustomType)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFCallback, zfstring, callbackSerializeCustomType)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, callbackSerializeCustomData
         , ZFMP_IN(const ZFSerializableData &, customData)
         )
@@ -488,8 +484,8 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFCallback, void, pathInfo
         , ZFMP_IN(const ZFPathInfo *, pathInfo)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFCallback, void, pathInfo
-        , ZFMP_IN(const zfchar *, pathType)
-        , ZFMP_IN(const zfchar *, pathData)
+        , ZFMP_IN(const zfstring &, pathType)
+        , ZFMP_IN(const zfstring &, pathData)
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCallback, ZFCallbackForMethod

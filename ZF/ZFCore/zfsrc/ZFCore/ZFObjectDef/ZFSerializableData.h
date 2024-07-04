@@ -126,8 +126,8 @@ public:
     zffinal void pathInfo(ZF_IN const ZFPathInfo *pathInfo);
     /** @brief see #pathInfo */
     zffinal void pathInfo(
-            ZF_IN const zfchar *pathType
-            , ZF_IN const zfchar *pathData
+            ZF_IN const zfstring &pathType
+            , ZF_IN const zfstring &pathData
             );
     /**
      * @brief recursively check path info from child to parent
@@ -146,35 +146,35 @@ public:
     // class
 public:
     /** @brief see #ZFSerializable */
-    zffinal void itemClass(ZF_IN const zfchar *classNameFull);
+    zffinal void itemClass(ZF_IN const zfstring &classNameFull);
     /** @brief see #ZFSerializable */
-    zffinal const zfchar *itemClass(void) const;
+    zffinal zfstring itemClass(void) const;
 
     // ============================================================
     // other types
 public:
     /** @brief see #ZFSerializable, same as set value of attribute "prop" */
-    inline void propertyName(ZF_IN const zfchar *name) {
+    inline void propertyName(ZF_IN const zfstring &name) {
         this->attr(ZFSerializableKeyword_prop, name);
     }
     /** @brief see #propertyName */
-    inline const zfchar *propertyName(void) const {
+    inline zfstring propertyName(void) const {
         return this->attr(ZFSerializableKeyword_prop);
     }
     /** @brief see #ZFSerializable, same as set value of attribute "value" */
-    inline void propertyValue(ZF_IN const zfchar *value) {
+    inline void propertyValue(ZF_IN const zfstring &value) {
         this->attr(ZFSerializableKeyword_value, value);
     }
     /** @brief see #propertyValue */
-    inline const zfchar *propertyValue(void) const {
+    inline zfstring propertyValue(void) const {
         return this->attr(ZFSerializableKeyword_value);
     }
     /** @brief see #ZFSerializable, same as set value of attribute "category" */
-    inline void category(ZF_IN const zfchar *category) {
+    inline void category(ZF_IN const zfstring &category) {
         this->attr(ZFSerializableKeyword_category, category);
     }
     /** @brief see #category */
-    inline const zfchar *category(void) const {
+    inline zfstring category(void) const {
         return this->attr(ZFSerializableKeyword_category);
     }
 
@@ -193,13 +193,13 @@ public:
      * typically used by impl to achieve additional features
      */
     zffinal void serializableDataTag(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN ZFObject *tag
             );
     /**
      * @brief see #serializableDataTag
      */
-    zffinal zfany serializableDataTag(ZF_IN const zfchar *key) const;
+    zffinal zfany serializableDataTag(ZF_IN const zfstring &key) const;
     /** @brief see #serializableDataTag */
     zffinal void serializableDataTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
@@ -208,11 +208,11 @@ public:
     /**
      * @brief remove tag, same as set tag to null
      */
-    zffinal void serializableDataTagRemove(ZF_IN const zfchar *key);
+    zffinal void serializableDataTagRemove(ZF_IN const zfstring &key);
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfauto serializableDataTagRemoveAndGet(ZF_IN const zfchar *key);
+    zffinal zfauto serializableDataTagRemoveAndGet(ZF_IN const zfstring &key);
     /**
      * @brief see #serializableDataTag
      *
@@ -233,11 +233,11 @@ public:
      * after you add, remove or modify attributes
      */
     zffinal void attr(
-            ZF_IN const zfchar *name
-            , ZF_IN const zfchar *value
+            ZF_IN const zfstring &name
+            , ZF_IN const zfstring &value
             );
     /** @brief see #attr */
-    zffinal const zfchar *attr(ZF_IN const zfchar *name) const;
+    zffinal zfstring attr(ZF_IN const zfstring &name) const;
 
     /** @brief see #attr */
     zffinal zfindex attrCount(void) const;
@@ -245,7 +245,7 @@ public:
     /**
      * @brief remove value with name, see #attr
      */
-    zffinal void attrRemove(ZF_IN const zfchar *name);
+    zffinal void attrRemove(ZF_IN const zfstring &name);
 
     /**
      * @brief remove all attribute
@@ -253,7 +253,7 @@ public:
     zffinal void attrRemoveAll(void);
 
     /** @brief see #zfiterator */
-    zffinal zfiterator attrIterFind(ZF_IN const zfchar *name) const;
+    zffinal zfiterator attrIterFind(ZF_IN const zfstring &name) const;
     /** @brief see #zfiterator */
     zffinal zfiterator attrIter(void) const;
     /** @brief see #zfiterator */
@@ -261,14 +261,14 @@ public:
     /** @brief see #zfiterator */
     zffinal void attrIterNext(ZF_IN_OUT zfiterator &it) const;
     /** @brief see #zfiterator */
-    zffinal const zfchar *attrIterKey(ZF_IN const zfiterator &it) const;
+    zffinal zfstring attrIterKey(ZF_IN const zfiterator &it) const;
     /** @brief see #zfiterator */
-    zffinal const zfchar *attrIterValue(ZF_IN const zfiterator &it) const;
+    zffinal zfstring attrIterValue(ZF_IN const zfiterator &it) const;
 
     /** @brief see #zfiterator */
     zffinal void attrIterValue(
             ZF_IN_OUT zfiterator &it
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &value
             );
     /** @brief see #zfiterator */
     zffinal void attrIterRemove(ZF_IN_OUT zfiterator &it);
@@ -310,11 +310,11 @@ public:
     /**
      * @brief find element with name or zfindexMax() if not found
      */
-    zffinal zfindex childForName(ZF_IN const zfchar *name) const;
+    zffinal zfindex childForName(ZF_IN const zfstring &name) const;
     /**
      * @brief see #childForName
      */
-    zffinal zfindex childForCategory(ZF_IN const zfchar *name) const;
+    zffinal zfindex childForCategory(ZF_IN const zfstring &name) const;
 
     /** @brief see #ZFSerializable */
     zffinal zfindex childCount(void) const;
@@ -350,11 +350,11 @@ public:
     zffinal void resolveUnmark(void) const;
 
     /** @brief see #resolved */
-    zffinal zfbool resolvedAttribute(ZF_IN const zfchar *name) const;
+    zffinal zfbool resolvedAttribute(ZF_IN const zfstring &name) const;
     /** @brief see #resolved */
-    zffinal void resolveAttributeMark(ZF_IN const zfchar *name) const;
+    zffinal void resolveAttributeMark(ZF_IN const zfstring &name) const;
     /** @brief see #resolved */
-    zffinal void resolveAttributeUnmark(ZF_IN const zfchar *name) const;
+    zffinal void resolveAttributeUnmark(ZF_IN const zfstring &name) const;
 
     /** @brief see #resolved */
     zffinal zfbool resolvedPropertyName(void) const {

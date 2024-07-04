@@ -28,16 +28,16 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_default, ZFPath, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ModuleLocalPath")
 public:
-    virtual const zfchar *pathForModule(void) {
+    virtual zfstring pathForModule(void) {
         if(this->_pathForModule.isEmpty()) {
             (void)this->pathForModuleFile();
-            zfindex pos = zfstringFindReversely(this->_pathForModuleFile, ZFFileSeparator());
+            zfindex pos = zfstringFindReversely(this->_pathForModuleFile, '/');
             zfCoreAssert(pos != zfindexMax());
             this->_pathForModule.assign(this->_pathForModuleFile, pos);
         }
         return this->_pathForModule;
     }
-    virtual const zfchar *pathForModuleFile(void) {
+    virtual zfstring pathForModuleFile(void) {
         if(this->_pathForModuleFile.isEmpty()) {
             #if _ZFP_ZFPathImpl_default_whereami
                 zfstring tmp;
@@ -73,51 +73,47 @@ public:
         return this->_pathForModuleFile;
     }
 
-    virtual const zfchar *pathForSetting(void) {
+    virtual zfstring pathForSetting(void) {
         if(this->_pathForSetting.isEmpty()) {
             this->_pathForSetting = this->pathForModule();
-            this->_pathForSetting += ZFFileSeparator();
-            this->_pathForSetting += "zfsetting";
+            this->_pathForSetting += "/zfsetting";
         }
         return this->_pathForSetting;
     }
-    virtual void pathForSetting(ZF_IN const zfchar *path = zfnull) {
+    virtual void pathForSetting(ZF_IN const zfstring &path) {
         this->_pathForSetting = path;
     }
 
-    virtual const zfchar *pathForStorage(void) {
+    virtual zfstring pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
             this->_pathForStorage = this->pathForModule();
-            this->_pathForStorage += ZFFileSeparator();
-            this->_pathForStorage += "zfstorage";
+            this->_pathForStorage += "/zfstorage";
         }
         return this->_pathForStorage;
     }
-    virtual void pathForStorage(ZF_IN const zfchar *path = zfnull) {
+    virtual void pathForStorage(ZF_IN const zfstring &path) {
         this->_pathForStorage = path;
     }
 
-    virtual const zfchar *pathForStorageShared(void) {
+    virtual zfstring pathForStorageShared(void) {
         if(this->_pathForStorageShared.isEmpty()) {
             this->_pathForStorageShared = this->pathForModule();
-            this->_pathForStorageShared += ZFFileSeparator();
-            this->_pathForStorageShared += "zfstorageshared";
+            this->_pathForStorageShared += "/zfstorageshared";
         }
         return this->_pathForStorageShared;
     }
-    virtual void pathForStorageShared(ZF_IN const zfchar *path = zfnull) {
+    virtual void pathForStorageShared(ZF_IN const zfstring &path) {
         this->_pathForStorageShared = path;
     }
 
-    virtual const zfchar *pathForCache(void) {
+    virtual zfstring pathForCache(void) {
         if(this->_pathForCache.isEmpty()) {
             this->_pathForCache = this->pathForModule();
-            this->_pathForCache += ZFFileSeparator();
-            this->_pathForCache += "zfcache";
+            this->_pathForCache += "/zfcache";
         }
         return this->_pathForCache;
     }
-    virtual void pathForCache(ZF_IN const zfchar *path = zfnull) {
+    virtual void pathForCache(ZF_IN const zfstring &path) {
         this->_pathForCache = path;
     }
     virtual void pathForCacheClear(void) {

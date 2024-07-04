@@ -631,7 +631,7 @@ public:
             for(zfindex i = 0; i < views->count(); ++i) {
                 ZFUIView *tmp = views->get(i);
                 if(tmp->viewId().isEmpty()
-                        || this->internalViewAutoSerializeTags.find(tmp->viewId().cString()) == this->internalViewAutoSerializeTags.end()
+                        || this->internalViewAutoSerializeTags.find(tmp->viewId()) == this->internalViewAutoSerializeTags.end()
                         ) {
                     continue;
                 }
@@ -647,7 +647,7 @@ public:
             for(zfindex i = 0; i < views->count(); ++i) {
                 ZFUIView *tmp = views->get(i);
                 if(tmp->viewId().isEmpty()
-                        || this->internalViewAutoSerializeTags.find(tmp->viewId().cString()) == this->internalViewAutoSerializeTags.end()
+                        || this->internalViewAutoSerializeTags.find(tmp->viewId()) == this->internalViewAutoSerializeTags.end()
                         ) {
                     continue;
                 }
@@ -752,7 +752,7 @@ zfbool ZFUIView::serializableOnSerializeFromData(
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
-        const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
+        zfstring category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFUIView_child)) {

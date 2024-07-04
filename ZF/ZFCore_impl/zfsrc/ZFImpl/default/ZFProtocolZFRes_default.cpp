@@ -13,21 +13,15 @@ public:
     virtual void protocolOnInit(void) {
         zfsuper::protocolOnInit();
         this->_resRootPath = ZFPathForModule();
-        this->_resRootPath += ZFFileSeparator();
+        this->_resRootPath += '/';
         #if ZF_ENV_sys_MacOS
-            if(ZFFileIsDir(zfstr("%s..%sResources%szfres"
+            if(ZFFileIsDir(zfstr("%s../Resources/zfres"
                             , this->_resRootPath
-                            , ZFFileSeparator()
-                            , ZFFileSeparator()
                             ))) {
-                this->_resRootPath += "..";
-                this->_resRootPath += ZFFileSeparator();
-                this->_resRootPath += "Resources";
-                this->_resRootPath += ZFFileSeparator();
+                this->_resRootPath += "../Resources/";
             }
         #endif
-        this->_resRootPath += "zfres";
-        this->_resRootPath += ZFFileSeparator();
+        this->_resRootPath += "zfres/";
     }
 
 public:

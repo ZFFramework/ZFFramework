@@ -298,7 +298,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_##TypeName(), outErrorHint, outErrorPos) == zfnull) { \
             return zffalse; \
         } \
-        const zfchar *valueString = ZFSerializableUtil::checkPropertyValue(serializableData); \
+        zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData); \
         if(valueString == zfnull) { \
             typedef Type _Type; \
             v = _Type(); \
@@ -600,7 +600,7 @@ protected:
             ) {
         if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
-        const zfchar *valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
+        zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
         if(valueString == zfnull) {
             this->wrappedValueReset();
         }

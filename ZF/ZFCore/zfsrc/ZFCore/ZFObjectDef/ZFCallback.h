@@ -110,7 +110,7 @@ public:
     ZFCallback(ZF_IN const ZFCallback &ref);
     ZFCallback &operator = (ZF_IN const ZFCallback &ref);
     ZFCallback &operator = (ZF_IN const zfnullT &dummy);
-    virtual ~ZFCallback(void);
+    ~ZFCallback(void);
     zfbool operator == (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) == ZFCompareEqual);}
     zfbool operator != (ZF_IN const ZFCallback &ref) const {return (this->objectCompare(ref) != ZFCompareEqual);}
     zfbool operator == (ZF_IN const zfnullT &dummy) const {return (d == zfnull);}
@@ -188,11 +188,11 @@ public:
      * you must ensure the callback id is unique and verbose enough to describe the callback,
      * otherwise, leave it empty
      */
-    zffinal void callbackId(ZF_IN const zfchar *callbackId);
+    zffinal void callbackId(ZF_IN const zfstring &callbackId);
     /**
      * @brief see #callbackId
      */
-    zffinal const zfchar *callbackId(void) const;
+    zffinal zfstring callbackId(void) const;
 
     /**
      * @brief retain and store a autoreleased object attached to this callback,
@@ -206,11 +206,11 @@ public:
      * you can also save state for the callback as the auto released data
      */
     zffinal void callbackTag(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN ZFObject *tag
             );
     /** @brief see #callbackTag */
-    zffinal zfany callbackTag(ZF_IN const zfchar *key) const;
+    zffinal zfany callbackTag(ZF_IN const zfstring &key) const;
     /** @brief see #callbackTag */
     zffinal void callbackTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
@@ -219,13 +219,13 @@ public:
     /**
      * @brief remove tag, same as set tag to null
      */
-    inline void callbackTagRemove(ZF_IN const zfchar *key) {
+    inline void callbackTagRemove(ZF_IN const zfstring &key) {
         this->callbackTag(key, zfnull);
     }
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfauto callbackTagRemoveAndGet(ZF_IN const zfchar *key);
+    zffinal zfauto callbackTagRemoveAndGet(ZF_IN const zfstring &key);
     /**
      * @brief see #callbackTag
      *
@@ -314,11 +314,11 @@ public:
      * you may set to #ZFCallbackSerializeCustomTypeDisable to explicitly
      * disable callback serialization
      */
-    zffinal void callbackSerializeCustomType(ZF_IN const zfchar *customType);
+    zffinal void callbackSerializeCustomType(ZF_IN const zfstring &customType);
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal const zfchar *callbackSerializeCustomType(void) const;
+    zffinal zfstring callbackSerializeCustomType(void) const;
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
@@ -358,8 +358,8 @@ public:
     zffinal void pathInfo(ZF_IN const ZFPathInfo *pathInfo);
     /** @brief see #pathInfo */
     zffinal void pathInfo(
-            ZF_IN const zfchar *pathType
-            , ZF_IN const zfchar *pathData
+            ZF_IN const zfstring &pathType
+            , ZF_IN const zfstring &pathData
             );
 
 private:

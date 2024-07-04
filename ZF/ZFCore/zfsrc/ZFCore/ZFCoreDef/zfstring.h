@@ -588,7 +588,7 @@ public:
 public:
     /** @brief compare with another string */
     inline zfint compare(ZF_IN const zft_zfstring<T_Char> &s) const {
-        return _ZFP_zfstring_cmp(this->cString(), s.cString());
+        return d == s.d ? 0 : _ZFP_zfstring_cmp(this->cString(), s.cString());
     }
     /** @brief compare with another string */
     zfint compare(

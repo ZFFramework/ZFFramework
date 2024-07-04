@@ -23,7 +23,7 @@ public:
     {
     }
     _ZFP_ZFSerializableDataAttributeData(
-            ZF_IN const zfchar *attrValue
+            ZF_IN const zfstring &attrValue
             , ZF_IN_OPT zfbool resolved = zffalse
             )
     : attrValue(attrValue)
@@ -77,7 +77,7 @@ public:
             }
         }
 
-        zfdelete(this->pathInfo);
+        zfpoolDelete(this->pathInfo);
     }
 };
 
@@ -85,22 +85,32 @@ public:
 // ZFSerializableData
 ZFSerializableData::ZFSerializableData(ZF_IN _ZFP_ZFSerializableDataPrivate *d) {
     this->d = d;
-    ++(d->refCount);
+    if(d) {
+        ++(d->refCount);
+    }
 }
-ZFSerializableData::ZFSerializableData(void) {
-    d = zfnew(_ZFP_ZFSerializableDataPrivate);
+ZFSerializableData::ZFSerializableData(void)
+: d(zfnull)
+{
 }
-ZFSerializableData::ZFSerializableData(ZF_IN const ZFSerializableData &ref) {
-    d = ref.d;
-    ++(d->refCount);
+ZFSerializableData::ZFSerializableData(ZF_IN const ZFSerializableData &ref)
+: d(ref.d)
+{
+    if(d) {
+        ++(d->refCount);
+    }
 }
 ZFSerializableData &ZFSerializableData::operator = (ZF_IN const ZFSerializableData &ref) {
     _ZFP_ZFSerializableDataPrivate *dTmp = d;
     d = ref.d;
-    ++(ref.d->refCount);
-    --(dTmp->refCount);
-    if(dTmp->refCount == 0) {
-        zfdelete(dTmp);
+    if(d) {
+        ++(d->refCount);
+    }
+    if(dTmp) {
+        --(dTmp->refCount);
+        if(dTmp->refCount == 0) {
+            zfpoolDelete(dTmp);
+        }
     }
     return *this;
 }
@@ -108,15 +118,20 @@ zfbool ZFSerializableData::operator == (ZF_IN const ZFSerializableData &ref) con
     return (d == ref.d);
 }
 ZFSerializableData::~ZFSerializableData(void) {
-    --(d->refCount);
-    if(d->refCount == 0) {
-        zfdelete(d);
+    if(d) {
+        --(d->refCount);
+        if(d->refCount == 0) {
+            zfpoolDelete(d);
+        }
     }
 }
 
 void ZFSerializableData::copyFrom(ZF_IN const ZFSerializableData &ref) {
-    if(d == ref.d) {
+    if(d == ref.d || ref.d == zfnull) {
         return;
+    }
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
 
     d->classNameFull = ref.d->classNameFull;
@@ -124,12 +139,12 @@ void ZFSerializableData::copyFrom(ZF_IN const ZFSerializableData &ref) {
 
     if(d->pathInfo == zfnull) {
         if(ref.d->pathInfo != zfnull) {
-            d->pathInfo = zfnew(ZFPathInfo, *(ref.d->pathInfo));
+            d->pathInfo = zfpoolNew(ZFPathInfo, *(ref.d->pathInfo));
         }
     }
     else {
         if(ref.d->pathInfo == zfnull) {
-            zfdelete(d->pathInfo);
+            zfpoolDelete(d->pathInfo);
             d->pathInfo = zfnull;
         }
         else {
@@ -146,18 +161,21 @@ void ZFSerializableData::copyFrom(ZF_IN const ZFSerializableData &ref) {
 }
 
 zfindex ZFSerializableData::objectRetainCount(void) const {
-    return d->refCount;
+    return d ? d->refCount : 0;
 }
 
 // ============================================================
 // local path logic
 const ZFPathInfo *ZFSerializableData::pathInfo(void) const {
-    return d->pathInfo;
+    return d ? d->pathInfo : zfnull;
 }
 void ZFSerializableData::pathInfo(ZF_IN const ZFPathInfo *pathInfo) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
     if(pathInfo != zfnull && !pathInfo->isEmpty()) {
         if(d->pathInfo == zfnull) {
-            d->pathInfo = zfnew(ZFPathInfo, *pathInfo);
+            d->pathInfo = zfpoolNew(ZFPathInfo, *pathInfo);
         }
         else {
             *(d->pathInfo) = *pathInfo;
@@ -165,18 +183,21 @@ void ZFSerializableData::pathInfo(ZF_IN const ZFPathInfo *pathInfo) {
     }
     else {
         if(d->pathInfo != zfnull) {
-            zfdelete(d->pathInfo);
+            zfpoolDelete(d->pathInfo);
             d->pathInfo = zfnull;
         }
     }
 }
 void ZFSerializableData::pathInfo(
-        ZF_IN const zfchar *pathType
-        , ZF_IN const zfchar *pathData
+        ZF_IN const zfstring &pathType
+        , ZF_IN const zfstring &pathData
         ) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
     if(!zfstringIsEmpty(pathType) || !zfstringIsEmpty(pathData)) {
         if(d->pathInfo == zfnull) {
-            d->pathInfo = zfnew(ZFPathInfo, pathType, pathData);
+            d->pathInfo = zfpoolNew(ZFPathInfo, pathType, pathData);
         }
         else {
             d->pathInfo->pathType = pathType;
@@ -185,26 +206,26 @@ void ZFSerializableData::pathInfo(
     }
     else {
         if(d->pathInfo != zfnull) {
-            zfdelete(d->pathInfo);
+            zfpoolDelete(d->pathInfo);
             d->pathInfo = zfnull;
         }
     }
 }
 const ZFPathInfo *ZFSerializableData::pathInfoCheck(void) const {
     _ZFP_ZFSerializableDataPrivate *check = d;
-    do {
+    while(check != zfnull) {
         if(check->pathInfo != zfnull && !check->pathInfo->isEmpty()) {
             return check->pathInfo;
         }
         check = check->serializableDataParent;
-    } while(check != zfnull);
+    }
     return zfnull;
 }
 
 // ============================================================
 // parent
 zfbool ZFSerializableData::serializableDataParent(ZF_OUT ZFSerializableData &ret) const {
-    if(d->serializableDataParent != zfnull) {
+    if(d && d->serializableDataParent != zfnull) {
         ret = ZFSerializableData(d->serializableDataParent);
         return zftrue;
     }
@@ -215,7 +236,10 @@ zfbool ZFSerializableData::serializableDataParent(ZF_OUT ZFSerializableData &ret
 
 // ============================================================
 // class
-void ZFSerializableData::itemClass(ZF_IN const zfchar *classNameFull) {
+void ZFSerializableData::itemClass(ZF_IN const zfstring &classNameFull) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
     if(classNameFull == zfnull) {
         d->classNameFull.removeAll();
     }
@@ -223,23 +247,28 @@ void ZFSerializableData::itemClass(ZF_IN const zfchar *classNameFull) {
         d->classNameFull = classNameFull;
     }
 }
-const zfchar *ZFSerializableData::itemClass(void) const {
-    return d->classNameFull.isEmpty() ? zfnull : d->classNameFull.cString();
+zfstring ZFSerializableData::itemClass(void) const {
+    return d && d->classNameFull ? d->classNameFull : zfnull;
 }
 
 // ============================================================
 // other types
 void ZFSerializableData::removeAll(void) {
-    d->removeAll();
+    if(d) {
+        d->removeAll();
+    }
 }
 
 // ============================================================
 void ZFSerializableData::serializableDataTag(
-        ZF_IN const zfchar *key
+        ZF_IN const zfstring &key
         , ZF_IN ZFObject *tag
         ) {
     if(key == zfnull) {
         return;
+    }
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
     }
 
     _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
@@ -262,8 +291,8 @@ void ZFSerializableData::serializableDataTag(
         }
     }
 }
-zfany ZFSerializableData::serializableDataTag(ZF_IN const zfchar *key) const {
-    if(key != zfnull) {
+zfany ZFSerializableData::serializableDataTag(ZF_IN const zfstring &key) const {
+    if(d && key != zfnull) {
         _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
         if(it != m.end()) {
@@ -276,16 +305,18 @@ void ZFSerializableData::serializableDataTagGetAllKeyValue(
         ZF_IN_OUT ZFCoreArray<zfstring> &allKey
         , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) const {
-    _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
-    allKey.capacity(allKey.count() + m.size());
-    allValue.capacity(allValue.count() + m.size());
-    for(_ZFP_ZFSerializableDataTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
-        allKey.add(it->first);
-        allValue.add(it->second);
+    if(d) {
+        _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
+        allKey.capacity(allKey.count() + m.size());
+        allValue.capacity(allValue.count() + m.size());
+        for(_ZFP_ZFSerializableDataTagMapType::iterator it = m.begin(); it != m.end(); ++it) {
+            allKey.add(it->first);
+            allValue.add(it->second);
+        }
     }
 }
-void ZFSerializableData::serializableDataTagRemove(ZF_IN const zfchar *key) {
-    if(key != zfnull) {
+void ZFSerializableData::serializableDataTagRemove(ZF_IN const zfstring &key) {
+    if(d && key != zfnull) {
         _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
         if(it != m.end()) {
@@ -293,8 +324,8 @@ void ZFSerializableData::serializableDataTagRemove(ZF_IN const zfchar *key) {
         }
     }
 }
-zfauto ZFSerializableData::serializableDataTagRemoveAndGet(ZF_IN const zfchar *key) {
-    if(key != zfnull) {
+zfauto ZFSerializableData::serializableDataTagRemoveAndGet(ZF_IN const zfstring &key) {
+    if(d && key != zfnull) {
         _ZFP_ZFSerializableDataTagMapType &m = d->serializableDataTagMap;
         _ZFP_ZFSerializableDataTagMapType::iterator it = m.find(key);
         if(it != m.end()) {
@@ -306,7 +337,7 @@ zfauto ZFSerializableData::serializableDataTagRemoveAndGet(ZF_IN const zfchar *k
     return zfnull;
 }
 void ZFSerializableData::serializableDataTagRemoveAll(void) {
-    if(!d->serializableDataTagMap.empty()) {
+    if(d && !d->serializableDataTagMap.empty()) {
         _ZFP_ZFSerializableDataTagMapType tmp;
         tmp.swap(d->serializableDataTagMap);
     }
@@ -315,10 +346,13 @@ void ZFSerializableData::serializableDataTagRemoveAll(void) {
 // ============================================================
 // attribute
 void ZFSerializableData::attr(
-        ZF_IN const zfchar *name
-        , ZF_IN const zfchar *value
+        ZF_IN const zfstring &name
+        , ZF_IN const zfstring &value
         ) {
     if(name != zfnull) {
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+        }
         if(value != zfnull) {
             _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
             if(it != d->attributes.end()) {
@@ -333,8 +367,8 @@ void ZFSerializableData::attr(
         }
     }
 }
-const zfchar *ZFSerializableData::attr(ZF_IN const zfchar *name) const {
-    if(name != zfnull) {
+zfstring ZFSerializableData::attr(ZF_IN const zfstring &name) const {
+    if(d && name != zfnull) {
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end()) {
             return it->second.attrValue;
@@ -344,50 +378,61 @@ const zfchar *ZFSerializableData::attr(ZF_IN const zfchar *name) const {
 }
 
 zfindex ZFSerializableData::attrCount(void) const {
-    return (zfindex)d->attributes.size();
+    return (zfindex)(d ? d->attributes.size() : 0);
 }
-void ZFSerializableData::attrRemove(ZF_IN const zfchar *name) {
-    if(name != zfnull) {
+void ZFSerializableData::attrRemove(ZF_IN const zfstring &name) {
+    if(d && name != zfnull) {
         d->attributes.erase(name);
     }
 }
 void ZFSerializableData::attrRemoveAll(void) {
-    d->attributes.clear();
+    if(d) {
+        d->attributes.clear();
+    }
 }
 
-zfiterator ZFSerializableData::attrIterFind(ZF_IN const zfchar *name) const {
-    if(name == zfnull) {
-        return zfiterator();
+zfiterator ZFSerializableData::attrIterFind(ZF_IN const zfstring &name) const {
+    if(d && name != zfnull) {
+        return d->attributes.iterFind(name);
     }
-    return d->attributes.iterFind(name);
+    else {
+        return zfiteratorInvalid();
+    }
 }
 zfiterator ZFSerializableData::attrIter(void) const {
-    return d->attributes.iter();
+    return d ? d->attributes.iter() : zfiteratorInvalid();
 }
 zfbool ZFSerializableData::attrIterValid(ZF_IN const zfiterator &it) const {
-    return d->attributes.iterValid(it);
+    return d ? d->attributes.iterValid(it) : zffalse;
 }
-const zfchar *ZFSerializableData::attrIterKey(ZF_IN const zfiterator &it) const {
-    return d->attributes.iterKey(it);
+zfstring ZFSerializableData::attrIterKey(ZF_IN const zfiterator &it) const {
+    return d ? d->attributes.iterKey(it) : zfnull;
 }
-const zfchar *ZFSerializableData::attrIterValue(ZF_IN const zfiterator &it) const {
-    return d->attributes.iterValue(it).attrValue;
+zfstring ZFSerializableData::attrIterValue(ZF_IN const zfiterator &it) const {
+    return d ? d->attributes.iterValue(it).attrValue : zfnull;
 }
 void ZFSerializableData::attrIterValue(
         ZF_IN_OUT zfiterator &it
-        , ZF_IN const zfchar *value
+        , ZF_IN const zfstring &value
         ) {
-    if(value == zfnull) {
-        this->attrIterRemove(it);
-        return;
+    if(d) {
+        if(value == zfnull) {
+            this->attrIterRemove(it);
+        }
+        else {
+            d->attributes.iterValue(it, value);
+        }
     }
-    d->attributes.iterValue(it, value);
 }
 void ZFSerializableData::attrIterRemove(ZF_IN_OUT zfiterator &it) {
-    d->attributes.iterRemove(it);
+    if(d) {
+        d->attributes.iterRemove(it);
+    }
 }
 void ZFSerializableData::attrIterNext(ZF_IN_OUT zfiterator &it) const {
-    d->attributes.iterNext(it);
+    if(d) {
+        d->attributes.iterNext(it);
+    }
 }
 
 zfbool ZFSerializableData::attrIterResolved(ZF_IN const zfiterator &it) const {
@@ -419,6 +464,9 @@ void ZFSerializableData::attrIterResolveUnmark(ZF_IN const zfiterator &it) const
 // ============================================================
 // element
 void ZFSerializableData::childAdd(ZF_IN const ZFSerializableData &element) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
     zfCoreAssertWithMessage(d != element.d, "adding self is not allowed");
     zfCoreAssertWithMessage(d->serializableDataParent == zfnull, "adding a data which already has parent");
     d->elements.push_back(element);
@@ -428,6 +476,9 @@ void ZFSerializableData::childAdd(
         ZF_IN const ZFSerializableData &element
         , ZF_IN zfindex atIndex
         ) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
     zfCoreAssertWithMessage(d != element.d, "adding self is not allowed");
     zfCoreAssertWithMessage(d->serializableDataParent == zfnull, "adding a data which already has parent");
     if(atIndex == zfindexMax()) {
@@ -446,13 +497,16 @@ void ZFSerializableData::childReplace(
         ZF_IN zfindex index
         , ZF_IN const ZFSerializableData &element
         ) {
+    if(d == zfnull) {
+        d = zfpoolNew(_ZFP_ZFSerializableDataPrivate);
+    }
     d->elements[(zfstlsize)index].d->serializableDataParent = zfnull;
     d->elements[(zfstlsize)index] = element;
     element.d->serializableDataParent = d;
 }
 
-zfindex ZFSerializableData::childForName(ZF_IN const zfchar *name) const {
-    if(name != zfnull && *name != '\0') {
+zfindex ZFSerializableData::childForName(ZF_IN const zfstring &name) const {
+    if(d && name != zfnull && *name != '\0') {
         for(zfstlsize i = 0; i < d->elements.size(); ++i) {
             if(zfstringIsEqual(d->elements[i].propertyName(), name)) {
                 return i;
@@ -461,8 +515,8 @@ zfindex ZFSerializableData::childForName(ZF_IN const zfchar *name) const {
     }
     return zfindexMax();
 }
-zfindex ZFSerializableData::childForCategory(ZF_IN const zfchar *category) const {
-    if(category != zfnull && *category != '\0') {
+zfindex ZFSerializableData::childForCategory(ZF_IN const zfstring &category) const {
+    if(d && category != zfnull && *category != '\0') {
         for(zfstlsize i = 0; i < d->elements.size(); ++i) {
             if(zfstringIsEqual(d->elements[i].category(), category)) {
                 return i;
@@ -473,7 +527,7 @@ zfindex ZFSerializableData::childForCategory(ZF_IN const zfchar *category) const
 }
 
 zfindex ZFSerializableData::childCount(void) const {
-    return (zfindex)d->elements.size();
+    return (zfindex)(d ? d->elements.size() : 0);
 }
 const ZFSerializableData &ZFSerializableData::childAt(ZF_IN zfindex index) const {
     return d->elements[(zfstlsize)index];
@@ -487,7 +541,7 @@ void ZFSerializableData::childRemoveAt(ZF_IN zfindex index) {
     d->elements.erase(d->elements.begin() + (zfstlsize)index);
 }
 void ZFSerializableData::childRemoveAll(void) {
-    if(!d->elements.empty()) {
+    if(d && !d->elements.empty()) {
         for(zfstlsize i = 0; i < d->elements.size(); ++i) {
             d->elements[i].d->serializableDataParent = zfnull;
         }
@@ -498,21 +552,21 @@ void ZFSerializableData::childRemoveAll(void) {
 // ============================================================
 // resolved state
 zfbool ZFSerializableData::resolved(void) const {
-    return ZFSerializableDataResolveCheckEnable && d->resolved;
+    return ZFSerializableDataResolveCheckEnable && (d == zfnull || d->resolved);
 }
 void ZFSerializableData::resolveMark(void) const {
-    if(ZFSerializableDataResolveCheckEnable) {
+    if(d && ZFSerializableDataResolveCheckEnable) {
         d->resolved = zftrue;
     }
 }
 void ZFSerializableData::resolveUnmark(void) const {
-    if(ZFSerializableDataResolveCheckEnable) {
+    if(d && ZFSerializableDataResolveCheckEnable) {
         d->resolved = zffalse;
     }
 }
 
-zfbool ZFSerializableData::resolvedAttribute(ZF_IN const zfchar *name) const {
-    if(ZFSerializableDataResolveCheckEnable && name != zfnull) {
+zfbool ZFSerializableData::resolvedAttribute(ZF_IN const zfstring &name) const {
+    if(d && ZFSerializableDataResolveCheckEnable && name != zfnull) {
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end()) {
             return it->second.resolved;
@@ -520,16 +574,16 @@ zfbool ZFSerializableData::resolvedAttribute(ZF_IN const zfchar *name) const {
     }
     return zffalse;
 }
-void ZFSerializableData::resolveAttributeMark(ZF_IN const zfchar *name) const {
-    if(ZFSerializableDataResolveCheckEnable && name != zfnull) {
+void ZFSerializableData::resolveAttributeMark(ZF_IN const zfstring &name) const {
+    if(d && ZFSerializableDataResolveCheckEnable && name != zfnull) {
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end()) {
             it->second.resolved = zftrue;
         }
     }
 }
-void ZFSerializableData::resolveAttributeUnmark(ZF_IN const zfchar *name) const {
-    if(ZFSerializableDataResolveCheckEnable && name != zfnull) {
+void ZFSerializableData::resolveAttributeUnmark(ZF_IN const zfstring &name) const {
+    if(d && ZFSerializableDataResolveCheckEnable && name != zfnull) {
         _ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.find(name);
         if(it != d->attributes.end()) {
             it->second.resolved = zffalse;
@@ -541,8 +595,8 @@ zfbool ZFSerializableData::resolvedAll(
         ZF_OUT_OPT const ZFSerializableData **firstNotResolvedElement /* = zfnull */
         , ZF_OUT_OPT zfstring *firstNotResolvedAttribute /* = zfnull */
         ) const {
-    if(!ZFSerializableDataResolveCheckEnable) {
-        return zffalse;
+    if(d == zfnull || !ZFSerializableDataResolveCheckEnable) {
+        return zftrue;
     }
     if(!this->resolved()) {
         if(firstNotResolvedElement != zfnull) {
@@ -569,7 +623,7 @@ zfbool ZFSerializableData::resolvedAll(
     return zftrue;
 }
 void ZFSerializableData::resolveMarkAll(void) const {
-    if(ZFSerializableDataResolveCheckEnable) {
+    if(d && ZFSerializableDataResolveCheckEnable) {
         this->resolveMark();
         this->resolveAttributeMarkAll();
         for(zfindex i = 0; i < this->childCount(); ++i) {
@@ -578,7 +632,7 @@ void ZFSerializableData::resolveMarkAll(void) const {
     }
 }
 void ZFSerializableData::resolveUnmarkAll(void) const {
-    if(ZFSerializableDataResolveCheckEnable) {
+    if(d && ZFSerializableDataResolveCheckEnable) {
         this->resolveUnmark();
         this->resolveAttributeUnmarkAll();
         for(zfindex i = 0; i < this->childCount(); ++i) {
@@ -587,14 +641,14 @@ void ZFSerializableData::resolveUnmarkAll(void) const {
     }
 }
 void ZFSerializableData::resolveAttributeMarkAll(void) const {
-    if(ZFSerializableDataResolveCheckEnable) {
+    if(d && ZFSerializableDataResolveCheckEnable) {
         for(_ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.begin(); it != d->attributes.end(); ++it) {
             it->second.resolved = zftrue;
         }
     }
 }
 void ZFSerializableData::resolveAttributeUnmarkAll(void) const {
-    if(ZFSerializableDataResolveCheckEnable) {
+    if(d && ZFSerializableDataResolveCheckEnable) {
         for(_ZFP_ZFSerializableDataAttributeMapType::iterator it = d->attributes.begin(); it != d->attributes.end(); ++it) {
             it->second.resolved = zftrue;
         }
@@ -612,7 +666,8 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
         return ZFCompareEqual;
     }
 
-    if(!zfstringIsEqual(this->itemClass(), another.itemClass())
+    if(d == zfnull || another.d == zfnull
+            || !zfstringIsEqual(this->itemClass(), another.itemClass())
             || this->attrCount() != another.attrCount()
             || this->childCount() != another.childCount()
             ) {
@@ -620,7 +675,7 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
     }
 
     for(zfiterator it = another.attrIter(); another.attrIterValid(it); another.attrIterNext(it)) {
-        const zfchar *value = this->attr(another.attrIterKey(it));
+        zfstring value = this->attr(another.attrIterKey(it));
         if(value == zfnull || !zfstringIsEqual(another.attrIterValue(it), value)) {
             return ZFCompareUncomparable;
         }
@@ -634,7 +689,7 @@ ZFCompareResult ZFSerializableData::objectCompare(ZF_IN const ZFSerializableData
 }
 
 zfbool ZFSerializableData::isEmpty(void) const {
-    return (
+    return d == zfnull || (
         d->classNameFull.isEmpty()
         && d->attributes.empty()
         && d->elements.empty()

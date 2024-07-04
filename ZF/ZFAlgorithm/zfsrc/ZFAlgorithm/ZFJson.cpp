@@ -209,7 +209,7 @@ public:
     zfuint refCount;
     ZFJsonTypeEnum type;
     union {
-        zfchar *value; // for ZFJsonType::e_JsonValue
+        zfstring *value; // for ZFJsonType::e_JsonValue
         AttrMap *attrMap; // for ZFJsonType::e_JsonObject
         ChildList *childList; // for ZFJsonType::e_JsonArray
     } d;
@@ -227,7 +227,7 @@ public:
                 break;
             case ZFJsonType::e_JsonValue:
                 if(d.value) {
-                    zffree(d.value);
+                    zfdelete(d.value);
                 }
                 break;
             case ZFJsonType::e_JsonObject:
@@ -367,16 +367,21 @@ ZFJson ZFJson::copy(void) const {
 
 // ============================================================
 // for value type
-ZFJson &ZFJson::value(ZF_IN const zfchar *value) {
+ZFJson &ZFJson::value(ZF_IN const zfstring &value) {
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFJsonPrivate, ZFJsonType::e_JsonValue);
     }
     zfCoreAssert(this->type() == ZFJsonType::e_JsonValue);
-    zfsChange(d->d.value, value);
+    if(d->d.value == zfnull) {
+        d->d.value = zfnew(zfstring, value);
+    }
+    else {
+        *(d->d.value) = value;
+    }
     return *this;
 }
-const zfchar *ZFJson::value(void) const {
-    return d && d->type == ZFJsonType::e_JsonValue ? d->d.value : zfnull;
+zfstring ZFJson::value(void) const {
+    return d && d->type == ZFJsonType::e_JsonValue && d->d.value ? *(d->d.value) : zfnull;
 }
 
 // ============================================================
@@ -386,8 +391,8 @@ zfindex ZFJson::attrCount(void) const {
 }
 
 ZFJson &ZFJson::attr(
-        ZF_IN const zfchar *key
-        , ZF_IN const zfchar *value
+        ZF_IN const zfstring &key
+        , ZF_IN const zfstring &value
         ) {
     if(value == zfnull) {
         this->attrRemove(key);
@@ -400,7 +405,7 @@ ZFJson &ZFJson::attr(
     return *this;
 }
 ZFJson &ZFJson::attr(
-        ZF_IN const zfchar *key
+        ZF_IN const zfstring &key
         , ZF_IN const ZFJson &item
         ) {
     if(key == zfnull) {
@@ -421,7 +426,7 @@ ZFJson &ZFJson::attr(
     }
     return *this;
 }
-ZFJson ZFJson::attr(ZF_IN const zfchar *key) const {
+ZFJson ZFJson::attr(ZF_IN const zfstring &key) const {
     if(d && d->type == ZFJsonType::e_JsonObject && d->d.attrMap) {
         _ZFP_ZFJsonPrivate::AttrMap::iterator it = d->d.attrMap->find(key);
         if(it != d->d.attrMap->end()) {
@@ -430,7 +435,7 @@ ZFJson ZFJson::attr(ZF_IN const zfchar *key) const {
     }
     return zfnull;
 }
-const zfchar *ZFJson::attrValue(ZF_IN const zfchar *key) const {
+zfstring ZFJson::attrValue(ZF_IN const zfstring &key) const {
     if(d && d->type == ZFJsonType::e_JsonObject && d->d.attrMap) {
         _ZFP_ZFJsonPrivate::AttrMap::iterator it = d->d.attrMap->find(key);
         if(it != d->d.attrMap->end() && it->second.type() == ZFJsonType::e_JsonValue) {
@@ -440,7 +445,7 @@ const zfchar *ZFJson::attrValue(ZF_IN const zfchar *key) const {
     return zfnull;
 }
 
-ZFJson &ZFJson::attrRemove(ZF_IN const zfchar *key) {
+ZFJson &ZFJson::attrRemove(ZF_IN const zfstring &key) {
     if(d && d->type == ZFJsonType::e_JsonObject && d->d.attrMap) {
         d->d.attrMap->erase(key);
     }
@@ -463,7 +468,7 @@ zfiterator ZFJson::attrIter(void) const {
     }
 }
 
-zfiterator ZFJson::attrIterFind(ZF_IN const zfchar *key) const {
+zfiterator ZFJson::attrIterFind(ZF_IN const zfstring &key) const {
     if(d && d->type == ZFJsonType::e_JsonObject && d->d.attrMap) {
         return d->d.attrMap->iterFind(key);
     }
@@ -482,7 +487,7 @@ void ZFJson::attrIterNext(ZF_IN_OUT zfiterator &it) const {
     }
 }
 
-const zfchar *ZFJson::attrIterKey(ZF_IN const zfiterator &it) const {
+zfstring ZFJson::attrIterKey(ZF_IN const zfiterator &it) const {
     if(d && d->type == ZFJsonType::e_JsonObject && d->d.attrMap) {
         return d->d.attrMap->iterKey(it);
     }
@@ -542,7 +547,7 @@ ZFJson ZFJson::childAt(ZF_IN zfindex index) const {
 }
 
 ZFJson &ZFJson::childAdd(
-        ZF_IN const zfchar *value
+        ZF_IN const zfstring &value
         , ZF_IN_OPT zfindex index /* = zfindexMax() */
         ) {
     return this->childAdd(ZFJson(ZFJsonType::e_JsonValue).value(value), index);
@@ -620,31 +625,31 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJsonTypeEnum, type)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJson, copy)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson &, value
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, const zfchar *, value)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfstring, value)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJson, ZFJson &, attr
-        , ZFMP_IN(const zfchar *, key)
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, key)
+        , ZFMP_IN(const zfstring &, value)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJson, ZFJson &, attr
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const ZFJson &, item)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson, attr
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, const zfchar *, attrValue
-        , ZFMP_IN(const zfchar *, key)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfstring, attrValue
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson &, attrRemove
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJson &, attrRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfindex, attrCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfiterator, attrIter)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfiterator, attrIterFind
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfbool, attrIterValid
         , ZFMP_IN(const zfiterator &, it)
@@ -652,7 +657,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfbool, attrIterValid
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, void, attrIterNext
         , ZFMP_IN_OUT(zfiterator &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, const zfchar *, attrIterKey
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, const zfstring &, attrIterKey
         , ZFMP_IN(const zfiterator &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson, attrIterValue
@@ -670,7 +675,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson, childAt
         , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJson, ZFJson &, childAdd
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         , ZFMP_IN_OPT(zfindex, index, zfindexMax())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJson, ZFJson &, childAdd

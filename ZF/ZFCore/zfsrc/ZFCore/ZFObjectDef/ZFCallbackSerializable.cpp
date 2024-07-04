@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 // serialize routine
 ZFTYPEID_DEFINE_BY_SERIALIZABLE_CONVERTER(ZFCallback, ZFCallback, {
         { // custom serialize logic
-            const zfchar *customType = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFCallback_callbackType);
+            zfstring customType = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFCallback_callbackType);
             if(customType != zfnull) {
                 _ZFP_ZFCallbackSerializeCustomCallback serializeCallback = _ZFP_ZFCallbackSerializeCustomTypeForName(customType);
                 if(serializeCallback == zfnull) {

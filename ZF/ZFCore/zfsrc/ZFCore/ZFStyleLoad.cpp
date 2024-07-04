@@ -33,7 +33,7 @@ static void _ZFP_ZFStyleLoadImpl(
 
             zfstring relativePathTmp = relativePath;
             if(!relativePathTmp.isEmpty()) {
-                relativePathTmp += ZFFileSeparator();
+                relativePathTmp += '/';
             }
             relativePathTmp += fd.fileName();
 
@@ -100,7 +100,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
         ZFStyleChangeBlock();
         for(zfindex i = 0; i < serializableData.childCount(); ++i) {
             const ZFSerializableData &child = serializableData.childAt(i);
-            const zfchar *styleKey = ZFSerializableUtil::checkPropertyName(child);
+            zfstring styleKey = ZFSerializableUtil::checkPropertyName(child);
             if(styleKey != zfnull) {
                 zfauto styleValueHolder;
                 if(ZFObjectFromDataT(styleValueHolder, child)) {

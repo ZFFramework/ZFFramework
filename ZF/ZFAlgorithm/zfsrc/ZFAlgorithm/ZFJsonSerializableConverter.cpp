@@ -44,7 +44,7 @@ static zfbool _ZFP_ZFSerializableDataFromJson(
 
     ZFJson elementJsonArray;
     for(zfiterator jsonItemIt = jsonObject.attrIter(); jsonObject.attrIterValid(jsonItemIt); jsonObject.attrIterNext(jsonItemIt)) {
-        const zfchar *key = jsonObject.attrIterKey(jsonItemIt);
+        zfstring key = jsonObject.attrIterKey(jsonItemIt);
         ZFJson jsonItem = jsonObject.attrIterValue(jsonItemIt);
         if(*key == _ZFP_ZFJsonSerializeKey_classPrefix) {
             serializableData.itemClass(key + 1);

@@ -121,7 +121,7 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, ZFLogFormat *, ZFLogFormatDefault)
 // other convenient method
 extern ZFLIB_ZFCore zfstring _ZFP_zfLogCurTimeString(void);
 /** @cond ZFPrivateDoc */
-#define zfLogCurTimeString() (_ZFP_zfLogCurTimeString().cString())
+#define zfLogCurTimeString() _ZFP_zfLogCurTimeString()
 /** @endcond */
 /**
  * @brief get a string contains current time with format HH:mm:ss.SSS

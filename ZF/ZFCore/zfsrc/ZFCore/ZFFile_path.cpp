@@ -7,7 +7,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // cwd
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForCwd) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForCwd) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFFileCwd) *impl = ZFPROTOCOL_TRY_ACCESS(ZFFileCwd);
     if(impl != zfnull) {
         return impl->pathForCwd();
@@ -17,7 +17,7 @@ ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForCwd) {
     }
 }
 ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFPathForCwdChange
-        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const zfstring &, path)
         ) {
     ZFPROTOCOL_INTERFACE_CLASS(ZFFileCwd) *impl = ZFPROTOCOL_TRY_ACCESS(ZFFileCwd);
     if(impl != zfnull) {
@@ -27,8 +27,8 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFPathForCwdChange
         return zffalse;
     }
 }
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForCwdOrModule) {
-    const zfchar *ret = ZFPathForCwd();
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForCwdOrModule) {
+    zfstring ret = ZFPathForCwd();
     if(ret != zfnull) {
         return ret;
     }
@@ -39,10 +39,10 @@ ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForCwdOrModule) {
 
 // ============================================================
 // module
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForModule) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForModule) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForModule();
 }
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForModuleFile) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForModuleFile) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForModuleFile();
 }
 
@@ -52,11 +52,11 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForSettingOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForSetting) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForSetting) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForSetting
-        , ZFMP_IN_OPT(const zfchar *, path, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForSettingOnChange())) {
         zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting());
@@ -74,11 +74,11 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForStorageOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForStorage) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForStorage) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorage
-        , ZFMP_IN_OPT(const zfchar *, path, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForStorageOnChange())) {
         zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage());
@@ -96,11 +96,11 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForStorageSharedOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForStorageShared) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForStorageShared) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorageShared
-        , ZFMP_IN_OPT(const zfchar *, path, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForStorageSharedOnChange())) {
         zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared());
@@ -120,11 +120,11 @@ ZFEVENT_GLOBAL_REGISTER(ZFPathForCacheBeforeClear)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForCacheAfterClear)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(const zfchar *, ZFPathForCache) {
+ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForCache) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForCache();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForCache
-        , ZFMP_IN_OPT(const zfchar *, path, zfnull)
+        , ZFMP_IN_OPT(const zfstring &, path, zfnull)
         ) {
     if(ZFGlobalObserver().observerHasAdd(ZFGlobalEvent::EventZFPathForCacheOnChange())) {
         zfobj<v_zfstring> old(ZFPROTOCOL_ACCESS(ZFPath)->pathForCache());

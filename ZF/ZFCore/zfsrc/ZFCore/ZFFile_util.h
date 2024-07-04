@@ -13,7 +13,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief format path according #ZFFileSeparator
+ * @brief format path
  *
  * format rules:
  * -  ensured no '/' at tail

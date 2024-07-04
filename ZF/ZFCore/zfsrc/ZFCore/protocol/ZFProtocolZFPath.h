@@ -18,47 +18,47 @@ public:
     /**
      * @brief see #ZFPathForModule
      */
-    virtual const zfchar *pathForModule(void) zfpurevirtual;
+    virtual zfstring pathForModule(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForModuleFile
      */
-    virtual const zfchar *pathForModuleFile(void) zfpurevirtual;
+    virtual zfstring pathForModuleFile(void) zfpurevirtual;
 
     /**
      * @brief see #ZFPathForSetting
      */
-    virtual const zfchar *pathForSetting(void) zfpurevirtual;
+    virtual zfstring pathForSetting(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForSetting
      */
-    virtual void pathForSetting(ZF_IN const zfchar *path) zfpurevirtual;
+    virtual void pathForSetting(ZF_IN const zfstring &path) zfpurevirtual;
 
     /**
      * @brief see #ZFPathForStorage
      */
-    virtual const zfchar *pathForStorage(void) zfpurevirtual;
+    virtual zfstring pathForStorage(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForStorage
      */
-    virtual void pathForStorage(ZF_IN const zfchar *path) zfpurevirtual;
+    virtual void pathForStorage(ZF_IN const zfstring &path) zfpurevirtual;
 
     /**
      * @brief see #ZFPathForStorageShared
      */
-    virtual const zfchar *pathForStorageShared(void) zfpurevirtual;
+    virtual zfstring pathForStorageShared(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForStorageShared
      */
-    virtual void pathForStorageShared(ZF_IN const zfchar *path) zfpurevirtual;
+    virtual void pathForStorageShared(ZF_IN const zfstring &path) zfpurevirtual;
 
     /**
      * @brief see #ZFPathForCache
      */
-    virtual const zfchar *pathForCache(void) zfpurevirtual;
+    virtual zfstring pathForCache(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForCache
      */
-    virtual void pathForCache(ZF_IN const zfchar *path) zfpurevirtual;
+    virtual void pathForCache(ZF_IN const zfstring &path) zfpurevirtual;
     /**
      * @brief see #ZFPathForCacheClear
      */

@@ -158,7 +158,7 @@ zfbool ZFUIAutoLayoutParam::serializableOnSerializeFromData(
 
         // target/targetPos
         {
-            const zfchar *value = ZFSerializableUtil::requireAttribute(
+            zfstring value = ZFSerializableUtil::requireAttribute(
                 element, ZFSerializableKeyword_ZFUIAutoLayoutParam_target, outErrorHint, outErrorPos);
             if(value == zfnull) {
                 return zffalse;

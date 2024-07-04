@@ -14,7 +14,7 @@ zfbool ZFEnum::serializableOnSerializeFromData(
         ) {
     if(!zfsuperI(ZFSerializable)::serializableOnSerializeFromData(serializableData, outErrorHint, outErrorPos)) {return zffalse;}
 
-    const zfchar *valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
+    zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
     if(valueString != zfnull) {
         zfuint enumValue = ZFEnumInvalid();
         if(!zfstringIsEqual(valueString, ZFEnumNameInvalid())) {

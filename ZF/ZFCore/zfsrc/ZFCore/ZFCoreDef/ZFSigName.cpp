@@ -9,11 +9,10 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-zfclassPOD _ZFP_ZFSigNamePrivate {
+zfclassLikePOD _ZFP_ZFSigNamePrivate {
 public:
     zfuint refCount;
-    zfuint length;
-    zfchar *s;
+    zfstring s;
     zfidentity sigId;
 };
 
@@ -37,21 +36,34 @@ static _ZFP_ZFSigNameIdMapType &_ZFP_ZFSigNameIdUnusedMap(void) {
     static _ZFP_ZFSigNameIdMapType m;
     return m;
 }
+// delay delete, to prevent sigId increase for creating tmp ZFSigName
 static _ZFP_ZFSigNameCacheType &_ZFP_ZFSigNameCache(void) {
     static _ZFP_ZFSigNameCacheType l;
     return l;
 }
 
-static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len = zfindexMax()) {
-    if(zfstringIsEmpty(s, len)) {
+static void _ZFP_ZFSigIdAttach(ZF_IN _ZFP_ZFSigNamePrivate *d) {
+    if(_ZFP_ZFSigNameIdUnusedMap().empty()) {
+        do {
+            ++_ZFP_ZFSigNameId();
+            if(_ZFP_ZFSigNameId() == zfidentityInvalid()) {
+                ++_ZFP_ZFSigNameId();
+            }
+        } while(_ZFP_ZFSigNameIdMap().find(_ZFP_ZFSigNameId()) != _ZFP_ZFSigNameIdMap().end());
+        d->sigId = _ZFP_ZFSigNameId();
+    }
+    else {
+        d->sigId = _ZFP_ZFSigNameIdUnusedMap().begin()->first;
+        _ZFP_ZFSigNameIdUnusedMap().erase(_ZFP_ZFSigNameIdUnusedMap().begin());
+    }
+    _ZFP_ZFSigNameIdMap()[d->sigId] = zftrue;
+}
+static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfstring &s) {
+    if(s == zfnull) {
         return zfnull;
     }
     _ZFP_ZFSigNameCache();
-    _ZFP_ZFSigNameMapType::iterator it = _ZFP_ZFSigNameMap().find(
-            len == zfindexMax()
-            ? s
-            : zfstring(s, len).cString()
-            );
+    _ZFP_ZFSigNameMapType::iterator it = _ZFP_ZFSigNameMap().find(s);
     if(it != _ZFP_ZFSigNameMap().end()) {
         _ZFP_ZFSigNamePrivate *d = it->second;
         ++(d->refCount);
@@ -60,23 +72,9 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfchar *s, ZF_IN_
     else {
         _ZFP_ZFSigNamePrivate *d = zfnew(_ZFP_ZFSigNamePrivate);
         d->refCount = 1;
-        if(_ZFP_ZFSigNameIdUnusedMap().empty()) {
-            do {
-                ++_ZFP_ZFSigNameId();
-                if(_ZFP_ZFSigNameId() == zfidentityInvalid()) {
-                    ++_ZFP_ZFSigNameId();
-                }
-            } while(_ZFP_ZFSigNameIdMap().find(_ZFP_ZFSigNameId()) != _ZFP_ZFSigNameIdMap().end());
-            d->sigId = _ZFP_ZFSigNameId();
-        }
-        else {
-            d->sigId = _ZFP_ZFSigNameIdUnusedMap().begin()->first;
-            _ZFP_ZFSigNameIdUnusedMap().erase(_ZFP_ZFSigNameIdUnusedMap().begin());
-        }
-        d->s = zfsCopy(s, len);
-        d->length = (zfuint)(len != zfindexMax() ? len : zfslen(d->s));
+        d->sigId = zfidentityInvalid();
+        d->s = s;
         _ZFP_ZFSigNameMap()[d->s] = d;
-        _ZFP_ZFSigNameIdMap()[d->sigId] = zftrue;
         return d;
     }
 }
@@ -93,9 +91,10 @@ static void _ZFP_ZFSigNameDetach(ZF_IN _ZFP_ZFSigNamePrivate *d) {
             --(d->refCount);
             if(d->refCount == 0) {
                 _ZFP_ZFSigNameMap().erase(d->s);
-                _ZFP_ZFSigNameIdMap().erase(d->sigId);
-                _ZFP_ZFSigNameIdUnusedMap()[d->sigId] = zftrue;
-                zffree(d->s);
+                if(d->sigId != zfidentityInvalid()) {
+                    _ZFP_ZFSigNameIdMap().erase(d->sigId);
+                    _ZFP_ZFSigNameIdUnusedMap()[d->sigId] = zftrue;
+                }
                 zfdelete(d);
             }
         }
@@ -116,9 +115,9 @@ ZFSigName::ZFSigName(ZF_IN const zfstring &s) {
     zfCoreMutexLocker();
     d = _ZFP_ZFSigNameAttach(s);
 }
-ZFSigName::ZFSigName(ZF_IN const zfchar *s, ZF_IN_OPT zfindex len /* = zfindexMax() */) {
+ZFSigName::ZFSigName(ZF_IN const zfchar *s) {
     zfCoreMutexLocker();
-    d = _ZFP_ZFSigNameAttach(s, len);
+    d = _ZFP_ZFSigNameAttach(s);
 }
 ZFSigName::~ZFSigName(void) {
     if(d) {
@@ -128,7 +127,15 @@ ZFSigName::~ZFSigName(void) {
 }
 
 zfidentity ZFSigName::sigId(void) const {
-    return d ? d->sigId : zfidentityInvalid();
+    if(d) {
+        if(d->sigId == zfidentityInvalid()) {
+            _ZFP_ZFSigIdAttach(d);
+        }
+        return d->sigId;
+    }
+    else {
+        return zfidentityInvalid();
+    }
 }
 
 zfbool ZFSigName::isEmpty(void) const {
@@ -138,9 +145,12 @@ zfbool ZFSigName::isEmpty(void) const {
 const zfchar *ZFSigName::cString(void) const {
     return d ? d->s : "";
 }
+zfstring ZFSigName::zfString(void) const {
+    return d ? d->s : zfnull;
+}
 
 zfindex ZFSigName::length(void) const {
-    return d ? d->length : 0;
+    return d ? d->s.length() : 0;
 }
 
 zfint ZFSigName::compare(ZF_IN const ZFSigName &ref) const {

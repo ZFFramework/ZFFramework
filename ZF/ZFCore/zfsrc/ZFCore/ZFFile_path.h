@@ -16,38 +16,38 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *
  * return null if not available
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCwd)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForCwd)
 /**
  * @brief change current working directory
  *
  * return false if failed
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfbool, ZFPathForCwdChange
-        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const zfstring &, path)
         )
 /**
  * @brief util method to access #ZFPathForCwd,
  *   return #ZFPathForModule if not available
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCwdOrModule)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForCwdOrModule)
 
 // ============================================================
 // module
 /**
  * @brief get module's parent's path, e.g. "/path"
  *
- * path is ensured to use ZFFileSeparator as separator,
+ * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForModule)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForModule)
 /**
  * @brief get module's path, e.g. "/path/module.exe"
  *
- * path is ensured to use ZFFileSeparator as separator\n
+ * path is ensured to use '/' as separator\n
  * it's not ensured module path is actually executable's path,
  * use other path types for data storage such as #ZFPathForSetting
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForModuleFile)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForModuleFile)
 
 // ============================================================
 // setting
@@ -65,15 +65,15 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 /**
  * @brief get a proper data path that app can save settings to
  *
- * path is ensured to use ZFFileSeparator as separator,
+ * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForSetting)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForSetting)
 /**
  * @brief change the data path, null to use defalut path
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForSetting
-        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const zfstring &, path)
         )
 
 // ============================================================
@@ -92,15 +92,15 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
 /**
  * @brief get a proper storage path that app can write files to
  *
- * path is ensured to use ZFFileSeparator as separator,
+ * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForStorage)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForStorage)
 /**
  * @brief change the storage path, null to use defalut path
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorage
-        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const zfstring &, path)
         )
 
 // ============================================================
@@ -123,15 +123,15 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * note, this path may or may not be writable,
  * maybe external storage path or user's home path,
  * write with caution and only if necessary\n
- * path is ensured to use ZFFileSeparator as separator,
+ * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForStorageShared)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForStorageShared)
 /**
  * @brief change the storage path, null to use defalut path
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForStorageShared
-        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const zfstring &, path)
         )
 
 // ============================================================
@@ -164,15 +164,15 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  *
  * cache is used for temp files only,
  * may or may not be deleted automatically\n
- * path is ensured to use ZFFileSeparator as separator,
+ * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfchar *, ZFPathForCache)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForCache)
 /**
  * @brief change the cache path, null to use defalut path
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, ZFPathForCache
-        , ZFMP_IN(const zfchar *, path)
+        , ZFMP_IN(const zfstring &, path)
         )
 /**
  * @brief clear all caches under #ZFPathForCache

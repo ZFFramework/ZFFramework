@@ -42,7 +42,7 @@ public:
         ZFCoreArray<zfstring> enumNames;
     };
     typedef union {
-        zfchar *NS; // for NSBegin, full namespace, including nested
+        zfstring *NS; // for NSBegin, full namespace, including nested
         const ZFClass *cls; // for classBegin
         EnumInfo *enumInfo; // for enumBegin
     } D;
@@ -53,7 +53,7 @@ public:
     const zfchar *scopeNS(void) {
         switch(this->scopeType) {
             case ScopeType_NS:
-                return d.NS;
+                return *(d.NS);
             case ScopeType_class:
                 return d.cls->classNameFull();
             default:
@@ -74,7 +74,7 @@ public:
     ~_ZFP_ZFDynamicRegScopeInfo(void) {
         switch(scopeType) {
             case ScopeType_NS:
-                zffree(d.NS);
+                zfdelete(d.NS);
                 break;
             case ScopeType_class:
                 break;
@@ -128,7 +128,7 @@ public:
         }
     }
 public:
-    void error(ZF_IN const zfchar *errorHint) {
+    void error(ZF_IN const zfstring &errorHint) {
         this->errorOccurred = zftrue;
         if(!ZFDynamic::errorCallbacks().isEmpty()) {
             zfstring s;
@@ -255,7 +255,7 @@ public:
         }
 
         this->errorOccurred = zffalse;
-        if(!this->regTag.isEmpty()) {
+        if(this->regTag) {
             _ZFP_ZFDynamicRegTagMap().erase(this->regTag);
             this->regTag.removeAll();
         }
@@ -302,17 +302,10 @@ ZFDynamic::ZFDynamic(void)
 : d(zfnew(_ZFP_ZFDynamicPrivate))
 {
 }
-ZFDynamic::ZFDynamic(ZF_IN const zfchar *regTag)
+ZFDynamic::ZFDynamic(ZF_IN const zfstring &regTag)
 : d(zfnew(_ZFP_ZFDynamicPrivate))
 {
     this->regTag(regTag);
-}
-ZFDynamic::ZFDynamic(ZF_IN ZFObject *regTag)
-: d(zfnew(_ZFP_ZFDynamicPrivate))
-{
-    if(regTag != zfnull) {
-        this->regTag(regTag->objectInfo());
-    }
 }
 ZFDynamic::ZFDynamic(ZF_IN const ZFDynamic &ref)
 : d(ref.d)
@@ -424,7 +417,7 @@ void ZFDynamic::exportTag(
     }
 }
 
-ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag) {
+ZFDynamic &ZFDynamic::regTag(ZF_IN const zfstring &regTag) {
     zfstlmap<zfstring, ZFDynamic> &m = _ZFP_ZFDynamicRegTagMap();
     if(!d->regTag.isEmpty()) {
         m.erase(d->regTag);
@@ -445,17 +438,8 @@ ZFDynamic &ZFDynamic::regTag(ZF_IN const zfchar *regTag) {
     m[regTag] = *this;
     return *this;
 }
-const zfchar *ZFDynamic::regTag(void) const {
-    return (d->regTag.isEmpty() ? zfnull : d->regTag.cString());
-}
-ZFDynamic &ZFDynamic::regTag(ZF_IN ZFObject *regTag) {
-    if(regTag != zfnull) {
-        this->regTag(regTag->objectInfo());
-    }
-    else {
-        this->regTag("");
-    }
-    return *this;
+zfstring ZFDynamic::regTag(void) const {
+    return d->regTag;
 }
 
 void ZFDynamic::removeAll(void) {
@@ -480,8 +464,8 @@ const ZFCoreArray<zfidentity> &ZFDynamic::allEvent(void) const {
 }
 
 ZFDynamic &ZFDynamic::classBegin(
-        ZF_IN const zfchar *classNameFull
-        , ZF_IN const zfchar *parentClassNameFull
+        ZF_IN const zfstring &classNameFull
+        , ZF_IN const zfstring &parentClassNameFull
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
         ) {
     if(d->errorOccurred) {return *this;}
@@ -508,7 +492,7 @@ ZFDynamic &ZFDynamic::classBegin(
     }
 }
 ZFDynamic &ZFDynamic::classBegin(
-        ZF_IN const zfchar *classNameFull
+        ZF_IN const zfstring &classNameFull
         , ZF_IN_OPT const ZFClass *classParent /* = ZFObject::ClassData() */
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
         ) {
@@ -524,7 +508,7 @@ ZFDynamic &ZFDynamic::classBegin(
     else {
         zfstring errorHint;
         const ZFClass *dynClass = ZFClassDynamicRegister(
-            scopePrev && scopePrev->scopeNS() ? zfstr("%s.%s", scopePrev->scopeNS(), classNameFull).cString() : classNameFull,
+            scopePrev && scopePrev->scopeNS() ? zfstr("%s.%s", scopePrev->scopeNS(), classNameFull) : classNameFull,
             classParent, classDynamicRegisterUserData, &errorHint);
         if(dynClass == zfnull) {
             d->error(zfstr("unable to register class: %s, reason: %s"
@@ -677,11 +661,11 @@ ZFDynamic &ZFDynamic::on(
     return *this;
 }
 
-ZFDynamic &ZFDynamic::NSBegin(ZF_IN_OPT const zfchar *methodNamespace /* = ZF_NAMESPACE_GLOBAL_NAME */) {
+ZFDynamic &ZFDynamic::NSBegin(ZF_IN const zfstring &methodNamespace) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_NS()) {return *this;}
-    methodNamespace = ZFNamespaceSkipGlobal(methodNamespace);
-    if(zfstringIsEmpty(methodNamespace)) {
+    const zfchar *methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespace);
+    if(zfstringIsEmpty(methodNamespaceTmp)) {
         d->error("empty namespace or NSBegin on global namespace");
         return *this;
     }
@@ -689,10 +673,14 @@ ZFDynamic &ZFDynamic::NSBegin(ZF_IN_OPT const zfchar *methodNamespace /* = ZF_NA
     _ZFP_ZFDynamicRegScopeInfo *scope = zfnew(_ZFP_ZFDynamicRegScopeInfo, _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS);
     d->scopeList.add(scope);
     if(scopePrev != zfnull) {
-        scope->d.NS = zfsConnect(scope->scopeNS(), ".", methodNamespace);
+        scope->d.NS = zfnew(zfstring);
+        zfstring &tmp = *(scope->d.NS);
+        tmp += scope->scopeNS();
+        tmp += ".";
+        tmp += methodNamespaceTmp;
     }
     else {
-        scope->d.NS = zfsCopy(methodNamespace);
+        scope->d.NS = zfnew(zfstring, methodNamespaceTmp);
     }
     return *this;
 }
@@ -709,7 +697,7 @@ ZFDynamic &ZFDynamic::NSEnd(void) {
     return *this;
 }
 
-ZFDynamic &ZFDynamic::enumBegin(ZF_IN const zfchar *enumClassName) {
+ZFDynamic &ZFDynamic::enumBegin(ZF_IN const zfstring &enumClassName) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_class()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -723,7 +711,7 @@ ZFDynamic &ZFDynamic::enumBegin(ZF_IN const zfchar *enumClassName) {
     scope->d.enumInfo->enumIsFlags = zffalse;
     return *this;
 }
-ZFDynamic &ZFDynamic::enumBeginFlags(ZF_IN const zfchar *enumClassName) {
+ZFDynamic &ZFDynamic::enumBeginFlags(ZF_IN const zfstring &enumClassName) {
     if(d->errorOccurred) {return *this;}
     if(!d->scopeCheck_class()) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scopePrev = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
@@ -738,7 +726,7 @@ ZFDynamic &ZFDynamic::enumBeginFlags(ZF_IN const zfchar *enumClassName) {
     return *this;
 }
 ZFDynamic &ZFDynamic::enumValue(
-        ZF_IN const zfchar *enumName
+        ZF_IN const zfstring &enumName
         , ZF_IN_OPT zfuint enumValue /* = ZFEnumInvalid() */
         ) {
     if(d->errorOccurred) {return *this;}
@@ -795,7 +783,7 @@ static zfbool _ZFP_ZFDynamicEventGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     ret = invokerMethod->methodDynamicRegisterUserData();
     return zftrue;
 }
-ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
+ZFDynamic &ZFDynamic::event(ZF_IN const zfstring &eventName) {
     if(d->errorOccurred) {return *this;}
     _ZFP_ZFDynamicRegScopeInfo *scope = d->scopeList.isEmpty() ? zfnull : d->scopeList.getLast();
     if(scope != zfnull && scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_enum) {
@@ -808,14 +796,14 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
     }
     zfstring idName;
     const ZFClass *cls = zfnull;
-    const zfchar *NS = zfnull;
+    zfstring NS;
     if(scope == zfnull) {
         idName += ZF_NAMESPACE_GLOBAL_NAME;
-        NS = ZF_NAMESPACE_GLOBAL_NAME;
+        NS = zftext(ZF_NAMESPACE_GLOBAL_NAME);
     }
     else if(scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS) {
-        idName += scope->d.NS;
-        NS = scope->d.NS;
+        idName += *(scope->d.NS);
+        NS = *(scope->d.NS);
     }
     else if(scope->scopeType == _ZFP_ZFDynamicRegScopeInfo::ScopeType_class) {
         idName += scope->d.cls->classNameFull();
@@ -848,8 +836,8 @@ ZFDynamic &ZFDynamic::event(ZF_IN const zfchar *eventName) {
 }
 
 ZFDynamic &ZFDynamic::method(
-        ZF_IN const zfchar *methodReturnTypeId
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodReturnTypeId
+        , ZF_IN const zfstring &methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
@@ -880,7 +868,7 @@ ZFDynamic &ZFDynamic::method(
     if(scope != zfnull) {
         switch(scope->scopeType) {
             case _ZFP_ZFDynamicRegScopeInfo::ScopeType_NS:
-                p.methodNamespace(scope->d.NS);
+                p.methodNamespace(*(scope->d.NS));
                 break;
             case _ZFP_ZFDynamicRegScopeInfo::ScopeType_class:
                 p.methodOwnerClass(scope->d.cls);
@@ -925,8 +913,8 @@ static zfauto _ZFP_ZFDynamicPropertyInit(ZF_IN const ZFProperty *property) {
     return zfnull;
 }
 ZFDynamic &ZFDynamic::property(
-        ZF_IN const zfchar *propertyTypeId
-        , ZF_IN const zfchar *propertyName
+        ZF_IN const zfstring &propertyTypeId
+        , ZF_IN const zfstring &propertyName
         , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
         , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
         , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
@@ -964,7 +952,7 @@ ZFDynamic &ZFDynamic::property(
 }
 ZFDynamic &ZFDynamic::property(
         ZF_IN const ZFClass *propertyClassOfRetainProperty
-        , ZF_IN const zfchar *propertyName
+        , ZF_IN const zfstring &propertyName
         , ZF_IN_OPT ZFObject *propertyInitValue /* = zfnull */
         , ZF_IN_OPT ZFMethodPrivilegeType setterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
         , ZF_IN_OPT ZFMethodPrivilegeType getterPrivilegeType /* = ZFMethodPrivilegeTypePublic */
@@ -1028,32 +1016,32 @@ ZFDynamic &ZFDynamic::property(ZF_IN const ZFPropertyDynamicRegisterParam &param
 }
 
 ZFDynamic &ZFDynamic::propertyOnInit(
-        ZF_IN const zfchar *propertyName
+        ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &callback
         ) {
     return this->propertyLifeCycle(propertyName, ZFPropertyLifeCycleOnInit, callback);
 }
 ZFDynamic &ZFDynamic::propertyOnVerify(
-        ZF_IN const zfchar *propertyName
+        ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &callback
         ) {
     return this->propertyLifeCycle(propertyName, ZFPropertyLifeCycleOnVerify, callback);
 }
 ZFDynamic &ZFDynamic::propertyOnAttach(
-        ZF_IN const zfchar *propertyName
+        ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &callback
         ) {
     return this->propertyLifeCycle(propertyName, ZFPropertyLifeCycleOnAttach, callback);
 }
 ZFDynamic &ZFDynamic::propertyOnDetach(
-        ZF_IN const zfchar *propertyName
+        ZF_IN const zfstring &propertyName
         , ZF_IN const ZFListener &callback
         ) {
     return this->propertyLifeCycle(propertyName, ZFPropertyLifeCycleOnDetach, callback);
 }
 
 ZFDynamic &ZFDynamic::propertyLifeCycle(
-        ZF_IN const zfchar *propertyName
+        ZF_IN const zfstring &propertyName
         , ZF_IN ZFPropertyLifeCycle lifeCycle
         , ZF_IN const ZFListener &callback
         ) {
@@ -1151,21 +1139,12 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
         ZFDynamic &v = invokerObject.zfv();
         v.regTag(regTag);
     }, v_ZFDynamic
-    , ZFMP_IN(const zfchar *, regTag)
-    )
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        ZFDynamic &v = invokerObject.zfv();
-        v.regTag(regTag);
-    }, v_ZFDynamic
-    , ZFMP_IN(ZFObject *, regTag)
+    , ZFMP_IN(const zfstring &, regTag)
     )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, regTag
-        , ZFMP_IN(const zfchar *, regTag)
+        , ZFMP_IN(const zfstring &, regTag)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, regTag
-        , ZFMP_IN(ZFObject *, regTag)
-        )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const zfchar *, regTag)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, zfstring, regTag)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, void, removeAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFClass *> &, allClass)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFClass *> &, allEnum)
@@ -1173,12 +1152,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const Z
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFProperty *> &, allProperty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<zfidentity> &, allEvent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
-        , ZFMP_IN(const zfchar *, classNameFull)
-        , ZFMP_IN(const zfchar *, parentClassNameFull)
+        , ZFMP_IN(const zfstring &, classNameFull)
+        , ZFMP_IN(const zfstring &, parentClassNameFull)
         , ZFMP_IN_OPT(ZFObject *, classDynamicRegisterUserData, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_3(v_ZFDynamic, ZFDynamic &, classBegin
-        , ZFMP_IN(const zfchar *, classNameFull)
+        , ZFMP_IN(const zfstring &, classNameFull)
         , ZFMP_IN_OPT(const ZFClass *, classParent, ZFObject::ClassData())
         , ZFMP_IN_OPT(ZFObject *, classDynamicRegisterUserData, zfnull)
         )
@@ -1204,28 +1183,28 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, onDealloc
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, NSBegin
-        , ZFMP_IN_OPT(const zfchar *, methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
+        , ZFMP_IN_OPT(const zfstring &, methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFDynamic &, NSEnd)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, enumBegin
-        , ZFMP_IN(const zfchar *, enumClassName)
+        , ZFMP_IN(const zfstring &, enumClassName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, enumBeginFlags
-        , ZFMP_IN(const zfchar *, enumClassName)
+        , ZFMP_IN(const zfstring &, enumClassName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, enumValue
-        , ZFMP_IN(const zfchar *, enumName)
+        , ZFMP_IN(const zfstring &, enumName)
         , ZFMP_IN_OPT(zfuint, enumValue, ZFEnumInvalid())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, enumEnd
         , ZFMP_IN_OPT(zfuint, enumDefault, ZFEnumInvalid())
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, event
-        , ZFMP_IN(const zfchar *, eventName)
+        , ZFMP_IN(const zfstring &, eventName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_6(v_ZFDynamic, ZFDynamic &, method
-        , ZFMP_IN(const zfchar *, methodReturnTypeId)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodReturnTypeId)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
         , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
@@ -1235,15 +1214,15 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, method
         , ZFMP_IN(const ZFMethodDynamicRegisterParam &, param)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, property
-        , ZFMP_IN(const zfchar *, propertyTypeId)
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyTypeId)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
         , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
         , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_5(v_ZFDynamic, ZFDynamic &, property
         , ZFMP_IN(const ZFClass *, propertyClassOfRetainProperty)
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN_OPT(ZFObject *, propertyInitValue, zfnull)
         , ZFMP_IN_OPT(ZFMethodPrivilegeType, setterPrivilegeType, ZFMethodPrivilegeTypePublic)
         , ZFMP_IN_OPT(ZFMethodPrivilegeType, getterPrivilegeType, ZFMethodPrivilegeTypePublic)
@@ -1252,19 +1231,19 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, property
         , ZFMP_IN(const ZFPropertyDynamicRegisterParam &, param)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnInit
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnVerify
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnAttach
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFDynamic, ZFDynamic &, propertyOnDetach
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyName)
         , ZFMP_IN(const ZFListener &, callback)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, ZFCoreArray<ZFOutput> &, errorCallbacks)

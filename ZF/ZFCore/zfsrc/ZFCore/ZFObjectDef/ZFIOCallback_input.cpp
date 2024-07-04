@@ -193,14 +193,14 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForInputInRange, ZFCallbackSerial
 // ============================================================
 // ZFInputForBuffer serialization
 ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFInputForBuffer, ZFCallbackSerializeCustomType_ZFInputForBuffer) {
-    const zfchar *buf = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFInputForBuffer_buf);
+    zfstring buf = ZFSerializableUtil::checkAttribute(serializableData, ZFSerializableKeyword_ZFInputForBuffer_buf);
     if(buf == zfnull) {
         ret = ZFInputForBufferUnsafe(zfnull, 0, zftrue);
     }
     else {
         zfstring bufDecoded;
         zfCoreDataDecode(bufDecoded, buf);
-        ret = ZFInputForBufferUnsafe(bufDecoded.cString(), bufDecoded.length());
+        ret = ZFInputForBuffer(bufDecoded.cString(), bufDecoded.length());
     }
     return zftrue;
 }

@@ -136,7 +136,7 @@ zfbool zfstringFromDataT(
     if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_zfstring(), outErrorHint, outErrorPos) == zfnull) {
         return zffalse;
     }
-    const zfchar *valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
+    zfstring valueString = ZFSerializableUtil::checkPropertyValue(serializableData);
     if(valueString == zfnull) {
         v = zfnull;
         return zftrue;

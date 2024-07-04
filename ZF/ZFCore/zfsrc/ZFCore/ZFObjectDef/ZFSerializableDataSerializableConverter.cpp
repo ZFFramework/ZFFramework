@@ -272,7 +272,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
         }
         else {
             zfCoreDataDecode(decodedTmp, pLeft, pRight - pLeft);
-            serializableData.itemClass(decodedTmp.cString());
+            serializableData.itemClass(decodedTmp);
             decodedTmp.removeAll();
         }
 
@@ -309,7 +309,7 @@ zfbool _ZFP_ZFSerializableDataFromZfsd(
 
                 // save
                 if(!attributeName.isEmpty() && !decodedTmp.isEmpty()) {
-                    serializableData.attr(attributeName.cString(), decodedTmp.cString());
+                    serializableData.attr(attributeName, decodedTmp);
                 }
                 decodedTmp.removeAll();
 

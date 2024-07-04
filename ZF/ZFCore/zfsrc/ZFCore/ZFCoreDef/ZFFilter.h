@@ -573,7 +573,7 @@ protected:
             ZF_IN_OUT T_Public &to
             , ZF_IN T_Internal const &from
             ) const {
-        to = from.cString();
+        to = from;
     }
     zfoverride
     virtual zfbool filterOnCheckEqual(

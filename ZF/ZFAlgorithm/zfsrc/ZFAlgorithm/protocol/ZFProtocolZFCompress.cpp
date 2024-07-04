@@ -24,11 +24,11 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
         }
         const zfchar *path = tmp;
         zfindex pathLen = tmp.length();
-        while(path[0] == ZFFileSeparator()) {
+        while(path[0] == '/') {
             ++path;
             --pathLen;
         }
-        while(pathLen > 0 && path[pathLen - 1] == ZFFileSeparator()) {
+        while(pathLen > 0 && path[pathLen - 1] == '/') {
             --pathLen;
         }
         if(pathLen == 0) {
@@ -44,7 +44,7 @@ static zfbool _ZFP_ZFProtocolZFCompress_FindNext(
                 continue;
             }
         }
-        zfindex pos = zfstringFind(path, pathLen, ZFFileSeparatorString(), 1);
+        zfindex pos = zfstringFind(path, pathLen, '/');
         if(pos != zfindexMax() && pos != pathLen - 1) {
             continue;
         }
@@ -67,7 +67,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFCompress)::decompressContentFindFirst(
     d->decompressToken = decompressToken;
     d->lastIndex = zfindexMax();
     ZFPathFormat(d->relPath, filePathInZip);
-    while(!d->relPath.isEmpty() && d->relPath[0] == ZFFileSeparator()) {
+    while(!d->relPath.isEmpty() && d->relPath[0] == '/') {
         d->relPath.remove(0, 1);
     }
     zfbool ret = _ZFP_ZFProtocolZFCompress_FindNext(fd, d);

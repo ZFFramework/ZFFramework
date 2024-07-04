@@ -16,20 +16,20 @@ zfbool _ZFP_ZFImpl_ZFRes_resPathFix(
 
 // ============================================================
 const zfstring &ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resRootPath(void) {
-    static zfstring d = zfstr(".%sres%s", ZFFileSeparator(), ZFFileSeparator());
+    static zfstring d = zfstr(".%sres%s", '/', '/');
     return d;
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resIsExist(ZF_IN const zfchar *resPath) {
     zfstring tmpPath;
     tmpPath += this->resRootPath();
     tmpPath += resPath;
-    return ZFFileIsExist(tmpPath.cString());
+    return ZFFileIsExist(tmpPath);
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resIsDir(ZF_IN const zfchar *resPath) {
     zfstring tmpPath;
     tmpPath += this->resRootPath();
     tmpPath += resPath;
-    return ZFFileIsDir(tmpPath.cString());
+    return ZFFileIsDir(tmpPath);
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resCopy(
         ZF_IN const zfchar *resPath
@@ -49,7 +49,7 @@ zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resCopy(
         zfbool ret = ZFFileCopy(tmpPath, dstPath, isRecursive, isForce, &errPosTmp);
         if(!ret) {
             if(zfstringFind(errPosTmp, this->resRootPath()) == 0) {
-                *errPos += errPosTmp.cString() + this->resRootPath().length();
+                *errPos += errPosTmp + this->resRootPath().length();
             }
             else {
                 *errPos += errPosTmp;
@@ -65,7 +65,7 @@ void *ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resOpen(ZF_IN const zfchar *resPath) {
     zfstring tmpPath;
     tmpPath += this->resRootPath();
     tmpPath += resPath;
-    return ZFFileOpen(tmpPath.cString(), ZFFileOpenOption::e_Read);
+    return ZFFileOpen(tmpPath, ZFFileOpenOption::e_Read);
 }
 zfbool ZFPROTOCOL_INTERFACE_CLASS(ZFRes)::resClose(ZF_IN void *token) {
     return ZFFileClose(token);

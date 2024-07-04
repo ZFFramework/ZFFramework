@@ -105,7 +105,7 @@ public:
     /**
      * @brief true if contains the key
      */
-    zffinal zfbool isContain(ZF_IN const zfchar *key) const;
+    zffinal zfbool isContain(ZF_IN const zfstring &key) const;
 
     /**
      * @brief add elements from ref
@@ -120,18 +120,18 @@ public:
      * assert fail if value is null (use an empty smart pointer to store null value)
      */
     zffinal void set(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN const ZFCorePointerBase &value
             );
     /**
      * @brief get value or null if not exist
      */
-    zffinal ZFCorePointerBase *get(ZF_IN const zfchar *key) const;
+    zffinal ZFCorePointerBase *get(ZF_IN const zfstring &key) const;
     /**
      * @brief get value or null if not exist
      */
     template<typename T_Element>
-    T_Element get(ZF_IN const zfchar *key) const {
+    T_Element get(ZF_IN const zfstring &key) const {
         ZFCorePointerBase *t = this->get(key);
         if(t != zfnull) {
             return t->pointerValueT<T_Element>();
@@ -173,7 +173,7 @@ public:
     /**
      * @brief remove or do nothing if not exist
      */
-    zffinal void remove(ZF_IN const zfchar *key);
+    zffinal void remove(ZF_IN const zfstring &key);
 
     /**
      * @brief remove all content
@@ -187,7 +187,7 @@ public:
     zffinal zfiterator iter(void) const;
 
     /** @brief see #zfiterator */
-    zffinal zfiterator iterFind(ZF_IN const zfchar *key) const;
+    zffinal zfiterator iterFind(ZF_IN const zfstring &key) const;
 
     /** @brief see #zfiterator */
     zffinal zfbool iterValid(ZF_IN const zfiterator &it) const;
@@ -196,7 +196,7 @@ public:
     zffinal void iterNext(ZF_IN_OUT zfiterator &it) const;
 
     /** @brief see #zfiterator */
-    zffinal const zfchar *iterKey(ZF_IN const zfiterator &it) const;
+    zffinal zfstring iterKey(ZF_IN const zfiterator &it) const;
     /** @brief see #zfiterator */
     zffinal ZFCorePointerBase *iterValue(ZF_IN const zfiterator &it) const;
 
@@ -210,7 +210,7 @@ public:
 
     /** @brief see #zfiterator */
     zffinal void iterAdd(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN const ZFCorePointerBase &value
             );
 

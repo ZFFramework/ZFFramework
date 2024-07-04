@@ -240,7 +240,7 @@ zfbool ZFAniGroup::serializableOnSerializeFromData(
     for(zfindex i = 0; i < serializableData.childCount(); ++i) {
         const ZFSerializableData &categoryData = serializableData.childAt(i);
         if(categoryData.resolved()) {continue;}
-        const zfchar *category = ZFSerializableUtil::checkCategory(categoryData);
+        zfstring category = ZFSerializableUtil::checkCategory(categoryData);
         if(category == zfnull) {continue;}
 
         if(zfstringIsEqual(category, ZFSerializableKeyword_ZFAniGroup_child)) {

@@ -15,7 +15,7 @@ zfclassFwd ZFClass;
 // ============================================================
 extern ZFLIB_ZFCore const zfidentity *_ZFP_ZFIdMapRegister(
         ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const zfchar *idName
+        , ZF_IN const zfstring &idName
         , ZF_IN_OPT zfbool isDynamicRegister = zffalse
         );
 extern ZFLIB_ZFCore void _ZFP_ZFIdMapUnregister(
@@ -26,7 +26,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFIdMapUnregister(
 /**
  * @brief get id name from id value, or null if no such id, see #ZFIdMapIdForName
  */
-extern ZFLIB_ZFCore const zfchar *ZFIdMapNameForId(ZF_IN zfidentity idValue);
+extern ZFLIB_ZFCore zfstring ZFIdMapNameForId(ZF_IN zfidentity idValue);
 /**
  * @brief get id value from id name, or #zfidentityInvalid if no such id name, see #ZFIDMAP
  *
@@ -37,7 +37,7 @@ extern ZFLIB_ZFCore const zfchar *ZFIdMapNameForId(ZF_IN zfidentity idValue);
  * -  registered by #ZFIDMAP_REGISTER series
  * -  ever accessed
  */
-extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfchar *idName);
+extern ZFLIB_ZFCore zfidentity ZFIdMapIdForName(ZF_IN const zfstring &idName);
 
 /**
  * @brief see #ZFIDMAP
@@ -55,7 +55,7 @@ extern ZFLIB_ZFCore void ZFIdMapGetAll(
  *
  * assert fail if already registered
  */
-extern ZFLIB_ZFCore zfidentity ZFIdMapDynamicRegister(ZF_IN const zfchar *idName);
+extern ZFLIB_ZFCore zfidentity ZFIdMapDynamicRegister(ZF_IN const zfstring &idName);
 /**
  * @brief unregister id that was registered by #ZFIdMapDynamicRegister
  *
@@ -67,10 +67,10 @@ extern ZFLIB_ZFCore void ZFIdMapDynamicUnregister(ZF_IN zfidentity idValue);
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFIdMapHolder {
 public:
     _ZFP_ZFIdMapHolder(
-            ZF_IN const zfchar *idName
+            ZF_IN const zfstring &idName
             , ZF_IN const ZFClass *ownerClass
-            , ZF_IN const zfchar *ownerNamespace
-            , ZF_IN const zfchar *methodName
+            , ZF_IN const zfstring &ownerNamespace
+            , ZF_IN const zfstring &methodName
             );
     ~_ZFP_ZFIdMapHolder(void);
 
@@ -92,7 +92,7 @@ public:
  * declared id can be accessed by:
  * @code
  *   zfidentity idValue = YourClass::IdYourSth();
- *   const zfchar *idName = ZFIdMapNameForId(idValue);
+ *   zfstring idName = ZFIdMapNameForId(idValue);
  * @endcode
  * note that subclass may declare an id same as parent,
  * while the final id name is different:\n

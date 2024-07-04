@@ -150,10 +150,7 @@ zfbool ZFCoreMap::isEmpty(void) const {
     return d->m.empty();
 }
 
-zfbool ZFCoreMap::isContain(ZF_IN const zfchar *key) const {
-    if(key == zfnull) {
-        key = "";
-    }
+zfbool ZFCoreMap::isContain(ZF_IN const zfstring &key) const {
     return (d->m.find(key) != d->m.end());
 }
 
@@ -166,13 +163,9 @@ void ZFCoreMap::addFrom(ZF_IN const ZFCoreMap &ref) {
 }
 
 void ZFCoreMap::set(
-        ZF_IN const zfchar *key
+        ZF_IN const zfstring &key
         , ZF_IN const ZFCorePointerBase &value
         ) {
-    if(key == zfnull) {
-        key = "";
-    }
-
     _ZFP_ZFCoreMapPrivate::MapType::iterator it = d->m.find(key);
     if(it == d->m.end()) {
         d->m[key] = value.refNew();
@@ -183,10 +176,7 @@ void ZFCoreMap::set(
         toDelete->refDelete();
     }
 }
-ZFCorePointerBase *ZFCoreMap::get(ZF_IN const zfchar *key) const {
-    if(key == zfnull) {
-        key = "";
-    }
+ZFCorePointerBase *ZFCoreMap::get(ZF_IN const zfstring &key) const {
     _ZFP_ZFCoreMapPrivate::MapType::iterator it = d->m.find(key);
     if(it == d->m.end()) {
         return zfnull;
@@ -213,10 +203,7 @@ void ZFCoreMap::allValueT(ZF_IN_OUT ZFCoreArray<ZFCorePointerBase *> &ret) const
     }
 }
 
-void ZFCoreMap::remove(ZF_IN const zfchar *key) {
-    if(key == zfnull) {
-        key = "";
-    }
+void ZFCoreMap::remove(ZF_IN const zfstring &key) {
     _ZFP_ZFCoreMapPrivate::MapType::iterator it = d->m.find(key);
     if(it != d->m.end()) {
         ZFCorePointerBase *savedValue = it->second;
@@ -235,10 +222,7 @@ zfiterator ZFCoreMap::iter(void) const {
     return d->m.iter();
 }
 
-zfiterator ZFCoreMap::iterFind(ZF_IN const zfchar *key) const {
-    if(key == zfnull) {
-        key = "";
-    }
+zfiterator ZFCoreMap::iterFind(ZF_IN const zfstring &key) const {
     return d->m.iterFind(key);
 }
 
@@ -250,7 +234,7 @@ void ZFCoreMap::iterNext(ZF_IN_OUT zfiterator &it) const {
     d->m.iterNext(it);
 }
 
-const zfchar *ZFCoreMap::iterKey(ZF_IN const zfiterator &it) const {
+zfstring ZFCoreMap::iterKey(ZF_IN const zfiterator &it) const {
     return d->m.iterKey(it);
 }
 ZFCorePointerBase *ZFCoreMap::iterValue(ZF_IN const zfiterator &it) const {
@@ -272,7 +256,7 @@ void ZFCoreMap::iterRemove(ZF_IN_OUT zfiterator &it) {
 }
 
 void ZFCoreMap::iterAdd(
-        ZF_IN const zfchar *key
+        ZF_IN const zfstring &key
         , ZF_IN const ZFCorePointerBase &value
         ) {
     this->set(key, value);

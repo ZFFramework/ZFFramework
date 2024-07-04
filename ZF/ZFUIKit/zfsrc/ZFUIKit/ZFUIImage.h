@@ -219,11 +219,11 @@ public:
     /**
      * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
      */
-    virtual void imageSerializableType(ZF_IN const zfchar *typeName);
+    virtual void imageSerializableType(ZF_IN const zfstring &typeName);
     /**
      * @brief see #imageSerializableType
      */
-    virtual const zfchar *imageSerializableType(void);
+    virtual zfstring imageSerializableType(void);
     /**
      * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
      */

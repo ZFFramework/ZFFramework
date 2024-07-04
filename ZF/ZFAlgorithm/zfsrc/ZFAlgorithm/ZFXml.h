@@ -142,11 +142,11 @@ public:
      * -  XmlText: always null
      * -  XmlComment: always null
      */
-    ZFXml &name(ZF_IN const zfchar *name);
+    ZFXml &name(ZF_IN const zfstring &name);
     /**
      * @brief see #name
      */
-    const zfchar *name(void) const;
+    zfstring name(void) const;
 
     /**
      * @brief value of the node
@@ -160,11 +160,11 @@ public:
      * -  XmlText: the text itself without tags if CDATA
      * -  XmlComment: the comment itself without tags
      */
-    ZFXml &value(ZF_IN const zfchar *value);
+    ZFXml &value(ZF_IN const zfstring &value);
     /**
      * @brief see #value
      */
-    const zfchar *value(void) const;
+    zfstring value(void) const;
 
     // ============================================================
 public:
@@ -185,21 +185,21 @@ public:
      * @brief add or set attribute
      */
     ZFXml &attr(
-            ZF_IN const zfchar *key
-            , ZF_IN const zfchar *value
+            ZF_IN const zfstring &key
+            , ZF_IN const zfstring &value
             );
     /**
      * @brief get attribute with key
      */
-    const zfchar *attr(ZF_IN const zfchar *key) const;
+    zfstring attr(ZF_IN const zfstring &key) const;
     /**
      * @brief true if attribute exist
      */
-    zfbool attrExist(ZF_IN const zfchar *key) const;
+    zfbool attrExist(ZF_IN const zfstring &key) const;
     /**
      * @brief remove attribute with key
      */
-    ZFXml &attrRemove(ZF_IN const zfchar *key);
+    ZFXml &attrRemove(ZF_IN const zfstring &key);
     /**
      * @brief remove all attribute
      */
@@ -209,20 +209,20 @@ public:
     /** @brief see #zfiterator */
     zfiterator attrIter(void) const;
     /** @brief see #zfiterator */
-    zfiterator attrIterFind(ZF_IN const zfchar *key) const;
+    zfiterator attrIterFind(ZF_IN const zfstring &key) const;
     /** @brief see #zfiterator */
     zfbool attrIterValid(ZF_IN const zfiterator &it) const;
     /** @brief see #zfiterator */
     void attrIterNext(ZF_IN_OUT zfiterator &it) const;
     /** @brief see #zfiterator */
-    const zfchar *attrIterKey(ZF_IN const zfiterator &it) const;
+    zfstring attrIterKey(ZF_IN const zfiterator &it) const;
     /** @brief see #zfiterator */
-    const zfchar *attrIterValue(ZF_IN const zfiterator &it) const;
+    zfstring attrIterValue(ZF_IN const zfiterator &it) const;
 
     /** @brief see #zfiterator */
     void attrIterValue(
             ZF_IN_OUT zfiterator &it
-            , ZF_IN const zfchar *value
+            , ZF_IN const zfstring &value
             );
     /** @brief see #zfiterator */
     void attrIterRemove(ZF_IN_OUT zfiterator &it);
@@ -285,7 +285,7 @@ public:
     /** @brief return #valid */
     inline operator zfbool (void) const {return this->valid();}
     /** @brief access #attr */
-    inline const zfchar *operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
+    inline zfstring operator [] (ZF_IN const zfstring &key) const {return this->attr(key);}
     /** @brief access #childAt */
     inline ZFXml operator [] (ZF_IN zfindex index) const {return this->childAt(index);}
 
@@ -299,15 +299,15 @@ ZFOUTPUT_TYPE(ZFXml, {v.objectInfoT(s);})
 
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlElement
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlText
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlComment
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocument)
@@ -315,12 +315,12 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocument)
 ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDeclaration)
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlDocType
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         )
 /** @brief util to create #ZFXml */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFXml, ZFXmlPI
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN(const zfstring &, value)
         )
 
 // ============================================================

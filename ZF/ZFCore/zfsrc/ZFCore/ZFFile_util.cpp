@@ -15,8 +15,8 @@ static zfbool _ZFP_ZFPathFormat(
             do {
                 ++p;
             } while(p < srcEnd && *p == '/');
-            if(ret.isEmpty() || ret[ret.length() - 1] != ZFFileSeparator()) {
-                ret += ZFFileSeparator();
+            if(ret.isEmpty() || ret[ret.length() - 1] != '/') {
+                ret += '/';
             }
         }
         else if(*p == '\\') {
@@ -31,8 +31,8 @@ static zfbool _ZFP_ZFPathFormat(
                 while(p < srcEnd && (*p == '/' || *p == '\\')) {
                     ++p;
                 }
-                if(ret.isEmpty() || ret[ret.length() - 1] != ZFFileSeparator()) {
-                    ret += ZFFileSeparator();
+                if(ret.isEmpty() || ret[ret.length() - 1] != '/') {
+                    ret += '/';
                 }
             }
         }
@@ -105,15 +105,15 @@ ZFMETHOD_FUNC_DEFINE_1(void, ZFPathFormatRelative
         if(p + 2 >= ret.length()) {
             return;
         }
-        if(!(ret[p] == ZFFileSeparator() && ret[p + 1] == '.' && ret[p + 2] == '.')) {
+        if(!(ret[p] == '/' && ret[p + 1] == '.' && ret[p + 2] == '.')) {
             ++p;
             continue;
         }
-        if(!(p + 3 >= ret.length() || ret[p + 3] == ZFFileSeparator())) {
+        if(!(p + 3 >= ret.length() || ret[p + 3] == '/')) {
             p += 4;
             continue;
         }
-        zfindex pL = zfstringFindReversely(ret.cString(), p, ZFFileSeparatorString());
+        zfindex pL = zfstringFindReversely(ret.cString(), p, '/');
         if(pL == zfindexMax()) {
             if(p == 3 && ret[0] == '.' && ret[1] == '.') {
                 return;
@@ -146,7 +146,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOf
     if(zfstringIsEmpty(src) || zfstringIsEqual(src, ".")) {
         return zffalse;
     }
-    zfindex pos = zfstringFindReversely(src, zfindexMax(), ZFFileSeparatorString());
+    zfindex pos = zfstringFindReversely(src, zfindexMax(), '/');
     if(src >= ret.cString() && src < ret.cString() + ret.length()) {
         if(pos != zfindexMax()) {
             ret.remove(0, (src + pos + 1) - ret.cString());
@@ -181,7 +181,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileNameOfWithoutExt
         return zffalse;
     }
     zfindex len = zfslen(src);
-    zfindex pos = zfstringFindReversely(src, len, ZFFileSeparatorString());
+    zfindex pos = zfstringFindReversely(src, len, '/');
     if(pos != zfindexMax()) {
         ++pos;
     }
@@ -226,7 +226,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFFileExtOf
     if(zfstringIsEmpty(src) || zfstringIsEqual(src, ".")) {
         return zffalse;
     }
-    zfindex pos = zfstringFindReversely(src, zfindexMax(), ZFFileSeparatorString());
+    zfindex pos = zfstringFindReversely(src, zfindexMax(), '/');
     zfindex dotPos = zfstringFindReversely(src, zfindexMax(), ".", 1);
     if(pos != zfindexMax() && dotPos < pos) {
         dotPos = zfindexMax();
@@ -298,9 +298,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathParentOf
     if(zfstringIsEmpty(src) || zfstringIsEqual(src, ".")) {
         return zffalse;
     }
-    zfindex pos = zfstringFindReversely(src, zfindexMax(), ZFFileSeparatorString());
+    zfindex pos = zfstringFindReversely(src, zfindexMax(), '/');
     if(src >= ret.cString() && src < ret.cString() + ret.length()) {
-        if(pos != zfindexMax() && !(pos >= 3 && src[pos-1] == ZFFileSeparator() && src[pos-2] == ':')) {
+        if(pos != zfindexMax() && !(pos >= 3 && src[pos-1] == '/' && src[pos-2] == ':')) {
             ret.remove(pos);
             return zftrue;
         }
@@ -310,7 +310,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathParentOf
         }
     }
     else {
-        if(pos != zfindexMax() && !(pos >= 3 && src[pos-1] == ZFFileSeparator() && src[pos-2] == ':')) {
+        if(pos != zfindexMax() && !(pos >= 3 && src[pos-1] == '/' && src[pos-2] == ':')) {
             ret.append(src, pos);
             return zftrue;
         }
@@ -337,7 +337,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfbool, ZFPathComponentsOf
     zfindex posL = 0;
     zfindex posR = len;
     do {
-        posL = zfstringFindReversely(src, posR, ZFFileSeparatorString());
+        posL = zfstringFindReversely(src, posR, '/');
         if(posL == zfindexMax()) {
             if(posR > 0) {
                 ret.add(zfstring(src, posR));

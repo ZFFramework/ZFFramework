@@ -109,8 +109,8 @@ public:
 public:
     zfuint refCount;
     ZFXmlTypeEnum type;
-    zfchar *name;
-    zfchar *value;
+    zfstring name;
+    zfstring value;
     AttrMap attrMap;
     ChildList childList;
     zfbool CDATA;
@@ -125,14 +125,6 @@ public:
     , childList()
     , CDATA(zffalse)
     {
-    }
-    ~_ZFP_ZFXmlPrivate(void) {
-        if(this->name) {
-            zffree(this->name);
-        }
-        if(this->value) {
-            zffree(this->value);
-        }
     }
 };
 
@@ -235,35 +227,35 @@ ZFXmlTypeEnum ZFXml::type(void) const {
     return d ? d->type : ZFXmlType::e_XmlNull;
 }
 
-ZFXml &ZFXml::name(ZF_IN const zfchar *name) {
+ZFXml &ZFXml::name(ZF_IN const zfstring &name) {
     switch(this->type()) {
         case ZFXmlType::e_XmlPI:
         case ZFXmlType::e_XmlElement:
-            zfsChange(d->name, name);
+            d->name = name;
             break;
         default:
             break;
     }
     return *this;
 }
-const zfchar *ZFXml::name(void) const {
+zfstring ZFXml::name(void) const {
     return d ? d->name : zfnull;
 }
 
-ZFXml &ZFXml::value(ZF_IN const zfchar *value) {
+ZFXml &ZFXml::value(ZF_IN const zfstring &value) {
     switch(this->type()) {
         case ZFXmlType::e_XmlDocType:
         case ZFXmlType::e_XmlPI:
         case ZFXmlType::e_XmlText:
         case ZFXmlType::e_XmlComment:
-            zfsChange(d->value, value);
+            d->value = value;
             break;
         default:
             break;
     }
     return *this;
 }
-const zfchar *ZFXml::value(void) const {
+zfstring ZFXml::value(void) const {
     return d ? d->value : zfnull;
 }
 
@@ -317,8 +309,8 @@ zfindex ZFXml::attrCount(void) const {
     return (zfindex)(d ? d->attrMap.size() : 0);
 }
 ZFXml &ZFXml::attr(
-        ZF_IN const zfchar *key
-        , ZF_IN const zfchar *value
+        ZF_IN const zfstring &key
+        , ZF_IN const zfstring &value
         ) {
     if(!zfstringIsEmpty(key)) {
         _ZFP_ZFXmlAssertCanHaveAttribute(*this);
@@ -331,7 +323,7 @@ ZFXml &ZFXml::attr(
     }
     return *this;
 }
-const zfchar *ZFXml::attr(ZF_IN const zfchar *key) const {
+zfstring ZFXml::attr(ZF_IN const zfstring &key) const {
     if(d && key) {
         _ZFP_ZFXmlPrivate::AttrMap::iterator it = d->attrMap.find(key);
         if(it != d->attrMap.end()) {
@@ -340,10 +332,10 @@ const zfchar *ZFXml::attr(ZF_IN const zfchar *key) const {
     }
     return zfnull;
 }
-zfbool ZFXml::attrExist(ZF_IN const zfchar *key) const {
+zfbool ZFXml::attrExist(ZF_IN const zfstring &key) const {
     return d && key && d->attrMap.find(key) != d->attrMap.end();
 }
-ZFXml &ZFXml::attrRemove(ZF_IN const zfchar *key /* = zfnull */) {
+ZFXml &ZFXml::attrRemove(ZF_IN const zfstring &key /* = zfnull */) {
     if(d && key) {
         d->attrMap.erase(key);
     }
@@ -359,7 +351,7 @@ ZFXml &ZFXml::attrRemoveAll(void) {
 zfiterator ZFXml::attrIter(void) const {
     return d ? d->attrMap.iter() : zfiteratorInvalid();
 }
-zfiterator ZFXml::attrIterFind(ZF_IN const zfchar *key) const {
+zfiterator ZFXml::attrIterFind(ZF_IN const zfstring &key) const {
     return d ? d->attrMap.iterFind(key) : zfiteratorInvalid();
 }
 zfbool ZFXml::attrIterValid(ZF_IN const zfiterator &it) const {
@@ -370,16 +362,16 @@ void ZFXml::attrIterNext(ZF_IN_OUT zfiterator &it) const {
         d->attrMap.iterNext(it);
     }
 }
-const zfchar *ZFXml::attrIterKey(ZF_IN const zfiterator &it) const {
-    return d ? d->attrMap.iterKey(it).cString() : zfnull;
+zfstring ZFXml::attrIterKey(ZF_IN const zfiterator &it) const {
+    return d ? d->attrMap.iterKey(it) : zfnull;
 }
-const zfchar *ZFXml::attrIterValue(ZF_IN const zfiterator &it) const {
-    return d ? d->attrMap.iterValue(it).cString() : zfnull;
+zfstring ZFXml::attrIterValue(ZF_IN const zfiterator &it) const {
+    return d ? d->attrMap.iterValue(it) : zfnull;
 }
 
 void ZFXml::attrIterValue(
         ZF_IN_OUT zfiterator &it
-        , ZF_IN const zfchar *value
+        , ZF_IN const zfstring &value
         ) {
     if(d) {
         d->attrMap.iterValue(it, value);
@@ -519,32 +511,32 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfstring, objectInfo)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXmlTypeEnum, type)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, name
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, const zfchar *, name)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfstring, name)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, value
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, const zfchar *, value)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfstring, value)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, copy)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfindex, attrCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml &, attr
-        , ZFMP_IN(const zfchar *, key)
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, key)
+        , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, const zfchar *, attr
-        , ZFMP_IN(const zfchar *, key)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfstring, attr
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfbool, attrExist
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, attrRemove
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml &, attrRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfiterator, attrIter)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfiterator, attrIterFind
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfbool, attrIterValid
         , ZFMP_IN(const zfiterator &, it)
@@ -552,15 +544,15 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfbool, attrIterValid
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, attrIterNext
         , ZFMP_IN_OUT(zfiterator &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, const zfchar *, attrIterKey
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfstring, attrIterKey
         , ZFMP_IN(const zfiterator &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, const zfchar *, attrIterValue
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, zfstring, attrIterValue
         , ZFMP_IN(const zfiterator &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, void, attrIterValue
         , ZFMP_IN_OUT(zfiterator &, it)
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, void, attrIterRemove
         , ZFMP_IN_OUT(zfiterator &, it)
@@ -591,17 +583,17 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, CDATA)
 
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlElement
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         ) {
     return ZFXml(ZFXmlType::e_XmlElement).name(name);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlText
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         ) {
     return ZFXml(ZFXmlType::e_XmlText).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlComment
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         ) {
     return ZFXml(ZFXmlType::e_XmlComment).value(value);
 }
@@ -612,13 +604,13 @@ ZFMETHOD_FUNC_DEFINE_0(ZFXml, ZFXmlDeclaration) {
     return ZFXml(ZFXmlType::e_XmlDeclaration);
 }
 ZFMETHOD_FUNC_DEFINE_1(ZFXml, ZFXmlDocType
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, value)
         ) {
     return ZFXml(ZFXmlType::e_XmlDocType).value(value);
 }
 ZFMETHOD_FUNC_DEFINE_2(ZFXml, ZFXmlPI
-        , ZFMP_IN(const zfchar *, name)
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, name)
+        , ZFMP_IN(const zfstring &, value)
         ) {
     return ZFXml(ZFXmlType::e_XmlPI).name(name).value(value);
 }
