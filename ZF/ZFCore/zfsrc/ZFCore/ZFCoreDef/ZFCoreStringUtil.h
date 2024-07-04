@@ -560,6 +560,33 @@ inline zfstring zfstringToUpper(
     return ret;
 }
 
+/**
+ * @brief util to switch-case on string
+ *
+ * @code
+ *   switch(zfstringSwitch(v
+ *           , "111"
+ *           , "222"
+ *           )) {
+ *       case 0:
+ *           zfLog("case 111");
+ *           break;
+ *       case 1:
+ *           zfLog("case 222");
+ *           break;
+ *       default:
+ *           zfLog("default");
+ *           break;
+ *   }
+ * @endcode
+ */
+#define zfstringSwitch(v, c0, ...) _ZFP_zfstringSwitch(v, c0, ##__VA_ARGS__)
+extern ZFLIB_ZFCore zfindex _ZFP_zfstringSwitch(
+        ZF_IN const zfchar *v
+        , ZF_IN const zfchar *c0
+        , ...
+        );
+
 ZF_NAMESPACE_GLOBAL_END
 
 #endif // #ifndef _ZFI_ZFCoreStringUtil_h_
