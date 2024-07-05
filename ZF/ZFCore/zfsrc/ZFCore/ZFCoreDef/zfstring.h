@@ -229,7 +229,8 @@ public:
         d->d.buf[++(d->length)] = '\0';
         return *this;
     }
-    inline const T_Char *operator + (ZF_IN zfindex offset) const {
+    template<typename T_Int>
+    inline const T_Char *operator + (ZF_IN T_Int const &offset) const {
         return this->cString() + offset;
     }
     /** @endcond */
