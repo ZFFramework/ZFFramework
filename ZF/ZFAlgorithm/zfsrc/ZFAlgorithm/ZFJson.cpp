@@ -657,7 +657,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfbool, attrIterValid
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, void, attrIterNext
         , ZFMP_IN_OUT(zfiterator &, it)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, const zfstring &, attrIterKey
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, zfstring, attrIterKey
         , ZFMP_IN(const zfiterator &, it)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson, attrIterValue

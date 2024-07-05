@@ -664,7 +664,7 @@ private:
                 const T_Char *ptr = d->d.ptr;
                 d->d.buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
                 if(ptr) {
-                    zfmemcpy(d->d.buf, ptr, (capacity + 1) * sizeof(T_Char));
+                    zfmemcpy(d->d.buf, ptr, capacity * sizeof(T_Char));
                 }
                 else {
                     d->d.buf[0] = '\0';
