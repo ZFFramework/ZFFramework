@@ -62,7 +62,12 @@ static _ZFP_ZFSigNamePrivate *_ZFP_ZFSigNameAttach(ZF_IN const zfstring &s) {
     if(s == zfnull) {
         return zfnull;
     }
+
+    // ensure init order
     _ZFP_ZFSigNameCache();
+    _ZFP_ZFSigNameIdMap();
+    _ZFP_ZFSigNameIdUnusedMap();
+
     _ZFP_ZFSigNameMapType::iterator it = _ZFP_ZFSigNameMap().find(s);
     if(it != _ZFP_ZFSigNameMap().end()) {
         _ZFP_ZFSigNamePrivate *d = it->second;
