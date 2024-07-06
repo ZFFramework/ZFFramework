@@ -66,7 +66,7 @@ extern ZFLIB_ZFCore const zfchar *ZFObjectIOImplCheckFileExt(ZF_IN const ZFPathI
  */
 extern ZFLIB_ZFCore zfbool ZFObjectIOImplCheck(
         ZF_IN const ZFPathInfo &pathInfo
-        , ZF_IN const zfchar *desiredFileExt
+        , ZF_IN const zfstring &desiredFileExt
         );
 
 /**

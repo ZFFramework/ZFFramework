@@ -22,7 +22,7 @@ protected:
         this->testCaseOutputSeparator();
         this->testCaseOutput("prepare style");
 
-        const zfchar *styleKey = _ZFP_ZFCore_ZFStyle_test_Object::ClassData()->classNameFull();
+        const zfstring &styleKey = _ZFP_ZFCore_ZFStyle_test_Object::ClassData()->classNameFull();
         {
             zfobj<_ZFP_ZFCore_ZFStyle_test_Object> styleValue;
             styleValue->myProperty(123);

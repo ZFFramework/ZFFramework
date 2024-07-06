@@ -141,7 +141,7 @@ ZFCompareResult ZFObject::objectCompare(ZF_IN ZFObject *anotherObj) {
 
 /* ZFMETHOD_MAX_PARAM */
 zfauto ZFObject::invoke(
-        ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodName
         ) {
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfauto ret;
@@ -153,7 +153,7 @@ zfauto ZFObject::invoke(
     }
 }
 zfauto ZFObject::invoke(
-        ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodName
         , ZF_IN ZFObject *param0
         , ZF_IN_OPT ZFObject *param1 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param2 /* = ZFMethodGenericInvokerDefaultParam() */
@@ -186,7 +186,7 @@ zfauto ZFObject::invoke(
     }
 }
 zfauto ZFObject::invokeDetail(
-        ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodName
         , ZF_IN const ZFCoreArray<zfauto> &params
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -216,7 +216,7 @@ zfbool ZFObject::objectTagExist(void) {
     return d && d->objectTagMap && !(d->objectTagMap->empty());
 }
 void ZFObject::objectTag(
-        ZF_IN const zfchar *key
+        ZF_IN const zfstring &key
         , ZF_IN ZFObject *tag
         ) {
     zfCoreMutexLocker();
@@ -254,7 +254,7 @@ void ZFObject::objectTag(
         zfunsafe_zfRelease(obj);
     }
 }
-zfany ZFObject::objectTag(ZF_IN const zfchar *key) {
+zfany ZFObject::objectTag(ZF_IN const zfstring &key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
         if(d && d->objectTagMap) {
@@ -281,7 +281,7 @@ void ZFObject::objectTagGetAllKeyValue(
         }
     }
 }
-zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfchar *key) {
+zfauto ZFObject::objectTagRemoveAndGet(ZF_IN const zfstring &key) {
     if(key != zfnull) {
         zfCoreMutexLocker();
         if(d && d->objectTagMap) {
@@ -700,10 +700,10 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfbool, equalTo
         , ZFMP_IN(ZFObject *, anotherObj)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfauto, invoke
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodName)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_8(ZFObject, zfauto, invoke
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN(ZFObject *, param0)
         , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
         , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
@@ -715,28 +715,28 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_8(ZFObject, zfauto, invoke
         // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_4(ZFObject, zfauto, invokeDetail
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, zfbool, objectTagExist)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTag
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(ZFObject *, tag)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfany, objectTag
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFObject, void, objectTagGetAllKeyValue
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
         , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, void, objectTagRemove
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFObject, zfauto, objectTagRemoveAndGet
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFObject, void, objectTagRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_3(ZFObject, void, observerAdd

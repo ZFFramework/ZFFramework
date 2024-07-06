@@ -43,7 +43,7 @@ public:
     _ZFP_ZFClassSingletonPointerHolder(void) : d(zfnull) {}
 };
 typedef void (*_ZFP_ZFClassSingletonDeleteCallback)(ZF_IN void *instance);
-extern ZFLIB_ZFCore _ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfchar *sig);
+extern ZFLIB_ZFCore _ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig);
 
 zffinal zfclassNotPOD ZFLIB_ZFCore _ZFP_ZFClassSingletonDeleteCallbackHolder {
 public:

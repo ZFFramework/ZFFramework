@@ -6,8 +6,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
-    static zfstring namePrefix(ZF_NAMESPACE_GLOBAL_NAME);
-    static zfstring abbrNamePrefix(ZF_NAMESPACE_GLOBAL_ABBR_NAME);
+    static zfstring namePrefix = zftext(ZF_NAMESPACE_GLOBAL_NAME);
+    static zfstring abbrNamePrefix = zftext(ZF_NAMESPACE_GLOBAL_ABBR_NAME);
     if(zfstringIsEmpty(ns)) {
         return zfnull;
     }

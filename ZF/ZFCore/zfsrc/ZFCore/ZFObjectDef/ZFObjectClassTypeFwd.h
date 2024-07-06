@@ -158,7 +158,7 @@ public:
      * for ZFClassDataChangeTypeClassAliasAttach / ZFClassDataChangeTypeClassAliasDetach,
      * it's the aliased class name
      */
-    const zfchar *name;
+    zfstring name;
 
 public:
     /** @brief see #objectInfo */
@@ -175,7 +175,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFClassDataChangeNotify(
         , ZF_IN const ZFClass *changedClass
         , ZF_IN const ZFProperty *changedProperty
         , ZF_IN const ZFMethod *changedMethod
-        , ZF_IN_OPT const zfchar *name = zfnull
+        , ZF_IN_OPT const zfstring &name = zfnull
         );
 
 template<typename T_Type>

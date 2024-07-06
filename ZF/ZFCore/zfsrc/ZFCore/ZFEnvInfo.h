@@ -30,11 +30,11 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, envSummary)
  * @brief register a callback to output custom env info, see #envSummary
  */
 extern ZFLIB_ZFCore void envSummaryCallbackRegister(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN ZFEnvSummaryCallback callback
         );
 /** @brief see #envSummaryCallbackRegister */
-extern ZFLIB_ZFCore void envSummaryCallbackUnregister(ZF_IN const zfchar *name);
+extern ZFLIB_ZFCore void envSummaryCallbackUnregister(ZF_IN const zfstring &name);
 
 // ============================================================
 /**

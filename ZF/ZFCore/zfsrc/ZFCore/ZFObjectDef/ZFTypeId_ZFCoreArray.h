@@ -72,7 +72,7 @@ private:
 
 public:
     /** @brief init element type */
-    virtual zfbool elementTypeInit(ZF_IN const zfchar *elementTypeId);
+    virtual zfbool elementTypeInit(ZF_IN const zfstring &elementTypeId);
 private:
     zfauto _ZFP_elementTypeCheck(ZF_IN ZFObject *element);
 
@@ -87,7 +87,7 @@ protected:
     }
 
     /** @brief init with #elementTypeInit */
-    virtual void objectOnInit(ZF_IN const zfchar *elementTypeId) {
+    virtual void objectOnInit(ZF_IN const zfstring &elementTypeId) {
         this->objectOnInit();
         this->elementTypeInit(elementTypeId);
     }

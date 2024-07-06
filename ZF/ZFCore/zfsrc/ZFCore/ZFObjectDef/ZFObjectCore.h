@@ -349,14 +349,14 @@ public:
      *   do nothing if fail
      */
     virtual zfauto invoke(
-            ZF_IN const zfchar *methodName
+            ZF_IN const zfstring &methodName
             );
     /**
      * @brief util method to perform #ZFDI_invoke,
      *   do nothing if fail
      */
     virtual zfauto invoke(
-            ZF_IN const zfchar *methodName
+            ZF_IN const zfstring &methodName
             , ZF_IN ZFObject *param0
             , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
             , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
@@ -371,7 +371,7 @@ public:
      *   do nothing if fail
      */
     virtual zfauto invokeDetail(
-            ZF_IN const zfchar *methodName
+            ZF_IN const zfstring &methodName
             , ZF_IN const ZFCoreArray<zfauto> &params
             , ZF_OUT_OPT zfbool *success = zfnull
             , ZF_OUT_OPT zfstring *errorHint = zfnull
@@ -389,13 +389,13 @@ public:
      * replace if existing, remove if tag is null
      */
     zffinal void objectTag(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN ZFObject *tag
             );
     /**
      * @brief see #objectTag
      */
-    zffinal zfany objectTag(ZF_IN const zfchar *key);
+    zffinal zfany objectTag(ZF_IN const zfstring &key);
     /**
      * @brief get all key value
      */
@@ -406,13 +406,13 @@ public:
     /**
      * @brief remove tag, same as set tag to null
      */
-    zffinal inline void objectTagRemove(ZF_IN const zfchar *key) {
+    zffinal inline void objectTagRemove(ZF_IN const zfstring &key) {
         this->objectTag(key, zfnull);
     }
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfauto objectTagRemoveAndGet(ZF_IN const zfchar *key);
+    zffinal zfauto objectTagRemoveAndGet(ZF_IN const zfstring &key);
     /**
      * @brief remove all tag
      *
@@ -485,7 +485,7 @@ public:
      *   zfclass YourClass {
      *       // declare your event here,
      *       // which would generate a method:
-     *       //   static const zfchar *EventYourEvent(void)
+     *       //   static zfidentity EventYourEvent(void)
      *       ZFEVENT(YourEvent)
      *   };
      *   // notify using declared event

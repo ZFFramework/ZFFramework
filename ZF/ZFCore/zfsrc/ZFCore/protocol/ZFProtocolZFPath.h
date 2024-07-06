@@ -18,16 +18,16 @@ public:
     /**
      * @brief see #ZFPathForModule
      */
-    virtual zfstring pathForModule(void) zfpurevirtual;
+    virtual const zfstring &pathForModule(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForModuleFile
      */
-    virtual zfstring pathForModuleFile(void) zfpurevirtual;
+    virtual const zfstring &pathForModuleFile(void) zfpurevirtual;
 
     /**
      * @brief see #ZFPathForSetting
      */
-    virtual zfstring pathForSetting(void) zfpurevirtual;
+    virtual const zfstring &pathForSetting(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForSetting
      */
@@ -36,7 +36,7 @@ public:
     /**
      * @brief see #ZFPathForStorage
      */
-    virtual zfstring pathForStorage(void) zfpurevirtual;
+    virtual const zfstring &pathForStorage(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForStorage
      */
@@ -45,7 +45,7 @@ public:
     /**
      * @brief see #ZFPathForStorageShared
      */
-    virtual zfstring pathForStorageShared(void) zfpurevirtual;
+    virtual const zfstring &pathForStorageShared(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForStorageShared
      */
@@ -54,7 +54,7 @@ public:
     /**
      * @brief see #ZFPathForCache
      */
-    virtual zfstring pathForCache(void) zfpurevirtual;
+    virtual const zfstring &pathForCache(void) zfpurevirtual;
     /**
      * @brief see #ZFPathForCache
      */

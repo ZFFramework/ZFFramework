@@ -192,7 +192,7 @@ public:
     /**
      * @brief see #callbackId
      */
-    zffinal zfstring callbackId(void) const;
+    zffinal const zfstring &callbackId(void) const;
 
     /**
      * @brief retain and store a autoreleased object attached to this callback,
@@ -318,7 +318,7 @@ public:
     /**
      * @brief see #ZFTypeId_ZFCallback
      */
-    zffinal zfstring callbackSerializeCustomType(void) const;
+    zffinal const zfstring &callbackSerializeCustomType(void) const;
     /**
      * @brief see #ZFTypeId_ZFCallback
      */

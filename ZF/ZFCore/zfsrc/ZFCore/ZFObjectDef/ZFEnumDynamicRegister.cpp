@@ -143,7 +143,7 @@ static ZFEnum *_ZFP_ZFEnumDynamic_e(
     return ret;
 }
 const ZFClass *ZFEnumDynamicRegister(
-        ZF_IN const zfchar *enumClassName
+        ZF_IN const zfstring &enumClassName
         , ZF_IN const ZFCoreArray<zfuint> &enumValues
         , ZF_IN const ZFCoreArray<zfstring> &enumNames
         , ZF_IN zfuint enumDefault /* = ZFEnumInvalid() */
@@ -235,7 +235,7 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_6(const ZFClass *, ZFEnumDynamicRegister
-        , ZFMP_IN(const zfchar *, enumClassName)
+        , ZFMP_IN(const zfstring &, enumClassName)
         , ZFMP_IN(const ZFCoreArray<zfuint> &, enumValues)
         , ZFMP_IN(const ZFCoreArray<zfstring> &, enumNames)
         , ZFMP_IN_OPT(zfuint, enumDefault, ZFEnumInvalid())

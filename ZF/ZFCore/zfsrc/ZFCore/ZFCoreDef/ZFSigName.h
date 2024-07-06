@@ -38,8 +38,6 @@ public:
 
     /** @brief access string value, return empty string if empty */
     const zfchar *cString(void) const;
-    /** @brief access string value, return empty string if empty */
-    zfstring zfString(void) const;
 
     /** @brief length of string content */
     zfindex length(void) const;
@@ -49,7 +47,7 @@ public:
 
     /** @brief string comparation */
     zfint compare(ZF_IN const zfstring &s) const {
-        return this->zfString().compare(s);
+        return ((const zfstring &)(*this)).compare(s);
     }
 
     /** @brief string comparation */
@@ -59,7 +57,7 @@ public:
     /** @cond ZFPrivateDoc */
 public:
     operator const zfchar *(void) const {return this->cString();}
-    operator zfstring (void) const;
+    operator const zfstring &(void) const;
 public:
     ZFSigName &operator = (ZF_IN const ZFSigName &ref);
     ZFSigName &operator = (ZF_IN const zfstring &s);

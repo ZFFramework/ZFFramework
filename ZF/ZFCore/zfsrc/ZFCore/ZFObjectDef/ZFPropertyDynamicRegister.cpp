@@ -62,28 +62,28 @@ const ZFClass *ZFPropertyDynamicRegisterParam::propertyOwnerClass(void) const {
     return d->propertyOwnerClass;
 }
 
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyTypeId(ZF_IN const zfchar *propertyTypeId) {
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyTypeId(ZF_IN const zfstring &propertyTypeId) {
     d->propertyTypeId = propertyTypeId;
     return *this;
 }
-const zfchar *ZFPropertyDynamicRegisterParam::propertyTypeId(void) const {
-    return (d->propertyTypeId.isEmpty() ? zfnull : d->propertyTypeId.cString());
+const zfstring &ZFPropertyDynamicRegisterParam::propertyTypeId(void) const {
+    return d->propertyTypeId;
 }
 
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyTypeName(ZF_IN const zfchar *propertyTypeName) {
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyTypeName(ZF_IN const zfstring &propertyTypeName) {
     d->propertyTypeName = propertyTypeName;
     return *this;
 }
-const zfchar *ZFPropertyDynamicRegisterParam::propertyTypeName(void) const {
-    return (d->propertyTypeName.isEmpty() ? d->propertyTypeId.cString() : d->propertyTypeName.cString());
+const zfstring &ZFPropertyDynamicRegisterParam::propertyTypeName(void) const {
+    return (d->propertyTypeName ? d->propertyTypeName : d->propertyTypeId);
 }
 
-ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyName(ZF_IN const zfchar *propertyName) {
+ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyName(ZF_IN const zfstring &propertyName) {
     d->propertyName = propertyName;
     return *this;
 }
-const zfchar *ZFPropertyDynamicRegisterParam::propertyName(void) const {
-    return (d->propertyName.isEmpty() ? zfnull : d->propertyName.cString());
+const zfstring &ZFPropertyDynamicRegisterParam::propertyName(void) const {
+    return d->propertyName;
 }
 
 ZFPropertyDynamicRegisterParam &ZFPropertyDynamicRegisterParam::propertyClassOfRetainProperty(ZF_IN const ZFClass *propertyClassOfRetainProperty) {

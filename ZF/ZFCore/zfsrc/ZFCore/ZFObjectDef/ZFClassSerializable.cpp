@@ -25,11 +25,11 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFClass, const ZFClass *, {
         return zftrue;
     })
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(ZFClass, v_ZFClass, const ZFClass *, classForName
-        , ZFMP_IN(const zfchar *, className)
+        , ZFMP_IN(const zfstring &, className)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_2(ZFClass, v_ZFClass, const ZFClass *, classForName
-        , ZFMP_IN(const zfchar *, className)
-        , ZFMP_IN(const zfchar *, classNamespace)
+        , ZFMP_IN(const zfstring &, className)
+        , ZFMP_IN(const zfstring &, classNamespace)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_4(v_ZFClass, void, instanceObserverAdd
     , ZFMP_IN(const ZFListener &, observer)
@@ -48,10 +48,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, instanceObserverRemov
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, void, instanceObserverRemoveAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, classDataChangeAutoRemoveTagAdd
-        , ZFMP_IN(const zfchar *, tag)
+        , ZFMP_IN(const zfstring &, tag)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, classDataChangeAutoRemoveTagRemove
-        , ZFMP_IN(const zfchar *, tag)
+        , ZFMP_IN(const zfstring &, tag)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, objectInfoOfInheritTreeT
         , ZFMP_IN_OUT(zfstring &, ret)
@@ -60,9 +60,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfstring, objectInfoOfInher
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, zfbool, classIsTypeOf
         , ZFMP_IN(const ZFClass *, cls)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const zfchar *, classNamespace)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const zfchar *, className)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const zfchar *, classNameFull)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const zfstring &, classNamespace)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const zfstring &, className)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const zfstring &, classNameFull)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, const ZFClass *, classParent)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsAbstract)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, classIsInterface)
@@ -105,7 +105,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, methodGetAllT
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, ZFCoreArray<const ZFMethod *>, methodGetAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, const ZFMethod *, methodForNameIgnoreParent
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId0, zfnull)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId1, zfnull)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId2, zfnull)
@@ -116,7 +116,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, const ZFMethod *, methodFor
         // , ZFMP_IN_OPT(const zfchar *, methodParamTypeId7, zfnull)
         ) /* ZFMETHOD_MAX_PARAM */
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, const ZFMethod *, methodForName
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId0, zfnull)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId1, zfnull)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId2, zfnull)
@@ -128,10 +128,10 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFClass, const ZFMethod *, methodFor
         ) /* ZFMETHOD_MAX_PARAM */
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFClass, void, methodForNameGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, ZFCoreArray<const ZFMethod *>, methodForNameGetAll
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfindex, propertyCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFProperty *, propertyAt
@@ -142,31 +142,31 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, propertyGetAllT
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, ZFCoreArray<const ZFProperty *>, propertyGetAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFProperty *, propertyForNameIgnoreParent
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, const ZFProperty *, propertyForName
-        , ZFMP_IN(const zfchar *, propertyName)
+        , ZFMP_IN(const zfstring &, propertyName)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, zfbool, propertyHasOverrideInitStep)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, zfbool, propertyHasOverrideInitStep
         , ZFMP_IN(const ZFProperty *, property)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFClass, void, classTag
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(ZFObject *, tag)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, zfany, classTag
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFClass, void, classTagGetAllKeyValue
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, allKey)
         , ZFMP_IN_OUT(ZFCoreArray<zfauto> &, allValue)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, void, classTagRemove
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFClass, zfauto, classTagRemoveAndGet
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFClass, void, classTagRemoveAll)
 

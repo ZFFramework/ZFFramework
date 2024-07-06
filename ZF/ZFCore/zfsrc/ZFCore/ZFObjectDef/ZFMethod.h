@@ -142,9 +142,9 @@ public:
     ZFMethodParamDefaultValueCallback paramDefaultValueAccess[ZFMETHOD_MAX_PARAM];
 public:
     _ZFP_ZFMethodMP &add(
-            ZF_IN const zfchar *paramTypeId
-            , ZF_IN const zfchar *paramTypeName
-            , ZF_IN const zfchar *paramName
+            ZF_IN const zfstring &paramTypeId
+            , ZF_IN const zfstring &paramTypeName
+            , ZF_IN const zfstring &paramName
             , ZF_IN ZFMethodParamDefaultValueCallback paramDefaultValueAccess
             ) {
         this->paramTypeId[this->paramCount] = paramTypeId;
@@ -275,16 +275,16 @@ public:
             , ZF_IN ZFFuncAddrType invoker
             , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
             , ZF_IN ZFMethodType methodType
-            , ZF_IN const zfchar *methodName
-            , ZF_IN const zfchar *returnTypeId
-            , ZF_IN const zfchar *returnTypeName
+            , ZF_IN const zfstring &methodName
+            , ZF_IN const zfstring &returnTypeId
+            , ZF_IN const zfstring &returnTypeName
             , ZF_IN const _ZFP_ZFMethodMP &mp
             );
     void _ZFP_ZFMethod_initClassMemberType(
             ZF_IN const ZFClass *methodOwnerClass
             , ZF_IN ZFMethodPrivilegeType privilegeType
             );
-    void _ZFP_ZFMethod_initFuncType(ZF_IN const zfchar *methodNamespace);
+    void _ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace);
     /** @cond ZFPrivateDoc */
     ZFMethod(void);
     /** @endcond */
@@ -327,7 +327,7 @@ public:
     /**
      * @brief internal method id, for debug use only
      */
-    inline const zfchar *methodInternalId(void) const {
+    inline const zfstring &methodInternalId(void) const {
         return this->_ZFP_ZFMethod_methodInternalId;
     }
     /**
@@ -361,21 +361,21 @@ public:
     /**
      * @brief get the method's name
      */
-    inline const zfchar *methodName(void) const {
+    inline const zfstring &methodName(void) const {
         return this->_ZFP_ZFMethod_methodName;
     }
 
     /**
      * @brief get the method's return value's type id
      */
-    inline const zfchar *methodReturnTypeId(void) const {
+    inline const zfstring &methodReturnTypeId(void) const {
         return this->_ZFP_ZFMethod_returnTypeId;
     }
     /**
      * @brief get the method's return value's type name
      */
-    inline const zfchar *methodReturnTypeName(void) const {
-        return this->_ZFP_ZFMethod_returnTypeName;
+    inline const zfstring &methodReturnTypeName(void) const {
+        return this->_ZFP_ZFMethod_returnTypeName ? this->_ZFP_ZFMethod_returnTypeName : this->_ZFP_ZFMethod_returnTypeId;
     }
 
     /**
@@ -414,21 +414,21 @@ public:
     /**
      * @brief get the method's param type id at index
      */
-    inline const zfchar *methodParamTypeIdAt(ZF_IN zfindex index) const {
+    inline const zfstring &methodParamTypeIdAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramTypeIdList[index];
     }
     /**
      * @brief get the method's param type name at index, usually for debug use
      */
-    inline const zfchar *methodParamTypeNameAt(ZF_IN zfindex index) const {
+    inline const zfstring &methodParamTypeNameAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramTypeNameList[index];
     }
     /**
      * @brief get the method's param name at index, usually for debug use
      */
-    inline const zfchar *methodParamNameAt(ZF_IN zfindex index) const {
+    inline const zfstring &methodParamNameAt(ZF_IN zfindex index) const {
         zfCoreAssert(index < this->methodParamCount());
         return this->_ZFP_ZFMethod_paramNameList[index];
     }
@@ -652,7 +652,7 @@ public:
      * @brief get the method namespace, for func type only,
      *   null or empty string for global scope (#ZF_NAMESPACE_GLOBAL)
      */
-    inline const zfchar *methodNamespace(void) const {
+    inline const zfstring &methodNamespace(void) const {
         return this->_ZFP_ZFMethod_methodNamespace;
     }
 
@@ -692,7 +692,7 @@ public:
     zfuint _ZFP_ZFMethod_refCount;
     const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
     ZFCoreArray<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;
-    zfchar *_ZFP_ZFMethod_methodInternalId;
+    zfstring _ZFP_ZFMethod_methodInternalId;
 
     zfbool _ZFP_ZFMethod_methodIsInternal;
     zfbool _ZFP_ZFMethod_methodIsInternalPrivate;
@@ -738,10 +738,10 @@ extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN ZFMethodType methodType
         , ZF_IN const ZFClass *methodOwnerClass
         , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-        , ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
-        , ZF_IN const zfchar *returnTypeId
-        , ZF_IN const zfchar *returnTypeName
+        , ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodName
+        , ZF_IN const zfstring &returnTypeId
+        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         );
 extern ZFLIB_ZFCore void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method);
@@ -757,10 +757,10 @@ public:
             , ZF_IN ZFMethodType methodType
             , ZF_IN const ZFClass *methodOwnerClass
             , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-            , ZF_IN const zfchar *methodNamespace
-            , ZF_IN const zfchar *methodName
-            , ZF_IN const zfchar *returnTypeId
-            , ZF_IN const zfchar *returnTypeName
+            , ZF_IN const zfstring &methodNamespace
+            , ZF_IN const zfstring &methodName
+            , ZF_IN const zfstring &returnTypeId
+            , ZF_IN const zfstring &returnTypeName
             , ZF_IN const _ZFP_ZFMethodMP &mp
             );
     ~_ZFP_ZFMethodRegisterHolder(void);
@@ -800,13 +800,13 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodGetAll(ZF_IN_OPT const ZFFilterForZ
  * use #ZFMethodFuncForName to explicitly find function type method
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodForName(
-        ZF_IN const zfchar *classNameOrNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &classNameOrNamespace
+        , ZF_IN const zfstring &methodName
         );
 /** @brief see #ZFMethodForName */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodForName(
-        ZF_IN const zfchar *classNameOrNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &classNameOrNamespace
+        , ZF_IN const zfstring &methodName
         , ZF_IN_OPT const zfchar *methodParamTypeId0
         , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
         , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
@@ -822,13 +822,13 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodForName(
  */
 extern ZFLIB_ZFCore void ZFMethodForNameGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const zfchar *classNameOrNamespace
-        , ZF_IN const zfchar *methodName
+        , ZF_IN const zfstring &classNameOrNamespace
+        , ZF_IN const zfstring &methodName
         );
 /** @brief see #ZFMethodForNameGetAllT */
 inline ZFCoreArray<const ZFMethod *> ZFMethodForNameGetAll(
-        ZF_IN const zfchar *classNameOrNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &classNameOrNamespace
+        , ZF_IN const zfstring &methodName
         ) {
     ZFCoreArray<const ZFMethod *> ret;
     ZFMethodForNameGetAllT(ret, classNameOrNamespace, methodName);
@@ -861,7 +861,7 @@ inline ZFCoreArray<const ZFMethod *> ZFMethodForNameGetAll(
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodAlias(
         ZF_IN const ZFMethod *method
-        , ZF_IN const zfchar *aliasName
+        , ZF_IN const zfstring &aliasName
         );
 /**
  * @brief see #ZFMethodAlias

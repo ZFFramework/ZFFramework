@@ -107,7 +107,7 @@ public:
     /** @brief the impl */
     Impl &impl(void) const;
     /** @brief name for the impl */
-    zfstring implName(void) const;
+    const zfstring &implName(void) const;
     /** @brief user data passed from #implAttach */
     void *implUserData(void) const;
     /** @brief begin first find */

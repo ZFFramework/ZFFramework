@@ -1052,7 +1052,7 @@ ZFCALLBACK_SERIALIZE_CUSTOM_TYPE_DEFINE(ZFOutputForLocal, ZFCallbackSerializeCus
 
 // ============================================================
 ZFSTYLE_DECODER_DEFINE(ZFStyleDecoder_pathInfo, {
-    if(*styleKey != '@') {
+    if(styleKey[0] != '@') {
         return zffalse;
     }
     ZFInput input;

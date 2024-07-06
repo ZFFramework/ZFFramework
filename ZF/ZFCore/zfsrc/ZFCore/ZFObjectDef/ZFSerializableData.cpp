@@ -247,8 +247,8 @@ void ZFSerializableData::itemClass(ZF_IN const zfstring &classNameFull) {
         d->classNameFull = classNameFull;
     }
 }
-zfstring ZFSerializableData::itemClass(void) const {
-    return d && d->classNameFull ? d->classNameFull : zfnull;
+const zfstring &ZFSerializableData::itemClass(void) const {
+    return d ? d->classNameFull : zfstring::Empty();
 }
 
 // ============================================================

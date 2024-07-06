@@ -145,13 +145,13 @@ public:
             , ZF_IN const zfstring &value
             );
     /** @brief see #ZFTextTemplateApply */
-    zfstring replaceData(ZF_IN const zfstring &key) const;
+    const zfstring &replaceData(ZF_IN const zfstring &key) const;
     /** @brief see #ZFTextTemplateApply */
     zfindex replaceDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    zfstring replaceDataNameAt(ZF_IN zfindex index) const;
+    const zfstring &replaceDataNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
-    zfstring replaceDataAt(ZF_IN zfindex index) const;
+    const zfstring &replaceDataAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
     void replaceDataRemove(ZF_IN const zfstring &key);
     /** @brief see #ZFTextTemplateApply */
@@ -177,7 +177,7 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex enableDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    zfstring enableDataNameAt(ZF_IN zfindex index) const;
+    const zfstring &enableDataNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
     zfbool enableDataAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
@@ -205,7 +205,7 @@ public:
     /** @brief see #ZFTextTemplateApply */
     zfindex indexDataCount(void) const;
     /** @brief see #ZFTextTemplateApply */
-    zfstring indexDataNameAt(ZF_IN zfindex index) const;
+    const zfstring &indexDataNameAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */
     const ZFTextTemplateIndexData *indexDataAt(ZF_IN zfindex index) const;
     /** @brief see #ZFTextTemplateApply */

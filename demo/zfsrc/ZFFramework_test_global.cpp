@@ -31,7 +31,7 @@ void ZFFramework_test_TestCase::testCaseOnStop(ZF_IN ZFResultTypeEnum testCaseRe
 void ZFFramework_test_TestCase::testCaseOutputSeparator(void) {
     this->testCaseOutput("----------------------------------------");
 }
-zfstring ZFFramework_test_TestCase::testCaseTmpPath(void) {
+const zfstring &ZFFramework_test_TestCase::testCaseTmpPath(void) {
     return this->_testCaseTmpPath;
 }
 zfstring ZFFramework_test_TestCase::testCaseUseTmpFile(ZF_IN const zfchar *fileName) {

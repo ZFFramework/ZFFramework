@@ -178,7 +178,7 @@ ZF_STATIC_INITIALIZER_INIT(ZFStyleableDefaultStyleDataHolder) {
 ZFCoreMap instanceDataMap; // _ZFP_ZFStyleableDefaultPointerHolder *
 ZF_STATIC_INITIALIZER_END(ZFStyleableDefaultStyleDataHolder)
 
-_ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfchar *name) {
+_ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name) {
     zfCoreMutexLocker();
     ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFStyleableDefaultStyleDataHolder)->instanceDataMap;
     ZFCorePointerBase *v = m.get(name);
@@ -278,7 +278,7 @@ static zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &_ZFP_ZFStyleDecoderMap(void) {
     return d;
 }
 void _ZFP_ZFStyleDecoderRegister(
-        ZF_IN const zfchar *registerSig
+        ZF_IN const zfstring &registerSig
         , ZF_IN _ZFP_ZFStyleDecoder decoder
         ) {
     zfCoreMutexLocker();
@@ -289,14 +289,14 @@ void _ZFP_ZFStyleDecoderRegister(
         registerSig);
     m[registerSig] = decoder;
 }
-void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfchar *registerSig) {
+void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfstring &registerSig) {
     zfCoreMutexLocker();
     zfstlmap<zfstring, _ZFP_ZFStyleDecoder> &m = _ZFP_ZFStyleDecoderMap();
     m.erase(registerSig);
 }
 
 void ZFStyleSet(
-        ZF_IN const zfchar *styleKey
+        ZF_IN const zfstring &styleKey
         , ZF_IN ZFStyleable *styleValue
         ) {
     if(styleKey && styleValue) {
@@ -306,7 +306,7 @@ void ZFStyleSet(
         zfCoreMutexUnlock();
     }
 }
-zfauto ZFStyleGet(ZF_IN const zfchar *styleKey) {
+zfauto ZFStyleGet(ZF_IN const zfstring &styleKey) {
     if(styleKey == zfnull) {
         return zfnull;
     }
@@ -422,21 +422,21 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleableCopyFrom
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, zfbool, styleableIsDefaultStyle)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, void, styleKey
-        , ZFMP_IN(const zfchar *, styleKey)
+        , ZFMP_IN(const zfstring &, styleKey)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, const zfchar *, styleKey)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFStyleable, const zfstring &, styleKey)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFStyleable, void, styleKeyForProperty
-        , ZFMP_IN(const zfchar *, propertyName)
-        , ZFMP_IN(const zfchar *, styleKey)
+        , ZFMP_IN(const zfstring &, propertyName)
+        , ZFMP_IN(const zfstring &, styleKey)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfchar *, styleKeyForProperty
-        , ZFMP_IN(const zfchar *, propertyName)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfstring &, styleKeyForProperty
+        , ZFMP_IN(const zfstring &, propertyName)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_2(ZFStyleable, void, styleKeyForProperty
         , ZFMP_IN(const ZFProperty *, property)
-        , ZFMP_IN(const zfchar *, styleKey)
+        , ZFMP_IN(const zfstring &, styleKey)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfchar *, styleKeyForProperty
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFStyleable, const zfstring &, styleKeyForProperty
         , ZFMP_IN(const ZFProperty *, property)
         )
 
@@ -445,11 +445,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFStyleDefaultApplyAutoCopy
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleSet
-        , ZFMP_IN(const zfchar *, styleKey)
+        , ZFMP_IN(const zfstring &, styleKey)
         , ZFMP_IN(ZFStyleable *, styleValue)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFStyleGet
-        , ZFMP_IN(const zfchar *, styleKey)
+        , ZFMP_IN(const zfstring &, styleKey)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFStyleGetAll
         , ZFMP_IN_OUT(ZFCoreArray<zfstring> &, styleKey)

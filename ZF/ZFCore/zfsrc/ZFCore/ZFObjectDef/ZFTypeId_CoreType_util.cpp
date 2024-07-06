@@ -127,6 +127,7 @@ zfbool zfflagsFromStringT(
     return zftrue;
 }
 
+/** @cond ZFPrivateDoc */
 zfbool zfstringFromDataT(
         ZF_OUT const zfchar * &v
         , ZF_IN const ZFSerializableData &serializableData
@@ -160,6 +161,7 @@ zfbool zfstringToDataT(
     serializableData.propertyValue(v);
     return zftrue;
 }
+/** @endcond */
 
 ZF_NAMESPACE_GLOBAL_END
 

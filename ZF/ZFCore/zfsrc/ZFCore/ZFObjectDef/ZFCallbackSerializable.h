@@ -65,11 +65,11 @@ typedef zfbool (*_ZFP_ZFCallbackSerializeCustomCallback)(
         , ZF_OUT_OPT ZFSerializableData *outErrorPos /* = zfnull */
         );
 extern ZFLIB_ZFCore void _ZFP_ZFCallbackSerializeCustomTypeRegister(
-        ZF_IN const zfchar *customType
+        ZF_IN const zfstring &customType
         , ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback
         );
-extern ZFLIB_ZFCore void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfchar *customType);
-extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfchar *customType);
+extern ZFLIB_ZFCore void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfstring &customType);
+extern ZFLIB_ZFCore _ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfstring &customType);
 
 /**
  * @brief see #ZFTypeId_ZFCallback

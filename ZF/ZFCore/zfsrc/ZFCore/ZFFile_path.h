@@ -39,7 +39,7 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForCwdOrModule)
  * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForModule)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfstring &, ZFPathForModule)
 /**
  * @brief get module's path, e.g. "/path/module.exe"
  *
@@ -47,7 +47,7 @@ ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForModule)
  * it's not ensured module path is actually executable's path,
  * use other path types for data storage such as #ZFPathForSetting
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForModuleFile)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfstring &, ZFPathForModuleFile)
 
 // ============================================================
 // setting
@@ -68,7 +68,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForSetting)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfstring &, ZFPathForSetting)
 /**
  * @brief change the data path, null to use defalut path
  */
@@ -95,7 +95,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForStorage)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfstring &, ZFPathForStorage)
 /**
  * @brief change the storage path, null to use defalut path
  */
@@ -126,7 +126,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForStorageShared)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfstring &, ZFPathForStorageShared)
 /**
  * @brief change the storage path, null to use defalut path
  */
@@ -167,7 +167,7 @@ ZF_NAMESPACE_END(ZFGlobalEvent)
  * path is ensured to use '/' as separator,
  * and no extra separator would be added to tail
  */
-ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, zfstring, ZFPathForCache)
+ZFMETHOD_FUNC_DECLARE_0(ZFLIB_ZFCore, const zfstring &, ZFPathForCache)
 /**
  * @brief change the cache path, null to use defalut path
  */

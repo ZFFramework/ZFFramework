@@ -4,7 +4,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 static void _ZFP_ZFStyleLoad_ZFStyleSet(
-        ZF_IN const zfchar *styleKey
+        ZF_IN const zfstring &styleKey
         , ZF_IN ZFStyleable *styleValue
         ) {
     if(styleValue != zfnull && styleValue->classData()->classIsTypeOf(ZFStyleList::ClassData())) {
@@ -16,11 +16,11 @@ static void _ZFP_ZFStyleLoad_ZFStyleSet(
 }
 static void _ZFP_ZFStyleLoadImpl(
         ZF_IN const ZFPathInfoImpl &fileImpl
-        , ZF_IN const zfchar *pathType
-        , ZF_IN const zfchar *pathData
+        , ZF_IN const zfstring &pathType
+        , ZF_IN const zfstring &pathData
         , ZF_IN const ZFFilterForString *fileNameFilter
         , ZF_IN const ZFFilterForString *dirNameFilter
-        , ZF_IN const zfchar *relativePath
+        , ZF_IN const zfstring &relativePath
         ) {
     ZFFileFindData fd;
     if(fileImpl.callbackFindFirst(fd, pathData)) {
@@ -129,14 +129,14 @@ ZFMETHOD_FUNC_DEFINE_1(zfbool, ZFStyleLoad
 // ============================================================
 zfclassNotPOD _ZFP_ZFStyleListPrivate {
 public:
-    ZFCoreArray<zfchar *> keyList;
+    ZFCoreArray<zfstring> keyList;
     ZFCoreArray<ZFStyleable *> valueList;
 };
 
 ZFMETHOD_DEFINE_0(ZFStyleList, zfindex, itemCount) {
     return d->keyList.count();
 }
-ZFMETHOD_DEFINE_1(ZFStyleList, const zfchar *, itemKeyAt
+ZFMETHOD_DEFINE_1(ZFStyleList, const zfstring &, itemKeyAt
         , ZFMP_IN(zfindex, index)
         ) {
     return d->keyList.get(index);
@@ -147,13 +147,12 @@ ZFMETHOD_DEFINE_1(ZFStyleList, ZFStyleable *, itemValueAt
     return d->valueList.get(index);
 }
 ZFMETHOD_DEFINE_2(ZFStyleList, void, itemForKey
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(ZFStyleable *, value)
         ) {
     for(zfindex i = 0; i < d->keyList.count(); ++i) {
         if(zfstringIsEqual(d->keyList[i], key)) {
             if(value == zfnull) {
-                zffree(d->keyList.removeAndGet(i));
                 zfRelease(d->valueList.removeAndGet(i));
             }
             else {
@@ -164,7 +163,7 @@ ZFMETHOD_DEFINE_2(ZFStyleList, void, itemForKey
     }
 
     if(value != zfnull) {
-        d->keyList.add(zfsCopy(key));
+        d->keyList.add(key);
         d->valueList.add(zfRetain(value));
     }
 }
@@ -175,12 +174,11 @@ void ZFStyleList::objectOnInit(void) {
 }
 void ZFStyleList::objectOnDealloc(void) {
     if(!d->keyList.isEmpty()) {
-        ZFCoreArray<zfchar *> keyListTmp = d->keyList;
-        d->keyList = ZFCoreArray<zfchar *>();
+        ZFCoreArray<zfstring> keyListTmp = d->keyList;
+        d->keyList = ZFCoreArray<zfstring>();
         ZFCoreArray<ZFStyleable *> valueListTmp = d->valueList;
         d->valueList = ZFCoreArray<ZFStyleable *>();
         for(zfindex i = 0; i < keyListTmp.count(); ++i) {
-            zffree(keyListTmp[i]);
             zfRelease(valueListTmp[i]);
         }
     }
@@ -202,7 +200,7 @@ zfbool ZFStyleList::serializableOnSerializeFromData(
         if(elementData.resolved()) {
             continue;
         }
-        const zfchar *key = elementData.propertyName();
+        zfstring key = elementData.propertyName();
         if(key == zfnull) {
             continue;
         }

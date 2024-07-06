@@ -11,7 +11,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_Qt, ZFPath, ZFProtocolLevel::e_SystemHigh)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("Qt::applicationDirPath")
 public:
-    virtual zfstring pathForModule(void) {
+    virtual const zfstring &pathForModule(void) {
         if(this->_pathForModule.isEmpty()) {
             this->_pathForModule = QCoreApplication::applicationDirPath().toStdString().c_str();
             if(this->_pathForModule.isEmpty()) {
@@ -20,7 +20,7 @@ public:
         }
         return this->_pathForModule;
     }
-    virtual zfstring pathForModuleFile(void) {
+    virtual const zfstring &pathForModuleFile(void) {
         if(this->_pathForModuleFile.isEmpty()) {
             this->_pathForModuleFile = QCoreApplication::applicationFilePath().toStdString().c_str();
             if(this->_pathForModuleFile.isEmpty()) {
@@ -30,7 +30,7 @@ public:
         return this->_pathForModuleFile;
     }
 
-    virtual zfstring pathForSetting(void) {
+    virtual const zfstring &pathForSetting(void) {
         if(this->_pathForSetting.isEmpty()) {
             ZFPathFormat(this->_pathForSetting, QStandardPaths::writableLocation(QStandardPaths::ConfigLocation).toStdString().c_str());
             if(this->_pathForSetting.isEmpty()) {
@@ -44,7 +44,7 @@ public:
         this->_pathForSetting = path;
     }
 
-    virtual zfstring pathForStorage(void) {
+    virtual const zfstring &pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
             ZFPathFormat(this->_pathForStorage, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdString().c_str());
             if(this->_pathForStorage.isEmpty()) {
@@ -58,7 +58,7 @@ public:
         this->_pathForStorage = path;
     }
 
-    virtual zfstring pathForStorageShared(void) {
+    virtual const zfstring &pathForStorageShared(void) {
         if(this->_pathForStorageShared.isEmpty()) {
             ZFPathFormat(this->_pathForStorageShared, QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation).toStdString().c_str());
             if(this->_pathForStorageShared.isEmpty()) {
@@ -72,7 +72,7 @@ public:
         this->_pathForStorageShared = path;
     }
 
-    virtual zfstring pathForCache(void) {
+    virtual const zfstring &pathForCache(void) {
         if(this->_pathForCache.isEmpty()) {
             ZFPathFormat(this->_pathForCache, QStandardPaths::writableLocation(QStandardPaths::CacheLocation).toStdString().c_str());
             if(this->_pathForCache.isEmpty()) {

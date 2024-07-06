@@ -39,10 +39,10 @@ ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForCwdOrModule) {
 
 // ============================================================
 // module
-ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForModule) {
+ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForModule) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForModule();
 }
-ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForModuleFile) {
+ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForModuleFile) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForModuleFile();
 }
 
@@ -52,7 +52,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForSettingOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForSetting) {
+ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForSetting) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForSetting();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForSetting
@@ -74,7 +74,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForStorageOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForStorage) {
+ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForStorage) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForStorage();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorage
@@ -96,7 +96,7 @@ ZF_NAMESPACE_BEGIN(ZFGlobalEvent)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForStorageSharedOnChange)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForStorageShared) {
+ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForStorageShared) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForStorageShared();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForStorageShared
@@ -120,7 +120,7 @@ ZFEVENT_GLOBAL_REGISTER(ZFPathForCacheBeforeClear)
 ZFEVENT_GLOBAL_REGISTER(ZFPathForCacheAfterClear)
 ZF_NAMESPACE_END(ZFGlobalEvent)
 
-ZFMETHOD_FUNC_DEFINE_0(zfstring, ZFPathForCache) {
+ZFMETHOD_FUNC_DEFINE_0(const zfstring &, ZFPathForCache) {
     return ZFPROTOCOL_ACCESS(ZFPath)->pathForCache();
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFPathForCache

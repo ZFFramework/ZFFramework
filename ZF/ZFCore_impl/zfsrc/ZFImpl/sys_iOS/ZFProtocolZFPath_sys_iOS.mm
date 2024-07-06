@@ -9,7 +9,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_sys_iOS, ZFPath, ZFProtocolLevel::e_SystemNormal)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("iOS:SandboxPath")
 public:
-    virtual zfstring pathForModule(void) {
+    virtual const zfstring &pathForModule(void) {
         if(this->_pathForModule.isEmpty()) {
             (void)this->pathForModuleFile();
             zfindex pos = zfstringFindReversely(this->_pathForModuleFile, '/');
@@ -19,7 +19,7 @@ public:
         }
         return this->_pathForModule;
     }
-    virtual zfstring pathForModuleFile(void) {
+    virtual const zfstring &pathForModuleFile(void) {
         if(this->_pathForModuleFile.isEmpty()) {
             zfstring tmp;
             ZFImpl_sys_iOS_zfstringFromNSString(tmp, [[NSBundle mainBundle] bundlePath]);
@@ -28,7 +28,7 @@ public:
         return this->_pathForModuleFile;
     }
 
-    virtual zfstring pathForSetting(void) {
+    virtual const zfstring &pathForSetting(void) {
         if(this->_pathForSetting.isEmpty()) {
             this->_pathForSetting = this->nativeDocumentPath();
             this->_pathForSetting += "/zfsetting";
@@ -39,7 +39,7 @@ public:
         this->_pathForSetting = path;
     }
 
-    virtual zfstring pathForStorage(void) {
+    virtual const zfstring &pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
             this->_pathForStorage = this->nativeDocumentPath();
             this->_pathForStorage += "/zfstorage";
@@ -50,7 +50,7 @@ public:
         this->_pathForStorage = path;
     }
 
-    virtual zfstring pathForStorageShared(void) {
+    virtual const zfstring &pathForStorageShared(void) {
         if(this->_pathForStorageShared.isEmpty()) {
             this->_pathForStorageShared = this->nativeDocumentPath();
         }
@@ -60,7 +60,7 @@ public:
         this->_pathForStorageShared = path;
     }
 
-    virtual zfstring pathForCache(void) {
+    virtual const zfstring &pathForCache(void) {
         if(this->_pathForCache.isEmpty()) {
             this->_pathForCache = this->nativeCachePath();
             this->_pathForCache += "/zfcache";
@@ -76,7 +76,7 @@ public:
 
 private:
     zfstring _nativeDocumentPath;
-    zfstring nativeDocumentPath(void) {
+    const zfstring &nativeDocumentPath(void) {
         if(_nativeDocumentPath.isEmpty()) {
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             zfstring tmp;
@@ -86,7 +86,7 @@ private:
         return _nativeDocumentPath;
     }
     zfstring _nativeCachePath;
-    zfstring nativeCachePath(void) {
+    const zfstring &nativeCachePath(void) {
         if(_nativeCachePath.isEmpty()) {
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
             zfstring tmp;

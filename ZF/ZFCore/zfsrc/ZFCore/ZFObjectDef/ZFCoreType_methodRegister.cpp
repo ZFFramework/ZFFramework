@@ -100,14 +100,14 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfidentity, zfidentityCalcPointer
 // ZFCoreStatistic
 ZF_NAMESPACE_BEGIN(ZFCoreStatistic)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountLog
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, invokeCountRemove
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(void, invokeCountRemoveAll)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfindex, invokeCountGet
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         )
 ZF_NAMESPACE_END(ZFCoreStatistic)
 

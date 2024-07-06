@@ -181,7 +181,7 @@ protected:
      * @brief init with pattern, see #pattern
      */
     ZFOBJECT_ON_INIT_DECLARE_2(
-            ZFMP_IN(const zfchar *, pattern)
+            ZFMP_IN(const zfstring &, pattern)
             , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
             )
 
@@ -213,7 +213,7 @@ public:
     /**
      * @brief get current pattern or null if not set, use #pattern to change
      */
-    ZFMETHOD_DECLARE_0(const zfchar *, pattern)
+    ZFMETHOD_DECLARE_0(const zfstring &, pattern)
     /**
      * @brief get current flag or ZFRegExpOptionNone if not set, use #pattern to change
      */
@@ -222,7 +222,7 @@ public:
      * @brief get named group's number which can be used as "$n" while #replace, or zfindexMax() if no such group
      */
     ZFMETHOD_DECLARE_1(zfindex, namedGroupIndexForName
-            , ZFMP_IN(const zfchar *, name)
+            , ZFMP_IN(const zfstring &, name)
             )
 
 public:
@@ -230,7 +230,7 @@ public:
      * @brief change the pattern
      */
     ZFMETHOD_DECLARE_2(void, pattern
-            , ZFMP_IN(const zfchar *, pattern)
+            , ZFMP_IN(const zfstring &, pattern)
             , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
             )
 
@@ -249,7 +249,7 @@ public:
     ZFMETHOD_DECLARE_6(void, replace
             , ZFMP_OUT(zfstring &, ret)
             , ZFMP_OUT(ZFRegExpResult &, result)
-            , ZFMP_IN(const zfchar *, replacePattern)
+            , ZFMP_IN(const zfstring &, replacePattern)
             , ZFMP_IN(const zfchar *, src)
             , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
             , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
@@ -274,14 +274,14 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, ZFIndexRange, ZFRegExpFind
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfstring, ZFRegExpReplace
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(ZFRegExp *, patternFrom)
-        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN(const zfstring &, patternTo)
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         )
 /** @brief util to replace by regexp */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFAlgorithm, zfstring, ZFRegExpReplace
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(const zfstring &, patternFrom)
-        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN(const zfstring &, patternTo)
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         )
 

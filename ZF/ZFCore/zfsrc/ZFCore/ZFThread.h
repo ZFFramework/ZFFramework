@@ -74,7 +74,7 @@ public:
      * main thread has no need to register
      */
     ZFMETHOD_DECLARE_STATIC_1(void *, nativeThreadRegister
-            , ZFMP_IN(const zfchar *, threadName)
+            , ZFMP_IN(const zfstring &, threadName)
             )
     /**
      * @brief see #nativeThreadRegister

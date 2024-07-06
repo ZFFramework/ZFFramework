@@ -24,7 +24,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   after the class unregistered
  */
 extern ZFLIB_ZFCore const ZFClass *ZFClassDynamicRegister(
-        ZF_IN const zfchar *classNameFull
+        ZF_IN const zfstring &classNameFull
         , ZF_IN_OPT const ZFClass *parent = zfnull
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData = zfnull
         , ZF_OUT_OPT zfstring *errorHint = zfnull

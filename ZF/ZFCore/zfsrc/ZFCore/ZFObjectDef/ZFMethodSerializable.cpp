@@ -40,13 +40,13 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethod, const ZFMethod *, {
 
         return zftrue;
     })
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfchar *, methodInternalId)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfstring &, methodInternalId)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, methodIsUserRegister)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, methodIsDynamicRegister)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfany, methodDynamicRegisterUserData)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfchar *, methodName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfchar *, methodReturnTypeId)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfchar *, methodReturnTypeName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfstring &, methodName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfstring &, methodReturnTypeId)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfstring &, methodReturnTypeName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfindex, methodParamCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfindex, methodParamCountMin)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFMethod, zfbool, methodParamTypeIdIsMatch
@@ -62,13 +62,13 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_8(v_ZFMethod, zfbool, methodParamTypeIdI
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, zfbool, methodParamTypeIdIsMatch
         , ZFMP_IN(const ZFMethod *, method)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamTypeIdAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfstring &, methodParamTypeIdAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamTypeNameAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfstring &, methodParamTypeNameAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfchar *, methodParamNameAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, const zfstring &, methodParamNameAt
         , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFMethod, ZFMethodParamDefaultValueCallback, methodParamDefaultValueCallbackAt
@@ -119,12 +119,12 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, methodIsNormal)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, methodIsStatic)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, methodIsVirtual)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, zfbool, methodIsFunctionType)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfchar *, methodNamespace)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFMethod, const zfstring &, methodNamespace)
 
 /* ZFMETHOD_MAX_PARAM */
 const ZFMethod *ZFMethodFromSig(
-        ZF_IN const zfchar *classOrNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &classOrNamespace
+        , ZF_IN const zfstring &methodName
         , ZF_IN_OPT const zfchar *methodParamTypeId0 /* = zfnull */
         , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
         , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
@@ -146,7 +146,7 @@ const ZFMethod *ZFMethodFromSig(
         );
 }
 const ZFMethod *ZFMethodFromSig(
-        ZF_IN const zfchar *methodSig
+        ZF_IN const zfstring &methodSig
         , ZF_IN const ZFCoreArray<ZFIndexRange> &methodSigPos
         ) {
     if(methodSig == zfnull || methodSigPos.count() != ZFMETHOD_MAX_PARAM + 2) {
@@ -175,7 +175,7 @@ const ZFMethod *ZFMethodFromSig(
 
 zfbool ZFMethodSigSplit(
         ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret
-        , ZF_IN const zfchar *src
+        , ZF_IN const zfstring &src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         ) {
     ret.removeAll();
@@ -221,9 +221,9 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodFromSig
-        , ZFMP_IN(const zfchar *, classOrNamespace)
-        , ZFMP_IN(const zfchar *, methodName)
-        , ZFMP_IN(const zfchar *, param0)
+        , ZFMP_IN(const zfstring &, classOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
+        , ZFMP_IN(const zfchar *, methodParamTypeId0)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId1, zfnull)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId2, zfnull)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId3, zfnull)
@@ -233,12 +233,12 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodFromSig
         /* ZFMETHOD_MAX_PARAM , ZFMP_IN_OPT(const zfchar *, methodParamTypeId7, zfnull) */
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodFromSig
-        , ZFMP_IN(const zfchar *, methodSig)
+        , ZFMP_IN(const zfstring &, methodSig)
         , ZFMP_IN(const ZFCoreArray<ZFIndexRange> &, methodSigPos)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(zfbool, ZFMethodSigSplit
         , ZFMP_IN_OUT(ZFCoreArray<ZFIndexRange> &, ret)
-        , ZFMP_IN(const zfchar *, src)
+        , ZFMP_IN(const zfstring &, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         )
 

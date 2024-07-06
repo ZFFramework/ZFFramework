@@ -80,7 +80,7 @@ void ZFFileFindData::objectInfoT(ZF_IN_OUT zfstring &ret) const {
 ZFFileFindData::Impl &ZFFileFindData::impl(void) const {
     return d->impl;
 }
-zfstring ZFFileFindData::implName(void) const {
+const zfstring &ZFFileFindData::implName(void) const {
     return d->implName;
 }
 void *ZFFileFindData::implUserData(void) const {
@@ -145,10 +145,10 @@ zfany ZFFileFindData::implTag(ZF_IN const zfstring &key) const {
 
 // ============================================================
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFFileFindData, ZFFileFindData)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, zfstring, fileName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfstring &, fileName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, zfbool, fileIsDir)
 
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, zfstring, implName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, const zfstring &, implName)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFFileFindData, void *, implUserData)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFFileFindData, void, implAttach
         , ZFMP_IN(const zfstring &, implName)

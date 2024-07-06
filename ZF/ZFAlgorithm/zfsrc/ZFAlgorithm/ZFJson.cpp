@@ -380,8 +380,8 @@ ZFJson &ZFJson::value(ZF_IN const zfstring &value) {
     }
     return *this;
 }
-zfstring ZFJson::value(void) const {
-    return d && d->type == ZFJsonType::e_JsonValue && d->d.value ? *(d->d.value) : zfnull;
+const zfstring &ZFJson::value(void) const {
+    return d && d->type == ZFJsonType::e_JsonValue && d->d.value ? *(d->d.value) : zfstring::Empty();
 }
 
 // ============================================================
@@ -627,7 +627,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJson, copy)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson &, value
         , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfstring, value)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, const zfstring &, value)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFJson, ZFJson &, attr
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const zfstring &, value)

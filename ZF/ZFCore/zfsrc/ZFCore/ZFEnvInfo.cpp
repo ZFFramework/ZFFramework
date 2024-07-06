@@ -16,12 +16,12 @@ ZF_GLOBAL_INITIALIZER_END(ZFEnvSummaryDataHolder)
 ZF_NAMESPACE_BEGIN(ZFEnvInfo)
 
 void envSummaryCallbackRegister(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN ZFEnvSummaryCallback callback
         ) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap[name] = callback;
 }
-void envSummaryCallbackUnregister(ZF_IN const zfchar *name) {
+void envSummaryCallbackUnregister(ZF_IN const zfstring &name) {
     ZF_GLOBAL_INITIALIZER_INSTANCE(ZFEnvSummaryDataHolder)->envSummaryCallbackMap.erase(name);
 }
 

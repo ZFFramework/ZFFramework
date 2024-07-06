@@ -223,7 +223,7 @@ public:
     /**
      * @brief see #value
      */
-    zfstring value(void) const;
+    const zfstring &value(void) const;
 
     // ============================================================
     // for object type

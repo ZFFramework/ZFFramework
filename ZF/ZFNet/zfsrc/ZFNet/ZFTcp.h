@@ -70,7 +70,7 @@ public:
      *
      * return "localhost" for server (null host with #open)
      */
-    ZFMETHOD_DECLARE_0(const zfchar *, host)
+    ZFMETHOD_DECLARE_0(const zfstring &, host)
     /**
      * @brief current opened port, or 0 if not opened
      */

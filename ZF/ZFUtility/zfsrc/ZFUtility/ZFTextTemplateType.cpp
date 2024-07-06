@@ -216,22 +216,22 @@ void ZFTextTemplateParam::replaceDataAdd(
         }
     }
 }
-zfstring ZFTextTemplateParam::replaceData(ZF_IN const zfstring &key) const {
+const zfstring &ZFTextTemplateParam::replaceData(ZF_IN const zfstring &key) const {
     _ZFP_ZFTextTemplateReplaceData *replaceData = d->replaceDataMap.get<_ZFP_ZFTextTemplateReplaceData *>(key);
     if(replaceData != zfnull) {
         return replaceData->value;
     }
     else {
-        return zfnull;
+        return zfstring::Empty();
     }
 }
 zfindex ZFTextTemplateParam::replaceDataCount(void) const {
     return d->replaceDataMap.count();
 }
-zfstring ZFTextTemplateParam::replaceDataNameAt(ZF_IN zfindex index) const {
+const zfstring &ZFTextTemplateParam::replaceDataNameAt(ZF_IN zfindex index) const {
     return d->replaceDataList.get(index)->key;
 }
-zfstring ZFTextTemplateParam::replaceDataAt(ZF_IN zfindex index) const {
+const zfstring &ZFTextTemplateParam::replaceDataAt(ZF_IN zfindex index) const {
     return d->replaceDataList.get(index)->value;
 }
 void ZFTextTemplateParam::replaceDataRemove(ZF_IN const zfstring &key) {
@@ -300,7 +300,7 @@ zfbool ZFTextTemplateParam::enableDataValue(ZF_IN const zfstring &key) const {
 zfindex ZFTextTemplateParam::enableDataCount(void) const {
     return d->enableDataMap.count();
 }
-zfstring ZFTextTemplateParam::enableDataNameAt(ZF_IN zfindex index) const {
+const zfstring &ZFTextTemplateParam::enableDataNameAt(ZF_IN zfindex index) const {
     return d->enableDataList.get(index)->key;
 }
 zfbool ZFTextTemplateParam::enableDataAt(ZF_IN zfindex index) const {
@@ -372,7 +372,7 @@ ZFTextTemplateIndexData *ZFTextTemplateParam::indexData(ZF_IN const zfstring &ke
 zfindex ZFTextTemplateParam::indexDataCount(void) const {
     return d->indexDataMap.count();
 }
-zfstring ZFTextTemplateParam::indexDataNameAt(ZF_IN zfindex index) const {
+const zfstring &ZFTextTemplateParam::indexDataNameAt(ZF_IN zfindex index) const {
     return d->indexDataList.get(index)->key;
 }
 const ZFTextTemplateIndexData *ZFTextTemplateParam::indexDataAt(ZF_IN zfindex index) const {
@@ -703,14 +703,14 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFTextTemplateParam, void, replaceDa
         , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfstring, replaceData
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, replaceData
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, replaceDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfstring, replaceDataNameAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, replaceDataNameAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfstring, replaceDataAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, replaceDataAt
         , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, void, replaceDataRemove
@@ -735,7 +735,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableD
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, enableDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfstring, enableDataNameAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, enableDataNameAt
         , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfbool, enableDataAt
@@ -760,7 +760,7 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTem
         , ZFMP_IN(const zfstring &, key)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFTextTemplateParam, zfindex, indexDataCount)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, zfstring, indexDataNameAt
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const zfstring &, indexDataNameAt
         , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFTextTemplateParam, const ZFTextTemplateIndexData *, indexDataAt

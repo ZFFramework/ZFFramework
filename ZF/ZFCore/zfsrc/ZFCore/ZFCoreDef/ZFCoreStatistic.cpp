@@ -10,7 +10,7 @@ static ZFCoreMap &_ZFP_ZFCoreStatisticDataMap(void) {
     return d;
 }
 
-void invokeCountLog(ZF_IN const zfchar *key) {
+void invokeCountLog(ZF_IN const zfstring &key) {
     ZFCoreMap &m = _ZFP_ZFCoreStatisticDataMap();
     zfindex *count = m.get<zfindex *>(key);
     if(count != zfnull) {
@@ -20,13 +20,13 @@ void invokeCountLog(ZF_IN const zfchar *key) {
         m.set(key, ZFCorePointerForObject<zfindex *>(zfnew(zfindex, 1)));
     }
 }
-void invokeCountRemove(ZF_IN const zfchar *key) {
+void invokeCountRemove(ZF_IN const zfstring &key) {
     _ZFP_ZFCoreStatisticDataMap().remove(key);
 }
 void invokeCountRemoveAll(void) {
     _ZFP_ZFCoreStatisticDataMap().removeAll();
 }
-zfindex invokeCountGet(ZF_IN const zfchar *key) {
+zfindex invokeCountGet(ZF_IN const zfstring &key) {
     zfindex *count = _ZFP_ZFCoreStatisticDataMap().get<zfindex *>(key);
     return ((count != zfnull) ? *count : 0);
 }

@@ -196,7 +196,7 @@ zfbool _ZFP_ZFCoreArrayToDataT(
 }
 
 // ============================================================
-zfbool v_ZFCoreArray::elementTypeInit(ZF_IN const zfchar *elementTypeId) {
+zfbool v_ZFCoreArray::elementTypeInit(ZF_IN const zfstring &elementTypeId) {
     if(this->elementType != zfnull) {
         return zffalse;
     }
@@ -252,7 +252,7 @@ ZFTYPEID_ID_DATA_REGISTER(ZFCoreArray, ZFCoreArray<zfauto>)
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
     invokerObject->to<v_ZFCoreArray *>()->elementTypeInit(elementTypeId);
 }, v_ZFCoreArray
-, ZFMP_IN(const zfchar *, elementTypeId)
+, ZFMP_IN(const zfstring &, elementTypeId)
 )
 
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(v_ZFCoreArray, void, copyFrom

@@ -45,7 +45,7 @@ public:
     /**
      * @brief internal property id, for debug use only
      */
-    inline const zfchar *propertyInternalId(void) const {
+    inline const zfstring &propertyInternalId(void) const {
         return this->_ZFP_ZFProperty_propertyInternalId;
     }
     /**
@@ -87,7 +87,7 @@ public:
     /**
      * @brief name for the property
      */
-    inline const zfchar *propertyName(void) const {
+    inline const zfstring &propertyName(void) const {
         return this->_ZFP_ZFProperty_name;
     }
 
@@ -98,8 +98,8 @@ public:
      * it may or may not be same for same type,
      * usually for debug use only
      */
-    inline const zfchar *propertyTypeName(void) const {
-        return this->_ZFP_ZFProperty_typeName;
+    inline const zfstring &propertyTypeName(void) const {
+        return this->_ZFP_ZFProperty_typeName ? this->_ZFP_ZFProperty_typeName : this->_ZFP_ZFProperty_typeId;
     }
     /**
      * @brief type id string declared in ZFPROPERTY_XXX
@@ -109,7 +109,7 @@ public:
      * see #ZFTypeInfo
      * @note for retain property, this value is always the class name of the #propertyClassOfRetainProperty
      */
-    inline const zfchar *propertyTypeId(void) const {
+    inline const zfstring &propertyTypeId(void) const {
         return this->_ZFP_ZFProperty_typeId;
     }
     /**
@@ -166,9 +166,9 @@ public:
             , ZF_IN zfbool propertyIsDynamicRegister
             , ZF_IN ZFObject *propertyDynamicRegisterUserData
             , ZF_IN const ZFClass *propertyOwnerClass
-            , ZF_IN const zfchar *name
-            , ZF_IN const zfchar *typeName
-            , ZF_IN const zfchar *typeIdName
+            , ZF_IN const zfstring &name
+            , ZF_IN const zfstring &typeName
+            , ZF_IN const zfstring &typeIdName
             , ZF_IN const ZFMethod *setterMethod
             , ZF_IN const ZFMethod *getterMethod
             , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
@@ -180,7 +180,7 @@ public:
     }
 public:
     zfuint _ZFP_ZFProperty_refCount;
-    zfchar *_ZFP_ZFProperty_propertyInternalId;
+    zfstring _ZFP_ZFProperty_propertyInternalId;
     zfbool _ZFP_ZFProperty_propertyIsUserRegister;
     zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserData;
@@ -224,9 +224,9 @@ extern ZFLIB_ZFCore ZFProperty *_ZFP_ZFPropertyRegister(
         , ZF_IN zfbool propertyIsDynamicRegister
         , ZF_IN ZFObject *propertyDynamicRegisterUserData
         , ZF_IN const ZFClass *propertyOwnerClass
-        , ZF_IN const zfchar *name
-        , ZF_IN const zfchar *typeName
-        , ZF_IN const zfchar *typeIdName
+        , ZF_IN const zfstring &name
+        , ZF_IN const zfstring &typeName
+        , ZF_IN const zfstring &typeIdName
         , ZF_IN const ZFMethod *setterMethod
         , ZF_IN const ZFMethod *getterMethod
         , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
@@ -249,9 +249,9 @@ public:
             , ZF_IN zfbool propertyIsDynamicRegister
             , ZF_IN ZFObject *propertyDynamicRegisterUserData
             , ZF_IN const ZFClass *propertyOwnerClass
-            , ZF_IN const zfchar *name
-            , ZF_IN const zfchar *typeName
-            , ZF_IN const zfchar *typeIdName
+            , ZF_IN const zfstring &name
+            , ZF_IN const zfstring &typeName
+            , ZF_IN const zfstring &typeIdName
             , ZF_IN const ZFMethod *setterMethod
             , ZF_IN const ZFMethod *getterMethod
             , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup

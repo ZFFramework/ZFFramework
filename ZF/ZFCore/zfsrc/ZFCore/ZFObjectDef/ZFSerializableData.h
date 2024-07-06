@@ -148,7 +148,7 @@ public:
     /** @brief see #ZFSerializable */
     zffinal void itemClass(ZF_IN const zfstring &classNameFull);
     /** @brief see #ZFSerializable */
-    zffinal zfstring itemClass(void) const;
+    zffinal const zfstring &itemClass(void) const;
 
     // ============================================================
     // other types

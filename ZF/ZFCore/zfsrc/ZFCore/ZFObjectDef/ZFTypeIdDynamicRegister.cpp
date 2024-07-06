@@ -36,7 +36,7 @@ static zfbool _ZFP_ZFTypeIdGI(ZFMETHOD_GENERIC_INVOKER_PARAMS) {
     return zftrue;
 }
 zfbool ZFTypeIdDynamicRegister(
-        ZF_IN const zfchar *typeIdName
+        ZF_IN const zfstring &typeIdName
         , ZF_IN const ZFCorePointerForObject<ZFTypeInfo *> &typeIdData
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
         ) {
@@ -65,7 +65,7 @@ zfbool ZFTypeIdDynamicRegister(
     _ZFP_ZFTypeInfoRegister(typeIdName, typeIdData);
     return zftrue;
 }
-void ZFTypeIdDynamicUnregister(ZF_IN const zfchar *typeIdName) {
+void ZFTypeIdDynamicUnregister(ZF_IN const zfstring &typeIdName) {
     if(!zfstringIsEmpty(typeIdName)) {
         ZF_GLOBAL_INITIALIZER_CLASS(ZFTypeIdDynamicRegisterDataHolder) *d = ZF_GLOBAL_INITIALIZER_INSTANCE(ZFTypeIdDynamicRegisterDataHolder);
         zfstlmap<zfstring, ZFCorePointerForObject<ZFTypeInfo *> >::iterator it = d->m.find(typeIdName);

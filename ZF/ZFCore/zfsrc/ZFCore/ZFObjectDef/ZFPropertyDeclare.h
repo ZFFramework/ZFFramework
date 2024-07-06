@@ -23,8 +23,8 @@ zfclassFwd ZFClass;
  * @brief get property by name, or null if not registered
  */
 extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
-        ZF_IN const zfchar *classNameOrFullName
-        , ZF_IN const zfchar *propertyName
+        ZF_IN const zfstring &classNameOrFullName
+        , ZF_IN const zfstring &propertyName
         );
 
 // ============================================================

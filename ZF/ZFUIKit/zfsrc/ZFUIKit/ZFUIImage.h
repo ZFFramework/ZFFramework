@@ -223,7 +223,7 @@ public:
     /**
      * @brief see #imageSerializableType
      */
-    virtual zfstring imageSerializableType(void);
+    virtual const zfstring &imageSerializableType(void);
     /**
      * @brief see #ZFUIIMAGE_SERIALIZE_TYPE_DEFINE
      */

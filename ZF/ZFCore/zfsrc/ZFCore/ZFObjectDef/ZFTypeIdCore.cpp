@@ -35,10 +35,11 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFTypeIdWrapper, zfbool, wrappedValue
         , ZFMP_IN_OUT(zfstring &, s)
         )
 
-ZFOBJECT_ON_INIT_USER_REGISTER_1({
-        invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueFromString(src);
+ZFOBJECT_ON_INIT_USER_REGISTER_2({
+        invokerObject->to<ZFTypeIdWrapper *>()->wrappedValueFromString(src, srcLen);
     }, ZFTypeIdWrapper
     , ZFMP_IN(const zfchar *, src)
+    , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
     )
 ZFOBJECT_ON_INIT_USER_REGISTER_1({
         if(src != zfnull) {

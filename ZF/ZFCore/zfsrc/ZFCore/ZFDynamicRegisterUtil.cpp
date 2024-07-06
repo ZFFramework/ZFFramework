@@ -438,7 +438,7 @@ ZFDynamic &ZFDynamic::regTag(ZF_IN const zfstring &regTag) {
     m[regTag] = *this;
     return *this;
 }
-zfstring ZFDynamic::regTag(void) const {
+const zfstring &ZFDynamic::regTag(void) const {
     return d->regTag;
 }
 
@@ -1144,7 +1144,7 @@ ZFOBJECT_ON_INIT_USER_REGISTER_1({
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFDynamic, ZFDynamic &, regTag
         , ZFMP_IN(const zfstring &, regTag)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, zfstring, regTag)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const zfstring &, regTag)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, void, removeAll)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFClass *> &, allClass)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFDynamic, const ZFCoreArray<const ZFClass *> &, allEnum)

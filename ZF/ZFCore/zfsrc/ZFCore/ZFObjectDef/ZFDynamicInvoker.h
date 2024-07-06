@@ -176,7 +176,7 @@ inline zfindex ZFDI_paramCount(
 extern ZFLIB_ZFCore zfbool ZFDI_invoke(ZF_OUT zfauto &ret
         , ZF_OUT_OPT zfstring *errorHint
         , ZF_IN_OPT ZFObject *obj
-        , ZF_IN const zfchar *name
+        , ZF_IN const zfstring &name
         , ZF_IN_OPT zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr = zffalse
@@ -223,7 +223,7 @@ extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
  */
 extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
-        , ZF_IN const zfchar *typeId
+        , ZF_IN const zfstring &typeId
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         , ZF_OUT_OPT zfstring *errorHint = zfnull
@@ -248,11 +248,11 @@ extern ZFLIB_ZFCore zfbool ZFDI_objectFromString(
  * @endcode
  */
 extern ZFLIB_ZFCore zfauto ZFInvoke(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         );
 /** @brief see #ZFInvoke */
 extern ZFLIB_ZFCore zfauto ZFInvoke(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN ZFObject *param0
         , ZF_IN_OPT ZFObject *param1 = ZFMethodGenericInvokerDefaultParam()
         , ZF_IN_OPT ZFObject *param2 = ZFMethodGenericInvokerDefaultParam()
@@ -264,7 +264,7 @@ extern ZFLIB_ZFCore zfauto ZFInvoke(
         );
 /** @brief see #ZFInvoke */
 extern ZFLIB_ZFCore zfauto ZFInvokeDetail(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN const ZFCoreArray<zfauto> &params
         , ZF_OUT_OPT zfbool *success = zfnull
         , ZF_OUT_OPT zfstring *errorHint = zfnull

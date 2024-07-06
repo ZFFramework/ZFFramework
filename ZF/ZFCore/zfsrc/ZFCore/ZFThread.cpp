@@ -143,7 +143,7 @@ ZFEVENT_REGISTER(ZFThread, ThreadOnStop)
 ZFEVENT_REGISTER(ZFThread, ThreadTaskQueueOnFinish)
 
 ZFMETHOD_DEFINE_1(ZFThread, void *, nativeThreadRegister
-        , ZFMP_IN(const zfchar *, threadName)
+        , ZFMP_IN(const zfstring &, threadName)
         ) {
     zfCoreMutexLocker();
     ZFThread *zfThread = ZFThread::currentThread();

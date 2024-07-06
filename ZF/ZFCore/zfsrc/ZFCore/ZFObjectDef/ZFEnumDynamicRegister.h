@@ -16,7 +16,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *   during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkHigh
  */
 extern ZFLIB_ZFCore const ZFClass *ZFEnumDynamicRegister(
-        ZF_IN const zfchar *enumClassName
+        ZF_IN const zfstring &enumClassName
         , ZF_IN const ZFCoreArray<zfuint> &enumValues
         , ZF_IN const ZFCoreArray<zfstring> &enumNames
         , ZF_IN zfuint enumDefault = ZFEnumInvalid()

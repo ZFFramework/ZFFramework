@@ -27,9 +27,9 @@ void ZFMethod::_ZFP_ZFMethod_init(
         , ZF_IN ZFFuncAddrType invoker
         , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
         , ZF_IN ZFMethodType methodType
-        , ZF_IN const zfchar *methodName
-        , ZF_IN const zfchar *returnTypeId
-        , ZF_IN const zfchar *returnTypeName
+        , ZF_IN const zfstring &methodName
+        , ZF_IN const zfstring &returnTypeId
+        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         ) {
     zfCoreAssert(methodGenericInvoker != zfnull);
@@ -108,7 +108,7 @@ void ZFMethod::_ZFP_ZFMethod_initClassMemberType(
     this->_ZFP_ZFMethod_methodOwnerClass = methodOwnerClass;
     this->_ZFP_ZFMethod_privilegeType = privilegeType;
 }
-void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfchar *methodNamespace) {
+void ZFMethod::_ZFP_ZFMethod_initFuncType(ZF_IN const zfstring &methodNamespace) {
     if(!zfstringIsEmpty(methodNamespace)
         && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_NAME)
         && !zfstringIsEqual(methodNamespace, ZF_NAMESPACE_GLOBAL_ABBR_NAME)
@@ -158,8 +158,6 @@ ZFMethod::ZFMethod(void)
 ZFMethod::~ZFMethod(void) {
     zfRelease(this->_ZFP_ZFMethod_methodUserRegisterUserData);
     zfRelease(this->_ZFP_ZFMethod_methodDynamicRegisterUserData);
-
-    zffree(this->_ZFP_ZFMethod_methodInternalId);
 
     // registered by ZFSigName, no need to free
     // _ZFP_ZFMethod_methodName;
@@ -380,7 +378,7 @@ void ZFMethod::methodInvoker(ZF_IN ZFFuncAddrType methodInvoker) const {
 }
 
 // ============================================================
-typedef zfstlhashmap<const zfchar *, ZFMethod *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFMethodMapType;
+typedef zfstlhashmap<zfstring, ZFMethod *, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFMethodMapType;
 static _ZFP_ZFMethodMapType &_ZFP_ZFMethodMap(void) {
     static _ZFP_ZFMethodMapType m;
     return m;
@@ -412,7 +410,7 @@ static void _ZFP_ZFMethodInstanceSig(
     }
 }
 
-static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfchar *methodInternalId) {
+static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfstring &methodInternalId) {
     zfCoreMutexLocker();
     _ZFP_ZFMethodMapType &m = _ZFP_ZFMethodMap();
     _ZFP_ZFMethodMapType::iterator it = m.find(methodInternalId);
@@ -423,7 +421,7 @@ static ZFMethod *_ZFP_ZFMethodInstanceAccess(ZF_IN const zfchar *methodInternalI
     }
     else {
         ZFMethod *v = zfnew(ZFMethod);
-        v->_ZFP_ZFMethod_methodInternalId = zfsCopy(methodInternalId);
+        v->_ZFP_ZFMethod_methodInternalId = methodInternalId;
         m[v->methodInternalId()] = v;
         return v;
     }
@@ -438,17 +436,18 @@ ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN ZFMethodType methodType
         , ZF_IN const ZFClass *methodOwnerClass
         , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-        , ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
-        , ZF_IN const zfchar *returnTypeId
-        , ZF_IN const zfchar *returnTypeName
+        , ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodName
+        , ZF_IN const zfstring &returnTypeId
+        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         ) {
     zfCoreMutexLocker();
-    methodNamespace = ZFNamespaceSkipGlobal(methodNamespace);
+    const zfchar *methodNamespaceTmp = methodNamespace;
+    methodNamespaceTmp = ZFNamespaceSkipGlobal(methodNamespaceTmp);
 
     zfCoreAssert(methodGenericInvoker != zfnull);
-    zfCoreAssert(methodOwnerClass == zfnull || zfstringIsEmpty(methodNamespace));
+    zfCoreAssert(methodOwnerClass == zfnull || zfstringIsEmpty(methodNamespaceTmp));
     zfCoreAssert(methodName != zfnull && *methodName != '\0');
     zfCoreAssert(returnTypeId != zfnull && *returnTypeId != '\0');
     zfCoreAssert(returnTypeName != zfnull && *returnTypeName != '\0');
@@ -456,7 +455,13 @@ ZFMethod *_ZFP_ZFMethodRegister(
     ZFMethod *method = zfnull;
 
     zfstring methodInternalId;
-    ZFSigName methodScope = methodOwnerClass ? methodOwnerClass->classNameFull() : methodNamespace;
+    ZFSigName methodScope;
+    if(methodOwnerClass) {
+        methodScope = methodOwnerClass->classNameFull();
+    }
+    else {
+        methodScope = methodNamespaceTmp;
+    }
     ZFSigName methodNameSig = methodName;
     _ZFP_ZFMethodInstanceSig(methodInternalId
             , methodScope
@@ -479,7 +484,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
             else {
                 zfCoreCriticalMessageTrim(
                     "[ZFMethodFuncUserRegister] registering a method that already registered, namespace: %s, methodName: %s, methodInternalId: %s",
-                    methodNamespace,
+                    methodNamespaceTmp,
                     methodName,
                     methodInternalId);
             }
@@ -495,7 +500,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
             else {
                 zfCoreCriticalMessageTrim(
                     "[ZFMethodDynamicRegister] registering a method that already registered, namespace: %s, methodName: %s, methodInternalId: %s",
-                    methodNamespace,
+                    methodNamespaceTmp,
                     methodName,
                     methodInternalId);
             }
@@ -543,7 +548,7 @@ ZFMethod *_ZFP_ZFMethodRegister(
             _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
         }
         else {
-            method->_ZFP_ZFMethod_initFuncType(methodNamespace);
+            method->_ZFP_ZFMethod_initFuncType(methodNamespaceTmp);
             _ZFP_ZFMethodFuncRegister(method);
             _ZFP_ZFClassDataChangeNotify(ZFClassDataChangeTypeAttach, zfnull, zfnull, method);
         }
@@ -588,10 +593,10 @@ _ZFP_ZFMethodRegisterHolder::_ZFP_ZFMethodRegisterHolder(
         , ZF_IN ZFMethodType methodType
         , ZF_IN const ZFClass *methodOwnerClass
         , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-        , ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
-        , ZF_IN const zfchar *returnTypeId
-        , ZF_IN const zfchar *returnTypeName
+        , ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodName
+        , ZF_IN const zfstring &returnTypeId
+        , ZF_IN const zfstring &returnTypeName
         , ZF_IN const _ZFP_ZFMethodMP &mp
         )
 : method(zfnull)
@@ -641,8 +646,8 @@ void ZFMethodGetAllT(
 // ============================================================
 /* ZFMETHOD_MAX_PARAM */
 const ZFMethod *ZFMethodForName(
-        ZF_IN const zfchar *classNameOrNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &classNameOrNamespace
+        , ZF_IN const zfstring &methodName
         ) {
     const ZFClass *cls = ZFClass::classForName(classNameOrNamespace);
     if(cls != zfnull) {
@@ -653,8 +658,8 @@ const ZFMethod *ZFMethodForName(
     }
 }
 const ZFMethod *ZFMethodForName(
-        ZF_IN const zfchar *classNameOrNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &classNameOrNamespace
+        , ZF_IN const zfstring &methodName
         , ZF_IN_OPT const zfchar *methodParamTypeId0
         , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
         , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
@@ -692,8 +697,8 @@ const ZFMethod *ZFMethodForName(
 }
 void ZFMethodForNameGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const zfchar *classNameOrNamespace
-        , ZF_IN const zfchar *methodName
+        , ZF_IN const zfstring &classNameOrNamespace
+        , ZF_IN const zfstring &methodName
         ) {
     const ZFClass *cls = ZFClass::classForName(classNameOrNamespace);
     if(cls != zfnull) {
@@ -707,7 +712,7 @@ void ZFMethodForNameGetAllT(
 // ============================================================
 const ZFMethod *ZFMethodAlias(
         ZF_IN const ZFMethod *method
-        , ZF_IN const zfchar *aliasName
+        , ZF_IN const zfstring &aliasName
         ) {
     zfCoreMutexLocker();
     if(method == zfnull || zfstringIsEmpty(aliasName)) {
@@ -801,12 +806,12 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFMethod *>, ZFMethodGe
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodForName
-        , ZFMP_IN(const zfchar *, classNameOrNamespace)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodForName
-        , ZFMP_IN(const zfchar *, classNameOrNamespace)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN(const zfchar *, methodParamTypeId0)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId1, zfnull)
         , ZFMP_IN_OPT(const zfchar *, methodParamTypeId2, zfnull)
@@ -819,17 +824,17 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodForName
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, ZFMethodForNameGetAllT
         , ZFMP_IN_OUT(ZFCoreArray<const ZFMethod *> &, ret)
-        , ZFMP_IN(const zfchar *, classNameOrNamespace)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<const ZFMethod *>, ZFMethodForNameGetAll
-        , ZFMP_IN(const zfchar *, classNameOrNamespace)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, classNameOrNamespace)
+        , ZFMP_IN(const zfstring &, methodName)
         )
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodAlias
         , ZFMP_IN(const ZFMethod *, method)
-        , ZFMP_IN(const zfchar *, aliasName)
+        , ZFMP_IN(const zfstring &, aliasName)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(void, ZFMethodAliasRemove
         , ZFMP_IN(const ZFMethod *, aliasMethod)

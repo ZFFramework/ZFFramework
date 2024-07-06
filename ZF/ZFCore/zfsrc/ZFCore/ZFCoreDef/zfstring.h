@@ -611,6 +611,12 @@ public:
 private:
     _ZFP_zfstringD<T_Char> *d;
 public:
+    /** @brief global null string ref for impl */
+    static inline const zft_zfstring<T_Char> &Empty(void) {
+        static const zft_zfstring<T_Char> d;
+        return d;
+    }
+public:
     /**
      * @brief explicitly create from literal string,
      *   you must ensure the literal's life exceeds the returned string

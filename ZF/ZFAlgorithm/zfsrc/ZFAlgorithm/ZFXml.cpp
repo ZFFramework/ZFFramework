@@ -238,8 +238,8 @@ ZFXml &ZFXml::name(ZF_IN const zfstring &name) {
     }
     return *this;
 }
-zfstring ZFXml::name(void) const {
-    return d ? d->name : zfnull;
+const zfstring &ZFXml::name(void) const {
+    return d ? d->name : zfstring::Empty();
 }
 
 ZFXml &ZFXml::value(ZF_IN const zfstring &value) {
@@ -255,8 +255,8 @@ ZFXml &ZFXml::value(ZF_IN const zfstring &value) {
     }
     return *this;
 }
-zfstring ZFXml::value(void) const {
-    return d ? d->value : zfnull;
+const zfstring &ZFXml::value(void) const {
+    return d ? d->value : zfstring::Empty();
 }
 
 // ============================================================
@@ -513,11 +513,11 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, name
         , ZFMP_IN(const zfstring &, name)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfstring, name)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, const zfstring &, name)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFXml, ZFXml &, value
         , ZFMP_IN(const zfstring &, value)
         )
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfstring, value)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, const zfstring &, value)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, ZFXml, copy)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFXml, zfindex, attrCount)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_2(v_ZFXml, ZFXml &, attr

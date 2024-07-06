@@ -190,8 +190,8 @@ const ZFMethod *ZFMethodDynamicRegister(
 
 const ZFMethod *ZFMethodDynamicRegister(
         ZF_IN const ZFClass *methodOwnerClass
-        , ZF_IN const zfchar *methodReturnTypeId
-        , ZF_IN const zfchar *methodName
+        , ZF_IN const zfstring &methodReturnTypeId
+        , ZF_IN const zfstring &methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */
@@ -223,9 +223,9 @@ const ZFMethod *ZFMethodDynamicRegister(
     return ZFMethodDynamicRegister(p, errorHint);
 }
 const ZFMethod *ZFMethodDynamicRegister(
-        ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodReturnTypeId
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodReturnTypeId
+        , ZF_IN const zfstring &methodName
         , ZF_IN const ZFMP &methodParam
         , ZF_IN const ZFListener &methodImpl
         , ZF_IN_OPT ZFMethodType methodType /* = ZFMethodTypeVirtual */

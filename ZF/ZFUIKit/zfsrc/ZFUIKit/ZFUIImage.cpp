@@ -387,7 +387,7 @@ void ZFUIImage::nativeImage(
 void ZFUIImage::imageSerializableType(ZF_IN const zfstring &typeName) {
     d->serializableType = typeName;
 }
-zfstring ZFUIImage::imageSerializableType(void) {
+const zfstring &ZFUIImage::imageSerializableType(void) {
     return d->serializableType;
 }
 void ZFUIImage::imageSerializableData(ZF_IN const ZFSerializableData *serializableData) {

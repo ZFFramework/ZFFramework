@@ -21,7 +21,7 @@ public:
     /** @brief style count */
     ZFMETHOD_DECLARE_0(zfindex, itemCount)
     /** @brief style key */
-    ZFMETHOD_DECLARE_1(const zfchar *, itemKeyAt
+    ZFMETHOD_DECLARE_1(const zfstring &, itemKeyAt
             , ZFMP_IN(zfindex, index)
             )
     /** @brief style value */
@@ -30,7 +30,7 @@ public:
             )
     /** @brief style value */
     ZFMETHOD_DECLARE_2(void, itemForKey
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             , ZFMP_IN(ZFStyleable *, value)
             )
 

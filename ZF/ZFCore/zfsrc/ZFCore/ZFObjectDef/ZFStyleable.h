@@ -118,32 +118,31 @@ private:
 
 public:
     /** @brief see #ZFStyleSet */
-    zffinal void styleKey(ZF_IN const zfchar *styleKey);
+    zffinal void styleKey(ZF_IN const zfstring &styleKey);
     /** @brief see #ZFStyleSet */
-    zffinal const zfchar *styleKey(void);
+    zffinal const zfstring &styleKey(void);
     /** @brief see #ZFStyleSet */
     zffinal void styleKeyForProperty(
-            ZF_IN const zfchar *propertyName
-            , ZF_IN const zfchar *styleKey
+            ZF_IN const zfstring &propertyName
+            , ZF_IN const zfstring &styleKey
             );
     /** @brief see #ZFStyleSet */
-    zffinal const zfchar *styleKeyForProperty(ZF_IN const zfchar *propertyName);
+    zffinal const zfstring &styleKeyForProperty(ZF_IN const zfstring &propertyName);
     /** @brief see #ZFStyleSet */
     zffinal void styleKeyForProperty(
             ZF_IN const ZFProperty *property
-            , ZF_IN const zfchar *
-            styleKey) {
+            , ZF_IN const zfstring &styleKey) {
         if(property) {
             this->styleKeyForProperty(property->propertyName(), styleKey);
         }
     }
     /** @brief see #ZFStyleSet */
-    zffinal const zfchar *styleKeyForProperty(ZF_IN const ZFProperty *property) {
+    zffinal const zfstring &styleKeyForProperty(ZF_IN const ZFProperty *property) {
         if(property) {
             return this->styleKeyForProperty(property->propertyName());
         }
         else {
-            return zfnull;
+            return zfstring::Empty();
         }
     }
 private:
@@ -182,7 +181,7 @@ public:
     _ZFP_ZFStyleableDefaultPointerHolder(void) : d(zfnull) {}
 };
 
-extern ZFLIB_ZFCore _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfchar *name);
+extern ZFLIB_ZFCore _ZFP_ZFStyleableDefaultPointerHolder *_ZFP_ZFStyleableDefaultRefAccess(ZF_IN const zfstring &name);
 typedef void (*_ZFP_ZFStyleableDefaultDeleteCallback)(ZF_IN void *instance);
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFStyleableDefaultDeleteCallbackHolder {
 public:
@@ -424,7 +423,7 @@ extern ZFLIB_ZFCore void ZFStyleDefaultApplyAutoCopy(ZF_IN ZFStyleable *style);
  * note, by default, all styles would be cleared during #ZFFrameworkCleanup as level #ZFLevelZFFrameworkNormal
  */
 extern ZFLIB_ZFCore void ZFStyleSet(
-        ZF_IN const zfchar *styleKey
+        ZF_IN const zfstring &styleKey
         , ZF_IN ZFStyleable *styleValue
         );
 /**
@@ -437,7 +436,7 @@ extern ZFLIB_ZFCore void ZFStyleSet(
  * @note you may register your own decoder by #ZFSTYLE_DECODER_DEFINE
  *   to supply additional style
  */
-extern ZFLIB_ZFCore zfauto ZFStyleGet(ZF_IN const zfchar *styleKey);
+extern ZFLIB_ZFCore zfauto ZFStyleGet(ZF_IN const zfstring &styleKey);
 /**
  * @brief get all styles, for debug use only, see #ZFStyleSet
  */
@@ -487,8 +486,7 @@ ZFEVENT_GLOBAL(ZFStyleOnChange)
  * sender is the styleable object that changing the styleKey,
  * param0 is a #v_zfstring if chaning property's name
  * or holds empty string if changing the styleable object itself,
- * param1 is a #v_zfstring to (const zfchar *)
- * that holds the new styleKey\n
+ * param1 is a #v_zfstring that holds the new styleKey\n
  * \n
  * by default, we would assert fail if invalid style occurred,
  * you may close it by #ZFStyleInvalidCheckDisable
@@ -515,7 +513,7 @@ extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
  *       // perform your decode action, proto type:
  *       //   zfbool decode(
  *       //           ZF_OUT zfauto &ret
- *       //           , ZF_IN const zfchar *styleKey
+ *       //           , ZF_IN const zfstring &styleKey
  *       //           );
  *   })
  * @endcode
@@ -533,20 +531,20 @@ extern ZFLIB_ZFCore void ZFStyleInvalidCheckDisable(void);
     } \
     static zfbool _ZFP_decode( \
             ZF_OUT zfauto &ret \
-            , ZF_IN const zfchar *styleKey \
+            , ZF_IN const zfstring &styleKey \
             ) { \
         decodeAction __VA_ARGS__ \
     } \
     ZF_STATIC_REGISTER_END(ZFStyleDecoder_##registerSig)
 typedef zfbool (*_ZFP_ZFStyleDecoder)(
         ZF_OUT zfauto &ret
-        , ZF_IN const zfchar *styleKey
+        , ZF_IN const zfstring &styleKey
         );
 extern ZFLIB_ZFCore void _ZFP_ZFStyleDecoderRegister(
-        ZF_IN const zfchar *registerSig
+        ZF_IN const zfstring &registerSig
         , ZF_IN _ZFP_ZFStyleDecoder decoder
         );
-extern ZFLIB_ZFCore void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfchar *registerSig);
+extern ZFLIB_ZFCore void _ZFP_ZFStyleDecoderUnregister(ZF_IN const zfstring &registerSig);
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #ifndef _ZFI_ZFStyleable_h_

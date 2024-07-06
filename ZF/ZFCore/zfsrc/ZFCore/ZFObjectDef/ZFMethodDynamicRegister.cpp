@@ -232,12 +232,12 @@ const ZFClass *ZFMethodDynamicRegisterParam::methodOwnerClass(void) const {
     return d->methodOwnerClass;
 }
 
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodNamespace(ZF_IN const zfchar *methodNamespace) {
+ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodNamespace(ZF_IN const zfstring &methodNamespace) {
     d->methodNamespace = methodNamespace;
     return *this;
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodNamespace(void) const {
-    return (d->methodNamespace.isEmpty() ? zfnull : d->methodNamespace.cString());
+const zfstring &ZFMethodDynamicRegisterParam::methodNamespace(void) const {
+    return d->methodNamespace;
 }
 
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodGenericInvoker(ZF_IN ZFMethodGenericInvoker methodGenericInvoker) {
@@ -272,34 +272,34 @@ ZFMethodPrivilegeType ZFMethodDynamicRegisterParam::methodPrivilegeType(void) co
     return d->methodPrivilegeType;
 }
 
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodName(ZF_IN const zfchar *methodName) {
+ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodName(ZF_IN const zfstring &methodName) {
     d->methodName = methodName;
     return *this;
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodName(void) const {
-    return (d->methodName.isEmpty() ? zfnull : d->methodName.cString());
+const zfstring &ZFMethodDynamicRegisterParam::methodName(void) const {
+    return d->methodName;
 }
 
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodReturnTypeId(ZF_IN const zfchar *methodReturnTypeId) {
+ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodReturnTypeId(ZF_IN const zfstring &methodReturnTypeId) {
     d->methodReturnTypeId = methodReturnTypeId;
     return *this;
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodReturnTypeId(void) const {
-    return (d->methodReturnTypeId.isEmpty() ? zfnull : d->methodReturnTypeId.cString());
+const zfstring &ZFMethodDynamicRegisterParam::methodReturnTypeId(void) const {
+    return d->methodReturnTypeId;
 }
 
-ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodReturnTypeName(ZF_IN const zfchar *methodReturnTypeName) {
+ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodReturnTypeName(ZF_IN const zfstring &methodReturnTypeName) {
     d->methodReturnTypeName = methodReturnTypeName;
     return *this;
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodReturnTypeName(void) const {
-    return (d->methodReturnTypeName.isEmpty() ? d->methodReturnTypeId.cString() : d->methodReturnTypeName.cString());
+const zfstring &ZFMethodDynamicRegisterParam::methodReturnTypeName(void) const {
+    return d->methodReturnTypeName ? d->methodReturnTypeName : d->methodReturnTypeId;
 }
 
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAdd(
-        ZF_IN const zfchar *methodParamTypeId
-        , ZF_IN_OPT const zfchar *methodParamTypeName /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamName /* = zfnull */
+        ZF_IN const zfstring &methodParamTypeId
+        , ZF_IN_OPT const zfstring &methodParamTypeName /* = zfnull */
+        , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
         , ZF_IN_OPT ZFMethodParamDefaultValueCallback methodParamDefaultValueCallback /* = zfnull */
         ) {
     zfCoreAssert(d->methodParamCount < ZFMETHOD_MAX_PARAM);
@@ -324,9 +324,9 @@ static zfauto _ZFP_ZFMethodDynamicRegisterParamDefaultGetter(
     return invokerMethod->_ZFP_ZFMethod_paramDefaultValueList[paramIndex];
 }
 ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAddWithDefault(
-        ZF_IN const zfchar *methodParamTypeId
-        , ZF_IN_OPT const zfchar *methodParamTypeName /* = zfnull */
-        , ZF_IN_OPT const zfchar *methodParamName /* = zfnull */
+        ZF_IN const zfstring &methodParamTypeId
+        , ZF_IN_OPT const zfstring &methodParamTypeName /* = zfnull */
+        , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
         , ZF_IN_OPT ZFObject *methodParamDefaultValue /* = zfnull */
         ) {
     d->methodParamDefaultValue[d->methodParamCount] = methodParamDefaultValue;
@@ -336,24 +336,24 @@ ZFMethodDynamicRegisterParam &ZFMethodDynamicRegisterParam::methodParamAddWithDe
 zfindex ZFMethodDynamicRegisterParam::methodParamCount(void) const {
     return d->methodParamCount;
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodParamTypeIdAt(ZF_IN zfindex index) const {
-    return (index < d->methodParamCount ? d->methodParamTypeId[index].cString() : zfnull);
+const zfstring &ZFMethodDynamicRegisterParam::methodParamTypeIdAt(ZF_IN zfindex index) const {
+    return (index < d->methodParamCount ? d->methodParamTypeId[index] : zfstring::Empty());
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodParamTypeNameAt(ZF_IN zfindex index) const {
+const zfstring &ZFMethodDynamicRegisterParam::methodParamTypeNameAt(ZF_IN zfindex index) const {
     if(index < d->methodParamCount) {
         if(d->methodParamTypeName[index].isEmpty()) {
-            return d->methodParamTypeId[index].cString();
+            return d->methodParamTypeId[index];
         }
         else {
-            return d->methodParamTypeName[index].cString();
+            return d->methodParamTypeName[index];
         }
     }
     else {
-        return zfnull;
+        return zfstring::Empty();
     }
 }
-const zfchar *ZFMethodDynamicRegisterParam::methodParamNameAt(ZF_IN zfindex index) const {
-    return (index < d->methodParamCount ? d->methodParamName[index].cString() : zfnull);
+const zfstring &ZFMethodDynamicRegisterParam::methodParamNameAt(ZF_IN zfindex index) const {
+    return (index < d->methodParamCount ? d->methodParamName[index] : zfstring::Empty());
 }
 ZFMethodParamDefaultValueCallback ZFMethodDynamicRegisterParam::methodParamDefaultValueCallbackAt(ZF_IN zfindex index) const {
     return (index < d->methodParamCount ? d->methodParamDefaultValueCallback[index] : zfnull);
@@ -487,8 +487,8 @@ public:
 };
 
 ZFMP &ZFMP::mp(
-        ZF_IN const zfchar *methodParamTypeId
-        , ZF_IN_OPT const zfchar *methodParamName /* = zfnull */
+        ZF_IN const zfstring &methodParamTypeId
+        , ZF_IN_OPT const zfstring &methodParamName /* = zfnull */
         , ZF_IN_OPT ZFObject *methodParamDefaultValue /* = ZFMethodGenericInvokerDefaultParam() */
         ) {
     zfCoreAssert(d->methodParamCount <= ZFMETHOD_MAX_PARAM);
@@ -502,10 +502,10 @@ ZFMP &ZFMP::mp(
 zfindex ZFMP::methodParamCount(void) const {
     return d->methodParamCount;
 }
-const zfchar *ZFMP::methodParamTypeIdAt(ZF_IN zfindex index) const {
+const zfstring &ZFMP::methodParamTypeIdAt(ZF_IN zfindex index) const {
     return d->methodParamTypeId[index];
 }
-const zfchar *ZFMP::methodParamNameAt(ZF_IN zfindex index) const {
+const zfstring &ZFMP::methodParamNameAt(ZF_IN zfindex index) const {
     return d->methodParamName[index];
 }
 zfany ZFMP::methodParamDefaultValueAt(ZF_IN zfindex index) const {
@@ -576,8 +576,8 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(const ZFMethod *, ZFMethodDynamicRegister
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_IN(const ZFClass *, methodOwnerClass)
-        , ZFMP_IN(const zfchar *, methodReturnTypeId)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodReturnTypeId)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
         , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)
@@ -585,9 +585,9 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(const ZFMethod *, ZFMethodDynamicRegister
-        , ZFMP_IN(const zfchar *, methodNamespace)
-        , ZFMP_IN(const zfchar *, methodReturnTypeId)
-        , ZFMP_IN(const zfchar *, methodName)
+        , ZFMP_IN(const zfstring &, methodNamespace)
+        , ZFMP_IN(const zfstring &, methodReturnTypeId)
+        , ZFMP_IN(const zfstring &, methodName)
         , ZFMP_IN(const ZFMP &, methodParam)
         , ZFMP_IN(const ZFListener &, methodImpl)
         , ZFMP_IN_OPT(ZFMethodType, methodType, ZFMethodTypeVirtual)

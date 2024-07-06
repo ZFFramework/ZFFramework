@@ -102,7 +102,7 @@ public:
      */
     ZFDynamic &regTag(ZF_IN const zfstring &regTag);
     /** @brief see #regTag */
-    zfstring regTag(void) const;
+    const zfstring &regTag(void) const;
 
 public:
     /** @brief see #ZFDynamic */

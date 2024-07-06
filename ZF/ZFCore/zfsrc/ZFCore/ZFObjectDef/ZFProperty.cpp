@@ -61,8 +61,6 @@ ZFProperty::ZFProperty(void)
 {
 }
 ZFProperty::~ZFProperty(void) {
-    zffree(this->_ZFP_ZFProperty_propertyInternalId);
-
     // registered by ZFSigName, no need to free
     // this->_ZFP_ZFProperty_name;
     // this->_ZFP_ZFProperty_typeName;
@@ -73,9 +71,9 @@ void ZFProperty::_ZFP_ZFPropertyInit(
         , ZF_IN zfbool propertyIsDynamicRegister
         , ZF_IN ZFObject *propertyDynamicRegisterUserData
         , ZF_IN const ZFClass *propertyOwnerClass
-        , ZF_IN const zfchar *name
-        , ZF_IN const zfchar *typeName
-        , ZF_IN const zfchar *typeIdName
+        , ZF_IN const zfstring &name
+        , ZF_IN const zfstring &typeName
+        , ZF_IN const zfstring &typeIdName
         , ZF_IN const ZFMethod *setterMethod
         , ZF_IN const ZFMethod *getterMethod
         , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup
@@ -99,7 +97,7 @@ void ZFProperty::_ZFP_ZFPropertyInit(
 }
 
 // ============================================================
-typedef zfstlhashmap<const zfchar *, ZFProperty *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFPropertyMapType;
+typedef zfstlhashmap<zfstring, ZFProperty *, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFPropertyMapType;
 static _ZFP_ZFPropertyMapType &_ZFP_ZFPropertyMap(void) {
     static _ZFP_ZFPropertyMapType m;
     return m;
@@ -142,7 +140,7 @@ static void _ZFP_ZFPropertyInstanceSig(
         zfindexToStringT(ret, propertyName.sigId());
     }
 }
-static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfchar *propertyInternalId) {
+static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfstring &propertyInternalId) {
     zfCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInternalId);
@@ -153,7 +151,7 @@ static ZFProperty *_ZFP_ZFPropertyInstanceFind(ZF_IN const zfchar *propertyInter
         return zfnull;
     }
 }
-static ZFProperty *_ZFP_ZFPropertyInstanceAccess(ZF_IN const zfchar *propertyInternalId) {
+static ZFProperty *_ZFP_ZFPropertyInstanceAccess(ZF_IN const zfstring &propertyInternalId) {
     zfCoreMutexLocker();
     _ZFP_ZFPropertyMapType &m = _ZFP_ZFPropertyMap();
     _ZFP_ZFPropertyMapType::iterator it = m.find(propertyInternalId);
@@ -175,9 +173,9 @@ ZFProperty *_ZFP_ZFPropertyRegister(
         , ZF_IN zfbool propertyIsDynamicRegister
         , ZF_IN ZFObject *propertyDynamicRegisterUserData
         , ZF_IN const ZFClass *propertyOwnerClass
-        , ZF_IN const zfchar *name
-        , ZF_IN const zfchar *typeName
-        , ZF_IN const zfchar *typeIdName
+        , ZF_IN const zfstring &name
+        , ZF_IN const zfstring &typeName
+        , ZF_IN const zfstring &typeIdName
         , ZF_IN const ZFMethod *setterMethod
         , ZF_IN const ZFMethod *getterMethod
         , ZF_IN _ZFP_ZFPropertyMethodCleanup setterMethodCleanup

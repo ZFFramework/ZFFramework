@@ -27,7 +27,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFClassDynamicRegisterAutoRemove)
 
 // ============================================================
 const ZFClass *ZFClassDynamicRegister(
-        ZF_IN const zfchar *classNameFull
+        ZF_IN const zfstring &classNameFull
         , ZF_IN_OPT const ZFClass *parent /* = zfnull */
         , ZF_IN_OPT ZFObject *classDynamicRegisterUserData /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -57,7 +57,7 @@ const ZFClass *ZFClassDynamicRegister(
     cls = ZFClass::_ZFP_ZFClassRegister(
         zfnull,
         dotPos == zfindexMax() ? zfnull : zfstring(classNameFull, dotPos).cString(),
-        dotPos == zfindexMax() ? classNameFull : classNameFull + dotPos + ZFNamespaceSeparatorLen(),
+        dotPos == zfindexMax() ? classNameFull : zfstring(classNameFull + dotPos + ZFNamespaceSeparatorLen()),
         parent,
         zfnull,
         zftrue,
@@ -114,7 +114,7 @@ ZF_NAMESPACE_GLOBAL_END
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(const ZFClass *, ZFClassDynamicRegister
-        , ZFMP_IN(const zfchar *, classNameFull)
+        , ZFMP_IN(const zfstring &, classNameFull)
         , ZFMP_IN_OPT(const ZFClass *, parent, zfnull)
         , ZFMP_IN_OPT(ZFObject *, classDynamicRegisterUserData, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)

@@ -80,14 +80,14 @@ public:
 
 // ============================================================
 extern ZFLIB_ZFCore void _ZFP_ZFTypeInfoRegister(
-        ZF_IN const zfchar *typeId
+        ZF_IN const zfstring &typeId
         , ZF_IN ZFTypeInfo *typeIdData
         );
-extern ZFLIB_ZFCore ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfchar *typeId);
+extern ZFLIB_ZFCore ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfstring &typeId);
 /**
  * @brief access type id data
  */
-extern ZFLIB_ZFCore const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfchar *typeId);
+extern ZFLIB_ZFCore const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfstring &typeId);
 /** @brief see #ZFTypeInfoGetAll */
 extern ZFLIB_ZFCore void ZFTypeInfoGetAllT(ZF_IN_OUT ZFCoreArray<const ZFTypeInfo *> &ret);
 /**
@@ -882,12 +882,12 @@ typedef void (*_ZFP_PropAliasDetachCallback)(
 extern ZFLIB_ZFCore void _ZFP_PropAliasAttach(
         ZF_IN ZFObject *obj
         , ZF_IN void *v
-        , ZF_IN const zfchar *typeName
+        , ZF_IN const zfstring &typeName
         , ZF_IN _ZFP_PropAliasDetachCallback detachCallback
         );
 extern ZFLIB_ZFCore void _ZFP_PropAliasDetach(
         ZF_IN ZFObject *obj
-        , ZF_IN const zfchar *typeName
+        , ZF_IN const zfstring &typeName
         );
 
 ZF_NAMESPACE_GLOBAL_END

@@ -112,7 +112,7 @@ ZF_STATIC_INITIALIZER_INIT(ZFClassSingletonInstanceRefHolder) {
 ZFCoreMap singletonInstanceMap; // _ZFP_ZFClassSingletonPointerHolder *
 ZF_STATIC_INITIALIZER_END(ZFClassSingletonInstanceRefHolder)
 
-_ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfchar *sig) {
+_ZFP_ZFClassSingletonPointerHolder *_ZFP_ZFClassSingletonInstanceRefAccess(ZF_IN const zfstring &sig) {
     zfCoreMutexLocker();
     ZFCoreMap &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFClassSingletonInstanceRefHolder)->singletonInstanceMap;
     ZFCorePointerBase *v = m.get(sig);

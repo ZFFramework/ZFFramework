@@ -442,7 +442,7 @@ ZF_GLOBAL_INITIALIZER_END(ZFClassTagClearLevelHigh)
 
 // ============================================================
 // static methods
-const ZFClass *ZFClass::classForName(ZF_IN const zfchar *className) {
+const ZFClass *ZFClass::classForName(ZF_IN const zfstring &className) {
     if(className == zfnull) {
         return zfnull;
     }
@@ -451,13 +451,13 @@ const ZFClass *ZFClass::classForName(ZF_IN const zfchar *className) {
     }
 }
 const ZFClass *ZFClass::classForName(
-        ZF_IN const zfchar *className
-        , ZF_IN const zfchar *classNamespace
+        ZF_IN const zfstring &className
+        , ZF_IN const zfstring &classNamespace
         ) {
-    classNamespace = ZFNamespaceSkipGlobal(classNamespace);
-    if(!zfstringIsEmpty(classNamespace)) {
+    const zfchar *classNamespaceTmp = ZFNamespaceSkipGlobal(classNamespace);
+    if(!zfstringIsEmpty(classNamespaceTmp)) {
         zfstring classNameFull;
-        classNameFull += classNamespace;
+        classNameFull += classNamespaceTmp;
         classNameFull += ZFNamespaceSeparator();
         classNameFull += className;
         return _ZFP_ZFClassMap.get<const ZFClass *>(classNameFull);
@@ -540,11 +540,11 @@ void ZFClass::_ZFP_ZFClass_classDataChangeNotify(void) const {
         }
     }
 }
-void ZFClass::classDataChangeAutoRemoveTagAdd(ZF_IN const zfchar *tag) const {
+void ZFClass::classDataChangeAutoRemoveTagAdd(ZF_IN const zfstring &tag) const {
     zfCoreAssert(tag != zfnull);
     d->classDataChangeAutoRemoveTagList[tag] = zftrue;
 }
-void ZFClass::classDataChangeAutoRemoveTagRemove(ZF_IN const zfchar *tag) const {
+void ZFClass::classDataChangeAutoRemoveTagRemove(ZF_IN const zfstring &tag) const {
     zfCoreAssert(tag != zfnull);
     d->classDataChangeAutoRemoveTagList.erase(tag);
 }
@@ -839,7 +839,7 @@ void ZFClass::methodGetAllT(ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret) const 
 
 /* ZFMETHOD_MAX_PARAM */
 const ZFMethod *ZFClass::methodForNameIgnoreParent(
-        ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodName
         , ZF_IN const zfchar *methodParamTypeId0
         , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
         , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
@@ -873,7 +873,7 @@ const ZFMethod *ZFClass::methodForNameIgnoreParent(
     }
     return zfnull;
 }
-const ZFMethod *ZFClass::methodForNameIgnoreParent(ZF_IN const zfchar *methodName) const {
+const ZFMethod *ZFClass::methodForNameIgnoreParent(ZF_IN const zfstring &methodName) const {
     if(methodName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         _ZFP_ZFClassMethodMapType::iterator itName = d->methodMap.find(methodName);
@@ -893,7 +893,7 @@ const ZFMethod *ZFClass::methodForNameIgnoreParent(ZF_IN const zfchar *methodNam
 }
 void ZFClass::methodForNameIgnoreParentGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const zfchar *methodName
+        , ZF_IN const zfstring &methodName
         ) const {
     if(methodName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
@@ -904,7 +904,7 @@ void ZFClass::methodForNameIgnoreParentGetAllT(
     }
 }
 const ZFMethod *ZFClass::methodForName(
-        ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodName
         , ZF_IN const zfchar *methodParamTypeId0
         , ZF_IN_OPT const zfchar *methodParamTypeId1 /* = zfnull */
         , ZF_IN_OPT const zfchar *methodParamTypeId2 /* = zfnull */
@@ -938,7 +938,7 @@ const ZFMethod *ZFClass::methodForName(
     }
     return zfnull;
 }
-const ZFMethod *ZFClass::methodForName(ZF_IN const zfchar *methodName) const {
+const ZFMethod *ZFClass::methodForName(ZF_IN const zfstring &methodName) const {
     if(methodName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         _ZFP_ZFClassMethodMapType::iterator itName = d->methodMapCache.find(methodName);
@@ -958,7 +958,7 @@ const ZFMethod *ZFClass::methodForName(ZF_IN const zfchar *methodName) const {
 }
 void ZFClass::methodForNameGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const zfchar *methodName
+        , ZF_IN const zfstring &methodName
         ) const {
     if(methodName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
@@ -991,7 +991,7 @@ void ZFClass::propertyGetAllT(ZF_IN_OUT ZFCoreArray<const ZFProperty *> &ret) co
     }
 }
 
-const ZFProperty *ZFClass::propertyForNameIgnoreParent(const zfchar *propertyName) const {
+const ZFProperty *ZFClass::propertyForNameIgnoreParent(ZF_IN const zfstring &propertyName) const {
     if(propertyName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         if(propertyName != zfnull) {
@@ -1003,7 +1003,7 @@ const ZFProperty *ZFClass::propertyForNameIgnoreParent(const zfchar *propertyNam
     }
     return zfnull;
 }
-const ZFProperty *ZFClass::propertyForName(const zfchar *propertyName) const {
+const ZFProperty *ZFClass::propertyForName(ZF_IN const zfstring &propertyName) const {
     if(propertyName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         if(propertyName != zfnull) {
@@ -1016,7 +1016,7 @@ const ZFProperty *ZFClass::propertyForName(const zfchar *propertyName) const {
     return zfnull;
 }
 
-const ZFMethod *ZFClass::propertySetterForNameIgnoreParent(const zfchar *propertyName) const {
+const ZFMethod *ZFClass::propertySetterForNameIgnoreParent(ZF_IN const zfstring &propertyName) const {
     if(propertyName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         _ZFP_ZFClassMethodMapType::iterator itName = d->methodMap.find(propertyName);
@@ -1032,7 +1032,7 @@ const ZFMethod *ZFClass::propertySetterForNameIgnoreParent(const zfchar *propert
     }
     return zfnull;
 }
-const ZFMethod *ZFClass::propertySetterForName(const zfchar *propertyName) const {
+const ZFMethod *ZFClass::propertySetterForName(ZF_IN const zfstring &propertyName) const {
     if(propertyName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         _ZFP_ZFClassMethodMapType::iterator itName = d->methodMapCache.find(propertyName);
@@ -1048,7 +1048,7 @@ const ZFMethod *ZFClass::propertySetterForName(const zfchar *propertyName) const
     }
     return zfnull;
 }
-const ZFMethod *ZFClass::propertyGetterForNameIgnoreParent(const zfchar *propertyName) const {
+const ZFMethod *ZFClass::propertyGetterForNameIgnoreParent(ZF_IN const zfstring &propertyName) const {
     if(propertyName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         _ZFP_ZFClassMethodMapType::iterator itName = d->methodMap.find(propertyName);
@@ -1064,7 +1064,7 @@ const ZFMethod *ZFClass::propertyGetterForNameIgnoreParent(const zfchar *propert
     }
     return zfnull;
 }
-const ZFMethod *ZFClass::propertyGetterForName(const zfchar *propertyName) const {
+const ZFMethod *ZFClass::propertyGetterForName(ZF_IN const zfstring &propertyName) const {
     if(propertyName != zfnull) {
         _ZFP_ZFClassPrivate::methodAndPropertyCacheUpdate(this);
         _ZFP_ZFClassMethodMapType::iterator itName = d->methodMapCache.find(propertyName);
@@ -1091,7 +1091,7 @@ zfbool ZFClass::propertyHasOverrideInitStep(ZF_IN const ZFProperty *property) co
 // ============================================================
 // class instance methods
 void ZFClass::classTag(
-        ZF_IN const zfchar *key
+        ZF_IN const zfstring &key
         , ZF_IN ZFObject *tag
         ) const {
     if(key == zfnull) {
@@ -1120,7 +1120,7 @@ void ZFClass::classTag(
         zfunsafe_zfRelease(obj);
     }
 }
-zfany ZFClass::classTag(ZF_IN const zfchar *key) const {
+zfany ZFClass::classTag(ZF_IN const zfstring &key) const {
     if(key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFClassTagMapType::iterator it = d->classTagMap.find(key);
@@ -1142,7 +1142,7 @@ void ZFClass::classTagGetAllKeyValue(
         allValue.add(it->second);
     }
 }
-zfauto ZFClass::classTagRemoveAndGet(ZF_IN const zfchar *key) const {
+zfauto ZFClass::classTagRemoveAndGet(ZF_IN const zfstring &key) const {
     if(key != zfnull) {
         zfCoreMutexLocker();
         _ZFP_ZFClassTagMapType &m = d->classTagMap;
@@ -1199,8 +1199,8 @@ ZFClass::~ZFClass(void) {
 
 ZFClass *ZFClass::_ZFP_ZFClassRegister(
         ZF_IN zfbool *ZFCoreLibDestroyFlag
-        , ZF_IN const zfchar *classNamespace
-        , ZF_IN const zfchar *className
+        , ZF_IN const zfstring &classNamespace
+        , ZF_IN const zfstring &className
         , ZF_IN const ZFClass *parent
         , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
@@ -1213,25 +1213,27 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         , ZF_IN ZFObject *classDynamicRegisterUserData
         ) {
     zfCoreMutexLocker();
+    const zfchar *classNamespaceTmp = classNamespace;
     if(outer != zfnull) {
-        classNamespace = outer->classNameFull();
+        classNamespaceTmp = outer->classNameFull();
     }
 
-    if(zfsncmp(className, "v_", 2) == 0) {
-        className += 2;
+    const zfchar *classNameTmp = className;
+    if(zfsncmp(classNameTmp, "v_", 2) == 0) {
+        classNameTmp += 2;
     }
 
     // method data holder is required during _ZFP_ZFClassUnregister,
     // access here to ensure init order
     _ZFP_ZFMethodDataHolderInit();
 
-    classNamespace = ZFNamespaceSkipGlobal(classNamespace);
+    classNamespaceTmp = ZFNamespaceSkipGlobal(classNamespaceTmp);
     zfstring classNameFull;
-    if(classNamespace != zfnull) {
-        classNameFull += classNamespace;
+    if(classNamespaceTmp != zfnull) {
+        classNameFull += classNamespaceTmp;
         classNameFull += ZFNamespaceSeparator();
     }
-    classNameFull += className;
+    classNameFull += classNameTmp;
 
     ZFCorePointerBase *d = _ZFP_ZFClassMap.get(classNameFull);
     ZFClass *cls = zfnull;
@@ -1239,7 +1241,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     if(d != zfnull) {
         cls = d->pointerValueT<ZFClass *>();
         if(cls->classIsInterface() != classIsInterface || cls->classParent() != parent) {
-            zfCoreCriticalMessageTrim("[ZFClass] register a class that already registered: %s", className);
+            zfCoreCriticalMessageTrim("[ZFClass] register a class that already registered: %s", classNameTmp);
             return zfnull;
         }
         ++(cls->d->refCount);
@@ -1264,8 +1266,8 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         cls->d->constructor = constructor;
         cls->d->destructor = destructor;
 
-        cls->_ZFP_ZFClass_classNamespace = classNamespace;
-        cls->_ZFP_ZFClass_className = className;
+        cls->_ZFP_ZFClass_classNamespace = classNamespaceTmp;
+        cls->_ZFP_ZFClass_className = classNameTmp;
         cls->_ZFP_ZFClass_classNameFull = classNameFull;
 
         if(parent != zfnull && parent != ZFInterface::ClassData()) {
@@ -1283,11 +1285,11 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
         static zfindex _ZFP_len = zfslen(_ZFP_);
         static const zfchar *_ZFP_I_ = "_ZFP_I_";
         static zfindex _ZFP_I_len = zfslen(_ZFP_I_);
-        if(zfsncmp(className, _ZFP_I_, _ZFP_I_len) == 0) {
+        if(zfsncmp(classNameTmp, _ZFP_I_, _ZFP_I_len) == 0) {
             cls->_ZFP_ZFClass_classIsInternal = zftrue;
             cls->_ZFP_ZFClass_classIsInternalPrivate = zftrue;
         }
-        else if(zfsncmp(className, _ZFP_, _ZFP_len) == 0) {
+        else if(zfsncmp(classNameTmp, _ZFP_, _ZFP_len) == 0) {
             cls->_ZFP_ZFClass_classIsInternal = zftrue;
             cls->_ZFP_ZFClass_classIsInternalPrivate = zffalse;
         }
@@ -1637,8 +1639,8 @@ void ZFClass::_ZFP_classDynamicRegisterObjectInstanceDetach(ZF_IN ZFObject *obj)
 
 // ============================================================
 _ZFP_ZFClassRegisterHolder::_ZFP_ZFClassRegisterHolder(
-        ZF_IN const zfchar *classNamespace
-        , ZF_IN const zfchar *className
+        ZF_IN const zfstring &classNamespace
+        , ZF_IN const zfstring &className
         , ZF_IN const ZFClass *parent
         , ZF_IN const ZFClass *outer
         , ZF_IN zfbool classCanAllocPublic
@@ -1706,7 +1708,7 @@ void _ZFP_ZFClassDataChangeNotify(
         , ZF_IN const ZFClass *changedClass
         , ZF_IN const ZFProperty *changedProperty
         , ZF_IN const ZFMethod *changedMethod
-        , ZF_IN_OPT const zfchar *name /* = zfnull */
+        , ZF_IN_OPT const zfstring &name /* = zfnull */
         ) {
     zfCoreMutexLocker();
     (void)ZFClassDataChangeObserver(); // ensure init order
@@ -1735,7 +1737,7 @@ void _ZFP_ZFClassDataChangeNotify(
 // ============================================================
 void ZFClassAlias(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *aliasName
+        , ZF_IN const zfstring &aliasName
         ) {
     zfCoreMutexLocker();
 
@@ -1757,7 +1759,7 @@ void ZFClassAlias(
 }
 void ZFClassAliasRemove(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *aliasName
+        , ZF_IN const zfstring &aliasName
         ) {
     zfCoreMutexLocker();
     if(cls == zfnull || zfstringIsEmpty(aliasName)) {
@@ -1796,11 +1798,11 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(ZFCoreArray<const ZFClass *>, ZFClassGetA
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAlias
         , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN(const zfchar *, aliasName)
+        , ZFMP_IN(const zfstring &, aliasName)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(void, ZFClassAliasRemove
         , ZFMP_IN(const ZFClass *, cls)
-        , ZFMP_IN(const zfchar *, aliasName)
+        , ZFMP_IN(const zfstring &, aliasName)
         )
 
 ZF_NAMESPACE_GLOBAL_END

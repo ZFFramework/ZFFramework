@@ -143,7 +143,7 @@ zfbool ZFObjectIOSave(
 }
 
 const zfchar *ZFObjectIOImplCheckFileExt(ZF_IN const ZFPathInfo &pathInfo) {
-    const zfchar *pStart = pathInfo.pathData.cString();
+    const zfchar *pStart = pathInfo.pathData;
     const zfchar *ret = pStart + pathInfo.pathData.length() - 1;
     while(ret > pStart && *ret != '.') {--ret;}
     if(*ret == '.') {
@@ -155,11 +155,10 @@ const zfchar *ZFObjectIOImplCheckFileExt(ZF_IN const ZFPathInfo &pathInfo) {
 }
 zfbool ZFObjectIOImplCheck(
         ZF_IN const ZFPathInfo &pathInfo
-        , ZF_IN const zfchar *desiredFileExt
+        , ZF_IN const zfstring &desiredFileExt
         ) {
-    zfindex len = zfslen(desiredFileExt);
-    return (pathInfo.pathData.length() >= len
-        && zfstringIsEqual(pathInfo.pathData.cString() + pathInfo.pathData.length() - len, desiredFileExt));
+    return (pathInfo.pathData.length() >= desiredFileExt.length()
+        && zfstringIsEqual(pathInfo.pathData + pathInfo.pathData.length() - desiredFileExt.length(), desiredFileExt));
 }
 
 ZF_NAMESPACE_GLOBAL_END

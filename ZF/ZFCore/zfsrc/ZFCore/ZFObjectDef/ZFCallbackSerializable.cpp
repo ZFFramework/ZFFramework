@@ -133,7 +133,7 @@ static zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &_ZFP_ZFCallba
     return d;
 }
 void _ZFP_ZFCallbackSerializeCustomTypeRegister(
-        ZF_IN const zfchar *customType
+        ZF_IN const zfstring &customType
         , ZF_IN _ZFP_ZFCallbackSerializeCustomCallback serializeCallback
         ) {
     zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
@@ -142,10 +142,10 @@ void _ZFP_ZFCallbackSerializeCustomTypeRegister(
 
     m[customType] = serializeCallback;
 }
-void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfchar *customType) {
+void _ZFP_ZFCallbackSerializeCustomTypeUnregister(ZF_IN const zfstring &customType) {
     _ZFP_ZFCallbackSerializeCustomCallbackMap().erase(customType);
 }
-_ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfchar *customType) {
+_ZFP_ZFCallbackSerializeCustomCallback _ZFP_ZFCallbackSerializeCustomTypeForName(ZF_IN const zfstring &customType) {
     zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback> &m = _ZFP_ZFCallbackSerializeCustomCallbackMap();
     zfstlmap<zfstring, _ZFP_ZFCallbackSerializeCustomCallback>::iterator it = m.find(customType);
     if(it != m.end()) {

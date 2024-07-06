@@ -143,7 +143,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfimport
 }
 
 ZFMETHOD_FUNC_DEFINE_1(zfauto, zfimportCacheRemove
-        , ZFMP_IN(const zfchar *, callbackId)
+        , ZFMP_IN(const zfstring &, callbackId)
         ) {
     if(callbackId == zfnull) {
         return zfnull;

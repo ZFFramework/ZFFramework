@@ -113,7 +113,7 @@ zfbool ZFArgs::operator == (ZF_IN const ZFArgs &ref) const {
 void ZFArgs::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     ret += ZFTOKEN_ZFObjectInfoLeft;
     ret += "ZFArgs";
-    const zfchar *eventName = ZFEventNameForId(this->eventId());
+    zfstring eventName = ZFEventNameForId(this->eventId());
     if(eventName != zfnull) {
         ret += " event:";
         ret += eventName;

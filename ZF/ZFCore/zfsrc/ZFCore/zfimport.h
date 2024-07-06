@@ -70,7 +70,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfimport
 
 /** @brief remove the cache created by #zfimport */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, zfauto, zfimportCacheRemove
-        , ZFMP_IN(const zfchar *, callbackId)
+        , ZFMP_IN(const zfstring &, callbackId)
         )
 
 /** @brief remove all cache created by #zfimport */

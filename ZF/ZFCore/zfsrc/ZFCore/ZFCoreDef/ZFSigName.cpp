@@ -151,9 +151,6 @@ zfbool ZFSigName::isEmpty(void) const {
 const zfchar *ZFSigName::cString(void) const {
     return d ? d->s : "";
 }
-zfstring ZFSigName::zfString(void) const {
-    return d ? d->s : zfnull;
-}
 
 zfindex ZFSigName::length(void) const {
     return d ? d->s.length() : 0;
@@ -166,6 +163,10 @@ zfint ZFSigName::compare(ZF_IN const ZFSigName &ref) const {
     else {
         return zfscmp(this->cString(), ref.cString());
     }
+}
+
+ZFSigName::operator const zfstring &(void) const {
+    return d ? d->s : zfstring::Empty();
 }
 
 ZFSigName &ZFSigName::operator = (ZF_IN const ZFSigName &ref) {

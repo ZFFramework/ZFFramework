@@ -28,7 +28,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFPathImpl_default, ZFPath, ZFProtocolLevel::e_Default)
     ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT("ModuleLocalPath")
 public:
-    virtual zfstring pathForModule(void) {
+    virtual const zfstring &pathForModule(void) {
         if(this->_pathForModule.isEmpty()) {
             (void)this->pathForModuleFile();
             zfindex pos = zfstringFindReversely(this->_pathForModuleFile, '/');
@@ -37,7 +37,7 @@ public:
         }
         return this->_pathForModule;
     }
-    virtual zfstring pathForModuleFile(void) {
+    virtual const zfstring &pathForModuleFile(void) {
         if(this->_pathForModuleFile.isEmpty()) {
             #if _ZFP_ZFPathImpl_default_whereami
                 zfstring tmp;
@@ -73,7 +73,7 @@ public:
         return this->_pathForModuleFile;
     }
 
-    virtual zfstring pathForSetting(void) {
+    virtual const zfstring &pathForSetting(void) {
         if(this->_pathForSetting.isEmpty()) {
             this->_pathForSetting = this->pathForModule();
             this->_pathForSetting += "/zfsetting";
@@ -84,7 +84,7 @@ public:
         this->_pathForSetting = path;
     }
 
-    virtual zfstring pathForStorage(void) {
+    virtual const zfstring &pathForStorage(void) {
         if(this->_pathForStorage.isEmpty()) {
             this->_pathForStorage = this->pathForModule();
             this->_pathForStorage += "/zfstorage";
@@ -95,7 +95,7 @@ public:
         this->_pathForStorage = path;
     }
 
-    virtual zfstring pathForStorageShared(void) {
+    virtual const zfstring &pathForStorageShared(void) {
         if(this->_pathForStorageShared.isEmpty()) {
             this->_pathForStorageShared = this->pathForModule();
             this->_pathForStorageShared += "/zfstorageshared";
@@ -106,7 +106,7 @@ public:
         this->_pathForStorageShared = path;
     }
 
-    virtual zfstring pathForCache(void) {
+    virtual const zfstring &pathForCache(void) {
         if(this->_pathForCache.isEmpty()) {
             this->_pathForCache = this->pathForModule();
             this->_pathForCache += "/zfcache";

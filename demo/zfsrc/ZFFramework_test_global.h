@@ -20,7 +20,7 @@ protected:
 
 public:
     virtual void testCaseOutputSeparator(void);
-    virtual zfstring testCaseTmpPath(void);
+    virtual const zfstring &testCaseTmpPath(void);
     virtual zfstring testCaseUseTmpFile(ZF_IN const zfchar *fileName);
     virtual void testCaseAddFileToRemove(ZF_IN const zfchar *filePath);
 

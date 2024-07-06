@@ -21,15 +21,15 @@ extern ZFLIB_ZFCore void _ZFP_ZFMethodFuncUnregister(ZF_IN const ZFMethod *metho
  * or use #ZFMethodForName for short
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(
-        ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodName
         );
 /**
  * @brief see #ZFMethodFuncForName
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(
-        ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodName
         , ZF_IN_OPT const zfchar *methodParamTypeId0
         , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
         , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
@@ -44,15 +44,15 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodFuncForName(
  */
 extern ZFLIB_ZFCore void ZFMethodFuncForNameGetAllT(
         ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-        , ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
+        , ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodName
         );
 /**
  * @brief see #ZFMethodFuncForName
  */
 inline ZFCoreArray<const ZFMethod *> ZFMethodFuncForNameGetAll(
-        ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &methodNamespace
+        , ZF_IN const zfstring &methodName
         ) {
     ZFCoreArray<const ZFMethod *> ret;
     ZFMethodFuncForNameGetAllT(ret, methodNamespace, methodName);

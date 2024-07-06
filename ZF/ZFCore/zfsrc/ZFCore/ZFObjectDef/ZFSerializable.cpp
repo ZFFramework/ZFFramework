@@ -223,7 +223,7 @@ zfbool ZFSerializable::serializeToData(
             switch(propertyType) {
                 case ZFSerializablePropertyTypeSerializable:
                     if(styleable != zfnull) {
-                        const zfchar *styleKey = styleable->styleKeyForProperty(data->property);
+                        const zfstring &styleKey = styleable->styleKeyForProperty(data->property);
                         if(styleKey != zfnull) {
                             ZFSerializableData propertyData;
                             propertyData.itemClass(data->property->propertyTypeId());

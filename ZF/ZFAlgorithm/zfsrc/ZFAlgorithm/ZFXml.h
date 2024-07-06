@@ -146,7 +146,7 @@ public:
     /**
      * @brief see #name
      */
-    zfstring name(void) const;
+    const zfstring &name(void) const;
 
     /**
      * @brief value of the node
@@ -164,7 +164,7 @@ public:
     /**
      * @brief see #value
      */
-    zfstring value(void) const;
+    const zfstring &value(void) const;
 
     // ============================================================
 public:

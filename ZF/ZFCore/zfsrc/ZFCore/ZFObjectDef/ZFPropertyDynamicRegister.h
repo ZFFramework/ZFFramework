@@ -52,19 +52,19 @@ public:
     const ZFClass *propertyOwnerClass(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyTypeId(ZF_IN const zfchar *propertyTypeId);
+    ZFPropertyDynamicRegisterParam &propertyTypeId(ZF_IN const zfstring &propertyTypeId);
     /** @brief see #ZFPropertyDynamicRegister */
-    const zfchar *propertyTypeId(void) const;
+    const zfstring &propertyTypeId(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyTypeName(ZF_IN const zfchar *propertyTypeName);
+    ZFPropertyDynamicRegisterParam &propertyTypeName(ZF_IN const zfstring &propertyTypeName);
     /** @brief see #ZFPropertyDynamicRegister */
-    const zfchar *propertyTypeName(void) const;
+    const zfstring &propertyTypeName(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
-    ZFPropertyDynamicRegisterParam &propertyName(ZF_IN const zfchar *propertyName);
+    ZFPropertyDynamicRegisterParam &propertyName(ZF_IN const zfstring &propertyName);
     /** @brief see #ZFPropertyDynamicRegister */
-    const zfchar *propertyName(void) const;
+    const zfstring &propertyName(void) const;
 
     /** @brief see #ZFPropertyDynamicRegister */
     ZFPropertyDynamicRegisterParam &propertyClassOfRetainProperty(ZF_IN const ZFClass *propertyClassOfRetainProperty);

@@ -94,13 +94,13 @@ public:
      *   the class must be placed in global scope (#ZF_NAMESPACE_GLOBAL)
      * @note for #ZFTypeIdWrapper, the class name would be "YourType" instead of "v_YourType"
      */
-    static const ZFClass *classForName(ZF_IN const zfchar *classNameOrFullName);
+    static const ZFClass *classForName(ZF_IN const zfstring &classNameOrFullName);
     /**
      * @brief find class with explicit namespace, see #classForName
      */
     static const ZFClass *classForName(
-            ZF_IN const zfchar *className
-            , ZF_IN const zfchar *classNamespace
+            ZF_IN const zfstring &className
+            , ZF_IN const zfstring &classNamespace
             );
 
     // ============================================================
@@ -151,9 +151,9 @@ public:
      * and want to update it again if meta data changed\n
      * see also #ZFClassDataChangeObserver
      */
-    void classDataChangeAutoRemoveTagAdd(ZF_IN const zfchar *tag) const;
+    void classDataChangeAutoRemoveTagAdd(ZF_IN const zfstring &tag) const;
     /** @brief see #classDataChangeAutoRemoveTagAdd */
-    void classDataChangeAutoRemoveTagRemove(ZF_IN const zfchar *tag) const;
+    void classDataChangeAutoRemoveTagRemove(ZF_IN const zfstring &tag) const;
 
     // ============================================================
     // class info
@@ -193,19 +193,19 @@ public:
     /**
      * @brief class namespace, null or empty string for global scope class
      */
-    inline const zfchar *classNamespace(void) const {
+    inline const zfstring &classNamespace(void) const {
         return this->_ZFP_ZFClass_classNamespace;
     }
     /**
      * @brief class name, e.g. "ZFObject"
      */
-    inline const zfchar *className(void) const {
+    inline const zfstring &className(void) const {
         return this->_ZFP_ZFClass_className;
     }
     /**
      * @brief class full name, e.g. "NS0.NS1.YourObject"
      */
-    inline const zfchar *classNameFull(void) const {
+    inline const zfstring &classNameFull(void) const {
         return this->_ZFP_ZFClass_classNameFull;
     }
 
@@ -429,7 +429,7 @@ public:
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
     const ZFMethod *methodForNameIgnoreParent(
-            ZF_IN const zfchar *methodName
+            ZF_IN const zfstring &methodName
             , ZF_IN const zfchar *methodParamTypeId0
             , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
             , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
@@ -440,14 +440,14 @@ public:
             , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
             ) const;
     /** @brief see #methodForNameIgnoreParent */
-    const ZFMethod *methodForNameIgnoreParent(ZF_IN const zfchar *methodName) const;
+    const ZFMethod *methodForNameIgnoreParent(ZF_IN const zfstring &methodName) const;
     /** @brief see #methodForNameIgnoreParent */
     void methodForNameIgnoreParentGetAllT(
             ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-            , ZF_IN const zfchar *methodName
+            , ZF_IN const zfstring &methodName
             ) const;
     /** @brief see #methodForNameIgnoreParent */
-    ZFCoreArray<const ZFMethod *> methodForNameIgnoreParentGetAll(ZF_IN const zfchar *methodName) const {
+    ZFCoreArray<const ZFMethod *> methodForNameIgnoreParentGetAll(ZF_IN const zfstring &methodName) const {
         ZFCoreArray<const ZFMethod *> ret;
         this->methodForNameIgnoreParentGetAllT(ret, methodName);
         return ret;
@@ -461,7 +461,7 @@ public:
      * @note ensured breadth-first
      */
     const ZFMethod *methodForName(
-            ZF_IN const zfchar *methodName
+            ZF_IN const zfstring &methodName
             , ZF_IN const zfchar *methodParamTypeId0
             , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
             , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
@@ -472,16 +472,16 @@ public:
             , ZF_IN_OPT const zfchar *methodParamTypeId7 = zfnull
             ) const;
     /** @brief see #methodForName */
-    const ZFMethod *methodForName(ZF_IN const zfchar *methodName) const;
+    const ZFMethod *methodForName(ZF_IN const zfstring &methodName) const;
     /** @brief see #methodForNameGetAll */
     void methodForNameGetAllT(
             ZF_IN_OUT ZFCoreArray<const ZFMethod *> &ret
-            , ZF_IN const zfchar *methodName
+            , ZF_IN const zfstring &methodName
             ) const;
     /**
      * @brief get all method with name, ignoring method id
      */
-    ZFCoreArray<const ZFMethod *> methodForNameGetAll(ZF_IN const zfchar *methodName) const {
+    ZFCoreArray<const ZFMethod *> methodForNameGetAll(ZF_IN const zfstring &methodName) const {
         ZFCoreArray<const ZFMethod *> ret;
         this->methodForNameGetAllT(ret, methodName);
         return ret;
@@ -528,7 +528,7 @@ public:
      * @see propertyAt, propertyForName
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      */
-    const ZFProperty *propertyForNameIgnoreParent(const zfchar *propertyName) const;
+    const ZFProperty *propertyForNameIgnoreParent(ZF_IN const zfstring &propertyName) const;
     /**
      * @brief get the property by name hierarchically from class inherit tree, or zfnull if not exists
      *
@@ -538,7 +538,7 @@ public:
      * @note can be found only if it matches the condition described in #ZFOBJECT_REGISTER
      * @note ensured breadth-first
      */
-    const ZFProperty *propertyForName(const zfchar *propertyName) const;
+    const ZFProperty *propertyForName(ZF_IN const zfstring &propertyName) const;
 
     /**
      * @brief try to get property setter method within this class only
@@ -546,28 +546,28 @@ public:
      * note, the property has no need to exist,
      * we only search method with proper name and param and return type
      */
-    const ZFMethod *propertySetterForNameIgnoreParent(const zfchar *propertyName) const;
+    const ZFMethod *propertySetterForNameIgnoreParent(ZF_IN const zfstring &propertyName) const;
     /**
      * @brief try to get property setter method
      *
      * note, the property has no need to exist,
      * we only search method with proper name and param and return type
      */
-    const ZFMethod *propertySetterForName(const zfchar *propertyName) const;
+    const ZFMethod *propertySetterForName(ZF_IN const zfstring &propertyName) const;
     /**
      * @brief try to get property getter method within this class only
      *
      * note, the property has no need to exist,
      * we only search method with proper name and param and return type
      */
-    const ZFMethod *propertyGetterForNameIgnoreParent(const zfchar *propertyName) const;
+    const ZFMethod *propertyGetterForNameIgnoreParent(ZF_IN const zfstring &propertyName) const;
     /**
      * @brief try to get property getter method
      *
      * note, the property has no need to exist,
      * we only search method with proper name and param and return type
      */
-    const ZFMethod *propertyGetterForName(const zfchar *propertyName) const;
+    const ZFMethod *propertyGetterForName(ZF_IN const zfstring &propertyName) const;
 
     /**
      * @brief whether the property has #ZFPROPERTY_ON_INIT_DECLARE
@@ -591,13 +591,13 @@ public:
      * @note usually used to store meta-data for performance use only
      */
     void classTag(
-            ZF_IN const zfchar *key
+            ZF_IN const zfstring &key
             , ZF_IN ZFObject *tag
             ) const;
     /**
      * @brief see #classTag
      */
-    zfany classTag(ZF_IN const zfchar *key) const;
+    zfany classTag(ZF_IN const zfstring &key) const;
     /** @brief see #classTag */
     zffinal void classTagGetAllKeyValue(
             ZF_IN_OUT ZFCoreArray<zfstring> &allKey
@@ -606,13 +606,13 @@ public:
     /**
      * @brief remove tag, same as set tag to null
      */
-    inline void classTagRemove(ZF_IN const zfchar *key) const {
+    inline void classTagRemove(ZF_IN const zfstring &key) const {
         this->classTag(key, zfnull);
     }
     /**
      * @brief remove tag, return removed tag or null if not exist
      */
-    zffinal zfauto classTagRemoveAndGet(ZF_IN const zfchar *key) const;
+    zffinal zfauto classTagRemoveAndGet(ZF_IN const zfstring &key) const;
     /**
      * @brief see #classTag
      *
@@ -628,8 +628,8 @@ public:
 public:
     static ZFClass *_ZFP_ZFClassRegister(
             ZF_IN zfbool *ZFCoreLibDestroyFlag
-            , ZF_IN const zfchar *classNamespace
-            , ZF_IN const zfchar *className
+            , ZF_IN const zfstring &classNamespace
+            , ZF_IN const zfstring &className
             , ZF_IN const ZFClass *parent
             , ZF_IN const ZFClass *outer
             , ZF_IN zfbool classCanAllocPublic
@@ -723,8 +723,8 @@ public:
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFClassRegisterHolder {
 public:
     _ZFP_ZFClassRegisterHolder(
-            ZF_IN const zfchar *classNamespace
-            , ZF_IN const zfchar *className
+            ZF_IN const zfstring &classNamespace
+            , ZF_IN const zfstring &className
             , ZF_IN const ZFClass *parent
             , ZF_IN const ZFClass *outer
             , ZF_IN zfbool classCanAllocPublic
@@ -846,14 +846,14 @@ public:
  */
 extern ZFLIB_ZFCore void ZFClassAlias(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *aliasName
+        , ZF_IN const zfstring &aliasName
         );
 /**
  * @brief see #ZFClassAlias
  */
 extern ZFLIB_ZFCore void ZFClassAliasRemove(
         ZF_IN const ZFClass *cls
-        , ZF_IN const zfchar *aliasName
+        , ZF_IN const zfstring &aliasName
         );
 
 ZF_NAMESPACE_GLOBAL_END

@@ -44,28 +44,19 @@ inline zfbool zfstringFromStringT(
     v = src;
     return zftrue;
 }
-/** @endcond */
 
-/**
- * @brief see #zfstringFromData, designed for performance
- *
- * returned (const zfchar *) propertyValue is the pointer to serializableData's value,
- * you should ensure it's alive while using the propertyValue
- */
 extern ZFLIB_ZFCore zfbool zfstringFromDataT(
         ZF_OUT const zfchar * &propertyValue
         , ZF_IN const ZFSerializableData &serializableData
         , ZF_OUT_OPT zfstring *outErrorHint = zfnull
         , ZF_OUT_OPT ZFSerializableData *outErrorPos = zfnull
         );
-/**
- * @brief see #zfstringToData, designed for performance
- */
 extern ZFLIB_ZFCore zfbool zfstringToDataT(
         ZF_OUT ZFSerializableData &serializableData
         , ZF_IN const zfchar * const &propertyValue
         , ZF_OUT_OPT zfstring *outErrorHint /* = zfnull */
         );
+/** @endcond */
 
 /**
  * @brief convert flags to string using flagList and nameList

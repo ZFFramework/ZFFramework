@@ -167,7 +167,7 @@ static zfbool _ZFP_ZFDI_invoke(
         ZF_OUT zfauto &ret
         , ZF_OUT_OPT zfstring *errorHint
         , ZF_IN_OPT ZFObject *obj
-        , ZF_IN const zfchar *name
+        , ZF_IN const zfstring &name
         , ZF_IN const ZFCoreArray<const ZFMethod *> &methodList
         , ZF_IN_OPT zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
@@ -217,7 +217,7 @@ zfbool ZFDI_invoke(
         ZF_OUT zfauto &ret
         , ZF_OUT_OPT zfstring *errorHint
         , ZF_IN_OPT ZFObject *obj
-        , ZF_IN const zfchar *name
+        , ZF_IN const zfstring &name
         , ZF_IN_OPT zfindex paramCount
         , ZF_IN_OUT zfauto (&paramList)[ZFMETHOD_MAX_PARAM]
         , ZF_IN_OPT zfbool convStr /* = zffalse */
@@ -634,7 +634,7 @@ zfbool ZFDI_objectFromString(
 }
 zfbool ZFDI_objectFromString(
         ZF_OUT zfauto &ret
-        , ZF_IN const zfchar *typeId
+        , ZF_IN const zfstring &typeId
         , ZF_IN const zfchar *src
         , ZF_IN_OPT zfindex srcLen /* = zfindexMax() */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -658,7 +658,7 @@ zfbool ZFDI_objectFromString(
 
 // ============================================================
 zfauto ZFInvoke(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         ) {
     zfauto paramList[ZFMETHOD_MAX_PARAM];
     zfauto ret;
@@ -670,7 +670,7 @@ zfauto ZFInvoke(
     }
 }
 zfauto ZFInvoke(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN ZFObject *param0
         , ZF_IN_OPT ZFObject *param1 /* = ZFMethodGenericInvokerDefaultParam() */
         , ZF_IN_OPT ZFObject *param2 /* = ZFMethodGenericInvokerDefaultParam() */
@@ -703,7 +703,7 @@ zfauto ZFInvoke(
     }
 }
 zfauto ZFInvokeDetail(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN const ZFCoreArray<zfauto> &params
         , ZF_OUT_OPT zfbool *success /* = zfnull */
         , ZF_OUT_OPT zfstring *errorHint /* = zfnull */
@@ -737,10 +737,10 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(ZFCoreArray<ZFOutput> &, ZFDI_errorCallbacks)
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(zfauto, ZFInvoke
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfauto, ZFInvoke
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, param0)
         , ZFMP_IN_OPT(ZFObject *, param1, ZFMethodGenericInvokerDefaultParam())
         , ZFMP_IN_OPT(ZFObject *, param2, ZFMethodGenericInvokerDefaultParam())
@@ -752,7 +752,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_8(zfauto, ZFInvoke
         // , ZFMP_IN_OPT(ZFObject *, param7, ZFMethodGenericInvokerDefaultParam())
         )
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_4(zfauto, ZFInvokeDetail
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(const ZFCoreArray<zfauto> &, params)
         , ZFMP_OUT_OPT(zfbool *, success, zfnull)
         , ZFMP_OUT_OPT(zfstring *, errorHint, zfnull)

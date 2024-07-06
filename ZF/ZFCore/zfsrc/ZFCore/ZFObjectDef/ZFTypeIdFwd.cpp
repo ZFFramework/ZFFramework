@@ -8,7 +8,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
-typedef zfstlhashmap<const zfchar *, ZFTypeInfo *, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFTypeInfoMapType;
+typedef zfstlhashmap<zfstring, ZFTypeInfo *, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFTypeInfoMapType;
 ZF_STATIC_INITIALIZER_INIT(ZFTypeInfoHolder) {
 }
 ZF_STATIC_INITIALIZER_DESTROY(ZFTypeInfoHolder) {
@@ -18,7 +18,7 @@ _ZFP_ZFTypeInfoMapType m;
 ZF_STATIC_INITIALIZER_END(ZFTypeInfoHolder)
 
 void _ZFP_ZFTypeInfoRegister(
-        ZF_IN const zfchar *typeId
+        ZF_IN const zfstring &typeId
         , ZF_IN ZFTypeInfo *typeIdData
         ) {
     zfCoreMutexLocker();
@@ -26,7 +26,7 @@ void _ZFP_ZFTypeInfoRegister(
     zfCoreAssert(m.find(typeId) == m.end());
     m[typeIdData->typeId()] = typeIdData;
 }
-ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfchar *typeId) {
+ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfstring &typeId) {
     zfCoreMutexLocker();
     _ZFP_ZFTypeInfoMapType &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFTypeInfoHolder)->m;
     _ZFP_ZFTypeInfoMapType::iterator it = m.find(typeId);
@@ -35,7 +35,7 @@ ZFTypeInfo *_ZFP_ZFTypeInfoUnregister(ZF_IN const zfchar *typeId) {
     m.erase(it);
     return t;
 }
-const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfchar *typeId) {
+const ZFTypeInfo *ZFTypeInfoForName(ZF_IN const zfstring &typeId) {
     zfCoreMutexLocker();
     _ZFP_ZFTypeInfoMapType &m = ZF_STATIC_INITIALIZER_INSTANCE(ZFTypeInfoHolder)->m;
     _ZFP_ZFTypeInfoMapType::iterator it = m.find(typeId);
@@ -81,7 +81,7 @@ private:
 void _ZFP_PropAliasAttach(
         ZF_IN ZFObject *obj
         , ZF_IN void *v
-        , ZF_IN const zfchar *typeName
+        , ZF_IN const zfstring &typeName
         , ZF_IN _ZFP_PropAliasDetachCallback detachCallback
         ) {
     zfstring key = "_ZFP_PropTypeAlias_";
@@ -95,7 +95,7 @@ void _ZFP_PropAliasAttach(
 }
 void _ZFP_PropAliasDetach(
         ZF_IN ZFObject *obj
-        , ZF_IN const zfchar *typeName
+        , ZF_IN const zfstring &typeName
         ) {
     zfstring key = "_ZFP_PropTypeAlias_";
     key += typeName;

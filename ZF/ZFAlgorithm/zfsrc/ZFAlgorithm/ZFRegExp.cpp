@@ -179,7 +179,7 @@ zfbool ZFRegExp::serializableOnSerializeToString(
 }
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFRegExp
-        , ZFMP_IN(const zfchar *, pattern)
+        , ZFMP_IN(const zfstring &, pattern)
         , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
         ) {
     this->objectOnInit();
@@ -224,14 +224,14 @@ ZFMETHOD_DEFINE_0(ZFRegExp, void *, nativeRegExp) {
     return d->nativeRegExp;
 }
 
-ZFMETHOD_DEFINE_0(ZFRegExp, const zfchar *, pattern) {
-    return (d->pattern.isEmpty() ? zfnull : d->pattern.cString());
+ZFMETHOD_DEFINE_0(ZFRegExp, const zfstring &, pattern) {
+    return d->pattern;
 }
 ZFMETHOD_DEFINE_0(ZFRegExp, ZFRegExpOptionFlags, options) {
     return d->flag;
 }
 ZFMETHOD_DEFINE_1(ZFRegExp, zfindex, namedGroupIndexForName
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         ) {
     if(name == zfnull) {
         return zfindexMax();
@@ -240,12 +240,9 @@ ZFMETHOD_DEFINE_1(ZFRegExp, zfindex, namedGroupIndexForName
 }
 
 ZFMETHOD_DEFINE_2(ZFRegExp, void, pattern
-        , ZFMP_IN(const zfchar *, pattern)
+        , ZFMP_IN(const zfstring &, pattern)
         , ZFMP_IN_OPT(ZFRegExpOptionFlags, flag, ZFRegExpOptionFlags::EnumDefault())
         ) {
-    if(pattern == zfnull) {
-        pattern = "";
-    }
     d->pattern = pattern;
     d->flag = flag;
     ZFPROTOCOL_ACCESS(ZFRegExp)->pattern(this, pattern, flag);
@@ -261,7 +258,7 @@ ZFMETHOD_DEFINE_3(ZFRegExp, void, find
 ZFMETHOD_DEFINE_6(ZFRegExp, void, replace
         , ZFMP_OUT(zfstring &, ret)
         , ZFMP_OUT(ZFRegExpResult &, result)
-        , ZFMP_IN(const zfchar *, replacePattern)
+        , ZFMP_IN(const zfstring &, replacePattern)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLength, zfindexMax())
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
@@ -291,7 +288,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFIndexRange, ZFRegExpFind
 ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(ZFRegExp *, patternFrom)
-        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN(const zfstring &, patternTo)
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         ) {
     if(patternFrom) {
@@ -307,7 +304,7 @@ ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace
 ZFMETHOD_FUNC_DEFINE_4(zfstring, ZFRegExpReplace
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN(const zfstring &, patternFrom)
-        , ZFMP_IN(const zfchar *, patternTo)
+        , ZFMP_IN(const zfstring &, patternTo)
         , ZFMP_IN_OPT(zfindex, maxReplaceCount, zfindexMax())
         ) {
     return ZFRegExpReplace(src, zfobj<ZFRegExp>(patternFrom), patternTo, maxReplaceCount);

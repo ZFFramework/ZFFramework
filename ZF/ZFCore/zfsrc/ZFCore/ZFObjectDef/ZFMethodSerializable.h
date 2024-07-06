@@ -38,8 +38,8 @@ ZFOUTPUT_TYPE(ZFMethod, {v.objectInfoT(s);})
  * @brief parse method from method sig
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(
-        ZF_IN const zfchar *classOrNamespace
-        , ZF_IN const zfchar *methodName
+        ZF_IN const zfstring &classOrNamespace
+        , ZF_IN const zfstring &methodName
         , ZF_IN_OPT const zfchar *methodParamTypeId0 = zfnull
         , ZF_IN_OPT const zfchar *methodParamTypeId1 = zfnull
         , ZF_IN_OPT const zfchar *methodParamTypeId2 = zfnull
@@ -55,7 +55,7 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(
  * methodSigPos must be successfully decoded by #ZFMethodSigSplit
  */
 extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(
-        ZF_IN const zfchar *methodSig
+        ZF_IN const zfstring &methodSig
         , ZF_IN const ZFCoreArray<ZFIndexRange> &methodSigPos);
 
 /**
@@ -75,7 +75,7 @@ extern ZFLIB_ZFCore const ZFMethod *ZFMethodFromSig(
  */
 extern ZFLIB_ZFCore zfbool ZFMethodSigSplit(
         ZF_IN_OUT ZFCoreArray<ZFIndexRange> &ret
-        , ZF_IN const zfchar *src
+        , ZF_IN const zfstring &src
         , ZF_IN_OPT zfindex srcLen = zfindexMax()
         );
 

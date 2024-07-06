@@ -110,6 +110,7 @@ ZFOBJECT_ON_INIT_USER_REGISTER_3({
     , ZFMP_IN(zfindex, pos)
     , ZFMP_IN(zfindex, len)
     )
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_0(zfstring, v_zfstring, const zfstring &, Empty)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_STATIC_1(zfstring, v_zfstring, zfstring, shared
         , ZFMP_IN(const zfchar *, sLiteral)
         )

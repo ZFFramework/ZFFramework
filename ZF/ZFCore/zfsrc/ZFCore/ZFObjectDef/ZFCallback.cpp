@@ -213,8 +213,8 @@ void ZFCallback::callbackId(ZF_IN const zfstring &callbackId) {
     }
     d->callbackId = callbackId;
 }
-zfstring ZFCallback::callbackId(void) const {
-    return (d ? d->callbackId : zfnull);
+const zfstring &ZFCallback::callbackId(void) const {
+    return (d ? d->callbackId : zfstring::Empty());
 }
 
 void ZFCallback::callbackTag(
@@ -344,8 +344,8 @@ void ZFCallback::callbackSerializeCustomType(ZF_IN const zfstring &customType) {
     }
     zfsChange(d->serializableCustomType, customType);
 }
-zfstring ZFCallback::callbackSerializeCustomType(void) const {
-    return (d ? d->serializableCustomType : zfnull);
+const zfstring &ZFCallback::callbackSerializeCustomType(void) const {
+    return (d ? d->serializableCustomType : zfstring::Empty());
 }
 void ZFCallback::callbackSerializeCustomData(ZF_IN const ZFSerializableData *customData) {
     if(d == zfnull) {
