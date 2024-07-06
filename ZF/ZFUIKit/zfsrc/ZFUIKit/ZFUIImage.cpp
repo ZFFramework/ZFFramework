@@ -14,7 +14,7 @@ static _ZFP_ZFUIImageSerializeDataMapType &_ZFP_ZFUIImageSerializeDataMap(void) 
     return d;
 }
 void _ZFP_ZFUIImageSerializeTypeRegister(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback
         ) {
     zfCoreMutexLocker();
@@ -25,7 +25,7 @@ void _ZFP_ZFUIImageSerializeTypeRegister(
         name);
     m[name] = fromCallback;
 }
-void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfchar *name) {
+void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfstring &name) {
     zfCoreMutexLocker();
     _ZFP_ZFUIImageSerializeDataMapType &m = _ZFP_ZFUIImageSerializeDataMap();
     m.erase(name);

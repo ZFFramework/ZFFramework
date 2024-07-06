@@ -69,7 +69,7 @@ public:
     /** @brief see #ZFUITextEdit */
     virtual void text(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) zfpurevirtual;
     /** @brief see #ZFUITextEdit */
     virtual void textAppearance(
@@ -123,7 +123,7 @@ public:
      */
     zffinal zfbool notifyCheckTextShouldChange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const zfchar *newValue
+            , ZF_IN const zfstring &newValue
             ) {
         return textEdit->textShouldChange(newValue);
     }
@@ -132,7 +132,7 @@ public:
      */
     zffinal void notifyTextChange(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const zfchar *newValue
+            , ZF_IN const zfstring &newValue
             ) {
         textEdit->_ZFP_ZFUITextEdit_textNotifyChange(newValue);
     }

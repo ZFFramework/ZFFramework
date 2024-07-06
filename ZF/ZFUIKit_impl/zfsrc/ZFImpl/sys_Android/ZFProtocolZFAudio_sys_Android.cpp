@@ -52,7 +52,7 @@ public:
     }
     virtual void nativeAudioLoad(
             ZF_IN ZFAudio *audio
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFAudio(), "native_nativeAudioLoad",

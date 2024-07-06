@@ -463,7 +463,7 @@ public:
      * @brief find page by ZFUIPage::pageGroupId
      */
     ZFMETHOD_DECLARE_1(ZFCoreArray<ZFUIPage *>, pageListForGroupId
-            , ZFMP_IN(const zfchar *, pageGroupId)
+            , ZFMP_IN(const zfstring &, pageGroupId)
             )
 
     // ============================================================
@@ -495,7 +495,7 @@ public:
             )
     /** @brief resume multiple page for group id */
     ZFMETHOD_DECLARE_1(void, pageResumeForGroupId
-            , ZFMP_IN(const zfchar *, pageGroupId)
+            , ZFMP_IN(const zfstring &, pageGroupId)
             )
 
     /** @brief destroy page */

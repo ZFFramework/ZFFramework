@@ -399,7 +399,7 @@ extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
         ZF_IN_OUT ZFUIAutoLayoutRule &rule
         , ZF_IN ZFUIAutoLayout *parent
         , ZF_IN ZFUIView *child
-        , ZF_IN const zfchar *targetId
+        , ZF_IN const zfstring &targetId
         );
 extern ZFLIB_ZFUIWidget zfbool _ZFP_ZFUIAutoLayout_targetIdUpdate(
         ZF_OUT zfstring &targetId

@@ -70,7 +70,7 @@ public:
             this->setInputMethodHints(this->textEditInputMethodHintsSaved);
         }
     }
-    void _ZFP_text(const zfchar *text, zfbool needNotify) {
+    void _ZFP_text(const zfstring &text, zfbool needNotify) {
         if(this->textEditTextSaved.compare(text) == 0) {
             return;
         }
@@ -238,7 +238,7 @@ public:
 public:
     virtual void text(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) {
         _ZFP_ZFUITextEditImpl_sys_Qt_TextEdit *nativeImplView = getNativeImplView(textEdit);
         nativeImplView->_ZFP_text(text, zffalse);

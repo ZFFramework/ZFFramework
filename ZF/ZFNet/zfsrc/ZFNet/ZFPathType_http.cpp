@@ -305,7 +305,7 @@ ZFPATHTYPE_FILEIO_REGISTER(http, ZFPathType_http()
 // ============================================================
 // ZFInputForHttp
 ZFMETHOD_FUNC_INLINE_DEFINE_1(ZFInput, ZFInputForHttp
-        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const zfstring &, url)
         )
 
 ZF_NAMESPACE_GLOBAL_END

@@ -71,11 +71,11 @@ public:
      * @brief util method for impl to achieve cache logic
      */
     ZFMETHOD_DECLARE_1(zfauto, itemCacheAccess
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             )
     /** @brief see #itemCacheAccess */
     ZFMETHOD_DECLARE_2(void, itemCacheRecycle
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             , ZFMP_IN(ZFObject *, cache)
             )
 

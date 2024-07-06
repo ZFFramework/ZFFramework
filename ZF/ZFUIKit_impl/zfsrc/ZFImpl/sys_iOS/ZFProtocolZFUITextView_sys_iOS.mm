@@ -63,7 +63,7 @@ public:
 public:
     virtual void text(
             ZF_IN ZFUITextView *textView
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) {
         _ZFP_ZFUITextViewImpl_sys_iOS_TextView *nativeImplView = (__bridge _ZFP_ZFUITextViewImpl_sys_iOS_TextView *)textView->nativeImplView();
         nativeImplView.text = ZFImpl_sys_iOS_zfstringToNSString(text);

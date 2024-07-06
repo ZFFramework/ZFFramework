@@ -36,7 +36,7 @@ public:
     /** @brief see #ZFUITextView */
     virtual void text(
             ZF_IN ZFUITextView *textView
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) zfpurevirtual;
     /** @brief see #ZFUITextView */
     virtual void textAppearance(

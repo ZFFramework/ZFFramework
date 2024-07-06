@@ -55,7 +55,7 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt
 #define _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key) \
     zfstring cacheKey = zfstr("_ZFP_ZFUIListAdapter_cacheKey_%s", key)
 ZFMETHOD_DEFINE_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellCacheDefaultAccess
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         ) {
     _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
@@ -69,7 +69,7 @@ ZFMETHOD_DEFINE_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellCacheDefaultAccess
     }
 }
 ZFMETHOD_DEFINE_2(ZFUIListAdapter, void, cellCacheDefaultRecycle
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(ZFUIListCell *, cell)
         ) {
     _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key);

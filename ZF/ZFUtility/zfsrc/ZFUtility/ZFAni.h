@@ -52,7 +52,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
  */
 ZFMETHOD_FUNC_DECLARE_4(ZFLIB_ZFUtility, zfautoT<ZFAnimationTimeLine>, ZFAni
         , ZFMP_IN(ZFObject *, target)
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         )

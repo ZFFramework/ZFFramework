@@ -453,7 +453,7 @@ void ZFAniGroup::objectInfoOnAppend(ZF_IN_OUT zfstring &ret) {
 // ============================================================
 // util for chained call
 ZFMETHOD_DEFINE_3(ZFAniGroup, void, child
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         ) {

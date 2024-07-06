@@ -232,7 +232,7 @@ public:
 public:
     zffinal void _ZFP_ZFUITextEdit_textNotifyBeginEdit(void);
     zffinal void _ZFP_ZFUITextEdit_textNotifyEndEdit(void);
-    zffinal void _ZFP_ZFUITextEdit_textNotifyChange(ZF_IN const zfchar *newText);
+    zffinal void _ZFP_ZFUITextEdit_textNotifyChange(ZF_IN const zfstring &newText);
     zffinal void _ZFP_ZFUITextEdit_textSelectRangeNotifyChange(void);
     zffinal void _ZFP_ZFUITextEdit_textNotifyReturnClicked(void);
     /**
@@ -242,7 +242,7 @@ public:
      * and null or empty string would always treated as allowed for safe
      */
     ZFMETHOD_DECLARE_1(zfbool, textShouldChange
-            , ZFMP_IN(const zfchar *, newText)
+            , ZFMP_IN(const zfstring &, newText)
             )
     /**
      * @brief manually start edit
@@ -264,11 +264,11 @@ protected:
     virtual void textOnEditEnd(void);
     /** @brief see #EventTextOnChangeCheck */
     virtual void textOnChangeCheck(
-            ZF_IN const zfchar *newText
+            ZF_IN const zfstring &newText
             , ZF_IN_OUT zfbool &shouldChange
             );
     /** @brief see #EventTextOnChange */
-    virtual void textOnChange(ZF_IN const zfchar *oldText);
+    virtual void textOnChange(ZF_IN const zfstring &oldText);
     /** @brief see #EventTextOnReturnClick */
     virtual void textOnReturnClick(void);
     /** @brief see #EventTextOnEditConfirm */

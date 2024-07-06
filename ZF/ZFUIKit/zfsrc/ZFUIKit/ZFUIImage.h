@@ -20,10 +20,10 @@ typedef zfbool (*_ZFP_ZFUIImageSerializeFromCallback)(
         );
 
 extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeRegister(
-        ZF_IN const zfchar *name
+        ZF_IN const zfstring &name
         , ZF_IN _ZFP_ZFUIImageSerializeFromCallback fromCallback
         );
-extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfchar *name);
+extern ZFLIB_ZFUIKit void _ZFP_ZFUIImageSerializeTypeUnregister(ZF_IN const zfstring &name);
 /**
  * @brief register a serializable logic for ZFUIImage
  *

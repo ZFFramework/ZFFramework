@@ -9,7 +9,7 @@ ZFOBJECT_REGISTER(ZFState)
 ZFOBJECT_SINGLETON_DEFINE_WITH_LEVEL(ZFState, instance, ZFLevelZFFrameworkEssential)
 
 zfclassFwd _ZFP_ZFStateData;
-typedef zfstlhashmap<const zfchar *, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>, zfcharConst_zfstlHash, zfcharConst_zfstlEqual> _ZFP_ZFStateMapType;
+typedef zfstlhashmap<zfstring, ZFCorePointerForPoolObject<_ZFP_ZFStateData *>, zfstring_zfstlHash, zfstring_zfstlEqual> _ZFP_ZFStateMapType;
 typedef zfstllist<ZFCorePointerForPoolObject<_ZFP_ZFStateData *> > _ZFP_ZFStateListType;
 zfclassNotPOD _ZFP_ZFStateData {
 public:
@@ -294,8 +294,8 @@ ZFMETHOD_DEFINE_1(ZFState, void, loadCancel
 }
 
 ZFMETHOD_DEFINE_2(ZFState, void, set
-        , ZFMP_IN(const zfchar *, key)
-        , ZFMP_IN(const zfchar *, value)
+        , ZFMP_IN(const zfstring &, key)
+        , ZFMP_IN(const zfstring &, value)
         ) {
     if(zfstringIsEmpty(key)) {
         return;
@@ -352,7 +352,7 @@ ZFMETHOD_DEFINE_2(ZFState, void, set
     }
 }
 ZFMETHOD_DEFINE_1(ZFState, void, remove
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         ) {
     return this->set(key, zfnull);
 }
@@ -378,7 +378,7 @@ ZFMETHOD_DEFINE_0(ZFState, void, removeAll) {
 }
 
 ZFMETHOD_DEFINE_1(ZFState, zfstring, get
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         ) {
     if(zfstringIsEmpty(key)) {
         return zfnull;
@@ -393,7 +393,7 @@ ZFMETHOD_DEFINE_1(ZFState, zfstring, get
     }
 }
 ZFMETHOD_DEFINE_2(ZFState, zfauto, getAsync
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(const ZFListener &, callback)
         ) {
     if(zfstringIsEmpty(key)) {

@@ -64,7 +64,7 @@ public:
 public:
     virtual void text(
             ZF_IN ZFUITextView *textView
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) {
         ZFImpl_sys_SDL_View *nativeView = (ZFImpl_sys_SDL_View *)textView->nativeView();
         nativeView->renderRequest();
@@ -162,7 +162,7 @@ private:
             ZF_OUT int &w
             , ZF_OUT int &h
             , ZF_IN ZFUITextView *textView
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             , ZF_IN zfindex textLen
             , ZF_IN int widthHint
             , ZF_IN zffloat textSize

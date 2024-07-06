@@ -859,7 +859,7 @@ public:
      * @brief find view by viewId, return the view or null if not found
      */
     ZFMETHOD_DECLARE_3(zfanyT<ZFUIView>, childFindById
-            , ZFMP_IN(const zfchar *, viewId)
+            , ZFMP_IN(const zfstring &, viewId)
             , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
             , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
             )
@@ -1059,11 +1059,11 @@ public:
      * we would copy style from serialize data to the existing one instead
      */
     ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagAdd
-            , ZFMP_IN(const zfchar *, tag)
+            , ZFMP_IN(const zfstring &, tag)
             )
     /** @brief see #internalViewAutoSerializeTagAdd */
     ZFMETHOD_DECLARE_1(void, internalViewAutoSerializeTagRemove
-            , ZFMP_IN(const zfchar *, tag)
+            , ZFMP_IN(const zfstring &, tag)
             )
     /** @brief see #internalViewAutoSerializeTagAdd */
     ZFMETHOD_DECLARE_0(void, internalViewAutoSerializeTagRemoveAll)

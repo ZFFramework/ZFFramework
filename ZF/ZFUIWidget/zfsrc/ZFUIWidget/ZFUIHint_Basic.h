@@ -34,14 +34,14 @@ public:
  * -  have an alpha change animation as the hint's show and hide animation
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFUIHint>, ZFUIHintMake
-        , ZFMP_IN(const zfchar *, text)
+        , ZFMP_IN(const zfstring &, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         )
 /**
  * @brief #ZFUIHintMake and show the hint
  */
 ZFMETHOD_FUNC_INLINE_DECLARE_2(ZFLIB_ZFUIWidget, zfautoT<ZFUIHint>, ZFUIHintShow
-        , ZFMP_IN(const zfchar *, text)
+        , ZFMP_IN(const zfstring &, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {
     zfautoT<ZFUIHint> hint = ZFUIHintMake(text, icon);

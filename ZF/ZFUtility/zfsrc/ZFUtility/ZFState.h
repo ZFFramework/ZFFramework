@@ -70,14 +70,14 @@ public:
      * @brief set state
      */
     ZFMETHOD_DECLARE_2(void, set
-            , ZFMP_IN(const zfchar *, key)
-            , ZFMP_IN(const zfchar *, value)
+            , ZFMP_IN(const zfstring &, key)
+            , ZFMP_IN(const zfstring &, value)
             )
     /**
      * @brief set state
      */
     ZFMETHOD_DECLARE_1(void, remove
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             )
     /**
      * @brief remove all state
@@ -88,7 +88,7 @@ public:
      * @brief get state or null if not #ready
      */
     ZFMETHOD_DECLARE_1(zfstring, get
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             )
     /**
      * @brief util to #get with #load
@@ -96,7 +96,7 @@ public:
      * callback's param0 would be the result value if exists
      */
     ZFMETHOD_DECLARE_2(zfauto, getAsync
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             , ZFMP_IN(const ZFListener &, callback)
             )
     /**

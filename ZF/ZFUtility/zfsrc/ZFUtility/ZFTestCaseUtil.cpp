@@ -23,7 +23,7 @@ ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase>, ZFTestCaseRun
     return testCase->testCaseIsRunning() ? testCase : zfnull;
 }
 ZFMETHOD_FUNC_DEFINE_1(zfautoT<ZFTestCase>, ZFTestCaseRun
-        , ZFMP_IN(const zfchar *, classNameFull)
+        , ZFMP_IN(const zfstring &, classNameFull)
         ) {
     return ZFTestCaseRun(ZFClass::classForName(classNameFull));
 }

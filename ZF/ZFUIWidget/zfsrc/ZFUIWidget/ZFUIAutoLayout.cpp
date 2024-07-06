@@ -297,7 +297,7 @@ zfbool _ZFP_ZFUIAutoLayout_targetUpdate(
         ZF_IN_OUT ZFUIAutoLayoutRule &rule
         , ZF_IN ZFUIAutoLayout *parent
         , ZF_IN ZFUIView *child
-        , ZF_IN const zfchar *targetId
+        , ZF_IN const zfstring &targetId
         ) {
     if(rule.pos() == ZFUIAutoLayoutPos::e_None) {
         return zftrue;

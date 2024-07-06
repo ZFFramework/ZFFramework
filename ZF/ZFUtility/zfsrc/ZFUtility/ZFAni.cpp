@@ -18,7 +18,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFAnimationTimeLine>, ZFAni
 // ============================================================
 ZFMETHOD_FUNC_DEFINE_4(zfautoT<ZFAnimationTimeLine>, ZFAni
         , ZFMP_IN(ZFObject *, target)
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         , ZFMP_IN(ZFObject *, from)
         , ZFMP_IN(ZFObject *, to)
         ) {
@@ -59,7 +59,7 @@ public:
 public:
     zfbool checkSetup(
             ZF_IN ZFObject *aniTarget
-            , ZF_IN const zfchar *name
+            , ZF_IN const zfstring &name
             , ZF_IN ZFObject *from
             , ZF_IN ZFObject *to
             ) {
@@ -133,7 +133,7 @@ public:
 private:
     zfbool _prepare(
             ZF_IN ZFObject *aniTarget
-            , ZF_IN const zfchar *name
+            , ZF_IN const zfstring &name
             ) {
         if(aniTarget == zfnull) {
             return zffalse;

@@ -140,7 +140,7 @@ public:
 public:
     virtual void text(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) {
         JNIEnv *jniEnv = JNIGetJNIEnv();
         static jmethodID jmId = JNIUtilGetStaticMethodID(jniEnv, ZFImpl_sys_Android_jclassZFUITextEdit(), "native_text",

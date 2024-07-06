@@ -164,7 +164,7 @@ public:
 public:
     /** @brief util to add child animation */
     ZFMETHOD_DECLARE_3(void, child
-            , ZFMP_IN(const zfchar *, name)
+            , ZFMP_IN(const zfstring &, name)
             , ZFMP_IN(ZFObject *, from)
             , ZFMP_IN(ZFObject *, to)
             )

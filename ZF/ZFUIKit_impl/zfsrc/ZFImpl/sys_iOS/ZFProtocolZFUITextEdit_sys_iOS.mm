@@ -215,7 +215,7 @@ public:
 public:
     virtual void text(
             ZF_IN ZFUITextEdit *textEdit
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) {
         _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *nativeImplView = (__bridge _ZFP_ZFUITextEditImpl_sys_iOS_TextEdit *)textEdit->nativeImplView();
         nativeImplView.text = ZFImpl_sys_iOS_zfstringToNSString(text);

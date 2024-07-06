@@ -146,7 +146,7 @@ public:
     }
     virtual void nativeAudioLoad(
             ZF_IN ZFAudio *audio
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) {
         zfself *owner = this;
         NativeAudio *nativeAudio = (NativeAudio *)audio->nativeAudio();

@@ -23,7 +23,7 @@ ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFTestCase>, ZFTestCaseRun
  * @brief see #ZFTestCaseRun
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, zfautoT<ZFTestCase>, ZFTestCaseRun
-        , ZFMP_IN(const zfchar *, classNameFull)
+        , ZFMP_IN(const zfstring &, classNameFull)
         )
 
 // ============================================================

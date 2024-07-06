@@ -79,7 +79,7 @@ ZFMETHOD_DEFINE_1(ZFAudio, void, load
 }
 
 ZFMETHOD_DEFINE_1(ZFAudio, void, load
-        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const zfstring &, url)
         ) {
     zfRetain(this); // release when OnLoad
     this->stop();
@@ -198,7 +198,7 @@ ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
 }
 
 ZFOBJECT_ON_INIT_DEFINE_1(ZFAudio
-        , ZFMP_IN(const zfchar *, url)
+        , ZFMP_IN(const zfstring &, url)
         ) {
     this->objectOnInit();
     this->load(url);

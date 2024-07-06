@@ -61,27 +61,27 @@ public:
      * the oldest cache would be removed
      */
     ZFMETHOD_DECLARE_2(void, cacheAdd
-            , ZFMP_IN(const zfchar *, cacheKey)
+            , ZFMP_IN(const zfstring &, cacheKey)
             , ZFMP_IN(ZFObject *, cacheValue)
             )
     /**
      * @brief access and remove cache, or return null if not exist, see #cacheCheck
      */
     ZFMETHOD_DECLARE_1(zfauto, cacheGet
-            , ZFMP_IN(const zfchar *, cacheKey)
+            , ZFMP_IN(const zfstring &, cacheKey)
             )
     /**
      * @brief check cache, or return null if not exist, see #cacheGet
      */
     ZFMETHOD_DECLARE_1(zfauto, cacheCheck
-            , ZFMP_IN(const zfchar *, cacheKey)
+            , ZFMP_IN(const zfstring &, cacheKey)
             )
 
     /**
      * @brief remove all cache with cacheKey
      */
     ZFMETHOD_DECLARE_1(void, cacheRemove
-            , ZFMP_IN(const zfchar *, cacheKey)
+            , ZFMP_IN(const zfstring &, cacheKey)
             )
     /**
      * @brief remove all cache

@@ -562,7 +562,7 @@ ZFMETHOD_DEFINE_0(ZFUIPageManager, ZFCoreArray<ZFUIPage *> &, pageList) {
 }
 
 ZFMETHOD_DEFINE_1(ZFUIPageManager, ZFCoreArray<ZFUIPage *>, pageListForGroupId
-        , ZFMP_IN(const zfchar *, pageGroupId)
+        , ZFMP_IN(const zfstring &, pageGroupId)
         ) {
     ZFCoreArray<ZFUIPage *> ret;
     for(zfindex i = 0; i < d->pageList.count(); ++i) {
@@ -649,7 +649,7 @@ ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResume
     d->pageRequestAdd(this, callback);
 }
 ZFMETHOD_DEFINE_1(ZFUIPageManager, void, pageResumeForGroupId
-        , ZFMP_IN(const zfchar *, pageGroupId)
+        , ZFMP_IN(const zfstring &, pageGroupId)
         ) {
     ZFUIPageManager *pm = this;
     ZFLISTENER_2(callback

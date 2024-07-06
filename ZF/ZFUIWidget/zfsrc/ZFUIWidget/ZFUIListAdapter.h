@@ -172,11 +172,11 @@ protected:
 public:
     /** @brief see #cellCacheOnRecycle */
     ZFMETHOD_DECLARE_1(zfautoT<ZFUIListCell>, cellCacheDefaultAccess
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             )
     /** @brief see #cellCacheOnRecycle */
     ZFMETHOD_DECLARE_2(void, cellCacheDefaultRecycle
-            , ZFMP_IN(const zfchar *, key)
+            , ZFMP_IN(const zfstring &, key)
             , ZFMP_IN(ZFUIListCell *, cell)
             )
 

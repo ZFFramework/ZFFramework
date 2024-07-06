@@ -1668,7 +1668,7 @@ void ZFUIView::layoutOnLayout(ZF_IN const ZFUIRect &bounds) {
 // ============================================================
 // child views
 ZFMETHOD_DEFINE_3(ZFUIView, zfanyT<ZFUIView>, childFindById
-        , ZFMP_IN(const zfchar *, viewId)
+        , ZFMP_IN(const zfstring &, viewId)
         , ZFMP_IN_OPT(zfbool, findRecursively, zftrue)
         , ZFMP_IN_OPT(zfbool, includeInternalViews, zffalse)
         ) {
@@ -1897,7 +1897,7 @@ ZFMETHOD_DEFINE_0(ZFUIView, ZFCoreArray<zfautoT<ZFUIView> >, internalFgViewArray
 // ============================================================
 // other internal view logic
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd
-        , ZFMP_IN(const zfchar *, tag)
+        , ZFMP_IN(const zfstring &, tag)
         ) {
     if(zfstringIsEmpty(tag)) {
         return;
@@ -1905,7 +1905,7 @@ ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagAdd
     d->internalViewAutoSerializeTags[tag] = zftrue;
 }
 ZFMETHOD_DEFINE_1(ZFUIView, void, internalViewAutoSerializeTagRemove
-        , ZFMP_IN(const zfchar *, tag)
+        , ZFMP_IN(const zfstring &, tag)
         ) {
     if(zfstringIsEmpty(tag)) {
         return;

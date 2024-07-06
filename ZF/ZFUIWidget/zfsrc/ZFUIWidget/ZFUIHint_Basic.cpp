@@ -27,7 +27,7 @@ ZFPROPERTY_ON_INIT_DEFINE(ZFUIHintContentBasic, zfanyT<ZFUIImageView>, backgroun
 }
 
 ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintMake
-        , ZFMP_IN(const zfchar *, text)
+        , ZFMP_IN(const zfstring &, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         ) {
     zfobj<ZFUIHint> hint;
@@ -43,7 +43,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintMake
     return hint;
 }
 ZFMETHOD_FUNC_INLINE_DEFINE_2(zfautoT<ZFUIHint>, ZFUIHintShow
-        , ZFMP_IN(const zfchar *, text)
+        , ZFMP_IN(const zfstring &, text)
         , ZFMP_IN_OPT(ZFUIImage *, icon, zfnull)
         )
 

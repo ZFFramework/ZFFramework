@@ -71,7 +71,7 @@ private:
 public:
     virtual void text(
             ZF_IN ZFUITextView *textView
-            , ZF_IN const zfchar *text
+            , ZF_IN const zfstring &text
             ) {
         _ZFP_ZFUITextViewImpl_sys_Qt_TextView *nativeImplView = getNativeImplView(textView);
         nativeImplView->setText(ZFImpl_sys_Qt_zfstringToQString(text));

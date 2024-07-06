@@ -81,7 +81,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFCache, zfbool, cacheTrimWhenReceiveMemoryWarning) 
 }
 
 ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
-        , ZFMP_IN(const zfchar *, cacheKey)
+        , ZFMP_IN(const zfstring &, cacheKey)
         , ZFMP_IN(ZFObject *, cacheValue)
         ) {
     if(cacheKey == zfnull || cacheValue == zfnull) {
@@ -133,7 +133,7 @@ ZFMETHOD_DEFINE_2(ZFCache, void, cacheAdd
     this->cacheTrim(this->cacheMaxSize());
 }
 ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
-        , ZFMP_IN(const zfchar *, cacheKey)
+        , ZFMP_IN(const zfstring &, cacheKey)
         ) {
     if(cacheKey == zfnull) {
         return zfnull;
@@ -161,7 +161,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheGet
     return ret;
 }
 ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
-        , ZFMP_IN(const zfchar *, cacheKey)
+        , ZFMP_IN(const zfstring &, cacheKey)
         ) {
     if(cacheKey == zfnull) {
         return zfnull;
@@ -191,7 +191,7 @@ ZFMETHOD_DEFINE_1(ZFCache, zfauto, cacheCheck
 }
 
 ZFMETHOD_DEFINE_1(ZFCache, void, cacheRemove
-        , ZFMP_IN(const zfchar *, cacheKey)
+        , ZFMP_IN(const zfstring &, cacheKey)
         ) {
     _ZFP_ZFCacheMap::iterator cacheMapIt = d->cacheMap.find(cacheKey);
     if(cacheMapIt == d->cacheMap.end() || cacheMapIt->second.empty()) {

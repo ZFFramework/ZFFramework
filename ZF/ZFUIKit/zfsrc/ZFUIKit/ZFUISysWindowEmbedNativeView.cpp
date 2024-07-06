@@ -73,7 +73,7 @@ zfstlmap<zfstring, zfbool> m;
 ZF_GLOBAL_INITIALIZER_END(ZFUISysWindowEmbedNativeViewAutoRemove)
 ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView
         , ZFMP_IN(void *, nativeParent)
-        , ZFMP_IN(const zfchar *, sysWindowName)
+        , ZFMP_IN(const zfstring &, sysWindowName)
         ) {
     if(!zfstringIsEmpty(sysWindowName) && ZFMethodFuncForName(zfnull, sysWindowName) != zfnull) {
         zfCoreLog("window \"%s\" already registered", sysWindowName);
@@ -102,7 +102,7 @@ ZFMETHOD_DEFINE_2(ZFUISysWindow, zfautoT<ZFUISysWindow>, nativeWindowEmbedNative
     return sysWindow;
 }
 ZFMETHOD_DEFINE_1(ZFUISysWindow, void, nativeWindowEmbedNativeViewCleanup
-        , ZFMP_IN(const zfchar *, sysWindowName)
+        , ZFMP_IN(const zfstring &, sysWindowName)
         ) {
     const ZFMethod *method = ZFMethodFuncForName(zfnull, sysWindowName);
     if(method != zfnull && method->methodIsUserRegister()) {

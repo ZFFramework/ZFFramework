@@ -145,13 +145,13 @@ public:
      */
     ZFMETHOD_DECLARE_STATIC_2(zfautoT<ZFUISysWindow>, nativeWindowEmbedNativeView
             , ZFMP_IN(void *, nativeParent)
-            , ZFMP_IN(const zfchar *, sysWindowName)
+            , ZFMP_IN(const zfstring &, sysWindowName)
             )
     /**
      * @brief remove window attached by #nativeWindowEmbedNativeView
      */
     ZFMETHOD_DECLARE_STATIC_1(void, nativeWindowEmbedNativeViewCleanup
-            , ZFMP_IN(const zfchar *, sysWindowName)
+            , ZFMP_IN(const zfstring &, sysWindowName)
             )
 
 public:

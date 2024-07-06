@@ -93,7 +93,7 @@ public:
 
     /** @brief load from url */
     ZFMETHOD_DECLARE_1(void, load
-            , ZFMP_IN(const zfchar *, url)
+            , ZFMP_IN(const zfstring &, url)
             )
 
     /**
@@ -153,7 +153,7 @@ protected:
     /** @brief load from input */
     ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(const ZFInput &, input))
     /** @brief load from url */
-    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(const zfchar *, url))
+    ZFOBJECT_ON_INIT_DECLARE_1(ZFMP_IN(const zfstring &, url))
 protected:
     zfoverride
     virtual void objectOnInit(void);

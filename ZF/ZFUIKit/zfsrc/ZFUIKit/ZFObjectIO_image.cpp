@@ -11,11 +11,11 @@ static _ZFP_ZFObjectIO_image_imageExtMapType &_ZFP_ZFObjectIO_image_imageExtMap(
     return m;
 }
 
-void ZFObjectIO_image_imageExtAdd(ZF_IN const zfchar *imageExt) {
+void ZFObjectIO_image_imageExtAdd(ZF_IN const zfstring &imageExt) {
     zfCoreAssert(!zfstringIsEmpty(imageExt));
     _ZFP_ZFObjectIO_image_imageExtMap()[imageExt] = zftrue;
 }
-void ZFObjectIO_image_imageExtRemove(ZF_IN const zfchar *imageExt) {
+void ZFObjectIO_image_imageExtRemove(ZF_IN const zfstring &imageExt) {
     _ZFP_ZFObjectIO_image_imageExtMap().erase(imageExt);
 }
 void ZFObjectIO_image_imageExtGetAllT(ZF_IN_OUT ZFCoreArray<zfstring> &ret) {

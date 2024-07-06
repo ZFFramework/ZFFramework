@@ -235,7 +235,7 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyEndEdit(void) {
     d->textEditing = zffalse;
     this->textOnEditEnd();
 }
-void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyChange(ZF_IN const zfchar *newText) {
+void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyChange(ZF_IN const zfstring &newText) {
     zfstring oldText = this->text();
 
     d->textChangedByImplFlag = zftrue;
@@ -297,7 +297,7 @@ void ZFUITextEdit::_ZFP_ZFUITextEdit_textNotifyReturnClicked(void) {
     }
 }
 ZFMETHOD_DEFINE_1(ZFUITextEdit, zfbool, textShouldChange
-        , ZFMP_IN(const zfchar *, newText)
+        , ZFMP_IN(const zfstring &, newText)
         ) {
     zfbool shouldChange = zftrue;
     this->textOnChangeCheck(newText, shouldChange);
@@ -325,7 +325,7 @@ void ZFUITextEdit::textOnEditEnd(void) {
     this->observerNotify(ZFUITextEdit::EventTextOnEditEnd());
 }
 void ZFUITextEdit::textOnChangeCheck(
-        ZF_IN const zfchar *newText
+        ZF_IN const zfstring &newText
         , ZF_IN_OUT zfbool &shouldChange
         ) {
     shouldChange = zftrue;
@@ -344,7 +344,7 @@ void ZFUITextEdit::textOnChangeCheck(
         shouldChange = t->zfv;
     }
 }
-void ZFUITextEdit::textOnChange(ZF_IN const zfchar *oldText) {
+void ZFUITextEdit::textOnChange(ZF_IN const zfstring &oldText) {
     if(this->observerHasAdd(ZFUITextEdit::EventTextOnChange())) {
         zfobj<v_zfstring> oldTextTmp(oldText);
         this->observerNotify(ZFUITextEdit::EventTextOnChange(), oldTextTmp);

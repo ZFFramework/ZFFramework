@@ -127,7 +127,7 @@ public:
     }
     virtual void nativeAudioLoad(
             ZF_IN ZFAudio *audio
-            , ZF_IN const zfchar *url
+            , ZF_IN const zfstring &url
             ) {
         _ZFP_ZFAudioImpl_sys_iOS_Audio *nativeAudio = (__bridge _ZFP_ZFAudioImpl_sys_iOS_Audio *)audio->nativeAudio();
 

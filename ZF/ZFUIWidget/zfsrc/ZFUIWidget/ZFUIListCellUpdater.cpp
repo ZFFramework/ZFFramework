@@ -10,7 +10,7 @@ ZFEVENT_REGISTER(ZFUIListCellUpdater, CellOnRecycle)
 #define _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key) \
     zfstring cacheKey = zfstr("_ZFP_ZFUIListCellUpdater_cacheKey_%s", key)
 ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfauto, itemCacheAccess
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         ) {
     _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key);
     ZFArray *cacheList = this->toObject()->objectTag(cacheKey);
@@ -24,7 +24,7 @@ ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfauto, itemCacheAccess
     }
 }
 ZFMETHOD_DEFINE_2(ZFUIListCellUpdater, void, itemCacheRecycle
-        , ZFMP_IN(const zfchar *, key)
+        , ZFMP_IN(const zfstring &, key)
         , ZFMP_IN(ZFObject *, cache)
         ) {
     _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key);
