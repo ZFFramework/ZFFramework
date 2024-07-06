@@ -62,53 +62,7 @@ ZFTYPEID_PROGRESS_DEFINE(zftimet, zftimet, {
     })
 
 // ============================================================
-ZFTYPEID_DEFINE(zfidentity, zfidentity, {
-        if(ZFSerializableUtil::requireItemClass(serializableData, ZFTypeId_zfidentity(), outErrorHint, outErrorPos) == zfnull) {
-            return zffalse;
-        }
-        v = zfidentityInvalid();
-        ZFSerializableUtilSerializeAttributeFromData(serializableData, outErrorHint, outErrorPos,
-                check, ZFSerializableKeyword_value, zfidentity, v, {
-                    return zffalse;
-                });
-        serializableData.resolveMark();
-        return zftrue;
-    }, {
-        serializableData.itemClass(ZFTypeId_zfidentity());
-        zfstring s;
-        if(!zfidentityToStringT(s, v)) {
-            ZFSerializableUtilErrorOccurred(outErrorHint,
-                "unable to convert value to string");
-            return zffalse;
-        }
-        serializableData.propertyValue(s.isEmpty() ? zfnull : s.cString());
-        return zftrue;
-    }, {
-        if(src == zfnull
-                || srcLen == 0
-                || zfsncmp(src, ZFTOKEN_zfidentityInvalid, srcLen) == 0
-                ) {
-            v = zfidentityInvalid();
-            return zftrue;
-        }
-        v = ZFIdMapIdForName(srcLen == zfindexMax() || src[srcLen] == '\0' ? src : zfstring(src, srcLen).cString());
-        return (v != zfidentityInvalid());
-    }, {
-        if(v == zfidentityInvalid()) {
-            s += ZFTOKEN_zfidentityInvalid;
-            return zftrue;
-        }
-        else {
-            const zfchar *name = ZFIdMapNameForId(v);
-            if(name == zfnull) {
-                return zffalse;
-            }
-            else {
-                s += name;
-                return zftrue;
-            }
-        }
-    })
+_ZFP_ZFTYPEID_DEFINE_int_allow_negative(zfidentity, zfidentity)
 
 // ============================================================
 _ZFP_ZFTYPEID_DEFINE_int_disallow_negative(zfflags, zfflags)

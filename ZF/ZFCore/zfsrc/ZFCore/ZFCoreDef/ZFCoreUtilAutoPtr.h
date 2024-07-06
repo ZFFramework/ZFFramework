@@ -31,11 +31,6 @@ _ZFP_zflineFreeContainer<T_POD> _ZFP_zflineFreeWrapper(ZF_IN T_POD *p) {
  */
 #define zflineFree(obj) (_ZFP_zflineFreeWrapper(obj).p)
 
-/**
- * @brief #zfsConnect strings then #zflineFree it
- */
-#define zfsConnectLineFree(src, ...) zflineFree(zfsConnect(src, ##__VA_ARGS__))
-
 // ============================================================
 // zfblockedFree
 zfclassLikePOD ZFLIB_ZFCore _ZFP_zfblockedFreeContainer {

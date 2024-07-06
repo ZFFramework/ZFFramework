@@ -133,6 +133,35 @@ typedef zfauto (*ZFMethodParamDefaultValueCallback)(
         );
 
 // ============================================================
+zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFMethodMP {
+public:
+    zfindex paramCount;
+    ZFSigName paramTypeId[ZFMETHOD_MAX_PARAM];
+    ZFSigName paramTypeName[ZFMETHOD_MAX_PARAM];
+    ZFSigName paramName[ZFMETHOD_MAX_PARAM];
+    ZFMethodParamDefaultValueCallback paramDefaultValueAccess[ZFMETHOD_MAX_PARAM];
+public:
+    _ZFP_ZFMethodMP &add(
+            ZF_IN const zfchar *paramTypeId
+            , ZF_IN const zfchar *paramTypeName
+            , ZF_IN const zfchar *paramName
+            , ZF_IN ZFMethodParamDefaultValueCallback paramDefaultValueAccess
+            ) {
+        this->paramTypeId[this->paramCount] = paramTypeId;
+        this->paramTypeName[this->paramCount] = paramTypeName;
+        this->paramName[this->paramCount] = paramName;
+        this->paramDefaultValueAccess[this->paramCount] = paramDefaultValueAccess;
+        ++this->paramCount;
+        return *this;
+    }
+public:
+    _ZFP_ZFMethodMP(void) : paramCount(0) {
+    }
+private:
+    _ZFP_ZFMethodMP(ZF_IN const _ZFP_ZFMethodMP &ref);
+};
+
+// ============================================================
 /**
  * @brief reflectable method for ZFObject
  *
@@ -249,7 +278,7 @@ public:
             , ZF_IN const zfchar *methodName
             , ZF_IN const zfchar *returnTypeId
             , ZF_IN const zfchar *returnTypeName
-            , ... /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
+            , ZF_IN const _ZFP_ZFMethodMP &mp
             );
     void _ZFP_ZFMethod_initClassMemberType(
             ZF_IN const ZFClass *methodOwnerClass
@@ -713,24 +742,7 @@ extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegister(
         , ZF_IN const zfchar *methodName
         , ZF_IN const zfchar *returnTypeId
         , ZF_IN const zfchar *returnTypeName
-        /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
-        , ...
-        );
-extern ZFLIB_ZFCore ZFMethod *_ZFP_ZFMethodRegisterV(
-        ZF_IN zfbool methodIsUserRegister
-        , ZF_IN zfbool methodIsDynamicRegister
-        , ZF_IN ZFObject *methodDynamicRegisterUserData
-        , ZF_IN ZFFuncAddrType methodInvoker
-        , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-        , ZF_IN ZFMethodType methodType
-        , ZF_IN const ZFClass *methodOwnerClass
-        , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-        , ZF_IN const zfchar *methodNamespace
-        , ZF_IN const zfchar *methodName
-        , ZF_IN const zfchar *returnTypeId
-        , ZF_IN const zfchar *returnTypeName
-        /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
-        , ZF_IN va_list vaList
+        , ZF_IN const _ZFP_ZFMethodMP &mp
         );
 extern ZFLIB_ZFCore void _ZFP_ZFMethodUnregister(ZF_IN const ZFMethod *method);
 
@@ -749,25 +761,7 @@ public:
             , ZF_IN const zfchar *methodName
             , ZF_IN const zfchar *returnTypeId
             , ZF_IN const zfchar *returnTypeName
-            /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
-            , ...
-            );
-    _ZFP_ZFMethodRegisterHolder(
-            ZF_IN zfbool dummy
-            , ZF_IN zfbool methodIsUserRegister
-            , ZF_IN zfbool methodIsDynamicRegister
-            , ZF_IN ZFObject *methodDynamicRegisterUserData
-            , ZF_IN ZFFuncAddrType methodInvoker
-            , ZF_IN ZFMethodGenericInvoker methodGenericInvoker
-            , ZF_IN ZFMethodType methodType
-            , ZF_IN const ZFClass *methodOwnerClass
-            , ZF_IN ZFMethodPrivilegeType methodPrivilegeType
-            , ZF_IN const zfchar *methodNamespace
-            , ZF_IN const zfchar *methodName
-            , ZF_IN const zfchar *returnTypeId
-            , ZF_IN const zfchar *returnTypeName
-            /* ParamTypeIdString, ParamTypeName, ParamName, DefaultValueAccessCallback, end with zfnull */
-            , ZF_IN va_list vaList
+            , ZF_IN const _ZFP_ZFMethodMP &mp
             );
     ~_ZFP_ZFMethodRegisterHolder(void);
 public:

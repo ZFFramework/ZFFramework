@@ -53,8 +53,7 @@ ZFMETHOD_DEFINE_2(ZFUIListAdapter, zffloat, cellSizeAt
 
 // ============================================================
 #define _ZFP_ZFUIListAdapter_cacheKey(cacheKey, key) \
-    zfchar *cacheKey = zfsConnect("_ZFP_ZFUIListAdapter_cacheKey", key); \
-    zfblockedFree(cacheKey)
+    zfstring cacheKey = zfstr("_ZFP_ZFUIListAdapter_cacheKey_%s", key)
 ZFMETHOD_DEFINE_1(ZFUIListAdapter, zfautoT<ZFUIListCell>, cellCacheDefaultAccess
         , ZFMP_IN(const zfchar *, key)
         ) {

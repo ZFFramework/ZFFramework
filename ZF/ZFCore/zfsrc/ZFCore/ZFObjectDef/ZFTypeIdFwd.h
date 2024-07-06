@@ -805,14 +805,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 _ZFP_PropTypeW_##TypeName *v = zfnew(_ZFP_PropTypeW_##TypeName); \
                 *v = (_ZFP_PropTypeW_##TypeName)aliasValue; \
                 _ZFP_PropAliasAttach(obj, v \
-                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *v; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \
@@ -845,14 +845,14 @@ typedef zfbool (*_ZFP_ZFTypeIdProgressUpdate)(
                 _TrNoRef *p = zfnew(_TrNoRef); \
                 *p = v; \
                 _ZFP_PropAliasAttach(obj, p \
-                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     , _ZFP_PropAliasOnDetach \
                     ); \
                 return *p; \
             } \
             static void zfvAccessFinish(ZF_IN_OUT zfauto &obj) { \
                 _ZFP_PropAliasDetach(obj \
-                    , zfsConnectLineFree(#TypeName, ":", zftTraits<T_Access>::ModifierName()) \
+                    , zfstr("%s:%s", #TypeName, zftTraits<T_Access>::ModifierName()) \
                     ); \
             } \
         private: \

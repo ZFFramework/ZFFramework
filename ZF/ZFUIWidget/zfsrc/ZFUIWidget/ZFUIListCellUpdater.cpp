@@ -8,8 +8,7 @@ ZFEVENT_REGISTER(ZFUIListCellUpdater, CellOnUpdate)
 ZFEVENT_REGISTER(ZFUIListCellUpdater, CellOnRecycle)
 
 #define _ZFP_ZFUIListCellUpdater_cacheKey(cacheKey, key) \
-    zfchar *cacheKey = zfsConnect("_ZFP_ZFUIListCellUpdater_cacheKey", key); \
-    zfblockedFree(cacheKey)
+    zfstring cacheKey = zfstr("_ZFP_ZFUIListCellUpdater_cacheKey_%s", key)
 ZFMETHOD_DEFINE_1(ZFUIListCellUpdater, zfauto, itemCacheAccess
         , ZFMP_IN(const zfchar *, key)
         ) {

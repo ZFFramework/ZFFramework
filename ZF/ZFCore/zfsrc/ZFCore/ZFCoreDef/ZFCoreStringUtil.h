@@ -129,48 +129,6 @@ inline zfchar *zfsAppend(
     return old;
 }
 
-#define _ZFP_zfsConnectEndPtr ((void *)-1)
-inline zfchar *_ZFP_zfsConnect(ZF_IN const zfchar *src, ...) {
-    zfindex len = 0;
-    va_list vaList;
-    const zfchar *tmp = src;
-
-    va_start(vaList, src);
-    do {
-        if(tmp != zfnull) {
-            len += zfslen(tmp);
-        }
-        tmp = va_arg(vaList, const zfchar *);
-    } while(tmp != _ZFP_zfsConnectEndPtr);
-    va_end(vaList);
-
-    zfchar *ret = (zfchar *)zfmalloc(sizeof(zfchar) * (len + 1));
-    tmp = src;
-    len = 0;
-    zfindex tmpLen = 0;
-    va_start(vaList, src);
-    do {
-        if(tmp != zfnull) {
-            tmpLen = zfslen(tmp);
-            zfmemcpy(ret + len, tmp, sizeof(zfchar) * tmpLen);
-            len += tmpLen;
-        }
-        tmp = va_arg(vaList, const zfchar *);
-    } while(tmp != _ZFP_zfsConnectEndPtr);
-    va_end(vaList);
-    ret[len] = '\0';
-
-    return ret;
-}
-/**
- * @brief connect multiple strings and return a newly created string,
- *   result must be deleted by #zffree
- *
- * null string would be treated as empty string
- */
-#define zfsConnect(src, ...) \
-    ZFM_VA_APPEND(_ZFP_zfsConnect, _ZFP_zfsConnectEndPtr, src, ##__VA_ARGS__)
-
 // ============================================================
 /**
  * @brief check whether the toCompare matches the tokens, return the index in tokens or zfindexMax() if not matched
@@ -580,7 +538,10 @@ inline zfstring zfstringToUpper(
  *   }
  * @endcode
  */
-#define zfstringSwitch(v, c0, ...) _ZFP_zfstringSwitch(v, c0, ##__VA_ARGS__)
+#define zfstringSwitch(v, c0, ...) _ZFP_zfstringSwitch(v, c0 \
+        ZFM_FIX_PARAM(_ZFP_zfstringSwitchExpand, ZFM_EMPTY, ##__VA_ARGS__) \
+        , zfnull)
+#define _ZFP_zfstringSwitchExpand(arg) , ((const zfchar *)(arg))
 extern ZFLIB_ZFCore zfindex _ZFP_zfstringSwitch(
         ZF_IN const zfchar *v
         , ZF_IN const zfchar *c0

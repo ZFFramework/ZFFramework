@@ -40,55 +40,55 @@ extern ZFLIB_ZFCore void ZFMethodUserUnregister(ZF_IN const ZFMethod *method);
         , methodNameString \
         , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \
         , #ReturnType \
-        ParamExpandOrEmpty0(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType0>::TrNoRef>::TypeId() \
+        , _ZFP_ZFMethodMP() \
+        ParamExpandOrEmpty0(.add( \
+                ZFTypeId<zftTraits<ParamType0>::TrNoRef>::TypeId() \
                 , #ParamType0 \
                 , #param0 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty0, 0) \
-            ) \
-        ParamExpandOrEmpty1(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType1>::TrNoRef>::TypeId() \
+                )) \
+        ParamExpandOrEmpty1(.add( \
+                ZFTypeId<zftTraits<ParamType1>::TrNoRef>::TypeId() \
                 , #ParamType1 \
                 , #param1 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty1, 1) \
-            ) \
-        ParamExpandOrEmpty2(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType2>::TrNoRef>::TypeId() \
+                )) \
+        ParamExpandOrEmpty2(.add( \
+                ZFTypeId<zftTraits<ParamType2>::TrNoRef>::TypeId() \
                 , #ParamType2 \
                 , #param2 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty2, 2) \
-            ) \
-        ParamExpandOrEmpty3(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType3>::TrNoRef>::TypeId() \
+                )) \
+        ParamExpandOrEmpty3(.add( \
+                ZFTypeId<zftTraits<ParamType3>::TrNoRef>::TypeId() \
                 , #ParamType3 \
                 , #param3 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty3, 3) \
-            ) \
-        ParamExpandOrEmpty4(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType4>::TrNoRef>::TypeId() \
+                )) \
+        ParamExpandOrEmpty4(.add( \
+                ZFTypeId<zftTraits<ParamType4>::TrNoRef>::TypeId() \
                 , #ParamType4 \
                 , #param4 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty4, 4) \
-            ) \
-        ParamExpandOrEmpty5(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType5>::TrNoRef>::TypeId() \
+                )) \
+        ParamExpandOrEmpty5(.add( \
+                ZFTypeId<zftTraits<ParamType5>::TrNoRef>::TypeId() \
                 , #ParamType5 \
                 , #param5 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty5, 5) \
-            ) \
-        ParamExpandOrEmpty6(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType6>::TrNoRef>::TypeId() \
+                )) \
+        ParamExpandOrEmpty6(.add( \
+                ZFTypeId<zftTraits<ParamType6>::TrNoRef>::TypeId() \
                 , #ParamType6 \
                 , #param6 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty6, 6) \
-            ) \
-        ParamExpandOrEmpty7(ZFM_EMPTY() \
-                , ZFTypeId<zftTraits<ParamType7>::TrNoRef>::TypeId() \
+                )) \
+        ParamExpandOrEmpty7(.add( \
+                ZFTypeId<zftTraits<ParamType7>::TrNoRef>::TypeId() \
                 , #ParamType7 \
                 , #param7 \
                 , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(GenericInvokerOwner, DefaultExpandOrEmpty7, 7) \
-            ) \
-        , (const zfchar *)zfnull \
+                )) \
     )
 
 #define _ZFP_ZFMethodUserRegister(...) \

@@ -48,24 +48,6 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewFocusNextSetup
     }
 }
 
-void _ZFP_ZFUIViewFocusNextSetupChain(
-        ZF_IN ZFUIView *view0
-        , ZF_IN ZFUIView *view1
-        , ...
-        ) {
-    ZFUIView *from = view0;
-    ZFUIView *to = view1;
-
-    va_list vaList;
-    va_start(vaList, view1);
-    while(to != _ZFP_ZFUIViewFocusNextSetupChainEndPtr) {
-        ZFUIViewFocusNextSetup(from, to);
-        from = to;
-        to = va_arg(vaList, ZFUIView *);
-    }
-    va_end(vaList);
-}
-
 // ============================================================
 ZFEXPORT_VAR_DEFINE(ZFFilterForZFObject, ZFUIViewFocusNextFilter, ZFFilterForZFObject())
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIViewFocusNextFilterDataHolder, ZFLevelZFFrameworkEssential) {

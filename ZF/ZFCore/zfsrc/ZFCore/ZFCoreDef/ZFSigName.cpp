@@ -134,6 +134,7 @@ ZFSigName::~ZFSigName(void) {
 zfidentity ZFSigName::sigId(void) const {
     if(d) {
         if(d->sigId == zfidentityInvalid()) {
+            zfCoreMutexLocker();
             _ZFP_ZFSigIdAttach(d);
         }
         return d->sigId;

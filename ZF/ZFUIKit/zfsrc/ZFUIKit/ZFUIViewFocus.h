@@ -18,18 +18,6 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewFocusNextSetup
         , ZFMP_IN(ZFUIView *, nextFocus)
         )
 
-#define _ZFP_ZFUIViewFocusNextSetupChainEndPtr ((ZFUIView *)-1)
-extern ZFLIB_ZFUIKit void _ZFP_ZFUIViewFocusNextSetupChain(
-        ZF_IN ZFUIView *view0
-        , ZF_IN ZFUIView *view1
-        , ...
-        );
-/**
- * @brief util method to chain all view's next focus target by #ZFUIViewFocusNextSetup
- */
-#define ZFUIViewFocusNextSetupChain(view0, view1, ...) \
-    ZFM_VA_APPEND(_ZFP_ZFUIViewFocusNextSetupChain, _ZFP_ZFUIViewFocusNextSetupChainEndPtr, view0, view1, ##__VA_ARGS__)
-
 // ============================================================
 /**
  * @brief filter to exclude certain view from being focused by #ZFUIViewFocusNextFind, empty by default

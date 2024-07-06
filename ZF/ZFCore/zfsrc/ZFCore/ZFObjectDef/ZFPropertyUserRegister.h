@@ -95,7 +95,7 @@ public:
             , ZF_IN zfany const &ownerObj
             ) {
         return (ownerObj->objectTag(
-                zfsConnectLineFree("_ZFP_PropURDIRetain_", property->propertyName())
+                zfstr("_ZFP_PropURDIRetain_%s", property->propertyName())
             ) != zfnull);
     }
     /** @brief default impl for #ZFPropertyUserRegisterRetain */
@@ -217,7 +217,7 @@ public:
             , ZF_IN zfany const &ownerObj
             ) {
         return (ownerObj->objectTag(
-                zfsConnectLineFree("_ZFP_PropURDIAssign_", property->propertyName())
+                zfstr("_ZFP_PropURDIAssign_%s", property->propertyName())
             ) != zfnull);
     }
     /** @brief default impl for #ZFPropertyUserRegisterAssign */

@@ -345,55 +345,55 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                     , #MethodName \
                     , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \
                     , #ReturnType \
-                    ParamExpandOrEmpty0(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType0>::TrNoRef>::TypeId() \
+                    , _ZFP_ZFMethodMP() \
+                    ParamExpandOrEmpty0(.add( \
+                            ZFTypeId<zftTraits<ParamType0>::TrNoRef>::TypeId() \
                             , #ParamType0 \
                             , #param0 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty0, 0) \
-                        ) \
-                    ParamExpandOrEmpty1(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType1>::TrNoRef>::TypeId() \
+                            )) \
+                    ParamExpandOrEmpty1(.add( \
+                            ZFTypeId<zftTraits<ParamType1>::TrNoRef>::TypeId() \
                             , #ParamType1 \
                             , #param1 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty1, 1) \
-                        ) \
-                    ParamExpandOrEmpty2(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType2>::TrNoRef>::TypeId() \
+                            )) \
+                    ParamExpandOrEmpty2(.add( \
+                            ZFTypeId<zftTraits<ParamType2>::TrNoRef>::TypeId() \
                             , #ParamType2 \
                             , #param2 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty2, 2) \
-                        ) \
-                    ParamExpandOrEmpty3(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType3>::TrNoRef>::TypeId() \
+                            )) \
+                    ParamExpandOrEmpty3(.add( \
+                            ZFTypeId<zftTraits<ParamType3>::TrNoRef>::TypeId() \
                             , #ParamType3 \
                             , #param3 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty3, 3) \
-                        ) \
-                    ParamExpandOrEmpty4(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType4>::TrNoRef>::TypeId() \
+                            )) \
+                    ParamExpandOrEmpty4(.add( \
+                            ZFTypeId<zftTraits<ParamType4>::TrNoRef>::TypeId() \
                             , #ParamType4 \
                             , #param4 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty4, 4) \
-                        ) \
-                    ParamExpandOrEmpty5(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType5>::TrNoRef>::TypeId() \
+                            )) \
+                    ParamExpandOrEmpty5(.add( \
+                            ZFTypeId<zftTraits<ParamType5>::TrNoRef>::TypeId() \
                             , #ParamType5 \
                             , #param5 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty5, 5) \
-                        ) \
-                    ParamExpandOrEmpty6(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType6>::TrNoRef>::TypeId() \
+                            )) \
+                    ParamExpandOrEmpty6(.add( \
+                            ZFTypeId<zftTraits<ParamType6>::TrNoRef>::TypeId() \
                             , #ParamType6 \
                             , #param6 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty6, 6) \
-                        ) \
-                    ParamExpandOrEmpty7(ZFM_EMPTY() \
-                            , ZFTypeId<zftTraits<ParamType7>::TrNoRef>::TypeId() \
+                            )) \
+                    ParamExpandOrEmpty7(.add( \
+                            ZFTypeId<zftTraits<ParamType7>::TrNoRef>::TypeId() \
                             , #ParamType7 \
                             , #param7 \
                             , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##MethodName##_##RegSig, DefaultExpandOrEmpty7, 7) \
-                        ) \
-                    , (const zfchar *)zfnull \
+                            )) \
                 ); \
             return _methodHolder.method; \
         } \
@@ -611,55 +611,55 @@ ZF_NAMESPACE_GLOBAL_BEGIN
                 , #MethodName \
                 , ZFTypeId<zftTraits<ReturnType>::TrNoRef>::TypeId() \
                 , #ReturnType \
-                ParamExpandOrEmpty0(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType0>::TrNoRef>::TypeId() \
+                , _ZFP_ZFMethodMP() \
+                ParamExpandOrEmpty0(.add( \
+                        ZFTypeId<zftTraits<ParamType0>::TrNoRef>::TypeId() \
                         , #ParamType0 \
                         , #param0 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty0, 0) \
-                    ) \
-                ParamExpandOrEmpty1(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType1>::TrNoRef>::TypeId() \
+                        )) \
+                ParamExpandOrEmpty1(.add( \
+                        ZFTypeId<zftTraits<ParamType1>::TrNoRef>::TypeId() \
                         , #ParamType1 \
                         , #param1 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty1, 1) \
-                    ) \
-                ParamExpandOrEmpty2(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType2>::TrNoRef>::TypeId() \
+                        )) \
+                ParamExpandOrEmpty2(.add( \
+                        ZFTypeId<zftTraits<ParamType2>::TrNoRef>::TypeId() \
                         , #ParamType2 \
                         , #param2 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty2, 2) \
-                    ) \
-                ParamExpandOrEmpty3(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType3>::TrNoRef>::TypeId() \
+                        )) \
+                ParamExpandOrEmpty3(.add( \
+                        ZFTypeId<zftTraits<ParamType3>::TrNoRef>::TypeId() \
                         , #ParamType3 \
                         , #param3 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty3, 3) \
-                    ) \
-                ParamExpandOrEmpty4(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType4>::TrNoRef>::TypeId() \
+                        )) \
+                ParamExpandOrEmpty4(.add( \
+                        ZFTypeId<zftTraits<ParamType4>::TrNoRef>::TypeId() \
                         , #ParamType4 \
                         , #param4 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty4, 4) \
-                    ) \
-                ParamExpandOrEmpty5(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType5>::TrNoRef>::TypeId() \
+                        )) \
+                ParamExpandOrEmpty5(.add( \
+                        ZFTypeId<zftTraits<ParamType5>::TrNoRef>::TypeId() \
                         , #ParamType5 \
                         , #param5 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty5, 5) \
-                    ) \
-                ParamExpandOrEmpty6(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType6>::TrNoRef>::TypeId() \
+                        )) \
+                ParamExpandOrEmpty6(.add( \
+                        ZFTypeId<zftTraits<ParamType6>::TrNoRef>::TypeId() \
                         , #ParamType6 \
                         , #param6 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty6, 6) \
-                    ) \
-                ParamExpandOrEmpty7(ZFM_EMPTY() \
-                        , ZFTypeId<zftTraits<ParamType7>::TrNoRef>::TypeId() \
+                        )) \
+                ParamExpandOrEmpty7(.add( \
+                        ZFTypeId<zftTraits<ParamType7>::TrNoRef>::TypeId() \
                         , #ParamType7 \
                         , #param7 \
                         , _ZFP_ZFMETHOD_GENERIC_PARAM_DEFAULT_ACCESS_ADDR(_ZFP_MtdH_##OwnerClass##_##MethodName##_##RegSig, DefaultExpandOrEmpty7, 7) \
-                    ) \
-                , (const zfchar *)zfnull \
+                        )) \
             ); \
         return _methodHolder.method; \
     } \
