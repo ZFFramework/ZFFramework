@@ -16,7 +16,7 @@
  *   zfLogTrim() << "serialized data:";
  *   zfLogTrim() << xmlString;
  *
- *   ZFSerializableData dataNew = ZFSerializableDataFromXml(ZFInputForBufferUnsafe(xmlString));
+ *   ZFSerializableData dataNew = ZFSerializableDataFromXml(ZFInputForString(xmlString));
  *   zfauto objNew = ZFObjectFromData(dataNew);
  *   zfLogTrim() << "re-serialized object:";
  *   zfLogTrim() << objNew;

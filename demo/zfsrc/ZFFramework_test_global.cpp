@@ -45,5 +45,8 @@ void ZFFramework_test_TestCase::testCaseAddFileToRemove(ZF_IN const zfchar *file
     this->_filesToRemove.add(filePath);
 }
 
+// ============================================================
+ZFEXPORT_VAR_DEFINE(zfbool, ZFFramework_test_asyncTestAvailable, zftrue)
+
 ZF_NAMESPACE_GLOBAL_END
 

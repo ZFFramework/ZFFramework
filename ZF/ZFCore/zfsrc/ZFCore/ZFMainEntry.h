@@ -44,6 +44,32 @@ ZF_NAMESPACE_GLOBAL_BEGIN
     ZF_STATIC_REGISTER_END(ZFMainEntryRegister) \
     static void _ZFMain(void)
 
+/**
+ * @brief util macro to register #ZFApp::EventAppParamDispatch
+ *
+ * @code
+ *   ZFMAIN_PARAM_DISPATCH(MyDispatch) {
+ *       if(xxx) {
+ *           zfargs.eventFiltered(zftrue);
+ *           doSomething();
+ *       }
+ *   }
+ * @endcode
+ */
+#define ZFMAIN_PARAM_DISPATCH(regSig) \
+    static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs); \
+    ZF_GLOBAL_INITIALIZER_INIT(MPD_##regSig) { \
+        this->callback = ZFCallbackForFunc(_ZFP_MPD_##regSig); \
+        ZFGlobalObserver().observerAdd(ZFApp::EventAppParamDispatch(), this->callback); \
+    } \
+    ZF_GLOBAL_INITIALIZER_DESTROY(MPD_##regSig) { \
+        ZFGlobalObserver().observerRemove(ZFApp::EventAppParamDispatch(), this->callback); \
+    } \
+    private: \
+        ZFListener callback; \
+    ZF_GLOBAL_INITIALIZER_END(MPD_##regSig) \
+    static void _ZFP_MPD_##regSig(ZF_IN const ZFArgs &zfargs)
+
 // ============================================================
 ZF_NAMESPACE_BEGIN(ZFApp)
 

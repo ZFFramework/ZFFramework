@@ -29,6 +29,8 @@ private:
     zfstring _testCaseTmpPath;
 };
 
+ZFEXPORT_VAR_DECLARE(ZFLIB_APP, zfbool, ZFFramework_test_asyncTestAvailable)
+
 #define ZFFramework_test_protocolCheck(ProtocolName) \
     do { \
         if(!ZFProtocolIsAvailable(#ProtocolName)) { \
@@ -40,8 +42,12 @@ private:
 
 #define ZFFramework_test_asyncTestCheck() \
     do { \
-        if(!ZFThread::implMainThreadTaskAvailable()) { \
-            this->testCaseOutput("ZFThread::implMainThreadTaskAvailable() not available, skip test case"); \
+        if(!ZFThread::implMainThreadTaskAvailable() || !ZFFramework_test_asyncTestAvailable()) { \
+            this->testCaseOutput(zfstr("%s not available, skip test case" \
+                        , !ZFThread::implMainThreadTaskAvailable() \
+                            ? "ZFThread::implMainThreadTaskAvailable()" \
+                            : "ZFFramework_test_asyncTestAvailable()" \
+                        )); \
             this->testCaseStop(); \
             return; \
         } \

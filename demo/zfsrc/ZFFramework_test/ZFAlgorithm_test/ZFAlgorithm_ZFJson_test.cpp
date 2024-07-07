@@ -70,10 +70,10 @@ private:
         ZFJsonToOutput(ZFOutputForString(jsonString), jsonItem);
         ZFCoreStatistic::invokeTimeLogBegin("ZFJsonPerformance_test_fromData");
         for(zfindex i = 0; i < fromDataTimes; ++i) {
-            ZFJsonFromInput(ZFInputForBufferUnsafe(jsonString));
+            ZFJsonFromInput(ZFInputForString(jsonString));
         }
         ZFCoreStatistic::invokeTimeLogEnd("ZFJsonPerformance_test_fromData");
-        ZFJson jsonItemNew = ZFJsonFromInput(ZFInputForBufferUnsafe(jsonString));
+        ZFJson jsonItemNew = ZFJsonFromInput(ZFInputForString(jsonString));
 
         this->testCaseOutputSeparator();
 

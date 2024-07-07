@@ -63,10 +63,10 @@ private:
         ZFXmlToOutput(ZFOutputForString(xmlString), xmlItem);
         ZFCoreStatistic::invokeTimeLogBegin("ZFXmlPerformance_test_fromData");
         for(zfindex i = 0; i < fromDataTimes; ++i) {
-            ZFXmlFromInput(ZFInputForBufferUnsafe(xmlString));
+            ZFXmlFromInput(ZFInputForString(xmlString));
         }
         ZFCoreStatistic::invokeTimeLogEnd("ZFXmlPerformance_test_fromData");
-        ZFXml xmlItemNew = ZFXmlFromInput(ZFInputForBufferUnsafe(xmlString));
+        ZFXml xmlItemNew = ZFXmlFromInput(ZFInputForString(xmlString));
 
         this->testCaseOutputSeparator();
 

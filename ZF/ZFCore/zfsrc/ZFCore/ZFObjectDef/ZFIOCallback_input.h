@@ -228,8 +228,7 @@ extern ZFLIB_ZFCore ZFInput ZFInputForBuffer(
  * @brief same as #ZFInputForBuffer
  */
 extern ZFLIB_ZFCore ZFInput ZFInputForString(
-        ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex count = zfindexMax()
+        ZF_IN const zfstring &src
         , ZF_IN_OPT zfbool serializable = zffalse
         );
 

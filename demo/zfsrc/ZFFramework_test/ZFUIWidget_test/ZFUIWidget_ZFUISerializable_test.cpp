@@ -20,7 +20,7 @@ protected:
             ZFObjectToXml(ZFOutputForString(s), testObject);
             ZFOutputDefault() << s;
             this->testCaseOutput("xml re-serialized:");
-            ZFObjectToXml(ZFOutputDefault(), ZFObjectFromXml(ZFInputForBufferUnsafe(s)));
+            ZFObjectToXml(ZFOutputDefault(), ZFObjectFromXml(ZFInputForString(s)));
         }
 
         {
@@ -30,7 +30,7 @@ protected:
             ZFObjectToJson(ZFOutputForString(s), testObject);
             ZFOutputDefault() << s;
             this->testCaseOutput("json re-serialized:");
-            ZFObjectToJson(ZFOutputDefault(), ZFObjectFromJson(ZFInputForBufferUnsafe(s)));
+            ZFObjectToJson(ZFOutputDefault(), ZFObjectFromJson(ZFInputForString(s)));
         }
 
         {
@@ -40,7 +40,7 @@ protected:
             ZFObjectToZfsd(ZFOutputForString(s), testObject);
             ZFOutputDefault() << s;
             this->testCaseOutput("zfsd re-serialized:");
-            ZFObjectToZfsd(ZFOutputDefault(), ZFObjectFromZfsd(ZFInputForBufferUnsafe(s)));
+            ZFObjectToZfsd(ZFOutputDefault(), ZFObjectFromZfsd(ZFInputForString(s)));
         }
 
         this->testCaseStop();

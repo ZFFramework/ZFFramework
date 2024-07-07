@@ -399,11 +399,22 @@ ZFInput ZFInputForBuffer(
     return _ZFP_ZFInputForBuffer(zftrue, src, count, serializable);
 }
 ZFInput ZFInputForString(
-        ZF_IN const zfchar *src
-        , ZF_IN_OPT zfindex count /* = zfindexMax() */
+        ZF_IN const zfstring &src
         , ZF_IN_OPT zfbool serializable /* = zffalse */
         ) {
-    return _ZFP_ZFInputForBuffer(zftrue, src, count, serializable);
+    zfobj<_ZFP_I_ZFInputForBufferUnsafeOwner> owner;
+    zfobj<v_zfstring> buf(src);
+    owner->pStart = (const zfbyte *)buf->zfv.cString();
+    owner->pEnd = owner->pStart + buf->zfv.length() * sizeof(zfchar);
+    owner->p = owner->pStart;
+    ZFInput ret = ZFCallbackForMemberMethod(
+        owner, ZFMethodAccess(_ZFP_I_ZFInputForBufferUnsafeOwner, onInput));
+    ret.callbackTag("ZFInputForBufferCopiedBuffer", buf);
+    ret.callbackTag(ZFCallbackTagKeyword_ioOwner, owner);
+    if(serializable) {
+        _ZFP_ZFInputForBuffer_serialize(ret, src, src.length() * sizeof(zfchar));
+    }
+    return ret;
 }
 
 ZF_NAMESPACE_GLOBAL_END
@@ -454,9 +465,8 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFInput, ZFInputForBuffer
         , ZFMP_IN_OPT(zfindex, count, zfindexMax())
         , ZFMP_IN_OPT(zfbool, serializable, zffalse)
         )
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(ZFInput, ZFInputForString
-        , ZFMP_IN(const zfchar *, buf)
-        , ZFMP_IN_OPT(zfindex, count, zfindexMax())
+ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFInput, ZFInputForString
+        , ZFMP_IN(const zfstring &, src)
         , ZFMP_IN_OPT(zfbool, serializable, zffalse)
         )
 
