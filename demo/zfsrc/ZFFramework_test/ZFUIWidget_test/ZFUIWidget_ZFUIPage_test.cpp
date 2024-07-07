@@ -202,6 +202,12 @@ protected:
         zfsuper::testCaseOnStop(testCaseResult);
     }
 
+    zfoverride
+    virtual void objectOnInit(void) {
+        zfsuper::objectOnInit();
+        this->_pageManager = zfnull;
+    }
+
 private:
     void prepareSettingButton(
             ZF_IN ZFUIWindow *window
