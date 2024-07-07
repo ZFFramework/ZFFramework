@@ -48,7 +48,7 @@ void ZFMethod::_ZFP_ZFMethod_init(
     this->_ZFP_ZFMethod_returnTypeName = returnTypeName;
 
     // update param count
-    for(zfindex i = 0; i < mp.paramCount; ++i) {
+    for(zfuint i = 0; i < mp.paramCount; ++i) {
         if(mp.paramDefaultValueAccess[i] != zfnull) {
             _ZFP_ZFMethod_paramDefaultBeginIndex = (zfuint)i;
             break;
@@ -404,7 +404,7 @@ static void _ZFP_ZFMethodInstanceSig(
     ret += ':';
     zfindexToStringT(ret, methodName.sigId());
 
-    for(zfindex i = 0; i < mp.paramCount; ++i) {
+    for(zfuint i = 0; i < mp.paramCount; ++i) {
         ret += '+';
         zfidentityToStringT(ret, mp.paramTypeId[i].sigId());
     }
@@ -508,9 +508,9 @@ ZFMethod *_ZFP_ZFMethodRegister(
 
         // param type id may be same for different cpp type
         // strict check type name to prevent redefine
-        zfbool isRedefine = (mp.paramCount == method->methodParamCount());
+        zfbool isRedefine = ((zfindex)mp.paramCount == method->methodParamCount());
         if(!isRedefine) {
-            for(zfindex i = 0; i < mp.paramCount; ++i) {
+            for(zfuint i = 0; i < mp.paramCount; ++i) {
                 if(!zfstringIsEqual(mp.paramTypeName[i], method->methodParamTypeNameAt(i))) {
                     isRedefine = zftrue;
                     break;

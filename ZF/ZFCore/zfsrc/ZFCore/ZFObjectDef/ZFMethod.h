@@ -135,7 +135,7 @@ typedef zfauto (*ZFMethodParamDefaultValueCallback)(
 // ============================================================
 zfclassLikePOD ZFLIB_ZFCore _ZFP_ZFMethodMP {
 public:
-    zfindex paramCount;
+    zfuint paramCount;
     ZFSigName paramTypeId[ZFMETHOD_MAX_PARAM];
     ZFSigName paramTypeName[ZFMETHOD_MAX_PARAM];
     ZFSigName paramName[ZFMETHOD_MAX_PARAM];
