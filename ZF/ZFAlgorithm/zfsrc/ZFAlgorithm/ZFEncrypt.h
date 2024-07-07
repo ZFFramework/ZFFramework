@@ -17,13 +17,13 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFEncrypt
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_IN(const zfchar *, encryptKey)
+        , ZFMP_IN(const zfstring &, encryptKey)
         )
 /** @brief see #ZFEncrypt */
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfbool, ZFDecrypt
         , ZFMP_IN_OUT(const ZFOutput &, output)
         , ZFMP_IN(const ZFInput &, input)
-        , ZFMP_IN(const zfchar *, encryptKey)
+        , ZFMP_IN(const zfstring &, encryptKey)
         )
 
 ZF_NAMESPACE_GLOBAL_END

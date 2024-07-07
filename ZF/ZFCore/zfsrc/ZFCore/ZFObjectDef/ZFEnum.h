@@ -17,7 +17,8 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 /**
  * @brief invalid value's name for ZFEnum
  */
-#define ZFEnumNameInvalid() "ZFEnumInvalid"
+#define ZFEnumNameInvalid() _ZFP_ZFEnumNameInvalid()
+extern ZFLIB_ZFCore const zfstring &_ZFP_ZFEnumNameInvalid(void);
 
 // ============================================================
 /**
@@ -152,7 +153,7 @@ public:
     /**
      * @brief get the name at index, or ZFEnumNameInvalid if not exist
      */
-    virtual const zfchar *enumNameAt(ZF_IN zfindex index) zfpurevirtual;
+    virtual const zfstring &enumNameAt(ZF_IN zfindex index) zfpurevirtual;
     /**
      * @brief return true if contain the specified value
      */
@@ -161,11 +162,11 @@ public:
     /**
      * @brief get the value with specified name, or ZFEnumInvalid if not exist
      */
-    virtual zfuint enumValueForName(ZF_IN const zfchar *name) zfpurevirtual;
+    virtual zfuint enumValueForName(ZF_IN const zfstring &name) zfpurevirtual;
     /**
      * @brief get the name with specified value, or ZFEnumNameInvalid if not exist
      */
-    virtual const zfchar *enumNameForValue(ZF_IN zfuint value) zfpurevirtual;
+    virtual const zfstring &enumNameForValue(ZF_IN zfuint value) zfpurevirtual;
 
     /**
      * @brief true if this enum type is flags type
@@ -198,7 +199,7 @@ public:
      * return invalid if holds flags value,
      * use #zfflagsToString instead
      */
-    virtual const zfchar *enumName(void) {
+    virtual const zfstring &enumName(void) {
         return this->enumNameForValue(_ZFP_ZFEnum_value);
     }
 

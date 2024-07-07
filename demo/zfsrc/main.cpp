@@ -86,12 +86,12 @@ static zfauto _ZFP_ZFFramework_test_containerViewPrepare(void) {
 
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
         ZF_IN ZFUIView *containerView
-        , ZF_IN const zfchar *subModuleName
+        , ZF_IN const zfstring &subModuleName
         , ZF_IN ZFCoreArray<const ZFClass *> const &testCases
         );
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
         ZF_IN ZFUIView *containerView
-        , ZF_IN const zfchar *subModuleName
+        , ZF_IN const zfstring &subModuleName
         , ZF_IN const ZFClass *testCase
         );
 static void _ZFP_ZFFramework_test_prepareTestCase(ZF_IN ZFUIView *containerView) {
@@ -137,7 +137,7 @@ zfclass _ZFP_ZFFramework_test_TestCaseSubModuleData : zfextend ZFObject {
 };
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
         ZF_IN ZFUIView *containerView
-        , ZF_IN const zfchar *subModuleName
+        , ZF_IN const zfstring &subModuleName
         , ZF_IN ZFCoreArray<const ZFClass *> const &testCases
         ) {
     zfobj<ZFUIKit_test_Button> button;
@@ -185,7 +185,7 @@ static void _ZFP_ZFFramework_test_prepareTestCaseSubModule(
 }
 static void _ZFP_ZFFramework_test_prepareTestCaseSubModuleTest(
         ZF_IN ZFUIView *containerView
-        , ZF_IN const zfchar *subModuleName
+        , ZF_IN const zfstring &subModuleName
         , ZF_IN const ZFClass *testCase
         ) {
     zfobj<ZFUIKit_test_Button> button;

@@ -48,7 +48,7 @@ public:
         return _ZFP_ZFEnumDataRef()->enumValueAt(index);
     }
     zfoverride
-    virtual const zfchar *enumNameAt(ZF_IN zfindex index) {
+    virtual const zfstring &enumNameAt(ZF_IN zfindex index) {
         return _ZFP_ZFEnumDataRef()->enumNameAt(index);
     }
     zfoverride
@@ -56,11 +56,11 @@ public:
         return _ZFP_ZFEnumDataRef()->enumContainValue(value);
     }
     zfoverride
-    virtual zfuint enumValueForName(ZF_IN const zfchar *name) {
+    virtual zfuint enumValueForName(ZF_IN const zfstring &name) {
         return _ZFP_ZFEnumDataRef()->enumValueForName(name);
     }
     zfoverride
-    virtual const zfchar *enumNameForValue(ZF_IN zfuint value) {
+    virtual const zfstring &enumNameForValue(ZF_IN zfuint value) {
         return _ZFP_ZFEnumDataRef()->enumNameForValue(value);
     }
 public:

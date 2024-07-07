@@ -4,9 +4,9 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-zfclassPOD _ZFP_ZFUIImageFromInputCacheData {
+zfclassLikePOD _ZFP_ZFUIImageFromInputCacheData {
 public:
-    zfchar *inputId;
+    zfstring inputId;
     void *nativeImage;
 };
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIImageFromInputCacheHolder, ZFLevelZFFrameworkNormal) {
@@ -15,7 +15,6 @@ ZF_GLOBAL_INITIALIZER_DESTROY(ZFUIImageFromInputCacheHolder) {
     zfCoreMutexLocker();
     while(!this->cache.isEmpty()) {
         _ZFP_ZFUIImageFromInputCacheData cacheData = this->cache.removeFirstAndGet();
-        zffree(cacheData.inputId);
         ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(cacheData.nativeImage);
     }
 }
@@ -49,13 +48,12 @@ static void *_ZFP_ZFUIImageFromInput(ZF_IN const ZFInput &input) {
 
     zfCoreMutexLocker();
     _ZFP_ZFUIImageFromInputCacheData cacheData;
-    cacheData.inputId = zfsCopy(input.callbackId());
+    cacheData.inputId = input.callbackId();
     cacheData.nativeImage = ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRetain(nativeImage);
     d->cache.add(cacheData);
 
     while(d->cache.count() > 5) {
         _ZFP_ZFUIImageFromInputCacheData cacheData = d->cache.removeFirstAndGet();
-        zffree(cacheData.inputId);
         ZFPROTOCOL_ACCESS(ZFUIImage)->nativeImageRelease(cacheData.nativeImage);
     }
 

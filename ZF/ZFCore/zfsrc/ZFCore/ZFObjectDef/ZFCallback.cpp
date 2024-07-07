@@ -27,7 +27,7 @@ public:
     _ZFP_ZFCallbackLambdaDeleteCallback callbackLambdaImplDestroy;
     ZFFuncAddrType callbackLambdaInvoker;
 
-    zfchar *serializableCustomType;
+    zfstring serializableCustomType;
     ZFSerializableData *serializableCustomData;
     ZFPathInfo *pathInfo;
 
@@ -53,7 +53,6 @@ public:
         if(this->callbackOwnerObjectRetainFlag != 0) {
             zfRelease(this->callbackOwnerObject);
         }
-        zffree(this->serializableCustomType);
         zfdelete(this->serializableCustomData);
         zfdelete(this->pathInfo);
         if(this->callbackLambdaImplDestroy) {
@@ -342,10 +341,10 @@ void ZFCallback::callbackSerializeCustomType(ZF_IN const zfstring &customType) {
     if(d == zfnull) {
         d = zfnew(_ZFP_ZFCallbackPrivate);
     }
-    zfsChange(d->serializableCustomType, customType);
+    d->serializableCustomType = customType;
 }
 const zfstring &ZFCallback::callbackSerializeCustomType(void) const {
-    return (d ? d->serializableCustomType : zfstring::Empty());
+    return d ? d->serializableCustomType : zfstring::Empty();
 }
 void ZFCallback::callbackSerializeCustomData(ZF_IN const ZFSerializableData *customData) {
     if(d == zfnull) {

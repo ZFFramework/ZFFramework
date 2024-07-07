@@ -11,7 +11,7 @@ public:
     virtual zfbool encrypt(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN const ZFInput &input
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         zfindex inputSize = input.ioSize();
         if(inputSize != zfindexMax()) {
@@ -33,7 +33,7 @@ public:
     virtual zfbool decrypt(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN const ZFInput &input
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) {
         zfchar sizeCheckBuf[16] = {0};
         for(zfindex i = 0; i < 10; ++i) {
@@ -56,9 +56,9 @@ public:
         return (size == sizeCheck);
     }
 private:
-    zfstring tableForKey(ZF_IN const zfchar *key) {
+    zfstring tableForKey(ZF_IN const zfstring &key) {
         zfstring table = ZFBase64TableDefault();
-        zfstring keyTmp = zfstr("%s%s", key, zfslen(key));
+        zfstring keyTmp = zfstr("%s%s", key, key.length());
         keyTmp = ZFMd5(keyTmp, keyTmp.length());
         const zfbyte *p = (const zfbyte *)keyTmp.cString();
         const zfbyte *pEnd = p + keyTmp.length();

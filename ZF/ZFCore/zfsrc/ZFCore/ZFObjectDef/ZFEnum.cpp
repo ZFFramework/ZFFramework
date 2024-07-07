@@ -3,6 +3,11 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
+const zfstring &_ZFP_ZFEnumNameInvalid(void) {
+    static zfstring s = zftext("ZFEnumInvalid");
+    return s;
+}
+
 // ============================================================
 // ZFEnum
 ZFOBJECT_REGISTER(ZFEnum)
@@ -321,22 +326,22 @@ ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfindex, enumIndexForValue
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfuint, enumValueAt
         , ZFMP_IN(zfindex, index)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfchar *, enumNameAt
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfstring &, enumNameAt
         , ZFMP_IN(zfindex, index)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfbool, enumContainValue
         , ZFMP_IN(zfuint, value)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, zfuint, enumValueForName
-        , ZFMP_IN(const zfchar *, name)
+        , ZFMP_IN(const zfstring &, name)
         )
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfchar *, enumNameForValue
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_1(ZFEnum, const zfstring &, enumNameForValue
         , ZFMP_IN(zfuint, value)
         )
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfbool, enumIsFlags)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfuint, enumDefault)
 ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, zfuint const &, enumValue)
-ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, const zfchar *, enumName)
+ZFMETHOD_USER_REGISTER_FOR_ZFOBJECT_FUNC_0(ZFEnum, const zfstring &, enumName)
 ZFMETHOD_USER_REGISTER_DETAIL_1({
         invokerObject->to<ZFEnum *>()->_ZFP_ZFEnum_value = value;
     }, ZFEnum,

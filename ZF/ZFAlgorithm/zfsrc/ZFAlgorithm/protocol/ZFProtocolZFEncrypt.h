@@ -23,7 +23,7 @@ public:
     virtual zfbool encrypt(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN const ZFInput &input
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) zfpurevirtual;
     /**
      * @brief see #ZFDecrypt
@@ -31,7 +31,7 @@ public:
     virtual zfbool decrypt(
             ZF_IN_OUT const ZFOutput &output
             , ZF_IN const ZFInput &input
-            , ZF_IN const zfchar *key
+            , ZF_IN const zfstring &key
             ) zfpurevirtual;
 ZFPROTOCOL_INTERFACE_END(ZFEncrypt)
 

@@ -12,10 +12,10 @@
  * @code
  *   // in C++
  *   ZFMETHOD_FUNC_DECLARE_1(ZFLIB_APP, zfstring, myFunc
- *           , ZFMP_IN(const zfchar *, param)
+ *           , ZFMP_IN(const zfstring &, param)
  *           )
  *   ZFMETHOD_FUNC_DEFINE_1(zfstring, myFunc
- *           , ZFMP_IN(const zfchar *, param)
+ *           , ZFMP_IN(const zfstring &, param)
  *           ) {
  *       return param;
  *   }

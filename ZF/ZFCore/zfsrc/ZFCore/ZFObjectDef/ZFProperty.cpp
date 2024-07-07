@@ -162,7 +162,7 @@ static ZFProperty *_ZFP_ZFPropertyInstanceAccess(ZF_IN const zfstring &propertyI
     }
     else {
         ZFProperty *v = zfnew(ZFProperty);
-        v->_ZFP_ZFProperty_propertyInternalId = zfsCopy(propertyInternalId);
+        v->_ZFP_ZFProperty_propertyInternalId = propertyInternalId;
         m[v->propertyInternalId()] = v;
         return v;
     }
