@@ -211,7 +211,15 @@ zfbool v_ZFCoreArray::elementTypeInit(ZF_IN const zfstring &elementTypeId) {
         this->_ZFP_elementTypeHolder = zfnull;
         return zftrue;
     }
-    return zffalse;
+    else if(ZFClass::classForName(elementTypeId) != zfnull) {
+        this->zfv = ZFCoreArray<zfauto>().refNew();
+        this->_ZFP_elementTypeHolder = zfnew(ZFCorePointerForObject<ZFTypeInfo *>, zfnew(ZFTypeId<zfauto>));
+        this->elementType = this->_ZFP_elementTypeHolder->pointerValueT<const ZFTypeInfo *>();
+        return zftrue;
+    }
+    else {
+        return zffalse;
+    }
 }
 zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
     if(element == zfnull) {
@@ -223,9 +231,13 @@ zfauto v_ZFCoreArray::_ZFP_elementTypeCheck(ZF_IN ZFObject *element) {
             if(!this->elementTypeInit(v->wrappedValueTypeId())) {
                 return zfnull;
             }
-            return element;
         }
-        return zfnull;
+        else {
+            if(!this->elementTypeInit(ZFObject::ClassData()->classNameFull())) {
+                return zfnull;
+            }
+        }
+        return element;
     }
     if(this->elementType->typeIdClass() == zfnull) {
         return zfnull;

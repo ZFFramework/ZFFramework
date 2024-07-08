@@ -258,7 +258,7 @@ ZFPROPERTY_ON_ATTACH_DEFINE(ZFState, ZFPathInfo, stateFile) {
 }
 ZFMETHOD_DEFINE_0(ZFState, ZFPathInfo, stateFileFixed) {
     if(this->stateFile().isEmpty()) {
-        return ZFPathInfo(ZFPathType_storagePath(), "ZFState");
+        return ZFPathInfo(ZFPathType_settingPath(), "ZFState");
     }
     else {
         return this->stateFile();

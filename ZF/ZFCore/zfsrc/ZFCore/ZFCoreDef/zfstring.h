@@ -60,7 +60,7 @@ template<typename T_Char>
 zfclassNotPOD _ZFP_zfstringD {
 public:
     zfuint refCount;
-    zfuint capacity;
+    zfuint capacity; // capacity including tail '\0'
     zfuint length;
     union {
         T_Char *buf; // capacity != 0
@@ -323,7 +323,6 @@ public:
             len = s.length() - offset;
         }
         if(len > 0) {
-            _prepareWrite(this->length());
             return this->append(s.cString() + offset, len);
         }
         else {
@@ -374,13 +373,7 @@ public:
         if(len > s.length() - offset) {
             len = s.length() - offset;
         }
-        if(len > 0) {
-            _prepareWrite(this->length());
-            return this->assign(s.cString() + offset, len);
-        }
-        else {
-            return *this;
-        }
+        return this->assign(s.cString() + offset, len);
     }
     /** @brief replace all content of the string */
     zft_zfstring<T_Char> &assign(
@@ -396,27 +389,19 @@ public:
             }
         }
         if(len > 0) {
-            _prepareWrite(len);;
+            _capacityChange(len, zffalse);
             d->length = (zfuint)len;
             zfmemcpy(d->d.buf, s, len * sizeof(T_Char));
             d->d.buf[len] = '\0';
+        }
+        else {
+            this->removeAll();
         }
         return *this;
     }
     /** @brief replace all content of the string */
     inline zft_zfstring<T_Char> &assign(ZF_IN const zfnullT &dummy) {
-        zfCoreMutexLocker();
-        if(!this->isEmpty()){
-            if(d->refCount == 1) {
-                this->removeAll();
-            }
-            else {
-                _ZFP_zfstringD<T_Char> *dTmp = d;
-                d = _ZFP_Empty();
-                ++(d->refCount);
-                --(dTmp->refCount);
-            }
-        }
+        this->removeAll();
         return *this;
     }
 
@@ -503,9 +488,7 @@ public:
             zfmemcpy(d->d.buf + replacePos, s, len * sizeof(T_Char));
             d->length = (zfuint)(lenTmp + len - replaceLen);
             d->d.buf[d->length] = '\0';
-            if(d->capacity >= 128 && len <= 32) {
-                capacityTrim();
-            }
+            capacityTrim();
         }
         return *this;
     }
@@ -527,7 +510,9 @@ public:
 public:
     /** @brief ensure the string's capacity (excluding tail '\0'), note the result capacity is not ensured same as requested one */
     inline void capacity(ZF_IN zfindex capacity) {
-        _prepareWrite(capacity);
+        if(capacity >= d->capacity) {
+            _capacityChange(capacity, zftrue);
+        }
     }
     /** @brief get current capacity (excluding tail '\0') */
     inline zfindex capacity(void) const {
@@ -535,7 +520,9 @@ public:
     }
     /** @brief trim to a proper capacity to save memory */
     inline void capacityTrim(void) {
-        _capacityChange(this->length());
+        if(d->capacity >= 128 && d->length <= 32) {
+            _capacityChange(this->length(), zftrue);
+        }
     }
     /** @brief remove part of the string */
     void remove(
@@ -552,9 +539,7 @@ public:
                 zfmemmove(d->d.buf + pos, d->d.buf + pos + len, (lenTmp - pos - len) * sizeof(T_Char));
                 d->length -= len;
                 d->d.buf[d->length] = '\0';
-                if(d->capacity >= 128 && len <= 32) {
-                    capacityTrim();
-                }
+                capacityTrim();
             }
         }
     }
@@ -659,7 +644,7 @@ private:
             capacity = ((capacity / 1024) + 1) * 1024;
         }
     }
-    void _capacityChange(ZF_IN zfindex capacity) {
+    void _capacityChange(ZF_IN zfindex capacity, zfbool keepContents) {
         _capacityOptimize(capacity);
         zfCoreMutexLocker();
         if(d->refCount == 1) {
@@ -669,7 +654,7 @@ private:
             else {
                 const T_Char *ptr = d->d.ptr;
                 d->d.buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
-                if(ptr) {
+                if(ptr && keepContents) {
                     zfmemcpy(d->d.buf, ptr, capacity * sizeof(T_Char));
                 }
                 else {
@@ -682,7 +667,7 @@ private:
             d = zfpoolNew(_ZFP_zfstringD<T_Char>);
             d->length = dTmp->length;
             d->d.buf = (T_Char *)zfmalloc(capacity * sizeof(T_Char));
-            if(dTmp->d.ptr) {
+            if(dTmp->d.ptr && keepContents) {
                 zfmemcpy(d->d.buf, dTmp->d.ptr, (dTmp->length + 1) * sizeof(T_Char));
             }
             else {
@@ -690,10 +675,13 @@ private:
             }
         }
         d->capacity = (zfuint)capacity;
+        if(!keepContents) {
+            d->length = 0;
+        }
     }
     inline void _prepareWrite(ZF_IN zfindex capacity) {
         if(capacity >= d->capacity || d->refCount > 1) {
-            _capacityChange(capacity);
+            _capacityChange(capacity, zftrue);
         }
     }
 };

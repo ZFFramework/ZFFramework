@@ -12,7 +12,7 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 ZFOUTPUT_TYPE(zfbool, {s += (v ? ZFTOKEN_zfbool_zftrue : ZFTOKEN_zfbool_zffalse);})
-ZFOUTPUT_TYPE(zfbyte, {zfsFromIntT(s, v, 16);})
+ZFOUTPUT_TYPE(zfbyte, {zfsFromIntT(s, v);})
 ZFOUTPUT_TYPE(zfchar, {s += v;})
 ZFOUTPUT_TYPE(zfstring, {s += v;})
 ZFOUTPUT_TYPE(zfstring::Char, {s += (zfchar)v;})
@@ -60,7 +60,7 @@ ZFOUTPUT_TYPE(zfflags, {
         s += "-1";
     }
     else {
-        zfsFromIntT(s, v, 16);
+        zfsFromIntT(s, v);
     }
 })
 ZFOUTPUT_TYPE(zfidentity, {

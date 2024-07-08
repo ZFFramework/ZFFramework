@@ -41,10 +41,19 @@ private:
         if(ZFImpl_sys_SDL_embed) {
             return;
         }
-        if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
-            zfCoreCriticalMessage("SDL init failed: %s", SDL_GetError());
+        unsigned int sdlInitFlag = SDL_INIT_EVERYTHING;
+        do {
+            if(SDL_Init(sdlInitFlag) == 0) {break;}
+            zfstring errorHint = SDL_GetError();
+
+            zfCoreLogTrim("[ZFMainEntry_sys_SDL] try init without audio");
+            sdlInitFlag &= (~SDL_INIT_AUDIO);
+            if(SDL_Init(sdlInitFlag) == 0) {break;}
+            zfstringAppend(errorHint, "\n    init without audio: %s", (const zfchar *)SDL_GetError());
+
+            zfCoreCriticalMessage("SDL init failed: %s", errorHint);
             return;
-        }
+        } while(zffalse);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
         d->builtinWindow = ZFImpl_sys_SDL_CreateWindow();

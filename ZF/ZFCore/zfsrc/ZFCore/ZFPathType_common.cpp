@@ -55,6 +55,7 @@ ZFPATHTYPE_DEFINE(text)
         )
 
 _ZFP_ZFPathType_common_DEFINE(modulePath, ZFPathType_modulePath(), ZFPathForModule)
+_ZFP_ZFPathType_common_DEFINE(settingPath, ZFPathType_settingPath(), ZFPathForSetting)
 _ZFP_ZFPathType_common_DEFINE(storagePath, ZFPathType_storagePath(), ZFPathForStorage)
 _ZFP_ZFPathType_common_DEFINE(storageSharedPath, ZFPathType_storageSharedPath(), ZFPathForStorageShared)
 _ZFP_ZFPathType_common_DEFINE(cachePath, ZFPathType_cachePath(), ZFPathForCache)

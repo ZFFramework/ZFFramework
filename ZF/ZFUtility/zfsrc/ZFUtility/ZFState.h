@@ -21,7 +21,7 @@ public:
     /**
      * @brief path to store state file
      *
-     * when invalid, `ZFPathInfo(ZFPathType_storagePath, 'ZFState')`
+     * when invalid, `ZFPathInfo(ZFPathType_settingPath, 'ZFState')`
      * would be used\n
      * note the old file won't be deleted automatically when this config changed,
      * you should delete it manually if necessary\n

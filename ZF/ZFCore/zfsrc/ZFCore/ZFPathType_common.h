@@ -20,6 +20,14 @@ ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, modulePath)
 /**
  * @brief see #ZFPathInfo
  *
+ * pathData is file's relative path within #ZFPathForSetting
+ * @note path must be well formed, use #ZFPathFormat if necessary
+ */
+ZFPATHTYPE_DECLARE(ZFLIB_ZFCore, settingPath)
+
+/**
+ * @brief see #ZFPathInfo
+ *
  * pathData is file's relative path within #ZFPathForStorage
  * @note path must be well formed, use #ZFPathFormat if necessary
  */

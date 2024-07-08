@@ -181,17 +181,26 @@ private:
             return zftrue;
         }
 
+        zfstring textTmp = text;
+        for(zfchar *p = textTmp.zfunsafe_buffer(); *p; ++p) {
+            if(*p == '\n') {
+                *p = '\0';
+            }
+        }
         zfindex iText = 0;
         w = 0;
         int line = 0;
         while(iText < textLen) {
             ++line;
             int extent, count;
-            if(TTF_MeasureUTF8(sdlFont, text + iText, widthHint, &extent, &count) != 0) {
+            if(TTF_MeasureUTF8(sdlFont, textTmp + iText, widthHint, &extent, &count) != 0) {
                 return zffalse;
             }
             w = zfmMax(w, extent);
             iText += count;
+            if(textTmp[iText] == '\0') {
+                ++iText;
+            }
         }
         h = zfmMax(h, lineSkip) + lineSkip * (line - 1);
         return zftrue;
