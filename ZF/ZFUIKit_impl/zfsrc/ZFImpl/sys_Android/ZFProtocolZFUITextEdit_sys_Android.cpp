@@ -259,7 +259,6 @@ public:
             (jobject)textEdit->nativeImplView());
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextEditImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextEditImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

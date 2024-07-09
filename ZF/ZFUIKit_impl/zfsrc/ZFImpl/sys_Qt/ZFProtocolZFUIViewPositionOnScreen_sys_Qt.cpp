@@ -27,7 +27,6 @@ public:
         rect.height = view->viewFrame().height;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewPositionOnScreenImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewPositionOnScreenImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

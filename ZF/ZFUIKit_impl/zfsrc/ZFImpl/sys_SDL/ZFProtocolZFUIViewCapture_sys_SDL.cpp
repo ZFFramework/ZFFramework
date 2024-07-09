@@ -36,7 +36,6 @@ public:
         return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewCaptureImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewCaptureImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 

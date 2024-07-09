@@ -213,7 +213,6 @@ public:
         nativeImplView->_ZFP_textSize(fixedTextSize);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextViewImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

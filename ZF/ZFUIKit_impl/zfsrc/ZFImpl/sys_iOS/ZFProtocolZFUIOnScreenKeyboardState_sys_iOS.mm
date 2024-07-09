@@ -58,7 +58,6 @@ public:
         return _ZFP_ZFUIOnScreenKeyboardStateImpl_sys_iOS_instance.keyboardFrame;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIOnScreenKeyboardStateImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIOnScreenKeyboardStateImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

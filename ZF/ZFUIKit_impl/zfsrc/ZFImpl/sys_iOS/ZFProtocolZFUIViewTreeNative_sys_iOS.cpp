@@ -21,7 +21,6 @@ public:
         outputCallback << s;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTreeNativeImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewTreeNativeImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

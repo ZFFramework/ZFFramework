@@ -97,7 +97,6 @@ public:
         nativeImplView->update();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageViewImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

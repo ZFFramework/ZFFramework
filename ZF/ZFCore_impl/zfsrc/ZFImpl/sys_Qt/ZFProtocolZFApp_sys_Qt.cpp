@@ -22,7 +22,6 @@ public:
         ZFMainExecute(appParamsSaved);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAppImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Qt

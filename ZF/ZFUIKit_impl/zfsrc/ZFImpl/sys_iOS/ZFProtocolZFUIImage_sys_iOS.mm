@@ -80,7 +80,6 @@ public:
         return ZFUISizeMake(uiImage.size.width * uiImage.scale, uiImage.size.height * uiImage.scale);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -35,7 +35,6 @@ public:
         return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewCaptureImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewCaptureImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

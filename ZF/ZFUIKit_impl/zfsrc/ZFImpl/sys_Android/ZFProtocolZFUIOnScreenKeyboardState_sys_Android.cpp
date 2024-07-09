@@ -31,7 +31,6 @@ public:
         return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIOnScreenKeyboardStateImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIOnScreenKeyboardStateImpl_sys_Android)
 
 ZF_GLOBAL_INITIALIZER_INIT_WITH_LEVEL(ZFUIOnScreenKeyboardStateImpl_sys_Android_init, ZFLevelZFFrameworkPostNormal) {
     JNIEnv *jniEnv = JNIGetJNIEnv();

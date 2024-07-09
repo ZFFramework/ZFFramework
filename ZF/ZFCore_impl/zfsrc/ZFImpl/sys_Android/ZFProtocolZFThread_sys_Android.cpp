@@ -188,7 +188,6 @@ public:
         JNIUtilDeleteGlobalRef(jniEnv, nativeTokenTmp);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFThreadImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFThreadImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

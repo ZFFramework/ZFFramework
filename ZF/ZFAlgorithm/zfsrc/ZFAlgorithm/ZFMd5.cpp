@@ -14,7 +14,7 @@ static void _ZFP_ZFMd5_Update(_ZFP_ZFMd5_CTX *ctx, const void *data, zfindex siz
 static void _ZFP_ZFMd5_Final(zfbyte *result, _ZFP_ZFMd5_CTX *ctx);
 
 #define _ZFP_ZFMd5_blockSize 512
-void ZFMd5(
+void ZFMd5T(
         ZF_IN_OUT zfstring &ret
         , ZF_IN const void *src
         , ZF_IN zfindex srcLen
@@ -47,7 +47,7 @@ void ZFMd5(
         }
     }
 }
-ZFMETHOD_FUNC_DEFINE_3(void, ZFMd5
+ZFMETHOD_FUNC_DEFINE_3(void, ZFMd5T
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const ZFInput &, callback)
         , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
@@ -91,17 +91,17 @@ ZFMETHOD_FUNC_DEFINE_2(zfstring, ZFMd5
         , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
         ) {
     zfstring ret;
-    ZFMd5(ret, callback, upperCase);
+    ZFMd5T(ret, callback, upperCase);
     return ret;
 }
 
-ZFMETHOD_FUNC_DEFINE_4(void, ZFMd5
+ZFMETHOD_FUNC_DEFINE_4(void, ZFMd5T
         , ZFMP_IN_OUT(zfstring &, ret)
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
         , ZFMP_IN_OPT(zfbool, upperCase, zftrue)
         ) {
-    return ZFMd5(ret, (const void *)src, srcLen, upperCase);
+    return ZFMd5T(ret, (const void *)src, srcLen, upperCase);
 }
 ZFMETHOD_FUNC_DEFINE_3(zfstring, ZFMd5
         , ZFMP_IN(const zfchar *, src)

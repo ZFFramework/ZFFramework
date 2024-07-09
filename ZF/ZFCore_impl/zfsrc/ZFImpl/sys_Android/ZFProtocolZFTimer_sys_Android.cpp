@@ -56,7 +56,6 @@ public:
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFTimer(), jmId, (jobject)timer->nativeTimer());
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFTimerImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

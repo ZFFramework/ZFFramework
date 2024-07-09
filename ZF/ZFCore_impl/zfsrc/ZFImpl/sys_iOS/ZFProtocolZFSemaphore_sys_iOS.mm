@@ -42,7 +42,6 @@ public:
         return [(__bridge NSCondition *)semaphore->nativeSemaphore() waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:((NSTimeInterval)miliSecsTimeout / 1000)]];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFSemaphoreImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFSemaphoreImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

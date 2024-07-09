@@ -94,7 +94,6 @@ public:
         zfpoolDelete(nativeToken);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 JNI_METHOD_DECLARE_BEGIN(ZFImpl_sys_Android_JNI_ID_ZFUIDrawableView
@@ -159,7 +158,6 @@ public:
         return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForImageImpl_sys_Android)
 
 // ============================================================
 // ZFUIDraw
@@ -271,7 +269,6 @@ public:
             );
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

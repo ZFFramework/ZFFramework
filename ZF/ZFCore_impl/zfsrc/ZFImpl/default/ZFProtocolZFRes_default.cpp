@@ -32,7 +32,6 @@ public:
 private:
     zfstring _resRootPath;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFResImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFResImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

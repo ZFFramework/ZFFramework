@@ -175,7 +175,6 @@ public:
 private:
     _ZFP_ZFThreadImpl_sys_Qt_MainThreadHolder _mainThreadHolder;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFThreadImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFThreadImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

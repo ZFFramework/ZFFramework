@@ -53,10 +53,6 @@ zfclassLikePOD ZFLIB_ZFCore zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweak(void) : _ZFP_obj(zfnull) {}
-    zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfRetain(obj._ZFP_obj)) {}
-    zfweak(ZF_IN zfnullT const &) : _ZFP_obj(zfnull) {}
-    template<typename T_ZFObject>
-    zfweak(ZF_IN T_ZFObject *obj) : _ZFP_obj(obj ? zfRetain(obj->toObject()->objectHolder()) : zfnull) {}
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
@@ -67,19 +63,6 @@ public:
     }
 
 public:
-    inline zfweak &operator = (ZF_IN zfweak const &obj) {
-        this->set(obj);
-        return *this;
-    }
-    inline zfweak &operator = (ZF_IN zfnullT const &) {
-        this->set(zfnull);
-        return *this;
-    }
-    template<typename T_ZFObject>
-    inline zfweak &operator = (ZF_IN T_ZFObject *obj) {
-        this->set(obj);
-        return *this;
-    }
     template<typename T_ZFObject>
     inline zfweak &operator = (ZF_IN T_ZFObject const &obj) {
         this->set(obj);
@@ -87,24 +70,12 @@ public:
     }
 
 public:
-    inline zfbool operator == (ZF_IN zfweak const &obj) const {
-        return this->toObject() == obj.toObject();
-    }
-    inline zfbool operator != (ZF_IN zfweak const &obj) const {
-        return this->toObject() != obj.toObject();
-    }
-    inline zfbool operator == (ZF_IN zfnullT const &) const {
-        return this->toObject() == zfnull;
-    }
-    inline zfbool operator != (ZF_IN zfnullT const &) const {
-        return this->toObject() != zfnull;
-    }
     template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
+    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
         return this->toObject() == _ZFP_zfanyCast(obj);
     }
     template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
+    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
         return this->toObject() != _ZFP_zfanyCast(obj);
     }
 
@@ -112,8 +83,8 @@ public:
     inline ZFObject *operator -> (void) const {
         return this->toObject();
     }
-    inline operator zfbool (void) const {
-        return this->toObject() != zfnull;
+    inline operator ZFObject *(void) const {
+        return this->toObject();
     }
     template<typename T_ZFObject>
     inline operator T_ZFObject * (void) const {
@@ -222,31 +193,23 @@ zfclassLikePOD zfweakT : zfextend zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweakT(void) : zfweak() {}
-    zfweakT(ZF_IN zfnullT const &) : zfweak() {}
-    template<typename T_ZFObject>
-    zfweakT(ZF_IN T_ZFObject *obj) : zfweak(obj) {}
     template<typename T_ZFObject>
     zfweakT(ZF_IN T_ZFObject const &obj) : zfweak(obj) {}
 
 public:
-    inline zfbool operator == (ZF_IN zfweakT<T_ZFObjectBase> const &obj) const {
-        return this->toObject() == obj.toObject();
-    }
-    inline zfbool operator != (ZF_IN zfweakT<T_ZFObjectBase> const &obj) const {
-        return this->toObject() != obj.toObject();
-    }
-    inline zfbool operator == (ZF_IN zfnullT const &) const {
-        return this->toObject() == zfnull;
-    }
-    inline zfbool operator != (ZF_IN zfnullT const &) const {
-        return this->toObject() != zfnull;
-    }
     template<typename T_ZFObject>
-    inline zfbool operator == (ZF_IN T_ZFObject *obj) const {
+    inline zfweakT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
+        this->set(obj);
+        return *this;
+    }
+
+public:
+    template<typename T_ZFObject>
+    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
         return this->toObject() == _ZFP_zfanyCast(obj);
     }
     template<typename T_ZFObject>
-    inline zfbool operator != (ZF_IN T_ZFObject *obj) const {
+    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
         return this->toObject() != _ZFP_zfanyCast(obj);
     }
 
@@ -254,6 +217,15 @@ public:
     inline T_ZFObjectBase *operator -> (void) const {
         return zfcast(T_ZFObjectBase *, this->toObject());
     }
+    inline operator ZFObject *(void) const {
+        return this->toObject();
+    }
+    template<typename T_ZFObject>
+    inline operator T_ZFObject * (void) const {
+        return zfcast(T_ZFObject *, this->toObject());
+    }
+
+public:
     inline ZFObject *toObject(void) const { // required for _ZFP_zfanyCast to work
         return zfweak::toObject();
     }

@@ -81,7 +81,6 @@ private:
         AndroidLogDetail(AndroidLogLevelE, AndroidLogTagDefault(), "%s", s);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFImplOutputImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFImplOutputImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

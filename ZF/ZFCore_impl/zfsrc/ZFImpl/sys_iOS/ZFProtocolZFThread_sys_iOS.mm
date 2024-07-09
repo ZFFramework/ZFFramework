@@ -145,7 +145,6 @@ public:
         threadOwner = nil;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFThreadImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFThreadImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

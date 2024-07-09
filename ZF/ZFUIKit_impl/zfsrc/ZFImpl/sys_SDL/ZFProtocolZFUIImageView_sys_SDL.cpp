@@ -104,7 +104,6 @@ private:
         return zffalse;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageViewImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL

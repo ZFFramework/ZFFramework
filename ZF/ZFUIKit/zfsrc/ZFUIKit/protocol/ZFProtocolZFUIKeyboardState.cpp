@@ -61,7 +61,6 @@ public:
         return (ZF_GLOBAL_INITIALIZER_INSTANCE(ZFUIKeyboardStateBuiltinImpl_DataHolder)->keyPressedRaw.find(keyCodeRaw) != zfindexMax());
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIKeyboardStateBuiltinImpl)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIKeyboardStateBuiltinImpl)
 
 // ============================================================
 void ZFUIKeyboardStateBuiltinImplRegister(void) {

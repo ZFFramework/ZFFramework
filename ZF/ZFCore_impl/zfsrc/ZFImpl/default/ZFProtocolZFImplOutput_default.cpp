@@ -29,7 +29,6 @@ public:
         #endif
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFImplOutputImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFImplOutputImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

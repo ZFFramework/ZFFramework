@@ -97,7 +97,6 @@ private:
     zfstring _pathForStorageShared;
     zfstring _pathForCache;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFPathImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFPathImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

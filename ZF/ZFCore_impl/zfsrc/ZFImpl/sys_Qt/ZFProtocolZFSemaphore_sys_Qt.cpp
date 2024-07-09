@@ -60,7 +60,6 @@ public:
         return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFSemaphoreImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFSemaphoreImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Qt

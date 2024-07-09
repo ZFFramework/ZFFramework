@@ -153,7 +153,6 @@ public:
     virtual void executeInNewThreadCleanup(ZF_IN void *nativeToken) {
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFThreadImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFThreadImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -330,7 +330,6 @@ public:
         nativeParent->children.removeAll();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIScrollViewImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIScrollViewImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 

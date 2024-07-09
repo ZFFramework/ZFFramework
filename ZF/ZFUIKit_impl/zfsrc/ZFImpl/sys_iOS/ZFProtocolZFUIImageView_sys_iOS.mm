@@ -97,7 +97,6 @@ public:
         [nativeImplView updateImageWithNinePatch];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageViewImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

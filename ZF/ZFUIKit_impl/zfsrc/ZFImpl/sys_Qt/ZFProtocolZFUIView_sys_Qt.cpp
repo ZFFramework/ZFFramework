@@ -540,7 +540,6 @@ private:
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewImpl_sys_Qt)
 
 // ============================================================
 // ZFUIViewFocus
@@ -569,7 +568,6 @@ public:
         _ZFP_ZFUIViewImpl_sys_Qt_FocusProxy_viewFocusRequest(nativeView->_ZFP_focusProxyToken, viewFocus);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewFocusImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewFocusImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

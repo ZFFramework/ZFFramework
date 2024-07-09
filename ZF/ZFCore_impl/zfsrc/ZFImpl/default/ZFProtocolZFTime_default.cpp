@@ -388,7 +388,6 @@ public:
             && microSecond <= 999);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimeImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFTimeImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

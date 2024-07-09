@@ -261,7 +261,6 @@ public:
         nativeAni->nativeAniStop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAnimationNativeViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAnimationNativeViewImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

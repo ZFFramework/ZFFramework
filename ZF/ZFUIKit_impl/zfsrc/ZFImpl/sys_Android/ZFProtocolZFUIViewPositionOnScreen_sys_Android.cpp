@@ -34,7 +34,6 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, jobjRect);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewPositionOnScreenImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewPositionOnScreenImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Android

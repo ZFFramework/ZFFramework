@@ -210,7 +210,6 @@ public:
         nativeImplView.textSize = fixedTextSize;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextViewImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextViewImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

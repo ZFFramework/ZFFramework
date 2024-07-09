@@ -148,7 +148,6 @@ public:
         return [nativeWebView canGoForward];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIWebViewImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIWebViewImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

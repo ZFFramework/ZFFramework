@@ -9,9 +9,9 @@ ZFENUM_DEFINE(ZFProtocolInstanceState)
 ZFTYPEID_ACCESS_ONLY_DEFINE(ZFProtocol, ZFProtocol *)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolInstanceStateEnum, protocolInstanceState)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplementationName)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevelEnum, protocolImplementationLevel)
-ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplementationPlatformHint)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplName)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, ZFProtocolLevelEnum, protocolImplLevel)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFProtocol, const zfchar *, protocolImplPlatformHint)
 
 // ============================================================
 zfclassLikePOD _ZFP_ZFProtocolDataPrivateData {
@@ -116,7 +116,7 @@ ZFMETHOD_FUNC_DEFINE_2(ZFProtocol *, ZFProtocolForName
             implData.implTryAccessCallback();
         }
         if(implData.implInstance != zfnull
-                && (zfstringIsEmpty(desiredImpl) || zfstringIsEqual(desiredImpl, implData.implInstance->protocolImplementationPlatformHint()))
+                && (zfstringIsEmpty(desiredImpl) || zfstringIsEqual(desiredImpl, implData.implInstance->protocolImplPlatformHint()))
                 ) {
             return implData.implInstance;
         }
@@ -144,12 +144,12 @@ void ZFProtocolImplInfo::objectInfoT(ZF_IN_OUT zfstring &ret) const {
     }
     if(this->protocolImpl != zfnull) {
         zfstringAppend(ret, " %s(%s)"
-                , this->protocolImpl->protocolImplementationName()
-                , this->protocolImpl->protocolImplementationLevel()
+                , this->protocolImpl->protocolImplName()
+                , this->protocolImpl->protocolImplLevel()
                 );
-        if(!zfstringIsEmpty(this->protocolImpl->protocolImplementationPlatformHint())) {
+        if(!zfstringIsEmpty(this->protocolImpl->protocolImplPlatformHint())) {
             ret += " ";
-            ret += this->protocolImpl->protocolImplementationPlatformHint();
+            ret += this->protocolImpl->protocolImplPlatformHint();
         }
     }
     ret += ZFTOKEN_ZFObjectInfoRight;
@@ -233,13 +233,13 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFProtocolImplInfoPrint
     }
     if(data.protocolImpl != zfnull) {
         callback.execute(" ");
-        callback.execute(data.protocolImpl->protocolImplementationName());
+        callback.execute(data.protocolImpl->protocolImplName());
         callback.execute("(");
-        callback.execute(ZFProtocolLevelToString(data.protocolImpl->protocolImplementationLevel()).cString());
+        callback.execute(ZFProtocolLevelToString(data.protocolImpl->protocolImplLevel()).cString());
         callback.execute(")");
-        if(!zfstringIsEmpty(data.protocolImpl->protocolImplementationPlatformHint())) {
+        if(!zfstringIsEmpty(data.protocolImpl->protocolImplPlatformHint())) {
             callback.execute(" ");
-            callback.execute(data.protocolImpl->protocolImplementationPlatformHint());
+            callback.execute(data.protocolImpl->protocolImplPlatformHint());
         }
     }
 }

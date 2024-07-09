@@ -21,7 +21,6 @@ public:
         outputCallback << s;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTreeNativeImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewTreeNativeImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -55,7 +55,6 @@ public:
 public:
     zfstlmap<ZFUIView *, zfbool> _delayTaskMap;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewTransformImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

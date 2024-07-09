@@ -73,7 +73,6 @@ public:
         return ZFUISizeMake((zffloat)nativeImageTmp->w, (zffloat)nativeImageTmp->h);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 

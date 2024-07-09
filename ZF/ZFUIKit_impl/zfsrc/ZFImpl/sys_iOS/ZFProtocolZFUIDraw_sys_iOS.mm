@@ -58,7 +58,6 @@ public:
         // nothing to do
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForViewImpl_sys_iOS)
 
 // ============================================================
 // ZFUIDrawForImage
@@ -83,7 +82,6 @@ public:
         return (__bridge_retained void *)nativeImage;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForImageImpl_sys_iOS)
 
 // ============================================================
 // ZFUIDraw
@@ -137,7 +135,6 @@ public:
         CGImageRelease(subImage);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

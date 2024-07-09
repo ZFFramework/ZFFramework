@@ -196,7 +196,6 @@ private:
     ZFUISysWindow *_mainWindow;
     _ZFP_ZFUISysWindowImpl_sys_Qt_EventWrapper _eventWrapper;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUISysWindowImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

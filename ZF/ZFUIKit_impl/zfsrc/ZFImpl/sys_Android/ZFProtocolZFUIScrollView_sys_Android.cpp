@@ -164,7 +164,6 @@ public:
             (jobject)parent->nativeImplView());
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIScrollViewImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIScrollViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

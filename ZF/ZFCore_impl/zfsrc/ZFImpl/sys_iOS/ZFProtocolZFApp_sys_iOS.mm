@@ -19,7 +19,6 @@ public:
         });
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAppImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_iOS

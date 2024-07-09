@@ -321,7 +321,6 @@ public:
         nativeImplView->clearFocus();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextEditImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextEditImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

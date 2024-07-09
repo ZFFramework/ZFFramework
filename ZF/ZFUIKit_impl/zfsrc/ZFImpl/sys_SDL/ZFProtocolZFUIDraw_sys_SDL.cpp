@@ -105,7 +105,6 @@ private:
         return zffalse;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForViewImpl_sys_SDL)
 
 // ============================================================
 // ZFUIDrawForImage
@@ -155,7 +154,6 @@ public:
         return drawImpl->nativeImage;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForImageImpl_sys_SDL)
 
 // ============================================================
 // ZFUIDraw
@@ -253,7 +251,6 @@ public:
         SDL_RenderCopy(drawImpl->sdlRenderer, sdlTexture, &srcRect, &rectClipped);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -23,7 +23,6 @@ public:
         return (chdir(pathForCwd) == 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_Posix)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileCwdImpl_sys_Posix)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Posix

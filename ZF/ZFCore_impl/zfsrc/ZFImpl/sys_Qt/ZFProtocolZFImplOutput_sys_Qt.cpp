@@ -60,7 +60,6 @@ private:
 private:
     QMutex _logMutex;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFImplOutputImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFImplOutputImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

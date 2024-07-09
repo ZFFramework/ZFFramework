@@ -207,7 +207,6 @@ private:
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAnimationNativeViewImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAnimationNativeViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

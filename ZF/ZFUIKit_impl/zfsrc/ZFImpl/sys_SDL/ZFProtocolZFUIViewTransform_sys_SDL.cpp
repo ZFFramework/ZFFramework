@@ -30,7 +30,6 @@ public:
         // nothing to do
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewTransformImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 

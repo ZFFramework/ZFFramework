@@ -199,7 +199,6 @@ public:
         [nativeAni nativeAniStop];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAnimationNativeViewImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAnimationNativeViewImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

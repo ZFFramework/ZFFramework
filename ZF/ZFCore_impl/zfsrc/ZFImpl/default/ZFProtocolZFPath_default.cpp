@@ -128,7 +128,6 @@ private:
     zfstring _pathForStorageShared;
     zfstring _pathForCache;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFPathImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFPathImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

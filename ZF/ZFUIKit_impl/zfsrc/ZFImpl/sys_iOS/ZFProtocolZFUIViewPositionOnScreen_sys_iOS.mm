@@ -28,7 +28,6 @@ public:
         ZFImpl_sys_iOS_ZFUIRectFromCGRectT(rect, nativeRect);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewPositionOnScreenImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewPositionOnScreenImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -74,7 +74,6 @@ public:
         return JNIUtilNewGlobalRef(jniEnv, tmp);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageIOImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageIOImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

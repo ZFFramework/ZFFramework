@@ -316,7 +316,6 @@ public:
         JNIUtilDeleteLocalRef(jniEnv, jobjSize);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

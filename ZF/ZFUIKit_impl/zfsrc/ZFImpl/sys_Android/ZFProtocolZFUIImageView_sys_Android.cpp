@@ -83,7 +83,6 @@ public:
             );
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageViewImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

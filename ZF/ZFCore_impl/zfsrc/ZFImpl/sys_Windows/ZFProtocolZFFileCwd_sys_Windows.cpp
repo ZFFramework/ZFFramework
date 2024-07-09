@@ -25,7 +25,6 @@ public:
         return (_wchdir(zfstringToUTF16(pathForCwd, ZFStringEncoding::e_UTF8).cString()) == 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_Windows)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileCwdImpl_sys_Windows)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Windows

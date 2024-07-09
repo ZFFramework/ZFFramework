@@ -35,7 +35,6 @@ public:
         return zftrue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewCaptureImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewCaptureImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Android

@@ -49,7 +49,6 @@ public:
         [nativeChild removeFromSuperview];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowEmbedNativeViewImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUISysWindowEmbedNativeViewImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

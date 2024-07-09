@@ -212,7 +212,6 @@ public:
         nativeAudio.audio.volume = volume;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAudioImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAudioImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

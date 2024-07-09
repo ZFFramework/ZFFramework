@@ -576,7 +576,6 @@ public:
         nativeScrollView->_ZFP_scrollViewContentViewLayoutProxy->childRemoveAll();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIScrollViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIScrollViewImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

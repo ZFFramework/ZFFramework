@@ -51,7 +51,6 @@ public:
         JNIUtilDeleteGlobalRef(jniEnv, (jobject)parent);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowEmbedNativeViewImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUISysWindowEmbedNativeViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

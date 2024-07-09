@@ -70,7 +70,6 @@ public:
         // nothing to do
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForViewImpl_sys_Qt)
 
 // ============================================================
 // ZFUIDrawForImage
@@ -103,7 +102,6 @@ public:
         return image;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawForImageImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawForImageImpl_sys_Qt)
 
 // ============================================================
 // ZFUIDraw
@@ -167,7 +165,6 @@ public:
         painter->setCompositionMode(oldMode);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIDrawImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIDrawImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

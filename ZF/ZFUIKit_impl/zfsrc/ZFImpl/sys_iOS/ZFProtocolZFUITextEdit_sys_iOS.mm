@@ -309,7 +309,6 @@ public:
         [nativeImplView resignFirstResponder];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextEditImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextEditImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

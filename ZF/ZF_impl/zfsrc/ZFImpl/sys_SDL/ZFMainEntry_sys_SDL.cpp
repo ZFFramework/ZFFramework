@@ -46,10 +46,10 @@ private:
             if(SDL_Init(sdlInitFlag) == 0) {break;}
             zfstring errorHint = SDL_GetError();
 
-            zfCoreLogTrim("[ZFMainEntry_sys_SDL] try init without audio");
-            sdlInitFlag &= (~SDL_INIT_AUDIO);
-            if(SDL_Init(sdlInitFlag) == 0) {break;}
-            zfstringAppend(errorHint, "\n    init without audio: %s", (const zfchar *)SDL_GetError());
+            // zfCoreLogTrim("[ZFMainEntry_sys_SDL] try init without audio");
+            // sdlInitFlag &= (~SDL_INIT_AUDIO);
+            // if(SDL_Init(sdlInitFlag) == 0) {break;}
+            // zfstringAppend(errorHint, "\n    init without audio: %s", (const zfchar *)SDL_GetError());
 
             zfCoreCriticalMessage("SDL init failed: %s", errorHint);
             return;

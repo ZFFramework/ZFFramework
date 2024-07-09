@@ -63,7 +63,6 @@ public:
             viewFocus);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewFocusImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewFocusImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

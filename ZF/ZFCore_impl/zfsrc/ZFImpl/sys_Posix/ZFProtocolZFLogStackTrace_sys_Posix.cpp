@@ -59,7 +59,6 @@ public:
         zffree(array);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFLogStackTraceImpl_sys_Posix)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFLogStackTraceImpl_sys_Posix)
 
 ZF_NAMESPACE_GLOBAL_END
 

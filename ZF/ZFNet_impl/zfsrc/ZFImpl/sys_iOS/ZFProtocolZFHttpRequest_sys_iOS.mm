@@ -252,7 +252,6 @@ public:
         return ZFImpl_sys_iOS_zfstringFromNSString(ZFImpl_sys_iOS_NSDictionaryIterValue(task.response.allHeaderFields, it));
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFHttpRequestImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFHttpRequestImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

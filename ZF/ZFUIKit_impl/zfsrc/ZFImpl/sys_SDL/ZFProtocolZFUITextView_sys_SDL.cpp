@@ -464,7 +464,6 @@ private:
         } while(zftrue);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextViewImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextViewImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_SDL

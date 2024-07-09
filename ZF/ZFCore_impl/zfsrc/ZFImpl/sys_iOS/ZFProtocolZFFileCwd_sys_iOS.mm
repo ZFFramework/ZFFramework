@@ -18,7 +18,6 @@ public:
         return ([[NSFileManager defaultManager] changeCurrentDirectoryPath:ZFImpl_sys_iOS_zfstringToNSString(pathForCwd)] == YES);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileCwdImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileCwdImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_iOS

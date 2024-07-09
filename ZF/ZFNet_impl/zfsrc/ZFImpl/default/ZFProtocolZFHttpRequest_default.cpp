@@ -490,7 +490,6 @@ public:
 private:
     ZFIdentityGenerator taskIdGen;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFHttpRequestImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFHttpRequestImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -33,7 +33,6 @@ public:
 private:
     zfstring _resRootPath;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFResImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFResImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -170,7 +170,6 @@ public:
 private:
     ZFUISysWindow *_mainWindow;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUISysWindowImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

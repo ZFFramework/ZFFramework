@@ -201,7 +201,6 @@ public:
             (jint)fixedTextSize);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUITextViewImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUITextViewImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

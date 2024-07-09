@@ -85,7 +85,6 @@ public:
         return (zfindex)SDLNet_TCP_Recv((TCPsocket)nativeSocket, data, (int)maxSize);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTcpImpl_sys_SDL)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFTcpImpl_sys_SDL)
 
 ZF_NAMESPACE_GLOBAL_END
 

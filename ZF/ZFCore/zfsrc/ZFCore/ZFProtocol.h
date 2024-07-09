@@ -111,13 +111,13 @@ public:
     /**
      * @brief get the name of the protocol implementation, e.g. "ZFObject_default"
      */
-    virtual const zfchar *protocolImplementationName(void) const {
+    virtual const zfchar *protocolImplName(void) const {
         return zfnull;
     }
     /**
      * @brief get the level of the protocol implementation
      */
-    virtual ZFProtocolLevelEnum protocolImplementationLevel(void) const {
+    virtual ZFProtocolLevelEnum protocolImplLevel(void) const {
         return ZFProtocolLevel::e_Default;
     }
     /**
@@ -128,7 +128,7 @@ public:
      *   you may check this value to be your expected value and assert false if not
      *   (for example, view's impl usually depends on string's impl)
      */
-    virtual const zfchar *protocolImplementationPlatformHint(void) const {
+    virtual const zfchar *protocolImplPlatformHint(void) const {
         return "";
     }
 
@@ -137,8 +137,8 @@ public:
     virtual void objectInfoT(ZF_IN_OUT zfstring &ret) const {
         zfstringAppend(ret, "<[%s] %s%s>",
             this->protocolName(),
-            this->protocolImplementationName(),
-            (!zfstringIsEmpty(this->protocolImplementationPlatformHint()) ? zfstr(" (%s)", this->protocolImplementationPlatformHint()).cString() : "")
+            this->protocolImplName(),
+            (!zfstringIsEmpty(this->protocolImplPlatformHint()) ? zfstr(" (%s)", this->protocolImplPlatformHint()).cString() : "")
             );
     }
     /**
@@ -245,7 +245,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                     implData->implInstance = zfnull; \
                 } \
             } \
-            static void _ZFP_ZFProtocolImplementationRegister( \
+            static void _ZFP_ZFProtocolImplRegister( \
                     ZF_IN _ZFP_ZFProtocolConstructor implConstructor \
                     , ZF_IN _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk \
                     , ZF_IN const zfchar *implName \
@@ -280,7 +280,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                 _d.implLevel = implLevel; \
                 _d.implCleanupCallback = zfself::_ZFP_ZFProtocolInstanceCleanupCallback; \
             } \
-            static void _ZFP_ZFProtocolImplementationChange( \
+            static void _ZFP_ZFProtocolImplChange( \
                     ZF_IN _ZFP_ZFProtocolConstructor implConstructor \
                     , ZF_IN _ZFP_ZFProtocolIsAvailableCkCallback isAvailableCk \
                     , ZF_IN const zfchar *implName \
@@ -346,7 +346,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                         zfstring err; \
                         zfstringAppend(err, "(%s)%s depends on (%s)\"%s\"", \
                             _d.implInstance->protocolName(), \
-                            _d.implInstance->protocolImplementationName(), \
+                            _d.implInstance->protocolImplName(), \
                             mismatchProtocolName, \
                             desiredImplPlatformHint); \
                         if(mismatchImpl == zfnull) { \
@@ -354,7 +354,7 @@ extern ZFLIB_ZFCore void _ZFP_ZFProtocolImplAccess(void);
                         } \
                         else { \
                             zfstringAppend(err, " but it's implementation \"%s\" mismatch", \
-                                mismatchImpl->protocolImplementationPlatformHint()); \
+                                mismatchImpl->protocolImplPlatformHint()); \
                         } \
                         zfCoreLogTrim(err); \
                         zfCoreCriticalError(); \
@@ -512,11 +512,11 @@ private:
             typedef ImplementationClass zfself; \
         public: \
             zfoverride \
-            virtual const zfchar *protocolImplementationName(void) const { \
+            virtual const zfchar *protocolImplName(void) const { \
                 return #ImplementationName; \
             } \
             zfoverride \
-            virtual ZFProtocolLevelEnum protocolImplementationLevel(void) const { \
+            virtual ZFProtocolLevelEnum protocolImplLevel(void) const { \
                 return implLevel; \
             } \
         public: \
@@ -525,12 +525,12 @@ private:
             } \
             static void _ZFP_ZFProtocolUnregister(void) { \
                 if(ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolDataRef().implConstructor == &ImplementationClass::_ZFP_##ImplementationClass##_ctor) { \
-                    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default); \
+                    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default); \
                 } \
                 _ZFP_ZFProtocolImplDataUnregister(zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), #ModuleName); \
             } \
-            static zfbool _ZFP_ZFProtocolRegister(void) { \
-                ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationRegister( \
+            static void _ZFP_ZFProtocolRegister(void) { \
+                ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplRegister( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
                     &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
                     #ImplementationName, \
@@ -538,32 +538,27 @@ private:
                 static _ZFP_ZFProtocolImplRegisterHolder _holder( \
                     zfself::_ZFP_ZFProtocolZFCoreLibDestroyFlag(), \
                     &ImplementationClass::_ZFP_ZFProtocolUnregister); \
-                return zftrue; \
             } \
-            static zfbool _ZFP_ZFProtocolChange(void) { \
-                ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplementationChange( \
+            static void _ZFP_ZFProtocolChange(void) { \
+                ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange( \
                     &ImplementationClass::_ZFP_##ImplementationClass##_ctor, \
                     &ImplementationClass::_ZFP_ZFProtocolIsAvailableCk, \
                     #ImplementationName, \
                     implLevel); \
-                return zftrue; \
             }
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_BEGIN(ImplementationName, ImplementationClass, ModuleName, implLevel) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_BEGIN_(ImplementationName, ImplementationClass, ModuleName, implLevel)
 
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass) \
     }; \
-    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (ZFProtocol const &)v);})
-#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ImplementationClass) \
-    _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass)
-
-#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_REGISTER_(ImplementationName, ImplementationClass) \
+    ZFOUTPUT_TYPE(ImplementationClass, {zftToString(s, (ZFProtocol const &)v);}) \
     ZF_STATIC_REGISTER_INIT(ZFPImplReg_##ImplementationClass) { \
         ImplementationClass::_ZFP_ZFProtocolRegister(); \
     } \
     ZF_STATIC_REGISTER_END(ZFPImplReg_##ImplementationClass)
-#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_REGISTER(ImplementationName, ImplementationClass) \
-    _ZFP_ZFPROTOCOL_IMPLEMENTATION_REGISTER_(ImplementationName, ImplementationClass)
+#define _ZFP_ZFPROTOCOL_IMPLEMENTATION_END(ImplementationName, ImplementationClass) \
+    _ZFP_ZFPROTOCOL_IMPLEMENTATION_END_(ImplementationName, ImplementationClass)
+
 #define _ZFP_ZFPROTOCOL_IMPLEMENTATION_CHECK(CheckAction) \
     static zfbool _ZFP_ZFProtocolIsAvailableCk(void) { \
         CheckAction \
@@ -591,11 +586,11 @@ private:
  *
  * \n
  * if you are able to access an implementation,
- * you may check its platform hint by #ZFProtocol::protocolImplementationPlatformHint
+ * you may check its platform hint by #ZFProtocol::protocolImplPlatformHint
  */
 #define ZFPROTOCOL_IMPLEMENTATION_PLATFORM_HINT(PlatformHint) \
     public: \
-        virtual const zfchar *protocolImplementationPlatformHint(void) const { \
+        virtual const zfchar *protocolImplPlatformHint(void) const { \
             return PlatformHint; \
         }
 
@@ -624,7 +619,7 @@ private:
 /** @brief see #ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_BEGIN */
 #define ZFPROTOCOL_IMPLEMENTATION_PLATFORM_DEPENDENCY_ITEM(Protocol, DependencyPlatformHint) \
             if(ZFPROTOCOL_TRY_ACCESS(Protocol) == zfnull \
-                    || !zfstringIsEqual(ZFPROTOCOL_ACCESS(Protocol)->protocolImplementationPlatformHint(), DependencyPlatformHint) \
+                    || !zfstringIsEqual(ZFPROTOCOL_ACCESS(Protocol)->protocolImplPlatformHint(), DependencyPlatformHint) \
                     ) { \
                 desiredImplPlatformHint = DependencyPlatformHint; \
                 mismatchProtocolName = ZFM_TOSTRING(Protocol); \
@@ -669,7 +664,6 @@ private:
  *               ...
  *           }
  *   ZFPROTOCOL_IMPLEMENTATION_END(YourImplementation)
- *   ZFPROTOCOL_IMPLEMENTATION_REGISTER(YourImplementation)
  * @endcode
  * you must have exactly one implementation for each protocol interface
  * if you want to use the specific module\n
@@ -680,7 +674,6 @@ private:
  *       ZFPROTOCOL_IMPLEMENTATION_BEGIN(YourImplementation, ...)
  *       ...
  *       ZFPROTOCOL_IMPLEMENTATION_END(YourImplementation)
- *       ZFPROTOCOL_IMPLEMENTATION_REGISTER(YourImplementation)
  *   #endif
  *
  *   // in ModuleLinux.cpp
@@ -688,7 +681,6 @@ private:
  *       ZFPROTOCOL_IMPLEMENTATION_BEGIN(YourImplementation, ...)
  *       ...
  *       ZFPROTOCOL_IMPLEMENTATION_END(YourImplementation)
- *       ZFPROTOCOL_IMPLEMENTATION_REGISTER(YourImplementation)
  *   #endif
  * @endcode
  * the implementation's registration is automatically done by the BEGIN and END macro,
@@ -712,7 +704,7 @@ private:
  * for how to declare a protocol, see #ZFPROTOCOL_INTERFACE_BEGIN\n
  * \n
  * advanced: \n
- * you may change implementation at runtime, see #ZFProtocolChangeImplementation\n
+ * you may change implementation at runtime, see #ZFProtocolImplChange\n
  * \n
  * you may define implementation which depends on other implementation:
  * @code
@@ -722,7 +714,6 @@ private:
  *       })
  *       ...
  *   ZFPROTOCOL_IMPLEMENTATION_END(YourImplementation)
- *   ZFPROTOCOL_IMPLEMENTATION_REGISTER(YourImplementation)
  * @endcode
  */
 #define ZFPROTOCOL_IMPLEMENTATION_BEGIN(ImplementationName, ModuleName, implLevel) \
@@ -735,28 +726,24 @@ private:
 /**
  * @brief for more information, please refer to #ZFPROTOCOL_IMPLEMENTATION_BEGIN
  */
-#define ZFPROTOCOL_IMPLEMENTATION_REGISTER(ImplementationName) \
-    _ZFP_ZFPROTOCOL_IMPLEMENTATION_REGISTER(ImplementationName, ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName))
-/**
- * @brief for more information, please refer to #ZFPROTOCOL_IMPLEMENTATION_BEGIN
- */
 #define ZFPROTOCOL_IMPLEMENTATION_CHECK(CheckAction) \
     _ZFP_ZFPROTOCOL_IMPLEMENTATION_CHECK(CheckAction)
 
 // ============================================================
-#define _ZFP_ZFProtocolChangeImplementation(ImplementationName, ImplementationClass) \
-    ImplementationClass::_ZFP_ZFProtocolChange()
-
 /**
  * @brief change the implementation at runtime
  *
  * old implementation's level is ignored and forced to be replaced\n
  * it's your responsibility to make sure old implementation isn't in use,
- * otherwise, app may crash\n
- * usually, you should change before #ZFFrameworkInit
+ * otherwise, app may crash
  */
-#define ZFProtocolChangeImplementation(ImplementationName) \
-    _ZFP_ZFProtocolChangeImplementation(ImplementationName, ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName))
+#define ZFProtocolImplChange(ImplementationName) \
+    ZFPROTOCOL_IMPLEMENTATION_CLASS(ImplementationName)::_ZFP_ZFProtocolChange()
+/**
+ * @brief remove implementation, see #ZFProtocolImplChange
+ */
+#define ZFProtocolImplRemove(ModuleName) \
+    ZFPROTOCOL_INTERFACE_CLASS(ModuleName)::_ZFP_ZFProtocolImplChange(zfnull, zfnull, zfnull, ZFProtocolLevel::e_Default)
 
 // ============================================================
 /**

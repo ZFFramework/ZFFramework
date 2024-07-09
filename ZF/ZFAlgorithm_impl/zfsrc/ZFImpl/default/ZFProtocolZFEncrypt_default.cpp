@@ -72,7 +72,6 @@ private:
         return table;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEncryptImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFEncryptImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

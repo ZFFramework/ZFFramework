@@ -104,7 +104,6 @@ private:
     zfstring _pathForStorageShared;
     zfstring _pathForCache;
 ZFPROTOCOL_IMPLEMENTATION_END(ZFPathImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFPathImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_iOS

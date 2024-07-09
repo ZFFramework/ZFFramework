@@ -16,7 +16,6 @@ public:
         ret += [[UIDevice currentDevice] systemVersion].UTF8String;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_systemInfoImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFEnvInfo_systemInfoImpl_sys_iOS)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_frameworkInfoImpl_sys_iOS, ZFEnvInfo_frameworkInfo, ZFProtocolLevel::e_SystemNormal)
 public:
@@ -27,7 +26,6 @@ public:
         ret += [[UIDevice currentDevice] systemVersion].UTF8String;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_frameworkInfoImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFEnvInfo_frameworkInfoImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_iOS

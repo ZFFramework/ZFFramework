@@ -16,7 +16,6 @@ public:
         return defaultValue;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_deviceUIInfoImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFEnvInfo_deviceUIInfoImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

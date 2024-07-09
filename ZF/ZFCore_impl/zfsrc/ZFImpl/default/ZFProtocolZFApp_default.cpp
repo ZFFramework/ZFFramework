@@ -62,7 +62,6 @@ public:
         taskData->threadToken = ZFPROTOCOL_ACCESS(ZFThread)->executeInNewThread(runnable, runnableCleanup);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAppImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -170,7 +170,6 @@ public:
             );
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAudioImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAudioImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

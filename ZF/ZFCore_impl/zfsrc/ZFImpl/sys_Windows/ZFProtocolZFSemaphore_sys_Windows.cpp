@@ -107,7 +107,6 @@ public:
         return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFSemaphoreImpl_sys_Windows)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFSemaphoreImpl_sys_Windows)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif

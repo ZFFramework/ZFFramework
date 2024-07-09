@@ -21,7 +21,6 @@ public:
         JNIUtilCallStaticVoidMethod(jniEnv, ZFImpl_sys_Android_jclassZFApp(), jmId);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFAppImpl_sys_Android)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFAppImpl_sys_Android)
 
 ZF_NAMESPACE_GLOBAL_END
 

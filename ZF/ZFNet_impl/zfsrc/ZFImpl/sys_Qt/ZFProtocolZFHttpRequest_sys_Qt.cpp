@@ -392,7 +392,6 @@ private:
         return new QList<QByteArray>::Iterator(*(QList<QByteArray>::Iterator *)data);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFHttpRequestImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFHttpRequestImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

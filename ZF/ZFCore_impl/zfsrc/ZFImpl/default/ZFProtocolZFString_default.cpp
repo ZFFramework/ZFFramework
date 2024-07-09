@@ -101,7 +101,6 @@ public:
         return UTFCodeUtil::UTF8GetWordCount(utf8String);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFStringImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFStringImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

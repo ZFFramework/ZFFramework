@@ -423,7 +423,6 @@ private:
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFCompressImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFCompressImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

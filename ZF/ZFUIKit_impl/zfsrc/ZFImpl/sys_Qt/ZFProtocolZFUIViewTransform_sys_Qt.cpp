@@ -43,7 +43,6 @@ public:
         nativeView->setTransform(QTransform());
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewTransformImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewTransformImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

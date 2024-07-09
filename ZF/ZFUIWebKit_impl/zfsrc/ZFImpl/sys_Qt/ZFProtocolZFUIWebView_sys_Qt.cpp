@@ -119,7 +119,6 @@ public:
         return nativeWebView->history()->canGoForward();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIWebViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIWebViewImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

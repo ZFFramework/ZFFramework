@@ -107,7 +107,6 @@ public:
         [(__bridge _ZFP_ZFTimerImpl_sys_iOS_TimerOwner *)timer->nativeTimer() stopTimer];
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFTimerImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

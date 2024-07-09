@@ -61,7 +61,6 @@ public:
         return ZFImpl_sys_Qt_ZFUISizeFromQSize(nativeImageTmp->size());
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIImageImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIImageImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 

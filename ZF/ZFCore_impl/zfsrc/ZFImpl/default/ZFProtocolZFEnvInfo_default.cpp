@@ -80,7 +80,6 @@ public:
         #endif
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_systemInfoImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFEnvInfo_systemInfoImpl_default)
 
 ZFPROTOCOL_IMPLEMENTATION_BEGIN(ZFEnvInfo_frameworkInfoImpl_default, ZFEnvInfo_frameworkInfo, ZFProtocolLevel::e_Default)
 public:
@@ -101,7 +100,6 @@ public:
         #endif
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFEnvInfo_frameworkInfoImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFEnvInfo_frameworkInfoImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

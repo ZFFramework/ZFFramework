@@ -431,7 +431,6 @@ public:
             [(__bridge UIView *)nativeView sizeThatFits:ZFImpl_sys_iOS_ZFUISizeToCGSize(ret)]);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewImpl_sys_iOS)
 
 // ============================================================
 // ZFUIViewFocus
@@ -488,7 +487,6 @@ public:
         }
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUIViewFocusImpl_sys_iOS)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUIViewFocusImpl_sys_iOS)
 
 ZF_NAMESPACE_GLOBAL_END
 

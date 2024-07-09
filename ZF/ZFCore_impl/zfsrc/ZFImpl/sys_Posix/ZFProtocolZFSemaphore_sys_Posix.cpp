@@ -111,7 +111,6 @@ public:
         return (pthread_cond_timedwait(&(semaphoreToken->sema), &(semaphoreToken->semaLocker), &t) == 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFSemaphoreImpl_sys_Posix)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFSemaphoreImpl_sys_Posix)
 
 ZF_NAMESPACE_GLOBAL_END
 #endif // #if ZF_ENV_sys_Posix

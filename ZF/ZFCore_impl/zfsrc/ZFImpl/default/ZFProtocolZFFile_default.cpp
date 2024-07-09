@@ -710,7 +710,6 @@ public:
         return (ferror((FILE *)token) != 0);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFFileImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFFileImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

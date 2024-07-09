@@ -132,7 +132,6 @@ public:
         token->timerStop();
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFTimerImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFTimerImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

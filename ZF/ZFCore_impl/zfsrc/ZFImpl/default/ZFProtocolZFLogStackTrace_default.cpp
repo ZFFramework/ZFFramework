@@ -108,7 +108,6 @@ private:
         return ret;
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFLogStackTraceImpl_default)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFLogStackTraceImpl_default)
 
 ZF_NAMESPACE_GLOBAL_END
 

@@ -403,14 +403,14 @@ public:
                     ParamExpandOrEmpty6(ZFM_COMMA() ParamType6 param6) \
                     ParamExpandOrEmpty7(ZFM_COMMA() ParamType7 param7) \
                     ) { \
-                CaptureExpandOrEmpty0(typename _ZFP_ZFLAMBDA_TR<CaptureType0>::T capture0 = _ZFP_d->capture0;) \
-                CaptureExpandOrEmpty1(typename _ZFP_ZFLAMBDA_TR<CaptureType1>::T capture1 = _ZFP_d->capture1;) \
-                CaptureExpandOrEmpty2(typename _ZFP_ZFLAMBDA_TR<CaptureType2>::T capture2 = _ZFP_d->capture2;) \
-                CaptureExpandOrEmpty3(typename _ZFP_ZFLAMBDA_TR<CaptureType3>::T capture3 = _ZFP_d->capture3;) \
-                CaptureExpandOrEmpty4(typename _ZFP_ZFLAMBDA_TR<CaptureType4>::T capture4 = _ZFP_d->capture4;) \
-                CaptureExpandOrEmpty5(typename _ZFP_ZFLAMBDA_TR<CaptureType5>::T capture5 = _ZFP_d->capture5;) \
-                CaptureExpandOrEmpty6(typename _ZFP_ZFLAMBDA_TR<CaptureType6>::T capture6 = _ZFP_d->capture6;) \
-                CaptureExpandOrEmpty7(typename _ZFP_ZFLAMBDA_TR<CaptureType7>::T capture7 = _ZFP_d->capture7;) \
+                CaptureExpandOrEmpty0(_ZFP_ZFLAMBDA_TR<CaptureType0>::T capture0 = _ZFP_d->capture0;) \
+                CaptureExpandOrEmpty1(_ZFP_ZFLAMBDA_TR<CaptureType1>::T capture1 = _ZFP_d->capture1;) \
+                CaptureExpandOrEmpty2(_ZFP_ZFLAMBDA_TR<CaptureType2>::T capture2 = _ZFP_d->capture2;) \
+                CaptureExpandOrEmpty3(_ZFP_ZFLAMBDA_TR<CaptureType3>::T capture3 = _ZFP_d->capture3;) \
+                CaptureExpandOrEmpty4(_ZFP_ZFLAMBDA_TR<CaptureType4>::T capture4 = _ZFP_d->capture4;) \
+                CaptureExpandOrEmpty5(_ZFP_ZFLAMBDA_TR<CaptureType5>::T capture5 = _ZFP_d->capture5;) \
+                CaptureExpandOrEmpty6(_ZFP_ZFLAMBDA_TR<CaptureType6>::T capture6 = _ZFP_d->capture6;) \
+                CaptureExpandOrEmpty7(_ZFP_ZFLAMBDA_TR<CaptureType7>::T capture7 = _ZFP_d->capture7;) \
                 {
 #define _ZFP_ZFLAMBDA_END() \
                 } \

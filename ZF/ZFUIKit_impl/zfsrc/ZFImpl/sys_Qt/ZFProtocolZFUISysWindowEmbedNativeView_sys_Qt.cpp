@@ -40,7 +40,6 @@ public:
         ((ZFImpl_sys_Qt_BaseLayout *)nativeParent->layout())->childRemove(nativeChild);
     }
 ZFPROTOCOL_IMPLEMENTATION_END(ZFUISysWindowEmbedNativeViewImpl_sys_Qt)
-ZFPROTOCOL_IMPLEMENTATION_REGISTER(ZFUISysWindowEmbedNativeViewImpl_sys_Qt)
 
 ZF_NAMESPACE_GLOBAL_END
 
