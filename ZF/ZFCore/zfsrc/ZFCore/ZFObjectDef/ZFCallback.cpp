@@ -12,51 +12,80 @@ void _ZFP_ZFCallback_executeNullCallback(void) {
 // ============================================================
 // _ZFP_ZFCallbackPrivate
 typedef zfstlmap<zfstring, zfauto> _ZFP_ZFCallbackTagMap;
-zfclassNotPOD _ZFP_ZFCallbackPrivate {
+
+zfclassNotPOD _ZFP_ZFCallbackPrivateExt {
 public:
-    zfuint refCount;
     zfstring callbackId;
     _ZFP_ZFCallbackTagMap callbackTagMap;
-
-    ZFCallbackType callbackType;
-    ZFObject *callbackOwnerObject; // assign only
-    zfuint callbackOwnerObjectRetainFlag;
-    const ZFMethod *callbackMethod;
-    ZFFuncAddrType callbackRawFunction;
-    void *callbackLambdaImpl;
-    _ZFP_ZFCallbackLambdaDeleteCallback callbackLambdaImplDestroy;
-    ZFFuncAddrType callbackLambdaInvoker;
 
     zfstring serializableCustomType;
     ZFSerializableData *serializableCustomData;
     ZFPathInfo *pathInfo;
 
 public:
-    _ZFP_ZFCallbackPrivate(void)
-    : refCount(1)
-    , callbackId(zfnull)
+    _ZFP_ZFCallbackPrivateExt(void)
+    : callbackId()
     , callbackTagMap()
-    , callbackType(ZFCallbackTypeDummy)
-    , callbackOwnerObject(zfnull)
-    , callbackOwnerObjectRetainFlag(0)
-    , callbackMethod(zfnull)
-    , callbackRawFunction(zfnull)
-    , callbackLambdaImpl(zfnull)
-    , callbackLambdaImplDestroy(zfnull)
-    , callbackLambdaInvoker(zfnull)
-    , serializableCustomType(zfnull)
+    , serializableCustomType()
     , serializableCustomData(zfnull)
     , pathInfo(zfnull)
     {
     }
+};
+
+zfclassNotPOD _ZFP_ZFCallbackPrivate {
+public:
+    zfuint refCount;
+
+    ZFCallbackType callbackType;
+    union {
+        // for ZFCallbackTypeMethod
+        const ZFMethod *callbackMethod;
+
+        // for ZFCallbackTypeMemberMethod
+        zfclassPOD {
+        public:
+            ZFObject *callbackOwnerObject; // assign only
+            zfuint callbackOwnerObjectRetainFlag;
+            const ZFMethod *callbackMethod;
+        } memberType;
+
+        // for ZFCallbackTypeRawFunction
+        ZFFuncAddrType callbackRawFunction;
+
+        // for ZFCallbackTypeLambda
+        zfclassPOD {
+        public:
+            void *callbackLambdaImpl;
+            _ZFP_ZFCallbackLambdaDeleteCallback callbackLambdaImplDestroy;
+            ZFFuncAddrType callbackLambdaInvoker;
+        } lambdaType;
+    } d;
+
+    _ZFP_ZFCallbackPrivateExt *ext;
+
+public:
+    _ZFP_ZFCallbackPrivate(void)
+    : refCount(1)
+    , callbackType(ZFCallbackTypeDummy)
+    , d()
+    , ext(zfnull)
+    {
+    }
     ~_ZFP_ZFCallbackPrivate(void) {
-        if(this->callbackOwnerObjectRetainFlag != 0) {
-            zfRelease(this->callbackOwnerObject);
+        if(callbackType == ZFCallbackTypeMemberMethod && d.memberType.callbackOwnerObjectRetainFlag != 0) {
+            zfRelease(d.memberType.callbackOwnerObject);
         }
-        zfdelete(this->serializableCustomData);
-        zfdelete(this->pathInfo);
-        if(this->callbackLambdaImplDestroy) {
-            this->callbackLambdaImplDestroy(this->callbackLambdaImpl);
+        if(ext) {
+            if(ext->serializableCustomData) {
+                zfpoolDelete(ext->serializableCustomData);
+            }
+            if(ext->pathInfo) {
+                zfpoolDelete(ext->pathInfo);
+            }
+        }
+        if(callbackType == ZFCallbackTypeLambda && d.lambdaType.callbackLambdaImplDestroy) {
+            d.lambdaType.callbackLambdaImplDestroy(d.lambdaType.callbackLambdaImpl);
         }
     }
 };
@@ -67,13 +96,13 @@ static void _ZFP_ZFCallbackPrivateDataChange(_ZFP_ZFCallbackPrivate *&oldData, _
     zfCoreMutexLock();
     _ZFP_ZFCallbackPrivate *dTmp = oldData;
     oldData = newData;
-    if(newData != zfnull) {
+    if(newData) {
         ++newData->refCount;
     }
-    if(dTmp != zfnull) {
+    if(dTmp) {
         --dTmp->refCount;
         if(dTmp->refCount == 0) {
-            zfdelete(dTmp);
+            zfpoolDelete(dTmp);
         }
     }
     zfCoreMutexUnlock();
@@ -107,13 +136,13 @@ ZFCallback::~ZFCallback(void) {
 }
 ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMethod(ZF_IN const ZFMethod *callbackMethod) {
     ZFCallback callback;
-    callback.d = zfnew(_ZFP_ZFCallbackPrivate);
-    zfCoreAssertWithMessageTrim(callbackMethod != zfnull, "[ZFCallback] method is null");
+    callback.d = zfpoolNew(_ZFP_ZFCallbackPrivate);
+    zfCoreAssertWithMessageTrim(callbackMethod, "[ZFCallback] method is null");
     zfCoreAssertWithMessageTrim(callbackMethod->methodType() == ZFMethodTypeStatic,
         "[ZFCallback] method \"%s\" is not class static member type",
         callbackMethod);
     callback.d->callbackType = ZFCallbackTypeMethod;
-    callback.d->callbackMethod = callbackMethod;
+    callback.d->d.callbackMethod = callbackMethod;
     return callback;
 }
 ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMemberMethod(
@@ -121,8 +150,8 @@ ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMemberMethod(
         , ZF_IN const ZFMethod *callbackMethod
         ) {
     ZFCallback callback;
-    callback.d = zfnew(_ZFP_ZFCallbackPrivate);
-    zfCoreAssertWithMessageTrim(callbackOwnerObject != zfnull && callbackMethod != zfnull,
+    callback.d = zfpoolNew(_ZFP_ZFCallbackPrivate);
+    zfCoreAssertWithMessageTrim(callbackOwnerObject && callbackMethod,
         "[ZFCallback] invalid callback, ownerObj: %s, method: %s",
         callbackOwnerObject,
         callbackMethod);
@@ -134,16 +163,17 @@ ZFCallback ZFCallback::_ZFP_ZFCallbackCreateMemberMethod(
         callbackOwnerObject->objectInfoOfInstance(),
         callbackMethod);
     callback.d->callbackType = ZFCallbackTypeMemberMethod;
-    callback.d->callbackOwnerObject = callbackOwnerObject;
-    callback.d->callbackMethod = callbackMethod;
+    callback.d->d.memberType.callbackOwnerObject = callbackOwnerObject;
+    callback.d->d.memberType.callbackMethod = callbackMethod;
+    callback.d->d.memberType.callbackOwnerObjectRetainFlag = 0;
     return callback;
 }
 ZFCallback ZFCallback::_ZFP_ZFCallbackCreateRawFunction(ZF_IN ZFFuncAddrType callbackRawFunction) {
     ZFCallback callback;
-    callback.d = zfnew(_ZFP_ZFCallbackPrivate);
-    zfCoreAssertWithMessageTrim(callbackRawFunction != zfnull, "[ZFCallback] invalid function address");
+    callback.d = zfpoolNew(_ZFP_ZFCallbackPrivate);
+    zfCoreAssertWithMessageTrim(callbackRawFunction, "[ZFCallback] invalid function address");
     callback.d->callbackType = ZFCallbackTypeRawFunction;
-    callback.d->callbackRawFunction = callbackRawFunction;
+    callback.d->d.callbackRawFunction = callbackRawFunction;
     return callback;
 }
 ZFCallback ZFCallback::_ZFP_ZFCallbackCreateLambda(
@@ -152,11 +182,11 @@ ZFCallback ZFCallback::_ZFP_ZFCallbackCreateLambda(
         , ZF_IN ZFFuncAddrType callbackLambdaInvoker
         ) {
     ZFCallback callback;
-    callback.d = zfnew(_ZFP_ZFCallbackPrivate);
+    callback.d = zfpoolNew(_ZFP_ZFCallbackPrivate);
     callback.d->callbackType = ZFCallbackTypeLambda;
-    callback.d->callbackLambdaImpl = callbackLambdaImpl;
-    callback.d->callbackLambdaImplDestroy = callbackLambdaImplDestroy;
-    callback.d->callbackLambdaInvoker = callbackLambdaInvoker;
+    callback.d->d.lambdaType.callbackLambdaImpl = callbackLambdaImpl;
+    callback.d->d.lambdaType.callbackLambdaImplDestroy = callbackLambdaImplDestroy;
+    callback.d->d.lambdaType.callbackLambdaInvoker = callbackLambdaInvoker;
     return callback;
 }
 
@@ -208,12 +238,15 @@ void ZFCallback::callbackClear(void) {
 void ZFCallback::callbackId(ZF_IN const zfstring &callbackId) {
     zfCoreMutexLocker();
     if(d == zfnull) {
-        d = zfnew(_ZFP_ZFCallbackPrivate);
+        d = zfpoolNew(_ZFP_ZFCallbackPrivate);
     }
-    d->callbackId = callbackId;
+    if(d->ext == zfnull) {
+        d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
+    }
+    d->ext->callbackId = callbackId;
 }
 const zfstring &ZFCallback::callbackId(void) const {
-    return (d ? d->callbackId : zfstring::Empty());
+    return (d && d->ext ? d->ext->callbackId : zfstring::Empty());
 }
 
 void ZFCallback::callbackTag(
@@ -225,13 +258,16 @@ void ZFCallback::callbackTag(
     }
     zfCoreMutexLocker();
     if(d == zfnull) {
-        d = zfnew(_ZFP_ZFCallbackPrivate);
+        d = zfpoolNew(_ZFP_ZFCallbackPrivate);
+    }
+    if(d->ext == zfnull) {
+        d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
     }
 
-    _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
+    _ZFP_ZFCallbackTagMap &m = d->ext->callbackTagMap;
     _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
     if(it == m.end()) {
-        if(tag != zfnull) {
+        if(tag) {
             m[key] = tag;
         }
     }
@@ -249,9 +285,9 @@ void ZFCallback::callbackTag(
     }
 }
 zfany ZFCallback::callbackTag(ZF_IN const zfstring &key) const {
-    if(d != zfnull && key != zfnull) {
+    if(d && d->ext && key) {
         zfCoreMutexLocker();
-        _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
+        _ZFP_ZFCallbackTagMap &m = d->ext->callbackTagMap;
         _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
         if(it != m.end()) {
             return it->second;
@@ -263,9 +299,9 @@ void ZFCallback::callbackTagGetAllKeyValue(
         ZF_IN_OUT ZFCoreArray<zfstring> &allKey
         , ZF_IN_OUT ZFCoreArray<zfauto> &allValue
         ) const {
-    if(d != zfnull) {
+    if(d && d->ext) {
         zfCoreMutexLocker();
-        _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
+        _ZFP_ZFCallbackTagMap &m = d->ext->callbackTagMap;
         allKey.capacity(allKey.count() + m.size());
         allValue.capacity(allValue.count() + m.size());
         for(_ZFP_ZFCallbackTagMap::iterator it = m.begin(); it != m.end(); ++it) {
@@ -275,9 +311,9 @@ void ZFCallback::callbackTagGetAllKeyValue(
     }
 }
 zfauto ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfstring &key) {
-    if(d != zfnull && key != zfnull) {
+    if(d && d->ext && key) {
         zfCoreMutexLocker();
-        _ZFP_ZFCallbackTagMap &m = d->callbackTagMap;
+        _ZFP_ZFCallbackTagMap &m = d->ext->callbackTagMap;
         _ZFP_ZFCallbackTagMap::iterator it = m.find(key);
         if(it != m.end()) {
             zfauto ret = it->second;
@@ -288,10 +324,10 @@ zfauto ZFCallback::callbackTagRemoveAndGet(ZF_IN const zfstring &key) {
     return zfnull;
 }
 void ZFCallback::callbackTagRemoveAll(void) {
-    if(d != zfnull && !d->callbackTagMap.empty()) {
+    if(d && d->ext && !d->ext->callbackTagMap.empty()) {
         zfCoreMutexLocker();
         _ZFP_ZFCallbackTagMap tmp;
-        tmp.swap(d->callbackTagMap);
+        tmp.swap(d->ext->callbackTagMap);
     }
 }
 
@@ -300,38 +336,49 @@ ZFCallbackType ZFCallback::callbackType(void) const {
 }
 
 zfany ZFCallback::callbackOwnerObject(void) const {
-    return (d ? d->callbackOwnerObject : zfnull);
+    return (d && d->callbackType == ZFCallbackTypeMemberMethod ? d->d.memberType.callbackOwnerObject : zfnull);
 }
 
 const ZFMethod *ZFCallback::callbackMethod(void) const {
-    return (d ? d->callbackMethod : zfnull);
+    switch(d ? d->callbackType : ZFCallbackTypeDummy) {
+        case ZFCallbackTypeMethod:
+            return d->d.callbackMethod;
+        case ZFCallbackTypeMemberMethod:
+            return d->d.memberType.callbackMethod;
+        default:
+            return zfnull;
+    }
 }
 
 ZFFuncAddrType ZFCallback::callbackRawFunction(void) const {
-    return (d ? d->callbackRawFunction : zfnull);
+    return (d && d->callbackType == ZFCallbackTypeRawFunction ? d->d.callbackRawFunction : zfnull);
 }
 
 void *ZFCallback::callbackLambdaImpl(void) const {
-    return d->callbackLambdaImpl;
+    return d && d->callbackType == ZFCallbackTypeLambda ? d->d.lambdaType.callbackLambdaImpl : zfnull;
 }
 ZFFuncAddrType ZFCallback::callbackLambdaInvoker(void) const {
-    return d->callbackLambdaInvoker;
+    return d && d->callbackType == ZFCallbackTypeLambda ? d->d.lambdaType.callbackLambdaInvoker : zfnull;
 }
 void ZFCallback::_ZFP_ZFCallback_callbackLambdaInvoker(ZF_IN ZFFuncAddrType v) const {
-    d->callbackLambdaInvoker = v;
+    d->d.lambdaType.callbackLambdaInvoker = v;
 }
 
 void ZFCallback::callbackOwnerObjectRetain(void) const {
-    if(d != zfnull && d->callbackOwnerObject != zfnull && !d->callbackOwnerObjectRetainFlag) {
-        zfRetain(d->callbackOwnerObject);
-        ++(d->callbackOwnerObjectRetainFlag);
+    zfCoreMutexLocker();
+    if(d && d->callbackType == ZFCallbackTypeMemberMethod && d->d.memberType.callbackOwnerObject) {
+        ++(d->d.memberType.callbackOwnerObjectRetainFlag);
+        if(d->d.memberType.callbackOwnerObjectRetainFlag == 1) {
+            zfunsafe_zfRetain(d->d.memberType.callbackOwnerObject);
+        }
     }
 }
 void ZFCallback::callbackOwnerObjectRelease(void) const {
-    if(d != zfnull && d->callbackOwnerObjectRetainFlag > 0) {
-        --(d->callbackOwnerObjectRetainFlag);
-        if(d->callbackOwnerObjectRetainFlag == 0) {
-            zfRelease(d->callbackOwnerObject);
+    zfCoreMutexLocker();
+    if(d && d->callbackType == ZFCallbackTypeMemberMethod && d->d.memberType.callbackOwnerObjectRetainFlag > 0) {
+        --(d->d.memberType.callbackOwnerObjectRetainFlag);
+        if(d->d.memberType.callbackOwnerObjectRetainFlag == 0) {
+            zfRelease(d->d.memberType.callbackOwnerObject);
         }
     }
 }
@@ -339,56 +386,65 @@ void ZFCallback::callbackOwnerObjectRelease(void) const {
 void ZFCallback::callbackSerializeCustomType(ZF_IN const zfstring &customType) {
     zfCoreMutexLocker();
     if(d == zfnull) {
-        d = zfnew(_ZFP_ZFCallbackPrivate);
+        d = zfpoolNew(_ZFP_ZFCallbackPrivate);
     }
-    d->serializableCustomType = customType;
+    if(d->ext == zfnull) {
+        d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
+    }
+    d->ext->serializableCustomType = customType;
 }
 const zfstring &ZFCallback::callbackSerializeCustomType(void) const {
-    return d ? d->serializableCustomType : zfstring::Empty();
+    return d && d->ext ? d->ext->serializableCustomType : zfstring::Empty();
 }
 void ZFCallback::callbackSerializeCustomData(ZF_IN const ZFSerializableData *customData) {
-    if(d == zfnull) {
-        d = zfnew(_ZFP_ZFCallbackPrivate);
-    }
     if(customData == zfnull) {
-        if(d->serializableCustomData != zfnull) {
-            zfdelete(d->serializableCustomData);
-            d->serializableCustomData = zfnull;
+        if(d && d->ext && d->ext->serializableCustomData) {
+            zfpoolDelete(d->ext->serializableCustomData);
+            d->ext->serializableCustomData = zfnull;
         }
     }
     else {
-        if(d->serializableCustomData != zfnull) {
-            *(d->serializableCustomData) = *customData;
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFCallbackPrivate);
+        }
+        if(d->ext == zfnull) {
+            d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
+        }
+        if(d->ext->serializableCustomData) {
+            *(d->ext->serializableCustomData) = *customData;
         }
         else {
-            d->serializableCustomData = zfnew(ZFSerializableData, *customData);
+            d->ext->serializableCustomData = zfpoolNew(ZFSerializableData, *customData);
         }
     }
 }
 const ZFSerializableData *ZFCallback::callbackSerializeCustomData(void) const {
-    return (d ? d->serializableCustomData : zfnull);
+    return (d && d->ext ? d->ext->serializableCustomData : zfnull);
 }
 
 const ZFPathInfo *ZFCallback::pathInfo(void) const {
-    return (d ? d->pathInfo : zfnull);
+    return (d && d->ext ? d->ext->pathInfo : zfnull);
 }
 void ZFCallback::pathInfo(ZF_IN const ZFPathInfo *pathInfo) {
     zfCoreMutexLocker();
-    if(d == zfnull) {
-        d = zfnew(_ZFP_ZFCallbackPrivate);
-    }
-    if(pathInfo != zfnull && !pathInfo->isEmpty()) {
-        if(d->pathInfo == zfnull) {
-            d->pathInfo = zfnew(ZFPathInfo, *pathInfo);
+    if(pathInfo && !pathInfo->isEmpty()) {
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFCallbackPrivate);
+        }
+        if(d->ext == zfnull) {
+            d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
+        }
+        if(d->ext->pathInfo == zfnull) {
+            d->ext->pathInfo = zfpoolNew(ZFPathInfo, *pathInfo);
         }
         else {
-            *(d->pathInfo) = *pathInfo;
+            *(d->ext->pathInfo) = *pathInfo;
         }
     }
     else {
-        if(d->pathInfo != zfnull) {
-            zfdelete(d->pathInfo);
-            d->pathInfo = zfnull;
+        if(d && d->ext && d->ext->pathInfo) {
+            zfpoolDelete(d->ext->pathInfo);
+            d->ext->pathInfo = zfnull;
         }
     }
 }
@@ -397,22 +453,25 @@ void ZFCallback::pathInfo(
         , ZF_IN const zfstring &pathData
         ) {
     zfCoreMutexLocker();
-    if(d == zfnull) {
-        d = zfnew(_ZFP_ZFCallbackPrivate);
-    }
     if(!zfstringIsEmpty(pathType) || !zfstringIsEmpty(pathData)) {
-        if(d->pathInfo == zfnull) {
-            d->pathInfo = zfnew(ZFPathInfo, pathType, pathData);
+        if(d == zfnull) {
+            d = zfpoolNew(_ZFP_ZFCallbackPrivate);
+        }
+        if(d->ext == zfnull) {
+            d->ext = zfpoolNew(_ZFP_ZFCallbackPrivateExt);
+        }
+        if(d->ext->pathInfo == zfnull) {
+            d->ext->pathInfo = zfpoolNew(ZFPathInfo, pathType, pathData);
         }
         else {
-            d->pathInfo->pathType = pathType;
-            d->pathInfo->pathData = pathData;
+            d->ext->pathInfo->pathType = pathType;
+            d->ext->pathInfo->pathData = pathData;
         }
     }
     else {
-        if(d->pathInfo != zfnull) {
-            zfdelete(d->pathInfo);
-            d->pathInfo = zfnull;
+        if(d && d->ext && d->ext->pathInfo) {
+            zfpoolDelete(d->ext->pathInfo);
+            d->ext->pathInfo = zfnull;
         }
     }
 }

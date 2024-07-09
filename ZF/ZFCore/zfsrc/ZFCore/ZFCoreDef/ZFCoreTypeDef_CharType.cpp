@@ -35,6 +35,8 @@ zfindex zfcharGetSize(const zfchar *p) {
 
 // ============================================================
 zfint zfsicmp(const zfchar *s1, const zfchar *s2) {
+    if(s1 == zfnull) {s1 = "";}
+    if(s2 == zfnull) {s2 = "";}
     while(*s1 && *s2 && (
                 (*s1 == *s2)
                 || (*s1 >= 'A' && *s1 <= 'Z' && *s1 + 32 == *s2)

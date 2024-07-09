@@ -4,8 +4,19 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
+zfauto::zfauto(ZF_IN zfauto const &obj)
+: _ZFP_obj(zfRetain(obj._ZFP_obj))
+{
+}
 zfauto::~zfauto(void) {
     zfRelease(_ZFP_obj);
+}
+
+zfauto &zfauto::operator = (ZF_IN zfauto const &p) {
+    zfCoreMutexLock();
+    this->zfunsafe_assign(_ZFP_zfanyCast(p));
+    zfCoreMutexUnlock();
+    return *this;
 }
 
 void zfauto::zfunsafe_assign(ZF_IN ZFObject *obj) {

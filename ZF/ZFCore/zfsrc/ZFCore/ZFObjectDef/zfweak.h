@@ -53,6 +53,7 @@ zfclassLikePOD ZFLIB_ZFCore zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweak(void) : _ZFP_obj(zfnull) {}
+    zfweak(ZF_IN zfweak const &obj) : _ZFP_obj(zfRetain(obj._ZFP_obj)) {}
     template<typename T_ZFObject>
     zfweak(ZF_IN T_ZFObject const &obj) {
         ZFObject *t = _ZFP_zfanyCast(obj);
@@ -63,6 +64,10 @@ public:
     }
 
 public:
+    inline zfweak &operator = (ZF_IN zfweak const &obj) {
+        this->set(obj);
+        return *this;
+    }
     template<typename T_ZFObject>
     inline zfweak &operator = (ZF_IN T_ZFObject const &obj) {
         this->set(obj);
@@ -110,13 +115,6 @@ public:
      */
     inline zfany get(void) const {
         return _ZFP_obj ? _ZFP_obj->objectHolded().toObject() : zfnull;
-    }
-    /**
-     * @brief set the holded object
-     */
-    template<typename T_ZFObject>
-    void set(ZF_IN T_ZFObject *obj) {
-        zfRetainChange(_ZFP_obj, obj ? obj->toObject()->objectHolder() : zfnull);
     }
     /**
      * @brief set the holded object
@@ -193,10 +191,20 @@ zfclassLikePOD zfweakT : zfextend zfweak {
     /** @cond ZFPrivateDoc */
 public:
     zfweakT(void) : zfweak() {}
+    zfweakT(ZF_IN zfweak const &obj) : zfweak(obj) {}
+    zfweakT(ZF_IN zfweakT<T_ZFObjectBase> const &obj) : zfweak((zfweak const &)obj) {}
     template<typename T_ZFObject>
     zfweakT(ZF_IN T_ZFObject const &obj) : zfweak(obj) {}
 
 public:
+    inline zfweakT<T_ZFObjectBase> &operator = (ZF_IN zfweak const &obj) {
+        this->set(obj);
+        return *this;
+    }
+    inline zfweakT<T_ZFObjectBase> &operator = (ZF_IN zfweakT<T_ZFObjectBase> const &obj) {
+        this->set(obj);
+        return *this;
+    }
     template<typename T_ZFObject>
     inline zfweakT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
         this->set(obj);

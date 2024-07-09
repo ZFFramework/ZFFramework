@@ -142,7 +142,7 @@ void zfcharAppendAndMoveNext(T_Str &s, T_CharString &p) {
 // zfchar types
 /** @brief strlen wrapper as zfchar type */
 inline zfindex zfslen(const zfchar *s) {
-    return (zfindex)strlen(s);
+    return (zfindex)strlen(s ? s : "");
 }
 /** @brief strcpy wrapper as zfchar type */
 inline zfchar *zfscpy(zfchar *dst, const zfchar *src) {
@@ -150,13 +150,13 @@ inline zfchar *zfscpy(zfchar *dst, const zfchar *src) {
 }
 /** @brief strcmp wrapper as zfchar type */
 inline zfint zfscmp(const zfchar *s1, const zfchar *s2) {
-    return (zfint)strcmp(s1, s2);
+    return (zfint)strcmp(s1 ? s1 : "", s2 ? s2 : "");
 }
 /** @brief stricmp wrapper as zfchar type, no locale supported */
 extern ZFLIB_ZFCore zfint zfsicmp(const zfchar *s1, const zfchar *s2);
 /** @brief strncmp wrapper as zfchar type */
 inline zfint zfsncmp(const zfchar *s1, const zfchar *s2, zfindex count) {
-    return ((count == zfindexMax()) ? strcmp(s1, s2) : strncmp(s1, s2, (size_t)count));
+    return ((count == zfindexMax()) ? zfscmp(s1, s2) : strncmp(s1, s2, (size_t)count));
 }
 /** @brief strnicmp wrapper as zfchar type, no locale supported */
 extern ZFLIB_ZFCore zfint zfsnicmp(const zfchar *s1, const zfchar *s2, zfindex count);

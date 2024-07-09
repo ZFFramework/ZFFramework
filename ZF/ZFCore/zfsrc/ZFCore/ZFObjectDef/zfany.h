@@ -61,10 +61,15 @@ zfclassPOD ZFLIB_ZFCore zfany {
     /** @cond ZFPrivateDoc */
 public:
     zfany(void) : _ZFP_obj(zfnull) {}
+    zfany(ZF_IN zfany const &obj) : _ZFP_obj(obj._ZFP_obj) {}
     template<typename T_ZFObject>
     zfany(ZF_IN T_ZFObject const &obj) : _ZFP_obj(_ZFP_zfanyCast(obj)) {}
 
 public:
+    inline zfany &operator = (ZF_IN zfany const &obj) {
+        _ZFP_obj = obj._ZFP_obj;
+        return *this;
+    }
     template<typename T_ZFObject>
     inline zfany &operator = (ZF_IN T_ZFObject const &obj) {
         _ZFP_obj = _ZFP_zfanyCast(obj);
@@ -133,10 +138,20 @@ zfclassPOD zfanyT : zfextend zfany {
     /** @cond ZFPrivateDoc */
 public:
     zfanyT(void) : zfany() {}
+    zfanyT(ZF_IN zfany const &obj) : zfany(obj) {}
+    zfanyT(ZF_IN zfanyT<T_ZFObjectBase> const &obj) : zfany((zfany const &)obj) {}
     template<typename T_ZFObject>
     zfanyT(ZF_IN T_ZFObject const &obj) : zfany(obj) {}
 
 public:
+    inline zfanyT<T_ZFObjectBase> &operator = (ZF_IN zfany const &obj) {
+        zfany::operator=(obj);
+        return *this;
+    }
+    inline zfanyT<T_ZFObjectBase> &operator = (ZF_IN zfanyT<T_ZFObjectBase> const &obj) {
+        zfany::operator=((zfany const &)obj);
+        return *this;
+    }
     template<typename T_ZFObject>
     inline zfanyT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
         zfany::operator=(obj);

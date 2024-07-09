@@ -35,11 +35,13 @@ zffinal zfclassLikePOD ZFLIB_ZFCore zfauto {
     /** @cond ZFPrivateDoc */
 public:
     zfauto(void) : _ZFP_obj(zfnull) {}
+    zfauto(ZF_IN zfauto const &obj);
     template<typename T_ZFObject>
     zfauto(ZF_IN T_ZFObject const &obj);
     zffinal ~zfauto(void);
 
 public:
+    zfauto &operator = (ZF_IN zfauto const &obj);
     template<typename T_ZFObject>
     zfauto &operator = (ZF_IN T_ZFObject const &obj);
 
@@ -115,10 +117,20 @@ zffinal zfclassLikePOD zfautoT : zfextend zfauto {
     /** @cond ZFPrivateDoc */
 public:
     zfautoT(void) : zfauto() {}
+    zfautoT(ZF_IN zfauto const &obj) : zfauto(obj) {}
+    zfautoT(ZF_IN zfautoT<T_ZFObjectBase> const &obj) : zfauto((zfauto const &)obj) {}
     template<typename T_ZFObject>
     zfautoT(ZF_IN T_ZFObject const &obj) : zfauto(obj) {}
 
 public:
+    inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN zfauto const &obj) {
+        zfauto::operator=(obj);
+        return *this;
+    }
+    inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN zfautoT<T_ZFObjectBase> const &obj) {
+        zfauto::operator=((zfauto const &)obj);
+        return *this;
+    }
     template<typename T_ZFObject>
     inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
         zfauto::operator=(obj);
