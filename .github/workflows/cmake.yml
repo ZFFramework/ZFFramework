@@ -25,6 +25,16 @@ jobs:
     - name: get-cmake
       uses: lukka/get-cmake@latest
 
+    - name: get-sdl
+      uses: libsdl-org/setup-sdl@main
+      with:
+        install-linux-dependencies: true
+        version: 2-latest
+        version-sdl-image: 2-latest
+        version-sdl-mixer: 2-latest
+        version-sdl-net: 2-latest
+        version-sdl-ttf: 2-latest
+
     - name: ZFSetup
       run: |
         chmod +x ./zfsetup.sh
