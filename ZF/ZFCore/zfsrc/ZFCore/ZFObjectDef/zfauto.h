@@ -42,11 +42,6 @@ template<typename T_ZFObjectBase>
 T_ZFObjectBase *zfautoT<T_ZFObjectBase>::operator -> (void) const {
     return zfcast(T_ZFObjectBase *, this->toObject());
 }
-template<typename T_ZFObjectBase>
-template<typename T_ZFObject>
-inline zfautoT<T_ZFObjectBase>::operator T_ZFObject * (void) const {
-    return zfcast(T_ZFObject *, this->toObject());
-}
 
 template<typename T_ZFObjectBase>
 const ZFClass *zfautoT<T_ZFObjectBase>::ClassData(void) {

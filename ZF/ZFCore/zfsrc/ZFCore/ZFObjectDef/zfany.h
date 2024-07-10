@@ -172,13 +172,6 @@ public:
     inline T_ZFObjectBase *operator -> (void) const {
         return zfcast(T_ZFObjectBase *, this->toObject());
     }
-    inline operator ZFObject * (void) const {
-        return this->toObject();
-    }
-    template<typename T_ZFObject>
-    inline operator T_ZFObject * (void) const {
-        return zfcast(T_ZFObject *, this->toObject());
-    }
 
 public:
     inline ZFObject *toObject(void) const { // required for _ZFP_zfanyCast to work
