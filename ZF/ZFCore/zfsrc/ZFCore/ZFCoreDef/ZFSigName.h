@@ -56,8 +56,8 @@ public:
     }
     /** @cond ZFPrivateDoc */
 public:
-    operator const zfchar *(void) const {return this->cString();}
-    operator const zfstring &(void) const;
+    operator const zfchar * (void) const {return this->cString();}
+    operator const zfstring & (void) const;
 public:
     ZFSigName &operator = (ZF_IN const ZFSigName &ref);
     ZFSigName &operator = (ZF_IN const zfstring &s);

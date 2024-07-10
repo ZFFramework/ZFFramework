@@ -30,7 +30,7 @@ public:
     ZFV(ZF_IN ZFObject *obj) : _ZFP_obj(obj) {}
 public:
     template<typename T_Type>
-    operator T_Type &(void) const;
+    operator T_Type & (void) const;
     /** @endcond */
 private:
     ZFObject *_ZFP_obj;
@@ -90,7 +90,7 @@ public:
     inline ZFObject *operator -> (void) const {
         return _ZFP_obj;
     }
-    inline operator ZFObject *(void) const {
+    inline operator ZFObject * (void) const {
         return _ZFP_obj;
     }
     template<typename T_ZFObject>
@@ -145,16 +145,16 @@ public:
 
 public:
     inline zfanyT<T_ZFObjectBase> &operator = (ZF_IN zfany const &obj) {
-        zfany::operator=(obj);
+        zfany::operator = (obj);
         return *this;
     }
     inline zfanyT<T_ZFObjectBase> &operator = (ZF_IN zfanyT<T_ZFObjectBase> const &obj) {
-        zfany::operator=((zfany const &)obj);
+        zfany::operator = ((zfany const &)obj);
         return *this;
     }
     template<typename T_ZFObject>
     inline zfanyT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
-        zfany::operator=(obj);
+        zfany::operator = (obj);
         return *this;
     }
 
@@ -172,7 +172,7 @@ public:
     inline T_ZFObjectBase *operator -> (void) const {
         return zfcast(T_ZFObjectBase *, this->toObject());
     }
-    inline operator ZFObject *(void) const {
+    inline operator ZFObject * (void) const {
         return this->toObject();
     }
     template<typename T_ZFObject>

@@ -200,7 +200,7 @@ public:
     ~ZFMethodDynamicRegisterParam(void);
     ZFMethodDynamicRegisterParam &operator = (ZF_IN ZFMethodDynamicRegisterParam const &ref);
     zfbool operator == (ZF_IN ZFMethodDynamicRegisterParam const &ref) const;
-    zfbool operator != (ZF_IN ZFMethodDynamicRegisterParam const &ref) const {return !this->operator==(ref);}
+    zfbool operator != (ZF_IN ZFMethodDynamicRegisterParam const &ref) const {return !this->operator == (ref);}
     /** @endcond */
 
 private:

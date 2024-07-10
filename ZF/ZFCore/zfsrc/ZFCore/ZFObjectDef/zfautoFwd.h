@@ -59,7 +59,7 @@ public:
     inline ZFObject *operator -> (void) const {
         return this->toObject();
     }
-    inline operator ZFObject *(void) const {
+    inline operator ZFObject * (void) const {
         return this->toObject();
     }
     template<typename T_ZFObject>
@@ -124,16 +124,16 @@ public:
 
 public:
     inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN zfauto const &obj) {
-        zfauto::operator=(obj);
+        zfauto::operator = (obj);
         return *this;
     }
     inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN zfautoT<T_ZFObjectBase> const &obj) {
-        zfauto::operator=((zfauto const &)obj);
+        zfauto::operator = ((zfauto const &)obj);
         return *this;
     }
     template<typename T_ZFObject>
     inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
-        zfauto::operator=(obj);
+        zfauto::operator = (obj);
         return *this;
     }
 
@@ -149,7 +149,7 @@ public:
 
 public:
     T_ZFObjectBase *operator -> (void) const;
-    inline operator ZFObject *(void) const {
+    inline operator ZFObject * (void) const {
         return this->toObject();
     }
     template<typename T_ZFObject>

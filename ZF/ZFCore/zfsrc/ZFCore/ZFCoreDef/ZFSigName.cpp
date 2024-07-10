@@ -165,7 +165,7 @@ zfint ZFSigName::compare(ZF_IN const ZFSigName &ref) const {
     }
 }
 
-ZFSigName::operator const zfstring &(void) const {
+ZFSigName::operator const zfstring & (void) const {
     return d ? d->s : zfstring::Empty();
 }
 

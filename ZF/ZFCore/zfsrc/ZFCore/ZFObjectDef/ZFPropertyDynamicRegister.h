@@ -126,7 +126,7 @@ public:
     ~ZFPropertyDynamicRegisterParam(void);
     ZFPropertyDynamicRegisterParam &operator = (ZF_IN ZFPropertyDynamicRegisterParam const &ref);
     zfbool operator == (ZF_IN ZFPropertyDynamicRegisterParam const &ref) const;
-    zfbool operator != (ZF_IN ZFPropertyDynamicRegisterParam const &ref) const {return !this->operator==(ref);}
+    zfbool operator != (ZF_IN ZFPropertyDynamicRegisterParam const &ref) const {return !this->operator == (ref);}
     /** @endcond */
 
 private:

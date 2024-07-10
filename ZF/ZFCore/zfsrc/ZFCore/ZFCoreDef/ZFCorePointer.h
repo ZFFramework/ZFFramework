@@ -390,7 +390,7 @@ ZFOUTPUT_TYPE_TEMPLATE(ZFM_EXPAND(typename T_Pointer, typename T_ZFCorePointerTy
             return this->pointerValue(); \
         } \
         template<typename T_Ref> \
-        inline T_Ref operator *(void) const { \
+        inline T_Ref operator * (void) const { \
             return *(this->pointerValue()); \
         } \
         inline zfbool operator == (ZF_IN zfnullT const &p) const { \

@@ -207,9 +207,52 @@ public:
     {this->zfunsafe_assign(zfunsafe_zflineAlloc(T_ZFObjectBase, p0, p1, p2, p3, p4, p5, p6, p7));}
 
 public:
+    inline zfobj<T_ZFObjectBase> &operator = (ZF_IN zfauto const &obj) {
+        zfauto::operator = (obj);
+        return *this;
+    }
+    inline zfobj<T_ZFObjectBase> &operator = (ZF_IN zfautoT<T_ZFObjectBase> const &obj) {
+        zfauto::operator = ((zfauto const &)obj);
+        return *this;
+    }
+    inline zfobj<T_ZFObjectBase> &operator = (ZF_IN zfobj<T_ZFObjectBase> const &obj) {
+        zfauto::operator = ((zfauto const &)obj);
+        return *this;
+    }
+    template<typename T_ZFObject>
+    inline zfautoT<T_ZFObjectBase> &operator = (ZF_IN T_ZFObject const &obj) {
+        zfauto::operator = (obj);
+        return *this;
+    }
+
+public:
+    template<typename T_ZFObject>
+    inline zfbool operator == (ZF_IN T_ZFObject const &obj) const {
+        return this->toObject() == _ZFP_zfanyCast(obj);
+    }
+    template<typename T_ZFObject>
+    inline zfbool operator != (ZF_IN T_ZFObject const &obj) const {
+        return this->toObject() != _ZFP_zfanyCast(obj);
+    }
+
+public:
+    T_ZFObjectBase *operator -> (void) const {
+        return zfcast(T_ZFObjectBase *, this->toObject());
+    }
+    inline operator ZFObject * (void) const {
+        return this->toObject();
+    }
+    template<typename T_ZFObject>
+    inline operator T_ZFObject * (void) const {
+        return zfcast(T_ZFObject *, this->toObject());
+    }
+
+public:
     inline ZFObject *toObject(void) const { // required for _ZFP_zfanyCast to work
         return zfautoT<T_ZFObjectBase>::toObject();
     }
+
+public:
     /** @endcond */
 };
 

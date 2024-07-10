@@ -179,7 +179,7 @@ public:
 
 public:
     /** @cond ZFPrivateDoc */
-    inline operator const T_Char *(void) const {
+    inline operator const T_Char * (void) const {
         return this->isEmpty() ? zfnull : this->cString();
     }
 public:

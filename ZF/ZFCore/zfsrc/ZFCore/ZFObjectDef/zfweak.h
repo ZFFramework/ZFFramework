@@ -88,7 +88,7 @@ public:
     inline ZFObject *operator -> (void) const {
         return this->toObject();
     }
-    inline operator ZFObject *(void) const {
+    inline operator ZFObject * (void) const {
         return this->toObject();
     }
     template<typename T_ZFObject>
@@ -225,7 +225,7 @@ public:
     inline T_ZFObjectBase *operator -> (void) const {
         return zfcast(T_ZFObjectBase *, this->toObject());
     }
-    inline operator ZFObject *(void) const {
+    inline operator ZFObject * (void) const {
         return this->toObject();
     }
     template<typename T_ZFObject>

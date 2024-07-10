@@ -713,7 +713,7 @@ protected:
 // ============================================================
 /** @cond ZFPrivateDoc */
 template<typename T_Type>
-ZFV::operator T_Type &(void) const {
+ZFV::operator T_Type & (void) const {
     ZFTypeIdWrapper *w = zfcast(ZFTypeIdWrapper *, _ZFP_obj);
     typedef typename zftTraits<T_Type &>::TrNoRef T_Type_;
     zfCoreAssertWithMessageTrim(w != zfnull && w->classData()->classIsTypeOf(ZFTypeId<T_Type_>::TypeIdClass())

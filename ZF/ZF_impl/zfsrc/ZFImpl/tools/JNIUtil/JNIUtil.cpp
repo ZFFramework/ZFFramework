@@ -214,7 +214,7 @@ JNIType::JNIType(
     this->setType(type, classNameOrArrayElementTypeId);
 }
 JNIType::JNIType(const JNIType &ref) : _type(ref._type), _id(NULL) {
-    this->operator=(ref);
+    this->operator = (ref);
 }
 JNIType &JNIType::operator = (const JNIType &ref) {
     if(this != &ref) {
