@@ -267,7 +267,6 @@ zffinal zfclassNotPOD ZFLIB_ZFCore ZFMethod {
     ZFCLASS_DISALLOW_COPY_CONSTRUCTOR(ZFMethod)
 
 public:
-    zfbool _ZFP_ZFMethodNeedInit;
     void _ZFP_ZFMethod_init(
             ZF_IN zfbool methodIsUserRegister
             , ZF_IN zfbool methodIsDynamicRegister
@@ -545,9 +544,9 @@ public:
      * \n
      * the final script that calling ZFFFramework, should look like:
      * @code
-     *   var obj = MyZFObjectType::newInstance();
-     *   var objParam = SomeType::newInstance();
-     *   var result = obj.myFunc(v_zfnumber(1), v_zfstring("2"), objParam)
+     *   local obj = MyZFObjectType();
+     *   local objParam = SomeType();
+     *   local result = obj:myFunc(zfint(1), zfstring("2"), objParam)
      * @endcode
      */
     inline ZFMethodGenericInvoker methodGenericInvoker(void) const {
@@ -689,6 +688,7 @@ public:
 
 public:
     // general
+    zfbool _ZFP_ZFMethodNeedInit;
     zfuint _ZFP_ZFMethod_refCount;
     const ZFMethod *_ZFP_ZFMethod_methodAliasFrom;
     ZFCoreArray<const ZFMethod *> _ZFP_ZFMethod_methodAliasTo;

@@ -160,7 +160,6 @@ public:
     ZFProperty(void);
     ~ZFProperty(void);
     /** @endcond */
-    zfbool _ZFP_ZFPropertyNeedInit;
     void _ZFP_ZFPropertyInit(
             ZF_IN zfbool propertyIsUserRegister
             , ZF_IN zfbool propertyIsDynamicRegister
@@ -181,6 +180,7 @@ public:
 public:
     zfuint _ZFP_ZFProperty_refCount;
     zfstring _ZFP_ZFProperty_propertyInternalId;
+    zfbool _ZFP_ZFPropertyNeedInit;
     zfbool _ZFP_ZFProperty_propertyIsUserRegister;
     zfbool _ZFP_ZFProperty_propertyIsDynamicRegister;
     ZFObject *_ZFP_ZFProperty_propertyDynamicRegisterUserData;
