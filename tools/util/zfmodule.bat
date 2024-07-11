@@ -4,7 +4,7 @@ setlocal
 set WORK_DIR=%~dp0
 set MODULE_REPO=%~1%
 set MODULE_NAME=%~2%
-set MODULE_BRANCH=%~2%
+set MODULE_BRANCH=%~3%
 
 if not defined MODULE_REPO goto :usage
 goto :run
