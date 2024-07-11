@@ -64,6 +64,22 @@ static void _ZFP_ZFMethodGenericInvokerParamsCheck_paramCountMismatch(
                 );
     }
 }
+static void _ZFP_ZFMethodGenericInvokerParamsCheck_paramTypeMismatch(
+        ZF_OUT_OPT zfstring *errorHint
+        , ZF_IN zfindex N
+        , ZF_IN const ZFClass *paramType
+        , ZF_IN ZFObject *p
+        ) {
+    if(errorHint != zfnull) {
+        zfstringAppend(errorHint
+                , "unable to access param%s as type (%s): (%s)%s"
+                , N
+                , paramType->className()
+                , p->classData()->className()
+                , p
+                );
+    }
+}
 zfbool ZFMethodGenericInvokerParamsCheck(
         ZF_OUT_OPT zfstring *errorHint
         , ZF_IN zfindex paramCount
@@ -103,15 +119,7 @@ zfbool ZFMethodGenericInvokerParamsCheck(
         } \
         ZFObject *p = paramList[N]; \
         if(p != zfnull && !p->classData()->classIsTypeOf(paramType##N)) { \
-            if(errorHint != zfnull) { \
-                zfstringAppend(errorHint \
-                        , "unable to access param%s as type (%s): (%s)%s" \
-                        , N \
-                        , paramType##N->className() \
-                        , p->classData()->className() \
-                        , p \
-                        ); \
-            } \
+            _ZFP_ZFMethodGenericInvokerParamsCheck_paramTypeMismatch(errorHint, N, paramType##N, p); \
             return zffalse; \
         } \
     } \

@@ -380,6 +380,9 @@ zfbool ZFDI_invoke(
                 ZFDI_WrapperBase *wrapper = paramList[iParam];
                 if(wrapper != zfnull) {
                     s = wrapper->zfv();
+                    if(s == zfnull) {
+                        s = "";
+                    }
                 }
                 else if(convStr) {
                     v_zfstring *holder = paramList[iParam];
@@ -388,6 +391,9 @@ zfbool ZFDI_invoke(
                             && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())
                             ) {
                         s = holder->zfv;
+                        if(s == zfnull) {
+                            s = "";
+                        }
                     }
                 }
                 if(s != zfnull) {
@@ -533,6 +539,9 @@ zfbool ZFDI_alloc(
                 ZFDI_WrapperBase *wrapper = paramList[iParam];
                 if(wrapper != zfnull) {
                     s = wrapper->zfv();
+                    if(s == zfnull) {
+                        s = "";
+                    }
                 }
                 else if(convStr) {
                     v_zfstring *holder = paramList[iParam];
@@ -541,6 +550,9 @@ zfbool ZFDI_alloc(
                             && !zfstringIsEqual(method->methodParamTypeIdAt(iParam), ZFTypeId_zfstring())
                             ) {
                         s = holder->zfv;
+                        if(s == zfnull) {
+                            s = "";
+                        }
                     }
                 }
                 if(s != zfnull) {

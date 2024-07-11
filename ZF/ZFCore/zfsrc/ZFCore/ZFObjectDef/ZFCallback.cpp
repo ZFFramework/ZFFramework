@@ -83,6 +83,7 @@ public:
             if(ext->pathInfo) {
                 zfpoolDelete(ext->pathInfo);
             }
+            zfpoolDelete(ext);
         }
         if(callbackType == ZFCallbackTypeLambda && d.lambdaType.callbackLambdaImplDestroy) {
             d.lambdaType.callbackLambdaImplDestroy(d.lambdaType.callbackLambdaImpl);
