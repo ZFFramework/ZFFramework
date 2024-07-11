@@ -17,7 +17,7 @@ call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%ZF_ROOT_PATH%\ZFModule" 
 
 for %%i in (%ZF_ROOT_PATH%) do set ABS_ZF_ROOT_PATH=%%~fi
 for %%i in (%WORK_DIR%) do set ABS_WORK_DIR=%%~fi
-if %ABS_ZF_ROOT_PATH% == %ABS_WORK_DIR% (
+if not %ABS_ZF_ROOT_PATH% == %ABS_WORK_DIR% (
     call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%" "zfautoscript_zf3rd_setup*.zfsh"
     call "%ZF_ROOT_PATH%\tools\common\zfsh_recursive.bat" "%WORK_DIR%" "zfautoscript_zfmodule.zfsh"
 )
