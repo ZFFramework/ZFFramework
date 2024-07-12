@@ -5,7 +5,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 // ZFTimeValue
-ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeValue, ZFTimeValueZero, ZFTimeValueMake(zftimetZero(), zftimetZero()))
+ZFEXPORT_VAR_READONLY_DEFINE(ZFTimeValue, ZFTimeValueZero, ZFTimeValueMake(0, 0))
 
 ZFMETHOD_FUNC_INLINE_DEFINE_2(ZFTimeValue, ZFTimeValueMake
         , ZFMP_IN(zftimet, sec)

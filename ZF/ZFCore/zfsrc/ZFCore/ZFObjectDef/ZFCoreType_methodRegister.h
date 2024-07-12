@@ -19,16 +19,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, const zfchar *, ZFNamespaceSeparator
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfindex, ZFNamespaceSeparatorLen)
 
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfindex, zfindexMax)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfindex, zfindexZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfint, zfintZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfuint, zfuintZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zffloat, zffloatZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfdouble, zfdoubleZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zflongdouble, zflongdoubleZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfbyte, zfbyteZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfflags, zfflagsZero)
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfidentity, zfidentityZero)
+ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zftimet, zftimetInvalid)
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFCore, zfidentity, zfidentityInvalid)
 
 ZFEXPORT_VAR_READONLY_VALUEREF_DECLARE(ZFLIB_ZFCore, zfiterator, zfiteratorInvalid, zfiteratorInvalid())

@@ -54,7 +54,7 @@ ZFEVENT_REGISTER(ZFTimer, TimerOnStop)
 
 ZFOBJECT_ON_INIT_DEFINE_2(ZFTimer
         , ZFMP_IN(zftimet, timerInterval)
-        , ZFMP_IN_OPT(zftimet, timerDelay, zftimetZero())
+        , ZFMP_IN_OPT(zftimet, timerDelay, 0)
         ) {
     this->objectOnInit();
     zfself::timerInterval(timerInterval);

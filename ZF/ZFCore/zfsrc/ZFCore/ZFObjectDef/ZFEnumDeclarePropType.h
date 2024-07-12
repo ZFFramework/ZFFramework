@@ -319,7 +319,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 #define _ZFP_ZFENUM_FLAGS_PROP_TYPE_DEFINE(EnumName, EnumFlagsName) \
     ZFTYPEID_DEFINE_BY_STRING_CONVERTER_WITH_CUSTOM_WRAPPER(EnumFlagsName, EnumFlagsName, { \
-            zfflags flags = zfflagsZero(); \
+            zfflags flags = 0; \
             if(!zfflagsFromStringT(flags, \
                         EnumName::ClassData(), \
                         src, srcLen)) { \

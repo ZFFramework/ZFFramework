@@ -381,16 +381,7 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_2(ZFCoreArray<zfstring>, ZFNamespaceGetAll
 // ============================================================
 // core type
 ZFEXPORT_VAR_READONLY_DEFINE(zfindex, zfindexMax, zfindexMax())
-ZFEXPORT_VAR_READONLY_DEFINE(zfindex, zfindexZero, zfindexZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zfint, zfintZero, zfintZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zfuint, zfuintZero, zfuintZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zffloat, zffloatZero, zffloatZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zfdouble, zfdoubleZero, zfdoubleZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zflongdouble, zflongdoubleZero, zflongdoubleZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zfbyte, zfbyteZero, zfbyteZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetZero, zftimetZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zfflags, zfflagsZero, zfflagsZero())
-ZFEXPORT_VAR_READONLY_DEFINE(zfidentity, zfidentityZero, zfidentityZero())
+ZFEXPORT_VAR_READONLY_DEFINE(zftimet, zftimetInvalid, zftimetInvalid())
 ZFEXPORT_VAR_READONLY_DEFINE(zfidentity, zfidentityInvalid, zfidentityInvalid())
 
 ZFEXPORT_VAR_READONLY_VALUEREF_DEFINE(zfiterator, zfiteratorInvalid)

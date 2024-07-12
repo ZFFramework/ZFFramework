@@ -186,7 +186,7 @@ zfidentity ZFContainer::objectHash(void) {
         return zfidentityHash(this->count(), first->objectHash());
     }
     else {
-        return zfidentityZero();
+        return 0;
     }
 }
 ZFCompareResult ZFContainer::objectCompare(ZF_IN ZFObject *anotherObj) {

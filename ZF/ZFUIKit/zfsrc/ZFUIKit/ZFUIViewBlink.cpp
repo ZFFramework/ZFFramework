@@ -72,7 +72,7 @@ ZFMETHOD_FUNC_DEFINE_2(void, ZFUIViewBlink
 ZFMETHOD_FUNC_INLINE_DEFINE_4(void, ZFUIViewBlink
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIImage *, blinkImage)
-        , ZFMP_IN_OPT(zftimet, blinkDuration, zftimetZero())
+        , ZFMP_IN_OPT(zftimet, blinkDuration, 0)
         , ZFMP_IN_OPT(zfindex, blinkCount, 1)
         )
 

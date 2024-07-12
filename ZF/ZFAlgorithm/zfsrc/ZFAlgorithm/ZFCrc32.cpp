@@ -2,7 +2,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFEXPORT_VAR_READONLY_DEFINE(zfflags, ZFCrc32Zero, ((zfflags)0x0))
 ZFEXPORT_VAR_READONLY_DEFINE(zfflags, ZFCrc32Invalid, ((zfflags)0xFFFFFFFF))
 
 // ============================================================
@@ -34,7 +33,7 @@ static zft_zfuint32 *_ZFP_ZFCrc32TableRef(void) {
 zfflags ZFCrc32(
         ZF_IN const void *src
         , ZF_IN zfindex srcLen
-        , ZF_IN_OPT zfflags prevResult /* = ZFCrc32Zero() */
+        , ZF_IN_OPT zfflags prevResult /* = 0 */
         ) {
     if(src == zfnull) {return ZFCrc32Invalid();}
     const zfbyte *p = (const zfbyte *)src;
@@ -48,7 +47,7 @@ zfflags ZFCrc32(
 }
 ZFMETHOD_FUNC_DEFINE_2(zfflags, ZFCrc32
         , ZFMP_IN(const ZFInput &, callback)
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
+        , ZFMP_IN_OPT(zfflags, prevResult, 0)
         ) {
     if(!callback) {return ZFCrc32Invalid();}
 
@@ -69,7 +68,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfflags, ZFCrc32
 ZFMETHOD_FUNC_DEFINE_3(zfflags, ZFCrc32
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
+        , ZFMP_IN_OPT(zfflags, prevResult, 0)
         ) {
     return ZFCrc32((const void *)src, ((srcLen == zfindexMax()) ? zfslen(src) : srcLen), prevResult);
 }

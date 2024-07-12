@@ -110,7 +110,7 @@ zfbool zfflagsFromStringT(
         }
         if(!recognized) {
             if(pos[iSrc].count > 2 && *(src + pos[iSrc].start) == '0' && *(src + pos[iSrc].start + 1) == 'x') {
-                zfflags tmp = zfflagsZero();
+                zfflags tmp = 0;
                 if(!zfsToIntT(tmp, src + pos[iSrc].start + 2, pos[iSrc].count - 2, 16, zftrue, outErrorPos)) {
                     return zffalse;
                 }

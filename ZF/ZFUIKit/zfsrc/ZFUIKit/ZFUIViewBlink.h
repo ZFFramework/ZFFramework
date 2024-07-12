@@ -70,7 +70,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, void, ZFUIViewBlink
 ZFMETHOD_FUNC_INLINE_DECLARE_4(ZFLIB_ZFUIKit, void, ZFUIViewBlink
         , ZFMP_IN(ZFUIView *, view)
         , ZFMP_IN(ZFUIImage *, blinkImage)
-        , ZFMP_IN_OPT(zftimet, blinkDuration, zftimetZero())
+        , ZFMP_IN_OPT(zftimet, blinkDuration, 0)
         , ZFMP_IN_OPT(zfindex, blinkCount, 1)
         ) {
     ZFUIViewBlink(view, ZFUIViewBlinkParam()

@@ -199,7 +199,7 @@ public:
 ZF_GLOBAL_INITIALIZER_END(ZFUIViewBlinkWhenFocusAutoApplyPauseForTimeDataHolder)
 
 ZFMETHOD_FUNC_DEFINE_1(void, ZFUIViewBlinkWhenFocusAutoApplyPauseForTime
-        , ZFMP_IN_OPT(zftimet, time, zftimetZero())
+        , ZFMP_IN_OPT(zftimet, time, 0)
         ) {
     if(ZFUIViewBlinkWhenFocusAutoApplyPaused()) {
         return;

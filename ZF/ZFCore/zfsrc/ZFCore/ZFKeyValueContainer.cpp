@@ -260,7 +260,7 @@ zfidentity ZFKeyValueContainer::objectHash(void) {
             | ((ZFObjectHash(this->iterValue(it)) << 24) & 0xFF000000)));
     }
     else {
-        return zfidentityZero();
+        return 0;
     }
 }
 ZFCompareResult ZFKeyValueContainer::objectCompare(ZF_IN ZFObject *anotherObj) {

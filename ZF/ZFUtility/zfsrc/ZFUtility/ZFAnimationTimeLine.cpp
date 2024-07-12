@@ -132,7 +132,7 @@ void ZFAnimationTimeLine::objectOnDealloc(void) {
 zfidentity ZFAnimationTimeLine::objectHash(void) {
     return zfidentityHash(zfsuper::objectHash()
         , this->aniInterval()
-        , (this->aniCurve() ? this->aniCurve()->objectHash() : zfidentityZero())
+        , (this->aniCurve() ? this->aniCurve()->objectHash() : (zfidentity)0)
         );
 }
 ZFCompareResult ZFAnimationTimeLine::objectCompare(ZF_IN ZFObject *anotherObj) {

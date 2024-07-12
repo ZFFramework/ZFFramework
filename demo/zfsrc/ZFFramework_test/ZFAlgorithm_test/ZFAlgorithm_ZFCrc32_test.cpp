@@ -12,7 +12,7 @@ protected:
 
         const zfchar *testString = "123abc";
         zfflags testValue = (zfflags)0x8DFE51D2; // testString's CRC32 to verify
-        zfflags value = ZFCrc32Zero();
+        zfflags value = 0;
 
         value = ZFCrc32((const zfbyte *)testString, zfslen(testString) * sizeof(zfchar));
         this->testCaseOutput(zfstr("CRC32 of array \"%s\": %s", testString, value));

@@ -10,11 +10,6 @@
 ZF_NAMESPACE_GLOBAL_BEGIN
 
 /**
- * @brief init value for continous calculation, see #ZFCrc32
- */
-ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32Zero)
-
-/**
  * @brief invalid value for CRC32
  */
 ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32Invalid)
@@ -29,7 +24,7 @@ ZFEXPORT_VAR_READONLY_DECLARE(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32Invalid)
 extern ZFLIB_ZFAlgorithm zfflags ZFCrc32(
         ZF_IN const void *src
         , ZF_IN zfindex srcLen
-        , ZF_IN_OPT zfflags prevResult = ZFCrc32Zero()
+        , ZF_IN_OPT zfflags prevResult = 0
         );
 /**
  * @brief calculate CRC32, return #ZFCrc32Invalid if failed
@@ -40,7 +35,7 @@ extern ZFLIB_ZFAlgorithm zfflags ZFCrc32(
  */
 ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32
         , ZFMP_IN(const ZFInput &, callback)
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
+        , ZFMP_IN_OPT(zfflags, prevResult, 0)
         )
 /**
  * @brief see #ZFCrc32
@@ -48,7 +43,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32
 ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFAlgorithm, zfflags, ZFCrc32
         , ZFMP_IN(const zfchar *, src)
         , ZFMP_IN_OPT(zfindex, srcLen, zfindexMax())
-        , ZFMP_IN_OPT(zfflags, prevResult, ZFCrc32Zero())
+        , ZFMP_IN_OPT(zfflags, prevResult, 0)
         )
 
 ZF_NAMESPACE_GLOBAL_END

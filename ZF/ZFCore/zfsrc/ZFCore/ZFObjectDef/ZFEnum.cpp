@@ -24,7 +24,7 @@ zfbool ZFEnum::serializableOnSerializeFromData(
         zfuint enumValue = ZFEnumInvalid();
         if(!zfstringIsEqual(valueString, ZFEnumNameInvalid())) {
             if(this->enumIsFlags()) {
-                zfflags t = zfflagsZero();
+                zfflags t = 0;
                 if(zfflagsFromStringT(t, this->classData(), valueString)) {
                     enumValue = (zfuint)t;
                 }
@@ -172,7 +172,7 @@ zfbool ZFEnum::wrappedValueFromString(
     }
 
     if(this->enumIsFlags()) {
-        zfflags t = zfflagsZero();
+        zfflags t = 0;
         if(zfflagsFromStringT(t, this->classData(), src, srcLen)) {
             this->enumValue((zfuint)t);
             return zftrue;

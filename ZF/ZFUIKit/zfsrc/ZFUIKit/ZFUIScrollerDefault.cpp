@@ -228,7 +228,7 @@ public:
     zftimet aniByPointDurationForOffset(ZF_IN zffloat offset) {
         offset = zfmAbs(offset);
         if(offset <= 2) {
-            return zftimetZero();
+            return 0;
         }
 
         if(offset >= _ZFP_ZFUIScrollerDefault_scrollAniBounceDragMax) {
@@ -245,7 +245,7 @@ public:
     }
     void aniByPointStart(
             ZF_IN zffloat stopPos
-            , ZF_IN_OPT zftimet duration = zftimetZero()
+            , ZF_IN_OPT zftimet duration = 0
             ) {
         // fix stopPos in bounce range
         if(this->calcBounceHeadFromContentOffset(stopPos) > _ZFP_ZFUIScrollerDefault_scrollAniBounceMax) {

@@ -63,7 +63,7 @@ protected:
      */
     ZFOBJECT_ON_INIT_DECLARE_2(
             ZFMP_IN(zftimet, timerInterval)
-            , ZFMP_IN_OPT(zftimet, timerDelay, zftimetZero())
+            , ZFMP_IN_OPT(zftimet, timerDelay, 0)
             )
     zfoverride
     virtual void objectOnInit(void);

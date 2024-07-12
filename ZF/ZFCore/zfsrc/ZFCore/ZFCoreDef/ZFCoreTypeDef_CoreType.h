@@ -111,52 +111,38 @@ ZFT_INT_WEAK(_ZFT_t_zfindex, zfindex)
  * @see zfuint
  */
 #define zfindexMax() ((zfindex)-1)
-/** @brief zero value */
-#define zfindexZero() ((zfindex)0)
 
 // ============================================================
 /**
  * @brief same as int, see #zfindex
  */
 ZFT_INT_WEAK(_ZFT_t_zfint, zfint);
-/** @brief zero value */
-#define zfintZero() ((zfint)0)
 /**
  * @brief same as unsigned int, see #zfindex
  */
 ZFT_INT_WEAK(_ZFT_t_zfuint, zfuint);
-/** @brief zero value */
-#define zfuintZero() ((zfuint)0)
 
 // ============================================================
 /**
  * @brief same as float, see #zfindex
  */
 ZFT_INT_WEAK(_ZFT_t_zffloat, zffloat);
-/** @brief zero value */
-#define zffloatZero() ((zffloat)0)
 
 /**
  * @brief same as double, see #zfindex
  */
 ZFT_INT_STRONG(double, zfdouble)
-/** @brief zero value */
-#define zfdoubleZero() ((zfdouble)0)
 
 /**
  * @brief same as long double, see #zfindex
  */
 ZFT_INT_STRONG(long double, zflongdouble)
-/** @brief zero value */
-#define zflongdoubleZero() ((zflongdouble)0)
 
 // ============================================================
 /**
  * @brief 8-bit unsigned value, see #zfindex
  */
 ZFT_INT_WEAK(_ZFT_t_zfbyte, zfbyte);
-/** @brief zero value */
-#define zfbyteZero() ((zfbyte)0)
 
 // ============================================================
 /**
@@ -166,16 +152,14 @@ ZFT_INT_WEAK(_ZFT_t_zfbyte, zfbyte);
  * but usually use miliseconds in ZFFramework
  */
 ZFT_INT_STRONG(zft_zfint64, zftimet)
-/** @brief zero value */
-#define zftimetZero() ((zftimet)0)
+/** @brief invalid time value */
+#define zftimetInvalid() ((zftimet)-1)
 
 // ============================================================
 /**
  * @brief used to hold flags, ensured 32 bit, ensured unsigned
  */
 ZFT_INT_STRONG(zft_zfuint32, zfflags)
-/** @brief zero value */
-#define zfflagsZero() ((zfflags)0)
 
 // ============================================================
 /**
@@ -190,14 +174,10 @@ ZFT_INT_STRONG(zft_zfuint32, zfflags)
  *   #zfidentity would always be serialized by the name of #ZFIdMapNameForId
  */
 ZFT_INT_STRONG(zft_zfuint32, zfidentity)
-/** @brief zero value */
-#define zfidentityZero() ((zfidentity)0)
 /**
  * @brief an invalid id value, ensured ((zfidentity)-1)
  */
 #define zfidentityInvalid() ((zfidentity)-1)
-/** @brief string tokens */
-#define ZFTOKEN_zfidentityInvalid "Invalid"
 
 ZF_NAMESPACE_GLOBAL_END
 
