@@ -23,12 +23,12 @@ ZFTYPEID_DEFINE_BY_STRING_CONVERTER(ZFMethod, const ZFMethod *, {
         if(v->methodIsFunctionType()) {
             if(!zfstringIsEmpty(v->methodNamespace())) {
                 s += v->methodNamespace();
-                s += ZFNamespaceSeparator();
+                s += ".";
             }
         }
         else {
             s += v->methodOwnerClass()->classNameFull();
-            s += ZFNamespaceSeparator();
+            s += ".";
         }
 
         s += v->methodName();
@@ -195,7 +195,7 @@ zfbool ZFMethodSigSplit(
     }
 
     // [Scope0.Scope1.]methodName[:methodParamTypeId0]
-    zfindex dotPos = zfstringFindReversely(src, ret[1].count, ZFNamespaceSeparator());
+    zfindex dotPos = zfstringFindReversely(src, ret[1].count, ".");
     if(dotPos == 0) { // .methodName
         ret[1].start += 1;
         ret[1].count -= 1;

@@ -11,24 +11,24 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
     if(zfstringIsEmpty(ns)) {
         return zfnull;
     }
-    else if(zfsncmp(ns, ZFNamespaceSeparator(), ZFNamespaceSeparatorLen()) == 0) {
-        if(ns[ZFNamespaceSeparatorLen()] == '\0') {
+    else if(zfsncmp(ns, ".", 1) == 0) {
+        if(ns[1] == '\0') {
             return zfnull;
         }
         else {
-            return ns + ZFNamespaceSeparatorLen();
+            return ns + 1;
         }
     }
     else if(zfsncmp(ns, namePrefix, namePrefix.length()) == 0) {
         if(ns[namePrefix.length()] == '\0') {
             return zfnull;
         }
-        else if(zfsncmp(ns + namePrefix.length(), ZFNamespaceSeparator(), ZFNamespaceSeparatorLen()) == 0) {
-            if(ns[namePrefix.length() + ZFNamespaceSeparatorLen()] == '\0') {
+        else if(zfsncmp(ns + namePrefix.length(), ".", 1) == 0) {
+            if(ns[namePrefix.length() + 1] == '\0') {
                 return zfnull;
             }
             else {
-                return ns + namePrefix.length() + ZFNamespaceSeparatorLen();
+                return ns + namePrefix.length() + 1;
             }
         }
         else {
@@ -39,12 +39,12 @@ const zfchar *ZFNamespaceSkipGlobal(ZF_IN const zfchar *ns) {
         if(ns[abbrNamePrefix.length()] == '\0') {
             return zfnull;
         }
-        else if(zfsncmp(ns + abbrNamePrefix.length(), ZFNamespaceSeparator(), ZFNamespaceSeparatorLen()) == 0) {
-            if(ns[abbrNamePrefix.length() + ZFNamespaceSeparatorLen()] == '\0') {
+        else if(zfsncmp(ns + abbrNamePrefix.length(), ".", 1) == 0) {
+            if(ns[abbrNamePrefix.length() + 1] == '\0') {
                 return zfnull;
             }
             else {
-                return ns + abbrNamePrefix.length() + ZFNamespaceSeparatorLen();
+                return ns + abbrNamePrefix.length() + 1;
             }
         }
         else {
@@ -70,11 +70,11 @@ zfbool ZFNamespaceSplit(
     const zfchar *pEnd = src + (srcLen == zfindexMax() ? zfslen(src) : srcLen);
     zfbool hasAdd = zffalse;
     while(p < pEnd) {
-        if(zfsncmp(p, ZFNamespaceSeparator(), ZFNamespaceSeparatorLen()) == 0) {
+        if(zfsncmp(p, ".", 1) == 0) {
             if(p > pL) {
                 ret.add(ZFIndexRangeMake(pL - src, p - pL));
             }
-            p = pL = p + ZFNamespaceSeparatorLen();
+            p = pL = p + 1;
             hasAdd = zftrue;
             continue;
         }
@@ -123,7 +123,7 @@ zfstring _ZFP_ZFNamespaceRegister(
     zfstring ns;
     if(parent != zfnull) {
         ns += parent;
-        ns += ZFNamespaceSeparator();
+        ns += ".";
     }
     ns += child;
     ZFCoreArray<ZFIndexRange> pos;

@@ -53,11 +53,11 @@ const ZFClass *ZFClassDynamicRegister(
             parent);
         return zfnull;
     }
-    zfindex dotPos = zfstringFindReversely(classNameFull, zfindexMax(), ZFNamespaceSeparator());
+    zfindex dotPos = zfstringFindReversely(classNameFull, zfindexMax(), ".");
     cls = ZFClass::_ZFP_ZFClassRegister(
         zfnull,
         dotPos == zfindexMax() ? zfnull : zfstring(classNameFull, dotPos).cString(),
-        dotPos == zfindexMax() ? classNameFull : zfstring(classNameFull + dotPos + ZFNamespaceSeparatorLen()),
+        dotPos == zfindexMax() ? classNameFull : zfstring(classNameFull + dotPos + 1),
         parent,
         zfnull,
         zftrue,

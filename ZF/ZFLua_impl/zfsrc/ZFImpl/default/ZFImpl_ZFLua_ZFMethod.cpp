@@ -54,7 +54,7 @@ ZFImpl_ZFLua_implSetupCallback_DEFINE(ZFMethod, ZFM_EXPAND({
             for(zfindex i = 0; i < allMethod.count(); ++i) {
                 const ZFMethod *method = allMethod[i];
                 if(!zfstringIsEmpty(method->methodNamespace())) {
-                    zfindex dotPos = zfstringFind(method->methodNamespace(), zfindexMax(), ZFNamespaceSeparator());
+                    zfindex dotPos = zfstringFind(method->methodNamespace(), zfindexMax(), ".");
                     if(dotPos == zfindexMax()) {
                         methodNamespaceList[method->methodNamespace()] = zftrue;
                     }

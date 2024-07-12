@@ -458,7 +458,7 @@ const ZFClass *ZFClass::classForName(
     if(!zfstringIsEmpty(classNamespaceTmp)) {
         zfstring classNameFull;
         classNameFull += classNamespaceTmp;
-        classNameFull += ZFNamespaceSeparator();
+        classNameFull += ".";
         classNameFull += className;
         return _ZFP_ZFClassMap.get<const ZFClass *>(classNameFull);
     }
@@ -1231,7 +1231,7 @@ ZFClass *ZFClass::_ZFP_ZFClassRegister(
     zfstring classNameFull;
     if(classNamespaceTmp != zfnull) {
         classNameFull += classNamespaceTmp;
-        classNameFull += ZFNamespaceSeparator();
+        classNameFull += ".";
     }
     classNameFull += classNameTmp;
 
@@ -1749,7 +1749,7 @@ void ZFClassAlias(
     }
     zfstring aliasNameFull = cls->classNamespace();
     if(!aliasNameFull.isEmpty()) {
-        aliasNameFull += ZFNamespaceSeparator();
+        aliasNameFull += ".";
     }
     aliasNameFull += aliasName;
     _ZFP_ZFClassMap.set(aliasNameFull, ZFCorePointerForPointerRef<const ZFClass *>(cls));
@@ -1772,7 +1772,7 @@ void ZFClassAliasRemove(
 
     zfstring aliasNameFull = cls->classNamespace();
     if(!aliasNameFull.isEmpty()) {
-        aliasNameFull += ZFNamespaceSeparator();
+        aliasNameFull += ".";
     }
     aliasNameFull += aliasName;
     _ZFP_ZFClassMap.remove(aliasNameFull);

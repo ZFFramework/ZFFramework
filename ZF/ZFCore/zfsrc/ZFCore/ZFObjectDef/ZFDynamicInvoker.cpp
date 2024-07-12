@@ -257,15 +257,8 @@ zfbool ZFDI_invoke(
             || _ZFP_ZFDI_errorOccurred();
     }
 
-    zfindex dotPos = zfstringFindReversely(name, zfslen(name), ZFNamespaceSeparator());
+    zfindex dotPos = zfstringFindReversely(name, zfslen(name), ".");
     if(dotPos == zfindexMax()) {
-        // methodName()
-        ZFMethodFuncForNameGetAllT(methodList, zfnull, name);
-        if(!methodList.isEmpty()) {
-            return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
-                || _ZFP_ZFDI_errorOccurred();
-        }
-
         // ClassName()
         // v_ClassName()
         const ZFClass *cls = ZFClass::classForName(name, zfnull);
@@ -274,11 +267,29 @@ zfbool ZFDI_invoke(
                 || _ZFP_ZFDI_errorOccurred();
         }
 
+        // methodName()
+        ZFMethodFuncForNameGetAllT(methodList, zfnull, name);
+        if(!methodList.isEmpty()) {
+            return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
+                || _ZFP_ZFDI_errorOccurred();
+        }
+
         // fail
         return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
             || _ZFP_ZFDI_errorOccurred();
     }
     else {
+        // NS.ClassName()
+        // NS.v_ClassName()
+        // NS.ClassName.InnerClassName()
+        {
+            const ZFClass *cls = ZFClass::classForName(name, zfnull);
+            if(cls != zfnull) {
+                return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
+                    || _ZFP_ZFDI_errorOccurred();
+            }
+        }
+
         zfstring scopeTmp(name, dotPos);
         const zfchar *nameTmp = name + dotPos + 1;
 
@@ -298,17 +309,6 @@ zfbool ZFDI_invoke(
             ZFMethodFuncForNameGetAllT(methodList, scopeTmp, nameTmp);
             if(!methodList.isEmpty()) {
                 return _ZFP_ZFDI_invoke(ret, errorHint, obj, name, methodList, paramCount, paramList, convStr)
-                    || _ZFP_ZFDI_errorOccurred();
-            }
-        }
-
-        // NS.ClassName()
-        // NS.v_ClassName()
-        // NS.ClassName.InnerClassName()
-        {
-            const ZFClass *cls = ZFClass::classForName(name, zfnull);
-            if(cls != zfnull) {
-                return ZFDI_alloc(ret, errorHint, cls, paramCount, paramList, convStr)
                     || _ZFP_ZFDI_errorOccurred();
             }
         }

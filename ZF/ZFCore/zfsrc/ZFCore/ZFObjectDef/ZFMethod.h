@@ -392,9 +392,6 @@ public:
     }
     /**
      * @brief check whether method param type id matches
-     *
-     * null type id means not specified (any type matches),
-     * use #ZFTypeId_void to explicitly limit param count
      */
     zfbool methodParamTypeIdIsMatch(
             ZF_IN_OPT const zfchar *methodParamTypeId0 = zfnull

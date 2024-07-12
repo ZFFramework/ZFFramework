@@ -354,8 +354,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_3(void, zfstringToUpperT
 
 // ============================================================
 // namespace
-ZFEXPORT_VAR_READONLY_DEFINE(const zfchar *, ZFNamespaceSeparator, ZFNamespaceSeparator())
-ZFEXPORT_VAR_READONLY_DEFINE(zfindex, ZFNamespaceSeparatorLen, ZFNamespaceSeparatorLen())
 ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_1(const zfchar *, ZFNamespaceSkipGlobal
         , ZFMP_IN(const zfchar *, ns)
         )

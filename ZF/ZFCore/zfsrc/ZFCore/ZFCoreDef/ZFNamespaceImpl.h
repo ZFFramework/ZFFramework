@@ -13,15 +13,6 @@ ZF_NAMESPACE_GLOBAL_BEGIN
 
 // ============================================================
 /**
- * @brief separator token for #ZF_NAMESPACE_CURRENT
- */
-#define ZFNamespaceSeparator() "."
-/**
- * @brief separator token for #ZF_NAMESPACE_CURRENT
- */
-#define ZFNamespaceSeparatorLen() 1 // zfslen(ZFNamespaceSeparator())
-
-/**
  * @brief register namespace
  */
 #define ZF_NAMESPACE_REGISTER(NameSpace, ParentNameSpace) \
@@ -63,8 +54,7 @@ public:
  * -  global namespace and ZFFramework's main namespace (#ZF_NAMESPACE_GLOBAL) are ensured null
  * -  embeded namespace are supported,
  *   however, you must ensure it's valid declared by #ZF_NAMESPACE_REGISTER or #ZF_NAMESPACE_END_WITH_REGISTER
- * -  for embeded namespace, the namespace text are something looks like "GrandParent.Parent.Child",
- *   the separator token can be accessed by #ZFNamespaceSeparator
+ * -  for embeded namespace, the namespace text are something looks like "GrandParent.Parent.Child"
  */
 #define ZF_NAMESPACE_CURRENT() \
     _ZFP_ZF_NAMESPACE_NOT_REGISTERED()
@@ -74,7 +64,7 @@ public:
  * @brief skip "zf." in "zf.NS0.NS1.funcName"
  *
  * things to skip:
- * -  #ZFNamespaceSeparator at head ("." in ".NS0")
+ * -  dot at head ("." in ".NS0")
  * -  #ZF_NAMESPACE_GLOBAL_NAME
  * -  #ZF_NAMESPACE_GLOBAL_ABBR_NAME
  *
