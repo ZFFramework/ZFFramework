@@ -28,9 +28,9 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfpost
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void, zfpostCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         ) {
-    _ZFP_zfpostTask *task = zfcast(_ZFP_zfpostTask *, taskId);
+    _ZFP_zfpostTask *task = taskId;
     if(task) {
         if(task->target) {
             task->target->taskQueueRemove(task->callback);

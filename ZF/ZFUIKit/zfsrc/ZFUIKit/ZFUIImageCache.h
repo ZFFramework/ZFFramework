@@ -24,7 +24,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFUIKit, zfauto, ZFUIImageLoad
  * @brief cancel load task of #ZFUIImageLoad
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUIKit, void, ZFUIImageLoadCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

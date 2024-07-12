@@ -174,10 +174,10 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, zfasync
 }
 
 ZFMETHOD_FUNC_DEFINE_1(void, zfasyncCancel
-            , ZFMP_IN(ZFObject *, taskId)
+            , ZFMP_IN(const zfauto &, taskId)
             ) {
     zfCoreMutexLocker();
-    _ZFP_I_zfasyncTaskData *taskData = zfcast(_ZFP_I_zfasyncTaskData *, taskId);
+    _ZFP_I_zfasyncTaskData *taskData = taskId;
     if(taskData == zfnull || taskData->taskId == zfidentityInvalid()) {
         return;
     }

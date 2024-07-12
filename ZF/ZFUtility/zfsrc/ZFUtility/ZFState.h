@@ -63,7 +63,7 @@ public:
      * @brief remove callback added by #load
      */
     ZFMETHOD_DECLARE_1(void, loadCancel
-            , ZFMP_IN(ZFObject *, taskId)
+            , ZFMP_IN(const zfauto &, taskId)
             )
 
     /**
@@ -103,7 +103,7 @@ public:
      * @brief cancel task started by #getAsync
      */
     ZFMETHOD_DECLARE_1(void, getAsyncCancel
-            , ZFMP_IN(ZFObject *, taskId)
+            , ZFMP_IN(const zfauto &, taskId)
             )
 
     /**

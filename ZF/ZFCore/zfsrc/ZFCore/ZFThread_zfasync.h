@@ -38,7 +38,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfasync
  * @brief try to cancel the task or finishCallback started by #zfasync
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfasyncCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

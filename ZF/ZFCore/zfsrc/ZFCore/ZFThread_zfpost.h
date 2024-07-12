@@ -22,7 +22,7 @@ ZFMETHOD_FUNC_DECLARE_2(ZFLIB_ZFCore, zfauto, zfpost
  * @brief try to cancel the task started by #zfpost
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFCore, void, zfpostCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

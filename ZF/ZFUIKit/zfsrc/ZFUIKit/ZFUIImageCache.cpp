@@ -13,7 +13,7 @@ ZFMETHOD_FUNC_DEFINE_2(zfauto, ZFUIImageLoad
     return ZFIOCacheLoad(src, callback, loadImpl);
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFUIImageLoadCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         ) {
     ZFIOCacheLoadCancel(taskId);
 }

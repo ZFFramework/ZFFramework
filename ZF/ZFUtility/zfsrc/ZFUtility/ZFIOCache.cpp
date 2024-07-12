@@ -342,9 +342,9 @@ ZFMETHOD_FUNC_DEFINE_3(zfauto, ZFIOCacheLoad
     return taskId;
 }
 ZFMETHOD_FUNC_DEFINE_1(void, ZFIOCacheLoadCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         ) {
-    _ZFP_I_ZFIOCacheLoadTaskId *taskIdTmp = zfcast(_ZFP_I_ZFIOCacheLoadTaskId *, taskId);
+    _ZFP_I_ZFIOCacheLoadTaskId *taskIdTmp = taskId;
     if(taskIdTmp) {
         if(taskIdTmp->owner) {
             taskIdTmp->owner->callbackList.removeElement(taskIdTmp->callback);

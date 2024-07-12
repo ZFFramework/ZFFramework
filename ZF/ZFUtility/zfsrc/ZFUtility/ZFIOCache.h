@@ -81,7 +81,7 @@ ZFMETHOD_FUNC_DECLARE_3(ZFLIB_ZFUtility, zfauto, ZFIOCacheLoad
  * @brief cancel load task of #ZFIOCacheLoad
  */
 ZFMETHOD_FUNC_DECLARE_1(ZFLIB_ZFUtility, void, ZFIOCacheLoadCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         )
 
 ZF_NAMESPACE_GLOBAL_END

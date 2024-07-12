@@ -285,9 +285,9 @@ ZFMETHOD_DEFINE_1(ZFState, zfauto, load
     return taskId;
 }
 ZFMETHOD_DEFINE_1(ZFState, void, loadCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         ) {
-    v_ZFListener *task = zfcast(v_ZFListener *, taskId);
+    v_ZFListener *task = taskId;
     if(task && task->zfv) {
         d->loadQueue->removeElement(task->zfv);
     }
@@ -424,7 +424,7 @@ ZFMETHOD_DEFINE_2(ZFState, zfauto, getAsync
     return this->load(action);
 }
 ZFMETHOD_DEFINE_1(ZFState, void, getAsyncCancel
-        , ZFMP_IN(ZFObject *, taskId)
+        , ZFMP_IN(const zfauto &, taskId)
         ) {
     this->loadCancel(taskId);
 }

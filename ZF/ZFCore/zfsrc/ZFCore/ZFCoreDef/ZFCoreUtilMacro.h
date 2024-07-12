@@ -43,7 +43,7 @@ ZF_NAMESPACE_GLOBAL_BEGIN
  *       zfHint("moveable?")zffalse);
  * @endcode
  */
-#define zfHint(hint)
+#define zfHint(...)
 
 // ============================================================
 #define _ZFP_ZFM_REPEAT_0(Type, LeftCommaFix, CenterCommaFix)
