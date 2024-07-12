@@ -159,6 +159,13 @@ public:
         return ZFV(this->toObject());
     }
     /**
+     * @brief see #ZFV
+     */
+    template<typename T_Type>
+    inline T_Type &zfv(void) const {
+        return (T_Type &)ZFV(this->toObject());
+    }
+    /**
      * @brief access as #zfany
      */
     const zfany &asAny(void) const {
