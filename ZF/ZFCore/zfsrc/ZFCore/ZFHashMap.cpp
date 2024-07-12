@@ -61,16 +61,16 @@ ZFMETHOD_DEFINE_0(ZFHashMap, zfbool, isEmpty) {
 }
 
 ZFMETHOD_DEFINE_1(ZFHashMap, zfbool, isContain
-        , ZFMP_IN(ZFObject *, pKey)
+        , ZFMP_IN(ZFObject *, key)
         ) {
-    return (pKey != zfnull && d->data.find(pKey) != d->data.end());
+    return (key != zfnull && d->data.find(key) != d->data.end());
 }
 
 ZFMETHOD_DEFINE_1(ZFHashMap, zfany, get
-        , ZFMP_IN(ZFObject *, pKey)
+        , ZFMP_IN(ZFObject *, key)
         ) {
-    if(pKey != zfnull) {
-        _ZFP_ZFHashMapPrivate::MapType::const_iterator it = d->data.find(pKey);
+    if(key != zfnull) {
+        _ZFP_ZFHashMapPrivate::MapType::const_iterator it = d->data.find(key);
         if(it != d->data.end()) {
             return it->second;
         }
@@ -146,30 +146,30 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, addFrom
 }
 
 ZFMETHOD_DEFINE_2(ZFHashMap, void, set
-        , ZFMP_IN(ZFObject *, pKey)
-        , ZFMP_IN(ZFObject *, pValue)
+        , ZFMP_IN(ZFObject *, key)
+        , ZFMP_IN(ZFObject *, value)
         ) {
-    if(pKey == zfnull) {
+    if(key == zfnull) {
         return;
     }
-    if(pValue == zfnull) {
-        this->remove(pKey);
+    if(value == zfnull) {
+        this->remove(key);
         return;
     }
 
-    _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(pKey);
+    _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(key);
     if(it != d->data.end()) {
         this->contentOnRemove(it->first, it->second);
         ZFObject *tmp = it->second;
-        zfRetain(pValue);
-        it->second = pValue;
+        zfRetain(value);
+        it->second = value;
         this->contentOnAdd(it->first, it->second);
         zfRelease(tmp);
     }
     else {
-        zfRetain(pKey);
-        zfRetain(pValue);
-        (d->data)[pKey] = pValue;
+        zfRetain(key);
+        zfRetain(value);
+        (d->data)[key] = value;
         this->contentOnAdd(it->first, it->second);
     }
 
@@ -177,10 +177,10 @@ ZFMETHOD_DEFINE_2(ZFHashMap, void, set
 }
 
 ZFMETHOD_DEFINE_1(ZFHashMap, void, remove
-        , ZFMP_IN(ZFObject *, pKey)
+        , ZFMP_IN(ZFObject *, key)
         ) {
-    if(pKey != zfnull) {
-        _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(pKey);
+    if(key != zfnull) {
+        _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(key);
         if(it != d->data.end()) {
             ZFObject *tmpKey = it->first;
             ZFObject *tmpValue = it->second;
@@ -194,10 +194,10 @@ ZFMETHOD_DEFINE_1(ZFHashMap, void, remove
     }
 }
 ZFMETHOD_DEFINE_1(ZFHashMap, zfauto, removeAndGet
-        , ZFMP_IN(ZFObject *, pKey)
+        , ZFMP_IN(ZFObject *, key)
         ) {
-    if(pKey != zfnull) {
-        _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(pKey);
+    if(key != zfnull) {
+        _ZFP_ZFHashMapPrivate::MapType::iterator it = d->data.find(key);
         if(it != d->data.end()) {
             ZFObject *tmpKey = it->first;
             ZFObject *tmpValue = it->second;

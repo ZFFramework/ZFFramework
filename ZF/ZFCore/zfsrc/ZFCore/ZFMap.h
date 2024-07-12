@@ -29,17 +29,17 @@ public:
     ZFMETHOD_DECLARE_0(zfbool, isEmpty)
 
     /**
-     * @brief return true if contain pKey
+     * @brief return true if contain key
      */
     ZFMETHOD_DECLARE_1(zfbool, isContain
-            , ZFMP_IN(ZFObject *, pKey)
+            , ZFMP_IN(ZFObject *, key)
             )
 
     /**
      * @brief get element by key or null if no such key
      */
     ZFMETHOD_DECLARE_1(zfany, get
-            , ZFMP_IN(ZFObject *, pKey)
+            , ZFMP_IN(ZFObject *, key)
             )
 
     /**
@@ -77,15 +77,15 @@ public:
      * use null value to remove the pair
      */
     ZFMETHOD_DECLARE_2(void, set
-            , ZFMP_IN(ZFObject *, pKey)
-            , ZFMP_IN(ZFObject *, pValue)
+            , ZFMP_IN(ZFObject *, key)
+            , ZFMP_IN(ZFObject *, value)
             )
 
     /**
-     * @brief remove value associated with pKey
+     * @brief remove value associated with key
      */
     ZFMETHOD_DECLARE_1(void, remove
-            , ZFMP_IN(ZFObject *, pKey)
+            , ZFMP_IN(ZFObject *, key)
             )
     /**
      * @brief remove and return removed value or null if not exist
@@ -94,7 +94,7 @@ public:
      * since the latter one have two search step
      */
     ZFMETHOD_DECLARE_1(zfauto, removeAndGet
-            , ZFMP_IN(ZFObject *, pKey)
+            , ZFMP_IN(ZFObject *, key)
             )
     /**
      * @brief remove all content

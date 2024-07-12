@@ -105,7 +105,7 @@ inline zfstring zfflagsToString(
  * @brief convert string to zfflags
  *
  * params:
- * -  pErrPos pointer to first char where error occurred,
+ * -  outErrorPos pointer to first char where error occurred,
  *   a non converted format is not regarded as error
  */
 extern ZFLIB_ZFCore zfbool zfflagsFromStringT(
