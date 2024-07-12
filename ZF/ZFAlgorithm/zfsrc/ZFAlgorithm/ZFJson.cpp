@@ -365,6 +365,48 @@ ZFJson ZFJson::copy(void) const {
     return ret;
 }
 
+ZFJson &ZFJson::merge(ZF_IN const ZFJson &other) {
+    if(d == other.d) {
+        return *this;
+    }
+    switch(this->type()) {
+        case ZFJsonType::e_JsonNull:
+            if(other.type() == ZFJsonType::e_JsonObject || other.type() == ZFJsonType::e_JsonArray) {
+                this->operator=(other.copy());
+            }
+            break;
+        case ZFJsonType::e_JsonValue:
+            break;
+        case ZFJsonType::e_JsonObject:
+            if(other.type() == ZFJsonType::e_JsonObject) {
+                for(zfiterator it = other.attrIter(); other.attrIterValid(it); other.attrIterNext(it)) {
+                    zfstring key = other.attrIterKey(it);
+                    ZFJson exist = this->attr(key);
+                    ZFJson attach = other.attrIterValue(it);
+                    if(exist.type() == ZFJsonType::e_JsonObject && attach.type() == ZFJsonType::e_JsonObject) {
+                        exist.merge(attach);
+                    }
+                    else {
+                        this->attr(key, attach);
+                    }
+                }
+            }
+            break;
+        case ZFJsonType::e_JsonArray:
+            if(other.type() == ZFJsonType::e_JsonArray) {
+                this->childRemoveAll();
+                for(zfindex i = 0; i < other.childCount(); ++i) {
+                    this->childAdd(other.childAt(i));
+                }
+            }
+            break;
+        default:
+            zfCoreCriticalShouldNotGoHere();
+            break;
+    }
+    return *this;
+}
+
 // ============================================================
 // for value type
 ZFJson &ZFJson::value(ZF_IN const zfstring &value) {
@@ -599,7 +641,12 @@ zfindex ZFJson::childFind(ZF_IN const ZFJson &item) const {
 }
 
 ZFJson::operator zfstring (void) const {
-    return ZFJsonToString(*this);
+    if(this->valid()) {
+        return ZFJsonToString(*this);
+    }
+    else {
+        return zfnull;
+    }
 }
 
 // ============================================================
@@ -624,6 +671,9 @@ ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfstring, objectInfo)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJsonTypeEnum, type)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, zfbool, valid)
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_0(v_ZFJson, ZFJson, copy)
+ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson &, merge
+        , ZFMP_IN(const ZFJson &, other)
+        )
 ZFMETHOD_USER_REGISTER_FOR_WRAPPER_FUNC_1(v_ZFJson, ZFJson &, value
         , ZFMP_IN(const zfstring &, value)
         )

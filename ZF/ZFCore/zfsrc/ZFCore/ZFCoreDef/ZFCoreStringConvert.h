@@ -32,6 +32,23 @@ ZF_NAMESPACE_GLOBAL_BEGIN
         TypeName##FromStringT(v, src, srcLen, errorHint); \
         return v; \
     } \
+    /** @cond ZFPrivateDoc */ \
+    inline zfbool TypeName##FromStringT( \
+            ZF_OUT Type &v \
+            , ZF_IN const zfstring &src \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
+        return TypeName##FromStringT(v, src.cString(), src.length(), errorHint); \
+    } \
+    inline Type TypeName##FromString( \
+            ZF_IN const zfstring &src \
+            , ZF_OUT_OPT zfstring *errorHint = zfnull \
+            ) { \
+        Type v; \
+        TypeName##FromStringT(v, src.cString(), src.length(), errorHint); \
+        return v; \
+    } \
+    /** @endcond */ \
     /** @brief util method to convert TypeName to string */ \
     extern ZFLIB_ zfbool TypeName##ToStringT( \
             ZF_IN_OUT zfstring &s \

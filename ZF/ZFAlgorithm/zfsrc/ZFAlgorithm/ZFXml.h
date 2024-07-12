@@ -285,6 +285,8 @@ public:
     /** @brief return #valid */
     inline operator zfbool (void) const {return this->valid();}
     /** @brief access #attr */
+    inline zfstring operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
+    /** @brief access #attr */
     inline zfstring operator [] (ZF_IN const zfstring &key) const {return this->attr(key);}
     /** @brief access #childAt */
     inline ZFXml operator [] (ZF_IN zfindex index) const {return this->childAt(index);}

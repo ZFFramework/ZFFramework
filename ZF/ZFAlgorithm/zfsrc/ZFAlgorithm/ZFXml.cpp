@@ -486,7 +486,12 @@ zfbool ZFXml::CDATA(void) const {
 
 // ============================================================
 ZFXml::operator zfstring (void) const {
-    return ZFXmlToString(*this);
+    if(this->valid()) {
+        return ZFXmlToString(*this);
+    }
+    else {
+        return zfnull;
+    }
 }
 
 // ============================================================

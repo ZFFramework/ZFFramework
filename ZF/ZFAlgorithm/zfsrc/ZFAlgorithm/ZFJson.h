@@ -213,6 +213,15 @@ public:
      */
     ZFJson copy(void) const;
 
+    /**
+     * @brief util to merge from other json
+     *
+     * -  arrays: would be replaced
+     * -  objects: all attr value or array would be replaced,
+     *   all attr object would be merged recursively
+     */
+    ZFJson &merge(ZF_IN const ZFJson &other);
+
     // ============================================================
     // for value type
 public:
@@ -333,6 +342,8 @@ public:
     operator zfstring (void) const;
     /** @brief return #valid */
     inline operator zfbool (void) const {return this->valid();}
+    /** @brief access #attr */
+    inline ZFJson operator [] (ZF_IN const zfchar *key) const {return this->attr(key);}
     /** @brief access #attr */
     inline ZFJson operator [] (ZF_IN const zfstring &key) const {return this->attr(key);}
     /** @brief access #childAt */

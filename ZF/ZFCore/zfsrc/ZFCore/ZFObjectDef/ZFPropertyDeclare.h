@@ -404,8 +404,8 @@ public:
                                              InitValueOrEmpty) \
     public: \
         /** @cond ZFPrivateDoc */ \
-        typedef Type PropVT_##Name; \
-        typedef zfauto PropHT_##Name; \
+        typedef Type _ZFP_PropVT_##Name; \
+        typedef zfauto _ZFP_PropHT_##Name; \
         /** @endcond */ \
     private: \
         zffinal zfclassNotPOD _ZFP_PropV_##Name { \
@@ -419,18 +419,18 @@ public:
                 zfpoolDelete(this->_ZFP_v); \
             } \
         public: \
-            zfself::PropVT_##Name &_ZFP_init( \
+            zfself::_ZFP_PropVT_##Name &_ZFP_init( \
                     ZF_IN ZFObject *owner \
                     , ZF_IN zfbool notifyOwnerAttach \
                     ) { \
                 if(!(this->_ZFP_v)) { \
-                    this->_ZFP_v = zfpoolNew(_ZFP_PropRVH<zfself::PropVT_##Name>, InitValueOrEmpty); \
+                    this->_ZFP_v = zfpoolNew(_ZFP_PropRVH<zfself::_ZFP_PropVT_##Name>, InitValueOrEmpty); \
                     _ZFP_ZFPropertyLifeCycleCall_init_retain( \
                         zfself::_ZFP_Prop_##Name(), \
                         owner, \
                         zfcast(ZFObject *, this->_ZFP_v->value()), \
                         notifyOwnerAttach, \
-                        _ZFP_PropRVSC_r<zfself::PropVT_##Name>::f, \
+                        _ZFP_PropRVSC_r<zfself::_ZFP_PropVT_##Name>::f, \
                         this->_ZFP_v); \
                 } \
                 return this->_ZFP_v->value(); \
@@ -451,7 +451,7 @@ public:
                 this->_ZFP_v = zfnull; \
             } \
         public: \
-            _ZFP_PropRVH<zfself::PropVT_##Name> *_ZFP_v; \
+            _ZFP_PropRVH<zfself::_ZFP_PropVT_##Name> *_ZFP_v; \
         }; \
         zfself::_ZFP_PropV_##Name Name##_PropV; \
     private: \
@@ -481,8 +481,8 @@ public:
                                              InitValueOrEmpty) \
     public: \
         /** @cond ZFPrivateDoc */ \
-        typedef Type PropVT_##Name; \
-        typedef Type PropHT_##Name; \
+        typedef Type _ZFP_PropVT_##Name; \
+        typedef Type _ZFP_PropHT_##Name; \
         /** @endcond */ \
     private: \
         zffinal zfclassNotPOD _ZFP_PropV_##Name { \
@@ -496,18 +496,18 @@ public:
                 zfpoolDelete(this->_ZFP_v); \
             } \
         public: \
-            zfself::PropVT_##Name &_ZFP_init( \
+            zfself::_ZFP_PropVT_##Name &_ZFP_init( \
                     ZF_IN ZFObject *owner \
                     , ZF_IN zfbool notifyOwnerAttach \
                     ) { \
                 if(!(this->_ZFP_v)) { \
-                    this->_ZFP_v = zfpoolNew(zfself::PropVT_##Name, InitValueOrEmpty); \
+                    this->_ZFP_v = zfpoolNew(zfself::_ZFP_PropVT_##Name, InitValueOrEmpty); \
                     _ZFP_ZFPropertyLifeCycleCall_init_assign( \
                         zfself::_ZFP_Prop_##Name(), \
                         owner, \
                         this->_ZFP_v, \
                         notifyOwnerAttach, \
-                        _ZFP_PropWeak<zfself::PropVT_##Name>::v(*(this->_ZFP_v))); \
+                        _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(*(this->_ZFP_v))); \
                 } \
                 return (*(this->_ZFP_v)); \
             } \
@@ -523,12 +523,12 @@ public:
                     owner, \
                     this->_ZFP_v, \
                     notifyOwnerDetach, \
-                    _ZFP_PropWeak<zfself::PropVT_##Name>::v(*(this->_ZFP_v))); \
+                    _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(*(this->_ZFP_v))); \
                 zfpoolDelete(this->_ZFP_v); \
                 this->_ZFP_v = zfnull; \
             } \
         public: \
-            zfself::PropVT_##Name *_ZFP_v; \
+            zfself::_ZFP_PropVT_##Name *_ZFP_v; \
         }; \
         zfself::_ZFP_PropV_##Name Name##_PropV; \
     private: \
@@ -541,7 +541,7 @@ public:
             if(t->Name##_PropV._ZFP_accessed()) { \
                 zfself::_ZFP_PropV_##Name _holder; \
                 if(outInitValue != zfnull) { \
-                    ZFTypeId<zfself::PropVT_##Name>::ValueStore(*outInitValue, _holder._ZFP_init(ownerObj, zffalse)); \
+                    ZFTypeId<zfself::_ZFP_PropVT_##Name>::ValueStore(*outInitValue, _holder._ZFP_init(ownerObj, zffalse)); \
                 } \
                 zfbool ret = (ZFComparerDefault( \
                         t->Name(), _holder._ZFP_init(ownerObj, zffalse)) \
@@ -626,7 +626,7 @@ public:
                 accessed, \
                 valueOld, \
                 zfcast(ZFObject *, propertyValue), \
-                _ZFP_PropRVSC_r<zfself::PropVT_##Name>::f, \
+                _ZFP_PropRVSC_r<zfself::_ZFP_PropVT_##Name>::f, \
                 Name##_PropV._ZFP_v); \
             zfsynchronizeUnlock(this); \
         } \
@@ -655,10 +655,10 @@ public:
                 accessed, \
                 &valueOld, \
                 &propertyValue, \
-                _ZFP_PropRVSC_a<zfself::PropVT_##Name>::f, \
+                _ZFP_PropRVSC_a<zfself::_ZFP_PropVT_##Name>::f, \
                 Name##_PropV._ZFP_v, \
-                _ZFP_PropWeak<zfself::PropVT_##Name>::v(valueOld), \
-                _ZFP_PropWeak<zfself::PropVT_##Name>::v(propertyValue)); \
+                _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(valueOld), \
+                _ZFP_PropWeak<zfself::_ZFP_PropVT_##Name>::v(propertyValue)); \
             zfsynchronizeUnlock(this); \
         } \
     public:
@@ -686,7 +686,8 @@ public:
         _ZFP_ZFMETHOD_INLINE( \
                 notAutoRegister \
                 , AccessType, ZFMethodTypeVirtual, G \
-                , Type const &, Name \
+                /* ZFTAG_TRICKS: return non const ref, but use const ref in reflection */ \
+                , Type &, Name \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
                 , _ZFP_ZFMP_DUMMY() \
@@ -728,18 +729,18 @@ public:
                 , ZF_IN ZFObject *propertyLifeCycleUserData \
                 ) { \
             zfcast(zfself *, propertyOwnerObject)->zfself::_ZFP_propL_##lifeCycleName##_##Name( \
-                *(constFix(const) zfself::PropHT_##Name *)propertyValue, \
-                *(zfself::PropHT_##Name *)propertyValueOld); \
+                *(constFix(const) zfself::_ZFP_PropHT_##Name *)propertyValue, \
+                *(zfself::_ZFP_PropHT_##Name *)propertyValueOld); \
         } \
     public: \
         zffinal void _ZFP_propL_##lifeCycleName##_##Name( \
-            ZF_IN zfself::PropHT_##Name constFix(const) &propertyValue, \
-            ZF_IN zfself::PropHT_##Name const &propertyValueOld)
+            ZF_IN zfself::_ZFP_PropHT_##Name constFix(const) &propertyValue, \
+            ZF_IN zfself::_ZFP_PropHT_##Name const &propertyValueOld)
 #define _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DECLARE(Type, Name, lifeCycleName, constFix) \
     public: \
         zffinal void _ZFP_propL_##lifeCycleName##_##Name( \
-            ZF_IN zfself::PropHT_##Name constFix(const) &propertyValue, \
-            ZF_IN zfself::PropHT_##Name const &propertyValueOld);
+            ZF_IN zfself::_ZFP_PropHT_##Name constFix(const) &propertyValue, \
+            ZF_IN zfself::_ZFP_PropHT_##Name const &propertyValueOld);
 #define _ZFP_ZFPROPERTY_LIFE_CYCLE_OVERRIDE_DEFINE(OwnerClass, Type, Name, lifeCycleName, constFix, extraRegStep) \
     ZF_STATIC_REGISTER_INIT(propL_##OwnerClass##_##lifeCycleName##_##Name) { \
         _ZFP_ZFPropertyLifeCycleRegister( \
@@ -758,13 +759,13 @@ public:
                 , ZF_IN ZFObject *propertyLifeCycleUserData \
                 ) { \
             zfcast(OwnerClass *, propertyOwnerObject)->OwnerClass::_ZFP_propL_##lifeCycleName##_##Name( \
-                *(constFix(const) OwnerClass::PropHT_##Name *)propertyValue, \
-                *(OwnerClass::PropHT_##Name *)propertyValueOld); \
+                *(constFix(const) OwnerClass::_ZFP_PropHT_##Name *)propertyValue, \
+                *(OwnerClass::_ZFP_PropHT_##Name *)propertyValueOld); \
         } \
     ZF_STATIC_REGISTER_END(propL_##OwnerClass##_##lifeCycleName##_##Name) \
     void OwnerClass::_ZFP_propL_##lifeCycleName##_##Name( \
-        ZF_IN zfself::PropHT_##Name constFix(const) &propertyValue, \
-        ZF_IN zfself::PropHT_##Name const &propertyValueOld)
+        ZF_IN zfself::_ZFP_PropHT_##Name constFix(const) &propertyValue, \
+        ZF_IN zfself::_ZFP_PropHT_##Name const &propertyValueOld)
 
 extern ZFLIB_ZFCore void _ZFP_ZFPropertyLifeCycleRegister(
         ZF_IN const zfchar *lifeCycleName
