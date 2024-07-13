@@ -8,7 +8,6 @@ ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_none)
 // ============================================================
 // void
 ZFTYPEID_ID_DATA_REGISTER(void, void)
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_void)
 
 // ============================================================
 // const void * / void *

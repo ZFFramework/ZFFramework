@@ -3,8 +3,6 @@
 
 ZF_NAMESPACE_GLOBAL_BEGIN
 
-ZFMETHOD_FUNC_USER_REGISTER_FOR_FUNC_0(const zfchar *, ZFTypeId_ZFCoreArray)
-
 zfbool _ZFP_ZFCoreArrayFromStringT(
         ZF_IN const ZFTypeInfo *elementType
         , ZF_IN_OUT ZFCoreArrayBase &v
