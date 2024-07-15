@@ -203,28 +203,21 @@ public:
  *
  * (ZFTAG_LIMITATION) due to some limitations of C++ (basically the limitations of diamond inheritance),
  * you should remember these while using interface:
- * -  an interface must inherit from #ZFInterface,
- *   and must not be inherited by another interface,
- *   it can only be "implemented" by a "ZFObject type",
- *   for how to achieve the inheritance of an interface,
- *   see bellow
+ * -  an interface must inherit from #ZFInterface or other interface (at most one),
+ *   it can only be "implemented" by a "ZFObject type"
  * -  you must have #ZFINTERFACE_DECLARE declared in your interface,
  *   and must have ZFIMPLEMENT_DECLARE declared in your child type
  *   that implement the interface
- * -  you must not override anything within an interface,
- *   such as:
- *   -  ZFProperty (ZFPROPERTY_OVERRIDE_XXX)
- *   -  normal virtual method
  *
  * \n
  * ADVANCED:\n
- * to simulate a interface that inherit from other interfaces,
+ * to simulate a interface that inherit from multiple interfaces,
  * you should do it like this:\n
  * Java code:
  * @code
  *   public interface IParent0 {}
  *   public interface IParent1 {}
- *   public interface IChild extends IParent0 extends IParent1 {}
+ *   public interface IChild extends IParent0, IParent1 {}
  *   public class ObjParent implements IParent0 {}
  *   public class ObjChild extends ObjParent implements IChild {}
  * @endcode
@@ -236,8 +229,8 @@ public:
  *   zfinterface IParent1 : zfextend ZFInterface {
  *       ZFINTERFACE_DECLARE(IParent1, ZFInterface)
  *   };
- *   zfinterface IChild : zfextend ZFInterface { // note: here is always ZFInterface
- *       ZFINTERFACE_DECLARE(IChild, ZFInterface)
+ *   zfinterface IChild : zfextend IParent0 { // note: can only inherit at most one parent interface
+ *       ZFINTERFACE_DECLARE(IChild, IParent0)
  *   };
  *   zfclass ObjParent : zfextend ZFObject, zfimplement IParent0 {
  *       ZFOBJECT_DECLARE(ObjParent, ZFObject)
@@ -247,9 +240,12 @@ public:
  *                    , zfimplement IParent1 // note: here is required
  *   {
  *       ZFOBJECT_DECLARE(ObjChild, ObjParent)
- *       ZFIMPLEMENT_DECLARE(IChild, IParent1) // note: here is required
+ *       ZFIMPLEMENT_DECLARE(IChild
+ *               , IParent1 // note: here is required
+ *               )
  *   };
  * @endcode
+ * it's strongly recommend not to make interface inherit multiple interfaces
  */
 zfinterface ZFLIB_ZFCore ZFInterface {
     _ZFP_ZFINTERFACE_DECLARE(ZFInterface, _ZFP_ObjI_Base, _ZFP_ObjI_Base)

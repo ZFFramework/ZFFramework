@@ -110,7 +110,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
 #define ZFPROPERTY_RETAIN_READONLY(Type, Name, InitValueOrEmpty) \
     ZFPROPERTY_RETAIN_DETAIL( \
         Type, Name, InitValueOrEmpty, \
-        private, public)
+        protected, public)
 
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPROPERTY_RETAIN_DETAIL( \
@@ -134,7 +134,7 @@ extern ZFLIB_ZFCore const ZFProperty *ZFPropertyForName(
 #define ZFPROPERTY_ASSIGN_READONLY(Type, Name, InitValueOrEmpty) \
     ZFPROPERTY_ASSIGN_DETAIL( \
         Type, Name, InitValueOrEmpty, \
-        private, public)
+        protected, public)
 
 /** @brief see #ZFPROPERTY_RETAIN */
 #define ZFPROPERTY_ASSIGN_DETAIL( \
